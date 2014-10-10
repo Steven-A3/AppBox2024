@@ -2,7 +2,7 @@
 //  ExpenseListBudget.m
 //  AppBox3
 //
-//  Created by dotnetguy83 on 8/5/14.
+//  Created by kimjeonghwan on 10/10/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -14,6 +14,7 @@
 @dynamic category;
 @dynamic currencyCode;
 @dynamic date;
+@dynamic isModified;
 @dynamic location;
 @dynamic notes;
 @dynamic paymentType;
@@ -22,6 +23,5 @@
 @dynamic uniqueID;
 @dynamic updateDate;
 @dynamic usedAmount;
-@dynamic isModified;
 
 @end

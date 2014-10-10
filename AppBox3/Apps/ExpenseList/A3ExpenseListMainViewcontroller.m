@@ -692,7 +692,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     else {
         // 입력 포커스 후
         // price * qty 계산
-        item.subTotal = @(item.price.floatValue * item.qty.floatValue);
+        item.subTotal = @(item.price.doubleValue * item.qty.doubleValue);
         aCell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:item.subTotal];
         
         
@@ -734,7 +734,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
                 NSNumberFormatter *formatter = [NSNumberFormatter new];
                 [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
                 nextCell.qtyTextField.text = [formatter stringFromNumber:nextItem.qty];
-                nextCell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:@(nextItem.price.floatValue * nextItem.qty.floatValue)];
+                nextCell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:@(nextItem.price.doubleValue * nextItem.qty.doubleValue)];
             }
         }
     }
@@ -770,9 +770,9 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 - (void)calculateAndDisplayResultWithAnimation:(BOOL)animation saveData:(BOOL)saveData {
     // 전체 사용금액 계산.
-    float usedBudget = 0.0;
+    double usedBudget = 0.0;
     for (ExpenseListItem *item in _tableDataSourceArray) {
-        usedBudget += item.price.floatValue * item.qty.floatValue;
+        usedBudget += item.price.doubleValue * item.qty.doubleValue;
     }
     _currentBudget.usedAmount = @(usedBudget);
     
@@ -985,7 +985,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 		cell.nameTextField.text = item.itemName;
 		cell.priceTextField.text = [self.currencyFormatter stringFromNumber:item.price];
 		cell.qtyTextField.text = item.qty.stringValue;
-		cell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:@(item.price.floatValue * item.qty.floatValue)];
+		cell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:@(item.price.doubleValue * item.qty.doubleValue)];
 	} else {
 		cell.nameTextField.text = @"";
 		cell.priceTextField.text = @"";
@@ -1222,7 +1222,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         
         aCell.priceTextField.text = [self.currencyFormatter stringFromNumber:item.price];
         aCell.qtyTextField.text = item.qty.stringValue;
-        aCell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:@(item.price.floatValue * item.qty.floatValue)];
+        aCell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:@(item.price.doubleValue * item.qty.doubleValue)];
     }
     
     _selectedItem = item;
@@ -1251,7 +1251,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	}
     
     // price * qty 계산
-    item.subTotal = @(item.price.floatValue * item.qty.floatValue);
+    item.subTotal = @(item.price.doubleValue * item.qty.doubleValue);
     aCell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:item.subTotal];
     
     // 전체 항목 계산 & 화면(헤더뷰) 반영.
@@ -1304,7 +1304,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	}
 
     // price * qty 계산
-    item.subTotal = @(item.price.floatValue * item.qty.floatValue);
+    item.subTotal = @(item.price.doubleValue * item.qty.doubleValue);
     aCell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:item.subTotal];
 	item.hasData = @(YES);
 	item.updateDate = updateDate;

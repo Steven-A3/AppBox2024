@@ -224,7 +224,7 @@
             return;
         }
         
-        float usedGaugeOffset = (self.frame.size.width / 100.0) * (usedAmount.floatValue / totalAmount.floatValue * 100.0);
+        double usedGaugeOffset = (self.frame.size.width / 100.0) * (usedAmount.doubleValue / totalAmount.doubleValue * 100.0);
         
         if ( (usedGaugeOffset+_sliderThumbView.frame.size.width) > self.frame.size.width ) {
             usedGaugeOffset = self.frame.size.width - (_sliderThumbView.frame.size.width / 2.0);//self.frame.size.width - _sliderThumbView.frame.size.width;
@@ -273,13 +273,13 @@
         usedAmount = budget.usedAmount ? budget.usedAmount : @0;
         totalAmount = budget.totalAmount ? budget.totalAmount : @0;
         
-        if (budget.totalAmount.floatValue == 0 || !budget.totalAmount) {
+        if (budget.totalAmount.doubleValue == 0 || !budget.totalAmount) {
             resultAmount = nil;
         } else {
-            resultAmount = @(budget.usedAmount.floatValue / budget.totalAmount.floatValue * 100.0);
+            resultAmount = @(budget.usedAmount.doubleValue / budget.totalAmount.doubleValue * 100.0);
         }
         
-        remainAmount = @(budget.totalAmount.floatValue - budget.usedAmount.floatValue);
+        remainAmount = @(budget.totalAmount.doubleValue - budget.usedAmount.doubleValue);
         [_detailInfoButton setImage:[[UIImage imageNamed:@"information"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
         [_detailInfoButton setImage:[[UIImage imageNamed:@"information"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateHighlighted];
         [_detailInfoButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"information"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
@@ -315,8 +315,8 @@
         [resultBudgetStringArray addObject:[self.currencyFormatter stringFromNumber:totalAmount]];
     }
     else {
-        [resultBudgetStringArray addObject:[self.currencyFormatter stringFromNumber: @(fabs(remainAmount.floatValue)) ]];
-		[resultBudgetStringArray addObject:remainAmount.floatValue >= 0.0 ? NSLocalizedString(@" left of ", @" left of ") : NSLocalizedString(@" over of ", @" over of ") ];
+        [resultBudgetStringArray addObject:[self.currencyFormatter stringFromNumber: @(llabs(remainAmount.doubleValue)) ]];
+		[resultBudgetStringArray addObject:remainAmount.doubleValue >= 0.0 ? NSLocalizedString(@" left of ", @" left of ") : NSLocalizedString(@" over of ", @" over of ") ];
         [resultBudgetStringArray addObject:[self.currencyFormatter stringFromNumber:totalAmount]];
     }
 

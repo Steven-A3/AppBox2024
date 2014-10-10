@@ -78,6 +78,9 @@
 		57213EFB19C328FD005AD0ED /* CLLocationManager+authorization.m in Sources */ = {isa = PBXBuildFile; fileRef = 57213EFA19C328FD005AD0ED /* CLLocationManager+authorization.m */; };
 		5727A57219D411F100ADB17C /* Erase.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5727A57119D411F100ADB17C /* Erase.caf */; };
 		5727A57419D41B9200ADB17C /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5727A57319D41B9200ADB17C /* CoreMotion.framework */; };
+		5733FBCD19E8061800A7357E /* ExpenseListBudget.m in Sources */ = {isa = PBXBuildFile; fileRef = 5733FBCC19E8061800A7357E /* ExpenseListBudget.m */; };
+		5733FBD019E8061800A7357E /* ExpenseListBudgetLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5733FBCF19E8061800A7357E /* ExpenseListBudgetLocation.m */; };
+		5733FBD319E8061900A7357E /* ExpenseListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5733FBD219E8061900A7357E /* ExpenseListItem.m */; };
 		577707F219D57CB900DC066A /* NPColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 577707EF19D57CB900DC066A /* NPColorPickerView.m */; };
 		577707F319D57CB900DC066A /* NPConicGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 577707F119D57CB900DC066A /* NPConicGradient.m */; };
 		577707F619D57E1F00DC066A /* CGColor+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 577707F519D57E1F00DC066A /* CGColor+Additions.m */; };
@@ -415,9 +418,7 @@
 		687484C019783BE100EA8F74 /* WalletItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484BF19783BE100EA8F74 /* WalletItem.m */; };
 		687484C319783BE100EA8F74 /* WalletFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484C219783BE100EA8F74 /* WalletFavorite.m */; };
 		687484C619783BE100EA8F74 /* WalletFieldItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484C519783BE100EA8F74 /* WalletFieldItem.m */; };
-		687484CC19783C0F00EA8F74 /* ExpenseListBudgetLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484CB19783C0F00EA8F74 /* ExpenseListBudgetLocation.m */; };
 		687484CF19783C1000EA8F74 /* ExpenseListHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484CE19783C1000EA8F74 /* ExpenseListHistory.m */; };
-		687484D219783C1000EA8F74 /* ExpenseListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484D119783C1000EA8F74 /* ExpenseListItem.m */; };
 		687484DB19783C2F00EA8F74 /* TipCalcRecent.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484DA19783C2F00EA8F74 /* TipCalcRecent.m */; };
 		687484DE19783C3000EA8F74 /* TipCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484DD19783C3000EA8F74 /* TipCalcHistory.m */; };
 		687484DF197842BE00EA8F74 /* CurrencyHistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874849B19783B7900EA8F74 /* CurrencyHistoryItem.m */; };
@@ -887,7 +888,6 @@
 		68F9391917D0DDBB0082234C /* FMMoveTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F9391617D0DDBB0082234C /* FMMoveTableView.m */; };
 		68F9391A17D0DDBB0082234C /* FMMoveTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F9391817D0DDBB0082234C /* FMMoveTableViewCell.m */; };
 		68F967BF1818D74300D64A0A /* NSArray+validation.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F967BE1818D74300D64A0A /* NSArray+validation.m */; };
-		805D968C199099C700E7F79C /* ExpenseListBudget.m in Sources */ = {isa = PBXBuildFile; fileRef = 805D968B199099C700E7F79C /* ExpenseListBudget.m */; };
 		8079DFBC190F93B90084BD89 /* A3DateLunarTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8079DFBB190F93B90084BD89 /* A3DateLunarTest.m */; };
 		808DA9EB196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 808DA9EA196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.m */; };
 /* End PBXBuildFile section */
@@ -1072,6 +1072,12 @@
 		57213EFA19C328FD005AD0ED /* CLLocationManager+authorization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CLLocationManager+authorization.m"; sourceTree = "<group>"; };
 		5727A57119D411F100ADB17C /* Erase.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Erase.caf; sourceTree = "<group>"; };
 		5727A57319D41B9200ADB17C /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		5733FBCB19E8061800A7357E /* ExpenseListBudget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExpenseListBudget.h; path = Data/ExpenseListBudget.h; sourceTree = "<group>"; };
+		5733FBCC19E8061800A7357E /* ExpenseListBudget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExpenseListBudget.m; path = Data/ExpenseListBudget.m; sourceTree = "<group>"; };
+		5733FBCE19E8061800A7357E /* ExpenseListBudgetLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExpenseListBudgetLocation.h; path = Data/ExpenseListBudgetLocation.h; sourceTree = "<group>"; };
+		5733FBCF19E8061800A7357E /* ExpenseListBudgetLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExpenseListBudgetLocation.m; path = Data/ExpenseListBudgetLocation.m; sourceTree = "<group>"; };
+		5733FBD119E8061900A7357E /* ExpenseListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExpenseListItem.h; path = Data/ExpenseListItem.h; sourceTree = "<group>"; };
+		5733FBD219E8061900A7357E /* ExpenseListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExpenseListItem.m; path = Data/ExpenseListItem.m; sourceTree = "<group>"; };
 		577707EE19D57CB900DC066A /* NPColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NPColorPickerView.h; path = NPColorPicker/NPColorPickerView.h; sourceTree = "<group>"; };
 		577707EF19D57CB900DC066A /* NPColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NPColorPickerView.m; path = NPColorPicker/NPColorPickerView.m; sourceTree = "<group>"; };
 		577707F019D57CB900DC066A /* NPConicGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NPConicGradient.h; path = NPColorPicker/NPConicGradient.h; sourceTree = "<group>"; };
@@ -1650,12 +1656,8 @@
 		687484C219783BE100EA8F74 /* WalletFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletFavorite.m; sourceTree = "<group>"; };
 		687484C419783BE100EA8F74 /* WalletFieldItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletFieldItem.h; sourceTree = "<group>"; };
 		687484C519783BE100EA8F74 /* WalletFieldItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletFieldItem.m; sourceTree = "<group>"; };
-		687484CA19783C0F00EA8F74 /* ExpenseListBudgetLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExpenseListBudgetLocation.h; path = Data/ExpenseListBudgetLocation.h; sourceTree = "<group>"; };
-		687484CB19783C0F00EA8F74 /* ExpenseListBudgetLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExpenseListBudgetLocation.m; path = Data/ExpenseListBudgetLocation.m; sourceTree = "<group>"; };
 		687484CD19783C1000EA8F74 /* ExpenseListHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExpenseListHistory.h; path = Data/ExpenseListHistory.h; sourceTree = "<group>"; };
 		687484CE19783C1000EA8F74 /* ExpenseListHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExpenseListHistory.m; path = Data/ExpenseListHistory.m; sourceTree = "<group>"; };
-		687484D019783C1000EA8F74 /* ExpenseListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExpenseListItem.h; path = Data/ExpenseListItem.h; sourceTree = "<group>"; };
-		687484D119783C1000EA8F74 /* ExpenseListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExpenseListItem.m; path = Data/ExpenseListItem.m; sourceTree = "<group>"; };
 		687484D919783C2F00EA8F74 /* TipCalcRecent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TipCalcRecent.h; path = Data/TipCalcRecent.h; sourceTree = "<group>"; };
 		687484DA19783C2F00EA8F74 /* TipCalcRecent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TipCalcRecent.m; path = Data/TipCalcRecent.m; sourceTree = "<group>"; };
 		687484DC19783C3000EA8F74 /* TipCalcHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TipCalcHistory.h; path = Data/TipCalcHistory.h; sourceTree = "<group>"; };
@@ -2635,8 +2637,6 @@
 		68F9391817D0DDBB0082234C /* FMMoveTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMMoveTableViewCell.m; sourceTree = "<group>"; };
 		68F967BD1818D74300D64A0A /* NSArray+validation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+validation.h"; sourceTree = "<group>"; };
 		68F967BE1818D74300D64A0A /* NSArray+validation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+validation.m"; sourceTree = "<group>"; };
-		805D968A199099C700E7F79C /* ExpenseListBudget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExpenseListBudget.h; path = Data/ExpenseListBudget.h; sourceTree = "<group>"; };
-		805D968B199099C700E7F79C /* ExpenseListBudget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExpenseListBudget.m; path = Data/ExpenseListBudget.m; sourceTree = "<group>"; };
 		8079DFBB190F93B90084BD89 /* A3DateLunarTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateLunarTest.m; sourceTree = "<group>"; };
 		808DA9E9196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterSlideShowCollectionViewLayout.h; sourceTree = "<group>"; };
 		808DA9EA196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterSlideShowCollectionViewLayout.m; sourceTree = "<group>"; };
@@ -4883,20 +4883,20 @@
 		68E2A6BC18D0B3F600E834D9 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				687484D019783C1000EA8F74 /* ExpenseListItem.h */,
-				687484D119783C1000EA8F74 /* ExpenseListItem.m */,
 				687484CD19783C1000EA8F74 /* ExpenseListHistory.h */,
 				687484CE19783C1000EA8F74 /* ExpenseListHistory.m */,
-				687484CA19783C0F00EA8F74 /* ExpenseListBudgetLocation.h */,
-				687484CB19783C0F00EA8F74 /* ExpenseListBudgetLocation.m */,
 				6896DC951921D64F00FA98F3 /* ExpenseListItem+management.h */,
 				6896DC961921D64F00FA98F3 /* ExpenseListItem+management.m */,
 				687483E01977E77D00EA8F74 /* ExpenseListBudget+extension.h */,
 				687483E11977E77D00EA8F74 /* ExpenseListBudget+extension.m */,
 				687484011977EE0A00EA8F74 /* ExpenseListHistory+extension.h */,
 				687484021977EE0A00EA8F74 /* ExpenseListHistory+extension.m */,
-				805D968A199099C700E7F79C /* ExpenseListBudget.h */,
-				805D968B199099C700E7F79C /* ExpenseListBudget.m */,
+				5733FBD119E8061900A7357E /* ExpenseListItem.h */,
+				5733FBD219E8061900A7357E /* ExpenseListItem.m */,
+				5733FBCE19E8061800A7357E /* ExpenseListBudgetLocation.h */,
+				5733FBCF19E8061800A7357E /* ExpenseListBudgetLocation.m */,
+				5733FBCB19E8061800A7357E /* ExpenseListBudget.h */,
+				5733FBCC19E8061800A7357E /* ExpenseListBudget.m */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -5841,6 +5841,7 @@
 				68143D0818E3EC1F00569691 /* A3NumberKeyboardViewController_iPhone.m in Sources */,
 				6848249319D2723700E5184C /* A3SettingsBackupRestoreiTunesViewController.m in Sources */,
 				689C9A581839CD7F007C97EE /* UIProgressView+AFNetworking.m in Sources */,
+				5733FBD319E8061900A7357E /* ExpenseListItem.m in Sources */,
 				68B6A2BB18CEC76D004084EF /* UIViewController+LoanCalcAddtion.m in Sources */,
 				68B6A45618CEE781004084EF /* PSTGridLayoutSection.m in Sources */,
 				68E2A5DB18D0AC5200E834D9 /* A3DateMainTableViewController.m in Sources */,
@@ -5924,7 +5925,6 @@
 				68B6A44518CEE781004084EF /* MWTapDetectingView.m in Sources */,
 				682FDF281981CC0400C6C83D /* NSPersistentStoreCoordinator+MagicalRecord.m in Sources */,
 				68B6A44A18CEE781004084EF /* NSIndexPath+PSTCollectionViewAdditions.m in Sources */,
-				687484D219783C1000EA8F74 /* ExpenseListItem.m in Sources */,
 				680D63A318CFFC2500938AD0 /* VerticalSlider.m in Sources */,
 				682FDF201981CC0400C6C83D /* NSManagedObjectContext+MagicalSaves.m in Sources */,
 				68E2A6A018D0B22800E834D9 /* A3SalesCalcCalculator.m in Sources */,
@@ -6079,6 +6079,7 @@
 				68B6A2C618CEC76D004084EF /* A3LoanCalcMonthlyTableTitleView.m in Sources */,
 				680D638C18CFF9D400938AD0 /* A3CalcKeyboardView_iPhone.m in Sources */,
 				68B6A44F18CEE781004084EF /* PSTCollectionViewFlowLayout.m in Sources */,
+				5733FBCD19E8061800A7357E /* ExpenseListBudget.m in Sources */,
 				68B6A32E18CEC76D004084EF /* A3WalletItemTitleView.m in Sources */,
 				68F14FB919485E8500159EAD /* A3DaysCounterAddAndEditCalendarViewController.m in Sources */,
 				6874849919783B7900EA8F74 /* CurrencyHistory.m in Sources */,
@@ -6103,11 +6104,11 @@
 				6874840F1977F44D00EA8F74 /* LoanCalcHistory+extension.m in Sources */,
 				684D92FF18BC1FBC005016F7 /* A3DateCalcTableviewCell.m in Sources */,
 				684D92FE18BC1FBC005016F7 /* A3DateCalcTableRowData.m in Sources */,
+				5733FBD019E8061800A7357E /* ExpenseListBudgetLocation.m in Sources */,
 				68F14FB419485E8500159EAD /* A3DaysCounterSlideshowTransitionSelectViewController.m in Sources */,
 				68F14FBF19485E8500159EAD /* A3DaysCounterEditCalendarListViewController.m in Sources */,
 				682FDF141981CC0400C6C83D /* NSManagedObject+MagicalDataImport.m in Sources */,
 				684D92BE18BC1EFE005016F7 /* A3BatteryStatusMainViewController.m in Sources */,
-				805D968C199099C700E7F79C /* ExpenseListBudget.m in Sources */,
 				680D639718CFF9D400938AD0 /* A3CalculatorUtil.m in Sources */,
 				68E2A66418D0B1FC00E834D9 /* A3PercentCalculator.m in Sources */,
 				6825367018A7B89F00EAFB84 /* A3LunarConverterViewController.m in Sources */,
@@ -6191,7 +6192,6 @@
 				68E2A6B318D0B22800E834D9 /* A3TipCalcHistoryViewController.m in Sources */,
 				17D42CD07704EE2EF58EB82A /* UIViewController+A3Addition.m in Sources */,
 				6825364F18A7AA4C00EAFB84 /* MASCompositeConstraint.m in Sources */,
-				687484CC19783C0F00EA8F74 /* ExpenseListBudgetLocation.m in Sources */,
 				684D92BA18BC1EFE005016F7 /* A3BatterStatusBatteryPanelView.m in Sources */,
 				68B6A32818CEC76D004084EF /* A3WalletDateInputCell.m in Sources */,
 				68B6A2CF18CEC76D004084EF /* A3UnitConverterHistory3RowCell.m in Sources */,
