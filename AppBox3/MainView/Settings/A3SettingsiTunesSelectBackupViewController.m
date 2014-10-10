@@ -15,6 +15,7 @@
 @interface A3SettingsiTunesSelectBackupViewController () <UIActionSheetDelegate>
 
 @property (nonatomic, strong) NSArray *backupFiles;
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
 @end
 
@@ -64,6 +65,21 @@
 	return _backupFiles;
 }
 
+
+- (NSDateFormatter *)dateFormatter {
+	if (!_dateFormatter) {
+		_dateFormatter = [NSDateFormatter new];
+		if (IS_IPAD) {
+			[_dateFormatter setDateStyle:NSDateFormatterFullStyle];
+			[_dateFormatter setDateStyle:NSDateFormatterShortStyle];
+		} else {
+			[_dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+			[_dateFormatter setDateStyle:NSDateFormatterShortStyle];
+		}
+	}
+	return _dateFormatter;
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -95,7 +111,7 @@
 	NSString *filename = self.backupFiles[indexPath.row];
 	cell.textLabel.text = filename;
 	NSDictionary *attribute = [fileManager attributesOfItemAtPath:[filename pathInDocumentDirectory] error:NULL];
-	cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@", [attribute.fileCreationDate timeAgo], [fileManager humanReadableFileSize:attribute.fileSize]];
+	cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@", [attribute.fileCreationDate timeAgoWithLimit:60*60*24 dateFormatter:self.dateFormatter], [fileManager humanReadableFileSize:attribute.fileSize]];
 
 	return cell;
 }
