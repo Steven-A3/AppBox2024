@@ -92,13 +92,15 @@
             _headerLabel.text = NSLocalizedString(@"Enter your passcode", @"Enter your passcode");
         }
         _headerLabel.textAlignment = NSTextAlignmentCenter;
+        _headerLabel.numberOfLines = 0;
         [self.view addSubview:_headerLabel];
     }
 
 	CGFloat offset = _beingPresentedInViewController ? 64 : 0;
 	CGFloat headerHeight = [self tableView:self.tableView heightForHeaderInSection:0];
 	[_headerLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.centerX.equalTo(self.view.centerX);
+		make.left.equalTo(self.view.left).with.offset(15);
+        make.right.equalTo(self.view.right).with.offset(-15);
 		_headerY = make.centerY.equalTo(self.view.top).with.offset(headerHeight * 0.6 + offset);
 	}];
 
