@@ -319,6 +319,10 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 	}
 }
 
+- (void)backupRestoreManager:(A3BackupRestoreManager *)manager backupCompleteWithSuccess:(BOOL)success {
+	[self.restClient loadMetadata:kDropboxDir];
+}
+
 #pragma mark - segue
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -366,6 +370,7 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 - (A3BackupRestoreManager *)backupRestoreManager {
 	if (!_backupRestoreManager) {
 		_backupRestoreManager = [A3BackupRestoreManager new];
+		_backupRestoreManager.delegate = self;
 		_backupRestoreManager.hostingView = self.navigationController.view;
 		_backupRestoreManager.hostingViewController = self;
 	}

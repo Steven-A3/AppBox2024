@@ -377,6 +377,10 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 	[alert show];
 
 	[self deleteBackupFile];
+
+	if ([_delegate respondsToSelector:@selector(backupRestoreManager:backupCompleteWithSuccess:)]) {
+		[_delegate backupRestoreManager:self backupCompleteWithSuccess:YES];
+	}
 }
 
 - (void)restClient:(DBRestClient *)client uploadProgress:(CGFloat)progress forFile:(NSString *)destPath from:(NSString *)srcPath {
