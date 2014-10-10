@@ -845,7 +845,12 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 //	[[NSUserDefaults standardUserDefaults] synchronize];
     [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationsUserNotificationSettingsRegistered object:notificationSettings];
 }
+
 #endif
+
+- (BOOL)application:(UIApplication *)application shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
+    return NO;
+}
 
 - (void)applicationProtectedDataWillBecomeUnavailable:(UIApplication *)application {
 	FNLOG();
