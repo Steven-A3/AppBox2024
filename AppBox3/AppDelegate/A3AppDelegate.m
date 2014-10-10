@@ -717,6 +717,8 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 
 	FNLOG();
 
+	if (notification.object == self.cacheStoreManager.context) return;
+
 	NSManagedObjectContext *rootContext = [NSManagedObjectContext MR_rootSavingContext];
 	[rootContext performBlockAndWait:^{
 		[rootContext mergeChangesFromContextDidSaveNotification:notification];
@@ -727,7 +729,6 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 		[mainContext mergeChangesFromContextDidSaveNotification:notification];
 	}];
 }
-
 
 - (NSURL *)storeURL
 {
