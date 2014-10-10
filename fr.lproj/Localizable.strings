@@ -927,3 +927,11 @@ Entrez la clé de cryptage pour le portefeuille.";
 "or Shake!" = "ou Secouer!";
 "This app does not have access to your photos." = "Cette app n'a pas accès à vos photos ou vidéos.";
 "You can enable access in Privacy Settings." = "Vous pouvez autoriser l'accès dans les réglages Confidentialité.";
+
+"SOS" = "SOS";
+"Strobe" = "Stroboscope";
+"Trippy" = "Signalisation";
+"Police Car" = "Police";
+"Fire Truck" = "Pompier";
+"Caution Flare" = "Avertissement";
+"Traffic Light" = "Feu de circulation";

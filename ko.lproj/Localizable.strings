@@ -938,3 +938,11 @@
 
 "This app does not have access to your photos." = "이 App은 사용자의 사진 또는 비디오에 접근할 수 없습니다.";
 "You can enable access in Privacy Settings." = "개인 정보 설정에서 접근을 활성화할 수 있습니다.";
+
+"SOS" = "SOS";
+"Strobe" = "섬광등 모드";
+"Trippy" = "삼색섬광";
+"Police Car" = "경찰차";
+"Fire Truck" = "소방차";
+"Caution Flare" = "주의표시";
+"Traffic Light" = "신호등";

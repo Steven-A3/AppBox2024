@@ -935,3 +935,11 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 
 "This app does not have access to your photos." = "Diese App hat keinen Zugriff auf Ihre Fotos oder Videos.";
 "You can enable access in Privacy Settings." = "Der Zugriff kann in den Datenschutzeinstellungen aktiviert werden.";
+
+"SOS" = "SOS";
+"Strobe" = "Stroboskop";
+"Trippy" = "3er Wechsel";
+"Police Car" = "Polizeiauto";
+"Fire Truck" = "Feuerwehr";
+"Caution Flare" = "Warnblinklicht";
+"Traffic Light" = "Ampel";

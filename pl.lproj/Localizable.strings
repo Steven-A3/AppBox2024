@@ -926,3 +926,11 @@ Wprowadź klucz szyfrowania dla portfela.";
 "or Shake!" = "lub\nWstrząsnąć!";
 "This app does not have access to your photos." = "Ten program nie ma dostępu do Twoich zdjęć i wideo.";
 "You can enable access in Privacy Settings." = "Dostęp możesz włączyć w ustawieniach prywatności.";
+
+"SOS" = "SOS";
+"Strobe" = "Stroboskop";
+"Trippy" = "Przelot";
+"Police Car" = "Radiowóz";
+"Fire Truck" = "Straż pożarna";
+"Caution Flare" = "Rakieta";
+"Traffic Light" = "Światła drogowe";
