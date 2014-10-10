@@ -13,16 +13,17 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
+#import "JVFloatLabeledTextField.h"
 
 #define kFailedAttemptLabelBackgroundColor [UIColor colorWithRed:0.8f green:0.1f blue:0.2f alpha:1.000f]
 #define kLabelFont (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? [UIFont fontWithName: @"AvenirNext-Regular" size: kLabelFontSize * kFontSizeModifier] : [UIFont fontWithName: @"AvenirNext-Regular" size: kLabelFontSize])
 
 @interface A3PasswordViewController () <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, strong) UITextField *passwordField;
-@property (nonatomic, strong) UITextField *aNewPasswordField;
-@property (nonatomic, strong) UITextField *confirmPasswordField;
-@property (nonatomic, strong) UITextField *passwordHintField;
+@property (nonatomic, strong) JVFloatLabeledTextField *passwordField;
+@property (nonatomic, strong) JVFloatLabeledTextField *aNewPasswordField;
+@property (nonatomic, strong) JVFloatLabeledTextField *confirmPasswordField;
+@property (nonatomic, strong) JVFloatLabeledTextField *passwordHintField;
 @property (nonatomic, strong) UIResponder *currentResponder;
 @property (nonatomic, strong) UILabel *headerLabel;
 @property (nonatomic, strong) UILabel *failedAttemptLabel;
@@ -414,8 +415,13 @@
 	}
 }
 
-- (UITextField *)setupPasscodeField {
-	UITextField *textField = [UITextField new];
+- (JVFloatLabeledTextField *)setupPasscodeField {
+	JVFloatLabeledTextField *textField = [JVFloatLabeledTextField new];
+	textField.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
+	textField.floatingLabelTextColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:1.0];
+	textField.font = [UIFont systemFontOfSize:17];
+	textField.floatingLabelFont = [UIFont systemFontOfSize:13];
+	textField.floatingLabelYPadding = @(0);
 	textField.secureTextEntry = YES;
 	textField.keyboardType = UIKeyboardTypeDefault;
 	textField.delegate = self;
@@ -425,7 +431,10 @@
 - (void)setupCell:(UITableViewCell *)cell forRowAskingPasscodeAtIndexPath:(NSIndexPath *)indexPath {
     FNLOG();
 	if (!_passwordField) {
-		_passwordField = [self setupPasscodeField];
+		_passwordField = (JVFloatLabeledTextField *) [UITextField new];
+		_passwordField.secureTextEntry = YES;
+		_passwordField.keyboardType = UIKeyboardTypeDefault;
+		_passwordField.delegate = self;
 	}
 	[cell addSubview:_passwordField];
 	[_passwordField makeConstraints:^(MASConstraintMaker *make) {
@@ -441,37 +450,36 @@
 - (void)makeConstraintForTextField:(UITextField *)textField inCell:(UITableViewCell *)cell {
 	[cell addSubview:textField];
 	[textField makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(cell.left).with.offset(170);
-		make.top.equalTo(cell.top).with.offset(10);
-		make.bottom.equalTo(cell.bottom).with.offset(-10);
+		make.left.equalTo(cell.left).with.offset(IS_IPHONE ? 15 : 28);
+		make.top.equalTo(cell.top);
+		make.bottom.equalTo(cell.bottom);
 		make.right.equalTo(cell.right).with.offset(IS_IPHONE ? 15 : 28);
 	}];
 }
 
 - (void)setupCell:(UITableViewCell *)cell forRowEnablingPasscodeAtIndexPath:(NSIndexPath *)indexPath {
-	UITextField *textField;
+	JVFloatLabeledTextField *textField;
 	switch (indexPath.row) {
 		case 0:
-			cell.textLabel.text = NSLocalizedString(@"New Passcode", @"New Passcode");
 			if (!_aNewPasswordField) {
 				_aNewPasswordField = [self setupPasscodeField];
 			}
+			_aNewPasswordField.placeholder = NSLocalizedString(@"New Passcode", @"New Passcode");
 			textField = _aNewPasswordField;
 			break;
 		case 1:
-			cell.textLabel.text = NSLocalizedString(@"Confirm Passcode", @"Confirm Passcode");
 			if (!_confirmPasswordField) {
 				_confirmPasswordField = [self setupPasscodeField];
 			}
+			_confirmPasswordField.placeholder = NSLocalizedString(@"Confirm Passcode", @"Confirm Passcode");
 			textField = _confirmPasswordField;
 			break;
 		case 2:
-			cell.textLabel.text = NSLocalizedString(@"Hint", @"Hint");
 			if (!_passwordHintField) {
-				_passwordHintField = [UITextField new];
-				_passwordHintField.keyboardType = UIKeyboardTypeDefault;
-				_passwordHintField.delegate = self;
+				_passwordHintField = [self setupPasscodeField];
+				_passwordHintField.secureTextEntry = NO;
 			}
+			_passwordHintField.placeholder = NSLocalizedString(@"Hint", @"Hint");
 			textField = _passwordHintField;
 			break;
 	}
@@ -482,32 +490,31 @@
 	UITextField *textField;
 	switch (indexPath.row) {
 		case 0:
-			cell.textLabel.text = NSLocalizedString(@"Old Passcode", @"Old Passcode");
 			if (!_passwordField) {
 				_passwordField = [self setupPasscodeField];
+				_passwordField.placeholder = NSLocalizedString(@"Old Passcode", @"Old Passcode");
 			}
 			textField = _passwordField;
 			break;
 		case 1:
-			cell.textLabel.text = NSLocalizedString(@"New Passcode", @"New Passcode");
 			if (!_aNewPasswordField) {
 				_aNewPasswordField = [self setupPasscodeField];
+				_aNewPasswordField.placeholder = NSLocalizedString(@"New Passcode", @"New Passcode");
 			}
 			textField = _aNewPasswordField;
 			break;
 		case 2:
-			cell.textLabel.text = NSLocalizedString(@"Confirm Passcode", @"Confirm Passcode");
 			if (!_confirmPasswordField) {
 				_confirmPasswordField = [self setupPasscodeField];
+				_confirmPasswordField.placeholder = NSLocalizedString(@"Confirm Passcode", @"Confirm Passcode");
 			}
 			textField = _confirmPasswordField;
 			break;
 		case 3:
-			cell.textLabel.text = NSLocalizedString(@"Hint", @"Hint");
 			if (!_passwordHintField) {
-				_passwordHintField = [UITextField new];
-				_passwordHintField.keyboardType = UIKeyboardTypeDefault;
-				_passwordHintField.delegate = self;
+				_passwordHintField = [self setupPasscodeField];
+				_passwordHintField.secureTextEntry = NO;
+				_passwordHintField.placeholder = NSLocalizedString(@"Hint", @"Hint");
 			}
 			textField = _passwordHintField;
 			break;
