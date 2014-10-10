@@ -17,9 +17,6 @@
 /* Class = "IBUILabel"; text = "Tap to view larger"; ObjectID = "6rS-5S-grs"; */
 "6rS-5S-grs.text" = "Tap to view larger";
 
-/* Class = "IBUILabel"; text = "Tap to add period"; ObjectID = "Cat-ab-onw"; */
-"dw0-mi-UhI.text" = "Tap to add period";
-
 /* Class = "IBUILabel"; text = "Tap the plus button to add a country"; ObjectID = "DU3-Gi-SHf"; */
 "DU3-Gi-SHf.text" = "Tap the plus button to add a country";
 
@@ -71,6 +68,9 @@
 /* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "UKH-uM-FHa"; */
 "UKH-uM-FHa.text" = "Touch and hold an item,\nthen drag it up or down";
 
+/* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "Vlo-oI-hX9"; */
+"Vlo-oI-hX9.text" = "Tap the screen to display\nthe controls";
+
 /* Class = "IBUILabel"; text = "Touch and hold a language,\nthen drag it up or down"; ObjectID = "Vz2-2z-yFf"; */
 "Vz2-2z-yFf.text" = "Touch and hold a language,\nthen drag it up or down";
 
@@ -106,6 +106,9 @@
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "dlc-w8-sH6"; */
 "dlc-w8-sH6.text" = "Tap the screen to display\nthe controls";
+
+/* Class = "IBUILabel"; text = "Tap to add period"; ObjectID = "dw0-mi-UhI"; */
+"dw0-mi-UhI.text" = "Tap to add period";
 
 /* Class = "IBUILabel"; text = "Tap to add or edit budget"; ObjectID = "eJZ-Dc-ywX"; */
 "eJZ-Dc-ywX.text" = "Tap to add or edit budget";

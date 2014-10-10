@@ -71,6 +71,9 @@
 /* Class = "IBUILabel"; text = "Touch and hold an item,\nthen drag it up or down"; ObjectID = "UKH-uM-FHa"; */
 "UKH-uM-FHa.text" = "Toucher et maintenir un item,\npuis le tirer vers le haut ou le bas";
 
+/* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "Vlo-oI-hX9"; */
+"Vlo-oI-hX9.text" = "Appuyer l’écran pour\nafficher les commandes.";
+
 /* Class = "IBUILabel"; text = "Touch and hold a language,\nthen drag it up or down"; ObjectID = "Vz2-2z-yFf"; */
 "Vz2-2z-yFf.text" = "Toucher et maintenir une langue,\npuis la traîner vers le haut ou le bas";
 
