@@ -510,7 +510,9 @@ NSString *const cellID = @"flashEffectID";
 - (void)showHUD {
     [self hideHUD];
     
+//    self.progressHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES withTouchableUnderneath:YES];
     self.progressHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    self.progressHud.userInteractionEnabled = NO;
     self.progressHud.mode = MBProgressHUDModeCustomView;
     self.progressHud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:_isTorchOn ? @"f_flash_on" : @"f_flash_off"]];
 	self.progressHud.labelText = _isTorchOn ? NSLocalizedString(@"LED On", @"LED On") : NSLocalizedString(@"LED Off", @"LED Off");
