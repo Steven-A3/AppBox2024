@@ -230,7 +230,7 @@
 }
 
 - (void)decompressProgress:(float)currentByte total:(float)totalByte {
-	_HUD.progress = currentByte / totalByte;
+	_HUD.progress = (float) MIN(currentByte / totalByte, 1.0);
 	[self.percentFormatter setMaximumFractionDigits:0];
 	_HUD.detailsLabelText = [self.percentFormatter stringFromNumber:@(_HUD.progress)];
 }

@@ -154,6 +154,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 	[_deleteFilesAfterZip addObject:[A3BackupInfoFilename pathInDocumentDirectory]];
 
 	self.HUD.labelText = NSLocalizedString(@"Compressing", @"Compressing");
+	self.HUD.progress = 0;
 	[_hostingView addSubview:self.HUD];
 	[self.HUD show:YES];
 
@@ -296,7 +297,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 }
 
 - (void)compressProgress:(float)currentByte total:(float)totalByte {
-	_HUD.progress = currentByte / totalByte;
+	_HUD.progress = (float) MIN(currentByte / totalByte, 1.0);
 	_HUD.detailsLabelText = [self.percentFormatter stringFromNumber:@(_HUD.progress)];
 }
 
