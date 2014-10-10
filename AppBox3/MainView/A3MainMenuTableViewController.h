@@ -11,7 +11,9 @@
 #import "A3SelectTableViewController.h"
 
 @interface A3MainMenuTableViewController : A3TableViewController
+
 @property (nonatomic, assign) BOOL pushClockViewControllerOnPasscodeFailure;
+@property (nonatomic, strong) NSString *activeAppName;
 
 - (BOOL)openRecentlyUsedMenu;
 

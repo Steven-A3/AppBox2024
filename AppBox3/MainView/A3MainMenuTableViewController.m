@@ -41,7 +41,6 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 @property (nonatomic, strong) UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
 @property (nonatomic, strong) A3TableViewElement *mostRecentMenuElement;
 @property (nonatomic, strong) NSTimer *titleResetTimer;
-@property (nonatomic, strong) NSString *activeAppName;
 
 @end
 
@@ -463,6 +462,8 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 		UIViewController *viewController = [self getViewControllerForElement:(A3TableViewMenuElement *) _selectedElement];
 		[self popToRootAndPushViewController:viewController];
 		[self updateRecentlyUsedAppsWithElement:(A3TableViewMenuElement *) _selectedElement];
+
+		self.activeAppName = _selectedElement.title;
 	}
 	_selectedElement = nil;
 }

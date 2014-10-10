@@ -199,6 +199,7 @@
 		if (![startingAppName length]) {
 			A3ClockMainViewController *clockViewController = [A3ClockMainViewController new];
 			[self.mainMenuViewController popToRootAndPushViewController:clockViewController];
+			self.mainMenuViewController.activeAppName = @"Clock";
 		} else {
 			[self.mainMenuViewController openRecentlyUsedMenu];
 		}

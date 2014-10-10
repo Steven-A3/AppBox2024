@@ -87,6 +87,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
                 if (![[[A3AppDelegate instance] mainMenuViewController] openRecentlyUsedMenu]) {
                     A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
                     [self.navigationController pushViewController:clockVC animated:NO];
+					[[A3AppDelegate instance] mainMenuViewController].activeAppName = @"Clock";
                 }
             }
 			[appDelegate downloadDataFiles];
@@ -151,6 +152,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
     if (![[[A3AppDelegate instance] mainMenuViewController] openRecentlyUsedMenu]) {
         A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
         [self.navigationController pushViewController:clockVC animated:NO];
+		[[A3AppDelegate instance] mainMenuViewController].activeAppName = @"Clock";
     }
 }
 
@@ -237,6 +239,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 
 		A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
 		[self.navigationController pushViewController:clockVC animated:NO];
+		[[A3AppDelegate instance] mainMenuViewController].activeAppName = @"Clock";
 	} else {
 		[self dismissViewControllerAnimated:YES completion:NULL];
 	}
