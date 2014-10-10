@@ -71,6 +71,8 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"startingAppCell" forIndexPath:indexPath];
 
 	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+    
+    cell.textLabel.font = [UIFont systemFontOfSize:17];
 
 	if (indexPath.row == 0) {
 		cell.textLabel.text = NSLocalizedString(@"None", @"None");
