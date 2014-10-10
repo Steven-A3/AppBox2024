@@ -2172,7 +2172,6 @@
 		68CA9B1819618866002E58DC /* Calculation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Calculation.m; sourceTree = "<group>"; };
 		68CA9BA41961B881002E58DC /* PercentCalcHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PercentCalcHistory.h; sourceTree = "<group>"; };
 		68CA9BA51961B881002E58DC /* PercentCalcHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PercentCalcHistory.m; sourceTree = "<group>"; };
-		68CAB47519557A4E00A4D2B9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Instruction_iPad.strings; sourceTree = "<group>"; };
 		68CAB47719557AA800A4D2B9 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Instruction_iPad.strings"; sourceTree = "<group>"; };
 		68CAB47919557B2100A4D2B9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Instruction_iPad.strings; sourceTree = "<group>"; };
 		68CAB47B19557B2300A4D2B9 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Instruction_iPad.strings; sourceTree = "<group>"; };
@@ -2202,6 +2201,7 @@
 		68D356191845CF94008409B4 /* UIImage+imageWithColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+imageWithColor.m"; sourceTree = "<group>"; };
 		68D455941886DD8C004F3877 /* A3AppDelegate+appearance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "A3AppDelegate+appearance.h"; path = "AppDelegate/A3AppDelegate+appearance.h"; sourceTree = "<group>"; };
 		68D455951886DD8C004F3877 /* A3AppDelegate+appearance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "A3AppDelegate+appearance.m"; path = "AppDelegate/A3AppDelegate+appearance.m"; sourceTree = "<group>"; };
+		68D501FF19E7B1D200CD1CDD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Instruction_iPad.strings; sourceTree = "<group>"; };
 		68D61BD617F53FB400EF4B5E /* DKLiveBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DKLiveBlurView.h; path = External/DKLiveBlur/LiveBlur/LiveBlur/DKLiveBlurView.h; sourceTree = "<group>"; };
 		68D61BD717F53FB400EF4B5E /* DKLiveBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DKLiveBlurView.m; path = External/DKLiveBlur/LiveBlur/LiveBlur/DKLiveBlurView.m; sourceTree = "<group>"; };
 		68D6E901199ECC0A00166A47 /* LadyCalendarAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LadyCalendarAccount.h; sourceTree = "<group>"; };
@@ -3267,15 +3267,15 @@
 		68236CD3186A8D34006F442B /* Passcode */ = {
 			isa = PBXGroup;
 			children = (
-				68236CD4186A8D75006F442B /* A3PasscodeViewController.h */,
-				68236CD5186A8D75006F442B /* A3PasscodeViewController.m */,
-				68067C8A186E867C00D1A1D1 /* A3PasswordViewController.h */,
-				68067C8B186E867C00D1A1D1 /* A3PasswordViewController.m */,
-				68067C90186E926D00D1A1D1 /* A3PasscodeViewControllerProtocol.h */,
 				68DC38231871BD0C0088DDA0 /* A3KeychainUtils.h */,
 				68DC38241871BD0C0088DDA0 /* A3KeychainUtils.m */,
-				17D42647DF41660948614893 /* A3PasscodeCommonViewController.m */,
 				17D42289427C0BC32E80BBA4 /* A3PasscodeCommonViewController.h */,
+				17D42647DF41660948614893 /* A3PasscodeCommonViewController.m */,
+				68236CD4186A8D75006F442B /* A3PasscodeViewController.h */,
+				68236CD5186A8D75006F442B /* A3PasscodeViewController.m */,
+				68067C90186E926D00D1A1D1 /* A3PasscodeViewControllerProtocol.h */,
+				68067C8A186E867C00D1A1D1 /* A3PasswordViewController.h */,
+				68067C8B186E867C00D1A1D1 /* A3PasswordViewController.m */,
 			);
 			name = Passcode;
 			sourceTree = "<group>";
@@ -6579,7 +6579,6 @@
 			children = (
 				68E50B251945E1E600FAD986 /* Base */,
 				68F15016194B1FB800159EAD /* ko */,
-				68CAB47519557A4E00A4D2B9 /* en */,
 				68CAB47719557AA800A4D2B9 /* zh-Hans */,
 				68CAB47919557B2100A4D2B9 /* de */,
 				68CAB47B19557B2300A4D2B9 /* ja */,
@@ -6587,6 +6586,7 @@
 				68CAB47F19557C9400A4D2B9 /* fr */,
 				68CAB48119557C9600A4D2B9 /* pl */,
 				68CAB48319557C9800A4D2B9 /* es */,
+				68D501FF19E7B1D200CD1CDD /* en */,
 			);
 			name = Instruction_iPad.storyboard;
 			path = Instruction;

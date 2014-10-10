@@ -55,13 +55,9 @@
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 0 && indexPath.row == 2 && ![MFMessageComposeViewController canSendText]) {
-		cell.textLabel.text = nil;
-		cell.accessoryType = UITableViewCellAccessoryNone;
-	} else if (indexPath.section == 2 && indexPath.row == 0) {
+    if (indexPath.section == 2 && indexPath.row == 0) {
 		cell.detailTextLabel.text = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
 	}
-	
 }
 
 #pragma mark -- UITableViewDelegate

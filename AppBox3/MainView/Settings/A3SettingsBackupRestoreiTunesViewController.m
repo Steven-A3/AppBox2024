@@ -93,7 +93,18 @@
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSDictionary *attribute = [fileManager attributesOfItemAtPath:[filename pathInDocumentDirectory]
 															error:NULL];
-	_backupInfoString = [NSString stringWithFormat:NSLocalizedString(@"Last Backup: %@", @"Last Backup: %@"), [attribute.fileCreationDate timeAgo]];
+
+	NSDateFormatter *dateFormatter = [NSDateFormatter new];
+	if (IS_IPAD) {
+		[dateFormatter setDateStyle:NSDateFormatterFullStyle];
+		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+	}
+	else {
+		[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+	}
+	NSString *dateString = [attribute.fileCreationDate timeAgoWithLimit:60*60*24 dateFormatter:dateFormatter];
+	_backupInfoString = [NSString stringWithFormat:NSLocalizedString(@"Last Backup: %@", @"Last Backup: %@"), dateString];
 }
 
 - (void)didReceiveMemoryWarning

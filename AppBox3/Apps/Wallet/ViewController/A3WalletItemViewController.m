@@ -111,6 +111,20 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 	[self removeContentSizeCategoryDidChangeNotification];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	if (!(self.isMovingToParentViewController || self.isBeingPresented)) {
+		// Edit 창이 닫힐 때, 데이터를 새로 읽어 들인다.
+
+		FNLOG();
+		NSString *itemID = _item.uniqueID;
+		_item = [WalletItem MR_findFirstByAttribute:ID_KEY withValue:itemID];
+		_category = nil;
+		_fieldItems = nil;
+	}
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
@@ -550,7 +564,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 {
     UITableViewCell *cell = nil;
 
-	if (_fieldItems[indexPath.row] == self.titleItem) {
+	if (self.fieldItems[indexPath.row] == self.titleItem) {
 		A3WalletItemTitleCell *titleCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemTitleCellID forIndexPath:indexPath];
 		titleCell.titleTextField.text = [_item.name length] ? _item.name : NSLocalizedString(@"New Item", @"New Item");
 		titleCell.titleTextField.delegate = self;

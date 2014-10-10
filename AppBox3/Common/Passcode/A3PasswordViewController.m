@@ -32,6 +32,7 @@
 @property (nonatomic, strong) MASConstraint *footerY;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, assign) BOOL shouldDismissViewController;
+@property (nonatomic, strong) UILabel *sectionHeaderLabel;
 
 @end
 
@@ -66,27 +67,32 @@
 	self.tableView.delegate = self;
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeNone;
 	[self.view addSubview:self.tableView];
 
 	[self.tableView makeConstraints:^(MASConstraintMaker *make) {
 		make.edges.equalTo(self.view);
 	}];
+    
+    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, [self keyboardHeight], 0);
 
-	_headerLabel = [UILabel new];
-	_headerLabel.font = [UIFont systemFontOfSize:17];
-	_headerLabel.textColor = [UIColor colorWithWhite:0.31f alpha:1.0f];
-	if (_isWalletEncryptionKeyMode) {
-		if (_beingPresentedInViewController) {
-			_headerLabel.text = NSLocalizedString(@"Data migration is in progress.", nil);
-		} else {
-			_headerLabel.text = NSLocalizedString(@"Data migration is in progress.\nEnter Encryption Key for Wallet.", nil);
-			_headerLabel.numberOfLines = 2;
-		}
-	} else {
-		_headerLabel.text = NSLocalizedString(@"Enter your passcode", @"Enter your passcode");
-	}
-	_headerLabel.textAlignment = NSTextAlignmentCenter;
-	[self.view addSubview:_headerLabel];
+    if (!(_isUserChangingPasscode && IS_IPHONE35)) {
+        _headerLabel = [UILabel new];
+        _headerLabel.font = [UIFont systemFontOfSize:17];
+        _headerLabel.textColor = [UIColor colorWithWhite:0.31f alpha:1.0f];
+        if (_isWalletEncryptionKeyMode) {
+            if (_beingPresentedInViewController) {
+                _headerLabel.text = NSLocalizedString(@"Data migration is in progress.", nil);
+            } else {
+                _headerLabel.text = NSLocalizedString(@"Data migration is in progress.\nEnter Encryption Key for Wallet.", nil);
+                _headerLabel.numberOfLines = 2;
+            }
+        } else {
+            _headerLabel.text = NSLocalizedString(@"Enter your passcode", @"Enter your passcode");
+        }
+        _headerLabel.textAlignment = NSTextAlignmentCenter;
+        [self.view addSubview:_headerLabel];
+    }
 
 	CGFloat offset = _beingPresentedInViewController ? 64 : 0;
 	CGFloat headerHeight = [self tableView:self.tableView heightForHeaderInSection:0];
@@ -117,12 +123,16 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	if (_isUserChangingPasscode && IS_IPHONE35) {
+		[_headerLabel setHidden:YES];
+	}
+}
+
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-
-    FNLOG();
-    
-	[self.tableView reloadData];
 
 	if (_isUserEnablingPasscode) {
         if (_aNewPasswordField) {
@@ -321,7 +331,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    A3StandardTableViewCell *cell = [[A3StandardTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    static NSString *const cellReuseIdentifier = @"passwordCell";
+	A3StandardTableViewCell *cell;
+	cell = [tableView dequeueReusableCellWithIdentifier:cellReuseIdentifier];
+	if (!cell) {
+		cell = [[A3StandardTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellReuseIdentifier];
+	}
 	cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	cell.textLabel.font = [UIFont systemFontOfSize:17];
 	
@@ -339,11 +354,20 @@
 }
 
 - (CGFloat)keyboardHeight {
-	if (IS_IPHONE) return 216;
-	return IS_LANDSCAPE ? 352 : 264;
+    CGFloat keyboardHeight;
+	if (IS_IPHONE) {
+        keyboardHeight = 216;
+    } else {
+        keyboardHeight = IS_LANDSCAPE ? 352 : 264;
+    }
+    if (_isUserChangingPasscode && !IS_IOS7) keyboardHeight += 40.0;
+	return keyboardHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (_isUserChangingPasscode && IS_IPHONE35) {
+        return 23.0;
+    }
 	NSInteger numberOfRows = [self tableView:tableView numberOfRowsInSection:section];
 
 	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
@@ -352,7 +376,30 @@
 	return sectionHeight;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	if (_isUserChangingPasscode && IS_IPHONE35) {
+		UIView *sectionHeaderView = [UIView new];
+		_sectionHeaderLabel = [UILabel new];
+		_sectionHeaderLabel.font = [UIFont systemFontOfSize:14];
+		_sectionHeaderLabel.textColor = [UIColor colorWithWhite:0.31f alpha:1.0f];
+		_sectionHeaderLabel.textAlignment = NSTextAlignmentCenter;
+		_sectionHeaderLabel.text = NSLocalizedString(@"Enter your passcode", @"Enter your passcode");
+		[sectionHeaderView addSubview:_sectionHeaderLabel];
+
+		[_sectionHeaderLabel makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(sectionHeaderView.left).with.offset(10);
+			make.right.equalTo(sectionHeaderView.right).with.offset(-10);
+			make.centerY.equalTo(sectionHeaderView.centerY);
+		}];
+		return sectionHeaderView;
+	}
+	return nil;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    if (_isUserChangingPasscode && IS_IPHONE35) {
+        return 0;
+    }
 	return [self tableView:tableView heightForHeaderInSection:section];
 }
 
@@ -482,7 +529,11 @@
 		}
 		if (textField != _passwordHintField) {
 			[self setMessage:nil];
-			_headerLabel.text = NSLocalizedString(@"Enter your passcode", @"Enter your passcode");
+            if (_isUserChangingPasscode && IS_IPHONE35) {
+                _sectionHeaderLabel.text = NSLocalizedString(@"Enter your passcode", @"Enter your passcode");
+            } else {
+                _headerLabel.text = NSLocalizedString(@"Enter your passcode", @"Enter your passcode");
+            }
 		}
 	}
 }
@@ -673,8 +724,11 @@
 }
 
 - (void)setMessage:(NSString *)text {
-	if (!IS_IOS7 && (_isUserEnablingPasscode || _isUserChangingPasscode)) {
+	if ((!IS_IOS7 || IS_IPHONE35) && (_isUserEnablingPasscode || _isUserChangingPasscode)) {
 		_headerLabel.text = text;
+		if (IS_IPHONE35) {
+			_sectionHeaderLabel.text = text;
+		}
 	} else {
 		_failedAttemptLabel.text = text;
 		_failedAttemptLabel.hidden = NO;
@@ -695,7 +749,9 @@
 	CGFloat headerHeight = [self tableView:self.tableView heightForHeaderInSection:0];
 	FNLOG(@"%f", headerHeight);
 	CGFloat offset = _beingPresentedInViewController ? 64 : 0;
-	_headerY.with.offset(headerHeight * 0.6 + offset);
+    if (_headerY) {
+        _headerY.with.offset(headerHeight * 0.6 + offset);
+    }
 	offset += 44.0 * [self tableView:self.tableView numberOfRowsInSection:0];
 	_footerY.with.offset(headerHeight + headerHeight/2.0 + offset);
 	[self.view layoutIfNeeded];
@@ -717,6 +773,12 @@
 
 - (void)dealloc {
 	[self removeObserver];
+}
+
+- (void)rotateAccordingToStatusBarOrientationAndSupportedOrientations {
+    [super rotateAccordingToStatusBarOrientationAndSupportedOrientations];
+    
+    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, [self keyboardHeight], 0);
 }
 
 @end

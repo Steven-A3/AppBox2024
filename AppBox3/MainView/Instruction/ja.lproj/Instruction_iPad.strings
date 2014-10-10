@@ -97,6 +97,10 @@
 "アイテムを押し続けながら上下に動かして
 順番を変更する事が出来ます。";
 
+/* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "Vlo-oI-hX9"; */
+"Vlo-oI-hX9.text" = "画面をタップすると、
+コントロールが表示されます。";
+
 /* Class = "IBUILabel"; text = "touch and hold a language,\nthen drag it up or down"; ObjectID = "Vz2-2z-yFf"; */
 "Vz2-2z-yFf.text" =
 "言語をタッチして押し続けながら上下に

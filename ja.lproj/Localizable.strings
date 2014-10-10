@@ -712,7 +712,7 @@
 "Passcode did not match. Try again." = "パスコードが一致しません。";
 "Enter Passcode" = "パスコードを入力";
 "New Passcode" = "新しいパスコード";
-"Confirm Passcode" = "新しいパスコードを再入力";
+"Confirm Passcode" = "パスコード再入力";
 "Hint" = "ヒント";
 "Old Passcode" = "古いパスコード";
 "Please enter new passcode." = " 新しいパスコードを入力してください。";
@@ -932,3 +932,11 @@
 "or Shake!" = "やシェイク!";
 "This app does not have access to your photos." = "このAppには写真およびビデオへのアクセス権がありません。";
 "You can enable access in Privacy Settings." = "”プライバシー設定”でアクセスを有効にできます。";
+
+"SOS" = "SOS";
+"Strobe" = "閃光灯モード";
+"Trippy" = "三色閃光";
+"Police Car" = "パトカー";
+"Fire Truck" = "消防車";
+"Caution Flare" = "注意フレアー";
+"Traffic Light" = "交通信号";

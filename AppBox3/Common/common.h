@@ -9,6 +9,8 @@
 #ifndef AppBox3_common_h
 #define AppBox3_common_h
 
+#import <CoreLocation/CoreLocation.h>
+
 #ifdef DEBUG
 #define FNLOG(p,...)		NSLog(@"%s line %d, " p, __FUNCTION__, __LINE__, ##__VA_ARGS__)
 #define FNLOGRECT(rect)		NSLog(@"%s line %d, (%.1fx%.1f)-(%.1fx%.1f)", __FUNCTION__, __LINE__, rect.origin.x, rect.origin.y, \

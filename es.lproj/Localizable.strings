@@ -920,3 +920,11 @@ Introduzca la clave de cifrado para el bolsillo.";
 "or Shake!" = "o Sacuda!";
 "This app does not have access to your photos." = "Esta aplicación no tiene acceso a sus fotos ni vídeos.";
 "You can enable access in Privacy Settings." = "Puede activar el acceso en los ajustes de privacidad.";
+
+"SOS" = "SOS";
+"Strobe" = "Parpadeo";
+"Trippy" = "Alucinante";
+"Police Car" = "Sirena de policía";
+"Fire Truck" = "Sirena de bombero";
+"Caution Flare" = "Alerta de fuego";
+"Traffic Light" = "Semáforo";

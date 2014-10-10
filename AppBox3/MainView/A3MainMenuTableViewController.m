@@ -278,8 +278,8 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 								[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
 							}];
 						}
+						self.activeAppName = elementObject.title;
 					}
-					self.activeAppName = elementObject.title;
 				}
                 else
 				{
@@ -453,6 +453,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 		_pushClockViewControllerOnPasscodeFailure = NO;
         A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
         [self popToRootAndPushViewController:clockVC];
+		self.activeAppName = @"Clock";
 
         return;
     }

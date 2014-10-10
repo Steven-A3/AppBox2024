@@ -17,6 +17,7 @@
 
 @property (nonatomic, strong) DBRestClient *restClient;
 @property (nonatomic, strong) MBProgressHUD *hud;
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
 @end
 
@@ -49,6 +50,20 @@
 
 - (IBAction)cancelButtonAction:(id)sender {
 	[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (NSDateFormatter *)dateFormatter {
+	if (!_dateFormatter) {
+		_dateFormatter = [NSDateFormatter new];
+		if (IS_IPAD) {
+			[_dateFormatter setDateStyle:NSDateFormatterFullStyle];
+			[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+		} else {
+			[_dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+			[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+		}
+	}
+	return _dateFormatter;
 }
 
 - (DBRestClient *)restClient {
@@ -86,7 +101,7 @@
 
 	DBMetadata *rowData = self.dropboxMetadata.contents[indexPath.row];
     cell.textLabel.text = rowData.filename;
-	cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@", [rowData.lastModifiedDate timeAgo], rowData.humanReadableSize];
+	cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@", [rowData.lastModifiedDate timeAgoWithLimit:60*60*24 dateFormatter:self.dateFormatter], rowData.humanReadableSize];
 
 	return cell;
 }

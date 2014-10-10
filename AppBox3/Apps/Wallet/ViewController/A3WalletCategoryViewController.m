@@ -778,7 +778,10 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
     }
 
     // Segregate the time zones into the appropriate arrays.
-    for (id object in self.items) {
+    for (WalletItem *object in self.items) {
+		if (!object.name) {
+			object.name = @"";
+		}
 
         // Ask the collation which section number the time zone belongs in, based on its locale name.
         NSInteger sectionNumber = [self.collation sectionForObject:object collationStringSelector:NSSelectorFromString(@"name")];
@@ -804,7 +807,10 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
             NSArray *sortedDataArrayForSection = [self.collation sortedArrayFromArray:dataArrayForSection collationStringSelector:NSSelectorFromString(@"name")];
 
             WalletItem *firstItem = sortedDataArrayForSection[0];
-            NSString *firstLetter = [[[firstItem name] substringToIndex:1] componentsSeparatedByKorean];
+			NSString *firstLetter = @" ";
+			if ([firstItem.name length]) {
+				firstLetter = [[[firstItem name] substringToIndex:1] componentsSeparatedByKorean];
+			}
             [dataContainingSectionsArray addObject:sortedDataArrayForSection];
             NSInteger sectionTitleIndex = [[_collation sectionTitles] indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
                 return [obj isEqualToString:firstLetter];

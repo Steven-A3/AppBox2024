@@ -96,6 +96,10 @@ visualizzare i comandi";
 "Tocca e tieni premuto su un 
 elemento, poi trascinalo su o giù";
 
+/* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "Vlo-oI-hX9"; */
+"Vlo-oI-hX9.text" = "Tocca lo schermo per
+visualizzare i comandi";
+
 /* Class = "IBUILabel"; text = "Touch and hold a language,\nthen drag it up or down"; ObjectID = "Vz2-2z-yFf"; */
 "Vz2-2z-yFf.text" =
 "Tocca e tieni premuto su una 

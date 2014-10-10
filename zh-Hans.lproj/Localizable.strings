@@ -941,3 +941,11 @@
 
 "This app does not have access to your photos." = "此应用程序没有权限来访问您的照片或视频。";
 "You can enable access in Privacy Settings." = "您可以在“隐私设置”中启用访问心。";
+
+"SOS" = "求助信号";
+"Strobe" = "闪光灯模式";
+"Trippy" = "三色闪光";
+"Police Car" = "警车";
+"Fire Truck" = "消防车";
+"Caution Flare" = "注意标志";
+"Traffic Light" = "红绿灯";

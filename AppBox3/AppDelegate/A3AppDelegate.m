@@ -708,6 +708,26 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 		[sharedSyncManager uploadMediaFilesToCloud];
 		[sharedSyncManager downloadMediaFilesFromCloud];
 	}
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
+}
+
+- (void)managedObjectContextDidSave:(NSNotification *)notification {
+	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) return;
+
+	FNLOG();
+
+	if (notification.object == self.cacheStoreManager.context) return;
+
+	NSManagedObjectContext *rootContext = [NSManagedObjectContext MR_rootSavingContext];
+	[rootContext performBlockAndWait:^{
+		[rootContext mergeChangesFromContextDidSaveNotification:notification];
+	}];
+
+	NSManagedObjectContext *mainContext = [NSManagedObjectContext MR_defaultContext];
+	[mainContext performBlockAndWait:^{
+		[mainContext mergeChangesFromContextDidSaveNotification:notification];
+	}];
 }
 
 - (NSURL *)storeURL
@@ -859,6 +879,7 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 - (void)applicationProtectedDataDidBecomeAvailable:(UIApplication *)application {
 	FNLOG();
 }
+
 
 
 @end
