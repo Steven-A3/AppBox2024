@@ -39,7 +39,8 @@ NSString *const A3NotificationExpenseListCurrencyCodeChanged = @"A3NotificationE
 
 @interface A3ExpenseListMainViewController () <ATSDragToReorderTableViewControllerDelegate, UIPopoverControllerDelegate,
 		A3ExpenseBudgetSettingDelegate, A3ExpenseListItemCellDelegate, UINavigationControllerDelegate,
-		A3ExpenseListHistoryDelegate, A3CalculatorViewControllerDelegate, A3InstructionViewControllerDelegate>
+		A3ExpenseListHistoryDelegate, A3CalculatorViewControllerDelegate, A3InstructionViewControllerDelegate,
+		A3ViewControllerProtocol>
 
 @property (nonatomic, strong) A3ExpenseListHeaderView *headerView;
 @property (nonatomic, strong) UIView *sep1View;
@@ -1469,6 +1470,12 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 - (void)calculatorDidDismissWithValue:(NSString *)value {
 	_calculatorTargetTextField.text = value;
 	[self itemCellTextFieldFinished:_calculatorTargetCell textField:_calculatorTargetTextField];
+}
+
+#pragma mark - A3ViewControllerProtocol
+
+- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
+	return NO;
 }
 
 @end

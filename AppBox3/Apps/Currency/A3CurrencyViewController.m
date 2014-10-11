@@ -42,7 +42,7 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 @interface A3CurrencyViewController () <FMMoveTableViewDataSource, FMMoveTableViewDelegate,
 		UITextFieldDelegate, A3CurrencyMenuDelegate, A3SearchViewControllerDelegate, A3CurrencySettingsDelegate, A3CurrencyChartViewDelegate,
 		UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate, UIActivityItemSource, A3CalculatorViewControllerDelegate,
-		A3InstructionViewControllerDelegate>
+		A3InstructionViewControllerDelegate, A3ViewControllerProtocol>
 
 @property (nonatomic, strong) NSMutableArray *favorites;
 @property (nonatomic, strong) NSMutableDictionary *equalItem;
@@ -1387,6 +1387,10 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 	[self.historyBarButton setEnabled:YES];
+}
+
+- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
+	return NO;
 }
 
 #pragma mark -- THE END

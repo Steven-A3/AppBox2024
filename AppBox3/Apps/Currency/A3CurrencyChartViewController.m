@@ -22,7 +22,8 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3CalculatorViewController.h"
 
-@interface A3CurrencyChartViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
+@interface A3CurrencyChartViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate,
+		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewControllerProtocol>
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UIView *line1;
@@ -659,6 +660,12 @@
 	if ([[A3AppDelegate instance].reachability isReachable]) {
 		[self reloadChartImage];
 	}
+}
+
+#pragma mark - A3ViewControllerProtocol
+
+- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
+	return NO;
 }
 
 @end

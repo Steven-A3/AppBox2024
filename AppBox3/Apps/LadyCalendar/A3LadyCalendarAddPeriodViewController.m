@@ -28,7 +28,8 @@
 
 extern NSString *const A3WalletItemFieldNoteCellID;
 
-@interface A3LadyCalendarAddPeriodViewController ()
+@interface A3LadyCalendarAddPeriodViewController () <A3ViewControllerProtocol>
+
 @property (strong, nonatomic) NSMutableArray *sectionsArray;
 @property (strong, nonatomic) NSString *inputItemKey;
 @property (strong, nonatomic) A3NumberKeyboardViewController *keyboardVC;
@@ -803,6 +804,12 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	}
 
 	[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - A3ViewControllerProtocol
+
+- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
+	return NO;
 }
 
 @end

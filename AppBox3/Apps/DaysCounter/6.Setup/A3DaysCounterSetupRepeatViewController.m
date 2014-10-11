@@ -19,7 +19,7 @@
 #import "DaysCounterEvent.h"
 #import "UIViewController+tableViewStandardDimension.h"
 
-@interface A3DaysCounterSetupRepeatViewController ()
+@interface A3DaysCounterSetupRepeatViewController () <A3ViewControllerProtocol>
 
 @property (strong, nonatomic) NSArray *itemArray;
 @property (strong, nonatomic) A3NumberKeyboardViewController *numberKeyboardVC;
@@ -68,6 +68,7 @@
 
 	self.tableView.showsVerticalScrollIndicator = NO;
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
 
     if ([_eventModel.isLunar boolValue]) {
         self.itemArray = @[NSLocalizedString(@"Never", @"Never"), NSLocalizedString(@"Every Year", @"Every Year")];
@@ -318,6 +319,12 @@
             _dismissCompletionBlock();
         }
     }
+}
+
+#pragma mark - A3ViewControllerProtocol
+
+- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
+	return NO;
 }
 
 @end

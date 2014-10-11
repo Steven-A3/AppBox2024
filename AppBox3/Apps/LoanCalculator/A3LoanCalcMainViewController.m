@@ -52,7 +52,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 @interface A3LoanCalcMainViewController () <LoanCalcHistoryViewControllerDelegate, LoanCalcExtraPaymentDelegate,
 		LoanCalcLoanDataDelegate, LoanCalcSelectCalcForDelegate, LoanCalcSelectFrequencyDelegate, A3KeyboardDelegate,
-		UITextFieldDelegate, UITextViewDelegate, UIPopoverControllerDelegate, UIActivityItemSource>
+		UITextFieldDelegate, UITextViewDelegate, UIPopoverControllerDelegate, UIActivityItemSource, A3ViewControllerProtocol>
 
 @property (nonatomic, strong) NSArray *moreMenuButtons;
 @property (nonatomic, strong) UIView *moreMenuView;
@@ -3058,6 +3058,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	if ([customCurrencyCode length]) {
 		[self.loanFormatter setCurrencyCode:customCurrencyCode];
 	}
+}
+
+- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
+	return NO;
 }
 
 @end

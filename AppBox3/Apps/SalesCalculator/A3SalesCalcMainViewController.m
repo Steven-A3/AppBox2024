@@ -43,15 +43,13 @@ enum A3TableElementCellType {
     A3TableElementCellType_Note
 };
 
-#ifdef __IPHONE8_0
 @interface A3SalesCalcMainViewController () <CLLocationManagerDelegate, UIPopoverControllerDelegate,
 		A3JHSelectTableViewControllerProtocol, A3SalesCalcHistorySelectDelegate, A3TableViewInputElementDelegate,
-		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, UIPopoverPresentationControllerDelegate>
-#else
-@interface A3SalesCalcMainViewController () <CLLocationManagerDelegate, UIPopoverControllerDelegate,
-A3JHSelectTableViewControllerProtocol, A3SalesCalcHistorySelectDelegate, A3TableViewInputElementDelegate,
-A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
+		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewControllerProtocol
+#ifdef __IPHONE8_0
+		, UIPopoverPresentationControllerDelegate
 #endif
+		>
 
 @property (nonatomic, strong) A3JHTableViewRootElement *root;
 @property (nonatomic, strong) A3SalesCalcPreferences *preferences;
@@ -1277,6 +1275,12 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
 
 - (NSNumberFormatter *)currencyFormatterForTableViewInputElement {
 	return self.currencyFormatter;
+}
+
+#pragma mark - A3ViewControllerProtocol
+
+- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
+	return NO;
 }
 
 @end

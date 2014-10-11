@@ -31,7 +31,10 @@
 #define kDefaultButtonColor     [UIColor colorWithRed:193.0/255.0 green:196.0/255.0 blue:200.0/255.0 alpha:1.0]
 #define kSelectedButtonColor    [A3AppDelegate instance].themeColor
 
-@interface A3DateMainTableViewController () <UITextFieldDelegate, UIPopoverControllerDelegate, A3DateKeyboardDelegate, A3DateCalcExcludeDelegate, A3DateCalcDurationDelegate, A3DateCalcHeaderViewDelegate, A3DateCalcEditEventDelegate, UIActivityItemSource>
+@interface A3DateMainTableViewController ()
+		<UITextFieldDelegate, UIPopoverControllerDelegate, A3DateKeyboardDelegate, A3DateCalcExcludeDelegate,
+		A3DateCalcDurationDelegate, A3DateCalcHeaderViewDelegate, A3DateCalcEditEventDelegate, UIActivityItemSource,
+		A3ViewControllerProtocol>
 
 @property (strong, nonatomic) A3DateCalcHeaderView *headerView;
 @property (strong, nonatomic) NSArray *sectionTitles;
@@ -1476,6 +1479,7 @@
 }
 
 #define kAddSubRowIndex 1
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
@@ -1555,7 +1559,7 @@
     }
 }
 
--(void)scrollToTopOfTableView {
+- (void)scrollToTopOfTableView {
 	[UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
 	[UIView setAnimationBeginsFromCurrentState:YES];
 	[UIView setAnimationCurve:7];
@@ -1566,28 +1570,33 @@
 
 #pragma mark - Option Views Delegate
 
--(void)durationSettingChanged
+- (void)durationSettingChanged
 {
     [self setResultToHeaderViewWithAnimation:YES];
     [self.tableView reloadData];
 }
 
--(void)excludeSettingDelegate
+- (void)excludeSettingDelegate
 {
     [self setResultToHeaderViewWithAnimation:YES];
     [self.tableView reloadData];
 }
 
--(void)dismissDateCalcDurationViewController {
+- (void)dismissDateCalcDurationViewController {
 	[self enableControls:YES];
 }
 
--(void)dismissExcludeSettingViewController {
+- (void)dismissExcludeSettingViewController {
 	[self enableControls:YES];
 }
 
--(void)dismissEditEventViewController {
+- (void)dismissEditEventViewController {
 	[self enableControls:YES];
+}
+
+- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
+	FNLOG();
+	return NO;
 }
 
 @end

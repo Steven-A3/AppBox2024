@@ -26,7 +26,8 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
-@interface A3LoanCalcLoanDetailViewController () <LoanCalcSelectFrequencyDelegate, LoanCalcExtraPaymentDelegate, A3KeyboardDelegate, UITextFieldDelegate>
+@interface A3LoanCalcLoanDetailViewController () <LoanCalcSelectFrequencyDelegate, LoanCalcExtraPaymentDelegate,
+		A3KeyboardDelegate, UITextFieldDelegate, A3ViewControllerProtocol>
 {
     BOOL _isLoanCalcEdited;
 }
@@ -782,6 +783,12 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 		self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight]));
 	}
 	[UIView commitAnimations];
+}
+
+#pragma mark - A3ViewControllerProtocol
+
+- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
+	return NO;
 }
 
 @end

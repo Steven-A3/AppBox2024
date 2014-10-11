@@ -20,7 +20,7 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 
-@interface A3PercentCalcMainViewController () <UITextFieldDelegate, A3PercentCalcHistoryDelegate>
+@interface A3PercentCalcMainViewController () <UITextFieldDelegate, A3PercentCalcHistoryDelegate, A3ViewControllerProtocol>
 
 @property (strong, nonatomic) A3PercentCalcHeaderView *headerView;
 @property (strong, nonatomic) NSArray *sectionTitles;
@@ -1424,6 +1424,12 @@
 
 - (void)dismissHistoryViewController {
     [self setBarButtonEnable:YES];
+}
+
+#pragma mark - A3ViewControllerProtocol
+
+- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
+	return NO;
 }
 
 @end

@@ -44,7 +44,8 @@ enum A3ExpenseListAddBudgetCellType {
     A3TableElementCellType_Note
 };
 
-@interface A3ExpenseListAddBudgetViewController () <A3JHSelectTableViewControllerProtocol, A3TableViewInputElementDelegate, A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
+@interface A3ExpenseListAddBudgetViewController () <A3JHSelectTableViewControllerProtocol, A3TableViewInputElementDelegate,
+		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewControllerProtocol>
 @property (nonatomic, strong) ExpenseListBudget *currentBudget;
 @property (nonatomic, strong) A3JHTableViewRootElement *root;
 @property (nonatomic, strong) CellTextInputBlock cellTextInputBeginBlock;
@@ -949,6 +950,12 @@ static NSString *CellIdentifier = @"Cell";
 
 - (NSNumberFormatter *)currencyFormatterForTableViewInputElement {
 	return self.currencyFormatter;
+}
+
+#pragma mark - A3ViewControllerProtocol
+
+- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
+	return NO;
 }
 
 @end

@@ -36,7 +36,7 @@
 @interface A3UnitConverterConvertTableViewController () <UITextFieldDelegate, ATSDragToReorderTableViewControllerDelegate,
 		A3UnitSelectViewControllerDelegate, A3UnitConverterFavoriteEditDelegate, A3UnitConverterMenuDelegate,
 		UIPopoverControllerDelegate, UIActivityItemSource, FMMoveTableViewDelegate, FMMoveTableViewDataSource,
-		A3InstructionViewControllerDelegate>
+		A3InstructionViewControllerDelegate, A3ViewControllerProtocol>
 
 @property (nonatomic, strong) FMMoveTableView *fmMoveTableView;
 @property (nonatomic, strong) NSMutableSet *swipedCells;
@@ -2042,6 +2042,12 @@ const CGFloat kUnitCellVisibleWidth = 100.0;
 - (void)unSwipeAll {
 	FNLOG();
 	[self shiftRight:self.swipedCells];
+}
+
+#pragma mark - A3ViewControllerProtocol
+
+- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
+	return NO;
 }
 
 #pragma mark -- THE END

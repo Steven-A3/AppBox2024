@@ -25,7 +25,10 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
-@interface A3LoanCalcExtraPaymentViewController () <A3KeyboardDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource, A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
+@interface A3LoanCalcExtraPaymentViewController ()
+		<A3KeyboardDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource,
+		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate,
+		A3ViewControllerProtocol>
 {
     NSIndexPath *_currentIndexPath;
     NSDate *_defaultYearlyMonthDate;
@@ -779,6 +782,10 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 		code = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
 	}
 	return code;
+}
+
+- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
+	return NO;
 }
 
 @end

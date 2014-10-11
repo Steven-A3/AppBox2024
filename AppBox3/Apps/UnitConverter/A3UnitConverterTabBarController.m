@@ -17,7 +17,7 @@
 #import "UIViewController+A3Addition.h"
 #import "A3CenterViewDelegate.h"
 
-@interface A3UnitConverterTabBarController ()
+@interface A3UnitConverterTabBarController () <A3ViewControllerProtocol>
 
 @property (nonatomic, strong) UINavigationController *myMoreNavigationController;
 @property (nonatomic, strong) UIView *moreMenuView;
@@ -195,6 +195,12 @@
 	[viewControllers addObject:_myMoreNavigationController];
 
     self.viewControllers = viewControllers;
+}
+
+#pragma mark - A3ViewControllerProtocol
+
+- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
+	return NO;
 }
 
 @end

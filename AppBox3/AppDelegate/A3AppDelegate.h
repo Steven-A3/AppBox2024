@@ -55,7 +55,9 @@ extern NSString *const A3LocalNotificationFromLadyCalendar;
 extern NSString *const A3LocalNotificationFromDaysCounter;
 
 @protocol A3ViewControllerProtocol <NSObject>
+@optional
 - (NSUInteger)a3SupportedInterfaceOrientations;
+- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier;
 @end
 
 @interface A3AppDelegate : UIResponder <UIApplicationDelegate>

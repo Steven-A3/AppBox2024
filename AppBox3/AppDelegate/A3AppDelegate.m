@@ -869,7 +869,12 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 #endif
 
 - (BOOL)application:(UIApplication *)application shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
-    return NO;
+	UINavigationController *navigationController = [self navigationController];
+	UIViewController<A3ViewControllerProtocol> *visibleViewController = (UIViewController <A3ViewControllerProtocol> *) [navigationController visibleViewController];
+	if ([visibleViewController respondsToSelector:@selector(shouldAllowExtensionPointIdentifier:)]) {
+		return [visibleViewController shouldAllowExtensionPointIdentifier:extensionPointIdentifier];
+	}
+	return YES;
 }
 
 - (void)applicationProtectedDataWillBecomeUnavailable:(UIApplication *)application {

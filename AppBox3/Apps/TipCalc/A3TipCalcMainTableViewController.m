@@ -53,7 +53,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 @interface A3TipCalcMainTableViewController () <UITextFieldDelegate, UIActivityItemSource, UIPopoverControllerDelegate,
 		CLLocationManagerDelegate,A3TipCalcDataManagerDelegate, A3TipCalcSettingsDelegate,
 		A3TipCalcHistorySelectDelegate, A3JHSelectTableViewControllerProtocol, A3TableViewInputElementDelegate,
-		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate
+		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewControllerProtocol
 #ifdef __IPHONE_8_0
 		, UIPopoverPresentationControllerDelegate
 #endif
@@ -1272,6 +1272,12 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 - (NSNumberFormatter *)currencyFormatterForTableViewInputElement {
 	return [self.dataManager currencyFormatter];
+}
+
+#pragma mark - A3ViewControllerProtocol
+
+- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
+	return NO;
 }
 
 @end

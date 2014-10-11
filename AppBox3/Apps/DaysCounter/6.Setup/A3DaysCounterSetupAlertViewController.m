@@ -20,7 +20,7 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "DaysCounterEvent+extension.h"
 
-@interface A3DaysCounterSetupAlertViewController () <A3KeyboardDelegate, UITextFieldDelegate>
+@interface A3DaysCounterSetupAlertViewController () <A3KeyboardDelegate, UITextFieldDelegate, A3ViewControllerProtocol>
 @property (strong, nonatomic) NSArray *itemArray;
 @property (strong, nonatomic) NSDate *originalValue;
 @property (strong, nonatomic) A3NumberKeyboardViewController *numberKeyboardVC;
@@ -77,6 +77,7 @@
 	self.tableView.showsVerticalScrollIndicator = NO;
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
+	self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
 
 	self.itemArray = @[@{EventRowTitle : NSLocalizedString(@"Alert_None", @"None"), EventRowType : @(AlertType_None)},
 			@{EventRowTitle : NSLocalizedString(@"At time of event", @"At time of event"), EventRowType : @(AlertType_AtTimeOfEvent)},
@@ -437,6 +438,12 @@
 	UITextField *textField = (UITextField *) keyInputDelegate;
 	textField.text = @"";
 	_textBeforeEditingTextField = @"";
+}
+
+#pragma mark - A3ViewControllerProtocol
+
+- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
+	return NO;
 }
 
 @end

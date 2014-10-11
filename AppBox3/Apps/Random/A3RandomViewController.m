@@ -12,6 +12,7 @@
 #import <CoreMotion/CoreMotion.h>
 #import "A3AppDelegate+appearance.h"
 #import "A3DefaultColorDefines.h"
+#import "A3UserDefaults.h"
 
 #define kAccelerometerFrequency			25 //Hz
 #define kFilteringFactorForErase		0.1
@@ -20,6 +21,8 @@
 
 const NSInteger MINCOLUMN = 0;
 const NSInteger MAXCOLUMN = 1;
+
+NSString *const A3RandomLastValueKey = @"A3RandomLastValueKey";
 
 @interface A3RandomViewController () <UIAccelerometerDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIScrollViewDelegate>
 
@@ -88,6 +91,11 @@ const NSInteger MAXCOLUMN = 1;
     [_limitNumberPickerView selectRow:100 inComponent:MAXCOLUMN animated:YES];
     _resultPrintLabel.adjustsFontSizeToFitWidth = YES;
     _resultPrintLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:80];
+
+	NSNumber *lastResult = [[A3UserDefaults standardUserDefaults] objectForKey:A3RandomLastValueKey];
+	if (lastResult) {
+		_resultPrintLabel.text = [NSString stringWithFormat:@"%ld", [lastResult longValue]];
+	}
 
     _limitPickerViewSeparatorWidthConst.constant =IS_RETINA ? 0.5 : 1.0;
     _limitPickerViewSeparatorTopHeightConst.constant =IS_RETINA ? 0.5 : 1.0;
@@ -286,6 +294,9 @@ const NSInteger MAXCOLUMN = 1;
     //	srand(time(NULL));
 	NSInteger	newNum = arc4random() % (maxNumber - minNumber + 1) + minNumber;
     _resultPrintLabel.text = [NSString stringWithFormat:@"%ld", (long)newNum];
+
+	[[A3UserDefaults standardUserDefaults] setObject:@(newNum) forKey:A3RandomLastValueKey];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {

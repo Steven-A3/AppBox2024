@@ -36,10 +36,9 @@ typedef NS_ENUM(NSInteger, PriceDiscountType) {
     Price_Amount,
 };
 
-@interface A3UnitPriceDetailTableController () <UITextFieldDelegate, UITextViewDelegate, A3KeyboardDelegate, UINavigationControllerDelegate, A3UnitSelectViewControllerDelegate, A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate>
-{
-    PriceDiscountType _discountType;
-}
+@interface A3UnitPriceDetailTableController () <UITextFieldDelegate, UITextViewDelegate, A3KeyboardDelegate,
+		UINavigationControllerDelegate, A3UnitSelectViewControllerDelegate, A3SearchViewControllerDelegate,
+		A3CalculatorViewControllerDelegate, A3ViewControllerProtocol>
 
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;
 
@@ -63,7 +62,9 @@ NSString *const A3UnitPriceInputCellID = @"A3UnitPriceInputCell";
 NSString *const A3UnitPriceActionCellID = @"A3UnitPriceActionCell";
 NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
-@implementation A3UnitPriceDetailTableController
+@implementation A3UnitPriceDetailTableController {
+	PriceDiscountType _discountType;
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -880,6 +881,12 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 - (void)calculatorDidDismissWithValue:(NSString *)value {
 	_calculatorTargetTextField.text = value;
 	[self textFieldDidEndEditing:_calculatorTargetTextField];
+}
+
+#pragma mark - A3ViewControllerProtocol
+
+- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
+	return NO;
 }
 
 @end

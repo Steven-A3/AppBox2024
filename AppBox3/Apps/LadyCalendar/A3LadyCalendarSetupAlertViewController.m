@@ -18,7 +18,7 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
-@interface A3LadyCalendarSetupAlertViewController () <UITextFieldDelegate, A3KeyboardDelegate>
+@interface A3LadyCalendarSetupAlertViewController () <UITextFieldDelegate, A3KeyboardDelegate, A3ViewControllerProtocol>
 
 @property (strong, nonatomic) NSArray *itemArray;
 @property (strong, nonatomic) UITextField *customTextField;
@@ -186,6 +186,12 @@
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
 	[_customTextField resignFirstResponder];
+}
+
+#pragma mark - A3ViewControllerProtocol
+
+- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
+	return NO;
 }
 
 @end
