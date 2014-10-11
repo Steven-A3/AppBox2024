@@ -90,9 +90,9 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	// Do any additional setup after loading the view.
 	self.view.backgroundColor = kBackgroundColor;
 	if (!_beingDisplayedAsLockscreen) {
-		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
-																							   target: self
-																							   action: @selector(cancelAndDismissMe)];
+		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
+																							  target: self
+																							  action: @selector(cancelAndDismissMe)];
 	}
 
 	_isCurrentlyOnScreen = NO;
@@ -396,9 +396,9 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	[self prepareAsLockscreen];
 
 	if (showCancelButton) {
-		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
-																							   target: self
-																							   action: @selector(cancelAndDismissMe)];
+		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
+																							  target: self
+																							  action: @selector(cancelAndDismissMe)];
 	}
 	
 	// In case the user leaves the app while the lockscreen is already active.
@@ -469,9 +469,9 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController: self];
 	[viewController presentViewController: navController animated: NO completion: nil];
 //	[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
-																						   target: self
-																						   action: @selector(cancelAndDismissMe)];
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
+																						  target: self
+																						  action: @selector(cancelAndDismissMe)];
 }
 
 - (void)showLockScreenInViewController:(UIViewController *)viewController {

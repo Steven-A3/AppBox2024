@@ -211,7 +211,7 @@
 	[viewController presentViewController: navController animated:NO completion: nil];
 
 	if (_showCancelButton) {
-		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
+		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
 																							   target: self
 																							   action: @selector(cancelButtonAction:)];
 	}
