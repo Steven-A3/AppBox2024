@@ -911,7 +911,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     viewController.allowChooseFavorite = YES;
     viewController.isFromCurrencyConverter = YES;
 
-	if (selectedIndex >= 0 && selectedIndex < ([_favorites count] - 1) ) {
+	if (selectedIndex >= 0 && selectedIndex <= ([_favorites count] - 1) ) {
 		CurrencyFavorite *selectedFavorite = _favorites[selectedIndex];
 		NSString *selectedItem = selectedFavorite.uniqueID;
 		viewController.placeHolder = selectedItem;
