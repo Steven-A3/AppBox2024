@@ -102,10 +102,10 @@
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="paymentType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="totalAmount" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="totalAmount" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="usedAmount" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="usedAmount" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
     </entity>
     <entity name="ExpenseListBudgetLocation" representedClassName="ExpenseListBudgetLocation" syncable="YES">
         <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
@@ -113,8 +113,8 @@
         <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="contact" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="country" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="latitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="state" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
@@ -130,9 +130,9 @@
         <attribute name="itemDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="itemName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="price" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="price" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="qty" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="subTotal" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="subTotal" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
     </entity>
@@ -353,7 +353,6 @@
         <element name="ExpenseListBudgetLocation" positionX="540" positionY="-322" width="153" height="193"/>
         <element name="ExpenseListHistory" positionX="196" positionY="-342" width="128" height="90"/>
         <element name="ExpenseListItem" positionX="196" positionY="-235" width="128" height="193"/>
-        <element name="LadyCalendarAccount" positionX="-576" positionY="-684" width="128" height="133"/>
         <element name="LadyCalendarPeriod" positionX="-585" positionY="873" width="128" height="208"/>
         <element name="LoanCalcComparisonHistory" positionX="198" positionY="837" width="128" height="148"/>
         <element name="LoanCalcHistory" positionX="441" positionY="531" width="128" height="448"/>
@@ -368,10 +367,11 @@
         <element name="UnitHistoryItem" positionX="-191" positionY="252" width="128" height="118"/>
         <element name="UnitPriceHistory" positionX="-605" positionY="332" width="128" height="88"/>
         <element name="UnitPriceInfo" positionX="-47" positionY="428" width="128" height="223"/>
-        <element name="WalletCategory" positionX="-567" positionY="-675" width="128" height="133"/>
         <element name="WalletFavorite" positionX="-335" positionY="764" width="128" height="103"/>
-        <element name="WalletField" positionX="-558" positionY="-666" width="128" height="133"/>
         <element name="WalletFieldItem" positionX="-506" positionY="558" width="128" height="208"/>
         <element name="WalletItem" positionX="-702" positionY="636" width="128" height="133"/>
+        <element name="LadyCalendarAccount" positionX="-576" positionY="-684" width="128" height="133"/>
+        <element name="WalletCategory" positionX="-567" positionY="-675" width="128" height="133"/>
+        <element name="WalletField" positionX="-558" positionY="-666" width="128" height="133"/>
     </elements>
 </model>
