@@ -23,6 +23,8 @@ const NSInteger MINCOLUMN = 0;
 const NSInteger MAXCOLUMN = 1;
 
 NSString *const A3RandomLastValueKey = @"A3RandomLastValueKey";
+NSString *const A3RandomRangeMinimumKey = @"A3RandomRangeMinimumKey";
+NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 
 @interface A3RandomViewController () <UIAccelerometerDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIScrollViewDelegate>
 
@@ -85,10 +87,20 @@ NSString *const A3RandomLastValueKey = @"A3RandomLastValueKey";
 
     [_generatorButton setTitle:NSLocalizedString(@"Tap", nil) forState:UIControlStateNormal];
     _orShakeLabel.text = NSLocalizedString(@"or Shake!", nil);
-    
+
     _resultPanelView.backgroundColor = COLOR_HEADERVIEW_BG;
-    [_limitNumberPickerView selectRow:1 inComponent:MINCOLUMN animated:YES];
-    [_limitNumberPickerView selectRow:100 inComponent:MAXCOLUMN animated:YES];
+
+	NSInteger minimum = 1, maximum = 100;
+	id minimumObj = [[A3UserDefaults standardUserDefaults] objectForKey:A3RandomRangeMinimumKey];
+	if (minimumObj) {
+		minimum = [minimumObj integerValue];
+	}
+	id maximumObj = [[A3UserDefaults standardUserDefaults] objectForKey:A3RandomRangeMaximumKey];
+	if (maximumObj) {
+		maximum = [maximumObj integerValue];
+	}
+    [_limitNumberPickerView selectRow:minimum inComponent:MINCOLUMN animated:YES];
+    [_limitNumberPickerView selectRow:maximum inComponent:MAXCOLUMN animated:YES];
     _resultPrintLabel.adjustsFontSizeToFitWidth = YES;
     _resultPrintLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:80];
 
@@ -270,6 +282,9 @@ NSString *const A3RandomLastValueKey = @"A3RandomLastValueKey";
         [pickerView selectRow:minValue inComponent:MAXCOLUMN animated:YES];
         [pickerView selectRow:maxValue inComponent:MINCOLUMN animated:YES];
     }
+	[[A3UserDefaults standardUserDefaults] setObject:@(minValue) forKey:A3RandomRangeMinimumKey];
+	[[A3UserDefaults standardUserDefaults] setObject:@(maxValue) forKey:A3RandomRangeMaximumKey];
+	[[A3UserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)setRandomNumber:(NSTimer *)timer {
