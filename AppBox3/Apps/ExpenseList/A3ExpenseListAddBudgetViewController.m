@@ -323,7 +323,7 @@ enum A3ExpenseListAddBudgetCellType {
         // Section 0.
         A3TableViewInputElement *budget = section0[0];
 
-        NSNumber *totalBudget = @([((NSString *)budget.value) floatValue]);
+        NSNumber *totalBudget = @([budget.value doubleValue]);
 
         if (![totalBudget isEqualToNumber:@0] || _isCategoryModified) {
             return YES;

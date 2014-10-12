@@ -97,9 +97,9 @@
     _dateLabel.text = [aBudget.updateDate timeAgo];
     
     NSArray *strings;
-    if (aBudget.usedAmount.floatValue > aBudget.totalAmount.floatValue) {
+    if (aBudget.usedAmount.doubleValue > aBudget.totalAmount.doubleValue) {
 		strings = @[
-				[nFormatter stringFromNumber: @(aBudget.usedAmount.floatValue - aBudget.totalAmount.floatValue) ],
+				[nFormatter stringFromNumber: @(aBudget.usedAmount.doubleValue - aBudget.totalAmount.doubleValue) ],
 				NSLocalizedString(@" over of ", @" over of "),
 				[nFormatter stringFromNumber: aBudget.totalAmount]
 		];
@@ -114,7 +114,7 @@
         _resultAmountLabel.attributedText = savedPriceAttribute;
     } else {
         strings = @[
-				[nFormatter stringFromNumber: @(aBudget.totalAmount.floatValue - aBudget.usedAmount.floatValue) ],
+				[nFormatter stringFromNumber: @(aBudget.totalAmount.doubleValue - aBudget.usedAmount.doubleValue) ],
 				NSLocalizedString(@" left of ", @" left of "),
 				[nFormatter stringFromNumber: aBudget.totalAmount]];
         
