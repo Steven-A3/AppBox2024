@@ -282,6 +282,9 @@ NSString *const cellID = @"flashEffectID";
         }
     
         [self setupInstructionView];
+
+		FNLOG(@"[[UIApplication sharedApplication] setIdleTimerDisabled:YES];");
+        [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
 	}
 }
 
@@ -342,6 +345,9 @@ NSString *const cellID = @"flashEffectID";
 }
 
 - (void)prepareClose {
+	FNLOG(@"[[UIApplication sharedApplication] setIdleTimerDisabled: NO ];");
+	[[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+
 	_isBeingDismiss = YES;
 }
 
@@ -383,6 +389,9 @@ NSString *const cellID = @"flashEffectID";
 
 - (void)mainMenuDidHide {
 	if (_isBeingDismiss) return;
+
+	FNLOG(@"[[UIApplication sharedApplication] setIdleTimerDisabled: YES ];");
+	[[UIApplication sharedApplication] setIdleTimerDisabled:YES];
 
     if (IS_IPHONE && ([self.mm_drawerController openSide] == MMDrawerSideLeft)) {
         if (_isTorchOn) {
@@ -644,6 +653,9 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 }
 
 - (IBAction)appsButtonTouchUp:(id)sender {
+	FNLOG(@"[[UIApplication sharedApplication] setIdleTimerDisabled: NO ];");
+	[[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+
     [self releaseStrobelight];
     if (_isTorchOn) {
         [self setTorchOff];
