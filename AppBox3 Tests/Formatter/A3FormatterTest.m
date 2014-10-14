@@ -273,4 +273,12 @@
 	NSLog(@"\n%@, %@\n", en_US, ko_KR);
 }
 
+- (void)testCurrencyFormatter {
+    NSNumberFormatter *nf = [NSNumberFormatter new];
+    [nf setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [nf setCurrencyCode:@"KRW"];
+    
+    NSLog(@"%@", [nf stringFromNumber:@(50000000000)]);
+}
+
 @end
