@@ -53,19 +53,21 @@ NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRat
 			] mutableCopy];
 
 	NSString *userCurrencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
-	NSInteger idx = [favorites indexOfObjectPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-		return [obj[ID_KEY] isEqualToString:userCurrencyCode];
-	}];
-	if (idx == NSNotFound) {
-		[favorites insertObject:@{ID_KEY : userCurrencyCode} atIndex:1];
-		[favorites removeLastObject];
-	} else {
-		if (   [userCurrencyCode isEqualToString:@"EUR"]
-				|| [userCurrencyCode isEqualToString:@"GBP"])
-		{
-			[favorites moveObjectFromIndex:idx toIndex:0];
+	if (userCurrencyCode) {
+		NSInteger idx = [favorites indexOfObjectPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
+			return [obj[ID_KEY] isEqualToString:userCurrencyCode];
+		}];
+		if (idx == NSNotFound) {
+			[favorites insertObject:@{ID_KEY : userCurrencyCode} atIndex:1];
+			[favorites removeLastObject];
 		} else {
-			[favorites moveObjectFromIndex:idx toIndex:1];
+			if (   [userCurrencyCode isEqualToString:@"EUR"]
+					|| [userCurrencyCode isEqualToString:@"GBP"])
+			{
+				[favorites moveObjectFromIndex:idx toIndex:0];
+			} else {
+				[favorites moveObjectFromIndex:idx toIndex:1];
+			}
 		}
 	}
 	NSInteger order = 1000000;

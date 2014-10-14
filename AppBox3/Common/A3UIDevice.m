@@ -317,4 +317,12 @@ https://github.com/andrealufino/ALSystemUtilities/blob/develop/ALSystemUtilities
 	return [A3UIDevice useKoreanLunarCalendar];
 }
 
++ (NSString *)systemCurrencyCode {
+	NSString *systemCurrencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
+	if (!systemCurrencyCode) {
+		systemCurrencyCode = @"USD";
+	}
+	return systemCurrencyCode;
+}
+
 @end

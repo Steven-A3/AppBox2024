@@ -849,7 +849,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 - (NSString *)defaultCurrencyCode {
 	NSString *currencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitPriceUserDefaultsCurrencyCode];
 	if (!currencyCode) {
-		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
+		currencyCode = [A3UIDevice systemCurrencyCode];
 	}
 	return currencyCode;
 }

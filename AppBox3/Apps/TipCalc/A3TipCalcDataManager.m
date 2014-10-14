@@ -852,7 +852,7 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 - (NSString *)currencyCode {
 	NSString *currencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3TipCalcUserDefaultsCurrencyCode];
 	if (!currencyCode) {
-		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
+		currencyCode = [A3UIDevice systemCurrencyCode];
 	}
 	return currencyCode;
 }

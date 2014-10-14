@@ -779,7 +779,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 - (NSString *)defaultCurrencyCode {
 	NSString *code = [[A3SyncManager sharedSyncManager] objectForKey:A3LoanCalcUserDefaultsCustomCurrencyCode];
 	if (!code) {
-		code = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
+		code = [A3UIDevice systemCurrencyCode];
 	}
 	return code;
 }

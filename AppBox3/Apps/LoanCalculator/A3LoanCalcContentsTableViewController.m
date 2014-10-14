@@ -426,7 +426,7 @@
 - (NSString *)defaultCurrencyCode {
 	NSString *currencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3LoanCalcUserDefaultsCustomCurrencyCode];
 	if (!currencyCode) {
-		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
+		currencyCode = [A3UIDevice systemCurrencyCode];
 	}
 	return currencyCode;
 }
