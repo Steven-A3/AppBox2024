@@ -233,7 +233,7 @@
 			<key>one</key>
 			<string>demain</string>
 			<key>other</key>
-			<string>%ld jours gauche</string>
+			<string>%ld jours restants</string>
 		</dict>
 	</dict>
 	<key>%ld weeks</key>
