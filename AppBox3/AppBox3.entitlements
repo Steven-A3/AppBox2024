@@ -10,7 +10,7 @@
 		<string>$(TeamIdentifierPrefix)net.allaboutapps.AppBox</string>
 		<key>keychain-access-groups</key>
 		<array>
-			<string>$(AppIdentifierPrefix)net.allaboutapps.AppBox</string>
+			<string>5VX99NB632.net.allaboutapps.AppBox</string>
 		</array>
 	</dict>
 </plist>
