@@ -277,8 +277,11 @@
     NSNumberFormatter *nf = [NSNumberFormatter new];
     [nf setNumberStyle:NSNumberFormatterCurrencyStyle];
     [nf setCurrencyCode:@"KRW"];
+    NSNumber *number = [NSNumber numberWithDouble:5e+10];
+    double doubleFromNumber = [number doubleValue];
     
     NSLog(@"%@", [nf stringFromNumber:@(50000000000)]);
+    NSLog(@"%f", doubleFromNumber);
 }
 
 @end
