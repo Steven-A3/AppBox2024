@@ -315,7 +315,7 @@
         [resultBudgetStringArray addObject:[self.currencyFormatter stringFromNumber:totalAmount]];
     }
     else {
-        [resultBudgetStringArray addObject:[self.currencyFormatter stringFromNumber: @(llabs(remainAmount.doubleValue)) ]];
+        [resultBudgetStringArray addObject:[self.currencyFormatter stringFromNumber: @(fabs(remainAmount.doubleValue)) ]];
 		[resultBudgetStringArray addObject:remainAmount.doubleValue >= 0.0 ? NSLocalizedString(@" left of ", @" left of ") : NSLocalizedString(@" over of ", @" over of ") ];
         [resultBudgetStringArray addObject:[self.currencyFormatter stringFromNumber:totalAmount]];
     }
