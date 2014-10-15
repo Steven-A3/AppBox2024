@@ -713,21 +713,19 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 }
 
 - (void)managedObjectContextDidSave:(NSNotification *)notification {
-	if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) return;
-
-	FNLOG();
-
 	if (notification.object == self.cacheStoreManager.context) return;
 
-	NSManagedObjectContext *rootContext = [NSManagedObjectContext MR_rootSavingContext];
-	[rootContext performBlockAndWait:^{
-		[rootContext mergeChangesFromContextDidSaveNotification:notification];
-	}];
-
-	NSManagedObjectContext *mainContext = [NSManagedObjectContext MR_defaultContext];
-	[mainContext performBlockAndWait:^{
-		[mainContext mergeChangesFromContextDidSaveNotification:notification];
-	}];
+    if (notification.object == [NSManagedObjectContext MR_defaultContext]) {
+        NSManagedObjectContext *rootContext = [NSManagedObjectContext MR_rootSavingContext];
+        [rootContext performBlockAndWait:^{
+            [rootContext mergeChangesFromContextDidSaveNotification:notification];
+        }];
+    } else if (notification.object == [NSManagedObjectContext MR_rootSavingContext]) {
+        NSManagedObjectContext *mainContext = [NSManagedObjectContext MR_defaultContext];
+        [mainContext performBlockAndWait:^{
+            [mainContext mergeChangesFromContextDidSaveNotification:notification];
+        }];
+    }
 }
 
 - (NSURL *)storeURL
