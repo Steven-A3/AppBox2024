@@ -459,11 +459,11 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 	if (success && _selectedElement) {
 		[self callPrepareCloseOnActiveMainAppViewController];
 
+		self.activeAppName = _selectedElement.title;
+
 		UIViewController *viewController = [self getViewControllerForElement:(A3TableViewMenuElement *) _selectedElement];
 		[self popToRootAndPushViewController:viewController];
 		[self updateRecentlyUsedAppsWithElement:(A3TableViewMenuElement *) _selectedElement];
-
-		self.activeAppName = _selectedElement.title;
 	}
 	_selectedElement = nil;
 }

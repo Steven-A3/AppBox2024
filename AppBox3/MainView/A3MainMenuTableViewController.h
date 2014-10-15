@@ -13,7 +13,7 @@
 @interface A3MainMenuTableViewController : A3TableViewController
 
 @property (nonatomic, assign) BOOL pushClockViewControllerOnPasscodeFailure;
-@property (nonatomic, strong) NSString *activeAppName;
+@property (nonatomic, copy) NSString *activeAppName;
 
 - (BOOL)openRecentlyUsedMenu;
 
