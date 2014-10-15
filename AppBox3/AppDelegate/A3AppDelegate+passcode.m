@@ -253,6 +253,8 @@
 }
 
 - (BOOL)shouldAskPasscodeForStarting {
+    if (![A3KeychainUtils getPassword]) return NO;
+
 	NSNumber *number = [[A3UserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyForAskPasscodeForStarting];
 	if (number) {
 		return [number boolValue];
@@ -280,18 +282,22 @@
 }
 
 - (BOOL)shouldAskPasscodeForSettings {
+    if (![A3KeychainUtils getPassword]) return NO;
 	return [[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForSettings];
 }
 
 - (BOOL)shouldAskPasscodeForDaysCounter {
+    if (![A3KeychainUtils getPassword]) return NO;
 	return [[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForDaysCounter];
 }
 
 - (BOOL)shouldAskPasscodeForLadyCalendar {
+    if (![A3KeychainUtils getPassword]) return NO;
 	return [[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForLadyCalendar];
 }
 
 - (BOOL)shouldAskPasscodeForWallet {
+    if (![A3KeychainUtils getPassword]) return NO;
 	return [[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForWallet];
 }
 
