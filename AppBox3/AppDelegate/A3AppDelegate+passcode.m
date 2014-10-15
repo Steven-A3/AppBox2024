@@ -202,7 +202,7 @@
 			self.mainMenuViewController.activeAppName = @"Clock";
 		} else {
 			BOOL shouldOpenClockApp = NO;
-			NSArray *appsRequirePasscode = @[@"Settings", @"Days Counter", @"Lady Calendar", @"Wallet"];
+			NSArray *appsRequirePasscode = @[@"Settings", @"Days Counter", @"Ladies Calendar", @"Wallet"];
 			NSInteger idx = [appsRequirePasscode indexOfObject:startingAppName];
 			if (idx != NSNotFound) {
 				switch (idx) {
