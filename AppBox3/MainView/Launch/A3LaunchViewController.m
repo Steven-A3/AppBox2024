@@ -84,7 +84,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
             mainMenuTableViewController.pushClockViewControllerOnPasscodeFailure = YES;
 
 			if (![self showLockScreen]) {
-                if (![[[A3AppDelegate instance] mainMenuViewController] openRecentlyUsedMenu]) {
+                if (![[[A3AppDelegate instance] mainMenuViewController] openRecentlyUsedMenu:YES]) {
                     A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
                     [self.navigationController pushViewController:clockVC animated:NO];
 					[[A3AppDelegate instance] mainMenuViewController].activeAppName = @"Clock";
@@ -149,7 +149,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
     // Cancel Button 이 없으므로 성공하지 않고서는 이곳에 올수 없다. 하지만 그래도 체크
     if (!success) return;
 
-    if (![[[A3AppDelegate instance] mainMenuViewController] openRecentlyUsedMenu]) {
+    if (![[[A3AppDelegate instance] mainMenuViewController] openRecentlyUsedMenu:NO]) {
         A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
         [self.navigationController pushViewController:clockVC animated:NO];
 		[[A3AppDelegate instance] mainMenuViewController].activeAppName = @"Clock";

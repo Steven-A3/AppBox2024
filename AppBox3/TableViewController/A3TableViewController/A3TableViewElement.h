@@ -17,7 +17,7 @@
 @property (nonatomic, copy) NSString *imageName;
 @property (nonatomic, copy) id value;
 @property (nonatomic) NSInteger identifier;
-@property (nonatomic, copy) void (^onSelected)(A3TableViewElement *);
+@property (nonatomic, copy) void (^onSelected)(A3TableViewElement *, BOOL verifyPasscode);
 @property (nonatomic, strong) UIColor *backgroundColor;
 @property (nonatomic, strong) NSNumber *cellHeight;
 @property (nonatomic, weak) A3TableViewExpandableElement *expandableElement;

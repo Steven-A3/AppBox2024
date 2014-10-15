@@ -66,23 +66,27 @@
 
 	BOOL presentLockScreen = [self shouldProtectScreen];
 	if (presentLockScreen) {
-		if (!self.passcodeViewController) {
-			self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
-            BOOL showCancelButton = ![[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting];
-            if (showCancelButton) {
-                UIViewController *visibleViewController = [self.navigationController visibleViewController];
-				self.parentOfPasscodeViewController = visibleViewController;
-                [self.passcodeViewController showLockScreenInViewController:visibleViewController];
-                self.pushClockViewControllerIfFailPasscode = YES;
-            } else {
-                [self.passcodeViewController showLockScreenWithAnimation:NO showCacelButton:showCancelButton];
-            }
-		}
+        [self presentLockScreen];
         return YES;
 	} else {
 		[self showReceivedLocalNotifications];
 	}
     return NO;
+}
+
+- (void)presentLockScreen {
+    if (!self.passcodeViewController) {
+        self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
+        BOOL showCancelButton = ![[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting];
+        if (showCancelButton) {
+            UIViewController *visibleViewController = [self.navigationController visibleViewController];
+            self.parentOfPasscodeViewController = visibleViewController;
+            [self.passcodeViewController showLockScreenInViewController:visibleViewController];
+            self.pushClockViewControllerIfFailPasscode = YES;
+        } else {
+            [self.passcodeViewController showLockScreenWithAnimation:NO showCacelButton:showCancelButton];
+        }
+    }
 }
 
 - (BOOL)shouldProtectScreen {
@@ -129,17 +133,20 @@
 }
 
 - (void)applicationWillEnterForeground_passcode {
-	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
-	if ([startingAppName length]) {
-		if ([self shouldAskPasscodeForStarting]) {
-			[self showLockScreen];
-		} else {
-			[self.mainMenuViewController openRecentlyUsedMenu];
-		}
-	} else {
-		// 현재 사용중인 앱에 암호 설정이 있는 경우 암호 확인을 해야 하므로
-		[self showLockScreen];
-	}
+    if ([self shouldAskPasscodeForStarting]) {
+        [self showLockScreen];
+    } else {
+        NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+        if ([startingAppName length]) {
+            if ([self requirePasscodeForStartingApp]) {
+                [self presentLockScreen];
+            } else {
+                [self.mainMenuViewController openRecentlyUsedMenu:YES];
+            }
+        } else {
+            [self showLockScreen];
+        }
+    }
 
 	[self removeSecurityCoverView];
 }
@@ -201,40 +208,44 @@
 			[self.mainMenuViewController popToRootAndPushViewController:clockViewController];
 			self.mainMenuViewController.activeAppName = @"Clock";
 		} else {
-			BOOL shouldOpenClockApp = NO;
-			NSArray *appsRequirePasscode = @[@"Settings", @"Days Counter", @"Ladies Calendar", @"Wallet"];
-			NSInteger idx = [appsRequirePasscode indexOfObject:startingAppName];
-			if (idx != NSNotFound) {
-				switch (idx) {
-					case 0:
-						if ([self shouldAskPasscodeForSettings]) shouldOpenClockApp = YES;
-						break;
-					case 1:
-						if ([self shouldAskPasscodeForDaysCounter]) shouldOpenClockApp = YES;
-						break;
-					case 2:
-						if ([self shouldAskPasscodeForLadyCalendar]) shouldOpenClockApp = YES;
-						break;
-					case 3:
-						if ([self shouldAskPasscodeForWallet]) shouldOpenClockApp = YES;
-						break;
-				}
-			}
-
-			if (shouldOpenClockApp) {
+			if ([self requirePasscodeForStartingApp]) {
 				A3ClockMainViewController *clockViewController = [A3ClockMainViewController new];
 				[self.mainMenuViewController popToRootAndPushViewController:clockViewController];
 				self.mainMenuViewController.activeAppName = @"Clock";
 			} else {
-				[self.mainMenuViewController openRecentlyUsedMenu];
+				[self.mainMenuViewController openRecentlyUsedMenu:YES];
 			}
 		}
 		[self showReceivedLocalNotifications];
 		return;
 	}
 	if ([startingAppName length]) {
-		[self.mainMenuViewController openRecentlyUsedMenu];
+		[self.mainMenuViewController openRecentlyUsedMenu:NO];
 	}
+}
+
+- (BOOL)requirePasscodeForStartingApp {
+    BOOL requirePasscodeForStartingApp = NO;
+    NSArray *appsRequirePasscode = @[@"Settings", @"Days Counter", @"Ladies Calendar", @"Wallet"];
+    NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+    NSInteger idx = [appsRequirePasscode indexOfObject:startingAppName];
+    if (idx != NSNotFound) {
+        switch (idx) {
+            case 0:
+                if ([self shouldAskPasscodeForSettings]) requirePasscodeForStartingApp = YES;
+                break;
+            case 1:
+                if ([self shouldAskPasscodeForDaysCounter]) requirePasscodeForStartingApp = YES;
+                break;
+            case 2:
+                if ([self shouldAskPasscodeForLadyCalendar]) requirePasscodeForStartingApp = YES;
+                break;
+            case 3:
+                if ([self shouldAskPasscodeForWallet]) requirePasscodeForStartingApp = YES;
+                break;
+        }
+    }
+    return requirePasscodeForStartingApp;
 }
 
 - (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {

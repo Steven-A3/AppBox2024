@@ -55,7 +55,7 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 	if (self.onSelected) {
-		self.onSelected(self);
+		self.onSelected(self, YES);
 	}
 }
 

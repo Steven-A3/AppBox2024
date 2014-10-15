@@ -237,14 +237,16 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 
 			__typeof(self) __weak weakSelf = self;
 
-			element.onSelected = ^(A3TableViewElement *elementObject) {
+			element.onSelected = ^(A3TableViewElement *elementObject, BOOL verifyPasscode) {
 				FNLOG(@"self.activeAppName = %@", self.activeAppName);
 				A3TableViewMenuElement *menuElement = (A3TableViewMenuElement *) elementObject;
 
 				BOOL proceedPasscodeCheck = NO;
+
 				// Check active view controller
 				if (![self.activeAppName isEqualToString:elementObject.title]) {
-					if (   [A3KeychainUtils getPassword]
+					if (   verifyPasscode
+                        && [A3KeychainUtils getPassword]
 						&& [menuElement securitySettingsIsOn]
 						&& [[A3AppDelegate instance] didPasscodeTimerEnd]
 						)
@@ -571,19 +573,19 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 	}
 }
 
-- (BOOL)openRecentlyUsedMenu {
+- (BOOL)openRecentlyUsedMenu:(BOOL)verifyPasscode {
 	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
 	if ([startingAppName length]) {
 		if ([startingAppName isEqualToString:self.activeAppName]) return YES;
 
 		A3TableViewMenuElement *menuElement = [self menuElementWithName:startingAppName];
 		if (menuElement) {
-			menuElement.onSelected(menuElement);
+			menuElement.onSelected(menuElement, verifyPasscode);
 			return YES;
 		}
 	}
 	else if (_mostRecentMenuElement) {
-		_mostRecentMenuElement.onSelected(_mostRecentMenuElement);
+		_mostRecentMenuElement.onSelected(_mostRecentMenuElement, verifyPasscode);
 		return YES;
 	}
 	return NO;
