@@ -201,7 +201,33 @@
 			[self.mainMenuViewController popToRootAndPushViewController:clockViewController];
 			self.mainMenuViewController.activeAppName = @"Clock";
 		} else {
-			[self.mainMenuViewController openRecentlyUsedMenu];
+			BOOL shouldOpenClockApp = NO;
+			NSArray *appsRequirePasscode = @[@"Settings", @"Days Counter", @"Lady Calendar", @"Wallet"];
+			NSInteger idx = [appsRequirePasscode indexOfObject:startingAppName];
+			if (idx != NSNotFound) {
+				switch (idx) {
+					case 0:
+						if ([self shouldAskPasscodeForSettings]) shouldOpenClockApp = YES;
+						break;
+					case 1:
+						if ([self shouldAskPasscodeForDaysCounter]) shouldOpenClockApp = YES;
+						break;
+					case 2:
+						if ([self shouldAskPasscodeForLadyCalendar]) shouldOpenClockApp = YES;
+						break;
+					case 3:
+						if ([self shouldAskPasscodeForWallet]) shouldOpenClockApp = YES;
+						break;
+				}
+			}
+
+			if (shouldOpenClockApp) {
+				A3ClockMainViewController *clockViewController = [A3ClockMainViewController new];
+				[self.mainMenuViewController popToRootAndPushViewController:clockViewController];
+				self.mainMenuViewController.activeAppName = @"Clock";
+			} else {
+				[self.mainMenuViewController openRecentlyUsedMenu];
+			}
 		}
 		[self showReceivedLocalNotifications];
 		return;
