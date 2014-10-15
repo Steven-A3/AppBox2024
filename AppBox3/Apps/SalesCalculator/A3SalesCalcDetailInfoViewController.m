@@ -14,6 +14,8 @@
 #import "UIViewController+A3Addition.h"
 #import "A3StandardLeft15Cell.h"
 #import "UIColor+A3Addition.h"
+#import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 @interface A3SalesCalcDetailInfoViewController ()
 
@@ -154,6 +156,7 @@ static NSString *CellIdentifier = @"Cell";
 
     NSNumberFormatter *formatter = [NSNumberFormatter new];
     [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	[formatter setCurrencyCode:[self defaultCurrencyCode]];
     if (indexPath.section == 0) {
 		cell.backgroundColor = [UIColor whiteColor];
         if (indexPath.row == 0) {
@@ -223,6 +226,14 @@ static NSString *CellIdentifier = @"Cell";
     } else {
         return indexPath.row == 0 ? 43.0 : 44.0;
     }
+}
+
+- (NSString *)defaultCurrencyCode {
+	NSString *currencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3SalesCalcUserDefaultsCurrencyCode];
+	if (!currencyCode) {
+		currencyCode = [A3UIDevice systemCurrencyCode];
+	}
+	return currencyCode;
 }
 
 @end
