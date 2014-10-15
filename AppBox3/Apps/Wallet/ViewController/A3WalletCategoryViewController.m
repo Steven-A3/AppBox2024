@@ -967,11 +967,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
             self.items = nil;
             [self configureSections];
 
-            if ([section count] == 1) {
-                [tableView reloadData];
-            } else {
-                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            }
+            [tableView reloadData];
 
             // more button 활성화여부
             [self itemCountCheck];
