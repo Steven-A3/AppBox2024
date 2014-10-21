@@ -475,8 +475,12 @@
 - (void)refreshItems
 {
     self.items = nil;
-    [self configureSections];
-    [self.tableView reloadData];
+    if ([self.searchBar.text length] > 0 ) {
+        [self filterContentForSearchText:self.searchBar.text];
+    } else {
+        [self configureSections];
+        [self.tableView reloadData];
+    }
 }
 
 #pragma mark Instruction Related
