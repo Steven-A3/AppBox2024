@@ -945,7 +945,12 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
             [resultArray addObject:[NSString stringWithFormat:NSLocalizedString(@"%ld y", @"%ld y"), labs([diffComponent year])]];
         }
         if ( option & DurationOption_Month && [diffComponent month] != 0) {
-            [resultArray addObject:[NSString stringWithFormat:NSLocalizedString(@"%ld m", @"%ld m"), labs([diffComponent month])]];
+            if ([A3UIDevice useKoreanLunarCalendar]) {
+                [resultArray addObject:[NSString stringWithFormat:NSLocalizedString(@"%ld %@", @"%ld 개월"), labs([diffComponent month]), NSLocalizedString(@"DaysCounterDuration_month_abbreviation", @"m")]];
+            }
+            else {
+                [resultArray addObject:[NSString stringWithFormat:NSLocalizedString(@"%ld m", @"%ld m"), labs([diffComponent month])]];
+            }
         }
         if ( option & DurationOption_Week && [diffComponent weekOfYear] != 0) {
             [resultArray addObject:[NSString stringWithFormat:NSLocalizedString(@"%ld w", @"%ld w"), labs([diffComponent weekOfYear])]];
