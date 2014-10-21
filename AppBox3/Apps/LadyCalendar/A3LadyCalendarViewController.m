@@ -168,6 +168,51 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+    
+	[self setupNavigationTitle];
+    
+	[self.navigationController setToolbarHidden:NO];
+    _collectionView.delegate = self;
+    
+	if ( isFirst ) {
+		isFirst = NO;
+        
+		[self showCalendarHeaderView];
+		[self updateAddButton];
+        //		[_collectionView reloadData];
+	} else {
+		[_calendarHeaderView setHidden:NO];
+		[self setupCalendarRange];
+        //		[self.collectionView reloadData];
+	}
+    
+	_chartBarButton.enabled = ([self.dataManager numberOfPeriodsWithAccountID:[self.dataManager currentAccount].uniqueID] > 0);
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        NSDate *currentWatchingDate = [self.dataManager currentAccount].watchingDate;
+        if (!currentWatchingDate) {
+            LadyCalendarPeriod *lastPeriod = [[_dataManager periodListSortedByStartDateIsAscending:YES] lastObject];
+            if (!lastPeriod) {
+                currentWatchingDate = [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]];
+            }
+            else {
+                currentWatchingDate = [A3DateHelper dateMakeMonthFirstDayAtDate:[lastPeriod startDate]];
+            }
+        }
+
+        _currentMonth = currentWatchingDate;
+        
+        [self.dataManager setWatchingDateForCurrentAccount:currentWatchingDate];
+        
+        [self moveToCurrentWatchingDate];
+        [self updateCurrentMonthLabel];
+		[self.collectionView reloadData];
+    });
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
@@ -248,45 +293,7 @@
 
 	[self.dataManager setWatchingDateForCurrentAccount:[notification.userInfo objectForKey:A3LadyCalendarChangedDateKey]];
 
-	[self moveToCurrentMonth];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-	[super viewWillAppear:animated];
-
-	[self setupNavigationTitle];
-
-	[self.navigationController setToolbarHidden:NO];
-    _collectionView.delegate = self;
-
-	if ( isFirst ) {
-		isFirst = NO;
-
-		[self showCalendarHeaderView];
-		[self updateAddButton];
-
-//		[_collectionView reloadData];
-	} else {
-		[_calendarHeaderView setHidden:NO];
-		[self setupCalendarRange];
-
-//		[self.collectionView reloadData];
-	}
-
-	_chartBarButton.enabled = ([self.dataManager numberOfPeriodsWithAccountID:[self.dataManager currentAccount].uniqueID] > 0);
-
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        NSDate *currentWatchingDate = [self.dataManager currentAccount].watchingDate;
-        currentWatchingDate = (currentWatchingDate == nil ? [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]] : currentWatchingDate);
-        _currentMonth = currentWatchingDate;
-        
-        [self.dataManager setWatchingDateForCurrentAccount:currentWatchingDate];
-        
-        [self moveToCurrentMonth];
-        [self updateCurrentMonthLabel];
-		[self.collectionView reloadData];
-    });
+	[self moveToCurrentWatchingDate];
 }
 
 - (void)setupNavigationTitle {
@@ -387,9 +394,10 @@
     [_currentMonthLabel sizeToFit];
 }
 
-- (void)moveToCurrentMonth
+- (void)moveToCurrentWatchingDate
 {
     NSDate *currentWatchingDate = [self.dataManager currentAccount].watchingDate;
+    
     if (!currentWatchingDate) {
         currentWatchingDate = [self.dataManager startDateForCurrentAccount];
     }
@@ -653,7 +661,7 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 - (IBAction)moveToTodayAction:(id)sender {
 	[self.dataManager setWatchingDateForCurrentAccount:[NSDate date]];
 
-	[self moveToCurrentMonth];
+	[self moveToCurrentWatchingDate];
 }
 
 - (IBAction)changeListTypeAction:(id)sender {
