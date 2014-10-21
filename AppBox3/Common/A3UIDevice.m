@@ -170,27 +170,37 @@ NSString *const A3AnimationIDKeyboardWillShow = @"A3AnimationIDKeyboardWillShow"
 	if ([platform isEqualToString:@"iPod4,1"])   return @"iPod Touch 4G";
 	if ([platform isEqualToString:@"iPod5,1"])   return @"iPod Touch (5th generation)";
     
-	if ([platform isEqualToString:@"iPad2,1"])   return @"iPad 2 (Wi-Fi)";      // iPad2 WiFi
-	if ([platform isEqualToString:@"iPad2,2"])   return @"iPad 2";       // iPad2 GSM
-	if ([platform isEqualToString:@"iPad2,3"])   return @"iPad 2";     // iPad2 CDMAV
-	if ([platform isEqualToString:@"iPad2,4"])   return @"iPad 2 (Wi-Fi)";     // iPad2 Mid 2012 CDMAS WiFi
+	if ([platform isEqualToString:@"iPad2,1"])   return @"iPad 2 (Wi-Fi)";                      // iPad2 WiFi
+	if ([platform isEqualToString:@"iPad2,2"])   return @"iPad 2";                              // iPad2 GSM
+	if ([platform isEqualToString:@"iPad2,3"])   return @"iPad 2";                              // iPad2 CDMAV
+	if ([platform isEqualToString:@"iPad2,4"])   return @"iPad 2 (Wi-Fi)";                      // iPad2 Mid 2012 CDMAS WiFi
 
-	if ([platform isEqualToString:@"iPad3,1"])   return @"iPad (3rd generation, Wi-Fi)";      // WiFi
-	if ([platform isEqualToString:@"iPad3,2"])   return @"iPad (3rd generation)";      // CDMA
-	if ([platform isEqualToString:@"iPad3,3"])   return @"iPad (3rd generation)";      // GSM
+	if ([platform isEqualToString:@"iPad3,1"])   return @"iPad (3rd generation, Wi-Fi)";        // WiFi
+	if ([platform isEqualToString:@"iPad3,2"])   return @"iPad (3rd generation)";               // CDMA
+	if ([platform isEqualToString:@"iPad3,3"])   return @"iPad (3rd generation)";               // GSM
     
-	if ([platform isEqualToString:@"iPad3,4"])   return @"iPad (4th generation, Wi-Fi)";      // WiFi
-	if ([platform isEqualToString:@"iPad3,5"])   return @"iPad (4th generation)";      // GSM
-	if ([platform isEqualToString:@"iPad3,6"])   return @"iPad (4th generation)";      // Cellular
+	if ([platform isEqualToString:@"iPad3,4"])   return @"iPad (4th generation, Wi-Fi)";        // WiFi
+	if ([platform isEqualToString:@"iPad3,5"])   return @"iPad (4th generation)";               // GSM
+	if ([platform isEqualToString:@"iPad3,6"])   return @"iPad (4th generation)";               // Cellular
     
-	if ([platform isEqualToString:@"iPad4,1"])   return @"iPad Air (Wi-Fi)";      // WiFi
-	if ([platform isEqualToString:@"iPad4,2"])   return @"iPad Air";      // Cellular
+	if ([platform isEqualToString:@"iPad4,1"])   return @"iPad Air (Wi-Fi)";                    // WiFi
+	if ([platform isEqualToString:@"iPad4,2"])   return @"iPad Air";                            // Cellular
     
-	if ([platform isEqualToString:@"iPad2,5"])   return @"iPad mini (Wi-Fi)";      // WiFi
-	if ([platform isEqualToString:@"iPad2,6"])   return @"iPad mini";      // GSM
-	if ([platform isEqualToString:@"iPad2,7"])   return @"iPad mini";      // Cellular
-	if ([platform isEqualToString:@"iPad4,4"])   return @"iPad mini with Retina display (Wi-Fi)";      // Retina, WiFi
-	if ([platform isEqualToString:@"iPad4,5"])   return @"iPad mini with Retina display";      // Retina, Cellular
+	if ([platform isEqualToString:@"iPad5,3"])   return @"iPad Air 2 (Wi-Fi)";                  // iPad Air 2 WiFi
+	if ([platform isEqualToString:@"iPad5,4"])   return @"iPad Air";                            // iPad Air 2 Cellular
+    
+    // iPad Mini
+	if ([platform isEqualToString:@"iPad2,5"])   return @"iPad mini (Wi-Fi)";                   // WiFi
+	if ([platform isEqualToString:@"iPad2,6"])   return @"iPad mini";                           // GSM
+	if ([platform isEqualToString:@"iPad2,7"])   return @"iPad mini";                           // Cellular
+	if ([platform isEqualToString:@"iPad4,4"])   return @"iPad mini with Retina display (Wi-Fi)";       // Retina, WiFi
+	if ([platform isEqualToString:@"iPad4,5"])   return @"iPad mini with Retina display";               // Retina, Cellular
+	if ([platform isEqualToString:@"iPad4,6"])   return @"iPad mini with Retina display";               // Retina, Cellular
+    
+    if ([platform isEqualToString:@"iPad4,7"])   return @"iPad mini 3 (Wi-Fi)";       // iPad mini 3 WiFi
+	if ([platform isEqualToString:@"iPad4,8"])   return @"iPad mini 3";               // iPad mini 3 Cellular
+    if ([platform isEqualToString:@"iPad4,9"])   return @"iPad mini 3";               // iPad mini 3 Cellular
+    
     
     // 최신 디바이스라서 못찾은 경우.
     if ([platform rangeOfString:@"iPhone"].location != NSNotFound) return @"iPhone (Latest)";
