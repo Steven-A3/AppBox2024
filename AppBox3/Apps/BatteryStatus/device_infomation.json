@@ -97,15 +97,15 @@
             "Memory": "1 GB LPDDR3 DRAM"
         },
         "iPad Air 2": {
-            "Chips": "A7 chip with 64-bit architecture\nM7 motion coprocessor",
+            "Chips": "A8 chip with 64-bit architecture\nM8 motion coprocessor",
             "CPU": "1.4 GHz dual-core",
-            "GPU": "PowerVR G6430 (4-core)",
+            "GPU": "PowerVR G6650 (6-core)",
             "Memory": "1 GB LPDDR3 DRAM"
         },
         "iPad Air 2 (Wi-Fi)": {
-            "Chips": "A7 chip with 64-bit architecture\nM7 motion coprocessor",
+            "Chips": "A8 chip with 64-bit architecture\nM8 motion coprocessor",
             "CPU": "1.4 GHz dual-core",
-            "GPU": "PowerVR G6430 (4-core)",
+            "GPU": "PowerVR G6650 (6-core)",
             "Memory": "1 GB LPDDR3 DRAM"
         },
         "iPad mini": {
@@ -133,7 +133,7 @@
             "Memory": "1 GB LPDDR3 DRAM"
         },
         "iPad mini 3": {
-            "Chips": "A7 chip with 64-bit architecture\nM7 motion coprocessor",
+            "Chips": "A8 chip with 64-bit architecture\nM8 motion coprocessor",
             "CPU": "1.3 GHz dual-core",
             "GPU": "PowerVR G6430 (4-core)",
             "Memory": "1 GB LPDDR3 DRAM"

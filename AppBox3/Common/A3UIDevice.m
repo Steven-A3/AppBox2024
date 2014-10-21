@@ -198,8 +198,8 @@ NSString *const A3AnimationIDKeyboardWillShow = @"A3AnimationIDKeyboardWillShow"
 	if ([platform isEqualToString:@"iPad4,6"])   return @"iPad mini with Retina display";               // Retina, Cellular
     
     if ([platform isEqualToString:@"iPad4,7"])   return @"iPad mini 3 (Wi-Fi)";       // iPad mini 3 WiFi
-	if ([platform isEqualToString:@"iPad4,8"])   return @"iPad mini 3";               // iPad mini 3 Cellular
-    if ([platform isEqualToString:@"iPad4,9"])   return @"iPad mini 3";               // iPad mini 3 Cellular
+	if ([platform isEqualToString:@"iPad4,8"])   return @"iPad mini 3";               // iPad mini 3 Cellular GSM
+    if ([platform isEqualToString:@"iPad4,9"])   return @"iPad mini 3";               // iPad mini 3 Cellular CDMA
     
     
     // 최신 디바이스라서 못찾은 경우.
