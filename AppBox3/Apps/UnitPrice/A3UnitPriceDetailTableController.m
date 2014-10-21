@@ -84,7 +84,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	}
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPAD)?28:15, 0, 0);
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPAD)? 28 : 15, 0, 0);
     self.tableView.contentInset = UIEdgeInsetsMake(-1, 0, 36, 0);
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = [self tableViewSeparatorColor];
@@ -864,9 +864,13 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)currencyCode {
 	[UnitPriceInfo changeDefaultCurrencyCode:currencyCode];
 
-	[self.currencyFormatter setCurrencyCode:currencyCode];
-	self.currencyFormatter.maximumFractionDigits = 2;
-	[self.tableView reloadData];
+    if (!IS_IOS7) {
+        self.currencyFormatter = nil;
+    }
+
+    [self.currencyFormatter setCurrencyCode:currencyCode];
+    self.currencyFormatter.maximumFractionDigits = 2;
+    [self.tableView reloadData];
 }
 
 #pragma mark - Number Keyboard Calculator Button Notification
