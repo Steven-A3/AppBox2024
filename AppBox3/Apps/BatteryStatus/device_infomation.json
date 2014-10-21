@@ -133,7 +133,7 @@
             "Memory": "1 GB LPDDR3 DRAM"
         },
         "iPad mini 3": {
-            "Chips": "A8 chip with 64-bit architecture\nM8 motion coprocessor",
+            "Chips": "A7 chip with 64-bit architecture\nM7 motion coprocessor",
             "CPU": "1.3 GHz dual-core",
             "GPU": "PowerVR G6430 (4-core)",
             "Memory": "1 GB LPDDR3 DRAM"
