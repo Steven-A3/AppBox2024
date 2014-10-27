@@ -112,7 +112,9 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 }
 
 - (void)cloudDidImportChanges:(NSNotification *)notification {
-	[self loadEventData];
+	if ([self.navigationController visibleViewController] == self) {
+		[self loadEventData];
+	}
 }
 
 - (void)removeObserver {
@@ -206,6 +208,8 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
     NSMutableArray *sectionArray = [NSMutableArray array];
     NSMutableDictionary *sectionDict = [NSMutableDictionary dictionary];
     for (DaysCounterEvent *event in array) {
+		if (!event.effectiveStartDate) continue;
+
         NSString *sectionKey = [A3DateHelper dateStringFromDate:event.effectiveStartDate withFormat:@"yyyy.MM"];
         NSMutableArray *items = [sectionDict objectForKey:sectionKey];
         if ( items == nil ) {
