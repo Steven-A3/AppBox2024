@@ -205,7 +205,9 @@
 }
 
 - (void)cloudDidImportChanges:(NSNotification *)notification {
-	[self reloadTableView];
+	if ([self.navigationController visibleViewController] == self) {
+		[self reloadTableView];
+	}
 }
 
 - (void)removeObserver {
