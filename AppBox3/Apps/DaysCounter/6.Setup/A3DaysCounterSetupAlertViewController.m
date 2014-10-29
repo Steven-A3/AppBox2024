@@ -63,7 +63,7 @@
 	[comps setDay:-day];
 	[comps setHour:-hour];
 	[comps setMinute:-minute];
-	NSDate *diffDate = [[NSCalendar currentCalendar] dateByAddingComponents:comps toDate:date options:0];
+	NSDate *diffDate = [[[A3AppDelegate instance] calendar] dateByAddingComponents:comps toDate:date options:0];
     
 	return diffDate;
 }
@@ -305,7 +305,7 @@
 		curCell.accessoryType = UITableViewCellAccessoryCheckmark;
 
 		NSDate *effectiveStartDate = _eventModel.effectiveStartDate;
-		NSCalendar *calendar = [NSCalendar currentCalendar];
+		NSCalendar *calendar = [[A3AppDelegate instance] calendar];
 		NSDateComponents *addComponent = [[NSDateComponents alloc] init];
 		addComponent.minute = -alertTimeInterval;
 		NSDate *effectiveAlertDate = [calendar dateByAddingComponents:addComponent toDate:effectiveStartDate options:0];
@@ -404,7 +404,7 @@
 	NSInteger days = [textField.text integerValue];
 	if (days > 0) {
 		NSDate *alertDate = [A3DateHelper dateByAddingDays:-days fromDate:_eventModel.effectiveStartDate];
-		NSDateComponents *alertIntervalComp = [[NSCalendar currentCalendar] components:NSMinuteCalendarUnit fromDate:_eventModel.effectiveStartDate
+		NSDateComponents *alertIntervalComp = [[[A3AppDelegate instance] calendar] components:NSMinuteCalendarUnit fromDate:_eventModel.effectiveStartDate
 																				toDate:alertDate
 																			   options:0];
 		_eventModel.alertDatetime = alertDate;

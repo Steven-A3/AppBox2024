@@ -78,10 +78,10 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 
     [self configureDatePickerDataSource];
     
-    
-	NSDateComponents *firstDayComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[NSDate date]];
+    NSCalendar *calendar = [[A3AppDelegate instance] calendar];
+	NSDateComponents *firstDayComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[NSDate date]];
     firstDayComp.day = 1;
-    _defaultYearlyMonthDate = [A3DateHelper dateByAddingMonth:1 fromDate:[[NSCalendar currentCalendar] dateFromComponents:firstDayComp]];
+    _defaultYearlyMonthDate = [A3DateHelper dateByAddingMonth:1 fromDate:[calendar dateFromComponents:firstDayComp]];
     _defaultOnetimeYearMonthDate = [A3DateHelper dateByAddingYears:1 fromDate:_defaultYearlyMonthDate];
     
     self.tableView.separatorColor = [self tableViewSeparatorColor];
@@ -611,7 +611,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         
         if (_exPaymentType == A3LC_ExtraPaymentYearly) {
             NSDate *pickDate = ![_loanCalcData extraPaymentYearlyDate] ? _defaultYearlyMonthDate : [_loanCalcData extraPaymentYearlyDate];
-            NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitMonth fromDate:pickDate];
+            NSDateComponents *components = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitMonth fromDate:pickDate];
             NSInteger month = [components month];
             
             NSDateFormatter *df = [[NSDateFormatter alloc] init];
@@ -648,7 +648,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         // 해당 날짜가 선택되어지도록 (loan데이타에 날짜가 있으면 그날짜를, 없으면 오늘 날짜를)
         if (_exPaymentType == A3LC_ExtraPaymentOnetime) {
             NSDate *pickDate = _loanCalcData.extraPaymentOneTimeDate ? _loanCalcData.extraPaymentOneTimeDate : _defaultOnetimeYearMonthDate;
-            NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:pickDate];
+            NSDateComponents *components = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:pickDate];
             NSUInteger month = [components month];
             NSUInteger year = [components year];
             
@@ -683,7 +683,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         }
         else if (_exPaymentType == A3LC_ExtraPaymentYearly) {
             NSDate *pickDate = _loanCalcData.extraPaymentYearlyDate ? _loanCalcData.extraPaymentYearlyDate : _defaultOnetimeYearMonthDate;
-            NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:pickDate];
+            NSDateComponents *components = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:pickDate];
             NSUInteger month = [components month];
             
             [pickerCell.picker selectRow:month-1 inComponent:0 animated:NO];

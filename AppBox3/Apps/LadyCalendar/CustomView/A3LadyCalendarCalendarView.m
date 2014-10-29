@@ -244,11 +244,12 @@
     }
     if ( [endMonthStr integerValue] > [curMonthStr integerValue] ) {
         edDay = [A3DateHelper lastDaysOfMonth:_dateMonth];
-        
-        NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:edDate];
+
+		NSCalendar *calendar = [[A3AppDelegate instance] calendar];
+        NSDateComponents *dateComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:edDate];
         dateComp.day = 1;
-        NSDate *firstDateOfMonth = [[NSCalendar currentCalendar] dateFromComponents:dateComp];
-        dateComp = [[NSCalendar currentCalendar] components:NSWeekdayCalendarUnit fromDate:firstDateOfMonth];
+        NSDate *firstDateOfMonth = [calendar dateFromComponents:dateComp];
+        dateComp = [calendar components:NSWeekdayCalendarUnit fromDate:firstDateOfMonth];
         
         if ([dateComp weekday] == 1) {
             unlinkedAtLastWeekday = YES;

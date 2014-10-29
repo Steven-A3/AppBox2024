@@ -16,6 +16,7 @@
 #import "NSDate+formatting.h"
 #import "A3DefaultColorDefines.h"
 #import "A3OverlappedCircleView.h"
+#import "A3AppDelegate.h"
 
 #define SLIDER_OFFSET_LABEL     20
 #define SLIDER_THUMB_MARGIN     20
@@ -809,7 +810,7 @@
     
     NSDate *fromDate;
     NSDate *toDate;
-    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSCalendar *calendar = [[A3AppDelegate instance] calendar];
     
     [calendar rangeOfUnit:NSDayCalendarUnit startDate:&fromDate
                  interval:NULL forDate:fromDateTime];

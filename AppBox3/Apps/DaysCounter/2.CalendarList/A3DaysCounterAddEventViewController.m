@@ -123,8 +123,9 @@
 		_eventItem.uniqueID = [[NSUUID UUID] UUIDString];
 		_eventItem.updateDate = [NSDate date];
 
-        [A3DaysCounterModelManager setDateModelObjectForDateComponents:[[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:[NSDate date]] withEventModel:_eventItem endDate:NO];
-        [A3DaysCounterModelManager setDateModelObjectForDateComponents:[[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:[NSDate date]] withEventModel:_eventItem endDate:YES];
+		NSCalendar *calendar = [[A3AppDelegate instance] calendar];
+        [A3DaysCounterModelManager setDateModelObjectForDateComponents:[calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:[NSDate date]] withEventModel:_eventItem endDate:NO];
+        [A3DaysCounterModelManager setDateModelObjectForDateComponents:[calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:[NSDate date]] withEventModel:_eventItem endDate:YES];
 
         _eventItem.isAllDay = @(YES);
         _eventItem.isLunar = @(NO);

@@ -412,26 +412,27 @@
     BOOL isLunar = [info.isLunar boolValue];
     NSDate *startDate = [info.startDate solarDate];
     NSDate *endDate = [[info endDateCreateIfNotExist:NO ] solarDate];
+	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
     
     if ( isLunar ) {
-        NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:startDate];
+        NSDateComponents *dateComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:startDate];
         BOOL isResultLeapMonth = NO;
 		NSDateComponents *resultComponents = [NSDate lunarCalcWithComponents:dateComp
                                                             gregorianToLunar:YES
                                                                    leapMonth:NO
                                                                       korean:[A3UIDevice useKoreanLunarCalendar]
                                                              resultLeapMonth:&isResultLeapMonth];
-        NSDate *convertDate = [[NSCalendar currentCalendar] dateFromComponents:resultComponents];
+        NSDate *convertDate = [calendar dateFromComponents:resultComponents];
         startDate = convertDate;
         
         if ( endDate ) {
-            dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:endDate];
+            dateComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:endDate];
             dateComp = [NSDate lunarCalcWithComponents:dateComp
                                       gregorianToLunar:YES
                                              leapMonth:NO
                                                 korean:[A3UIDevice useKoreanLunarCalendar]
                                        resultLeapMonth:&isResultLeapMonth];
-			convertDate = [[NSCalendar currentCalendar] dateFromComponents:dateComp];
+			convertDate = [calendar dateFromComponents:dateComp];
             endDate = convertDate;
         }
     }
@@ -468,7 +469,7 @@
         NSDateComponents *startDateComp = [A3DaysCounterModelManager nextSolarDateComponentsFromLunarDateComponents:startDateCompLunar
                                                                                                           leapMonth:isLeapMonth
                                                                                                            fromDate:[NSDate date]];
-        startDate = [[NSCalendar currentCalendar] dateFromComponents:startDateComp];
+        startDate = [[[A3AppDelegate instance] calendar] dateFromComponents:startDateComp];
     }
     
     
@@ -1012,7 +1013,8 @@ EXIT_FUCTION:
     }
     
     lunarImageView.hidden = !isLunar;
-    
+
+	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
     if (!hasRepeat) {
         NSDate *startDate = [info.startDate solarDate];
         NSDate *endDate = [[info endDateCreateIfNotExist:NO ] solarDate];
@@ -1025,25 +1027,25 @@ EXIT_FUCTION:
         cell.untilRoundWidthConst.constant = 42;
         
         if ( isLunar ) {
-            NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:startDate];
+            NSDateComponents *dateComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:startDate];
             BOOL isResultLeapMonth = NO;
             NSDateComponents *resultComponents = [NSDate lunarCalcWithComponents:dateComp
                                                                 gregorianToLunar:YES
                                                                        leapMonth:NO
                                                                           korean:[A3UIDevice useKoreanLunarCalendar]
                                                                  resultLeapMonth:&isResultLeapMonth];
-            NSDate *convertDate = [[NSCalendar currentCalendar] dateFromComponents:resultComponents];
+            NSDate *convertDate = [calendar dateFromComponents:resultComponents];
             
             startDate = convertDate;
             
             if ( endDate ) {
-                dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:endDate];
+                dateComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:endDate];
                 dateComp = [NSDate lunarCalcWithComponents:dateComp
                                           gregorianToLunar:YES
                                                  leapMonth:NO
                                                     korean:[A3UIDevice useKoreanLunarCalendar]
                                            resultLeapMonth:&isResultLeapMonth];
-                convertDate = [[NSCalendar currentCalendar] dateFromComponents:dateComp];
+                convertDate = [calendar dateFromComponents:dateComp];
                 endDate = convertDate;
             }
         }
@@ -1105,7 +1107,7 @@ EXIT_FUCTION:
         NSDate *startDate = [info.startDate solarDate];
         
         if ( isLunar ) {
-            NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay
+            NSDateComponents *dateComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay
                                                                          fromDate:startDate];
             BOOL isResultLeapMonth = NO;
             dateComp = [NSDate lunarCalcWithComponents:dateComp
@@ -1113,7 +1115,7 @@ EXIT_FUCTION:
                                              leapMonth:NO
                                                 korean:[A3UIDevice useKoreanLunarCalendar]
                                        resultLeapMonth:&isResultLeapMonth];
-            NSDate *convertDate = [[NSCalendar currentCalendar] dateFromComponents:dateComp];
+            NSDate *convertDate = [calendar dateFromComponents:dateComp];
             startDate = convertDate;
         }
         

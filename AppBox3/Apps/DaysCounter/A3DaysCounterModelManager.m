@@ -239,7 +239,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     NSInteger alertType = [self alertTypeIndexFromDate:startDate alertDate:date];
     if (alertType == AlertType_Custom) {
         //return [A3Formatter stringFromDate:date format:DaysCounterDefaultDateFormat];
-        NSDateComponents *comp = [[NSCalendar currentCalendar] components:NSDayCalendarUnit fromDate:date toDate:startDate options:0];
+        NSDateComponents *comp = [[[A3AppDelegate instance] calendar] components:NSDayCalendarUnit fromDate:date toDate:startDate options:0];
         return [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days before", @"StringsDict", nil), (long)comp.day];
     }
     
@@ -273,7 +273,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     }
     
     NSInteger retType = AlertType_Custom;
-    NSDateComponents *comps = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute fromDate:alertDate toDate:date options:0];
+    NSDateComponents *comps = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute fromDate:alertDate toDate:date options:0];
     if ( [comps year] == 0 && [comps month] == 0 && [comps day] == 0 && [comps hour] == 0 && [comps minute] == 0 ) {
         retType = AlertType_AtTimeOfEvent;
     }
@@ -882,7 +882,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
             option = DurationOption_Minutes | DurationOption_Hour;
     }
 
-	NSCalendar *calendar = [NSCalendar currentCalendar];
+	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
     NSDateComponents *diffComponent;
 
     if (isAllDay) {
@@ -1169,11 +1169,11 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (DaysCounterEvent *)closestEventObjectOfCalendar:(DaysCounterCalendar *)calendar
 {
-    NSDateComponents *nowComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:[NSDate date]];
+    NSDateComponents *nowComp = [[[A3AppDelegate instance] calendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:[NSDate date]];
     nowComp.hour = 0;
     nowComp.minute = 0;
     nowComp.second = 0;
-    NSDate *today = [[NSCalendar currentCalendar] dateFromComponents:nowComp];
+    NSDate *today = [[[A3AppDelegate instance] calendar] dateFromComponents:nowComp];
 
 	// return Today or closest until
 	DaysCounterEvent *closestEvent = [DaysCounterEvent MR_findFirstWithPredicate:
@@ -1204,7 +1204,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         solarComp = [self nextSolarDateComponentsFromLunarDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:event.startDate toLunar:YES]
                                                               leapMonth:[event.startDate.isLeapMonth boolValue]
                                                                fromDate:now];
-        nextDate = [[NSCalendar currentCalendar] dateFromComponents:solarComp];
+        nextDate = [[[A3AppDelegate instance] calendar] dateFromComponents:solarComp];
         FNLOG(@"\nToday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@", now, [[event startDate] solarDate], nextDate);
         return nextDate;
     }
@@ -1273,13 +1273,14 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     // EffectiveAlertDate 갱신.
     NSDate *alertDate = eventModel.alertDatetime;
     if (alertDate) {
+		NSCalendar *calendar = [[A3AppDelegate instance] calendar];
         NSDateComponents *alertIntervalComp = [NSDateComponents new];
         alertIntervalComp.minute = -labs([eventModel.alertInterval integerValue]);
-        NSDate *alertDate = [[NSCalendar currentCalendar] dateByAddingComponents:alertIntervalComp toDate:eventModel.effectiveStartDate options:0];
-        NSDateComponents *alertDateComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:alertDate];
+        NSDate *alertDate = [calendar dateByAddingComponents:alertIntervalComp toDate:eventModel.effectiveStartDate options:0];
+        NSDateComponents *alertDateComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:alertDate];
         alertDateComp.second = 0;
         
-        eventModel.alertDatetime = [[NSCalendar currentCalendar] dateFromComponents:alertDateComp];
+        eventModel.alertDatetime = [calendar dateFromComponents:alertDateComp];
     }
     
     FNLOG(@"\nToday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@, \nAlertDate: %@", [NSDate date], [eventModel.startDate solarDate], eventModel.effectiveStartDate, eventModel.alertDatetime);
@@ -1303,10 +1304,11 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 	if (![alertItems count])
         return;
 
+	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
     // 얼럿 생성 & 등록.
-    NSDateComponents *nowDateComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:[NSDate date]];
+    NSDateComponents *nowDateComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:[NSDate date]];
     nowDateComp.second = 0;
-    __block NSDate *now = [[NSCalendar currentCalendar] dateFromComponents:nowDateComp];
+    __block NSDate *now = [calendar dateFromComponents:nowDateComp];
     NSMutableArray *localNotifications = [NSMutableArray new];
     [alertItems enumerateObjectsUsingBlock:^(DaysCounterEvent *event, NSUInteger idx, BOOL *stop) {
 		DaysCounterReminder *reminder = [event reminderWithContext:context];
@@ -1393,7 +1395,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 {
     NSDateComponents *alertIntervalComp = [NSDateComponents new];
     alertIntervalComp.minute = -[event.alertInterval integerValue];
-    NSDate *effectiveAlertDate = [[NSCalendar currentCalendar] dateByAddingComponents:alertIntervalComp toDate:event.effectiveStartDate options:0];
+    NSDate *effectiveAlertDate = [[[A3AppDelegate instance] calendar] dateByAddingComponents:alertIntervalComp toDate:event.effectiveStartDate options:0];
     return effectiveAlertDate;
 }
 
@@ -1405,7 +1407,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         isLeapMonth = [NSDate isLunarDateComponents:lunarComponents isKorean:YES];
     }
 
-    NSDateComponents *fromComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:fromDate];
+    NSDateComponents *fromComp = [[[A3AppDelegate instance] calendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:fromDate];
     lunarComponents.year = fromComp.year;
     NSDateComponents *startComp = [NSDate lunarCalcWithComponents:lunarComponents gregorianToLunar:NO leapMonth:isLeapMonth korean:YES resultLeapMonth:&isResultLeapMonth];
     NSDateComponents *resultComp;
@@ -1430,14 +1432,14 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 + (NSDate *)nextSolarDateFromLunarDateComponents:(NSDateComponents *)lunarComponents leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate
 {
     NSDateComponents *solarComp = [self nextSolarDateComponentsFromLunarDateComponents:lunarComponents leapMonth:isLeapMonth fromDate:fromDate];
-    NSDate *result = [[NSCalendar currentCalendar] dateFromComponents:solarComp];
+    NSDate *result = [[[A3AppDelegate instance] calendar] dateFromComponents:solarComp];
     return result;
 }
 
 + (NSDateComponents *)dateComponentsOfRepeatForLunarDateComponent:(NSDateComponents *)lunarComponents aboutNextTime:(BOOL)isAboutNextTime leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate repeatType:(NSInteger)repeatType
 {
     BOOL isResultLeapMonth;
-    NSDateComponents *fromComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:fromDate];
+    NSDateComponents *fromComp = [[[A3AppDelegate instance] calendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:fromDate];
     NSDateComponents *calcComp = [NSDateComponents new];
     
     switch (repeatType) {
@@ -1466,7 +1468,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         isLeapMonth = [NSDate isLunarDateComponents:calcComp isKorean:YES];
     }
     NSDateComponents *resultDateComponents = [NSDate lunarCalcWithComponents:calcComp gregorianToLunar:NO leapMonth:isLeapMonth korean:YES resultLeapMonth:&isResultLeapMonth];
-    NSDate *resultDate = [[NSCalendar currentCalendar] dateFromComponents:resultDateComponents];
+    NSDate *resultDate = [[[A3AppDelegate instance] calendar] dateFromComponents:resultDateComponents];
     if (!resultDateComponents || !resultDate || [resultDate timeIntervalSince1970] < [fromDate timeIntervalSince1970]) {
         return nil;
     }
@@ -1511,10 +1513,10 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         solarComp.hour = 0;     // lunar 는 all day.
         solarComp.minute = 0;
         solarComp.second = 0;
-        dateModel.solarDate = [[NSCalendar currentCalendar] dateFromComponents:solarComp];
+        dateModel.solarDate = [[[A3AppDelegate instance] calendar] dateFromComponents:solarComp];
     }
     else {
-        dateModel.solarDate = [[NSCalendar currentCalendar] dateFromComponents:dateComponents];
+        dateModel.solarDate = [[[A3AppDelegate instance] calendar] dateFromComponents:dateComponents];
         dateModel.year = @(dateComponents.year);
         dateModel.month = @(dateComponents.month);
         dateModel.day = @(dateComponents.day);
@@ -1560,7 +1562,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         [dateFormat replaceOccurrencesOfString:@"MMMM" withString:@"MMM" options:0 range:NSMakeRange(0, [dateFormat length])];
         dateFormat = [[dateFormat stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] mutableCopy];
         
-        NSDateComponents *solarComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit fromDate:[dateModel solarDate]];
+        NSDateComponents *solarComp = [[[A3AppDelegate instance] calendar] components:NSYearCalendarUnit fromDate:[dateModel solarDate]];
         if (solarComp.year == [dateModel.year integerValue]) {
             NSRange range = [dateFormat rangeOfString:@"M" options:NSCaseInsensitiveSearch];
             dateFormat = [[dateFormat substringFromIndex:range.location] mutableCopy];

@@ -10,6 +10,7 @@
 #import "common.h"
 #import "NSString+conversion.h"
 #import "NSDateFormatter+A3Addition.h"
+#import "A3AppDelegate.h"
 
 @implementation LoanCalcData (Calculation)
 
@@ -283,13 +284,13 @@
 #pragma mark - Schedule info
 - (NSDate *)dateOfPaymentIndex:(NSUInteger)index
 {
+	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
     NSDate *dateOfPayment;
     switch (self.frequencyIndex) {
         case A3LC_FrequencyWeekly:
         {
             NSDateComponents* dateComponents = [[NSDateComponents alloc]init];
             [dateComponents setDay:7*(index+1)];
-            NSCalendar* calendar = [NSCalendar currentCalendar];
             dateOfPayment = [calendar dateByAddingComponents:dateComponents toDate:self.startDate options:0];
         }
             break;
@@ -297,7 +298,6 @@
         {
             NSDateComponents* dateComponents = [[NSDateComponents alloc]init];
             [dateComponents setDay:14*(index+1)];
-            NSCalendar* calendar = [NSCalendar currentCalendar];
             dateOfPayment = [calendar dateByAddingComponents:dateComponents toDate:self.startDate options:0];
         }
             break;
@@ -305,7 +305,6 @@
         {
             NSDateComponents* dateComponents = [[NSDateComponents alloc]init];
             [dateComponents setMonth:1*(index+1)];
-            NSCalendar* calendar = [NSCalendar currentCalendar];
             dateOfPayment = [calendar dateByAddingComponents:dateComponents toDate:self.startDate options:0];
         }
             break;
@@ -313,7 +312,6 @@
         {
             NSDateComponents* dateComponents = [[NSDateComponents alloc]init];
             [dateComponents setMonth:2*(index+1)];
-            NSCalendar* calendar = [NSCalendar currentCalendar];
             dateOfPayment = [calendar dateByAddingComponents:dateComponents toDate:self.startDate options:0];
         }
             break;
@@ -321,7 +319,6 @@
         {
             NSDateComponents* dateComponents = [[NSDateComponents alloc]init];
             [dateComponents setMonth:3*(index+1)];
-            NSCalendar* calendar = [NSCalendar currentCalendar];
             dateOfPayment = [calendar dateByAddingComponents:dateComponents toDate:self.startDate options:0];
         }
             break;
@@ -329,7 +326,6 @@
         {
             NSDateComponents* dateComponents = [[NSDateComponents alloc]init];
             [dateComponents setMonth:6*(index+1)];
-            NSCalendar* calendar = [NSCalendar currentCalendar];
             dateOfPayment = [calendar dateByAddingComponents:dateComponents toDate:self.startDate options:0];
         }
             break;
@@ -337,7 +333,6 @@
         {
             NSDateComponents* dateComponents = [[NSDateComponents alloc]init];
             [dateComponents setYear:1*(index+1)];
-            NSCalendar* calendar = [NSCalendar currentCalendar];
             dateOfPayment = [calendar dateByAddingComponents:dateComponents toDate:self.startDate options:0];
         }
             break;
@@ -365,7 +360,7 @@
             addedExtraPayments += self.extraPaymentMonthly.doubleValue;
         }
         else {
-            NSCalendar *cal = [NSCalendar currentCalendar];
+            NSCalendar *cal = [[A3AppDelegate instance] calendar];
 
             NSDateComponents *preComponents = [cal components:NSCalendarUnitMonth fromDate:prePaymentDate];
             NSDateComponents *thisComponents = [cal components:NSCalendarUnitMonth fromDate:thisPaymentDate];
@@ -384,7 +379,7 @@
             addedExtraPayments += self.extraPaymentYearly.doubleValue;
         }
         else {
-            NSCalendar *cal = [NSCalendar currentCalendar];
+            NSCalendar *cal = [[A3AppDelegate instance] calendar];
             NSDateComponents *preComponents = [cal components:NSCalendarUnitMonth fromDate:prePaymentDate];
             NSDateComponents *thisComponents = [cal components:NSCalendarUnitMonth fromDate:thisPaymentDate];
             NSDateComponents *extraPayComponents = [cal components:NSCalendarUnitMonth fromDate:self.extraPaymentYearlyDate];
@@ -398,7 +393,7 @@
         }
          */
         
-        NSCalendar *cal = [NSCalendar currentCalendar];
+        NSCalendar *cal = [[A3AppDelegate instance] calendar];
         NSDateComponents *preComponents = [cal components:NSCalendarUnitMonth fromDate:prePaymentDate];
         NSDateComponents *thisComponents = [cal components:NSCalendarUnitMonth fromDate:thisPaymentDate];
         NSDateComponents *extraPayComponents = [cal components:NSCalendarUnitMonth fromDate:self.extraPaymentYearlyDate];

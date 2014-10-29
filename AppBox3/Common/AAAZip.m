@@ -7,6 +7,7 @@
 //
 
 #import "AAAZip.h"
+#import "A3AppDelegate.h"
 
 @interface AAAZip ()
 
@@ -86,7 +87,7 @@
 		if( fileDate )
 		{
 			// some application does use dosDate, but tmz_date instead
-			NSCalendar* currCalendar = [NSCalendar currentCalendar];
+			NSCalendar* currCalendar = [[A3AppDelegate instance] calendar];
 			NSCalendarUnit flags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit |
             NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit ;
 			NSDateComponents* dc = [currCalendar components:flags fromDate:fileDate];

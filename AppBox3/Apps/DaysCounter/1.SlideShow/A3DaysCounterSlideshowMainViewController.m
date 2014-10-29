@@ -209,7 +209,7 @@
     NSDate *now = [NSDate date];
     
     // Start Timer 화면 갱신.
-    NSDateComponents *nowComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:now];
+    NSDateComponents *nowComp = [[[A3AppDelegate instance] calendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:now];
     [self performSelector:@selector(startTimer) withObject:nil afterDelay:60 - [nowComp second]];
 
     if ( [_sharedManager numberOfEventContainedImage] > 0 ) {
@@ -298,11 +298,11 @@
         self.isFirstViewLoad = NO;
         __block NSInteger indexOfTodayPhoto = -1;
         
-        NSDateComponents *nowComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:[NSDate date]];
+        NSDateComponents *nowComp = [[[A3AppDelegate instance] calendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:[NSDate date]];
         nowComp.hour = 0;
         nowComp.minute = 0;
         nowComp.second = 0;
-        NSDate *today = [[NSCalendar currentCalendar] dateFromComponents:nowComp];
+        NSDate *today = [[[A3AppDelegate instance] calendar] dateFromComponents:nowComp];
         
         [self.eventsArray enumerateObjectsUsingBlock:^(DaysCounterEvent *event, NSUInteger idx, BOOL *stop) {
             if ([event.effectiveStartDate timeIntervalSince1970] >= [today timeIntervalSince1970]) {
