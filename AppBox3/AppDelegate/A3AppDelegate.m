@@ -89,12 +89,6 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 	if (_previousVersion) {
 		_shouldMigrateV1Data = YES;
 		[A3KeychainUtils migrateV1Passcode];
-
-        // AppBox Pro V1.8.4까지는 Days Until 기능의 옵션에 의해서 남은 일자에 대한 배지 기능이 있었습니다.
-        // AppBox Pro V3.0 이후로는 배지 기능을 제공하지 않습니다.
-        // 이전 버전이 읽어들여진 경우, 이 값을 초기화해야 합니다.
-        application.applicationIconBadgeNumber = 0;
-
 	} else {
 		// TODO: 지우고 새로 설치해도 암호가 지워지지 않는 오류 수정해야 함
 		_previousVersion = [[A3UserDefaults standardUserDefaults] objectForKey:kA3ApplicationLastRunVersion];
@@ -103,6 +97,11 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 			[self initializePasscodeUserDefaults];
 		}
 	}
+
+	// AppBox Pro V1.8.4까지는 Days Until 기능의 옵션에 의해서 남은 일자에 대한 배지 기능이 있었습니다.
+	// AppBox Pro V3.0 이후로는 배지 기능을 제공하지 않습니다.
+	// 이 값은 초기화 합니다.
+	application.applicationIconBadgeNumber = 0;
 
 	// toolsconf.db가 library directory에 남아 있으면 마이그레이션이 끝나지 않았으므로 확실히 점검한다.
 	NSString *oldFilePath = [@"toolsconf.db" pathInLibraryDirectory];
