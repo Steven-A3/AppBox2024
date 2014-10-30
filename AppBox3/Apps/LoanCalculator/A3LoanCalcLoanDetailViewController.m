@@ -14,7 +14,6 @@
 #import "LoanCalcString.h"
 #import "LoanCalcPreference.h"
 #import "A3AppDelegate.h"
-#import "UIViewController+A3Addition.h"
 #import "UIViewController+LoanCalcAddtion.h"
 #import "A3KeyboardDelegate.h"
 #import "UIViewController+NumberKeyboard.h"
@@ -22,7 +21,6 @@
 #import "A3NumberKeyboardViewController.h"
 #import "UITableView+utility.h"
 #import "UIViewController+iPad_rightSideView.h"
-#import "A3AppDelegate+appearance.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
@@ -368,12 +366,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
     if (self.loanData.frequencyIndex != frequencyType) {
         self.loanData.frequencyIndex = frequencyType;
         
-        NSUInteger frequencyIndex = [self indexOfCalcItem:A3LC_CalculationItemFrequency];
-        [self.tableView reloadRowsAtIndexPaths:@[
-                                                 [NSIndexPath indexPathForRow:frequencyIndex inSection:1]
-                                                 ]
-                              withRowAnimation:UITableViewRowAnimationFade];
-        
+        [self.tableView reloadData];
         [self updateLoanCalculation];
     }
 }
@@ -620,7 +613,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return [LoanCalcPreference new].showExtraPayment ? 3:2;
+    return [LoanCalcPreference showExtraPayment] && (self.loanData.frequencyIndex == A3LC_FrequencyMonthly) ? 3:2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -755,7 +748,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == ([LoanCalcPreference new].showExtraPayment == YES ? 2 : 1)) {
+    if (section == ([LoanCalcPreference showExtraPayment] && (self.loanData.frequencyIndex == A3LC_FrequencyMonthly) ? 2 : 1)) {
         return 38;
     }
     
@@ -765,7 +758,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if (section == 2) {
-        return [LoanCalcPreference new].showExtraPayment ? NSLocalizedString(@"EXTRA PAYMENTS", @"EXTRA PAYMENTS") : nil;
+        return [LoanCalcPreference showExtraPayment] && (self.loanData.frequencyIndex == A3LC_FrequencyMonthly) ? NSLocalizedString(@"EXTRA PAYMENTS", @"EXTRA PAYMENTS") : nil;
     }
     
     return nil;

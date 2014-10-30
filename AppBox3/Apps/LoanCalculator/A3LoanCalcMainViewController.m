@@ -546,7 +546,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	self.loanData.startDate = sender.date;
 
     if (!_isComparisonMode) {
-        NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:self.loanData.showExtraPayment ? 4 : 3];
+        NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly ? 4 : 3];
         [self.tableView reloadRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationNone];
     }
 }
@@ -801,8 +801,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 {
 	self.loanData.showAdvanced = !self.loanData.showAdvanced;
     
-    LoanCalcPreference *preference = [LoanCalcPreference new];
-    [preference setShowAdvanced:self.loanData.showAdvanced];
+    [LoanCalcPreference setShowAdvanced:self.loanData.showAdvanced];
     
     if (self.loanData.showAdvanced) {
         [SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:17]];
@@ -828,10 +827,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         bottomLine.hidden = NO;
     }
     
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:self.loanData.showExtraPayment ? 4 : 3] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly ? 4 : 3] withRowAnimation:UITableViewRowAnimationFade];
     
     if (self.loanData.showAdvanced) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:self.loanData.showExtraPayment ? 4 : 3] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly ? 4 : 3] atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }
 	[self saveLoanData];
 }
@@ -894,7 +893,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                 return nil;
             }
             section--;
-            if ((self.loanData.showExtraPayment == NO) && (section == 3)) {
+            if (!(self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly) && (section == 3)) {
                 section = 2;
             }
             
@@ -916,11 +915,11 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     } while (!exit);
 
     if (prevCell && selectedIP && [prevCell isKindOfClass:[A3LoanCalcTextInputCell class]]) {
-        if (selectedIP.section == (self.loanData.showExtraPayment ? 4 : 3)) {
+        if (selectedIP.section == (self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly ? 4 : 3)) {
             return nil;
         }
         else if (selectedIP.section == 3) {
-            return self.loanData.showExtraPayment ? ((A3LoanCalcTextInputCell *)prevCell).textField : nil;
+            return self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly ? ((A3LoanCalcTextInputCell *)prevCell).textField : nil;
         }
         return ((A3LoanCalcTextInputCell *)prevCell).textField;
     }
@@ -945,7 +944,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             section++;
             row=0;
             
-            if ((self.loanData.showExtraPayment == NO) && (section == 3)) {
+            if (!(self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly) && (section == 3)) {
                 section = 4;
             }
         }
@@ -972,7 +971,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             return nil;
         }
         else if (selectedIP.section == 3) {
-            return self.loanData.showExtraPayment ? ((A3LoanCalcTextInputCell *)nextCell).textField : nil;
+            return self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly ? ((A3LoanCalcTextInputCell *)nextCell).textField : nil;
         }
         return ((A3LoanCalcTextInputCell *)nextCell).textField;
     }
@@ -1036,7 +1035,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (void)initializeLoanData:(LoanCalcData *)loan
 {
-    LoanCalcPreference *preference = [LoanCalcPreference new];
     loan.principal = @0;
     loan.downPayment = @0;
     loan.extraPaymentMonthly = @0;
@@ -1046,9 +1044,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     loan.frequencyIndex = A3LC_FrequencyMonthly;
     loan.startDate = [NSDate date];
     loan.calculationMode = A3LC_CalculationForRepayment;
-    loan.showAdvanced = preference.showAdvanced;
-    loan.showDownPayment = preference.showDownPayment;
-    loan.showExtraPayment = preference.showExtraPayment;
+    loan.showAdvanced = [LoanCalcPreference showAdvanced];
+    loan.showDownPayment = [LoanCalcPreference showDownPayment];
+    loan.showExtraPayment = [LoanCalcPreference showExtraPayment];
 }
 
 - (void)clearLoanData:(LoanCalcData *)loan
@@ -1927,8 +1925,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         [self.tableView beginUpdates];
         
         [_advItems removeObject:self.dateInputItem];
-        NSIndexPath *ip1 = [NSIndexPath indexPathForRow:0 inSection:self.loanData.showExtraPayment ? 4 : 3];
-        NSIndexPath *ip2 = [NSIndexPath indexPathForRow:1 inSection:self.loanData.showExtraPayment ? 4 : 3];
+        NSIndexPath *ip1 = [NSIndexPath indexPathForRow:0 inSection:self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly ? 4 : 3];
+        NSIndexPath *ip2 = [NSIndexPath indexPathForRow:1 inSection:self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly ? 4 : 3];
         [self.tableView reloadRowsAtIndexPaths:@[ip1] withRowAnimation:UITableViewRowAnimationFade];
         [self.tableView deleteRowsAtIndexPaths:@[ip2] withRowAnimation:UITableViewRowAnimationFade];
         
@@ -1941,8 +1939,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     if (![_advItems containsObject:self.dateInputItem]) {
         [_advItems insertObject:self.dateInputItem atIndex:1];
         [self.tableView beginUpdates];
-        NSIndexPath *ip1 = [NSIndexPath indexPathForRow:0 inSection:self.loanData.showExtraPayment ? 4 : 3];
-        NSIndexPath *ip2 = [NSIndexPath indexPathForRow:1 inSection:self.loanData.showExtraPayment ? 4 : 3];
+        NSIndexPath *ip1 = [NSIndexPath indexPathForRow:0 inSection:self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly ? 4 : 3];
+        NSIndexPath *ip2 = [NSIndexPath indexPathForRow:1 inSection:self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly ? 4 : 3];
         [self.tableView reloadRowsAtIndexPaths:@[ip1] withRowAnimation:UITableViewRowAnimationFade];
         [self.tableView insertRowsAtIndexPaths:@[ip2] withRowAnimation:UITableViewRowAnimationFade];
 		CGRect cellRect = [self.tableView rectForRowAtIndexPath:ip2];
@@ -2022,7 +2020,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 	self.scrollToIndexPath = [self.tableView indexPathForCellSubview:textField];
 
-	if (self.scrollToIndexPath.section == (self.loanData.showExtraPayment ? 4 : 3)) {
+	if (self.scrollToIndexPath.section == (self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly ? 4 : 3)) {
 		if (_advItems[self.scrollToIndexPath.row] == self.startDateItem) {
 			return NO;
 		}
@@ -2312,12 +2310,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     if (self.loanData.frequencyIndex != frequencyType) {
 		self.loanData.frequencyIndex = frequencyType;
         
-        NSUInteger frequencyIndex = [self indexOfCalcItem:A3LC_CalculationItemFrequency];
-        [self.tableView reloadRowsAtIndexPaths:@[
-                                                 [NSIndexPath indexPathForRow:frequencyIndex inSection:2]
-                                                 ]
-                              withRowAnimation:UITableViewRowAnimationFade];
-        
+        [self.tableView reloadData];
         [self updateLoanCalculation];
     }
 }
@@ -2458,7 +2451,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             }
         }
         
-        if (self.loanData.showExtraPayment) {
+        if (self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly) {
             if (indexPath.section == 3) {
                 [self didSelectExtraPaymentSectionAtIndexPath:indexPath tableView:tableView];
             }
@@ -2483,7 +2476,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         return 3;
     }
     else {
-        if (self.loanData.showExtraPayment) {
+        if (self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly) {
             return 5;
         }
         else {
@@ -2509,7 +2502,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             return self.calcItems.count;
         }
         else if (section == 3) {
-            if (self.loanData.showExtraPayment) {
+            if (self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly) {
                 return self.extraPaymentItems.count;
             }
             else {
@@ -2553,7 +2546,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             }
         }
         else if (indexPath.section == 3) {
-            if (self.loanData.showExtraPayment) {
+            if (self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly) {
                 return 44;
             }
             else {
@@ -2598,10 +2591,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         }
         else if (section == 3) {
             return titleHeight - 1;
-//            return self.loanData.showExtraPayment ? titleHeight - 1 : 1;
+//            return self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly ? titleHeight - 1 : 1;
         }
         else if (section == 4) {
-            return self.loanData.showExtraPayment ? titleHeight - 1 : titleHeight - 2;
+            return self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly ? titleHeight - 1 : titleHeight - 2;
         }
         return 1;
     }
@@ -2620,7 +2613,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     if (_isComparisonMode && section == 2) {
         return 38;
     }
-    else if (!_isComparisonMode && section == (self.loanData.showExtraPayment ? 4 : 3)) {
+    else if (!_isComparisonMode && section == (self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly ? 4 : 3)) {
         return (self.loanData.showAdvanced) ? 38 : (IS_RETINA ? 39.5 : 38);
     }
 
@@ -2633,7 +2626,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         
     }
     else {
-        if (section == (self.loanData.showExtraPayment ? 4 : 3)) {
+        if (section == (self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly ? 4 : 3)) {
             return self.advancedTitleView;
         }
     }
@@ -2873,7 +2866,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         case 3:
         case 4:
         {
-            if (self.loanData.showExtraPayment) {
+            if (self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly) {
                 if ([indexPath section] == 3) {
                     cell = [self cellOfExtraPaymentAtIndexPath:indexPath tableView:tableView];
                 }
