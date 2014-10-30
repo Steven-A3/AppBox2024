@@ -66,7 +66,7 @@
 {
     [super viewDidLoad];
 
-    _originalBrightness = (CGFloat) MAX([[UIScreen mainScreen] brightness], 0.5);
+    _originalBrightness = [[UIScreen mainScreen] brightness];
 
 	self.automaticallyAdjustsScrollViewInsets = NO;
 
