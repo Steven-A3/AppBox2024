@@ -16,7 +16,6 @@
 
 @interface A3LoanCalcSettingViewController ()
 
-@property (nonatomic, strong) LoanCalcPreference *preference;
 @property (nonatomic, strong) void (^settingChangedBlock)(void);
 @property (nonatomic, strong) void (^settingDismissBlock)(void);
 
@@ -53,7 +52,6 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
 }
 
 - (void)cloudStoreDidImport {
-	_preference = nil;
 	[self.tableView reloadData];
 }
 
@@ -82,15 +80,6 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
 	}
 }
 
-- (LoanCalcPreference *)preference
-{
-    if (!_preference) {
-        _preference = [LoanCalcPreference new];
-    }
-    
-    return _preference;
-}
-
 - (void)doneButtonAction:(UIBarButtonItem *)button {
 	if (IS_IPAD) {
 		[self.A3RootViewController dismissRightSideViewController];
@@ -109,11 +98,11 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
     // Dispose of any resources that can be recreated.
 }
 
-- (void)downPaymentSwitchAction:(UISwitch *)onoff
+- (void)downPaymentSwitchAction:(UISwitch *)switchControl
 {
-    self.preference.showDownPayment = onoff.on;
+	[LoanCalcPreference setShowDownPayment:switchControl.on];
     
-    if (onoff.on) {
+    if (switchControl.on) {
         [[NSNotificationCenter defaultCenter] postNotificationName:A3LoanCalcNotificationDownPaymentEnabled object:nil];
     }
     else {
@@ -125,11 +114,11 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
     }
 }
 
-- (void)extraPaymentSwitchAction:(UISwitch *)onoff
+- (void)extraPaymentSwitchAction:(UISwitch *)switchControl
 {
-    self.preference.showExtraPayment = onoff.on;
+	[LoanCalcPreference setShowExtraPayment:switchControl.on];
     
-    if (onoff.on) {
+    if (switchControl.on) {
         [[NSNotificationCenter defaultCenter] postNotificationName:A3LoanCalcNotificationExtraPaymentEnabled object:nil];
     }
     else {
@@ -164,6 +153,13 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
     return 1;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+	if (section == 1) {
+		return NSLocalizedString(@"For monthly payment.", @"For monthly payment.");
+	}
+	return nil;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = nil;
@@ -172,7 +168,7 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
 		A3LoanCalcSettingSwitchCell *switchCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcSettingSwitchCellID forIndexPath:indexPath];
 		switchCell.selectionStyle = UITableViewCellSelectionStyleNone;
 		switchCell.titleLabel.text = NSLocalizedString(@"Down Payment", @"Down Payment");
-		switchCell.onoffSwitch.on = self.preference.showDownPayment;
+		switchCell.onoffSwitch.on = [LoanCalcPreference showDownPayment];
 		[switchCell.onoffSwitch addTarget:self action:@selector(downPaymentSwitchAction:) forControlEvents:UIControlEventValueChanged];
 
 		cell = switchCell;
@@ -181,7 +177,7 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
 		A3LoanCalcSettingSwitchCell *switchCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcSettingSwitchCellID forIndexPath:indexPath];
 		switchCell.selectionStyle = UITableViewCellSelectionStyleNone;
 		switchCell.titleLabel.text = NSLocalizedString(@"Extra Payment", @"Extra Payment");
-		switchCell.onoffSwitch.on = self.preference.showExtraPayment;
+		switchCell.onoffSwitch.on = [LoanCalcPreference showExtraPayment];
 		[switchCell.onoffSwitch addTarget:self action:@selector(extraPaymentSwitchAction:) forControlEvents:UIControlEventValueChanged];
 
 		cell = switchCell;
@@ -202,58 +198,8 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return 1;
+    if (section == 1) return UITableViewAutomaticDimension;
+	return 1;
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
- */
 
 @end

@@ -24,10 +24,13 @@ extern NSString *const A3LoanCalcNotificationExtraPaymentDisabled;
 
 @interface LoanCalcPreference : NSObject
 
-@property (nonatomic) 			BOOL showDownPayment;
-@property (nonatomic)			BOOL showExtraPayment;
-@property (nonatomic)			BOOL showAdvanced;
-@property (nonatomic)			BOOL useSimpleInterest;
-@property (nonatomic)			A3LoanCalcCalculationFor calculationFor;
++ (BOOL)showDownPayment;
++ (void)setShowDownPayment:(BOOL)showDownPayment;
+
++ (BOOL)showExtraPayment;
++ (void)setShowExtraPayment:(BOOL)showExtraPayment;
+
++ (BOOL)showAdvanced;
++ (void)setShowAdvanced:(BOOL)showAdvanced;
 
 @end

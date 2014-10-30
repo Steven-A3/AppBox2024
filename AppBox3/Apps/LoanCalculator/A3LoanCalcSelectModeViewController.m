@@ -66,7 +66,7 @@
     NSNumber *modeNumb = _calForItems[indexPath.row];
     A3LoanCalcCalculationMode calMode = modeNumb.integerValue;
     
-    if ((calMode == A3LC_CalculationForDownPayment) && ![LoanCalcPreference new].showDownPayment) {
+    if ((calMode == A3LC_CalculationForDownPayment) && ![LoanCalcPreference showDownPayment]) {
         return;
     }
     
@@ -112,7 +112,7 @@
     cell.textLabel.text = [LoanCalcString titleOfCalFor:calMode];
     
     if (calMode == A3LC_CalculationForDownPayment) {
-        if ([LoanCalcPreference new].showDownPayment) {
+        if ([LoanCalcPreference showDownPayment]) {
             cell.textLabel.textColor = [UIColor blackColor];
         }
         else {

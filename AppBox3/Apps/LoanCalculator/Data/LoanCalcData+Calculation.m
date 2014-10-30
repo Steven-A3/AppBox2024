@@ -61,43 +61,35 @@
             case A3LC_FrequencyWeekly:
             {
                 double days = 365*self.monthOfTerms.doubleValue/12.0;
-                return days/7.0;
-                break;
+                return round(days/7.0);
             }
             case A3LC_FrequencyBiweekly:
             {
                 double days = 365*self.monthOfTerms.doubleValue/12.0;
-                return days/14.0;
-                break;
+                return round(days/14.0);
             }
             case A3LC_FrequencyMonthly:
             {
                 return self.monthOfTerms.doubleValue;
-                break;
             }
             case A3LC_FrequencyBimonthly:
             {
-                return self.monthOfTerms.doubleValue/2.0;
-                break;
+                return round(self.monthOfTerms.doubleValue/2.0);
             }
             case A3LC_FrequencyQuarterly:
             {
-                return self.monthOfTerms.doubleValue/3.0;
-                break;
+                return round(self.monthOfTerms.doubleValue/3.0);
             }
             case A3LC_FrequencySemiannualy:
             {
-                return self.monthOfTerms.doubleValue/6.0;
-                break;
+                return round(self.monthOfTerms.doubleValue/6.0);
             }
             case A3LC_FrequencyAnnually:
             {
-                return self.monthOfTerms.floatValue/12.0;
-                break;
+                return round(self.monthOfTerms.floatValue/12.0);
             }
             default:
-                return self.monthOfTerms.floatValue;
-                break;
+                return round(self.monthOfTerms.floatValue);
         }
     }
     else {
@@ -255,8 +247,54 @@
 }
 
 #pragma mark - Total info
+
 - (NSNumber *)totalAmount {
-	float totalAmount = self.repayment.floatValue * [self termsInFrequency];
+	double totalAmount;
+	double balance = [self.principal doubleValue];
+
+	NSInteger maxTurn = (NSInteger) [self termsInFrequency];
+	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
+	NSDate *startDate = self.startDate ? self.startDate : [NSDate date];
+	NSDateComponents *components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:startDate];
+	NSInteger startYear = components.year;
+	NSInteger startMonth = components.month;
+
+	components = [calendar components:NSMonthCalendarUnit fromDate:self.extraPaymentYearlyDate ? self.extraPaymentYearlyDate : [NSDate date]];
+	NSInteger extraPaymentYearlyMonth = components.month;
+
+	components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:self.extraPaymentOneTimeDate ? self.extraPaymentOneTimeDate : [NSDate date]];
+	NSInteger extraPaymentOneTimeYear = components.year;
+	NSInteger extraPaymentOneTimeMonth = components.month;
+
+
+	double repayment;
+	totalAmount = 0;
+	double interestRate = [self interestRateOfFrequency];
+
+	for (NSInteger turn = 0; turn < maxTurn; turn++) {
+		repayment = self.repayment.doubleValue;
+		if (self.extraPaymentMonthly) {
+			repayment += self.extraPaymentMonthly.doubleValue;
+		}
+		NSInteger currentMonth = (startMonth + turn) % 12;
+		currentMonth = currentMonth == 0 ? 12 : currentMonth;
+
+		if (self.extraPaymentYearly && extraPaymentYearlyMonth == currentMonth) {
+			repayment += self.extraPaymentYearly.doubleValue;
+		}
+		if ((extraPaymentOneTimeYear == (startYear + ceil((startMonth + turn - 1) / 12)) ) && (extraPaymentOneTimeMonth ==  currentMonth)) {
+			repayment += self.extraPaymentOneTime.doubleValue;
+		}
+
+		if ((balance - repayment) < 0) {
+			totalAmount += balance;
+			break;
+		} else {
+			balance -= repayment - (balance * interestRate);
+			totalAmount += repayment;
+		}
+	}
+
 	return [NSNumber numberWithFloat:totalAmount];
 }
 

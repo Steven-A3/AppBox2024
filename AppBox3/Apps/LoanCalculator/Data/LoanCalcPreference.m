@@ -16,13 +16,9 @@ NSString *const A3LoanCalcNotificationDownPaymentDisabled = @"A3LoanCalcNotifica
 NSString *const A3LoanCalcNotificationExtraPaymentEnabled = @"A3LoanCalcNotificationExtraPaymentEnabled";
 NSString *const A3LoanCalcNotificationExtraPaymentDisabled = @"A3LoanCalcNotificationExtraPaymentDisabled";
 
-@interface LoanCalcPreference ()
-
-@end
-
 @implementation LoanCalcPreference
 
-- (BOOL)showDownPayment {
++ (BOOL)showDownPayment {
 	NSNumber *value = [[A3SyncManager sharedSyncManager] objectForKey:A3LoanCalcUserDefaultShowDownPayment];
 	if (value) {
 		return [value boolValue];
@@ -30,11 +26,11 @@ NSString *const A3LoanCalcNotificationExtraPaymentDisabled = @"A3LoanCalcNotific
 	return YES;
 }
 
-- (void)setShowDownPayment:(BOOL)showDownPayment {
++ (void)setShowDownPayment:(BOOL)showDownPayment {
 	[[A3SyncManager sharedSyncManager] setBool:showDownPayment forKey:A3LoanCalcUserDefaultShowDownPayment state:A3DataObjectStateModified];
 }
 
-- (BOOL)showExtraPayment {
++ (BOOL)showExtraPayment {
 	NSNumber *value = [[A3SyncManager sharedSyncManager] objectForKey:A3LoanCalcUserDefaultShowExtraPayment];
 	if (value) {
 		return [value boolValue];
@@ -42,11 +38,11 @@ NSString *const A3LoanCalcNotificationExtraPaymentDisabled = @"A3LoanCalcNotific
 	return YES;
 }
 
-- (void)setShowExtraPayment:(BOOL)showExtraPayment {
++ (void)setShowExtraPayment:(BOOL)showExtraPayment {
 	[[A3SyncManager sharedSyncManager] setBool:showExtraPayment forKey:A3LoanCalcUserDefaultShowExtraPayment state:A3DataObjectStateModified];
 }
 
-- (BOOL)showAdvanced {
++ (BOOL)showAdvanced {
 	NSNumber *value = [[A3SyncManager sharedSyncManager] objectForKey:A3LoanCalcUserDefaultShowAdvanced];
 	if (value) {
 		return [value boolValue];
@@ -56,7 +52,7 @@ NSString *const A3LoanCalcNotificationExtraPaymentDisabled = @"A3LoanCalcNotific
     }
 }
 
-- (void)setShowAdvanced:(BOOL)showAdvanced {
++ (void)setShowAdvanced:(BOOL)showAdvanced {
 	[[A3SyncManager sharedSyncManager] setBool:showAdvanced forKey:A3LoanCalcUserDefaultShowAdvanced state:A3DataObjectStateModified];
 }
 
