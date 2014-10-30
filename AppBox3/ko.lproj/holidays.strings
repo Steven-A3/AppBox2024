@@ -70,7 +70,7 @@
 "Boqueron Battle Victory Day"  = "Boqueron Battle 승전의 날";
 "Botswana Day"  = "보츠와나의 날";
 "Botswana Day Holiday"  = "보츠와나의 날";
-"Boxing Day"  = "크리스마스 선물의 날";
+"Boxing Day"  = "박싱데이(선물포장하는날)";
 "Bright Monday"  = "부활절 월요일";
 "Buddha's Birthday"  = "석가탄신일";
 "Canada Day"  = "캐나다의 날";
@@ -618,9 +618,9 @@
 "Nunavut Day(NU)" = "Nunavut의 날(NU)";
 "Orangemen's Day(NL)" = "오렌지맨의 날(NL)";
 "Regatta Day(NL)" = "레게타의 날(NL)";
-"Boxing Day(NT NU ON QC)" = "크리스마스 선물의 날(NT NU ON QC)";
+"Boxing Day(NT NU ON QC)" = "박싱데이(선물포장하는날)(NT NU ON QC)";
 "Christmas Day Public Holiday" = "크리스마스 공휴일";
-"Boxing Day Public Holiday" = "크리스마스 선물의 날 공휴일";
+"Boxing Day Public Holiday" = "박싱데이(선물포장하는날)";
 
 "New Year's Day Public Holiday" = "신년 공휴일";
 "Second of January Public Holiday(Scotland)" = "1월 2일 공휴일(스코틀랜드)";
@@ -684,3 +684,6 @@
 "Chuseok( ~Sep 13)" = "추석( ~9.13)";
 "Chuseok(Sep 21~23)" = "추석(9.21~23)";
 "Hangul Day(HangeulNal)" = "한글날";
+
+"St Stephen's Day / Boxing Day" = "박싱데이(선물포장하는날)";
+"Saint-Etienne" = "박싱데이(선물포장하는날)";

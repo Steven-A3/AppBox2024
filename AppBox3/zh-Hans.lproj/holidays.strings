@@ -617,9 +617,9 @@
 "Nunavut Day(NU)" = "Nunavut日(NU)";
 "Orangemen's Day(NL)" = "橙带党员日(NL)";
 "Regatta Day(NL)" = "国庆日赛舟(NL)";
-"Boxing Day(NT NU ON QC)" = "圣诞节翌日(NT NU ON QC)";
+"Boxing Day(NT NU ON QC)" = "节礼日(NT NU ON QC)";
 "Christmas Day Public Holiday" = "圣诞节公众假期";
-"Boxing Day Public Holiday" = "拳击天的公众假期";
+"Boxing Day Public Holiday" = "节礼日";
 
 "New Year's Day Public Holiday" = "公休日（元旦）";
 "Second of January Public Holiday(Scotland)" = "公休日（1月2日,苏格兰）";
@@ -697,3 +697,6 @@
 
 //2014.07.20
 "Chinese New Year's Eve" = "除夕";
+
+"St Stephen's Day / Boxing Day" = "节礼日";
+"Saint-Etienne" = "节礼日";

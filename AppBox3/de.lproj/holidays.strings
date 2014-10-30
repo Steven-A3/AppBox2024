@@ -70,7 +70,7 @@
 "Boqueron Battle Victory Day" = "Siegestag der Schlacht von Boqueron";
 "Botswana Day" = "Botsuana Tag";
 "Botswana Day Holiday" = "Botsuana Feiertag";
-"Boxing Day" = "Tag des Boxens";
+"Boxing Day" = "Geschenkschachtel-Tag";
 "Bright Monday" = "Bright Monday";
 "Buddha's Birthday" = "Geburtstag von Buddha";
 "Canada Day" = "Kanada Tag";
@@ -619,9 +619,9 @@
 "Nunavut Day(NU)" = "Nunavut Tag(NU)";
 "Orangemen's Day(NL)" = "Oranier's Tag(NL)";
 "Regatta Day(NL)" = "Regatta Tag(NL)";
-"Boxing Day(NT NU ON QC)" = "Tag des Boxens(NT NU ON QC)";
+"Boxing Day(NT NU ON QC)" = "Geschenkschachtel-Tag(NT NU ON QC)";
 "Christmas Day Public Holiday" = "Feiertag(Weihnachten)";
-"Boxing Day Public Holiday" = "Feiertag(Tag des Boxens)";
+"Boxing Day Public Holiday" = "Feiertag(Geschenkschachtel-Tag)";
 
 "New Year's Day Public Holiday" = "Feiertag(Neujahr)";
 "Second of January Public Holiday(Scotland)" = "Feiertag(Zweiter Januar,Schottland)";
@@ -697,4 +697,5 @@
 "German Unity Day" = "Tag der Deutschen Einheit";
 "Day of Repentance and Prayer" = "Buß- und Bettag";
 "St Stephen's Day / Boxing Day" = "2. Weihnachtsfeiertag";
+"Saint-Etienne" = "Geschenkschachtel-Tag";
 

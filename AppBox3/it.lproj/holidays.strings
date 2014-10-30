@@ -70,7 +70,7 @@
 "Boqueron Battle Victory Day" = "Festa di Vittoria della Battaglia Boqueron";
 "Botswana Day" = "Giorno di Botswana";
 "Botswana Day Holiday" = "Festa di Giorno di Botswana";
-"Boxing Day" = "Giorno di’Imballaggio ";
+"Boxing Day" = "Boxing Day";
 "Bright Monday" = "Luminose Lunedì pasquale";
 "Buddha's Birthday" = "Compleanno di Buddha";
 "Canada Day" = "Giorno di Canada";
@@ -618,9 +618,9 @@
 "Nunavut Day(NU)" = "Giorno di Nunavut(NU)";
 "Orangemen's Day(NL)" = "Giorno di Orangemen(NL)";
 "Regatta Day(NL)" = "Giorno di Regatta(NL)";
-"Boxing Day(NT NU ON QC)" = "Giorno d’Imballaggio(NT NU ON QC)";
+"Boxing Day(NT NU ON QC)" = "Boxing Day(NT NU ON QC)";
 "Christmas Day Public Holiday" = "Festa Pubblica(Natale)";
-"Boxing Day Public Holiday" = "Festa Pubblica(Giorno d’Imballaggio)";
+"Boxing Day Public Holiday" = "Festa Pubblica(Boxing Day)";
 
 "New Year's Day Public Holiday" = "Festa Pubblica(Capodanno)";
 "Second of January Public Holiday(Scotland)" = "Festa Pubblica(2 Gennaio,Scozia)";
@@ -696,3 +696,5 @@
 //2014.07.20
 "International Workers' Day" = "Festa del lavoro";
 
+"St Stephen's Day / Boxing Day" = "Boxing Day";
+"Saint-Etienne" = "Boxing Day";
