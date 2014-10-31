@@ -44,9 +44,15 @@ NSString *const A3SyncManagerEmptyObject = @"(!_^_!Empty!_^_!_#+129)";
 		// This loop assumes you are using the same key names in both
 		// the user defaults database and the iCloud key-value store
 		for (NSString* key in changedKeys) {
+            FNLOG(@"%@", key);
 			NSDictionary *objectInCloud = [store objectForKey:key];
 			NSDictionary *objectInLocal = [userDefaults objectForKey:key];
 
+            FNLOG(@"%@, %@", objectInCloud, objectInLocal);
+            
+            if (![objectInCloud isKindOfClass:[NSDictionary class]] || ![objectInLocal isKindOfClass:[NSDictionary class]]) {
+                continue;
+            }
 			if (!objectInLocal || [objectInLocal[A3KeyValueDBState] unsignedIntegerValue] == A3DataObjectStateInitialized) {
 				[userDefaults setObject:objectInCloud forKey:key];
 			} else {
