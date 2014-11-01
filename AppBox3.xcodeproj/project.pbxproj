@@ -350,7 +350,7 @@
 		684D92BE18BC1EFE005016F7 /* A3BatteryStatusMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92AB18BC1EFE005016F7 /* A3BatteryStatusMainViewController.m */; };
 		684D92BF18BC1EFE005016F7 /* A3BatteryStatusManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92AD18BC1EFE005016F7 /* A3BatteryStatusManager.m */; };
 		684D92C018BC1EFE005016F7 /* A3BatteryStatusSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92AF18BC1EFE005016F7 /* A3BatteryStatusSettingViewController.m */; };
-		684D92C118BC1EFE005016F7 /* device_infomation.json in Resources */ = {isa = PBXBuildFile; fileRef = 684D92B018BC1EFE005016F7 /* device_infomation.json */; };
+		684D92C118BC1EFE005016F7 /* device_information.json in Resources */ = {isa = PBXBuildFile; fileRef = 684D92B018BC1EFE005016F7 /* device_information.json */; };
 		684D92ED18BC1FBC005016F7 /* A3DateCalcAddSubButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92C718BC1FBC005016F7 /* A3DateCalcAddSubButton.m */; };
 		684D92EE18BC1FBC005016F7 /* A3DateCalcAddSubCell1.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92C918BC1FBC005016F7 /* A3DateCalcAddSubCell1.m */; };
 		684D92EF18BC1FBC005016F7 /* A3DateCalcAddSubCell1.xib in Resources */ = {isa = PBXBuildFile; fileRef = 684D92CA18BC1FBC005016F7 /* A3DateCalcAddSubCell1.xib */; };
@@ -1538,7 +1538,7 @@
 		684D92AD18BC1EFE005016F7 /* A3BatteryStatusManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3BatteryStatusManager.m; sourceTree = "<group>"; };
 		684D92AE18BC1EFE005016F7 /* A3BatteryStatusSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BatteryStatusSettingViewController.h; sourceTree = "<group>"; };
 		684D92AF18BC1EFE005016F7 /* A3BatteryStatusSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3BatteryStatusSettingViewController.m; sourceTree = "<group>"; };
-		684D92B018BC1EFE005016F7 /* device_infomation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = device_infomation.json; sourceTree = "<group>"; };
+		684D92B018BC1EFE005016F7 /* device_information.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = device_information.json; sourceTree = "<group>"; };
 		684D92C618BC1FBC005016F7 /* A3DateCalcAddSubButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateCalcAddSubButton.h; sourceTree = "<group>"; };
 		684D92C718BC1FBC005016F7 /* A3DateCalcAddSubButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateCalcAddSubButton.m; sourceTree = "<group>"; };
 		684D92C818BC1FBC005016F7 /* A3DateCalcAddSubCell1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateCalcAddSubCell1.h; sourceTree = "<group>"; };
@@ -3813,7 +3813,7 @@
 				684D92AD18BC1EFE005016F7 /* A3BatteryStatusManager.m */,
 				684D92AE18BC1EFE005016F7 /* A3BatteryStatusSettingViewController.h */,
 				684D92AF18BC1EFE005016F7 /* A3BatteryStatusSettingViewController.m */,
-				684D92B018BC1EFE005016F7 /* device_infomation.json */,
+				684D92B018BC1EFE005016F7 /* device_information.json */,
 			);
 			path = BatteryStatus;
 			sourceTree = "<group>";
@@ -5497,7 +5497,7 @@
 				68143D0318E3EC1F00569691 /* A3NumberKeyboardSimpleVC_iPad.xib in Resources */,
 				68F14FD519485E8500159EAD /* A3DaysCounterAddEventDateInputCell.xib in Resources */,
 				68B6A2F318CEC76D004084EF /* A3UnitPriceInputView_iPad.xib in Resources */,
-				684D92C118BC1EFE005016F7 /* device_infomation.json in Resources */,
+				684D92C118BC1EFE005016F7 /* device_information.json in Resources */,
 				68B6A2D818CEC76D004084EF /* A3UnitConverterTVEqualCell.xib in Resources */,
 				68F1500C19485E8500159EAD /* A3DaysCounterLocationDetailViewController.xib in Resources */,
 				68B6A35218CEC76D004084EF /* WalletPhoneStoryBoard.storyboard in Resources */,

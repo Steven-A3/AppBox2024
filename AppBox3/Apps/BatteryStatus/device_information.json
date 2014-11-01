@@ -37,7 +37,7 @@
             "Memory": "512 MB LPDDR2 DRAM"
         },
         "iPhone 4": {
-            "Chips": "A5 Chip",
+            "Chips": "A4 Chip",
             "CPU": "1 GHz (underclocked to 800 MHz)\nARM Cortex-A8",
             "GPU": "PowerVR SGX535 GPU (200 MHz)",
             "Memory": "512 MB LPDDR2 DRAM"

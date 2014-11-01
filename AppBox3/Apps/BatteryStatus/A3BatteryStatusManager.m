@@ -90,7 +90,7 @@ NSString *const A3BatteryStatusThemeColorChanged = @"A3BatteryStatusThemeColorCh
 {
     NSMutableArray *array = [NSMutableArray new];
     
-    NSString * path = [[NSBundle mainBundle] pathForResource:@"device_infomation" ofType:@"json"];
+    NSString * path = [[NSBundle mainBundle] pathForResource:@"device_information" ofType:@"json"];
     NSAssert(path, @"BatteryStatusPropertyList 파일이 존재하지 않습니다.");
     
     NSString * modelName = [A3UIDevice platformString];
@@ -149,7 +149,7 @@ NSString *const A3BatteryStatusThemeColorChanged = @"A3BatteryStatusThemeColorCh
     NSMutableArray *array = [NSMutableArray new];
    
     NSError * error;
-    NSString * path = [[NSBundle mainBundle] pathForResource:@"device_infomation" ofType:@"json"];
+    NSString * path = [[NSBundle mainBundle] pathForResource:@"device_information" ofType:@"json"];
     NSAssert(path, @"BatteryStatusPropertyList 파일이 존재하지 않습니다.");
 
     NSString * modelName = [A3UIDevice platformString];
