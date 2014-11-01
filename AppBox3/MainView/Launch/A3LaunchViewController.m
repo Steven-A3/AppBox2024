@@ -79,17 +79,17 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
     
 	if ([self isMovingToParentViewController] ) {
 		A3AppDelegate *appDelegate = [A3AppDelegate instance];
+		A3MainMenuTableViewController *mainMenuTableViewController = [[A3AppDelegate instance] mainMenuViewController];
 		if (!_showAsWhatsNew && [[A3UserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowWhatsNew_3_0]) {
-            A3MainMenuTableViewController *mainMenuTableViewController = [[A3AppDelegate instance] mainMenuViewController];
             mainMenuTableViewController.pushClockViewControllerOnPasscodeFailure = YES;
 
 			if (![self showLockScreen]) {
-                if (![[[A3AppDelegate instance] mainMenuViewController] openRecentlyUsedMenu:YES]) {
-                    A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
-                    [self.navigationController pushViewController:clockVC animated:NO];
-					[[A3AppDelegate instance] mainMenuViewController].activeAppName = @"Clock";
-                }
-            }
+				if ([[A3AppDelegate instance] startOptionOpenClockOnce] ||
+					![[[A3AppDelegate instance] mainMenuViewController] openRecentlyUsedMenu:YES]) {
+					[[A3AppDelegate instance] setStartOptionOpenClockOnce:NO];
+					[mainMenuTableViewController openClockApp];
+				}
+			}
 			[appDelegate downloadDataFiles];
 		}
 		else
@@ -149,11 +149,13 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
     // Cancel Button 이 없으므로 성공하지 않고서는 이곳에 올수 없다. 하지만 그래도 체크
     if (!success) return;
 
-    if (![[[A3AppDelegate instance] mainMenuViewController] openRecentlyUsedMenu:NO]) {
-        A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
-        [self.navigationController pushViewController:clockVC animated:NO];
-		[[A3AppDelegate instance] mainMenuViewController].activeAppName = @"Clock";
-    }
+	A3AppDelegate *appDelegate = [A3AppDelegate instance];
+    if ([appDelegate startOptionOpenClockOnce] ||
+			![[appDelegate mainMenuViewController] openRecentlyUsedMenu:NO]) {
+		[appDelegate setStartOptionOpenClockOnce:NO];
+		A3MainMenuTableViewController *mainMenuTableViewController = [[A3AppDelegate instance] mainMenuViewController];
+		[mainMenuTableViewController openClockApp];
+	}
 }
 
 - (void)migrationManager:(A3DataMigrationManager *)manager didFinishMigration:(BOOL)success {
@@ -237,9 +239,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 		_currentSceneViewController = nil;
 		_launchStoryboard = nil;
 
-		A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
-		[self.navigationController pushViewController:clockVC animated:NO];
-		[[A3AppDelegate instance] mainMenuViewController].activeAppName = @"Clock";
+		[[[A3AppDelegate instance] mainMenuViewController] openClockApp];
 	} else {
 		[self dismissViewControllerAnimated:YES completion:NULL];
 	}

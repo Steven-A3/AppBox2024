@@ -455,6 +455,7 @@
 		6888090E17C63F57008B2856 /* A3FlickrTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6888090D17C63F57008B2856 /* A3FlickrTest.m */; };
 		6890AB321786BA08004FECE4 /* A3CurrencyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6890AB311786BA08004FECE4 /* A3CurrencyViewController.m */; };
 		6891D7FD183C5EDD0060B677 /* A3CurrencySettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6891D7FB183C5EDD0060B677 /* A3CurrencySettingsViewController.m */; };
+		689421051A04AF34005F3AE3 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 689421041A04AF34005F3AE3 /* Settings.bundle */; };
 		68948B5017D9760A00BF4BE9 /* A3NavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68948B4F17D9760A00BF4BE9 /* A3NavigationController.m */; };
 		6895347C178686AF007061CA /* UIImage+Masking.m in Sources */ = {isa = PBXBuildFile; fileRef = 68953462178686AF007061CA /* UIImage+Masking.m */; };
 		6895347E178686AF007061CA /* UIImage+Reflection.m in Sources */ = {isa = PBXBuildFile; fileRef = 68953464178686AF007061CA /* UIImage+Reflection.m */; };
@@ -1744,6 +1745,7 @@
 		6890AB311786BA08004FECE4 /* A3CurrencyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = A3CurrencyViewController.m; path = Apps/Currency/A3CurrencyViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6891D7FA183C5EDD0060B677 /* A3CurrencySettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencySettingsViewController.h; path = Apps/Currency/A3CurrencySettingsViewController.h; sourceTree = "<group>"; };
 		6891D7FB183C5EDD0060B677 /* A3CurrencySettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencySettingsViewController.m; path = Apps/Currency/A3CurrencySettingsViewController.m; sourceTree = "<group>"; };
+		689421041A04AF34005F3AE3 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = AppBox3/Settings.bundle; sourceTree = "<group>"; };
 		68948B4E17D9760A00BF4BE9 /* A3NavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3NavigationController.h; path = ViewControllers/A3NavigationController.h; sourceTree = "<group>"; };
 		68948B4F17D9760A00BF4BE9 /* A3NavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3NavigationController.m; path = ViewControllers/A3NavigationController.m; sourceTree = "<group>"; };
 		68953461178686AF007061CA /* UIImage+Masking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Masking.h"; sourceTree = "<group>"; };
@@ -3648,6 +3650,7 @@
 				682B37C618AB36B600C6BD66 /* Wallet.xcassets */,
 				68961FE118B311D100C89F16 /* Mirror.xcassets */,
 				6810C64519D9246F00BE75A9 /* Flashlight.xcassets */,
+				689421041A04AF34005F3AE3 /* Settings.bundle */,
 			);
 			name = "{Resources}";
 			path = ..;
@@ -5622,6 +5625,7 @@
 				680D63A018CFF9D400938AD0 /* A3MirrorViewController.xib in Resources */,
 				68F14FC919485E8500159EAD /* A3DaysCounterEventListEditViewController.xib in Resources */,
 				68D1AC9C17977FCE0047D4BF /* A3CurrencyTVEqualCell.xib in Resources */,
+				689421051A04AF34005F3AE3 /* Settings.bundle in Resources */,
 				68F14FE219485E8500159EAD /* A3DaysCounterCalendarListMainUserCell.xib in Resources */,
 				68F14FD919485E8500159EAD /* A3DaysCounterAddEventNotesCell.xib in Resources */,
 				17D42CC05C00D47B63A1491C /* FSWebLogin.xib in Resources */,

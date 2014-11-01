@@ -15,6 +15,8 @@
 @property (nonatomic, assign) BOOL pushClockViewControllerOnPasscodeFailure;
 @property (nonatomic, copy) NSString *activeAppName;
 
+- (void)openClockApp;
+
 - (BOOL)openRecentlyUsedMenu:(BOOL)verifyPasscode;
 
 @end

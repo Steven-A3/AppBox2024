@@ -80,8 +80,11 @@ extern NSString *const A3LocalNotificationFromDaysCounter;
 @property (nonatomic, strong) NSMetadataQuery *metadataQuery;
 @property (nonatomic, assign) BOOL pushClockViewControllerIfFailPasscode;
 @property (nonatomic, weak) UIViewController *parentOfPasscodeViewController;
+@property (nonatomic, assign) BOOL startOptionOpenClockOnce;
 
 + (A3AppDelegate *)instance;
+
+- (void)updateStartOption;
 
 - (void)showReceivedLocalNotifications;
 - (UINavigationController *)navigationController;

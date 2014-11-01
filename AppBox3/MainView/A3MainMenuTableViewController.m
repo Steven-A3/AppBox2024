@@ -452,10 +452,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 		[self callPrepareCloseOnActiveMainAppViewController];
 
 		_pushClockViewControllerOnPasscodeFailure = NO;
-        A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
-        [self popToRootAndPushViewController:clockVC];
-		self.activeAppName = @"Clock";
-
+		[self openClockApp];
         return;
     }
 	if (success && _selectedElement) {
@@ -468,6 +465,12 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 		[self updateRecentlyUsedAppsWithElement:(A3TableViewMenuElement *) _selectedElement];
 	}
 	_selectedElement = nil;
+}
+
+- (void)openClockApp {
+	A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
+	[self popToRootAndPushViewController:clockVC];
+	self.activeAppName = @"Clock";
 }
 
 - (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {

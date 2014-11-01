@@ -133,20 +133,27 @@
 }
 
 - (void)applicationWillEnterForeground_passcode {
+	[self updateStartOption];
+
     if ([self shouldAskPasscodeForStarting]) {
         [self showLockScreen];
     } else {
-        NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
-        if ([startingAppName length]) {
-            if ([self requirePasscodeForStartingApp]) {
-                [self presentLockScreen];
-            } else {
-                [self.mainMenuViewController openRecentlyUsedMenu:YES];
-            }
-        } else {
-            [self showLockScreen];
-        }
-    }
+		if (self.startOptionOpenClockOnce) {
+			[self.mainMenuViewController openClockApp];
+			[self setStartOptionOpenClockOnce:NO];
+		} else {
+			NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+			if ([startingAppName length]) {
+				if ([self requirePasscodeForStartingApp]) {
+					[self presentLockScreen];
+				} else {
+					[self.mainMenuViewController openRecentlyUsedMenu:YES];
+				}
+			} else {
+				[self showLockScreen];
+			}
+		}
+	}
 
 	[self removeSecurityCoverView];
 }
@@ -203,15 +210,17 @@
 			[self.navigationController dismissViewControllerAnimated:NO completion:NULL];
 		}
 
+		if (self.startOptionOpenClockOnce) {
+			[self.mainMenuViewController openClockApp];
+			[self setStartOptionOpenClockOnce:NO];
+			return;
+		}
+
 		if (![startingAppName length]) {
-			A3ClockMainViewController *clockViewController = [A3ClockMainViewController new];
-			[self.mainMenuViewController popToRootAndPushViewController:clockViewController];
-			self.mainMenuViewController.activeAppName = @"Clock";
+			[self.mainMenuViewController openClockApp];
 		} else {
 			if ([self requirePasscodeForStartingApp]) {
-				A3ClockMainViewController *clockViewController = [A3ClockMainViewController new];
-				[self.mainMenuViewController popToRootAndPushViewController:clockViewController];
-				self.mainMenuViewController.activeAppName = @"Clock";
+				[self.mainMenuViewController openClockApp];
 			} else {
 				[self.mainMenuViewController openRecentlyUsedMenu:YES];
 			}

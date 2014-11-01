@@ -32,6 +32,7 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3UserDefaults.h"
 
+NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 NSString *const A3DropboxLoginWithSuccess = @"A3DropboxLoginWithSuccess";
 NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
@@ -66,6 +67,12 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 	return (A3AppDelegate *) [[UIApplication sharedApplication] delegate];
 }
 
+- (void)updateStartOption {
+	_startOptionOpenClockOnce = [[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsStartOptionOpenClockOnce];
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3UserDefaultsStartOptionOpenClockOnce];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	FNLOG();
 	CDESetCurrentLoggingLevel(CDELoggingLevelVerbose);
@@ -74,6 +81,8 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 	[A3SyncManager sharedSyncManager];
 
 	[[NSUbiquitousKeyValueStore defaultStore] synchronize];
+
+	[self updateStartOption];
 
 	[self setupContext];
 
