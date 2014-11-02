@@ -68,6 +68,11 @@ extern NSString *const A3AnimationIDKeyboardWillShow;
 
 // KJH
 + (NSString *)platform;
+
++ (NSDictionary *)deviceInformationDictionary;
+
++ (NSDictionary *)remainingTimeDictionary;
+
 + (NSString *)platformString;
 #pragma mark - Methods
 + (NSString *)totalDiskSpace;

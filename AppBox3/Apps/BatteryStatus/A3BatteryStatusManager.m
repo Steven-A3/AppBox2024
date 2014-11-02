@@ -58,22 +58,20 @@ NSString *const A3BatteryStatusThemeColorChanged = @"A3BatteryStatusThemeColorCh
 }
 
 +(NSArray *)themeColorArray {
-    return [NSArray arrayWithObjects:
-     [UIColor colorWithRed:253.0/255.0 green:158.0/255.0 blue:26.0/255.0 alpha:1.0],
-     [UIColor colorWithRed:250.0/255.0 green:207.0/255.0 blue:37.0/255.0 alpha:1.0],
-     [UIColor colorWithRed:165.0/255.0 green:222.0/255.0 blue:55.0/255.0 alpha:1.0],
-     [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:76.0/255.0 alpha:1.0],
-     [UIColor colorWithRed:32.0/255.0 green:214.0/255.0 blue:120.0/255.0 alpha:1.0],
-     
-     [UIColor colorWithRed:64.0/255.0 green:224.0/255.0 blue:208.0/255.0 alpha:1.0],
-     [UIColor colorWithRed:90.0/255.0 green:200.0/255.0 blue:250.0/255.0 alpha:1.0],
-     [UIColor colorWithRed:63.0/255.0 green:156.0/255.0 blue:250.0/255.0 alpha:1.0],
-     [UIColor colorWithRed:107.0/255.0 green:105.0/255.0 blue:223.0/255.0 alpha:1.0],
-     [UIColor colorWithRed:204.0/255.0 green:115.0/255.0 blue:225.0/255.0 alpha:1.0],
-     
-     [UIColor colorWithRed:246.0/255.0 green:104.0/255.0 blue:202.0/255.0 alpha:1.0],
-     [UIColor colorWithRed:198.0/255.0 green:156.0/255.0 blue:109.0/255.0 alpha:1.0],
-     nil];
+    return @[[UIColor colorWithRed:253.0 / 255.0 green:158.0 / 255.0 blue:26.0 / 255.0 alpha:1.0],
+			[UIColor colorWithRed:250.0 / 255.0 green:207.0 / 255.0 blue:37.0 / 255.0 alpha:1.0],
+			[UIColor colorWithRed:165.0 / 255.0 green:222.0 / 255.0 blue:55.0 / 255.0 alpha:1.0],
+			[UIColor colorWithRed:76.0 / 255.0 green:217.0 / 255.0 blue:76.0 / 255.0 alpha:1.0],
+			[UIColor colorWithRed:32.0 / 255.0 green:214.0 / 255.0 blue:120.0 / 255.0 alpha:1.0],
+
+			[UIColor colorWithRed:64.0 / 255.0 green:224.0 / 255.0 blue:208.0 / 255.0 alpha:1.0],
+			[UIColor colorWithRed:90.0 / 255.0 green:200.0 / 255.0 blue:250.0 / 255.0 alpha:1.0],
+			[UIColor colorWithRed:63.0 / 255.0 green:156.0 / 255.0 blue:250.0 / 255.0 alpha:1.0],
+			[UIColor colorWithRed:107.0 / 255.0 green:105.0 / 255.0 blue:223.0 / 255.0 alpha:1.0],
+			[UIColor colorWithRed:204.0 / 255.0 green:115.0 / 255.0 blue:225.0 / 255.0 alpha:1.0],
+
+			[UIColor colorWithRed:246.0 / 255.0 green:104.0 / 255.0 blue:202.0 / 255.0 alpha:1.0],
+			[UIColor colorWithRed:198.0 / 255.0 green:156.0 / 255.0 blue:109.0 / 255.0 alpha:1.0]];
 }
 
 +(NSArray *)adjustedIndex {
@@ -88,32 +86,19 @@ NSString *const A3BatteryStatusThemeColorChanged = @"A3BatteryStatusThemeColorCh
 
 +(NSArray *)deviceInfoDataArray
 {
-    NSMutableArray *array = [NSMutableArray new];
-    
-    NSString * path = [[NSBundle mainBundle] pathForResource:@"device_information" ofType:@"json"];
-    NSAssert(path, @"BatteryStatusPropertyList 파일이 존재하지 않습니다.");
-    
-    NSString * modelName = [A3UIDevice platformString];
-    NSError * error;
-    NSData * jsonData = [NSData dataWithContentsOfFile:path];
-    NSDictionary *deviceInformation = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:&error];
-    NSDictionary * devicesInfo = [deviceInformation objectForKey:@"devicesInfo"];
-    if (!devicesInfo) {
-        FNLOG(@"존재하는 device정보가 없습니다.");
-        return nil;
-    }
-    
-    NSDictionary * currentDeviceInfo = [devicesInfo objectForKey:modelName];
+    NSDictionary * currentDeviceInfo = [A3UIDevice deviceInformationDictionary];
     if (!currentDeviceInfo) {
         FNLOG(@"존재하는 currentDeviceInfo 정보가 없습니다.");
         return nil;
     }
-    
 
-    NSString *Chips = [currentDeviceInfo objectForKey:@"Chips"];
-    NSString *CPU = [currentDeviceInfo objectForKey:@"CPU"];
-    NSString *GPU = [currentDeviceInfo objectForKey:@"GPU"];
-    NSString *Memory = [currentDeviceInfo objectForKey:@"Memory"];
+	NSString *modelName = currentDeviceInfo[@"Model"];
+    NSString *Chips = currentDeviceInfo[@"Chips"];
+    NSString *CPU = currentDeviceInfo[@"CPU"];
+    NSString *GPU = currentDeviceInfo[@"GPU"];
+    NSString *Memory = currentDeviceInfo[@"Memory"];
+
+	NSMutableArray *array = [NSMutableArray new];
 
     // Device.
     [array addObject:@{@"title" : NSLocalizedString(@"Device", @"Device"), @"value" : modelName}];
@@ -148,19 +133,7 @@ NSString *const A3BatteryStatusThemeColorChanged = @"A3BatteryStatusThemeColorCh
 {
     NSMutableArray *array = [NSMutableArray new];
    
-    NSError * error;
-    NSString * path = [[NSBundle mainBundle] pathForResource:@"device_information" ofType:@"json"];
-    NSAssert(path, @"BatteryStatusPropertyList 파일이 존재하지 않습니다.");
-
-    NSString * modelName = [A3UIDevice platformString];
-    NSData * jsonData = [NSData dataWithContentsOfFile:path];
-    NSDictionary *deviceInformation = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:&error];
-    NSDictionary * remainingTimeInfo = [deviceInformation objectForKey:@"remainingTimeInfo"];
-    remainingTimeInfo = [remainingTimeInfo objectForKey:modelName];
-    if (!remainingTimeInfo) {
-        FNLOG(@"존재하는 device정보가 없습니다.");
-        return nil;
-    }
+	NSDictionary *remainingTimeInfo = [A3UIDevice remainingTimeDictionary];
 
     NSArray * columns = @[
 			@"Talk Time on 2G",
@@ -266,7 +239,7 @@ NSString *const A3BatteryStatusThemeColorChanged = @"A3BatteryStatusThemeColorCh
 
 +(NSURL *)moreInformationAboutBatteries
 {
-    NSString *languageCode = [[NSLocale preferredLanguages] objectAtIndex:0];
+    NSString *languageCode = [NSLocale preferredLanguages][0];
     NSString *urlString;
     if ([languageCode isEqualToString:@"zh-Hans"] || [languageCode isEqualToString:@"zh-Hant"]) {
         urlString = @"http://www.apple.com/cn/batteries/";

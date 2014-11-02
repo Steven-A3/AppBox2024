@@ -14,6 +14,7 @@
 #import "common.h"
 #import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
+#import "NSString+conversion.h"
 #import <sys/types.h>
 #import <sys/sysctl.h>
 #import <AVFoundation/AVFoundation.h>
@@ -132,6 +133,72 @@ NSString *const A3AnimationIDKeyboardWillShow = @"A3AnimationIDKeyboardWillShow"
 	return platform;
 }
 
+NSString *const A3DeviceInformationFilename = @"device_information.json";
+NSString *const A3DeviceInformationKey = @"deviceInformation";
+NSString *const A3DeviceInformationPlatformKey = @"platform";
+NSString *const A3DeviceInformationRemainingTimeKey = @"remainingTimeInfo";
+
++ (NSString *)deviceInfoFilepath {
+	NSString *dataFilePath = [A3DeviceInformationFilename pathInCachesDataDirectory];
+	if (![[NSFileManager defaultManager] fileExistsAtPath:dataFilePath]) {
+		NSArray *components = [A3DeviceInformationFilename componentsSeparatedByString:@"."];
+		dataFilePath = [[NSBundle mainBundle] pathForResource:components[0] ofType:components[1]];
+	}
+	return dataFilePath;
+}
+
++ (NSString *)modelNameFromDeviceInfo:(NSDictionary *)rootDictionary {
+	NSString *platformString = [A3UIDevice platform];
+	NSDictionary *platformDatabase = rootDictionary[A3DeviceInformationPlatformKey];
+	NSString *modelName = platformDatabase[platformString];
+	if (!modelName) {
+		NSRange range = [platformString rangeOfString:@"iPhone"];
+		if (range.location != NSNotFound) {
+			modelName = @"iPhone (Latest)";
+		} else {
+			range = [platformString rangeOfString:@"iPad"];
+			if (range.location != NSNotFound) {
+				modelName = @"iPad (Latest)";
+			} else {
+				modelName = @"iPod (Latest)";
+			}
+		}
+	}
+	return modelName;
+}
+
++ (NSDictionary *)deviceInformationDictionary {
+	NSData *rawTextData;
+
+	NSString *dataFilePath = [A3UIDevice deviceInfoFilepath];
+
+	rawTextData = [NSData dataWithContentsOfFile:dataFilePath];
+
+	NSError * error;
+	NSDictionary *rootDictionary = [NSJSONSerialization JSONObjectWithData:rawTextData options:NSJSONReadingMutableContainers error:&error];
+
+	NSString *modelName = [A3UIDevice modelNameFromDeviceInfo:rootDictionary];
+	NSDictionary * deviceInfoDatabase = rootDictionary[A3DeviceInformationKey];
+	NSDictionary *deviceInfo = deviceInfoDatabase[modelName];
+	return deviceInfo;
+}
+
++ (NSDictionary *)remainingTimeDictionary {
+	NSData *rawTextData;
+
+	NSString *dataFilePath = [A3UIDevice deviceInfoFilepath];
+
+	rawTextData = [NSData dataWithContentsOfFile:dataFilePath];
+
+	NSError * error;
+	NSDictionary *rootDictionary = [NSJSONSerialization JSONObjectWithData:rawTextData options:NSJSONReadingMutableContainers error:&error];
+
+	NSString *modelName = [A3UIDevice modelNameFromDeviceInfo:rootDictionary];
+	NSDictionary *remainingTimeInfoDatabase = rootDictionary[A3DeviceInformationRemainingTimeKey];
+	NSDictionary *remainingTimeInfo = remainingTimeInfoDatabase[modelName];
+	return remainingTimeInfo;
+}
+
 /*******************
  
  장비 모델 확인 및 목록
@@ -140,74 +207,8 @@ NSString *const A3AnimationIDKeyboardWillShow = @"A3AnimationIDKeyboardWillShow"
  
  *********************/
 + (NSString *)platformString {
-	NSString *platform = [self platform];
-	if ([platform isEqualToString:@"iPhone1,1"]) return @"iPhone 1G";
-	if ([platform isEqualToString:@"iPhone1,2"]) return @"iPhone 3G";
-	if ([platform isEqualToString:@"iPhone2,1"]) return @"iPhone 3GS";
-    
-    if ([platform isEqualToString:@"iPhone3,1"]) return @"iPhone 4";        // "iPhone4 GSM";
-    if ([platform isEqualToString:@"iPhone3,2"]) return @"iPhone 4";        // "iPhone4 GSM Rev A";
-    if ([platform isEqualToString:@"iPhone3,3"]) return @"iPhone 4";        // "iPhone4 CDMA"
-    if ([platform isEqualToString:@"iPhone4,1"]) return @"iPhone 4s";       // "iPhone4S GSM+CDMA"
-    
-    if ([platform isEqualToString:@"iPhone5,1"]) return @"iPhone 5";          // "iPhone5 GSM"
-    if ([platform isEqualToString:@"iPhone5,2"]) return @"iPhone 5";          // "iPhone5 GSM+CDMA"
-    if ([platform isEqualToString:@"iPhone5,3"]) return @"iPhone 5c";       // GSM
-    if ([platform isEqualToString:@"iPhone5,4"]) return @"iPhone 5c";       // Global
-
-    if ([platform isEqualToString:@"iPhone6,1"]) return @"iPhone 5s";       // GSM
-    if ([platform isEqualToString:@"iPhone6,2"]) return @"iPhone 5s";       // Global
-
-    if ([platform isEqualToString:@"iPhone7,2"]) return @"iPhone 6";        // Model Nums : A1549, A1586
-    if ([platform isEqualToString:@"iPhone7,1"]) return @"iPhone 6 Plus";   // Model Nums : A1522, A1524
-
-	if ([platform isEqualToString:@"i386"])   return @"iPhone Simulator";
-    if ([platform isEqualToString:@"x86_64"])   return @"iPhone Simulator";
-    
-	if ([platform isEqualToString:@"iPod1,1"])   return @"iPod Touch 1G";
-	if ([platform isEqualToString:@"iPod2,1"])   return @"iPod Touch 2G";
-	if ([platform isEqualToString:@"iPod3,1"])   return @"iPod Touch 3G";
-	if ([platform isEqualToString:@"iPod4,1"])   return @"iPod Touch 4G";
-	if ([platform isEqualToString:@"iPod5,1"])   return @"iPod Touch (5th generation)";
-    
-	if ([platform isEqualToString:@"iPad2,1"])   return @"iPad 2 (Wi-Fi)";                      // iPad2 WiFi
-	if ([platform isEqualToString:@"iPad2,2"])   return @"iPad 2";                              // iPad2 GSM
-	if ([platform isEqualToString:@"iPad2,3"])   return @"iPad 2";                              // iPad2 CDMAV
-	if ([platform isEqualToString:@"iPad2,4"])   return @"iPad 2 (Wi-Fi)";                      // iPad2 Mid 2012 CDMAS WiFi
-
-	if ([platform isEqualToString:@"iPad3,1"])   return @"iPad (3rd generation, Wi-Fi)";        // WiFi
-	if ([platform isEqualToString:@"iPad3,2"])   return @"iPad (3rd generation)";               // CDMA
-	if ([platform isEqualToString:@"iPad3,3"])   return @"iPad (3rd generation)";               // GSM
-    
-	if ([platform isEqualToString:@"iPad3,4"])   return @"iPad (4th generation, Wi-Fi)";        // WiFi
-	if ([platform isEqualToString:@"iPad3,5"])   return @"iPad (4th generation)";               // GSM
-	if ([platform isEqualToString:@"iPad3,6"])   return @"iPad (4th generation)";               // Cellular
-    
-	if ([platform isEqualToString:@"iPad4,1"])   return @"iPad Air (Wi-Fi)";                    // WiFi
-	if ([platform isEqualToString:@"iPad4,2"])   return @"iPad Air";                            // Cellular
-    
-	if ([platform isEqualToString:@"iPad5,3"])   return @"iPad Air 2 (Wi-Fi)";                  // iPad Air 2 WiFi
-	if ([platform isEqualToString:@"iPad5,4"])   return @"iPad Air";                            // iPad Air 2 Cellular
-    
-    // iPad Mini
-	if ([platform isEqualToString:@"iPad2,5"])   return @"iPad mini (Wi-Fi)";                   // WiFi
-	if ([platform isEqualToString:@"iPad2,6"])   return @"iPad mini";                           // GSM
-	if ([platform isEqualToString:@"iPad2,7"])   return @"iPad mini";                           // Cellular
-	if ([platform isEqualToString:@"iPad4,4"])   return @"iPad mini with Retina display (Wi-Fi)";       // Retina, WiFi
-	if ([platform isEqualToString:@"iPad4,5"])   return @"iPad mini with Retina display";               // Retina, Cellular
-	if ([platform isEqualToString:@"iPad4,6"])   return @"iPad mini with Retina display";               // Retina, Cellular
-    
-    if ([platform isEqualToString:@"iPad4,7"])   return @"iPad mini 3 (Wi-Fi)";       // iPad mini 3 WiFi
-	if ([platform isEqualToString:@"iPad4,8"])   return @"iPad mini 3";               // iPad mini 3 Cellular GSM
-    if ([platform isEqualToString:@"iPad4,9"])   return @"iPad mini 3";               // iPad mini 3 Cellular CDMA
-    
-    
-    // 최신 디바이스라서 못찾은 경우.
-    if ([platform rangeOfString:@"iPhone"].location != NSNotFound) return @"iPhone (Latest)";
-    if ([platform rangeOfString:@"iPod"].location != NSNotFound) return @"iPod (Latest)";
-    if ([platform rangeOfString:@"iPad"].location != NSNotFound) return @"iPad (Latest)";
-
-    return nil;
+	NSDictionary *deviceInfo = [A3UIDevice deviceInformationDictionary];
+    return deviceInfo[@"Model"];
 }
 
 /******************
