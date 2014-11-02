@@ -50,7 +50,6 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 @property (nonatomic, strong) NSDictionary *localNotificationUserInfo;
 @property (nonatomic, strong) UILocalNotification *storedLocalNotification;
 @property (nonatomic, strong) NSMutableArray *downloadList;
-@property (nonatomic, strong) NSURLSessionDownloadTask *downloadTask;
 @property (nonatomic, strong) NSURLSession *backgroundDownloadSession;
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) NSTimer *locationUpdateTimer;
@@ -507,8 +506,11 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 		return;
 	}
-	if (_downloadTask) return;
 
+	if (_backgroundDownloadSession) {
+		// _backgroundDownloadSession이 있다는 것은 Download가 진행중이라는 의미
+		return;
+	}
 	Reachability *reachability = notification.object;
 	if ([_downloadList count] && [reachability isReachableViaWiFi]) {
 		[self startDownloadDataFiles];
@@ -517,6 +519,9 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 
 - (void)downloadDataFiles {
 	_downloadList = [NSMutableArray new];
+	[_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/FlickrRecommendation.json"]];
+	[_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/device_information.json"]];
+
 	NSFileManager *fileManager = [NSFileManager new];
 	if ([A3UIDevice shouldSupportLunarCalendar]) {
 		NSString *kanjiDataFile = [@"data/LunarConverter.sqlite" pathInCachesDirectory];
@@ -524,7 +529,6 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 			[_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/LunarConverter.sqlite"]];
 		}
 	}
-	[_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/FlickrRecommendation.json"]];
 //	[_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/message.plist"]];
 
 	[self startDownloadDataFiles];
@@ -533,32 +537,40 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 - (void)startDownloadDataFiles {
 	if (![_downloadList count]) {
 		_downloadList = nil;
-		_downloadTask = nil;
 		_backgroundDownloadSession = nil;
 
 		[self updateHolidayNations];
 		return;
 	}
-	if (_downloadTask || ![self.reachability isReachableViaWiFi]) {
+	if (![self.reachability isReachableViaWiFi]) {
 		return;
 	}
 	NSURLRequest *downloadRequest = [NSURLRequest requestWithURL:_downloadList[0]];
-	_downloadTask = [self.backgroundDownloadSession downloadTaskWithRequest:downloadRequest];
-	[_downloadTask resume];
+	NSURLSessionDownloadTask *downloadTask = [self.backgroundDownloadSession downloadTaskWithRequest:downloadRequest];
+	[downloadTask resume];
 }
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location {
 	if ([_downloadList count]) {
 		[_downloadList removeObjectAtIndex:0];
 	}
-	
+
 	NSString *filename = [downloadTask.originalRequest.URL lastPathComponent];
 	NSString *destinationPath =	[@"data" pathInCachesDirectory];
 	destinationPath = [destinationPath stringByAppendingPathComponent:filename];
 	FNLOG(@"%@", destinationPath);
 	NSFileManager *fileManager = [NSFileManager new];
-	[fileManager moveItemAtURL:location toURL:[NSURL fileURLWithPath:destinationPath] error:NULL];
-	
+	NSError *error;
+	[fileManager removeItemAtPath:destinationPath error:&error];
+	if (error) {
+		FNLOG(@"%@", error.localizedDescription);
+	} else {
+		[fileManager moveItemAtURL:location toURL:[NSURL fileURLWithPath:destinationPath] error:&error];
+		if (error) {
+			FNLOG(@"%@", error.localizedDescription);
+		}
+	}
+
 	[self startDownloadDataFiles];
 }
 
@@ -579,14 +591,13 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 		}
 		if (error.code == -997) {
 			_downloadList = nil;
-			_downloadTask = nil;
+			_backgroundDownloadSession = nil;
 			return;
 		}
 		if ([self.reachability isReachableViaWiFi]) {
 			[self startDownloadDataFiles];
 		}
 	}
-	_downloadTask = nil;
 }
 
 #pragma mark - HolidayNations
