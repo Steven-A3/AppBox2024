@@ -138,11 +138,15 @@ NSString *const A3DeviceInformationKey = @"deviceInformation";
 NSString *const A3DeviceInformationPlatformKey = @"platform";
 NSString *const A3DeviceInformationRemainingTimeKey = @"remainingTimeInfo";
 
++ (NSString *)dataFilePathFromBundle {
+	NSArray *components = [A3DeviceInformationFilename componentsSeparatedByString:@"."];
+	return [[NSBundle mainBundle] pathForResource:components[0] ofType:components[1]];
+}
+
 + (NSString *)deviceInfoFilepath {
 	NSString *dataFilePath = [A3DeviceInformationFilename pathInCachesDataDirectory];
 	if (![[NSFileManager defaultManager] fileExistsAtPath:dataFilePath]) {
-		NSArray *components = [A3DeviceInformationFilename componentsSeparatedByString:@"."];
-		dataFilePath = [[NSBundle mainBundle] pathForResource:components[0] ofType:components[1]];
+		return [A3UIDevice dataFilePathFromBundle];
 	}
 	return dataFilePath;
 }
@@ -177,6 +181,11 @@ NSString *const A3DeviceInformationRemainingTimeKey = @"remainingTimeInfo";
 	NSError * error;
 	NSDictionary *rootDictionary = [NSJSONSerialization JSONObjectWithData:rawTextData options:NSJSONReadingMutableContainers error:&error];
 
+	if (error) {
+		rawTextData = [NSData dataWithContentsOfFile:[A3UIDevice dataFilePathFromBundle]];
+		rootDictionary = [NSJSONSerialization JSONObjectWithData:rawTextData options:NSJSONReadingMutableContainers error:&error];
+	}
+
 	NSString *modelName = [A3UIDevice modelNameFromDeviceInfo:rootDictionary];
 	NSDictionary * deviceInfoDatabase = rootDictionary[A3DeviceInformationKey];
 	NSDictionary *deviceInfo = deviceInfoDatabase[modelName];
@@ -193,6 +202,10 @@ NSString *const A3DeviceInformationRemainingTimeKey = @"remainingTimeInfo";
 	NSError * error;
 	NSDictionary *rootDictionary = [NSJSONSerialization JSONObjectWithData:rawTextData options:NSJSONReadingMutableContainers error:&error];
 
+	if (error) {
+		rawTextData = [NSData dataWithContentsOfFile:[A3UIDevice dataFilePathFromBundle]];
+		rootDictionary = [NSJSONSerialization JSONObjectWithData:rawTextData options:NSJSONReadingMutableContainers error:&error];
+	}
 	NSString *modelName = [A3UIDevice modelNameFromDeviceInfo:rootDictionary];
 	NSDictionary *remainingTimeInfoDatabase = rootDictionary[A3DeviceInformationRemainingTimeKey];
 	NSDictionary *remainingTimeInfo = remainingTimeInfoDatabase[modelName];
