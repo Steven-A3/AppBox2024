@@ -7,8 +7,6 @@
 //
 
 #import "LoanCalcData+Calculation.h"
-#import "common.h"
-#import "NSString+conversion.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "A3AppDelegate.h"
 
@@ -86,10 +84,10 @@
             }
             case A3LC_FrequencyAnnually:
             {
-                return round(self.monthOfTerms.floatValue/12.0);
+                return round(self.monthOfTerms.doubleValue/12.0);
             }
             default:
-                return round(self.monthOfTerms.floatValue);
+                return round(self.monthOfTerms.doubleValue);
         }
     }
     else {
@@ -97,7 +95,7 @@
     }
 }
 
-- (float)termsInMonth:(float) terms
+- (double)termsInMonth:(double) terms
 {
     switch (self.frequencyIndex) {
         case A3LC_FrequencyWeekly:
@@ -153,7 +151,7 @@
 	double termsInFrequency = [self termsInFrequency];
     
 	principal = self.principal.doubleValue;
-    downPayment = self.downPayment ? self.downPayment.floatValue : 0;
+    downPayment = self.downPayment ? self.downPayment.doubleValue : 0;
 
 	if (interestRateOfFrequency > 0) {
 		repayment = (interestRateOfFrequency / (1 - pow(1 + interestRateOfFrequency, -termsInFrequency))) * (principal - downPayment);
@@ -205,8 +203,8 @@
     }
     
 	double downPayment;
-	double principal = self.principal.floatValue;
-	double repayment = self.repayment.floatValue;
+	double principal = self.principal.doubleValue;
+	double repayment = self.repayment.doubleValue;
 	double interestRateOfFrequency = [self interestRateOfFrequency];
 	double termsInFrequency = [self termsInFrequency];
 
@@ -230,11 +228,11 @@
     }
     
     double principal = self.principal.doubleValue;
-    double downPayment = self.downPayment ? self.downPayment.floatValue : 0;
+    double downPayment = self.downPayment ? self.downPayment.doubleValue : 0;
 	double repayment = self.repayment.doubleValue;
 	double interestRateOfFrequency = [self interestRateOfFrequency];
     
-	float calculatedPrincipal = principal - downPayment;
+	double calculatedPrincipal = principal - downPayment;
 	double term;
 	if (interestRateOfFrequency > 0) {
 		term = log(repayment / (repayment - calculatedPrincipal * interestRateOfFrequency)) / log(interestRateOfFrequency + 1);
@@ -295,28 +293,28 @@
 		}
 	}
 
-	return [NSNumber numberWithFloat:totalAmount];
+	return @(totalAmount);
 }
 
 - (NSNumber *)totalInterest {
 	if (self.interestRateOfFrequency == 0.0) {
 		return @0;
 	}
-    float downPayment = self.downPayment ? self.downPayment.floatValue : 0;
+    double downPayment = self.downPayment ? self.downPayment.doubleValue : 0;
 	if (isnan(downPayment))
 		downPayment = 0.0;
-	float totalInterest = self.repayment.floatValue * [self termsInFrequency] - (self.principal.floatValue - downPayment);
-	return [NSNumber numberWithFloat:totalInterest];
+	double totalInterest = [self totalAmount].doubleValue - (self.principal.doubleValue - downPayment);
+	return @(totalInterest);
 }
 
 - (NSNumber *)monthlyAverageInterest {
 	if (self.interestRateOfFrequency == 0.0) {
 		return @0;
 	}
-    float totalInterest = [self totalInterest].floatValue;
-    float termsInFrequency = [self termsInFrequency];
-	float average = totalInterest/termsInFrequency;
-	return [NSNumber numberWithFloat:average];
+    double totalInterest = [self totalInterest].doubleValue;
+    double termsInFrequency = [self termsInFrequency];
+	double average = totalInterest/termsInFrequency;
+	return @(average);
 }
 
 #pragma mark - Schedule info
@@ -405,7 +403,7 @@
             NSInteger preMonth = [preComponents month];
             NSInteger thisMonth = [thisComponents month];
             if (preMonth != thisMonth) {
-                addedExtraPayments += self.extraPaymentMonthly.floatValue;
+                addedExtraPayments += self.extraPaymentMonthly.doubleValue;
             }
         }
     }
@@ -426,7 +424,7 @@
             NSInteger extraPayMonth = [extraPayComponents month];
             
             if ((extraPayMonth == thisMonth) && (thisMonth != preMonth)) {
-                addedExtraPayments += self.extraPaymentYearly.floatValue;
+                addedExtraPayments += self.extraPaymentYearly.doubleValue;
             }
         }
          */
@@ -440,22 +438,22 @@
         NSInteger extraPayMonth = [extraPayComponents month];
         
         if ((extraPayMonth == thisMonth) && (thisMonth != preMonth)) {
-            addedExtraPayments += self.extraPaymentYearly.floatValue;
+            addedExtraPayments += self.extraPaymentYearly.doubleValue;
         }
         
     }
     
     // onetime payment
-    if (self.extraPaymentOneTime && (self.extraPaymentOneTime.floatValue>0) && self.extraPaymentOneTimeDate) {
+    if (self.extraPaymentOneTime && (self.extraPaymentOneTime.doubleValue>0) && self.extraPaymentOneTimeDate) {
         if (prePaymentDate == nil) {
             if (([thisPaymentDate compare:self.extraPaymentOneTimeDate] == NSOrderedDescending) || ([thisPaymentDate compare:self.extraPaymentOneTimeDate] == NSOrderedSame)) {
-                addedExtraPayments += self.extraPaymentOneTime.floatValue;
+                addedExtraPayments += self.extraPaymentOneTime.doubleValue;
             }
         }
         else {
             if ([prePaymentDate compare:self.extraPaymentOneTimeDate] == NSOrderedAscending) {
                 if (([thisPaymentDate compare:self.extraPaymentOneTimeDate] == NSOrderedDescending) || ([thisPaymentDate compare:self.extraPaymentOneTimeDate] == NSOrderedSame)) {
-                    addedExtraPayments += self.extraPaymentOneTime.floatValue;
+                    addedExtraPayments += self.extraPaymentOneTime.doubleValue;
                 }
             }
         }
@@ -481,7 +479,7 @@
 
 - (BOOL)repaymentValid
 {
-    if (self.repayment && (self.repayment.floatValue>0)) {
+    if (self.repayment && (self.repayment.doubleValue>0)) {
         return YES;
     }
     else {
@@ -491,7 +489,7 @@
 
 - (BOOL)principalValid
 {
-    if (self.principal && (self.principal.floatValue>0)) {
+    if (self.principal && (self.principal.doubleValue>0)) {
         return YES;
     }
     else {
@@ -501,7 +499,7 @@
 
 - (BOOL)termsValid
 {
-    if (self.monthOfTerms && (self.monthOfTerms.floatValue>0)) {
+    if (self.monthOfTerms && (self.monthOfTerms.doubleValue>0)) {
         return YES;
     }
     else {
@@ -585,8 +583,8 @@
         NSNumber *interest = @(balance * [self interestRateOfFrequency]);
         
         double paymentTmp = [self paymentOfPaymentIndex:paymentIndex].doubleValue;
-        if ((paymentTmp-interest.floatValue) > balance) {
-            paymentTmp = balance + interest.floatValue;
+        if ((paymentTmp-interest.doubleValue) > balance) {
+            paymentTmp = balance + interest.doubleValue;
         }
         NSNumber *payment = @(paymentTmp);
         NSNumber *principal = @(payment.doubleValue - interest.doubleValue);
