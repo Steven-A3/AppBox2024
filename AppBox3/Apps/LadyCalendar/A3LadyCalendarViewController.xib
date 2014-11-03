@@ -70,7 +70,7 @@
                     </connections>
                 </barButtonItem>
                 <barButtonItem style="plain" systemItem="flexibleSpace" id="zMa-bv-MDk"/>
-                <barButtonItem image="calendar02" id="ln9-Uy-7vy">
+                <barButtonItem image="calendar" id="ln9-Uy-7vy">
                     <connections>
                         <action selector="changeListTypeAction:" destination="-1" id="hvM-ju-6zG"/>
                     </connections>
@@ -306,7 +306,7 @@
         <image name="account" width="26" height="20"/>
         <image name="add01" width="25" height="25"/>
         <image name="add03" width="16" height="16"/>
-        <image name="calendar02" width="24" height="24"/>
+        <image name="calendar" width="24" height="24"/>
         <image name="chart" width="21" height="21"/>
         <image name="general" width="25" height="25"/>
         <image name="list" width="22" height="13"/>
