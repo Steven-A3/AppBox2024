@@ -560,14 +560,16 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 	destinationPath = [destinationPath stringByAppendingPathComponent:filename];
 	FNLOG(@"%@", destinationPath);
 	NSFileManager *fileManager = [NSFileManager new];
-	NSError *error;
-	[fileManager removeItemAtPath:destinationPath error:&error];
+	NSError *error = nil;
+    if ([fileManager fileExistsAtPath:destinationPath]) {
+        [fileManager removeItemAtPath:destinationPath error:&error];
+    }
 	if (error) {
-		FNLOG(@"%@", error.localizedDescription);
+		FNLOG(@"%@, %@, %@, %@", error.localizedDescription, error.localizedFailureReason, error.localizedRecoveryOptions, error.localizedRecoverySuggestion);
 	} else {
 		[fileManager moveItemAtURL:location toURL:[NSURL fileURLWithPath:destinationPath] error:&error];
 		if (error) {
-			FNLOG(@"%@", error.localizedDescription);
+            FNLOG(@"%@, %@, %@, %@", error.localizedDescription, error.localizedFailureReason, error.localizedRecoveryOptions, error.localizedRecoverySuggestion);
 		}
 	}
 
