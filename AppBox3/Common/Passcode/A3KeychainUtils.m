@@ -44,6 +44,10 @@ static NSString *kA3KeychainAccountName = @"A3AppBox3Passcode";
 				(__bridge_transfer NSString *) kSecValueData 	: [password dataUsingEncoding:NSUTF8StringEncoding],
 				(__bridge_transfer NSString *) kSecAttrComment	: hintString
 		};
+        // TODO:
+        // According to the iOS 8.0 GM Release Note,
+        // Touch ID protected keychain items do not allow SecItemUpdate. SecItemUpdate always returns errSecInteractionNotAllowed.
+        // Workaround: Instead of updating, the items have to be deleted and added again.
 		status = SecItemUpdate((__bridge CFDictionaryRef) updateQuery, (__bridge CFDictionaryRef) changesDictionary);
 	} else {
 		NSMutableDictionary *addQuery = [[self query] mutableCopy];
