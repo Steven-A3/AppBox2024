@@ -30,6 +30,7 @@
 #import "A3SyncManager.h"
 #import "A3UserDefaults+A3Defaults.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 #define kInchesPerFeet  (0.3048/0.0254)
 
@@ -128,8 +129,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	[_fmMoveTableView registerNib:[UINib nibWithNibName:@"A3UnitConverterTVEqualCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3UnitConverterEqualCellID];
 
 	_fmMoveTableView.rowHeight = 84.0;
-	_fmMoveTableView.separatorColor = [self tableViewSeparatorColor];
-	_fmMoveTableView.separatorInset = UIEdgeInsetsMake(0.0, 0.0, -1.0, 0.0);
+	_fmMoveTableView.separatorColor = A3UITableViewSeparatorColor;
+	_fmMoveTableView.separatorInset = UIEdgeInsetsZero;
 	_fmMoveTableView.contentInset = UIEdgeInsetsMake(0, 0, 70.0, 0);
 	_fmMoveTableView.showsVerticalScrollIndicator = NO;
 
@@ -924,11 +925,6 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	else if ([ [self.convertItems objectAtIndex:indexPath.row] isKindOfClass:[NSNumber class] ]) {
 		A3UnitConverterTVDataCell *dataCell;
 		dataCell = [tableView dequeueReusableCellWithIdentifier:A3UnitConverterDataCellID forIndexPath:indexPath];
-
-		if (nil == dataCell) {
-			dataCell = [[A3UnitConverterTVDataCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:A3UnitConverterDataCellID];
-			dataCell.menuDelegate = self;
-		}
 
 		[self configureDataCell:dataCell atIndexPath:indexPath];
 

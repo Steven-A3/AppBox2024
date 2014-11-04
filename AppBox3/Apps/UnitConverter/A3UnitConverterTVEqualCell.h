@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "A3CurrencyTableViewCell.h"
 
-@interface A3UnitConverterTVEqualCell : UITableViewCell
+@interface A3UnitConverterTVEqualCell : A3CurrencyTableViewCell
 
 @property (nonatomic, weak) IBOutlet UILabel *centerLabel;
 

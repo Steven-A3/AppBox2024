@@ -7,9 +7,11 @@
 //
 
 #import "A3UnitConverterTVDataCell.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3UnitConverterTVDataCell ()
 
+@property (nonatomic, strong) UIView *separatorLineView;
 @property (nonatomic, strong) UIView *menuView;
 @property (nonatomic, strong) MASConstraint *valueFieldWidthConstraint, *value2FieldWidthConstraint;
 
@@ -32,8 +34,8 @@
 		[self.contentView addSubview:self.codeLabel];
 		[self.contentView addSubview:self.rateLabel];
 		[self.contentView addSubview:self.flagImageView];
-		[self addSubview:self.separatorLineView];
-        
+		[self separatorLineView];
+
 		[self useDynamicType];
         
         [self setupValueViews];
@@ -162,7 +164,9 @@
 
     [self removeConstraints:self.constraints];
     [self.contentView removeConstraints:self.contentView.constraints];
-    
+
+	[self setupSeparatorConstraint];
+
 	if (_inputType == UnitInput_Normal) {
         [self addNormalInputConstraints];
     }
@@ -184,6 +188,26 @@
             make.right.equalTo(self.rateLabel.right).with.offset(-20);
         }
     }];
+}
+
+- (UIView *)separatorLineView {
+	if (!_separatorLineView) {
+		_separatorLineView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 83.0, self.bounds.size.width, 1.0)];
+		_separatorLineView.backgroundColor = A3UITableViewSeparatorColor;
+		[self.contentView addSubview:_separatorLineView];
+
+		[self setupSeparatorConstraint];
+	}
+	return _separatorLineView;
+}
+
+- (void)setupSeparatorConstraint {
+	[_separatorLineView makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(self.left);
+		make.right.equalTo(self.right);
+		make.bottom.equalTo(self.bottom);
+		make.height.equalTo(@(1 / [UIScreen mainScreen].scale));
+	}];
 }
 
 - (void)updateMultiTextFieldModeConstraintsWithEditingTextField:(UITextField *)field {
@@ -325,13 +349,6 @@
 		make.right.equalTo(_codeLabel.right);
 		make.bottom.equalTo(self.contentView.bottom).with.offset(-8);
 	}];
-
-	[_separatorLineView makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(self.left);
-		make.right.equalTo(self.right);
-		make.height.equalTo(@1.0);
-		make.bottom.equalTo(self.bottom).with.offset(-1);
-	}];
 }
 
 - (UILabel *)codeLabel {
@@ -367,15 +384,6 @@
 		_flagImageView.translatesAutoresizingMaskIntoConstraints = NO;
 	}
 	return _flagImageView;
-}
-
-- (UIView *)separatorLineView {
-	if (!_separatorLineView) {
-		_separatorLineView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 83.0, self.bounds.size.width, 1.0)];
-		_separatorLineView.backgroundColor = [UIColor clearColor];
-		_separatorLineView.translatesAutoresizingMaskIntoConstraints = NO;
-	}
-	return _separatorLineView;
 }
 
 - (UIButton *)touchCoverRectButton {

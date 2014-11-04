@@ -31,7 +31,6 @@ typedef NS_ENUM(NSInteger, UnitInputType) {
 @property (nonatomic, strong) UILabel *codeLabel;
 @property (nonatomic, strong) UILabel *rateLabel;
 @property (nonatomic, strong) UIImageView *flagImageView;
-@property (nonatomic, strong) UIView *separatorLineView;
 @property (nonatomic, strong) UIButton *touchCoverRectButton;
 @property (nonatomic, weak) id<A3UnitConverterMenuDelegate>	menuDelegate;
 
