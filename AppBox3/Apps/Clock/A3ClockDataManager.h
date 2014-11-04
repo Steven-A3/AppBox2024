@@ -49,6 +49,9 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 - (void)startTimer;
 - (void)stopTimer;
 - (void)onTimerDateTimeTick;
+
+- (void)refreshWholeClockInfo:(NSDate *)currentTime;
+
 - (NSArray *)waveColors;
 - (NSArray*)flipColors;
 - (NSArray*)ledColors;

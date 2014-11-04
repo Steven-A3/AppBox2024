@@ -88,6 +88,7 @@
 	[self prepareOptionalSubviews];
 	[self layoutSubviews];
 
+	[self.clockDataManager refreshWholeClockInfo:[NSDate date]];
 	[self refreshWholeClock:self.clockDataManager.clockInfo];
 }
 
