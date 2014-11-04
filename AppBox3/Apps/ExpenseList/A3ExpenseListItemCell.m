@@ -26,7 +26,7 @@
 @property (nonatomic, strong) MASConstraint *sep1Const;
 @property (nonatomic, strong) MASConstraint *sep2Const;
 @property (nonatomic, strong) MASConstraint *sep3Const;
-@property (nonatomic, strong) id inputViewController;
+@property (nonatomic, strong) id numberKeyboardViewController;
 @property (nonatomic, strong) A3ExpenseListAccessoryView *keyboardAccessoryView;
 @property (nonatomic, weak) UITextField *calculatorTargetTextField;
 @property (nonatomic, copy) NSString *textBeforeEditingTextField;
@@ -230,56 +230,6 @@
     if ([_delegate respondsToSelector:@selector(itemCellTextFieldBeginEditing:textField:)]) {
         [_delegate itemCellTextFieldBeginEditing:self textField:textField];
     }
-    
-    if (textField == _nameTextField) {
-		textField.returnKeyType = UIReturnKeyDefault;
-        textField.inputAccessoryView = [self keyboardAccessoryView];
-        [self.keyboardAccessoryView undoRedoButtonStateChangeFor:textField];
-    }
-    else if (textField == _priceTextField) {
-        A3NumberKeyboardViewController *keyboardViewController;
-//        if (IS_IPHONE) {
-//            keyboardViewController = [[A3NumberKeyboardViewController_iPhone alloc] initWithNibName:@"A3NumberKeyboardSimpleVC_iPhone" bundle:nil];
-//        } else {
-//            keyboardViewController = [[A3NumberKeyboardSimpleVC_iPad alloc] initWithNibName:@"A3NumberKeyboardSimpleVC_iPad" bundle:nil];
-//        }
-        if (IS_IPHONE) {
-            keyboardViewController = [[A3NumberKeyboardViewController_iPhone alloc] initWithNibName:@"A3NumberKeyboardSimplePrevNextVC_iPhone" bundle:nil];
-        } else {
-            keyboardViewController = [[A3NumberKeyboardSimpleVC_iPad alloc] initWithNibName:@"A3NumberKeyboardSimplePrevNextVC_iPad" bundle:nil];
-        }
-        self.inputViewController = keyboardViewController;
-        
-        keyboardViewController.textInputTarget = textField;
-        keyboardViewController.delegate = self;
-		keyboardViewController.currencyCode = self.defaultCurrencyCode;
-        keyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
-		[keyboardViewController.clearButton setTitle:@"" forState:UIControlStateNormal];
-		[keyboardViewController.clearButton setEnabled:NO];
-        
-        textField.inputView = keyboardViewController.view;
-        textField.inputAccessoryView = [self keyboardAccessoryView];
-
-		self.inputViewController = keyboardViewController;
-    }
-    else if (textField == _qtyTextField) {
-        A3NumberKeyboardViewController *keyboardViewController;
-        if (IS_IPHONE) {
-            keyboardViewController = [[A3NumberKeyboardViewController_iPhone alloc] initWithNibName:@"A3NumberKeyboardSimplePrevNextVC_iPhone" bundle:nil];
-        } else {
-            keyboardViewController = [[A3NumberKeyboardSimpleVC_iPad alloc] initWithNibName:@"A3NumberKeyboardSimplePrevNextVC_iPad" bundle:nil];
-        }
-        
-        keyboardViewController.textInputTarget = textField;
-        keyboardViewController.delegate = self;
-        textField.inputView = keyboardViewController.view;
-		textField.inputAccessoryView = [self keyboardAccessoryView];
-        keyboardViewController.keyboardType = A3NumberKeyboardTypeInteger;
-		[keyboardViewController.clearButton setTitle:@"" forState:UIControlStateNormal];
-		[keyboardViewController.clearButton setEnabled:NO];
-
-        _inputViewController = keyboardViewController;
-    }
 
     return YES;
 }
@@ -295,6 +245,56 @@
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	_firstResponder = textField;
 	_textBeforeEditingTextField = textField.text;
+
+    if (textField == _nameTextField) {
+        textField.returnKeyType = UIReturnKeyDefault;
+        textField.inputAccessoryView = [self keyboardAccessoryView];
+        [self.keyboardAccessoryView undoRedoButtonStateChangeFor:textField];
+    }
+    else if (textField == _priceTextField) {
+        A3NumberKeyboardViewController *keyboardViewController;
+        //        if (IS_IPHONE) {
+        //            keyboardViewController = [[A3NumberKeyboardViewController_iPhone alloc] initWithNibName:@"A3NumberKeyboardSimpleVC_iPhone" bundle:nil];
+        //        } else {
+        //            keyboardViewController = [[A3NumberKeyboardSimpleVC_iPad alloc] initWithNibName:@"A3NumberKeyboardSimpleVC_iPad" bundle:nil];
+        //        }
+        if (IS_IPHONE) {
+            keyboardViewController = [[A3NumberKeyboardViewController_iPhone alloc] initWithNibName:@"A3NumberKeyboardSimplePrevNextVC_iPhone" bundle:nil];
+        } else {
+            keyboardViewController = [[A3NumberKeyboardSimpleVC_iPad alloc] initWithNibName:@"A3NumberKeyboardSimplePrevNextVC_iPad" bundle:nil];
+        }
+        self.numberKeyboardViewController = keyboardViewController;
+        
+        keyboardViewController.textInputTarget = textField;
+        keyboardViewController.delegate = self;
+        keyboardViewController.currencyCode = self.defaultCurrencyCode;
+        keyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
+        [keyboardViewController.clearButton setTitle:@"" forState:UIControlStateNormal];
+        [keyboardViewController.clearButton setEnabled:NO];
+        
+        textField.inputView = keyboardViewController.view;
+        textField.inputAccessoryView = [self keyboardAccessoryView];
+        
+        self.numberKeyboardViewController = keyboardViewController;
+    }
+    else if (textField == _qtyTextField) {
+        A3NumberKeyboardViewController *keyboardViewController;
+        if (IS_IPHONE) {
+            keyboardViewController = [[A3NumberKeyboardViewController_iPhone alloc] initWithNibName:@"A3NumberKeyboardSimplePrevNextVC_iPhone" bundle:nil];
+        } else {
+            keyboardViewController = [[A3NumberKeyboardSimpleVC_iPad alloc] initWithNibName:@"A3NumberKeyboardSimplePrevNextVC_iPad" bundle:nil];
+        }
+        
+        keyboardViewController.textInputTarget = textField;
+        keyboardViewController.delegate = self;
+        textField.inputView = keyboardViewController.view;
+        textField.inputAccessoryView = [self keyboardAccessoryView];
+        keyboardViewController.keyboardType = A3NumberKeyboardTypeInteger;
+        [keyboardViewController.clearButton setTitle:@"" forState:UIControlStateNormal];
+        [keyboardViewController.clearButton setEnabled:NO];
+        
+        _numberKeyboardViewController = keyboardViewController;
+    }
 
     if (_nameTextField != textField) {
         textField.placeholder = @"";
@@ -393,19 +393,19 @@
         
     }
     else if (_firstResponder == _qtyTextField) {
-        ((A3NumberKeyboardViewController *)_inputViewController).bigButton1.selected = NO;
-        ((A3NumberKeyboardViewController *)_inputViewController).bigButton2.selected = NO;
+        ((A3NumberKeyboardViewController *) _numberKeyboardViewController).bigButton1.selected = NO;
+        ((A3NumberKeyboardViewController *) _numberKeyboardViewController).bigButton2.selected = NO;
     }
 }
 
 - (void)handleBigButton2 {
     if (_firstResponder == _priceTextField) {
-        ((A3NumberKeyboardViewController *)_inputViewController).bigButton1.selected = YES;
-        ((A3NumberKeyboardViewController *)_inputViewController).bigButton2.selected = NO;
+        ((A3NumberKeyboardViewController *) _numberKeyboardViewController).bigButton1.selected = YES;
+        ((A3NumberKeyboardViewController *) _numberKeyboardViewController).bigButton2.selected = NO;
     }
     else if (_firstResponder == _qtyTextField) {
-        ((A3NumberKeyboardViewController *)_inputViewController).bigButton1.selected = NO;
-        ((A3NumberKeyboardViewController *)_inputViewController).bigButton2.selected = NO;
+        ((A3NumberKeyboardViewController *) _numberKeyboardViewController).bigButton1.selected = NO;
+        ((A3NumberKeyboardViewController *) _numberKeyboardViewController).bigButton2.selected = NO;
     }
 }
 
