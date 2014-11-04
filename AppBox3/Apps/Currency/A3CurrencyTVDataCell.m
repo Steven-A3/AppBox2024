@@ -7,6 +7,7 @@
 //
 
 #import "A3CurrencyTVDataCell.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3CurrencyTVDataCell ()
 @property (nonatomic, strong) UIView *menuView;
@@ -130,15 +131,6 @@
 		_flagImageView.translatesAutoresizingMaskIntoConstraints = NO;
 	}
 	return _flagImageView;
-}
-
-- (UIView *)separatorLineView {
-	if (!_separatorLineView) {
-		_separatorLineView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 83.0, self.bounds.size.width, 1.0)];
-		_separatorLineView.backgroundColor = [UIColor clearColor];
-		_separatorLineView.translatesAutoresizingMaskIntoConstraints = NO;
-	}
-	return _separatorLineView;
 }
 
 #pragma mark - A3TableViewSwipeCellDelegate

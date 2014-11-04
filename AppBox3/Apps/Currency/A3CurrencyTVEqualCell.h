@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "A3CurrencyTableViewCell.h"
 
-@interface A3CurrencyTVEqualCell : UITableViewCell
+@interface A3CurrencyTVEqualCell : A3CurrencyTableViewCell
 
 @property (nonatomic, weak) IBOutlet UILabel *centerLabel;
 @property (nonatomic, weak) IBOutlet UIButton *yahooButton;

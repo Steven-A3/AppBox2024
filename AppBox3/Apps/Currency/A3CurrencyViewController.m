@@ -35,6 +35,7 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "CurrencyFavorite.h"
 #import "NSManagedObject+extension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChangedNotification";
 NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
@@ -133,8 +134,8 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	[self.tableView registerNib:[UINib nibWithNibName:@"A3CurrencyTVEqualCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3CurrencyEqualCellID];
 
 	self.tableView.rowHeight = 84.0;
-	self.tableView.separatorColor = [UIColor colorWithRed:200.0 / 255.0 green:200.0 / 255.0 blue:200.0 / 255.0 alpha:1.0];
-	self.tableView.separatorInset = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = UIEdgeInsetsZero;
 	self.tableView.showsVerticalScrollIndicator = NO;
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
@@ -664,10 +665,6 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	} else {
 		A3CurrencyTVDataCell *dataCell;
 		dataCell = [tableView dequeueReusableCellWithIdentifier:A3CurrencyDataCellID forIndexPath:indexPath];
-		if (nil == dataCell) {
-			dataCell = [[A3CurrencyTVDataCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:A3CurrencyDataCellID];
-			dataCell.menuDelegate = self;
-		}
 
 		[self configureDataCell:dataCell atIndexPath:indexPath];
 
@@ -741,9 +738,6 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 - (A3CurrencyTVEqualCell *)reusableEqualCellForTableView:(UITableView *)tableView {
 	A3CurrencyTVEqualCell *cell;
 	cell = [tableView dequeueReusableCellWithIdentifier:A3CurrencyEqualCellID];
-	if (nil == cell) {
-		cell = [[A3CurrencyTVEqualCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:A3CurrencyEqualCellID];
-	}
 	return cell;
 }
 

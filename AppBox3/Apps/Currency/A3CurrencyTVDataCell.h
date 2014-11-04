@@ -7,6 +7,7 @@
 //
 
 #import "A3FMMoveTableViewController.h"
+#import "A3CurrencyTableViewCell.h"
 
 @protocol A3CurrencyMenuDelegate <NSObject>
 - (void)menuAdded;
@@ -16,7 +17,7 @@
 - (void)deleteActionForCell:(UITableViewCell *)cell;
 @end
 
-@interface A3CurrencyTVDataCell : UITableViewCell <A3FMMoveTableViewSwipeCellDelegate>
+@interface A3CurrencyTVDataCell : A3CurrencyTableViewCell <A3FMMoveTableViewSwipeCellDelegate>
 
 @property (nonatomic, strong) UITextField *valueField;
 @property (nonatomic, strong) UILabel *codeLabel;
