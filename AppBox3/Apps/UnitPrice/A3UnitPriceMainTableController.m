@@ -89,9 +89,10 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     lineView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     lineView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:1.0];
     [self.tableView addSubview:lineView];
-    
-    self.currencyFormatter.maximumFractionDigits = 2;
-    [self updateUnitPrices:NO];
+
+	// 단가의 경우 원화/엔화인 경우에는 소수점 이하까지 표현하도록 함
+	[self.currencyFormatter setMaximumFractionDigits:2];
+	[self updateUnitPrices:NO];
 
 	[self registerContentSizeCategoryDidChangeNotification];
     
@@ -152,8 +153,10 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 }
 
 - (void)currencyCodeChanged:(NSNotification *)notification {
-	NSString *currencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitPriceUserDefaultsCurrencyCode];
-	[self.currencyFormatter setCurrencyCode:currencyCode];
+	// Xcode 6로 빌드하는 경우, currency code 만 다시 설정하면 Maximum Fraction Digits 가 동작하지 않아 새로 할당 받도록 함
+	[self setCurrencyFormatter:nil];
+
+	[self.currencyFormatter setCurrencyCode:self.defaultCurrencyCode];
     [self.currencyFormatter setMaximumFractionDigits:2];
 	[self.tableView reloadData];
 }
