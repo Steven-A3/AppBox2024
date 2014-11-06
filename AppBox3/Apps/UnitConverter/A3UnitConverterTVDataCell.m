@@ -9,7 +9,7 @@
 #import "A3UnitConverterTVDataCell.h"
 #import "UIViewController+tableViewStandardDimension.h"
 
-@interface A3UnitConverterTVDataCell ()
+@interface  A3UnitConverterTVDataCell ()
 
 @property (nonatomic, strong) UIView *separatorLineView;
 @property (nonatomic, strong) UIView *menuView;
@@ -17,14 +17,16 @@
 
 @end
 
-@implementation A3UnitConverterTVDataCell
+@implementation A3UnitConverterTVDataCell {
+	CGFloat _textFieldHeight;
+}
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
 		// Initialization code
-        self.frame = CGRectMake(0.0, 0.0, 320.0, 84);
+		_textFieldHeight = 77;
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [self.contentView addSubview:self.touchCoverRectButton];
 		[self.contentView addSubview:self.valueField];
@@ -39,7 +41,8 @@
 		[self useDynamicType];
         
         [self setupValueViews];
-		[self addConstraints];
+		[self setupTextFieldConstraints];
+		[self setupConstraintsForRightSideViews];
     }
     return self;
 }
@@ -75,11 +78,16 @@
     if (_inputType != inputType) {
         _inputType = inputType;
         [self setupValueViews];
-        [self addConstraints];
+		[self setupTextFieldConstraints];
 		if (inputType != UnitInput_Normal) {
 			[self updateMultiTextFieldModeConstraintsWithEditingTextField:nil];
 		}
 		[self layoutIfNeeded];
+
+		FNLOGRECT(_valueField.frame);
+		FNLOGRECT(_value2Field.frame);
+		FNLOGRECT(_valueLabel.frame);
+		FNLOGRECT(_value2Label.frame);
     }
 }
 
@@ -87,10 +95,9 @@
 	if (!_valueField) {
 		_valueField = [[UITextField alloc] initWithFrame:CGRectZero];
 		_valueField.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:65.0];
-		_valueField.adjustsFontSizeToFitWidth = YES;
-		_valueField.minimumFontSize = 10.0;
-		_valueField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         _valueField.tag = 1;
+		_valueField.adjustsFontSizeToFitWidth = YES;
+		_valueField.minimumFontSize = 10;
 	}
 	return _valueField;
 }
@@ -100,6 +107,8 @@
 		_value2Field = [[UITextField alloc] initWithFrame:CGRectMake(7.0, 0.0, 187.0, 83.0)];
 		_value2Field.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:65.0];
         _value2Field.tag = 2;
+		_value2Field.adjustsFontSizeToFitWidth = YES;
+		_value2Field.minimumFontSize = 10;
 	}
 	return _value2Field;
 }
@@ -155,17 +164,9 @@
     }
 }
 
-- (void)addConstraints {
-    
-    // reset constraints
-	[_valueFieldWidthConstraint uninstall];
-	[_value2FieldWidthConstraint uninstall];
-    
-
-    [self removeConstraints:self.constraints];
-    [self.contentView removeConstraints:self.contentView.constraints];
-
-	[self setupSeparatorConstraint];
+- (void)setupTextFieldConstraints {
+	_valueFieldWidthConstraint = nil;
+	_value2FieldWidthConstraint = nil;
 
 	if (_inputType == UnitInput_Normal) {
         [self addNormalInputConstraints];
@@ -176,25 +177,13 @@
     else if (_inputType == UnitInput_FeetInch) {
         [self addFeetInchInputConstraints];
     }
-    
-    [self.touchCoverRectButton makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.contentView.left);
-        make.top.equalTo(self.contentView.top);
-        make.bottom.equalTo(self.contentView.bottom);
-        if (IS_IPAD) {
-            make.right.equalTo(self.contentView.right).with.offset(-160);
-        }
-        else {
-            make.right.equalTo(self.rateLabel.right).with.offset(-20);
-        }
-    }];
 }
 
 - (UIView *)separatorLineView {
 	if (!_separatorLineView) {
 		_separatorLineView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 83.0, self.bounds.size.width, 1.0)];
 		_separatorLineView.backgroundColor = A3UITableViewSeparatorColor;
-		[self.contentView addSubview:_separatorLineView];
+		[self addSubview:_separatorLineView];
 
 		[self setupSeparatorConstraint];
 	}
@@ -214,39 +203,55 @@
 	[_valueFieldWidthConstraint uninstall];
 	[_value2FieldWidthConstraint uninstall];
 
-	CGFloat maxWidth = self.contentView.bounds.size.width * (IS_IPHONE ? 0.6 : 0.8);
+	CGFloat maxWidth = self.contentView.bounds.size.width * (IS_IPHONE ? 0.65 : 0.8);
 	CGFloat valueFieldWidth, value2FieldWidth;
 	UIFont *font;
 	if (_inputType != UnitInput_Normal) {
 		CGFloat fontSize = 66.0, minFontSize = 10.0;
 		CGFloat effectiveWidth = maxWidth;
-		CGFloat height;
 		NSStringDrawingContext *context = [NSStringDrawingContext new];
 		CGSize size = CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX);
 		while (effectiveWidth >= maxWidth && fontSize >= minFontSize) {
 			effectiveWidth = 0.0;
-			height = 0.0;
 			fontSize -= 1.0;
 			font = [UIFont fontWithName:@"HelveticaNeue-Light" size:fontSize];
 			NSString *text = [_valueField.text length] ? _valueField.text : _valueField.placeholder;
-			CGRect bounds = [text boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : font} context:context];
-			valueFieldWidth = bounds.size.width + 4.0;
-			height = MAX(height, bounds.size.height);
-			if (field == _valueField) {
-				valueFieldWidth += 10.0;
-			}
+			NSDictionary *attribute = @{NSFontAttributeName : font};
+
+			CGRect bounds = [text boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin
+											attributes:attribute
+											   context:context];
+			valueFieldWidth = bounds.size.width;
 			effectiveWidth += valueFieldWidth;
-			bounds = [_valueLabel.text boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : font} context:context];
+
+			bounds = [_valueLabel.text boundingRectWithSize:size
+													options:NSStringDrawingUsesLineFragmentOrigin
+												 attributes:attribute
+													context:context];
 			effectiveWidth += bounds.size.width;
-			height = MAX(height, bounds.size.height);
+
 			text = [_value2Field.text length] ? _value2Field.text : _value2Field.placeholder;
-			bounds = [text boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : font} context:context];
-			value2FieldWidth = bounds.size.width + 4.0;
-			height = MAX(height, bounds.size.height);
-			if (field == _value2Field) {
-				value2FieldWidth += 10.0;
-			}
+			bounds = [text boundingRectWithSize:size
+										options:NSStringDrawingUsesLineFragmentOrigin
+									 attributes:attribute
+										context:context];
+			value2FieldWidth = bounds.size.width;
 			effectiveWidth += value2FieldWidth;
+
+			if ([_valueField isEditing] || [_value2Field isEditing]) {
+				bounds = [@"93" boundingRectWithSize:size
+											 options:NSStringDrawingUsesLineFragmentOrigin
+										  attributes:attribute
+											 context:context
+				];
+				effectiveWidth += bounds.size.width;
+
+				if ([_valueField isEditing]) {
+					valueFieldWidth += bounds.size.width;
+				} else {
+					value2FieldWidth += bounds.size.width;
+				}
+			}
 		}
 	} else {
 		valueFieldWidth = maxWidth;
@@ -265,6 +270,7 @@
 	[_value2Field makeConstraints:^(MASConstraintMaker *make) {
 		_value2FieldWidthConstraint = make.width.equalTo(@(value2FieldWidth));
 	}];
+
 	[self layoutIfNeeded];
 
 	NSString *text;
@@ -281,57 +287,56 @@
 }
 
 - (void)addNormalInputConstraints {
-	[_valueField makeConstraints:^(MASConstraintMaker *make) {
+	[_valueField remakeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.contentView.left).with.offset(IS_IPHONE ? 15 : 28);
 		make.centerY.equalTo(self.contentView.centerY);
 		make.right.equalTo(_codeLabel.left);
+		make.height.equalTo(@(_textFieldHeight));
 	}];
-
-	[self setupConstraintsForRightSideViews];
 }
 
 - (void)addFractionInputConstraints {
-	[_valueField makeConstraints:^(MASConstraintMaker *make) {
+	[_valueField remakeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.contentView.left).with.offset(IS_IPHONE ? 15 : 28);
 		make.centerY.equalTo(self.contentView.centerY);
 		_valueFieldWidthConstraint = make.width.equalTo(self.contentView.width).with.multipliedBy(IS_IPAD ? 0.4 : 0.3);
+		make.height.equalTo(@(_textFieldHeight));
 	}];
 
-	[_valueLabel makeConstraints:^(MASConstraintMaker *make) {
+	[_valueLabel remakeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(_valueField.right);
 		make.centerY.equalTo(self.contentView.centerY);
 	}];
 
-	[_value2Field makeConstraints:^(MASConstraintMaker *make) {
+	[_value2Field remakeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(_valueLabel.right);
 		make.centerY.equalTo(self.contentView.centerY);
 		_value2FieldWidthConstraint = make.width.lessThanOrEqualTo(self.contentView.width).with.multipliedBy(IS_IPAD ? 0.4 : 0.3);
+		make.height.equalTo(@(_textFieldHeight));
 	}];
-
-	[self setupConstraintsForRightSideViews];
 }
 
 - (void)addFeetInchInputConstraints {
-	[_valueField makeConstraints:^(MASConstraintMaker *make) {
+	[_valueField remakeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.contentView.left).with.offset(IS_IPHONE ? 15 : 28);
 		make.centerY.equalTo(self.contentView.centerY).with.offset(-4);
 		_valueFieldWidthConstraint = make.width.equalTo(self.contentView.width).with.multipliedBy(0.17);
+		make.height.equalTo(@(_textFieldHeight));
 	}];
-	[_valueLabel makeConstraints:^(MASConstraintMaker *make) {
+	[_valueLabel remakeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(_valueField.right);
 		make.centerY.equalTo(_valueField.centerY);
 	}];
-	[_value2Field makeConstraints:^(MASConstraintMaker *make) {
+	[_value2Field remakeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(_valueLabel.right).with.offset(15);
 		make.centerY.equalTo(_valueField.centerY);
 		_value2FieldWidthConstraint = make.width.lessThanOrEqualTo(self.contentView.width).with.multipliedBy(IS_IPAD ? 0.4 : 0.3);
+		make.height.equalTo(@(_textFieldHeight));
 	}];
-	[_value2Label makeConstraints:^(MASConstraintMaker *make) {
+	[_value2Label remakeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(_value2Field.right);
 		make.centerY.equalTo(_valueField.centerY);
 	}];
-
-	[self setupConstraintsForRightSideViews];
 }
 
 - (void)setupConstraintsForRightSideViews {
@@ -348,6 +353,18 @@
 	[_rateLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.right.equalTo(_codeLabel.right);
 		make.bottom.equalTo(self.contentView.bottom).with.offset(-8);
+	}];
+
+	[self.touchCoverRectButton makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(self.contentView.left);
+		make.top.equalTo(self.contentView.top);
+		make.bottom.equalTo(self.contentView.bottom);
+		if (IS_IPAD) {
+			make.right.equalTo(self.contentView.right).with.offset(-160);
+		}
+		else {
+			make.right.equalTo(self.rateLabel.right).with.offset(-20);
+		}
 	}];
 }
 

@@ -1789,24 +1789,21 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	if ([cell isKindOfClass:[A3UnitConverterTVDataCell class]]) {
 		switch (cell.inputType) {
 			case UnitInput_Normal:
-				cell.inputType = UnitInput_Fraction;
+				[cell setInputType:UnitInput_Fraction];
 				cell.value2Field.text = @"";
-				[cell updateMultiTextFieldModeConstraintsWithEditingTextField:textField];
-				_isSwitchingFractionMode = YES;
 				[self addKeyboardAccessoryToTextField:textField];
-				FNLOG();
-				[textField resignFirstResponder];
-				[textField becomeFirstResponder];
-				FNLOG();
-				_isSwitchingFractionMode = NO;
+				[textField reloadInputViews];
 				[self.numberKeyboardViewController.fractionButton setSelected:YES];
 				break;
 			case UnitInput_Fraction:
-				cell.inputType = UnitInput_Normal;
+				[cell setInputType:UnitInput_Normal];
 				_isSwitchingFractionMode = YES;
 				textField.inputAccessoryView = nil;
-				[textField resignFirstResponder];
-				[textField becomeFirstResponder];
+				[textField reloadInputViews];
+				if (textField == cell.value2Field) {
+					[textField resignFirstResponder];
+					[cell.valueField becomeFirstResponder];
+				}
 				_isSwitchingFractionMode = NO;
 				[self.numberKeyboardViewController.fractionButton setSelected:NO];
 				break;

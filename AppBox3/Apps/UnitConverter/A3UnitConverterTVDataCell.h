@@ -35,4 +35,5 @@ typedef NS_ENUM(NSInteger, UnitInputType) {
 @property (nonatomic, weak) id<A3UnitConverterMenuDelegate>	menuDelegate;
 
 - (void)updateMultiTextFieldModeConstraintsWithEditingTextField:(UITextField *)field;
+
 @end
