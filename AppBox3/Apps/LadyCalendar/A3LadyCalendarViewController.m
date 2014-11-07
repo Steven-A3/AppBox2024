@@ -173,6 +173,7 @@
 	[super viewWillAppear:animated];
     
 	[self setupNavigationTitle];
+    [self setupCalendarHeaderViewFrame];
     
 	[self.navigationController setToolbarHidden:NO];
     _collectionView.delegate = self;
@@ -182,11 +183,9 @@
         
 		[self showCalendarHeaderView];
 		[self updateAddButton];
-        //		[_collectionView reloadData];
 	} else {
 		[_calendarHeaderView setHidden:NO];
 		[self setupCalendarRange];
-        //		[self.collectionView reloadData];
 	}
     
 	_chartBarButton.enabled = ([self.dataManager numberOfPeriodsWithAccountID:[self.dataManager currentAccount].uniqueID] > 0);
@@ -312,13 +311,17 @@
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-	if ( UIInterfaceOrientationIsLandscape(self.interfaceOrientation) ) {
-		_calendarHeaderView.frame = CGRectMake(_calendarHeaderView.frame.origin.x, _calendarHeaderView.frame.origin.y, self.view.frame.size.width, _calendarHeaderView.frame.size.height);
-	}
-	else{
-		_calendarHeaderView.frame = CGRectMake(_calendarHeaderView.frame.origin.x, _calendarHeaderView.frame.origin.y, self.view.frame.size.width, _calendarHeaderView.frame.size.height);
-	}
+    [self setupCalendarHeaderViewFrame];
 	[_collectionView reloadData];
+}
+
+- (void)setupCalendarHeaderViewFrame {
+    if ( UIInterfaceOrientationIsLandscape(self.interfaceOrientation) ) {
+        _calendarHeaderView.frame = CGRectMake(_calendarHeaderView.frame.origin.x, _calendarHeaderView.frame.origin.y, self.view.frame.size.width, _calendarHeaderView.frame.size.height);
+    }
+    else{
+        _calendarHeaderView.frame = CGRectMake(_calendarHeaderView.frame.origin.x, _calendarHeaderView.frame.origin.y, self.view.frame.size.width, _calendarHeaderView.frame.size.height);
+    }
 }
 
 - (A3LadyCalendarModelManager *)dataManager {
