@@ -167,15 +167,14 @@
     
     self.infoTableView.contentInset = UIEdgeInsetsMake(size.height - 88, 0, 0, 0);
 }
-#else
+#endif
+
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     
     self.infoTableView.contentInset = UIEdgeInsetsMake(CGRectGetHeight(self.view.frame) - 88, 0, 0, 0);
 }
-
-#endif
 
 - (void)didReceiveMemoryWarning
 {
