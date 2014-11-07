@@ -70,7 +70,6 @@
     [self.view addSubview:self.searchBar];
     [self mySearchDisplayController];
 
-    [self setupInstructionView];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
     
 // TODO
@@ -129,6 +128,9 @@
 {
     [super viewWillAppear:animated];
 
+	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+		[self setupInstructionView];
+	}
     [self.view addSubview:self.searchBar];
 
     // 테이블 항목을 선택시에는 카테고리 이름이 backBar Item 이 되고,나머지는 공백.
