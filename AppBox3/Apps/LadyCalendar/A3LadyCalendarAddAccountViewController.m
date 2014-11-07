@@ -25,6 +25,7 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "UITableView+utility.h"
+#import "A3StandardTableViewCell.h"
 
 @interface A3LadyCalendarAddAccountViewController ()
 
@@ -82,7 +83,6 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	}
 
 	self.navigationItem.rightBarButtonItem.enabled = _isEditMode;
-	self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
 
 	[self.tableView registerClass:[A3WalletNoteCell class] forCellReuseIdentifier:A3WalletItemFieldNoteCellID];
 	[self registerContentSizeCategoryDidChangeNotification];
@@ -244,14 +244,13 @@ extern NSString *const A3WalletItemFieldNoteCellID;
         }
         else if( cellType == AccountCell_Notes ){
 			A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldNoteCellID forIndexPath:indexPath];
-			noteCell.keepShortInset = YES;
 			[noteCell setupTextView];
 			noteCell.textView.delegate = self;
 			noteCell.textView.text = _accountItem.notes;
 			cell = noteCell;
         }
         else if( cellType == AccountCell_Birthday){
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+            cell = [[A3StandardTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.detailTextLabel.font = [UIFont systemFontOfSize:17.0];
         }
@@ -262,16 +261,15 @@ extern NSString *const A3WalletItemFieldNoteCellID;
             datePicker.maximumDate = [NSDate date];
             [datePicker addTarget:self action:@selector(dateChangeAction:) forControlEvents:UIControlEventValueChanged];
         }
-        if( cellType == AccountCell_Name || cellType == AccountCell_Notes ){
+        if( cellType == AccountCell_Name){
             UIView *leftView = [cell viewWithTag:10];
             for(NSLayoutConstraint *layout in cell.contentView.constraints){
                 if( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == leftView && layout.secondItem == cell.contentView )
-                    layout.constant = 15.0 - (cellType == AccountCell_Notes ? 4 : 0);
+                    layout.constant = (IS_IPHONE ? 15.0 : 28.0) - 0;
             }
         }
     }
-    
-    
+
     if( cellType == AccountCell_Name ){
         UITextField *textField = (UITextField *)[cell viewWithTag:10];
         textField.text = _accountItem.name;
