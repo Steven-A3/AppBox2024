@@ -489,7 +489,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
     
 }
 
--(void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     if (!animated) {
         return;
