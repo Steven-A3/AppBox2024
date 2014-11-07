@@ -37,7 +37,7 @@
 
 #else
 
-@interface A3DaysCounterCalendarListMainViewController () <UINavigationControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, A3InstructionViewControllerDelegate>
+@interface A3DaysCounterCalendarListMainViewController () <UINavigationControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, A3InstructionViewControllerDelegate, UIPopoverPresentationControllerDelegate>
 
 #endif
 
@@ -847,9 +847,9 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
             popover.sourceView = self.view;
             popover.delegate = self;
             UITableViewCell *senderCell = [tableView cellForRowAtIndexPath:indexPath];
-            CGFloat deleteButtonWidth = 82; //  UITableViewCellDeleteConfirmationView
-            //popover.sourceRect = CGRectMake(CGRectGetWidth(self.view.frame) - deleteButtonWidth, senderCell.center.y + senderCell.contentView.bounds.size.height/2, 0, 0);
-            popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
+            CGFloat deleteButtonWidth = 200; //  UITableViewCellDeleteConfirmationView
+            popover.sourceRect = CGRectMake(CGRectGetWidth(self.view.frame) - deleteButtonWidth, senderCell.frame.origin.y + 64, 200, senderCell.frame.size.height);
+            popover.permittedArrowDirections = UIPopoverArrowDirectionRight;
             
             [self presentViewController:alertController animated:YES completion:NULL];
         }
