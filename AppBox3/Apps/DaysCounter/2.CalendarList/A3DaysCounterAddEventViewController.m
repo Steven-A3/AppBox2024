@@ -69,6 +69,7 @@
 
 @implementation A3DaysCounterAddEventViewController {
 	BOOL _isAddingEvent;
+	BOOL _ignoreShowKeyboard;
 }
 
 - (id)init {
@@ -250,13 +251,15 @@
             isFirstAppear = NO;
         }
     }
-    
-    if ( self.eventItem == nil && isFirstAppear) {
-        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-        UITextField *textField = (UITextField*)[cell viewWithTag:10];
-        [textField becomeFirstResponder];
-        isFirstAppear = NO;
-    }
+
+	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+		if ( self.eventItem == nil) {
+			UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+			UITextField *textField = (UITextField*)[cell viewWithTag:10];
+			[textField becomeFirstResponder];
+			isFirstAppear = NO;
+		}
+	}
 }
 
 - (void)viewWillLayoutSubviews {
@@ -329,17 +332,21 @@
 }
 
 - (void)showKeyboard {
-    UITableViewCell *aCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+	if (_ignoreShowKeyboard) {
+		_ignoreShowKeyboard = NO;
+		return;
+	}
+	UITableViewCell *aCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 
-    if (!aCell) {
-        return;
-    }
-    if (!_isAddingEvent) {
-        return;
-    }
-    
-    UITextField *textField = (UITextField*)[aCell viewWithTag:10];
-    [textField becomeFirstResponder];
+	if (!aCell) {
+		return;
+	}
+	if (!_isAddingEvent) {
+		return;
+	}
+
+	UITextField *textField = (UITextField *) [aCell viewWithTag:10];
+	[textField becomeFirstResponder];
 }
 
 #pragma mark -
@@ -851,6 +858,7 @@
             cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
         }
         else {
+			FNLOG();
             [cell setSeparatorInset:UIEdgeInsetsMake(0, 0, 0, 0)];
         }
     }
@@ -2140,10 +2148,12 @@
     [UIView animateWithDuration:0.35 animations:^{
         expandableCell.expandButton.transform = CGAffineTransformRotate(CGAffineTransformIdentity, DegreesToRadians((_isAdvancedCellOpen ?  0 : -179.9)));
     }];
-    
-    // fix for separators bug in iOS 7
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+
+	if (IS_IOS7) {
+		// fix for separators bug in iOS 7
+		self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+		self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+	}
 
     [CATransaction begin];
     [CATransaction setCompletionBlock:^{
@@ -2668,6 +2678,13 @@
     }
 	_imagePickerController = nil;
 	_imagePickerPopoverController = nil;
+
+	_ignoreShowKeyboard = YES;
+	double delayInSeconds = 1.0;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		[self.tableView reloadData];
+	});
 }
 
 #pragma mark - UIScrollViewDelegate
