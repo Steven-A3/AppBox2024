@@ -244,7 +244,8 @@
 "Use My Location" = "Użyj moje położenie";
 "Search Location" = "Znajdź położenie";
 "Please enter the end date." = "Wpisz datę końcową.";
-"Cannot Save Event\nThe start date must be before the end date." = "Błąd podczas zapisu wydarzenia\nData początku musi być przed datą końca.";
+"The start date must be before the end date." = "Data początku musi być przed datą końca.";
+"Cannot Save Event" = "Błąd podczas zapisu wydarzenia";
 "Start date is not a lunar date." = "Data początku nie jest datą księżycową.";
 "End date is not a lunar date." = "Data zakończenia nie jest datą księżycową.";
 "It's not a Lunar Date" = "To nie jest data księżycowa";
@@ -936,3 +937,4 @@ Wprowadź klucz szyfrowania dla portfela.";
 "Traffic Light" = "Światła drogowe";
 
 "For monthly payment." = "Za miesięczną wypłatę.";
+

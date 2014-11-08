@@ -249,7 +249,8 @@
 "Use My Location" = "Mia Posizione";
 "Search Location" = "Cerca Posizione";
 "Please enter the end date." = "Si prega di inserire la data di termine.";
-"Cannot Save Event\nThe start date must be before the end date." = "Non è possibile salvare l’evento\nLa data di inizio deve essere precedente alla data di termine";
+"The start date must be before the end date." = "La data di inizio deve essere precedente alla data di termine";
+"Cannot Save Event" = "Non è possibile salvare l’evento";
 "Start date is not a lunar date." = "La data di inizio non è una data lunare";
 "End date is not a lunar date." = "La data di termine non è una data lunare";
 "It's not a Lunar Date" = "Non è una data lunare";
@@ -931,3 +932,4 @@ Inserire chiave di crittografia per il portafoglio.";
 "Traffic Light" = "Semaforo";
 
 "For monthly payment." = "Per il pagamento mensile.";
+

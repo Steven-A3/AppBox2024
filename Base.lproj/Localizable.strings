@@ -209,7 +209,8 @@
 "Use My Location" = "Use My Location";
 "Search Location" = "Search Location";
 "Please enter the end date." = "Please enter the end date.";
-"Cannot Save Event\nThe start date must be before the end date." = "Cannot Save Event\nThe start date must be before the end date.";
+"The start date must be before the end date." = "The start date must be before the end date.";
+"Cannot Save Event" = "Cannot Save Event";
 "Start date is not a lunar date." = "Start date is not a lunar date.";
 "End date is not a lunar date." = "End date is not a lunar date.";
 "It's not a Lunar Date" = "It's not a Lunar Date";

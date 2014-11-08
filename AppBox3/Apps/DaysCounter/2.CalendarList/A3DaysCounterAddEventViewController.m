@@ -1574,8 +1574,8 @@
         NSDate *endDate = [[_eventItem endDateCreateIfNotExist:NO ] solarDate];
         
         if ( [endDate timeIntervalSince1970] < [startDate timeIntervalSince1970]) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                message:NSLocalizedString(@"Cannot Save Event\nThe start date must be before the end date.", @"Cannot Save Event\nThe start date must be before the end date.")
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cannot Save Event", nil)
+                                                                message:NSLocalizedString(@"The start date must be before the end date.", nil)
                                                                delegate:nil
                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                                                       otherButtonTitles:nil];
@@ -1637,7 +1637,7 @@
     [self removeObserver];
 }
 
-#ifdef __IPHONE8_0
+#ifdef __IPHONE_8_0
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
 {
     application.delegate = nil;

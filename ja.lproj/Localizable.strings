@@ -251,8 +251,8 @@
 "Use My Location" = "自分の位置使用";
 "Search Location" = "位置検索";
 "Please enter the end date." = "終了日の入力してください。";
-"Cannot Save Event\nThe start date must be before the end date." = "イベントの保存ができません。
-開始日は必ず終了日の前になります。";
+"The start date must be before the end date." = "開始日は必ず終了日の前になります。";
+"Cannot Save Event" = "イベントの保存ができません。";
 "Start date is not a lunar date." = "開始日が旧暦ではありません。";
 "End date is not a lunar date." = "終了日が旧暦ではありません。";
 "It's not a Lunar Date" = "旧暦ではありません。";
@@ -942,3 +942,4 @@
 "Traffic Light" = "交通信号";
 
 "For monthly payment." = "毎月の支払いの場合";
+

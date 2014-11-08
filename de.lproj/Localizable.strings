@@ -244,7 +244,8 @@
 "Use My Location" = "Ort verwenden";
 "Search Location" = "Ort suchen";
 "Please enter the end date." = "Bitte geben Sie den Endtermin ein.";
-"Cannot Save Event\nThe start date must be before the end date." = "Das Ereignis kann nicht gespeichert werden\nder Starttermin muss vor dem Endtermin liegen.";
+"The start date must be before the end date." = "der Starttermin muss vor dem Endtermin liegen.";
+"Cannot Save Event" = "Das Ereignis kann nicht gespeichert werden";
 "Start date is not a lunar date." = "Starttermin ist kein Lunar Datum";
 "End date is not a lunar date." = "Endtermin ist kein Lunar Datum";
 "It's not a Lunar Date" = "Das ist kein Lunar Datum";
@@ -945,3 +946,4 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 "Traffic Light" = "Ampel";
 
 "For monthly payment." = "Für monatliche Zahlung.";
+

@@ -252,7 +252,8 @@
 "Use My Location" = "Utiliser ma lieu";
 "Search Location" = "Rechercher lieu";
 "Please enter the end date." = "Veuillez saisir la date d’arrêt.";
-"Cannot Save Event\nThe start date must be before the end date." = "Impossible de sauvegarder l’événement \nLa date de démarrage doit précéder la date d’arrêt.";
+"The start date must be before the end date." = "La date de démarrage doit précéder la date d’arrêt.";
+"Cannot Save Event" = "Impossible de sauvegarder l’événement";
 "Start date is not a lunar date." = "La date de démarrage n’est pas la date lunaire";
 "End date is not a lunar date." = "La date d’arrêt n’est pas la date lunaire";
 "It's not a Lunar Date" = "Ce n’est pas la date lunaire";
@@ -936,3 +937,4 @@
 "Traffic Light" = "Feu de circulation";
 
 "For monthly payment." = "Pour le paiement mensuel.";
+

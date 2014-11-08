@@ -238,7 +238,8 @@
 "Use My Location" = "나의 위치 사용";
 "Search Location" = "위치 검색";
 "Please enter the end date." = "종료일을 입력해 주세요.";
-"Cannot Save Event\nThe start date must be before the end date." = "시작일은 종료일 이전에 있어야 합니다.";
+"The start date must be before the end date." = "시작일은 종료일 이전에 있어야 합니다.";
+"Cannot Save Event" = "저장 할 수 없습니다.";
 "Start date is not a lunar date." = "시작일이 바른 음력날짜가 아닙니다.";
 "End date is not a lunar date." = "종료일이 바른 음력 날짜가 아닙니다.";
 "It's not a Lunar Date" = "바른 음력날짜가 아닙니다.";
@@ -948,3 +949,4 @@
 "Traffic Light" = "신호등";
 
 "For monthly payment." = "매월 납입에서 사용";
+

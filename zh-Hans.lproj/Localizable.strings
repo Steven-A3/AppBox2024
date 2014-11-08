@@ -247,8 +247,8 @@
 "Use My Location" = "使用我的位置";
 "Search Location" = "搜索位置";
 "Please enter the end date." = "请输入结束日期。";
-"Cannot Save Event\nThe start date must be before the end date." =
-"无法保存事件。开始日期必须早于结束日期。";
+"The start date must be before the end date." = "开始日期必须早于结束日期。";
+"Cannot Save Event" = "无法保存事件。";
 "Start date is not a lunar date." = "开始日期不是阴历日期。";
 "End date is not a lunar date." = "结束日期不是阴历日期。";
 "It's not a Lunar Date" = "不是阴历日期。";
