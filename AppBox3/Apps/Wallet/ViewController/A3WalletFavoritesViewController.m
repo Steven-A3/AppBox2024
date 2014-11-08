@@ -31,8 +31,6 @@
     self.navigationItem.title = NSLocalizedString(@"Favorites", @"Favorites");
 	self.showCategoryInDetailViewController = YES;
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidSave:) name:NSManagedObjectContextWillSaveNotification object:nil];
-
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidShow) name:A3NotificationMainMenuDidShow object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
@@ -80,11 +78,6 @@
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 	UIColor *disabledColor = [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
 	self.tabBarController.tabBar.selectedImageTintColor = enable ? nil : disabledColor;
-}
-
-- (void)managedObjectContextDidSave:(NSNotification *)notification {
-	self.items = nil;
-	[self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
