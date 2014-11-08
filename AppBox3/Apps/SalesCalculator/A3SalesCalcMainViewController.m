@@ -46,7 +46,7 @@ enum A3TableElementCellType {
 @interface A3SalesCalcMainViewController () <CLLocationManagerDelegate, UIPopoverControllerDelegate,
 		A3JHSelectTableViewControllerProtocol, A3SalesCalcHistorySelectDelegate, A3TableViewInputElementDelegate,
 		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewControllerProtocol
-#ifdef __IPHONE8_0
+#ifdef __IPHONE_8_0
 		, UIPopoverPresentationControllerDelegate
 #endif
 		>

@@ -31,14 +31,10 @@
 
 #define ActionTag_DeleteCalendar 100
 
-#ifdef __IPHONE8_0
-
+#ifdef __IPHONE_8_0
 @interface A3DaysCounterCalendarListMainViewController () <UINavigationControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, A3InstructionViewControllerDelegate, UIPopoverPresentationControllerDelegate>
-
 #else
-
-@interface A3DaysCounterCalendarListMainViewController () <UINavigationControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, A3InstructionViewControllerDelegate, UIPopoverPresentationControllerDelegate>
-
+@interface A3DaysCounterCalendarListMainViewController () <UINavigationControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, A3InstructionViewControllerDelegate>
 #endif
 
 @property (strong, nonatomic) NSArray *itemArray;
