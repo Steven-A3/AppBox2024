@@ -169,7 +169,9 @@
 		self.coverView.image = [UIImage imageNamed:[self getLaunchImageName]];
 		[self.window addSubview:self.coverView];
 
-		[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
+		if (IS_IOS7) {
+			[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
+		}
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(statusBarFrameOrOrientationChanged:)
