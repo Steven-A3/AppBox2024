@@ -159,13 +159,11 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	if ([self isMovingToParentViewController]) {
-		[self.navigationController setNavigationBarHidden:YES animated:NO];
+	[self.navigationController setNavigationBarHidden:YES animated:NO];
 
-		UIImage *image = [UIImage new];
-		[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
-		[self.navigationController.navigationBar setShadowImage:image];
-	}
+	UIImage *image = [UIImage new];
+	[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+	[self.navigationController.navigationBar setShadowImage:image];
 }
 
 - (NSMutableArray *)categories {
