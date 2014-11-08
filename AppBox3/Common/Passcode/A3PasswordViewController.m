@@ -273,7 +273,9 @@
 												   object:nil];
 		[mainWindow.rootViewController addChildViewController: self];
 
-		[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
+		if (IS_IOS7) {
+			[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
+		}
 	}
 	self.title = NSLocalizedString(@"Enter Passcode", @"");
 }
