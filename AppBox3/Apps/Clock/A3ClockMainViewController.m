@@ -173,17 +173,15 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	if ([self isMovingToParentViewController]) {
-		[self layoutSubviews];
-		[self.clockDataManager startTimer];
-		[self setupInstructionView];
-		if (self.instructionViewController) {
-			[self adjustInstructionFingerPositionForPortrait:IS_PORTRAIT];
-		}
-		_pageControl.currentPage = [[A3UserDefaults standardUserDefaults] integerForKey:A3ClockUserDefaultsCurrentPage];
-		[self scrollToPage:_pageControl.currentPage];
-		[self gotoPage:_pageControl.currentPage];
+	[self layoutSubviews];
+	[self.clockDataManager startTimer];
+	[self setupInstructionView];
+	if (self.instructionViewController) {
+		[self adjustInstructionFingerPositionForPortrait:IS_PORTRAIT];
 	}
+	_pageControl.currentPage = [[A3UserDefaults standardUserDefaults] integerForKey:A3ClockUserDefaultsCurrentPage];
+	[self scrollToPage:_pageControl.currentPage];
+	[self gotoPage:_pageControl.currentPage];
 }
 
 static NSString *const A3V3InstructionDidShowForClock1 = @"A3V3InstructionDidShowForClock1";
@@ -194,13 +192,11 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 
 	[self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]}];
 
-	if ([self isMovingToParentViewController]) {
-        if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock1] && ![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock2]) {
-            [self showMenus:NO];
-        }
-        else {
-            [self showMenus:YES];
-        }
+	if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock1] && ![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock2]) {
+		[self showMenus:NO];
+	}
+	else {
+		[self showMenus:YES];
 	}
     [self resetAndStartAutoDimTimer];
 }
