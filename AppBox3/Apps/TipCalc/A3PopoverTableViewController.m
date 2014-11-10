@@ -10,6 +10,7 @@
 #import "A3DefaultColorDefines.h"
 #import "UIColor+A3Addition.h"
 #import "UIViewController+A3Addition.h"
+#import "A3StandardLeft15Cell.h"
 
 typedef NS_ENUM(NSInteger, SectionType) {
     SectionType_Empty = 0,
@@ -134,9 +135,9 @@ typedef NS_ENUM(NSInteger, SectionType) {
     }
     
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    A3StandardLeft15Cell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	if (!cell) {
-		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+		cell = [[A3StandardLeft15Cell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
         cell.textLabel.adjustsFontSizeToFitWidth = YES;
         cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
