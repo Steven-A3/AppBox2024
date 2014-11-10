@@ -759,11 +759,13 @@ extern NSString *const A3WalletItemFieldNoteCellID;
         return;
     }
     else if ( [_periodItem.endDate timeIntervalSince1970] < [_periodItem.startDate timeIntervalSince1970] ) {
-		[A3LadyCalendarModelManager alertMessage:NSLocalizedString(@"Cannot Save Period.\nThe start date must be before the end date.", @"Cannot Save Period.\nThe start date must be before the end date.") title:nil];
+		[A3LadyCalendarModelManager alertMessage:NSLocalizedString(@"The start date must be before the end date.", nil)
+										   title:NSLocalizedString(@"Cannot Save Period.", nil)];
         return;
     }
     else if ( [_dataManager isOverlapStartDate:_periodItem.startDate endDate:_periodItem.endDate accountID:_dataManager.currentAccount.uniqueID periodID:_periodItem.uniqueID] ) {
-		[A3LadyCalendarModelManager alertMessage:NSLocalizedString(@"The new date you entered overlaps with previous dates.", @"The new date you entered overlaps with previous dates.") title:nil];
+		[A3LadyCalendarModelManager alertMessage:NSLocalizedString(@"The new date you entered overlaps with previous dates.", @"The new date you entered overlaps with previous dates.")
+										   title:NSLocalizedString(@"Info", @"Info")];
         return;
     }
     if ( _prevPeriod && !_isCustomCycleLengthMode ) {
