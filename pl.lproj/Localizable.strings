@@ -60,7 +60,6 @@
 "Lunar Calendar" = "Kalendarz księżycowy";
 
 /* "Twój przyjaciel przekazuje Ci informację, że Lustro, Budzik, Poziomica, Waluty, Daty, Odliczanie, Napiwki, Jednostki i aplikacje sieciowe (Web Apps)  z AppBox Pro™ są już dostępne na twojego iPhone-a lub iPod-a Touch. Kliknij link poniżej aby ściągnąć AppBox Pro™ ze sklepu iTunes.\n\nhttps://itunes.apple.com/app/id318404385"; */
-"tellafriend" = "Przyjaciel przekazuje Ci informacje, że Kalkulator, Daty, Pożyczki, Procenty, Wyprzedaże, Napiwki, Jednostki, Waluty, Kalendarz księżycowy, Tłumacz, Konwerter jednostek, Odliczanie, Wydatki, Kalendarz kobiecy, Portfel, Dni wolne, Status baterii, Zegar, Lupa oraz Lustro są dostępne w aplikacji AppBox Pro™ na iPhone, iPad oraz iPod Touch. Kliknij poniżej aby pobrać AppBox Pro™ z iTunes App Store.";
 
 /* "Our every effort has been made to present an accurate holiday list. However many part of the world holidays are subject to arbitrary changes by local authorities. We cannot accept any responsibility for any error or omission in the holiday data. You are therefore advised to verify the dates with the embassy or consulate of country, before planning any case."; */
 "DISCLAIMER_MESSAGE" = "Staraliśmy się aby wyświetlić aktualną listę dni wolnych. Jednak w wiele dni wolnych na świecie zależy od lokalnych władz i ich ustaleń. Nie możemy wziąść odpowiedzialności za jakikolwiek błąd lub pominięcie jakieś daty dnia wolnego. Zalecamy aby sprawdzić datę w ambasadzie lub konsulacie kraju, zanim podejmie się decyzję na temat planowanego wyjazdu.";
@@ -445,7 +444,7 @@
 "Cycle Length" = "Długość cyklu";
 "Delete Period" = "Usuń okres";
 "Please input end date." = "Wpisz datę zakończenia.";
-"Cannot Save Period.\nThe start date must be before the end date." = "Błąd zapisu okresu.\nData rozpoczęcia musi być przed datą zakończenia.";
+"Cannot Save Period." = "Błąd zapisu okresu.";
 "The new date you entered overlaps with previous dates." = "Wpisana data pokrywa się z poprzednią.";
 "6 Mos" = "6 Mie";
 "6 Months" = "6 miesięcy";
@@ -938,3 +937,7 @@ Wprowadź klucz szyfrowania dla portfela.";
 
 "For monthly payment." = "Za miesięczną wypłatę.";
 
+"Notifications are disabled" = "Powiadomienia są wyłączone.";
+"Please enable alert after enabling notifications for this app." = "Proszę włączyć alarm po włączeniu powiadomień dla tej aplikacji.";
+
+"Cannot Save Period." = "Cannot Save Period.";

@@ -59,8 +59,6 @@
 "Passcode Lock" = "Verrouillage par code";
 "Lunar Calendar" = "Calendrier lunaire";
 
-"tellafriend" = "Un ami veut vous faire savoir la durée de vie du Calculette, Calculette de date, Calculette du prêt, Calculette de pourcentage, Calculette de ventes, Calculette du pourboire, Prix à l'unité, Convertisseur de devises, Traducteur, Convertisseur d'unité, Calendrier d'Événements, Liste de dépense, Calendrier féminin, Portefeuille, Jours fériés, Batterie, Horloge, Magnifier et Miroir que vous attendez de AppBox Pro sont maintenant disponibles pour votre iPhone, iPad et iPod Touch. Cliquez ci-dessous pour télécharger AppBox Pro à partir de l'iTunes App Store.";
-
 /* "Our every effort has been made to present an accurate holiday list. However many part of the world holidays are subject to arbitrary changes by local authorities. We cannot accept any responsibility for any error or omission in the holiday data. You are therefore advised to verify the dates with the embassy or consulate of country, before planning any case."; */
 "DISCLAIMER_MESSAGE" = "Nous avons fait de notre mieux pour présenter une liste de Jours fériés précise. Cependant, plusieurs parties des Jours fériés mondiales sont sujettes à des changements arbitraires faits par des autorités locales. Nous déclinons notre responsabilité pour toute erreur ou omission dans les données des Jours fériés. Par conséquent, nous vous conseillons de vérifier les dates auprès de l’ambassade ou du consulat du pays avant de planifier tout cas.";
 
@@ -453,7 +451,7 @@
 "Cycle Length" = "Durée du cycle";
 "Delete Period" = "Supprimer la période";
 "Please input end date." = "Veuillez saisir la date.";
-"Cannot Save Period.\nThe start date must be before the end date." = "Impossible de sauvegarder la période.\nLa date de démarrage doit précéder la date de d’arrêt.";
+"Cannot Save Period." = "Impossible de sauvegarder la période.";
 "The new date you entered overlaps with previous dates." = "La nouvelle date saisie chevauche avec la date précédente.";
 "6 Mos" = "6 Mos";
 "6 Months" = "6 Mois";
@@ -938,3 +936,7 @@
 
 "For monthly payment." = "Pour le paiement mensuel.";
 
+"Notifications are disabled" = "Les notifications sont désactivées.";
+"Please enable alert after enabling notifications for this app." = "Se il vous plaît permettre d'alerte après l'activation des notifications pour cette application.";
+
+"Cannot Save Period." = "Cannot Save Period.";

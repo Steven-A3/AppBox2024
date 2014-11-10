@@ -58,7 +58,6 @@
 "Sync" = "Synchronisieren";
 "Passcode Lock" = "Code-Sperre";
 "Lunar Calendar" = "Lunar Kalender";
-"tellafriend" = "Ein Freund möchte Sie auf die neuen Funktionen von AppBox Pro™ aufmerksam machen. Nutzen Sie Rechner, Datumsrechner, Darlehensrechner, Prozentrechner, Kaufpreisrechner, Trinkgeldrechner, Stückpreis, Währungsrechner, Übersetzer, Einheitenrechner, Tageszähler, Ausgabenliste, Damen-Kalender, Geldbörse, Feiertage, Batteriestatus, Uhr, Lupe und  Spiegel für Ihr iPhone, iPad und iPod Touch. Klicken Sie unten zum Download von AppBox Pro™ aus dem iTunes App Store.";
 
 /* "Our every effort has been made to present an accurate holiday list. However many part of the world holidays are subject to arbitrary changes by local authorities. We cannot accept any responsibility for any error or omission in the holiday data. You are therefore advised to verify the dates with the embassy or consulate of country, before planning any case."; */
 "DISCLAIMER_MESSAGE" = "Wir prüfen alle Feiertage mit größter Sorgfalt. Dennoch kann es sein, dass einige Angaben fehlerhaft sind, da vielerorts Feiertage durch die jeweiligen Behörden kurzfristig geändert werden können. Deswegen übernehmen wir keine Haftung für die Richtigkeit der hier gemachten Angaben und raten Ihnen die Feiertage mit Hilfe der Botschaft oder des Konsulats des betreffenden Landes zu prüfen.";
@@ -445,7 +444,7 @@
 "Cycle Length" = "Zykluslänge";
 "Delete Period" = "Periode löschen";
 "Please input end date." = "Bitte geben Sie den Endtermin ein.";
-"Cannot Save Period.\nThe start date must be before the end date." = "Periode kann nicht gespeichert werden.\nDer Starttermin muss vor dem Endtermin liegen.";
+"Cannot Save Period." = "Periode kann nicht gespeichert werden.";
 "The new date you entered overlaps with previous dates." = "Der neue Termin überschneidet sich mit einem früheren Zeitpunkt.";
 "6 Mos" = "6 M";
 "6 Months" = "6 Monate";
@@ -947,3 +946,7 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 
 "For monthly payment." = "Für monatliche Zahlung.";
 
+"Notifications are disabled" = "Benachrichtigungen sind deaktiviert.";
+"Please enable alert after enabling notifications for this app." = "Bitte aktivieren Benachrichtigung nach der Aktivierung von Benachrichtigungen für diese App.";
+
+"Cannot Save Period." = "Cannot Save Period.";

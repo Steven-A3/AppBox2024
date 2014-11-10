@@ -59,8 +59,6 @@
 "Passcode Lock" = "Blocco con codice";
 "Lunar Calendar" = "Calendario Lunare";
 
-"tellafriend" = "Un amico ti vuole far conoscere AppBox Pro™, un unico programma che contiene: Calcolatrice, Calcolatrice Data, Calcolatrice Prestito, Calcolatrice Percentuale, Calcolatrice Sconti, Calcolatrice Mancia, Prezzo unitario, Convertitore Valuta, Traduttore, Convertitore Unità, Conta Giorni, Lista Spesa, Calendario femminile, Portafoglio, Festività, Stato Batteria, Orologio, Lente d'ingrandimento e Specchio. AppBox Pro™ è ora disponibile per il tuo iPhone, iPad e iPod Touch. Clicca sotto per scaricare AppBox Pro™ da iTunes AppStore.";
-
 "DISCLAIMER_MESSAGE" = "Abbiamo dato il meglio per realizzare un’accurata lista delle festività. Queste, tuttavia, sono soggette a variazioni determinate dalle autorità locali. Pertanto non possiamo accettare alcuna responsabilità rispetto ad errori od omissioni nei dati relativi al calendario delle festività. Consigliamo di verificare sempre con le ambasciate o i consolati dei Paesi interessati";
 "HOLIDAYS_ACKNOWLEDGEMENT" = "Le foto mostrate nell’applicazione Vacanze in AppBox Pro sono ottenute da Flickr e riflettono la bellezza e la magnificenza di diverse località del mondo. Tutti i diritti rimangono riservati agli autori delle foto, dei quali sono mostrati lo screen name e il link all’immagine originale. ALLABOUTAPPS non detiene alcun diritto su tali foto. Se vuoi partecipare, mandaci un’email. Non possiamo pagarti, ma daremo accesso al tuo photo stream ad un nuovo e vasto pubblico. Grazie agli autori per la condivisione.";
 
@@ -249,7 +247,7 @@
 "Use My Location" = "Mia Posizione";
 "Search Location" = "Cerca Posizione";
 "Please enter the end date." = "Si prega di inserire la data di termine.";
-"The start date must be before the end date." = "La data di inizio deve essere precedente alla data di termine";
+"The start date must be before the end date." = "La data di inizio deve essere precedente alla data di termine.";
 "Cannot Save Event" = "Non è possibile salvare l’evento";
 "Start date is not a lunar date." = "La data di inizio non è una data lunare";
 "End date is not a lunar date." = "La data di termine non è una data lunare";
@@ -449,7 +447,7 @@
 "Cycle Length" = "Durata del Ciclo";
 "Delete Period" = "Elimina periodo";
 "Please input end date." = "Si prega di inserire una data di termine";
-"Cannot Save Period.\nThe start date must be before the end date." = "Non è possibile salvare il periodo.\nLa data di inizio deve precedere la data di termine";
+"Cannot Save Period." = "Non è possibile salvare il periodo.";
 "The new date you entered overlaps with previous dates." = "La nuova data inserita si sovrappone con le date precedenti.";
 "6 Mos" = "6 mes";
 "6 Months" = "6 mesi";
@@ -933,3 +931,7 @@ Inserire chiave di crittografia per il portafoglio.";
 
 "For monthly payment." = "Per il pagamento mensile.";
 
+"Notifications are disabled" = "Le notifiche sono disabilitate.";
+"Please enable alert after enabling notifications for this app." = "Si prega di abilitare allarme dopo aver abilitato le notifiche per questa applicazione.";
+
+"Cannot Save Period." = "Cannot Save Period.";
