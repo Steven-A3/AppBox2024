@@ -24,6 +24,7 @@
 
 @property (strong, nonatomic) NSArray *itemArray;
 @property (strong, nonatomic) NSMutableDictionary *settingDict;
+@property (strong, nonatomic) id settingsObserver;
 
 @end
 
@@ -327,58 +328,52 @@
         if( [[item objectForKey:ItemKey_Type] integerValue] == SettingCell_Alert ){
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
 #ifdef __IPHONE_8_0
-            if (!IS_IOS7) {
-                UIUserNotificationSettings *currentNotificationSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
-                BOOL didRegisterBefore = [[NSUserDefaults standardUserDefaults] boolForKey:A3NotificationsUserNotificationSettingsRegistered];
-                if (didRegisterBefore && [currentNotificationSettings types] == UIUserNotificationTypeNone) {
-                    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userNotificationSettingsRegistered:) name:A3NotificationsUserNotificationSettingsRegistered object:nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationsUserNotificationSettingsRegistered object:currentNotificationSettings];
-                    return;
-                }
-                
-                if ([currentNotificationSettings types] == UIUserNotificationTypeNone) {
-                    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge|UIUserNotificationTypeSound|UIUserNotificationTypeAlert categories:nil];
-                    
-                    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3NotificationsUserNotificationSettingsRegistered];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
-                    
-                    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userNotificationSettingsRegistered:) name:A3NotificationsUserNotificationSettingsRegistered object:nil];
-                    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-                    return;
-                }
-            }
+			if (!IS_IOS7) {
+				// 설정에 들어가기 전에, Notification 설정을 확인
+				UIUserNotificationSettings *currentNotificationSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
+				if (currentNotificationSettings.types == UIUserNotificationTypeNone) {
+
+					UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeSound|UIUserNotificationTypeAlert categories:nil];
+					[[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+
+					_settingsObserver = [[NSNotificationCenter defaultCenter] addObserverForName:A3NotificationsUserNotificationSettingsRegistered
+																						  object:nil
+																						   queue:nil
+																					  usingBlock:^(NSNotification *note) {
+																						  [[NSNotificationCenter defaultCenter] removeObserver:_settingsObserver];
+																						  _settingsObserver = nil;
+
+																						  UIUserNotificationSettings *userSettings = note.object;
+																						  if (userSettings.types == UIUserNotificationTypeNone) {
+																							  // User did not allow to use notification
+																							  // Alert User to it is not possible to set alert option
+
+																							  UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Notifications are disabled", nil)
+																																									   message:NSLocalizedString(@"Please enable alert after enabling notifications for this app.", nil)
+																																								preferredStyle:UIAlertControllerStyleAlert];
+																							  [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK")
+																																				  style:UIAlertActionStyleCancel
+																																				handler:NULL]];
+																							  [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Settings", @"Settings")
+																																				  style:UIAlertActionStyleDefault
+																																				handler:^(UIAlertAction *action) {
+																																					[[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+																																				}]];
+																							  [self presentViewController:alertController
+																												 animated:YES
+																											   completion:NULL];
+																						  } else {
+																							  [self moveToAlertSetupViewController];
+																						  }
+																					  }];
+					return;
+				}
+			}
 #endif
-            
             [self moveToAlertSetupViewController];
         }
     }
 }
-
-#ifdef __IPHONE_8_0
-- (void)userNotificationSettingsRegistered:(NSNotification *)notification
-{
-    UIUserNotificationSettings *settings = notification.object;
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationsUserNotificationSettingsRegistered object:nil];
-    
-    if (settings.types == UIUserNotificationTypeNone) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@""
-                                                                                 message:@"알림 권한이 없어서, 알람을 받지 못하지만 계속해서 설정하시겠습니까? (알람 권한을 얻으려면 셋팅 -> AppBox Pro 로 이동해주세요.)"
-                                                                          preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                                            style:UIAlertActionStyleCancel
-                                                          handler:NULL]];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Continue", @"Continue")
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction *action) {
-                                                              [self moveToAlertSetupViewController];
-                                                          }]];
-        [self presentViewController:alertController animated:YES completion:NULL];
-    }
-    else {
-        [self moveToAlertSetupViewController];
-    }
-}
-#endif
 
 - (void)moveToAlertSetupViewController
 {
