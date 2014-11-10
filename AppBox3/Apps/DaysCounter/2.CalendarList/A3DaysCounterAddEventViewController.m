@@ -35,6 +35,7 @@
 #import "NSString+conversion.h"
 #import "DaysCounterCalendar.h"
 #import "CLLocationManager+authorization.h"
+#import "A3Utilities.h"
 
 #define ActionTag_Location      100
 #define ActionTag_Photo         101
@@ -65,6 +66,7 @@
 @property (weak, nonatomic) UITextView *textViewResponder;
 @property (strong, nonatomic) UIImagePickerController *imagePickerController;
 @property (copy, nonatomic) NSString *originalPhotoID;
+@property (strong, nonatomic) id settingsObserver;
 @end
 
 @implementation A3DaysCounterAddEventViewController {
@@ -1263,6 +1265,51 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
+	if (!IS_IOS7) {
+		// 설정에 들어가기 전에, Notification 설정을 확인
+		UIUserNotificationSettings *currentNotificationSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
+		if (currentNotificationSettings.types == UIUserNotificationTypeNone) {
+
+			UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeSound|UIUserNotificationTypeAlert categories:nil];
+			[[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+
+			_settingsObserver = [[NSNotificationCenter defaultCenter] addObserverForName:A3NotificationsUserNotificationSettingsRegistered
+																		 object:nil
+																		  queue:nil
+																	 usingBlock:^(NSNotification *note) {
+																		 [[NSNotificationCenter defaultCenter] removeObserver:_settingsObserver];
+																		 _settingsObserver = nil;
+
+																		 UIUserNotificationSettings *userSettings = note.object;
+																		 if (userSettings.types == UIUserNotificationTypeNone) {
+																			 // User did not allow to use notification
+																			 // Alert User to it is not possible to set alert option
+
+																			 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Notifications are disabled", nil)
+																																					  message:NSLocalizedString(@"Please enable alert after enabling notifications for this app.", nil)
+																																			   preferredStyle:UIAlertControllerStyleAlert];
+																			 [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK")
+																																 style:UIAlertActionStyleCancel
+																															   handler:NULL]];
+																			 [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Settings", @"Settings")
+																																 style:UIAlertActionStyleDefault
+																															   handler:^(UIAlertAction *action) {
+																																   [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+																															   }]];
+																			 [self presentViewController:alertController
+																								animated:YES
+																							  completion:NULL];
+																		 } else {
+																			 [self pushSetupAlertViewController];
+																		 }
+																	 }];
+			return;
+		}
+    }
+	[self pushSetupAlertViewController];
+}
+
+- (void)pushSetupAlertViewController {
     A3DaysCounterSetupAlertViewController *nextVC = [[A3DaysCounterSetupAlertViewController alloc] initWithNibName:@"A3DaysCounterSetupAlertViewController" bundle:nil];
     [_sharedManager recalculateEventDatesForEvent:_eventItem];
     nextVC.eventModel = self.eventItem;
@@ -1272,7 +1319,7 @@
         NSIndexPath *alertIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowForItemType:EventCellType_Alert atSectionArray:section1_items]
                                                          inSection:AddSection_Section_1];
         
-        UITableViewCell *cell = [tableView cellForRowAtIndexPath:alertIndexPath];
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:alertIndexPath];
         cell.detailTextLabel.text = [_sharedManager alertDateStringFromDate:_eventItem.effectiveStartDate
                                                                   alertDate:_eventItem.alertDatetime];
     };
@@ -1503,59 +1550,8 @@
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
     [self resignAllAction];
-    
-#ifdef __IPHONE_8_0
-    if (!IS_IOS7 && _eventItem.alertDatetime) {
-        UIUserNotificationSettings *currentNotificationSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
-        
-        BOOL didRegisterBefore = [[NSUserDefaults standardUserDefaults] boolForKey:A3NotificationsUserNotificationSettingsRegistered];
-        if (didRegisterBefore && [currentNotificationSettings types] == UIUserNotificationTypeNone) {
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userNotificationSettingsRegistered:) name:A3NotificationsUserNotificationSettingsRegistered object:nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationsUserNotificationSettingsRegistered object:currentNotificationSettings];
-            return;
-        }
-        
-        if ([currentNotificationSettings types] == UIUserNotificationTypeNone) {
-            UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge|UIUserNotificationTypeSound|UIUserNotificationTypeAlert categories:nil];
-            
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3NotificationsUserNotificationSettingsRegistered];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userNotificationSettingsRegistered:) name:A3NotificationsUserNotificationSettingsRegistered object:nil];
-            [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-            return;
-        }
-    }
-#endif
-
     [self registerEvent];
 }
-
-#ifdef __IPHONE_8_0
-- (void)userNotificationSettingsRegistered:(NSNotification *)notification
-{
-    UIUserNotificationSettings *settings = notification.object;
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationsUserNotificationSettingsRegistered object:nil];
-
-    if (settings.types == UIUserNotificationTypeNone) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@""
-                                                                                 message:@"알림 권한이 없어서, 알람을 받지 못하지만 이벤트는 계속 등록하시겠습니까? (알람 권한을 얻으려면 셋팅 -> AppBox Pro 로 이동해주세요.)"
-                                                                          preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                                            style:UIAlertActionStyleCancel
-                                                          handler:NULL]];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Continue", @"Continue")
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction *action) {
-                                                              [self registerEvent];
-                                                          }]];
-        [self presentViewController:alertController animated:YES completion:NULL];
-    }
-    else {
-        [self registerEvent];
-    }
-}
-#endif
 
 - (void)registerEvent
 {
@@ -1626,8 +1622,7 @@
     [_eventItem moveImagesToOriginalDirectory];
     
     [A3DaysCounterModelManager reloadAlertDateListForLocalNotification:_savingContext ];
-    
-    
+
     if (IS_IPAD) {
         [self.A3RootViewController dismissCenterViewController];
     }
@@ -1636,34 +1631,6 @@
     }
     [self removeObserver];
 }
-
-#ifdef __IPHONE_8_0
-- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
-{
-    application.delegate = nil;
-    
-    if (notificationSettings.types == UIUserNotificationTypeNone) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@""
-                                                                                 message:@"알림 권한이 없어서, 알람을 받지 못하지만 계속 등록합니다."
-                                                                          preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                                            style:UIAlertActionStyleCancel
-                                                          handler:^(UIAlertAction *action) {
-                                                              [alertController dismissViewControllerAnimated:YES completion:NULL];
-                                                          }]];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK")
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction *action) {
-                                                              [self registerEvent];
-//                                                              [alertController dismissViewControllerAnimated:YES completion:NULL];
-                                                          }]];
-        [self presentViewController:alertController animated:YES completion:NULL];
-    }
-    else {
-        [self registerEvent];
-    }
-}
-#endif
 
 - (void)cancelButtonAction:(UIBarButtonItem *)button
 {
