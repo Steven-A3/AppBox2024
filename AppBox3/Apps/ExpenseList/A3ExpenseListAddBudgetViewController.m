@@ -173,12 +173,14 @@ enum A3ExpenseListAddBudgetCellType {
 }
 
 - (void)viewWillLayoutSubviews {
-    [super viewWillLayoutSubviews];;;;;;;;;
+    [super viewWillLayoutSubviews];
 #ifdef __IPHONE_8_0
     // Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
     if ([self.tableView respondsToSelector:@selector(layoutMargins)])
     {
-        self.tableView.layoutMargins = UIEdgeInsetsZero;
+		UIEdgeInsets layoutMargins = self.tableView.layoutMargins;
+		layoutMargins.left = 0;
+		self.tableView.layoutMargins = layoutMargins;
     }
 #endif
 }
@@ -583,7 +585,9 @@ static NSString *CellIdentifier = @"Cell";
     // Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
     if ([cell respondsToSelector:@selector(layoutMargins)])
     {
-        cell.layoutMargins = UIEdgeInsetsZero;
+		UIEdgeInsets layoutMargins = cell.layoutMargins;
+		layoutMargins.left = 0;
+        cell.layoutMargins = layoutMargins;
     }
 #endif
 

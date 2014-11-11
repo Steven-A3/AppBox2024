@@ -294,10 +294,12 @@
     
     // Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
 #ifdef __IPHONE_8_0
-    if ([self.tableView respondsToSelector:@selector(layoutMargins)])
-    {
-        self.tableView.layoutMargins = UIEdgeInsetsZero;
-    }
+	if ([self.tableView respondsToSelector:@selector(layoutMargins)])
+	{
+		UIEdgeInsets layoutMargins = self.tableView.layoutMargins;
+		layoutMargins.left = 0;
+		self.tableView.layoutMargins = layoutMargins;
+	}
 #endif
 }
 
@@ -661,7 +663,9 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
         // Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
         if ([cell respondsToSelector:@selector(layoutMargins)])
         {
-            cell.layoutMargins = UIEdgeInsetsZero;
+			UIEdgeInsets layoutMargins = cell.layoutMargins;
+			layoutMargins.left = 0;
+			cell.layoutMargins = layoutMargins;
         }
 #endif
         
@@ -790,7 +794,9 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
     // Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
     if ([cell respondsToSelector:@selector(layoutMargins)])
     {
-        cell.layoutMargins = UIEdgeInsetsZero;
+		UIEdgeInsets layoutMargins = cell.layoutMargins;
+		layoutMargins.left = 0;
+		cell.layoutMargins = layoutMargins;
     }
 #endif
     

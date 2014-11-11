@@ -153,11 +153,13 @@
     [super viewWillLayoutSubviews];
     
 #ifdef __IPHONE_8_0
-    // Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
-    if (!IS_IOS7 && [self.currentLocationTableView respondsToSelector:@selector(layoutMargins)])
-    {
-        self.currentLocationTableView.layoutMargins = UIEdgeInsetsZero;
-    }
+	// Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
+	if ([self.currentLocationTableView respondsToSelector:@selector(layoutMargins)])
+	{
+		UIEdgeInsets layoutMargins = self.currentLocationTableView.layoutMargins;
+		layoutMargins.left = 0;
+		self.currentLocationTableView.layoutMargins = layoutMargins;
+	}
 #endif
 }
 
@@ -394,9 +396,12 @@
     [_infoTableView setContentOffset:CGPointMake(0, -CGRectGetHeight(self.view.frame)) animated:YES];
 
 #ifdef __IPHONE_8_0
-	if (!IS_IOS7) {
-        _infoTableView.layoutMargins = UIEdgeInsetsZero;
-    }
+	if ([_infoTableView respondsToSelector:@selector(layoutMargins)])
+	{
+		UIEdgeInsets layoutMargins = _infoTableView.layoutMargins;
+		layoutMargins.left = 0;
+		_infoTableView.layoutMargins = layoutMargins;
+	}
 #endif
     
     return YES;
@@ -481,13 +486,13 @@
     if ( tableView == _currentLocationTableView ) {
         cell = [self tableView:tableView cellOfChangeLocationAtIndexPath:indexPath];
         
-#ifdef __IPHONE_8_0
-        if (!IS_IOS7 && [cell respondsToSelector:@selector(layoutMargins)])
+        if ([cell respondsToSelector:@selector(layoutMargins)])
         {
-            cell.layoutMargins = UIEdgeInsetsZero;
+			UIEdgeInsets layoutMargins = cell.layoutMargins;
+			layoutMargins.left = 0;
+			cell.layoutMargins = layoutMargins;
         }
-#endif
-        
+
         return cell;
     }
     
@@ -925,7 +930,12 @@
 
 #ifdef __IPHONE_8_0
     if (!IS_IOS7) {
-        _infoTableView.layoutMargins = UIEdgeInsetsZero;
+		if ([_infoTableView respondsToSelector:@selector(layoutMargins)])
+		{
+			UIEdgeInsets layoutMargins = _infoTableView.layoutMargins;
+			layoutMargins.left = 0;
+			_infoTableView.layoutMargins = layoutMargins;
+		}
     }
 #endif
 }

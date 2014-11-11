@@ -64,10 +64,12 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
     
 #ifdef __IPHONE_8_0
-    if ([self.tableView respondsToSelector:@selector(layoutMargins)])
-    {
-        self.tableView.layoutMargins = UIEdgeInsetsZero;
-    }
+	if ([self.tableView respondsToSelector:@selector(layoutMargins)])
+	{
+		UIEdgeInsets layoutMargins = self.tableView.layoutMargins;
+		layoutMargins.left = 0;
+		self.tableView.layoutMargins = layoutMargins;
+	}
 #endif
     self.tableView.separatorInset = A3UITableViewSeparatorInset;
 }
@@ -142,10 +144,12 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     [super viewWillLayoutSubviews];
     
 #ifdef __IPHONE_8_0
-    if ([self.tableView respondsToSelector:@selector(layoutMargins)])
-    {
-        self.tableView.layoutMargins = UIEdgeInsetsZero;
-    }
+	if ([self.tableView respondsToSelector:@selector(layoutMargins)])
+	{
+		UIEdgeInsets layoutMargins = self.tableView.layoutMargins;
+		layoutMargins.left = 0;
+		self.tableView.layoutMargins = layoutMargins;
+	}
 #endif
 }
 

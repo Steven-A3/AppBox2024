@@ -56,10 +56,12 @@
 
 	#ifdef __IPHONE_8_0
     // Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
-    if ([self.tableView respondsToSelector:@selector(layoutMargins)])
-    {
-        self.tableView.layoutMargins = UIEdgeInsetsZero;
-    }
+	if ([self.tableView respondsToSelector:@selector(layoutMargins)])
+	{
+		UIEdgeInsets layoutMargins = self.tableView.layoutMargins;
+		layoutMargins.left = 0;
+		self.tableView.layoutMargins = layoutMargins;
+	}
 	#endif
 }
 
@@ -77,10 +79,12 @@
 
 	#ifdef __IPHONE_8_0
     // Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
-    if ([self.tableView respondsToSelector:@selector(layoutMargins)])
-    {
-        self.tableView.layoutMargins = UIEdgeInsetsZero;
-    }
+	if ([self.tableView respondsToSelector:@selector(layoutMargins)])
+	{
+		UIEdgeInsets layoutMargins = self.tableView.layoutMargins;
+		layoutMargins.left = 0;
+		self.tableView.layoutMargins = layoutMargins;
+	}
 	#endif
 }
 

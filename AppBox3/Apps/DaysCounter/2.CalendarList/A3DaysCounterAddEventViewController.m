@@ -36,6 +36,7 @@
 #import "DaysCounterCalendar.h"
 #import "CLLocationManager+authorization.h"
 #import "A3Utilities.h"
+#import "A3StandardLeft15Cell.h"
 
 #define ActionTag_Location      100
 #define ActionTag_Photo         101
@@ -269,21 +270,18 @@
     
 #ifdef __IPHONE_8_0
     // Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
-    if ([self.tableView respondsToSelector:@selector(layoutMargins)])
-    {
-        self.tableView.layoutMargins = UIEdgeInsetsZero;
-    }
+	if ([self.tableView respondsToSelector:@selector(layoutMargins)])
+	{
+		UIEdgeInsets layoutMargins = self.tableView.layoutMargins;
+		layoutMargins.left = 0;
+		self.tableView.layoutMargins = layoutMargins;
+	}
 #endif
 }
 
 - (BOOL)usesFullScreenInLandscape
 {
     return (IS_IPAD && UIInterfaceOrientationIsLandscape(self.interfaceOrientation) && _landscapeFullScreen);
-}
-
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
 }
 
 - (void)didReceiveMemoryWarning
@@ -510,7 +508,9 @@
     // Ensure self.tableView.separatorInset = UIEdgeInsetsZero is applied correctly in iOS 8
     if ([cell respondsToSelector:@selector(layoutMargins)])
     {
-        cell.layoutMargins = UIEdgeInsetsZero;
+		UIEdgeInsets layoutMargins = cell.layoutMargins;
+		layoutMargins.left = 0;
+		cell.layoutMargins = layoutMargins;
     }
 #endif
     
@@ -534,7 +534,7 @@
         NSInteger itemType = [[itemDict objectForKey:EventRowType] integerValue];
         
         if ( itemType == EventCellType_RepeatType || itemType == EventCellType_EndRepeatDate || itemType == EventCellType_Alert || itemType == EventCellType_DurationOption || itemType == EventCellType_Location) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
+            cell = [[A3StandardLeft15Cell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
             cell.textLabel.tag = 10;
