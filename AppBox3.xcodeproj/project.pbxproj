@@ -732,7 +732,6 @@
 		68E2A66518D0B1FC00E834D9 /* NSNumberFormatter+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A64318D0B1FC00E834D9 /* NSNumberFormatter+Extension.m */; };
 		68E2A6A018D0B22800E834D9 /* A3SalesCalcCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A66918D0B22800E834D9 /* A3SalesCalcCalculator.m */; };
 		68E2A6A118D0B22800E834D9 /* A3SalesCalcData.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A66B18D0B22800E834D9 /* A3SalesCalcData.m */; };
-		68E2A6A218D0B22800E834D9 /* A3SalesCalcDetailInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A66D18D0B22800E834D9 /* A3SalesCalcDetailInfoViewController.m */; };
 		68E2A6A318D0B22800E834D9 /* A3SalesCalcHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A66F18D0B22800E834D9 /* A3SalesCalcHeaderView.m */; };
 		68E2A6A418D0B22800E834D9 /* A3SalesCalcHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A67118D0B22800E834D9 /* A3SalesCalcHistoryCell.m */; };
 		68E2A6A518D0B22800E834D9 /* A3SalesCalcHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A67318D0B22800E834D9 /* A3SalesCalcHistoryViewController.m */; };
@@ -2297,8 +2296,6 @@
 		68E2A66918D0B22800E834D9 /* A3SalesCalcCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SalesCalcCalculator.m; sourceTree = "<group>"; };
 		68E2A66A18D0B22800E834D9 /* A3SalesCalcData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3SalesCalcData.h; sourceTree = "<group>"; };
 		68E2A66B18D0B22800E834D9 /* A3SalesCalcData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SalesCalcData.m; sourceTree = "<group>"; };
-		68E2A66C18D0B22800E834D9 /* A3SalesCalcDetailInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3SalesCalcDetailInfoViewController.h; sourceTree = "<group>"; };
-		68E2A66D18D0B22800E834D9 /* A3SalesCalcDetailInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SalesCalcDetailInfoViewController.m; sourceTree = "<group>"; };
 		68E2A66E18D0B22800E834D9 /* A3SalesCalcHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3SalesCalcHeaderView.h; sourceTree = "<group>"; };
 		68E2A66F18D0B22800E834D9 /* A3SalesCalcHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SalesCalcHeaderView.m; sourceTree = "<group>"; };
 		68E2A67018D0B22800E834D9 /* A3SalesCalcHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3SalesCalcHistoryCell.h; sourceTree = "<group>"; };
@@ -4842,8 +4839,6 @@
 				68E2A66918D0B22800E834D9 /* A3SalesCalcCalculator.m */,
 				68E2A66A18D0B22800E834D9 /* A3SalesCalcData.h */,
 				68E2A66B18D0B22800E834D9 /* A3SalesCalcData.m */,
-				68E2A66C18D0B22800E834D9 /* A3SalesCalcDetailInfoViewController.h */,
-				68E2A66D18D0B22800E834D9 /* A3SalesCalcDetailInfoViewController.m */,
 				68E2A66E18D0B22800E834D9 /* A3SalesCalcHeaderView.h */,
 				68E2A66F18D0B22800E834D9 /* A3SalesCalcHeaderView.m */,
 				68E2A67018D0B22800E834D9 /* A3SalesCalcHistoryCell.h */,
@@ -6001,7 +5996,6 @@
 				6848249A19D272A100E5184C /* A3SettingsiTunesSelectBackupViewController.m in Sources */,
 				684E9F04188A43C300FAA48E /* NJKWebViewProgress.m in Sources */,
 				684D92F318BC1FBC005016F7 /* A3DateCalcEditEventViewController.m in Sources */,
-				68E2A6A218D0B22800E834D9 /* A3SalesCalcDetailInfoViewController.m in Sources */,
 				680D639C18CFF9D400938AD0 /* UILabel+Boldify.m in Sources */,
 				6835659418FA663100C3494C /* A3WalletMoreTableViewController.m in Sources */,
 				68B6A2EF18CEC76D004084EF /* A3UnitPriceInfoCell.m in Sources */,

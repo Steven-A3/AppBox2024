@@ -6,7 +6,6 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <CoreLocation/CoreLocation.h>
 #import "A3SalesCalcMainViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
@@ -22,7 +21,6 @@
 #import "A3SalesCalcData.h"
 #import "A3SalesCalcPreferences.h"
 #import "A3SalesCalcCalculator.h"
-#import "A3SalesCalcDetailInfoViewController.h"
 #import "A3DefaultColorDefines.h"
 #import "A3TextViewElement.h"
 #import "SalesCalcHistory.h"
@@ -31,7 +29,6 @@
 #import "A3CurrencySelectViewController.h"
 #import "A3CalculatorViewController.h"
 #import "UITableView+utility.h"
-#import "A3UserDefaultsKeys.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3StandardDetailTableViewController.h"
