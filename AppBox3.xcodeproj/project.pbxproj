@@ -496,6 +496,7 @@
 		68ADE14817D83D28009618A7 /* MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE14117D83D28009618A7 /* MMDrawerController.m */; };
 		68ADE14917D83D28009618A7 /* MMDrawerVisualState.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE14417D83D28009618A7 /* MMDrawerVisualState.m */; };
 		68ADE14A17D83D28009618A7 /* UIViewController+MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE14617D83D28009618A7 /* UIViewController+MMDrawerController.m */; };
+		68AE58C91A118A4B0021E489 /* A3StandardDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68AE58C81A118A4B0021E489 /* A3StandardDetailTableViewController.m */; };
 		68AF607D162BCCEE00E98002 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68AF607C162BCCEE00E98002 /* CoreLocation.framework */; };
 		68B62EBF199E532B006384E1 /* CurrencyFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B62EBE199E532B006384E1 /* CurrencyFavorite.m */; };
 		68B62EC2199E620B006384E1 /* DaysCounterCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B62EC1199E620B006384E1 /* DaysCounterCalendar.m */; };
@@ -1834,6 +1835,8 @@
 		68ADE14417D83D28009618A7 /* MMDrawerVisualState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMDrawerVisualState.m; path = MMDrawerController/MMDrawerVisualState.m; sourceTree = "<group>"; };
 		68ADE14517D83D28009618A7 /* UIViewController+MMDrawerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+MMDrawerController.h"; path = "MMDrawerController/UIViewController+MMDrawerController.h"; sourceTree = "<group>"; };
 		68ADE14617D83D28009618A7 /* UIViewController+MMDrawerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+MMDrawerController.m"; path = "MMDrawerController/UIViewController+MMDrawerController.m"; sourceTree = "<group>"; };
+		68AE58C71A118A4B0021E489 /* A3StandardDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3StandardDetailTableViewController.h; path = ViewControllers/A3StandardDetailTableViewController.h; sourceTree = "<group>"; };
+		68AE58C81A118A4B0021E489 /* A3StandardDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3StandardDetailTableViewController.m; path = ViewControllers/A3StandardDetailTableViewController.m; sourceTree = "<group>"; };
 		68AF607C162BCCEE00E98002 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		68B62EBD199E532B006384E1 /* CurrencyFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CurrencyFavorite.h; path = Apps/Currency/Model/CurrencyFavorite.h; sourceTree = "<group>"; };
 		68B62EBE199E532B006384E1 /* CurrencyFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CurrencyFavorite.m; path = Apps/Currency/Model/CurrencyFavorite.m; sourceTree = "<group>"; };
@@ -3386,6 +3389,8 @@
 				68948B4F17D9760A00BF4BE9 /* A3NavigationController.m */,
 				17D4208E18870FAC3EF2732E /* A3FMMoveTableViewController.h */,
 				17D42F73E2A6E4EF05525C2B /* A3FMMoveTableViewController.m */,
+				68AE58C71A118A4B0021E489 /* A3StandardDetailTableViewController.h */,
+				68AE58C81A118A4B0021E489 /* A3StandardDetailTableViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -5804,6 +5809,7 @@
 				68E2A65A18D0B1FC00E834D9 /* A3PercentCalcData.m in Sources */,
 				682FDF301981CC0400C6C83D /* MagicalRecord+Options.m in Sources */,
 				68B6A2B418CEC76D004084EF /* LoanCalcData.m in Sources */,
+				68AE58C91A118A4B0021E489 /* A3StandardDetailTableViewController.m in Sources */,
 				68B6A2B618CEC76D004084EF /* LoanCalcPreference.m in Sources */,
 				682FDF341981CC0400C6C83D /* MagicalRecord+ShorthandSupport.m in Sources */,
 				686FCF911775CFE400F19332 /* Reachability.m in Sources */,

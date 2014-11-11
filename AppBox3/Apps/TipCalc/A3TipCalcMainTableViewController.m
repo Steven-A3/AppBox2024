@@ -33,6 +33,7 @@
 #import "A3UserDefaultsKeys.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "A3StandardDetailTableViewController.h"
 
 #define kColorPlaceHolder [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]
 
@@ -386,7 +387,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     
     [self dismissMoreMenu];
     
-    A3PopoverTableViewController *popoverTableViewController = [[A3PopoverTableViewController alloc] initWithStyle:UITableViewStylePlain];
     NSMutableArray *titles = [NSMutableArray new];
     NSMutableArray *details = [NSMutableArray new];
     NSMutableArray *values;
@@ -419,11 +419,10 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         [titles addObject:@[NSLocalizedString(@"Subtotal", @"Subtotal"), NSLocalizedString(@"Tip", @"Tip")]];
         [details addObject:values];
     }
-    [popoverTableViewController setSectionArrayForTitles:titles withDetails:details];
 
-#ifdef __IPHONE_8_0
-	if (IS_IOS7) {
-#endif
+	if (IS_IOS7 || IS_IPAD) {
+		A3PopoverTableViewController *popoverTableViewController = [[A3PopoverTableViewController alloc] initWithStyle:UITableViewStylePlain];
+		[popoverTableViewController setSectionArrayForTitles:titles withDetails:details];
 		self.localPopoverController = [[UIPopoverController alloc] initWithContentViewController:popoverTableViewController];
 		self.localPopoverController.backgroundColor = [UIColor whiteColor];
 		self.localPopoverController.delegate = self;
@@ -432,20 +431,18 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 								   permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 		[self.localPopoverController setPopoverContentSize:CGSizeMake(320, popoverTableViewController.tableView.contentSize.height)
 												  animated:NO];
-#ifdef __IPHONE_8_0
-	}
-	else {
-		popoverTableViewController.title = NSLocalizedString(@"Detail", @"Detail");
-		popoverTableViewController.modalPresentationStyle = UIModalPresentationPopover;
-		[popoverTableViewController setPreferredContentSize:CGSizeMake(320, popoverTableViewController.tableView.contentSize.height)];
-		UIPopoverPresentationController *popoverPresentationController = popoverTableViewController.popoverPresentationController;
+	} else {
+		A3StandardDetailTableViewController *detailViewController = [[A3StandardDetailTableViewController alloc] initWithTitles:titles details:details];
+		detailViewController.title = NSLocalizedString(@"Detail", @"Detail");
+		detailViewController.modalPresentationStyle = UIModalPresentationPopover;
+		[detailViewController setPreferredContentSize:CGSizeMake(320, detailViewController.tableView.contentSize.height)];
+		UIPopoverPresentationController *popoverPresentationController = detailViewController.popoverPresentationController;
 		popoverPresentationController.sourceView = _headerView.detailInfoButton;
 		popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
 		popoverPresentationController.delegate = self;
-		[self presentViewController:popoverTableViewController animated:YES completion:nil];
-
+		[self presentViewController:detailViewController animated:YES completion:nil];
 	}
-#endif
+
 	[self enableControls:NO];
 }
 

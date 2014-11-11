@@ -34,6 +34,8 @@
 #import "A3UserDefaultsKeys.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "A3StandardDetailTableViewController.h"
+#import "A3PopoverTableViewController.h"
 
 enum A3TableElementCellType {
     A3TableElementCellType_Price = 100,
@@ -400,34 +402,89 @@ enum A3TableElementCellType {
     
     _headerView.detailInfoButton.enabled = NO;
 
-    A3SalesCalcDetailInfoViewController *infoViewController = [[A3SalesCalcDetailInfoViewController alloc] initWithStyle:UITableViewStylePlain];
-	[infoViewController setResult:_preferences.calcData];
+	NSMutableArray *titleSections = [NSMutableArray new];
+	[titleSections addObject:@[NSLocalizedString(@"Sale Price", @"Sale Price"), NSLocalizedString(@"Sale Price Tax", @"Sale Price Tax")]];
+	[titleSections addObject:@[NSLocalizedString(@"Original Price", @"Original Price"), NSLocalizedString(@"Original Price Tax", @"Original Price Tax")]];
+	[titleSections addObject:@[NSLocalizedString(@"Saved Amount", @"Saved Amount"), NSLocalizedString(@"Saved Amount Tax", @"Saved Amount Tax")]];
 
-#ifdef __IPHONE_8_0
-	if (!IS_IOS7) {
-		[self.localPopoverController setPopoverContentSize:CGSizeMake(320, infoViewController.tableView.contentSize.height) animated:NO];
-		infoViewController.modalPresentationStyle = UIModalPresentationPopover;
-		[infoViewController setPreferredContentSize:CGSizeMake(320, 308)];
-		UIPopoverPresentationController *popoverPresentationController = infoViewController.popoverPresentationController;
+	NSMutableArray *detailSections = [NSMutableArray new];
+
+	[detailSections addObject:@[
+			[self.currencyFormatter stringFromNumber:[A3SalesCalcCalculator salePriceWithoutTaxForCalcData:_preferences.calcData]],
+			[self.currencyFormatter stringFromNumber:[A3SalesCalcCalculator salePriceTaxForCalcData:_preferences.calcData]]
+	]];
+	[detailSections addObject:@[
+			[self.currencyFormatter stringFromNumber:[A3SalesCalcCalculator originalPriceBeforeTaxAndDiscountForCalcData:_preferences.calcData]],
+			[self.currencyFormatter stringFromNumber:[A3SalesCalcCalculator originalPriceTaxForCalcData:_preferences.calcData]]
+	]];
+	[detailSections addObject:@[
+			[self.currencyFormatter stringFromNumber:[A3SalesCalcCalculator savedAmountForCalcData:_preferences.calcData]],
+			[self.currencyFormatter stringFromNumber:[A3SalesCalcCalculator savedAmountTaxForCalcData:_preferences.calcData]]
+	]];
+
+	if (IS_IOS7 || IS_IPAD) {
+		A3PopoverTableViewController *popoverTableViewController = [[A3PopoverTableViewController alloc] initWithStyle:UITableViewStylePlain];
+		[popoverTableViewController setSectionArrayForTitles:titleSections withDetails:detailSections];
+
+		self.localPopoverController = [[UIPopoverController alloc] initWithContentViewController:popoverTableViewController];
+		self.localPopoverController.backgroundColor = [UIColor whiteColor];
+		self.localPopoverController.delegate = self;
+		[self.localPopoverController presentPopoverFromRect:_headerView.detailInfoButton.frame
+													 inView:self.view
+								   permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+		[self.localPopoverController setPopoverContentSize:CGSizeMake(320, popoverTableViewController.tableView.contentSize.height)
+												  animated:NO];
+	} else {
+		A3StandardDetailTableViewController *detailViewController = [[A3StandardDetailTableViewController alloc] initWithTitles:titleSections details:detailSections];
+		detailViewController.title = NSLocalizedString(@"Detail", @"Detail");
+		detailViewController.modalPresentationStyle = UIModalPresentationPopover;
+		[detailViewController setPreferredContentSize:CGSizeMake(320, detailViewController.tableView.contentSize.height)];
+		UIPopoverPresentationController *popoverPresentationController = detailViewController.popoverPresentationController;
 		popoverPresentationController.sourceView = _headerView.detailInfoButton;
 		popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
 		popoverPresentationController.delegate = self;
-		[self presentViewController:infoViewController animated:YES completion:nil];
+		[self presentViewController:detailViewController animated:YES completion:nil];
 	}
-    else
-#endif
-    {
-		infoViewController.tableView.scrollEnabled = IS_IPHONE35;
-		infoViewController.tableView.showsVerticalScrollIndicator = NO;
-		self.localPopoverController = [[UIPopoverController alloc] initWithContentViewController:infoViewController];
-		self.localPopoverController.backgroundColor = [UIColor whiteColor];
-		self.localPopoverController.delegate = self;
-		[self.localPopoverController setPopoverContentSize:CGSizeMake(320, 311) animated:NO];
-		[self.localPopoverController presentPopoverFromRect:[_headerView convertRect:_headerView.detailInfoButton.frame fromView:self.view]
-													 inView:self.view
-								   permittedArrowDirections:UIPopoverArrowDirectionUp
-												   animated:YES];
-	}
+
+//	if (IS_IOS7 || IS_IPAD) {
+//		A3SalesCalcDetailInfoViewController *infoViewController = [[A3SalesCalcDetailInfoViewController alloc] initWithStyle:UITableViewStylePlain];
+//		[infoViewController setResult:_preferences.calcData];
+//
+//		if (!IS_IOS7) {
+//			[self.localPopoverController setPopoverContentSize:CGSizeMake(320, infoViewController.tableView.contentSize.height) animated:NO];
+//			infoViewController.modalPresentationStyle = UIModalPresentationPopover;
+//			[infoViewController setPreferredContentSize:CGSizeMake(320, 308)];
+//			UIPopoverPresentationController *popoverPresentationController = infoViewController.popoverPresentationController;
+//			popoverPresentationController.sourceView = _headerView.detailInfoButton;
+//			popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+//			popoverPresentationController.delegate = self;
+//			[self presentViewController:infoViewController animated:YES completion:nil];
+//		}
+//		else
+//		{
+//			infoViewController.tableView.scrollEnabled = IS_IPHONE35;
+//			infoViewController.tableView.showsVerticalScrollIndicator = NO;
+//			self.localPopoverController = [[UIPopoverController alloc] initWithContentViewController:infoViewController];
+//			self.localPopoverController.backgroundColor = [UIColor whiteColor];
+//			self.localPopoverController.delegate = self;
+//			[self.localPopoverController setPopoverContentSize:CGSizeMake(320, 311) animated:NO];
+//			[self.localPopoverController presentPopoverFromRect:[_headerView convertRect:_headerView.detailInfoButton.frame fromView:self.view]
+//														 inView:self.view
+//									   permittedArrowDirections:UIPopoverArrowDirectionUp
+//													   animated:YES];
+//		}
+//	} else {
+//		A3StandardDetailTableViewController *infoViewController = [[A3StandardDetailTableViewController alloc] initWithTitles:titleSections details:detailSections];
+//		infoViewController.title = NSLocalizedString(@"Detail", @"Detail");
+//		[self.localPopoverController setPopoverContentSize:CGSizeMake(320, infoViewController.tableView.contentSize.height) animated:NO];
+//		infoViewController.modalPresentationStyle = UIModalPresentationPopover;
+//		[infoViewController setPreferredContentSize:CGSizeMake(320, 308)];
+//		UIPopoverPresentationController *popoverPresentationController = infoViewController.popoverPresentationController;
+//		popoverPresentationController.sourceView = _headerView.detailInfoButton;
+//		popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+//		popoverPresentationController.delegate = self;
+//		[self presentViewController:infoViewController animated:YES completion:nil];
+//	}
 
     // 기타 & 버튼들, 비활성 처리.
 	[self enableControls:NO];
