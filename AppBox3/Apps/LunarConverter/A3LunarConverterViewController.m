@@ -202,6 +202,10 @@
 
 	if ( _dbManager )
 		[_dbManager open];
+
+	if (IS_IPHONE && IS_LANDSCAPE) {
+		[self hideKeyboardAnimate:NO];
+	}
 }
 
 - (void)mainMenuBecameFirstResponder {
@@ -215,9 +219,9 @@
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-	if ( IS_IPAD ){
-		[self layoutKeyboardToOrientation:toInterfaceOrientation];
-	}
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	[self layoutKeyboardToOrientation:toInterfaceOrientation];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -345,7 +349,6 @@
 #pragma mark - Keyboard Layout
 
 - (void)addDateKeyboard {
-	_isShowKeyboard = YES;
 
 	if (IS_IPAD) {
 		self.dateKeyboardVC = [[A3DateKeyboardViewController_iPad alloc] initWithNibName:@"A3DateKeyboardViewController_iPad" bundle:nil];
@@ -373,12 +376,14 @@
 	}];
 	[superview layoutIfNeeded];
 
+	self.dateKeyboardVC.dateComponents = _inputDateComponents;
+	self.dateKeyboardVC.isLunarDate = _isLunarInput;
+
+	_isShowKeyboard = YES;
+
 	[UIView animateWithDuration:0.3 animations:^{
 		[self layoutKeyboardToOrientation:self.interfaceOrientation];
 	}];
-
-	self.dateKeyboardVC.dateComponents = _inputDateComponents;
-	self.dateKeyboardVC.isLunarDate = _isLunarInput;
 }
 
 - (CGFloat)keyboardHeight {

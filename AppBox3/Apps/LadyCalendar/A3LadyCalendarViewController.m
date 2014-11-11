@@ -311,6 +311,7 @@
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[self showCalendarHeaderView];
     [self setupCalendarHeaderViewFrame];
 	[_collectionView reloadData];
 }
@@ -367,11 +368,12 @@
 
 - (void)showCalendarHeaderView
 {
-	_calendarHeaderView.frame = CGRectMake(0, 20.0+44.0, self.navigationController.navigationBar.frame.size.width, _calendarHeaderView.frame.size.height);
+	CGFloat navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
+	_calendarHeaderView.frame = CGRectMake(0, 20.0+navigationBarHeight, self.navigationController.navigationBar.frame.size.width, _calendarHeaderView.frame.size.height);
 	[self.navigationController.view insertSubview:_calendarHeaderView belowSubview:self.view];
 
 	UIEdgeInsets insets = _collectionView.contentInset;
-	_collectionView.contentInset = UIEdgeInsetsMake(_calendarHeaderView.frame.size.height+20+44.0,insets.left,insets.bottom,insets.right);
+	_collectionView.contentInset = UIEdgeInsetsMake(_calendarHeaderView.frame.size.height+20+navigationBarHeight,insets.left,insets.bottom,insets.right);
 }
 
 - (void)updateCurrentMonthLabel
