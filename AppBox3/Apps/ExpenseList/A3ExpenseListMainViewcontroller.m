@@ -84,7 +84,12 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	_barButtonEnabled = YES;
 
     [self makeBackButtonEmptyArrow];
-	[self leftBarButtonAppsButton];
+	if (IS_IPAD || IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	} else {
+		self.navigationItem.leftBarButtonItem = nil;
+		self.navigationItem.hidesBackButton = YES;
+	}
 
     self.title = NSLocalizedString(@"Expense List", @"Expense List");
 
@@ -180,7 +185,10 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-//    [self setupInstructionView];
+
+	if (IS_IPHONE && IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	}
 }
 
 - (void)dealloc {
@@ -348,6 +356,14 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 		currencyCode = [A3UIDevice systemCurrencyCode];
 	}
 	return currencyCode;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (IS_IPHONE && IS_LANDSCAPE) {
+		[self leftBarButtonAppsButton];
+	}
 }
 
 #pragma mark Instruction Related

@@ -72,8 +72,13 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     self.navigationItem.title = NSLocalizedString(@"Unit Price", @"Unit Price");
     
     [self makeBackButtonEmptyArrow];
-    [self leftBarButtonAppsButton];
-    
+	if (IS_IPAD || IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	} else {
+		self.navigationItem.leftBarButtonItem = nil;
+		self.navigationItem.hidesBackButton = YES;
+	}
+
     self.navigationItem.hidesBackButton = YES;
     
     self.composeBarItem.enabled = NO;
@@ -413,7 +418,9 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 
 - (void)inputViewTapped:(A3UnitPriceInputView *)inputView
 {
-    if (inputView.tag == 1) {
+	if (IS_IPHONE && IS_LANDSCAPE) return;
+
+	if (inputView.tag == 1) {
 		UIStoryboard *storyboard = [UIStoryboard storyboardWithName:IS_IPAD ? @"UnitPriceStoryboard_iPad" : @"UnitPriceStoryboard" bundle:nil];
         A3UnitPriceDetailTableController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"A3UnitPriceDetailTableController"];
         viewController.delegate = self;
@@ -994,6 +1001,14 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 		currencyCode = [A3UIDevice systemCurrencyCode];
 	}
 	return currencyCode;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (IS_IPHONE && IS_LANDSCAPE) {
+		[self leftBarButtonAppsButton];
+	}
 }
 
 @end

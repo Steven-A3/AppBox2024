@@ -152,13 +152,23 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
             }
         }
         else {
-			[self leftBarButtonAppsButton];
+			if (IS_PORTRAIT) {
+				[self leftBarButtonAppsButton];
+			} else {
+				self.navigationItem.leftBarButtonItem = nil;
+				self.navigationItem.hidesBackButton = YES;
+			}
         }
     } else {
         [self makeBackButtonEmptyArrow];
         self.navigationItem.hidesBackButton = YES;
-        
-		[self leftBarButtonAppsButton];
+
+		if (IS_IPAD || IS_PORTRAIT) {
+			[self leftBarButtonAppsButton];
+		} else {
+			self.navigationItem.leftBarButtonItem = nil;
+			self.navigationItem.hidesBackButton = YES;
+		}
     }
 }
 
@@ -823,6 +833,14 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 - (BOOL)moveTableView:(FMMoveTableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return NO;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (IS_IPHONE && IS_LANDSCAPE) {
+		[self leftBarButtonAppsButton];
+	}
 }
 
 @end

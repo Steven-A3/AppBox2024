@@ -225,6 +225,9 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	if ([self isMovingToParentViewController]) {
         [self setupInstructionView];
 	}
+	if (IS_IPHONE && IS_LANDSCAPE) {
+		[self setToolBarsHidden:YES];
+	}
 }
 
 - (void)viewWillLayoutSubviews {
@@ -290,19 +293,15 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 - (CGAffineTransform) getTransform {
 	CGAffineTransform   transform;
 
-	if (!IS_IPHONE) {
-		UIInterfaceOrientation curDeviceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-		if (curDeviceOrientation == UIDeviceOrientationPortrait) {
-			transform = CGAffineTransformMakeRotation(M_PI_2);
-		} else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
-			transform = CGAffineTransformMakeRotation(-M_PI_2);
-		} else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
-			transform = CGAffineTransformMakeRotation(0);
-		} else {
-			transform = CGAffineTransformMakeRotation(M_PI);
-		}
-	} else {
+	UIInterfaceOrientation curDeviceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+	if (curDeviceOrientation == UIDeviceOrientationPortrait) {
 		transform = CGAffineTransformMakeRotation(M_PI_2);
+	} else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
+		transform = CGAffineTransformMakeRotation(-M_PI_2);
+	} else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
+		transform = CGAffineTransformMakeRotation(0);
+	} else {
+		transform = CGAffineTransformMakeRotation(M_PI);
 	}
 
 	return transform;
@@ -891,6 +890,8 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 
 	}
 	else {
+		if (IS_IPHONE && IS_LANDSCAPE) return;
+
 		BOOL toolBarHidden = self.topBar.hidden;
 		[self setToolBarsHidden:!toolBarHidden];
 	}
@@ -1059,10 +1060,6 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	return YES;
-}
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
 	// makes the UI more Camera.app like

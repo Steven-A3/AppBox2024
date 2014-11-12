@@ -116,10 +116,13 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
         self.navigationItem.leftItemsSupplementBackButton = YES;
         // more 탭바
         self.navigationItem.hidesBackButton = NO;
-        [self leftBarButtonAppsButton];
-    } else {
-		[self leftBarButtonAppsButton];
     }
+	if (IS_IPAD || IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	} else {
+		self.navigationItem.leftBarButtonItem = nil;
+		self.navigationItem.hidesBackButton = YES;
+	}
 }
 
 - (UIButton *)addButton
@@ -459,13 +462,20 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 						   frame: self.instructionViewController.view.window.bounds];
 }
 
-
 - (void)setIfNotEqualTransform:(CGAffineTransform)transform frame:(CGRect)frame {
 	if(!CGAffineTransformEqualToTransform(self.instructionViewController.view.transform, transform)) {
 		self.instructionViewController.view.transform = transform;
 	}
 	if(!CGRectEqualToRect(self.instructionViewController.view.frame, frame)) {
 		self.instructionViewController.view.frame = frame;
+	}
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (IS_IPHONE && IS_LANDSCAPE) {
+		[self leftBarButtonAppsButton];
 	}
 }
 

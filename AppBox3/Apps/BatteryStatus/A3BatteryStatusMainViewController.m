@@ -47,7 +47,13 @@
     [super viewDidLoad];
 
 	[self makeBackButtonEmptyArrow];
-	[self leftBarButtonAppsButton];
+
+	if (IS_IPAD || IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	} else {
+		self.navigationItem.leftBarButtonItem = nil;
+		self.navigationItem.hidesBackButton = YES;
+	}
     [self rightBarButton];
     
     if (IS_IPAD) {
@@ -274,18 +280,20 @@ static NSString *const A3V3InstructionDidShowForBattery = @"A3V3InstructionDidSh
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    
-    CGRect rect = self.headerView.frame;
-    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-        rect.size.height = 275.0;
-    }
-    else {
-        rect.size.height = 321.0;
-    }
-    _headerView.frame = rect;
-    [UIView animateWithDuration:duration animations:^{
-        [self.tableView setTableHeaderView:_headerView];
-    }];
+	if (IS_IPHONE && IS_LANDSCAPE) {
+		[self leftBarButtonAppsButton];
+	}
+	CGRect rect = self.headerView.frame;
+	if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+		rect.size.height = 275.0;
+	}
+	else {
+		rect.size.height = 321.0;
+	}
+	_headerView.frame = rect;
+	[UIView animateWithDuration:duration animations:^{
+		[self.tableView setTableHeaderView:_headerView];
+	}];
 
 	[self refreshHeaderView];
 }
@@ -300,7 +308,7 @@ static NSString *const A3V3InstructionDidShowForBattery = @"A3V3InstructionDidSh
  */
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)transitionCoordinator {
 	[super viewWillTransitionToSize:size withTransitionCoordinator:transitionCoordinator];
-	
+
 	UIInterfaceOrientation orientation;
 	orientation = size.width < size.height ? UIInterfaceOrientationPortrait : UIInterfaceOrientationLandscapeLeft;
 	[self willRotateToInterfaceOrientation:orientation duration: 0];

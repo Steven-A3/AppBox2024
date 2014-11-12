@@ -102,7 +102,13 @@ enum A3TableElementCellType {
 	_barButtonEnabled = YES;
 
     [self makeBackButtonEmptyArrow];
-	[self leftBarButtonAppsButton];
+	if (IS_IPAD || IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	} else {
+		self.navigationItem.leftBarButtonItem = nil;
+		self.navigationItem.hidesBackButton = YES;
+	}
+
     [self rightButtonHistoryButton];
 	[self enableControls:YES];
     
@@ -508,6 +514,14 @@ enum A3TableElementCellType {
 	[self enableControls:YES];
 }
 #endif
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (IS_IPHONE && IS_LANDSCAPE) {
+		[self leftBarButtonAppsButton];
+	}
+}
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
 	if (self.localPopoverController) {

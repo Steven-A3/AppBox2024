@@ -546,6 +546,8 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
+	if (IS_IPHONE && IS_LANDSCAPE) return NO;
+
 	self.scrollToIndexPath = [self.tableView indexPathForCellSubview:textField];
     return YES;
 }

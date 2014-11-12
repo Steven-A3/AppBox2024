@@ -52,7 +52,12 @@
     [self.navigationController setToolbarHidden:NO];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 30 : 56, 0, 0);
 
-	[self leftBarButtonAppsButton];
+	if (IS_IPAD || IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	} else {
+		self.navigationItem.leftBarButtonItem = nil;
+		self.navigationItem.hidesBackButton = YES;
+	}
     [self makeBackButtonEmptyArrow];
     
     NSManagedObjectContext *newContext = [NSManagedObjectContext MR_rootSavingContext];
@@ -128,8 +133,14 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-    if ( IS_IPAD ) {
-        if ( UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+
+	if (IS_IPHONE && IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	}
+
+	if ( IS_IPAD ) {
+        if ( IS_PORTRAIT ) {
             [self leftBarButtonAppsButton];
         }
         else {

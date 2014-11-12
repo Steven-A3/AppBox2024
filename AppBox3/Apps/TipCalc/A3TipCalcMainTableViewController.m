@@ -199,7 +199,12 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 	_barButtonEnabled = YES;
 
     [self makeBackButtonEmptyArrow];
-    [self leftBarButtonAppsButton];
+	if (IS_IPAD || IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	} else {
+		self.navigationItem.leftBarButtonItem = nil;
+		self.navigationItem.hidesBackButton = YES;
+	}
     [self rightBarButtons];
     self.title = NSLocalizedString(@"Tip Calculator", @"Tip Calculator");
     
@@ -464,6 +469,14 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
 	[self enableControls:YES];
 	self.localPopoverController = nil;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (IS_IPHONE && IS_LANDSCAPE) {
+		[self leftBarButtonAppsButton];
+	}
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {

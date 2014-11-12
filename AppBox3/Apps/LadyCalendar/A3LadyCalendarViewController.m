@@ -62,7 +62,12 @@
 	
 	self.title = NSLocalizedString(@"Ladies Calendar", nil);
 
-	[self leftBarButtonAppsButton];
+	if (IS_IPAD || IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	} else {
+		self.navigationItem.leftBarButtonItem = nil;
+		self.navigationItem.hidesBackButton = YES;
+	}
 
 	if ( IS_IPHONE ) {
 		[self rightButtonMoreButton];
@@ -311,6 +316,12 @@
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (IS_IPHONE && IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	}
+
 	[self showCalendarHeaderView];
     [self setupCalendarHeaderViewFrame];
 	[_collectionView reloadData];

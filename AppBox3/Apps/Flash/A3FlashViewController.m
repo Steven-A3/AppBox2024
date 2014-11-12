@@ -163,7 +163,6 @@ NSString *const cellID = @"flashEffectID";
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pickerTopSeparatorHeightConst;
 
-
 @property (weak, nonatomic) IBOutlet UISlider *sliderControl;
 @property (weak, nonatomic) IBOutlet UISlider *flashBrightnessSlider;
 @property (weak, nonatomic) IBOutlet UIImageView *contentImageView;
@@ -183,6 +182,7 @@ NSString *const cellID = @"flashEffectID";
 @property (weak, nonatomic) IBOutlet UIImageView *flashBrightnessMinButton;
 @property (weak, nonatomic) IBOutlet UIImageView *flashBrightnessMaxButton;
 @property (weak, nonatomic) IBOutlet UIView *pickerSeparatorView;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *appsBarButton;
 
 - (IBAction)sliderControlValueChanged:(UISlider *)sender;
 
@@ -344,6 +344,8 @@ NSString *const cellID = @"flashEffectID";
 }
 
 -(void)cleanUp {
+	[UIScreen mainScreen].brightness = _deviceBrightnessBefore;
+
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     [self saveUserDefaults];
 	[self removeObservers];
@@ -370,6 +372,7 @@ NSString *const cellID = @"flashEffectID";
 }
 
 - (void)applicationWillResignActiveNotification:(NSNotification *)notification {
+	[UIScreen mainScreen].brightness = _deviceBrightnessBefore;
     if (_isTorchOn) {
         [self setTorchOff];
     }
@@ -379,6 +382,8 @@ NSString *const cellID = @"flashEffectID";
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
+	_deviceBrightnessBefore = [UIScreen mainScreen].brightness;
+
     if (_isTorchOn) {
         [self setTorchOn];
     }
@@ -390,6 +395,13 @@ NSString *const cellID = @"flashEffectID";
     UIScreen *mainScreen = [UIScreen mainScreen];
     CGFloat offset = (_screenBrightnessValue / 100.0);
     mainScreen.brightness = offset;
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+
+	_showAllMenu = YES;
+	[self flashScreenTapped:nil];
 }
 
 - (void)mainMenuDidHide {
@@ -413,6 +425,10 @@ NSString *const cellID = @"flashEffectID";
     if (_currentFlashViewMode & A3FlashViewModeTypeEffect) {
         [self startStrobeLightEffectForIndex:_selectedEffectIndex];
     }
+
+	UIScreen *mainScreen = [UIScreen mainScreen];
+	CGFloat offset = (_screenBrightnessValue / 100.0);
+	mainScreen.brightness = offset;
 }
 
 - (void)saveUserDefaults {
@@ -658,6 +674,8 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 }
 
 - (IBAction)appsButtonTouchUp:(id)sender {
+	[UIScreen mainScreen].brightness = _deviceBrightnessBefore;
+
 	FNLOG(@"[[UIApplication sharedApplication] setIdleTimerDisabled: NO ];");
 	[[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 
@@ -871,7 +889,9 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 
 - (void)configureFlashViewMode:(A3FlashViewModeType)type animation:(BOOL)animate {
     _currentFlashViewMode = type;
-    
+
+	self.appsBarButton.enabled = !(IS_IPHONE && IS_LANDSCAPE);
+
     [[A3UserDefaults standardUserDefaults] setObject:@(_currentFlashViewMode) forKey:A3UserDefaultFlashViewMode];
     [[A3UserDefaults standardUserDefaults] synchronize];
     
@@ -889,7 +909,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     _topToolBarTopConst.constant = 20;
-    
     
     if (_currentFlashViewMode == A3FlashViewModeTypeNone) {
         [_sliderControl setMinimumValue:0.0];
@@ -916,7 +935,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         return;
     }
 
-
     [self adjustToolBarColorToPreventVeryWhiteColor];
     
     if (_currentFlashViewMode & A3FlashViewModeTypeLED) {
@@ -934,7 +952,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     else {
         [_ledBarButton setImage:[[UIImage imageNamed:@"f_flash_off"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     }
-
 
     if (_currentFlashViewMode & A3FlashViewModeTypeColor) {
         [_colorBarButton setImage:[[UIImage imageNamed:@"f_color_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
@@ -963,7 +980,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         _colorPickerTopConst.constant = CGRectGetHeight(self.view.bounds);
     }
 
-
     if (_currentFlashViewMode & A3FlashViewModeTypeEffect) {
         [_effectBarButton setImage:[[UIImage imageNamed:@"f_effect_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         
@@ -985,7 +1001,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
         _effectPickerView.hidden = YES;
         _pickerPanelView.hidden = YES;
     }
-
 
     if (_currentFlashViewMode == A3FlashViewModeTypeLED) {
         _pickerViewBottomConst.constant = -(CGRectGetHeight(_pickerPanelView.bounds) - kBottomToolBarHeight);

@@ -116,9 +116,13 @@
 
     self.navigationItem.title = NSLocalizedString(@"Days Counter", @"Days Counter");
     [self checkCalendarListToFixExceptionOfOldVersion];
-    
 
-    [self leftBarButtonAppsButton];
+	if (IS_IPAD || IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	} else {
+		self.navigationItem.leftBarButtonItem = nil;
+		self.navigationItem.hidesBackButton = YES;
+	}
     [self makeBackButtonEmptyArrow];
 
     UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
@@ -483,6 +487,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 }
 
 #pragma mark - UINavigationController Delegate
+
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
     
 }
@@ -497,6 +502,14 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
         navigationController.delegate = nil;
         [((A3DaysCounterAddEventViewController *)viewController) showKeyboard];
     }
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (IS_IPHONE && IS_LANDSCAPE) {
+		[self leftBarButtonAppsButton];
+	}
 }
 
 #pragma mark - Table view data source

@@ -246,8 +246,10 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
 }
 
 - (void)tapOnScrollView {
-	BOOL navigationBarHidden = self.navigationController.navigationBarHidden;
-	[self setNavigationBarHidden:!navigationBarHidden];
+	if (IS_IPAD || IS_PORTRAIT) {
+		BOOL navigationBarHidden = self.navigationController.navigationBarHidden;
+		[self setNavigationBarHidden:!navigationBarHidden];
+	}
 }
 
 - (void)setNavigationBarHidden:(BOOL)hidden {

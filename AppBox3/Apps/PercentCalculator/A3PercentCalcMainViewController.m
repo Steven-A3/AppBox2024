@@ -72,7 +72,13 @@
 
 	_barButtonEnabled = YES;
 
-    [self leftBarButtonAppsButton];
+	if (IS_IPAD || IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	} else {
+		self.navigationItem.leftBarButtonItem = nil;
+		self.navigationItem.hidesBackButton = YES;
+	}
+
     [self rightButtonHistoryButton];
     [self makeBackButtonEmptyArrow];
     
@@ -184,6 +190,14 @@
 - (void)contentSizeDidChange:(NSNotification *)notification {
     FNLOG(@"%@", notification);
     [_headerView setNeedsLayout];
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (IS_IPHONE && IS_LANDSCAPE) {
+		[self leftBarButtonAppsButton];
+	}
 }
 
 - (void)initSectionABMark {
@@ -970,7 +984,9 @@
 #pragma mark - UITextField Delegate
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    _isKeyboardShown = YES;
+	if (IS_IPHONE && IS_LANDSCAPE) return NO;
+
+	_isKeyboardShown = YES;
     self.firstResponder = textField;
     //textField.textColor = COLOR_TABLE_TEXT_TYPING;
     

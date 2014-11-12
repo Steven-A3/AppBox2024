@@ -427,6 +427,8 @@
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+	if (IS_IPHONE && IS_LANDSCAPE) return NO;
+
 	self.previousValue = textField.text;
 
 	A3NumberKeyboardViewController *keyboardVC = [self simpleNumberKeyboard];

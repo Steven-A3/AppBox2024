@@ -65,7 +65,12 @@
     self.toolbarItems = _bottomToolbar.items;
     self.navigationItem.rightBarButtonItem = [self instructionHelpBarButton];
 
-    [self leftBarButtonAppsButton];
+	if (IS_IPAD || IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	} else {
+		self.navigationItem.leftBarButtonItem = nil;
+		self.navigationItem.hidesBackButton = YES;
+	}
     [self makeBackButtonEmptyArrow];
     [self setupInstructionView];
     
@@ -153,6 +158,14 @@
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
     [self.tableView reloadData];
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (IS_IPHONE && IS_LANDSCAPE) {
+		[self leftBarButtonAppsButton];
+	}
 }
 
 #pragma mark Instruction Related

@@ -308,17 +308,27 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     // 현재 more탭바인지 여부 체크
     if (_isFromMoreTableViewController) {
         self.navigationItem.leftItemsSupplementBackButton = YES;
-
         self.navigationItem.hidesBackButton = NO;
 
-		[self leftBarButtonAppsButton];
     } else {
         // 아님
         [self makeBackButtonEmptyArrow];
         self.navigationItem.hidesBackButton = YES;
-        
-		[self leftBarButtonAppsButton];
     }
+	if (IS_IPAD || IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	} else {
+		self.navigationItem.leftBarButtonItem = nil;
+		self.navigationItem.hidesBackButton = YES;
+	}
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (IS_IPHONE && IS_LANDSCAPE) {
+		[self leftBarButtonAppsButton];
+	}
 }
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
@@ -629,7 +639,6 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	[self setIfNotEqualTransform: transform
 						   frame: self.instructionViewController.view.window.bounds];
 }
-
 
 - (void)setIfNotEqualTransform:(CGAffineTransform)transform frame:(CGRect)frame {
 	if(!CGAffineTransformEqualToTransform(self.instructionViewController.view.transform, transform)) {
@@ -1315,6 +1324,8 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 #pragma mark - UITextField delegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+	if (IS_IPHONE && IS_LANDSCAPE) return NO;
+
 	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:textField];
 	if (!cell) return NO;
 	NSIndexPath *indexPath = [_fmMoveTableView indexPathForCell:cell];

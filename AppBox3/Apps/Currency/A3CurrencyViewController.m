@@ -109,7 +109,13 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	[self setupSwipeRecognizers];
 
 	[self makeBackButtonEmptyArrow];
-	[self leftBarButtonAppsButton];
+
+	if (IS_IPAD || IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	} else {
+		self.navigationItem.leftBarButtonItem = nil;
+		self.navigationItem.hidesBackButton = YES;
+	}
 
 	if (IS_IPHONE) {
 		[self rightButtonMoreButton];
@@ -946,6 +952,8 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 #pragma mark -- UITextField delegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+	if (IS_IPHONE && IS_LANDSCAPE) return NO;
+
     [self dismissMoreMenu];
 
 	CurrencyFavorite *favoriteItem = self.favorites[0];
@@ -1385,6 +1393,14 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 - (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
 	return NO;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (IS_IPHONE && IS_LANDSCAPE) {
+		[self leftBarButtonAppsButton];
+	}
 }
 
 #pragma mark -- THE END

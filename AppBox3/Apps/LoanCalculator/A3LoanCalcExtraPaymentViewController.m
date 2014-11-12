@@ -321,7 +321,8 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
             year = _pickerDataSource_0[[pickerView selectedRowInComponent:0]];
             month = _pickerDataSource_1[[pickerView selectedRowInComponent:1]];
         }
-        
+
+		// TODO: 년/월, 월/년, 지역 형식에 맞추기
         NSDateFormatter *df = [[NSDateFormatter alloc] init];
         df.dateStyle = NSDateFormatterFullStyle;
         df.dateFormat = @"MMMM, yyyy";
@@ -434,6 +435,8 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
+	if (IS_IPHONE && IS_LANDSCAPE) return NO;
+
     if ([_items containsObject:self.dateInputItem]) {
         [_items removeObject:self.dateInputItem];
         

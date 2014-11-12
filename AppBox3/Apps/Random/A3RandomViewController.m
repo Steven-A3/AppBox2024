@@ -83,7 +83,12 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
     self.title = NSLocalizedString(@"Random", @"Random");
     
 	[self makeBackButtonEmptyArrow];
-	[self leftBarButtonAppsButton];
+	if (IS_IPAD || IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	} else {
+		self.navigationItem.leftBarButtonItem = nil;
+		self.navigationItem.hidesBackButton = YES;
+	}
 
     [_generatorButton setTitle:NSLocalizedString(@"Tap", nil) forState:UIControlStateNormal];
     _orShakeLabel.text = NSLocalizedString(@"or Shake!", nil);
@@ -320,6 +325,14 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (IS_IPHONE && IS_LANDSCAPE) {
+		[self leftBarButtonAppsButton];
+	}
 }
 
 @end

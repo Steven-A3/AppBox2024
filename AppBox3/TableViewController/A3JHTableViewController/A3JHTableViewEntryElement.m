@@ -44,6 +44,8 @@
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+	if (IS_IPHONE && IS_LANDSCAPE) return NO;
+
 	switch (self.inputType) {
 		case A3TableViewEntryTypeText:
 			break;

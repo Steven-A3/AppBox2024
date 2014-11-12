@@ -104,33 +104,27 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 
 
 - (void)setPreviewRotation:(CGRect)screenBounds {
-    if (!IS_IPHONE) {
-                CGAffineTransform   transform;
-        UIInterfaceOrientation curInterfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-        if (curInterfaceOrientation == UIDeviceOrientationPortrait) {
-           transform = CGAffineTransformMakeRotation(M_PI_2);
-        } else if (curInterfaceOrientation == UIDeviceOrientationPortraitUpsideDown) {
-            transform = CGAffineTransformMakeRotation(-M_PI_2);
-        } else if (curInterfaceOrientation == UIDeviceOrientationLandscapeRight) {
-            transform = CGAffineTransformMakeRotation(M_PI);
-        } else {
-            transform = CGAffineTransformMakeRotation(0);
-        }
-        if (_isLosslessZoom == NO &&
-            _effectiveScale > 1) {
-        [_previewLayer setTransform:CGAffineTransformScale(transform, _effectiveScale, _effectiveScale)];
-        } else {
-        [_previewLayer setTransform:transform];
-        }
-    } else {
-        _previewLayer.transform = CGAffineTransformMakeRotation(M_PI_2);
-    }
-    
+	CGAffineTransform   transform;
+	UIInterfaceOrientation curInterfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+	if (curInterfaceOrientation == UIDeviceOrientationPortrait) {
+		transform = CGAffineTransformMakeRotation(M_PI_2);
+	} else if (curInterfaceOrientation == UIDeviceOrientationPortraitUpsideDown) {
+		transform = CGAffineTransformMakeRotation(-M_PI_2);
+	} else if (curInterfaceOrientation == UIDeviceOrientationLandscapeRight) {
+		transform = CGAffineTransformMakeRotation(M_PI);
+	} else {
+		transform = CGAffineTransformMakeRotation(0);
+	}
+	if (_isLosslessZoom == NO &&
+			_effectiveScale > 1) {
+		[_previewLayer setTransform:CGAffineTransformScale(transform, _effectiveScale, _effectiveScale)];
+	} else {
+		[_previewLayer setTransform:transform];
+	}
 
     if (_effectiveScale <= 1) {
         _previewLayer.frame = screenBounds;
     }
-
 }
 
 - (void)viewWillLayoutSubviews {
@@ -143,10 +137,10 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 
     }
     else {
+		[self setPreviewRotation:screenBounds];
         [self.flashBrightSlider setFrame:CGRectMake(self.flashBrightSlider.frame.origin.x, self.flashBrightSlider.frame.origin.y, screenBounds.size.width - 98, self.flashBrightSlider.frame.size.height)];
         [self.brightnessSlider setFrame:CGRectMake(self.brightnessSlider.frame.origin.x, self.brightnessSlider.frame.origin.y, screenBounds.size.width - 98, self.brightnessSlider.frame.size.height)];
         [self.magnifierSlider setFrame:CGRectMake(self.magnifierSlider.frame.origin.x, self.magnifierSlider.frame.origin.y, screenBounds.size.width - 98, self.magnifierSlider.frame.size.height)];
-        
     }
  
     [self.statusBarBackground setFrame:CGRectMake(self.statusBarBackground.bounds.origin.x, self.statusBarBackground.bounds.origin.y , screenBounds.size.width , self.statusBarBackground.bounds.size.height)];
@@ -244,6 +238,8 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 }
 
 - (void)tapOnPreviewView {
+	if (IS_IPHONE && IS_LANDSCAPE) return;
+
 	BOOL toolBarsHidden = self.topToolBar.hidden;
 	[self setToolBarsHidden:!toolBarsHidden];
 }
@@ -751,11 +747,6 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
 
 #pragma mark - set view rotate
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return YES;
-}
-
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     // makes the UI more Camera.app like
@@ -783,8 +774,6 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
     
     CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
     [self setPreviewRotation:screenBounds];
-    
-
 }
 
 @end

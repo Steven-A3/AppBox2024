@@ -98,8 +98,13 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	self.dataSectionStartIndex = 0;
 
     [self makeBackButtonEmptyArrow];
-    [self leftBarButtonAppsButton];
-    
+	if (IS_IPAD || IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	} else {
+		self.navigationItem.leftBarButtonItem = nil;
+		self.navigationItem.hidesBackButton = YES;
+	}
+
     self.navigationItem.hidesBackButton = YES;
 
     self.navigationItem.titleView = self.selectSegment;
@@ -190,6 +195,11 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (IS_IPHONE && IS_LANDSCAPE) {
+		[self leftBarButtonAppsButton];
+	}
     [self.tableView reloadData];
 }
 
@@ -2015,6 +2025,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
+	if (IS_IPHONE && IS_LANDSCAPE) return NO;
+
 	[self dismissMoreMenu];
 	[self dismissDatePicker];
 

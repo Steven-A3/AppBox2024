@@ -58,7 +58,12 @@
     self.tableView.showsHorizontalScrollIndicator = NO;
     
 	[self makeBackButtonEmptyArrow];
-	[self leftBarButtonAppsButton];
+	if (IS_IPAD || IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	} else {
+		self.navigationItem.leftBarButtonItem = nil;
+		self.navigationItem.hidesBackButton = YES;
+	}
 	[self setupSubviews];
 	[self registerContentSizeCategoryDidChangeNotification];
 
@@ -155,6 +160,14 @@
 
 	if (IS_IPAD) {
 		[self enableControls:!self.A3RootViewController.showLeftView];
+	}
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (IS_IPHONE && IS_LANDSCAPE) {
+		[self leftBarButtonAppsButton];
 	}
 }
 

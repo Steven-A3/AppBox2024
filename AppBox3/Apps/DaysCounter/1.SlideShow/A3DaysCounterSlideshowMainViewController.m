@@ -70,8 +70,13 @@
 
 	_barButtonEnabled = YES;
 
-	if ( IS_IPHONE ) {
-		[self leftBarButtonAppsButton];
+	if (IS_IPHONE) {
+		if (IS_PORTRAIT) {
+			[self leftBarButtonAppsButton];
+		} else {
+			self.navigationItem.leftBarButtonItem = nil;
+			self.navigationItem.hidesBackButton = YES;
+		}
         [self rightButtonMoreButton];
 	}
 	else {
@@ -346,7 +351,13 @@
 
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    _isRotating = YES;
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (IS_IPHONE && IS_LANDSCAPE) {
+		[self leftBarButtonAppsButton];
+	}
+
+	_isRotating = YES;
 }
 
 - (void)cleanUp {

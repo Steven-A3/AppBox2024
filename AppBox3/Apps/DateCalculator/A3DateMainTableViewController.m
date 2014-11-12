@@ -91,7 +91,12 @@
     self.title = NSLocalizedString(@"Date Calculator", @"Date Calculator");
 	kCalculationString = NSLocalizedString(@"CALCULATION", @"CALCULATION");
 
-    [self leftBarButtonAppsButton];
+	if (IS_IPAD || IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	} else {
+		self.navigationItem.leftBarButtonItem = nil;
+		self.navigationItem.hidesBackButton = YES;
+	}
     [self makeBackButtonEmptyArrow];
 
 	self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
@@ -229,8 +234,14 @@
     [super didReceiveMemoryWarning];
 }
 
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (IS_IPHONE && IS_LANDSCAPE) {
+		[self leftBarButtonAppsButton];
+	}
+
     [self.dateKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
 }
 
@@ -848,6 +859,8 @@
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
+	if (IS_IPHONE && IS_LANDSCAPE) return NO;
+
     return YES;
 }
 
@@ -1506,6 +1519,9 @@
     else if (indexPath.section == 1) {
         // From, To Date Input
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+		if (IS_IPHONE && IS_LANDSCAPE) return;
+
         if (!self.dateKeyboardViewController) {
             self.dateKeyboardViewController = self.newDateKeyboardViewController;
         }
