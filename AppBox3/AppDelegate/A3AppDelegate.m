@@ -58,7 +58,9 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 
 @end
 
-@implementation A3AppDelegate
+@implementation A3AppDelegate {
+	BOOL _appIsNotActiveYet;
+}
 
 @synthesize window = _window;
 
@@ -73,6 +75,8 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	_appIsNotActiveYet = YES;
+
 	FNLOG();
 	CDESetCurrentLoggingLevel(CDELoggingLevelVerbose);
 
@@ -222,6 +226,8 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+	_appIsNotActiveYet = NO;
+
 	FNLOG();
 	A3SyncManager *syncManager = [A3SyncManager sharedSyncManager];
 	[syncManager synchronizeWithCompletion:NULL];
@@ -885,11 +891,23 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 #endif
 
 - (BOOL)application:(UIApplication *)application shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
-	UINavigationController *navigationController = [self navigationController];
-	UIViewController<A3ViewControllerProtocol> *visibleViewController = (UIViewController <A3ViewControllerProtocol> *) [navigationController visibleViewController];
-	if ([visibleViewController respondsToSelector:@selector(shouldAllowExtensionPointIdentifier:)]) {
-		return [visibleViewController shouldAllowExtensionPointIdentifier:extensionPointIdentifier];
+	if (_appIsNotActiveYet) {
+		FNLOG(@"NO");
+		return NO;
 	}
+
+	if (self.passcodeViewController) {
+		return NO;
+	}
+
+	UINavigationController *navigationController = [self navigationController];
+	UIViewController <A3ViewControllerProtocol> *visibleViewController = (UIViewController <A3ViewControllerProtocol> *) [navigationController visibleViewController];
+	if ([visibleViewController respondsToSelector:@selector(shouldAllowExtensionPointIdentifier:)]) {
+		BOOL shouldAllow = [visibleViewController shouldAllowExtensionPointIdentifier:extensionPointIdentifier];
+		FNLOG(@"%@, %@", visibleViewController, shouldAllow ? @"YES" : @"NO");
+		return shouldAllow;
+	}
+	FNLOG(@"YES");
 	return YES;
 }
 

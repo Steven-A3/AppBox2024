@@ -137,6 +137,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
         if (!self.passcodeViewController) {
             self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
             [self.passcodeViewController showLockScreenWithAnimation:NO showCacelButton:NO];
+			[A3AppDelegate instance].passcodeViewController = self.passcodeViewController;
         }
         return YES;
     } else {
@@ -146,10 +147,12 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 }
 
 - (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
+	A3AppDelegate *appDelegate = [A3AppDelegate instance];
+	appDelegate.passcodeViewController = nil;
+
     // Cancel Button 이 없으므로 성공하지 않고서는 이곳에 올수 없다. 하지만 그래도 체크
     if (!success) return;
 
-	A3AppDelegate *appDelegate = [A3AppDelegate instance];
     if ([appDelegate startOptionOpenClockOnce] ||
 			![[appDelegate mainMenuViewController] openRecentlyUsedMenu:NO]) {
 		[appDelegate setStartOptionOpenClockOnce:NO];
