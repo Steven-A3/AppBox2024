@@ -27,7 +27,9 @@
 	 This notification is most likely triggered inside an animation block,
 	 therefore no animation is needed to perform this nice transition.
 	 */
-	[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
+	if (IS_IOS7) {
+		[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
+	}
 }
 
 

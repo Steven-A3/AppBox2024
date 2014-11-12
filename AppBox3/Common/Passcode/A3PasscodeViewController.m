@@ -419,19 +419,24 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 			_shouldDismissViewController = YES;
 		} else {
 			[mainWindow addSubview: self.view];
-			[[NSNotificationCenter defaultCenter] addObserver:self
-													 selector:@selector(statusBarFrameOrOrientationChanged:)
-														 name:UIApplicationDidChangeStatusBarOrientationNotification
-													   object:nil];
-			[[NSNotificationCenter defaultCenter] addObserver:self
-													 selector:@selector(statusBarFrameOrOrientationChanged:)
-														 name:UIApplicationDidChangeStatusBarFrameNotification
-													   object:nil];
 			[mainWindow.rootViewController addChildViewController: self];
-			// All this hassle because a view added to UIWindow does not rotate automatically
-			// and if we would have added the view anywhere else, it wouldn't display properly
-			// (having a modal on screen when the user leaves the app, for example).
-			[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
+
+			if (IS_IOS7) {
+				[[NSNotificationCenter defaultCenter] addObserver:self
+														 selector:@selector(statusBarFrameOrOrientationChanged:)
+															 name:UIApplicationDidChangeStatusBarOrientationNotification
+														   object:nil];
+				[[NSNotificationCenter defaultCenter] addObserver:self
+														 selector:@selector(statusBarFrameOrOrientationChanged:)
+															 name:UIApplicationDidChangeStatusBarFrameNotification
+														   object:nil];
+
+				// All this hassle because a view added to UIWindow does not rotate automatically
+				// and if we would have added the view anywhere else, it wouldn't display properly
+				// (having a modal on screen when the user leaves the app, for example).
+				[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
+			}
+
 			CGPoint newCenter;
 			if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeLeft) {
 				self.view.center = CGPointMake(self.view.center.x * -1.f, self.view.center.y);

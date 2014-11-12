@@ -261,19 +261,19 @@
 		[rootViewController presentViewController:self animated:NO completion:NULL];
 		_shouldDismissViewController = YES;
 	} else {
-
 		[mainWindow addSubview: self.view];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(statusBarFrameOrOrientationChanged:)
-													 name:UIApplicationDidChangeStatusBarOrientationNotification
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(statusBarFrameOrOrientationChanged:)
-													 name:UIApplicationDidChangeStatusBarFrameNotification
-												   object:nil];
-		[mainWindow.rootViewController addChildViewController: self];
 
 		if (IS_IOS7) {
+			[[NSNotificationCenter defaultCenter] addObserver:self
+													 selector:@selector(statusBarFrameOrOrientationChanged:)
+														 name:UIApplicationDidChangeStatusBarOrientationNotification
+													   object:nil];
+			[[NSNotificationCenter defaultCenter] addObserver:self
+													 selector:@selector(statusBarFrameOrOrientationChanged:)
+														 name:UIApplicationDidChangeStatusBarFrameNotification
+													   object:nil];
+			[mainWindow.rootViewController addChildViewController: self];
+
 			[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
 		}
 	}
