@@ -17,7 +17,7 @@
 			<key>one</key>
 			<string>1 godzina</string>
 			<key>other</key>
-			<string>%ld godniny</string>
+			<string>%ld godziny</string>
 		</dict>
 	</dict>
 	<key>%ld hrs</key>
