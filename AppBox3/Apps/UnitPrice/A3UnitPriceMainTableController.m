@@ -212,6 +212,14 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 	[self enableControls:YES];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if (IS_IPHONE && IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	}
+}
+
 - (UIView *)footerView {
 	if (!_footerView) {
 		_footerView = [UIView new];
