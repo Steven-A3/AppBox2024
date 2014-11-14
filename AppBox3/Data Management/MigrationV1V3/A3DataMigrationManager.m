@@ -83,14 +83,14 @@ NSString *const kKeyForDDayShowCountdown			= @"kKeyForDDayShowCountdown";
 - (void)migrateV1DataWithPassword:(NSString *)password {
 	[self migrateFilesForV1_7];
 
+    [[NSManagedObjectContext MR_defaultContext] reset];
+    
 	_migrateV1WithDaysCounterPhoto = NO;
 
 	[self migrateDaysCounterInContext:_context];
 	[self migrateLadyCalendarInContext:_context];
 	[self migrateTranslatorHistoryInContext:_context];
 	[self migrateWalletDataInContext:_context withPassword:password];
-
-	[[NSManagedObjectContext MR_defaultContext] reset];
 
 	[self deleteV1DataFiles];
 
