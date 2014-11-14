@@ -110,7 +110,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 	[self makeBackButtonEmptyArrow];
 
-	if (IS_IPAD || IS_PORTRAIT) {
+	if (IS_IPAD || UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
 		[self leftBarButtonAppsButton];
 	} else {
 		self.navigationItem.leftBarButtonItem = nil;
@@ -244,6 +244,9 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 		[self reloadUpdateDateLabel];
 	}
+    if (IS_IPHONE && IS_PORTRAIT) {
+        [self leftBarButtonAppsButton];
+    }
 }
 
 - (void)enableControls:(BOOL)enable {
