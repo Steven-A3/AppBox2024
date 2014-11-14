@@ -206,6 +206,9 @@
 	if (IS_IPHONE && IS_LANDSCAPE) {
 		[self hideKeyboardAnimate:NO];
 	}
+	if (IS_IPHONE && IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	}
 }
 
 - (void)mainMenuBecameFirstResponder {
