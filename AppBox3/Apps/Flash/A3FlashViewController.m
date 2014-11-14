@@ -246,12 +246,10 @@ NSString *const cellID = @"flashEffectID";
     [self initializeCurrentContentColorWithColorPickerView];
     [self initializeStrobeEffectList];
     
-    
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(flashScreenTapped:)];
     [_contentImageView addGestureRecognizer:tapGesture];
     UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(flashScreenTapped:)];
     [_colorPickerView addGestureRecognizer:tapGesture2];
-    
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActiveNotification:) name:UIApplicationWillResignActiveNotification object:nil];
