@@ -62,14 +62,16 @@
 	_barButtonEnabled = YES;
     //self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
-    self.toolbarItems = _bottomToolbar.items;
     self.navigationItem.rightBarButtonItem = [self instructionHelpBarButton];
 
 	if (IS_IPAD || IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
+		self.toolbarItems = _bottomToolbar.items;
+		[self.navigationController setToolbarHidden:NO];
 	} else {
 		self.navigationItem.leftBarButtonItem = nil;
 		self.navigationItem.hidesBackButton = YES;
+		[self.navigationController setToolbarHidden:YES];
 	}
     [self makeBackButtonEmptyArrow];
     [self setupInstructionView];
@@ -94,6 +96,28 @@
 	[self removeContentSizeCategoryDidChangeNotification];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+	}
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+
+	self.navigationController.delegate = nil;
+	self.itemArray = [NSMutableArray arrayWithArray:[_sharedManager favoriteEventsList]];
+	[self.tableView reloadData];
+
+	[[A3UserDefaults standardUserDefaults] setInteger:4 forKey:A3DaysCounterLastOpenedMainIndex];
+	[[A3UserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if (IS_IPHONE && IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+		self.toolbarItems = _bottomToolbar.items;
+		[self.navigationController setToolbarHidden:NO];
 	}
 }
 
@@ -138,18 +162,6 @@
 	}
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.navigationController.delegate = nil;
-    [self.navigationController setToolbarHidden:NO];
-    self.itemArray = [NSMutableArray arrayWithArray:[_sharedManager favoriteEventsList]];
-    [self.tableView reloadData];
-    
-    [[A3UserDefaults standardUserDefaults] setInteger:4 forKey:A3DaysCounterLastOpenedMainIndex];
-    [[A3UserDefaults standardUserDefaults] synchronize];
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -165,6 +177,8 @@
 
 	if (IS_IPHONE && IS_LANDSCAPE) {
 		[self leftBarButtonAppsButton];
+		self.toolbarItems = _bottomToolbar.items;
+		[self.navigationController setToolbarHidden:NO];
 	}
 }
 
