@@ -152,7 +152,16 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+
 	[self enableControls:YES];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if (IS_IPHONE && IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
