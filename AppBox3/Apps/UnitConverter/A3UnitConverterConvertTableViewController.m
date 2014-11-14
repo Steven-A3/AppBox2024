@@ -275,6 +275,9 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	if ([self isMovingToParentViewController]) {
         [self setupInstructionView];
 	}
+	if (IS_IPHONE && IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	}
 }
 
 - (void)viewWillLayoutSubviews {
