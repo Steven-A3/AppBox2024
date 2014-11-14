@@ -184,6 +184,14 @@ enum A3TableElementCellType {
 	[self enableControls:YES];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if (IS_IPHONE && IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	}
+}
+
 - (void)rightSideViewWillHide {
 	[self enableControls:YES];
 }
