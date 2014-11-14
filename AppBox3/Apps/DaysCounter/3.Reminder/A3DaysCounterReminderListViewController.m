@@ -48,15 +48,16 @@
     [super viewDidLoad];
 
     self.title = NSLocalizedString(@"Reminder", @"Reminder");
-    self.toolbarItems = _bottomToolbar.items;
-    [self.navigationController setToolbarHidden:NO];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 30 : 56, 0, 0);
 
 	if (IS_IPAD || IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
+		self.toolbarItems = _bottomToolbar.items;
+		[self.navigationController setToolbarHidden:NO];
 	} else {
 		self.navigationItem.leftBarButtonItem = nil;
 		self.navigationItem.hidesBackButton = YES;
+		[self.navigationController setToolbarHidden:YES];
 	}
     [self makeBackButtonEmptyArrow];
     
@@ -73,6 +74,16 @@
 	[self removeContentSizeCategoryDidChangeNotification];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+	}
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if (IS_IPHONE && IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+		self.toolbarItems = _bottomToolbar.items;
+		[self.navigationController setToolbarHidden:NO];
 	}
 }
 
@@ -115,8 +126,7 @@
     self.navigationController.delegate = nil;
     self.itemArray = [NSMutableArray arrayWithArray:[_sharedManager reminderList]];
     [self.tableView reloadData];
-    [self.navigationController setToolbarHidden:NO];
-    
+
     [[A3UserDefaults standardUserDefaults] setInteger:3 forKey:A3DaysCounterLastOpenedMainIndex];
     [[A3UserDefaults standardUserDefaults] synchronize];
 }
@@ -137,6 +147,8 @@
 
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
+		self.toolbarItems = _bottomToolbar.items;
+		[self.navigationController setToolbarHidden:NO];
 	}
 
 	if ( IS_IPAD ) {

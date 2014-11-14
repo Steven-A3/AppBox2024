@@ -87,14 +87,12 @@
         self.navigationItem.rightBarButtonItems = @[self.shareButton, self.infoButton, self.instructionHelpBarButton];
 	}
 
-    [self.navigationController setToolbarHidden:YES];
-    [self setToolbarItems:_bottomToolbar.items];
-    [self leftBarButtonAppsButton];
     [self setAutomaticallyAdjustsScrollViewInsets:NO];
-    
+    [self.navigationController setToolbarHidden:YES];
+	[self setToolbarItems:_bottomToolbar.items];
+
     currentIndex = 0;
     [self makeBackButtonEmptyArrow];
-
     
     A3DaysCounterSlideShowCollectionViewLayout *flowLayout = [A3DaysCounterSlideShowCollectionViewLayout new];
 	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
@@ -279,10 +277,12 @@
     [self updateNavigationTitle];
 }
 
-- (void)viewWillLayoutSubviews
-{
-    [super viewWillLayoutSubviews];
-    
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if (IS_IPHONE && IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	}
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -459,6 +459,8 @@
 
 - (void)tapPhotoViewScreen:(UITapGestureRecognizer*)gesture
 {
+	if (IS_IPHONE && IS_LANDSCAPE) return;
+
     if (_isShowMoreMenu) {
         [self dismissMoreMenu];
         return;

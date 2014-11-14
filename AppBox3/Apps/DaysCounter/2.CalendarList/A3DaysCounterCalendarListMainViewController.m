@@ -119,15 +119,18 @@
 
 	if (IS_IPAD || IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
+        [self setToolbarItems:_bottomToolbar.items];
+		[self.navigationController setToolbarHidden:NO];
 	} else {
 		self.navigationItem.leftBarButtonItem = nil;
 		self.navigationItem.hidesBackButton = YES;
+		[self.addEventButton setHidden:YES];
+		[self.navigationController setToolbarHidden:YES];
 	}
     [self makeBackButtonEmptyArrow];
 
     UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
     self.navigationItem.rightBarButtonItems = @[edit, [self instructionHelpBarButton]];
-    [self setToolbarItems:_bottomToolbar.items];
     
     if ( IS_IPHONE ) {
         if (IS_RETINA) {
@@ -271,12 +274,22 @@
 {
     [super viewWillAppear:animated];
     self.navigationController.delegate = nil;
-    [self.navigationController setToolbarHidden:NO];
-    
+
     [self reloadTableView];
     
     [[A3UserDefaults standardUserDefaults] setInteger:2 forKey:A3DaysCounterLastOpenedMainIndex];
     [[A3UserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if (IS_IPHONE && IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+		[self.addEventButton setHidden:NO];
+		[self setToolbarItems:_bottomToolbar.items];
+		[self.navigationController setToolbarHidden:NO animated:YES];
+	}
 }
 
 - (void)didReceiveMemoryWarning
@@ -509,6 +522,9 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 
 	if (IS_IPHONE && IS_LANDSCAPE) {
 		[self leftBarButtonAppsButton];
+		[self.addEventButton setHidden:NO];
+        [self setToolbarItems:_bottomToolbar.items];
+		[self.navigationController setToolbarHidden:NO animated:YES];
 	}
 }
 
@@ -825,6 +841,9 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (IS_IPHONE && IS_LANDSCAPE) {
+        return;
+    }
     if ( tableView == self.tableView && (indexPath.row >= [_itemArray count]) ) {
         return;
     }
