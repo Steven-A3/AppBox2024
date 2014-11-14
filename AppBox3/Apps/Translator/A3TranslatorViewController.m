@@ -112,6 +112,9 @@
 			});
 		}
 	}
+	if (IS_IPHONE && IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	}
 }
 
 - (void)dealloc {
