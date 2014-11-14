@@ -159,6 +159,14 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if (IS_IPHONE && IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	}
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
@@ -332,6 +340,11 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 
 	if (IS_IPHONE && IS_LANDSCAPE) {
 		[self leftBarButtonAppsButton];
+
+		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+		CGRect frame = _limitNumberPickerView.frame;
+		frame.size.width = screenBounds.size.height;
+		_limitNumberPickerView.frame = frame;
 	}
 }
 
