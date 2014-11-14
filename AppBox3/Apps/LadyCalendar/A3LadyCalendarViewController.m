@@ -159,6 +159,9 @@
 												   otherButtonTitles:nil];
 		[disclaimer show];
 	}
+	if (IS_IPHONE && IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	}
 }
 
 - (void)removeObserver {
