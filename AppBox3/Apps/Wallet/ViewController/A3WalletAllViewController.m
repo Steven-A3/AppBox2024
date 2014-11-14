@@ -86,6 +86,32 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 	}
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+
+	[self.view addSubview:self.searchBar];
+	[self showLeftNavigationBarItems];
+
+	// 데이타 갱신
+	[self refreshItems];
+
+	// 버튼 기능 활성화 여부
+	[self itemCountCheck];
+
+	if (![self isMovingToParentViewController] && _topViewRef) {
+		[self updateTopViewInfo:_topViewRef];
+	}
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if (IS_IPHONE && IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	}
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
@@ -186,24 +212,6 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-	[self.view addSubview:self.searchBar];
-	[self showLeftNavigationBarItems];
-
-    // 데이타 갱신
-    [self refreshItems];
-    
-    // 버튼 기능 활성화 여부
-    [self itemCountCheck];
-
-	if (![self isMovingToParentViewController] && _topViewRef) {
-		[self updateTopViewInfo:_topViewRef];
-	}
 }
 
 - (void)itemCountCheck {

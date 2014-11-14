@@ -47,7 +47,12 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 	[self makeBackButtonEmptyArrow];
 	self.navigationItem.hidesBackButton = YES;
 
-	[self leftBarButtonAppsButton];
+	if (IS_IPAD || IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	} else {
+		self.navigationItem.leftBarButtonItem = nil;
+		self.navigationItem.hidesBackButton = YES;
+	}
 
 	[self initializeViews];
 
@@ -58,6 +63,14 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 
 - (void)removeObserver {
 	[self removeContentSizeCategoryDidChangeNotification];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if (IS_IPHONE && IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
