@@ -76,7 +76,9 @@
 @property (nonatomic) NSInteger selectedRowIndex;
 @end
 
-@implementation A3DaysCounterCalendarListMainViewController
+@implementation A3DaysCounterCalendarListMainViewController {
+	BOOL _addEventButtonPressed;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -290,6 +292,14 @@
 		[self setToolbarItems:_bottomToolbar.items];
 		[self.navigationController setToolbarHidden:NO animated:YES];
 	}
+	if (_addEventButtonPressed) {
+		_addEventButtonPressed = NO;
+		double delayInSeconds = 4.0;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			[self reloadTableView];
+		});
+	}
 }
 
 - (void)didReceiveMemoryWarning
@@ -454,6 +464,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
                                              [viewCtrl showKeyboard];
                                          }];
     }
+	_addEventButtonPressed = YES;
 }
 
 - (IBAction)reminderAction:(id)sender {
