@@ -171,13 +171,13 @@
 
 		if (IS_IOS7) {
 			[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
-		}
 
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(statusBarFrameOrOrientationChanged:)
-													 name:UIApplicationDidChangeStatusBarOrientationNotification
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarFrameOrOrientationChanged:) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
+			[[NSNotificationCenter defaultCenter] addObserver:self
+													 selector:@selector(statusBarFrameOrOrientationChanged:)
+														 name:UIApplicationDidChangeStatusBarOrientationNotification
+													   object:nil];
+			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarFrameOrOrientationChanged:) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
+		}
 	}
 	return;
 }
