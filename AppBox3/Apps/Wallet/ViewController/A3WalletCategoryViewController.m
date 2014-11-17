@@ -785,6 +785,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
         [newSectionsArray addObject:array];
     }
 
+	BOOL needAdjustment = LANGUAGE_KOREAN;
     // Segregate the time zones into the appropriate arrays.
     for (WalletItem *object in self.items) {
 		if (!object.name) {
@@ -794,6 +795,14 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
         // Ask the collation which section number the time zone belongs in, based on its locale name.
         NSInteger sectionNumber = [self.collation sectionForObject:object collationStringSelector:NSSelectorFromString(@"name")];
 
+		// Language가 Korean인 경우, 영어에서 sectionNumber가 실제보다 1 크게 결과가 나오는 오류가 있어서 보정함
+		if (needAdjustment && [object.name length]) {
+			NSRange range = [[object.name substringToIndex:1] rangeOfString:[_collation.sectionTitles[sectionNumber] substringToIndex:1] options:NSCaseInsensitiveSearch];
+			if (range.location == NSNotFound) {
+				sectionNumber = MAX(0, sectionNumber - 1);
+			}
+		}
+        FNLOG(@"%ld, %ld, %@, %@, %@", (long)sectionNumber, (long)sectionTitlesCount, _collation.sectionTitles[MAX(sectionNumber - 1, 0)], _collation.sectionTitles[MAX(sectionNumber, 0)], _collation.sectionTitles[MIN(sectionNumber + 1, sectionTitlesCount - 1)]);
         // Get the array for the section.
         NSMutableArray *sections = newSectionsArray[sectionNumber];
 
