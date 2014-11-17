@@ -46,7 +46,9 @@ NSString *const A3DaysCounterListSortAscending = @"A3DaysCounterListSortAscendin
 NSString *const A3DaysCounterListSortKeyDate = @"date";
 NSString *const A3DaysCounterListSortKeyName = @"name";
 
-@implementation A3DaysCounterEventListViewController
+@implementation A3DaysCounterEventListViewController {
+	BOOL _addEventButtonPressed;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -676,7 +678,6 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    FNLOG();
     if ( editingStyle == UITableViewCellEditingStyleDelete ) {
         NSDictionary *dict = [_itemArray objectAtIndex:indexPath.section];
         NSArray *items = [dict objectForKey:EventKey_Items];
@@ -684,11 +685,11 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
         if ( [items count] > 0) {
             item = [items objectAtIndex:indexPath.row];
         }
-        
-        [_sharedManager removeEvent:item inContext:[NSManagedObjectContext MR_rootSavingContext] ];
+
+		if (item) {
+			[_sharedManager removeEvent:item inContext:item.managedObjectContext];
+		}
 		[self loadEventData];
-        [self.tableView setEditing:YES];
-        [self.tableView setEditing:NO];
     }
 }
 
@@ -921,6 +922,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 }
 
 #pragma mark - action method
+
 - (IBAction)photoViewAction:(id)sender {
 	[self callPrepareCloseOnActiveMainAppViewController];
 
@@ -946,6 +948,8 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 }
 
 - (IBAction)addEventAction:(id)sender {
+	_addEventButtonPressed = YES;
+
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
 	viewCtrl.savingContext = [NSManagedObjectContext MR_rootSavingContext];
     viewCtrl.calendarID = _calendarItem.uniqueID;
