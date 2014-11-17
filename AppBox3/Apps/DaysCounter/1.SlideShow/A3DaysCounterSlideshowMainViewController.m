@@ -80,6 +80,7 @@
         [self rightButtonMoreButton];
 	}
 	else {
+        [self leftBarButtonAppsButton];
         self.infoButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"information"] style:UIBarButtonItemStylePlain target:self action:@selector(detailAction:)];
         self.shareButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareOtherAction:)];
         self.infoButton.tintColor = [A3AppDelegate instance].themeColor;
