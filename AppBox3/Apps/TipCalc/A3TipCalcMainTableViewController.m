@@ -150,6 +150,12 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 	}
 }
 
+- (void)prepareClose {
+	self.tableView.delegate = nil;
+	self.tableView.dataSource = nil;
+	[self removeObserver];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 

@@ -21,7 +21,7 @@
 #import "A3InstructionViewController.h"
 #import "A3UserDefaults.h"
 
-@interface A3WalletAllViewController () <UISearchBarDelegate, UISearchDisplayDelegate, A3InstructionViewControllerDelegate>
+@interface A3WalletAllViewController () <UISearchBarDelegate, UISearchDisplayDelegate, A3InstructionViewControllerDelegate, A3ViewControllerProtocol>
 
 @property (nonatomic, strong) UIBarButtonItem *searchItem;
 @property (nonatomic, strong) NSMutableDictionary *topItem;

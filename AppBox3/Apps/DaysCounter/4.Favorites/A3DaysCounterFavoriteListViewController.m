@@ -32,12 +32,11 @@
 #import "A3UserDefaults.h"
 
 
-@interface A3DaysCounterFavoriteListViewController () <FMMoveTableViewDelegate, FMMoveTableViewDataSource, A3InstructionViewControllerDelegate>
+@interface A3DaysCounterFavoriteListViewController () <FMMoveTableViewDelegate, FMMoveTableViewDataSource, A3InstructionViewControllerDelegate,
+		A3ViewControllerProtocol>
 
 @property (strong, nonatomic) NSMutableArray *itemArray;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
-
-- (void)editAction:(id)sender;
 
 @end
 
@@ -97,6 +96,12 @@
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 	}
+}
+
+- (void)prepareClose {
+	self.tableView.delegate = nil;
+	self.tableView.dataSource = nil;
+	[self removeObserver];
 }
 
 - (void)viewWillAppear:(BOOL)animated

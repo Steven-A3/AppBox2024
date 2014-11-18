@@ -58,6 +58,7 @@ extern NSString *const A3LocalNotificationFromDaysCounter;
 @optional
 - (NSUInteger)a3SupportedInterfaceOrientations;
 - (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier;
+- (void)prepareClose;
 @end
 
 @interface A3AppDelegate : UIResponder <UIApplicationDelegate>

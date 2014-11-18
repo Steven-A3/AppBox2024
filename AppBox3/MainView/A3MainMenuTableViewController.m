@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <LocalAuthentication/LocalAuthentication.h>
 #import "A3MainMenuTableViewController.h"
 #import "A3TableViewRootElement.h"
 #import "A3TableViewSection.h"
@@ -259,14 +260,29 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 					}
 					if (proceedPasscodeCheck) {
 						weakSelf.selectedElement = menuElement;
-						weakSelf.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
-						UIViewController *passcodeTargetViewController;
-						if (IS_IPHONE) {
-							passcodeTargetViewController = [self mm_drawerController];
+						if (IS_IOS7 || ![[A3AppDelegate instance] useTouchID]) {
+							[weakSelf presentLockScreen];
 						} else {
-							passcodeTargetViewController = [[A3AppDelegate instance] rootViewController];
+							LAContext *context = [LAContext new];
+							NSError *error;
+							if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
+								[context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
+										localizedReason:[NSString stringWithFormat:@"Unlock %@", NSLocalizedString(self.selectedElement.title, nil)]
+												  reply:^(BOOL success, NSError *error) {
+													  dispatch_async(dispatch_get_main_queue(), ^{
+														  [[A3AppDelegate instance] removeSecurityCoverView];
+														  if (success) {
+															  [self passcodeViewControllerDidDismissWithSuccess:YES];
+														  } else {
+															  [self presentLockScreen];
+														  }
+													  });
+
+												  }];
+							} else {
+								[self presentLockScreen];
+							}
 						}
-						[_passcodeViewController showLockScreenInViewController:passcodeTargetViewController];
 					} else {
 						[self callPrepareCloseOnActiveMainAppViewController];
 
@@ -298,6 +314,19 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 		}
 	}
 	return elementsArray;
+}
+
+- (void)presentLockScreen {
+	[self dismissModalViewControllerOnMainViewController];
+
+	self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
+	UIViewController *passcodeTargetViewController;
+	if (IS_IPHONE) {
+		passcodeTargetViewController = [self mm_drawerController];
+	} else {
+		passcodeTargetViewController = [[A3AppDelegate instance] rootViewController];
+	}
+	[_passcodeViewController showLockScreenInViewController:passcodeTargetViewController];
 }
 
 - (NSArray *)dataFromElements:(NSArray *)elements {
@@ -478,7 +507,6 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 }
 
 - (void)applicationWillResignActive {
-	_selectedElement = nil;
 	if (_passcodeViewController) {
 		[_passcodeViewController cancelAndDismissMe];
 	}

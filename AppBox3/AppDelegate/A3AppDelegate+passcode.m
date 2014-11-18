@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <LocalAuthentication/LocalAuthentication.h>
 #import "A3AppDelegate+passcode.h"
 #import "A3PasscodeViewController.h"
 #import "A3KeychainUtils.h"
@@ -58,6 +59,26 @@
 	return NO;
 }
 
+- (BOOL)useTouchID {
+	if (IS_IOS7) return NO;
+
+	LAContext *context = [LAContext new];
+	NSError *error;
+	if (![context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
+		return NO;
+	}
+	NSNumber *object = [[A3UserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyForUseTouchID];
+	if (object) {
+		return [object boolValue];
+	}
+	return YES;
+}
+
+- (void)setUseTouchID:(BOOL)use {
+	[[A3UserDefaults standardUserDefaults] setBool:use forKey:kUserDefaultsKeyForUseTouchID];
+	[[A3UserDefaults standardUserDefaults] synchronize];
+}
+
 - (BOOL)showLockScreen {
 	BOOL passwordEnabled = [A3KeychainUtils getPassword] != nil;
 	BOOL passcodeTimerEnd = [self didPasscodeTimerEnd];
@@ -76,16 +97,39 @@
 
 - (void)presentLockScreen {
     if (!self.passcodeViewController) {
-        self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
-        BOOL showCancelButton = ![[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting];
-        if (showCancelButton) {
-            UIViewController *visibleViewController = [self.navigationController visibleViewController];
-            self.parentOfPasscodeViewController = visibleViewController;
-            [self.passcodeViewController showLockScreenInViewController:visibleViewController];
-            self.pushClockViewControllerIfFailPasscode = YES;
-        } else {
-            [self.passcodeViewController showLockScreenWithAnimation:NO showCacelButton:showCancelButton];
-        }
+		void(^presentPasscodeViewControllerBlock)(void) = ^(){
+			self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
+			BOOL showCancelButton = ![[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting];
+			if (showCancelButton) {
+				UIViewController *visibleViewController = [self.navigationController visibleViewController];
+				self.parentOfPasscodeViewController = visibleViewController;
+				[self.passcodeViewController showLockScreenInViewController:visibleViewController];
+				self.pushClockViewControllerIfFailPasscode = YES;
+			} else {
+				[self.passcodeViewController showLockScreenWithAnimation:NO showCacelButton:showCancelButton];
+			}
+		};
+		if (IS_IOS7 || ![self useTouchID]) {
+			presentPasscodeViewControllerBlock();
+		} else {
+			LAContext *context = [LAContext new];
+			NSError *error;
+			if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
+				[context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
+						localizedReason:NSLocalizedString(@"Unlock AppBox Pro", @"Unlock AppBox Pro") reply:^(BOOL success, NSError *error) {
+							dispatch_async(dispatch_get_main_queue(), ^{
+								if (success) {
+									[self removeSecurityCoverView];
+									[self passcodeViewControllerDidDismissWithSuccess:YES];
+								} else {
+									presentPasscodeViewControllerBlock();
+								}
+							});
+						}];
+			} else {
+				presentPasscodeViewControllerBlock();
+			}
+		}
     }
 }
 
@@ -129,12 +173,13 @@
 }
 
 - (void)applicationDidBecomeActive_passcode {
-	[self removeSecurityCoverView];
+//	[self removeSecurityCoverView];
 }
 
 - (void)applicationWillEnterForeground_passcode {
 	[self updateStartOption];
 
+	[self removeSecurityCoverView];
     if ([self shouldAskPasscodeForStarting]) {
         [self showLockScreen];
     } else {
@@ -154,8 +199,6 @@
 			}
 		}
 	}
-
-	[self removeSecurityCoverView];
 }
 
 - (void)applicationWillResignActive_passcode {
@@ -163,23 +206,29 @@
 		FNLOG(@"CoverView added to Window");
 		[[UIApplication sharedApplication] ignoreSnapshotOnNextApplicationLaunch];
 
-		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-		self.coverView = [[UIImageView alloc] initWithFrame:screenBounds];
-		self.coverView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		self.coverView.image = [UIImage imageNamed:[self getLaunchImageName]];
-		[self.window addSubview:self.coverView];
-
-		if (IS_IOS7) {
-			[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
-
-			[[NSNotificationCenter defaultCenter] addObserver:self
-													 selector:@selector(statusBarFrameOrOrientationChanged:)
-														 name:UIApplicationDidChangeStatusBarOrientationNotification
-													   object:nil];
-			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarFrameOrOrientationChanged:) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
-		}
+		[self addSecurityCoverView];
 	}
 	return;
+}
+
+- (void)addSecurityCoverView {
+	if (self.coverView) return;
+
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	self.coverView = [[UIImageView alloc] initWithFrame:screenBounds];
+	self.coverView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	self.coverView.image = [UIImage imageNamed:[self getLaunchImageName]];
+	[self.window addSubview:self.coverView];
+
+	if (IS_IOS7) {
+		[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
+
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(statusBarFrameOrOrientationChanged:)
+													 name:UIApplicationDidChangeStatusBarOrientationNotification
+												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarFrameOrOrientationChanged:) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
+	}
 }
 
 - (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder {
@@ -206,6 +255,8 @@
 }
 
 - (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
+	[self removeSecurityCoverView];
+
 	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
     if (!success && self.pushClockViewControllerIfFailPasscode) {
 		if (self.parentOfPasscodeViewController.navigationController != self.navigationController) {

@@ -28,7 +28,7 @@
 #import "A3UserDefaults.h"
 #import "LadyCalendarAccount.h"
 
-@interface A3LadyCalendarViewController () <A3InstructionViewControllerDelegate>
+@interface A3LadyCalendarViewController () <A3InstructionViewControllerDelegate, A3ViewControllerProtocol>
 
 @property (strong, nonatomic) A3LadyCalendarModelManager *dataManager;
 @property (strong, nonatomic) UIView *headerView;
@@ -174,6 +174,12 @@
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+}
+
+- (void)prepareClose {
+	self.collectionView.delegate = nil;
+	self.collectionView.dataSource = nil;
+	[self removeObserver];
 }
 
 - (void)viewWillAppear:(BOOL)animated

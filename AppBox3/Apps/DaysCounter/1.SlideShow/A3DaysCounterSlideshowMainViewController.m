@@ -34,7 +34,11 @@
 
 #define VISIBLE_INDEX_INTERVAL      2
 
-@interface A3DaysCounterSlideShowMainViewController () <A3CenterViewDelegate, A3DaysCounterEventDetailViewControllerDelegate, A3InstructionViewControllerDelegate, UIActivityItemSource, UIPopoverControllerDelegate, UIGestureRecognizerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource,UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+@interface A3DaysCounterSlideShowMainViewController ()
+		<A3CenterViewDelegate, A3DaysCounterEventDetailViewControllerDelegate,
+		A3InstructionViewControllerDelegate, UIActivityItemSource, UIPopoverControllerDelegate,
+		UIGestureRecognizerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource,
+		UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, A3ViewControllerProtocol>
 @property (strong, nonatomic) UIPopoverController *popoverVC;
 @property (strong, nonatomic) NSArray *eventsArray;
 @property (nonatomic, strong) NSArray *moreMenuButtons;
@@ -62,7 +66,6 @@
     }
     return self;
 }
-
 
 - (void)viewDidLoad
 {
@@ -142,6 +145,12 @@
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 	}
+}
+
+- (void)prepareClose {
+	self.collectionView.delegate = nil;
+	self.collectionView.dataSource = nil;
+	[self removeObserver];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

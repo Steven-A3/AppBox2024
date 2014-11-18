@@ -34,7 +34,7 @@ const NSInteger kTranslatorAlertViewType_DeleteAll = 2;
 		<UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource,
 		A3TranslatorMessageCellDelegate, UIKeyInput, A3TranslatorLanguageTVDelegateDelegate,
 		A3SearchViewControllerDelegate, UIPopoverControllerDelegate, UIActionSheetDelegate,
-		UIActivityItemSource>
+		UIActivityItemSource, A3ViewControllerProtocol>
 
 // Language Select
 @property (nonatomic, strong) UIView *languageSelectView;

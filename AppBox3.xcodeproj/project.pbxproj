@@ -251,6 +251,7 @@
 		682968A618505E3900B70E13 /* A3SetupDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 682968A518505E3900B70E13 /* A3SetupDataViewController.m */; };
 		682968A818505E3900B70E13 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 682968A718505E3900B70E13 /* Images.xcassets */; };
 		682969251850746900B70E13 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2DB15EB10B000BD6AD4 /* CoreData.framework */; };
+		6829762F1A1A19CC00E06E87 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6829762E1A1A19CC00E06E87 /* LocalAuthentication.framework */; };
 		682B37C318AB365D00C6BD66 /* Calculator.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 682B37C218AB365D00C6BD66 /* Calculator.xcassets */; };
 		682B37C518AB369500C6BD66 /* Unit.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 682B37C418AB369500C6BD66 /* Unit.xcassets */; };
 		682B37C718AB36B600C6BD66 /* Wallet.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 682B37C618AB36B600C6BD66 /* Wallet.xcassets */; };
@@ -1372,6 +1373,7 @@
 		682968A418505E3900B70E13 /* A3SetupDataViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = A3SetupDataViewController.h; sourceTree = "<group>"; };
 		682968A518505E3900B70E13 /* A3SetupDataViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = A3SetupDataViewController.m; sourceTree = "<group>"; };
 		682968A718505E3900B70E13 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		6829762E1A1A19CC00E06E87 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		682B37C218AB365D00C6BD66 /* Calculator.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Calculator.xcassets; path = "AppBox3/Asset Catalogs/Calculator.xcassets"; sourceTree = "<group>"; };
 		682B37C418AB369500C6BD66 /* Unit.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Unit.xcassets; path = "AppBox3/Asset Catalogs/Unit.xcassets"; sourceTree = "<group>"; };
 		682B37C618AB36B600C6BD66 /* Wallet.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Wallet.xcassets; path = "AppBox3/Asset Catalogs/Wallet.xcassets"; sourceTree = "<group>"; };
@@ -2660,6 +2662,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6829762F1A1A19CC00E06E87 /* LocalAuthentication.framework in Frameworks */,
 				5727A57419D41B9200ADB17C /* CoreMotion.framework in Frameworks */,
 				68636000198BF88F00C3A323 /* libensembles.a in Frameworks */,
 				681E1281193447D70077DCFA /* libz.dylib in Frameworks */,
@@ -3438,6 +3441,7 @@
 		682EA2D415EB10B000BD6AD4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6829762E1A1A19CC00E06E87 /* LocalAuthentication.framework */,
 				5727A57319D41B9200ADB17C /* CoreMotion.framework */,
 				681E1280193447D70077DCFA /* libz.dylib */,
 				68DBAB6C18C4C2B2003A67E5 /* MediaPlayer.framework */,

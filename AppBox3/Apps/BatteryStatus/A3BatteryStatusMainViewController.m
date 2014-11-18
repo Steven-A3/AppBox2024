@@ -135,6 +135,8 @@
 }
 
 - (void)prepareClose {
+	self.tableView.delegate = nil;
+	self.tableView.dataSource = nil;
 	[self dismissInstructionViewController:nil];
 	[self removeObserver];
 	[UIDevice currentDevice].batteryMonitoringEnabled = NO;

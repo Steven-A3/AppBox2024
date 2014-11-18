@@ -14,12 +14,20 @@
 - (void)saveTimerStartTime;
 - (BOOL)isSimplePasscode;
 
+- (BOOL)useTouchID;
+
+- (void)setUseTouchID:(BOOL)use;
+
 - (BOOL)showLockScreen;
 
 - (void)applicationDidEnterBackground_passcode;
 - (void)applicationDidBecomeActive_passcode;
 - (void)applicationWillEnterForeground_passcode;
 - (void)applicationWillResignActive_passcode;
+
+- (void)addSecurityCoverView;
+
+- (void)removeSecurityCoverView;
 
 - (BOOL)shouldAskPasscodeForStarting;
 

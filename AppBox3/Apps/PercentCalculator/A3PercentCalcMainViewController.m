@@ -146,6 +146,12 @@
 	}
 }
 
+- (void)prepareClose {
+	self.tableView.delegate = nil;
+	self.tableView.dataSource = nil;
+	[self removeObserver];
+}
+
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 

@@ -70,6 +70,35 @@ static char const *const key_firstActionSheet 					= "key_firstActionSheet";
 	}
 }
 
+- (void)dismissModalViewControllerOnMainViewController {
+	UINavigationController *navigationController;
+
+	if (IS_IPHONE) {
+		navigationController = (UINavigationController *) self.mm_drawerController.centerViewController;
+		[self.mm_drawerController closeDrawerAnimated:YES completion:nil];
+	} else {
+		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+		[rootViewController dismissRightSideViewController];
+
+		navigationController = [rootViewController centerNavigationController];
+		// KJH
+		if (rootViewController.presentViewControllers && [rootViewController.presentViewControllers count] > 0) {
+			[rootViewController dismissCenterViewController];
+		}
+	}
+
+	if (navigationController.presentedViewController) {
+		UIViewController *presentedViewController = navigationController.presentedViewController;
+		if ([presentedViewController isKindOfClass:[UINavigationController class]]) {
+			UINavigationController *presentedNavigationController = (UINavigationController *) presentedViewController;
+			UIViewController *targetViewController = presentedNavigationController.viewControllers[0];
+			[targetViewController dismissViewControllerAnimated:NO completion:NULL];
+		} else {
+			[presentedViewController dismissViewControllerAnimated:NO completion:NULL];
+		}
+	}
+}
+
 - (void)popToRootAndPushViewController:(UIViewController *)viewController {
 	UINavigationController *navigationController;
 
@@ -88,8 +117,15 @@ static char const *const key_firstActionSheet 					= "key_firstActionSheet";
 	}
 
 	// Modal 이 있는 경우, 제거한다.
-	if (self.navigationController.presentedViewController) {
-		[self.navigationController dismissViewControllerAnimated:NO completion:NULL];
+	if (navigationController.presentedViewController) {
+		UIViewController *presentedViewController = navigationController.presentedViewController;
+		if ([presentedViewController isKindOfClass:[UINavigationController class]]) {
+			UINavigationController *presentedNavigationController = (UINavigationController *) presentedViewController;
+			UIViewController *targetViewController = presentedNavigationController.viewControllers[0];
+			[targetViewController dismissViewControllerAnimated:NO completion:NULL];
+		} else {
+			[presentedViewController dismissViewControllerAnimated:NO completion:NULL];
+		}
 	}
 
     NSMutableArray *currentViewControllers = [[navigationController viewControllers] mutableCopy];

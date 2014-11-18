@@ -37,6 +37,7 @@
 #import "CLLocationManager+authorization.h"
 #import "A3Utilities.h"
 #import "A3StandardLeft15Cell.h"
+#import "A3UserDefaults.h"
 
 #define ActionTag_Location      100
 #define ActionTag_Photo         101
@@ -189,6 +190,7 @@
     isFirstAppear = YES;
     self.tableView.separatorInset = UIEdgeInsetsZero;
 
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidAppear) name:A3NotificationRightSideViewDidAppear object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
@@ -202,7 +204,15 @@
 #endif
 }
 
+- (void)applicationDidEnterBackground {
+	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+	if ([startingAppName length] && ![startingAppName isEqualToString:@"Days Counter"]) {
+		[self cancelButtonAction:nil];
+	}
+}
+
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewDidAppear object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];

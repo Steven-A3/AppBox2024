@@ -172,6 +172,12 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 }
 
+- (void)prepareClose {
+	self.fmMoveTableView.delegate = nil;
+	self.fmMoveTableView.dataSource = nil;
+	[self removeObserver];
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 

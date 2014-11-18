@@ -65,6 +65,12 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 	[self removeContentSizeCategoryDidChangeNotification];
 }
 
+- (void)prepareClose {
+	self.tableView.delegate = nil;
+	self.tableView.dataSource = nil;
+	[self removeObserver];
+}
+
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 

@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	HolidaysHeaderViewCountryLabel
 };
 
-@interface A3HolidaysPageContentViewController () <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
+@interface A3HolidaysPageContentViewController () <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, A3ViewControllerProtocol>
 
 @property (nonatomic, strong) NSArray *holidays;
 @property (nonatomic, strong) DKLiveBlurView *imageView;
@@ -88,6 +88,12 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	[_imageView setScrollView:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3HolidaysFlickrDownloadManagerDownloadComplete object:nil];
+}
+
+- (void)prepareClose {
+	self.tableView.delegate = nil;
+	self.tableView.dataSource = nil;
+	[self removeObserver];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

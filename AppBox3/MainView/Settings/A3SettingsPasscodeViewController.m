@@ -6,21 +6,20 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <LocalAuthentication/LocalAuthentication.h>
 #import "A3SettingsPasscodeViewController.h"
 #import "A3AppDelegate+passcode.h"
 #import "A3PasscodeViewController.h"
 #import "UIViewController+A3Addition.h"
-#import "A3PasswordViewController.h"
 #import "A3KeychainUtils.h"
-#import "A3UIDevice.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "Reachability.h"
-#import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
 
 @interface A3SettingsPasscodeViewController () <A3PasscodeViewControllerDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong) UISwitch *useSimpleCodeSwitch;
+@property (nonatomic, strong) UISwitch *touchIDSwitch;
 @property (nonatomic, strong) UISwitch *askPasscodeForStarting;
 @property (nonatomic, strong) UISwitch *askPasscodeForSettings;
 @property (nonatomic, strong) UISwitch *askPasscodeForDaysCounter;
@@ -33,22 +32,21 @@
 @implementation A3SettingsPasscodeViewController {
 	BOOL _changingPasscodeType;
 	BOOL _passwordConfirmedWhileSwitchingSimplePasscodeUse;
-}
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+	BOOL _touchIDAvailable;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
+	if (!IS_IOS7) {
+		LAContext *context = [LAContext new];
+		NSError *error;
+		_touchIDAvailable = [context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error];
+	}
+
 	[self makeBackButtonEmptyArrow];
+
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 }
@@ -63,13 +61,11 @@
 	}
 }
 
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	switch (indexPath.section) {
@@ -94,6 +90,15 @@
 	if (section < 2) return UITableViewAutomaticDimension;
 	BOOL isLastSection = ([self.tableView numberOfSections] - 1) == section;
 	return [self standardHeightForFooterIsLastSection:isLastSection];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 1 && indexPath.row == 1) {
+		if (!_touchIDAvailable) {
+			return 0;
+		}
+	}
+	return [super tableView:tableView heightForRowAtIndexPath:indexPath];
 }
 
 - (BOOL)passcodeEnabled {
@@ -123,12 +128,24 @@
 			break;
 		}
 		case 1: {
+			if (_touchIDAvailable) {
+				if (!_touchIDSwitch) {
+					_touchIDSwitch = [UISwitch new];
+					[_touchIDSwitch addTarget:self action:@selector(touchIDSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
+				}
+				[_touchIDSwitch setOn:[[A3AppDelegate instance] useTouchID]];
+				cell.accessoryView = _touchIDSwitch;
+			}
+			break;
+		}
+		case 2: {
 			if (!_useSimpleCodeSwitch) {
 				_useSimpleCodeSwitch = [UISwitch new];
 				[_useSimpleCodeSwitch addTarget:self action:@selector(useSimplePasscodeValuedChanged:) forControlEvents:UIControlEventValueChanged];
 			}
 			[_useSimpleCodeSwitch setOn:[[A3AppDelegate instance] isSimplePasscode]];
 			cell.accessoryView = _useSimpleCodeSwitch;
+			break;
 		}
 	 }
 }
@@ -182,6 +199,10 @@
 			cell.accessoryView = _askPasscodeForWallet;
 			break;
 	}
+}
+
+- (void)touchIDSwitchValueChanged:(UISwitch *)control {
+	[[A3AppDelegate instance] setUseTouchID:control.on];
 }
 
 - (void)askPasscodeForStartingValueChanged:(UISwitch *)control {

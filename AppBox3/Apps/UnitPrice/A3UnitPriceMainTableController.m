@@ -30,7 +30,7 @@ NSString *const A3NotificationUnitPriceCurrencyCodeChanged = @"A3NotificationUni
 NSString *const A3UnitPricePrice1DefaultID = @"UnitPriceDefault1";
 NSString *const A3UnitPricePrice2DefaultID = @"UnitPriceDefault2";
 
-@interface A3UnitPriceMainTableController () <UnitPriceInputDelegate, A3UnitPriceModifyDelegate, UnitPriceHistoryViewControllerDelegate>
+@interface A3UnitPriceMainTableController () <UnitPriceInputDelegate, A3UnitPriceModifyDelegate, UnitPriceHistoryViewControllerDelegate, A3ViewControllerProtocol>
 {
     float price1UnitPrice;
     float price2UnitPrice;
@@ -134,6 +134,11 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 	}
 }
 
+- (void)prepareClose {
+	self.tableView.delegate = nil;
+	self.tableView.dataSource = nil;
+	[self removeObserver];
+}
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];

@@ -145,6 +145,7 @@ extern NSString *const A3UnitPriceUserDataEntityPriceFavorites;
 extern NSString *const kUserDefaultTimerStart;
 extern NSString *const kUserDefaultsKeyForPasscodeTimerDuration;
 extern NSString *const kUserDefaultsKeyForUseSimplePasscode;
+extern NSString *const kUserDefaultsKeyForUseTouchID;
 extern NSString *const kUserDefaultsKeyForAskPasscodeForStarting;
 extern NSString *const kUserDefaultsKeyForAskPasscodeForSettings;
 extern NSString *const kUserDefaultsKeyForAskPasscodeForDaysCounter;

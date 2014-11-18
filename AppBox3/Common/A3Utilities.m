@@ -142,6 +142,7 @@ NSString *const A3WalletDataEntityCategoryInfo = @"A3WalletDataEntityCategoryInf
 NSString *const kUserDefaultTimerStart 						= @"AppBoxPasscodeTimerStart";
 NSString *const kUserDefaultsKeyForPasscodeTimerDuration 	= @"kUserRequirePasscodeAfterMinutes";
 NSString *const kUserDefaultsKeyForUseSimplePasscode 		= @"kUserUseSimplePasscode";
+NSString *const kUserDefaultsKeyForUseTouchID 				= @"kUserDefaultsKeyForUseTouchID";
 NSString *const kUserDefaultsKeyForAskPasscodeForStarting 	= @"kUserRequirePasscodeAppBoxPro";
 NSString *const kUserDefaultsKeyForAskPasscodeForSettings 	= @"kUserRequirePasscodeSettiings";
 NSString *const kUserDefaultsKeyForAskPasscodeForDaysCounter = @"kUserRequirePasscodeDaysUntil";

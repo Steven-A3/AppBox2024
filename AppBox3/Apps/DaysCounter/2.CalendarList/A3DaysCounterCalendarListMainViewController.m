@@ -32,7 +32,11 @@
 #define ActionTag_DeleteCalendar 100
 
 #ifdef __IPHONE_8_0
-@interface A3DaysCounterCalendarListMainViewController () <UINavigationControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, A3InstructionViewControllerDelegate, UIPopoverPresentationControllerDelegate>
+@interface A3DaysCounterCalendarListMainViewController () <UINavigationControllerDelegate, UISearchBarDelegate,
+		UISearchDisplayDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate,
+		UIActionSheetDelegate, A3InstructionViewControllerDelegate, UIPopoverPresentationControllerDelegate,
+		A3ViewControllerProtocol
+		>
 #else
 @interface A3DaysCounterCalendarListMainViewController () <UINavigationControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, A3InstructionViewControllerDelegate>
 #endif
@@ -224,6 +228,14 @@
 	}
 }
 
+- (void)prepareClose {
+	[self dismissInstructionViewController:nil];
+
+	self.tableView.delegate = nil;
+	self.tableView.dataSource = nil;
+	[self removeObserver];
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
@@ -233,11 +245,6 @@
 }
 
 - (void)dealloc {
-	[self removeObserver];
-}
-
-- (void)prepareClose {
-	[self dismissInstructionViewController:nil];
 	[self removeObserver];
 }
 

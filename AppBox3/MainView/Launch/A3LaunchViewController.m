@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <LocalAuthentication/LocalAuthentication.h>
 #import "A3LaunchViewController.h"
 #import "A3ClockMainViewController.h"
 #import "A3LaunchSceneViewController.h"
@@ -134,11 +135,37 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 
     BOOL presentLockScreen = [[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting];
     if (presentLockScreen) {
-        if (!self.passcodeViewController) {
-            self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
-            [self.passcodeViewController showLockScreenWithAnimation:NO showCacelButton:NO];
-			[A3AppDelegate instance].passcodeViewController = self.passcodeViewController;
-        }
+		void (^presentPasscodeViewControllerBlock)(void) = ^(){
+			if (!self.passcodeViewController) {
+				self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
+				[self.passcodeViewController showLockScreenWithAnimation:NO showCacelButton:NO];
+				[A3AppDelegate instance].passcodeViewController = self.passcodeViewController;
+			}
+		};
+		if (IS_IOS7 || ![[A3AppDelegate instance] useTouchID]) {
+			presentPasscodeViewControllerBlock();
+		} else {
+			LAContext *context = [LAContext new];
+			NSError *error;
+			if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
+				[appDelegate addSecurityCoverView];
+				[context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
+						localizedReason:@"Unlock AppBox Pro"
+								  reply:^(BOOL success, NSError *error) {
+									  dispatch_async(dispatch_get_main_queue(), ^{
+										  A3AppDelegate *appDelegate = [A3AppDelegate instance];
+										  [appDelegate removeSecurityCoverView];
+										  if (success) {
+											  [self passcodeViewControllerDidDismissWithSuccess:YES];
+										  } else {
+											  presentPasscodeViewControllerBlock();
+										  }
+									  });
+								  }];
+			} else {
+				presentPasscodeViewControllerBlock();
+			}
+		}
         return YES;
     } else {
         [appDelegate showReceivedLocalNotifications];

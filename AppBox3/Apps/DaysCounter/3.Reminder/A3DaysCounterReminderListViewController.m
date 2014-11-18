@@ -26,7 +26,7 @@
 #import "A3UserDefaults.h"
 #import "UITableView+utility.h"
 
-@interface A3DaysCounterReminderListViewController ()
+@interface A3DaysCounterReminderListViewController () <UITableViewDataSource, UITableViewDelegate, A3ViewControllerProtocol>
 @property (strong, nonatomic) NSMutableArray *itemArray;
 @property (strong, nonatomic) NSIndexPath *clearIndexPath;
 
@@ -75,6 +75,12 @@
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 	}
+}
+
+- (void)prepareClose {
+	self.tableView.delegate = nil;
+	self.tableView.dataSource = nil;
+	[self removeObserver];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

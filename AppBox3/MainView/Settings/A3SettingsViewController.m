@@ -6,17 +6,14 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <LocalAuthentication/LocalAuthentication.h>
 #import "A3SettingsViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "A3UserDefaults+A3Addition.h"
 #import "A3KeychainUtils.h"
-#import "A3AppDelegate+appearance.h"
-#import "A3UIDevice.h"
 #import "UIViewController+tableViewStandardDimension.h"
-#import "A3AppDelegate+iCloud.h"
 #import "Reachability.h"
 #import "A3SyncManager.h"
-#import "A3UserDefaults.h"
 
 typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	A3SettingsRowUseiCloud = 1100,
@@ -146,8 +143,33 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.row == 0 && indexPath.section == 1) {
 		if ([self checkPasscode]) {
-			_passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
-			[_passcodeViewController showLockScreenInViewController:self];
+			void(^presentPasscodeViewControllerBlock)(void) = ^(){
+				_passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
+				[_passcodeViewController showLockScreenInViewController:self];
+			};
+			if (IS_IOS7 || ![[A3AppDelegate instance] useTouchID]) {
+				presentPasscodeViewControllerBlock();
+			} else {
+				LAContext *context = [LAContext new];
+				NSError *error;
+				if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
+					[context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
+							localizedReason:@"Unlock AppBox Pro"
+									  reply:^(BOOL success, NSError *error) {
+										  dispatch_async(dispatch_get_main_queue(), ^{
+											  [[A3AppDelegate instance] removeSecurityCoverView];
+											  if (success) {
+												  [self performSegueWithIdentifier:@"passcode" sender:nil];
+											  } else {
+												  presentPasscodeViewControllerBlock();
+											  }
+										  });
+
+									  }];
+				} else {
+					presentPasscodeViewControllerBlock();
+				}
+			}
 		} else {
 			[self performSegueWithIdentifier:@"passcode" sender:nil];
 		}
