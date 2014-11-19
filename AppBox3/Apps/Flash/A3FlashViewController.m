@@ -384,8 +384,13 @@ NSString *const cellID = @"flashEffectID";
 
     if (_isTorchOn) {
         [self setTorchOn];
+		double delayInSeconds = 1.0;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			[self setTorchOn];
+		});
     }
-    
+	
     if (_currentFlashViewMode & A3FlashViewModeTypeEffect) {
         [self startStrobeLightEffectForIndex:_selectedEffectIndex];
     }
@@ -1013,40 +1018,24 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 
 #pragma mark - LED Related
 - (void)setTorchOn {
-	Class myClass = NSClassFromString(@"AVCaptureDevice");
-	if (!myClass) {
-		return;
-	}
-	
-	NSLog(@"%s", __FUNCTION__);
-	
 	AVCaptureDevice *myTorch = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
 	[myTorch lockForConfiguration:nil];
 
-	if ([myTorch torchMode] != AVCaptureTorchModeOn) {
-
+	if (_flashBrightnessValue == 0.0) {
+		[myTorch setTorchMode:AVCaptureTorchModeOff];
+	} else {
 		[myTorch setTorchMode:AVCaptureTorchModeOn];
-		if (_flashBrightnessValue == 0.0) {
-			[myTorch setTorchMode:AVCaptureTorchModeOff];
-		} else {
-			[myTorch setTorchModeOnWithLevel:_flashBrightnessValue error:nil];
-		}
+		[myTorch setTorchModeOnWithLevel:_flashBrightnessValue error:nil];
 	}
 
 	[myTorch unlockForConfiguration];
 }
 
 - (void)setTorchOff {
-	Class myClass = NSClassFromString(@"AVCaptureDevice");
-	if (!myClass) {
-		return;
-	}
-
 	AVCaptureDevice *myTorch = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
 	[myTorch lockForConfiguration:nil];
 	
 	[myTorch setTorchMode:AVCaptureTorchModeOff];
-	[myTorch setFlashMode:AVCaptureFlashModeOff];
 	
 	[myTorch unlockForConfiguration];
 	
@@ -1057,11 +1046,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 
 - (void)toggleTorch {
 #if !TARGET_IPHONE_SIMULATOR
-	Class myClass = NSClassFromString(@"AVCaptureDevice");
-	if (!myClass) {
-		return;
-	}
-	
 	if (_LEDSession) {
 		if (_isTorchOn) {
 			[self setTorchOff];
@@ -1086,7 +1070,6 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 		[myTorch lockForConfiguration:nil];
         
         if (!_isTorchOn || _flashBrightnessValue == 0.0) {
-            [myTorch setTorchMode:AVCaptureTorchModeOff];
             [myTorch setTorchMode:AVCaptureTorchModeOff];
         } else {
 			[myTorch setTorchMode:AVCaptureTorchModeOn];
