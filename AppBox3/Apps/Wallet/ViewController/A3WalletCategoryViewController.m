@@ -142,7 +142,7 @@
     [self refreshItems];
 
 	// 타이틀 표시 (갯수가 있으므로 페이지 진입시 갱신한다.)
-	self.navigationItem.title = [NSString stringWithFormat:@"%@(%ld)", self.category.name, (long)self.items.count];
+	[self updateNavigationBarTitle];
 
     // more button 활성화여부
     [self itemCountCheck];
@@ -153,7 +153,7 @@
 	[self refreshItems];
 
 	// 타이틀 표시 (갯수가 있으므로 페이지 진입시 갱신한다.)
-	self.navigationItem.title = [NSString stringWithFormat:@"%@(%ld)", self.category.name, (long)self.items.count];
+	[self updateNavigationBarTitle];
 
 	// more button 활성화여부
 	[self itemCountCheck];
@@ -174,6 +174,10 @@
 {
     BOOL itemHave = (self.items.count>0) ? YES:NO;
     self.editButtonItem.enabled = itemHave;
+}
+
+- (void)updateNavigationBarTitle {
+	self.navigationItem.title = [NSString stringWithFormat:@"%@(%ld)", self.category.name, (long)self.items.count];
 }
 
 - (NSMutableArray *)items
@@ -640,6 +644,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 // called when cancel button pressed
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
     [self filterContentForSearchText:nil];
+	[self updateNavigationBarTitle];
 }
 
 // called when Search (in our case "Done") button pressed
@@ -990,8 +995,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
             [self itemCountCheck];
 
             // 타이틀 표시 (갯수가 있으므로 페이지 진입시 갱신한다.)
-            NSString *cateTitle = [NSString stringWithFormat:@"%@(%ld)", self.category.name, (long)self.items.count];
-            self.navigationItem.title = cateTitle;
+			[self updateNavigationBarTitle];
         }
     }
 }
