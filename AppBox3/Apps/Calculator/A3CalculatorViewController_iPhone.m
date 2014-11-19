@@ -88,7 +88,7 @@
     [super viewDidLoad];
 
     self.automaticallyAdjustsScrollViewInsets = NO;
-	self.title = NSLocalizedString(@"Calculator", @"Calculator");
+	self.title = NSLocalizedString(A3AppName_Calculator, nil);
 
 	if (!_modalPresentingParentViewController) {
 		[self leftBarButtonAppsButton];
@@ -668,7 +668,7 @@ static NSString *const A3V3InstructionDidShowForCalculator = @"A3V3InstructionDi
 
 - (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
 {
-    return NSLocalizedString(@"Calculator", @"Calculator");
+    return NSLocalizedString(A3AppName_Calculator, nil);
 }
 
 

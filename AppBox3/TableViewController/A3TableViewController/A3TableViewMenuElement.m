@@ -13,13 +13,13 @@
 
 - (BOOL)securitySettingsIsOn {
 	if (!_needSecurityCheck) return NO;
-	if ([self.title isEqualToString:@"Days Counter"]) {
+	if ([self.title isEqualToString:A3AppName_DaysCounter]) {
 		return [[A3AppDelegate instance] shouldAskPasscodeForDaysCounter];
-	} else if ([self.title isEqualToString:@"Ladies Calendar"]) {
+	} else if ([self.title isEqualToString:A3AppName_LadiesCalendar]) {
 		return [[A3AppDelegate instance] shouldAskPasscodeForLadyCalendar];
-	} else if ([self.title isEqualToString:@"Wallet"]) {
+	} else if ([self.title isEqualToString:A3AppName_Wallet]) {
 		return [[A3AppDelegate instance] shouldAskPasscodeForWallet];
-	} else if ([self.title isEqualToString:@"Settings"]) {
+	} else if ([self.title isEqualToString:A3AppName_Settings]) {
 		return [[A3AppDelegate instance] shouldAskPasscodeForSettings];
 	}
 	return NO;

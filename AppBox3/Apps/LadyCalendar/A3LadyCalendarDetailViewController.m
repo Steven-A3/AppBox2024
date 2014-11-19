@@ -63,7 +63,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 
 	if (_isFromNotification) {
-		self.title = NSLocalizedString(@"Ladies Calendar", nil);
+		self.title = NSLocalizedString(A3AppName_LadiesCalendar, nil);
 		[self rightBarButtonDoneButton];
 	}
 	if (_periodID) {

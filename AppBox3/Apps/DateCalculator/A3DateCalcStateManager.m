@@ -28,7 +28,7 @@ static DurationType g_currentDurationType;
     
     if (oldOptions == options) {
         // 선택 항목이 마지막 하나 남은 경우.
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Date Calculator", nil)
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(A3AppName_DateCalculator, nil)
                                                             message:NSLocalizedString(@"To show results, need one option.", nil)
                                                            delegate:self
                                                   cancelButtonTitle:NSLocalizedString(@"OK", nil)

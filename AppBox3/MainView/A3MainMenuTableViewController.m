@@ -197,7 +197,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 
 - (id)bottomSection {
 	NSArray *bottomSection = @[
-			@{kA3AppsMenuName : @"Settings", kA3AppsStoryboard_iPhone : @"A3Settings", kA3AppsStoryboard_iPad:@"A3Settings", kA3AppsMenuNeedSecurityCheck : @YES, kA3AppsDoNotKeepAsRecent : @YES},
+			@{kA3AppsMenuName : A3AppName_Settings, kA3AppsStoryboard_iPhone : @"A3Settings", kA3AppsStoryboard_iPad:@"A3Settings", kA3AppsMenuNeedSecurityCheck : @YES, kA3AppsDoNotKeepAsRecent : @YES},
 			@{kA3AppsMenuName : @"About", kA3AppsStoryboard_iPhone : @"about", kA3AppsStoryboard_iPad:@"about", kA3AppsDoNotKeepAsRecent:@YES},
 //			@{kA3AppsMenuName : @"Help", kA3AppsClassName_iPhone : @"A3HelpViewController", kA3AppsDoNotKeepAsRecent:@YES},
 	];
@@ -267,7 +267,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 							NSError *error;
 							if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
 								[context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
-										localizedReason:[NSString stringWithFormat:@"Unlock %@", NSLocalizedString(self.selectedElement.title, nil)]
+										localizedReason:[NSString stringWithFormat:NSLocalizedString(@"Unlock %@", @"Unlock %@"), NSLocalizedString(self.selectedElement.title, nil)]
 												  reply:^(BOOL success, NSError *error) {
 													  dispatch_async(dispatch_get_main_queue(), ^{
 														  [[A3AppDelegate instance] removeSecurityCoverView];
@@ -499,7 +499,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 - (void)openClockApp {
 	A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
 	[self popToRootAndPushViewController:clockVC];
-	self.activeAppName = @"Clock";
+	self.activeAppName = A3AppName_Clock;
 }
 
 - (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {

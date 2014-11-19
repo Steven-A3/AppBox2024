@@ -83,7 +83,7 @@ enum A3TableElementCellType {
 	self = [super initWithStyle:UITableViewStyleGrouped];
 	if (self) {
         // Custom initialization
-        self.title = IS_IPHONE ? NSLocalizedString(@"Sales Calculator_Short", nil): NSLocalizedString(@"Sales Calculator", @"Sales Calculator");
+        self.title = IS_IPHONE ? NSLocalizedString(@"Sales Calculator_Short", nil): NSLocalizedString(A3AppName_SalesCalculator, nil);
         [self configureTableData];
         
         _locationManager = [[CLLocationManager alloc] init];

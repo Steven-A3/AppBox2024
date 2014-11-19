@@ -221,7 +221,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 		self.navigationItem.hidesBackButton = YES;
 	}
     [self rightBarButtons];
-    self.title = NSLocalizedString(@"Tip Calculator", @"Tip Calculator");
+    self.title = NSLocalizedString(A3AppName_TipCalculator, nil);
     
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.showsHorizontalScrollIndicator = NO;

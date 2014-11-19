@@ -948,5 +948,6 @@
 
 "Notifications are disabled" = "알림이 꺼져 있습니다.";
 "Please enable alert after enabling notifications for this app." = "이 앱의 알림 설정을 켜신 후에 알림 설정을 진행해주세요.";
-"Cannot Save Period." = "Cannot Save Period.";
-"Unlock AppBox Pro" = "Unlock AppBox Pro";
+
+"Unlock AppBox Pro" = "AppBox Pro 잠금 해제";
+"Unlock %@" = "%@ 잠금 해제";

@@ -432,7 +432,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 	UIApplication *application = [UIApplication sharedApplication];
 	NSArray *notifications = [application scheduledLocalNotifications];
 	for (UILocalNotification *notification in notifications) {
-		if ([notification.userInfo[A3LocalNotificationOwner] isEqualToString:@"Ladies Calendar"]) {
+		if ([notification.userInfo[A3LocalNotificationOwner] isEqualToString:A3LocalNotificationFromLadyCalendar]) {
 			[application cancelLocalNotification:notification];
 		}
 	}

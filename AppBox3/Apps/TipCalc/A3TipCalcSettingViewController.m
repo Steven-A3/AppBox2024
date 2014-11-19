@@ -24,7 +24,7 @@
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
-        self.title = NSLocalizedString(@"Settings", @"Settings");
+        self.title = NSLocalizedString(A3AppName_Settings, nil);
         self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
     }
     return self;

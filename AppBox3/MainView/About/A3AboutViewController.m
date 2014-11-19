@@ -161,10 +161,10 @@
 		}
 		case 3: {
 			NSMutableString *message = [NSMutableString new];
-			[message appendString:[NSString stringWithFormat:@"\n📌 %@\n\n", NSLocalizedString(@"Holidays", nil)]];
+			[message appendString:[NSString stringWithFormat:@"\n📌 %@\n\n", NSLocalizedString(A3AppName_Holidays, nil)]];
 			[message appendString:[NSString stringWithFormat:@"%@\n\n", NSLocalizedString(@"DISCLAIMER_MESSAGE", nil)]];
 
-			[message appendString:[NSString stringWithFormat:@"📌 %@\n\n", NSLocalizedString(@"Ladies Calendar", nil)]];
+			[message appendString:[NSString stringWithFormat:@"📌 %@\n\n", NSLocalizedString(A3AppName_LadiesCalendar, nil)]];
 			[message appendString:[NSString stringWithFormat:@"%@\n\n", NSLocalizedString(@"LadyCalendarDisclaimerMsg", nil)]];
 
 			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Disclaimer", nil)

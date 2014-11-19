@@ -120,7 +120,7 @@
 {
     [super viewDidLoad];
 
-    self.navigationItem.title = NSLocalizedString(@"Days Counter", @"Days Counter");
+    self.navigationItem.title = NSLocalizedString(A3AppName_DaysCounter, nil);
     [self checkCalendarListToFixExceptionOfOldVersion];
 
 	if (IS_IPAD || IS_PORTRAIT) {

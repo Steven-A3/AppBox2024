@@ -52,7 +52,7 @@ NSString *const A3BatteryTitleKey = @"title";
 		[self rightBarButtonDoneButton];
 	}
 
-    self.title = NSLocalizedString(@"Settings", @"Settings");
+    self.title = NSLocalizedString(A3AppName_Settings, nil);
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.separatorInset = UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0);

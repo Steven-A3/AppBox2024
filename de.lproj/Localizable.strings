@@ -949,5 +949,5 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 "Notifications are disabled" = "Benachrichtigungen sind deaktiviert.";
 "Please enable alert after enabling notifications for this app." = "Bitte aktivieren Benachrichtigung nach der Aktivierung von Benachrichtigungen für diese App.";
 
-"Cannot Save Period." = "Cannot Save Period.";
-"Unlock AppBox Pro" = "Unlock AppBox Pro";
+"Unlock AppBox Pro" = "AppBox Pro entsperren";
+"Unlock %@" = "%@ entsperren";

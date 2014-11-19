@@ -91,7 +91,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 		self.navigationItem.hidesBackButton = YES;
 	}
 
-    self.title = NSLocalizedString(@"Expense List", @"Expense List");
+    self.title = NSLocalizedString(A3AppName_ExpenseList, nil);
 
 	self.dragDelegate = self;
 

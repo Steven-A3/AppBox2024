@@ -25,6 +25,7 @@ extern NSString *const kHolidayName;
 extern NSString *const kHolidayIsPublic;
 extern NSString *const kHolidayDate;
 extern NSString *const kHolidayDuration;
+extern NSString *const kHolidaysResourceName;
 
 @interface HolidayData : NSObject
 

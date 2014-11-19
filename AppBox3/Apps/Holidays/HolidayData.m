@@ -17,6 +17,7 @@ NSString *const kHolidayName = @"name";
 NSString *const kHolidayIsPublic = @"public";
 NSString *const kHolidayDate = @"date";
 NSString *const kHolidayDuration = @"duration";
+NSString *const kHolidaysResourceName = @"holidays";
 
 @implementation HolidayData
 

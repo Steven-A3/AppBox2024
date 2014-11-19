@@ -96,7 +96,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	self.tableView.dataSource = self;
 	self.tableView.delegate = self;
 
-	self.title = NSLocalizedString(@"Currency Converter", nil);
+	self.title = NSLocalizedString(A3AppName_CurrencyConverter, nil);
 
 	self.refreshControl = [UIRefreshControl new];
 	[self.refreshControl addTarget:self action:@selector(refreshControlValueChanged) forControlEvents:UIControlEventValueChanged];

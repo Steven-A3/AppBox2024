@@ -63,7 +63,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 {
     [super viewDidLoad];
 
-	self.title = NSLocalizedString(@"Calculator", @"Calculator");
+	self.title = NSLocalizedString(A3AppName_Calculator, nil);
 
     // Do any additional setup after loading the view from its nib.
 	if (!_modalPresentingParentViewController) {
@@ -465,7 +465,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 
 - (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
 {
-    return NSLocalizedString(@"Calculator", @"Calculator");
+    return NSLocalizedString(A3AppName_Calculator, nil);
 }
 
 #pragma mark -

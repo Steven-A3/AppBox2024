@@ -72,7 +72,7 @@
     settings.tag = A3RightBarButtonTagShareButton;
     self.navigationItem.rightBarButtonItems = @[settings, shareButton];
 
-	self.title = IS_IPHONE ? NSLocalizedString(@"Lunar Converter_Short", nil) : NSLocalizedString(@"Lunar Converter", nil);
+	self.title = IS_IPHONE ? NSLocalizedString(@"Lunar Converter_Short", nil) : NSLocalizedString(A3AppName_LunarConverter, nil);
 	_pageControl.hidden = YES;
 	[_pageControl makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(self.view.centerX);

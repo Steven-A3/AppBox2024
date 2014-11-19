@@ -43,7 +43,7 @@
 {
     [super viewDidLoad];
 
-    self.title = NSLocalizedString(@"Settings", @"Settings");
+    self.title = NSLocalizedString(A3AppName_Settings, nil);
 
 	self.tableView.showsVerticalScrollIndicator = NO;
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
@@ -354,7 +354,7 @@
 																							  [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK")
 																																				  style:UIAlertActionStyleCancel
 																																				handler:NULL]];
-																							  [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Settings", @"Settings")
+																							  [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(A3AppName_Settings, nil)
 																																				  style:UIAlertActionStyleDefault
 																																				handler:^(UIAlertAction *action) {
 																																					[[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];

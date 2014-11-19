@@ -288,7 +288,7 @@
 
 - (BOOL)requirePasscodeForStartingApp {
     BOOL requirePasscodeForStartingApp = NO;
-    NSArray *appsRequirePasscode = @[@"Settings", @"Days Counter", @"Ladies Calendar", @"Wallet"];
+    NSArray *appsRequirePasscode = @[A3AppName_Settings, A3AppName_DaysCounter, A3AppName_LadiesCalendar, A3AppName_Wallet];
     NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
     NSInteger idx = [appsRequirePasscode indexOfObject:startingAppName];
     if (idx != NSNotFound) {

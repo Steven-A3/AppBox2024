@@ -206,7 +206,7 @@
 
 - (void)applicationDidEnterBackground {
 	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
-	if ([startingAppName length] && ![startingAppName isEqualToString:@"Days Counter"]) {
+	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_DaysCounter]) {
 		[self cancelButtonAction:nil];
 	}
 }
@@ -1301,7 +1301,7 @@
 																			 [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK")
 																																 style:UIAlertActionStyleCancel
 																															   handler:NULL]];
-																			 [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Settings", @"Settings")
+																			 [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(A3AppName_Settings, nil)
 																																 style:UIAlertActionStyleDefault
 																															   handler:^(UIAlertAction *action) {
 																																   [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];

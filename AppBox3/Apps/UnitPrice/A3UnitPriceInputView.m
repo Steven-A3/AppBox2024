@@ -7,6 +7,7 @@
 //
 
 #import "A3UnitPriceInputView.h"
+#import "A3AppDelegate.h"
 
 @interface A3UnitPriceInputView ()
 
@@ -88,7 +89,7 @@
     _markLabel.font = [UIFont systemFontOfSize:11];
     _markLabel.backgroundColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];
 
-	_unitPriceTitleLabel.text = NSLocalizedString(@"UNIT PRICE", @"UNIT PRICE");
+	_unitPriceTitleLabel.text = NSLocalizedString([A3AppName_UnitPrice uppercaseString], nil);
 	_priceTitleLabel.text = NSLocalizedString(@"PRICE", @"PRICE");
 	_unitTitleLabel.text = NSLocalizedString(@"UNIT", @"UNIT");
 	_sizeTitleLabel.text = NSLocalizedString(@"SIZE", @"SIZE");

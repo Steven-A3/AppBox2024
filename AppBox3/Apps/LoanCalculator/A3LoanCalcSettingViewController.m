@@ -39,7 +39,7 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
 {
     [super viewDidLoad];
 
-    self.navigationItem.title = NSLocalizedString(@"Settings", @"Settings");
+    self.navigationItem.title = NSLocalizedString(A3AppName_Settings, nil);
     
     self.tableView.separatorColor = [self tableViewSeparatorColor];
     self.tableView.contentInset = UIEdgeInsetsMake(-1, 0, 0, 0);

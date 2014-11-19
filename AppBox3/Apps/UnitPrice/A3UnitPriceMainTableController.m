@@ -69,7 +69,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 
 	_barButtonEnabled = YES;
 
-    self.navigationItem.title = NSLocalizedString(@"Unit Price", @"Unit Price");
+    self.navigationItem.title = NSLocalizedString(A3AppName_UnitPrice, nil);
     
     [self makeBackButtonEmptyArrow];
 	if (IS_IPAD || IS_PORTRAIT) {

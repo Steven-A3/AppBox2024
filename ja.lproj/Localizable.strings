@@ -930,7 +930,7 @@
 "Tap" = "タップ";
 "or Shake!" = "やシェイク!";
 "This app does not have access to your photos." = "このAppには写真およびビデオへのアクセス権がありません。";
-"You can enable access in Privacy Settings." = "”プライバシー設定”でアクセスを有効にできます。";
+"You can enable access in Privacy Settings." = "“プライバシー設定”でアクセスを有効にできます。";
 
 "SOS" = "SOS";
 "Strobe" = "閃光灯モード";
@@ -945,5 +945,5 @@
 "Notifications are disabled" = "通知は無効になっています。";
 "Please enable alert after enabling notifications for this app." = "このアプリの通知を有効にした後、アラートを有効にしてください。";
 
-"Cannot Save Period." = "Cannot Save Period.";
-"Unlock AppBox Pro" = "Unlock AppBox Pro";
+"Unlock AppBox Pro" = "AppBox Proのロックを解除";
+"Unlock %@" = "%@のロックを解除";

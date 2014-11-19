@@ -68,7 +68,7 @@
 {
     [super viewDidLoad];
 
-    self.title = IS_IPHONE ? NSLocalizedString(@"Percent Calculator_Short", nil) : NSLocalizedString(@"Percent Calculator", @"Percent Calculator");
+    self.title = IS_IPHONE ? NSLocalizedString(@"Percent Calculator_Short", nil) : NSLocalizedString(A3AppName_PercentCalculator, nil);
 
 	_barButtonEnabled = YES;
 

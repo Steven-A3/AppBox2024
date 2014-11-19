@@ -434,7 +434,7 @@
 - (void)updateNavigationTitle
 {
     if ( [_sharedManager numberOfEventContainedImage] < 1 ) {
-        self.navigationItem.title = NSLocalizedString(@"Days Counter", @"Days Counter");
+        self.navigationItem.title = NSLocalizedString(A3AppName_DaysCounter, nil);
     }
     else {
         self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"%ld of %ld", @"%ld of %ld"), (long) currentIndex + 1, (long) [_eventsArray count]];
@@ -759,7 +759,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
     currentIndex = indexPath.row;
     
     if ( [_sharedManager numberOfEventContainedImage] < 1 ) {
-        self.navigationItem.title = NSLocalizedString(@"Days Counter", @"Days Counter");
+        self.navigationItem.title = NSLocalizedString(A3AppName_DaysCounter, nil);
     }
     else {
         self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"%ld of %ld", @"%ld of %ld"), (long) currentIndex + 1, (long) [_eventsArray count]];

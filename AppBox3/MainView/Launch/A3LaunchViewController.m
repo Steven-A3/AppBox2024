@@ -150,7 +150,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 			if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
 				[appDelegate addSecurityCoverView];
 				[context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
-						localizedReason:@"Unlock AppBox Pro"
+						localizedReason:NSLocalizedString(@"Unlock AppBox Pro", @"Unlock AppBox Pro")
 								  reply:^(BOOL success, NSError *error) {
 									  dispatch_async(dispatch_get_main_queue(), ^{
 										  A3AppDelegate *appDelegate = [A3AppDelegate instance];

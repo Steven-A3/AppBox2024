@@ -88,7 +88,7 @@
 {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"Date Calculator", @"Date Calculator");
+    self.title = NSLocalizedString(A3AppName_DateCalculator, nil);
 	kCalculationString = NSLocalizedString(@"CALCULATION", @"CALCULATION");
 
 	if (IS_IPAD || IS_PORTRAIT) {

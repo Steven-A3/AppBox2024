@@ -54,6 +54,30 @@ extern NSString *const A3LocalNotificationDataID;
 extern NSString *const A3LocalNotificationFromLadyCalendar;
 extern NSString *const A3LocalNotificationFromDaysCounter;
 
+extern NSString *const A3AppName_DateCalculator;
+extern NSString *const A3AppName_LoanCalculator;
+extern NSString *const A3AppName_SalesCalculator;
+extern NSString *const A3AppName_TipCalculator;
+extern NSString *const A3AppName_UnitPrice;
+extern NSString *const A3AppName_Calculator;
+extern NSString *const A3AppName_PercentCalculator;
+extern NSString *const A3AppName_CurrencyConverter;
+extern NSString *const A3AppName_LunarConverter;
+extern NSString *const A3AppName_Translator;
+extern NSString *const A3AppName_UnitConverter;
+extern NSString *const A3AppName_DaysCounter;
+extern NSString *const A3AppName_LadiesCalendar;
+extern NSString *const A3AppName_Wallet;
+extern NSString *const A3AppName_ExpenseList;
+extern NSString *const A3AppName_Holidays;
+extern NSString *const A3AppName_Clock;
+extern NSString *const A3AppName_BatteryStatus;
+extern NSString *const A3AppName_Mirror;
+extern NSString *const A3AppName_Magnifier;
+extern NSString *const A3AppName_Flashlight;
+extern NSString *const A3AppName_Random;
+extern NSString *const A3AppName_Settings;
+
 @protocol A3ViewControllerProtocol <NSObject>
 @optional
 - (NSUInteger)a3SupportedInterfaceOrientations;

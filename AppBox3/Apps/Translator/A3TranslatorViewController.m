@@ -42,7 +42,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
 		// Custom initialization
-		self.title = NSLocalizedString(@"Translator", @"Translator");
+		self.title = NSLocalizedString(A3AppName_Translator, nil);
 	}
     return self;
 }

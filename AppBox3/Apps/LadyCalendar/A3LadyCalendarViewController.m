@@ -60,7 +60,7 @@
 	[super viewDidLoad];
 	// Do any additional setup after loading the view from its nib.
 	
-	self.title = NSLocalizedString(@"Ladies Calendar", nil);
+	self.title = NSLocalizedString(A3AppName_LadiesCalendar, nil);
 
 	if (IS_IPAD || IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
@@ -311,7 +311,7 @@
 
 - (void)setupNavigationTitle {
 	if ([self.dataManager numberOfAccount] == 1 && [[self.dataManager currentAccount].name isEqualToString:[self.dataManager defaultAccountName]]) {
-		self.navigationItem.title = NSLocalizedString(@"Ladies Calendar", nil);
+		self.navigationItem.title = NSLocalizedString(A3AppName_LadiesCalendar, nil);
 	}
 	else{
 		self.navigationItem.title = [self.dataManager currentAccount].name;

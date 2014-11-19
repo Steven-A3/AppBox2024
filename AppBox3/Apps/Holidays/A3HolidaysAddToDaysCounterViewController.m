@@ -13,6 +13,7 @@
 #import "HolidayData+Country.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3StandardTableViewCell.h"
+#import "A3AppDelegate.h"
 
 @interface A3HolidaysAddToDaysCounterViewController ()
 
@@ -49,7 +50,7 @@ static NSString *CellIdentifier = @"Cell";
 	UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonAction:)];
 	self.navigationItem.rightBarButtonItem = doneButton;
 
-	self.title = NSLocalizedString(@"Holidays", @"Holidays");
+	self.title = NSLocalizedString(A3AppName_Holidays, @"Holidays");
 
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
