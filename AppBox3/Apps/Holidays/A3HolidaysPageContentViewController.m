@@ -39,7 +39,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 @end
 
 @implementation A3HolidaysPageContentViewController {
-	NSInteger _thisYear;
+	NSInteger _thisYear, _currentYear;
 	CGFloat _lastKnownOffset;
 	UIInterfaceOrientation _previousOrientation;
 }
@@ -66,6 +66,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 		_thisYear++;
 		_holidays = nil;
 	}
+	_currentYear = _thisYear;
 }
 
 - (void)viewDidLoad
@@ -459,7 +460,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 - (void)updateTableHeaderView:(UIView *)headerView {
 	UILabel *yearLabel = (UILabel *) [headerView viewWithTag:HolidaysHeaderViewYearLabel];
 	yearLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-	yearLabel.text = [NSString stringWithFormat:@"%ld", (long)_thisYear];
+	yearLabel.text = [NSString stringWithFormat:@"%ld", (long)_currentYear];
 
 	UILabel *countryNameLabel = (UILabel *) [headerView viewWithTag:HolidaysHeaderViewCountryLabel];
 	countryNameLabel.text = [[NSLocale currentLocale] displayNameForKey:NSLocaleCountryCode value:self.countryCode];
@@ -527,15 +528,16 @@ static NSString *const CellIdentifier = @"holidaysCell";
 
 - (void)prevYearButtonAction {
 	UILabel *yearLabel = (UILabel *) [self.tableView.tableHeaderView viewWithTag:HolidaysHeaderViewYearLabel];
-	_thisYear = [yearLabel.text integerValue] - 1;
+	NSInteger year = [yearLabel.text integerValue] - 1;
 	HolidayData *data = [[HolidayData alloc] init];
-	NSArray *array = [data holidaysForCountry:self.countryCode year:_thisYear fullSet:YES];
+	NSArray *array = [data holidaysForCountry:self.countryCode year:year fullSet:YES];
 	if (array) {
-		yearLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long) _thisYear];
-		[self reloadDataWithYear:_thisYear];
+		_currentYear = year;
+		yearLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long) year];
+		[self reloadDataWithYear:year];
 		[self scrollToRightPosition:_tableView enforceToMiddle:YES animated:NO];
 	} else {
-		[self alertNotAvailableYear:_thisYear];
+		[self alertNotAvailableYear:year];
 	}
 }
 
@@ -550,15 +552,16 @@ static NSString *const CellIdentifier = @"holidaysCell";
 
 - (void)nextYearButtonAction {
 	UILabel *yearLabel = (UILabel *) [self.tableView.tableHeaderView viewWithTag:HolidaysHeaderViewYearLabel];
-	_thisYear = [yearLabel.text integerValue] + 1;
+	NSInteger year = [yearLabel.text integerValue] + 1;
 	HolidayData *data = [HolidayData new];
-	NSArray *array = [data holidaysForCountry:self.countryCode year:_thisYear fullSet:YES];
+	NSArray *array = [data holidaysForCountry:self.countryCode year:year fullSet:YES];
 	if (array) {
-		yearLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)_thisYear];
-		[self reloadDataWithYear:_thisYear];
+		_currentYear = year;
+		yearLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)year];
+		[self reloadDataWithYear:year];
 		[self scrollToRightPosition:self.tableView enforceToMiddle:YES animated:NO];
 	} else {
-		[self alertNotAvailableYear:_thisYear];
+		[self alertNotAvailableYear:year];
 	}
 }
 
