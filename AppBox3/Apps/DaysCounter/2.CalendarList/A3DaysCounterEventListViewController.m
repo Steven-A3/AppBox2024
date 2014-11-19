@@ -148,6 +148,19 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 	[self loadEventData];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if (_addEventButtonPressed) {
+		_addEventButtonPressed = NO;
+		double delayInSeconds = 4.0;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			[self loadEventData];
+		});
+	}
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
