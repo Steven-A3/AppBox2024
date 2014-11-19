@@ -119,13 +119,7 @@ static char const *const key_firstActionSheet 					= "key_firstActionSheet";
 	// Modal 이 있는 경우, 제거한다.
 	if (navigationController.presentedViewController) {
 		UIViewController *presentedViewController = navigationController.presentedViewController;
-		if ([presentedViewController isKindOfClass:[UINavigationController class]]) {
-			UINavigationController *presentedNavigationController = (UINavigationController *) presentedViewController;
-			UIViewController *targetViewController = presentedNavigationController.viewControllers[0];
-			[targetViewController dismissViewControllerAnimated:NO completion:NULL];
-		} else {
-			[presentedViewController dismissViewControllerAnimated:NO completion:NULL];
-		}
+		[presentedViewController dismissViewControllerAnimated:NO completion:NULL];
 	}
 
     NSMutableArray *currentViewControllers = [[navigationController viewControllers] mutableCopy];
