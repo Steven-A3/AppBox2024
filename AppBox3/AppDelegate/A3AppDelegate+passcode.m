@@ -173,7 +173,7 @@
 }
 
 - (void)applicationDidBecomeActive_passcode {
-//	[self removeSecurityCoverView];
+	[self removeSecurityCoverView];
 }
 
 - (void)applicationWillEnterForeground_passcode {
@@ -212,6 +212,10 @@
 }
 
 - (void)addSecurityCoverView {
+	// 암호 대화 상자가 열려 있다면 커버를 추가하지 않는다.
+	if (self.passcodeViewController) return;
+	
+	// 이미 커버가 추가되어 있다면, 추가하지 않는다.
 	if (self.coverView) return;
 
 	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];

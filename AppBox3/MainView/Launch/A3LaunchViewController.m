@@ -48,6 +48,16 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
+	[self.navigationController setNavigationBarHidden:YES];
+	UIImage *image = [UIImage new];
+	[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+	[self.navigationController.navigationBar setShadowImage:image];
+
+	UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+	backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	backgroundImageView.image = [UIImage imageNamed:[[A3AppDelegate instance] getLaunchImageName]];
+	[self.view addSubview:backgroundImageView];
+
 	if ([[A3AppDelegate instance] shouldMigrateV1Data]) {
 		[[A3UserDefaults standardUserDefaults] setBool:NO forKey:A3UserDefaultsDidShowWhatsNew_3_0];
 		[[A3UserDefaults standardUserDefaults] synchronize];
