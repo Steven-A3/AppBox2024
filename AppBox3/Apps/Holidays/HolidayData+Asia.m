@@ -1480,7 +1480,7 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 {
 	NSUInteger year = self.year;
 
-	if ((year < 2006) || (year > 2014)) {
+	if ((year < 2006) || (year > 2015)) {
 		return nil;
 	}
 	
