@@ -158,14 +158,14 @@
             "Model" : "iPad Air 2",
             "Chips": "A8 chip with 64-bit architecture\nM8 motion coprocessor",
             "CPU": "1.5Ghz tri-core ARM processor",
-            "GPU": "PowerVR G6650 (6-core)",
+            "GPU": "PowerVR GXA6850 (8-core)",
             "Memory": "2 GB LPDDR3 DRAM"
         },
         "iPad Air 2 (Wi-Fi)": {
             "Model" : "iPad Air 2 (Wi-Fi)",
             "Chips": "A8 chip with 64-bit architecture\nM8 motion coprocessor",
             "CPU": "1.5Ghz tri-core ARM processor",
-            "GPU": "PowerVR G6650 (6-core)",
+            "GPU": "PowerVR GXA6850 (8-core)",
             "Memory": "2 GB LPDDR3 DRAM"
         },
         "iPad mini": {
