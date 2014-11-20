@@ -28,6 +28,7 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3UserDefaults.h"
+#import "A3LunarConverterViewController.h"
 
 NSString *const A3NotificationAppsMainMenuContentsChanged = @"A3NotificationAppsMainMenuContentsChanged";
 NSString *const A3MainMenuBecameFirstResponder = @"A3MainMenuBecameFirstResponder";
@@ -614,6 +615,13 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 		if (menuElement) {
 			menuElement.onSelected(menuElement, verifyPasscode);
 			return YES;
+		} else {
+			if ([startingAppName isEqualToString:A3AppName_LunarConverter]) {
+				A3LunarConverterViewController *viewController = [[A3LunarConverterViewController alloc] init];
+				[self popToRootAndPushViewController:viewController];
+				self.activeAppName = startingAppName;
+				return YES;
+			}
 		}
 	}
 	else if (_mostRecentMenuElement) {
