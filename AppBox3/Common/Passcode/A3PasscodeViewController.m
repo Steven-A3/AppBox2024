@@ -18,7 +18,6 @@ static NSString *const kPasscodeCharacter = @"\u2014"; // A longer "-"
 static CGFloat const kPasscodeFontSize = 33.0f;
 static CGFloat const kFontSizeModifier = 1.5f;
 static CGFloat const kiPhoneHorizontalGap = 40.0f;
-static CGFloat const kLockAnimationDuration = 0.15f;
 static CGFloat const kSlideAnimationDuration = 0.15f;
 // Set to 0 if you want to skip the check. If you don't, nothing happens,
 // just maxNumberOfAllowedFailedAttempts protocol method is checked for and called.
