@@ -17,9 +17,9 @@ static const int MAX_ZOOM_FACTOR = 6;
 NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 
-@interface A3MirrorViewController() <A3InstructionViewControllerDelegate>
+@interface A3MirrorViewController() <A3InstructionViewControllerDelegate, A3ViewControllerProtocol>
 {
-	GLKView *_videoPreviewViewNoFilter;     // OPEN GL ES Aware-View
+	GLKView *_videoPreviewViewNoFilter;     // OPEN GLES Aware-View
 	GLKView *_videoPreviewViewMonoFilter;
 	GLKView *_videoPreviewViewTonalFilter;
 	GLKView *_videoPreviewViewNoirFilter;
@@ -76,6 +76,8 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 
 @property (nonatomic, strong) UIView *statusBarBackground;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
+@property (nonatomic, strong) NSMutableArray *filterViews;
+@property (nonatomic, strong) NSMutableArray *filterLabels;
 
 @end
 
@@ -127,6 +129,7 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
+
 	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 	[self setNavigationBarHidden:YES];
 	[self setToolBarsHidden:YES];
@@ -134,7 +137,6 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 
 	self.view.bounds = [[UIScreen mainScreen] bounds];
 	[self.view setBackgroundColor:[UIColor blackColor]];
-
 
 	self.statusBarBackground = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, screenBounds.size.width, 20)];
 	[self.statusBarBackground setBackgroundColor:[UIColor blackColor]];
@@ -161,11 +163,8 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	_videoPreviewViewNoFilter.transform = [self getTransform];
 	_videoPreviewViewNoFilter.frame = screenBounds;
 
-
-
 	[self.view addSubview:_videoPreviewViewNoFilter];
 	[self.view sendSubviewToBack:_videoPreviewViewNoFilter];
-
 
 	// bind the frame buffer to get the frame buffer width and height;
 	// the bounds used by CIContext when drawing to a GLKView are in pixels (not points),
@@ -174,7 +173,6 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	// we want to obtain this piece of information so that we won't be
 	// accessing _videoPreviewView's properties from another thread/queue
 	[_videoPreviewViewNoFilter bindDrawable];
-
 
 	_videoPreviewViewBounds = CGRectZero;
 	_videoPreviewViewBounds.size.width = _videoPreviewViewNoFilter.drawableWidth;
@@ -204,7 +202,6 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	}
 	[self setupGestureRecognizer];
 
-
 	self.lastimageButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0,47,47)];
 	[self.lastimageButton addTarget:_cameraRollButton.target action:_cameraRollButton.action forControlEvents:UIControlEventTouchUpInside];
 	self.lastimageButton.layer.cornerRadius = 23.5;
@@ -218,6 +215,30 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
                      barMetrics:UIBarMetricsDefault];
     [_topBar setShadowImage:[UIImage new]
          forToolbarPosition:UIToolbarPositionAny];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
+- (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
+- (void)prepareClose {
+	[self removeObserver];
+}
+
+- (void)applicationDidBecomeActive {
+	_videoDevice.videoZoomFactor = _effectiveScale;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	[self configureLayout];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -230,36 +251,16 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	}
 }
 
-- (void)viewWillLayoutSubviews {
-
+- (void)configureLayout {
 	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 	if (_isMultipleView == YES) {
-		[self setViewRotation:_videoPreviewViewMonoFilter];
-		[self setViewRotation:_videoPreviewViewTonalFilter];
-		[self setViewRotation:_videoPreviewViewNoirFilter];
-		[self setViewRotation:_videoPreviewViewChromeFilter];
-		[self setViewRotation:_videoPreviewViewFadeFilter];
-		[self setViewRotation:_videoPreviewViewNoFilter];
-		[self setViewRotation:_videoPreviewViewProcessFilter];
-		[self setViewRotation:_videoPreviewViewInstantFilter];
-		[self setViewRotation:_videoPreviewViewTransferFilter];
-		[self setLabelRotation:_monoLabel];
-		[self setLabelRotation:_tonalLabel];
-		[self setLabelRotation:_noirLabel];
-		[self setLabelRotation:_chromeLabel];
-		[self setLabelRotation:_fadeLabel];
-		[self setLabelRotation:_noneLabel];
-		[self setLabelRotation:_processLabel];
-		[self setLabelRotation:_instantLabel];
-		[self setLabelRotation:_transferLabel];
-		[self showMultipleViews:NO];
 		[self.zoomSlider  setFrame:CGRectMake(self.zoomSlider.frame.origin.x, self.zoomSlider.frame.origin.y, screenBounds.size.width - 106, self.zoomSlider.frame.size.height)];
-        [_topBar setItems:@[[self appsBarButton]] animated:YES];
+		[_topBar setItems:@[[self appsBarButton]] animated:YES];
 	}
 	else {
 		[self setFilterViewRotation:[self currentFilterView] withScreenBounds:screenBounds];
 		[self.zoomSlider  setFrame:CGRectMake(self.zoomSlider.frame.origin.x, self.zoomSlider.frame.origin.y, screenBounds.size.width - 98, self.zoomSlider.frame.size.height)];
-        [_topBar setItems:[self topToolBarBarButtons] animated:YES];
+		[_topBar setItems:[self topToolBarBarButtons] animated:YES];
 	}
 
 	[self.statusBarBackground setFrame:CGRectMake(self.statusBarBackground.bounds.origin.x, self.statusBarBackground.bounds.origin.y , screenBounds.size.width , self.statusBarBackground.bounds.size.height)];
@@ -273,7 +274,6 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 }
 
 - (NSArray *)topToolBarBarButtons {
-    
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem *help = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"help"] style:UIBarButtonItemStyleBordered target:self action:@selector(showInstructionView:)];
     UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
@@ -282,15 +282,14 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
     return @[[self appsBarButton], flexibleSpace, help, fixedSpace, flip];
 }
 
-- (void) setFilterViewRotation:(GLKView *)filterView withScreenBounds:(CGRect)screenBounds{
-
+- (void)setFilterViewRotation:(GLKView *)filterView withScreenBounds:(CGRect)screenBounds{
 	[self setViewRotation:filterView];
 	if (_effectiveScale <= 1) {
 		filterView.frame = screenBounds;
 	}
 }
 
-- (CGAffineTransform) getTransform {
+- (CGAffineTransform)getTransform {
 	CGAffineTransform   transform;
 
 	UIInterfaceOrientation curDeviceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
@@ -307,38 +306,7 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	return transform;
 }
 
-- (void)setLabelRotation:(UILabel *)label {
-	if (!IS_IPHONE) {
-		CGAffineTransform   transform;
-		UIInterfaceOrientation curDeviceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-		if (curDeviceOrientation == UIDeviceOrientationPortrait) {
-			transform = CGAffineTransformMakeRotation(-M_PI_2);
-		} else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
-			transform = CGAffineTransformMakeRotation(M_PI_2);
-		} else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
-			transform = CGAffineTransformIdentity;
-
-		} else {
-			transform = CGAffineTransformMakeRotation(M_PI);
-
-		}
-		if (_isFlip) {
-			[label setTransform:CGAffineTransformScale(transform, -1, 1)];
-		} else {
-			[label setTransform:transform];
-		}
-	} else {
-		if (_isFlip) {
-			label.transform = CGAffineTransformScale(CGAffineTransformMakeRotation(-M_PI_2), -1, 1);
-		} else {
-			label.transform = CGAffineTransformMakeRotation(-M_PI_2);
-		}
-
-	}
-}
-
-- (void) setViewRotation:(UIView *)view {
-
+- (void)setViewRotation:(UIView *)view {
     CGFloat scalefactor = 1.0;
     if(_isLosslessZoom == NO) {
         scalefactor = _effectiveScale;
@@ -348,14 +316,13 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	} else {
 		[view setTransform:CGAffineTransformConcat([self getTransform], CGAffineTransformMakeScale(scalefactor, scalefactor))];
 	}
-
 }
 
 - (BOOL)usesFullScreenInLandscape {
 	return YES;
 }
 
-- (CGFloat) getMaxZoom {
+- (CGFloat)getMaxZoom {
 	return MIN( _videoDevice.activeFormat.videoMaxZoomFactor, MAX_ZOOM_FACTOR );
 }
 
@@ -378,7 +345,6 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 
 - (void)_start
 {
-
 	NSError *error = nil;
 
 	// get the input device and also validate the settings
@@ -396,18 +362,14 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	// begin configure capture session
 	[_captureSession beginConfiguration];
 
-
-
 	// CoreImage wants BGRA pixel format
 	NSDictionary *outputSettings = @{ (id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA)};
-
 
 	// create and configure video data output
 	AVCaptureVideoDataOutput *videoDataOutput = [AVCaptureVideoDataOutput new];
 	videoDataOutput.videoSettings = outputSettings;
 	videoDataOutput.alwaysDiscardsLateVideoFrames = YES;
 	[videoDataOutput setSampleBufferDelegate:self queue:_captureSessionQueue];
-
 
 	if (![_captureSession canAddOutput:videoDataOutput])
 	{
@@ -422,7 +384,6 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	}
 	if ([_captureSession canAddOutput:_stillImageOutput] )
 		[_captureSession addOutput:_stillImageOutput];
-
 
 	// connect the video device input and video data and still image outputs
 	[_captureSession addInput:videoDeviceInput];
@@ -474,8 +435,6 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	 _videoDevice.exposureMode = AVCaptureExposureModeAutoExpose;
 	 }
 
-
-
 	 if (_videoDevice.isAutoFocusRangeRestrictionSupported == YES) {
 	 _videoDevice.autoFocusRangeRestriction = AVCaptureAutoFocusRangeRestrictionNear;
 	 }
@@ -520,12 +479,12 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	}
 }
 
--(void) restoreOriginalFrameRate {
+-(void)restoreOriginalFrameRate {
 	_videoDevice.activeVideoMinFrameDuration = _currentMaxDuration;
 	_videoDevice.activeVideoMaxFrameDuration = _currentMinDuration;
 }
 
--(void) setSlowFrameRate {
+-(void)setSlowFrameRate {
 	_videoDevice.activeVideoMinFrameDuration = _slowFrameRateRange.minFrameDuration;
 	_videoDevice.activeVideoMaxFrameDuration = _slowFrameRateRange.maxFrameDuration;
 }
@@ -565,8 +524,6 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	/*
 	CGRect sourceExtent = ciimg.extent;
 
-
-
 	if (bFlip == YES) {
 		// horizontal flip
 		if(IS_LANDSCAPE) {
@@ -576,7 +533,6 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 		CGAffineTransform t = CGAffineTransformMake(1, 0, 0, -1, 0, sourceExtent.size.height);
 		ciimg = [ciimg imageByApplyingTransform:t];
 		}
-
 	}
 */
 
@@ -593,7 +549,6 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 		[currentFilter bindDrawable];
 		[currentFilter display];
 	} else {
-
 		[_videoPreviewViewMonoFilter bindDrawable];
 		[_videoPreviewViewMonoFilter display];
 
@@ -667,7 +622,6 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
     self.instructionViewController = nil;
 }
 
-
 #pragma GLKViewDelegate
 - (void) glkView:(GLKView *)view drawInRect:(CGRect)rect {
 	CGRect sourceExtent = _ciImage.extent;
@@ -682,16 +636,13 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 		// use full height of the video image, and center crop the width
 		drawRect.origin.x += (drawRect.size.width - drawRect.size.height * previewAspect) / 2.0;
 		drawRect.size.width = drawRect.size.height * previewAspect;
-
 	}
 	else
 	{
 		// use full width of the video image, and center crop the height
 		drawRect.origin.y += (drawRect.size.height - drawRect.size.width / previewAspect) / 2.0;
 		drawRect.size.height = drawRect.size.width / previewAspect;
-
 	}
-
 
 	CIImage *filteredImage = nil;
 
@@ -733,7 +684,6 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	}
 	// });
 
-
 	//  glBindRenderbuffer(GL_RENDERBUFFER, _renderBuffer);
 	//[_eaglContext presentRenderbuffer:GL_RENDERBUFFER];
 }
@@ -747,28 +697,20 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 		_previewMonoFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
 		[_videoPreviewViewMonoFilter addGestureRecognizer:_previewMonoFilterGestureRecognizer];
 
-
-
 		_previewTonalFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
 		[_videoPreviewViewTonalFilter addGestureRecognizer:_previewTonalFilterGestureRecognizer];
-
 
 		_previewNoirFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
 		[_videoPreviewViewNoirFilter addGestureRecognizer:_previewNoirFilterGestureRecognizer];
 
-
 		_previewFadeFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
 		[_videoPreviewViewFadeFilter addGestureRecognizer:_previewFadeFilterGestureRecognizer];
-
 
 		_previewChromeFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
 		[_videoPreviewViewChromeFilter addGestureRecognizer:_previewChromeFilterGestureRecognizer];
 
-
 		_previewProcessFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
 		[_videoPreviewViewProcessFilter addGestureRecognizer:_previewProcessFilterGestureRecognizer];
-
-
 
 		_previewTransferFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
 		[_videoPreviewViewTransferFilter addGestureRecognizer:_previewTransferFilterGestureRecognizer];
@@ -776,7 +718,6 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 		_previewInstantFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
 		[_videoPreviewViewInstantFilter addGestureRecognizer:_previewInstantFilterGestureRecognizer];
 	}
-
 
 	UIGestureRecognizer *noFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
 	noFilterPinchGesture.delegate = self;
@@ -883,7 +824,6 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 		}
 		self.bottomBar.hidden = NO;
 		_isMultipleView = NO;
-
 	}
 	else {
 		if (IS_IPHONE && IS_LANDSCAPE) return;
@@ -922,24 +862,16 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 #pragma mark - Filter Setting
 
 - (void)addAllFilterViews {
-	[self.view addSubview:_videoPreviewViewMonoFilter];
-	[self.view sendSubviewToBack:_videoPreviewViewMonoFilter];
-	[self.view addSubview:_videoPreviewViewTonalFilter];
-	[self.view sendSubviewToBack:_videoPreviewViewTonalFilter];
-	[self.view addSubview:_videoPreviewViewNoirFilter];
-	[self.view sendSubviewToBack:_videoPreviewViewNoirFilter];
-	[self.view addSubview:_videoPreviewViewFadeFilter];
-	[self.view sendSubviewToBack:_videoPreviewViewFadeFilter];
-	[self.view addSubview:_videoPreviewViewChromeFilter];
-	[self.view sendSubviewToBack:_videoPreviewViewChromeFilter];
-	[self.view addSubview:_videoPreviewViewProcessFilter];
-	[self.view sendSubviewToBack:_videoPreviewViewProcessFilter];
-	[self.view addSubview:_videoPreviewViewTransferFilter];
-	[self.view sendSubviewToBack:_videoPreviewViewTransferFilter];
-	[self.view addSubview:_videoPreviewViewInstantFilter];
-	[self.view sendSubviewToBack:_videoPreviewViewInstantFilter];
+	for (GLKView *filterView in _filterViews) {
+		[self.view addSubview:filterView];
+		[self.view sendSubviewToBack:filterView];
+		[self setFilterViewRotation:filterView withScreenBounds:filterView.frame];
+	}
 }
+
 - (void)createFilterViews {
+	_filterViews = [NSMutableArray new];
+
 	_videoPreviewViewMonoFilter = [self filterView];
 	_videoPreviewViewTonalFilter = [self filterView];
 	_videoPreviewViewNoirFilter = [self filterView];
@@ -948,6 +880,17 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	_videoPreviewViewProcessFilter = [self filterView];
 	_videoPreviewViewTransferFilter = [self filterView];
 	_videoPreviewViewInstantFilter = [self filterView];
+
+	[_filterViews addObject:_videoPreviewViewMonoFilter];
+	[_filterViews addObject:_videoPreviewViewTonalFilter];
+	[_filterViews addObject:_videoPreviewViewNoirFilter];
+	[_filterViews addObject:_videoPreviewViewFadeFilter];
+	[_filterViews addObject:_videoPreviewViewNoFilter];
+	[_filterViews addObject:_videoPreviewViewChromeFilter];
+	[_filterViews addObject:_videoPreviewViewProcessFilter];
+	[_filterViews addObject:_videoPreviewViewTransferFilter];
+	[_filterViews addObject:_videoPreviewViewInstantFilter];
+
 	[self addAllFilterViews];
 
 	_monoLabel = [self filterLabelWithText:NSLocalizedString(@"Mono", @"Mono")];
@@ -959,6 +902,9 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	_processLabel = [self filterLabelWithText:NSLocalizedString(@"Process", @"Process")];
 	_transferLabel = [self filterLabelWithText:NSLocalizedString(@"Transfer", @"Transfer")];
 	_instantLabel = [self filterLabelWithText:NSLocalizedString(@"Instant", @"Instant")];
+
+	_filterLabels = [NSMutableArray new];
+	[_filterLabels addObjectsFromArray:@[_monoLabel, _tonalLabel, _noirLabel, _fadeLabel, _noneLabel, _chromeLabel, _processLabel, _transferLabel, _instantLabel]];
 }
 
 - (GLKView *)filterView {
@@ -973,7 +919,6 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 - (UILabel *)filterLabelWithText:(NSString *)text {
 	UILabel *label = [UILabel new];
 	label.textColor = [UIColor whiteColor];
-	label.backgroundColor = [UIColor clearColor];
 	label.font = [UIFont fontWithName:@"Trebuchet MS" size: 12.0];
 	label.shadowColor = [UIColor blackColor];
 	label.text = text;
@@ -995,8 +940,8 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 
 	FNLOG("nFilterIndex is invalide %ld", (unsigned long) _filterIndex);
 	return _videoPreviewViewNoFilter;
-
 }
+
 -(void) removeAllFilterViews {
 	[_videoPreviewViewNoFilter removeFromSuperview];
 	if (_isFiltersEnabled == YES){
@@ -1010,7 +955,6 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 		[_videoPreviewViewInstantFilter removeFromSuperview];
 	}
 }
-
 
 - (void)cleanUp {
 	[self dismissInstructionViewController:nil];
@@ -1058,51 +1002,50 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
 	// makes the UI more Camera.app like
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone)
 	{
 		[UIView setAnimationsEnabled:NO];
 	}
     else {
-        if (_isLosslessZoom == YES) {
-            _center.x = [self currentFilterView].center.y;
-            _center.y = [self currentFilterView].center.x;
-        }
-        
-    }
+		if (_isLosslessZoom == YES) {
+			_center.x = [self currentFilterView].center.y;
+			_center.y = [self currentFilterView].center.x;
+		}
+	}
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+	if (_isMultipleView) {
+		for (GLKView *filterView in _filterViews) {
+			[self setFilterViewRotation:filterView withScreenBounds:filterView.frame];
+		}
+		[self setupFilterViewFrameWithOption:NO];
+		[self removeFilterLabelsFromSuperview];
+		[self addFilterLabels];
+	} else {
+		[self setFilterViewRotation:self.currentFilterView withScreenBounds:screenBounds];
+	}
+
+	[self configureLayout];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
 		[UIView setAnimationsEnabled:YES];
 		[UIView beginAnimations:@"reappear" context:NULL];
 		[UIView setAnimationDuration:0.75];
 		[UIView commitAnimations];
 	}
-    else
-    {
-        if (_isLosslessZoom == YES) {
-            [self currentFilterView].center = _center;
-            
-        }
-        
-        CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
-        if (_isMultipleView == YES) {
-            [self setViewRotation:_videoPreviewViewMonoFilter];
-            [self setViewRotation:_videoPreviewViewTonalFilter];
-            [self setViewRotation:_videoPreviewViewNoirFilter];
-            [self setViewRotation:_videoPreviewViewChromeFilter];
-            [self setViewRotation:_videoPreviewViewFadeFilter];
-            [self setViewRotation:_videoPreviewViewNoFilter];
-            [self setViewRotation:_videoPreviewViewProcessFilter];
-            [self setViewRotation:_videoPreviewViewInstantFilter];
-            [self setViewRotation:_videoPreviewViewTransferFilter];
-        }
-        else {
-            [self setFilterViewRotation:[self currentFilterView] withScreenBounds:screenBounds];
-        }
-    }
+	else {
+	}
 }
 
 - (void)didReceiveMemoryWarning
@@ -1121,25 +1064,21 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 
 		[currentView setTransform:CGAffineTransformScale([self getTransform], _effectiveScale, _effectiveScale)];
 	}
-
 }
 
 #pragma mark - IB Action Buttons
 
-- (IBAction)zoomIng:(id)sender {
-	UISlider *zoomFactor = (UISlider *) sender;
-
+- (IBAction)zoomSliderDidValueChange:(UISlider *)sliderControl {
 	if (_isLosslessZoom == YES) {
-
 		if (!_videoDevice.isRampingVideoZoom) {
-			_videoDevice.videoZoomFactor = zoomFactor.value;
-			_effectiveScale = zoomFactor.value;
+			_videoDevice.videoZoomFactor = sliderControl.value;
+			_effectiveScale = sliderControl.value;
 		}
 	} else {
-		_effectiveScale = zoomFactor.value;
+		_effectiveScale = sliderControl.value;
+
 		[self currentViewTransformScale];
 	}
-
 }
 
 - (IBAction)appsButton:(id)sender {
@@ -1151,7 +1090,6 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 }
 
 - (IBAction)flipButton:(id)sender {
-
 	[UIView transitionWithView:self.view duration:0.7 options:UIViewAnimationOptionTransitionFlipFromRight
 					animations:^{
 						//if (bMultipleView == YES) {
@@ -1223,7 +1161,6 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 					orientation = (UIInterfaceOrientation) [[UIDevice currentDevice] orientation];
 				}
 
-
 				if (_isFlip == YES) {
 					if (IS_LANDSCAPE ||
 							orientation == UIDeviceOrientationLandscapeRight ||
@@ -1248,7 +1185,6 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 				} else {
 					t = CGAffineTransformMakeRotation(M_PI);
 				}
-
 
 				if (_filterIndex == A3MirrorMonoFilter) {
 					ciSaveImg = [CIFilter filterWithName:@"CIPhotoEffectMono" keysAndValues:kCIInputImageKey, ciSaveImg, nil].outputImage;
@@ -1302,15 +1238,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 
 	NSArray *coordinate = filterViewCoordinate[nViewIndex];
 
-	[_monoLabel removeFromSuperview];
-	[_tonalLabel removeFromSuperview];
-	[_noirLabel removeFromSuperview];
-	[_fadeLabel removeFromSuperview];
-	[_noneLabel removeFromSuperview];
-	[_chromeLabel removeFromSuperview];
-	[_processLabel removeFromSuperview];
-	[_transferLabel removeFromSuperview];
-	[_instantLabel removeFromSuperview];
+	[self removeFilterLabelsFromSuperview];
 
 	[UIView animateWithDuration:0.3
 						  delay:0
@@ -1339,105 +1267,124 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 
 	_videoPreviewViewBounds.size = _originalsize;
 	self.zoomToolBar.hidden = NO;
-
 }
 
-- (void)showMultipleViews:(BOOL)bSizeChange {
+- (void)removeFilterLabelsFromSuperview {
+	for (UILabel *label in _filterLabels) {
+		[label removeFromSuperview];
+	}
+}
+
+- (void)setupFilterView:(GLKView *)filterView frame:(CGRect)frame {
+	[filterView setFrame:frame];
+	FNLOGRECT(frame);
+}
+
+- (void)setupFilterViewFrameWithOption:(BOOL)smallOption {
 	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 	CGFloat height = (screenBounds.size.height-84)/3;
 	CGFloat width  = (screenBounds.size.width*height)/screenBounds.size.height;
 	CGFloat orignialHeight =_videoPreviewViewBounds.size.height;
-	if (bSizeChange == YES) {
+	if (smallOption == YES) {
 		_videoPreviewViewBounds.size.height = (_videoPreviewViewBounds.size.height)*(height/screenBounds.size.height);
 		_videoPreviewViewBounds.size.width = (_videoPreviewViewBounds.size.height * _videoPreviewViewBounds.size.width)/orignialHeight;
 	}
-	//FNLOG(@"_videoPreviewViewBounds height = %f, width = %f: height = %f, width = %f", _videoPreviewViewBounds.size.height, _videoPreviewViewBounds.size.width,height,width);
+
+	CGFloat x,y;
 	CGFloat widthOffset = (self.view.bounds.size.width - (width*3 + 10))/2;
+	x = widthOffset, y = 20+44;
+	[self setupFilterView:_videoPreviewViewMonoFilter frame:CGRectMake(x, y, width, height)];
+
+	x = x+ width + 5;
+	[self setupFilterView:_videoPreviewViewTonalFilter frame:CGRectMake(x, y, width, height)];
+
+	x = x+width + 5;
+	[self setupFilterView:_videoPreviewViewNoirFilter frame:CGRectMake(x, y, width, height)];
+
+	x = widthOffset, y = y + height + 5;
+	[self setupFilterView:_videoPreviewViewFadeFilter frame:CGRectMake(x, y, width, height)];
+
+	x = x + width + 5;
+	[self setupFilterView:_videoPreviewViewNoFilter frame:CGRectMake(x, y, width, height)];
+
+	x = x + width + 5;
+	[self setupFilterView:_videoPreviewViewChromeFilter frame:CGRectMake(x, y, width, height)];
+
+	x = widthOffset, y = y + height +5;
+	[self setupFilterView:_videoPreviewViewProcessFilter frame:CGRectMake(x, y, width, height)];
+
+	x = x + width + 5;
+	[self setupFilterView:_videoPreviewViewTransferFilter frame:CGRectMake(x, y, width, height)];
+
+	x = x + width + 5;
+	[self setupFilterView:_videoPreviewViewInstantFilter frame:CGRectMake(x, y, width, height)];
+}
+
+- (void)addFilterLabels {
+	[self.view addSubview:_monoLabel];
+	[_monoLabel makeConstraints:^(MASConstraintMaker *make) {
+		make.bottom.equalTo(_videoPreviewViewMonoFilter.bottom);
+		make.left.equalTo(_videoPreviewViewMonoFilter.left);
+	}];
+	[self.view addSubview:_tonalLabel];
+	[_tonalLabel makeConstraints:^(MASConstraintMaker *make) {
+		make.bottom.equalTo(_videoPreviewViewTonalFilter.bottom);
+		make.left.equalTo(_videoPreviewViewTonalFilter.left);
+	}];
+	[self.view addSubview:_noirLabel];
+	[_noirLabel makeConstraints:^(MASConstraintMaker *make) {
+		make.bottom.equalTo(_videoPreviewViewNoirFilter.bottom);
+		make.left.equalTo(_videoPreviewViewNoirFilter.left);
+	}];
+	[self.view addSubview:_fadeLabel];
+	[_fadeLabel makeConstraints:^(MASConstraintMaker *make) {
+		make.bottom.equalTo(_videoPreviewViewFadeFilter.bottom);
+		make.left.equalTo(_videoPreviewViewFadeFilter.left);
+	}];
+	[self.view addSubview:_noneLabel];
+	[_noneLabel makeConstraints:^(MASConstraintMaker *make) {
+		make.bottom.equalTo(_videoPreviewViewNoFilter.bottom);
+		make.left.equalTo(_videoPreviewViewNoFilter.left);
+	}];
+	[self.view addSubview:_chromeLabel];
+	[_chromeLabel makeConstraints:^(MASConstraintMaker *make) {
+		make.bottom.equalTo(_videoPreviewViewChromeFilter.bottom);
+		make.left.equalTo(_videoPreviewViewChromeFilter.left);
+	}];
+	[self.view addSubview:_processLabel];
+	[_processLabel makeConstraints:^(MASConstraintMaker *make) {
+		make.bottom.equalTo(_videoPreviewViewProcessFilter.bottom);
+		make.left.equalTo(_videoPreviewViewProcessFilter.left);
+	}];
+	[self.view addSubview:_transferLabel];
+	[_transferLabel makeConstraints:^(MASConstraintMaker *make) {
+		make.bottom.equalTo(_videoPreviewViewTransferFilter.bottom);
+		make.left.equalTo(_videoPreviewViewTransferFilter.left);
+	}];
+	[self.view addSubview:_instantLabel];
+	[_instantLabel makeConstraints:^(MASConstraintMaker *make) {
+		make.bottom.equalTo(_videoPreviewViewInstantFilter.bottom);
+		make.left.equalTo(_videoPreviewViewInstantFilter.left);
+	}];
+
+	[self.view layoutIfNeeded];
+}
+
+- (void)showMultipleViews:(BOOL)bSizeChange {
+
+	for (GLKView *filterView in _filterViews) {
+		[self setFilterViewRotation:filterView withScreenBounds:filterView.frame];
+	}
+
 	[UIView animateWithDuration:0.3
 						  delay:0
 						options:UIViewAnimationOptionCurveEaseIn
 					 animations:^{
-
-						 CGFloat x,y;
-						 x = widthOffset, y = 20+44;
-						 [_videoPreviewViewMonoFilter setFrame:CGRectMake(x, y, width, height)];
-						 //FNLOG("Mono = %f, %f",_videoPreviewViewMonoFilter.frame.origin.x, _videoPreviewViewMonoFilter.frame.origin.y);
-						 x = x+ width + 5;
-						 [_videoPreviewViewTonalFilter setFrame:CGRectMake(x, y, width, height)];
-						 //FNLOG("Tonal = %f, %f",_videoPreviewViewTonalFilter.frame.origin.x, _videoPreviewViewTonalFilter.frame.origin.y);
-						 x = x+width + 5;
-						 [_videoPreviewViewNoirFilter setFrame:CGRectMake(x, y, width, height)];
-						 //FNLOG("Noir = %f, %f",_videoPreviewViewNoirFilter.frame.origin.x, _videoPreviewViewNoirFilter.frame.origin.y);
-						 x = widthOffset, y = y + height + 5;
-						 [_videoPreviewViewFadeFilter setFrame:CGRectMake(x, y, width, height)];
-						 // FNLOG("_videoPreviewViewFadeFilter = %f, %f",_videoPreviewViewFadeFilter.frame.origin.x, _videoPreviewViewFadeFilter.frame.origin.y);
-						 x = x + width + 5;
-						 [_videoPreviewViewNoFilter setFrame:CGRectMake(x, y, width, height)];
-						 //FNLOG("_videoPreviewViewNoFilter = %f, %f",_videoPreviewViewNoFilter.frame.origin.x, _videoPreviewViewNoFilter.frame.origin.y);
-						 x = x + width + 5;
-						 [_videoPreviewViewChromeFilter setFrame:CGRectMake(x, y, width, height)];
-						 //FNLOG("_videoPreviewViewChromeFilter = %f, %f",_videoPreviewViewChromeFilter.frame.origin.x, _videoPreviewViewChromeFilter.frame.origin.y);
-
-						 x = widthOffset, y = y + height +5;
-						 [_videoPreviewViewProcessFilter setFrame:CGRectMake(x, y, width, height)];
-						 // FNLOG("_videoPreviewViewProcessFilter = %f, %f",_videoPreviewViewProcessFilter.frame.origin.x, _videoPreviewViewProcessFilter.frame.origin.y);
-						 x = x + width + 5;
-						 [_videoPreviewViewTransferFilter setFrame:CGRectMake(x, y, width, height)];
-						 //FNLOG("_videoPreviewViewTransferFilter = %f, %f",_videoPreviewViewTransferFilter.frame.origin.x, _videoPreviewViewTransferFilter.frame.origin.y);
-						 x = x + width + 5;
-						 [_videoPreviewViewInstantFilter setFrame:CGRectMake(x, y, width, height)];
-						 //FNLOG("_videoPreviewViewInstantFilter = %f, %f",_videoPreviewViewInstantFilter.frame.origin.x, _videoPreviewViewInstantFilter.frame.origin.y);
+						 [self setupFilterViewFrameWithOption:bSizeChange];
 					 }
-
-					 completion:^(BOOL finised) {
-
-						 [_videoPreviewViewMonoFilter addSubview:_monoLabel];
-						 [_monoLabel makeConstraints:^(MASConstraintMaker *make) {
-							 make.top.equalTo(_videoPreviewViewMonoFilter.top);
-							 make.right.equalTo(_videoPreviewViewMonoFilter.right);
-						 }];
-						 [_videoPreviewViewTonalFilter addSubview:_tonalLabel];
-						 [_tonalLabel makeConstraints:^(MASConstraintMaker *make) {
-							 make.top.equalTo(_videoPreviewViewTonalFilter.top);
-							 make.right.equalTo(_videoPreviewViewTonalFilter.right);
-						 }];
-						 [_videoPreviewViewNoirFilter addSubview:_noirLabel];
-						 [_noirLabel makeConstraints:^(MASConstraintMaker *make) {
-							 make.top.equalTo(_videoPreviewViewNoirFilter.top);
-							 make.right.equalTo(_videoPreviewViewNoirFilter.right);
-						 }];
-						 [_videoPreviewViewFadeFilter addSubview:_fadeLabel];
-						 [_fadeLabel makeConstraints:^(MASConstraintMaker *make) {
-							 make.top.equalTo(_videoPreviewViewFadeFilter.top);
-							 make.right.equalTo(_videoPreviewViewFadeFilter.right);
-						 }];
-						 [_videoPreviewViewNoFilter addSubview:_noneLabel];
-						 [_noneLabel makeConstraints:^(MASConstraintMaker *make) {
-							 make.top.equalTo(_videoPreviewViewNoFilter.top);
-							 make.right.equalTo(_videoPreviewViewNoFilter.right);
-						 }];
-						 [_videoPreviewViewChromeFilter addSubview:_chromeLabel];
-						 [_chromeLabel makeConstraints:^(MASConstraintMaker *make) {
-							 make.top.equalTo(_videoPreviewViewChromeFilter.top);
-							 make.right.equalTo(_videoPreviewViewChromeFilter.right);
-						 }];
-						 [_videoPreviewViewProcessFilter addSubview:_processLabel];
-						 [_processLabel makeConstraints:^(MASConstraintMaker *make) {
-							 make.top.equalTo(_videoPreviewViewProcessFilter.top);
-							 make.right.equalTo(_videoPreviewViewProcessFilter.right);
-						 }];
-						 [_videoPreviewViewTransferFilter addSubview:_transferLabel];
-						 [_transferLabel makeConstraints:^(MASConstraintMaker *make) {
-							 make.top.equalTo(_videoPreviewViewTransferFilter.top);
-							 make.right.equalTo(_videoPreviewViewTransferFilter.right);
-						 }];
-						 [_videoPreviewViewInstantFilter addSubview:_instantLabel];
-						 [_instantLabel makeConstraints:^(MASConstraintMaker *make) {
-							 make.top.equalTo(_videoPreviewViewInstantFilter.top);
-							 make.right.equalTo(_videoPreviewViewInstantFilter.right);
-						 }];
+					 completion:^(BOOL finished) {
+						 [self addFilterLabels];
 					 }];
-
 }
 
 @end

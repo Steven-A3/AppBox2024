@@ -37,7 +37,7 @@ typedef NS_ENUM(NSUInteger, A3MirrorFilterType) {
 @property (weak, nonatomic) IBOutlet UISlider *zoomSlider;
 @property (weak, nonatomic) IBOutlet UIToolbar *zoomToolBar;
 
-- (IBAction)zoomIng:(id)sender;
+- (IBAction)zoomSliderDidValueChange:(id)sender;
 - (IBAction)appsButton:(id)sender;
 - (IBAction)flipButton:(id)sender;
 - (IBAction)showInstructionView:(id)sender;

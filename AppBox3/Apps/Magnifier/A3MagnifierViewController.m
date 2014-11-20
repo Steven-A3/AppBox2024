@@ -96,12 +96,29 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     _isLightOn = NO;
     self.flashBrightSlider.value = 0.5;
     [self setupInstructionView];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
+- (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
+- (void)prepareClose {
+	[self removeObserver];
+}
+
+- (void)applicationDidBecomeActive {
+	_device.videoZoomFactor = _effectiveScale;
 }
 
 - (BOOL)usesFullScreenInLandscape {
     return YES;
 }
-
 
 - (void)setPreviewRotation:(CGRect)screenBounds {
 	CGAffineTransform   transform;
@@ -128,6 +145,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 }
 
 - (void)viewWillLayoutSubviews {
+	FNLOG();
     CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
     if(!IS_IPHONE) {
         [self setPreviewRotation:screenBounds];
@@ -145,7 +163,6 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
  
     [self.statusBarBackground setFrame:CGRectMake(self.statusBarBackground.bounds.origin.x, self.statusBarBackground.bounds.origin.y , screenBounds.size.width , self.statusBarBackground.bounds.size.height)];
     [self.bottomToolBar setFrame:CGRectMake(self.bottomToolBar.bounds.origin.x, screenBounds.size.height - 74 , screenBounds.size.width, 74)];
-
 }
 
 - (void)setupPreview {
@@ -385,7 +402,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
                 //CGFloat sliderValue = pow( [self getMaxZoom], magnify.value );
                 //FNLOG(@"max slider value = %f", sliderValue);
                 _device.videoZoomFactor = magnify.value;
-                    _effectiveScale = magnify.value;
+                _effectiveScale = magnify.value;
         }
         
     } else {
@@ -587,7 +604,6 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
     }
 }
 
-
 - (void)setupAVCapture {
     NSError *error = nil;
 	
@@ -608,8 +624,6 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
         [self.lightButton  setEnabled:NO];
     }
 
-    
-    
 	AVCaptureDeviceInput *deviceInput = [AVCaptureDeviceInput deviceInputWithDevice:_device error:&error];
     if ( [_session canAddInput:deviceInput] )
 		[_session addInput:deviceInput];

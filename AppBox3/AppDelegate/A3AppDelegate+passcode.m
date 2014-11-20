@@ -285,9 +285,7 @@
 		[self showReceivedLocalNotifications];
 		return;
 	}
-	if ([startingAppName length]) {
-		[self.mainMenuViewController openRecentlyUsedMenu:NO];
-	}
+	[self.mainMenuViewController openRecentlyUsedMenu:NO];
 }
 
 - (BOOL)requirePasscodeForStartingApp {
