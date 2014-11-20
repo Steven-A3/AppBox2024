@@ -45,7 +45,9 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 
 @end
 
-@implementation A3MainMenuTableViewController
+@implementation A3MainMenuTableViewController {
+	BOOL _ignorePasscodeResult;
+}
 
 - (instancetype)init {
 	self = [super initWithStyle:UITableViewStyleGrouped];
@@ -472,6 +474,10 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 }
 
 - (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
+	if (_ignorePasscodeResult) {
+		_ignorePasscodeResult = NO;
+		return;
+	}
     if (IS_IPHONE) {
         [self.mm_drawerController closeDrawerAnimated:NO completion:^(BOOL finished) {
             [[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
@@ -508,6 +514,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 
 - (void)applicationDidEnterBackground {
 	if (_passcodeViewController) {
+		_ignorePasscodeResult = YES;
 		[_passcodeViewController cancelAndDismissMe];
 	}
 	_passcodeViewController = nil;
