@@ -38,6 +38,7 @@
 #import "A3Utilities.h"
 #import "A3StandardLeft15Cell.h"
 #import "A3UserDefaults.h"
+#import "A3StandardTableViewCell.h"
 
 #define ActionTag_Location      100
 #define ActionTag_Photo         101
@@ -544,7 +545,7 @@
         NSInteger itemType = [[itemDict objectForKey:EventRowType] integerValue];
         
         if ( itemType == EventCellType_RepeatType || itemType == EventCellType_EndRepeatDate || itemType == EventCellType_Alert || itemType == EventCellType_DurationOption || itemType == EventCellType_Location) {
-            cell = [[A3StandardLeft15Cell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
+            cell = [[A3StandardTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
             cell.textLabel.tag = 10;
