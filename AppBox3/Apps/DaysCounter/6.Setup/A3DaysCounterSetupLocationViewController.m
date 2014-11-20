@@ -423,10 +423,7 @@
 
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
-    if (isSearchActive) {
-        _infoTableView.contentInset = _infoTableViewInsetOld;
-        [_infoTableView setContentOffset:_infoTableViewOldOffset animated:YES];
-    }
+	[self adjustInfoTableViewInset];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -918,16 +915,8 @@
         self.searchText = nil;
         [searchBar resignFirstResponder];
     }
+	[self adjustInfoTableViewInset];
     
-    if (_infoTableViewInsetOld.top > CGRectGetHeight(self.view.bounds)) {
-        _infoTableViewInsetOld.top = CGRectGetHeight(self.view.bounds) - 88;
-        _infoTableView.contentInset = _infoTableViewInsetOld;
-    }
-    else {
-        _infoTableView.contentInset = _infoTableViewInsetOld;
-        [_infoTableView setContentOffset:_infoTableViewOldOffset animated:YES];
-    }
-
 #ifdef __IPHONE_8_0
     if (!IS_IOS7) {
 		if ([_infoTableView respondsToSelector:@selector(layoutMargins)])
@@ -938,6 +927,17 @@
 		}
     }
 #endif
+}
+
+- (void)adjustInfoTableViewInset {
+	if (_infoTableViewInsetOld.top > CGRectGetHeight(self.view.bounds)) {
+		_infoTableViewInsetOld.top = CGRectGetHeight(self.view.bounds) - 88;
+		_infoTableView.contentInset = _infoTableViewInsetOld;
+	}
+	else {
+		_infoTableView.contentInset = _infoTableViewInsetOld;
+		[_infoTableView setContentOffset:_infoTableViewOldOffset animated:YES];
+	}
 }
 
 #pragma mark - action method
