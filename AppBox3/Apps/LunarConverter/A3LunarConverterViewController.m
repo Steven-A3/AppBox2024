@@ -64,7 +64,12 @@
 	[super viewDidLoad];
 	// Do any additional setup after loading the view from its nib.
 
-	[self leftBarButtonAppsButton];
+	if (IS_IPAD || IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	} else {
+		self.navigationItem.leftBarButtonItem = nil;
+		self.navigationItem.hidesBackButton = YES;
+	}
     
     UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(shareButtonAction:)];
     shareButton.tag = A3RightBarButtonTagShareButton;
@@ -224,6 +229,9 @@
 {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
+	if (IS_IPHONE && IS_LANDSCAPE) {
+		[self leftBarButtonAppsButton];
+	}
 	[self layoutKeyboardToOrientation:toInterfaceOrientation];
 }
 
