@@ -162,6 +162,8 @@
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	}
+
+	[self updateCurrentMonthLabel];
 }
 
 - (void)removeObserver {
@@ -426,15 +428,19 @@
     if (!currentWatchingDate) {
         currentWatchingDate = [self.dataManager startDateForCurrentAccount];
     }
-    
-    NSInteger year = [A3DateHelper yearFromDate:currentWatchingDate];
-	NSInteger month = [A3DateHelper monthFromDate:currentWatchingDate];
-    if (year < _startYear) {
-        currentWatchingDate = [self.dataManager startDateForCurrentAccount];
-        year = [A3DateHelper yearFromDate:currentWatchingDate];
-        month = [A3DateHelper monthFromDate:currentWatchingDate];
+
+	[self scrollToDate:currentWatchingDate];
+}
+
+- (void)scrollToDate:(NSDate *)date {
+	NSInteger year = [A3DateHelper yearFromDate:date];
+	NSInteger month = [A3DateHelper monthFromDate:date];
+	if (year < _startYear) {
+        date = [self.dataManager startDateForCurrentAccount];
+        year = [A3DateHelper yearFromDate:date];
+        month = [A3DateHelper monthFromDate:date];
     }
-    
+
 	NSInteger section = year - _startYear;
 	NSInteger row;
 	if (year == _startYear) {
@@ -448,7 +454,7 @@
 	if (row >= numberOfRows) {
 		row = numberOfRows - 1;
 	}
-    [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
+	[_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
 }
 
 - (LadyCalendarPeriod*)previousPeriodFromIndexPath:(NSIndexPath*)indexPath
@@ -696,7 +702,13 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
         numberOfMonthInPage = 2;
     else if ( numberOfMonthInPage == 2 )
         numberOfMonthInPage = 1;
+
+	NSDate *oldCurrentMonth = _currentMonth;
+
     [_collectionView reloadData];
+
+	[self scrollToDate:oldCurrentMonth];
+
 	[self updateCurrentMonthLabel];
     
     if ( numberOfMonthInPage == 1 )
