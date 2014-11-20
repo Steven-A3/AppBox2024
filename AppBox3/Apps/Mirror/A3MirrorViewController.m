@@ -628,11 +628,7 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	if (_isLosslessZoom == YES) {
 		self.zoomSlider.maximumValue = [self getMaxZoom];
 	} else {
-		if ([[_stillImageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor] > MAX_ZOOM_FACTOR) {
-			self.zoomSlider.maximumValue = MAX_ZOOM_FACTOR;
-		} else {
-			self.zoomSlider.maximumValue = [[_stillImageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor];
-		}
+		self.zoomSlider.maximumValue = MAX([[_stillImageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor], MAX_ZOOM_FACTOR);
 	}
 	FNLOG(@"minum = %f maximum = %f current = %f", self.zoomSlider.minimumValue, self.zoomSlider.maximumValue, self.zoomSlider.value);
 }
