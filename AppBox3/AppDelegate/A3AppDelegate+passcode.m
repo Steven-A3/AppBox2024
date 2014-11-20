@@ -261,16 +261,16 @@
 - (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
 	[self removeSecurityCoverView];
 
+	if (self.startOptionOpenClockOnce) {
+		[self.mainMenuViewController openClockApp];
+		[self setStartOptionOpenClockOnce:NO];
+		return;
+	}
+
 	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
     if (!success && self.pushClockViewControllerIfFailPasscode) {
 		if (self.parentOfPasscodeViewController.navigationController != self.navigationController) {
 			[self.navigationController dismissViewControllerAnimated:NO completion:NULL];
-		}
-
-		if (self.startOptionOpenClockOnce) {
-			[self.mainMenuViewController openClockApp];
-			[self setStartOptionOpenClockOnce:NO];
-			return;
 		}
 
 		if (![startingAppName length]) {

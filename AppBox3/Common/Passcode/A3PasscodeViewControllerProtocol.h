@@ -21,8 +21,10 @@
 @end
 
 @protocol A3PasscodeViewControllerProtocol <NSObject>
-@optional
 
+@property (weak, nonatomic) id<A3PasscodeViewControllerDelegate> delegate;
+
+@optional
 - (void)showLockScreenWithAnimation:(BOOL)animated showCacelButton:(BOOL)showCancelButton;
 - (void)showLockScreenInViewController:(UIViewController *)viewController;
 - (void)showForEnablingPasscodeInViewController:(UIViewController *)viewController;

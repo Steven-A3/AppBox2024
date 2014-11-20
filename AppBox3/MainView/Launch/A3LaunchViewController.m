@@ -16,15 +16,15 @@
 #import "A3MainMenuTableViewController.h"
 #import "A3UserDefaults.h"
 #import "A3KeychainUtils.h"
+#import "A3PasscodeViewControllerProtocol.h"
 
 NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhatsNew_3_0";
 
-@interface A3LaunchViewController () <UIViewControllerTransitioningDelegate, UIActionSheetDelegate, A3DataMigrationManagerDelegate, A3PasscodeViewControllerDelegate>
+@interface A3LaunchViewController () <UIViewControllerTransitioningDelegate, UIActionSheetDelegate, A3DataMigrationManagerDelegate>
 
 @property (nonatomic, strong) UIStoryboard *launchStoryboard;
 @property (nonatomic, strong) A3LaunchSceneViewController *currentSceneViewController;
 @property (nonatomic, strong) A3DataMigrationManager *migrationManager;
-@property (nonatomic, strong) UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
 
 @end
 
@@ -63,18 +63,16 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 		[[A3UserDefaults standardUserDefaults] synchronize];
 	}
 
-	if (!_showAsWhatsNew && [[A3UserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowWhatsNew_3_0]) {
-		return;
-	}
-	
-	_sceneNumber = 0;
+	if (_showAsWhatsNew || ![[A3UserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowWhatsNew_3_0]) {
+		_sceneNumber = 0;
 
-	_launchStoryboard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Launch_iPhone" : @"Launch_iPad" bundle:nil];
-	_currentSceneViewController = [_launchStoryboard instantiateViewControllerWithIdentifier:@"LaunchScene0"];
-	_currentSceneViewController.sceneNumber = _sceneNumber;
-	_currentSceneViewController.delegate = self;
-	[self.view addSubview:_currentSceneViewController.view];
-	[self addChildViewController:_currentSceneViewController];
+		_launchStoryboard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Launch_iPhone" : @"Launch_iPad" bundle:nil];
+		_currentSceneViewController = [_launchStoryboard instantiateViewControllerWithIdentifier:@"LaunchScene0"];
+		_currentSceneViewController.sceneNumber = _sceneNumber;
+		_currentSceneViewController.delegate = self;
+		[self.view addSubview:_currentSceneViewController.view];
+		[self addChildViewController:_currentSceneViewController];
+	}
 }
 
 - (void)didReceiveMemoryWarning
@@ -94,7 +92,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 		if (!_showAsWhatsNew && [[A3UserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowWhatsNew_3_0]) {
             mainMenuTableViewController.pushClockViewControllerOnPasscodeFailure = YES;
 
-			if (![self showLockScreen]) {
+			if (![appDelegate showLockScreen]) {
 				if ([[A3AppDelegate instance] startOptionOpenClockOnce] ||
 					![[[A3AppDelegate instance] mainMenuViewController] openRecentlyUsedMenu:YES]) {
 					[[A3AppDelegate instance] setStartOptionOpenClockOnce:NO];
@@ -113,7 +111,6 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 			[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
 			[self.navigationController.navigationBar setShadowImage:image];
 			
-			A3AppDelegate *appDelegate = [A3AppDelegate instance];
 			if ([appDelegate shouldMigrateV1Data]) {
                 [_currentSceneViewController hideButtons];
 
@@ -133,68 +130,6 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 				[appDelegate downloadDataFiles];
 			}
 		}
-	}
-}
-
-- (BOOL)showLockScreen {
-    A3AppDelegate *appDelegate = [A3AppDelegate instance];
-    BOOL passwordEnabled = [A3KeychainUtils getPassword] != nil;
-    BOOL passcodeTimerEnd = [appDelegate didPasscodeTimerEnd];
-
-    if (!passwordEnabled || !passcodeTimerEnd) return NO;
-
-    BOOL presentLockScreen = [[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting];
-    if (presentLockScreen) {
-		void (^presentPasscodeViewControllerBlock)(void) = ^(){
-			if (!self.passcodeViewController) {
-				self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
-				[self.passcodeViewController showLockScreenWithAnimation:NO showCacelButton:NO];
-				[A3AppDelegate instance].passcodeViewController = self.passcodeViewController;
-			}
-		};
-		if (IS_IOS7 || ![[A3AppDelegate instance] useTouchID]) {
-			presentPasscodeViewControllerBlock();
-		} else {
-			LAContext *context = [LAContext new];
-			NSError *error;
-			if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
-				[appDelegate addSecurityCoverView];
-				[context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
-						localizedReason:NSLocalizedString(@"Unlock AppBox Pro", @"Unlock AppBox Pro")
-								  reply:^(BOOL success, NSError *error) {
-									  dispatch_async(dispatch_get_main_queue(), ^{
-										  A3AppDelegate *appDelegate = [A3AppDelegate instance];
-										  [appDelegate removeSecurityCoverView];
-										  if (success) {
-											  [self passcodeViewControllerDidDismissWithSuccess:YES];
-										  } else {
-											  presentPasscodeViewControllerBlock();
-										  }
-									  });
-								  }];
-			} else {
-				presentPasscodeViewControllerBlock();
-			}
-		}
-        return YES;
-    } else {
-        [appDelegate showReceivedLocalNotifications];
-    }
-    return NO;
-}
-
-- (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
-	A3AppDelegate *appDelegate = [A3AppDelegate instance];
-	appDelegate.passcodeViewController = nil;
-
-    // Cancel Button 이 없으므로 성공하지 않고서는 이곳에 올수 없다. 하지만 그래도 체크
-    if (!success) return;
-
-    if ([appDelegate startOptionOpenClockOnce] ||
-			![[appDelegate mainMenuViewController] openRecentlyUsedMenu:NO]) {
-		[appDelegate setStartOptionOpenClockOnce:NO];
-		A3MainMenuTableViewController *mainMenuTableViewController = [[A3AppDelegate instance] mainMenuViewController];
-		[mainMenuTableViewController openClockApp];
 	}
 }
 

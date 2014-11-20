@@ -20,6 +20,8 @@
 
 - (BOOL)showLockScreen;
 
+- (void)presentLockScreen;
+
 - (void)applicationDidEnterBackground_passcode;
 - (void)applicationDidBecomeActive_passcode;
 - (void)applicationWillEnterForeground_passcode;

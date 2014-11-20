@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol A3PasscodeViewControllerProtocol;
+
 @protocol A3LaunchSceneViewControllerDelegate <NSObject>
 - (void)useICloudButtonPressedInViewController:(UIViewController *)viewController;
 - (void)continueButtonPressedInViewController:(UIViewController *)viewController;
