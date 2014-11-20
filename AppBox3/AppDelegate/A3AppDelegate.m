@@ -737,6 +737,8 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 	}
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
+	
+	_isCoreDataReady = YES;
 }
 
 - (void)managedObjectContextDidSave:(NSNotification *)notification {

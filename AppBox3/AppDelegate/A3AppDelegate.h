@@ -106,6 +106,7 @@ extern NSString *const A3AppName_Settings;
 @property (nonatomic, assign) BOOL pushClockViewControllerIfFailPasscode;
 @property (nonatomic, weak) UIViewController *parentOfPasscodeViewController;
 @property (nonatomic, assign) BOOL startOptionOpenClockOnce;
+@property (nonatomic, assign) BOOL isCoreDataReady;
 
 + (A3AppDelegate *)instance;
 

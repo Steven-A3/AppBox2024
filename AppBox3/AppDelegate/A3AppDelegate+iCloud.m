@@ -57,6 +57,10 @@
 	self.wakeUpTime = [NSDate date];
 	FNLOG(@"%@", self.wakeUpTime);
 
+	if (!self.isCoreDataReady) {
+		completionHandler(UIBackgroundFetchResultNoData);
+		return;
+	}
 	if ([[UIApplication sharedApplication] isProtectedDataAvailable]) {
 		FNLOG(@"Protected Data is Available.");
 		
