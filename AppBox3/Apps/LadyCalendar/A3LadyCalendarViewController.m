@@ -53,6 +53,7 @@
 	BOOL isShowMoreMenu;
 	NSInteger numberOfMonthInPage;
 	BOOL isFirst;
+	BOOL _isBeingClose;
 }
 
 - (void)viewDidLoad
@@ -179,6 +180,8 @@
 }
 
 - (void)prepareClose {
+	FNLOG();
+	_isBeingClose = YES;
 	self.collectionView.delegate = nil;
 	self.collectionView.dataSource = nil;
 	[self removeObserver];
@@ -187,7 +190,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
-    
+	
+	if (_isBeingClose) return;
+	
 	[self setupNavigationTitle];
     [self setupCalendarHeaderViewFrame];
     
@@ -207,6 +212,8 @@
 	_chartBarButton.enabled = ([self.dataManager numberOfPeriodsWithAccountID:[self.dataManager currentAccount].uniqueID] > 0);
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+		if (_isBeingClose) return;
+		
         NSDate *currentWatchingDate = [self.dataManager currentAccount].watchingDate;
         if (!currentWatchingDate) {
             LadyCalendarPeriod *lastPeriod = [[_dataManager periodListSortedByStartDateIsAscending:YES] lastObject];
@@ -254,6 +261,7 @@
 }
 
 - (void)cleanUp {
+	_isBeingClose = YES;
 	[self dismissInstructionViewController:nil];
     [_calendarHeaderView removeFromSuperview];
     _collectionView.delegate = nil;
