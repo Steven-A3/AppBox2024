@@ -79,6 +79,7 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 	NSUInteger	_shareSourceIndex, _shareTargetIndex;
 	BOOL		_shareAll;
 	BOOL		_barButtonEnabled;
+	BOOL		_viewWillAppearCalled;
 }
 
 NSString *const A3CurrencyDataCellID = @"A3CurrencyDataCell";
@@ -231,7 +232,9 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	UIView *superview = self.view.superview;
 	[superview addSubview:self.plusButton];
 
-	if ([self isMovingToParentViewController]) {
+	if (!_viewWillAppearCalled) {
+		_viewWillAppearCalled = YES;
+
 		[self.plusButton makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(superview.centerX);
 			make.centerY.equalTo(superview.bottom).with.offset(-32);
@@ -247,9 +250,9 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 				[self updateCurrencyRatesWithAnimation:NO ];
 			}
 		}
-
 		[self reloadUpdateDateLabel];
 	}
+
     if (IS_IPHONE && IS_PORTRAIT) {
         [self leftBarButtonAppsButton];
     }

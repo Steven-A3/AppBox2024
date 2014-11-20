@@ -145,18 +145,17 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
     [super viewWillAppear:animated];
     
     [self setupMotionManager];
-    if (self.isMovingToParentViewController) {
-        if (IS_IPAD) {
-            _generatorButton.layer.cornerRadius = 111.0 / 2.0;
-        } else {
-            _generatorButton.layer.cornerRadius = CGRectGetWidth(_generatorButton.frame) / 2.0;
-        }
-        _generatorButton.layer.borderColor = [[A3AppDelegate instance].themeColor CGColor];
-        _generatorButton.layer.borderWidth = 1.5;
-        _generatorButton.backgroundColor = [UIColor whiteColor];
 
-        _resultViewTopConst.constant = CGRectGetHeight(self.navigationController.navigationBar.bounds) + 20;
-    }
+	if (IS_IPAD) {
+		_generatorButton.layer.cornerRadius = 111.0 / 2.0;
+	} else {
+		_generatorButton.layer.cornerRadius = CGRectGetWidth(_generatorButton.frame) / 2.0;
+	}
+	_generatorButton.layer.borderColor = [[A3AppDelegate instance].themeColor CGColor];
+	_generatorButton.layer.borderWidth = 1.5;
+	_generatorButton.backgroundColor = [UIColor whiteColor];
+
+	_resultViewTopConst.constant = CGRectGetHeight(self.navigationController.navigationBar.bounds) + 20;
 }
 
 - (void)viewDidAppear:(BOOL)animated {

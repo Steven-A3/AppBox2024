@@ -187,7 +187,7 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	_isFiltersEnabled = NO;
 	_effectiveScale = 1.0;
 	_filterIndex = A3MirrorNoFilter;
-	[self _start];
+
 	if(_isLosslessZoom == YES) _isFiltersEnabled = YES;
 	if (_isFiltersEnabled == YES) {
 		[self.filterButton setImage:[[UIImage imageNamed:@"m_color"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
@@ -238,6 +238,7 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
+	[self _start];
 	[self configureLayout];
 }
 

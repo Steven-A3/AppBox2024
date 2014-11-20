@@ -264,30 +264,26 @@ NSString *const cellID = @"flashEffectID";
 
 	if (_isBeingDismiss) return;
 
-    if ([self isMovingToParentViewController]) {
-        _showAllMenu = YES;
-        [self configureFlashViewMode:_currentFlashViewMode animation:NO];
+	_showAllMenu = YES;
+	[self configureFlashViewMode:_currentFlashViewMode animation:NO];
 
-        [self setupInstructionView];
+	[self setupInstructionView];
 
-		FNLOG(@"[[UIApplication sharedApplication] setIdleTimerDisabled:YES];");
-        [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
-	}
+	FNLOG(@"[[UIApplication sharedApplication] setIdleTimerDisabled:YES];");
+	[[UIApplication sharedApplication] setIdleTimerDisabled:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	if ([self isMovingToParentViewController]) {
-		if (_currentFlashViewMode & A3FlashViewModeTypeLED) {
-			_isTorchOn = YES;
-			[self showHUD];
-			[self initializeLED];
-		}
+	if (_currentFlashViewMode & A3FlashViewModeTypeLED) {
+		_isTorchOn = YES;
+		[self showHUD];
+		[self initializeLED];
+	}
 
-		if (_currentFlashViewMode & A3FlashViewModeTypeEffect) {
-			[self startStrobeLightEffectForIndex:_selectedEffectIndex];
-		}
+	if (_currentFlashViewMode & A3FlashViewModeTypeEffect) {
+		[self startStrobeLightEffectForIndex:_selectedEffectIndex];
 	}
 }
 
