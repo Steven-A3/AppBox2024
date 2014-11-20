@@ -121,11 +121,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>%ld 개월</string>
+			<string>%ld개월</string>
 			<key>one</key>
-			<string>%ld 개월</string>
+			<string>%ld개월</string>
 			<key>other</key>
-			<string>%ld 개월</string>
+			<string>%ld개월</string>
 		</dict>
 	</dict>
 	<key>%ld mos</key>
