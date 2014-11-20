@@ -36,7 +36,6 @@
 	return [date timeIntervalSinceReferenceDate];
 }
 
-
 - (void)saveTimerStartTime {
 	[[A3UserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kUserDefaultTimerStart];
 	FNLOG(@"**************************************************************");
@@ -115,11 +114,13 @@
 			LAContext *context = [LAContext new];
 			NSError *error;
 			if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
+				self.isTouchIDEvaluationInProgress = YES;
 				[context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
 						localizedReason:NSLocalizedString(@"Unlock AppBox Pro", @"Unlock AppBox Pro") reply:^(BOOL success, NSError *error) {
+							self.isTouchIDEvaluationInProgress = NO;
 							dispatch_async(dispatch_get_main_queue(), ^{
+								[self removeSecurityCoverView];
 								if (success) {
-									[self removeSecurityCoverView];
 									[self passcodeViewControllerDidDismissWithSuccess:YES];
 								} else {
 									presentPasscodeViewControllerBlock();
@@ -127,6 +128,7 @@
 							});
 						}];
 			} else {
+				[self removeSecurityCoverView];
 				presentPasscodeViewControllerBlock();
 			}
 		}
@@ -172,18 +174,20 @@
 	}
 }
 
-- (void)applicationDidBecomeActive_passcode {
-	[self removeSecurityCoverView];
+ - (void)applicationDidBecomeActive_passcode {
+	if (!self.isTouchIDEvaluationInProgress) {
+		[self removeSecurityCoverView];
+	}
 }
 
 - (void)applicationWillEnterForeground_passcode {
 	[self updateStartOption];
 
-	[self removeSecurityCoverView];
     if ([self shouldAskPasscodeForStarting]) {
         [self showLockScreen];
     } else {
 		if (self.startOptionOpenClockOnce) {
+			[self removeSecurityCoverView];
 			[self.mainMenuViewController openClockApp];
 			[self setStartOptionOpenClockOnce:NO];
 		} else {
@@ -192,6 +196,7 @@
 				if ([self requirePasscodeForStartingApp]) {
 					[self presentLockScreen];
 				} else {
+					[self removeSecurityCoverView];
 					[self.mainMenuViewController openRecentlyUsedMenu:YES];
 				}
 			} else {
@@ -212,6 +217,7 @@
 }
 
 - (void)addSecurityCoverView {
+	FNLOG();
 	// 암호 대화 상자가 열려 있다면 커버를 추가하지 않는다.
 	if (self.passcodeViewController) return;
 	
@@ -285,7 +291,10 @@
 		[self showReceivedLocalNotifications];
 		return;
 	}
-	[self.mainMenuViewController openRecentlyUsedMenu:NO];
+	if (![self.mainMenuViewController openRecentlyUsedMenu:NO]) {
+		[self.mainMenuViewController openClockApp];
+	}
+	self.passcodeViewController = nil;
 }
 
 - (BOOL)requirePasscodeForStartingApp {
@@ -310,10 +319,6 @@
         }
     }
     return requirePasscodeForStartingApp;
-}
-
-- (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {
-	self.passcodeViewController = nil;
 }
 
 - (BOOL)shouldAskPasscodeForStarting {
