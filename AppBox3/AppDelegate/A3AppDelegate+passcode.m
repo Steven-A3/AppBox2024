@@ -274,6 +274,7 @@
 	if (self.startOptionOpenClockOnce) {
 		[self.mainMenuViewController openClockApp];
 		[self setStartOptionOpenClockOnce:NO];
+		self.passcodeViewController = nil;
 		return;
 	}
 
@@ -293,6 +294,7 @@
 			}
 		}
 		[self showReceivedLocalNotifications];
+		self.passcodeViewController = nil;
 		return;
 	}
 	if (![self.mainMenuViewController openRecentlyUsedMenu:NO]) {
