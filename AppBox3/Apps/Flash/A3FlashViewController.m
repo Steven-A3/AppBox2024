@@ -238,8 +238,9 @@ NSString *const cellID = @"flashEffectID";
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 	[self setNavigationBarHidden:YES];
-    
-    _isLEDAvailable = [A3UIDevice hasTorch];
+	[self.navigationController.toolbar setHidden:YES];
+
+	_isLEDAvailable = [A3UIDevice hasTorch];
     
     [self initializeCurrentFlashViewModeType];
     [self initializeBrightnessAndStorbeSpeedSliderRelated];
