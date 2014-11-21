@@ -52,6 +52,7 @@
 
 @implementation A3ClockMainViewController {
     CGFloat _originalBrightness;
+	BOOL _isAutoDimActivated;
 }
 
 - (A3ClockDataManager *)clockDataManager {
@@ -65,8 +66,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    _originalBrightness = [[UIScreen mainScreen] brightness];
 
 	self.automaticallyAdjustsScrollViewInsets = NO;
 
@@ -145,7 +144,9 @@
 
 - (void)prepareClose {
 	[self dismissInstructionViewController:nil];
-	[[UIScreen mainScreen] setBrightness:_originalBrightness];
+
+	[self turnOffAutoDim];
+
 	[_autoDimTimer invalidate];
 	_autoDimTimer = nil;
 
@@ -159,6 +160,7 @@
 }
 
 - (void)cleanUp {
+	[self removeObserver];
 }
 
 - (void)dealloc {
@@ -202,9 +204,12 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 }
 
 - (void)turnOffAutoDim {
+	if (_isAutoDimActivated) {
+		[[UIScreen mainScreen] setBrightness:_originalBrightness];
+	}
+	_isAutoDimActivated = NO;
     [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 
-    [[UIScreen mainScreen] setBrightness:_originalBrightness];
     [_autoDimTimer invalidate];
     _autoDimTimer = nil;
 }
@@ -226,6 +231,9 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
 }
 
 - (void)activateAutoDim {
+	_isAutoDimActivated = YES;
+	_originalBrightness = [[UIScreen mainScreen] brightness];
+
     [_autoDimTimer invalidate];
     _autoDimTimer = nil;
     [[UIScreen mainScreen] setBrightness:0.0];
