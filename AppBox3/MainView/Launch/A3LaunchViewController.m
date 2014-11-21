@@ -93,6 +93,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
             mainMenuTableViewController.pushClockViewControllerOnPasscodeFailure = YES;
 
 			if (![appDelegate showLockScreen]) {
+				[appDelegate updateStartOption];
 				if ([[A3AppDelegate instance] startOptionOpenClockOnce] ||
 					![[[A3AppDelegate instance] mainMenuViewController] openRecentlyUsedMenu:YES]) {
 					[[A3AppDelegate instance] setStartOptionOpenClockOnce:NO];

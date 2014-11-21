@@ -85,8 +85,6 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 
 	[[NSUbiquitousKeyValueStore defaultStore] synchronize];
 
-	[self updateStartOption];
-
 	[self setupContext];
 
 	UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];

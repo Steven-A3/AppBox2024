@@ -185,11 +185,11 @@
 }
 
 - (void)applicationWillEnterForeground_passcode {
-	[self updateStartOption];
-
     if ([self shouldAskPasscodeForStarting]) {
         [self showLockScreen];
     } else {
+		[self updateStartOption];
+
 		if (self.startOptionOpenClockOnce) {
 			[self removeSecurityCoverView];
 			[self.mainMenuViewController openClockApp];
@@ -270,6 +270,8 @@
 
 - (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
 	[self removeSecurityCoverView];
+
+	[self updateStartOption];
 
 	if (self.startOptionOpenClockOnce) {
 		[self.mainMenuViewController openClockApp];
