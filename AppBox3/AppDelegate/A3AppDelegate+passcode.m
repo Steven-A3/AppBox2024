@@ -115,10 +115,14 @@
 			NSError *error;
 			if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
 				self.isTouchIDEvaluationInProgress = YES;
+				[[UIApplication sharedApplication] setStatusBarHidden:YES];
+				[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 				[context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
 						localizedReason:NSLocalizedString(@"Unlock AppBox Pro", @"Unlock AppBox Pro") reply:^(BOOL success, NSError *error) {
 							self.isTouchIDEvaluationInProgress = NO;
 							dispatch_async(dispatch_get_main_queue(), ^{
+								[[UIApplication sharedApplication] setStatusBarHidden:NO];
+								[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 								[self removeSecurityCoverView];
 								if (success) {
 									[self passcodeViewControllerDidDismissWithSuccess:YES];

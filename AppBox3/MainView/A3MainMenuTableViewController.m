@@ -267,10 +267,15 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 							LAContext *context = [LAContext new];
 							NSError *error;
 							if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
+								[[UIApplication sharedApplication] setStatusBarHidden:YES];
+								[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 								[context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
 										localizedReason:[NSString stringWithFormat:NSLocalizedString(@"Unlock %@", @"Unlock %@"), NSLocalizedString(self.selectedElement.title, nil)]
 												  reply:^(BOOL success, NSError *error) {
 													  dispatch_async(dispatch_get_main_queue(), ^{
+														  [[UIApplication sharedApplication] setStatusBarHidden:NO];
+														  [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+
 														  [[A3AppDelegate instance] removeSecurityCoverView];
 														  if (success) {
 															  [self passcodeViewControllerDidDismissWithSuccess:YES];
