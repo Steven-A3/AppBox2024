@@ -309,8 +309,11 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 						[self.mm_drawerController closeDrawerAnimated:YES completion:^(BOOL finished) {
 							[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
 						}];
-					} else if (IS_PORTRAIT) {
-						[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
+					} else if (IS_IPAD) {
+						A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+						if (rootViewController.showLeftView) {
+							[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
+						}
 					}
 				}
                 
