@@ -164,9 +164,10 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 
 	NSInteger maxRecent = [[A3AppDelegate instance] maximumRecentlyUsedMenus];
 	NSArray *recentMenuItems = nil;
+	NSDictionary *recentlyUsedMenuDictionary = [self recentlyUsedMenuItems];
+	recentMenuItems = recentlyUsedMenuDictionary[kA3AppsExpandableChildren];
+
 	if (maxRecent) {
-		NSDictionary *recentlyUsedMenuDictionary = [self recentlyUsedMenuItems];
-		recentMenuItems = recentlyUsedMenuDictionary[kA3AppsExpandableChildren];
 		if ([recentMenuItems count]) {
 			if ([recentMenuItems count] > maxRecent) {
 				recentMenuItems = [recentMenuItems subarrayWithRange:NSMakeRange(0, maxRecent)];
@@ -178,16 +179,14 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 			}
 		}
 	}
-
-	self.rootElement.sectionsArray = @[[self sectionWithData:section0], self.appSection, self.bottomSection];
-
 	if ([recentMenuItems count]) {
-		A3TableViewSection *section = self.rootElement.sectionsArray[0];
-		A3TableViewExpandableElement *recentElement = section.elements[1];
-		_mostRecentMenuElement = recentElement.elements[0];
+		NSArray *recentMenuElements = [self elementsWithData:recentMenuItems];
+		_mostRecentMenuElement = recentMenuElements[0];
 	} else {
 		_mostRecentMenuElement = nil;
 	}
+
+	self.rootElement.sectionsArray = @[[self sectionWithData:section0], self.appSection, self.bottomSection];
 }
 
 - (id)appSection {
@@ -584,7 +583,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 	} else {
 		NSInteger maxRecent = [[A3AppDelegate instance] maximumRecentlyUsedMenus];
 
-		if (maxRecent == 1) {
+		if (maxRecent <= 1) {
 			recentlyUsed[kA3AppsExpandableChildren] = [self dataFromElements:@[element]];
 		} else {
 			NSArray *newDataArray = [self dataFromElements:@[element]];
