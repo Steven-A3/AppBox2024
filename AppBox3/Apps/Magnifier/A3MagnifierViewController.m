@@ -61,6 +61,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
     // Do any additional setup after loading the view from its nib.
     [self.view setBackgroundColor:[UIColor blackColor]];
     [self.view setBounds:[[UIScreen mainScreen] bounds]];
@@ -78,7 +79,8 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 	self.lastimageButton.layer.masksToBounds = YES;
     [self.bottomToolBar.items[0] setCustomView:self.lastimageButton];
     [self loadFirstPhoto];
-    
+
+	_effectiveScale = 1.0;
     [self setupPreview];
     [self setupAVCapture];
     [self setupGestureRecognizer];
@@ -113,29 +115,51 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 }
 
 - (void)applicationDidBecomeActive {
-	_device.videoZoomFactor = _effectiveScale;
+	[_session startRunning];
+
+	if (_isLosslessZoom) {
+		_device.videoZoomFactor = _effectiveScale;
+	} else {
+		[_previewLayer setTransform:CGAffineTransformScale([self getMagnifierRotationTransform], _effectiveScale, _effectiveScale)];
+	}
 }
 
 - (BOOL)usesFullScreenInLandscape {
     return YES;
 }
 
-- (void)setPreviewRotation:(CGRect)screenBounds {
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	[self configureLayout];
+}
+
+- (CGAffineTransform)getMagnifierRotationTransform {
 	CGAffineTransform   transform;
-	UIInterfaceOrientation curInterfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-	if (curInterfaceOrientation == UIDeviceOrientationPortrait) {
+
+	UIInterfaceOrientation curDeviceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+	if (curDeviceOrientation == UIDeviceOrientationPortrait) {
+		FNLOG(@"UIDeviceOrientationPortrait, CGAffineTransformMakeRotation(M_PI_2)");
 		transform = CGAffineTransformMakeRotation(M_PI_2);
-	} else if (curInterfaceOrientation == UIDeviceOrientationPortraitUpsideDown) {
+	} else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
+		FNLOG(@"UIDeviceOrientationPortraitUpsideDown, CGAffineTransformMakeRotation(-M_PI_2)");
 		transform = CGAffineTransformMakeRotation(-M_PI_2);
-	} else if (curInterfaceOrientation == UIDeviceOrientationLandscapeRight) {
-		transform = CGAffineTransformMakeRotation(M_PI);
-	} else {
+	} else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
+		FNLOG(@"UIDeviceOrientationLandscapeRight, CGAffineTransformMakeRotation(0)");
 		transform = CGAffineTransformMakeRotation(0);
-	}
-	if (_isLosslessZoom == NO &&
-			_effectiveScale > 1) {
-		[_previewLayer setTransform:CGAffineTransformScale(transform, _effectiveScale, _effectiveScale)];
 	} else {
+		FNLOG(@"CGAffineTransformMakeRotation(M_PI)");
+		transform = CGAffineTransformMakeRotation(M_PI);
+	}
+
+	return transform;
+}
+
+- (void)setPreviewRotation:(CGRect)screenBounds {
+	if (!_isLosslessZoom) {
+		[_previewLayer setTransform:CGAffineTransformScale([self getMagnifierRotationTransform], _effectiveScale, _effectiveScale)];
+	} else {
+		CGAffineTransform   transform = [self getMagnifierRotationTransform];
 		[_previewLayer setTransform:transform];
 	}
 
@@ -144,8 +168,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     }
 }
 
-- (void)viewWillLayoutSubviews {
-	FNLOG();
+- (void)configureLayout {
     CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
     if(!IS_IPHONE) {
         [self setPreviewRotation:screenBounds];
@@ -223,7 +246,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     self.magnifierSlider.value = 1;
 
     if (_isLosslessZoom == NO) {
-		self.magnifierSlider.maximumValue = MAX(MAX_ZOOM_FACTOR, [[_stillImageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor]);
+		self.magnifierSlider.maximumValue = MIN(MAX_ZOOM_FACTOR, [[_stillImageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor]);
     } else {
         self.magnifierSlider.maximumValue = [self getMaxZoom];
     }
@@ -271,27 +294,12 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     if (_effectiveScale < self.magnifierSlider.minimumValue ) _effectiveScale = self.magnifierSlider.minimumValue;
     if(_effectiveScale > self.magnifierSlider.maximumValue) _effectiveScale = self.magnifierSlider.maximumValue;
     if(_effectiveScale == self.magnifierSlider.value) return;
-    if (_isLosslessZoom == YES) {
+    if (_isLosslessZoom) {
         if (!_device.isRampingVideoZoom) {
             _device.videoZoomFactor = _effectiveScale;
         }
-        
     } else {
-        if (IS_IPHONE) {
-            [_previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI_2), _effectiveScale, _effectiveScale)];
-        }
-        else {
-            UIInterfaceOrientation curDeviceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-            if (curDeviceOrientation == UIDeviceOrientationPortrait) {
-                [_previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI_2), _effectiveScale, _effectiveScale)];
-            } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
-                [_previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(-M_PI_2), _effectiveScale, _effectiveScale)];
-            } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
-                [_previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI), _effectiveScale, _effectiveScale)];
-            } else {
-                [_previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(0), _effectiveScale, _effectiveScale)];
-            }
-        }
+		[_previewLayer setTransform:CGAffineTransformScale([self getMagnifierRotationTransform], _effectiveScale, _effectiveScale)];
     }
     
     self.magnifierSlider.value = _effectiveScale;
@@ -397,7 +405,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 - (IBAction)magnifierSliderAction:(id)sender {
     UISlider *magnify = (UISlider *) sender;
    // FNLOG(@"slider value = %f", magnify.value);
-    if (_isLosslessZoom == YES) {
+    if (_isLosslessZoom) {
         if (!_device.isRampingVideoZoom) {
                 //CGFloat sliderValue = pow( [self getMaxZoom], magnify.value );
                 //FNLOG(@"max slider value = %f", sliderValue);
@@ -407,9 +415,8 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
         
     } else {
         _effectiveScale = magnify.value;
-        [_previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI_2), _effectiveScale, _effectiveScale)];
+        [_previewLayer setTransform:CGAffineTransformScale([self getMagnifierRotationTransform], _effectiveScale, _effectiveScale)];
     }
-
 }
 
 - (AVCaptureVideoOrientation)avOrientationForDeviceOrientation:(UIInterfaceOrientation)deviceOrientation
@@ -510,19 +517,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 
 														   ciSaveImg = [self ApplyFilters:ciSaveImg];
 
-														   CGAffineTransform t;
-
-														   if (curDeviceOrientation == UIDeviceOrientationPortrait) {
-															   t = CGAffineTransformMakeRotation(-M_PI / 2);
-														   } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
-															   t = CGAffineTransformMakeRotation(M_PI / 2);
-														   } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight ||
-																   curDeviceOrientation == UIDeviceOrientationFaceUp) {
-															   t = CGAffineTransformMakeRotation(M_PI);
-														   } else {
-															   t = CGAffineTransformMakeRotation(0);
-														   }
-
+														   CGAffineTransform t = [self getRotationTransformWithOption:NO];
 														   ciSaveImg = [ciSaveImg imageByApplyingTransform:t];
 														   CGImageRef cgimg = [_ciContext createCGImage:ciSaveImg fromRect:[ciSaveImg extent]];
 														   [self.assetLibrary writeImageToSavedPhotosAlbum:cgimg metadata:[_ciImage properties] completionBlock:^(NSURL *assetURL, NSError *error) {
@@ -610,8 +605,6 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
 	_session = [AVCaptureSession new];
     [_session beginConfiguration];
 
-
-	
     // Select a video device, make an input
 	_device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     if([_device lockForConfiguration:&error] != YES)
@@ -749,8 +742,6 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
 	[_ciContext drawImage:_ciImage inRect:_videoPreviewViewBounds fromRect:drawRect];
            [_previewLayer display];
    // });
-
-
 }
 
 #pragma mark - AVCapture Setup End
@@ -768,6 +759,12 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
         _centerXY.x = _previewLayer.center.y;
         _centerXY.y = _previewLayer.center.x;
     }
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	[self configureLayout];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation

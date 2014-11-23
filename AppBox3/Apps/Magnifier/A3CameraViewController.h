@@ -17,10 +17,11 @@
 
 - (UIImage *)cropImageWithSquare:(UIImage *)source;
 - (void)loadFirstPhoto;
-
 - (void)setImageOnCameraRollButton:(UIImage *)image;
 - (IBAction)loadCameraRoll:(id)sender;
 - (void)notifyCameraShotSaveRule;
-
 - (BOOL)hasAuthorizationToAccessPhoto;
+
+- (CGAffineTransform)getRotationTransformWithOption:(BOOL)useDeviceZoom;
+
 @end

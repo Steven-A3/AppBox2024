@@ -12,6 +12,7 @@
 #import "FrameRateCalculator.h"
 #import "A3InstructionViewController.h"
 #import "A3UserDefaults.h"
+#import "A3CameraViewController.h"
 
 static const int MAX_ZOOM_FACTOR = 6;
 NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
@@ -145,6 +146,8 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	[self.statusBarBackground setHidden:YES];
 	_isFlip = YES;
 
+	[self _start];
+
 	_eaglContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
 
 	// create the CIContext instance, note that this must be done after _videoPreviewView is properly set up
@@ -160,7 +163,7 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 
 	// because the native video image from the back camera is in UIDeviceOrientationLandscapeLeft (i.e. the home button is on the right), we need to apply a clockwise 90 degree transform so that we can draw the video preview as if we were in a landscape-oriented view; if you're using the front camera and you want to have a mirrored preview (so that the user is seeing themselves in the mirror), you need to apply an additional horizontal flip (by concatenating CGAffineTransformMakeScale(-1.0, 1.0) to the rotation transform)
 	//[self setFilterViewRotation:_videoPreviewViewNoFilter withScreenBounds:screenBounds];
-	_videoPreviewViewNoFilter.transform = [self getTransform];
+	_videoPreviewViewNoFilter.transform = [self getRotationTransformWithOption:_isLosslessZoom];
 	_videoPreviewViewNoFilter.frame = screenBounds;
 
 	[self.view addSubview:_videoPreviewViewNoFilter];
@@ -232,7 +235,16 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 }
 
 - (void)applicationDidBecomeActive {
-	_videoDevice.videoZoomFactor = _effectiveScale;
+	[self applyZoomFactor];
+}
+
+- (void)applyZoomFactor {
+	_zoomSlider.value = _effectiveScale;
+	if (_isLosslessZoom) {
+		_videoDevice.videoZoomFactor = _effectiveScale;
+	} else {
+		[self currentViewTransformScale];
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -240,6 +252,7 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 
 	[self _start];
 	[self configureLayout];
+	[self applyZoomFactor];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -290,32 +303,15 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	}
 }
 
-- (CGAffineTransform)getTransform {
-	CGAffineTransform   transform;
-
-	UIInterfaceOrientation curDeviceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-	if (curDeviceOrientation == UIDeviceOrientationPortrait) {
-		transform = CGAffineTransformMakeRotation(M_PI_2);
-	} else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
-		transform = CGAffineTransformMakeRotation(-M_PI_2);
-	} else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
-		transform = CGAffineTransformMakeRotation(0);
-	} else {
-		transform = CGAffineTransformMakeRotation(M_PI);
-	}
-
-	return transform;
-}
-
 - (void)setViewRotation:(UIView *)view {
     CGFloat scalefactor = 1.0;
     if(_isLosslessZoom == NO) {
         scalefactor = _effectiveScale;
     }
 	if (_isFlip) {
-		[view setTransform:CGAffineTransformConcat([self getTransform], CGAffineTransformMakeScale(-scalefactor, scalefactor))];
+		[view setTransform:CGAffineTransformConcat([self getRotationTransformWithOption:_isLosslessZoom], CGAffineTransformMakeScale(-scalefactor, scalefactor))];
 	} else {
-		[view setTransform:CGAffineTransformConcat([self getTransform], CGAffineTransformMakeScale(scalefactor, scalefactor))];
+		[view setTransform:CGAffineTransformConcat([self getRotationTransformWithOption:_isLosslessZoom], CGAffineTransformMakeScale(scalefactor, scalefactor))];
 	}
 }
 
@@ -584,7 +580,8 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	if (_isLosslessZoom == YES) {
 		self.zoomSlider.maximumValue = [self getMaxZoom];
 	} else {
-		self.zoomSlider.maximumValue = MAX([[_stillImageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor], MAX_ZOOM_FACTOR);
+		CGFloat maxScaleFactor = [[_stillImageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor];
+		self.zoomSlider.maximumValue = MIN(maxScaleFactor, MAX_ZOOM_FACTOR);
 	}
 	FNLOG(@"minum = %f maximum = %f current = %f", self.zoomSlider.minimumValue, self.zoomSlider.maximumValue, self.zoomSlider.value);
 }
@@ -1055,22 +1052,21 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	// Dispose of any resources that can be recreated.
 }
 
-- (void) currentViewTransformScale
+- (void)currentViewTransformScale
 {
 	GLKView *currentView = [self currentFilterView];
 
 	if (_isFlip) {
-		[currentView setTransform:CGAffineTransformScale([self getTransform], -1* _effectiveScale, _effectiveScale)];
+		[currentView setTransform:CGAffineTransformScale([self getRotationTransformWithOption:_isLosslessZoom], -1* _effectiveScale, _effectiveScale)];
 	} else {
-
-		[currentView setTransform:CGAffineTransformScale([self getTransform], _effectiveScale, _effectiveScale)];
+		[currentView setTransform:CGAffineTransformScale([self getRotationTransformWithOption:_isLosslessZoom], _effectiveScale, _effectiveScale)];
 	}
 }
 
 #pragma mark - IB Action Buttons
 
 - (IBAction)zoomSliderDidValueChange:(UISlider *)sliderControl {
-	if (_isLosslessZoom == YES) {
+	if (_isLosslessZoom) {
 		if (!_videoDevice.isRampingVideoZoom) {
 			_videoDevice.videoZoomFactor = sliderControl.value;
 			_effectiveScale = sliderControl.value;
@@ -1174,18 +1170,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 					}
 				}
 
-				CGAffineTransform t;
-
-				if (orientation == UIDeviceOrientationPortrait) {
-					t = CGAffineTransformMakeRotation(-M_PI / 2);
-				} else if (orientation == UIDeviceOrientationPortraitUpsideDown) {
-					t = CGAffineTransformMakeRotation(M_PI / 2);
-				} else if (orientation == UIDeviceOrientationLandscapeRight ||
-						orientation == UIDeviceOrientationFaceUp) {
-					t = CGAffineTransformMakeRotation(0);
-				} else {
-					t = CGAffineTransformMakeRotation(M_PI);
-				}
+				CGAffineTransform t = [self getRotationTransformWithOption:NO];
 
 				if (_filterIndex == A3MirrorMonoFilter) {
 					ciSaveImg = [CIFilter filterWithName:@"CIPhotoEffectMono" keysAndValues:kCIInputImageKey, ciSaveImg, nil].outputImage;

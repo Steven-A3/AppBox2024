@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
+#import "A3MirrorViewController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "A3CameraViewController.h"
 #import "MWPhotoBrowser.h"
@@ -241,4 +242,24 @@
 	return YES;
 }
 
+- (CGAffineTransform)getRotationTransformWithOption:(BOOL)useDeviceZoom {
+	CGAffineTransform   transform;
+
+	UIInterfaceOrientation curDeviceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+	if (curDeviceOrientation == UIDeviceOrientationPortrait) {
+		FNLOG(@"UIDeviceOrientationPortrait, CGAffineTransformMakeRotation(-M_PI_2)");
+		transform = CGAffineTransformMakeRotation(-M_PI_2 * (useDeviceZoom ? -1 : 1));
+	} else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
+		FNLOG(@"UIDeviceOrientationPortraitUpsideDown, CGAffineTransformMakeRotation(M_PI_2)");
+		transform = CGAffineTransformMakeRotation(M_PI_2 * (useDeviceZoom ? -1 : 1));
+	} else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
+		FNLOG(@"UIDeviceOrientationLandscapeRight, CGAffineTransformMakeRotation(0)");
+		transform = CGAffineTransformMakeRotation(0);
+	} else {
+		FNLOG(@"CGAffineTransformMakeRotation(M_PI)");
+		transform = CGAffineTransformMakeRotation(M_PI);
+	}
+
+	return transform;
+}
 @end
