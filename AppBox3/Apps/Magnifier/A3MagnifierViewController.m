@@ -245,8 +245,13 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     self.magnifierSlider.continuous = YES;
     self.magnifierSlider.value = 1;
 
-    if (_isLosslessZoom == NO) {
-		self.magnifierSlider.maximumValue = MIN(MAX_ZOOM_FACTOR, [[_stillImageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor]);
+    if (!_isLosslessZoom) {
+		CGFloat deviceMax = [[_stillImageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor];
+		if (deviceMax == 1) {
+			self.magnifierSlider.maximumValue = MAX_ZOOM_FACTOR;
+		} else {
+			self.magnifierSlider.maximumValue = MIN(MAX_ZOOM_FACTOR, deviceMax);
+		}
     } else {
         self.magnifierSlider.maximumValue = [self getMaxZoom];
     }
