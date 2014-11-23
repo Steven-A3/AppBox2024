@@ -360,6 +360,7 @@
 #pragma mark - Keyboard Layout
 
 - (void)addDateKeyboard {
+	if (self.dateKeyboardVC) return;
 
 	if (IS_IPAD) {
 		self.dateKeyboardVC = [[A3DateKeyboardViewController_iPad alloc] initWithNibName:@"A3DateKeyboardViewController_iPad" bundle:nil];
