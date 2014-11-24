@@ -20,9 +20,7 @@
 #import "A3LadyCalendarViewController.h"
 #import "A3WalletMainTabBarController.h"
 #import "A3UserDefaults.h"
-#import "A3ClockMainViewController.h"
 #import "A3MainMenuTableViewController.h"
-#import "A3BasicWebViewController.h"
 
 @implementation A3AppDelegate (passcode)
 
@@ -117,13 +115,24 @@
 				self.isTouchIDEvaluationInProgress = YES;
 				[[UIApplication sharedApplication] setStatusBarHidden:YES];
 				[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
+				self.touchIDBackgroundViewController = [UIViewController new];
+				CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+				UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:bounds];
+				backgroundImageView.image = [UIImage imageNamed:[self getLaunchImageName]];
+				backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+				[self.touchIDBackgroundViewController.view addSubview:backgroundImageView];
+
+				[self.rootViewController presentViewController:self.touchIDBackgroundViewController animated:NO completion:NULL];
 				[context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
 						localizedReason:NSLocalizedString(@"Unlock AppBox Pro", @"Unlock AppBox Pro") reply:^(BOOL success, NSError *error) {
 							self.isTouchIDEvaluationInProgress = NO;
 							dispatch_async(dispatch_get_main_queue(), ^{
+								[self removeSecurityCoverView];
+
 								[[UIApplication sharedApplication] setStatusBarHidden:NO];
 								[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-								[self removeSecurityCoverView];
+								[self.touchIDBackgroundViewController dismissViewControllerAnimated:NO completion:NULL];
 								if (success) {
 									[self passcodeViewControllerDidDismissWithSuccess:YES];
 								} else {
@@ -223,18 +232,43 @@
 - (void)addSecurityCoverView {
 	FNLOG();
 	// 암호 대화 상자가 열려 있다면 커버를 추가하지 않는다.
-	if (self.passcodeViewController) return;
-	
+	if (self.passcodeViewController || self.isTouchIDEvaluationInProgress) return;
+
 	// 이미 커버가 추가되어 있다면, 추가하지 않는다.
 	if (self.coverView) return;
 
-	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGRect screenBounds = [[UIScreen mainScreen] bounds];
+	if (IS_IPHONE && IS_LANDSCAPE && IS_IOS7) {
+		CGFloat height = screenBounds.size.height;
+		screenBounds.size.height = screenBounds.size.width;
+		screenBounds.size.width = height;
+	}
 	self.coverView = [[UIImageView alloc] initWithFrame:screenBounds];
 	self.coverView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	self.coverView.image = [UIImage imageNamed:[self getLaunchImageName]];
 	[self.window addSubview:self.coverView];
 
-	if (IS_IOS7) {
+	if (IS_IPHONE && IS_LANDSCAPE) {
+		CGFloat angle;
+		switch ([[UIApplication sharedApplication] statusBarOrientation]) {
+			case UIInterfaceOrientationPortraitUpsideDown:
+				angle = M_PI;
+				break;
+			case UIInterfaceOrientationLandscapeLeft:
+				angle = M_PI_2;
+				break;
+			case UIInterfaceOrientationLandscapeRight:
+				angle = -M_PI_2;
+				break;
+			default:
+				angle = 0;
+		}
+		self.coverView.transform = CGAffineTransformMakeRotation(angle);
+		self.coverView.frame = screenBounds;
+		FNLOGRECT(self.coverView.frame);
+	}
+
+	if (IS_IPAD && IS_IOS7) {
 		[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self

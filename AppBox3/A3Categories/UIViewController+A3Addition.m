@@ -101,15 +101,15 @@ static char const *const key_firstActionSheet 					= "key_firstActionSheet";
 
 - (void)popToRootAndPushViewController:(UIViewController *)viewController {
 	UINavigationController *navigationController;
+	A3AppDelegate *appDelegate = [A3AppDelegate instance];
+	navigationController = appDelegate.currentMainNavigationController;
 
 	if (IS_IPHONE) {
-		navigationController = (UINavigationController *) self.mm_drawerController.centerViewController;
-		[self.mm_drawerController closeDrawerAnimated:YES completion:nil];
+		[appDelegate.drawerController closeDrawerAnimated:YES completion:nil];
 	} else {
 		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
 		[rootViewController dismissRightSideViewController];
 
-		navigationController = [rootViewController centerNavigationController];
         // KJH
         if (rootViewController.presentViewControllers && [rootViewController.presentViewControllers count] > 0) {
             [rootViewController dismissCenterViewController];

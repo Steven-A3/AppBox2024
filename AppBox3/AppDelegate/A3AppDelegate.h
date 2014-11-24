@@ -91,6 +91,7 @@ extern NSString *const A3AppName_Settings;
 @property (strong, nonatomic) MMDrawerController *drawerController;
 @property (strong, nonatomic) A3RootViewController_iPad *rootViewController;
 @property (strong, nonatomic) UIViewController *rootViewController_iPhone;
+@property (strong, nonatomic) UINavigationController *currentMainNavigationController;
 @property (strong, nonatomic) A3MainMenuTableViewController *mainMenuViewController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) NSDate *wakeUpTime;
@@ -108,6 +109,7 @@ extern NSString *const A3AppName_Settings;
 @property (nonatomic, assign) BOOL startOptionOpenClockOnce;
 @property (nonatomic, assign) BOOL isCoreDataReady;
 @property (nonatomic, assign) BOOL isTouchIDEvaluationInProgress;
+@property (nonatomic, strong) UIViewController *touchIDBackgroundViewController;
 
 + (A3AppDelegate *)instance;
 

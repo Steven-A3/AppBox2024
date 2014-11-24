@@ -131,12 +131,14 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 		_rootViewController = [[A3RootViewController_iPad alloc] initWithNibName:nil bundle:nil];
 		rootViewController = _rootViewController;
 		_mainMenuViewController = _rootViewController.mainMenuViewController;
+		_currentMainNavigationController = _rootViewController.centerNavigationController;
 	} else {
 		_mainMenuViewController = [[A3MainMenuTableViewController alloc] init];
 		UINavigationController *menuNavigationController = [[UINavigationController alloc] initWithRootViewController:_mainMenuViewController];
 
 		UIViewController *viewController = [A3MainViewController new];
 		A3NavigationController *navigationController = [[A3NavigationController alloc] initWithRootViewController:viewController];
+		_currentMainNavigationController = navigationController;
 
 		_drawerController = [[MMDrawerController alloc] initWithCenterViewController:navigationController leftDrawerViewController:menuNavigationController];
 		_rootViewController_iPhone = _drawerController;
