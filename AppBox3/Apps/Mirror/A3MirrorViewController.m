@@ -160,11 +160,9 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	[_videoPreviewViewNoFilter setDelegate:self];
 	[_videoPreviewViewNoFilter setUserInteractionEnabled:YES];
 	[_videoPreviewViewNoFilter setEnableSetNeedsDisplay:NO];
-
-	// because the native video image from the back camera is in UIDeviceOrientationLandscapeLeft (i.e. the home button is on the right), we need to apply a clockwise 90 degree transform so that we can draw the video preview as if we were in a landscape-oriented view; if you're using the front camera and you want to have a mirrored preview (so that the user is seeing themselves in the mirror), you need to apply an additional horizontal flip (by concatenating CGAffineTransformMakeScale(-1.0, 1.0) to the rotation transform)
-	//[self setFilterViewRotation:_videoPreviewViewNoFilter withScreenBounds:screenBounds];
-	_videoPreviewViewNoFilter.transform = [self getRotationTransformWithOption:_isLosslessZoom];
 	_videoPreviewViewNoFilter.frame = screenBounds;
+	// because the native video image from the back camera is in UIDeviceOrientationLandscapeLeft (i.e. the home button is on the right), we need to apply a clockwise 90 degree transform so that we can draw the video preview as if we were in a landscape-oriented view; if you're using the front camera and you want to have a mirrored preview (so that the user is seeing themselves in the mirror), you need to apply an additional horizontal flip (by concatenating CGAffineTransformMakeScale(-1.0, 1.0) to the rotation transform)
+	[self setFilterViewRotation:_videoPreviewViewNoFilter withScreenBounds:screenBounds];
 
 	[self.view addSubview:_videoPreviewViewNoFilter];
 	[self.view sendSubviewToBack:_videoPreviewViewNoFilter];
@@ -243,7 +241,7 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	if (_isLosslessZoom) {
 		_videoDevice.videoZoomFactor = _effectiveScale;
 	} else {
-		[self currentViewTransformScale];
+		[self setFilterViewRotation:[self currentFilterView] withScreenBounds:self.view.bounds];
 	}
 }
 
@@ -298,21 +296,36 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 
 - (void)setFilterViewRotation:(GLKView *)filterView withScreenBounds:(CGRect)screenBounds{
 	[self setViewRotation:filterView];
-	if (_effectiveScale <= 1) {
-		filterView.frame = screenBounds;
-	}
+	filterView.frame = screenBounds;
 }
 
 - (void)setViewRotation:(UIView *)view {
-    CGFloat scalefactor = 1.0;
-    if(_isLosslessZoom == NO) {
-        scalefactor = _effectiveScale;
-    }
-	if (_isFlip) {
-		[view setTransform:CGAffineTransformConcat([self getRotationTransformWithOption:_isLosslessZoom], CGAffineTransformMakeScale(-scalefactor, scalefactor))];
-	} else {
-		[view setTransform:CGAffineTransformConcat([self getRotationTransformWithOption:_isLosslessZoom], CGAffineTransformMakeScale(scalefactor, scalefactor))];
+    CGFloat scaleFactor = _isLosslessZoom ? 1.0 : _effectiveScale;
+	CGAffineTransform scaleTransform;
+	CGAffineTransform rotationTransform;
+	UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+	switch (orientation) {
+		case UIInterfaceOrientationPortrait:
+			scaleTransform = CGAffineTransformMakeScale(scaleFactor, _isFlip ? -scaleFactor : scaleFactor);
+			rotationTransform = CGAffineTransformMakeRotation(_isFlip ? -M_PI_2 : M_PI_2);
+			break;
+		case UIInterfaceOrientationPortraitUpsideDown:
+			scaleTransform = CGAffineTransformMakeScale(scaleFactor, _isFlip ? -scaleFactor : scaleFactor);
+			rotationTransform = CGAffineTransformMakeRotation(_isFlip ? M_PI_2 : -M_PI_2);
+			break;
+		case UIInterfaceOrientationLandscapeLeft:
+			scaleTransform = CGAffineTransformMakeScale(_isFlip ? -scaleFactor : scaleFactor, scaleFactor);
+			rotationTransform = CGAffineTransformMakeRotation(0);
+			break;
+		case UIInterfaceOrientationLandscapeRight:
+			scaleTransform = CGAffineTransformMakeScale(_isFlip ? -scaleFactor : scaleFactor, scaleFactor);
+			rotationTransform = CGAffineTransformMakeRotation(M_PI);
+			break;
+		default:
+			scaleTransform = CGAffineTransformMakeScale(_isFlip ? -scaleFactor : scaleFactor, scaleFactor);
+			rotationTransform = CGAffineTransformMakeRotation(0);
 	}
+	[view setTransform:CGAffineTransformConcat(rotationTransform, scaleTransform)];
 }
 
 - (BOOL)usesFullScreenInLandscape {
@@ -781,7 +794,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 
 		}
 	} else {
-		[self currentViewTransformScale];
+		[self setFilterViewRotation:[self currentFilterView] withScreenBounds:self.view.bounds];
 	}
 	self.zoomSlider.value = _effectiveScale;
 }
@@ -1022,7 +1035,6 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 	if (_isMultipleView) {
 		for (GLKView *filterView in _filterViews) {
 			[self setFilterViewRotation:filterView withScreenBounds:filterView.frame];
@@ -1031,6 +1043,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 		[self removeFilterLabelsFromSuperview];
 		[self addFilterLabels];
 	} else {
+		CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 		[self setFilterViewRotation:self.currentFilterView withScreenBounds:screenBounds];
 	}
 
@@ -1056,17 +1069,6 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	// Dispose of any resources that can be recreated.
 }
 
-- (void)currentViewTransformScale
-{
-	GLKView *currentView = [self currentFilterView];
-
-	if (_isFlip) {
-		[currentView setTransform:CGAffineTransformScale([self getRotationTransformWithOption:_isLosslessZoom], -1* _effectiveScale, _effectiveScale)];
-	} else {
-		[currentView setTransform:CGAffineTransformScale([self getRotationTransformWithOption:_isLosslessZoom], _effectiveScale, _effectiveScale)];
-	}
-}
-
 #pragma mark - IB Action Buttons
 
 - (IBAction)zoomSliderDidValueChange:(UISlider *)sliderControl {
@@ -1078,7 +1080,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	} else {
 		_effectiveScale = sliderControl.value;
 
-		[self currentViewTransformScale];
+		[self setFilterViewRotation:[self currentFilterView] withScreenBounds:self.view.bounds];
 	}
 }
 
@@ -1091,26 +1093,14 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 }
 
 - (IBAction)flipButton:(id)sender {
-	[UIView transitionWithView:self.view duration:0.7 options:UIViewAnimationOptionTransitionFlipFromRight
+//	[_captureSession stopRunning];
+//	[_captureSession startRunning];
+	[UIView transitionWithView:self.currentFilterView duration:0.7 options:UIViewAnimationOptionTransitionFlipFromRight
 					animations:^{
-						//if (bMultipleView == YES) {
-						//  [self removeAllFilterViews];
-						//} else {
-						//  [[self currentFilterView] removeFromSuperview];
-						// }
-						[_captureSession stopRunning];
 						_isFlip = !_isFlip;
 						[self setViewRotation:[self currentFilterView]];
-						[_captureSession startRunning];
 					}completion:^(BOOL finished) {
-
-		// if (bMultipleView == YES) {
-		//     [self addAllFilterViews];
-		// } else {
-		//    [self.view addSubview:[self currentFilterView]];
-		//  [self.view sendSubviewToBack:[self currentFilterView]];
-		//}
-	}];
+			}];
 }
 
 - (void)snapAnimation
