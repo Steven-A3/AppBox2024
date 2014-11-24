@@ -230,12 +230,11 @@
 }
 
 - (void)addSecurityCoverView {
-	FNLOG();
 	// 암호 대화 상자가 열려 있다면 커버를 추가하지 않는다.
 	if (self.passcodeViewController || self.isTouchIDEvaluationInProgress) return;
 
 	// 이미 커버가 추가되어 있다면, 추가하지 않는다.
-	if (self.coverView) return;
+	if (self.coverView.superview) return;
 
 	CGRect screenBounds = [[UIScreen mainScreen] bounds];
 	if (IS_IPHONE && IS_LANDSCAPE && IS_IOS7) {
