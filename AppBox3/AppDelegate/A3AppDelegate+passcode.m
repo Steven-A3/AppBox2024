@@ -93,59 +93,59 @@
 }
 
 - (void)presentLockScreen {
-    if (!self.passcodeViewController) {
-		void(^presentPasscodeViewControllerBlock)(void) = ^(){
-			self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
-			BOOL showCancelButton = ![[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting];
-			if (showCancelButton) {
-				UIViewController *visibleViewController = [self.navigationController visibleViewController];
-				self.parentOfPasscodeViewController = visibleViewController;
-				[self.passcodeViewController showLockScreenInViewController:visibleViewController];
-				self.pushClockViewControllerIfFailPasscode = YES;
-			} else {
-				[self.passcodeViewController showLockScreenWithAnimation:NO showCacelButton:showCancelButton];
-			}
-		};
-		if (IS_IOS7 || ![self useTouchID]) {
-			presentPasscodeViewControllerBlock();
+	FNLOG(@"appDelegate.passcodeViewController must nil = %@", self.passcodeViewController);
+
+	void(^presentPasscodeViewControllerBlock)(void) = ^(){
+		self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
+		BOOL showCancelButton = ![[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting];
+		if (showCancelButton) {
+			UIViewController *visibleViewController = [self.navigationController visibleViewController];
+			self.parentOfPasscodeViewController = visibleViewController;
+			[self.passcodeViewController showLockScreenInViewController:visibleViewController];
+			self.pushClockViewControllerIfFailPasscode = YES;
 		} else {
-			LAContext *context = [LAContext new];
-			NSError *error;
-			if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
-				self.isTouchIDEvaluationInProgress = YES;
-				[[UIApplication sharedApplication] setStatusBarHidden:YES];
-				[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-
-				self.touchIDBackgroundViewController = [UIViewController new];
-				CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-				UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:bounds];
-				backgroundImageView.image = [UIImage imageNamed:[self getLaunchImageName]];
-				backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-				[self.touchIDBackgroundViewController.view addSubview:backgroundImageView];
-
-				[self.rootViewController presentViewController:self.touchIDBackgroundViewController animated:NO completion:NULL];
-				[context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
-						localizedReason:NSLocalizedString(@"Unlock AppBox Pro", @"Unlock AppBox Pro") reply:^(BOOL success, NSError *error) {
-							self.isTouchIDEvaluationInProgress = NO;
-							dispatch_async(dispatch_get_main_queue(), ^{
-								[self removeSecurityCoverView];
-
-								[[UIApplication sharedApplication] setStatusBarHidden:NO];
-								[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-								[self.touchIDBackgroundViewController dismissViewControllerAnimated:NO completion:NULL];
-								if (success) {
-									[self passcodeViewControllerDidDismissWithSuccess:YES];
-								} else {
-									presentPasscodeViewControllerBlock();
-								}
-							});
-						}];
-			} else {
-				[self removeSecurityCoverView];
-				presentPasscodeViewControllerBlock();
-			}
+			[self.passcodeViewController showLockScreenWithAnimation:NO showCacelButton:showCancelButton];
 		}
-    }
+	};
+	if (IS_IOS7 || ![self useTouchID]) {
+		presentPasscodeViewControllerBlock();
+	} else {
+		LAContext *context = [LAContext new];
+		NSError *error;
+		if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
+			self.isTouchIDEvaluationInProgress = YES;
+			[[UIApplication sharedApplication] setStatusBarHidden:YES];
+			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
+			self.touchIDBackgroundViewController = [UIViewController new];
+			CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+			UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:bounds];
+			backgroundImageView.image = [UIImage imageNamed:[self getLaunchImageName]];
+			backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+			[self.touchIDBackgroundViewController.view addSubview:backgroundImageView];
+
+			[self.rootViewController presentViewController:self.touchIDBackgroundViewController animated:NO completion:NULL];
+			[context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
+					localizedReason:NSLocalizedString(@"Unlock AppBox Pro", @"Unlock AppBox Pro") reply:^(BOOL success, NSError *error) {
+						self.isTouchIDEvaluationInProgress = NO;
+						dispatch_async(dispatch_get_main_queue(), ^{
+							[self removeSecurityCoverView];
+
+							[[UIApplication sharedApplication] setStatusBarHidden:NO];
+							[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+							[self.touchIDBackgroundViewController dismissViewControllerAnimated:NO completion:NULL];
+							if (success) {
+								[self passcodeViewControllerDidDismissWithSuccess:YES];
+							} else {
+								presentPasscodeViewControllerBlock();
+							}
+						});
+					}];
+		} else {
+			[self removeSecurityCoverView];
+			presentPasscodeViewControllerBlock();
+		}
+	}
 }
 
 - (BOOL)shouldProtectScreen {
@@ -302,6 +302,7 @@
 }
 
 - (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
+	FNLOG();
 	[self removeSecurityCoverView];
 
 	[self updateStartOption];
@@ -309,7 +310,6 @@
 	if (self.startOptionOpenClockOnce) {
 		[self.mainMenuViewController openClockApp];
 		[self setStartOptionOpenClockOnce:NO];
-		self.passcodeViewController = nil;
 		return;
 	}
 
@@ -329,12 +329,15 @@
 			}
 		}
 		[self showReceivedLocalNotifications];
-		self.passcodeViewController = nil;
 		return;
 	}
 	if (![self.mainMenuViewController openRecentlyUsedMenu:NO]) {
 		[self.mainMenuViewController openClockApp];
 	}
+}
+
+- (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {
+	FNLOG();
 	self.passcodeViewController = nil;
 }
 
