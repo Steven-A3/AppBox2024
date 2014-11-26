@@ -139,6 +139,12 @@
 	}
 }
 
+- (BOOL)resignFirstResponder {
+	[self.tabBarController.selectedViewController resignFirstResponder];
+
+	return [super resignFirstResponder];
+}
+
 #pragma mark - UITabBarControllerDelegate
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController

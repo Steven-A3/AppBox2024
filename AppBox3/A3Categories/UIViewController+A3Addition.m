@@ -672,4 +672,9 @@ static char const *const key_firstActionSheet 					= "key_firstActionSheet";
     [[self firstActionSheet] dismissWithClickedButtonIndex:[self.firstActionSheet cancelButtonIndex] animated:NO];
 }
 
+- (BOOL)resignFirstResponder {
+	[self.firstResponder resignFirstResponder];
+	return [super resignFirstResponder];
+}
+
 @end

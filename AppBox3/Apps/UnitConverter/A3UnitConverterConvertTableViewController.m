@@ -147,11 +147,16 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		make.height.equalTo(@44);
 	}];
 
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSubViewWillHide:) name:A3NotificationRightSideViewWillDismiss object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	[self registerContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+}
+
+- (void)applicationWillResignActive {
+	[self.firstResponder resignFirstResponder];
 }
 
 - (void)cloudStoreDidImport {
@@ -165,6 +170,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
@@ -199,6 +205,12 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 - (void)rightSubViewWillHide:(NSNotification *)noti
 {
     [self enableControls:YES];
+}
+
+- (BOOL)resignFirstResponder {
+	[self.firstResponder resignFirstResponder];
+
+	return [super resignFirstResponder];
 }
 
 - (void)enableControls:(BOOL)enable

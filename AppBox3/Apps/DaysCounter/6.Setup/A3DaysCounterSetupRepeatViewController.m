@@ -24,6 +24,7 @@
 @property (strong, nonatomic) NSArray *itemArray;
 @property (strong, nonatomic) A3NumberKeyboardViewController *numberKeyboardVC;
 @property (strong, nonatomic) NSNumber *originalValue;
+@property (weak, nonatomic) UITextField *editingTextField;
 @property (copy, nonatomic) NSString *textBeforeEditingTextField;
 
 @end
@@ -103,6 +104,12 @@
     if (IS_IPAD && _dismissCompletionBlock) {
         _dismissCompletionBlock();
     }
+}
+
+- (BOOL)resignFirstResponder {
+	[self.editingTextField resignFirstResponder];
+
+	return [super resignFirstResponder];
 }
 
 #pragma mark 
@@ -254,6 +261,7 @@
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
+	self.editingTextField = textField;
 	self.textBeforeEditingTextField = textField.text;
 	self.numberKeyboardVC.textInputTarget = textField;
 	self.numberKeyboardVC.delegate = self;
@@ -263,6 +271,8 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+	self.editingTextField = nil;
+
 	if (![textField.text length]) {
 		textField.text = _textBeforeEditingTextField;
 	}

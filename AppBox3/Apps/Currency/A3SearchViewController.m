@@ -57,6 +57,11 @@
 	}
 }
 
+- (BOOL)resignFirstResponder {
+	[_searchBar resignFirstResponder];
+	return [super resignFirstResponder];
+}
+
 - (void)doneButtonAction:(UIBarButtonItem *)button {
 	if ([_delegate respondsToSelector:@selector(willDismissSearchViewController)]) {
 		[_delegate willDismissSearchViewController];

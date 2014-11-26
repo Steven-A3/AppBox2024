@@ -152,22 +152,19 @@
 	if (shouldAskForStarting) {
 		presentLockScreen = YES;
 	} else {
-		UINavigationController *navigationController = self.navigationController;
-		if ([navigationController.viewControllers count] >= 2) {
-			id activeViewController = navigationController.viewControllers[1];
-			if ([activeViewController isKindOfClass:[A3SettingsViewController class]]) {
-				presentLockScreen = [self shouldAskPasscodeForSettings];
-			} else if ([activeViewController isKindOfClass:[A3DaysCounterSlideShowMainViewController class]] ||
-					[activeViewController isKindOfClass:[A3DaysCounterCalendarListMainViewController class]] ||
-					[activeViewController isKindOfClass:[A3DaysCounterReminderListViewController class]] ||
-					[activeViewController isKindOfClass:[A3DaysCounterFavoriteListViewController class]] )
-			{
-				presentLockScreen = [self shouldAskPasscodeForDaysCounter];
-			} else if ([activeViewController isKindOfClass:[A3LadyCalendarViewController class]]) {
-				presentLockScreen = [self shouldAskPasscodeForLadyCalendar];
-			} else if ([activeViewController isKindOfClass:[A3WalletMainTabBarController class]]) {
-				presentLockScreen = [self shouldAskPasscodeForWallet];
-			}
+		NSString *activeAppName = self.mainMenuViewController.activeAppName;
+		if ([activeAppName isEqualToString:A3AppName_Settings]) {
+			presentLockScreen = [self shouldAskPasscodeForSettings];
+		}
+		else if ([activeAppName isEqualToString:A3AppName_DaysCounter])
+		{
+			presentLockScreen = [self shouldAskPasscodeForDaysCounter];
+		}
+		else if ([activeAppName isEqualToString:A3AppName_LadiesCalendar]) {
+			presentLockScreen = [self shouldAskPasscodeForLadyCalendar];
+		}
+		else if ([activeAppName isEqualToString:A3AppName_Wallet]) {
+			presentLockScreen = [self shouldAskPasscodeForWallet];
 		}
 	}
 	return presentLockScreen;
@@ -221,6 +218,8 @@
 	if ([A3KeychainUtils getPassword] && [self shouldProtectScreen]) {
 		FNLOG(@"CoverView added to Window");
 		[[UIApplication sharedApplication] ignoreSnapshotOnNextApplicationLaunch];
+		UIViewController *visibleViewController = [self.currentMainNavigationController visibleViewController];
+		[visibleViewController resignFirstResponder];
 
 		[self addSecurityCoverView];
 	}

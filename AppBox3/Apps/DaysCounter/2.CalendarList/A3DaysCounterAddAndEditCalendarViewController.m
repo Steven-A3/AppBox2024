@@ -19,6 +19,7 @@
 
 @interface A3DaysCounterAddAndEditCalendarViewController ()
 @property (strong, nonatomic) NSArray *colorArray;
+@property (weak, nonatomic) UIResponder *firstResponder;
 
 @end
 
@@ -77,6 +78,12 @@
 
 - (void)dealloc {
 	[self removeObserver];
+}
+
+- (BOOL)resignFirstResponder {
+	[self.firstResponder resignFirstResponder];
+
+	return [super resignFirstResponder];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -306,8 +313,13 @@
     return YES;
 }
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+	self.firstResponder = textField;
+}
+
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+	self.firstResponder = nil;
 	_calendar.name = textField.text;
 }
 

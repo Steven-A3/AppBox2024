@@ -146,6 +146,11 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 	}
 }
 
+- (BOOL)resignFirstResponder {
+	[_searchBar resignFirstResponder];
+	return [super resignFirstResponder];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

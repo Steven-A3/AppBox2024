@@ -40,7 +40,6 @@
 	return self;
 }
 
-
 - (void)showDatePicker
 {
 	NSDate *alarmDate = _eventModel.alertDatetime;
@@ -111,6 +110,12 @@
 	if (IS_IPAD && _dismissCompletionBlock) {
 		_dismissCompletionBlock();
 	}
+}
+
+- (BOOL)resignFirstResponder {
+	[self.editingTextField resignFirstResponder];
+
+	return [super resignFirstResponder];
 }
 
 #pragma mark - Table view data source

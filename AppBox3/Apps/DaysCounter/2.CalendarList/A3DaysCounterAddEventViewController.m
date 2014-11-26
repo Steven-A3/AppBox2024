@@ -2675,6 +2675,8 @@
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
+	self.firstResponder = textView;
+
     if ( [_eventItem.notes length] < 1 ) {
         textView.text = @"";
     }
@@ -2686,6 +2688,8 @@
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
+	self.firstResponder = nil;
+
     _eventItem.notes = textView.text;
 
     self.textViewResponder = nil;

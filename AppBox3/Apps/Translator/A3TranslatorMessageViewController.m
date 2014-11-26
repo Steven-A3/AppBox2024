@@ -181,6 +181,13 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	}
 }
 
+- (BOOL)resignFirstResponder {
+	[_sourceLanguageSelectTextField resignFirstResponder];
+	[_targetLanguageSelectTextField resignFirstResponder];
+	[_textView resignFirstResponder];
+	return [super resignFirstResponder];
+}
+
 - (void)reachabilityDidChange:(NSNotification *)notification {
 	Reachability *reachability = (Reachability *)[notification object];
 
