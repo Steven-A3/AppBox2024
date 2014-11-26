@@ -113,20 +113,18 @@
 		LAContext *context = [LAContext new];
 		NSError *error;
 		if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
+			[self addSecurityCoverView];
+
 			self.isTouchIDEvaluationInProgress = YES;
 			[[UIApplication sharedApplication] setStatusBarHidden:YES];
 			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
 			self.touchIDBackgroundViewController = [UIViewController new];
-			CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-			UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:bounds];
-			backgroundImageView.image = [UIImage imageNamed:[self getLaunchImageName]];
-			backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-			[self.touchIDBackgroundViewController.view addSubview:backgroundImageView];
-
 			[self.rootViewController presentViewController:self.touchIDBackgroundViewController animated:NO completion:NULL];
+
 			[context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
-					localizedReason:NSLocalizedString(@"Unlock AppBox Pro", @"Unlock AppBox Pro") reply:^(BOOL success, NSError *error) {
+					localizedReason:NSLocalizedString(@"Unlock AppBox Pro", @"Unlock AppBox Pro")
+							  reply:^(BOOL success, NSError *error) {
 						self.isTouchIDEvaluationInProgress = NO;
 						dispatch_async(dispatch_get_main_queue(), ^{
 							[self removeSecurityCoverView];
