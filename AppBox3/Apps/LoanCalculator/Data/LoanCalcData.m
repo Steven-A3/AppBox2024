@@ -77,9 +77,9 @@ NSString *const A3LoanCalcCurrencyCodeChanged = @"A3LoanCalcCurrencyCodeChanged"
 - (NSString *)termValueString {
 	NSString *resultString;
 	if ([self.showsTermInMonths boolValue]) {
-		resultString = [NSString localizedStringWithFormat:NSLocalizedStringFromTable(@"%ld months", @"StringsDict", @"Loan Calculation terms in months"), (long)[self.monthOfTerms integerValue] ];
+		resultString = [NSString localizedStringWithFormat:NSLocalizedStringFromTable(@"%ld months", @"StringsDict", @"Loan Calculation terms in months"), (long)round([self.monthOfTerms doubleValue]) ];
 	} else {
-		resultString = [NSString localizedStringWithFormat:NSLocalizedStringFromTable(@"%ld years", @"StringsDict", @"Loan Calculation terms in years"), (long)[self.monthOfTerms integerValue] / 12 ];
+		resultString = [NSString localizedStringWithFormat:NSLocalizedStringFromTable(@"%ld years", @"StringsDict", @"Loan Calculation terms in years"), (long)round([self.monthOfTerms doubleValue] / 12) ];
 	}
 	return resultString;
 }
