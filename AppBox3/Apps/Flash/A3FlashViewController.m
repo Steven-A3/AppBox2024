@@ -220,6 +220,7 @@ NSString *const cellID = @"flashEffectID";
     CGFloat		_strobeSpeedFactor;
     BOOL    _showAllMenu;
 	BOOL	_isBeingDismiss;
+	BOOL	_willResignActive;
 }
 
 #pragma mark
@@ -318,7 +319,8 @@ NSString *const cellID = @"flashEffectID";
     
     UIScreen *mainScreen = [UIScreen mainScreen];
     mainScreen.brightness = _deviceBrightnessBefore;
-    
+	FNLOG(@"Restoring with original Screen Brightness = %f", _deviceBrightnessBefore);
+
     if (_isTorchOn) {
         [self setTorchOff];
     }
@@ -339,6 +341,7 @@ NSString *const cellID = @"flashEffectID";
 }
 
 -(void)cleanUp {
+	FNLOG(@"Restoring with original Screen Brightness = %f", _deviceBrightnessBefore);
 	[UIScreen mainScreen].brightness = _deviceBrightnessBefore;
 
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
@@ -367,7 +370,9 @@ NSString *const cellID = @"flashEffectID";
 }
 
 - (void)applicationWillResignActiveNotification:(NSNotification *)notification {
+	_willResignActive = YES;
 	[UIScreen mainScreen].brightness = _deviceBrightnessBefore;
+	FNLOG(@"Restoring with original Screen Brightness = %f", _deviceBrightnessBefore);
     if (_isTorchOn) {
         [self setTorchOff];
     }
@@ -377,24 +382,28 @@ NSString *const cellID = @"flashEffectID";
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
-	_deviceBrightnessBefore = [UIScreen mainScreen].brightness;
+	if (_willResignActive) {
+		_deviceBrightnessBefore = [UIScreen mainScreen].brightness;
+		_willResignActive = NO;
+		FNLOG(@"Saving original Screen Brightness = %f", _deviceBrightnessBefore);
+	}
 
-    if (_isTorchOn) {
-        [self setTorchOn];
+	if (_isTorchOn) {
+		[self setTorchOn];
 		double delayInSeconds = 1.0;
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t) (delayInSeconds * NSEC_PER_SEC));
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
 			[self setTorchOn];
 		});
-    }
-	
-    if (_currentFlashViewMode & A3FlashViewModeTypeEffect) {
-        [self startStrobeLightEffectForIndex:_selectedEffectIndex];
-    }
-    
-    UIScreen *mainScreen = [UIScreen mainScreen];
-    CGFloat offset = (_screenBrightnessValue / 100.0);
-    mainScreen.brightness = offset;
+	}
+
+	if (_currentFlashViewMode & A3FlashViewModeTypeEffect) {
+		[self startStrobeLightEffectForIndex:_selectedEffectIndex];
+	}
+
+	UIScreen *mainScreen = [UIScreen mainScreen];
+	CGFloat offset = (_screenBrightnessValue / 100.0);
+	mainScreen.brightness = offset;
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
@@ -470,7 +479,8 @@ NSString *const cellID = @"flashEffectID";
 
 - (void)initializeBrightnessAndStorbeSpeedSliderRelated {
     _deviceBrightnessBefore = [[UIScreen mainScreen] brightness];
-    
+	FNLOG(@"Saving original Screen Brightness = %f", _deviceBrightnessBefore);
+
     NSNumber *blackWhite = [[A3UserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashBlackWhiteValue];
     _blackWhiteValue = !blackWhite ? 100.0 : [blackWhite floatValue];
     
@@ -675,6 +685,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 
 - (IBAction)appsButtonTouchUp:(id)sender {
 	[UIScreen mainScreen].brightness = _deviceBrightnessBefore;
+	FNLOG(@"Restoring with original Screen Brightness = %f", _deviceBrightnessBefore);
 
 	FNLOG(@"[[UIApplication sharedApplication] setIdleTimerDisabled: NO ];");
 	[[UIApplication sharedApplication] setIdleTimerDisabled:NO];
