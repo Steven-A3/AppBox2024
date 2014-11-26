@@ -57,8 +57,6 @@
 }
 
 - (void)removeAllLabels {
-	[self.contentView removeConstraints:[self.contentView constraints]];
-    
 	for (UILabel *label in _leftLabels) {
 		[label removeFromSuperview];
 	}
