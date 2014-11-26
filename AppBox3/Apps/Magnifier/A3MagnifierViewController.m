@@ -176,7 +176,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     }
  
     [self.statusBarBackground setFrame:CGRectMake(self.statusBarBackground.bounds.origin.x, self.statusBarBackground.bounds.origin.y , screenBounds.size.width , self.statusBarBackground.bounds.size.height)];
-    [self.bottomToolBar setFrame:CGRectMake(self.bottomToolBar.bounds.origin.x, screenBounds.size.height - 74 , screenBounds.size.width, 74)];
+	[self setToolBarsHidden:_topToolBar.hidden];
 }
 
 - (void)setupPreview {
@@ -321,6 +321,8 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 - (void)setToolBarsHidden:(BOOL)hidden {
 	self.topToolBar.hidden = hidden;
 	self.bottomToolBar.hidden = hidden;
+
+	[self.bottomToolBar setFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.size.height - 74 , self.view.frame.size.width, 74)];
 	if (hidden == YES) {
 		[self.flashToolBar setFrame:CGRectMake(self.flashToolBar.frame.origin.x,
 				self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.brightnessToolBar.frame.size.height - self.flashToolBar.frame.size.height,

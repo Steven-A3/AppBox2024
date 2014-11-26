@@ -276,20 +276,21 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 }
 
 - (void)configureLayout {
-	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	if (_isMultipleView == YES) {
-		[self.zoomSlider  setFrame:CGRectMake(self.zoomSlider.frame.origin.x, self.zoomSlider.frame.origin.y, screenBounds.size.width - 106, self.zoomSlider.frame.size.height)];
+		[self.zoomSlider setFrame:CGRectMake(self.zoomSlider.frame.origin.x, self.zoomSlider.frame.origin.y, screenBounds.size.width - 106, self.zoomSlider.frame.size.height)];
 		[_topBar setItems:@[[self appsBarButton]] animated:YES];
 	}
 	else {
 		[self setFilterViewRotation:[self currentFilterView] withScreenBounds:screenBounds];
-		[self.zoomSlider  setFrame:CGRectMake(self.zoomSlider.frame.origin.x, self.zoomSlider.frame.origin.y, screenBounds.size.width - 98, self.zoomSlider.frame.size.height)];
+		[self.zoomSlider setFrame:CGRectMake(self.zoomSlider.frame.origin.x, self.zoomSlider.frame.origin.y, screenBounds.size.width - 98, self.zoomSlider.frame.size.height)];
 		[_topBar setItems:[self topToolBarBarButtons] animated:YES];
 	}
 
 	[self.statusBarBackground setFrame:CGRectMake(self.statusBarBackground.bounds.origin.x, self.statusBarBackground.bounds.origin.y , screenBounds.size.width , self.statusBarBackground.bounds.size.height)];
-	[self.topBar setFrame:(CGRectMake(self.topBar.bounds.origin.x, 20 , screenBounds.size.width, self.topBar.bounds.size.height))];
-	[self.bottomBar setFrame:CGRectMake(self.bottomBar.bounds.origin.x, screenBounds.size.height - 74 , screenBounds.size.width, 74)];
+	
+	[self setToolBarsHidden:_topBar.hidden];
+	
 }
 
 - (UIBarButtonItem *)appsBarButton {
@@ -583,7 +584,6 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 		[_videoPreviewViewInstantFilter bindDrawable];
 		[_videoPreviewViewInstantFilter display];
 	}
-
 }
 
 - (void)setupZoomSlider {
@@ -857,6 +857,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	self.statusBarBackground.hidden = hidden;
 	[[UIApplication sharedApplication] setStatusBarHidden:hidden];
 
+	[self.bottomBar setFrame:CGRectMake(self.bottomBar.bounds.origin.x, self.view.frame.size.height - 74 , self.view.frame.size.width, 74)];
 	if(hidden == YES) {
 		[self.zoomToolBar setFrame:CGRectMake(self.zoomToolBar.frame.origin.x,
 				self.view.frame.size.height - self.zoomToolBar.frame.size.height,
@@ -864,7 +865,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 				self.zoomToolBar.frame.size.height)];
 	} else {
 		[self.zoomToolBar setFrame:CGRectMake(self.zoomToolBar.frame.origin.x,
-				self.view.bounds.size.height - self.zoomToolBar.frame.size.height - self.bottomBar.frame.size.height,
+				self.view.frame.size.height - self.zoomToolBar.frame.size.height - self.bottomBar.frame.size.height,
 				self.zoomToolBar.frame.size.width,
 				self.zoomToolBar.frame.size.height)];
 	}
@@ -943,7 +944,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	return label;
 }
 
-- (GLKView *) currentFilterView {
+- (GLKView *)currentFilterView {
 	switch (_filterIndex) {
 		case A3MirrorMonoFilter: return _videoPreviewViewMonoFilter;
 		case A3MirrorTonalFilter: return _videoPreviewViewTonalFilter;
@@ -960,7 +961,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	return _videoPreviewViewNoFilter;
 }
 
--(void) removeAllFilterViews {
+-(void)removeAllFilterViews {
 	[_videoPreviewViewNoFilter removeFromSuperview];
 	if (_isFiltersEnabled == YES){
 		[_videoPreviewViewMonoFilter removeFromSuperview];
