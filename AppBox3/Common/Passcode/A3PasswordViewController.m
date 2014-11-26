@@ -255,9 +255,28 @@
 
 	[self prepareAsLockscreen];
 
-	UIViewController *rootViewController = IS_IPAD ? [[A3AppDelegate instance] rootViewController] : [[A3AppDelegate instance] rootViewController_iPhone];
-	[rootViewController presentViewController:self animated:NO completion:NULL];
-	_shouldDismissViewController = YES;
+	UIWindow *mainWindow = [UIApplication sharedApplication].keyWindow;
+	if (!mainWindow) {
+		UIViewController *rootViewController = IS_IPAD ? [[A3AppDelegate instance] rootViewController] : [[A3AppDelegate instance] rootViewController_iPhone];
+		[rootViewController presentViewController:self animated:NO completion:NULL];
+		_shouldDismissViewController = YES;
+	} else {
+		[mainWindow addSubview: self.view];
+		
+		if (IS_IOS7) {
+			[[NSNotificationCenter defaultCenter] addObserver:self
+													 selector:@selector(statusBarFrameOrOrientationChanged:)
+														 name:UIApplicationDidChangeStatusBarOrientationNotification
+													   object:nil];
+			[[NSNotificationCenter defaultCenter] addObserver:self
+													 selector:@selector(statusBarFrameOrOrientationChanged:)
+														 name:UIApplicationDidChangeStatusBarFrameNotification
+													   object:nil];
+			[mainWindow.rootViewController addChildViewController: self];
+			
+			[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
+		}
+	}
 
 	self.title = NSLocalizedString(@"Enter Passcode", @"");
 }
@@ -540,10 +559,10 @@
 
 - (void)dismissMe {
 	if ([self navigationController] || _beingPresentedInViewController || _shouldDismissViewController) {
-		[self dismissViewControllerAnimated:NO completion:nil];
 		if ([self.delegate respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
 			[self.delegate passcodeViewControllerDidDismissWithSuccess:YES];
 		}
+		[self dismissViewControllerAnimated:NO completion:nil];
 	} else {
 		[self.view removeFromSuperview];
 		[self removeFromParentViewController];
