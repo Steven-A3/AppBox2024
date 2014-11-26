@@ -153,6 +153,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 				LAContext *context = [LAContext new];
 				NSError *error;
 				if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
+					[[A3AppDelegate instance] addSecurityCoverView];
 					[[UIApplication sharedApplication] setStatusBarHidden:YES];
 					[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 					[context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
