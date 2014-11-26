@@ -14,9 +14,9 @@
 #import "A3UserDefaults.h"
 #import "A3CameraViewController.h"
 
-static const int MAX_ZOOM_FACTOR = 6;
+#define MAX_ZOOM_FACTOR 	6.0
+
 NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
-NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 
 @interface A3MirrorViewController() <A3InstructionViewControllerDelegate, A3ViewControllerProtocol>
 {
@@ -93,7 +93,7 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 		// create the dispatch queue for handling capture session delegate method calls
 		_captureSessionQueue = dispatch_queue_create("capture_session_queue", DISPATCH_QUEUE_SERIAL);
 
-		// create the coordiate for filter views
+		// create coordinates for filter views
 		filterViewCoordinate = @[ @[@[@0,@0],@[@1,@0],@[@2,@0],@[@0,@1],@[@1,@1],@[@2,@1],@[@0,@2],@[@1,@2],@[@2,@2]],
 				@[@[@-1,@0],@[@0,@0],@[@1,@0],@[@-1,@1],@[@0,@1],@[@1,@1],@[@-1,@2],@[@0, @2],@[@1,@2]],
 				@[@[@-2, @0],@[@-1, @0],@[@0,@0],@[@-2,@1],@[@-1,@1],@[@0,@1],@[@-2,@2],@[@-1,@2],@[@0,@2]],
@@ -136,7 +136,7 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	[self setToolBarsHidden:YES];
 	[self.zoomToolBar setHidden:YES];   // it will show after _videoDevice Setup finish
 
-	self.view.bounds = [[UIScreen mainScreen] bounds];
+	self.view.bounds = screenBounds;
 	[self.view setBackgroundColor:[UIColor blackColor]];
 
 	self.statusBarBackground = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, screenBounds.size.width, 20)];
@@ -146,8 +146,8 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	[self.statusBarBackground setHidden:YES];
 	_isFlip = YES;
 
-	[self _start];
-
+	[self setupAVCaptureSession];
+	
 	_eaglContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
 
 	// create the CIContext instance, note that this must be done after _videoPreviewView is properly set up
@@ -160,10 +160,8 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	[_videoPreviewViewNoFilter setDelegate:self];
 	[_videoPreviewViewNoFilter setUserInteractionEnabled:YES];
 	[_videoPreviewViewNoFilter setEnableSetNeedsDisplay:NO];
-	_videoPreviewViewNoFilter.frame = screenBounds;
-	// because the native video image from the back camera is in UIDeviceOrientationLandscapeLeft (i.e. the home button is on the right), we need to apply a clockwise 90 degree transform so that we can draw the video preview as if we were in a landscape-oriented view; if you're using the front camera and you want to have a mirrored preview (so that the user is seeing themselves in the mirror), you need to apply an additional horizontal flip (by concatenating CGAffineTransformMakeScale(-1.0, 1.0) to the rotation transform)
 	[self setFilterViewRotation:_videoPreviewViewNoFilter withScreenBounds:screenBounds];
-
+	// because the native video image from the back camera is in UIDeviceOrientationLandscapeLeft (i.e. the home button is on the right), we need to apply a clockwise 90 degree transform so that we can draw the video preview as if we were in a landscape-oriented view; if you're using the front camera and you want to have a mirrored preview (so that the user is seeing themselves in the mirror), you need to apply an additional horizontal flip (by concatenating CGAffineTransformMakeScale(-1.0, 1.0) to the rotation transform)
 	[self.view addSubview:_videoPreviewViewNoFilter];
 	[self.view sendSubviewToBack:_videoPreviewViewNoFilter];
 
@@ -196,7 +194,7 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 		[self.filterButton setImage:nil];
 		[self.filterButton setEnabled:NO];
 	}
-	// create multi filter view with GestureRecognizer which should be done after AVCaptureSession initialize(_start)
+	// create multi filter view with GestureRecognizer which should be done after AVCaptureSession initialize(setupAVCaptureSession)
 	if (_isFiltersEnabled == YES) {
 		[self createFilterViews];
 		[self showOneFilterView:_filterIndex];
@@ -217,6 +215,8 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
     [_topBar setShadowImage:[UIImage new]
          forToolbarPosition:UIToolbarPositionAny];
 
+	[self setupZoomSlider];
+
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
@@ -233,24 +233,36 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 }
 
 - (void)applicationDidBecomeActive {
+	[_captureSession startRunning];
 	[self applyZoomFactor];
 }
 
 - (void)applyZoomFactor {
 	_zoomSlider.value = _effectiveScale;
 	if (_isLosslessZoom) {
-		_videoDevice.videoZoomFactor = _effectiveScale;
+		if ([_videoDevice lockForConfiguration:nil]) {
+			_videoDevice.videoZoomFactor = _effectiveScale;
+			[_videoDevice unlockForConfiguration];
+		} else {
+			_effectiveScale = _videoDevice.videoZoomFactor;
+			_zoomSlider.value = _effectiveScale;
+		}
 	} else {
-		[self setFilterViewRotation:[self currentFilterView] withScreenBounds:self.view.bounds];
+		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+		[self setFilterViewRotation:[self currentFilterView] withScreenBounds:screenBounds];
 	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	[self _start];
+	double delayInSeconds = 1.0;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		[_captureSession startRunning];
+	});
+
 	[self configureLayout];
-	[self applyZoomFactor];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -294,9 +306,16 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
     return @[[self appsBarButton], flexibleSpace, help, fixedSpace, flip];
 }
 
-- (void)setFilterViewRotation:(GLKView *)filterView withScreenBounds:(CGRect)screenBounds{
+- (void)setFilterViewRotation:(GLKView *)filterView withScreenBounds:(CGRect)frame {
 	[self setViewRotation:filterView];
-	filterView.frame = screenBounds;
+
+	if (IS_IPHONE) {
+		if (_effectiveScale == 1.0) {
+			filterView.frame = frame;
+		}
+	} else {
+		filterView.frame = frame;
+	}
 }
 
 - (void)setViewRotation:(UIView *)view {
@@ -353,12 +372,17 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	return captureDevice;
 }
 
-- (void)_start
+- (void)setupAVCaptureSession
 {
 	NSError *error = nil;
 
+	// create the capture session
+	_captureSession = [AVCaptureSession new];
+	[_captureSession beginConfiguration];
+
 	// get the input device and also validate the settings
 	_videoDevice = [self deviceWithMediaType:AVMediaTypeVideo preferringPosition:AVCaptureDevicePositionFront];
+
 	// obtain device input
 	AVCaptureDeviceInput *videoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:_videoDevice error:&error];
 	if (!videoDeviceInput)
@@ -366,11 +390,6 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 		FNLOG(@"Unable to obtain video device input, error: %@", error);
 		return;
 	}
-
-	// create the capture session
-	_captureSession = [AVCaptureSession new];
-	// begin configure capture session
-	[_captureSession beginConfiguration];
 
 	// CoreImage wants BGRA pixel format
 	NSDictionary *outputSettings = @{ (id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA)};
@@ -430,9 +449,8 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	}
 
 	[_captureSession commitConfiguration];
-	if(![_videoDevice lockForConfiguration:&error]) {
-		FNLOG(@"Device is locking failure : %@", error);
-	}
+
+	[_videoDevice lockForConfiguration:nil];
 
 	[self searchSlowCameraFrameRate];
 
@@ -454,26 +472,23 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	 }
 	 */
 	FNLOG(@"FocusMode = %d, ExposureMode = %d, AVCaptureAutoFocusRangeRestriction = %d, smoothfocus = %d", (int)_videoDevice.focusMode, (int)_videoDevice.exposureMode, (int)_videoDevice.autoFocusRangeRestriction, _videoDevice.smoothAutoFocusEnabled);
-	if ([self getMaxZoom] != 1) {   // support at loselessZoom
-		_isLosslessZoom = YES;
-	} else {
-		_isLosslessZoom = NO;
-	}
-	[self setupZoomSlider];
+	[_videoDevice unlockForConfiguration];
+
+	FNLOG(@"_videoDevice.activeFormat.videoMaxZoomFactor = %f", _videoDevice.activeFormat.videoMaxZoomFactor);
+	_isLosslessZoom = _videoDevice.activeFormat.videoMaxZoomFactor > 1;
+	_effectiveScale = 1.0;
 
 	// then start everything
 	[_frameCalculator reset];
-    if (!IS_IOS7) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            	[_captureSession startRunning];
-        });
-    }
-    else {
-        [_captureSession startRunning];
-    }
+
+	double delayInSeconds = 0.1;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+		[_captureSession startRunning];
+	});
 }
 
-- (void) searchSlowCameraFrameRate {
+- (void)searchSlowCameraFrameRate {
 	_currentMaxDuration = _videoDevice.activeVideoMaxFrameDuration;
 	_currentMinDuration = _videoDevice.activeVideoMinFrameDuration;
 	_slowFrameRateRange = nil;
@@ -490,14 +505,21 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 }
 
 -(void)restoreOriginalFrameRate {
-	_videoDevice.activeVideoMinFrameDuration = _currentMaxDuration;
-	_videoDevice.activeVideoMaxFrameDuration = _currentMinDuration;
+	if ([_videoDevice lockForConfiguration:nil]) {
+		_videoDevice.activeVideoMinFrameDuration = _currentMaxDuration;
+		_videoDevice.activeVideoMaxFrameDuration = _currentMinDuration;
+		[_videoDevice unlockForConfiguration];
+	}
 }
 
 -(void)setSlowFrameRate {
-	_videoDevice.activeVideoMinFrameDuration = _slowFrameRateRange.minFrameDuration;
-	_videoDevice.activeVideoMaxFrameDuration = _slowFrameRateRange.maxFrameDuration;
+	if ([_videoDevice lockForConfiguration:nil]) {
+		_videoDevice.activeVideoMinFrameDuration = _slowFrameRateRange.minFrameDuration;
+		_videoDevice.activeVideoMaxFrameDuration = _slowFrameRateRange.maxFrameDuration;
+		[_videoDevice unlockForConfiguration];
+	}
 }
+
 - (void)_stop
 {
 	if (!_captureSession || !_captureSession.running)
@@ -523,36 +545,16 @@ NSString *const A3MirrorFirstPrivacyCheck = @"A3MirrorFirstPrivacyCheck";
 	_videoDevice = nil;
 }
 
--(void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
-
+- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
 	CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
 	_ciImage = [CIImage imageWithCVPixelBuffer:(CVPixelBufferRef)imageBuffer options:nil];
 
 	CMTime timestamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
 	[_frameCalculator calculateFramerateAtTimestamp:timestamp];
-	//FNLOG(@"%f fps",frameCalculator.frameRate);
-	/*
-	CGRect sourceExtent = ciimg.extent;
-
-	if (bFlip == YES) {
-		// horizontal flip
-		if(IS_LANDSCAPE) {
-		  //CGAffineTransform t = CGAffineTransformMake(-1, 0, 0, 1, sourceExtent.size.width,0);
-		 //ciimg = [ciimg imageByApplyingTransform:t];
-		} else {
-		CGAffineTransform t = CGAffineTransformMake(1, 0, 0, -1, 0, sourceExtent.size.height);
-		ciimg = [ciimg imageByApplyingTransform:t];
-		}
-	}
-*/
 
 	if(_eaglContext != [EAGLContext currentContext]) {
 		[EAGLContext setCurrentContext:_eaglContext];
 	}
-
-	//setup the blend mode to "source over" so that CI will use that
-	//glEnable(GL_BLEND);
-	//glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
 	if(_isMultipleView == NO) {
 		GLKView *currentFilter = [self currentFilterView];
@@ -638,7 +640,8 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 }
 
 #pragma GLKViewDelegate
-- (void) glkView:(GLKView *)view drawInRect:(CGRect)rect {
+
+- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
 	CGRect sourceExtent = _ciImage.extent;
 
 	CGFloat sourceAspect = sourceExtent.size.width / sourceExtent.size.height;
@@ -704,6 +707,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 }
 
 #pragma mark - TapGesture setup
+
 - (void)setupGestureRecognizer {
 	_previewNoFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
 	[_videoPreviewViewNoFilter addGestureRecognizer:_previewNoFilterGestureRecognizer];
@@ -781,22 +785,21 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	return YES;
 }
 
-- (void) handlePinchFrom:(UIPinchGestureRecognizer *)recognizer {
+- (void)handlePinchFrom:(UIPinchGestureRecognizer *)recognizer {
 	_effectiveScale = _beginGestureScale *recognizer.scale;
 	//FNLOG(@"effectiveScale = %f, beginGeustureScale = %f, recognizer.scale = %f", effectiveScale, beginGestureScale, recognizer.scale);
-	if (_effectiveScale < self.zoomSlider.minimumValue ) _effectiveScale = self.zoomSlider.minimumValue;
-	if(_effectiveScale > self.zoomSlider.maximumValue) _effectiveScale = self.zoomSlider.maximumValue;
-	if(_effectiveScale == self.zoomSlider.value) return;
 
-	if (_isLosslessZoom == YES) {
-		if (!_videoDevice.isRampingVideoZoom) {
-			_videoDevice.videoZoomFactor = _effectiveScale;
-
-		}
-	} else {
-		[self setFilterViewRotation:[self currentFilterView] withScreenBounds:self.view.bounds];
+	if (_effectiveScale < self.zoomSlider.minimumValue ) {
+		_effectiveScale = self.zoomSlider.minimumValue;
 	}
-	self.zoomSlider.value = _effectiveScale;
+	if(_effectiveScale > self.zoomSlider.maximumValue) {
+		_effectiveScale = self.zoomSlider.maximumValue;
+	}
+	if(_effectiveScale == self.zoomSlider.value) {
+		return;
+	}
+
+	[self applyZoomFactor];
 }
 
 - (void)tapOnPreviewView:(UITapGestureRecognizer *) tap {
@@ -1072,16 +1075,8 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 #pragma mark - IB Action Buttons
 
 - (IBAction)zoomSliderDidValueChange:(UISlider *)sliderControl {
-	if (_isLosslessZoom) {
-		if (!_videoDevice.isRampingVideoZoom) {
-			_videoDevice.videoZoomFactor = sliderControl.value;
-			_effectiveScale = sliderControl.value;
-		}
-	} else {
-		_effectiveScale = sliderControl.value;
-
-		[self setFilterViewRotation:[self currentFilterView] withScreenBounds:self.view.bounds];
-	}
+	_effectiveScale = sliderControl.value;
+	[self applyZoomFactor];
 }
 
 - (IBAction)appsButton:(id)sender {
@@ -1093,9 +1088,8 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 }
 
 - (IBAction)flipButton:(id)sender {
-//	[_captureSession stopRunning];
-//	[_captureSession startRunning];
-	[UIView transitionWithView:self.currentFilterView duration:0.7 options:UIViewAnimationOptionTransitionFlipFromRight
+	UIViewAnimationOptions option = UIViewAnimationOptionTransitionFlipFromLeft;
+	[UIView transitionWithView:self.currentFilterView duration:0.7 options:option
 					animations:^{
 						_isFlip = !_isFlip;
 						[self setViewRotation:[self currentFilterView]];
@@ -1127,7 +1121,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
      ];
 }
 
-- (IBAction)captureButtonAction:(id)sender {
+- (IBAction)snapButtonAction:(id)sender {
     if (![self hasAuthorizationToAccessPhoto]) {
         return;
     }
@@ -1138,9 +1132,10 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 		// Flash set to Auto for Still Capture
 		// [self setFlashMode:AVCaptureFlashModeAuto forDevice:_videoDevice];
 
-		if (_isLosslessZoom == NO) {
+		if (!_isLosslessZoom) {
 			AVCaptureConnection *stillImageConnection = [_stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
-			[stillImageConnection setVideoScaleAndCropFactor:_effectiveScale];
+			CGFloat scale = MIN(_effectiveScale, stillImageConnection.videoMaxScaleAndCropFactor);
+			[stillImageConnection setVideoScaleAndCropFactor:scale];
 		}
         
 		[_stillImageOutput captureStillImageAsynchronouslyFromConnection:[_stillImageOutput connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
@@ -1243,7 +1238,12 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 						 [_videoPreviewViewInstantFilter setFrame:CGRectMake(x*((NSNumber*)coordinate[A3MirrorInstantFilter][0]).intValue, y*((NSNumber*)coordinate[A3MirrorInstantFilter][1]).intValue , width, height)];
 						 //FNLOG("Instant = %f, %f",_videoPreviewViewInstantFilter.bounds.origin.x, _videoPreviewViewInstantFilter.bounds.origin.y);
 					 }
-					 completion:nil];
+					 completion:^(BOOL finished) {
+						 [_filterViews enumerateObjectsUsingBlock:^(GLKView *view, NSUInteger idx, BOOL *stop) {
+							 if (idx == nViewIndex) return;
+							 [view setHidden:YES];
+						 }];
+					 }];
 
 	_videoPreviewViewBounds.size = _originalsize;
 	self.zoomToolBar.hidden = NO;
@@ -1353,6 +1353,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 - (void)showMultipleViews:(BOOL)bSizeChange {
 
 	for (GLKView *filterView in _filterViews) {
+		[filterView setHidden:NO];
 		[self setFilterViewRotation:filterView withScreenBounds:filterView.frame];
 	}
 

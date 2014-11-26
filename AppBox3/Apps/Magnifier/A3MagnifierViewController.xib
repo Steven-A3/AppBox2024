@@ -13,7 +13,7 @@
                 <outlet property="flashBrightSlider" destination="2dF-jI-xRn" id="ueh-DU-fE5"/>
                 <outlet property="flashToolBar" destination="VNC-ds-Hi4" id="gbx-AN-LE7"/>
                 <outlet property="lightButton" destination="V3Z-ZX-qW7" id="o1U-34-Had"/>
-                <outlet property="magnifierSlider" destination="XkM-xa-vJh" id="VHN-xz-lIf"/>
+                <outlet property="zoomSlider" destination="XkM-xa-vJh" id="VHN-xz-lIf"/>
                 <outlet property="magnifierToolBar" destination="cPy-Lx-SnA" id="hRY-aN-quI"/>
                 <outlet property="topToolBar" destination="uR2-5Q-sX3" id="tBU-1Y-i2p"/>
                 <outlet property="view" destination="1" id="rO6-jj-wuU"/>

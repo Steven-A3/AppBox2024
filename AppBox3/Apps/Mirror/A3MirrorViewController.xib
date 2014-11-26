@@ -103,7 +103,7 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="yGz-2F-zSM"/>
                         <barButtonItem image="m_snap" id="JHO-yb-jWr">
                             <connections>
-                                <action selector="captureButtonAction:" destination="-1" id="274-SE-hol"/>
+                                <action selector="snapButtonAction:" destination="-1" id="274-SE-hol"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Kgc-aP-7UM"/>

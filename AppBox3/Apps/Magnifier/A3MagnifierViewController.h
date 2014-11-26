@@ -26,7 +26,7 @@
 @property (weak, nonatomic) IBOutlet UIToolbar *magnifierToolBar;
 @property (weak, nonatomic) IBOutlet UIToolbar *bottomToolBar;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *cameraRollButton;
-@property (weak, nonatomic) IBOutlet UISlider *magnifierSlider;
+@property (weak, nonatomic) IBOutlet UISlider *zoomSlider;
 @property (weak, nonatomic) IBOutlet UISlider *brightnessSlider;
 @property (weak, nonatomic) IBOutlet UISlider *flashBrightSlider;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *lightButton;
