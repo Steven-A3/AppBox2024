@@ -64,7 +64,6 @@ NSString *const A3CurrencyUserDefaultsAutoUpdate 			= @"A3CurrencyUserDefaultsAu
 NSString *const A3CurrencyUserDefaultsUseCellularData 		= @"A3CurrencyUserDefaultsUseCellularData";
 NSString *const A3CurrencyUserDefaultsShowNationalFlag 		= @"A3CurrencyUserDefaultsShowNationalFlag";
 NSString *const A3CurrencyUserDefaultsLastInputValue 		= @"A3CurrencyUserDefaultsLastInputValue";
-NSString *const A3CurrencyDataEntityFavorites = @"A3CurrencyDataEntityFavorites";
 
 #pragma mark ------ Date Calculator
 NSString *const A3DateCalcDefaultsIsAddSubMode 				= @"A3DateCalcDefaultsIsAddSubMode";
@@ -81,7 +80,6 @@ NSString *const A3DateCalcDefaultsExcludeOptions 			= @"A3DateCalcDefaultsExclud
 #pragma mark ------ Days Counter
 NSString *const A3DaysCounterUserDefaultsSlideShowOptions 	= @"A3DaysCounterUserDefaultsSlideShowOptions";
 NSString *const A3DaysCounterLastOpenedMainIndex			= @"A3DaysCounterLastOpenedMainIndex";
-NSString *const A3DaysCounterDataEntityCalendars = @"A3DaysCounterDataEntityCalendars";
 
 #pragma mark ------ Expense List
 NSString *const A3ExpenseListUserDefaultsCurrencyCode 		= @"A3ExpenseListUserDefaultsCurrencyCode";
@@ -106,7 +104,6 @@ NSString *const A3LoanCalcUserDefaultsCustomCurrencyCode 	= @"A3LoanCalcUserDefa
 NSString *const A3LadyCalendarCurrentAccountID              = @"A3LadyCalendarCurrentAccountID";
 NSString *const A3LadyCalendarUserDefaultsSettings = @"A3LadyCalendarUserDefaultsSettings";
 NSString *const A3LadyCalendarLastViewMonth                 = @"A3LadyCalendarLastViewMonth";
-NSString *const A3LadyCalendarDataEntityAccounts = @"A3LadyCalendarDataEntityAccounts";
 
 #pragma mark ------ Lunar Converter
 NSString *const A3LunarConverterLastInputDateComponents 	= @"A3LunarConverterLastInputDateComponents";
@@ -136,7 +133,6 @@ NSString *const A3UnitPriceUserDataEntityPriceFavorites = @"A3UnitPriceUserDataE
 
 #pragma mark ------ Wallet
 NSString *const A3WalletUserDefaultsSelectedTab 			= @"A3WalletUserDefaultsSelectedTab";
-NSString *const A3WalletDataEntityCategoryInfo = @"A3WalletDataEntityCategoryInfo";
 
 #pragma mark ------ Passcode
 NSString *const kUserDefaultTimerStart 						= @"AppBoxPasscodeTimerStart";

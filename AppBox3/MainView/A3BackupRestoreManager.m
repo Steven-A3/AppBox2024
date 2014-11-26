@@ -81,19 +81,6 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 	[fileList addObject:@{A3ZipFilename : path, A3ZipNewFilename : [NSString stringWithFormat:@"%@%@", filename, @"-wal"]}];
 
 	// Backup data files
-	NSFileManager *fileManager = [NSFileManager defaultManager];
-	[self addToFileList:fileList forDataFilename:A3CurrencyDataEntityFavorites fileManager:fileManager];
-	[self addToFileList:fileList forDataFilename:A3DaysCounterDataEntityCalendars fileManager:fileManager];
-	[self addToFileList:fileList forDataFilename:A3LadyCalendarDataEntityAccounts fileManager:fileManager];
-	[self addToFileList:fileList forDataFilename:A3WalletDataEntityCategoryInfo fileManager:fileManager];
-	[self addToFileList:fileList forDataFilename:A3UnitConverterDataEntityUnitCategories fileManager:fileManager];
-	[self addToFileList:fileList forDataFilename:A3UnitConverterDataEntityConvertItems fileManager:fileManager];
-	[self addToFileList:fileList forDataFilename:A3UnitConverterDataEntityFavorites fileManager:fileManager];
-	[self addToFileList:fileList forDataFilename:A3UnitPriceUserDataEntityPriceFavorites fileManager:fileManager];
-	[self addToFileList:fileList forDataFilename:A3MainMenuDataEntityRecentlyUsed fileManager:fileManager];
-	[self addToFileList:fileList forDataFilename:A3MainMenuDataEntityAllMenu fileManager:fileManager];
-	[self addToFileList:fileList forDataFilename:A3MainMenuDataEntityFavorites fileManager:fileManager];
-
 	NSArray *daysCounterEvents = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"photoID != NULL"]];
 	for (DaysCounterEvent *event in daysCounterEvents) {
 		[fileList addObject:
@@ -297,7 +284,8 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 }
 
 - (void)compressProgress:(float)currentByte total:(float)totalByte {
-	_HUD.progress = (float) MIN(currentByte / totalByte, 1.0);
+	_HUD.progress = currentByte / totalByte;
+	FNLOG(@"%f, %f, %f", currentByte, totalByte, _HUD.progress);
 	_HUD.detailsLabelText = [self.percentFormatter stringFromNumber:@(_HUD.progress)];
 }
 
@@ -423,18 +411,6 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 		[self moveComponent:filename fromURL:sourceBaseURL toURL:targetBaseURL];
 		[self moveComponent:[NSString stringWithFormat:@"%@%@", filename, @"-wal"] fromURL:sourceBaseURL toURL:targetBaseURL];
 		[self moveComponent:[NSString stringWithFormat:@"%@%@", filename, @"-shm"] fromURL:sourceBaseURL toURL:targetBaseURL];
-
-		[self moveComponent:A3CurrencyDataEntityFavorites fromURL:sourceBaseURL toURL:targetBaseURL];
-		[self moveComponent:A3DaysCounterDataEntityCalendars fromURL:sourceBaseURL toURL:targetBaseURL];
-		[self moveComponent:A3LadyCalendarDataEntityAccounts fromURL:sourceBaseURL toURL:targetBaseURL];
-		[self moveComponent:A3WalletDataEntityCategoryInfo fromURL:sourceBaseURL toURL:targetBaseURL];
-		[self moveComponent:A3MainMenuDataEntityRecentlyUsed fromURL:sourceBaseURL toURL:targetBaseURL];
-		[self moveComponent:A3MainMenuDataEntityFavorites fromURL:sourceBaseURL toURL:targetBaseURL];
-		[self moveComponent:A3MainMenuDataEntityAllMenu fromURL:sourceBaseURL toURL:targetBaseURL];
-		[self moveComponent:A3UnitConverterDataEntityUnitCategories fromURL:sourceBaseURL toURL:targetBaseURL];
-		[self moveComponent:A3UnitConverterDataEntityConvertItems fromURL:sourceBaseURL toURL:targetBaseURL];
-		[self moveComponent:A3UnitConverterDataEntityFavorites fromURL:sourceBaseURL toURL:targetBaseURL];
-		[self moveComponent:A3UnitPriceUserDataEntityPriceFavorites fromURL:sourceBaseURL toURL:targetBaseURL];
 
 		targetBaseURL = [NSURL fileURLWithPath:NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0]];
 

@@ -27,6 +27,7 @@
 	BOOL		unzipWithPassword;
 	NSString*	zipFilename;
 	NSString*	zipFilepath;
+	NSFileManager *_fileManager;
 }
 
 - (id)init
@@ -34,6 +35,7 @@
 	if((self=[super init]))
 	{
 		_zipFile = NULL ;
+		_fileManager = [NSFileManager new];
 	}
 	return self;
 }
@@ -80,7 +82,10 @@
     //	zipInfo.dosDate = (unsigned long) current;
     
 	NSError *error = nil;
-	NSDictionary* attr = [[NSFileManager new] attributesOfItemAtPath:file error:&error];
+	NSDictionary* attr = [_fileManager attributesOfItemAtPath:file error:&error];
+	if (error) {
+		FNLOG(@"%@", error.localizedDescription);
+	}
 	if( attr )
 	{
 		NSDate* fileDate = (NSDate*)[attr objectForKey:NSFileModificationDate];
@@ -266,15 +271,16 @@
     for(aFileInfo in filelist)
     {
         aFilePath = [aFileInfo objectForKey:@"name"];
-        fileattrib = [[NSFileManager new] attributesOfItemAtPath:aFilePath error:&error];
+        fileattrib = [_fileManager attributesOfItemAtPath:aFilePath error:&error];
         if(error)
         {
-            FNLOG(@"getTotalBytes error %@, %@", aFilePath, error.localizedDescription );
+            FNLOG(@"getTotalBytes error %@, %@, %@, %@, %@", aFilePath, error.localizedDescription, error.localizedFailureReason, error.localizedRecoveryOptions, error.localizedRecoverySuggestion );
         }
         else
         {
             fsize = [fileattrib objectForKey:NSFileSize];
             total += [fsize floatValue];
+			FNLOG(@"%@, %@, %f", aFilePath, fsize, total);
         }
     }
     
@@ -315,7 +321,14 @@
                 
                 // compress file
                 if([self addFileToZip:filePath newname:newPath]) {
-                    currentByte += [[[[NSFileManager new] attributesOfItemAtPath:filePath error:nil] objectForKey:NSFileSize] floatValue];
+					NSError *error;
+					NSDictionary *attribute = [_fileManager attributesOfItemAtPath:filePath error:&error];
+					if (error) {
+						FNLOG(@"%@, %@", filePath, error.localizedDescription);
+					} else {
+						currentByte += [[attribute objectForKey:NSFileSize] floatValue];
+					}
+
 					[self performSelectorOnMainThread:@selector(compressProgress) withObject:nil waitUntilDone:NO];
                 } else {
                     bResult = FALSE;
@@ -370,8 +383,7 @@
 	if( _unzFile ){
         int ret = unzGoToFirstFile( _unzFile );
         unsigned char		buffer[4096] = {0};
-        NSFileManager* fman = [NSFileManager new];
-        
+
         if( ret!=UNZ_OK )
         {
 			[self outputErrorMessage:@"Failed"];
@@ -428,9 +440,9 @@
             NSString* fullPath = [path stringByAppendingPathComponent:strPath];
             
             if( isDirectory )
-                [fman createDirectoryAtPath:fullPath withIntermediateDirectories:YES attributes:nil error:nil];
+                [_fileManager createDirectoryAtPath:fullPath withIntermediateDirectories:YES attributes:nil error:nil];
             else
-                [fman createDirectoryAtPath:[fullPath stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:nil];
+                [_fileManager createDirectoryAtPath:[fullPath stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:nil];
             
             FILE* fp = fopen( (const char*)[fullPath UTF8String], "wb");
             while( fp )
@@ -479,7 +491,7 @@
                 if( attr )
                 {
                     //		[attr  setValue:orgDate forKey:NSFileCreationDate];
-                    if( ![fman setAttributes:attr ofItemAtPath:fullPath error:nil] )
+                    if( ![_fileManager setAttributes:attr ofItemAtPath:fullPath error:nil] )
                     {
                         // cann't set attributes 
                         FNLOG(@"Failed to set attributes");

@@ -71,7 +71,6 @@ extern NSString *const A3CurrencyUserDefaultsAutoUpdate;
 extern NSString *const A3CurrencyUserDefaultsUseCellularData;
 extern NSString *const A3CurrencyUserDefaultsShowNationalFlag;
 extern NSString *const A3CurrencyUserDefaultsLastInputValue;
-extern NSString *const A3CurrencyDataEntityFavorites;
 
 #pragma mark ------ Date Calculator
 extern NSString *const A3DateCalcDefaultsIsAddSubMode;
@@ -88,7 +87,6 @@ extern NSString *const A3DateCalcDefaultsExcludeOptions;
 #pragma mark ------ DaysCounter
 extern NSString *const A3DaysCounterUserDefaultsSlideShowOptions;
 extern NSString *const A3DaysCounterLastOpenedMainIndex;
-extern NSString *const A3DaysCounterDataEntityCalendars;
 
 #pragma mark ------ Expense List
 extern NSString *const A3ExpenseListUserDefaultsCurrencyCode;
@@ -113,7 +111,6 @@ extern NSString *const A3LoanCalcUserDefaultsCustomCurrencyCode;
 extern NSString *const A3LadyCalendarCurrentAccountID;
 extern NSString *const A3LadyCalendarUserDefaultsSettings;
 extern NSString *const A3LadyCalendarLastViewMonth;
-extern NSString *const A3LadyCalendarDataEntityAccounts;
 
 #pragma mark ------ Lunar Converter
 extern NSString *const A3LunarConverterLastInputDateComponents;
@@ -154,6 +151,5 @@ extern NSString *const kUserDefaultsKeyForAskPasscodeForWallet;
 
 #pragma mark ------ Wallet
 extern NSString *const A3WalletUserDefaultsSelectedTab;
-extern NSString *const A3WalletDataEntityCategoryInfo;
 
 #endif
