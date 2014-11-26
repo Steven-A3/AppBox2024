@@ -155,8 +155,13 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 		CGAffineTransform   transform = [self getMagnifierRotationTransform];
 		[_previewLayer setTransform:transform];
 	}
-
-	_previewLayer.frame = screenBounds;
+	if (IS_IPHONE) {
+		if (_effectiveScale == 1.0) {
+			_previewLayer.frame = screenBounds;
+		}
+	} else {
+		_previewLayer.frame = screenBounds;
+	}
 }
 
 - (void)configureLayout {
@@ -307,7 +312,13 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 	} else {
 		[_previewLayer setTransform:CGAffineTransformScale([self getMagnifierRotationTransform], _effectiveScale, _effectiveScale)];
 		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-		_previewLayer.frame = screenBounds;
+		if (IS_IPHONE) {
+			if (_effectiveScale == 1.0) {
+				_previewLayer.frame = screenBounds;
+			}
+		} else {
+			_previewLayer.frame = screenBounds;
+		}
 	}
 }
 
