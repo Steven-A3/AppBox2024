@@ -1158,28 +1158,31 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             }
             case A3LC_CalculationForTermOfMonths:
             {
-                NSString *unit = [LoanCalcString shortUnitTitleOfFrequency:A3LC_FrequencyMonthly];
-                int monthInt =  (int)round(data.monthOfTerms.doubleValue);
-                NSString *result = [NSString stringWithFormat:@"%ld %@", (long)monthInt, unit];
+                long month = (long) round(data.monthOfTerms.doubleValue);
+                NSString *result = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), month];
                 return result;
             }
             case A3LC_CalculationForTermOfYears:
             {
-                NSString *unit = [LoanCalcString shortUnitTitleOfFrequency:A3LC_FrequencyAnnually];
                 if (round([data.monthOfTerms doubleValue]) < 12.0) {
                     NSInteger monthInt = roundl([data.monthOfTerms doubleValue]);
-                    NSString *result = [NSString stringWithFormat:NSLocalizedString(@"0 %@ %ld mo", @"0 %@ %ld mo"), unit, (long) monthInt];
-                    return result;
+					return [NSString stringWithFormat:@"%@ %@",
+													  [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld yrs", @"StringsDict", nil), (long)0],
+													  [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), (long) monthInt]
+					];
                 }
                 else {
                     NSInteger yearInt = roundl([data.monthOfTerms doubleValue]) / 12.0;
                     NSInteger monthInt = roundl([data.monthOfTerms doubleValue]) - (12 * yearInt);
                     NSString *result;
                     if (monthInt == 0) {
-                        result = [NSString stringWithFormat:@"%ld %@", (long)yearInt, unit];
+                        result = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld yrs", @"StringsDict", nil), (long)yearInt];
                     }
                     else {
-                        result = [NSString stringWithFormat:NSLocalizedString(@"%ld %@ %ld mo", @"%ld %@ %ld mo"), (long) yearInt, unit, (long) monthInt];
+                        result = [NSString stringWithFormat:@"%@ %@",
+								[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld yrs", @"StringsDict", nil), (long) yearInt],
+								[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), (long) monthInt]
+						];
                     }
                     return result;
                 }

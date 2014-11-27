@@ -250,7 +250,9 @@
 	double totalAmount;
 	double balance = [self.principal doubleValue];
 
-	NSInteger maxTurn = (NSInteger) [self termsInFrequency];
+	NSInteger maxTurn = (NSInteger) round([self termsInFrequency]);
+	FNLOG(@"maxTurn = %ld", (long)maxTurn);
+
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
 	NSDate *startDate = self.startDate ? self.startDate : [NSDate date];
 	NSDateComponents *components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:startDate];
@@ -264,13 +266,12 @@
 	NSInteger extraPaymentOneTimeYear = components.year;
 	NSInteger extraPaymentOneTimeMonth = components.month;
 
-
-	double repayment;
+	double repayment = self.repayment.doubleValue;;
 	totalAmount = 0;
 	double interestRate = [self interestRateOfFrequency];
+	FNLOG(@"interestRate = %@", @(interestRate));
 
 	for (NSInteger turn = 0; turn < maxTurn; turn++) {
-		repayment = self.repayment.doubleValue;
 		if (self.extraPaymentMonthly) {
 			repayment += self.extraPaymentMonthly.doubleValue;
 		}
@@ -293,6 +294,7 @@
 		}
 	}
 
+	FNLOG(@"totalAmount = %@", @(totalAmount));
 	return @(totalAmount);
 }
 
