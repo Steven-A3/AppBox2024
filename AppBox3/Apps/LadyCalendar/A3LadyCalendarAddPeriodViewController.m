@@ -25,6 +25,7 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "LadyCalendarAccount.h"
+#import "A3UserDefaults.h"
 
 extern NSString *const A3WalletItemFieldNoteCellID;
 
@@ -129,6 +130,15 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
 
 	[self.tableView registerClass:[A3WalletNoteCell class] forCellReuseIdentifier:A3WalletItemFieldNoteCellID];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
+}
+
+- (void)applicationWillResignActive {
+	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_LadiesCalendar]) {
+		[self cancelAction:nil];
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -145,6 +155,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)dealloc
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 	self.keyboardVC = nil;
 }
 
