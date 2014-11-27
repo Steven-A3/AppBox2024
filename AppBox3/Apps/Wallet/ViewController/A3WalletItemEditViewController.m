@@ -762,57 +762,29 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     CGRect fromRect = [self.tableView convertRect:cell.bounds fromView:cell];
     fromRect.origin.x = self.view.center.x;
     fromRect.size = CGSizeZero;
-    
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-#ifdef __IPHONE_8_0
-        if (!IS_IOS7) {
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:NULL]];
-            
-            if (deleteEnable) {
-                [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Video", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-                    [self deleteMediaItem];
-                }]];
-            }
-            
-            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Take Video", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                [self imagePickerActionForButtonIndex:deleteEnable ? 1 : 0 destructiveButtonIndex:deleteEnable ? 1 : -1 actionSheetTag:2];
-            }]];
-            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Choose Existing", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                [self imagePickerActionForButtonIndex:deleteEnable ? 2 : 1 destructiveButtonIndex:deleteEnable ? 1 : -1 actionSheetTag:2];
-            }]];
-            
-            UIPopoverPresentationController *popover = alertController.popoverPresentationController;
-            popover.sourceView = self.view;
-            popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
-            
-            [self presentViewController:alertController animated:YES completion:NULL];
-        }
-        else
-#endif
-        {
-            UIActionSheet *actionSheet = deleteEnable ? [[UIActionSheet alloc] initWithTitle:nil
-                                                                                    delegate:self
-                                                                           cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                                                                      destructiveButtonTitle:NSLocalizedString(@"Delete Video", nil)
-                                                                           otherButtonTitles:NSLocalizedString(@"Take Video", nil),
-                                                         NSLocalizedString(@"Choose Existing", nil), nil] :
-            [[UIActionSheet alloc] initWithTitle:nil
-                                        delegate:self
-                               cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                          destructiveButtonTitle:nil
-                               otherButtonTitles:NSLocalizedString(@"Take Video", nil),
-             NSLocalizedString(@"Choose Existing", nil),
-             nil];
-            actionSheet.tag = ActionTag_PhotoLibraryEdit;
-            
-            if ([cell isKindOfClass:[A3WalletItemRightIconCell class]]) {
-                [actionSheet showFromRect:[((A3WalletItemRightIconCell *)cell).iconImgView bounds] inView:[(A3WalletItemRightIconCell *)cell iconImgView] animated:YES];
-            }
-            else if ([cell isKindOfClass:[A3WalletItemPhotoFieldCell class]]) {
-                [actionSheet showFromRect:[((A3WalletItemPhotoFieldCell *)cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *)cell photoButton] animated:YES];
-            }
-        }
+
+	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+		UIActionSheet *actionSheet = deleteEnable ? [[UIActionSheet alloc] initWithTitle:nil
+																				delegate:self
+																	   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+																  destructiveButtonTitle:NSLocalizedString(@"Delete Video", nil)
+																	   otherButtonTitles:NSLocalizedString(@"Take Video", nil),
+																						 NSLocalizedString(@"Choose Existing", nil), nil] :
+				[[UIActionSheet alloc] initWithTitle:nil
+											delegate:self
+								   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+							  destructiveButtonTitle:nil
+								   otherButtonTitles:NSLocalizedString(@"Take Video", nil),
+													 NSLocalizedString(@"Choose Existing", nil),
+													 nil];
+		actionSheet.tag = ActionTag_PhotoLibraryEdit;
+
+		if ([cell isKindOfClass:[A3WalletItemRightIconCell class]]) {
+			[actionSheet showFromRect:[((A3WalletItemRightIconCell *)cell).iconImgView bounds] inView:[(A3WalletItemRightIconCell *)cell iconImgView] animated:YES];
+		}
+		else if ([cell isKindOfClass:[A3WalletItemPhotoFieldCell class]]) {
+			[actionSheet showFromRect:[((A3WalletItemPhotoFieldCell *)cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *)cell photoButton] animated:YES];
+		}
 	}
     else {
 		if (deleteEnable) {
