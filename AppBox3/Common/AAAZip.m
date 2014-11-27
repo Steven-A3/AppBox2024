@@ -69,6 +69,8 @@
 	return [self createZipFile2:zipFile];
 }
 
+#define bufferSizeForReading	4096
+
 - (BOOL)addFileToZip:(NSString*) file newname:(NSString*) newname;
 {
 	if( !_zipFile )
@@ -106,7 +108,6 @@
 	}
 	
 	int ret ;
-	NSData* data = nil;
 	if( [_password length] == 0 )
 	{
 		ret = zipOpenNewFileInZip( _zipFile,
@@ -120,9 +121,7 @@
 	}
 	else
 	{
-		data = [ NSData dataWithContentsOfFile:file];
-		uLong crcValue = crc32( 0L,NULL, 0L );
-		crcValue = crc32( crcValue, (const Bytef*)[data bytes], (uInt)[data length] );
+		uLong crcValue = [self crcForPath:file];
 		ret = zipOpenNewFileInZip3( _zipFile,
                                    (const char*) [newname UTF8String],
                                    &zipInfo,
@@ -142,22 +141,63 @@
 	{
 		return NO;
 	}
-	if( data==nil )
-	{
-		data = [ NSData dataWithContentsOfFile:file];
-	}
-	unsigned int dataLen = (uInt)[data length];
-	ret = zipWriteInFileInZip( _zipFile, (const void*)[data bytes], dataLen);
-	
-	if( ret!=Z_OK )
-	{
-		return NO;
-	}
-	ret = zipCloseFileInZip( _zipFile );
 
-	if( ret!=Z_OK )
-		return NO;
-	return YES;
+	CFURLRef fileURL = CFURLCreateWithFileSystemPath(kCFAllocatorDefault, (__bridge CFStringRef)file, kCFURLPOSIXPathStyle, false);
+	if (!fileURL) return NO;
+	CFReadStreamRef readStream = CFReadStreamCreateWithFile(kCFAllocatorDefault, fileURL);
+	if (!readStream) goto release_and_return;
+	if (!CFReadStreamOpen(readStream)) goto release_and_return;
+	CFIndex readBytesCount;
+	do {
+		uint8_t buffer[bufferSizeForReading];
+		readBytesCount = CFReadStreamRead(readStream, buffer, sizeof(buffer));
+		if (readBytesCount > 0) {
+			ret = zipWriteInFileInZip(_zipFile, buffer, (unsigned int) readBytesCount);
+		}
+	} while (readBytesCount > 0 && ret == Z_OK);
+
+	if (ret == Z_OK) {
+		ret = zipCloseFileInZip( _zipFile );
+	}
+
+release_and_return:
+	if (readStream) {
+		CFReadStreamClose(readStream);
+		CFRelease(readStream);
+	}
+	if (fileURL) {
+		CFRelease(fileURL);
+	}
+
+	return ret == Z_OK;
+}
+
+- (uLong)crcForPath:(NSString *)path {
+	uLong crcValue = crc32(0L, NULL, 0);
+	CFURLRef fileURL = CFURLCreateWithFileSystemPath(kCFAllocatorDefault,
+			(__bridge CFStringRef)path, kCFURLPOSIXPathStyle, false);
+	if (!fileURL) return 0;
+	CFReadStreamRef readStream = CFReadStreamCreateWithFile(kCFAllocatorDefault, fileURL);
+	if (!readStream) goto done;
+	if (!CFReadStreamOpen(readStream)) goto done;
+	CFIndex readBytesCount;
+	do {
+		uint8_t buffer[bufferSizeForReading];
+		readBytesCount = CFReadStreamRead(readStream, buffer, sizeof(buffer));
+		if (readBytesCount > 0) {
+			crcValue = crc32(crcValue, buffer, (uInt)readBytesCount);
+		}
+	} while (readBytesCount > 0);
+
+done:
+	if (readStream) {
+		CFReadStreamClose(readStream);
+		CFRelease(readStream);
+	}
+	if (fileURL) {
+		CFRelease(fileURL);
+	}
+	return crcValue;
 }
 
 - (BOOL)unzipOpenFile:(NSString*) zipFile
