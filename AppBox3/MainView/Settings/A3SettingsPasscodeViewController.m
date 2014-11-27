@@ -357,7 +357,7 @@
 				[_useSimpleCodeSwitch setOn:!_useSimpleCodeSwitch.isOn];
 				_changingPasscodeType = NO;
 			}
-			if ([_useSimpleCodeSwitch isOn]) {
+			if (![[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForUseSimplePasscode]) {
 				_passcodeViewController = [[A3PasscodeViewController alloc] initWithDelegate:self];
 			} else {
 				_passcodeViewController = [[A3PasswordViewController alloc] initWithDelegate:self];
