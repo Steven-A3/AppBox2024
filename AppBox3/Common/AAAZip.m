@@ -21,8 +21,8 @@
 	id			_delegate;
 	NSThread*   _thread;
 
-	float       currentByte;
-	float       totalByte;
+	float _currentByte;
+	float _totalByte;
 
 	BOOL		unzipWithPassword;
 	NSString*	zipFilename;
@@ -69,7 +69,7 @@
 	return [self createZipFile2:zipFile];
 }
 
-#define bufferSizeForReading	4096
+#define bufferSizeForReading	65536
 
 - (BOOL)addFileToZip:(NSString*) file newname:(NSString*) newname;
 {
@@ -153,6 +153,10 @@
 		readBytesCount = CFReadStreamRead(readStream, buffer, sizeof(buffer));
 		if (readBytesCount > 0) {
 			ret = zipWriteInFileInZip(_zipFile, buffer, (unsigned int) readBytesCount);
+			_currentByte += readBytesCount;
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[self compressProgress];
+			});
 		}
 	} while (readBytesCount > 0 && ret == Z_OK);
 
@@ -244,14 +248,16 @@ done:
 
 - (void)compressProgress
 {
-    if( _delegate && [_delegate respondsToSelector:@selector(compressProgress:total:)])
-		[_delegate compressProgress:currentByte total:totalByte];
+    if([_delegate respondsToSelector:@selector(compressProgress:total:)]) {
+		[_delegate compressProgress:_currentByte total:_totalByte];
+	}
 }
 
 - (void)decompressProgress
 {
-    if( _delegate && [_delegate respondsToSelector:@selector(decompressProgress:total:)])
-		[_delegate decompressProgress:currentByte total:totalByte];
+    if([_delegate respondsToSelector:@selector(decompressProgress:total:)]) {
+		[_delegate decompressProgress:_currentByte total:_totalByte];
+	}
 }
 
 - (void)completedZipProcessWithSuccess
@@ -299,7 +305,7 @@ done:
 	}
 }
 
-- (float)getTotalBytes:(NSArray *) filelist
+- (float)getTotalBytes:(NSArray *)filelist
 {
     float           total = 0;
     NSNumber        *fsize = nil;
@@ -311,17 +317,19 @@ done:
     for(aFileInfo in filelist)
     {
         aFilePath = [aFileInfo objectForKey:@"name"];
-        fileattrib = [_fileManager attributesOfItemAtPath:aFilePath error:&error];
-        if(error)
-        {
-            FNLOG(@"getTotalBytes error %@, %@, %@, %@, %@", aFilePath, error.localizedDescription, error.localizedFailureReason, error.localizedRecoveryOptions, error.localizedRecoverySuggestion );
-        }
-        else
-        {
-            fsize = [fileattrib objectForKey:NSFileSize];
-            total += [fsize floatValue];
-			FNLOG(@"%@, %@, %f", aFilePath, fsize, total);
-        }
+		if ([_fileManager fileExistsAtPath:aFilePath]) {
+			fileattrib = [_fileManager attributesOfItemAtPath:aFilePath error:&error];
+			if(error)
+			{
+				FNLOG(@"getTotalBytes error %@, %@, %@, %@, %@", aFilePath, error.localizedDescription, error.localizedFailureReason, error.localizedRecoveryOptions, error.localizedRecoverySuggestion );
+			}
+			else
+			{
+				fsize = [fileattrib objectForKey:NSFileSize];
+				total += [fsize floatValue];
+				FNLOG(@"%@, %@, %f", aFilePath, fsize, total);
+			}
+		}
     }
     
     return total;
@@ -337,10 +345,10 @@ done:
     NSString        *target = [argumentList objectForKey:@"kZipFile"];
     NSArray         *fileList = [argumentList   objectForKey:@"kFileList"];
     
-    totalByte       = [self getTotalBytes:fileList];
-    currentByte     = 0;
+    _totalByte = [self getTotalBytes:fileList];
+    _currentByte = 0;
     
-    if(totalByte > 0) {
+    if(_totalByte > 0) {
         if ([self createZipFile2:target Password:DEFAULT_SECURITY_KEY])
         {
             NSDictionary   *aFileInfo = nil;
@@ -360,17 +368,7 @@ done:
                 }
                 
                 // compress file
-                if([self addFileToZip:filePath newname:newPath]) {
-					NSError *error;
-					NSDictionary *attribute = [_fileManager attributesOfItemAtPath:filePath error:&error];
-					if (error) {
-						FNLOG(@"%@, %@", filePath, error.localizedDescription);
-					} else {
-						currentByte += [[attribute objectForKey:NSFileSize] floatValue];
-					}
-
-					[self performSelectorOnMainThread:@selector(compressProgress) withObject:nil waitUntilDone:NO];
-                } else {
+                if(![self addFileToZip:filePath newname:newPath]) {
                     bResult = FALSE;
                     break;
                 }
@@ -410,6 +408,8 @@ done:
 }
 
 - (BOOL)decompressFile:(id)object {
+	_currentByte = 0;
+
     NSDictionary        *argumentList = object;
     BOOL                success = YES;
     
@@ -419,10 +419,15 @@ done:
 	if ([argumentList objectForKey:@"kPassword"]) {
 		_password = [argumentList objectForKey:@"kPassword"];
 	}
-    _unzFile = unzOpen( (const char*)[zipFile UTF8String] );
+	NSDictionary *zipFileAttribute = [[NSFileManager defaultManager] attributesOfItemAtPath:zipFile error:nil];
+	if (zipFileAttribute) {
+		_totalByte = [[zipFileAttribute objectForKey:NSFileSize] floatValue];
+	}
+
+	_unzFile = unzOpen( (const char*)[zipFile UTF8String] );
 	if( _unzFile ){
         int ret = unzGoToFirstFile( _unzFile );
-        unsigned char		buffer[4096] = {0};
+        unsigned char		buffer[bufferSizeForReading] = {0};
 
         if( ret!=UNZ_OK )
         {
@@ -487,11 +492,17 @@ done:
             FILE* fp = fopen( (const char*)[fullPath UTF8String], "wb");
             while( fp )
             {
-                read=unzReadCurrentFile(_unzFile, buffer, 4096);
+                read=unzReadCurrentFile(_unzFile, buffer, bufferSizeForReading);
                 if( read > 0 )
                 {
                     fwrite(buffer, read, 1, fp );
-                }
+
+					_currentByte += read;
+					#pragma mark -
+					dispatch_async(dispatch_get_main_queue(), ^{
+						[self decompressProgress];
+					});
+				}
                 else if( read<0 )
                 {
 					[self outputErrorMessage:@"Failed to reading zip file"];
@@ -503,7 +514,7 @@ done:
 					goto finalize;
                 }
                 else 
-                    break;				
+                    break;
             }
             if( fp )
             {
@@ -526,7 +537,6 @@ done:
                 
                 orgDate = [gregorian dateFromComponents:dc] ;
 
-                
                 NSDictionary* attr = [NSDictionary dictionaryWithObject:orgDate forKey:NSFileModificationDate]; //[[NSFileManager defaultManager] fileAttributesAtPath:fullPath traverseLink:YES];
                 if( attr )
                 {
@@ -536,7 +546,6 @@ done:
                         // cann't set attributes 
                         FNLOG(@"Failed to set attributes");
                     }
-                    
                 }
             }
             unzCloseCurrentFile( _unzFile );

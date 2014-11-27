@@ -69,23 +69,33 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 	NSMutableArray *fileList = [NSMutableArray new];
 	_deleteFilesAfterZip = [NSMutableArray new];
 
-	_backupCoreDataStorePath = [self storeFilePath];
 	NSString *path;
 	NSString *filename = [[A3AppDelegate instance] storeFileName];
-	[fileList addObject:@{A3ZipFilename : _backupCoreDataStorePath, A3ZipNewFilename : filename}];
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+
+	_backupCoreDataStorePath = [self storeFilePath];
+	if ([fileManager isDeletableFileAtPath:_backupCoreDataStorePath]) {
+		[fileList addObject:@{A3ZipFilename : _backupCoreDataStorePath, A3ZipNewFilename : filename}];
+	}
 
 	path = [NSString stringWithFormat:@"%@%@", _backupCoreDataStorePath, @"-shm"];
-	[fileList addObject:@{A3ZipFilename : path, A3ZipNewFilename : [NSString stringWithFormat:@"%@%@", filename, @"-shm"]}];
+	if ([fileManager fileExistsAtPath:path]) {
+		[fileList addObject:@{A3ZipFilename : path, A3ZipNewFilename : [NSString stringWithFormat:@"%@%@", filename, @"-shm"]}];
+	}
 
 	path = [NSString stringWithFormat:@"%@%@", _backupCoreDataStorePath, @"-wal"];
-	[fileList addObject:@{A3ZipFilename : path, A3ZipNewFilename : [NSString stringWithFormat:@"%@%@", filename, @"-wal"]}];
+	if ([fileManager fileExistsAtPath:path]) {
+		[fileList addObject:@{A3ZipFilename : path, A3ZipNewFilename : [NSString stringWithFormat:@"%@%@", filename, @"-wal"]}];
+	}
 
 	// Backup data files
 	NSArray *daysCounterEvents = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"photoID != NULL"]];
 	for (DaysCounterEvent *event in daysCounterEvents) {
+		NSString *photoPath = [[event photoURLInOriginalDirectory:YES] path];
+		if (![fileManager fileExistsAtPath:photoPath]) continue;
 		[fileList addObject:
 			@{
-				A3ZipFilename : [[event photoURLInOriginalDirectory:YES] path],
+				A3ZipFilename : photoPath,
 				A3ZipNewFilename : [NSString stringWithFormat:@"%@/%@", A3DaysCounterImageDirectory, event.photoID]
 			}];
 	}
@@ -96,10 +106,11 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 		if ([holidaysFlickrDownloadManager hasUserSuppliedImageForCountry:countryCode]) {
 			NSString *holidayBackground = [[A3HolidaysFlickrDownloadManager sharedInstance] holidayImagePathForCountryCode:countryCode];
 			if ([holidayBackground length]) {
+				if (![fileManager fileExistsAtPath:holidayBackground]) continue;
 				[fileList addObject:
 						@{
-								A3ZipFilename : holidayBackground,
-								A3ZipNewFilename : [holidayBackground lastPathComponent]
+							A3ZipFilename : holidayBackground,
+							A3ZipNewFilename : [holidayBackground lastPathComponent]
 						}
 				];
 			}
@@ -108,18 +119,22 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 	NSArray *walletImages = [WalletFieldItem MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"hasImage == YES"]];
 	for (WalletFieldItem *item in walletImages) {
+		NSString *photoPath = [[item photoImageURLInOriginalDirectory:YES] path];
+		if (![fileManager fileExistsAtPath:photoPath]) continue;
 		[fileList addObject:
 			@{
-				A3ZipFilename : [[item photoImageURLInOriginalDirectory:YES] path],
+				A3ZipFilename : photoPath,
 				A3ZipNewFilename : [NSString stringWithFormat:@"%@/%@", A3WalletImageDirectory, item.uniqueID]
 			}];
 	}
 
 	NSArray *walletVideos = [WalletFieldItem MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"hasVideo == YES"]];
 	for (WalletFieldItem *video in walletVideos) {
+		NSString *videoFilePath = [[video videoFileURLInOriginal:YES] path];
+		if (![fileManager fileExistsAtPath:videoFilePath]) continue;
 		[fileList addObject:
 			@{
-				A3ZipFilename : [[video videoFileURLInOriginal:YES] path],
+				A3ZipFilename : videoFilePath,
 				A3ZipNewFilename : [NSString stringWithFormat:@"%@/%@-video.%@", A3WalletVideoDirectory, video.uniqueID, video.videoExtension]
 			}];
 	}
@@ -285,7 +300,6 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 - (void)compressProgress:(float)currentByte total:(float)totalByte {
 	_HUD.progress = currentByte / totalByte;
-	FNLOG(@"%f, %f, %f", currentByte, totalByte, _HUD.progress);
 	_HUD.detailsLabelText = [self.percentFormatter stringFromNumber:@(_HUD.progress)];
 }
 
