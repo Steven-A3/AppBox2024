@@ -93,6 +93,7 @@
 }
 
 - (void)presentLockScreen {
+	if (self.passcodeViewController) return;
 	FNLOG(@"appDelegate.passcodeViewController must nil = %@", self.passcodeViewController);
 
 	void(^presentPasscodeViewControllerBlock)(void) = ^(){
@@ -299,7 +300,6 @@
 }
 
 - (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
-	FNLOG();
 	[self removeSecurityCoverView];
 
 	[self updateStartOption];
@@ -428,7 +428,6 @@
 	 */
 	[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
 }
-
 
 // And to his AGWindowView: https://github.com/hfossli/AGWindowView
 // Without the 'desiredOrientation' method, using showLockscreen in one orientation,
