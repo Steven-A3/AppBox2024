@@ -199,6 +199,12 @@
 	[self enableControls:YES];
 }
 
+- (BOOL)resignFirstResponder {
+	FNLOG();
+	[self.firstResponder resignFirstResponder];
+	return [super resignFirstResponder];
+}
+
 - (void)initializeControl
 {
     // HeaderView

@@ -153,6 +153,8 @@
 	if (shouldAskForStarting) {
 		presentLockScreen = YES;
 	} else {
+		if ([self requirePasscodeForStartingApp]) return YES;
+
 		NSString *activeAppName = self.mainMenuViewController.activeAppName;
 		if ([activeAppName isEqualToString:A3AppName_Settings]) {
 			presentLockScreen = [self shouldAskPasscodeForSettings];
@@ -342,6 +344,7 @@
     BOOL requirePasscodeForStartingApp = NO;
     NSArray *appsRequirePasscode = @[A3AppName_Settings, A3AppName_DaysCounter, A3AppName_LadiesCalendar, A3AppName_Wallet];
     NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+	if (![startingAppName length]) return NO;
     NSInteger idx = [appsRequirePasscode indexOfObject:startingAppName];
     if (idx != NSNotFound) {
         switch (idx) {
