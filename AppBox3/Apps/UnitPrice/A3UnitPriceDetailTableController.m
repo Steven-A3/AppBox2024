@@ -125,6 +125,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 }
 
 - (void)prepareClose {
+	self.delegate = nil;
 	self.tableView.delegate = nil;
 	self.tableView.dataSource = nil;
 	[self removeObserver];

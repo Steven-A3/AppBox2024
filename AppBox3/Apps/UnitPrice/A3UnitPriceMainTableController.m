@@ -44,6 +44,7 @@ NSString *const A3UnitPricePrice2DefaultID = @"UnitPriceDefault2";
 @property (nonatomic, strong) UIView *footerView;
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3UnitDataManager *unitDataManager;
+@property (nonatomic, strong) A3UnitPriceDetailTableController *detailTableViewController;
 
 @end
 
@@ -135,6 +136,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 }
 
 - (void)prepareClose {
+	self.detailTableViewController.delegate = nil;
 	self.tableView.delegate = nil;
 	self.tableView.dataSource = nil;
 	[self removeObserver];
@@ -223,6 +225,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	}
+	self.detailTableViewController = nil;
 }
 
 - (UIView *)footerView {
@@ -440,6 +443,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
         viewController.isPriceA = YES;
         viewController.price = self.price1;
         [self.navigationController pushViewController:viewController animated:YES];
+		self.detailTableViewController = viewController;
     }
     else if (inputView.tag == 2) {
 
@@ -449,6 +453,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
         viewController.isPriceA = NO;
         viewController.price = self.price2;
         [self.navigationController pushViewController:viewController animated:YES];
+		self.detailTableViewController = viewController;
     }
 }
 
