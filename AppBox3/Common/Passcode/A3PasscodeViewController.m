@@ -497,7 +497,6 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	self.title = NSLocalizedString(@"Change Passcode", @"");
 }
 
-
 - (void)showForTurningOffPasscodeInViewController:(UIViewController *)viewController {
 	[self prepareForTurningOffPasscode];
 	[self prepareNavigationControllerWithController: viewController];

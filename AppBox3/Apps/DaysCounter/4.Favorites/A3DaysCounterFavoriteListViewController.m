@@ -114,6 +114,7 @@
 
 	[[A3UserDefaults standardUserDefaults] setInteger:4 forKey:A3DaysCounterLastOpenedMainIndex];
 	[[A3UserDefaults standardUserDefaults] synchronize];
+	[self.navigationController setToolbarHidden:NO];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -122,7 +123,6 @@
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 		self.toolbarItems = _bottomToolbar.items;
-		[self.navigationController setToolbarHidden:NO];
 	}
 }
 
