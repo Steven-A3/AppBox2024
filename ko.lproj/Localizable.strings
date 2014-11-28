@@ -490,7 +490,7 @@
 
 "PAYMENT" = "상환금";
 "PRINCIPAL" = "납입원금";
-"INTEREST" = "대출금리";
+"INTEREST" = "대출이자";
 "BALANCE" = "잔금";
 "Total Interest" = "총이자";
 "Avg.Interest" = "평균 이자";

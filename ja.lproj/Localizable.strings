@@ -507,8 +507,8 @@
 
 "PAYMENT" = "返済額";
 "PRINCIPAL" = "借入金額";
-"INTEREST" = "金利";
-"BALANCE" = "現状";
+"INTEREST" = "利子額";
+"BALANCE" = "残高";
 "Total Interest" = "総利子";
 "Avg.Interest" = "平均利子";
 "Total Amount" = "総返済額";
