@@ -305,7 +305,7 @@
     double downPayment = self.downPayment ? self.downPayment.doubleValue : 0;
 	if (isnan(downPayment))
 		downPayment = 0.0;
-	double totalInterest = [self totalAmount].doubleValue - (self.principal.doubleValue - downPayment);
+	double totalInterest = [self totalAmount].doubleValue - (self.principal.doubleValue + downPayment);
 	return @(totalInterest);
 }
 
