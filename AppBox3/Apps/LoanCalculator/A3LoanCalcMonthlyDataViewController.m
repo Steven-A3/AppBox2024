@@ -198,19 +198,21 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
         NSInteger yearInt =  (int)round(loan.monthOfTerms.doubleValue/12.0);
         infoCell.upSecondValueLB.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld years", @"StringsDict", nil), (long)yearInt];
         
-        NSString *unit = [LoanCalcString shortTitleOfFrequency:A3LC_FrequencyAnnually];
         if (round([loan.monthOfTerms doubleValue]) < 12.0) {
             NSInteger monthInt = roundl([loan.monthOfTerms doubleValue]);
-            infoCell.upSecondValueLB.text = [NSString stringWithFormat:NSLocalizedString(@"0 %@ %ld mo", @"0 %@ %ld mo"), unit, (long) monthInt];
+			infoCell.upSecondValueLB.text = [NSString stringWithFormat:@"%@ %@",
+																	   [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld yrs", @"StringsDict", nil), (long)0],
+																	   [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), (long)monthInt]];
         }
         else {
             NSInteger yearInt = roundl([loan.monthOfTerms doubleValue]) / 12.0;
             NSInteger monthInt = roundl([loan.monthOfTerms doubleValue]) - (12 * yearInt);
             if (monthInt == 0) {
-                infoCell.upSecondValueLB.text = [NSString stringWithFormat:@"%ld %@", (long)yearInt, unit];
-            }
-            else {
-                infoCell.upSecondValueLB.text = [NSString stringWithFormat:NSLocalizedString(@"%ld %@ %ld mo", @"%ld %@ %ld mo"), (long) yearInt, unit, (long) monthInt];
+                infoCell.upSecondValueLB.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld yrs", @"StringsDict", nil), (long)yearInt];
+            } else {
+                infoCell.upSecondValueLB.text = [NSString stringWithFormat:@"%@ %@",
+						[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld yrs", @"StringsDict", nil), (long)yearInt],
+						[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), (long)monthInt]];
             }
         }
     }
