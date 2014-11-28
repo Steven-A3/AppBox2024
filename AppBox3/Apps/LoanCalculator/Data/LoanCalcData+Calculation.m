@@ -248,7 +248,7 @@
 
 - (NSNumber *)totalAmount {
 	double totalAmount;
-	double balance = [self.principal doubleValue];
+	double balance = [self.principal doubleValue] - [self.downPayment doubleValue];
 
 	NSInteger maxTurn = (NSInteger) round([self termsInFrequency]);
 	FNLOG(@"maxTurn = %ld", (long)maxTurn);
@@ -295,7 +295,7 @@
 	}
 
 	FNLOG(@"totalAmount = %@", @(totalAmount));
-	return @(totalAmount);
+	return @(totalAmount + [self.downPayment doubleValue]);
 }
 
 - (NSNumber *)totalInterest {
@@ -305,7 +305,7 @@
     double downPayment = self.downPayment ? self.downPayment.doubleValue : 0;
 	if (isnan(downPayment))
 		downPayment = 0.0;
-	double totalInterest = [self totalAmount].doubleValue - (self.principal.doubleValue + downPayment);
+	double totalInterest = ([self totalAmount].doubleValue - downPayment) - (self.principal.doubleValue - downPayment);
 	return @(totalInterest);
 }
 
