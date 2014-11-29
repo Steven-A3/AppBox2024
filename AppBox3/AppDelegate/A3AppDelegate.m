@@ -111,7 +111,7 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 	// AppBox Pro V1.8.4까지는 Days Until 기능의 옵션에 의해서 남은 일자에 대한 배지 기능이 있었습니다.
 	// AppBox Pro V3.0 이후로는 배지 기능을 제공하지 않습니다.
 	// 이 값은 초기화 합니다.
-	application.applicationIconBadgeNumber = 0;
+	[self clearScheduledOldVersionLocalNotifications];
 
 	// toolsconf.db가 library directory에 남아 있으면 마이그레이션이 끝나지 않았으므로 확실히 점검한다.
 	NSString *oldFilePath = [@"toolsconf.db" pathInLibraryDirectory];
@@ -345,6 +345,19 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 		[self showLadyCalendarDetailView];
 	}
 	_localNotificationUserInfo = nil;
+}
+
+- (void)clearScheduledOldVersionLocalNotifications {
+	UIApplication *application = [UIApplication sharedApplication];
+	application.applicationIconBadgeNumber = 0;
+	NSArray *scheduledNotifications = [application scheduledLocalNotifications];
+	FNLOG(@"%@", [application scheduledLocalNotifications]);
+	[scheduledNotifications enumerateObjectsUsingBlock:^(UILocalNotification *localNotification, NSUInteger idx, BOOL *stop) {
+		if (localNotification.userInfo[@"kABPLocalNotificationTypeDaysUntil"] || localNotification.applicationIconBadgeNumber) {
+			[application cancelLocalNotification:localNotification];
+		}
+	}];
+	FNLOG(@"%@", [application scheduledLocalNotifications]);
 }
 
 #pragma mark - UIAlertViewDelegate
