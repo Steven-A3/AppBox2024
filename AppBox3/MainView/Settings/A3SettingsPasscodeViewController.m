@@ -360,8 +360,10 @@
 			if (success) {
 				_passwordConfirmedWhileSwitchingSimplePasscodeUse = YES;
 			} else {
-				[_useSimpleCodeSwitch setOn:!_useSimpleCodeSwitch.isOn];
+				[_useSimpleCodeSwitch setOn:[[A3AppDelegate instance] isSimplePasscode]];
 				_changingPasscodeType = NO;
+				_passcodeViewController = nil;
+				return;
 			}
 			if (![[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForUseSimplePasscode]) {
 				_passcodeViewController = [[A3PasscodeViewController alloc] initWithDelegate:self];
@@ -370,8 +372,9 @@
 			}
 			[_passcodeViewController showForEnablingPasscodeInViewController:self];
 		} else {
+			_passcodeViewController = nil;
+			[_useSimpleCodeSwitch setOn:[[A3AppDelegate instance] isSimplePasscode]];
 			_changingPasscodeType = NO;
-			_passwordConfirmedWhileSwitchingSimplePasscodeUse = NO;
 		}
 	} else {
 		_passcodeViewController = nil;
