@@ -368,6 +368,8 @@
 - (BOOL)shouldAskPasscodeForStarting {
     if (![A3KeychainUtils getPassword]) return NO;
 
+	if (![self didPasscodeTimerEnd]) return NO;
+
 	NSNumber *number = [[A3UserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyForAskPasscodeForStarting];
 	if (number) {
 		return [number boolValue];
