@@ -69,7 +69,7 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 
 - (void)alertInternetConnectionIsNotAvailable;
 + (UIViewController <A3PasscodeViewControllerProtocol> *)passcodeViewControllerWithDelegate:(id <A3PasscodeViewControllerDelegate>)delegate;
-- (BOOL)checkPasscode;
+
 - (void)willDismissFromRightSide;
 - (void)alertCloudNotEnabled;
 

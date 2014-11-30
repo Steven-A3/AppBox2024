@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
+#import "UIViewController+NumberKeyboard.h"
 #import <LocalAuthentication/LocalAuthentication.h>
 #import "A3SettingsViewController.h"
 #import "UIViewController+A3Addition.h"
@@ -142,7 +143,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.row == 0 && indexPath.section == 1) {
-		if ([self checkPasscode]) {
+		if ([A3KeychainUtils getPassword] != nil) {
 			void(^presentPasscodeViewControllerBlock)(void) = ^(){
 				_passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
 				[_passcodeViewController showLockScreenInViewController:self];

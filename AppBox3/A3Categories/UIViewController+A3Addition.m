@@ -12,7 +12,6 @@
 #import "UIViewController+MMDrawerController.h"
 #import "A3CenterViewDelegate.h"
 #import "UIViewController+A3Addition.h"
-#import "A3KeychainUtils.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
@@ -513,10 +512,6 @@ static char const *const key_firstActionSheet 					= "key_firstActionSheet";
 		passcodeViewController = [[A3PasswordViewController alloc] initWithDelegate:delegate];
 	}
 	return passcodeViewController;
-}
-
-- (BOOL)checkPasscode {
-	return ([[A3KeychainUtils getPassword] length] && [[A3AppDelegate instance] didPasscodeTimerEnd]);
 }
 
 - (void)alertInternetConnectionIsNotAvailable {
