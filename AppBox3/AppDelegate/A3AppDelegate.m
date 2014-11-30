@@ -107,6 +107,15 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 			[self initializePasscodeUserDefaults];
 		}
 	}
+	if ([[_previousVersion substringToIndex:3] doubleValue] < 3.3) {
+		FNLOG(@"%@", @([[_previousVersion substringToIndex:3] doubleValue]));
+		// 3.3 이전버전에서 업데이트 한 경우
+		// V3.3 부터 Touch ID가 추가되고 Touch ID 활성화가 기본
+		// Touch ID가 활성화된 경우, passcode timer를 쓸 수 없도록 하였으므로 0으로 설정한다.
+		// 3.3을 처음 설치한 경우에는 기본이 0이므로 별도 설정 불필요.
+		[[A3UserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultsKeyForPasscodeTimerDuration];
+		[[A3UserDefaults standardUserDefaults] synchronize];
+	}
 
 	// AppBox Pro V1.8.4까지는 Days Until 기능의 옵션에 의해서 남은 일자에 대한 배지 기능이 있었습니다.
 	// AppBox Pro V3.0 이후로는 배지 기능을 제공하지 않습니다.

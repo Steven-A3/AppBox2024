@@ -56,6 +56,11 @@
 	return [self standardHeightForFooterIsLastSection:NO];
 }
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	if ([[A3AppDelegate instance] useTouchID]) return 1;
+	return [super tableView:tableView numberOfRowsInSection:section];
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	double seconds = [[A3UserDefaults standardUserDefaults] doubleForKey:kUserDefaultsKeyForPasscodeTimerDuration];
 

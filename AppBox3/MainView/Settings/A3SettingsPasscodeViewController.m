@@ -203,6 +203,12 @@
 
 - (void)touchIDSwitchValueChanged:(UISwitch *)control {
 	[[A3AppDelegate instance] setUseTouchID:control.on];
+	if ([control isOn]) {
+		[[A3UserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultsKeyForPasscodeTimerDuration];
+		[[A3UserDefaults standardUserDefaults] synchronize];
+
+		[self.tableView reloadData];
+	}
 }
 
 - (void)askPasscodeForStartingValueChanged:(UISwitch *)control {
