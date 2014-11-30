@@ -108,7 +108,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
+	FNLOG();
+
     if ( [_eventItem.uniqueID length] > 0 ) {
         [self constructItemsFromEvent:_eventItem];
     }
@@ -121,8 +123,14 @@
             [self.delegate didChangedCalendarEventDetailViewController:self];
         }
     }
-    
-    [self.tableView reloadData];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if (![self isMovingToParentViewController]) {
+		[self.tableView reloadData];
+	}
 }
 
 - (void)didReceiveMemoryWarning
