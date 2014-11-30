@@ -135,6 +135,7 @@
 
     [[A3UserDefaults standardUserDefaults] setInteger:3 forKey:A3DaysCounterLastOpenedMainIndex];
     [[A3UserDefaults standardUserDefaults] synchronize];
+	[self.navigationController setToolbarHidden:NO];
 }
 
 - (void)didReceiveMemoryWarning
@@ -156,15 +157,6 @@
 		self.toolbarItems = _bottomToolbar.items;
 		[self.navigationController setToolbarHidden:NO];
 	}
-
-	if ( IS_IPAD ) {
-        if ( IS_PORTRAIT ) {
-            [self leftBarButtonAppsButton];
-        }
-        else {
-            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
-        }
-    }
 }
 
 #pragma mark - Table view data source
