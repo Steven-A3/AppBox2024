@@ -1223,9 +1223,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     _imagePickerController.videoQuality = UIImagePickerControllerQualityTypeHigh;
     _imagePickerController.navigationBar.barStyle = UIBarStyleDefault;
     _imagePickerController.delegate = self;
-    
-    
-    
+
     if (IS_IPAD) {
         if (_imagePickerController.sourceType == UIImagePickerControllerSourceTypeCamera) {
             _imagePickerController.showsCameraControls = YES;
@@ -1288,7 +1286,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	}
     
     if (buttonIndex == actionSheet.destructiveButtonIndex) {
-        if (actionSheet.tag == ActionTag_ImagePickerMenu || actionSheet.tag == ActionTag_DeleteImage || actionSheet.tag == ActionTag_DeleteVideo) {
+        if (actionSheet.tag == ActionTag_ImagePickerMenu || actionSheet.tag == ActionTag_DeleteImage || actionSheet.tag == ActionTag_DeleteVideo || actionSheet.tag == ActionTag_PhotoLibraryEdit) {
             // 삭제하기
             [self deleteMediaItem];
             return;
