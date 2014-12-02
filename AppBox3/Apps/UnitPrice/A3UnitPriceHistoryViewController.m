@@ -167,7 +167,8 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
     double unitPrice = 0;
     
     double priceValue = item.price.doubleValue;
-    NSUInteger sizeValue = (item.size.integerValue <= 0) ? 1:item.size.integerValue;
+    double sizeValue = item.size.doubleValue;
+	if (sizeValue == 0.0) sizeValue = 1.0;
     NSUInteger quantityValue = item.quantity.integerValue;
     
     // 할인값

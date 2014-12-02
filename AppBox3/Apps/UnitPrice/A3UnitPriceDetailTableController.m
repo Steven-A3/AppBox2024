@@ -270,7 +270,8 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
     priceTxt = [self.currencyFormatter stringFromNumber:@(priceInfo.price.doubleValue)];
 
     double priceValue = priceInfo.price.doubleValue;
-    NSInteger sizeValue = (priceInfo.size.integerValue <= 0) ? 1:priceInfo.size.integerValue;
+    double sizeValue = priceInfo.size.doubleValue;
+	if (sizeValue == 0.0) sizeValue = 1.0;
     NSInteger quantityValue = priceInfo.quantity.integerValue;
     
     // 할인값
@@ -294,6 +295,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
     if ((priceValue>0) && (sizeValue>0) && (quantityValue>0)) {
         unitPrice = (priceValue - discountValue) / (sizeValue * quantityValue);
+		FNLOG(@"%@, %@", @(unitPrice), @([self.currencyFormatter minimumFractionDigits]));
 
         if (unitPrice > 0) {
             if (validUnit(priceInfo.unitID)) {

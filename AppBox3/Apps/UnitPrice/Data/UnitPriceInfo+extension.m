@@ -65,7 +65,8 @@ NSString *const NOTES_KEY		= @"note";
 
 - (double)unitPrice {
 	double priceValue = self.price.doubleValue;
-	NSInteger sizeValue = (self.size.integerValue <= 0) ? 1:self.size.integerValue;
+	double sizeValue = self.size.doubleValue;
+	if (sizeValue == 0.0) sizeValue = 1.0;
 	NSInteger quantityValue = self.quantity.integerValue;
 
 	// 할인값
@@ -86,7 +87,8 @@ NSString *const NOTES_KEY		= @"note";
 
 - (double)unitPrice2WithPrice1:(UnitPriceInfo *)price1 {
 	double priceValue = self.price.floatValue;
-	NSInteger sizeValue = (self.size.integerValue <= 0) ? 1:self.size.integerValue;
+	double sizeValue = self.size.doubleValue;
+	if (sizeValue == 0.0) sizeValue = 1.0;
 	NSInteger quantityValue = self.quantity.integerValue;
 
 	// 할인값
@@ -133,7 +135,8 @@ NSString *const NOTES_KEY		= @"note";
 	NSString *unitPriceTxt = @"";
 
 	double priceValue = self.price.doubleValue;
-	NSInteger sizeValue = (self.size.integerValue <= 0) ? 1:self.size.integerValue;
+	double sizeValue = self.size.doubleValue;
+	if (sizeValue == 0.0) sizeValue = 1.0;
 	NSInteger quantityValue = self.quantity.integerValue;
 
 	// 할인값
@@ -195,7 +198,8 @@ NSString *const NOTES_KEY		= @"note";
 	unitShortName = validUnit(self.unitID) ? [self unitShortNameForPriceInfo:self] : NSLocalizedString(@"None", @"None");
 
 	double priceValue = self.price.floatValue;
-	NSInteger sizeValue = (self.size.integerValue <= 0) ? 1:self.size.integerValue;
+	double sizeValue = self.size.doubleValue;
+	if (sizeValue == 0.0) sizeValue = 1.0;
 	NSInteger quantityValue = self.quantity.integerValue;
 
 	// 할인값

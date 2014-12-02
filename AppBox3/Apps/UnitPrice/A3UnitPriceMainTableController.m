@@ -598,7 +598,8 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     unitShortName1 = validUnit(self.price1.unitID) ? [self shortUnitNameForPriceInfo:self.price1] : NSLocalizedString(@"None", @"None");
 
     double priceValue1 = self.price1.price.doubleValue;
-    NSInteger sizeValue1 = (self.price1.size.integerValue <= 0) ? 1 : self.price1.size.integerValue;
+    double sizeValue1 = self.price1.size.doubleValue;
+	if (sizeValue1 == 0.0) sizeValue1 = 1.0;
     NSInteger quantityValue1 = self.price1.quantity.integerValue;
     
     // 할인값
@@ -667,8 +668,9 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     priceTxt2 = [self.currencyFormatter stringFromNumber:@(self.price2.price.doubleValue)];
     unitShortName2 = validUnit(self.price2.unitID) ? [self shortUnitNameForPriceInfo:self.price2] : NSLocalizedString(@"None", @"None");
 
-    float priceValue2 = self.price2.price.floatValue;
-    NSInteger sizeValue2 = (self.price2.size.integerValue <= 0) ? 1:self.price2.size.integerValue;
+    double priceValue2 = self.price2.price.doubleValue;
+    double sizeValue2 = self.price2.size.doubleValue;
+	if (sizeValue2 == 0.0) sizeValue2 = 1.0;
     NSInteger quantityValue2 = self.price2.quantity.integerValue;
     
     // 할인값
