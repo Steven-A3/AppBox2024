@@ -609,7 +609,10 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 		}
 				// App launch/Turning passcode off: Passcode OK -> dismiss, Passcode incorrect -> deny access.
 		else {
-			if ([typedString isEqualToString: savedPasscode]) [self dismissMe];
+			if ([typedString isEqualToString: savedPasscode]) {
+				_passcodeValid = YES;
+				[self dismissMe];
+			}
 			else {
 				[self performSelector: @selector(denyAccess) withObject: nil afterDelay: 0.15f];
 				return NO;
