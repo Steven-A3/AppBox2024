@@ -936,3 +936,6 @@ Inserire chiave di crittografia per il portafoglio.";
 
 "Unlock AppBox Pro" = "Sblocca AppBox Pro ";
 "Unlock %@" = "Sblocca %@";
+
+"Camera access disabled" = "Accesso Camera negato.";
+"To turn on the LED requires camera access." = "Per accendere il LED richiede l'accesso della fotocamera.";

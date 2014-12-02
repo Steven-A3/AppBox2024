@@ -951,3 +951,6 @@
 
 "Unlock AppBox Pro" = "AppBox Pro 잠금 해제";
 "Unlock %@" = "%@ 잠금 해제";
+
+"Camera access disabled" = "카메라를 사용할 수 없습니다";
+"To turn on the LED requires camera access." = "LED를 켜려면 카메라 접근 권한이 필요합니다.";

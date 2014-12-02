@@ -941,3 +941,6 @@
 
 "Unlock AppBox Pro" = "Déverrouiller AppBox Pro";
 "Unlock %@" = "Déverrouiller %@";
+
+"Camera access disabled" = "Accéder à la caméra refusé";
+"To turn on the LED requires camera access." = "Pour allumer le voyant nécessite un accès à la caméra.";

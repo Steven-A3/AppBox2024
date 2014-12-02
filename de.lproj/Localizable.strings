@@ -951,3 +951,6 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 
 "Unlock AppBox Pro" = "AppBox Pro entsperren";
 "Unlock %@" = "%@ entsperren";
+
+"Camera access disabled" = "Kamera der Zugriff verweigert";
+"To turn on the LED requires camera access." = "Um die LED einschalten erfordert Zugriff auf die Kamera.";

@@ -237,6 +237,9 @@ NSString *const cellID = @"flashEffectID";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+	[self requestAuthorizationForCamera];
+
     // Do any additional setup after loading the view from its nib.
 	[self setNavigationBarHidden:YES];
 	[self.navigationController.toolbar setHidden:YES];
@@ -253,7 +256,6 @@ NSString *const cellID = @"flashEffectID";
     UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(flashScreenTapped:)];
     [_colorPickerView addGestureRecognizer:tapGesture2];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActiveNotification:) name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3DrawerStateChanged object:nil];
     if (IS_IPAD) {
@@ -261,12 +263,43 @@ NSString *const cellID = @"flashEffectID";
     }
 }
 
+- (void)requestAuthorizationForCamera {
+	if (IS_IOS7) return;
+	AVAuthorizationStatus authorizationStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+	if (authorizationStatus == AVAuthorizationStatusAuthorized) return;
+	if (authorizationStatus == AVAuthorizationStatusNotDetermined) {
+		[AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:nil];
+		return;
+	}
+	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Camera access disabled", nil)
+																			 message:NSLocalizedString(@"To turn on the LED requires camera access.", nil)
+																	  preferredStyle:UIAlertControllerStyleAlert];
+	[alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK")
+														style:UIAlertActionStyleCancel
+													  handler:NULL]];
+	[alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(A3AppName_Settings, nil)
+														style:UIAlertActionStyleDefault
+													  handler:^(UIAlertAction *action) {
+														  [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+													  }]];
+	[self presentViewController:alertController
+					   animated:YES
+					 completion:NULL];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
+	FNLOG();
 	if (_isBeingDismiss) return;
 
 	_showAllMenu = YES;
+	if (_currentFlashViewMode & A3FlashViewModeTypeLED) {
+		if (![A3UIDevice canAccessCamera]) {
+			_currentFlashViewMode ^= A3FlashViewModeTypeLED;
+			[self requestAuthorizationForCamera];
+		}
+	}
 	[self configureFlashViewMode:_currentFlashViewMode animation:NO];
 
 	[self setupInstructionView];
@@ -278,8 +311,11 @@ NSString *const cellID = @"flashEffectID";
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
+	FNLOG();
 	if (_currentFlashViewMode & A3FlashViewModeTypeLED) {
-		_isTorchOn = YES;
+		if ([A3UIDevice canAccessCamera]) {
+			_isTorchOn = YES;
+		}
 		[self showHUD];
 		[self initializeLED];
 	}
@@ -287,6 +323,7 @@ NSString *const cellID = @"flashEffectID";
 	if (_currentFlashViewMode & A3FlashViewModeTypeEffect) {
 		[self startStrobeLightEffectForIndex:_selectedEffectIndex];
 	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -390,6 +427,7 @@ NSString *const cellID = @"flashEffectID";
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
+	FNLOG();
 	if (_willResignActive) {
 		_deviceBrightnessBefore = [UIScreen mainScreen].brightness;
 		_willResignActive = NO;
@@ -397,12 +435,18 @@ NSString *const cellID = @"flashEffectID";
 	}
 
 	if (_isTorchOn) {
-		[self setTorchOn];
-		double delayInSeconds = 1.0;
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t) (delayInSeconds * NSEC_PER_SEC));
-		dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+		if ([A3UIDevice canAccessCamera]) {
 			[self setTorchOn];
-		});
+			double delayInSeconds = 1.0;
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t) (delayInSeconds * NSEC_PER_SEC));
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+				[self setTorchOn];
+			});
+		} else {
+			_isTorchOn = NO;
+			_currentFlashViewMode = A3FlashViewModeTypeNone;
+			[self configureFlashViewMode:_currentFlashViewMode animation:NO];
+		}
 	}
 
 	if (_currentFlashViewMode & A3FlashViewModeTypeEffect) {
@@ -462,8 +506,13 @@ NSString *const cellID = @"flashEffectID";
     NSNumber *flashViewMode = [[A3UserDefaults standardUserDefaults] objectForKey:A3UserDefaultFlashViewMode];
     if (!flashViewMode) {
         if (_isLEDAvailable) {
-            _currentFlashViewMode = A3FlashViewModeTypeLED;
-            _isTorchOn = YES;
+			if ([A3UIDevice canAccessCamera]) {
+				_isTorchOn = YES;
+				_currentFlashViewMode = A3FlashViewModeTypeLED;
+			} else {
+				_isTorchOn = NO;
+				_currentFlashViewMode = A3FlashViewModeTypeNone;
+			}
         }
         else {
             _currentFlashViewMode = A3FlashViewModeTypeNone;
@@ -725,11 +774,16 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     _currentFlashViewMode = _currentFlashViewMode ^ A3FlashViewModeTypeLED;
 
     if (_currentFlashViewMode & A3FlashViewModeTypeLED) {
-        _isTorchOn = YES;
-        [self showHUD];
-        [self initializeLED];
-        [self setTorchOn];
-    }
+		if ([A3UIDevice canAccessCamera]) {
+			_isTorchOn = YES;
+			[self showHUD];
+			[self initializeLED];
+			[self setTorchOn];
+		} else {
+			_currentFlashViewMode = _currentFlashViewMode ^ A3FlashViewModeTypeLED;
+			[self requestAuthorizationForCamera];
+		}
+	}
     else {
         _isTorchOn = NO;
         [self showHUD];
@@ -872,7 +926,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     
     NSLog(@"flash: %f", _flashBrightnessValue);
     
-    if(_isLEDAvailable == YES) {
+    if(_isLEDAvailable && [A3UIDevice canAccessCamera]) {
         AVCaptureDevice *myTorch = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
         
         [myTorch lockForConfiguration:nil];
@@ -1034,6 +1088,10 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 
 #pragma mark - LED Related
 - (void)setTorchOn {
+	if (![A3UIDevice canAccessCamera]) {
+		[self requestAuthorizationForCamera];
+		return;
+	}
 	AVCaptureDevice *myTorch = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
 	[myTorch lockForConfiguration:nil];
 
@@ -1074,6 +1132,11 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 
 - (void)initializeLED {
 	if (!_LEDInitialized && _isLEDAvailable) {
+		if (![A3UIDevice canAccessCamera]) {
+			[self requestAuthorizationForCamera];
+			return;
+		}
+
 		AVCaptureDevice *myTorch = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
 		AVCaptureDeviceInput *flashInput = [AVCaptureDeviceInput deviceInputWithDevice:myTorch error: nil];
 		AVCaptureVideoDataOutput *output = [[AVCaptureVideoDataOutput alloc] init];

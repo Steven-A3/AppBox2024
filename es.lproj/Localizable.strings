@@ -935,3 +935,6 @@ Introduzca la clave de cifrado para el bolsillo.";
 
 "Unlock AppBox Pro" = "Desbloquear AppBox Pro";
 "Unlock %@" = "Desbloquear %@";
+
+"Camera access disabled" = "Acceso a la cámara negó";
+"To turn on the LED requires camera access." = "Para encender el LED requiere acceso a la cámara.";

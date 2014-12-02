@@ -895,3 +895,6 @@ Enter Encryption Key for Wallet.";
 
 "Unlock AppBox Pro" = "Unlock AppBox Pro";
 "Unlock %@" = "Unlock %@";
+
+"Camera access disabled" = "Camera access disabled";
+"To turn on the LED requires camera access." = "LED requires camera access.";

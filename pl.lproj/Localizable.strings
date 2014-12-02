@@ -942,3 +942,6 @@ Wprowadź klucz szyfrowania dla portfela.";
 
 "Unlock AppBox Pro" = "Odblokować AppBox Pro";
 "Unlock %@" = "Odblokować %@";
+
+"Camera access disabled" = "Odmowa dostępu aparatu";
+"To turn on the LED requires camera access." = "Aby włączyć LED wymaga dostępu do kamery.";

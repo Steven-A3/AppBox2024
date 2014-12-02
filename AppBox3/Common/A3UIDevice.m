@@ -107,17 +107,19 @@ NSString *const A3AnimationIDKeyboardWillShow = @"A3AnimationIDKeyboardWillShow"
 }
 
 + (BOOL)hasTorch {
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] < 4.0)
-        return NO;
-    
 #if !TARGET_IPHONE_SIMULATOR
-    for ( AVCaptureDevice *device in [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo] ) {
-        if ( device.hasTorch ) {
-            return YES;
-        }
-    }
+	for ( AVCaptureDevice *device in [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo] ) {
+		if ( device.hasTorch ) {
+			return YES;
+		}
+	}
 #endif
     return NO;
+}
+
++ (BOOL)canAccessCamera {
+	if (IS_IOS7) return YES;
+	return [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo] == AVAuthorizationStatusAuthorized;
 }
 
 /////////////////

@@ -956,3 +956,6 @@
 
 "Unlock AppBox Pro" = "解锁AppBox Pro";
 "Unlock %@" = "解锁%@";
+
+"Camera access disabled" = "相机不能使用";
+"To turn on the LED requires camera access." = "要打开LED，需要摄像头的访问。";
