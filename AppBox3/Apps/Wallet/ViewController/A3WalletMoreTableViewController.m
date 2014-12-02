@@ -93,47 +93,6 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 	}
 }
 
-- (void)removeObserver {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3UserDefaultsDidChangeNotification object:nil];
-	if (IS_IPAD) {
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidShow object:nil];
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
-	}
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-
-	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
-		FNLOG();
-		[self removeObserver];
-	}
-}
-
-- (void)dealloc {
-	[self removeObserver];
-}
-
-- (void)cleanUp {
-	[self dismissInstructionViewController:nil];
-	[self removeObserver];
-}
-
-- (void)mainMenuDidShow {
-	[self enableControls:NO];
-}
-
-- (void)mainMenuDidHide {
-	[self enableControls:YES];
-}
-
-- (void)enableControls:(BOOL)enable {
-	if (!IS_IPAD) return;
-	[self.navigationItem.leftBarButtonItem setEnabled:enable];
-	[self.navigationItem.rightBarButtonItem setEnabled:enable];
-	self.tabBarController.tabBar.selectedImageTintColor = enable ? nil : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
-}
-
 - (void)viewWillAppear:(BOOL)animated {
 	_categories = nil;
 	[self.tableView reloadData];
@@ -156,13 +115,62 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 			[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 		}
 	}
-    
-    if (_isEditing) {
-        [self setupInstructionView];
-    }
+
+	if (_isEditing) {
+		[self setupInstructionView];
+	}
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	}
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+		FNLOG();
+		[self removeObserver];
+	}
+}
+
+- (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3UserDefaultsDidChangeNotification object:nil];
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidShow object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
+- (void)cleanUp {
+	[self dismissInstructionViewController:nil];
+	[self removeObserver];
+}
+
+- (BOOL)resignFirstResponder {
+	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_Wallet]) {
+		[self dismissInstructionViewController:nil];
+	}
+	return [super resignFirstResponder];
+}
+
+- (void)mainMenuDidShow {
+	[self enableControls:NO];
+}
+
+- (void)mainMenuDidHide {
+	[self enableControls:YES];
+}
+
+- (void)enableControls:(BOOL)enable {
+	if (!IS_IPAD) return;
+	[self.navigationItem.leftBarButtonItem setEnabled:enable];
+	[self.navigationItem.rightBarButtonItem setEnabled:enable];
+	self.tabBarController.tabBar.selectedImageTintColor = enable ? nil : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {

@@ -213,6 +213,16 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	[self removeObserver];
 }
 
+- (BOOL)resignFirstResponder {
+	[self.firstResponder resignFirstResponder];
+
+	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_CurrencyConverter]) {
+		[self dismissInstructionViewController:nil];
+	}
+	return [super resignFirstResponder];
+}
+
 - (void)mainMenuViewDidHide {
 	[self enableControls:YES];
 }
@@ -990,8 +1000,6 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		self.numberKeyboardViewController = keyboardVC;
 		textField.inputView = [keyboardVC view];
 
-		[self setFirstResponder:textField];
-
 		return YES;
 	} else {
 		[self.firstResponder resignFirstResponder];
@@ -1020,6 +1028,8 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	_calculatorTargetTextField = textField;
+	[self setFirstResponder:textField];
+
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:textField];
 	[self addNumberKeyboardNotificationObservers];
 }
@@ -1053,6 +1063,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		[self putHistoryWithValue:@([self.previousValue floatValueEx])];
 		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 	}
+	_calculatorTargetTextField = nil;
 }
 
 #pragma mark - KeyboardViewControllerDelegate

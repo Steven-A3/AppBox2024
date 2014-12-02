@@ -146,6 +146,54 @@
 	}];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+
+	if (_isBeingClose) return;
+
+	[self setupNavigationTitle];
+	[self setupCalendarHeaderViewFrame];
+
+	[self.navigationController setToolbarHidden:NO];
+	_collectionView.delegate = self;
+
+	if ( isFirst ) {
+		isFirst = NO;
+
+		[self showCalendarHeaderView];
+		[self updateAddButton];
+	} else {
+		[_calendarHeaderView setHidden:NO];
+		[self setupCalendarRange];
+	}
+
+	_chartBarButton.enabled = ([self.dataManager numberOfPeriodsWithAccountID:[self.dataManager currentAccount].uniqueID] > 0);
+
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+		if (_isBeingClose) return;
+
+		NSDate *currentWatchingDate = [self.dataManager currentAccount].watchingDate;
+		if (!currentWatchingDate) {
+			LadyCalendarPeriod *lastPeriod = [[_dataManager periodListSortedByStartDateIsAscending:YES] lastObject];
+			if (!lastPeriod) {
+				currentWatchingDate = [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]];
+			}
+			else {
+				currentWatchingDate = [A3DateHelper dateMakeMonthFirstDayAtDate:[lastPeriod startDate]];
+			}
+		}
+
+		_currentMonth = currentWatchingDate;
+
+		[self.dataManager setWatchingDateForCurrentAccount:currentWatchingDate];
+
+		[self moveToCurrentWatchingDate];
+		[self updateCurrentMonthLabel];
+		[self.collectionView reloadData];
+	});
+}
+
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
@@ -187,54 +235,6 @@
 	[self removeObserver];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-	[super viewWillAppear:animated];
-	
-	if (_isBeingClose) return;
-	
-	[self setupNavigationTitle];
-    [self setupCalendarHeaderViewFrame];
-    
-	[self.navigationController setToolbarHidden:NO];
-    _collectionView.delegate = self;
-    
-	if ( isFirst ) {
-		isFirst = NO;
-        
-		[self showCalendarHeaderView];
-		[self updateAddButton];
-	} else {
-		[_calendarHeaderView setHidden:NO];
-		[self setupCalendarRange];
-	}
-    
-	_chartBarButton.enabled = ([self.dataManager numberOfPeriodsWithAccountID:[self.dataManager currentAccount].uniqueID] > 0);
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-		if (_isBeingClose) return;
-		
-        NSDate *currentWatchingDate = [self.dataManager currentAccount].watchingDate;
-        if (!currentWatchingDate) {
-            LadyCalendarPeriod *lastPeriod = [[_dataManager periodListSortedByStartDateIsAscending:YES] lastObject];
-            if (!lastPeriod) {
-                currentWatchingDate = [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]];
-            }
-            else {
-                currentWatchingDate = [A3DateHelper dateMakeMonthFirstDayAtDate:[lastPeriod startDate]];
-            }
-        }
-
-        _currentMonth = currentWatchingDate;
-        
-        [self.dataManager setWatchingDateForCurrentAccount:currentWatchingDate];
-        
-        [self moveToCurrentWatchingDate];
-        [self updateCurrentMonthLabel];
-		[self.collectionView reloadData];
-    });
-}
-
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
@@ -269,6 +269,14 @@
 
 - (void)dealloc {
 	[self removeObserver];
+}
+
+- (BOOL)resignFirstResponder {
+	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_LadiesCalendar]) {
+		[self dismissInstructionViewController:nil];
+	}
+	return [super resignFirstResponder];
 }
 
 - (void)mainMenuDidShow {

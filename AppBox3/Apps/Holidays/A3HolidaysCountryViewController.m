@@ -83,6 +83,14 @@ extern NSString *const A3CurrencyActionCellID;
 	}
 }
 
+- (BOOL)resignFirstResponder {
+	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_Holidays]) {
+		[self dismissInstructionViewController:nil];
+	}
+	return [super resignFirstResponder];
+}
+
 - (void)dealloc {
 	[self removeObserver];
 }

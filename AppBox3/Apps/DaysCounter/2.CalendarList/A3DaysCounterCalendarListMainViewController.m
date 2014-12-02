@@ -213,6 +213,44 @@
 #endif
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+	self.navigationController.delegate = nil;
+
+	[self reloadTableView];
+
+	[[A3UserDefaults standardUserDefaults] setInteger:2 forKey:A3DaysCounterLastOpenedMainIndex];
+	[[A3UserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if (IS_IPHONE && IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+		[self.addEventButton setHidden:NO];
+		[self setToolbarItems:_bottomToolbar.items];
+		[self.navigationController setToolbarHidden:NO animated:YES];
+	}
+	if (_addEventButtonPressed) {
+		_addEventButtonPressed = NO;
+		double delayInSeconds = 4.0;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			[self reloadTableView];
+		});
+	}
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+		[self removeObserver];
+	}
+}
+
 - (void)cloudDidImportChanges:(NSNotification *)notification {
 	if ([self.navigationController visibleViewController] == self) {
 		[self reloadTableView];
@@ -236,14 +274,6 @@
 	[self removeObserver];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-
-	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
-		[self removeObserver];
-	}
-}
-
 - (void)dealloc {
 	[self removeObserver];
 }
@@ -251,6 +281,14 @@
 - (void)cleanUp {
 	[self dismissInstructionViewController:nil];
 	[self removeObserver];
+}
+
+- (BOOL)resignFirstResponder {
+	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_DaysCounter]) {
+		[self dismissInstructionViewController:nil];
+	}
+	return [super resignFirstResponder];
 }
 
 - (void)mainMenuViewDidHide {
@@ -276,36 +314,6 @@
 	[super appsButtonAction:barButtonItem];
 	if (IS_IPAD) {
 		[self enableControls:!self.A3RootViewController.showLeftView];
-	}
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.navigationController.delegate = nil;
-
-    [self reloadTableView];
-    
-    [[A3UserDefaults standardUserDefaults] setInteger:2 forKey:A3DaysCounterLastOpenedMainIndex];
-    [[A3UserDefaults standardUserDefaults] synchronize];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-
-	if (IS_IPHONE && IS_PORTRAIT) {
-		[self leftBarButtonAppsButton];
-		[self.addEventButton setHidden:NO];
-		[self setToolbarItems:_bottomToolbar.items];
-		[self.navigationController setToolbarHidden:NO animated:YES];
-	}
-	if (_addEventButtonPressed) {
-		_addEventButtonPressed = NO;
-		double delayInSeconds = 4.0;
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-			[self reloadTableView];
-		});
 	}
 }
 

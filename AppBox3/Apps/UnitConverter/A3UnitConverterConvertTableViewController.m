@@ -178,12 +178,6 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 }
 
-- (void)prepareClose {
-	self.fmMoveTableView.delegate = nil;
-	self.fmMoveTableView.dataSource = nil;
-	[self removeObserver];
-}
-
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
@@ -192,6 +186,22 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		[self clearEverything];
 		[self removeObserver];
 	}
+}
+
+- (void)prepareClose {
+	self.fmMoveTableView.delegate = nil;
+	self.fmMoveTableView.dataSource = nil;
+	[self removeObserver];
+}
+
+- (BOOL)resignFirstResponder {
+	[self.firstResponder resignFirstResponder];
+	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_UnitConverter]) {
+		[self dismissInstructionViewController:nil];
+	}
+
+	return [super resignFirstResponder];
 }
 
 - (void)dealloc {
@@ -205,12 +215,6 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 - (void)rightSubViewWillHide:(NSNotification *)noti
 {
     [self enableControls:YES];
-}
-
-- (BOOL)resignFirstResponder {
-	[self.firstResponder resignFirstResponder];
-
-	return [super resignFirstResponder];
 }
 
 - (void)enableControls:(BOOL)enable

@@ -104,25 +104,6 @@
 	_currentPageIndex = NSNotFound;
 }
 
-- (void)removeObserver {
-	[self removeContentSizeCategoryDidChangeNotification];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-
-	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
-		FNLOG();
-		[self removeObserver];
-		[_dayChangedTimer invalidate];
-		_dayChangedTimer = nil;
-	}
-}
-
-- (void)dealloc {
-	[self removeObserver];
-}
-
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
@@ -153,6 +134,33 @@
 
 		[self alertDisclaimer];
 	}
+}
+
+- (void)removeObserver {
+	[self removeContentSizeCategoryDidChangeNotification];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+		FNLOG();
+		[self removeObserver];
+		[_dayChangedTimer invalidate];
+		_dayChangedTimer = nil;
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
+- (BOOL)resignFirstResponder {
+	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_Holidays]) {
+		[self dismissInstructionViewController:nil];
+	}
+	return [super resignFirstResponder];
 }
 
 - (void)alertDisclaimer {

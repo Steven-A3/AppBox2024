@@ -98,6 +98,14 @@
 	}
 }
 
+- (BOOL)resignFirstResponder {
+	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_DaysCounter]) {
+		[self dismissInstructionViewController:nil];
+	}
+	return [super resignFirstResponder];
+}
+
 - (void)prepareClose {
 	self.tableView.delegate = nil;
 	self.tableView.dataSource = nil;

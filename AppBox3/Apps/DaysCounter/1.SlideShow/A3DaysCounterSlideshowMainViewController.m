@@ -132,6 +132,109 @@
 	messageLabel.text = NSLocalizedString(@"You can add photos into events.", nil);
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+
+	self.isRotating = NO;
+	self.eventsArray = [_sharedManager allEventsListContainedImage];
+
+	NSDate *now = [NSDate date];
+
+	// Start Timer 화면 갱신.
+	NSDateComponents *nowComp = [[[A3AppDelegate instance] calendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:now];
+	[self performSelector:@selector(startTimer) withObject:nil afterDelay:60 - [nowComp second]];
+
+	if ( [_sharedManager numberOfEventContainedImage] > 0 ) {
+		if ( !_isShowMoreMenu ) {
+			self.navigationController.navigationBarHidden = YES;
+		}
+		else {
+			self.navigationController.navigationBarHidden = NO;
+		}
+		_noPhotoView.hidden = YES;
+		_collectionView.hidden = NO;
+		_infoButton.enabled = YES;
+		_shareButton.enabled = YES;
+	}
+	else {
+		if ( _isShowMoreMenu ) {
+//            [self hideTopToolbarAnimated:NO];
+		}
+		self.navigationController.navigationBarHidden = NO;
+		_noPhotoView.hidden = NO;
+		_collectionView.hidden = YES;
+		_infoButton.enabled = NO;
+		_shareButton.enabled = NO;
+		[self.view bringSubviewToFront:_noPhotoView];
+	}
+	[self setNeedsStatusBarAppearanceUpdate];
+	[self.navigationController setToolbarHidden:self.navigationController.navigationBarHidden];
+	[self updateNavigationTitle];
+
+	if ( IS_IPAD && UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+		[self.A3RootViewController animateHideLeftViewForFullScreenCenterView:YES];
+	}
+	if ( self.A3RootViewController.showRightView ) {
+		if ( self.navigationController.navigationBarHidden )
+			[self tapPhotoViewScreen:nil];
+	}
+
+	[_collectionView reloadData];
+
+	[[A3UserDefaults standardUserDefaults] setInteger:1 forKey:A3DaysCounterLastOpenedMainIndex];
+	[[A3UserDefaults standardUserDefaults] synchronize];
+
+	if (_prevShownEventID) {
+		NSUInteger eventIdx = [_eventsArray indexOfObjectPassingTest:^BOOL(DaysCounterEvent *item, NSUInteger idx, BOOL *stop) {
+			return [item.uniqueID isEqualToString:_prevShownEventID];
+		}];
+
+		if (eventIdx != NSNotFound) {
+			currentIndex = eventIdx;
+		}
+		else {
+			currentIndex = 0;
+		}
+
+		if ([_eventsArray count] > 0) {
+			[_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0]
+									atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
+											animated:NO];
+		}
+	}
+
+	[self updateNavigationTitle];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if (IS_IPHONE && IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	}
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+		FNLOG();
+		[self removeObserver];
+	}
+
+	self.navigationController.delegate = nil;
+
+
+	[self stopTimer];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+	[super viewDidDisappear:animated];
+	self.navigationController.delegate = nil;
+}
+
 - (void)cloudStoreDidImport {
 	self.eventsArray = [_sharedManager allEventsListContainedImage];
 	[self.collectionView reloadData];
@@ -153,28 +256,22 @@
 	[self removeObserver];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-
-	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
-		FNLOG();
-		[self removeObserver];
-	}
-    
-    self.navigationController.delegate = nil;
-
-
-	[self stopTimer];
-}
-
 - (void)dealloc {
     if (self.navigationController.delegate == self)
     {
         self.navigationController.delegate = nil;
     }
-    
+
 	[self cleanUp];
 	[self removeObserver];
+}
+
+- (BOOL)resignFirstResponder {
+	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_DaysCounter]) {
+		[self dismissInstructionViewController:nil];
+	}
+	return [super resignFirstResponder];
 }
 
 - (void)mainMenuViewDidHide {
@@ -210,95 +307,6 @@
 	if (IS_IPAD) {
 		[self enableControls:!self.A3RootViewController.showLeftView];
 	}
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-	
-    self.isRotating = NO;
-    self.eventsArray = [_sharedManager allEventsListContainedImage];
-    
-    NSDate *now = [NSDate date];
-    
-    // Start Timer 화면 갱신.
-    NSDateComponents *nowComp = [[[A3AppDelegate instance] calendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:now];
-    [self performSelector:@selector(startTimer) withObject:nil afterDelay:60 - [nowComp second]];
-
-    if ( [_sharedManager numberOfEventContainedImage] > 0 ) {
-        if ( !_isShowMoreMenu ) {
-            self.navigationController.navigationBarHidden = YES;
-        }
-        else {
-            self.navigationController.navigationBarHidden = NO;
-        }
-        _noPhotoView.hidden = YES;
-        _collectionView.hidden = NO;
-        _infoButton.enabled = YES;
-        _shareButton.enabled = YES;
-    }
-    else {
-        if ( _isShowMoreMenu ) {
-//            [self hideTopToolbarAnimated:NO];
-        }
-        self.navigationController.navigationBarHidden = NO;
-        _noPhotoView.hidden = NO;
-        _collectionView.hidden = YES;
-        _infoButton.enabled = NO;
-        _shareButton.enabled = NO;
-        [self.view bringSubviewToFront:_noPhotoView];
-    }
-    [self setNeedsStatusBarAppearanceUpdate];
-    [self.navigationController setToolbarHidden:self.navigationController.navigationBarHidden];
-    [self updateNavigationTitle];
-    
-    if ( IS_IPAD && UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-        [self.A3RootViewController animateHideLeftViewForFullScreenCenterView:YES];
-    }
-    if ( self.A3RootViewController.showRightView ) {
-        if ( self.navigationController.navigationBarHidden )
-            [self tapPhotoViewScreen:nil];
-    }
-
-    [_collectionView reloadData];
-    
-    [[A3UserDefaults standardUserDefaults] setInteger:1 forKey:A3DaysCounterLastOpenedMainIndex];
-    [[A3UserDefaults standardUserDefaults] synchronize];
-    
-    if (_prevShownEventID) {
-		NSUInteger eventIdx = [_eventsArray indexOfObjectPassingTest:^BOOL(DaysCounterEvent *item, NSUInteger idx, BOOL *stop) {
-			return [item.uniqueID isEqualToString:_prevShownEventID];
-		}];
-        
-		if (eventIdx != NSNotFound) {
-			currentIndex = eventIdx;
-		}
-        else {
-			currentIndex = 0;
-		}
-        
-        if ([_eventsArray count] > 0) {
-            [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0]
-                                    atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
-                                            animated:NO];
-        }
-    }
-    
-    [self updateNavigationTitle];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-
-	if (IS_IPHONE && IS_PORTRAIT) {
-		[self leftBarButtonAppsButton];
-	}
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    self.navigationController.delegate = nil;
 }
 
 - (void)viewDidLayoutSubviews

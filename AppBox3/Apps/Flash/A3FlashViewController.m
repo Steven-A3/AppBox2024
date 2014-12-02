@@ -356,6 +356,14 @@ NSString *const cellID = @"flashEffectID";
 	_isBeingDismiss = YES;
 }
 
+- (BOOL)resignFirstResponder {
+	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_Flashlight]) {
+		[self dismissInstructionViewController:nil];
+	}
+	return [super resignFirstResponder];
+}
+
 - (void)removeObservers
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];

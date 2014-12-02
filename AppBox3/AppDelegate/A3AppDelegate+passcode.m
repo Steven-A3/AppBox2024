@@ -221,11 +221,11 @@
 	if ([A3KeychainUtils getPassword] && [self shouldProtectScreen]) {
 		FNLOG(@"CoverView added to Window");
 		[[UIApplication sharedApplication] ignoreSnapshotOnNextApplicationLaunch];
-		UIViewController *visibleViewController = [self.currentMainNavigationController visibleViewController];
-		[visibleViewController resignFirstResponder];
 
 		[self addSecurityCoverView];
 	}
+	UIViewController *visibleViewController = [self.currentMainNavigationController visibleViewController];
+	[visibleViewController resignFirstResponder];
 	return;
 }
 

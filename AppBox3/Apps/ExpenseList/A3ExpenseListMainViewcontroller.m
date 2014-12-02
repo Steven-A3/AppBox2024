@@ -150,6 +150,23 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if (IS_IPHONE && IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	}
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+		FNLOG();
+		[self removeObserver];
+	}
+}
+
 - (void)cloudStoreDidImport {
 	if (self.firstResponder) return;
 
@@ -180,23 +197,6 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	[self removeObserver];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-
-	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
-		FNLOG();
-		[self removeObserver];
-	}
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-
-	if (IS_IPHONE && IS_PORTRAIT) {
-		[self leftBarButtonAppsButton];
-	}
-}
-
 - (void)dealloc {
 	[self removeObserver];
 }
@@ -204,6 +204,14 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 - (void)cleanUp {
 	[self dismissInstructionViewController:nil];
 	[self removeObserver];
+}
+
+- (BOOL)resignFirstResponder {
+	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_ExpenseList]) {
+		[self dismissInstructionViewController:nil];
+	}
+	return [super resignFirstResponder];
 }
 
 - (void)mainMenuDidHide {

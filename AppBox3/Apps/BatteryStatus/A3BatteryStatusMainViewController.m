@@ -142,6 +142,14 @@
 	[UIDevice currentDevice].batteryMonitoringEnabled = NO;
 }
 
+- (BOOL)resignFirstResponder {
+	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_BatteryStatus]) {
+		[self dismissInstructionViewController:nil];
+	}
+	return [super resignFirstResponder];
+}
+
 - (void)cleanUp {
 }
 

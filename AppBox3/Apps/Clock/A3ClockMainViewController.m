@@ -24,6 +24,9 @@
 
 #define kCntPage 4.0
 
+NSString *const A3V3InstructionDidShowForClock1 = @"A3V3InstructionDidShowForClock1";
+NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClock2";
+
 @interface A3ClockMainViewController () <A3ClockDataManagerDelegate, A3ChooseColorDelegate, A3InstructionViewControllerDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) UIScrollView *scrollView;
@@ -159,6 +162,20 @@
 	[[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 }
 
+- (BOOL)resignFirstResponder {
+	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_Clock]) {
+		if (self.instructionViewController) {
+			[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForClock1];
+			[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForClock2];
+			[[A3UserDefaults standardUserDefaults] synchronize];
+			[self.instructionViewController.view removeFromSuperview];
+			self.instructionViewController = nil;
+		}
+	}
+	return [super resignFirstResponder];
+}
+
 - (void)cleanUp {
 	[self removeObserver];
 }
@@ -185,9 +202,6 @@
 	[self scrollToPage:_pageControl.currentPage];
 	[self gotoPage:_pageControl.currentPage];
 }
-
-static NSString *const A3V3InstructionDidShowForClock1 = @"A3V3InstructionDidShowForClock1";
-static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClock2";
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
@@ -728,6 +742,7 @@ static NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidSho
     [self showMenus:NO];
     [[A3UserDefaults standardUserDefaults] setBool:NO forKey:A3V3InstructionDidShowForClock1];
     [[A3UserDefaults standardUserDefaults] setBool:NO forKey:A3V3InstructionDidShowForClock2];
+	[[A3UserDefaults standardUserDefaults] synchronize];
     [self showInstructionView];
 }
 
