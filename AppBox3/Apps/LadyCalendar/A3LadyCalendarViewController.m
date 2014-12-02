@@ -388,12 +388,20 @@
 	NSDateComponents *endComponents = [defaultCalendar components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:[self.dataManager endDateForCurrentAccount]];
 	_endYear = endComponents.year;
 	_endMonth = endComponents.month;
-	if (_startYear == _endYear && ((_endMonth - _startMonth) < 2)) {
-		_endMonth = _startMonth + 2;
-		if (_endMonth > 12) {
-			_endYear++;
-			_endMonth = _endMonth / 12;
-		}
+	NSDateComponents *difference =
+	[defaultCalendar components:NSMonthCalendarUnit
+					   fromDate:[self.dataManager startDateForCurrentAccount]
+						 toDate:[self.dataManager endDateForCurrentAccount]
+						options:0];
+	if (difference.month < 3) {
+		difference.month = 3;
+		NSDate *updatedEndDate = [defaultCalendar dateByAddingComponents:difference
+																  toDate:[self.dataManager startDateForCurrentAccount]
+																 options:0];
+		endComponents = [defaultCalendar components:NSYearCalendarUnit|NSMonthCalendarUnit
+										   fromDate:updatedEndDate];
+		_endYear = endComponents.year;
+		_endMonth = endComponents.month;
 	}
 }
 
