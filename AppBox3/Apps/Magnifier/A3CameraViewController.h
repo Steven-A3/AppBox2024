@@ -24,4 +24,5 @@
 
 - (CGAffineTransform)getRotationTransformWithOption:(BOOL)useDeviceZoom;
 
+- (void)requestAuthorizationForCamera:(NSString *)appName;
 @end

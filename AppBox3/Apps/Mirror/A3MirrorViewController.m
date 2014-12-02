@@ -37,16 +37,6 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 	AVCaptureSession *_captureSession;
 	AVCaptureStillImageOutput *_stillImageOutput;
 
-	UITapGestureRecognizer *_previewNoFilterGestureRecognizer;
-	UITapGestureRecognizer *_previewMonoFilterGestureRecognizer;
-	UITapGestureRecognizer *_previewTonalFilterGestureRecognizer;
-	UITapGestureRecognizer *_previewNoirFilterGestureRecognizer;
-	UITapGestureRecognizer *_previewFadeFilterGestureRecognizer;
-	UITapGestureRecognizer *_previewChromeFilterGestureRecognizer;
-	UITapGestureRecognizer *_previewProcessFilterGestureRecognizer;
-	UITapGestureRecognizer *_previewTransferFilterGestureRecognizer;
-	UITapGestureRecognizer *_previewInstantFilterGestureRecognizer;
-
 	UILabel *_monoLabel;
 	UILabel *_tonalLabel;
 	UILabel *_noirLabel;
@@ -79,6 +69,13 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @property (nonatomic, strong) NSMutableArray *filterViews;
 @property (nonatomic, strong) NSMutableArray *filterLabels;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *snapButton;
+@property (weak, nonatomic) IBOutlet UIToolbar *topBar;
+@property (weak, nonatomic) IBOutlet UIToolbar *bottomBar;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *cameraRollButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *filterButton;
+@property (weak, nonatomic) IBOutlet UISlider *zoomSlider;
+@property (weak, nonatomic) IBOutlet UIToolbar *zoomToolBar;
 
 @end
 
@@ -148,6 +145,35 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 
 	[self setupAVCaptureSession];
 	
+	[self setupPreview];
+
+	[self setupFilterView];
+
+	[self setupPhotoButton];
+
+	[self setupTopToolbar];
+	[self setupZoomSlider];
+}
+
+- (void)setupPhotoButton {
+	self.lastimageButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0,47,47)];
+	[self.lastimageButton addTarget:_cameraRollButton.target action:_cameraRollButton.action forControlEvents:UIControlEventTouchUpInside];
+	self.lastimageButton.layer.cornerRadius = 23.5;
+	self.lastimageButton.layer.masksToBounds = YES;
+	[self.bottomBar.items[0] setCustomView:self.lastimageButton];
+	[self loadFirstPhoto];
+}
+
+- (void)setupTopToolbar {
+	[_topBar setTranslucent:YES];
+	[_topBar setBackgroundImage:[UIImage new]
+			 forToolbarPosition:UIBarPositionAny
+					 barMetrics:UIBarMetricsDefault];
+	[_topBar setShadowImage:[UIImage new]
+		 forToolbarPosition:UIToolbarPositionAny];
+}
+
+- (void)setupPreview {
 	_eaglContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
 
 	// create the CIContext instance, note that this must be done after _videoPreviewView is properly set up
@@ -160,6 +186,7 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 	[_videoPreviewViewNoFilter setDelegate:self];
 	[_videoPreviewViewNoFilter setUserInteractionEnabled:YES];
 	[_videoPreviewViewNoFilter setEnableSetNeedsDisplay:NO];
+	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 	[self setFilterViewRotation:_videoPreviewViewNoFilter withScreenBounds:screenBounds];
 	// because the native video image from the back camera is in UIDeviceOrientationLandscapeLeft (i.e. the home button is on the right), we need to apply a clockwise 90 degree transform so that we can draw the video preview as if we were in a landscape-oriented view; if you're using the front camera and you want to have a mirrored preview (so that the user is seeing themselves in the mirror), you need to apply an additional horizontal flip (by concatenating CGAffineTransformMakeScale(-1.0, 1.0) to the rotation transform)
 	[self.view addSubview:_videoPreviewViewNoFilter];
@@ -186,7 +213,9 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 	_isFiltersEnabled = NO;
 	_effectiveScale = 1.0;
 	_filterIndex = A3MirrorNoFilter;
+}
 
+- (void)setupFilterView {
 	if(_isLosslessZoom == YES) _isFiltersEnabled = YES;
 	if (_isFiltersEnabled == YES) {
 		[self.filterButton setImage:[[UIImage imageNamed:@"m_color"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
@@ -200,24 +229,6 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 		[self showOneFilterView:_filterIndex];
 	}
 	[self setupGestureRecognizer];
-
-	self.lastimageButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0,47,47)];
-	[self.lastimageButton addTarget:_cameraRollButton.target action:_cameraRollButton.action forControlEvents:UIControlEventTouchUpInside];
-	self.lastimageButton.layer.cornerRadius = 23.5;
-	self.lastimageButton.layer.masksToBounds = YES;
-	[self.bottomBar.items[0] setCustomView:self.lastimageButton];
-	[self loadFirstPhoto];
-    
-    [_topBar setTranslucent:YES];
-    [_topBar setBackgroundImage:[UIImage new]
-             forToolbarPosition:UIBarPositionAny
-                     barMetrics:UIBarMetricsDefault];
-    [_topBar setShadowImage:[UIImage new]
-         forToolbarPosition:UIToolbarPositionAny];
-
-	[self setupZoomSlider];
-
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)removeObserver {
@@ -241,8 +252,26 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 }
 
 - (void)applicationDidBecomeActive {
-	[_captureSession startRunning];
-	[self applyZoomFactor];
+	if ([A3UIDevice canAccessCamera]) {
+		if (_captureSession) {
+			[self setupAVCaptureSession];
+			[self setupFilterView];
+			[self setupZoomSlider];
+			[self configureLayout];
+		}
+		[_captureSession startRunning];
+		[self applyZoomFactor];
+	} else {
+		if (_isMultipleView) {
+			[self showOneFilterView:_filterIndex];
+		}
+		[self requestAuthorizationForCamera:A3AppName_Mirror];
+
+		_captureSession = nil;
+		_videoDevice = nil;
+		_stillImageOutput = nil;
+	}
+	[self setupButtonEnabled];
 }
 
 - (void)applyZoomFactor {
@@ -264,23 +293,38 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	double delayInSeconds = 1.0;
-	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		[_captureSession startRunning];
-	});
+	FNLOG();
+	if ([A3UIDevice canAccessCamera]) {
+		double delayInSeconds = 1.0;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			[_captureSession startRunning];
+		});
+	} else {
+		[self requestAuthorizationForCamera:A3AppName_Mirror];
+	}
 
+	[self setupButtonEnabled];
 	[self configureLayout];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
+
+	FNLOG(@"[self isMovingToParentViewController] = %@", @([self isMovingToParentViewController]));
 	if ([self isMovingToParentViewController]) {
         [self setupInstructionView];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
 	}
 	if (IS_IPHONE && IS_LANDSCAPE) {
 		[self setToolBarsHidden:YES];
 	}
+}
+
+- (void)setupButtonEnabled {
+	BOOL enabled = [A3UIDevice canAccessCamera];
+	[self.snapButton setEnabled:enabled];
+	[self.filterButton setEnabled:enabled];
 }
 
 - (void)configureLayout {
@@ -383,6 +427,8 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 
 - (void)setupAVCaptureSession
 {
+	if (![A3UIDevice canAccessCamera]) return;
+
 	NSError *error = nil;
 
 	// create the capture session
@@ -717,71 +763,24 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 #pragma mark - TapGesture setup
 
 - (void)setupGestureRecognizer {
-	_previewNoFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-	[_videoPreviewViewNoFilter addGestureRecognizer:_previewNoFilterGestureRecognizer];
-
-	if (_isFiltersEnabled == YES) {
-		_previewMonoFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-		[_videoPreviewViewMonoFilter addGestureRecognizer:_previewMonoFilterGestureRecognizer];
-
-		_previewTonalFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-		[_videoPreviewViewTonalFilter addGestureRecognizer:_previewTonalFilterGestureRecognizer];
-
-		_previewNoirFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-		[_videoPreviewViewNoirFilter addGestureRecognizer:_previewNoirFilterGestureRecognizer];
-
-		_previewFadeFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-		[_videoPreviewViewFadeFilter addGestureRecognizer:_previewFadeFilterGestureRecognizer];
-
-		_previewChromeFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-		[_videoPreviewViewChromeFilter addGestureRecognizer:_previewChromeFilterGestureRecognizer];
-
-		_previewProcessFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-		[_videoPreviewViewProcessFilter addGestureRecognizer:_previewProcessFilterGestureRecognizer];
-
-		_previewTransferFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-		[_videoPreviewViewTransferFilter addGestureRecognizer:_previewTransferFilterGestureRecognizer];
-
-		_previewInstantFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-		[_videoPreviewViewInstantFilter addGestureRecognizer:_previewInstantFilterGestureRecognizer];
-	}
-
-	UIGestureRecognizer *noFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
-	noFilterPinchGesture.delegate = self;
-	[_videoPreviewViewNoFilter addGestureRecognizer:noFilterPinchGesture];
-
-	if (_isFiltersEnabled == YES ) {
-		UIGestureRecognizer *monoFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
-		monoFilterPinchGesture.delegate = self;
-		[_videoPreviewViewMonoFilter addGestureRecognizer:monoFilterPinchGesture];
-
-		UIGestureRecognizer *tonalFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
-		tonalFilterPinchGesture.delegate = self;
-		[_videoPreviewViewTonalFilter addGestureRecognizer:tonalFilterPinchGesture];
-
-		UIGestureRecognizer *noirFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
-		noirFilterPinchGesture.delegate = self;
-		[_videoPreviewViewNoirFilter addGestureRecognizer:noirFilterPinchGesture];
-
-		UIGestureRecognizer *fadeFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
-		fadeFilterPinchGesture.delegate = self;
-		[_videoPreviewViewFadeFilter addGestureRecognizer:fadeFilterPinchGesture];
-
-		UIGestureRecognizer *chromeFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
-		chromeFilterPinchGesture.delegate = self;
-		[_videoPreviewViewChromeFilter addGestureRecognizer:chromeFilterPinchGesture];
-
-		UIGestureRecognizer *processFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
-		processFilterPinchGesture.delegate = self;
-		[_videoPreviewViewProcessFilter addGestureRecognizer:processFilterPinchGesture];
-
-		UIGestureRecognizer *transferFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
-		transferFilterPinchGesture.delegate = self;
-		[_videoPreviewViewTransferFilter addGestureRecognizer:transferFilterPinchGesture];
-
-		UIGestureRecognizer *instantFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
-		instantFilterPinchGesture.delegate = self;
-		[_videoPreviewViewInstantFilter addGestureRecognizer:instantFilterPinchGesture];
+	if (_isFiltersEnabled) {
+		for (GLKView *filterView in _filterViews) {
+			if (![[filterView gestureRecognizers] count]) {
+				UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
+				UIPinchGestureRecognizer *pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
+				pinchGestureRecognizer.delegate = self;
+				[filterView addGestureRecognizer:tapGestureRecognizer];
+				[filterView addGestureRecognizer:pinchGestureRecognizer];
+			}
+		}
+	} else {
+		if (![[_videoPreviewViewNoFilter gestureRecognizers] count]) {
+			UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
+			UIPinchGestureRecognizer *pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
+			pinchGestureRecognizer.delegate = self;
+			[_videoPreviewViewNoFilter addGestureRecognizer:tapGestureRecognizer];
+			[_videoPreviewViewNoFilter addGestureRecognizer:pinchGestureRecognizer];
+		}
 	}
 }
 
@@ -811,35 +810,13 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 }
 
 - (void)tapOnPreviewView:(UITapGestureRecognizer *) tap {
-	if (_isMultipleView == YES) {
+	FNLOG();
+	if (_isMultipleView) {
 		[self restoreOriginalFrameRate];
-		if ([tap isEqual:_previewNoFilterGestureRecognizer]) {
-			_filterIndex = A3MirrorNoFilter;
-			[self showOneFilterView:A3MirrorNoFilter];
-		} else if ([tap isEqual:_previewMonoFilterGestureRecognizer]) {
-			_filterIndex = A3MirrorMonoFilter;
-			[self showOneFilterView:A3MirrorMonoFilter];
-		} else if ([tap isEqual:_previewTonalFilterGestureRecognizer]) {
-			_filterIndex = A3MirrorTonalFilter;
-			[self showOneFilterView:A3MirrorTonalFilter];
-		} else if ([tap isEqual:_previewNoirFilterGestureRecognizer]) {
-			_filterIndex = A3MirrorNoirFilter;
-			[self showOneFilterView:A3MirrorNoirFilter];
-		} else if ([tap isEqual:_previewFadeFilterGestureRecognizer]) {
-			_filterIndex = A3MirrorFadeFilter;
-			[self showOneFilterView:A3MirrorFadeFilter];
-		} else if ([tap isEqual:_previewChromeFilterGestureRecognizer]) {
-			_filterIndex = A3MirrorChromeFilter;
-			[self showOneFilterView:A3MirrorChromeFilter];
-		} else if ([tap isEqual:_previewProcessFilterGestureRecognizer]) {
-			_filterIndex = A3MirrorProcessFilter;
-			[self showOneFilterView:A3MirrorProcessFilter];
-		} else if ([tap isEqual:_previewTransferFilterGestureRecognizer]) {
-			_filterIndex = A3MirrorTransferFilter;
-			[self showOneFilterView:A3MirrorTransferFilter];
-		} else if([tap isEqual:_previewInstantFilterGestureRecognizer]) {
-			_filterIndex = A3MirrorInstantFilter;
-			[self showOneFilterView:A3MirrorInstantFilter];
+
+		_filterIndex = [_filterViews indexOfObject:tap.view];
+		if (_filterIndex != NSNotFound) {
+			[self showOneFilterView:_filterIndex];
 		}
 
 		[self.filterButton setBackgroundImage:nil forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
@@ -851,7 +828,8 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 		self.bottomBar.hidden = NO;
 		_isMultipleView = NO;
 	}
-	else {
+	else
+	{
 		if (IS_IPHONE && IS_LANDSCAPE) return;
 
 		BOOL toolBarHidden = self.topBar.hidden;
@@ -897,6 +875,8 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 }
 
 - (void)createFilterViews {
+	if ([_filterViews count]) return;
+
 	_filterViews = [NSMutableArray new];
 
 	_videoPreviewViewMonoFilter = [self filterView];
@@ -990,7 +970,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	[self removeAllFilterViews];
 
 	_videoPreviewViewNoFilter = nil;
-	if (_isFiltersEnabled == YES) {
+	if (_isFiltersEnabled) {
 		_videoPreviewViewMonoFilter = nil;
 		_videoPreviewViewTonalFilter = nil;
 		_videoPreviewViewNoirFilter = nil;
@@ -1003,17 +983,8 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 
 	[self _stop];
 
-	_previewNoFilterGestureRecognizer = nil;
-	if (_isFiltersEnabled == YES) {
-		_previewMonoFilterGestureRecognizer = nil;
-		_previewTonalFilterGestureRecognizer = nil;
-		_previewNoirFilterGestureRecognizer = nil;
-		_previewFadeFilterGestureRecognizer = nil;
-		_previewChromeFilterGestureRecognizer = nil;
-		_previewProcessFilterGestureRecognizer = nil;
-		_previewTransferFilterGestureRecognizer = nil;
-		_previewInstantFilterGestureRecognizer = nil;
-
+	if (_isFiltersEnabled) {
+		_filterViews = nil;
 		_monoLabel = nil;
 		_tonalLabel = nil;
 		_noirLabel = nil;

@@ -39,9 +39,20 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     FrameRateCalculator 		*_frameCalculator;
 }
 
+@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @property (nonatomic, strong) AVCaptureDevice *videoDevice;
 @property (nonatomic, strong) UIView *statusBarBackground;
-@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *lightButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *snapButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *cameraRollButton;
+@property (weak, nonatomic) IBOutlet UIToolbar *topToolBar;
+@property (weak, nonatomic) IBOutlet UIToolbar *brightnessToolBar;
+@property (weak, nonatomic) IBOutlet UIToolbar *magnifierToolBar;
+@property (weak, nonatomic) IBOutlet UIToolbar *bottomToolBar;
+@property (weak, nonatomic) IBOutlet UISlider *zoomSlider;
+@property (weak, nonatomic) IBOutlet UISlider *brightnessSlider;
+@property (weak, nonatomic) IBOutlet UISlider *flashBrightSlider;
+@property (weak, nonatomic) IBOutlet UIToolbar *flashToolBar;
 
 @end
 
@@ -86,16 +97,12 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     [self setupBrightness];
     [self setupTorchLevelBar];
     
-	_isLosslessZoom = _videoDevice.activeFormat.videoMaxZoomFactor > 1.0;
-
 	[self setupZoomSlider];
     
     _isInvertedColor = NO;
     _isLightOn = NO;
     self.flashBrightSlider.value = 0.5;
     [self setupInstructionView];
-
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)removeObserver {
@@ -118,15 +125,6 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 	return [super resignFirstResponder];
 }
 
-- (void)applicationDidBecomeActive {
-	[_captureSession startRunning];
-
-	[self applyZoomScale];
-	if (_isLightOn) {
-		[self applyLED];
-	}
-}
-
 - (BOOL)usesFullScreenInLandscape {
     return YES;
 }
@@ -136,7 +134,50 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 
 	[self configureLayout];
 
-	[_captureSession startRunning];
+	if ([A3UIDevice canAccessCamera]) {
+		[_captureSession startRunning];
+	} else {
+		[self requestAuthorizationForCamera:A3AppName_Magnifier];
+	}
+	[self setupButtonEnabled];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
+- (void)applicationDidBecomeActive {
+	[self setupButtonEnabled];
+
+	if ([A3UIDevice canAccessCamera]) {
+		if (!_captureSession) {
+			[self setupAVCapture];
+			[self setupBrightness];
+			[self setupZoomSlider];
+		}
+		[_captureSession startRunning];
+		[self applyZoomScale];
+
+		if (_isLightOn) {
+			[self applyLED];
+		}
+	} else {
+		_captureSession = nil;
+		_videoDevice = nil;
+		_stillImageOutput = nil;
+		_videoDataOutput = nil;
+		_videoDataOutputQueue = nil;
+
+		[self requestAuthorizationForCamera:A3AppName_Magnifier];
+	}
+}
+
+- (void)setupButtonEnabled {
+	BOOL enable = [A3UIDevice canAccessCamera];
+	[self.snapButton setEnabled:enable];
+	[self.lightButton setEnabled:enable];
 }
 
 - (CGAffineTransform)getMagnifierRotationTransform {
@@ -246,13 +287,17 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     self.zoomSlider.value = 1;
 
     if (!_isLosslessZoom) {
-		CGFloat deviceMax = [[_stillImageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor];
-		if (deviceMax == 1) {
-			self.zoomSlider.maximumValue = MAX_ZOOM_FACTOR;
+		if (_stillImageOutput) {
+			CGFloat deviceMax = [[_stillImageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor];
+			if (deviceMax == 1) {
+				self.zoomSlider.maximumValue = MAX_ZOOM_FACTOR;
+			} else {
+				self.zoomSlider.maximumValue = MIN(MAX_ZOOM_FACTOR, deviceMax);
+			}
 		} else {
-			self.zoomSlider.maximumValue = MIN(MAX_ZOOM_FACTOR, deviceMax);
+			self.zoomSlider.maximumValue = 1.0;
 		}
-    } else {
+	} else {
         self.zoomSlider.maximumValue = [self getMaxZoom];
     }
 }
@@ -615,13 +660,16 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
 }
 
 - (void)setupAVCapture {
+	if (![A3UIDevice canAccessCamera]) return;
+
     NSError *error = nil;
-	
+
 	_captureSession = [AVCaptureSession new];
     [_captureSession beginConfiguration];
 
     // Select a video device, make an input
 	_videoDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+	_isLosslessZoom = _videoDevice.activeFormat.videoMaxZoomFactor > 1.0;
     [_videoDevice lockForConfiguration:nil];
 
     if (!_videoDevice.hasTorch) {

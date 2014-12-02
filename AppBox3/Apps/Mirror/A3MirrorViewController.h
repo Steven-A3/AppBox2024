@@ -30,20 +30,4 @@ typedef NS_ENUM(NSUInteger, A3MirrorFilterType) {
 
 @interface A3MirrorViewController : A3CameraViewController <AVCaptureVideoDataOutputSampleBufferDelegate, GLKViewDelegate, UIGestureRecognizerDelegate>
 
-@property (weak, nonatomic) IBOutlet UIToolbar *topBar;
-@property (weak, nonatomic) IBOutlet UIToolbar *bottomBar;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *cameraRollButton;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *filterButton;
-@property (weak, nonatomic) IBOutlet UISlider *zoomSlider;
-@property (weak, nonatomic) IBOutlet UIToolbar *zoomToolBar;
-
-- (IBAction)zoomSliderDidValueChange:(id)sender;
-- (IBAction)appsButton:(id)sender;
-- (IBAction)flipButton:(id)sender;
-- (IBAction)showInstructionView:(id)sender;
-- (IBAction)snapButtonAction:(id)sender;
-- (IBAction)colorButton:(id)sender;
-
-@property (weak, nonatomic) IBOutlet UIView *viewOutlet;
-
 @end

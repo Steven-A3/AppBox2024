@@ -12,24 +12,5 @@
 #import "A3CameraViewController.h"
 
 @interface A3MagnifierViewController : A3CameraViewController <AVCaptureVideoDataOutputSampleBufferDelegate, UIGestureRecognizerDelegate>
-- (IBAction)appsButtonAction:(id)sender;
-- (IBAction)invertButtonAction:(id)sender;
-- (IBAction)lightButtonAction:(id)sender;
-- (IBAction)brightSliderAction:(id)sender;
-- (IBAction)magnifierSliderAction:(id)sender;
-- (IBAction)snapButtonAction:(id)sender;
-- (IBAction)flashBrightSliderAction:(id)sender;
-- (IBAction)showInstructionView:(id)sender;
-
-@property (weak, nonatomic) IBOutlet UIToolbar *topToolBar;
-@property (weak, nonatomic) IBOutlet UIToolbar *brightnessToolBar;
-@property (weak, nonatomic) IBOutlet UIToolbar *magnifierToolBar;
-@property (weak, nonatomic) IBOutlet UIToolbar *bottomToolBar;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *cameraRollButton;
-@property (weak, nonatomic) IBOutlet UISlider *zoomSlider;
-@property (weak, nonatomic) IBOutlet UISlider *brightnessSlider;
-@property (weak, nonatomic) IBOutlet UISlider *flashBrightSlider;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *lightButton;
-@property (weak, nonatomic) IBOutlet UIToolbar *flashToolBar;
 
 @end

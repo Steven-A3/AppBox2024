@@ -948,5 +948,6 @@
 "Unlock AppBox Pro" = "AppBox Proのロックを解除";
 "Unlock %@" = "%@のロックを解除";
 
-"Camera access disabled" = "カメラを使用することができません";
+"Camera access denied" = "カメラのアクセスが拒否されました";
 "To turn on the LED requires camera access." = "LEDを点灯するカメラのアクセス権限が必要です。";
+"%@ requires camera access." = "%@、カメラへのアクセスを必要とします。";

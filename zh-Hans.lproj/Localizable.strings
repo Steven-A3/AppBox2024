@@ -950,12 +950,10 @@
 "Traffic Light" = "红绿灯";
 
 "For monthly payment." = "如果按月支付";
-
 "Notifications are disabled" = "通知将被禁用。";
 "Please enable alert after enabling notifications for this app." = "请启用通知这个应用程序后，启用警报。";
-
 "Unlock AppBox Pro" = "解锁AppBox Pro";
 "Unlock %@" = "解锁%@";
-
-"Camera access disabled" = "相机不能使用";
+"Camera access denied" = "相机不能使用";
 "To turn on the LED requires camera access." = "要打开LED，需要摄像头的访问。";
+"%@ requires camera access." = "%@，需要摄像头的访问。";

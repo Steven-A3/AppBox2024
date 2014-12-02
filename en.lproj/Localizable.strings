@@ -848,15 +848,10 @@
 "Use AppBox Pro" = "Use AppBox Pro";
 
 "Loading" = "Loading";
-
 "DaysCalendar_CalendarDeleteConfirmMsg" = "Are you sure you want to delete this calendar? All events associated with the calendar will also be deleted.";
-
 "%@ syncing is in progress. Try after 10 minutes." = "%@ syncing is in progress. Try after 10 minutes.";
-
 "iCloud delete is in progress. Try after 10 minutes." = "iCloud delete is in progress. Try after 10 minutes.";
-
 "Syncing...(%@)" = "Syncing...(%@)";
-
 "Detail" = "Detail";
 
 "Data migration is in progress.\nEnter Encryption Key for Wallet." = "Data migration is in progress.\
@@ -889,13 +884,11 @@ Enter Encryption Key for Wallet.";
 "Traffic Light" = "Traffic Light";
 
 "For monthly payment." = "For monthly payment.";
-
 "Notifications are disabled" = "Notifications are disabled";
 "Please enable alert after enabling notifications for this app." = "Please enable alert after enabling notifications for this app.";
-
 "Cannot Save Period." = "Cannot Save Period.";
 "Unlock AppBox Pro" = "Unlock AppBox Pro";
 "Unlock %@" = "Unlock %@";
-
-"Camera access disabled" = "Camera access disabled";
+"Camera access denied" = "Camera access disabled";
 "To turn on the LED requires camera access." = "LED requires camera access.";
+"%@ requires camera access." = "%@ requires camera access.";

@@ -936,12 +936,10 @@ Wprowadź klucz szyfrowania dla portfela.";
 "Traffic Light" = "Światła drogowe";
 
 "For monthly payment." = "Za miesięczną wypłatę.";
-
 "Notifications are disabled" = "Powiadomienia są wyłączone.";
 "Please enable alert after enabling notifications for this app." = "Proszę włączyć alarm po włączeniu powiadomień dla tej aplikacji.";
-
 "Unlock AppBox Pro" = "Odblokować AppBox Pro";
 "Unlock %@" = "Odblokować %@";
-
-"Camera access disabled" = "Odmowa dostępu aparatu";
+"Camera access denied" = "Odmowa dostępu aparatu";
 "To turn on the LED requires camera access." = "Aby włączyć LED wymaga dostępu do kamery.";
+"%@ requires camera access." = "%@ wymaga dostępu do kamery.";

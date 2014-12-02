@@ -930,12 +930,10 @@ Inserire chiave di crittografia per il portafoglio.";
 "Traffic Light" = "Semaforo";
 
 "For monthly payment." = "Per il pagamento mensile.";
-
 "Notifications are disabled" = "Le notifiche sono disabilitate.";
 "Please enable alert after enabling notifications for this app." = "Si prega di abilitare allarme dopo aver abilitato le notifiche per questa applicazione.";
-
 "Unlock AppBox Pro" = "Sblocca AppBox Pro ";
 "Unlock %@" = "Sblocca %@";
-
-"Camera access disabled" = "Accesso Camera negato.";
+"Camera access denied" = "Accesso Camera negato.";
 "To turn on the LED requires camera access." = "Per accendere il LED richiede l'accesso della fotocamera.";
+"%@ requires camera access." = "%@ richiede l'accesso della fotocamera.";

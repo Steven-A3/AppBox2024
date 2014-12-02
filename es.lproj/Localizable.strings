@@ -932,9 +932,8 @@ Introduzca la clave de cifrado para el bolsillo.";
 
 "Notifications are disabled" = "Las notificaciones son discapacitados.";
 "Please enable alert after enabling notifications for this app." = "Por favor, activa alerta después de activar las notificaciones para esta aplicación.";
-
 "Unlock AppBox Pro" = "Desbloquear AppBox Pro";
 "Unlock %@" = "Desbloquear %@";
-
-"Camera access disabled" = "Acceso a la cámara negó";
+"Camera access denied" = "Acceso a la cámara negó";
 "To turn on the LED requires camera access." = "Para encender el LED requiere acceso a la cámara.";
+"%@ requires camera access." = "%@ requiere acceso a la cámara.";

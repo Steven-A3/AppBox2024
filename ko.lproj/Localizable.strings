@@ -945,12 +945,10 @@
 "Traffic Light" = "신호등";
 
 "For monthly payment." = "매월 납입에서 사용";
-
 "Notifications are disabled" = "알림이 꺼져 있습니다.";
 "Please enable alert after enabling notifications for this app." = "이 앱의 알림 설정을 켜신 후에 알림 설정을 진행해주세요.";
-
 "Unlock AppBox Pro" = "AppBox Pro 잠금 해제";
 "Unlock %@" = "%@ 잠금 해제";
-
-"Camera access disabled" = "카메라를 사용할 수 없습니다";
+"Camera access denied" = "카메라를 사용할 수 없습니다";
 "To turn on the LED requires camera access." = "LED를 켜려면 카메라 접근 권한이 필요합니다.";
+"%@ requires camera access." = "%@: 카메라 접근 권한이 필요합니다.";
