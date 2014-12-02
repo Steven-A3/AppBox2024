@@ -79,6 +79,8 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 }
 
 - (void)removeObserver {
+	[super removeObserver];
+
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidShow object:nil];
@@ -125,14 +127,6 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 
 - (void)dealloc {
 	[self removeObserver];
-}
-
-- (BOOL)resignFirstResponder {
-	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
-	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_Wallet]) {
-		[self dismissInstructionViewController:nil];
-	}
-	return [super resignFirstResponder];
 }
 
 - (void)mainMenuDidShow {

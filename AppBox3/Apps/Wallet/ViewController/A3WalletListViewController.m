@@ -27,6 +27,7 @@
 #import "NSMutableArray+A3Sort.h"
 #import "NSString+WalletStyle.h"
 #import "WalletField.h"
+#import "A3UserDefaults.h"
 
 NSString *const A3WalletTextCellID1 = @"A3WalletListTextCell";
 NSString *const A3WalletBigVideoCellID1 = @"A3WalletListBigVideoCell";
@@ -59,9 +60,16 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 	[self registerContentSizeCategoryDidChangeNotification];
 
 	self.tabBarController.tabBar.translucent = NO;
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
+}
+
+- (void)applicationWillResignActive {
+	[self resignFirstResponder];
 }
 
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 }
 
@@ -86,6 +94,14 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 		FNLOG();
 		[self removeObserver];
 	}
+}
+
+- (BOOL)resignFirstResponder {
+	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_Wallet]) {
+		[self dismissInstructionViewController:nil];
+	}
+	return [super resignFirstResponder];
 }
 
 - (void)dealloc {

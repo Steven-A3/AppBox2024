@@ -156,7 +156,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 - (void)applicationWillResignActive {
-	[self.firstResponder resignFirstResponder];
+	[self resignFirstResponder];
 }
 
 - (void)cloudStoreDidImport {

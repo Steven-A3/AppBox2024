@@ -23,6 +23,8 @@
 @property (nonatomic, assign) BOOL showCategoryInDetailViewController;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 
+- (void)removeObserver;
+
 - (void)initializeViews;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath walletItem:(WalletItem *)item;
 - (void)showLeftNavigationBarItems;
