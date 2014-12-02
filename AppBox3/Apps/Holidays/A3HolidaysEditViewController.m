@@ -361,12 +361,17 @@ static NSString *CellIdentifier = @"Cell";
 			}
 
 			NSInteger myButtonIndex = buttonIndex;
-			_imagePickerController = [[UIImagePickerController alloc] init];
-			if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-				myButtonIndex++;
-			if (actionSheet.destructiveButtonIndex>=0)
+			if (actionSheet.destructiveButtonIndex >= 0)
 				myButtonIndex--;
-            
+
+			if (myButtonIndex == 0 && !IS_IOS7 && ![A3UIDevice canAccessCamera]) {
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[self requestAuthorizationForCamera:NSLocalizedString(A3AppName_Holidays, nil)];
+				});
+
+				return;
+			}
+			_imagePickerController = [[UIImagePickerController alloc] init];
 			switch (myButtonIndex) {
 				case 0:
 					_imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
@@ -389,49 +394,25 @@ static NSString *CellIdentifier = @"Cell";
 			if (IS_IPAD) {
 				if (_imagePickerController.sourceType == UIImagePickerControllerSourceTypeCamera) {
 					_imagePickerController.showsCameraControls = YES;
-                    
-                    if (IS_IOS7) {
-                        [self presentViewController:_imagePickerController animated:YES completion:NULL];
-                    }
-                    else {
-                        [self presentViewController:_imagePickerController animated:NO completion:NULL];
-                    }
+
+					double delayInSeconds = 0.0;
+					dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+					dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+						[self presentViewController:_imagePickerController animated:YES completion:NULL];
+					});
 				}
 				else {
-                    CGRect fromRect;
-                    if ([[A3HolidaysFlickrDownloadManager sharedInstance] hasUserSuppliedImageForCountry:_countryCode]) {
-                        UITableViewCell *cell = [self.tableView cellForCellSubview:_imageView];
-                        fromRect = [self.view convertRect:_imageView.frame fromView:cell];
-                    } else {
-                        UITableViewCell *cell = [self.tableView cellForCellSubview:_cameraButton];
-                        fromRect = [self.view convertRect:_cameraButton.frame fromView:cell];
-                    }
-                    
-#ifdef __IPHONE_8_0
-                    if (!IS_IOS7) {
-                        _imagePickerController.modalPresentationStyle = UIModalPresentationPopover;
-                        UIPopoverPresentationController *popoverPresentation = [_imagePickerController popoverPresentationController];
-                        popoverPresentation.permittedArrowDirections = UIPopoverArrowDirectionAny;
-                        popoverPresentation.sourceView = self.view;
-                        popoverPresentation.sourceRect = fromRect;
-                        
-                        // 이전 화면을 덮었던 ActionSheet 가 사라진 후에도 영향을 주어서, 현재의 스택을 벗어나서 실행하도록 하였습니다.
-                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                            [self presentViewController:_imagePickerController animated:YES completion:NULL];
-                        });
-                    }
-                    else
-#endif
-                    {
-                        self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
-                        self.imagePickerPopoverController.delegate = self;
-                        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_currentIndexPath];
-                        if (!cell) {
-                            return;
-                        }
-                        [_imagePickerPopoverController presentPopoverFromRect:[cell.accessoryView bounds] inView:[cell accessoryView] permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-                    }
-                    
+					double delayInSeconds = 0.0;
+					dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+					dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+						self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
+						self.imagePickerPopoverController.delegate = self;
+						UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_currentIndexPath];
+						if (!cell) {
+							return;
+						}
+						[_imagePickerPopoverController presentPopoverFromRect:[cell.accessoryView bounds] inView:[cell accessoryView] permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+					});
 				}
 			}
 			else {

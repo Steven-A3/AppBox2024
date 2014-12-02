@@ -2402,11 +2402,13 @@
 		}
 
 		NSInteger myButtonIndex = buttonIndex;
-		_imagePickerController = [[UIImagePickerController alloc] init];
-		if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-			myButtonIndex++;
 		if (actionSheet.destructiveButtonIndex>=0)
 			myButtonIndex--;
+		if (myButtonIndex == 0 && !IS_IOS7 && ![A3UIDevice canAccessCamera]) {
+			[self requestAuthorizationForCamera:NSLocalizedString(A3AppName_DaysCounter, nil)];
+			return;
+		}
+		_imagePickerController = [[UIImagePickerController alloc] init];
 		switch (myButtonIndex) {
 			case 0:
 				_imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;

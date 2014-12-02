@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
+#import "A3MirrorViewController.h"
 #import <CoreLocation/CoreLocation.h>
 #import "A3WalletItemEditViewController.h"
 #import "A3AppDelegate.h"
@@ -670,6 +671,30 @@ static char const *const key_firstActionSheet 					= "key_firstActionSheet";
 - (BOOL)resignFirstResponder {
 	[self.firstResponder resignFirstResponder];
 	return [super resignFirstResponder];
+}
+
+- (void)requestAuthorizationForCamera:(NSString *)appName {
+	if (IS_IOS7) return;
+	AVAuthorizationStatus authorizationStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+	if (authorizationStatus == AVAuthorizationStatusAuthorized) return;
+	if (authorizationStatus == AVAuthorizationStatusNotDetermined) {
+		[AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:nil];
+		return;
+	}
+	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Camera access denied", nil)
+																			 message:[NSString stringWithFormat:NSLocalizedString(@"%@ requires camera access.", nil), appName]
+																	  preferredStyle:UIAlertControllerStyleAlert];
+	[alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK")
+														style:UIAlertActionStyleCancel
+													  handler:NULL]];
+	[alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(A3AppName_Settings, nil)
+														style:UIAlertActionStyleDefault
+													  handler:^(UIAlertAction *action) {
+														  [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+													  }]];
+	[self presentViewController:alertController
+					   animated:YES
+					 completion:NULL];
 }
 
 @end

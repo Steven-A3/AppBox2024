@@ -11,6 +11,7 @@
 #import "A3CameraViewController.h"
 #import "MWPhotoBrowser.h"
 #import "A3AppDelegate.h"
+#import "UIViewController+A3Addition.h"
 
 @interface A3CameraViewController () <MWPhotoBrowserDelegate>
 
@@ -258,30 +259,6 @@
 	}
 
 	return transform;
-}
-
-- (void)requestAuthorizationForCamera:(NSString *)appName {
-	if (IS_IOS7) return;
-	AVAuthorizationStatus authorizationStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
-	if (authorizationStatus == AVAuthorizationStatusAuthorized) return;
-	if (authorizationStatus == AVAuthorizationStatusNotDetermined) {
-		[AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:nil];
-		return;
-	}
-	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Camera access denied", nil)
-																			 message:[NSString stringWithFormat:NSLocalizedString(@"%@ requires camera access.", nil), appName]
-																	  preferredStyle:UIAlertControllerStyleAlert];
-	[alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK")
-														style:UIAlertActionStyleCancel
-													  handler:NULL]];
-	[alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(A3AppName_Settings, nil)
-														style:UIAlertActionStyleDefault
-													  handler:^(UIAlertAction *action) {
-														  [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
-													  }]];
-	[self presentViewController:alertController
-					   animated:YES
-					 completion:NULL];
 }
 
 @end

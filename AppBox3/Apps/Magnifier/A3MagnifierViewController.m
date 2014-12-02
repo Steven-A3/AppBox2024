@@ -137,7 +137,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 	if ([A3UIDevice canAccessCamera]) {
 		[_captureSession startRunning];
 	} else {
-		[self requestAuthorizationForCamera:A3AppName_Magnifier];
+		[self requestAuthorizationForCamera:NSLocalizedString(A3AppName_Magnifier, nil)];
 	}
 	[self setupButtonEnabled];
 }
@@ -170,7 +170,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 		_videoDataOutput = nil;
 		_videoDataOutputQueue = nil;
 
-		[self requestAuthorizationForCamera:A3AppName_Magnifier];
+		[self requestAuthorizationForCamera:NSLocalizedString(A3AppName_Magnifier, nil)];
 	}
 }
 
