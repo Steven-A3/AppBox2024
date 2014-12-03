@@ -207,8 +207,9 @@
 "Hurricane Thanksgiving Day"  = "추수 감사절";
 "Immaculate Conception Day"  = "무흠 수태";
 "Immaculate Conception"  = "무흠 수태";
-"Independence Day(Jum I-Indipendenza)"  = "독립기념일";
-"Independence Day"  = "독립기념일";
+"Independence Day(Jum I-Indipendenza)" = "독립기념일";
+"Independence Day" = "독립기념일";
+"Independence Day(Observed)" = "독립기념일(대체휴일)";
 "Independence Day(July 28~29)"  = "독립기념일(7월28일~29일)";
 "Independence Day(National Day)"  = "독립기념일(국경일)";
 "Independence Day(공화일)"  = "독립기념일";
@@ -420,6 +421,7 @@
 "Vernal Equinox"  = "춘분";
 "Vesak Day"  = "부처님 오신날";
 "Veterans Day"  = "재향 군인의 날";
+"Veterans Day(Observed)" = "재향 군인의 날(대체휴일)";
 "Victory Day"  = "승리의 날";
 "Victory Day(Ziua Victoriei)"  = "승리의 날";
 "Victory and Homeland Thanksgiving Day"  = "승리 및 추석감사절";
@@ -668,7 +670,7 @@
 "Earth Day" = "지구의 날";
 "John F. Kennedy's Birthday" = "존 F. 케네디 탄생일";
 "Patriot Day" = "911 테러 추모일";
-"Election Day" = "대통령 선거일";
+"Election Day" = "미국선거일";
 "Southland Anniversary Day" = "사우스랜드기념일";
 "Taranaki (New Plymouth) Anniversary Day" = "타라나키(뉴 플리머스)기념일";
 "Canterbury (South) Anniversary Day" = "캔터베리의 날(남섬)";

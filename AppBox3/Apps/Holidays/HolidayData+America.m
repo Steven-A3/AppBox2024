@@ -489,6 +489,11 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithWeekday:Sunday ordinal:1 month:11 year:year withCalendar:gregorian];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
+	holidayName = NSLocalizedStringFromTable(@"Election Day", kHolidaysResourceName, nil);
+	date = [HolidayData dateWithWeekday:Monday ordinal:1 month:11 year:year withCalendar:gregorian];
+	date = [date dateByAddingTimeInterval:60 * 60 * 24];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
+	
 	// Veterans Day is celebrated on November 11th.
 	holidayName = NSLocalizedStringFromTable(@"Veterans Day", kHolidaysResourceName, nil);
 	date = [HolidayData dateWithDay:11 month:11 year:year withCalendar:gregorian option:0];
@@ -523,7 +528,6 @@ static NSUInteger jewishTable[][14][2] = {
 
 	return holidays;
 }
-
 
 /*! Jamaica http://en.wikipedia.org/wiki/Public_holidays_in_Jamaica
  */

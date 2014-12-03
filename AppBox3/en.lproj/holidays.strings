@@ -209,6 +209,7 @@
 "Immaculate Conception" = "Immaculate Conception";
 "Independence Day(Jum I-Indipendenza)" = "Independence Day(Jum I-Indipendenza)";
 "Independence Day" = "Independence Day";
+"Independence Day(Observed)" = "Independence Day(Observed)";
 "Independence Day(July 28~29)" = "Independence Day(July 28~29)";
 "Independence Day(National Day)" = "Independence Day(National Day)";
 "Independence Day(Ziua Republicii)" = "Independence Day(Ziua Republicii)";
@@ -691,3 +692,4 @@
 
 "St Stephen's Day / Boxing Day" = "St Stephen's Day / Boxing Day";
 "Saint-Etienne" = "Boxing Day";
+"Veterans Day(Observed)" = "Veterans Day(Observed)";

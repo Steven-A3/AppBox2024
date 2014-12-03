@@ -209,6 +209,7 @@
 "Immaculate Conception" = "Immacolata Concezione";
 "Independence Day(Jum I-Indipendenza)" = "Giorno dell’Indipendenza (Jum I-Indipendenza)";
 "Independence Day" = "Giorno dell’Indipendenza";
+"Independence Day(Observed)" = "Giorno dell’Indipendenza(alternativa)";
 "Independence Day(July 28~29)" = "Giorno dell’Indipendenza (Luglio 28~29)";
 "Independence Day(National Day)" = "Giorno dell’Indipendenza (Giorno Nazionale)";
 "Independence Day(Ziua Republicii)" = "Giorno dell’Indipendenza (Ziua Republici)";
@@ -420,6 +421,7 @@
 "Vernal Equinox" = "Equinozio di Primavera";
 "Vesak Day" = "Festa di Vesak";
 "Veterans Day" = "Festa dei Veterani";
+"Veterans Day(Observed)" = "Festa dei Veterani(alternativa)";
 "Victory Day" = "Giorno dell'Unità Nazionale e Festa delle Forze Armate";
 "Victory Day(Ziua Victoriei)" = "Giorno della Vittoria(Ziua Victoriei)";
 "Victory and Homeland Thanksgiving Day" = "Giorno di Vittoria e Ringraziamento della Patria";
@@ -431,7 +433,7 @@
 "Whit Sunday" = "Domenica di Pentecoste";
 "Whit Sunday(Pentecost)" = "Domenica di Pentecoste";
 "Women's Day" = "Festa delle Donne";
-"Women's Day(for Women only" = "Festa delle Donne(Solo Per la Donna)";
+"Women's Day(for Women only)" = "Festa delle Donne(Solo Per la Donna)";
 "Worker's Day" = "Giorno del Lavoratore";
 "Workers' Day (Jum il-Haddiem)" = "Giorno del Lavoratore(Jum il-Haddiem)";
 "Youth Day" = "Giorno del Gioventú";
@@ -697,3 +699,4 @@
 
 "St Stephen's Day / Boxing Day" = "Boxing Day";
 "Saint-Etienne" = "Boxing Day";
+

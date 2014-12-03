@@ -209,6 +209,7 @@
 "Immaculate Conception" = "無原罪懐胎";
 "Independence Day(Jum I-Indipendenza)" = "独立記念日";
 "Independence Day" = "独立記念日";
+"Independence Day(Observed)" = "独立記念日(振替休日)";
 "Independence Day(July 28~29)" = "独立記念日(7月28日~29日)";
 "Independence Day(National Day)" = "独立記念日(国慶節)";
 "Independence Day(Ziua Republicii)" = "独立記念日";
@@ -420,6 +421,7 @@
 "Vernal Equinox" = "春分";
 "Vesak Day" = "花祭り";
 "Veterans Day" = "復員軍人の日";
+"Veterans Day(Observed)" = "復員軍人の日(振替休日)";
 "Victory Day" = "勝利の日";
 "Victory Day(Ziua Victoriei)" = "勝利の日";
 "Victory and Homeland Thanksgiving Day" = "勝利及び感謝祭";
@@ -431,7 +433,7 @@
 "Whit Sunday" = "五旬節";
 "Whit Sunday(Pentecost)" = "五旬節";
 "Women's Day" = "婦人の日";
-"Women's Day(for Women only" = "女性の日(女性のみ)";
+"Women's Day(for Women only)" = "女性の日(女性のみ)";
 "Worker's Day" = "労働者の日";
 "Workers' Day (Jum il-Haddiem)" = "労働者の日";
 "Youth Day" = "青年の日";
@@ -453,7 +455,7 @@
 "Shemini Atzeret*" = "シェミニ・アツェレット";
 "Simchat Torah*" = "律法の祭り";
 "Hanukkah" = "光の祭典";
-	
+
 "Tamkharit (Ashura)" = "アシュラ";
 "The Prophet's Birthday (Maouloud)" = "マホメット生誕日";
 "The Prophet's Birthday (Maulidur Rasul)" = "マホメット生誕日 ";
@@ -671,7 +673,7 @@
 "Earth Day" = "地球の日";
 "John F. Kennedy's Birthday" = "ジョン F ケネディの誕生日";
 "Patriot Day" = "愛国者の日";
-"Election Day" = "大統領選挙日";
+"Election Day" = "選挙の日";
 "Southland Anniversary Day" = "サウスランド記念日";
 "Taranaki (New Plymouth) Anniversary Day" = "タラナキ (ニュー プリモス) 記念日";
 "Canterbury (South) Anniversary Day" = "(南) カンタベリー記念日";
@@ -699,7 +701,6 @@
 "Showa Day" = "昭和の日";
 "Constitution Memorial Day" = "憲法記念日";
 "Autumnal Equinox Day" = "秋分の日";
-
 
 "St Stephen's Day / Boxing Day" = "ボクシング・デー";
 "Saint-Etienne" = "ボクシング・デー";

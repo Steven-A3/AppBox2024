@@ -208,6 +208,7 @@
 "Immaculate Conception" = "无沾成胎";
 "Independence Day(Jum I-Indipendenza)" = "独立纪念日";
 "Independence Day" = "独立纪念日";
+"Independence Day(Observed)" = "独立纪念日(另类假期)";
 "Independence Day(July 28~29)" = "独立纪念日(7月28日~29日)";
 "Independence Day(National Day)" = "独立纪念日(国庆节)";
 "Independence Day(Ziua Republicii)" = "独立纪念日";
@@ -419,6 +420,7 @@
 "Vernal Equinox" = "春分";
 "Vesak Day" = "卫塞节";
 "Veterans Day" = "退伍军人节";
+"Veterans Day(Observed)" = "退伍军人节(另类假期)";
 "Victory Day" = "胜利日";
 "Victory Day(Ziua Victoriei)" = "胜利日";
 "Victory and Homeland Thanksgiving Day" = "胜利和国土感恩节";
@@ -430,7 +432,7 @@
 "Whit Sunday" = "圣灵降临节";
 "Whit Sunday(Pentecost)" = "圣灵降临节";
 "Women's Day" = "妇女节";
-"Women's Day(for Women only" = "妇女节（只限女性）";
+"Women's Day(for Women only)" = "妇女节（只限女性）";
 "Worker's Day" = "劳工节";
 "Workers' Day (Jum il-Haddiem)" = "劳工节";
 "Youth Day" = "青年节";

@@ -226,6 +226,7 @@
 "Immaculate Conception" = "Unbefleckte Empfängnis";
 "Independence Day(Jum I-Indipendenza)" = "Tag der Unabhängigkeit (Jum I-Indipendenza)";
 "Independence Day" = "Tag der Unabhängigkeit";
+"Independence Day(Observed)" = "Tag der Unabhängigkeit(Alternative)";
 "Independence Day(July 28~29)" = "Tag der Unabhängigkeit (28. -29. Juli)";
 "Independence Day(National Day)" = "Tag der Unabhängigkeit (Nationalfeiertag)";
 "Independence Day(Ziua Republicii)" = "Tag der Unabhängigkeit (Ziua Republik)";
@@ -469,6 +470,7 @@
 "Vernal Equinox" = "Frühlingspunkt";
 "Vesak Day" = "Vesak-Tag";
 "Veterans Day" = "Tag der Veteranen";
+"Veterans Day(Observed)" = "Tag der Veteranen(Alternative)";
 "Victory Day" = "Tag des Sieges";
 "Victory Day(Ziua Victoriei)" = "Tag des Sieges (Ziua Victoriei)";
 "Victory and Homeland Thanksgiving Day" = "Tag des Sieg, der Heimat und Erntedankfest";
@@ -668,7 +670,7 @@
 "Earth Day" = "Tag der Erde";
 "John F. Kennedy's Birthday" = "Geburtstag von John F. Kennedy";
 "Patriot Day" = "Tag der Patrioten";
-"Election Day" = "Präsidentschaftswahl";
+"Election Day" = "Wahltag";
 "Southland Anniversary Day" = "Southland-Jahrestag";
 "Taranaki (New Plymouth) Anniversary Day" = "Taranaki-Jahrestag – New Plymouth";
 "Canterbury (South) Anniversary Day" = "Canterbury-Jahrestag – Süden";
@@ -697,4 +699,3 @@
 "Day of Repentance and Prayer" = "Buß- und Bettag";
 "St Stephen's Day / Boxing Day" = "2. Weihnachtsfeiertag";
 "Saint-Etienne" = "Geschenkschachtel-Tag";
-

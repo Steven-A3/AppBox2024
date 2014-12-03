@@ -209,6 +209,7 @@
 "Immaculate Conception" = "Inmaculada Concepción";
 "Independence Day(Jum I-Indipendenza)" = "Día de la Independencia(Jum I-Indipendenza)";
 "Independence Day" = "Día de la Independencia";
+"Independence Day(Observed)" = "Día de la Independencia(alternativa)";
 "Independence Day(July 28~29)" = "Día de la Independencia (28~29 de Julio)";
 "Independence Day(National Day)" = "Día de la Independencia (Día Nacional)";
 "Independence Day(Ziua Republicii)" = "Día de la Independencia(Ziua Republicii)";
@@ -420,6 +421,7 @@
 "Vernal Equinox" = "Equinoccio Vernal ";
 "Vesak Day" = "Día de Vesak";
 "Veterans Day" = "Día de los veteranos";
+"Veterans Day(Observed)" = "Día de los veteranos(alternativa)";
 "Victory Day" = "Día de Victoria";
 "Victory Day(Ziua Victoriei)" = "Victory Day(Ziua Victoriei)";
 "Victory and Homeland Thanksgiving Day" = "Día de Victoria y Gracias de Patria";
@@ -431,7 +433,7 @@
 "Whit Sunday" = "Domingo de Pentecostés";
 "Whit Sunday(Pentecost)" = "Domingo de Pentecostés";
 "Women's Day" = "Día de las Mujeres";
-"Women's Day(for Women only" = "Día de las Mujeres(Solamente para las mujeres)";
+"Women's Day(for Women only)" = "Día de las Mujeres(Solamente para las mujeres)";
 "Worker's Day" = "Día de los Trabajadores";
 "Workers' Day (Jum il-Haddiem)" = "Día de los Trabajadores(Jum il-Haddiem)";
 "Youth Day" = "Día de la Juventud";
