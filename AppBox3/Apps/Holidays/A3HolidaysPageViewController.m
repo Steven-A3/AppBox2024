@@ -46,6 +46,7 @@
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) NSString *dateFormat;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
+@property (nonatomic, strong) UIAlertView *disclaimerAlertView;
 @end
 
 @implementation A3HolidaysPageViewController {
@@ -158,6 +159,9 @@
 - (BOOL)resignFirstResponder {
 	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
 	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_Holidays]) {
+		if (_disclaimerAlertView) {
+			[_disclaimerAlertView dismissWithClickedButtonIndex:_disclaimerAlertView.cancelButtonIndex animated:NO];
+		}
 		[self.instructionViewController.view removeFromSuperview];
 		self.instructionViewController = nil;
 	}
@@ -173,6 +177,7 @@
 												  otherButtonTitles:nil];
 		alertView.tag = 82093;
 		[alertView show];
+		_disclaimerAlertView = alertView;
 	}
 }
 
@@ -180,6 +185,13 @@
 	if (alertView.tag == 82093) {
 		[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3HolidaysDoesNotNeedsShowDisclaimer];
 		[[A3UserDefaults standardUserDefaults] synchronize];
+	}
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+	FNLOG();
+	if (alertView == _disclaimerAlertView) {
+		_disclaimerAlertView = nil;
 	}
 }
 

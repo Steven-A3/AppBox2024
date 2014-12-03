@@ -35,7 +35,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) A3BackgroundWithPatternView *backgroundView;
 @property (nonatomic, strong) UIView *coverViewOnBlur;
-
+@property (nonatomic, strong) UIAlertView *acknowledgementAlertView;
 @end
 
 @implementation A3HolidaysPageContentViewController {
@@ -89,6 +89,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	[_imageView setScrollView:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3HolidaysFlickrDownloadManagerDownloadComplete object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 }
 
 - (void)prepareClose {
@@ -115,6 +116,18 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 			UIInterfaceOrientation orientation = CURRENT_ORIENTATION;
 			self.tableView.tableHeaderView = [self tableHeaderViewForInterfaceOrientation:orientation];
 		}
+	}
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
+}
+
+- (void)applicationWillResignActive {
+	if (_acknowledgementAlertView) {
+		[_acknowledgementAlertView dismissWithClickedButtonIndex:_acknowledgementAlertView.cancelButtonIndex animated:NO];
 	}
 }
 
@@ -148,6 +161,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 												  otherButtonTitles:nil];
 			alert.tag = 894234;
 			[alert show];
+			_acknowledgementAlertView = alert;
 		}
 	});
 }
@@ -156,6 +170,12 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	if (alertView.tag == 894234) {
 		[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3HolidaysDoesNotNeedsShowAcknowledgement];
 		[[A3UserDefaults standardUserDefaults] synchronize];
+	}
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+	if (alertView == _acknowledgementAlertView) {
+		_acknowledgementAlertView = nil;
 	}
 }
 
