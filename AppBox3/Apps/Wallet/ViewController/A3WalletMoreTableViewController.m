@@ -158,7 +158,8 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 - (BOOL)resignFirstResponder {
 	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
 	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_Wallet]) {
-		[self dismissInstructionViewController:nil];
+		[self.instructionViewController.view removeFromSuperview];
+		self.instructionViewController = nil;
 	}
 	return [super resignFirstResponder];
 }

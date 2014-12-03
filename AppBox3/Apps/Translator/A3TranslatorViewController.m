@@ -143,7 +143,8 @@
 - (BOOL)resignFirstResponder {
 	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
 	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_Translator]) {
-		[self dismissInstructionViewController:nil];
+		[self.instructionViewController.view removeFromSuperview];
+		self.instructionViewController = nil;
 	}
 	return [super resignFirstResponder];
 }
