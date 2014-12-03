@@ -264,6 +264,7 @@ NSString *const cellID = @"flashEffectID";
 }
 
 - (void)requestAuthorizationForCamera {
+	if (![A3UIDevice hasTorch]) return;
 	if (IS_IOS7) return;
 	AVAuthorizationStatus authorizationStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
 	if (authorizationStatus == AVAuthorizationStatusAuthorized) return;
