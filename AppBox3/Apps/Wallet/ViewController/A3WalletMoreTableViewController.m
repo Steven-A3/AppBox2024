@@ -278,7 +278,7 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 
 - (NSManagedObjectContext *)savingContext {
 	if (!_savingContext) {
-		_savingContext = [NSManagedObjectContext MR_rootSavingContext];
+		_savingContext = [NSManagedObjectContext MR_defaultContext];
 	}
 	return _savingContext;
 }
@@ -408,56 +408,21 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
 	FNLOG(@"%ld - %ld, %ld - %ld", (long)fromIndexPath.section, (long)fromIndexPath.row, (long)toIndexPath.section, (long)toIndexPath.row);
-	if (fromIndexPath.section == toIndexPath.section) {
-		NSMutableArray *section = self.sections[fromIndexPath.section];
-		[section moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
-		[self.savingContext MR_saveToPersistentStoreAndWait];
-        self.categories = nil;
-        self.sections = nil;
-        [self.tableView reloadData];
+
+	NSInteger fromIndex = fromIndexPath.section * [self numberOfItemsOnTapBar] + fromIndexPath.row;
+	NSInteger toIndex = toIndexPath.section * [self numberOfItemsOnTapBar] + toIndexPath.row;
+	[self.categories moveItemInSortedArrayFromIndex:fromIndex toIndex:toIndex];
+
+	if (fromIndexPath.section != toIndexPath.section && fromIndexPath.section == 1) {
+		WalletCategory *movingObject = self.categories[fromIndex];
+		movingObject.doNotShow = @NO;
 	}
-    else {
-		NSMutableArray *fromSection = self.sections[fromIndexPath.section];
-		WalletCategory *movingObject = fromSection[fromIndexPath.row];
-		[fromSection removeObjectAtIndex:fromIndexPath.row];
-		NSMutableArray *toSection = self.sections[toIndexPath.section];
-		[toSection insertObject:movingObject atIndex:toIndexPath.row];
 
-		if (fromIndexPath.section == 1) {
-			movingObject.doNotShow = @NO;
-		}
+	[self.savingContext MR_saveToPersistentStoreAndWait];
 
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[self.tableView reloadRowsAtIndexPaths:@[toIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-            
-			NSInteger from, to;
-			if (fromIndexPath.section == 0) {
-				from = fromIndexPath.row;
-				to = [self.sections[0] count] + toIndexPath.row;
-			} else {
-				from = [self.sections[0] count] + fromIndexPath.row - 1;
-				to = toIndexPath.row;
-			}
-			[self.categories moveItemInSortedArrayFromIndex:from toIndex:to];
-			[self.savingContext MR_saveToPersistentStoreAndWait];
-			self.sections = nil;
-			[self sections];
-            
-			NSIndexPath *adjustedIndexPath;
-			if (fromIndexPath.section == 0) {
-				adjustedIndexPath = [NSIndexPath indexPathForRow:[fromSection count] inSection:0];
-				[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1] toIndexPath:adjustedIndexPath];
-			} else {
-				NSUInteger movingRow = [toSection count] - 1;
-				adjustedIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
-				[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:movingRow inSection:0] toIndexPath:adjustedIndexPath];
-			}
-			[self.tableView reloadRowsAtIndexPaths:@[adjustedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-            
-
-            [self.tableView reloadData];
-		});
-	}
+	self.categories = nil;
+	self.sections = nil;
+	[self.tableView reloadData];
 }
 
 // Override to support conditional rearranging of the table view.
