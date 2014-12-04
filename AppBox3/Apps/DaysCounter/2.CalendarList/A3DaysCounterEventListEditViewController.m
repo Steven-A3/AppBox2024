@@ -200,6 +200,7 @@
 }
 
 #pragma mark - UIActionSheetDelegate
+
 - (void)deleteAllEventsAction
 {
     for(DaysCounterEvent *event in _itemArray){
@@ -267,7 +268,7 @@
             break;
             
         case ActionSheet_DeleteSelected:
-            [self showDeleteSeletedActionSheet];
+			[self showDeleteSelectedActionSheet];
             break;
             
         default:
@@ -283,7 +284,7 @@
     [self setFirstActionSheet:actionSheet];
 }
 
-- (void)showDeleteSeletedActionSheet {
+- (void)showDeleteSelectedActionSheet {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Events", @"Delete Events") otherButtonTitles:nil];
     actionSheet.tag = ActionSheet_DeleteSelected;
     [actionSheet showInView:self.view];
@@ -309,28 +310,7 @@
 
 - (void)deleteAllAction:(id)sender
 {
-#ifdef __IPHONE_8_0
-    if (!IS_IOS7) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:nil]];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete All", @"Delete All") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-            [self deleteAllEventsAction];
-        }]];
-        UIPopoverPresentationController *popover = alertController.popoverPresentationController;
-        popover.sourceView = self.view;
-        popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
-        
-        [self presentViewController:alertController animated:YES completion:NULL];
-    }
-    else
-    {
-        [self showDeleteAllActionSheet];
-    }
-#else
-    {
-        [self showDeleteAllActionSheet];
-    }
-#endif
+	[self showDeleteAllActionSheet];
 }
 
 - (void)toggleSelectAction:(id)sender
@@ -354,29 +334,8 @@
     if (![self hasSelectedItem]) {
         return;
     }
-    
-#ifdef __IPHONE_8_0
-    if (!IS_IOS7) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:nil]];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Events", @"Delete Events") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-            [self deleteSelectedEventsAction];
-        }]];
-        UIPopoverPresentationController *popover = alertController.popoverPresentationController;
-        popover.sourceView = self.view;
-        popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
-        
-        [self presentViewController:alertController animated:YES completion:NULL];
-    }
-    else
-    {
-        [self showDeleteSeletedActionSheet];
-    }
-#else
-    {
-        [self showDeleteSeletedActionSheet];
-    }
-#endif
+
+	[self showDeleteSelectedActionSheet];
 }
 
 -(BOOL)hasSelectedItem
