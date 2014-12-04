@@ -1064,7 +1064,6 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		[self putHistoryWithValue:@([self.previousValue floatValueEx])];
 		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 	}
-	_calculatorTargetTextField = nil;
 }
 
 #pragma mark - KeyboardViewControllerDelegate
