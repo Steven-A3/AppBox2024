@@ -82,41 +82,34 @@
 		cornerRadius = width / 2;
 	}
 
-	[self.colonView removeConstraints:self.colonView.constraints];
-
 	if (showSeconds) {
 		_upperLeftCircle.layer.cornerRadius = cornerRadius;
 		_lowerLeftCircle.layer.cornerRadius = cornerRadius;
 		_upperRightCircle.layer.cornerRadius = cornerRadius;
 		_lowerRightCircle.layer.cornerRadius = cornerRadius;
 
-		[_upperLeftCircle removeConstraints:_upperLeftCircle.constraints];
-		[_lowerLeftCircle removeConstraints:_lowerLeftCircle.constraints];
-		[_upperRightCircle removeConstraints:_upperRightCircle.constraints];
-		[_lowerRightCircle removeConstraints:_lowerRightCircle.constraints];
-
-		[_upperLeftCircle makeConstraints:^(MASConstraintMaker *make) {
+		[_upperLeftCircle remakeConstraints:^(MASConstraintMaker *make) {
 			make.left.equalTo(self.colonView.left);
 			make.top.equalTo(self.colonView.top);
 			make.width.equalTo(@(width));
 			make.height.equalTo(@(width));
 		}];
 
-		[_lowerLeftCircle makeConstraints:^(MASConstraintMaker *make) {
+		[_lowerLeftCircle remakeConstraints:^(MASConstraintMaker *make) {
 			make.left.equalTo(self.colonView.left);
 			make.bottom.equalTo(self.colonView.bottom);
 			make.width.equalTo(@(width));
 			make.height.equalTo(@(width));
 		}];
 
-		[_upperRightCircle makeConstraints:^(MASConstraintMaker *make) {
+		[_upperRightCircle remakeConstraints:^(MASConstraintMaker *make) {
 			make.right.equalTo(self.colonView.right);
 			make.top.equalTo(self.colonView.top);
 			make.width.equalTo(@(width));
 			make.height.equalTo(@(width));
 		}];
 
-		[_lowerRightCircle makeConstraints:^(MASConstraintMaker *make) {
+		[_lowerRightCircle remakeConstraints:^(MASConstraintMaker *make) {
 			make.right.equalTo(self.colonView.right);
 			make.bottom.equalTo(self.colonView.bottom);
 			make.width.equalTo(@(width));
@@ -126,17 +119,14 @@
 		_upperCircle.layer.cornerRadius = cornerRadius;
 		_lowerCircle.layer.cornerRadius = cornerRadius;
 
-		[_upperCircle removeConstraints:_upperCircle.constraints];
-		[_lowerCircle removeConstraints:_lowerCircle.constraints];
-
-		[_upperCircle makeConstraints:^(MASConstraintMaker *make) {
+		[_upperCircle remakeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(self.colonView.centerX);
 			make.top.equalTo(self.colonView.top);
 			make.width.equalTo(@(width));
 			make.height.equalTo(@(width));
 		}];
 
-		[_lowerCircle makeConstraints:^(MASConstraintMaker *make) {
+		[_lowerCircle remakeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(self.colonView.centerX);
 			make.bottom.equalTo(self.colonView.bottom);
 			make.width.equalTo(@(width));
@@ -144,7 +134,7 @@
 		}];
 	}
 
-	[self.colonView makeConstraints:^(MASConstraintMaker *make) {
+	[self.colonView remakeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(self.centerX);
 		self.colonViewCenterY = make.centerY.equalTo(self.top).with.offset(self.frame.size.height / 2);
 		if (self.position == ClockWaveLocationBig) {
@@ -156,7 +146,6 @@
 		}
 	}];
 }
-
 
 - (void)setColonColor:(UIColor *)color {
 	for (UIView *dot in self.colonView.subviews) {
