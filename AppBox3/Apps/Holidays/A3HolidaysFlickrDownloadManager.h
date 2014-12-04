@@ -20,25 +20,17 @@ extern NSString *const A3HolidaysFlickrDownloadManagerDownloadComplete;
 @property (nonatomic) NSURLSessionDownloadTask *downloadTask;
 
 + (instancetype)sharedInstance;
-
 - (UIImage *)imageForCountryCode:(NSString *)countryCode;
-
 - (NSString *)holidayImagePathForCountryCode:(NSString *)countryCode;
-
 - (BOOL)isDayForCountryCode:(NSString *)countryCode;
 - (BOOL)hasUserSuppliedImageForCountry:(NSString *)code;
 - (UIImageView *)thumbnailOfUserSuppliedImageForCountryCode:(NSString *)countryCode;
 - (void)addDownloadTaskForCountryCode:(NSString *)countryCode;
 - (void)saveUserSuppliedImage:(UIImage *)image forCountryCode:(NSString *)countryCode;
-
 - (NSString *)imageNameKeyForCountryCode:(NSString *)countryCode;
-
 - (NSString *)ownerKeyForCountryCode:(NSString *)countryCode;
-
 - (NSString *)urlKeyForCountryCode:(NSString *)countryCode;
-
 - (NSString *)dateKeyForCountryCode:(NSString *)countryCode;
-
 - (void)deleteImageForCountryCode:(NSString *)countryCode;
 
 @end
