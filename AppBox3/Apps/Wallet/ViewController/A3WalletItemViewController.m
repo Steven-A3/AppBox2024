@@ -122,6 +122,8 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 		_item = [WalletItem MR_findFirstByAttribute:ID_KEY withValue:itemID];
 		_category = nil;
 		_fieldItems = nil;
+		[self category];
+		[self fieldItems];
 	}
 }
 
