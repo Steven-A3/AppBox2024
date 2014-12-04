@@ -117,6 +117,8 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 {
     [super viewWillAppear:animated];
 
+	if (_itemDeleted) return;
+
 	if (![self isMovingToParentViewController]) {
 		[self refreshViews];
 	}
@@ -469,7 +471,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 	UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
     A3WalletItemEditViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemEditViewController"];
     viewController.delegate = self;
-    viewController.item = [self.item MR_inContext:[NSManagedObjectContext MR_rootSavingContext]];
+    viewController.item = [self.item MR_inContext:[NSManagedObjectContext MR_defaultContext]];
     viewController.hidesBottomBarWhenPushed = YES;
 	viewController.alwaysReturnToOriginalCategory = self.alwaysReturnToOriginalCategory;
     
@@ -542,7 +544,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 - (void)WalletItemDeleted
 {
 	_itemDeleted = YES;
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:NO];
 }
 
 #pragma mark - textField delegate

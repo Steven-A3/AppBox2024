@@ -1173,15 +1173,14 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 #pragma mark - UIActionSheet delegate
 
 - (void)deleteItemByActionSheet {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemID == %@", self.item.uniqueID];
-    [self.item MR_deleteEntity];
-    [WalletFavorite MR_deleteAllMatchingPredicate:predicate];
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-
-	[self dismissViewControllerAnimated:YES completion:^{
+	[self dismissViewControllerAnimated:NO completion:^{
 		if ([_delegate respondsToSelector:@selector(WalletItemDeleted)]) {
 			[_delegate WalletItemDeleted];
 		}
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemID == %@", self.item.uniqueID];
+		[self.item MR_deleteEntity];
+		[WalletFavorite MR_deleteAllMatchingPredicate:predicate];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 	}];
 }
 
