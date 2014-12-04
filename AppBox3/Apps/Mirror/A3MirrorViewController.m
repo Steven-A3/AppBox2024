@@ -341,9 +341,8 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 	}
 
 	[self.statusBarBackground setFrame:CGRectMake(self.statusBarBackground.bounds.origin.x, self.statusBarBackground.bounds.origin.y , screenBounds.size.width , self.statusBarBackground.bounds.size.height)];
-	
+
 	[self setToolBarsHidden:_topBar.hidden];
-	
 }
 
 - (UIBarButtonItem *)appsBarButton {
@@ -828,6 +827,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 		}
 		self.bottomBar.hidden = NO;
 		_isMultipleView = NO;
+		[self setToolBarsHidden:NO];
 	}
 	else
 	{
@@ -1019,6 +1019,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
+	[self.navigationController.toolbar setHidden:YES];
 	if (_isMultipleView) {
 		for (GLKView *filterView in _filterViews) {
 			[self setFilterViewRotation:filterView withScreenBounds:filterView.frame];
@@ -1032,6 +1033,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	}
 
 	[self configureLayout];
+	[self setToolBarsHidden:_topBar.hidden || _isMultipleView];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
