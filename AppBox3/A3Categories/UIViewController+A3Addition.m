@@ -119,7 +119,13 @@ static char const *const key_firstActionSheet 					= "key_firstActionSheet";
 	// Modal 이 있는 경우, 제거한다.
 	if (navigationController.presentedViewController) {
 		UIViewController *presentedViewController = navigationController.presentedViewController;
-		if (![presentedViewController isKindOfClass:[A3PasscodeCommonViewController class]]) {
+		if ([presentedViewController isKindOfClass:[UINavigationController class]]) {
+			UINavigationController *presentedNavigationController = (UINavigationController *) presentedViewController;
+			UIViewController *contentViewController = presentedNavigationController.viewControllers[0];
+			if (![contentViewController isKindOfClass:[A3PasscodeCommonViewController class]]) {
+				[presentedNavigationController dismissViewControllerAnimated:NO completion:nil];
+			}
+		} else {
 			[presentedViewController dismissViewControllerAnimated:NO completion:NULL];
 		}
 	}
