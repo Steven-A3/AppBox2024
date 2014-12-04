@@ -650,10 +650,7 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 
 			_locationUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:120 target:self selector:@selector(locationDidNotRespond) userInfo:nil repeats:NO];
 		} else {
-			NSArray *holidayCountries = [HolidayData userSelectedCountries];
-			for (NSString *countryCode in holidayCountries) {
-				[[A3HolidaysFlickrDownloadManager sharedInstance] addDownloadTaskForCountryCode:countryCode];
-			}
+			[self addDownloadTasksForHolidayImages];
 		}
 	});
 }
@@ -694,9 +691,7 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 				[HolidayData setUserSelectedCountries:countries];
 			}
 		}
-		for (NSString *countryCode in countries) {
-			[[A3HolidaysFlickrDownloadManager sharedInstance] addDownloadTaskForCountryCode:countryCode];
-		}
+		[self addDownloadTasksForHolidayImages];
 	}];
 }
 
@@ -706,10 +701,7 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 
 	[_locationManager stopMonitoringSignificantLocationChanges];
 	_locationManager = nil;
-	NSArray *holidayCountries = [HolidayData userSelectedCountries];
-	for (NSString *countryCode in holidayCountries) {
-		[[A3HolidaysFlickrDownloadManager sharedInstance] addDownloadTaskForCountryCode:countryCode];
-	}
+	[self addDownloadTasksForHolidayImages];
 }
 
 - (void)locationDidNotRespond {
@@ -718,9 +710,20 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 
 	[_locationManager stopMonitoringSignificantLocationChanges];
 	_locationManager = nil;
+	[self addDownloadTasksForHolidayImages];
+}
+
+- (void)addDownloadTasksForHolidayImages {
 	NSArray *holidayCountries = [HolidayData userSelectedCountries];
+	A3HolidaysFlickrDownloadManager *downloadManager = [A3HolidaysFlickrDownloadManager sharedInstance];
 	for (NSString *countryCode in holidayCountries) {
-		[[A3HolidaysFlickrDownloadManager sharedInstance] addDownloadTaskForCountryCode:countryCode];
+		NSString *imagePath = [downloadManager holidayImagePathForCountryCode:countryCode];
+		FNLOG(@"%@", imagePath);
+		if ([[NSFileManager defaultManager] fileExistsAtPath:imagePath]) {
+			FNLOG(@"Image file exists at path");
+			continue;
+		}
+		[downloadManager addDownloadTaskForCountryCode:countryCode];
 	}
 }
 
