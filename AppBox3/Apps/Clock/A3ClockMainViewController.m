@@ -196,7 +196,8 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 	[super viewWillAppear:animated];
 
 	if (_isClosing) {
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+		[[UIApplication sharedApplication] setStatusBarHidden:NO];
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 		return;
 	}
 	
