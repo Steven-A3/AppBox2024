@@ -542,7 +542,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 - (void)WalletItemDeleted
 {
 	_itemDeleted = YES;
-    [self.navigationController popViewControllerAnimated:NO];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - textField delegate

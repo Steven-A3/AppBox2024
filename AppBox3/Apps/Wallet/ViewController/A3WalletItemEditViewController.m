@@ -1176,13 +1176,13 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemID == %@", self.item.uniqueID];
     [self.item MR_deleteEntity];
     [WalletFavorite MR_deleteAllMatchingPredicate:predicate];
-    
-    if (_delegate && [_delegate respondsToSelector:@selector(WalletItemDeleted)]) {
-        [_delegate WalletItemDeleted];
-    }
-    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-    
-    [self dismissViewControllerAnimated:NO completion:NULL];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+
+	[self dismissViewControllerAnimated:YES completion:^{
+		if ([_delegate respondsToSelector:@selector(WalletItemDeleted)]) {
+			[_delegate WalletItemDeleted];
+		}
+	}];
 }
 
 - (void)imagePickerActionForButtonIndex:(NSInteger)myButtonIndex destructiveButtonIndex:(NSInteger)destructiveButtonIndex actionSheetTag:(NSInteger)actionSheetTag {
