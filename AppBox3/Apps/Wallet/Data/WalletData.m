@@ -196,7 +196,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 }
 
 + (void)initializeWalletCategories {
-	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
+	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_defaultContext];
 	[WalletData createLocalizedPresetCategoriesInContext:savingContext];
 	[WalletData createSystemCategoryInContext:savingContext];
 	[savingContext MR_saveToPersistentStoreAndWait];

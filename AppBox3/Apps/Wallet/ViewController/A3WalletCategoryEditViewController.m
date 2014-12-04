@@ -152,7 +152,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 
 - (NSManagedObjectContext *)savingContext {
 	if (!_savingContext) {
-		_savingContext = [NSManagedObjectContext MR_rootSavingContext];
+		_savingContext = [NSManagedObjectContext MR_defaultContext];
 	}
 	return _savingContext;
 }
@@ -233,7 +233,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 	[self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];
 
-	NSManagedObjectContext *context = [NSManagedObjectContext MR_rootSavingContext];
+	NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
 	if ([context hasChanges]) {
 		[context rollback];
 	}
