@@ -56,6 +56,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 @implementation A3ClockMainViewController {
     CGFloat _originalBrightness;
 	BOOL _isAutoDimActivated;
+	BOOL _isClosing;
 }
 
 - (A3ClockDataManager *)clockDataManager {
@@ -146,6 +147,8 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 }
 
 - (void)prepareClose {
+	FNLOG();
+	_isClosing = YES;
 	[self dismissInstructionViewController:nil];
 
 	[self turnOffAutoDim];
@@ -192,6 +195,11 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
+	if (_isClosing) {
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+		return;
+	}
+	
 	[self layoutSubviews];
 	[self.clockDataManager startTimer];
 	[self setupInstructionView];
@@ -442,11 +450,11 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
 		[[UIApplication sharedApplication] setStatusBarHidden:NO];
 		[self determineStatusBarStyle];
-
-		if (_buttonsTimer) {
-			[_buttonsTimer invalidate];
-			_buttonsTimer = nil;
-		}
+	}
+	if (_buttonsTimer) {
+		FNLOG(@"Timer disabled");
+		[_buttonsTimer invalidate];
+		_buttonsTimer = nil;
 	}
 }
 
