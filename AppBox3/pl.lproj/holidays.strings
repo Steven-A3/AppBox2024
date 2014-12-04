@@ -535,6 +535,9 @@
 "Federal Territory Day(KUL LBN PJY)" = "Święto terytorium federalnego(KUL LBN PJY)";
 "Chinese New Year" = "Chiński Nowy Rok";
 "Chinese New Year, Day 2" = "Chiński Nowy Rok";
+"Chinese New Year's Eve" = "Chiński Sylwester";
+"Chinese New Year(Second day)" = "Chiński Nowy Rok (II dzień)";
+"Chinese New Year(Third day)" = "Chiński Nowy Rok (Trzeci dzień)";
 "Wesak Day(Birth of Buddha)" = "Wesak Day(Dzień Buddy)";
 "King's Birthday" = "Urodziny Króla";
 "Hari Raya Qurban (Feast of Sacrifice)" = "Hari Raya Qurban (Święto Ofiar)";
@@ -681,6 +684,7 @@
 "The CPC Founding Day" = "Dzień Założenia Komunistycznej Partii Chin";
 "Spirit Festival" = "Święto Ducha";
 "Double Ninth Festival" = "Święto Dwóch Dziewiątek";
+"Double Ninth Festival(Chung Yeung Festival)" = "Święto Dwóch Dziewiątek";
 "Macau Special Administrative Region Establishment Day" = "Rocznica ustanowienia w Makau specjalnego regionu administracyjnego";
 "Winter Solstice" = "Święto przesilenia zimowego";
 "Presidential Address" = "Orędzie prezydenta";
@@ -711,18 +715,9 @@
 "Westland Anniversary Day" = "Rocznica Westland";
 "Anniversary Day Auckland / Northland" = "Rocznica Auckland/Northland";
 
-"Korean New Year's Day(Seollal)" = "Korean New Year's Day(Seollal)";
+"Korean New Year's Day(Seollal)" = "Koreański nowy rok";
 
-"New Year's Day " = "New Year's Day ";
-"Korean New Year's Day(Seollal 2.13~15) " = "Korean New Year's Day(Seollal 2.13~15) ";
-"Korean New Year's Day(Seollal 2.2~4) " = "Korean New Year's Day(Seollal 2.2~4) ";
-"Korean New Year's Day(Seollal) " = "Korean New Year's Day(Seollal) ";
-
-"Korean New Year's Day(Seollal 2.13~15)" = "Korean New Year's Day(Seollal 2.13~15)";
-"Korean New Year's Day(Seollal 2.2~4)" = "Korean New Year's Day(Seollal 2.2~4)";
 "Chuseok" = "Chuseok";
-"Chuseok( ~Sep 13)" = "Chuseok( ~Sep 13)";
-"Chuseok(Sep 21~23)" = "Chuseok(Sep 21~23)";
 "Hangul Day(HangeulNal)" = "Hangul Day(HangeulNal)";
 
 "St Stephen's Day / Boxing Day" = "Drugi dzień Świąt Bożego Narodzenia";

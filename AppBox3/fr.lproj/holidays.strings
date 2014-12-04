@@ -499,6 +499,9 @@
 "Federal Territory Day(KUL LBN PJY)" = "Journée du Territoire National(KUL LBN PJY)";
 "Chinese New Year" = "Nouvel An chinois";
 "Chinese New Year, Day 2" = "Nouvel An chinois";
+"Chinese New Year's Eve" = "Veille du Nouvel An chinois";
+"Chinese New Year(Second day)" = "Nouvel An chinois (deuxième jour)";
+"Chinese New Year(Third day)" = "Nouvel An chinois (troisième jour)";
 "Wesak Day(Birth of Buddha)" = "Wesak Day(Anniversaire de Bouddha)";
 "King's Birthday" = "Anniversaire du Roi";
 "Hari Raya Qurban (Feast of Sacrifice)" = "Hari Raya Qurban (Fête du Sacrifice)";
@@ -642,7 +645,8 @@
 "Summer Solstice" = "Solstice d'été";
 "The CPC Founding Day" = "Jour de la Fondation";
 "Spirit Festival" = "Fête des esprits";
-"Double Ninth Festival" = "Festival du neuvième jour du neuvième mois du calendrier lunaire chinois";
+"Double Ninth Festival" = "Fête de Chung Yeung";
+"Double Ninth Festival(Chung Yeung Festival)" = "Fête de Chung Yeung";
 "Macau Special Administrative Region Establishment Day" = "Fête de l’établissement de la région administrative spéciale de Macao";
 "Winter Solstice" = "Festival du solstice d'hiver";
 "Grandma's Day" = "Fête des grands-mères";
@@ -679,18 +683,9 @@
 "Westland Anniversary Day" = "Fête de l'Anniversaire (Westland)";
 "Anniversary Day Auckland / Northland" = "Anniversary Day Auckland / Northland";
 
-"Korean New Year's Day(Seollal)" = "Korean New Year's Day(Seollal)";
+"Korean New Year's Day(Seollal)" = "Nouvelle année coréenne";
 
-"New Year's Day " = "New Year's Day ";
-"Korean New Year's Day(Seollal 2.13~15) " = "Korean New Year's Day(Seollal 2.13~15) ";
-"Korean New Year's Day(Seollal 2.2~4) " = "Korean New Year's Day(Seollal 2.2~4) ";
-"Korean New Year's Day(Seollal) " = "Korean New Year's Day(Seollal) ";
-
-"Korean New Year's Day(Seollal 2.13~15)" = "Korean New Year's Day(Seollal 2.13~15)";
-"Korean New Year's Day(Seollal 2.2~4)" = "Korean New Year's Day(Seollal 2.2~4)";
 "Chuseok" = "Chuseok";
-"Chuseok( ~Sep 13)" = "Chuseok( ~Sep 13)";
-"Chuseok(Sep 21~23)" = "Chuseok(Sep 21~23)";
 "Hangul Day(HangeulNal)" = "Hangul Day(HangeulNal)";
 
 //2014.07.20

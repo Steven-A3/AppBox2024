@@ -499,6 +499,9 @@
 "Federal Territory Day(KUL LBN PJY)" = "Federal Territory Day(KUL LBN PJY)";
 "Chinese New Year" = "Chinese New Year";
 "Chinese New Year, Day 2" = "Chinese New Year, Day 2";
+"Chinese New Year's Eve" = "Chinese New Year's Eve";
+"Chinese New Year(Second day)" = "Chinese New Year(Second day)";
+"Chinese New Year(Third day)" = "Chinese New Year(Third day)";
 "Wesak Day(Birth of Buddha)" = "Wesak Day(Birth of Buddha)";
 "King's Birthday" = "King's Birthday";
 "Hari Raya Qurban (Feast of Sacrifice)" = "Hari Raya Qurban (Feast of Sacrifice)";
@@ -636,6 +639,7 @@
 "Summer Solstice" = "Summer Solstice";
 "The CPC Founding Day" = "The CPC Founding Day";
 "Double Ninth Festival" = "Double Ninth Festival";
+"Double Ninth Festival(Chung Yeung Festival)" = "Double Ninth Festival(Chung Yeung Festival)";
 "Macau Special Administrative Region Establishment Day" = "Macau Special Administrative Region Establishment Day";
 "Winter Solstice" = "Winter Solstice";
 "Alberta Family Day" = "Alberta Family Day";
@@ -678,17 +682,7 @@
 "Anniversary Day Auckland / Northland" = "Anniversary Day Auckland / Northland";
 
 "Korean New Year's Day(Seollal)" = "Korean New Year's Day(Seollal)";
-
-"New Year's Day " = "New Year's Day ";
-"Korean New Year's Day(Seollal 2.13~15) " = "Korean New Year's Day(Seollal 2.13~15) ";
-"Korean New Year's Day(Seollal 2.2~4) " = "Korean New Year's Day(Seollal 2.2~4) ";
-"Korean New Year's Day(Seollal) " = "Korean New Year's Day(Seollal) ";
-
-"Korean New Year's Day(Seollal 2.13~15)" = "Korean New Year's Day(Seollal 2.13~15)";
-"Korean New Year's Day(Seollal 2.2~4)" = "Korean New Year's Day(Seollal 2.2~4)";
 "Chuseok" = "Chuseok";
-"Chuseok( ~Sep 13)" = "Chuseok( ~Sep 13)";
-"Chuseok(Sep 21~23)" = "Chuseok(Sep 21~23)";
 "Hangul Day(HangeulNal)" = "Hangul Day(HangeulNal)";
 
 "St Stephen's Day / Boxing Day" = "St Stephen's Day / Boxing Day";

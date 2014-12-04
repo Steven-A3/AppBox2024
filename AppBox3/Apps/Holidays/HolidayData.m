@@ -559,6 +559,36 @@ static NSUInteger Eid_al_adha[][2] = {
 	return resultDate;
 }
 
++ (NSDate *)getWinterSolsticeForYear:(NSInteger)year calendar:(NSCalendar *)calendar {
+	NSUInteger month = 12, day = NSNotFound;
+	if (year >= 2000 && year <= 2050) {
+		switch (year) {
+			case 2002:
+			case 2003:
+			case 2006:
+			case 2007:
+			case 2011:
+			case 2015:
+			case 2019:
+			case 2023:
+			case 2027:
+			case 2031:
+			case 2035:
+			case 2039:
+			case 2043:
+				day = 22;
+				break;
+			default:
+				day = 21;
+				break;
+		}
+	}
+	if (day != NSNotFound) {
+		return [HolidayData dateWithDay:day month:month year:year withCalendar:calendar option:0];
+	}
+	return nil;
+}
+
 + (NSDate *)koreaLunarDateWithSolarDay:(NSUInteger)day month:(NSUInteger)month year:(NSUInteger)year
 {
 	NSDateComponents *lunarComponents = [[NSDateComponents alloc] init];

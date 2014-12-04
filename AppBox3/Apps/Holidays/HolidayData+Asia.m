@@ -14,24 +14,41 @@
 NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
     NSInteger day;
     switch (year) {
-        case 2001:
-        case 2002:
-        case 2004:
-        case 2005:
-        case 2006:
+		case 2004:
+			day = 3;
+			break;
+        case 1992:
+        case 1996:
+        case 1998:
+        case 2000:
         case 2008:
         case 2009:
-        case 2010:
         case 2012:
         case 2013:
+		case 2016:
+		case 2020:
             day = 4;
             break;
+		case 1990:
+		case 1991:
+		case 1993:
+		case 1994:
+		case 1995:
+		case 1997:
+		case 1999:
+		case 2001:
+		case 2002:
         case 2003:
+		case 2005:
+		case 2006:
         case 2007:
+		case 2010:
         case 2011:
 		case 2014:
 		case 2015:
-		case 2016:
+		case 2017:
+		case 2018:
+		case 2019:
             day = 5;
             break;
 		default:
@@ -141,7 +158,7 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	if (year >= 2000 && year <= 2020) {
-		NSInteger solstice = 21;
+		NSUInteger solstice;
 		switch (year) {
 			case 2008:
 			case 2012:
@@ -149,6 +166,8 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 			case 2020:
 				solstice = 20;
 				break;
+			default:
+				solstice = 21;
 		}
 		holidayName = NSLocalizedStringFromTable(@"Summer Solstice", kHolidaysResourceName, nil);
 		date = [HolidayData dateWithDay:solstice month:6 year:year withCalendar:gregorian option:0];
@@ -205,33 +224,12 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
-	
-	holidayName = NSLocalizedStringFromTable(@"Winter Solstice", kHolidaysResourceName, nil);
-	{
-		int month, day;
-		switch (year) {
-			case 2007:
-			case 2011:
-				month = 12;
-				day = 22;
-				break;
-			case 2008:
-			case 2009:
-			case 2010:
-			case 2012:
-			case 2013:
-			case 2014:
-				month = 12;
-				day = 21;
-				break;
-			default:
-				day = -1;
-				break;
-		}
-		if (day > 0) {
-			date = [HolidayData dateWithDay:day month:month year:year withCalendar:gregorian option:0];
-			[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
-		}
+
+	// Information source http://www.neoprogrammics.com/sun/Northern_Winter_Dates_and_Times.html
+	date = [HolidayData getWinterSolsticeForYear:year calendar:gregorian];
+	if (date) {
+		holidayName = NSLocalizedStringFromTable(@"Winter Solstice", kHolidaysResourceName, nil);
+		[holidays addObject:@{kHolidayName : holidayName, kHolidayIsPublic : @NO, kHolidayDate : date, kHolidayDuration : @1}];
 	}
 
 	holidayName = NSLocalizedStringFromTable(@"Macau Special Administrative Region Establishment Day", kHolidaysResourceName, nil);
@@ -260,10 +258,6 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	holidayName = NSLocalizedStringFromTable(@"New Year's Day", kHolidaysResourceName, nil);
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
-
-	holidayName = NSLocalizedStringFromTable(@"Shared Holiday by Government Decree", kHolidaysResourceName, nil);
-	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	// Spring Festival(The Chinese New Year)
 	holidayName = NSLocalizedStringFromTable(@"Chinese New Year", kHolidaysResourceName, nil);
@@ -364,7 +358,7 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
-	holidayName = NSLocalizedStringFromTable(@"Shared Holiday by Government Decree", kHolidaysResourceName, nil);
+	holidayName = NSLocalizedStringFromTable(@"Christmas Eve", kHolidaysResourceName, nil);
 	date = [HolidayData dateWithDay:24 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
@@ -372,7 +366,7 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
-	holidayName = NSLocalizedStringFromTable(@"New Year's Eve Bank Holiday", kHolidaysResourceName, nil);
+	holidayName = NSLocalizedStringFromTable(@"New Year's Eve", kHolidaysResourceName, nil);
 	date = [HolidayData dateWithDay:31 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
@@ -498,10 +492,13 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 		[offsetDC setDay:1];
 		
         //todo: 3days
-		holidayName = NSLocalizedStringFromTable(@"Chinese New Year Holiday", kHolidaysResourceName, nil);
+		// Second day
+		holidayName = NSLocalizedStringFromTable(@"Chinese New Year(Second day)", kHolidaysResourceName, nil);
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
-		
+
+		// Third day
+		holidayName = NSLocalizedStringFromTable(@"Chinese New Year(Third day)", kHolidaysResourceName, nil);
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
@@ -603,7 +600,7 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	date = [HolidayData dateWithDay:2 month:11 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = NSLocalizedStringFromTable(@"Feast of the Immaculate Conception", kHolidaysResourceName, nil);
+	holidayName = NSLocalizedStringFromTable(@"Immaculate Conception", kHolidaysResourceName, nil);
 	date = [HolidayData dateWithDay:8 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -615,35 +612,12 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	date = [HolidayData dateWithDay:21 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-    //todo: 2014년 이후 data없음
-	holidayName = NSLocalizedStringFromTable(@"Winter Solstice", kHolidaysResourceName, nil);
-	{
-		int month, day;
-		switch (year) {
-			case 2007:
-			case 2011:
-				month = 12;
-				day = 22;
-				break;
-			case 2008:
-			case 2009:
-			case 2010:
-			case 2012:
-			case 2013:
-			case 2014:
-				month = 12;
-				day = 21;
-				break;
-			default:
-				day = -1;
-				break;
-		}
-		if (day > 0) {
-			date = [HolidayData dateWithDay:day month:month year:year withCalendar:gregorian option:0];
-			[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
-		}
+	date = [HolidayData getWinterSolsticeForYear:year calendar:gregorian];
+	if (date) {
+		holidayName = NSLocalizedStringFromTable(@"Winter Solstice", kHolidaysResourceName, nil);
+		[holidays addObject:@{kHolidayName : holidayName, kHolidayIsPublic : @NO, kHolidayDate : date, kHolidayDuration : @1}];
 	}
-	
+
 	holidayName = NSLocalizedStringFromTable(@"Christmas Eve", kHolidaysResourceName, nil);
 	date = [HolidayData dateWithDay:24 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -786,12 +760,23 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
     //todo: 3days
-	if (year == 2010) {
-		holidayName = NSLocalizedStringFromTable(@"Korean New Year's Day(Seollal 2.13~15)", kHolidaysResourceName, nil);
-	} else if (year == 2011) {
-		holidayName = NSLocalizedStringFromTable(@"Korean New Year's Day(Seollal 2.2~4)", kHolidaysResourceName, nil);
-	} else {
-		holidayName = NSLocalizedStringFromTable(@"Korean New Year's Day(Seollal)", kHolidaysResourceName, nil);
+	holidayName = NSLocalizedStringFromTable(@"Korean New Year's Day(Seollal)", kHolidaysResourceName, nil);
+	if (LANGUAGE_KOREAN) {
+		NSString *duration;
+		switch (year) {
+			case 2010:
+				duration = @"(2.13~15)";
+				break;
+			case 2011:
+				duration = @"(2.2~4)";
+				break;
+			case 2015:
+				duration = @"(2.18~20)";
+				break;
+			default:
+				duration = nil;
+		}
+		if (duration) holidayName = [NSString stringWithFormat:@"%@%@", holidayName, duration];
 	}
 	date = [HolidayData koreaLunarDateWithSolarDay:1 month:1 year:year];
 	if (date != nil) {
@@ -835,12 +820,26 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
     //todo: 3days
-	if (year == 2010) {
-		holidayName = NSLocalizedStringFromTable(@"Chuseok(Sep 21~23)", kHolidaysResourceName, nil);
-	} else if (year == 2011) {
-		holidayName = NSLocalizedStringFromTable(@"Chuseok( ~Sep 13)", kHolidaysResourceName, nil);
-	} else {
-		holidayName = NSLocalizedStringFromTable(@"Chuseok", kHolidaysResourceName, nil);
+
+	holidayName = NSLocalizedStringFromTable(@"Chuseok", kHolidaysResourceName, nil);
+	if (LANGUAGE_KOREAN) {
+		NSString *duration;
+		switch (year) {
+			case 2010:
+				duration = @"(9.21~23)";
+				break;
+			case 2011:
+				duration = @"(9.12~13)";
+				break;
+			case 2015:
+				duration = @"(9.26~28)";
+				break;
+			default:
+				duration = nil;
+		}
+		if (duration) {
+			holidayName = [NSString stringWithFormat:@"%@%@", holidayName, duration];
+		}
 	}
 	date = [HolidayData koreaLunarDateWithSolarDay:15 month:8 year:year];
 	if (date != nil) {
@@ -889,7 +888,6 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	switch (year) {
 		case 2003:
 		case 2007:
-		case 2010:
 			equinox = 21;
 			break;
 	}
@@ -920,19 +918,12 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	date = [HolidayData dateWithWeekday:Monday ordinal:3 month:9 year:year withCalendar:gregorian];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-    //todo: 2014년 이후
+    // todo: 2020년 이후 추가 필요
+	// Information source : http://www.usno.navy.mil/USNO/astronomical-applications/data-services/earth-seasons
 	holidayName = NSLocalizedStringFromTable(@"Autumnal Equinox Day", kHolidaysResourceName, nil);
 	// Adjust for known equinox
-	int autumnEquinox = 23;
+	NSUInteger autumnEquinox;
 	switch (year) {
-		case 2004:
-		case 2005:
-		case 2008:
-		case 2009:
-		case 2012:
-		case 2013:
-			autumnEquinox = 22;
-			break;
 		case 2002:
 		case 2003:
 		case 2006:
@@ -940,9 +931,13 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 		case 2010:
 		case 2011:
 		case 2014:
+		case 2015:
+		case 2018:
+		case 2019:
 			autumnEquinox = 23;
 			break;
 		default:
+			autumnEquinox = 22;
 			break;
 	}
 	date = [HolidayData dateWithDay:autumnEquinox month:9 year:year withCalendar:gregorian option:0];

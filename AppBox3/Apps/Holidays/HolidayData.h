@@ -59,6 +59,8 @@ extern NSString *const kHolidaysResourceName;
 
 + (NSDate *)getDeepavaliForYear:(NSInteger)year;
 
++ (NSDate *)getWinterSolsticeForYear:(NSInteger)year calendar:(NSCalendar *)calendar;
+
 + (NSDate *)koreaLunarDateWithSolarDay:(NSUInteger)day month:(NSUInteger)month year:(NSUInteger)year;
 
 + (NSDate *)chinaLunarDateWithSolarDay:(NSUInteger)day month:(NSUInteger)month year:(NSUInteger)year;

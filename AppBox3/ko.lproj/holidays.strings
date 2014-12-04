@@ -498,8 +498,11 @@
 "Hari Raya Nyepi Tahun Baru (Hindu New Year)"  = "하리 라야 네피 바루(힌두교의 설날)";
 
 "Federal Territory Day(KUL LBN PJY)" = "연방자치령의 날(KUL LBN PJY)";
-"Chinese New Year" = "음력 신년";
-"Chinese New Year, Day 2" = "음력 신년, 다음날";
+"Chinese New Year" = "춘절(중국 설)";
+"Chinese New Year, Day 2" = "춘절, 다음날";
+"Chinese New Year's Eve" = "섣달그믐";
+"Chinese New Year(Second day)" = "춘절(둘째날)";
+"Chinese New Year(Third day)" = "춘절(셋째날)";
 "Wesak Day(Birth of Buddha)" = "부처님 오신날";
 "King's Birthday" = "황제의 생일";
 "Hari Raya Qurban (Feast of Sacrifice)" = "Hari Raya Qurban(희생기념일)";
@@ -639,6 +642,7 @@
 "Summer Solstice" = "하지";
 "The CPC Founding Day" = "인민대회 창건일";
 "Double Ninth Festival" = "중양절";
+"Double Ninth Festival(Chung Yeung Festival)" = "중양절";
 "Macau Special Administrative Region Establishment Day" = "마카오 특별 행정구 제정 기념일";
 "Winter Solstice" = "동지";
 "Alberta Family Day" = "가족의 날";
@@ -680,12 +684,9 @@
 "Westland Anniversary Day" = "웨스트랜드 기념일";
 "Anniversary Day Auckland / Northland" = "오클랜드/북섬 기념일";
 
-"Korean New Year's Day(Seollal 2.13~15)" = "설날(2.13~15)";
-"Korean New Year's Day(Seollal 2.2~4)" = "설날(2.2~4)";
 "Korean New Year's Day(Seollal)" = "설날";
+
 "Chuseok" = "추석";
-"Chuseok( ~Sep 13)" = "추석( ~9.13)";
-"Chuseok(Sep 21~23)" = "추석(9.21~23)";
 "Hangul Day(HangeulNal)" = "한글날";
 
 "St Stephen's Day / Boxing Day" = "박싱데이(선물포장하는날)";

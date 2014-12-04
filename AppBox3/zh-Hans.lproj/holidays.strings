@@ -499,6 +499,9 @@
 "Federal Territory Day(KUL LBN PJY)" = "联邦自制令日(KUL LBN PJY)";
 "Chinese New Year" = "春节";
 "Chinese New Year, Day 2" = "春节初二";
+"Chinese New Year's Eve" = "除夕";
+"Chinese New Year(Second day)" = "春节初二";
+"Chinese New Year(Third day)" = "赤口";
 "Wesak Day(Birth of Buddha)" = "佛祖降临日";
 "King's Birthday" = "国王诞辰";
 "Hari Raya Qurban (Feast of Sacrifice)" = "Hari Raya Qurban(牺牲纪念日)";
@@ -645,6 +648,7 @@
 "The CPC Founding Day" = "建党节";
 "Spirit Festival" = "中元节";
 "Double Ninth Festival" = "重阳节";
+"Double Ninth Festival(Chung Yeung Festival)" = "重阳节";
 "Macau Special Administrative Region Establishment Day" = "澳门特别行政区成立日";
 "Winter Solstice" = "冬至节";
 "Grandma's Day" = "祖母节";
@@ -683,18 +687,9 @@
 "Westland Anniversary Day" = "威士兰周年纪念日";
 "Anniversary Day Auckland / Northland" = "奥克兰/北部地区纪念日";
 
-"Korean New Year's Day(Seollal)" = "Korean New Year's Day(Seollal)";
+"Korean New Year's Day(Seollal)" = "韩国农历新年";
 
-"New Year's Day " = "New Year's Day ";
-"Korean New Year's Day(Seollal 2.13~15) " = "Korean New Year's Day(Seollal 2.13~15) ";
-"Korean New Year's Day(Seollal 2.2~4) " = "Korean New Year's Day(Seollal 2.2~4) ";
-"Korean New Year's Day(Seollal) " = "Korean New Year's Day(Seollal) ";
-
-"Korean New Year's Day(Seollal 2.13~15)" = "Korean New Year's Day(Seollal 2.13~15)";
-"Korean New Year's Day(Seollal 2.2~4)" = "Korean New Year's Day(Seollal 2.2~4)";
 "Chuseok" = "Chuseok";
-"Chuseok( ~Sep 13)" = "Chuseok( ~Sep 13)";
-"Chuseok(Sep 21~23)" = "Chuseok(Sep 21~23)";
 "Hangul Day(HangeulNal)" = "Hangul Day(HangeulNal)";
 
 //2014.07.20
