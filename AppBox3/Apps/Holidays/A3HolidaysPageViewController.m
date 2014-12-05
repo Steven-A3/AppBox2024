@@ -51,6 +51,7 @@
 
 @implementation A3HolidaysPageViewController {
 	NSInteger _lastPageIndex, _currentPageIndex;
+	BOOL _isClosing;
 }
 
 - (void)cleanUp {
@@ -73,6 +74,10 @@
 	[_dayChangedTimer invalidate];
 	_dayChangedTimer = nil;
 	_viewControllerCache = nil;
+}
+
+- (void)prepareClose {
+	_isClosing = YES;
 }
 
 - (void)viewDidLoad
@@ -111,7 +116,9 @@
 	if (self.isMovingToParentViewController) {
 		[self jumpToPage:0 direction:UIPageViewControllerNavigationDirectionForward animated:NO];
 	} else {
-		[self setNavigationBarHidden:YES];
+		if (!_isClosing) {
+			[self setNavigationBarHidden:YES];
+		}
 	}
 }
 
