@@ -576,10 +576,12 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 	}
 	double delayInSeconds = IS_IOS7 ? 20.0 : 2.0;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		NSURLRequest *downloadRequest = [NSURLRequest requestWithURL:_downloadList[0]];
-		NSURLSessionDownloadTask *downloadTask = [self.backgroundDownloadSession downloadTaskWithRequest:downloadRequest];
-		[downloadTask resume];
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+		if ([_downloadList count]) {
+			NSURLRequest *downloadRequest = [NSURLRequest requestWithURL:_downloadList[0]];
+			NSURLSessionDownloadTask *downloadTask = [self.backgroundDownloadSession downloadTaskWithRequest:downloadRequest];
+			[downloadTask resume];
+		}
 	});
 }
 
@@ -728,14 +730,12 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 - (void)addDownloadTasksForHolidayImages {
 	NSArray *holidayCountries = [HolidayData userSelectedCountries];
 	A3HolidaysFlickrDownloadManager *downloadManager = [A3HolidaysFlickrDownloadManager sharedInstance];
-	for (NSString *countryCode in holidayCountries) {
+	if ([holidayCountries count]) {
+		NSString *countryCode = holidayCountries[0];
 		NSString *imagePath = [downloadManager holidayImagePathForCountryCode:countryCode];
-		FNLOG(@"%@", imagePath);
-		if ([[NSFileManager defaultManager] fileExistsAtPath:imagePath]) {
-			FNLOG(@"Image file exists at path");
-			continue;
+		if (![[NSFileManager defaultManager] fileExistsAtPath:imagePath]) {
+			[downloadManager addDownloadTaskForCountryCode:countryCode];
 		}
-		[downloadManager addDownloadTaskForCountryCode:countryCode];
 	}
 }
 
