@@ -92,9 +92,13 @@ static char const *const key_firstActionSheet 					= "key_firstActionSheet";
 		if ([presentedViewController isKindOfClass:[UINavigationController class]]) {
 			UINavigationController *presentedNavigationController = (UINavigationController *) presentedViewController;
 			UIViewController *targetViewController = presentedNavigationController.viewControllers[0];
-			[targetViewController dismissViewControllerAnimated:NO completion:NULL];
+			if (![targetViewController isKindOfClass:[A3PasscodeCommonViewController class]]) {
+				[targetViewController dismissViewControllerAnimated:NO completion:NULL];
+			}
 		} else {
-			[presentedViewController dismissViewControllerAnimated:NO completion:NULL];
+			if (![presentedViewController isKindOfClass:[A3PasscodeCommonViewController class]]) {
+				[presentedViewController dismissViewControllerAnimated:NO completion:NULL];
+			}
 		}
 	}
 }
@@ -126,7 +130,9 @@ static char const *const key_firstActionSheet 					= "key_firstActionSheet";
 				[presentedNavigationController dismissViewControllerAnimated:NO completion:nil];
 			}
 		} else {
-			[presentedViewController dismissViewControllerAnimated:NO completion:NULL];
+			if (![presentedViewController isKindOfClass:[A3PasscodeCommonViewController class]]) {
+				[presentedViewController dismissViewControllerAnimated:NO completion:NULL];
+			}
 		}
 	}
 
