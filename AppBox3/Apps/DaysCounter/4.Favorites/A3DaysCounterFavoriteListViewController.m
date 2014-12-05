@@ -270,7 +270,10 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
     UILabel *daysLabel = (UILabel*)[cell viewWithTag:11];
     UILabel *markLabel = (UILabel*)[cell viewWithTag:12];
     UIImageView *imageView = (UIImageView*)[cell viewWithTag:13];
-    
+	imageView.contentMode = UIViewContentModeScaleAspectFill;
+	imageView.layer.cornerRadius = imageView.bounds.size.width / 2.0;
+	imageView.layer.masksToBounds = YES;
+
     if (IS_IPHONE) {
         textLabel.font = [UIFont systemFontOfSize:15.0];
         daysLabel.font = [UIFont systemFontOfSize:13.0];
@@ -288,9 +291,8 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
         textLabel.text = event.eventName;
 		if ([event.photoID length]) {
 			imageView.image = [favorite.event thumbnailImageInOriginalDirectory:YES];
-			imageView.contentMode = UIViewContentModeScaleAspectFill;
-			imageView.layer.cornerRadius = imageView.bounds.size.width / 2.0;
-			imageView.layer.masksToBounds = YES;
+		} else {
+			imageView.image = nil;
 		}
         
         NSDate *today = [NSDate date];
