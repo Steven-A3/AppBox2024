@@ -124,7 +124,11 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 		[self setupInstructionView];
 	}
 	if (IS_IPHONE && IS_PORTRAIT) {
-		[self leftBarButtonAppsButton];
+		if (_isEditing) {
+			[self leftBarButtonAddButton];
+		} else {
+			[self leftBarButtonAppsButton];
+		}
 	}
 }
 
@@ -183,7 +187,11 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
 	if (IS_IPHONE && IS_LANDSCAPE) {
-		[self leftBarButtonAppsButton];
+		if (_isEditing) {
+			[self leftBarButtonAddButton];
+		} else {
+			[self leftBarButtonAppsButton];
+		}
 	}
 }
 
