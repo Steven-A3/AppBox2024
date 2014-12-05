@@ -1179,7 +1179,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 - (IBAction)colorButton:(id)sender {
 	_isMultipleView = !_isMultipleView;
 
-	if (_isMultipleView == YES) {
+	if (_isMultipleView) {
 		[self setSlowFrameRate];
 		self.bottomBar.hidden = YES;
 		self.zoomToolBar.hidden =  YES;
@@ -1334,6 +1334,8 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 }
 
 - (void)showMultipleViews:(BOOL)bSizeChange {
+
+	[self setToolBarsHidden:YES];
 
 	for (GLKView *filterView in _filterViews) {
 		[filterView setHidden:NO];
