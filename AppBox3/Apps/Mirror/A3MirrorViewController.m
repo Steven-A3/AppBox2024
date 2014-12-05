@@ -332,13 +332,12 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	if (_isMultipleView == YES) {
 		[self.zoomSlider setFrame:CGRectMake(self.zoomSlider.frame.origin.x, self.zoomSlider.frame.origin.y, screenBounds.size.width - 106, self.zoomSlider.frame.size.height)];
-		[_topBar setItems:@[[self appsBarButton]] animated:YES];
 	}
 	else {
 		[self setFilterViewRotation:[self currentFilterView] withScreenBounds:screenBounds];
 		[self.zoomSlider setFrame:CGRectMake(self.zoomSlider.frame.origin.x, self.zoomSlider.frame.origin.y, screenBounds.size.width - 98, self.zoomSlider.frame.size.height)];
-		[_topBar setItems:[self topToolBarBarButtons] animated:YES];
 	}
+	[_topBar setItems:[self topToolBarBarButtons] animated:YES];
 
 	[self.statusBarBackground setFrame:CGRectMake(self.statusBarBackground.bounds.origin.x, self.statusBarBackground.bounds.origin.y , screenBounds.size.width , self.statusBarBackground.bounds.size.height)];
 
