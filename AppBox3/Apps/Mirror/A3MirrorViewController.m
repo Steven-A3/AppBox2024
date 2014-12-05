@@ -325,7 +325,7 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 - (void)setupButtonEnabled {
 	BOOL enabled = [A3UIDevice canAccessCamera];
 	[self.snapButton setEnabled:enabled];
-	[self.filterButton setEnabled:enabled];
+	[self.filterButton setEnabled:enabled && _isLosslessZoom];
 }
 
 - (void)configureLayout {
