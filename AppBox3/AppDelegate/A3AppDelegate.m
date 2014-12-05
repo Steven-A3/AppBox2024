@@ -574,9 +574,13 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 	if (![self.reachability isReachableViaWiFi]) {
 		return;
 	}
-	NSURLRequest *downloadRequest = [NSURLRequest requestWithURL:_downloadList[0]];
-	NSURLSessionDownloadTask *downloadTask = [self.backgroundDownloadSession downloadTaskWithRequest:downloadRequest];
-	[downloadTask resume];
+	double delayInSeconds = IS_IOS7 ? 20.0 : 2.0;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		NSURLRequest *downloadRequest = [NSURLRequest requestWithURL:_downloadList[0]];
+		NSURLSessionDownloadTask *downloadTask = [self.backgroundDownloadSession downloadTaskWithRequest:downloadRequest];
+		[downloadTask resume];
+	});
 }
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location {
@@ -650,7 +654,11 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 
 			_locationUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:120 target:self selector:@selector(locationDidNotRespond) userInfo:nil repeats:NO];
 		} else {
-			[self addDownloadTasksForHolidayImages];
+			double delayInSeconds = 20.0;
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				[self addDownloadTasksForHolidayImages];
+			});
 		}
 	});
 }
@@ -691,7 +699,11 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 				[HolidayData setUserSelectedCountries:countries];
 			}
 		}
-		[self addDownloadTasksForHolidayImages];
+		double delayInSeconds = 20.0;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			[self addDownloadTasksForHolidayImages];
+		});
 	}];
 }
 
