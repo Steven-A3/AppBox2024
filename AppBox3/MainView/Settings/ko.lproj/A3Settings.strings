@@ -119,7 +119,7 @@
 "eGG-mK-Q2m.text" = "즉시";
 
 /* Class = "IBUILabel"; text = "Backup & Restore on Dropbox"; ObjectID = "ehr-w2-0vk"; */
-"ehr-w2-0vk.text" = "Dropbox 백업 및 복원";
+"ehr-w2-0vk.text" = "Dropbox로 백업 및 복원";
 
 /* Class = "IBUINavigationItem"; title = "Theme Color"; ObjectID = "eqe-ec-kWO"; */
 "eqe-ec-kWO.title" = "테마 색상";
@@ -145,7 +145,7 @@
 "oSP-yD-m2L.title" = "설정";
 
 /* Class = "IBUINavigationItem"; title = "Backup & Restore on Dropbox"; ObjectID = "oxS-sd-8U7"; */
-"oxS-sd-8U7.title" = "Dropbox 백업 및 복원";
+"oxS-sd-8U7.title" = "Dropbox로 백업 및 복원";
 
 /* Class = "IBUILabel"; text = "Passcode Lock"; ObjectID = "pjv-dt-D5o"; */
 "pjv-dt-D5o.text" = "암호 잠금";
@@ -190,10 +190,10 @@
 "0Me-nY-VE5.text" = "최근 5 개";
 
 /* Class = "IBUILabel"; text = "Backup & Restore on iTunes"; ObjectID = "3V3-lS-rew"; */
-"3V3-lS-rew.text" = "백업 - iTunes 파일공유";
+"3V3-lS-rew.text" = "iTunes로 백업 및 복원";
 
 /* Class = "IBUINavigationItem"; title = "Backup & Restore on iTunes"; ObjectID = "wZg-tr-J14"; */
-"wZg-tr-J14.title" = "백업 - iTunes 파일공유";
+"wZg-tr-J14.title" = "iTunes로 백업 및 복원";
 
 /* Class = "IBUINavigationItem"; title = "Select Backup"; ObjectID = "sf0-2F-cNr"; */
 "sf0-2F-cNr.title" = "백업 파일 선택";
@@ -214,7 +214,7 @@
 "u8Z-Fp-NHQ.title" = "시작 앱";
 
 /* Class = "IBUILabel"; text = "How to use iTunes Files Sharing"; ObjectID = "VFX-hm-AIs"; */
-"VFX-hm-AIs.text" = "아이튠즈 파일 공유 사용법";
+"VFX-hm-AIs.text" = "iTunes 파일 공유 사용법";
 
 /* Class = "IBUITableViewSection"; footerTitle = "Please move the backup file to your computer. Delete the backup file to save the storage space in your device.\nDeleting the app will delete the backup file in your device together."; ObjectID = "Scy-Ii-bsP"; */
 "Scy-Ii-bsP.footerTitle" = "백업 파일은 반드시 컴퓨터에 저장하고 앱 안에 있는 백업 파일은 삭제합니다. 그러면 저장 공간을 절약할 수 있습니다. \n앱을 지우면 앱안에 저장된 백업파일도 함께 지워지니 주의해 주십시요.";
