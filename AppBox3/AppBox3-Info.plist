@@ -36,9 +36,13 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>3.3.0</string>
+	<string>3.3.1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location is used to show weather and holidays.</string>
+	<key>NSUbiquitousDisplaySet</key>
+	<string>net.allaboutapps.AppBox</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>appbox.ttf</string>
@@ -74,9 +78,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Your location is used to show weather and holidays.</string>
-	<key>NSUbiquitousDisplaySet</key>
-	<string>net.allaboutapps.AppBox</string>
 </dict>
 </plist>
