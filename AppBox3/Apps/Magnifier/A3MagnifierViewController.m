@@ -599,13 +599,14 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 
 - (IBAction)flashBrightSliderAction:(id)sender {
     UISlider  *flashslider = (UISlider  *)sender;
-    if(_videoDevice.torchAvailable == YES) {
-        if (flashslider.value == 0.0) {
-            [_videoDevice setTorchMode:AVCaptureTorchModeOff];
-        } else {
-            [_videoDevice setTorchModeOnWithLevel:flashslider.value error:nil];
-        }
-    }
+	if(_videoDevice.torchAvailable && [_videoDevice lockForConfiguration:nil]) {
+		if (flashslider.value == 0.0) {
+			[_videoDevice setTorchMode:AVCaptureTorchModeOff];
+		} else {
+			[_videoDevice setTorchModeOnWithLevel:flashslider.value error:nil];
+		}
+		[_videoDevice unlockForConfiguration];
+	}
 }
 
 #pragma mark Instruction Related
