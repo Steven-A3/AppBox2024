@@ -173,6 +173,9 @@
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 		if (_isBeingClose) return;
 
+		[self setupNavigationTitle];
+		[self.collectionView reloadData];
+
 		NSDate *currentWatchingDate = [self.dataManager currentAccount].watchingDate;
 		if (!currentWatchingDate) {
 			LadyCalendarPeriod *lastPeriod = [[_dataManager periodListSortedByStartDateIsAscending:YES] lastObject];
@@ -190,7 +193,6 @@
 
 		[self moveToCurrentWatchingDate];
 		[self updateCurrentMonthLabel];
-		[self.collectionView reloadData];
 	});
 }
 
@@ -329,10 +331,12 @@
 }
 
 - (void)setupNavigationTitle {
+	self.dataManager.currentAccount = nil;
 	if ([self.dataManager numberOfAccount] == 1 && [[self.dataManager currentAccount].name isEqualToString:[self.dataManager defaultAccountName]]) {
 		self.navigationItem.title = NSLocalizedString(A3AppName_LadiesCalendar, nil);
 	}
 	else{
+		FNLOG(@"%@", self.dataManager.currentAccount);
 		self.navigationItem.title = [self.dataManager currentAccount].name;
 	}
 }

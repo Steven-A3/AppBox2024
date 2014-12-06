@@ -18,6 +18,8 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "LadyCalendarAccount.h"
+#import "NSManagedObject+extension.h"
+#import "NSString+conversion.h"
 
 // UserInfo have "changedMonth".
 NSString *const A3NotificationLadyCalendarPeriodDataChanged = @"A3NotificationLadyCalendarPeriodDataChanged";
@@ -47,10 +49,11 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 }
 
 - (void)addDefaultAccount {
-	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
+	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_defaultContext];
 	LadyCalendarAccount *account = [LadyCalendarAccount MR_createEntityInContext:savingContext];
 	account.uniqueID = DefaultAccountID;
 	account.name = [self defaultAccountName];
+	account.order = [NSString orderStringWithOrder:1000000];
 	[savingContext MR_saveToPersistentStoreAndWait];
 }
 
@@ -87,7 +90,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 }
 
 - (void)deleteAccount:(LadyCalendarAccount *)account {
-	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
+	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_defaultContext];
 	LadyCalendarAccount *deletingAccount = [account MR_inContext:savingContext];
 	[deletingAccount MR_deleteEntityInContext:savingContext];
 	[savingContext MR_saveToPersistentStoreAndWait];

@@ -16,6 +16,7 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "NSMutableArray+A3Sort.h"
 #import "LadyCalendarAccount.h"
+#import "NSString+conversion.h"
 
 @interface A3LadyCalendarAccountListViewController ()
 
@@ -96,15 +97,33 @@
 
 - (NSManagedObjectContext *)savingContext {
 	if (!_savingContext) {
-		_savingContext = [NSManagedObjectContext MR_rootSavingContext];
+		_savingContext = [NSManagedObjectContext MR_defaultContext];
 	}
 	return _savingContext;
 }
 
 - (NSMutableArray *)ladyCalendarAccounts {
 	if (!_ladyCalendarAccounts) {
-		NSArray *accounts = [LadyCalendarAccount MR_findAllInContext:self.savingContext];
+		NSArray *accounts = [LadyCalendarAccount MR_findAllSortedBy:A3CommonPropertyOrder ascending:YES];
 		_ladyCalendarAccounts = [NSMutableArray arrayWithArray:accounts];
+		BOOL needAssignOrder = NO;
+		for (LadyCalendarAccount *account in _ladyCalendarAccounts) {
+			if (account.order == nil) {
+				needAssignOrder = YES;
+				break;
+			}
+		}
+		if (needAssignOrder) {
+			NSUInteger order = 1000000;
+			for (LadyCalendarAccount *account in _ladyCalendarAccounts) {
+				account.order = [NSString orderStringWithOrder:order];
+				order += 1000000;
+			}
+			[self.savingContext MR_saveToPersistentStoreAndWait];
+
+			accounts = [LadyCalendarAccount MR_findAllSortedBy:A3CommonPropertyOrder ascending:YES];
+			_ladyCalendarAccounts = [NSMutableArray arrayWithArray:accounts];
+		}
 	}
 	return _ladyCalendarAccounts;
 }
@@ -185,11 +204,13 @@
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
 	[_ladyCalendarAccounts moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
+	FNLOG(@"%@", _ladyCalendarAccounts);
 	[self.savingContext MR_saveToPersistentStoreAndWait];
     
 	double delayInSeconds = 0.15;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+		_ladyCalendarAccounts = nil;
 		[self.tableView reloadData];
 	});
 }
@@ -201,7 +222,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	LadyCalendarAccount *account = [_ladyCalendarAccounts objectAtIndex:indexPath.row];
+	LadyCalendarAccount *account = [self.ladyCalendarAccounts objectAtIndex:indexPath.row];
 	[_dataManager setCurrentAccount:account];
 
 	[[A3SyncManager sharedSyncManager] setObject:account.uniqueID forKey:A3LadyCalendarCurrentAccountID state:A3DataObjectStateModified];
@@ -213,7 +234,7 @@
 
 - (void)editButtonAction:(UIButton *)button
 {
-	LadyCalendarAccount *account = [_ladyCalendarAccounts objectAtIndex:button.tag];
+	LadyCalendarAccount *account = [self.ladyCalendarAccounts objectAtIndex:button.tag];
 	
     A3LadyCalendarAddAccountViewController *viewCtrl = [[A3LadyCalendarAddAccountViewController alloc] init];
 	viewCtrl.dataManager = _dataManager;

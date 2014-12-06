@@ -26,6 +26,7 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "UITableView+utility.h"
 #import "A3StandardTableViewCell.h"
+#import "NSManagedObject+extension.h"
 
 @interface A3LadyCalendarAddAccountViewController ()
 
@@ -144,7 +145,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (NSManagedObjectContext *)savingContext {
 	if (!_savingContext) {
-		_savingContext = [NSManagedObjectContext MR_rootSavingContext];
+		_savingContext = [NSManagedObjectContext MR_defaultContext];
 	}
 	return _savingContext;
 }
@@ -563,6 +564,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
         NSInteger totalUser = [self.dataManager numberOfAccount];
 		_accountItem.name = [NSString stringWithFormat:@"%@%02ld", NSLocalizedString(@"User", nil), (long) totalUser + 1];
     }
+	if (!_accountItem.order) {
+		[_accountItem assignOrderAsLastInContext:_accountItem.managedObjectContext];
+	}
 
 	[self.savingContext MR_saveToPersistentStoreAndWait];
 
