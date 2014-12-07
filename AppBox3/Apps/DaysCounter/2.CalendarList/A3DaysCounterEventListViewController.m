@@ -28,7 +28,10 @@
 #import "DaysCounterEvent+extension.h"
 #import "A3UserDefaults.h"
 
-@interface A3DaysCounterEventListViewController () <UINavigationControllerDelegate, UISearchDisplayDelegate, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, A3DaysCounterEventDetailViewControllerDelegate>
+@interface A3DaysCounterEventListViewController ()
+		<UINavigationControllerDelegate, UISearchDisplayDelegate, UISearchBarDelegate,
+		UITableViewDataSource, UITableViewDelegate, A3DaysCounterEventDetailViewControllerDelegate,
+		A3ViewControllerProtocol>
 @property (nonatomic, strong) NSArray *itemArray;
 @property (nonatomic, strong) NSArray *sourceArray;
 @property (nonatomic, strong) NSArray *searchResultArray;
@@ -48,6 +51,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 
 @implementation A3DaysCounterEventListViewController {
 	BOOL _addEventButtonPressed;
+	BOOL _isBeingDismiss;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -110,7 +114,19 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
     [self.view layoutIfNeeded];
 
 	[self registerContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+}
+
+- (void)applicationDidEnterBackground {
+	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_DaysCounter]) {
+		[self deactivateSearchDisplayController];
+	} else {
+		if ([[A3AppDelegate instance] shouldProtectScreen] && [_mySearchDisplayController isActive]) {
+			[_mySearchDisplayController setActive:NO];
+		}
+	}
 }
 
 - (void)cloudDidImportChanges:(NSNotification *)notification {
@@ -120,6 +136,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 }
 
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 }
@@ -131,6 +148,9 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+	if (_isBeingDismiss) return;
+
     [self.navigationController setToolbarHidden:NO];
 
     if ( [self.changedCalendarID length] > 0 && ![self.changedCalendarID isEqualToString:_calendarItem.uniqueID] ) {
@@ -146,6 +166,11 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
     }
 
 	[self loadEventData];
+
+	if ([self.mySearchDisplayController isActive]) {
+		[self makeSearchResultArray:_searchBar.text];
+		[self.mySearchDisplayController.searchResultsTableView reloadData];
+	}
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -169,6 +194,10 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
         [self removeObserver];
         [self.tableView setEditing:NO];
     }
+}
+
+- (void)prepareClose {
+	_isBeingDismiss = YES;
 }
 
 -(void)viewWillLayoutSubviews {
@@ -869,7 +898,6 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 #pragma mark - SearchBarDelegate
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-	_searchBar.text = @"";
 }
 
 // called when cancel button pressed
@@ -885,11 +913,17 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    self.searchResultArray = [_sourceArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"eventName contains[cd] %@",searchText]];
-    FNLOG(@"%s %@ : %ld",__FUNCTION__,searchText, (long)[_searchResultArray count]);
+	[self makeSearchResultArray:searchText];
+}
+
+- (void)makeSearchResultArray:(NSString *)searchText {
+	_searchResultArray = nil;
+	self.searchResultArray = [_sourceArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"eventName contains[cd] %@",searchText]];
+	FNLOG(@"%s %@ : %ld",__FUNCTION__,searchText, (long)[_searchResultArray count]);
 }
 
 #pragma mark - action method
+
 - (IBAction)changeSortAction:(id)sender
 {
     UISegmentedControl *segCtrl = (UISegmentedControl*)sender;
@@ -906,6 +940,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 
 - (IBAction)searchAction:(id)sender
 {
+	self.searchBar.text = @"";
     [self.searchBar becomeFirstResponder];
 }
 
@@ -938,17 +973,28 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 //    }
 }
 
+- (void)deactivateSearchDisplayController {
+	if ([_mySearchDisplayController isActive]) {
+		[_mySearchDisplayController setActive:NO];
+		_mySearchDisplayController.searchResultsDelegate = nil;
+		_mySearchDisplayController.searchResultsDataSource = nil;
+		_mySearchDisplayController = nil;
+	}
+}
+
 #pragma mark - action method
 
 - (IBAction)photoViewAction:(id)sender {
+	[self deactivateSearchDisplayController];
 	[self callPrepareCloseOnActiveMainAppViewController];
 
 	A3DaysCounterSlideShowMainViewController *viewCtrl = [[A3DaysCounterSlideShowMainViewController alloc] initWithNibName:@"A3DaysCounterSlideShowMainViewController" bundle:nil];
-    viewCtrl.sharedManager = _sharedManager;
-    [self popToRootAndPushViewController:viewCtrl];
+	viewCtrl.sharedManager = _sharedManager;
+	[self popToRootAndPushViewController:viewCtrl];
 }
 
 - (IBAction)reminderAction:(id)sender {
+	[self deactivateSearchDisplayController];
 	[self callPrepareCloseOnActiveMainAppViewController];
 
 	A3DaysCounterReminderListViewController *viewCtrl = [[A3DaysCounterReminderListViewController alloc] initWithNibName:@"A3DaysCounterReminderListViewController" bundle:nil];
@@ -957,6 +1003,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 }
 
 - (IBAction)favoriteAction:(id)sender {
+	[self deactivateSearchDisplayController];
 	[self callPrepareCloseOnActiveMainAppViewController];
 
     A3DaysCounterFavoriteListViewController *viewCtrl = [[A3DaysCounterFavoriteListViewController alloc] initWithNibName:@"A3DaysCounterFavoriteListViewController" bundle:nil];

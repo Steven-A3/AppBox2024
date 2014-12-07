@@ -22,6 +22,8 @@
 
 - (void)presentLockScreen;
 
+- (BOOL)shouldProtectScreen;
+
 - (void)applicationDidEnterBackground_passcode;
 - (void)applicationDidBecomeActive_passcode;
 - (void)applicationWillEnterForeground_passcode;

@@ -72,6 +72,14 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 	}
 #endif
     self.tableView.separatorInset = A3UITableViewSeparatorInset;
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
+- (void)applicationDidEnterBackground {
+	if ([[A3AppDelegate instance] shouldProtectScreen]) {
+		[_searchBar resignFirstResponder];
+	}
 }
 
 - (void)cloudStoreDidImport {
@@ -81,6 +89,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 }
 
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 }
 

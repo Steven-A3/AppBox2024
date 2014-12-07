@@ -148,6 +148,8 @@
 }
 
 - (BOOL)shouldProtectScreen {
+	if ([A3KeychainUtils getPassword] == nil) return NO;
+
 	BOOL presentLockScreen = NO;
 	BOOL shouldAskForStarting = [[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting];
 	if (shouldAskForStarting) {
@@ -218,7 +220,7 @@
 }
 
 - (void)applicationWillResignActive_passcode {
-	if ([A3KeychainUtils getPassword] && [self shouldProtectScreen]) {
+	if ([self shouldProtectScreen]) {
 		FNLOG(@"CoverView added to Window");
 		[[UIApplication sharedApplication] ignoreSnapshotOnNextApplicationLaunch];
 

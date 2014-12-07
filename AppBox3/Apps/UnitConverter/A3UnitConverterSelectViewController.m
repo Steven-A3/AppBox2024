@@ -67,6 +67,7 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
     if ((!_isModal && IS_IPHONE) || IS_IPAD) {
         self.navigationItem.leftBarButtonItem = self.cancelItem;
     }
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
     
 #ifdef __IPHONE_8_0
@@ -78,6 +79,12 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 	}
 #endif
     self.tableView.separatorInset = A3UITableViewSeparatorInset;
+}
+
+- (void)applicationDidEnterBackground {
+	if ([[A3AppDelegate instance] shouldProtectScreen]) {
+		[_searchBar resignFirstResponder];
+	}
 }
 
 - (void)cloudStoreDidImport {
@@ -105,6 +112,7 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 }
 
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 }
 

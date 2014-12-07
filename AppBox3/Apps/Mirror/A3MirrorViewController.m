@@ -245,7 +245,7 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 
 - (BOOL)resignFirstResponder {
 	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
-	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_BatteryStatus]) {
+	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_Mirror]) {
 		[self.instructionViewController.view removeFromSuperview];
 		self.instructionViewController = nil;
 	}

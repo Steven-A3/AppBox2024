@@ -53,9 +53,17 @@ static NSString *CellIdentifier = @"Cell";
 	}
 
 	[self registerContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
+- (void)applicationDidEnterBackground {
+	if ([self.mySearchDisplayController isActive]) {
+		[self.mySearchDisplayController setActive:NO];
+	}
 }
 
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 }
 
