@@ -79,9 +79,26 @@
             [self.tableView removeGestureRecognizer:gesture];
         }
     }
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
+- (void)applicationDidEnterBackground {
+	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_Wallet]) {
+		[_mySearchDisplayController setActive:NO];
+		_mySearchDisplayController.delegate = nil;
+		_mySearchDisplayController.searchResultsDelegate = nil;
+		_mySearchDisplayController.searchResultsDataSource = nil;
+		_mySearchDisplayController = nil;
+	} else {
+		if ([[A3AppDelegate instance] shouldProtectScreen] && [_mySearchDisplayController isActive]) {
+			[_mySearchDisplayController setActive:NO];
+		}
+	}
 }
 
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidShow object:nil];
@@ -106,15 +123,6 @@
 
 - (void)dealloc {
 	[self removeObserver];
-}
-
-- (BOOL)resignFirstResponder {
-	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
-	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_Wallet]) {
-		[self.instructionViewController.view removeFromSuperview];
-		self.instructionViewController = nil;
-	}
-	return [super resignFirstResponder];
 }
 
 - (void)mainMenuDidShow {
@@ -155,6 +163,11 @@
 
     // more button 활성화여부
     [self itemCountCheck];
+
+	if ([_mySearchDisplayController isActive]) {
+		[self filterContentForSearchText:_searchBar.text];
+		[_mySearchDisplayController.searchResultsTableView reloadData];
+	}
 }
 
 - (void)cloudStoreDidImport {

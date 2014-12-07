@@ -70,6 +70,22 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 	}
     [self setupInstructionView];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
+- (void)applicationDidEnterBackground {
+	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_Wallet]) {
+		[_mySearchDisplayController setActive:NO];
+		_mySearchDisplayController.delegate = nil;
+		_mySearchDisplayController.searchResultsDelegate = nil;
+		_mySearchDisplayController.searchResultsDataSource = nil;
+		_mySearchDisplayController = nil;
+	} else {
+		if ([[A3AppDelegate instance] shouldProtectScreen] && [_mySearchDisplayController isActive]) {
+			[_mySearchDisplayController setActive:NO];
+		}
+	}
 }
 
 - (void)cloudStoreDidImport {
@@ -81,6 +97,7 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 - (void)removeObserver {
 	[super removeObserver];
 
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidShow object:nil];
@@ -103,6 +120,10 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 
 	if (![self isMovingToParentViewController] && _topViewRef) {
 		[self updateTopViewInfo:_topViewRef];
+	}
+	if ([_mySearchDisplayController isActive]) {
+		[self filterContentForSearchText:_searchBar.text];
+		[_mySearchDisplayController.searchResultsTableView reloadData];
 	}
 }
 
