@@ -1297,7 +1297,10 @@ typedef CMathParser<char, double> MathParser;
                 [self convertMathExpressionToAttributedString];
                 return;
             }
-            NSString *lastChar = [mathexpression substringFromIndex:[mathexpression length] - 1];
+			NSString *lastChar = nil;
+			if ([mathexpression length]) {
+				lastChar = [mathexpression substringFromIndex:[mathexpression length] - 1];
+			}
             if ([lastChar isEqualToString:@")"]) {
                 lastChar = [mathexpression substringFromIndex:[mathexpression length] - 2];
                 NSRange range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890."]];
@@ -1325,7 +1328,7 @@ typedef CMathParser<char, double> MathParser;
             else
             {
                 NSRange range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890."]];
-                if (range.location != NSNotFound) {
+                if ([mathexpression length] && range.location != NSNotFound) {
                     range = [mathexpression rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890."] options:NSBackwardsSearch];
                     NSUInteger startLocation = range.location;
                     while ((range.location != NSNotFound) &&
