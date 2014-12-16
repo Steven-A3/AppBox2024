@@ -53,7 +53,7 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 	self = [super init];
 	if (self) {
 		_fileManager = [NSFileManager new];
-		[_fileManager URLForUbiquityContainerIdentifier:nil];
+
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyValueStoreDidChangeExternally:) name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification object:store];
 #ifdef DEBUG_ENSEMBLE_PROGRESS
