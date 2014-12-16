@@ -17,6 +17,7 @@
 @class Reachability;
 @class A3DataMigrationManager;
 @class A3MainMenuTableViewController;
+@class GADInterstitial;
 
 extern NSString *const kA3ApplicationLastRunVersion;
 extern NSString *const kA3AppsMenuName;
@@ -110,6 +111,9 @@ extern NSString *const A3AppName_Settings;
 @property (nonatomic, assign) BOOL isCoreDataReady;
 @property (nonatomic, assign) BOOL isTouchIDEvaluationInProgress;
 @property (nonatomic, strong) UIViewController *touchIDBackgroundViewController;
+#ifdef APPBOX3_FREE
+@property (nonatomic, strong) GADInterstitial *googleAdInterstitial;
+#endif
 
 + (A3AppDelegate *)instance;
 

@@ -31,6 +31,7 @@
 #import "AFHTTPRequestOperation.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3UserDefaults.h"
+#import "GADInterstitial.h"
 
 NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
@@ -44,7 +45,11 @@ NSString *const A3NotificationCloudKeyValueStoreDidImport = @"A3CloudKeyValueSto
 NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataStoreDidImport";
 NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3NotificationsUserNotificationSettingsRegistered";
 
-@interface A3AppDelegate () <UIAlertViewDelegate, NSURLSessionDownloadDelegate, CLLocationManagerDelegate>
+@interface A3AppDelegate () <UIAlertViewDelegate, NSURLSessionDownloadDelegate, CLLocationManagerDelegate
+		#ifdef APPBOX3_FREE
+		, GADInterstitialDelegate
+		#endif
+		>
 
 @property (nonatomic, strong) NSString *previousVersion;
 @property (nonatomic, strong) NSDictionary *localNotificationUserInfo;
@@ -77,8 +82,11 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	_appIsNotActiveYet = YES;
 
-	FNLOG();
-	CDESetCurrentLoggingLevel(CDELoggingLevelVerbose);
+	CDESetCurrentLoggingLevel(CDELoggingLevelNone);
+
+	#ifdef APPBOX3_FREE
+	self.googleAdInterstitial = [self createAndLoadInterstitial];
+	#endif
 
 	[self prepareDirectories];
 	[A3SyncManager sharedSyncManager];
@@ -958,5 +966,19 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 - (void)applicationProtectedDataDidBecomeAvailable:(UIApplication *)application {
 	FNLOG();
 }
+
+#ifdef APPBOX3_FREE
+
+#pragma mark - Google AdMob
+
+- (GADInterstitial *)createAndLoadInterstitial {
+	GADInterstitial *interstitial = [[GADInterstitial alloc] init];
+	interstitial.adUnitID = @"ca-app-pub-3940256099942544/4411468910";
+	interstitial.delegate = self;
+	[interstitial loadRequest:[GADRequest request]];
+	return interstitial;
+}
+
+#endif
 
 @end
