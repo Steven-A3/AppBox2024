@@ -385,6 +385,9 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
 }
 
 - (A3HolidaysPageContentViewController *)contentViewControllerAtPage:(NSUInteger)page {
+	if (page >= [_countries count]) {
+		page = [_countries count] - 1;
+	}
 	A3HolidaysPageContentViewController *viewController;
 	viewController = _viewControllerCache[_countries[page]];
 	if (!viewController) {
