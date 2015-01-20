@@ -185,9 +185,31 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 }
 
 - (void)prepareClose {
-	self.tableView.delegate = nil;
-	self.tableView.dataSource = nil;
-	[self removeObserver];
+    if (self.presentedViewController) {
+        [self.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+    }
+    self.tableView.delegate = nil;
+    self.tableView.dataSource = nil;
+    [self removeObserver];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self reloadCurrencyCode];
+    [self refreshRightBarItems];
+    [self loadPreviousCalculation];
+    [self.tableView reloadData];
+
+#ifdef APPBOX3_FREE
+    if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+        A3AppDelegate *appDelegate = [A3AppDelegate instance];
+        if ([appDelegate.googleAdInterstitial isReady]) {
+            [appDelegate.googleAdInterstitial presentFromRootViewController:self];
+        }
+    }
+#endif
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -234,7 +256,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 - (void)rightSideViewWillHide:(NSNotification *)noti
 {
     [self enableControls:YES];
-    
+
     [self refreshRightBarItems];
 }
 
@@ -307,16 +329,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 - (void)appWillResignActive:(NSNotification*)noti
 {
     [self clearEverything];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-	[self reloadCurrencyCode];
-    [self refreshRightBarItems];
-	[self loadPreviousCalculation];
-    [self.tableView reloadData];
 }
 
 - (void)settingNoti:(NSNotification *)noti

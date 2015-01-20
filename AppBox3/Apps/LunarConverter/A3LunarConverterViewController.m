@@ -51,14 +51,6 @@
 	BOOL _isShowKeyboard;
 }
 
-- (void)cleanUp
-{
-	[self removeObserver];
-
-	[self.dateKeyboardVC.view removeFromSuperview];
-	_dbManager = nil;
-}
-
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
@@ -70,7 +62,7 @@
 		self.navigationItem.leftBarButtonItem = nil;
 		self.navigationItem.hidesBackButton = YES;
 	}
-    
+
     UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(shareButtonAction:)];
     shareButton.tag = A3RightBarButtonTagShareButton;
 	UIBarButtonItem *settings = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"general"] style:UIBarButtonItemStylePlain target:self action:@selector(settingsButtonAction:)];
@@ -176,6 +168,20 @@
 	}
 }
 
+- (void)prepareClose {
+	if (self.presentedViewController) {
+		[self.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+	}
+}
+
+- (void)cleanUp
+{
+	[self removeObserver];
+
+	[self.dateKeyboardVC.view removeFromSuperview];
+	_dbManager = nil;
+}
+
 - (void)dealloc {
 	[self removeObserver];
 }
@@ -192,10 +198,15 @@
 	[super viewWillAppear:animated];
 
 	[self calculateDate];
-}
 
-- (void)contentSizeDidChange:(NSNotification *)notification {
-	[self calculateDate];
+#ifdef APPBOX3_FREE
+	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+		A3AppDelegate *appDelegate = [A3AppDelegate instance];
+		if ([appDelegate.googleAdInterstitial isReady]) {
+			[appDelegate.googleAdInterstitial presentFromRootViewController:self];
+		}
+	}
+#endif
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -214,6 +225,10 @@
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	}
+}
+
+- (void)contentSizeDidChange:(NSNotification *)notification {
+	[self calculateDate];
 }
 
 - (void)mainMenuBecameFirstResponder {

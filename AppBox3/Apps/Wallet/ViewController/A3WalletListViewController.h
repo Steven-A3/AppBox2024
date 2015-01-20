@@ -13,7 +13,12 @@
 @class WalletCategory;
 @class A3InstructionViewController;
 
-@interface A3WalletListViewController : UIViewController <FMMoveTableViewDelegate, FMMoveTableViewDataSource>
+@protocol A3WalletViewControllerProtocol
+- (BOOL)shouldShowHelpView;
+
+@end
+
+@interface A3WalletListViewController : UIViewController <FMMoveTableViewDelegate, FMMoveTableViewDataSource, A3WalletViewControllerProtocol>
 
 @property (nonatomic, strong) FMMoveTableView *tableView;
 @property (nonatomic, strong) WalletCategory *category;
@@ -30,12 +35,10 @@
 - (void)showLeftNavigationBarItems;
 - (void)addButtonConstraints;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath withItem:(WalletItem *)item;
-
 - (void)dismissInstructionViewController:(UIView *)view;
-
 - (void)statusBarFrameOrOrientationChanged:(NSNotification *)notification;
-
 - (void)rotateAccordingToStatusBarOrientationAndSupportedOrientations;
+
 @end
 
 extern NSString *const A3WalletTextCellID1;

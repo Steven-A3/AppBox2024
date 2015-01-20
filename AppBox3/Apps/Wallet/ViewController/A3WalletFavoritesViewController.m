@@ -148,10 +148,14 @@ static NSString *const A3V3InstructionDidShowForWalletFavorite = @"A3V3Instructi
 
 - (void)setupInstructionView
 {
-    if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForWalletFavorite]) {
+    if ([self shouldShowHelpView]) {
         [self showInstructionView];
     }
     self.navigationItem.rightBarButtonItem = [self instructionHelpBarButton];
+}
+
+- (BOOL)shouldShowHelpView {
+	return ![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForWalletFavorite];
 }
 
 - (void)showInstructionView

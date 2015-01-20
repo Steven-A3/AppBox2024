@@ -573,10 +573,15 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 
 - (void)setupInstructionView
 {
-    if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForWalletAllView]) {
+    if ([self shouldShowHelpView]) {
         [self showInstructionView];
     }
 }
+
+- (BOOL)shouldShowHelpView {
+    return ![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForWalletAllView];
+}
+
 
 - (void)showInstructionView
 {

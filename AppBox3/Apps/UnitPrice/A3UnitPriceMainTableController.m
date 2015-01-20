@@ -136,6 +136,9 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 }
 
 - (void)prepareClose {
+	if (self.presentedViewController) {
+		[self.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+	}
 	self.detailTableViewController.delegate = nil;
 	self.tableView.delegate = nil;
 	self.tableView.dataSource = nil;
@@ -217,6 +220,14 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     [super viewWillAppear:animated];
 
 	[self enableControls:YES];
+#ifdef APPBOX3_FREE
+	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+		A3AppDelegate *appDelegate = [A3AppDelegate instance];
+		if ([appDelegate.googleAdInterstitial isReady]) {
+			[appDelegate.googleAdInterstitial presentFromRootViewController:self];
+		}
+	}
+#endif
 }
 
 - (void)viewDidAppear:(BOOL)animated {

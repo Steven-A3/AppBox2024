@@ -515,4 +515,8 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 	}
 }
 
+- (BOOL)shouldShowHelpView {
+	return NO;
+}
+
 @end

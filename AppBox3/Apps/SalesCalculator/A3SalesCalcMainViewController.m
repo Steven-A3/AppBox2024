@@ -162,6 +162,9 @@ enum A3TableElementCellType {
 }
 
 - (void)prepareClose {
+	if (self.presentedViewController) {
+		[self.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+	}
 	self.tableView.delegate = nil;
 	self.tableView.dataSource = nil;
 	[self removeObserver];
@@ -188,6 +191,14 @@ enum A3TableElementCellType {
 	[super viewWillAppear:animated];
 
 	[self enableControls:YES];
+#ifdef APPBOX3_FREE
+	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+		A3AppDelegate *appDelegate = [A3AppDelegate instance];
+		if ([appDelegate.googleAdInterstitial isReady]) {
+			[appDelegate.googleAdInterstitial presentFromRootViewController:self];
+		}
+	}
+#endif
 }
 
 - (void)viewDidAppear:(BOOL)animated {

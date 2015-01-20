@@ -562,9 +562,9 @@
     if (autoDimValue == 0) {
         return NSLocalizedString(@"Never", @"Never");
     } else if (autoDimValue == 60) {
-        return [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld hours", @"stringsDict", nil), 1];
+        return [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld hours", @"StringsDict", nil), 1];
     }
-    return [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld minutes", @"stringsDict", nil), autoDimValue];
+    return [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld minutes", @"StringsDict", nil), autoDimValue];
 }
 
 @end

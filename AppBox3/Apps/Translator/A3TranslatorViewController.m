@@ -84,6 +84,12 @@
 	[self.tableView reloadData];
 }
 
+- (void)prepareClose {
+	if (self.presentedViewController) {
+		[self.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+	}
+}
+
 - (void)removeObserver {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
@@ -113,6 +119,14 @@
 				[self addButtonAction];
 			});
 		}
+#ifdef APPBOX3_FREE
+		else {
+			A3AppDelegate *appDelegate = [A3AppDelegate instance];
+			if ([appDelegate.googleAdInterstitial isReady]) {
+				[appDelegate.googleAdInterstitial presentFromRootViewController:self];
+			}
+		}
+#endif
 	}
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];

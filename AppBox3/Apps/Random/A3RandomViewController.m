@@ -156,6 +156,15 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 	_generatorButton.backgroundColor = [UIColor whiteColor];
 
 	_resultViewTopConst.constant = CGRectGetHeight(self.navigationController.navigationBar.bounds) + 20;
+
+#ifdef APPBOX3_FREE
+    if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+        A3AppDelegate *appDelegate = [A3AppDelegate instance];
+        if ([appDelegate.googleAdInterstitial isReady]) {
+            [appDelegate.googleAdInterstitial presentFromRootViewController:self];
+        }
+    }
+#endif
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -178,8 +187,19 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
     // Dispose of any resources that can be recreated.
 }
 
+- (void)prepareClose {
+    if (self.presentedViewController) {
+        [self.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+    }
+}
+
+- (void)cleanUp {
+    [self removeObserver];
+}
+
 -(void)dealloc {
     [self removeObserver];
+
     if (randomNumberTimer && [randomNumberTimer isValid]) {
         [randomNumberTimer invalidate];
         randomNumberTimer = nil;

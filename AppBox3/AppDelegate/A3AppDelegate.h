@@ -11,6 +11,7 @@
 #import "A3PasscodeViewControllerProtocol.h"
 #import "A3CacheStoreManager.h"
 #import "A3DataMigrationManager.h"
+#import "GADInterstitial.h"
 
 @class MMDrawerController;
 @protocol A3PasscodeViewControllerProtocol;

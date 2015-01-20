@@ -16,6 +16,7 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "UIViewController+A3Addition.h"
 #import "A3CenterViewDelegate.h"
+#import "A3UserDefaults.h"
 
 @interface A3UnitConverterTabBarController () <A3ViewControllerProtocol>
 
@@ -59,6 +60,9 @@
 }
 
 - (void)prepareClose {
+	if (self.presentedViewController) {
+		[self.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+	}
 	for (UIViewController *childViewController in self.viewControllers) {
 		if ([childViewController isKindOfClass:[UINavigationController class]]) {
 			UINavigationController *navigationController = (UINavigationController *)childViewController;
@@ -128,6 +132,17 @@
 	UIImage *image = [UIImage new];
 	[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
 	[self.navigationController.navigationBar setShadowImage:image];
+
+#ifdef APPBOX3_FREE
+	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+		if ([[A3UserDefaults standardUserDefaults] boolForKey:@"A3V3InstructionDidShowForUnitConverter"]) {
+			A3AppDelegate *appDelegate = [A3AppDelegate instance];
+			if ([appDelegate.googleAdInterstitial isReady]) {
+				[appDelegate.googleAdInterstitial presentFromRootViewController:self];
+			}
+		}
+	}
+#endif
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

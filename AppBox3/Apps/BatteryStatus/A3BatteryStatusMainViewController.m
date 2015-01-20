@@ -18,6 +18,7 @@
 #import "A3InstructionViewController.h"
 #import "A3UserDefaults.h"
 #import "A3StandardTableViewCell.h"
+#import "GADInterstitial.h"
 
 @interface A3BatteryStatusMainViewController () <A3InstructionViewControllerDelegate>
 @property (nonatomic, strong) A3BatteryStatusSettingViewController *settingsViewController;
@@ -138,6 +139,9 @@
 	self.tableView.delegate = nil;
 	self.tableView.dataSource = nil;
 	[self dismissInstructionViewController:nil];
+    if (self.presentedViewController) {
+        [self.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+    }
 	[self removeObserver];
 	[UIDevice currentDevice].batteryMonitoringEnabled = NO;
 }
@@ -204,6 +208,14 @@ static NSString *const A3V3InstructionDidShowForBattery = @"A3V3InstructionDidSh
     if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForBattery]) {
         [self showInstructionView];
     }
+    #ifdef APPBOX3_FREE
+    else {
+        A3AppDelegate *appDelegate = [A3AppDelegate instance];
+        if ([appDelegate.googleAdInterstitial isReady]) {
+            [appDelegate.googleAdInterstitial presentFromRootViewController:self];
+        }
+    }
+    #endif
 }
 
 - (void)showInstructionView

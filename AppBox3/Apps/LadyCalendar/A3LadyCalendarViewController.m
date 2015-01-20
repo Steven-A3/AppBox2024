@@ -121,7 +121,6 @@
     // TODO
 //  스크롤중에 종료되는 버그로 인해서 일단 제거.
 //	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDefaultsDidChange) name:A3UserDefaultsDidChangeNotification object:nil];
-    [self setupInstructionView];
 }
 
 //
@@ -194,6 +193,10 @@
 		[self moveToCurrentWatchingDate];
 		[self updateCurrentMonthLabel];
 	});
+
+	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+		[self setupInstructionView];
+	}
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -232,6 +235,11 @@
 - (void)prepareClose {
 	FNLOG();
 	_isBeingClose = YES;
+
+	if (self.presentedViewController) {
+		[self.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+	}
+
 	self.collectionView.delegate = nil;
 	self.collectionView.dataSource = nil;
 	[self removeObserver];
@@ -520,6 +528,14 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
     if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForLadyCalendar]) {
         [self showInstructionView];
     }
+#ifdef APPBOX3_FREE
+	else {
+		A3AppDelegate *appDelegate = [A3AppDelegate instance];
+		if ([appDelegate.googleAdInterstitial isReady]) {
+			[appDelegate.googleAdInterstitial presentFromRootViewController:self];
+		}
+	}
+#endif
 }
 
 - (void)showInstructionView

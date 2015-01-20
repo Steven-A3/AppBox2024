@@ -154,7 +154,55 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataChanged:) name:NSManagedObjectContextObjectsDidChangeNotification object:[NSManagedObjectContext MR_defaultContext]];
 	[self registerContentSizeCategoryDidChangeNotification];
-    [self setupInstructionView];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+		[self setupInstructionView];
+	}
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	UIView *superview = self.view.superview;
+	[superview addSubview:self.plusButton];
+
+	if (!_viewWillAppearCalled) {
+		_viewWillAppearCalled = YES;
+
+		[self.plusButton makeConstraints:^(MASConstraintMaker *make) {
+			make.centerX.equalTo(superview.centerX);
+			make.centerY.equalTo(superview.bottom).with.offset(-32);
+			make.width.equalTo(@44);
+			make.height.equalTo(@44);
+		}];
+
+		Reachability *reachability = [Reachability reachabilityForInternetConnection];
+		A3UserDefaults *userDefaults = [A3UserDefaults standardUserDefaults];
+		if ([[A3UserDefaults standardUserDefaults] currencyAutoUpdate]) {
+			if ([reachability isReachableViaWiFi] ||
+					([userDefaults currencyUseCellularData] && [A3UIDevice hasCellularNetwork])) {
+				[self updateCurrencyRatesWithAnimation:NO ];
+			}
+		}
+		[self reloadUpdateDateLabel];
+	}
+
+	if (IS_IPHONE && IS_PORTRAIT) {
+		[self leftBarButtonAppsButton];
+	}
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+		FNLOG();
+		[self removeObserver];
+	}
 }
 
 - (void)cloudDidImportChanges:(NSNotification *)note {
@@ -182,18 +230,12 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 }
 
 - (void)prepareClose {
+	if (self.presentedViewController) {
+		[self.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+	}
 	self.tableView.delegate = nil;
 	self.tableView.dataSource = nil;
 	[self removeObserver];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-
-	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
-		FNLOG();
-		[self removeObserver];
-	}
 }
 
 - (void)cleanUp {
@@ -235,38 +277,6 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 - (void)settingsChanged {
 	[self.tableView reloadData];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-
-	UIView *superview = self.view.superview;
-	[superview addSubview:self.plusButton];
-
-	if (!_viewWillAppearCalled) {
-		_viewWillAppearCalled = YES;
-
-		[self.plusButton makeConstraints:^(MASConstraintMaker *make) {
-			make.centerX.equalTo(superview.centerX);
-			make.centerY.equalTo(superview.bottom).with.offset(-32);
-			make.width.equalTo(@44);
-			make.height.equalTo(@44);
-		}];
-
-		Reachability *reachability = [Reachability reachabilityForInternetConnection];
-		A3UserDefaults *userDefaults = [A3UserDefaults standardUserDefaults];
-		if ([[A3UserDefaults standardUserDefaults] currencyAutoUpdate]) {
-			if ([reachability isReachableViaWiFi] ||
-					([userDefaults currencyUseCellularData] && [A3UIDevice hasCellularNetwork])) {
-				[self updateCurrencyRatesWithAnimation:NO ];
-			}
-		}
-		[self reloadUpdateDateLabel];
-	}
-
-    if (IS_IPHONE && IS_PORTRAIT) {
-        [self leftBarButtonAppsButton];
-    }
 }
 
 - (void)enableControls:(BOOL)enable {
@@ -606,6 +616,14 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForCurrency]) {
         [self showInstructionView];
     }
+#ifdef APPBOX3_FREE
+	else {
+		A3AppDelegate *appDelegate = [A3AppDelegate instance];
+		if ([appDelegate.googleAdInterstitial isReady]) {
+			[appDelegate.googleAdInterstitial presentFromRootViewController:self];
+		}
+	}
+#endif
 }
 
 - (void)instructionHelpButtonAction:(id)sender {

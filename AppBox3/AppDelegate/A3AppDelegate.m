@@ -973,10 +973,14 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 
 - (GADInterstitial *)createAndLoadInterstitial {
 	GADInterstitial *interstitial = [[GADInterstitial alloc] init];
-	interstitial.adUnitID = @"ca-app-pub-3940256099942544/4411468910";
+	interstitial.adUnitID = @"ca-app-pub-0532362805885914/2537692543";
 	interstitial.delegate = self;
 	[interstitial loadRequest:[GADRequest request]];
 	return interstitial;
+}
+
+- (void)interstitialDidDismissScreen:(GADInterstitial *)ad {
+	self.googleAdInterstitial = [self createAndLoadInterstitial];
 }
 
 #endif

@@ -38,69 +38,31 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 
 @implementation A3WalletMainTabBarController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-        self.delegate = self;
-		if ([WalletCategory MR_countOfEntities] == 0) {
-			[WalletData initializeWalletCategories];
-		}
-
-        // test for "kWhichTabPrefKey" key value
-        NSUInteger preTabIndex = [[A3UserDefaults standardUserDefaults] integerForKey:A3WalletUserDefaultsSelectedTab];
-        if (preTabIndex == 0)
-        {
-            // no default source value has been set, create it here
-            //
-            // since no default values have been set (i.e. no preferences file created), create it here
-			[[A3UserDefaults standardUserDefaults] setInteger:kDefaultTabSelection forKey:A3WalletUserDefaultsSelectedTab];
-			[[A3UserDefaults standardUserDefaults] synchronize];
-		}
-
-		[WalletData createDirectories];
-
-        [self categories];
-        
-        [self setupTabBar];
-
-    }
-    return self;
-}
-
-- (id) initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    if (self) {
-        //init
-        
-        self.delegate = self;
-		if ([WalletCategory MR_countOfEntities] == 0) {
-			[WalletData initializeWalletCategories];
-		}
-
-        // test for "kWhichTabPrefKey" key value
-        NSUInteger preTabIndex = [[A3UserDefaults standardUserDefaults] integerForKey:A3WalletUserDefaultsSelectedTab];
-        if (preTabIndex == 0)
-        {
-            // no default source value has been set, create it here
-            //
-            // since no default values have been set (i.e. no preferences file created), create it here
-			[[A3UserDefaults standardUserDefaults] setInteger:kDefaultTabSelection forKey:A3WalletUserDefaultsSelectedTab];
-			[[A3UserDefaults standardUserDefaults] synchronize];
-		}
-        
-        [self setupTabBar];
-    }
-    
-    return self;
-}
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+	self.delegate = self;
+	if ([WalletCategory MR_countOfEntities] == 0) {
+		[WalletData initializeWalletCategories];
+	}
+
+	// test for "kWhichTabPrefKey" key value
+	NSUInteger preTabIndex = [[A3UserDefaults standardUserDefaults] integerForKey:A3WalletUserDefaultsSelectedTab];
+	if (preTabIndex == 0)
+	{
+		// no default source value has been set, create it here
+		//
+		// since no default values have been set (i.e. no preferences file created), create it here
+		[[A3UserDefaults standardUserDefaults] setInteger:kDefaultTabSelection forKey:A3WalletUserDefaultsSelectedTab];
+		[[A3UserDefaults standardUserDefaults] synchronize];
+	}
+
+	[WalletData createDirectories];
+
+	[self categories];
+
+	[self setupTabBar];
 
 	// 카테고리 이름/아이콘이 바뀌면 탭바의 표시되는 정보도 변경되어야 하므로 노티를 수신한다.
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveCategoryChangedNotification:) name:A3WalletNotificationCategoryChanged object:nil];
@@ -139,6 +101,9 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 }
 
 - (void)prepareClose {
+	if (self.presentedViewController) {
+		[self.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+	}
 	for (UIViewController *childViewController in self.viewControllers) {
 		if ([childViewController isKindOfClass:[UINavigationController class]]) {
 			UINavigationController *navigationController = (UINavigationController *)childViewController;
@@ -164,6 +129,19 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 	UIImage *image = [UIImage new];
 	[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
 	[self.navigationController.navigationBar setShadowImage:image];
+
+#ifdef APPBOX3_FREE
+	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+		UINavigationController *selectedNavigationController = (UINavigationController *) self.selectedViewController;
+		UIViewController<A3WalletViewControllerProtocol> *activeViewController = (UIViewController <A3WalletViewControllerProtocol> *) selectedNavigationController.viewControllers[0];
+		if (![activeViewController shouldShowHelpView]) {
+			A3AppDelegate *appDelegate = [A3AppDelegate instance];
+			if ([appDelegate.googleAdInterstitial isReady]) {
+				[appDelegate.googleAdInterstitial presentFromRootViewController:self];
+			}
+		}
+	}
+#endif
 }
 
 - (NSMutableArray *)categories {

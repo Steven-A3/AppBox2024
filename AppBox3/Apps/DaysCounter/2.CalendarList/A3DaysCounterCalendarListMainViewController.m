@@ -197,7 +197,6 @@
     
     [A3DaysCounterModelManager reloadAlertDateListForLocalNotification:[NSManagedObjectContext MR_rootSavingContext]];
     
-    [self setupInstructionView];
 	[self registerContentSizeCategoryDidChangeNotification];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
@@ -216,6 +215,11 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
+
+    if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+        [self setupInstructionView];
+    }
+
 	self.navigationController.delegate = nil;
 
 	[self reloadTableView];
@@ -268,6 +272,9 @@
 
 - (void)prepareClose {
 	[self dismissInstructionViewController:nil];
+    if (self.presentedViewController) {
+        [self.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+    }
 
 	self.tableView.delegate = nil;
 	self.tableView.dataSource = nil;
@@ -427,6 +434,14 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
     if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForDaysCounterCalendarList]) {
         [self showInstructionView];
     }
+#ifdef APPBOX3_FREE
+    else {
+        A3AppDelegate *appDelegate = [A3AppDelegate instance];
+        if ([appDelegate.googleAdInterstitial isReady]) {
+            [appDelegate.googleAdInterstitial presentFromRootViewController:self];
+        }
+    }
+#endif
 }
 
 - (void)showInstructionView
