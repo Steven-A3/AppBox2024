@@ -114,7 +114,7 @@
 "S47-yQ-cP7.text" = "Chinese";
 
 /* Class = "IBUITableViewSection"; footerTitle = "IMPORTANT: If you forget your passcode, you must delete the app and reinstall it. (Your data will be deleted if you reinstall the app.)"; ObjectID = "Sb9-sM-r8l"; */
-"Sb9-sM-r8l.footerTitle" = "IMPORTANT: If you forget your passcode, you must delete the app and reinstall it. (Your data will be deleted, if you reinstall the app.)";
+"Sb9-sM-r8l.footerTitle" = "IMPORTANT: If you forget your passcode, you must delete the app and reinstall it. (Your data will be deleted if you reinstall the app.)";
 
 /* Class = "IBUITableViewSection"; footerTitle = "Please move the backup file to your computer. Delete the backup file to save the storage space in your device.\nDeleting the app will delete the backup file in your device together."; ObjectID = "Scy-Ii-bsP"; */
 "Scy-Ii-bsP.footerTitle" = "Please move the backup file to your computer. Delete the backup file to save the storage space in your device.\nDeleting the app will delete the backup file in your device together.";
@@ -163,6 +163,9 @@
 
 /* Class = "IBUINavigationItem"; title = "Theme Color"; ObjectID = "eqe-ec-kWO"; */
 "eqe-ec-kWO.title" = "Theme Color";
+
+/* Class = "IBUILabel"; text = "Touch ID"; ObjectID = "fLR-f5-fnt"; */
+"fLR-f5-fnt.text" = "Touch ID";
 
 /* Class = "IBUINavigationItem"; title = "Favorites"; ObjectID = "fqW-Vk-vP5"; */
 "fqW-Vk-vP5.title" = "Favorites";

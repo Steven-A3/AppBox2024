@@ -1091,11 +1091,11 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	}
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = NSLocalizedStringFromTable(@"228 Peace Memorial Day", kHolidaysResourceName, nil);
+	holidayName = NSLocalizedStringFromTable(@"Peace Memorial Day", kHolidaysResourceName, nil);
 	date = [HolidayData dateWithDay:28 month:2 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
-    holidayName = NSLocalizedStringFromTable(@"Combination of Women's Day and Children's Day", kHolidaysResourceName, nil);
+    holidayName = NSLocalizedStringFromTable(@"Children's Day", kHolidaysResourceName, nil);
 	date = [HolidayData dateWithDay:4 month:4 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
     
