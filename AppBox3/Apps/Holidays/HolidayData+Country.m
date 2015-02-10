@@ -17,6 +17,7 @@ NSString *const kHolidayCountryCode = @"kHolidayCountryCode";
 NSString *const kHolidayCapitalCityName = @"kHolidayCapitalCityName";
 NSString *const kHolidayTimeZone = @"kHolidayTimeZone";
 NSString *const kA3TimeZoneName = @"kA3TimeZoneName";
+NSString *const A3NotificationHolidaysCountryListChanged = @"A3NotificationHolidaysCountryListChanged";
 
 @implementation HolidayData (Country)
 
@@ -620,6 +621,37 @@ NSString *const kA3TimeZoneName = @"kA3TimeZoneName";
 		return [obj1[kHolidayDate] compare:obj2[kHolidayDate]];
 	}];
 	return holidays;
+}
+
++ (BOOL)isSupportedCountry:(NSString *)countryCode {
+	NSArray *supportedCountries = [HolidayData supportedCountries];
+	NSInteger indexOfCountry = [supportedCountries indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+		return [countryCode isEqualToString:obj[kHolidayCountryCode]];
+	}];
+	return indexOfCountry != NSNotFound;
+}
+
++ (void)resetFirstCountryWithLocale {
+	NSArray *countries = [HolidayData userSelectedCountries];
+	if (!countries)
+		return;
+
+	NSString *currentCountryFromLocale = [[[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleCountryCode] lowercaseString];
+
+	if (![HolidayData isSupportedCountry:currentCountryFromLocale])
+		return;
+
+	if ([currentCountryFromLocale length] && ![currentCountryFromLocale isEqualToString:countries[0]]) {
+		NSMutableArray *newCountries = [NSMutableArray arrayWithArray:countries];
+
+		[newCountries removeObject:currentCountryFromLocale];
+		[newCountries insertObject:currentCountryFromLocale atIndex:0];
+
+		[[A3UserDefaults standardUserDefaults] setObject:newCountries forKey:kHolidayCountriesForCurrentDevice];
+		[[A3UserDefaults standardUserDefaults] synchronize];
+
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationHolidaysCountryListChanged object:nil];
+	}
 }
 
 + (NSArray *)userSelectedCountries {

@@ -108,6 +108,29 @@
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 	_lastPageIndex = NSNotFound;
 	_currentPageIndex = NSNotFound;
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(countryListChanged) name:A3NotificationHolidaysCountryListChanged object:nil];
+}
+
+- (void)countryListChanged {
+	_countries = nil;
+	_pageControl.numberOfPages = [self.countries count];
+
+	NSInteger page = self.pageControl.currentPage;
+	if (page >= _pageControl.numberOfPages) {
+		page = _pageControl.numberOfPages - 1;
+	}
+	[self jumpToPage:page direction:UIPageViewControllerNavigationDirectionForward animated:NO ];
+	_pageControl.currentPage = page;
+
+	dispatch_async(dispatch_get_main_queue(), ^{
+		NSArray *allKeys = [_viewControllerCache allKeys];
+		for (NSString *key in allKeys) {
+			if (![self.countries containsObject:key]) {
+				[_viewControllerCache removeObjectForKey:key];
+			}
+		}
+	});
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -145,6 +168,7 @@
 }
 
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 }
 
@@ -675,10 +699,9 @@ extern NSString *const kA3HolidayScreenImageURL;		// USE key + country code
 }
 
 - (void)viewController:(UIViewController *)viewController didFinishPickingCountry:(NSString *)countryCode dataChanged:(BOOL)dataChanged {
-	if (dataChanged) {
-		_countries = nil;
-		_pageControl.numberOfPages = [self.countries count];
-	}
+	_countries = nil;
+	_pageControl.numberOfPages = [self.countries count];
+
 	NSInteger page = [self.countries indexOfObject:countryCode];
 	[self jumpToPage:page direction:UIPageViewControllerNavigationDirectionForward animated:NO ];
 	_pageControl.currentPage = page;

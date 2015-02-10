@@ -63,9 +63,18 @@ extern NSString *const A3CurrencyActionCellID;
 	[self.tableView registerNib:[UINib nibWithNibName:@"A3CurrencyTVActionCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3CurrencyActionCellID];
 
 	[self registerContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(countryListChanged) name:A3NotificationHolidaysCountryListChanged object:nil];
+}
+
+- (void)countryListChanged {
+	[HolidayData resetFirstCountryWithLocale];
+	
+	_userSelectedCountries = nil;
+	[self.tableView reloadData];
 }
 
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 }
 

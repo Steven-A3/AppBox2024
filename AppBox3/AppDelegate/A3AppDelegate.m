@@ -263,6 +263,8 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 	[self applicationDidBecomeActive_passcode];
 
 	[self fetchPushNotification];
+
+	[self updateHolidayNations];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -576,7 +578,6 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 		_downloadList = nil;
 		_backgroundDownloadSession = nil;
 
-		[self updateHolidayNations];
 		return;
 	}
 	if (![self.reachability isReachableViaWiFi]) {
@@ -650,20 +651,31 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 - (void)updateHolidayNations {
 	dispatch_async(dispatch_get_main_queue(), ^{
 		if ([CLLocationManager locationServicesEnabled]) {
-			_locationManager = [[CLLocationManager alloc] init];
-			_locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
-			_locationManager.delegate = self;
+			if (!_locationManager) {
+				_locationManager = [[CLLocationManager alloc] init];
+				_locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
+				_locationManager.delegate = self;
+			}
 
-			if (!IS_IOS7 && [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
-				if ([_locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+			if ([CLLocationManager authorizationStatus] < kCLAuthorizationStatusAuthorized) {
+				[HolidayData resetFirstCountryWithLocale];
+
+				if (!IS_IOS7 && [_locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
 					[_locationManager requestWhenInUseAuthorization];
 				}
 			}
 
 			[_locationManager startUpdatingLocation];
 
-			_locationUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:120 target:self selector:@selector(locationDidNotRespond) userInfo:nil repeats:NO];
+			if (_locationUpdateTimer) {
+				[_locationUpdateTimer invalidate];
+				_locationUpdateTimer = nil;
+			}
+ 			_locationUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:120 target:self selector:@selector(locationDidNotRespond) userInfo:nil repeats:NO];
 		} else {
+			// 위치 정보 접근이 제한되어 있는 경우에는 autoupdatingCurrentLocale에서 정보를 읽어 휴일 국가 목록을 업데이트 한다.
+			[HolidayData resetFirstCountryWithLocale];
+
 			double delayInSeconds = 20.0;
 			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -674,6 +686,7 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+	FNLOG();
 	[_locationUpdateTimer invalidate];
 	_locationUpdateTimer = nil;
 
@@ -699,14 +712,13 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 				return;
 
 			if (![countries[0] isEqualToString:_countryCodeOfCurrentLocation]) {
-				NSInteger idx = [countries indexOfObject:_countryCodeOfCurrentLocation];
-				if (idx != NSNotFound) {
-					[countries removeObjectAtIndex:idx];
-				}
-
+				
+				[countries removeObject:_countryCodeOfCurrentLocation];
 				[countries insertObject:_countryCodeOfCurrentLocation atIndex:0];
 
 				[HolidayData setUserSelectedCountries:countries];
+
+				[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationHolidaysCountryListChanged object:nil];
 			}
 		}
 		double delayInSeconds = 20.0;
@@ -718,11 +730,13 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+	FNLOG();
 	[_locationUpdateTimer invalidate];
 	_locationUpdateTimer = nil;
 
 	[_locationManager stopMonitoringSignificantLocationChanges];
 	_locationManager = nil;
+	
 	[self addDownloadTasksForHolidayImages];
 }
 
