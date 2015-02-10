@@ -48,7 +48,6 @@
 		<string>appbox.ttf</string>
 		<string>Digit.ttf</string>
 		<string>REGISTER.TTF</string>
-		<string>LigatureSymbols.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
