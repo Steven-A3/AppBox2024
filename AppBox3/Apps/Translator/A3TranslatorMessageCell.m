@@ -491,7 +491,7 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 }
 
 - (NSString *)supportedVoiceLanguageForLanguage:(NSString *)language defaultCode:(NSString *)defaultCode inArray:(NSArray *)voices {
-	NSString *languageCode = [NSString stringWithFormat:@"en-%@", [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode]];
+	NSString *languageCode = [NSString stringWithFormat:@"%@-%@", language, [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode]];
     if ([language isEqualToString:@"zh-CN"] || [language isEqualToString:@"zh-TW"]) {
         languageCode = language;
     }
