@@ -31,6 +31,7 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "DaysCounterCalendar.h"
 #import "NSMutableArray+A3Sort.h"
+#import "NSDate-Utilities.h"
 
 extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
@@ -1400,6 +1401,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 }
 
 #pragma mark - Lunar
+
 + (NSDateComponents *)nextSolarDateComponentsFromLunarDateComponents:(NSDateComponents *)lunarComponents leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate
 {
     BOOL isResultLeapMonth;
@@ -1407,24 +1409,9 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         isLeapMonth = [NSDate isLunarDateComponents:lunarComponents isKorean:[A3UIDevice useKoreanLunarCalendar]];
     }
 
-    NSDateComponents *fromComp = [[[A3AppDelegate instance] calendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:fromDate];
-    lunarComponents.year = fromComp.year;
-    NSDateComponents *startComp = [NSDate lunarCalcWithComponents:lunarComponents
-												 gregorianToLunar:NO
-														leapMonth:isLeapMonth
-														   korean:[A3UIDevice useKoreanLunarCalendar]
-												  resultLeapMonth:&isResultLeapMonth];
     NSDateComponents *resultComp;
-    if (fromComp.year == startComp.year &&
-        (startComp.month > fromComp.month ||
-        (startComp.month == fromComp.month && startComp.day > fromComp.day)) ) {
-        resultComp = [self dateComponentsOfRepeatForLunarDateComponent:lunarComponents aboutNextTime:NO leapMonth:isLeapMonth fromDate:fromDate repeatType:RepeatType_EveryYear];
-    }
-    else {
-        resultComp = [self dateComponentsOfRepeatForLunarDateComponent:lunarComponents aboutNextTime:(startComp.year > fromComp.year ? NO : YES) leapMonth:isLeapMonth fromDate:fromDate repeatType:RepeatType_EveryYear];
-    }
-    
-//    NSAssert(resultComp, @"Not Exist Lunar Date");
+	resultComp = [self dateComponentsOfRepeatForLunarDateComponent:lunarComponents leapMonth:isLeapMonth fromDate:fromDate repeatType:RepeatType_EveryYear];
+	
     if (!resultComp) {
         return nil;
     }
@@ -1444,46 +1431,49 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     return result;
 }
 
-+ (NSDateComponents *)dateComponentsOfRepeatForLunarDateComponent:(NSDateComponents *)lunarComponents aboutNextTime:(BOOL)isAboutNextTime leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate repeatType:(NSInteger)repeatType
-{
-    BOOL isResultLeapMonth;
-    NSDateComponents *fromComp = [[[A3AppDelegate instance] calendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:fromDate];
-    NSDateComponents *calcComp = [NSDateComponents new];
-    
-    switch (repeatType) {
-        case RepeatType_EveryYear:
-        {
-            calcComp.year = isAboutNextTime ? fromComp.year + 1 : fromComp.year;
-            calcComp.month = lunarComponents.month;
-            calcComp.day = lunarComponents.day;
-            calcComp = [self validLunarDateComponents:calcComp];
-        }
-            break;
-        case RepeatType_EveryMonth:
-        case RepeatType_Every2Week:
-        case RepeatType_EveryWeek:
-        case RepeatType_EveryDay:
-        {
-            
-        }
-            break;
-        default:
-            break;
-    }
-    
-    // 존재하지 않는 반복 음력날짜에 대한 검증
-    if (isLeapMonth) {
-        isLeapMonth = [NSDate isLunarDateComponents:calcComp isKorean:[A3UIDevice useKoreanLunarCalendar]];
-    }
-    NSDateComponents *resultDateComponents = [NSDate lunarCalcWithComponents:calcComp
-															gregorianToLunar:NO
-																   leapMonth:isLeapMonth
-																	  korean:[A3UIDevice useKoreanLunarCalendar]
-															 resultLeapMonth:&isResultLeapMonth];
-    NSDate *resultDate = [[[A3AppDelegate instance] calendar] dateFromComponents:resultDateComponents];
-    if (!resultDateComponents || !resultDate || [resultDate timeIntervalSince1970] < [fromDate timeIntervalSince1970]) {
-        return nil;
-    }
++ (NSDateComponents *)dateComponentsOfRepeatForLunarDateComponent:(NSDateComponents *)lunarComponents leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate repeatType:(NSInteger)repeatType {
+	BOOL isResultLeapMonth;
+	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
+	NSDateComponents *fromComp = [calendar components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit fromDate:fromDate];
+	NSDateComponents *calcComp = [NSDateComponents new];
+	NSDate *resultDate;
+	NSDateComponents *resultDateComponents;
+	NSDate *zeroHourFromDate = [fromDate dateAtStartOfDay];
+
+	switch (repeatType) {
+		case RepeatType_EveryYear: {
+			calcComp.year = MAX(fromComp.year - 2, lunarComponents.year - 1);
+			calcComp.month = lunarComponents.month;
+			calcComp.day = lunarComponents.day;
+			calcComp = [self validLunarDateComponents:calcComp];
+			break;
+		}
+		case RepeatType_EveryMonth:
+		case RepeatType_Every2Week:
+		case RepeatType_EveryWeek:
+		case RepeatType_EveryDay: {
+			break;
+		}
+		default:
+			break;
+	}
+	do {
+		calcComp.year += 1;
+		
+		// 존재하지 않는 반복 음력날짜에 대한 검증
+		if (isLeapMonth) {
+			isLeapMonth = [NSDate isLunarDateComponents:calcComp isKorean:[A3UIDevice useKoreanLunarCalendar]];
+		}
+		resultDateComponents = [NSDate lunarCalcWithComponents:calcComp
+											  gregorianToLunar:NO
+													 leapMonth:isLeapMonth
+														korean:[A3UIDevice useKoreanLunarCalendar]
+																 resultLeapMonth:&isResultLeapMonth];
+		resultDate = [calendar dateFromComponents:resultDateComponents];
+		if (!resultDateComponents || !resultDate) {
+			return nil;
+		}
+	} while ([resultDate isEarlierThanDate:zeroHourFromDate]);
 
     return calcComp;
 }

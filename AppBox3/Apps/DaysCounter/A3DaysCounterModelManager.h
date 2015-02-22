@@ -73,7 +73,6 @@
 + (NSDate*)repeatDateOfCurrentNotNextWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate; // 반복 시작이 당해 혹은 현재 시점 날짜 출력을 위하여 추가.
 + (NSString*)stringOfDurationOption:(NSInteger)option fromDate:(NSDate*)fromDate toDate:(NSDate*)toDate isAllDay:(BOOL)isAllDay isShortStyle:(BOOL)isShortStyle isStrictShortType:(BOOL)isStrictShortType;
 
-
 - (NSString*)stringForSlideshowTransitionType:(NSInteger)type;
 - (void)setupEventSummaryInfo:(DaysCounterEvent*)item toView:(UIView*)toView;
 
@@ -91,15 +90,12 @@
 
 #pragma mark - EventTime Management (AlertTime, EffectiveStartDate)
 - (NSString *)localizedSystemCalendarNameForCalendarID:(NSString *)calendarID;
-
 + (NSDate *)effectiveAlertDateForEvent:(DaysCounterEvent *)event;
-
 + (void)reloadAlertDateListForLocalNotification:(NSManagedObjectContext *)context;
 
 #pragma mark - Lunar
 + (NSDateComponents *)nextSolarDateComponentsFromLunarDateComponents:(NSDateComponents *)lunarComponents leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate;
 + (NSDate *)nextSolarDateFromLunarDateComponents:(NSDateComponents *)lunarComponents leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate;
-+ (NSDateComponents *)dateComponentsOfRepeatForLunarDateComponent:(NSDateComponents *)lunarComponents aboutNextTime:(BOOL)isAboutNextTime leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate repeatType:(NSInteger)repeatType;
 
 #pragma mark - Manipulate DaysCounterDateModel Object
 + (void)setDateModelObjectForDateComponents:(NSDateComponents *)dateComponents withEventModel:(DaysCounterEvent *)eventModel endDate:(BOOL)isEndDate;
