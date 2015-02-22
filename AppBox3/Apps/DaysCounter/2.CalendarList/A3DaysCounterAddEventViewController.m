@@ -2001,7 +2001,7 @@
     // 음력 날짜 유효성 체크.
     if ([_eventItem.isLunar boolValue]) {
         BOOL isLunarDate = [NSDate isLunarDateComponents:dateComp isKorean:[A3UIDevice useKoreanLunarCalendar]];
-        [self leapMonthCellEnable:[NSDate isLunarLeapMonthAtDateComponents:dateComp isKorean:YES]];
+        [self leapMonthCellEnable:[NSDate isLunarLeapMonthAtDateComponents:dateComp isKorean:[A3UIDevice useKoreanLunarCalendar]]];
 
         if (!isLunarDate) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"It's not a Lunar Date", @"It's not a Lunar Date") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil, nil] ;
@@ -2252,7 +2252,7 @@
     // 음력 날짜 유효성 체크.
     if ([_eventItem.isLunar boolValue]) {
         //BOOL isLunarDate = [NSDate isLunarDate:[calendar dateFromComponents:dateComponents] isKorean:[A3UIDevice useKoreanLunarCalendar]];
-        [self leapMonthCellEnable:[NSDate isLunarLeapMonthAtDateComponents:dateComponents isKorean:YES]];
+        [self leapMonthCellEnable:[NSDate isLunarLeapMonthAtDateComponents:dateComponents isKorean:[A3UIDevice useKoreanLunarCalendar]]];
     }
     
     if ([self.inputDateKey isEqualToString:EventItem_StartDate]) {

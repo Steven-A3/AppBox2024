@@ -1404,12 +1404,16 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 {
     BOOL isResultLeapMonth;
     if (isLeapMonth) {
-        isLeapMonth = [NSDate isLunarDateComponents:lunarComponents isKorean:YES];
+        isLeapMonth = [NSDate isLunarDateComponents:lunarComponents isKorean:[A3UIDevice useKoreanLunarCalendar]];
     }
 
     NSDateComponents *fromComp = [[[A3AppDelegate instance] calendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:fromDate];
     lunarComponents.year = fromComp.year;
-    NSDateComponents *startComp = [NSDate lunarCalcWithComponents:lunarComponents gregorianToLunar:NO leapMonth:isLeapMonth korean:YES resultLeapMonth:&isResultLeapMonth];
+    NSDateComponents *startComp = [NSDate lunarCalcWithComponents:lunarComponents
+												 gregorianToLunar:NO
+														leapMonth:isLeapMonth
+														   korean:[A3UIDevice useKoreanLunarCalendar]
+												  resultLeapMonth:&isResultLeapMonth];
     NSDateComponents *resultComp;
     if (fromComp.year == startComp.year &&
         (startComp.month > fromComp.month ||
@@ -1425,7 +1429,11 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         return nil;
     }
 
-    NSDateComponents *resultDateComponents = [NSDate lunarCalcWithComponents:resultComp gregorianToLunar:NO leapMonth:isLeapMonth korean:YES resultLeapMonth:&isResultLeapMonth];
+    NSDateComponents *resultDateComponents = [NSDate lunarCalcWithComponents:resultComp
+															gregorianToLunar:NO
+																   leapMonth:isLeapMonth
+																	  korean:[A3UIDevice useKoreanLunarCalendar]
+															 resultLeapMonth:&isResultLeapMonth];
     return resultDateComponents;
 }
 
@@ -1465,9 +1473,13 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     
     // 존재하지 않는 반복 음력날짜에 대한 검증
     if (isLeapMonth) {
-        isLeapMonth = [NSDate isLunarDateComponents:calcComp isKorean:YES];
+        isLeapMonth = [NSDate isLunarDateComponents:calcComp isKorean:[A3UIDevice useKoreanLunarCalendar]];
     }
-    NSDateComponents *resultDateComponents = [NSDate lunarCalcWithComponents:calcComp gregorianToLunar:NO leapMonth:isLeapMonth korean:YES resultLeapMonth:&isResultLeapMonth];
+    NSDateComponents *resultDateComponents = [NSDate lunarCalcWithComponents:calcComp
+															gregorianToLunar:NO
+																   leapMonth:isLeapMonth
+																	  korean:[A3UIDevice useKoreanLunarCalendar]
+															 resultLeapMonth:&isResultLeapMonth];
     NSDate *resultDate = [[[A3AppDelegate instance] calendar] dateFromComponents:resultDateComponents];
     if (!resultDateComponents || !resultDate || [resultDate timeIntervalSince1970] < [fromDate timeIntervalSince1970]) {
         return nil;
@@ -1478,7 +1490,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 + (NSDateComponents *)validLunarDateComponents:(NSDateComponents *)comp
 {
-    BOOL result = [NSDate isLunarDateComponents:comp isKorean:YES];
+    BOOL result = [NSDate isLunarDateComponents:comp isKorean:[A3UIDevice useKoreanLunarCalendar]];
     if (result) {
         return comp;
     }
@@ -1503,13 +1515,17 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         dateModel.day = @(dateComponents.day);
 
         if ([dateModel.isLeapMonth boolValue]) {
-            dateModel.isLeapMonth = @([NSDate isLunarLeapMonthAtDateComponents:dateComponents isKorean:YES]);
+            dateModel.isLeapMonth = @([NSDate isLunarLeapMonthAtDateComponents:dateComponents isKorean:[A3UIDevice useKoreanLunarCalendar]]);
         }
         else {
             dateModel.isLeapMonth = @(NO);
         }
         
-        NSDateComponents *solarComp = [NSDate lunarCalcWithComponents:dateComponents gregorianToLunar:NO leapMonth:[dateModel.isLeapMonth boolValue] korean:YES resultLeapMonth:&isResultLeapMonth];
+        NSDateComponents *solarComp = [NSDate lunarCalcWithComponents:dateComponents
+													 gregorianToLunar:NO
+															leapMonth:[dateModel.isLeapMonth boolValue]
+															   korean:[A3UIDevice useKoreanLunarCalendar]
+													  resultLeapMonth:&isResultLeapMonth];
         solarComp.hour = 0;     // lunar 는 all day.
         solarComp.minute = 0;
         solarComp.second = 0;
