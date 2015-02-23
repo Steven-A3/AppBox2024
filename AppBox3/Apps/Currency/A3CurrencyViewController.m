@@ -154,6 +154,8 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataChanged:) name:NSManagedObjectContextObjectsDidChangeNotification object:[NSManagedObjectContext MR_defaultContext]];
 	[self registerContentSizeCategoryDidChangeNotification];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -205,6 +207,12 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	}
 }
 
+- (void)applicationDidBecomeActive {
+	if ([[A3UserDefaults standardUserDefaults] currencyAutoUpdate]) {
+		[self updateCurrencyRatesWithAnimation:NO];
+	}
+}
+
 - (void)cloudDidImportChanges:(NSNotification *)note {
 	if (self.firstResponder) {
 		return;
@@ -219,14 +227,17 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 - (void)removeObserver {
 	[self removeContentSizeCategoryDidChangeNotification];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3CurrencySettingsChangedNotification object:nil];
+	
+	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+	[notificationCenter removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[notificationCenter removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+	[notificationCenter removeObserver:self name:A3CurrencySettingsChangedNotification object:nil];
 	if (IS_IPAD) {
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+		[notificationCenter removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
+		[notificationCenter removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 	}
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:[NSManagedObjectContext MR_defaultContext]];
+	[notificationCenter removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:[NSManagedObjectContext MR_defaultContext]];
+	[notificationCenter removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)prepareClose {
