@@ -393,6 +393,9 @@ typedef CMathParser<char, double> MathParser;
                 double dv = [currentString doubleValue];
                 if (dv != 0) {
                     temp = [temp appendWithString:[self getResultValueString:dv shortFormat:(IS_IPHONE && _isLandScape == NO ? YES:NO)]];
+					if ([currentString hasSuffix:@"."]) {
+						temp = [temp appendWithString:@"."];
+					}
                 } else {
                     // to reserve 0.
                     temp = [temp appendWithString:currentString];
@@ -1422,11 +1425,23 @@ typedef CMathParser<char, double> MathParser;
             if (range.location != NSNotFound) {
                 break;  // 마지막 입력값이 이미 소수점을 갖고 있습니다.
             }
-            
-            mathexpression = [mathexpression stringByAppendingString:[lastValue length] == 0 ? @"0." : @"."];
+			
+			NSMutableString *editingString = [NSMutableString stringWithString:mathexpression];
+			
+			if ([mathexpression hasPrefix:@"(-"] && [mathexpression hasSuffix:@")"]) {
+				[editingString insertString:@"." atIndex:[mathexpression length] - 1];
+			} else {
+				if ([lastValue integerValue] > 0) {
+					[editingString appendString:@"0"];
+					[editingString appendString:@"."];
+				} else {
+					[editingString appendString:@"."];
+				}
+			}
+			mathexpression = editingString;
             [self convertMathExpressionToAttributedString];
+			break;
         }
-            break;
     }
 }
 
