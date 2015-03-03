@@ -27,6 +27,18 @@
     [super tearDown];
 }
 
+- (void)testScreen {
+	UIScreen *mainScreen = [UIScreen mainScreen];
+	FNLOGRECT(mainScreen.nativeBounds);
+	FNLOGRECT(mainScreen.bounds);
+	FNLOG(@"%f", mainScreen.scale);
+	FNLOG(@"%f", mainScreen.nativeScale);
+	
+	UIDevice *device = [UIDevice currentDevice];
+	FNLOG(@"%@", device.systemName);
+	FNLOG(@"%@", device.model);
+}
+
 - (void)testAVSpeech
 {
 	NSMutableSet *appleSpeechSet = [NSMutableSet new];

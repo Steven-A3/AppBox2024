@@ -8,6 +8,7 @@
 
 #import "HolidayData+Asia.h"
 #import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 @implementation HolidayData (Asia)
 

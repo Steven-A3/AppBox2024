@@ -392,6 +392,7 @@
 		686BB8671909676A009163F2 /* A3WalletFieldEditTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 686BB8661909676A009163F2 /* A3WalletFieldEditTitleCell.m */; };
 		686BC1D31846343100FA5C94 /* A3CurrencySettings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 686BC1D51846343100FA5C94 /* A3CurrencySettings.storyboard */; };
 		686BC1DB184639CA00FA5C94 /* A3CurrencyChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 686BC1DD184639CA00FA5C94 /* A3CurrencyChartViewController.xib */; };
+		686F06E71AA1D9DC0093A6F9 /* A3MarkingsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 686F06E61AA1D9DC0093A6F9 /* A3MarkingsView.m */; };
 		686FCF6D1775CEFE00F19332 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686FCF6C1775CEFE00F19332 /* CoreImage.framework */; };
 		686FCF6F1775CF9100F19332 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686FCF6E1775CF9100F19332 /* ImageIO.framework */; };
 		686FCF721775CF9D00F19332 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686FCF701775CF9D00F19332 /* Accelerate.framework */; };
@@ -1258,6 +1259,7 @@
 		6883D5E2183E7ABA00808CD2 /* A3MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6883D5E1183E7ABA00808CD2 /* A3MainViewController.m */; };
 		6886791C18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6886791A18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib */; };
 		6886791D18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6886791B18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib */; };
+		688788831A9B29C7008C8567 /* A3RulerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688788821A9B29C7008C8567 /* A3RulerViewController.m */; };
 		6888090A17C63DBB008B2856 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6888090917C63DBB008B2856 /* CFNetwork.framework */; };
 		6888090E17C63F57008B2856 /* A3FlickrTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6888090D17C63F57008B2856 /* A3FlickrTest.m */; };
 		6890AB321786BA08004FECE4 /* A3CurrencyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6890AB311786BA08004FECE4 /* A3CurrencyViewController.m */; };
@@ -2446,6 +2448,8 @@
 		686BB8661909676A009163F2 /* A3WalletFieldEditTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletFieldEditTitleCell.m; sourceTree = "<group>"; };
 		686BC1D91846343900FA5C94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/A3CurrencySettings.storyboard; sourceTree = "<group>"; };
 		686BC1DC184639CA00FA5C94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/A3CurrencyChartViewController.xib; sourceTree = "<group>"; };
+		686F06E51AA1D9DC0093A6F9 /* A3MarkingsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3MarkingsView.h; path = Ruler/A3MarkingsView.h; sourceTree = "<group>"; };
+		686F06E61AA1D9DC0093A6F9 /* A3MarkingsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3MarkingsView.m; path = Ruler/A3MarkingsView.m; sourceTree = "<group>"; };
 		686FCF431775CD1300F19332 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		686FCF441775CD1300F19332 /* Reachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		686FCF6C1775CEFE00F19332 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
@@ -2550,6 +2554,8 @@
 		6885F86E1A6D032C000642EF /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = "zh-Hant"; path = "zh-Hant.lproj/StringsDict.stringsdict"; sourceTree = "<group>"; };
 		6886791A18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3NumberKeyboardSimpleUnitConverterVC_iPad.xib; sourceTree = "<group>"; };
 		6886791B18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib; sourceTree = "<group>"; };
+		688788811A9B29C7008C8567 /* A3RulerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3RulerViewController.h; path = Ruler/A3RulerViewController.h; sourceTree = "<group>"; };
+		688788821A9B29C7008C8567 /* A3RulerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3RulerViewController.m; path = Ruler/A3RulerViewController.m; sourceTree = "<group>"; };
 		6888090917C63DBB008B2856 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		6888090D17C63F57008B2856 /* A3FlickrTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3FlickrTest.m; path = FlickrTest/A3FlickrTest.m; sourceTree = "<group>"; };
 		6890AB0C1786B800004FECE4 /* EXPBackwardCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXPBackwardCompatibility.h; sourceTree = "<group>"; };
@@ -4594,6 +4600,7 @@
 				680D638818CFF9D400938AD0 /* Mirror */,
 				68E2A62A18D0B1FC00E834D9 /* PercentCalculator */,
 				57E4E1CA19D2DD090037371B /* Random */,
+				688788881A9B29D5008C8567 /* Ruler */,
 				68E2A66718D0B22800E834D9 /* SalesCalculator */,
 				68E2A68418D0B22800E834D9 /* TipCalc */,
 				17D426FC856AC9AFCB19292B /* Translator */,
@@ -4892,6 +4899,17 @@
 				6876D71017A75E5A00E16991 /* A3CurrencyViewControllerTest.m */,
 			);
 			path = Currency;
+			sourceTree = "<group>";
+		};
+		688788881A9B29D5008C8567 /* Ruler */ = {
+			isa = PBXGroup;
+			children = (
+				688788811A9B29C7008C8567 /* A3RulerViewController.h */,
+				688788821A9B29C7008C8567 /* A3RulerViewController.m */,
+				686F06E51AA1D9DC0093A6F9 /* A3MarkingsView.h */,
+				686F06E61AA1D9DC0093A6F9 /* A3MarkingsView.m */,
+			);
+			name = Ruler;
 			sourceTree = "<group>";
 		};
 		6888090C17C63F20008B2856 /* FlickrTest */ = {
@@ -6891,6 +6909,7 @@
 				68B6A44718CEE781004084EF /* DACircularProgressView.m in Sources */,
 				68B6A45218CEE781004084EF /* PSTCollectionViewUpdateItem.m in Sources */,
 				68D0732018210B5100D34870 /* A3RoundedSideButton.m in Sources */,
+				686F06E71AA1D9DC0093A6F9 /* A3MarkingsView.m in Sources */,
 				68F14FCC19485E8500159EAD /* A3DaysCounterReminderListViewController.m in Sources */,
 				68D61BD817F53FB400EF4B5E /* DKLiveBlurView.m in Sources */,
 				687F928618F603F1006377B9 /* A3UnitConverterMoreTableViewController.m in Sources */,
@@ -7346,6 +7365,7 @@
 				68B6A2E918CEC76D004084EF /* A3UnitPriceAddViewController.m in Sources */,
 				6831EBFB18619CC800BAF15B /* AppBox3.xcdatamodeld in Sources */,
 				68E2A66518D0B1FC00E834D9 /* NSNumberFormatter+Extension.m in Sources */,
+				688788831A9B29C7008C8567 /* A3RulerViewController.m in Sources */,
 				682FDF361981CC0400C6C83D /* MagicalRecord.m in Sources */,
 				17D42AE1F680213C832FB44C /* A3CurrencyHistoryCell.m in Sources */,
 				680D639418CFF9D400938AD0 /* A3CalculatorButtonsViewController_iPad.m in Sources */,

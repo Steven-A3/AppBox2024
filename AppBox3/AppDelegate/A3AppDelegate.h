@@ -78,6 +78,7 @@ extern NSString *const A3AppName_Mirror;
 extern NSString *const A3AppName_Magnifier;
 extern NSString *const A3AppName_Flashlight;
 extern NSString *const A3AppName_Random;
+extern NSString *const A3AppName_Ruler;
 extern NSString *const A3AppName_Settings;
 
 @protocol A3ViewControllerProtocol <NSObject>

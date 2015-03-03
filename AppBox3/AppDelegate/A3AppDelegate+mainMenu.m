@@ -52,6 +52,7 @@ NSString *const A3AppName_Mirror = @"Mirror";
 NSString *const A3AppName_Magnifier = @"Magnifier";
 NSString *const A3AppName_Flashlight = @"Flashlight";
 NSString *const A3AppName_Random = @"Random";
+NSString *const A3AppName_Ruler = @"Ruler";
 NSString *const A3AppName_Settings = @"Settings";
 
 - (NSArray *)allMenu {
@@ -111,6 +112,7 @@ NSString *const A3AppName_Settings = @"Settings";
 						 @{kA3AppsMenuName : A3AppName_Magnifier, kA3AppsClassName_iPhone : @"A3MagnifierViewController", kA3AppsNibName_iPhone:@"A3MagnifierViewController", kA3AppsMenuImageName : @"Magnifier"},
 						 @{kA3AppsMenuName : A3AppName_Flashlight, kA3AppsClassName_iPhone : @"A3FlashViewController", kA3AppsNibName_iPhone:@"A3FlashViewController", kA3AppsMenuImageName : @"Flashlight"},
 						 @{kA3AppsMenuName : A3AppName_Random, kA3AppsClassName_iPhone : @"A3RandomViewController", kA3AppsNibName_iPhone:@"A3RandomViewController", kA3AppsMenuImageName : @"Random"},
+						 @{kA3AppsMenuName : A3AppName_Ruler, kA3AppsClassName_iPhone : @"A3RulerViewController", kA3AppsMenuImageName : @"Ruler"},
 						 ]
 				 },
 			 ];
@@ -135,30 +137,43 @@ NSString *const A3AppName_Settings = @"Settings";
 		for (NSDictionary *section in allMenuArray) {
 			if ([section[kA3AppsMenuName] isEqualToString:@"Utility"]) {
 				BOOL hasFlashlight = NO;
+				BOOL hasRuler = NO;
 				for (NSDictionary *menus in section[kA3AppsExpandableChildren]) {
 					if ([menus[kA3AppsMenuName] isEqualToString:A3AppName_Flashlight]) {
 						hasFlashlight = YES;
-						break;
 					}
+					if ([menus[kA3AppsMenuName] isEqualToString:A3AppName_Ruler]) {
+						hasRuler = YES;
+					}
+					if (hasFlashlight && hasRuler) break;
 				}
+				if (hasFlashlight && hasRuler) break;
+
+				NSMutableArray *newMenus = [section[kA3AppsExpandableChildren] mutableCopy];
 				if (!hasFlashlight) {
-					NSMutableArray *newMenus = [section[kA3AppsExpandableChildren] mutableCopy];
 					NSArray *newItems = @[
 							@{kA3AppsMenuName : A3AppName_Flashlight, kA3AppsClassName_iPhone : @"A3FlashViewController", kA3AppsNibName_iPhone:@"A3FlashViewController", kA3AppsMenuImageName : @"Flashlight"},
 							@{kA3AppsMenuName : A3AppName_Random, kA3AppsClassName_iPhone : @"A3RandomViewController", kA3AppsNibName_iPhone:@"A3RandomViewController", kA3AppsMenuImageName : @"Random"},
 					];
 					[newMenus addObjectsFromArray:newItems];
-
-					NSMutableDictionary *newSection = [section mutableCopy];
-					newSection[kA3AppsExpandableChildren] = newMenus;
-
-					NSMutableArray *newAllMenu = [allMenuArray mutableCopy];
-					[newAllMenu removeObject:section];
-					[newAllMenu addObject:newSection];
-					allMenuArray = newAllMenu;
-
-					[[A3SyncManager sharedSyncManager] setObject:allMenuArray forKey:A3MainMenuDataEntityAllMenu state:A3DataObjectStateModified];
 				}
+				if (!hasRuler) {
+					NSArray *newItems = @[
+							@{kA3AppsMenuName : A3AppName_Ruler, kA3AppsClassName_iPhone : @"A3RulerViewController", kA3AppsMenuImageName : @"Ruler"},
+					];
+					[newMenus addObjectsFromArray:newItems];
+				}
+
+				NSMutableDictionary *newSection = [section mutableCopy];
+				newSection[kA3AppsExpandableChildren] = newMenus;
+
+				NSMutableArray *newAllMenu = [allMenuArray mutableCopy];
+				[newAllMenu removeObject:section];
+				[newAllMenu addObject:newSection];
+				allMenuArray = newAllMenu;
+
+				[[A3SyncManager sharedSyncManager] setObject:allMenuArray forKey:A3MainMenuDataEntityAllMenu state:A3DataObjectStateModified];
+				break;
 			}
 		}
 	}
