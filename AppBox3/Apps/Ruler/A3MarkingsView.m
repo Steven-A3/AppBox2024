@@ -10,8 +10,18 @@
 
 @implementation A3MarkingsView
 
+- (instancetype)init {
+	self = [super init];
+	if (self) {
+		self.backgroundColor = [UIColor clearColor];
+	}
+
+	return self;
+}
+
+
 - (void)drawRect:(CGRect)rect {
-	if (_markingsType == A3MarkingsCentimeters) {
+	if (_markingsType == A3MarkingsTypeCentimeters) {
 		[self drawCentimetersInRect:rect];
 	} else {
 		[self drawInchesInRect:rect];
@@ -28,13 +38,13 @@
 
 	for (NSInteger idx = 0; idx < 9; idx++) {
 		CGFloat margin = idx == 4 ? rect.size.width * 0.2 :rect.size.width * 0.4;
-		CGFloat y = rect.origin.y + rect.size.height - idx * space;
+		CGFloat y = rect.origin.y + rect.size.height - (idx + 1) * space - ((idx + 1) * lineWidth) - lineWidth;
 		if (_markingsDirection == A3MarkingsDirectionRight) {
 			[drawingPath moveToPoint:CGPointMake(rect.origin.x + margin, y)];
-			[drawingPath moveToPoint:CGPointMake(rect.origin.x + rect.size.width, y)];
+			[drawingPath addLineToPoint:CGPointMake(rect.origin.x + rect.size.width, y)];
 		} else {
 			[drawingPath moveToPoint:CGPointMake(rect.origin.x, y)];
-			[drawingPath moveToPoint:CGPointMake(rect.origin.x + rect.size.width - margin, y)];
+			[drawingPath addLineToPoint:CGPointMake(rect.origin.x + rect.size.width - margin, y)];
 		}
 	}
 	[[UIColor blackColor] setStroke];
@@ -56,13 +66,13 @@
 		} else {
 			margin = idx == 7 ? rect.size.width * 0.2 : rect.size.width * 0.4;
 		}
-		CGFloat y = rect.origin.y + rect.size.height - idx * space;
+		CGFloat y = rect.origin.y + rect.size.height - (idx + 1) * space - ((idx + 1) * lineWidth) - lineWidth;
 		if (_markingsDirection == A3MarkingsDirectionRight) {
 			[drawingPath moveToPoint:CGPointMake(rect.origin.x + margin, y)];
-			[drawingPath moveToPoint:CGPointMake(rect.origin.x + rect.size.width, y)];
+			[drawingPath addLineToPoint:CGPointMake(rect.origin.x + rect.size.width, y)];
 		} else {
 			[drawingPath moveToPoint:CGPointMake(rect.origin.x, y)];
-			[drawingPath moveToPoint:CGPointMake(rect.origin.x + rect.size.width - margin, y)];
+			[drawingPath addLineToPoint:CGPointMake(rect.origin.x + rect.size.width - margin, y)];
 		}
 	}
 	[[UIColor blackColor] setStroke];

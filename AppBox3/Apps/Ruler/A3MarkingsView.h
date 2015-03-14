@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSUInteger, A3MarkingsType) {
-	A3MarkingsCentimeters = 0,
-	A3MarkingsInches
+	A3MarkingsTypeCentimeters = 0,
+	A3MarkingsTypeInches
 };
 
 typedef NS_ENUM(NSUInteger, A3MarkingsDirection) {
