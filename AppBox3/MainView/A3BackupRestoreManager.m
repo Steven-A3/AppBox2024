@@ -410,6 +410,18 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 - (void)restoreDataAt:(NSString *)backupFilePath toURL:(NSURL *)toURL {
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 
+	[[NSManagedObjectContext MR_defaultContext] reset];
+	
+	NSError *error;
+	NSPersistentStoreCoordinator *persistentStoreCoordinator = [NSPersistentStoreCoordinator MR_defaultStoreCoordinator];
+	for (NSPersistentStore *store in [persistentStoreCoordinator persistentStores]) {
+		BOOL removed = [persistentStoreCoordinator removePersistentStore:store error:&error];
+		
+		if (!removed) {
+			NSLog(@"Couldn't remove persistent store: %@", error);
+		}
+	}
+	
 	[MagicalRecord cleanUp];
 
 	[self deleteCoreDataStoreFilesAt:toURL];
