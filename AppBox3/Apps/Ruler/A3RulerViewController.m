@@ -141,7 +141,7 @@
 		_centimeterAsPoints = (480.0 / 960.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
 		_inchAsPoints = (480.0 / 960.0) * pixelsInInch;
 	} else if ([model isEqualToString:@"iPhone 6"]) {
-		CGFloat pixelsInInch = 326;
+		CGFloat pixelsInInch = 327.5;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
 		_centimeterAsPoints = (568.0 / 1334.0) * pixelsInCentimeter;
 		_inchAsPoints = (568.0 / 1334.0) * pixelsInInch;
