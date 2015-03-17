@@ -11,7 +11,7 @@
 @interface CDECloudDirectory : NSObject
 
 @property (copy) NSString *path;
-@property (copy) NSArray *contents;
 @property (copy) NSString *name;
+@property (strong) NSArray *contents;
 
 @end

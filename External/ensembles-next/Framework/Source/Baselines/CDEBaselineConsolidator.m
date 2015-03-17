@@ -211,7 +211,8 @@
         
         for (NSUInteger j = 0; j < i; j++) {
             CDEStoreModificationEvent *secondEvent = allBaselines[j];
-
+            
+            // Compare revisions
             CDERevisionSet *firstSet = firstEvent.revisionSet;
             CDERevisionSet *secondSet = secondEvent.revisionSet;
             NSComparisonResult comparison = [firstSet compare:secondSet];
@@ -235,8 +236,11 @@
 
 - (NSManagedObjectID *)mergedBaselineFromOrderedBaselineEventIDs:(NSArray *)baselineIDs error:(NSError * __autoreleasing *)error
 {
-    if (baselineIDs.count == 0) return nil;
     if (baselineIDs.count == 1) return baselineIDs.lastObject;
+    if (baselineIDs.count == 0) {
+        if (error) *error = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeUnknown userInfo:@{NSLocalizedDescriptionKey : @"No baselines found"}];
+        return nil;
+    }
     
     NSManagedObjectContext *context = self.eventStore.managedObjectContext;
     NSArray *baselines = [baselineIDs cde_arrayByTransformingObjectsWithBlock:^id(NSManagedObjectID *objectID) {
@@ -245,17 +249,45 @@
     
     CDELog(CDELoggingLevelVerbose, @"Merging baselines with unique ids: %@", [baselines valueForKeyPath:@"uniqueIdentifier"]);
     
-    // Change the first baseline into our new baseline by assigning a different unique id
-    // Global count should be maximum, ie, just keep the count of the existing first baseline.
-    // A baseline global count is not required to preceed save/merge events, and assigning the
-    // maximum will give this new baseline precedence over older baselines.
-    __block CDEStoreModificationEvent *firstBaseline = baselines[0];
-    NSManagedObjectID *firstBaselineID = firstBaseline.objectID;
-    firstBaseline.timestamp = [NSDate timeIntervalSinceReferenceDate];
-    firstBaseline.modelVersion = [self.ensemble.managedObjectModel cde_entityHashesPropertyList];
+    // Determine which baselines are empty, and should be ignored (other than revision set),
+    // and determine which is most-recent non-empty baseline, which will be the new baseline.
+    NSManagedObjectID *mergedBaselineID = nil;
+    NSMutableArray *otherBaselineIDsRequiringMerging = [[NSMutableArray alloc] init];
+    for (NSManagedObjectID *baselineID in baselineIDs) {
+        NSError *localError = nil;
+        NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"CDEObjectChange"];
+        fetch.predicate = [NSPredicate predicateWithFormat:@"storeModificationEvent = %@", baselineID];
+        fetch.fetchLimit = 1;
+        NSUInteger changeCount = [context countForFetchRequest:fetch error:&localError];
+        if (changeCount == NSNotFound) {
+            *error = localError;
+            return nil;
+        }
+        
+        if (changeCount > 0) {
+            if (!mergedBaselineID) {
+                mergedBaselineID = baselineID;
+            }
+            else {
+                [otherBaselineIDsRequiringMerging addObject:baselineID];
+            }
+        }
+        else {
+            CDELog(CDELoggingLevelVerbose, @"Empty baseline found with objectID %@.", baselineID);
+        }
+    }
+    
+    // If all are empty, we just take first
+    if (!mergedBaselineID) {
+        mergedBaselineID = baselineIDs.firstObject;
+        CDELog(CDELoggingLevelVerbose, @"All baselines are empty. Adopting the first non-empty one, with object id: %@", mergedBaselineID);
+    }
+    
+    // Change the first baseline into our new baseline
+    __block CDEStoreModificationEvent *mergedBaseline = (id)[context objectWithID:mergedBaselineID];
 
     // Retrieve all global identifiers. Map global ids to object changes.
-    [CDEStoreModificationEvent prefetchRelatedObjectsForStoreModificationEvents:@[firstBaseline]];
+    [CDEStoreModificationEvent prefetchRelatedObjectsForStoreModificationEvents:@[mergedBaseline]];
     NSMapTable *objectChangeIDsByGlobalIdentifierIDs = [NSMapTable cde_strongToStrongObjectsMapTable];
     
     NSExpressionDescription *changeIDDesc = [[NSExpressionDescription alloc] init];
@@ -269,7 +301,7 @@
     globalIDDesc.expressionResultType = NSObjectIDAttributeType;
     
     NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"CDEObjectChange"];
-    fetch.predicate = [NSPredicate predicateWithFormat:@"storeModificationEvent = %@", firstBaselineID];
+    fetch.predicate = [NSPredicate predicateWithFormat:@"storeModificationEvent = %@", mergedBaselineID];
     fetch.resultType = NSDictionaryResultType;
     fetch.propertiesToFetch = @[changeIDDesc, globalIDDesc];
     
@@ -286,14 +318,10 @@
         [objectChangeIDsByGlobalIdentifierIDs setObject:changeID forKey:globalID];
     }
     
-    // Get other baselines
-    NSMutableArray *otherBaselineIDs = [baselineIDs mutableCopy];
-    [otherBaselineIDs removeObject:firstBaseline.objectID];
-    
     // Apply changes from others
     __block BOOL success = YES;
     __block BOOL baselineModified = NO;
-    for (NSManagedObjectID *baselineID in otherBaselineIDs) {
+    for (NSManagedObjectID *baselineID in otherBaselineIDsRequiringMerging) {
         __block CDEStoreModificationEvent *baseline = (id)[context objectWithID:baselineID];
         
         CDELog(CDELoggingLevelVerbose, @"Merging in baseline with unique id: %@", baseline.uniqueIdentifier);
@@ -317,7 +345,7 @@
                 CDEObjectChange *existingChange = existingChangeID ? (id)[context objectWithID:existingChangeID] : nil;
                 if (!existingChange) {
                     // Move change to new baseline
-                    change.storeModificationEvent = firstBaseline;
+                    change.storeModificationEvent = mergedBaseline;
                     [objectChangeIDsByGlobalIdentifierIDs setObject:changeID forKey:change.globalIdentifier.objectID];
                     baselineModified = YES;
                 }
@@ -333,7 +361,7 @@
             
             success = [context save:&localError];
             [context reset];
-            firstBaseline = (id)[context objectWithID:firstBaselineID];
+            mergedBaseline = (id)[context objectWithID:mergedBaselineID];
             baseline = (id)[context objectWithID:baselineID];
             if (!success) *stop = YES;
         }];
@@ -350,22 +378,31 @@
         
         // Change baseline id if it was actually changed. If unchanged, avoid exporting a new baseline
         // by leaving id the same.
-        NSString *persistentStoreId = firstBaseline.eventRevision.persistentStoreIdentifier;
+        NSString *persistentStoreId = mergedBaseline.eventRevision.persistentStoreIdentifier;
         if (baselineModified) {
             persistentStoreId = self.eventStore.persistentStoreIdentifier;
-            firstBaseline.uniqueIdentifier = [[NSProcessInfo processInfo] globallyUniqueString];
+            mergedBaseline.uniqueIdentifier = [[NSProcessInfo processInfo] globallyUniqueString];
         }
         
+        // Update timestamps and global counts
+        // Global count should be maximum.
+        // A baseline global count is not required to preceed save/merge events, and assigning the
+        // maximum will give this new baseline precedence over older baselines.
+        mergedBaseline.timestamp = [NSDate timeIntervalSinceReferenceDate];
+        mergedBaseline.modelVersion = [self.ensemble.managedObjectModel cde_entityHashesPropertyList];
+        mergedBaseline.globalCount = [[baselines valueForKeyPath:@"@max.globalCount"] unsignedIntegerValue];
+        
+        // Update revisions
         CDERevisionSet *newRevisionSet = [CDERevisionSet revisionSetByTakingStoreWiseMaximumOfRevisionSets:[baselines valueForKeyPath:@"revisionSet"]];
-        [firstBaseline setRevisionSet:newRevisionSet forPersistentStoreIdentifier:persistentStoreId];
-        if (firstBaseline.eventRevision.revisionNumber == -1) firstBaseline.eventRevision.revisionNumber = 0;
+        [mergedBaseline setRevisionSet:newRevisionSet forPersistentStoreIdentifier:persistentStoreId];
+        if (mergedBaseline.eventRevision.revisionNumber == -1) mergedBaseline.eventRevision.revisionNumber = 0;
         
         success = [context save:&localError];
     }
 
     if (error) *error = localError;
     
-    return success ? firstBaselineID : nil;
+    return success ? mergedBaselineID : nil;
 }
 
 @end

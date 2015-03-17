@@ -7,8 +7,23 @@
 //
 
 #import "NSData+CDEAdditions.h"
+#import <CommonCrypto/CommonDigest.h>
 
 @implementation NSData (CDEAdditions)
+
+- (NSString *)cde_md5Checksum
+{
+    const NSUInteger ChecksumLength = 16;
+    unsigned char cString[ChecksumLength];
+    CC_MD5(self.bytes, (CC_LONG)self.length, cString);
+    
+    NSMutableString *result = [[NSMutableString alloc] init];
+    for (NSUInteger i = 0; i < ChecksumLength; i++) {
+        [result appendFormat:@"%02X", cString[i]];
+    }
+    
+    return result;
+}
 
 + (NSData *)cde_dataWithBase64EncodedString:(NSString *)aString
 {

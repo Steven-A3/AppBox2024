@@ -61,7 +61,7 @@
     id object = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:testManagedObjectContext];
     NSSet *objects = [NSSet setWithObject:object];
     [testManagedObjectContext obtainPermanentIDsForObjects:objects.allObjects error:NULL];
-    [eventBuilder addChangesForInsertedObjects:objects objectsAreSaved:NO inManagedObjectContext:testManagedObjectContext];
+    [eventBuilder addChangesForInsertedObjects:objects objectsAreSaved:NO useGlobalIdentifiersInEventStore:NO inManagedObjectContext:testManagedObjectContext];
     [self.eventStore.managedObjectContext performBlockAndWait:^{
         XCTAssertTrue(event.objectChanges.count == 1, @"Should be an object change initially");
     }];

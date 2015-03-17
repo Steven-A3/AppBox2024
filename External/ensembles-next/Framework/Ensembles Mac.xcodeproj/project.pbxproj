@@ -56,10 +56,19 @@
 		07571EDD1910DF88008479A9 /* Ensembles.h in Headers */ = {isa = PBXBuildFile; fileRef = 07571EDB1910DF88008479A9 /* Ensembles.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		07592CA7177F2D1000816034 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07BF78E9177F03320029D500 /* XCTest.framework */; };
 		07592CAD177F2D1000816034 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 07592CAB177F2D1000816034 /* InfoPlist.strings */; };
+		075983761A0241E600C410FA /* CDEAsynchronousOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0759836E1A0241E600C410FA /* CDEAsynchronousOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		075983771A0241E600C410FA /* CDEAsynchronousOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0759836F1A0241E600C410FA /* CDEAsynchronousOperation.m */; };
+		075983781A0241E600C410FA /* CDEAsynchronousTaskQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 075983701A0241E600C410FA /* CDEAsynchronousTaskQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		075983791A0241E600C410FA /* CDEAsynchronousTaskQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 075983711A0241E600C410FA /* CDEAsynchronousTaskQueue.m */; };
+		0759837A1A0241E600C410FA /* CDEProcedure.h in Headers */ = {isa = PBXBuildFile; fileRef = 075983721A0241E600C410FA /* CDEProcedure.h */; };
+		0759837B1A0241E600C410FA /* CDEProcedure.m in Sources */ = {isa = PBXBuildFile; fileRef = 075983731A0241E600C410FA /* CDEProcedure.m */; };
+		0759837C1A0241E600C410FA /* CDEProcedureStep.h in Headers */ = {isa = PBXBuildFile; fileRef = 075983741A0241E600C410FA /* CDEProcedureStep.h */; };
+		0759837D1A0241E600C410FA /* CDEProcedureStep.m in Sources */ = {isa = PBXBuildFile; fileRef = 075983751A0241E600C410FA /* CDEProcedureStep.m */; };
 		075C271F18B3716200A7BC25 /* CDEEventStoreModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 07897FFA18B258A0001E8A23 /* CDEEventStoreModel.xcdatamodeld */; };
 		075FDCD518360B0E0020E1C9 /* CDEIntegratorMergeRepairTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 075FDCD418360B0E0020E1C9 /* CDEIntegratorMergeRepairTests.m */; };
 		075FDCDA183611680020E1C9 /* CDEPersistentStoreEnsembleMergeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 075FDCD9183611680020E1C9 /* CDEPersistentStoreEnsembleMergeTests.m */; };
 		07697A7817E0BD0800A9BB63 /* CDEMockCloudFileSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 07697A7717E0BD0800A9BB63 /* CDEMockCloudFileSystem.m */; };
+		076F1A691A70EA6600234ED2 /* CDERepairSyncTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 076F1A681A70EA6600234ED2 /* CDERepairSyncTests.m */; };
 		07793DBE1934FDE000873C5C /* CDEJSONEventExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 07793DBC1934FDE000873C5C /* CDEJSONEventExport.h */; };
 		07793DBF1934FDE000873C5C /* CDEJSONEventExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 07793DBD1934FDE000873C5C /* CDEJSONEventExport.m */; };
 		077B555317D1E5A0008AA7F7 /* DoubleInsertFixture.json in Resources */ = {isa = PBXBuildFile; fileRef = 077B555217D1E5A0008AA7F7 /* DoubleInsertFixture.json */; };
@@ -97,6 +106,9 @@
 		07D7E5B61912412F0086A2AE /* NSManagedObjectContext+CDEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D7E5B41912412F0086A2AE /* NSManagedObjectContext+CDEAdditions.m */; };
 		07D7E5B91912414C0086A2AE /* CDEEventFileSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D7E5B71912414C0086A2AE /* CDEEventFileSet.h */; };
 		07D7E5BA1912414C0086A2AE /* CDEEventFileSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D7E5B81912414C0086A2AE /* CDEEventFileSet.m */; };
+		07D8B2171A6D24610059CED4 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DAD10FE18CA067A00237084 /* CoreData.framework */; };
+		07DBC84C1A726C930031594C /* NSFileCoordinator+CDEAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 07DBC84A1A726C930031594C /* NSFileCoordinator+CDEAdditions.h */; };
+		07DBC84D1A726C930031594C /* NSFileCoordinator+CDEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DBC84B1A726C930031594C /* NSFileCoordinator+CDEAdditions.m */; };
 		07DCC6C7184FA4050097B4D9 /* CDEBaselineConsolidatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DCC6C6184FA4050097B4D9 /* CDEBaselineConsolidatorTests.m */; };
 		07DDA7E417C8FE25009C6F94 /* CDEIntegratorUpdateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DDA7E317C8FE25009C6F94 /* CDEIntegratorUpdateTests.m */; };
 		07DDA7E917CA256E009C6F94 /* CDERevisionManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DDA7E817CA256E009C6F94 /* CDERevisionManagerTests.m */; };
@@ -106,20 +118,16 @@
 		07F3D428194837D900B74B5A /* CDEJSONEventImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F3D426194837D900B74B5A /* CDEJSONEventImport.m */; };
 		07F3D4681948A60200B74B5A /* NSData+CDEAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 07F3D4661948A60200B74B5A /* NSData+CDEAdditions.h */; };
 		07F3D4691948A60200B74B5A /* NSData+CDEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F3D4671948A60200B74B5A /* NSData+CDEAdditions.m */; };
-		6DAD10FB18CA067900237084 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DAD10FA18CA067900237084 /* Cocoa.framework */; };
+		6DAD10FB18CA067900237084 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DAD10FA18CA067900237084 /* Cocoa.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		6DAD112318CA070A00237084 /* CDEDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF7A08177F0A9D0029D500 /* CDEDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6DAD112418CA070E00237084 /* CDEAvailabilityMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 075754B4188BC952006803FA /* CDEAvailabilityMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6DAD112518CA071600237084 /* CDEDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF7A09177F0A9D0029D500 /* CDEDefines.m */; };
-		6DAD112718CA071600237084 /* CDEAsynchronousTaskQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF7A06177F0A9D0029D500 /* CDEAsynchronousTaskQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6DAD112818CA071700237084 /* CDEAsynchronousTaskQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF7A07177F0A9D0029D500 /* CDEAsynchronousTaskQueue.m */; };
 		6DAD112918CA071700237084 /* CDEFoundationAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF7A0A177F0A9D0029D500 /* CDEFoundationAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6DAD112A18CA071700237084 /* CDEFoundationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF7A0B177F0A9D0029D500 /* CDEFoundationAdditions.m */; };
 		6DAD112B18CA071700237084 /* NSManagedObjectModel+CDEAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D2D630182D627E001D24BC /* NSManagedObjectModel+CDEAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6DAD112C18CA071700237084 /* NSManagedObjectModel+CDEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D2D631182D627E001D24BC /* NSManagedObjectModel+CDEAdditions.m */; };
 		6DAD112D18CA071700237084 /* NSMapTable+CDEAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF7A04177F0A9D0029D500 /* NSMapTable+CDEAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6DAD112E18CA071700237084 /* NSMapTable+CDEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF7A05177F0A9D0029D500 /* NSMapTable+CDEAdditions.m */; };
-		6DAD112F18CA071700237084 /* CDEAsynchronousOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0701770718C1EF7400C4DA01 /* CDEAsynchronousOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6DAD113018CA071700237084 /* CDEAsynchronousOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0701770818C1EF7400C4DA01 /* CDEAsynchronousOperation.m */; };
 		6DAD113118CA071C00237084 /* CDEICloudFileSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 07973F01183BE44A007F48CA /* CDEICloudFileSystem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6DAD113218CA071C00237084 /* CDEICloudFileSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 07973F02183BE44A007F48CA /* CDEICloudFileSystem.m */; };
 		6DAD113318CA071C00237084 /* CDELocalCloudFileSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 07973F03183BE44A007F48CA /* CDELocalCloudFileSystem.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -189,8 +197,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0701770718C1EF7400C4DA01 /* CDEAsynchronousOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEAsynchronousOperation.h; sourceTree = "<group>"; };
-		0701770818C1EF7400C4DA01 /* CDEAsynchronousOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEAsynchronousOperation.m; sourceTree = "<group>"; };
 		0701770B18C1EF8300C4DA01 /* CDEFileDownloadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEFileDownloadOperation.h; sourceTree = "<group>"; };
 		0701770C18C1EF8300C4DA01 /* CDEFileDownloadOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEFileDownloadOperation.m; sourceTree = "<group>"; };
 		0701770F18C2543D00C4DA01 /* CDEFileUploadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEFileUploadOperation.h; sourceTree = "<group>"; };
@@ -254,6 +260,14 @@
 		07592CAC177F2D1000816034 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		07592CB0177F2D1000816034 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		07592CB6177F320800816034 /* CDEEventStoreTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEEventStoreTests.m; sourceTree = "<group>"; };
+		0759836E1A0241E600C410FA /* CDEAsynchronousOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEAsynchronousOperation.h; sourceTree = "<group>"; };
+		0759836F1A0241E600C410FA /* CDEAsynchronousOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEAsynchronousOperation.m; sourceTree = "<group>"; };
+		075983701A0241E600C410FA /* CDEAsynchronousTaskQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEAsynchronousTaskQueue.h; sourceTree = "<group>"; };
+		075983711A0241E600C410FA /* CDEAsynchronousTaskQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEAsynchronousTaskQueue.m; sourceTree = "<group>"; };
+		075983721A0241E600C410FA /* CDEProcedure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEProcedure.h; sourceTree = "<group>"; };
+		075983731A0241E600C410FA /* CDEProcedure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEProcedure.m; sourceTree = "<group>"; };
+		075983741A0241E600C410FA /* CDEProcedureStep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEProcedureStep.h; sourceTree = "<group>"; };
+		075983751A0241E600C410FA /* CDEProcedureStep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEProcedureStep.m; sourceTree = "<group>"; };
 		075FDCD418360B0E0020E1C9 /* CDEIntegratorMergeRepairTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEIntegratorMergeRepairTests.m; sourceTree = "<group>"; };
 		075FDCD9183611680020E1C9 /* CDEPersistentStoreEnsembleMergeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEPersistentStoreEnsembleMergeTests.m; sourceTree = "<group>"; };
 		075FDCDB183615C60020E1C9 /* CDEMockLocalFileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEMockLocalFileSystem.h; sourceTree = "<group>"; };
@@ -261,6 +275,7 @@
 		07697A7117E0B6C000A9BB63 /* CDECloudManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDECloudManagerTests.m; sourceTree = "<group>"; };
 		07697A7617E0BD0800A9BB63 /* CDEMockCloudFileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEMockCloudFileSystem.h; sourceTree = "<group>"; };
 		07697A7717E0BD0800A9BB63 /* CDEMockCloudFileSystem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEMockCloudFileSystem.m; sourceTree = "<group>"; };
+		076F1A681A70EA6600234ED2 /* CDERepairSyncTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDERepairSyncTests.m; sourceTree = "<group>"; };
 		07793DBC1934FDE000873C5C /* CDEJSONEventExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEJSONEventExport.h; sourceTree = "<group>"; };
 		07793DBD1934FDE000873C5C /* CDEJSONEventExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEJSONEventExport.m; sourceTree = "<group>"; };
 		077B555217D1E5A0008AA7F7 /* DoubleInsertFixture.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DoubleInsertFixture.json; sourceTree = "<group>"; };
@@ -288,6 +303,7 @@
 		07973F18183D3082007F48CA /* IntegratorMergeTestsFixture.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = IntegratorMergeTestsFixture.json; sourceTree = "<group>"; };
 		07AD39B4189675C3008545AD /* CDEBaseliningSyncTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEBaseliningSyncTests.m; sourceTree = "<group>"; };
 		07B18211188806A0005229A1 /* CDERebaserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDERebaserTests.m; sourceTree = "<group>"; };
+		07B9B1C51A9B4B2700B37DAF /* RNCryptor.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RNCryptor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		07BAB4BB184677640096318D /* CDEBaselineConsolidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEBaselineConsolidator.h; sourceTree = "<group>"; };
 		07BAB4BC184677640096318D /* CDEBaselineConsolidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEBaselineConsolidator.m; sourceTree = "<group>"; };
 		07BAE701178D65D00036E743 /* CDESaveMonitorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDESaveMonitorTests.m; sourceTree = "<group>"; };
@@ -302,8 +318,6 @@
 		07BF7A02177F0A9D0029D500 /* CDEPropertyChangeValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDEPropertyChangeValue.m; path = ../Events/CDEPropertyChangeValue.m; sourceTree = "<group>"; };
 		07BF7A04177F0A9D0029D500 /* NSMapTable+CDEAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMapTable+CDEAdditions.h"; sourceTree = "<group>"; };
 		07BF7A05177F0A9D0029D500 /* NSMapTable+CDEAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMapTable+CDEAdditions.m"; sourceTree = "<group>"; };
-		07BF7A06177F0A9D0029D500 /* CDEAsynchronousTaskQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEAsynchronousTaskQueue.h; sourceTree = "<group>"; };
-		07BF7A07177F0A9D0029D500 /* CDEAsynchronousTaskQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEAsynchronousTaskQueue.m; sourceTree = "<group>"; };
 		07BF7A08177F0A9D0029D500 /* CDEDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEDefines.h; sourceTree = "<group>"; };
 		07BF7A09177F0A9D0029D500 /* CDEDefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEDefines.m; sourceTree = "<group>"; };
 		07BF7A0A177F0A9D0029D500 /* CDEFoundationAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEFoundationAdditions.h; sourceTree = "<group>"; };
@@ -348,7 +362,10 @@
 		07D7E5B71912414C0086A2AE /* CDEEventFileSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEEventFileSet.h; sourceTree = "<group>"; };
 		07D7E5B81912414C0086A2AE /* CDEEventFileSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEEventFileSet.m; sourceTree = "<group>"; };
 		07D9F00E1911039D00D191FA /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		07DBC84A1A726C930031594C /* NSFileCoordinator+CDEAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileCoordinator+CDEAdditions.h"; sourceTree = "<group>"; };
+		07DBC84B1A726C930031594C /* NSFileCoordinator+CDEAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileCoordinator+CDEAdditions.m"; sourceTree = "<group>"; };
 		07DCC6C6184FA4050097B4D9 /* CDEBaselineConsolidatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEBaselineConsolidatorTests.m; sourceTree = "<group>"; };
+		07DCE04D19D01ED1003747D4 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		07DDA7E317C8FE25009C6F94 /* CDEIntegratorUpdateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEIntegratorUpdateTests.m; sourceTree = "<group>"; };
 		07DDA7E517C9ECF6009C6F94 /* CDERevisionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDERevisionManager.h; path = Source/Revisioning/CDERevisionManager.h; sourceTree = SOURCE_ROOT; };
 		07DDA7E617C9ECF6009C6F94 /* CDERevisionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDERevisionManager.m; path = Source/Revisioning/CDERevisionManager.m; sourceTree = SOURCE_ROOT; };
@@ -403,6 +420,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07D8B2171A6D24610059CED4 /* CoreData.framework in Frameworks */,
 				6DAD10FB18CA067900237084 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -459,6 +477,7 @@
 				072E5AED17EB44C3002D9604 /* CDETwoWaySyncTests.m */,
 				07AD39B4189675C3008545AD /* CDEBaseliningSyncTests.m */,
 				07C07BB7191D0EBA00A9D7E6 /* CDEBatchSyncTests.m */,
+				076F1A681A70EA6600234ED2 /* CDERepairSyncTests.m */,
 			);
 			name = "Sync System Tests";
 			sourceTree = "<group>";
@@ -538,11 +557,27 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		0759836D1A0241E600C410FA /* Asynchronicity */ = {
+			isa = PBXGroup;
+			children = (
+				0759836E1A0241E600C410FA /* CDEAsynchronousOperation.h */,
+				0759836F1A0241E600C410FA /* CDEAsynchronousOperation.m */,
+				075983701A0241E600C410FA /* CDEAsynchronousTaskQueue.h */,
+				075983711A0241E600C410FA /* CDEAsynchronousTaskQueue.m */,
+				075983721A0241E600C410FA /* CDEProcedure.h */,
+				075983731A0241E600C410FA /* CDEProcedure.m */,
+				075983741A0241E600C410FA /* CDEProcedureStep.h */,
+				075983751A0241E600C410FA /* CDEProcedureStep.m */,
+			);
+			path = Asynchronicity;
+			sourceTree = "<group>";
+		};
 		0777BF0F17183FD500F1D0D2 /* Source */ = {
 			isa = PBXGroup;
 			children = (
 				07571EDB1910DF88008479A9 /* Ensembles.h */,
 				07BF7A03177F0A9D0029D500 /* General */,
+				0759836D1A0241E600C410FA /* Asynchronicity */,
 				07973F00183BE44A007F48CA /* Cloud File Systems */,
 				07973F09183BE466007F48CA /* Cloud Management */,
 				07BF79F5177F0A9D0029D500 /* Ensemble */,
@@ -657,10 +692,6 @@
 				07BF7A08177F0A9D0029D500 /* CDEDefines.h */,
 				07BF7A09177F0A9D0029D500 /* CDEDefines.m */,
 				075754B4188BC952006803FA /* CDEAvailabilityMacros.h */,
-				07BF7A06177F0A9D0029D500 /* CDEAsynchronousTaskQueue.h */,
-				07BF7A07177F0A9D0029D500 /* CDEAsynchronousTaskQueue.m */,
-				0701770718C1EF7400C4DA01 /* CDEAsynchronousOperation.h */,
-				0701770818C1EF7400C4DA01 /* CDEAsynchronousOperation.m */,
 				07BF7A0A177F0A9D0029D500 /* CDEFoundationAdditions.h */,
 				07BF7A0B177F0A9D0029D500 /* CDEFoundationAdditions.m */,
 				07D2D630182D627E001D24BC /* NSManagedObjectModel+CDEAdditions.h */,
@@ -669,6 +700,8 @@
 				07D7E5B41912412F0086A2AE /* NSManagedObjectContext+CDEAdditions.m */,
 				07BF7A04177F0A9D0029D500 /* NSMapTable+CDEAdditions.h */,
 				07BF7A05177F0A9D0029D500 /* NSMapTable+CDEAdditions.m */,
+				07DBC84A1A726C930031594C /* NSFileCoordinator+CDEAdditions.h */,
+				07DBC84B1A726C930031594C /* NSFileCoordinator+CDEAdditions.m */,
 				07F3D4661948A60200B74B5A /* NSData+CDEAdditions.h */,
 				07F3D4671948A60200B74B5A /* NSData+CDEAdditions.m */,
 			);
@@ -777,6 +810,8 @@
 		07E492E817172CB200FE81B5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				07B9B1C51A9B4B2700B37DAF /* RNCryptor.framework */,
+				07DCE04D19D01ED1003747D4 /* CloudKit.framework */,
 				07BF79B8177F05800029D500 /* Mac */,
 				6DAD10FA18CA067900237084 /* Cocoa.framework */,
 				6DAD110F18CA067A00237084 /* XCTest.framework */,
@@ -814,16 +849,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				07571EDD1910DF88008479A9 /* Ensembles.h in Headers */,
-				6DAD112F18CA071700237084 /* CDEAsynchronousOperation.h in Headers */,
-				6DAD112718CA071600237084 /* CDEAsynchronousTaskQueue.h in Headers */,
 				6DAD112418CA070E00237084 /* CDEAvailabilityMacros.h in Headers */,
 				6DAD113918CA072000237084 /* CDECloudDirectory.h in Headers */,
 				0744FF3A191A38C300153100 /* CDEEventMigrator.h in Headers */,
+				0759837C1A0241E600C410FA /* CDEProcedureStep.h in Headers */,
 				6DAD113B18CA072000237084 /* CDECloudFile.h in Headers */,
 				6DAD113D18CA072000237084 /* CDECloudFileSystem.h in Headers */,
 				6DAD112318CA070A00237084 /* CDEDefines.h in Headers */,
 				07C84449193483FC008B6E4D /* CDEPersistentStoreEnsemble+Private.h in Headers */,
 				6DAD113518CA071C00237084 /* CDEFileDownloadOperation.h in Headers */,
+				075983761A0241E600C410FA /* CDEAsynchronousOperation.h in Headers */,
 				6DAD113718CA071C00237084 /* CDEFileUploadOperation.h in Headers */,
 				6DAD112918CA071700237084 /* CDEFoundationAdditions.h in Headers */,
 				07C844561934AEC8008B6E4D /* CDEPersistentStoreEventExport.h in Headers */,
@@ -831,8 +866,10 @@
 				6DAD113318CA071C00237084 /* CDELocalCloudFileSystem.h in Headers */,
 				6DAD114018CA072300237084 /* CDEPersistentStoreEnsemble.h in Headers */,
 				6DAD112D18CA071700237084 /* NSMapTable+CDEAdditions.h in Headers */,
+				07DBC84C1A726C930031594C /* NSFileCoordinator+CDEAdditions.h in Headers */,
 				6DAD112B18CA071700237084 /* NSManagedObjectModel+CDEAdditions.h in Headers */,
 				0744FF36191A38C300153100 /* CDEEventExport.h in Headers */,
+				0759837A1A0241E600C410FA /* CDEProcedure.h in Headers */,
 				07D7E5B91912414C0086A2AE /* CDEEventFileSet.h in Headers */,
 				6DAD116718CA074600237084 /* CDEBaselineConsolidator.h in Headers */,
 				6DAD114218CA072300237084 /* CDEPersistentStoreImporter.h in Headers */,
@@ -840,6 +877,7 @@
 				07793DBE1934FDE000873C5C /* CDEJSONEventExport.h in Headers */,
 				6DAD115618CA073000237084 /* CDEStoreModificationEvent.h in Headers */,
 				6DAD116118CA074100237084 /* CDERevisionManager.h in Headers */,
+				075983781A0241E600C410FA /* CDEAsynchronousTaskQueue.h in Headers */,
 				6DAD116318CA074100237084 /* CDERevision.h in Headers */,
 				07D7E5B51912412F0086A2AE /* NSManagedObjectContext+CDEAdditions.h in Headers */,
 				07F3D4681948A60200B74B5A /* NSData+CDEAdditions.h in Headers */,
@@ -1054,6 +1092,7 @@
 				07CCA9D917E4AF0E0017B6C4 /* CDEOneWaySyncTests.m in Sources */,
 				0754307717F20BEE00FA4946 /* CDECloudManagerTests.m in Sources */,
 				0747CDA517C3E0A300221ED7 /* CDEIntegratorTestCase.m in Sources */,
+				076F1A691A70EA6600234ED2 /* CDERepairSyncTests.m in Sources */,
 				07DDA7E917CA256E009C6F94 /* CDERevisionManagerTests.m in Sources */,
 				072E7AE117BFC1D30076117D /* CDEIntegratorTests.m in Sources */,
 				0722B27417B7713D00496F4A /* CDESaveMonitorTests.m in Sources */,
@@ -1113,7 +1152,6 @@
 				6DAD114518CA072A00237084 /* CDEEventStore.m in Sources */,
 				6DAD114318CA072300237084 /* CDEPersistentStoreImporter.m in Sources */,
 				6DAD116418CA074100237084 /* CDERevision.m in Sources */,
-				6DAD113018CA071700237084 /* CDEAsynchronousOperation.m in Sources */,
 				07D7E5B61912412F0086A2AE /* NSManagedObjectContext+CDEAdditions.m in Sources */,
 				6DAD115918CA073000237084 /* CDEDataFile.m in Sources */,
 				6DAD116618CA074100237084 /* CDERevisionSet.m in Sources */,
@@ -1124,15 +1162,18 @@
 				6DAD116818CA074600237084 /* CDEBaselineConsolidator.m in Sources */,
 				07F3D428194837D900B74B5A /* CDEJSONEventImport.m in Sources */,
 				6DAD114F18CA073000237084 /* CDEEventRevision.m in Sources */,
+				075983771A0241E600C410FA /* CDEAsynchronousOperation.m in Sources */,
 				0744FF3B191A38C300153100 /* CDEEventMigrator.m in Sources */,
+				0759837B1A0241E600C410FA /* CDEProcedure.m in Sources */,
 				6DAD113A18CA072000237084 /* CDECloudDirectory.m in Sources */,
 				0744FF39191A38C300153100 /* CDEEventImport.m in Sources */,
 				6DAD112A18CA071700237084 /* CDEFoundationAdditions.m in Sources */,
-				6DAD112818CA071700237084 /* CDEAsynchronousTaskQueue.m in Sources */,
+				07DBC84D1A726C930031594C /* NSFileCoordinator+CDEAdditions.m in Sources */,
 				0744FF24191A38B500153100 /* CDEDeleteStage.m in Sources */,
 				6DAD113418CA071C00237084 /* CDELocalCloudFileSystem.m in Sources */,
 				6DAD112518CA071600237084 /* CDEDefines.m in Sources */,
 				6DAD112E18CA071700237084 /* NSMapTable+CDEAdditions.m in Sources */,
+				075983791A0241E600C410FA /* CDEAsynchronousTaskQueue.m in Sources */,
 				6DAD116218CA074100237084 /* CDERevisionManager.m in Sources */,
 				07C844571934AEC8008B6E4D /* CDEPersistentStoreEventExport.m in Sources */,
 				6DAD113C18CA072000237084 /* CDECloudFile.m in Sources */,
@@ -1142,6 +1183,7 @@
 				6DAD114B18CA072A00237084 /* CDESaveMonitor.m in Sources */,
 				6DAD114118CA072300237084 /* CDEPersistentStoreEnsemble.m in Sources */,
 				0744FF28191A38B500153100 /* CDEInsertStage.m in Sources */,
+				0759837D1A0241E600C410FA /* CDEProcedureStep.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

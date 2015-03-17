@@ -35,7 +35,6 @@
 
 /* Begin PBXBuildFile section */
 		0701770318C1EC4B00C4DA01 /* CDEFileDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0701770218C1EC4B00C4DA01 /* CDEFileDownloadOperation.m */; };
-		0701770618C1EDE700C4DA01 /* CDEAsynchronousOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0701770518C1EDE700C4DA01 /* CDEAsynchronousOperation.m */; };
 		0701771518C25F2A00C4DA01 /* CDEFileUploadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0701771418C25F2A00C4DA01 /* CDEFileUploadOperation.m */; };
 		070D336318018A960054BA23 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 070D336218018A960054BA23 /* XCTest.framework */; };
 		070D336418018A960054BA23 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07BF374817F184DD00C56F64 /* Foundation.framework */; };
@@ -95,11 +94,9 @@
 		07571EE01910E171008479A9 /* Ensembles.h in Headers */ = {isa = PBXBuildFile; fileRef = 07571EDE1910DFB9008479A9 /* Ensembles.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		07571EE11910E171008479A9 /* CDEDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF379117F1853000C56F64 /* CDEDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		07571EE21910E171008479A9 /* CDEAvailabilityMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 34700E9D188B225700FD00B1 /* CDEAvailabilityMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		07571EE31910E171008479A9 /* CDEAsynchronousTaskQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF378F17F1853000C56F64 /* CDEAsynchronousTaskQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		07571EE41910E171008479A9 /* CDEFoundationAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF379317F1853000C56F64 /* CDEFoundationAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		07571EE51910E171008479A9 /* NSMapTable+CDEAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF379617F1853000C56F64 /* NSMapTable+CDEAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		07571EE61910E171008479A9 /* NSManagedObjectModel+CDEAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D2D639182D6846001D24BC /* NSManagedObjectModel+CDEAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		07571EE71910E171008479A9 /* CDEAsynchronousOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0701770418C1EDE700C4DA01 /* CDEAsynchronousOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		07571EE81910E171008479A9 /* CDEICloudFileSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 07973EFA183BE40A007F48CA /* CDEICloudFileSystem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		07571EE91910E171008479A9 /* CDELocalCloudFileSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 07973EFC183BE40A007F48CA /* CDELocalCloudFileSystem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		07571EEA1910E171008479A9 /* CDEFileDownloadOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0701770118C1EC4B00C4DA01 /* CDEFileDownloadOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -127,6 +124,14 @@
 		07571F111910EC02008479A9 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07571F101910EC02008479A9 /* CoreFoundation.framework */; };
 		07571F171910EC02008479A9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 07571F151910EC02008479A9 /* InfoPlist.strings */; };
 		07571F1E1910EDA1008479A9 /* CDEEventStoreModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 072BA97C180AACD9003AA94E /* CDEEventStoreModel.xcdatamodeld */; };
+		075983871A02420000C410FA /* CDEAsynchronousOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0759837F1A02420000C410FA /* CDEAsynchronousOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		075983881A02420000C410FA /* CDEAsynchronousOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 075983801A02420000C410FA /* CDEAsynchronousOperation.m */; };
+		075983891A02420000C410FA /* CDEAsynchronousTaskQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 075983811A02420000C410FA /* CDEAsynchronousTaskQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0759838A1A02420000C410FA /* CDEAsynchronousTaskQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 075983821A02420000C410FA /* CDEAsynchronousTaskQueue.m */; };
+		0759838B1A02420000C410FA /* CDEProcedure.h in Headers */ = {isa = PBXBuildFile; fileRef = 075983831A02420000C410FA /* CDEProcedure.h */; };
+		0759838C1A02420000C410FA /* CDEProcedure.m in Sources */ = {isa = PBXBuildFile; fileRef = 075983841A02420000C410FA /* CDEProcedure.m */; };
+		0759838D1A02420000C410FA /* CDEProcedureStep.h in Headers */ = {isa = PBXBuildFile; fileRef = 075983851A02420000C410FA /* CDEProcedureStep.h */; };
+		0759838E1A02420000C410FA /* CDEProcedureStep.m in Sources */ = {isa = PBXBuildFile; fileRef = 075983861A02420000C410FA /* CDEProcedureStep.m */; };
 		075B3FB318096C720089D4D3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 075B3FB218096C720089D4D3 /* QuartzCore.framework */; };
 		075B3FCB18097A080089D4D3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 075B3FB218096C720089D4D3 /* QuartzCore.framework */; };
 		075B3FCC18097A140089D4D3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07C002351809662E0077E204 /* Security.framework */; };
@@ -136,6 +141,8 @@
 		075FDCE6183628F90020E1C9 /* CDEMockLocalFileSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 075FDCE1183628F90020E1C9 /* CDEMockLocalFileSystem.m */; };
 		075FDCE7183628F90020E1C9 /* CDEPersistentStoreEnsembleMergeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 075FDCE2183628F90020E1C9 /* CDEPersistentStoreEnsembleMergeTests.m */; };
 		075FDCE8183628F90020E1C9 /* CDEStoreModificationEventTestsModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 075FDCE3183628F90020E1C9 /* CDEStoreModificationEventTestsModel.xcdatamodeld */; };
+		076F1A6C1A70F4B500234ED2 /* CDEBatchSyncTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 076F1A6A1A70F4B500234ED2 /* CDEBatchSyncTests.m */; };
+		076F1A6D1A70F4B500234ED2 /* CDERepairSyncTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 076F1A6B1A70F4B500234ED2 /* CDERepairSyncTests.m */; };
 		076FC91F1902704D00C3FE6A /* CDEBaseliningSyncTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 076FC91E1902704D00C3FE6A /* CDEBaseliningSyncTests.m */; };
 		07793DC91936208500873C5C /* CDEPersistentStoreEnsemble+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 07793DC61936208500873C5C /* CDEPersistentStoreEnsemble+Private.h */; };
 		07793DCA1936208500873C5C /* CDEPersistentStoreEnsemble+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 07793DC71936208500873C5C /* CDEPersistentStoreEnsemble+Private.m */; };
@@ -161,7 +168,6 @@
 		07BF37B517F1853000C56F64 /* CDEEventStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF378917F1853000C56F64 /* CDEEventStore.m */; };
 		07BF37B617F1853000C56F64 /* CDEPropertyChangeValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF378B17F1853000C56F64 /* CDEPropertyChangeValue.m */; };
 		07BF37B717F1853000C56F64 /* CDESaveMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF378D17F1853000C56F64 /* CDESaveMonitor.m */; };
-		07BF37B817F1853000C56F64 /* CDEAsynchronousTaskQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF379017F1853000C56F64 /* CDEAsynchronousTaskQueue.m */; };
 		07BF37B917F1853000C56F64 /* CDEDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF379217F1853000C56F64 /* CDEDefines.m */; };
 		07BF37BA17F1853000C56F64 /* CDEFoundationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF379417F1853000C56F64 /* CDEFoundationAdditions.m */; };
 		07BF37BB17F1853000C56F64 /* NSMapTable+CDEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF379717F1853000C56F64 /* NSMapTable+CDEAdditions.m */; };
@@ -188,6 +194,8 @@
 		07D7E5961912403A0086A2AE /* CDEEventFileSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D7E5941912403A0086A2AE /* CDEEventFileSet.m */; };
 		07D7E5991912405B0086A2AE /* NSManagedObjectContext+CDEAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D7E5971912405B0086A2AE /* NSManagedObjectContext+CDEAdditions.h */; };
 		07D7E59A1912405B0086A2AE /* NSManagedObjectContext+CDEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D7E5981912405B0086A2AE /* NSManagedObjectContext+CDEAdditions.m */; };
+		07DBC8481A726C480031594C /* NSFileCoordinator+CDEAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 07DBC8461A726C480031594C /* NSFileCoordinator+CDEAdditions.h */; };
+		07DBC8491A726C480031594C /* NSFileCoordinator+CDEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DBC8471A726C480031594C /* NSFileCoordinator+CDEAdditions.m */; };
 		07F001BE18427645001A0504 /* IntegratorMergeTestsFixture.json in Resources */ = {isa = PBXBuildFile; fileRef = 07F001BD18427645001A0504 /* IntegratorMergeTestsFixture.json */; };
 		07F3D42B19484C3600B74B5A /* CDEJSONEventImport.h in Headers */ = {isa = PBXBuildFile; fileRef = 07F3D42919484C3600B74B5A /* CDEJSONEventImport.h */; };
 		07F3D42C19484C3600B74B5A /* CDEJSONEventImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F3D42A19484C3600B74B5A /* CDEJSONEventImport.m */; };
@@ -234,8 +242,6 @@
 /* Begin PBXFileReference section */
 		0701770118C1EC4B00C4DA01 /* CDEFileDownloadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDEFileDownloadOperation.h; path = "Source/Cloud File Systems/CDEFileDownloadOperation.h"; sourceTree = SOURCE_ROOT; };
 		0701770218C1EC4B00C4DA01 /* CDEFileDownloadOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDEFileDownloadOperation.m; path = "Source/Cloud File Systems/CDEFileDownloadOperation.m"; sourceTree = SOURCE_ROOT; };
-		0701770418C1EDE700C4DA01 /* CDEAsynchronousOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEAsynchronousOperation.h; sourceTree = "<group>"; };
-		0701770518C1EDE700C4DA01 /* CDEAsynchronousOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEAsynchronousOperation.m; sourceTree = "<group>"; };
 		0701771318C25F2A00C4DA01 /* CDEFileUploadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDEFileUploadOperation.h; path = "Source/Cloud File Systems/CDEFileUploadOperation.h"; sourceTree = SOURCE_ROOT; };
 		0701771418C25F2A00C4DA01 /* CDEFileUploadOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDEFileUploadOperation.m; path = "Source/Cloud File Systems/CDEFileUploadOperation.m"; sourceTree = SOURCE_ROOT; };
 		070D336118018A960054BA23 /* Tests iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -305,6 +311,14 @@
 		07571F141910EC02008479A9 /* Ensembles Resources iOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Ensembles Resources iOS-Info.plist"; sourceTree = "<group>"; };
 		07571F161910EC02008479A9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		07571F181910EC02008479A9 /* Ensembles Resources iOS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Ensembles Resources iOS-Prefix.pch"; sourceTree = "<group>"; };
+		0759837F1A02420000C410FA /* CDEAsynchronousOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEAsynchronousOperation.h; sourceTree = "<group>"; };
+		075983801A02420000C410FA /* CDEAsynchronousOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEAsynchronousOperation.m; sourceTree = "<group>"; };
+		075983811A02420000C410FA /* CDEAsynchronousTaskQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEAsynchronousTaskQueue.h; sourceTree = "<group>"; };
+		075983821A02420000C410FA /* CDEAsynchronousTaskQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEAsynchronousTaskQueue.m; sourceTree = "<group>"; };
+		075983831A02420000C410FA /* CDEProcedure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEProcedure.h; sourceTree = "<group>"; };
+		075983841A02420000C410FA /* CDEProcedure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEProcedure.m; sourceTree = "<group>"; };
+		075983851A02420000C410FA /* CDEProcedureStep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEProcedureStep.h; sourceTree = "<group>"; };
+		075983861A02420000C410FA /* CDEProcedureStep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEProcedureStep.m; sourceTree = "<group>"; };
 		075B3FB218096C720089D4D3 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		075B3FCE18097A370089D4D3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		075FDCDF183628F90020E1C9 /* CDEIntegratorMergeRepairTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEIntegratorMergeRepairTests.m; sourceTree = "<group>"; };
@@ -312,6 +326,8 @@
 		075FDCE1183628F90020E1C9 /* CDEMockLocalFileSystem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEMockLocalFileSystem.m; sourceTree = "<group>"; };
 		075FDCE2183628F90020E1C9 /* CDEPersistentStoreEnsembleMergeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEPersistentStoreEnsembleMergeTests.m; sourceTree = "<group>"; };
 		075FDCE4183628F90020E1C9 /* CDEStoreModificationEventTestsModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CDEStoreModificationEventTestsModel.xcdatamodel; sourceTree = "<group>"; };
+		076F1A6A1A70F4B500234ED2 /* CDEBatchSyncTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEBatchSyncTests.m; sourceTree = "<group>"; };
+		076F1A6B1A70F4B500234ED2 /* CDERepairSyncTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDERepairSyncTests.m; sourceTree = "<group>"; };
 		076FC91E1902704D00C3FE6A /* CDEBaseliningSyncTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEBaseliningSyncTests.m; sourceTree = "<group>"; };
 		07793DC61936208500873C5C /* CDEPersistentStoreEnsemble+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CDEPersistentStoreEnsemble+Private.h"; sourceTree = "<group>"; };
 		07793DC71936208500873C5C /* CDEPersistentStoreEnsemble+Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CDEPersistentStoreEnsemble+Private.m"; sourceTree = "<group>"; };
@@ -352,8 +368,6 @@
 		07BF378B17F1853000C56F64 /* CDEPropertyChangeValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEPropertyChangeValue.m; sourceTree = "<group>"; };
 		07BF378C17F1853000C56F64 /* CDESaveMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDESaveMonitor.h; sourceTree = "<group>"; };
 		07BF378D17F1853000C56F64 /* CDESaveMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDESaveMonitor.m; sourceTree = "<group>"; };
-		07BF378F17F1853000C56F64 /* CDEAsynchronousTaskQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEAsynchronousTaskQueue.h; sourceTree = "<group>"; };
-		07BF379017F1853000C56F64 /* CDEAsynchronousTaskQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEAsynchronousTaskQueue.m; sourceTree = "<group>"; };
 		07BF379117F1853000C56F64 /* CDEDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEDefines.h; sourceTree = "<group>"; };
 		07BF379217F1853000C56F64 /* CDEDefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEDefines.m; sourceTree = "<group>"; };
 		07BF379317F1853000C56F64 /* CDEFoundationAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEFoundationAdditions.h; sourceTree = "<group>"; };
@@ -393,6 +407,8 @@
 		07D7E5941912403A0086A2AE /* CDEEventFileSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEEventFileSet.m; sourceTree = "<group>"; };
 		07D7E5971912405B0086A2AE /* NSManagedObjectContext+CDEAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+CDEAdditions.h"; sourceTree = "<group>"; };
 		07D7E5981912405B0086A2AE /* NSManagedObjectContext+CDEAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+CDEAdditions.m"; sourceTree = "<group>"; };
+		07DBC8461A726C480031594C /* NSFileCoordinator+CDEAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileCoordinator+CDEAdditions.h"; sourceTree = "<group>"; };
+		07DBC8471A726C480031594C /* NSFileCoordinator+CDEAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileCoordinator+CDEAdditions.m"; sourceTree = "<group>"; };
 		07F001BD18427645001A0504 /* IntegratorMergeTestsFixture.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = IntegratorMergeTestsFixture.json; sourceTree = "<group>"; };
 		07F3D42919484C3600B74B5A /* CDEJSONEventImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEJSONEventImport.h; sourceTree = "<group>"; };
 		07F3D42A19484C3600B74B5A /* CDEJSONEventImport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEJSONEventImport.m; sourceTree = "<group>"; };
@@ -531,6 +547,8 @@
 		070D33CD18018C020054BA23 /* Sync System Tests */ = {
 			isa = PBXGroup;
 			children = (
+				076F1A6A1A70F4B500234ED2 /* CDEBatchSyncTests.m */,
+				076F1A6B1A70F4B500234ED2 /* CDERepairSyncTests.m */,
 				070D339018018AAD0054BA23 /* CDESyncTest.h */,
 				070D339118018AAD0054BA23 /* CDESyncTest.m */,
 				070D338718018AAD0054BA23 /* CDEOneWaySyncTests.m */,
@@ -600,6 +618,22 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		0759837E1A02420000C410FA /* Asynchronicity */ = {
+			isa = PBXGroup;
+			children = (
+				0759837F1A02420000C410FA /* CDEAsynchronousOperation.h */,
+				075983801A02420000C410FA /* CDEAsynchronousOperation.m */,
+				075983811A02420000C410FA /* CDEAsynchronousTaskQueue.h */,
+				075983821A02420000C410FA /* CDEAsynchronousTaskQueue.m */,
+				075983831A02420000C410FA /* CDEProcedure.h */,
+				075983841A02420000C410FA /* CDEProcedure.m */,
+				075983851A02420000C410FA /* CDEProcedureStep.h */,
+				075983861A02420000C410FA /* CDEProcedureStep.m */,
+			);
+			name = Asynchronicity;
+			path = Source/Asynchronicity;
+			sourceTree = SOURCE_ROOT;
+		};
 		07BF373C17F184DD00C56F64 = {
 			isa = PBXGroup;
 			children = (
@@ -640,6 +674,7 @@
 			children = (
 				07571EDE1910DFB9008479A9 /* Ensembles.h */,
 				07BF378E17F1853000C56F64 /* General */,
+				0759837E1A02420000C410FA /* Asynchronicity */,
 				07BF37C417F1854F00C56F64 /* Cloud File Systems */,
 				07BF376E17F1853000C56F64 /* Cloud Management */,
 				07BF377C17F1853000C56F64 /* Ensemble */,
@@ -708,14 +743,12 @@
 				07BF379117F1853000C56F64 /* CDEDefines.h */,
 				07BF379217F1853000C56F64 /* CDEDefines.m */,
 				34700E9D188B225700FD00B1 /* CDEAvailabilityMacros.h */,
-				07BF378F17F1853000C56F64 /* CDEAsynchronousTaskQueue.h */,
-				07BF379017F1853000C56F64 /* CDEAsynchronousTaskQueue.m */,
-				0701770418C1EDE700C4DA01 /* CDEAsynchronousOperation.h */,
-				0701770518C1EDE700C4DA01 /* CDEAsynchronousOperation.m */,
 				07BF379317F1853000C56F64 /* CDEFoundationAdditions.h */,
 				07BF379417F1853000C56F64 /* CDEFoundationAdditions.m */,
 				07BF379617F1853000C56F64 /* NSMapTable+CDEAdditions.h */,
 				07BF379717F1853000C56F64 /* NSMapTable+CDEAdditions.m */,
+				07DBC8461A726C480031594C /* NSFileCoordinator+CDEAdditions.h */,
+				07DBC8471A726C480031594C /* NSFileCoordinator+CDEAdditions.m */,
 				07D2D639182D6846001D24BC /* NSManagedObjectModel+CDEAdditions.h */,
 				07D2D63A182D6846001D24BC /* NSManagedObjectModel+CDEAdditions.m */,
 				07D7E5971912405B0086A2AE /* NSManagedObjectContext+CDEAdditions.h */,
@@ -796,13 +829,12 @@
 			files = (
 				07793DCB1936208500873C5C /* CDEProgression.h in Headers */,
 				07571EE01910E171008479A9 /* Ensembles.h in Headers */,
-				07571EE71910E171008479A9 /* CDEAsynchronousOperation.h in Headers */,
-				07571EE31910E171008479A9 /* CDEAsynchronousTaskQueue.h in Headers */,
 				07571EE21910E171008479A9 /* CDEAvailabilityMacros.h in Headers */,
 				07571EEE1910E171008479A9 /* CDECloudDirectory.h in Headers */,
 				0744FEF619179F5200153100 /* CDEEventMigrator.h in Headers */,
 				07F3D42B19484C3600B74B5A /* CDEJSONEventImport.h in Headers */,
 				07571EEF1910E171008479A9 /* CDECloudFile.h in Headers */,
+				07DBC8481A726C480031594C /* NSFileCoordinator+CDEAdditions.h in Headers */,
 				07571EED1910E171008479A9 /* CDECloudFileSystem.h in Headers */,
 				0744FF0D19179F6300153100 /* CDEUpdateStage.h in Headers */,
 				07793DC91936208500873C5C /* CDEPersistentStoreEnsemble+Private.h in Headers */,
@@ -814,12 +846,14 @@
 				07571EE81910E171008479A9 /* CDEICloudFileSystem.h in Headers */,
 				07D7E5951912403A0086A2AE /* CDEEventFileSet.h in Headers */,
 				07571EE91910E171008479A9 /* CDELocalCloudFileSystem.h in Headers */,
+				075983871A02420000C410FA /* CDEAsynchronousOperation.h in Headers */,
 				07571EF11910E171008479A9 /* CDEPersistentStoreEnsemble.h in Headers */,
 				07D7E5991912405B0086A2AE /* NSManagedObjectContext+CDEAdditions.h in Headers */,
 				07571EE51910E171008479A9 /* NSMapTable+CDEAdditions.h in Headers */,
 				07571EE61910E171008479A9 /* NSManagedObjectModel+CDEAdditions.h in Headers */,
 				07571EF01910E171008479A9 /* CDECloudManager.h in Headers */,
 				07793DD8193620BC00873C5C /* CDEJSONEventExport.h in Headers */,
+				0759838D1A02420000C410FA /* CDEProcedureStep.h in Headers */,
 				07571EF21910E171008479A9 /* CDEPersistentStoreImporter.h in Headers */,
 				07571EF31910E171008479A9 /* CDEEventStore.h in Headers */,
 				07793DD4193620BC00873C5C /* CDEEventExport.h in Headers */,
@@ -836,7 +870,9 @@
 				0744FF0919179F6300153100 /* CDEInsertStage.h in Headers */,
 				07571EFC1910E171008479A9 /* CDEStoreModificationEvent.h in Headers */,
 				07571EFD1910E171008479A9 /* CDEDataFile.h in Headers */,
+				0759838B1A02420000C410FA /* CDEProcedure.h in Headers */,
 				07571EFE1910E171008479A9 /* CDERevision.h in Headers */,
+				075983891A02420000C410FA /* CDEAsynchronousTaskQueue.h in Headers */,
 				0744FEF819179F5200153100 /* CDEObjectGraphMigrator.h in Headers */,
 				07571EFF1910E171008479A9 /* CDERevisionManager.h in Headers */,
 				07D1B1B719472BC900C04CBF /* CDEPersistentStoreEventImport.h in Headers */,
@@ -1018,6 +1054,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				076F1A6D1A70F4B500234ED2 /* CDERepairSyncTests.m in Sources */,
 				07D2D640182D6887001D24BC /* CDEManagedObjectModelTests.m in Sources */,
 				070D33A618018AAD0054BA23 /* CDERevisionSetTests.m in Sources */,
 				070D33BB18018AAD0054BA23 /* CDETwoWaySyncTests.m in Sources */,
@@ -1051,6 +1088,7 @@
 				070D33B918018AAD0054BA23 /* CDEStoreModificationEventTestsModel.xcdatamodeld in Sources */,
 				070D33A818018AAD0054BA23 /* CDEEventDeviceRevisionTests.m in Sources */,
 				07D7E58E19123FE00086A2AE /* CDEEventMigratorMultipleFileTests.m in Sources */,
+				076F1A6C1A70F4B500234ED2 /* CDEBatchSyncTests.m in Sources */,
 				070D33AD18018AAD0054BA23 /* CDEIntegratorTestCase.m in Sources */,
 				070D33B518018AAD0054BA23 /* CDERevisionManagerTests.m in Sources */,
 				070D33B218018AAD0054BA23 /* CDEOneWaySyncTests.m in Sources */,
@@ -1073,20 +1111,22 @@
 				0701770318C1EC4B00C4DA01 /* CDEFileDownloadOperation.m in Sources */,
 				07BF37BC17F1853000C56F64 /* CDEEventRevision.m in Sources */,
 				07F3D4651948A55B00B74B5A /* NSData+CDEAdditions.m in Sources */,
-				0701770618C1EDE700C4DA01 /* CDEAsynchronousOperation.m in Sources */,
 				07973EFE183BE40A007F48CA /* CDEICloudFileSystem.m in Sources */,
 				0744FF0819179F6300153100 /* CDEDeleteStage.m in Sources */,
 				0744FF0C19179F6300153100 /* CDEIntegrationStage.m in Sources */,
+				075983881A02420000C410FA /* CDEAsynchronousOperation.m in Sources */,
 				0744FEF919179F5200153100 /* CDEObjectGraphMigrator.m in Sources */,
 				07793DCA1936208500873C5C /* CDEPersistentStoreEnsemble+Private.m in Sources */,
 				07BF37B917F1853000C56F64 /* CDEDefines.m in Sources */,
 				07793DD7193620BC00873C5C /* CDEEventImport.m in Sources */,
 				07BF37BF17F1853000C56F64 /* CDEObjectChange.m in Sources */,
 				07D7E5961912403A0086A2AE /* CDEEventFileSet.m in Sources */,
+				0759838E1A02420000C410FA /* CDEProcedureStep.m in Sources */,
 				07D2D63B182D6846001D24BC /* NSManagedObjectModel+CDEAdditions.m in Sources */,
 				0744FF0A19179F6300153100 /* CDEInsertStage.m in Sources */,
 				07BF37C217F1853000C56F64 /* CDERevisionManager.m in Sources */,
 				07BF37B517F1853000C56F64 /* CDEEventStore.m in Sources */,
+				0759838C1A02420000C410FA /* CDEProcedure.m in Sources */,
 				07ABB5A418B24A6B006FC638 /* CDEDataFile.m in Sources */,
 				07BF37AB17F1853000C56F64 /* CDECloudFile.m in Sources */,
 				07793DD9193620BC00873C5C /* CDEJSONEventExport.m in Sources */,
@@ -1098,11 +1138,11 @@
 				0744FF0E19179F6300153100 /* CDEUpdateStage.m in Sources */,
 				07BF37B117F1853000C56F64 /* CDEPersistentStoreImporter.m in Sources */,
 				07BF37C117F1853000C56F64 /* CDERevision.m in Sources */,
+				0759838A1A02420000C410FA /* CDEAsynchronousTaskQueue.m in Sources */,
 				07BF37B717F1853000C56F64 /* CDESaveMonitor.m in Sources */,
 				07D1B1B819472BC900C04CBF /* CDEPersistentStoreEventImport.m in Sources */,
 				07D184001892824200E89B89 /* CDERebaser.m in Sources */,
 				0744FF0619179F6300153100 /* CDEEventIntegrator.m in Sources */,
-				07BF37B817F1853000C56F64 /* CDEAsynchronousTaskQueue.m in Sources */,
 				0701771518C25F2A00C4DA01 /* CDEFileUploadOperation.m in Sources */,
 				07BF37BB17F1853000C56F64 /* NSMapTable+CDEAdditions.m in Sources */,
 				07BF37B217F1853000C56F64 /* CDEEventBuilder.m in Sources */,
@@ -1112,6 +1152,7 @@
 				07BF37AA17F1853000C56F64 /* CDECloudDirectory.m in Sources */,
 				07BF37BE17F1853000C56F64 /* CDEGlobalIdentifier.m in Sources */,
 				07973EFF183BE40A007F48CA /* CDELocalCloudFileSystem.m in Sources */,
+				07DBC8491A726C480031594C /* NSFileCoordinator+CDEAdditions.m in Sources */,
 				07BF37C317F1853000C56F64 /* CDERevisionSet.m in Sources */,
 				07F3D42C19484C3600B74B5A /* CDEJSONEventImport.m in Sources */,
 				07BF37BA17F1853000C56F64 /* CDEFoundationAdditions.m in Sources */,

@@ -22,4 +22,11 @@
     _identityToken = newToken;
 }
 
+- (void)fetchUserIdentityWithCompletion:(CDEFetchUserIdentityCallback)completion
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (completion) completion(_identityToken, nil);
+    });
+}
+
 @end

@@ -81,6 +81,7 @@
                 }
             }
             @catch ( NSException *exception ) {
+                CDELog(CDELoggingLevelVerbose, @"Exception occurred during event import. Stopping.");
                 success = NO;
                 error = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeExceptionRaised userInfo:nil];
             }

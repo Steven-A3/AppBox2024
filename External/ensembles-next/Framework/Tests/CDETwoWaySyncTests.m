@@ -136,6 +136,61 @@
     XCTAssertEqual(parents.count, (NSUInteger)1, @"Wrong number of parents found");
 }
 
+- (void)testMultipleChangesSharingSingleDataFile
+{
+    [self leechStores];
+    
+    const uint8_t b1[10001];
+    NSData *data = [[NSData alloc] initWithBytes:b1 length:10001];
+    id parent1 = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];
+    [parent1 setValue:@"1" forKey:@"name"];
+    [parent1 setValue:data forKey:@"data"];
+    [context1 save:NULL];
+    
+    id parent2 = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context2];
+    [parent2 setValue:@"2" forKey:@"name"];
+    [parent2 setValue:data forKey:@"data"];
+    [context2 save:NULL];
+    
+    [self syncChanges];
+    
+    [context1 deleteObject:parent1]; // Delete one parent
+    [context1 save:NULL];
+    
+    [self syncChanges];
+    
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"Parent"];
+    NSArray *parents = [context1 executeFetchRequest:fetch error:NULL];
+    XCTAssertEqual(parents.count, (NSUInteger)1, @"Wrong number of parents found");
+    
+    id resultParent = parents.lastObject;
+    XCTAssertEqualObjects(data, [resultParent valueForKey:@"data"]);
+    XCTAssertEqualObjects(@"2", [resultParent valueForKey:@"name"]);
+    
+    [context1 deleteObject:resultParent];
+    [context1 save:NULL];
+
+    [ensemble1 setValue:@YES forKeyPath:@"rebaser.forceRebase"];
+    [self mergeEnsemble:ensemble1];
+    [self mergeEnsemble:ensemble1];
+    [self mergeEnsemble:ensemble1];
+    
+    id parent3 = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context2];
+    [parent3 setValue:@"3" forKey:@"name"];
+    [parent3 setValue:data forKey:@"data"];
+    [context2 save:NULL];
+
+    [ensemble1 setValue:@NO forKeyPath:@"rebaser.forceRebase"];
+    [self syncChanges];
+ 
+    parents = [context1 executeFetchRequest:fetch error:NULL];
+    XCTAssertEqual(parents.count, (NSUInteger)1, @"Wrong number of parents found");
+
+    resultParent = parents.lastObject;
+    XCTAssertEqualObjects(data, [resultParent valueForKey:@"data"]);
+    XCTAssertEqualObjects(@"3", [resultParent valueForKey:@"name"]);
+}
+
 - (void)testConcurrentInsertsOfSameObjectWithInterruptedMerge
 {
     [self leechStores];
@@ -162,6 +217,33 @@
     [self mergeEnsemble:ensemble2];
     
     [self mergeEnsemble:ensemble1];
+    
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"Parent"];
+    NSArray *parents = [context2 executeFetchRequest:fetch error:NULL];
+    XCTAssertEqual(parents.count, (NSUInteger)1, @"Wrong number of parents found");
+    
+    parents = [context1 executeFetchRequest:fetch error:NULL];
+    XCTAssertEqual(parents.count, (NSUInteger)1, @"Wrong number of parents found");
+}
+
+- (void)testImportOfSameObjectOnMultipleDevices
+{
+    id parent1 = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];
+    NSDate *date = [NSDate dateWithTimeIntervalSinceReferenceDate:10.0];
+    [parent1 setValue:@"bob" forKey:@"name"];
+    [parent1 setValue:date forKey:@"date"];
+    XCTAssertTrue([context1 save:NULL], @"Could not save");
+    
+    id parent2 = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context2];
+    [parent2 setValue:@"bob" forKey:@"name"];
+    [parent2 setValue:date forKey:@"date"];
+    XCTAssertTrue([context2 save:NULL], @"Could not save");
+    
+    ensemble1.delegate = self;
+    ensemble2.delegate = self;
+    [self leechStores];
+    
+    [self syncChanges];
     
     NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"Parent"];
     NSArray *parents = [context2 executeFetchRequest:fetch error:NULL];

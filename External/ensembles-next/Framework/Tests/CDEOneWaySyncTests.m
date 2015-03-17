@@ -180,6 +180,98 @@
     XCTAssertEqualObjects([[syncedParent valueForKey:@"children"] anyObject], syncedChild, @"Relationship not set");
 }
 
+- (void)testInitialImportWithNoGlobalIdentifiersProvided
+{
+    id parent = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];
+    id child = [NSEntityDescription insertNewObjectForEntityForName:@"Child" inManagedObjectContext:context1];
+    [child setValue:parent forKey:@"parent"];
+    XCTAssertTrue([context1 save:NULL], @"Could not save");
+    
+    ensemble1.delegate = nil;
+    ensemble2.delegate = nil;
+    [self leechStores];
+    
+    XCTAssertNil([self syncChanges], @"Sync failed");
+    
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"Parent"];
+    NSArray *parents = [context2 executeFetchRequest:fetch error:NULL];
+    XCTAssertEqual(parents.count, (NSUInteger)1, @"No parent found");
+    
+    fetch = [NSFetchRequest fetchRequestWithEntityName:@"Child"];
+    NSArray *children = [context2 executeFetchRequest:fetch error:NULL];
+    XCTAssertEqual(children.count, (NSUInteger)1, @"No child found");
+    
+    id syncedParent = parents.lastObject;
+    id syncedChild = children.lastObject;
+    XCTAssertEqualObjects(syncedChild, [syncedParent valueForKey:@"child"], @"Relationship not set");
+}
+
+- (void)testSaveWithNoGlobalIdentifiersProvided
+{
+    ensemble1.delegate = nil;
+    ensemble2.delegate = nil;
+    [self leechStores];
+    
+    id parent = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];
+    id child = [NSEntityDescription insertNewObjectForEntityForName:@"Child" inManagedObjectContext:context1];
+    [child setValue:parent forKey:@"parent"];
+    XCTAssertTrue([context1 save:NULL], @"Could not save");
+    
+    XCTAssertNil([self syncChanges], @"Sync failed");
+    
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"Parent"];
+    NSArray *parents = [context2 executeFetchRequest:fetch error:NULL];
+    XCTAssertEqual(parents.count, (NSUInteger)1, @"No parent found");
+    
+    fetch = [NSFetchRequest fetchRequestWithEntityName:@"Child"];
+    NSArray *children = [context2 executeFetchRequest:fetch error:NULL];
+    XCTAssertEqual(children.count, (NSUInteger)1, @"No child found");
+    
+    id syncedParent = parents.lastObject;
+    id syncedChild = children.lastObject;
+    XCTAssertEqualObjects(syncedChild, [syncedParent valueForKey:@"child"], @"Relationship not set");
+}
+
+- (void)testChangeRelationshipWithNoGlobalIdentifiersProvided
+{
+    ensemble1.delegate = nil;
+    ensemble2.delegate = nil;
+    [self leechStores];
+    
+    id parent = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];
+    id child1 = [NSEntityDescription insertNewObjectForEntityForName:@"Child" inManagedObjectContext:context1];
+    id child2 = [NSEntityDescription insertNewObjectForEntityForName:@"Child" inManagedObjectContext:context1];
+    XCTAssertTrue([context1 save:NULL], @"Could not save");
+    
+    [child1 setValue:parent forKey:@"parent"];
+    XCTAssertTrue([context1 save:NULL], @"Could not save");
+
+    XCTAssertNil([self syncChanges], @"Sync failed");
+    
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"Parent"];
+    NSArray *parents = [context2 executeFetchRequest:fetch error:NULL];
+    XCTAssertEqual(parents.count, (NSUInteger)1, @"No parent found");
+    
+    fetch = [NSFetchRequest fetchRequestWithEntityName:@"Child"];
+    NSMutableArray *children = [[context2 executeFetchRequest:fetch error:NULL] mutableCopy];
+    XCTAssertEqual(children.count, (NSUInteger)2, @"No child found");
+    
+    id syncedParent = parents.lastObject;
+    id syncedChild = [syncedParent valueForKey:@"child"];
+    XCTAssertNotNil(syncedChild, @"Relationship not set");
+    
+    [children removeObject:syncedChild];
+    id otherChild = children.lastObject;
+    [syncedParent setValue:otherChild forKey:@"child"];
+    
+    [context2 save:NULL];
+    
+    [self syncChanges];
+    
+    [context1 refreshObject:parent mergeChanges:NO];
+    XCTAssertEqualObjects(child2, [parent valueForKey:@"child"]);
+}
+
 - (void)testSmallDataAttributeLeadsToNoExternalDataFiles
 {
     [self leechStores];
@@ -268,28 +360,42 @@
 - (void)testRebasingWithLargeData
 {
     [self leechStores];
-
-    const uint8_t bytes[10001];
+    
+    const uint8_t b1[10002];
+    id parent = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];
+    [parent setValue:[[NSData alloc] initWithBytes:b1 length:10002] forKey:@"data"];
+    [context1 save:NULL];
+    
+    const uint8_t b2[10001];
     NSMutableArray *parents = [NSMutableArray array];
-    for (NSUInteger i = 0; i < 100; i++) {
-        // 50 saves forces a rebase
+    for (NSUInteger i = 0; i < 10; i++) {
         id parent = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];
-        [parent setValue:[[NSData alloc] initWithBytes:bytes length:10001] forKey:@"data"];
+        [parent setValue:[[NSData alloc] initWithBytes:b2 length:10001] forKey:@"data"];
         [parents addObject:parent];
         [context1 save:NULL];
     }
     
-    [context1 deleteObject:parents[0]]; // Delete one parent
+    [context1 deleteObject:parent]; // Delete original parent
     [context1 save:NULL];
     
     NSString *eventStoreDataDir = [eventDataRoot1 stringByAppendingPathComponent:@"com.ensembles.synctest/data"];
     NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:eventStoreDataDir error:NULL];
-    XCTAssertEqual(contents.count, (NSUInteger)100, @"Should be a 50 data files. Delete has no affect before rebase.");
+    XCTAssertEqual(contents.count, (NSUInteger)2, @"Should be a 2 data files. Delete has no affect before rebase.");
 
-    [self syncChanges]; // Should rebase due to many saves
+    [ensemble1 setValue:@YES forKeyPath:@"rebaser.forceRebase"];
+    [self mergeEnsemble:ensemble1];
     
     contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:eventStoreDataDir error:NULL];
-    XCTAssertEqual(contents.count, (NSUInteger)99, @"Rebase should clean up one of the data files");
+    XCTAssertEqual(contents.count, (NSUInteger)2, @"First rebase should not delete unreferenced data file");
+    
+    id lastParent = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];
+    [lastParent setValue:[[NSData alloc] initWithBytes:b2 length:10001] forKey:@"data"];
+    [context1 save:NULL];
+    
+    [self mergeEnsemble:ensemble1];
+
+    contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:eventStoreDataDir error:NULL];
+    XCTAssertEqual(contents.count, (NSUInteger)1, @"Second rebase should delete unreferenced data file");
 }
 
 - (void)testBatchedMigrationAndMultipartFileSets

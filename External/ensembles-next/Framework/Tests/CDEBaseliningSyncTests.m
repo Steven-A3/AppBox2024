@@ -157,7 +157,7 @@
     XCTAssertEqual(parentsIn2.count, (NSUInteger)100, @"Wrong parent count in second context");
 }
 
-- (void)testRebasingGoesToMinimumGlobalCountFromAnyDevice
+- (void)testRebasingGlobalCount
 {
     [self leechStores];
     [self mergeEnsemble:ensemble1];
@@ -168,10 +168,8 @@
     XCTAssertEqual(eventFiles.count, (NSUInteger)0, @"Should be no event file");
 
     // Should generate event with global count 1
-    for (NSUInteger i = 0; i < 500; i++) {
-        NSManagedObject *parentOnDevice2 = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context2];
-        [parentOnDevice2 setValue:@"jane" forKey:@"name"];
-    }
+    NSManagedObject *parentOnDevice2 = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context2];
+    [parentOnDevice2 setValue:@"jane" forKey:@"name"];
     XCTAssertTrue([context2 save:NULL], @"Could not save");
     
     // Should generate event with global count 2
@@ -183,30 +181,28 @@
     XCTAssertEqual(eventFiles.count, (NSUInteger)2, @"Should be 2 event files");
     
     // Should generate event with global count 1
-    for (NSUInteger i = 0; i < 500; i++) {
-        NSManagedObject *parentOnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];
-        [parentOnDevice1 setValue:@"bob" forKey:@"name"];
-    }
+    NSManagedObject *parentOnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];
+    [parentOnDevice1 setValue:@"bob" forKey:@"name"];
     XCTAssertTrue([context1 save:NULL], @"Could not save");
     
-    // Should generate events with global counts 2-23
+    // Should generate events with global counts 2-3
     NSArray *parents = [context1 executeFetchRequest:[NSFetchRequest fetchRequestWithEntityName:@"Parent"] error:NULL];
-    for (NSInteger i = 0; i < 21; i++) {
+    for (NSInteger i = 2; i < 4; i++) {
         for (id parent in parents) {
             [parent setValue:@"tom" forKey:@"name"];
         }
         XCTAssertTrue([context1 save:NULL], @"Could not save");
     }
     
-    // Should generate a merge event with global count 13, and rebase up to global count 2 (lowest from any store)
+    // Should generate a merge event with global count 4, and rebase up to global count 1 (lowest from any store minus 1)
     [ensemble1 setValue:@YES forKeyPath:@"rebaser.forceRebase"];
     [self mergeEnsemble:ensemble1];
     
     baselineFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:cloudBaselinesDir error:NULL];
     eventFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:cloudEventsDir error:NULL];
     XCTAssertEqual(baselineFiles.count, (NSUInteger)1, @"Should be one baseline file");
-    XCTAssertEqual(eventFiles.count, (NSUInteger)21, @"Should be 21 events after rebase. Ie global counts 3-23");
-    XCTAssertEqual([baselineFiles.lastObject integerValue], (NSInteger)2, @"Wrong global count for baseline");
+    XCTAssertEqual(eventFiles.count, (NSUInteger)4, @"Should be 4 events after rebase");
+    XCTAssertEqual([baselineFiles.lastObject integerValue], (NSInteger)1, @"Wrong global count for baseline");
 }
 
 - (void)testRebasingWithLocalStoreLeftBehind

@@ -8,6 +8,7 @@
 
 #import "CDEEventStore.h"
 #import "CDEDefines.h"
+#import "NSData+CDEAdditions.h"
 #import "CDEStoreModificationEvent.h"
 #import "CDERevisionSet.h"
 #import "CDERevision.h"
@@ -310,8 +311,9 @@ static NSString *defaultPathToEventDataRootDirectory = nil;
 
 - (NSString *)storeDataInFile:(NSData *)data
 {
-    NSString *filename = [[NSProcessInfo processInfo] globallyUniqueString];
+    NSString *filename = [data cde_md5Checksum];
     NSString *toPath = [self.pathToDataFileDirectory stringByAppendingPathComponent:filename];
+    [fileManager removeItemAtPath:toPath error:NULL];
     BOOL success = [data writeToFile:toPath atomically:YES];
     if (!success) filename = nil;
     return filename;
@@ -376,13 +378,16 @@ static NSString *defaultPathToEventDataRootDirectory = nil;
 
 - (void)flushWithCompletion:(CDECompletionBlock)completion
 {
-    __block BOOL success = YES;
     [self saveStoreMetadata];
     
     if (self.managedObjectContext) {
         [self.managedObjectContext performBlock:^{
             NSError *error = nil;
-            success = [managedObjectContext save:&error];
+            __block BOOL success = [managedObjectContext save:&error];
+            if (!success) {
+                CDELog(CDELoggingLevelError, @"Failed to save during flush. Will reset event store context: %@", error);
+                [managedObjectContext reset];
+            }
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (completion) completion(success ? nil : error);
             });
@@ -421,6 +426,7 @@ static NSString *defaultPathToEventDataRootDirectory = nil;
 
 - (BOOL)removeEventStore
 {
+    CDELog(CDELoggingLevelTrace, @"Removing event store");
     self.persistentStoreIdentifier = nil;
     mandatoryEventCountedSet = nil;
     [self tearDownCoreDataStack];

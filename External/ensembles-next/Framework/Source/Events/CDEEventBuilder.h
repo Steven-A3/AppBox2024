@@ -43,10 +43,10 @@ typedef NS_ENUM(uint16_t, CDEUpdateStoreOption) {
 - (BOOL)saveAndReset:(NSError * __autoreleasing *)error;
 
 // The following methods are called from thread of synced-store context
-- (NSArray *)retrieveGlobalIdentifierStringsForManagedObjects:(NSArray *)objects;
+- (NSArray *)retrieveGlobalIdentifierStringsForManagedObjects:(NSArray *)objects storedInEventStore:(BOOL)inEventStore;
 - (NSArray *)addGlobalIdentifiersForManagedObjectIDs:(NSArray *)objectIDs identifierStrings:(NSArray *)globalIDStrings;
 
-- (void)addChangesForInsertedObjects:(NSSet *)insertedObjects objectsAreSaved:(BOOL)saved inManagedObjectContext:(NSManagedObjectContext *)context;
+- (void)addChangesForInsertedObjects:(NSSet *)insertedObjects objectsAreSaved:(BOOL)saved useGlobalIdentifiersInEventStore:(BOOL)yn inManagedObjectContext:(NSManagedObjectContext *)context;
 - (NSArray *)propertyChangeValueArraysForInsertedObjects:(NSArray *)insertedObjects objectsAreSaved:(BOOL)saved inManagedObjectContext:(NSManagedObjectContext *)context;
 - (void)addInsertChangesForPropertyChangeValueArrays:(NSArray *)changeArrays globalIdentifierObjectIDs:(NSArray *)globalIds;
 

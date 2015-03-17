@@ -7,14 +7,15 @@
 //
 
 #import <CoreData/CoreData.h>
-#import <DropboxSDK/DropboxSDK.h>
+#import <Dropbox/Dropbox.h>
 #import <Security/Security.h>
 
 #import "IDMSyncManager.h"
-#import "CDEDropboxCloudFileSystem.h"
+#import "CDEDropboxSyncCloudFileSystem.h"
 #import "CDENodeCloudFileSystem.h"
 #import "CDEZipCloudFileSystem.h"
 #import "IDMNodeSyncSettingsViewController.h"
+#import "CDEEncryptedCloudFileSystem.h"
 #import "CDEMultipeerCloudFileSystem.h"
 #import "IDMMultipeerManager.h"
 
@@ -30,21 +31,21 @@ NSString * const IDMMultipeerService = @"multipeer";
 NSString * const IDMNodeS3EmailDefaultKey = @"IDMNodeS3EmailDefaultKey";
 
 // Set these with your account details
-NSString * const IDMICloudContainerIdentifier = nil;
 NSString * const IDMDropboxAppKey = @"fjgu077wm7qffv0";
 NSString * const IDMDropboxAppSecret = @"djibc9zfvppronm";
 
-@interface IDMSyncManager () <CDEPersistentStoreEnsembleDelegate, DBSessionDelegate, CDEDropboxCloudFileSystemDelegate, CDENodeCloudFileSystemDelegate>
+@interface IDMSyncManager () <CDEPersistentStoreEnsembleDelegate, CDEDropboxSyncCloudFileSystemDelegate, CDENodeCloudFileSystemDelegate>
 
 @end
 
 @implementation IDMSyncManager {
     id <CDECloudFileSystem> cloudFileSystem;
     NSUInteger activeMergeCount;
-    CDECompletionBlock dropboxLinkSessionCompletion;
+    CDECompletionBlock dropboxLinkCompletion;
     CDECompletionBlock nodeCredentialUpdateCompletion;
-    DBSession *dropboxSession;
+    DBAccountManager *dropboxAccountManager;
     IDMMultipeerManager *multipeerManager;
+    NSTimer *syncTimer;
 }
 
 @synthesize ensemble = ensemble;
@@ -65,9 +66,17 @@ NSString * const IDMDropboxAppSecret = @"djibc9zfvppronm";
 {
     self = [super init];
     if (self) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(icloudDidDownload:) name:CDEICloudFileSystemDidDownloadFilesNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(filesDidDownload:) name:CDEICloudFileSystemDidDownloadFilesNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(filesDidDownload:) name:CDEDropboxSyncCloudFileSystemDidDownloadFilesNotification object:nil];
+        syncTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(performSync) userInfo:nil repeats:YES];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [syncTimer invalidate];
 }
 
 #pragma mark - Setting Up and Resetting
@@ -85,11 +94,9 @@ NSString * const IDMDropboxAppSecret = @"djibc9zfvppronm";
 
     [self clearNodePassword];
     
-    [dropboxSession unlinkAll];
-    dropboxSession = nil;
+    [dropboxAccountManager.linkedAccount unlink];
     
     ensemble.delegate = nil;
-    ensemble = nil;
     
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:IDMCloudServiceUserDefaultKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -124,7 +131,7 @@ NSString * const IDMDropboxAppSecret = @"djibc9zfvppronm";
 
     NSURL *storeURL = [NSURL fileURLWithPath:storePath];
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Model" withExtension:@"momd"];
-    ensemble = [[CDEPersistentStoreEnsemble alloc] initWithEnsembleIdentifier:@"MainStore" persistentStoreURL:storeURL managedObjectModelURL:modelURL cloudFileSystem:cloudFileSystem];
+    ensemble = [[CDEPersistentStoreEnsemble alloc] initWithEnsembleIdentifier:@"MainStore.v2" persistentStoreURL:storeURL managedObjectModelURL:modelURL cloudFileSystem:cloudFileSystem];
     ensemble.delegate = self;
 }
 
@@ -133,13 +140,14 @@ NSString * const IDMDropboxAppSecret = @"djibc9zfvppronm";
     NSString *cloudService = [[NSUserDefaults standardUserDefaults] stringForKey:IDMCloudServiceUserDefaultKey];
     id <CDECloudFileSystem> newSystem = nil;
     if ([cloudService isEqualToString:IDMICloudService]) {
-        CDEICloudFileSystem *iCloudFileSystem = [[CDEICloudFileSystem alloc] initWithUbiquityContainerIdentifier:IDMICloudContainerIdentifier];
-        newSystem = [[CDEZipCloudFileSystem alloc] initWithCloudFileSystem:iCloudFileSystem];
+        // We add encryption and zipping here. In a real app, you should store the password some other way (eg Keychain).
+        CDEICloudFileSystem *iCloudFileSystem = [[CDEICloudFileSystem alloc] initWithUbiquityContainerIdentifier:nil];
+        CDEEncryptedCloudFileSystem *encryptedFileSystem = [[CDEEncryptedCloudFileSystem alloc] initWithCloudFileSystem:iCloudFileSystem password:@"secret"];
+        newSystem = [[CDEZipCloudFileSystem alloc] initWithCloudFileSystem:encryptedFileSystem];
     }
     else if ([cloudService isEqualToString:IDMDropboxService]) {
-        dropboxSession = [[DBSession alloc] initWithAppKey:IDMDropboxAppKey appSecret:IDMDropboxAppSecret root:kDBRootAppFolder];
-        dropboxSession.delegate = self;
-        CDEDropboxCloudFileSystem *newDropboxSystem = [[CDEDropboxCloudFileSystem alloc] initWithSession:dropboxSession];
+        if (!dropboxAccountManager) dropboxAccountManager = [[DBAccountManager alloc] initWithAppKey:IDMDropboxAppKey secret:IDMDropboxAppSecret];
+        CDEDropboxSyncCloudFileSystem *newDropboxSystem = [[CDEDropboxSyncCloudFileSystem alloc] initWithAccountManager:dropboxAccountManager];
         newDropboxSystem.delegate = self;
         newSystem = newDropboxSystem;
     }
@@ -172,7 +180,7 @@ NSString * const IDMDropboxAppSecret = @"djibc9zfvppronm";
 
 #pragma mark - Sync Methods
 
-- (void)icloudDidDownload:(NSNotification *)notif
+- (void)filesDidDownload:(NSNotification *)notif
 {
     [self synchronizeWithCompletion:NULL];
 }
@@ -185,7 +193,12 @@ NSString * const IDMDropboxAppSecret = @"djibc9zfvppronm";
 
 - (void)synchronizeWithCompletion:(CDECompletionBlock)completion
 {
-    if (!self.canSynchronize) return;
+    if (!self.canSynchronize || ensemble.isLeeching || ensemble.isMerging) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (completion) completion(nil);
+        });
+        return;
+    }
     
     [self incrementMergeCount];
     if (!ensemble.isLeeched) {
@@ -199,6 +212,10 @@ NSString * const IDMDropboxAppSecret = @"djibc9zfvppronm";
             }
             else {
                 if (completion) completion(error);
+                if (ensemble.isLeeched) {
+                    // Schedule first merge
+                    [self performSelector:@selector(synchronizeWithCompletion:) withObject:nil afterDelay:2.0];
+                }
             }
         }];
     }
@@ -210,6 +227,13 @@ NSString * const IDMDropboxAppSecret = @"djibc9zfvppronm";
             if (completion) completion(error);
         }];
     }
+}
+
+- (void)performSync
+{
+    [self synchronizeWithCompletion:^(NSError *error) {
+        if (error) NSLog(@"Error in sync: %@", error);
+    }];
 }
 
 - (void)decrementMergeCount
@@ -253,29 +277,26 @@ NSString * const IDMDropboxAppSecret = @"djibc9zfvppronm";
 #pragma mark - Dropbox Session
 
 - (BOOL)handleOpenURL:(NSURL *)url {
-    if ([dropboxSession handleOpenURL:url]) {
-		if ([dropboxSession isLinked]) {
-            if (dropboxLinkSessionCompletion) dropboxLinkSessionCompletion(nil);
+    DBAccount *account = [dropboxAccountManager handleOpenURL:url];
+    if (account) {
+		if ([account isLinked]) {
+            if (dropboxLinkCompletion) dropboxLinkCompletion(nil);
 		}
         else {
             NSError *error = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeAuthenticationFailure userInfo:nil];
-            if (dropboxLinkSessionCompletion) dropboxLinkSessionCompletion(error);
+            if (dropboxLinkCompletion) dropboxLinkCompletion(error);
         }
-        dropboxLinkSessionCompletion = NULL;
+        dropboxLinkCompletion = NULL;
 		return YES;
     }
     return NO;
 }
 
-- (void)linkSessionForDropboxCloudFileSystem:(CDEDropboxCloudFileSystem *)fileSystem completion:(CDECompletionBlock)completion
+- (void)linkAccountManagerForDropboxSyncCloudFileSystem:(CDEDropboxSyncCloudFileSystem *)fileSystem completion:(CDECompletionBlock)completion
 {
     UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-    dropboxLinkSessionCompletion = [completion copy];
-    [dropboxSession linkFromController:window.rootViewController];
-}
-
-- (void)sessionDidReceiveAuthorizationFailure:(DBSession*)session userId:(NSString *)userId
-{
+    dropboxLinkCompletion = [completion copy];
+    [fileSystem.accountManager linkFromController:window.rootViewController];
 }
 
 #pragma mark - Node-S3 Backend Delegate Methods

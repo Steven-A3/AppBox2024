@@ -95,9 +95,11 @@
 
 #pragma mark - User Identity
 
-- (id <NSObject, NSCoding, NSCopying>)identityToken
+- (void)fetchUserIdentityWithCompletion:(CDEFetchUserIdentityCallback)completion
 {
-    return self.username;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (completion) completion(self.username, nil);
+    });
 }
 
 #pragma mark - Checking File Existence

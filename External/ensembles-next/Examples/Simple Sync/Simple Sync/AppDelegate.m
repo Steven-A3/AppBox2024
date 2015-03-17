@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 The Mental Faculty B.V. All rights reserved.
 //
 
+#import <Ensembles/Ensembles.h>
 #import "AppDelegate.h"
 #import "ViewController.h"
 #import "NumberHolder.h"

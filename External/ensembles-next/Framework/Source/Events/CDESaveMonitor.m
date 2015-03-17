@@ -191,7 +191,7 @@
     // Prepare inserts
     NSArray *orderedInsertedObjects = insertedObjects.allObjects;
     NSArray *insertedObjectIDs = [orderedInsertedObjects valueForKeyPath:@"objectID"];
-    NSArray *globalIDStrings = [eventBuilder retrieveGlobalIdentifierStringsForManagedObjects:orderedInsertedObjects];
+    NSArray *globalIDStrings = [eventBuilder retrieveGlobalIdentifierStringsForManagedObjects:orderedInsertedObjects storedInEventStore:NO];
     NSArray *changeValueArraysForInserts = [eventBuilder propertyChangeValueArraysForInsertedObjects:orderedInsertedObjects objectsAreSaved:YES inManagedObjectContext:context];
     
     // Prepare deletions

@@ -17,6 +17,9 @@
 #import "CDERevision.h"
 #import "CDEEventMigrator.h"
 
+const NSUInteger CDEFileUploadBatchSize = 10;
+const NSUInteger CDEFileDownloadBatchSize = 10;
+
 @interface CDECloudManager ()
 
 @property (nonatomic, strong, readwrite) NSSet *snapshotBaselineFilenames;
@@ -28,7 +31,6 @@
 @property (nonatomic, strong, readonly) NSString *localDownloadDirectory;
 @property (nonatomic, strong, readonly) NSString *localUploadDirectory;
 
-@property (nonatomic, strong, readonly) NSString *remoteEnsembleDirectory;
 @property (nonatomic, strong, readonly) NSString *remoteStoresDirectory;
 @property (nonatomic, strong, readonly) NSString *remoteEventsDirectory;
 @property (nonatomic, strong, readonly) NSString *remoteBaselinesDirectory;
@@ -153,15 +155,17 @@
     NSAssert([NSThread isMainThread], @"importNewDataFilesWithCompletion... called off the main thread");
     CDELog(CDELoggingLevelTrace, @"Transferring new data files from cloud to event store");
     
-    [self transferNewRemoteDataFilesToTransitCacheWithCompletion:^(NSError *error) {
-        if (error) {
-            if (completion) completion(error);
-            return;
-        }
-        
-        BOOL success = [self migrateNewDataFilesFromTransitCache:&error];
-        if (completion) completion(success ? nil : error);
-    }];
+    NSMutableSet *toRetrieve = [self.snapshotDataFilenames mutableCopy];
+    NSSet *storeFilenames = self.eventStore.allDataFilenames;
+    [toRetrieve minusSet:storeFilenames];
+    
+    NSArray *filesToDownload = toRetrieve.allObjects;
+    [self downloadFiles:filesToDownload fromRemoteDirectory:self.remoteDataDirectory batchCompletionBlock:^NSError* (NSArray *remotePaths, NSArray *localPaths) {
+        NSError *error = nil;
+        [self migrateNewDataFilesFromTransitCache:&error];
+        return error;
+    }
+    completion:completion];
 }
 
 
@@ -197,23 +201,7 @@
         return;
     }
     
-    NSMutableArray *taskBlocks = [NSMutableArray array];
-    for (NSString *filename in filenames) {
-        NSString *remotePath = [remoteDirectory stringByAppendingPathComponent:filename];
-        NSString *localPath = [self.localDownloadDirectory stringByAppendingPathComponent:filename];
-        CDEAsynchronousTaskBlock block = ^(CDEAsynchronousTaskCallbackBlock next) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                CDELog(CDELoggingLevelVerbose, @"Downloading file to transit cache: %@", remotePath);
-                [self.cloudFileSystem downloadFromPath:remotePath toLocalFile:localPath completion:^(NSError *error) {
-                    next(error, NO);
-                }];
-            });
-        };
-        [taskBlocks addObject:block];
-    }
-    
-    CDEAsynchronousTaskQueue *taskQueue = [[CDEAsynchronousTaskQueue alloc] initWithTasks:taskBlocks terminationPolicy:CDETaskQueueTerminationPolicyStopOnError completion:completion];
-    [operationQueue addOperation:taskQueue];
+    [self downloadFiles:filenames fromRemoteDirectory:remoteDirectory batchCompletionBlock:NULL completion:completion];
 }
 
 - (NSArray *)filesRequiringRetrievalFromAvailableRemoteFiles:(NSArray *)remoteFiles allowedEventTypes:(NSArray *)eventTypes
@@ -243,6 +231,67 @@
     NSSet *storeFilenames = self.eventStore.allDataFilenames;
     [toRetrieve minusSet:storeFilenames];
     [self transferRemoteFiles:toRetrieve.allObjects fromRemoteDirectory:self.remoteDataDirectory withCompletion:completion];
+}
+
+- (void)downloadFiles:(NSArray *)filenames fromRemoteDirectory:(NSString *)remoteDirectory batchCompletionBlock:(NSError* (^)(NSArray *remotePaths, NSArray *localPaths))batchCompletion completion:(CDECompletionBlock)completion
+{
+    NSMutableArray *taskBlocks = [NSMutableArray array];
+    
+    NSUInteger batchSize = [cloudFileSystem respondsToSelector:@selector(fileDownloadMaximumBatchSize)] ? cloudFileSystem.fileDownloadMaximumBatchSize : CDEFileDownloadBatchSize;
+    [filenames cde_enumerateObjectsInBatchesWithBatchSize:batchSize usingBlock:^(NSArray *filesToDownload, NSUInteger batchesRemaining, BOOL *stop) {
+        CDEAsynchronousTaskBlock block = ^(CDEAsynchronousTaskCallbackBlock next) {
+            NSMutableArray *remotePaths = [[NSMutableArray alloc] init];
+            NSMutableArray *localPaths = [[NSMutableArray alloc] init];
+            for (NSString *filename in filesToDownload) {
+                NSString *remotePath = [remoteDirectory stringByAppendingPathComponent:filename];
+                NSString *localPath = [self.localDownloadDirectory stringByAppendingPathComponent:filename];
+                [remotePaths addObject:remotePath];
+                [localPaths addObject:localPath];
+            }
+            
+            CDELog(CDELoggingLevelVerbose, @"Downloading files to transit cache: %@", remotePaths);
+            
+            if ([cloudFileSystem respondsToSelector:@selector(downloadFromPaths:toLocalFiles:completion:)]) {
+                [self.cloudFileSystem downloadFromPaths:remotePaths toLocalFiles:localPaths completion:^(NSError *error) {
+                    if (error) {
+                        next(error, NO);
+                        return;
+                    }
+                    
+                    if (batchCompletion) error = batchCompletion(remotePaths, localPaths);
+                    next(error, NO);
+                }];
+            }
+            else {
+                NSMutableArray *downloadTasks = [NSMutableArray array];
+                [localPaths enumerateObjectsUsingBlock:^(NSString *localPath, NSUInteger idx, BOOL *stop) {
+                    NSString *remotePath = remotePaths[idx];
+                    CDEAsynchronousTaskBlock task = ^(CDEAsynchronousTaskCallbackBlock nextFileDownload) {
+                        [self.cloudFileSystem downloadFromPath:remotePath toLocalFile:localPath completion:^(NSError *error) {
+                            if (error) {
+                                CDELog(CDELoggingLevelError, @"Failed file download with error: %@", error);
+                                nextFileDownload(error, NO);
+                                return;
+                            }
+                            
+                            if (batchCompletion) error = batchCompletion(@[remotePath], @[localPath]);
+                            nextFileDownload(error, NO);
+                        }];
+                    };
+                    [downloadTasks addObject:task];
+                }];
+                CDEAsynchronousTaskQueue *batchQueue = [[CDEAsynchronousTaskQueue alloc] initWithTasks:downloadTasks terminationPolicy:CDETaskQueueTerminationPolicyStopOnError completion:^(NSError *error) {
+                    next(error, NO);
+                }];
+                [batchQueue start];
+            }
+            
+        };
+        [taskBlocks addObject:block];
+    }];
+    
+    CDEAsynchronousTaskQueue *taskQueue = [[CDEAsynchronousTaskQueue alloc] initWithTasks:taskBlocks terminationPolicy:CDETaskQueueTerminationPolicyStopOnError completion:completion];
+    [operationQueue addOperation:taskQueue];
 }
 
 
@@ -473,21 +522,51 @@
     files = [self sortFilenamesByGlobalCount:files];
     
     NSMutableArray *taskBlocks = [NSMutableArray array];
-    for (NSString *filename in files) {
-        NSString *remotePath = [remoteDirectory stringByAppendingPathComponent:filename];
-        NSString *localPath = [self.localUploadDirectory stringByAppendingPathComponent:filename];
+    
+    NSUInteger batchSize = [cloudFileSystem respondsToSelector:@selector(fileUploadMaximumBatchSize)] ? cloudFileSystem.fileUploadMaximumBatchSize : CDEFileUploadBatchSize;
+    [files cde_enumerateObjectsInBatchesWithBatchSize:batchSize usingBlock:^(NSArray *filenames, NSUInteger batchesRemaining, BOOL *stop) {
         CDEAsynchronousTaskBlock block = ^(CDEAsynchronousTaskCallbackBlock next) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                CDELog(CDELoggingLevelVerbose, @"Uploading file to remote path: %@", remotePath);
-                [self.cloudFileSystem uploadLocalFile:localPath toPath:remotePath completion:^(NSError *error) {
-                    [fileManager removeItemAtPath:localPath error:NULL];
-                    if (error) CDELog(CDELoggingLevelError, @"Failed file upload with error: %@", error);
-                    next(error, NO);
-                }];
+                NSMutableArray *remotePaths = [NSMutableArray array];
+                NSMutableArray *localPaths = [NSMutableArray array];
+                for (NSString *filename in filenames) {
+                    NSString *remotePath = [remoteDirectory stringByAppendingPathComponent:filename];
+                    [remotePaths addObject:remotePath];
+                    NSString *localPath = [self.localUploadDirectory stringByAppendingPathComponent:filename];
+                    [localPaths addObject:localPath];
+                }
+
+                CDELog(CDELoggingLevelVerbose, @"Uploading files to remote path: %@", remotePaths);
+                
+                if ([self.cloudFileSystem respondsToSelector:@selector(uploadLocalFiles:toPaths:completion:)]) {
+                    [self.cloudFileSystem uploadLocalFiles:localPaths toPaths:remotePaths completion:^(NSError *error) {
+                        for (NSString *localPath in localPaths) [fileManager removeItemAtPath:localPath error:NULL];
+                        if (error) CDELog(CDELoggingLevelError, @"Failed file uploads with error: %@", error);
+                        next(error, NO);
+                    }];
+                }
+                else {
+                    NSMutableArray *uploadTasks = [NSMutableArray array];
+                    [localPaths enumerateObjectsUsingBlock:^(NSString *localPath, NSUInteger idx, BOOL *stop) {
+                        NSString *remotePath = remotePaths[idx];
+                        CDEAsynchronousTaskBlock task = ^(CDEAsynchronousTaskCallbackBlock nextFileUpload) {
+                            [self.cloudFileSystem uploadLocalFile:localPath toPath:remotePath completion:^(NSError *error) {
+                                [fileManager removeItemAtPath:localPath error:NULL];
+                                if (error) CDELog(CDELoggingLevelError, @"Failed file upload with error: %@", error);
+                                nextFileUpload(error, NO);
+                            }];
+                        };
+                        [uploadTasks addObject:task];
+                    }];
+                    CDEAsynchronousTaskQueue *batchQueue = [[CDEAsynchronousTaskQueue alloc] initWithTasks:uploadTasks terminationPolicy:CDETaskQueueTerminationPolicyStopOnError completion:^(NSError *error) {
+                        next(error, NO);
+                    }];
+                    [batchQueue start];
+                }
             });
         };
         [taskBlocks addObject:block];
-    }
+    }];
     
     CDEAsynchronousTaskQueue *taskQueue = [[CDEAsynchronousTaskQueue alloc] initWithTasks:taskBlocks terminationPolicy:CDETaskQueueTerminationPolicyStopOnError completion:completion];
     [operationQueue addOperation:taskQueue];
@@ -521,7 +600,7 @@
     return sortedSets;
 }
 
-- (NSSet *)remoteEventFileSetsMissingInEventStoreFromCloudFiles:(NSSet *)remoteFiles allowedTypes:(NSArray *)types
+- (NSSet *)completeRemoteEventFileSetsMissingInEventStoreFromCloudFiles:(NSSet *)remoteFiles allowedTypes:(NSArray *)types
 {
     BOOL areBaselines = [types containsObject:@(CDEStoreModificationEventTypeBaseline)];
     NSSet *storeFileSets = [self eventFileSetsForEventsWithAllowedTypes:types createdInStore:nil];
@@ -536,7 +615,7 @@
                 break;
             }
         }
-        if (!remoteSetIsInEventStore) [missingSets addObject:remoteSet];
+        if (!remoteSetIsInEventStore && remoteSet.hasAllParts) [missingSets addObject:remoteSet];
     }
     
     return missingSets;
@@ -595,7 +674,12 @@
 {
     NSArray *dirs = @[localFileRoot, self.localDownloadDirectory, self.localUploadDirectory];
     for (NSString *dir in dirs) {
-        [fileManager createDirectoryAtPath:dir withIntermediateDirectories:YES attributes:nil error:NULL];
+        NSError *error = nil;
+        [fileManager removeItemAtPath:dir error:NULL];
+        BOOL success = [fileManager createDirectoryAtPath:dir withIntermediateDirectories:YES attributes:nil error:&error];
+        if (!success) {
+            CDELog(CDELoggingLevelError, @"Could not create transit directory %@: %@", dir, error);
+        }
     }
 }
 
@@ -661,13 +745,13 @@
     NSArray *baselineTypes = @[@(CDEStoreModificationEventTypeBaseline)];
     
     // Determine baselines to remove
-    NSSet *baselineFileSetsToRemove = [self remoteEventFileSetsMissingInEventStoreFromCloudFiles:snapshotBaselineFilenames allowedTypes:baselineTypes];
+    NSSet *baselineFileSetsToRemove = [self completeRemoteEventFileSetsMissingInEventStoreFromCloudFiles:snapshotBaselineFilenames allowedTypes:baselineTypes];
     NSSet *aliases = [baselineFileSetsToRemove valueForKeyPath:@"@distinctUnionOfSets.allAliases"];
     NSMutableSet *baselinesToRemove = [snapshotBaselineFilenames mutableCopy];
     [baselinesToRemove intersectSet:aliases];
     
     // Determine non-baselines to remove
-    NSSet *eventFileSetsToRemove = [self remoteEventFileSetsMissingInEventStoreFromCloudFiles:snapshotEventFilenames allowedTypes:nonBaselineTypes];
+    NSSet *eventFileSetsToRemove = [self completeRemoteEventFileSetsMissingInEventStoreFromCloudFiles:snapshotEventFilenames allowedTypes:nonBaselineTypes];
     aliases = [eventFileSetsToRemove valueForKeyPath:@"@distinctUnionOfSets.allAliases"];
     NSMutableSet *nonBaselinesToRemove = [snapshotEventFilenames mutableCopy];
     [nonBaselinesToRemove intersectSet:aliases];
@@ -692,15 +776,25 @@
     
     // Queue up tasks
     NSMutableArray *tasks = [[NSMutableArray alloc] initWithCapacity:pathsToRemove.count];
-    for (NSString *path in pathsToRemove) {
+    if ([self.cloudFileSystem respondsToSelector:@selector(removeItemsAtPaths:completion:)]) {
         CDEAsynchronousTaskBlock block = ^(CDEAsynchronousTaskCallbackBlock next) {
-            [self.cloudFileSystem removeItemAtPath:path completion:^(NSError *error) {
+            [self.cloudFileSystem removeItemsAtPaths:pathsToRemove completion:^(NSError *error) {
                 next(error, NO);
             }];
         };
         [tasks addObject:block];
     }
-    
+    else {
+        for (NSString *path in pathsToRemove) {
+            CDEAsynchronousTaskBlock block = ^(CDEAsynchronousTaskCallbackBlock next) {
+                [self.cloudFileSystem removeItemAtPath:path completion:^(NSError *error) {
+                    next(error, NO);
+                }];
+            };
+            [tasks addObject:block];
+        }
+    }
+
     CDEAsynchronousTaskQueue *taskQueue = [[CDEAsynchronousTaskQueue alloc] initWithTasks:tasks terminationPolicy:CDETaskQueueTerminationPolicyCompleteAll completion:completion];
     [operationQueue addOperation:taskQueue];
 }
@@ -798,7 +892,8 @@
     for (NSString *path in paths) {
         CDEAsynchronousTaskBlock block = ^(CDEAsynchronousTaskCallbackBlock next) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.cloudFileSystem fileExistsAtPath:path completion:^(BOOL exists, BOOL isDirectory, NSError *error) {
+                
+                void (^postExistenceCheckBlock)(BOOL, NSError*) = ^(BOOL exists, NSError *error) {
                     if (error) {
                         next(error, NO);
                     }
@@ -813,7 +908,18 @@
                     else {
                         next(nil, NO);
                     }
-                }];
+                };
+                
+                if ([self.cloudFileSystem respondsToSelector:@selector(directoryExistsAtPath:completion:)]) {
+                    [self.cloudFileSystem directoryExistsAtPath:path completion:^(BOOL exists, NSError *error) {
+                        postExistenceCheckBlock(exists, error);
+                    }];
+                }
+                else {
+                    [self.cloudFileSystem fileExistsAtPath:path completion:^(BOOL exists, BOOL isDirectory, NSError *error) {
+                        postExistenceCheckBlock(exists, error);
+                    }];
+                }
             });
         };
         [taskBlocks addObject:block];
@@ -826,43 +932,20 @@
 
 #pragma mark Store Registration Info
 
-- (void)retrieveRegistrationInfoForStoreWithIdentifier:(NSString *)identifier completion:(void(^)(NSDictionary *info, NSError *error))completion
+- (void)checkExistenceOfRegistrationInfoForStoreWithIdentifier:(NSString *)identifier completion:(void(^)(BOOL exists, NSError *error))completion
 {
-    CDELog(CDELoggingLevelTrace, @"Retrieving registration info");
-    
-    // Remove any existing files in the cache first
-    NSError *error = nil;
-    BOOL success = [self removeFilesInDirectory:self.localDownloadDirectory error:&error];
-    if (!success) {
-        if (completion) completion(nil, error);
-        return;
-    }
+    CDELog(CDELoggingLevelTrace, @"Checking existence of registration info");
     
     NSString *remotePath = [self.remoteStoresDirectory stringByAppendingPathComponent:identifier];
-    NSString *localPath = [self.localDownloadDirectory stringByAppendingPathComponent:identifier];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.cloudFileSystem fileExistsAtPath:remotePath completion:^(BOOL exists, BOOL isDirectory, NSError *error) {
-            if (error || !exists) {
-                if (completion) completion(nil, error);
-                return;
-            }
-            
-            CDELog(CDELoggingLevelVerbose, @"Downloading file at remote path: %@", remotePath);
-            [self.cloudFileSystem downloadFromPath:remotePath toLocalFile:localPath completion:^(NSError *error) {
-                NSDictionary *info = nil;
-                if (!error) {
-                    info = [NSDictionary dictionaryWithContentsOfFile:localPath];
-                    [fileManager removeItemAtPath:localPath error:NULL];
-                }
-                if (error) CDELog(CDELoggingLevelError, @"Download failed for with error: %@", error);
-                if (completion) completion(info, error);
-            }];
-        }];
-    });
+    [self.cloudFileSystem fileExistsAtPath:remotePath completion:^(BOOL exists, BOOL isDirectory, NSError *error) {
+        if (completion) completion(exists, error);
+    }];
 }
 
 - (void)setRegistrationInfo:(NSDictionary *)info forStoreWithIdentifier:(NSString *)identifier completion:(CDECompletionBlock)completion
 {
+    CDELog(CDELoggingLevelTrace, @"Setting registration info for store in cloud");
+
     // Remove any existing files in the cache first
     NSError *error = nil;
     BOOL success = [self removeFilesInDirectory:self.localUploadDirectory error:&error];

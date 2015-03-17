@@ -132,6 +132,7 @@
     [ensemble leechPersistentStoreWithCompletion:^(NSError *error) {
         XCTAssertNil(error, @"Error occurred while leeching");
         cloudFileSystem.identityToken = @"second";
+        [ensemble mergeWithCompletion:NULL];
         [self performSelector:@selector(checkForDeleech) withObject:nil afterDelay:0.5];
     }];
     [self waitForAsync];

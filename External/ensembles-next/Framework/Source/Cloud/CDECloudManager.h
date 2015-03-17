@@ -18,6 +18,7 @@
 @property (nonatomic, strong, readonly) CDEEventStore *eventStore;
 @property (nonatomic, strong, readonly) id <CDECloudFileSystem> cloudFileSystem;
 @property (nonatomic, strong, readonly) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, strong, readonly) NSString *remoteEnsembleDirectory;
 
 - (instancetype)initWithEventStore:(CDEEventStore *)newStore cloudFileSystem:(id <CDECloudFileSystem>)cloudFileSystem managedObjectModel:(NSManagedObjectModel *)newModel;
 
@@ -40,7 +41,7 @@
 - (void)removeOutdatedRemoteFilesWithCompletion:(CDECompletionBlock)completion;
 - (BOOL)removeOutOfDateNewlyImportedFiles:(NSError * __autoreleasing *)error;
 
-- (void)retrieveRegistrationInfoForStoreWithIdentifier:(NSString *)identifier completion:(void(^)(NSDictionary *info, NSError *error))completion;
+- (void)checkExistenceOfRegistrationInfoForStoreWithIdentifier:(NSString *)identifier completion:(void(^)(BOOL exists, NSError *error))completion;
 - (void)setRegistrationInfo:(NSDictionary *)info forStoreWithIdentifier:(NSString *)identifier completion:(CDECompletionBlock)completion;
 
 @end

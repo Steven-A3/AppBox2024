@@ -20,6 +20,8 @@
 @synthesize managedObjectModel = managedObjectModel;
 @synthesize ensemble = ensemble;
 @synthesize persistentStoreOptions = persistentStoreOptions;
+@synthesize importPersistentStoreData = importPersistentStoreData;
+@synthesize progressUnitsCompletionBlock;
 
 - (id)initWithPersistentStoreAtPath:(NSString *)newPath managedObjectModel:(NSManagedObjectModel *)newModel eventStore:(CDEEventStore *)newEventStore;
 {
@@ -29,6 +31,7 @@
         eventStore = newEventStore;
         managedObjectModel = newModel;
         persistentStoreOptions = nil;
+        importPersistentStoreData = YES;
     }
     return self;
 }
@@ -43,7 +46,22 @@
     CDELog(CDELoggingLevelTrace, @"Importing persistent store");
 
     __block NSError *error = nil;
+    CDEEventBuilder *eventBuilder = [self makeEventBuilder];
     
+    // If not importing data, just finalize the event and complete
+    if (!self.importPersistentStoreData) {
+        NSError *localError;
+        CDELog(CDELoggingLevelTrace, @"Saving");
+        [eventBuilder finalizeNewEvent];
+        BOOL success = [eventBuilder saveAndReset:&localError];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (completion) completion(success ? nil : localError);
+        });
+        return;
+    }
+    
+    // If importing, setup a context
     NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     [context performBlockAndWait:^{
         NSPersistentStoreCoordinator *coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:managedObjectModel];
@@ -67,16 +85,6 @@
         });
         return;
     }
-    
-    CDEEventBuilder *eventBuilder = [[CDEEventBuilder alloc] initWithEventStore:self.eventStore];
-    eventBuilder.ensemble = self.ensemble;
-    [eventBuilder makeNewEventOfType:CDEStoreModificationEventTypeBaseline uniqueIdentifier:nil];
-    [eventBuilder performBlockAndWait:^{
-        // Use distant past for the time, so the leeched data gets less
-        // priority than existing data.
-        eventBuilder.event.globalCount = 0;
-        eventBuilder.event.timestamp = [[NSDate distantPast] timeIntervalSinceReferenceDate];
-    }];
     
     __block BOOL success = YES;
     [context performBlock:^{
@@ -117,6 +125,20 @@
     }];
 }
 
+- (CDEEventBuilder *)makeEventBuilder
+{
+    CDEEventBuilder *eventBuilder = [[CDEEventBuilder alloc] initWithEventStore:self.eventStore];
+    eventBuilder.ensemble = self.ensemble;
+    [eventBuilder makeNewEventOfType:CDEStoreModificationEventTypeBaseline uniqueIdentifier:nil];
+    [eventBuilder performBlockAndWait:^{
+        // Use distant past for the time, so the leeched data gets less
+        // priority than existing data.
+        eventBuilder.event.globalCount = 0;
+        eventBuilder.event.timestamp = [[NSDate distantPast] timeIntervalSinceReferenceDate];
+    }];
+    return eventBuilder;
+}
+
 - (BOOL)addGlobalIdentifiersWithEventBuilder:(CDEEventBuilder *)eventBuilder forObjectsInContext:(NSManagedObjectContext *)context error:(NSError * __autoreleasing *)error
 {
     __block BOOL success = YES;
@@ -128,7 +150,7 @@
         fetch.includesSubentities = NO;
         
         success = [context cde_enumerateObjectsForFetchRequest:fetch withBatchSize:500 withBlock:^(NSArray *objects, NSUInteger remaining, BOOL *stop) {
-            NSArray *globalIDStrings = [eventBuilder retrieveGlobalIdentifierStringsForManagedObjects:objects];
+            NSArray *globalIDStrings = [eventBuilder retrieveGlobalIdentifierStringsForManagedObjects:objects storedInEventStore:NO];
             NSArray *objectIDs = [objects valueForKeyPath:@"objectID"];
             [eventBuilder addGlobalIdentifiersForManagedObjectIDs:objectIDs identifierStrings:globalIDStrings];
             BOOL saveSucceeded = [eventBuilder saveAndReset:error];
@@ -138,7 +160,7 @@
         
         if (!success) break;
         
-        [self.ensemble incrementProgress];
+        if (self.progressUnitsCompletionBlock) self.progressUnitsCompletionBlock(1);
     }
     if (error && !success && !(*error)) *error = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeUnknown userInfo:nil];
     return success;
@@ -160,7 +182,7 @@
             CDELog(CDELoggingLevelVerbose, @"Objects remaining for this entity: %lu", (unsigned long)remaining * 500);
 
             NSSet *objectsSet = [NSSet setWithArray:objects];
-            [eventBuilder addChangesForInsertedObjects:objectsSet objectsAreSaved:YES inManagedObjectContext:context];
+            [eventBuilder addChangesForInsertedObjects:objectsSet objectsAreSaved:YES useGlobalIdentifiersInEventStore:YES inManagedObjectContext:context];
             BOOL saveSucceeded = [eventBuilder saveAndReset:error];
             [context reset];
             if (!saveSucceeded) *stop = YES;
@@ -168,7 +190,7 @@
         
         if (!success) break;
         
-        [self.ensemble incrementProgress];
+        if (self.progressUnitsCompletionBlock) self.progressUnitsCompletionBlock(1);
     }
     if (error && !success && !(*error)) *error = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeUnknown userInfo:nil];
     return success;

@@ -14,7 +14,7 @@
 {
     NSMutableString *result = [NSMutableString string];
     [result appendFormat:@"%@\r", super.description];
-    NSArray *keys = @[@"path", @"name", @"contents"];
+    NSArray *keys = @[@"path", @"name"];
     for (NSString *key in keys) {
         [result appendFormat:@"%@: %@; \r", key, [[self valueForKey:key] description]];
     }

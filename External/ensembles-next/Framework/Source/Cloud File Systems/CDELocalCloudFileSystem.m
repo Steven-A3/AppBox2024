@@ -43,9 +43,11 @@
     });
 }
 
-- (id <NSObject, NSCoding, NSCopying>)identityToken
+- (void)fetchUserIdentityWithCompletion:(CDEFetchUserIdentityCallback)completion
 {
-    return NSUserName();
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (completion) completion(NSUserName(), nil);
+    });
 }
 
 - (void)fileExistsAtPath:(NSString *)path completion:(void(^)(BOOL exists, BOOL isDirectory, NSError *error))block

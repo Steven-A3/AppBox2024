@@ -40,8 +40,5 @@
 
 - (NSArray *)globalIdentifiersForManagedObjects:(NSArray *)objects;
 
-- (void)incrementProgress;
-- (void)incrementProgressBy:(NSUInteger)incrementAmount;
-
 @end
 

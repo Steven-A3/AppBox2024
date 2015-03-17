@@ -3,9 +3,11 @@ Core Data Ensembles
 
 _Author:_ Drew McCormack<br>
 _Created:_ 29th September, 2013<br>
-_Last Updated:_ 8th July, 2014
+_Last Updated:_ 24th February, 2015
 
-Ensembles extends Apple's Core Data framework to add peer-to-peer synchronization for Mac OS and iOS. Multiple SQLite persistent stores can be coupled together via a file synchronization platform like iCloud or Dropbox, or a direct peer-to-peer connection. The framework can be readily extended to support any service capable of moving files between devices, including custom servers.
+Ensembles extends Apple's Core Data framework to add peer-to-peer synchronization for Mac OS and iOS. Multiple SQLite persistent stores can be coupled together via file synchronization platforms like iCloud, CloudKit, Dropbox, and even direct peer-to-peer connections. The framework can be readily extended to support any service capable of moving files between devices, including custom servers.
+
+*There is a [Google Group](https://groups.google.com/forum/#!forum/ensembles) for discussing best practices with other developers.*
 
 #### Ensembles 2
 
@@ -21,7 +23,7 @@ Ensembles 2 includes a number of improvements over Ensembles v1.x.
  * Memory usage can be carefully controlled by controlling data traversals
  * Progress notifications are available for long processes like merging
  * Property to monitor current activity
- * Support for a WebDAV backend
+ * Backends for CloudKit, Dropbox Sync API, and WebDAV
  
 In conclusion, Ensembles 2 is preferred to Ensembles 1.x, especially for large data sets or complex data models.
 
@@ -116,11 +118,13 @@ By way of example, if you want to support Dropbox, you need to add the DropboxSD
 
 #### Available Backends
 
-Ensembles currently supports the following backends (Cocoapods subspecs are shown in parentheses):
+Ensembles 2 currently supports the following backends (Cocoapods subspecs are shown in parentheses):
 
  * Local File System (Core)
  * iCloud (Core)
- * Dropbox (Dropbox) 
+ * CloudKit (CloudKit)
+ * Dropbox Core (Dropbox) 
+ * Dropbox Sync (DropboxSync)
  * WebDAV (WebDAV)
  * Multipeer Connectivity (Multipeer)
  * Zip Compression (Zip)
@@ -130,11 +134,11 @@ The local file system backend is mostly for testing purposes.
 
 The Zip Compression backend is not actually for data transfer, but can be used to wrap any of the other backends in order to compress files before transporting them.
 
-The Ensembles Node.js Server is a custom server that is provided to purchasers of the Priority Support Package. It an be deployed on Heroku, and utilizes Amazon S3 for cloud storage.
+The Ensembles Node.js Server is a custom server that is provided to purchasers of the Priority Support Package. It can be deployed on Heroku, and utilizes Amazon S3 for cloud storage.
 
 #### Idiomatic  App
 
-Idiomatic is a relatively simple example app which incorporates Ensembles and works with iCloud, Dropbox, Multipeer, and Ensembles Server to sync across devices. The app allows you to record your ideas, include a photo, and add tags to group them. The Core Data model of the app has three entities, including a many-to-many relationship.
+Idiomatic is a relatively simple example app which incorporates Ensembles and works with iCloud, Dropbox Sync, Multipeer, and Ensembles Server to sync across devices. The app allows you to record your ideas, include a photo, and add tags to group them. The Core Data model of the app has three entities, including a many-to-many relationship.
 
 The Idiomatic project is a good way to get acquainted with Ensembles, and how it is integrated in a Core Data app. Idiomatic can be downloaded from the App Store if you want to see how it works. If you want to build and run it yourself, you need to follow a few preparatory steps.
 

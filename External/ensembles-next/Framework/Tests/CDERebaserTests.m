@@ -103,7 +103,7 @@
     [self waitForAsyncOpToFinish];
 }
 
-- (void)testDevicesWhichHaveNoEventsSinceBaselineAreIgnoredInGlobalCountCutoff
+- (void)testDevicesWhichHaveNoNewAreIgnoredInGlobalCountCutoff
 {
     NSArray *baselines = [self addEventsForType:CDEStoreModificationEventTypeBaseline storeId:@"store1" globalCounts:@[@0] revisions:@[@0]];
     
@@ -117,26 +117,27 @@
     
     [self addEventsForType:CDEStoreModificationEventTypeMerge storeId:@"123" globalCounts:@[@1, @2] revisions:@[@1, @2]];
     
-    XCTAssertEqual([rebaser globalCountForNewBaseline], (CDEGlobalCount)2, @"Wrong global count");
+    XCTAssertEqual([rebaser globalCountForNewBaseline], (CDEGlobalCount)1, @"Wrong global count");
 }
 
 - (void)testRevisionsForRebasingWithStoreNotInBaseline
 {
-    [self addEventsForType:CDEStoreModificationEventTypeBaseline storeId:@"store1" globalCounts:@[@10] revisions:@[@110]];
-    [self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"123" globalCounts:@[@0, @1] revisions:@[@0, @1]];
+    [self addEventsForType:CDEStoreModificationEventTypeBaseline storeId:@"store1" globalCounts:@[@2] revisions:@[@110]];
+    [self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@4] revisions:@[@111]];
+    [self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"123" globalCounts:@[@3, @4, @5] revisions:@[@0, @1, @2]];
     [rebaser rebaseWithCompletion:^(NSError *error) {
         XCTAssertNil(error, @"Error was not nil");
         [context performBlockAndWait:^{
-            XCTAssertEqual([[self storeModEvents] count], (NSUInteger)1, @"Should only be baseline left");
+            XCTAssertEqual([[self storeModEvents] count], (NSUInteger)4, @"Should be baseline and one event left");
             
             CDEStoreModificationEvent *baseline = [self fetchBaseline];
             CDERevisionSet *revSet = baseline.revisionSet;
             CDERevision *revForStore1 = [revSet revisionForPersistentStoreIdentifier:@"store1"];
             CDERevision *revFor123 = [revSet revisionForPersistentStoreIdentifier:@"123"];
             CDEGlobalCount baselineGlobalCount = baseline.globalCount;
-            XCTAssertEqual(baselineGlobalCount, (CDEGlobalCount)1, @"Wrong global count");
+            XCTAssertEqual(baselineGlobalCount, (CDEGlobalCount)3, @"Wrong global count");
             XCTAssertEqual(revForStore1.revisionNumber, (CDERevisionNumber)110, @"Wrong revision number for store1");
-            XCTAssertEqual(revFor123.revisionNumber, (CDERevisionNumber)1, @"Wrong revision number for 123");
+            XCTAssertEqual(revFor123.revisionNumber, (CDERevisionNumber)0, @"Wrong revision number for 123");
         }];
         [self stopAsyncOp];
     }];
@@ -165,10 +166,10 @@
             CDERevision *revForStore1 = [revSet revisionForPersistentStoreIdentifier:@"store1"];
             CDERevision *revFor123 = [revSet revisionForPersistentStoreIdentifier:@"123"];
             CDEGlobalCount baselineGlobalCount = baseline.globalCount;
-            XCTAssertEqual(baselineGlobalCount, (CDEGlobalCount)21, @"Wrong global count");
-            XCTAssertEqual(revForStore1.revisionNumber, (CDERevisionNumber)112, @"Wrong revision number for store1");
+            XCTAssertEqual(baselineGlobalCount, (CDEGlobalCount)20, @"Wrong global count");
+            XCTAssertEqual(revForStore1.revisionNumber, (CDERevisionNumber)111, @"Wrong revision number for store1");
             XCTAssertEqual(revFor123.revisionNumber, (CDERevisionNumber)2, @"Wrong revision number for 123");
-            XCTAssertEqual([[self storeModEvents] count], (NSUInteger)2, @"Wrong number of events. Should have baseline and 1 other.");
+            XCTAssertEqual([[self storeModEvents] count], (NSUInteger)3, @"Wrong number of events. Should have baseline and 1 other.");
         }];
         [self stopAsyncOp];
     }];
@@ -208,7 +209,8 @@
 {
     NSArray *baselines = [self addEventsForType:CDEStoreModificationEventTypeBaseline storeId:@"store1" globalCounts:@[@10] revisions:@[@110]];
     CDEStoreModificationEvent *baseline = baselines.lastObject;
-    CDEStoreModificationEvent *event = [[self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@20] revisions:@[@111]] lastObject];
+    CDEStoreModificationEvent *event1 = [[self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@20] revisions:@[@111]] lastObject];
+    [[self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@21] revisions:@[@112]] lastObject];
     
     [context performBlockAndWait:^{
         // Object change in baseline
@@ -228,7 +230,7 @@
         
         // Object change outside baseline
         CDEObjectChange *change2 = [NSEntityDescription insertNewObjectForEntityForName:@"CDEObjectChange" inManagedObjectContext:context];
-        change2.storeModificationEvent = event;
+        change2.storeModificationEvent = event1;
         change2.type = CDEObjectChangeTypeInsert;
         change2.nameOfEntity = @"A";
         change2.globalIdentifier = globalId1;
@@ -258,8 +260,9 @@
 {
     NSArray *baselines = [self addEventsForType:CDEStoreModificationEventTypeBaseline storeId:@"store1" globalCounts:@[@10] revisions:@[@110]];
     CDEStoreModificationEvent *baseline = baselines.lastObject;
-    CDEStoreModificationEvent *event = [[self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@20] revisions:@[@111]] lastObject];
-    
+    CDEStoreModificationEvent *event1 = [[self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@20] revisions:@[@111]] lastObject];
+    [[self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@21] revisions:@[@112]] lastObject];
+
     [context performBlockAndWait:^{
         // Object change in baseline
         CDEGlobalIdentifier *globalId1 = [NSEntityDescription insertNewObjectForEntityForName:@"CDEGlobalIdentifier" inManagedObjectContext:context];
@@ -282,7 +285,7 @@
         globalId2.nameOfEntity = @"B";
     
         CDEObjectChange *change2 = [NSEntityDescription insertNewObjectForEntityForName:@"CDEObjectChange" inManagedObjectContext:context];
-        change2.storeModificationEvent = event;
+        change2.storeModificationEvent = event1;
         change2.type = CDEObjectChangeTypeInsert;
         change2.nameOfEntity = @"B";
         change2.globalIdentifier = globalId2;
@@ -308,7 +311,8 @@
 {
     NSArray *baselines = [self addEventsForType:CDEStoreModificationEventTypeBaseline storeId:@"store1" globalCounts:@[@10] revisions:@[@110]];
     CDEStoreModificationEvent *baseline = baselines.lastObject;
-    CDEStoreModificationEvent *event = [[self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@20] revisions:@[@111]] lastObject];
+    CDEStoreModificationEvent *event1 = [[self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@20] revisions:@[@111]] lastObject];
+    [[self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@21] revisions:@[@112]] lastObject];
 
     [context performBlockAndWait:^{
         // Object change in baseline
@@ -329,7 +333,7 @@
         
         // Object change outside baseline
         CDEObjectChange *change2 = [NSEntityDescription insertNewObjectForEntityForName:@"CDEObjectChange" inManagedObjectContext:context];
-        change2.storeModificationEvent = event;
+        change2.storeModificationEvent = event1;
         change2.type = CDEObjectChangeTypeUpdate;
         change2.nameOfEntity = @"A";
         change2.globalIdentifier = globalId1;
@@ -367,8 +371,9 @@
 {
     NSArray *baselines = [self addEventsForType:CDEStoreModificationEventTypeBaseline storeId:@"store1" globalCounts:@[@10] revisions:@[@110]];
     CDEStoreModificationEvent *baseline = baselines.lastObject;
-    CDEStoreModificationEvent *event = [[self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@20] revisions:@[@111]] lastObject];
-    
+    CDEStoreModificationEvent *event1 = [[self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@20] revisions:@[@111]] lastObject];
+    [[self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@21] revisions:@[@112]] lastObject];
+
     [context performBlockAndWait:^{
         // Object change in baseline
         CDEGlobalIdentifier *globalId1 = [NSEntityDescription insertNewObjectForEntityForName:@"CDEGlobalIdentifier" inManagedObjectContext:context];
@@ -389,7 +394,7 @@
         
         // Object change outside baseline
         CDEObjectChange *change2 = [NSEntityDescription insertNewObjectForEntityForName:@"CDEObjectChange" inManagedObjectContext:context];
-        change2.storeModificationEvent = event;
+        change2.storeModificationEvent = event1;
         change2.type = CDEObjectChangeTypeUpdate;
         change2.nameOfEntity = @"A";
         change2.globalIdentifier = globalId1;

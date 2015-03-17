@@ -56,7 +56,9 @@
         for (NSManagedObjectID *changeID in changeIDs) {
             NSURL *url = nil;
             CDEObjectChange *change = (id)[eventContext objectWithID:changeID];
-            if (change.globalIdentifier.storeURI) url = [[NSURL alloc] initWithString:change.globalIdentifier.storeURI];
+            if (change.globalIdentifier.storeURI) {
+                url = [[NSURL alloc] initWithString:change.globalIdentifier.storeURI];
+            }
             [urisForInsertChanges addObject:CDENilToNSNull(url)];
         }
     }];

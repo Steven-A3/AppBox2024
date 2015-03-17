@@ -21,6 +21,7 @@
 @property (nonatomic, weak, readwrite) CDEPersistentStoreEnsemble *ensemble;
 @property (nonatomic, strong, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, strong, readwrite) NSDictionary *persistentStoreOptions;
+@property (nonatomic, assign, readwrite) BOOL importPersistentStoreData;
 
 - (id)initWithPersistentStoreAtPath:(NSString *)path managedObjectModel:(NSManagedObjectModel *)model eventStore:(CDEEventStore *)eventStore;
 

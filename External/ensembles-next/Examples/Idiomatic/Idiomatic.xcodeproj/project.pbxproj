@@ -14,10 +14,6 @@
 		070F46FB1805D51400EE36E5 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 070F46F71805D51400EE36E5 /* Model.xcdatamodeld */; };
 		070F46FD1805D6C100EE36E5 /* IDMNote.m in Sources */ = {isa = PBXBuildFile; fileRef = 070F46F41805D51400EE36E5 /* IDMNote.m */; };
 		070F46FE1805D6C400EE36E5 /* IDMTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 070F46F61805D51400EE36E5 /* IDMTag.m */; };
-		0726FDB518AA476800670262 /* CDEDropboxCloudFileSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0726FDB418AA476800670262 /* CDEDropboxCloudFileSystem.m */; };
-		0726FDB618AA476800670262 /* CDEDropboxCloudFileSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0726FDB418AA476800670262 /* CDEDropboxCloudFileSystem.m */; };
-		0726FDC718AA47E300670262 /* libSDropboxSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0726FDC418AA47C700670262 /* libSDropboxSDK.a */; };
-		0726FDC818AA47EA00670262 /* DropboxOSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0726FDC618AA47C700670262 /* DropboxOSX.framework */; };
 		074B959C17EC783B0016F84D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074B959B17EC783B0016F84D /* Foundation.framework */; };
 		074B959E17EC783B0016F84D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074B959D17EC783B0016F84D /* CoreGraphics.framework */; };
 		074B95A017EC783B0016F84D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074B959F17EC783B0016F84D /* UIKit.framework */; };
@@ -53,20 +49,29 @@
 		07A006C01949D5BD00E4B524 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 07A006AF1949B92500E4B524 /* unzip.c */; };
 		07A006C11949D5BD00E4B524 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 07A006B11949B92500E4B524 /* zip.c */; };
 		07A006C31949D5E200E4B524 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 07A006C21949D5E200E4B524 /* libz.dylib */; };
-		07BFF8FB1977F89B00B89B4C /* Ensembles.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 07168C0418E037FC00153494 /* Ensembles.framework */; };
-		07BFF8FC1977F97400B89B4C /* DropboxOSX.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 0726FDC618AA47C700670262 /* DropboxOSX.framework */; };
+		07B9B1BB1A9B3FAD00B37DAF /* libRNCryptor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 078F22BF1A9B3EEA00D8EFC5 /* libRNCryptor.a */; };
+		07B9B1C41A9B403C00B37DAF /* CDEEncryptedCloudFileSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B9B1C31A9B403C00B37DAF /* CDEEncryptedCloudFileSystem.m */; };
+		07B9B1C91A9B4BB600B37DAF /* CDEEncryptedCloudFileSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B9B1C31A9B403C00B37DAF /* CDEEncryptedCloudFileSystem.m */; };
+		07BFF8FB1977F89B00B89B4C /* Ensembles.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 07168C0418E037FC00153494 /* Ensembles.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		07C138D01A9B4E9B00C2BC13 /* RNCryptor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 078F22C11A9B3EEA00D8EFC5 /* RNCryptor.framework */; };
+		07C138D11A9B4E9B00C2BC13 /* RNCryptor.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 078F22C11A9B3EEA00D8EFC5 /* RNCryptor.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		07D1EAD9196A8CD300E3C82F /* CDEMultipeerCloudFileSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D1EAD8196A8CD300E3C82F /* CDEMultipeerCloudFileSystem.m */; };
 		07D1EAE7196A8D2A00E3C82F /* IDMMultipeerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D1EAE6196A8D2A00E3C82F /* IDMMultipeerManager.m */; };
 		07D1EAE9196A8D8100E3C82F /* MultipeerConnectivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07D1EAE8196A8D8100E3C82F /* MultipeerConnectivity.framework */; };
 		07D9F0051910FD7600D191FA /* Ensembles.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 07571F411910F2BE008479A9 /* Ensembles.bundle */; };
 		07D9F0261911077900D191FA /* Ensembles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07168C0418E037FC00153494 /* Ensembles.framework */; };
+		07EA36B51A10EA9100B2E043 /* CDEDropboxSyncCloudFileSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 07EA36B41A10EA9100B2E043 /* CDEDropboxSyncCloudFileSystem.m */; };
+		07EA36C01A10EB2F00B2E043 /* Dropbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07EA36BF1A10EB2F00B2E043 /* Dropbox.framework */; };
+		07EA36C21A10FC8100B2E043 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07EA36C11A10FC8100B2E043 /* CFNetwork.framework */; };
+		07EA36C41A10FCA900B2E043 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07EA36C31A10FCA900B2E043 /* SystemConfiguration.framework */; };
+		07EA36C61A10FCBC00B2E043 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07EA36C51A10FCBC00B2E043 /* QuartzCore.framework */; };
+		07EA36C81A10FCCC00B2E043 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 07EA36C71A10FCCC00B2E043 /* libc++.dylib */; };
 		9477ED311800137300C2A419 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9477ED301800137300C2A419 /* Cocoa.framework */; };
 		9477ED3B1800137300C2A419 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9477ED391800137300C2A419 /* InfoPlist.strings */; };
 		9477ED3D1800137300C2A419 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9477ED3C1800137300C2A419 /* main.m */; };
 		9477ED441800137300C2A419 /* IDMAppDelegateMac.m in Sources */ = {isa = PBXBuildFile; fileRef = 9477ED431800137300C2A419 /* IDMAppDelegateMac.m */; };
 		9477ED471800137300C2A419 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9477ED451800137300C2A419 /* MainMenu.xib */; };
 		9477ED491800137300C2A419 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9477ED481800137300C2A419 /* Images.xcassets */; };
-		9477ED621800140200C2A419 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9477ED611800140200C2A419 /* CoreData.framework */; };
 		9477ED6B18001B7000C2A419 /* IDMAddNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9477ED6918001B7000C2A419 /* IDMAddNoteViewController.m */; };
 		9477ED6C18001B7000C2A419 /* IDMAddNoteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9477ED6A18001B7000C2A419 /* IDMAddNoteViewController.xib */; };
 /* End PBXBuildFile section */
@@ -85,27 +90,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 6DAD10F918CA067900237084;
 			remoteInfo = Ensembles;
-		};
-		0726FDC118AA47C700670262 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0726FDBB18AA47C700670262 /* DropboxSDK.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D3196B831412FE180060E7C6;
-			remoteInfo = DropboxSDK;
-		};
-		0726FDC318AA47C700670262 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0726FDBB18AA47C700670262 /* DropboxSDK.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D3933BE5145F12AD00E15FA7;
-			remoteInfo = SDropboxSDK;
-		};
-		0726FDC518AA47C700670262 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0726FDBB18AA47C700670262 /* DropboxSDK.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D36931CC15088350003FBA23;
-			remoteInfo = DropboxOSX;
 		};
 		07571F401910F2BE008479A9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -128,6 +112,34 @@
 			remoteGlobalIDString = 07BF374517F184DD00C56F64;
 			remoteInfo = "Ensembles iOS";
 		};
+		078F22BE1A9B3EEA00D8EFC5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 078F22B11A9B3EEA00D8EFC5 /* RNCryptor.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FB7564F01512D3C4007B806B;
+			remoteInfo = RNCryptor;
+		};
+		078F22C01A9B3EEA00D8EFC5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 078F22B11A9B3EEA00D8EFC5 /* RNCryptor.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = AB13427A15E0FC2300456914;
+			remoteInfo = "RNCryptor OS X";
+		};
+		078F22C21A9B3EEA00D8EFC5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 078F22B11A9B3EEA00D8EFC5 /* RNCryptor.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FB7565001512D3C4007B806B;
+			remoteInfo = RNCryptorTests;
+		};
+		078F22C41A9B3EEA00D8EFC5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 078F22B11A9B3EEA00D8EFC5 /* RNCryptor.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FB6AC68C16F6704100CA0C0A;
+			remoteInfo = rncrypt;
+		};
 		07A006A41949B8D900E4B524 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9477ED211800132E00C2A419 /* Ensembles Mac.xcodeproj */;
@@ -141,6 +153,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 07C07BA6191CEAF500A9D7E6;
 			remoteInfo = "Ensembles Resources";
+		};
+		07C138D21A9B4E9B00C2BC13 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 078F22B11A9B3EEA00D8EFC5 /* RNCryptor.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = AB13427915E0FC2300456914;
+			remoteInfo = "RNCryptor OS X";
 		};
 		07D9F0031910FD2400D191FA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -172,7 +191,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				07BFF8FC1977F97400B89B4C /* DropboxOSX.framework in Copy Frameworks */,
+				07C138D11A9B4E9B00C2BC13 /* RNCryptor.framework in Copy Frameworks */,
 				07BFF8FB1977F89B00B89B4C /* Ensembles.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
@@ -188,9 +207,6 @@
 		070F46F51805D51400EE36E5 /* IDMTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IDMTag.h; path = Shared/IDMTag.h; sourceTree = SOURCE_ROOT; };
 		070F46F61805D51400EE36E5 /* IDMTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IDMTag.m; path = Shared/IDMTag.m; sourceTree = SOURCE_ROOT; };
 		070F46F81805D51400EE36E5 /* Model_0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model_0.xcdatamodel; sourceTree = "<group>"; };
-		0726FDB318AA476800670262 /* CDEDropboxCloudFileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDEDropboxCloudFileSystem.h; path = ../../Framework/Extensions/CDEDropboxCloudFileSystem.h; sourceTree = "<group>"; };
-		0726FDB418AA476800670262 /* CDEDropboxCloudFileSystem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDEDropboxCloudFileSystem.m; path = ../../Framework/Extensions/CDEDropboxCloudFileSystem.m; sourceTree = "<group>"; };
-		0726FDBB18AA47C700670262 /* DropboxSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = DropboxSDK.xcodeproj; path = ../../Vendor/DropboxSDK/DropboxSDK/DropboxSDK.xcodeproj; sourceTree = "<group>"; };
 		074B959817EC783B0016F84D /* Idiomatic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Idiomatic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		074B959B17EC783B0016F84D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		074B959D17EC783B0016F84D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -219,6 +235,7 @@
 		077231E118C6080D0065BFEE /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		07746AAD18C6276F00A267F5 /* IDMSyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDMSyncManager.h; sourceTree = "<group>"; };
 		07746AAE18C6276F00A267F5 /* IDMSyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IDMSyncManager.m; sourceTree = "<group>"; };
+		078F22B11A9B3EEA00D8EFC5 /* RNCryptor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCryptor.xcodeproj; path = ../../Vendor/RNCryptor/RNCryptor.xcodeproj; sourceTree = "<group>"; };
 		0791BCE217F6F58C00E7C31B /* Ensembles iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Ensembles iOS.xcodeproj"; path = "../../Framework/Ensembles iOS.xcodeproj"; sourceTree = "<group>"; };
 		07973EF8183BE32C007F48CA /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		07A006981949B8D900E4B524 /* CDEZipCloudFileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDEZipCloudFileSystem.h; path = ../../Framework/Extensions/CDEZipCloudFileSystem.h; sourceTree = "<group>"; };
@@ -236,6 +253,8 @@
 		07A006B41949B92500E4B524 /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSZipArchive.m; sourceTree = "<group>"; };
 		07A006BA1949BA5C00E4B524 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		07A006C21949D5E200E4B524 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/usr/lib/libz.dylib; sourceTree = DEVELOPER_DIR; };
+		07B9B1C21A9B403C00B37DAF /* CDEEncryptedCloudFileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDEEncryptedCloudFileSystem.h; path = ../../Framework/Extensions/CDEEncryptedCloudFileSystem.h; sourceTree = "<group>"; };
+		07B9B1C31A9B403C00B37DAF /* CDEEncryptedCloudFileSystem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDEEncryptedCloudFileSystem.m; path = ../../Framework/Extensions/CDEEncryptedCloudFileSystem.m; sourceTree = "<group>"; };
 		07BF372E17F17D4100C56F64 /* Idiomatic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Idiomatic.entitlements; sourceTree = "<group>"; };
 		07BF37D417F189EB00C56F64 /* libensembles_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libensembles_ios.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		07D1EAD7196A8CD300E3C82F /* CDEMultipeerCloudFileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDEMultipeerCloudFileSystem.h; path = ../../Framework/Extensions/CDEMultipeerCloudFileSystem.h; sourceTree = "<group>"; };
@@ -243,6 +262,13 @@
 		07D1EAE5196A8D2A00E3C82F /* IDMMultipeerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IDMMultipeerManager.h; path = Multipeer/IDMMultipeerManager.h; sourceTree = "<group>"; };
 		07D1EAE6196A8D2A00E3C82F /* IDMMultipeerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IDMMultipeerManager.m; path = Multipeer/IDMMultipeerManager.m; sourceTree = "<group>"; };
 		07D1EAE8196A8D8100E3C82F /* MultipeerConnectivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MultipeerConnectivity.framework; path = System/Library/Frameworks/MultipeerConnectivity.framework; sourceTree = SDKROOT; };
+		07EA36B31A10EA9100B2E043 /* CDEDropboxSyncCloudFileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDEDropboxSyncCloudFileSystem.h; path = ../../Framework/Extensions/CDEDropboxSyncCloudFileSystem.h; sourceTree = "<group>"; };
+		07EA36B41A10EA9100B2E043 /* CDEDropboxSyncCloudFileSystem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDEDropboxSyncCloudFileSystem.m; path = ../../Framework/Extensions/CDEDropboxSyncCloudFileSystem.m; sourceTree = "<group>"; };
+		07EA36BF1A10EB2F00B2E043 /* Dropbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Dropbox.framework; path = ../../Vendor/DropboxSyncSDK/iOS/Dropbox.framework; sourceTree = "<group>"; };
+		07EA36C11A10FC8100B2E043 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		07EA36C31A10FCA900B2E043 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		07EA36C51A10FCBC00B2E043 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		07EA36C71A10FCCC00B2E043 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		9477ED211800132E00C2A419 /* Ensembles Mac.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Ensembles Mac.xcodeproj"; path = "../../Framework/Ensembles Mac.xcodeproj"; sourceTree = "<group>"; };
 		9477ED2F1800137300C2A419 /* Idiomatic Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Idiomatic Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9477ED301800137300C2A419 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
@@ -257,11 +283,11 @@
 		9477ED431800137300C2A419 /* IDMAppDelegateMac.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IDMAppDelegateMac.m; sourceTree = "<group>"; };
 		9477ED461800137300C2A419 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		9477ED481800137300C2A419 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		9477ED611800140200C2A419 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
 		9477ED671800168400C2A419 /* IdiomaticMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = IdiomaticMac.entitlements; sourceTree = "<group>"; };
 		9477ED6818001B7000C2A419 /* IDMAddNoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDMAddNoteViewController.h; sourceTree = "<group>"; };
 		9477ED6918001B7000C2A419 /* IDMAddNoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IDMAddNoteViewController.m; sourceTree = "<group>"; };
 		9477ED6A18001B7000C2A419 /* IDMAddNoteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IDMAddNoteViewController.xib; sourceTree = "<group>"; };
+		E9A3BC9D1A98515F005E5C4D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -269,12 +295,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07B9B1BB1A9B3FAD00B37DAF /* libRNCryptor.a in Frameworks */,
+				07EA36C81A10FCCC00B2E043 /* libc++.dylib in Frameworks */,
+				07EA36C61A10FCBC00B2E043 /* QuartzCore.framework in Frameworks */,
+				07EA36C41A10FCA900B2E043 /* SystemConfiguration.framework in Frameworks */,
+				07EA36C21A10FC8100B2E043 /* CFNetwork.framework in Frameworks */,
 				07D1EAE9196A8D8100E3C82F /* MultipeerConnectivity.framework in Frameworks */,
 				07A006BB1949BA5C00E4B524 /* libz.dylib in Frameworks */,
 				07571F4D1910F738008479A9 /* libensembles.a in Frameworks */,
+				07EA36C01A10EB2F00B2E043 /* Dropbox.framework in Frameworks */,
 				077231E218C6080D0065BFEE /* MobileCoreServices.framework in Frameworks */,
 				077231E018C604610065BFEE /* Security.framework in Frameworks */,
-				0726FDC718AA47E300670262 /* libSDropboxSDK.a in Frameworks */,
 				07973EF9183BE32C007F48CA /* CoreData.framework in Frameworks */,
 				074B959E17EC783B0016F84D /* CoreGraphics.framework in Frameworks */,
 				074B95A017EC783B0016F84D /* UIKit.framework in Frameworks */,
@@ -288,8 +319,7 @@
 			files = (
 				07A006C31949D5E200E4B524 /* libz.dylib in Frameworks */,
 				07D9F0261911077900D191FA /* Ensembles.framework in Frameworks */,
-				0726FDC818AA47EA00670262 /* DropboxOSX.framework in Frameworks */,
-				9477ED621800140200C2A419 /* CoreData.framework in Frameworks */,
+				07C138D01A9B4E9B00C2BC13 /* RNCryptor.framework in Frameworks */,
 				9477ED311800137300C2A419 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -311,20 +341,10 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
-		0726FDBC18AA47C700670262 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				0726FDC218AA47C700670262 /* DropboxSDK.framework */,
-				0726FDC418AA47C700670262 /* libSDropboxSDK.a */,
-				0726FDC618AA47C700670262 /* DropboxOSX.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		074B958F17EC783B0016F84D = {
 			isa = PBXGroup;
 			children = (
-				0726FDBB18AA47C700670262 /* DropboxSDK.xcodeproj */,
+				078F22B11A9B3EEA00D8EFC5 /* RNCryptor.xcodeproj */,
 				9477ED211800132E00C2A419 /* Ensembles Mac.xcodeproj */,
 				0791BCE217F6F58C00E7C31B /* Ensembles iOS.xcodeproj */,
 				07D1EAE3196A8CF700E3C82F /* Cloud Backends */,
@@ -349,13 +369,18 @@
 		074B959A17EC783B0016F84D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E9A3BC9D1A98515F005E5C4D /* Security.framework */,
+				07EA36C71A10FCCC00B2E043 /* libc++.dylib */,
+				07EA36C51A10FCBC00B2E043 /* QuartzCore.framework */,
+				07EA36C31A10FCA900B2E043 /* SystemConfiguration.framework */,
+				07EA36C11A10FC8100B2E043 /* CFNetwork.framework */,
+				07EA36BF1A10EB2F00B2E043 /* Dropbox.framework */,
 				07D1EAE8196A8D8100E3C82F /* MultipeerConnectivity.framework */,
 				07A006C21949D5E200E4B524 /* libz.dylib */,
 				07A006BA1949BA5C00E4B524 /* libz.dylib */,
 				077231E118C6080D0065BFEE /* MobileCoreServices.framework */,
 				077231DF18C604610065BFEE /* Security.framework */,
 				07973EF8183BE32C007F48CA /* CoreData.framework */,
-				9477ED611800140200C2A419 /* CoreData.framework */,
 				07BF37D417F189EB00C56F64 /* libensembles_ios.a */,
 				074B959B17EC783B0016F84D /* Foundation.framework */,
 				074B959D17EC783B0016F84D /* CoreGraphics.framework */,
@@ -414,6 +439,17 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		078F22B21A9B3EEA00D8EFC5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				078F22BF1A9B3EEA00D8EFC5 /* libRNCryptor.a */,
+				078F22C11A9B3EEA00D8EFC5 /* RNCryptor.framework */,
+				078F22C31A9B3EEA00D8EFC5 /* RNCryptorTests.xctest */,
+				078F22C51A9B3EEA00D8EFC5 /* rncrypt */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		07A006A81949B92500E4B524 /* SSZipArchive */ = {
 			isa = PBXGroup;
 			children = (
@@ -444,14 +480,16 @@
 		07D1EAE3196A8CF700E3C82F /* Cloud Backends */ = {
 			isa = PBXGroup;
 			children = (
+				07B9B1C21A9B403C00B37DAF /* CDEEncryptedCloudFileSystem.h */,
+				07B9B1C31A9B403C00B37DAF /* CDEEncryptedCloudFileSystem.m */,
 				07D1EAD7196A8CD300E3C82F /* CDEMultipeerCloudFileSystem.h */,
 				07D1EAD8196A8CD300E3C82F /* CDEMultipeerCloudFileSystem.m */,
 				07A006981949B8D900E4B524 /* CDEZipCloudFileSystem.h */,
 				07A006991949B8D900E4B524 /* CDEZipCloudFileSystem.m */,
 				070176EF18BD17DF00C4DA01 /* CDENodeCloudFileSystem.h */,
 				070176F018BD17DF00C4DA01 /* CDENodeCloudFileSystem.m */,
-				0726FDB318AA476800670262 /* CDEDropboxCloudFileSystem.h */,
-				0726FDB418AA476800670262 /* CDEDropboxCloudFileSystem.m */,
+				07EA36B31A10EA9100B2E043 /* CDEDropboxSyncCloudFileSystem.h */,
+				07EA36B41A10EA9100B2E043 /* CDEDropboxSyncCloudFileSystem.m */,
 			);
 			name = "Cloud Backends";
 			sourceTree = "<group>";
@@ -535,12 +573,12 @@
 				9477ED2C1800137300C2A419 /* Frameworks */,
 				9477ED2D1800137300C2A419 /* Resources */,
 				07BFF8FA1977F88100B89B4C /* Copy Frameworks */,
-				07BFF9061977FA1500B89B4C /* Code Sign Embedded Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				07D9F028191107B700D191FA /* PBXTargetDependency */,
+				07C138D31A9B4E9B00C2BC13 /* PBXTargetDependency */,
 			);
 			name = "Idiomatic Mac";
 			productName = IdiomaticMac;
@@ -554,7 +592,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = IDM;
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "The Mental Faculty B.V.";
 				TargetAttributes = {
 					074B959717EC783B0016F84D = {
@@ -591,16 +629,16 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 0726FDBC18AA47C700670262 /* Products */;
-					ProjectRef = 0726FDBB18AA47C700670262 /* DropboxSDK.xcodeproj */;
-				},
-				{
 					ProductGroup = 077F113B17F709ED0093A212 /* Products */;
 					ProjectRef = 0791BCE217F6F58C00E7C31B /* Ensembles iOS.xcodeproj */;
 				},
 				{
 					ProductGroup = 9477ED221800132E00C2A419 /* Products */;
 					ProjectRef = 9477ED211800132E00C2A419 /* Ensembles Mac.xcodeproj */;
+				},
+				{
+					ProductGroup = 078F22B21A9B3EEA00D8EFC5 /* Products */;
+					ProjectRef = 078F22B11A9B3EEA00D8EFC5 /* RNCryptor.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -626,27 +664,6 @@
 			remoteRef = 07168C0318E037FC00153494 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		0726FDC218AA47C700670262 /* DropboxSDK.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = DropboxSDK.framework;
-			remoteRef = 0726FDC118AA47C700670262 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		0726FDC418AA47C700670262 /* libSDropboxSDK.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libSDropboxSDK.a;
-			remoteRef = 0726FDC318AA47C700670262 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		0726FDC618AA47C700670262 /* DropboxOSX.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = DropboxOSX.framework;
-			remoteRef = 0726FDC518AA47C700670262 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		07571F411910F2BE008479A9 /* Ensembles.bundle */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
@@ -659,6 +676,34 @@
 			fileType = archive.ar;
 			path = libensembles.a;
 			remoteRef = 077F113E17F709ED0093A212 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		078F22BF1A9B3EEA00D8EFC5 /* libRNCryptor.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNCryptor.a;
+			remoteRef = 078F22BE1A9B3EEA00D8EFC5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		078F22C11A9B3EEA00D8EFC5 /* RNCryptor.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = RNCryptor.framework;
+			remoteRef = 078F22C01A9B3EEA00D8EFC5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		078F22C31A9B3EEA00D8EFC5 /* RNCryptorTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = RNCryptorTests.xctest;
+			remoteRef = 078F22C21A9B3EEA00D8EFC5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		078F22C51A9B3EEA00D8EFC5 /* rncrypt */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = rncrypt;
+			remoteRef = 078F22C41A9B3EEA00D8EFC5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		07A006A51949B8D900E4B524 /* Profiling.app */ = {
@@ -710,29 +755,11 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		07BFF9061977FA1500B89B4C /* Code Sign Embedded Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Code Sign Embedded Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "FRAMEWORKS_LOCATION=\"${BUILT_PRODUCTS_DIR}\"/\"${FRAMEWORKS_FOLDER_PATH}\"\nIDENTITY=\"3rd Party Mac Developer Application\"\n\ncodesign --verbose --force --sign \"$IDENTITY\" \"$FRAMEWORKS_LOCATION/DropboxOSX.framework/Versions/A\"\ncodesign --verbose --force --sign \"$IDENTITY\" \"$FRAMEWORKS_LOCATION/Ensembles.framework/Versions/A\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		074B959417EC783B0016F84D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0726FDB518AA476800670262 /* CDEDropboxCloudFileSystem.m in Sources */,
 				07746AAF18C6276F00A267F5 /* IDMSyncManager.m in Sources */,
 				07A006B61949B92500E4B524 /* mztools.c in Sources */,
 				07A006B81949B92500E4B524 /* zip.c in Sources */,
@@ -747,10 +774,12 @@
 				070F46F91805D51400EE36E5 /* IDMNote.m in Sources */,
 				07A006B51949B92500E4B524 /* ioapi.c in Sources */,
 				07A006B71949B92500E4B524 /* unzip.c in Sources */,
+				07B9B1C41A9B403C00B37DAF /* CDEEncryptedCloudFileSystem.m in Sources */,
 				074B95AC17EC783B0016F84D /* IDMAppDelegate.m in Sources */,
 				07D1EAE7196A8D2A00E3C82F /* IDMMultipeerManager.m in Sources */,
 				070176F118BD17DF00C4DA01 /* CDENodeCloudFileSystem.m in Sources */,
 				07A0069A1949B8D900E4B524 /* CDEZipCloudFileSystem.m in Sources */,
+				07EA36B51A10EA9100B2E043 /* CDEDropboxSyncCloudFileSystem.m in Sources */,
 				070F46FB1805D51400EE36E5 /* Model.xcdatamodeld in Sources */,
 				074B95DE17EC7DDF0016F84D /* IDMNotesViewController.m in Sources */,
 			);
@@ -765,10 +794,10 @@
 				9477ED6B18001B7000C2A419 /* IDMAddNoteViewController.m in Sources */,
 				07A006C11949D5BD00E4B524 /* zip.c in Sources */,
 				075157581805D7FD00C4D4F1 /* Model.xcdatamodeld in Sources */,
+				07B9B1C91A9B4BB600B37DAF /* CDEEncryptedCloudFileSystem.m in Sources */,
 				0751809A18B743C500CE4264 /* IDMMediaFile.m in Sources */,
 				070176F218BD17DF00C4DA01 /* CDENodeCloudFileSystem.m in Sources */,
 				07A006BE1949D5BD00E4B524 /* ioapi.c in Sources */,
-				0726FDB618AA476800670262 /* CDEDropboxCloudFileSystem.m in Sources */,
 				07A006C01949D5BD00E4B524 /* unzip.c in Sources */,
 				9477ED3D1800137300C2A419 /* main.m in Sources */,
 				070F46FD1805D6C100EE36E5 /* IDMNote.m in Sources */,
@@ -785,6 +814,11 @@
 			isa = PBXTargetDependency;
 			name = "Ensembles iOS";
 			targetProxy = 07571F4B1910F700008479A9 /* PBXContainerItemProxy */;
+		};
+		07C138D31A9B4E9B00C2BC13 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "RNCryptor OS X";
+			targetProxy = 07C138D21A9B4E9B00C2BC13 /* PBXContainerItemProxy */;
 		};
 		07D9F0041910FD2400D191FA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -850,7 +884,6 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -895,7 +928,6 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -925,16 +957,20 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Idiomatic/Idiomatic.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Ensembles-bqnnqguhepfxlkgqvdamggjewche/Build/Products/Debug-iphoneos",
+					"$(SRCROOT)/../../Vendor/DropboxSyncSDK/iOS",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Idiomatic/Idiomatic-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../../Vendor/DropboxSDK/**",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../Framework/**",
+					"$(SRCROOT)/../../Vendor/RNCryptor/RNCryptor",
 				);
 				INFOPLIST_FILE = "Idiomatic/Idiomatic-Info.plist";
 				OTHER_LDFLAGS = "-ObjC";
@@ -950,15 +986,21 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Idiomatic/Idiomatic.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Ensembles-bqnnqguhepfxlkgqvdamggjewche/Build/Products/Debug-iphoneos",
+					"$(SRCROOT)/../../Vendor/DropboxSyncSDK/iOS",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Idiomatic/Idiomatic-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../../Vendor/DropboxSDK/**",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../Framework/**",
+					"$(SRCROOT)/../../Vendor/RNCryptor/RNCryptor",
 				);
 				INFOPLIST_FILE = "Idiomatic/Idiomatic-Info.plist";
 				OTHER_LDFLAGS = "-ObjC";
@@ -974,6 +1016,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = IdiomaticMac/IdiomaticMac.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "Mac Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -992,7 +1035,7 @@
 					"$(SRCROOT)/../../Vendor/DropboxSDK/**",
 				);
 				INFOPLIST_FILE = "IdiomaticMac/IdiomaticMac-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -1022,7 +1065,7 @@
 					"$(SRCROOT)/../../Vendor/DropboxSDK/**",
 				);
 				INFOPLIST_FILE = "IdiomaticMac/IdiomaticMac-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

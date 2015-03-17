@@ -18,7 +18,7 @@
 
 @implementation CDEDeleteStage
 
-// Called on event child context queue
+// Called on event context queue
 - (BOOL)applyChangeIDs:(NSArray *)changeIDs error:(NSError *__autoreleasing *)error
 {
     NSManagedObjectContext *eventContext = self.eventStore.managedObjectContext;
@@ -34,15 +34,32 @@
 
         NSManagedObject *object = [objectsByGlobalId objectForKey:change.globalIdentifier.globalIdentifier];
         
-        // Clear the store URI in the global id
-        change.globalIdentifier.storeURI = nil;
-        
         [self.managedObjectContext performBlockAndWait:^{
             [self.class nullifyRelationshipsAndDeleteObject:object];
         }];
     }
     
     return YES;
+}
+
+// Called on event context queue
++ (void)nullifyGlobalIdentifierStoreURIsForChangesWithIDs:(NSArray *)changeIDs inEventContext:(NSManagedObjectContext *)context
+{
+    [context performBlockAndWait:^{
+        NSError *error = nil;
+        NSFetchRequest *fetch = [[NSFetchRequest alloc] initWithEntityName:@"CDEObjectChange"];
+        fetch.predicate = [NSPredicate predicateWithFormat:@"SELF IN %@", changeIDs];
+        fetch.relationshipKeyPathsForPrefetching = @[@"globalIdentifier"];
+        NSArray *changes = [context executeFetchRequest:fetch error:&error];
+        if (!changes) {
+            CDELog(CDELoggingLevelError, @"Could not fetch changes to nullify store URIs after deletion: %@", error);
+            return;
+        }
+        
+        for (CDEObjectChange *change in changes) {
+            change.globalIdentifier.storeURI = nil;
+        }
+    }];
 }
 
 // Called on managedObjectContext thread

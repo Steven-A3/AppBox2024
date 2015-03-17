@@ -201,7 +201,7 @@
     }
     else if ([value isKindOfClass:[NSDate class]]) {
         NSDate *date = (id)value;
-        value = @[@"date", [NSNumber numberWithLongLong:(long long)([date timeIntervalSince1970] * 1000)]];
+        value = @[@"date", [NSNumber numberWithDouble:([date timeIntervalSince1970] * 1000)]];
     }
     else if ([value isKindOfClass:[NSData class]]) {
         value = @[@"data", [value cde_base64EncodedString]];

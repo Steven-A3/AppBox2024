@@ -6,8 +6,6 @@
 //
 
 #import "CDEDropboxCloudFileSystem.h"
-#import "DBMetadata.h"
-#import "DBRestClient.h"
 
 static const NSUInteger kCDENumberOfRetriesForFailedAttempt = 5;
 
@@ -127,11 +125,14 @@ static const NSUInteger kCDENumberOfRetriesForFailedAttempt = 5;
     }
 }
 
-#pragma mark - User Identity
+#pragma mark User Identity
 
-- (id <NSObject, NSCoding, NSCopying>)identityToken
+- (void)fetchUserIdentityWithCompletion:(CDEFetchUserIdentityCallback)completion
 {
-    return self.session.userIds.count > 0 ? self.session.userIds[0] : nil;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        id token = self.session.userIds.count > 0 ? self.session.userIds[0] : nil;
+        if (completion) completion(token, nil);
+    });
 }
 
 #pragma mark Checking File Existence

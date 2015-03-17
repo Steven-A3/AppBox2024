@@ -10,6 +10,8 @@
 
 @interface NSData (CDEAdditions)
 
+- (NSString *)cde_md5Checksum;
+
 + (NSData *)cde_dataWithBase64EncodedString:(NSString *)string;
 - (NSString *)cde_base64EncodedString;
 

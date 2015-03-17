@@ -153,7 +153,7 @@
     [eventManagedObjectContext performBlockAndWait:^{
         [self refetchEvent];
 
-        result = [eventManagedObjectContext save:error];
+        if (eventManagedObjectContext.hasChanges) result = [eventManagedObjectContext save:error];
         if (!result) return;
         
         [eventManagedObjectContext reset];
@@ -166,20 +166,40 @@
 
 #pragma mark - Global Identifiers
 
-- (NSArray *)retrieveGlobalIdentifierStringsForManagedObjects:(NSArray *)objects
+- (void)performInContext:(NSManagedObjectContext *)context block:(CDECodeBlock)block
+{
+    if (context.concurrencyType == NSPrivateQueueConcurrencyType)
+        [context performBlockAndWait:block];
+    else
+        block();
+}
+
+- (NSArray *)retrieveGlobalIdentifierStringsForManagedObjects:(NSArray *)objects storedInEventStore:(BOOL)inEventStore
 {
     if (objects.count == 0) return @[];
     NSManagedObjectContext *context = [objects.lastObject managedObjectContext];
     
     __block NSArray *globalIDStrings = nil;
-    CDECodeBlock block = ^{
-        globalIDStrings = [[self.ensemble globalIdentifiersForManagedObjects:objects] copy];
-    };
     
-    if (context.concurrencyType == NSPrivateQueueConcurrencyType)
-        [context performBlockAndWait:block];
-    else
-        block();
+    if (inEventStore) {
+        // Get object ids
+        __block NSArray *objectIDs = nil;
+        [self performInContext:context block:^{
+            objectIDs = [objects valueForKeyPath:@"objectID"];
+        }];
+        
+        // Fetch global ids from event store
+        NSManagedObjectContext *eventContext = self.eventStore.managedObjectContext;
+        [eventContext performBlockAndWait:^{
+            NSArray *globalIds = [CDEGlobalIdentifier fetchGlobalIdentifiersForObjectIDs:objectIDs inManagedObjectContext:eventContext];
+            globalIDStrings = [globalIds valueForKeyPath:@"globalIdentifier"];
+        }];
+    }
+    else {
+        [self performInContext:context block:^{
+            globalIDStrings = [[self.ensemble globalIdentifiersForManagedObjects:objects] copy];
+        }];
+    }
     
     return globalIDStrings;
 }
@@ -224,13 +244,14 @@
 
 #pragma mark - Insertion Object Changes
 
-- (void)addChangesForInsertedObjects:(NSSet *)insertedObjects objectsAreSaved:(BOOL)saved inManagedObjectContext:(NSManagedObjectContext *)context
+- (void)addChangesForInsertedObjects:(NSSet *)insertedObjects objectsAreSaved:(BOOL)saved useGlobalIdentifiersInEventStore:(BOOL)useGlobalIdsFromEventStore inManagedObjectContext:(NSManagedObjectContext *)context
 {
     if (insertedObjects.count == 0) return;
     
     // This method must be called on context thread
     NSArray *orderedObjects = insertedObjects.allObjects;
-    NSArray *globalIdStrings = [self retrieveGlobalIdentifierStringsForManagedObjects:orderedObjects];
+    
+    NSArray *globalIdStrings = [self retrieveGlobalIdentifierStringsForManagedObjects:orderedObjects storedInEventStore:useGlobalIdsFromEventStore];
     NSArray *globalIdObjectIDs = [self addGlobalIdentifiersForManagedObjectIDs:[orderedObjects valueForKeyPath:@"objectID"] identifierStrings:globalIdStrings];
     NSArray *changeValueArrays = [self propertyChangeValueArraysForInsertedObjects:orderedObjects objectsAreSaved:saved inManagedObjectContext:context];
     
@@ -430,7 +451,7 @@
     success = [contextWithChanges obtainPermanentIDsForObjects:contextWithChanges.insertedObjects.allObjects error:error];
     if (!success) return NO;
 
-    [self addChangesForInsertedObjects:contextWithChanges.insertedObjects objectsAreSaved:NO inManagedObjectContext:contextWithChanges];
+    [self addChangesForInsertedObjects:contextWithChanges.insertedObjects objectsAreSaved:NO useGlobalIdentifiersInEventStore:NO inManagedObjectContext:contextWithChanges];
     [self addChangesForDeletedObjects:contextWithChanges.deletedObjects inManagedObjectContext:contextWithChanges];
     [self addChangesForUnsavedUpdatedObjects:contextWithChanges.updatedObjects inManagedObjectContext:contextWithChanges];
     

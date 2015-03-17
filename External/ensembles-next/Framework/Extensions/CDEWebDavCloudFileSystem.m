@@ -6,10 +6,7 @@
 //
 
 #import "CDEWebDavCloudFileSystem.h"
-#import "CDEDefines.h"
-#import "CDEFoundationAdditions.h"
-#import "CDECloudFile.h"
-#import "CDECloudDirectory.h"
+
 
 @interface CDEWebDavCloudFileSystem () <NSURLConnectionDelegate, NSURLConnectionDataDelegate>
 
@@ -117,9 +114,11 @@
 
 #pragma mark - User Identity
 
-- (id <NSObject, NSCoding, NSCopying>)identityToken
+- (void)fetchUserIdentityWithCompletion:(CDEFetchUserIdentityCallback)completion
 {
-    return self.username;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (completion) completion(self.username, nil);
+    });
 }
 
 #pragma mark - Checking File Existence
@@ -143,6 +142,31 @@
             
             BOOL isDir = [parser.cloudItems.lastObject isKindOfClass:[CDECloudDirectory class]];
             if (completion) completion(YES, isDir, nil);
+        }
+    }];
+}
+
+#pragma mark - Checking File Existence
+
+- (void)directoryExistsAtPath:(NSString *)path completion:(CDEDirectoryExistenceCallback)completion
+{
+    [self sendPropertyFindRequestForPath:path depth:0 completion:^(NSError *error, NSInteger statusCode, NSData *responseData) {
+        if (error && statusCode != 404) {
+            if (completion) completion(NO, error);
+        }
+        else if (statusCode == 404) {
+            if (completion) completion(NO, nil);
+        }
+        else {
+            CDEWebDavResponseParser *parser = [[CDEWebDavResponseParser alloc] initWithData:responseData];
+            BOOL succeeded = [parser parse:&error];
+            if (!succeeded) {
+                if (completion) completion(NO, error);
+                return;
+            }
+            
+            BOOL isDir = [parser.cloudItems.lastObject isKindOfClass:[CDECloudDirectory class]];
+            if (completion) completion(isDir, nil);
         }
     }];
 }

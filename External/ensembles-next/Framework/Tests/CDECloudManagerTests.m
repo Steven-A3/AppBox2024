@@ -324,21 +324,27 @@
     NSString *path2 = [remoteEnsemblesDir stringByAppendingPathComponent:@"events/11_store1_3_1of2.cdeevent"];
     NSString *path3 = [remoteEnsemblesDir stringByAppendingPathComponent:@"events/11_store1_3_2of2.cdeevent"];
     NSString *path4 = [remoteEnsemblesDir stringByAppendingPathComponent:@"events/12_abc_2_1of2.cdeevent"];
-    NSString *path5 = [remoteEnsemblesDir stringByAppendingPathComponent:@"events/unknown.cdeevent"];
+    NSString *path5 = [remoteEnsemblesDir stringByAppendingPathComponent:@"events/12_abc_2_2of2.cdeevent"];
+    NSString *path6 = [remoteEnsemblesDir stringByAppendingPathComponent:@"events/13_abc_3_1of2.cdeevent"];
+    NSString *path7 = [remoteEnsemblesDir stringByAppendingPathComponent:@"events/unknown.cdeevent"];
 
     [fs createFileAtPath:path1 withData:nil];
     [fs createFileAtPath:path2 withData:nil];
     [fs createFileAtPath:path3 withData:nil];
     [fs createFileAtPath:path4 withData:nil];
     [fs createFileAtPath:path5 withData:nil];
+    [fs createFileAtPath:path6 withData:nil];
+    [fs createFileAtPath:path7 withData:nil];
 
     [cloudManager snapshotRemoteFilesWithCompletion:^(NSError *error) {
         [cloudManager removeOutdatedRemoteFilesWithCompletion:^(NSError *error) {
             XCTAssertNotNil(fs.itemsByRemotePath[path1], @"Deleted file that should be kept");
             XCTAssertNil(fs.itemsByRemotePath[path2], @"Did not delete file that should be kept");
             XCTAssertNil(fs.itemsByRemotePath[path3], @"Did not delete file that should be kept");
-            XCTAssertNotNil(fs.itemsByRemotePath[path4], @"Deleted file that should be kept");
-            XCTAssertNotNil(fs.itemsByRemotePath[path5], @"Deleted file that is unknown, and should be kept");
+            XCTAssertNotNil(fs.itemsByRemotePath[path4], @"Deleted file that should be kept because there is an event in store");
+            XCTAssertNotNil(fs.itemsByRemotePath[path5], @"Deleted file that should be kept because there is an event in store");
+            XCTAssertNotNil(fs.itemsByRemotePath[path6], @"Deleted file that should be kept because it is in incomplete set");
+            XCTAssertNotNil(fs.itemsByRemotePath[path7], @"Deleted file that is unknown, and should be kept");
             [self stopWaiting];
         }];
     }];
@@ -370,8 +376,8 @@
         [cloudManager removeOutdatedRemoteFilesWithCompletion:^(NSError *error) {
             XCTAssertNotNil(fs.itemsByRemotePath[path1], @"Deleted file that should be kept");
             XCTAssertNotNil(fs.itemsByRemotePath[path2], @"Deleted file that should be kept");
-            XCTAssertNil(fs.itemsByRemotePath[path3], @"Did not delete file that should be kept");
-            XCTAssertNil(fs.itemsByRemotePath[path4], @"Did not delete file that should be kept");
+            XCTAssertNil(fs.itemsByRemotePath[path3], @"Did not delete file that should not be kept");
+            XCTAssertNotNil(fs.itemsByRemotePath[path4], @"Deleted file that was part of incomplete file set");
             [self stopWaiting];
         }];
     }];

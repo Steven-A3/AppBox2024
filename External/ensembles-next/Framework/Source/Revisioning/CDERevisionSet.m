@@ -146,6 +146,10 @@
 
 #pragma mark Ordering
 
+// Determines order based on position in sync history. If one set includes
+// the other in its ancestory, then it is ordered after. If neither includes
+// the other in its ancestory, they are considered concurrent, and thus ordered
+// the same.
 - (NSComparisonResult)compare:(CDERevisionSet *)otherSet
 {
     NSMutableSet *allStoreIds = [[NSMutableSet alloc] initWithSet:self.persistentStoreIdentifiers];

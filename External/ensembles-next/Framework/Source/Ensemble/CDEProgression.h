@@ -10,10 +10,14 @@
 
 @class CDEPersistentStoreEnsemble;
 
+@protocol CDEProgression;
+
+typedef void (^CDEProgressUnitsCompletionBlock)(NSUInteger numberOfNewUnitsCompleted);
+
 @protocol CDEProgression <NSObject>
 
 @property (nonatomic, readonly) NSUInteger numberOfProgressUnits;
-@property (nonatomic, weak, readwrite) CDEPersistentStoreEnsemble *ensemble;
+@property (nonatomic, copy) CDEProgressUnitsCompletionBlock progressUnitsCompletionBlock;
 
 @end
 

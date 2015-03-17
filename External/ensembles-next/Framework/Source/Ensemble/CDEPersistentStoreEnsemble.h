@@ -25,6 +25,53 @@ typedef NS_ENUM(NSUInteger, CDEEnsembleActivity) {
     CDEEnsembleActivityMerging      = 300
 };
 
+typedef NS_ENUM(NSUInteger, CDEMergingPhase) {
+    CDEMergingPhaseUnknown = 0,
+    CDEMergingPhasePreparation,
+    CDEMergingPhaseDataFileRetrieval,
+    CDEMergingPhaseBaselineRetrieval,
+    CDEMergingPhaseEventRetrieval,
+    CDEMergingPhaseBaselineConsolidation,
+    CDEMergingPhaseRebasing,
+    CDEMergingPhaseIntegratingEvents,
+    CDEMergingPhaseDataFileDeposition,
+    CDEMergingPhaseBaselineDeposition,
+    CDEMergingPhaseEventDeposition,
+    CDEMergingPhaseFileDeletion
+};
+
+typedef NS_ENUM(NSUInteger, CDELeechingPhase) {
+    CDELeechingPhaseUnknown = 0,
+    CDELeechingPhasePreparation,
+    CDELeechingPhaseSettingUpCloudStructure,
+    CDELeechingPhaseSettingUpLocalStructure,
+    CDELeechingPhaseImportingPersistentStore,
+    CDELeechingPhaseRegisteringPeer
+};
+
+
+///
+/// @name Seed Policies
+///
+
+typedef NS_ENUM(NSUInteger, CDESeedPolicy) {
+    CDESeedPolicyMergeAllData = 0,          /// Import local store, and merge with cloud data (at next merge)
+    CDESeedPolicyExcludeLocalData = 100     /// Do not import local data. You will usually want to delete the store before leeching.
+};
+
+
+///
+/// @name Merge Control
+///
+
+typedef NS_ENUM(NSUInteger, CDEMergeOptions) {
+    CDEMergeOptionsNone = 0,
+    CDEMergeOptionsForceRebase = 1,
+    CDEMergeOptionsSuppressRebase = 2,
+    CDEMergeOptionsCloudFileRetrievalOnly = 4,
+    CDEMergeOptionsCloudFileDepositionOnly = 8
+};
+
 
 ///
 /// @name Notifications
@@ -85,6 +132,11 @@ extern NSString * const CDEManagedObjectContextSaveNotificationKey;
  Used as a key in the `userInfo` dictionary of the `CDEPersistentStoreEnsembleDidBeginActivityNotification` and `CDEPersistentStoreEnsembleWillEndActivityNotification` notifications. Its value activity in an `NSNumber`.
  */
 extern NSString * const CDEEnsembleActivityKey;
+
+/**
+ Used as a key in the `userInfo` dictionary of the `CDEPersistentStoreEnsembleDidMakeProgressWithActivityNotification` notification. The value is an `NSNumber` containing either a `CDEMergingPhase` or `CDELeechingPhase`, depending on the current activity.
+ */
+extern NSString * const CDEActivityPhaseKey;
 
 /** 
  Used as a key in the `userInfo` dictionary of the `CDEPersistentStoreEnsembleDidMakeProgressWithActivityNotification` notification. It's value is an `NSNumber` holding the fraction of progress, between 0.0 and 1.0.
@@ -427,7 +479,7 @@ extern NSString * const CDEProgressFractionKey;
  
  This method sets up local storage and metadata, and registers the persistent store with the cloud, so that ensemble objects on other devices know of its existence.
  
- It also converts the contents of the persistent store into transaction logs, and adds them to the cloud for merging on other devices.
+ It also converts the contents of the local persistent store into transaction logs, and adds them to the cloud for merging on other devices.
  
  Because this can be a lengthy process, and can involve networking, the method is asynchronous.
  
@@ -438,6 +490,26 @@ extern NSString * const CDEProgressFractionKey;
  @param completion A completion block that is executed when leeching completes, whether successful or not. The block is passed `nil` upon a successful leech, and an `NSError` otherwise.
  */
 - (void)leechPersistentStoreWithCompletion:(CDECompletionBlock)completion;
+
+/**
+ Attaches the ensemble to corresponding ensemble objects on other devices, using a specific policy for initially seeding the cloud data.
+ 
+ This method sets up local storage and metadata, and registers the persistent store with the cloud, so that ensemble objects on other devices know of its existence.
+ 
+ The seed policy determines how the existing contents of the persistent store are treated. They can be ignored, or converted to transaction logs, and added to the cloud for merging on other devices. 
+ 
+ It is worth noting that some seed policies require more work and data transfer than others. In particular, merging data requires more work and data transfer on all devices, because they all have to receive and reconcile the newly imported data.
+ 
+ Because this can be a lengthy process, and can involve networking, the method is asynchronous.
+ 
+ If an error occurs, the ensemble will be left in a deleeched state. You will have to reattempt to leech at a later time.
+ 
+ You should avoid saving to the persistent store during leeching. If a save is detected, the leech will terminate with an error.
+ 
+ @param policy The seed policy used for existing data in the persistent store. For example, the data can be merged into the cloud data, or ignored.
+ @param completion A completion block that is executed when leeching completes, whether successful or not. The block is passed `nil` upon a successful leech, and an `NSError` otherwise.
+ */
+- (void)leechPersistentStoreWithSeedPolicy:(CDESeedPolicy)policy completion:(CDECompletionBlock)completion;
 
 /**
  Detaches the ensemble from peers, effectively terminating syncing.
@@ -465,6 +537,18 @@ extern NSString * const CDEProgressFractionKey;
  @param completion A block that is executed upon completion of merging, whether successful or not. The block is passed nil upon a successful merge, and an `NSError` otherwise.
  */
 - (void)mergeWithCompletion:(CDECompletionBlock)completion;
+
+/**
+ This is an advanced method. It begins a merge, like `mergeWithCompletion:`, but also takes options that give control over which phases of the merge are executed.
+ 
+ For example, you can force rebasing to run, compacting the sync history, or you can suppress rebasing so it will not be run. (Rebasing is usually run automatically when Ensembles estimates a significant space saving can be made.)
+ 
+ Other options allow cause just the file uploads or downloads to be take place, without merging data into the persistent store.
+ 
+ @param mergeOptions Options used to control which phases of the merge are executed.
+ @param completion A block that is executed upon completion of merging, whether successful or not. The block is passed nil upon a successful merge, and an `NSError` otherwise.
+ */
+- (void)mergeWithOptions:(CDEMergeOptions)mergeOptions completion:(CDECompletionBlock)completion;
 
 /**
  Cancels a merge, if one is active.

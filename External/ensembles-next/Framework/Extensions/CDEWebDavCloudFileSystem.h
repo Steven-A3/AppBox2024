@@ -6,8 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
-#import "CDECloudFileSystem.h"
+#import <Ensembles/Ensembles.h>
 
 @class CDEWebDavCloudFileSystem;
 

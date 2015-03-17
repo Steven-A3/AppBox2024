@@ -13,4 +13,6 @@
 
 + (void)nullifyRelationshipsAndDeleteObject:(NSManagedObject *)object;
 
++ (void)nullifyGlobalIdentifierStoreURIsForChangesWithIDs:(NSArray *)changeIDs inEventContext:(NSManagedObjectContext *)context;
+
 @end

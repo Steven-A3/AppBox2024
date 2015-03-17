@@ -162,7 +162,6 @@ typedef void (^CDECodeBlock)(void);
 typedef void (^CDEBooleanQueryBlock)(NSError *error, BOOL result);
 typedef void (^CDECompletionBlock)(NSError *error);
 
-
 #pragma mark Functions
 
 void CDEDispatchCompletionBlockToMainQueue(CDECompletionBlock block, NSError *error);

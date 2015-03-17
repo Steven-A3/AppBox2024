@@ -66,3 +66,10 @@ typedef NS_ENUM(int16_t, CDEStoreModificationEventType) {
 + (NSArray *)sortDescriptorsForNonBaselineEvents;
 
 @end
+
+
+@interface CDEStoreModificationEvent (CDEKeyValueCoding)
+
+- (NSUInteger)countOfObjectChanges;
+
+@end

@@ -4,6 +4,9 @@
 * [ensembles.io/news](http://www.ensembles.io/news/) Blog of Ensembles related news
 * [@ensemblesio](http://twitter.com/ensemblesio) The Ensembles Twitter Account
 
+### Forums and Mailing Lists
+* [Ensembles Mailing List](https://groups.google.com/forum/#!forum/ensembles) Hosted by Google Groups
+
 ### Presentations
 * [Everything — but the kitchen — syncs](http://www.iosdevuk.com/talks/) Drew McCormack at iOSDevUK 2013
 * [Everything — but the kitchen — syncs (Video)](http://gotocon.com/video) Drew McCormack at GOTO Aarhus 2013
@@ -12,6 +15,7 @@
 ### Podcasts
 * [NSBrief #110](http://nsbrief.com/110-drew-mccormack/) featuring Drew McCormack
 * [CocoaRadio #4](http://carpeaqua.com/cocoaradio/#04) featuring Drew McCormack
+* [iDeveloper #133](http://shownotes.ideveloper.co/issues/10) featuring Drew McCormack
 
 ### Articles on Ensembles
 * [Introducing Ensembles: Core Data sync the way it should be](http://mentalfaculty.tumblr.com/post/62909673342/introducing-ensembles-core-data-sync-the-way-it-should) by Drew McCormack

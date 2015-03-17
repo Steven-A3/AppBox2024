@@ -10,7 +10,9 @@
 #import "CDEDefines.h"
 
 typedef void (^CDEFileExistenceCallback)(BOOL exists, BOOL isDirectory, NSError *error);
+typedef void (^CDEDirectoryExistenceCallback)(BOOL exists, NSError *error);
 typedef void (^CDEDirectoryContentsCallback)(NSArray *contents, NSError *error);
+typedef void (^CDEFetchUserIdentityCallback)(id <NSObject, NSCoding, NSCopying> token, NSError *error);
 
 /**
  A cloud file system facilitates data transfer between devices.
@@ -19,6 +21,7 @@ typedef void (^CDEDirectoryContentsCallback)(NSArray *contents, NSError *error);
  */
 @protocol CDECloudFileSystem <NSObject>
 
+
 @required
 
 ///
@@ -26,7 +29,7 @@ typedef void (^CDEDirectoryContentsCallback)(NSArray *contents, NSError *error);
 ///
 
 /**
- Whether ensembles is considered to be connected to the file system, and thereby can make requests. 
+ Whether ensembles is considered to be connected to the file system, and thereby can make requests.
  
  Different backends may interpret this differently. What should be true is that if `isConnected` returns `YES`, ensembles can attempt to make file transactions.
  
@@ -35,13 +38,13 @@ typedef void (^CDEDirectoryContentsCallback)(NSArray *contents, NSError *error);
 @property (nonatomic, assign, readonly) BOOL isConnected;
 
 /**
- A token representing the user of the cloud file system.
+ Fetches a token representing the user of the cloud file system.
  
  Often this will be the user or login name.
  
- When implementing a cloud file system class, it is important to fire KVO notifications when the identity changes. These are observed by the ensemble, and used to determine whether it is necessary to force a deleech.
+ @param completion The callback block, which passes back the user token. The last argument is an `NSError`, which should be `nil` if successful.
  */
-@property (nonatomic, strong, readonly) id <NSObject, NSCopying, NSCoding> identityToken; // Must fire KVO Notifications
+- (void)fetchUserIdentityWithCompletion:(CDEFetchUserIdentityCallback)completion;
 
 /**
  Attempts to connect to the cloud backend.
@@ -64,6 +67,27 @@ typedef void (^CDEDirectoryContentsCallback)(NSArray *contents, NSError *error);
  @param block The completion block, which takes `BOOL` arguments for whether the file exists and whether it is a directory. The last argument is an `NSError`, which should be `nil` if successful.
  */
 - (void)fileExistsAtPath:(NSString *)path completion:(CDEFileExistenceCallback)block;
+
+
+@optional
+
+///
+/// @name Directory Existence
+///
+
+/**
+ Determines whether a directory exists in the cloud.
+ 
+ Upon determining whether the directory exists, the completion block should be called on the main thread.
+ 
+ This method is optional, and is provided as a potential optimization for certain backends (eg zip). If it is available, it will be used; otherwise, the fileExistsAtPath:completion: method will be used instead.
+ 
+ @param block The completion block, which takes two arguments. The first is a `BOOL` and indicates whether the directory exists. The second argument is an `NSError`, which should be `nil` if successful.
+ */
+- (void)directoryExistsAtPath:(NSString *)path completion:(CDEDirectoryExistenceCallback)block;
+
+
+@required
 
 ///
 /// @name Working with Directories
@@ -126,7 +150,66 @@ typedef void (^CDEDirectoryContentsCallback)(NSArray *contents, NSError *error);
  */
 - (void)downloadFromPath:(NSString *)fromPath toLocalFile:(NSString *)toPath completion:(CDECompletionBlock)block;
 
+
 @optional
+
+///
+/// @name Batch Operations
+///
+
+/**
+ If the `uploadLocalFiles:toPaths:completion:` method is implemented, this property can be used to set the maximum number of files that are uploaded at once.
+ 
+ If not provided, a default value will be used.
+ */
+@property (nonatomic, assign, readonly) NSUInteger fileUploadMaximumBatchSize;
+
+/**
+ If the `downloadFromPaths:toLocalFiles:completion:` method is implemented, this property can be used to set the maximum number of files that are downloaded at once.
+ 
+ If not provided, a default value will be used.
+ */
+@property (nonatomic, assign, readonly) NSUInteger fileDownloadMaximumBatchSize;
+
+/**
+ Uploads local files to the cloud file system.
+ 
+ This method will be called to upload files if it is available. It can be used to more efficiently upload multiple items at once.
+ 
+ The completion block takes an `NSError`, which should be `nil` upon successful completion. The block should be called on the main thread.
+ 
+ @param fromPath The paths to the files on the device.
+ @param toPaths The paths of the files in the cloud file system.
+ @param block The completion block, which takes one argument, an `NSError`.
+ */
+- (void)uploadLocalFiles:(NSArray *)fromPaths toPaths:(NSArray *)toPaths completion:(CDECompletionBlock)block;
+
+/**
+ Downloads files from cloud file system.
+ 
+ This method will be called to download files if it is available. It can be used to more efficiently download multiple items at once.
+ 
+ The completion block takes an `NSError`, which should be `nil` upon successful completion. The block should be called on the main thread.
+ 
+ @param fromPaths The paths of the files in the cloud file system.
+ @param toPaths The paths to the files on the device.
+ @param block The completion block, which takes one argument, an `NSError`.
+ */
+- (void)downloadFromPaths:(NSArray *)fromPaths toLocalFiles:(NSArray *)toPaths completion:(CDECompletionBlock)block;
+
+/**
+ Deletes one or more files or directories.
+ 
+ This method will be called to remove items if it is available. It can be used to more efficiently delete multiple items at once.
+ 
+ If this method is not implemented, the framework will fallback to repeeatedly calling the method to remove a single item.
+ 
+ The completion block takes and `NSError`, which should be `nil` upon successful completion. The block should be called on the main thread.
+ 
+ @param paths Array of paths for the items to be removed.
+ @param block The completion block, which takes one argument, an `NSError`.
+ */
+- (void)removeItemsAtPaths:(NSArray *)paths completion:(CDECompletionBlock)block;
 
 ///
 /// @name Initial Setup
@@ -138,9 +221,27 @@ typedef void (^CDEDirectoryContentsCallback)(NSArray *contents, NSError *error);
  For example, if the root directory of the file system needs to be created, this would be a good time to do that.
  
  The completion block takes an `NSError`, which should be `nil` upon successful completion. The block should be called on the main thread.
-
+ 
  @param block The completion block, which takes one argument, an `NSError`.
  */
 - (void)performInitialPreparation:(CDECompletionBlock)completion;
+
+
+///
+/// @name Repair
+///
+
+/**
+ An optional method which can be implemented to perform any repairs that are needed prior to merging.
+ 
+ Eg. Systems like iCloud and Dropbox can sometimes create duplicate files or folders. This is a good place to 'fix' that.
+ 
+ The completion block takes an `NSError`, which should be `nil` upon successful completion. The block should be called on the main thread.
+ 
+ @param ensembleDir Path to the directory of the ensemble.
+ @param block The completion block, which takes one argument, an `NSError`.
+ */
+- (void)repairEnsembleDirectory:(NSString *)ensembleDir completion:(CDECompletionBlock)completion;
+
 
 @end

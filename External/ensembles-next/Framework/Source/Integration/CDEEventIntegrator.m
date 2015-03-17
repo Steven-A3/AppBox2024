@@ -26,6 +26,19 @@
 #import "CDEPropertyChangeValue.h"
 #import "CDERevisionManager.h"
 
+
+@interface CDEObjectChangeDescriptor : NSObject
+
+@property (nonatomic) NSManagedObjectID *changeID;
+@property (nonatomic) NSManagedObjectID *globalIdentifierID;
+
+@end
+
+@implementation CDEObjectChangeDescriptor
+
+@end
+
+
 @interface CDEEventIntegrator ()
 
 @property (readwrite) NSManagedObjectContext *managedObjectContext;
@@ -52,7 +65,7 @@
 @synthesize willBeginMergingEntityBlock = willBeginMergingEntityBlock;
 @synthesize didFinishMergingEntityBlock = didFinishMergingEntityBlock;
 @synthesize ensemble = ensemble;
-
+@synthesize progressUnitsCompletionBlock;
 
 #pragma mark Initialization
 
@@ -170,7 +183,7 @@
             // Do we actually need to integrate the events?
             BOOL integrationNeeded = [self integrationIsNeededForEventIDs:storeModEventIDs];
             if (!integrationNeeded) {
-                [self.ensemble incrementProgressBy:self.numberOfProgressUnits];
+                if (self.progressUnitsCompletionBlock) self.progressUnitsCompletionBlock(self.numberOfProgressUnits);
                 [self completeSuccessfully];
                 return;
             }
@@ -198,6 +211,7 @@
                 if (isUnique && !saveOccurredDuringMerge) {
                     [eventBuilder finalizeNewEvent];
                     eventSaveSucceeded = [eventStoreContext save:&error];
+                    [eventStoreContext reset];
                 }
                 else {
                     error = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeSaveOccurredDuringMerge userInfo:nil];
@@ -246,8 +260,8 @@
                 [eventContext deleteObject:event];
                 if (![eventContext save:&error]) {
                     CDELog(CDELoggingLevelError, @"Could not save after deleting partially merged event from a failed merge. Will reset context: %@", error);
-                    [eventContext reset];
                 }
+                [eventContext reset];
             }
         }];
     }
@@ -424,40 +438,50 @@
                 CDELog(CDELoggingLevelVerbose, @"Number of objects remaining to integrate for this entity: %lu", (unsigned long)batchesRemaining * batchSize);
                 
                 // Fetch the object change ids grouped by event id
-                NSDictionary *insertChangeIDsByEventID = [self fetchObjectChangeIDsOfType:CDEObjectChangeTypeInsert forGlobalIdentifierIDs:batchGlobalIdentifierIDs entity:entity groupedByEventIDs:storeModEventIDs error:&localError];
-                NSDictionary *updateChangeIDsByEventID = [self fetchObjectChangeIDsOfType:CDEObjectChangeTypeUpdate forGlobalIdentifierIDs:batchGlobalIdentifierIDs entity:entity groupedByEventIDs:storeModEventIDs error:&localError];
-                NSDictionary *deleteChangeIDsByEventID = [self fetchObjectChangeIDsOfType:CDEObjectChangeTypeDelete forGlobalIdentifierIDs:batchGlobalIdentifierIDs entity:entity groupedByEventIDs:storeModEventIDs error:&localError];
-                if (!insertChangeIDsByEventID || !updateChangeIDsByEventID || !deleteChangeIDsByEventID) {
+                NSMutableDictionary *changeDescsByTypeByEventID = [self fetchObjectChangeDescriptorsForGlobalIdentifierIDs:batchGlobalIdentifierIDs entity:entity groupedByTypeAndEventIDs:storeModEventIDs error:&localError];
+                if (!changeDescsByTypeByEventID) {
                     success = NO;
                     *stop = YES;
                     return;
                 }
-
+                
+                // Remove redundant object changes
+                [self removeRedundantChangesFromChangeDescriptorsByTypeByEventID:changeDescsByTypeByEventID forOrderedEventIDs:storeModEventIDs];
+                
                 // Insert and update objects in all events
                 for (NSManagedObjectID *eventID in storeModEventIDs) {
                     
                     // Insert and update objects
                     // Use batch size 0 here, because we are batching over global identifiers, not change ids
-                    NSArray *insertChangeIDs = insertChangeIDsByEventID[eventID];
+                    NSArray *insertChangeDescs = changeDescsByTypeByEventID[eventID][@(CDEObjectChangeTypeInsert)];
                     NSSet *insertedObjectIDs = nil;
-                    success = [self insertAndUpdateObjectsForInsertChangeIDs:insertChangeIDs relationships:relationshipsToMigratedEntities batchSize:0 migratedEntities:migratedEntities objectIDsForInserts:&insertedObjectIDs error:&localError];
+                    if (insertChangeDescs.count > 0) {
+                        NSArray *insertChangeIDs = [insertChangeDescs valueForKeyPath:@"changeID"];
+                        success = [self insertAndUpdateObjectsForInsertChangeIDs:insertChangeIDs relationships:relationshipsToMigratedEntities batchSize:0 migratedEntities:migratedEntities objectIDsForInserts:&insertedObjectIDs error:&localError];
+                    }
                     if (!success) {
                         *stop = YES;
                         return;
                     }
-                    [allInsertedObjectIDs unionSet:insertedObjectIDs];
+                    if (insertedObjectIDs) [allInsertedObjectIDs unionSet:insertedObjectIDs];
                     
                     // Updates
-                    NSArray *updateChangeIDs = updateChangeIDsByEventID[eventID];
-                    success = [self updateObjectsForUpdateChangeIDs:updateChangeIDs relationships:relationshipsToMigratedEntities batchSize:0 error:&localError];
+                    NSArray *updateChangeDescs = changeDescsByTypeByEventID[eventID][@(CDEObjectChangeTypeUpdate)];
+                    if (updateChangeDescs.count > 0) {
+                        NSArray *updateChangeIDs = [updateChangeDescs valueForKeyPath:@"changeID"];
+                        success = [self updateObjectsForUpdateChangeIDs:updateChangeIDs relationships:relationshipsToMigratedEntities batchSize:0 error:&localError];
+                    }
                     if (!success) {
                         *stop = YES;
                         return;
                     }
                     
                     // Deletes
-                    NSArray *deleteChangeIDs = deleteChangeIDsByEventID[eventID];
-                    success = [self deleteObjectsForChangeIDs:deleteChangeIDs batchSize:0 error:&localError];
+                    NSArray *deleteChangeDescs = changeDescsByTypeByEventID[eventID][@(CDEObjectChangeTypeDelete)];
+                    if (deleteChangeDescs.count > 0) {
+                        NSArray *deleteChangeIDs = [deleteChangeDescs valueForKeyPath:@"changeID"];
+                        success = [self deleteObjectsForChangeIDs:deleteChangeIDs batchSize:0 error:&localError];
+                    }
                     if (!success) {
                         *stop = YES;
                         return;
@@ -476,7 +500,7 @@
             return NO;
         }
         
-        [self.ensemble incrementProgress];
+        if (self.progressUnitsCompletionBlock) self.progressUnitsCompletionBlock(1);
         
         // Connect any relationships from the migrated entities to the new entity.
         // Include self-referential relationships
@@ -527,7 +551,7 @@
         
         if (didFinishMergingEntityBlock) didFinishMergingEntityBlock(entity);
     
-        [self.ensemble incrementProgress];
+        if (self.progressUnitsCompletionBlock) self.progressUnitsCompletionBlock(1);
     }
     
     BOOL success = [self saveAndResetManagedObjectContext:&localError];
@@ -549,6 +573,42 @@
     }
     
     return YES;
+}
+
+- (void)removeRedundantChangesFromChangeDescriptorsByTypeByEventID:(NSMutableDictionary *)descsByTypeByEventID forOrderedEventIDs:(NSArray *)eventIDs
+{
+    // Just remove inserts and updates that preceed a deletion on the same object
+    NSMutableSet *deletedObjectGlobalIDs = [[NSMutableSet alloc] init];
+    for (NSManagedObjectID *eventID in eventIDs.reverseObjectEnumerator) {
+        NSDictionary *descsByType = descsByTypeByEventID[eventID];
+        NSMutableDictionary *newDescsByType = [descsByType mutableCopy];
+        
+        NSArray *deleted = descsByType[@(CDEObjectChangeTypeDelete)];
+        NSArray *deletedGlobalIDs = [deleted valueForKeyPath:@"globalIdentifierID"];
+        [deletedObjectGlobalIDs addObjectsFromArray:deletedGlobalIDs];
+        
+        NSArray *inserted = descsByType[@(CDEObjectChangeTypeInsert)];
+        NSMutableSet *insertedGlobalIDsSet = [[NSMutableSet alloc] initWithArray:[inserted valueForKeyPath:@"globalIdentifierID"]];
+        [insertedGlobalIDsSet minusSet:deletedObjectGlobalIDs];
+        if (inserted.count != insertedGlobalIDsSet.count) {
+            NSArray *newInserted = [inserted filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(CDEObjectChangeDescriptor *desc, NSDictionary *bindings) {
+                return [insertedGlobalIDsSet containsObject:desc.globalIdentifierID];
+            }]];
+            newDescsByType[@(CDEObjectChangeTypeInsert)] = newInserted;
+        }
+        
+        NSArray *updated = descsByType[@(CDEObjectChangeTypeUpdate)];
+        NSMutableSet *updatedGlobalIDsSet = [[NSMutableSet alloc] initWithArray:[updated valueForKeyPath:@"globalIdentifierID"]];
+        [updatedGlobalIDsSet minusSet:deletedObjectGlobalIDs];
+        if (updated.count != updatedGlobalIDsSet.count) {
+            NSArray *newUpdated = [updated filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(CDEObjectChangeDescriptor *desc, NSDictionary *bindings) {
+                return [updatedGlobalIDsSet containsObject:desc.globalIdentifierID];
+            }]];
+            newDescsByType[@(CDEObjectChangeTypeUpdate)] = newUpdated;
+        }
+        
+        if (newDescsByType) descsByTypeByEventID[eventID] = newDescsByType;
+    }
 }
 
 
@@ -596,6 +656,12 @@
     return YES;
 }
 
+- (void)processPendingChangesInManagedObjectContext {
+    [managedObjectContext performBlockAndWait:^{
+        [managedObjectContext processPendingChanges];
+    }];
+}
+
 // Called on background queue
 - (BOOL)commit:(NSError * __autoreleasing *)error
 {
@@ -606,9 +672,7 @@
         if ((*error).code != NSManagedObjectMergeError && failedSaveBlock) {
             // Setup a child reparation context
             NSManagedObjectContext *reparationContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-            [reparationContext performBlockAndWait:^{
-                reparationContext.parentContext = managedObjectContext;
-            }];
+            reparationContext.parentContext = managedObjectContext;
             
             // Inform of failure, and give chance to repair
             BOOL retry = failedSaveBlock(managedObjectContext, *error, reparationContext);
@@ -875,6 +939,64 @@
     }
     
     return objectIDsByEventID;
+}
+
+- (NSMutableDictionary *)fetchObjectChangeDescriptorsForGlobalIdentifierIDs:(NSArray *)globalIdentifierIDs entity:(NSEntityDescription *)entity groupedByTypeAndEventIDs:(NSArray *)eventIDs error:(NSError * __autoreleasing *)error
+{
+    __block NSArray *fetchResult = nil;
+    __block NSError *localError = nil;
+    [self.eventStore.managedObjectContext performBlockAndWait:^{
+        NSExpressionDescription *objectIDDesc = [[NSExpressionDescription alloc] init];
+        objectIDDesc.name = @"objectID";
+        objectIDDesc.expression = [NSExpression expressionForEvaluatedObject];
+        objectIDDesc.expressionResultType = NSObjectIDAttributeType;
+        
+        NSExpressionDescription *storeEventIDDesc = [[NSExpressionDescription alloc] init];
+        storeEventIDDesc.name = @"storeEventID";
+        storeEventIDDesc.expression = [NSExpression expressionForKeyPath:@"storeModificationEvent"];
+        storeEventIDDesc.expressionResultType = NSObjectIDAttributeType;
+        
+        NSExpressionDescription *typeDesc = [[NSExpressionDescription alloc] init];
+        typeDesc.name = @"type";
+        typeDesc.expression = [NSExpression expressionForKeyPath:@"type"];
+        typeDesc.expressionResultType = NSInteger16AttributeType;
+        
+        NSExpressionDescription *globalIDDesc = [[NSExpressionDescription alloc] init];
+        globalIDDesc.name = @"globalIdentifier";
+        globalIDDesc.expression = [NSExpression expressionForKeyPath:@"globalIdentifier"];
+        globalIDDesc.expressionResultType = NSObjectIDAttributeType;
+        
+        NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"CDEObjectChange"];
+        fetch.predicate = [NSPredicate predicateWithFormat:@"nameOfEntity = %@ && storeModificationEvent IN %@ && globalIdentifier IN %@", entity.name, eventIDs, globalIdentifierIDs];
+        fetch.sortDescriptors = [CDEObjectChange sortDescriptorsForEventOrder];
+        fetch.propertiesToFetch = @[objectIDDesc, storeEventIDDesc, typeDesc, globalIDDesc];
+        fetch.resultType = NSDictionaryResultType;
+        fetchResult = [self.eventStore.managedObjectContext executeFetchRequest:fetch error:&localError];
+    }];
+    
+    if (!fetchResult) {
+        if (error) *error = localError;
+        return nil;
+    }
+    
+    // Group results with store event id as the key
+    NSMutableDictionary *objectIDsByTypeByEventID = [NSMutableDictionary dictionary];
+    for (NSDictionary *d in fetchResult) {
+        NSManagedObjectID *eventID = d[@"storeEventID"];
+        NSDictionary *changesByType = objectIDsByTypeByEventID[eventID];
+        if (!changesByType) {
+            changesByType = @{@(CDEObjectChangeTypeDelete):[NSMutableArray array], @(CDEObjectChangeTypeInsert):[NSMutableArray array], @(CDEObjectChangeTypeUpdate):[NSMutableArray array]};
+            objectIDsByTypeByEventID[eventID] = changesByType;
+        }
+        NSMutableArray *changes = changesByType[d[@"type"]];
+        
+        CDEObjectChangeDescriptor *desc = [[CDEObjectChangeDescriptor alloc] init];
+        desc.globalIdentifierID = d[@"globalIdentifier"];
+        desc.changeID = d[@"objectID"];
+        [changes addObject:desc];
+    }
+    
+    return objectIDsByTypeByEventID;
 }
 
 - (NSArray *)fetchObjectChangeIDsOfType:(CDEObjectChangeType)type forGlobalIdentifierIDs:(NSArray *)globalIdentifierIDs entity:(NSEntityDescription *)entity inEventsWithIDs:(NSArray *)eventIDs error:(NSError * __autoreleasing *)error

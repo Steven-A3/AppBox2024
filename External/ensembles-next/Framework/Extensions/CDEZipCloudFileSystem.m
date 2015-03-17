@@ -55,9 +55,19 @@ static NSString * const CDEZipFilePathExtension = @"cdezip";
     return cloudFileSystem.isConnected;
 }
 
-- (id <NSObject, NSCopying, NSCoding>) identityToken
+- (void)fetchUserIdentityWithCompletion:(CDEFetchUserIdentityCallback)completion;
 {
-    return cloudFileSystem.identityToken;
+    [cloudFileSystem fetchUserIdentityWithCompletion:completion];
+}
+
+- (void)performInitialPreparation:(CDECompletionBlock)completion
+{
+    [cloudFileSystem performInitialPreparation:completion];
+}
+
+- (void)repairEnsembleDirectory:(NSString *)ensembleDir completion:(CDECompletionBlock)completion
+{
+    [cloudFileSystem repairEnsembleDirectory:ensembleDir completion:completion];
 }
 
 - (void)fileExistsAtPath:(NSString *)path completion:(CDEFileExistenceCallback)completion
@@ -78,6 +88,21 @@ static NSString * const CDEZipFilePathExtension = @"cdezip";
     }];
 }
 
+- (void)directoryExistsAtPath:(NSString *)path completion:(CDEDirectoryExistenceCallback)completion
+{
+    if ([cloudFileSystem respondsToSelector:@selector(directoryExistsAtPath:completion:)]) {
+        [cloudFileSystem directoryExistsAtPath:path completion:^(BOOL exists, NSError *error) {
+            if (completion) completion(error ? NO : exists, error);
+        }];
+    }
+    else {
+        [cloudFileSystem fileExistsAtPath:path completion:^(BOOL exists, BOOL isDirectory, NSError *error) {
+            exists = exists && isDirectory;
+            if (completion) completion(error ? NO : exists, error);
+        }];
+    }
+}
+
 - (void)createDirectoryAtPath:(NSString *)path completion:(CDECompletionBlock)completion
 {
     [cloudFileSystem createDirectoryAtPath:path completion:completion];
@@ -86,13 +111,25 @@ static NSString * const CDEZipFilePathExtension = @"cdezip";
 - (void)removeItemAtPath:(NSString *)fromPath completion:(CDECompletionBlock)completion
 {
     NSString *zippedPath = [fromPath stringByAppendingPathExtension:CDEZipFilePathExtension];
-    [cloudFileSystem removeItemAtPath:zippedPath completion:^(NSError *error) {
-        if (error) {
-            [cloudFileSystem removeItemAtPath:fromPath completion:completion];
-            return;
-        }
+    [cloudFileSystem removeItemAtPath:zippedPath completion:^(NSError *zipFileError) {
+        [cloudFileSystem removeItemAtPath:fromPath completion:^(NSError *nonZipError) {
+            NSError *error = (zipFileError && nonZipError) ? nonZipError : nil;
+            if (completion) completion(error);
+        }];
+    }];
+}
 
-        if (completion) completion(nil);
+- (void)removeItemsAtPaths:(NSArray *)paths completion:(CDECompletionBlock)block
+{
+    NSMutableArray *allPaths = [[NSMutableArray alloc] initWithArray:paths];
+    for (NSString *path in paths) {
+        NSString *zippedPath = [path stringByAppendingPathExtension:CDEZipFilePathExtension];
+        [allPaths addObject:zippedPath];
+    }
+    
+    [cloudFileSystem removeItemsAtPaths:allPaths completion:^(NSError *error) {
+        // There can be errors due to zipped paths not existing, or vice versa. Ignore.
+        if (block) block(nil);
     }];
 }
 
@@ -120,6 +157,11 @@ static NSString * const CDEZipFilePathExtension = @"cdezip";
     return tempFilePath;
 }
 
+- (NSUInteger) fileDownloadMaximumBatchSize
+{
+    return [cloudFileSystem fileDownloadMaximumBatchSize];
+}
+
 - (void)downloadFromPath:(NSString *)fromPath toLocalFile:(NSString *)toPath completion:(CDECompletionBlock)completion
 {
     NSString *tempFilePath = [self tempFilePath];
@@ -139,6 +181,44 @@ static NSString * const CDEZipFilePathExtension = @"cdezip";
     }];
 }
 
+- (void)downloadFromPaths:(NSArray *)fromPaths toLocalFiles:(NSArray *)toPaths completion:(CDECompletionBlock)completion
+{
+    NSMutableArray *tempPaths = [[NSMutableArray alloc] init];
+    NSMutableArray *zippedPaths = [[NSMutableArray alloc] init];
+    for (NSUInteger i = 0; i < fromPaths.count; i++) {
+        NSString *fromPath = fromPaths[i];
+        NSString *tempFilePath = [self tempFilePath];
+        NSString *zippedPath = [fromPath stringByAppendingPathExtension:CDEZipFilePathExtension];
+        [tempPaths addObject:tempFilePath];
+        [zippedPaths addObject:zippedPath];
+    }
+    
+    [cloudFileSystem downloadFromPaths:zippedPaths toLocalFiles:tempPaths completion:^(NSError *error) {
+        if (error) {
+            [cloudFileSystem downloadFromPaths:fromPaths toLocalFiles:toPaths completion:completion];
+            return;
+        }
+        
+        NSUInteger i = 0;
+        NSError *localError = nil;
+        BOOL unzipSucceeded = YES;
+        for (NSString *tempFilePath in tempPaths) {
+            NSString *toPath = toPaths[i++];
+            NSString *destinationDir = [toPath stringByDeletingLastPathComponent];
+            unzipSucceeded = [SSZipArchive unzipFileAtPath:tempFilePath toDestination:destinationDir overwrite:NO password:nil error:&localError];
+            [fileManager removeItemAtPath:tempFilePath error:NULL];
+            if (!unzipSucceeded) break;
+        }
+        
+        if (completion) completion(unzipSucceeded ? nil : localError);
+    }];
+}
+
+- (NSUInteger)fileUploadMaximumBatchSize
+{
+    return [cloudFileSystem fileUploadMaximumBatchSize];
+}
+
 - (void)uploadLocalFile:(NSString *)fromPath toPath:(NSString *)toPath completion:(CDECompletionBlock)completion
 {
     NSString *tempFilePath = [self tempFilePath];
@@ -148,6 +228,44 @@ static NSString * const CDEZipFilePathExtension = @"cdezip";
         [fileManager removeItemAtPath:tempFilePath error:NULL];
         if (completion) completion(error);
     }];
+}
+
+- (void)uploadLocalFiles:(NSArray *)fromPaths toPaths:(NSArray *)toPaths completion:(CDECompletionBlock)completion
+{
+    NSMutableArray *tempPaths = [[NSMutableArray alloc] init];
+    NSMutableArray *zippedPaths = [[NSMutableArray alloc] init];
+    for (NSUInteger i = 0; i < fromPaths.count; i++) {
+        NSString *fromPath = fromPaths[i];
+        NSString *toPath = toPaths[i];
+        NSString *tempFilePath = [self tempFilePath];
+        [SSZipArchive createZipFileAtPath:tempFilePath withFilesAtPaths:@[fromPath]];
+        NSString *zippedPath = [toPath stringByAppendingPathExtension:CDEZipFilePathExtension];
+        [tempPaths addObject:tempFilePath];
+        [zippedPaths addObject:zippedPath];
+    }
+    
+    [cloudFileSystem uploadLocalFiles:tempPaths toPaths:zippedPaths completion:^(NSError *error) {
+        for (NSString *tempPath in tempPaths) [fileManager removeItemAtPath:tempPath error:NULL];
+        if (completion) completion(error);
+    }];
+}
+
+#pragma mark Message Forwarding
+
+- (BOOL)respondsToSelector:(SEL)aSelector
+{
+    BOOL result = NO;
+    if (@selector(removeItemsAtPaths:completion:) == aSelector ||
+        @selector(repairEnsembleDirectory:completion:) == aSelector ||
+        @selector(performInitialPreparation:) == aSelector ||
+        @selector(fileUploadMaximumBatchSize) == aSelector || @selector(uploadLocalFiles:toPaths:completion:) == aSelector ||
+        @selector(fileDownloadMaximumBatchSize) == aSelector || @selector(downloadFromPaths:toLocalFiles:completion:) == aSelector ) {
+        result = [cloudFileSystem respondsToSelector:aSelector];
+    }
+    else {
+        result = [super respondsToSelector:aSelector];
+    }
+    return result;
 }
 
 @end

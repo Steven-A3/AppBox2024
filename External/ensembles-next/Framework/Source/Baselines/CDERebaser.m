@@ -33,6 +33,12 @@
 @synthesize ensemble = ensemble;
 @synthesize forceRebase = forceRebase;
 
++ (void)initialize
+{
+    if (self == [CDERebaser class]) {
+    }
+}
+
 - (instancetype)initWithEventStore:(CDEEventStore *)newStore
 {
     self = [super init];
@@ -100,11 +106,11 @@
         NSInteger insertedCount = [self countOfNonBaselineObjectChangesOfType:CDEObjectChangeTypeInsert];
         NSInteger updatedCount = [self countOfNonBaselineObjectChangesOfType:CDEObjectChangeTypeUpdate];
         
-        // Estimate size of baseline after rebasing.
+        // Estimate size of event store after rebasing.
         // Assume that an insertion is 1 data unit.
         // A deletion removes at least one insertion, so it is worth 1 data unit.
         // An update is usually to some subset of properties. Assume it has weight 0.1 data units.
-        float postRebaseSize = currentBaselineCount - deletedCount + insertedCount;
+        float postRebaseSize = currentBaselineCount + insertedCount - deletedCount;
         
         // Estimate compaction
         float currentSize = currentBaselineCount + insertedCount + 0.1*updatedCount;
@@ -149,6 +155,15 @@
         [self estimateEventStoreCompactionFollowingRebaseWithCompletion:^(float compaction) {
             BOOL compactionIsAdequate = compaction > 0.5f;
             BOOL result = !hasBaseline || !hasAllDevicesInBaseline || hasManyEvents || (hasAdequateChanges && compactionIsAdequate);
+            
+            // Include a stochastic component to reduce likelihood that two devices rebase at the same time
+            if (result && hasBaseline && hasAllDevicesInBaseline) {
+                const float PercentageAcceptance = 20.0f;
+                float randomUpToOne = arc4random_uniform(RAND_MAX) / (float)RAND_MAX;
+                BOOL stochasticTestPassed = randomUpToOne < PercentageAcceptance/100.0f;
+                result = result && stochasticTestPassed;
+            }
+
             if (completion) completion(result);
         }];
     }];
@@ -228,6 +243,13 @@
         newBaseline.timestamp = [NSDate timeIntervalSinceReferenceDate];
         newBaseline.modelVersion = [self.ensemble.managedObjectModel cde_entityHashesPropertyList];
         
+        // Update store revisions by taking the maximum for each store, and the baseline
+        // Do this before deleting events, so that if there is a crash,
+        // there will be no missing dependency errors generated.
+        newBaseline = (id)[context existingObjectWithID:newBaselineID error:&error];
+        [newBaseline setRevisionSet:newRevisionSet forPersistentStoreIdentifier:persistentStoreId];
+        if (newBaseline.eventRevision.revisionNumber == -1) newBaseline.eventRevision.revisionNumber = 0;
+        
         // Delete events
         for (NSManagedObjectID *eventID in eventIDs) {
             @autoreleasepool {
@@ -243,11 +265,6 @@
                 }
             }
         }
-        
-        // Update store revisions by taking the maximum for each store, and the baseline
-        newBaseline = (id)[context existingObjectWithID:newBaselineID error:&error];
-        [newBaseline setRevisionSet:newRevisionSet forPersistentStoreIdentifier:persistentStoreId];
-        if (newBaseline.eventRevision.revisionNumber == -1) newBaseline.eventRevision.revisionNumber = 0;
 
         // Save
         BOOL saved = [context save:&error];
@@ -370,9 +387,11 @@
     // We will remove any store that hasn't updated since the existing baseline
     NSManagedObjectContext *context = eventStore.managedObjectContext;
     __block CDERevisionSet *baselineRevisionSet;
+    __block CDEGlobalCount currentBaselineCount;
     [context performBlockAndWait:^{
         CDEStoreModificationEvent *baselineEvent = [CDEStoreModificationEvent fetchMostRecentBaselineStoreModificationEventInManagedObjectContext:context];
         baselineRevisionSet = baselineEvent.revisionSet;
+        currentBaselineCount = baselineEvent.globalCount;
     }];
     
     // Baseline count is minimum of global count from all devices
@@ -384,9 +403,14 @@
         CDERevision *baselineRevision = [baselineRevisionSet revisionForPersistentStoreIdentifier:storeId];
         if (baselineRevision && baselineRevision.revisionNumber >= revision.revisionNumber) continue;
         
-        // Find the minimum global count
-        baselineCount = MIN(baselineCount, revision.globalCount);
+        // Find the minimum global count. We try to leave at least one
+        // event for each store. This prevents unnecessary full-integrations.
+        // But the baseline must progress, so some devices could be left behind
+        // and have to do a full integration.
+        if (revision.globalCount <= currentBaselineCount+1) continue;
+        baselineCount = MIN(baselineCount, revision.globalCount-1);
     }
+    
     if (baselineCount == NSNotFound) baselineCount = 0;
     
     return baselineCount;

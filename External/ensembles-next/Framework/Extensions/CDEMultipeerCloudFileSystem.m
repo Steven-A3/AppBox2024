@@ -51,9 +51,11 @@ NSString * const CDEMultipeerMessageTypeKey = @"messageType";
     });
 }
 
-- (id <NSObject, NSCoding, NSCopying>)identityToken
+- (void)fetchUserIdentityWithCompletion:(CDEFetchUserIdentityCallback)completion
 {
-    return @"User";
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (completion) completion(@"User", nil);
+    });
 }
 
 - (void)fileExistsAtPath:(NSString *)path completion:(void(^)(BOOL exists, BOOL isDirectory, NSError *error))completion
