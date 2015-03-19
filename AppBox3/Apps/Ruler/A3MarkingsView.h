@@ -22,5 +22,6 @@ typedef NS_ENUM(NSUInteger, A3MarkingsDirection) {
 
 @property (assign) A3MarkingsType markingsType;
 @property (assign) A3MarkingsDirection markingsDirection;
+@property (assign) BOOL drawPortrait;
 
 @end
