@@ -36,6 +36,8 @@
 @property (nonatomic, strong) UIButton *resetButton;
 @property (nonatomic, strong) UIButton *appsButton;
 @property (assign) CGFloat redLineWidth;
+@property (assign) BOOL needSnapToInteger;
+@property (assign) BOOL resetRedLinePosition;
 
 @end
 
@@ -323,11 +325,14 @@
 
 - (void)moveRedLineToCentimeter:(double)centimeter interfaceOrientation:(BOOL)isPortrait {
 	if (isPortrait) {
-		CGFloat y = _screenHeight - centimeter * _centimeterAsPoints - [self hiddenSpace];
+		CGFloat y;
+//		y = _screenHeight - centimeter * _centimeterAsPoints - [self hiddenSpace];
+		y = _rulerScrollView.contentSize.height - centimeter * _centimeterAsPoints - _rulerScrollView.contentOffset.y;
 		_redLineView.frame = CGRectMake(0, y, _screenWidth, _redLineWidth);
 		_handleView.frame = CGRectMake(_handleView.frame.origin.x, _redLineView.frame.origin.y + 10.0, 40, 50);
 	} else {
-		_redLineView.frame = CGRectMake(centimeter * _centimeterAsPoints - _rulerScrollView.contentOffset.x, 0, _redLineWidth, _screenHeight);
+		CGFloat x = centimeter * _centimeterAsPoints - _rulerScrollView.contentOffset.x - 0.5;
+		_redLineView.frame = CGRectMake(x, 0, _redLineWidth, _screenHeight);
 		_handleView.frame = CGRectMake(_redLineView.frame.origin.x - 10.0, _handleView.frame.origin.y, 40, 50);
 	}
 }
@@ -337,17 +342,28 @@
 	// 초기화할때 scrollView 의 contentOffset 을 변경하는데, animation 이 함께 일어나는 경우, offset 이 정확하지 않아 초기화 위치를 얻을 수가 없어
 	// 별도로 고려하지 않는 멤버를 추가했다. 물론 원래의 멤버에 옵션을 주는 방법도 있었지만, 복잡도를 낮추기 위해서 중복을 감수했다.
 	if (isPortrait) {
-		CGFloat y = _screenHeight - _resetPosition * _centimeterAsPoints;
-		NSString *deviceModel = [A3UIDevice platformString];
-		if ([deviceModel isEqualToString:@"iPad 2"] || [deviceModel isEqualToString:@"iPad 2 (Wi-Fi)"]) {
-			y -= 0.5;
-		}
+		CGFloat y;
+//		y = _screenHeight - _resetPosition * _centimeterAsPoints;
+		y = _rulerScrollView.contentSize.height - _resetPosition * _centimeterAsPoints - _rulerScrollView.contentOffset.y;
+//		NSString *deviceModel = [A3UIDevice platformString];
+//		if ([deviceModel isEqualToString:@"iPad 2"] || [deviceModel isEqualToString:@"iPad 2 (Wi-Fi)"]) {
+//			y -= 0.5;
+//		}
 		_redLineView.frame = CGRectMake(0, y, _screenWidth, _redLineWidth);
+		FNLOGRECT(_redLineView.frame);
 	} else {
-		CGFloat x = _resetPosition * _centimeterAsPoints;
+		CGFloat x = _resetPosition * _centimeterAsPoints - 0.5;
 		_redLineView.frame = CGRectMake(x, 0, _redLineWidth, _screenHeight);
 	}
 	[self updateLabelsForInterfaceOrientation:isPortrait];
+}
+
+- (CGFloat)currentCentimeterForInterfaceOrientation:(BOOL)isPortrait {
+	if (isPortrait) {
+		return (_rulerScrollView.contentSize.height - (_rulerScrollView.contentOffset.y + _screenHeight) + (_screenHeight - _redLineView.frame.origin.y)) / _centimeterAsPoints;
+	} else {
+		return (_rulerScrollView.contentOffset.x + _redLineView.frame.origin.x + 0.5) / _centimeterAsPoints;
+	}
 }
 
 - (void)handlePan:(UIPanGestureRecognizer *)gestureRecognizer {
@@ -364,16 +380,8 @@
 	[self updateLabelsForInterfaceOrientation:IS_PORTRAIT];
 }
 
-- (double)currentCentimeterForInterfaceOrientation:(BOOL)isPortrait {
-	if (isPortrait) {
-		return (_rulerScrollView.contentSize.height - (_rulerScrollView.contentOffset.y + _screenHeight) + (_screenHeight - _redLineView.frame.origin.y)) / _centimeterAsPoints;
-	} else {
-		return (_rulerScrollView.contentOffset.x + _redLineView.frame.origin.x) / _centimeterAsPoints;
-	}
-}
-
 - (void)updateLabelsForInterfaceOrientation:(BOOL)isPortrait {
-	double centimeter = [self currentCentimeterForInterfaceOrientation:isPortrait];
+	CGFloat centimeter = [self currentCentimeterForInterfaceOrientation:isPortrait];
 	_centimeterLabel.text = [NSString stringWithFormat:@"%@ cm", [_numberFormatter stringFromNumber:@(centimeter)]];
 	double inch = centimeter / 2.54;
 	double fraction = inch - floor(inch);
@@ -443,6 +451,14 @@
 		} else {
 			markingsView.frame = CGRectMake(_centimeterAsPoints * (idx + centimeterStartIndex) - 2, _screenHeight - _markingsWidth, _centimeterAsPoints, _markingsWidth);
 		}
+#ifdef DEBUG
+		if (((idx + centimeterStartIndex) % (NSInteger)_resetPosition) == 0) {
+			FNLOG(@"******************* %ld", (long)idx + centimeterStartIndex);
+			FNLOGRECT(markingsView.frame);
+			FNLOGRECT(_redLineView.frame);
+			FNLOG(@"*******************");
+		}
+#endif
 	}];
 
 	[_centimeterLabels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop) {
@@ -498,6 +514,20 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
 	[self layoutMarkingsToInterfaceOrientation:IS_PORTRAIT];
 	[self updateLabelsForInterfaceOrientation:IS_PORTRAIT];
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
+	BOOL isPortrait = IS_PORTRAIT;
+	if (_needSnapToInteger) {
+		_needSnapToInteger = NO;
+		CGFloat currentCentimeter = [self currentCentimeterForInterfaceOrientation:isPortrait];
+		[self moveRedLineToCentimeter:round(currentCentimeter) interfaceOrientation:isPortrait];
+		[self updateLabelsForInterfaceOrientation:isPortrait];
+	} else if (_resetRedLinePosition) {
+		_resetRedLinePosition = NO;
+		[self resetRedLinePositionForInterfaceOrientation:isPortrait];
+		[self updateLabelsForInterfaceOrientation:isPortrait];
+	}
 }
 
 - (NSString *)fractionForInches:(double)fraction {
@@ -601,12 +631,13 @@
 	} else {
 		[_rulerScrollView setContentOffset:CGPointMake(0, 0) animated:YES];
 	}
-	[self resetRedLinePositionForInterfaceOrientation:isPortrait];
-	[self updateLabelsForInterfaceOrientation:isPortrait];
+	_resetRedLinePosition = YES;
 }
 
 - (void)advanceButtonAction {
 	if (IS_PORTRAIT) {
+		CGFloat currentCentimeter = [_centimeterLabel.text doubleValue];
+		_needSnapToInteger = (currentCentimeter - floor(currentCentimeter)) == 0.0;
 		[_rulerScrollView setContentOffset:CGPointMake(0, _rulerScrollView.contentOffset.y - (_screenHeight - _redLineView.frame.origin.y)) animated:YES];
 	} else {
 		[_rulerScrollView setContentOffset:CGPointMake(_rulerScrollView.contentOffset.x + _redLineView.frame.origin.x, 0) animated:YES];
@@ -627,33 +658,41 @@
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[UIView setAnimationsEnabled:NO];
+	
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
 	CGFloat hiddenSpace = [self hiddenSpace];
-	BOOL isPortraitBeforeRotate = IS_PORTRAIT;
-	CGFloat currentCentimeter = [self currentCentimeterForInterfaceOrientation:isPortraitBeforeRotate];
+	BOOL isPortrait = UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
+	CGFloat currentCentimeter = [self currentCentimeterForInterfaceOrientation:isPortrait];
 
 	FNLOG(@"hidden space = %f, currentCentimeter = %f, %ld", hiddenSpace, currentCentimeter, (long)IS_PORTRAIT);
 
-	[self setupBasicMeasureForInterfaceOrientation:!isPortraitBeforeRotate];
+	[self setupBasicMeasureForInterfaceOrientation:isPortrait];
 
-	[self setupScrollViewContentSizeToInterfaceOrientation:!isPortraitBeforeRotate];
-	[self setHiddenSpace:hiddenSpace interfaceOrientation:!isPortraitBeforeRotate];
+	[self setupScrollViewContentSizeToInterfaceOrientation:isPortrait];
+	[self setHiddenSpace:hiddenSpace interfaceOrientation:isPortrait];
 
-	[self layoutMarkingsToInterfaceOrientation:!isPortraitBeforeRotate];
-	[self layoutButtonsToInterfaceOrientation:!isPortraitBeforeRotate];
+	[self layoutMarkingsToInterfaceOrientation:isPortrait];
+	[self layoutButtonsToInterfaceOrientation:isPortrait];
 
 	[_inchesMarkingViews enumerateObjectsUsingBlock:^(A3MarkingsView *view, NSUInteger idx, BOOL *stop) {
-		view.drawPortrait = !isPortraitBeforeRotate;
+		view.drawPortrait = isPortrait;
 		[view setNeedsDisplay];
 	}];
 	[_centimetersMarkingViews enumerateObjectsUsingBlock:^(A3MarkingsView *view, NSUInteger idx, BOOL *stop) {
-		view.drawPortrait = !isPortraitBeforeRotate;
+		view.drawPortrait = isPortrait;
 		[view setNeedsDisplay];
 	}];
 
-	[self moveRedLineToCentimeter:currentCentimeter interfaceOrientation:!isPortraitBeforeRotate];
-	[self updateLabelsForInterfaceOrientation:!isPortraitBeforeRotate];
+	[self moveRedLineToCentimeter:currentCentimeter interfaceOrientation:isPortrait];
+	[self updateLabelsForInterfaceOrientation:isPortrait];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+
+	[UIView setAnimationsEnabled:YES];
 }
 
 @end
