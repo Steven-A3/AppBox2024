@@ -21,6 +21,7 @@
 #import "CurrencyRateItem.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3CalculatorViewController.h"
+#import "A3YahooCurrency.h"
 
 @interface A3CurrencyChartViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate,
 		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewControllerProtocol>
@@ -34,7 +35,6 @@
 @property (nonatomic, weak) IBOutlet UIImageView *chartView;
 @property (nonatomic, strong) NSMutableArray *titleLabels;
 @property (nonatomic, strong) NSMutableArray *valueLabels;
-@property (nonatomic, strong) CurrencyRateItem *sourceItem, *targetItem;
 @property (nonatomic, weak) UITextField *sourceTextField, *targetTextField;
 @property (nonatomic, strong) UIImageView *landscapeChartView;
 @property (nonatomic, strong) UIScrollView *landscapeView;
@@ -43,6 +43,7 @@
 @property (nonatomic, strong) NSMutableArray *constraints;
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, weak) UITextField *calculatorTargetTextField;
+@property (nonatomic, copy) NSString *sourceCurrencyCode, *targetCurrencyCode;
 
 @end
 
@@ -110,6 +111,16 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:kReachabilityChangedNotification object:nil];
 }
 
+- (void)setOriginalSourceCode:(NSString *)originalSourceCode {
+	_originalSourceCode = [originalSourceCode mutableCopy];
+	_sourceCurrencyCode = originalSourceCode;
+}
+
+- (void)setOriginalTargetCode:(NSString *)originalTargetCode {
+	_originalTargetCode = [originalTargetCode mutableCopy];
+	_targetCurrencyCode = originalTargetCode;
+}
+
 - (void)removeObserver {
 	[self removeContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
@@ -131,12 +142,12 @@
 
 - (void)notifyDelegateValueChanged {
 	NSNumber *number = @([_sourceTextField.text floatValueEx]);
-	if ([number isEqualToNumber:self.initialValue] && [_originalSourceCode isEqualToString:self.sourceItem.currencyCode]  && [_originalTargetCode isEqualToString:self.targetItem.currencyCode]) {
+	if ([number isEqualToNumber:self.initialValue] && [_originalSourceCode isEqualToString:_sourceCurrencyCode]  && [_originalTargetCode isEqualToString:_targetCurrencyCode]) {
 		// Nothing changed
 		return;
 	}
-	if ([_delegate respondsToSelector:@selector(chartViewControllerValueChangedChartViewController:valueChanged:newCodes:)]) {
-		[_delegate chartViewControllerValueChangedChartViewController:self valueChanged:number newCodes:@[self.sourceItem, self.targetItem] ];
+	if ([_delegate respondsToSelector:@selector(chartViewControllerValueChangedChartViewController:valueChanged:)]) {
+		[_delegate chartViewControllerValueChangedChartViewController:self valueChanged:number];
 	}
 }
 
@@ -278,7 +289,7 @@
 }
 
 - (void)updateDisplay {
-	self.title = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@", @"%@ to %@"), self.sourceItem.currencyCode, self.targetItem.currencyCode];
+	self.title = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@", @"%@ to %@"), _sourceCurrencyCode, _targetCurrencyCode];
 
 	[self fillCurrencyTable];
 	self.segmentedControl.selectedSegmentIndex = 0;
@@ -287,26 +298,10 @@
 
 #pragma mark - CurrencyItem
 
-- (CurrencyRateItem *)sourceItem {
-	if (!_sourceItem) {
-		NSArray *fetchedResult = [CurrencyRateItem MR_findByAttribute:A3KeyCurrencyCode withValue:_sourceCurrencyCode inContext:[A3AppDelegate instance].cacheStoreManager.context];
-		NSAssert([fetchedResult count], @"%s, %s, CurrencyItem is empty or source currency code is not valid.", __FUNCTION__, __PRETTY_FUNCTION__);
-		_sourceItem = fetchedResult[0];
-	}
-	return _sourceItem;
-}
-
-- (CurrencyRateItem *)targetItem {
-	if (!_targetItem) {
-		NSArray *fetchedResult = [CurrencyRateItem MR_findByAttribute:A3KeyCurrencyCode withValue:_targetCurrencyCode inContext:[A3AppDelegate instance].cacheStoreManager.context];
-		NSAssert([fetchedResult count], @"%s, CurrencyItem is empty or target currency code is not valid.", __PRETTY_FUNCTION__);
-        _targetItem = fetchedResult[0];
-	}
-	return _targetItem;
-}
-
 - (float)conversionRate {
-	return [[A3AppDelegate instance].cacheStoreManager rateForCurrencyCode:self.targetItem.currencyCode] / [[A3AppDelegate instance].cacheStoreManager rateForCurrencyCode:self.sourceItem.currencyCode];
+	A3YahooCurrency *source = [_currencyDataManager dataForCurrencyCode:_sourceCurrencyCode];
+	A3YahooCurrency *target = [_currencyDataManager dataForCurrencyCode:_targetCurrencyCode];
+	return [target.rateToUSD floatValue] / [source.rateToUSD floatValue];
 }
 
 #pragma mark - UITableViewDataSourceDelegate
@@ -331,10 +326,10 @@
 
 //		cell.rateLabel.text = self.sourceItem.currencySymbol;
         cell.rateLabel.text =@"";
-		cell.codeLabel.text = self.sourceItem.currencyCode;
+		cell.codeLabel.text = _sourceCurrencyCode;
 		_sourceTextField = cell.valueField;
 
-		NSNumberFormatter *nf = [self currencyFormatterWithCurrencyCode:self.sourceItem.currencyCode];
+		NSNumberFormatter *nf = [self currencyFormatterWithCurrencyCode:_sourceCurrencyCode];
 		cell.valueField.text = [nf stringFromNumber:_sourceValue];
 	} else {
 		cell.valueField.delegate = self;
@@ -342,7 +337,7 @@
 		cell.valueField.text = self.targetValueString;
 //		cell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, Rate = %0.4f", @"%@, Rate = %0.4f"), self.targetItem.currencySymbol, self.conversionRate];
         cell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Rate = %0.4f", @"Rate = %0.4f"), self.conversionRate];
-		cell.codeLabel.text = _targetItem.currencyCode;
+		cell.codeLabel.text = _targetCurrencyCode;
 		_targetTextField = cell.valueField;
 	}
 	return cell;
@@ -356,7 +351,7 @@
 - (NSString *)targetValueString {
 	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
 	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
-	[nf setCurrencyCode:self.targetItem.currencyCode];
+	[nf setCurrencyCode:_targetCurrencyCode];
 	if (IS_IPHONE) {
 		[nf setCurrencySymbol:@""];
 	}
@@ -370,7 +365,7 @@
 - (NSString *)sourceValueString {
 	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
 	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
-	[nf setCurrencyCode:self.sourceItem.currencyCode];
+	[nf setCurrencyCode:_sourceCurrencyCode];
 	if (IS_IPHONE) {
 		[nf setCurrencySymbol:@""];
 	}
@@ -411,10 +406,8 @@
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
 	if (_selectionInSource) {
 		self.sourceCurrencyCode = selectedItem;
-		_sourceItem = nil;
 	} else {
 		self.targetCurrencyCode = selectedItem;
-		_targetItem = nil;
 	}
 	[self.tableView reloadData];
 	[self updateDisplay];
@@ -475,9 +468,9 @@
 	NSNumberFormatter *nf;
 	if (textField == _sourceTextField) {
 		_sourceValue = @(value);
-		nf = [self currencyFormatterWithCurrencyCode:_sourceItem.currencyCode];
+		nf = [self currencyFormatterWithCurrencyCode:_sourceCurrencyCode];
 	} else if (textField == _targetTextField) {
-		nf = [self currencyFormatterWithCurrencyCode:self.targetItem.currencyCode];
+		nf = [self currencyFormatterWithCurrencyCode:_targetCurrencyCode];
 	}
 	textField.text = [nf stringFromNumber:@(value)];
 
@@ -566,7 +559,7 @@
 - (void)fillCurrencyTable {
 	float rate = self.conversionRate;
 	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
-	[nf setCurrencyCode:self.sourceItem.currencyCode];
+	[nf setCurrencyCode:_sourceCurrencyCode];
     [nf setNumberStyle:NSNumberFormatterCurrencyStyle];
 	NSArray *titles = @[@5, @10, @25, @50, @100];
 	NSInteger index = 0;
@@ -574,7 +567,7 @@
 		titleLabel.text = [nf stringFromNumber:titles[index]];
 		index++;
 	}
-	[nf setCurrencyCode:self.targetItem.currencyCode];
+	[nf setCurrencyCode:_targetCurrencyCode];
 	index = 0;
 	for (UILabel *valueLabel in _valueLabels) {
 		valueLabel.text = [nf stringFromNumber:@([titles[index] floatValue] * rate)];
@@ -587,7 +580,7 @@
 - (NSURL *)urlForChartImage {
 	NSArray *types = @[@"1d", @"5d", @"1m", @"5m", @"1y"];
 	NSString *string = [NSString stringWithFormat:@"http://chart.finance.yahoo.com/z?s=%@%@=x&t=%@&z=%@&region=%@&lang=%@",
-												  self.sourceItem.currencyCode, self.targetItem.currencyCode,
+												  _sourceCurrencyCode, _targetCurrencyCode,
 												  types[(NSUInteger) self.segmentedControl.selectedSegmentIndex],
 												  IS_IPHONE || (IS_IPHONE && !IS_LANDSCAPE)  ? @"m" : @"l",
 												  [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode],

@@ -8,18 +8,23 @@
 
 #import "A3CurrencyDataManager.h"
 #import "NSMutableArray+MoveObject.h"
-#import "CurrencyRateItem.h"
 #import "AFHTTPRequestOperation.h"
 #import "A3YahooCurrency.h"
 #import "Reachability.h"
 #import "A3UserDefaultsKeys.h"
-#import "A3SyncManager.h"
-#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "CurrencyFavorite.h"
 #import "NSString+conversion.h"
 
 NSString *const A3KeyCurrencyCode = @"currencyCode";
 NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRatesUdpated";
+NSString *const A3NotificationCurrencyRatesUpdateFailed = @"A3NotificationCurrencyRatesUpdateFailed";
+NSString *const A3CurrencyRatesDataFilename = @"currencyRates";
+
+@interface A3CurrencyDataManager ()
+
+@property (nonatomic, strong) NSArray *dataArray;
+
+@end
 
 @implementation A3CurrencyDataManager
 
@@ -33,7 +38,7 @@ NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRat
 			NSArray *knownNames = @[@"Copper Highgrade", @"Zambian kwacha", @"Offshore Renminbi", @"Special Drawing Rights", @"Unidad de Fomento"];
 			name = [knownNames objectAtIndex:index];
 		} else {
-			FNLOG(@"Failed to name resolution.");
+			FNLOG(@"Failed to name resolutiona.");
 		}
 	}
 	return name;
@@ -94,39 +99,57 @@ NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRat
 	return [NSURLRequest requestWithURL:requestURL];
 }
 
-+ (void)updateCurrencyRatesInContext:(NSManagedObjectContext *)context {
+- (void)updateCurrencyRatesInContext:(NSManagedObjectContext *)context {
 	if (![[self class] yahooNetworkAvailable]) return;
 
 	NSURLRequest *request = [[self class] yahooAllCurrenciesURLRequest];
 
 	AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+	if ([operation respondsToSelector:@selector(setQualityOfService:)]) {
+		[operation setQualityOfService:NSQualityOfServiceUserInteractive];
+	}
 	operation.responseSerializer = [AFJSONResponseSerializer serializer];
 
-	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id JSON) {
-		NSDictionary *list = JSON[@"list"];
-		NSArray *yahooArray = list[@"resources"];
-		[yahooArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-			A3YahooCurrency *yahoo = [[A3YahooCurrency alloc] initWithObject:obj];
+	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *requestOperation, id JSON) {
+				NSDictionary *list = JSON[@"list"];
+				NSArray *yahooArray = list[@"resources"];
 
-			CurrencyRateItem *entity = [CurrencyRateItem MR_findFirstByAttribute:A3KeyCurrencyCode withValue:yahoo.currencyCode inContext:context];
+				NSString *path = [A3CurrencyRatesDataFilename pathInCachesDataDirectory];
+				[yahooArray writeToFile:path atomically:YES];
 
-			if (!entity) {
-				entity = [CurrencyRateItem MR_createEntityInContext:context];
-				entity.currencyCode = yahoo.currencyCode;
-				entity.name = yahoo.name;
+				[context MR_saveToPersistentStoreAndWait];
+
+				[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdated object:nil];
+
+				self.dataArray = nil;
+
+				FNLOG(@"Update currency rate done successfully.");
 			}
-			entity.rateToUSD = yahoo.rateToUSD;
-			entity.updateDate = yahoo.updated;
-		}];
-
-		[context MR_saveToPersistentStoreAndWait];
-
-		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdated object:nil];
-	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		FNLOG(@"AFJSONRequestOperation failed getting Yahoo all currency list.");
-	}];
+									 failure:^(AFHTTPRequestOperation *requestOperation, NSError *error) {
+										 FNLOG(@"Update currency rate failed.");
+										 [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdateFailed object:nil];
+									 }];
 
 	[operation start];
+}
+
+- (A3YahooCurrency *)dataForCurrencyCode:(NSString *)code {
+	if (!_dataArray) {
+		NSString *path = [A3CurrencyRatesDataFilename pathInCachesDataDirectory];
+		if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+			path = [[NSBundle mainBundle] pathForResource:A3CurrencyRatesDataFilename ofType:nil];
+		}
+		_dataArray = [NSArray arrayWithContentsOfFile:path];
+	}
+	__block A3YahooCurrency *result = nil;
+	[_dataArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		A3YahooCurrency *currencyData = [[A3YahooCurrency alloc] initWithObject:obj];
+		if ([currencyData.currencyCode isEqualToString:code]) {
+			result = currencyData;
+			*stop = YES;
+		}
+	}];
+	return result;
 }
 
 @end
