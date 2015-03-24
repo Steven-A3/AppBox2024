@@ -205,6 +205,19 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 + (NSArray *)walletCategoriesFilterDoNotShow:(BOOL)hideDoNotShow inContext:(NSManagedObjectContext *)context {
 	NSManagedObjectContext *workingContext = context ? context : [NSManagedObjectContext MR_defaultContext];
 	if (hideDoNotShow) {
+		NSArray *categories = [WalletCategory MR_findAllSortedBy:@"order" ascending:YES inContext:workingContext];
+		BOOL dataUpdated = NO;
+		for (NSInteger idx = 0; idx < MIN(IS_IPHONE ? 4 : 7, [categories count]); idx++) {
+			WalletCategory *category = categories[idx];
+			if (category.doNotShow.boolValue) {
+				category.doNotShow = @NO;
+				dataUpdated = YES;
+			}
+		}
+		if (dataUpdated) {
+			[workingContext MR_saveToPersistentStoreAndWait];
+		}
+		
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K != %@", @"doNotShow", @(hideDoNotShow)];
 		return [WalletCategory MR_findAllSortedBy:@"order" ascending:YES withPredicate:predicate inContext:workingContext];
 	} else {
