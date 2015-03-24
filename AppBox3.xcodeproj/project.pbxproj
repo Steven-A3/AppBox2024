@@ -134,6 +134,16 @@
 		680E837119D41D83007CF12C /* A3SettingsStartingAppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680E837019D41D83007CF12C /* A3SettingsStartingAppViewController.m */; };
 		680FF7131980B88D00C736F5 /* A3SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 680FF7121980B88D00C736F5 /* A3SyncManager.m */; };
 		6810C64619D9246F00BE75A9 /* Flashlight.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6810C64519D9246F00BE75A9 /* Flashlight.xcassets */; };
+		681170911AC03D4C0079F4F9 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A281839CD7F007C97EE /* AFHTTPRequestOperation.m */; };
+		681170921AC03D4C0079F4F9 /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A2A1839CD7F007C97EE /* AFHTTPRequestOperationManager.m */; };
+		681170931AC03D4C0079F4F9 /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A2C1839CD7F007C97EE /* AFHTTPSessionManager.m */; };
+		681170941AC03D4C0079F4F9 /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A2F1839CD7F007C97EE /* AFNetworkReachabilityManager.m */; };
+		681170951AC03D4C0079F4F9 /* AFSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A311839CD7F007C97EE /* AFSecurityPolicy.m */; };
+		681170961AC03D4C0079F4F9 /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A331839CD7F007C97EE /* AFURLConnectionOperation.m */; };
+		681170971AC03D4C0079F4F9 /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A351839CD7F007C97EE /* AFURLRequestSerialization.m */; };
+		681170981AC03D4C0079F4F9 /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A371839CD7F007C97EE /* AFURLResponseSerialization.m */; };
+		681170991AC03D4C0079F4F9 /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A391839CD7F007C97EE /* AFURLSessionManager.m */; };
+		6811709F1AC041F60079F4F9 /* currencyRates in Resources */ = {isa = PBXBuildFile; fileRef = 6811709E1AC041F60079F4F9 /* currencyRates */; };
 		68143CF718E3EC1F00569691 /* appbox.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68143CC518E3EC1F00569691 /* appbox.ttf */; };
 		68143CF818E3EC1F00569691 /* Digit.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68143CC618E3EC1F00569691 /* Digit.ttf */; };
 		68143CF918E3EC1F00569691 /* REGISTER.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 68143CC718E3EC1F00569691 /* REGISTER.TTF */; };
@@ -1994,6 +2004,7 @@
 		680FF7111980B88D00C736F5 /* A3SyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SyncManager.h; path = AppDelegate/A3SyncManager.h; sourceTree = "<group>"; };
 		680FF7121980B88D00C736F5 /* A3SyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SyncManager.m; path = AppDelegate/A3SyncManager.m; sourceTree = "<group>"; };
 		6810C64519D9246F00BE75A9 /* Flashlight.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Flashlight.xcassets; path = "AppBox3/Asset Catalogs/Flashlight.xcassets"; sourceTree = "<group>"; };
+		6811709E1AC041F60079F4F9 /* currencyRates */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = currencyRates; path = "AppBox3/Data Management/currencyRates"; sourceTree = "<group>"; };
 		681361331A6CADC000E13F51 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3CurrencyChartViewController.strings; sourceTree = "<group>"; };
 		681361341A6CADC000E13F51 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3CurrencySettings.strings; sourceTree = "<group>"; };
 		681361351A6CADC000E13F51 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LoanCalculatorPadStoryBoard.strings; sourceTree = "<group>"; };
@@ -4559,6 +4570,7 @@
 		683B94BE15EB230000575377 /* {Resources} */ = {
 			isa = PBXGroup;
 			children = (
+				6811709E1AC041F60079F4F9 /* currencyRates */,
 				684609C0194E161C00FD5F53 /* unit.strings */,
 				684609C2194E161C00FD5F53 /* unitShort.strings */,
 				684609B4194E155500FD5F53 /* holidays.strings */,
@@ -6654,6 +6666,7 @@
 				68F14FFB19485E8500159EAD /* A3DaysCounterSetupEndRepeatViewController.xib in Resources */,
 				68F14FCB19485E8500159EAD /* A3DaysCounterEventListViewController.xib in Resources */,
 				68F14FD419485E8500159EAD /* A3DaysCounterAddEventDateCell.xib in Resources */,
+				6811709F1AC041F60079F4F9 /* currencyRates in Resources */,
 				6886791C18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib in Resources */,
 				68F1C8C518D7F37D009FAE8A /* A3LadyCalendarChartCell.xib in Resources */,
 				684609C4194E161C00FD5F53 /* unit.strings in Resources */,
@@ -8175,25 +8188,34 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				681170971AC03D4C0079F4F9 /* AFURLRequestSerialization.m in Sources */,
+				681170961AC03D4C0079F4F9 /* AFURLConnectionOperation.m in Sources */,
 				6876D71217A75E5A00E16991 /* A3CurrencyItemTest.m in Sources */,
 				6888090E17C63F57008B2856 /* A3FlickrTest.m in Sources */,
 				68DBF05217CB8AAB009CAC33 /* HolidayData+Africa.m in Sources */,
+				681170991AC03D4C0079F4F9 /* AFURLSessionManager.m in Sources */,
 				6876D71117A75E5A00E16991 /* A3NSMutableArrayCategory.m in Sources */,
 				68E6D12018A48C0F00109183 /* A3FormatterTest.m in Sources */,
 				685946D118C371C800528190 /* A3SpeechTest.m in Sources */,
+				681170951AC03D4C0079F4F9 /* AFSecurityPolicy.m in Sources */,
+				681170911AC03D4C0079F4F9 /* AFHTTPRequestOperation.m in Sources */,
 				68DBF05017CB8AA0009CAC33 /* HolidayData.m in Sources */,
 				683A291B19A1B25200265484 /* A3DateCalculationTest.m in Sources */,
 				8079DFBC190F93B90084BD89 /* A3DateLunarTest.m in Sources */,
 				68DBF05417CB8AAB009CAC33 /* HolidayData+Asia.m in Sources */,
 				689E9856197C1BB5003710C3 /* A3UnitDataManager.m in Sources */,
 				68DBF04B17CB884F009CAC33 /* A3HolidaysTest.m in Sources */,
+				681170931AC03D4C0079F4F9 /* AFHTTPSessionManager.m in Sources */,
 				689E9855197C1B99003710C3 /* A3UnitNamesTest.m in Sources */,
 				68DBF05717CB8AAB009CAC33 /* HolidayData+MiddleEast.m in Sources */,
 				6819A86F18A6092B00E63C8B /* NSDateFormatter+A3Addition.m in Sources */,
+				681170921AC03D4C0079F4F9 /* AFHTTPRequestOperationManager.m in Sources */,
 				68143D7A18E4FFBB00569691 /* NSDate+TimeAgo.m in Sources */,
 				68DBF05517CB8AAB009CAC33 /* HolidayData+Country.m in Sources */,
 				6876D71317A75E5A00E16991 /* A3CurrencyViewControllerTest.m in Sources */,
 				68DBF05617CB8AAB009CAC33 /* HolidayData+Europe.m in Sources */,
+				681170941AC03D4C0079F4F9 /* AFNetworkReachabilityManager.m in Sources */,
+				681170981AC03D4C0079F4F9 /* AFURLResponseSerialization.m in Sources */,
 				68DBF05317CB8AAB009CAC33 /* HolidayData+America.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

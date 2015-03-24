@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "finger_drag.png"
+      "filename" : "horizontal-drag.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "finger_drag@2x.png"
+      "filename" : "horizontal-drag@2x.png"
     },
     {
       "idiom" : "universal",
