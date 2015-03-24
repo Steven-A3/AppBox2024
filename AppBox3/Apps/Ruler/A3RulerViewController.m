@@ -26,6 +26,7 @@
 @property (assign) NSInteger numberOfCentimetersInScreen;
 @property (assign) NSInteger numberOfInchesInScreen;
 @property (nonatomic, strong) UIView *redLineView;
+@property (nonatomic, strong) UIView *redLineGlassView;
 @property (nonatomic, strong) NSNumberFormatter *numberFormatter;
 @property (nonatomic, strong) UILabel *centimeterLabel;
 @property (nonatomic, strong) UILabel *inchLabel;
@@ -60,6 +61,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
+	self.automaticallyAdjustsScrollViewInsets = NO;
+	
 	UIImage *image = [[UIImage alloc] init];
 	[self.navigationController.navigationBar setBackgroundImage:image forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 	[self.navigationController.navigationBar setShadowImage:image];
@@ -72,6 +75,34 @@
 	
 	[self setupBasicMeasureForInterfaceOrientation:IS_PORTRAIT];
 	[self setupSubviews];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(drawerStateChanged) name:A3DrawerStateChanged object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
+}
+
+- (void)mainMenuDidHide {
+	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+}
+
+- (void)drawerStateChanged {
+	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+}
+
+- (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3DrawerStateChanged object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+		[self removeObserver];
+	}
+}
+
+- (void)prepareClose {
+	[self removeObserver];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -113,7 +144,7 @@
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
 		_centimeterAsPoints = (568.0 / 1334.0) * pixelsInCentimeter;
 		_inchAsPoints = (568.0 / 1334.0) * pixelsInInch;
-		_resetPosition = 11.0;
+		_resetPosition = 9.5;
 		_redLineWidth = 0.5;
 	} else if ([model isEqualToString:@"iPhone 6 Plus"]) {
 		CGFloat pixelsInInch = 403.5;	// Original value = 401
@@ -123,7 +154,7 @@
 		_resetPosition = 11.0;
 		_redLineWidth = 0.5;
 	} else if ([model isEqualToString:@"iPad 2"] || [model isEqualToString:@"iPad 2 (Wi-Fi)"]) {
-		CGFloat pixelsInInch = 132.4;	// Announced PPI: 132
+		CGFloat pixelsInInch = 132.7;	// Announced PPI: 132
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
 		_centimeterAsPoints = (1024.0 / 1024.0) * pixelsInCentimeter;
 		_inchAsPoints = (1024.0 / 1024.0) * pixelsInInch;
@@ -168,13 +199,13 @@
 //		_inchAsPoints = (568.0 / 1920.0) * pixelsInInch;
 //		_resetPosition = 10.0;
 //		_redLineWidth = 0.5;
-
-		CGFloat pixelsInInch = 132.4;	// Announced PPI: 132
+		// iPhone 6
+		CGFloat pixelsInInch = 327.5;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (1024.0 / 1024.0) * pixelsInCentimeter;
-		_inchAsPoints = (1024.0 / 1024.0) * pixelsInInch;
-		_resetPosition = 18.0;
-		_redLineWidth = 1.0;
+		_centimeterAsPoints = (568.0 / 1334.0) * pixelsInCentimeter;
+		_inchAsPoints = (568.0 / 1334.0) * pixelsInInch;
+		_resetPosition = 9.5;
+		_redLineWidth = 0.5;
 	}
 
 	CGRect screenBounds = [[UIScreen mainScreen] bounds];
@@ -267,6 +298,12 @@
 	[self.view addSubview:_redLineView];
 	[self resetRedLinePositionForInterfaceOrientation:IS_PORTRAIT];
 
+	_redLineGlassView = [UIView new];
+	_redLineGlassView.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:128.0/255.0 blue:1.0/255.0 alpha:0.3];
+	_redLineGlassView.layer.borderWidth = 1.0;
+	_redLineGlassView.layer.borderColor = [UIColor colorWithWhite:0.0 alpha:0.05].CGColor;
+	[self.view addSubview:_redLineGlassView];
+
 	_centimeterLabel = [UILabel new];
 	_centimeterLabel.font = [UIFont systemFontOfSize:18.0];
 	_centimeterLabel.textAlignment = NSTextAlignmentRight;
@@ -282,16 +319,15 @@
 	[self updateLabelsForInterfaceOrientation:IS_PORTRAIT];
 
 	_fingerDragView = [UIImageView new];
-	_fingerDragView.userInteractionEnabled = YES;
 	_fingerDragView.image = [UIImage imageNamed:@"finger_drag"];
 	[self.view addSubview:_fingerDragView];
 
 	_fingerDragViewGestureRecognizer = [UIPanGestureRecognizer new];
 	[_fingerDragViewGestureRecognizer addTarget:self action:@selector(handleDrag:)];
-	[_fingerDragView addGestureRecognizer:_fingerDragViewGestureRecognizer];
+	[_redLineGlassView addGestureRecognizer:_fingerDragViewGestureRecognizer];
 
 	_rulerDragView = [UIImageView new];
-	_rulerDragView.image = [UIImage imageNamed:@"finger_drag"];
+	_rulerDragView.image = [UIImage imageNamed:@"horizontal_drag"];
 	[_rulerScrollView addSubview:_rulerDragView];
 	[self layoutRulerDragViewToInterfaceOrientation:IS_PORTRAIT];
 
@@ -413,6 +449,13 @@
 			_inchLabel.textAlignment = NSTextAlignmentRight;
 		}
 		_fingerDragView.frame = CGRectMake(_screenWidth * 0.6, _redLineView.frame.origin.y - 21.0, 42.0, 42.0);
+
+		[_redLineGlassView remakeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(@-1);
+			make.centerY.equalTo(_redLineView.centerY);
+			make.width.equalTo(@(_screenWidth + 2.0));
+			make.height.equalTo(@(_centimeterAsPoints));
+		}];
 	} else {
 		_centimeterLabel.transform = CGAffineTransformIdentity;
 		_inchLabel.transform = CGAffineTransformIdentity;
@@ -434,6 +477,13 @@
 			_inchLabel.textAlignment = NSTextAlignmentRight;
 		}
 		_fingerDragView.frame = CGRectMake(_redLineView.frame.origin.x - 21.0, _screenHeight * 0.6, 42, 42);
+
+		[_redLineGlassView remakeConstraints:^(MASConstraintMaker *make) {
+			make.centerX.equalTo(_redLineView.centerX);
+			make.top.equalTo(@(-1));
+			make.width.equalTo(@(_centimeterAsPoints));
+			make.height.equalTo(@(_screenHeight + 2.0));
+		}];
 	}
 }
 
@@ -524,7 +574,9 @@
 	if (_needSnapToInteger) {
 		_needSnapToInteger = NO;
 		CGFloat currentCentimeter = [self currentCentimeterForInterfaceOrientation:isPortrait];
-		[self moveRedLineToCentimeter:round(currentCentimeter) interfaceOrientation:isPortrait];
+		currentCentimeter = roundf(currentCentimeter * 10.0) / 10.0;
+		FNLOG(@"%f", currentCentimeter);
+		[self moveRedLineToCentimeter:currentCentimeter interfaceOrientation:isPortrait];
 		[self updateLabelsForInterfaceOrientation:isPortrait];
 	} else if (_resetRedLinePosition) {
 		_resetRedLinePosition = NO;
@@ -556,11 +608,23 @@
 
 - (void)layoutRulerDragViewToInterfaceOrientation:(BOOL)toPortrait {
 	if (toPortrait) {
-		_rulerDragView.transform = CGAffineTransformMakeRotation(M_PI/2.0);
-		_rulerDragView.frame = CGRectMake(_screenWidth / 2.0 - 21.0, _rulerScrollView.contentSize.height - _screenHeight / 2.0 - 21.0, 42, 42);
+		_rulerDragView.transform = CGAffineTransformMakeRotation(-M_PI/2.0);
+		CGFloat positionFromStart;
+		if (IS_IPHONE) {
+			positionFromStart = _rulerScrollView.contentSize.height - _screenHeight * 0.3 - 64.0;
+		} else {
+			positionFromStart = _rulerScrollView.contentSize.height - _screenHeight / 2.0 - 64.0;
+		}
+		_rulerDragView.frame = CGRectMake(_screenWidth * 0.7 - 64.0, positionFromStart, 128, 128);
 	} else {
-		_rulerDragView.transform = CGAffineTransformMakeRotation(M_PI);
-		_rulerDragView.frame = CGRectMake(_screenWidth / 2.0 - 21, _screenHeight / 2.0 - 21, 42, 42);
+		_rulerDragView.transform = CGAffineTransformIdentity;
+		CGFloat positionFromStart;
+		if (IS_IPHONE) {
+			positionFromStart = _screenWidth * 0.3 - 64.0;
+		} else {
+			positionFromStart = _screenWidth / 2.0 - 64.0;
+		}
+		_rulerDragView.frame = CGRectMake(positionFromStart, _screenHeight * 0.7 - 64.0, 128, 128);
 	}
 }
 
@@ -661,8 +725,7 @@
 }
 
 - (void)advanceButtonAction {
-	CGFloat currentCentimeter = [_centimeterLabel.text doubleValue];
-	_needSnapToInteger = (currentCentimeter - floor(currentCentimeter)) == 0.0;
+	_needSnapToInteger = YES;
 	if (IS_PORTRAIT) {
 		[_rulerScrollView setContentOffset:CGPointMake(0, _rulerScrollView.contentOffset.y - (_screenHeight - _redLineView.frame.origin.y)) animated:YES];
 	} else {
