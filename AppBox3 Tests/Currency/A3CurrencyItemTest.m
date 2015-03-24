@@ -10,6 +10,9 @@
 #define EXP_SHORTHAND
 #import "Expecta.h"
 #import "NSString+conversion.h"
+#import "AFNetworking.h"
+
+NSString *const A3CurrencyRatesDataFilename = @"currencyRates";
 
 @interface A3CurrencyItemTest : XCTestCase
 
@@ -33,6 +36,31 @@
 
 - (void)testKorean {
     NSLog(@"%@", [@"초성분리" componentsSeparatedByKorean]);
+}
+
+- (void)testDownloadCurrencyDates {
+	XCTestExpectation* expectation = [self expectationWithDescription:@"Download datafile"];
+	
+	NSURL *requestURL = [NSURL URLWithString:@"http://finance.yahoo.com/webservice/v1/symbols/allcurrencies/quote?format=json"];
+
+	NSURLRequest *request = [NSURLRequest requestWithURL:requestURL];
+	AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+	operation.responseSerializer = [AFJSONResponseSerializer serializer];
+
+	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id JSON) {
+		NSDictionary *list = JSON[@"list"];
+		NSArray *yahooArray = list[@"resources"];
+		NSString *path = [A3CurrencyRatesDataFilename pathInDocumentDirectory];
+		NSLog(@"%@", path);
+		[yahooArray writeToFile:path atomically:YES];
+
+		[expectation fulfill];
+	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+	}];
+
+	[operation start];
+	
+	[self waitForExpectationsWithTimeout:3 handler:nil];
 }
 
 @end
