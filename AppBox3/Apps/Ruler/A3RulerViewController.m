@@ -319,7 +319,12 @@
 	[self updateLabelsForInterfaceOrientation:IS_PORTRAIT];
 
 	_fingerDragView = [UIImageView new];
-	_fingerDragView.image = [UIImage imageNamed:@"finger_drag"];
+	if (IS_IOS7) {
+		UIImage *image = [[UIImage imageNamed:@"finger_drag"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+		_fingerDragView.image = image;
+	} else {
+		_fingerDragView.image = [UIImage imageNamed:@"finger_drag"];
+	}
 	[self.view addSubview:_fingerDragView];
 
 	_fingerDragViewGestureRecognizer = [UIPanGestureRecognizer new];
@@ -327,7 +332,13 @@
 	[_redLineGlassView addGestureRecognizer:_fingerDragViewGestureRecognizer];
 
 	_rulerDragView = [UIImageView new];
-	_rulerDragView.image = [UIImage imageNamed:@"horizontal_drag"];
+	if (IS_IOS7) {
+		UIImage *image = [[UIImage imageNamed:@"horizontal_drag"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+		_rulerDragView.image = image;
+	} else {
+		_rulerDragView.image = [UIImage imageNamed:@"horizontal_drag"];
+	}
+
 	[_rulerScrollView addSubview:_rulerDragView];
 	[self layoutRulerDragViewToInterfaceOrientation:IS_PORTRAIT];
 
@@ -421,14 +432,18 @@
 
 - (void)updateLabelsForInterfaceOrientation:(BOOL)isPortrait {
 	CGFloat centimeter = [self currentCentimeterForInterfaceOrientation:isPortrait];
-	_centimeterLabel.text = [NSString stringWithFormat:@"%@ cm", [_numberFormatter stringFromNumber:@(centimeter)]];
+	_centimeterLabel.text = [NSString stringWithFormat:@"%@ cm",
+					[_numberFormatter stringFromNumber:@(centimeter)]];
 	double inch = centimeter / 2.54;
 	double fraction = inch - floor(inch);
 	NSString *inchFractionString = [self fractionForInches:fraction];
 	if ([inchFractionString length]) {
 		inchFractionString = [NSString stringWithFormat:@"(%@)", inchFractionString];
 	}
-	_inchLabel.text = [NSString stringWithFormat:@"%@%@ inches", [_numberFormatter stringFromNumber:@(inch)], inchFractionString];
+	_inchLabel.text = [NSString stringWithFormat:@"%@%@ %@",
+					[_numberFormatter stringFromNumber:@(inch)],
+					inchFractionString,
+					NSLocalizedStringFromTable(@"inches", @"unit", nil)];
 
 	if (isPortrait) {
 		_centimeterLabel.transform = CGAffineTransformMakeRotation(-M_PI / 2);
@@ -594,13 +609,13 @@
 
 - (void)addButtons {
 	// Apps, Accumulate, Reset
-	_advanceButton = [self buttonWithTitle:@"Advance" topOffset:_screenHeight * 0.8];
+	_advanceButton = [self buttonWithTitle:NSLocalizedString(@"Advance", @"Advance") topOffset:_screenHeight * 0.8];
 	[_advanceButton addTarget:self action:@selector(advanceButtonAction) forControlEvents:UIControlEventTouchUpInside];
 	
-	_resetButton = [self buttonWithTitle:@"Reset" topOffset:_screenHeight * 0.55];
+	_resetButton = [self buttonWithTitle:NSLocalizedString(@"Reset", @"Reset") topOffset:_screenHeight * 0.55];
 	[_resetButton addTarget:self action:@selector(resetButtonAction) forControlEvents:UIControlEventTouchUpInside];
 
-	_appsButton = [self buttonWithTitle:@"Apps" topOffset:_screenHeight * 0.3];
+	_appsButton = [self buttonWithTitle:NSLocalizedString(@"Apps", @"Apps") topOffset:_screenHeight * 0.3];
 	[_appsButton addTarget:self action:@selector(appsButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 
 	[self layoutButtonsToInterfaceOrientation:IS_PORTRAIT];
@@ -609,21 +624,18 @@
 - (void)layoutRulerDragViewToInterfaceOrientation:(BOOL)toPortrait {
 	if (toPortrait) {
 		_rulerDragView.transform = CGAffineTransformMakeRotation(-M_PI/2.0);
-		CGFloat positionFromStart;
+		CGFloat positionStartFrom;
 		if (IS_IPHONE) {
-			positionFromStart = _rulerScrollView.contentSize.height - _screenHeight * 0.3 - 64.0;
+			positionStartFrom = _rulerScrollView.contentSize.height - _screenHeight * 0.3 - 64.0;
 		} else {
-			positionFromStart = _rulerScrollView.contentSize.height - _screenHeight / 2.0 - 64.0;
+			positionStartFrom = _rulerScrollView.contentSize.height - _screenHeight / 2.0 - 64.0;
 		}
-		_rulerDragView.frame = CGRectMake(_screenWidth * 0.7 - 64.0, positionFromStart, 128, 128);
+		_rulerDragView.frame = CGRectMake(_screenWidth * 0.7 - 64.0, positionStartFrom, 128, 128);
 	} else {
+		// iPhone은 Landscape를 지원하지 않는다.
 		_rulerDragView.transform = CGAffineTransformIdentity;
 		CGFloat positionFromStart;
-		if (IS_IPHONE) {
-			positionFromStart = _screenWidth * 0.3 - 64.0;
-		} else {
-			positionFromStart = _screenWidth / 2.0 - 64.0;
-		}
+		positionFromStart = _screenWidth / 2.0 - 64.0;
 		_rulerDragView.frame = CGRectMake(positionFromStart, _screenHeight * 0.7 - 64.0, 128, 128);
 	}
 }
@@ -693,12 +705,16 @@
 }
 
 - (void)setButton:(UIButton *)button constraintAt:(CGFloat)position {
-	[button remakeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(self.view.left).with.offset(40.0);
-		make.top.equalTo(self.view.top).with.offset(position);
-		make.width.equalTo(@120);
-		make.height.equalTo(@30);
-	}];
+	if (IS_IOS7) {
+		button.frame = CGRectMake(40.0, position, 120, 30);
+	} else {
+		[button remakeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(self.view.left).with.offset(40.0);
+			make.top.equalTo(self.view.top).with.offset(position);
+			make.width.equalTo(@120);
+			make.height.equalTo(@30);
+		}];
+	}
 }
 
 - (void)resetButtonAction {

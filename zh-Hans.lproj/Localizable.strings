@@ -34,6 +34,7 @@
 "Magnifier" = "放大镜";
 "Flashlight" = "手电灯";
 "Random" = "随机数据生成";
+"Ruler" = "尺子";
 
 "Select Currency" = "选取货币";
 "Principal" = "本金";
@@ -957,3 +958,6 @@
 "Camera access denied" = "相机不能使用";
 "To turn on the LED requires camera access." = "要打开LED，需要摄像头的访问。";
 "%@ requires camera access." = "%@，需要摄像头的访问。";
+
+"Advance" = "推进";
+"Reset" = "重置";

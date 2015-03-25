@@ -34,6 +34,7 @@
 "Magnifier" = "Lupe";
 "Flashlight"  = "Taschenlampe";
 "Random"  = "Zufallszahl";
+"Ruler" = "Lineal";
 
 "Select Currency" = "Währung wählen";
 "Principal" = "Betrag";
@@ -952,3 +953,6 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 "Camera access denied" = "Kamera der Zugriff verweigert";
 "To turn on the LED requires camera access." = "Um die LED einschalten erfordert Zugriff auf die Kamera.";
 "%@ requires camera access." = "%@ erfordert Zugriff auf die Kamera.";
+
+"Advance" = "Vorrücken";
+"Reset" = "Zurücksetzen";

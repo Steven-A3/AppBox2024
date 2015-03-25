@@ -34,6 +34,7 @@
 "Magnifier" = "Magnifier";
 "Flashlight" = "Lampe de poche";
 "Random" = "Aléatoire";
+"Ruler" = "Règle";
 
 "Select Currency" = "Sélectionner la devise";
 "Principal" = "Capital de Prêt";
@@ -942,3 +943,6 @@
 "Camera access denied" = "Accéder à la caméra refusé";
 "To turn on the LED requires camera access." = "Pour allumer le voyant nécessite un accès à la caméra.";
 "%@ requires camera access." = "%@ nécessite un accès à la caméra.";
+
+"Advance" = "Avancer";
+"Reset" = "Réinitialiser";

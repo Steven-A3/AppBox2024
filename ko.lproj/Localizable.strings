@@ -34,6 +34,7 @@
 "Magnifier" = "돋보기";
 "Flashlight" = "손전등";
 "Random" = "난수생성";
+"Ruler" = "자";
 
 "Select Currency" = "통화 선택";
 "Principal" = "대출금액";
@@ -952,3 +953,6 @@
 "Camera access denied" = "카메라를 사용할 수 없습니다";
 "To turn on the LED requires camera access." = "LED를 켜려면 카메라 접근 권한이 필요합니다.";
 "%@ requires camera access." = "%@: 카메라 접근 권한이 필요합니다.";
+
+"Advance" = "자 옮기기";
+"Reset" = "처음으로";

@@ -34,6 +34,7 @@
 "Mirror" = "ミラー";
 "Flashlight" = "懐中電灯";
 "Random" = "乱数生成";
+"Ruler" = "ルーラー";
 
 "Select Currency" = "通貨の選択";
 "Principal" = "借入金額";
@@ -951,3 +952,6 @@
 "Camera access denied" = "カメラのアクセスが拒否されました";
 "To turn on the LED requires camera access." = "LEDを点灯するカメラのアクセス権限が必要です。";
 "%@ requires camera access." = "%@、カメラへのアクセスを必要とします。";
+
+"Advance" = "移る";
+"Reset" = "リセット";

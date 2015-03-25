@@ -34,6 +34,7 @@
 "Magnifier" = "Lupa";
 "Flashlight" = "Latarka";
 "Random" = "Losowanie";
+"Ruler" = "Linijka";
 
 "Select Currency" = "Wybierz walutę";
 "Principal" = "Kapitał";
@@ -943,3 +944,6 @@ Wprowadź klucz szyfrowania dla portfela.";
 "Camera access denied" = "Odmowa dostępu aparatu";
 "To turn on the LED requires camera access." = "Aby włączyć LED wymaga dostępu do kamery.";
 "%@ requires camera access." = "%@ wymaga dostępu do kamery.";
+
+"Advance" = "Przenieść";
+"Reset" = "Resetuj";

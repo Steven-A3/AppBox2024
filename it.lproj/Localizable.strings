@@ -34,6 +34,7 @@
 "Mirror" = "Specchio";
 "Flashlight" = "Torcia";
 "Random" = "Casuale";
+"Ruler" = "Righello";
 
 "Select Currency" = "Seleziona Valuta";
 "Principal" = "Capitale";
@@ -937,3 +938,6 @@ Inserire chiave di crittografia per il portafoglio.";
 "Camera access denied" = "Accesso Camera negato.";
 "To turn on the LED requires camera access." = "Per accendere il LED richiede l'accesso della fotocamera.";
 "%@ requires camera access." = "%@ richiede l'accesso della fotocamera.";
+
+"Advance" = "Muoversi";
+"Reset" = "Reimposta";

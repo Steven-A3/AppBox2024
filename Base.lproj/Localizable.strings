@@ -34,6 +34,7 @@
 "Magnifier" = "Magnifier";
 "Flashlight" = "Flashlight";
 "Random" = "Random";
+"Ruler" = "Ruler";
 
 "Select Currency" = "Select Currency";
 "Principal" = "Principal";
@@ -891,3 +892,6 @@ Enter Encryption Key for Wallet.";
 "Camera access denied" = "Camera access disabled";
 "To turn on the LED requires camera access." = "LED requires camera access.";
 "%@ requires camera access." = "%@ requires camera access.";
+
+"Advance" = "Advance";
+"Reset" = "Reset";

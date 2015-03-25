@@ -34,6 +34,7 @@
 "Magnifier" = "Amplificador";
 "Flashlight" = "Linterna";
 "Random" = "Random";
+"Ruler" = "Regla";
 
 "Select Currency" = "Seleccione Moneda";
 "Principal" = "Capital prestado";
@@ -937,3 +938,6 @@ Introduzca la clave de cifrado para el bolsillo.";
 "Camera access denied" = "Acceso a la cámara negó";
 "To turn on the LED requires camera access." = "Para encender el LED requiere acceso a la cámara.";
 "%@ requires camera access." = "%@ requiere acceso a la cámara.";
+
+"Advance" = "Avanzar";
+"Reset" = "Restablecer";
