@@ -376,6 +376,8 @@
 		684D92FE18BC1FBC005016F7 /* A3DateCalcTableRowData.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92E418BC1FBC005016F7 /* A3DateCalcTableRowData.m */; };
 		684D92FF18BC1FBC005016F7 /* A3DateCalcTableviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92E618BC1FBC005016F7 /* A3DateCalcTableviewCell.m */; };
 		684D932E18BC20E1005016F7 /* NSDate+formatting.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D932D18BC20E1005016F7 /* NSDate+formatting.m */; };
+		684E1BDD1AC13BA100925771 /* A3OpenSourceLicensesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 684E1BDC1AC13BA100925771 /* A3OpenSourceLicensesViewController.m */; };
+		684E1BE51AC1406E00925771 /* openSourceLicenses.txt in Resources */ = {isa = PBXBuildFile; fileRef = 684E1BE41AC1406E00925771 /* openSourceLicenses.txt */; };
 		684E944217C22E760081A8B5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 684E944117C22E760081A8B5 /* Images.xcassets */; };
 		684E9EF7188A206C00FAA48E /* A3AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 684E9EF6188A206C00FAA48E /* A3AboutViewController.m */; };
 		684E9EFA188A20E800FAA48E /* A3HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 684E9EF9188A20E800FAA48E /* A3HelpViewController.m */; };
@@ -2417,6 +2419,9 @@
 		684D92E618BC1FBC005016F7 /* A3DateCalcTableviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateCalcTableviewCell.m; sourceTree = "<group>"; };
 		684D932C18BC20E1005016F7 /* NSDate+formatting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+formatting.h"; sourceTree = "<group>"; };
 		684D932D18BC20E1005016F7 /* NSDate+formatting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+formatting.m"; sourceTree = "<group>"; };
+		684E1BDB1AC13BA100925771 /* A3OpenSourceLicensesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3OpenSourceLicensesViewController.h; path = About/A3OpenSourceLicensesViewController.h; sourceTree = "<group>"; };
+		684E1BDC1AC13BA100925771 /* A3OpenSourceLicensesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3OpenSourceLicensesViewController.m; path = About/A3OpenSourceLicensesViewController.m; sourceTree = "<group>"; };
+		684E1BE41AC1406E00925771 /* openSourceLicenses.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = openSourceLicenses.txt; path = AppBox3/openSourceLicenses.txt; sourceTree = "<group>"; };
 		684E944117C22E760081A8B5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "AppBox3/Asset Catalogs/Images.xcassets"; sourceTree = "<group>"; };
 		684E9EF5188A206C00FAA48E /* A3AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3AboutViewController.h; path = About/A3AboutViewController.h; sourceTree = "<group>"; };
 		684E9EF6188A206C00FAA48E /* A3AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3AboutViewController.m; path = About/A3AboutViewController.m; sourceTree = "<group>"; };
@@ -4570,6 +4575,7 @@
 		683B94BE15EB230000575377 /* {Resources} */ = {
 			isa = PBXGroup;
 			children = (
+				684E1BE41AC1406E00925771 /* openSourceLicenses.txt */,
 				6811709E1AC041F60079F4F9 /* currencyRates */,
 				684609C0194E161C00FD5F53 /* unit.strings */,
 				684609C2194E161C00FD5F53 /* unitShort.strings */,
@@ -4786,6 +4792,8 @@
 				684E9EF6188A206C00FAA48E /* A3AboutViewController.m */,
 				684E9EF8188A20E800FAA48E /* A3HelpViewController.h */,
 				684E9EF9188A20E800FAA48E /* A3HelpViewController.m */,
+				684E1BDB1AC13BA100925771 /* A3OpenSourceLicensesViewController.h */,
+				684E1BDC1AC13BA100925771 /* A3OpenSourceLicensesViewController.m */,
 			);
 			name = About;
 			sourceTree = "<group>";
@@ -6559,6 +6567,7 @@
 				68B6A33518CEC76D004084EF /* A3WalletListTextCell.xib in Resources */,
 				6831EBFC18619CC800BAF15B /* AppBoxCacheStore.sqlite in Resources */,
 				68F150FB194C27B900159EAD /* LoanCalculatorPhoneStoryBoard.storyboard in Resources */,
+				684E1BE51AC1406E00925771 /* openSourceLicenses.txt in Resources */,
 				68F14FEC19485E8500159EAD /* A3DaysCounterHeaderFooterView.xib in Resources */,
 				684D92EF18BC1FBC005016F7 /* A3DateCalcAddSubCell1.xib in Resources */,
 				6825367418A7B89F00EAFB84 /* LunarConverterCell.xib in Resources */,
@@ -7325,6 +7334,7 @@
 				68F14FB619485E8500159EAD /* A3DaysCounterSlideshowViewController.m in Sources */,
 				687D0D1017CAE519005AB571 /* HolidayData.m in Sources */,
 				684D92F218BC1FBC005016F7 /* A3DateCalcDurationViewController.m in Sources */,
+				684E1BDD1AC13BA100925771 /* A3OpenSourceLicensesViewController.m in Sources */,
 				68B6A44418CEE781004084EF /* MWTapDetectingImageView.m in Sources */,
 				682FDF2C1981CC0400C6C83D /* MagicalRecord+ErrorHandling.m in Sources */,
 				684E9F0C188A447400FAA48E /* A3BasicWebViewController.m in Sources */,
