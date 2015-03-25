@@ -82,10 +82,12 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 #ifdef DEBUG
 	UIScreen *mainScreen = [UIScreen mainScreen];
-	FNLOGRECT(mainScreen.nativeBounds);
+	if ([mainScreen respondsToSelector:@selector(nativeBounds)]) {
+		FNLOGRECT(mainScreen.nativeBounds);
+		FNLOG(@"%f", mainScreen.nativeScale);
+	}
 	FNLOGRECT(mainScreen.bounds);
 	FNLOG(@"%f", mainScreen.scale);
-	FNLOG(@"%f", mainScreen.nativeScale);
 #endif
 	
 	_appIsNotActiveYet = YES;
