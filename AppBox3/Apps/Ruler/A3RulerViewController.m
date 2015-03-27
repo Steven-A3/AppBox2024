@@ -134,8 +134,8 @@
 		_centimeterAsPoints = (480.0 / 960.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
 		_inchAsPoints = (480.0 / 960.0) * pixelsInInch;
 		_redLineWidth = 0.5;
-		if ([model isEqualToString:@"iPhone 4"] || [model isEqualToString:@"iPhone 4s"]) {
-			_resetPosition = 6.0;
+		if (IS_IPHONE35) {
+			_resetPosition = 6.5;
 		} else {
 			_resetPosition = 8.0;
 		}
@@ -200,12 +200,16 @@
 //		_resetPosition = 10.0;
 //		_redLineWidth = 0.5;
 		// iPhone 6
-		CGFloat pixelsInInch = 327.5;
+		CGFloat pixelsInInch = 326;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (568.0 / 1334.0) * pixelsInCentimeter;
-		_inchAsPoints = (568.0 / 1334.0) * pixelsInInch;
-		_resetPosition = 9.5;
+		_centimeterAsPoints = (480.0 / 960.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
+		_inchAsPoints = (480.0 / 960.0) * pixelsInInch;
 		_redLineWidth = 0.5;
+		if (IS_IPHONE35) {
+			_resetPosition = 6.5;
+		} else {
+			_resetPosition = 8.0;
+		}
 	}
 
 	CGRect screenBounds = [[UIScreen mainScreen] bounds];
@@ -642,7 +646,13 @@
 
 - (void)layoutButtonsToInterfaceOrientation:(BOOL)toPortrait {
 	CGFloat halfButtonHeight = 30.0/2.0;
-	if (IS_IPHONE) {
+	if (IS_IPHONE35) {
+		[self setButton:_advanceButton constraintAt:_screenHeight * 0.85 - halfButtonHeight];
+		[self setButton:_resetButton constraintAt:_screenHeight * 0.575 - halfButtonHeight];
+		[self setButton:_appsButton constraintAt:_screenHeight * 0.30 - halfButtonHeight];
+		
+		[self applyTransformToButtons:CGAffineTransformMakeRotation(-M_PI / 2)];
+	} else if (IS_IPHONE) {
 		[self setButton:_advanceButton constraintAt:_screenHeight * 0.75 - halfButtonHeight];
 		[self setButton:_resetButton constraintAt:_screenHeight * 0.5 - halfButtonHeight];
 		[self setButton:_appsButton constraintAt:_screenHeight * 0.25 - halfButtonHeight];
