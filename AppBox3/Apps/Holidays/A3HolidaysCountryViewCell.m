@@ -16,6 +16,7 @@
 #import "FXLabel.h"
 #import "A3HolidaysPageViewController.h"
 #import "UIImage+Resizing.h"
+#import "common.h"
 
 @interface A3HolidaysCountryViewCell ()
 
@@ -134,7 +135,11 @@
 
 - (void)setCountryCode:(NSString *)countryCode {
 	_countryCode = [countryCode mutableCopy];
-	_countryName.text = [[NSLocale currentLocale] displayNameForKey:NSLocaleCountryCode value:_countryCode];
+	if ([_countryCode isEqualToString:@"jewish"]) {
+		_countryName.text = NSLocalizedString(@"Jewish Holidays", @"Jewish Holidays");
+	} else {
+		_countryName.text = [[NSLocale currentLocale] displayNameForKey:NSLocaleCountryCode value:_countryCode];
+	}
 
 	HolidayData *holidayData = [HolidayData new];
 

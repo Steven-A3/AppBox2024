@@ -19,6 +19,9 @@ NSString *const kHolidayTimeZone = @"kHolidayTimeZone";
 NSString *const kA3TimeZoneName = @"kA3TimeZoneName";
 NSString *const A3NotificationHolidaysCountryListChanged = @"A3NotificationHolidaysCountryListChanged";
 
+// V3.4 이전에는 il에 대해서 Jewish Holidays를 표시했으나, 3.4부터는 il과 Jewish holiday를 분리한다.
+// 이전 버전이 설치되어 있었던 경우에 한해서 휴일 나라 목록에 il을 가지고 있는 경우, jewish를 자동으로 추가한다.
+
 @implementation HolidayData (Country)
 
 + (NSArray *)supportedCountries {
@@ -226,12 +229,21 @@ NSString *const A3NotificationHolidaysCountryListChanged = @"A3NotificationHolid
 //					kHolidayTimeZone : @"JST",
 					kA3TimeZoneName : @"Asia/Tokyo",
 			},    // UTC+9
+			// V3.3 까지는 il에 Jewish Holiday를 표시했으나,
+			// V3.4 부터는 il에 대해서 Israel Holidays를 표시한다.
+			// "Jewish"를 추가하고 나라 목록에서 추가할 수 있도록 변경한다.
 			@{
 					kHolidayCountryCode : @"il",
 //					kHolidayCapitalCityName : @"Jerusalem",
 //					kHolidayTimeZone : @"EET",
 					kA3TimeZoneName : @"Asia/Jerusalem",
 			},    // UTC+2
+			@{
+				kHolidayCountryCode : @"jewish",
+				//					kHolidayCapitalCityName : @"Jerusalem",
+				//					kHolidayTimeZone : @"EET",
+				kA3TimeZoneName : @"Asia/Jerusalem",
+				},    // UTC+2
 			@{
 					kHolidayCountryCode : @"jo",
 //					kHolidayCapitalCityName : @"Amman",

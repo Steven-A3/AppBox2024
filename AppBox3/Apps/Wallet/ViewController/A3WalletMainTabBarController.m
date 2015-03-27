@@ -286,7 +286,7 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
     NSMutableArray *viewControllers = [[NSMutableArray alloc] init];
 
 	NSUInteger numberOfItemsOnTapBar = [self numberOfCategoriesInTabBar];
-	for (NSUInteger idx = 0; idx < numberOfItemsOnTapBar; idx++) {
+	for (NSUInteger idx = 0; idx < MIN(numberOfItemsOnTapBar, [self.categories count]); idx++) {
 
         WalletCategory *category = self.categories[idx];
         UIViewController *viewController;
@@ -345,15 +345,18 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
         [viewControllers addObject:nav];
     }
 
-	A3WalletMoreTableViewController *moreViewController = [[A3WalletMoreTableViewController alloc] initWithStyle:UITableViewStylePlain];
-	moreViewController.mainTabBarController = self;
-	_myMoreNavigationController = [[UINavigationController alloc] initWithRootViewController:moreViewController];
-	_myMoreNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemMore tag:0];
-	[viewControllers addObject:_myMoreNavigationController];
+//	if ([_categories count] >= [self numberOfCategoriesInTabBar]) {
+		A3WalletMoreTableViewController *moreViewController = [[A3WalletMoreTableViewController alloc] initWithStyle:UITableViewStylePlain];
+		moreViewController.mainTabBarController = self;
+		_myMoreNavigationController = [[UINavigationController alloc] initWithRootViewController:moreViewController];
+		_myMoreNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemMore tag:0];
+		[viewControllers addObject:_myMoreNavigationController];
+//	}
 
     self.viewControllers = viewControllers;
 
-    self.selectedIndex = [[A3UserDefaults standardUserDefaults] integerForKey:A3WalletUserDefaultsSelectedTab];
+	FNLOG(@"%ld, %ld, %ld", (long)[[A3UserDefaults standardUserDefaults] integerForKey:A3WalletUserDefaultsSelectedTab], (long)[self numberOfCategoriesInTabBar], (long)[_categories count]);
+    self.selectedIndex = MIN(MIN([[A3UserDefaults standardUserDefaults] integerForKey:A3WalletUserDefaultsSelectedTab], [self numberOfCategoriesInTabBar]), [_categories count]);
 }
 
 @end

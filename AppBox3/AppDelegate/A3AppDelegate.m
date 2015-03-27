@@ -32,6 +32,7 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3UserDefaults.h"
 #import "GADInterstitial.h"
+#import "A3AppDelegate+migration.h"
 
 NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
@@ -133,6 +134,9 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 		// 3.3을 처음 설치한 경우에는 기본이 0이므로 별도 설정 불필요.
 		[[A3UserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultsKeyForPasscodeTimerDuration];
 		[[A3UserDefaults standardUserDefaults] synchronize];
+	}
+	if ([[_previousVersion substringToIndex:3] doubleValue] < 3.4) {
+		[self migrateToV3_4_Holidays];
 	}
 
 	// AppBox Pro V1.8.4까지는 Days Until 기능의 옵션에 의해서 남은 일자에 대한 배지 기능이 있었습니다.

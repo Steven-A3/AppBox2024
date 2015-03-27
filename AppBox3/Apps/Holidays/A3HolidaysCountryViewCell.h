@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "FMMoveTableViewCell.h"
 
 @protocol A3HolidaysPageViewControllerProtocol;

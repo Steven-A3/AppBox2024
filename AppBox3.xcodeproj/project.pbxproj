@@ -32,6 +32,7 @@
 		17D425100E1C4BDFC5E6CF0C /* A3SettingsAddFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D420998FD2347EFF70EFDA /* A3SettingsAddFavoritesViewController.m */; };
 		17D42564DA81AFE9484B0D58 /* A3TranslatorMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4292480B4F2F878AD138E /* A3TranslatorMessageCell.m */; };
 		17D4257DD60BA9435E1D2103 /* NSManagedObject+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D426C577E54ADD2419E6DB /* NSManagedObject+extension.m */; };
+		17D4258B7D4BF46E0C3369B5 /* A3AppDelegate+migration.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42800F92AEDF5F432A3BD /* A3AppDelegate+migration.m */; };
 		17D425CA8B84A776935B9382 /* Foursquare2.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42335F0EAF9428BAC7BBD /* Foursquare2.m */; };
 		17D425D8B8511A61A52DBE3E /* A3SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4263A1F905EB73EA573B2 /* A3SearchViewController.m */; };
 		17D4262AB96A4454B8EF3B49 /* A3LanguagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D425363271B74082FD8477 /* A3LanguagePickerController.m */; };
@@ -1569,6 +1570,7 @@
 		68E2A6B318D0B22800E834D9 /* A3TipCalcHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A69018D0B22800E834D9 /* A3TipCalcHistoryViewController.m */; };
 		68E2A6B418D0B22800E834D9 /* A3TipCalcMainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A69218D0B22800E834D9 /* A3TipCalcMainTableViewController.m */; };
 		68E2A6B718D0B22800E834D9 /* A3TipCalcSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A69818D0B22800E834D9 /* A3TipCalcSettingViewController.m */; };
+		68E3A2A81AC4F61C004FE7B0 /* IsraelHolidays.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68E3A2A71AC4F61C004FE7B0 /* IsraelHolidays.plist */; };
 		68E50B1F1945E18800FAD986 /* Instruction_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68E50B211945E18800FAD986 /* Instruction_iPhone.storyboard */; };
 		68E50B241945E1E600FAD986 /* Instruction_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68E50B261945E1E600FAD986 /* Instruction_iPad.storyboard */; };
 		68E6D12018A48C0F00109183 /* A3FormatterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6D11F18A48C0F00109183 /* A3FormatterTest.m */; };
@@ -1780,6 +1782,7 @@
 		17D42220C3CF119DC5027EB3 /* A3CurrencyHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyHistoryCell.h; path = Apps/Currency/A3CurrencyHistoryCell.h; sourceTree = "<group>"; };
 		17D4227E7D59F72869C3BE40 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		17D42289427C0BC32E80BBA4 /* A3PasscodeCommonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3PasscodeCommonViewController.h; path = Passcode/A3PasscodeCommonViewController.h; sourceTree = "<group>"; };
+		17D422895A1E4B72C4BFC867 /* A3AppDelegate+migration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "A3AppDelegate+migration.h"; path = "AppDelegate/A3AppDelegate+migration.h"; sourceTree = "<group>"; };
 		17D4228D8D938C6FD778BB35 /* A3SettingsChooseColorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsChooseColorViewController.m; path = Settings/A3SettingsChooseColorViewController.m; sourceTree = "<group>"; };
 		17D422D483CFDAB932E71595 /* A3SettingsFavoritesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsFavoritesViewController.h; path = Settings/A3SettingsFavoritesViewController.h; sourceTree = "<group>"; };
 		17D422F078FF20AC13BDAE74 /* A3SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SearchViewController.h; path = Apps/Currency/A3SearchViewController.h; sourceTree = "<group>"; };
@@ -1829,6 +1832,7 @@
 		17D427DBB6EAAE740BD75F4B /* A3LanguagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3LanguagePickerController.h; path = Translator/A3LanguagePickerController.h; sourceTree = "<group>"; };
 		17D427EA0359B24E0984228C /* FSConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSConverter.h; sourceTree = "<group>"; };
 		17D428002E7CC2380AB2E2DA /* UIViewController+NumberKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+NumberKeyboard.m"; sourceTree = "<group>"; };
+		17D42800F92AEDF5F432A3BD /* A3AppDelegate+migration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "A3AppDelegate+migration.m"; path = "AppDelegate/A3AppDelegate+migration.m"; sourceTree = "<group>"; };
 		17D42835AF604EA6A37B16D4 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		17D4283B29E7CACCE273EF77 /* NSMutableArray+MoveObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+MoveObject.m"; sourceTree = "<group>"; };
 		17D4283E196270552D6283A1 /* A3StandardTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3StandardTableViewCell.m; sourceTree = "<group>"; };
@@ -3222,6 +3226,7 @@
 		68E2A69218D0B22800E834D9 /* A3TipCalcMainTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = A3TipCalcMainTableViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		68E2A69718D0B22800E834D9 /* A3TipCalcSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TipCalcSettingViewController.h; sourceTree = "<group>"; };
 		68E2A69818D0B22800E834D9 /* A3TipCalcSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3TipCalcSettingViewController.m; sourceTree = "<group>"; };
+		68E3A2A71AC4F61C004FE7B0 /* IsraelHolidays.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = IsraelHolidays.plist; path = Holidays/IsraelHolidays.plist; sourceTree = "<group>"; };
 		68E50B201945E18800FAD986 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Instruction_iPhone.storyboard; sourceTree = "<group>"; };
 		68E50B251945E1E600FAD986 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Instruction_iPad.storyboard; sourceTree = "<group>"; };
 		68E6D11F18A48C0F00109183 /* A3FormatterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3FormatterTest.m; path = Formatter/A3FormatterTest.m; sourceTree = "<group>"; };
@@ -4339,6 +4344,8 @@
 				17D42D1AA1C9348634F8FEF1 /* A3SyncManager+NSUbiquitousKeyValueStore.m */,
 				680FF7111980B88D00C736F5 /* A3SyncManager.h */,
 				680FF7121980B88D00C736F5 /* A3SyncManager.m */,
+				17D42800F92AEDF5F432A3BD /* A3AppDelegate+migration.m */,
+				17D422895A1E4B72C4BFC867 /* A3AppDelegate+migration.h */,
 			);
 			name = AppDelegate;
 			sourceTree = "<group>";
@@ -4943,6 +4950,7 @@
 		6888091217C640BC008B2856 /* Holidays */ = {
 			isa = PBXGroup;
 			children = (
+				68E3A2A71AC4F61C004FE7B0 /* IsraelHolidays.plist */,
 				68832C9E199A3C8E00AF7C18 /* FlickrRecommendation.json */,
 				688257B617D3AFFB006429D3 /* A3HolidaysAddToDaysCounterViewController.h */,
 				688257B717D3AFFB006429D3 /* A3HolidaysAddToDaysCounterViewController.m */,
@@ -6550,6 +6558,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68E3A2A81AC4F61C004FE7B0 /* IsraelHolidays.plist in Resources */,
 				68636003198BF91300C3A323 /* Ensembles.bundle in Resources */,
 				68143D0318E3EC1F00569691 /* A3NumberKeyboardSimpleVC_iPad.xib in Resources */,
 				68F14FD519485E8500159EAD /* A3DaysCounterAddEventDateInputCell.xib in Resources */,
@@ -7551,6 +7560,7 @@
 				17D428930215FEF99A8B5249 /* A3SyncManager+NSUbiquitousKeyValueStore.m in Sources */,
 				17D427E2FFD30C08F33352DB /* A3UserDefaults.m in Sources */,
 				17D426BC7A3AD946E25DEADB /* A3WalletVideoItemViewController.m in Sources */,
+				17D4258B7D4BF46E0C3369B5 /* A3AppDelegate+migration.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

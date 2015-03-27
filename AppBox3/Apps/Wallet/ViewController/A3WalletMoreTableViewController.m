@@ -308,26 +308,28 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 
 - (NSArray *)sections {
 	if (!_sections) {
-		NSUInteger numberOfItemsOnTapBar = [self numberOfItemsOnTapBar];
-		NSUInteger idx = 0;
+		NSInteger numberOfItemsOnTapBar = MIN([self numberOfItemsOnTapBar], [self.categories count]);
+		NSInteger idx = 0;
 
 		NSMutableArray *sections = [NSMutableArray new];
 
 		if (self.isEditing) {
 			NSMutableArray *section0 = [NSMutableArray new];
 			for (; idx < numberOfItemsOnTapBar; idx++) {
-				[section0 addObject:self.categories[idx]];
+				[section0 addObject:_categories[idx]];
 			}
 			[sections addObject:section0];
 		} else {
 			idx = numberOfItemsOnTapBar;
 		}
 
-		NSMutableArray *section1 = [NSMutableArray new];
-		for (; idx < [self.categories count]; idx++) {
-			[section1 addObject:self.categories[idx]];
+		if (idx < [_categories count]) {
+			NSMutableArray *section1 = [NSMutableArray new];
+			for (; idx < [_categories count]; idx++) {
+				[section1 addObject:self.categories[idx]];
+			}
+			[sections addObject:section1];
 		}
-		[sections addObject:section1];
 		_sections = sections;
 	}
 
