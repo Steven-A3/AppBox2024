@@ -154,7 +154,7 @@
 "Egyptian Naval Day" = "Giorno Navale Egiziano";
 "Emancipation Day" = "Giorno di Emancipazione";
 "Epiphany" = "Epifania";
-"Evacuation Day(Eid el-Galaa)" = "Giorno di Evacuzione (Eid el-Galaa)";
+"Evacuation Day(Eid el-Galaa)" = "Giorno di Evacuzione(Eid el-Galaa)";
 "Family Day" = "Giorno di Famiglia";
 "Father's Day" = "Festa dei Padri";
 "Feast of Assumption" = "Festa dell’Assunzione";
@@ -695,3 +695,9 @@
 
 "St Stephen's Day / Boxing Day" = "Boxing Day";
 "Saint-Etienne" = "Boxing Day";
+
+"Feast of the revolution" = "Festa della rivoluzione";
+"Martys' Day" = "Festa dei Martiri";
+"Eid al-Fitr" = "Eid al-Fitr";
+"Eid al-Adha" = "Eid al-Adha";
+"Evacuation Day" = "Giorno di Evacuzione";

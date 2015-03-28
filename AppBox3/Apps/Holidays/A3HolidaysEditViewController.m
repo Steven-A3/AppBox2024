@@ -171,7 +171,8 @@ static NSString *CellIdentifier = @"Cell";
 	_excludedHolidays = [excludedList mutableCopy];
 
 	self.title = [NSString stringWithFormat:@"%@ (%lu)",
-			[[NSLocale currentLocale] displayNameForKey:NSLocaleCountryCode value:_countryCode], (unsigned long)[_holidaysForCountry count]];
+											[HolidayData displayNameForCountryCode:_countryCode],
+											(unsigned long)[_holidaysForCountry count]];
 }
 
 - (NSMutableArray *)excludedHolidays {

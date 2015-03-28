@@ -602,6 +602,12 @@ NSString *const A3NotificationHolidaysCountryListChanged = @"A3NotificationHolid
 //					kHolidayTimeZone : @"CAT",
 					kA3TimeZoneName : @"Africa/Maputo",
 			},    // UTC+2, Central Africa Time
+			@{
+					kHolidayCountryCode : @"tn",
+//					kHolidayCapitalCityName : @"Tunis",
+//					kHolidayTimeZone : @"CET",
+					kA3TimeZoneName : @"Africa/Tunis",
+			},    // UTC+1, Central Africa Time
 
 //			@"ar", @"au", @"at", @"be", @"bw", @"br", @"cm", @"ca", @"cf", @"cl", // 10
 //			@"cn", @"co", @"hr", @"cz", @"dk", @"do", @"ec", @"eg", @"sv", @"gq", // 20
@@ -801,6 +807,20 @@ NSString *const A3NotificationHolidaysCountryListChanged = @"A3NotificationHolid
 		return holidaysThisYear[indexForFirstUpcomingHoliday];
 	}
 	return nil;
+}
+
++ (NSString *)displayNameForCountryCode:(NSString *)countryCode {
+	NSString *countryName;
+	if ([countryCode isEqualToString:@"jewish"]) {
+		if ([[NSLocale preferredLanguages][0] isEqualToString:@"he"]) {
+			countryName = @"ימים טובים";
+		} else {
+			countryName = NSLocalizedString(@"Jewish Holidays", @"Jewish Holidays");
+		}
+	} else {
+		countryName = [[NSLocale currentLocale] displayNameForKey:NSLocaleCountryCode value:countryCode];
+	}
+	return countryName;
 }
 
 @end

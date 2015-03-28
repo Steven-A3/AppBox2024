@@ -336,7 +336,7 @@
 "Remembrance of the dead" = "Souvenir de la mort";
 "Repentance Day" = "Journée du repentir";
 "Republic Day (Jum ir-Repubblika)" = "Jour de la République (Jum ir-Repubblika)";
-"Republic Day" = "Jour de la République";
+"Republic Day" = "Fête de la république";
 "Respect for the Aged Day" = "Respect pour les personnes âgées jours";
 "Restoration Day" = "Jour de la Restauration";
 "Restoration of Independence" = "Restauration de l'Indépendance";
@@ -432,7 +432,7 @@
 "Whit Monday" = "Lundi de Pentecôte";
 "Whit Sunday" = "Dimanche de Pentecôte";
 "Whit Sunday(Pentecost)" = "Dimanche de Pentecôte (Pentecôte)";
-"Women's Day" = "Journée de la femme";
+"Women's Day" = "Fête de la femme";
 "Women's Day(for Women only)" = "Journée de la femme";
 "Worker's Day" = "Fête du travail";
 "Workers' Day (Jum il-Haddiem)" = "Fête du travail(Journée-il Haddiem)";
@@ -694,3 +694,10 @@
 
 "St Stephen's Day / Boxing Day" = "Saint-Etienne";
 "Saint-Etienne" = "Saint-Etienne";
+
+"Feast of the revolution" = "Fête de la révolution";
+"Martys' Day" = "Fête des martyrs";
+
+"Eid al-Fitr" = "Aïd el-Fitr";
+"Eid al-Adha" = "Aïd al-Adha";
+"Evacuation Day" = "Fête de l'évacuation";

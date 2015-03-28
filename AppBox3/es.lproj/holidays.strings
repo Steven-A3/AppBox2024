@@ -152,9 +152,9 @@
 "Easter and Easter Monday" = "Pascua y el Lúnes de Pascua";
 "Easter(Orthodox)" = "La Pascua (Ortodoxo)";
 "Egyptian Naval Day" = "Día Naval de Egipcio";
-"Emancipation Day" = "Día de la Emancipación ";
+"Emancipation Day" = "Día de la Emancipación";
 "Epiphany" = "Epifanía";
-"Evacuation Day(Eid el-Galaa)" = "Día de Evacuación ";
+"Evacuation Day(Eid el-Galaa)" = "Día de Evacuación";
 "Family Day" = "Día de la Familia";
 "Father's Day" = "Día del Padre";
 "Feast of Assumption" = "Fiesta de Asunción";
@@ -690,3 +690,9 @@
 
 "St Stephen's Day / Boxing Day" = "Boxing Day(Día de las Cajas)";
 "Saint-Etienne" = "Boxing Day(Día de las Cajas)";
+
+"Feast of the revolution" = "Fiesta de la revolución";
+"Martys' Day" = "Fiesta de los Mártires";
+"Eid al-Fitr" = "Eid al-Fitr";
+"Eid al-Adha" = "Eid al-Adha";
+"Evacuation Day" = "Día de Evacuación";

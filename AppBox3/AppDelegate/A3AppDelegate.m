@@ -89,6 +89,7 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 	}
 	FNLOGRECT(mainScreen.bounds);
 	FNLOG(@"%f", mainScreen.scale);
+	FNLOG(@"%@", [NSLocale preferredLanguages][0]);
 #endif
 	
 	_appIsNotActiveYet = YES;

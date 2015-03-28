@@ -79,7 +79,12 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 }
 
 - (UIImage *)imageForCountryCode:(NSString *)countryCode {
-	NSString *imagePath = [self holidayImagePathForCountryCode:countryCode];
+	NSString *imagePath;
+	if ([countryCode isEqualToString:@"jewish"]) {
+		imagePath = [self holidayImagePathForCountryCode:@"il"];
+	} else {
+		imagePath = [self holidayImagePathForCountryCode:countryCode];
+	}
 	return [imagePath length] ? [UIImage imageWithContentsOfFile:imagePath] : nil;
 }
 

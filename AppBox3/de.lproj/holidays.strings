@@ -164,7 +164,7 @@
 "Eidul Fitr" = "Eidul Fitr";
 "Emancipation Day" = "Tag der Emanzipation";
 "Epiphany" = "Heilige Drei Könige";
-"Evacuation Day(Eid el-Galaa)" = "Tag der Evakuierung (EID el-galaa)";
+"Evacuation Day(Eid el-Galaa)" = "Tag der Evakuierung(EID el-galaa)";
 "Family Day" = "Tag der Familie";
 "Father's Day" = "Vatertag";
 "Feast of Assumption" = "Mariä Himmelfahrt";
@@ -731,3 +731,9 @@
 "Hanukkah VII" = "Chanukka VII";
 "Hanukkah VIII" = "Chanukka VIII";
 "Election Day" = "Wahltag";
+
+"Feast of the revolution" = "Fest der Revolution";
+"Martys' Day" = "Fest der Märtyrer";
+"Eid al-Fitr" = "Eid al-Fitr";
+"Eid al-Adha" = "Eid al-Adha";
+"Evacuation Day" = "Tag der Evakuierung";

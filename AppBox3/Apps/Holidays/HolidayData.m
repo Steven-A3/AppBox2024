@@ -314,7 +314,7 @@ static NSUInteger islamicNewYear[][2] = {
 	/*1989,1410*/{ 8, 2},{ 7,23}, 
 	/*1991,1412*/{ 7,12},{ 7, 1},{ 6,20},{ 6,10},{ 5,30},{ 5,19},{ 5, 8},{ 4,28},{ 4,17},{ 4, 5},
 	/*2001,1422*/{ 3,26},{ 3,15},{ 3, 4},{ 2,22},{ 2,10},{ 1,31},{ 1,20},{12,28},{12,17},{12, 7},
-	/*2011,1432*/{11,26},{11,14},{11,4},{10,24},{10,13}};
+	/*2011,1432*/{11,26},{11,14},{11, 4},{10,24},{10,14},{10, 3},{ 9,22}};
 
 // From year 2008-2015, {month, day}, Eidul Fitr or Ramadan Feast
 // TODO: Update yearly
@@ -331,7 +331,7 @@ static NSUInteger Eid_al_adha[][2] = {
 
 + (NSDate *)getIslamicNewYear:(NSUInteger)year withCalendar:(NSCalendar *)calendar
 {
-	if ((year < 1989) || (year > 2015)) return nil;
+	if ((year < 1989) || (year > 2017)) return nil;
 	return [self dateWithDay:islamicNewYear[year - 1989][1] month:islamicNewYear[year - 1989][0] year:year withCalendar:calendar option:0];
 }
 

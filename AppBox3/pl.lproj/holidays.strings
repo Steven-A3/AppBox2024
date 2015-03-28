@@ -164,7 +164,7 @@
 "Eidul Fitr" = "Eidul Fitr";
 "Emancipation Day" = "Dzień Emancypacji";
 "Epiphany" = "Objawienie Pańskie";
-"Evacuation Day(Eid el-Galaa)" = "Dzień Ewakuacji (Eid el-Galaa)";
+"Evacuation Day(Eid el-Galaa)" = "Dzień Ewakuacji(Eid el-Galaa)";
 "Family Day" = "Święto Rodziny";
 "Father's Day" = "Dzień Ojca";
 "Feast of Assumption" = "Święto Wniebowzięcia";
@@ -722,3 +722,9 @@
 
 "St Stephen's Day / Boxing Day" = "Drugi dzień Świąt Bożego Narodzenia";
 "Saint-Etienne" = "Drugi dzień Świąt Bożego Narodzenia";
+
+"Feast of the revolution" = "Święto rewolucji";
+"Martys' Day" = "Święto Męczenników";
+"Eid al-Fitr" = "Eid al-Fitr";
+"Eid al-Adha" = "Eid al-Adha";
+"Evacuation Day" = "Dzień Ewakuacji";

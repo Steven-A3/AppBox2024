@@ -55,11 +55,7 @@ static NSString *const CellIdentifier = @"Cell";
 		[countryCodes enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
 			A3SearchTargetItem *object = [A3SearchTargetItem new];
 			object.code = obj[kHolidayCountryCode];
-			if ([object.code isEqualToString:@"jewish"]) {
-				object.displayName = NSLocalizedString(@"Jewish Holidays", @"Jewish Holidays");
-			} else {
-				object.displayName = [[NSLocale currentLocale] displayNameForKey:NSLocaleCountryCode value:obj[kHolidayCountryCode]];
-			}
+			object.displayName = [HolidayData displayNameForCountryCode:object.code];
 			[_allData addObject:object];
 		}];
 

@@ -143,7 +143,11 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 }
 
 - (void)imageDownloaded:(NSNotification *)notification {
-	if ([notification.userInfo[@"CountryCode"] isEqualToString:_countryCode]) {
+	NSString *downloadedCountryCode = notification.userInfo[@"CountryCode"];
+	if ([_countryCode isEqualToString:@"jewish"] && [downloadedCountryCode isEqualToString:@"il"]) {
+		downloadedCountryCode = @"jewish";
+	}
+	if ([downloadedCountryCode isEqualToString:_countryCode]) {
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[_pageViewController updatePhotoLabelText];
 			_imageView.originalImage = [[A3HolidaysFlickrDownloadManager sharedInstance] imageForCountryCode:_countryCode];
@@ -485,7 +489,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 	yearLabel.text = [NSString stringWithFormat:@"%ld", (long)_currentYear];
 
 	UILabel *countryNameLabel = (UILabel *) [headerView viewWithTag:HolidaysHeaderViewCountryLabel];
-	countryNameLabel.text = [[NSLocale currentLocale] displayNameForKey:NSLocaleCountryCode value:self.countryCode];
+	countryNameLabel.text = [HolidayData displayNameForCountryCode:self.countryCode];
 
 	NSUInteger myPosition = [self upcomingFirstHoliday];
 

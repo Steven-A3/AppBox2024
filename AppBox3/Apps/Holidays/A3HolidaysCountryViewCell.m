@@ -126,6 +126,9 @@
 
 	_coverOnImageView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
 	[self setFontsForLabels];
+
+	[_locationImageView removeFromSuperview];
+	_locationImageView = nil;
 }
 
 - (void)setFontsForLabels {
@@ -135,11 +138,7 @@
 
 - (void)setCountryCode:(NSString *)countryCode {
 	_countryCode = [countryCode mutableCopy];
-	if ([_countryCode isEqualToString:@"jewish"]) {
-		_countryName.text = NSLocalizedString(@"Jewish Holidays", @"Jewish Holidays");
-	} else {
-		_countryName.text = [[NSLocale currentLocale] displayNameForKey:NSLocaleCountryCode value:_countryCode];
-	}
+	_countryName.text = [HolidayData displayNameForCountryCode:_countryCode];
 
 	HolidayData *holidayData = [HolidayData new];
 
