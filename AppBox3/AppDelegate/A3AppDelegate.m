@@ -66,6 +66,7 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 
 @implementation A3AppDelegate {
 	BOOL _appIsNotActiveYet;
+	BOOL _backgroundDownloadIsInProgress;
 }
 
 @synthesize window = _window;
@@ -589,6 +590,10 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 }
 
 - (void)startDownloadDataFiles {
+	if (_backgroundDownloadIsInProgress) {
+		return;
+	}
+	_backgroundDownloadIsInProgress = YES;
 	if (![_downloadList count]) {
 		_downloadList = nil;
 		_backgroundDownloadSession = nil;
@@ -631,8 +636,10 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
             FNLOG(@"%@, %@, %@, %@", error.localizedDescription, error.localizedFailureReason, error.localizedRecoveryOptions, error.localizedRecoverySuggestion);
 		}
 	}
-
-	[self startDownloadDataFiles];
+	_backgroundDownloadIsInProgress = NO;
+	if ([self.reachability isReachableViaWiFi]) {
+		[self startDownloadDataFiles];
+	}
 }
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite {
@@ -644,7 +651,8 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 }
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
-	FNLOG();
+	_backgroundDownloadIsInProgress = NO;
+
 	if (error) {
 //		FNLOG(@"%ld, %@, %@, %@", (long)error.code, error.localizedDescription, error.localizedFailureReason, error.localizedRecoveryOptions);
 		if (error.code == -1100) {
