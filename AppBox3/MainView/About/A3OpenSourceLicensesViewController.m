@@ -19,7 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-	self.title = @"Open Source Licenses";
+//	self.title = NSLocalizedString(@"Open Source Licenses", @"Open Source Licenses");
 	NSString *path = [[NSBundle mainBundle] pathForResource:@"openSourceLicenses" ofType:@"txt"];
 	NSString *contents = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
 	self.textView.text = contents;

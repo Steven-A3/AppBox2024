@@ -61,3 +61,10 @@
 
 /* Class = "IBUILabel"; text = "Tell a Friend by message"; ObjectID = "ygM-lV-AEG"; */
 "ygM-lV-AEG.text" = "친구에게 메시지로 추천하기";
+
+/* Class = "UILabel"; text = "Open Source Licenses"; ObjectID = "EA3-28-uzR"; */
+"EA3-28-uzR.text" = "오픈 소스 라이센스";
+
+/* Class = "UINavigationItem"; title = "Open Source Licenses"; ObjectID = "OXd-fK-eHk"; */
+"OXd-fK-eHk.title" = "오픈 소스 라이센스";
+

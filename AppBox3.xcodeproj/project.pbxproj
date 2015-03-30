@@ -2017,7 +2017,6 @@
 		681361361A6CADC000E13F51 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LoanCalculatorPhoneStoryBoard.strings; sourceTree = "<group>"; };
 		681361371A6CADC000E13F51 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/UnitPriceStoryboard.strings; sourceTree = "<group>"; };
 		681361381A6CADC000E13F51 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/UnitPriceStoryboard_iPad.strings; sourceTree = "<group>"; };
-		681361391A6CADC000E13F51 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/about.strings; sourceTree = "<group>"; };
 		6813613A1A6CADC000E13F51 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Launch_iPhone.strings; sourceTree = "<group>"; };
 		6813613B1A6CADC000E13F51 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Launch_iPad.strings; sourceTree = "<group>"; };
 		6813613C1A6CADC000E13F51 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Instruction_iPhone.strings; sourceTree = "<group>"; };
@@ -2555,6 +2554,7 @@
 		687F928818F69C74006377B9 /* A3MoreTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3MoreTableViewCell.m; sourceTree = "<group>"; };
 		687FF89817D1931100130ABC /* A3HolidaysCountrySearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3HolidaysCountrySearchViewController.h; path = Holidays/A3HolidaysCountrySearchViewController.h; sourceTree = "<group>"; };
 		687FF89917D1931100130ABC /* A3HolidaysCountrySearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3HolidaysCountrySearchViewController.m; path = Holidays/A3HolidaysCountrySearchViewController.m; sourceTree = "<group>"; };
+		68812F051AC902960014F3ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/about.strings; sourceTree = "<group>"; };
 		688257A817D37863006429D3 /* A3HolidaysEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3HolidaysEditViewController.h; path = Holidays/A3HolidaysEditViewController.h; sourceTree = "<group>"; };
 		688257A917D37863006429D3 /* A3HolidaysEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3HolidaysEditViewController.m; path = Holidays/A3HolidaysEditViewController.m; sourceTree = "<group>"; };
 		688257AF17D37D37006429D3 /* A3HolidaysEditCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3HolidaysEditCell.h; path = Holidays/A3HolidaysEditCell.h; sourceTree = "<group>"; };
@@ -8563,8 +8563,8 @@
 				68F150DA194C21F100159EAD /* fr */,
 				68F150DC194C21F200159EAD /* pl */,
 				68F150DE194C21F400159EAD /* es */,
-				681361391A6CADC000E13F51 /* en */,
 				6813614B1A6CADE300E13F51 /* zh-Hant */,
+				68812F051AC902960014F3ED /* en */,
 			);
 			name = about.storyboard;
 			path = About;

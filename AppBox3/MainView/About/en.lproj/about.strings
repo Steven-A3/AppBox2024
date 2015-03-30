@@ -1,45 +1,54 @@
 
-/* Class = "IBUILabel"; text = "@appbox_pro"; ObjectID = "0Ql-Zd-0gc"; */
+/* Class = "UILabel"; text = "@appbox_pro"; ObjectID = "0Ql-Zd-0gc"; */
 "0Ql-Zd-0gc.text" = "@appbox_pro";
 
-/* Class = "IBUILabel"; text = "Website"; ObjectID = "5OA-em-QL5"; */
+/* Class = "UITextView"; text = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda."; ObjectID = "37b-b6-Z2D"; */
+"37b-b6-Z2D.text" = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.";
+
+/* Class = "UILabel"; text = "Website"; ObjectID = "5OA-em-QL5"; */
 "5OA-em-QL5.text" = "Website";
 
-/* Class = "IBUITableViewSection"; headerTitle = " "; ObjectID = "6ib-TK-JMG"; */
+/* Class = "UITableViewSection"; headerTitle = " "; ObjectID = "6ib-TK-JMG"; */
 "6ib-TK-JMG.headerTitle" = " ";
 
-/* Class = "IBUILabel"; text = "Disclaimer"; ObjectID = "9Z8-Bh-Lsm"; */
+/* Class = "UILabel"; text = "Disclaimer"; ObjectID = "9Z8-Bh-Lsm"; */
 "9Z8-Bh-Lsm.text" = "Disclaimer";
 
-/* Class = "IBUILabel"; text = "Twitter"; ObjectID = "KTG-Xd-Ija"; */
+/* Class = "UILabel"; text = "Open Source Licenses"; ObjectID = "EA3-28-uzR"; */
+"EA3-28-uzR.text" = "Open Source Licenses";
+
+/* Class = "UILabel"; text = "Twitter"; ObjectID = "KTG-Xd-Ija"; */
 "KTG-Xd-Ija.text" = "Twitter";
 
-/* Class = "IBUILabel"; text = "www.allaboutapps.net"; ObjectID = "Nce-mm-wa5"; */
+/* Class = "UILabel"; text = "www.allaboutapps.net"; ObjectID = "Nce-mm-wa5"; */
 "Nce-mm-wa5.text" = "www.allaboutapps.net";
 
-/* Class = "IBUILabel"; text = "Write a Review"; ObjectID = "P36-ib-WDG"; */
+/* Class = "UINavigationItem"; title = "Open Source Licenses"; ObjectID = "OXd-fK-eHk"; */
+"OXd-fK-eHk.title" = "Open Source Licenses";
+
+/* Class = "UILabel"; text = "Write a Review"; ObjectID = "P36-ib-WDG"; */
 "P36-ib-WDG.text" = "Write a Review";
 
-/* Class = "IBUITableViewSection"; footerTitle = "Copyright © 2009-2015 ALLABOUTAPPS Inc. All rights reserved."; ObjectID = "Spr-CR-vU4"; */
+/* Class = "UITableViewSection"; footerTitle = "Copyright © 2009-2015 ALLABOUTAPPS Inc. All rights reserved."; ObjectID = "Spr-CR-vU4"; */
 "Spr-CR-vU4.footerTitle" = "Copyright © 2009-2015 ALLABOUTAPPS Inc. All rights reserved.";
 
-/* Class = "IBUITableViewSection"; headerTitle = " "; ObjectID = "Spr-CR-vU4"; */
+/* Class = "UITableViewSection"; headerTitle = " "; ObjectID = "Spr-CR-vU4"; */
 "Spr-CR-vU4.headerTitle" = " ";
 
-/* Class = "IBUILabel"; text = "Acknowledgement"; ObjectID = "Y4I-oe-yba"; */
+/* Class = "UILabel"; text = "Acknowledgement"; ObjectID = "Y4I-oe-yba"; */
 "Y4I-oe-yba.text" = "Acknowledgement";
 
-/* Class = "IBUILabel"; text = "Contact Support"; ObjectID = "YRa-HJ-6kz"; */
+/* Class = "UILabel"; text = "Contact Support"; ObjectID = "YRa-HJ-6kz"; */
 "YRa-HJ-6kz.text" = "Contact Support";
 
-/* Class = "IBUILabel"; text = "3.0.0"; ObjectID = "cFb-Qr-7IF"; */
+/* Class = "UILabel"; text = "3.0.0"; ObjectID = "cFb-Qr-7IF"; */
 "cFb-Qr-7IF.text" = "3.0.0";
 
-/* Class = "IBUILabel"; text = "What's New"; ObjectID = "jzI-Kv-pA8"; */
+/* Class = "UILabel"; text = "What's New"; ObjectID = "jzI-Kv-pA8"; */
 "jzI-Kv-pA8.text" = "What's New";
 
-/* Class = "IBUILabel"; text = "Version"; ObjectID = "rPK-fC-u92"; */
+/* Class = "UILabel"; text = "Version"; ObjectID = "rPK-fC-u92"; */
 "rPK-fC-u92.text" = "Version";
 
-/* Class = "IBUINavigationItem"; title = "About"; ObjectID = "vLL-sw-MLM"; */
+/* Class = "UINavigationItem"; title = "About"; ObjectID = "vLL-sw-MLM"; */
 "vLL-sw-MLM.title" = "About";

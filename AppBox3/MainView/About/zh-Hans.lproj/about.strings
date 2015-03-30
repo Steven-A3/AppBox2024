@@ -52,3 +52,10 @@
 
 /* Class = "IBUILabel"; text = "Tell a Friend by message"; ObjectID = "ygM-lV-AEG"; */
 "ygM-lV-AEG.text" = "通过短信告诉朋友";
+
+/* Class = "UILabel"; text = "Open Source Licenses"; ObjectID = "EA3-28-uzR"; */
+"EA3-28-uzR.text" = "開源許可證";
+
+/* Class = "UINavigationItem"; title = "Open Source Licenses"; ObjectID = "OXd-fK-eHk"; */
+"OXd-fK-eHk.title" = "開源許可證";
+

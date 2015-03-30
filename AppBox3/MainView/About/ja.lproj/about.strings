@@ -61,3 +61,10 @@
 
 /* Class = "IBUILabel"; text = "Tell a Friend by message"; ObjectID = "ygM-lV-AEG"; */
 "ygM-lV-AEG.text" = "メッセージでお友達に知らせる";
+
+/* Class = "UILabel"; text = "Open Source Licenses"; ObjectID = "EA3-28-uzR"; */
+"EA3-28-uzR.text" = "オープンソースライセンス";
+
+/* Class = "UINavigationItem"; title = "Open Source Licenses"; ObjectID = "OXd-fK-eHk"; */
+"OXd-fK-eHk.title" = "オープンソースライセンス";
+

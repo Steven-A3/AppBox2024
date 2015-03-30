@@ -15,7 +15,7 @@
 "9Z8-Bh-Lsm.text" = "Aviso legal";
 
 /* Class = "IBUILabel"; text = "Tell a Friend by email"; ObjectID = "CKx-jh-s85"; */
-"CKx-jh-s85.text" = "Weiterempfehlen per E-Mail";
+"CKx-jh-s85.text" = "Recomendar a un amigo con e-mail";
 
 /* Class = "IBUITableViewSection"; headerTitle = " "; ObjectID = "Fc3-n4-rxm"; */
 "Fc3-n4-rxm.headerTitle" = " ";
@@ -60,4 +60,11 @@
 "vLL-sw-MLM.title" = "Información";
 
 /* Class = "IBUILabel"; text = "Tell a Friend by message"; ObjectID = "ygM-lV-AEG"; */
-"ygM-lV-AEG.text" = "Weiterempfehlen per SMS";
+"ygM-lV-AEG.text" = "Recomendar a un amigo con los SMS";
+
+/* Class = "UILabel"; text = "Open Source Licenses"; ObjectID = "EA3-28-uzR"; */
+"EA3-28-uzR.text" = "Licencias de código abierto";
+
+/* Class = "UINavigationItem"; title = "Open Source Licenses"; ObjectID = "OXd-fK-eHk"; */
+"OXd-fK-eHk.title" = "Licencias de código abierto";
+

@@ -16,3 +16,10 @@
 "R44-Fm-Kr5.text" = "Facebook";
 "Y4I-oe-yba.text" = "確認";
 "P36-ib-WDG.text" = "撰寫評論";
+
+/* Class = "UILabel"; text = "Open Source Licenses"; ObjectID = "EA3-28-uzR"; */
+"EA3-28-uzR.text" = "开源许可证";
+
+/* Class = "UINavigationItem"; title = "Open Source Licenses"; ObjectID = "OXd-fK-eHk"; */
+"OXd-fK-eHk.title" = "开源许可证";
+
