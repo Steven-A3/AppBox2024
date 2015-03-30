@@ -43,7 +43,9 @@
 
 @end
 
-@implementation A3RulerViewController
+@implementation A3RulerViewController {
+	NSInteger _oldCentimeterStartIndex;
+}
 
 - (instancetype)init {
 	self = [super init];
@@ -52,6 +54,7 @@
 		[_numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
 		[_numberFormatter setMinimumFractionDigits:2];
 		[_numberFormatter setMaximumFractionDigits:2];
+		_oldCentimeterStartIndex = NSNotFound;
 	}
 
 	return self;
@@ -514,8 +517,13 @@
 		centimeterStartIndex = floor(_rulerScrollView.contentOffset.x / _centimeterAsPoints);
 	}
 
-//	FNLOG(@"Centimeter Start Index = %ld", (long)centimeterStartIndex);
+	if (centimeterStartIndex == _oldCentimeterStartIndex) {
+		return;
+	}
+	FNLOG(@"Centimeter Start Index = %ld, old = %ld", (long)centimeterStartIndex, _oldCentimeterStartIndex);
 	
+	_oldCentimeterStartIndex = centimeterStartIndex;
+
 	[_centimetersMarkingViews enumerateObjectsUsingBlock:^(A3MarkingsView *markingsView, NSUInteger idx, BOOL *stop) {
 		markingsView.drawPortrait = toPortrait;
 		if (toPortrait) {
