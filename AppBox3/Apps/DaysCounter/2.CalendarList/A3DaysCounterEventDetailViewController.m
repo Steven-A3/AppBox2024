@@ -1291,10 +1291,6 @@ EXIT_FUCTION:
     eventInfoCell.sinceRoundLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
     eventInfoCell.sinceRoundLabel.layer.cornerRadius = 9.0;
 
-//    [SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:46.0]];
-//	[SFKImage setDefaultColor:[UIColor colorWithRed:159/255.0 green:159/255.0 blue:159/255.0 alpha:1.0]];
-//    eventInfoCell.lunar1AImageView.image = [SFKImage imageNamed:@"f"];
-//    eventInfoCell.lunar1BImageView.image = [SFKImage imageNamed:@"f"];
     eventInfoCell.lunar1AImageView.hidden = YES;
     eventInfoCell.lunar1BImageView.hidden = YES;
     
