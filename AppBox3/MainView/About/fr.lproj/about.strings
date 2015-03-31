@@ -59,3 +59,6 @@
 /* Class = "UINavigationItem"; title = "Open Source Licenses"; ObjectID = "OXd-fK-eHk"; */
 "OXd-fK-eHk.title" = "Licences open source";
 
+/* Class = "UILabel"; text = "Other Apps"; ObjectID = "3zq-zd-Qlj"; */
+"3zq-zd-Qlj.text" = "Plus d'applications";
+

@@ -68,3 +68,6 @@
 /* Class = "UINavigationItem"; title = "Open Source Licenses"; ObjectID = "OXd-fK-eHk"; */
 "OXd-fK-eHk.title" = "오픈 소스 라이센스";
 
+/* Class = "UILabel"; text = "Other Apps"; ObjectID = "3zq-zd-Qlj"; */
+"3zq-zd-Qlj.text" = "더 많은 앱들";
+

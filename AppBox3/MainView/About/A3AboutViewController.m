@@ -151,6 +151,11 @@
 			break;
 		}
 		case 2: {
+			NSURL *url = [[NSURL alloc] initWithString:@"itms-apps://itunes.com/apps/allaboutapps"];
+			[[UIApplication sharedApplication] openURL:url];
+			break;
+		}
+		case 3: {
 			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Acknowledgement", @"Acknowledgement")
 																message:NSLocalizedString(@"HOLIDAYS_ACKNOWLEDGEMENT", nil)
 															   delegate:nil
@@ -159,7 +164,7 @@
 			[alertView show];
 			break;
 		}
-		case 3: {
+		case 4: {
 			NSMutableString *message = [NSMutableString new];
 			[message appendString:[NSString stringWithFormat:@"\n📌 %@\n\n", NSLocalizedString(A3AppName_Holidays, nil)]];
 			[message appendString:[NSString stringWithFormat:@"%@\n\n", NSLocalizedString(@"DISCLAIMER_MESSAGE", nil)]];

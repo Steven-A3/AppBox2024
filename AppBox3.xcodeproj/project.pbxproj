@@ -2554,7 +2554,6 @@
 		687F928818F69C74006377B9 /* A3MoreTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3MoreTableViewCell.m; sourceTree = "<group>"; };
 		687FF89817D1931100130ABC /* A3HolidaysCountrySearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3HolidaysCountrySearchViewController.h; path = Holidays/A3HolidaysCountrySearchViewController.h; sourceTree = "<group>"; };
 		687FF89917D1931100130ABC /* A3HolidaysCountrySearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3HolidaysCountrySearchViewController.m; path = Holidays/A3HolidaysCountrySearchViewController.m; sourceTree = "<group>"; };
-		68812F051AC902960014F3ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/about.strings; sourceTree = "<group>"; };
 		688257A817D37863006429D3 /* A3HolidaysEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3HolidaysEditViewController.h; path = Holidays/A3HolidaysEditViewController.h; sourceTree = "<group>"; };
 		688257A917D37863006429D3 /* A3HolidaysEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3HolidaysEditViewController.m; path = Holidays/A3HolidaysEditViewController.m; sourceTree = "<group>"; };
 		688257AF17D37D37006429D3 /* A3HolidaysEditCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3HolidaysEditCell.h; path = Holidays/A3HolidaysEditCell.h; sourceTree = "<group>"; };
@@ -2637,6 +2636,7 @@
 		6896DC961921D64F00FA98F3 /* ExpenseListItem+management.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ExpenseListItem+management.m"; path = "Data/ExpenseListItem+management.m"; sourceTree = "<group>"; };
 		6898A6E51908AEA50099C09E /* WalletFavorite+initialize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WalletFavorite+initialize.h"; sourceTree = "<group>"; };
 		6898A6E61908AEA50099C09E /* WalletFavorite+initialize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WalletFavorite+initialize.m"; sourceTree = "<group>"; };
+		6899C2661AC986B4008B64C1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/about.strings; sourceTree = "<group>"; };
 		689A203319AB33B4009144B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		689A203419AB33B7009144B6 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		689A203519AB3435009144B6 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -8564,7 +8564,7 @@
 				68F150DC194C21F200159EAD /* pl */,
 				68F150DE194C21F400159EAD /* es */,
 				6813614B1A6CADE300E13F51 /* zh-Hant */,
-				68812F051AC902960014F3ED /* en */,
+				6899C2661AC986B4008B64C1 /* en */,
 			);
 			name = about.storyboard;
 			path = About;
