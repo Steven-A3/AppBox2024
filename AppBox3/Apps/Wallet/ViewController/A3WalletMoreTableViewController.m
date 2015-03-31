@@ -106,8 +106,9 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 			_isAddingCategoryInProgress = NO;
 			NSIndexPath *indexPath;
 			if (_isEditing) {
-				NSUInteger lastRow = [self.tableView numberOfRowsInSection:1] - 1;
-				indexPath = [NSIndexPath indexPathForRow:lastRow inSection:1];
+				NSUInteger lastSection = [self.tableView numberOfSections] - 1;
+				NSUInteger lastRow = [self.tableView numberOfRowsInSection:lastSection] - 1;
+				indexPath = [NSIndexPath indexPathForRow:lastRow inSection:lastSection];
 			} else {
 				NSUInteger lastRow = [self.tableView numberOfRowsInSection:0] - 1;
 				indexPath = [NSIndexPath indexPathForRow:lastRow inSection:0];
