@@ -125,6 +125,7 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 		[self filterContentForSearchText:_searchBar.text];
 		[_mySearchDisplayController.searchResultsTableView reloadData];
 	}
+	[self enableControls:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -159,10 +160,12 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 }
 
 - (void)enableControls:(BOOL)enable {
+	[self.addButton setEnabled:enable && ([WalletData visibleCategoryCount] > 0)];
+	
 	if (!IS_IPAD) return;
+	
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 	[self.navigationItem.rightBarButtonItem setEnabled:enable];
-	[self.addButton setEnabled:enable];
 	BOOL segmentedControlEnable = enable && [WalletItem MR_countOfEntities] > 0;
 	[self.segmentedControlRef setTintColor:segmentedControlEnable ? nil : [UIColor colorWithRed:147.0 / 255.0 green:147.0 / 255.0 blue:147.0 / 255.0 alpha:1.0]];
 	[self.segmentedControlRef setEnabled:segmentedControlEnable];
