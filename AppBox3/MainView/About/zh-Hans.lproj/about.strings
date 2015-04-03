@@ -30,7 +30,7 @@
 "Spr-CR-vU4.footerTitle" = "Copyright © 2009-2015 ALLABOUTAPPS Inc. 保留所有权利。";
 
 /* Class = "IBUILabel"; text = "Acknowledgement"; ObjectID = "Y4I-oe-yba"; */
-"Y4I-oe-yba.text" = "确认";
+"Y4I-oe-yba.text" = "致谢";
 
 /* Class = "IBUILabel"; text = "Contact Support"; ObjectID = "YRa-HJ-6kz"; */
 "YRa-HJ-6kz.text" = "与支持联系";
