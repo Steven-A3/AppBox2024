@@ -945,7 +945,6 @@ Wprowadź klucz szyfrowania dla portfela.";
 "To turn on the LED requires camera access." = "Aby włączyć LED wymaga dostępu do kamery.";
 "%@ requires camera access." = "%@ wymaga dostępu do kamery.";
 
-"Advance" = "Przenieść";
-"Reset" = "Resetuj";
-
 "Jewish Holidays" = "Święta żydowskie";
+
+"'%@' is back." = "'%@' jest z powrotem.";

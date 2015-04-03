@@ -944,7 +944,6 @@
 "To turn on the LED requires camera access." = "Pour allumer le voyant nécessite un accès à la caméra.";
 "%@ requires camera access." = "%@ nécessite un accès à la caméra.";
 
-"Advance" = "Avancer";
-"Reset" = "Réinitialiser";
-
 "Jewish Holidays" = "Jours fériés juifs";
+
+"'%@' is back." = "'%@' est de retour.";

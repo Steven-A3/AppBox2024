@@ -939,7 +939,6 @@ Inserire chiave di crittografia per il portafoglio.";
 "To turn on the LED requires camera access." = "Per accendere il LED richiede l'accesso della fotocamera.";
 "%@ requires camera access." = "%@ richiede l'accesso della fotocamera.";
 
-"Advance" = "Muoversi";
-"Reset" = "Reimposta";
-
 "Jewish Holidays" = "Festività ebraiche";
+
+"'%@' is back." = "Si aggiunge la funzione '%@'.";

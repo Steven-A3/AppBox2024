@@ -67,6 +67,7 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 @implementation A3AppDelegate {
 	BOOL _appIsNotActiveYet;
 	BOOL _backgroundDownloadIsInProgress;
+	BOOL _needShowAlertV3_4NewFeature;
 }
 
 @synthesize window = _window;
@@ -138,7 +139,10 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 		[[A3UserDefaults standardUserDefaults] synchronize];
 	}
 	if ([[_previousVersion substringToIndex:3] doubleValue] < 3.4) {
-		[self migrateToV3_4_Holidays];
+		if (!_shouldMigrateV1Data) {
+			[self migrateToV3_4_Holidays];
+			_needShowAlertV3_4NewFeature = YES;
+		}
 	}
 
 	// AppBox Pro V1.8.4까지는 Days Until 기능의 옵션에 의해서 남은 일자에 대한 배지 기능이 있었습니다.
@@ -1002,6 +1006,18 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 
 - (void)applicationProtectedDataDidBecomeAvailable:(UIApplication *)application {
 	FNLOG();
+}
+
+- (void)didFinishPushViewController {
+	if (_needShowAlertV3_4NewFeature) {
+		_needShowAlertV3_4NewFeature = NO;
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+															message:[NSString stringWithFormat:NSLocalizedString(@"'%@' is back.", @"'%@' is back to AppBox Pro."), NSLocalizedString(@"Ruler", @"Ruler")]
+														   delegate:nil
+												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+												  otherButtonTitles:nil];
+		[alertView show];
+	}
 }
 
 #ifdef APPBOX3_FREE

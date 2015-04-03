@@ -196,6 +196,7 @@ static char const *const key_firstActionSheet 					= "key_firstActionSheet";
     if (viewController) {
         [navigationController pushViewController:viewController animated:NO];
     }
+	[[A3AppDelegate instance] didFinishPushViewController];
 }
 
 - (void)leftBarButtonAppsButton {

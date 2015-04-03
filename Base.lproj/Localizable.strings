@@ -893,7 +893,6 @@ Enter Encryption Key for Wallet.";
 "To turn on the LED requires camera access." = "LED requires camera access.";
 "%@ requires camera access." = "%@ requires camera access.";
 
-"Advance" = "Advance";
-"Reset" = "Reset";
-
 "Jewish Holidays" = "Jewish Holidays";
+
+"'%@' is back." = "'%@' is back.";

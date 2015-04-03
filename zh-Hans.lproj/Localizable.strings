@@ -959,7 +959,6 @@
 "To turn on the LED requires camera access." = "要打开LED，需要摄像头的访问。";
 "%@ requires camera access." = "%@，需要摄像头的访问。";
 
-"Advance" = "推进";
-"Reset" = "重置";
-
 "Jewish Holidays" = "犹太假日";
+
+"'%@' is back." = "'%@'又回来了。";

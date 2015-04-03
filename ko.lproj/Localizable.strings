@@ -954,7 +954,6 @@
 "To turn on the LED requires camera access." = "LED를 켜려면 카메라 접근 권한이 필요합니다.";
 "%@ requires camera access." = "%@: 카메라 접근 권한이 필요합니다.";
 
-"Advance" = "자 옮기기";
-"Reset" = "처음으로";
-
 "Jewish Holidays" = "유대교 휴일";
+
+"'%@' is back." = "'%@'가 추가되었습니다.";

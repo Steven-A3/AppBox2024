@@ -131,6 +131,7 @@ extern NSString *const A3AppName_Settings;
 - (NSURL *)storeURL;
 - (NSString *)storeFileName;
 
+- (void)didFinishPushViewController;
 @end
 
 #import "A3AppDelegate+iCloud.h"

@@ -953,7 +953,6 @@
 "To turn on the LED requires camera access." = "LEDを点灯するカメラのアクセス権限が必要です。";
 "%@ requires camera access." = "%@、カメラへのアクセスを必要とします。";
 
-"Advance" = "移る";
-"Reset" = "リセット";
-
 "Jewish Holidays" = "ユダヤ教の祝日";
+
+"'%@' is back." = "'%@'は戻って追加されます。";

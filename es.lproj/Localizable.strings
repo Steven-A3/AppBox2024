@@ -939,7 +939,6 @@ Introduzca la clave de cifrado para el bolsillo.";
 "To turn on the LED requires camera access." = "Para encender el LED requiere acceso a la cámara.";
 "%@ requires camera access." = "%@ requiere acceso a la cámara.";
 
-"Advance" = "Avanzar";
-"Reset" = "Restablecer";
-
 "Jewish Holidays" = "Festivos judíos";
+
+"'%@' is back." = "Se añade la función de '%@'.";

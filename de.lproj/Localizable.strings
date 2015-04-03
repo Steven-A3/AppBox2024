@@ -954,7 +954,6 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 "To turn on the LED requires camera access." = "Um die LED einschalten erfordert Zugriff auf die Kamera.";
 "%@ requires camera access." = "%@ erfordert Zugriff auf die Kamera.";
 
-"Advance" = "Vorrücken";
-"Reset" = "Zurücksetzen";
-
 "Jewish Holidays" = "Jüdische Feiertage";
+
+"'%@' is back." = "'%@' hinzugefügt wird.";
