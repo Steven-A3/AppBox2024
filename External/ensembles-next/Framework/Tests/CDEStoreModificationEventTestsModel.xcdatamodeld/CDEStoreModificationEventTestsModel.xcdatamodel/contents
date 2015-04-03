@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13E28" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6751" systemVersion="14C1514" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="BatchChild" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="batchGrandParents" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BatchGrandParent" inverseName="batchChildren" inverseEntity="BatchGrandParent" syncable="YES"/>
         <relationship name="batchParent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BatchParent" inverseName="batchChildren" inverseEntity="BatchParent" syncable="YES"/>
         <relationship name="friend" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BatchChild" inverseName="friendTo" inverseEntity="BatchChild" syncable="YES"/>
         <relationship name="friendTo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BatchChild" inverseName="friend" inverseEntity="BatchChild" syncable="YES"/>
+        <relationship name="largeDataBlob" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="LargeDataBlob" inverseName="batchChild" inverseEntity="LargeDataBlob" syncable="YES"/>
         <relationship name="siblings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BatchChild" inverseName="siblingsTo" inverseEntity="BatchChild" syncable="YES"/>
         <relationship name="siblingsTo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BatchChild" inverseName="siblings" inverseEntity="BatchChild" syncable="YES"/>
         <userInfo>
@@ -42,6 +43,14 @@
     <entity name="DerivedParent" parentEntity="Parent" syncable="YES">
         <relationship name="derivedChildren" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DerivedChild" inverseName="derivedParent" inverseEntity="DerivedChild" syncable="YES"/>
     </entity>
+    <entity name="LargeDataBlob" syncable="YES">
+        <attribute name="data" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <relationship name="batchChild" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BatchChild" inverseName="largeDataBlob" inverseEntity="BatchChild" syncable="YES"/>
+        <userInfo>
+            <entry key="CDEMigrationBatchSizeKey" value="10"/>
+            <entry key="CDEMigrationPriorityKey" value="100"/>
+        </userInfo>
+    </entity>
     <entity name="Parent" syncable="YES">
         <attribute name="data" optional="YES" attributeType="Binary" storedInTruthFile="YES" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
@@ -57,12 +66,13 @@
         <relationship name="relatedParentsInverse" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Parent" inverseName="relatedParents" inverseEntity="Parent" syncable="YES"/>
     </entity>
     <elements>
-        <element name="BatchChild" positionX="178" positionY="-343" width="128" height="148"/>
+        <element name="BatchChild" positionX="178" positionY="-343" width="128" height="163"/>
         <element name="BatchGrandParent" positionX="-297" positionY="-148" width="128" height="88"/>
         <element name="BatchParent" positionX="-549" positionY="-268" width="128" height="88"/>
         <element name="Child" positionX="0" positionY="5" width="128" height="133"/>
         <element name="DerivedChild" positionX="-2" positionY="293" width="128" height="73"/>
         <element name="DerivedParent" positionX="-549" positionY="297" width="128" height="58"/>
+        <element name="LargeDataBlob" positionX="414" positionY="-315" width="128" height="73"/>
         <element name="Parent" positionX="-551" positionY="-25" width="128" height="223"/>
     </elements>
 </model>

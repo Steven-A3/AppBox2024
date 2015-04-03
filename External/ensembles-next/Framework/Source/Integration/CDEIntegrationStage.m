@@ -109,7 +109,10 @@
 + (void)setValue:(id)value forKey:(NSString *)key inObject:(id)object
 {
     id currentValue = [self valueForKey:key inObject:object];
-    if (value != currentValue && ![value isEqual:currentValue]) {
+    BOOL valueIsLargeData = [value isKindOfClass:[NSData class]] && [value length] > 10e3;
+    BOOL currentValueIsLargeData = [currentValue isKindOfClass:[NSData class]] && [currentValue length] > 10e3;
+    BOOL isLargeData = valueIsLargeData || currentValueIsLargeData;
+    if (value != currentValue && (isLargeData || ![currentValue isEqual:value])) {
         @try {
             [object willChangeValueForKey:key];
             [object setPrimitiveValue:value forKey:key];

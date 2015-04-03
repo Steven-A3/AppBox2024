@@ -257,14 +257,14 @@
         eventRevision.revisionNumber = revision;
         otherStoreEvent.eventRevision = eventRevision;
         otherStoreEvent.timestamp = 10.0;
+        [eventMOC save:NULL];
     }];
 }
 
 - (void)testRevisionNumbersOfOtherStoresForTwoStoresWithNoPreviousMerge
 {
-    [self addEventForRevision:4 store:@"store0"];
-    
     [self saveContext];
+    [self addEventForRevision:4 store:@"store0"];
     
     [eventMOC performBlockAndWait:^{
         NSArray *modEvents = [self fetchModEvents];

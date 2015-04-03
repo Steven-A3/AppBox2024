@@ -81,42 +81,6 @@
     [self waitForAsyncOpToFinish];
 }
 
-- (void)testConsolidatingWithAnEmptyBaselinePrioritizesNonEmpty
-{
-    [self addBaselineEventsForStoreId:@"123" globalCounts:@[@(2)] revisions:@[@(2)]];
-    CDEStoreModificationEvent *nonEmptyBaseline = [[self addBaselineEventsForStoreId:@"234" globalCounts:@[@(0)] revisions:@[@(0)]] lastObject];
-    __block NSString *nonEmptyUniqueID = nil;
-    [context performBlockAndWait:^{
-        nonEmptyUniqueID = [nonEmptyBaseline.uniqueIdentifier copy];
-        
-        CDEGlobalIdentifier *globalId = [NSEntityDescription insertNewObjectForEntityForName:@"CDEGlobalIdentifier" inManagedObjectContext:context];
-        globalId.globalIdentifier = @"123";
-        globalId.nameOfEntity = @"Parent";
-        CDEObjectChange *change1 = [self objectChangeForGlobalId:globalId valuesByKey:@{@"date":[NSDate dateWithTimeIntervalSince1970:10]}];
-        change1.storeModificationEvent = nonEmptyBaseline;
-        
-        [context save:NULL];
-    }];
-
-    [consolidator consolidateBaselineWithCompletion:^(NSError *error) {
-        [context performBlock:^{
-            NSArray *events = [self storeModEvents];
-            XCTAssertEqual(events.count, (NSUInteger)1, @"Should only be one baseline left");
-            
-            CDEStoreModificationEvent *event = events.lastObject;
-            XCTAssertEqual(event.globalCount, (int64_t)2, @"Wrong global count");
-            XCTAssertEqual([event.revisionSet revisionForPersistentStoreIdentifier:@"123"].revisionNumber, (int64_t)2, @"Wrong revision for first");
-            XCTAssertEqual([event.revisionSet revisionForPersistentStoreIdentifier:@"234"].revisionNumber, (int64_t)0, @"Wrong revision for second");
-            XCTAssertEqualObjects(nonEmptyUniqueID, event.uniqueIdentifier);
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self stopAsyncOp];
-            });
-        }];
-    }];
-    [self waitForAsyncOpToFinish];
-}
-
 - (void)testConsolidatingWithMultipleEmptyBaselines
 {
     CDEStoreModificationEvent *mergedBaseline = [[self addBaselineEventsForStoreId:@"123" globalCounts:@[@(2)] revisions:@[@(2)]] lastObject];
@@ -135,7 +99,6 @@
             XCTAssertEqual(event.globalCount, (int64_t)2, @"Wrong global count");
             XCTAssertEqual([event.revisionSet revisionForPersistentStoreIdentifier:@"123"].revisionNumber, (int64_t)2, @"Wrong revision for first");
             XCTAssertEqual([event.revisionSet revisionForPersistentStoreIdentifier:@"234"].revisionNumber, (int64_t)0, @"Wrong revision for second");
-            XCTAssertEqualObjects(mergedBaselineID, event.uniqueIdentifier);
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self stopAsyncOp];
@@ -179,7 +142,7 @@
 - (void)testBaselineRevisionsWhenMergingConcurrentBaselines
 {
     [[self addBaselineEventsForStoreId:@"123" globalCounts:@[@(10)] revisions:@[@(10)]] lastObject];
-    [[self addBaselineEventsForStoreId:@"234" globalCounts:@[@(20)] revisions:@[@(11)]] lastObject];
+    [[self addBaselineEventsForStoreId:@"store1" globalCounts:@[@(20)] revisions:@[@(11)]] lastObject];
     
     [consolidator consolidateBaselineWithCompletion:^(NSError *error) {
         XCTAssertNil(error, @"Error was not nil");

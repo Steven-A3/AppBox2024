@@ -230,7 +230,9 @@
     NSArray *events = [context executeFetchRequest:fetch error:&error];
     if (!events) CDELog(CDELoggingLevelError, @"Could not fetch baselines: %@", error);
         
-    if (events.count > 1) events = [CDERevisionManager sortStoreModificationEvents:events];
+    if (events.count > 1) {
+        events = [CDERevisionManager sortStoreModificationEvents:events];
+    }
     
     return events.lastObject; // Return most recent
 }

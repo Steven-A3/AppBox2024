@@ -51,7 +51,7 @@
     NSPersistentStoreCoordinator *testPSC1 = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
     [testPSC1 addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:testStoreURL1 options:nil error:NULL];
     
-    context1 = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSConfinementConcurrencyType];
+    context1 = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
     context1.persistentStoreCoordinator = testPSC1;
     context1.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy;
     
@@ -60,7 +60,7 @@
     
     cloudFileSystem1 = [[CDELocalCloudFileSystem alloc] initWithRootDirectory:cloudRootDir];
     eventDataRoot1 = [testRootDirectory stringByAppendingPathComponent:@"eventData1"];
-    ensemble1 = [[CDEPersistentStoreEnsemble alloc] initWithEnsembleIdentifier:@"com.ensembles.synctest" persistentStoreURL:testStoreURL1 managedObjectModelURL:testModelURL cloudFileSystem:cloudFileSystem1 localDataRootDirectoryURL:[NSURL URLWithString:eventDataRoot1]];
+    ensemble1 = [[CDEPersistentStoreEnsemble alloc] initWithEnsembleIdentifier:@"com.ensembles.synctest" persistentStoreURL:testStoreURL1 persistentStoreOptions:nil managedObjectModelURL:testModelURL cloudFileSystem:cloudFileSystem1 localDataRootDirectoryURL:[NSURL URLWithString:eventDataRoot1]];
     ensemble1.delegate = self;
     
     // Second store
@@ -70,16 +70,17 @@
     NSPersistentStoreCoordinator *testPSC2 = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
     [testPSC2 addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:testStoreURL2 options:nil error:NULL];
     
-    context2 = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSConfinementConcurrencyType];
+    context2 = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
     context2.persistentStoreCoordinator = testPSC2;
     context2.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy;
     
     cloudFileSystem2 = [[CDELocalCloudFileSystem alloc] initWithRootDirectory:cloudRootDir];
     eventDataRoot2 = [testRootDirectory stringByAppendingPathComponent:@"eventData2"];
-    ensemble2 = [[CDEPersistentStoreEnsemble alloc] initWithEnsembleIdentifier:@"com.ensembles.synctest" persistentStoreURL:testStoreURL2 managedObjectModelURL:testModelURL cloudFileSystem:cloudFileSystem2 localDataRootDirectoryURL:[NSURL URLWithString:eventDataRoot2]];
+    ensemble2 = [[CDEPersistentStoreEnsemble alloc] initWithEnsembleIdentifier:@"com.ensembles.synctest" persistentStoreURL:testStoreURL2 persistentStoreOptions:nil managedObjectModelURL:testModelURL cloudFileSystem:cloudFileSystem2 localDataRootDirectoryURL:[NSURL URLWithString:eventDataRoot2]];
     ensemble2.delegate = self;
     
-    [self runBaselineConsolidationTest:self];
+    // Call test method here
+    [self runLargeBinariesTest:self];
 }
 
 - (IBAction)runBaselineConsolidationTest:(id)sender
@@ -108,6 +109,19 @@
     }];
 }
 
+- (IBAction)runLargeBinariesTest:(id)sender
+{
+    [self addNumberOfObjects:100 toContext:context1 includeLargeBinaries:YES];
+    [ensemble1 leechPersistentStoreWithCompletion:^(NSError *error) {
+        [ensemble2 leechPersistentStoreWithCompletion:^(NSError *error) {
+            [ensemble1 mergeWithCompletion:^(NSError *error) {
+                [ensemble2 mergeWithCompletion:^(NSError *error) {
+                }];
+            }];
+        }];
+    }];
+}
+
 - (void)deleteObjectsInContext:(NSManagedObjectContext *)context
 {
     @autoreleasepool {
@@ -120,17 +134,38 @@
 
 - (void)addNumberOfObjects:(NSUInteger)count toContext:(NSManagedObjectContext *)context
 {
+    [self addNumberOfObjects:count toContext:context includeLargeBinaries:NO];
+}
+
+- (void)addNumberOfObjects:(NSUInteger)count toContext:(NSManagedObjectContext *)context includeLargeBinaries:(BOOL)includeLargeBinaries
+{
     @autoreleasepool {
         for (NSUInteger i = 0; i < count; i++) {
             id parent = [NSEntityDescription insertNewObjectForEntityForName:@"BatchParent" inManagedObjectContext:context];
             for (NSUInteger c = 0; c < 5; c++) {
                 id child = [NSEntityDescription insertNewObjectForEntityForName:@"BatchChild" inManagedObjectContext:context];
                 [child setValue:parent forKey:@"batchParent"];
+                if (includeLargeBinaries) {
+                    id blob = [NSEntityDescription insertNewObjectForEntityForName:@"LargeDataBlob" inManagedObjectContext:context];
+                    NSData *randomData = [self randomDataOfSize:1000000]; // About 1MB
+                    [blob setValue:randomData forKey:@"data"];
+                    [child setValue:blob forKey:@"largeDataBlob"];
+                }
             }
         }
         [context save:NULL];
         [context reset];
     }
+}
+
+-(NSData *)randomDataOfSize:(NSUInteger)numberOfBytes
+{
+    NSMutableData *newData = [NSMutableData dataWithCapacity:numberOfBytes];
+    for (NSUInteger i = 0 ; i < numberOfBytes/4 ; ++i ) {
+        u_int32_t randomBits = arc4random();
+        [newData appendBytes:&randomBits length:4];
+    }
+    return newData;
 }
 
 @end

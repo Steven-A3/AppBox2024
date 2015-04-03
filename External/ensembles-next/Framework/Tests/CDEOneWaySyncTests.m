@@ -118,7 +118,7 @@
 }
 
 - (void)testNotANumberAttribute
-{
+{    
     [self leechStores];
     
     id parent = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];

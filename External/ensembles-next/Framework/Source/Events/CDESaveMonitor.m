@@ -206,6 +206,9 @@
     // Make sure the event is saved atomically
     NSManagedObjectContext *eventContext = self.eventStore.managedObjectContext;
     [eventContext performBlock:^{
+        // Reset just in case there is some invalid state from a failed operation
+        [eventContext reset];
+        
         // Add a store mod event
         [eventBuilder makeNewEventOfType:CDEStoreModificationEventTypeSave uniqueIdentifier:newUniqueId];
         

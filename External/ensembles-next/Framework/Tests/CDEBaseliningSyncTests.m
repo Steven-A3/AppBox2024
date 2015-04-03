@@ -279,6 +279,7 @@
         CFRunLoopStop(CFRunLoopGetCurrent());
     }];
     while ( !finished1 || !finished2 ) CFRunLoopRun();
+    
     [ensemble2 setValue:@NO forKeyPath:@"rebaser.forceRebase"];
     [ensemble1 setValue:@NO forKeyPath:@"rebaser.forceRebase"];
     
@@ -288,7 +289,7 @@
     NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"Parent"];
     NSArray *parents1 = [context1 executeFetchRequest:fetch error:NULL];
     NSArray *parents2 = [context2 executeFetchRequest:fetch error:NULL];
-    XCTAssertEqual(parents1.count, (NSUInteger)90, @"Wrong numbmer of parents");
+    XCTAssertEqual(parents1.count, (NSUInteger)90, @"Wrong number of parents");
     XCTAssertEqual(parents1.count, parents2.count, @"Unequal number of parents");
 }
 

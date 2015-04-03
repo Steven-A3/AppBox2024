@@ -109,6 +109,10 @@ NSString * const CDEDropboxSyncCloudFileSystemDidUploadFilesNotification = @"CDE
                 if (!strongSelf) return;
                 if (strongSelf->filesystem.status.download.inProgress) [strongSelf scheduleDownloadNotification];
                 if (strongSelf->filesystem.status.upload.inProgress) [strongSelf scheduleUploadNotification];
+                if (!strongSelf->filesystem.status.anyInProgress) {
+                    [strongSelf scheduleDownloadNotification];
+                    [strongSelf scheduleUploadNotification];
+                }
             }];
         }
     }

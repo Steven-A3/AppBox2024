@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "Ensembles"
-  s.version      = "2.2"
+  s.version      = "2.2.2"
   s.summary      = "A peer-to-peer synchronization framework for Core Data."
 
   s.description  =  <<-DESC
@@ -78,6 +78,13 @@ Pod::Spec.new do |s|
     ss.dependency 'Ensembles/Core'
     ss.dependency 'SSZipArchive'
     ss.source_files = 'Framework/Extensions/CDEZipCloudFileSystem.{h,m}'
+  end
+  
+  s.subspec 'Encrypt' do |ss|
+    ss.dependency 'Ensembles/Core'
+    ss.dependency 'RNCryptor'
+    ss.framework = 'Security'
+    ss.source_files = 'Framework/Extensions/CDEEncryptedCloudFileSystem.{h,m}'
   end
 
   s.subspec 'Node' do |ss|

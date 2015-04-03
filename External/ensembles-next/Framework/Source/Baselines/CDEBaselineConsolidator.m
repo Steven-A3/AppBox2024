@@ -102,7 +102,7 @@
         }
         
         // Merge surviving baselines
-        CDELog(CDELoggingLevelVerbose, @"Baselines remaining that need merging");
+        CDELog(CDELoggingLevelVerbose, @"Baselines remaining that need merging: %lu", (unsigned long)survivingBaselineIDs.count);
         NSManagedObjectID *newBaselineID = [self mergedBaselineFromOrderedBaselineEventIDs:survivingBaselineIDs error:&error];
         if (!newBaselineID) {
             [self failWithCompletion:completion error:error];
@@ -249,39 +249,11 @@
     
     CDELog(CDELoggingLevelVerbose, @"Merging baselines with unique ids: %@", [baselines valueForKeyPath:@"uniqueIdentifier"]);
     
-    // Determine which baselines are empty, and should be ignored (other than revision set),
-    // and determine which is most-recent non-empty baseline, which will be the new baseline.
-    NSManagedObjectID *mergedBaselineID = nil;
-    NSMutableArray *otherBaselineIDsRequiringMerging = [[NSMutableArray alloc] init];
-    for (NSManagedObjectID *baselineID in baselineIDs) {
-        NSError *localError = nil;
-        NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"CDEObjectChange"];
-        fetch.predicate = [NSPredicate predicateWithFormat:@"storeModificationEvent = %@", baselineID];
-        fetch.fetchLimit = 1;
-        NSUInteger changeCount = [context countForFetchRequest:fetch error:&localError];
-        if (changeCount == NSNotFound) {
-            *error = localError;
-            return nil;
-        }
-        
-        if (changeCount > 0) {
-            if (!mergedBaselineID) {
-                mergedBaselineID = baselineID;
-            }
-            else {
-                [otherBaselineIDsRequiringMerging addObject:baselineID];
-            }
-        }
-        else {
-            CDELog(CDELoggingLevelVerbose, @"Empty baseline found with objectID %@.", baselineID);
-        }
-    }
-    
-    // If all are empty, we just take first
-    if (!mergedBaselineID) {
-        mergedBaselineID = baselineIDs.firstObject;
-        CDELog(CDELoggingLevelVerbose, @"All baselines are empty. Adopting the first non-empty one, with object id: %@", mergedBaselineID);
-    }
+    // Determine which baselines to eliminate and which is the
+    // most-recent. That will become the new baseline.
+    NSManagedObjectID *mergedBaselineID = baselineIDs[0];
+    NSMutableArray *otherBaselineIDsRequiringMerging = [baselineIDs mutableCopy];
+    [otherBaselineIDsRequiringMerging removeObjectAtIndex:0];
     
     // Change the first baseline into our new baseline
     __block CDEStoreModificationEvent *mergedBaseline = (id)[context objectWithID:mergedBaselineID];
@@ -320,7 +292,6 @@
     
     // Apply changes from others
     __block BOOL success = YES;
-    __block BOOL baselineModified = NO;
     for (NSManagedObjectID *baselineID in otherBaselineIDsRequiringMerging) {
         __block CDEStoreModificationEvent *baseline = (id)[context objectWithID:baselineID];
         
@@ -347,12 +318,9 @@
                     // Move change to new baseline
                     change.storeModificationEvent = mergedBaseline;
                     [objectChangeIDsByGlobalIdentifierIDs setObject:changeID forKey:change.globalIdentifier.objectID];
-                    baselineModified = YES;
                 }
                 else {
-                    BOOL changed = NO;
-                    [existingChange mergeValuesFromSubordinateObjectChange:change isModified:(baselineModified ? NULL : &changed)];
-                    if (changed) baselineModified = YES;
+                    [existingChange mergeValuesFromSubordinateObjectChange:change isModified:NULL];
                 }
             }
             
@@ -368,6 +336,8 @@
     }
     
     if (success) {
+        CDELog(CDELoggingLevelVerbose, @"Updating revisions of merged baseline");
+
         // Update the revisions of each store in the baseline.
         // Do this last, so if a crash occurs, it will just continue the merge next time.
         // Doing this first would cause the incomplete baseline to not be concurrent with other baselines,
@@ -376,13 +346,9 @@
             return [context objectWithID:objectID];
         }];
         
-        // Change baseline id if it was actually changed. If unchanged, avoid exporting a new baseline
-        // by leaving id the same.
-        NSString *persistentStoreId = mergedBaseline.eventRevision.persistentStoreIdentifier;
-        if (baselineModified) {
-            persistentStoreId = self.eventStore.persistentStoreIdentifier;
-            mergedBaseline.uniqueIdentifier = [[NSProcessInfo processInfo] globallyUniqueString];
-        }
+        // Change baseline id.
+        NSString *persistentStoreId = self.eventStore.persistentStoreIdentifier;
+        mergedBaseline.uniqueIdentifier = [[NSProcessInfo processInfo] globallyUniqueString];
         
         // Update timestamps and global counts
         // Global count should be maximum.
