@@ -138,9 +138,11 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 		[[A3UserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultsKeyForPasscodeTimerDuration];
 		[[A3UserDefaults standardUserDefaults] synchronize];
 	}
-	if ([[_previousVersion substringToIndex:3] doubleValue] < 3.4) {
+	if (_previousVersion && [[_previousVersion substringToIndex:3] doubleValue] < 3.4) {
 		if (!_shouldMigrateV1Data) {
 			[self migrateToV3_4_Holidays];
+		}
+		if ([[_previousVersion substringToIndex:3] doubleValue] >= 3.0) {
 			_needShowAlertV3_4NewFeature = YES;
 		}
 	}
