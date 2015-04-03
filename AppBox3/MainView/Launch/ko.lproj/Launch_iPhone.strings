@@ -137,3 +137,6 @@ on all your devices"; ObjectID = "K25-Dj-0hb"; */
 
 /* Class = "IBUILabel"; text = "Flashlight"; ObjectID = "ni3-pI-wdj"; */
 "ni3-pI-wdj.text" = "손전등";
+
+/* Class = "UILabel"; text = "Ruler"; ObjectID = "i80-fG-GLd"; */
+"i80-fG-GLd.text" = "자";

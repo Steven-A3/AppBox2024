@@ -138,3 +138,6 @@ sur tous vos dispositifs";
 /* Class = "IBUILabel"; text = "Mirror"; ObjectID = "VV8-za-92e"; */
 "VV8-za-92e.text" = "Miroir";
 
+/* Class = "UILabel"; text = "Ruler"; ObjectID = "7a9-pg-MJ7"; */
+"7a9-pg-MJ7.text" = "Règle";
+

@@ -137,3 +137,7 @@ su tutti i tuoi dispositivi";
 
 "1LD-Du-cEp.text" = "Torcia";  // Flashlight
 "D9z-d7-61u.text" = "Lente d'ingrandimento";  // Magnifier
+
+/* Class = "UILabel"; text = "Ruler"; ObjectID = "7a9-pg-MJ7"; */
+"7a9-pg-MJ7.text" = "Righello";
+

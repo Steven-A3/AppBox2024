@@ -137,3 +137,7 @@ on all your devices"; ObjectID = "K25-Dj-0hb"; */
 
 "3xJ-Ct-Vtk.text" = "Spiegel";  // Mirror
 "4JO-f3-Yeq.text" = "Zufallszahl";  // Random
+
+/* Class = "UILabel"; text = "Ruler"; ObjectID = "i80-fG-GLd"; */
+"i80-fG-GLd.text" = "Lineal";
+

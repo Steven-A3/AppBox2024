@@ -1,4 +1,4 @@
-﻿"wFh-rf-oGS.text" = "產量";
+"wFh-rf-oGS.text" = "產量";
 "xk9-a9-WGh.normalTitle" = "使用 AppBox Pro";
 "gMT-1E-eq4.text" = "天計數器";
 "kyc-gi-ylJ.normalTitle" = "使用 AppBox Pro";
@@ -45,3 +45,7 @@
 "fVE-ef-mZ7.text" = "電池狀態";
 "CUC-uG-Jld.text" = "時鐘";
 "7KY-kl-Ksz.text" = "基本型/科學型計算器";
+
+/* Class = "UILabel"; text = "Ruler"; ObjectID = "i80-fG-GLd"; */
+"i80-fG-GLd.text" = "尺子";
+

@@ -138,3 +138,7 @@ a 64Bit e molto altro";
 
 "3xJ-Ct-Vtk.text" = "Specchio";  // Mirror
 "4JO-f3-Yeq.text" = "Casuale";  // Random
+
+/* Class = "UILabel"; text = "Ruler"; ObjectID = "i80-fG-GLd"; */
+"i80-fG-GLd.text" = "Righello";
+

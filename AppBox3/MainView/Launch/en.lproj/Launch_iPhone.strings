@@ -1,138 +1,141 @@
 
-/* Class = "IBUILabel"; text = "Unit Conveter"; ObjectID = "0bh-Bt-1Rg"; */
+/* Class = "UILabel"; text = "Unit Conveter"; ObjectID = "0bh-Bt-1Rg"; */
 "0bh-Bt-1Rg.text" = "Unit Conveter";
 
-/* Class = "IBUILabel"; text = "Utility"; ObjectID = "3pq-Ua-ezN"; */
+/* Class = "UILabel"; text = "Utility"; ObjectID = "3pq-Ua-ezN"; */
 "3pq-Ua-ezN.text" = "Utility";
 
-/* Class = "IBUILabel"; text = "Mirror"; ObjectID = "3xJ-Ct-Vtk"; */
+/* Class = "UILabel"; text = "Mirror"; ObjectID = "3xJ-Ct-Vtk"; */
 "3xJ-Ct-Vtk.text" = "Mirror";
 
-/* Class = "IBUILabel"; text = "Ladies Calendar"; ObjectID = "3xh-WT-2qJ"; */
+/* Class = "UILabel"; text = "Ladies Calendar"; ObjectID = "3xh-WT-2qJ"; */
 "3xh-WT-2qJ.text" = "Ladies Calendar";
 
-/* Class = "IBUILabel"; text = "Random"; ObjectID = "4JO-f3-Yeq"; */
+/* Class = "UILabel"; text = "Random"; ObjectID = "4JO-f3-Yeq"; */
 "4JO-f3-Yeq.text" = "Random";
 
-/* Class = "IBUILabel"; text = "Loan Calculator"; ObjectID = "5dF-dl-Cfh"; */
+/* Class = "UILabel"; text = "Loan Calculator"; ObjectID = "5dF-dl-Cfh"; */
 "5dF-dl-Cfh.text" = "Loan Calculator";
 
-/* Class = "IBUILabel"; text = "well designed for both \niPhone and iPad"; ObjectID = "73z-Fm-nHB"; */
+/* Class = "UILabel"; text = "well designed for both \niPhone and iPad"; ObjectID = "73z-Fm-nHB"; */
 "73z-Fm-nHB.text" = "well designed for both \niPhone and iPad";
 
-/* Class = "IBUILabel"; text = "Basic/Scientific Calculator"; ObjectID = "7KY-kl-Ksz"; */
+/* Class = "UILabel"; text = "Basic/Scientific Calculator"; ObjectID = "7KY-kl-Ksz"; */
 "7KY-kl-Ksz.text" = "Basic/Scientific Calculator";
 
-/* Class = "IBUILabel"; text = "Magnifier"; ObjectID = "86S-LG-bmW"; */
+/* Class = "UILabel"; text = "Magnifier"; ObjectID = "86S-LG-bmW"; */
 "86S-LG-bmW.text" = "Magnifier";
 
-/* Class = "IBUILabel"; text = "Percent Calculator"; ObjectID = "C7O-ix-OQV"; */
+/* Class = "UILabel"; text = "Percent Calculator"; ObjectID = "C7O-ix-OQV"; */
 "C7O-ix-OQV.text" = "Percent Calculator";
 
-/* Class = "IBUILabel"; text = "Clock"; ObjectID = "CUC-uG-Jld"; */
+/* Class = "UILabel"; text = "Clock"; ObjectID = "CUC-uG-Jld"; */
 "CUC-uG-Jld.text" = "Clock";
 
-/* Class = "IBUILabel"; text = "Holidays"; ObjectID = "Hg6-My-X9i"; */
+/* Class = "UILabel"; text = "Holidays"; ObjectID = "Hg6-My-X9i"; */
 "Hg6-My-X9i.text" = "Holidays";
 
-/* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "Ixg-rR-GNM"; */
+/* Class = "UIButton"; normalTitle = "Continue"; ObjectID = "Ixg-rR-GNM"; */
 "Ixg-rR-GNM.normalTitle" = "Continue";
 
-/* Class = "IBUILabel"; text = "keep your data up to date on all your devices"; ObjectID = "K25-Dj-0hb"; */
+/* Class = "UILabel"; text = "keep your data up to date on all your devices"; ObjectID = "K25-Dj-0hb"; */
 "K25-Dj-0hb.text" = "keep your data up to date on all your devices";
 
-/* Class = "IBUILabel"; text = "Improvements and Optimizations"; ObjectID = "LH1-Sz-F5c"; */
+/* Class = "UILabel"; text = "Improvements and Optimizations"; ObjectID = "LH1-Sz-F5c"; */
 "LH1-Sz-F5c.text" = "Improvements and Optimizations";
 
-/* Class = "IBUILabel"; text = "Sales Calculator"; ObjectID = "QRY-F6-eI0"; */
+/* Class = "UILabel"; text = "Sales Calculator"; ObjectID = "QRY-F6-eI0"; */
 "QRY-F6-eI0.text" = "Sales Calculator";
 
-/* Class = "IBUILabel"; text = "Date Calculator"; ObjectID = "TO4-lW-QE2"; */
+/* Class = "UILabel"; text = "Date Calculator"; ObjectID = "TO4-lW-QE2"; */
 "TO4-lW-QE2.text" = "Date Calculator";
 
-/* Class = "IBUIButton"; normalTitle = "Later"; ObjectID = "UGi-UW-2XK"; */
+/* Class = "UIButton"; normalTitle = "Later"; ObjectID = "UGi-UW-2XK"; */
 "UGi-UW-2XK.normalTitle" = "Later";
 
-/* Class = "IBUILabel"; text = "New Look"; ObjectID = "X9y-7J-ggo"; */
+/* Class = "UILabel"; text = "New Look"; ObjectID = "X9y-7J-ggo"; */
 "X9y-7J-ggo.text" = "New Look";
 
-/* Class = "IBUILabel"; text = "Unit Price"; ObjectID = "XOG-GS-v6Y"; */
+/* Class = "UILabel"; text = "Unit Price"; ObjectID = "XOG-GS-v6Y"; */
 "XOG-GS-v6Y.text" = "Unit Price";
 
-/* Class = "IBUILabel"; text = "easy, faster and more focused, 64Bit and much more"; ObjectID = "ZZQ-VK-PjS"; */
+/* Class = "UILabel"; text = "easy, faster and more focused, 64Bit and much more"; ObjectID = "ZZQ-VK-PjS"; */
 "ZZQ-VK-PjS.text" = "easy, faster and more focused, 64Bit and much more";
 
-/* Class = "IBUILabel"; text = "Expense List"; ObjectID = "c42-0X-ouA"; */
+/* Class = "UILabel"; text = "Expense List"; ObjectID = "c42-0X-ouA"; */
 "c42-0X-ouA.text" = "Expense List";
 
-/* Class = "IBUILabel"; text = "Currency Converter"; ObjectID = "eTo-UJ-qLJ"; */
+/* Class = "UILabel"; text = "Currency Converter"; ObjectID = "eTo-UJ-qLJ"; */
 "eTo-UJ-qLJ.text" = "Currency Converter";
 
-/* Class = "IBUILabel"; text = "Battery Status"; ObjectID = "fVE-ef-mZ7"; */
+/* Class = "UILabel"; text = "Battery Status"; ObjectID = "fVE-ef-mZ7"; */
 "fVE-ef-mZ7.text" = "Battery Status";
 
-/* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "gJ6-AU-90c"; */
+/* Class = "UIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "gJ6-AU-90c"; */
 "gJ6-AU-90c.normalTitle" = "Use AppBox Pro";
 
-/* Class = "IBUILabel"; text = "Days Counter"; ObjectID = "gMT-1E-eq4"; */
+/* Class = "UILabel"; text = "Days Counter"; ObjectID = "gMT-1E-eq4"; */
 "gMT-1E-eq4.text" = "Days Counter";
 
-/* Class = "IBUILabel"; text = "Wallet"; ObjectID = "hYb-Yr-r9V"; */
+/* Class = "UILabel"; text = "Wallet"; ObjectID = "hYb-Yr-r9V"; */
 "hYb-Yr-r9V.text" = "Wallet";
 
-/* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "hb4-tU-6Zr"; */
+/* Class = "UIButton"; normalTitle = "Continue"; ObjectID = "hb4-tU-6Zr"; */
 "hb4-tU-6Zr.normalTitle" = "Continue";
 
-/* Class = "IBUILabel"; text = "iCloud Sync"; ObjectID = "hey-av-TTu"; */
+/* Class = "UILabel"; text = "iCloud Sync"; ObjectID = "hey-av-TTu"; */
 "hey-av-TTu.text" = "iCloud Sync";
 
-/* Class = "IBUILabel"; text = "Lunar Converter"; ObjectID = "hit-L7-cuy"; */
+/* Class = "UILabel"; text = "Lunar Converter"; ObjectID = "hit-L7-cuy"; */
 "hit-L7-cuy.text" = "Lunar Converter";
 
-/* Class = "IBUIButton"; normalTitle = "Use iCloud"; ObjectID = "jNp-9m-gWI"; */
+/* Class = "UILabel"; text = "Ruler"; ObjectID = "i80-fG-GLd"; */
+"i80-fG-GLd.text" = "Ruler";
+
+/* Class = "UIButton"; normalTitle = "Use iCloud"; ObjectID = "jNp-9m-gWI"; */
 "jNp-9m-gWI.normalTitle" = "Use iCloud";
 
-/* Class = "IBUILabel"; text = "Converter"; ObjectID = "keG-kf-hWu"; */
+/* Class = "UILabel"; text = "Converter"; ObjectID = "keG-kf-hWu"; */
 "keG-kf-hWu.text" = "Converter";
 
-/* Class = "IBUILabel"; text = "Translator"; ObjectID = "kkF-Z6-oM0"; */
+/* Class = "UILabel"; text = "Translator"; ObjectID = "kkF-Z6-oM0"; */
 "kkF-Z6-oM0.text" = "Translator";
 
-/* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "kyc-gi-ylJ"; */
+/* Class = "UIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "kyc-gi-ylJ"; */
 "kyc-gi-ylJ.normalTitle" = "Use AppBox Pro";
 
-/* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "lr0-dL-j7a"; */
+/* Class = "UIButton"; normalTitle = "Continue"; ObjectID = "lr0-dL-j7a"; */
 "lr0-dL-j7a.normalTitle" = "Continue";
 
-/* Class = "IBUILabel"; text = "What's New"; ObjectID = "mT0-ZK-dI1"; */
+/* Class = "UILabel"; text = "What's New"; ObjectID = "mT0-ZK-dI1"; */
 "mT0-ZK-dI1.text" = "What's New";
 
-/* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "mUw-5N-ug2"; */
+/* Class = "UIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "mUw-5N-ug2"; */
 "mUw-5N-ug2.normalTitle" = "Use AppBox Pro";
 
-/* Class = "IBUILabel"; text = "Flashlight"; ObjectID = "ni3-pI-wdj"; */
+/* Class = "UILabel"; text = "Flashlight"; ObjectID = "ni3-pI-wdj"; */
 "ni3-pI-wdj.text" = "Flashlight";
 
-/* Class = "IBUILabel"; text = "Calculator"; ObjectID = "pMI-GK-toN"; */
+/* Class = "UILabel"; text = "Calculator"; ObjectID = "pMI-GK-toN"; */
 "pMI-GK-toN.text" = "Calculator";
 
-/* Class = "IBUILabel"; text = "Reference"; ObjectID = "pRj-wQ-ZtV"; */
+/* Class = "UILabel"; text = "Reference"; ObjectID = "pRj-wQ-ZtV"; */
 "pRj-wQ-ZtV.text" = "Reference";
 
-/* Class = "IBUILabel"; text = "Tip Calculator"; ObjectID = "pgE-6d-yU7"; */
+/* Class = "UILabel"; text = "Tip Calculator"; ObjectID = "pgE-6d-yU7"; */
 "pgE-6d-yU7.text" = "Tip Calculator";
 
-/* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "qCf-Nb-LdB"; */
+/* Class = "UIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "qCf-Nb-LdB"; */
 "qCf-Nb-LdB.normalTitle" = "Use AppBox Pro";
 
-/* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "qLl-8c-QA3"; */
+/* Class = "UIButton"; normalTitle = "Continue"; ObjectID = "qLl-8c-QA3"; */
 "qLl-8c-QA3.normalTitle" = "Continue";
 
-/* Class = "IBUILabel"; text = "Productivity"; ObjectID = "wFh-rf-oGS"; */
+/* Class = "UILabel"; text = "Productivity"; ObjectID = "wFh-rf-oGS"; */
 "wFh-rf-oGS.text" = "Productivity";
 
-/* Class = "IBUIButton"; normalTitle = "Continue"; ObjectID = "xYa-vJ-mm4"; */
+/* Class = "UIButton"; normalTitle = "Continue"; ObjectID = "xYa-vJ-mm4"; */
 "xYa-vJ-mm4.normalTitle" = "Continue";
 
-/* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "xk9-a9-WGh"; */
+/* Class = "UIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "xk9-a9-WGh"; */
 "xk9-a9-WGh.normalTitle" = "Use AppBox Pro";

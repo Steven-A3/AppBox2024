@@ -1,4 +1,4 @@
-﻿"MQq-Fj-ljR.text" = "單價";
+"MQq-Fj-ljR.text" = "單價";
 "cFb-hc-ow3.text" = "隨機數據生成";
 "gfY-Dc-cGm.text" = "日期計算";
 "vJ2-Dp-SnT.text" = "參考";
@@ -45,3 +45,6 @@
 "noh-Kb-lie.text" = "淑女日曆";
 "Z9P-lk-CAW.normalTitle" = "繼續";
 "DKJ-oV-07R.text" = "農曆/國曆";
+/* Class = "UILabel"; text = "Ruler"; ObjectID = "7a9-pg-MJ7"; */
+"7a9-pg-MJ7.text" = "尺子";
+

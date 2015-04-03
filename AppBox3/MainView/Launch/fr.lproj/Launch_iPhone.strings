@@ -138,4 +138,6 @@ sur tous vos dispositifs";
 /* Class = "IBUILabel"; text = "Flashlight"; ObjectID = "ni3-pI-wdj"; */
 "ni3-pI-wdj.text" = "Lampe de poche";
 
+/* Class = "UILabel"; text = "Ruler"; ObjectID = "i80-fG-GLd"; */
+"i80-fG-GLd.text" = "Règle";
 

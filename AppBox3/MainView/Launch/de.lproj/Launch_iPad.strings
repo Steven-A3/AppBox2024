@@ -137,3 +137,7 @@ auf allen Ihren Geräten";
 
 "1LD-Du-cEp.text" = "Taschenlampe"; // Flashlight
 "D9z-d7-61u.text" = "Lupe";         // Magnifier
+
+/* Class = "UILabel"; text = "Ruler"; ObjectID = "7a9-pg-MJ7"; */
+"7a9-pg-MJ7.text" = "Lineal";
+

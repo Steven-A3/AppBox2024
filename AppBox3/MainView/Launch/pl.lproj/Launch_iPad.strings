@@ -138,3 +138,6 @@ na wszystkich urządzeniach";
 /* Class = "IBUILabel"; text = "Random"; ObjectID = "cFb-hc-ow3"; */
 "cFb-hc-ow3.text" = "Losowanie";
 
+/* Class = "UILabel"; text = "Ruler"; ObjectID = "7a9-pg-MJ7"; */
+"7a9-pg-MJ7.text" = "Linijka";
+
