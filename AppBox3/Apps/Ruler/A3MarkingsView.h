@@ -18,10 +18,16 @@ typedef NS_ENUM(NSUInteger, A3MarkingsDirection) {
 	A3MarkingsDirectionRight
 };
 
+typedef NS_ENUM(NSUInteger, A3MarkingsVerticalDirection) {
+	A3MarkingsVerticalDirectionUp = 0,
+	A3MarkingsVerticalDirectionDown
+};
+
 @interface A3MarkingsView : UIView
 
 @property (assign) A3MarkingsType markingsType;
-@property (assign) A3MarkingsDirection markingsDirection;
+@property (assign) A3MarkingsDirection horizontalDirection;
+@property (assign) A3MarkingsVerticalDirection verticalDirection;
 @property (assign) BOOL drawPortrait;
 
 @end
