@@ -250,14 +250,12 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 	} else {
 		// Simulator
 
-		// iPhone 4s
-		// 326 PPI, 960 pixels, 480 points
-		CGFloat pixelsInInch = 326.7;
+		CGFloat pixelsInInch = 163.4;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (480.0 / 960.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
-		_inchAsPoints = (480.0 / 960.0) * pixelsInInch;
-		_redLineWidth = 0.5;
-		_resetPosition = _centimeterPositionRightBottom ? 6.5 : 2.5;
+		_centimeterAsPoints = (1024.0 / 1024.0) * pixelsInCentimeter;
+		_inchAsPoints = (1024.0 / 1024.0) * pixelsInInch;
+		_resetPosition = _centimeterPositionRightBottom ? 14.0 : 5.5;
+		_redLineWidth = 1.0;
 	}
 
 	CGRect screenBounds = [[UIScreen mainScreen] bounds];
@@ -711,8 +709,8 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		} else {
 			if (_rulerScrollDirectionReverse) {
 				[label remakeConstraints:^(MASConstraintMaker *make) {
-					make.top.equalTo(label.superview.top);
-					make.left.equalTo(label.superview.left);
+					make.top.equalTo(label.superview.top).with.offset(-1);
+					make.left.equalTo(label.superview.left).with.offset(1);
 				}];
 			} else {
 				[label remakeConstraints:^(MASConstraintMaker *make) {
@@ -781,8 +779,8 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		} else {
 			if (_rulerScrollDirectionReverse) {
 				[label remakeConstraints:^(MASConstraintMaker *make) {
-					make.left.equalTo(label.superview.left);
-					make.bottom.equalTo(label.superview.bottom);
+					make.left.equalTo(label.superview.left).with.offset(3);
+					make.bottom.equalTo(label.superview.bottom).with.offset(2);
 				}];
 			} else {
 				[label remakeConstraints:^(MASConstraintMaker *make) {
@@ -848,24 +846,24 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		if (toPortrait) {
 			if (_rulerScrollDirectionReverse) {
 				[label remakeConstraints:^(MASConstraintMaker *make) {
-					make.bottom.equalTo(label.superview.bottom);
+					make.bottom.equalTo(label.superview.bottom).with.offset(-1);
 					make.right.equalTo(label.superview.right);
 				}];
 			} else {
 				[label remakeConstraints:^(MASConstraintMaker *make) {
-					make.top.equalTo(label.superview.top);
-					make.right.equalTo(label.superview.right);
+					make.top.equalTo(label.superview.top).with.offset(1);
+					make.right.equalTo(label.superview.right).with.offset(-1);
 				}];
 			}
 		} else {
 			if (_rulerScrollDirectionReverse) {
 				[label remakeConstraints:^(MASConstraintMaker *make) {
-					make.bottom.equalTo(label.superview.bottom);
-					make.left.equalTo(label.superview.left);
+					make.bottom.equalTo(label.superview.bottom).with.offset(2);
+					make.left.equalTo(label.superview.left).with.offset(1);
 				}];
 			} else {
 				[label remakeConstraints:^(MASConstraintMaker *make) {
-					make.bottom.equalTo(label.superview.bottom).with.offset(1);
+					make.bottom.equalTo(label.superview.bottom).with.offset(0);
 					make.right.equalTo(label.superview.right).with.offset(-1);
 				}];
 			}
@@ -930,8 +928,8 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		} else {
 			if (_rulerScrollDirectionReverse) {
 				[label remakeConstraints:^(MASConstraintMaker *make) {
-					make.top.equalTo(label.superview.top);
-					make.left.equalTo(label.superview.left);
+					make.top.equalTo(label.superview.top).with.offset(-2);
+					make.left.equalTo(label.superview.left).with.offset(3);
 				}];
 			} else {
 				[label remakeConstraints:^(MASConstraintMaker *make) {
@@ -982,12 +980,12 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 	_advanceButton.titleLabel.font = [UIFont fontWithName:@"appbox" size:20.0];
 	[_advanceButton addTarget:self action:@selector(advanceButtonAction) forControlEvents:UIControlEventTouchUpInside];
 
-	_flipUnitButton = [self buttonWithTitle:@"l"];
+	_flipUnitButton = [self buttonWithTitle:@"q"];
 	_flipUnitButton.titleLabel.font = [UIFont fontWithName:@"appbox" size:20.0];
 	_flipUnitButton.titleLabel.transform = CGAffineTransformMakeRotation(-M_PI / 2);
 	[_flipUnitButton addTarget:self action:@selector(flipUnitButtonAction) forControlEvents:UIControlEventTouchUpInside];
 
-	_flipScrollDirectionButton = [self buttonWithTitle:@"l"];
+	_flipScrollDirectionButton = [self buttonWithTitle:@"q"];
 	_flipScrollDirectionButton.titleLabel.font = [UIFont fontWithName:@"appbox" size:20.0];
 	[_flipScrollDirectionButton addTarget:self action:@selector(flipScrollDirectionButtonAction) forControlEvents:UIControlEventTouchUpInside];
 
