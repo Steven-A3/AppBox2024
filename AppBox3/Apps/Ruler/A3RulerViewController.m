@@ -553,6 +553,12 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 	} else {
 		_redLineView.frame = CGRectMake(location.x, 0, _redLineWidth, _screenHeight);
 	}
+	CGFloat currentPosition = [self currentPositionForInterfaceOrientation:IS_PORTRAIT];
+	CGFloat roundBySecondFraction = floor(currentPosition * 100.0)/100.0;
+	if ((round(currentPosition) ==  roundBySecondFraction + 0.01) ||
+		(round(currentPosition) == roundBySecondFraction - 0.01)) {
+		[self moveRedLineToPosition:round(currentPosition) interfaceOrientation:IS_PORTRAIT];
+	}
 
 	[self updateLabelsForInterfaceOrientation:IS_PORTRAIT];
 }
