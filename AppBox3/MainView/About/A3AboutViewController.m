@@ -151,7 +151,12 @@
 			break;
 		}
 		case 2: {
-			NSURL *url = [[NSURL alloc] initWithString:@"itms-apps://itunes.com/apps/allaboutapps"];
+			NSURL *url;
+			if (IS_IOS7) {
+				url = [[NSURL alloc] initWithString:@"https://itunes.apple.com/artist/allaboutapps/id307094026"];
+			} else {
+				url = [[NSURL alloc] initWithString:@"itms-apps://itunes.com/apps/allaboutapps"];
+			}
 			[[UIApplication sharedApplication] openURL:url];
 			break;
 		}
