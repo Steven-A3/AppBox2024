@@ -513,7 +513,7 @@
 "Avg.Interest" = "平均利息";
 "Total Amount" = "总偿还金额";
 "Average Interest" = "平均利息";
-"Amounts" = "数量";
+"Amounts" = "金额";
 "Loan" = "贷款";
 "Comparison" = "比较";
 " of " = " / ";
@@ -575,8 +575,8 @@
 "Sale Price Tax" = "折扣价格税金";
 "Original Price" = "销售价";
 "Original Price Tax" = "销售价格税金";
-"Saved Amount" = "节约数量";
-"Saved Amount Tax" = "节约数量税金";
+"Saved Amount" = "节约金额";
+"Saved Amount Tax" = "节约金额税金";
 "  Sale Price with Tax" = "  含税折扣价格";
 "  Sale Price w/Tax" = "  含税折扣价格";
 "  Sale Price" = "  折扣价格";
@@ -597,8 +597,8 @@
 "Tip Per Person" = "小费/人";
 "Input" = "Input";
 "Amount" = "本金";
-"Amount After Tax" = "税后数量";
-"Amount Before Tax" = "税前数量";
+"Amount After Tax" = "税后金额";
+"Amount Before Tax" = "税前金额";
 "Split" = "同行人员数";
 
 "Before Split" = "分摊前";

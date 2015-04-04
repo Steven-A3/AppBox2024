@@ -111,7 +111,7 @@
 "monthly" = "每月";
 "Save to camera roll failed." = "未能儲存到相簿";
 "The new date you entered overlaps with previous dates." = "新週期和以前週期相重複。";
-"Amounts" = "數量";
+"Amounts" = "金額";
 "yearly" = "每年";
 "Extra Payment(yearly)" = "額外支付(每年)";
 "Syncing...(%@)" = "同步...(%@)";
@@ -308,7 +308,7 @@
 "More" = "更多";
 "Edit Image" = "編輯圖像";
 "0 %@ %ld mo" = "0 %@ %ld 月";
-"Saved Amount Tax" = "節約數量稅金";
+"Saved Amount Tax" = "節約金額稅金";
 "Passcode did not match. Try again." = "密碼不匹配。請再試一次。";
 "Loan Calc Frequency short string bi montly" = "每兩個月";
 "DISCOUNT" = "折扣";
@@ -579,7 +579,7 @@
 "Disabling iCloud" = "禁用的iCloud";
 "Notifications are disabled" = "通知將被禁用。";
 "Close" = "關閉";
-"Amount Before Tax" = "稅前數量";
+"Amount Before Tax" = "稅前金額";
 "Add or Subtract days" = "加上或減去到指定日期的天數";
 "Weekly" = "每周";
 "Map" = "地圖";
@@ -606,7 +606,7 @@
 "WEATHER" = "天氣";
 "What is X% of Y" = "什麼是Y的 X% ";
 "Extra(One-time)" = "額外(一次)";
-"Amount After Tax" = "稅後數量";
+"Amount After Tax" = "稅後金額";
 "Delete and start over" = "刪除後重新開始";
 "Tap" = "點擊";
 "Learn about iOS Security" = "學習關於iOS安全的內容";
@@ -662,7 +662,7 @@
 "Show AM/PM" = "顯示上午／下午";
 "Unit Converter" = "單位換算";
 "%@Rate = %0.4f" = "%@比率 = %0.4f";
-"Saved Amount" = "節約數量";
+"Saved Amount" = "節約金額";
 "%@ to %@ = %@" = "%@ to %@ = %@";
 "To: " = "到: ";
 "Starts" = "開始日";
