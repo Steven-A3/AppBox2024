@@ -1431,12 +1431,7 @@ typedef CMathParser<char, double> MathParser;
 			if ([mathexpression hasPrefix:@"(-"] && [mathexpression hasSuffix:@")"]) {
 				[editingString insertString:@"." atIndex:[mathexpression length] - 1];
 			} else {
-				if ([lastValue integerValue] > 0) {
-					[editingString appendString:@"0"];
-					[editingString appendString:@"."];
-				} else {
-					[editingString appendString:@"."];
-				}
+				[editingString appendString:@"."];
 			}
 			mathexpression = editingString;
             [self convertMathExpressionToAttributedString];
