@@ -111,6 +111,9 @@ NSString *const A3SyncManagerEmptyObject = @"(!_^_!Empty!_^_!_#+129)";
 
 - (void)setObject:(id)object forKey:(NSString *)key state:(A3DataObjectStateValue)state {
 	FNLOG(@"%@", key);
+	if (object == nil)
+		return;
+	
 	NSDictionary *userDefaultsFormat = @{
 			A3KeyValueDBDataObject : object,
 			A3KeyValueDBState : @(state),
