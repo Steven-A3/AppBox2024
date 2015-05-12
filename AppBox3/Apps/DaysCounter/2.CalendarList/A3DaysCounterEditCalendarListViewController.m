@@ -225,7 +225,7 @@
     
     calendar.isShow = @(!checkState);
 	[self.savingContext MR_saveToPersistentStoreAndWait];
-    if (checkState == [shownUserCalendar count] == 2) {
+    if (checkState && ([shownUserCalendar count] == 2)) {
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
     else {
