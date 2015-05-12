@@ -149,8 +149,16 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 			FNLOG(@"FlickrRecommendation.json file did not downloaded yet.");
 			return;
 		}
+		NSData *rawData = [NSData dataWithContentsOfFile:filePath];
+		if (rawData == nil) {
+			return;
+		}
 		NSError *error;
 		NSArray *candidates = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath] options:0 error:&error];
+		if (error || candidates == nil) {
+			return;
+		}
+			
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"country == %@", countryCode];
 		candidates = [candidates filteredArrayUsingPredicate:predicate];
 		if ([candidates count]) {
