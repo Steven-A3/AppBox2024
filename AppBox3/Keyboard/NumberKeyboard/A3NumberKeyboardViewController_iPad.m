@@ -17,6 +17,13 @@
 
 @implementation A3NumberKeyboardViewController_iPad
 
+@dynamic bigButton1;
+@dynamic bigButton2;
+@dynamic dotButton;
+@dynamic prevButton;
+@dynamic nextButton;
+@dynamic clearButton;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];

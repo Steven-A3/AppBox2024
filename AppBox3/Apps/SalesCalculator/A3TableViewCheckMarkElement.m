@@ -13,6 +13,8 @@
 
 @implementation A3TableViewCheckMarkElement
 
+@dynamic title;
+
 - (UITableViewCell *)cellForTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath {
  	NSString *reuseIdentifier = @"A3TableViewElementCell";
 	A3JHTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];

@@ -380,7 +380,7 @@ static NSString *const A3V3InstructionDidShowForBattery = @"A3V3InstructionDidSh
 
 - (void)refreshHeaderView {
 	_headerView.batteryColor = [A3BatteryStatusManager chosenTheme];
-	[_headerView setBatteryRemainingPercent:abs([[UIDevice currentDevice] batteryLevel] * 100) state:[[UIDevice currentDevice] batteryState]];
+	[_headerView setBatteryRemainingPercent:fabsf([[UIDevice currentDevice] batteryLevel] * 100) state:[[UIDevice currentDevice] batteryState]];
 }
 
 #pragma mark - Table view data source

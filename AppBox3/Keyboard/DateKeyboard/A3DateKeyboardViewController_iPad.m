@@ -15,6 +15,9 @@
 
 @implementation A3DateKeyboardViewController_iPad
 
+@dynamic yearButton, monthButton, dayButton, num7_Jan_Button, num8_Feb_Button, num9_Mar_Button, num4_Apr_Button, num5_May_Button, num6_Jun_Button;
+@dynamic num1_Jul_Button, num2_Aug_Button, num3_Sep_Button, today_Oct_Button, num0_Nov_Button, delete_Dec_Button, doneButton;
+
 - (void)removeExtraLabelsForButton:(UIButton *)button {
 	A3KeyboardButton_iOS7 *aButton = (A3KeyboardButton_iOS7 *) button;
 	if ([aButton respondsToSelector:@selector(removeExtraLabels)]) {
@@ -48,7 +51,7 @@
 	CGFloat row_1, row_2, row_3, row_4;
 	CGFloat width_small, height_small, width_big, height_big;
 
-	BOOL portrait = UIDeviceOrientationIsPortrait(toInterfaceOrientation);
+	BOOL portrait = UIDeviceOrientationIsPortrait((UIDeviceOrientation)toInterfaceOrientation);
 	if (portrait) {
 		width_big = 124.0; height_big = 118.0;
 		width_small = 89.0; height_small = 57.0;

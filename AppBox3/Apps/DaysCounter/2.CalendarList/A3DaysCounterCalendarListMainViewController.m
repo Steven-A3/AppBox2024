@@ -649,7 +649,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
                                                                  strict:NO];
 
             BOOL isAllDay = [event.isAllDay boolValue];
-            if (!isAllDay && (llabs([today timeIntervalSince1970] - [startDate.solarDate timeIntervalSince1970]) > 86400)) {
+            if (!isAllDay && (fabs([today timeIntervalSince1970] - [startDate.solarDate timeIntervalSince1970]) > 86400)) {
                 isAllDay = YES;
             }
 
@@ -663,7 +663,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
         }
         else {
             BOOL isAllDay = [event.isAllDay boolValue];
-            if (!isAllDay && (llabs([today timeIntervalSince1970] - [event.effectiveStartDate timeIntervalSince1970]) > 86400)) {
+            if (!isAllDay && (fabs([today timeIntervalSince1970] - [event.effectiveStartDate timeIntervalSince1970]) > 86400)) {
                 isAllDay = YES;
             }
 

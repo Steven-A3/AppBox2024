@@ -24,6 +24,8 @@
 
 @implementation A3WalletFavoritesViewController
 
+@dynamic tableView;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

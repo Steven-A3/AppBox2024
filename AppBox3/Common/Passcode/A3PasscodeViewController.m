@@ -84,6 +84,8 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	BOOL _shouldDismissViewController;
 }
 
+@dynamic delegate;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

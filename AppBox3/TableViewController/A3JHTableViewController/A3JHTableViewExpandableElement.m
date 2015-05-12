@@ -15,6 +15,8 @@
 
 @implementation A3JHTableViewExpandableElement
 
+@dynamic title;
+
 - (UITableViewCell *)cellForTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath {
 	NSString *reuseIdentifier = @"A3TableViewExpandableElementCell";
 	A3JHTableViewExpandableHeaderCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];

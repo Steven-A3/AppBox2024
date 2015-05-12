@@ -763,7 +763,7 @@
     NSDateComponents *fComp = [NSDateComponents new];
     NSDateComponents *tComp = [NSDateComponents new];
     if (_calcType == CALC_TYPE_SUB) {
-        fComp.day = maxDayCount + abs(offsetFrom);
+        fComp.day = maxDayCount + fabs(offsetFrom);
     }
     else {
         fComp.day = offsetFrom;

@@ -50,6 +50,8 @@ NSString *const A3CalculatorModeScientific = @"scientific";
     UIBarButtonItem *_history;
 }
 
+@dynamic evaluatedResultLabel;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
