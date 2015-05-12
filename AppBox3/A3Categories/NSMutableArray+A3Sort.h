@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-NSString *const A3CommonPropertyOrder;
+extern NSString *const A3CommonPropertyOrder;
 
 @interface NSMutableArray (A3Sort)
 
