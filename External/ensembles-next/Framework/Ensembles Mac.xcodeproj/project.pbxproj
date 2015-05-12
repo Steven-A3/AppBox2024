@@ -177,6 +177,7 @@
 		6DAD116918CA074600237084 /* CDERebaser.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E64F5A18799F6800305C22 /* CDERebaser.h */; };
 		6DAD116A18CA074600237084 /* CDERebaser.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E64F5B18799F6800305C22 /* CDERebaser.m */; };
 		6DAD116E18CA07B600237084 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6DAD116C18CA07B600237084 /* InfoPlist.strings */; };
+		C817B10D1AD96EAE008FEC36 /* CDEActivityNotificationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C817B10C1AD96EAE008FEC36 /* CDEActivityNotificationTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -387,6 +388,7 @@
 		6DAD110F18CA067A00237084 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		6DAD116B18CA07B000237084 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Supporting Files/Info.plist"; sourceTree = SOURCE_ROOT; };
 		6DAD116D18CA07B600237084 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = "Supporting Files/en.lproj/InfoPlist.strings"; sourceTree = SOURCE_ROOT; };
+		C817B10C1AD96EAE008FEC36 /* CDEActivityNotificationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEActivityNotificationTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -464,6 +466,7 @@
 				07D2D637182D65FB001D24BC /* CDEManagedObjectModelTests.m */,
 				07DCC6C6184FA4050097B4D9 /* CDEBaselineConsolidatorTests.m */,
 				07B18211188806A0005229A1 /* CDERebaserTests.m */,
+				C817B10C1AD96EAE008FEC36 /* CDEActivityNotificationTests.m */,
 			);
 			name = "Unit Tests";
 			sourceTree = "<group>";
@@ -1074,6 +1077,7 @@
 			files = (
 				07D7E4DC19110FC30086A2AE /* CDEMockLocalFileSystem.m in Sources */,
 				07D2D638182D65FB001D24BC /* CDEManagedObjectModelTests.m in Sources */,
+				C817B10D1AD96EAE008FEC36 /* CDEActivityNotificationTests.m in Sources */,
 				07D7E591191240010086A2AE /* CDEEventFileSetTests.m in Sources */,
 				0722B27117B770A600496F4A /* CDEObjectChangeTests.m in Sources */,
 				075FDCDA183611680020E1C9 /* CDEPersistentStoreEnsembleMergeTests.m in Sources */,

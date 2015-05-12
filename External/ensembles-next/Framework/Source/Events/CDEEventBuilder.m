@@ -168,7 +168,7 @@
 
 - (void)performInContext:(NSManagedObjectContext *)context block:(CDECodeBlock)block
 {
-    if (context.concurrencyType == NSPrivateQueueConcurrencyType)
+    if (context.concurrencyType != NSConfinementConcurrencyType)
         [context performBlockAndWait:block];
     else
         block();
@@ -289,7 +289,7 @@
     };
     
     // Execute the block on the context's thread
-    if (context.concurrencyType == NSPrivateQueueConcurrencyType)
+    if (context.concurrencyType != NSConfinementConcurrencyType)
         [context performBlockAndWait:block];
     else
         block();
@@ -566,7 +566,9 @@
     NSMutableDictionary *newMovedIdentifiers = [[NSMutableDictionary alloc] initWithCapacity:propertyChange.movedIdentifiersByIndex.count];
     for (NSNumber *index in propertyChange.movedIdentifiersByIndex.allKeys) {
         id objectID = propertyChange.movedIdentifiersByIndex[index];
-        id globalIdentifier = [[globalIdentifiersByObjectID objectForKey:objectID] globalIdentifier];
+        CDEGlobalIdentifier *globalIDObject = [globalIdentifiersByObjectID objectForKey:objectID];
+        NSString *globalIdentifier = nil;
+        if (globalIDObject != (id)[NSNull null]) globalIdentifier = globalIDObject.globalIdentifier;
         if (!globalIdentifier) {
             CDELog(CDELoggingLevelWarning, @"Missing global id for moved object with objectID: %@", objectID);
             continue;

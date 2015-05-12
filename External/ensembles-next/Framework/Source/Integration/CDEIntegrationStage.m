@@ -164,10 +164,15 @@
         if (!storeIdString) continue; // Doesn't exist in store
         
         NSURL *uri = [NSURL URLWithString:storeIdString];
-        NSManagedObjectID *objectID = [coordinator managedObjectIDForURIRepresentation:uri];
-        [objectIDs addObject:objectID];
+        NSManagedObjectID *objectID = uri ? [coordinator managedObjectIDForURIRepresentation:uri] : nil;
         
-        [objectIDByGlobalId setObject:objectID forKey:globalId];
+        if (objectID) {
+            [objectIDs addObject:objectID];
+            [objectIDByGlobalId setObject:objectID forKey:globalId];
+        }
+        else {
+            CDELog(CDELoggingLevelWarning, @"Was unable to fetch object with URI: %@", storeIdString);
+        }
     }
     
     // Fetch objects

@@ -3,7 +3,7 @@ Core Data Ensembles
 
 _Author:_ Drew McCormack<br>
 _Created:_ 29th September, 2013<br>
-_Last Updated:_ 24th February, 2015
+_Last Updated:_ 15th April, 2015
 
 Ensembles extends Apple's Core Data framework to add peer-to-peer synchronization for Mac OS and iOS. Multiple SQLite persistent stores can be coupled together via file synchronization platforms like iCloud, CloudKit, Dropbox, and even direct peer-to-peer connections. The framework can be readily extended to support any service capable of moving files between devices, including custom servers.
 
@@ -128,11 +128,14 @@ Ensembles 2 currently supports the following backends (Cocoapods subspecs are sh
  * WebDAV (WebDAV)
  * Multipeer Connectivity (Multipeer)
  * Zip Compression (Zip)
+ * Encryption (Encrypt)
  * Ensembles Node.js Server (Node)
  
 The local file system backend is mostly for testing purposes. 
 
 The Zip Compression backend is not actually for data transfer, but can be used to wrap any of the other backends in order to compress files before transporting them.
+
+The Encryption backend is similar to the Zip backend in that it is a wrapper for other backends. It encrypts the data using a supplied pass phrase before it is stored in the cloud.
 
 The Ensembles Node.js Server is a custom server that is provided to purchasers of the Priority Support Package. It can be deployed on Heroku, and utilizes Amazon S3 for cloud storage.
 

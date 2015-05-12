@@ -180,7 +180,7 @@
         
         NSInteger batchSize = entity.cde_migrationBatchSize ? : 500;
         success = [context cde_enumerateObjectsForFetchRequest:fetch withBatchSize:batchSize withBlock:^(NSArray *objects, NSUInteger remaining, BOOL *stop) {
-            CDELog(CDELoggingLevelVerbose, @"Objects remaining for this entity: %lu", (unsigned long)remaining * 100);
+            CDELog(CDELoggingLevelVerbose, @"Approx. objects remaining for this entity: %lu", (unsigned long)remaining * batchSize);
 
             NSSet *objectsSet = [NSSet setWithArray:objects];
             [eventBuilder addChangesForInsertedObjects:objectsSet objectsAreSaved:YES useGlobalIdentifiersInEventStore:YES inManagedObjectContext:context];

@@ -40,6 +40,8 @@
 +(void)setDefaultPathToEventDataRootDirectory:(NSString *)newPath;
 +(NSString *)defaultPathToEventDataRootDirectory;
 
++ (NSString *)pathToEventDataRootDirectoryForRootDirectory:(NSString *)rootDir ensembleIdentifier:(NSString *)identifier;
+
 - (instancetype)initWithEnsembleIdentifier:(NSString *)identifier pathToEventDataRootDirectory:(NSString *)rootDirectory;
 
 - (void)flushWithCompletion:(CDECompletionBlock)completion;

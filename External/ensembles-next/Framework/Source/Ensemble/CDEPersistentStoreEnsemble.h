@@ -119,7 +119,7 @@ extern NSString * const CDEPersistentStoreEnsembleDidMakeProgressWithActivityNot
 /**
  This notification is fired when the ensemble finishes a potentially long running activity, such as leeching, deleeching, or merging.
  
- The ensemble is the object for notification, and the type of activity is passed via the `userInfo` dictionary of the notification, for the key `CDEEnsembleActivityKey`.
+ The ensemble is the object for notification, and the type of activity is passed via the `userInfo` dictionary of the notification, for the key `CDEEnsembleActivityKey`.  If the activity is ending with an error, the `userInfo` dictionary will contain the corresponding `NSError` object for the key `CDEActivityErrorKey`.
  */
 extern NSString * const CDEPersistentStoreEnsembleWillEndActivityNotification;
 
@@ -132,6 +132,11 @@ extern NSString * const CDEManagedObjectContextSaveNotificationKey;
  Used as a key in the `userInfo` dictionary of the `CDEPersistentStoreEnsembleDidBeginActivityNotification` and `CDEPersistentStoreEnsembleWillEndActivityNotification` notifications. Its value activity in an `NSNumber`.
  */
 extern NSString * const CDEEnsembleActivityKey;
+
+/**
+ Used as a key in the `userInfo` dictionary of the `CDEPersistentStoreEnsembleWillEndActivityNotification` notification. If present in the dictionary, its value is an `NSError`.
+ */
+extern NSString * const CDEActivityErrorKey;
 
 /**
  Used as a key in the `userInfo` dictionary of the `CDEPersistentStoreEnsembleDidMakeProgressWithActivityNotification` notification. The value is an `NSNumber` containing either a `CDEMergingPhase` or `CDELeechingPhase`, depending on the current activity.

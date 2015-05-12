@@ -42,6 +42,7 @@ NSString * const CDEPersistentStoreEnsembleWillEndActivityNotification = @"CDEPe
 
 NSString * const CDEManagedObjectContextSaveNotificationKey = @"managedObjectContextSaveNotification";
 NSString * const CDEEnsembleActivityKey = @"CDEEnsembleActivityKey";
+NSString * const CDEActivityErrorKey = @"CDEActivityErrorKey";
 NSString * const CDEActivityPhaseKey = @"CDEActivityPhaseKey";
 NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
 
@@ -90,10 +91,13 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
         self.managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
         self.cloudFileSystem = newCloudFileSystem;
     
-        self.eventStore = [[CDEEventStore alloc] initWithEnsembleIdentifier:self.ensembleIdentifier pathToEventDataRootDirectory:eventDataRootURL.path];
+        BOOL success = [self setupEventStoreWithDataRootDirectoryURL:eventDataRootURL];
+        if (!success) return nil;
+
         self.leeching = NO;
         self.merging = NO;
         self.deleeching = NO;
+
         self.leeched = eventStore.containsEventData;
         if (self.leeched) [self.eventStore removeUnusedDataWithCompletion:NULL];
         
@@ -175,6 +179,29 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
             });
         }
     };
+}
+
+- (BOOL)setupEventStoreWithDataRootDirectoryURL:(NSURL *)eventDataRootURL
+{
+    self.eventStore = [[CDEEventStore alloc] initWithEnsembleIdentifier:self.ensembleIdentifier pathToEventDataRootDirectory:eventDataRootURL.path];
+    if (!self.eventStore) {
+        // Attempt to recover by removing local data
+        CDELog(CDELoggingLevelError, @"Failed to create event store. Serious error, so removing local data.");
+        NSString *ensembleRoot = [CDEEventStore pathToEventDataRootDirectoryForRootDirectory:eventDataRootURL.path ensembleIdentifier:self.ensembleIdentifier];
+        NSError *error = nil;
+        if (![[NSFileManager defaultManager] removeItemAtPath:ensembleRoot error:&error]) {
+            CDELog(CDELoggingLevelError, @"Attempt to remove corrupt ensemble data failed. Giving up: %@", error);
+            return NO;
+        }
+        else {
+            self.eventStore = [[CDEEventStore alloc] initWithEnsembleIdentifier:self.ensembleIdentifier pathToEventDataRootDirectory:eventDataRootURL.path];
+            if (!self.eventStore) {
+                CDELog(CDELoggingLevelError, @"Attempt to remove create event store failed again. Giving up.");
+                return NO;
+            }
+        }
+    }
+    return YES;
 }
 
 - (void)dealloc
@@ -287,6 +314,23 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
     }
 }
 
+#pragma mark - Posting Notifications
+
+- (void)postDidBeginActivity:(CDEEnsembleActivity)activity {
+    [[NSNotificationCenter defaultCenter] postNotificationName:CDEPersistentStoreEnsembleDidBeginActivityNotification object:self userInfo:@{CDEEnsembleActivityKey : @(activity)}];
+}
+
+- (void)postWillEndActivity:(CDEEnsembleActivity)activity error:(NSError*)error {
+    NSDictionary *userInfo;
+    if (error) {
+        userInfo = @{CDEEnsembleActivityKey : @(activity),
+                     CDEActivityErrorKey : error};
+    } else {
+        userInfo = @{CDEEnsembleActivityKey : @(activity)};
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:CDEPersistentStoreEnsembleWillEndActivityNotification object:self userInfo:userInfo];
+}
+
 #pragma mark - Progress
 
 - (void)updateActivityProgressTo:(float)progress forPhase:(NSNumber *)phaseNumber
@@ -359,7 +403,7 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
         if (error && !stateChangeError) [eventStore removeEventStore];
         
         if (self.leeching) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:CDEPersistentStoreEnsembleWillEndActivityNotification object:self userInfo:@{CDEEnsembleActivityKey : @(CDEEnsembleActivityLeeching)}];
+            [self postWillEndActivity:CDEEnsembleActivityLeeching error:error];
         }
         
         self.leeching = NO;
@@ -388,8 +432,8 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
         self.currentActivity = CDEEnsembleActivityLeeching;
         
         // Notify of leeching
-        [[NSNotificationCenter defaultCenter] postNotificationName:CDEPersistentStoreEnsembleDidBeginActivityNotification object:self userInfo:@{CDEEnsembleActivityKey : @(CDEEnsembleActivityLeeching)}];
-        
+        [self postDidBeginActivity:CDEEnsembleActivityLeeching];
+
         next(nil);
     };
     return setupStep;
@@ -547,8 +591,8 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
         self.currentActivity = CDEEnsembleActivityDeleeching;
         self.activityProgress = 0.0f;
         totalUnitsInActivity = 1;
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:CDEPersistentStoreEnsembleDidBeginActivityNotification object:self userInfo:@{CDEEnsembleActivityKey : @(CDEEnsembleActivityDeleeching)}];
+
+        [self postDidBeginActivity:CDEEnsembleActivityDeleeching];
         firedNotification = YES;
         
         BOOL removedStore = [eventStore removeEventStore];
@@ -563,7 +607,7 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
         self.activityProgress = 1.0f;
         self.deleeching = NO;
         self.currentActivity = CDEEnsembleActivityNone;
-        if (firedNotification) [[NSNotificationCenter defaultCenter] postNotificationName:CDEPersistentStoreEnsembleWillEndActivityNotification object:self userInfo:@{CDEEnsembleActivityKey : @(CDEEnsembleActivityDeleeching)}];
+        if (firedNotification) [self postWillEndActivity:CDEEnsembleActivityDeleeching error:error];
         [self dispatchCompletion:completion withError:error];
         CDELog(CDELoggingLevelTrace, @"Completed deleech");
     }];
@@ -788,7 +832,7 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
     
     // Proceed
     [procedure proceedInOperationQueue:operationQueue withCompletion:^(NSError *error) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:CDEPersistentStoreEnsembleWillEndActivityNotification object:self userInfo:@{CDEEnsembleActivityKey : @(CDEEnsembleActivityMerging)}];
+        [self postWillEndActivity:CDEEnsembleActivityMerging error:error];
         [self.eventIntegrator stopMonitoringSaves];
         self.merging = NO;
         self.currentActivity = CDEEnsembleActivityNone;
@@ -835,9 +879,9 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
         
         self.merging = YES;
         self.currentActivity = CDEEnsembleActivityMerging;
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:CDEPersistentStoreEnsembleDidBeginActivityNotification object:self userInfo:@{CDEEnsembleActivityKey : @(CDEEnsembleActivityMerging)}];
-        
+
+        [self postDidBeginActivity:CDEEnsembleActivityMerging];
+
         [self.eventIntegrator startMonitoringSaves]; // Will cancel merge if save occurs
         
         next(nil);
