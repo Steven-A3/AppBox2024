@@ -411,8 +411,10 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
     
     nameText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"UPDATED", @"UPDATED")
                                                attributes:textAttributes];
-    countText = [[NSAttributedString alloc] initWithString:dateText
-                                                attributes:valueAttributes];
+	if (dateText != nil) {
+		countText = [[NSAttributedString alloc] initWithString:dateText
+													attributes:valueAttributes];
+	}
     if (IS_IPAD) {
         [updateAttrString appendAttributedString:countText];
         [updateAttrString appendAttributedString:[[NSAttributedString alloc] initWithString:@" " attributes:textAttributes]];
