@@ -10,7 +10,6 @@
 #import "A3ExpressionComponent.h"
 #import "MathParser.h"
 #import "A3CalculatorUtil.h"
-#import "NSAttributedString+Append.h"
 #import "A3AppDelegate.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
@@ -19,6 +18,7 @@
 
 @property (nonatomic, weak) HTCopyableLabel *expressionLabel;
 @property (nonatomic, weak) HTCopyableLabel *evaluatedResultLabel;
+@property (nonatomic, strong) NSNumberFormatter *decimalFormatter;
 
 @end
 
@@ -31,6 +31,14 @@ typedef CMathParser<char, double> MathParser;
     BOOL                EEMode;
     BOOL                LOGYMode;
     A3CalculatorUtil    *calutil;
+}
+
+- (NSNumberFormatter *)decimalFormatter {
+	if (!_decimalFormatter) {
+		_decimalFormatter = [NSNumberFormatter new];
+		[_decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+	}
+	return _decimalFormatter;
 }
 
 - (NSString *) getMathExpression {
@@ -363,9 +371,7 @@ typedef CMathParser<char, double> MathParser;
 
 
 - (NSAttributedString *)getExpressionWith:(NSString *) mExpression isDefault:(BOOL)bDefault{
-//    FNLOG(@"mExpression = %@",mExpression);
-    //NSAttributedString *temp = [[NSAttributedString alloc] initWithAttributedString:[calutil invisibleString]];
-    NSAttributedString *temp = [NSAttributedString new];
+    NSMutableAttributedString *resultExpression = [NSMutableAttributedString new];
     NSUInteger i, length = [mExpression length];
     NSString *currentString;
     NSRange range;
@@ -390,17 +396,22 @@ typedef CMathParser<char, double> MathParser;
                 range.length = [self getNumberLengthFromMathExpression:mExpression with:range.location];
                 
                 currentString = [mExpression substringWithRange:range];
-                double dv = [currentString doubleValue];
-                if (dv != 0) {
-                    temp = [temp appendWithString:[self getResultValueString:dv shortFormat:(IS_IPHONE && _isLandScape == NO ? YES:NO)]];
-					if ([currentString hasSuffix:@"."]) {
-						temp = [temp appendWithString:@"."];
-					}
-                } else {
-                    // to reserve 0.
-                    temp = [temp appendWithString:currentString];
-                }
-                
+				
+				if (![[self.decimalFormatter decimalSeparator] isEqualToString:@"."]) {
+					currentString = [currentString stringByReplacingOccurrencesOfString:@"." withString:self.decimalFormatter.decimalSeparator];
+				}
+//                double dv = [currentString doubleValue];
+//                if (dv != 0) {
+//                    resultExpression = [resultExpression appendWithString:[self getResultValueString:dv shortFormat:(IS_IPHONE && _isLandScape == NO ? YES:NO)]];
+//					if ([currentString hasSuffix:@"."]) {
+//						resultExpression = [resultExpression appendWithString:@"."];
+//					}
+//                } else {
+//                    // to reserve 0.
+//                    resultExpression = [resultExpression appendWithString:currentString];
+//                }
+				[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:currentString]];
+				
                 i+= range.length;
             }
                 break;
@@ -416,7 +427,7 @@ typedef CMathParser<char, double> MathParser;
                 range.location = i;
                 range.length = 1;
                 currentString = [mExpression substringWithRange:range];
-                temp=[temp appendWithString:currentString];
+				[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:currentString]];
                 i++;
             }
                 break;
@@ -429,7 +440,7 @@ typedef CMathParser<char, double> MathParser;
                 }
                 if((length >= (i + 6)) > 0 &&
                    [currentString isEqualToString:@"sinh-1"]) {
-                    temp = [temp appendWith:bDefault == YES ?[calutil stringArcSinh] : [calutil stringArcSinh_h]];
+					[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:bDefault == YES ? [calutil stringArcSinh] : [calutil stringArcSinh_h]]];
                 } else {
                     if(length >= (i+5)) {
                         range.length = 5;
@@ -437,7 +448,7 @@ typedef CMathParser<char, double> MathParser;
                     }
                     if((length >= (i+5)) &&
                        [currentString isEqualToString:@"sin-1"]){
-                        temp = [temp appendWith:bDefault == YES ?[calutil stringArcSin]:[calutil stringArcSin_h]];
+						[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:bDefault == YES ? [calutil stringArcSin] : [calutil stringArcSin_h]]];
                     } else {
                         if(length >= (i+4)) {
                             range.length = 4;
@@ -445,7 +456,7 @@ typedef CMathParser<char, double> MathParser;
                         }
                         if((length >= (i+4)) &&
                            [currentString isEqualToString:@"sinh"]){
-                            temp = [temp appendWithString:currentString];
+							[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:currentString]];
                         } else {
                             if(length >= (i + 3)){
                                 range.length = 3;
@@ -453,7 +464,7 @@ typedef CMathParser<char, double> MathParser;
                             }
                             if((length >= (i+3)) &&
                                [currentString isEqualToString:@"sin"]) {
-                                temp = [temp appendWithString:currentString];
+								[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:currentString]];
                             } else {
                                 FNLOG("Error:%@ is undefined in MathExpression", currentString);
                                 i+=length;// exit for loop
@@ -475,7 +486,7 @@ typedef CMathParser<char, double> MathParser;
                 }
                 if((length >= (i + 6)) > 0 &&
                    [currentString isEqualToString:@"cosh-1"]) {
-                    temp = [temp appendWith:bDefault == YES ?[calutil stringArcCosh]:[calutil stringArcCosh_h]];
+					[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:bDefault == YES ? [calutil stringArcCosh] : [calutil stringArcCosh_h]]];
                 } else {
                     if(length >= (i+5)) {
                         range.length = 5;
@@ -483,10 +494,10 @@ typedef CMathParser<char, double> MathParser;
                     }
                     if((length >= (i+5)) &&
                        [currentString isEqualToString:@"cos-1"]){
-                        temp = [temp appendWith:bDefault == YES ?[calutil stringArcCos]:[calutil stringArcCos_h]];
+						[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:bDefault == YES ? [calutil stringArcCos] : [calutil stringArcCos_h]]];
                     } else if((length >= (i+5)) &&
                               [currentString isEqualToString:@"cot-1"]){
-                        temp = [temp appendWith:bDefault == YES ?[calutil stringArcCot]:[calutil stringArcCot_h]];
+						[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:bDefault == YES ? [calutil stringArcCot] : [calutil stringArcCot_h]]];
                     } else {
                         if(length >= (i+4)) {
                             range.length = 4;
@@ -494,7 +505,7 @@ typedef CMathParser<char, double> MathParser;
                         }
                         if((length >= (i+4)) &&
                            [currentString isEqualToString:@"cosh"]){
-                            temp = [temp appendWithString:currentString];
+							[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:currentString]];
                         } else {
                             if(length >= (i + 3)){
                                 range.length = 3;
@@ -502,10 +513,10 @@ typedef CMathParser<char, double> MathParser;
                             }
                             if((length >= (i+3)) &&
                                [currentString isEqualToString:@"cos"]) {
-                                temp = [temp appendWithString:currentString];
+								[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:currentString]];
                             } else if((length >= (i+3)) &&
                                       [currentString isEqualToString:@"cot"]) {
-                                temp = [temp appendWithString:currentString];
+								[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:currentString]];
                             } else {
                                 FNLOG("Error:%@ is undefined in MathExpression", currentString);
                                 i+=length;// exit for loop
@@ -527,7 +538,7 @@ typedef CMathParser<char, double> MathParser;
                 }
                 if((length >= (i + 6)) > 0 &&
                    [currentString isEqualToString:@"tanh-1"]) {
-                    temp = [temp appendWith:bDefault == YES ?[calutil stringArcTanh]:[calutil stringArcTanh_h]];
+					[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:bDefault == YES ? [calutil stringArcTanh] : [calutil stringArcTanh_h]]];
                 } else {
                     if(length >= (i+5)) {
                         range.length = 5;
@@ -535,7 +546,7 @@ typedef CMathParser<char, double> MathParser;
                     }
                     if((length >= (i+5)) &&
                        [currentString isEqualToString:@"tan-1"]){
-                        temp = [temp appendWith:bDefault == YES ?[calutil stringArcTan]:[calutil stringArcTan_h]];
+						[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:bDefault == YES ? [calutil stringArcTan] : [calutil stringArcTan_h]]];
                     } else {
                         if(length >= (i+4)) {
                             range.length = 4;
@@ -543,7 +554,7 @@ typedef CMathParser<char, double> MathParser;
                         }
                         if((length >= (i+4)) &&
                            [currentString isEqualToString:@"tanh"]){
-                            temp = [temp appendWithString:currentString];
+							[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:currentString]];
                         } else {
                             if(length >= (i + 3)){
                                 range.length = 3;
@@ -551,7 +562,7 @@ typedef CMathParser<char, double> MathParser;
                             }
                             if((length >= (i+3)) &&
                                [currentString isEqualToString:@"tan"]) {
-                                temp = [temp appendWithString:currentString];
+								[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:currentString]];
                             } else {
                                 FNLOG("Error:%@ is undefined in MathExpression", currentString);
                                 i+=length;// exit for loop
@@ -573,7 +584,7 @@ typedef CMathParser<char, double> MathParser;
                         range.location = i + 5;
                         range.length = [self getNumberLengthFromMathExpression:mExpression with:range.location];//numberLength - range.location-1;
                         currentString = [mExpression substringWithRange:range];
-                        temp = [temp appendWithString:[currentString stringByAppendingString:@"!"]];
+						[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:[currentString stringByAppendingString:@"!"]]];
                         i = range.location + range.length + 1; // 1 is for ')'
                     } else {
                         FNLOG("Error:%@ is undefined in MathExpression", currentString);
@@ -600,26 +611,35 @@ typedef CMathParser<char, double> MathParser;
                         if(length > range.location) {
                             range.length = [self getNumberLengthFromMathExpression:mExpression with:range.location];
                             NSString *num = [mExpression substringWithRange:range];
-                            temp = [temp appendWith:[bDefault == YES ? [calutil stringWithSuperscriptMiddleFont:[@"log" stringByAppendingString:subscriptNum] location:3 length:[subscriptNum length] value:@-1] :
-                                                     [calutil stringWithSuperscriptSystemFont:[@"log" stringByAppendingString:subscriptNum] location:3 length:[subscriptNum length] value:@-1] appendWithString:@"("]];
-                            temp = [temp appendWithString:num];
+							NSMutableAttributedString *logSymbol = bDefault == YES ? [calutil stringWithSuperscriptMiddleFont:[@"log" stringByAppendingString:subscriptNum] location:3 length:[subscriptNum length] value:@-1] :
+									[calutil stringWithSuperscriptSystemFont:[@"log" stringByAppendingString:subscriptNum] location:3 length:[subscriptNum length] value:@-1];
+							[logSymbol appendAttributedString:[[NSAttributedString alloc] initWithString:@"("]];
+
+							[resultExpression appendAttributedString:logSymbol];
+							[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:num]];
                             i = range.location + range.length;
                         } else {
-                            temp = [temp appendWith:[bDefault == YES ? [calutil stringWithSuperscriptMiddleFont:[@"log" stringByAppendingString:subscriptNum] location:3 length:[subscriptNum length] value:@-1] :
-                                                     [calutil stringWithSuperscriptSystemFont:[@"log" stringByAppendingString:subscriptNum] location:3 length:[subscriptNum length] value:@-1] appendWithString:@"("]];
+							NSMutableAttributedString *logSymbol = bDefault == YES ? [calutil stringWithSuperscriptMiddleFont:[@"log" stringByAppendingString:subscriptNum] location:3 length:[subscriptNum length] value:@-1] :
+									[calutil stringWithSuperscriptSystemFont:[@"log" stringByAppendingString:subscriptNum] location:3 length:[subscriptNum length] value:@-1];
+							[logSymbol appendAttributedString:[[NSAttributedString alloc] initWithString:@"("]];
+							[resultExpression appendAttributedString:logSymbol];
+
                             i = range.location;
                         }
                         break;
                     } else if([currentString isEqualToString:@"LOG2("]) {
-                        temp = [temp appendWith:[bDefault == YES ? [calutil stringWithSuperscriptMiddleFont:[@"log" stringByAppendingString:@"2"] location:3 length:1 value:@-1] :
-                                                 [calutil stringWithSuperscriptSystemFont:[@"log" stringByAppendingString:@"2"] location:3 length:1 value:@-1] appendWithString:@"("]];
+						NSMutableAttributedString *logSymbol = bDefault == YES ? [calutil stringWithSuperscriptMiddleFont:[@"log" stringByAppendingString:@"2"] location:3 length:1 value:@-1] :
+								[calutil stringWithSuperscriptSystemFont:[@"log" stringByAppendingString:@"2"] location:3 length:1 value:@-1];
+						[logSymbol appendAttributedString:[[NSAttributedString alloc] initWithString:@"("]];
+						[resultExpression appendAttributedString:logSymbol];
+
                         i+= 5;
                         if(length > i) {
                             range.location = i;
                             range.length = [self getNumberLengthFromMathExpression:mExpression with:range.location];
                             if(range.length > 0 ) {
                                 currentString = [mExpression substringWithRange:range];
-                                temp = [temp appendWithString:currentString];
+								[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:currentString]];
                                 i+=range.length;
                             }
                         }
@@ -631,14 +651,17 @@ typedef CMathParser<char, double> MathParser;
                     range.length = 4;
                     currentString = [mExpression substringWithRange:range];
                     if([currentString isEqualToString:@"LOG("]) {
-                        temp = [[temp appendWith:bDefault == YES? [calutil stringLog10] :[calutil stringLog10_h]] appendWithString:@"("];
+						NSMutableAttributedString *logSymbol = bDefault == YES? [calutil stringLog10] :[calutil stringLog10_h];
+						[logSymbol appendAttributedString:[[NSAttributedString alloc] initWithString:@"("]];
+						[resultExpression appendAttributedString:logSymbol];
+
                         i+=4;
                         if(length > i) {
                             range.location = i;
                             range.length = [self getNumberLengthFromMathExpression:mExpression with:range.location];
                             if(range.length > 0 ) {
                                 currentString = [mExpression substringWithRange:range];
-                                temp = [temp appendWithString:currentString];
+								[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:currentString]];
                                 i+=range.length;
                             }
                         }
@@ -650,14 +673,14 @@ typedef CMathParser<char, double> MathParser;
                     range.length = 3;
                     currentString = [mExpression substringWithRange:range];
                     if([currentString isEqualToString:@"LN("]) {
-                        temp = [temp appendWithString:@"ln("];
+						[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:@"ln("]];
                         i+=3;
                         if(length > i) {
                             range.location = i;
                             range.length = [self getNumberLengthFromMathExpression:mExpression with:range.location];
                             if(range.length > 0 ) {
                                 currentString = [mExpression substringWithRange:range];
-                                temp = [temp appendWithString:currentString];
+								[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:currentString]];
                                 i+=range.length;
                             }
                         }
@@ -677,16 +700,20 @@ typedef CMathParser<char, double> MathParser;
                         range.length = [self getNumberLengthFromMathExpression:mExpression with:range.location];
                         NSString *superscriptNum = [mExpression substringWithRange:range];
                         range.location = i + 6 + range.length + 1; // 1: skip ','
+
+						NSMutableAttributedString *symbol = bDefault == YES ? [calutil stringWithSuperscriptMiddleFont:[superscriptNum stringByAppendingString:@"√"] location:0 length:[superscriptNum length] value:@1] :
+								[calutil stringWithSuperscriptSystemFont:[superscriptNum stringByAppendingString:@"√"] location:0 length:[superscriptNum length] value:@1];
+						[symbol appendAttributedString:[[NSAttributedString alloc] initWithString:@"("]];
+						[resultExpression appendAttributedString:symbol];
+
                         if(length > range.location) {
                             range.length = [self getNumberLengthFromMathExpression:mExpression with:range.location];
                             NSString *num = [mExpression substringWithRange:range];
-                            temp = [temp appendWith:[bDefault == YES ? [calutil stringWithSuperscriptMiddleFont:[superscriptNum stringByAppendingString:@"√"] location:0 length:[superscriptNum length] value:@1] :
-                                                     [calutil stringWithSuperscriptSystemFont:[superscriptNum stringByAppendingString:@"√"] location:0 length:[superscriptNum length] value:@1]  appendWithString:@"("]];
-                            temp = [temp appendWithString:num];
+
+							[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:num]];
+
                             i = range.location + range.length;
                         } else {
-                            temp = [temp appendWith:[bDefault == YES ? [calutil stringWithSuperscriptMiddleFont:[superscriptNum stringByAppendingString:@"√"] location:0 length:[superscriptNum length] value:@1] :
-                                                     [calutil stringWithSuperscriptSystemFont:[superscriptNum stringByAppendingString:@"√"] location:0 length:[superscriptNum length] value:@1] appendWithString:@"("]];
                             i = range.location;
                         }
                         break;
@@ -701,12 +728,14 @@ typedef CMathParser<char, double> MathParser;
                     range.length = [self getNumberLengthFromMathExpression:mExpression with:range.location];
                     if(range.length > 0 ){
                         currentString = [mExpression substringWithRange:range];
-                        temp = bDefault == YES ? [temp appendWith:[calutil stringWithSuperscriptMiddleFont:currentString location:0 length:[currentString length] value:@(1)]] :
-                                                [temp appendWith:[calutil stringWithSuperscriptSystemFont:currentString location:0 length:[currentString length] value:@(1)]];
+						NSMutableAttributedString *symbol = bDefault == YES ? [calutil stringWithSuperscriptMiddleFont:currentString location:0 length:[currentString length] value:@(1)] :
+								[calutil stringWithSuperscriptSystemFont:currentString location:0 length:[currentString length] value:@(1)];
+						[resultExpression appendAttributedString:symbol];
+
                         i+=[currentString length];
                     }
                 } else {
-                    temp = [temp appendWithString:@"^"];
+					[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:@"^"]];
                     i++;
                 }
             }
@@ -717,14 +746,19 @@ typedef CMathParser<char, double> MathParser;
                     range.length = 5;
                     currentString = [mExpression substringWithRange:range];
                     if([currentString isEqualToString:@"SQRT("]) {
-                        temp = [temp appendWith:bDefault == YES ? [calutil stringSquareroot] :[calutil stringSquareroot_h]];
+						if (bDefault) {
+							[resultExpression appendAttributedString:[calutil stringSquareroot]];
+						} else {
+							[resultExpression appendAttributedString:[calutil stringSquareroot_h]];
+						}
+
                         i+=5;
                         if(length > i) {
                             range.location = i;
                             range.length = [self getNumberLengthFromMathExpression:mExpression with:range.location];
                             if(range.length > 0 ) {
                                 currentString = [mExpression substringWithRange:range];
-                                temp = [temp appendWithString:currentString];
+								[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:currentString]];
                                 i+=range.length;
                             }
                         }
@@ -739,19 +773,25 @@ typedef CMathParser<char, double> MathParser;
                     range.length = 5;
                     currentString = [mExpression substringWithRange:range];
                     if([currentString isEqualToString:@"CBRT("]) {
-                        temp = [temp appendWith:bDefault == YES ? [calutil stringCuberoot] : [calutil stringCuberoot_h]];
-                        i+=5;
-                        if(length > i) {
-                            range.location = i;
-                            range.length = [self getNumberLengthFromMathExpression:mExpression with:range.location];
-                            if(range.length > 0 ) {
-                                currentString = [mExpression substringWithRange:range];
-                                temp = [temp appendWithString:currentString];
-                                i+=range.length;
-                            }
-                        }
-                        break;
-                    }
+						if (bDefault) {
+							[resultExpression appendAttributedString:[calutil stringCuberoot]];
+						} else {
+							[resultExpression appendAttributedString:[calutil stringCuberoot_h]];
+						}
+
+						i += 5;
+						if (length > i) {
+							range.location = i;
+							range.length = [self getNumberLengthFromMathExpression:mExpression with:range.location];
+							if (range.length > 0) {
+								currentString = [mExpression substringWithRange:range];
+								[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:currentString]];
+
+								i += range.length;
+							}
+						}
+						break;
+					}
                 }
             }
                 break;
@@ -761,7 +801,7 @@ typedef CMathParser<char, double> MathParser;
                     range.length = 7;
                     currentString = [mExpression substringWithRange:range];
                     if([currentString isEqualToString:@"RANDOM("]) {
-                        temp = [temp appendWithString:currentString];
+						[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:currentString]];
                         i+=7;
                         break;
                     }
@@ -782,8 +822,7 @@ typedef CMathParser<char, double> MathParser;
                             fontsize = 22.0;
                         }
                         NSAttributedString *pi = [[NSAttributedString alloc] initWithString:@"π" attributes:@{NSFontAttributeName:[UIFont fontWithName:@"HelveticaNeue-MediumItalic" size:fontsize]}];
-
-                        temp = [temp appendWith:pi];
+						[resultExpression appendAttributedString:pi];
                         i+=2;
                     }
                 }
@@ -795,9 +834,10 @@ typedef CMathParser<char, double> MathParser;
                 break;
         }
     }
-    
-    temp = [temp appendWith:[calutil invisibleString]];
-    return [temp copy];
+
+	[resultExpression appendAttributedString:[calutil invisibleString]];
+
+    return resultExpression;
 }
 
 - (void) changethelastnumberwithoperator:(NSUInteger) key{

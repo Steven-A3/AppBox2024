@@ -17,7 +17,6 @@
 #import "Calculation.h"
 #import "A3CalculatorHistoryViewController.h"
 #import "A3KeyboardView.h"
-#import "NSAttributedString+Append.h"
 #import "A3InstructionViewController.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3KeyboardButton_iOS7_iPhone.h"
@@ -648,7 +647,7 @@ static NSString *const A3V3InstructionDidShowForCalculator = @"A3V3InstructionDi
 {
     if ([activityType isEqualToString:UIActivityTypeMail]) {
 		NSString *normalString = [NSString stringWithFormat:@"%@\n\n", NSLocalizedString(@"I'd like to share a calculation with you.", nil)];
-		NSAttributedString *shareString = [[NSAttributedString alloc] initWithString:normalString];
+		NSMutableAttributedString *shareString = [[NSMutableAttributedString alloc] initWithString:normalString];
         NSMutableAttributedString *expression = [[NSMutableAttributedString alloc] initWithAttributedString:[self.calculator getMathAttributedExpression]];
         if ([expression length] >= 3) {
             NSRange range;
@@ -659,14 +658,18 @@ static NSString *const A3V3InstructionDidShowForCalculator = @"A3V3InstructionDi
         }
 
         if (![[expression string] hasSuffix:@"="]) {
-            shareString = [shareString appendWith:[expression appendWithString:[NSString stringWithFormat:@"=%@\n", [self.calculator getResultString]]]];
+			NSString *formatString = [NSString stringWithFormat:@"=%@\n", [self.calculator getResultString]];
+			[expression appendAttributedString:[[NSAttributedString alloc] initWithString:formatString]];
+			[shareString appendAttributedString:expression];
         } else {
-            shareString = [shareString appendWith:[expression appendWithString:[self.calculator getResultString]]];
-            
+			[expression appendAttributedString:[[NSAttributedString alloc] initWithString:[self.calculator getResultString]]];
+            [shareString appendAttributedString:expression];
         }
 		NSString *shareFormat = @"\n\n%@\nhttps://itunes.apple.com/app/id318404385";
-		shareString = [shareString appendWithString:[NSString stringWithFormat:shareFormat, NSLocalizedString(@"You can calculate more in the AppBox Pro.", nil)]];
-        return shareString;
+		NSString *urlString = [NSString stringWithFormat:shareFormat, NSLocalizedString(@"You can calculate more in the AppBox Pro.", nil)];
+		[shareString appendAttributedString:[[NSAttributedString alloc] initWithString:urlString]];
+
+		return shareString;
     } else {
         return [self.calculator getResultString];
     }
