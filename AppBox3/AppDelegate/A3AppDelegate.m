@@ -129,7 +129,7 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 			[self initializePasscodeUserDefaults];
 		}
 	}
-	if ([[_previousVersion substringToIndex:3] doubleValue] < 3.3) {
+	if (_previousVersion && [_previousVersion length] > 4 && [[_previousVersion substringToIndex:3] doubleValue] < 3.3) {
 		FNLOG(@"%@", @([[_previousVersion substringToIndex:3] doubleValue]));
 		// 3.3 이전버전에서 업데이트 한 경우
 		// V3.3 부터 Touch ID가 추가되고 Touch ID 활성화가 기본
@@ -138,7 +138,7 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 		[[A3UserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultsKeyForPasscodeTimerDuration];
 		[[A3UserDefaults standardUserDefaults] synchronize];
 	}
-	if (_previousVersion && [[_previousVersion substringToIndex:3] doubleValue] < 3.4) {
+	if (_previousVersion && [_previousVersion length] > 4 && [[_previousVersion substringToIndex:3] doubleValue] < 3.4) {
 		if (!_shouldMigrateV1Data) {
 			[self migrateToV3_4_Holidays];
 		}
