@@ -179,6 +179,15 @@ NSString *const A3DeviceInformationRemainingTimeKey = @"remainingTimeInfo";
 	NSString *dataFilePath = [A3UIDevice deviceInfoFilepath];
 
 	rawTextData = [NSData dataWithContentsOfFile:dataFilePath];
+	
+	if (rawTextData == nil) {
+		dataFilePath = [A3UIDevice dataFilePathFromBundle];
+		rawTextData = [NSData dataWithContentsOfFile:dataFilePath];
+		
+		if (rawTextData == nil) {
+			return nil;
+		}
+	}
 
 	NSError * error;
 	NSDictionary *rootDictionary = [NSJSONSerialization JSONObjectWithData:rawTextData options:NSJSONReadingMutableContainers error:&error];
@@ -223,6 +232,7 @@ NSString *const A3DeviceInformationRemainingTimeKey = @"remainingTimeInfo";
  *********************/
 + (NSString *)platformString {
 	NSDictionary *deviceInfo = [A3UIDevice deviceInformationDictionary];
+	if (deviceInfo == nil) return nil;
     return deviceInfo[@"Model"];
 }
 
