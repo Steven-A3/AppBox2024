@@ -124,7 +124,6 @@
 		680D639718CFF9D400938AD0 /* A3CalculatorUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D637818CFF9D400938AD0 /* A3CalculatorUtil.m */; };
 		680D639818CFF9D400938AD0 /* A3CalculatorViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D637A18CFF9D400938AD0 /* A3CalculatorViewController_iPad.m */; };
 		680D639918CFF9D400938AD0 /* A3CalculatorViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D637C18CFF9D400938AD0 /* A3CalculatorViewController_iPhone.m */; };
-		680D639B18CFF9D400938AD0 /* NSAttributedString+Append.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D638118CFF9D400938AD0 /* NSAttributedString+Append.m */; };
 		680D639C18CFF9D400938AD0 /* UILabel+Boldify.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D638318CFF9D400938AD0 /* UILabel+Boldify.m */; };
 		680D639D18CFF9D400938AD0 /* A3MagnifierViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D638618CFF9D400938AD0 /* A3MagnifierViewController.m */; };
 		680D639E18CFF9D400938AD0 /* A3MagnifierViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 680D638718CFF9D400938AD0 /* A3MagnifierViewController.xib */; };
@@ -866,7 +865,6 @@
 		68746D0C1A413235007E74A0 /* A3JHTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68143D1918E3EC7C00569691 /* A3JHTableViewCell.m */; };
 		68746D0D1A413235007E74A0 /* A3TableViewExpandableDefaultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68143D4018E3EC7C00569691 /* A3TableViewExpandableDefaultCell.m */; };
 		68746D0E1A413235007E74A0 /* A3TableViewMonthEntryElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 68143D4818E3EC7C00569691 /* A3TableViewMonthEntryElement.m */; };
-		68746D0F1A413235007E74A0 /* NSAttributedString+Append.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D638118CFF9D400938AD0 /* NSAttributedString+Append.m */; };
 		68746D101A413235007E74A0 /* UIImage+imageWithColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D356191845CF94008409B4 /* UIImage+imageWithColor.m */; };
 		68746D111A413235007E74A0 /* A3CalculatorButtonsInBasicViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D636A18CFF9D400938AD0 /* A3CalculatorButtonsInBasicViewController_iPad.m */; };
 		68746D121A413235007E74A0 /* DaysCounterFavorite+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68425D5A1977BF63007C1AAE /* DaysCounterFavorite+extension.m */; };
@@ -1993,8 +1991,6 @@
 		680D637B18CFF9D400938AD0 /* A3CalculatorViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalculatorViewController_iPhone.h; sourceTree = "<group>"; };
 		680D637C18CFF9D400938AD0 /* A3CalculatorViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalculatorViewController_iPhone.m; sourceTree = "<group>"; };
 		680D637D18CFF9D400938AD0 /* A3ExpressionComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ExpressionComponent.h; sourceTree = "<group>"; };
-		680D638018CFF9D400938AD0 /* NSAttributedString+Append.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+Append.h"; sourceTree = "<group>"; };
-		680D638118CFF9D400938AD0 /* NSAttributedString+Append.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+Append.m"; sourceTree = "<group>"; };
 		680D638218CFF9D400938AD0 /* UILabel+Boldify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Boldify.h"; sourceTree = "<group>"; };
 		680D638318CFF9D400938AD0 /* UILabel+Boldify.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Boldify.m"; sourceTree = "<group>"; };
 		680D638518CFF9D400938AD0 /* A3MagnifierViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3MagnifierViewController.h; sourceTree = "<group>"; };
@@ -3945,8 +3941,6 @@
 				680D637C18CFF9D400938AD0 /* A3CalculatorViewController_iPhone.m */,
 				680D637D18CFF9D400938AD0 /* A3ExpressionComponent.h */,
 				17D425DE3A3E4C299A8A0D06 /* MathParser.h */,
-				680D638018CFF9D400938AD0 /* NSAttributedString+Append.h */,
-				680D638118CFF9D400938AD0 /* NSAttributedString+Append.m */,
 				680D638218CFF9D400938AD0 /* UILabel+Boldify.h */,
 				680D638318CFF9D400938AD0 /* UILabel+Boldify.m */,
 				17D4236125BF62298D2D0D15 /* A3CalculatorViewController.h */,
@@ -7378,7 +7372,6 @@
 				68143D5018E3EC7C00569691 /* A3JHTableViewCell.m in Sources */,
 				68143D6318E3EC7C00569691 /* A3TableViewExpandableDefaultCell.m in Sources */,
 				68143D6718E3EC7C00569691 /* A3TableViewMonthEntryElement.m in Sources */,
-				680D639B18CFF9D400938AD0 /* NSAttributedString+Append.m in Sources */,
 				68D3561A1845CF94008409B4 /* UIImage+imageWithColor.m in Sources */,
 				680D638E18CFF9D400938AD0 /* A3CalculatorButtonsInBasicViewController_iPad.m in Sources */,
 				68425D5B1977BF63007C1AAE /* DaysCounterFavorite+extension.m in Sources */,
@@ -8020,7 +8013,6 @@
 				68746D0C1A413235007E74A0 /* A3JHTableViewCell.m in Sources */,
 				68746D0D1A413235007E74A0 /* A3TableViewExpandableDefaultCell.m in Sources */,
 				68746D0E1A413235007E74A0 /* A3TableViewMonthEntryElement.m in Sources */,
-				68746D0F1A413235007E74A0 /* NSAttributedString+Append.m in Sources */,
 				68746D101A413235007E74A0 /* UIImage+imageWithColor.m in Sources */,
 				68746D111A413235007E74A0 /* A3CalculatorButtonsInBasicViewController_iPad.m in Sources */,
 				68746D121A413235007E74A0 /* DaysCounterFavorite+extension.m in Sources */,
