@@ -93,6 +93,9 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 {
     [super viewDidLoad];
 
+	self.automaticallyAdjustsScrollViewInsets = NO;
+	self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+	
 	_currencyDataManager = [A3CurrencyDataManager new];
 	[A3CurrencyDataManager setupFavorites];
 
