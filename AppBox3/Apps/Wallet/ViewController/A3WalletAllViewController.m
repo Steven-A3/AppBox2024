@@ -403,18 +403,20 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
     // update
     NSString *dateText = @"-";
     WalletItem *recentItem = [WalletItem MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
-    if (recentItem) {
+    if (recentItem && recentItem.updateDate) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 		[formatter setDateStyle:IS_IPHONE ? NSDateFormatterShortStyle : NSDateFormatterMediumStyle];
         dateText = [formatter stringFromDate:recentItem.updateDate];
+		
+		if (dateText == nil) {
+			dateText = @"-";
+		}
     }
-    
+	
     nameText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"UPDATED", @"UPDATED")
                                                attributes:textAttributes];
-	if (dateText != nil) {
-		countText = [[NSAttributedString alloc] initWithString:dateText
-													attributes:valueAttributes];
-	}
+	countText = [[NSAttributedString alloc] initWithString:dateText
+												attributes:valueAttributes];
     if (IS_IPAD) {
         [updateAttrString appendAttributedString:countText];
         [updateAttrString appendAttributedString:[[NSAttributedString alloc] initWithString:@" " attributes:textAttributes]];
