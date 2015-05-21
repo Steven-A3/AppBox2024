@@ -487,6 +487,11 @@
 		month = MIN(_endMonth, month);
 	}
 	row = month - (section == 0 ? _startMonth : 1);
+
+	if (section >= _collectionView.numberOfSections) {
+		section = _collectionView.numberOfSections - 1;
+	}
+
 	NSInteger numberOfRows = [self collectionView:_collectionView numberOfItemsInSection:section];
 	if (row >= numberOfRows) {
 		row = numberOfRows - 1;
