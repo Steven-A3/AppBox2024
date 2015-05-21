@@ -340,6 +340,7 @@
 		_expressionLabel.textAlignment = NSTextAlignmentRight;
 		_expressionLabel.text = @"";
         _expressionLabel.copyingEnabled = NO;
+		_expressionLabel.lineBreakMode = NSLineBreakByTruncatingHead;
 	}
 	return _expressionLabel;
 }
