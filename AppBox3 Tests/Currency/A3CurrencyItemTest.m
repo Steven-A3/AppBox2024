@@ -63,4 +63,13 @@ NSString *const A3CurrencyRatesDataFilename = @"currencyRates";
 	[self waitForExpectationsWithTimeout:3 handler:nil];
 }
 
+- (void)testCrash {
+	NSDictionary *attribute = @{
+								NSFontAttributeName : [UIFont boldSystemFontOfSize:15],
+								NSForegroundColorAttributeName:[UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1.0]
+								};
+	NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:nil attributes:attribute];
+	NSLog(@"%@", attributedString);
+}
+
 @end
