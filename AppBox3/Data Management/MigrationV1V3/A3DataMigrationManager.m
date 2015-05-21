@@ -273,7 +273,7 @@ NSString *const kMyGirlsDayHistoryTypeInput				= @"input";
 	NSString *accountID = [[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarCurrentAccountID];
 
 	for (NSArray *item in history) {
-		if ([item[0] isEqualToString:kMyGirlsDayHistoryTypeInput]) {
+		if ([item[0] isEqualToString:kMyGirlsDayHistoryTypeInput] && [item count] >= 4) {
 			@autoreleasepool {
 				LadyCalendarPeriod *period = [LadyCalendarPeriod MR_createEntityInContext:context];
 				period.accountID = accountID;
