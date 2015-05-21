@@ -144,8 +144,9 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 	if ([[Reachability reachabilityWithHostname:@"www.flickr.com"] isReachableViaWiFi]) {
 		self.downloadInProgress = YES;
 
+		NSFileManager *fileManager = [NSFileManager new];
 		NSString *filePath = [@"FlickrRecommendation.json" pathInCachesDataDirectory];
-		if (![[NSFileManager new] fileExistsAtPath:filePath]) {
+		if (![fileManager fileExistsAtPath:filePath]) {
 			FNLOG(@"FlickrRecommendation.json file did not downloaded yet.");
 			return;
 		}
@@ -154,11 +155,12 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 			return;
 		}
 		NSError *error;
-		NSArray *candidates = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath] options:0 error:&error];
+		NSArray *candidates = [NSJSONSerialization JSONObjectWithData:rawData options:0 error:&error];
 		if (error || candidates == nil) {
+			[fileManager removeItemAtPath:filePath error:nil];
 			return;
 		}
-			
+
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"country == %@", countryCode];
 		candidates = [candidates filteredArrayUsingPredicate:predicate];
 		if ([candidates count]) {

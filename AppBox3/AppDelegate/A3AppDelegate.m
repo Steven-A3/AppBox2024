@@ -625,23 +625,33 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 		[_downloadList removeObjectAtIndex:0];
 	}
 
-	NSString *filename = [downloadTask.originalRequest.URL lastPathComponent];
-	NSString *destinationPath =	[@"data" pathInCachesDirectory];
-	destinationPath = [destinationPath stringByAppendingPathComponent:filename];
-	FNLOG(@"%@", destinationPath);
-	NSFileManager *fileManager = [NSFileManager new];
-	NSError *error = nil;
-    if ([fileManager fileExistsAtPath:destinationPath]) {
-        [fileManager removeItemAtPath:destinationPath error:&error];
-    }
-	if (error) {
-		FNLOG(@"%@, %@, %@, %@", error.localizedDescription, error.localizedFailureReason, error.localizedRecoveryOptions, error.localizedRecoverySuggestion);
-	} else {
-		[fileManager moveItemAtURL:location toURL:[NSURL fileURLWithPath:destinationPath] error:&error];
-		if (error) {
-            FNLOG(@"%@, %@, %@, %@", error.localizedDescription, error.localizedFailureReason, error.localizedRecoveryOptions, error.localizedRecoverySuggestion);
+	// Verify downloaded file contents.
+	// device_information.json, FlickrRecommendation.json 모두 json이므로
+	NSData *rawData = [NSData dataWithContentsOfURL:location];
+	if (rawData) {
+		NSError *error;
+		NSArray *candidates = [NSJSONSerialization JSONObjectWithData:rawData options:0 error:&error];
+		if (!error || candidates != nil) {
+			NSString *filename = [downloadTask.originalRequest.URL lastPathComponent];
+			NSString *destinationPath =	[@"data" pathInCachesDirectory];
+			destinationPath = [destinationPath stringByAppendingPathComponent:filename];
+			FNLOG(@"%@", destinationPath);
+			NSFileManager *fileManager = [NSFileManager new];
+			NSError *error = nil;
+			if ([fileManager fileExistsAtPath:destinationPath]) {
+				[fileManager removeItemAtPath:destinationPath error:&error];
+			}
+			if (error) {
+				FNLOG(@"%@, %@, %@, %@", error.localizedDescription, error.localizedFailureReason, error.localizedRecoveryOptions, error.localizedRecoverySuggestion);
+			} else {
+				[fileManager moveItemAtURL:location toURL:[NSURL fileURLWithPath:destinationPath] error:&error];
+				if (error) {
+					FNLOG(@"%@, %@, %@, %@", error.localizedDescription, error.localizedFailureReason, error.localizedRecoveryOptions, error.localizedRecoverySuggestion);
+				}
+			}
 		}
 	}
+	
 	_backgroundDownloadIsInProgress = NO;
 	if ([self.reachability isReachableViaWiFi]) {
 		[self startDownloadDataFiles];
