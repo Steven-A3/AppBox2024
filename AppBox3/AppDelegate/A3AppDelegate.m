@@ -31,7 +31,6 @@
 #import "AFHTTPRequestOperation.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3UserDefaults.h"
-#import "GADInterstitial.h"
 #import "A3AppDelegate+migration.h"
 
 NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
@@ -1037,8 +1036,7 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 #pragma mark - Google AdMob
 
 - (GADInterstitial *)createAndLoadInterstitial {
-	GADInterstitial *interstitial = [[GADInterstitial alloc] init];
-	interstitial.adUnitID = @"ca-app-pub-0532362805885914/2537692543";
+	GADInterstitial *interstitial = [[GADInterstitial alloc] initWithAdUnitID:@"ca-app-pub-0532362805885914/2537692543"];
 	interstitial.delegate = self;
 	[interstitial loadRequest:[GADRequest request]];
 	return interstitial;

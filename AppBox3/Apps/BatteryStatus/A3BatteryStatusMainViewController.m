@@ -18,7 +18,7 @@
 #import "A3InstructionViewController.h"
 #import "A3UserDefaults.h"
 #import "A3StandardTableViewCell.h"
-#import "GADInterstitial.h"
+@import GoogleMobileAds;
 
 @interface A3BatteryStatusMainViewController () <A3InstructionViewControllerDelegate>
 @property (nonatomic, strong) A3BatteryStatusSettingViewController *settingsViewController;

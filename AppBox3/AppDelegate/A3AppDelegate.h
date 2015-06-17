@@ -11,14 +11,13 @@
 #import "A3PasscodeViewControllerProtocol.h"
 #import "A3CacheStoreManager.h"
 #import "A3DataMigrationManager.h"
-#import "GADInterstitial.h"
+#import <GoogleMobileAds/GoogleMobileAds.h>
 
 @class MMDrawerController;
 @protocol A3PasscodeViewControllerProtocol;
 @class Reachability;
 @class A3DataMigrationManager;
 @class A3MainMenuTableViewController;
-@class GADInterstitial;
 
 extern NSString *const kA3ApplicationLastRunVersion;
 extern NSString *const kA3AppsMenuName;

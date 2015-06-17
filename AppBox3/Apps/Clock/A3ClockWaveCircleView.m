@@ -91,7 +91,7 @@
 		imageName = _position == ClockWaveLocationBig ? @"wave_large" : @"wave";
 		waveHeight = _position == ClockWaveLocationBig ? 11 : 6;
 	}
-	slicingEdge = UIEdgeInsetsMake(waveHeight, 0, 1, 0);
+	slicingEdge = UIEdgeInsetsMake(waveHeight, 0, 0, 0);
 
 	CGRect frame = self.bounds;
 	if (_fillPercent == 0.0) {

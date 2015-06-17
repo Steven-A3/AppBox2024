@@ -444,13 +444,13 @@
 	}
 
 	holidayName = NSLocalizedStringFromTable(@"Pentecost", kHolidaysResourceName, nil);
-	date = [HolidayData getPentecost:year western:NO withCalendar:gregorian];
+	date = [HolidayData getPentecost:year western:YES withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	holidayName = NSLocalizedStringFromTable(@"Whit Monday", kHolidaysResourceName, nil);
-	date = [HolidayData getWhitMonday:year western:NO withCalendar:gregorian];
+	date = [HolidayData getWhitMonday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
