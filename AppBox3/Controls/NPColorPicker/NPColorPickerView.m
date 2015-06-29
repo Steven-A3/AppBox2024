@@ -468,7 +468,7 @@ NSString * kColorProperty = @"color";
 
    CGFloat teta = M_PI_3 * saturation;
 
-   CGFloat l = brightness * ( (sqrtf(3) / 2) / cosf(fabsf(teta - (M_PI/6))));
+   CGFloat l = brightness * ( (sqrtf(3) / 2) / cosf(fabs(teta - (M_PI/6))));
    CGPoint s = (CGPoint) { center.x + cosf(2*M_PI_3) * internalRadius, center.y + sinf(2*M_PI_3) * internalRadius };   
    CGPoint b = (CGPoint) { center.x + cosf(4*M_PI_3) * internalRadius, center.y + sinf(4*M_PI_3) * internalRadius };
    
@@ -521,7 +521,7 @@ NSString * kColorProperty = @"color";
    
    if (brightness) {
       CGFloat v1l = sqrtf(v1.x*v1.x + v1.y*v1.y);
-      CGFloat max = v1l  * ( (sqrtf(3) / 2) / cosf(fabsf(teta - (M_PI/6))));
+      CGFloat max = v1l  * ( (sqrtf(3) / 2) / cosf(fabs(teta - (M_PI/6))));
       CGFloat l = sqrtf(v2.x*v2.x + MIN(v2.y,0)*MIN(v2.y,0));
       *brightness = MIN( l, max) / max ;
    }
