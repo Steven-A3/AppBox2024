@@ -123,14 +123,13 @@ extern NSString *const A3AppName_Settings;
 - (void)showReceivedLocalNotifications;
 - (UINavigationController *)navigationController;
 - (UIViewController *)visibleViewController;
-
 - (void)downloadDataFiles;
-
 - (void)setupContext;
 - (NSURL *)storeURL;
 - (NSString *)storeFileName;
-
 - (void)didFinishPushViewController;
+- (BOOL)shouldPresentAd;
+
 @end
 
 #import "A3AppDelegate+iCloud.h"

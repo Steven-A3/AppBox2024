@@ -1048,4 +1048,8 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 
 #endif
 
+- (BOOL)shouldPresentAd {
+	return YES;
+}
+
 @end
