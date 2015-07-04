@@ -1528,22 +1528,24 @@ typedef CMathParser<char, double> MathParser;
                 mathexpression = [mathexpression stringByAppendingString:@"+"];
             }
         } else if ([lastChar isEqualToString:@"0"] && [mathexpression length] == 1) {
-            _evaluatedResultLabel.text = num;
-            mathexpression = num;
+            _evaluatedResultLabel.text = @"";
+            mathexpression = @"";
         }
         
         NSUInteger i = 1, numLen = 0;
-        NSRange range;
-        range.length = 1;
-        do {
-            range.location = [mathexpression length] - i++;
-            range = [mathexpression rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] options:0 range:range];
-            if(range.location != NSNotFound) {
-                numLen++;
-            }
-        } while (range.location != NSNotFound &&
-                 i <= [mathexpression length]);
-        
+		if ([mathexpression length] > 0) {
+			NSRange range;
+			range.length = 1;
+			do {
+				range.location = [mathexpression length] - i++;
+				range = [mathexpression rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] options:0 range:range];
+				if(range.location != NSNotFound) {
+					numLen++;
+				}
+			} while (range.location != NSNotFound &&
+					 i <= [mathexpression length]);
+		}
+		
         if (IS_IPHONE && IS_PORTRAIT) {
             if (numLen >= 9) return;
         } else {
