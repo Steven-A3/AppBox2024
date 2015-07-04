@@ -130,6 +130,11 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
 		[self resetButtonAction];
+
+		A3AppDelegate *appDelegate = [A3AppDelegate instance];
+		if (appDelegate.shouldPresentAd && [appDelegate.googleAdInterstitial isReady]) {
+			[appDelegate.googleAdInterstitial presentFromRootViewController:self];
+		}
 	}
 }
 

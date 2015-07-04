@@ -112,14 +112,14 @@ extern NSString *const A3AppName_Settings;
 @property (nonatomic, assign) BOOL isCoreDataReady;
 @property (nonatomic, assign) BOOL isTouchIDEvaluationInProgress;
 @property (nonatomic, strong) UIViewController *touchIDBackgroundViewController;
-#ifdef APPBOX3_FREE
+@property (nonatomic, assign) BOOL shouldPresentAd;
+@property (nonatomic, assign) BOOL isIAPRemoveAdsAvailable;
+@property (nonatomic, copy) SKProduct *IAPRemoveAdsProductFromiTunes;
+
 @property (nonatomic, strong) GADInterstitial *googleAdInterstitial;
-#endif
 
 + (A3AppDelegate *)instance;
-
 - (void)updateStartOption;
-
 - (void)showReceivedLocalNotifications;
 - (UINavigationController *)navigationController;
 - (UIViewController *)visibleViewController;
@@ -128,7 +128,6 @@ extern NSString *const A3AppName_Settings;
 - (NSURL *)storeURL;
 - (NSString *)storeFileName;
 - (void)didFinishPushViewController;
-- (BOOL)shouldPresentAd;
 
 @end
 

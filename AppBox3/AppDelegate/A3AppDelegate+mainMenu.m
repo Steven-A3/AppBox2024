@@ -187,18 +187,25 @@ NSString *const A3AppName_Settings = @"Settings";
 				return [NSLocalizedString(obj1[kA3AppsMenuName], nil) compare:NSLocalizedString(obj2[kA3AppsMenuName], nil)];
 			}];
 			if (![A3UIDevice shouldSupportLunarCalendar]) {
-				NSUInteger indexOfLunarConverter = [originalMenus indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-					return [obj[kA3AppsMenuName] isEqualToString:A3AppName_LunarConverter];
-				}];
-				if (indexOfLunarConverter != NSNotFound) {
-					[originalMenus removeObjectAtIndex:indexOfLunarConverter];
-				}
+				[self removeMenu:A3AppName_LunarConverter inMenus:originalMenus];
+			}
+			if ([A3AppDelegate instance].shouldPresentAd) {
+				[self removeMenu:A3AppName_Translator inMenus:originalMenus];
 			}
 			modifiedSection[kA3AppsExpandableChildren] = originalMenus;
 			[sortedMenuArray addObject:modifiedSection];
 		}
 	}
 	return sortedMenuArray;
+}
+
+- (void)removeMenu:(NSString *)name inMenus:(NSMutableArray *)menus {
+	NSUInteger indexOfMenu = [menus indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+		return [obj[kA3AppsMenuName] isEqualToString:name];
+	}];
+	if (indexOfMenu != NSNotFound) {
+		[menus removeObjectAtIndex:indexOfMenu];
+	}
 }
 
 - (NSDictionary *)favoriteMenuDictionary {

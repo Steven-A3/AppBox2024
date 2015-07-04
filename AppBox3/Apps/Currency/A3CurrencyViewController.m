@@ -111,7 +111,6 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 	self.tableViewController = [[UITableViewController alloc] initWithStyle:self.tableView.style];
 	self.tableViewController.tableView = self.tableView;
-	self.tableViewController.refreshControl = self.refreshControl;
 	[self addChildViewController:self.tableViewController];
 
 	[self setupSwipeRecognizers];
@@ -170,6 +169,8 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
 		[self setupInstructionView];
+	} else {
+		self.tableViewController.refreshControl = self.refreshControl;
 	}
 }
 
@@ -543,7 +544,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencyRatesUpdated) name:A3NotificationCurrencyRatesUpdated object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencyRatesUpdateFailed) name:A3NotificationCurrencyRatesUpdateFailed object:nil];
 
-	if (!self.firstResponder && animate) {
+	if (!self.firstResponder && animate && !self.presentedViewController) {
 		[self.refreshControl beginRefreshing];
 	}
 
@@ -654,14 +655,14 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForCurrency]) {
         [self showInstructionView];
     }
-#ifdef APPBOX3_FREE
 	else {
 		A3AppDelegate *appDelegate = [A3AppDelegate instance];
-		if ([appDelegate.googleAdInterstitial isReady]) {
+		if (appDelegate.shouldPresentAd && [appDelegate.googleAdInterstitial isReady]) {
 			[appDelegate.googleAdInterstitial presentFromRootViewController:self];
+		} else {
+			self.tableViewController.refreshControl = self.refreshControl;
 		}
 	}
-#endif
 }
 
 - (void)instructionHelpButtonAction:(id)sender {

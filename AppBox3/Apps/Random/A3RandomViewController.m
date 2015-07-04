@@ -157,14 +157,12 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 
 	_resultViewTopConst.constant = CGRectGetHeight(self.navigationController.navigationBar.bounds) + 20;
 
-#ifdef APPBOX3_FREE
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
         A3AppDelegate *appDelegate = [A3AppDelegate instance];
-        if ([appDelegate.googleAdInterstitial isReady]) {
+        if (appDelegate.shouldPresentAd && [appDelegate.googleAdInterstitial isReady]) {
             [appDelegate.googleAdInterstitial presentFromRootViewController:self];
         }
     }
-#endif
 }
 
 - (void)viewDidAppear:(BOOL)animated {

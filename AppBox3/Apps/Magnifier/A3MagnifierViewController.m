@@ -141,6 +141,13 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 		[self requestAuthorizationForCamera:NSLocalizedString(A3AppName_Magnifier, nil)];
 	}
 	[self setupButtonEnabled];
+	
+	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+		A3AppDelegate *appDelegate = [A3AppDelegate instance];
+		if (appDelegate.shouldPresentAd && [appDelegate.googleAdInterstitial isReady]) {
+			[appDelegate.googleAdInterstitial presentFromRootViewController:self];
+		}
+	}
 }
 
 - (void)viewDidAppear:(BOOL)animated {

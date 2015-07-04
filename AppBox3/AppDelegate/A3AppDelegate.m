@@ -32,6 +32,8 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3UserDefaults.h"
 #import "A3AppDelegate+migration.h"
+#import "RMStoreAppReceiptVerificator.h"
+#import "RMAppReceipt.h"
 
 NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
@@ -46,9 +48,7 @@ NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataSto
 NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3NotificationsUserNotificationSettingsRegistered";
 
 @interface A3AppDelegate () <UIAlertViewDelegate, NSURLSessionDownloadDelegate, CLLocationManagerDelegate
-		#ifdef APPBOX3_FREE
 		, GADInterstitialDelegate
-		#endif
 		>
 
 @property (nonatomic, strong) NSString *previousVersion;
@@ -60,6 +60,7 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 @property (nonatomic, strong) NSTimer *locationUpdateTimer;
 @property (nonatomic, copy) NSString *deviceToken;
 @property (nonatomic, copy) NSString *alertURLString;
+@property (nonatomic, strong) RMStoreAppReceiptVerificator *receiptVerificator;
 
 @end
 
@@ -82,6 +83,11 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	_shouldPresentAd = YES;
+	_isIAPRemoveAdsAvailable = NO;
+	
+	[self configureStore];
+
 #ifdef DEBUG
 	UIScreen *mainScreen = [UIScreen mainScreen];
 	if ([mainScreen respondsToSelector:@selector(nativeBounds)]) {
@@ -97,9 +103,7 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 
 	CDESetCurrentLoggingLevel(CDELoggingLevelNone);
 
-	#ifdef APPBOX3_FREE
 	self.googleAdInterstitial = [self createAndLoadInterstitial];
-	#endif
 
 	[self prepareDirectories];
 	[A3SyncManager sharedSyncManager];
@@ -1031,8 +1035,6 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 	}
 }
 
-#ifdef APPBOX3_FREE
-
 #pragma mark - Google AdMob
 
 - (GADInterstitial *)createAndLoadInterstitial {
@@ -1046,10 +1048,66 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 	self.googleAdInterstitial = [self createAndLoadInterstitial];
 }
 
-#endif
-
 - (BOOL)shouldPresentAd {
-	return YES;
+	return _shouldPresentAd;
+}
+
+- (void)configureStore
+{
+	_receiptVerificator = [[RMStoreAppReceiptVerificator alloc] init];
+	[RMStore defaultStore].receiptVerificator = _receiptVerificator;
+
+	if (![_receiptVerificator verifyAppReceipt]) {
+		[[RMStore defaultStore] refreshReceiptOnSuccess:^{
+			if (![_receiptVerificator verifyAppReceipt]) {
+				NSLog(@"failed to verify receipt.");
+			} else {
+				[self evaluateReceipt];
+			}
+		} failure:^(NSError *error) {
+
+		}];
+	} else {
+		[self evaluateReceipt];
+	}
+}
+
+- (void)evaluateReceipt {
+	RMAppReceipt *receipt = [RMAppReceipt bundleReceipt];
+	if (receipt.originalAppVersion) {
+		NSArray *components = [receipt.originalAppVersion componentsSeparatedByString:@"."];
+		float version = [components[0] floatValue] + [components[1] floatValue] / 10.0;
+		if (version <= 3.5) {
+			_shouldPresentAd = NO;
+		} else {
+			for (RMAppReceiptIAP *iapReceipt in receipt.inAppPurchases) {
+				if ([iapReceipt.productIdentifier isEqualToString:@"net.allaboutapps.AppBox3.removeAds"]) {
+					_shouldPresentAd = NO;
+					break;
+				}
+			}
+		}
+	} else {
+		_shouldPresentAd = NO;
+	}
+	if (_shouldPresentAd) {
+		if (![SKPaymentQueue canMakePayments]) return;
+		
+		NSArray *queryProducts = @[@"net.allaboutapps.AppBox3.removeAds"];
+		
+		[[RMStore defaultStore] requestProducts:[NSSet setWithArray:queryProducts] success:^(NSArray *products, NSArray *invalidProductIdentifiers) {
+			for (SKProduct *product in products) {
+				if ([product.productIdentifier isEqualToString:queryProducts[0]]) {
+					_IAPRemoveAdsProductFromiTunes = product;
+					_isIAPRemoveAdsAvailable = YES;
+					
+					[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:nil];
+					break;
+				}
+			}
+		} failure:^(NSError *error) {
+		}];
+	}
 }
 
 @end

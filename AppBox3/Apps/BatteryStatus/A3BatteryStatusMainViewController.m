@@ -208,14 +208,12 @@ static NSString *const A3V3InstructionDidShowForBattery = @"A3V3InstructionDidSh
     if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForBattery]) {
         [self showInstructionView];
     }
-    #ifdef APPBOX3_FREE
     else {
         A3AppDelegate *appDelegate = [A3AppDelegate instance];
-        if ([appDelegate.googleAdInterstitial isReady]) {
+        if (appDelegate.shouldPresentAd && [appDelegate.googleAdInterstitial isReady]) {
             [appDelegate.googleAdInterstitial presentFromRootViewController:self];
         }
     }
-    #endif
 }
 
 - (void)showInstructionView

@@ -119,14 +119,12 @@
 				[self addButtonAction];
 			});
 		}
-#ifdef APPBOX3_FREE
 		else {
 			A3AppDelegate *appDelegate = [A3AppDelegate instance];
-			if ([appDelegate.googleAdInterstitial isReady]) {
+			if (appDelegate.shouldPresentAd && [appDelegate.googleAdInterstitial isReady]) {
 				[appDelegate.googleAdInterstitial presentFromRootViewController:self];
 			}
 		}
-#endif
 	}
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];

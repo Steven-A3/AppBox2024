@@ -29,11 +29,17 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3UserDefaults.h"
 #import "A3LunarConverterViewController.h"
+#import "RMStore.h"
+#import "RMAppReceipt.h"
+#import "A3TableViewElement.h"
 
 NSString *const A3NotificationAppsMainMenuContentsChanged = @"A3NotificationAppsMainMenuContentsChanged";
 NSString *const A3MainMenuBecameFirstResponder = @"A3MainMenuBecameFirstResponder";
 NSString *const A3NotificationMainMenuDidShow = @"A3NotificationMainMenuDidShow";
 NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide";
+
+NSString *const A3AppName_RemoveAds = @"Remove Ads";
+NSString *const A3AppName_RestorePurchase = @"Restore Purchase";
 
 @interface A3MainMenuTableViewController () <UISearchDisplayDelegate, UISearchBarDelegate, A3PasscodeViewControllerDelegate, A3TableViewExpandableElementDelegate>
 
@@ -198,9 +204,10 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 - (id)bottomSection {
 	NSArray *bottomSection;
 
-	if ([[A3AppDelegate instance] shouldPresentAd]) {
+	if ([[A3AppDelegate instance] isIAPRemoveAdsAvailable]) {
 		bottomSection = @[
-				@{kA3AppsMenuName : @"Remove Ads", kA3AppsMenuNeedSecurityCheck : @NO, kA3AppsDoNotKeepAsRecent : @YES},
+				@{kA3AppsMenuName : A3AppName_RemoveAds, kA3AppsMenuNeedSecurityCheck : @NO, kA3AppsDoNotKeepAsRecent : @YES},
+				@{kA3AppsMenuName : A3AppName_RestorePurchase, kA3AppsMenuNeedSecurityCheck : @NO, kA3AppsDoNotKeepAsRecent : @YES},
 				@{kA3AppsMenuName : A3AppName_Settings, kA3AppsStoryboard_iPhone : @"A3Settings", kA3AppsStoryboard_iPad:@"A3Settings", kA3AppsMenuNeedSecurityCheck : @YES, kA3AppsDoNotKeepAsRecent : @YES},
 				@{kA3AppsMenuName : @"About", kA3AppsStoryboard_iPhone : @"about", kA3AppsStoryboard_iPad:@"about", kA3AppsDoNotKeepAsRecent:@YES},
 		];
@@ -220,6 +227,42 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 	section.elements = [self elementsWithData:data];
 
 	return section;
+}
+
+- (void)restorePurchaseIAPRemoveAds {
+	[[RMStore defaultStore] restoreTransactionsOnSuccess:^(NSArray *transactions) {
+		BOOL isTransactionRestored = NO;
+		for (SKPaymentTransaction *transaction in transactions) {
+			SKPayment *payment = transaction.payment;
+			if ([payment.productIdentifier isEqualToString:@"net.allaboutapps.AppBox3.removeAds"]) {
+				isTransactionRestored = YES;
+				break;
+			}
+		}
+		
+		if (isTransactionRestored) {
+			// transaction이 존재한다면 기존 사용자 이거나 IAP를 구매한 사용자인건 틀림이 없음
+			A3AppDelegate *appDelegate = [A3AppDelegate instance];
+			appDelegate.shouldPresentAd = NO;
+			appDelegate.isIAPRemoveAdsAvailable = NO;
+			
+			[self menuContentsChanged];
+			
+			UIAlertView *thanksAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Thanks", @"Thanks")
+																	  message:NSLocalizedString(@"Thank you very much for purchasing the AppBox Pro.", @"Thank you very much for purchasing the AppBox Pro.")
+																	 delegate:nil
+															cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+															otherButtonTitles:nil];
+			[thanksAlertView show];
+		} else {
+			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error")
+																message:NSLocalizedString(@"No Transactions to Restore", @"No Transactions to Restore")
+															   delegate:nil
+													  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+													  otherButtonTitles:nil];
+			[alertView show];
+		}
+	} failure:nil];
 }
 
 - (NSArray *)elementsWithData:(NSArray *)elementsDescriptions {
@@ -252,6 +295,22 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 				A3TableViewMenuElement *menuElement = (A3TableViewMenuElement *) elementObject;
 
 				BOOL proceedPasscodeCheck = NO;
+
+				if ([elementObject.title isEqualToString:A3AppName_RemoveAds]) {
+					[[RMStore defaultStore] addPayment:@"net.allaboutapps.AppBox3.removeAds" success:^(SKPaymentTransaction *transaction) {
+						A3AppDelegate *appDelegate = [A3AppDelegate instance];
+						appDelegate.shouldPresentAd = NO;
+						appDelegate.isIAPRemoveAdsAvailable = NO;
+
+						[self menuContentsChanged];
+					} failure:^(SKPaymentTransaction *transaction, NSError *error) {
+						[self restorePurchaseIAPRemoveAds];
+					}];
+					return;
+				} else if ([elementObject.title isEqualToString:A3AppName_RestorePurchase]) {
+					[self restorePurchaseIAPRemoveAds];
+					return;
+				}
 
 				// Check active view controller
 				if (![self.activeAppName isEqualToString:elementObject.title]) {

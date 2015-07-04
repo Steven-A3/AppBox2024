@@ -149,6 +149,11 @@
 	[super viewWillAppear:animated];
 
 	_scrollView.contentOffset = CGPointMake(320, 0);
+
+	A3AppDelegate *appDelegate = [A3AppDelegate instance];
+	if (appDelegate.shouldPresentAd && [appDelegate.googleAdInterstitial isReady]) {
+		[appDelegate.googleAdInterstitial presentFromRootViewController:self];
+	}
 }
 
 - (void)removeObserver {
@@ -440,8 +445,11 @@
             [self setNavigationBarHidden:NO];
         }
         self.pageControl.hidden = NO;
-        [[UIApplication sharedApplication] setStatusBarHidden:NO];
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+
+		if (!self.presentedViewController) {
+			[[UIApplication sharedApplication] setStatusBarHidden:NO];
+			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+		}
         _inputViewForPlayInputClick.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1.0];
         self.calculator.isLandScape = NO;
     }
@@ -462,10 +470,15 @@
         _scrollView.contentSize = CGSizeMake(screenBounds.size.width, 240.0);
         _scrollView.scrollEnabled = NO;
         navGestureRecognizer.enabled = NO;
-        
-        [self setNavigationBarHidden:YES];
-        [[UIApplication sharedApplication] setStatusBarHidden:YES];
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
+		FNLOG(@"%@", self.presentedViewController);
+
+		if (!self.presentedViewController) {
+			[self setNavigationBarHidden:YES];
+			[[UIApplication sharedApplication] setStatusBarHidden:YES];
+			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+		}
+		
         _inputViewForPlayInputClick.backgroundColor = [UIColor colorWithRed:252.0 / 255.0 green:252.0 / 255.0 blue:253.0 / 255.0 alpha:1.0];
         self.calculator.isLandScape = YES;
     }

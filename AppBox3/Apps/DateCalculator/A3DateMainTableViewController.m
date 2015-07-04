@@ -160,19 +160,16 @@
 	}
 }
 
-#ifdef APPBOX3_FREE
-
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
         A3AppDelegate *appDelegate = [A3AppDelegate instance];
-        if ([appDelegate.googleAdInterstitial isReady]) {
+        if (appDelegate.shouldPresentAd && [appDelegate.googleAdInterstitial isReady]) {
             [appDelegate.googleAdInterstitial presentFromRootViewController:self];
         }
     }
 }
-#endif
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];

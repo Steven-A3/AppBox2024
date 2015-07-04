@@ -130,18 +130,16 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 	[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
 	[self.navigationController.navigationBar setShadowImage:image];
 
-#ifdef APPBOX3_FREE
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
 		UINavigationController *selectedNavigationController = (UINavigationController *) self.selectedViewController;
 		UIViewController<A3WalletViewControllerProtocol> *activeViewController = (UIViewController <A3WalletViewControllerProtocol> *) selectedNavigationController.viewControllers[0];
 		if (![activeViewController shouldShowHelpView]) {
 			A3AppDelegate *appDelegate = [A3AppDelegate instance];
-			if ([appDelegate.googleAdInterstitial isReady]) {
+			if (appDelegate.shouldPresentAd && [appDelegate.googleAdInterstitial isReady]) {
 				[appDelegate.googleAdInterstitial presentFromRootViewController:self];
 			}
 		}
 	}
-#endif
 }
 
 - (NSMutableArray *)categories {
