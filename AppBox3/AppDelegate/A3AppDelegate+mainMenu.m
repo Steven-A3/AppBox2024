@@ -189,9 +189,6 @@ NSString *const A3AppName_Settings = @"Settings";
 			if (![A3UIDevice shouldSupportLunarCalendar]) {
 				[self removeMenu:A3AppName_LunarConverter inMenus:originalMenus];
 			}
-			if ([A3AppDelegate instance].shouldPresentAd) {
-				[self removeMenu:A3AppName_Translator inMenus:originalMenus];
-			}
 			modifiedSection[kA3AppsExpandableChildren] = originalMenus;
 			[sortedMenuArray addObject:modifiedSection];
 		}
