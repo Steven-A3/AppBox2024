@@ -218,8 +218,12 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 	[[A3UserDefaults standardUserDefaults] setObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] forKey:kA3ApplicationLastRunVersion];
 	[[A3UserDefaults standardUserDefaults] synchronize];
 
-	[application registerForRemoteNotificationTypes:
+	if (IS_IOS7) {
+		[application registerForRemoteNotificationTypes:
 			(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+	} else {
+		[application registerForRemoteNotifications];
+	}
 
 	return YES;
 }
@@ -872,15 +876,16 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 	// Get Bundle Info for Remote Registration (handy if you have more than one app)
 	NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
 	NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-	
-	// Check what Notifications the user has turned on.  We registered for all three, but they may have manually disabled some or all of them.
-	NSUInteger rntypes = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
-	
-	// Set the defaults to disabled unless we find otherwise...
-	NSString *pushBadge = (rntypes & UIRemoteNotificationTypeBadge) ? @"enabled" : @"disabled";
-	NSString *pushAlert = (rntypes & UIRemoteNotificationTypeAlert) ? @"enabled" : @"disabled";
-	NSString *pushSound = (rntypes & UIRemoteNotificationTypeSound) ? @"enabled" : @"disabled";
-	
+
+	NSString *urlString;
+
+	// Prepare the Device Token for Registration (remove spaces and < >)
+	NSString *deviceToken = [[[[devToken description]
+			stringByReplacingOccurrencesOfString:@"<"withString:@""]
+			stringByReplacingOccurrencesOfString:@">" withString:@""]
+			stringByReplacingOccurrencesOfString: @" " withString: @""];
+	_deviceToken = deviceToken;
+
 	// Get the users Device Model, Display Name, Unique ID, Token & Version Number
 	UIDevice *device = [UIDevice currentDevice];
 	NSString *identifierForVendor = [[device identifierForVendor] UUIDString];
@@ -888,29 +893,48 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 	NSString *deviceName = [device name];
 	NSString *deviceModel = [A3UIDevice platformString];
 	NSString *deviceSystemVersion = device.systemVersion;
-	
-	// Prepare the Device Token for Registration (remove spaces and < >)
-	NSString *deviceToken = [[[[devToken description]
-							   stringByReplacingOccurrencesOfString:@"<"withString:@""]
-							  stringByReplacingOccurrencesOfString:@">" withString:@""]
-							 stringByReplacingOccurrencesOfString: @" " withString: @""];
-	_deviceToken = deviceToken;
 
-	NSString *urlString = [[NSString stringWithFormat:@"http://apns.allaboutapps.net/apns/apns.php?task=%@&appname=%@&appversion=%@&deviceuid=%@&devicetoken=%@&devicename=%@&devicemodel=%@&deviceversion=%@&pushbadge=%@&pushalert=%@&pushsound=%@", @"register",
-					appName,
-					appVersion,
-					identifierForVendor,
-					deviceToken,
-					deviceName,
-					deviceModel,
-					deviceSystemVersion,
-					pushBadge,
-					pushAlert,
-					pushSound] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+	if (IS_IOS7) {
+		// Check what Notifications the user has turned on.  We registered for all three, but they may have manually disabled some or all of them.
+		NSUInteger rntypes = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+
+		// Set the defaults to disabled unless we find otherwise...
+		NSString *pushBadge = (rntypes & UIRemoteNotificationTypeBadge) ? @"enabled" : @"disabled";
+		NSString *pushAlert = (rntypes & UIRemoteNotificationTypeAlert) ? @"enabled" : @"disabled";
+		NSString *pushSound = (rntypes & UIRemoteNotificationTypeSound) ? @"enabled" : @"disabled";
+
+		urlString = [[NSString stringWithFormat:@"http://apns.allaboutapps.net/apns/apns.php?task=%@&appname=%@&appversion=%@&deviceuid=%@&devicetoken=%@&devicename=%@&devicemodel=%@&deviceversion=%@&pushbadge=%@&pushalert=%@&pushsound=%@", @"register",
+												appName,
+												appVersion,
+												identifierForVendor,
+												deviceToken,
+												deviceName,
+												deviceModel,
+												deviceSystemVersion,
+												pushBadge,
+												pushAlert,
+												pushSound] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+	} else {
+		NSString *isRegistered = [[UIApplication sharedApplication] isRegisteredForRemoteNotifications] ? @"enabled" : @"disabled";
+
+		urlString = [[NSString stringWithFormat:@"http://apns.allaboutapps.net/apns/apns.php?task=%@&appname=%@&appversion=%@&deviceuid=%@&devicetoken=%@&devicename=%@&devicemodel=%@&deviceversion=%@&pushbadge=%@&pushalert=%@&pushsound=%@", @"register",
+												appName,
+												appVersion,
+												identifierForVendor,
+												deviceToken,
+												deviceName,
+												deviceModel,
+												deviceSystemVersion,
+												isRegistered,
+												isRegistered,
+												isRegistered] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+	}
+	FNLOG(@"%@", urlString);
 
 	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
 	AFHTTPRequestOperation *registerOperation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
 	[registerOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+		FNLOG(@"%@", responseObject);
 		[self fetchPushNotification];
 	} failure:NULL];
 	[registerOperation start];
