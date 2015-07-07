@@ -665,8 +665,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	if (![textField.text length]) {
 		textField.text = _textBeforeEditingTextField;
 	}
-	if (![textField.text length]) {
-		textField.text = @"0";
+	if (![textField.text length] || [textField.text integerValue] == 0) {
+		textField.text = _textBeforeEditingTextField;
 	}
     
     if (![textField.text isEqualToString:_textBeforeEditingTextField]) {

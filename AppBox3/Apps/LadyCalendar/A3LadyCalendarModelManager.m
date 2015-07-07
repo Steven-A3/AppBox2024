@@ -117,6 +117,9 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
         return;
 
 	NSInteger averageCycleLength = [self cycleLengthConsideringUserOption];
+	if (averageCycleLength == 0) {
+		averageCycleLength = 28;
+	}
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
 	NSDateComponents *difference = [calendar components:NSDayCalendarUnit fromDate:period.periodEnds toDate:today options:0];
 	NSInteger numberOfPredictToMake = difference.day / averageCycleLength + 1;
