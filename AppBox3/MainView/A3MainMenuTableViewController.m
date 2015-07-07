@@ -255,7 +255,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 															otherButtonTitles:nil];
 			[thanksAlertView show];
 		} else {
-			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error")
+			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", nil)
 																message:NSLocalizedString(@"No Transactions to Restore", @"No Transactions to Restore")
 															   delegate:nil
 													  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
