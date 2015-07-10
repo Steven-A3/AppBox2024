@@ -220,12 +220,6 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     [super viewWillAppear:animated];
 
 	[self enableControls:YES];
-	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		A3AppDelegate *appDelegate = [A3AppDelegate instance];
-		if (appDelegate.shouldPresentAd && [appDelegate.googleAdInterstitial isReady]) {
-			[appDelegate.googleAdInterstitial presentFromRootViewController:self];
-		}
-	}
 }
 
 - (void)viewDidAppear:(BOOL)animated {

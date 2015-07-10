@@ -536,11 +536,6 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
     
     if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForClock1]) {
         [self showInstructionView];
-	} else {
-		A3AppDelegate *appDelegate = [A3AppDelegate instance];
-		if (appDelegate.shouldPresentAd && [appDelegate.googleAdInterstitial isReady]) {
-			[appDelegate.googleAdInterstitial presentFromRootViewController:self];
-		}
 	}
 }
 

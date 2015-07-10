@@ -138,11 +138,6 @@
 
 	if (self.isMovingToParentViewController || self.isBeingPresented) {
 		[self jumpToPage:0 direction:UIPageViewControllerNavigationDirectionForward animated:NO];
-		
-		A3AppDelegate *appDelegate = [A3AppDelegate instance];
-		if (appDelegate.shouldPresentAd && [appDelegate.googleAdInterstitial isReady]) {
-			[appDelegate.googleAdInterstitial presentFromRootViewController:self];
-		}
 	} else {
 		if (!_isClosing) {
 			[self setNavigationBarHidden:YES];

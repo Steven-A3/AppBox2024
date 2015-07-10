@@ -163,13 +163,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 	[super viewWillAppear:animated];
 
 	[self enableControls:YES];
-
-	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		A3AppDelegate *appDelegate = [A3AppDelegate instance];
-		if (appDelegate.shouldPresentAd && [appDelegate.googleAdInterstitial isReady]) {
-			[appDelegate.googleAdInterstitial presentFromRootViewController:self];
-		}
-	}
 }
 
 - (void)viewDidAppear:(BOOL)animated {

@@ -156,13 +156,6 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 	_generatorButton.backgroundColor = [UIColor whiteColor];
 
 	_resultViewTopConst.constant = CGRectGetHeight(self.navigationController.navigationBar.bounds) + 20;
-
-    if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        A3AppDelegate *appDelegate = [A3AppDelegate instance];
-        if (appDelegate.shouldPresentAd && [appDelegate.googleAdInterstitial isReady]) {
-            [appDelegate.googleAdInterstitial presentFromRootViewController:self];
-        }
-    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {

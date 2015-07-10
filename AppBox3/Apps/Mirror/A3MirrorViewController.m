@@ -307,13 +307,6 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 
 	[self setupButtonEnabled];
 	[self configureLayout];
-
-	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		A3AppDelegate *appDelegate = [A3AppDelegate instance];
-		if (appDelegate.shouldPresentAd && [appDelegate.googleAdInterstitial isReady]) {
-			[appDelegate.googleAdInterstitial presentFromRootViewController:self];
-		}
-	}
 }
 
 - (void)viewDidAppear:(BOOL)animated {

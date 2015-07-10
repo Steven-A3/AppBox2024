@@ -434,12 +434,6 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
     if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForDaysCounterCalendarList]) {
         [self showInstructionView];
     }
-    else {
-        A3AppDelegate *appDelegate = [A3AppDelegate instance];
-        if (appDelegate.shouldPresentAd && [appDelegate.googleAdInterstitial isReady]) {
-            [appDelegate.googleAdInterstitial presentFromRootViewController:self];
-        }
-    }
 }
 
 - (void)showInstructionView

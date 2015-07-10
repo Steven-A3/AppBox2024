@@ -149,11 +149,6 @@
 	[super viewWillAppear:animated];
 
 	_scrollView.contentOffset = CGPointMake(320, 0);
-
-	A3AppDelegate *appDelegate = [A3AppDelegate instance];
-	if (appDelegate.shouldPresentAd && [appDelegate.googleAdInterstitial isReady]) {
-		[appDelegate.googleAdInterstitial presentFromRootViewController:self];
-	}
 }
 
 - (void)removeObserver {

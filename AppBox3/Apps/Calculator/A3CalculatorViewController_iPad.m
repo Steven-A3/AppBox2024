@@ -102,15 +102,6 @@ NSString *const A3CalculatorModeScientific = @"scientific";
     [_calculatorkeypad.radbutton setTitle:[self radian] == YES ? @"Deg" : @"Rad" forState:UIControlStateNormal];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-
-	A3AppDelegate *appDelegate = [A3AppDelegate instance];
-	if (appDelegate.shouldPresentAd && [appDelegate.googleAdInterstitial isReady]) {
-		[appDelegate.googleAdInterstitial presentFromRootViewController:self];
-	}
-}
-
 - (void)cloudStoreDidImport {
 	NSString *mathExpression = [[A3SyncManager sharedSyncManager] objectForKey:A3CalculatorUserDefaultsSavedLastExpression];
 	if (mathExpression){

@@ -533,12 +533,6 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
     if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForLadyCalendar]) {
         [self showInstructionView];
     }
-	else {
-		A3AppDelegate *appDelegate = [A3AppDelegate instance];
-		if (appDelegate.shouldPresentAd && [appDelegate.googleAdInterstitial isReady]) {
-			[appDelegate.googleAdInterstitial presentFromRootViewController:self];
-		}
-	}
 }
 
 - (void)showInstructionView

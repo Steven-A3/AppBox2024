@@ -654,14 +654,8 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 {
     if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForCurrency]) {
         [self showInstructionView];
-    }
-	else {
-		A3AppDelegate *appDelegate = [A3AppDelegate instance];
-		if (appDelegate.shouldPresentAd && [appDelegate.googleAdInterstitial isReady]) {
-			[appDelegate.googleAdInterstitial presentFromRootViewController:self];
-		} else {
-			self.tableViewController.refreshControl = self.refreshControl;
-		}
+    } else {
+		self.tableViewController.refreshControl = self.refreshControl;
 	}
 }
 

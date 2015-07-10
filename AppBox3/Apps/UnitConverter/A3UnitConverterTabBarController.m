@@ -132,15 +132,6 @@
 	UIImage *image = [UIImage new];
 	[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
 	[self.navigationController.navigationBar setShadowImage:image];
-
-	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		if ([[A3UserDefaults standardUserDefaults] boolForKey:@"A3V3InstructionDidShowForUnitConverter"]) {
-			A3AppDelegate *appDelegate = [A3AppDelegate instance];
-			if (appDelegate.shouldPresentAd && [appDelegate.googleAdInterstitial isReady]) {
-				[appDelegate.googleAdInterstitial presentFromRootViewController:self];
-			}
-		}
-	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
