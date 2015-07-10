@@ -7,10 +7,11 @@
 //
 
 #import "A3AppDelegate.h"
+#import "A3Application.h"
 
 int main(int argc, char *argv[])
 {
     @autoreleasepool {
-		return UIApplicationMain(argc, argv, nil, NSStringFromClass([A3AppDelegate class]));
+		return UIApplicationMain(argc, argv, NSStringFromClass([A3Application class]), NSStringFromClass([A3AppDelegate class]));
 	}
 }
