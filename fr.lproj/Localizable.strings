@@ -952,3 +952,5 @@
 "No Transactions to Restore" = "Aucune transaction à restaurer";
 "Remove Ads" = "Supprimer pubs";
 "Restore Purchase" = "Rétablir achat précédent";
+"Transaction failed. Try again later." = "Échec de la transaction. Réessayez ultérieurement.";
+"Processing" = "Traitement en cours";

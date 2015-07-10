@@ -962,3 +962,6 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 "No Transactions to Restore" = "Keine Transaktionen zum Wiederherstellen";
 "Remove Ads" = "Werbung entfernen";
 "Restore Purchase" = "Erworbene Produkte wiederherstellen";
+
+"Transaction failed. Try again later." = "Fehler bei Transaktion. Versuchen Sie es später erneut.";
+"Processing" = "Verarbeitung";

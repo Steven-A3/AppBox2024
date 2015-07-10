@@ -901,3 +901,6 @@ Enter Encryption Key for Wallet.";
 "No Transactions to Restore" = "No Transactions to Restore";
 "Remove Ads" = "Remove Ads";
 "Restore Purchase" = "Restore Purchase";
+
+"Transaction failed. Try again later." = "Transaction failed. Try again later.";
+"Processing" = "Processing";

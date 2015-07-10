@@ -947,3 +947,5 @@ Introduzca la clave de cifrado para el bolsillo.";
 "No Transactions to Restore" = "No hay transacciones que restaurar";
 "Remove Ads" = "Eliminar publ.";
 "Restore Purchase" = "Restaurar compra anterior";
+"Transaction failed. Try again later." = "Error en la transacción. Inténtelo de nuevo más tarde.";
+"Processing" = "Procesamiento";

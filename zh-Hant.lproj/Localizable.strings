@@ -781,3 +781,5 @@
 "No Transactions to Restore" = "無可復原交易";
 "Remove Ads" = "移除廣告";
 "Restore Purchase" = "還原先前的購買項目";
+"Transaction failed. Try again later." = "交易失敗。請稍後再試。";
+"Processing" = "正在處理";

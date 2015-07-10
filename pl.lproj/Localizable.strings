@@ -953,3 +953,5 @@ Wprowadź klucz szyfrowania dla portfela.";
 "No Transactions to Restore" = "Brak transakcji do odtworzenia";
 "Remove Ads" = "Usuń Reklamy";
 "Restore Purchase" = "Przywróć poprzednie zakup";
+"Transaction failed. Try again later." = "Operacja nie powiodła się. Próbuj ponownie później.";
+"Processing" = "Przetwarzanie";

@@ -961,3 +961,5 @@
 "No Transactions to Restore" = "復元するトランザクションはありません";
 "Remove Ads" = "広告を削除";
 "Restore Purchase" = "前の購入を復元";
+"Transaction failed. Try again later." = "トランザクションに失敗しました。 後でやり直してください。";
+"Processing" = "処理しています";
