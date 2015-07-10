@@ -215,7 +215,9 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 		_currentSceneViewController = nil;
 		_launchStoryboard = nil;
 
-		[[[A3AppDelegate instance] mainMenuViewController] openClockApp];
+		A3AppDelegate *appDelegate = [A3AppDelegate instance];
+		appDelegate.firstRunAfterInstall = NO;
+		[[appDelegate mainMenuViewController] openClockApp];
 	} else {
 		[self dismissViewControllerAnimated:YES completion:NULL];
 	}

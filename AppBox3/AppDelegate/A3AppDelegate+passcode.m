@@ -128,8 +128,6 @@
 							  reply:^(BOOL success, NSError *error) {
 						self.isTouchIDEvaluationInProgress = NO;
 						dispatch_async(dispatch_get_main_queue(), ^{
-							[self removeSecurityCoverView];
-
 							[[UIApplication sharedApplication] setStatusBarHidden:NO];
 							[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 							[self.touchIDBackgroundViewController dismissViewControllerAnimated:NO completion:NULL];
@@ -188,7 +186,7 @@
 }
 
  - (void)applicationDidBecomeActive_passcode {
-	if (!self.isTouchIDEvaluationInProgress) {
+	if (!self.isTouchIDEvaluationInProgress && self.passcodeViewController == nil) {
 		[self removeSecurityCoverView];
 	}
 }
@@ -294,6 +292,7 @@
 }
 
 - (void)removeSecurityCoverView {
+	FNLOG();
 	if (self.coverView) {
 		[self.coverView removeFromSuperview];
 		self.coverView = nil;
@@ -301,6 +300,7 @@
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
 	}
+	[self startAdDisplayTimer];
 }
 
 - (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {

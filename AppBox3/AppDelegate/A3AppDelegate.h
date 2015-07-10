@@ -12,6 +12,7 @@
 #import "A3CacheStoreManager.h"
 #import "A3DataMigrationManager.h"
 #import <GoogleMobileAds/GoogleMobileAds.h>
+#import "RMStoreAppReceiptVerificator.h"
 
 @class MMDrawerController;
 @protocol A3PasscodeViewControllerProtocol;
@@ -80,6 +81,8 @@ extern NSString *const A3AppName_Random;
 extern NSString *const A3AppName_Ruler;
 extern NSString *const A3AppName_Settings;
 
+extern NSString *const A3InAppPurchaseRemoveAdsProductIdentifier;
+
 @protocol A3ViewControllerProtocol <NSObject>
 @optional
 - (NSUInteger)a3SupportedInterfaceOrientations;
@@ -115,11 +118,20 @@ extern NSString *const A3AppName_Settings;
 @property (nonatomic, assign) BOOL shouldPresentAd;
 @property (nonatomic, assign) BOOL isIAPRemoveAdsAvailable;
 @property (nonatomic, copy) SKProduct *IAPRemoveAdsProductFromiTunes;
-
 @property (nonatomic, strong) GADInterstitial *googleAdInterstitial;
+@property (nonatomic, strong) RMStoreAppReceiptVerificator *receiptVerificator;
+@property (nonatomic, strong) NSTimer *adDisplayTimer;
+@property (nonatomic, strong) NSDate *appOpenTime;
+@property (nonatomic, assign) BOOL inAppPurchaseInProgress;
+@property (nonatomic, assign) BOOL firstRunAfterInstall;
 
 + (A3AppDelegate *)instance;
 - (void)updateStartOption;
+
+- (void)startAdDisplayTimer;
+
+- (void)restartAdDisplayTimer;
+- (void)removeAdDisplayTimer;
 - (void)showReceivedLocalNotifications;
 - (UINavigationController *)navigationController;
 - (UIViewController *)visibleViewController;
@@ -129,6 +141,7 @@ extern NSString *const A3AppName_Settings;
 - (NSString *)storeFileName;
 - (void)didFinishPushViewController;
 
+- (BOOL)receiptHasRemoveAds;
 @end
 
 #import "A3AppDelegate+iCloud.h"

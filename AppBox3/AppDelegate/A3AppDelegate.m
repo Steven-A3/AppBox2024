@@ -32,7 +32,6 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3UserDefaults.h"
 #import "A3AppDelegate+migration.h"
-#import "RMStoreAppReceiptVerificator.h"
 #import "RMAppReceipt.h"
 
 NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
@@ -47,6 +46,8 @@ NSString *const A3NotificationCloudKeyValueStoreDidImport = @"A3CloudKeyValueSto
 NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataStoreDidImport";
 NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3NotificationsUserNotificationSettingsRegistered";
 
+NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.AppBox3.removeAds";
+
 @interface A3AppDelegate () <UIAlertViewDelegate, NSURLSessionDownloadDelegate, CLLocationManagerDelegate
 		, GADInterstitialDelegate
 		>
@@ -60,7 +61,6 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 @property (nonatomic, strong) NSTimer *locationUpdateTimer;
 @property (nonatomic, copy) NSString *deviceToken;
 @property (nonatomic, copy) NSString *alertURLString;
-@property (nonatomic, strong) RMStoreAppReceiptVerificator *receiptVerificator;
 
 @end
 
@@ -128,6 +128,7 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 		// TODO: 지우고 새로 설치해도 암호가 지워지지 않는 오류 수정해야 함
 		_previousVersion = [[A3UserDefaults standardUserDefaults] objectForKey:kA3ApplicationLastRunVersion];
 		if (!_previousVersion) {
+			_firstRunAfterInstall = YES;
 			[A3KeychainUtils removePassword];
 			[self initializePasscodeUserDefaults];
 		}
@@ -238,7 +239,13 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
+	if (_adDisplayTimer) {
+		[_adDisplayTimer invalidate];
+		_adDisplayTimer = nil;
+		FNLOG(@"ad timer = nil");
+	}
+	
+    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 	[[A3UserDefaults standardUserDefaults] synchronize];
 
@@ -273,7 +280,9 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-	_appIsNotActiveYet = NO;
+	if (_appIsNotActiveYet) {
+		_appIsNotActiveYet = NO;
+	}
 
 	FNLOG();
 	A3SyncManager *syncManager = [A3SyncManager sharedSyncManager];
@@ -290,7 +299,7 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 	}
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 	[self applicationDidBecomeActive_passcode];
-
+	
 	[self fetchPushNotification];
 
 	[self updateHolidayNations];
@@ -1076,61 +1085,110 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 	return _shouldPresentAd;
 }
 
+#pragma mark - Validate App Receipt
+
 - (void)configureStore
 {
 	_receiptVerificator = [[RMStoreAppReceiptVerificator alloc] init];
 	[RMStore defaultStore].receiptVerificator = _receiptVerificator;
 
 	if (![_receiptVerificator verifyAppReceipt]) {
-		[[RMStore defaultStore] refreshReceiptOnSuccess:^{
-			if (![_receiptVerificator verifyAppReceipt]) {
-				NSLog(@"failed to verify receipt.");
-			} else {
-				[self evaluateReceipt];
-			}
-		} failure:^(NSError *error) {
-
-		}];
+		FNLOG(@"App Receipt Validation Failed!");
+		[self prepareIAPProducts];
 	} else {
 		[self evaluateReceipt];
 	}
 }
 
-- (void)evaluateReceipt {
+- (BOOL)receiptHasRemoveAds {
 	RMAppReceipt *receipt = [RMAppReceipt bundleReceipt];
 	if (receipt.originalAppVersion) {
 		NSArray *components = [receipt.originalAppVersion componentsSeparatedByString:@"."];
 		float version = [components[0] floatValue] + [components[1] floatValue] / 10.0;
 		if (version <= 3.5) {
-			_shouldPresentAd = NO;
+			return YES;
 		} else {
 			for (RMAppReceiptIAP *iapReceipt in receipt.inAppPurchases) {
-				if ([iapReceipt.productIdentifier isEqualToString:@"net.allaboutapps.AppBox3.removeAds"]) {
-					_shouldPresentAd = NO;
-					break;
+				if ([iapReceipt.productIdentifier isEqualToString:A3InAppPurchaseRemoveAdsProductIdentifier]) {
+					return YES;
 				}
 			}
 		}
-	} else {
-		_shouldPresentAd = NO;
 	}
+	return NO;
+}
+
+- (void)evaluateReceipt {
+	_shouldPresentAd = ![self receiptHasRemoveAds];
+
 	if (_shouldPresentAd) {
-		if (![SKPaymentQueue canMakePayments]) return;
-		
-		NSArray *queryProducts = @[@"net.allaboutapps.AppBox3.removeAds"];
-		
-		[[RMStore defaultStore] requestProducts:[NSSet setWithArray:queryProducts] success:^(NSArray *products, NSArray *invalidProductIdentifiers) {
-			for (SKProduct *product in products) {
-				if ([product.productIdentifier isEqualToString:queryProducts[0]]) {
-					_IAPRemoveAdsProductFromiTunes = product;
-					_isIAPRemoveAdsAvailable = YES;
-					
-					[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:nil];
-					break;
-				}
+		[self prepareIAPProducts];
+	}
+}
+
+- (void)prepareIAPProducts {
+	if (![SKPaymentQueue canMakePayments]) return;
+	
+	NSArray *queryProducts = @[A3InAppPurchaseRemoveAdsProductIdentifier];
+	
+	[[RMStore defaultStore] requestProducts:[NSSet setWithArray:queryProducts] success:^(NSArray *products, NSArray *invalidProductIdentifiers) {
+		for (SKProduct *product in products) {
+			if ([product.productIdentifier isEqualToString:queryProducts[0]]) {
+				_IAPRemoveAdsProductFromiTunes = product;
+				_isIAPRemoveAdsAvailable = YES;
+				
+				[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:nil];
+				break;
 			}
-		} failure:^(NSError *error) {
-		}];
+		}
+	} failure:^(NSError *error) {
+	}];
+}
+
+- (void)displayAd {
+	[_adDisplayTimer invalidate];
+	_adDisplayTimer = nil;
+	
+	if ([self.googleAdInterstitial isReady]) {
+
+		UIViewController *rootViewController;
+		UIViewController *presentingViewController;
+		rootViewController = IS_IPHONE ? self.rootViewController_iPhone : self.rootViewController;
+		presentingViewController = rootViewController.presentedViewController ? rootViewController.presentedViewController : rootViewController;
+
+		[self.googleAdInterstitial presentFromRootViewController:presentingViewController];
+	} else {
+		_adDisplayTimer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(displayAd) userInfo:nil repeats:NO];
+	}
+}
+
+- (void)startAdDisplayTimer {
+	if (!_firstRunAfterInstall && !_inAppPurchaseInProgress) {
+		if (_shouldPresentAd) {
+			[self removeAdDisplayTimer];
+			
+			_appOpenTime = [NSDate date];
+			_adDisplayTimer = [NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(displayAd) userInfo:nil repeats:NO];
+			FNLOG(@"ad timer did start");
+		}
+	}
+}
+
+- (void)restartAdDisplayTimer {
+	if (_adDisplayTimer) {
+		[_adDisplayTimer invalidate];
+		_adDisplayTimer = nil;
+		NSTimeInterval interval = MAX(15 - [[NSDate date] timeIntervalSinceDate:_appOpenTime], 4);
+		_adDisplayTimer = [NSTimer scheduledTimerWithTimeInterval:interval target:self selector:@selector(displayAd) userInfo:nil repeats:NO];
+		FNLOG(@"ad timer did restart with interval %.0f", interval);
+	}
+}
+
+- (void)removeAdDisplayTimer {
+	if (_adDisplayTimer) {
+		[_adDisplayTimer invalidate];
+		_adDisplayTimer = nil;
+		FNLOG(@"ad timer removed");
 	}
 }
 
