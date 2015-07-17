@@ -783,3 +783,5 @@
 "Restore Purchase" = "還原先前的購買項目";
 "Transaction failed. Try again later." = "交易失敗。請稍後再試。";
 "Processing" = "正在處理";
+"Thank You" = "感謝您";
+"You've already purchased this.\nYour purchase was successful." = "您已購買此項目。\n您的購買已成功。";

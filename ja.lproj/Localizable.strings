@@ -663,7 +663,7 @@
 
 "Wallet_All_Category" = "すべて";
 "Field Type" = "フィールドタイプ";
-"All Items" = "すべてのアイテム";
+"All Items" = "全ての項目";
 "CATEGORIES" = "カテゴリー";
 "CATEGORY" = "カテゴリー";
 "ITEMS" = "アイテム";
@@ -956,10 +956,12 @@
 "Jewish Holidays" = "ユダヤ教の祝日";
 
 "'%@' is back." = "'%@'は戻って追加されます。";
-"Thanks" = "感謝";
+"Thanks" = "ありがとうございます";
 "Thank you very much for purchasing the AppBox Pro." = "AppBox Proの購入ありがとうございました。";
 "No Transactions to Restore" = "復元するトランザクションはありません";
 "Remove Ads" = "広告を削除";
 "Restore Purchase" = "前の購入を復元";
 "Transaction failed. Try again later." = "トランザクションに失敗しました。 後でやり直してください。";
 "Processing" = "処理しています";
+"Thank You" = "ありがとうございます";
+"You've already purchased this.\nYour purchase was successful." = "このアイテムは購入済みです。\n購入手続きが完了しました。";

@@ -904,3 +904,5 @@ Enter Encryption Key for Wallet.";
 
 "Transaction failed. Try again later." = "Transaction failed. Try again later.";
 "Processing" = "Processing";
+"Thank You" = "Thank You";
+"You've already purchased this.\nYour purchase was successful." = "You've already purchased this.\nYour purchase was successful.";

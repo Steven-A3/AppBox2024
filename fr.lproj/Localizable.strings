@@ -954,3 +954,5 @@
 "Restore Purchase" = "Rétablir achat précédent";
 "Transaction failed. Try again later." = "Échec de la transaction. Réessayez ultérieurement.";
 "Processing" = "Traitement en cours";
+"Thank You" = "Merci";
+"You've already purchased this.\nYour purchase was successful." = "Vous avez déjà acheté cet article.\nVotre achat a été effectué avec succès.";

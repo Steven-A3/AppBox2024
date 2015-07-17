@@ -949,3 +949,5 @@ Inserire chiave di crittografia per il portafoglio.";
 "Restore Purchase" = "Ripristinare Acquisto Precedente";
 "Transaction failed. Try again later." = "Transazione non riuscita. Riprovare più tardi.";
 "Processing" = "Elaborazione in corso";
+"Thank You" = "Grazie";
+"You've already purchased this.\nYour purchase was successful." = "Hai già acquistato quest'articolo.\nIl tuo acquisto è stato completato correttamente.";

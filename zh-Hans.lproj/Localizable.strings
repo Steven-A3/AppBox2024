@@ -962,10 +962,12 @@
 "Jewish Holidays" = "犹太假日";
 
 "'%@' is back." = "'%@'又回来了。";
-"Thanks" = "谢谢";
+"Thanks" = "非常感谢";
 "Thank you very much for purchasing the AppBox Pro." = "非常感谢您购买AppBox临。";
 "No Transactions to Restore" = "无可还原交易";
 "Remove Ads" = "移除广告";
 "Restore Purchase" = "恢复上次购买";
 "Transaction failed. Try again later." = "交易失敗。稍候再试。";
 "Processing" = "正在处理";
+"Thank You" = "非常感谢";
+"You've already purchased this.\nYour purchase was successful." = "您已经购买了此项目。\n您已成功完成购买。";
