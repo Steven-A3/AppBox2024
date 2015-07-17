@@ -77,4 +77,11 @@
 	}
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	[[A3AppDelegate instance] removeSecurityCoverView];
+	[[A3AppDelegate instance] removeAdDisplayTimer];
+}
+
 @end
