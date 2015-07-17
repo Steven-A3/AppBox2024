@@ -767,8 +767,6 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	FNLOG(@"%ld, %ld", (long)indexPath.section, (long)indexPath.row);
-
 	UITableViewCell *cell = nil;
 	NSArray *itemContainArray;
 	if (tableView == self.searchDisplayController.searchResultsTableView) {
