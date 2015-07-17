@@ -97,6 +97,9 @@
 	FNLOG(@"appDelegate.passcodeViewController must nil = %@", self.passcodeViewController);
 
 	void(^presentPasscodeViewControllerBlock)(void) = ^(){
+		[self removeSecurityCoverView];
+		[self removeAdDisplayTimer];
+		
 		self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
 		BOOL showCancelButton = ![[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting];
 		if (showCancelButton) {
@@ -186,7 +189,7 @@
 }
 
  - (void)applicationDidBecomeActive_passcode {
-	if (!self.isTouchIDEvaluationInProgress && self.passcodeViewController == nil) {
+	if (!self.isTouchIDEvaluationInProgress && self.passcodeViewController == nil && self.mainMenuViewController.passcodeViewController == nil) {
 		[self removeSecurityCoverView];
 	}
 }
