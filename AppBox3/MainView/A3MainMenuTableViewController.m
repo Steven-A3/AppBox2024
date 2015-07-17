@@ -15,6 +15,7 @@
 #import "A3AppDelegate.h"
 #import "UIViewController+MMDrawerController.h"
 #import "UIViewController+A3Addition.h"
+#import "A3PasscodeViewControllerProtocol.h"
 #import "A3TableViewMenuElement.h"
 #import "A3KeychainUtils.h"
 #import "NSMutableArray+MoveObject.h"
@@ -45,8 +46,7 @@ NSString *const A3AppName_RestorePurchase = @"Restore Purchase";
 
 @property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
-@property (nonatomic, weak) A3TableViewElement *selectedElement;
-@property (nonatomic, strong) UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
+@property (nonatomic, strong) A3TableViewElement *selectedElement;
 @property (nonatomic, strong) A3TableViewElement *mostRecentMenuElement;
 @property (nonatomic, strong) NSTimer *titleResetTimer;
 @property (nonatomic, strong) MBProgressHUD *hudView;
@@ -284,10 +284,14 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 						}
 					}
 					if (proceedPasscodeCheck) {
+						[[A3AppDelegate instance] removeAdDisplayTimer];
+						
 						weakSelf.selectedElement = menuElement;
 						if (IS_IOS7 || ![[A3AppDelegate instance] useTouchID]) {
 							[weakSelf presentLockScreen];
 						} else {
+							[[A3AppDelegate instance] addSecurityCoverView];
+							
 							LAContext *context = [LAContext new];
 							NSError *error;
 							if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
@@ -300,8 +304,8 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 														  [[UIApplication sharedApplication] setStatusBarHidden:NO];
 														  [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 
-														  [[A3AppDelegate instance] removeSecurityCoverView];
 														  if (success) {
+															  [[A3AppDelegate instance] removeSecurityCoverView];
 															  [self passcodeViewControllerDidDismissWithSuccess:YES];
 														  } else {
 															  [self presentLockScreen];
@@ -536,6 +540,8 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 }
 
 - (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {
+	[[A3AppDelegate instance] startAdDisplayTimer];
+	_selectedElement = nil;
     _passcodeViewController = nil;
 }
 
@@ -683,13 +689,38 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 	[appDelegate removeAdDisplayTimer];
 
 	[self showProcessingHUD];
+
+	if ([appDelegate.receiptVerificator verifyAppReceipt]) {
+		[self proceedPurchaseRemoveAds];
+	} else {
+		[[RMStore defaultStore] refreshReceiptOnSuccess:^{
+			if ([appDelegate receiptHasRemoveAds]) {
+				[self hideProcessingHUD];
+				[self processRemoveAds];
+				appDelegate.inAppPurchaseInProgress = NO;
+				[self alertAlreadyPurchased];
+			} else {
+				[self proceedPurchaseRemoveAds];
+			}
+		} failure:^(NSError *error) {
+			[self hideProcessingHUD];
+			
+			[self alertRestoreFailed];
+			appDelegate.inAppPurchaseInProgress = NO;
+		}];
+		return;
+	}
+}
+
+- (void)proceedPurchaseRemoveAds {
+	A3AppDelegate *appDelegate = [A3AppDelegate instance];
 	
 	[[RMStore defaultStore] addPayment:A3InAppPurchaseRemoveAdsProductIdentifier success:^(SKPaymentTransaction *transaction) {
 		[self hideProcessingHUD];
-		
-		[self processRemoveAdsWithAlert:NO];
-		appDelegate.inAppPurchaseInProgress = NO;
 
+		[self processRemoveAds];
+		appDelegate.inAppPurchaseInProgress = NO;
+		
 	} failure:^(SKPaymentTransaction *transaction, NSError *error) {
 		[self hideProcessingHUD];
 		
@@ -716,7 +747,8 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 			[self hideProcessingHUD];
 
 			if ([appDelegate receiptHasRemoveAds]) {
-				[self processRemoveAdsWithAlert:YES];
+				[self processRemoveAds];
+				[self alertAlreadyPurchased];
 			} else {
 				[self alertRestoreFailed];
 			}
@@ -743,7 +775,8 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 			}
 			
 			if (isTransactionRestored) {
-				[self processRemoveAdsWithAlert:YES];
+				[self processRemoveAds];
+				[self alertRestoreSuccess];
 			} else {
 				[self alertRestoreFailed];
 			}
@@ -756,16 +789,21 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 	}
 }
 
-- (void)processRemoveAdsWithAlert:(BOOL)showAlert {
+- (void)processRemoveAds {
 	A3AppDelegate *appDelegate = [A3AppDelegate instance];
 	appDelegate.shouldPresentAd = NO;
 	appDelegate.isIAPRemoveAdsAvailable = NO;
 	
 	[self menuContentsChanged];
-	
-	if (showAlert) {
-		[self alertRestoreSuccess];
-	}
+}
+
+- (void)alertAlreadyPurchased {
+	UIAlertView *alertAlreadyPurchased = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Thank You", @"Thank You")
+																	message:NSLocalizedString(@"You've already purchased this.\nYour purchase was successful.", @"You've already purchased this.\nYour purchase was successful.")
+																   delegate:nil
+														  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+														  otherButtonTitles:nil];
+	[alertAlreadyPurchased show];
 }
 
 - (void)alertRestoreSuccess {

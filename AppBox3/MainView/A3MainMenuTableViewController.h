@@ -10,13 +10,16 @@
 #import "A3TableViewController.h"
 #import "A3SelectTableViewController.h"
 
+@protocol A3PasscodeViewControllerProtocol;
+
 @interface A3MainMenuTableViewController : A3TableViewController
 
 @property (nonatomic, assign) BOOL pushClockViewControllerOnPasscodeFailure;
 @property (nonatomic, copy) NSString *activeAppName;
 
-- (void)openClockApp;
+@property (nonatomic, strong) UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
 
+- (void)openClockApp;
 - (BOOL)openRecentlyUsedMenu:(BOOL)verifyPasscode;
 
 @end
