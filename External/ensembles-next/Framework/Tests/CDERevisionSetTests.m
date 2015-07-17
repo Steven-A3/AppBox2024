@@ -151,10 +151,10 @@
     [set addRevision:revision2];
     
     CDERevisionSet *other = [[CDERevisionSet alloc] init];
-    CDERevision *newRevision = (id)[[CDERevisionMock alloc] init];
+    CDERevisionMock *newRevision = (id)[[CDERevisionMock alloc] init];
     newRevision.persistentStoreIdentifier = [revision2 persistentStoreIdentifier];
     newRevision.revisionNumber = [revision2 revisionNumber]-1;
-    [other addRevision:newRevision];
+    [other addRevision:(id)newRevision];
     
     CDERevisionSet *result = [other revisionSetByTakingStoreWiseMinimumWithRevisionSet:set];
     XCTAssertEqual(result.numberOfRevisions, (NSUInteger)1, @"Wrong number of store revs");
@@ -179,10 +179,10 @@
     [set addRevision:revision2];
     
     CDERevisionSet *other = [[CDERevisionSet alloc] init];
-    CDERevision *newRevision = (id)[[CDERevisionMock alloc] init];
+    CDERevisionMock *newRevision = (id)[[CDERevisionMock alloc] init];
     newRevision.persistentStoreIdentifier = [revision2 persistentStoreIdentifier];
     newRevision.revisionNumber = [revision2 revisionNumber]-1;
-    [other addRevision:newRevision];
+    [other addRevision:(id)newRevision];
     
     CDERevisionSet *result = [other revisionSetByTakingStoreWiseMaximumWithRevisionSet:set];
     XCTAssertEqual(result.numberOfRevisions, (NSUInteger)1, @"Wrong number of store revs");

@@ -9,6 +9,7 @@
 #import "CDEBaselineConsolidator.h"
 #import "CDEFoundationAdditions.h"
 #import "NSManagedObjectModel+CDEAdditions.h"
+#import "CDEPersistentStoreEnsemble+Private.h"
 #import "NSMapTable+CDEAdditions.h"
 #import "CDEPersistentStoreEnsemble.h"
 #import "CDERevisionManager.h"
@@ -39,7 +40,8 @@
 + (NSFetchRequest *)baselineFetchRequest
 {
     NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"CDEStoreModificationEvent"];
-    fetch.predicate = [NSPredicate predicateWithFormat:@"type = %d", CDEStoreModificationEventTypeBaseline];
+    NSArray *baselineTypes = @[@(CDEStoreModificationEventTypeBaseline), @(CDEStoreModificationEventTypeBaselineMissingDependencies)];
+    fetch.predicate = [NSPredicate predicateWithFormat:@"type IN %@", baselineTypes];
     return fetch;
 }
 
@@ -68,21 +70,34 @@
     [context performBlock:^{
         // Fetch existing baselines, ordered beginning with most recent
         NSError *error = nil;
-        NSArray *baselineEvents = [self baselinesDecreasingInRecencyInManagedObjectContext:context error:&error];
+        NSMutableArray *baselineEvents = [[self baselinesDecreasingInRecencyInManagedObjectContext:context error:&error] mutableCopy];
         if (!baselineEvents) {
             [self failWithCompletion:completion error:error];
             return;
         }
         CDELog(CDELoggingLevelVerbose, @"Found baselines with unique ids: %@", [baselineEvents valueForKeyPath:@"uniqueIdentifier"]);
         
-        // Check that all baseline model versions are known
+        // Check that all baselines pass dependency checks
         CDERevisionManager *revisionManager = [[CDERevisionManager alloc] initWithEventStore:self.eventStore];
         revisionManager.managedObjectModelURL = self.ensemble.managedObjectModelURL;
-        BOOL hasAllModelVersions = [revisionManager checkModelVersionsOfStoreModificationEvents:baselineEvents];
-        if (!hasAllModelVersions) {
-            NSError *error = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeUnknownModelVersion userInfo:nil];
-            [self failWithCompletion:completion error:error];
-            return;
+        for (CDEStoreModificationEvent *baseline in [baselineEvents copy]) {
+            // Don't check baselines created locally
+            if ([baseline.eventRevision.persistentStoreIdentifier isEqualToString:self.eventStore.persistentStoreIdentifier]) continue;
+            
+            BOOL passes = [revisionManager checkDependenciesOfBaseline:baseline];
+            if (passes && baseline.type == CDEStoreModificationEventTypeBaselineMissingDependencies) {
+                baseline.type = CDEStoreModificationEventTypeBaseline;
+            }
+            else if (!passes && baseline.type == CDEStoreModificationEventTypeBaseline) {
+                baseline.type = CDEStoreModificationEventTypeBaselineMissingDependencies;
+            }
+            
+            if (!passes) [baselineEvents removeObject:baseline];
+            
+            NSError *error = nil;
+            if (context.hasChanges && ![context save:&error]) {
+                CDELog(CDELoggingLevelError, @"Could not change baseline type. Save failed: %@", error);
+            }
         }
         
         // Determine which baselines should be eliminated
@@ -320,7 +335,7 @@
                     [objectChangeIDsByGlobalIdentifierIDs setObject:changeID forKey:change.globalIdentifier.objectID];
                 }
                 else {
-                    [existingChange mergeValuesFromSubordinateObjectChange:change isModified:NULL];
+                    [existingChange mergeValuesFromObjectChange:change treatChangeAsSubordinate:YES];
                 }
             }
             
@@ -355,7 +370,7 @@
         // A baseline global count is not required to preceed save/merge events, and assigning the
         // maximum will give this new baseline precedence over older baselines.
         mergedBaseline.timestamp = [NSDate timeIntervalSinceReferenceDate];
-        mergedBaseline.modelVersion = [self.ensemble.managedObjectModel cde_entityHashesPropertyList];
+        mergedBaseline.modelVersion = self.ensemble.modelVersionHash;
         mergedBaseline.globalCount = [[baselines valueForKeyPath:@"@max.globalCount"] unsignedIntegerValue];
         
         // Update revisions

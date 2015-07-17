@@ -63,6 +63,13 @@
                         success = event != nil;
                         if (success) {
                             eventType = event.type;
+                            
+                            // Assume all baselines are initially missing dependencies, because we don't
+                            // know if they do or do not. The baseline consolidator will update the status.
+                            if (eventType == CDEStoreModificationEventTypeBaseline) {
+                                eventType = CDEStoreModificationEventTypeBaselineMissingDependencies;
+                            }
+                            
                             event.type = CDEStoreModificationEventTypeIncomplete;
                         }
                     }

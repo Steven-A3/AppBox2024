@@ -83,27 +83,18 @@
 
 #pragma mark Merging
 
-- (void)mergeValuesFromSubordinateObjectChange:(CDEObjectChange *)change
-{
-    [self mergeValuesFromSubordinateObjectChange:change isModified:NULL];
-}
-
-- (void)mergeValuesFromSubordinateObjectChange:(CDEObjectChange *)change isModified:(BOOL *)modified
+- (void)mergeValuesFromObjectChange:(CDEObjectChange *)change treatChangeAsSubordinate:(BOOL)subordinate
 {
     NSDictionary *existingPropertiesByName = [[NSDictionary alloc] initWithObjects:self.propertyChangeValues forKeys:[self.propertyChangeValues valueForKeyPath:@"propertyName"]];
+    NSMutableArray *newPropertyChangeValues = [[NSMutableArray alloc] init];
     
-    if (modified) *modified = NO;
-    
-    NSMutableArray *addedPropertyChangeValues = nil;
     for (CDEPropertyChangeValue *propertyValue in change.propertyChangeValues) {
         NSString *propertyName = propertyValue.propertyName;
         CDEPropertyChangeValue *existingValue = existingPropertiesByName[propertyName];
         
         // If this property name is not already present, just copy it in
         if (nil == existingValue) {
-            if (!addedPropertyChangeValues) addedPropertyChangeValues = [[NSMutableArray alloc] initWithCapacity:10];
-            [addedPropertyChangeValues addObject:propertyValue];
-            if (modified) *modified = YES;
+            [newPropertyChangeValues addObject:propertyValue];
             continue;
         }
         
@@ -111,22 +102,16 @@
         BOOL isToMany = propertyValue.type == CDEPropertyChangeTypeToManyRelationship;
         isToMany = isToMany || propertyValue.type == CDEPropertyChangeTypeOrderedToManyRelationship;
         if (isToMany) {
-            id added = existingValue.addedIdentifiers;
-            id removed = existingValue.removedIdentifiers;
-            id moved = existingValue.movedIdentifiersByIndex;
-            
-            [existingValue mergeToManyRelationshipFromSubordinatePropertyChangeValue:propertyValue];
-            if (modified == NULL || (*modified)) continue;
-            
-            if (added && ![added isEqualToSet:existingValue.addedIdentifiers]) *modified = YES;
-            if (removed && ![removed isEqualToSet:existingValue.removedIdentifiers]) *modified = YES;
-            if (moved && ![moved isEqualToDictionary:existingValue.movedIdentifiersByIndex]) *modified = YES;
+            [existingValue mergeToManyRelationshipFromPropertyChangeValue:propertyValue treatValueAsSubordinate:subordinate];
+            [newPropertyChangeValues addObject:existingValue];
+            continue;
         }
+        
+        // Both values exist. Choose dominant.
+        [newPropertyChangeValues addObject:(subordinate ? existingValue : propertyValue)];
     }
-    
-    if (addedPropertyChangeValues.count > 0) {
-        self.propertyChangeValues = [self.propertyChangeValues arrayByAddingObjectsFromArray:addedPropertyChangeValues];
-    }
+
+    self.propertyChangeValues = newPropertyChangeValues;
 }
 
 #pragma mark Prefetching

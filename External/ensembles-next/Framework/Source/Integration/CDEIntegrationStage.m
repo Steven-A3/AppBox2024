@@ -269,52 +269,55 @@
         NSArray *globalIds = changedOrderedPropertiesByGlobalId.cde_allKeys;
         NSMapTable *objectsByGlobalId = [self fetchObjectsByGlobalIdentifierForEntityName:entityName globalIdentifiers:globalIds error:&error];
         
-        for (CDEGlobalIdentifier *globalId in globalIds) {
-            NSSet *changedOrderedProperties = [changedOrderedPropertiesByGlobalId objectForKey:globalId];
-            NSManagedObject *object = [objectsByGlobalId objectForKey:globalId];
-            for (NSString *propertyName in changedOrderedProperties) {
-                NSOrderedSet *relatedSet = [object valueForKey:propertyName];
-                
-                NSRelationshipDescription *relationship = object.entity.relationshipsByName[propertyName];
-                if (!relationship)  {
-                    CDELog(CDELoggingLevelVerbose, @"Did not find relationship property in model: %@", propertyName);
-                    continue;
+        [managedObjectContext performBlockAndWait:^{
+            for (CDEGlobalIdentifier *globalId in globalIds) {
+                NSSet *changedOrderedProperties = [changedOrderedPropertiesByGlobalId objectForKey:globalId];
+                NSManagedObject *object = [objectsByGlobalId objectForKey:globalId];
+                for (NSString *propertyName in changedOrderedProperties) {
+                    NSRelationshipDescription *relationship = object.entity.relationshipsByName[propertyName];
+                    if (!relationship)  {
+                        CDELog(CDELoggingLevelVerbose, @"Did not find relationship property in model: %@", propertyName);
+                        continue;
+                    }
+                    
+                    NSOrderedSet *relatedSet = [self.class valueForKey:propertyName inObject:object];
+                    NSString *relatedEntityName = relationship.destinationEntity.name;
+                    NSMutableSet *relatedEntityObjects = relatedObjectsByEntity[relatedEntityName];
+                    if (!relatedEntityObjects) {
+                        relatedEntityObjects = [[NSMutableSet alloc] init];
+                        relatedObjectsByEntity[relatedEntityName] = relatedEntityObjects;
+                    }
+                    
+                    [relatedEntityObjects addObjectsFromArray:relatedSet.array];
                 }
-                
-                NSString *relatedEntityName = relationship.destinationEntity.name;
-                NSMutableSet *relatedEntityObjects = relatedObjectsByEntity[relatedEntityName];
-                if (!relatedEntityObjects) {
-                    relatedEntityObjects = [[NSMutableSet alloc] init];
-                    relatedObjectsByEntity[relatedEntityName] = relatedEntityObjects;
-                }
-                
-                [relatedEntityObjects addObjectsFromArray:relatedSet.array];
             }
-        }
+        }];
     }
     
     // Map related objects to their global ids
     NSMutableDictionary *relatedObjectsByGlobalIdByEntity = [NSMutableDictionary dictionaryWithCapacity:10];
-    for (NSString *entityName in relatedObjectsByEntity) {
-        NSMapTable *relatedObjectsByGlobalId = relatedObjectsByGlobalIdByEntity[entityName];
-        if (!relatedObjectsByGlobalId) {
-            relatedObjectsByGlobalId = [NSMapTable cde_strongToStrongObjectsMapTable];
-            relatedObjectsByGlobalIdByEntity[entityName] = relatedObjectsByGlobalId;
-        }
-        
-        NSArray *relatedObjects = [relatedObjectsByEntity[entityName] allObjects];
-        NSArray *objectIDs = [relatedObjects valueForKeyPath:@"objectID"];
-        NSArray *globalIds = [CDEGlobalIdentifier fetchGlobalIdentifiersForObjectIDs:objectIDs inManagedObjectContext:self.eventStore.managedObjectContext];
-        
-        [relatedObjects enumerateObjectsUsingBlock:^(id object, NSUInteger index, BOOL *stop) {
-            CDEGlobalIdentifier *globalId = globalIds[index];
-            if (globalId == (id)[NSNull null]) {
-                CDELog(CDELoggingLevelError, @"A global identifier was not found for an ordered-relationship object");
-                return;
+    [managedObjectContext performBlockAndWait:^{
+        for (NSString *entityName in relatedObjectsByEntity) {
+            NSMapTable *relatedObjectsByGlobalId = relatedObjectsByGlobalIdByEntity[entityName];
+            if (!relatedObjectsByGlobalId) {
+                relatedObjectsByGlobalId = [NSMapTable cde_strongToStrongObjectsMapTable];
+                relatedObjectsByGlobalIdByEntity[entityName] = relatedObjectsByGlobalId;
             }
-            [relatedObjectsByGlobalId setObject:object forKey:globalId.globalIdentifier];
-        }];
-    }
+            
+            NSArray *relatedObjects = [relatedObjectsByEntity[entityName] allObjects];
+            NSArray *objectIDs = [relatedObjects valueForKeyPath:@"objectID"];
+            NSArray *globalIds = [CDEGlobalIdentifier fetchGlobalIdentifiersForObjectIDs:objectIDs inManagedObjectContext:self.eventStore.managedObjectContext];
+            
+            [relatedObjects enumerateObjectsUsingBlock:^(id object, NSUInteger index, BOOL *stop) {
+                CDEGlobalIdentifier *globalId = globalIds[index];
+                if (globalId == (id)[NSNull null]) {
+                    CDELog(CDELoggingLevelError, @"A global identifier was not found for an ordered-relationship object");
+                    return;
+                }
+                [relatedObjectsByGlobalId setObject:object forKey:globalId.globalIdentifier];
+            }];
+        }
+    }];
     
     return relatedObjectsByGlobalIdByEntity;
 }

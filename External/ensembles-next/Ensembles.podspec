@@ -51,7 +51,6 @@ Pod::Spec.new do |s|
     ss.dependency 'Ensembles/Core'
     ss.ios.dependency 'Dropbox-iOS-SDK'
     ss.osx.dependency 'Dropbox-OSX-SDK'
-    ss.source = {:git => 'git://github.com/drewmccormack/dropbox-sdk-ios.git'}
     ss.source_files = 'Framework/Extensions/CDEDropboxCloudFileSystem.{h,m}'
   end
   

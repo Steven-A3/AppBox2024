@@ -15,6 +15,7 @@
 #import "CDERevisionSet.h"
 #import "CDEPropertyChangeValue.h"
 #import "CDERevision.h"
+#import "CDERevisionManager.h"
 
 @interface CDERebaser (TestMethods)
 
@@ -49,15 +50,15 @@
     return should;
 }
 
-- (void)testEmptyEventStoreNeedsRebasing
+- (void)testEmptyEventStoreDoesNotNeedRebasing
 {
-    XCTAssertTrue([self shouldRebase], @"Empty store should be rebased to give it a baseline");
+    XCTAssertFalse([self shouldRebase], @"Empty store not be rebased");
 }
 
-- (void)testEventStoreWithNoBaselineNeedsRebasing
+- (void)testEventStoreWithNoBaselineDoesNotNeedRebasing
 {
     [self addEventsForType:CDEStoreModificationEventTypeMerge storeId:@"123" globalCounts:@[@0] revisions:@[@0]];
-    XCTAssertTrue([self shouldRebase], @"Store with events, but no baseline, should need a new baseline");
+    XCTAssertFalse([self shouldRebase], @"Store with events, but no baseline, should not need rebasing");
 }
 
 - (void)testEventStoreWithFewEventsDoesNotNeedRebasing
@@ -77,26 +78,14 @@
     XCTAssertFalse([self shouldRebase], @"Store with only a few events should not rebase, even if baseline is small");
 }
 
-- (void)testBaselineMissingADeviceNeedsRebasing
-{
-    [self addEventsForType:CDEStoreModificationEventTypeBaseline storeId:@"store1" globalCounts:@[@0] revisions:@[@0]];
-    [self addEventsForType:CDEStoreModificationEventTypeMerge storeId:@"123" globalCounts:@[@1, @2] revisions:@[@1, @2]];
-    XCTAssertTrue([self shouldRebase], @"If baseline misses a device, it should rebase");
-}
-
-- (void)testRebasingEmptyEventStoreGeneratesBaseline
+- (void)testRebasingEmptyEventStoreDoesNotGenerateBaseline
 {
     [rebaser rebaseWithCompletion:^(NSError *error) {
         XCTAssertNil(error, @"Rebasing should succeed: %@", error);
         [context performBlock:^{
             NSArray *events = [self storeModEvents];
-            CDEStoreModificationEvent *event = events.lastObject;
             XCTAssertNotNil(events, @"Event fetch failed");
-            XCTAssertEqual(events.count, (NSUInteger)1, @"Should be a baseline");
-            XCTAssertEqual(event.type, CDEStoreModificationEventTypeBaseline, @"Wrong event type for baseline");
-            XCTAssertEqual(event.globalCount, (CDEGlobalCount)0, @"Wrong global count for baseline");
-            XCTAssertEqual(event.eventRevision.revisionNumber, (CDERevisionNumber)0, @"Wrong revision number for baseline");
-
+            XCTAssertEqual(events.count, (NSUInteger)0, @"Should be no baseline");
             [self performSelectorOnMainThread:@selector(stopAsyncOp) withObject:nil waitUntilDone:NO];
         }];
     }];
@@ -123,28 +112,28 @@
 - (void)testRevisionsForRebasingWithStoreNotInBaseline
 {
     [self addEventsForType:CDEStoreModificationEventTypeBaseline storeId:@"store1" globalCounts:@[@2] revisions:@[@110]];
-    [self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@4] revisions:@[@111]];
+    [self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@4, @5] revisions:@[@111, @112]];
     [self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"123" globalCounts:@[@3, @4, @5] revisions:@[@0, @1, @2]];
     [rebaser rebaseWithCompletion:^(NSError *error) {
         XCTAssertNil(error, @"Error was not nil");
         [context performBlockAndWait:^{
-            XCTAssertEqual([[self storeModEvents] count], (NSUInteger)4, @"Should be baseline and one event left");
+            XCTAssertEqual([[self storeModEvents] count], (NSUInteger)5, @"Should only clean up one event from store1. 123 is ignored");
             
             CDEStoreModificationEvent *baseline = [self fetchBaseline];
             CDERevisionSet *revSet = baseline.revisionSet;
             CDERevision *revForStore1 = [revSet revisionForPersistentStoreIdentifier:@"store1"];
             CDERevision *revFor123 = [revSet revisionForPersistentStoreIdentifier:@"123"];
             CDEGlobalCount baselineGlobalCount = baseline.globalCount;
-            XCTAssertEqual(baselineGlobalCount, (CDEGlobalCount)3, @"Wrong global count");
-            XCTAssertEqual(revForStore1.revisionNumber, (CDERevisionNumber)110, @"Wrong revision number for store1");
-            XCTAssertEqual(revFor123.revisionNumber, (CDERevisionNumber)0, @"Wrong revision number for 123");
+            XCTAssertEqual(baselineGlobalCount, (CDEGlobalCount)4, @"Wrong global count");
+            XCTAssertEqual(revForStore1.revisionNumber, (CDERevisionNumber)111, @"Wrong revision number for store1");
+            XCTAssertNil(revFor123);
         }];
         [self stopAsyncOp];
     }];
     [self waitForAsyncOpToFinish];
 }
 
-- (void)testNewBaselineIncludesUpToGlobalCountOfStoreWithLeastRecentEvents
+- (void)testGlobalCountOfNewBaseline
 {
     NSArray *baselines = [self addEventsForType:CDEStoreModificationEventTypeBaseline storeId:@"store1" globalCounts:@[@10] revisions:@[@110]];
     [self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@20, @21] revisions:@[@111, @112]];
@@ -166,10 +155,10 @@
             CDERevision *revForStore1 = [revSet revisionForPersistentStoreIdentifier:@"store1"];
             CDERevision *revFor123 = [revSet revisionForPersistentStoreIdentifier:@"123"];
             CDEGlobalCount baselineGlobalCount = baseline.globalCount;
-            XCTAssertEqual(baselineGlobalCount, (CDEGlobalCount)20, @"Wrong global count");
-            XCTAssertEqual(revForStore1.revisionNumber, (CDERevisionNumber)111, @"Wrong revision number for store1");
+            XCTAssertEqual(baselineGlobalCount, (CDEGlobalCount)18, @"Wrong global count"); // 80% between 10 and 20
+            XCTAssertEqual(revForStore1.revisionNumber, (CDERevisionNumber)110, @"Wrong revision number for store1");
             XCTAssertEqual(revFor123.revisionNumber, (CDERevisionNumber)2, @"Wrong revision number for 123");
-            XCTAssertEqual([[self storeModEvents] count], (NSUInteger)3, @"Wrong number of events. Should have baseline and 1 other.");
+            XCTAssertEqual([[self storeModEvents] count], (NSUInteger)4, @"Wrong number of events. Should have baseline and 1 other.");
         }];
         [self stopAsyncOp];
     }];
@@ -210,7 +199,7 @@
     NSArray *baselines = [self addEventsForType:CDEStoreModificationEventTypeBaseline storeId:@"store1" globalCounts:@[@10] revisions:@[@110]];
     CDEStoreModificationEvent *baseline = baselines.lastObject;
     CDEStoreModificationEvent *event1 = [[self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@20] revisions:@[@111]] lastObject];
-    [[self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@21] revisions:@[@112]] lastObject];
+    [[self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@25] revisions:@[@112]] lastObject];
     
     [context performBlockAndWait:^{
         // Object change in baseline
@@ -261,7 +250,7 @@
     NSArray *baselines = [self addEventsForType:CDEStoreModificationEventTypeBaseline storeId:@"store1" globalCounts:@[@10] revisions:@[@110]];
     CDEStoreModificationEvent *baseline = baselines.lastObject;
     CDEStoreModificationEvent *event1 = [[self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@20] revisions:@[@111]] lastObject];
-    [[self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@21] revisions:@[@112]] lastObject];
+    [[self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@25] revisions:@[@112]] lastObject];
 
     [context performBlockAndWait:^{
         // Object change in baseline
@@ -312,7 +301,7 @@
     NSArray *baselines = [self addEventsForType:CDEStoreModificationEventTypeBaseline storeId:@"store1" globalCounts:@[@10] revisions:@[@110]];
     CDEStoreModificationEvent *baseline = baselines.lastObject;
     CDEStoreModificationEvent *event1 = [[self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@20] revisions:@[@111]] lastObject];
-    [[self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@21] revisions:@[@112]] lastObject];
+    [[self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@25] revisions:@[@112]] lastObject];
 
     [context performBlockAndWait:^{
         // Object change in baseline
@@ -372,7 +361,7 @@
     NSArray *baselines = [self addEventsForType:CDEStoreModificationEventTypeBaseline storeId:@"store1" globalCounts:@[@10] revisions:@[@110]];
     CDEStoreModificationEvent *baseline = baselines.lastObject;
     CDEStoreModificationEvent *event1 = [[self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@20] revisions:@[@111]] lastObject];
-    [[self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@21] revisions:@[@112]] lastObject];
+    [[self addEventsForType:CDEStoreModificationEventTypeSave storeId:@"store1" globalCounts:@[@25] revisions:@[@112]] lastObject];
 
     [context performBlockAndWait:^{
         // Object change in baseline

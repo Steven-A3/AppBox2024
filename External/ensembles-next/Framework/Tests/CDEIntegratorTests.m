@@ -8,6 +8,7 @@
 
 #import <XCTest/XCTest.h>
 #import "CDEIntegratorTestCase.h"
+#import "CDERevisionManager.h"
 
 @interface CDEEventIntegrator (TestMethods)
 
@@ -25,6 +26,18 @@
     CDEStoreModificationEvent *modEvent;
     CDEGlobalIdentifier *globalId1, *globalId2, *globalId3;
     CDEObjectChange *objectChange1, *objectChange2, *objectChange3;
+}
+
++ (void)setUp
+{
+    [super setUp];
+    CDEPerformIntegrabilityChecks = NO;
+}
+
++ (void)tearDown
+{
+    [super tearDown];
+    CDEPerformIntegrabilityChecks = YES;
 }
 
 - (void)setUp

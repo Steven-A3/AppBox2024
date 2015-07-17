@@ -221,20 +221,10 @@ static NSString *defaultPathToEventDataRootDirectory = nil;
 
 - (CDERevisionNumber)lastRevisionSaved
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"persistentStoreIdentifier = %@ AND (storeModificationEvent.type != %d OR storeModificationEventForOtherStores.type != %d)", self.persistentStoreIdentifier, CDEStoreModificationEventTypeIncomplete, CDEStoreModificationEventTypeIncomplete];
+    NSArray *excludedTypes = @[@(CDEStoreModificationEventTypeBaselineMissingDependencies), @(CDEStoreModificationEventTypeIncomplete)];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"persistentStoreIdentifier = %@ AND NOT (storeModificationEvent.type IN %@)", self.persistentStoreIdentifier, excludedTypes];
     CDERevisionNumber result = [self lastRevisionNumberSavedForEventRevisionPredicate:predicate];
     return result;
-}
-
-- (CDERevisionNumber)baselineRevision
-{
-    __block CDERevisionNumber revisionNumber = -1;
-    [managedObjectContext performBlockAndWait:^{
-        CDEStoreModificationEvent *event = [CDEStoreModificationEvent fetchMostRecentBaselineStoreModificationEventInManagedObjectContext:managedObjectContext];
-        CDERevision *revision = [event.revisionSet revisionForPersistentStoreIdentifier:self.persistentStoreIdentifier];
-        if (revision) revisionNumber = revision.revisionNumber;
-    }];
-    return revisionNumber;
 }
 
 
@@ -244,7 +234,7 @@ static NSString *defaultPathToEventDataRootDirectory = nil;
 {
     __block NSString *result = nil;
     [managedObjectContext performBlockAndWait:^{
-        CDEStoreModificationEvent *event = [CDEStoreModificationEvent fetchMostRecentBaselineStoreModificationEventInManagedObjectContext:managedObjectContext];
+        CDEStoreModificationEvent *event = [CDEStoreModificationEvent fetchBaselineEventInManagedObjectContext:managedObjectContext];
         result = event.uniqueIdentifier;
     }];
     return result;
@@ -509,11 +499,17 @@ static NSString *defaultPathToEventDataRootDirectory = nil;
     }
     
     // Prevent event store being backed up
-	NSURL *url = [NSURL fileURLWithPath:self.pathToEventStoreRootDirectory];
-	NSError *metadataError;
-	BOOL success = [url setResourceValue:@YES forKey:NSURLIsExcludedFromBackupKey error:&metadataError];
-	if (!success) CDELog(CDELoggingLevelWarning, @"Could not exclude event store directory from backup");
-	
+#if !TARGET_OS_IPHONE
+    if (&NSURLIsExcludedFromBackupKey != NULL) {
+#endif
+        NSURL *url = [NSURL fileURLWithPath:self.pathToEventStoreRootDirectory];
+        NSError *metadataError;
+        BOOL success = [url setResourceValue:@YES forKey:NSURLIsExcludedFromBackupKey error:&metadataError];
+        if (!success) CDELog(CDELoggingLevelWarning, @"Could not exclude event store directory from backup");
+#if !TARGET_OS_IPHONE
+    }
+#endif
+    
     return YES;
 }
 

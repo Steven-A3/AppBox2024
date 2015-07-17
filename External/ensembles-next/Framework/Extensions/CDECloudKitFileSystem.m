@@ -74,7 +74,6 @@ NSString * const CDECloudKitRecordZoneName = @"com.mentalfaculty.ensembles.zone"
     
     CKNotificationInfo *notificationInfo = [[CKNotificationInfo alloc] init];
     notificationInfo.shouldSendContentAvailable = YES;
-    notificationInfo.shouldBadge = NO;
     subscription.notificationInfo = notificationInfo;
     
     [self.database saveSubscription:subscription completionHandler:^(CKSubscription *subscription, NSError *error) {

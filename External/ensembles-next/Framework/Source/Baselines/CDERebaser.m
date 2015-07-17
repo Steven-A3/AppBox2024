@@ -9,6 +9,7 @@
 #import "CDERebaser.h"
 #import "NSManagedObjectModel+CDEAdditions.h"
 #import "NSManagedObjectContext+CDEAdditions.h"
+#import "CDEPersistentStoreEnsemble+Private.h"
 #import "NSMapTable+CDEAdditions.h"
 #import "CDEFoundationAdditions.h"
 #import "NSMapTable+CDEAdditions.h"
@@ -56,7 +57,7 @@
 {
     NSManagedObjectContext *context = eventStore.managedObjectContext;
     [context performBlock:^{
-        CDEStoreModificationEvent *baseline = [CDEStoreModificationEvent fetchMostRecentBaselineStoreModificationEventInManagedObjectContext:context];
+        CDEStoreModificationEvent *baseline = [CDEStoreModificationEvent fetchBaselineEventInManagedObjectContext:context];
         CDERevisionSet *baselineRevisionSet = baseline.revisionSet;
         NSSet *storeIds = baselineRevisionSet.persistentStoreIdentifiers;
         NSArray *types = @[@(CDEStoreModificationEventTypeMerge), @(CDEStoreModificationEventTypeSave)];
@@ -137,27 +138,16 @@
     // Rebase if there are more than 500 object changes, and we can reduce data by more than 50%,
     // or if there is no baseline at all
     NSManagedObjectContext *context = eventStore.managedObjectContext;
-    [context performBlock:^{
-        BOOL hasBaseline = NO;
-        CDERevisionSet *baselineRevisionSet = nil;
-        CDEStoreModificationEvent *baseline = [CDEStoreModificationEvent fetchMostRecentBaselineStoreModificationEventInManagedObjectContext:context];
-        hasBaseline = baseline != nil;
-        baselineRevisionSet = baseline.revisionSet;
-        
-        // Rebase if the baseline doesn't include all stores
-        CDERevisionManager *revisionManager = [[CDERevisionManager alloc] initWithEventStore:self.eventStore];
-        NSSet *allStores = revisionManager.allPersistentStoreIdentifiers;
-        BOOL hasAllDevicesInBaseline = [baselineRevisionSet.persistentStoreIdentifiers isEqualToSet:allStores];
-        
+    [context performBlock:^{        
         BOOL hasManyEvents = [self countOfStoreModificationEvents] > 100;
         BOOL hasAdequateChanges = [self countOfAllObjectChanges] >= 500;
         
         [self estimateEventStoreCompactionFollowingRebaseWithCompletion:^(float compaction) {
             BOOL compactionIsAdequate = compaction > 0.5f;
-            BOOL result = !hasBaseline || !hasAllDevicesInBaseline || hasManyEvents || (hasAdequateChanges && compactionIsAdequate);
+            BOOL result = hasManyEvents || (hasAdequateChanges && compactionIsAdequate);
             
             // Include a stochastic component to reduce likelihood that two devices rebase at the same time
-            if (result && hasBaseline && hasAllDevicesInBaseline) {
+            if (result) {
                 const float PercentageAcceptance = 20.0f;
                 float randomUpToOne = arc4random_uniform(RAND_MAX) / (float)RAND_MAX;
                 BOOL stochasticTestPassed = randomUpToOne < PercentageAcceptance/100.0f;
@@ -182,51 +172,33 @@
     NSManagedObjectContext *context = eventStore.managedObjectContext;
     [context performBlock:^{
         // Fetch objects
-        CDEStoreModificationEvent *existingBaseline = [CDEStoreModificationEvent fetchMostRecentBaselineStoreModificationEventInManagedObjectContext:context];
+        CDEStoreModificationEvent *existingBaseline = [CDEStoreModificationEvent fetchBaselineEventInManagedObjectContext:context];
         NSArray *eventsToMerge = [CDEStoreModificationEvent fetchNonBaselineEventsUpToGlobalCount:newBaselineGlobalCount inManagedObjectContext:context];
-        if (existingBaseline && eventsToMerge.count == 0) {
+
+        // Keep only integrable events
+        CDERevisionManager *revisionManager = [[CDERevisionManager alloc] initWithEventStore:self.eventStore];
+        revisionManager.managedObjectModelURL = self.ensemble.managedObjectModelURL;
+        eventsToMerge = [revisionManager integrableEventsFromEvents:eventsToMerge];
+        
+        // If no events, return
+        if (eventsToMerge.count == 0) {
+            [context reset];
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (completion) completion(nil);
             });
             return;
         }
         
-        // Check that events can be integrated, ie, pass all checks.
-        NSError *error = nil;
-        CDERevisionManager *revisionManager = [[CDERevisionManager alloc] initWithEventStore:self.eventStore];
-        revisionManager.managedObjectModelURL = self.ensemble.managedObjectModelURL;
-        BOOL passedChecks = [revisionManager checkRebasingPrerequisitesForEvents:eventsToMerge error:&error];
-        if (!passedChecks) {
-            CDELog(CDELoggingLevelWarning, @"Failed rebasing prerequisite checks. Aborting rebase");
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (completion) completion(error);
-            });
-            return;
-        }
-        
         // Determine what the new revisions will be
         NSArray *revisionedEvents = eventsToMerge;
-        if (existingBaseline) revisionedEvents = [revisionedEvents arrayByAddingObject:existingBaseline];
+        revisionedEvents = [revisionedEvents arrayByAddingObject:existingBaseline];
         CDERevisionSet *newRevisionSet = [CDERevisionSet revisionSetByTakingStoreWiseMaximumOfRevisionSets:[revisionedEvents valueForKeyPath:@"revisionSet"]];
-        NSString *persistentStoreId = self.eventStore.persistentStoreIdentifier;
-        
-        // If no baseline exists, create one.
-        CDEStoreModificationEvent *newBaseline = existingBaseline;
-        if (!existingBaseline) {
-            CDEEventRevision *eventRevision = [NSEntityDescription insertNewObjectForEntityForName:@"CDEEventRevision" inManagedObjectContext:context];
-            eventRevision.persistentStoreIdentifier = persistentStoreId;
-            eventRevision.revisionNumber = 0;
-            
-            newBaseline = [NSEntityDescription insertNewObjectForEntityForName:@"CDEStoreModificationEvent" inManagedObjectContext:context];
-            newBaseline.type = CDEStoreModificationEventTypeBaseline;
-            newBaseline.timestamp = 0.0;
-            eventRevision.storeModificationEvent = newBaseline;
-            [context obtainPermanentIDsForObjects:@[newBaseline] error:&error];
-        }
     
-        // Merge events into baseline
+        // Merge events into baseline, but don't delete the events yet.
+        CDEStoreModificationEvent *newBaseline = existingBaseline;
         NSArray *eventIDs = [eventsToMerge valueForKeyPath:@"objectID"];
         NSManagedObjectID *newBaselineID = newBaseline.objectID;
+        NSError *error = nil;
         BOOL success = [self mergeOrderedEventsWithIDs:eventIDs intoBaselineWithID:newBaselineID error:&error];
         if (!success) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -241,30 +213,26 @@
         if (!newBaseline) CDELog(CDELoggingLevelError, @"Couldn't retrieve baseline: %@", error);
         newBaseline.globalCount = newBaselineGlobalCount;
         newBaseline.timestamp = [NSDate timeIntervalSinceReferenceDate];
-        newBaseline.modelVersion = [self.ensemble.managedObjectModel cde_entityHashesPropertyList];
+        newBaseline.modelVersion = self.ensemble.modelVersionHash;
         
         // Update store revisions by taking the maximum for each store, and the baseline
         // Do this before deleting events, so that if there is a crash,
         // there will be no missing dependency errors generated.
+        NSString *persistentStoreId = self.eventStore.persistentStoreIdentifier;
         newBaseline = (id)[context existingObjectWithID:newBaselineID error:&error];
         [newBaseline setRevisionSet:newRevisionSet forPersistentStoreIdentifier:persistentStoreId];
         if (newBaseline.eventRevision.revisionNumber == -1) newBaseline.eventRevision.revisionNumber = 0;
         
         // Delete events
-        for (NSManagedObjectID *eventID in eventIDs) {
-            @autoreleasepool {
-                CDEStoreModificationEvent *event = (id)[context existingObjectWithID:eventID error:&error];
-                if (event) {
-                    [CDEStoreModificationEvent prefetchRelatedObjectsForStoreModificationEvents:@[event]];
-                    [context deleteObject:event];
-                    [context save:&error];
-                    [context reset];
-                }
-                else {
-                    CDELog(CDELoggingLevelError, @"Couldn't retrieve event: %@", error);
-                }
-            }
+        NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"CDEStoreModificationEvent"];
+        fetch.predicate = [NSPredicate predicateWithFormat:@"SELF IN %@", eventIDs];
+        NSArray *eventsToDelete = [context executeFetchRequest:fetch error:&error];
+        if (!eventsToDelete) {
+            CDELog(CDELoggingLevelError, @"Couldn't retrieve events: %@", error);
         }
+        
+        [CDEStoreModificationEvent prefetchRelatedObjectsForStoreModificationEvents:eventsToDelete];
+        for (CDEStoreModificationEvent *event in eventsToDelete) [context deleteObject:event];
 
         // Save
         BOOL saved = [context save:&error];
@@ -314,7 +282,8 @@
                 CDEObjectChange *change = (id)[context objectWithID:changeID];
                 NSManagedObjectID *existingChangeID = [objectChangesByGlobalId objectForKey:change.globalIdentifier.objectID];
                 CDEObjectChange *existingChange = existingChangeID ? (id)[context objectWithID:existingChangeID] : nil;
-                [self mergeChange:change withSubordinateChange:existingChange addToBaseline:baseline withObjectChangeIDsByGlobalIdentifierIDs:objectChangesByGlobalId];
+                
+                [self mergeChange:change intoBaselineChange:existingChange withBaseline:baseline objectChangeIDsByGlobalIdentifierIDs:objectChangesByGlobalId];
                 
                 if (count++ % 500 == 0) {
                     if (![context save:&localError]) {
@@ -343,33 +312,41 @@
     return YES;
 }
 
-- (void)mergeChange:(CDEObjectChange *)change withSubordinateChange:(CDEObjectChange *)subordinateChange addToBaseline:(CDEStoreModificationEvent *)baseline withObjectChangeIDsByGlobalIdentifierIDs:(NSMapTable *)objectChangeIDsByGlobalIdentifierIDs
+- (void)mergeChange:(CDEObjectChange *)change intoBaselineChange:(CDEObjectChange *)baselineChange withBaseline:(CDEStoreModificationEvent *)baseline objectChangeIDsByGlobalIdentifierIDs:(NSMapTable *)objectChangeIDsByGlobalIdentifierIDs
 {
     NSManagedObjectContext *context = change.managedObjectContext;
     switch (change.type) {
         case CDEObjectChangeTypeDelete:
-            if (subordinateChange) {
+            if (baselineChange) {
                 [objectChangeIDsByGlobalIdentifierIDs removeObjectForKey:change.globalIdentifier.objectID];
-                [context deleteObject:subordinateChange];
+                [context deleteObject:baselineChange];
             }
             break;
             
         case CDEObjectChangeTypeInsert:
-            if (subordinateChange) {
-                [change mergeValuesFromSubordinateObjectChange:subordinateChange];
-                [context deleteObject:subordinateChange];
+            if (baselineChange) {
+                [baselineChange mergeValuesFromObjectChange:change treatChangeAsSubordinate:NO];
             }
-            change.storeModificationEvent = baseline;
-            [objectChangeIDsByGlobalIdentifierIDs setObject:change.objectID forKey:change.globalIdentifier.objectID];
+            else {
+                CDEObjectChange *newChange = [NSEntityDescription insertNewObjectForEntityForName:@"CDEObjectChange" inManagedObjectContext:context];
+                newChange.type = CDEObjectChangeTypeInsert;
+                newChange.globalIdentifier = change.globalIdentifier;
+                newChange.nameOfEntity = change.nameOfEntity;
+                newChange.propertyChangeValues = change.propertyChangeValues;
+                newChange.storeModificationEvent = baseline;
+                
+                NSError *error;
+                if (![context obtainPermanentIDsForObjects:@[newChange] error:&error]) {
+                    CDELog(CDELoggingLevelError, @"Error obtaining permananet id: %@", error);
+                }
+                
+                [objectChangeIDsByGlobalIdentifierIDs setObject:newChange.objectID forKey:newChange.globalIdentifier.objectID];
+            }
             break;
             
         case CDEObjectChangeTypeUpdate:
-            if (subordinateChange) {
-                [change mergeValuesFromSubordinateObjectChange:subordinateChange];
-                [context deleteObject:subordinateChange];
-                change.type = CDEObjectChangeTypeInsert;
-                change.storeModificationEvent = baseline;
-                [objectChangeIDsByGlobalIdentifierIDs setObject:change.objectID forKey:change.globalIdentifier.objectID];
+            if (baselineChange) {
+                [baselineChange mergeValuesFromObjectChange:change treatChangeAsSubordinate:NO];
             }
             break;
             
@@ -382,19 +359,19 @@
 - (CDEGlobalCount)globalCountForNewBaseline
 {
     CDERevisionManager *revisionManager = [[CDERevisionManager alloc] initWithEventStore:self.eventStore];
-    CDERevisionSet *latestRevisionSet = [revisionManager revisionSetOfMostRecentEvents];
+    CDERevisionSet *latestRevisionSet = [revisionManager revisionSetOfMostRecentIntegrableEvents];
     
     // We will remove any store that hasn't updated since the existing baseline
     NSManagedObjectContext *context = eventStore.managedObjectContext;
     __block CDERevisionSet *baselineRevisionSet;
     __block CDEGlobalCount currentBaselineCount;
     [context performBlockAndWait:^{
-        CDEStoreModificationEvent *baselineEvent = [CDEStoreModificationEvent fetchMostRecentBaselineStoreModificationEventInManagedObjectContext:context];
+        CDEStoreModificationEvent *baselineEvent = [CDEStoreModificationEvent fetchBaselineEventInManagedObjectContext:context];
         baselineRevisionSet = baselineEvent.revisionSet;
         currentBaselineCount = baselineEvent.globalCount;
     }];
     
-    // Baseline count is minimum of global count from all devices
+    // Max global count in our range is the minimum of global count from all devices
     CDEGlobalCount baselineCount = NSNotFound;
     for (CDERevision *revision in latestRevisionSet.revisions) {
         // Ignore stores that haven't updated since the baseline
@@ -402,16 +379,22 @@
         NSString *storeId = revision.persistentStoreIdentifier;
         CDERevision *baselineRevision = [baselineRevisionSet revisionForPersistentStoreIdentifier:storeId];
         if (baselineRevision && baselineRevision.revisionNumber >= revision.revisionNumber) continue;
-        
-        // Find the minimum global count. We try to leave at least one
-        // event for each store. This prevents unnecessary full-integrations.
-        // But the baseline must progress, so some devices could be left behind
-        // and have to do a full integration.
-        if (revision.globalCount <= currentBaselineCount+1) continue;
-        baselineCount = MIN(baselineCount, revision.globalCount-1);
+
+        // Find the minimum global count.
+        baselineCount = MIN(baselineCount, revision.globalCount);
     }
     
-    if (baselineCount == NSNotFound) baselineCount = 0;
+    if (baselineCount == NSNotFound) {
+        baselineCount = 0;
+    }
+    else {
+        // Choose the new global count to be in the range from the baseline to the new count
+        // leaving some events around, to avoid unnecessary full integrations
+        CDEGlobalCount low = MIN(currentBaselineCount, baselineCount);
+        baselineCount = low + (baselineCount - low) * 0.80f;
+        baselineCount = MAX(baselineCount, 0);
+        if (baselineCount - low == 0) baselineCount++; // Make sure it moves forward
+    }
     
     return baselineCount;
 }

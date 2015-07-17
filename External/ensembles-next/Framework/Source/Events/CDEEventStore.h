@@ -28,7 +28,6 @@
 @property (nonatomic, assign, readonly) CDERevisionNumber lastSaveRevisionSaved;
 @property (nonatomic, assign, readonly) CDERevisionNumber lastMergeRevisionSaved;
 @property (nonatomic, assign, readonly) CDERevisionNumber lastRevisionSaved;
-@property (nonatomic, assign, readonly) CDERevisionNumber baselineRevision;
 
 @property (nonatomic, strong, readonly) NSSet *allDataFilenames;
 @property (nonatomic, strong, readonly) NSSet *newlyImportedDataFilenames;

@@ -24,6 +24,7 @@
 @property (nonatomic, strong, readwrite) NSURL *storeURL;
 @property (nonatomic, strong, readwrite) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, strong, readwrite) NSURL *managedObjectModelURL;
+@property (nonatomic, strong, readonly) NSString *modelVersionHash;
 
 @property (atomic, assign, readwrite, getter = isLeeched) BOOL leeched;
 @property (atomic, assign, readwrite, getter = isLeeching) BOOL leeching;

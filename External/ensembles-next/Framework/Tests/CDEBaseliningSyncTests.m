@@ -33,7 +33,7 @@
     XCTAssertEqual(baselineFiles.count, (NSUInteger)1, @"Should only be one baseline");
     
     NSArray *eventFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:cloudEventsDir error:NULL];
-    XCTAssert(eventFiles.count <= 2 && eventFiles.count > 0, @"Should be one or two merges. Depends on store ids.");
+    XCTAssert(eventFiles.count > 0, @"Should be merges.");
 }
 
 - (void)testCloudBaselineFileContentDuringLeechAndSync
@@ -136,10 +136,11 @@
     XCTAssertTrue([context1 save:NULL], @"Could not save");
     
     // Each update is worth 0.1, so we need more than 10 for each object to trigger a rebase.
+    NSUInteger count = 0;
     NSArray *parents = [context1 executeFetchRequest:[NSFetchRequest fetchRequestWithEntityName:@"Parent"] error:NULL];
     for (NSInteger i = 0; i < 11; i++) {
         for (id parent in parents) {
-            [parent setValue:@"tom" forKey:@"name"];
+            [parent setValue:[NSString stringWithFormat:@"tom%lu", count++] forKey:@"name"];
         }
         XCTAssertTrue([context1 save:NULL], @"Could not save");
     }
@@ -149,7 +150,7 @@
     NSArray *baselineFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:cloudBaselinesDir error:NULL];
     NSArray *eventFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:cloudEventsDir error:NULL];
     XCTAssertEqual(baselineFiles.count, (NSUInteger)1, @"Should be one baseline file");
-    XCTAssertEqual(eventFiles.count, (NSUInteger)12, @"Should be 12 event files");
+    XCTAssertEqual(eventFiles.count, (NSUInteger)12, @"Wrong number of event files");
     
     [self mergeEnsemble:ensemble2];
     
@@ -185,16 +186,16 @@
     [parentOnDevice1 setValue:@"bob" forKey:@"name"];
     XCTAssertTrue([context1 save:NULL], @"Could not save");
     
-    // Should generate events with global counts 2-3
+    // Should generate events with global counts 3-4
     NSArray *parents = [context1 executeFetchRequest:[NSFetchRequest fetchRequestWithEntityName:@"Parent"] error:NULL];
     for (NSInteger i = 2; i < 4; i++) {
         for (id parent in parents) {
-            [parent setValue:@"tom" forKey:@"name"];
+            [parent setValue:[NSString stringWithFormat:@"tom%i", arc4random()] forKey:@"name"];
         }
         XCTAssertTrue([context1 save:NULL], @"Could not save");
     }
     
-    // Should generate a merge event with global count 4, and rebase up to global count 1 (lowest from any store minus 1)
+    // Should generate a merge event with global count 6, and rebase up to global count 2 (lowest from any store minus 1)
     [ensemble1 setValue:@YES forKeyPath:@"rebaser.forceRebase"];
     [self mergeEnsemble:ensemble1];
     
@@ -269,6 +270,7 @@
     
     [ensemble2 setValue:@YES forKeyPath:@"rebaser.forceRebase"];
     [ensemble1 setValue:@YES forKeyPath:@"rebaser.forceRebase"];
+    
     __block BOOL finished1 = NO, finished2 = NO;
     [ensemble1 mergeWithCompletion:^(NSError *error) {
         finished1 = YES;
@@ -284,7 +286,7 @@
     [ensemble1 setValue:@NO forKeyPath:@"rebaser.forceRebase"];
     
     [self syncChanges];
-    
+
     // Should be fully synced here
     NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"Parent"];
     NSArray *parents1 = [context1 executeFetchRequest:fetch error:NULL];

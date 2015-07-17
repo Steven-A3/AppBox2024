@@ -724,6 +724,42 @@
     XCTAssertEqualObjects(parent, [child2OnDevice1 valueForKey:@"derivedParent"], @"Wrong child");
 }
 
+- (void)testRelationshipsMixingEntities
+{
+    [self leechStores];
+    
+    id derivedParentOnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"DerivedParent" inManagedObjectContext:context1];
+    [derivedParentOnDevice1 setName:@"dp1"];
+    id parentOnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];
+    [parentOnDevice1 setName:@"p2"];
+    
+    id child1OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"DerivedChild" inManagedObjectContext:context1];
+    [child1OnDevice1 setName:@"dc1"];
+    [child1OnDevice1 setValue:parentOnDevice1 forKey:@"parent"];
+    [child1OnDevice1 setValue:derivedParentOnDevice1 forKey:@"parentWithSiblings"];
+
+    id child2OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"Child" inManagedObjectContext:context1];
+    [child2OnDevice1 setName:@"c2"];
+    [child2OnDevice1 setValue:derivedParentOnDevice1 forKey:@"parentWithSiblings"];
+    
+    XCTAssertTrue([context1 save:NULL], @"Could not save");
+    XCTAssertNil([self syncChanges], @"Sync failed");
+    
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"Child"];
+    NSArray *children = [context2 executeFetchRequest:fetch error:NULL];
+    id child1OnDevice2 = [children filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name = 'dc1'"]][0];
+    id child2OnDevice2 = [children filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name = 'c2'"]][0];
+
+    fetch = [NSFetchRequest fetchRequestWithEntityName:@"Parent"];
+    NSArray *parents = [context2 executeFetchRequest:fetch error:NULL];
+    id derivedParentOnDevice2 = [parents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name = 'dp1'"]][0];
+    id parentOnDevice2 = [parents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name = 'p2'"]][0];
+
+    XCTAssertEqualObjects(parentOnDevice2, [child1OnDevice2 valueForKey:@"parent"], @"Wrong parent");
+    XCTAssertEqualObjects(derivedParentOnDevice2, [child1OnDevice2 valueForKey:@"parentWithSiblings"], @"Wrong parentWithSiblings");
+    XCTAssertEqualObjects(derivedParentOnDevice2, [child2OnDevice2 valueForKey:@"parentWithSiblings"], @"Wrong parentWithSiblings for Child 2");
+}
+
 - (void)testSelfReferentialRelationships
 {
     [self leechStores];

@@ -85,6 +85,8 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
         
         rebaseCheckDone = NO;
         
+        self.compressModelHashes = NO;
+        
         self.ensembleIdentifier = identifier;
         self.storeURL = newStoreURL;
         self.managedObjectModelURL = modelURL;
@@ -701,6 +703,17 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
     }];
 }
 
+- (NSString *)modelVersionHash {
+    NSString *modelVersionHash = nil;
+    if (self.compressModelHashes) {
+        modelVersionHash = [self.managedObjectModel cde_compressedModelHash];
+    }
+    else {
+        modelVersionHash = [self.managedObjectModel cde_entityHashesPropertyList];
+    }
+    return modelVersionHash;
+}
+
 #pragma mark Accessors
 
 - (NSURL *)localDataRootDirectoryURL
@@ -1175,6 +1188,7 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
     NSArray *result = nil;
     if ([self.delegate respondsToSelector:@selector(persistentStoreEnsemble:globalIdentifiersForManagedObjects:)]) {
         result = [self.delegate persistentStoreEnsemble:self globalIdentifiersForManagedObjects:objects];
+        NSAssert(result.count == objects.count, @"Wrong number of global identifiers returned from persistentStoreEnsemble:globalIdentifiersForManagedObjects:");
     }
     return result;
 }

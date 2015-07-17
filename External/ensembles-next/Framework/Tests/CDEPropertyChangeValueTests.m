@@ -214,7 +214,7 @@
     value2.addedIdentifiers = [NSSet setWithObjects:@"11", nil];
     value2.removedIdentifiers = [NSSet setWithObjects:@"12", nil];
     
-    [value2 mergeToManyRelationshipFromSubordinatePropertyChangeValue:value1];
+    [value2 mergeToManyRelationshipFromPropertyChangeValue:value1 treatValueAsSubordinate:YES];
     
     NSSet *added = [NSSet setWithObjects:@"11", nil];
     
@@ -234,7 +234,7 @@
     value2.removedIdentifiers = [NSSet setWithObjects:@"12", nil];
     value2.movedIdentifiersByIndex = @{@0 : @"11"};
     
-    [value2 mergeToManyRelationshipFromSubordinatePropertyChangeValue:value1];
+    [value2 mergeToManyRelationshipFromPropertyChangeValue:value1 treatValueAsSubordinate:YES];
     
     NSSet *added = [NSSet setWithObjects:@"11", @"13", nil];
     NSDictionary *moved = @{@0 : @"11", @1 : @"13"};

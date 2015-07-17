@@ -10,13 +10,17 @@
 
 @implementation CDERevision
 
+@synthesize persistentStoreIdentifier = persistentStoreIdentifier;
+@synthesize revisionNumber = revisionNumber;
+@synthesize globalCount = globalCount;
+
 - (instancetype)initWithPersistentStoreIdentifier:(NSString *)identifier revisionNumber:(CDERevisionNumber)number globalCount:(CDEGlobalCount)newCount
 {
     self = [super init];
     if (self) {
-        self.persistentStoreIdentifier = identifier;
-        self.revisionNumber = number;
-        self.globalCount = newCount;
+        persistentStoreIdentifier = [identifier copy];
+        revisionNumber = number;
+        globalCount = newCount;
     }
     return self;
 }

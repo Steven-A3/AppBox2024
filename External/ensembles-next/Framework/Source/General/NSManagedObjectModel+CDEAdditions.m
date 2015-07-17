@@ -9,6 +9,7 @@
 #import "NSManagedObjectModel+CDEAdditions.h"
 #import "CDEFoundationAdditions.h"
 #import "CDEDefines.h"
+#import "NSData+CDEAdditions.h"
 
 @implementation NSManagedObjectModel (CDEAdditions)
 
@@ -23,6 +24,13 @@
         [result appendString:entityString];
     }];
     return result;
+}
+
+- (NSString *)cde_compressedModelHash
+{
+    NSData *uncompressedHash = [[self cde_modelHash] dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *checksum = [NSString stringWithFormat:@"md5%@", [uncompressedHash cde_md5Checksum]];
+    return checksum;
 }
 
 - (NSString *)cde_entityHashesPropertyList

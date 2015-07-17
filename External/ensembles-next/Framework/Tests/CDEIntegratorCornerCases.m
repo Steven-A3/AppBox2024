@@ -8,12 +8,25 @@
 
 #import <XCTest/XCTest.h>
 #import "CDEIntegratorTestCase.h"
+#import "CDERevisionManager.h"
 
 @interface CDEIntegratorCornerCases : CDEIntegratorTestCase
 
 @end
 
 @implementation CDEIntegratorCornerCases
+
++ (void)setUp
+{
+    [super setUp];
+    CDEPerformIntegrabilityChecks = NO;
+}
+
++ (void)tearDown
+{
+    [super tearDown];
+    CDEPerformIntegrabilityChecks = YES;
+}
 
 - (void)addEventsForFile:(NSString *)filename
 {

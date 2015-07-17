@@ -76,7 +76,7 @@
         event.type = CDEStoreModificationEventTypeIncomplete;
         event.timestamp = [NSDate timeIntervalSinceReferenceDate];
         event.globalCount = 0;
-        event.modelVersion = [self.ensemble.managedObjectModel cde_entityHashesPropertyList];
+        event.modelVersion = self.ensemble.modelVersionHash;
         if (uniqueIdOrNil) event.uniqueIdentifier = uniqueIdOrNil;
         
         CDEEventRevision *revision = [NSEntityDescription insertNewObjectForEntityForName:@"CDEEventRevision" inManagedObjectContext:eventManagedObjectContext];
@@ -85,16 +85,9 @@
         revision.storeModificationEvent = event;
         
         // Set the state of other stores
-        if (eventType == CDEStoreModificationEventTypeSave) {
-            CDERevisionSet *newRevisionSet = [revisionManager revisionSetForLastMergeOrBaseline];
-            [newRevisionSet removeRevisionForPersistentStoreIdentifier:persistentStoreId];
-            event.revisionSetOfOtherStoresAtCreation = newRevisionSet;
-        }
-        else if (eventType == CDEStoreModificationEventTypeMerge) {
-            CDERevisionSet *mostRecentSet = [revisionManager revisionSetOfMostRecentEvents];
-            [mostRecentSet removeRevisionForPersistentStoreIdentifier:persistentStoreId];
-            event.revisionSetOfOtherStoresAtCreation = mostRecentSet;
-        }
+        CDERevisionSet *newRevisionSet = [revisionManager revisionSetForLastMergeOrBaseline];
+        [newRevisionSet removeRevisionForPersistentStoreIdentifier:persistentStoreId];
+        event.revisionSetOfOtherStoresAtCreation = newRevisionSet;
         
         [eventManagedObjectContext processPendingChanges];
         if (persistentStoreId) returnRevision = [event.revisionSet revisionForPersistentStoreIdentifier:persistentStoreId];
@@ -114,6 +107,32 @@
         CDEGlobalCount globalCountBeforeMakingEvent = [revisionManager maximumGlobalCount];
         event.globalCount = globalCountBeforeMakingEvent+1;
         event.type = eventType;
+    }];
+}
+
+#pragma mark - Revisions
+
+- (void)updateEventRevisionsAccountingForMergeOfEventIDs:(NSArray *)eventIDs
+{
+    // The event has the revisions from the last merge (or baseline).
+    // Replace where appropriate with the newer revisions from the events.
+    // Don't update the local persistent store revision, because that is set right.
+    [eventManagedObjectContext performBlockAndWait:^{
+        NSArray *revisionSets = [eventIDs cde_arrayByTransformingObjectsWithBlock:^(NSManagedObjectID *anEventID) {
+            CDEStoreModificationEvent *anEvent = (id)[eventManagedObjectContext objectWithID:anEventID];
+            return anEvent.revisionSet;
+        }];
+        
+        NSString *localStoreIdentifier = self.event.eventRevision.persistentStoreIdentifier;
+        CDERevisionSet *maximumSet = [CDERevisionSet revisionSetByTakingStoreWiseMaximumOfRevisionSets:revisionSets];
+        
+        CDERevisionSet *newSet = [self.event.revisionSet copy];
+        for (NSString *storeIdentifier in maximumSet.persistentStoreIdentifiers) {
+            if ([storeIdentifier isEqualToString:localStoreIdentifier]) continue;
+            [newSet removeRevisionForPersistentStoreIdentifier:storeIdentifier];
+            [newSet addRevision:[maximumSet revisionForPersistentStoreIdentifier:storeIdentifier]];
+        }
+        [self.event setRevisionSet:newSet forPersistentStoreIdentifier:localStoreIdentifier];
     }];
 }
 
@@ -206,6 +225,8 @@
 
 - (NSArray *)addGlobalIdentifiersForManagedObjectIDs:(NSArray *)objectIDs identifierStrings:(NSArray *)globalIDStrings
 {
+    NSParameterAssert((globalIDStrings == nil) || (objectIDs.count == globalIDStrings.count));
+    
     NSArray *entityNames = [objectIDs valueForKeyPath:@"entity.name"];
     NSMutableArray *globalIDs = [[NSMutableArray alloc] init];
     __block NSArray *globalIDObjectIDs = nil;

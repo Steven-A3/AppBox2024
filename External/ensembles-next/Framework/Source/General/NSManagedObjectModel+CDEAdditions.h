@@ -11,6 +11,7 @@
 @interface NSManagedObjectModel (CDEAdditions)
 
 - (NSString *)cde_modelHash;
+- (NSString *)cde_compressedModelHash;
 
 - (NSString *)cde_entityHashesPropertyList; // XML Dictionary
 + (NSDictionary *)cde_entityHashesByNameFromPropertyList:(NSString *)propertyList;

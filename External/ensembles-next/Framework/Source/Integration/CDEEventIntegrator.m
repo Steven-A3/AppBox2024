@@ -173,12 +173,8 @@
                 return;
             }
             
-            // Do we have everything we need to integrate the events?
-            BOOL success = [self canIntegrateEventIDs:storeModEventIDs error:&error];
-            if (!success) {
-                [self failWithError:error];
-                return;
-            }
+            // Remove any events for which prerequisites are not met
+            storeModEventIDs = [self integrableEventIDsFromEventIDs:storeModEventIDs];
             
             // Do we actually need to integrate the events?
             BOOL integrationNeeded = [self integrationIsNeededForEventIDs:storeModEventIDs];
@@ -195,9 +191,10 @@
             eventBuilder = [[CDEEventBuilder alloc] initWithEventStore:self.eventStore];
             eventBuilder.ensemble = self.ensemble;
             CDERevision *revision = [eventBuilder makeNewEventOfType:CDEStoreModificationEventTypeMerge uniqueIdentifier:newEventUniqueId];
+            [eventBuilder updateEventRevisionsAccountingForMergeOfEventIDs:storeModEventIDs];
             
             // Integrate
-            success = [self integrateEventIDs:storeModEventIDs error:&error];
+            BOOL success = [self integrateEventIDs:storeModEventIDs error:&error];
             if (!success) {
                 [self failWithError:error];
                 return;
@@ -294,7 +291,7 @@
     if (!storeBaselineId || ![storeBaselineId isEqualToString:currentBaselineId]) return YES;
     
     // Determine if a full integration is needed due to abandonment during rebasing
-    // This is the case if no events exist that are newer than the baseline.
+    // This is the case if no merge event exists that comes fully after the baseline.
     CDERevisionManager *revisionManager = [[CDERevisionManager alloc] initWithEventStore:self.eventStore];
     NSError *error = nil;
     BOOL passed = [revisionManager checkThatLocalPersistentStoreHasNotBeenAbandoned:&error];
@@ -321,7 +318,7 @@
         if (fullIntegration) {
             // All events, including baseline
             NSMutableArray *events = [[CDEStoreModificationEvent fetchNonBaselineEventsInManagedObjectContext:eventStoreContext] mutableCopy];
-            CDEStoreModificationEvent *baseline = [CDEStoreModificationEvent fetchMostRecentBaselineStoreModificationEventInManagedObjectContext:eventStoreContext];
+            CDEStoreModificationEvent *baseline = [CDEStoreModificationEvent fetchBaselineEventInManagedObjectContext:eventStoreContext];
             if (baseline) [events insertObject:baseline atIndex:0];
             storeModEvents = events;
             CDELog(CDELoggingLevelTrace, @"Baseline has changed. Will carry out full integration of the persistent store.");
@@ -344,28 +341,28 @@
     return storeModEventIDs;
 }
 
-- (BOOL)canIntegrateEventIDs:(NSArray *)storeModEventIDs error:(NSError * __autoreleasing *)error
+- (NSArray *)integrableEventIDsFromEventIDs:(NSArray *)storeModEventIDs
 {
-    CDELog(CDELoggingLevelTrace, @"Checking if can integrate");
+    CDELog(CDELoggingLevelTrace, @"Checking which events can be integrated");
     
     CDERevisionManager *revisionManager = [[CDERevisionManager alloc] initWithEventStore:self.eventStore];
     revisionManager.managedObjectModelURL = self.ensemble.managedObjectModelURL;
     
-    __block BOOL success = YES;
+    __block NSArray *integrableIDs = nil;
     NSManagedObjectContext *eventStoreContext = self.eventStore.managedObjectContext;
     [eventStoreContext performBlockAndWait:^{
-        NSArray *storeModEvents = [storeModEventIDs cde_arrayByTransformingObjectsWithBlock:^id(NSManagedObjectID *objectID) {
+        NSArray *storeModEvents = [storeModEventIDs cde_arrayByTransformingObjectsWithBlock:^(NSManagedObjectID *objectID) {
             return [eventStoreContext objectWithID:objectID];
         }];
         
-        BOOL canIntegrate = [revisionManager checkIntegrationPrequisitesForEvents:storeModEvents error:error];
-        if (!canIntegrate) {
-            success = NO;
-            return;
-        }
+        NSArray *integrableEvents = [revisionManager integrableEventsFromEvents:storeModEvents];
+        
+        integrableIDs = [integrableEvents cde_arrayByTransformingObjectsWithBlock:^(CDEStoreModificationEvent *event) {
+            return event.objectID;
+        }];
     }];
     
-    return success;
+    return integrableIDs;
 }
 
 - (BOOL)integrationIsNeededForEventIDs:(NSArray *)storeModEventIDs

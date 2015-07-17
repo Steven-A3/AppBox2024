@@ -74,6 +74,7 @@
 		077B555317D1E5A0008AA7F7 /* DoubleInsertFixture.json in Resources */ = {isa = PBXBuildFile; fileRef = 077B555217D1E5A0008AA7F7 /* DoubleInsertFixture.json */; };
 		077B555517D1E5CF008AA7F7 /* CDEIntegratorCornerCases.m in Sources */ = {isa = PBXBuildFile; fileRef = 077B555417D1E5CF008AA7F7 /* CDEIntegratorCornerCases.m */; };
 		07973F19183D308D007F48CA /* IntegratorMergeTestsFixture.json in Resources */ = {isa = PBXBuildFile; fileRef = 07973F18183D3082007F48CA /* IntegratorMergeTestsFixture.json */; };
+		07AAD7DE1B4AFC4300411C44 /* CDERandomSyncTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 07AAD7DD1B4AFC4300411C44 /* CDERandomSyncTests.m */; };
 		07AD39B5189675C3008545AD /* CDEBaseliningSyncTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 07AD39B4189675C3008545AD /* CDEBaseliningSyncTests.m */; };
 		07B18212188806A0005229A1 /* CDERebaserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B18211188806A0005229A1 /* CDERebaserTests.m */; };
 		07C07B75191CE9FC00A9D7E6 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DAD10FA18CA067900237084 /* Cocoa.framework */; };
@@ -94,6 +95,7 @@
 		07C8444A193483FC008B6E4D /* CDEPersistentStoreEnsemble+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C84448193483FC008B6E4D /* CDEPersistentStoreEnsemble+Private.m */; };
 		07C844561934AEC8008B6E4D /* CDEPersistentStoreEventExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 07C844541934AEC7008B6E4D /* CDEPersistentStoreEventExport.h */; };
 		07C844571934AEC8008B6E4D /* CDEPersistentStoreEventExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C844551934AEC8008B6E4D /* CDEPersistentStoreEventExport.m */; };
+		07C94BE91ADCF0D500F85C2C /* CDEDependencySyncTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C94BE81ADCF0D500F85C2C /* CDEDependencySyncTests.m */; };
 		07CCA9D917E4AF0E0017B6C4 /* CDEOneWaySyncTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CCA9D417E49B4A0017B6C4 /* CDEOneWaySyncTests.m */; };
 		07D1B1BB1947483D00C04CBF /* CDEPersistentStoreEventImport.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D1B1B91947483D00C04CBF /* CDEPersistentStoreEventImport.h */; };
 		07D1B1BC1947483D00C04CBF /* CDEPersistentStoreEventImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D1B1BA1947483D00C04CBF /* CDEPersistentStoreEventImport.m */; };
@@ -302,6 +304,7 @@
 		07973F0F183BE466007F48CA /* CDECloudManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDECloudManager.h; sourceTree = "<group>"; };
 		07973F10183BE466007F48CA /* CDECloudManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDECloudManager.m; sourceTree = "<group>"; };
 		07973F18183D3082007F48CA /* IntegratorMergeTestsFixture.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = IntegratorMergeTestsFixture.json; sourceTree = "<group>"; };
+		07AAD7DD1B4AFC4300411C44 /* CDERandomSyncTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDERandomSyncTests.m; sourceTree = "<group>"; };
 		07AD39B4189675C3008545AD /* CDEBaseliningSyncTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEBaseliningSyncTests.m; sourceTree = "<group>"; };
 		07B18211188806A0005229A1 /* CDERebaserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDERebaserTests.m; sourceTree = "<group>"; };
 		07B9B1C51A9B4B2700B37DAF /* RNCryptor.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RNCryptor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -350,6 +353,7 @@
 		07C8444B19348DE1008B6E4D /* CDEProgression.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CDEProgression.h; sourceTree = "<group>"; };
 		07C844541934AEC7008B6E4D /* CDEPersistentStoreEventExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEPersistentStoreEventExport.h; sourceTree = "<group>"; };
 		07C844551934AEC8008B6E4D /* CDEPersistentStoreEventExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEPersistentStoreEventExport.m; sourceTree = "<group>"; };
+		07C94BE81ADCF0D500F85C2C /* CDEDependencySyncTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEDependencySyncTests.m; sourceTree = "<group>"; };
 		07CCA9D417E49B4A0017B6C4 /* CDEOneWaySyncTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEOneWaySyncTests.m; sourceTree = "<group>"; };
 		07D1B1B91947483D00C04CBF /* CDEPersistentStoreEventImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEPersistentStoreEventImport.h; sourceTree = "<group>"; };
 		07D1B1BA1947483D00C04CBF /* CDEPersistentStoreEventImport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEPersistentStoreEventImport.m; sourceTree = "<group>"; };
@@ -481,6 +485,8 @@
 				07AD39B4189675C3008545AD /* CDEBaseliningSyncTests.m */,
 				07C07BB7191D0EBA00A9D7E6 /* CDEBatchSyncTests.m */,
 				076F1A681A70EA6600234ED2 /* CDERepairSyncTests.m */,
+				07C94BE81ADCF0D500F85C2C /* CDEDependencySyncTests.m */,
+				07AAD7DD1B4AFC4300411C44 /* CDERandomSyncTests.m */,
 			);
 			name = "Sync System Tests";
 			sourceTree = "<group>";
@@ -1103,11 +1109,13 @@
 				0747CDA217C3DCE300221ED7 /* CDEBasicIntegratorRelationshipTests.m in Sources */,
 				07DDA7E417C8FE25009C6F94 /* CDEIntegratorUpdateTests.m in Sources */,
 				070D33D018019A680054BA23 /* CDEGlobalIdentifierTests.m in Sources */,
+				07AAD7DE1B4AFC4300411C44 /* CDERandomSyncTests.m in Sources */,
 				07B18212188806A0005229A1 /* CDERebaserTests.m in Sources */,
 				072E5AEC17EB4332002D9604 /* CDESyncTest.m in Sources */,
 				073BB0CB1780841E0061466E /* CDEStoreModificationEventTestsModel.xcdatamodeld in Sources */,
 				075FDCD518360B0E0020E1C9 /* CDEIntegratorMergeRepairTests.m in Sources */,
 				07DCC6C7184FA4050097B4D9 /* CDEBaselineConsolidatorTests.m in Sources */,
+				07C94BE91ADCF0D500F85C2C /* CDEDependencySyncTests.m in Sources */,
 				074DE60F17B7797E009755EB /* CDEEventDeviceRevisionTests.m in Sources */,
 				072BD7BF17F30A1E00D19306 /* CDEPersistentStoreEnsembleTests.m in Sources */,
 				074DE61117B779D8009755EB /* CDERevisionTests.m in Sources */,

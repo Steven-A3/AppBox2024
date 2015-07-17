@@ -11,8 +11,8 @@
 
 @interface CDERevision : NSObject
 
-@property (nonatomic, assign, readwrite) CDERevisionNumber revisionNumber;
-@property (nonatomic, assign, readwrite) CDEGlobalCount globalCount;
+@property (nonatomic, assign, readonly) CDERevisionNumber revisionNumber;
+@property (nonatomic, assign, readonly) CDEGlobalCount globalCount;
 @property (nonatomic, copy, readwrite) NSString *persistentStoreIdentifier;
 @property (nonatomic, copy, readonly) id <NSObject, NSCopying> uniqueIdentifier;
 

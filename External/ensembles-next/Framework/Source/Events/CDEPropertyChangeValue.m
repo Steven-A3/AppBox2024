@@ -313,14 +313,16 @@
 
 #pragma mark Merging
 
-- (void)mergeToManyRelationshipFromSubordinatePropertyChangeValue:(CDEPropertyChangeValue *)propertyValue
+- (void)mergeToManyRelationshipFromPropertyChangeValue:(CDEPropertyChangeValue *)propertyValue treatValueAsSubordinate:(BOOL)subordinate
 {
     static NSString *globalIdErrorMessage = @"Encountered NSNull in relationship merge. This should not arise. It usually indicates that at some point, multiple objects were saved at once with the same global id.";
     
+    NSSet *dominantRemoveIdentifiers = subordinate ? self.removedIdentifiers : propertyValue.removedIdentifiers;
+
     // Adds
     NSMutableSet *newAdded = [[NSMutableSet alloc] initWithSet:self.addedIdentifiers];
     [newAdded unionSet:propertyValue.addedIdentifiers];
-    [newAdded minusSet:self.removedIdentifiers]; // removes override adds in other value
+    [newAdded minusSet:dominantRemoveIdentifiers];
     
     // Check for NSNull. Should not be there.
     if ([newAdded containsObject:[NSNull null]]) {
@@ -337,15 +339,8 @@
     
     // If it is an ordered to-many, update ordering.
     NSMutableDictionary *indexesByGlobalId = [[NSMutableDictionary alloc] init];
-    for (NSNumber *indexNum in propertyValue.movedIdentifiersByIndex) {
-        NSString *globalId = propertyValue.movedIdentifiersByIndex[indexNum];
-        if ((id)globalId == [NSNull null]) {
-            CDELog(CDELoggingLevelError, @"%@", globalIdErrorMessage);
-            continue;
-        }
-        indexesByGlobalId[globalId] = indexNum;
-    }
     
+    // Add existing values
     for (NSNumber *indexNum in self.movedIdentifiersByIndex) {
         NSString *globalId = self.movedIdentifiersByIndex[indexNum];
         if ((id)globalId == [NSNull null]) {
@@ -353,6 +348,19 @@
             continue;
         }
         indexesByGlobalId[globalId] = indexNum;
+    }
+    
+    // Update with other values
+    for (NSNumber *indexNum in propertyValue.movedIdentifiersByIndex) {
+        NSString *globalId = propertyValue.movedIdentifiersByIndex[indexNum];
+        if ((id)globalId == [NSNull null]) {
+            CDELog(CDELoggingLevelError, @"%@", globalIdErrorMessage);
+            continue;
+        }
+        NSNumber *index = indexesByGlobalId[globalId];
+        if ((index && !subordinate) || !index) {
+            indexesByGlobalId[globalId] = indexNum;
+        }
     }
     
     // Sort first on index, and use global id to resolve conflicts.

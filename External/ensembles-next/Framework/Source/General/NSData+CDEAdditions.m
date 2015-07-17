@@ -25,6 +25,16 @@
     return result;
 }
 
+- (NSData *)cde_sha256Hash
+{
+    unsigned char hash[CC_SHA256_DIGEST_LENGTH];
+    if ( CC_SHA256([self bytes], (CC_LONG)[self length], hash) ) {
+        NSData *sha1 = [NSData dataWithBytes:hash length:CC_SHA256_DIGEST_LENGTH];
+        return sha1;
+    }
+    return nil;
+}
+
 + (NSData *)cde_dataWithBase64EncodedString:(NSString *)aString
 {
 	NSData *data = [aString dataUsingEncoding:NSASCIIStringEncoding];

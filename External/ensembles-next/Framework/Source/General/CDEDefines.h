@@ -54,12 +54,6 @@ typedef NS_ENUM(NSInteger, CDEErrorCode) {
     /// An attempt to access a file failed.
     CDEErrorCodeFileAccessFailed            = 107,
     
-    /// Some change sets are missing. Usually temporarily missing data. Retry a bit later.
-    CDEErrorCodeDiscontinuousRevisions      = 200,
-    
-    /// Some change sets are missing. Usually temporarily missing data. Retry a bit later.
-    CDEErrorCodeMissingDependencies         = 201,
-    
     /// User changed cloud identity. This forces a deleech.
     CDEErrorCodeCloudIdentityChanged        = 202,
     
@@ -83,9 +77,6 @@ typedef NS_ENUM(NSInteger, CDEErrorCode) {
     
     /// There is no persistent store at the path. Ensure a store exists and try again.
     CDEErrorCodeMissingStore                = 209,
-    
-    /// Files used to store large NSData attributes are missing. Usually temporary. Retry a bit later.
-    CDEErrorCodeMissingDataFiles            = 210,
     
     /// A save or merge should only generate one type of change per object (eg insert).
     /// Multiple changes for one object were detected.

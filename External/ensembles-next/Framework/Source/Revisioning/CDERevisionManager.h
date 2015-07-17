@@ -13,6 +13,9 @@
 
 @class CDEEventStore;
 @class CDERevisionSet;
+@class CDEStoreModificationEvent;
+
+extern BOOL CDEPerformIntegrabilityChecks; // Used for tests to disable checks
 
 @interface CDERevisionManager : NSObject
 
@@ -27,20 +30,17 @@
 - (NSArray *)fetchStoreModificationEventsConcurrentWithEvents:(NSArray *)events error:(NSError * __autoreleasing *)error;
 - (NSArray *)recursivelyFetchStoreModificationEventsConcurrentWithEvents:(NSArray *)events error:(NSError *__autoreleasing *)error;
 
-- (BOOL)checkIntegrationPrequisitesForEvents:(NSArray *)events error:(NSError * __autoreleasing *)error;
+- (NSArray *)integrableEventsFromEvents:(NSArray *)events;
 
 - (BOOL)checkModelVersionsOfStoreModificationEvents:(NSArray *)events;
-- (BOOL)checkAllDependenciesExistForStoreModificationEvents:(NSArray *)events;
-- (BOOL)checkContinuityOfStoreModificationEvents:(NSArray *)events;
 - (BOOL)checkAllDataFilesExistForStoreModificationEvents:(NSArray *)events;
 
-- (BOOL)checkRebasingPrerequisitesForEvents:(NSArray *)events error:(NSError * __autoreleasing *)error;
-
+- (BOOL)checkDependenciesOfBaseline:(CDEStoreModificationEvent *)baseline;
 - (BOOL)checkThatLocalPersistentStoreHasNotBeenAbandoned:(NSError * __autoreleasing *)error;
 
 - (CDEGlobalCount)maximumGlobalCount;
-- (CDERevisionSet *)revisionSetOfMostRecentEvents;
-- (NSSet *)allPersistentStoreIdentifiers;
+- (CDERevisionSet *)revisionSetOfMostRecentIntegrableEvents;
+- (NSSet *)persistentStoreIdentifiersIncludedInIntegrableEvents;
 
 - (CDERevisionSet *)revisionSetForLastMergeOrBaseline;
 

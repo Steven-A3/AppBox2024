@@ -38,6 +38,8 @@ typedef NS_ENUM(uint16_t, CDEUpdateStoreOption) {
 - (CDERevision *)makeNewEventOfType:(CDEStoreModificationEventType)type uniqueIdentifier:(NSString *)uniqueIdOrNil;
 - (void)finalizeNewEvent;
 
+- (void)updateEventRevisionsAccountingForMergeOfEventIDs:(NSArray *)eventIDs;
+
 - (void)performBlockAndWait:(CDECodeBlock)block; // Executes in eventManagedObjectContext queue
 
 - (BOOL)saveAndReset:(NSError * __autoreleasing *)error;

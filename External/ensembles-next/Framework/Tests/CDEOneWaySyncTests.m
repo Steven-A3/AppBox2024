@@ -137,7 +137,7 @@
 - (void)testNotANumberAttribute
 {    
     [self leechStores];
-    
+        
     id parent = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];
     [parent setValue:@(NAN) forKeyPath:@"doubleProperty"];
     XCTAssertTrue([context1 save:NULL], @"Could not save");

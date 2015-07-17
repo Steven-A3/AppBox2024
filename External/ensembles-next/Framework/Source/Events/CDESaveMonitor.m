@@ -138,7 +138,7 @@
             changedValuesByObjectID[objectID] = propertyChanges;
         }
     }];
-    
+
     NSManagedObjectContext *context = [objects.anyObject managedObjectContext];
     [changedValuesByContext setObject:changedValuesByObjectID forKey:context];
 }
@@ -203,6 +203,15 @@
     NSArray *objectIDsForUpdates = [orderedUpdatedObjects valueForKeyPath:@"objectID"];
     [eventBuilder updatePropertyChangeValuesForUpdatedObjects:orderedUpdatedObjects inManagedObjectContext:context options:CDEUpdateStoreOptionSavedValue propertyChangeValuesByObjectID:changedValuesByObjectID];
 
+    // If there are no changes, we bail early and don't create any save event.
+    NSUInteger insertCount = orderedInsertedObjects.count;
+    NSUInteger updateCount = orderedUpdatedObjects.count;
+    NSUInteger deleteCount = orderedDeletedObjects.count;
+    if (insertCount + updateCount + deleteCount == 0) {
+        [self.eventStore deregisterIncompleteMandatoryEventIdentifier:newUniqueId];
+        return;
+    }
+    
     // Make sure the event is saved atomically
     NSManagedObjectContext *eventContext = self.eventStore.managedObjectContext;
     [eventContext performBlock:^{

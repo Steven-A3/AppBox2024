@@ -22,6 +22,13 @@
     return self;
 }
 
+- (id)copyWithZone:(NSZone *)zone
+{
+    CDERevisionSet *newSet = [[self.class alloc] init];
+    newSet->revisionsByIdentifier = [self->revisionsByIdentifier mutableCopy];
+    return newSet;
+}
+
 - (NSSet *)revisions
 {
     NSSet *result = [NSSet setWithArray:revisionsByIdentifier.allValues];
@@ -134,6 +141,15 @@
     }];
 }
 
++ (CDERevisionSet *)revisionSetByTakingStoreWiseMinimumOfRevisionSets:(NSArray *)sets
+{
+    CDERevisionSet *newSet = [[CDERevisionSet alloc] init];
+    for (CDERevisionSet *set in sets) {
+        newSet = [newSet revisionSetByTakingStoreWiseMinimumWithRevisionSet:set];
+    }
+    return newSet;
+}
+
 + (CDERevisionSet *)revisionSetByTakingStoreWiseMaximumOfRevisionSets:(NSArray *)sets
 {
     CDERevisionSet *newSet = [[CDERevisionSet alloc] init];
@@ -212,6 +228,12 @@
     }
     
     return rev1AlwaysEqualToRev2;
+}
+
+- (BOOL)isEqual:(id)object
+{
+    if (![object isKindOfClass:self.class]) return NO;
+    return [self isEqualToRevisionSet:object];
 }
 
 

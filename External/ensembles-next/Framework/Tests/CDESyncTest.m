@@ -16,7 +16,7 @@
 
 @end
 
-@interface CDESyncTest () <CDEPersistentStoreEnsembleDelegate>
+@interface CDESyncTest () 
 
 @end
 
@@ -34,7 +34,7 @@
     testStoreFile1 = [testRootDirectory stringByAppendingPathComponent:@"store1.sql"];
     testStoreURL1 = [NSURL fileURLWithPath:testStoreFile1];
     
-    NSURL *testModelURL = [[NSBundle bundleForClass:self.class] URLForResource:@"CDEStoreModificationEventTestsModel" withExtension:@"momd"];
+    testModelURL = [[NSBundle bundleForClass:self.class] URLForResource:@"CDEStoreModificationEventTestsModel" withExtension:@"momd"];
     model = [[NSManagedObjectModel alloc] initWithContentsOfURL:testModelURL];
     NSPersistentStoreCoordinator *testPSC1 = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
     [testPSC1 addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:testStoreURL1 options:nil error:NULL];

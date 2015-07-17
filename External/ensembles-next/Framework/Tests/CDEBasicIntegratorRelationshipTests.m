@@ -8,13 +8,25 @@
 
 #import <XCTest/XCTest.h>
 #import "CDEIntegratorTestCase.h"
+#import "CDERevisionManager.h"
 
 @interface CDEBasicIntegratorRelationshipTests : CDEIntegratorTestCase
 
 @end
 
 @implementation CDEBasicIntegratorRelationshipTests
-    
+
++ (void)setUp
+{
+    [super setUp];
+    CDEPerformIntegrabilityChecks = NO;
+}
+
++ (void)tearDown
+{
+    [super tearDown];
+    CDEPerformIntegrabilityChecks = YES;
+}
     
 - (void)setUp
 {

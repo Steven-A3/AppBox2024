@@ -14,10 +14,11 @@
 @class CDERevisionSet;
 
 typedef NS_ENUM(int16_t, CDEStoreModificationEventType) {
-    CDEStoreModificationEventTypeIncomplete = 0,
-    CDEStoreModificationEventTypeBaseline   = 100,
-    CDEStoreModificationEventTypeSave       = 200,
-    CDEStoreModificationEventTypeMerge      = 300
+    CDEStoreModificationEventTypeIncomplete                    = 0,
+    CDEStoreModificationEventTypeBaseline                      = 100,
+    CDEStoreModificationEventTypeSave                          = 200,
+    CDEStoreModificationEventTypeMerge                         = 300,
+    CDEStoreModificationEventTypeBaselineMissingDependencies   = 400
 };
 
 
@@ -39,6 +40,9 @@ typedef NS_ENUM(int16_t, CDEStoreModificationEventType) {
 - (void)setRevisionSet:(CDERevisionSet *)newSet forPersistentStoreIdentifier:(NSString *)persistentStoreId;
 - (void)deleteEventRevisions;
 
+// Fetch all
++ (NSArray *)fetchCompleteStoreModificationEventsInManagedObjectContext:(NSManagedObjectContext *)context;
+
 // Fetching types of events. Pass nil for either argument to allow all.
 + (NSArray *)fetchStoreModificationEventsWithTypes:(NSArray *)types persistentStoreIdentifier:(NSString *)persistentStoreIdentifier inManagedObjectContext:(NSManagedObjectContext *)context;
 
@@ -50,11 +54,13 @@ typedef NS_ENUM(int16_t, CDEStoreModificationEventType) {
 
 // Fetching non-baseline events
 + (NSArray *)fetchNonBaselineEventsForPersistentStoreIdentifier:(NSString *)persistentStoreId sinceRevisionNumber:(CDERevisionNumber)revision inManagedObjectContext:(NSManagedObjectContext *)context;
++ (NSArray *)fetchNonBaselineEventsForPersistentStoreIdentifier:(NSString *)persistentStoreId inRevisionNumberRange:(NSRange)range inManagedObjectContext:(NSManagedObjectContext *)context;
 + (NSArray *)fetchNonBaselineEventsUpToGlobalCount:(CDEGlobalCount)globalCount inManagedObjectContext:(NSManagedObjectContext *)context;
 + (NSArray *)fetchNonBaselineEventsInManagedObjectContext:(NSManagedObjectContext *)context;
 
 // Fetching baseline events
-+ (instancetype)fetchMostRecentBaselineStoreModificationEventInManagedObjectContext:(NSManagedObjectContext *)context;
++ (instancetype)fetchBaselineEventInManagedObjectContext:(NSManagedObjectContext *)context;
++ (NSArray *)fetchBaselineEventsInManagedObjectContext:(NSManagedObjectContext *)context; // Ordered ascending
 
 // Predicates
 + (NSPredicate *)predicateForAllowedTypes:(NSArray *)types persistentStoreIdentifier:(NSString *)persistentStoreIdentifier;
@@ -63,7 +69,7 @@ typedef NS_ENUM(int16_t, CDEStoreModificationEventType) {
 + (void)prefetchRelatedObjectsForStoreModificationEvents:(NSArray *)storeModEvents;
 
 // Sorting
-+ (NSArray *)sortDescriptorsForNonBaselineEvents;
++ (NSArray *)sortDescriptorsForEvents;
 
 @end
 

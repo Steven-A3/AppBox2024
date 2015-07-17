@@ -672,7 +672,7 @@ const NSUInteger CDEFileDownloadBatchSize = 10;
 
 - (void)createTransitCacheDirectories
 {
-    NSArray *dirs = @[localFileRoot, self.localDownloadDirectory, self.localUploadDirectory];
+    NSArray *dirs = @[self.localDownloadDirectory, self.localUploadDirectory];
     for (NSString *dir in dirs) {
         NSError *error = nil;
         [fileManager removeItemAtPath:dir error:NULL];

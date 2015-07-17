@@ -8,6 +8,7 @@
 
 #import <XCTest/XCTest.h>
 #import "CDEIntegratorTestCase.h"
+#import "CDERevisionManager.h"  
 
 @interface CDEIntegratorUpdateTests : CDEIntegratorTestCase
 
@@ -15,6 +16,18 @@
 
 @implementation CDEIntegratorUpdateTests {
     id parent1, parent2, child1, child2, child3;
+}
+
++ (void)setUp
+{
+    [super setUp];
+    CDEPerformIntegrabilityChecks = NO;
+}
+
++ (void)tearDown
+{
+    [super tearDown];
+    CDEPerformIntegrabilityChecks = YES;
 }
 
 - (void)setUp

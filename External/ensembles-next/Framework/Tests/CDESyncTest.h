@@ -7,11 +7,11 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "CDEPersistentStoreEnsemble.h"
 
-@class CDEPersistentStoreEnsemble;
 @protocol CDECloudFileSystem;
 
-@interface CDESyncTest : XCTestCase {
+@interface CDESyncTest : XCTestCase <CDEPersistentStoreEnsembleDelegate> {
     @protected
     NSManagedObjectContext *context1, *context2;
     NSManagedObjectModel *model;
@@ -22,6 +22,7 @@
     NSString *cloudRootDir;
     NSURL *testStoreURL1, *testStoreURL2;
     NSString *eventDataRoot1, *eventDataRoot2;
+    NSURL *testModelURL;
 }
 
 - (void)waitForAsync;

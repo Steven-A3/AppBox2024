@@ -9,12 +9,25 @@
 #import <XCTest/XCTest.h>
 #import "CDEEventIntegrator.h"
 #import "CDEIntegratorTestCase.h"
+#import "CDERevisionManager.h"
 
 @interface CDEIntegratorMergeRepairTests : CDEIntegratorTestCase
 
 @end
 
 @implementation CDEIntegratorMergeRepairTests {
+}
+
++ (void)setUp
+{
+    [super setUp];
+    CDEPerformIntegrabilityChecks = NO;
+}
+
++ (void)tearDown
+{
+    [super tearDown];
+    CDEPerformIntegrabilityChecks = YES;
 }
 
 - (void)setUp

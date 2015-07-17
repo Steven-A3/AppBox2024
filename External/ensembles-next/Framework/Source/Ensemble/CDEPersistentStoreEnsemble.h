@@ -474,6 +474,13 @@ extern NSString * const CDEProgressFractionKey;
  */
 - (instancetype)initWithEnsembleIdentifier:(NSString *)identifier persistentStoreURL:(NSURL *)storeURL persistentStoreOptions:(NSDictionary *)options managedObjectModelURL:(NSURL *)modelURL cloudFileSystem:(id <CDECloudFileSystem>)cloudFileSystem localDataRootDirectoryURL:(NSURL *)dataRootURL;
 
+/**
+ Set this property to YES to use a compressed model hash that also ignores entities and properties in the model that are marked with CDEIgnoredKey.
+ 
+ The default value is NO.
+ */
+@property (nonatomic, readwrite) BOOL compressModelHashes;
+
 
 ///
 /// @name Leeching and Deleeching

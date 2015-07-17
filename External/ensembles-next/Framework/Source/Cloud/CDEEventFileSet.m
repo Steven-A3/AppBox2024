@@ -315,7 +315,8 @@
 {
     NSPredicate *predicate = nil;
     if (baseline) {
-        NSPredicate *basePredicate = [NSPredicate predicateWithFormat:@"type = %d AND globalCount = %lld AND uniqueIdentifier = %@", CDEStoreModificationEventTypeBaseline, globalCount, uniqueIdentifier];
+        NSArray *baselineTypes = @[@(CDEStoreModificationEventTypeBaseline), @(CDEStoreModificationEventTypeBaselineMissingDependencies)];
+        NSPredicate *basePredicate = [NSPredicate predicateWithFormat:@"type IN %@ AND globalCount = %lld AND uniqueIdentifier = %@", baselineTypes, globalCount, uniqueIdentifier];
         if (persistentStorePrefix) {
             NSPredicate *storePredicate = [NSPredicate predicateWithFormat:@"eventRevision.persistentStoreIdentifier BEGINSWITH %@", persistentStorePrefix];
             predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[basePredicate, storePredicate]];
@@ -325,7 +326,8 @@
         }
     }
     else {
-        predicate = [NSPredicate predicateWithFormat:@"(type = %d OR type = %d) AND globalCount = %lld AND eventRevision.persistentStoreIdentifier = %@ AND eventRevision.revisionNumber = %lld", CDEStoreModificationEventTypeSave, CDEStoreModificationEventTypeMerge, globalCount, persistentStoreIdentifier, revisionNumber];
+        NSArray *saveAndMergeTypes = @[@(CDEStoreModificationEventTypeSave), @(CDEStoreModificationEventTypeMerge)];
+        predicate = [NSPredicate predicateWithFormat:@"type IN %@ AND globalCount = %lld AND eventRevision.persistentStoreIdentifier = %@ AND eventRevision.revisionNumber = %lld", saveAndMergeTypes, globalCount, persistentStoreIdentifier, revisionNumber];
     }
     return predicate;
 }
