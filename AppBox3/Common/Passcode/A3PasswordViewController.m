@@ -69,6 +69,7 @@
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeNone;
+	self.tableView.scrollEnabled = NO;
 	[self.view addSubview:self.tableView];
 
 	[self.tableView makeConstraints:^(MASConstraintMaker *make) {
