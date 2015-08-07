@@ -190,7 +190,7 @@
 /**
  *  Fetch every objects for every entities and check any of it has duplicated objects
  *
- *  @return YES: Entity has duplicated records
+ *  @return YES if it founds entity which duplicated objects
  */
 - (BOOL)deduplicateDatabase {
 	NSManagedObjectModel *model = [NSManagedObjectModel MR_defaultManagedObjectModel];
@@ -201,10 +201,19 @@
 			dataHasDuplicatedRecords |= [self deDupRecordsForEntity:entityDescription.name];
 		}
 	}
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_defaultContext];
+	[managedObjectContext MR_saveToPersistentStoreAndWait];
+	
 	return dataHasDuplicatedRecords;
 }
 
+/**
+ *  Find duplicated NSManagedObject for given entity name and delete duplicated objects
+ *
+ *  @param entityName Name of the entity to find and delete duplicated objects.
+ *
+ *  @return YES if it founds duplicated objects and deleted duplicated objects.
+ */
 - (BOOL)deDupRecordsForEntity:(NSString *)entityName {
 	BOOL hasDuplicatedRecords = NO;
 	
@@ -230,26 +239,12 @@
 
 	NSError *error;
 	NSArray *result = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
-	FNLOG(@"%@", result);
 
 	for (NSDictionary *unique in result) {
 		if ([unique[@"dupCount"] integerValue] > 1) {
 			hasDuplicatedRecords = YES;
 			
-			NSMutableString *predicateFormatString = [NSMutableString new];
-			NSInteger argumentCount = [[unique allKeys] count] - 1;
-			for (NSInteger index = 0; index < argumentCount -  1 ; index++) {
-				[predicateFormatString appendString:@"%K == %@ AND "];
-			}
-			[predicateFormatString appendString:@"%K == %@"];
-			NSMutableArray *argumentsArray = [NSMutableArray new];
-			for (NSString *key in [unique allKeys]) {
-				if (![key isEqualToString:@"dupCount"]) {
-					[argumentsArray addObject:key];
-					[argumentsArray addObject:unique[key]];
-				}
-			}
-			NSPredicate *predicate = [NSPredicate predicateWithFormat:predicateFormatString argumentArray:argumentsArray];
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"uniqueID", unique[@"uniqueID"]];
 
 			NSArray *duplicatedItems = [NSClassFromString(entityName) MR_findAllWithPredicate:predicate];
 			BOOL skipFirst = YES;
@@ -258,6 +253,7 @@
 					skipFirst = NO;
 					continue;
 				}
+				FNLOG(@"Deleting: %@", targetRow);
 				[targetRow MR_deleteEntity];
 			}
 		}
