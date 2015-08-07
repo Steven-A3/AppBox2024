@@ -974,3 +974,7 @@
 "Your paid app receipt has been validated. Thank you very much for purchasing the AppBox Pro." = "你的付费应用程序收到了验证。非常感谢您购买AppBox Pro。";
 "iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again." = "iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again.";
 "Help" = "帮助";
+"Save Video" = "保存视频";
+"Failed" = "失败。";
+"Saved" = "它已被保存。";
+"Saving" = "进行中";

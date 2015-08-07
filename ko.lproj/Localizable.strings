@@ -969,3 +969,7 @@
 "Your paid app receipt has been validated. Thank you very much for purchasing the AppBox Pro." = "유료 버전 구매 기록이 확인되었습니다. AppBox Pro를 구매해 주셔서 감사합니다.";
 "iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again." = "중복 데이터가 발생하여 iCloud 동기화를 중단했습니다. iCloud 동기화를 다시 사용하시려면 도움말을 참조해 주세요.";
 "Help" = "도움말";
+"Save Video" = "비디오 저장";
+"Failed" = "실패했습니다.";
+"Saved" = "성공했습니다.";
+"Saving" = "저장하는 중";

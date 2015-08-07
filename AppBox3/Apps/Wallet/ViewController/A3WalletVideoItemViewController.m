@@ -28,8 +28,9 @@
 #import "WalletFavorite.h"
 #import "WalletFavorite+initialize.h"
 #import "WalletField.h"
+#import "MBProgressHUD.h"
 
-@interface A3WalletVideoItemViewController () <WalletItemEditDelegate, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface A3WalletVideoItemViewController () <WalletItemEditDelegate, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, strong) NSMutableArray *videoFieldItems;
 @property (nonatomic, strong) NSMutableArray *normalFieldItems;
@@ -43,6 +44,8 @@
 @property (nonatomic, strong) NSMutableDictionary *photoItem;
 @property (nonatomic, strong) NSMutableDictionary *metadataItem;
 @property (nonatomic, strong) MPMoviePlayerViewController *moviePlayerViewController;
+
+@property (nonatomic, strong) MBProgressHUD *progressHUD;
 
 @end
 
@@ -288,6 +291,8 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
         _metadataView.frame = frame;
         
         [_metadataView.favoriteButton addTarget:self action:@selector(favorButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+		[_metadataView addSaveButton];
+		[_metadataView.saveButton addTarget:self action:@selector(saveButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         
         _metadataView.titleTextField.delegate = self;
     }
@@ -340,7 +345,11 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     WalletFieldItem *fieldItem = _videoFieldItems[page];
 
 	if (fieldItem) {
-		CGFloat duration = [WalletData getDurationOfMovie:[fieldItem videoFileURLInOriginal:YES ]];
+		NSURL *videoURL = [fieldItem videoFileURLInOriginal:YES];
+		[_metadataView.saveButton setHidden:!UIVideoAtPathIsCompatibleWithSavedPhotosAlbum([videoURL path])];
+		_metadataView.tag = page;
+		
+		CGFloat duration = [WalletData getDurationOfMovie:videoURL];
 		NSInteger dur = round(duration);
 		_metadataView.mediaSizeLabel.text = [NSString stringWithFormat:@"%@ %lds", NSLocalizedString(@"Duration Time", @"Duration Time"), (long) dur];
 
@@ -777,6 +786,78 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }
+}
+
+#pragma mark -- Save button action
+
+- (void)saveButtonAction:(UIButton *)button {
+	UIActionSheet *confirmSaveSheet = [[UIActionSheet alloc] initWithTitle:nil
+																  delegate:self
+														 cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+													destructiveButtonTitle:nil
+														 otherButtonTitles:NSLocalizedString(@"Save Video", @"Save Video"), nil];
+	confirmSaveSheet.tag = button.tag;
+	[confirmSaveSheet showInView:self.view];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if (buttonIndex != actionSheet.cancelButtonIndex) {
+		WalletFieldItem *fieldItem = _videoFieldItems[actionSheet.tag];
+
+		if (fieldItem) {
+			NSURL *videoURL = [fieldItem videoFileURLInOriginal:YES];
+			[self showProgressHUDWithMessage:[NSString stringWithFormat:@"%@\u2026" , NSLocalizedString(@"Saving", @"Displayed with ellipsis as 'Saving...' when an item is in the process of being saved")]];
+			dispatch_async(dispatch_get_main_queue(), ^{
+				UISaveVideoAtPathToSavedPhotosAlbum([videoURL path], self,
+						@selector(video:didFinishSavingWithError:contextInfo:), nil);
+			});
+		}
+	}
+}
+
+- (void)video:(NSString *)path didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
+	[self showProgressHUDCompleteMessage: error ? NSLocalizedString(@"Failed", @"Informing the user a process has failed") : NSLocalizedString(@"Saved", @"Informing the user an item has been saved")];
+}
+
+#pragma mark - Action Progress
+
+- (MBProgressHUD *)progressHUD {
+	if (!_progressHUD) {
+		_progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+		_progressHUD.minSize = CGSizeMake(120, 120);
+		_progressHUD.minShowTime = 1;
+		_progressHUD.opacity = 0.9;
+		// The sample image is based on the
+		// work by: http://www.pixelpressicons.com
+		// licence: http://creativecommons.org/licenses/by/2.5/ca/
+		self.progressHUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MWPhotoBrowser.bundle/images/Checkmark.png"]];
+		[self.view addSubview:_progressHUD];
+	}
+	return _progressHUD;
+}
+
+- (void)showProgressHUDWithMessage:(NSString *)message {
+	self.progressHUD.labelText = message;
+	self.progressHUD.mode = MBProgressHUDModeIndeterminate;
+	[self.progressHUD show:YES];
+	self.navigationController.navigationBar.userInteractionEnabled = NO;
+}
+
+- (void)hideProgressHUD:(BOOL)animated {
+	[self.progressHUD hide:animated];
+	self.navigationController.navigationBar.userInteractionEnabled = YES;
+}
+
+- (void)showProgressHUDCompleteMessage:(NSString *)message {
+	if (message) {
+		if (self.progressHUD.isHidden) [self.progressHUD show:YES];
+		self.progressHUD.labelText = message;
+		self.progressHUD.mode = MBProgressHUDModeCustomView;
+		[self.progressHUD hide:YES afterDelay:1.5];
+	} else {
+		[self.progressHUD hide:YES];
+	}
+	self.navigationController.navigationBar.userInteractionEnabled = YES;
 }
 
 @end

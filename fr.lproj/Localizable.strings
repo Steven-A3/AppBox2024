@@ -959,3 +959,7 @@
 "Your paid app receipt has been validated. Thank you very much for purchasing the AppBox Pro." = "Votre application reçu de paiement a été validé. Merci beaucoup pour l'achat de l'AppBox Pro.";
 "iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again." = "iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again.";
 "Help" = "Aide";
+"Save Video" = "Enregistrer la vidéo";
+"Failed" = "échoué";
+"Saved" = "Enregistré";
+"Saving" = "En cours";

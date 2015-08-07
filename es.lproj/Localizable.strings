@@ -954,3 +954,7 @@ Introduzca la clave de cifrado para el bolsillo.";
 "Your paid app receipt has been validated. Thank you very much for purchasing the AppBox Pro." = "Su recibo aplicación de pago ha sido validado. Muchas gracias por comprar el AppBox Pro.";
 "iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again." = "iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again.";
 "Help" = "Ayuda";
+"Save Video" = "Guardar vídeo";
+"Failed" = "fracasado";
+"Saved" = "Salvado";
+"Saving" = "En curso";

@@ -954,3 +954,7 @@ Inserire chiave di crittografia per il portafoglio.";
 "Your paid app receipt has been validated. Thank you very much for purchasing the AppBox Pro." = "La ricevuta pagato app è stato convalidato. La ringrazio molto per aver acquistato il AppBox Pro.";
 "iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again." = "iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again.";
 "Help" = "Guida";
+"Save Video" = "Salva video";
+"Failed" = "Mancato";
+"Saved" = "Risparmiato";
+"Saving" = "In corso";

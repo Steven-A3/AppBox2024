@@ -98,4 +98,20 @@
 	return [text boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : font} context:context].size.height;
 }
 
+- (UIButton *)saveButton {
+	if (!_saveButton) {
+		_saveButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+		[_saveButton setImage:[[UIImage imageNamed:@"share"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
+	}
+	return _saveButton;
+}
+
+- (void)addSaveButton {
+	[self addSubview:self.saveButton];
+	[_saveButton makeConstraints:^(MASConstraintMaker *make) {
+		make.centerY.equalTo(self.favoriteButton.centerY);
+		make.right.equalTo(self.right).with.offset(-10);
+	}];
+}
+
 @end

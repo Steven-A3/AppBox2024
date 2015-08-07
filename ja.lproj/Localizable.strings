@@ -968,3 +968,7 @@
 "Your paid app receipt has been validated. Thank you very much for purchasing the AppBox Pro." = "あなたの有料アプリの領収書が検証されています。AppBox Proの購入ありがとうございました。";
 "iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again." = "重複データが発生してiCloudの同期が中断されました。iCloud同期を再起動するには、ヘルプを参照してください。";
 "Help" = "ヘルプ";
+"Save Video" = "ビデオを保存する";
+"Failed" = "失敗しました。";
+"Saved" = "保存しました。";
+"Saving" = "保存中";

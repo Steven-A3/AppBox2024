@@ -909,3 +909,7 @@ Enter Encryption Key for Wallet.";
 "Your paid app receipt has been validated. Thank you very much for purchasing the AppBox Pro." = "Your paid app receipt has been validated. Thank you very much for purchasing the AppBox Pro.";
 "iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again." = "iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again.";
 "Help" = "Help";
+"Save Video" = "Save Video";
+"Failed" = "Failed";
+"Saved" = "Saved";
+"Saving" = "Saving";

@@ -970,3 +970,7 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 "Your paid app receipt has been validated. Thank you very much for purchasing the AppBox Pro." = "Ihre bezahlten App Erhalt validiert wurde. Vielen Dank für den Kauf des AppBox Pro.";
 "iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again." = "iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again.";
 "Help" = "Hilfe";
+"Save Video" = "Save Video";
+"Failed" = "fehlgeschlagen";
+"Saved" = "gespeichert";
+"Saving" = "in Bearbeitung";
