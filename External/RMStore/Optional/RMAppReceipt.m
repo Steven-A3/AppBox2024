@@ -143,7 +143,7 @@ static NSURL *_appleRootCertificateURL = nil;
 					}
 #warning 제출시에는 반드시 아래의 행을 제거해야 한다.
 //#ifdef DEBUG
-//					_originalAppVersion = @"3.6.0";
+//					_originalAppVersion = @"3.7.0";
 //#endif
                     break;
                 case RMAppReceiptASN1TypeExpirationDate:
