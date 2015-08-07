@@ -13,5 +13,6 @@ extern NSString *const A3CloudHasData;
 @interface A3AppDelegate (iCloud)
 
 - (void)setCloudEnabled:(BOOL)enable;
+- (BOOL)deduplicateDatabase;
 
 @end

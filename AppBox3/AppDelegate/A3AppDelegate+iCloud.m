@@ -187,4 +187,83 @@
 	];
 }
 
+/**
+ *  Fetch every objects for every entities and check any of it has duplicated objects
+ *
+ *  @return YES: Entity has duplicated records
+ */
+- (BOOL)deduplicateDatabase {
+	NSManagedObjectModel *model = [NSManagedObjectModel MR_defaultManagedObjectModel];
+	
+	BOOL dataHasDuplicatedRecords = NO;
+	for (NSEntityDescription *entityDescription in model.entities) {
+		@autoreleasepool {
+			dataHasDuplicatedRecords |= [self deDupRecordsForEntity:entityDescription.name];
+		}
+	}
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+	return dataHasDuplicatedRecords;
+}
+
+- (BOOL)deDupRecordsForEntity:(NSString *)entityName {
+	BOOL hasDuplicatedRecords = NO;
+	
+	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_defaultContext];
+	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:entityName inManagedObjectContext:managedObjectContext];
+
+	NSExpression *keyPathExpression = [NSExpression expressionForKeyPath: @"uniqueID"]; // Does not really matter
+	NSExpression *countExpression = [NSExpression expressionForFunction:@"count:"
+															  arguments:@[keyPathExpression]];
+	NSExpressionDescription *expressionDescription = [[NSExpressionDescription alloc] init];
+	[expressionDescription setName: @"dupCount"];
+	[expressionDescription setExpression: countExpression];
+	[expressionDescription setExpressionResultType: NSInteger32AttributeType];
+
+	NSMutableArray *propertiesToFetch = [NSMutableArray arrayWithArray:entityDescription.properties];
+	[propertiesToFetch addObject:expressionDescription];
+
+	NSFetchRequest *fetchRequest = [NSFetchRequest new];
+	fetchRequest.entity = entityDescription;
+	fetchRequest.propertiesToFetch = propertiesToFetch;
+	fetchRequest.propertiesToGroupBy = entityDescription.properties;
+	fetchRequest.resultType = NSDictionaryResultType;
+
+	NSError *error;
+	NSArray *result = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+	FNLOG(@"%@", result);
+
+	for (NSDictionary *unique in result) {
+		if ([unique[@"dupCount"] integerValue] > 1) {
+			hasDuplicatedRecords = YES;
+			
+			NSMutableString *predicateFormatString = [NSMutableString new];
+			NSInteger argumentCount = [[unique allKeys] count] - 1;
+			for (NSInteger index = 0; index < argumentCount -  1 ; index++) {
+				[predicateFormatString appendString:@"%K == %@ AND "];
+			}
+			[predicateFormatString appendString:@"%K == %@"];
+			NSMutableArray *argumentsArray = [NSMutableArray new];
+			for (NSString *key in [unique allKeys]) {
+				if (![key isEqualToString:@"dupCount"]) {
+					[argumentsArray addObject:key];
+					[argumentsArray addObject:unique[key]];
+				}
+			}
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:predicateFormatString argumentArray:argumentsArray];
+
+			NSArray *duplicatedItems = [NSClassFromString(entityName) MR_findAllWithPredicate:predicate];
+			BOOL skipFirst = YES;
+			for (NSManagedObject *targetRow in duplicatedItems) {
+				if (skipFirst) {
+					skipFirst = NO;
+					continue;
+				}
+				[targetRow MR_deleteEntity];
+			}
+		}
+	}
+
+	return hasDuplicatedRecords;
+}
+
 @end
