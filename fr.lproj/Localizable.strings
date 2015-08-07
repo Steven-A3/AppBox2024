@@ -955,4 +955,7 @@
 "Transaction failed. Try again later." = "Échec de la transaction. Réessayez ultérieurement.";
 "Processing" = "Traitement en cours";
 "Thank You" = "Merci";
-"You've already purchased this.\nYour purchase was successful." = "Vous avez déjà acheté cet article.\nVotre achat a été effectué avec succès.";
+"You've already purchased this. Your purchases has been restored." = "Vous avez déjà acheté cet article. Vos achats a été restauré.";
+"Your paid app receipt has been validated. Thank you very much for purchasing the AppBox Pro." = "Votre application reçu de paiement a été validé. Merci beaucoup pour l'achat de l'AppBox Pro.";
+"iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again." = "iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again.";
+"Help" = "Aide";

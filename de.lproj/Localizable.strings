@@ -966,4 +966,7 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 "Transaction failed. Try again later." = "Fehler bei Transaktion. Versuchen Sie es später erneut.";
 "Processing" = "Verarbeitung";
 "Thank You" = "Danke";
-"You've already purchased this.\nYour purchase was successful." = "Sie haben diesen Artikel bereits gekauft.\nIhr Kauf war erfolgreich.";
+"You've already purchased this. Your purchases has been restored." = "Sie haben diesen Artikel bereits gekauft. Ihre Käufe wurde wiederhergestellt.";
+"Your paid app receipt has been validated. Thank you very much for purchasing the AppBox Pro." = "Ihre bezahlten App Erhalt validiert wurde. Vielen Dank für den Kauf des AppBox Pro.";
+"iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again." = "iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again.";
+"Help" = "Hilfe";

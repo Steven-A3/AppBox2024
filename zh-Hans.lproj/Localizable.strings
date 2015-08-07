@@ -970,4 +970,7 @@
 "Transaction failed. Try again later." = "交易失敗。稍候再试。";
 "Processing" = "正在处理";
 "Thank You" = "非常感谢";
-"You've already purchased this.\nYour purchase was successful." = "您已经购买了此项目。\n您已成功完成购买。";
+"You've already purchased this. Your purchases has been restored." = "您已经购买了此项目。您的购买有所恢复。";
+"Your paid app receipt has been validated. Thank you very much for purchasing the AppBox Pro." = "你的付费应用程序收到了验证。非常感谢您购买AppBox Pro。";
+"iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again." = "iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again.";
+"Help" = "帮助";

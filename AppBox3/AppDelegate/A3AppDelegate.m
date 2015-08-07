@@ -8,6 +8,7 @@
 
 #import <DropboxSDK/DropboxSDK.h>
 #import <CoreLocation/CoreLocation.h>
+#import <AVFoundation/AVFoundation.h>
 #import "A3AppDelegate.h"
 #import "A3MainMenuTableViewController.h"
 #import "MMDrawerController.h"
@@ -85,7 +86,9 @@ NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.A
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	_shouldPresentAd = YES;
 	_isIAPRemoveAdsAvailable = NO;
-	
+
+	[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
+
 	[self configureStore];
 
 #ifdef DEBUG
@@ -103,7 +106,9 @@ NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.A
 
 	CDESetCurrentLoggingLevel(CDELoggingLevelNone);
 
-	self.googleAdInterstitial = [self createAndLoadInterstitial];
+	if (_shouldPresentAd) {
+		self.googleAdInterstitial = [self createAndLoadInterstitial];
+	}
 
 	[self prepareDirectories];
 	[A3SyncManager sharedSyncManager];
@@ -433,6 +438,9 @@ NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.A
 			break;
 		case 21:
 			[self showLadyCalendarDetailView];
+			break;
+		case 31:
+			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.allaboutapps.net/wordpress/archives/274"]];
 			break;
 		case ABAD_ALERT_PUSH_ALERT:
 			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.alertURLString]];
@@ -841,14 +849,34 @@ NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.A
 	[MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:[self storeFileName]];
 
 	self.managedObjectContext = [NSManagedObjectContext MR_defaultContext];
-
-	if ([[A3UserDefaults standardUserDefaults] boolForKey:A3SyncManagerCloudEnabled]) {
-		A3SyncManager *sharedSyncManager = [A3SyncManager sharedSyncManager];
-		sharedSyncManager.storePath = [[self storeURL] path];
-		[sharedSyncManager setupEnsemble];
-		[sharedSyncManager synchronizeWithCompletion:NULL];
-		[sharedSyncManager uploadMediaFilesToCloud];
-		[sharedSyncManager downloadMediaFilesFromCloud];
+	if ([self deduplicateDatabase]) {
+		// 중복 데이터가 발견되었다면, 동기화를 끄고, 사용자에게 새로 시작하도록 안내를 한다.
+		if ([[A3UserDefaults standardUserDefaults] boolForKey:A3SyncManagerCloudEnabled]) {
+			A3SyncManager *sharedSyncManager = [A3SyncManager sharedSyncManager];
+			sharedSyncManager.storePath = [[self storeURL] path];
+			[sharedSyncManager setupEnsemble];
+			[sharedSyncManager disableCloudSync];
+			
+			[[A3UserDefaults standardUserDefaults] removeObjectForKey:A3SyncManagerCloudEnabled];
+			[[A3UserDefaults standardUserDefaults] synchronize];
+			
+			UIAlertView *alertSyncDisabled = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+																		message:NSLocalizedString(@"iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again.", nil)
+																	   delegate:self
+															  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+															  otherButtonTitles:NSLocalizedString(@"Help", @"Help"), nil];
+			alertSyncDisabled.tag = 31;
+			[alertSyncDisabled show];
+		}
+	} else {
+		if ([[A3UserDefaults standardUserDefaults] boolForKey:A3SyncManagerCloudEnabled]) {
+			A3SyncManager *sharedSyncManager = [A3SyncManager sharedSyncManager];
+			sharedSyncManager.storePath = [[self storeURL] path];
+			[sharedSyncManager setupEnsemble];
+			[sharedSyncManager synchronizeWithCompletion:NULL];
+			[sharedSyncManager uploadMediaFilesToCloud];
+			[sharedSyncManager downloadMediaFilesFromCloud];
+		}
 	}
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
@@ -1087,12 +1115,16 @@ NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.A
 
 #pragma mark - Validate App Receipt
 
+- (RMStoreAppReceiptVerificator *)receiptVerificator {
+	if (!_receiptVerificator) {
+		_receiptVerificator = [[RMStoreAppReceiptVerificator alloc] init];
+	}
+	return _receiptVerificator;
+}
+
 - (void)configureStore
 {
-	_receiptVerificator = [[RMStoreAppReceiptVerificator alloc] init];
-	[RMStore defaultStore].receiptVerificator = _receiptVerificator;
-
-	if (![_receiptVerificator verifyAppReceipt]) {
+	if (![self.receiptVerificator verifyAppReceipt]) {
 		FNLOG(@"App Receipt Validation Failed!");
 		[self prepareIAPProducts];
 	} else {
@@ -1102,17 +1134,32 @@ NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.A
 
 - (BOOL)receiptHasRemoveAds {
 	RMAppReceipt *receipt = [RMAppReceipt bundleReceipt];
-	if (receipt.originalAppVersion) {
-		NSArray *components = [receipt.originalAppVersion componentsSeparatedByString:@"."];
-		float version = [components[0] floatValue] + [components[1] floatValue] / 10.0;
-		if (version <= 3.5) {
+	if (receipt == nil) return NO;
+
+	if ([self isPaidAppVersionCustomer:receipt]) {
+		return YES;
+	}
+	return [self isIAPPurchasedCustomer:receipt];
+}
+
+- (BOOL)isPaidAppVersionCustomer:(RMAppReceipt *)receipt {
+	if (receipt == nil) return NO;
+	
+	// https://developer.apple.com/library/ios/releasenotes/General/ValidateAppStoreReceipt/Chapters/ReceiptFields.html#//apple_ref/doc/uid/TP40010573-CH106-SW_9
+	// Receipts prior to June 20, 2013 omit this field. It is populated on all new receipts, regardless of OS version.
+	if (receipt.originalAppVersion == nil) return YES;
+
+	NSArray *components = [receipt.originalAppVersion componentsSeparatedByString:@"."];
+	float version = [components[0] floatValue] + [components[1] floatValue] / 10.0;
+	return version <= 3.5;
+}
+
+- (BOOL)isIAPPurchasedCustomer:(RMAppReceipt *)receipt {
+	if (receipt == nil) return NO;
+
+	for (RMAppReceiptIAP *iapReceipt in receipt.inAppPurchases) {
+		if ([iapReceipt.productIdentifier isEqualToString:A3InAppPurchaseRemoveAdsProductIdentifier]) {
 			return YES;
-		} else {
-			for (RMAppReceiptIAP *iapReceipt in receipt.inAppPurchases) {
-				if ([iapReceipt.productIdentifier isEqualToString:A3InAppPurchaseRemoveAdsProductIdentifier]) {
-					return YES;
-				}
-			}
 		}
 	}
 	return NO;

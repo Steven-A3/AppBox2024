@@ -19,6 +19,7 @@
 @class Reachability;
 @class A3DataMigrationManager;
 @class A3MainMenuTableViewController;
+@class RMAppReceipt;
 
 extern NSString *const kA3ApplicationLastRunVersion;
 extern NSString *const kA3AppsMenuName;
@@ -142,6 +143,10 @@ extern NSString *const A3InAppPurchaseRemoveAdsProductIdentifier;
 - (void)didFinishPushViewController;
 
 - (BOOL)receiptHasRemoveAds;
+
+- (BOOL)isPaidAppVersionCustomer:(RMAppReceipt *)receipt;
+
+- (BOOL)isIAPPurchasedCustomer:(RMAppReceipt *)receipt;
 @end
 
 #import "A3AppDelegate+iCloud.h"

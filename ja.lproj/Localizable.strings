@@ -964,4 +964,7 @@
 "Transaction failed. Try again later." = "トランザクションに失敗しました。 後でやり直してください。";
 "Processing" = "処理しています";
 "Thank You" = "ありがとうございます";
-"You've already purchased this.\nYour purchase was successful." = "このアイテムは購入済みです。\n購入手続きが完了しました。";
+"You've already purchased this. Your purchases has been restored." = "このアイテムは購入済みです。あなたの購入は、復元されました。";
+"Your paid app receipt has been validated. Thank you very much for purchasing the AppBox Pro." = "あなたの有料アプリの領収書が検証されています。AppBox Proの購入ありがとうございました。";
+"iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again." = "重複データが発生してiCloudの同期が中断されました。iCloud同期を再起動するには、ヘルプを参照してください。";
+"Help" = "ヘルプ";

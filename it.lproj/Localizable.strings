@@ -950,4 +950,7 @@ Inserire chiave di crittografia per il portafoglio.";
 "Transaction failed. Try again later." = "Transazione non riuscita. Riprovare più tardi.";
 "Processing" = "Elaborazione in corso";
 "Thank You" = "Grazie";
-"You've already purchased this.\nYour purchase was successful." = "Hai già acquistato quest'articolo.\nIl tuo acquisto è stato completato correttamente.";
+"You've already purchased this. Your purchases has been restored." = "Hai già acquistato quest'articolo. I vostri acquisti è stata restaurata.";
+"Your paid app receipt has been validated. Thank you very much for purchasing the AppBox Pro." = "La ricevuta pagato app è stato convalidato. La ringrazio molto per aver acquistato il AppBox Pro.";
+"iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again." = "iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again.";
+"Help" = "Guida";

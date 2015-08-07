@@ -212,6 +212,12 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 				@{kA3AppsMenuName : A3AppName_Settings, kA3AppsStoryboard_iPhone : @"A3Settings", kA3AppsStoryboard_iPad:@"A3Settings", kA3AppsMenuNeedSecurityCheck : @YES, kA3AppsDoNotKeepAsRecent : @YES},
 				@{kA3AppsMenuName : @"About", kA3AppsStoryboard_iPhone : @"about", kA3AppsStoryboard_iPad:@"about", kA3AppsDoNotKeepAsRecent:@YES},
 		];
+	} else if ([[A3AppDelegate instance] shouldPresentAd]) {
+		bottomSection = @[
+				@{kA3AppsMenuName : A3AppName_RestorePurchase, kA3AppsMenuNeedSecurityCheck : @NO, kA3AppsDoNotKeepAsRecent : @YES},
+				@{kA3AppsMenuName : A3AppName_Settings, kA3AppsStoryboard_iPhone : @"A3Settings", kA3AppsStoryboard_iPad:@"A3Settings", kA3AppsMenuNeedSecurityCheck : @YES, kA3AppsDoNotKeepAsRecent : @YES},
+				@{kA3AppsMenuName : @"About", kA3AppsStoryboard_iPhone : @"about", kA3AppsStoryboard_iPad:@"about", kA3AppsDoNotKeepAsRecent:@YES},
+		];
 	} else {
 		bottomSection = @[
 				@{kA3AppsMenuName : A3AppName_Settings, kA3AppsStoryboard_iPhone : @"A3Settings", kA3AppsStoryboard_iPad:@"A3Settings", kA3AppsMenuNeedSecurityCheck : @YES, kA3AppsDoNotKeepAsRecent : @YES},
@@ -262,10 +268,10 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 				BOOL proceedPasscodeCheck = NO;
 
 				if ([elementObject.title isEqualToString:A3AppName_RemoveAds]) {
-					[self purchaseRemoveAds];
+					[self didSelectRemoveAdsRow];
 					return;
 				} else if ([elementObject.title isEqualToString:A3AppName_RestorePurchase]) {
-					[self restorePurchaseIAPRemoveAds];
+					[self didSelectRestorePurchase];
 					return;
 				}
 
@@ -683,7 +689,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 
 #pragma mark In App Purchase
 
-- (void)purchaseRemoveAds {
+- (void)didSelectRemoveAdsRow {
 	A3AppDelegate *appDelegate = [A3AppDelegate instance];
 	appDelegate.inAppPurchaseInProgress = YES;
 	[appDelegate removeAdDisplayTimer];
@@ -691,28 +697,43 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 	[self showProcessingHUD];
 
 	if ([appDelegate.receiptVerificator verifyAppReceipt]) {
-		[self proceedPurchaseRemoveAds];
+		// 영수증을 다시 확인을 한다.
+		// 영수증이 정상인데, 이 멤버가 호출이 되었다는 것은,
+		// 사용자가 3.6 이후 버전을 구매했다는 의미 이므로 인앱 구매를 진행한다.
+		// App Store에서 구매한 실 사용자라면 이 흐름으로 진행이 된다.
+
+		[self executePurchaseRemoveAds];
 	} else {
+		// App Review 상황이거나, 앱을 App Store를 통해서 설치하지 않은 경우,
+		// iTunes를 통해서 설치한 경우, 영수증이 없는 경우가 있다.
+		
+		// 앱 심사 과정의 Reject된 상황을 고려할 때 refreshReceipt가 App Review과정에서 실패하는 것으로
+		// 추정이 된다.
 		[[RMStore defaultStore] refreshReceiptOnSuccess:^{
-			if ([appDelegate receiptHasRemoveAds]) {
+			RMAppReceipt *appReceipt = [RMAppReceipt bundleReceipt];
+			if ([appDelegate isPaidAppVersionCustomer:appReceipt]) {
+				[self hideProcessingHUD];
+				[self processRemoveAds];
+				appDelegate.inAppPurchaseInProgress = NO;
+				[self alertPaidAppCustomer];
+			} else if ([appDelegate isIAPPurchasedCustomer:appReceipt]) {
 				[self hideProcessingHUD];
 				[self processRemoveAds];
 				appDelegate.inAppPurchaseInProgress = NO;
 				[self alertAlreadyPurchased];
 			} else {
-				[self proceedPurchaseRemoveAds];
+				[self executePurchaseRemoveAds];
 			}
 		} failure:^(NSError *error) {
-			[self hideProcessingHUD];
-			
-			[self alertRestoreFailed];
-			appDelegate.inAppPurchaseInProgress = NO;
+			// 탈옥폰이라면 다음에 진행될 인앱 구매 진행이 실패할 것이다.
+			// 앱 리뷰시 영수증 리프레시에 실패하여 이 코드가 실행이 된다.
+			[self executePurchaseRemoveAds];
 		}];
 		return;
 	}
 }
 
-- (void)proceedPurchaseRemoveAds {
+- (void)executePurchaseRemoveAds {
 	A3AppDelegate *appDelegate = [A3AppDelegate instance];
 	
 	[[RMStore defaultStore] addPayment:A3InAppPurchaseRemoveAdsProductIdentifier success:^(SKPaymentTransaction *transaction) {
@@ -724,17 +745,12 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 	} failure:^(SKPaymentTransaction *transaction, NSError *error) {
 		[self hideProcessingHUD];
 		
-		UIAlertView *purchaseFailed = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-																 message:NSLocalizedString(@"Transaction failed. Try again later.", @"Transaction failed. Try again later.")
-																delegate:nil
-													   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-													   otherButtonTitles:nil];
-		[purchaseFailed show];
+		[self alertTransactionFailed];
 		appDelegate.inAppPurchaseInProgress = NO;
 	}];
 }
 
-- (void)restorePurchaseIAPRemoveAds {
+- (void)didSelectRestorePurchase {
 	// App Receipt가 정상적으로 Validate가 되었는지 확인한다.
 	A3AppDelegate *appDelegate = [A3AppDelegate instance];
 	appDelegate.inAppPurchaseInProgress = YES;
@@ -746,47 +762,54 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 		[[RMStore defaultStore] refreshReceiptOnSuccess:^{
 			[self hideProcessingHUD];
 
-			if ([appDelegate receiptHasRemoveAds]) {
+			RMAppReceipt *appReceipt = [RMAppReceipt bundleReceipt];
+			if ([appDelegate isPaidAppVersionCustomer:appReceipt]) {
+				[self processRemoveAds];
+				[self alertPaidAppCustomer];
+				appDelegate.inAppPurchaseInProgress = NO;
+			} else if ([appDelegate isIAPPurchasedCustomer:appReceipt]) {
 				[self processRemoveAds];
 				[self alertAlreadyPurchased];
+				appDelegate.inAppPurchaseInProgress = NO;
 			} else {
-				[self alertRestoreFailed];
+				[self executeRestoreTransaction];
 			}
-			appDelegate.inAppPurchaseInProgress = NO;
 
 		} failure:^(NSError *error) {
-			[self hideProcessingHUD];
-
-			[self alertRestoreFailed];
-			appDelegate.inAppPurchaseInProgress = NO;
+			[self executeRestoreTransaction];
 		}];
 		return;
 	} else {
-		[[RMStore defaultStore] restoreTransactionsOnSuccess:^(NSArray *transactions) {
-			[self hideProcessingHUD];
-
-			BOOL isTransactionRestored = NO;
-			for (SKPaymentTransaction *transaction in transactions) {
-				SKPayment *payment = transaction.payment;
-				if ([payment.productIdentifier isEqualToString:A3InAppPurchaseRemoveAdsProductIdentifier]) {
-					isTransactionRestored = YES;
-					break;
-				}
-			}
-			
-			if (isTransactionRestored) {
-				[self processRemoveAds];
-				[self alertRestoreSuccess];
-			} else {
-				[self alertRestoreFailed];
-			}
-			appDelegate.inAppPurchaseInProgress = NO;
-		} failure:^(NSError *error) {
-			[self hideProcessingHUD];
-
-			appDelegate.inAppPurchaseInProgress = NO;
-		}];
+		[self executeRestoreTransaction];
 	}
+}
+
+- (void)executeRestoreTransaction {
+	A3AppDelegate *appDelegate = [A3AppDelegate instance];
+	[[RMStore defaultStore] restoreTransactionsOnSuccess:^(NSArray *transactions) {
+		[self hideProcessingHUD];
+		
+		BOOL isTransactionRestored = NO;
+		for (SKPaymentTransaction *transaction in transactions) {
+			SKPayment *payment = transaction.payment;
+			if ([payment.productIdentifier isEqualToString:A3InAppPurchaseRemoveAdsProductIdentifier]) {
+				isTransactionRestored = YES;
+				break;
+			}
+		}
+		
+		if (isTransactionRestored) {
+			[self processRemoveAds];
+			[self alertRestoreSuccess];
+		} else {
+			[self alertRestoreFailed];
+		}
+		appDelegate.inAppPurchaseInProgress = NO;
+	} failure:^(NSError *error) {
+		[self hideProcessingHUD];
+		
+		appDelegate.inAppPurchaseInProgress = NO;
+	}];
 }
 
 - (void)processRemoveAds {
@@ -797,11 +820,20 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 	[self menuContentsChanged];
 }
 
-- (void)alertAlreadyPurchased {
-	UIAlertView *alertAlreadyPurchased = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Thank You", @"Thank You")
-																	message:NSLocalizedString(@"You've already purchased this.\nYour purchase was successful.", @"You've already purchased this.\nYour purchase was successful.")
+- (void)alertPaidAppCustomer {
+	UIAlertView *alertAlreadyPurchased = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Thank You", nil)
+																	message:NSLocalizedString(@"Your paid app receipt has been validated. Thank you very much for purchasing the AppBox Pro.", nil)
 																   delegate:nil
-														  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+														  cancelButtonTitle:NSLocalizedString(@"OK", nil)
+														  otherButtonTitles:nil];
+	[alertAlreadyPurchased show];
+}
+
+- (void)alertAlreadyPurchased {
+	UIAlertView *alertAlreadyPurchased = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Thank You", nil)
+																	message:NSLocalizedString(@"You've already purchased this. Your purchases has been restored.", nil)
+																   delegate:nil
+														  cancelButtonTitle:NSLocalizedString(@"OK", nil)
 														  otherButtonTitles:nil];
 	[alertAlreadyPurchased show];
 }
@@ -822,6 +854,15 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 											  otherButtonTitles:nil];
 	[alertView show];
+}
+
+- (void)alertTransactionFailed {
+	UIAlertView *purchaseFailed = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+															 message:NSLocalizedString(@"Transaction failed. Try again later.", @"Transaction failed. Try again later.")
+															delegate:nil
+												   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+												   otherButtonTitles:nil];
+	[purchaseFailed show];
 }
 
 - (MBProgressHUD *)hudView {

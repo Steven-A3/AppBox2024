@@ -950,4 +950,7 @@ Introduzca la clave de cifrado para el bolsillo.";
 "Transaction failed. Try again later." = "Error en la transacción. Inténtelo de nuevo más tarde.";
 "Processing" = "Procesamiento";
 "Thank You" = "Gracias";
-"You've already purchased this.\nYour purchase was successful." = "Ya has comprado este artículo.\nTu compra se ha completado correctamente.";
+"You've already purchased this. Your purchases has been restored." = "Ya has comprado este artículo. Sus compras se ha restaurado.";
+"Your paid app receipt has been validated. Thank you very much for purchasing the AppBox Pro." = "Su recibo aplicación de pago ha sido validado. Muchas gracias por comprar el AppBox Pro.";
+"iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again." = "iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again.";
+"Help" = "Ayuda";
