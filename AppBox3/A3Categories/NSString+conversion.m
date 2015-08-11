@@ -8,7 +8,6 @@
 
 #import "NSString+conversion.h"
 #import "common.h"
-#import "A3AppDelegate.h"
 
 @implementation NSString (conversion)
 
