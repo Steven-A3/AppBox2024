@@ -36,6 +36,7 @@
 #import "RMAppReceipt.h"
 
 NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
+NSString *const A3UserDefaultsLastAdsDisplayTime = @"A3UserDefaultsLastAdsDisplayTime";
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 NSString *const A3DropboxLoginWithSuccess = @"A3DropboxLoginWithSuccess";
 NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
@@ -1204,18 +1205,40 @@ NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.A
 		presentingViewController = rootViewController.presentedViewController ? rootViewController.presentedViewController : rootViewController;
 
 		[self.googleAdInterstitial presentFromRootViewController:presentingViewController];
+		
+		[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3UserDefaultsLastAdsDisplayTime];
+		[[NSUserDefaults standardUserDefaults] synchronize];
 	} else {
 		_adDisplayTimer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(displayAd) userInfo:nil repeats:NO];
 	}
+}
+
+- (NSTimeInterval)adTimerInterval {
+	// 광고를 표시하는 시간 규칙
+	// 최종 광고 표시 시간으로 부터 10분이 지나야 한다.
+	// 앱 기동후 15초가 지나야 한다.
+	// 최종 광고 시간으로 부터 10분이 지나지 않았다면 MAX(10분, 10분 - 최종 광고시간으로 부터의 경과 시간) 후에 광고를 표시한다.
+	// 최종 광고 시간이 지났으면 앱 기동 시점으로 부터 15초를 기다린다.
+
+	NSDate *lastAdDisplayTime = [[NSUserDefaults standardUserDefaults] objectForKey:A3UserDefaultsLastAdsDisplayTime];
+	NSTimeInterval intervalFromLastAd;
+	intervalFromLastAd = [[NSDate date] timeIntervalSinceDate:lastAdDisplayTime];
+
+	NSTimeInterval timerInterval = MIN(15, 15 - [[NSDate date] timeIntervalSinceDate:_appOpenTime]);
+	if (intervalFromLastAd < 60 * 10) {
+		timerInterval = 60 * 10 - intervalFromLastAd;
+	}
+
+	return timerInterval;
 }
 
 - (void)startAdDisplayTimer {
 	if (!_firstRunAfterInstall && !_inAppPurchaseInProgress) {
 		if (_shouldPresentAd) {
 			[self removeAdDisplayTimer];
-			
+
 			_appOpenTime = [NSDate date];
-			_adDisplayTimer = [NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(displayAd) userInfo:nil repeats:NO];
+			_adDisplayTimer = [NSTimer scheduledTimerWithTimeInterval:[self adTimerInterval] target:self selector:@selector(displayAd) userInfo:nil repeats:NO];
 			FNLOG(@"ad timer did start");
 		}
 	}
@@ -1225,7 +1248,8 @@ NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.A
 	if (_adDisplayTimer) {
 		[_adDisplayTimer invalidate];
 		_adDisplayTimer = nil;
-		NSTimeInterval interval = MAX(15 - [[NSDate date] timeIntervalSinceDate:_appOpenTime], 4);
+
+		NSTimeInterval interval = MAX([self adTimerInterval], 5);
 		_adDisplayTimer = [NSTimer scheduledTimerWithTimeInterval:interval target:self selector:@selector(displayAd) userInfo:nil repeats:NO];
 		FNLOG(@"ad timer did restart with interval %.0f", interval);
 	}
