@@ -547,7 +547,6 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 
 - (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {
 	[[A3AppDelegate instance] startAdDisplayTimer];
-	_selectedElement = nil;
     _passcodeViewController = nil;
 }
 

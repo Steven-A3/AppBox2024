@@ -573,7 +573,6 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
 	if (typedString.length == 4) {
 		NSString *savedPasscode = [A3KeychainUtils getPassword];
-		FNLOG(@"%@", savedPasscode);
 
 		// Entering from Settings. If savedPasscode is empty, it means
 		// the user is setting a new Passcode now, or is changing his current Passcode.
