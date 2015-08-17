@@ -269,7 +269,7 @@ NSString *const A3BatteryTitleKey = @"title";
 		[self.navigationController pushViewController:viewController animated:YES];
 	} else {
 		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-		[self.A3RootViewController presentViewController:navigationController animated:YES completion:NULL];
+		[[[A3AppDelegate instance] rootViewController] presentViewController:navigationController animated:YES completion:NULL];
 	}
 }
 

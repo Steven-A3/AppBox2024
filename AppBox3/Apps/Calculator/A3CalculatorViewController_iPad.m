@@ -199,7 +199,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
 	[super appsButtonAction:barButtonItem];
 
-	[self enableControls:!self.A3RootViewController.showLeftView];
+	[self enableControls:![[A3AppDelegate instance] rootViewController].showLeftView];
 }
 
 - (void)mainMenuDidHide {
@@ -522,7 +522,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 	viewController.calculator = self.calculator;
 	viewController.iPadViewController = self;
 
-	[self.A3RootViewController presentRightSideViewController:viewController];
+	[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewController];
 }
 
 - (void)putCalculationHistoryWithExpression:(NSString *)expression{

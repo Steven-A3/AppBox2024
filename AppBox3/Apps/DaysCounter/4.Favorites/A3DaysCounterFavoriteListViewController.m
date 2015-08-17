@@ -172,7 +172,7 @@
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
 	[super appsButtonAction:barButtonItem];
 	if (IS_IPAD) {
-		[self enableControls:!self.A3RootViewController.showLeftView];
+		[self enableControls:![[A3AppDelegate instance] rootViewController].showLeftView];
 	}
 }
 

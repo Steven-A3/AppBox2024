@@ -228,8 +228,8 @@
 - (void)cancelAction:(id)sender
 {
     if ( IS_IPAD ) {
-        [self.A3RootViewController dismissRightSideViewController];
-        [self.A3RootViewController.centerNavigationController viewWillAppear:YES];
+        [[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
+        [[[A3AppDelegate instance] rootViewController].centerNavigationController viewWillAppear:YES];
     }
     else {
         [self.navigationController popViewControllerAnimated:YES];
@@ -240,8 +240,8 @@
 {
     if ( IS_IPAD ) {
         _eventModel.durationOption = @(self.selectedOptionFlag);
-        [self.A3RootViewController dismissRightSideViewController];
-        [self.A3RootViewController.centerNavigationController viewWillAppear:YES];
+        [[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
+        [[[A3AppDelegate instance] rootViewController].centerNavigationController viewWillAppear:YES];
     }
     else {
         [self.navigationController popViewControllerAnimated:YES];

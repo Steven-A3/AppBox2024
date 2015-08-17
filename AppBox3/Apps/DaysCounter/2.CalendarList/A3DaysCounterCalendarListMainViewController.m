@@ -321,7 +321,7 @@
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
 	[super appsButtonAction:barButtonItem];
 	if (IS_IPAD) {
-		[self enableControls:!self.A3RootViewController.showLeftView];
+		[self enableControls:![[A3AppDelegate instance] rootViewController].showLeftView];
 	}
 }
 
@@ -525,7 +525,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
         [self presentViewController:navCtrl animated:YES completion:nil];
     }
     else {
-        [self.A3RootViewController presentRightSideViewController:viewCtrl];
+        [[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewCtrl];
     }
 }
 

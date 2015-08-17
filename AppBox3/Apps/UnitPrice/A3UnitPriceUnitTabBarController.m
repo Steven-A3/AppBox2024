@@ -8,7 +8,6 @@
 
 #import "A3UnitPriceUnitTabBarController.h"
 #import "UIViewController+A3Addition.h"
-#import "UIViewController+NumberKeyboard.h"
 #import "UnitPriceInfo.h"
 #import "A3UnitDataManager.h"
 
@@ -81,7 +80,7 @@ NSString *const A3UnitPriceSegmentIndex = @"A3UnitPriceSegmentIndex";
 		[self.selectedViewController.presentedViewController dismissViewControllerAnimated:YES completion:NULL];
 	}
 	else {
-		[self.A3RootViewController dismissRightSideViewController];
+		[[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
 	}
 }
 

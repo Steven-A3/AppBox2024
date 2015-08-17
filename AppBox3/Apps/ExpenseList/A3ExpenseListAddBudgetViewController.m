@@ -227,7 +227,7 @@ enum A3ExpenseListAddBudgetCellType {
     }
     
 	if (IS_IPAD) {
-		[self.A3RootViewController dismissCenterViewController];
+		[[[A3AppDelegate instance] rootViewController] dismissCenterViewController];
 	} else {
 		[self dismissViewControllerAnimated:YES completion:nil];
 	}
@@ -283,7 +283,7 @@ enum A3ExpenseListAddBudgetCellType {
 
 -(void)cancelButtonAction {
 	if (IS_IPAD) {
-		[self.A3RootViewController dismissCenterViewController];
+		[[[A3AppDelegate instance] rootViewController] dismissCenterViewController];
 	}
 	else {
 		[self dismissViewControllerAnimated:YES completion:nil];
@@ -731,7 +731,7 @@ static NSString *CellIdentifier = @"Cell";
 				[self presentViewController:_modalNavigationController animated:YES completion:NULL];
 				[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectTableViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:selectTableViewController];
 			} else {
-				[self.A3RootViewController presentRightSideViewController:selectTableViewController];
+				[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:selectTableViewController];
 			}
         }
         

@@ -135,7 +135,7 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
 - (void)doneButtonAction:(id)sender
 {
 	if (IS_IPAD) {
-		[self.A3RootViewController dismissRightSideViewController];
+		[[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
 		if ([_delegate respondsToSelector:@selector(dismissHistoryViewController)]) {
 			[_delegate performSelector:@selector(dismissHistoryViewController)];
 		}

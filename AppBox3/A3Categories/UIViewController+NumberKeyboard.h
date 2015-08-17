@@ -29,7 +29,6 @@ extern NSString *const A3NotificationCalculatorButtonPressed;
 @property (nonatomic, strong) UINavigationController *navigationControllerForKeyboard;
 @property (nonatomic, weak) UIResponder *firstResponder;
 
-- (A3RootViewController_iPad *)A3RootViewController;
 - (A3NumberKeyboardViewController *)simpleNumberKeyboard;
 - (A3NumberKeyboardViewController *)simplePrevNextNumberKeyboard;
 - (A3NumberKeyboardViewController *)simplePrevNextClearNumberKeyboard;

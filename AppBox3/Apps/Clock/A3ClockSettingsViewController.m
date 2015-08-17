@@ -107,7 +107,7 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 	[[UIApplication sharedApplication] setStatusBarHidden:YES];
 
 	if (IS_IPAD) {
-		[self.A3RootViewController dismissRightSideViewController];
+		[[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
 	} else {
 		[self dismissViewControllerAnimated:YES completion:nil];
 	}

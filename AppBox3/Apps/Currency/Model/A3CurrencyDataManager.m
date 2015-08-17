@@ -111,24 +111,25 @@ NSString *const A3CurrencyRatesDataFilename = @"currencyRates";
 	operation.responseSerializer = [AFJSONResponseSerializer serializer];
 
 	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *requestOperation, id JSON) {
-				NSDictionary *list = JSON[@"list"];
-				NSArray *yahooArray = list[@"resources"];
-
-				NSString *path = [A3CurrencyRatesDataFilename pathInCachesDataDirectory];
-				[yahooArray writeToFile:path atomically:YES];
-
-				[context MR_saveToPersistentStoreAndWait];
-
-				[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdated object:nil];
-
-				self.dataArray = nil;
-
-				FNLOG(@"Update currency rate done successfully.");
-			}
+		NSDictionary *list = JSON[@"list"];
+		NSArray *yahooArray = list[@"resources"];
+		
+		NSString *path = [A3CurrencyRatesDataFilename pathInCachesDataDirectory];
+		[yahooArray writeToFile:path atomically:YES];
+		
+		[context MR_saveToPersistentStoreAndWait];
+		
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdated object:nil];
+		
+		self.dataArray = nil;
+		
+		FNLOG(@"Update currency rate done successfully.");
+	}
 									 failure:^(AFHTTPRequestOperation *requestOperation, NSError *error) {
 										 FNLOG(@"Update currency rate failed.");
 										 [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdateFailed object:nil];
-									 }];
+									 }
+	 ];
 
 	[operation start];
 }

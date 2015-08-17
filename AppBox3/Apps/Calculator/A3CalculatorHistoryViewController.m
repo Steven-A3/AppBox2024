@@ -194,7 +194,7 @@ NSString *const A3CalculatorHistoryRowCellID = @"CcellRow";
 	[self.calculator saveExpression];
 
     if (IS_IPAD) {
-		[self.A3RootViewController dismissRightSideViewController];
+		[[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
 	} else {
 		[self dismissViewControllerAnimated:YES completion:nil];
 	}

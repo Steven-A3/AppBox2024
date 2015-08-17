@@ -11,7 +11,6 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "A3UnitConverterTVActionCell.h"
 #import "A3UnitPriceAddViewController.h"
-#import "UIColor+A3Addition.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3UnitDataManager.h"
 
@@ -325,7 +324,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 		[self.presentedViewController dismissViewControllerAnimated:YES completion:NULL];
 	}
 	else {
-		[self.A3RootViewController dismissRightSideViewController];
+		[[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
 	}
 }
 
@@ -556,7 +555,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 					[self dismissViewControllerAnimated:YES completion:nil];
 				}
 			} else {
-				[self.A3RootViewController dismissRightSideViewController];
+				[[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
 			}
 
 			return;

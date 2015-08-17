@@ -834,7 +834,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     [self.tableView reloadData];
     [_headerView showDetailInfoButton];
 
-	if (IS_IPAD && self.A3RootViewController.showRightView) {
+	if (IS_IPAD && [[A3AppDelegate instance] rootViewController].showRightView) {
 		[self enableControls:NO];
 	}
 }
@@ -1059,7 +1059,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             }
             else {
 				[self enableControls:NO];
-				[self.A3RootViewController presentRightSideViewController:selectTableViewController];
+				[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:selectTableViewController];
 				[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 			}
             
@@ -1086,7 +1086,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 		}
 	}
 	else {
-		[self.A3RootViewController toggleLeftMenuViewOnOff];
+		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
 		[self enableControls:NO];
 	}
 }
@@ -1179,7 +1179,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(historyViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 	} else {
-		[self.A3RootViewController presentRightSideViewController:viewController];
+		[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewController];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
 }
@@ -1202,7 +1202,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 	} else {
-		[self.A3RootViewController presentRightSideViewController:viewController];
+		[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewController];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
 }

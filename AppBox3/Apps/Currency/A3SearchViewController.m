@@ -6,12 +6,11 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3UIDevice.h"
+#import "A3SearchViewController.h"
 #import "UIViewController+NumberKeyboard.h"
-#import "A3CurrencySelectViewController.h"
-#import "UIViewController+A3Addition.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "NSString+conversion.h"
+#import "A3AppDelegate.h"
 
 @implementation A3SearchTargetItem
 @end
@@ -68,7 +67,7 @@
 	}
 
 	if (IS_IPAD) {
-		[self.A3RootViewController dismissRightSideViewController];
+		[[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
 	} else {
 		if (_shouldPopViewController) {
 			[self.navigationController popViewControllerAnimated:YES];
@@ -115,8 +114,8 @@
 	} else {
 		if (self.showCancelButton) {
 			[self dismissViewControllerAnimated:YES completion:nil];
-		} else if (self.A3RootViewController.showRightView) {
-			[self.A3RootViewController dismissRightSideViewController];
+		} else if ([[A3AppDelegate instance] rootViewController].showRightView) {
+			[[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
 		} else {
 			[self dismissViewControllerAnimated:YES completion:nil];
 		}

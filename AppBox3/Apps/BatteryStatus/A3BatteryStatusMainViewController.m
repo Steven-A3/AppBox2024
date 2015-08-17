@@ -348,7 +348,7 @@ static NSString *const A3V3InstructionDidShowForBattery = @"A3V3InstructionDidSh
 		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsViewControllerDidDismiss:) name:A3NotificationChildViewControllerDidDismiss object:_settingsViewController];
 	} else {
-		[self.A3RootViewController presentRightSideViewController:_settingsViewController];
+		[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:_settingsViewController];
 	}
 }
 

@@ -36,10 +36,6 @@ static char const *const key_navigationControllerForKeyboard	= "key_navigationCo
 
 @implementation UIViewController (NumberKeyboard)
 
-- (A3RootViewController_iPad *)A3RootViewController {
-	return [[A3AppDelegate instance] rootViewController];
-}
-
 - (A3NumberKeyboardViewController *)iPadNumberKeyboard {
 	return [[A3NumberKeyboardViewController_iPad alloc] initWithNibName:@"A3NumberKeyboardViewController_iPad" bundle:nil];
 }

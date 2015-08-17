@@ -55,7 +55,7 @@
 - (void)doneButtonAction:(id)sender
 {
 	if (IS_IPAD) {
-		[self.A3RootViewController dismissRightSideViewController];
+		[[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
 	} else {
 		//[self dismissViewControllerAnimated:YES completion:nil];
 

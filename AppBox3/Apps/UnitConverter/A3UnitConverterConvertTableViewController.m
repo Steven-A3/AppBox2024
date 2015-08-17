@@ -368,8 +368,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 			[self rightButtonMoreButton];
 		}
 	} else {
-		[self.A3RootViewController toggleLeftMenuViewOnOff];
-		[self enableControls:!self.A3RootViewController.showLeftView];
+		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
+		[self enableControls:![[A3AppDelegate instance] rootViewController].showLeftView];
 	}
 }
 
@@ -427,7 +427,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(historyViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 	} else {
 		[self enableControls:NO];
-		[self.A3RootViewController presentRightSideViewController:viewController];
+		[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewController];
 	}
 }
 

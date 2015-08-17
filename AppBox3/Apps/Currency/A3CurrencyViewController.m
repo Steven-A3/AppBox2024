@@ -401,9 +401,9 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 			[self rightButtonMoreButton];
 		}
 	} else {
-		A3RootViewController_iPad *rootViewController = self.A3RootViewController;
+		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
 		[self enableControls: rootViewController.showLeftView ];
-		[self.A3RootViewController toggleLeftMenuViewOnOff];
+		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
 	}
 }
 
@@ -469,7 +469,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(historyViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:_historyViewController];
 	} else {
 		[self enableControls:NO];
-		[self.A3RootViewController presentRightSideViewController:_historyViewController];
+		[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:_historyViewController];
 	}
 }
 
@@ -493,7 +493,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 	} else {
 		[self enableControls:NO];
-		[self.A3RootViewController presentRightSideViewController:_settingsViewController];
+		[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:_settingsViewController];
 	}
 }
 
@@ -933,7 +933,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 			[self.navigationController pushViewController:_currencySelectViewController animated:YES];
 			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencySelectViewDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:_currencySelectViewController];
 		} else {
-			[self.A3RootViewController presentRightSideViewController:_currencySelectViewController];
+			[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:_currencySelectViewController];
 		}
 	} else {
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -972,7 +972,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencySelectViewDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:_currencySelectViewController];
 	} else {
-		[self.A3RootViewController presentRightSideViewController:_currencySelectViewController];
+		[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:_currencySelectViewController];
 	}
 }
 

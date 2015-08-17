@@ -9,7 +9,6 @@
 #import "A3WalletIconSelectViewController.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIViewController+A3Addition.h"
-#import "UIViewController+NumberKeyboard.h"
 #import "UIImage+imageWithColor.h"
 #import "WalletData.h"
 
@@ -110,7 +109,7 @@
     }
     
 	if (IS_IPAD) {
-		[self.A3RootViewController dismissRightSideViewController];
+		[[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
 	} else {
 		[self.navigationController popViewControllerAnimated:YES];
 	}

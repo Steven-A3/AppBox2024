@@ -323,7 +323,7 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 		[self.presentedViewController dismissViewControllerAnimated:YES completion:NULL];
 	}
 	else {
-		[self.A3RootViewController dismissRightSideViewController];
+		[[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
 	}
 }
 

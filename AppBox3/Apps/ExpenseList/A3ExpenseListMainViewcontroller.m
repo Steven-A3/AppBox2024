@@ -362,7 +362,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
 	[super appsButtonAction:barButtonItem];
 	if (IS_IPAD) {
-		[self enableControls:!self.A3RootViewController.showLeftView];
+		[self enableControls:![[A3AppDelegate instance] rootViewController].showLeftView];
 	}
 }
 
@@ -610,7 +610,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(expenseHistoryViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 	} else {
-		[self.A3RootViewController presentRightSideViewController:viewController];
+		[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewController];
 	}
 }
 

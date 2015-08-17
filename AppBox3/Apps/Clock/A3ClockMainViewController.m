@@ -741,7 +741,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 	} else {
-		[self.A3RootViewController presentRightSideViewController:viewController];
+		[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewController];
 	}
 }
 
@@ -899,7 +899,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 		_appsButtonTop.with.offset(5);
 		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 	} else {
-		BOOL hideStatusBar = [_clockAppsButton isHidden] || !self.A3RootViewController.showLeftView;
+		BOOL hideStatusBar = [_clockAppsButton isHidden] || ![[A3AppDelegate instance] rootViewController].showLeftView;
 		_appsButtonTop.with.offset(26);
 		[[UIApplication sharedApplication] setStatusBarHidden:hideStatusBar withAnimation:UIStatusBarAnimationNone];
 		[self determineStatusBarStyle];
@@ -907,7 +907,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 }
 
 - (void)determineStatusBarStyle {
-	BOOL useDefault = (IS_IPAD && self.A3RootViewController.showLeftView) || _pageControl.currentPage == 2 || (IS_IPHONE && self.mm_drawerController.openSide == MMDrawerSideLeft);
+	BOOL useDefault = (IS_IPAD && [[A3AppDelegate instance] rootViewController].showLeftView) || _pageControl.currentPage == 2 || (IS_IPHONE && self.mm_drawerController.openSide == MMDrawerSideLeft);
 	if (useDefault) {
 		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 	} else {

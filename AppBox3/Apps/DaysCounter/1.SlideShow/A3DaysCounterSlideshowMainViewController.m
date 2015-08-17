@@ -173,9 +173,9 @@
 	[self updateNavigationTitle];
 
 	if ( IS_IPAD && UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-		[self.A3RootViewController animateHideLeftViewForFullScreenCenterView:YES];
+		[[[A3AppDelegate instance] rootViewController] animateHideLeftViewForFullScreenCenterView:YES];
 	}
-	if ( self.A3RootViewController.showRightView ) {
+	if ( [[A3AppDelegate instance] rootViewController].showRightView ) {
 		if ( self.navigationController.navigationBarHidden )
 			[self tapPhotoViewScreen:nil];
 	}
@@ -306,7 +306,7 @@
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
 	[super appsButtonAction:barButtonItem];
 	if (IS_IPAD) {
-		[self enableControls:!self.A3RootViewController.showLeftView];
+		[self enableControls:![[A3AppDelegate instance] rootViewController].showLeftView];
 	}
 }
 
@@ -690,7 +690,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
 					[self presentViewController:_modalNavigationController animated:YES completion:NULL];
 					[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(optionViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 				} else {
-					[self.A3RootViewController presentRightSideViewController:viewController];
+					[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewController];
 					double delayInSeconds = 0.6;
 					dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 					dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -716,7 +716,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
 {
     if ( [viewController isKindOfClass:[A3MainViewController class]]) {
         if ( IS_IPAD && UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-            [self.A3RootViewController animateHideLeftViewForFullScreenCenterView:NO];
+            [[[A3AppDelegate instance] rootViewController] animateHideLeftViewForFullScreenCenterView:NO];
         }
     }
 }

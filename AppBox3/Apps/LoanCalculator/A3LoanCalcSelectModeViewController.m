@@ -56,7 +56,7 @@
 }
 
 - (void)doneButtonAction:(id)button {
-	[self.A3RootViewController dismissRightSideViewController];
+	[[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
 }
 
 #pragma mark - Table view delegate
@@ -78,7 +78,7 @@
         [self.navigationController popViewControllerAnimated:YES];
     }
     else {
-        [self.A3RootViewController dismissRightSideViewController];
+        [[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
     }
 }
 

@@ -161,7 +161,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-	[self.A3RootViewController viewWillLayoutSubviews];
+	[[[A3AppDelegate instance] rootViewController] viewWillLayoutSubviews];
 }
 
 - (void)reloadItemAtCellType:(NSInteger)cellType

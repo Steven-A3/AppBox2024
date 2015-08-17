@@ -692,7 +692,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 			[self rightButtonMoreButton];
 		}
 	} else {
-		A3RootViewController_iPad *rootViewController = self.A3RootViewController;
+		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
 		[rootViewController toggleLeftMenuViewOnOff];
 		[self enableControls:!rootViewController.showLeftView];
 	}
@@ -882,7 +882,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 	} else {
 		[self enableControls:NO];
-		[self.A3RootViewController presentRightSideViewController:viewController];
+		[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewController];
 	}
 }
 
@@ -2381,7 +2381,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         }
         else {
             [self enableControls:NO];
-            [self.A3RootViewController presentRightSideViewController:viewController];
+            [[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewController];
         }
         [self dismissDatePicker];
     }
@@ -2453,7 +2453,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             }
             else {
 				[self enableControls:NO];
-				[self.A3RootViewController presentRightSideViewController:viewController];
+				[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewController];
 			}
             [self dismissDatePicker];
         }
@@ -2472,7 +2472,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                 }
                 else {
 					[self enableControls:NO];
-					[self.A3RootViewController presentRightSideViewController:viewController];
+					[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewController];
 				}
                 
                 [self dismissDatePicker];

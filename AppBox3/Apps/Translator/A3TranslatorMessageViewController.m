@@ -532,7 +532,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(languagePickerControllerDidDismiss:) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 	} else {
-		[self.A3RootViewController presentRightSideViewController:viewController];
+		[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewController];
 	}
 	return viewController;
 }

@@ -393,7 +393,7 @@
     if( IS_IPHONE )
         [self dismissViewControllerAnimated:YES completion:nil];
     else
-        [self.A3RootViewController dismissRightSideViewController];
+        [[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
 }
 
 - (void)toggleSwitchAction:(id)sender

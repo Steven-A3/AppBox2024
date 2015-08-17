@@ -359,7 +359,7 @@
         [self presentViewController:nav animated:YES completion:NULL];
     } else {
         [self enableControls:NO];
-        [self.A3RootViewController presentRightSideViewController:settingsViewController];
+        [[[A3AppDelegate instance] rootViewController] presentRightSideViewController:settingsViewController];
     }
 }
 
@@ -1102,7 +1102,7 @@
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
 	[super appsButtonAction:barButtonItem];
 
-	[self enableControls:!self.A3RootViewController.showLeftView];
+	[self enableControls:![[A3AppDelegate instance] rootViewController].showLeftView];
 	if (IS_IPAD) {
 		[self dateKeyboardDoneButtonPressed:nil ];
 	}

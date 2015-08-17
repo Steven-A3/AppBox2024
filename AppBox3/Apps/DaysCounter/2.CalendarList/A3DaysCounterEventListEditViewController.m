@@ -298,8 +298,8 @@
         [self dismissViewControllerAnimated:YES completion:nil];
     }
     else {
-        [self.A3RootViewController dismissCenterViewController];
-        [self.A3RootViewController.centerNavigationController viewWillAppear:YES];
+        [[[A3AppDelegate instance] rootViewController] dismissCenterViewController];
+        [[[A3AppDelegate instance] rootViewController].centerNavigationController viewWillAppear:YES];
     }
 }
 
@@ -388,7 +388,7 @@
         [self presentViewController:navCtrl animated:YES completion:nil];
     }
     else {
-        [self.A3RootViewController presentRightSideViewController:viewCtrl];
+        [[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewCtrl];
     }
 }
 

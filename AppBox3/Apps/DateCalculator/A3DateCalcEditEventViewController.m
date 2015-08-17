@@ -61,7 +61,7 @@
 - (void)doneButtonAction:(id)sender
 {
 	if (IS_IPAD) {
-		[self.A3RootViewController dismissRightSideViewController];
+		[[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
 		if ([_delegate respondsToSelector:@selector(dismissEditEventViewController)]) {
 			[_delegate performSelector:@selector(dismissEditEventViewController)];
 		}

@@ -146,7 +146,7 @@ static NSString *CellIdentifier = @"Cell";
 		[self.delegate searchViewController:self itemSelectedWithItem:data.code];
 	}
 	if (IS_IPAD) {
-		[self.A3RootViewController dismissRightSideViewController];
+		[[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
 	} else {
 		[self dismissViewControllerAnimated:YES completion:nil];
 	}
