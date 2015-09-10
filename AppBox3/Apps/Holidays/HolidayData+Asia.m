@@ -1476,7 +1476,7 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 {
 	NSUInteger year = self.year;
 
-	if ((year < 2006) || (year > 2015)) {
+	if ((year < 2006) || (year > 2016)) {
 		return nil;
 	}
 	
@@ -1496,7 +1496,7 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 			NSDate *newDate = [gregorian dateByAddingComponents:offsetDC toDate:[item objectAtIndex:1] options:0];
 
 			[holidays addObject:@{kHolidayName:[item objectAtIndex:0], kHolidayIsPublic:@NO, kHolidayDate:newDate, kHolidayDuration:@1}];
-		}
+			}
 
 		return holidays;
 	}

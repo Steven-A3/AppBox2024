@@ -1932,5 +1932,212 @@
 			<date>2015-12-24T15:00:00Z</date>
 		</array>
 	</array>
+	<key>2016</key>
+	<array>
+		<array>
+			<string>New Year&apos;s Day (R)</string>
+			<date>2015-12-31T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Makar Sankranti (R)</string>
+			<date>2016-01-13T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Pongal (R)</string>
+			<date>2016-01-14T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Guru Govind Singh&apos;s Birthday (R)</string>
+			<date>2016-01-15T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Republic Day (G)</string>
+			<date>2015-01-25T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Basant Panchami / Sri Panchami (R)</string>
+			<date>2016-02-11T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Shivaji Jayanti (R)</string>
+			<date>2016-02-18T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Guru Ravidas&apos;s Birthday (R)</string>
+			<date>2016-02-21T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Swami Dayananda Saraswati Jayanti (R)</string>
+			<date>2016-03-03T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Maha Shivaratri (R)</string>
+			<date>2016-03-06T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Holika Dahan, Dolyatra (R)</string>
+			<date>2016-03-22T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Holi (G)</string>
+			<date>2016-03-23T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Good Friday (G)</string>
+			<date>2016-03-24T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Easter Sunday (R)</string>
+			<date>2016-03-26T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Chaitra Sukhladi/Gudi Padava/Ugadi/Cheti Chand (R)</string>
+			<date>2016-04-07T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Vaisakhi/Vishu (R)</string>
+			<date>2016-04-12T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Masadi/Vaisakhadi,Bahag Bihu (Asam) (R)</string>
+			<date>2016-04-13T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Ram Navami (G)</string>
+			<date>2016-04-14T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Mahavir Jayanti (G)</string>
+			<date>2016-04-19T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Hazarat Ali&apos;s Birthday (R)</string>
+			<date>2016-04-20T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Guru Rabindranath&apos;s Birthday (R)</string>
+			<date>2016-05-07T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Buddha Purnima (G)</string>
+			<date>2016-05-20T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Jamat-Ul-Vida (R)</string>
+			<date>2016-06-30T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Idu&apos;l Fitr (G)</string>
+			<date>2016-07-05T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Rath Yatra (R)</string>
+			<date>2016-07-05T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Independence Day (G)</string>
+			<date>2016-08-14T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Parsi New Year&apos;s day/Nauraj (R)</string>
+			<date>2016-08-16T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Raksha Bandhan (R)</string>
+			<date>2016-08-17T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Janmashtami (G)</string>
+			<date>2016-08-24T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Vinayaka Chaturthi/Ganesh Chaturthi (R)</string>
+			<date>2016-09-04T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Id-ul-Zuha (Bakrid) (G)</string>
+			<date>2016-09-11T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Onam (R)</string>
+			<date>2016-09-13T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Mahatma Gandhi&apos;s Birthday (G)</string>
+			<date>2016-10-01T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Dussehra (Maha Saptami) (Additional) (R)</string>
+			<date>2016-10-07T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Dussehra (Maha Ashtami) (Additional) (R)</string>
+			<date>2016-10-08T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Dussehra (Maha Navmi) (R)</string>
+			<date>2016-10-09T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Dussehra (G)</string>
+			<date>2016-10-10T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Muharram (G)</string>
+			<date>2016-10-11T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Maharishi Valmiki&apos;s Birthday (R)</string>
+			<date>2016-10-15T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Karaka Chaturthi(Karva Chouth) (R)</string>
+			<date>2016-10-18T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Deepavali (South India) (R)</string>
+			<date>2016-10-28T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Naraka Chaturdasi (R)</string>
+			<date>2016-10-28T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Diwali(Deepavali) (G)</string>
+			<date>2016-10-29T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Govardhan Puja (R)</string>
+			<date>2016-10-30T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Bhai Duj (R)</string>
+			<date>2016-10-31T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Pratihar Sashthi/Surya Sashthi (Chhat Puja) (R)</string>
+			<date>2016-11-05T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Guru Nanak&apos;s Birthday (G)</string>
+			<date>2016-11-13T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Guru Teg Bahadur&apos;s Martyrdom Day (R)</string>
+			<date>2016-11-23T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Milad-Un-Nabi or Id-E- Milad (Birthday of Prophet Mohammad) (G)</string>
+			<date>2016-12-12T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Christmas Eve (R)</string>
+			<date>2016-12-23T15:00:00Z</date>
+		</array>
+		<array>
+			<string>Christmas (G)</string>
+			<date>2016-12-24T15:00:00Z</date>
+		</array>
+	</array>
 </dict>
 </plist>
