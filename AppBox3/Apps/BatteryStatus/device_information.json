@@ -38,9 +38,12 @@
         "iPad4,7" : "iPad mini 3 (Wi-Fi)",
         "iPad4,8" : "iPad mini 3",
         "iPad4,9" : "iPad mini 3",
+        "iPad5,1" : "iPad mini 4 (Wi-Fi)",
+        "iPad5,2" : "iPad mini 4",
         "iPad5,3" : "iPad Air 2 (Wi-Fi)",
         "iPad5,4" : "iPad Air 2",
-        "iPod5,1" : "iPod Touch (5th generation)"
+        "iPod5,1" : "iPod Touch (5th generation)",
+        "iPod7,1" : "iPod Touch (6th generation)"
     },
     "deviceInformation": {
         "iPhone 6": {
@@ -105,6 +108,14 @@
             "CPU": "1 GHz (underclocked to 800 MHz)\nDual-core ARM Cortex-A9",
             "GPU": "PowerVR SGX543MP2 (2-core)",
             "Memory": "512 MB LPDDR2 DRAM",
+            "PPI": "326"
+        },
+        "iPod Touch (6th generation)": {
+            "Model" : "iPod Touch (6th generation)",
+            "Chips": "A8 with 64-bit architecture\nM8 motion coprocessor",
+            "CPU": "1.4 GHz (underclocked to 1.1 GHz)\nDual-core Apple Typhoon ARMv8-A",
+            "GPU": "PowerVR Series 6XT GX6450 (quad-core)",
+            "Memory": "1 GB LPDDR3 RAM",
             "PPI": "326"
         },
         "iPad 2": {
@@ -233,6 +244,22 @@
             "CPU": "1.3 GHz dual-core",
             "GPU": "PowerVR G6430 (4-core)",
             "Memory": "1 GB LPDDR3 DRAM",
+            "PPI": "326"
+        },
+        "iPad mini 4": {
+            "Model" : "iPad mini 4",
+            "Chips": "A8 chip with 64-bit architecture\nM8 motion coprocessor",
+            "CPU": "1.5Ghz tri-core ARM processor",
+            "GPU": "PowerVR GXA6850 (8-core)",
+            "Memory": "2 GB LPDDR3 DRAM",
+            "PPI": "326"
+        },
+        "iPad mini 4 (Wi-Fi)": {
+            "Model" : "iPad mini 4 (Wi-Fi)",
+            "Chips": "A8 chip with 64-bit architecture\nM8 motion coprocessor",
+            "CPU": "1.5Ghz tri-core ARM processor",
+            "GPU": "PowerVR GXA6850 (8-core)",
+            "Memory": "2 GB LPDDR3 DRAM",
             "PPI": "326"
         },
         "iPhone Simulator": {
@@ -345,6 +372,13 @@
             "Charging time": 4,
             "Fast charge": 2
         },
+        "iPod Touch (6th generation)": {
+            "Model" : "iPod Touch (6th generation)",
+            "Video playback": 8,
+            "Audio playback": 40,
+            "Charging time": 4,
+            "Fast charge": 2
+        },
         "iPad 2": {
             "Model" : "iPad 2",
             "Internet on Wi-Fi": 10,
@@ -445,6 +479,19 @@
         },
         "iPad mini 3 (Wi-Fi)": {
             "Model" : "iPad mini 3 (Wi-Fi)",
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad mini 4": {
+            "Model" : "iPad mini 4",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad mini 4 (Wi-Fi)": {
+            "Model" : "iPad mini 4 (Wi-Fi)",
             "Internet on Wi-Fi": 10,
             "Video playback": 10,
             "Audio playback": 10
