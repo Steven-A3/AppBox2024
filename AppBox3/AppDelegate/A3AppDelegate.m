@@ -85,24 +85,15 @@ NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.A
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
 	_shouldPresentAd = YES;
+
 	_isIAPRemoveAdsAvailable = NO;
 
 	[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
 
 	[self configureStore];
 
-#ifdef DEBUG
-	UIScreen *mainScreen = [UIScreen mainScreen];
-	if ([mainScreen respondsToSelector:@selector(nativeBounds)]) {
-		FNLOGRECT(mainScreen.nativeBounds);
-		FNLOG(@"%f", mainScreen.nativeScale);
-	}
-	FNLOGRECT(mainScreen.bounds);
-	FNLOG(@"%f", mainScreen.scale);
-	FNLOG(@"%@", [NSLocale preferredLanguages][0]);
-#endif
-	
 	_appIsNotActiveYet = YES;
 
 	CDESetCurrentLoggingLevel(CDELoggingLevelNone);
@@ -843,6 +834,8 @@ NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.A
 
 - (void)setupContext
 {
+	[MagicalRecord setLogLevel:MagicalRecordLogLevelVerbose];
+	
 	NSManagedObjectModel *model = [NSManagedObjectModel MR_newManagedObjectModelNamed:@"AppBox3.momd"];
 	[NSManagedObjectModel MR_setDefaultManagedObjectModel:model];
 
