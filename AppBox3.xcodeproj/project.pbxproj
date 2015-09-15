@@ -331,7 +331,6 @@
 		6830C7871851A26E0075010F /* A3UserDefaults+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6830C7861851A26E0075010F /* A3UserDefaults+A3Addition.m */; };
 		6831407F18C20C9700896819 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6831407E18C20C9700896819 /* AVFoundation.framework */; };
 		68315CF6195696560095CF7A /* A3DaysCounterCalendarListMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68315CF5195696560095CF7A /* A3DaysCounterCalendarListMainViewController.xib */; };
-		68319D251B159EEB0035A202 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68319D231B1598E20035A202 /* GoogleMobileAds.framework */; };
 		68319D261B15A5080035A202 /* A3RulerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688788821A9B29C7008C8567 /* A3RulerViewController.m */; };
 		68319D271B15A50C0035A202 /* A3MarkingsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 686F06E61AA1D9DC0093A6F9 /* A3MarkingsView.m */; };
 		6831DF0B16C3D30100EABB2A /* A3ActionMenuBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6831DF0A16C3D30100EABB2A /* A3ActionMenuBackgroundView.m */; };
@@ -1582,7 +1581,6 @@
 		68E6F37217B2A06600F10ED9 /* A3CurrencyHistory2RowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F37117B2A06600F10ED9 /* A3CurrencyHistory2RowCell.m */; };
 		68E6F37517B2A09C00F10ED9 /* A3CurrencyHistory3RowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F37417B2A09C00F10ED9 /* A3CurrencyHistory3RowCell.m */; };
 		68E6F37917B2A1DE00F10ED9 /* A3CurrencyHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F37817B2A1DE00F10ED9 /* A3CurrencyHistoryViewController.m */; };
-		68EA502F1B42B79C00D05B55 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68319D231B1598E20035A202 /* GoogleMobileAds.framework */; };
 		68EC80D616E1ADF800CF672E /* A3Formatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EC80D516E1ADF800CF672E /* A3Formatter.m */; };
 		68F04D031B40F825004FDD7B /* AppleIncRootCertificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 68F04CA21B40F825004FDD7B /* AppleIncRootCertificate.cer */; };
 		68F04D071B40F825004FDD7B /* RMAppReceipt.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F04CF61B40F825004FDD7B /* RMAppReceipt.m */; };
@@ -1718,6 +1716,7 @@
 		68F1C90318D814F9009FAE8A /* UIColor+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C90018D814F9009FAE8A /* UIColor+A3Addition.m */; };
 		68F1C90418D814F9009FAE8A /* UIPopoverController+Override.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C90218D814F9009FAE8A /* UIPopoverController+Override.m */; };
 		68F1C92318D82500009FAE8A /* NYXProgressiveImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C92218D82500009FAE8A /* NYXProgressiveImageView.m */; };
+		68F2629F1B91A4AC00BB9ED5 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68F2629E1B91A4AC00BB9ED5 /* GoogleMobileAds.framework */; };
 		68F319FC18D83D1F0003BE62 /* A3LaunchSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F319F718D83D1F0003BE62 /* A3LaunchSceneViewController.m */; };
 		68F319FD18D83D1F0003BE62 /* A3LaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F319F918D83D1F0003BE62 /* A3LaunchViewController.m */; };
 		68F32E51188AC3C600248F16 /* UIViewController+tableViewStandardDimension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F32E50188AC3C600248F16 /* UIViewController+tableViewStandardDimension.m */; };
@@ -2322,7 +2321,6 @@
 		6830C7861851A26E0075010F /* A3UserDefaults+A3Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "A3UserDefaults+A3Addition.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6831407E18C20C9700896819 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		68315CF5195696560095CF7A /* A3DaysCounterCalendarListMainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DaysCounterCalendarListMainViewController.xib; sourceTree = "<group>"; };
-		68319D231B1598E20035A202 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = "External/GoogleMobileAdsSdkiOS-7.2.2/GoogleMobileAds.framework"; sourceTree = "<group>"; };
 		6831DF0916C3D30100EABB2A /* A3ActionMenuBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ActionMenuBackgroundView.h; sourceTree = "<group>"; };
 		6831DF0A16C3D30100EABB2A /* A3ActionMenuBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ActionMenuBackgroundView.m; sourceTree = "<group>"; };
 		6831EBF718619CC800BAF15B /* AppBox3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AppBox3.xcdatamodel; sourceTree = "<group>"; };
@@ -3521,6 +3519,7 @@
 		68F1C91F18D8248A009FAE8A /* NYXImagesKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYXImagesKit.h; sourceTree = "<group>"; };
 		68F1C92118D82500009FAE8A /* NYXProgressiveImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYXProgressiveImageView.h; sourceTree = "<group>"; };
 		68F1C92218D82500009FAE8A /* NYXProgressiveImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYXProgressiveImageView.m; sourceTree = "<group>"; };
+		68F2629E1B91A4AC00BB9ED5 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = "External/GoogleMobileAdsSdkiOS-7.4.1/GoogleMobileAds.framework"; sourceTree = "<group>"; };
 		68F319F618D83D1F0003BE62 /* A3LaunchSceneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LaunchSceneViewController.h; sourceTree = "<group>"; };
 		68F319F718D83D1F0003BE62 /* A3LaunchSceneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LaunchSceneViewController.m; sourceTree = "<group>"; };
 		68F319F818D83D1F0003BE62 /* A3LaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LaunchViewController.h; sourceTree = "<group>"; };
@@ -3558,7 +3557,7 @@
 			files = (
 				68F04D101B40F86B004FDD7B /* libcrypto.a in Frameworks */,
 				68F04D111B40F86B004FDD7B /* libssl.a in Frameworks */,
-				68EA502F1B42B79C00D05B55 /* GoogleMobileAds.framework in Frameworks */,
+				68F2629F1B91A4AC00BB9ED5 /* GoogleMobileAds.framework in Frameworks */,
 				6829762F1A1A19CC00E06E87 /* LocalAuthentication.framework in Frameworks */,
 				5727A57419D41B9200ADB17C /* CoreMotion.framework in Frameworks */,
 				68636000198BF88F00C3A323 /* libensembles.a in Frameworks */,
@@ -3598,7 +3597,6 @@
 				68746DE01A413235007E74A0 /* MessageUI.framework in Frameworks */,
 				68746E781A4133ED007E74A0 /* CoreFoundation.framework in Frameworks */,
 				68746E761A4133CE007E74A0 /* StoreKit.framework in Frameworks */,
-				68319D251B159EEB0035A202 /* GoogleMobileAds.framework in Frameworks */,
 				68746E751A4133B3007E74A0 /* AudioToolbox.framework in Frameworks */,
 				68746E741A4133AA007E74A0 /* AdSupport.framework in Frameworks */,
 				68746DC51A413235007E74A0 /* LocalAuthentication.framework in Frameworks */,
@@ -4346,12 +4344,12 @@
 				17D42800F92AEDF5F432A3BD /* A3AppDelegate+migration.m */,
 				68236CDB186AA7B4006F442B /* A3AppDelegate+passcode.h */,
 				68236CDC186AA7B4006F442B /* A3AppDelegate+passcode.m */,
+				17D42280DB60A6CCC3A86439 /* A3Application.h */,
+				17D429E0CA06F9AD34AD53A2 /* A3Application.m */,
 				680FF7111980B88D00C736F5 /* A3SyncManager.h */,
 				680FF7121980B88D00C736F5 /* A3SyncManager.m */,
 				17D429B3F3A6137477940274 /* A3SyncManager+NSUbiquitousKeyValueStore.h */,
 				17D42D1AA1C9348634F8FEF1 /* A3SyncManager+NSUbiquitousKeyValueStore.m */,
-				17D429E0CA06F9AD34AD53A2 /* A3Application.m */,
-				17D42280DB60A6CCC3A86439 /* A3Application.h */,
 			);
 			name = AppDelegate;
 			sourceTree = "<group>";
@@ -5684,8 +5682,8 @@
 		68CC1594174F764C0000870F /* External */ = {
 			isa = PBXGroup;
 			children = (
+				68F2629E1B91A4AC00BB9ED5 /* GoogleMobileAds.framework */,
 				68F04CA01B40F825004FDD7B /* RMStore */,
-				68319D231B1598E20035A202 /* GoogleMobileAds.framework */,
 				68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */,
 				689C9A261839CD7F007C97EE /* AFNetworking */,
 				683224B717CE1AB900973F34 /* DKLiveBlur */,
@@ -8760,7 +8758,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/External/dropbox-ios-sdk-1.3.9",
-					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.2.2",
+					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.4.1",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";
@@ -8795,7 +8793,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/External/dropbox-ios-sdk-1.3.9",
-					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.2.2",
+					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.4.1",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";
