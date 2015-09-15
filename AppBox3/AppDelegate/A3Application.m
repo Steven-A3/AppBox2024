@@ -11,7 +11,6 @@
 - (void)sendEvent:(UIEvent *)event {
 	[super sendEvent:event];
 
-	FNLOG(@"");
 	[[A3AppDelegate instance] restartAdDisplayTimer];
 }
 
