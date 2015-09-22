@@ -17,6 +17,8 @@
         "iPhone6,2" : "iPhone 5s",
         "iPhone7,1" : "iPhone 6 Plus",
         "iPhone7,2" : "iPhone 6",
+		"iPhone8,1" : "iPhone 6s Plus",
+		"iPhone8,2" : "iPhone 6s",
         "iPad2,1" : "iPad 2 (Wi-Fi)",
         "iPad2,2" : "iPad 2",
         "iPad2,3" : "iPad 2",
@@ -46,6 +48,22 @@
         "iPod7,1" : "iPod Touch (6th generation)"
     },
     "deviceInformation": {
+		"iPhone 6s": {
+			"Model" : "iPhone 6s",
+			"Chips": "A9 with 64-bit architecture\nM9 motion coprocessor",
+			"CPU": "Apple-designed A9",
+			"GPU": "TBD",
+			"Memory": "2GB",
+			"PPI" : "326"
+		},
+		"iPhone 6s Plus": {
+			"Model" : "iPhone 6s Plus",
+			"Chips": "A9 with 64-bit architecture\nM9 motion coprocessor",
+			"CPU": "Apple-designed A9",
+			"GPU": "TBD",
+			"Memory": "2GB",
+			"PPI": "401"
+		},
         "iPhone 6": {
             "Model" : "iPhone 6",
             "Chips": "A8 with 64-bit architecture\nM8 motion coprocessor",
@@ -296,6 +314,26 @@
         }
     },
     "remainingTimeInfo": {
+		"iPhone 6s": {
+			"Model" : "iPhone 6s",
+			"Talk Time on 3G": 14,
+			"Internet on 3G": 10,
+			"Internet on LTE": 10,
+			"Internet on Wi-Fi": 11,
+			"Video playback": 11,
+			"Audio playback": 50,
+			"Standby": 240
+		},
+		"iPhone 6s Plus": {
+			"Model" : "iPhone 6s Plus",
+			"Talk Time on 3G": 24,
+			"Internet on 3G": 12,
+			"Internet on LTE": 12,
+			"Internet on Wi-Fi": 12,
+			"Video playback": 14,
+			"Audio playback": 80,
+			"Standby": 384
+		},
         "iPhone 6": {
             "Model" : "iPhone 6",
             "Talk Time on 3G": 14,
