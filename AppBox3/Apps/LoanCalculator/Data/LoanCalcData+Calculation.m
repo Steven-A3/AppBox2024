@@ -272,6 +272,7 @@
 	FNLOG(@"interestRate = %@", @(interestRate));
 
 	for (NSInteger turn = 0; turn < maxTurn; turn++) {
+		repayment = self.repayment.doubleValue;
 		if (self.extraPaymentMonthly) {
 			repayment += self.extraPaymentMonthly.doubleValue;
 		}
@@ -294,7 +295,6 @@
 		}
 	}
 
-	FNLOG(@"totalAmount = %@", @(totalAmount));
 	return @(totalAmount + [self.downPayment doubleValue]);
 }
 
