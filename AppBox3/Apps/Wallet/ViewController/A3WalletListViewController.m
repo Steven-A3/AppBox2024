@@ -448,7 +448,7 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 // answer: http://stackoverflow.com/a/4960988/793916
 #pragma mark - Handling rotation of instruction view
 
-- (NSUInteger)supportedInterfaceOrientations {
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
 	if (IS_IPHONE) {
 		return UIInterfaceOrientationMaskPortrait;
 	} else {

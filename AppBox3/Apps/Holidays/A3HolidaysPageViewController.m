@@ -716,7 +716,7 @@ extern NSString *const kA3HolidayScreenImageURL;		// USE key + country code
 	});
 }
 
-- (NSUInteger)pageViewControllerSupportedInterfaceOrientations:(UIPageViewController *)pageViewController {
+- (UIInterfaceOrientationMask)pageViewControllerSupportedInterfaceOrientations:(UIPageViewController *)pageViewController {
 	if (IS_IPHONE) {
 		return UIInterfaceOrientationMaskPortrait;
 	}

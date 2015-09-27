@@ -356,7 +356,7 @@
     }
     
     if(idx == -1)
-        return [UIImage imageNamed:nil];
+        return nil;
     else
         return [UIImage imageNamed:[NSString stringWithFormat:@"weather_%02ld", (long)idx]];
 }

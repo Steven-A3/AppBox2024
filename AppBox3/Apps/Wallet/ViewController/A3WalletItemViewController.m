@@ -364,8 +364,8 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 						picker.mailComposeDelegate = self;
 						NSString *mailAddress = [urlString substringWithRange:range];
 						[picker setToRecipients:@[mailAddress]];  //받는 사람(배열의 형태로 넣어도 됩니다. )
-						[picker setSubject:nil];  //제목
-						[picker setMessageBody:nil isHTML:NO];     //내용
+						[picker setSubject:@""];  //제목
+						[picker setMessageBody:@"" isHTML:NO];     //내용
 						[self presentViewController:picker animated:YES completion:NULL];
 					}
 

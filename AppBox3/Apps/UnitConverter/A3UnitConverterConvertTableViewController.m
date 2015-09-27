@@ -617,7 +617,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 // answer: http://stackoverflow.com/a/4960988/793916
 #pragma mark - Handling rotation of instruction view
 
-- (NSUInteger)supportedInterfaceOrientations {
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
 	if (IS_IPHONE) {
 		return UIInterfaceOrientationMaskPortrait;
 	} else {

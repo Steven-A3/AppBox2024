@@ -11,7 +11,7 @@
 
 @implementation A3PasscodeCommonViewController
 
-- (NSUInteger)supportedInterfaceOrientations {
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
 	if (IS_IPHONE) {
 		return UIInterfaceOrientationMaskPortrait;
 	} else {

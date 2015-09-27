@@ -1,0 +1,121 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "092EFDC6C2E44C652A66927AE3D387AB11411431",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "03E6A121BBA3F8EE2C1504EBAFF18657499B30EC" : 0,
+    "BF2FE30DD30E807A424B26D63A15FEB4A29593EB" : 0,
+    "DD20A1A48C66B5213E0FEBB87A95EF51D6C6F3E8" : 0,
+    "B5EA45284829F65E890A38F99D4461F0C01E09F2" : 0,
+    "9F9B14DA276794D9192F387F0CC62561009373D0" : 0,
+    "1FAD14248C2E2130F5273E4566DB253638ABA44A" : 0,
+    "4182765C525509B305166AB949D5935FD5C85212" : 0,
+    "092EFDC6C2E44C652A66927AE3D387AB11411431" : 0,
+    "AB12DD813B28CC3E8531DBF922633AE204704AE0" : 0,
+    "FC4C7FE37AA3FD2199A0357D6DB5F0C2582DE10D" : 0,
+    "1F601A37F0218B98FD4991D9D51BA9E46A39A47A" : 0,
+    "E238AF988AF4C59F293B07479363ECFB5D3BFAFF" : 0,
+    "6FC4832245A6A8E50F2A782F20A8B58A46BD1FEB" : 0,
+    "9B743EAFE885833D5C3FB79C6F033B93695A0689" : 0,
+    "E546B06C786C54AF5A4AC9BA77C80E70C9CF897F" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "12CE2E6C-8D2C-4F3B-A482-57E223959F27",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "03E6A121BBA3F8EE2C1504EBAFF18657499B30EC" : "AppBox3\/External\/JVFloatLabeledTextField",
+    "BF2FE30DD30E807A424B26D63A15FEB4A29593EB" : "AppBox3\/External\/MMDrawerController",
+    "DD20A1A48C66B5213E0FEBB87A95EF51D6C6F3E8" : "AppBox3\/External\/AFNetworking",
+    "B5EA45284829F65E890A38F99D4461F0C01E09F2" : "AppBox3\/External\/FMMoveTableView",
+    "9F9B14DA276794D9192F387F0CC62561009373D0" : "AppBox3\/External\/MWPhotoBrowser",
+    "1FAD14248C2E2130F5273E4566DB253638ABA44A" : "AppBox3\/External\/FXPageControl",
+    "4182765C525509B305166AB949D5935FD5C85212" : "AppBox3\/External\/MBProgressHUD",
+    "092EFDC6C2E44C652A66927AE3D387AB11411431" : "AppBox3",
+    "AB12DD813B28CC3E8531DBF922633AE204704AE0" : "AppBox3\/External\/HTCopyableLabel",
+    "FC4C7FE37AA3FD2199A0357D6DB5F0C2582DE10D" : "AppBox3\/External\/MPFoldTransition",
+    "1F601A37F0218B98FD4991D9D51BA9E46A39A47A" : "AppBox3\/External\/NSDate-Extensions",
+    "E238AF988AF4C59F293B07479363ECFB5D3BFAFF" : "AppBox3\/External\/FXLabel",
+    "6FC4832245A6A8E50F2A782F20A8B58A46BD1FEB" : "AppBox3\/External\/Masonry",
+    "9B743EAFE885833D5C3FB79C6F033B93695A0689" : "AppBox3\/External\/NSDate-TimeAgo",
+    "E546B06C786C54AF5A4AC9BA77C80E70C9CF897F" : "AppBox3\/External\/DKLiveBlur"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "AppBox3",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "AppBox3.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Steven-A3\/JVFloatLabeledTextField.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "03E6A121BBA3F8EE2C1504EBAFF18657499B30EC"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "ssh:\/\/center.allaboutapps.net\/draco\/git\/AppBox3.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "092EFDC6C2E44C652A66927AE3D387AB11411431"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Steven-A3\/NSDate-Extensions.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "1F601A37F0218B98FD4991D9D51BA9E46A39A47A"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Steven-A3\/FXPageControl.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "1FAD14248C2E2130F5273E4566DB253638ABA44A"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/jdg\/MBProgressHUD.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "4182765C525509B305166AB949D5935FD5C85212"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Steven-A3\/Masonry.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "6FC4832245A6A8E50F2A782F20A8B58A46BD1FEB"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Steven-A3\/NSDate-TimeAgo.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "9B743EAFE885833D5C3FB79C6F033B93695A0689"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Steven-A3\/MWPhotoBrowser.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "9F9B14DA276794D9192F387F0CC62561009373D0"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Steven-A3\/HTCopyableLabel.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "AB12DD813B28CC3E8531DBF922633AE204704AE0"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Steven-A3\/FMMoveTableView.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "B5EA45284829F65E890A38F99D4461F0C01E09F2"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Steven-A3\/MMDrawerController.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "BF2FE30DD30E807A424B26D63A15FEB4A29593EB"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/AFNetworking\/AFNetworking.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "DD20A1A48C66B5213E0FEBB87A95EF51D6C6F3E8"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Steven-A3\/FXLabel.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "E238AF988AF4C59F293B07479363ECFB5D3BFAFF"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Steven-A3\/DKLiveBlur.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "E546B06C786C54AF5A4AC9BA77C80E70C9CF897F"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Steven-A3\/MPFoldTransition.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "FC4C7FE37AA3FD2199A0357D6DB5F0C2582DE10D"
+    }
+  ]
+}

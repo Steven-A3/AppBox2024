@@ -308,7 +308,7 @@ NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.A
 	[MagicalRecord cleanUp];
 }
 
-- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
 
 	NSUInteger orientations;
 
