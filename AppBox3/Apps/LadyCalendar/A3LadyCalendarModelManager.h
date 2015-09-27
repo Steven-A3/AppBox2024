@@ -19,17 +19,11 @@ extern NSString *const A3LadyCalendarChangedDateKey;
 + (void)alertMessage:(NSString*)message title:(NSString*)title;
 - (NSString *)defaultAccountName;
 - (void)prepare;
-
 - (void)prepareAccount;
-
 - (void)deleteAccount:(LadyCalendarAccount *)account;
-
 - (void)makePredictPeriodsBeforeCurrentPeriod;
-
 - (NSInteger)numberOfAccount;
-
 - (void)setWatchingDateForCurrentAccount:(NSDate *)date;
-
 - (NSInteger)numberOfPeriodsWithAccountID:(NSString*)accountID;
 - (NSArray *)periodListSortedByStartDateIsAscending:(BOOL)ascending;
 - (NSArray *)predictPeriodListSortedByStartDateIsAscending:(BOOL)ascending;
@@ -40,18 +34,16 @@ extern NSString *const A3LadyCalendarChangedDateKey;
 - (LadyCalendarPeriod *)nextPeriodFromDate:(NSDate *)date;
 - (NSArray *)periodListStartsInMonth:(NSDate *)month;
 - (NSArray *)periodListInRangeWithMonth:(NSDate*)month accountID:(NSString*)accountID;
+- (LadyCalendarPeriod *)lastPeriod;
 - (BOOL)isOverlapStartDate:(NSDate*)startDate endDate:(NSDate*)endDate accountID:(NSString*)accountID periodID:(NSString*)periodID;
 - (NSMutableDictionary*)createDefaultSetting;
 - (NSDictionary*)currentSetting;
 - (NSString*)stringForAlertType:(NSInteger)alertType;
-
 - (NSInteger)cycleLengthConsideringUserOption;
-
 - (void)recalculateDates;
 - (NSString*)stringFromDate:(NSDate*)date;
 - (NSDate *)startDateForCurrentAccount;
 - (NSDate *)endDateForCurrentAccount;
-
 + (void)setupLocalNotification;
 
 @end

@@ -107,17 +107,19 @@ extern NSString *const A3WalletItemFieldNoteCellID;
         A3LadyCalendarModelManager *modelManager = [A3LadyCalendarModelManager new];
         NSInteger cycleLength = [modelManager cycleLengthConsideringUserOption];
 
+        self.prevPeriod = [_dataManager lastPeriod];
+
 		_periodItem = [LadyCalendarPeriod MR_createEntityInContext:[NSManagedObjectContext MR_defaultContext]];
 		_periodItem.updateDate = [NSDate date];
-		_periodItem.startDate = [A3DateHelper dateMake12PM:[NSDate date]];
         _periodItem.cycleLength = cycleLength == 0 ? @28 : @(cycleLength);
 		_periodItem.isPredict = @NO;
-		_periodItem.endDate = [A3DateHelper dateByAddingDays:4 fromDate:_periodItem.startDate];
 		_periodItem.accountID = _dataManager.currentAccount.uniqueID;
 
-        self.prevPeriod = [_dataManager previousPeriodFromDate:_periodItem.startDate];
         if (_prevPeriod) {
             _periodItem.startDate = [A3DateHelper dateByAddingDays:cycleLength fromDate:_prevPeriod.startDate];
+            _periodItem.endDate = [A3DateHelper dateByAddingDays:4 fromDate:_periodItem.startDate];
+        } else {
+            _periodItem.startDate = [A3DateHelper dateMake12PM:[NSDate date]];
             _periodItem.endDate = [A3DateHelper dateByAddingDays:4 fromDate:_periodItem.startDate];
         }
 
@@ -725,6 +727,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)calculateCycleLengthFromDate:(NSDate *)fromDate
 {
+    if (!fromDate)
+        return;
+    
 //    if (_isEditMode) {
 //        return;
 //    }

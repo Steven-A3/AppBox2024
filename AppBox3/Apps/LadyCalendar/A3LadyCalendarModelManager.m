@@ -250,6 +250,11 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
     return [LadyCalendarPeriod MR_findFirstWithPredicate:predicate sortedBy:@"startDate" ascending:YES];
 }
 
+- (LadyCalendarPeriod *)lastPeriod {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(accountID == %@) AND isPredict == NO", [self currentAccount].uniqueID];
+    return [LadyCalendarPeriod MR_findFirstWithPredicate:predicate sortedBy:@"startDate" ascending:NO];
+}
+
 - (BOOL)isOverlapStartDate:(NSDate*)startDate endDate:(NSDate*)endDate accountID:(NSString*)accountID periodID:(NSString*)periodID
 {
     NSArray *array = nil;
