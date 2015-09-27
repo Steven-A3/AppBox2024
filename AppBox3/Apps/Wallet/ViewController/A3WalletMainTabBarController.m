@@ -21,6 +21,7 @@
 #import "A3UserDefaults.h"
 #import "WalletCategory.h"
 #import "A3CenterViewDelegate.h"
+#import "UIViewController+A3Addition.h"
 
 #define kDefaultTabSelection    1	// default tab value is 0 (tab #1), stored in A3UserDefaults
 
@@ -81,6 +82,17 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3WalletNotificationCategoryAdded object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3WalletNotificationCategoryDeleted object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3WalletNotificationItemCategoryMoved object:nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if ([self isBeingPresented] || [self isMovingToParentViewController]) {
+        FNLOG(@"==============================");
+        FNLOG(@"Calling presentInterstitialAds");
+        FNLOG(@"==============================");
+		[self presentInterstitialAds];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

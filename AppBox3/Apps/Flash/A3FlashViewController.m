@@ -325,6 +325,12 @@ NSString *const cellID = @"flashEffectID";
 		[self startStrobeLightEffectForIndex:_selectedEffectIndex];
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+	if ([self isBeingPresented] || [self isMovingToParentViewController]) {
+        FNLOG(@"==============================");
+        FNLOG(@"Calling presentInterstitialAds");
+        FNLOG(@"==============================");
+		[self presentInterstitialAds];
+	}
 }
 
 - (void)viewWillLayoutSubviews {

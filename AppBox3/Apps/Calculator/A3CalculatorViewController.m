@@ -10,6 +10,7 @@
 #import "A3CalculatorViewController.h"
 #import "A3UserDefaultsKeys.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "UIViewController+A3Addition.h"
 
 @implementation A3CalculatorViewController
 
@@ -37,6 +38,17 @@
 
 - (BOOL)radian {
     return [[A3SyncManager sharedSyncManager] boolForKey:A3CalculatorUserDefaultsRadianDegreeState];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if ([self isBeingPresented] || [self isMovingToParentViewController]) {
+        FNLOG(@"==============================");
+        FNLOG(@"Calling presentInterstitialAds");
+        FNLOG(@"==============================");
+		[self presentInterstitialAds];
+	}
 }
 
 @end

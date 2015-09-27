@@ -78,21 +78,16 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 #pragma mark - Custom Date String Related
 - (NSString *)fullStyleDateStringFromDate:(NSDate *)date withShortTime:(BOOL)shortTime;
 - (NSString *)customFullStyleDateStringFromDate:(NSDate *)date withShortTime:(BOOL)shortTime;
-
 - (NSString *)shareMessageFormat;
-
 - (NSString *)commonShareFooter;
-
 - (NSString *)appITunesURL;
-
 - (void)alertLocationDisabled;
-
 - (NSString *)shareMailMessageWithHeader:(NSString *)header contents:(NSString *)contents tail:(NSString *)tail;
-
-
 - (void)setFirstActionSheet:(UIActionSheet *)actionSheet;
 - (UIActionSheet *)firstActionSheet;
 - (void)rotateFirstActionSheet;
-
 - (void)requestAuthorizationForCamera:(NSString *)appName;
+
+- (void)presentInterstitialAds;
+
 @end

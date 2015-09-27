@@ -229,6 +229,13 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 		[self leftBarButtonAppsButton];
 	}
 	self.detailTableViewController = nil;
+
+	if ([self isBeingPresented] || [self isMovingToParentViewController]) {
+        FNLOG(@"==============================");
+        FNLOG(@"Calling presentInterstitialAds");
+        FNLOG(@"==============================");
+		[self presentInterstitialAds];
+	}
 }
 
 - (UIView *)footerView {

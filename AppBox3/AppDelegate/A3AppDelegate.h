@@ -121,18 +121,12 @@ extern NSString *const A3InAppPurchaseRemoveAdsProductIdentifier;
 @property (nonatomic, copy) SKProduct *IAPRemoveAdsProductFromiTunes;
 @property (nonatomic, strong) GADInterstitial *googleAdInterstitial;
 @property (nonatomic, strong) RMStoreAppReceiptVerificator *receiptVerificator;
-@property (nonatomic, strong) NSTimer *adDisplayTimer;
 @property (nonatomic, strong) NSDate *appOpenTime;
 @property (nonatomic, assign) BOOL inAppPurchaseInProgress;
 @property (nonatomic, assign) BOOL firstRunAfterInstall;
 
 + (A3AppDelegate *)instance;
 - (void)updateStartOption;
-
-- (void)startAdDisplayTimer;
-
-- (void)restartAdDisplayTimer;
-- (void)removeAdDisplayTimer;
 - (void)showReceivedLocalNotifications;
 - (UINavigationController *)navigationController;
 - (UIViewController *)visibleViewController;
@@ -141,12 +135,11 @@ extern NSString *const A3InAppPurchaseRemoveAdsProductIdentifier;
 - (NSURL *)storeURL;
 - (NSString *)storeFileName;
 - (void)didFinishPushViewController;
-
 - (BOOL)receiptHasRemoveAds;
-
 - (BOOL)isPaidAppVersionCustomer:(RMAppReceipt *)receipt;
-
 - (BOOL)isIAPPurchasedCustomer:(RMAppReceipt *)receipt;
+- (BOOL)displayAds;
+
 @end
 
 #import "A3AppDelegate+iCloud.h"

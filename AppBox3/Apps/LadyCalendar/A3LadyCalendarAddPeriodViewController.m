@@ -15,8 +15,6 @@
 #import "A3DateHelper.h"
 #import "A3NumberKeyboardViewController.h"
 #import "UIColor+A3Addition.h"
-#import "A3UserDefaultsKeys.h"
-#import "A3AppDelegate+appearance.h"
 #import "A3WalletNoteCell.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "NSDate+formatting.h"
@@ -102,31 +100,34 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 						ItemKey_Title : NSLocalizedString(@"Delete Period", @"Delete Period"),
 						ItemKey_Type : @(PeriodCellType_Delete)
 				}]]}];
+        self.prevPeriod = [_dataManager previousPeriodFromDate:_periodItem.startDate];
+        LadyCalendarPeriod *latestPeriod = [[_dataManager periodListSortedByStartDateIsAscending:YES] lastObject];
+        _isLatestPeriod = [_periodItem.startDate isEqualToDate:latestPeriod.startDate];
 	} else {
+        A3LadyCalendarModelManager *modelManager = [A3LadyCalendarModelManager new];
+        NSInteger cycleLength = [modelManager cycleLengthConsideringUserOption];
+
 		_periodItem = [LadyCalendarPeriod MR_createEntityInContext:[NSManagedObjectContext MR_defaultContext]];
 		_periodItem.updateDate = [NSDate date];
 		_periodItem.startDate = [A3DateHelper dateMake12PM:[NSDate date]];
-//		[_periodItem reassignUniqueIDWithStartDate];
-		_periodItem.cycleLength = @28;
+        _periodItem.cycleLength = cycleLength == 0 ? @28 : @(cycleLength);
 		_periodItem.isPredict = @NO;
 		_periodItem.endDate = [A3DateHelper dateByAddingDays:4 fromDate:_periodItem.startDate];
 		_periodItem.accountID = _dataManager.currentAccount.uniqueID;
-	}
 
-	if ( _isEditMode ) {
-		self.prevPeriod = [_dataManager previousPeriodFromDate:_periodItem.startDate];
-        LadyCalendarPeriod *latestPeriod = [[_dataManager periodListSortedByStartDateIsAscending:YES] lastObject];
-        _isLatestPeriod = [_periodItem.startDate isEqualToDate:latestPeriod.startDate];
-	}
-	else
-	{
-		NSInteger ovulationDays = 14;
-		_periodItem.ovulation = [A3DateHelper dateByAddingDays:ovulationDays fromDate:_periodItem.startDate];
         self.prevPeriod = [_dataManager previousPeriodFromDate:_periodItem.startDate];
+        if (_prevPeriod) {
+            _periodItem.startDate = [A3DateHelper dateByAddingDays:cycleLength fromDate:_prevPeriod.startDate];
+            _periodItem.endDate = [A3DateHelper dateByAddingDays:4 fromDate:_periodItem.startDate];
+        }
+
+        NSInteger ovulationDays = 14;
+        _periodItem.ovulation = [A3DateHelper dateByAddingDays:ovulationDays fromDate:_periodItem.startDate];
         if (self.prevPeriod) {
             [self calculateCycleLengthFromDate:_periodItem.startDate];
         }
-	}
+    }
+
 	self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
 
 	[self.tableView registerClass:[A3WalletNoteCell class] forCellReuseIdentifier:A3WalletItemFieldNoteCellID];
@@ -386,7 +387,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
             UITextField *textField = (UITextField*)cell.accessoryView;
             textField.text = [NSString stringWithFormat:@"%ld",[_periodItem.cycleLength longValue]];
             textField.textColor = (!_prevPeriod || _isLatestPeriod) ? [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255] : [UIColor colorWithRed:201/255.0 green:201/255.0 blue:201/255.0 alpha:1.0];
-            textField.userInteractionEnabled = (!_prevPeriod || _isLatestPeriod) ? YES : NO;
+//            textField.userInteractionEnabled = (!_prevPeriod || _isLatestPeriod) ? YES : NO;
 			break;
 		}
 
@@ -737,17 +738,17 @@ extern NSString *const A3WalletItemFieldNoteCellID;
         _prevPeriod = currentPeriod;
     }
     else {
-        _prevPeriod = [_dataManager previousPeriodFromDate: currentPeriod ? [currentPeriod startDate] : fromDate];
+        _prevPeriod = [_dataManager previousPeriodFromDate: fromDate];
     }
     
     if (!_prevPeriod && currentPeriod ) {    // 더이상 이전월이 없는, 최초의 달.
         _prevPeriod = currentPeriod;
     }
-    else if ((!_prevPeriod && !currentPeriod) || ([_prevPeriod.startDate timeIntervalSince1970] == [currentPeriod.startDate timeIntervalSince1970])) {    // 더이상 않이 없는, 이전 월인 경우.
+    else if ((!_prevPeriod && !currentPeriod) || ([_prevPeriod.startDate isEqualToDate:fromDate])) {    // 더이상 않이 없는, 이전 월인 경우.
         [self reloadItemAtCellType:PeriodCellType_CycleLength];
         return;
     }
-    
+    FNLOG(@"%@,%@", currentPeriod, _prevPeriod);
     if (_prevPeriod) {
         NSInteger cycleLength = [A3DateHelper diffDaysFromDate:_prevPeriod.startDate
                                                         toDate:fromDate];

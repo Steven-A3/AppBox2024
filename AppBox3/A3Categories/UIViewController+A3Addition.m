@@ -22,6 +22,9 @@
 
 static char const *const key_firstActionSheet 					= "key_firstActionSheet";
 
+NSString *const A3NumberOfTimesOpeningSubApp = @"A3NumberOfTimesOpeningSubApp";
+NSString *const A3AdsDisplayTime = @"A3AdsDisplayTime";
+
 @implementation UIViewController (A3Addition)
 
 /*! MainMenuViewController에서 app switch 할 때 popToRootViewController를 한 뒤에, 각 ViewController에 cleanUp을 호출합니다.
@@ -708,6 +711,33 @@ static char const *const key_firstActionSheet 					= "key_firstActionSheet";
 	[self presentViewController:alertController
 					   animated:YES
 					 completion:NULL];
+}
+
+- (void)presentInterstitialAds {
+    FNLOG();
+    NSDate *adsDisplayTime = [[NSUserDefaults standardUserDefaults] objectForKey:A3AdsDisplayTime];
+    NSInteger numberOfTimesOpeningSubApp = [[NSUserDefaults standardUserDefaults] integerForKey:A3NumberOfTimesOpeningSubApp];
+    if (adsDisplayTime && [[NSDate date] timeIntervalSinceDate:adsDisplayTime] > 60 * 60) {
+        if ([[A3AppDelegate instance] displayAds]) {
+            [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3AdsDisplayTime];
+            [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:A3NumberOfTimesOpeningSubApp];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+        return;
+    }
+
+    if (numberOfTimesOpeningSubApp > 5) {
+        if ([[A3AppDelegate instance] displayAds]) {
+            [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3AdsDisplayTime];
+            [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:A3NumberOfTimesOpeningSubApp];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            return;
+        }
+    } else {
+        numberOfTimesOpeningSubApp++;
+    }
+    [[NSUserDefaults standardUserDefaults] setInteger:numberOfTimesOpeningSubApp forKey:A3NumberOfTimesOpeningSubApp];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 @end

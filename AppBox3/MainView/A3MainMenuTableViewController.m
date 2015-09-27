@@ -290,8 +290,6 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 						}
 					}
 					if (proceedPasscodeCheck) {
-						[[A3AppDelegate instance] removeAdDisplayTimer];
-						
 						weakSelf.selectedElement = menuElement;
 						if (IS_IOS7 || ![[A3AppDelegate instance] useTouchID]) {
 							[weakSelf presentLockScreen];
@@ -546,7 +544,6 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 }
 
 - (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {
-	[[A3AppDelegate instance] startAdDisplayTimer];
     _passcodeViewController = nil;
 }
 
@@ -691,7 +688,6 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 - (void)didSelectRemoveAdsRow {
 	A3AppDelegate *appDelegate = [A3AppDelegate instance];
 	appDelegate.inAppPurchaseInProgress = YES;
-	[appDelegate removeAdDisplayTimer];
 
 	[self showProcessingHUD];
 
@@ -753,7 +749,6 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 	// App Receipt가 정상적으로 Validate가 되었는지 확인한다.
 	A3AppDelegate *appDelegate = [A3AppDelegate instance];
 	appDelegate.inAppPurchaseInProgress = YES;
-	[appDelegate removeAdDisplayTimer];
 
 	[self showProcessingHUD];
 

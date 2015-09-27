@@ -44,6 +44,9 @@ extern NSString *const A3LadyCalendarChangedDateKey;
 - (NSMutableDictionary*)createDefaultSetting;
 - (NSDictionary*)currentSetting;
 - (NSString*)stringForAlertType:(NSInteger)alertType;
+
+- (NSInteger)cycleLengthConsideringUserOption;
+
 - (void)recalculateDates;
 - (NSString*)stringFromDate:(NSDate*)date;
 - (NSDate *)startDateForCurrentAccount;

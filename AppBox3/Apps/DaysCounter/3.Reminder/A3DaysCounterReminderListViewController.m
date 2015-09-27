@@ -91,6 +91,12 @@
 		self.toolbarItems = _bottomToolbar.items;
 		[self.navigationController setToolbarHidden:NO];
 	}
+    if ([self isBeingPresented] || [self isMovingToParentViewController]) {
+        FNLOG(@"==============================");
+        FNLOG(@"Calling presentInterstitialAds");
+        FNLOG(@"==============================");
+        [self presentInterstitialAds];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

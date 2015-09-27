@@ -218,6 +218,13 @@
 	}
 
 	[self updateCurrentMonthLabel];
+
+	if ([self isBeingPresented] || [self isMovingToParentViewController]) {
+        FNLOG(@"==============================");
+        FNLOG(@"Calling presentInterstitialAds");
+        FNLOG(@"==============================");
+		[self presentInterstitialAds];
+	}
 }
 
 - (void)removeObserver {

@@ -241,7 +241,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 }
 
 - (LadyCalendarPeriod *)previousPeriodFromDate:(NSDate *)date {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(startDate < %@) AND (accountID == %@)", date, [self currentAccount].uniqueID];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(startDate < %@) AND (accountID == %@) AND isPredict == NO", date, [self currentAccount].uniqueID];
 	return [LadyCalendarPeriod MR_findFirstWithPredicate:predicate sortedBy:@"startDate" ascending:NO];
 }
 
@@ -379,6 +379,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 	else if ( cycleOption == CycleLength_AverageAllCycle ){
 		cycleLength = [self calculateAverageCycleFromArray:periodArray fromIndex:0];
 	}
+    FNLOG(@"%@", @(cycleLength));
 
 	// 현재 예상목록을 모두 지우고 다시 생성한다.
 	[self removeAllPredictItemsAccountID:account.uniqueID];

@@ -98,8 +98,7 @@
 
 	void(^presentPasscodeViewControllerBlock)(void) = ^(){
 		[self removeSecurityCoverView];
-		[self removeAdDisplayTimer];
-		
+
 		self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
 		BOOL showCancelButton = ![[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting];
 		if (showCancelButton) {
@@ -303,7 +302,6 @@
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
 	}
-	[self startAdDisplayTimer];
 }
 
 - (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
