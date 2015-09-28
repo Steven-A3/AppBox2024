@@ -51,17 +51,17 @@
 		"iPhone 6s": {
 			"Model" : "iPhone 6s",
 			"Chips": "A9 with 64-bit architecture\nM9 motion coprocessor",
-			"CPU": "Apple-designed A9",
+			"CPU": "1.8 GHz dual-core Apple-designed ARMv8-A",
 			"GPU": "TBD",
-			"Memory": "2GB",
+			"Memory": "2GB LPDDR4 DRAM",
 			"PPI" : "326"
 		},
 		"iPhone 6s Plus": {
 			"Model" : "iPhone 6s Plus",
 			"Chips": "A9 with 64-bit architecture\nM9 motion coprocessor",
-			"CPU": "Apple-designed A9",
+			"CPU": "1.8 GHz dual-core Apple-designed ARMv8-A",
 			"GPU": "TBD",
-			"Memory": "2GB",
+			"Memory": "2GB LPDDR4 DRAM",
 			"PPI": "401"
 		},
         "iPhone 6": {
