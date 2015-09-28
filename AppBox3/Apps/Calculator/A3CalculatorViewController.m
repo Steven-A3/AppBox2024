@@ -40,6 +40,12 @@
     return [[A3SyncManager sharedSyncManager] boolForKey:A3CalculatorUserDefaultsRadianDegreeState];
 }
 
+- (void)viewDidLoad {
+	[super viewDidLoad];
+
+	[[A3AppDelegate instance] popStartingAppInfo];
+}
+
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 

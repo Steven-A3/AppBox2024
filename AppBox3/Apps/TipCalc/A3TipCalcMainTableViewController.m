@@ -120,6 +120,8 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[self registerContentSizeCategoryDidChangeNotification];
+
+    [[A3AppDelegate instance] popStartingAppInfo];
 }
 
 /*! Tip Calculator 의 경우에는 KeyValueStore 에는 CurrencyCode 만 저장이 된다.

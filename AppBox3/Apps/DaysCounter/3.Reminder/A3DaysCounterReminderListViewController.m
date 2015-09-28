@@ -68,6 +68,8 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
 	[self registerContentSizeCategoryDidChangeNotification];
+    
+    [[A3AppDelegate instance] popStartingAppInfo];
 }
 
 - (void)removeObserver {

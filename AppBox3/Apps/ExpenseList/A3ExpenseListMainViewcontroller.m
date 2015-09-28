@@ -148,6 +148,8 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	[self registerContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+
+    [[A3AppDelegate instance] popStartingAppInfo];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

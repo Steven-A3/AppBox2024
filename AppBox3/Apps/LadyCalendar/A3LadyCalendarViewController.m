@@ -121,6 +121,7 @@
     // TODO
 //  스크롤중에 종료되는 버그로 인해서 일단 제거.
 //	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDefaultsDidChange) name:A3UserDefaultsDidChangeNotification object:nil];
+    [[A3AppDelegate instance] popStartingAppInfo];
 }
 
 //

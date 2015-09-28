@@ -139,6 +139,8 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
                                              selector:@selector(releaseMotionManager)
                                                  name:UIApplicationDidEnterBackgroundNotification
                                                object:nil];
+
+    [[A3AppDelegate instance] popStartingAppInfo];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

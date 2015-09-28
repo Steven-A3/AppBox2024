@@ -261,6 +261,8 @@ NSString *const cellID = @"flashEffectID";
     if (IS_IPAD) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
     }
+    
+    [[A3AppDelegate instance] popStartingAppInfo];
 }
 
 - (void)requestAuthorizationForCamera {

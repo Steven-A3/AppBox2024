@@ -110,6 +110,7 @@
 	_currentPageIndex = NSNotFound;
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(countryListChanged) name:A3NotificationHolidaysCountryListChanged object:nil];
+    [[A3AppDelegate instance] popStartingAppInfo];
 }
 
 - (void)countryListChanged {

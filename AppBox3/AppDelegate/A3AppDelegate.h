@@ -38,6 +38,7 @@ extern NSString *const kA3AppsMenuNeedSecurityCheck;
 extern NSString *const kA3AppsMenuArray;
 extern NSString *const kA3AppsDataUpdateDate;
 extern NSString *const kA3AppsStartingAppName;
+extern NSString *const kA3AppsOriginalStartingAppName;
 
 /* Notifications */
 extern NSString *const A3NotificationAppsMainMenuContentsChanged;
@@ -127,6 +128,9 @@ extern NSString *const A3InAppPurchaseRemoveAdsProductIdentifier;
 
 + (A3AppDelegate *)instance;
 - (void)updateStartOption;
+
+- (void)popStartingAppInfo;
+
 - (void)showReceivedLocalNotifications;
 - (UINavigationController *)navigationController;
 - (UIViewController *)visibleViewController;

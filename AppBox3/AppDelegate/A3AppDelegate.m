@@ -9,6 +9,7 @@
 #import <DropboxSDK/DropboxSDK.h>
 #import <CoreLocation/CoreLocation.h>
 #import <AVFoundation/AVFoundation.h>
+#import <Foundation/Foundation.h>
 #import "A3AppDelegate.h"
 #import "A3MainMenuTableViewController.h"
 #import "MMDrawerController.h"
@@ -62,6 +63,7 @@ NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.A
 @property (nonatomic, strong) NSTimer *locationUpdateTimer;
 @property (nonatomic, copy) NSString *deviceToken;
 @property (nonatomic, copy) NSString *alertURLString;
+@property (nonatomic, strong) UIApplicationShortcutItem *shortcutItem;
 
 @end
 
@@ -83,8 +85,24 @@ NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.A
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+- (BOOL)shouldPerformAdditionalDelegateHandling:(NSDictionary *)launchOptions {
+    if (launchOptions) {
+        _shortcutItem = launchOptions[UIApplicationLaunchOptionsShortcutItemKey];
+    
+        if (_shortcutItem) {
+            [self pushStartingAppInfo];
+            [[A3UserDefaults standardUserDefaults] setObject:_shortcutItem.userInfo[kA3AppsMenuName] forKey:kA3AppsStartingAppName];
+            _shortcutItem = nil;
+            
+            return NO;
+        }
+    }
+    return YES;
+}
 
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    BOOL shouldPerformAdditionalDelegateHandling = [self shouldPerformAdditionalDelegateHandling:launchOptions];
+    
 	_shouldPresentAd = YES;
 
 	_isIAPRemoveAdsAvailable = NO;
@@ -222,7 +240,7 @@ NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.A
 		[application registerForRemoteNotifications];
 	}
 
-	return YES;
+	return shouldPerformAdditionalDelegateHandling;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -322,8 +340,9 @@ NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.A
 }
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-    FNLOG();
-	if ([[DBSession sharedSession] handleOpenURL:url]) {
+    if ([[url absoluteString] hasPrefix:@"appboxpro://"]) {
+        FNLOG(@"%@", url);
+    } else if ([[DBSession sharedSession] handleOpenURL:url]) {
 		if ([[DBSession sharedSession] isLinked]) {
 			FNLOG(@"App linked successfully!");
 			[[NSNotificationCenter defaultCenter] postNotificationName:A3DropboxLoginWithSuccess object:nil];
@@ -334,6 +353,50 @@ NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.A
 	}
 	// Add whatever other url handling code your app requires here
 	return NO;
+}
+
+- (void)application:(UIApplication * _Nonnull)application performActionForShortcutItem:(UIApplicationShortcutItem * _Nonnull)shortcutItem completionHandler:(void (^ _Nonnull)(BOOL succeeded))completionHandler {
+    _shortcutItem = shortcutItem;
+    completionHandler([self handleShortcutItem]);
+}
+
+- (BOOL)handleShortcutItem {
+    if (!_shortcutItem) return NO;
+
+    [self pushStartingAppInfo];
+    [[A3UserDefaults standardUserDefaults] setObject:_shortcutItem.userInfo[kA3AppsMenuName] forKey:kA3AppsStartingAppName];
+    _shortcutItem = nil;
+    
+    
+				if ([self requirePasscodeForStartingApp]) {
+                    [self presentLockScreen];
+                } else {
+                    [self removeSecurityCoverView];
+                    [self.mainMenuViewController openRecentlyUsedMenu:YES];
+                }
+    
+    return YES;
+}
+
+- (void)pushStartingAppInfo {
+    NSString *startAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+    if ([startAppName length]) {
+        [[NSUserDefaults standardUserDefaults] setObject:startAppName forKey:kA3AppsOriginalStartingAppName];
+    } else {
+        [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:kA3AppsOriginalStartingAppName];
+    }
+}
+
+- (void)popStartingAppInfo {
+    id originalStartingAppName = [[NSUserDefaults standardUserDefaults] objectForKey:kA3AppsOriginalStartingAppName];
+    if (originalStartingAppName) {
+        if ([originalStartingAppName length]) {
+            [[A3UserDefaults standardUserDefaults] setObject:originalStartingAppName forKey:kA3AppsStartingAppName];
+        } else {
+            [[A3UserDefaults standardUserDefaults] removeObjectForKey:kA3AppsStartingAppName];
+        }
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kA3AppsOriginalStartingAppName];
+    }
 }
 
 #pragma mark Notification

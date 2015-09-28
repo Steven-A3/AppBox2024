@@ -29,6 +29,7 @@ NSString *const kA3AppsMenuNeedSecurityCheck = @"kA3AppsMenuNeedSecurityCheck";
 NSString *const kA3AppsMenuArray = @"kA3AppsMenuArray";
 NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 NSString *const kA3AppsStartingAppName = @"kA3AppsStartingAppName";
+NSString *const kA3AppsOriginalStartingAppName = @"kA3AppsOriginalStartingAppName";
 
 NSString *const A3AppName_DateCalculator = @"Date Calculator";
 NSString *const A3AppName_LoanCalculator = @"Loan Calculator";
@@ -224,6 +225,7 @@ NSString *const A3AppName_Settings = @"Settings";
 		};
 		[[A3SyncManager sharedSyncManager] setObject:dictionary forKey:A3MainMenuDataEntityFavorites state:A3DataObjectStateInitialized];
 	}
+    [self updateApplicationShortcutItems];
 	return dictionary;
 }
 
@@ -245,6 +247,23 @@ NSString *const A3AppName_Settings = @"Settings";
 	[[A3SyncManager sharedSyncManager] setObject:A3SyncManagerEmptyObject forKey:A3MainMenuDataEntityRecentlyUsed state:A3DataObjectStateModified];
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:nil];
+}
+
+- (void)updateApplicationShortcutItems {
+    if (![[UIApplication sharedApplication] respondsToSelector:NSSelectorFromString(@"shortcutItems")])
+        return;
+    NSArray *favoriteMenus = [self favoriteItems];
+    NSMutableArray *newShortcutItems = [NSMutableArray new];
+    for (NSDictionary *favoriteItem in favoriteMenus) {
+        UIApplicationShortcutItem *shortcutItem = [[UIApplicationShortcutItem alloc] initWithType:[NSString stringWithFormat:@"net.allaboutapps.%@", favoriteItem[kA3AppsMenuName]]
+                                                                                   localizedTitle:NSLocalizedString(favoriteItem[kA3AppsMenuName], nil)
+                                                                                localizedSubtitle:Nil
+                                                                                             icon:[UIApplicationShortcutIcon iconWithTemplateImageName:favoriteItem[kA3AppsMenuImageName]]
+                                                                                         userInfo:favoriteItem
+                                                   ];
+        [newShortcutItems addObject:shortcutItem];
+    }
+    [[UIApplication sharedApplication] setShortcutItems:newShortcutItems];
 }
 
 @end

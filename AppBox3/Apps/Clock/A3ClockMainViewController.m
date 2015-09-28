@@ -119,6 +119,8 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationRightSideViewDidDismiss object:nil];
 	}
+
+    [[A3AppDelegate instance] popStartingAppInfo];
 }
 
 - (void)applicationDidBecomeActive {

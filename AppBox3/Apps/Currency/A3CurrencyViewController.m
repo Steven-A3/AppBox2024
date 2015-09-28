@@ -162,6 +162,8 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	[self registerContentSizeCategoryDidChangeNotification];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+
+    [[A3AppDelegate instance] popStartingAppInfo];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

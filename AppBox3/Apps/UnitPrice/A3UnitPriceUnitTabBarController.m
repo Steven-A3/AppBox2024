@@ -59,6 +59,8 @@ NSString *const A3UnitPriceSegmentIndex = @"A3UnitPriceSegmentIndex";
 	// Do any additional setup after loading the view.
     
     self.navigationItem.titleView = self.selectSegment;
+
+    [[A3AppDelegate instance] popStartingAppInfo];
 }
 
 - (void)didReceiveMemoryWarning
