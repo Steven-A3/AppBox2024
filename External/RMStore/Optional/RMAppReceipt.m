@@ -141,7 +141,7 @@ static NSURL *_appleRootCertificateURL = nil;
 					if (_originalAppVersion == nil || [_originalAppVersion length] == 0) {
 						_originalAppVersion = @"1.0.0";
 					}
-#warning 제출시에는 반드시 아래의 행을 제거해야 한다.
+#warning        Do not include following lines of code when you submit to App Store
 //#ifdef DEBUG
 //					_originalAppVersion = @"3.7.0";
 //#endif
