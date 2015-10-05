@@ -190,7 +190,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		_inchAsPoints = (480.0 / 960.0) * pixelsInInch;
 		_redLineWidth = 0.5;
 		_resetPosition = _centimeterPositionRightBottom ? 6.5 : 2.5;
-	} else if ([model isEqualToString:@"iPhone 6"]) {
+    } else if ([model isEqualToString:@"iPhone 6"] || [model isEqualToString:@"iPhone 6s"]) {
 		// iPhone 6
 		CGFloat pixelsInInch = 327.6;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
@@ -198,7 +198,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		_inchAsPoints = (568.0 / 1334.0) * pixelsInInch;
 		_resetPosition = _centimeterPositionRightBottom ? 9.5 : 3.5;
 		_redLineWidth = 0.5;
-	} else if ([model isEqualToString:@"iPhone 6 Plus"]) {
+	} else if ([model isEqualToString:@"iPhone 6 Plus"] || [model isEqualToString:@"iPhone 6s Plus"]) {
 		// iPhone 6 Plus
 		CGFloat pixelsInInch = 403.5;	// Original value = 401
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
@@ -245,7 +245,10 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		_inchAsPoints = (1024.0 / 2048.0) * pixelsInInch;
 		_resetPosition = _centimeterPositionRightBottom ? 14.0 : 5.5;
 		_redLineWidth = 0.5;
-	} else if ([model isEqualToString:@"iPad mini 3"] || [model isEqualToString:@"iPad mini 3 (Wi-Fi)"]) {
+	} else if ([model isEqualToString:@"iPad mini 3"] ||
+               [model isEqualToString:@"iPad mini 3 (Wi-Fi)"] ||
+               [model isEqualToString:@"iPad mini 4"] ||
+               [model isEqualToString:@"iPad mini 4 (Wi-Fi)"]) {
 		// iPad mini 3
 		CGFloat pixelsInInch = 327.2;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
