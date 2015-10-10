@@ -21,5 +21,7 @@ extern NSString *const A3NotificationExpenseListCurrencyCodeChanged;
 @end
 
 @interface A3ExpenseListMainViewController : ATSDragToReorderTableViewController
+
 - (NSString *)defaultCurrencyCode;
+
 @end

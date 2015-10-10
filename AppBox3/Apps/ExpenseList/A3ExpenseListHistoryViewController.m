@@ -48,6 +48,9 @@ static NSString *CellIdentifier = @"Cell";
 	}
 
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
     self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
 	[self.tableView registerClass:[A3ExpenseListHistoryCell class] forCellReuseIdentifier:CellIdentifier];
 }

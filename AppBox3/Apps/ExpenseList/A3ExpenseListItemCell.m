@@ -273,6 +273,10 @@
         [keyboardViewController.clearButton setEnabled:NO];
         
         textField.inputView = keyboardViewController.view;
+		if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
+			textField.inputAssistantItem.leadingBarButtonGroups = @[];
+			textField.inputAssistantItem.trailingBarButtonGroups = @[];
+		}
         textField.inputAccessoryView = [self keyboardAccessoryView];
         
         self.numberKeyboardViewController = keyboardViewController;
@@ -288,6 +292,10 @@
         keyboardViewController.textInputTarget = textField;
         keyboardViewController.delegate = self;
         textField.inputView = keyboardViewController.view;
+		if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
+			textField.inputAssistantItem.leadingBarButtonGroups = @[];
+			textField.inputAssistantItem.trailingBarButtonGroups = @[];
+		}
         textField.inputAccessoryView = [self keyboardAccessoryView];
         keyboardViewController.keyboardType = A3NumberKeyboardTypeInteger;
         [keyboardViewController.clearButton setTitle:@"" forState:UIControlStateNormal];
