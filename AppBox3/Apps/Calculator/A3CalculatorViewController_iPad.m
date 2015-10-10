@@ -179,6 +179,10 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 	_textFieldForPlayInputClick.delegate = self;
 	_inputViewForPlayInputClick = [[A3KeyboardView alloc] initWithFrame:CGRectMake(0, 0, 1, 0.1)];
 	_textFieldForPlayInputClick.inputView = _inputViewForPlayInputClick;
+    if ([_textFieldForPlayInputClick respondsToSelector:@selector(inputAssistantItem)]) {
+        _textFieldForPlayInputClick.inputAssistantItem.leadingBarButtonGroups = @[];
+        _textFieldForPlayInputClick.inputAssistantItem.trailingBarButtonGroups = @[];
+    }
 	[self.view addSubview:_textFieldForPlayInputClick];
 
 	[_textFieldForPlayInputClick becomeFirstResponder];
