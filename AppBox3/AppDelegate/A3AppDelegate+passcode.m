@@ -188,9 +188,13 @@
 }
 
  - (void)applicationDidBecomeActive_passcode {
-	if (!self.isTouchIDEvaluationInProgress && self.passcodeViewController == nil && self.mainMenuViewController.passcodeViewController == nil) {
-		[self removeSecurityCoverView];
-	}
+	 dispatch_async(dispatch_get_main_queue(), ^{
+		 if (!self.isTouchIDEvaluationInProgress && self.passcodeViewController == nil && self.mainMenuViewController.passcodeViewController == nil) {
+			 [self removeSecurityCoverView];
+			 [self presentInterstitialAds];
+			 FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+		 }
+	 });
 }
 
 - (void)applicationWillEnterForeground_passcode {
@@ -336,6 +340,8 @@
 	if (![self.mainMenuViewController openRecentlyUsedMenu:NO]) {
 		[self.mainMenuViewController openClockApp];
 	}
+	[self presentInterstitialAds];
+	FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 }
 
 - (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {

@@ -46,15 +46,4 @@
 	[[A3AppDelegate instance] popStartingAppInfo];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-
-	if ([self isBeingPresented] || [self isMovingToParentViewController]) {
-        FNLOG(@"==============================");
-        FNLOG(@"Calling presentInterstitialAds");
-        FNLOG(@"==============================");
-		[self presentInterstitialAds];
-	}
-}
-
 @end

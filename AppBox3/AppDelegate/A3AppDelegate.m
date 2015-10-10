@@ -50,6 +50,10 @@ NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3Notifica
 
 NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.AppBox3.removeAds";
 
+NSString *const A3NumberOfTimesOpeningSubApp = @"A3NumberOfTimesOpeningSubApp";
+NSString *const A3AdsDisplayTime = @"A3AdsDisplayTime";
+NSString *const A3InterstitialAdUnitID = @"ca-app-pub-0532362805885914/2537692543";
+
 @interface A3AppDelegate () <UIAlertViewDelegate, NSURLSessionDownloadDelegate, CLLocationManagerDelegate
 		, GADInterstitialDelegate
 		>
@@ -64,6 +68,9 @@ NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.A
 @property (nonatomic, copy) NSString *deviceToken;
 @property (nonatomic, copy) NSString *alertURLString;
 @property (nonatomic, strong) UIApplicationShortcutItem *shortcutItem;
+@property (nonatomic, strong) GADRequest *adRequest;
+@property (nonatomic, strong) GADBannerView *adBannerView;
+@property (nonatomic, strong) GADInterstitial *adInterstitial;
 
 @end
 
@@ -114,10 +121,6 @@ NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.A
 	_appIsNotActiveYet = YES;
 
 	CDESetCurrentLoggingLevel(CDELoggingLevelNone);
-
-	if (_shouldPresentAd) {
-		self.googleAdInterstitial = [self createAndLoadInterstitial];
-	}
 
 	[self prepareDirectories];
 	[A3SyncManager sharedSyncManager];
@@ -281,6 +284,7 @@ NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.A
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
+	_adDisplayedAfterApplicationDidBecomeActive = NO;
 	FNLOG();
 	// Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 	[self applicationWillEnterForeground_passcode];
@@ -1098,12 +1102,10 @@ NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.A
 	[alertView show];
 }
 
-#ifdef __IPHONE_8_0
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationsUserNotificationSettingsRegistered object:notificationSettings];
 }
-#endif
 
 - (BOOL)application:(UIApplication *)application shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
 	if (_appIsNotActiveYet) {
@@ -1147,17 +1149,6 @@ NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.A
 }
 
 #pragma mark - Google AdMob
-
-- (GADInterstitial *)createAndLoadInterstitial {
-	GADInterstitial *interstitial = [[GADInterstitial alloc] initWithAdUnitID:@"ca-app-pub-0532362805885914/2537692543"];
-	interstitial.delegate = self;
-	[interstitial loadRequest:[GADRequest request]];
-	return interstitial;
-}
-
-- (void)interstitialDidDismissScreen:(GADInterstitial *)ad {
-	self.googleAdInterstitial = [self createAndLoadInterstitial];
-}
 
 - (BOOL)shouldPresentAd {
 	return _shouldPresentAd;
@@ -1242,12 +1233,61 @@ NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.A
 	}];
 }
 
-- (BOOL)displayAds {
-    if ([self.googleAdInterstitial isReady]) {
-        [_googleAdInterstitial presentFromRootViewController:self.window.rootViewController];
-        return YES;
-    }
-    return NO;
+#pragma mark -- AdMob
+
+- (GADRequest *)adRequestWithKeywords:(NSArray *)keywords gender:(GADGender)gender {
+	GADRequest *adRequest = [GADRequest request];
+	adRequest.keywords = keywords;
+	adRequest.gender = gender;
+	return adRequest;
+}
+
+- (void)setupAdInterstitialForAdUnitID:(NSString *)adUnitID keywords:(NSArray *)keywords gender:(GADGender)gender {
+	_adRequest = [self adRequestWithKeywords:keywords gender:gender];
+	_adInterstitial = [[GADInterstitial alloc] initWithAdUnitID:adUnitID];
+	_adInterstitial.delegate = self;
+	[_adInterstitial loadRequest:_adRequest];
+}
+
+- (void)interstitialDidReceiveAd:(GADInterstitial *)ad {
+	[_adInterstitial presentFromRootViewController:self.navigationController];
+}
+
+- (void)interstitialWillPresentScreen:(GADInterstitial *)ad {
+	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3AdsDisplayTime];
+	[[NSUserDefaults standardUserDefaults] setInteger:0 forKey:A3NumberOfTimesOpeningSubApp];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (BOOL)presentInterstitialAds {
+	FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+	if (self.adDisplayedAfterApplicationDidBecomeActive) {
+		return NO;
+	}
+	self.adDisplayedAfterApplicationDidBecomeActive = YES;
+	
+	NSDate *adsDisplayTime = [[NSUserDefaults standardUserDefaults] objectForKey:A3AdsDisplayTime];
+	NSInteger numberOfTimesOpeningSubApp = [[NSUserDefaults standardUserDefaults] integerForKey:A3NumberOfTimesOpeningSubApp];
+	if (adsDisplayTime && [[NSDate date] timeIntervalSinceDate:adsDisplayTime] > 60 * 60) {
+		[self setupAdInterstitialForAdUnitID:A3InterstitialAdUnitID keywords:nil gender:kGADGenderUnknown];
+		return YES;
+	}
+	
+	if (numberOfTimesOpeningSubApp >= 2) {
+		[self setupAdInterstitialForAdUnitID:A3InterstitialAdUnitID keywords:nil gender:kGADGenderUnknown];
+		return YES;
+	} else {
+		[self increaseNumberOfTimesOpenedSubappCount];
+	}
+	
+	return NO;
+}
+
+- (void)increaseNumberOfTimesOpenedSubappCount {
+	NSInteger numberOfTimesOpeningSubApp = [[NSUserDefaults standardUserDefaults] integerForKey:A3NumberOfTimesOpeningSubApp];
+	numberOfTimesOpeningSubApp++;
+	[[NSUserDefaults standardUserDefaults] setInteger:numberOfTimesOpeningSubApp forKey:A3NumberOfTimesOpeningSubApp];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 @end

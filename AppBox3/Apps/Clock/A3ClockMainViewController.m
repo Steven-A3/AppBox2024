@@ -226,13 +226,6 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 		[self showMenus:YES];
 	}
     [self resetAndStartAutoDimTimer];
-
-	if ([self isBeingPresented] || [self isMovingToParentViewController]) {
-        FNLOG(@"==============================");
-        FNLOG(@"Calling presentInterstitialAds");
-        FNLOG(@"==============================");
-		[self presentInterstitialAds];
-	}
 }
 
 - (void)turnOffAutoDim {
