@@ -88,6 +88,4 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 - (void)rotateFirstActionSheet;
 - (void)requestAuthorizationForCamera:(NSString *)appName;
 
-- (void)presentInterstitialAds;
-
 @end
