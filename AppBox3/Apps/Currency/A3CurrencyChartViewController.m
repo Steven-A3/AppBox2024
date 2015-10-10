@@ -78,6 +78,9 @@
 	self.tableView.delegate = self;
 	self.tableView.scrollEnabled = NO;
 	self.tableView.separatorInset = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
 	self.tableView.separatorColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
 	self.tableView.showsVerticalScrollIndicator = NO;
 
@@ -430,6 +433,10 @@
 	keyboardVC.delegate = self;
 	keyboardVC.keyboardType = A3NumberKeyboardTypeCurrency;
 	textField.inputView = [keyboardVC view];
+	if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
+		textField.inputAssistantItem.leadingBarButtonGroups = @[];
+		textField.inputAssistantItem.trailingBarButtonGroups = @[];
+	}
 	textField.text = @"";
 	return YES;
 }

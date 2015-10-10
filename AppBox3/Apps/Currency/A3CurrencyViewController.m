@@ -149,6 +149,9 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	self.tableView.rowHeight = 84.0;
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = UIEdgeInsetsZero;
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
 	self.tableView.showsVerticalScrollIndicator = NO;
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
@@ -171,8 +174,6 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
 		[self setupInstructionView];
-	} else {
-		self.tableViewController.refreshControl = self.refreshControl;
 	}
 }
 
@@ -207,10 +208,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		[self leftBarButtonAppsButton];
 	}
 	if ([self isBeingPresented] || [self isMovingToParentViewController]) {
-        FNLOG(@"==============================");
-        FNLOG(@"Calling presentInterstitialAds");
-        FNLOG(@"==============================");
-		[self presentInterstitialAds];
+		self.tableViewController.refreshControl = self.refreshControl;
 	}
 }
 
@@ -662,9 +660,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 {
     if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForCurrency]) {
         [self showInstructionView];
-    } else {
-		self.tableViewController.refreshControl = self.refreshControl;
-	}
+    }
 }
 
 - (void)instructionHelpButtonAction:(id)sender {
@@ -1036,6 +1032,8 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 #pragma mark -- UITextField delegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+	self.tableViewController.refreshControl = nil;
+	
 	if (IS_IPHONE && IS_LANDSCAPE) return NO;
 
     [self dismissMoreMenu];
@@ -1061,7 +1059,12 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		keyboardVC.delegate = self;
 		self.numberKeyboardViewController = keyboardVC;
 		textField.inputView = [keyboardVC view];
-
+		
+		if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
+			textField.inputAssistantItem.leadingBarButtonGroups = @[];
+			textField.inputAssistantItem.trailingBarButtonGroups = @[];
+		}
+		
 		return YES;
 	} else {
 		[self.firstResponder resignFirstResponder];
@@ -1125,6 +1128,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		[self putHistoryWithValue:@([self.previousValue floatValueEx])];
 		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 	}
+	self.tableViewController.refreshControl = self.refreshControl;
 }
 
 #pragma mark - KeyboardViewControllerDelegate
