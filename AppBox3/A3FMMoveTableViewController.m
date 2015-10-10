@@ -16,10 +16,12 @@ const CGFloat kVisibleWidth = 100.0;
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
-	self.tableView = [[FMMoveTableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
-	self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+	_tableView = [[FMMoveTableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+	_tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+	if ([_tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		_tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
 	[self.view addSubview:self.tableView];
-
 }
 
 // Setup a left and right swipe recognizer.
