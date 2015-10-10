@@ -266,6 +266,10 @@
 	self.numberKeyboardVC.textInputTarget = textField;
 	self.numberKeyboardVC.delegate = self;
 	textField.inputView = self.numberKeyboardVC.view;
+	if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
+		textField.inputAssistantItem.leadingBarButtonGroups = @[];
+		textField.inputAssistantItem.trailingBarButtonGroups = @[];
+	}
 	textField.text = @"";
 }
 

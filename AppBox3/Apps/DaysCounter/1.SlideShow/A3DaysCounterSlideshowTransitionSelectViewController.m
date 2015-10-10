@@ -37,6 +37,9 @@
 	self.tableView.showsVerticalScrollIndicator = NO;
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
 
     [self makeBackButtonEmptyArrow];
     self.itemArray = @[@(TransitionType_Cube),@(TransitionType_Dissolve),@(TransitionType_Origami),@(TransitionType_Ripple),@(TransitionType_Wipe)];

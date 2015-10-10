@@ -31,15 +31,13 @@
 
 #define ActionTag_DeleteCalendar 100
 
-#ifdef __IPHONE_8_0
-@interface A3DaysCounterCalendarListMainViewController () <UINavigationControllerDelegate, UISearchBarDelegate,
+@interface A3DaysCounterCalendarListMainViewController ()
+        <
+        UINavigationControllerDelegate, UISearchBarDelegate,
 		UISearchDisplayDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate,
 		UIActionSheetDelegate, A3InstructionViewControllerDelegate, UIPopoverPresentationControllerDelegate,
 		A3ViewControllerProtocol
 		>
-#else
-@interface A3DaysCounterCalendarListMainViewController () <UINavigationControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, A3InstructionViewControllerDelegate>
-#endif
 
 @property (strong, nonatomic) NSArray *itemArray;
 @property (strong, nonatomic) NSArray *searchResultArray;
@@ -76,8 +74,8 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerView_view1_widthConst_iPad;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerView_view2_widthConst_iPad;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerView_view3_widthConst_iPad;
-
 @property (nonatomic) NSInteger selectedRowIndex;
+
 @end
 
 @implementation A3DaysCounterCalendarListMainViewController {

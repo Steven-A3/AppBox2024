@@ -82,6 +82,9 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
     self.toolbarItems = _bottomToolbar.items;
     [self.navigationController setToolbarHidden:NO];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
     if (IS_RETINA) {
         CGRect rect = self.tableView.tableHeaderView.frame;
         //rect.size.height += 0.5;

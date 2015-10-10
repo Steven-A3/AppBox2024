@@ -49,6 +49,9 @@
 
     self.title = NSLocalizedString(@"Reminder", @"Reminder");
     self.tableView.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 30 : 56, 0, 0);
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
 
 	if (IS_IPAD || IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];

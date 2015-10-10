@@ -44,6 +44,9 @@
     }
     self.title = NSLocalizedString(@"Duration Options", @"Duration Options");
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
     self.itemArray = @[
                        @{EventRowTitle : NSLocalizedString(@"Years", @"Years"),EventRowType : @(DurationOption_Year)},
                        @{EventRowTitle : NSLocalizedString(@"Months", @"Months"),EventRowType : @(DurationOption_Month)},

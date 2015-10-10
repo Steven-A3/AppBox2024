@@ -6,12 +6,13 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "A3CenterViewDelegate.h"
+
 @class A3DaysCounterModelManager;
 @interface A3DaysCounterSlideShowMainViewController : UIViewController {
     NSInteger currentIndex;
 }
+
 @property (strong, nonatomic) A3DaysCounterModelManager *sharedManager;
 @property (strong, nonatomic) IBOutlet UIToolbar *topToolbar;
 @property (strong, nonatomic) IBOutlet UIToolbar *bottomToolbar;

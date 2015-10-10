@@ -45,6 +45,9 @@
     self.navigationItem.title = NSLocalizedString(@"Change Location", @"Change Location");
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.tableView.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
     self.tableView.separatorColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
     self.tableView.contentInset = UIEdgeInsetsMake(self.navigationController.navigationBar.frame.size.height + 20, 0, 0, 0);
     self.tableDataSource = @[NSLocalizedString(@"Current Location", @"Current Location")];

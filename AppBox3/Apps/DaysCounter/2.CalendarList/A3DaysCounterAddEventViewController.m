@@ -100,6 +100,9 @@
 	self.tableView.showsVerticalScrollIndicator = NO;
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
     self.tableView.separatorInset = UIEdgeInsetsZero;
 
     self.cellIDArray = @[@"titleCell", @"photoCell", @"switchCell", @"switchCell", @"switchCell",       // 0 ~ 4
@@ -190,19 +193,15 @@
     [self.navigationController setToolbarHidden:YES];
     isFirstAppear = YES;
     self.tableView.separatorInset = UIEdgeInsetsZero;
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidAppear) name:A3NotificationRightSideViewDidAppear object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
-    
-#ifdef __IPHONE_8_0
-    if ([self.tableView respondsToSelector:@selector(separatorInset)])
-    {
-        self.tableView.separatorInset = UIEdgeInsetsZero;
-    }
-#endif
 }
 
 - (void)applicationDidEnterBackground {
@@ -2211,6 +2210,10 @@
 		self.dateKeyboardViewController.delegate = self;
         self.dateKeyboardViewController.isLunarDate = [_eventItem.isLunar boolValue];
         textField.inputView = self.dateKeyboardViewController.view;
+		if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
+			textField.inputAssistantItem.leadingBarButtonGroups = @[];
+			textField.inputAssistantItem.trailingBarButtonGroups = @[];
+		}
     }
 }
 

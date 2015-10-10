@@ -6,9 +6,10 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 @class A3DaysCounterModelManager;
+
 @interface A3DaysCounterReminderListViewController : UIViewController
+
 @property (strong, nonatomic) A3DaysCounterModelManager *sharedManager;
 @property (strong, nonatomic) IBOutlet UIToolbar *bottomToolbar;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -18,4 +19,5 @@
 - (IBAction)calendarViewAction:(id)sender;
 - (IBAction)addEventAction:(id)sender;
 - (IBAction)favoriteAction:(id)sender;
+
 @end

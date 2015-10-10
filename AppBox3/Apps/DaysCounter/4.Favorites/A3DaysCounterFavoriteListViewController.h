@@ -6,11 +6,11 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 @class A3DaysCounterModelManager;
 @class FMMoveTableView;
 
 @interface A3DaysCounterFavoriteListViewController : UIViewController
+
 @property (strong, nonatomic) A3DaysCounterModelManager *sharedManager;
 @property (strong, nonatomic) IBOutlet UIToolbar *bottomToolbar;
 @property (strong, nonatomic) IBOutlet FMMoveTableView *tableView;
