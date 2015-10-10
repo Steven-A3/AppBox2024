@@ -72,7 +72,10 @@
     if (IS_IPAD) {
         self.tableView.separatorInset = UIEdgeInsetsMake(0, 28.0, 0, 0);
     }
-    
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
+	
     [self setupTopWhitePaddingView];
     [self setupInstructionView];
     
@@ -127,12 +130,6 @@
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	}
-    if ([self isBeingPresented] || [self isMovingToParentViewController]) {
-        FNLOG(@"==============================");
-        FNLOG(@"Calling presentInterstitialAds");
-        FNLOG(@"==============================");
-        [self presentInterstitialAds];
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
