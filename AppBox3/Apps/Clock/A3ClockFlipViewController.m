@@ -387,11 +387,12 @@
 	BOOL showSeconds = [[A3UserDefaults standardUserDefaults] clockTheTimeWithSeconds];
 	if (IS_IPHONE) {
 		if (IS_PORTRAIT) {
-			fontSize = showSeconds ? 64 : 112;
+			fontSize = showSeconds ? 64 : 110;
 			frontView.layer.cornerRadius = 5;
 			backView.layer.cornerRadius = 5;
+			
 		} else {
-			fontSize = showSeconds ? 112 : [self showWeather] ? 133 : 156;
+			fontSize = showSeconds ? 110 : [self showWeather] ? 132 : 156;
 			frontView.layer.cornerRadius = showSeconds ? 5 : 8;
 			backView.layer.cornerRadius = showSeconds ? 5 : 8;
 		}
@@ -473,6 +474,11 @@
 }
 
 - (void)refreshSecond:(A3ClockInfo *)clockInfo {
+//#warning Following code is for the test
+//	[self tickTime:_hourView withText:[NSString stringWithFormat:@"%02ld", (long)clockInfo.dateComponents.second] animated:YES ];
+//	[self tickTime:_minuteView withText:[NSString stringWithFormat:@"%02ld", (long)clockInfo.dateComponents.second] animated:YES ];
+//#warning TestCode ends here
+	
 	[self tickTime:_secondView withText:[NSString stringWithFormat:@"%02ld", (long)clockInfo.dateComponents.second] animated:YES ];
 }
 
