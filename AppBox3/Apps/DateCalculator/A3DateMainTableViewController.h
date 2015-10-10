@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 @interface A3DateMainTableViewController : UITableViewController
 
 @end

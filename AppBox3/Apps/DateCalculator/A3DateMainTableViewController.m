@@ -58,7 +58,6 @@
 @property (nonatomic, copy) NSString *placeholderBeforeEditingText;
 @end
 
-
 @implementation A3DateMainTableViewController {
     BOOL _isShowMoreMenu;
     BOOL _isKeyboardShown;
@@ -168,12 +167,6 @@
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	}
-    if ([self isBeingPresented] || [self isMovingToParentViewController]) {
-        FNLOG(@"==============================");
-        FNLOG(@"Calling presentInterstitialAds");
-        FNLOG(@"==============================");
-        [self presentInterstitialAds];
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -219,10 +212,13 @@
 - (void)initializeControl
 {
     // HeaderView
-    self.headerView = [[A3DateCalcHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.tableView.frame), IS_IPHONE ? 104 : 158)];
+    self.headerView = [[A3DateCalcHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), IS_IPHONE ? 104 : 158)];
     self.headerView.delegate = self;
     self.headerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleRightMargin;
     self.tableView.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15.0 : 28.0, 0, 0);
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
     if (IS_IPAD) {
         self.navigationItem.hidesBackButton = YES;
     }
@@ -921,6 +917,11 @@
 		_simpleNormalNumberKeyboard.delegate = self;
 		textField.inputView = _simpleNormalNumberKeyboard.view;
 
+		if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
+			textField.inputAssistantItem.leadingBarButtonGroups = @[];
+			textField.inputAssistantItem.trailingBarButtonGroups = @[];
+		}
+
 		if (textField == footerCell.yearTextField) {
 			_datePrevShow = NO;
 			_dateNextShow = YES;
@@ -940,6 +941,11 @@
 		A3DateKeyboardViewController * keyboardVC = [self dateKeyboardViewController];
 		keyboardVC.delegate = self;
 		textField.inputView = keyboardVC.view;
+
+		if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
+			textField.inputAssistantItem.leadingBarButtonGroups = @[];
+			textField.inputAssistantItem.trailingBarButtonGroups = @[];
+		}
 	}
 
 	_isKeyboardShown = YES;
