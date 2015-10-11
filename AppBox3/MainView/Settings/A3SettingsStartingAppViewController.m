@@ -34,6 +34,9 @@
 
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = UIEdgeInsetsMake(0, 57, 0, 0);
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
 }
 
 - (void)didReceiveMemoryWarning

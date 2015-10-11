@@ -57,6 +57,9 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
 
 	NSString* appKey = @"ody0cjvmnaxvob4";
 	NSString* appSecret = @"4hbzpvkrlwhs9qh";
