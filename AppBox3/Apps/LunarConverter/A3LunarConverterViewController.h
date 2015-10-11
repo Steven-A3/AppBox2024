@@ -6,7 +6,6 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "A3DateKeyboardViewController.h"
 #import "SQLiteWrapper.h"
 
