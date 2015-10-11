@@ -322,12 +322,6 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 	if (IS_IPHONE && IS_LANDSCAPE) {
 		[self setToolBarsHidden:YES];
 	}
-	if ([self isBeingPresented] || [self isMovingToParentViewController]) {
-        FNLOG(@"==============================");
-        FNLOG(@"Calling presentInterstitialAds");
-        FNLOG(@"==============================");
-		[self presentInterstitialAds];
-	}
 }
 
 - (void)setupButtonEnabled {

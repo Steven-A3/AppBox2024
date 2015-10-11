@@ -132,10 +132,6 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
 		[self resetButtonAction];
-        FNLOG(@"==============================");
-        FNLOG(@"Calling presentInterstitialAds");
-        FNLOG(@"==============================");
-		[self presentInterstitialAds];
 	}
 }
 
