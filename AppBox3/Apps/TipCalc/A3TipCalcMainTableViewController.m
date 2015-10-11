@@ -50,14 +50,12 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     RowElementID_Option
 };
 
-
-@interface A3TipCalcMainTableViewController () <UITextFieldDelegate, UIActivityItemSource, UIPopoverControllerDelegate,
-		CLLocationManagerDelegate,A3TipCalcDataManagerDelegate, A3TipCalcSettingsDelegate,
-		A3TipCalcHistorySelectDelegate, A3JHSelectTableViewControllerProtocol, A3TableViewInputElementDelegate,
-		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewControllerProtocol
-#ifdef __IPHONE_8_0
-		, UIPopoverPresentationControllerDelegate
-#endif
+@interface A3TipCalcMainTableViewController ()
+<
+UITextFieldDelegate, UIActivityItemSource, UIPopoverControllerDelegate,
+CLLocationManagerDelegate,A3TipCalcDataManagerDelegate, A3TipCalcSettingsDelegate,
+A3TipCalcHistorySelectDelegate, A3JHSelectTableViewControllerProtocol, A3TableViewInputElementDelegate,
+A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewControllerProtocol, UIPopoverPresentationControllerDelegate
 >
 
 @property (nonatomic, strong) A3JHTableViewRootElement *tableDataSource;
@@ -107,7 +105,8 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     [super viewDidLoad];
 
     [self initialize];
-    [self outputAllResultWithAnimation:NO];
+	[self outputAllResultWithAnimation:NO];
+	
     [self.headerView showDetailInfoButton];
     if (![self.dataManager hasCalcData] && [self.dataManager isTaxOptionOn]) {
         [self.dataManager getUSTaxRateByLocation];     // to calledFromAreaTax
@@ -236,6 +235,9 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.showsHorizontalScrollIndicator = NO;
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
     self.tableView.separatorInset = UIEdgeInsetsMake(0.0, IS_IPHONE ? 15.0 : 28.0, 0.0, 0.0);
     self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;

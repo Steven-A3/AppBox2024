@@ -54,6 +54,9 @@ typedef NS_ENUM(NSInteger, SectionType) {
     self.tableView.showsHorizontalScrollIndicator = NO;
     self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
     self.tableView.separatorInset = UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0);
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
 #ifdef __IPHONE_8_0
 	if (!IS_IOS7) {
 		if ([self.tableView respondsToSelector:@selector(layoutMargins)])

@@ -40,7 +40,10 @@ NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
 	[self.tableView registerClass:[A3TipCalcHistoryCell class] forCellReuseIdentifier:A3TipCalcHistoryCellID];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
     self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
-    
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
+	
     [self registerContentSizeCategoryDidChangeNotification];
 }
 
