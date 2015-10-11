@@ -68,6 +68,9 @@
 	self.tableView.delegate = self;
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeNone;
 	self.tableView.scrollEnabled = NO;
 	[self.view addSubview:self.tableView];

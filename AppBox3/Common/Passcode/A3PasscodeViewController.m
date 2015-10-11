@@ -550,6 +550,10 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	_passcodeKeyboardViewController = [self passcodeKeyboard];
 	_passcodeKeyboardViewController.textInputTarget = textField;
 	textField.inputView = _passcodeKeyboardViewController.view;
+	if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
+		textField.inputAssistantItem.leadingBarButtonGroups = @[];
+		textField.inputAssistantItem.trailingBarButtonGroups = @[];
+	}
 	return YES;
 }
 
