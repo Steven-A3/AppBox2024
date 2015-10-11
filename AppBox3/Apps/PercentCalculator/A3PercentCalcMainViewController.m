@@ -20,7 +20,8 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 
-@interface A3PercentCalcMainViewController () <UITextFieldDelegate, A3PercentCalcHistoryDelegate, A3ViewControllerProtocol>
+@interface A3PercentCalcMainViewController ()
+<UITextFieldDelegate, A3PercentCalcHistoryDelegate, A3ViewControllerProtocol>
 
 @property (strong, nonatomic) A3PercentCalcHeaderView *headerView;
 @property (strong, nonatomic) NSArray *sectionTitles;
@@ -88,7 +89,10 @@
     } else {
         self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
     }
-    
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
+	
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
@@ -1044,6 +1048,10 @@
     }
 
     textField.inputView = _simpleNormalNumberKeyboard.view;
+	if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
+		textField.inputAssistantItem.leadingBarButtonGroups = @[];
+		textField.inputAssistantItem.trailingBarButtonGroups = @[];
+	}
     _simpleNormalNumberKeyboard.textInputTarget = textField;
     _simpleNormalNumberKeyboard.delegate = self;
     

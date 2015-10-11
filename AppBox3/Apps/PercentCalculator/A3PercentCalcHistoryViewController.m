@@ -53,6 +53,9 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
 	}
 
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
     
