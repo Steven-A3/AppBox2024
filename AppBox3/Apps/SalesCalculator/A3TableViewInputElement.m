@@ -144,6 +144,10 @@
 	_inputViewController.textInputTarget = textField;
 	_inputViewController.delegate = self;
 	textField.inputView = _inputViewController.view;
+	if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
+		textField.inputAssistantItem.leadingBarButtonGroups = @[];
+		textField.inputAssistantItem.trailingBarButtonGroups = @[];
+	}
 	_inputViewController.currencyCode = self.currencyCode;
 
 	switch (type) {
@@ -181,6 +185,10 @@
 	switch (self.inputType) {
 		case A3TableViewEntryTypeText:
             textField.inputView = nil;
+			if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
+				textField.inputAssistantItem.leadingBarButtonGroups = @[];
+				textField.inputAssistantItem.trailingBarButtonGroups = @[];
+			}
             textField.clearButtonMode = UITextFieldViewModeWhileEditing;
 			break;
 		case A3TableViewEntryTypeCurrency:
@@ -241,14 +249,16 @@
 	if (self.inputType == A3TableViewEntryTypePercent) {
 		_valueType = [_inputViewController.bigButton2 isSelected] ? A3TableViewValueTypeCurrency : A3TableViewValueTypePercent;
 	}
+
 	_inputViewController = nil;
 	_firstResponder = nil;
-
+	
     if (_onEditingFinishAll) {      // SalesCalc % 관련 부분을 위하여 별도로 추가.
         _onEditingFinishAll(self, textField);
+		
         return;
     }
-    
+	
     if (_onEditingFinished) {
         _onEditingFinished(self, textField);
     }

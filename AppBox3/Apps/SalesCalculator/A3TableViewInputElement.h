@@ -7,6 +7,7 @@
 //
 
 #import "A3JHTableViewElement.h"
+#import "A3NumberKeyboardViewController.h"
 
 typedef NS_ENUM(NSInteger, A3TableViewInputType) {
 	A3TableViewEntryTypeText = 0,

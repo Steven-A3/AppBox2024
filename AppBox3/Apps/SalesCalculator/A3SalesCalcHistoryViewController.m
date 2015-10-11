@@ -46,7 +46,10 @@ NSString *const A3SalesCalcHistoryCellID = @"cell1";
 	[self.tableView registerClass:[A3SalesCalcHistoryCell class] forCellReuseIdentifier:A3SalesCalcHistoryCellID];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
     self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
-    
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
+	
     [self registerContentSizeCategoryDidChangeNotification];
 }
 

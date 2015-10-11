@@ -42,12 +42,11 @@ enum A3TableElementCellType {
     A3TableElementCellType_Note
 };
 
-@interface A3SalesCalcMainViewController () <CLLocationManagerDelegate, UIPopoverControllerDelegate,
+@interface A3SalesCalcMainViewController ()
+        <
+        CLLocationManagerDelegate, UIPopoverControllerDelegate,
 		A3JHSelectTableViewControllerProtocol, A3SalesCalcHistorySelectDelegate, A3TableViewInputElementDelegate,
-		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewControllerProtocol
-#ifdef __IPHONE_8_0
-		, UIPopoverPresentationControllerDelegate
-#endif
+		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewControllerProtocol,UIPopoverPresentationControllerDelegate
 		>
 
 @property (nonatomic, strong) A3JHTableViewRootElement *root;
@@ -82,14 +81,6 @@ enum A3TableElementCellType {
 - (id)init {
 	self = [super initWithStyle:UITableViewStyleGrouped];
 	if (self) {
-        // Custom initialization
-        self.title = IS_IPHONE ? NSLocalizedString(@"Sales Calculator_Short", nil): NSLocalizedString(A3AppName_SalesCalculator, nil);
-        [self configureTableData];
-        
-        _locationManager = [[CLLocationManager alloc] init];
-        _locationManager.delegate = self;
-        _locationTax = @0.0;
-        [self getReverseGeocode];
 	}
 	
 	return self;
@@ -99,6 +90,15 @@ enum A3TableElementCellType {
 {
     [super viewDidLoad];
 
+	self.title = IS_IPHONE ? NSLocalizedString(@"Sales Calculator_Short", nil): NSLocalizedString(A3AppName_SalesCalculator, nil);
+	
+	_locationManager = [[CLLocationManager alloc] init];
+	_locationManager.delegate = self;
+	_locationTax = @0.0;
+	[self getReverseGeocode];
+
+    
+	[self configureTableData];
 	_barButtonEnabled = YES;
 
     [self makeBackButtonEmptyArrow];
@@ -122,6 +122,9 @@ enum A3TableElementCellType {
         self.tableView.separatorInset = UIEdgeInsetsMake(0, 28.0, 0, 0);
         self.navigationItem.hidesBackButton = YES;
     }
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
 
     [self.headerView setResultData:[_preferences calcData] withAnimation:NO];
 
@@ -200,12 +203,6 @@ enum A3TableElementCellType {
 
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
-	}
-	if ([self isBeingPresented] || [self isMovingToParentViewController]) {
-        FNLOG(@"==============================");
-        FNLOG(@"Calling presentInterstitialAds");
-        FNLOG(@"==============================");
-		[self presentInterstitialAds];
 	}
 }
 
