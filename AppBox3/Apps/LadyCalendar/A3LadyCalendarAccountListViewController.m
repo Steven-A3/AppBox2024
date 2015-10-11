@@ -47,6 +47,9 @@
     self.tableView.allowsSelectionDuringEditing = YES;
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addAction:)];
     [self rightBarButtonDoneButton];

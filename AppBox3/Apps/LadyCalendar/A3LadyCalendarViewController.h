@@ -6,12 +6,11 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "A3CalendarViewDelegate.h"
 
 @class LadyCalendarAccount;
 
-@interface A3LadyCalendarViewController : UIViewController<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,A3CalendarViewDelegate>
+@interface A3LadyCalendarViewController : UIViewController
 
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) IBOutlet UIToolbar *bottomToolbar;

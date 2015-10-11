@@ -86,6 +86,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	self.tableView.showsVerticalScrollIndicator = NO;
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
 
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
@@ -651,6 +654,10 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	self.keyboardVC.textInputTarget = textField;
 	self.keyboardVC.delegate = self;
 	textField.inputView = self.keyboardVC.view;
+	if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
+		textField.inputAssistantItem.leadingBarButtonGroups = @[];
+		textField.inputAssistantItem.trailingBarButtonGroups = @[];
+	}
 	[self.keyboardVC setKeyboardType:A3NumberKeyboardTypeInteger];
     [self closeDateInputCell];
     return YES;

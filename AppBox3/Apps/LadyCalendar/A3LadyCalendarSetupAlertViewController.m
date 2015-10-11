@@ -160,6 +160,10 @@
 	[keyboardViewController reloadPrevNextButtons];
 	self.numberKeyboardViewController = keyboardViewController;
 	textField.inputView = self.numberKeyboardViewController.view;
+	if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
+		textField.inputAssistantItem.leadingBarButtonGroups = @[];
+		textField.inputAssistantItem.trailingBarButtonGroups = @[];
+	}
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {

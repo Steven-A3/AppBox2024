@@ -28,7 +28,13 @@
 #import "A3UserDefaults.h"
 #import "LadyCalendarAccount.h"
 
-@interface A3LadyCalendarViewController () <A3InstructionViewControllerDelegate, A3ViewControllerProtocol>
+@interface A3LadyCalendarViewController ()
+<A3InstructionViewControllerDelegate,
+A3ViewControllerProtocol,
+UICollectionViewDataSource,
+UICollectionViewDelegate,
+UICollectionViewDelegateFlowLayout,
+A3CalendarViewDelegate>
 
 @property (strong, nonatomic) A3LadyCalendarModelManager *dataManager;
 @property (strong, nonatomic) UIView *headerView;
@@ -219,13 +225,6 @@
 	}
 
 	[self updateCurrentMonthLabel];
-
-	if ([self isBeingPresented] || [self isMovingToParentViewController]) {
-        FNLOG(@"==============================");
-        FNLOG(@"Calling presentInterstitialAds");
-        FNLOG(@"==============================");
-		[self presentInterstitialAds];
-	}
 }
 
 - (void)removeObserver {
