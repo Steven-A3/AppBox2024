@@ -14,8 +14,16 @@
 #import "A3InstructionViewController.h"
 #import "MBProgressHUD.h"
 #import "UIImage+imageWithColor.h"
+#import <AVFoundation/AVFoundation.h>
+#import "NPColorPickerView.h"
 
 #define kBottomToolBarHeight        74
+
+extern NSString *const A3UserDefaultFlashViewMode;
+extern NSString *const A3UserDefaultFlashSelectedColor;
+extern NSString *const A3UserDefaultFlashBrightnessValue;
+extern NSString *const A3UserDefaultFlashLEDBrightnessValue;
+extern NSString *const A3UserDefaultFlashEffectIndex;
 
 typedef NS_ENUM(NSUInteger, A3FlashViewModeType) {
     A3FlashViewModeTypeNone = 0x00000000,
@@ -327,12 +335,6 @@ NSString *const cellID = @"flashEffectID";
 		[self startStrobeLightEffectForIndex:_selectedEffectIndex];
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
-	if ([self isBeingPresented] || [self isMovingToParentViewController]) {
-        FNLOG(@"==============================");
-        FNLOG(@"Calling presentInterstitialAds");
-        FNLOG(@"==============================");
-		[self presentInterstitialAds];
-	}
 }
 
 - (void)viewWillLayoutSubviews {
