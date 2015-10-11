@@ -55,6 +55,9 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
     self.tableView.tableHeaderView = self.headerView;
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 30, 0);
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
     self.tableView.separatorInset = UIEdgeInsetsMake(0, IS_IPAD ? 28+30+28:15+30+15, 0, 0);
     self.tableView.rowHeight = 74.0;
     self.tableView.showsVerticalScrollIndicator = NO;

@@ -92,6 +92,9 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
     
     self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
     self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.showsVerticalScrollIndicator = NO;
     [self.tableView setEditing:YES animated:NO];
