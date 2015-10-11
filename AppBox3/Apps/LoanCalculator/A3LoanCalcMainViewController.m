@@ -82,15 +82,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	NSDate 		*preDate;
 }
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -2086,6 +2077,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 		A3NumberKeyboardViewController *keyboardVC = [self normalNumberKeyboard];
 		textField.inputView = [keyboardVC view];
+		if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
+			textField.inputAssistantItem.leadingBarButtonGroups = @[];
+			textField.inputAssistantItem.trailingBarButtonGroups = @[];
+		}
 		self.numberKeyboardViewController = keyboardVC;
 
 		switch (calcItem) {
@@ -2134,6 +2129,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 			A3NumberKeyboardViewController *keyboardVC = [self normalNumberKeyboard];
 			textField.inputView = [keyboardVC view];
+			if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
+				textField.inputAssistantItem.leadingBarButtonGroups = @[];
+				textField.inputAssistantItem.trailingBarButtonGroups = @[];
+			}
 			self.numberKeyboardViewController = keyboardVC;
 			keyboardVC.currencyCode = [self defaultCurrencyCode];
 			keyboardVC.keyboardType = A3NumberKeyboardTypeCurrency;

@@ -38,15 +38,6 @@ NSString *const A3LoanCalcSelectCellID2 = @"A3LoanCalcSelectCell";
 NSString *const A3LoanCalcTextInputCellID2 = @"A3LoanCalcTextInputCell";
 NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -391,6 +382,10 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 
 	A3NumberKeyboardViewController *keyboardVC = [self normalNumberKeyboard];
 	textField.inputView = [keyboardVC view];
+	if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
+		textField.inputAssistantItem.leadingBarButtonGroups = @[];
+		textField.inputAssistantItem.trailingBarButtonGroups = @[];
+	}
 	self.numberKeyboardViewController = keyboardVC;
 
 	if (self.currentIndexPath.section == 1) {

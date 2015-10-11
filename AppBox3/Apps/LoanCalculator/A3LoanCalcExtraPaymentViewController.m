@@ -457,6 +457,10 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         // amount
         A3NumberKeyboardViewController *keyboardVC = [self normalNumberKeyboard];
         textField.inputView = [keyboardVC view];
+		if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
+			textField.inputAssistantItem.leadingBarButtonGroups = @[];
+			textField.inputAssistantItem.trailingBarButtonGroups = @[];
+		}
         self.numberKeyboardViewController = keyboardVC;
 		self.numberKeyboardViewController.currencyCode = [self defaultCurrencyCode];
         self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
