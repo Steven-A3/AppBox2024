@@ -73,6 +73,10 @@
 	keyboardViewController.delegate = self;
 	keyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
 	textField.inputView = keyboardViewController.view;
+	if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
+		textField.inputAssistantItem.leadingBarButtonGroups = @[];
+		textField.inputAssistantItem.trailingBarButtonGroups = @[];
+	}
 	_inputViewController = keyboardViewController;
 }
 
