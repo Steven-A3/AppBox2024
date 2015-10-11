@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
 @interface A3CameraViewController : UIViewController
