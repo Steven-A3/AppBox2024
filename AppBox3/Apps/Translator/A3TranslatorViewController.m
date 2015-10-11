@@ -275,6 +275,9 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 	_tableView = [[FMMoveTableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
 	_tableView.dataSource = self;
 	_tableView.delegate = self;
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
 	if (IS_IPAD) self.tableView.separatorInset = UIEdgeInsetsMake(0, 28, 0, 0);
 	_tableView.separatorColor = A3UITableViewSeparatorColor;
 	_tableView.rowHeight = 48.0;

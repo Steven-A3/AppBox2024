@@ -46,6 +46,9 @@ static NSString *CellIdentifier = @"Cell";
 	self.title = NSLocalizedString(@"Select Language", @"Select Language");
 	[self.tableView registerClass:[A3StandardLeft15Cell class] forCellReuseIdentifier:CellIdentifier];
 	self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
 	[self.mySearchDisplayController.searchResultsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
 
 	if (IS_IPHONE) {

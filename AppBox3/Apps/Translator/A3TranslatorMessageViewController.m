@@ -1298,6 +1298,10 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 
     if (_keyboardHeight == 0.0) {
         self.inputView = [self myTransparentKeyboard];
+		if ([self respondsToSelector:@selector(inputAssistantItem)]) {
+			self.inputAssistantItem.leadingBarButtonGroups = @[];
+			self.inputAssistantItem.trailingBarButtonGroups = @[];
+		}
     } else {
         self.inputView = nil;
     }
