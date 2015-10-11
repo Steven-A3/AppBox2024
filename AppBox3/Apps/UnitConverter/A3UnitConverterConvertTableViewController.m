@@ -1426,7 +1426,10 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	keyboardVC.textInputTarget = textField;
 	keyboardVC.delegate = self;
 	textField.inputView = [keyboardVC view];
-
+	if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
+		textField.inputAssistantItem.leadingBarButtonGroups = @[];
+		textField.inputAssistantItem.trailingBarButtonGroups = @[];
+	}
 	self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeReal;
 
 	switch (cell.inputType) {
