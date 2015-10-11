@@ -43,6 +43,8 @@
 @property (nonatomic, assign) BOOL isLunarDate;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
+- (CGFloat)keyboardHeight;
+
 - (void)changeInputToYear;
 
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;

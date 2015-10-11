@@ -35,11 +35,12 @@ typedef NS_ENUM(NSUInteger, A3NumberKeyboardSimpleLayout) {
 @property (nonatomic, assign) BOOL useDotAsClearButton;
 
 - (void)reloadPrevNextButtons;
+
+- (CGFloat)keyboardHeight;
+
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
 - (void)setupLocale;
-
 - (void)presentCurrencySelectViewController;
-
 - (IBAction)calculatorButtonAction:(UIButton *)sender;
 
 @end

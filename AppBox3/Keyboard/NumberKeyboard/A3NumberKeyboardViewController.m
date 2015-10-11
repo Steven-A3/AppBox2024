@@ -27,6 +27,18 @@
     return self;
 }
 
+- (CGFloat)keyboardHeight {
+	if (IS_IPHONE) {
+		return 216;
+	}
+	if (IS_PORTRAIT) {
+		FNLOG(@"264");
+		return 264;
+	}
+	FNLOG(@"352");
+	return 352;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -35,12 +47,22 @@
 	[self setupLocale];
 
 	[self.doneButton setTitle:NSLocalizedString(@"DoneButton", nil) forState:UIControlStateNormal];
+
+	CGRect screenBounds = [[UIScreen mainScreen] bounds];
+	self.view.bounds = CGRectMake(0, 0, screenBounds.size.width, [self keyboardHeight]);
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator {
+	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+	self.view.bounds = CGRectMake(0, 0, size.width, [self keyboardHeight]);
+	FNLOGRECT(self.view.bounds);
 }
 
 - (IBAction)keyboardInputAction:(UIButton *)button {
@@ -199,6 +221,7 @@
 }
 
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+
 }
 
 - (void)setCurrencyCode:(NSString *)currencyCode {

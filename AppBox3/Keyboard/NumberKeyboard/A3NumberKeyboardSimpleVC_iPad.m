@@ -13,6 +13,8 @@
 @implementation A3NumberKeyboardSimpleVC_iPad
 
 - (void)viewWillLayoutSubviews {
+	[super viewWillLayoutSubviews];
+
 	[self rotateToInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
 }
 

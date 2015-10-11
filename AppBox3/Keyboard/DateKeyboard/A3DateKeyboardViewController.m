@@ -29,6 +29,18 @@
     return self;
 }
 
+- (CGFloat)keyboardHeight {
+	if (IS_IPHONE) {
+		return 216;
+	}
+	if (IS_PORTRAIT) {
+		FNLOG(@"264");
+		return 264;
+	}
+	FNLOG(@"352");
+	return 352;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -40,11 +52,16 @@
 	[self.monthButton setTitle:NSLocalizedString(@"Month", nil) forState:UIControlStateNormal];
 	[self.dayButton setTitle:NSLocalizedString(@"Day", nil) forState:UIControlStateNormal];
 	[self.doneButton setTitle:NSLocalizedString(@"DoneButton", nil) forState:UIControlStateNormal];
+	
+	CGRect screenBounds = [[UIScreen mainScreen] bounds];
+	self.view.bounds = CGRectMake(0, 0, screenBounds.size.width, [self keyboardHeight]);
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator {
+	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+	
+	self.view.bounds = CGRectMake(0, 0, size.width, [self keyboardHeight]);
+	FNLOGRECT(self.view.bounds);
 }
 
 - (void)didReceiveMemoryWarning
