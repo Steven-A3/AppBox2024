@@ -142,7 +142,6 @@ extern NSString *const A3InAppPurchaseRemoveAdsProductIdentifier;
 - (BOOL)receiptHasRemoveAds;
 - (BOOL)isPaidAppVersionCustomer:(RMAppReceipt *)receipt;
 - (BOOL)isIAPPurchasedCustomer:(RMAppReceipt *)receipt;
-
 - (BOOL)presentInterstitialAds;
 @end
 

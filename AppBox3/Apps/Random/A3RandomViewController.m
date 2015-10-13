@@ -166,6 +166,7 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	}
+    [self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/8339889346" keywords:nil gender:kGADGenderUnknown];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

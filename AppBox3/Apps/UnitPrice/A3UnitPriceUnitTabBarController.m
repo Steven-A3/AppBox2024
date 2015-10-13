@@ -63,6 +63,14 @@ NSString *const A3UnitPriceSegmentIndex = @"A3UnitPriceSegmentIndex";
     [[A3AppDelegate instance] popStartingAppInfo];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+
+    if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+        [self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/2572557342" keywords:nil gender:kGADGenderUnknown];
+    }
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

@@ -20,7 +20,31 @@
 #import "A3UserDefaults.h"
 #import <objc/runtime.h>
 
-static char const *const key_firstActionSheet 					= "key_firstActionSheet";
+static char const *const key_firstActionSheet = "key_firstActionSheet";
+static char const *const key_adBannerView = "key_adBannerView";
+
+NSString *const AdMobAdUnitIDBattery = @"ca-app-pub-0532362805885914/2432956543";
+NSString *const AdMobAdUnitIDCalculator = @"ca-app-pub-0532362805885914/2712158144";
+NSString *const AdMobAdUnitIDClock = @"ca-app-pub-0532362805885914/2851758945";
+NSString *const AdMobAdUnitIDCurrency = @"ca-app-pub-0532362805885914/7281958549";
+NSString *const AdMobAdUnitIDDateCalc = @"ca-app-pub-0532362805885914/4188891345";
+NSString *const AdMobAdUnitIDDaysCounter = @"ca-app-pub-0532362805885914/7002756948";
+NSString *const AdMobAdUnitIDExpenseList = @"ca-app-pub-0532362805885914/8479490142";
+NSString *const AdMobAdUnitIDFlashlight = @"ca-app-pub-0532362805885914/3909689745";
+NSString *const AdMobAdUnitIDHolidays = @"ca-app-pub-0532362805885914/9956223343";
+NSString *const AdMobAdUnitIDLadiesCalendar = @"ca-app-pub-0532362805885914/5805225347";
+NSString *const AdMobAdUnitIDLunarConverter = @"ca-app-pub-0532362805885914/5526023743";
+NSString *const AdMobAdUnitIDMagnifier = @"ca-app-pub-0532362805885914/5386422940";
+NSString *const AdMobAdUnitIDMirror = @"ca-app-pub-0532362805885914/6863156141";
+NSString *const AdMobAdUnitIDPercentCalc = @"ca-app-pub-0532362805885914/7142357749";
+NSString *const AdMobAdUnitIDRandom = @"ca-app-pub-0532362805885914/8339889346";
+NSString *const AdMobAdUnitIDRuler = @"ca-app-pub-0532362805885914/9816622546";
+NSString *const AdMobAdUnitIDSalesCalc = @"ca-app-pub-0532362805885914/8619090941";
+NSString *const AdMobAdUnitIDTipCalc = @"ca-app-pub-0532362805885914/1095824149";
+NSString *const AdMobAdUnitIDTranslator = @"ca-app-pub-0532362805885914/1235424945";
+NSString *const AdMobAdUnitIDUnitConverter = @"ca-app-pub-0532362805885914/4049290542";
+NSString *const AdMobAdUnitIDUnitPrice = @"ca-app-pub-0532362805885914/2572557342";
+NSString *const AdMobAdUnitIDWallet = @"ca-app-pub-0532362805885914/4328492143";
 
 @implementation UIViewController (A3Addition)
 
@@ -661,7 +685,6 @@ static char const *const key_firstActionSheet 					= "key_firstActionSheet";
 	[alertView show];
 }
 
-
 - (UIActionSheet *)firstActionSheet {
 	return objc_getAssociatedObject(self, key_firstActionSheet);
 }
@@ -708,6 +731,50 @@ static char const *const key_firstActionSheet 					= "key_firstActionSheet";
 	[self presentViewController:alertController
 					   animated:YES
 					 completion:NULL];
+}
+
+#pragma mark -- Setup Banner view for gathering information
+
+/**
+ *  Create GADBannerView with given unitID, keywords, and gender
+ *
+ *  @param unitID   AdMob ad unit id
+ *  @param keywords keywords list
+ *  @param gender   gender information
+ */
+- (void)setupBannerViewForAdUnitID:(NSString *)unitID keywords:(NSArray *)keywords gender:(GADGender)gender {
+	if (![[A3AppDelegate instance] shouldPresentAd]) return;
+
+	GADRequest *adRequest = [GADRequest request];
+	adRequest.keywords = keywords;
+	adRequest.gender = gender;
+
+	GADBannerView *bannerView = [GADBannerView new];
+	bannerView.adUnitID = unitID;
+	bannerView.rootViewController = self;
+	bannerView.adSize = kGADAdSizeBanner;
+	bannerView.delegate = (id<GADBannerViewDelegate>)self;
+	[bannerView loadRequest:adRequest];
+	objc_setAssociatedObject(self, key_adBannerView, bannerView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+/**
+ *  광고를 받으면 폐기한다.
+ *  현재 이 요청의 목적은 광고 수요를 파악하는데 있으므로, 광고를 게재하지는 않는다.
+ *
+ *  @param bannerView <#bannerView description#>
+ */
+- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+	FNLOG(@"%@", bannerView.adUnitID);
+	objc_setAssociatedObject(self, key_adBannerView, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void)adView:(GADBannerView *)bannerView didFailToReceiveAdWithError:(GADRequestError *)error {
+	FNLOG(@"%@", error.localizedDescription);
+}
+
+- (GADBannerView *)bannerView {
+	return objc_getAssociatedObject(self, key_adBannerView);
 }
 
 @end

@@ -134,6 +134,14 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 	[self.navigationController.navigationBar setShadowImage:image];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+		[self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/4328492143" keywords:nil gender:kGADGenderUnknown];
+	}
+}
+
 - (NSMutableArray *)categories {
 	if (nil == _categories) {
 		_categories = [[WalletData walletCategoriesFilterDoNotShow:YES inContext:nil ] mutableCopy];

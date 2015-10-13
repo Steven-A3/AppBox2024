@@ -158,13 +158,15 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	}
+    if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+        [self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/8479490142" keywords:nil gender:kGADGenderUnknown];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
 	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
-		FNLOG();
 		[self removeObserver];
 	}
 }

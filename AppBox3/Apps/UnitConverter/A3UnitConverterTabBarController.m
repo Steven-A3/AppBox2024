@@ -136,6 +136,14 @@
 	[self.navigationController.navigationBar setShadowImage:image];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+		[self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/4049290542" keywords:nil gender:kGADGenderUnknown];
+	}
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 

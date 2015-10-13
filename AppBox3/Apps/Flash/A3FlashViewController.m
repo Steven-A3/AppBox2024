@@ -322,7 +322,6 @@ NSString *const cellID = @"flashEffectID";
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	FNLOG();
 	if (_currentFlashViewMode & A3FlashViewModeTypeLED) {
 		if ([A3UIDevice canAccessCamera]) {
 			_isTorchOn = YES;
@@ -335,6 +334,9 @@ NSString *const cellID = @"flashEffectID";
 		[self startStrobeLightEffectForIndex:_selectedEffectIndex];
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+		[self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/3909689745" keywords:nil gender:kGADGenderUnknown];
+	}
 }
 
 - (void)viewWillLayoutSubviews {

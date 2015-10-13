@@ -204,6 +204,9 @@ enum A3TableElementCellType {
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	}
+	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+		[self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/8619090941" keywords:nil gender:kGADGenderUnknown];
+	}
 }
 
 - (void)rightSideViewWillHide {

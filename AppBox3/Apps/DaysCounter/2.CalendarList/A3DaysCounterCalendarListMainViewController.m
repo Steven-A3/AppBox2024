@@ -245,6 +245,9 @@
 			[self reloadTableView];
 		});
 	}
+    if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+        [self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/7002756948" keywords:nil gender:kGADGenderUnknown];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

@@ -149,6 +149,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 	[super viewDidAppear:animated];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+	[self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/5386422940" keywords:nil gender:kGADGenderUnknown];
 }
 
 - (void)applicationDidBecomeActive {

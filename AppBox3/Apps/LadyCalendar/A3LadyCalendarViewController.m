@@ -225,6 +225,10 @@ A3CalendarViewDelegate>
 	}
 
 	[self updateCurrentMonthLabel];
+
+	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+		[self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/5805225347" keywords:nil gender:kGADGenderUnknown];
+	}
 }
 
 - (void)removeObserver {

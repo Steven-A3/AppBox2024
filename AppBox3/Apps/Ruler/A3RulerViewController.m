@@ -132,6 +132,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
 		[self resetButtonAction];
+		[self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/9816622546" keywords:nil gender:kGADGenderUnknown];
 	}
 }
 

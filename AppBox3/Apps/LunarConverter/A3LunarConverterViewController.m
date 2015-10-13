@@ -218,6 +218,7 @@
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	}
+	[self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/5526023743" keywords:nil gender:kGADGenderUnknown];
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {

@@ -149,7 +149,7 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	if (self.isMovingToParentViewController) {
+	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
 		NSDate *fireDate = [[NSDate dateTomorrow] dateAtStartOfDay];
 		FNLOG(@"%@, %f", fireDate, [fireDate timeIntervalSinceNow]/(60 * 60));
 		_dayChangedTimer = [[NSTimer alloc] initWithFireDate:fireDate
@@ -165,6 +165,8 @@
 		[self prepareViewControllerAtPage:1];
 
 		[self alertDisclaimer];
+
+		[self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/9956223343" keywords:nil gender:kGADGenderUnknown];
 	}
 }
 

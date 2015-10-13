@@ -202,6 +202,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	}
+    [self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/5665624549" keywords:nil gender:kGADGenderUnknown];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
