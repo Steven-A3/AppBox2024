@@ -206,6 +206,7 @@
 		6817825316253640008A6E4B /* A3SegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 6817825216253640008A6E4B /* A3SegmentedControl.m */; };
 		6817830F1902823D003E1BB9 /* A3WalletItemTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6817830E1902823D003E1BB9 /* A3WalletItemTitleCell.m */; };
 		6819A86F18A6092B00E63C8B /* NSDateFormatter+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4255AEBE358EED319031E /* NSDateFormatter+A3Addition.m */; };
+		6819B5181BCF541F00D1C6BE /* AppBox3UITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6819B5171BCF541F00D1C6BE /* AppBox3UITests.m */; };
 		6819C7B2188A4D64007E0E1B /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 684E9F0D188A4BB100FAA48E /* Social.framework */; };
 		681C511F194EB57400CB653A /* LoanCalculatorPadStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 681C5121194EB57400CB653A /* LoanCalculatorPadStoryBoard.storyboard */; };
 		681E11FD1932E2250077DCFA /* A3DataMigrationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 681E11FC1932E2250077DCFA /* A3DataMigrationManager.m */; };
@@ -922,6 +923,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		6819B51A1BCF541F00D1C6BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 682EA2C815EB10B000BD6AD4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 682EA2D015EB10B000BD6AD4;
+			remoteInfo = AppBox3;
+		};
 		68635FFA198BF80E00C3A323 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */;
@@ -1342,6 +1350,9 @@
 		6817825216253640008A6E4B /* A3SegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SegmentedControl.m; sourceTree = "<group>"; };
 		6817830D1902823D003E1BB9 /* A3WalletItemTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletItemTitleCell.h; sourceTree = "<group>"; };
 		6817830E1902823D003E1BB9 /* A3WalletItemTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletItemTitleCell.m; sourceTree = "<group>"; };
+		6819B5151BCF541F00D1C6BE /* AppBox3UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppBox3UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6819B5171BCF541F00D1C6BE /* AppBox3UITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppBox3UITests.m; sourceTree = "<group>"; };
+		6819B5191BCF541F00D1C6BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		681C5120194EB57400CB653A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LoanCalculatorPadStoryBoard.storyboard; sourceTree = "<group>"; };
 		681C5125194EB58400CB653A /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LoanCalculatorPadStoryBoard.strings; sourceTree = "<group>"; };
 		681C5127194EB58500CB653A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LoanCalculatorPadStoryBoard.strings"; sourceTree = "<group>"; };
@@ -2723,6 +2734,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6819B5121BCF541F00D1C6BE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6829688B18505E3800B70E13 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -3313,6 +3331,15 @@
 			name = Formatter;
 			sourceTree = "<group>";
 		};
+		6819B5161BCF541F00D1C6BE /* AppBox3UITests */ = {
+			isa = PBXGroup;
+			children = (
+				6819B5171BCF541F00D1C6BE /* AppBox3UITests.m */,
+				6819B5191BCF541F00D1C6BE /* Info.plist */,
+			);
+			path = AppBox3UITests;
+			sourceTree = "<group>";
+		};
 		681E11FA1932E1F50077DCFA /* MigrationV1V3 */ = {
 			isa = PBXGroup;
 			children = (
@@ -3504,6 +3531,7 @@
 				68D319461A3BFF78003B9F54 /* AppBox3 Free */,
 				6876D6FE17A75DAE00E16991 /* AppBox3 Tests */,
 				6829689218505E3900B70E13 /* A3SetupDefaultData */,
+				6819B5161BCF541F00D1C6BE /* AppBox3UITests */,
 				682EA2D415EB10B000BD6AD4 /* Frameworks */,
 				682EA2D215EB10B000BD6AD4 /* Products */,
 			);
@@ -3515,6 +3543,7 @@
 				682EA2D115EB10B000BD6AD4 /* AppBox3.app */,
 				6876D6FA17A75DAE00E16991 /* AppBox3 Tests.xctest */,
 				6829688E18505E3800B70E13 /* A3SetupDefaultData.app */,
+				6819B5151BCF541F00D1C6BE /* AppBox3UITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -5482,6 +5511,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		6819B5141BCF541F00D1C6BE /* AppBox3UITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6819B5221BCF541F00D1C6BE /* Build configuration list for PBXNativeTarget "AppBox3UITests" */;
+			buildPhases = (
+				6819B5111BCF541F00D1C6BE /* Sources */,
+				6819B5121BCF541F00D1C6BE /* Frameworks */,
+				6819B5131BCF541F00D1C6BE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6819B51B1BCF541F00D1C6BE /* PBXTargetDependency */,
+			);
+			name = AppBox3UITests;
+			productName = AppBox3UITests;
+			productReference = 6819B5151BCF541F00D1C6BE /* AppBox3UITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		6829688D18505E3800B70E13 /* A3SetupDefaultData */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 682968C218505E3900B70E13 /* Build configuration list for PBXNativeTarget "A3SetupDefaultData" */;
@@ -5545,6 +5592,10 @@
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = ALLABOUTAPPS;
 				TargetAttributes = {
+					6819B5141BCF541F00D1C6BE = {
+						CreatedOnToolsVersion = 7.0.1;
+						TestTargetID = 682EA2D015EB10B000BD6AD4;
+					};
 					6829688D18505E3800B70E13 = {
 						DevelopmentTeam = 84XB754BWU;
 					};
@@ -5605,6 +5656,7 @@
 				682EA2D015EB10B000BD6AD4 /* AppBox3 */,
 				6876D6F917A75DAE00E16991 /* AppBox3 Tests */,
 				6829688D18505E3800B70E13 /* A3SetupDefaultData */,
+				6819B5141BCF541F00D1C6BE /* AppBox3UITests */,
 			);
 		};
 /* End PBXProject section */
@@ -5634,6 +5686,13 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		6819B5131BCF541F00D1C6BE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6829688C18505E3800B70E13 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -5809,6 +5868,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		6819B5111BCF541F00D1C6BE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6819B5181BCF541F00D1C6BE /* AppBox3UITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6829688A18505E3800B70E13 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -6554,6 +6621,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		6819B51B1BCF541F00D1C6BE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 682EA2D015EB10B000BD6AD4 /* AppBox3 */;
+			targetProxy = 6819B51A1BCF541F00D1C6BE /* PBXContainerItemProxy */;
+		};
 		68636002198BF8F400C3A323 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Ensembles Resources";
@@ -6933,6 +7005,48 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		6819B51C1BCF541F00D1C6BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = AppBox3UITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = net.allaboutapps.AppBox3UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = AppBox3;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		6819B51D1BCF541F00D1C6BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = AppBox3UITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = net.allaboutapps.AppBox3UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = AppBox3;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
 		682968BB18505E3900B70E13 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -7221,6 +7335,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6819B5221BCF541F00D1C6BE /* Build configuration list for PBXNativeTarget "AppBox3UITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6819B51C1BCF541F00D1C6BE /* Debug */,
+				6819B51D1BCF541F00D1C6BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		682968C218505E3900B70E13 /* Build configuration list for PBXNativeTarget "A3SetupDefaultData" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
