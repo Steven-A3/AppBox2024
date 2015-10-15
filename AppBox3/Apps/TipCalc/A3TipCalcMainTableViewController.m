@@ -173,7 +173,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 		[self leftBarButtonAppsButton];
 	}
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/1095824149" keywords:nil gender:kGADGenderUnknown];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDTipCalc keywords:nil gender:kGADGenderUnknown];
 	}
 }
 

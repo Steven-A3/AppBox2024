@@ -67,7 +67,8 @@ NSString *const A3InterstitialAdUnitID = @"ca-app-pub-0532362805885914/253769254
 @property (nonatomic, strong) NSTimer *locationUpdateTimer;
 @property (nonatomic, copy) NSString *deviceToken;
 @property (nonatomic, copy) NSString *alertURLString;
-@property (nonatomic, strong) UIApplicationShortcutItem *shortcutItem;
+// TODO: 3D Touch 장비 입수후 테스트 필요
+//@property (nonatomic, strong) UIApplicationShortcutItem *shortcutItem;
 @property (nonatomic, strong) GADRequest *adRequest;
 @property (nonatomic, strong) GADBannerView *adBannerView;
 @property (nonatomic, strong) GADInterstitial *adInterstitial;
@@ -93,18 +94,21 @@ NSString *const A3InterstitialAdUnitID = @"ca-app-pub-0532362805885914/253769254
 }
 
 - (BOOL)shouldPerformAdditionalDelegateHandling:(NSDictionary *)launchOptions {
-    if (launchOptions) {
-        _shortcutItem = launchOptions[UIApplicationLaunchOptionsShortcutItemKey];
-    
-        if (_shortcutItem) {
-            [self pushStartingAppInfo];
-            [[A3UserDefaults standardUserDefaults] setObject:_shortcutItem.userInfo[kA3AppsMenuName] forKey:kA3AppsStartingAppName];
-            _shortcutItem = nil;
-            
-            return NO;
-        }
-    }
-    return YES;
+	return YES;
+
+// TODO: 3D Touch 장비 입수후 테스트 필요
+//    if (launchOptions) {
+//        _shortcutItem = launchOptions[UIApplicationLaunchOptionsShortcutItemKey];
+//    
+//        if (_shortcutItem) {
+//            [self pushStartingAppInfo];
+//            [[A3UserDefaults standardUserDefaults] setObject:_shortcutItem.userInfo[kA3AppsMenuName] forKey:kA3AppsStartingAppName];
+//            _shortcutItem = nil;
+//            
+//            return NO;
+//        }
+//    }
+//    return YES;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -359,28 +363,29 @@ NSString *const A3InterstitialAdUnitID = @"ca-app-pub-0532362805885914/253769254
 	return NO;
 }
 
-- (void)application:(UIApplication * _Nonnull)application performActionForShortcutItem:(UIApplicationShortcutItem * _Nonnull)shortcutItem completionHandler:(void (^ _Nonnull)(BOOL succeeded))completionHandler {
-    _shortcutItem = shortcutItem;
-    completionHandler([self handleShortcutItem]);
-}
-
-- (BOOL)handleShortcutItem {
-    if (!_shortcutItem) return NO;
-
-    [self pushStartingAppInfo];
-    [[A3UserDefaults standardUserDefaults] setObject:_shortcutItem.userInfo[kA3AppsMenuName] forKey:kA3AppsStartingAppName];
-    _shortcutItem = nil;
-    
-    
-				if ([self requirePasscodeForStartingApp]) {
-                    [self presentLockScreen];
-                } else {
-                    [self removeSecurityCoverView];
-                    [self.mainMenuViewController openRecentlyUsedMenu:YES];
-                }
-    
-    return YES;
-}
+// TODO: 3D Touch 장비 입수후 테스트 필요
+//- (void)application:(UIApplication * _Nonnull)application performActionForShortcutItem:(UIApplicationShortcutItem * _Nonnull)shortcutItem completionHandler:(void (^ _Nonnull)(BOOL succeeded))completionHandler {
+//    _shortcutItem = shortcutItem;
+//    completionHandler([self handleShortcutItem]);
+//}
+//
+//- (BOOL)handleShortcutItem {
+//    if (!_shortcutItem) return NO;
+//
+//    [self pushStartingAppInfo];
+//    [[A3UserDefaults standardUserDefaults] setObject:_shortcutItem.userInfo[kA3AppsMenuName] forKey:kA3AppsStartingAppName];
+//    _shortcutItem = nil;
+//    
+//    
+//				if ([self requirePasscodeForStartingApp]) {
+//                    [self presentLockScreen];
+//                } else {
+//                    [self removeSecurityCoverView];
+//                    [self.mainMenuViewController openRecentlyUsedMenu:YES];
+//                }
+//    
+//    return YES;
+//}
 
 - (void)pushStartingAppInfo {
     NSString *startAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];

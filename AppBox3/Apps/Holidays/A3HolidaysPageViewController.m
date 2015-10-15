@@ -166,7 +166,7 @@
 
 		[self alertDisclaimer];
 
-		[self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/9956223343" keywords:nil gender:kGADGenderUnknown];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDHolidays keywords:nil gender:kGADGenderUnknown];
 	}
 }
 

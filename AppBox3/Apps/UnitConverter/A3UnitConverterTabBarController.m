@@ -140,7 +140,7 @@
 	[super viewDidAppear:animated];
 
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/4049290542" keywords:nil gender:kGADGenderUnknown];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDUnitConverter keywords:nil gender:kGADGenderUnknown];
 	}
 }
 

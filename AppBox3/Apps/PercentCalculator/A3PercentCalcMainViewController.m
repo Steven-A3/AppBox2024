@@ -168,7 +168,7 @@
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	}
-    [self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/7142357749" keywords:nil gender:kGADGenderUnknown];
+    [self setupBannerViewForAdUnitID:AdMobAdUnitIDPercentCalc keywords:nil gender:kGADGenderUnknown];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

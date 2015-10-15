@@ -131,7 +131,7 @@
 		[self leftBarButtonAppsButton];
 	}
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/2432956543" keywords:nil gender:kGADGenderUnknown];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDBattery keywords:nil gender:kGADGenderUnknown];
 	}
 }
 

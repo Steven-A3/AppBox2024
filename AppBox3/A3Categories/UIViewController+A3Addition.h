@@ -11,6 +11,29 @@
 #import "A3PasscodeViewController.h"
 #import "A3PasswordViewController.h"
 
+extern NSString *const AdMobAdUnitIDBattery;
+extern NSString *const AdMobAdUnitIDCalculator;
+extern NSString *const AdMobAdUnitIDClock;
+extern NSString *const AdMobAdUnitIDCurrency;
+extern NSString *const AdMobAdUnitIDDateCalc;
+extern NSString *const AdMobAdUnitIDDaysCounter;
+extern NSString *const AdMobAdUnitIDExpenseList;
+extern NSString *const AdMobAdUnitIDFlashlight;
+extern NSString *const AdMobAdUnitIDHolidays;
+extern NSString *const AdMobAdUnitIDLadiesCalendar;
+extern NSString *const AdMobAdUnitIDLunarConverter;
+extern NSString *const AdMobAdUnitIDMagnifier;
+extern NSString *const AdMobAdUnitIDMirror;
+extern NSString *const AdMobAdUnitIDPercentCalc;
+extern NSString *const AdMobAdUnitIDRandom;
+extern NSString *const AdMobAdUnitIDRuler;
+extern NSString *const AdMobAdUnitIDSalesCalc;
+extern NSString *const AdMobAdUnitIDTipCalc;
+extern NSString *const AdMobAdUnitIDTranslator;
+extern NSString *const AdMobAdUnitIDUnitConverter;
+extern NSString *const AdMobAdUnitIDUnitPrice;
+extern NSString *const AdMobAdUnitIDWallet;
+
 typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 	A3RightBarButtonTagComposeButton = 1,
 	A3RightBarButtonTagShareButton,

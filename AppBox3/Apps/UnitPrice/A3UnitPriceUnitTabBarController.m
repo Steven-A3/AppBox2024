@@ -67,7 +67,7 @@ NSString *const A3UnitPriceSegmentIndex = @"A3UnitPriceSegmentIndex";
     [super viewDidAppear:animated];
 
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        [self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/2572557342" keywords:nil gender:kGADGenderUnknown];
+        [self setupBannerViewForAdUnitID:AdMobAdUnitIDUnitPrice keywords:nil gender:kGADGenderUnknown];
     }
 }
 

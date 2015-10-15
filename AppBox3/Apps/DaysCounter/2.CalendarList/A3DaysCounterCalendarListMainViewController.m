@@ -246,7 +246,7 @@
 		});
 	}
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        [self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/7002756948" keywords:nil gender:kGADGenderUnknown];
+        [self setupBannerViewForAdUnitID:AdMobAdUnitIDDaysCounter keywords:nil gender:kGADGenderUnknown];
     }
 }
 

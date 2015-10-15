@@ -138,7 +138,7 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 	[super viewDidAppear:animated];
 
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/4328492143" keywords:nil gender:kGADGenderUnknown];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDWallet keywords:nil gender:kGADGenderUnknown];
 	}
 }
 

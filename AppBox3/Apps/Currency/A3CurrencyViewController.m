@@ -212,7 +212,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 	}
 	if ([self isBeingPresented] || [self isMovingToParentViewController]) {
 		self.tableViewController.refreshControl = self.refreshControl;
-		[self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/7281958549" keywords:@[@"Finance", @"Money", @"Shopping", @"Travel"] gender:kGADGenderUnknown];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDCurrency keywords:@[@"Finance", @"Money", @"Shopping", @"Travel"] gender:kGADGenderUnknown];
 	}
 }
 
@@ -743,24 +743,43 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)tableView:(FMMoveTableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
 
-    return [self.favorites count];
+	NSInteger numberOfRows = [self.favorites count];
+	
+	if (tableView.movingIndexPath && tableView.movingIndexPath.section != tableView.initialIndexPathForMovingRow.section)
+	{
+		if (section == tableView.movingIndexPath.section) {
+			numberOfRows++;
+		}
+		else if (section == tableView.initialIndexPathForMovingRow.section) {
+			numberOfRows--;
+		}
+	}
+	
+	return numberOfRows;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(FMMoveTableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (tableView.movingIndexPath != nil) {
+		indexPath = [tableView adaptedIndexPathForRowAtIndexPath:indexPath];
+	}
+	
 	if (_favorites[indexPath.row] == _adItem) {
 		return 50.0;
 	}
 	return 84;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)tableView:(FMMoveTableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	UITableViewCell *cell;
 
+	if (tableView.movingIndexPath != nil) {
+		indexPath = [tableView adaptedIndexPathForRowAtIndexPath:indexPath];
+	}
 	if ([self.favorites objectAtIndex:indexPath.row] == _equalItem) {
 		A3CurrencyTVEqualCell *equalCell = [self reusableEqualCellForTableView:tableView];
 		cell = equalCell;
@@ -845,6 +864,9 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	}
 	dataCell.valueField.text = [self stringFromNumber:value withCurrencyCode:currencyCode isShare:NO];
 	dataCell.codeLabel.text = currencyCode;
+	
+	dataCell.accessibilityValue = currencyCode;
+	dataCell.accessibilityLabel = NSLocalizedString(@"Currency code", @"Currency code");
 }
 
 - (A3CurrencyTVEqualCell *)reusableEqualCellForTableView:(UITableView *)tableView {
@@ -872,7 +894,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	[self clearEverything];
 
 	id object = self.favorites[indexPath.row];
-	if (object != _equalItem) {
+	if (![object isEqual:_equalItem] && ![object isEqual:_adItem]) {
 		_selectedRow = indexPath.row;
 		_isAddingCurrency = NO;
 
@@ -950,14 +972,17 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 #pragma mark - FMMoveTableView
 
 - (BOOL)moveTableView:(FMMoveTableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-	return [self.favorites objectAtIndex:indexPath.row] != self.equalItem;
+	id<NSObject> object = self.favorites[indexPath.row];
+	return ![object isEqual:_equalItem] && ![object isEqual:_adItem];
 }
 
 - (void)moveTableView:(FMMoveTableView *)tableView willMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-
+	FNLOG();
 }
 
 - (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+	FNLOG();
+	
 	[_favorites moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 	[self.savingContext MR_saveToPersistentStoreAndWait];
 
@@ -1220,7 +1245,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		CurrencyFavorite *fromCurrency = self.favorites[fromIndex];
 		NSString *sourceCurrency = fromCurrency.uniqueID;
 		NSUInteger targetIndex = [_favorites indexOfObjectPassingTest:^BOOL(CurrencyFavorite *obj, NSUInteger idx, BOOL *stop) {
-			if ([obj isEqual:self.equalItem]) return NO;
+			if ([obj isEqual:_equalItem] || [obj isEqual:_adItem]) return NO;
 			return [obj.uniqueID isEqualToString:key];
 		}];
 		if (targetIndex != NSNotFound) {
@@ -1251,7 +1276,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	NSIndexPath *sourceIndexPath = [self.tableView indexPathForCell:cell];
 	NSIndexPath *targetIndexPath;
 	if (sourceIndexPath.row == 0) {
-		targetIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
+		targetIndexPath = [NSIndexPath indexPathForRow:2 + (_adItem ? 1 : 0) inSection:0];
 	} else {
 		targetIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
 	}
@@ -1317,7 +1342,6 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 	//NSInteger targetIdx = indexPath.row == 0 ? 2 : indexPath.row;
     NSInteger targetIdx = indexPath.row;
-	NSAssert(self.favorites[indexPath.row] != _equalItem, @"Selected row must not the equal cell and/or plus cell");
 	[self shareActionForSourceIndex:0 targetIndex:targetIdx sender:sender ];
 }
 
@@ -1431,7 +1455,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 - (NSString *)stringForShare {
 	if (_shareAll) {
-		NSUInteger idx = 2;
+		NSUInteger idx = 2 + (_adItem ? 1 : 0);
 		NSMutableString *resultString = [NSMutableString new];
 		for (; idx < [self.favorites count]; idx++) {
 			[resultString appendString:[self stringForShareOfSource:0 target:idx]];
@@ -1489,7 +1513,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	history.rate = [_currencyDataManager dataForCurrencyCode:baseCurrency].rateToUSD;
 	history.value = value;
 
-	NSInteger historyItemCount = MIN([self.favorites count] - 2, 4);
+	NSInteger historyItemCount = MIN([self.favorites count] - 2 - (_adItem ? 1 : 0), 4);
 	NSInteger idx = 0;
 	NSMutableSet *targets = [[NSMutableSet alloc] init];
 	for (; idx < historyItemCount; idx++) {
@@ -1497,7 +1521,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		item.uniqueID = [[NSUUID UUID] UUIDString];
 		item.updateDate = [NSDate date];
 		item.historyID = history.uniqueID;
-		CurrencyFavorite *favoriteN = self.favorites[idx + 2];
+		CurrencyFavorite *favoriteN = self.favorites[idx + 2 + (_adItem ? 1 : 0)];
 		NSString *favorite = favoriteN.uniqueID;
 		item.currencyCode = favorite;
 		item.rate = [_currencyDataManager dataForCurrencyCode:favorite].rateToUSD;
@@ -1523,6 +1547,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 }
 
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+	FNLOGRECT(bannerView.frame);
 	if (_adItem) return;
 	[_favorites insertObject:[self adItem] atIndex:2];
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:2 inSection:0];

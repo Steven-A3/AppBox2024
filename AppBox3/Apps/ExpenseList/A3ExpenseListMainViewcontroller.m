@@ -159,7 +159,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 		[self leftBarButtonAppsButton];
 	}
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        [self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/8479490142" keywords:nil gender:kGADGenderUnknown];
+        [self setupBannerViewForAdUnitID:AdMobAdUnitIDExpenseList keywords:nil gender:kGADGenderUnknown];
     }
 }
 
