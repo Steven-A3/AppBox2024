@@ -19,7 +19,8 @@
 - (void)presentLockScreen;
 - (BOOL)shouldProtectScreen;
 - (void)applicationDidEnterBackground_passcode;
-- (void)applicationDidBecomeActive_passcode;
+
+- (void)applicationDidBecomeActive_passcodeAfterLaunch:(BOOL)isAfterLaunch;
 - (void)applicationWillEnterForeground_passcode;
 - (void)applicationWillResignActive_passcode;
 - (void)addSecurityCoverView;

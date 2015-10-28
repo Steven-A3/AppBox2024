@@ -134,8 +134,6 @@ enum A3TableElementCellType {
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[self registerContentSizeCategoryDidChangeNotification];
-
-    [[A3AppDelegate instance] popStartingAppInfo];
 }
 
 - (void)cloudStoreDidImport {

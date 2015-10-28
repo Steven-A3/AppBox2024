@@ -18,7 +18,7 @@ typedef NS_ENUM(NSInteger, CenterColorType) {
 @interface A3OverlappedCircleView : UIView
 
 @property (assign, nonatomic) CenterColorType centerColorType;
-@property (assign, nonatomic) BOOL focused;
+@property (assign, nonatomic) BOOL hasFocus;
 
 @property (nonatomic, strong) UIColor *centerColor;
 

@@ -68,7 +68,7 @@ NSString *const A3InterstitialAdUnitID = @"ca-app-pub-0532362805885914/253769254
 @property (nonatomic, copy) NSString *deviceToken;
 @property (nonatomic, copy) NSString *alertURLString;
 // TODO: 3D Touch 장비 입수후 테스트 필요
-//@property (nonatomic, strong) UIApplicationShortcutItem *shortcutItem;
+@property (nonatomic, strong) UIApplicationShortcutItem *shortcutItem;
 @property (nonatomic, strong) GADRequest *adRequest;
 @property (nonatomic, strong) GADBannerView *adBannerView;
 @property (nonatomic, strong) GADInterstitial *adInterstitial;
@@ -93,22 +93,20 @@ NSString *const A3InterstitialAdUnitID = @"ca-app-pub-0532362805885914/253769254
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (BOOL)shouldPerformAdditionalDelegateHandling:(NSDictionary *)launchOptions {
-	return YES;
-
 // TODO: 3D Touch 장비 입수후 테스트 필요
-//    if (launchOptions) {
-//        _shortcutItem = launchOptions[UIApplicationLaunchOptionsShortcutItemKey];
-//    
-//        if (_shortcutItem) {
-//            [self pushStartingAppInfo];
-//            [[A3UserDefaults standardUserDefaults] setObject:_shortcutItem.userInfo[kA3AppsMenuName] forKey:kA3AppsStartingAppName];
-//            _shortcutItem = nil;
-//            
-//            return NO;
-//        }
-//    }
-//    return YES;
+- (BOOL)shouldPerformAdditionalDelegateHandling:(NSDictionary *)launchOptions {
+    if (launchOptions) {
+        _shortcutItem = launchOptions[UIApplicationLaunchOptionsShortcutItemKey];
+    
+        if (_shortcutItem) {
+            [self pushStartingAppInfo];
+            [[A3UserDefaults standardUserDefaults] setObject:_shortcutItem.userInfo[kA3AppsMenuName] forKey:kA3AppsStartingAppName];
+            _shortcutItem = nil;
+            
+            return NO;
+        }
+    }
+    return YES;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -296,10 +294,6 @@ NSString *const A3InterstitialAdUnitID = @"ca-app-pub-0532362805885914/253769254
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-	if (_appIsNotActiveYet) {
-		_appIsNotActiveYet = NO;
-	}
-
 	FNLOG();
 	A3SyncManager *syncManager = [A3SyncManager sharedSyncManager];
 	[syncManager synchronizeWithCompletion:NULL];
@@ -314,11 +308,15 @@ NSString *const A3InterstitialAdUnitID = @"ca-app-pub-0532362805885914/253769254
 		[navigationController popViewControllerAnimated:NO];
 	}
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-	[self applicationDidBecomeActive_passcode];
+	[self applicationDidBecomeActive_passcodeAfterLaunch:_appIsNotActiveYet];
 	
 	[self fetchPushNotification];
 
 	[self updateHolidayNations];
+
+	if (_appIsNotActiveYet) {
+		_appIsNotActiveYet = NO;
+	}
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -348,8 +346,9 @@ NSString *const A3InterstitialAdUnitID = @"ca-app-pub-0532362805885914/253769254
 }
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-    if ([[url absoluteString] hasPrefix:@"appboxpro://"]) {
+    if ([[[url absoluteString] lowercaseString] hasPrefix:@"appboxpro://"]) {
         FNLOG(@"%@", url);
+		return YES;
     } else if ([[DBSession sharedSession] handleOpenURL:url]) {
 		if ([[DBSession sharedSession] isLinked]) {
 			FNLOG(@"App linked successfully!");
@@ -364,28 +363,28 @@ NSString *const A3InterstitialAdUnitID = @"ca-app-pub-0532362805885914/253769254
 }
 
 // TODO: 3D Touch 장비 입수후 테스트 필요
-//- (void)application:(UIApplication * _Nonnull)application performActionForShortcutItem:(UIApplicationShortcutItem * _Nonnull)shortcutItem completionHandler:(void (^ _Nonnull)(BOOL succeeded))completionHandler {
-//    _shortcutItem = shortcutItem;
-//    completionHandler([self handleShortcutItem]);
-//}
-//
-//- (BOOL)handleShortcutItem {
-//    if (!_shortcutItem) return NO;
-//
-//    [self pushStartingAppInfo];
-//    [[A3UserDefaults standardUserDefaults] setObject:_shortcutItem.userInfo[kA3AppsMenuName] forKey:kA3AppsStartingAppName];
-//    _shortcutItem = nil;
-//    
-//    
-//				if ([self requirePasscodeForStartingApp]) {
-//                    [self presentLockScreen];
-//                } else {
-//                    [self removeSecurityCoverView];
-//                    [self.mainMenuViewController openRecentlyUsedMenu:YES];
-//                }
-//    
-//    return YES;
-//}
+- (void)application:(UIApplication * _Nonnull)application performActionForShortcutItem:(UIApplicationShortcutItem * _Nonnull)shortcutItem completionHandler:(void (^ _Nonnull)(BOOL succeeded))completionHandler {
+	FNLOG();
+    _shortcutItem = shortcutItem;
+    completionHandler([self handleShortcutItem]);
+}
+
+- (BOOL)handleShortcutItem {
+    if (!_shortcutItem) return NO;
+
+    [self pushStartingAppInfo];
+    [[A3UserDefaults standardUserDefaults] setObject:_shortcutItem.userInfo[kA3AppsMenuName] forKey:kA3AppsStartingAppName];
+    _shortcutItem = nil;
+    
+	if ([self shouldAskPasscodeForStarting] || [self requirePasscodeForStartingApp]) {
+		[self presentLockScreen];
+	} else {
+		[self removeSecurityCoverView];
+		[self.mainMenuViewController openRecentlyUsedMenu:YES];
+	}
+	
+    return YES;
+}
 
 - (void)pushStartingAppInfo {
     NSString *startAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
@@ -470,13 +469,11 @@ NSString *const A3InterstitialAdUnitID = @"ca-app-pub-0532362805885914/253769254
 	UIApplication *application = [UIApplication sharedApplication];
 	application.applicationIconBadgeNumber = 0;
 	NSArray *scheduledNotifications = [application scheduledLocalNotifications];
-	FNLOG(@"%@", [application scheduledLocalNotifications]);
 	[scheduledNotifications enumerateObjectsUsingBlock:^(UILocalNotification *localNotification, NSUInteger idx, BOOL *stop) {
 		if (localNotification.userInfo[@"kABPLocalNotificationTypeDaysUntil"] || localNotification.applicationIconBadgeNumber) {
 			[application cancelLocalNotification:localNotification];
 		}
 	}];
-	FNLOG(@"%@", [application scheduledLocalNotifications]);
 }
 
 #pragma mark - UIAlertViewDelegate
@@ -1025,15 +1022,15 @@ NSString *const A3InterstitialAdUnitID = @"ca-app-pub-0532362805885914/253769254
 												isRegistered,
 												isRegistered] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 	}
-	FNLOG(@"%@", urlString);
 
 	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
 	AFHTTPRequestOperation *registerOperation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
 	[registerOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-		FNLOG(@"%@", responseObject);
 		[self fetchPushNotification];
 	} failure:NULL];
+	
 	[registerOperation start];
+	
 	/*
 	 // !!! CHANGE "/apns.php?" TO THE PATH TO WHERE apns.php IS INSTALLED
 	 // !!! ( MUST START WITH / AND END WITH ? ).
@@ -1265,6 +1262,9 @@ NSString *const A3InterstitialAdUnitID = @"ca-app-pub-0532362805885914/253769254
 }
 
 - (BOOL)presentInterstitialAds {
+	if (!self.shouldPresentAd) {
+		return NO;
+	}
 	FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 	if (self.adDisplayedAfterApplicationDidBecomeActive) {
 		return NO;

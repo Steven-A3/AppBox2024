@@ -251,22 +251,21 @@ NSString *const A3AppName_Settings = @"Settings";
 
 // TODO: 3D Touch 장비 입수후 테스트 필요
 - (void)updateApplicationShortcutItems {
-	return;
-	
-//    if (![[UIApplication sharedApplication] respondsToSelector:NSSelectorFromString(@"shortcutItems")])
-//        return;
-//    NSArray *favoriteMenus = [self favoriteItems];
-//    NSMutableArray *newShortcutItems = [NSMutableArray new];
-//    for (NSDictionary *favoriteItem in favoriteMenus) {
-//        UIApplicationShortcutItem *shortcutItem = [[UIApplicationShortcutItem alloc] initWithType:[NSString stringWithFormat:@"net.allaboutapps.%@", favoriteItem[kA3AppsMenuName]]
-//                                                                                   localizedTitle:NSLocalizedString(favoriteItem[kA3AppsMenuName], nil)
-//                                                                                localizedSubtitle:Nil
-//                                                                                             icon:[UIApplicationShortcutIcon iconWithTemplateImageName:favoriteItem[kA3AppsMenuImageName]]
-//                                                                                         userInfo:favoriteItem
-//                                                   ];
-//        [newShortcutItems addObject:shortcutItem];
-//    }
-//    [[UIApplication sharedApplication] setShortcutItems:newShortcutItems];
+    if (![[UIApplication sharedApplication] respondsToSelector:NSSelectorFromString(@"shortcutItems")])
+        return;
+    NSArray *favoriteMenus = [self favoriteItems];
+    NSMutableArray *newShortcutItems = [NSMutableArray new];
+    for (NSDictionary *favoriteItem in favoriteMenus) {
+        UIApplicationShortcutItem *shortcutItem = [[UIApplicationShortcutItem alloc] initWithType:[NSString stringWithFormat:@"net.allaboutapps.%@", favoriteItem[kA3AppsMenuName]]
+                                                                                   localizedTitle:NSLocalizedString(favoriteItem[kA3AppsMenuName], nil)
+                                                                                localizedSubtitle:Nil
+                                                                                             icon:[UIApplicationShortcutIcon iconWithTemplateImageName:favoriteItem[kA3AppsMenuImageName]]
+                                                                                         userInfo:favoriteItem
+                                                   ];
+//		[newShortcutItems insertObject:shortcutItem atIndex:0];
+		[newShortcutItems addObject:shortcutItem];
+    }
+    [[UIApplication sharedApplication] setShortcutItems:newShortcutItems];
 }
 
 @end

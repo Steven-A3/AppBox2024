@@ -73,8 +73,6 @@
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
     [self setupInstructionView];
-
-    [[A3AppDelegate instance] popStartingAppInfo];
 }
 
 - (void)cloudStoreDidImport {

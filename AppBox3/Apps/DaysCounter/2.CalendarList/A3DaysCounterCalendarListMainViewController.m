@@ -208,8 +208,6 @@
         self.tableView.separatorInset = UIEdgeInsetsZero;
     }
 #endif
-
-    [[A3AppDelegate instance] popStartingAppInfo];
 }
 
 - (void)viewWillAppear:(BOOL)animated

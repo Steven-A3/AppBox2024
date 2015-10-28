@@ -41,9 +41,9 @@
 
 -(void)setFocused:(BOOL)focused
 {
-    _focused = focused;
+    _hasFocus = focused;
     
-    _backgroundCirlce.backgroundColor = _focused==YES ? [[COLOR_ELLIPSE_0 colorWithAlphaComponent:0.375] CGColor] : [[UIColor clearColor] CGColor];
+    _backgroundCirlce.backgroundColor = _hasFocus==YES ? [[COLOR_ELLIPSE_0 colorWithAlphaComponent:0.375] CGColor] : [[UIColor clearColor] CGColor];
 }
 
 -(void)setCenterColorType:(CenterColorType)aCenterColorType

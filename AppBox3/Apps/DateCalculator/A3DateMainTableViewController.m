@@ -118,8 +118,6 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
-
-    [[A3AppDelegate instance] popStartingAppInfo];
 }
 
 - (void)cloudStoreDidImport {

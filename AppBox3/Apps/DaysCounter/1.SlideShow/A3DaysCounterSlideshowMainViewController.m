@@ -130,8 +130,6 @@
 	noPhotosLabel.text = NSLocalizedString(@"No Photos", nil);
 	UILabel *messageLabel = (UILabel *)[self.view viewWithTag:11];
 	messageLabel.text = NSLocalizedString(@"You can add photos into events.", nil);
-
-    [[A3AppDelegate instance] popStartingAppInfo];
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -153,8 +153,6 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 
 	[self setupTopToolbar];
 	[self setupZoomSlider];
-
-    [[A3AppDelegate instance] popStartingAppInfo];
 }
 
 - (void)setupPhotoButton {

@@ -98,8 +98,6 @@
 											 selector:@selector(batteryThemeChanged)
 												 name:A3BatteryStatusThemeColorChanged
 											   object:nil];
-
-    [[A3AppDelegate instance] popStartingAppInfo];
 }
 
 - (void)removeObserver {

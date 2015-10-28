@@ -130,6 +130,7 @@ NSString *const AdMobAdUnitIDWallet = @"ca-app-pub-0532362805885914/4328492143";
 - (void)popToRootAndPushViewController:(UIViewController *)viewController {
 	UINavigationController *navigationController;
 	A3AppDelegate *appDelegate = [A3AppDelegate instance];
+	[appDelegate popStartingAppInfo];
 	navigationController = appDelegate.currentMainNavigationController;
 
 	if (IS_IPHONE) {

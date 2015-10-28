@@ -95,8 +95,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 {
     [super viewDidLoad];
 
-	self.automaticallyAdjustsScrollViewInsets = NO;
-	self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+	self.tableView.accessibilityIdentifier = @"Currency";
 	
 	_currencyDataManager = [A3CurrencyDataManager new];
 	[A3CurrencyDataManager setupFavorites];
@@ -168,8 +167,6 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 	[self registerContentSizeCategoryDidChangeNotification];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
-
-    [[A3AppDelegate instance] popStartingAppInfo];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

@@ -103,8 +103,6 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     _isLightOn = NO;
     self.flashBrightSlider.value = 0.5;
     [self setupInstructionView];
-
-    [[A3AppDelegate instance] popStartingAppInfo];
 }
 
 - (void)removeObserver {

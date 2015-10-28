@@ -93,7 +93,7 @@
 }
 
 - (void)presentLockScreen {
-	if (self.passcodeViewController) return;
+	if (self.passcodeViewController || self.isTouchIDEvaluationInProgress) return;
 	FNLOG(@"appDelegate.passcodeViewController must nil = %@", self.passcodeViewController);
 
 	void(^presentPasscodeViewControllerBlock)(void) = ^(){
@@ -187,20 +187,28 @@
 	}
 }
 
- - (void)applicationDidBecomeActive_passcode {
-	 dispatch_async(dispatch_get_main_queue(), ^{
-		 if (!self.isTouchIDEvaluationInProgress && self.passcodeViewController == nil && self.mainMenuViewController.passcodeViewController == nil) {
-			 [self removeSecurityCoverView];
-			 [self presentInterstitialAds];
-			 FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-		 }
-	 });
+- (void)applicationDidBecomeActive_passcodeAfterLaunch:(BOOL)isAfterLaunch {
+	FNLOG(@"");
+
+	if (!isAfterLaunch) {
+	}
+	dispatch_async(dispatch_get_main_queue(), ^{
+		if (!self.isTouchIDEvaluationInProgress && self.passcodeViewController == nil && self.mainMenuViewController.passcodeViewController == nil) {
+			[self removeSecurityCoverView];
+			[self presentInterstitialAds];
+			FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+		}
+	});
 }
 
 - (void)applicationWillEnterForeground_passcode {
+	FNLOG(@"");
     if ([self shouldAskPasscodeForStarting]) {
+		FNLOG(@"showLockScreen");
         [self showLockScreen];
-    } else {
+	}
+	else
+	{
 		[self updateStartOption];
 
 		if (self.startOptionOpenClockOnce) {
@@ -381,6 +389,7 @@
 
 	NSNumber *number = [[A3UserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyForAskPasscodeForStarting];
 	if (number) {
+		FNLOG("처음 시작 시 암호 물어보기 확인 됨");
 		return [number boolValue];
 	} else {
 		// Initialize Value with NO
