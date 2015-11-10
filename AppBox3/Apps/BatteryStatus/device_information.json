@@ -44,6 +44,8 @@
         "iPad5,2": "iPad mini 4",
         "iPad5,3": "iPad Air 2 (Wi-Fi)",
         "iPad5,4": "iPad Air 2",
+		"iPad6,7": "iPad Pro (Wi-Fi)",
+		"iPad6,8": "iPad Pro",
         "iPod5,1": "iPod Touch (5th generation)",
         "iPod7,1": "iPod Touch (6th generation)"
     },
@@ -216,6 +218,22 @@
             "Memory": "2 GB LPDDR3 DRAM",
             "PPI": "264"
         },
+		"iPad Pro": {
+			"Model": "iPad Pro",
+			"Chips": "A9 chip with 64-bit architecture\nM9 motion coprocessor",
+			"CPU": "TBD",
+			"GPU": "TBD",
+			"Memory": "4 GB LPDDR3 DRAM",
+			"PPI": "264"
+		},
+		"iPad Pro (Wi-Fi)": {
+			"Model": "iPad Pro (Wi-Fi)",
+			"Chips": "A9 chip with 64-bit architecture\nM9 motion coprocessor",
+			"CPU": "TBD",
+			"GPU": "TBD",
+			"Memory": "4 GB LPDDR3 DRAM",
+			"PPI": "264"
+		},
         "iPad mini": {
             "Model": "iPad mini",
             "Chips": "Dual-core A5 chip",
@@ -482,6 +500,19 @@
             "Video playback": 10,
             "Audio playback": 10
         },
+		"iPad Pro": {
+			"Model": "iPad Pro",
+			"Internet on Wi-Fi": 10,
+			"Internet on Cellular": 9,
+			"Video playback": 10,
+			"Audio playback": 10
+		},
+		"iPad Pro (Wi-Fi)": {
+			"Model": "iPad Pro (Wi-Fi)",
+			"Internet on Wi-Fi": 10,
+			"Video playback": 10,
+			"Audio playback": 10
+		},
         "iPad mini": {
             "Model": "iPad mini",
             "Internet on Wi-Fi": 10,
@@ -555,7 +586,7 @@
         "iPod (Latest)": {
             "Model": "iPod (Latest)",
             "Video playback": 10,
-            "Audio playback": 40,
+            "Audio playback": 40
         },
         "iPad (Latest)": {
             "Model": "iPad (Latest)",
@@ -564,7 +595,7 @@
             "Internet on LTE": 10,
             "Internet on Wi-Fi": 10,
             "Video playback": 10,
-            "Audio playback": 10,
+            "Audio playback": 10
         }
     }
 }

@@ -345,9 +345,32 @@ NSString *const A3InterstitialAdUnitID = @"ca-app-pub-0532362805885914/253769254
 	return orientations;
 }
 
+#pragma mark - Handle Open URL
+
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
     if ([[[url absoluteString] lowercaseString] hasPrefix:@"appboxpro://"]) {
         FNLOG(@"%@", url);
+		NSArray *components = [[url absoluteString] componentsSeparatedByString:@"://"];
+		if ([components count] > 1) {
+			NSString *moduleName = [[components lastObject] lowercaseString];
+			NSArray *allMenus = [self allMenuItems];
+			NSInteger indexOfMenu = [allMenus indexOfObjectPassingTest:^BOOL(NSDictionary * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+				return [[obj[kA3AppsMenuImageName] lowercaseString] isEqualToString:moduleName];
+			}];
+			if (indexOfMenu != NSNotFound) {
+				NSDictionary *menuItem = allMenus[indexOfMenu];
+				[[A3UserDefaults standardUserDefaults] setObject:menuItem[kA3AppsMenuName] forKey:kA3AppsStartingAppName];
+				
+				[self pushStartingAppInfo];
+				
+				if ([self shouldAskPasscodeForStarting] || [self requirePasscodeForStartingApp]) {
+					[self presentLockScreen];
+				} else {
+					[self removeSecurityCoverView];
+					[self.mainMenuViewController openRecentlyUsedMenu:YES];
+				}
+			}
+		}
 		return YES;
     } else if ([[DBSession sharedSession] handleOpenURL:url]) {
 		if ([[DBSession sharedSession] isLinked]) {
@@ -361,6 +384,8 @@ NSString *const A3InterstitialAdUnitID = @"ca-app-pub-0532362805885914/253769254
 	// Add whatever other url handling code your app requires here
 	return NO;
 }
+
+#pragma mark - UIApplicationShortcutItem 처리
 
 // TODO: 3D Touch 장비 입수후 테스트 필요
 - (void)application:(UIApplication * _Nonnull)application performActionForShortcutItem:(UIApplicationShortcutItem * _Nonnull)shortcutItem completionHandler:(void (^ _Nonnull)(BOOL succeeded))completionHandler {
@@ -407,7 +432,7 @@ NSString *const A3InterstitialAdUnitID = @"ca-app-pub-0532362805885914/253769254
     }
 }
 
-#pragma mark Notification
+#pragma mark - Notification
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
@@ -1235,7 +1260,7 @@ NSString *const A3InterstitialAdUnitID = @"ca-app-pub-0532362805885914/253769254
 	}];
 }
 
-#pragma mark -- AdMob
+#pragma mark - AdMob
 
 - (GADRequest *)adRequestWithKeywords:(NSArray *)keywords gender:(GADGender)gender {
 	GADRequest *adRequest = [GADRequest request];
