@@ -25,7 +25,6 @@ NSString *const kA3AppsStoryboard_iPhone = @"kA3AppsStoryboard_iPhone";
 NSString *const kA3AppsStoryboard_iPad = @"kA3AppsStoryboard_iPad";
 NSString *const kA3AppsMenuExpandable = @"kA3AppsMenuExpandable";
 NSString *const kA3AppsMenuNeedSecurityCheck = @"kA3AppsMenuNeedSecurityCheck";
-NSString *const kA3AppsMenu3DTouchIconName = @"kA3AppsMenu3DTouchIconName";
 
 NSString *const kA3AppsMenuArray = @"kA3AppsMenuArray";
 NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
@@ -64,13 +63,13 @@ NSString *const A3AppName_Settings = @"Settings";
 				 kA3AppsMenuCollapsed : @NO,
 				 kA3AppsMenuName : @"CalculatorGroup",
 				 kA3AppsExpandableChildren :	@[
-						 @{kA3AppsMenuName : A3AppName_DateCalculator, kA3AppsClassName_iPhone : @"A3DateMainTableViewController", kA3AppsMenuImageName : @"DateCalculator", kA3AppsMenu3DTouchIconName:@"DateCalculator_3DTouch"},
-						 @{kA3AppsMenuName : A3AppName_LoanCalculator, kA3AppsStoryboard_iPhone:@"LoanCalculatorPhoneStoryBoard", kA3AppsStoryboard_iPad:@"LoanCalculatorPadStoryBoard",kA3AppsMenuImageName : @"LoanCalculator", kA3AppsMenu3DTouchIconName:@"LoanCalculator_3DTouch"},
+						 @{kA3AppsMenuName : A3AppName_DateCalculator, kA3AppsClassName_iPhone : @"A3DateMainTableViewController", kA3AppsMenuImageName : @"DateCalculator"},
+						 @{kA3AppsMenuName : A3AppName_LoanCalculator, kA3AppsStoryboard_iPhone:@"LoanCalculatorPhoneStoryBoard", kA3AppsStoryboard_iPad:@"LoanCalculatorPadStoryBoard",kA3AppsMenuImageName : @"LoanCalculator"},
 						 @{kA3AppsMenuName : A3AppName_SalesCalculator, kA3AppsClassName_iPhone : @"A3SalesCalcMainViewController", kA3AppsMenuImageName : @"SalesCalculator"},
 						 @{kA3AppsMenuName : A3AppName_TipCalculator, kA3AppsClassName_iPhone : @"A3TipCalcMainTableViewController", kA3AppsMenuImageName : @"TipCalculator"},
 						 @{kA3AppsMenuName : A3AppName_UnitPrice, kA3AppsStoryboard_iPhone:@"UnitPriceStoryboard", kA3AppsStoryboard_iPad:@"UnitPriceStoryboard_iPad", kA3AppsMenuImageName : @"UnitPrice"},
 						 @{kA3AppsMenuName : A3AppName_Calculator, kA3AppsClassName_iPhone : @"A3CalculatorViewController_iPhone", kA3AppsClassName_iPad:@"A3CalculatorViewController_iPad",  kA3AppsMenuImageName : @"Calculator"},
-						 @{kA3AppsMenuName : A3AppName_PercentCalculator, kA3AppsClassName_iPhone : @"A3PercentCalcMainViewController", kA3AppsMenuImageName : @"PercentCalculator", kA3AppsMenu3DTouchIconName:@"PercentCalculator_3DTouch"}
+						 @{kA3AppsMenuName : A3AppName_PercentCalculator, kA3AppsClassName_iPhone : @"A3PercentCalcMainViewController", kA3AppsMenuImageName : @"PercentCalculator"}
 						 ]
 				 },
 			 @{
@@ -78,7 +77,7 @@ NSString *const A3AppName_Settings = @"Settings";
 				 kA3AppsMenuCollapsed : @NO,
 				 kA3AppsMenuName : @"Converter",
 				 kA3AppsExpandableChildren : @[
-						 @{kA3AppsMenuName : A3AppName_CurrencyConverter, kA3AppsClassName_iPhone : @"A3CurrencyViewController", kA3AppsMenuImageName : @"Currency", kA3AppsMenu3DTouchIconName:@"Currency_3DTouch"},
+						 @{kA3AppsMenuName : A3AppName_CurrencyConverter, kA3AppsClassName_iPhone : @"A3CurrencyViewController", kA3AppsMenuImageName : @"Currency"},
 						 @{kA3AppsMenuName : A3AppName_LunarConverter, kA3AppsClassName_iPhone : @"A3LunarConverterViewController", kA3AppsNibName_iPhone : @"A3LunarConverterViewController", kA3AppsMenuImageName : @"LunarConverter"},
 						 @{kA3AppsMenuName : A3AppName_Translator, kA3AppsClassName_iPhone : @"A3TranslatorViewController", kA3AppsMenuImageName : @"Translator"},
 						 @{kA3AppsMenuName : A3AppName_UnitConverter, kA3AppsStoryboard_iPhone:@"UnitConverterPhoneStoryboard", kA3AppsStoryboard_iPad:@"UnitConverterPhoneStoryboard", kA3AppsMenuImageName : @"UnitConverter"},
@@ -111,7 +110,7 @@ NSString *const A3AppName_Settings = @"Settings";
 						 @{kA3AppsMenuName : A3AppName_Clock, kA3AppsClassName_iPhone : @"A3ClockMainViewController", kA3AppsMenuImageName : @"Clock"},
 						 @{kA3AppsMenuName : A3AppName_BatteryStatus, kA3AppsClassName_iPhone : @"A3BatteryStatusMainViewController", kA3AppsMenuImageName : @"BatteryStatus"},
 						 @{kA3AppsMenuName : A3AppName_Mirror, kA3AppsClassName_iPhone : @"A3MirrorViewController", kA3AppsNibName_iPhone :@"A3MirrorViewController", kA3AppsMenuImageName : @"Mirror"},
-						 @{kA3AppsMenuName : A3AppName_Magnifier, kA3AppsClassName_iPhone : @"A3MagnifierViewController", kA3AppsNibName_iPhone:@"A3MagnifierViewController", kA3AppsMenuImageName : @"Magnifier", kA3AppsMenu3DTouchIconName:@"Magnifier_3DTouch"},
+						 @{kA3AppsMenuName : A3AppName_Magnifier, kA3AppsClassName_iPhone : @"A3MagnifierViewController", kA3AppsNibName_iPhone:@"A3MagnifierViewController", kA3AppsMenuImageName : @"Magnifier"},
 						 @{kA3AppsMenuName : A3AppName_Flashlight, kA3AppsClassName_iPhone : @"A3FlashViewController", kA3AppsNibName_iPhone:@"A3FlashViewController", kA3AppsMenuImageName : @"Flashlight"},
 						 @{kA3AppsMenuName : A3AppName_Random, kA3AppsClassName_iPhone : @"A3RandomViewController", kA3AppsNibName_iPhone:@"A3RandomViewController", kA3AppsMenuImageName : @"Random"},
 						 @{kA3AppsMenuName : A3AppName_Ruler, kA3AppsClassName_iPhone : @"A3RulerViewController", kA3AppsMenuImageName : @"Ruler"},
@@ -218,7 +217,7 @@ NSString *const A3AppName_Settings = @"Settings";
 				@[
 						@{kA3AppsMenuName : A3AppName_Calculator, kA3AppsClassName_iPhone : @"A3CalculatorViewController_iPhone", kA3AppsClassName_iPad:@"A3CalculatorViewController_iPad",  kA3AppsMenuImageName : @"Calculator"},
 						@{kA3AppsMenuName : A3AppName_Clock, kA3AppsClassName_iPhone : @"A3ClockMainViewController", kA3AppsMenuImageName : @"Clock"},
-						@{kA3AppsMenuName : A3AppName_CurrencyConverter, kA3AppsClassName_iPhone : @"A3CurrencyViewController", kA3AppsMenuImageName : @"Currency", kA3AppsMenu3DTouchIconName:@"Currency_3DTouch"},
+						@{kA3AppsMenuName : A3AppName_CurrencyConverter, kA3AppsClassName_iPhone : @"A3CurrencyViewController", kA3AppsMenuImageName : @"Currency"},
 						@{kA3AppsMenuName : A3AppName_DaysCounter, kA3AppsClassName_iPhone : @"", kA3AppsMenuImageName : @"DaysCounter", kA3AppsMenuNeedSecurityCheck : @YES},
 						@{kA3AppsMenuName : A3AppName_Holidays, kA3AppsClassName_iPhone : @"A3HolidaysPageViewController", kA3AppsMenuImageName : @"Holidays"},
 						@{kA3AppsMenuName : A3AppName_Wallet, kA3AppsClassName_iPhone : @"A3WalletMainTabBarController", kA3AppsMenuImageName : @"Wallet", kA3AppsMenuNeedSecurityCheck : @YES},
@@ -256,8 +255,12 @@ NSString *const A3AppName_Settings = @"Settings";
         return;
     NSArray *favoriteMenus = [self favoriteItems];
     NSMutableArray *newShortcutItems = [NSMutableArray new];
+	NSArray *appsHasSeparateIconFor3DTouch = @[A3AppName_CurrencyConverter, A3AppName_DateCalculator, A3AppName_LoanCalculator, A3AppName_Magnifier, A3AppName_PercentCalculator];
     for (NSDictionary *favoriteItem in favoriteMenus) {
-		NSString *iconName = [favoriteItem[kA3AppsMenu3DTouchIconName] length] ? favoriteItem[kA3AppsMenu3DTouchIconName] : favoriteItem[kA3AppsMenuImageName];
+		NSString *iconName = favoriteItem[kA3AppsMenuImageName];
+		if ([appsHasSeparateIconFor3DTouch containsObject:favoriteItem[kA3AppsMenuName]]) {
+			iconName = [iconName stringByAppendingString:@"_3DTouch"];
+		}
         UIApplicationShortcutItem *shortcutItem = [[UIApplicationShortcutItem alloc] initWithType:[NSString stringWithFormat:@"net.allaboutapps.%@", favoriteItem[kA3AppsMenuName]]
                                                                                    localizedTitle:NSLocalizedString(favoriteItem[kA3AppsMenuName], nil)
                                                                                 localizedSubtitle:Nil
