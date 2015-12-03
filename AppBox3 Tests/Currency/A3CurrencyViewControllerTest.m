@@ -10,14 +10,14 @@
 #define EXP_SHORTHAND
 #import "Expecta.h"
 
-#import "A3CurrencyViewController.h"
+#import "A3CurrencyTableViewController.h"
 
 @interface A3CurrencyViewControllerTest : XCTestCase
 
 @end
 
 @implementation A3CurrencyViewControllerTest {
-    A3CurrencyViewController *viewController;
+    A3CurrencyTableViewController *viewController;
 }
 
 - (void)setUp
@@ -25,7 +25,7 @@
     [super setUp];
     // Put setup code here; it will be run once, before the first test case.
 
-	viewController = [[A3CurrencyViewController alloc] init];
+	viewController = [[A3CurrencyTableViewController alloc] init];
 }
 
 - (void)tearDown

@@ -345,7 +345,7 @@ NSString *const AdMobAdUnitIDWallet = @"ca-app-pub-0532362805885914/4328492143";
 	return moreMenuView;
 }
 
-- (UIView *)presentMoreMenuWithButtons:(NSArray *)buttons tableView:(UITableView *)tableView {
+- (UIView *)presentMoreMenuWithButtons:(NSArray *)buttons pullDownView:(UIView *)pullDownView {
 	UIView *moreMenuView = [self moreMenuViewWithButtons:buttons];
 	CGRect clippingViewFrame = moreMenuView.frame;
 	clippingViewFrame.origin.y = 20.0 + 44.0 - 1.0;
@@ -364,16 +364,21 @@ NSString *const AdMobAdUnitIDWallet = @"ca-app-pub-0532362805885914/4328492143";
 		newFrame.origin.y = 0.0;
 		moreMenuView.frame = newFrame;
 
-		if (tableView) {
-			UIEdgeInsets insets = tableView.contentInset;
+		if ([pullDownView isKindOfClass:[UIScrollView class]]) {
+			UIScrollView *scrollView = (UIScrollView *) pullDownView;
+			UIEdgeInsets insets = scrollView.contentInset;
 			insets.top += clippingViewFrame.size.height;
-			tableView.contentInset = insets;
+			scrollView.contentInset = insets;
 
-			if (tableView.contentOffset.y == -64.0) {
-				CGPoint offset = tableView.contentOffset;
+			if (scrollView.contentOffset.y == -64.0) {
+				CGPoint offset = scrollView.contentOffset;
 				offset.y = -108.0;
-				tableView.contentOffset = offset;
+				scrollView.contentOffset = offset;
 			}
+		} else if (pullDownView) {
+			CGRect frame = pullDownView.frame;
+			frame.origin.y += moreMenuView.bounds.size.height;
+			pullDownView.frame = frame;
 		}
 	}];
 
@@ -384,7 +389,7 @@ NSString *const AdMobAdUnitIDWallet = @"ca-app-pub-0532362805885914/4328492143";
 	return clippingView;
 }
 
-- (void)dismissMoreMenuView:(UIView *)moreMenuView scrollView:(UIScrollView *)scrollView {
+- (void)dismissMoreMenuView:(UIView *)moreMenuView pullDownView:(UIView *)pullDownView {
 	UIView *menuView = moreMenuView.subviews[0];
     
 	[UIView animateWithDuration:0.3 animations:^{
@@ -392,14 +397,16 @@ NSString *const AdMobAdUnitIDWallet = @"ca-app-pub-0532362805885914/4328492143";
 		frame = CGRectOffset(frame, 0.0, -44.0);
 		menuView.frame = frame;
 
-		if (scrollView) {
+		if ([pullDownView isKindOfClass:[UIScrollView class]]) {
+			UIScrollView *scrollView = (UIScrollView *) pullDownView;
 			UIEdgeInsets insets = scrollView.contentInset;
 			insets.top -= moreMenuView.frame.size.height;
 			scrollView.contentInset = insets;
-		} /*else {  KJH
-			frame = CGRectOffset(self.view.frame, 0.0, moreMenuView.frame.size.height);
-			self.view.frame = frame;
-		}*/
+		} else if (pullDownView) {
+			CGRect frame = pullDownView.frame;
+			frame.origin.y -= menuView.bounds.size.height;
+			pullDownView.frame = frame;
+		}
 	} completion:^(BOOL finished) {
 		[moreMenuView removeFromSuperview];
 		[self.navigationItem.leftBarButtonItem setEnabled:YES];

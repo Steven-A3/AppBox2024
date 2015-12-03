@@ -1102,7 +1102,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 	[self rightBarButtonDoneButton];
 
 	_arrMenuButtons = @[self.composeButton, self.shareButton, [self historyButton:[TipCalcHistory class]], self.settingsButton];
-	_moreMenuView = [self presentMoreMenuWithButtons:_arrMenuButtons tableView:self.tableView];
+	_moreMenuView = [self presentMoreMenuWithButtons:_arrMenuButtons pullDownView:self.tableView];
 	_isShowMoreMenu = YES;
 
 	[self refreshMoreButtonState];
@@ -1128,7 +1128,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 	_isShowMoreMenu = NO;
 
 	[self rightButtonMoreButton];
-	[self dismissMoreMenuView:_moreMenuView scrollView:self.tableView];
+	[self dismissMoreMenuView:_moreMenuView pullDownView:self.tableView];
 	[self.view removeGestureRecognizer:gestureRecognizer];
 }
 

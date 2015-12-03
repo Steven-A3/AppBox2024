@@ -586,7 +586,7 @@ static NSString *const A3V3InstructionDidShowForCalculator = @"A3V3InstructionDi
     historyButton = [self historyButton:nil];
     helpButton = [self instructionHelpButton];
     _moreMenuButtons = @[helpButton, shareButton, historyButton];
-	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:nil];
+	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons pullDownView:nil];
 	_isShowMoreMenu = YES;
     
     [self checkRightButtonDisable];
@@ -613,7 +613,7 @@ static NSString *const A3V3InstructionDidShowForCalculator = @"A3V3InstructionDi
 	_isShowMoreMenu = NO;
     
 	[self rightButtonMoreButton];
-	[self dismissMoreMenuView:_moreMenuView scrollView:nil];
+	[self dismissMoreMenuView:_moreMenuView pullDownView:nil];
 	[self.view removeGestureRecognizer:gestureRecognizer];
 }
 

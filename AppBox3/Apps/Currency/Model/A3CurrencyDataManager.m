@@ -14,11 +14,13 @@
 #import "A3UserDefaultsKeys.h"
 #import "CurrencyFavorite.h"
 #import "NSString+conversion.h"
+#import "A3UserDefaults.h"
 
 NSString *const A3KeyCurrencyCode = @"currencyCode";
 NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRatesUdpated";
 NSString *const A3NotificationCurrencyRatesUpdateFailed = @"A3NotificationCurrencyRatesUpdateFailed";
 NSString *const A3CurrencyRatesDataFilename = @"currencyRates";
+NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 
 @interface A3CurrencyDataManager ()
 
@@ -26,7 +28,9 @@ NSString *const A3CurrencyRatesDataFilename = @"currencyRates";
 
 @end
 
-@implementation A3CurrencyDataManager
+@implementation A3CurrencyDataManager {
+	BOOL _updating;
+}
 
 - (NSString *)localizedNameForCode:(NSString *)currencyCode {
 	NSLocale *locale = [NSLocale currentLocale];
@@ -38,7 +42,7 @@ NSString *const A3CurrencyRatesDataFilename = @"currencyRates";
 			NSArray *knownNames = @[@"Copper Highgrade", @"Zambian kwacha", @"Offshore Renminbi", @"Special Drawing Rights", @"Unidad de Fomento"];
 			name = [knownNames objectAtIndex:index];
 		} else {
-			FNLOG(@"Failed to name resolutiona.");
+			FNLOG(@"Failed to find the name.");
 		}
 	}
 	return name;
@@ -99,7 +103,10 @@ NSString *const A3CurrencyRatesDataFilename = @"currencyRates";
 	return [NSURLRequest requestWithURL:requestURL];
 }
 
-- (void)updateCurrencyRatesInContext:(NSManagedObjectContext *)context {
+- (void)updateCurrencyRatesOnSuccess:(void (^)())success failure:(void (^)())failure {
+	if (_updating) return;
+	_updating = YES;
+	
 	if (![[self class] yahooNetworkAvailable]) return;
 
 	NSURLRequest *request = [[self class] yahooAllCurrenciesURLRequest];
@@ -111,26 +118,45 @@ NSString *const A3CurrencyRatesDataFilename = @"currencyRates";
 	operation.responseSerializer = [AFJSONResponseSerializer serializer];
 
 	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *requestOperation, id JSON) {
-		NSDictionary *list = JSON[@"list"];
-		NSArray *yahooArray = list[@"resources"];
-		
-		NSString *path = [A3CurrencyRatesDataFilename pathInCachesDataDirectory];
-		[yahooArray writeToFile:path atomically:YES];
-		
-		[context MR_saveToPersistentStoreAndWait];
-		
-		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdated object:nil];
-		
-		self.dataArray = nil;
-		
-		FNLOG(@"Update currency rate done successfully.");
-	}
-									 failure:^(AFHTTPRequestOperation *requestOperation, NSError *error) {
-										 FNLOG(@"Update currency rate failed.");
-										 [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdateFailed object:nil];
-									 }
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[[A3UserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3CurrencyUpdateDate];
+					[[A3UserDefaults standardUserDefaults] synchronize];
+
+					[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+
+					NSDictionary *list = JSON[@"list"];
+					NSArray *yahooArray = list[@"resources"];
+
+					NSString *path = [A3CurrencyRatesDataFilename pathInCachesDataDirectory];
+					[yahooArray writeToFile:path atomically:YES];
+
+					[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdated object:nil];
+
+					self.dataArray = nil;
+
+					if (success) {
+						success();
+					}
+
+					FNLOG(@"Update currency rate done successfully.");
+					_updating = NO;
+				});
+			}
+			failure:^(AFHTTPRequestOperation *requestOperation, NSError *error) {
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+
+					if (failure) {
+						failure();
+					}
+					FNLOG(@"Update currency rate failed.");
+					[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdateFailed object:nil];
+					_updating = NO;
+				});
+			}
 	 ];
 
+	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 	[operation start];
 }
 

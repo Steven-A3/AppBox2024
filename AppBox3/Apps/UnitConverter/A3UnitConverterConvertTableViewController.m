@@ -386,7 +386,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     history.enabled = [UnitHistory MR_countOfEntities] > 0 ? YES : NO;
     
 	_moreMenuButtons = @[help, share, history];
-	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:_fmMoveTableView];
+	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons pullDownView:_fmMoveTableView];
 	_isShowMoreMenu = YES;
 }
 
@@ -406,7 +406,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	_isShowMoreMenu = NO;
 
 	[self rightButtonMoreButton];
-	[self dismissMoreMenuView:_moreMenuView scrollView:_fmMoveTableView];
+	[self dismissMoreMenuView:_moreMenuView pullDownView:_fmMoveTableView];
 	[self.view removeGestureRecognizer:gestureRecognizer];
 }
 

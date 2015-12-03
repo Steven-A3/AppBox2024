@@ -2,15 +2,12 @@
 //  A3CurrencyViewController.h
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 7/5/13.
-//  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
+//  Created by Byeong Kwon Kwak on 10/29/15.
+//  Copyright © 2015 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3FMMoveTableViewController.h"
+#import <UIKit/UIKit.h>
 
-extern NSString *const A3CurrencyDataCellID;
-extern NSString *const A3CurrencySettingsChangedNotification;
-
-@interface A3CurrencyViewController : A3FMMoveTableViewController
+@interface A3CurrencyViewController : UIViewController
 
 @end

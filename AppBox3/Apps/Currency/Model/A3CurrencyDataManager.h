@@ -14,14 +14,13 @@
 extern NSString *const A3NotificationCurrencyRatesUpdated;
 extern NSString *const A3NotificationCurrencyRatesUpdateFailed;
 extern NSString *const A3KeyCurrencyCode;
+extern NSString *const A3CurrencyUpdateDate;
 
 @interface A3CurrencyDataManager : NSObject
 
 + (void)setupFavorites;
-- (void)updateCurrencyRatesInContext:(NSManagedObjectContext *)context;
-
+- (void)updateCurrencyRatesOnSuccess:(void (^)())success failure:(void (^)())failure;
 - (A3YahooCurrency *)dataForCurrencyCode:(NSString *)code;
-
 - (NSString *)localizedNameForCode:(NSString *)currencyCode;
 
 @end

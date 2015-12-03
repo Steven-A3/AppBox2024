@@ -470,7 +470,7 @@
 		688788831A9B29C7008C8567 /* A3RulerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688788821A9B29C7008C8567 /* A3RulerViewController.m */; };
 		6888090A17C63DBB008B2856 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6888090917C63DBB008B2856 /* CFNetwork.framework */; };
 		6888090E17C63F57008B2856 /* A3FlickrTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6888090D17C63F57008B2856 /* A3FlickrTest.m */; };
-		6890AB321786BA08004FECE4 /* A3CurrencyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6890AB311786BA08004FECE4 /* A3CurrencyViewController.m */; };
+		6890AB321786BA08004FECE4 /* A3CurrencyTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6890AB311786BA08004FECE4 /* A3CurrencyTableViewController.m */; };
 		6891D7FD183C5EDD0060B677 /* A3CurrencySettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6891D7FB183C5EDD0060B677 /* A3CurrencySettingsViewController.m */; };
 		689421051A04AF34005F3AE3 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 689421041A04AF34005F3AE3 /* Settings.bundle */; };
 		68948B5017D9760A00BF4BE9 /* A3NavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68948B4F17D9760A00BF4BE9 /* A3NavigationController.m */; };
@@ -683,6 +683,9 @@
 		68B9B16317D02B85003ACAD0 /* A3HolidaysCountryViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B16217D02B85003ACAD0 /* A3HolidaysCountryViewCell.m */; };
 		68B9B17017D04152003ACAD0 /* NSDate+daysleft.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B16F17D04152003ACAD0 /* NSDate+daysleft.m */; };
 		68C1ABFA18B1C05200021001 /* NSDateFormatter+LunarDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C1ABF918B1C05200021001 /* NSDateFormatter+LunarDate.m */; };
+		68C7E1081BE20C1C00861AFD /* A3CurrencyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C7E1071BE20C1C00861AFD /* A3CurrencyViewController.m */; };
+		68C7E10E1BE2178C00861AFD /* CurrencyPickerStyle.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68C7E10D1BE2178C00861AFD /* CurrencyPickerStyle.storyboard */; };
+		68C7E1111BE217AF00861AFD /* A3CurrencyPickerStyleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C7E1101BE217AF00861AFD /* A3CurrencyPickerStyleViewController.m */; };
 		68C802D819571A0200BC19EE /* WalletCategoryPreset.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68C802D719571A0200BC19EE /* WalletCategoryPreset.plist */; };
 		68C802DB19571A2000BC19EE /* WalletPreset.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68C802DD19571A2000BC19EE /* WalletPreset.strings */; };
 		68C9E3FE1882EF1B007E4697 /* A3AppDelegate+mainMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C9E3FD1882EF1B007E4697 /* A3AppDelegate+mainMenu.m */; };
@@ -1812,8 +1815,8 @@
 		6890AB2A1786B800004FECE4 /* libExpecta-ios-universal.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libExpecta-ios-universal.a"; sourceTree = "<group>"; };
 		6890AB2B1786B800004FECE4 /* NSObject+Expecta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Expecta.h"; sourceTree = "<group>"; };
 		6890AB2C1786B800004FECE4 /* NSValue+Expecta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValue+Expecta.h"; sourceTree = "<group>"; };
-		6890AB301786BA08004FECE4 /* A3CurrencyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyViewController.h; path = Apps/Currency/A3CurrencyViewController.h; sourceTree = "<group>"; };
-		6890AB311786BA08004FECE4 /* A3CurrencyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = A3CurrencyViewController.m; path = Apps/Currency/A3CurrencyViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		6890AB301786BA08004FECE4 /* A3CurrencyTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyTableViewController.h; path = Apps/Currency/A3CurrencyTableViewController.h; sourceTree = "<group>"; };
+		6890AB311786BA08004FECE4 /* A3CurrencyTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = A3CurrencyTableViewController.m; path = Apps/Currency/A3CurrencyTableViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6891D7FA183C5EDD0060B677 /* A3CurrencySettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencySettingsViewController.h; path = Apps/Currency/A3CurrencySettingsViewController.h; sourceTree = "<group>"; };
 		6891D7FB183C5EDD0060B677 /* A3CurrencySettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencySettingsViewController.m; path = Apps/Currency/A3CurrencySettingsViewController.m; sourceTree = "<group>"; };
 		689421041A04AF34005F3AE3 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = AppBox3/Settings.bundle; sourceTree = "<group>"; };
@@ -2237,6 +2240,11 @@
 		68B9B16F17D04152003ACAD0 /* NSDate+daysleft.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "NSDate+daysleft.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		68C1ABF818B1C05200021001 /* NSDateFormatter+LunarDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+LunarDate.h"; sourceTree = "<group>"; };
 		68C1ABF918B1C05200021001 /* NSDateFormatter+LunarDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+LunarDate.m"; sourceTree = "<group>"; };
+		68C7E1061BE20C1C00861AFD /* A3CurrencyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyViewController.h; path = Apps/Currency/A3CurrencyViewController.h; sourceTree = "<group>"; };
+		68C7E1071BE20C1C00861AFD /* A3CurrencyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyViewController.m; path = Apps/Currency/A3CurrencyViewController.m; sourceTree = "<group>"; };
+		68C7E10D1BE2178C00861AFD /* CurrencyPickerStyle.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = CurrencyPickerStyle.storyboard; path = Apps/Currency/CurrencyPickerStyle.storyboard; sourceTree = "<group>"; };
+		68C7E10F1BE217AF00861AFD /* A3CurrencyPickerStyleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyPickerStyleViewController.h; path = Apps/Currency/A3CurrencyPickerStyleViewController.h; sourceTree = "<group>"; };
+		68C7E1101BE217AF00861AFD /* A3CurrencyPickerStyleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyPickerStyleViewController.m; path = Apps/Currency/A3CurrencyPickerStyleViewController.m; sourceTree = "<group>"; };
 		68C802D719571A0200BC19EE /* WalletCategoryPreset.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WalletCategoryPreset.plist; sourceTree = "<group>"; };
 		68C802DC19571A2000BC19EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/WalletPreset.strings; sourceTree = "<group>"; };
 		68C802DF19571A2C00BC19EE /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/WalletPreset.strings; sourceTree = "<group>"; };
@@ -4282,9 +4290,6 @@
 		68AA75EB16A53B43005742D8 /* Currency */ = {
 			isa = PBXGroup;
 			children = (
-				6823F6F21863288D00E6E90D /* Model */,
-				6890AB301786BA08004FECE4 /* A3CurrencyViewController.h */,
-				6890AB311786BA08004FECE4 /* A3CurrencyViewController.m */,
 				68E6F34A17B25F5F00F10ED9 /* A3CurrencyChartViewController.h */,
 				68E6F34B17B25F5F00F10ED9 /* A3CurrencyChartViewController.m */,
 				686BC1DD184639CA00FA5C94 /* A3CurrencyChartViewController.xib */,
@@ -4296,10 +4301,17 @@
 				17D424F615E2893830803825 /* A3CurrencyHistoryCell.m */,
 				68E6F37717B2A1DE00F10ED9 /* A3CurrencyHistoryViewController.h */,
 				68E6F37817B2A1DE00F10ED9 /* A3CurrencyHistoryViewController.m */,
+				68C7E10F1BE217AF00861AFD /* A3CurrencyPickerStyleViewController.h */,
+				68C7E1101BE217AF00861AFD /* A3CurrencyPickerStyleViewController.m */,
 				6832ADE016A8D38500BEEEE6 /* A3CurrencySelectViewController.h */,
 				6832ADE116A8D38500BEEEE6 /* A3CurrencySelectViewController.m */,
+				686BC1D51846343100FA5C94 /* A3CurrencySettings.storyboard */,
+				6891D7FA183C5EDD0060B677 /* A3CurrencySettingsViewController.h */,
+				6891D7FB183C5EDD0060B677 /* A3CurrencySettingsViewController.m */,
 				17D42632666AC2368C10B1BA /* A3CurrencyTableViewCell.h */,
 				17D42ECA7D456D1062B38A3B /* A3CurrencyTableViewCell.m */,
+				6890AB301786BA08004FECE4 /* A3CurrencyTableViewController.h */,
+				6890AB311786BA08004FECE4 /* A3CurrencyTableViewController.m */,
 				685E319D17917879001A0EC8 /* A3CurrencyTVActionCell.h */,
 				685E319E17917879001A0EC8 /* A3CurrencyTVActionCell.m */,
 				685E31991791694E001A0EC8 /* A3CurrencyTVActionCell.xib */,
@@ -4308,11 +4320,12 @@
 				68D1AC9717977F960047D4BF /* A3CurrencyTVEqualCell.h */,
 				68D1AC9817977F960047D4BF /* A3CurrencyTVEqualCell.m */,
 				68D1AC9B17977FCE0047D4BF /* A3CurrencyTVEqualCell.xib */,
+				68C7E1061BE20C1C00861AFD /* A3CurrencyViewController.h */,
+				68C7E1071BE20C1C00861AFD /* A3CurrencyViewController.m */,
 				17D422F078FF20AC13BDAE74 /* A3SearchViewController.h */,
 				17D4263A1F905EB73EA573B2 /* A3SearchViewController.m */,
-				6891D7FA183C5EDD0060B677 /* A3CurrencySettingsViewController.h */,
-				6891D7FB183C5EDD0060B677 /* A3CurrencySettingsViewController.m */,
-				686BC1D51846343100FA5C94 /* A3CurrencySettings.storyboard */,
+				68C7E10D1BE2178C00861AFD /* CurrencyPickerStyle.storyboard */,
+				6823F6F21863288D00E6E90D /* Model */,
 			);
 			name = Currency;
 			path = ..;
@@ -5722,6 +5735,7 @@
 				68F150FB194C27B900159EAD /* LoanCalculatorPhoneStoryBoard.storyboard in Resources */,
 				684E1BE51AC1406E00925771 /* openSourceLicenses.txt in Resources */,
 				68F14FEC19485E8500159EAD /* A3DaysCounterHeaderFooterView.xib in Resources */,
+				68C7E10E1BE2178C00861AFD /* CurrencyPickerStyle.storyboard in Resources */,
 				684D92EF18BC1FBC005016F7 /* A3DateCalcAddSubCell1.xib in Resources */,
 				6825367418A7B89F00EAFB84 /* LunarConverterCell.xib in Resources */,
 				68F1507A194B216D00159EAD /* StringsDict.stringsdict in Resources */,
@@ -6212,6 +6226,7 @@
 				68F1C8D118D7F37D009FAE8A /* A3LadyCalendarSetupAlertViewController.m in Sources */,
 				68B6A2B718CEC76D004084EF /* LoanCalcString.m in Sources */,
 				68B6A45D18CEE781004084EF /* SDWebImageCompat.m in Sources */,
+				68C7E1081BE20C1C00861AFD /* A3CurrencyViewController.m in Sources */,
 				68143D5118E3EC7C00569691 /* A3JHTableViewDateEntryElement.m in Sources */,
 				68E2A6A118D0B22800E834D9 /* A3SalesCalcData.m in Sources */,
 				68B6A2AE18CEC76D004084EF /* A3LoanCalcMonthlyDataViewController.m in Sources */,
@@ -6372,7 +6387,7 @@
 				68B6A2FC18CEC76D004084EF /* A3UnitPriceSliderView.m in Sources */,
 				682FDF4319820F5900C6C83D /* DaysCounterEvent.m in Sources */,
 				68B6A43F18CEE781004084EF /* MWCaptionView.m in Sources */,
-				6890AB321786BA08004FECE4 /* A3CurrencyViewController.m in Sources */,
+				6890AB321786BA08004FECE4 /* A3CurrencyTableViewController.m in Sources */,
 				68F1500B19485E8500159EAD /* A3DaysCounterLocationDetailViewController.m in Sources */,
 				68F14FEA19485E8500159EAD /* A3DaysCounterEventListSectionHeader.m in Sources */,
 				68E2A65B18D0B1FC00E834D9 /* A3PercentCalcFactorCell.m in Sources */,
@@ -6391,6 +6406,7 @@
 				680D638E18CFF9D400938AD0 /* A3CalculatorButtonsInBasicViewController_iPad.m in Sources */,
 				68425D5B1977BF63007C1AAE /* DaysCounterFavorite+extension.m in Sources */,
 				684E9EF7188A206C00FAA48E /* A3AboutViewController.m in Sources */,
+				68C7E1111BE217AF00861AFD /* A3CurrencyPickerStyleViewController.m in Sources */,
 				680886E01891751B0093FD97 /* A3ClockWaveCircleTimeView.m in Sources */,
 				688257AA17D37863006429D3 /* A3HolidaysEditViewController.m in Sources */,
 				6817830F1902823D003E1BB9 /* A3WalletItemTitleCell.m in Sources */,

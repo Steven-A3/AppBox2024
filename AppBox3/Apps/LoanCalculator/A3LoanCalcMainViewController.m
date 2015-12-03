@@ -702,7 +702,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	UIButton *settingsButton = self.settingsButton;
 
 	_moreMenuButtons = @[composeButton, shareButton, historyButton, settingsButton];
-	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:self.tableView];
+	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons pullDownView:self.tableView];
 	_isShowMoreMenu = YES;
 
 	if (self.tableView.contentOffset.y == -63) {
@@ -788,7 +788,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	_isShowMoreMenu = NO;
 
 	[self rightButtonMoreButton];
-	[self dismissMoreMenuView:_moreMenuView scrollView:self.tableView];
+	[self dismissMoreMenuView:_moreMenuView pullDownView:self.tableView];
 	if (gestureRecognizer) {
 		[self.view removeGestureRecognizer:gestureRecognizer];
 	}

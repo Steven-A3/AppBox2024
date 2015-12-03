@@ -9,7 +9,7 @@
 #import "A3CurrencyChartViewController.h"
 #import "A3CurrencyTVDataCell.h"
 #import "UIImageView+AFNetworking.h"
-#import "A3CurrencyViewController.h"
+#import "A3CurrencyTableViewController.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "A3NumberKeyboardViewController.h"
 #import "A3CurrencySelectViewController.h"
@@ -18,7 +18,6 @@
 #import "Reachability.h"
 #import "UIViewController+A3Addition.h"
 #import "A3CurrencyDataManager.h"
-#import "CurrencyRateItem.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3CalculatorViewController.h"
 #import "A3YahooCurrency.h"
@@ -583,7 +582,12 @@
 }
 
 #pragma mark - UIImageView Yahoo Chart
-
+/**
+ *  Yahoo Finance API
+ *  Build URL preparing to call Yahoo Finance API
+ *
+ *  @return NSURL object made for Yahoo Finance API, Currency Chart
+ */
 - (NSURL *)urlForChartImage {
 	NSArray *types = @[@"1d", @"5d", @"1m", @"5m", @"1y"];
 	NSString *string = [NSString stringWithFormat:@"http://chart.finance.yahoo.com/z?s=%@%@=x&t=%@&z=%@&region=%@&lang=%@",

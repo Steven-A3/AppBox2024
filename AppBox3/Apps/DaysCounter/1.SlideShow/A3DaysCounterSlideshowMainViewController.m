@@ -415,7 +415,7 @@
         share.enabled = YES;
     }
     
-	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:nil];
+	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons pullDownView:nil];
 	_isShowMoreMenu = YES;
 }
 
@@ -435,7 +435,7 @@
 	_isShowMoreMenu = NO;
     
 	[self rightButtonMoreButton];
-	[self dismissMoreMenuView:_moreMenuView scrollView:nil];
+	[self dismissMoreMenuView:_moreMenuView pullDownView:nil];
 	[self.view removeGestureRecognizer:gestureRecognizer];
 }
 

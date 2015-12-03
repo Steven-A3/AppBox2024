@@ -10,7 +10,7 @@
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3UserDefaults+A3Defaults.h"
-#import "A3CurrencyViewController.h"
+#import "A3CurrencyTableViewController.h"
 #import "UIViewController+iPad_rightSideView.h"
 
 @interface A3CurrencySettingsViewController ()

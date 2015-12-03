@@ -661,7 +661,7 @@
 
 	_moreMenuButtons = @[add, space, self.shareButton];
 
-	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:self.tableView];
+	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons pullDownView:self.tableView];
 	_isShowMoreMenu = YES;
 }
 
@@ -681,7 +681,7 @@
 	_isShowMoreMenu = NO;
 
 	[self rightButtonMoreButton];
-	[self dismissMoreMenuView:_moreMenuView scrollView:self.tableView];
+	[self dismissMoreMenuView:_moreMenuView pullDownView:self.tableView];
 	[self.view removeGestureRecognizer:gestureRecognizer];
 }
 
