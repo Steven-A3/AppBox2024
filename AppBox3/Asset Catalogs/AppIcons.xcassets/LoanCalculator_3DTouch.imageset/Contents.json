@@ -2,12 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "weather_23.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "weather_23@2x.png",
+      "filename" : "LoanCalculator_3DTouch@2x.png",
       "scale" : "2x"
     },
     {
