@@ -785,7 +785,7 @@
 "Processing" = "正在處理";
 "Thank You" = "感謝您";
 "You've already purchased this. Your purchases has been restored." = "您已購買此項目。您的購買有所恢復。";
-"Your paid app receipt has been validated. Thank you very much for purchasing the AppBox Pro." = "你的付費應用程序收到了驗證。非常感謝您購買AppBox Pro。";
+"Your paid app receipt has been validated. Thank you very much." = "你的付費應用程序收到了驗證。非常感謝。";
 "iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again." = "iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again.";
 "Help" = "說明";
 "Save Video" = "保存視頻";

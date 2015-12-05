@@ -10,4 +10,7 @@
 
 @interface A3CurrencyViewController : UIViewController
 
+@property (nonatomic, strong) UIBarButtonItem *historyBarButton;
+
+- (void)enableControls:(BOOL)enable;
 @end

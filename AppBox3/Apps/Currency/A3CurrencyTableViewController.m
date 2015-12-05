@@ -21,7 +21,6 @@
 #import "A3CurrencySettingsViewController.h"
 #import "A3UserDefaults+A3Defaults.h"
 #import "CurrencyHistoryItem.h"
-#import "A3CurrencyHistoryViewController.h"
 #import "UIViewController+MMDrawerController.h"
 #import "NSString+conversion.h"
 #import "UIViewController+A3Addition.h"
@@ -39,11 +38,12 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "common.h"
 #import "A3YahooCurrency.h"
+#import "A3CurrencyViewController.h"
 
 NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChangedNotification";
 
 @interface A3CurrencyTableViewController () <FMMoveTableViewDataSource, FMMoveTableViewDelegate,
-		UITextFieldDelegate, A3CurrencyMenuDelegate, A3SearchViewControllerDelegate, A3CurrencySettingsDelegate, A3CurrencyChartViewDelegate,
+		UITextFieldDelegate, A3CurrencyMenuDelegate, A3SearchViewControllerDelegate, A3CurrencyChartViewDelegate,
 		UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate, UIActivityItemSource, A3CalculatorViewControllerDelegate,
 		A3InstructionViewControllerDelegate, A3ViewControllerProtocol>
 
@@ -59,11 +59,8 @@ NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChan
 @property (nonatomic, strong) UIView *footerView;
 @property (nonatomic, copy) NSString *previousValue;
 @property (nonatomic, strong) NSDate *updateStartDate;
-@property (nonatomic, strong) UIBarButtonItem *historyBarButton;
 @property (nonatomic, weak) UITextField *calculatorTargetTextField;
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
-@property (nonatomic, strong) A3CurrencyHistoryViewController *historyViewController;
-@property (nonatomic, strong) A3CurrencySettingsViewController *settingsViewController;
 @property (nonatomic, strong) A3CurrencySelectViewController *currencySelectViewController;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
@@ -113,36 +110,6 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 	[self addChildViewController:self.tableViewController];
 
 	[self setupSwipeRecognizers];
-
-	/**
-	 *  Test with commented and if it is sure does not effect anything, delete following commented block of code.
-	 */
-//	[self makeBackButtonEmptyArrow];
-
-//	if (IS_IPAD || IS_PORTRAIT) {
-//		[self leftBarButtonAppsButton];
-//	} else {
-//		self.navigationItem.leftBarButtonItem = nil;
-//		self.navigationItem.hidesBackButton = YES;
-//	}
-//
-//	if (IS_IPHONE) {
-//		[self rightButtonMoreButton];
-//	} else {
-//		self.navigationItem.hidesBackButton = YES;
-//
-//		UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
-//		share.tag = A3RightBarButtonTagShareButton;
-//		UIBarButtonItem *settings = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"general"] style:UIBarButtonItemStylePlain target:self action:@selector(settingsButtonAction:)];
-//		settings.tag = A3RightBarButtonTagSettingsButton;
-//		UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-//		self.historyBarButton = [self historyBarButton:[CurrencyHistory class]];
-//		self.historyBarButton.tag = A3RightBarButtonTagHistoryButton;
-//		space.width = 24.0;
-//        UIBarButtonItem *help = [self instructionHelpBarButton];
-//        help.tag = A3RightBarButtonTagHelpButton;
-//		self.navigationItem.rightBarButtonItems = @[settings, space, self.historyBarButton, space, share, space, help];
-//	}
 
 	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:A3CurrencyAdCellID];
 	[self.tableView registerClass:[A3CurrencyTVDataCell class] forCellReuseIdentifier:A3CurrencyDataCellID];
@@ -310,29 +277,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 	if (!IS_IPAD) return;
 
 	_barButtonEnabled = enable;
-	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 	[self.plusButton setEnabled:enable];
-
-	if (IS_IPAD) {
-		if (enable) {
-			[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
-				switch (barButtonItem.tag) {
-					case A3RightBarButtonTagHistoryButton:
-						[barButtonItem setEnabled:[CurrencyHistory MR_countOfEntities] > 0];
-						break;
-					case A3RightBarButtonTagShareButton:
-					case A3RightBarButtonTagSettingsButton:
-                    case A3RightBarButtonTagHelpButton:
-						[barButtonItem setEnabled:YES];
-						break;
-				}
-			}];
-		} else {
-			[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
-				[barButtonItem setEnabled:NO];
-			}];
-		}
-	}
 
 	CGRect cellFrame = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 	if (!CGRectEqualToRect(cellFrame, CGRectZero)) {
@@ -343,7 +288,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 
 - (void)coreDataChanged:(NSNotification *)notification {
 	if (IS_IPAD) {
-		[self.historyBarButton setEnabled:[CurrencyHistory MR_countOfEntities] > 0];
+		[_mainViewController.historyBarButton setEnabled:[CurrencyHistory MR_countOfEntities] > 0];
 	}
 }
 
@@ -450,73 +395,11 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 	[self dismissMoreMenuView:_moreMenuView pullDownView:self.tableView];
 }
 
-- (NSString *)stringFromNumber:(NSNumber *)value withCurrencyCode:(NSString *)currencyCode isShare:(BOOL)isShare {
-	NSNumberFormatter *formatter = [NSNumberFormatter new];
-	[formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-	[formatter setCurrencyCode:currencyCode];
-    
-    if (!isShare && IS_IPHONE) {
-		[formatter setCurrencySymbol:@""];
-    }
-
-	NSString *string = [formatter stringFromNumber:value];
-	return [string stringByTrimmingSpaceCharacters];
-}
-
 - (void)shareButtonAction:(id)sender {
 	[self resetIntermediateState];
 
 	[self enableControls:NO];
 	[self shareAll:sender];
-}
-
-- (void)historyButtonAction:(UIButton *)button {
-	[self resetIntermediateState];
-
-	_historyViewController = [[A3CurrencyHistoryViewController alloc] initWithNibName:nil bundle:nil];
-
-	if (IS_IPHONE) {
-		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:_historyViewController];
-		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(historyViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:_historyViewController];
-	} else {
-		[self enableControls:NO];
-		[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:_historyViewController];
-	}
-}
-
-- (void)historyViewControllerDidDismiss {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:_historyViewController];
-	_modalNavigationController = nil;
-	_historyViewController = nil;
-}
-
-- (void)settingsButtonAction:(UIButton *)button {
-	[self resetIntermediateState];
-
-	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"A3CurrencySettings" bundle:nil];
-	_settingsViewController = [storyboard instantiateInitialViewController];
-	_settingsViewController.delegate = self;
-
-	if (IS_IPHONE) {
-		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:_settingsViewController];
-		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:_settingsViewController];
-
-	} else {
-		[self enableControls:NO];
-		[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:_settingsViewController];
-	}
-}
-
-- (void)settingsViewControllerDidDismiss {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:_settingsViewController];
-	_settingsViewController = nil;
-	_modalNavigationController = nil;
-}
-
-- (void)currencyConfigurationChanged {
-	[self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -837,7 +720,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	} else {
 		dataCell.flagImageView.image = nil;
 	}
-	dataCell.valueField.text = [self stringFromNumber:value withCurrencyCode:currencyCode isShare:NO];
+	dataCell.valueField.text = [_currencyDataManager stringFromNumber:value withCurrencyCode:currencyCode isShare:NO];
 	dataCell.codeLabel.text = currencyCode;
 	
 	dataCell.accessibilityValue = currencyCode;
@@ -1147,7 +1030,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	} else {
 		double value = [[self.decimalFormatter numberFromString:textField.text] doubleValue];
 		CurrencyFavorite *favoriteZero = self.favorites[0];
-		textField.text = [self stringFromNumber:@(value) withCurrencyCode:favoriteZero.uniqueID isShare:NO];
+		textField.text = [_currencyDataManager stringFromNumber:@(value) withCurrencyCode:favoriteZero.uniqueID isShare:NO];
 		if (![textField.text isEqualToString:self.previousValue]) {
 			valueChanged = YES;
 		}
@@ -1168,7 +1051,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	if ([textField isKindOfClass:[UITextField class]]) {
 		textField.text = @"";
 		CurrencyFavorite *favoriteZero = self.favorites[0];
-		self.previousValue = [self stringFromNumber:@1 withCurrencyCode:favoriteZero.uniqueID isShare:NO];
+		self.previousValue = [_currencyDataManager stringFromNumber:@1 withCurrencyCode:favoriteZero.uniqueID isShare:NO];
 	}
 }
 
@@ -1191,7 +1074,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	[numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
 
 	CurrencyFavorite *favoriteZero = self.favorites[0];
-	_calculatorTargetTextField.text = [self stringFromNumber:[numberFormatter numberFromString:value] withCurrencyCode:favoriteZero.uniqueID isShare:NO];
+	_calculatorTargetTextField.text = [_currencyDataManager stringFromNumber:[numberFormatter numberFromString:value] withCurrencyCode:favoriteZero.uniqueID isShare:NO];
 
 	if (![_calculatorTargetTextField.text isEqualToString:self.previousValue]) {
 		valueChanged = YES;
@@ -1227,7 +1110,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 			CurrencyFavorite *target = self.favorites[targetIndex];
 			NSString *targetCurrency = target.uniqueID;
 			float rate = [self rateForSource:sourceCurrency target:targetCurrency];
-			targetTextField.text = [self stringFromNumber:@(fromValue * rate) withCurrencyCode:targetCurrency isShare:NO];
+			targetTextField.text = [_currencyDataManager stringFromNumber:@(fromValue * rate) withCurrencyCode:targetCurrency isShare:NO];
 		}
 	}
 }
@@ -1364,6 +1247,8 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	_sharePopoverController = nil;
 }
 
+#pragma mark - Share
+
 - (void)shareAll:(id)sender {
 	_shareAll = YES;
 	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completionHandler:^(NSString *activityType, BOOL completed) {
@@ -1377,6 +1262,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		}];
 	}
 }
+
 // http://itunes.apple.com/us/app/appbox-pro-alarm-clock-wallet/id318404385?mt=8
 - (void)shareActionForSourceIndex:(NSUInteger)sourceIdx targetIndex:(NSUInteger)targetIdx sender:(id)sender {
 	_shareSourceIndex = sourceIdx;
@@ -1447,9 +1333,9 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	float rate = [self rateForSource:source target:target];
 	return [NSString stringWithFormat:@"%@ %@ = %@ %@<br/>",
 			source,
-            [self stringFromNumber:self.lastInputValue withCurrencyCode:source isShare:YES],
+            [_currencyDataManager stringFromNumber:self.lastInputValue withCurrencyCode:source isShare:YES],
 			target,
-            [self stringFromNumber:@(self.lastInputValue.floatValue * rate) withCurrencyCode:target isShare:YES]];
+            [_currencyDataManager stringFromNumber:@(self.lastInputValue.floatValue * rate) withCurrencyCode:target isShare:YES]];
 }
 
 #pragma mark - History
@@ -1494,7 +1380,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	for (; idx < historyItemCount; idx++) {
 		CurrencyHistoryItem *item = [CurrencyHistoryItem MR_createEntity];
 		item.uniqueID = [[NSUUID UUID] UUIDString];
-		item.updateDate = [NSDate date];
+		item.updateDate = keyDate;
 		item.historyID = history.uniqueID;
 		CurrencyFavorite *favoriteN = self.favorites[idx + 2 + (_adItem ? 1 : 0)];
 		NSString *favorite = favoriteN.uniqueID;
@@ -1506,7 +1392,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
-	[self.historyBarButton setEnabled:YES];
+	[_mainViewController.historyBarButton setEnabled:YES];
 }
 
 - (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {

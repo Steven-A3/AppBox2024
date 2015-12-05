@@ -179,4 +179,17 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 	return result;
 }
 
+- (NSString *)stringFromNumber:(NSNumber *)value withCurrencyCode:(NSString *)currencyCode isShare:(BOOL)isShare {
+	NSNumberFormatter *formatter = [NSNumberFormatter new];
+	[formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	[formatter setCurrencyCode:currencyCode];
+
+	if (!isShare && IS_IPHONE) {
+		[formatter setCurrencySymbol:@""];
+	}
+
+	NSString *string = [formatter stringFromNumber:value];
+	return [string stringByTrimmingSpaceCharacters];
+}
+
 @end

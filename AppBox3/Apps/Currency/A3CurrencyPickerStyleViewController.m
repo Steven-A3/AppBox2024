@@ -20,12 +20,18 @@
 #import "Reachability.h"
 #import "A3CurrencyChartViewController.h"
 #import "UIViewController+A3Addition.h"
+#import "CurrencyHistory.h"
+#import "CurrencyHistoryItem.h"
+#import "A3CurrencyViewController.h"
+#import "A3UserDefaults+A3Defaults.h"
 
 NSString *const A3CurrencyPickerSelectedIndexColumnOne = @"A3CurrencyPickerSelectedIndexColumnOne";
 NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelectedIndexColumnTwo";
 
 @interface A3CurrencyPickerStyleViewController ()
-<UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate, A3KeyboardDelegate, A3CurrencyChartViewDelegate>
+<UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate, A3KeyboardDelegate,
+		UIActivityItemSource,
+		A3CurrencyChartViewDelegate, UIPopoverControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *fromCurrencyCodeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *fromValueLabel;
@@ -34,7 +40,6 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *fromValuesArray;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *toValuesArray;
 @property (weak, nonatomic) IBOutlet UIView *chartBackgroundView;
-@property (weak, nonatomic) IBOutlet UIPickerView *pickerView;
 @property (weak, nonatomic) IBOutlet UILabel *updateInfoLabel;
 @property (strong, nonatomic) NSArray *favorites;
 @property (strong, nonatomic) UITextField *hiddenTextField;
@@ -47,6 +52,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 @property (weak, nonatomic) IBOutlet UILabel *tapToEnterGuideLabel;
 @property (weak, nonatomic) IBOutlet UIView *fromCurrenciesContainerView;
 @property (strong, nonatomic) UIView *bannerBorderView;
+@property (nonatomic, strong) UIPopoverController *sharePopoverController;
 
 @end
 
@@ -187,44 +193,49 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	NSString *currencyCode = favorite.uniqueID;
 	if (!view) {
 		UIView *newView = [UIView new];
-		UIView *centerAlignView = [UIView new];
-		UIImageView *imageView = [UIImageView new];
-		
-		imageView.tag = 100;
-		[centerAlignView addSubview:imageView];
+		if ([[A3UserDefaults standardUserDefaults] currencyShowNationalFlag]) {
+			UIView *centerAlignView = [UIView new];
+			UIImageView *imageView = [UIImageView new];
+			
+			imageView.tag = 100;
+			[centerAlignView addSubview:imageView];
+			
+			UILabel *codeNameLabel  = [self currencyCodeLabel];
+			[centerAlignView addSubview:codeNameLabel];
+			
+			[imageView makeConstraints:^(MASConstraintMaker *make) {
+				make.left.equalTo(centerAlignView.left);
+				make.centerY.equalTo(centerAlignView.centerY);
+				make.width.equalTo(@24);
+				make.height.equalTo(@24);
+			}];
+			[codeNameLabel makeConstraints:^(MASConstraintMaker *make) {
+				make.right.equalTo(centerAlignView.right);
+				make.centerY.equalTo(centerAlignView.centerY);
+			}];
+			
+			[newView addSubview:centerAlignView];
+			
+			[centerAlignView makeConstraints:^(MASConstraintMaker *make) {
+				make.centerX.equalTo(newView.centerX);
+				make.centerY.equalTo(newView.centerY);
+				make.width.equalTo(@(24 + 10 + codeNameLabel.bounds.size.width));
+				make.height.equalTo(@24);
+			}];
+			
+		} else {
+			UILabel *codeNameLabel = [self currencyCodeLabel];
+			[newView addSubview:codeNameLabel];
+			
+			[codeNameLabel makeConstraints:^(MASConstraintMaker *make) {
+				make.centerX.equalTo(newView.centerX);
+				make.centerY.equalTo(newView.centerY);
+			}];
+		}
 
-		UILabel *codeNameLabel = [UILabel new];
-		codeNameLabel.translatesAutoresizingMaskIntoConstraints = NO;
-		codeNameLabel.font = [UIFont systemFontOfSize:17];
-		codeNameLabel.textColor = [UIColor blackColor];
-		codeNameLabel.tag = 200;
-		codeNameLabel.text = @"USD";
-		[centerAlignView addSubview:codeNameLabel];
-		[codeNameLabel sizeToFit];
-		
-		[imageView makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(centerAlignView.left);
-			make.centerY.equalTo(centerAlignView.centerY);
-			make.width.equalTo(@24);
-			make.height.equalTo(@24);
-		}];
-		[codeNameLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.right.equalTo(centerAlignView.right);
-			make.centerY.equalTo(centerAlignView.centerY);
-		}];
-		
-		[newView addSubview:centerAlignView];
-		
-		[centerAlignView makeConstraints:^(MASConstraintMaker *make) {
-			make.centerX.equalTo(newView.centerX);
-			make.centerY.equalTo(newView.centerY);
-			make.width.equalTo(@(24 + 10 + codeNameLabel.bounds.size.width));
-			make.height.equalTo(@24);
-		}];
-		
 		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 		newView.bounds = CGRectMake(0, 0, screenBounds.size.width / 2, 44);
-
+		
 		[self preparePickerRowView:newView forCurrencyCode:currencyCode];
 		return newView;
 	}
@@ -233,10 +244,23 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	return view;
 }
 
+- (UILabel *)currencyCodeLabel {
+	UILabel *codeNameLabel = [UILabel new];
+	codeNameLabel.translatesAutoresizingMaskIntoConstraints = NO;
+	codeNameLabel.font = [UIFont systemFontOfSize:17];
+	codeNameLabel.textColor = [UIColor blackColor];
+	codeNameLabel.tag = 200;
+	codeNameLabel.text = @"USD";
+	[codeNameLabel sizeToFit];
+	return codeNameLabel;
+}
+
 - (void)preparePickerRowView:(UIView *)view forCurrencyCode:(NSString *)currencyCode {
-	UIImageView *imageView = [view viewWithTag:100];
-	CurrencyRateItem *currencyInfo = [[[A3AppDelegate instance] cacheStoreManager] currencyInfoWithCode:currencyCode];
-	imageView.image = [UIImage imageNamed:currencyInfo.flagImageName];
+	if ([[A3UserDefaults standardUserDefaults] currencyShowNationalFlag]) {
+		UIImageView *imageView = [view viewWithTag:100];
+		CurrencyRateItem *currencyInfo = [[[A3AppDelegate instance] cacheStoreManager] currencyInfoWithCode:currencyCode];
+		imageView.image = [UIImage imageNamed:currencyInfo.flagImageName];
+	}
 
 	UILabel *codeNameLabel = [view viewWithTag:200];
 	codeNameLabel.text = currencyCode;
@@ -354,11 +378,14 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	if (_didPressClearKey) {
 		_hiddenTextField.text = @"1";
 		[self setFromValueLabelText:@"1"];
+		[self addHistoryWithValue:_oldValue];
 		return;
 	}
 	if (!_didPressNumberKey) {
 		_hiddenTextField.text = _oldValue;
 		[self setFromValueLabelText:_oldValue];
+	} else {
+		[self addHistoryWithValue:_oldValue];
 	}
 }
 
@@ -541,25 +568,109 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	[_hiddenTextField resignFirstResponder];
 }
 
+#pragma mark - Ad Received
+
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
 	if (IS_IPHONE) {
-		CGRect bannerFrame = bannerView.frame;
-		bannerFrame.origin.x = 0;
-		bannerFrame.origin.y = _fromCurrenciesContainerView.frame.origin.y;
-		bannerFrame = CGRectInset(bannerFrame, -1, -0.5);
-
 		if (!_bannerBorderView) {
-			_bannerBorderView = [[UIView alloc] initWithFrame:bannerFrame];
+			_bannerBorderView = [UIView new];
 			_bannerBorderView.layer.borderColor = [UIColor lightGrayColor].CGColor;
 			_bannerBorderView.layer.borderWidth = 0.5;
+			[self.view addSubview:_bannerBorderView];
+			
+			UIView *superview = self.view;
+			[_bannerBorderView remakeConstraints:^(MASConstraintMaker *make) {
+				make.left.equalTo(superview.left).with.offset(-0.5);
+				make.right.equalTo(superview.right).with.offset(0.5);
+				make.top.equalTo(_fromCurrenciesContainerView.top);
+				make.height.equalTo(@51);
+			}];
 		}
-		[self.view addSubview:_bannerBorderView];
-		
-		bannerFrame = bannerView.frame;
-		bannerFrame.origin.y = _fromCurrenciesContainerView.frame.origin.y;
-		bannerView.frame = bannerFrame;
 		[self.view addSubview:bannerView];
+		
+		[bannerView remakeConstraints:^(MASConstraintMaker *make) {
+			make.edges.equalTo(_bannerBorderView).insets(UIEdgeInsetsMake(0.5, 0.5, 0.5, 0.5));
+		}];
+	} else {
+		[self.view addSubview:bannerView];
+
+		UIView *superview = self.view;
+		[bannerView remakeConstraints:^(MASConstraintMaker *make) {
+			make.centerX.equalTo(superview.centerX);
+			make.centerY.equalTo(superview.bottom).multipliedBy(0.6);
+		}];
 	}
+}
+
+#pragma mark - History
+
+- (void)addHistoryWithValue:(NSString *)value {
+	NSInteger fromRow = [_pickerView selectedRowInComponent:0];
+	NSInteger toRow = [_pickerView selectedRowInComponent:1];
+	
+	A3YahooCurrency *fromCurrencyInfo = [self currencyInfoAtRow:fromRow];
+	A3YahooCurrency *toCurrencyInfo = [self currencyInfoAtRow:toRow];
+
+	CurrencyHistory *history = [CurrencyHistory MR_createEntity];
+	history.uniqueID = [[NSUUID UUID] UUIDString];
+	NSDate *keyDate = [NSDate date];
+	history.updateDate = keyDate;
+	history.currencyCode = fromCurrencyInfo.currencyCode;
+	history.rate = fromCurrencyInfo.rateToUSD;
+	history.value = @([value doubleValue]);
+
+	CurrencyHistoryItem *item = [CurrencyHistoryItem MR_createEntity];
+	item.uniqueID = [[NSUUID UUID] UUIDString];
+	item.updateDate = keyDate;
+	item.historyID = history.uniqueID;
+	item.currencyCode = toCurrencyInfo.currencyCode;
+	item.rate = toCurrencyInfo.rateToUSD;
+	item.order = [NSString stringWithFormat:@"%010ld", 1l];
+
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+
+	[_mainViewController enableControls:YES];
+}
+
+#pragma mark - Share
+
+- (void)shareButtonAction:(id)sender {
+	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completionHandler:^(NSString *activityType, BOOL completed) {
+		[_mainViewController enableControls:YES];
+	}];
+	_sharePopoverController.delegate = self;
+	[_mainViewController enableControls:NO];
+}
+
+- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController {
+	return NSLocalizedString(@"Share Currency Converter Data", @"Share Currency Converter Data");
+}
+
+- (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType {
+	if ([activityType isEqualToString:UIActivityTypeMail]) {
+		return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share a conversion with you.", nil)
+									   contents:[self stringForShare]
+										   tail:NSLocalizedString(@"You can convert more in the AppBox Pro.", nil)];
+	}
+	else {
+		return [[self stringForShare] stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
+	}
+}
+
+- (NSString *)stringForShare {
+	NSInteger fromRow = [_pickerView selectedRowInComponent:0];
+	NSInteger toRow = [_pickerView selectedRowInComponent:1];
+
+	A3YahooCurrency *fromCurrencyInfo = [self currencyInfoAtRow:fromRow];
+	A3YahooCurrency *toCurrencyInfo = [self currencyInfoAtRow:toRow];
+
+	double rate = [toCurrencyInfo.rateToUSD doubleValue] / [fromCurrencyInfo.rateToUSD doubleValue];
+	double inputValue = [_hiddenTextField.text doubleValue];
+	return [NSString stringWithFormat:@"%@ %@ = %@ %@<br/>",
+									  fromCurrencyInfo.currencyCode,
+									  [_currencyDataManager stringFromNumber:@(inputValue) withCurrencyCode:fromCurrencyInfo.currencyCode isShare:YES],
+									  toCurrencyInfo.currencyCode,
+									  [_currencyDataManager stringFromNumber:@(inputValue * rate) withCurrencyCode:toCurrencyInfo.currencyCode isShare:YES]];
 }
 
 @end

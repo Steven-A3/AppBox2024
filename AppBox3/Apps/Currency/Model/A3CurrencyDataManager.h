@@ -21,6 +21,9 @@ extern NSString *const A3CurrencyUpdateDate;
 + (void)setupFavorites;
 - (void)updateCurrencyRatesOnSuccess:(void (^)())success failure:(void (^)())failure;
 - (A3YahooCurrency *)dataForCurrencyCode:(NSString *)code;
+
+- (NSString *)stringFromNumber:(NSNumber *)value withCurrencyCode:(NSString *)currencyCode isShare:(BOOL)isShare;
+
 - (NSString *)localizedNameForCode:(NSString *)currencyCode;
 
 @end

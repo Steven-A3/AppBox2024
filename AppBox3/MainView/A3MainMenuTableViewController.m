@@ -818,7 +818,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 
 - (void)alertPaidAppCustomer {
 	UIAlertView *alertAlreadyPurchased = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Thank You", nil)
-																	message:NSLocalizedString(@"Your paid app receipt has been validated. Thank you very much for purchasing the AppBox Pro.", nil)
+																	message:NSLocalizedString(@"Your paid app receipt has been validated. Thank you very much.", nil)
 																   delegate:nil
 														  cancelButtonTitle:NSLocalizedString(@"OK", nil)
 														  otherButtonTitles:nil];

@@ -26,7 +26,6 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 @property (nonatomic, strong) A3CurrencyPickerStyleViewController *pickerStyleViewController;
 @property (nonatomic, strong) A3CurrencyTableViewController *listStyleViewController;
 @property (nonatomic, strong) A3CurrencyDataManager *dataManager;
-@property (nonatomic, strong) UIBarButtonItem *historyBarButton;
 @property (nonatomic, strong) NSArray *moreMenuButtons;
 @property (nonatomic, strong) UIView *moreMenuView;
 @property (nonatomic, strong) A3CurrencySettingsViewController *settingsViewController;
@@ -150,6 +149,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CurrencyPickerStyle" bundle:nil];
         _pickerStyleViewController = [storyboard instantiateInitialViewController];
         _pickerStyleViewController.currencyDataManager = self.dataManager;
+		_pickerStyleViewController.mainViewController = self;
     }
     return _pickerStyleViewController;
 }
@@ -158,6 +158,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
     if (!_listStyleViewController) {
         _listStyleViewController = [A3CurrencyTableViewController new];
         _listStyleViewController.currencyDataManager = self.dataManager;
+		_listStyleViewController.mainViewController = self;
     }
     return _listStyleViewController;
 }
@@ -229,6 +230,8 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 }
 
 - (void)settingsButtonAction:(UIButton *)button {
+	[self dismissMoreMenu];
+	
 	if (self.viewTypeSegmentedControl.selectedSegmentIndex == 1) {
 		[_listStyleViewController resetIntermediateState];
 	}
@@ -255,18 +258,21 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 }
 
 - (void)currencyConfigurationChanged {
-
+	[_pickerStyleViewController.pickerView reloadAllComponents];
+	[_listStyleViewController.tableView reloadData];
 }
 
 - (void)shareButtonAction:(id)sender {
 	if (self.viewTypeSegmentedControl.selectedSegmentIndex == 0) {
-		
+		[_pickerStyleViewController shareButtonAction:nil];
 	} else {
 		[_listStyleViewController shareButtonAction:nil];
 	}
 }
 
 - (void)historyButtonAction:(UIButton *)button {
+	[self dismissMoreMenu];
+	
 	if (self.viewTypeSegmentedControl.selectedSegmentIndex == 0) {
 		[_pickerStyleViewController resetIntermediateState];
 	} else {
@@ -292,6 +298,28 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 }
 
 - (void)enableControls:(BOOL)enable {
+	if (!IS_IPAD) return;
+
+	[self.navigationItem.leftBarButtonItem setEnabled:enable];
+
+	if (enable) {
+		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
+			switch (barButtonItem.tag) {
+				case A3RightBarButtonTagHistoryButton:
+					[barButtonItem setEnabled:[CurrencyHistory MR_countOfEntities] > 0];
+					break;
+				case A3RightBarButtonTagShareButton:
+				case A3RightBarButtonTagSettingsButton:
+				case A3RightBarButtonTagHelpButton:
+					[barButtonItem setEnabled:YES];
+					break;
+			}
+		}];
+	} else {
+		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
+			[barButtonItem setEnabled:NO];
+		}];
+	}
 	if (self.viewTypeSegmentedControl.selectedSegmentIndex == 0) {
 
 	} else {
