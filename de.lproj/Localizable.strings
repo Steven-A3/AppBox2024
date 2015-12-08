@@ -975,3 +975,23 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 "Saved" = "gespeichert";
 "Saving" = "in Bearbeitung";
 "List" = "List";
+
+/* Labels */
+"Degrees"  = "Grad(º)";
+"Bubble"  = "Blase";
+"Calibrate"  = "Kalibrieren";
+"Lock"  = "Sperren";
+"Slope(%)"  = "Neigung(%)";
+"Pitch(in/fit)"  = "Dachneigung";
+"Surface"  = "Oberfläche";
+"Unlock"  = "Entsperren";
+"Calibrate 1"  = "Kalibrieren 1";
+"Calibrate 2"  = "Kalibrieren 2";
+"Restart"  = "Wiederholen";
+
+/* Messages */
+"Calibrate1Msg"  = "- Halten Sie das iPhone auf einer ebenen Fläche, wie abgebildet (Volume-Regler nach oben).\r\n- Halten Sie das iPhone senkrecht zur Oberfläche.\r\n- Drücken Sie \"Kalibrieren 1\".";
+"Calibrate2Msg"  = "- Drehen Sie das iPhone um 180 Grad und senkrecht zur Oberfläche.\r\n- Drücken Sie \"Kalibrieren 2\".\r\n";
+"CalibrateSurface1Msg"  = "- Drücken Sie \"Kalibrieren 1\", während das iPhone flach auf der Oberfläche liegt.";
+"CalibrateSurface2Msg"  = "- Drehen Sie das iPhone um 180 Grad.\r\n- Drücken Sie \"Kalibrieren 2\".\r\n";
+"CalibrationDone"  = "Die Kalibrierung wurde erfolgreich abgeschlossen.";

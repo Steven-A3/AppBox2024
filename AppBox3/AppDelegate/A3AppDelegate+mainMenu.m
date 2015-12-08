@@ -54,6 +54,7 @@ NSString *const A3AppName_Magnifier = @"Magnifier";
 NSString *const A3AppName_Flashlight = @"Flashlight";
 NSString *const A3AppName_Random = @"Random";
 NSString *const A3AppName_Ruler = @"Ruler";
+NSString *const A3AppName_Level = @"Level";
 NSString *const A3AppName_Settings = @"Settings";
 
 - (NSArray *)allMenu {
@@ -114,6 +115,7 @@ NSString *const A3AppName_Settings = @"Settings";
 						 @{kA3AppsMenuName : A3AppName_Flashlight, kA3AppsClassName_iPhone : @"A3FlashViewController", kA3AppsNibName_iPhone:@"A3FlashViewController", kA3AppsMenuImageName : @"Flashlight"},
 						 @{kA3AppsMenuName : A3AppName_Random, kA3AppsClassName_iPhone : @"A3RandomViewController", kA3AppsNibName_iPhone:@"A3RandomViewController", kA3AppsMenuImageName : @"Random"},
 						 @{kA3AppsMenuName : A3AppName_Ruler, kA3AppsClassName_iPhone : @"A3RulerViewController", kA3AppsMenuImageName : @"Ruler"},
+						 @{kA3AppsMenuName : A3AppName_Level, kA3AppsClassName_iPhone : @"InclinometerViewController", kA3AppsMenuImageName : @"Level"},
 						 ]
 				 },
 			 ];
@@ -139,16 +141,20 @@ NSString *const A3AppName_Settings = @"Settings";
 			if ([section[kA3AppsMenuName] isEqualToString:@"Utility"]) {
 				BOOL hasFlashlight = NO;
 				BOOL hasRuler = NO;
+				BOOL hasLevel = NO;
 				for (NSDictionary *menus in section[kA3AppsExpandableChildren]) {
 					if ([menus[kA3AppsMenuName] isEqualToString:A3AppName_Flashlight]) {
 						hasFlashlight = YES;
 					}
-					if ([menus[kA3AppsMenuName] isEqualToString:A3AppName_Ruler]) {
+					else if ([menus[kA3AppsMenuName] isEqualToString:A3AppName_Ruler]) {
 						hasRuler = YES;
 					}
-					if (hasFlashlight && hasRuler) break;
+					else if ([menus[kA3AppsMenuName] isEqualToString:A3AppName_Level]) {
+						hasLevel = YES;
+					}
+					if (hasFlashlight && hasRuler && hasLevel) break;
 				}
-				if (hasFlashlight && hasRuler) break;
+				if (hasFlashlight && hasRuler && hasLevel) break;
 
 				NSMutableArray *newMenus = [section[kA3AppsExpandableChildren] mutableCopy];
 				if (!hasFlashlight) {
@@ -163,6 +169,17 @@ NSString *const A3AppName_Settings = @"Settings";
 							@{kA3AppsMenuName : A3AppName_Ruler, kA3AppsClassName_iPhone : @"A3RulerViewController", kA3AppsMenuImageName : @"Ruler"},
 					];
 					[newMenus addObjectsFromArray:newItems];
+				}
+				if (IS_IPHONE && !hasLevel) {
+					NSDictionary *levelItem = @{kA3AppsMenuName: A3AppName_Level, kA3AppsClassName_iPhone : @"InclinometerViewController", kA3AppsMenuImageName : @"Level"};
+					[newMenus addObject:levelItem];
+				} else if (IS_IPAD && hasLevel) {
+					NSInteger indexOfLevelItem = [section[kA3AppsExpandableChildren] indexOfObjectPassingTest:^BOOL(NSDictionary  * _Nonnull menuItem, NSUInteger idx, BOOL * _Nonnull stop) {
+						return [menuItem[kA3AppsMenuName] isEqualToString:A3AppName_Level];
+					}];
+					if (indexOfLevelItem != NSNotFound) {
+						[newMenus removeObjectAtIndex:indexOfLevelItem];
+					}
 				}
 
 				NSMutableDictionary *newSection = [section mutableCopy];

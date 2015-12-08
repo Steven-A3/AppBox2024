@@ -964,3 +964,23 @@
 "Saved" = "Enregistré";
 "Saving" = "En cours";
 "List" = "List";
+
+/* Labels */
+"Degrees" = "Degrés(º)";
+"Bubble" = "Bouillon";
+"Calibrate" = "Calibrer";
+"Lock" = "Verrouiller";
+"Slope(%)" = "Inclination(%)";
+"Pitch(in/fit)" = "Pitch(in/fit)";
+"Surface" = "Surface";
+"Unlock" = "Débloquer";
+"Calibrate 1" = "Calibrer 1";
+"Calibrate 2" = "Calibrer 2";
+"Restart" = "Redémarrez";
+
+/* Messages */
+"Calibrate1Msg" = "- Tenez l'iPhone sur une surface plane, comme montré ci-dessus (contrôle du volume vers le haut).\r\n- Maintenez l'iPhone perpendiculaire à la surface.\r\n- Pressez 'Calibrer 1'.";
+"Calibrate2Msg" = "- Faites pivoter l'iPhone à 180 degrés, perpendiculairement à la surface.\r\n- Pressez 'Calibrer 2'.";
+"CalibrateSurface1Msg" = "- Pressez 'Calibrer 1' tout en maintenant l'iPhone à plat sur la surface.";
+"CalibrateSurface2Msg" = "- Faites pivoter l'iPhone à 180 degrés.\r\n- Pressez 'Calibrer 2'";
+"CalibrationDone" = "Le calibration a été effectué avec succès.";

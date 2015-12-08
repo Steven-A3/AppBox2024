@@ -45,6 +45,7 @@ NSString *const AdMobAdUnitIDTranslator = @"ca-app-pub-0532362805885914/12354249
 NSString *const AdMobAdUnitIDUnitConverter = @"ca-app-pub-0532362805885914/4049290542";
 NSString *const AdMobAdUnitIDUnitPrice = @"ca-app-pub-0532362805885914/2572557342";
 NSString *const AdMobAdUnitIDWallet = @"ca-app-pub-0532362805885914/4328492143";
+NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
 
 @implementation UIViewController (A3Addition)
 

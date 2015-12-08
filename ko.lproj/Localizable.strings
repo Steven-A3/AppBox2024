@@ -974,3 +974,23 @@
 "Saved" = "성공했습니다.";
 "Saving" = "저장하는 중";
 "List" = "List";
+
+/* Labels */
+"Degrees" = "각도(도)";
+"Bubble" = "버블(X축)";
+"Calibrate" = "보정";
+"Lock" = "고정";
+"Slope(%)" = "기울기(퍼센트)";
+"Pitch(in/fit)" = "경사도(인치/피트)";
+"Surface" = "표면(X-Y축)";
+"Unlock" = "해제";
+"Calibrate 1" = "	보정 1";
+"Calibrate 2" = "보정 2";
+"Restart" = "다시 보정";
+
+/* Messages */
+"Calibrate1Msg" = "- 평평한 표면에 볼륨 컨트롤이 위에 오도록 장치를 수직으로 둔 상태에서 \"보정 1\" 버튼을 누릅니다.";
+"Calibrate2Msg" = "- 장치를 수직인 상태에서 180도로 회전한 후 \"보정 2\" 버튼을 누릅니다.";
+"CalibrateSurface1Msg" = "- 장치를 표면에 평평하게 둔 상태에서 \"보정 1\" 버튼을 누릅니다.";
+"CalibrateSurface2Msg" = "- 장치를 180도로 회전 후 \"보정 2\" 버튼을 누릅니다.";
+"CalibrationDone" = "성공적으로 보정되었습니다.";

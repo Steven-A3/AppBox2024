@@ -793,3 +793,23 @@
 "Saved" = "它已被保存。";
 "Saving" = "進行中";
 "List" = "List";
+
+/* Labels */
+"Degrees(º)" = "角度（度）";
+"Bubble" = "水準器(X軸)";
+"Calibrate" = "校準";
+"Lock" = "固定";
+"Slope(%)" = "斜率(%)";
+"Pitch(in/fit)" = "傾斜度(英寸/英尺)";
+"Surface" = "表面(X-Y轴)";
+"Unlock" = "解除";
+"Calibrate 1" = "校準 1";
+"Calibrate 2" = "校準 2";
+"Restart" = "重新校準";
+
+/* Messages */
+"Calibrate1Msg" = "- 在平平的表面上，使音量控制朝上，將iPhone垂直放置的狀態下，\r\n請按\"校準1\"按鍵。";
+"Calibrate2Msg" = "- iPhone在豎直的狀態下，將其旋轉180度後，請按\"校準2\"鍵。";
+"CalibrateSurface1Msg" = "- 將iPhone平平放置在表面的狀態下，請按\"校準1\"鍵。";
+"CalibrateSurface2Msg" = "- 將iPhone旋轉180度後，\r\n請按\"校準2\"鍵。";
+"CalibrationDone" = "校正成功";

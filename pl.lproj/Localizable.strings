@@ -965,3 +965,23 @@ Wprowadź klucz szyfrowania dla portfela.";
 "Saved" = "zapisane";
 "Saving" = "W trakcie";
 "List" = "List";
+
+/* Labels */
+"Degrees" = "Stopnie(º)";
+"Bubble" = "Bańka";
+"Calibrate" = "Kalibracja";
+"Lock" = "Blokuj";
+"Slope(%)" = "Spadek(%)";
+"Pitch(in/fit)" = "Rzut(in/fit)";
+"Surface" = "Powierzchnia";
+"Unlock" = "Odblokuj";
+"Calibrate 1" = "Kalibracja 1";
+"Calibrate 2" = "Kalibracja 2";
+"Restart" = "Ponownie";
+
+/* Messages */
+"Calibrate1Msg" = "- Połóż iPhone-a na płaskiej powierzchni, jak na obrazku (regulacja głośności do góry)\r\n- Przytrzymaj prostopadle do powierzchni.\r\n- Naciśnij „Kalibracja 1”.";
+"Calibrate2Msg" = "- Obrót iPhone-a o 180 stopni prostopadle do powierzchni.\r\n- Naciśnij „Kalibracja 2”.";
+"CalibrateSurface1Msg" = "- Połóż telefon płasko na powierzchni i naciśnij guzik „Kalibracja 1”";
+"CalibrateSurface2Msg" = "- Obrót telefon o 180 stopni.\r\n- Naciśnij guzik „Kalibracja 2”.\r\n";
+"CalibrationDone" = "Kalibracja zakończona.";

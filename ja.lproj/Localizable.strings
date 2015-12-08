@@ -973,3 +973,23 @@
 "Saved" = "保存しました。";
 "Saving" = "保存中";
 "List" = "List";
+
+/* Labels */
+"Degrees(º)" = "角度(度)";
+"Bubble" = "バブル(X軸)";
+"Calibrate" = "補正";
+"Lock" = "固定";
+"Slope(%)" = "傾き(パーセント)";
+"Pitch(in/fit)" = "傾斜度(インチ/フィット)";
+"Surface" = "表面(X-Y軸)";
+"Unlock" = "解除";
+"Calibrate 1" = "補正 1";
+"Calibrate 2" = "補正 2";
+"Restart" = "再補正";
+
+/* Messages */
+"Calibrate1Msg" = "- 平らな表面にボリュームコントロールが上に来るように装置を垂直に置いた状態で \"補正1\" ボタンを押します。";
+"Calibrate2Msg" = "- 装置を垂直な状態で180度に回転した後で \"補正2\" ボタンを押します。";
+"CalibrateSurface1Msg" = "- 装置を表面に平らに置いた状態で\"補正1\" ボタンを押します。";
+"CalibrateSurface2Msg" = "- 装置を180度に回転させた後で \"補正2\" ボタンを押します。";
+"CalibrationDone" = "補正に成功しました。";

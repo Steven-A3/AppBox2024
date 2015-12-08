@@ -959,3 +959,22 @@ Inserire chiave di crittografia per il portafoglio.";
 "Saved" = "Risparmiato";
 "Saving" = "In corso";
 "List" = "List";
+
+/* Labels */
+"Degrees(º)" = "Gradi(º)";
+"Bubble" = "Bolla";
+"Calibrate" = "Calibrare";
+"Lock" = "Blocca";
+"Slope(%)" = "Pendenza(%)";
+"Pitch(in/fit)" = "Inclinazione (in/fit)";
+"Surface" = "Superficie";
+"Unlock" = "Sblocca";
+"Calibrate 1" = "Calibrare 1";
+"Calibrate 2" = "Calibrare 2";
+"Restart" = "Ricomincia";
+
+"Calibrate1Msg" = "- Tieni l’iPhone su una superficie piatta come indicato e Premi ‘Calibrare 1’.";
+"Calibrate2Msg" = "- Ruota l’iPhone di 180 gradi mantenendolo a contatto con la superficie. Premi ‘Calibrare 2’.";
+"CalibrateSurface1Msg" = "- Premi ‘Calibrare 1’ lasciando l’iPhone a contatto con la superficie.";
+"CalibrateSurface2Msg" = "- Gira l’iPhone di 180 gradi e premi ‘Calibrare 2’.";
+"CalibrationDone" = "La calibrazione è stata completata correttamente.";

@@ -144,6 +144,7 @@
 		681170981AC03D4C0079F4F9 /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A371839CD7F007C97EE /* AFURLResponseSerialization.m */; };
 		681170991AC03D4C0079F4F9 /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A391839CD7F007C97EE /* AFURLSessionManager.m */; };
 		6811709F1AC041F60079F4F9 /* currencyRates in Resources */ = {isa = PBXBuildFile; fileRef = 6811709E1AC041F60079F4F9 /* currencyRates */; };
+		6811D3561C1317A200B3B114 /* Level.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6811D3551C1317A200B3B114 /* Level.xcassets */; };
 		68143CF718E3EC1F00569691 /* appbox.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68143CC518E3EC1F00569691 /* appbox.ttf */; };
 		68143CF818E3EC1F00569691 /* Digit.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68143CC618E3EC1F00569691 /* Digit.ttf */; };
 		68143CF918E3EC1F00569691 /* REGISTER.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 68143CC718E3EC1F00569691 /* REGISTER.TTF */; };
@@ -507,6 +508,10 @@
 		689C9A591839CD7F007C97EE /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A491839CD7F007C97EE /* UIWebView+AFNetworking.m */; };
 		689D41FB1966F33900D7F1A7 /* A3DateKeyboardViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 689D41F91966F33900D7F1A7 /* A3DateKeyboardViewController_iPad.xib */; };
 		689D41FC1966F33900D7F1A7 /* A3DateKeyboardViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 689D41FA1966F33900D7F1A7 /* A3DateKeyboardViewController_iPhone.xib */; };
+		689D59051C1569BA002CD422 /* CalibrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D58FE1C1569BA002CD422 /* CalibrationView.m */; };
+		689D59061C1569BA002CD422 /* ClinometerToolbarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D59001C1569BA002CD422 /* ClinometerToolbarViewController.m */; };
+		689D59071C1569BA002CD422 /* InclinometerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D59021C1569BA002CD422 /* InclinometerView.m */; };
+		689D59081C1569BA002CD422 /* InclinometerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D59041C1569BA002CD422 /* InclinometerViewController.m */; };
 		689D9FA01BD2195600096D07 /* AppBox3UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689D9F9F1BD2195600096D07 /* AppBox3UITests.swift */; };
 		689E9855197C1B99003710C3 /* A3UnitNamesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 689E9854197C1B99003710C3 /* A3UnitNamesTest.m */; };
 		689E9856197C1BB5003710C3 /* A3UnitDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A1CD18CEC76C004084EF /* A3UnitDataManager.m */; };
@@ -1218,6 +1223,7 @@
 		680FF7121980B88D00C736F5 /* A3SyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SyncManager.m; path = AppDelegate/A3SyncManager.m; sourceTree = "<group>"; };
 		6810C64519D9246F00BE75A9 /* Flashlight.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Flashlight.xcassets; path = "AppBox3/Asset Catalogs/Flashlight.xcassets"; sourceTree = "<group>"; };
 		6811709E1AC041F60079F4F9 /* currencyRates */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = currencyRates; path = "AppBox3/Data Management/currencyRates"; sourceTree = "<group>"; };
+		6811D3551C1317A200B3B114 /* Level.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Level.xcassets; path = "AppBox3/Asset Catalogs/Level.xcassets"; sourceTree = "<group>"; };
 		681361331A6CADC000E13F51 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3CurrencyChartViewController.strings; sourceTree = "<group>"; };
 		681361341A6CADC000E13F51 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3CurrencySettings.strings; sourceTree = "<group>"; };
 		681361351A6CADC000E13F51 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LoanCalculatorPadStoryBoard.strings; sourceTree = "<group>"; };
@@ -1897,6 +1903,14 @@
 		689D41F8196661EC00D7F1A7 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = pl; path = pl.lproj/StringsDict.stringsdict; sourceTree = "<group>"; };
 		689D41F91966F33900D7F1A7 /* A3DateKeyboardViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DateKeyboardViewController_iPad.xib; sourceTree = "<group>"; };
 		689D41FA1966F33900D7F1A7 /* A3DateKeyboardViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DateKeyboardViewController_iPhone.xib; sourceTree = "<group>"; };
+		689D58FD1C1569BA002CD422 /* CalibrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalibrationView.h; sourceTree = "<group>"; };
+		689D58FE1C1569BA002CD422 /* CalibrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalibrationView.m; sourceTree = "<group>"; };
+		689D58FF1C1569BA002CD422 /* ClinometerToolbarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClinometerToolbarViewController.h; sourceTree = "<group>"; };
+		689D59001C1569BA002CD422 /* ClinometerToolbarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClinometerToolbarViewController.m; sourceTree = "<group>"; };
+		689D59011C1569BA002CD422 /* InclinometerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InclinometerView.h; sourceTree = "<group>"; };
+		689D59021C1569BA002CD422 /* InclinometerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InclinometerView.m; sourceTree = "<group>"; };
+		689D59031C1569BA002CD422 /* InclinometerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InclinometerViewController.h; sourceTree = "<group>"; };
+		689D59041C1569BA002CD422 /* InclinometerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InclinometerViewController.m; sourceTree = "<group>"; };
 		689D9F9D1BD2195600096D07 /* AppBox3UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppBox3UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		689D9F9F1BD2195600096D07 /* AppBox3UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBox3UITests.swift; sourceTree = "<group>"; };
 		689D9FA11BD2195600096D07 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -3776,6 +3790,7 @@
 				68961FE118B311D100C89F16 /* Mirror.xcassets */,
 				6810C64519D9246F00BE75A9 /* Flashlight.xcassets */,
 				689421041A04AF34005F3AE3 /* Settings.bundle */,
+				6811D3551C1317A200B3B114 /* Level.xcassets */,
 			);
 			name = "{Resources}";
 			path = ..;
@@ -3794,6 +3809,7 @@
 				57E4E1C019D2DC5E0037371B /* Flash */,
 				6888091217C640BC008B2856 /* Holidays */,
 				68F1C83A18D7F37D009FAE8A /* LadyCalendar */,
+				68CCA0DF1C12C7BC00D09200 /* Level */,
 				68B6A16918CEC76C004084EF /* LoanCalculator */,
 				6825366618A7B89F00EAFB84 /* LunarConverter */,
 				680D638418CFF9D400938AD0 /* Magnifier */,
@@ -4911,6 +4927,21 @@
 			name = SymbolFontKit;
 			sourceTree = "<group>";
 		};
+		68CCA0DF1C12C7BC00D09200 /* Level */ = {
+			isa = PBXGroup;
+			children = (
+				689D58FD1C1569BA002CD422 /* CalibrationView.h */,
+				689D58FE1C1569BA002CD422 /* CalibrationView.m */,
+				689D58FF1C1569BA002CD422 /* ClinometerToolbarViewController.h */,
+				689D59001C1569BA002CD422 /* ClinometerToolbarViewController.m */,
+				689D59011C1569BA002CD422 /* InclinometerView.h */,
+				689D59021C1569BA002CD422 /* InclinometerView.m */,
+				689D59031C1569BA002CD422 /* InclinometerViewController.h */,
+				689D59041C1569BA002CD422 /* InclinometerViewController.m */,
+			);
+			path = Level;
+			sourceTree = "<group>";
+		};
 		68D319461A3BFF78003B9F54 /* AppBox3 Free */ = {
 			isa = PBXGroup;
 			children = (
@@ -5763,6 +5794,7 @@
 				68F1C8CC18D7F37D009FAE8A /* A3LadyCalendarListViewController.xib in Resources */,
 				68F14FE919485E8500159EAD /* A3DaysCounterEventListNameCell.xib in Resources */,
 				68143D0718E3EC1F00569691 /* A3NumberKeyboardViewController_iPad.xib in Resources */,
+				6811D3561C1317A200B3B114 /* Level.xcassets in Resources */,
 				68143D7918E40D7A00569691 /* A3NumberKeyboardSimplePrevNextVC_iPad.xib in Resources */,
 				68F14FE619485E8500159EAD /* A3DaysCounterEventListDateCell.xib in Resources */,
 				68F1C8CA18D7F37D009FAE8A /* A3LadyCalendarListCell.xib in Resources */,
@@ -6120,6 +6152,7 @@
 				68143D5818E3EC7C00569691 /* A3JHTableViewRootElement.m in Sources */,
 				68B6A34818CEC76D004084EF /* A3WalletFavoritesViewController.m in Sources */,
 				68B6A2BC18CEC76D004084EF /* A3LoanCalcCompareGraphCell.m in Sources */,
+				689D59071C1569BA002CD422 /* InclinometerView.m in Sources */,
 				68143D6018E3EC7C00569691 /* A3TableViewEntryCell.m in Sources */,
 				68F14FBD19485E8500159EAD /* A3DaysCounterCalendarListMainViewController.m in Sources */,
 				68E0B321198CAB8E00127229 /* SalesCalcHistory.m in Sources */,
@@ -6239,6 +6272,7 @@
 				6835659418FA663100C3494C /* A3WalletMoreTableViewController.m in Sources */,
 				68B6A2EF18CEC76D004084EF /* A3UnitPriceInfoCell.m in Sources */,
 				68F1C8DA18D7F37D009FAE8A /* A3ColoredCircleView.m in Sources */,
+				689D59081C1569BA002CD422 /* InclinometerViewController.m in Sources */,
 				68E2A6A718D0B22800E834D9 /* A3SalesCalcPreferences.m in Sources */,
 				68B6A2AD18CEC76D004084EF /* A3LoanCalcMainViewController.m in Sources */,
 				68B6A2EE18CEC76D004084EF /* A3UnitPriceHistoryViewController.m in Sources */,
@@ -6411,6 +6445,7 @@
 				688257AA17D37863006429D3 /* A3HolidaysEditViewController.m in Sources */,
 				6817830F1902823D003E1BB9 /* A3WalletItemTitleCell.m in Sources */,
 				68B6A2C318CEC76D004084EF /* A3LoanCalcLoanInfo2Cell.m in Sources */,
+				689D59061C1569BA002CD422 /* ClinometerToolbarViewController.m in Sources */,
 				17D42461C66EA03739D41FA8 /* A3CurrencyTableViewCell.m in Sources */,
 				577707FB19D57E5B00DC066A /* NPPickerIndicator.m in Sources */,
 				17D42B8113D2415FDF33A0DB /* A3CurrencyTVDataCell.m in Sources */,
@@ -6480,6 +6515,7 @@
 				17D42C81893E3C1784CE162E /* A3TranslatorMessageViewController.m in Sources */,
 				682FDF0E1981CC0400C6C83D /* NSRelationshipDescription+MagicalDataImport.m in Sources */,
 				68F14FC519485E8500159EAD /* A3DaysCounterEventDetailViewController.m in Sources */,
+				689D59051C1569BA002CD422 /* CalibrationView.m in Sources */,
 				57E4E1CE19D2DD360037371B /* A3RandomViewController.m in Sources */,
 				68143D6218E3EC7C00569691 /* A3TableViewExpandableCell.m in Sources */,
 				17D42E23FC78EEE74D1E160D /* A3TranslatorViewController.m in Sources */,

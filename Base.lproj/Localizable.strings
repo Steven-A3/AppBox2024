@@ -914,3 +914,21 @@ Enter Encryption Key for Wallet.";
 "Saved" = "Saved";
 "Saving" = "Saving";
 "List" = "List";
+
+"Degrees" = "Degrees(º)";
+"Bubble" = "Bubble";
+"Calibrate" = "Calibrate";
+"Lock" = "Lock";
+"Slope(%)" = "Slope(%)";
+"Pitch(in/fit)" = "Pitch(in/fit)";
+"Surface" = "Surface";
+"Unlock" = "Unlock";
+"Calibrate 1" = "Calibrate 1";
+"Calibrate 2" = "Calibrate 2";
+"Restart" = "Restart";
+
+"Calibrate1Msg" = "- Hold iPhone on a flat surface, as shown (volume control side up).\r\n- Keep iPhone perpendicular to surface.\r\nPress \"Calibrate 1\".";
+"Calibrate2Msg" = "- Rotate iPhone 180 degrees and \r\nperpendicular to the surface.\r\nPress \"Calibrate 2\".\r\n";
+"CalibrateSurface1Msg" = "- Press \"Calibrate 1\" while keeping\r\nthe iPhone flat on the surface.";
+"CalibrateSurface2Msg" = "- Rotate iPhone 180 degrees.\r\n- Press \"Calibrate 2\".\r\n";
+"CalibrationDone" = "Calibration has completed successfully.";

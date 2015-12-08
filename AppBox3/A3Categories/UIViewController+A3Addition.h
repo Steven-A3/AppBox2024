@@ -33,6 +33,7 @@ extern NSString *const AdMobAdUnitIDTranslator;
 extern NSString *const AdMobAdUnitIDUnitConverter;
 extern NSString *const AdMobAdUnitIDUnitPrice;
 extern NSString *const AdMobAdUnitIDWallet;
+extern NSString *const AdMobAdUnitIDLevel;
 
 typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 	A3RightBarButtonTagComposeButton = 1,
@@ -46,28 +47,21 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 
 - (void)cleanUp;
 - (CGRect)screenBoundsAdjustedWithOrientation;
-
 - (void)callPrepareCloseOnActiveMainAppViewController;
-
 - (void)dismissModalViewControllerOnMainViewController;
-
 - (void)popToRootAndPushViewController:(UIViewController *)viewController;
 - (void)leftBarButtonAppsButton;
-
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem;
 - (void)leftBarButtonCancelButton;
 - (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem;
-
 - (void)addThreeButtons:(NSArray *)buttons toView:(UIView *)view;
 - (void)addFourButtons:(NSArray *)buttons toView:(UIView *)view;
-
 - (UIView *)moreMenuViewWithButtons:(NSArray *)buttonsArray;
 - (UIView *)presentMoreMenuWithButtons:(NSArray *)buttons pullDownView:(UIView *)pullDownView;
 - (void)dismissMoreMenuView:(UIView *)moreMenuView pullDownView:(UIView *)pullDownView;
 - (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer;
 - (UIButton *)shareButton;
 - (void)shareButtonAction:(id)sender;
-
 - (UIButton *)historyButton:(Class)managedObject;
 - (UIBarButtonItem *)historyBarButton:(Class)managedObject;
 - (void)historyButtonAction:(UIButton *)button;
@@ -76,29 +70,23 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 - (UIButton *)instructionHelpButton;
 - (UIBarButtonItem *)instructionHelpBarButton;
 - (void)instructionHelpButtonAction:(id)sender;
-
 - (UIButton *)composeButton;
 - (void)composeButtonAction:(UIButton *)button;
-
 - (void)rightBarButtonDoneButton;
 - (void)doneButtonAction:(UIBarButtonItem *)button;
 - (void)rightButtonMoreButton;
 - (void)moreButtonAction:(UIBarButtonItem *)button;
 - (void)makeBackButtonEmptyArrow;
-
 - (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromBarButtonItem:(UIBarButtonItem *)barButtonItem completionHandler:(UIActivityViewControllerCompletionHandler)completionHandler;
-
 - (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromSubView:(UIView *)subView completionHandler:(UIActivityViewControllerCompletionHandler)completionHandler;
-
 - (void)alertInternetConnectionIsNotAvailable;
 + (UIViewController <A3PasscodeViewControllerProtocol> *)passcodeViewControllerWithDelegate:(id <A3PasscodeViewControllerDelegate>)delegate;
-
 - (void)willDismissFromRightSide;
 - (void)alertCloudNotEnabled;
-
 - (UIActionSheet *)actionSheetAskingImagePickupWithDelete:(BOOL)deleteEnable delegate:(id <UIActionSheetDelegate>)delegate;
 
 #pragma mark - Custom Date String Related
+
 - (NSString *)fullStyleDateStringFromDate:(NSDate *)date withShortTime:(BOOL)shortTime;
 - (NSString *)customFullStyleDateStringFromDate:(NSDate *)date withShortTime:(BOOL)shortTime;
 - (NSString *)shareMessageFormat;
@@ -110,8 +98,7 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 - (UIActionSheet *)firstActionSheet;
 - (void)rotateFirstActionSheet;
 - (void)requestAuthorizationForCamera:(NSString *)appName;
-
 - (void)setupBannerViewForAdUnitID:(NSString *)unitID keywords:(NSArray *)keywords gender:(GADGender)gender;
-
 - (GADBannerView *)bannerView;
+
 @end

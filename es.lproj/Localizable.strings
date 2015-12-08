@@ -959,3 +959,26 @@ Introduzca la clave de cifrado para el bolsillo.";
 "Saved" = "Salvado";
 "Saving" = "En curso";
 "List" = "List";
+
+/* Labels */
+"Degrees" = "Grados";
+"Bubble" = "Burbuja";
+"Calibrate" = "Corregir";
+"Lock" = "Bloquear";
+"Slope(%)" = "Pendiente(%)";
+"Pitch(in/fit)" = "Inclinación";
+"Surface" = "Superficie";
+"Unlock" = "Desbloquear";
+"Calibrate 1" = "Corregir 1";
+"Calibrate 2" = "Corregir 2";
+"Restart" = "Corregir de nuevo";
+"Reset Calibration" = "Restablecer la corrección";
+
+/* Messages */
+"Calibrate1Msg" = "- Mantenga el iPhone en una superficie plana, como se muestra en la figura (al lado superior del  control de volumen).
+- Mantenga iPhone perpendicular a la superficie. Pulse \"Calibrar 1\"";
+"Calibrate2Msg" = "- Gire 180 grados el IPhone, perpendicular a la superficie.
+- Pulse \"Calibrar 2\"";
+"CalibrateSurface1Msg" = "- Pulse \"Calibrar 1\" mientras mantiene el iPhone sobre la superficie plana.";
+"CalibrateSurface2Msg" = "- Gire 180 grados el IPhone.\r\n- Pulse \"Calibrar 2\"";
+"CalibrationDone" = "Se ha compleato la corrección con éxito.";
