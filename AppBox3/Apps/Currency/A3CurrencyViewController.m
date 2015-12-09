@@ -87,7 +87,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 
 - (UISegmentedControl *)viewTypeSegmentedControl {
     if (!_viewTypeSegmentedControl) {
-        _viewTypeSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedString(@"Currency", @"Currency"), NSLocalizedString(@"List", @"List")]];
+        _viewTypeSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[[UIImage imageNamed:@"currency_picker"], [UIImage imageNamed:@"currency_list"] ] ];
         [_viewTypeSegmentedControl setWidth:IS_IPAD ? 150:85 forSegmentAtIndex:0];
         [_viewTypeSegmentedControl setWidth:IS_IPAD ? 150:85 forSegmentAtIndex:1];
         [_viewTypeSegmentedControl addTarget:self action:@selector(viewTypeSegmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
