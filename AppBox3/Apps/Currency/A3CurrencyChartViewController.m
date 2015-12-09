@@ -191,7 +191,7 @@
 	[_line1 makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(superview.left);
 		make.right.equalTo(superview.right);
-		make.height.equalTo(@1);
+		make.height.equalTo(@0.5);
 	}];
 	[_titleView makeConstraints:^(MASConstraintMaker *make) {
 		make.top.equalTo(_line1.bottom);
@@ -209,7 +209,7 @@
 		make.top.equalTo(_valueView.bottom);
 		make.left.equalTo(superview.left);
 		make.right.equalTo(superview.right);
-		make.height.equalTo(@1);
+		make.height.equalTo(@0.5);
 	}];
 	[_segmentedControl makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(superview.centerX);
