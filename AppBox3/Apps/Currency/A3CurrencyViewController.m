@@ -9,7 +9,7 @@
 #import "A3CurrencyViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "A3CurrencyTableViewController.h"
-#import "A3CurrencyPickerStyleViewController.h"
+#import "A3CurrencyPickerStyleViewController_OLD.h"
 #import "A3CurrencyDataManager.h"
 #import "CurrencyHistory.h"
 #import "UIViewController+NumberKeyboard.h"
@@ -23,7 +23,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 @interface A3CurrencyViewController () <A3CurrencySettingsDelegate>
 
 @property (nonatomic, strong) UISegmentedControl *viewTypeSegmentedControl;
-@property (nonatomic, strong) A3CurrencyPickerStyleViewController *pickerStyleViewController;
+@property (nonatomic, strong) A3CurrencyPickerStyleViewController_OLD *pickerStyleViewController;
 @property (nonatomic, strong) A3CurrencyTableViewController *listStyleViewController;
 @property (nonatomic, strong) A3CurrencyDataManager *dataManager;
 @property (nonatomic, strong) NSArray *moreMenuButtons;
@@ -144,9 +144,9 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
     }
 }
 
-- (A3CurrencyPickerStyleViewController *)pickerStyleViewController {
+- (A3CurrencyPickerStyleViewController_OLD *)pickerStyleViewController {
     if (!_pickerStyleViewController) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CurrencyPickerStyle" bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CurrencyPickerStyle_OLD" bundle:nil];
         _pickerStyleViewController = [storyboard instantiateInitialViewController];
         _pickerStyleViewController.currencyDataManager = self.dataManager;
 		_pickerStyleViewController.mainViewController = self;
