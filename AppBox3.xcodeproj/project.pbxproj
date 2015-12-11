@@ -356,6 +356,7 @@
 		684A71BB1852E0100004A9FE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 684A71BA1852E0100004A9FE /* Security.framework */; };
 		684A71BD1852E0250004A9FE /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 684A71BC1852E0250004A9FE /* libc++.dylib */; };
 		684A71C21853464A0004A9FE /* A3AppDelegate+iCloud.m in Sources */ = {isa = PBXBuildFile; fileRef = 684A71C11853464A0004A9FE /* A3AppDelegate+iCloud.m */; };
+		684CA4D81C1A6D75001ECF4E /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 684CA4D71C1A6D75001ECF4E /* GoogleMobileAds.framework */; };
 		684D92BA18BC1EFE005016F7 /* A3BatterStatusBatteryPanelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92A318BC1EFE005016F7 /* A3BatterStatusBatteryPanelView.m */; };
 		684D92BB18BC1EFE005016F7 /* A3BatterStatusChooseColorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92A518BC1EFE005016F7 /* A3BatterStatusChooseColorCell.m */; };
 		684D92BC18BC1EFE005016F7 /* A3BatterStatusChooseColorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92A718BC1EFE005016F7 /* A3BatterStatusChooseColorViewController.m */; };
@@ -387,7 +388,6 @@
 		684E9F05188A43C300FAA48E /* NJKWebViewProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 684E9F03188A43C300FAA48E /* NJKWebViewProgressView.m */; };
 		684E9F09188A43DF00FAA48E /* A3ActivitySafari.m in Sources */ = {isa = PBXBuildFile; fileRef = 684E9F08188A43DF00FAA48E /* A3ActivitySafari.m */; };
 		684E9F0C188A447400FAA48E /* A3BasicWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 684E9F0B188A447400FAA48E /* A3BasicWebViewController.m */; };
-		684EE1E91BDF182E00879BA9 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 684EE1E81BDF182E00879BA9 /* GoogleMobileAds.framework */; };
 		68507F80191CA72400C1C895 /* A3AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68507F7F191CA72400C1C895 /* A3AppDelegate.m */; };
 		68521A3B17E1EBB200E08FB1 /* NSDate-Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 68521A3A17E1EBB200E08FB1 /* NSDate-Utilities.m */; };
 		68521A4617E1FF2E00E08FB1 /* FXLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 68521A4517E1FF2E00E08FB1 /* FXLabel.m */; };
@@ -691,7 +691,6 @@
 		68C1ABFA18B1C05200021001 /* NSDateFormatter+LunarDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C1ABF918B1C05200021001 /* NSDateFormatter+LunarDate.m */; };
 		68C7E1081BE20C1C00861AFD /* A3CurrencyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C7E1071BE20C1C00861AFD /* A3CurrencyViewController.m */; };
 		68C7E10E1BE2178C00861AFD /* CurrencyPickerStyle_OLD.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68C7E10D1BE2178C00861AFD /* CurrencyPickerStyle_OLD.storyboard */; };
-		68C7E1111BE217AF00861AFD /* A3CurrencyPickerStyleViewController_OLD.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C7E1101BE217AF00861AFD /* A3CurrencyPickerStyleViewController_OLD.m */; };
 		68C802D819571A0200BC19EE /* WalletCategoryPreset.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68C802D719571A0200BC19EE /* WalletCategoryPreset.plist */; };
 		68C802DB19571A2000BC19EE /* WalletPreset.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68C802DD19571A2000BC19EE /* WalletPreset.strings */; };
 		68C9E3FE1882EF1B007E4697 /* A3AppDelegate+mainMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C9E3FD1882EF1B007E4697 /* A3AppDelegate+mainMenu.m */; };
@@ -1594,6 +1593,7 @@
 		684A71BC1852E0250004A9FE /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		684A71C0185346490004A9FE /* A3AppDelegate+iCloud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "A3AppDelegate+iCloud.h"; path = "AppDelegate/A3AppDelegate+iCloud.h"; sourceTree = "<group>"; };
 		684A71C11853464A0004A9FE /* A3AppDelegate+iCloud.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "A3AppDelegate+iCloud.m"; path = "AppDelegate/A3AppDelegate+iCloud.m"; sourceTree = "<group>"; };
+		684CA4D71C1A6D75001ECF4E /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = "External/GoogleMobileAdsSdkiOS-7.6.0/GoogleMobileAds.framework"; sourceTree = "<group>"; };
 		684D92A218BC1EFE005016F7 /* A3BatterStatusBatteryPanelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BatterStatusBatteryPanelView.h; sourceTree = "<group>"; };
 		684D92A318BC1EFE005016F7 /* A3BatterStatusBatteryPanelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3BatterStatusBatteryPanelView.m; sourceTree = "<group>"; };
 		684D92A418BC1EFE005016F7 /* A3BatterStatusChooseColorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BatterStatusChooseColorCell.h; sourceTree = "<group>"; };
@@ -1652,7 +1652,6 @@
 		684E9F0A188A447400FAA48E /* A3BasicWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3BasicWebViewController.h; path = ViewControllers/A3BasicWebViewController.h; sourceTree = "<group>"; };
 		684E9F0B188A447400FAA48E /* A3BasicWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3BasicWebViewController.m; path = ViewControllers/A3BasicWebViewController.m; sourceTree = "<group>"; };
 		684E9F0D188A4BB100FAA48E /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
-		684EE1E81BDF182E00879BA9 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = "External/GoogleMobileAdsSdkiOS-7.5.2/GoogleMobileAds.framework"; sourceTree = "<group>"; };
 		68507F7E191CA72400C1C895 /* A3AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3AppDelegate.h; path = AppDelegate/A3AppDelegate.h; sourceTree = "<group>"; };
 		68507F7F191CA72400C1C895 /* A3AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3AppDelegate.m; path = AppDelegate/A3AppDelegate.m; sourceTree = "<group>"; };
 		68521A3917E1EBB200E08FB1 /* NSDate-Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate-Utilities.h"; path = "External/NSDate-Extensions/NSDate-Utilities.h"; sourceTree = "<group>"; };
@@ -2788,7 +2787,7 @@
 			files = (
 				68F04D101B40F86B004FDD7B /* libcrypto.a in Frameworks */,
 				68F04D111B40F86B004FDD7B /* libssl.a in Frameworks */,
-				684EE1E91BDF182E00879BA9 /* GoogleMobileAds.framework in Frameworks */,
+				684CA4D81C1A6D75001ECF4E /* GoogleMobileAds.framework in Frameworks */,
 				6829762F1A1A19CC00E06E87 /* LocalAuthentication.framework in Frameworks */,
 				5727A57419D41B9200ADB17C /* CoreMotion.framework in Frameworks */,
 				68636000198BF88F00C3A323 /* libensembles.a in Frameworks */,
@@ -4899,7 +4898,7 @@
 		68CC1594174F764C0000870F /* External */ = {
 			isa = PBXGroup;
 			children = (
-				684EE1E81BDF182E00879BA9 /* GoogleMobileAds.framework */,
+				684CA4D71C1A6D75001ECF4E /* GoogleMobileAds.framework */,
 				68F04CA01B40F825004FDD7B /* RMStore */,
 				68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */,
 				689C9A261839CD7F007C97EE /* AFNetworking */,
@@ -6460,7 +6459,6 @@
 				680D638E18CFF9D400938AD0 /* A3CalculatorButtonsInBasicViewController_iPad.m in Sources */,
 				68425D5B1977BF63007C1AAE /* DaysCounterFavorite+extension.m in Sources */,
 				684E9EF7188A206C00FAA48E /* A3AboutViewController.m in Sources */,
-				68C7E1111BE217AF00861AFD /* A3CurrencyPickerStyleViewController_OLD.m in Sources */,
 				680886E01891751B0093FD97 /* A3ClockWaveCircleTimeView.m in Sources */,
 				688257AA17D37863006429D3 /* A3HolidaysEditViewController.m in Sources */,
 				6817830F1902823D003E1BB9 /* A3WalletItemTitleCell.m in Sources */,
@@ -7252,6 +7250,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/External/dropbox-ios-sdk-1.3.9",
 					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.5.2",
+					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.6.0",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";
@@ -7289,6 +7288,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/External/dropbox-ios-sdk-1.3.9",
 					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.5.2",
+					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.6.0",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";

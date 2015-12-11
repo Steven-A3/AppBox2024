@@ -18,6 +18,6 @@
 @property (weak, nonatomic) A3CurrencyViewController *mainViewController;
 
 - (void)resetIntermediateState;
-
 - (void)shareButtonAction:(id)sender;
+
 @end

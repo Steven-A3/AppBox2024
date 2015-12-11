@@ -6,8 +6,15 @@
 //  Copyright © 2015 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@class A3CurrencyDataManager, A3CurrencyViewController;
 
 @interface A3CurrencyPickerStyleViewController : UIViewController
+
+@property (nonatomic, weak) A3CurrencyDataManager *currencyDataManager;
+@property (nonatomic, weak) A3CurrencyViewController *mainViewController;
+@property (weak, nonatomic) IBOutlet UIPickerView *pickerView;
+
+- (void)resetIntermediateState;
+- (void)shareButtonAction:(id)sender;
 
 @end
