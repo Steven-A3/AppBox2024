@@ -251,15 +251,23 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		_inchAsPoints = (1024.0 / 2048.0) * pixelsInInch;
 		_resetPosition = _centimeterPositionRightBottom ? 14.0 : 5.5;
 		_redLineWidth = 0.5;
+	} else if ([model isEqualToString:@"iPad Pro"]) {
+		// iPad Pro
+		CGFloat pixelsInInch = 227.3;
+		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+		_centimeterAsPoints = (1024.0 / 2732.0) * pixelsInCentimeter;
+		_inchAsPoints = (1024.0 / 2732.0) * pixelsInInch;
+		_resetPosition = _centimeterPositionRightBottom ? 28.0 : 11.0;
+		_redLineWidth = 0.5;
 	} else {
 		// Simulator
 
-		CGFloat pixelsInInch = 163.4;
+		CGFloat pixelsInInch = 227.3;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (1024.0 / 1024.0) * pixelsInCentimeter;
-		_inchAsPoints = (1024.0 / 1024.0) * pixelsInInch;
-		_resetPosition = _centimeterPositionRightBottom ? 14.0 : 5.5;
-		_redLineWidth = 1.0;
+		_centimeterAsPoints = (1024.0 / 2732.0) * pixelsInCentimeter;
+		_inchAsPoints = (1024.0 / 2732.0) * pixelsInInch;
+		_resetPosition = _centimeterPositionRightBottom ? 28.0 : 11.0;
+		_redLineWidth = 0.5;
 	}
 
 	CGRect screenBounds = [[UIScreen mainScreen] bounds];
