@@ -12,5 +12,7 @@
 
 @property (nonatomic, strong) UIBarButtonItem *historyBarButton;
 
+- (void)dismissMoreMenu;
+
 - (void)enableControls:(BOOL)enable;
 @end

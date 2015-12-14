@@ -523,6 +523,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+	[_mainViewController dismissMoreMenu];
 	if (IS_IPHONE && IS_LANDSCAPE) return NO;
 
 	self.previousValue = textField.text;

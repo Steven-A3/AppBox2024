@@ -17,6 +17,7 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIViewController+MMDrawerController.h"
 #import "A3CurrencyHistoryViewController.h"
+#import "A3AppDelegate.h"
 
 NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSelectedViewIndex";
 
@@ -185,8 +186,11 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 }
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
-	[self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+	if (self.viewTypeSegmentedControl.selectedSegmentIndex == 0) {
+		[_pickerStyleViewController resetIntermediateState];
+	} else {
+		[_listStyleViewController resetIntermediateState];
+	}
 
 	if (IS_IPHONE) {
 		[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
@@ -205,8 +209,11 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 #pragma mark - More Menu
 
 - (void)moreButtonAction:(UIBarButtonItem *)button {
-	[self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+	if (self.viewTypeSegmentedControl.selectedSegmentIndex == 0) {
+		[_pickerStyleViewController resetIntermediateState];
+	} else {
+		[_listStyleViewController resetIntermediateState];
+	}
 
 	[self rightBarButtonDoneButton];
 
@@ -277,6 +284,8 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 }
 
 - (void)shareButtonAction:(id)sender {
+	[self dismissMoreMenu];
+	
 	if (self.viewTypeSegmentedControl.selectedSegmentIndex == 0) {
 		[_pickerStyleViewController shareButtonAction:sender];
 	} else {

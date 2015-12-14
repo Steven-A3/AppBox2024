@@ -950,6 +950,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 #pragma mark - UITextField delegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+	[_mainViewController dismissMoreMenu];
 	self.tableViewController.refreshControl = nil;
 	
 	if (IS_IPHONE && IS_LANDSCAPE) return NO;
