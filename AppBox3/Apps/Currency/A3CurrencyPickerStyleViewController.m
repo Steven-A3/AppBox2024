@@ -23,15 +23,26 @@
 #import "A3CurrencyViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "A3CalculatorViewController.h"
+#import "NSDate+TimeAgo.h"
+#import "A3CurrencySelectViewController.h"
+#import "NSManagedObject+extension.h"
+#import "UIImageView+AFNetworking.h"
+#import "UIView+Screenshot.h"
+#import "CurrencyHistory.h"
+#import "CurrencyHistoryItem.h"
+#import "A3SyncManager.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "Reachability.h"
 
 NSString *const A3CurrencyPickerSelectedIndexColumnOne = @"A3CurrencyPickerSelectedIndexColumnOne";
 NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelectedIndexColumnTwo";
 
 @interface A3CurrencyPickerStyleViewController ()
 		<UITableViewDelegate, UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate,
-		UITextFieldDelegate, UIPopoverControllerDelegate, A3CalculatorViewControllerDelegate>
+		UITextFieldDelegate, UIPopoverControllerDelegate, A3CalculatorViewControllerDelegate, A3SearchViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet UILabel *updateDateLabel;
 @property (weak, nonatomic) IBOutlet UIView *lineAboveAdBackgroundView;
 @property (weak, nonatomic) IBOutlet UIView *adBackgroundView;
@@ -53,20 +64,67 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *lineViewAboveAdBGHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *lineTopSampleLabelsHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *lineBottomSampleLabelsHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *lineBottomToPickerSpaceConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *adBGBottomToLineUpTopConstraint;
+@property (weak, nonatomic) IBOutlet UIView *lineUpView;
+@property (strong, nonatomic) UIButton *plusButton;
+@property (nonatomic, strong) A3CurrencySelectViewController *currencySelectViewController;
+@property (weak, nonatomic) IBOutlet UIView *lineViewPickerTop_iPad;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *lineViewPickerTopHeightConstraint_iPad;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *lineBottomToSegmentVSpace;
 
 @end
 
-@implementation A3CurrencyPickerStyleViewController
+@implementation A3CurrencyPickerStyleViewController {
+	BOOL _didPressNumberKey;
+	BOOL _didPressClearKey;
+	BOOL _currentValueIsNotFromUser;
+	BOOL _didFirstTimeRefresh;
+}
+
+#pragma mark - View Lifecycle Management
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-	_sourceValue = @1;
+	self.automaticallyAdjustsScrollViewInsets = NO;
+	
+	_sourceValue = [self lastInputValue];
 	
 	[self setupPickerView];
     [self setupTableView];
 	[self setupSampleLabelsFont];
 	[self setupSegmentedControlTitles];
+	
+	[self refreshUpdateDateLabel];
+	
+	if (IS_IPHONE35) {
+		[self setupConstantsFor3_5inchNoAds];
+	} else if (IS_IPHONE) {
+		[self setupConstantsFor4inchNoAds];
+	} else {
+		[self setupConstantsForiPad];
+	}
+	
+	double delayInSeconds = 2.5;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		if (IS_IPHONE) {
+			[self setupBannerViewForAdUnitID:AdMobAdUnitIDCurrencyPicker keywords:@[@"Finance", @"Money", @"Shopping", @"Travel"]];
+		} else {
+			[self setupBannerViewForAdUnitID:AdMobAdUnitIDCurrencyPicker keywords:@[@"Finance", @"Money", @"Shopping", @"Travel"] gender:kGADGenderUnknown adSize:kGADAdSizeLeaderboard];
+		}
+	});
+
+	UIView *superview = self.view;
+	[self.view addSubview:self.plusButton];
+	
+	[self.plusButton makeConstraints:^(MASConstraintMaker *make) {
+		make.centerX.equalTo(superview.centerX);
+		make.centerY.equalTo(superview.bottom).with.offset(-32);
+		make.width.equalTo(@44);
+		make.height.equalTo(@44);
+	}];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -77,20 +135,70 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		double delayInSeconds = 2.5;
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-			[self setupBannerViewForAdUnitID:AdMobAdUnitIDCurrency keywords:@[@"Finance", @"Money", @"Shopping", @"Travel"] gender:kGADGenderUnknown];
-		});
+	if (![self isMovingToParentViewController]) {
+		_favorites = nil;
+		_sourceValue = [self lastInputValue];
+		[_tableView reloadData];
+		[_pickerView reloadAllComponents];
 	}
 }
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
+	if (!_didFirstTimeRefresh) {
+		_didFirstTimeRefresh = YES;
+
+		Reachability *reachability = [Reachability reachabilityForInternetConnection];
+		A3UserDefaults *userDefaults = [A3UserDefaults standardUserDefaults];
+		if ([[A3UserDefaults standardUserDefaults] currencyAutoUpdate]) {
+			if ([reachability isReachableViaWiFi] ||
+					([userDefaults currencyUseCellularData] && [A3UIDevice hasCellularNetwork])) {
+				[self updateButtonAction:nil];
+			}
+		}
+	}
+
 	self.tableView.contentInset = UIEdgeInsetsZero;
 	[self makeLinesSinglePixel];
+	[self setupIPADLayoutToInterfaceOrientation:self.interfaceOrientation];
+}
+
+- (void)setupConstantsFor3_5inchNoAds {
+	_adBackgroundViewHeightConstraint.constant = 0;
+	[_adBackgroundView setHidden:YES];
+	[_lineAboveAdBackgroundView setHidden:YES];
+
+	_tableView.rowHeight = 70.0;
+	_tableViewHeightConstraint.constant = 140.0;
+	_adBGBottomToLineUpTopConstraint.constant = -1;
+	_lineBottomToPickerSpaceConstraint.constant = -11;
+	
+	[self.view layoutIfNeeded];
+}
+
+- (void)setupConstantsFor4inchNoAds {
+	_adBackgroundViewHeightConstraint.constant = 0;
+	[_adBackgroundView setHidden:YES];
+	[_lineAboveAdBackgroundView setHidden:YES];
+
+	_tableView.rowHeight = 95.0;
+	_tableViewHeightConstraint.constant = 190.0;
+	_adBGBottomToLineUpTopConstraint.constant = -1;
+	_lineBottomToPickerSpaceConstraint.constant = 8;
+
+	[self.view layoutIfNeeded];
+}
+
+- (void)setupConstantsForiPad {
+	_adBackgroundViewHeightConstraint.constant = 0;
+	[_adBackgroundView setHidden:YES];
+	[_lineAboveAdBackgroundView setHidden:YES];
+	
+	_tableView.rowHeight = 95.0;
+	_tableViewHeightConstraint.constant = 190.0;
+	
+	[self.view layoutIfNeeded];
 }
 
 #pragma mark - TableView
@@ -195,6 +303,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	_lineViewAboveAdBGHeightConstraint.constant = 0.5;
 	_lineTopSampleLabelsHeightConstraint.constant = 0.5;
 	_lineBottomSampleLabelsHeightConstraint.constant = 0.5;
+	_lineViewPickerTopHeightConstraint_iPad.constant = 0.5;
 	
 	[self.view layoutIfNeeded];
 }
@@ -233,6 +342,92 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 #pragma mark - Update Button
 
 - (IBAction)updateButtonAction:(UIButton *)sender {
+	[self.currencyDataManager updateCurrencyRatesOnSuccess:^{
+		[self didSelectPickerRow];
+		[self refreshUpdateDateLabel];
+	} failure:^{
+		
+	}];
+}
+
+- (void)refreshUpdateDateLabel {
+	NSDate *updateDate = [[A3UserDefaults standardUserDefaults] objectForKey:A3CurrencyUpdateDate];
+	if (updateDate) {
+		NSString *updateTitle = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [updateDate timeAgo]];
+		
+		NSMutableAttributedString *updateString = [[NSMutableAttributedString alloc] initWithString:updateTitle
+																						 attributes:[self refreshControlTitleAttribute]];
+		self.updateDateLabel.attributedText = updateString;
+	}
+}
+
+- (NSDictionary *)refreshControlTitleAttribute {
+	return @{
+			NSFontAttributeName:[UIFont systemFontOfSize:12],
+			NSForegroundColorAttributeName:[UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0]
+	};
+}
+
+#pragma mark - Plus Button
+
+- (UIButton *)plusButton {
+	if (!_plusButton) {
+		_plusButton = [UIButton buttonWithType:UIButtonTypeSystem];
+		[_plusButton setImage:[UIImage imageNamed:@"add01"] forState:UIControlStateNormal];
+		[_plusButton addTarget:self action:@selector(plusButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+	}
+	return _plusButton;
+}
+
+- (void)plusButtonAction:(UIButton *)button {
+	if (self.firstResponder) {
+		[self.firstResponder resignFirstResponder];
+		[self setFirstResponder:nil];
+		return;
+	}
+	
+	[self resetIntermediateState];
+	
+	[_mainViewController enableControls:NO];
+	
+	_currencySelectViewController = [A3CurrencySelectViewController new];
+	_currencySelectViewController.allowChooseFavorite = YES;
+	_currencySelectViewController.isFromCurrencyConverter = YES;
+	_currencySelectViewController.delegate = self;
+
+	if (IS_IPHONE) {
+		_currencySelectViewController.shouldPopViewController = NO;
+		_currencySelectViewController.showCancelButton = YES;
+		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:_currencySelectViewController];
+		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
+	} else {
+		[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:_currencySelectViewController];
+	}
+}
+
+- (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedCode {
+	NSArray *result = [CurrencyFavorite MR_findByAttribute:@"uniqueID" withValue:selectedCode];
+	if ([result count]) {
+		NSInteger indexOfSelectedCurrency = [self.favorites indexOfObjectPassingTest:^BOOL(CurrencyFavorite * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+			return [obj.uniqueID isEqualToString:selectedCode];
+		}];
+		if (indexOfSelectedCurrency != NSNotFound) {
+			[_pickerView selectRow:indexOfSelectedCurrency inComponent:1 animated:YES];
+			[self didSelectPickerRow];
+		}
+		return;
+	}
+	NSManagedObjectContext *_savingContext = [NSManagedObjectContext MR_rootSavingContext];
+
+	CurrencyFavorite *newObject = [CurrencyFavorite MR_createEntityInContext:_savingContext];
+	newObject.uniqueID = selectedCode;
+	[newObject assignOrderAsLastInContext:_savingContext];
+	[_savingContext MR_saveToPersistentStoreAndWait];
+
+	_favorites = nil;
+	[_pickerView reloadAllComponents];
+	[_pickerView selectRow:[self.favorites count] - 1 inComponent:1 animated:YES];
+	[self didSelectPickerRow];
 }
 
 #pragma mark - Swap Button
@@ -247,7 +442,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	[self didSelectPickerRow];
 }
 
-#pragma mark - Term Segmented Control
+#pragma mark - Term Segmented Control & Chart View
 
 - (void)setupSegmentedControlTitles {
 	if (IS_IPAD && [[NSLocale preferredLanguages][0] isEqualToString:@"it"]) {
@@ -264,6 +459,65 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 }
 
 - (IBAction)termSelectValueChanged:(UISegmentedControl *)sender {
+	[self reloadChartImage];
+}
+
+- (void)reloadChartImage {
+	NSURLRequest *request = [NSURLRequest requestWithURL:self.urlForChartImage];
+	[self.chartImageView setImageWithURLRequest:request
+							   placeholderImage:nil
+										success:nil
+										failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+											[self.chartImageView setImage:[self chartNotAvailableImage]];
+										} ];
+}
+
+- (UIImage *)chartNotAvailableImage {
+	CGSize chartSize = [self chartSize];
+	UILabel *label = [UILabel new];
+	label.frame = CGRectMake(0,0,chartSize.width, chartSize.height);
+	label.numberOfLines = 2;
+	label.textAlignment = NSTextAlignmentCenter;
+	label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+	label.textColor = [UIColor colorWithRed:172.0 / 255.0 green:172.0 / 255.0 blue:172.0 / 255.0 alpha:1.0];
+	label.text = NSLocalizedString(@"Internet connection is not available.", @"Internet connection is not available.");
+	label.layer.borderWidth = IS_RETINA ? 0.25 : 0.5;
+	label.layer.borderColor = [UIColor colorWithWhite:0.0 alpha:0.2].CGColor;
+	label.opaque = NO;
+	return [label imageByRenderingView];
+}
+
+- (CGSize)chartSize {
+	CGSize size;
+	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+	if (IS_IPHONE) {
+		size.width = screenBounds.size.height == 480 ? 263 : 300;
+		size.height = screenBounds.size.height == 480 ? 154 : 175;
+	} else {
+		size.width = IS_PORTRAIT ?  605 : 555 ;
+		size.height = IS_PORTRAIT ? 268 : 246 ;
+	}
+	return size;
+}
+
+/**
+ *  Yahoo Finance API
+ *  Build URL preparing to call Yahoo Finance API
+ *
+ *  @return NSURL object made for Yahoo Finance API, Currency Chart
+ */
+- (NSURL *)urlForChartImage {
+	NSArray *types = @[@"1d", @"5d", @"1m", @"5m", @"1y"];
+	NSString *string = [NSString stringWithFormat:@"http://chart.finance.yahoo.com/z?s=%@%@=x&t=%@&z=%@&region=%@&lang=%@",
+												  _sourceCurrencyCode, _targetCurrencyCode,
+												  types[(NSUInteger) self.termSelectSegmentedControl.selectedSegmentIndex],
+												  IS_IPHONE || (IS_IPHONE && !IS_LANDSCAPE)  ? @"m" : @"l",
+												  [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode],
+												  [[NSLocale preferredLanguages] objectAtIndex:0] ];
+
+	FNLOG(@"%@", string);
+
+	return [NSURL URLWithString:string];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -288,25 +542,39 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
+	_didPressClearKey = NO;
+	_didPressNumberKey = NO;
+
 	_calculatorTargetTextField = textField;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
 	[self addNumberKeyboardNotificationObservers];
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
-	[self removeNumberKeyboardNotificationObservers];
-	self.numberKeyboardViewController = nil;
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+	if ([string length]) {
+		_didPressNumberKey = YES;
+		_didPressClearKey = NO;
+	}
+	
+	return YES;
+}
 
-	FNLOG(@"%@, %@", textField.text, textField);
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+	if (_didPressClearKey) {
+		textField.text = @"1";
+		[self addHistoryWithValue:_previousValue];
+	} else if (!_didPressNumberKey) {
+		textField.text = _previousValue;
+	} else {
+		[self addHistoryWithValue:_previousValue];
+		_currentValueIsNotFromUser = NO;
+	}
+
 	if (![textField.text length]) {
 		textField.text = self.previousValue;
 	}
 
 	float value = [textField.text floatValueEx];
-	if (value < 1.0) {
-		value = 1.0;
-	}
 
 	NSNumberFormatter *nf;
 	if (textField == _sourceTextField) {
@@ -322,6 +590,13 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	} else {
 		_sourceTextField.text = self.sourceValueString;
 	}
+
+	_sourceValue = @(value);
+	[[A3SyncManager sharedSyncManager] setObject:@(value) forKey:A3CurrencyUserDefaultsLastInputValue state:A3DataObjectStateModified];
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+	[self removeNumberKeyboardNotificationObservers];
+	self.numberKeyboardViewController = nil;
 }
 
 - (void)textFieldDidChange:(NSNotification *)notification {
@@ -336,6 +611,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 #pragma mark A3KeyboardViewControllerDelegate
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
+	_didPressClearKey = YES;
 	if (keyInputDelegate == _sourceTextField) {
 		_sourceTextField.text = @"";
 		_targetTextField.text = self.targetValueString;
@@ -492,6 +768,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 	[self updateSampleCurrencyLabels];
 	[self.tableView reloadData];
+	[self reloadChartImage];
 }
 
 - (A3YahooCurrency *)currencyInfoAtRow:(NSInteger)row {
@@ -511,8 +788,8 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	return _favorites;
 }
 
-#warning On the construction
 - (void)resetIntermediateState {
+	[_sourceTextField resignFirstResponder];
 }
 
 #pragma mark - Share
@@ -563,14 +840,144 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 #pragma mark - Ad Received
 
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
-	if (IS_IPHONE) {
+	if (IS_IPHONE35) {
+		[self.view addSubview:bannerView];
+		
+		[bannerView remakeConstraints:^(MASConstraintMaker *make) {
+			make.top.equalTo(_lineUpView.top);
+			make.left.equalTo(_lineUpView.left);
+			make.right.equalTo(_lineUpView.right);
+			make.height.equalTo(@50);
+		}];
+		
+		[self.view layoutIfNeeded];
+	} else if (IS_IPHONE) {
+		FNLOGRECT(bannerView.frame);
+		[_adBackgroundView setHidden:NO];
+		[_lineAboveAdBackgroundView setHidden:NO];
+		_adBackgroundViewHeightConstraint.constant = 50;
+
+		_tableView.rowHeight = 84.0;
+		_tableViewHeightConstraint.constant = 168.0;
+		_lineBottomToPickerSpaceConstraint.constant = -6.0;
+
 		[_adBackgroundView addSubview:bannerView];
 		
 		[bannerView remakeConstraints:^(MASConstraintMaker *make) {
-			make.edges.equalTo(_adBackgroundView);
+			make.top.equalTo(_adBackgroundView.top);
+			make.left.equalTo(_adBackgroundView.left);
+			make.right.equalTo(_adBackgroundView.right);
+			make.bottom.equalTo(_adBackgroundView.bottom);
 		}];
+
+		[_tableView reloadData];
+		[self.view layoutIfNeeded];
 	} else {
+		[_adBackgroundView setHidden:NO];
+		[_lineAboveAdBackgroundView setHidden:NO];
+		_adBackgroundViewHeightConstraint.constant = 90;
+		[self setupIPADLayoutToInterfaceOrientation:self.interfaceOrientation];
+		
+		FNLOGRECT(bannerView.frame);
+		[self.view addSubview:bannerView];
+		
+		[bannerView remakeConstraints:^(MASConstraintMaker *make) {
+			make.centerX.equalTo(_adBackgroundView.centerX);
+			make.centerY.equalTo(_adBackgroundView.centerY);
+		}];
+		
+		[self.view layoutIfNeeded];
 	}
+}
+
+#pragma mark - iPad Rotation
+
+/**
+ *	 Subclasses may override this method to perform additional actions immediately prior to the rotation. For example, 
+ *	 you might use this method to disable view interactions, stop media playback, or temporarily turn off expensive drawing or live updates. 
+ *	 You might also use it to swap the current view for one that reflects the new interface orientation
+ *   When this method is called, the interfaceOrientation property still contains the view's original orientation.
+ *	 Your implementation of this method must call super at some point during its execution.
+ *
+ *  @param toInterfaceOrientation The new orientation for the user interface. The possible values are described in UIInterfaceOrientation.
+ *  @param duration               The duration of the pending rotation, measured in seconds.
+ */
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (IS_IPHONE) return;
+	[self setupIPADLayoutToInterfaceOrientation:toInterfaceOrientation];
+}
+
+- (void)setupIPADLayoutToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+	if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+		[_termSelectSegmentedControl setHidden:NO];
+		[_chartImageView setHidden:NO];
+		if ([self bannerView]) {
+			_lineBottomToSegmentVSpace.constant = 50.0;
+			self.tableView.rowHeight = 84;
+			self.tableViewHeightConstraint.constant = 168;
+		} else {
+			_lineBottomToSegmentVSpace.constant = 50.0 + 27.0;
+			self.tableView.rowHeight = 95;
+			self.tableViewHeightConstraint.constant = 190;
+		}
+		[self.tableView reloadData];
+	} else {
+		if ([[A3AppDelegate instance] shouldPresentAd]) {
+			[_termSelectSegmentedControl setHidden:YES];
+			[_chartImageView setHidden:YES];
+			self.tableView.rowHeight = 107;
+			self.tableViewHeightConstraint.constant = 214;
+		} else {
+			[_termSelectSegmentedControl setHidden:YES];
+			[_chartImageView setHidden:YES];
+			self.tableView.rowHeight = 107;
+			self.tableViewHeightConstraint.constant = 214;
+		}
+		[self.tableView reloadData];
+	}
+	[self.view layoutIfNeeded];
+}
+
+#pragma mark - History
+
+- (NSNumber *)lastInputValue {
+	NSNumber *lastInput = [[A3SyncManager sharedSyncManager] objectForKey:A3CurrencyUserDefaultsLastInputValue];
+	_currentValueIsNotFromUser = lastInput == nil;
+	return lastInput ? lastInput : @1;
+}
+
+- (void)addHistoryWithValue:(NSString *)value {
+	if ([value floatValueEx] == 1.0 && _currentValueIsNotFromUser) {
+		return;
+	}
+
+	NSInteger fromRow = [_pickerView selectedRowInComponent:0];
+	NSInteger toRow = [_pickerView selectedRowInComponent:1];
+	
+	A3YahooCurrency *fromCurrencyInfo = [self currencyInfoAtRow:fromRow];
+	A3YahooCurrency *toCurrencyInfo = [self currencyInfoAtRow:toRow];
+	
+	CurrencyHistory *history = [CurrencyHistory MR_createEntity];
+	history.uniqueID = [[NSUUID UUID] UUIDString];
+	NSDate *keyDate = [NSDate date];
+	history.updateDate = keyDate;
+	history.currencyCode = fromCurrencyInfo.currencyCode;
+	history.rate = fromCurrencyInfo.rateToUSD;
+	history.value = @([value floatValueEx]);
+	
+	CurrencyHistoryItem *item = [CurrencyHistoryItem MR_createEntity];
+	item.uniqueID = [[NSUUID UUID] UUIDString];
+	item.updateDate = keyDate;
+	item.historyID = history.uniqueID;
+	item.currencyCode = toCurrencyInfo.currencyCode;
+	item.rate = toCurrencyInfo.rateToUSD;
+	item.order = [NSString stringWithFormat:@"%010ld", 1l];
+	
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+	
+	[_mainViewController enableControls:YES];
 }
 
 @end

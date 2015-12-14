@@ -41,6 +41,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+	self.automaticallyAdjustsScrollViewInsets = NO;
 	self.view.backgroundColor = [UIColor whiteColor];
 	
     [A3CurrencyDataManager setupFavorites];
@@ -78,6 +79,19 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
     self.navigationItem.titleView = self.viewTypeSegmentedControl;
 
     [self loadSelectedViewController];
+
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
+	}
+}
+
+- (void)mainMenuViewDidHide {
+	[self enableControls:YES];
+}
+
+- (void)rightSideViewWillDismiss {
+	[self enableControls:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -125,22 +139,22 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
         }
         [self.view addSubview:self.pickerStyleViewController.view];
         [self addChildViewController:_pickerStyleViewController];
+		
+		[self.pickerStyleViewController.view remakeConstraints:^(MASConstraintMaker *make) {
+			make.edges.equalTo(self.view);
+		}];
     } else {
         // Load list style
-		BOOL needAdjustContentInset = NO;
         if (_pickerStyleViewController.parentViewController == self) {
             [_pickerStyleViewController.view removeFromSuperview];
             [_pickerStyleViewController removeFromParentViewController];
-			needAdjustContentInset = YES;
 		}
         [self.view addSubview:self.listStyleViewController.view];
         [self addChildViewController:_listStyleViewController];
 
-		if (needAdjustContentInset) {
-			UIEdgeInsets contentInset = _listStyleViewController.tableView.contentInset;
-			contentInset.top = 64;
-			_listStyleViewController.tableView.contentInset = contentInset;
-		}
+		[_listStyleViewController.view remakeConstraints:^(MASConstraintMaker *make) {
+			make.edges.equalTo(self.view);
+		}];
     }
 }
 
@@ -264,9 +278,9 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 
 - (void)shareButtonAction:(id)sender {
 	if (self.viewTypeSegmentedControl.selectedSegmentIndex == 0) {
-		[_pickerStyleViewController shareButtonAction:nil];
+		[_pickerStyleViewController shareButtonAction:sender];
 	} else {
-		[_listStyleViewController shareButtonAction:nil];
+		[_listStyleViewController shareButtonAction:sender];
 	}
 }
 

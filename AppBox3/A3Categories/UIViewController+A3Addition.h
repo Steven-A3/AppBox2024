@@ -14,7 +14,8 @@
 extern NSString *const AdMobAdUnitIDBattery;
 extern NSString *const AdMobAdUnitIDCalculator;
 extern NSString *const AdMobAdUnitIDClock;
-extern NSString *const AdMobAdUnitIDCurrency;
+extern NSString *const AdMobAdUnitIDCurrencyList;
+extern NSString *const AdMobAdUnitIDCurrencyPicker;
 extern NSString *const AdMobAdUnitIDDateCalc;
 extern NSString *const AdMobAdUnitIDDaysCounter;
 extern NSString *const AdMobAdUnitIDExpenseList;
@@ -98,7 +99,9 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 - (UIActionSheet *)firstActionSheet;
 - (void)rotateFirstActionSheet;
 - (void)requestAuthorizationForCamera:(NSString *)appName;
+- (void)setupBannerViewForAdUnitID:(NSString *)unitID keywords:(NSArray *)keywords gender:(GADGender)gender adSize:(GADAdSize)adSize;
 - (void)setupBannerViewForAdUnitID:(NSString *)unitID keywords:(NSArray *)keywords gender:(GADGender)gender;
+- (void)setupBannerViewForAdUnitID:(NSString *)unitID keywords:(NSArray *)keywords;
 - (GADBannerView *)bannerView;
 
 @end

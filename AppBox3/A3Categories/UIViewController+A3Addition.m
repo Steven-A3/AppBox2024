@@ -26,7 +26,8 @@ static char const *const key_adBannerView = "key_adBannerView";
 NSString *const AdMobAdUnitIDBattery = @"ca-app-pub-0532362805885914/2432956543";
 NSString *const AdMobAdUnitIDCalculator = @"ca-app-pub-0532362805885914/2712158144";
 NSString *const AdMobAdUnitIDClock = @"ca-app-pub-0532362805885914/2851758945";
-NSString *const AdMobAdUnitIDCurrency = @"ca-app-pub-0532362805885914/7281958549";
+NSString *const AdMobAdUnitIDCurrencyList = @"ca-app-pub-0532362805885914/7281958549";
+NSString *const AdMobAdUnitIDCurrencyPicker = @"ca-app-pub-0532362805885914/1644430548";
 NSString *const AdMobAdUnitIDDateCalc = @"ca-app-pub-0532362805885914/4188891345";
 NSString *const AdMobAdUnitIDDaysCounter = @"ca-app-pub-0532362805885914/7002756948";
 NSString *const AdMobAdUnitIDExpenseList = @"ca-app-pub-0532362805885914/8479490142";
@@ -751,7 +752,7 @@ NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
  *  @param keywords keywords list
  *  @param gender   gender information
  */
-- (void)setupBannerViewForAdUnitID:(NSString *)unitID keywords:(NSArray *)keywords gender:(GADGender)gender {
+- (void)setupBannerViewForAdUnitID:(NSString *)unitID keywords:(NSArray *)keywords gender:(GADGender)gender adSize:(GADAdSize)adSize {
 	if (![[A3AppDelegate instance] shouldPresentAd]) return;
 
 	GADRequest *adRequest = [GADRequest request];
@@ -761,10 +762,22 @@ NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
 	GADBannerView *bannerView = [GADBannerView new];
 	bannerView.adUnitID = unitID;
 	bannerView.rootViewController = self;
-	bannerView.adSize = kGADAdSizeBanner;
+	bannerView.adSize = adSize;
 	bannerView.delegate = (id<GADBannerViewDelegate>)self;
 	[bannerView loadRequest:adRequest];
 	objc_setAssociatedObject(self, key_adBannerView, bannerView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void)setupBannerViewForAdUnitID:(NSString *)unitID keywords:(NSArray *)keywords gender:(GADGender)gender {
+	if (![[A3AppDelegate instance] shouldPresentAd]) return;
+
+	[self setupBannerViewForAdUnitID:unitID keywords:keywords gender:gender adSize:kGADAdSizeBanner];
+}
+
+- (void)setupBannerViewForAdUnitID:(NSString *)unitID keywords:(NSArray *)keywords {
+	if (![[A3AppDelegate instance] shouldPresentAd]) return;
+
+	[self setupBannerViewForAdUnitID:unitID keywords:keywords gender:kGADGenderUnknown adSize:kGADAdSizeBanner];
 }
 
 /**

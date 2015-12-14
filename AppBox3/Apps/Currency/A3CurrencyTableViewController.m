@@ -79,7 +79,7 @@ NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChan
 	NSUInteger	_shareSourceIndex, _shareTargetIndex;
 	BOOL		_shareAll;
 	BOOL		_barButtonEnabled;
-	BOOL		_viewWillAppearCalled;
+	BOOL _didFirstTimeRefresh;
 }
 
 NSString *const A3CurrencyDataCellID = @"A3CurrencyDataCell";
@@ -93,6 +93,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 {
     [super viewDidLoad];
 
+	self.automaticallyAdjustsScrollViewInsets = NO;
 	self.tableView.accessibilityIdentifier = @"Currency";
 	
 	_barButtonEnabled = YES;
@@ -116,6 +117,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 	[self.tableView registerNib:[UINib nibWithNibName:@"A3CurrencyTVActionCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3CurrencyActionCellID];
 	[self.tableView registerNib:[UINib nibWithNibName:@"A3CurrencyTVEqualCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3CurrencyEqualCellID];
 
+	self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
 	self.tableView.rowHeight = 84.0;
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = UIEdgeInsetsZero;
@@ -135,6 +137,16 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 	[self registerContentSizeCategoryDidChangeNotification];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+
+	UIView *superview = self.view;
+	[self.view addSubview:self.plusButton];
+
+	[self.plusButton makeConstraints:^(MASConstraintMaker *make) {
+		make.centerX.equalTo(superview.centerX);
+		make.centerY.equalTo(superview.bottom).with.offset(-32);
+		make.width.equalTo(@44);
+		make.height.equalTo(@44);
+	}];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -148,18 +160,10 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	UIView *superview = self.view.superview;
-	[superview addSubview:self.plusButton];
+	self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
 
-	if (!_viewWillAppearCalled) {
-		_viewWillAppearCalled = YES;
-
-		[self.plusButton makeConstraints:^(MASConstraintMaker *make) {
-			make.centerX.equalTo(superview.centerX);
-			make.centerY.equalTo(superview.bottom).with.offset(-32);
-			make.width.equalTo(@44);
-			make.height.equalTo(@44);
-		}];
+	if (!_didFirstTimeRefresh) {
+		_didFirstTimeRefresh = YES;
 
 		Reachability *reachability = [Reachability reachabilityForInternetConnection];
 		A3UserDefaults *userDefaults = [A3UserDefaults standardUserDefaults];
@@ -177,8 +181,9 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 	}
 	if ([self isBeingPresented] || [self isMovingToParentViewController]) {
 		self.tableViewController.refreshControl = self.refreshControl;
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDCurrency keywords:@[@"Finance", @"Money", @"Shopping", @"Travel"] gender:kGADGenderUnknown];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDCurrencyList keywords:@[@"Finance", @"Money", @"Shopping", @"Travel"] gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
 	}
+	[self.tableView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -626,7 +631,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	}
 	
 	if (_favorites[indexPath.row] == _adItem) {
-		return 50.0;
+		return IS_IPHONE ? 50.0 : 90.0;
 	}
 	return 84;
 }
@@ -1405,6 +1410,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	if (IS_IPHONE && IS_LANDSCAPE) {
 		[self leftBarButtonAppsButton];
 	}
+	self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
 }
 
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView {

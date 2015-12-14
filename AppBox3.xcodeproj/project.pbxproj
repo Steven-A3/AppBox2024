@@ -739,7 +739,7 @@
 		68E2A64A18D0B1FC00E834D9 /* A3ExpenseListHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A60D18D0B1FC00E834D9 /* A3ExpenseListHistoryCell.m */; };
 		68E2A64B18D0B1FC00E834D9 /* A3ExpenseListHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A60F18D0B1FC00E834D9 /* A3ExpenseListHistoryViewController.m */; };
 		68E2A64C18D0B1FC00E834D9 /* A3ExpenseListItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A61118D0B1FC00E834D9 /* A3ExpenseListItemCell.m */; };
-		68E2A64D18D0B1FC00E834D9 /* A3ExpenseListMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A61318D0B1FC00E834D9 /* A3ExpenseListMainViewController.m */; };
+		68E2A64D18D0B1FC00E834D9 /* A3ExpenseListMainViewcontroller.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A61318D0B1FC00E834D9 /* A3ExpenseListMainViewcontroller.m */; };
 		68E2A64F18D0B1FC00E834D9 /* A3ItemSelectListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A61718D0B1FC00E834D9 /* A3ItemSelectListViewController.m */; };
 		68E2A65018D0B1FC00E834D9 /* A3TableViewDatePickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A61918D0B1FC00E834D9 /* A3TableViewDatePickerCell.m */; };
 		68E2A65118D0B1FC00E834D9 /* A3TableViewDatePickerElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A61B18D0B1FC00E834D9 /* A3TableViewDatePickerElement.m */; };
@@ -2361,7 +2361,7 @@
 		68E2A61018D0B1FC00E834D9 /* A3ExpenseListItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ExpenseListItemCell.h; sourceTree = "<group>"; };
 		68E2A61118D0B1FC00E834D9 /* A3ExpenseListItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ExpenseListItemCell.m; sourceTree = "<group>"; };
 		68E2A61218D0B1FC00E834D9 /* A3ExpenseListMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ExpenseListMainViewController.h; sourceTree = "<group>"; };
-		68E2A61318D0B1FC00E834D9 /* A3ExpenseListMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ExpenseListMainViewController.m; sourceTree = "<group>"; };
+		68E2A61318D0B1FC00E834D9 /* A3ExpenseListMainViewcontroller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ExpenseListMainViewcontroller.m; sourceTree = "<group>"; };
 		68E2A61618D0B1FC00E834D9 /* A3ItemSelectListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ItemSelectListViewController.h; sourceTree = "<group>"; };
 		68E2A61718D0B1FC00E834D9 /* A3ItemSelectListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ItemSelectListViewController.m; sourceTree = "<group>"; };
 		68E2A61818D0B1FC00E834D9 /* A3TableViewDatePickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TableViewDatePickerCell.h; sourceTree = "<group>"; };
@@ -4996,7 +4996,7 @@
 				68E2A61018D0B1FC00E834D9 /* A3ExpenseListItemCell.h */,
 				68E2A61118D0B1FC00E834D9 /* A3ExpenseListItemCell.m */,
 				68E2A61218D0B1FC00E834D9 /* A3ExpenseListMainViewController.h */,
-				68E2A61318D0B1FC00E834D9 /* A3ExpenseListMainViewController.m */,
+				68E2A61318D0B1FC00E834D9 /* A3ExpenseListMainViewcontroller.m */,
 				68E2A61618D0B1FC00E834D9 /* A3ItemSelectListViewController.h */,
 				68E2A61718D0B1FC00E834D9 /* A3ItemSelectListViewController.m */,
 				68E2A61818D0B1FC00E834D9 /* A3TableViewDatePickerCell.h */,
@@ -6236,7 +6236,7 @@
 				689C9A4E1839CD7F007C97EE /* AFSecurityPolicy.m in Sources */,
 				68F14FC319485E8500159EAD /* A3DaysCounterEventDetailLocationViewController.m in Sources */,
 				68F14FFE19485E8500159EAD /* A3DaysCounterSetupRepeatViewController.m in Sources */,
-				68E2A64D18D0B1FC00E834D9 /* A3ExpenseListMainViewController.m in Sources */,
+				68E2A64D18D0B1FC00E834D9 /* A3ExpenseListMainViewcontroller.m in Sources */,
 				68B62EC2199E620B006384E1 /* DaysCounterCalendar.m in Sources */,
 				68E2777E19D177DB000EC931 /* MWPhotoBrowser+rotation.m in Sources */,
 				6874847B19780EFC00EA8F74 /* UnitPriceInfo+extension.m in Sources */,
@@ -7249,7 +7249,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/External/dropbox-ios-sdk-1.3.9",
-					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.5.2",
 					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.6.0",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -7287,7 +7286,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/External/dropbox-ios-sdk-1.3.9",
-					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.5.2",
 					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.6.0",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
