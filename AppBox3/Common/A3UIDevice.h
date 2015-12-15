@@ -43,6 +43,12 @@
 #define IS_PORTRAIT		(UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]))
 #define CURRENT_ORIENTATION        [[UIApplication sharedApplication] statusBarOrientation]
 
+#define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
+#define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+#define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
+#define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
+
 #define IS_RETINA	([[UIScreen mainScreen] scale] == 2)
 
 #define	LANGUAGE_KOREAN	[[NSLocale preferredLanguages][0] isEqualToString:@"ko"]
@@ -52,46 +58,32 @@ extern NSString *const A3AnimationIDKeyboardWillShow;
 @interface A3UIDevice : NSObject
 
 + (CGRect)screenBoundsAdjustedWithOrientation;
-
 + (CGFloat)statusBarHeight;
-
 + (double)memoryUsage;
 + (double)storageUsage;
 + (UIInterfaceOrientation)deviceOrientation;
 + (BOOL)deviceOrientationIsPortrait;
 + (CGFloat)applicationHeightForCurrentOrientation;
-
 + (CGRect)appFrame;
-
 + (BOOL)hasCellularNetwork;
 + (BOOL)hasTorch;
-
 + (BOOL)canAccessCamera;
 
 // KJH
 + (NSString *)platform;
-
 + (NSDictionary *)deviceInformationDictionary;
-
 + (NSDictionary *)remainingTimeDictionary;
-
 + (NSString *)platformString;
 #pragma mark - Methods
 + (NSString *)totalDiskSpace;
 + (NSString *)freeDiskSpace;
 + (NSString *)usedDiskSpace;
-
 + (NSString *)capacity;
-
 + (void)verifyAndAlertMicrophoneAvailability;
-
 + (BOOL)shouldUseImageForPrevNextButton;
-
 + (BOOL)shouldSupportLunarCalendar;
-
 + (BOOL)useKoreanLunarCalendar;
-
 + (BOOL)useKoreanLunarCalendarForConversion;
-
 + (NSString *)systemCurrencyCode;
+
 @end

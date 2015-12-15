@@ -440,7 +440,7 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 
 	date = [HolidayData getDeepavaliForYear:year];
 	if (date) {
-		holidayName = NSLocalizedStringFromTable(@"Diwali", kHolidaysResourceName, nil);
+		holidayName = NSLocalizedStringFromTable(@"Deepavali", kHolidaysResourceName, nil);
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
@@ -1437,13 +1437,11 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 		holidayName = NSLocalizedStringFromTable(@"Eid al-Fitr Holiday", kHolidaysResourceName, nil);
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
-		
-
 	}
 
 	date = [HolidayData getDeepavaliForYear:year];
 	if (date) {
-		holidayName = NSLocalizedStringFromTable(@"Diwali", kHolidaysResourceName, nil);
+		holidayName = NSLocalizedStringFromTable(@"Deepavali", kHolidaysResourceName, nil);
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
@@ -1679,8 +1677,6 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	date = [HolidayData dateWithDay:1 month:7 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
-    
-    
 	if (year == 2010) {
 		holidayName = NSLocalizedStringFromTable(@"Start of Ramadan Bank Holiday", kHolidaysResourceName, nil);
 		date = [HolidayData dateWithDay:12 month:8 year:year withCalendar:gregorian option:0];
