@@ -564,6 +564,9 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		NSArray *array = [CurrencyFavorite MR_findAllSortedBy:A3CommonPropertyOrder ascending:YES inContext:self.savingContext];
 		_favorites = [array mutableCopy];
 		[self addEqualItem];
+		if ([self bannerView]) {
+			[_favorites insertObject:[self adItem] atIndex:2];
+		}
 	}
 	return _favorites;
 }
