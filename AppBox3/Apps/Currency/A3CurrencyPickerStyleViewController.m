@@ -135,12 +135,10 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	if (![self isMovingToParentViewController]) {
-		_favorites = nil;
-		_sourceValue = [self lastInputValue];
-		[_tableView reloadData];
-		[_pickerView reloadAllComponents];
-	}
+	_favorites = nil;
+	_sourceValue = [self lastInputValue];
+	[_tableView reloadData];
+	[_pickerView reloadAllComponents];
 }
 
 
@@ -233,7 +231,6 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 		cell.valueField.textColor = self.tableView.tintColor;
 		
 		//		cell.rateLabel.text = self.sourceItem.currencySymbol;
-		cell.rateLabel.text =@"";
 		cell.codeLabel.text = _sourceCurrencyCode;
 		_sourceTextField = cell.valueField;
 
@@ -241,6 +238,13 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 		cell.flagImageView.image = [UIImage imageNamed:currencyInfo.flagImageName];
 		NSNumberFormatter *nf = [self currencyFormatterWithCurrencyCode:_sourceCurrencyCode];
 		cell.valueField.text = [nf stringFromNumber:_sourceValue];
+
+		if (IS_IPHONE) {
+			cell.rateLabel.text = currencyInfo.currencySymbol;
+		} else {
+			cell.rateLabel.text = @"";
+		}
+
 	} else {
 		cell.valueField.delegate = self;
 		[cell.valueField setEnabled:NO];
@@ -413,7 +417,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 			return [obj.uniqueID isEqualToString:selectedCode];
 		}];
 		if (indexOfSelectedCurrency != NSNotFound) {
-			[_pickerView selectRow:indexOfSelectedCurrency inComponent:1 animated:YES];
+			[_pickerView selectRow:indexOfSelectedCurrency inComponent:0 animated:YES];
 			[self didSelectPickerRow];
 		}
 		return;
@@ -427,7 +431,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 	_favorites = nil;
 	[_pickerView reloadAllComponents];
-	[_pickerView selectRow:[self.favorites count] - 1 inComponent:1 animated:YES];
+	[_pickerView selectRow:[self.favorites count] - 1 inComponent:0 animated:YES];
 	[self didSelectPickerRow];
 }
 
@@ -912,6 +916,8 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 }
 
 - (void)setupIPADLayoutToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+	if (!IS_IPAD) return;
+	
 	if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
 		[_termSelectSegmentedControl setHidden:NO];
 		[_chartImageView setHidden:NO];
