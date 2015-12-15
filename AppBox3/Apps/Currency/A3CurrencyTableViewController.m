@@ -174,15 +174,16 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 			}
 		}
 		[self reloadUpdateDateLabel];
+
+		self.tableViewController.refreshControl = self.refreshControl;
 	}
 
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	}
-	if ([self isBeingPresented] || [self isMovingToParentViewController]) {
-		self.tableViewController.refreshControl = self.refreshControl;
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDCurrencyList keywords:@[@"Finance", @"Money", @"Shopping", @"Travel"] gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
-	}
+	_favorites = nil;
+	[self setupBannerViewForAdUnitID:AdMobAdUnitIDCurrencyList keywords:@[@"Finance", @"Money", @"Shopping", @"Travel"] gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
+	
 	[self.tableView reloadData];
 }
 
@@ -481,10 +482,12 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 				[self.refreshControl endRefreshing];
 				[self reloadUpdateDateLabel];
+				self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
 			});
 		} else {
 			[self.refreshControl endRefreshing];
 			[self reloadUpdateDateLabel];
+			self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
 		}
 	}
 }
@@ -1131,6 +1134,18 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	[self resetIntermediateState];
 }
 
+- (NSIndexPath *)indexPathForDataCell:(A3CurrencyTVDataCell *)cell {
+	if (![cell isMemberOfClass:[A3CurrencyTVDataCell class]]) return nil;
+
+	NSInteger indexOfRow = [_favorites indexOfObjectPassingTest:^BOOL(CurrencyFavorite * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+		return ((obj != (id) _equalItem) && (obj != (id) _adItem) && [obj.uniqueID isEqualToString:cell.codeLabel.text]);
+	}];
+	if (indexOfRow != NSNotFound) {
+		return [NSIndexPath indexPathForRow:indexOfRow inSection:0];
+	}
+	return nil;
+}
+
 - (void)swapActionForCell:(UITableViewCell *)cell {
 	[self unSwipeAll];
 
@@ -1138,6 +1153,12 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	[swipedCell removeMenuView];
 
 	NSIndexPath *sourceIndexPath = [self.tableView indexPathForCell:cell];
+	if (!sourceIndexPath) {
+		sourceIndexPath = [self indexPathForDataCell:(A3CurrencyTVDataCell *) cell];
+		if (!sourceIndexPath) {
+			return;
+		}
+	}
 	NSIndexPath *targetIndexPath;
 	if (sourceIndexPath.row == 0) {
 		targetIndexPath = [NSIndexPath indexPathForRow:2 + (_adItem ? 1 : 0) inSection:0];
@@ -1174,7 +1195,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	viewController.currencyDataManager = _currencyDataManager;
 	viewController.initialValue = [self lastInputValue];
 	NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-	CurrencyFavorite *favorite0 = self.favorites[0], *favoriteN = self.favorites[indexPath.row == 0 ? 2 : indexPath.row ];
+	CurrencyFavorite *favorite0 = self.favorites[0], *favoriteN = self.favorites[indexPath.row == 0 ? 2 + (_adItem ? 1 : 0) : indexPath.row ];
 	NSString *favoriteZero = favorite0.uniqueID, *favorite = favoriteN.uniqueID;
 	viewController.originalSourceCode = favoriteZero;
 	viewController.originalTargetCode = favorite;
