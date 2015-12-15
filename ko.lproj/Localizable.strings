@@ -105,7 +105,7 @@
 "CPU" = "CPU";
 "GPU" = "GPU";
 "Memory" = "메모리";
-"Capacity" = "전체공간";
+"Storage" = "저장용량";
 
 "How to Maximize Power Use" = "배터리 절약하는 법";
 "More Information about Batteries" = "배터리에 대한 더 자세한 정보";

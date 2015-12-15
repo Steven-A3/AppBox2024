@@ -634,7 +634,7 @@
 "Tax" = "稅金";
 "Edit Budget" = "修改預算";
 "Battery Status" = "電池狀態";
-"Capacity" = "容量";
+"Storage" = "儲存設備";
 "You can convert more in the AppBox Pro." = "你可以在 AppBox Pro.轉換更多";
 "Add Field" = "增加項目";
 "DaysCalendar_CalendarDeleteConfirmMsg" = "您確定要刪除此日曆嗎？所有與此日曆關聯的事件也都將被刪除。";

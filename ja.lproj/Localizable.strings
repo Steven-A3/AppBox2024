@@ -107,7 +107,7 @@
 "CPU" = "シーピーユー(CPU)";
 "GPU" = "ジーピーユー(GPU)";
 "Memory" = "メモリー";
-"Capacity" = "容量";
+"Storage" = "ストレージ";
 
 "How to Maximize Power Use" = "バッテリーを最大限に延ばす方法";
 "More Information about Batteries" = "バッテリーに関する情報";

@@ -110,7 +110,7 @@
 "CPU" = "CPU";
 "GPU" = "GPU";
 "Memory" = "Mémoire";
-"Capacity" = "Capacité";
+"Storage" = "Stockage";
 
 "How to Maximize Power Use" = "Comment maximiser de l’énergie";
 "More Information about Batteries" = "Plus d’informations";

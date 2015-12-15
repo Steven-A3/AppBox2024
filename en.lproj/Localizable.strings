@@ -89,7 +89,7 @@
 "CPU" = "CPU";
 "GPU" = "GPU";
 "Memory" = "Memory";
-"Capacity" = "Capacity";
+"Storage" = "Storage";
 "How to Maximize Power Use" = "How to Maximize Power Use";
 "More Information about Batteries" = "More Information about Batteries";
 "Enter The Number!" = "Enter The Number!";
