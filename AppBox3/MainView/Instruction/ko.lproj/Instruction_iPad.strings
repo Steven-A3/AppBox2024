@@ -163,3 +163,9 @@
 
 /* Class = "IBUILabel"; text = "tap to see more categories"; ObjectID = "yQU-2w-5XK"; */
 "yQU-2w-5XK.text" = "탭하면 더 많은 카테고리를 볼 수 있습니다.";
+
+/* Class = "UILabel"; text = "Tap to view list style.\nYou can reorder the currency list."; ObjectID = "dro-2m-enK"; */
+"dro-2m-enK.text" = "탭하면 목록 형태로 볼 수 있습니다.\n통화 순서를 변경할 수 있습니다.";
+
+/* Class = "UILabel"; text = "Tap to add a currency"; ObjectID = "Vy0-r6-Uka"; */
+"Vy0-r6-Uka.text" = "탭하여 통화를 추가합니다.";

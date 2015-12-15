@@ -167,3 +167,9 @@
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "p6a-KD-zgx"; */
 "p6a-KD-zgx.text" = "轻按屏幕可显示控制";
+
+/* Class = "UILabel"; text = "Tap to view list style.\nYou can reorder the currency list."; ObjectID = "0s9-xh-ntL"; */
+"0s9-xh-ntL.text" = "点击查看列表样式。\n您可以重新排序货币列表。";
+
+/* Class = "UILabel"; text = "Tap to add a currency"; ObjectID = "ilf-hM-2IG"; */
+"ilf-hM-2IG.text" = "轻按以添加货币。";

@@ -163,3 +163,9 @@
 
 /* Class = "IBUILabel"; text = "Tap to see more categories"; ObjectID = "yQU-2w-5XK"; */
 "yQU-2w-5XK.text" = "Appuyer pour voir plus de catégories";
+
+/* Class = "UILabel"; text = "Tap to view list style.\nYou can reorder the currency list."; ObjectID = "dro-2m-enK"; */
+"dro-2m-enK.text" = "Touchez pour afficher la liste style.\nVous pouvez réorganiser la liste des devises.";
+
+/* Class = "UILabel"; text = "Tap to add a currency"; ObjectID = "Vy0-r6-Uka"; */
+"Vy0-r6-Uka.text" = "Appuyer pour ajouter une devise";

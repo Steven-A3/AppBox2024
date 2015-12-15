@@ -33,13 +33,14 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "Reachability.h"
+#import "A3InstructionViewController.h"
 
 NSString *const A3CurrencyPickerSelectedIndexColumnOne = @"A3CurrencyPickerSelectedIndexColumnOne";
 NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelectedIndexColumnTwo";
 
 @interface A3CurrencyPickerStyleViewController ()
 		<UITableViewDelegate, UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate,
-		UITextFieldDelegate, UIPopoverControllerDelegate, A3CalculatorViewControllerDelegate, A3SearchViewControllerDelegate>
+		UITextFieldDelegate, UIPopoverControllerDelegate, A3CalculatorViewControllerDelegate, A3SearchViewControllerDelegate, A3InstructionViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewHeightConstraint;
@@ -72,6 +73,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 @property (weak, nonatomic) IBOutlet UIView *lineViewPickerTop_iPad;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *lineViewPickerTopHeightConstraint_iPad;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *lineBottomToSegmentVSpace;
+@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 
 @end
 
@@ -139,8 +141,9 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	_sourceValue = [self lastInputValue];
 	[_tableView reloadData];
 	[_pickerView reloadAllComponents];
-}
 
+	[self setupInstructionView];
+}
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
@@ -986,6 +989,43 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 	
 	[_mainViewController enableControls:YES];
+}
+
+#pragma mark - Instruction
+
+#pragma mark Instruction Related
+
+static NSString *const A3V3InstructionDidShowForCurrencyPicker = @"A3V3InstructionDidShowForCurrencyPicker";
+
+- (void)setupInstructionView
+{
+	if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForCurrencyPicker]) {
+		[self showInstructionView];
+	}
+}
+
+- (void)instructionHelpButtonAction:(id)sender {
+	[_mainViewController dismissMoreMenu];
+	[self showInstructionView];
+}
+
+- (void)showInstructionView
+{
+	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForCurrencyPicker];
+	[[A3UserDefaults standardUserDefaults] synchronize];
+	
+	UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
+	_instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"CurrencyConverter_Picker"];
+	self.instructionViewController.delegate = self;
+	[self.navigationController.view addSubview:self.instructionViewController.view];
+	self.instructionViewController.view.frame = self.navigationController.view.frame;
+	self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+}
+
+- (void)dismissInstructionViewController:(UIView *)view
+{
+	[self.instructionViewController.view removeFromSuperview];
+	self.instructionViewController = nil;
 }
 
 @end

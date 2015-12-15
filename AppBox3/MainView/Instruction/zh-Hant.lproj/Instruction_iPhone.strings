@@ -1,4 +1,4 @@
-﻿"m1h-st-ypH.text" = "輕按以查看更多資訊";
+"m1h-st-ypH.text" = "輕按以查看更多資訊";
 "hpm-3C-8l8.text" = "輕按螢幕可顯示控制";
 "1dD-l5-TzF.text" = "輕按以添加新的清單";
 "fgC-K0-IiZ.text" = "將單位滑至左側,
@@ -78,3 +78,9 @@
 更多節假日";
 "M6u-St-Kuv.text" = "將語言滑至左側,
 然後輕按刪除";
+
+/* Class = "UILabel"; text = "Tap to view list style.\nYou can reorder the currency list."; ObjectID = "0s9-xh-ntL"; */
+"0s9-xh-ntL.text" = "點擊查看列表樣式。\n您可以重新排序貨幣列表。";
+
+/* Class = "UILabel"; text = "Tap to add a currency"; ObjectID = "ilf-hM-2IG"; */
+"ilf-hM-2IG.text" = "輕按以添加貨幣。";

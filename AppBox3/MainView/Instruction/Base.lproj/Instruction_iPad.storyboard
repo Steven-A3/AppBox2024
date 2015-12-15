@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13F34" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="s55-Nm-cjw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="s55-Nm-cjw">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <scenes>
         <!--BateryStatus Instruction View Controller-->
@@ -2114,6 +2114,91 @@ the controls</string>
             </objects>
             <point key="canvasLocation" x="5" y="4023"/>
         </scene>
+        <!--CurrencyConverter Instruction View Controller-->
+        <scene sceneID="5Ct-4w-MdX">
+            <objects>
+                <viewController storyboardIdentifier="CurrencyConverter_Picker" useStoryboardIdentifierAsRestorationIdentifier="YES" id="95Z-EJ-jWY" userLabel="CurrencyConverter Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="FZ6-ZY-hwV"/>
+                        <viewControllerLayoutGuide type="bottom" id="h9w-g9-nHS"/>
+                    </layoutGuides>
+                    <view key="view" alpha="0.69999998807907104" contentMode="scaleToFill" id="o8Q-2U-eYd">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="F32-0t-B8g">
+                                <rect key="frame" x="405" y="38" width="42" height="42"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="WX9-6f-zfz"/>
+                                    <constraint firstAttribute="width" constant="42" id="Z9k-yh-atI"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_down" translatesAutoresizingMaskIntoConstraints="NO" id="ALR-gs-Oqk">
+                                <rect key="frame" x="363" y="943" width="42" height="42"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="S1W-8D-p9R"/>
+                                    <constraint firstAttribute="width" constant="42" id="hcE-Bh-4aD"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="ncC-k8-DkN">
+                                <rect key="frame" x="405" y="943" width="14" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="14" id="1hx-Bw-39M"/>
+                                    <constraint firstAttribute="height" constant="14" id="XrN-Bi-m88"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="768" translatesAutoresizingMaskIntoConstraints="NO" id="dro-2m-enK">
+                                <rect key="frame" x="0.0" y="90" width="768" height="39.5"/>
+                                <string key="text">Tap to view list style.
+You can reorder the currency list.</string>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to add a currency" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="768" translatesAutoresizingMaskIntoConstraints="NO" id="Vy0-r6-Uka" userLabel="Label - swipe left or right to change keypad for basic/scientific">
+                                <rect key="frame" x="0.0" y="913" width="768" height="20"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="ALR-gs-Oqk" secondAttribute="centerX" id="4nn-93-epH"/>
+                            <constraint firstItem="ncC-k8-DkN" firstAttribute="leading" secondItem="ALR-gs-Oqk" secondAttribute="trailing" id="70b-CH-VxD"/>
+                            <constraint firstItem="ncC-k8-DkN" firstAttribute="top" secondItem="ALR-gs-Oqk" secondAttribute="top" id="BA6-gw-M3I"/>
+                            <constraint firstAttribute="bottom" secondItem="ALR-gs-Oqk" secondAttribute="bottom" constant="39" id="KGz-wZ-eqy"/>
+                            <constraint firstAttribute="trailing" secondItem="Vy0-r6-Uka" secondAttribute="trailing" id="MsM-3K-6go"/>
+                            <constraint firstAttribute="centerX" secondItem="F32-0t-B8g" secondAttribute="centerX" constant="-42" id="SNz-82-O67"/>
+                            <constraint firstItem="Vy0-r6-Uka" firstAttribute="bottom" secondItem="ALR-gs-Oqk" secondAttribute="top" constant="-10" id="SOE-kG-swq"/>
+                            <constraint firstItem="Vy0-r6-Uka" firstAttribute="leading" secondItem="o8Q-2U-eYd" secondAttribute="leading" id="a1n-vW-hnV"/>
+                            <constraint firstItem="F32-0t-B8g" firstAttribute="top" secondItem="o8Q-2U-eYd" secondAttribute="top" constant="38" id="ecX-VS-pXI"/>
+                            <constraint firstItem="dro-2m-enK" firstAttribute="top" secondItem="F32-0t-B8g" secondAttribute="bottom" constant="10" id="i9Q-ws-1Vp"/>
+                            <constraint firstItem="dro-2m-enK" firstAttribute="leading" secondItem="o8Q-2U-eYd" secondAttribute="leading" id="p9I-pQ-1M2"/>
+                            <constraint firstAttribute="centerX" secondItem="dro-2m-enK" secondAttribute="centerX" id="vpx-XO-Dob"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="SSR-Ki-736" appends="YES" id="F5O-vX-vhQ"/>
+                        </connections>
+                    </view>
+                    <connections>
+                        <outletCollection property="childImageViews" destination="F32-0t-B8g" id="tEm-bX-oXD"/>
+                        <outletCollection property="childImageViews" destination="ncC-k8-DkN" id="Lth-f2-ZfA"/>
+                        <outletCollection property="childImageViews" destination="ALR-gs-Oqk" id="8UY-l8-gr7"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fO4-N5-Nhz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="SSR-Ki-736">
+                    <connections>
+                        <action selector="viewTapped:" destination="95Z-EJ-jWY" id="xER-3K-M11"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="829" y="10762"/>
+        </scene>
     </scenes>
     <resources>
         <image name="delete03" width="14" height="14"/>
@@ -2122,9 +2207,4 @@ the controls</string>
         <image name="finger_right" width="42" height="42"/>
         <image name="finger_up" width="42" height="42"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination"/>
-    </simulatedMetricsContainer>
 </document>

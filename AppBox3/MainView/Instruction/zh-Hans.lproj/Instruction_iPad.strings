@@ -163,3 +163,9 @@
 
 /* Class = "IBUILabel"; text = "Tap to see more categories"; ObjectID = "yQU-2w-5XK"; */
 "yQU-2w-5XK.text" = "轻按以查看更多种类";
+
+/* Class = "UILabel"; text = "Tap to view list style.\nYou can reorder the currency list."; ObjectID = "dro-2m-enK"; */
+"dro-2m-enK.text" = "点击查看列表样式。\n您可以重新排序货币列表。";
+
+/* Class = "UILabel"; text = "Tap to add a currency"; ObjectID = "Vy0-r6-Uka"; */
+"Vy0-r6-Uka.text" = "轻按以添加货币。";

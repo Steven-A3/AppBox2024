@@ -166,3 +166,9 @@
 
 /* Class = "IBUILabel"; text = "Tap the screen to display the controls"; ObjectID = "p6a-KD-zgx"; */
 "p6a-KD-zgx.text" = "Berühren Sie den Touchscreen um die Steuerelemente anzuzeigen";
+
+/* Class = "UILabel"; text = "Tap to view list style.\nYou can reorder the currency list."; ObjectID = "0s9-xh-ntL"; */
+"0s9-xh-ntL.text" = "Tippen Sie auf die Liste der Design-Ansicht.\nSie können die Währung Liste neu zu ordnen.";
+
+/* Class = "UILabel"; text = "Tap to add a currency"; ObjectID = "ilf-hM-2IG"; */
+"ilf-hM-2IG.text" = "Hier tippen um eine Währung hinzuzufügen";

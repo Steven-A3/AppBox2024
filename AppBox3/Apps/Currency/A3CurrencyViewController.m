@@ -353,6 +353,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 - (void)instructionHelpButtonAction:(id)sender {
 	[self dismissMoreMenu];
 	if (self.viewTypeSegmentedControl.selectedSegmentIndex == 0) {
+		[_pickerStyleViewController showInstructionView];
 	} else {
 		[_listStyleViewController showInstructionView];
 	}

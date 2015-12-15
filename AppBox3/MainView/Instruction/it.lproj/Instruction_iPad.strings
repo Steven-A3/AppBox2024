@@ -225,3 +225,9 @@ sinistra, poi tocca Elimina";
 
 /* Class = "IBUILabel"; text = "Tap to see more categories"; ObjectID = "yQU-2w-5XK"; */
 "yQU-2w-5XK.text" = "Tocca per vedere più categorie";
+
+/* Class = "UILabel"; text = "Tap to view list style.\nYou can reorder the currency list."; ObjectID = "dro-2m-enK"; */
+"dro-2m-enK.text" = "Toccare per visualizzare la lista di stile.\nÈ possibile riordinare l'elenco delle valute.";
+
+/* Class = "UILabel"; text = "Tap to add a currency"; ObjectID = "Vy0-r6-Uka"; */
+"Vy0-r6-Uka.text" = "Tocca per aggiungere una valuta";

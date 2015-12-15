@@ -1,4 +1,4 @@
-﻿"KuK-sv-rbe.text" = "將貨幣滑至左側,
+"KuK-sv-rbe.text" = "將貨幣滑至左側,
 然後點擊選項。";
 "sgz-bU-EMv.text" = "輕按以查看更多種類";
 "s4i-R2-JdL.text" = "輕按以增加信息";
@@ -75,3 +75,9 @@
 "0lp-cl-Yp6.text" = "點擊資訊的右側不要放開,
 然後向上或向下拖拽";
 "OLX-lb-sFo.text" = "輕按以添加貨幣。";
+
+/* Class = "UILabel"; text = "Tap to view list style.\nYou can reorder the currency list."; ObjectID = "dro-2m-enK"; */
+"dro-2m-enK.text" = "點擊查看列表樣式。\n您可以重新排序貨幣列表。";
+
+/* Class = "UILabel"; text = "Tap to add a currency"; ObjectID = "Vy0-r6-Uka"; */
+"Vy0-r6-Uka.text" = "輕按以添加貨幣。";

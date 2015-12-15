@@ -268,3 +268,9 @@
 "画面をタップすると、
 コントロールが表示
 されます。";
+
+/* Class = "UILabel"; text = "Tap to view list style.\nYou can reorder the currency list."; ObjectID = "0s9-xh-ntL"; */
+"0s9-xh-ntL.text" = "タップしてリスト形式で表示します。\n通貨の順序を変更することができます。";
+
+/* Class = "UILabel"; text = "Tap to add a currency"; ObjectID = "ilf-hM-2IG"; */
+"ilf-hM-2IG.text" = "タップして通話を追加します。";

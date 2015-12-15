@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="ysT-2a-nae">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="ysT-2a-nae">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Clock1 Instruction View Controller-->
@@ -296,7 +297,6 @@ keypad for basic/scientific</string>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="208" translatesAutoresizingMaskIntoConstraints="NO" id="ljC-z5-F29">
                                 <rect key="frame" x="102" y="77" width="208" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <string key="text">Tap the screen to display
 the controls</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -1733,7 +1733,6 @@ then tap Delete</string>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="241" translatesAutoresizingMaskIntoConstraints="NO" id="DHT-qK-x4H" userLabel="Label - Slide the country to the left then tap Delete">
                                 <rect key="frame" x="10" y="48" width="241" height="41"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <string key="text">Slide the country to the left
 then tap Delete</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -2111,6 +2110,94 @@ the controls</string>
             </objects>
             <point key="canvasLocation" x="-949" y="7147"/>
         </scene>
+        <!--CurrencyConverter Instruction View Controller-->
+        <scene sceneID="WU4-vI-8Vl">
+            <objects>
+                <viewController storyboardIdentifier="CurrencyConverter_Picker" useStoryboardIdentifierAsRestorationIdentifier="YES" id="GyF-fL-hHn" userLabel="CurrencyConverter Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="JIp-81-Z1m"/>
+                        <viewControllerLayoutGuide type="bottom" id="mOm-rO-0eW"/>
+                    </layoutGuides>
+                    <view key="view" alpha="0.69999998807907104" contentMode="scaleToFill" id="E8o-Un-isq">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_down" translatesAutoresizingMaskIntoConstraints="NO" id="AiW-n8-806">
+                                <rect key="frame" x="139" y="487" width="42" height="42"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="42" id="6ay-UA-P5e"/>
+                                    <constraint firstAttribute="height" constant="42" id="loV-f4-VO7"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="WLX-0L-uDC">
+                                <rect key="frame" x="181" y="487" width="14" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="14" id="6r0-wH-6tn"/>
+                                    <constraint firstAttribute="height" constant="14" id="EsA-Il-O8J"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="244" translatesAutoresizingMaskIntoConstraints="NO" id="0s9-xh-ntL" userLabel="Label - slide the currency to the left, then tap options">
+                                <rect key="frame" x="10" y="88" width="287" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="JM7-D8-cfq"/>
+                                </constraints>
+                                <string key="text">Tap to view list style.
+You can reorder the currency list.</string>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to add a currency" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="ilf-hM-2IG" userLabel="Label - swipe left or right to change keypad for basic/scientific">
+                                <rect key="frame" x="10" y="464" width="300" height="20"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="TIr-MB-LIC">
+                                <rect key="frame" x="182" y="38" width="42" height="42"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="5Yn-wY-O1E"/>
+                                    <constraint firstAttribute="width" constant="42" id="fKi-be-aYa"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="TIr-MB-LIC" secondAttribute="centerX" constant="-43" id="6bI-li-qKw"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="0s9-xh-ntL" secondAttribute="trailing" constant="7" id="AwI-n4-eo7"/>
+                            <constraint firstItem="TIr-MB-LIC" firstAttribute="top" secondItem="E8o-Un-isq" secondAttribute="top" constant="38" id="BmH-tK-UsJ"/>
+                            <constraint firstItem="WLX-0L-uDC" firstAttribute="leading" secondItem="AiW-n8-806" secondAttribute="trailing" id="CKo-Jt-w8e"/>
+                            <constraint firstItem="WLX-0L-uDC" firstAttribute="top" secondItem="AiW-n8-806" secondAttribute="top" id="ENl-xj-ahE"/>
+                            <constraint firstItem="ilf-hM-2IG" firstAttribute="bottom" secondItem="AiW-n8-806" secondAttribute="top" constant="-3" id="F4Y-Fu-UQh"/>
+                            <constraint firstAttribute="trailing" secondItem="ilf-hM-2IG" secondAttribute="trailing" constant="10" id="L1d-rZ-Cc4"/>
+                            <constraint firstItem="ilf-hM-2IG" firstAttribute="leading" secondItem="E8o-Un-isq" secondAttribute="leading" constant="10" id="Q2h-fD-gc2"/>
+                            <constraint firstAttribute="bottom" secondItem="AiW-n8-806" secondAttribute="bottom" constant="39" id="WMs-1a-3R3"/>
+                            <constraint firstItem="0s9-xh-ntL" firstAttribute="leading" secondItem="E8o-Un-isq" secondAttribute="leading" constant="10" id="bVX-sL-pNC"/>
+                            <constraint firstAttribute="centerX" secondItem="AiW-n8-806" secondAttribute="centerX" id="gao-pC-m7j"/>
+                            <constraint firstItem="0s9-xh-ntL" firstAttribute="top" secondItem="TIr-MB-LIC" secondAttribute="bottom" constant="8" symbolic="YES" id="kDp-aV-Jwk"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="lkm-tX-Uw4" appends="YES" id="Tq6-Il-GQ0"/>
+                        </connections>
+                    </view>
+                    <connections>
+                        <outletCollection property="childImageViews" destination="TIr-MB-LIC" id="Nfj-gq-cHx"/>
+                        <outletCollection property="childImageViews" destination="WLX-0L-uDC" id="PCh-3S-fhW"/>
+                        <outletCollection property="childImageViews" destination="AiW-n8-806" id="9ux-FT-djr"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YTF-LH-OxG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="lkm-tX-Uw4">
+                    <connections>
+                        <action selector="viewTapped:" destination="GyF-fL-hHn" id="sfE-cM-fFI"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="-621" y="4469"/>
+        </scene>
     </scenes>
     <resources>
         <image name="delete03" width="14" height="14"/>
@@ -2119,9 +2206,4 @@ the controls</string>
         <image name="finger_right" width="42" height="42"/>
         <image name="finger_up" width="42" height="42"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

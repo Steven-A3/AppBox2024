@@ -183,3 +183,9 @@ più categorie";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "p6a-KD-zgx"; */
 "p6a-KD-zgx.text" = "Tocca lo schermo per\nvisualizzare i controlli.";
+
+/* Class = "UILabel"; text = "Tap to view list style.\nYou can reorder the currency list."; ObjectID = "0s9-xh-ntL"; */
+"0s9-xh-ntL.text" = "Toccare per visualizzare la lista di stile.\nÈ possibile riordinare l'elenco delle valute.";
+
+/* Class = "UILabel"; text = "Tap to add a currency"; ObjectID = "ilf-hM-2IG"; */
+"ilf-hM-2IG.text" = "Tocca per aggiungere una valuta";

@@ -234,3 +234,9 @@
 "yQU-2w-5XK.text" =
 "タップすれば様々なカテゴリを
 見る事が出来ます。";
+
+/* Class = "UILabel"; text = "Tap to view list style.\nYou can reorder the currency list."; ObjectID = "dro-2m-enK"; */
+"dro-2m-enK.text" = "タップしてリスト形式で表示します。\n通貨の順序を変更することができます。";
+
+/* Class = "UILabel"; text = "Tap to add a currency"; ObjectID = "Vy0-r6-Uka"; */
+"Vy0-r6-Uka.text" = "タップして通話を追加します。";

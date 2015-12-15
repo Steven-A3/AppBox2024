@@ -482,12 +482,10 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 				[self.refreshControl endRefreshing];
 				[self reloadUpdateDateLabel];
-				self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
 			});
 		} else {
 			[self.refreshControl endRefreshing];
 			[self reloadUpdateDateLabel];
-			self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
 		}
 	}
 }

@@ -169,3 +169,9 @@ więcej kategorii";
 
 /* Class = "IBUILabel"; text = "Tap the screen to display\nthe controls"; ObjectID = "p6a-KD-zgx"; */
 "p6a-KD-zgx.text" = "Naciśnij w ekran aby\nwyświetlić przyciski.";
+
+/* Class = "UILabel"; text = "Tap to view list style.\nYou can reorder the currency list."; ObjectID = "0s9-xh-ntL"; */
+"0s9-xh-ntL.text" = "Dotknij, aby wyświetlić listę styl.\nMożesz zmienić kolejność na liście walut.";
+
+/* Class = "UILabel"; text = "Tap to add a currency"; ObjectID = "ilf-hM-2IG"; */
+"ilf-hM-2IG.text" = "Naciśnij aby dodać walutę";
