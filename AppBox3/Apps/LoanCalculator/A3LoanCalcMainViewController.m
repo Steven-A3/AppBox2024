@@ -200,7 +200,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	}
-    [self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/5665624549" keywords:nil gender:kGADGenderUnknown];
+    [self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/5665624549" keywords:nil gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -3087,6 +3087,24 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
 	return NO;
+}
+
+#pragma mark - AdMob
+
+- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+	[self.view.superview addSubview:bannerView];
+
+	UIView *superview = self.view;
+	[bannerView remakeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(superview.left);
+		make.right.equalTo(superview.right);
+		make.bottom.equalTo(superview.bottom);
+		make.height.equalTo(@(bannerView.bounds.size.height));
+	}];
+	UIEdgeInsets contentInset = self.tableView.contentInset;
+	contentInset.bottom += bannerView.bounds.size.height;
+	self.tableView.contentInset = contentInset;
+	self.tableView.contentInset = contentInset;
 }
 
 @end
