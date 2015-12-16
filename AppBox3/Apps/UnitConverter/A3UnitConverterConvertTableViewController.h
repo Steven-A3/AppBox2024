@@ -6,9 +6,6 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "ATSDragToReorderTableViewController.h"
-
 @class A3UnitDataManager;
 
 extern NSString *const A3UnitConverterDataCellID;

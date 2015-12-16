@@ -137,9 +137,6 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDUnitConverter keywords:nil gender:kGADGenderUnknown];
-	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
