@@ -124,7 +124,7 @@
 		[self leftBarButtonAppsButton];
 	}
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDTranslator keywords:nil gender:kGADGenderUnknown];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDTranslator keywords:nil gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
 	}
 }
 
@@ -462,6 +462,33 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 
 	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 	_fetchedResultsController = nil;
+}
+
+#pragma mark - AdMob
+
+- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+	[self.view addSubview:bannerView];
+	
+	UIView *superview = self.view;
+	[bannerView remakeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(superview.left);
+		make.right.equalTo(superview.right);
+		make.bottom.equalTo(superview.bottom);
+		make.height.equalTo(@(bannerView.bounds.size.height));
+	}];
+
+	[_addButton remakeConstraints:^(MASConstraintMaker *make) {
+		make.centerX.equalTo(self.view.centerX);
+		make.bottom.equalTo(self.view.bottom).with.offset(-(10 + (IS_IPHONE ? 50 : 90)));
+		make.width.equalTo(@44);
+		make.height.equalTo(@44);
+	}];
+
+	UIEdgeInsets contentInset = self.tableView.contentInset;
+	contentInset.bottom += bannerView.bounds.size.height;
+	self.tableView.contentInset = contentInset;
+
+	[self.view layoutIfNeeded];
 }
 
 @end
