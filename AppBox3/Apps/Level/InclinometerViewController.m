@@ -94,16 +94,18 @@
 	
 	[self myLayoutSubviews];
 
-	[self setupBannerViewForAdUnitID:AdMobAdUnitIDLevel keywords:@[@"House"] gender:kGADGenderUnknown];
-	
-	UIView *superview = self.view;
-	[self.view addSubview:self.bannerView];
-	[self.bannerView makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(superview.left);
-		make.top.equalTo(superview.bottom);
-		make.width.equalTo(@320);
-		make.height.equalTo(@50);
-	}];
+	if ([[A3AppDelegate instance] shouldPresentAd]) {
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDLevel keywords:@[@"House"] gender:kGADGenderUnknown];
+		
+		UIView *superview = self.view;
+		[self.view addSubview:self.bannerView];
+		[self.bannerView makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(superview.left);
+			make.top.equalTo(superview.bottom);
+			make.width.equalTo(@320);
+			make.height.equalTo(@50);
+		}];
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
