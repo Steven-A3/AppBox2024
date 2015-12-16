@@ -342,6 +342,10 @@ static NSString *CellIdentifier = @"Cell";
 
 #pragma mark - UIActionSheet delegate
 
+- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
+	[self setFirstActionSheet:nil];
+}
+
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     [self setFirstActionSheet:nil];
 	if (buttonIndex == actionSheet.cancelButtonIndex) return;

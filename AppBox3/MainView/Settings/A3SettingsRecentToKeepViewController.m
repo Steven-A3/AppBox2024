@@ -141,6 +141,10 @@
     [self.tableView reloadData];
 }
 
+- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
+	[self setFirstActionSheet:nil];
+}
+
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     [self setFirstActionSheet:nil];
     

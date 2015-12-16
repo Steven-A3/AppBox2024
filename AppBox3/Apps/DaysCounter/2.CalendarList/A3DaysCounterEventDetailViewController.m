@@ -1707,6 +1707,8 @@ EXIT_FUCTION:
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
+	[self setFirstActionSheet:nil];
+	
     if ( buttonIndex == alertView.firstOtherButtonIndex ) {
         if ( self.delegate && [self.delegate respondsToSelector:@selector(willDeleteEvent:daysCounterEventDetailViewController:)]) {
             [self.delegate willDeleteEvent:self.eventItem daysCounterEventDetailViewController:self];

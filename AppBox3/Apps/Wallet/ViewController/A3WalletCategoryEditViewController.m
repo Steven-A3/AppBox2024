@@ -707,6 +707,10 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
     [[NSNotificationCenter defaultCenter] postNotificationName:A3WalletNotificationCategoryDeleted object:nil];
 }
 
+- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
+	[self setFirstActionSheet:nil];
+}
+
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     [self setFirstActionSheet:nil];
     

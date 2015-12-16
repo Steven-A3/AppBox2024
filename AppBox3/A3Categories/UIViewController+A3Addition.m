@@ -705,7 +705,6 @@ NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
     if (actionSheet) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rotateFirstActionSheet) name:UIDeviceOrientationDidChangeNotification object:nil];
     }
-
     
 	objc_setAssociatedObject(self, key_firstActionSheet, actionSheet, OBJC_ASSOCIATION_ASSIGN);
 }
