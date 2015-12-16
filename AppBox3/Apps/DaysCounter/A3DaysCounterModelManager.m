@@ -1305,6 +1305,15 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 	if (![alertItems count])
         return;
 
+	if (!IS_IOS7) {
+		UIUserNotificationSettings *currentNotificationSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
+		if (currentNotificationSettings.types == UIUserNotificationTypeNone) {
+
+			UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeSound | UIUserNotificationTypeAlert categories:nil];
+			[[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+		}
+	}
+
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
     // 얼럿 생성 & 등록.
     NSDateComponents *nowDateComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:[NSDate date]];
