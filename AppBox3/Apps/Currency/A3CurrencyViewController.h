@@ -10,9 +10,11 @@
 
 @interface A3CurrencyViewController : UIViewController
 
+@property (nonatomic, strong) UISegmentedControl *viewTypeSegmentedControl;
 @property (nonatomic, strong) UIBarButtonItem *historyBarButton;
+@property (nonatomic, strong) UIView *moreMenuView;
 
 - (void)dismissMoreMenu;
-
 - (void)enableControls:(BOOL)enable;
+
 @end

@@ -145,8 +145,6 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
-
 	if (!_didFirstTimeRefresh) {
 		_didFirstTimeRefresh = YES;
 

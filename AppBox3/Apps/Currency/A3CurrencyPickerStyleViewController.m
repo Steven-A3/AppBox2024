@@ -849,6 +849,8 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 #pragma mark - Ad Received
 
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+	[_mainViewController dismissMoreMenu];
+	
 	if (IS_IPHONE35) {
 		[self.view addSubview:bannerView];
 		

@@ -23,12 +23,10 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 
 @interface A3CurrencyViewController () <A3CurrencySettingsDelegate>
 
-@property (nonatomic, strong) UISegmentedControl *viewTypeSegmentedControl;
 @property (nonatomic, strong) A3CurrencyPickerStyleViewController *pickerStyleViewController;
 @property (nonatomic, strong) A3CurrencyTableViewController *listStyleViewController;
 @property (nonatomic, strong) A3CurrencyDataManager *dataManager;
 @property (nonatomic, strong) NSArray *moreMenuButtons;
-@property (nonatomic, strong) UIView *moreMenuView;
 @property (nonatomic, strong) A3CurrencySettingsViewController *settingsViewController;
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3CurrencyHistoryViewController *historyViewController;
@@ -246,7 +244,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 	if (self.viewTypeSegmentedControl.selectedSegmentIndex == 0) {
 		return _pickerStyleViewController.view;
 	} else {
-		return _listStyleViewController.tableView;
+		return _listStyleViewController.view;
 	}
 }
 
