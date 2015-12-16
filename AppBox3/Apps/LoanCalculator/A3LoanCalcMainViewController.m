@@ -3104,7 +3104,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	UIEdgeInsets contentInset = self.tableView.contentInset;
 	contentInset.bottom += bannerView.bounds.size.height;
 	self.tableView.contentInset = contentInset;
-	self.tableView.contentInset = contentInset;
 }
 
 @end
