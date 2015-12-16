@@ -173,7 +173,7 @@ pour ajouter un pays";
 "p6a-KD-zgx.text" = "Touchez l’écran pour\nafficher les commandes.";
 
 /* Class = "UILabel"; text = "Tap to view list style.\nYou can reorder the currency list."; ObjectID = "0s9-xh-ntL"; */
-"0s9-xh-ntL.text" = "Touchez pour afficher la liste style.\nVous pouvez réorganiser la liste des devises.";
+"0s9-xh-ntL.text" = "Touchez pour afficher la liste style.\nVous pouvez réorganiser la liste\ndes devises.";
 
 /* Class = "UILabel"; text = "Tap to add a currency"; ObjectID = "ilf-hM-2IG"; */
 "ilf-hM-2IG.text" = "Appuyer pour ajouter une devise";
