@@ -21,6 +21,8 @@
 #import <Foundation/Foundation.h>
 #import "RMStore.h"
 
+@class RMAppReceipt;
+
 /**
  Reference implementation of an app receipt verificator. If security is a concern you might want to avoid using a verificator whose code is open source.
  */
@@ -46,4 +48,5 @@ __attribute__((availability(ios,introduced=7.0)))
  */
 - (BOOL)verifyAppReceipt;
 
+- (BOOL)verifyAppReceipt:(RMAppReceipt *)receipt;
 @end

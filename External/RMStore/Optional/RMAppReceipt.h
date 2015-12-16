@@ -101,6 +101,7 @@ __attribute__((availability(ios,introduced=7.0)))
  */
 + (void)setAppleRootCertificateURL:(NSURL*)url;
 
++ (NSData *)dataFromPCKS7Path:(NSString *)path;
 @end
 
 /** Represents an in-app purchase in the app receipt.

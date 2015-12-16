@@ -721,6 +721,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 			} else {
 				[self executePurchaseRemoveAds];
 			}
+			[appDelegate makeReceiptBackup];
 		} failure:^(NSError *error) {
 			// 탈옥폰이라면 다음에 진행될 인앱 구매 진행이 실패할 것이다.
 			// 앱 리뷰시 영수증 리프레시에 실패하여 이 코드가 실행이 된다.
@@ -770,7 +771,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 			} else {
 				[self executeRestoreTransaction];
 			}
-
+			[appDelegate makeReceiptBackup];
 		} failure:^(NSError *error) {
 			[self executeRestoreTransaction];
 		}];

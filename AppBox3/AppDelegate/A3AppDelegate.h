@@ -126,6 +126,8 @@ extern NSString *const A3InAppPurchaseRemoveAdsProductIdentifier;
 @property (nonatomic, assign) BOOL firstRunAfterInstall;
 @property (nonatomic, assign) BOOL adDisplayedAfterApplicationDidBecomeActive;
 
+@property (nonatomic, copy) NSString *previousVersion;
+
 + (A3AppDelegate *)instance;
 - (void)updateStartOption;
 
@@ -139,10 +141,14 @@ extern NSString *const A3InAppPurchaseRemoveAdsProductIdentifier;
 - (NSURL *)storeURL;
 - (NSString *)storeFileName;
 - (void)didFinishPushViewController;
+
+- (void)makeReceiptBackup;
+
 - (BOOL)receiptHasRemoveAds;
 - (BOOL)isPaidAppVersionCustomer:(RMAppReceipt *)receipt;
 - (BOOL)isIAPPurchasedCustomer:(RMAppReceipt *)receipt;
 - (BOOL)presentInterstitialAds;
+
 @end
 
 #import "A3AppDelegate+iCloud.h"

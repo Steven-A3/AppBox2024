@@ -35,6 +35,7 @@
 #import "A3UserDefaults.h"
 #import "A3AppDelegate+migration.h"
 #import "RMAppReceipt.h"
+#import "UIViewController+A3Addition.h"
 
 NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
@@ -47,18 +48,17 @@ NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 NSString *const A3NotificationCloudKeyValueStoreDidImport = @"A3CloudKeyValueStoreDidImport";
 NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataStoreDidImport";
 NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3NotificationsUserNotificationSettingsRegistered";
-
 NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.AppBox3.removeAds";
-
 NSString *const A3NumberOfTimesOpeningSubApp = @"A3NumberOfTimesOpeningSubApp";
 NSString *const A3AdsDisplayTime = @"A3AdsDisplayTime";
 NSString *const A3InterstitialAdUnitID = @"ca-app-pub-0532362805885914/2537692543";
+NSString *const A3AppStoreReceiptBackupFilename = @"AppStoreReceiptBackup";
+NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 
 @interface A3AppDelegate () <UIAlertViewDelegate, NSURLSessionDownloadDelegate, CLLocationManagerDelegate
 		, GADInterstitialDelegate
 		>
 
-@property (nonatomic, strong) NSString *previousVersion;
 @property (nonatomic, strong) NSDictionary *localNotificationUserInfo;
 @property (nonatomic, strong) UILocalNotification *storedLocalNotification;
 @property (nonatomic, strong) NSMutableArray *downloadList;
@@ -1190,19 +1190,114 @@ NSString *const A3InterstitialAdUnitID = @"ca-app-pub-0532362805885914/253769254
 	return _receiptVerificator;
 }
 
+- (NSString *)backupReceiptFilePath {
+	return [[[NSFileManager defaultManager] applicationSupportPath] stringByAppendingPathComponent:A3AppStoreReceiptBackupFilename];
+}
+
 - (void)configureStore
 {
 	if (![self.receiptVerificator verifyAppReceipt]) {
-		FNLOG(@"App Receipt Validation Failed!");
-		[self prepareIAPProducts];
+		NSFileManager *fileManager = [NSFileManager defaultManager];
+		NSString *backupFilePath = [self backupReceiptFilePath];
+
+		void (^downloadFromCloudBlock)() = ^() {
+			CDEICloudFileSystem *cloudFileSystem = [[A3SyncManager sharedSyncManager] cloudFileSystem];
+			[cloudFileSystem connect:^(NSError *error) {
+				if (error) {
+					[self prepareIAPProducts];
+					return;
+				}
+				NSString *cloudPath = [A3AppStoreCloudDirectoryName stringByAppendingPathComponent:A3AppStoreReceiptBackupFilename];
+				[cloudFileSystem fileExistsAtPath:cloudPath completion:^(BOOL exists, BOOL isDirectory, NSError *error2) {
+					if (exists) {
+						[cloudFileSystem downloadFromPath:cloudPath toLocalFile:backupFilePath completion:^(NSError *error3) {
+							if (error3) {
+								[self prepareIAPProducts];
+								return;
+							}
+ 							NSData *data = [RMAppReceipt dataFromPCKS7Path:backupFilePath];
+							if (data) {
+								RMAppReceipt *receipt = [[RMAppReceipt alloc] initWithASN1Data:data];
+								if (![self.receiptVerificator verifyAppReceipt:receipt]) {
+									[self prepareIAPProducts];
+								} else {
+									[self evaluateReceipt];
+								}
+							}
+						}];
+					} else {
+						[self prepareIAPProducts];
+					}
+				}];
+			}];
+		};
+		if ([fileManager fileExistsAtPath:backupFilePath]) {
+			NSData *data = [RMAppReceipt dataFromPCKS7Path:backupFilePath];
+			if (data) {
+				RMAppReceipt *receipt = [[RMAppReceipt alloc] initWithASN1Data:data];
+				if (![self.receiptVerificator verifyAppReceipt:receipt]) {
+					downloadFromCloudBlock();
+				} else {
+					[self evaluateReceipt];
+				}
+			}
+		} else {
+			downloadFromCloudBlock();
+		}
 	} else {
 		[self evaluateReceipt];
+		[self makeReceiptBackup];
+	}
+}
+
+- (void)makeReceiptBackup {
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSURL *receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
+	if ([fileManager fileExistsAtPath:[receiptURL path]]) {
+		// Make backup
+		NSString *backupPath = [self backupReceiptFilePath];
+		if (![fileManager fileExistsAtPath:backupPath]) {
+			[fileManager copyItemAtPath:[receiptURL path] toPath:backupPath error:nil];
+		}
+
+		CDEICloudFileSystem *cloudFileSystem = [[A3SyncManager sharedSyncManager] cloudFileSystem];
+		[cloudFileSystem connect:^(NSError *error) {
+			if (!error) {
+				[cloudFileSystem fileExistsAtPath:A3AppStoreCloudDirectoryName completion:^(BOOL exists, BOOL isDirectory, NSError *error1) {
+					void (^fileCopyBlock)() = ^() {
+						NSString *cloudPath = [A3AppStoreCloudDirectoryName stringByAppendingPathComponent:A3AppStoreReceiptBackupFilename];
+						[cloudFileSystem fileExistsAtPath:cloudPath completion:^(BOOL exists2, BOOL isDirectory2, NSError *error2) {
+							if (!exists2) {
+								[cloudFileSystem uploadLocalFile:backupPath toPath:cloudPath completion:nil];
+							}
+						}];
+					};
+					if (exists) {
+						fileCopyBlock();
+					} else {
+						[cloudFileSystem createDirectoryAtPath:A3AppStoreCloudDirectoryName completion:^(NSError *error3) {
+							fileCopyBlock();
+						}];
+					}
+				}];
+			}
+		}];
 	}
 }
 
 - (BOOL)receiptHasRemoveAds {
 	RMAppReceipt *receipt = [RMAppReceipt bundleReceipt];
-	if (receipt == nil) return NO;
+
+	if (!receipt) {
+		NSString *backupFilePath = [self backupReceiptFilePath];
+		NSData *data = [RMAppReceipt dataFromPCKS7Path:backupFilePath];
+		if (data) {
+			receipt = [[RMAppReceipt alloc] initWithASN1Data:data];
+		}
+		if (!receipt) {
+			return NO;
+		}
+	}
 
 	if ([self isPaidAppVersionCustomer:receipt]) {
 		return YES;

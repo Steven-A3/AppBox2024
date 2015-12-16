@@ -72,6 +72,8 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 		_currentSceneViewController.delegate = self;
 		[self.view addSubview:_currentSceneViewController.view];
 		[self addChildViewController:_currentSceneViewController];
+	} else {
+		[self askRestorePurchase];
 	}
 }
 
@@ -218,13 +220,82 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 		A3AppDelegate *appDelegate = [A3AppDelegate instance];
 		appDelegate.firstRunAfterInstall = NO;
 		[[appDelegate mainMenuViewController] openClockApp];
+		
+		[self askRestorePurchase];
 	} else {
-		[self dismissViewControllerAnimated:YES completion:NULL];
+		[self dismissViewControllerAnimated:YES completion:nil];
 	}
 }
 
 - (BOOL)hidesNavigationBar {
 	return YES;
+}
+
+#pragma mark - Ask Restore Purchase
+
+- (void)askRestorePurchase {
+	// previousVersion과 currentVersion을 비교하여 다르다면 앱이 설치/업데이트 후 최초 실행중임을 알 수 있다.
+	NSString *currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+	if ([currentVersion isEqualToString:[A3AppDelegate instance].previousVersion]) {
+		return;
+	}
+	NSURL *receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
+	if (receiptURL && [[NSFileManager defaultManager] fileExistsAtPath:[receiptURL path]]) {
+		return;
+	}
+
+	if (!IS_IOS7 && IS_IPAD) {
+		UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Verification Required"
+																				 message:@"Verification Required"
+																		  preferredStyle:UIAlertControllerStyleActionSheet];
+		UIAlertAction *paidCustomer = [UIAlertAction actionWithTitle:@"Paid User"
+															   style:UIAlertActionStyleDefault
+															 handler:^(UIAlertAction *action) {
+																 [self proceedRestorePurchase];
+															 }];
+		UIAlertAction *boughtRemoveAds = [UIAlertAction actionWithTitle:@"Bought Remove Ads"
+															   style:UIAlertActionStyleDefault
+															 handler:^(UIAlertAction *action) {
+																 [self proceedRestorePurchase];
+															 }];
+		UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Continue without Verification"
+															   style:UIAlertActionStyleCancel
+															 handler:nil];
+
+		[alertController addAction:cancelAction];
+		[alertController addAction:boughtRemoveAds];
+		[alertController addAction:paidCustomer];
+
+		alertController.modalPresentationStyle = UIModalPresentationPopover;
+		UIPopoverPresentationController *popoverPresentation = [alertController popoverPresentationController];
+		popoverPresentation.sourceView = self.view;
+		[self presentViewController:alertController animated:YES completion:NULL];
+	} else {
+		UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Verification Required"
+																 delegate:self
+														cancelButtonTitle:@"Continue without Verification"
+												   destructiveButtonTitle:nil
+														otherButtonTitles:@"Paid User", @"Bought Remove Ads", nil];
+		[actionSheet showInView:self.view];
+
+		[self setFirstActionSheet:actionSheet];
+	}
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
+	[self setFirstActionSheet:nil];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	[self setFirstActionSheet:nil];
+
+	if (buttonIndex != actionSheet.cancelButtonIndex) {
+		[self proceedRestorePurchase];
+	}
+}
+
+- (void)proceedRestorePurchase {
+	[[A3AppDelegate instance].mainMenuViewController didSelectRestorePurchase];
 }
 
 @end
