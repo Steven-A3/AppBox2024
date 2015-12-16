@@ -126,18 +126,6 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 	}
 	self.tableView.showsVerticalScrollIndicator = NO;
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsChanged) name:A3CurrencySettingsChangedNotification object:nil];
-	if (IS_IPAD) {
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
-	}
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataChanged:) name:NSManagedObjectContextObjectsDidChangeNotification object:[NSManagedObjectContext MR_defaultContext]];
-	[self registerContentSizeCategoryDidChangeNotification];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
-
 	UIView *superview = self.view;
 	[self.view addSubview:self.plusButton];
 
@@ -152,9 +140,6 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupInstructionView];
-	}
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -185,6 +170,11 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 	[self setupBannerViewForAdUnitID:AdMobAdUnitIDCurrencyList keywords:@[@"Finance", @"Money", @"Shopping", @"Travel"] gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
 	
 	[self.tableView reloadData];
+
+	if ([self isMovingToParentViewController]) {
+		[self addObserver];
+		[self setupInstructionView];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -214,7 +204,24 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 	[self enableControls:_barButtonEnabled];
 }
 
+- (void)addObserver {
+	FNLOG();
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsChanged) name:A3CurrencySettingsChangedNotification object:nil];
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
+	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataChanged:) name:NSManagedObjectContextObjectsDidChangeNotification object:[NSManagedObjectContext MR_defaultContext]];
+	[self registerContentSizeCategoryDidChangeNotification];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
 - (void)removeObserver {
+	FNLOG();
 	[self removeContentSizeCategoryDidChangeNotification];
 	
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
