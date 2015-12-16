@@ -232,11 +232,9 @@ NSString *const A3AppName_Settings = @"Settings";
 				kA3AppsMenuExpandable : @YES,
 				kA3AppsExpandableChildren :
 				@[
-						@{kA3AppsMenuName : A3AppName_Calculator, kA3AppsClassName_iPhone : @"A3CalculatorViewController_iPhone", kA3AppsClassName_iPad:@"A3CalculatorViewController_iPad",  kA3AppsMenuImageName : @"Calculator"},
-						@{kA3AppsMenuName : A3AppName_Clock, kA3AppsClassName_iPhone : @"A3ClockMainViewController", kA3AppsMenuImageName : @"Clock"},
 						@{kA3AppsMenuName : A3AppName_CurrencyConverter, kA3AppsClassName_iPhone : @"A3CurrencyViewController", kA3AppsMenuImageName : @"Currency"},
-						@{kA3AppsMenuName : A3AppName_DaysCounter, kA3AppsClassName_iPhone : @"", kA3AppsMenuImageName : @"DaysCounter", kA3AppsMenuNeedSecurityCheck : @YES},
-						@{kA3AppsMenuName : A3AppName_Holidays, kA3AppsClassName_iPhone : @"A3HolidaysPageViewController", kA3AppsMenuImageName : @"Holidays"},
+						@{kA3AppsMenuName : A3AppName_Level, kA3AppsClassName_iPhone : @"InclinometerViewController", kA3AppsMenuImageName : @"Level"},
+						@{kA3AppsMenuName : A3AppName_UnitConverter, kA3AppsStoryboard_iPhone:@"UnitConverterPhoneStoryboard", kA3AppsStoryboard_iPad:@"UnitConverterPhoneStoryboard", kA3AppsMenuImageName : @"UnitConverter"},
 						@{kA3AppsMenuName : A3AppName_Wallet, kA3AppsClassName_iPhone : @"A3WalletMainTabBarController", kA3AppsMenuImageName : @"Wallet", kA3AppsMenuNeedSecurityCheck : @YES},
 				]
 		};
