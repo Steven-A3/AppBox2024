@@ -739,7 +739,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 
 		[self processRemoveAds];
 		appDelegate.inAppPurchaseInProgress = NO;
-		
+		[[A3AppDelegate instance] makeReceiptBackup];
 	} failure:^(SKPaymentTransaction *transaction, NSError *error) {
 		[self hideProcessingHUD];
 		

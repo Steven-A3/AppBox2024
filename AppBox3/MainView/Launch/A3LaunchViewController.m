@@ -243,6 +243,11 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 	if (receiptURL && [[NSFileManager defaultManager] fileExistsAtPath:[receiptURL path]]) {
 		return;
 	}
+	
+	NSString *backupReceiptFilepath = [[A3AppDelegate instance] backupReceiptFilePath];
+	if ([[NSFileManager defaultManager] fileExistsAtPath:backupReceiptFilepath]) {
+		return;
+	}
 
 	if (!IS_IOS7 && IS_IPAD) {
 		UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Verification Required"

@@ -142,6 +142,8 @@ extern NSString *const A3InAppPurchaseRemoveAdsProductIdentifier;
 - (NSString *)storeFileName;
 - (void)didFinishPushViewController;
 
+- (NSString *)backupReceiptFilePath;
+
 - (void)makeReceiptBackup;
 
 - (BOOL)receiptHasRemoveAds;

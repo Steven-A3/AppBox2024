@@ -1191,7 +1191,9 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 }
 
 - (NSString *)backupReceiptFilePath {
-	return [[[NSFileManager defaultManager] applicationSupportPath] stringByAppendingPathComponent:A3AppStoreReceiptBackupFilename];
+	NSString *baseFilepath = [[[NSFileManager defaultManager] applicationSupportPath] stringByAppendingPathComponent:A3AppStoreReceiptBackupFilename];
+	NSUUID *uuid = [[UIDevice currentDevice] identifierForVendor];
+	return [baseFilepath stringByAppendingString:[uuid UUIDString]];
 }
 
 - (void)configureStore
@@ -1256,19 +1258,26 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 	if ([fileManager fileExistsAtPath:[receiptURL path]]) {
 		// Make backup
 		NSString *backupPath = [self backupReceiptFilePath];
-		if (![fileManager fileExistsAtPath:backupPath]) {
-			[fileManager copyItemAtPath:[receiptURL path] toPath:backupPath error:nil];
+		if ([fileManager fileExistsAtPath:backupPath]) {
+			[fileManager removeItemAtPath:backupPath error:nil];
+		}
+		NSError *error;
+		[fileManager copyItemAtPath:[receiptURL path] toPath:backupPath error:&error];
+		if (error) {
+			FNLOG(@"Error copying receipt to backup: %@", [error localizedDescription]);
 		}
 
 		CDEICloudFileSystem *cloudFileSystem = [[A3SyncManager sharedSyncManager] cloudFileSystem];
-		[cloudFileSystem connect:^(NSError *error) {
-			if (!error) {
+		[cloudFileSystem connect:^(NSError *error2) {
+			if (!error2) {
 				[cloudFileSystem fileExistsAtPath:A3AppStoreCloudDirectoryName completion:^(BOOL exists, BOOL isDirectory, NSError *error1) {
 					void (^fileCopyBlock)() = ^() {
 						NSString *cloudPath = [A3AppStoreCloudDirectoryName stringByAppendingPathComponent:A3AppStoreReceiptBackupFilename];
-						[cloudFileSystem fileExistsAtPath:cloudPath completion:^(BOOL exists2, BOOL isDirectory2, NSError *error2) {
-							if (!exists2) {
-								[cloudFileSystem uploadLocalFile:backupPath toPath:cloudPath completion:nil];
+						[cloudFileSystem uploadLocalFile:backupPath toPath:cloudPath completion:^(NSError *error3) {
+							if (error3) {
+								FNLOG(@"%@", [error3 localizedDescription]);
+							} else {
+								FNLOG(@"App Store Receipt has been uploaded to iCloud.");
 							}
 						}];
 					};
@@ -1333,6 +1342,8 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 
 	if (_shouldPresentAd) {
 		[self prepareIAPProducts];
+	} else {
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:nil];
 	}
 }
 
