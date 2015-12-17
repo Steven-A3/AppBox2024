@@ -90,8 +90,7 @@
 	[super viewDidLoad];
 
 	[self.navigationController setNavigationBarHidden:YES animated:YES];
-	[[UIApplication sharedApplication] setStatusBarHidden:YES];
-	
+
 	[self myLayoutSubviews];
 
 	if ([[A3AppDelegate instance] shouldPresentAd]) {
@@ -106,11 +105,18 @@
 			make.height.equalTo(@50);
 		}];
 	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
+}
+
+- (void)mainMenuDidHide {
+	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
+	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+	
 	[self setupMotionManager];
 }
 
@@ -118,6 +124,23 @@
 	[super viewWillDisappear:animated];
 
 	[self.motionManager stopAccelerometerUpdates];
+	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+
+	if ([self isMovingFromParentViewController]) {
+		[self removeObserver];
+	}
+}
+
+- (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+}
+
+- (void)cleanUp {
+	[self removeObserver];
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)myLayoutSubviews {
@@ -157,6 +180,7 @@
 - (void)exitToHome {
 	if (IS_IPHONE) {
 		[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 	} else {
 		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
 	}

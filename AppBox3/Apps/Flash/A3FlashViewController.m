@@ -265,10 +265,7 @@ NSString *const cellID = @"flashEffectID";
     [_colorPickerView addGestureRecognizer:tapGesture2];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActiveNotification:) name:UIApplicationWillResignActiveNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3DrawerStateChanged object:nil];
-    if (IS_IPAD) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
-    }
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 }
 
 - (void)requestAuthorizationForCamera {
@@ -417,13 +414,7 @@ NSString *const cellID = @"flashEffectID";
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
-    
-    if (IS_IPAD) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
-    }
-    else {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:A3DrawerStateChanged object:nil];
-    }
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 }
 
 - (void)applicationWillResignActiveNotification:(NSNotification *)notification {

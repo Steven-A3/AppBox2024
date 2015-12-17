@@ -332,7 +332,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 
 						if (IS_IPHONE) {
 							[self.mm_drawerController closeDrawerAnimated:YES completion:^(BOOL finished) {
-								[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
+								[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationMainMenuDidHide object:nil];
 							}];
 						}
 						self.activeAppName = elementObject.title;
@@ -342,7 +342,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 				{
 					if (IS_IPHONE) {
 						[self.mm_drawerController closeDrawerAnimated:YES completion:^(BOOL finished) {
-							[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
+							[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationMainMenuDidHide object:nil];
 						}];
 					} else if (IS_IPAD) {
 						A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
