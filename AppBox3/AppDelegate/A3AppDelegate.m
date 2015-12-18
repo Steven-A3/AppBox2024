@@ -36,6 +36,7 @@
 #import "A3AppDelegate+migration.h"
 #import "RMAppReceipt.h"
 #import "UIViewController+A3Addition.h"
+#import "A3LadyCalendarModelManager.h"
 
 NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
@@ -963,6 +964,9 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
 	
 	_isCoreDataReady = YES;
+	
+	[A3DaysCounterModelManager reloadAlertDateListForLocalNotification:[NSManagedObjectContext MR_rootSavingContext] ];
+	[A3LadyCalendarModelManager setupLocalNotification];
 }
 
 - (void)managedObjectContextDidSave:(NSNotification *)notification {
