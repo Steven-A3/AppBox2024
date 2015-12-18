@@ -814,3 +814,8 @@
 "CalibrateSurface1Msg" = "- 將iPhone平平放置在表面的狀態下，請按\"校準1\"鍵。";
 "CalibrateSurface2Msg" = "- 將iPhone旋轉180度後，\r\n請按\"校準2\"鍵。";
 "CalibrationDone" = "校正成功";
+
+"Verification Required" = "需要驗證";
+"Paid User" = "付費用戶";
+"Bought Remove Ads" = "購買刪除廣告";
+"Continue without Verification" = "繼續無需驗資";

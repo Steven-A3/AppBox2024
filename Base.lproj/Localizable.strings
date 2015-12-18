@@ -933,3 +933,8 @@ Enter Encryption Key for Wallet.";
 "CalibrateSurface1Msg" = "- Press \"Calibrate 1\" while keeping\r\nthe iPhone flat on the surface.";
 "CalibrateSurface2Msg" = "- Rotate iPhone 180 degrees.\r\n- Press \"Calibrate 2\".\r\n";
 "CalibrationDone" = "Calibration has completed successfully.";
+
+"Verification Required" = "Verification Required";
+"Paid User" = "Paid User";
+"Bought Remove Ads" = "Bought Remove Ads";
+"Continue without Verification" = "Continue without Verification";

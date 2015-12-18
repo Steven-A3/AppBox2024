@@ -996,3 +996,8 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 "CalibrateSurface1Msg"  = "- Drücken Sie \"Kalibrieren 1\", während das iPhone flach auf der Oberfläche liegt.";
 "CalibrateSurface2Msg"  = "- Drehen Sie das iPhone um 180 Grad.\r\n- Drücken Sie \"Kalibrieren 2\".\r\n";
 "CalibrationDone"  = "Die Kalibrierung wurde erfolgreich abgeschlossen.";
+
+"Verification Required" = "Überprüfung erforderlich";
+"Paid User" = "bezahlte Benutzer";
+"Bought Remove Ads" = "Gekauft Werbungen entfernen";
+"Continue without Verification" = "Weiter ohne Prüfung";

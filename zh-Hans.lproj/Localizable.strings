@@ -1000,3 +1000,8 @@
 "CalibrateSurface1Msg" = "- 将iPhone平平放置在表面的状态下，请按\"校准 1\"键。";
 "CalibrateSurface2Msg" = "- 将iPhone旋转180度后，\r\n请按\"校准 2\"键。";
 "CalibrationDone" = "校正成功";
+
+"Verification Required" = "需要验证";
+"Paid User" = "付费用户";
+"Bought Remove Ads" = "购买删除广告";
+"Continue without Verification" = "继续无需验资";

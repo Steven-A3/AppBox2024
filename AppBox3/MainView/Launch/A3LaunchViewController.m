@@ -20,7 +20,8 @@
 
 NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhatsNew_3_0";
 
-@interface A3LaunchViewController () <UIViewControllerTransitioningDelegate, UIActionSheetDelegate, A3DataMigrationManagerDelegate>
+@interface A3LaunchViewController () <UIViewControllerTransitioningDelegate,
+		UIAlertViewDelegate, A3DataMigrationManagerDelegate>
 
 @property (nonatomic, strong) UIStoryboard *launchStoryboard;
 @property (nonatomic, strong) A3LaunchSceneViewController *currentSceneViewController;
@@ -250,51 +251,45 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 	}
 
 	if (!IS_IOS7 && IS_IPAD) {
-		UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Verification Required"
-																				 message:@"Verification Required"
-																		  preferredStyle:UIAlertControllerStyleActionSheet];
-		UIAlertAction *paidCustomer = [UIAlertAction actionWithTitle:@"Paid User"
+		UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Verification Required", @"Verification Required")
+																				 message:nil
+																		  preferredStyle:UIAlertControllerStyleAlert];
+		UIAlertAction *paidCustomer = [UIAlertAction actionWithTitle:NSLocalizedString(@"Paid User", @"Paid User")
 															   style:UIAlertActionStyleDefault
 															 handler:^(UIAlertAction *action) {
 																 [self proceedRestorePurchase];
 															 }];
-		UIAlertAction *boughtRemoveAds = [UIAlertAction actionWithTitle:@"Bought Remove Ads"
+		UIAlertAction *boughtRemoveAds = [UIAlertAction actionWithTitle:NSLocalizedString(@"Bought Remove Ads", @"Bought Remove Ads")
 															   style:UIAlertActionStyleDefault
 															 handler:^(UIAlertAction *action) {
 																 [self proceedRestorePurchase];
 															 }];
-		UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Continue without Verification"
+		UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Continue without Verification", @"Continue without Verification")
 															   style:UIAlertActionStyleCancel
 															 handler:nil];
 
-		[alertController addAction:cancelAction];
-		[alertController addAction:boughtRemoveAds];
 		[alertController addAction:paidCustomer];
+		[alertController addAction:boughtRemoveAds];
+		[alertController addAction:cancelAction];
 
 		alertController.modalPresentationStyle = UIModalPresentationPopover;
 		UIPopoverPresentationController *popoverPresentation = [alertController popoverPresentationController];
 		popoverPresentation.sourceView = self.view;
 		[self presentViewController:alertController animated:YES completion:NULL];
 	} else {
-		UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Verification Required"
-																 delegate:self
-														cancelButtonTitle:@"Continue without Verification"
-												   destructiveButtonTitle:nil
-														otherButtonTitles:@"Paid User", @"Bought Remove Ads", nil];
-		[actionSheet showInView:self.view];
-
-		[self setFirstActionSheet:actionSheet];
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Verification Required", @"Verification Required")
+															message:nil
+														   delegate:self
+												  cancelButtonTitle:NSLocalizedString(@"Continue without Verification", @"Continue without Verification")
+												  otherButtonTitles:NSLocalizedString(@"Paid User", @"Paid User"),
+																	NSLocalizedString(@"Bought Remove Ads", @"Bought Remove Ads"),
+																	nil];
+		[alertView show];
 	}
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
-	[self setFirstActionSheet:nil];
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	[self setFirstActionSheet:nil];
-
-	if (buttonIndex != actionSheet.cancelButtonIndex) {
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if (buttonIndex != alertView.cancelButtonIndex) {
 		[self proceedRestorePurchase];
 	}
 }

@@ -1,7 +1,7 @@
 {
     "platform": {
-        "i386": "iPhone Simulator",
-        "x86_64": "iPhone Simulator",
+        "i386": "iPhone 6",
+        "x86_64": "iPhone 6",
         "iPhone1,1": "iPhone 1G",
         "iPhone1,2": "iPhone 3G",
         "iPhone2,1": "iPhone 3GS",

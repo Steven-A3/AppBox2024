@@ -986,3 +986,8 @@ Wprowadź klucz szyfrowania dla portfela.";
 "CalibrateSurface1Msg" = "- Połóż telefon płasko na powierzchni i naciśnij guzik „Kalibracja 1”";
 "CalibrateSurface2Msg" = "- Obrót telefon o 180 stopni.\r\n- Naciśnij guzik „Kalibracja 2”.\r\n";
 "CalibrationDone" = "Kalibracja zakończona.";
+
+"Verification Required" = "Wymagana weryfikacja";
+"Paid User" = "Płatny użytkownika";
+"Bought Remove Ads" = "Kupił usunąć reklamy";
+"Continue without Verification" = "Kontynuuj bez weryfikacji";

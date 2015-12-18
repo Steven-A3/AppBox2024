@@ -985,3 +985,8 @@
 "CalibrateSurface1Msg" = "- Pressez 'Calibrer 1' tout en maintenant l'iPhone à plat sur la surface.";
 "CalibrateSurface2Msg" = "- Faites pivoter l'iPhone à 180 degrés.\r\n- Pressez 'Calibrer 2'";
 "CalibrationDone" = "Le calibration a été effectué avec succès.";
+
+"Verification Required" = "Vérification requise";
+"Paid User" = "Utilisateur payant";
+"Bought Remove Ads" = "Acheté supprimer pubs";
+"Continue without Verification" = "Continuer sans vérification";

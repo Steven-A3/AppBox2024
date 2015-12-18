@@ -995,3 +995,8 @@
 "CalibrateSurface1Msg" = "- 장치를 표면에 평평하게 둔 상태에서 \"보정 1\" 버튼을 누릅니다.";
 "CalibrateSurface2Msg" = "- 장치를 180도로 회전 후 \"보정 2\" 버튼을 누릅니다.";
 "CalibrationDone" = "성공적으로 보정되었습니다.";
+
+"Verification Required" = "확인이 필요합니다.";
+"Paid User" = "유료 사용자";
+"Bought Remove Ads" = "광고 제거를 구매했음";
+"Continue without Verification" = "확인하지 않고 사용";

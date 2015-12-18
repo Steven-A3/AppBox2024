@@ -979,3 +979,8 @@ Inserire chiave di crittografia per il portafoglio.";
 "CalibrateSurface1Msg" = "- Premi ‘Calibrare 1’ lasciando l’iPhone a contatto con la superficie.";
 "CalibrateSurface2Msg" = "- Gira l’iPhone di 180 gradi e premi ‘Calibrare 2’.";
 "CalibrationDone" = "La calibrazione è stata completata correttamente.";
+
+"Verification Required" = "Verifica obbligatoria";
+"Paid User" = "Utente a pagamento";
+"Bought Remove Ads" = "Comprato evitare le pubblicità";
+"Continue without Verification" = "Continua senza verifica";

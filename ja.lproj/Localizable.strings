@@ -994,3 +994,8 @@
 "CalibrateSurface1Msg" = "- 装置を表面に平らに置いた状態で\"補正1\" ボタンを押します。";
 "CalibrateSurface2Msg" = "- 装置を180度に回転させた後で \"補正2\" ボタンを押します。";
 "CalibrationDone" = "補正に成功しました。";
+
+"Verification Required" = "確認が必要です";
+"Paid User" = "支払ったユーザー";
+"Bought Remove Ads" = "広告の削除を購入したこと";
+"Continue without Verification" = "確認せずに続行";

@@ -983,3 +983,8 @@ Introduzca la clave de cifrado para el bolsillo.";
 "CalibrateSurface1Msg" = "- Pulse \"Calibrar 1\" mientras mantiene el iPhone sobre la superficie plana.";
 "CalibrateSurface2Msg" = "- Gire 180 grados el IPhone.\r\n- Pulse \"Calibrar 2\"";
 "CalibrationDone" = "Se ha compleato la corrección con éxito.";
+
+"Verification Required" = "Comprobación necesaria";
+"Paid User" = "A cargo de usuario";
+"Bought Remove Ads" = "Comprado Eliminar anuncios";
+"Continue without Verification" = "Continuar sin verificación";
