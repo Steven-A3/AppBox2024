@@ -129,14 +129,17 @@ na wszystkich urządzeniach";
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "xk9-a9-WGh"; */
 "xk9-a9-WGh.normalTitle" = "Użyj AppBox Pro";
 
-"3xJ-Ct-Vtk.text" = "Lustro";  // Mirror
-"4JO-f3-Yeq.text" = "Losowanie";        // Random
+"4JO-f3-Yeq.text" = "Lustro";  // Mirror
+"i80-fG-GLd.text" = "Losowanie";        // Random
 
-/* Class = "IBUILabel"; text = "Magnifier"; ObjectID = "86S-LG-bmW"; */
-"86S-LG-bmW.text" = "Lupa";
+/* Class = "IBUILabel"; text = "Magnifier"; ObjectID = "3xJ-Ct-Vtk"; */
+"3xJ-Ct-Vtk.text" = "Lupa";
 
 /* Class = "IBUILabel"; text = "Flashlight"; ObjectID = "ni3-pI-wdj"; */
 "ni3-pI-wdj.text" = "Latarka";
 
-/* Class = "UILabel"; text = "Ruler"; ObjectID = "i80-fG-GLd"; */
-"i80-fG-GLd.text" = "Linijka";
+/* Class = "UILabel"; text = "Ruler"; ObjectID = "sfr-Rs-SVI"; */
+"sfr-Rs-SVI.text" = "Linijka";
+
+/* Class = "UILabel"; text = "Level"; ObjectID = "86S-LG-bmW"; */
+"86S-LG-bmW.text" = "Poziomnica";

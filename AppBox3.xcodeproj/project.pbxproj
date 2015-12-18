@@ -1844,7 +1844,6 @@
 		68961FE118B311D100C89F16 /* Mirror.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Mirror.xcassets; path = "AppBox3/Asset Catalogs/Mirror.xcassets"; sourceTree = "<group>"; };
 		6896DC951921D64F00FA98F3 /* ExpenseListItem+management.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ExpenseListItem+management.h"; path = "Data/ExpenseListItem+management.h"; sourceTree = "<group>"; };
 		6896DC961921D64F00FA98F3 /* ExpenseListItem+management.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ExpenseListItem+management.m"; path = "Data/ExpenseListItem+management.m"; sourceTree = "<group>"; };
-		6898A0071ACD509200B3B9A4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Launch_iPhone.strings; sourceTree = "<group>"; };
 		6898A0091ACD52B900B3B9A4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Launch_iPad.strings; sourceTree = "<group>"; };
 		6898A6E51908AEA50099C09E /* WalletFavorite+initialize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WalletFavorite+initialize.h"; sourceTree = "<group>"; };
 		6898A6E61908AEA50099C09E /* WalletFavorite+initialize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WalletFavorite+initialize.m"; sourceTree = "<group>"; };
@@ -2307,6 +2306,7 @@
 		68D319411A3BFE76003B9F54 /* AppBox3 Free-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "AppBox3 Free-Info.plist"; path = "AppBox3 Free/AppBox3 Free-Info.plist"; sourceTree = SOURCE_ROOT; };
 		68D356181845CF94008409B4 /* UIImage+imageWithColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+imageWithColor.h"; sourceTree = "<group>"; };
 		68D356191845CF94008409B4 /* UIImage+imageWithColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+imageWithColor.m"; sourceTree = "<group>"; };
+		68D37A381C23F48E00E2FAF9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Launch_iPhone.strings; sourceTree = "<group>"; };
 		68D455941886DD8C004F3877 /* A3AppDelegate+appearance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "A3AppDelegate+appearance.h"; path = "AppDelegate/A3AppDelegate+appearance.h"; sourceTree = "<group>"; };
 		68D455951886DD8C004F3877 /* A3AppDelegate+appearance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "A3AppDelegate+appearance.m"; path = "AppDelegate/A3AppDelegate+appearance.m"; sourceTree = "<group>"; };
 		68D61BD617F53FB400EF4B5E /* DKLiveBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DKLiveBlurView.h; path = External/DKLiveBlur/LiveBlur/LiveBlur/DKLiveBlurView.h; sourceTree = "<group>"; };
@@ -7032,7 +7032,7 @@
 				68F150F8194C263A00159EAD /* pl */,
 				68F150FA194C263B00159EAD /* es */,
 				6813614C1A6CADE300E13F51 /* zh-Hant */,
-				6898A0071ACD509200B3B9A4 /* en */,
+				68D37A381C23F48E00E2FAF9 /* en */,
 			);
 			name = Launch_iPhone.storyboard;
 			sourceTree = "<group>";

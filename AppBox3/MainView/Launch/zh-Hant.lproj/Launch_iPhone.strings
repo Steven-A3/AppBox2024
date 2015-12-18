@@ -4,7 +4,7 @@
 "kyc-gi-ylJ.normalTitle" = "使用 AppBox Pro";
 "QRY-F6-eI0.text" = "折扣價格計算";
 "keG-kf-hWu.text" = "轉換器";
-"4JO-f3-Yeq.text" = "隨機數據生成";
+"i80-fG-GLd.text" = "隨機數據生成";
 "5dF-dl-Cfh.text" = "貸款計算";
 "pMI-GK-toN.text" = "計算器";
 "ZZQ-VK-PjS.text" = "更簡單，更快，更集中，
@@ -22,10 +22,10 @@
 "pgE-6d-yU7.text" = "小費計算";
 "UGi-UW-2XK.normalTitle" = "以後";
 "qLl-8c-QA3.normalTitle" = "繼續";
-"3xJ-Ct-Vtk.text" = "鏡子";
+"4JO-f3-Yeq.text" = "鏡子";
 "LH1-Sz-F5c.text" = "改進和優化";
 "jNp-9m-gWI.normalTitle" = "使用 iCloud";
-"86S-LG-bmW.text" = "放大鏡";
+"3xJ-Ct-Vtk.text" = "放大鏡";
 "0bh-Bt-1Rg.text" = "單位換算";
 "Ixg-rR-GNM.normalTitle" = "繼續";
 "gJ6-AU-90c.normalTitle" = "使用 AppBox Pro";
@@ -46,6 +46,8 @@
 "CUC-uG-Jld.text" = "時鐘";
 "7KY-kl-Ksz.text" = "基本型/科學型計算器";
 
-/* Class = "UILabel"; text = "Ruler"; ObjectID = "i80-fG-GLd"; */
-"i80-fG-GLd.text" = "尺子";
+/* Class = "UILabel"; text = "Ruler"; ObjectID = "sfr-Rs-SVI"; */
+"sfr-Rs-SVI.text" = "尺子";
 
+/* Class = "UILabel"; text = "Level"; ObjectID = "86S-LG-bmW"; */
+"86S-LG-bmW.text" = "確定水平";

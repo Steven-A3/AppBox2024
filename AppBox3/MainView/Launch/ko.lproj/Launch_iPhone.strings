@@ -129,14 +129,17 @@ on all your devices"; ObjectID = "K25-Dj-0hb"; */
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "xk9-a9-WGh"; */
 "xk9-a9-WGh.normalTitle" = "AppBox Pro 시작";
 
-"3xJ-Ct-Vtk.text" = "거울";
-"4JO-f3-Yeq.text" = "난수생성";
+"4JO-f3-Yeq.text" = "거울";
+"i80-fG-GLd.text" = "난수생성";
 
-/* Class = "IBUILabel"; text = "Magnifier"; ObjectID = "86S-LG-bmW"; */
-"86S-LG-bmW.text" = "돋보기";
+/* Class = "IBUILabel"; text = "Magnifier"; ObjectID = "3xJ-Ct-Vtk"; */
+"3xJ-Ct-Vtk.text" = "돋보기";
 
 /* Class = "IBUILabel"; text = "Flashlight"; ObjectID = "ni3-pI-wdj"; */
 "ni3-pI-wdj.text" = "손전등";
 
-/* Class = "UILabel"; text = "Ruler"; ObjectID = "i80-fG-GLd"; */
-"i80-fG-GLd.text" = "자";
+/* Class = "UILabel"; text = "Ruler"; ObjectID = "sfr-Rs-SVI"; */
+"sfr-Rs-SVI.text" = "자";
+
+/* Class = "UILabel"; text = "Level"; ObjectID = "86S-LG-bmW"; */
+"86S-LG-bmW.text" = "수평계";

@@ -130,15 +130,17 @@ a 64Bit e molto altro";
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "xk9-a9-WGh"; */
 "xk9-a9-WGh.normalTitle" = "Usa AppBox Pro";
 
-/* Class = "IBUILabel"; text = "Magnifier"; ObjectID = "86S-LG-bmW"; */
-"86S-LG-bmW.text" = "Lente d'ingrandimento";
+/* Class = "IBUILabel"; text = "Magnifier"; ObjectID = "3xJ-Ct-Vtk"; */
+"3xJ-Ct-Vtk.text" = "Lente d'ingrandimento";
 
 /* Class = "IBUILabel"; text = "Flashlight"; ObjectID = "ni3-pI-wdj"; */
 "ni3-pI-wdj.text" = "Torcia";
 
-"3xJ-Ct-Vtk.text" = "Specchio";  // Mirror
-"4JO-f3-Yeq.text" = "Casuale";  // Random
+"4JO-f3-Yeq.text" = "Specchio";  // Mirror
+"i80-fG-GLd.text" = "Casuale";  // Random
 
-/* Class = "UILabel"; text = "Ruler"; ObjectID = "i80-fG-GLd"; */
-"i80-fG-GLd.text" = "Righello";
+/* Class = "UILabel"; text = "Ruler"; ObjectID = "sfr-Rs-SVI"; */
+"sfr-Rs-SVI.text" = "Righello";
 
+/* Class = "UILabel"; text = "Level"; ObjectID = "86S-LG-bmW"; */
+"86S-LG-bmW.text" = "Livello";

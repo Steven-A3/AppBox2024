@@ -130,14 +130,17 @@ en todos sus dispositivos";
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "xk9-a9-WGh"; */
 "xk9-a9-WGh.normalTitle" = "Usar AppBox Pro";
 
-"3xJ-Ct-Vtk.text" = "Espejo";  // Mirror
-"4JO-f3-Yeq.text" = "Random";  // Random
+"4JO-f3-Yeq.text" = "Espejo";  // Mirror
+"i80-fG-GLd.text" = "Random";  // Random
 
-/* Class = "IBUILabel"; text = "Magnifier"; ObjectID = "86S-LG-bmW"; */
-"86S-LG-bmW.text" = "Amplificador";
+/* Class = "IBUILabel"; text = "Magnifier"; ObjectID = "3xJ-Ct-Vtk"; */
+"3xJ-Ct-Vtk.text" = "Amplificador";
 
 /* Class = "IBUILabel"; text = "Flashlight"; ObjectID = "ni3-pI-wdj"; */
 "ni3-pI-wdj.text" = "Linterna";
 
-/* Class = "UILabel"; text = "Ruler"; ObjectID = "i80-fG-GLd"; */
-"i80-fG-GLd.text" = "Regla";
+/* Class = "UILabel"; text = "Ruler"; ObjectID = "sfr-Rs-SVI"; */
+"sfr-Rs-SVI.text" = "Regla";
+
+/* Class = "UILabel"; text = "Level"; ObjectID = "86S-LG-bmW"; */
+"86S-LG-bmW.text" = "Nivelar";

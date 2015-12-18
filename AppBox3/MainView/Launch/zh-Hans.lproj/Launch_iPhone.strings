@@ -128,15 +128,17 @@ on all your devices"; ObjectID = "K25-Dj-0hb"; */
 /* Class = "IBUIButton"; normalTitle = "Use AppBox Pro"; ObjectID = "xk9-a9-WGh"; */
 "xk9-a9-WGh.normalTitle" = "使用 AppBox Pro";
 
-"3xJ-Ct-Vtk.text" = "镜子";  // Mirror
-"4JO-f3-Yeq.text" = "随机数据生成";  // Random
+"4JO-f3-Yeq.text" = "镜子";  // Mirror
+"i80-fG-GLd.text" = "随机数据生成";  // Random
 
-/* Class = "IBUILabel"; text = "Magnifier"; ObjectID = "86S-LG-bmW"; */
-"86S-LG-bmW.text" = "放大镜";
+/* Class = "IBUILabel"; text = "Magnifier"; ObjectID = "3xJ-Ct-Vtk"; */
+"3xJ-Ct-Vtk.text" = "放大镜";
 
 /* Class = "IBUILabel"; text = "Flashlight"; ObjectID = "ni3-pI-wdj"; */
 "ni3-pI-wdj.text" = "手电灯";
 
-/* Class = "UILabel"; text = "Ruler"; ObjectID = "i80-fG-GLd"; */
-"i80-fG-GLd.text" = "尺子";
+/* Class = "UILabel"; text = "Ruler"; ObjectID = "sfr-Rs-SVI"; */
+"sfr-Rs-SVI.text" = "尺子";
 
+/* Class = "UILabel"; text = "Level"; ObjectID = "86S-LG-bmW"; */
+"86S-LG-bmW.text" = "在水平面上";

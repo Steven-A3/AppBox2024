@@ -5,14 +5,14 @@
 /* Class = "UILabel"; text = "Utility"; ObjectID = "3pq-Ua-ezN"; */
 "3pq-Ua-ezN.text" = "Utility";
 
-/* Class = "UILabel"; text = "Mirror"; ObjectID = "3xJ-Ct-Vtk"; */
-"3xJ-Ct-Vtk.text" = "Mirror";
+/* Class = "UILabel"; text = "Magnifier"; ObjectID = "3xJ-Ct-Vtk"; */
+"3xJ-Ct-Vtk.text" = "Magnifier";
 
 /* Class = "UILabel"; text = "Ladies Calendar"; ObjectID = "3xh-WT-2qJ"; */
 "3xh-WT-2qJ.text" = "Ladies Calendar";
 
-/* Class = "UILabel"; text = "Random"; ObjectID = "4JO-f3-Yeq"; */
-"4JO-f3-Yeq.text" = "Random";
+/* Class = "UILabel"; text = "Mirror"; ObjectID = "4JO-f3-Yeq"; */
+"4JO-f3-Yeq.text" = "Mirror";
 
 /* Class = "UILabel"; text = "Loan Calculator"; ObjectID = "5dF-dl-Cfh"; */
 "5dF-dl-Cfh.text" = "Loan Calculator";
@@ -23,8 +23,8 @@
 /* Class = "UILabel"; text = "Basic/Scientific Calculator"; ObjectID = "7KY-kl-Ksz"; */
 "7KY-kl-Ksz.text" = "Basic/Scientific Calculator";
 
-/* Class = "UILabel"; text = "Magnifier"; ObjectID = "86S-LG-bmW"; */
-"86S-LG-bmW.text" = "Magnifier";
+/* Class = "UILabel"; text = "Level"; ObjectID = "86S-LG-bmW"; */
+"86S-LG-bmW.text" = "Level";
 
 /* Class = "UILabel"; text = "Percent Calculator"; ObjectID = "C7O-ix-OQV"; */
 "C7O-ix-OQV.text" = "Percent Calculator";
@@ -89,8 +89,8 @@
 /* Class = "UILabel"; text = "Lunar Converter"; ObjectID = "hit-L7-cuy"; */
 "hit-L7-cuy.text" = "Lunar Converter";
 
-/* Class = "UILabel"; text = "Ruler"; ObjectID = "i80-fG-GLd"; */
-"i80-fG-GLd.text" = "Ruler";
+/* Class = "UILabel"; text = "Random"; ObjectID = "i80-fG-GLd"; */
+"i80-fG-GLd.text" = "Random";
 
 /* Class = "UIButton"; normalTitle = "Use iCloud"; ObjectID = "jNp-9m-gWI"; */
 "jNp-9m-gWI.normalTitle" = "Use iCloud";
@@ -130,6 +130,9 @@
 
 /* Class = "UIButton"; normalTitle = "Continue"; ObjectID = "qLl-8c-QA3"; */
 "qLl-8c-QA3.normalTitle" = "Continue";
+
+/* Class = "UILabel"; text = "Ruler"; ObjectID = "sfr-Rs-SVI"; */
+"sfr-Rs-SVI.text" = "Ruler";
 
 /* Class = "UILabel"; text = "Productivity"; ObjectID = "wFh-rf-oGS"; */
 "wFh-rf-oGS.text" = "Productivity";
