@@ -73,8 +73,6 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 		_currentSceneViewController.delegate = self;
 		[self.view addSubview:_currentSceneViewController.view];
 		[self addChildViewController:_currentSceneViewController];
-	} else {
-		[self askRestorePurchase];
 	}
 }
 
@@ -104,6 +102,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 				}
 			}
 			[appDelegate downloadDataFiles];
+			[self askRestorePurchase];
 		}
 		else
 		{
