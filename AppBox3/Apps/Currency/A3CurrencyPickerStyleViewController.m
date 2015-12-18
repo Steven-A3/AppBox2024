@@ -541,6 +541,11 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	keyboardVC.textInputTarget = textField;
 	keyboardVC.delegate = self;
 	keyboardVC.keyboardType = A3NumberKeyboardTypeCurrency;
+
+	NSInteger fromRow = [_pickerView selectedRowInComponent:0];
+	A3YahooCurrency *fromCurrencyInfo = [self currencyInfoAtRow:fromRow];
+	keyboardVC.currencyCode = fromCurrencyInfo.currencyCode;
+
 	textField.inputView = [keyboardVC view];
 	if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
 		textField.inputAssistantItem.leadingBarButtonGroups = @[];
