@@ -127,6 +127,15 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 		make.width.equalTo(@44);
 		make.height.equalTo(@44);
 	}];
+	
+	if (IS_IOS7) {
+		[self.tableView remakeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(superview.left);
+			make.right.equalTo(superview.right);
+			make.top.equalTo(superview.top).with.offset(64);
+			make.height.equalTo(IS_IPHONE35 ? @140 : @190);
+		}];
+	}
 }
 
 - (void)didReceiveMemoryWarning {
@@ -172,7 +181,9 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	[_lineAboveAdBackgroundView setHidden:YES];
 
 	_tableView.rowHeight = 70.0;
-	_tableViewHeightConstraint.constant = 140.0;
+	if (!IS_IOS7) {
+		_tableViewHeightConstraint.constant = 140.0;
+	}
 	_adBGBottomToLineUpTopConstraint.constant = -1;
 	_lineBottomToPickerSpaceConstraint.constant = -11;
 	
@@ -185,7 +196,9 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	[_lineAboveAdBackgroundView setHidden:YES];
 
 	_tableView.rowHeight = 95.0;
-	_tableViewHeightConstraint.constant = 190.0;
+	if (!IS_IOS7) {
+		_tableViewHeightConstraint.constant = 190.0;
+	}
 	_adBGBottomToLineUpTopConstraint.constant = -1;
 	_lineBottomToPickerSpaceConstraint.constant = 8;
 
@@ -198,7 +211,9 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	[_lineAboveAdBackgroundView setHidden:YES];
 	
 	_tableView.rowHeight = 95.0;
-	_tableViewHeightConstraint.constant = 190.0;
+	if (!IS_IOS7) {
+		_tableViewHeightConstraint.constant = 190.0;
+	}
 	
 	[self.view layoutIfNeeded];
 }
@@ -254,7 +269,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 		CurrencyRateItem *currencyInfo = [[[A3AppDelegate instance] cacheStoreManager] currencyInfoWithCode:_targetCurrencyCode];
 		cell.flagImageView.image = [UIImage imageNamed:currencyInfo.flagImageName];
 		cell.valueField.text = self.targetValueString;
-		cell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, Rate = %0.4f", @"%@, Rate = %0.4f"), currencyInfo.currencySymbol, self.conversionRate];
+		cell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, Rate = %0.4g", @"%@, Rate = %0.4g"), currencyInfo.currencySymbol, self.conversionRate];
 		cell.codeLabel.text = _targetCurrencyCode;
 		_targetTextField = cell.valueField;
 	}
