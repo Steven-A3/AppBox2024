@@ -79,7 +79,7 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 @implementation A3AppDelegate {
 	BOOL _appIsNotActiveYet;
 	BOOL _backgroundDownloadIsInProgress;
-	BOOL _needShowAlertV3_4NewFeature;
+	BOOL _needShowAlertV3_8NewFeature;
 }
 
 @synthesize window = _window;
@@ -166,9 +166,9 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 		if (!_shouldMigrateV1Data) {
 			[self migrateToV3_4_Holidays];
 		}
-		if ([[_previousVersion substringToIndex:3] doubleValue] >= 3.0) {
-			_needShowAlertV3_4NewFeature = YES;
-		}
+	}
+	if (_previousVersion && [_previousVersion doubleValue] < 3.8) {
+		_needShowAlertV3_8NewFeature = YES;
 	}
 
 	// AppBox Pro V1.8.4까지는 Days Until 기능의 옵션에 의해서 남은 일자에 대한 배지 기능이 있었습니다.
@@ -1168,10 +1168,10 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 }
 
 - (void)didFinishPushViewController {
-	if (_needShowAlertV3_4NewFeature) {
-		_needShowAlertV3_4NewFeature = NO;
+	if (_needShowAlertV3_8NewFeature) {
+		_needShowAlertV3_8NewFeature = NO;
 		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-															message:[NSString stringWithFormat:NSLocalizedString(@"'%@' is back.", @"'%@' is back to AppBox Pro."), NSLocalizedString(@"Ruler", @"Ruler")]
+															message:[NSString stringWithFormat:NSLocalizedString(@"'%@' is back.", @"'%@' is back to AppBox Pro."), NSLocalizedString(@"Level", nil)]
 														   delegate:nil
 												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 												  otherButtonTitles:nil];
