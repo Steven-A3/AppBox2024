@@ -148,8 +148,8 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 	_favorites = nil;
 	_sourceValue = [self lastInputValue];
-	[_tableView reloadData];
 	[_pickerView reloadAllComponents];
+	[self didSelectPickerRow];
 
 	[self setupInstructionView];
 }
