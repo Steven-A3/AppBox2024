@@ -657,6 +657,8 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 #pragma mark - Number Keyboard Calculator Button Notification
 
 - (void)calculatorButtonAction {
+	_didPressClearKey = NO;
+	
 	[self.firstResponder resignFirstResponder];
 	A3CalculatorViewController *viewController = [self presentCalculatorViewController];
 	viewController.delegate = self;
@@ -666,9 +668,11 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	NSNumberFormatter *numberFormatter = [NSNumberFormatter new];
 	[numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
 	
-	_calculatorTargetTextField.text = value;
-	
-	[self textFieldDidEndEditing:_calculatorTargetTextField];
+	_sourceTextField.text = value;
+	if ([value floatValueEx] != 0.0) {
+		_didPressNumberKey = YES;
+	}
+	[self textFieldDidEndEditing:_sourceTextField];
 }
 
 #pragma mark - UIPickerView 
@@ -1014,8 +1018,6 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 }
 
 #pragma mark - Instruction
-
-#pragma mark Instruction Related
 
 static NSString *const A3V3InstructionDidShowForCurrencyPicker = @"A3V3InstructionDidShowForCurrencyPicker";
 
