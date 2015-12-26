@@ -150,6 +150,10 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 		NSString *accountID = [[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarCurrentAccountID];
 		_currentAccount = [LadyCalendarAccount MR_findFirstByAttribute:ID_KEY withValue:accountID];
+		if (!_currentAccount) {
+			_currentAccount = [LadyCalendarAccount MR_findFirst];
+			[[A3SyncManager sharedSyncManager] setObject:_currentAccount.uniqueID forKey:A3LadyCalendarCurrentAccountID state:A3DataObjectStateModified];
+		}
 	}
 	return _currentAccount;
 }
