@@ -61,7 +61,7 @@
 "Passcode Lock" = "Kod blokady";
 "Lunar Calendar" = "Kalendarz księżycowy";
 
-/* "Twój przyjaciel przekazuje Ci informację, że Lustro, Budzik, Poziomica, Waluty, Daty, Odliczanie, Napiwki, Jednostki i aplikacje sieciowe (Web Apps)  z AppBox Pro™ są już dostępne na twojego iPhone-a lub iPod-a Touch. Kliknij link poniżej aby ściągnąć AppBox Pro™ ze sklepu iTunes.\n\nhttps://itunes.apple.com/app/id318404385"; */
+/* "Twój przyjaciel przekazuje Ci informację, że Lustro, Budzik, Poziomica, Waluty, Daty, Odliczanie, Napiwki, Jednostki i aplikacje sieciowe (Web Apps)  z AppBox Pro® są już dostępne na twojego iPhone-a lub iPod-a Touch. Kliknij link poniżej aby ściągnąć AppBox Pro® ze sklepu iTunes.\n\nhttps://itunes.apple.com/app/id318404385"; */
 
 /* "Our every effort has been made to present an accurate holiday list. However many part of the world holidays are subject to arbitrary changes by local authorities. We cannot accept any responsibility for any error or omission in the holiday data. You are therefore advised to verify the dates with the embassy or consulate of country, before planning any case."; */
 "DISCLAIMER_MESSAGE" = "Staraliśmy się aby wyświetlić aktualną listę dni wolnych. Jednak w wiele dni wolnych na świecie zależy od lokalnych władz i ich ustaleń. Nie możemy wziąść odpowiedzialności za jakikolwiek błąd lub pominięcie jakieś daty dnia wolnego. Zalecamy aby sprawdzić datę w ambasadzie lub konsulacie kraju, zanim podejmie się decyzję na temat planowanego wyjazdu.";
@@ -720,8 +720,8 @@
 "Please enter passcode." = "Wpisz hasło.";
 "Open in Safari" = "Otwórz w Safari";
 
-"A friend has recommended AppBox Pro™ from the iTunes App Store" = "Przyjacielska rekomendacja aplikacji AppBox Pro™ z iTunes";
-"AppBox Pro™ V%@ Contact Support" = "AppBox Pro™ V%@ Skontaktuj się z pomocą techniczną";
+"A friend has recommended AppBox Pro® from the iTunes App Store" = "Przyjacielska rekomendacja aplikacji AppBox Pro® z iTunes";
+"AppBox Pro® V%@ Contact Support" = "AppBox Pro® V%@ Skontaktuj się z pomocą techniczną";
 "Close" = "Zamknij";
 "Continue" = "Kontynuuj";
 "Compressing" = "Kompresja";

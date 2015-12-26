@@ -501,7 +501,7 @@
 "Category" = "種類";
 "Result" = "結果";
 "Journey" = "旅行";
-"A friend has recommended AppBox Pro™ from the iTunes App Store" = "一個朋友在iTunes App Store 中推薦使用AppBox Pro™ ";
+"A friend has recommended AppBox Pro® from the iTunes App Store" = "一個朋友在iTunes App Store 中推薦使用AppBox Pro® ";
 "% Change from X to Y" = "% 從X 變為 Y";
 "Add Event" = "添加事件";
 "4 weeks" = "4周";
@@ -713,7 +713,7 @@
 "Syncing in background" = "後台同步";
 "End Date" = "結束日期";
 "Auto Dim" = "自動變暗";
-"AppBox Pro™ V%@ Contact Support" = "AppBox Pro™ V%@ 與支援部門聯絡";
+"AppBox Pro® V%@ Contact Support" = "AppBox Pro® V%@ 與支援部門聯絡";
 "Pets" = "寵物";
 "Optional" = "可選的";
 "Immediately" = "立即";

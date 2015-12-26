@@ -70,7 +70,7 @@ NSString *const A3AppName_RestorePurchase = @"Restore Purchase";
 	[self setupData];
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	
-	self.title = @"AppBox Pro";
+	self.title = @"AppBox Pro®";
 	self.tableView.accessibilityIdentifier = @"MainMenuTable";
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -94,7 +94,7 @@ NSString *const A3AppName_RestorePurchase = @"Restore Purchase";
 }
 
 - (void)resetTitle {
-	self.title = @"AppBox Pro";
+	self.title = @"AppBox Pro®";
 	[_titleResetTimer invalidate];
 	_titleResetTimer = nil;
 }

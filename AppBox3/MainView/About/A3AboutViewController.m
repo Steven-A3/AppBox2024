@@ -135,7 +135,7 @@
 		return;
 	}
 	NSString *emailSubject = [NSString stringWithFormat:
-			NSLocalizedString(@"AppBox Pro™ V%@ Contact Support", nil),
+			NSLocalizedString(@"AppBox Pro® V%@ Contact Support", nil),
 			[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] ];
 
 	UIDevice *currentDevice = [UIDevice currentDevice];

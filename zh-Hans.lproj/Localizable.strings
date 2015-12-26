@@ -62,7 +62,7 @@
 "Passcode Lock" = "密码锁定";
 "Lunar Calendar" = "阴历";
 
-/* "A friend wanted to let you know that the Calculator, Date Calculator, Loan Calculator, Percent Calculator, Sales Calculator, Tip Calculator, Unit Price, Currency Converter, Lunar Converter, Translator, Unit Converter, Days Counter, Expense List, Ladies Calendar, Wallet, Holidays, Battery Status, Clock, Magnifier and Mirror you've come to expect from AppBox Pro™ is now available for your iPhone, iPad and iPod Touch. Click below to download AppBox Pro™ from the iTunes App Store.\r\n\r\nhttps://itunes.apple.com/app/id318404385"; */
+/* "A friend wanted to let you know that the Calculator, Date Calculator, Loan Calculator, Percent Calculator, Sales Calculator, Tip Calculator, Unit Price, Currency Converter, Lunar Converter, Translator, Unit Converter, Days Counter, Expense List, Ladies Calendar, Wallet, Holidays, Battery Status, Clock, Magnifier and Mirror you've come to expect from AppBox Pro® is now available for your iPhone, iPad and iPod Touch. Click below to download AppBox Pro® from the iTunes App Store.\r\n\r\nhttps://itunes.apple.com/app/id318404385"; */
 
 /* "Our every effort has been made to present an accurate holiday list. However many part of the world holidays are subject to arbitrary changes by local authorities. We cannot accept any responsibility for any error or omission in the holiday data. You are therefore advised to verify the dates with the embassy or consulate of country, before planning any case." */
 "DISCLAIMER_MESSAGE" = "我们会努力为您提供准确的假日列表。但是由于世界各地的假期会由于政府的调整而有所变化，所以我们不会对假期数据的错误或遗漏承担责任。所以建议您在制定计划之前与大使馆或者领事馆确认。";
@@ -732,8 +732,8 @@
 "Please enter passcode." = "请输入密码";
 "Open in Safari" = "在Safari中打开";
 
-"A friend has recommended AppBox Pro™ from the iTunes App Store" = "一个朋友在iTunes App Store 中推荐使用AppBox Pro™ ";
-"AppBox Pro™ V%@ Contact Support" = "AppBox Pro™ V%@ 客户支持";
+"A friend has recommended AppBox Pro® from the iTunes App Store" = "一个朋友在iTunes App Store 中推荐使用AppBox Pro® ";
+"AppBox Pro® V%@ Contact Support" = "AppBox Pro® V%@ 客户支持";
 "Close" = "关闭";
 "Continue" = "继续";
 "Compressing" = "压缩";
