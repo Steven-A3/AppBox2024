@@ -71,24 +71,19 @@
 
 	holidayName = NSLocalizedStringFromTable(@"President's Day Holiday", kHolidaysResourceName, nil);
 	date = [HolidayData dateWithWeekday:Tuesday ordinal:3 month:7 year:year withCalendar:gregorian];
-	date = [HolidayData dateWithDay:21 month:7 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
-
 
 	holidayName = NSLocalizedStringFromTable(@"Botswana Day", kHolidaysResourceName, nil);
 	date = [HolidayData dateWithDay:30 month:9 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
-
 	holidayName = NSLocalizedStringFromTable(@"Botswana Day Holiday", kHolidaysResourceName, nil);
 	date = [HolidayData dateWithDay:1 month:10 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
-
 	holidayName = NSLocalizedStringFromTable(@"Christmas Day", kHolidaysResourceName, nil);
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
-
 
 	holidayName = NSLocalizedStringFromTable(@"Boxing Day", kHolidaysResourceName, nil);
 	date = [HolidayData dateWithDay:26 month:12 year:year withCalendar:gregorian option:0];
@@ -166,30 +161,10 @@
 	}
 
     //todo: http://en.wikipedia.org/wiki/Diwali Hindu Festival. Between October and November
-	holidayName = NSLocalizedStringFromTable(@"Diwali", kHolidaysResourceName, nil);
-	{
-		int month, day;
-		switch (year) {
-			case 2008:
-				month = 10;
-				day = 29;
-				break;
-			case 2009:
-				month = 10;
-				day = 17;
-				break;
-			case 2010:
-				month = 11;
-				day = 5;
-				break;
-			default:
-				day = -1;
-				break;
-		}
-		if (day > 0) {
-			date = [HolidayData dateWithDay:day month:month year:year withCalendar:gregorian option:0];
-			[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
-		}
+	date = [HolidayData getDeepavaliForYear:year];
+	if (date) {
+		holidayName = NSLocalizedStringFromTable(@"Diwali", kHolidaysResourceName, nil);
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
     //todo: "Eid ul-Fitr" (Between October and November) Muslim Festival
@@ -1299,7 +1274,7 @@
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
-	holidayName = NSLocalizedStringFromTable(@"Patriots' VDay", kHolidaysResourceName, nil);
+	holidayName = NSLocalizedStringFromTable(@"Patriots' Day", kHolidaysResourceName, nil);
 	date = [HolidayData dateWithDay:5 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
@@ -1352,7 +1327,9 @@
 
 	adjusted = [HolidayData adjustDate:date calendar:gregorian option:3];
 	if (adjusted && ![adjusted isEqualToDate:date]) {
-		holidayName = NSLocalizedStringFromTable(@"New Year's Day(day in lieu)", kHolidaysResourceName, nil);
+		holidayName = [NSString stringWithFormat:@"%@(%@)",
+						NSLocalizedStringFromTable(@"New Year's Day", kHolidaysResourceName, nil),
+						NSLocalizedStringFromTable(@"day in lieu", kHolidaysResourceName, nil)];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
@@ -1362,7 +1339,9 @@
 
 	adjusted = [HolidayData adjustDate:date calendar:gregorian option:3];
 	if (adjusted && ![adjusted isEqualToDate:date]) {
-		holidayName = NSLocalizedStringFromTable(@"Heroes' Day(day in lieu)", kHolidaysResourceName, nil);
+		holidayName = [NSString stringWithFormat:@"%@(%@)",
+						NSLocalizedStringFromTable(@"Heroes' Day", kHolidaysResourceName, nil),
+						NSLocalizedStringFromTable(@"day in lieu", kHolidaysResourceName, nil)];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
@@ -1372,7 +1351,9 @@
 
 	adjusted = [HolidayData adjustDate:date calendar:gregorian option:3];
 	if (adjusted && ![adjusted isEqualToDate:date]) {
-		holidayName = NSLocalizedStringFromTable(@"Women's Day(day in lieu)", kHolidaysResourceName, nil);
+		holidayName = [NSString stringWithFormat:@"%@(%@)",
+						NSLocalizedStringFromTable(@"Women's Day", kHolidaysResourceName, nil),
+						NSLocalizedStringFromTable(@"day in lieu", kHolidaysResourceName, nil)];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
@@ -1382,7 +1363,9 @@
 
 	adjusted = [HolidayData adjustDate:date calendar:gregorian option:3];
 	if (adjusted && ![adjusted isEqualToDate:date]) {
-		holidayName = NSLocalizedStringFromTable(@"Workers' Day(day in lieu)", kHolidaysResourceName, nil);
+		holidayName = [NSString stringWithFormat:@"%@(%@)",
+						NSLocalizedStringFromTable(@"Worker's Day", kHolidaysResourceName, nil),
+						NSLocalizedStringFromTable(@"day in lieu", kHolidaysResourceName, nil)];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
@@ -1392,7 +1375,9 @@
 
 	adjusted = [HolidayData adjustDate:date calendar:gregorian option:3];
 	if (adjusted && ![adjusted isEqualToDate:date]) {
-		holidayName = NSLocalizedStringFromTable(@"Independence Day(day in lieu)", kHolidaysResourceName, nil);
+		holidayName = [NSString stringWithFormat:@"%@(%@)",
+						NSLocalizedStringFromTable(@"Independence Day", kHolidaysResourceName, nil),
+						NSLocalizedStringFromTable(@"day in lieu", kHolidaysResourceName, nil)];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
@@ -1402,7 +1387,9 @@
 
 	adjusted = [HolidayData adjustDate:date calendar:gregorian option:3];
 	if (adjusted && ![adjusted isEqualToDate:date]) {
-		holidayName = NSLocalizedStringFromTable(@"Victory Day(day in lieu)", kHolidaysResourceName, nil);
+		holidayName = [NSString stringWithFormat:@"%@(%@)",
+						NSLocalizedStringFromTable(@"Victoria Day", kHolidaysResourceName, nil),
+						NSLocalizedStringFromTable(@"day in lieu", kHolidaysResourceName, nil)];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
@@ -1412,7 +1399,9 @@
 
 	adjusted = [HolidayData adjustDate:date calendar:gregorian option:3];
 	if (adjusted && ![adjusted isEqualToDate:date]) {
-		holidayName = NSLocalizedStringFromTable(@"Revolution Day(day in lieu)", kHolidaysResourceName, nil);
+		holidayName = [NSString stringWithFormat:@"%@(%@)",
+						NSLocalizedStringFromTable(@"Revolution Day", kHolidaysResourceName, nil),
+						NSLocalizedStringFromTable(@"day in lieu", kHolidaysResourceName, nil)];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
@@ -1422,7 +1411,9 @@
 
 	adjusted = [HolidayData adjustDate:date calendar:gregorian option:3];
 	if (adjusted && ![adjusted isEqualToDate:date]) {
-		holidayName = NSLocalizedStringFromTable(@"Day of Peace and Reconciliation(day in lieu)", kHolidaysResourceName, nil);
+		holidayName = [NSString stringWithFormat:@"%@(%@)",
+						NSLocalizedStringFromTable(@"Day of Peace and Reconciliation", kHolidaysResourceName, nil),
+						NSLocalizedStringFromTable(@"day in lieu", kHolidaysResourceName, nil)];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
@@ -1433,7 +1424,9 @@
 	
 	adjusted = [HolidayData adjustDate:date calendar:gregorian option:3];
 	if (adjusted && ![adjusted isEqualToDate:date]) {
-		holidayName = NSLocalizedStringFromTable(@"Family Day(Christmas)(day in lieu)", kHolidaysResourceName, nil);
+		holidayName = [NSString stringWithFormat:@"%@(%@)",
+						NSLocalizedStringFromTable(@"Family Day", kHolidaysResourceName, nil),
+						NSLocalizedStringFromTable(@"day in lieu", kHolidaysResourceName, nil)];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 

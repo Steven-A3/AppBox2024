@@ -348,7 +348,7 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
-	holidayName = [@"Islamic New Year" stringByAppendingFormat:@"(%lu)", (unsigned long) (year - ( (year > 2007) ? 578:579 ) ) ];
+	holidayName = [NSLocalizedStringFromTable(@"Islamic New Year", kHolidaysResourceName, nil) stringByAppendingFormat:@"(%lu)", (unsigned long) (year - ((year > 2007) ? 578 : 579))];
 	date = [HolidayData getIslamicNewYear:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -422,7 +422,7 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	date = [HolidayData dateWithDay:9 month:8 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	NSDateComponents *dc = [gregorian components:NSWeekdayCalendarUnit fromDate:date];
+	NSDateComponents *dc = [gregorian components:NSCalendarUnitWeekday fromDate:date];
 	if ([dc weekday] == Sunday) {
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
 		[offsetDC setDay:1];
@@ -440,7 +440,7 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 
 	date = [HolidayData getDeepavaliForYear:year];
 	if (date) {
-		holidayName = NSLocalizedStringFromTable(@"Deepavali", kHolidaysResourceName, nil);
+		holidayName = NSLocalizedStringFromTable(@"Diwali", kHolidaysResourceName, nil);
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
@@ -505,7 +505,8 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 		
 
 	}
-	
+
+	// TODO: Verify Ching Ming Every Year 매년 확인해야 합니다.
 	holidayName = NSLocalizedStringFromTable(@"Ching Ming Festival", kHolidaysResourceName, nil);
 	int equinox = 20;
 	if ((year == 2003) || (year == 2007)) equinox = 21;
@@ -661,7 +662,8 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
-	
+
+	// TODO: Ching Ming Verify Yearly, 매년 확인해야 합니다.
 	holidayName = NSLocalizedStringFromTable(@"Ching Ming Festival", kHolidaysResourceName, nil);
 	int equinox = 20;
 	if ((year == 2003) || (year == 2007)) equinox = 21;
@@ -1724,7 +1726,7 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	
     //todo: 다른 해 날짜 표시. 1day만 public
 	if (year == 2010) {
-		holidayName = NSLocalizedStringFromTable(@"Ashura Holiday", kHolidaysResourceName, nil);
+		holidayName = NSLocalizedStringFromTable(@"Ashura", kHolidaysResourceName, nil);
 		date = [HolidayData dateWithDay:16 month:12 year:year withCalendar:gregorian option:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
@@ -1800,7 +1802,9 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	if ((date = [HolidayData adjustDate:date calendar:gregorian option:1])) {
-		holidayName = NSLocalizedStringFromTable(@"National Labor Day(day in lieu)", kHolidaysResourceName, nil);
+		holidayName = [NSString stringWithFormat:@"%@(%@)",
+						NSLocalizedStringFromTable(@"National Labor Day", kHolidaysResourceName, nil),
+						NSLocalizedStringFromTable(@"day in lieu", kHolidaysResourceName, nil)];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	

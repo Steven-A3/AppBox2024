@@ -400,7 +400,7 @@ NSUInteger const jewishTable[][14][2] = {
     
     //todo: "National Sports Day" - on the second Tuesday of February (from 2012 AD)
     
-    holidayName = NSLocalizedStringFromTable(@" Independence Day", kHolidaysResourceName, nil);
+    holidayName = NSLocalizedStringFromTable(@"Independence Day", kHolidaysResourceName, nil);
 	date = [HolidayData dateWithDay:3 month:9 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -878,13 +878,13 @@ NSUInteger const jewishTable[][14][2] = {
 
 /*! Jewish Holiday rather than Israel Holiday
  */
-- (NSMutableArray *)jewish_HolidaysInYear
+- (NSMutableArray * _Nonnull)jewish_HolidaysInYear
 {
 	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	if ((year < 2000) || (year > 2049)) {
-		NSArray *holidayItem = [NSArray arrayWithObjects:@"Jewish Holidays (2000~2049 only)", nil];
+		NSDictionary *holidayItem = @{kHolidayName:@"Jewish Holidays (2000~2049 only)"};
 		[holidays addObject:holidayItem];
 
 		return holidays;
@@ -927,7 +927,7 @@ NSUInteger const jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:jewishTable[year - 2000][7][1] month:jewishTable[year - 2000][7][0] year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
-	holidayName = [@"Rosh HaShanah*" stringByAppendingString:[NSString stringWithFormat:@"(%lu)", (unsigned long)year + 3761 ]];
+	holidayName = [NSLocalizedStringFromTable(@"Rosh HaShanah*", kHolidaysResourceName, nil) stringByAppendingString:[NSString stringWithFormat:@"(%lu)", (unsigned long)year + 3761 ]];
 	date = [HolidayData dateWithDay:jewishTable[year - 2000][8][1] month:jewishTable[year - 2000][8][0] year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
@@ -954,11 +954,14 @@ NSUInteger const jewishTable[][14][2] = {
 	return holidays;
 }
 
-- (NSMutableArray *)il_HolidaysInYear {
+- (NSMutableArray * _Nonnull)il_HolidaysInYear {
 	NSUInteger year = self.year;
 
 	if ((year < 2014) || (year > 2016)) {
-		return nil;
+		NSMutableArray *holidays = [NSMutableArray new];
+		NSDictionary *holidayItem = @{kHolidayName:@"Israel Holidays (2014~2016 only)"};
+		[holidays addObject:holidayItem];
+		return holidays;
 	}
 
 	NSString *filepath = [[NSBundle mainBundle] pathForResource:@"IsraelHolidays" ofType:@"plist"];
@@ -992,7 +995,7 @@ NSUInteger const jewishTable[][14][2] = {
 			NSString *holidayName = item[0];
 			BOOL isPublicHoliday = [publicHolidayNames indexOfObject:holidayName] != NSNotFound;
 			NSDate *newDate = [gregorian dateByAddingComponents:offsetDC toDate:[item objectAtIndex:1] options:0];
-			[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@(isPublicHoliday), kHolidayDate:newDate, kHolidayDuration:@1}];
+			[holidays addObject:@{kHolidayName:NSLocalizedStringFromTable(holidayName, kHolidaysResourceName, nil), kHolidayIsPublic:@(isPublicHoliday), kHolidayDate:newDate, kHolidayDuration:@1}];
 		}
 
 		return holidays;
