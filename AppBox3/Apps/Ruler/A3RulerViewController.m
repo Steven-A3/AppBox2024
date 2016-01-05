@@ -253,20 +253,20 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		_redLineWidth = 0.5;
 	} else if ([model isEqualToString:@"iPad Pro"]) {
 		// iPad Pro
-		CGFloat pixelsInInch = 227.3;
+		CGFloat pixelsInInch = 264;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
 		_centimeterAsPoints = (1024.0 / 2732.0) * pixelsInCentimeter;
 		_inchAsPoints = (1024.0 / 2732.0) * pixelsInInch;
-		_resetPosition = _centimeterPositionRightBottom ? 28.0 : 11.0;
+		_resetPosition = _centimeterPositionRightBottom ? 23.0 : 9.0;
 		_redLineWidth = 0.5;
 	} else {
 		// Simulator
 
-		CGFloat pixelsInInch = 227.3;
+		CGFloat pixelsInInch = 264;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
 		_centimeterAsPoints = (1024.0 / 2732.0) * pixelsInCentimeter;
 		_inchAsPoints = (1024.0 / 2732.0) * pixelsInInch;
-		_resetPosition = _centimeterPositionRightBottom ? 28.0 : 11.0;
+		_resetPosition = _centimeterPositionRightBottom ? 23.0 : 9.0;
 		_redLineWidth = 0.5;
 	}
 
