@@ -894,7 +894,7 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 			equinox = 21;
 			break;
 	}
-	date = [HolidayData dateWithDay:equinox month:3 year:year withCalendar:gregorian option:0];
+	date = [HolidayData dateWithDay:equinox month:3 year:year withCalendar:gregorian option:1];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = NSLocalizedStringFromTable(@"Showa Day", kHolidaysResourceName, nil);
@@ -915,6 +915,10 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	
 	holidayName = NSLocalizedStringFromTable(@"Marine Day", kHolidaysResourceName, nil);
 	date = [HolidayData dateWithWeekday:Monday ordinal:3 month:7 year:year withCalendar:gregorian];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	
+	holidayName = NSLocalizedStringFromTable(@"Forest Day", kHolidaysResourceName, nil);
+	date = [HolidayData dateWithDay:11 month:8 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = NSLocalizedStringFromTable(@"Respect for the Aged Day", kHolidaysResourceName, nil);
