@@ -8,6 +8,12 @@
 
 #import "A3LoanCalcLoanInfoCell.h"
 
+@interface A3LoanCalcLoanInfoCell ()
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *separatorHeightConstraint;
+
+@end
+
 @implementation A3LoanCalcLoanInfoCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -32,19 +38,15 @@
     
     _markLabel.layer.masksToBounds = YES;
     _markLabel.layer.cornerRadius = _markLabel.bounds.size.height/2;
+	
+	self.separatorHeightConstraint.constant = 1/[[UIScreen mainScreen] scale];
+	[self layoutIfNeeded];
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
-    if (IS_RETINA) {
-        for (UIView *line in _hori1PxLines) {
-            CGRect rect = line.frame;
-            rect.size.height = 0.5f;
-            line.frame = rect;
-        }
-    }
+
 }
 
 @end

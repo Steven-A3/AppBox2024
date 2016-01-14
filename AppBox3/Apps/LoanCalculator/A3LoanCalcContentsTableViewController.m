@@ -183,24 +183,24 @@
     // red bar
     graphCell.redLineView.hidden = NO;
 
-    // downLabel, info X위치 (아이폰/아이패드 모두 우측에서 50)
-    dispatch_async(dispatch_get_main_queue(), ^{
-        float fromRightDistance = 15.0 + graphCell.infoButton.bounds.size.width + 10.0;
-        graphCell.lowLabel.layer.anchorPoint = CGPointMake(1.0, 0.5);
-        CGPoint center = graphCell.lowLabel.center;
-        center.x = graphCell.bounds.size.width - fromRightDistance;
-        graphCell.lowLabel.center = center;
-        graphCell.lowLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-
-        float fromRightDistance2 = 15.0;
-        graphCell.infoButton.layer.anchorPoint = CGPointMake(1.0, 0.5);
-        CGPoint center2 = graphCell.infoButton.center;
-        center2.x = graphCell.bounds.size.width - fromRightDistance2;
-        center2.y = (int)round(center.y);
-        graphCell.infoButton.center = center2;
-        graphCell.infoButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-
-    });
+//    // downLabel, info X위치 (아이폰/아이패드 모두 우측에서 50)
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        float fromRightDistance = 15.0 + graphCell.infoButton.bounds.size.width + 10.0;
+//        graphCell.lowLabel.layer.anchorPoint = CGPointMake(1.0, 0.5);
+//        CGPoint center = graphCell.lowLabel.center;
+//        center.x = graphCell.bounds.size.width - fromRightDistance;
+//        graphCell.lowLabel.center = center;
+//        graphCell.lowLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+//
+//        float fromRightDistance2 = 15.0;
+//        graphCell.infoButton.layer.anchorPoint = CGPointMake(1.0, 0.5);
+//        CGPoint center2 = graphCell.infoButton.center;
+//        center2.x = graphCell.bounds.size.width - fromRightDistance2;
+//        center2.y = (int)round(center.y);
+//        graphCell.infoButton.center = center2;
+//        graphCell.infoButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+//
+//    });
 
     // 애니메이션 Start
     graphCell.upLabel.alpha = 0.0;
@@ -312,14 +312,14 @@
     graphCell.infoButton.hidden = YES;
 
     // downLabel X위치 (우측에서 15)
-    dispatch_async(dispatch_get_main_queue(), ^{
-        float fromRightDistance = 15.0;
-        graphCell.lowLabel.layer.anchorPoint = CGPointMake(1.0, 0.5);
-        CGPoint center = graphCell.lowLabel.center;
-        center.x = graphCell.bounds.size.width - fromRightDistance;
-        graphCell.lowLabel.center = center;
-        graphCell.lowLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-    });
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        float fromRightDistance = 15.0;
+//        graphCell.lowLabel.layer.anchorPoint = CGPointMake(1.0, 0.5);
+//        CGPoint center = graphCell.lowLabel.center;
+//        center.x = graphCell.bounds.size.width - fromRightDistance;
+//        graphCell.lowLabel.center = center;
+//        graphCell.lowLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+//    });
 
     NSString *interestText = _totalMode ? NSLocalizedString(@"Total Interest", @"Interest") : (IS_IPAD ? NSLocalizedString(@"Average Interest", @"Average Interest") : NSLocalizedString(@"Avg.Interest", @"Avg.Interest"));
     NSString *paymentText = _totalMode ? NSLocalizedString(@"Total Amount", @"Total Amount") : NSLocalizedString(@"Payment", @"Payment");

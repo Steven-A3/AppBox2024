@@ -159,7 +159,8 @@
 }
 
 - (void)layoutSubviews {
-
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+	
 	_weekdayMonthDayBaseline.offset(IS_IPHONE && IS_LANDSCAPE ? 27 : 50);
 
 	[self setWeatherHidden:![[A3UserDefaults standardUserDefaults] clockShowWeather] ];
@@ -185,20 +186,30 @@
 
 	CGFloat boxSize, interimSpace;
 	BOOL showSeconds = [[A3UserDefaults standardUserDefaults] clockTheTimeWithSeconds];
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	if (IS_IPHONE) {
 		if (IS_PORTRAIT) {
 			boxSize = showSeconds ? 90 : 140;
+			boxSize *= screenBounds.size.width/320;
+			interimSpace = 10;
+			interimSpace *= screenBounds.size.width/320;
 		} else {
 			boxSize = showSeconds ? 140 : [self showWeather] ? 171 : 195;
+			boxSize *= scale;
+			interimSpace = 10;
+			interimSpace *= scale;
 		}
-		interimSpace = 10;
 	} else {
 		if (IS_PORTRAIT) {
 			boxSize = showSeconds ? 200 : 284;
+			boxSize *= scale;
 			interimSpace = 20;
+			interimSpace *= scale;
 		} else {
 			boxSize = showSeconds ? 284 : 360;
+			boxSize *= scale;
 			interimSpace = showSeconds ? 20 : 30;
+			interimSpace *= scale;
 		}
 	}
 
@@ -248,8 +259,8 @@
 	}
 
 	[_lbAMPM makeConstraints:^(MASConstraintMaker *make) {
-		[_timeViewConstraints addObject:make.left.equalTo(_hourView.left).with.offset(10)];
-		[_timeViewConstraints addObject:make.bottom.equalTo(_hourView.top).with.offset(-8)];
+		[_timeViewConstraints addObject:make.left.equalTo(_hourView.left).with.offset(10 * scale)];
+		[_timeViewConstraints addObject:make.bottom.equalTo(_hourView.top).with.offset(-8 * scale)];
 	}];
 
 	[_lbAMPM setHidden:![[A3UserDefaults standardUserDefaults] clockShowAMPM]];
@@ -381,6 +392,7 @@
 }
 
 - (void)setTimeFont:(SBTickerView *)tickerView isForSecond:(BOOL)isForSecond {
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
 	UILabel *frontView = (UILabel *)tickerView.frontView;
 	UILabel *backView = (UILabel *)tickerView.backView;
 	CGFloat fontSize;
@@ -388,25 +400,26 @@
 	if (IS_IPHONE) {
 		if (IS_PORTRAIT) {
 			fontSize = showSeconds ? 64 : 110;
-			frontView.layer.cornerRadius = 5;
-			backView.layer.cornerRadius = 5;
+			frontView.layer.cornerRadius = 5 * scale;
+			backView.layer.cornerRadius = 5 * scale;
 			
 		} else {
 			fontSize = showSeconds ? 110 : [self showWeather] ? 132 : 156;
-			frontView.layer.cornerRadius = showSeconds ? 5 : 8;
-			backView.layer.cornerRadius = showSeconds ? 5 : 8;
+			frontView.layer.cornerRadius = (showSeconds ? 5 : 8) * scale;
+			backView.layer.cornerRadius = (showSeconds ? 5 : 8) * scale;
 		}
 	} else {
 		if (IS_PORTRAIT) {
 			fontSize = showSeconds ? 150 : 214;
-			frontView.layer.cornerRadius = showSeconds ? 11 : 16;
-			backView.layer.cornerRadius = showSeconds ? 11 : 16;
+			frontView.layer.cornerRadius = (showSeconds ? 11 : 16) * scale;
+			backView.layer.cornerRadius = (showSeconds ? 11 : 16) * scale;
 		} else {
 			fontSize = showSeconds ? 214 : 284;
-			frontView.layer.cornerRadius = showSeconds ? 16 : 20;
-			backView.layer.cornerRadius = showSeconds ? 16 : 20;
+			frontView.layer.cornerRadius = (showSeconds ? 16 : 20) * scale;
+			backView.layer.cornerRadius = (showSeconds ? 16 : 20) * scale;
 		}
 	}
+	fontSize *= scale;
 	UIFont *font = isForSecond ? [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:fontSize] : [UIFont boldSystemFontOfSize:fontSize];
 	frontView.font = font;
 	backView.font = font;

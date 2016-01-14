@@ -32,14 +32,14 @@
 
 	if (![self isEditing]) {
 		CGRect frame = self.textLabel.frame;
-		frame.origin.x = IS_IPHONE ? 15 : 28;
+		frame.origin.x = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 		if (self.imageView.bounds.size.width) {
 			frame.origin.x += self.imageView.bounds.size.width;
 			if (IS_IPHONE) frame.origin.x += 13.0;
 		}
 		self.textLabel.frame = frame;
 	} else {
-		CGFloat originX = IS_IPHONE ? 15 : 28;
+		CGFloat originX = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 		if (self.imageView.bounds.size.width) {
 			CGRect frame = self.imageView.frame;
 			frame.origin.x = originX;

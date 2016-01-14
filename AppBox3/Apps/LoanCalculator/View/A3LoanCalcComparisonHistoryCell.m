@@ -33,6 +33,11 @@
     for (UILabel *markLB in _markLbs) {
         markLB.layer.cornerRadius = markLB.bounds.size.height/2;
     }
+	
+	if ([[UIScreen mainScreen] scale] > 2) {
+		FNLOG(@"[[UIScreen mainScreen] scale] > 2");
+		_leadingConstraint.constant = 12;
+	}
 }
 
 @end

@@ -25,6 +25,10 @@
 @property (strong, nonatomic) A3TripleCircleView *circleB_View;
 @property (weak, nonatomic) IBOutlet UILabel *totalInterestLB;
 @property (weak, nonatomic) IBOutlet UILabel *totalAmountLB;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *redLineARightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *redLineBRightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftLabelACenterXConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftLabelBCenterXConstraint;
 
 @property (readwrite) float leftA_X;
 @property (readwrite) float leftB_X;

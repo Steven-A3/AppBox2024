@@ -114,7 +114,9 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
+	
+	_separatorHeightConstraint.constant = 1.0 / [[UIScreen mainScreen] scale];
+	
     A3TripleCircleView *circleView = [A3TripleCircleView new];
 	circleView.frame = CGRectMake(0, 0, 31, 31);
 	[_lineView addSubview:circleView];

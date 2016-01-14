@@ -217,10 +217,12 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 				[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationMainMenuDidHide object:nil];
 			}
 		}];
-		[_drawerController setMaximumLeftDrawerWidth:320.0];
+		
+		CGRect screenBounds = [[UIScreen mainScreen] bounds];
+		[_drawerController setMaximumLeftDrawerWidth:screenBounds.size.width];
 		[_drawerController setShowsShadow:NO];
 
-		_drawerController.view.frame = [[UIScreen mainScreen] bounds];
+		_drawerController.view.frame = screenBounds;
 
 		rootViewController = _drawerController;
 	}

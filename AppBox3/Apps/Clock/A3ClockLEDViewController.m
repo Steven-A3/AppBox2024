@@ -77,6 +77,8 @@
 
 	[self setupTextColor];
 
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+	
 	CGFloat timeFontSize;
 	if (IS_IPHONE) {
 		if (self.showSeconds) {
@@ -91,6 +93,7 @@
 			timeFontSize = IS_PORTRAIT ? 231 : 304;
 		}
 	}
+	timeFontSize *= scale;
 
 	CGFloat otherFontSize;
 	if (IS_IPHONE) {
@@ -98,6 +101,7 @@
 	} else {
 		otherFontSize = 26;
 	}
+	otherFontSize *= scale;
 	UIFont *otherFont = [UIFont fontWithName:@"Register" size:otherFontSize];
 
 	_zeroLabel.text = self.showSeconds ? @"00 00 00" : @"00 00";
@@ -120,6 +124,9 @@
 			colonSize = IS_PORTRAIT ? 140 : 180;
 			colonOffset = IS_PORTRAIT ? -7 : -7;
 		}
+		colonSize *= scale;
+		colonOffset *= scale;
+		
 		CGFloat timeHalfHeightUp;
 		CGFloat timeHalfHeightDown;
 		if (IS_IPHONE) {
@@ -129,6 +136,9 @@
 			timeHalfHeightUp = IS_PORTRAIT ? 142 / 2: 182 / 2;
 			timeHalfHeightDown = IS_PORTRAIT ? 142 / 2: 182 / 2;
 		}
+		timeHalfHeightUp *= scale;
+		timeHalfHeightDown *= scale;
+		
 		_second1.font = _zeroLabel.font; _second2.font = _zeroLabel.font;
 
 		[self setGradientColor];
@@ -206,6 +216,9 @@
 			colonSize = IS_PORTRAIT ? 180 : 234;
 			colonOffset = IS_PORTRAIT ? -7 : -7;
 		}
+		colonSize *= scale;
+		colonOffset *= scale;
+		
 		CGFloat timeHalfHeightUp;
 		CGFloat timeHalfHeightDown;
 		if (IS_IPHONE) {
@@ -215,6 +228,8 @@
 			timeHalfHeightUp = IS_PORTRAIT ? 188 / 2 - 2: 236 / 2 - 1;
 			timeHalfHeightDown = IS_PORTRAIT ? 188 / 2 - 2: 236 / 2 - 3;
 		}
+		timeHalfHeightUp *= scale;
+		timeHalfHeightDown *= scale;
 
 		[self setGradientColor];
 		CGRect frame = self.view.bounds;

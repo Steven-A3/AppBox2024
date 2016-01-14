@@ -41,6 +41,25 @@ NSString *const A3AnimationIDKeyboardWillShow = @"A3AnimationIDKeyboardWillShow"
 	return bounds;
 }
 
++ (CGFloat)scaleToOriginalDesignDimension {
+	CGFloat scale;
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	if (IS_IPHONE) {
+		if (IS_PORTRAIT) {
+			scale = bounds.size.width / 320;
+		} else {
+			scale = bounds.size.width / (IS_IPHONE35 ? 480 : 568);
+		}
+	} else {
+		if (IS_PORTRAIT) {
+			scale = bounds.size.width / 768;
+		} else {
+			scale = bounds.size.width / 1024;
+		}
+	}
+	return scale;
+}
+
 + (CGFloat)statusBarHeight {
 	CGRect frame = [[UIApplication sharedApplication] statusBarFrame];
 	#ifdef __IPHONE_8_0

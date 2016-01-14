@@ -443,10 +443,19 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 	self.numberKeyboardViewController = keyboardVC;
 
 	[self addNumberKeyboardNotificationObservers];
+	
+	FNLOGINSETS(self.tableView.contentInset);
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+	FNLOGINSETS(self.tableView.contentInset);
+	return YES;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+	FNLOGINSETS(self.tableView.contentInset);
+
 	[self removeNumberKeyboardNotificationObservers];
 
     NSIndexPath *endIndexPath = self.currentIndexPath;

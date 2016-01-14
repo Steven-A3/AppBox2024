@@ -18,6 +18,8 @@
 
 @property (nonatomic, strong) void (^settingChangedBlock)(void);
 @property (nonatomic, strong) void (^settingDismissBlock)(void);
+@property (nonatomic, strong) UISwitch *downPaymentSwitch;
+@property (nonatomic, strong) UISwitch *extraPaymentSwitch;
 
 @end
 
@@ -141,49 +143,11 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    // Return the number of sections.
-    return 2;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    // Return the number of rows in the section.
-    return 1;
-}
-
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
 	if (section == 1) {
 		return NSLocalizedString(@"For monthly payment.", @"For monthly payment.");
 	}
 	return nil;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = nil;
-
-	if (indexPath.section == 0) {
-		A3LoanCalcSettingSwitchCell *switchCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcSettingSwitchCellID forIndexPath:indexPath];
-		switchCell.selectionStyle = UITableViewCellSelectionStyleNone;
-		switchCell.titleLabel.text = NSLocalizedString(@"Down Payment", @"Down Payment");
-		switchCell.onoffSwitch.on = [LoanCalcPreference showDownPayment];
-		[switchCell.onoffSwitch addTarget:self action:@selector(downPaymentSwitchAction:) forControlEvents:UIControlEventValueChanged];
-
-		cell = switchCell;
-	}
-	else if (indexPath.section == 1) {
-		A3LoanCalcSettingSwitchCell *switchCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcSettingSwitchCellID forIndexPath:indexPath];
-		switchCell.selectionStyle = UITableViewCellSelectionStyleNone;
-		switchCell.titleLabel.text = NSLocalizedString(@"Extra Payment", @"Extra Payment");
-		switchCell.onoffSwitch.on = [LoanCalcPreference showExtraPayment];
-		[switchCell.onoffSwitch addTarget:self action:@selector(extraPaymentSwitchAction:) forControlEvents:UIControlEventValueChanged];
-
-		cell = switchCell;
-	}
-
-    return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -200,6 +164,37 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
 {
     if (section == 1) return UITableViewAutomaticDimension;
 	return 1;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	switch (indexPath.section) {
+		case 0:
+			cell.textLabel.text = NSLocalizedString(@"Down Payment", @"Down Payment");
+			cell.accessoryView = self.downPaymentSwitch;
+			break;
+		case 1:
+			cell.textLabel.text = NSLocalizedString(@"Extra Payment", @"Extra Payment");
+			cell.accessoryView = self.extraPaymentSwitch;
+			break;
+	}
+}
+
+- (UISwitch *)downPaymentSwitch {
+	if (!_downPaymentSwitch) {
+		_downPaymentSwitch = [UISwitch new];
+		_downPaymentSwitch.on = [LoanCalcPreference showDownPayment];
+		[_downPaymentSwitch addTarget:self action:@selector(downPaymentSwitchAction:) forControlEvents:UIControlEventValueChanged];
+	}
+	return _downPaymentSwitch;
+}
+
+- (UISwitch *)extraPaymentSwitch {
+	if (!_extraPaymentSwitch) {
+		_extraPaymentSwitch = [UISwitch new];
+		_extraPaymentSwitch.on = [LoanCalcPreference showExtraPayment];
+		[_extraPaymentSwitch addTarget:self action:@selector(extraPaymentSwitchAction:) forControlEvents:UIControlEventValueChanged];
+	}
+	return _extraPaymentSwitch;
 }
 
 @end

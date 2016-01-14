@@ -45,12 +45,6 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
     self.navigationItem.titleView = self.selectSegment;
     
     if (IS_IPHONE) {
@@ -60,7 +54,7 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
     
 	self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = [self tableViewSeparatorColor];
-    
+	
     [self registerContentSizeCategoryDidChangeNotification];
 }
 
@@ -224,8 +218,7 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
         loanCell.upLeftLb.text = [NSString stringWithFormat:@"%@/%@", repayment, shortTerm];
         loanCell.upLeftLb.textColor = [UIColor colorWithRed:255.0/255.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
         loanCell.upLeftLb.font = [UIFont systemFontOfSize:15];
-        
-        
+		
         NSString *principal = [self.currencyFormatter stringFromNumber:@(history.principal.doubleValue)];
         NSString *percent = [self.percentFormatter stringFromNumber:@(history.interestRate.floatValue)];
         float months = roundf(history.term.floatValue);
@@ -242,39 +235,6 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
         loanCell.lowLeftLb.text = [NSString stringWithFormat:@"%@ %@ %@%@", principal, percent, yearText, monthText];
         loanCell.lowLeftLb.textColor = [UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1.0];
         loanCell.lowLeftLb.font = [UIFont systemFontOfSize:13];
-        
-        [loanCell.upLeftLb sizeToFit];
-        [loanCell.upRightLb sizeToFit];
-        [loanCell.lowLeftLb sizeToFit];
-        
-        // from bottom to label bottom : 41/13
-        float gap1 = 41;
-        float gap2 = 13;
-        float fromTopToA = loanCell.bounds.size.height - gap1;
-        float fromTopToB = loanCell.bounds.size.height - gap2;
-        loanCell.upLeftLb.layer.anchorPoint = CGPointMake(0.5, 1.0);
-        loanCell.upRightLb.layer.anchorPoint = CGPointMake(1, 1.0);
-        loanCell.lowLeftLb.layer.anchorPoint = CGPointMake(0.5, 1.0);
-        
-        CGPoint lbCenter;
-        
-        lbCenter = loanCell.upLeftLb.center;
-        lbCenter.y = fromTopToA;
-        loanCell.upLeftLb.center = lbCenter;
-        
-        lbCenter = loanCell.upRightLb.center;
-        lbCenter.x = 320-15;
-        lbCenter.y = fromTopToA;
-        loanCell.upRightLb.center = lbCenter;
-        
-        lbCenter = loanCell.lowLeftLb.center;
-        lbCenter.y = fromTopToB;
-        loanCell.lowLeftLb.center = lbCenter;
-        
-        // label baseline adjustment with font
-        [self baseLineAdjustment:loanCell.upLeftLb];
-        [self baseLineAdjustment:loanCell.upRightLb];
-        [self baseLineAdjustment:loanCell.lowLeftLb];
     }
 }
 

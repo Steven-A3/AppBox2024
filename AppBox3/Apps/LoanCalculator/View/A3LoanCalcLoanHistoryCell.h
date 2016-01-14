@@ -14,5 +14,13 @@
 @property (strong, nonatomic) IBOutlet UILabel *lowLeftLb;
 @property (strong, nonatomic) IBOutlet UILabel *upRightLb;
 @property (strong, nonatomic) IBOutlet UILabel *lowRightLb;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topLeftLabelLeadingConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topRightLabelTrailingConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomLeftLabelLeadingConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomRightLabelTrailingConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topLeftTopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topRightTopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomLeftBottomConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomRightBottomConstraint;
 
 @end

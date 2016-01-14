@@ -68,6 +68,7 @@
 
 - (void)updateConstraints {
 	[super updateConstraints];
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
 
 	BOOL showSeconds = [[A3UserDefaults standardUserDefaults] clockTheTimeWithSeconds];
 	BOOL bigCircle = self.position == ClockWaveLocationBig;
@@ -75,11 +76,11 @@
 	CGFloat cornerRadius;
 	CGFloat width;
 	if (bigCircle) {
-		width = IS_IPHONE ? 3 : 7;
-		cornerRadius = width / 2;
+		width = (IS_IPHONE ? 3 : 7) * scale;
+		cornerRadius = (width / 2) * scale;
 	} else {
-		width = IS_IPHONE ? 1 : 2;
-		cornerRadius = width / 2;
+		width = (IS_IPHONE ? 1 : 2) * scale;
+		cornerRadius = (width / 2) * scale;
 	}
 
 	if (showSeconds) {
@@ -138,11 +139,11 @@
 		make.centerX.equalTo(self.centerX);
 		self.colonViewCenterY = make.centerY.equalTo(self.top).with.offset(self.frame.size.height / 2);
 		if (self.position == ClockWaveLocationBig) {
-			make.width.equalTo(showSeconds ? (IS_IPHONE ? @94 : @187) : @(width));
-			make.height.equalTo(showSeconds ? (IS_IPHONE ? @35 : @78) : (IS_IPHONE ? @49: @110));
+			make.width.equalTo(showSeconds ? @((IS_IPHONE ? 94 : 187) * scale) : @(width));
+			make.height.equalTo(showSeconds ? @((IS_IPHONE ? 35 : 78) * scale) : (IS_IPHONE ? @49: @110));
 		} else {
-			make.width.equalTo(showSeconds ? (IS_IPHONE ? @19 : @35) : @(width));
-			make.height.equalTo(showSeconds ? (IS_IPHONE ? @7 : @13) : (IS_IPHONE ? @10 : @17));
+			make.width.equalTo(showSeconds ? @((IS_IPHONE ? 19 : 35) * scale) : @(width));
+			make.height.equalTo(@((showSeconds ? IS_IPHONE ? 7 : 13 : IS_IPHONE ? 10 : 17) * scale) );
 		}
 	}];
 }

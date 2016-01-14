@@ -29,7 +29,11 @@
 }
 
 - (void)initialize {
-	_textLabelOffset = IS_IPHONE ? 15 : 28;
+	if (IS_IPHONE) {
+		_textLabelOffset = [[UIScreen mainScreen] scale] > 2 ? 20 : 15;
+	} else {
+		_textLabelOffset = 28;
+	}
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -52,11 +56,14 @@
 {
     [super awakeFromNib];
 
-	[_titleLabel makeConstraints:^(MASConstraintMaker *make) {
+	[_titleLabel remakeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.contentView.left).with.offset(_textLabelOffset);
 		make.width.equalTo(self.contentView.width).with.multipliedBy(0.5);
 		make.centerY.equalTo(self.centerY);
 	}];
+
+	_textFieldRightConstraint.constant = -(_textLabelOffset);
+	_detailLabelRightConstraint.constant = -(_textLabelOffset);
 }
 
 - (void)prepareForReuse {

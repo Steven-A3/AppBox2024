@@ -77,30 +77,30 @@
     self.circleView.centerColor = redColor;
     self.redLineView.backgroundColor = redColor;
     
-    // low label, info btn pos
-    // downLabel, info X위치 (아이폰 우측에서 50, 아이패드 우측에서 50+13)
-    dispatch_async(dispatch_get_main_queue(), ^{
-        float fromRightDistance = IS_IPAD ? 63.0:50.0;
-        self.lowLabel.layer.anchorPoint = CGPointMake(1.0, 0.5);
-        CGPoint center = self.lowLabel.center;
-        center.x = self.bounds.size.width - fromRightDistance;
-        self.lowLabel.center = center;
-        self.lowLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-        
-        float fromRightDistance2 = IS_IPAD ? 28.0:15.0;
-        self.infoButton.layer.anchorPoint = CGPointMake(1.0, 0.5);
-        CGPoint center2 = self.infoButton.center;
-        center2.x = self.bounds.size.width - fromRightDistance2;
-        self.infoButton.center = center2;
-		CGRect bounds = self.infoButton.bounds;
-		bounds.size.width = 44.0;
-		bounds.size.height = 44.0;
-		self.infoButton.bounds = bounds;
-		FNLOG(@"InfoButton boudnds set.");
-        self.infoButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-        
-    });
-    
+//    // low label, info btn pos
+//    // downLabel, info X위치 (아이폰 우측에서 50, 아이패드 우측에서 50+13)
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        float fromRightDistance = IS_IPAD ? 63.0:50.0;
+//        self.lowLabel.layer.anchorPoint = CGPointMake(1.0, 0.5);
+//        CGPoint center = self.lowLabel.center;
+//        center.x = self.bounds.size.width - fromRightDistance;
+//        self.lowLabel.center = center;
+//        self.lowLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+//        
+//        float fromRightDistance2 = IS_IPAD ? 28.0:15.0;
+//        self.infoButton.layer.anchorPoint = CGPointMake(1.0, 0.5);
+//        CGPoint center2 = self.infoButton.center;
+//        center2.x = self.bounds.size.width - fromRightDistance2;
+//        self.infoButton.center = center2;
+//		CGRect bounds = self.infoButton.bounds;
+//		bounds.size.width = 44.0;
+//		bounds.size.height = 44.0;
+//		self.infoButton.bounds = bounds;
+//		FNLOG(@"InfoButton boudnds set.");
+//        self.infoButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+//        
+//    });
+	
     if (IS_IPAD) {
         // percent bar
         

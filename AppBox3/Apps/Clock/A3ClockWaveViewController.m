@@ -110,33 +110,34 @@
 	NSUInteger numberOfViews = [_circleArray count];
 	CGRect bounds = self.view.bounds;
 	CGRect screenBounds = [[UIScreen mainScreen] bounds];
+	CGFloat radiusBase = IS_PORTRAIT ? bounds.size.width : bounds.size.height;
 
 	switch (numberOfViews) {
 		case 1:
 		case 2:
 			boundsArray = @[
-					[NSValue valueWithCGRect:CGRectMake(0, 0, 270, 270)],
-					[NSValue valueWithCGRect:CGRectMake(0, 0, 62, 62)],
+					[NSValue valueWithCGRect:CGRectMake(0, 0, radiusBase * 0.84375, radiusBase * 0.84375)],
+					[NSValue valueWithCGRect:CGRectMake(0, 0, radiusBase * 0.19375, radiusBase * 0.19375)],
 			];
 			break;
 		case 3:
 			boundsArray = @[
-					[NSValue valueWithCGRect:CGRectMake(0, 0, 270, 270)],
-					[NSValue valueWithCGRect:CGRectMake(0, 0, 62, 62)],
-					[NSValue valueWithCGRect:CGRectMake(0, 0, 62, 62)],
+							[NSValue valueWithCGRect:CGRectMake(0, 0, radiusBase * 0.84375, radiusBase * 0.84375)],
+							[NSValue valueWithCGRect:CGRectMake(0, 0, radiusBase * 0.19375, radiusBase * 0.19375)],
+							[NSValue valueWithCGRect:CGRectMake(0, 0, radiusBase * 0.19375, radiusBase * 0.19375)],
 			];
 			break;
 		case 4:
 			boundsArray = @[
-					[NSValue valueWithCGRect:CGRectMake(0, 0, 270, 270)],
-					[NSValue valueWithCGRect:CGRectMake(0, 0, 62, 62)],
-					[NSValue valueWithCGRect:CGRectMake(0, 0, 62, 62)],
-					[NSValue valueWithCGRect:CGRectMake(0, 0, 62, 62)],
+							[NSValue valueWithCGRect:CGRectMake(0, 0, radiusBase * 0.84375, radiusBase * 0.84375)],
+							[NSValue valueWithCGRect:CGRectMake(0, 0, radiusBase * 0.19375, radiusBase * 0.19375)],
+							[NSValue valueWithCGRect:CGRectMake(0, 0, radiusBase * 0.19375, radiusBase * 0.19375)],
+							[NSValue valueWithCGRect:CGRectMake(0, 0, radiusBase * 0.19375, radiusBase * 0.19375)],
 			];
 			break;
 	}
 	if (IS_PORTRAIT) {
-		if (screenBounds.size.height == 568) {
+		if (screenBounds.size.height != 480) {
 			switch (numberOfViews) {
 				case 1:
 					centerArray = @[
@@ -145,23 +146,23 @@
 					break;
 				case 2:
 					centerArray = @[
-							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width / 2, 110 + 270 / 2)],
-							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.5, 436 + 62 / 2)],
+							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width / 2, bounds.size.height * 0.4)],
+							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.5, bounds.size.height * 0.8)],
 					];
 					break;
 				case 3:
 					centerArray = @[
-							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width / 2, 110 + 270 / 2)],
-							[NSValue valueWithCGPoint:CGPointMake(76, 428)],
-							[NSValue valueWithCGPoint:CGPointMake(244, 428)],
+							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width / 2, bounds.size.height * 0.43)],
+							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.25, bounds.size.height * 0.8)],
+							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.75, bounds.size.height * 0.8)],
 					];
 					break;
 				case 4:
 					centerArray = @[
-							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width / 2, 110 + 270 / 2)],
-							[NSValue valueWithCGPoint:CGPointMake(46, 428)],
-							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.5, 436 + 62 / 2)],
-							[NSValue valueWithCGPoint:CGPointMake(274, 428)],
+							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.5, bounds.size.height * 0.4)],
+							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.20, bounds.size.height * 0.75)],
+							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.5, bounds.size.height * 0.8)],
+							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.80, bounds.size.height * 0.75)],
 					];
 					break;
 			}
@@ -202,7 +203,7 @@
 			_clockIconCenterX =  make.centerX.equalTo(self.view.centerX);
 		}];
 	} else {
-		if (screenBounds.size.height == 568) {
+		if (screenBounds.size.height != 480) {
 			switch (numberOfViews) {
 				case 1:
 					centerArray = @[
@@ -211,23 +212,23 @@
 					break;
 				case 2:
 					centerArray = @[
-							[NSValue valueWithCGPoint:CGPointMake(250, bounds.size.height / 2)],
-							[NSValue valueWithCGPoint:CGPointMake(471, 160)],
+							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.4, bounds.size.height / 2)],
+							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.8, bounds.size.height / 2)],
 					];
 					break;
 				case 3:
 					centerArray = @[
-							[NSValue valueWithCGPoint:CGPointMake(250, bounds.size.height / 2)],
-							[NSValue valueWithCGPoint:CGPointMake(431, 76)],
-							[NSValue valueWithCGPoint:CGPointMake(431, 244)],
+							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.43, bounds.size.height / 2)],
+							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.8, bounds.size.height * 0.25)],
+							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.8, bounds.size.height * 0.75)],
 					];
 					break;
 				case 4:
 					centerArray = @[
-							[NSValue valueWithCGPoint:CGPointMake(250, bounds.size.height / 2)],
-							[NSValue valueWithCGPoint:CGPointMake(431, 56)],
-							[NSValue valueWithCGPoint:CGPointMake(471, 160)],
-							[NSValue valueWithCGPoint:CGPointMake(431, 264)],
+							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.4, bounds.size.height / 2)],
+							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.75, bounds.size.height * 0.2)],
+							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.8, bounds.size.height * 0.5)],
+							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.75, bounds.size.height * 0.8)],
 					];
 					break;
 			}
@@ -321,28 +322,31 @@
 	NSArray *centerArray;
 	NSUInteger numberOfViews = [_circleArray count];
 	CGRect bounds = self.view.bounds;
+	CGFloat diameterBase = MIN(bounds.size.width, bounds.size.height);
+	CGFloat bigCircleDiameter = diameterBase * 0.703125;
+	CGFloat smallCircleDiameter = diameterBase * 0.1614583;
 
 	switch (numberOfViews) {
 		case 1:
 		case 2:
 			boundsArray = @[
-					[NSValue valueWithCGRect:CGRectMake(0, 0, 540, 540)],
-					[NSValue valueWithCGRect:CGRectMake(0, 0, 124, 124)],
+					[NSValue valueWithCGRect:CGRectMake(0, 0, bigCircleDiameter, bigCircleDiameter)],
+					[NSValue valueWithCGRect:CGRectMake(0, 0, smallCircleDiameter, smallCircleDiameter)],
 			];
 			break;
 		case 3:
 			boundsArray = @[
-					[NSValue valueWithCGRect:CGRectMake(0, 0, 540, 540)],
-					[NSValue valueWithCGRect:CGRectMake(0, 0, 124, 124)],
-					[NSValue valueWithCGRect:CGRectMake(0, 0, 124, 124)],
+							[NSValue valueWithCGRect:CGRectMake(0, 0, bigCircleDiameter, bigCircleDiameter)],
+							[NSValue valueWithCGRect:CGRectMake(0, 0, smallCircleDiameter, smallCircleDiameter)],
+							[NSValue valueWithCGRect:CGRectMake(0, 0, smallCircleDiameter, smallCircleDiameter)],
 			];
 			break;
 		case 4:
 			boundsArray = @[
-					[NSValue valueWithCGRect:CGRectMake(0, 0, 540, 540)],
-					[NSValue valueWithCGRect:CGRectMake(0, 0, 124, 124)],
-					[NSValue valueWithCGRect:CGRectMake(0, 0, 124, 124)],
-					[NSValue valueWithCGRect:CGRectMake(0, 0, 124, 124)],
+							[NSValue valueWithCGRect:CGRectMake(0, 0, bigCircleDiameter, bigCircleDiameter)],
+							[NSValue valueWithCGRect:CGRectMake(0, 0, smallCircleDiameter, smallCircleDiameter)],
+							[NSValue valueWithCGRect:CGRectMake(0, 0, smallCircleDiameter, smallCircleDiameter)],
+							[NSValue valueWithCGRect:CGRectMake(0, 0, smallCircleDiameter, smallCircleDiameter)],
 			];
 			break;
 	}
@@ -355,23 +359,23 @@
 				break;
 			case 2:
 				centerArray = @[
-						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width / 2, 159 + 540 / 2)],
-						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width / 2, 809 + 124 / 2)],
+						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width / 2, bounds.size.height * 0.4189453125)],
+						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width / 2, bounds.size.height * 0.8505859375)],
 				];
 				break;
 			case 3:
 				centerArray = @[
-						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width / 2, 159 + 540 / 2)],
-						[NSValue valueWithCGPoint:CGPointMake(140 + 124 / 2, 729 + 124 / 2)],
-						[NSValue valueWithCGPoint:CGPointMake(504 + 124 / 2, 729 + 124 / 2)],
+						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width / 2, bounds.size.height * 0.4189453125)],
+						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.26302083, bounds.size.height * 0.8505859375)],
+						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.73697916, bounds.size.height * 0.8505859375)],
 				];
 				break;
 			case 4:
 				centerArray = @[
-						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width / 2, 159 + 540 / 2)],
-						[NSValue valueWithCGPoint:CGPointMake(88 + 124 / 2, 729 + 124 / 2)],
-						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width / 2, 809 + 124 / 2)],
-						[NSValue valueWithCGPoint:CGPointMake(556 + 124 / 2, 729 + 124 / 2)],
+						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width / 2, bounds.size.height * 0.4589453125)],
+						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.1953125, bounds.size.height * 0.7724609375)],
+						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width / 2, bounds.size.height * 0.8505859375)],
+						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.8040364583, bounds.size.height * 0.7724609375)],
 				];
 				break;
 		}
@@ -389,23 +393,23 @@
 				break;
 			case 2:
 				centerArray = @[
-						[NSValue valueWithCGPoint:CGPointMake(172 + 540 / 2, bounds.size.height / 2)],
-						[NSValue valueWithCGPoint:CGPointMake(823 + 124 / 2, bounds.size.height / 2)],
+						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.431640625, bounds.size.height / 2)],
+						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.8642578125, bounds.size.height / 2)],
 				];
 				break;
 			case 3:
 				centerArray = @[
-						[NSValue valueWithCGPoint:CGPointMake(172 + 540 / 2, bounds.size.height / 2)],
-						[NSValue valueWithCGPoint:CGPointMake(743 + 124 / 2, 140 + 124 / 2)],
-						[NSValue valueWithCGPoint:CGPointMake(743 + 124 / 2, 504 + 124 / 2)],
+						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.431640625, bounds.size.height / 2)],
+						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.7861328125, bounds.size.height * 0.26302083)],
+						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.7861328125, bounds.size.height * 0.26302083)],
 				];
 				break;
 			case 4:
 				centerArray = @[
-						[NSValue valueWithCGPoint:CGPointMake(172 + 540 / 2, bounds.size.height / 2)],
-						[NSValue valueWithCGPoint:CGPointMake(743 + 124 / 2, 88 + 124 / 2)],
-						[NSValue valueWithCGPoint:CGPointMake(823 + 124 / 2, bounds.size.height / 2)],
-						[NSValue valueWithCGPoint:CGPointMake(743 + 124 / 2, 556 + 124 / 2)],
+						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.431640625, bounds.size.height / 2)],
+						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.7861328125, bounds.size.height * 0.1953125)],
+						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.8642578125, bounds.size.height / 2)],
+						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.7861328125, bounds.size.height * 0.8046875)],
 				];
 				break;
 		}
@@ -476,6 +480,7 @@
 }
 
 - (void)addTimeView {
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
 	UIImage *imgHistory = IS_IPHONE ? [UIImage imageNamed:@"history"] : [UIImage imageNamed:@"history_p"];
 	imgHistory = [imgHistory imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 	self.clockIcon = [[UIImageView alloc] initWithImage:imgHistory];
@@ -484,7 +489,7 @@
 	[self.view addSubview:self.clockIcon];
 
 	self.am_pm24Label = [[UILabel alloc] init];
-	[self.am_pm24Label setFont:[UIFont systemFontOfSize:IS_IPHONE ? 14 : 24]];
+	[self.am_pm24Label setFont:[UIFont systemFontOfSize:(IS_IPHONE ? 14 : 24) * scale]];
 	[self.am_pm24Label setTextAlignment:NSTextAlignmentCenter];
 	[self.am_pm24Label setTextColor:[UIColor whiteColor]];
 	[self.view addSubview:self.am_pm24Label];
@@ -503,8 +508,9 @@
 }
 
 - (void)addDateView {
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
 	self.dateTopLabel = [[UILabel alloc] init];
-	[self.dateTopLabel setFont:[UIFont systemFontOfSize:IS_IPHONE ? 14 : 24]];
+	[self.dateTopLabel setFont:[UIFont systemFontOfSize:(IS_IPHONE ? 14 : 24) * scale]];
 	[self.dateTopLabel setTextColor:[UIColor whiteColor]];
 	[self.view addSubview:self.dateTopLabel];
 
@@ -514,7 +520,7 @@
 	[self.view addSubview:self.dateCircle];
 
 	self.dateBottomLabel = [[UILabel alloc] init];
-	[self.dateBottomLabel setFont:[UIFont systemFontOfSize:IS_IPHONE ? 14 : 15]];
+	[self.dateBottomLabel setFont:[UIFont systemFontOfSize:(IS_IPHONE ? 14 : 15) * scale]];
 	[self.dateBottomLabel setTextColor:[UIColor whiteColor]];
 	[self.view addSubview:self.dateBottomLabel];
 
@@ -538,23 +544,24 @@
 }
 
 - (void)addWeekdayView {
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
 	self.weekTopLabel = [[UILabel alloc] init];
-	[self.weekTopLabel setFont:[UIFont systemFontOfSize:IS_IPHONE ? 14 : 15]];
+	[self.weekTopLabel setFont:[UIFont systemFontOfSize:(IS_IPHONE ? 14 : 15) * scale]];
 	[self.weekTopLabel setTextColor:[UIColor whiteColor]];
 	[self.view addSubview:self.weekTopLabel];
 
 	self.weekCircle = [[A3ClockWaveCircleMiddleView alloc] initWithFrame:CGRectMake(0.f, 0.f, 62.f, 62.f)];
 	if (IS_IPAD) {
-		self.weekCircle.smallFont = [UIFont systemFontOfSize:17];
+		self.weekCircle.smallFont = [UIFont systemFontOfSize:17 * scale];
 	}
 	self.weekCircle.delegate = self;
 	self.weekCircle.isShowWave = YES;
-	self.weekCircle.bigFont = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:88];
-	self.weekCircle.smallFont = [UIFont fontWithName:@".HelveticaNeueInterface-Light" size:18];
+	self.weekCircle.bigFont = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:88 * scale];
+	self.weekCircle.smallFont = [UIFont fontWithName:@".HelveticaNeueInterface-Light" size:18 * scale];
 	[self.view addSubview:self.weekCircle];
 
 	self.weekBottomLabel = [[UILabel alloc] init];
-	[self.weekBottomLabel setFont:[UIFont systemFontOfSize:IS_IPHONE ? 14 : 15]];
+	[self.weekBottomLabel setFont:[UIFont systemFontOfSize:(IS_IPHONE ? 14 : 15) * scale]];
 	[self.weekBottomLabel setTextColor:[UIColor whiteColor]];
 	[self.view addSubview:self.weekBottomLabel];
 
@@ -578,8 +585,10 @@
 }
 
 - (void)addTemperatureView {
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+	
 	self.temperatureTopLabel = [[UILabel alloc] init];
-	[self.temperatureTopLabel setFont:[UIFont systemFontOfSize:IS_IPHONE ? 14 : 24]];
+	[self.temperatureTopLabel setFont:[UIFont systemFontOfSize:(IS_IPHONE ? 14 : 24) * scale]];
 	[self.temperatureTopLabel setTextColor:[UIColor whiteColor]];
 	[self.view addSubview:self.temperatureTopLabel];
 
@@ -591,7 +600,7 @@
 	[self.view addSubview:self.temperatureCircle];
 
 	self.temperatureBottomLabel = [[UILabel alloc] init];
-	[self.temperatureBottomLabel setFont:[UIFont systemFontOfSize:IS_IPHONE ? 14 : 24]];
+	[self.temperatureBottomLabel setFont:[UIFont systemFontOfSize:(IS_IPHONE ? 14 : 24) * scale]];
 	[self.temperatureBottomLabel setTextColor:[UIColor whiteColor]];
 	[self.view addSubview:self.temperatureBottomLabel];
 
@@ -615,13 +624,14 @@
 }
 
 - (void)addWeatherView {
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
 	_weatherImageView = [UIImageView new];
 	[self.view addSubview:_weatherImageView];
 
 	self.weatherLabel = [UILabel new];
 	[self.weatherLabel setTextColor:[UIColor whiteColor]];
 	self.weatherLabel.textAlignment = NSTextAlignmentLeft;
-	self.weatherLabel.font = [UIFont systemFontOfSize: IS_IPHONE ? 13 : 15];
+	self.weatherLabel.font = [UIFont systemFontOfSize:(IS_IPHONE ? 13 : 15) * scale];
 	[self.view addSubview:self.weatherLabel];
 
 	[self.weatherImageView makeConstraints:^(MASConstraintMaker *make) {
@@ -755,6 +765,8 @@
 }
 
 - (void)refreshWholeClock:(A3ClockInfo *)clockInfo {
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+	
 	if([[A3UserDefaults standardUserDefaults] clockUse24hourClock])
 		self.am_pm24Label.text = @"24";
 	else
@@ -771,10 +783,10 @@
 	if(self.showSeconds) {
 		if (self.timeCircle.position == ClockWaveLocationBig) {
 			// Big Circle and big font
-			timeFont = [UIFont fontWithName:letterFontName size:IS_IPHONE ? 64 : 128];
+			timeFont = [UIFont fontWithName:letterFontName size:(IS_IPHONE ? 64 : 128) * scale];
 			self.timeCircle.bigFont = timeFont;
 		} else {
-			timeFont = [UIFont fontWithName:smallFontName size:IS_IPHONE ? 13 : 24];
+			timeFont = [UIFont fontWithName:smallFontName size:(IS_IPHONE ? 13 : 24) * scale];
 			self.timeCircle.smallFont = timeFont;
 		}
 	}
@@ -782,10 +794,10 @@
 	{
 		if (self.timeCircle.position == ClockWaveLocationBig) {
 			// Big Circle and big font
-			timeFont = [UIFont fontWithName:letterFontName size:IS_IPHONE ? 88 : 176];
+			timeFont = [UIFont fontWithName:letterFontName size:(IS_IPHONE ? 88 : 176) * scale];
 			self.timeCircle.bigFont = timeFont;
 		} else {
-			timeFont = [UIFont fontWithName:smallFontName size:IS_IPHONE ? 20 : 30];
+			timeFont = [UIFont fontWithName:smallFontName size:(IS_IPHONE ? 20 : 30) * scale];
 			self.timeCircle.smallFont = timeFont;
 		}
 	}
@@ -825,11 +837,13 @@
 }
 
 - (void)adjustFontWhenWeatherIsNotAvailable {
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+	
 	if (!_weatherInfoAvailable) {
 		if (ClockWaveLocationBig == _temperatureCircle.position) {
-			_temperatureCircle.textLabel.font = [UIFont systemFontOfSize:IS_IPHONE ? 60 : 110];
+			_temperatureCircle.textLabel.font = [UIFont systemFontOfSize:(IS_IPHONE ? 60 : 110) * scale];
 		} else {
-			_temperatureCircle.textLabel.font = [UIFont systemFontOfSize:IS_IPHONE ? 14 : 18];
+			_temperatureCircle.textLabel.font = [UIFont systemFontOfSize:(IS_IPHONE ? 14 : 18) * scale];
 		}
 	}
 }

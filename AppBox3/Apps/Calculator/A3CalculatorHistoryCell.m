@@ -63,13 +63,14 @@
 }
 
 - (void)addConstraintLeft:(UILabel *)left right:(UILabel *)right centerY:(CGFloat)centerY {
+	CGFloat contentInset = [[UIScreen mainScreen] scale] > 2 ? 20 : 15;
 	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:left
                                                                  attribute:NSLayoutAttributeLeft
                                                                  relatedBy:NSLayoutRelationEqual
                                                                     toItem:self.contentView
                                                                  attribute:NSLayoutAttributeLeft
                                                                 multiplier:1.0
-                                                                  constant:15.0]];
+                                                                  constant:contentInset]];
 	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:left
                                                                  attribute:NSLayoutAttributeCenterY
                                                                  relatedBy:NSLayoutRelationEqual
@@ -83,7 +84,7 @@
                                                                     toItem:self.contentView
                                                                  attribute:NSLayoutAttributeRight
                                                                 multiplier:1.0
-                                                                  constant:-15.0]];
+                                                                  constant:-contentInset]];
 	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:right
                                                                  attribute:NSLayoutAttributeCenterY
                                                                  relatedBy:NSLayoutRelationEqual

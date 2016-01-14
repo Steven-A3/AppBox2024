@@ -267,16 +267,18 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 #define KBD_BUTTON_TAG_BASE     1000
 
 - (void)setupSubviews {
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+	FNLOG(@"%f", scale);
 
 	// Dimension 320 X 2 / 348, 80 x 54 cell, 8 column, 6 row
 	NSArray *buttonTitle = nil;
 
 	CGFloat x, y, width, height;
     if(IS_PORTRAIT) {
-       width = 80, height = 54;
+       width = 80 * scale, height = 54 * scale;
         buttonTitle = [self buttonTitlesLevel1_p];
     } else {
-       width = 60, height = 40;
+       width = 60 * scale, height = 40 * scale;
         buttonTitle = [self buttonTitlesLevel1_h];
     }
 	for (NSUInteger row = 0; row < 6; row++) {
@@ -330,7 +332,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
                 [button setBackgroundColorForDefaultState:[UIColor colorWithRed:252.0 / 255.0 green:252.0 / 255.0 blue:253.0 / 255.0 alpha:1.0]];
                 [button setBackgroundColorForHighlightedState:[UIColor colorWithRed:234.0 / 255.0 green:234.0 / 255.0 blue:235.0 / 255.0 alpha:1.0]];
 				[button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-                				[button setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+				[button setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
             }
 		}
 	}
@@ -339,13 +341,14 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 - (void)layoutSubviews {
     CGFloat x, y, width, height;
     CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
 	NSArray *buttonTitle = nil;
     
     if(IS_PORTRAIT) {
-        width = 80, height = 54;
+        width = 80 * scale, height = 54 * scale;
         buttonTitle = bSecondButtonSelected ? [self buttonTitlesLevel2_p]: [self buttonTitlesLevel1_p];
     } else {
-        width = (screenBounds.size.width == 480 ? 60: 71), height = 40;
+        width = (screenBounds.size.width == 480 ? 60 : 71 * scale), height = 40 * scale;
         buttonTitle = bSecondButtonSelected ? [self buttonTitlesLevel2_h]:[self buttonTitlesLevel1_h];
     }
 	for (NSUInteger row = 0; row < 6; row++) {
@@ -381,6 +384,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
         }
     }
 }
+
 - (void)setTitle:(NSDictionary *)titleInfo forButton:(A3KeyboardButton_iOS7_iPhone *)button {
 	id title = titleInfo[kA3CalcButtonTitle];
 	button.identifier = (NSUInteger *)[titleInfo[kA3CalcButtonID] integerValue];

@@ -18,6 +18,7 @@
 @property (strong, nonatomic) NSArray *downValueLBs;
 @property (nonatomic, readwrite) NSUInteger valueCount;
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *hori1PxLines;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *separatorHeightConstraint;
 
 + (float)heightForValueCount:(NSUInteger) count;
 

@@ -35,7 +35,7 @@
 
 - (void)configureLayer {
 	self.layer.borderColor = [UIColor colorWithRed:163.0 / 255.0 green:167.0 / 255.0 blue:171.0 / 255.0 alpha:1.0].CGColor;
-	self.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
+	self.layer.borderWidth = 1 / [[UIScreen mainScreen] scale];
 	
 	[self.layer addSublayer:self.highlightedMarkLayer];
 }

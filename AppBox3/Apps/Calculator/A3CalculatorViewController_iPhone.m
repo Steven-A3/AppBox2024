@@ -27,40 +27,39 @@
 @interface A3CalculatorViewController_iPhone () <UIScrollViewDelegate, A3CalcKeyboardViewDelegate,MBProgressHUDDelegate, A3CalcMessagShowDelegate, A3InstructionViewControllerDelegate, UITextFieldDelegate>
 
 @property (nonatomic, strong) HTCopyableLabel *expressionLabel;
-@property (nonatomic, strong) UILabel *degreeandradianLabel;
+@property (nonatomic, strong) UILabel *degreeRadianLabel;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) FXPageControl *pageControl;
 @property (nonatomic, strong) A3CalcKeyboardView_iPhone *keyboardView;
 @property (nonatomic, strong) A3Calculator *calculator;
 @property (nonatomic, strong) NSArray *moreMenuButtons;
 @property (nonatomic, strong) UIView *moreMenuView;
-@property (nonatomic, strong) MASConstraint *svbottomconstraint;
-@property (nonatomic, strong) MASConstraint *expressionTopconstraint;
-@property (nonatomic, strong) MASConstraint *resultLabelHeightconstraint;
+@property (nonatomic, strong) MASConstraint *scrollViewBottomConstraint;
+@property (nonatomic, strong) MASConstraint *expressionTopConstraint;
+@property (nonatomic, strong) MASConstraint *resultLabelHeightConstraint;
 @property (nonatomic, strong) MASConstraint *resultLabelBaselineConstraint;
 @property (nonatomic, strong) MASConstraint *degreeLabelBottomConstraint;
 @property (nonatomic, strong) MASConstraint *expressionLabelRightConstraint;
 @property (nonatomic, strong) MASConstraint *resultLabelRightConstraint;
-@property (nonatomic, strong) MASConstraint *svheightconstraint;
+@property (nonatomic, strong) MASConstraint *scrollViewHeightConstraint;
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
 @property (nonatomic, strong) UITextField *textFieldForPlayInputClick;
 @property (nonatomic, strong) A3KeyboardView *inputViewForPlayInputClick;
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
-//@property (nonatomic, strong) A3Expression *expression;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @end
 
 @implementation A3CalculatorViewController_iPhone {
     BOOL _isShowMoreMenu;
 
-    UITapGestureRecognizer *navGestureRecognizer;
-    UIBarButtonItem *share;
-    UIBarButtonItem *history;
-    UIBarButtonItem *help;
+    UITapGestureRecognizer *_navGestureRecognizer;
+    UIBarButtonItem *_share;
+    UIBarButtonItem *_history;
+    UIBarButtonItem *_help;
 
-    UIButton *shareButton;
-    UIButton *historyButton;
-    UIButton *helpButton;
+    UIButton *_shareButton;
+    UIButton *_historyButton;
+    UIButton *_helpButton;
 }
 
 
@@ -69,9 +68,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-//		self.expression = [A3Expression new];
-//        maximumFractionDigits = 3;
-//		minimumFractionDigits = 0;
     }
     return self;
 }
@@ -124,8 +120,8 @@
     
     // Radian / Degrees 버튼 초기화
     [_calculator setRadian:[self radian]];
-    _degreeandradianLabel.text = [self radian] == YES ? @"Rad" : @"Deg";
-    [_keyboardView.radianDegreeButton setTitle:([self radian] == YES ? @"Deg" : @"Rad") forState:UIControlStateNormal];
+    _degreeRadianLabel.text = [self radian] ? @"Rad" : @"Deg";
+    [_keyboardView.radianDegreeButton setTitle:([self radian] ? @"Deg" : @"Rad") forState:UIControlStateNormal];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
@@ -152,7 +148,8 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	_scrollView.contentOffset = CGPointMake(320, 0);
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+	_scrollView.contentOffset = CGPointMake(320 * scale, 0);
 }
 
 - (void)removeObserver {
@@ -188,10 +185,10 @@
 }
 
 - (void)setupGestureRecognizer {
-	navGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnScrollView)];
-	[self.view addGestureRecognizer:navGestureRecognizer];
-	if ([self hidesNavigationBar] == NO) {
-		navGestureRecognizer.enabled = NO;
+	_navGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnScrollView)];
+	[self.view addGestureRecognizer:_navGestureRecognizer];
+	if (![self hidesNavigationBar]) {
+		_navGestureRecognizer.enabled = NO;
 	}
 }
 
@@ -208,76 +205,74 @@
 }
 
 - (BOOL)hidesNavigationBar {
-	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
-    // in case of iphone 3.5, auto hide enabled.
-    return (screenBounds.size.height == 480 ||
-            screenBounds.size.height == 320);
+	return IS_LANDSCAPE || IS_IPHONE35;
 }
 
--(void) radiandegreeChange {
-    if([self radian] == YES) {
+- (void)toggleRadianDegree {
+    if([self radian]) {
         [_calculator setRadian:FALSE];
         self.radian = NO;
-        _degreeandradianLabel.text = @"Deg";
+        _degreeRadianLabel.text = @"Deg";
     } else {
         [_calculator setRadian:TRUE];
         self.radian = YES;
-        _degreeandradianLabel.text = @"Rad";
+        _degreeRadianLabel.text = @"Rad";
     }
 }
 
-- (CGFloat) getSVbottomOffSet:(CGRect) screenBounds {
-    return screenBounds.size.height == 320? 0: -20;
+- (CGFloat)getSVbottomOffSet:(CGRect) screenBounds {
+    return IS_LANDSCAPE ? 0 : -20;
 }
 
-
-- (CGFloat) getExpressionLabelTopOffSet:(CGRect) screenBounds {
-    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? 25.5:80): 5.5;
+- (CGFloat)getExpressionLabelTopOffSet:(CGRect) screenBounds {
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+    return IS_PORTRAIT ? (screenBounds.size.height == 480 ? 25.5 : 80 * scale) : 5.5 * scale;
 }
 
-- (CGFloat) getExpressionLabelRightOffSet:(CGRect) screenBounds {
-    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -6.5:-6.5):0.5;
+- (CGFloat)getExpressionLabelRightOffSet:(CGRect) screenBounds {
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+    return IS_PORTRAIT ? (screenBounds.size.height == 480 ? -6.5 : -6.5 * scale) : 0.5 * scale;
 }
 
-- (CGFloat) getResultLabelRightOffSet:(CGRect) screenBounds {
-    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -15:-14):-8.5;
+- (CGFloat)getResultLabelRightOffSet:(CGRect) screenBounds {
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+    return IS_PORTRAIT ? (screenBounds.size.height == 480 ? -15 : -14 * scale) : -8.5 * scale;
 }
 
 - (CGFloat)getResultLabelBaselineOffSet:(CGRect) screenBounds {
-    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? 121 : 204.5) : 68;
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+    return IS_PORTRAIT ? (screenBounds.size.height == 480 ? 121 : 204.5 * scale) : 68 * scale;
 }
 
-- (UIFont *) getResultLabelFont:(CGRect) screenBounds {
-    return [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:screenBounds.size.height == 320 ? 44 : screenBounds.size.height == 480 ? 62: 84];
+- (UIFont *)getResultLabelFont:(CGRect) screenBounds {
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+    return [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:IS_LANDSCAPE ? 44 * scale : screenBounds.size.height == 480 ? 62 : 84 * scale];
 }
 
 - (id)getResultLabelHeight:(CGRect) screenBounds {
-    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? @60 : @83):@44;
+    return IS_PORTRAIT ? (screenBounds.size.height == 480 ? @60 : @83) : @44;
 }
 
-/*
--(CGFloat) getDegreeLabelBottomOffset:(CGRect) screenBounds {
-    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -15.5:-15.5):-8.0;
-}
-*/
 - (id)getSVHeight:(CGRect) screenBounds {
-    return screenBounds.size.height == 320? @240: @324;
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+    return IS_LANDSCAPE ? @(240 * scale): @(324 * scale);
 }
 
 - (void)setupSubviews {
 	self.view.backgroundColor = [UIColor whiteColor];
 
 	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
 
 	[self.view addSubview:self.scrollView];
 	[_scrollView makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.view.left);
 		make.right.equalTo(self.view.right);
-		self.svheightconstraint = make.height.equalTo([self getSVHeight:screenBounds]);
-		self.svbottomconstraint = make.bottom.equalTo(self.view.bottom).with.offset([self getSVbottomOffSet:screenBounds]);
+		self.scrollViewHeightConstraint = make.height.equalTo([self getSVHeight:screenBounds]);
+		self.scrollViewBottomConstraint = make.bottom.equalTo(self.view.bottom).with.offset([self getSVbottomOffSet:screenBounds]);
 	}];
     
-	_keyboardView = [[A3CalcKeyboardView_iPhone alloc] initWithFrame:CGRectMake(0,0,640,324)];
+	_keyboardView = [[A3CalcKeyboardView_iPhone alloc] initWithFrame:CGRectMake(0,0,screenBounds.size.width * 2, 324 * scale)];
 	_keyboardView.delegate = self;
 	[_scrollView addSubview:_keyboardView];
     
@@ -301,7 +296,7 @@
         make.left.equalTo(self.view.left).with.offset(15);
         self.expressionLabelRightConstraint =  make.right.equalTo(self.view.right).with.offset([self getExpressionLabelRightOffSet:screenBounds]);
         make.height.equalTo(@23);
-        self.expressionTopconstraint = make.top.equalTo(self.view.top).with.offset([self getExpressionLabelTopOffSet:screenBounds]);
+        self.expressionTopConstraint = make.top.equalTo(self.view.top).with.offset([self getExpressionLabelTopOffSet:screenBounds]);
     }];
     
 
@@ -316,23 +311,23 @@
 
 - (void) setDegAndRad:(BOOL ) bFirst {
     if (!bFirst) {
-        [_degreeandradianLabel removeFromSuperview];
+        [_degreeRadianLabel removeFromSuperview];
     }
     
     if (IS_LANDSCAPE) {
-        
-        [self.view addSubview:self.degreeandradianLabel];
-        [_degreeandradianLabel makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.view.left).with.offset(12);
-            //self.degreeLabelBottomConstraint =  make.bottom.equalTo(_keyboardView.top).with.offset([self getDegreeLabelBottomOffset:screenBounds]);
-            make.bottom.equalTo(_keyboardView.top).with.offset(-8.0);
-        }];
+
+		[self.view addSubview:self.degreeRadianLabel];
+        [_degreeRadianLabel makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(self.view.left).with.offset(12);
+			//self.degreeLabelBottomConstraint =  make.bottom.equalTo(_keyboardView.top).with.offset([self getDegreeLabelBottomOffset:screenBounds]);
+			make.bottom.equalTo(_keyboardView.top).with.offset(-8.0);
+		}];
     } else {
-        [self.pageControl addSubview:self.degreeandradianLabel];
-        [_degreeandradianLabel makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.pageControl.left).with.offset(12);
-            make.bottom.equalTo(self.pageControl.bottom).with.offset(-1);
-        }];
+		[self.pageControl addSubview:self.degreeRadianLabel];
+        [_degreeRadianLabel makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(self.pageControl.left).with.offset(12);
+			make.bottom.equalTo(self.pageControl.bottom).with.offset(-1);
+		}];
     }
 }
 
@@ -365,18 +360,18 @@
 	return super.evaluatedResultLabel;
 }
 
-- (UILabel *)degreeandradianLabel {
-    if(!_degreeandradianLabel) {
-        _degreeandradianLabel = [UILabel new];
-        _degreeandradianLabel.font = [UIFont systemFontOfSize:14];
-        _degreeandradianLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
-        _degreeandradianLabel.textAlignment = NSTextAlignmentLeft;
-        _degreeandradianLabel.backgroundColor = [UIColor clearColor];
-//        _degreeandradianLabel.baselineAdjustment = UIBaselineAdjustmentAlignBaselines;
-        _degreeandradianLabel.text = @"Rad";
+- (UILabel *)degreeRadianLabel {
+    if(!_degreeRadianLabel) {
+        _degreeRadianLabel = [UILabel new];
+        _degreeRadianLabel.font = [UIFont systemFontOfSize:14];
+        _degreeRadianLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
+        _degreeRadianLabel.textAlignment = NSTextAlignmentLeft;
+        _degreeRadianLabel.backgroundColor = [UIColor clearColor];
+//        _degreeRadianLabel.baselineAdjustment = UIBaselineAdjustmentAlignBaselines;
+        _degreeRadianLabel.text = @"Rad";
     }
     
-    return _degreeandradianLabel;
+    return _degreeRadianLabel;
 }
 
 - (UIScrollView *)scrollView {
@@ -408,7 +403,8 @@
 }
 
 - (void)pageControlValueChanged {
-	[_scrollView setContentOffset:CGPointMake(_pageControl.currentPage * 320, 0) animated:YES];
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	[_scrollView setContentOffset:CGPointMake(_pageControl.currentPage * screenBounds.size.width, 0) animated:YES];
     if([self hidesNavigationBar]) {
         [self setNavigationBarHidden:NO];
     }
@@ -425,22 +421,23 @@
 
 - (void)viewWillLayoutSubviews {
     CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
     
     if (IS_PORTRAIT) {
         CGRect frame = _keyboardView.frame;
         frame.origin.x = 0.0;
         frame.origin.y = 0.0;
-        frame.size.width = 640;
-        frame.size.height = 324.0;
+        frame.size.width = screenBounds.size.width * 2;
+        frame.size.height = 324.0 * scale;
         _keyboardView.frame = frame;
-        _scrollView.contentSize = CGSizeMake(640, 324);
+        _scrollView.contentSize = CGSizeMake(screenBounds.size.width * 2, 324 * scale);
         _scrollView.scrollEnabled = YES;
         [self pageControlValueChanged]; // to move the previsous page of keyboard before rotating.
         if ([self hidesNavigationBar]) {
-            navGestureRecognizer.enabled = YES;
+            _navGestureRecognizer.enabled = YES;
             [self setNavigationBarHidden:YES];
         } else {
-            navGestureRecognizer.enabled = NO;
+            _navGestureRecognizer.enabled = NO;
             [self setNavigationBarHidden:NO];
         }
         self.pageControl.hidden = NO;
@@ -460,15 +457,15 @@
         CGRect frame = _keyboardView.frame;
         frame.origin.x = 0.0;
         frame.size.width = screenBounds.size.width;
-        frame.size.height = 240.0;
+        frame.size.height = 240.0 * scale;
         frame.origin.y = 0.0;
         _keyboardView.frame = frame;
         
         self.pageControl.hidden = YES;
         
-        _scrollView.contentSize = CGSizeMake(screenBounds.size.width, 240.0);
+        _scrollView.contentSize = CGSizeMake(screenBounds.size.width, 240.0 * scale);
         _scrollView.scrollEnabled = NO;
-        navGestureRecognizer.enabled = NO;
+        _navGestureRecognizer.enabled = NO;
 
 		FNLOG(@"%@", self.presentedViewController);
 
@@ -482,13 +479,13 @@
         self.calculator.isLandScape = YES;
     }
     self.evaluatedResultLabel.font = [self getResultLabelFont:screenBounds];
-    self.svbottomconstraint.offset([self getSVbottomOffSet:screenBounds]);
-    self.expressionTopconstraint.offset([self getExpressionLabelTopOffSet:screenBounds]);
+    self.scrollViewBottomConstraint.offset([self getSVbottomOffSet:screenBounds]);
+    self.expressionTopConstraint.offset([self getExpressionLabelTopOffSet:screenBounds]);
     self.expressionLabelRightConstraint.offset([self getExpressionLabelRightOffSet:screenBounds]);
     self.resultLabelBaselineConstraint.offset([self getResultLabelBaselineOffSet:screenBounds]);
     self.resultLabelRightConstraint.offset([self getResultLabelRightOffSet:screenBounds]);
-    //self.degreeLabelBottomConstraint.offset([self getDegreeLabelBottomOffset:screenBounds]);
-    self.svheightconstraint.equalTo([self getSVHeight:screenBounds]);
+    // self.degreeLabelBottomConstraint.offset([self getDegreeLabelBottomOffset:screenBounds]);
+    self.scrollViewHeightConstraint.equalTo([self getSVHeight:screenBounds]);
     
     [self setDegAndRad:NO];
     [self.calculator evaluateAndSet];
@@ -534,7 +531,8 @@ static NSString *const A3V3InstructionDidShowForCalculator = @"A3V3InstructionDi
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-	_pageControl.currentPage = (NSInteger) ceil(_scrollView.contentOffset.x / 320.0);
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	_pageControl.currentPage = (NSInteger) ceil(_scrollView.contentOffset.x / screenBounds.size.width);
 }
 
 - (void)keyboardButtonPressed:(NSUInteger)key {
@@ -553,7 +551,7 @@ static NSString *const A3V3InstructionDidShowForCalculator = @"A3V3InstructionDi
 
     if(key == A3E_RADIAN_DEGREE)
     {
-        [self radiandegreeChange];
+		[self toggleRadianDegree];
     }
     else {
         [self.calculator keyboardButtonPressed:key];
@@ -571,10 +569,10 @@ static NSString *const A3V3InstructionDidShowForCalculator = @"A3V3InstructionDi
         [self rightButtonMoreButton];
     }
     else {
-        share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
-        history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
-        help = [self instructionHelpBarButton];
-        self.navigationItem.rightBarButtonItems = @[history, share, help];
+        _share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
+        _history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
+        _help = [self instructionHelpBarButton];
+        self.navigationItem.rightBarButtonItems = @[_history, _share, _help];
         [self checkRightButtonDisable];
     }
 }
@@ -582,10 +580,10 @@ static NSString *const A3V3InstructionDidShowForCalculator = @"A3V3InstructionDi
 - (void)moreButtonAction:(UIBarButtonItem *)button {
 	[self rightBarButtonDoneButton];
 
-    shareButton = [self shareButton];
-    historyButton = [self historyButton:nil];
-    helpButton = [self instructionHelpButton];
-    _moreMenuButtons = @[helpButton, shareButton, historyButton];
+    _shareButton = [self shareButton];
+    _historyButton = [self historyButton:nil];
+    _helpButton = [self instructionHelpButton];
+    _moreMenuButtons = @[_helpButton, _shareButton, _historyButton];
 	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons pullDownView:nil];
 	_isShowMoreMenu = YES;
     
@@ -628,19 +626,19 @@ static NSString *const A3V3InstructionDidShowForCalculator = @"A3V3InstructionDi
 
 - (void) checkRightButtonDisable {
     if ([self isCalculationHistoryEmpty]) {
-        history.enabled = NO;
-        historyButton.enabled = NO;
+        _history.enabled = NO;
+        _historyButton.enabled = NO;
     } else {
-        history.enabled = YES;
-        historyButton.enabled = YES;
+        _history.enabled = YES;
+        _historyButton.enabled = YES;
     }
     
     if([self.expressionLabel.text length] > 0) {
-        share.enabled = YES;
-        shareButton.enabled = YES;
+        _share.enabled = YES;
+        _shareButton.enabled = YES;
     } else {
-        share.enabled = NO;
-        shareButton.enabled = NO;
+        _share.enabled = NO;
+        _shareButton.enabled = NO;
     }
 }
 

@@ -123,6 +123,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     self.tableView.showsHorizontalScrollIndicator = NO;
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = [self tableViewSeparatorColor];
+	self.automaticallyAdjustsScrollViewInsets = NO;
+	self.tableView.contentInset = UIEdgeInsetsMake(64.0, 0, 0, 0);
     
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 2)];
     line.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:1.0];
@@ -1562,10 +1564,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [nonSymobolCurrencyFormatter setCurrencySymbol:@""];
     
     if ([_loanDataA calculated]) {
-        
-        compareCell.left_A_Label.layer.anchorPoint = CGPointMake(0, 1.0);
-        compareCell.right_A_Label.layer.anchorPoint = CGPointMake(1, 1.0);
-        
         // text
         NSString *totalInterestString;
         NSString *totalAmountString;
@@ -1593,11 +1591,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         compareCell.left_A_Label.text = totalInterestString;
         compareCell.right_A_Label.text = totalAmountString;
         
-        
-        // value label position
-        [compareCell.left_A_Label sizeToFit];
-        [compareCell.right_A_Label sizeToFit];
-        
         // graph
         compareCell.red_A_Line.hidden = NO;
         
@@ -1605,67 +1598,14 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         float percentOfRedBar = 0;
         float interestFloat = [_loanDataA totalInterest].floatValue;
         percentOfRedBar = interestFloat/maxAmount;
-        
-        CGRect redRect = compareCell.red_A_Line.frame;
-        redRect.size.width = MAX(self.view.bounds.size.width * percentOfRedBar, compareCell.circleA_View.bounds.size.width/2);
-        compareCell.red_A_Line.frame = redRect;
-        
-        float percentOfMarkA = 0;
-        float totalFloat = [_loanDataA totalAmount].floatValue;
-        percentOfMarkA = totalFloat/maxAmount;
-        
-        CGPoint center = compareCell.markA_Label.center;
-        center.x = self.view.bounds.size.width - compareCell.markA_Label.frame.size.width;
-        compareCell.markA_Label.center = center;
-        
-        FNLOG(@"markA : %@", NSStringFromCGRect(compareCell.markA_Label.frame));
-        FNLOG(@"redLine : %@", NSStringFromCGRect(compareCell.red_A_Line.frame));
-        
-        float markTailX = compareCell.markA_Label.frame.origin.x + compareCell.markA_Label.frame.size.width;
-        markTailX = MIN(markTailX, self.view.bounds.size.width-15);
-        CGRect rectRight = compareCell.right_A_Label.frame;
-        rectRight.origin.x = MAX(markTailX - rectRight.size.width, compareCell.left_A_Label.frame.origin.x + compareCell.left_A_Label.frame.size.width + 15);
-        if ((rectRight.origin.x + rectRight.size.width) > (compareCell.frame.size.width - (IS_IPAD ? 28:15)) ) {
-            rectRight.origin.x = (compareCell.frame.size.width - (IS_IPAD ? 28:15)) - rectRight.size.width;
-        }
-        compareCell.right_A_Label.frame = rectRight;
-        FNLOG(@"rightA : %@", NSStringFromCGRect(compareCell.right_A_Label.frame));
 
-        float circleOriginX = compareCell.circleA_View.frame.origin.x;
-        CGRect rectLeft = compareCell.left_A_Label.frame;
-        rectLeft.origin.x = MAX(circleOriginX, IS_IPAD ? 28:15);
-        if ((rectLeft.origin.x + rectLeft.size.width) > rectRight.origin.x) {
-            rectLeft.origin.x -= (rectLeft.origin.x + rectLeft.size.width) - rectRight.origin.x;
-            if (rectLeft.origin.x < (IS_IPAD ? 28:15)) {
-                rectLeft.origin.x = IS_IPAD ? 28:15;
-                rectLeft.size.width = rectRight.origin.x - rectLeft.origin.x;
-            }
-        }
-        compareCell.left_A_Label.frame = rectLeft;
-        FNLOG(@"leftA : %@", NSStringFromCGRect(compareCell.left_A_Label.frame));
-        
-        // from bottom to label bottom : 115/90
-        float gap = IS_IPAD ? 115 : 90;
-        float fromTopToA = compareCell.bounds.size.height - gap;
-        
-        CGPoint lbCenter;
-        
-        lbCenter = compareCell.left_A_Label.center;
-        lbCenter.y = fromTopToA;
-        compareCell.left_A_Label.center = lbCenter;
-        
-        lbCenter = compareCell.right_A_Label.center;
-        lbCenter.y = fromTopToA;
-        compareCell.right_A_Label.center = lbCenter;
-        
-        // label baseline adjustment with font
-        CGRect newFrame = compareCell.left_A_Label.frame;
-        newFrame.origin.y -= floor(compareCell.left_A_Label.font.descender);
-        compareCell.left_A_Label.frame = newFrame;
-        newFrame = compareCell.right_A_Label.frame;
-        newFrame.origin.y -= floor(compareCell.right_A_Label.font.descender);
-        compareCell.right_A_Label.frame = newFrame;
-        
+		FNLOG(@"%f", percentOfRedBar);
+		compareCell.redLineARightConstraint.constant = -1 * self.view.bounds.size.width * (1 - percentOfRedBar);
+		[compareCell.left_A_Label sizeToFit];
+		CGFloat minimumCenterX = -1 * (self.view.bounds.size.width - (compareCell.left_A_Label.bounds.size.width / 2 + 10.0));
+		compareCell.leftLabelACenterXConstraint.constant = MAX(-(self.view.bounds.size.width * (1 - percentOfRedBar)), minimumCenterX);
+		[compareCell layoutIfNeeded];
+
         // 애니메이션 Start
         compareCell.left_A_Label.alpha = 0.0;
         compareCell.right_A_Label.alpha = 0.0;
@@ -1679,18 +1619,12 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         compareCell.right_A_Label.alpha = 1.0;
         
         [UIView commitAnimations];
-        
-        FNLOG(@"leftA : %@", NSStringFromCGRect(compareCell.left_A_Label.frame));
-        FNLOG(@"rightA : %@", NSStringFromCGRect(compareCell.right_A_Label.frame));
     }
     else {
         [self makeClearGraphLoanA:compareCell];
     }
     
     if ([_loanDataB calculated]) {
-        compareCell.left_B_Label.layer.anchorPoint = CGPointMake(0, 1.0);
-        compareCell.right_B_Label.layer.anchorPoint = CGPointMake(1, 1.0);
-        
         // text
         NSString *totalInterestString;
         NSString *totalAmountString;
@@ -1715,78 +1649,25 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         }
         compareCell.left_B_Label.text = totalInterestString;
         compareCell.right_B_Label.text = totalAmountString;
-        
-        
-        // value label position
-        [compareCell.left_B_Label sizeToFit];
-        [compareCell.right_B_Label sizeToFit];
-        
+		
         // graph
         compareCell.red_B_Line.hidden = NO;
         
         float maxAmount = MAX([_loanDataA totalAmount].floatValue, [_loanDataB totalAmount].floatValue);
-        
         float percentOfRedBar = 0;
-        
         float interestFloat = [_loanDataB totalInterest].floatValue;
         percentOfRedBar = interestFloat/maxAmount;
-        
-        CGRect redRect = compareCell.red_B_Line.frame;
-        redRect.size.width = MAX(self.view.bounds.size.width * percentOfRedBar, compareCell.circleA_View.bounds.size.width/2);
-        compareCell.red_B_Line.frame = redRect;
-        
+
+		FNLOG(@"%f", percentOfRedBar);
+		compareCell.redLineBRightConstraint.constant = -1 * self.view.bounds.size.width * (1 - percentOfRedBar);
+		compareCell.leftLabelBCenterXConstraint.constant = -1 * self.view.bounds.size.width * (1 - percentOfRedBar);
+		[compareCell layoutIfNeeded];
+
         float percentOfMarkB = 0;
         
         float totalFloat = [_loanDataB totalAmount].floatValue;
         percentOfMarkB = totalFloat/maxAmount;
-        
-        //compareCell.markB_Label.layer.anchorPoint = CGPointMake(0.5, 0.5);
-        CGPoint center = compareCell.markB_Label.center;
-        //center.x = MIN(self.view.bounds.size.width * percentOfMarkB, self.view.bounds.size.width - compareCell.markB_Label.frame.size.width/2);
-        center.x = self.view.bounds.size.width - compareCell.markB_Label.frame.size.width;
-        compareCell.markB_Label.center = center;
-        
-        float markTailX = compareCell.markB_Label.frame.origin.x + compareCell.markB_Label.frame.size.width;
-        markTailX = MIN(markTailX, self.view.bounds.size.width-15);
-        CGRect rectRight = compareCell.right_B_Label.frame;
-        //rectRight.origin.x = MAX(markTailX - rectRight.size.width, compareCell.left_B_Label.frame.origin.x + compareCell.left_B_Label.frame.size.width + 15);
-        rectRight.origin.x = markTailX - rectRight.size.width;
-        compareCell.right_B_Label.frame = rectRight;
-        
-        float circleOriginX = compareCell.circleB_View.frame.origin.x;
-        CGRect rectLeft = compareCell.left_B_Label.frame;
-        rectLeft.origin.x = MAX(circleOriginX, IS_IPAD ? 28:15);
-        if ((rectLeft.origin.x + rectLeft.size.width) > rectRight.origin.x) {
-            rectLeft.origin.x -= (rectLeft.origin.x + rectLeft.size.width) - rectRight.origin.x;
-            if (rectLeft.origin.x < (IS_IPAD ? 28:15)) {
-                rectLeft.origin.x = IS_IPAD ? 28:15;
-                rectLeft.size.width = rectRight.origin.x - rectLeft.origin.x;
-            }
-        }
-        compareCell.left_B_Label.frame = rectLeft;
-        
-        // from bottom to label bottom : 28 / 23
-        float gap = IS_IPAD ? 28 : 23;
-        float fromTopToA = compareCell.bounds.size.height - gap;
-        
-        CGPoint lbCenter;
-        
-        lbCenter = compareCell.left_B_Label.center;
-        lbCenter.y = fromTopToA;
-        compareCell.left_B_Label.center = lbCenter;
-        
-        lbCenter = compareCell.right_B_Label.center;
-        lbCenter.y = fromTopToA;
-        compareCell.right_B_Label.center = lbCenter;
-        
-        // label baseline adjustment with font
-        CGRect newFrame = compareCell.left_B_Label.frame;
-        newFrame.origin.y -= floor(compareCell.left_B_Label.font.descender);
-        compareCell.left_B_Label.frame = newFrame;
-        newFrame = compareCell.right_B_Label.frame;
-        newFrame.origin.y -= floor(compareCell.right_B_Label.font.descender);
-        compareCell.right_B_Label.frame = newFrame;
-        
+
         // 애니메이션 Start
         compareCell.left_B_Label.alpha = 0.0;
         compareCell.right_B_Label.alpha = 0.0;
@@ -1820,97 +1701,16 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 {
     compareCell.red_A_Line.hidden = YES;
     
-    NSString *initText = [self.loanFormatter stringFromNumber:@(0)];
-    compareCell.left_A_Label.text = initText;
-    compareCell.right_A_Label.text = initText;
-
-    // value label position
-    [compareCell.left_A_Label sizeToFit];
-    [compareCell.right_A_Label sizeToFit];
-    
-    // from bottom to label bottom : 115 / 90
-    float gap = IS_IPAD ? 115 : 90;
-    float fromTopToA = compareCell.bounds.size.height - gap;
-    compareCell.left_A_Label.layer.anchorPoint = CGPointMake(0, 1.0);
-    compareCell.right_A_Label.layer.anchorPoint = CGPointMake(1, 1.0);
-    
-    CGPoint lbCenter;
-    float left_hori_margin = IS_IPAD ? 28 : 15;
-    float right_hori_margin = 15.0;
-    
-    lbCenter = compareCell.left_A_Label.center;
-    lbCenter.x = 0.0+left_hori_margin;
-    lbCenter.y = fromTopToA;
-    compareCell.left_A_Label.center = lbCenter;
-    
-    lbCenter = compareCell.right_A_Label.center;
-    lbCenter.x = self.view.bounds.size.width-right_hori_margin;
-    lbCenter.y = fromTopToA;
-    compareCell.right_A_Label.center = lbCenter;
-    
-    // label baseline adjustment with font
-    CGRect newFrame = compareCell.left_A_Label.frame;
-    newFrame.origin.y -= floor(compareCell.left_A_Label.font.descender);
-    compareCell.left_A_Label.frame = newFrame;
-    newFrame = compareCell.right_A_Label.frame;
-    newFrame.origin.y -= floor(compareCell.right_A_Label.font.descender);
-    compareCell.right_A_Label.frame = newFrame;
-    
-//    lbCenter = compareCell.markA_Label.center;
-//    lbCenter.x = self.view.bounds.size.width-right_hori_margin;
-//    compareCell.markA_Label.center = lbCenter;
-    lbCenter = compareCell.markA_Label.center;
-    lbCenter.x = self.view.bounds.size.width - compareCell.markA_Label.frame.size.width;
-    compareCell.markA_Label.center = lbCenter;
+    compareCell.left_A_Label.text = @"";
+    compareCell.right_A_Label.text = @"";
 }
 
 - (void)makeClearGraphLoanB:(A3LoanCalcCompareGraphCell *)compareCell
 {
     compareCell.red_B_Line.hidden = YES;
     
-    NSString *initText = [self.loanFormatter stringFromNumber:@(0)];
-    compareCell.left_B_Label.text = initText;
-    compareCell.right_B_Label.text = initText;
-    
-    // value label position
-    [compareCell.left_B_Label sizeToFit];
-    [compareCell.right_B_Label sizeToFit];
-    
-    // from bottom to label bottom : 28 / 23
-    float gap = IS_IPAD ? 28 : 23;
-    float fromTopToA = compareCell.bounds.size.height - gap;
-    compareCell.left_B_Label.layer.anchorPoint = CGPointMake(0, 1.0);
-    compareCell.right_B_Label.layer.anchorPoint = CGPointMake(1, 1.0);
-    
-    CGPoint lbCenter;
-    float left_hori_margin = IS_IPAD ? 28 : 15;
-    float right_hori_margin = 15.0;
-    
-    lbCenter = compareCell.left_B_Label.center;
-    lbCenter.x = 0.0+left_hori_margin;
-    lbCenter.y = fromTopToA;
-    compareCell.left_B_Label.center = lbCenter;
-    
-    lbCenter = compareCell.right_B_Label.center;
-    lbCenter.x = self.view.bounds.size.width-right_hori_margin;
-    lbCenter.y = fromTopToA;
-    compareCell.right_B_Label.center = lbCenter;
-    
-    // label baseline adjustment with font
-    CGRect newFrame = compareCell.left_B_Label.frame;
-    newFrame.origin.y -= floor(compareCell.left_B_Label.font.descender);
-    compareCell.left_B_Label.frame = newFrame;
-    newFrame = compareCell.right_B_Label.frame;
-    newFrame.origin.y -= floor(compareCell.right_B_Label.font.descender);
-    compareCell.right_B_Label.frame = newFrame;
-    
-    
-//    lbCenter = compareCell.markB_Label.center;
-//    lbCenter.x = self.view.bounds.size.width-right_hori_margin;
-//    compareCell.markB_Label.center = lbCenter;
-    lbCenter = compareCell.markB_Label.center;
-    lbCenter.x = self.view.bounds.size.width - compareCell.markB_Label.frame.size.width;
-    compareCell.markB_Label.center = lbCenter;
+    compareCell.left_B_Label.text = @"";
+    compareCell.right_B_Label.text = @"";
 }
 
 - (void)putComparisonHistory
@@ -2137,14 +1937,19 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		}
 	}
 	[self addNumberKeyboardNotificationObservers];
+	
+	FNLOGINSETS(self.tableView.contentInset);
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+	FNLOGINSETS(self.tableView.contentInset);
 
 	return YES;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
+	FNLOGINSETS(self.tableView.contentInset);
+	
 	[self removeNumberKeyboardNotificationObservers];
 	[self setFirstResponder:nil];
 

@@ -49,7 +49,7 @@
 #define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 #define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
 
-#define IS_RETINA	([[UIScreen mainScreen] scale] == 2)
+#define IS_RETINA	([[UIScreen mainScreen] scale] >= 2)
 
 #define	LANGUAGE_KOREAN	[[NSLocale preferredLanguages][0] isEqualToString:@"ko"]
 
@@ -58,6 +58,9 @@ extern NSString *const A3AnimationIDKeyboardWillShow;
 @interface A3UIDevice : NSObject
 
 + (CGRect)screenBoundsAdjustedWithOrientation;
+
++ (CGFloat)scaleToOriginalDesignDimension;
+
 + (CGFloat)statusBarHeight;
 + (double)memoryUsage;
 + (double)storageUsage;

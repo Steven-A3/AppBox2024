@@ -142,7 +142,6 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 - (void)setupBasicMeasureForInterfaceOrientation:(BOOL)toPortrait {
 	NSString *model = [A3UIDevice platformString];
 
-
 	if ([model isEqualToString:@"iPod Touch (5th generation)"]) {
 		// iPod touch 5
 		CGFloat pixelsInInch = 326.7;
@@ -251,12 +250,13 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		_inchAsPoints = (1024.0 / 2048.0) * pixelsInInch;
 		_resetPosition = _centimeterPositionRightBottom ? 14.0 : 5.5;
 		_redLineWidth = 0.5;
-	} else if ([model isEqualToString:@"iPad Pro"]) {
+	} else if ([model isEqualToString:@"iPad Pro"] ||
+			   [model isEqualToString:@"iPad Pro (Wi-Fi)"]) {
 		// iPad Pro
-		CGFloat pixelsInInch = 264;
+		CGFloat pixelsInInch = 264.7;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (1024.0 / 2732.0) * pixelsInCentimeter;
-		_inchAsPoints = (1024.0 / 2732.0) * pixelsInInch;
+		_centimeterAsPoints = pixelsInCentimeter * 0.5;
+		_inchAsPoints = pixelsInInch * 0.5;
 		_resetPosition = _centimeterPositionRightBottom ? 23.0 : 9.0;
 		_redLineWidth = 0.5;
 	} else {

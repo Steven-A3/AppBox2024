@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="VhW-Mc-b1r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="VhW-Mc-b1r">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <scenes>
         <!--Loan Calc Main View Controller-->
@@ -16,10 +16,10 @@
                         <inset key="separatorInset" minX="28" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="A3LoanCalcLoanInfoCell" rowHeight="194" id="a8z-1W-J24" customClass="A3LoanCalcLoanInfoCell">
-                                <rect key="frame" x="0.0" y="113.5" width="768" height="194"/>
+                                <rect key="frame" x="0.0" y="114" width="768" height="194"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="a8z-1W-J24" id="Fcj-Kd-VOC">
-                                    <rect key="frame" x="0.0" y="0.0" width="768" height="193.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="768" height="193"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" id="oDX-Di-qVR" userLabel="seperate Line">
@@ -137,10 +137,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="A3LoanCalcLoanGraphCell" rowHeight="193" id="cJM-fP-CAO" customClass="A3LoanCalcLoanGraphCell">
-                                <rect key="frame" x="0.0" y="307.5" width="768" height="193"/>
+                                <rect key="frame" x="0.0" y="308" width="768" height="193"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cJM-fP-CAO" id="LFQ-Xh-w3r">
-                                    <rect key="frame" x="0.0" y="0.0" width="768" height="192.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="768" height="192"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" id="hxR-9g-WjE" userLabel="bgLine">
@@ -202,10 +202,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="A3LoanCalcCompareGraphCell" rowHeight="226" id="mpo-ZQ-bzt" customClass="A3LoanCalcCompareGraphCell">
-                                <rect key="frame" x="0.0" y="500.5" width="768" height="226"/>
+                                <rect key="frame" x="0.0" y="501" width="768" height="226"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mpo-ZQ-bzt" id="biu-wt-01E">
-                                    <rect key="frame" x="0.0" y="0.0" width="768" height="225.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="768" height="225"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" id="a50-LE-Nme" userLabel="bgLineA">
@@ -300,21 +300,21 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="A3LoanCalcSelectCell" textLabel="I6j-2t-Twp" detailTextLabel="uhy-Vu-FhR" style="IBUITableViewCellStyleValue1" id="aOt-he-e9d">
-                                <rect key="frame" x="0.0" y="726.5" width="768" height="44"/>
+                                <rect key="frame" x="0.0" y="727" width="768" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aOt-he-e9d" id="9Q4-sy-Pqq">
-                                    <rect key="frame" x="0.0" y="0.0" width="735" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="682" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="I6j-2t-Twp">
-                                            <rect key="frame" x="15" y="11" width="42" height="21"/>
+                                            <rect key="frame" x="68" y="11" width="42" height="21"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="uhy-Vu-FhR">
-                                            <rect key="frame" x="689" y="11" width="44" height="21"/>
+                                            <rect key="frame" x="638" y="11" width="44" height="21"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -324,10 +324,10 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="A3LoanCalcTextInputCell" id="G3B-1r-zSj" customClass="A3LoanCalcTextInputCell">
-                                <rect key="frame" x="0.0" y="770.5" width="768" height="44"/>
+                                <rect key="frame" x="0.0" y="771" width="768" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="G3B-1r-zSj" id="Csb-OP-BJH">
-                                    <rect key="frame" x="0.0" y="0.0" width="768" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="768" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XA0-MA-CbH">
@@ -359,10 +359,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="A3WalletNoteCell" rowHeight="180" id="Qs0-b9-pjR" customClass="A3WalletNoteCell">
-                                <rect key="frame" x="0.0" y="814.5" width="768" height="180"/>
+                                <rect key="frame" x="0.0" y="815" width="768" height="180"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Qs0-b9-pjR" id="bwY-cA-ufe">
-                                    <rect key="frame" x="0.0" y="0.0" width="768" height="179.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="768" height="179"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="apy-Og-R6f" customClass="GCPlaceholderTextView">
@@ -380,10 +380,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="A3WalletDateInputCell" rowHeight="218" id="Nlw-10-myG" customClass="A3WalletDateInputCell">
-                                <rect key="frame" x="0.0" y="994.5" width="768" height="218"/>
+                                <rect key="frame" x="0.0" y="995" width="768" height="218"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nlw-10-myG" id="CS9-22-IVQ">
-                                    <rect key="frame" x="0.0" y="0.0" width="768" height="217.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="768" height="217"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" id="gf5-40-JWm">
@@ -421,10 +421,10 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="A3LoanCalcPaymentInfoCell" id="PwZ-Nd-o7r" customClass="A3LoanCalcPaymentInfoCell">
-                                <rect key="frame" x="0.0" y="113.5" width="768" height="44"/>
+                                <rect key="frame" x="0.0" y="114" width="768" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PwZ-Nd-o7r" id="3D0-QA-mNH">
-                                    <rect key="frame" x="0.0" y="0.0" width="768" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="768" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" id="BFi-ou-tAx" userLabel="dateLb">
@@ -473,10 +473,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="A3LoanCalcLoanInfo3Cell" rowHeight="194" id="c7u-Am-P8p" customClass="A3LoanCalcLoanInfo3Cell">
-                                <rect key="frame" x="0.0" y="157.5" width="768" height="194"/>
+                                <rect key="frame" x="0.0" y="158" width="768" height="194"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c7u-Am-P8p" id="rWh-nS-joY">
-                                    <rect key="frame" x="0.0" y="0.0" width="768" height="193.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="768" height="193"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" id="PfG-OH-uMk" userLabel="seperate Line">
@@ -552,21 +552,21 @@
                         <inset key="separatorInset" minX="28" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="A3LoanCalcSelectCell" textLabel="38h-On-5Cn" detailTextLabel="wSw-jU-DIJ" style="IBUITableViewCellStyleValue1" id="yig-Ex-bBv">
-                                <rect key="frame" x="0.0" y="113.5" width="768" height="44"/>
+                                <rect key="frame" x="0.0" y="114" width="768" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yig-Ex-bBv" id="FE6-0m-2yc">
-                                    <rect key="frame" x="0.0" y="0.0" width="735" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="682" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="38h-On-5Cn">
-                                            <rect key="frame" x="15" y="11" width="42" height="21"/>
+                                            <rect key="frame" x="68" y="11" width="42" height="21"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wSw-jU-DIJ">
-                                            <rect key="frame" x="689" y="11" width="44" height="21"/>
+                                            <rect key="frame" x="638" y="11" width="44" height="21"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -576,10 +576,10 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="A3LoanCalcTextInputCell" id="3ZP-1e-CDr" customClass="A3LoanCalcTextInputCell">
-                                <rect key="frame" x="0.0" y="157.5" width="768" height="44"/>
+                                <rect key="frame" x="0.0" y="158" width="768" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3ZP-1e-CDr" id="dmh-zN-zgR">
-                                    <rect key="frame" x="0.0" y="0.0" width="768" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="768" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BgM-ze-Nt4">
@@ -603,10 +603,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="A3LoanCalcLoanGraphCell" rowHeight="193" id="88v-l2-ZcI" customClass="A3LoanCalcLoanGraphCell">
-                                <rect key="frame" x="0.0" y="201.5" width="768" height="193"/>
+                                <rect key="frame" x="0.0" y="202" width="768" height="193"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="88v-l2-ZcI" id="J3G-R3-3GG">
-                                    <rect key="frame" x="0.0" y="0.0" width="768" height="192.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="768" height="192"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" id="wlL-GM-BzF" userLabel="bgLine">

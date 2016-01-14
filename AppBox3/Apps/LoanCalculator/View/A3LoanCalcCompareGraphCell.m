@@ -44,8 +44,9 @@
     [super awakeFromNib];
     
     [self.red_A_Line addSubview:self.circleA_View];
+	
     [self.red_B_Line addSubview:self.circleB_View];
-    
+	
     _markA_Label.layer.cornerRadius = _markA_Label.bounds.size.height/2;
     _markB_Label.layer.cornerRadius = _markB_Label.bounds.size.height/2;
     

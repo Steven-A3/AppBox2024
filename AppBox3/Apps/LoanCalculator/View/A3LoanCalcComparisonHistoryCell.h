@@ -13,5 +13,6 @@
 @property (strong, nonatomic) IBOutlet UILabel *infoA_Lb;
 @property (strong, nonatomic) IBOutlet UILabel *infoB_Lb;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *markLbs;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leadingConstraint;
 
 @end
