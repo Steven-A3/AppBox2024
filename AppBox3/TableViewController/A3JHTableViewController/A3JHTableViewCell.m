@@ -16,7 +16,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        _leftSeparatorInset = IS_IPHONE ? 15 : 28;
+		_leftSeparatorInset = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
     }
     return self;
 }
@@ -31,10 +31,11 @@
 - (void)layoutSubviews {
 	[super layoutSubviews];
 
+	_leftSeparatorInset = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
+	
 	CGRect frame = self.textLabel.frame;
 	frame.origin.x = _leftSeparatorInset;
 	self.textLabel.frame = frame;
 }
-
 
 @end

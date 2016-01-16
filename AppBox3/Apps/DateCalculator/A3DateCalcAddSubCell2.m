@@ -39,9 +39,10 @@
 	self.monthLabel.text = NSLocalizedString(@"Month(s)", nil);
 	self.dayLabel.text = NSLocalizedString(@"Day(s)", nil);
 
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	if (IS_IPHONE) {
 		[_yearLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.centerX.equalTo(self.left).with.offset(320 / 3 / 2);
+			make.centerX.equalTo(self.left).with.offset(bounds.size.width / 3 / 2);
 			make.bottom.equalTo(self.bottom).with.offset(-10);
 		}];
 		[_monthLabel makeConstraints:^(MASConstraintMaker *make) {
@@ -49,7 +50,7 @@
 			make.bottom.equalTo(self.bottom).with.offset(-10);
 		}];
 		[_dayLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.centerX.equalTo(self.right).with.offset(- 320 / 3 / 2);
+			make.centerX.equalTo(self.right).with.offset(- bounds.size.width / 3 / 2);
 			make.bottom.equalTo(self.bottom).with.offset(-10);
 		}];
 	}

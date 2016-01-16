@@ -26,4 +26,16 @@
     // Configure the view for the selected state
 }
 
+- (void)awakeFromNib {
+    [super awakeFromNib];
+
+    CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
+
+    UIView *superview = self;
+    [_titleLB makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(superview.left).with.offset(leading);
+        make.centerY.equalTo(superview.centerY);
+    }];
+}
+
 @end

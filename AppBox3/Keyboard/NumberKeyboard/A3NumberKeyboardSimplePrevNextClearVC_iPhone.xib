@@ -342,10 +342,8 @@
                 <constraint firstAttribute="bottom" secondItem="26" secondAttribute="bottom" constant="-1" id="YYe-rN-qnh"/>
                 <constraint firstItem="13" firstAttribute="width" secondItem="8" secondAttribute="width" id="ZcZ-pK-ITP"/>
                 <constraint firstItem="25" firstAttribute="leading" secondItem="23" secondAttribute="leading" id="Zwt-ku-ZWd"/>
-                <constraint firstAttribute="trailing" secondItem="25" secondAttribute="trailing" constant="-1" id="aDv-5Z-eol"/>
                 <constraint firstItem="21" firstAttribute="leading" secondItem="EkR-bT-0U3" secondAttribute="trailing" constant="-1" id="bsC-hd-gqW"/>
                 <constraint firstItem="25" firstAttribute="height" secondItem="8" secondAttribute="height" id="cQ5-NR-1Lz"/>
-                <constraint firstAttribute="trailing" secondItem="24" secondAttribute="trailing" constant="-2" id="d5z-M4-C31"/>
                 <constraint firstItem="10" firstAttribute="width" secondItem="8" secondAttribute="width" id="eAd-YB-20T"/>
                 <constraint firstItem="12" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="-1" id="g2E-R4-GVS"/>
                 <constraint firstItem="17" firstAttribute="leading" secondItem="16" secondAttribute="trailing" constant="-1" id="gJa-4l-nCN"/>
@@ -354,7 +352,6 @@
                 <constraint firstItem="14" firstAttribute="height" secondItem="8" secondAttribute="height" id="gzR-nZ-u51"/>
                 <constraint firstItem="26" firstAttribute="height" secondItem="8" secondAttribute="height" id="hcu-07-KJg"/>
                 <constraint firstAttribute="bottom" secondItem="21" secondAttribute="bottom" constant="-1" id="i97-hg-1wd"/>
-                <constraint firstAttribute="trailing" secondItem="23" secondAttribute="trailing" constant="-2" id="iRc-GL-Dfx"/>
                 <constraint firstItem="16" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="-1" id="jSx-82-jq6"/>
                 <constraint firstAttribute="bottom" secondItem="22" secondAttribute="bottom" constant="-1" id="jiF-g3-Syi"/>
                 <constraint firstItem="12" firstAttribute="height" secondItem="8" secondAttribute="height" id="jxo-Qo-Pa0"/>
@@ -379,7 +376,7 @@
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="249" y="253"/>
+            <point key="canvasLocation" x="97" y="215"/>
         </view>
     </objects>
     <resources>

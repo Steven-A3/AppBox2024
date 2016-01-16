@@ -8,6 +8,13 @@
 
 #import "A3UnitPriceHistoryCell.h"
 
+@interface A3UnitPriceHistoryCell ()
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leadingConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topConstraint;
+
+@end
+
 @implementation A3UnitPriceHistoryCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -29,7 +36,10 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
+
+	CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
+	_leadingConstraint.constant = leading;
+
     for (UILabel *lb in _markLBs) {
         lb.layer.cornerRadius = lb.bounds.size.width/2;
         

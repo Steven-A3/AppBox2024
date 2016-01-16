@@ -33,7 +33,7 @@
     return self;
 }
 
--(void)layoutSubviews {
+- (void)layoutSubviews {
     [super layoutSubviews];
     [self adjustConstraintLaout];
     [super layoutSubviews];
@@ -46,7 +46,7 @@
     // Configure the view for the selected state
 }
 
--(void)initializeSubviews {
+- (void)initializeSubviews {
     _salePriceLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     _dateLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     _resultPriceLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -63,26 +63,26 @@
     _resultPriceLabel.adjustsFontSizeToFitWidth = YES;
 }
 
--(void)setupConstraintLayout {
+- (void)setupConstraintLayout {
+	CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
     [_salePriceLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(@15);
+        make.leading.equalTo(@(leading));
         make.baseline.equalTo(self.bottom).with.offset(-40);
     }];
     
     [_dateLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.trailing.equalTo(@-15);
+        make.trailing.equalTo(@(-leading));
         make.baseline.equalTo(self.bottom).with.offset(-40);
     }];
     
     [_resultPriceLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(@15);
-        make.trailing.equalTo(@-15);
+        make.leading.equalTo(@(leading));
+        make.right.equalTo(@(-leading));
         make.baseline.equalTo(self.bottom).with.offset(-13);
-        make.right.equalTo(@-15);
     }];
 }
 
--(void)adjustConstraintLaout {
+- (void)adjustConstraintLaout {
     _salePriceLabel.font = [UIFont systemFontOfSize:15];
     _dateLabel.font = [UIFont systemFontOfSize:12];
     _resultPriceLabel.font = [UIFont systemFontOfSize:13];
@@ -92,7 +92,7 @@
     [_resultPriceLabel sizeToFit];
 }
 
--(void)setSalesCalcData:(A3SalesCalcData *)aData {
+- (void)setSalesCalcData:(A3SalesCalcData *)aData {
     NSNumberFormatter *currencyFormatter = [NSNumberFormatter new];
     currencyFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
     currencyFormatter.currencyCode = aData.currencyCode;

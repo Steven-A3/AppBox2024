@@ -12,7 +12,6 @@
 #import "UnitPriceInfo.h"
 #import "A3UnitPriceSliderCell.h"
 #import "A3UnitPriceInputCell.h"
-#import "A3UnitPriceActionCell.h"
 #import "A3AppDelegate.h"
 #import "A3NumberKeyboardViewController.h"
 #import "UILabel+BaseAlignment.h"
@@ -30,6 +29,7 @@
 #import "A3SyncManager.h"
 #import "A3UnitDataManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "A3StandardTableViewCell.h"
 
 typedef NS_ENUM(NSInteger, PriceDiscountType) {
 	Price_Percent = 0,
@@ -84,7 +84,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	}
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPAD)? 28 : 15, 0, 0);
+    self.tableView.separatorInset = A3UITableViewSeparatorInset;
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
@@ -795,7 +795,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	}
 	else {
 		if ([self.items objectAtIndex:indexPath.row] == self.unitItem) {
-			A3UnitPriceActionCell *actionCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceActionCellID forIndexPath:indexPath];
+			A3StandardTableViewCell *actionCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceActionCellID forIndexPath:indexPath];
 			actionCell.textLabel.textColor = [UIColor blackColor];
 			actionCell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
 			actionCell.textLabel.font = [UIFont systemFontOfSize:17];

@@ -52,12 +52,14 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 @interface A3TipCalcMainTableViewController ()
 <
+UITableViewDataSource, UITableViewDelegate,
 UITextFieldDelegate, UIActivityItemSource, UIPopoverControllerDelegate,
 CLLocationManagerDelegate,A3TipCalcDataManagerDelegate, A3TipCalcSettingsDelegate,
 A3TipCalcHistorySelectDelegate, A3JHSelectTableViewControllerProtocol, A3TableViewInputElementDelegate,
 A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewControllerProtocol, UIPopoverPresentationControllerDelegate
 >
 
+@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) A3JHTableViewRootElement *tableDataSource;
 @property (nonatomic, strong) NSArray * tableSectionTitles;
 @property (nonatomic, strong) CellTextInputBlock cellTextInputBeginBlock;
@@ -82,14 +84,6 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 	A3TableViewInputElement *_taxElement;
 
 	BOOL _barButtonEnabled;
-}
-
-- (id)init {
-	self = [super initWithStyle:UITableViewStyleGrouped];
-	if (self) {
-	}
-	
-	return self;
 }
 
 - (A3TipCalcDataManager *)dataManager {
@@ -119,6 +113,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[self registerContentSizeCategoryDidChangeNotification];
+	
 }
 
 /*! Tip Calculator 의 경우에는 KeyValueStore 에는 CurrencyCode 만 저장이 된다.
@@ -218,7 +213,17 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 - (void)initialize {
 	_barButtonEnabled = YES;
 
+	_tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+	_tableView.dataSource = self;
+	_tableView.delegate = self;
+	[self.view addSubview:_tableView];
+	
+	[_tableView makeConstraints:^(MASConstraintMaker *make) {
+		make.edges.equalTo(self.view);
+	}];
+	
     [self makeBackButtonEmptyArrow];
+	
 	if (IS_IPAD || IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	} else {
@@ -227,7 +232,10 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 	}
     [self rightBarButtons];
     self.title = NSLocalizedString(A3AppName_TipCalculator, nil);
-    
+
+	self.automaticallyAdjustsScrollViewInsets = NO;
+	self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+	
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.showsHorizontalScrollIndicator = NO;
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
@@ -235,7 +243,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 	}
     self.tableView.separatorInset = UIEdgeInsetsMake(0.0, IS_IPHONE ? 15.0 : 28.0, 0.0, 0.0);
     self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
-    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+//    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     self.tableView.tableHeaderView = [self headerView];
     
     [self reloadTableDataSource];
@@ -821,7 +829,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
     return _cellInputDoneButtonPressed;
 }
 
--(void)scrollToTopOfTableView {
+- (void)scrollToTopOfTableView {
 	[UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
 	[UIView setAnimationBeginsFromCurrentState:YES];
 	[UIView setAnimationCurve:7];
@@ -1102,7 +1110,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 	[self rightBarButtonDoneButton];
 
 	_arrMenuButtons = @[self.composeButton, self.shareButton, [self historyButton:[TipCalcHistory class]], self.settingsButton];
-	_moreMenuView = [self presentMoreMenuWithButtons:_arrMenuButtons pullDownView:self.tableView];
+	_moreMenuView = [self presentMoreMenuWithButtons:_arrMenuButtons pullDownView:self.view];
 	_isShowMoreMenu = YES;
 
 	[self refreshMoreButtonState];
@@ -1128,7 +1136,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 	_isShowMoreMenu = NO;
 
 	[self rightButtonMoreButton];
-	[self dismissMoreMenuView:_moreMenuView pullDownView:self.tableView];
+	[self dismissMoreMenuView:_moreMenuView pullDownView:self.view];
 	[self.view removeGestureRecognizer:gestureRecognizer];
 }
 

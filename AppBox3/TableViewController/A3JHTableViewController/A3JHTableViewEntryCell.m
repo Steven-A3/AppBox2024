@@ -64,9 +64,11 @@
 		}
 		textFieldWidth += 10.0;
 		CGRect textLabelFrame = self.textLabel.frame;
-		textLabelFrame.size.width = self.bounds.size.width - textFieldTextWidth - 30.0;
+		textLabelFrame.origin.x = self.separatorInset.left;
+		textLabelFrame.size.width = self.bounds.size.width - textFieldTextWidth - self.separatorInset.left;
 		self.textLabel.frame = textLabelFrame;
         self.textField.frame = CGRectMake(self.bounds.size.width - textFieldWidth - 15.0, 0, textFieldWidth, CGRectGetHeight(self.frame));
+		FNLOGRECT(textLabelFrame);
 	}
 }
 

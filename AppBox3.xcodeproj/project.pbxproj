@@ -568,7 +568,6 @@
 		68B6A2DA18CEC76D004084EF /* TemperatureConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A1CB18CEC76C004084EF /* TemperatureConverter.m */; };
 		68B6A2DB18CEC76D004084EF /* A3UnitDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A1CD18CEC76C004084EF /* A3UnitDataManager.m */; };
 		68B6A2E718CEC76D004084EF /* UnitConverterPhoneStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A1E418CEC76C004084EF /* UnitConverterPhoneStoryboard.storyboard */; };
-		68B6A2E818CEC76D004084EF /* A3UnitPriceActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A1E718CEC76C004084EF /* A3UnitPriceActionCell.m */; };
 		68B6A2E918CEC76D004084EF /* A3UnitPriceAddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A1E918CEC76C004084EF /* A3UnitPriceAddViewController.m */; };
 		68B6A2EA18CEC76D004084EF /* A3UnitPriceCompareSliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A1EB18CEC76C004084EF /* A3UnitPriceCompareSliderCell.m */; };
 		68B6A2EB18CEC76D004084EF /* A3UnitPriceDetailTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A1ED18CEC76C004084EF /* A3UnitPriceDetailTableController.m */; };
@@ -1973,8 +1972,6 @@
 		68B6A1CC18CEC76C004084EF /* A3UnitDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UnitDataManager.h; sourceTree = "<group>"; };
 		68B6A1CD18CEC76C004084EF /* A3UnitDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitDataManager.m; sourceTree = "<group>"; };
 		68B6A1E418CEC76C004084EF /* UnitConverterPhoneStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = UnitConverterPhoneStoryboard.storyboard; sourceTree = "<group>"; };
-		68B6A1E618CEC76C004084EF /* A3UnitPriceActionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UnitPriceActionCell.h; sourceTree = "<group>"; };
-		68B6A1E718CEC76C004084EF /* A3UnitPriceActionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitPriceActionCell.m; sourceTree = "<group>"; };
 		68B6A1E818CEC76C004084EF /* A3UnitPriceAddViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UnitPriceAddViewController.h; sourceTree = "<group>"; };
 		68B6A1E918CEC76C004084EF /* A3UnitPriceAddViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitPriceAddViewController.m; sourceTree = "<group>"; };
 		68B6A1EA18CEC76C004084EF /* A3UnitPriceCompareSliderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UnitPriceCompareSliderCell.h; sourceTree = "<group>"; };
@@ -4517,8 +4514,6 @@
 		68B6A1E518CEC76C004084EF /* UnitPrice */ = {
 			isa = PBXGroup;
 			children = (
-				68B6A1E618CEC76C004084EF /* A3UnitPriceActionCell.h */,
-				68B6A1E718CEC76C004084EF /* A3UnitPriceActionCell.m */,
 				68B6A1E818CEC76C004084EF /* A3UnitPriceAddViewController.h */,
 				68B6A1E918CEC76C004084EF /* A3UnitPriceAddViewController.m */,
 				68B6A1EA18CEC76C004084EF /* A3UnitPriceCompareSliderCell.h */,
@@ -6080,7 +6075,6 @@
 				68F1500919485E8500159EAD /* A3DaysCounterChangeLocationViewController.m in Sources */,
 				68143D5718E3EC7C00569691 /* A3JHTableViewMonthEntryElement.m in Sources */,
 				68B6A44618CEE781004084EF /* MWZoomingScrollView.m in Sources */,
-				68B6A2E818CEC76D004084EF /* A3UnitPriceActionCell.m in Sources */,
 				68F14FB019485E8500159EAD /* A3DaysCounterSlideshowOptionViewController.m in Sources */,
 				68B6A32918CEC76D004084EF /* A3WalletItemFieldActionCell.m in Sources */,
 				68024AD81631637600D396F0 /* A3UIDevice.m in Sources */,

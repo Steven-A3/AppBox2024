@@ -43,8 +43,8 @@
 
 - (void)setupConstraint
 {
-    NSNumber * leftInset = @15;
-    
+	NSNumber * leftInset = @(IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28);
+	
     [_dateLabel makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(@10);
         make.leading.equalTo(leftInset);

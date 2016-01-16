@@ -18,6 +18,7 @@
 #import "UnitPriceInfo+extension.h"
 #import "A3DefaultColorDefines.h"
 #import "A3UnitPriceMainTableController.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3UnitPriceHistoryViewController () <UIActionSheetDelegate>
 
@@ -62,6 +63,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 
 	self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = [self tableViewSeparatorColor];
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 
     [self.tableView registerNib:[UINib nibWithNibName:@"A3UnitPriceHistoryCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3UnitPriceHistoryCellID];
 	[self registerContentSizeCategoryDidChangeNotification];

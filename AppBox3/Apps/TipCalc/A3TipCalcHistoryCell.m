@@ -61,14 +61,16 @@
 }
 
 -(void)setupConstraintLayout {
+	CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
+	
     [_dateLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(@15);
+        make.leading.equalTo(@(leading));
         make.baseline.equalTo(self.bottom).with.offset(-41);
     }];
     
     [_resultLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(@15);
-        make.trailing.equalTo(@-15);
+        make.leading.equalTo(@(leading));
+        make.trailing.equalTo(@(-leading));
         make.baseline.equalTo(self.bottom).with.offset(-13);
     }];
 }
