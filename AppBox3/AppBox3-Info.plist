@@ -62,7 +62,9 @@
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
-	<string>Launch Screen</string>
+	<string>Launch Screen~iphone</string>
+	<key>UILaunchStoryboardName~ipad</key>
+	<string>Launch Screen~ipad.storyboard</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
