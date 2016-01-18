@@ -976,7 +976,7 @@
 "List" = "List";
 
 /* Labels */
-"Degrees(º)" = "角度(度)";
+"Degrees" = "角度(度)";
 "Bubble" = "バブル(X軸)";
 "Calibrate" = "補正";
 "Lock" = "固定";
@@ -999,3 +999,4 @@
 "Paid User" = "支払ったユーザー";
 "Bought Remove Ads" = "広告の削除を購入したこと";
 "Continue without Verification" = "確認せずに続行";
+"Degrees" = "Degrees";

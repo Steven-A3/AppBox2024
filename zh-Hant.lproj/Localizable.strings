@@ -796,7 +796,7 @@
 "List" = "List";
 
 /* Labels */
-"Degrees(º)" = "角度（度）";
+"Degrees" = "角度（度）";
 "Bubble" = "水準器(X軸)";
 "Calibrate" = "校準";
 "Lock" = "固定";
@@ -819,3 +819,4 @@
 "Paid User" = "付費用戶";
 "Bought Remove Ads" = "購買刪除廣告";
 "Continue without Verification" = "繼續無需驗資";
+"Degrees" = "Degrees";

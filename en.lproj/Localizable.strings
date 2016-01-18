@@ -892,3 +892,46 @@ Enter Encryption Key for Wallet.";
 "Camera access denied" = "Camera access disabled";
 "To turn on the LED requires camera access." = "LED requires camera access.";
 "%@ requires camera access." = "%@ requires camera access.";
+
+"Jewish Holidays" = "Jewish Holidays";
+"'%@' is back." = "'%@' is back.";
+"Thanks" = "Thanks";
+"Thank you very much for purchasing the AppBox Pro." = "Thank you very much for purchasing the AppBox Pro.";
+"No Transactions to Restore" = "No Transactions to Restore";
+"Remove Ads" = "Remove Ads";
+"Restore Purchase" = "Restore Purchase";
+"Transaction failed. Try again later." = "Transaction failed. Try again later.";
+"Processing" = "Processing";
+"Thank You" = "Thank You";
+"You've already purchased this. Your purchases has been restored." = "You've already purchased this. Your purchases has been restored.";
+"Your paid app receipt has been validated. Thank you very much." = "Your paid app receipt has been validated. Thank you very much.";
+"iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again." = "iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again.";
+"Help" = "Help";
+"Save Video" = "Save Video";
+"Failed" = "Failed";
+"Saved" = "Saved";
+"Saving" = "Saving";
+"List" = "List";
+
+"Degrees" = "Degrees(º)";
+"Bubble" = "Bubble";
+"Calibrate" = "Calibrate";
+"Lock" = "Lock";
+"Slope(%)" = "Slope(%)";
+"Pitch(in/fit)" = "Pitch(in/fit)";
+"Surface" = "Surface";
+"Unlock" = "Unlock";
+"Calibrate 1" = "Calibrate 1";
+"Calibrate 2" = "Calibrate 2";
+"Restart" = "Restart";
+
+"Calibrate1Msg" = "- Hold iPhone on a flat surface, as shown (volume control side up).\r\n- Keep iPhone perpendicular to surface.\r\nPress \"Calibrate 1\".";
+"Calibrate2Msg" = "- Rotate iPhone 180 degrees and \r\nperpendicular to the surface.\r\nPress \"Calibrate 2\".\r\n";
+"CalibrateSurface1Msg" = "- Press \"Calibrate 1\" while keeping\r\nthe iPhone flat on the surface.";
+"CalibrateSurface2Msg" = "- Rotate iPhone 180 degrees.\r\n- Press \"Calibrate 2\".\r\n";
+"CalibrationDone" = "Calibration has completed successfully.";
+
+"Verification Required" = "Verification Required";
+"Paid User" = "Paid User";
+"Bought Remove Ads" = "Bought Remove Ads";
+"Continue without Verification" = "Continue without Verification";

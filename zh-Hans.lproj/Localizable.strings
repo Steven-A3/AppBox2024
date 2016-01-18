@@ -982,7 +982,7 @@
 "List" = "List";
 
 /* Labels */
-"Degrees(º)" = "角度（度）";
+"Degrees" = "角度（度）";
 "Bubble" = "水准器(X轴)";
 "Calibrate" = "校准";
 "Lock" = "固定";
@@ -1005,3 +1005,4 @@
 "Paid User" = "付费用户";
 "Bought Remove Ads" = "购买删除广告";
 "Continue without Verification" = "继续无需验资";
+"Degrees" = "Degrees";
