@@ -11,6 +11,7 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "A3DateCalcTableRowData.h"
 #import "A3DefaultColorDefines.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3DateCalcEditEventViewController ()
 
@@ -46,7 +47,7 @@
 	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCellIdentifier_Common];
 	[self.tableView setShowsHorizontalScrollIndicator:NO];
 	[self.tableView setShowsVerticalScrollIndicator:NO];
-    self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
+    self.tableView.separatorColor = A3UITableViewSeparatorColor;
 
     [self reloadTableViewData];
 }

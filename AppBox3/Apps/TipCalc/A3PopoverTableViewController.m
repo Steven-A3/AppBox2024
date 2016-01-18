@@ -11,6 +11,7 @@
 #import "UIColor+A3Addition.h"
 #import "UIViewController+A3Addition.h"
 #import "A3StandardLeft15Cell.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 typedef NS_ENUM(NSInteger, SectionType) {
     SectionType_Empty = 0,
@@ -52,8 +53,8 @@ typedef NS_ENUM(NSInteger, SectionType) {
     self.tableView.scrollEnabled = NO;
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.showsHorizontalScrollIndicator = NO;
-    self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
-    self.tableView.separatorInset = UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0);
+    self.tableView.separatorColor = A3UITableViewSeparatorColor;
+    self.tableView.separatorInset = A3UITableViewSeparatorInset;
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
@@ -176,7 +177,7 @@ typedef NS_ENUM(NSInteger, SectionType) {
                 }
             }
             else {
-                cell.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
+                cell.separatorInset = UIEdgeInsetsMake(0, ([[UIScreen mainScreen] scale] > 2 ? 20 : 15), 0, 0);
             }
         }
             break;

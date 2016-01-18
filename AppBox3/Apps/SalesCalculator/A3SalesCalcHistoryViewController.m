@@ -14,6 +14,7 @@
 #import "A3SalesCalcHistoryCell.h"
 #import "A3DefaultColorDefines.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 NSString *const A3SalesCalcHistoryCellID = @"cell1";
 
@@ -44,8 +45,8 @@ NSString *const A3SalesCalcHistoryCellID = @"cell1";
 	}
     
 	[self.tableView registerClass:[A3SalesCalcHistoryCell class] forCellReuseIdentifier:A3SalesCalcHistoryCellID];
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
-    self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
+    self.tableView.separatorInset = A3UITableViewSeparatorInset;
+    self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}

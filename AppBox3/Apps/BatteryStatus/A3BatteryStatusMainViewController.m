@@ -18,6 +18,8 @@
 #import "A3InstructionViewController.h"
 #import "A3UserDefaults.h"
 #import "A3StandardTableViewCell.h"
+#import "UIViewController+tableViewStandardDimension.h"
+
 @import GoogleMobileAds;
 
 @interface A3BatteryStatusMainViewController () <A3InstructionViewControllerDelegate>
@@ -65,7 +67,7 @@
 
     self.title = NSLocalizedString(A3AppName_BatteryStatus, @"Battery Status main view controller title.");
     self.tableView.showsVerticalScrollIndicator = NO;
-    self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
+    self.tableView.separatorColor = A3UITableViewSeparatorColor;
     self.tableView.tableFooterView = nil;
 
     self.tableView.tableHeaderView = self.headerView;

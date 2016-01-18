@@ -12,6 +12,7 @@
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3TipCalcSettingViewController ()
 
@@ -24,8 +25,6 @@
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
-        self.title = NSLocalizedString(A3AppName_Settings, nil);
-        self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
     }
     return self;
 }
@@ -33,6 +32,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+	self.title = NSLocalizedString(A3AppName_Settings, nil);
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 
     if (IS_IPHONE) {
         [self rightBarButtonDoneButton];

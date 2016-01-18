@@ -134,7 +134,8 @@
     [self makeBackButtonEmptyArrow];
 
     UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
-    self.navigationItem.rightBarButtonItems = @[edit, [self instructionHelpBarButton]];
+	UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    self.navigationItem.rightBarButtonItems = @[edit, space, [self instructionHelpBarButton]];
     
     if ( IS_IPHONE ) {
         if (IS_RETINA) {

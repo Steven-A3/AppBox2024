@@ -24,12 +24,13 @@
 #define INDEX_OF_LOCK_BUTTON					5
 
 - (void)addToolbuttonWithImageName:(NSString *)imageName atIndex:(NSInteger)index withAction:(SEL)theAction {
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
 	UIButton *theButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	UIImage *buttonImage = [UIImage imageNamed:imageName];
 	[theButton setImage:buttonImage forState:UIControlStateNormal];
 	[theButton addTarget:self action:theAction forControlEvents:UIControlEventTouchUpInside];
 	[theButton setTag:index];
-	[theButton setFrame:CGRectMake(30.0 + (ceil((320.0 - 60.0)/ (NUMBER_OF_INCLINOMETER_TOOL_BUTTON - 1)) * index) - 20.0, 0.0, 40.0, 41.0)];
+	[theButton setFrame:CGRectMake(30.0 + (ceil((self.view.bounds.size.width - 60.0)/ (NUMBER_OF_INCLINOMETER_TOOL_BUTTON - 1)) * index) - 20.0, 0.0, 40.0 * scale, 41.0 * scale)];
 	[self.view addSubview:theButton];
 }
 
@@ -37,8 +38,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
 	self.view.backgroundColor = [UIColor clearColor];
-	CGRect frame = CGRectMake(0.0, 0.0, 320.0, 41.0);
+	CGRect frame = CGRectMake(0.0, 0.0, self.view.bounds.size.width, 41.0 * scale);
 	self.view.frame = frame;
 	UIImage *toolbarBackgroundImage = [UIImage imageNamed:@"bg_Inclinometer_toolbar"];
 	UIImageView *mainView = [[UIImageView alloc] initWithImage:toolbarBackgroundImage];

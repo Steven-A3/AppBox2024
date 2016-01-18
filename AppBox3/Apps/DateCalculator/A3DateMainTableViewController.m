@@ -26,6 +26,7 @@
 #import "A3SyncManager.h"
 #import "A3UserDefaultsKeys.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 #define kDefaultBackgroundColor [UIColor lightGrayColor]
 #define kDefaultButtonColor     [UIColor colorWithRed:193.0/255.0 green:196.0/255.0 blue:200.0/255.0 alpha:1.0]
@@ -100,7 +101,8 @@
 
 	self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     self.tableView.showsVerticalScrollIndicator = NO;
-    self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
+    self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 
 	[self readFromSavedValue];
     _isKeyboardShown = NO;

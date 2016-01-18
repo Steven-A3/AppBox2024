@@ -30,6 +30,7 @@
 #import "NSManagedObject+extension.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3UserDefaults.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 #define kDefaultItemCount_iPhone    9
 #define kDefaultItemCount_iPad      18
@@ -115,7 +116,8 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     self.tableView.tableHeaderView = self.headerView;
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
-    self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
+    self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
     [self.tableView registerClass:[A3ExpenseListItemCell class] forCellReuseIdentifier:ExpenseListMainCellIdentifier];
     // 테이블 뷰 탭 제스쳐.
     _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnTableView:)];

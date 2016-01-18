@@ -34,6 +34,7 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3StandardDetailTableViewController.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 #define kColorPlaceHolder [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]
 
@@ -241,8 +242,8 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
-    self.tableView.separatorInset = UIEdgeInsetsMake(0.0, IS_IPHONE ? 15.0 : 28.0, 0.0, 0.0);
-    self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+    self.tableView.separatorColor = A3UITableViewSeparatorColor;
 //    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     self.tableView.tableHeaderView = [self headerView];
     

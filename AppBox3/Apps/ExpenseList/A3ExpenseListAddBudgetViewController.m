@@ -284,7 +284,7 @@ enum A3ExpenseListAddBudgetCellType {
 	[self removeObserver];
 }
 
--(void)cancelButtonAction {
+- (void)cancelButtonAction {
 	if (IS_IPAD) {
 		[[[A3AppDelegate instance] rootViewController] dismissCenterViewController];
 	}
@@ -296,7 +296,7 @@ enum A3ExpenseListAddBudgetCellType {
 	[self removeObserver];
 }
 
--(NSString *) dateStringFromDate:(NSDate *)date {
+- (NSString *)dateStringFromDate:(NSDate *)date {
     NSString * result;
     
     if ([[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode] isEqualToString:@"KR"]) {

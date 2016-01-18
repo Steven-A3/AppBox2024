@@ -52,7 +52,6 @@
 	}
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addCalendarAction:)];
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
 
     [self rightBarButtonDoneButton];
 }

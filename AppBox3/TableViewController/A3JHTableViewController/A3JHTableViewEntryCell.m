@@ -35,7 +35,7 @@
 
 		if (![self.textLabel.text length]) {
 			CGRect frame;
-			frame.origin.x = IS_IPHONE ? 15 : 28;
+			frame.origin.x = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 			frame.origin.y = 0;
 			frame.size.width = screenBounds.size.width - (IS_IPHONE ? 30 : 28 + 15);
 			frame.size.height = CGRectGetHeight(self.frame);

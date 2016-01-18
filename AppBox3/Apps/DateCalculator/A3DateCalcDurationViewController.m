@@ -14,6 +14,7 @@
 #import "A3DateCalcTableviewCell.h"
 #import "A3DefaultColorDefines.h"
 #import "UIImage+JHExtension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 static NSString *CellIdentifier = @"Cell";
 
@@ -59,8 +60,8 @@ static NSString *CellIdentifier = @"Cell";
 	[self.tableView setShowsHorizontalScrollIndicator:NO];
 	[self.tableView setShowsVerticalScrollIndicator:NO];
     self.tableView.tableFooterView = [UIView new];
-    self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
+    self.tableView.separatorColor = A3UITableViewSeparatorColor;
+    self.tableView.separatorInset = A3UITableViewSeparatorInset;
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}

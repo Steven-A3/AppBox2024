@@ -14,6 +14,7 @@
 #import "A3SalesCalcCalculator.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIImage+imageWithColor.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3SalesCalcHeaderView()
 
@@ -76,7 +77,7 @@
     [self addSubview:_savedPricePrintLabel];
     [self addSubview:_detailInfoButton];
 
-    _bottomGrayLineView.backgroundColor = COLOR_TABLE_SEPARATOR;
+    _bottomGrayLineView.backgroundColor = A3UITableViewSeparatorColor;
     [_detailInfoButton setImage:[[UIImage imageNamed:@"information"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
     [_detailInfoButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"information"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled]; // 196, 196, 196
     

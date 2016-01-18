@@ -18,6 +18,7 @@
 #import "A3UserDefaultsKeys.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 
 @interface A3PercentCalcMainViewController ()
@@ -85,18 +86,16 @@
     
     if (IS_IPAD) {
         self.navigationItem.hidesBackButton = YES;
-        self.tableView.separatorInset = UIEdgeInsetsMake(0, 28.0, 0, 0);
-    } else {
-        self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
     }
+
+    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    self.tableView.showsVerticalScrollIndicator = NO;
+    self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
-	
-    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
-    self.tableView.showsVerticalScrollIndicator = NO;
-    self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
-    
+
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(15, 15), NO, 0);
     _blankImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
@@ -250,7 +249,7 @@
 
 - (void)initHeaderView {
     self.headerView = [[A3PercentCalcHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 157)];
-    self.headerView.bottomLineView.backgroundColor = COLOR_TABLE_SEPARATOR;
+    self.headerView.bottomLineView.backgroundColor = A3UITableViewSeparatorColor;;
 
     if ([self reloadInputData]) {
         _selectedOptionIndexPath = [NSIndexPath indexPathForRow:self.calcType inSection:1];
@@ -296,26 +295,11 @@
 }
 
 - (void)rightButtonHistoryButton {
-
     UIImage *image = [UIImage imageNamed:@"history"];
-    //UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
     UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(saveToHistory:)];
-    
-    UIBarButtonItem *paddingItem1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-                                                                  target:self
-                                                                  action:nil];
-    UIBarButtonItem *paddingItem2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-                                                                                 target:self
-                                                                                 action:nil];
-    paddingItem1.width = -60.0;
-    paddingItem2.width = 0;
-    buttonItem.width = -44;
-    saveItem.width = -44;
-    
-    
-    //self.navigationItem.rightBarButtonItem = buttonItem;
-    self.navigationItem.rightBarButtonItems = @[buttonItem, saveItem];
+
+	self.navigationItem.rightBarButtonItems = @[buttonItem, saveItem];
 }
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
@@ -582,14 +566,9 @@
                     cell2.textField.clearButtonMode = UITextFieldViewModeNever;
                     cell2.textField.font = [UIFont systemFontOfSize:17.0];
                 }
-                
-                if (IS_IPAD) {
-                    cell2.separatorInset = UIEdgeInsetsMake(0, 28.0, 0, 0);
-                    cell2.leftSeparatorInset = 28.0;
-                } else {
-                    cell2.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
-                    cell2.leftSeparatorInset = 15.0;
-                }
+
+				cell2.separatorInset = A3UITableViewSeparatorInset;
+				cell2.leftSeparatorInset = cell2.separatorInset.left;
                 cell2.textField.delegate = self;
                 if (self.sections.count-1 < indexPath.section) {
                     return cell2;
@@ -623,12 +602,7 @@
 }
 
 - (UITableViewCell *)updateCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
-    if (IS_IPAD) {
-        cell.separatorInset = UIEdgeInsetsMake(0, 28.0, 0, 0);
-    } else {
-        cell.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
-    }
-    
+	cell.separatorInset = A3UITableViewSeparatorInset;
     cell.textLabel.text = self.sections[indexPath.section][indexPath.row];
     cell.accessoryType = indexPath.row==self.calcType ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     cell.detailTextLabel.text = @"";

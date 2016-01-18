@@ -10,6 +10,7 @@
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "A3DefaultColorDefines.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3ItemSelectListViewController ()
 
@@ -35,7 +36,7 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
+    self.tableView.separatorColor = A3UITableViewSeparatorColor;
 }
 
 - (void)didReceiveMemoryWarning

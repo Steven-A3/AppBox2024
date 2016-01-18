@@ -44,9 +44,6 @@
         [self makeBackButtonEmptyArrow];
         [self rightBarButtonDoneButton];
     }
-    else {
-        self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
-    }
 }
 
 - (void)didReceiveMemoryWarning

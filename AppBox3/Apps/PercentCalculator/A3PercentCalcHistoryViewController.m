@@ -17,6 +17,7 @@
 #import "A3DefaultColorDefines.h"
 #import "NSDate+TimeAgo.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 NSString *const A3PercentCalcHistoryCellID = @"cell1";
 NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
@@ -52,12 +53,12 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
 		[self rightBarButtonDoneButton];
 	}
 
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
+    self.tableView.separatorInset = A3UITableViewSeparatorInset;
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
     self.tableView.showsVerticalScrollIndicator = NO;
-    self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
+    self.tableView.separatorColor = A3UITableViewSeparatorColor;
     
 	[self.tableView registerClass:[A3PercentCalcHistoryCell class] forCellReuseIdentifier:A3PercentCalcHistoryCellID];
 	[self.tableView registerClass:[A3PercentCalcHistoryCompareCell class] forCellReuseIdentifier:A3PercentCalcHistoryCompareCellID];

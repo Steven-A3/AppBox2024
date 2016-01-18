@@ -18,6 +18,7 @@
 #import "ExpenseListBudgetLocation.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "ExpenseListHistory+extension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 static NSString *CellIdentifier = @"Cell";
 
@@ -47,11 +48,11 @@ static NSString *CellIdentifier = @"Cell";
 		[self rightBarButtonDoneButton];
 	}
 
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
+    self.tableView.separatorInset = A3UITableViewSeparatorInset;
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
-    self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
+    self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	[self.tableView registerClass:[A3ExpenseListHistoryCell class] forCellReuseIdentifier:CellIdentifier];
 }
 

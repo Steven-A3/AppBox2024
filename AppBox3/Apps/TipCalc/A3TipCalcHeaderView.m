@@ -13,6 +13,7 @@
 #import "UIImage+JHExtension.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIImage+imageWithColor.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @implementation A3TipCalcHeaderView
 {
@@ -96,7 +97,7 @@
     [self addSubview:_sliderGaugeLineView];
     [self addSubview:_bottomGrayLineView];
     _sliderBaseLineView.backgroundColor = COLOR_DEFAULT_GRAY;
-    _bottomGrayLineView.backgroundColor = COLOR_TABLE_SEPARATOR;
+    _bottomGrayLineView.backgroundColor = A3UITableViewSeparatorColor;
     _sliderGaugeLineView.backgroundColor = COLOR_NEGATIVE;
     if (IS_IPAD) {
         NSMutableArray *meterArray = [[NSMutableArray alloc] init];

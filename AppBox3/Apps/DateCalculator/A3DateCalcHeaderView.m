@@ -17,6 +17,7 @@
 #import "A3DefaultColorDefines.h"
 #import "A3OverlappedCircleView.h"
 #import "A3AppDelegate.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 #define SLIDER_OFFSET_LABEL     20
 #define SLIDER_THUMB_MARGIN     20
@@ -124,7 +125,7 @@
     
     self.sliderLineView.backgroundColor = [UIColor colorWithRed:188/255.0 green:188/255.0 blue:188/255.0 alpha:1.0];
     self.fromToRangeLineView.backgroundColor = COLOR_ELLIPSE_2_Center;
-    self.bottomLineView.backgroundColor = COLOR_TABLE_SEPARATOR;
+    self.bottomLineView.backgroundColor = A3UITableViewSeparatorColor;
     self.fromThumbView.centerColor = COLOR_ELLIPSE_2_Center;
     self.toThumbView.centerColor = COLOR_ELLIPSE_2_Center;
     self.backgroundColor = COLOR_HEADERVIEW_BG;

@@ -103,7 +103,6 @@
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
-    self.tableView.separatorInset = UIEdgeInsetsZero;
 
     self.cellIDArray = @[@"titleCell", @"photoCell", @"switchCell", @"switchCell", @"switchCell",       // 0 ~ 4
                          @"dateCell", @"dateCell", @"value1Cell", @"value1Cell", @"value1Cell",         // 5 ~ 9
@@ -192,7 +191,6 @@
         
     [self.navigationController setToolbarHidden:YES];
     isFirstAppear = YES;
-    self.tableView.separatorInset = UIEdgeInsetsZero;
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
@@ -532,7 +530,7 @@
     UITableViewCell *cell = nil;
     
     if ( _eventItem && indexPath.section == [_sectionTitleArray count] ) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell = [[A3StandardTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
         cell.textLabel.text = NSLocalizedString(@"Delete Event", @"Delete Event");
         cell.textLabel.textColor = [UIColor colorWithRed:1.0 green:59.0/255.0 blue:48.0/255.0 alpha:1.0];
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
@@ -633,7 +631,7 @@
             UIView *leftView = [cell viewWithTag:10];
             for(NSLayoutConstraint *layout in cell.contentView.constraints ) {
                 if ( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == leftView ) {
-                    layout.constant = (IS_IPHONE ? 15.0 : 28.0);
+                    layout.constant = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28.0;
                     break;
                 }
             }
@@ -653,7 +651,7 @@
     NSDictionary *itemDict = [items objectAtIndex:indexPath.row];
     NSInteger itemType = [[itemDict objectForKey:EventRowType] integerValue];
     
-    cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
+	cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28, 0, 0);
     
     switch (itemType) {
         case EventCellType_Title :
@@ -857,17 +855,17 @@
                     cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
                 }
                 else {
-                    cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
+					cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28, 0, 0);
                 }
             }
             else {
-                cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
+                cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28, 0, 0);
             }
         }
     }
     else {
         if ([_eventItem.isPeriod boolValue] && itemType == EventCellType_StartDate) {
-            cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
+            cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28, 0, 0);
         }
         else {
 			FNLOG();
@@ -1006,7 +1004,7 @@
         datePicker.date = date;
         
         if ([_eventItem.isPeriod boolValue]) {
-            cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
+            cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28, 0, 0);
         }
         else {
             cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -1464,7 +1462,8 @@
     }
 }
 
-#pragma mark etc
+#pragma mark - Section
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 //    return [_sectionTitleArray count] + (_eventItem.uniqueID ? 1 : 0);
@@ -1551,6 +1550,7 @@
 }
 
 #pragma mark - Action methods
+
 - (void)resignAllAction
 {
     [[self firstResponder] resignFirstResponder];

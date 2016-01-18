@@ -157,9 +157,11 @@
     calibrationViewForBubble = [[CalibrationView alloc] initWithMode:bubbleMode
 													   viewController:self];
 
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+	
 	toolbarVC = [[ClinometerToolbarViewController alloc] init];
 	toolbarVC.delegate = self;
-	toolbarVC.view.frame = CGRectMake(0.0, 0.0, 320.0, 41.0);
+	toolbarVC.view.frame = CGRectMake(0.0, 0.0, self.view.bounds.size.width, 41.0 * scale);
 	[self.view addSubview:[toolbarVC view]];
 	
 	[toolbarVC updateTimer];
@@ -236,7 +238,7 @@
 	[UIView commitAnimations];
 }
 
-- (void) calibrateDoneAction:(id)sender {
+- (void)calibrateDoneAction:(id)sender {
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:kTransitionDuration];
 	[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.view cache:YES];

@@ -112,7 +112,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 
 	[self setupSwipeRecognizers];
 
-	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:A3CurrencyAdCellID];
+	[self.tableView registerClass:[A3CurrencyTableViewCell class] forCellReuseIdentifier:A3CurrencyAdCellID];
 	[self.tableView registerClass:[A3CurrencyTVDataCell class] forCellReuseIdentifier:A3CurrencyDataCellID];
 	[self.tableView registerNib:[UINib nibWithNibName:@"A3CurrencyTVActionCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3CurrencyActionCellID];
 	[self.tableView registerNib:[UINib nibWithNibName:@"A3CurrencyTVEqualCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3CurrencyEqualCellID];
@@ -657,6 +657,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		cell = equalCell;
 	} else if (_favorites[indexPath.row] == _adItem) {
 		cell = [self.tableView dequeueReusableCellWithIdentifier:A3CurrencyAdCellID];
+		
 		GADBannerView *bannerView = [self bannerView];
 		[cell.contentView addSubview:bannerView];
 		

@@ -287,7 +287,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aiW-p5-JhH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="72" y="-103"/>
+            <point key="canvasLocation" x="10" y="-109"/>
         </scene>
         <!--Currency Picker Style View Controller-->
         <scene sceneID="E4S-U9-zwU">
@@ -520,7 +520,7 @@
                                 </connections>
                             </pickerView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="adk-L0-PvO" userLabel="Line Picker Top">
-                                <rect key="frame" x="0.0" y="414" width="600" height="1"/>
+                                <rect key="frame" x="0.0" y="383" width="600" height="1"/>
                                 <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="Hgf-rw-gTn"/>
@@ -579,11 +579,6 @@
                             <constraint firstItem="EAi-Ti-q73" firstAttribute="top" secondItem="RdI-5x-QQ3" secondAttribute="top" constant="1" id="xVu-tO-LNU"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Tqf-UD-rk3" secondAttribute="trailing" constant="-20" id="xhB-yt-YfZ"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="adk-L0-PvO"/>
-                            </mask>
-                        </variation>
                         <variation key="heightClass=regular-widthClass=regular">
                             <mask key="subviews">
                                 <include reference="adk-L0-PvO"/>
@@ -629,7 +624,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c9v-Ip-gby" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="72" y="559"/>
+            <point key="canvasLocation" x="10" y="570"/>
         </scene>
     </scenes>
     <resources>

@@ -35,7 +35,7 @@
 		[self addSubview:_titleLabel];
 
 		[_titleLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+			make.left.equalTo(self.left).with.offset(IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28);
 			make.bottom.equalTo(self.bottom).with.offset(-10);
 		}];
 	}

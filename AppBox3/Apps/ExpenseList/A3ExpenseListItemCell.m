@@ -115,13 +115,13 @@
 
 - (void)setupConstraintLayout
 {
-	CGFloat leftInset = IS_IPHONE ? 15 : 28;
+	CGFloat leftInset = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 	CGFloat sep1_Item = ceilf(CGRectGetWidth(self.contentView.frame) * 0.33);
 	CGFloat sep2_Price = ceilf(CGRectGetWidth(self.contentView.frame) * 0.26);
 	CGFloat sep3_Quantity = ceilf(CGRectGetWidth(self.contentView.frame) * 0.11);
     
 	[_checkButton makeConstraints:^(MASConstraintMaker *make) {
-		make.leading.equalTo(@15);
+		make.leading.equalTo(@([[UIScreen mainScreen] scale] > 2 ? 20 : 15));
 		make.centerY.equalTo(self.centerY);
 		make.width.equalTo(@21);
 		make.height.equalTo(@21);
@@ -150,7 +150,7 @@
     
 	[_nameTextField makeConstraints:^(MASConstraintMaker *make) {
 		if (IS_IPHONE) {
-			make.leading.equalTo(@15);
+			make.leading.equalTo(@([[UIScreen mainScreen] scale] > 2 ? 20 : 15));
 		} else {
 			make.leading.equalTo(@28);
 		}
@@ -183,7 +183,7 @@
 
 - (void)adjustConstraintLayout
 {
-	CGFloat leftInset = IS_IPHONE ? 15 : 28;
+	CGFloat leftInset = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 	CGFloat sep1_Item = ceilf(CGRectGetWidth(self.contentView.frame) * 0.33);
 	CGFloat sep2_Price = ceilf(CGRectGetWidth(self.contentView.frame) * 0.26);
 	CGFloat sep3_Quantity = ceilf(CGRectGetWidth(self.contentView.frame) * 0.11);

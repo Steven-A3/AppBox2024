@@ -8,6 +8,11 @@
 
 #import "A3DaysCounterRepeatCustomCell.h"
 
+@interface A3DaysCounterRepeatCustomCell ()
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLabelLeadingConstraint;
+
+@end
+
 @implementation A3DaysCounterRepeatCustomCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -22,6 +27,9 @@
 - (void)awakeFromNib
 {
     // Initialization code
+	CGFloat leadingConstant = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
+	_titleLabelLeadingConstraint.constant = leadingConstant;
+
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

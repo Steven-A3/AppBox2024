@@ -14,6 +14,7 @@
 #import "A3DefaultColorDefines.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIImage+imageWithColor.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 static NSString *CellIdentifier = @"Cell";
 
@@ -67,7 +68,7 @@ static NSString *CellIdentifier = @"Cell";
 	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
 	[self.tableView setShowsHorizontalScrollIndicator:NO];
 	[self.tableView setShowsVerticalScrollIndicator:NO];
-    self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
+    self.tableView.separatorColor = A3UITableViewSeparatorColor;
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {

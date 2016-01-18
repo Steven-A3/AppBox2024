@@ -49,8 +49,7 @@
         self.originalValue = [_sharedManager calendarItemByID:self.eventModel.calendarID];
     }
     self.title = NSLocalizedString(@"Calendar", @"Calendar");
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
-    
+
     self.calendarArray = [DaysCounterCalendar MR_findAllSortedBy:A3CommonPropertyOrder ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"type == %@", @(CalendarCellType_User)]];
 }
 

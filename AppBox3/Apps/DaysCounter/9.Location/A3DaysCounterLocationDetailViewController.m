@@ -180,8 +180,7 @@
             if ( indexPath.row == 0 ) {
                 textLabel.text = NSLocalizedString(@"Phone", @"Phone");
                 detailTextLabel.text = _locationItem.contact;
-                //cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
-                cell.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
+                cell.separatorInset = UIEdgeInsetsMake(0, ([[UIScreen mainScreen] scale] > 2 ? 20 : 15), 0, 0);
             }
             else {
                 textLabel.text = NSLocalizedString(@"Address", @"Address");

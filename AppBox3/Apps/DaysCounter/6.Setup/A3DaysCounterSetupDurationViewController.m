@@ -14,6 +14,7 @@
 #import "SFKImage.h"
 #import "DaysCounterEvent.h"
 #import "UIImage+JHExtension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3DaysCounterSetupDurationViewController ()
 @property (strong, nonatomic) NSArray *itemArray;
@@ -43,7 +44,8 @@
         self.originalValue = _eventModel.durationOption;
     }
     self.title = NSLocalizedString(@"Duration Options", @"Duration Options");
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
+    self.tableView.separatorColor = A3UITableViewSeparatorColor;
+    self.tableView.separatorInset = A3UITableViewSeparatorInset;
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}

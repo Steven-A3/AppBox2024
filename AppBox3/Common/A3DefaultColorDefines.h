@@ -19,8 +19,6 @@
 
 // TableView
 #define COLOR_HEADERVIEW_BG     [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:248.0/255.0 alpha:1.0]
-#define COLOR_TABLE_SEPARATOR   [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0]
-#define COLOR_TABLE_TEXTLABEL   [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0]
 #define COLOR_TABLE_DETAIL_TEXTLABEL        [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]
 #define COLOR_TABLE_INPUT_DETAIL_TEXTLABEL  [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0]
 #define COLOR_TABLE_SECTION_TITLE   [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0]

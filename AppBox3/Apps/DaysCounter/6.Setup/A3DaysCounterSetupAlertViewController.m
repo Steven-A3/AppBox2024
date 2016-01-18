@@ -75,7 +75,7 @@
 
 	self.tableView.showsVerticalScrollIndicator = NO;
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
-	self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
@@ -169,7 +169,6 @@
 			label.text = NSLocalizedString(@"Custom", nil);
 			UITextField *textField = (UITextField*)[cell viewWithTag:12];
 			textField.delegate = self;
-			((A3DaysCounterRepeatCustomCell *)cell).daysLabelWidthConst.constant = 100;
 			((A3DaysCounterRepeatCustomCell *)cell).checkImageView.image = [[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 			[((A3DaysCounterRepeatCustomCell *)cell).checkImageView setTintColor:[A3AppDelegate instance].themeColor];
 			[self setCheckmarkOnCustomInputCell:cell CheckShow:NO];

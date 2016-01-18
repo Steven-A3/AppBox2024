@@ -58,8 +58,10 @@
 		backgroundImage = [UIImage imageNamed:IS_IPHONE35 ? @"bg_Inclinometer_bubble_cal_480" : @"bg_Inclinometer_bubble_cal"];
 	}
 	
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+	
     UIImageView *levelBackView = [[UIImageView alloc] initWithImage:backgroundImage];
-    levelBackView.center = self.center;
+	levelBackView.frame = self.bounds;
     [self addSubview:levelBackView];
 
 	CATransform3D landscapeTransform = CATransform3DIdentity;
@@ -68,15 +70,16 @@
 	UIButton *exitButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	[exitButton setImage:[UIImage imageNamed:@"bt_clinometer_exit"] forState:UIControlStateNormal];
 	exitButton.backgroundColor = [UIColor clearColor];
-	exitButton.frame = CGRectMake(10.0, 10.0, 40.0, 41.0);
+	exitButton.frame = CGRectMake(10.0 * scale, 10.0 * scale, 40.0 * scale, 41.0 * scale);
+	
 	[exitButton addTarget:_viewController action:@selector(calibrateDoneAction:) forControlEvents:UIControlEventTouchUpInside];
 	[self addSubview:exitButton];
-						  
+
 	UIImage *imageNormal = [UIImage imageNamed:@"bt_input"];
     // set up Calibrate1 button
-	CGFloat x = 200.5;
-	CGFloat yOffset = IS_IPHONE35 ? 0 : 45.0;
-	CGRect buttonFrame = CGRectMake(x, 340.0 + yOffset, imageNormal.size.width, imageNormal.size.height);
+	CGFloat x = 200.5 * scale;
+	CGFloat yOffset = IS_IPHONE35 ? 0 : 45.0 * scale;
+	CGRect buttonFrame = CGRectMake(x, 340.0 * scale + yOffset, imageNormal.size.width * scale, imageNormal.size.height * scale);
     calibration1Button = [self buttonWithTitle:NSLocalizedString(@"Calibrate 1", nil)
 										target:self 
 									  selector:@selector(calibrate1Action:) 
@@ -89,7 +92,7 @@
     [self addSubview:calibration1Button];
     
     // set up Calibrate2 button
-	buttonFrame = CGRectMake(x, 100.0 + yOffset, imageNormal.size.width, imageNormal.size.height);
+	buttonFrame = CGRectMake(x, 100.0 * scale + yOffset, imageNormal.size.width * scale, imageNormal.size.height * scale);
 	calibration2Button = [self buttonWithTitle:NSLocalizedString(@"Calibrate 2", nil)
 										target:self 
 									  selector:@selector(calibrate2Action:) 
@@ -102,7 +105,7 @@
     [self addSubview:calibration2Button];
 	
 	UIFont *font = TEXT_LABEL_FONT;
-    UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(110.0, 300.0 + yOffset, 220.0, 100.0)];
+    UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(110.0 * scale, 300.0 * scale + yOffset, 220.0 * scale, 100.0 * scale)];
 	if (viewMode == surfaceMode) {
 		label1.text = NSLocalizedString(@"CalibrateSurface1Msg", nil);
 	} else {
@@ -117,7 +120,7 @@
 	label1.numberOfLines = 6;
 	[self addSubview:label1];
 	
-	UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(110.0, 60.0 + yOffset, 220.0, 100.0)];
+	UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(110.0 * scale, 60.0 * scale + yOffset, 220.0 * scale, 100.0 * scale)];
 	if (viewMode == surfaceMode) {
 		label2.text = NSLocalizedString(@"CalibrateSurface2Msg", nil);
 	} else {

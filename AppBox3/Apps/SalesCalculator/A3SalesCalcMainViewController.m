@@ -33,6 +33,7 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3StandardDetailTableViewController.h"
 #import "A3PopoverTableViewController.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 enum A3TableElementCellType {
     A3TableElementCellType_Price = 100,
@@ -115,11 +116,9 @@ enum A3TableElementCellType {
     self.tableView.tableHeaderView = self.headerView;
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
-    self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
-    if (IS_IPHONE) {
-        self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
-    } else {
-        self.tableView.separatorInset = UIEdgeInsetsMake(0, 28.0, 0, 0);
+    self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+    if (IS_IPAD) {
         self.navigationItem.hidesBackButton = YES;
     }
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
