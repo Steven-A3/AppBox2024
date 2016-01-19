@@ -30,19 +30,20 @@
 - (void)layoutSubviews {
 	[super layoutSubviews];
 
+	CGFloat margin = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 	if (![self isEditing]) {
 		CGRect frame = self.textLabel.frame;
-		frame.origin.x = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
+		frame.origin.x = margin;
 		if (self.imageView.bounds.size.width) {
 			frame.origin.x += self.imageView.bounds.size.width;
 			if (IS_IPHONE) frame.origin.x += 13.0;
 		}
 		self.textLabel.frame = frame;
 	} else {
-		CGFloat originX = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
+		CGFloat originX = margin;
 		if (self.imageView.bounds.size.width) {
 			CGRect frame = self.imageView.frame;
-			frame.origin.x = originX;
+			frame.origin.x = margin;
 			self.imageView.frame = frame;
 			originX += self.imageView.bounds.size.width + 13.0;
 		}

@@ -104,10 +104,14 @@
 
 		[_daysLeft makeConstraints:^(MASConstraintMaker *make) {
 			make.left.equalTo(_upcomingHoliday.right).with.offset(1);
-			make.right.lessThanOrEqualTo(_numberOfHolidays.left);
+			if (IS_IPHONE) {
+				make.right.lessThanOrEqualTo(_numberOfHolidays.left);
+			}
 			make.baseline.equalTo(_upcomingHoliday);
 		}];
-		[_daysLeft setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+		if (IS_IPHONE) {
+			[_daysLeft setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+		}
 
 		[self setFontsForLabels];
 		[self layoutIfNeeded];
@@ -151,7 +155,9 @@
 		if (IS_IPHONE) {
 			_daysLeft.text = [NSString stringWithFormat:@", %@", [upcomingHoliday[kHolidayDate] daysLeft]];
 		} else {
-			_daysLeft.text = [NSString stringWithFormat:@", %@, %@", [upcomingHoliday[kHolidayDate] daysLeft], [_pageViewController stringFromDate:upcomingHoliday[kHolidayDate] ] ];
+			NSDateFormatter *dateFormatter = [NSDateFormatter new];
+			[dateFormatter setDateStyle:NSDateFormatterShortStyle];
+			_daysLeft.text = [NSString stringWithFormat:@", %@, %@", [upcomingHoliday[kHolidayDate] daysLeft], [dateFormatter stringFromDate:upcomingHoliday[kHolidayDate] ] ];
 		}
 		_numberOfHolidays.text = [NSString stringWithFormat:@"%lu", (unsigned long)[holidays count]];
 	}

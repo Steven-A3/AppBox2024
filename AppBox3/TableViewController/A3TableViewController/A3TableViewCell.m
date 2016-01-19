@@ -96,7 +96,7 @@
 
 - (CGFloat)contentInset {
 	CGFloat inset = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
-	inset += self.imageView.image ? self.imageView.image.size.width + inset : 0;
+	inset += self.imageView.image ? self.imageView.image.size.width + 15 : 0;
 	return inset;
 }
 

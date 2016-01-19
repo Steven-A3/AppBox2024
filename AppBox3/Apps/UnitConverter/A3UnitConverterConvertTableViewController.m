@@ -2007,16 +2007,18 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	history.categoryID = @(_categoryID);
 	history.value = value;
 
-	NSInteger historyItemCount = MIN([self.convertItems count] - 2, 4);
-	NSInteger idx = 0;
-	for (; idx < historyItemCount; idx++) {
+	[_convertItems enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+		if (idx == 0) return;
+		if (obj == self.equalItem) return;
+		if (obj == self.adItem) return;
+		
 		UnitHistoryItem *item = [UnitHistoryItem MR_createEntityInContext:savingContext];
 		item.uniqueID = [[NSUUID UUID] UUIDString];
 		item.updateDate = [NSDate date];
 		item.unitHistoryID = history.uniqueID;
-		item.targetUnitItemID = _convertItems[idx + 2];
+		item.targetUnitItemID = obj;
 		item.order = [NSString stringWithFormat:@"%010ld", (long)idx];
-	}
+	}];
 
 	[savingContext MR_saveToPersistentStoreAndWait];
 

@@ -56,7 +56,7 @@ NSString *const A3BatteryTitleKey = @"title";
     self.title = NSLocalizedString(A3AppName_Settings, nil);
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.allowsSelectionDuringEditing = YES;
-    self.tableView.separatorInset = A3UITableViewSeparatorInset;
+	self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}

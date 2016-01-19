@@ -59,6 +59,12 @@ extern NSString *const A3CurrencyActionCellID;
 	self.tableView.rowHeight = 84;
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 	self.tableView.showsVerticalScrollIndicator = NO;
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
+	if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+		self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+	}
 	[self.tableView registerClass:[A3HolidaysCountryViewCell class] forCellReuseIdentifier:HolidayCellIdentifier];
 	[self.tableView registerNib:[UINib nibWithNibName:@"A3CurrencyTVActionCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3CurrencyActionCellID];
 

@@ -13,6 +13,9 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3UnitDataManager.h"
+#import "A3UIDevice.h"
+#import "A3StandardTableViewCell.h"
+#import "A3UserDefaultsKeys.h"
 
 @interface A3UnitConverterSelectViewController () <UISearchDisplayDelegate, A3UnitConverterAddViewControllerDelegate>
 {
@@ -54,7 +57,17 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 	_tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	_tableView.showsVerticalScrollIndicator = NO;
 
-    _tableView.separatorColor = [self tableViewSeparatorColor];
+	_tableView.separatorColor = A3UITableViewSeparatorColor;
+	_tableView.separatorInset = A3UITableViewSeparatorInset;
+	
+	if ([_tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		_tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
+	if ([_tableView respondsToSelector:@selector(layoutMargins)]) {
+		FNLOGINSETS(_tableView.layoutMargins);
+		_tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+	}
+
 	[self.view addSubview:_tableView];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"A3UnitConverterTVActionCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3UnitConverterActionCellID2];
@@ -442,7 +455,7 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	if (cell == nil) {
-		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+		cell = [[A3StandardTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
 		cell.textLabel.font = [UIFont systemFontOfSize:17.0];
 	}
 

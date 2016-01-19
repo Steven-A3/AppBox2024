@@ -11,6 +11,9 @@
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3UnitDataManager.h"
+#import "A3StandardTableViewCell.h"
+#import "UIViewController+tableViewStandardDimension.h"
+#import "A3UIDevice.h"
 
 @interface A3UnitConverterAddViewController ()
 
@@ -39,9 +42,16 @@
     
     self.navigationItem.hidesBackButton = YES;
     
-    self.tableView.separatorColor = [self tableViewSeparatorColor];
+    self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 	self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.rowHeight = 44.0;
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
+	if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+		self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+	}
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willDismissRightSideView) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
@@ -129,7 +139,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[A3StandardTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         
         UIButton *addButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [addButton setImage:[UIImage imageNamed:@"add04"] forState:UIControlStateNormal];
@@ -154,8 +164,7 @@
         plusBtn.selected = NO;
         cell.textLabel.textColor = [UIColor blackColor];
     }
-    
-    
+	
     return cell;
 }
 

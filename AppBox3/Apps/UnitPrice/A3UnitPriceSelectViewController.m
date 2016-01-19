@@ -48,8 +48,15 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 	_tableView.dataSource = self;
 	_tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	_tableView.showsVerticalScrollIndicator = NO;
-    _tableView.separatorColor = [self tableViewSeparatorColor];
+	_tableView.separatorColor = A3UITableViewSeparatorColor;
+	_tableView.separatorInset = A3UITableViewSeparatorInset;
     _tableView.rowHeight = 44.0;
+	if ([_tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		_tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
+	if ([_tableView respondsToSelector:@selector(layoutMargins)]) {
+		_tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+	}
 	[self.view addSubview:_tableView];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"A3UnitConverterTVActionCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3UnitPriceActionCellID2];

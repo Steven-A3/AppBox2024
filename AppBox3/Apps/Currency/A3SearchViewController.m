@@ -43,6 +43,12 @@
 	_tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self.view addSubview:_tableView];
 
+	if ([_tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		_tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
+	if ([_tableView respondsToSelector:@selector(layoutMargins)]) {
+		_tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+	}
 	[self.view addSubview:self.searchBar];
 	[self mySearchDisplayController];
 }

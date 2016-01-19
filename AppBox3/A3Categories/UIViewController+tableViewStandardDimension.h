@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#include "A3UIDevice.h"
 
 #define A3UITableViewCellLeftOffset_iPHONE		15
 #define A3UITableViewCellLeftOffset_iPAD_28     28
