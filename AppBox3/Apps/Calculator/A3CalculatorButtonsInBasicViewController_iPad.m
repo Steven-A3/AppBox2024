@@ -36,18 +36,19 @@
 }
 
 - (void)viewWillLayoutSubviews {
-    CGFloat p_bigbuttonwidth = 120.0, p_smallbuttonwidth = 90.0, p_buttonheight = 89.0;
-    CGFloat l_bigbuttonwidth = 168.0, l_smallbuttonwidth = 107.0, l_buttonheight = 74.0;
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+    CGFloat p_bigbuttonwidth = 120.0 * scale, p_smallbuttonwidth = 90.0 * scale, p_buttonheight = 89.0 * scale;
+    CGFloat l_bigbuttonwidth = 168.0 * scale, l_smallbuttonwidth = 107.0 * scale, l_buttonheight = 74.0 * scale;
     CGFloat start_x, start_y, v_space, h_bigspace,h_smallspace;
     CGFloat current_x, current_y, bigbuttonwidth, smallbuttonwidth, buttonheight;
 
 	if (IS_PORTRAIT) {
-		[_calculatorkeypadvw setFrame:CGRectMake(0.0,  617.0, 768.0, 407.0)];
-        start_x = 22.0,start_y = 10.0, v_space = 11.0, h_bigspace = 24.0, h_smallspace = 11.0;
+		[_calculatorkeypadvw setFrame:CGRectMake(0.0,  617.0 * scale, 768.0 * scale, 407.0 * scale)];
+        start_x = 22.0 * scale, start_y = 10.0 * scale, v_space = 11.0 * scale, h_bigspace = 24.0 * scale, h_smallspace = 11.0 * scale;
         bigbuttonwidth = p_bigbuttonwidth, smallbuttonwidth = p_smallbuttonwidth,buttonheight = p_buttonheight;
 	} else {
-		[_calculatorkeypadvw setFrame:CGRectMake(0.0, 420.0, 1024.0, 348.0)];
-        start_x = 33.0,start_y = 10.0, v_space = 11.0, h_bigspace = 33.0, h_smallspace = 17.0;
+		[_calculatorkeypadvw setFrame:CGRectMake(0.0, 420.0 * scale, 1024.0 * scale, 348.0 * scale)];
+        start_x = 33.0 * scale,start_y = 10.0 * scale, v_space = 11.0 * scale, h_bigspace = 33.0 * scale, h_smallspace = 17.0 * scale;
         bigbuttonwidth = l_bigbuttonwidth, smallbuttonwidth = l_smallbuttonwidth,buttonheight = l_buttonheight;
 	}
     
@@ -102,10 +103,10 @@
     current_x += (smallbuttonwidth + h_smallspace);
     [self.decimalpointbutton setFrame:CGRectMake(current_x, current_y, smallbuttonwidth, buttonheight)];
     
-    self.dividebutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 ];
-    self.multiplybutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 ];
-    self.minusbutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 ];
-    self.plusbutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 ];
-    self.operationendbutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 ];
+    self.dividebutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 * scale ];
+    self.multiplybutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 * scale ];
+    self.minusbutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 * scale ];
+    self.plusbutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 * scale ];
+    self.operationendbutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 * scale ];
 }
 @end

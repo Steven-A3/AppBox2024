@@ -51,9 +51,10 @@
     }
 	[self addSubview:self.favoriteButton];
 
+	CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 	[_titleTextField makeConstraints:^(MASConstraintMaker *make) {
 		make.baseline.equalTo(self.bottom).with.offset(-39);
-		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+		make.left.equalTo(self.left).with.offset(leading);
 		make.right.equalTo(_favoriteButton.left).with.offset(5);
 	}];
 	[_favoriteButton makeConstraints:^(MASConstraintMaker *make) {

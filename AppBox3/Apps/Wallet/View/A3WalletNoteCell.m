@@ -72,8 +72,9 @@
 		_topSeparator.backgroundColor = A3UITableViewSeparatorColor;
 		[self addSubview:_topSeparator];
 
+		CGFloat leading = [[UIScreen mainScreen] scale] > 2 ? 20 : 15;
 		[_topSeparator makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(self.left).with.offset(IS_IPHONE || _keepShortInset ? 15 : 28);
+			make.left.equalTo(self.left).with.offset(IS_IPHONE || _keepShortInset ? leading : 28);
 			make.right.equalTo(self.right);
 			make.top.equalTo(self.top);
 			make.height.equalTo(IS_RETINA ? @0.5 : @1.0);

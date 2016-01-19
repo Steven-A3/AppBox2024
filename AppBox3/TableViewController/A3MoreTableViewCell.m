@@ -18,8 +18,9 @@
 		_cellImageView = [UIImageView new];
 		[self addSubview:_cellImageView];
 
+		CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 		[_cellImageView makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+			make.left.equalTo(self.left).with.offset(leading);
 			make.centerY.equalTo(self.centerY);
 		}];
 		_cellTitleLabel = [UILabel new];
@@ -35,7 +36,7 @@
 		customSeparator.backgroundColor = A3UITableViewSeparatorColor;
 		[self addSubview:customSeparator];
 		[customSeparator makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+			make.left.equalTo(self.left).with.offset(leading);
 			make.top.equalTo(self.bottom).with.offset(-1);
 			make.right.equalTo(self.right);
 			make.height.equalTo(IS_RETINA? @0.5 : @1.0);

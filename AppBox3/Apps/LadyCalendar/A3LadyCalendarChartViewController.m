@@ -56,8 +56,8 @@
 
     [self makeBackButtonEmptyArrow];
     _periodSegmentCtrl.selectedSegmentIndex = 0;
-    _segmentLeftConst.constant = (IS_IPHONE ? 15.0 : 28.0);
-    _segmentRightConst.constant = (IS_IPHONE ? 15.0 : 28.0);
+    _segmentLeftConst.constant = (IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28.0);
+    _segmentRightConst.constant = (IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28.0);
     _separatorHeightConst.constant = 1.0 / [[UIScreen mainScreen] scale];
     NSArray *titleArray = @[
 			(IS_IPHONE ? NSLocalizedString(@"6 Mos", @"6 Mos") : NSLocalizedString(@"6 Months", @"6 Months")),
@@ -245,9 +245,9 @@
         UIView *bottomView = [cell viewWithTag:11];
         for (NSLayoutConstraint *layout in cell.contentView.constraints) {
             if ( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == leftView )
-                layout.constant = (IS_IPHONE ? 15.0 : 28.0);
+                layout.constant = (IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28.0);
             else if ( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == bottomView )
-                layout.constant = (IS_IPHONE ? 15.0 : 28.0);
+                layout.constant = (IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28.0);
             else if ( layout.firstAttribute == NSLayoutAttributeTrailing && layout.secondItem ==  bottomView )
                 layout.constant = (IS_IPHONE ? 18.0 : 28.0);
             else if ( layout.firstAttribute == NSLayoutAttributeTop && layout.firstItem == leftView )

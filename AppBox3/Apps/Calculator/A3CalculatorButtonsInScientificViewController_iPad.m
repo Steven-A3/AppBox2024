@@ -37,17 +37,18 @@
 }
 
 - (void)viewWillLayoutSubviews {
-    CGFloat p_buttonwidth = 96.0, p_buttonheight = 96.0;
-    CGFloat l_buttonwidth = 128.0, l_buttonheight = 80.0;
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+    CGFloat p_buttonwidth = 96.0 * scale, p_buttonheight = 96.0 * scale;
+    CGFloat l_buttonwidth = 128.0 * scale, l_buttonheight = 80.0 * scale;
     CGFloat start_x = -1.0, start_y = 0.0;
     CGFloat current_x, current_y, buttonwidth, buttonheight;
 
 	if (IS_PORTRAIT) {
-		[_calculatorkeypadvw setFrame:CGRectMake(0,  448, 768, 576)];
+		[_calculatorkeypadvw setFrame:CGRectMake(0,  448 * scale, 768 * scale, 576 * scale)];
 
         buttonwidth = p_buttonwidth, buttonheight = p_buttonheight;
 	} else {
-		[_calculatorkeypadvw setFrame:CGRectMake(0, 288, 1024, 480)];
+		[_calculatorkeypadvw setFrame:CGRectMake(0, 288 * scale, 1024 * scale, 480 * scale)];
 
         buttonwidth = l_buttonwidth, buttonheight = l_buttonheight;
 	}
@@ -158,11 +159,11 @@
     [self.plusbutton setBackgroundColor:themeColor];
     [self.operationendbutton setBackgroundColor:themeColor];
 
-    self.dividebutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 ];
-    self.multiplybutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 ];
-    self.minusbutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 ];
-    self.plusbutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 ];
-    self.operationendbutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 ];
+    self.dividebutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 * scale];
+    self.multiplybutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 * scale];
+    self.minusbutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 * scale];
+    self.plusbutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 * scale];
+    self.operationendbutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 * scale];
 }
 
 @end

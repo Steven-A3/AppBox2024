@@ -843,7 +843,7 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 	}];
 
 	UIEdgeInsets contentInset = self.collectionView.contentInset;
-	contentInset.bottom += bannerView.bounds.size.height;
+	contentInset.bottom = bannerView.bounds.size.height;
 	self.collectionView.contentInset = contentInset;
 
 	[self.view layoutIfNeeded];

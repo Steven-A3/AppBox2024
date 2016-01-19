@@ -133,7 +133,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
         }
     }
 
-	self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 
 	[self.tableView registerClass:[A3WalletNoteCell class] forCellReuseIdentifier:A3WalletItemFieldNoteCellID];
 

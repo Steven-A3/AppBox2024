@@ -15,6 +15,7 @@
 #import "Reachability.h"
 #import "UIImage+imageWithColor.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 NSString *const A3BatteryIndexKey = @"index";
 NSString *const A3BatteryCheckedKey = @"checked";
@@ -55,7 +56,7 @@ NSString *const A3BatteryTitleKey = @"title";
     self.title = NSLocalizedString(A3AppName_Settings, nil);
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.allowsSelectionDuringEditing = YES;
-    self.tableView.separatorInset = UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0);
+    self.tableView.separatorInset = A3UITableViewSeparatorInset;
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}

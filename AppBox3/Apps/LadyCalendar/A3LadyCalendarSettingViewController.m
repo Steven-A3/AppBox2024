@@ -209,9 +209,19 @@
 
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView *headerView = [[[NSBundle mainBundle] loadNibNamed:@"A3LadyCalendarSettingCell" owner:nil options:nil] objectAtIndex:1];
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenBounds.size.width, 35)];
     
-    UILabel *label = (UILabel*)[headerView viewWithTag:10];
+	UILabel *label = [UILabel new];
+	label.font = [UIFont systemFontOfSize:14];
+	label.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
+	[headerView addSubview:label];
+	
+	CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
+	[label makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(headerView.left).with.offset(leading);
+		make.centerY.equalTo(headerView.centerY);
+	}];
     NSDictionary *dict = [_itemArray objectAtIndex:section];
     if( section == 0 ){
         NSInteger period = [[_settingDict objectForKey:SettingItem_ForeCastingPeriods] integerValue];
@@ -231,9 +241,20 @@
 
 - (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    UIView *footerView = [[[NSBundle mainBundle] loadNibNamed:@"A3LadyCalendarSettingCell" owner:nil options:nil] objectAtIndex:2];
-    
-    UILabel *label = (UILabel*)[footerView viewWithTag:10];
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenBounds.size.width, 35)];
+	
+	UILabel *label = [UILabel new];
+	label.font = [UIFont systemFontOfSize:14];
+	label.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
+	[footerView addSubview:label];
+	
+	CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
+	[label makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(footerView.left).with.offset(leading);
+		make.centerY.equalTo(footerView.centerY);
+	}];
+	
     NSDictionary *dict = [_itemArray objectAtIndex:section];
     label.text = [dict objectForKey:ItemKey_Description];
     
@@ -249,20 +270,48 @@
 
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (cell == nil) {
-        if( cellType == SettingCell_Periods ){
-            NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3LadyCalendarSettingCell" owner:nil options:nil];
-            cell = [cellArray objectAtIndex:0];
+        if (cellType == SettingCell_Periods) {
+			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+			UILabel *leftLabel = [UILabel new];
+			leftLabel.text = @"3";
+			[cell addSubview:leftLabel];
+			
+			CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
+			[leftLabel makeConstraints:^(MASConstraintMaker *make) {
+				make.left.equalTo(cell.left).with.offset(leading);
+				make.centerY.equalTo(cell.centerY);
+			}];
+			
+			UILabel *rightLabel = [UILabel new];
+			rightLabel.text = @"12";
+			[cell addSubview:rightLabel];
+			
+			[rightLabel makeConstraints:^(MASConstraintMaker *make) {
+				make.right.equalTo(cell.right).with.offset(-leading);
+				make.centerY.equalTo(cell.centerY);
+			}];
+			UISlider *slider = [UISlider new];
+			slider.tag = 10;
+			[slider setMinimumValue:3];
+			[slider setMaximumValue:12];
+			[slider setValue:3];
+			[cell addSubview:slider];
+			[slider makeConstraints:^(MASConstraintMaker *make) {
+				make.left.equalTo(leftLabel.right).with.offset(8);
+				make.centerY.equalTo(cell.centerY);
+				make.right.equalTo(rightLabel.left).with.offset(-8);
+			}];
+			
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
-            UISlider *slider = (UISlider*)[cell viewWithTag:10];
             [slider addTarget:self action:@selector(periodChangedAction:) forControlEvents:UIControlEventValueChanged];
         }
-        else if( cellType == SettingCell_CycleLength ){
+        else if (cellType == SettingCell_CycleLength) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
             cell.textLabel.font = [UIFont systemFontOfSize:17.0];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
-        else if( cellType == SettingCell_AutoRecord ){
+        else if (cellType == SettingCell_AutoRecord) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
             UISwitch *swButton = [[UISwitch alloc] init];
             [swButton addTarget:self action:@selector(toggleSwitchAction:) forControlEvents:UIControlEventValueChanged];
@@ -270,7 +319,7 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.textLabel.font = [UIFont systemFontOfSize:17.0];
         }
-        else if( cellType == SettingCell_Alert ){
+        else if (cellType == SettingCell_Alert) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellID];
 			cell.textLabel.font = [UIFont systemFontOfSize:17.0];
             cell.detailTextLabel.font = [UIFont systemFontOfSize:17.0];
@@ -283,15 +332,15 @@
     NSArray *items = [dict objectForKey:ItemKey_Items];
     NSDictionary *item = [items objectAtIndex:indexPath.row];
     
-    if( cellType == SettingCell_Periods ){
+    if (cellType == SettingCell_Periods) {
         UISlider *slider = (UISlider *)[cell viewWithTag:10];
         slider.value = [[_settingDict objectForKey:SettingItem_ForeCastingPeriods] floatValue];
     }
-    else if( cellType == SettingCell_CycleLength ){
+    else if (cellType == SettingCell_CycleLength) {
         cell.textLabel.text = [item objectForKey:ItemKey_Title];
         cell.accessoryType = (indexPath.row == [[_settingDict objectForKey:SettingItem_CalculateCycle] integerValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
     }
-    else if( cellType == SettingCell_AutoRecord ){
+    else if (cellType == SettingCell_AutoRecord) {
         cell.textLabel.text = [item objectForKey:ItemKey_Title];
         UISwitch *swButton = (UISwitch*)cell.accessoryView;
         swButton.on = [[_settingDict objectForKey:SettingItem_AutoRecord] boolValue];
@@ -312,7 +361,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if( indexPath.section == 1 ){
+    if (indexPath.section == 1) {
         NSIndexPath *prevIndexPath = [NSIndexPath indexPathForRow:[[_settingDict objectForKey:SettingItem_CalculateCycle] integerValue] inSection:indexPath.section];
         [_settingDict setObject:@(indexPath.row) forKey:SettingItem_CalculateCycle];
 		[self saveSettings];

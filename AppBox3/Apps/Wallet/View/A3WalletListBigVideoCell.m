@@ -19,7 +19,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.frame = CGRectMake(0.0, 0.0, 320.0, 84);
+		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+        self.frame = CGRectMake(0.0, 0.0, screenBounds.size.width, 84);
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
 		[self.contentView addSubview:self.rightLabel];
@@ -123,10 +124,11 @@
 }
 
 - (CGSize)intrinsicContentSize {
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	if (IS_IPAD) {
 		return CGSizeMake(714.0, 48.0);
 	} else {
-        return CGSizeMake(320.0, 48.0);
+        return CGSizeMake(screenBounds.size.width, 48.0);
     }
 }
 

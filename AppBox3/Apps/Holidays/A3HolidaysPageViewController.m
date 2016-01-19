@@ -520,10 +520,11 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
 	[listButton setTintColor:[UIColor colorWithWhite:1.0 alpha:0.6]];
 	[self.view addSubview:listButton];
 
+	CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 	[listButton makeConstraints:^(MASConstraintMaker *make) {
 		make.width.equalTo(@44);
 		make.height.equalTo(@44);
-		make.right.equalTo(self.footerView.right).with.offset(IS_IPAD ? -28 : -15);
+		make.right.equalTo(self.footerView.right).with.offset(-leading);
 		make.centerY.equalTo(_footerView.centerY);
 	}];
 }
@@ -562,8 +563,9 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
 		_photoLabel1.userInteractionEnabled = YES;
 		[self.footerView addSubview:_photoLabel1];
 
+		CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 		[_photoLabel1 makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(_footerView.left).with.offset(IS_IPAD ? 28 : 15);
+			make.left.equalTo(_footerView.left).with.offset(leading);
 			make.right.lessThanOrEqualTo(self.pageControl.left).with.offset(-5);
 			make.centerY.equalTo(_footerView.centerY).with.offset(-7);
 		}];
@@ -581,7 +583,7 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
 		[_footerView addSubview:_photoLabel2];
 
 		[_photoLabel2 makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(_footerView.left).with.offset(IS_IPAD ? 28 : 15);
+			make.left.equalTo(_footerView.left).with.offset(leading);
 			make.right.lessThanOrEqualTo(_pageControl.left).with.offset(-5);
 			make.centerY.equalTo(_footerView.centerY).with.offset(7);
 		}];

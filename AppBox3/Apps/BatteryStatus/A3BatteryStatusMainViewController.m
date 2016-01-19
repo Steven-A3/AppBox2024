@@ -68,12 +68,10 @@
     self.title = NSLocalizedString(A3AppName_BatteryStatus, @"Battery Status main view controller title.");
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
     self.tableView.tableFooterView = nil;
 
     self.tableView.tableHeaderView = self.headerView;
-    if (IS_IPAD) {
-        self.tableView.separatorInset = UIEdgeInsetsMake(0, 28.0, 0, 0);
-    }
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
@@ -437,7 +435,7 @@ static NSString *CellIdentifier = @"Cell";
         cell.detailTextLabel.lineBreakMode = NSLineBreakByWordWrapping;
         cell.detailTextLabel.numberOfLines = 0;
     }
-	cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 :28, 0, 0);
+	cell.separatorInset = A3UITableViewSeparatorInset;
     
     // Configure the cell...
     NSDictionary *rowData = [_tableDataSourceArray objectAtIndex:indexPath.row];

@@ -20,6 +20,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import "A3AppDelegate+appearance.h"
 #import "MBProgressHUD.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 
 @interface A3DaysCounterChangeLocationViewController () <MBProgressHUDDelegate>
@@ -44,7 +45,7 @@
     // Do any additional setup after loading the view from its nib.
     self.navigationItem.title = NSLocalizedString(@"Change Location", @"Change Location");
     self.automaticallyAdjustsScrollViewInsets = NO;
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
+    self.tableView.separatorInset = A3UITableViewSeparatorInset;
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}

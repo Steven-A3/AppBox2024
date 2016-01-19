@@ -651,7 +651,7 @@
     NSDictionary *itemDict = [items objectAtIndex:indexPath.row];
     NSInteger itemType = [[itemDict objectForKey:EventRowType] integerValue];
     
-	cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28, 0, 0);
+	cell.separatorInset = A3UITableViewSeparatorInset;
     
     switch (itemType) {
         case EventCellType_Title :
@@ -855,17 +855,17 @@
                     cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
                 }
                 else {
-					cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28, 0, 0);
+					cell.separatorInset = A3UITableViewSeparatorInset;
                 }
             }
             else {
-                cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28, 0, 0);
+                cell.separatorInset = A3UITableViewSeparatorInset;
             }
         }
     }
     else {
         if ([_eventItem.isPeriod boolValue] && itemType == EventCellType_StartDate) {
-            cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28, 0, 0);
+            cell.separatorInset = A3UITableViewSeparatorInset;
         }
         else {
 			FNLOG();
@@ -1004,7 +1004,7 @@
         datePicker.date = date;
         
         if ([_eventItem.isPeriod boolValue]) {
-            cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28, 0, 0);
+            cell.separatorInset = A3UITableViewSeparatorInset;
         }
         else {
             cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);

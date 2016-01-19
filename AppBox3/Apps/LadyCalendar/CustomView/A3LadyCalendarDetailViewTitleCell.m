@@ -18,8 +18,9 @@
 		_titleLabel.minimumScaleFactor = 0.5;
 		[self addSubview:_titleLabel];
 
+		CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 		[_titleLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+			make.left.equalTo(self.left).with.offset(leading);
 			make.baseline.equalTo(self.top).with.offset(31);
 		}];
 
@@ -29,8 +30,8 @@
 		[self addSubview:_subTitleLabel];
 
 		[_subTitleLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
-			make.right.equalTo(self.right).with.offset(IS_IPHONE ? -15 : -28);
+			make.left.equalTo(self.left).with.offset(leading);
+			make.right.equalTo(self.right).with.offset(-leading);
 			make.baseline.equalTo(self.top).with.offset(51);
 		}];
 

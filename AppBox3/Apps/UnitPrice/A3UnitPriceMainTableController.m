@@ -25,6 +25,7 @@
 #import "A3UnitDataManager.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 NSString *const A3NotificationUnitPriceCurrencyCodeChanged = @"A3NotificationUnitPriceCurrencyCodeChanged";
 NSString *const A3UnitPricePrice1DefaultID = @"UnitPriceDefault1";
@@ -86,7 +87,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     self.navigationItem.rightBarButtonItems = @[self.historyBarItem, self.composeBarItem];
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPAD)?28:15, 0, 0);
+    self.tableView.separatorInset = A3UITableViewSeparatorInset;
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}

@@ -806,6 +806,9 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 		[self topView:topCell.topView enabledSet:itemHave];
 
         topCell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+		if ([topCell respondsToSelector:@selector(layoutMargins)]) {
+			topCell.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+		}
 
 		_segmentedControlRef = topCell.topView.sortingSegment;
 		_topViewRef = topCell.topView;

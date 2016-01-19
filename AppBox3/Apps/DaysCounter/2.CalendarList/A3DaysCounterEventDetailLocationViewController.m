@@ -18,6 +18,7 @@
 #import "NSString+conversion.h"
 #import "A3GradientView.h"
 #import "A3DaysCounterLocationDetailCell.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 
 @interface A3DaysCounterEventDetailLocationViewController ()
@@ -127,7 +128,7 @@
     if ( indexPath.row == 0 ) {
         textLabel.text = NSLocalizedString(@"Phone", @"Phone");
         detailTextLabel.text = _locationItem.contact;
-        cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
+        cell.separatorInset = A3UITableViewSeparatorInset;
     }
     else {
         textLabel.text = NSLocalizedString(@"Address", @"Address");

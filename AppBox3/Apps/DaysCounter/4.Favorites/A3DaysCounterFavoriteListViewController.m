@@ -30,6 +30,7 @@
 #import "DaysCounterFavorite+extension.h"
 #import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 
 @interface A3DaysCounterFavoriteListViewController () <FMMoveTableViewDelegate, FMMoveTableViewDataSource, A3InstructionViewControllerDelegate,
@@ -75,7 +76,7 @@
     [self makeBackButtonEmptyArrow];
     [self setupInstructionView];
     
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
+    self.tableView.separatorInset = A3UITableViewSeparatorInset;
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
@@ -263,7 +264,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
         }
         
         if ( leftConst ) {
-            leftConst.constant = ( IS_IPHONE ? 15.0 : 28.0 );
+            leftConst.constant = ( IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28.0 );
             [cell layoutIfNeeded];
         }
     }
@@ -299,16 +300,17 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
 		}
         
         NSDate *today = [NSDate date];
+		CGFloat leading = ([[UIScreen mainScreen] scale] > 2 ? 20 : 15);
 		A3DaysCounterEventListNameCell *eventListNameCell = (A3DaysCounterEventListNameCell *) cell;
         if (imageView.image) {
-            eventListNameCell.photoLeadingConst.constant = IS_IPHONE ? 15 : 28;
-            eventListNameCell.sinceLeadingConst.constant = IS_IPHONE ? 52 : 65;
-            eventListNameCell.nameLeadingConst.constant = IS_IPHONE ? 52 : 65;
+            eventListNameCell.photoLeadingConst.constant = IS_IPHONE ? leading : 28;
+            eventListNameCell.sinceLeadingConst.constant = IS_IPHONE ? leading + 40 : 65;
+            eventListNameCell.nameLeadingConst.constant = IS_IPHONE ? leading + 40 : 65;
             eventListNameCell.photoWidthConst.constant = 32;
         }
         else {
-            eventListNameCell.sinceLeadingConst.constant = IS_IPHONE ? 15 : 28;
-            eventListNameCell.nameLeadingConst.constant = IS_IPHONE ? 15 : 28;
+            eventListNameCell.sinceLeadingConst.constant = IS_IPHONE ? leading : 28;
+            eventListNameCell.nameLeadingConst.constant = IS_IPHONE ? leading : 28;
             eventListNameCell.photoWidthConst.constant = 0;
         }
         

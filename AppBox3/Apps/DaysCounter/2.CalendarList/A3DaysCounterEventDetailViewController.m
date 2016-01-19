@@ -71,7 +71,6 @@
     [self.navigationController setToolbarHidden:YES];
     [self makeBackButtonEmptyArrow];
 
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
     self.initialCalendarID = _eventItem.calendarID;
     
     [self setupTopWhitePaddingView];
@@ -255,7 +254,7 @@
         UIView *leftView = [cell viewWithTag:10];
         for (NSLayoutConstraint *layout in cell.contentView.constraints ) {
             if ( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == leftView ) {
-                layout.constant = (IS_IPHONE ? 15.0 : 28.0);
+                layout.constant = (IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28.0);
                 break;
             }
         }

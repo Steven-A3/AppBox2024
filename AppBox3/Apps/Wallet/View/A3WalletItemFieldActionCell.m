@@ -29,11 +29,12 @@
 - (void)awakeFromNib {
 	[super awakeFromNib];
 
+	CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 	[self.rightBtn2 makeConstraints:^(MASConstraintMaker *make) {
 		make.width.equalTo(@40);
 		make.height.equalTo(@40);
 		make.centerY.equalTo(self.centerY);
-		make.right.equalTo(self.right).with.offset(-15);
+		make.right.equalTo(self.right).with.offset(-leading);
 	}];
 	[self.rightBtn1 makeConstraints:^(MASConstraintMaker *make) {
 		make.width.equalTo(@40);

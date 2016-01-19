@@ -12,6 +12,7 @@
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
 #import "DaysCounterEventLocation.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3DaysCounterLocationPopupViewController ()
 @property (strong, nonatomic) NSString *addressStr;
@@ -39,7 +40,7 @@
         [self rightBarButtonDoneButton];
     
     self.addressStr = [_sharedManager addressFromVenue:_locationItem isDetail:YES];
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, ([[UIScreen mainScreen] scale] > 2 ? 20 : 15), 0, 0);
+    self.tableView.separatorInset = A3UITableViewSeparatorInset;
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
@@ -124,7 +125,7 @@
     if ( indexPath.row == 0 ) {
         textLabel.text = NSLocalizedString(@"Phone", @"Phone");
         detailTextLabel.text = _locationItem.contact;
-        cell.separatorInset = UIEdgeInsetsMake(0, ([[UIScreen mainScreen] scale] > 2 ? 20 : 15), 0, 0);
+        cell.separatorInset = A3UITableViewSeparatorInset;
     }
     else {
         textLabel.text = NSLocalizedString(@"Address", @"Address");

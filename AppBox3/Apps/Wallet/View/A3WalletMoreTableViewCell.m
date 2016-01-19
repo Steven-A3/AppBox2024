@@ -47,9 +47,10 @@
 }
 
 - (void)setupConstraints {
+	CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 
 	[_checkImageView makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+		make.left.equalTo(self.left).with.offset(leading);
 		make.width.equalTo(@15);
 		make.centerY.equalTo(self.centerY);
 	}];
@@ -67,7 +68,7 @@
 	}];
 
 	[_rightSideLabel makeConstraints:^(MASConstraintMaker *make) {
-		_rightSideLabelConstraint = make.right.equalTo(self.contentView.right).with.offset(self.editing ? -15 : 0);
+		_rightSideLabelConstraint = make.right.equalTo(self.contentView.right).with.offset(self.editing ? -leading : 0);
 		make.centerY.equalTo(self.centerY);
 	}];
 }

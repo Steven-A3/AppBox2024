@@ -29,8 +29,9 @@
 {
     [super awakeFromNib];
 
+	CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 	[_titleLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+		make.left.equalTo(self.left).with.offset(leading);
 		make.centerY.equalTo(self.centerY);
 	}];
     self.accessoryView = self.iconImageView;

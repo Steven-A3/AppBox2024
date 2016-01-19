@@ -273,7 +273,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
-	if (IS_IPAD) self.tableView.separatorInset = UIEdgeInsetsMake(0, 28, 0, 0);
+	_tableView.separatorInset = A3UITableViewSeparatorInset;
 	_tableView.separatorColor = A3UITableViewSeparatorColor;
 	_tableView.rowHeight = 48.0;
 	[self.view addSubview:_tableView];
@@ -485,7 +485,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 	}];
 
 	UIEdgeInsets contentInset = self.tableView.contentInset;
-	contentInset.bottom += bannerView.bounds.size.height;
+	contentInset.bottom = bannerView.bounds.size.height;
 	self.tableView.contentInset = contentInset;
 
 	[self.view layoutIfNeeded];

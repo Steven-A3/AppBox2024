@@ -628,7 +628,7 @@ static NSString *CellIdentifier = @"Cell";
 //            break;
         case AddBudgetCellID_Categories:
         {
-            cell.separatorInset = UIEdgeInsetsMake(0.0, IS_IPAD ? 28.0 : 15.0, 0.0, 0.0);
+            cell.separatorInset = A3UITableViewSeparatorInset;
             cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
         }
             break;

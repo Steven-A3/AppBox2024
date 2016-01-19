@@ -177,7 +177,7 @@ typedef NS_ENUM(NSInteger, SectionType) {
                 }
             }
             else {
-                cell.separatorInset = UIEdgeInsetsMake(0, ([[UIScreen mainScreen] scale] > 2 ? 20 : 15), 0, 0);
+                cell.separatorInset = A3UITableViewSeparatorInset;
             }
         }
             break;

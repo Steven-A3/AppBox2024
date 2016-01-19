@@ -32,8 +32,8 @@
 /* Class = "UILabel"; text = "Write a Review"; ObjectID = "P36-ib-WDG"; */
 "P36-ib-WDG.text" = "Write a Review";
 
-/* Class = "UITableViewSection"; footerTitle = "Copyright © 2009-2015 ALLABOUTAPPS Inc. All rights reserved."; ObjectID = "Spr-CR-vU4"; */
-"Spr-CR-vU4.footerTitle" = "Copyright © 2009-2015 ALLABOUTAPPS Inc. All rights reserved.";
+/* Class = "UITableViewSection"; footerTitle = "Copyright © 2009-2016 ALLABOUTAPPS Inc. All rights reserved."; ObjectID = "Spr-CR-vU4"; */
+"Spr-CR-vU4.footerTitle" = "Copyright © 2009-2016 ALLABOUTAPPS Inc. All rights reserved.";
 
 /* Class = "UITableViewSection"; headerTitle = " "; ObjectID = "Spr-CR-vU4"; */
 "Spr-CR-vU4.headerTitle" = " ";

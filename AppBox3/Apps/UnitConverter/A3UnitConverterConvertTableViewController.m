@@ -129,7 +129,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 		self.navigationItem.rightBarButtonItems = @[history, space, share, space, help];
 	}
 
-	[_fmMoveTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:A3UnitConverterAdCellID];
+	[_fmMoveTableView registerClass:[A3CurrencyTableViewCell class] forCellReuseIdentifier:A3UnitConverterAdCellID];
 	[_fmMoveTableView registerClass:[A3UnitConverterTVDataCell class] forCellReuseIdentifier:A3UnitConverterDataCellID];
 	[_fmMoveTableView registerNib:[UINib nibWithNibName:@"A3UnitConverterTVActionCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3UnitConverterActionCellID];
 	[_fmMoveTableView registerNib:[UINib nibWithNibName:@"A3UnitConverterTVEqualCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3UnitConverterEqualCellID];

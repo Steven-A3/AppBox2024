@@ -45,7 +45,7 @@ static NSString *CellIdentifier = @"Cell";
 
 	self.title = NSLocalizedString(@"Select Language", @"Select Language");
 	[self.tableView registerClass:[A3StandardLeft15Cell class] forCellReuseIdentifier:CellIdentifier];
-	self.tableView.separatorInset = UIEdgeInsetsMake(0, ([[UIScreen mainScreen] scale] > 2 ? 20 : 15), 0, 0);
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}

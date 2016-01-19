@@ -31,8 +31,10 @@
 		_titleLabel.minimumScaleFactor = 0.5;
 		[self addSubview:_titleLabel];
 
+		CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
+		
 		[_titleLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+			make.left.equalTo(self.left).with.offset(leading);
 			make.width.equalTo(self.width).with.offset(IS_IPHONE ? -30 : -56);
 			_titleCenterY = make.centerY.equalTo(self.centerY).with.offset(0);
 		}];
@@ -45,7 +47,7 @@
 		[self addSubview:_lunarDateLabel];
 
 		[_lunarDateLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.right.equalTo(self.right).with.offset(IS_IPHONE ? -15 : -28);
+			make.right.equalTo(self.right).with.offset(-leading);
 			make.top.equalTo(_titleLabel.bottom).offset(10);
 		}];
 
@@ -180,6 +182,7 @@
 	}
 	[self.mutableConstraints removeAllObjects];
 
+	CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 	if (IS_IPHONE) {
 		[_dateLabel sizeToFit];
 		[_dateLabel makeConstraints:^(MASConstraintMaker *make) {
@@ -187,7 +190,7 @@
 				case A3HolidayCellTypeSingleLine:
 				case A3HolidayCellTypeLunar1:
 					[self.mutableConstraints addObject:make.baseline.equalTo(_titleLabel.baseline)];
-					[self.mutableConstraints addObject:make.right.equalTo(self.right).offset(-15)];
+					[self.mutableConstraints addObject:make.right.equalTo(self.right).offset(-leading)];
 					[self.mutableConstraints addObject:make.width.equalTo(@(78))];
 					_dateLabel.textAlignment = NSTextAlignmentRight;
 					break;
@@ -196,10 +199,10 @@
 					if (_showPublic) {
 						[self.mutableConstraints addObject:make.left.equalTo(_publicMarkView.right).with.offset(5)];
 					} else {
-						[self.mutableConstraints addObject:make.left.equalTo(self.left).with.offset(15)];
+						[self.mutableConstraints addObject:make.left.equalTo(self.left).with.offset(leading)];
 					}
 					[self.mutableConstraints addObject:make.right.equalTo(self.right)];
-					[self.mutableConstraints addObject:make.centerY.equalTo(self.centerY).with.offset(15)];
+					[self.mutableConstraints addObject:make.centerY.equalTo(self.centerY).with.offset(leading)];
 					_dateLabel.textAlignment = NSTextAlignmentLeft;
 					break;
 			}
@@ -213,7 +216,7 @@
 						break;
 					case A3HolidayCellTypeDoubleLine:
 					case A3HolidayCellTypeLunar2:
-						[self.mutableConstraints addObject:make.left.equalTo(self.left).with.offset(15)];
+						[self.mutableConstraints addObject:make.left.equalTo(self.left).with.offset(leading)];
 						break;
 				}
 			}];

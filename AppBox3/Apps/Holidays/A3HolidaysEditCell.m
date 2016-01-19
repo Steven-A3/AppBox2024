@@ -79,17 +79,12 @@
 		_nameLabel.textColor = [UIColor blackColor];
 		[self addSubview:_nameLabel];
 
+		CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 		[_nameLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+			make.left.equalTo(self.left).with.offset(leading);
 			make.centerY.equalTo(self.centerY);
 			make.right.lessThanOrEqualTo(_publicMarkView.left);
 		}];
-
-//		[self.textLabel makeConstraints:^(MASConstraintMaker *make) {
-//			make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
-//			make.right.lessThanOrEqualTo(_publicLabel.left);
-//		}];
-//		[self.textLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 
 		[self setupFont];
 

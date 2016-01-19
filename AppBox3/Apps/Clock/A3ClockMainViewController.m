@@ -493,7 +493,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 		_yahooButton.hidden = YES;
 	}
     else {
-		_yahooButton.hidden = _clockDataManager.clockInfo.currentWeather == nil;
+		_yahooButton.hidden = (_clockDataManager.clockInfo.currentWeather == nil) || ![[A3UserDefaults standardUserDefaults] clockShowWeather];
 	}
 
     if (_useInstruction) {

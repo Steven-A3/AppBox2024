@@ -34,6 +34,7 @@
 	_timeLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
 	[self addSubview:_timeLabel];
 
+	CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 	_favoriteButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	[_favoriteButton setImage:[[UIImage imageNamed:@"star02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
 	[_favoriteButton setImage:[[UIImage imageNamed:@"star02_on"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateSelected];
@@ -41,7 +42,7 @@
 
 	[_titleTextField makeConstraints:^(MASConstraintMaker *make) {
 		make.baseline.equalTo(self.bottom).with.offset(-39);
-		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+		make.left.equalTo(self.left).with.offset(leading);
 		make.right.equalTo(_favoriteButton.left).with.offset(5);
 	}];
 	[_favoriteButton makeConstraints:^(MASConstraintMaker *make) {
@@ -51,8 +52,8 @@
 		make.centerY.equalTo(_titleTextField.centerY);
 	}];
 	[_timeLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
-		make.right.equalTo(self.right).with.offset(IS_IPHONE ? -15 : -28);
+		make.left.equalTo(self.left).with.offset(leading);
+		make.right.equalTo(self.right).with.offset(-leading);
 		make.baseline.equalTo(self.bottom).offset(-21);
 	}];
 	[self setupFonts];

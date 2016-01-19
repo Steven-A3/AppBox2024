@@ -63,9 +63,10 @@
 		[self setupShadow:_numberOfHolidays];
 		[self.contentView addSubview:_numberOfHolidays];
 
+		CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 		[_numberOfHolidays makeConstraints:^(MASConstraintMaker *make) {
 			make.centerY.equalTo(self.contentView.centerY);
-			make.right.equalTo(self.contentView.right).with.offset(IS_IPHONE ? -15 : -28);
+			make.right.equalTo(self.contentView.right).with.offset(-leading);
 		}];
 		[_numberOfHolidays setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 
@@ -80,7 +81,7 @@
 		[self.contentView addSubview:_countryName];
 
 		[_countryName makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(self.contentView.left).with.offset(IS_IPHONE ? 15 : 28);
+			make.left.equalTo(self.contentView.left).with.offset(leading);
 			make.right.lessThanOrEqualTo(_numberOfHolidays.left);
 			make.centerY.equalTo(self.contentView.centerY).with.offset(-12);
 		}];

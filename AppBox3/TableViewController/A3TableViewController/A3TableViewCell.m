@@ -50,7 +50,7 @@
 	self.textLabel.frame = frame;
 	
 	frame = self.imageView.frame;
-	frame.origin.x = IS_IPHONE ? 15 : 28;
+	frame.origin.x = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 	self.imageView.frame = frame;
 }
 
@@ -90,13 +90,13 @@
 }
 
 - (void)setBottomSeparatorForExpandableBottom {
-	_separatorLeft.offset(IS_IPHONE ? 15 : 28);
+	_separatorLeft.offset(IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28);
 	[self layoutIfNeeded];
 }
 
 - (CGFloat)contentInset {
-	CGFloat inset = IS_IPHONE ? 15 : 28;
-	inset += self.imageView.image ? self.imageView.image.size.width + 15 : 0;
+	CGFloat inset = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
+	inset += self.imageView.image ? self.imageView.image.size.width + inset : 0;
 	return inset;
 }
 

@@ -33,15 +33,17 @@
     _photoButton.layer.cornerRadius = _photoButton.frame.size.width/2.0;
     _photoButton.clipsToBounds = YES;
 
+	CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
+
 	[_photoButton makeConstraints:^(MASConstraintMaker *make) {
-		make.right.equalTo(self.right).with.offset(-15);
+		make.right.equalTo(self.right).with.offset(-leading);
 		make.width.equalTo(@60);
 		make.height.equalTo(@60);
 		make.centerY.equalTo(self.centerY);
 	}];
 
 	[_valueTextField makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+		make.left.equalTo(self.left).with.offset(leading);
 		make.centerY.equalTo(self.centerY);
 		make.right.equalTo(_photoButton.left);
 		make.height.equalTo(@50);

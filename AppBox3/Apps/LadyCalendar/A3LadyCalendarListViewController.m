@@ -17,6 +17,7 @@
 #import "A3DateHelper.h"
 #import "A3ColoredCircleView.h"
 #import "NSDateFormatter+A3Addition.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3LadyCalendarListViewController ()
 
@@ -36,7 +37,7 @@
 	self.title = NSLocalizedString(@"Periods", @"Periods");
 	[self rightBarButtonDoneButton];
 	[self makeBackButtonEmptyArrow];
-	self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
@@ -196,7 +197,7 @@
     textLabel.text = [NSString stringWithFormat:@"%ld", (long)[[dict objectForKey:ItemKey_Type] integerValue]];
     for (NSLayoutConstraint *layout in headerView.constraints) {
         if ( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == textLabel )
-            layout.constant = (IS_IPHONE ? 15.0 : 28.0);
+            layout.constant = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28.0;
     }
     
     return headerView;
@@ -217,7 +218,7 @@
         UIView *leftView = [cell viewWithTag:12];
         for (NSLayoutConstraint *layout in cell.contentView.constraints) {
             if ( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == leftView )
-                layout.constant = (IS_IPHONE ? 15.0 : 28.0);
+                layout.constant = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28.0;
         }
     }
     

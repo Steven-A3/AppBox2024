@@ -458,11 +458,12 @@
 
 - (void)makeConstraintForTextField:(UITextField *)textField inCell:(UITableViewCell *)cell {
 	[cell addSubview:textField];
+	CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 	[textField makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(cell.left).with.offset(IS_IPHONE ? 15 : 28);
+		make.left.equalTo(cell.left).with.offset(leading);
 		make.top.equalTo(cell.top);
 		make.bottom.equalTo(cell.bottom);
-		make.right.equalTo(cell.right).with.offset(IS_IPHONE ? 15 : 28);
+		make.right.equalTo(cell.right).with.offset(leading);
 	}];
 }
 

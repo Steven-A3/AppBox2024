@@ -241,13 +241,12 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 
 - (void) setupSubViews {
     self.view.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0];
-    CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 
     [self.view addSubview:self.evaluatedResultLabel];
 	[self.evaluatedResultLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.view.left).with.offset(85);
 		make.right.equalTo(self.view.right).with.offset(-15);
-        self.calctopconstraint =  make.bottom.equalTo(self.view.top).with.offset(screenBounds.size.height == 768 ? 389:566);
+        self.calctopconstraint =  make.bottom.equalTo(self.view.top).with.offset(IS_LANDSCAPE ? 389 : 566);
 		make.height.equalTo(@110);
 	}];
     
@@ -267,8 +266,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
     
     _calculator = [[A3Calculator alloc] initWithLabel:_expressionLabel result:self.evaluatedResultLabel];
     _calculator.delegate = self;
-    
-    
+	
     [self.view layoutIfNeeded];
 
     [self checkRightButtonDisable];
@@ -285,7 +283,6 @@ NSString *const A3CalculatorModeScientific = @"scientific";
     else {
         [self setupBasicKeyPad];
     }
-
 }
 
 - (void) setupBasicKeyPad {
@@ -313,7 +310,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
     _calculatorkeypad.view.clipsToBounds = YES;
 }
 
--(void) radiandegreeChange {
+- (void)radiandegreeChange {
     if([self radian] == YES) {
         [_calculator setRadian:FALSE];
         self.radian = NO;
@@ -375,14 +372,14 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 }
 
 - (void)viewWillLayoutSubviews {
-    CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
     
     if (scientific == NO)
     {
-        self.calctopconstraint.offset(screenBounds.size.height == 768 ? 404.5:581.5);
+        self.calctopconstraint.offset((IS_LANDSCAPE ? 404.5:581.5) * scale);
     }
     else {
-        self.calctopconstraint.offset(screenBounds.size.height == 768 ? 273.5:413.5);
+        self.calctopconstraint.offset((IS_LANDSCAPE ? 273.5:413.5) * scale);
     }
     
     if (IS_LANDSCAPE) {

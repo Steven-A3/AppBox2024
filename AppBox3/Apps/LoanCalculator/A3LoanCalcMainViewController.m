@@ -597,7 +597,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         [button addTarget:self action:@selector(advButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [_advancedTitleView addSubview:button];
 
-        UILabel *adv = [[UILabel alloc] initWithFrame:CGRectMake(IS_IPAD ? 28:15, 18.5, 200, 35)];
+        UILabel *adv = [[UILabel alloc] initWithFrame:CGRectMake(IS_IPAD ? 28:([[UIScreen mainScreen] scale] > 2 ? 20 : 15), 18.5, 200, 35)];
         adv.text = NSLocalizedString(@"ADVANCED", @"ADVANCED");
         adv.tag = 1234;
         
@@ -2447,14 +2447,16 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
+	CGFloat height = 1;
     if (_isComparisonMode && section == 2) {
-        return 38;
+		height = 38;
     }
     else if (!_isComparisonMode && section == (self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly ? 4 : 3)) {
-        return (self.loanData.showAdvanced) ? 38 : (IS_RETINA ? 39.5 : 38);
+		height = (self.loanData.showAdvanced) ? 38 : (IS_RETINA ? 39.5 : 38);
     }
 
-    return 1;
+	FNLOG(@"%f", height);
+    return height;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -2907,7 +2909,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		make.height.equalTo(@(bannerView.bounds.size.height));
 	}];
 	UIEdgeInsets contentInset = self.tableView.contentInset;
-	contentInset.bottom += bannerView.bounds.size.height;
+	contentInset.bottom = bannerView.bounds.size.height;
 	self.tableView.contentInset = contentInset;
 }
 

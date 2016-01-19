@@ -22,10 +22,11 @@
 - (void)awakeFromNib {
 	[super awakeFromNib];
 	
+	CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 	[_textField makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(self.left).with.offset(15);
+		make.left.equalTo(self.left).with.offset(leading);
 		make.centerY.equalTo(self.centerY);
-		make.right.equalTo(self.right).with.offset(-15);
+		make.right.equalTo(self.right).with.offset(-leading);
 	}];
 }
 

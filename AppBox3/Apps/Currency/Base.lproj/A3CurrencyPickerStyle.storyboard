@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
-        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -270,6 +269,8 @@
                         <outlet property="lineUpView" destination="Zc7-aB-tHB" id="2YA-s5-SkZ"/>
                         <outlet property="lineViewAboveAdBGHeightConstraint" destination="BMq-1W-dMD" id="akO-aC-3rU"/>
                         <outlet property="pickerView" destination="1vC-GF-vFt" id="CTC-eC-nsS"/>
+                        <outlet property="sampleTitlesBGViewHeightConstraint" destination="dXG-Pv-paf" id="svv-R5-pII"/>
+                        <outlet property="sampleValuesBGViewHeightConstraint" destination="bY7-XL-9YI" id="ISE-Ej-pnD"/>
                         <outlet property="tableView" destination="kMz-UO-QqV" id="fxd-1g-8bW"/>
                         <outlet property="tableViewHeightConstraint" destination="ZG2-Bd-fcP" id="RCd-Hm-itO"/>
                         <outlet property="updateDateLabel" destination="0RN-P3-9qx" id="8V7-v5-XXV"/>
@@ -584,10 +585,10 @@
                                 <include reference="adk-L0-PvO"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="W3h-OP-vox"/>
-                                <include reference="Txy-re-lTM"/>
                                 <include reference="Vfd-4W-QqM"/>
                                 <include reference="eRW-fu-beM"/>
+                                <include reference="W3h-OP-vox"/>
+                                <include reference="Txy-re-lTM"/>
                             </mask>
                         </variation>
                     </view>

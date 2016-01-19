@@ -30,7 +30,7 @@
 	[super layoutSubviews];
 	
 	CGRect frame = self.textLabel.frame;
-	frame.origin.x = 15;
+	frame.origin.x = ([[UIScreen mainScreen] scale] > 2 ? 20 : 15);
 	self.textLabel.frame = frame;
 }
 

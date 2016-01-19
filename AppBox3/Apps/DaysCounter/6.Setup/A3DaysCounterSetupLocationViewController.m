@@ -28,6 +28,7 @@
 #import "DaysCounterEvent.h"
 #import "DaysCounterEventLocation.h"
 #import "DaysCounterEvent+extension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3DaysCounterSetupLocationViewController () <MBProgressHUDDelegate>
 @property (nonatomic, strong) A3LocationPlacemarkView *placemarkView;
@@ -97,7 +98,7 @@
     self.mapView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
     self.mapViewHeightConst.constant = CGRectGetHeight(self.infoTableView.frame) - 88;
     self.infoTableView.contentInset = UIEdgeInsetsMake(IS_LANDSCAPE ? (CGRectGetWidth([[UIScreen mainScreen] bounds]) - 88) : (CGRectGetHeight([[UIScreen mainScreen] bounds]) - 88), 0, 0, 0);
-    self.infoTableView.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
+    self.infoTableView.separatorInset = A3UITableViewSeparatorInset;
     self.infoTableView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:0.95];
     self.infoTableView.separatorColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
     self.searchResultsTableView.separatorColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
@@ -530,7 +531,7 @@
         cell.textLabel.text = (isLoading ? NSLocalizedString(@"Loading locations....", @"Loading locations....") : @"");
         cell.detailTextLabel.text = @"";
         cell.textLabel.textColor = [UIColor blackColor];
-        cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
+        cell.separatorInset = A3UITableViewSeparatorInset;
     }
     else {
         FSVenue *item = [self.nearbyVenues objectAtIndex:indexPath.row];

@@ -75,7 +75,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		_month = period.startDate;
 	}
 
-	self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
 	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:A3TableViewCellDefaultCellID];

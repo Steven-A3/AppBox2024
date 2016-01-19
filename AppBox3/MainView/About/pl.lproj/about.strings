@@ -32,8 +32,8 @@
 /* Class = "IBUILabel"; text = "Facebook"; ObjectID = "R44-Fm-Kr5"; */
 "R44-Fm-Kr5.text" = "Facebook";
 
-/* Class = "IBUITableViewSection"; footerTitle = "Copyright © 2009-2015 ALLABOUTAPPS Inc. All rights reserved."; ObjectID = "Spr-CR-vU4"; */
-"Spr-CR-vU4.footerTitle" = "Prawa autorskie © 2009-2015 ALLABOUTAPPS Inc. Wszelkie prawa zastrzeżone.";
+/* Class = "IBUITableViewSection"; footerTitle = "Copyright © 2009-2016 ALLABOUTAPPS Inc. All rights reserved."; ObjectID = "Spr-CR-vU4"; */
+"Spr-CR-vU4.footerTitle" = "Prawa autorskie © 2009-2016 ALLABOUTAPPS Inc. Wszelkie prawa zastrzeżone.";
 
 /* Class = "IBUITableViewSection"; headerTitle = " "; ObjectID = "Spr-CR-vU4"; */
 "Spr-CR-vU4.headerTitle" = " ";
@@ -42,7 +42,7 @@
 "Y4I-oe-yba.text" = "Podziękowanie";
 
 /* Class = "IBUILabel"; text = "Contact Support"; ObjectID = "YRa-HJ-6kz"; */
-"YRa-HJ-6kz.text" = "Skontaktuj się z pomocą techniczną";
+"YRa-HJ-6kz.text" = "Skontaktuj się ze wsparciem";
 
 /* Class = "IBUILabel"; text = "3.0.0"; ObjectID = "cFb-Qr-7IF"; */
 "cFb-Qr-7IF.text" = "3.0";

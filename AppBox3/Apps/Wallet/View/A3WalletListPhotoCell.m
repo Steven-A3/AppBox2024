@@ -17,7 +17,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.frame = CGRectMake(0.0, 0.0, 320.0, 48);
+		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+		self.frame = CGRectMake(0.0, 0.0, screenBounds.size.width, 48);
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
 		[self.contentView addSubview:self.rightLabel];
@@ -51,7 +52,7 @@
     [_rightLabel sizeToFit];
     _rightLabel.center = CGPointMake(self.contentView.bounds.size.width, self.contentView.center.y);
     
-    CGFloat leftMargin = IS_IPHONE ? 15 : 28;
+	CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 	CGFloat centerY = self.contentView.center.y;
 
     if (!IS_RETINA) {
@@ -60,7 +61,7 @@
     for (NSInteger idx = 0; idx < _thumbImgViews.count; idx++) {
         UIImageView *thumbImgView = _thumbImgViews[idx];
         CGFloat width = thumbImgView.bounds.size.width;
-        thumbImgView.center = CGPointMake(leftMargin + idx * (width + 10) + width/2.0, centerY);
+        thumbImgView.center = CGPointMake(leading + idx * (width + 10) + width/2.0, centerY);
     }
 	FNLOG(@"%f", self.contentView.center.y);
 }
@@ -105,10 +106,11 @@
 }
 
 - (CGSize)intrinsicContentSize {
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	if (IS_IPAD) {
 		return CGSizeMake(714.0, 48.0);
 	} else {
-        return CGSizeMake(320.0, 48.0);
+        return CGSizeMake(screenBounds.size.width, 48.0);
     }
 }
 

@@ -141,29 +141,31 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 
 - (void)setupBasicMeasureForInterfaceOrientation:(BOOL)toPortrait {
 	NSString *model = [A3UIDevice platformString];
+	CGRect screenBounds = [[UIScreen mainScreen] bounds];
+	CGFloat screenHeight = MAX(screenBounds.size.width, screenBounds.size.height);
 
 	if ([model isEqualToString:@"iPod Touch (5th generation)"]) {
 		// iPod touch 5
 		CGFloat pixelsInInch = 326.7;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (480.0 / 960.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
-		_inchAsPoints = (480.0 / 960.0) * pixelsInInch;
+		_centimeterAsPoints = (screenHeight / 960.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
+		_inchAsPoints = (screenHeight / 960.0) * pixelsInInch;
 		_redLineWidth = 0.5;
 		_resetPosition = _centimeterPositionRightBottom ? 8.0 : 3.0;
 	} else if ([model isEqualToString:@"iPhone 5"]) {
 		// iPhone 5
 		CGFloat pixelsInInch = 327.0;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (480.0 / 960.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
-		_inchAsPoints = (480.0 / 960.0) * pixelsInInch;
+		_centimeterAsPoints = (screenHeight / 960.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
+		_inchAsPoints = (screenHeight / 960.0) * pixelsInInch;
 		_redLineWidth = 0.5;
 		_resetPosition = _centimeterPositionRightBottom ? 8.0 : 3.0;
 	} else if ([model isEqualToString:@"iPhone 5s"]) {
 		// iPhone 5s
 		CGFloat pixelsInInch = 326.5;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (480.0 / 960.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
-		_inchAsPoints = (480.0 / 960.0) * pixelsInInch;
+		_centimeterAsPoints = (screenHeight / 960.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
+		_inchAsPoints = (screenHeight / 960.0) * pixelsInInch;
 		_redLineWidth = 0.5;
 		_resetPosition = _centimeterPositionRightBottom ? 8.0 : 3.0;
 	} else if ([model isEqualToString:@"iPhone 4"])	{
@@ -171,8 +173,8 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		// 326 PPI, 960 pixels, 480 points
 		CGFloat pixelsInInch = 326.5;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (480.0 / 960.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
-		_inchAsPoints = (480.0 / 960.0) * pixelsInInch;
+		_centimeterAsPoints = (screenHeight / 960.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
+		_inchAsPoints = (screenHeight / 960.0) * pixelsInInch;
 		_redLineWidth = 0.5;
 		_resetPosition = _centimeterPositionRightBottom ? 6.5 : 2.5;
 	} else if ([model isEqualToString:@"iPhone 4s"])	{
@@ -180,32 +182,32 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		// 326 PPI, 960 pixels, 480 points
 		CGFloat pixelsInInch = 326.7;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (480.0 / 960.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
-		_inchAsPoints = (480.0 / 960.0) * pixelsInInch;
+		_centimeterAsPoints = (screenHeight / 960.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
+		_inchAsPoints = (screenHeight / 960.0) * pixelsInInch;
 		_redLineWidth = 0.5;
 		_resetPosition = _centimeterPositionRightBottom ? 6.5 : 2.5;
     } else if ([model isEqualToString:@"iPhone 6"] || [model isEqualToString:@"iPhone 6s"]) {
 		// iPhone 6
-		CGFloat pixelsInInch = 327.6;
+		CGFloat pixelsInInch = 326;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (568.0 / 1334.0) * pixelsInCentimeter;
-		_inchAsPoints = (568.0 / 1334.0) * pixelsInInch;
+		_centimeterAsPoints = (screenHeight / 1334.0) * pixelsInCentimeter;
+		_inchAsPoints = (screenHeight / 1334.0) * pixelsInInch;
 		_resetPosition = _centimeterPositionRightBottom ? 9.5 : 3.5;
 		_redLineWidth = 0.5;
 	} else if ([model isEqualToString:@"iPhone 6 Plus"] || [model isEqualToString:@"iPhone 6s Plus"]) {
 		// iPhone 6 Plus
-		CGFloat pixelsInInch = 403.5;	// Original value = 401
+		CGFloat pixelsInInch = 401;	// Original value = 401
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (568.0 / 1920.0) * pixelsInCentimeter;
-		_inchAsPoints = (568.0 / 1920.0) * pixelsInInch;
+		_centimeterAsPoints = (screenHeight / 1920.0) * pixelsInCentimeter;
+		_inchAsPoints = (screenHeight / 1920.0) * pixelsInInch;
 		_resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
 		_redLineWidth = 0.5;
 	} else if ([model isEqualToString:@"iPad 2"] || [model isEqualToString:@"iPad 2 (Wi-Fi)"]) {
 		// iPad 2
 		CGFloat pixelsInInch = 132.7;	// Announced PPI: 132
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (1024.0 / 1024.0) * pixelsInCentimeter;
-		_inchAsPoints = (1024.0 / 1024.0) * pixelsInInch;
+		_centimeterAsPoints = (screenHeight / 1024.0) * pixelsInCentimeter;
+		_inchAsPoints = (screenHeight / 1024.0) * pixelsInInch;
 		_resetPosition = _centimeterPositionRightBottom ? 18.0 : 7.0;
 		_redLineWidth = 1.0;
 	} else if ([model isEqualToString:@"iPad (3rd generation)"]
@@ -219,24 +221,24 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		// iPad Air
 		CGFloat pixelsInInch = 265.3;	// Original ppi = 264
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (1024.0 / 2048.0) * pixelsInCentimeter;
-		_inchAsPoints = (1024.0 / 2048.0) * pixelsInInch;
+		_centimeterAsPoints = (screenHeight / 2048.0) * pixelsInCentimeter;
+		_inchAsPoints = (screenHeight / 2048.0) * pixelsInInch;
 		_resetPosition = _centimeterPositionRightBottom ? 18.0 : 7.0;
 		_redLineWidth = 0.5;
 	} else if ([model isEqualToString:@"iPad mini"] || [model isEqualToString:@"iPad mini (Wi-Fi)"]) {
 		// iPad mini
 		CGFloat pixelsInInch = 163.4;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (1024.0 / 1024.0) * pixelsInCentimeter;
-		_inchAsPoints = (1024.0 / 1024.0) * pixelsInInch;
+		_centimeterAsPoints = (screenHeight / 1024.0) * pixelsInCentimeter;
+		_inchAsPoints = (screenHeight / 1024.0) * pixelsInInch;
 		_resetPosition = _centimeterPositionRightBottom ? 14.0 : 5.5;
 		_redLineWidth = 1.0;
 	} else if ([model isEqualToString:@"iPad mini with Retina display"] || [model isEqualToString:@"iPad mini with Retina display (Wi-Fi)"]) {
 		// iPad mini Retina
 		CGFloat pixelsInInch = 326.8;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (1024.0 / 2048.0) * pixelsInCentimeter;
-		_inchAsPoints = (1024.0 / 2048.0) * pixelsInInch;
+		_centimeterAsPoints = (screenHeight / 2048.0) * pixelsInCentimeter;
+		_inchAsPoints = (screenHeight / 2048.0) * pixelsInInch;
 		_resetPosition = _centimeterPositionRightBottom ? 14.0 : 5.5;
 		_redLineWidth = 0.5;
 	} else if ([model isEqualToString:@"iPad mini 3"] ||
@@ -246,8 +248,8 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		// iPad mini 3
 		CGFloat pixelsInInch = 327.2;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (1024.0 / 2048.0) * pixelsInCentimeter;
-		_inchAsPoints = (1024.0 / 2048.0) * pixelsInInch;
+		_centimeterAsPoints = (screenHeight / 2048.0) * pixelsInCentimeter;
+		_inchAsPoints = (screenHeight / 2048.0) * pixelsInInch;
 		_resetPosition = _centimeterPositionRightBottom ? 14.0 : 5.5;
 		_redLineWidth = 0.5;
 	} else if ([model isEqualToString:@"iPad Pro"] ||
@@ -255,8 +257,8 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		// iPad Pro
 		CGFloat pixelsInInch = 264.7;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = pixelsInCentimeter * 0.5;
-		_inchAsPoints = pixelsInInch * 0.5;
+		_centimeterAsPoints = (screenHeight / 2732.0) * pixelsInCentimeter;
+		_inchAsPoints = (screenHeight / 2732.0) * pixelsInInch;
 		_resetPosition = _centimeterPositionRightBottom ? 23.0 : 9.0;
 		_redLineWidth = 0.5;
 	} else {
@@ -269,8 +271,6 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		_resetPosition = _centimeterPositionRightBottom ? 23.0 : 9.0;
 		_redLineWidth = 0.5;
 	}
-
-	CGRect screenBounds = [[UIScreen mainScreen] bounds];
 
 	if ((IS_PORTRAIT && toPortrait) || (IS_LANDSCAPE && !toPortrait)) {
 		_screenWidth = screenBounds.size.width;

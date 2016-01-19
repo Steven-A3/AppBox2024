@@ -30,11 +30,12 @@
 
 - (void)calculateTextFieldFrame {
 	if (self.textLabel.font) {
-		CGFloat x = IS_IPHONE ? 15 : 28;
+		CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
+		CGFloat x = leading;
 		NSStringDrawingContext *context = [NSStringDrawingContext new];
 		CGRect textLabelBounds = [self.textLabel.text boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:self.textLabel.font} context:context];
 		x += ceil(textLabelBounds.size.width) + 10;
-		self.textField.frame = CGRectMake(x, 10, CGRectGetWidth(self.frame) - x - (IS_IPHONE ? 15:28), CGRectGetHeight(self.frame) - 20);
+		self.textField.frame = CGRectMake(x, 10, CGRectGetWidth(self.frame) - x - leading, CGRectGetHeight(self.frame) - 20);
 	}
 }
 

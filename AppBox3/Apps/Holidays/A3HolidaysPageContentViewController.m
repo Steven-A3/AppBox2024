@@ -354,15 +354,16 @@ static NSString *const CellIdentifier = @"holidaysCell";
 
 	segmentedControl.selectedSegmentIndex = 0;
 
+	CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 	[segmentedControl makeConstraints:^(MASConstraintMaker *make) {
 		if (IS_IPHONE) {
-			make.left.equalTo(headerView.left).with.offset(15);
+			make.left.equalTo(headerView.left).with.offset(leading);
 			make.bottom.equalTo(headerView.bottom).with.offset(-6);
 			make.width.equalTo(@171);
 			make.height.equalTo(@30);
 		} else {
 			make.width.equalTo(@301);
-			make.left.equalTo(headerView.left).with.offset(28);
+			make.left.equalTo(headerView.left).with.offset(leading);
 			make.bottom.equalTo(headerView.bottom).with.offset(-6);
 			make.height.equalTo(@30);
 		}
@@ -378,12 +379,12 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		if (IS_IPHONE) {
 			make.width.equalTo(@86);
 			make.height.equalTo(@30);
-			make.right.equalTo(headerView.right).with.offset(-15);
+			make.right.equalTo(headerView.right).with.offset(-leading);
 			make.bottom.equalTo(headerView.bottom).with.offset(-6);
 		} else {
 			make.width.equalTo(@151);
 			make.height.equalTo(@30);
-			make.right.equalTo(headerView.right).with.offset(-28);
+			make.right.equalTo(headerView.right).with.offset(-leading);
 			make.bottom.equalTo(headerView.bottom).with.offset(-6);
 		}
 	}];

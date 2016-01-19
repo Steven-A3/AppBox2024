@@ -74,6 +74,8 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *lineViewPickerTopHeightConstraint_iPad;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *lineBottomToSegmentVSpace;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *sampleTitlesBGViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *sampleValuesBGViewHeightConstraint;
 
 @end
 
@@ -195,12 +197,19 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	[_adBackgroundView setHidden:YES];
 	[_lineAboveAdBackgroundView setHidden:YES];
 
-	_tableView.rowHeight = 95.0;
-	if (!IS_IOS7) {
-		_tableViewHeightConstraint.constant = 190.0;
+	if ([[UIScreen mainScreen] scale] > 2) {
+		_tableView.rowHeight = 120.0;
+		_tableViewHeightConstraint.constant = 240.0;
+	} else {
+		_tableView.rowHeight = 95.0;
+		if (!IS_IOS7) {
+			_tableViewHeightConstraint.constant = 190.0;
+		}
 	}
 	_adBGBottomToLineUpTopConstraint.constant = -1;
 	_lineBottomToPickerSpaceConstraint.constant = 8;
+	_sampleTitlesBGViewHeightConstraint.constant = 40;
+	_sampleValuesBGViewHeightConstraint.constant = 40;
 
 	[self.view layoutIfNeeded];
 }
@@ -892,8 +901,13 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 		[_lineAboveAdBackgroundView setHidden:NO];
 		_adBackgroundViewHeightConstraint.constant = 50;
 
-		_tableView.rowHeight = 84.0;
-		_tableViewHeightConstraint.constant = 168.0;
+		if ([[UIScreen mainScreen] scale] > 2) {
+			_tableView.rowHeight = 120.0;
+			_tableViewHeightConstraint.constant = 240.0;
+		} else {
+			_tableView.rowHeight = 84.0;
+			_tableViewHeightConstraint.constant = 168.0;
+		}
 		_lineBottomToPickerSpaceConstraint.constant = -6.0;
 
 		[_adBackgroundView addSubview:bannerView];

@@ -35,7 +35,7 @@
 	[super layoutSubviews];
 
 	CGRect frame = self.textLabel.frame;
-	frame.origin.x = 15;
+	frame.origin.x = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 	self.textLabel.frame = frame;
 	self.separatorInset = UIEdgeInsetsMake(0, 54, 0, 0);
 }

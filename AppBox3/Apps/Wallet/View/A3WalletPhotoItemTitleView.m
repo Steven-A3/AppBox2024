@@ -35,13 +35,15 @@
 	[_favoriteButton setImage:[[UIImage imageNamed:@"star02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
 	[_favoriteButton setImage:[[UIImage imageNamed:@"star02_on"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateSelected];
 
+	CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
+
 	[_titleTextField makeConstraints:^(MASConstraintMaker *make) {
 		make.top.equalTo(self.top).with.offset(22);
-		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+		make.left.equalTo(self.left).with.offset(leading);
 	}];
 	[_timeLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.top.equalTo(_titleTextField.bottom);
-		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+		make.left.equalTo(self.left).with.offset(leading);
 	}];
 	[_favoriteButton makeConstraints:^(MASConstraintMaker *make) {
 		make.width.equalTo(@44);
@@ -51,11 +53,11 @@
 	}];
 	[_mediaSizeLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.top.equalTo(_timeLabel.bottom).with.offset(11);
-		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+		make.left.equalTo(self.left).with.offset(leading);
 	}];
 	[_takenDateLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.top.equalTo(_mediaSizeLabel.bottom);
-		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+		make.left.equalTo(self.left).with.offset(leading);
 	}];
 
 	[self setupFonts];

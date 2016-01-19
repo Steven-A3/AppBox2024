@@ -27,6 +27,7 @@
 #import "A3WalletSegmentedControl.h"
 #import "DaysCounterEvent+extension.h"
 #import "A3UserDefaults.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3DaysCounterEventListViewController ()
 		<UINavigationControllerDelegate, UISearchDisplayDelegate, UISearchBarDelegate,
@@ -81,7 +82,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 
     self.toolbarItems = _bottomToolbar.items;
     [self.navigationController setToolbarHidden:NO];
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
+    self.tableView.separatorInset = A3UITableViewSeparatorInset;
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
@@ -853,7 +854,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
         //		_mySearchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.2f];
 		_mySearchDisplayController.searchResultsTableView.showsVerticalScrollIndicator = NO;
         _mySearchDisplayController.searchResultsTableView.tableFooterView = [UIView new];
-        _mySearchDisplayController.searchResultsTableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
+        _mySearchDisplayController.searchResultsTableView.separatorInset = A3UITableViewSeparatorInset;
 	}
 	return _mySearchDisplayController;
 }
