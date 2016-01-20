@@ -30,13 +30,12 @@
 {
     [super awakeFromNib];
     
-    CGRect frame = _datePicker.frame;
-    frame.size.height = 216;
-    frame.size.width = 320;
-    _datePicker.frame = frame;
-    CGPoint center = _datePicker.center;
-    center.x = self.center.x;
-    _datePicker.center = center;
+	[_datePicker makeConstraints:^(MASConstraintMaker *make) {
+		make.centerX.equalTo(self.centerX);
+		make.centerY.equalTo(self.centerY);
+		make.width.equalTo(@320);
+		make.height.equalTo(@216);
+	}];
 }
 
 @end

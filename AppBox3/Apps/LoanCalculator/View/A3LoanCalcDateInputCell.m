@@ -29,10 +29,20 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
-    CGRect frame = _picker.frame;
-    frame.size.height = 216;
-    _picker.frame = frame;
+
+	[_picker makeConstraints:^(MASConstraintMaker *make) {
+		if (IS_IPHONE) {
+			make.left.equalTo(self.left);
+			make.right.equalTo(self.right);
+			make.centerY.equalTo(self.centerY);
+			make.height.equalTo(@216);
+		} else {
+			make.centerX.equalTo(self.centerX);
+			make.centerY.equalTo(self.centerY);
+			make.width.equalTo(@320);
+			make.height.equalTo(@216);
+		}
+	}];
 }
 
 @end
