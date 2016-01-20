@@ -41,12 +41,13 @@
                        [UIColor colorWithRed:246.0/255.0 green:104.0/255.0 blue:202.0/255.0 alpha:1.0],
                        [UIColor colorWithRed:198.0/255.0 green:156.0/255.0 blue:109.0/255.0 alpha:1.0],
                        nil];
-        
+
+		CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
         NSMutableArray * colorViewArray = [NSMutableArray new];
         NSInteger index = 0;
         for (UIColor *aColor in _colorArray) {
             UIButton * aView = [UIButton buttonWithType:UIButtonTypeCustom];
-			aView.frame = CGRectMake(0.0, 0.0, 80.0, 88.0);
+			aView.frame = CGRectMake(0.0, 0.0, 80.0 * scale, 88.0 * scale);
             aView.backgroundColor = aColor;
             aView.tag = index;
             [aView addTarget:self action:@selector(didSelectColorView:) forControlEvents:UIControlEventTouchUpInside];
@@ -77,48 +78,36 @@
     // Configure the view for the selected state
 }
 
--(void)adjustConstraintLayout {
-
-    NSInteger row;
-    NSInteger column;
-    NSInteger offsetX;
-    NSInteger insetY;
-    NSInteger inset;
-    
-//    if (IS_IPHONE) {
-        row = 4;
-        column = 3;
-        offsetX = 20;
-        insetY = 20;
-        inset = 20;
-//    } else {
-//        row =3;
-//        column = 4;
-//        if (IS_PORTRAIT) {
-//            offsetX = 40;
-//            insetY = 54;
-//            inset = 44;
-//        } else {
-//            offsetX = 32;
-//            insetY = 62;
-//            inset = 28;
-//        }
-//    }
-    
+- (void)adjustConstraintLayout {
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+	NSInteger row;
+	NSInteger column;
+	CGFloat offsetX;
+	CGFloat offsetY;
+	CGFloat insetX;
+	CGFloat insetY;
+	
+	row = 4;
+	column = 3;
+	offsetX = 20 * scale;
+	offsetY = 20 * scale;
+	
+	insetX = 20 * scale;
+	insetY = 20 * scale;
+	
     for (int i=0; i<_colorViewArray.count; i++) {
         UIButton * aView = [_colorViewArray objectAtIndex:i];
         CGRect rect = aView.frame;
-        rect.origin.x = (aView.frame.size.width * (i % column)) + (offsetX * (i % column) + inset);
-        rect.origin.y = (aView.frame.size.height * (i / column)) + (offsetX * (i / column) + insetY);
+        rect.origin.x = (aView.frame.size.width * (i % column)) + (offsetX * (i % column) + insetX);
+        rect.origin.y = (aView.frame.size.height * (i / column)) + (offsetY * (i / column) + insetY);
         aView.frame = rect;
         
         if (_selectedIndex == aView.tag) {
-            //[self didSelectColorView:aView];
             aView.backgroundColor = [UIColor whiteColor];
             aView.layer.borderColor = [[_colorArray objectAtIndex:_selectedIndex] CGColor];
             aView.layer.borderWidth = 1.0;
             
-            _selectMarkImageView.center = CGPointMake(aView.center.x, aView.center.y + 20.0);
+            _selectMarkImageView.center = CGPointMake(aView.center.x, aView.center.y + insetY);
         }
     }
 }
