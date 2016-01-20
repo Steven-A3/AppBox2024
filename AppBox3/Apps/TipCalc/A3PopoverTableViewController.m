@@ -58,14 +58,11 @@ typedef NS_ENUM(NSInteger, SectionType) {
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
+	if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+		self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+	}
 #ifdef __IPHONE_8_0
 	if (!IS_IOS7) {
-		if ([self.tableView respondsToSelector:@selector(layoutMargins)])
-		{
-			UIEdgeInsets layoutMargins = self.tableView.layoutMargins;
-			layoutMargins.left = 0;
-			self.tableView.layoutMargins = layoutMargins;
-		}
 		self.tableView.backgroundColor = [UIColor colorWithRGBRed:239 green:239 blue:244 alpha:255];
 		UIView *footerView = [UIView new];
 		self.tableView.tableFooterView = footerView;

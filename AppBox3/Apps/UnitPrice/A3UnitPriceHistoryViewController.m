@@ -64,6 +64,12 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 	self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = [self tableViewSeparatorColor];
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
+	if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+		self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+	}
 
     [self.tableView registerNib:[UINib nibWithNibName:@"A3UnitPriceHistoryCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3UnitPriceHistoryCellID];
 	[self registerContentSizeCategoryDidChangeNotification];

@@ -86,6 +86,9 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
+	if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+		self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+	}
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
 
     self.tableView.rowHeight = 74.0;

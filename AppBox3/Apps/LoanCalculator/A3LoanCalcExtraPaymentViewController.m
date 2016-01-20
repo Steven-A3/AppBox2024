@@ -85,7 +85,13 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
     _defaultOnetimeYearMonthDate = [A3DateHelper dateByAddingYears:1 fromDate:_defaultYearlyMonthDate];
     
     self.tableView.separatorColor = [self tableViewSeparatorColor];
-    
+    if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+        self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+    }
+    if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+        self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+    }
+
     [self registerContentSizeCategoryDidChangeNotification];
 }
 

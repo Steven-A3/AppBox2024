@@ -244,7 +244,12 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 	}
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
     self.tableView.separatorColor = A3UITableViewSeparatorColor;
-//    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
+	if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+		self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+	}
     self.tableView.tableHeaderView = [self headerView];
     
     [self reloadTableDataSource];

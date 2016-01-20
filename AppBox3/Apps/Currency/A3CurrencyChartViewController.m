@@ -72,16 +72,19 @@
 
 	self.automaticallyAdjustsScrollViewInsets = NO;
 	[self.tableView registerClass:[A3CurrencyTVDataCell class] forCellReuseIdentifier:A3CurrencyDataCellID];
-    self.tableView.rowHeight = [[UIScreen mainScreen] bounds].size.height == 480.0 ? 70.0 : 84.0;
+    self.tableView.rowHeight = IS_IPHONE35 ? 70.0 : 84.0;
 	self.tableView.dataSource = self;
 	self.tableView.delegate = self;
 	self.tableView.scrollEnabled = NO;
 	self.tableView.separatorInset = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
+	self.tableView.separatorColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
+	self.tableView.showsVerticalScrollIndicator = NO;
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
-	self.tableView.separatorColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
-	self.tableView.showsVerticalScrollIndicator = NO;
+	if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+		self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+	}
 
 	NSInteger idx = 0;
 	_titleLabels = [[NSMutableArray alloc] initWithCapacity:5];

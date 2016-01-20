@@ -11,6 +11,8 @@
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3UnitDataManager.h"
+#import "UIViewController+tableViewStandardDimension.h"
+#import "A3StandardTableViewCell.h"
 
 @interface A3UnitPriceAddViewController ()
 
@@ -38,7 +40,14 @@
 
     self.tableView.rowHeight = 44.0;
 	self.tableView.showsVerticalScrollIndicator = NO;
-    self.tableView.separatorColor = [self tableViewSeparatorColor];
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
+	if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+		self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+	}
 
     [self rightBarButtonDoneButton];
     self.navigationItem.hidesBackButton = YES;
@@ -144,7 +153,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[A3StandardTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         
         UIButton *addButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [addButton setImage:[UIImage imageNamed:@"add04"] forState:UIControlStateNormal];

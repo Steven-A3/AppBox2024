@@ -13,6 +13,7 @@
 #import "A3UnitPriceAddViewController.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3UnitDataManager.h"
+#import "A3StandardTableViewCell.h"
 
 @interface A3UnitPriceSelectViewController () <UISearchDisplayDelegate, A3UnitPriceAddViewControllerDelegate>
 {
@@ -417,7 +418,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 	if (!_isFavoriteMode && (tableView != self.searchDisplayController.searchResultsTableView) && ([self.allData objectAtIndex:indexPath.row] == self.noneItem)) {
 		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (cell == nil) {
-			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+			cell = [[A3StandardTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
 		}
 		[self configureNoneCell:cell];
 		toCell = cell;
@@ -425,7 +426,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 	else {
 		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (cell == nil) {
-			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+			cell = [[A3StandardTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
 			cell.textLabel.font = [UIFont systemFontOfSize:17];
 		}
 

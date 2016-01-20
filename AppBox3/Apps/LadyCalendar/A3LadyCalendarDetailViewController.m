@@ -64,6 +64,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
+	if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+		self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+	}
 
 	if (_isFromNotification) {
 		self.title = NSLocalizedString(A3AppName_LadiesCalendar, nil);

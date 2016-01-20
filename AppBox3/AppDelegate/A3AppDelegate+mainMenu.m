@@ -9,6 +9,7 @@
 #import "A3AppDelegate+mainMenu.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "A3UserDefaults.h"
 
 @implementation A3AppDelegate (mainMenu)
 
@@ -259,6 +260,29 @@ NSString *const A3AppName_Settings = @"Settings";
 				kA3AppsExpandableChildren : menus,
 		};
 		[[A3SyncManager sharedSyncManager] setObject:dictionary forKey:A3MainMenuDataEntityFavorites state:A3DataObjectStateInitialized];
+	}
+	if (IS_IPAD) {
+		NSMutableArray *newArray = [NSMutableArray new];
+		BOOL dataModified;
+		for (NSDictionary *menu in dictionary[kA3AppsExpandableChildren]) {
+			if (![menu[kA3AppsMenuName] isEqualToString:@"Level"]) {
+				[newArray addObject:menu];
+				dataModified = YES;
+			}
+		}
+		if (dataModified) {
+			NSMutableDictionary *modifiedDictionary = [dictionary mutableCopy];
+			modifiedDictionary[kA3AppsExpandableChildren] = newArray;
+			dictionary = modifiedDictionary;
+
+			NSDictionary *userDefaultsFormat = @{
+					A3KeyValueDBDataObject : modifiedDictionary,
+					A3KeyValueDBState : @(A3DataObjectStateModified),
+					A3KeyValueDBUpdateDate : [NSDate date]
+			};
+			[[A3UserDefaults standardUserDefaults] setObject:userDefaultsFormat forKey:A3MainMenuDataEntityFavorites];
+			[[A3UserDefaults standardUserDefaults] synchronize];
+		}
 	}
     [self updateApplicationShortcutItems];
 	return dictionary;

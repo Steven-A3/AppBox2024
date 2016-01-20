@@ -401,7 +401,7 @@
 				centerArray = @[
 						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.431640625, bounds.size.height / 2)],
 						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.7861328125, bounds.size.height * 0.26302083)],
-						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.7861328125, bounds.size.height * 0.26302083)],
+						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width * 0.7861328125, bounds.size.height * 0.73697916)],
 				];
 				break;
 			case 4:

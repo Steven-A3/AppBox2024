@@ -45,7 +45,13 @@ NSString *const A3CalculatorHistoryRowCellID = @"CcellRow";
     
 	self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor  = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
-    
+
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
+	if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+		self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+	}
     /*
 	UILabel *notice = [[UILabel alloc] init];
 	notice.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];

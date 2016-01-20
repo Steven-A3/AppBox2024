@@ -54,12 +54,15 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
 	}
 
     self.tableView.separatorInset = A3UITableViewSeparatorInset;
-	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
-		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
-	}
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = A3UITableViewSeparatorColor;
-    
+    if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+        self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+    }
+    if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+        self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+    }
+
 	[self.tableView registerClass:[A3PercentCalcHistoryCell class] forCellReuseIdentifier:A3PercentCalcHistoryCellID];
 	[self.tableView registerClass:[A3PercentCalcHistoryCompareCell class] forCellReuseIdentifier:A3PercentCalcHistoryCompareCellID];
     

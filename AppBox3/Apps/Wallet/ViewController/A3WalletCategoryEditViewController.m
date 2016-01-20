@@ -95,6 +95,9 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
+	if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+		self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+	}
     self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.showsVerticalScrollIndicator = NO;
     [self.tableView setEditing:YES animated:NO];

@@ -76,6 +76,13 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 	[self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
 	self.tableView.showsVerticalScrollIndicator = NO;
 	self.tableView.allowsSelectionDuringEditing = YES;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
+	if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+		self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+	}
     if (_isEditing) {
         [self.tableView setEditing:YES animated:YES];
     }
@@ -376,7 +383,6 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 	cell.cellImageView.tintColor = [UIColor colorWithRed:146.0/255.0 green:146.0/255.0 blue:146.0/255.0 alpha:1.0];
 	[cell.cellImageView sizeToFit];
 	cell.cellTitleLabel.text = NSLocalizedStringFromTable(walletCategory.name, @"WalletPreset", nil);
-	cell.separatorInset = A3UITableViewSeparatorInset;
 	[cell setShowCheckImageView:indexPath.section == 1];
 	if (_isEditing) {
 		cell.selectionStyle = indexPath.section == 1 ? UITableViewCellSelectionStyleDefault : UITableViewCellSelectionStyleNone;

@@ -18,6 +18,7 @@
 #import "A3AppDelegate+appearance.h"
 #import "DaysCounterEvent.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3StandardTableViewCell.h"
 
 @interface A3DaysCounterSetupRepeatViewController () <A3ViewControllerProtocol>
 
@@ -69,7 +70,14 @@
 
 	self.tableView.showsVerticalScrollIndicator = NO;
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 	self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
+	if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+		self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+	}
 
     if ([_eventModel.isLunar boolValue]) {
         self.itemArray = @[NSLocalizedString(@"Never", @"Never"), NSLocalizedString(@"Every Year", @"Every Year")];
@@ -160,7 +168,7 @@
         NSString *CellIdentifier = @"Cell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+            cell = [[A3StandardTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
 
@@ -203,7 +211,7 @@
             [((A3DaysCounterRepeatCustomCell *)cell).checkImageView setTintColor:[A3AppDelegate instance].themeColor];
         }
         else {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+            cell = [[A3StandardTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
         }
     }
     

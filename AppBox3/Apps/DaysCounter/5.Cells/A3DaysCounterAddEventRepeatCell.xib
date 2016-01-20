@@ -14,8 +14,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textField opaque="NO" clipsSubviews="YES" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8BK-Ol-4Fw">
-                        <rect key="frame" x="84" y="7" width="178.5" height="30"/>
+                    <textField opaque="NO" clipsSubviews="YES" tag="12" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8BK-Ol-4Fw">
+                        <rect key="frame" x="84" y="7" width="179" height="30"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="30" id="GGb-kV-oXz"/>
                         </constraints>
@@ -24,16 +24,16 @@
                         <textInputTraits key="textInputTraits"/>
                     </textField>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Custom" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aOJ-W5-WPE">
-                        <rect key="frame" x="15" y="11" width="59.5" height="21"/>
+                        <rect key="frame" x="15" y="11" width="60" height="21"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="y9J-0L-XKZ"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="day(s)" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xya-rQ-JY7">
-                        <rect key="frame" x="267" y="11" width="47.5" height="21"/>
+                        <rect key="frame" x="267" y="11" width="48" height="21"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="d6V-eZ-BxI"/>
                         </constraints>
@@ -41,7 +41,7 @@
                         <color key="textColor" red="0.50196078430000002" green="0.50196078430000002" blue="0.50196078430000002" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="check_02" translatesAutoresizingMaskIntoConstraints="NO" id="CHj-Sx-cyX">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="check_02" translatesAutoresizingMaskIntoConstraints="NO" id="CHj-Sx-cyX">
                         <rect key="frame" x="290" y="16" width="15" height="11"/>
                     </imageView>
                 </subviews>

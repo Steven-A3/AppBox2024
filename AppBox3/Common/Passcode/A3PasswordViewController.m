@@ -71,6 +71,9 @@
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
+	if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+		self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+	}
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeNone;
 	self.tableView.scrollEnabled = NO;
 	[self.view addSubview:self.tableView];

@@ -35,6 +35,12 @@
 
 	self.title = NSLocalizedString(A3AppName_Settings, nil);
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
+	if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+		self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+	}
 
     if (IS_IPHONE) {
         [self rightBarButtonDoneButton];

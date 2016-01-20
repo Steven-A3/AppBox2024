@@ -39,9 +39,12 @@
 
 	[self.tableView setEditing:YES];
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
-	self.tableView.separatorInset = UIEdgeInsetsMake(0, 53, 0, 0);
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
+	if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+		self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
 	}
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuContentChanged:) name:A3NotificationAppsMainMenuContentsChanged object:nil];

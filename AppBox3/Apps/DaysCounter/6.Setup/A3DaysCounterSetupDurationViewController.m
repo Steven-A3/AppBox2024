@@ -46,9 +46,12 @@
     self.title = NSLocalizedString(@"Duration Options", @"Duration Options");
     self.tableView.separatorColor = A3UITableViewSeparatorColor;
     self.tableView.separatorInset = A3UITableViewSeparatorInset;
-	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
-		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
-	}
+    if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+        self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+    }
+    if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+        self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+    }
     self.itemArray = @[
                        @{EventRowTitle : NSLocalizedString(@"Years", @"Years"),EventRowType : @(DurationOption_Year)},
                        @{EventRowTitle : NSLocalizedString(@"Months", @"Months"),EventRowType : @(DurationOption_Month)},

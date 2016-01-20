@@ -85,14 +85,17 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.tableView.separatorInset = A3UITableViewSeparatorInset;
-	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
-		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
-	}
     self.tableView.contentInset = UIEdgeInsetsMake(-1, 0, 36, 0);
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = [self tableViewSeparatorColor];
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
-    
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
+	if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+		self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+	}
+
     self.title = _isPriceA ? NSLocalizedString(@"Price A", @"Price A") : NSLocalizedString(@"Price B", @"Price B");
     self.currencyFormatter.maximumFractionDigits = 2;
     

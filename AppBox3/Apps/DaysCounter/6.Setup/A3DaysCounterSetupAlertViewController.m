@@ -79,6 +79,9 @@
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
+	if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+		self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+	}
 	self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
 
 	self.itemArray = @[@{EventRowTitle : NSLocalizedString(@"Alert_None", @"None"), EventRowType : @(AlertType_None)},
