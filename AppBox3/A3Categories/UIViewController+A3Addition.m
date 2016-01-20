@@ -69,7 +69,7 @@ NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
 }
 
 - (CGRect)screenBoundsAdjustedWithOrientation {
-	CGRect bounds = [[UIScreen mainScreen] bounds];
+	CGRect bounds = [[[A3AppDelegate instance] window] bounds];
 	#ifdef __IPHONE_8_0
 	if (IS_IOS7 && IS_LANDSCAPE) {
 		CGFloat width = bounds.size.width;
