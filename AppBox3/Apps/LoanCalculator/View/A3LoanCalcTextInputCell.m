@@ -58,7 +58,6 @@
 
 	[_titleLabel remakeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.contentView.left).with.offset(_textLabelOffset);
-		make.width.equalTo(self.contentView.width).with.multipliedBy(0.5);
 		make.centerY.equalTo(self.centerY);
 	}];
 
