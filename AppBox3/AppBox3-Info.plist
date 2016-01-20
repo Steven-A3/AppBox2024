@@ -47,7 +47,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Your location is used to show weather and holidays.</string>
 	<key>NSUbiquitousDisplaySet</key>
-	<string>net.allaboutapps.AppBox</string>
+	<string>com.e2ndesign.TPremium2</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>appbox.ttf</string>
