@@ -125,6 +125,12 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 	_tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
 	_tableView.separatorColor = [self tableViewSeparatorColor];
 	_tableView.separatorInset = A3UITableViewSeparatorInset;
+	if ([_tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		_tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
+	if ([_tableView respondsToSelector:@selector(layoutMargins)]) {
+		_tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+	}
 	if ([self.category.uniqueID isEqualToString:A3WalletUUIDPhotoCategory] || [self.category.uniqueID isEqualToString:A3WalletUUIDVideoCategory]) {
 		_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 	}

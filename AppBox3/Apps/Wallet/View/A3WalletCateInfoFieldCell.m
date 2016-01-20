@@ -26,4 +26,18 @@
     // Configure the view for the selected state
 }
 
+- (void)awakeFromNib {
+    [super awakeFromNib];
+
+    [_nameLabel makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.left).with.offset(IS_IPAD ? 28+30+28:15+30+15);
+        make.top.equalTo(self.top).with.offset(15);
+    }];
+
+    [_typeLabel makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.left).with.offset(IS_IPAD ? 28+30+28:15+30+15);
+        make.bottom.equalTo(self.bottom).with.offset(-15);
+    }];
+}
+
 @end

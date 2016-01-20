@@ -41,29 +41,42 @@
 	// Do any additional setup after loading the view.
     
     self.navigationItem.title = NSLocalizedString(@"Edit Image", @"Edit Image");
-    
-    if (IS_RETINA) {
-        CGRect upLine = _upperLine.frame;
-        CGRect belowLine = _lowerLine.frame;
-        
-        upLine.size.height = 0.5f;
-        belowLine.size.height = 0.5f;
-        belowLine.origin.y += 0.5f;
-        
-        _upperLine.frame = upLine;
-        _lowerLine.frame = belowLine;
-    }
-    
+
+	UIView *superview = self.view;
+	[_contentView makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(superview.left);
+		make.right.equalTo(superview.right);
+		make.top.equalTo(superview.top).with.offset(99);
+		CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+		make.height.equalTo(@( ( ([self.iconList count] / 5 + 1) * (30 + 20) + 20) * scale ) );
+	}];
+
+	CGFloat lineHeight = 1.0 / [[UIScreen mainScreen] scale];
+	[_upperLine makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(_contentView.left);
+		make.right.equalTo(_contentView.right);
+		make.top.equalTo(_contentView.top);
+		make.height.equalTo( @(lineHeight) );
+	}];
+	
+	[_lowerLine makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(_contentView.left);
+		make.right.equalTo(_contentView.right);
+		make.bottom.equalTo(_contentView.bottom);
+		make.height.equalTo(@(lineHeight));
+	}];
+	
     [self addIconImages];
 }
 
 - (void)addIconImages
 {
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
     for (NSUInteger idx = 0; idx < self.iconList.count; idx++) {
         NSString *iconName = _iconList[idx];
         UIImage *icon = [[UIImage imageNamed:iconName] tintedImageWithColor:[UIColor colorWithRed:146.0/255.0 green:146.0/255.0 blue:146.0/255.0 alpha:1.0]];
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.frame = CGRectMake(0, 0, 30, 30);
+        button.frame = CGRectMake(0, 0, 30 * scale, 30 * scale);
         button.tag = idx;
         [button setImage:icon forState:UIControlStateNormal];
         NSString *onImgName = [iconName stringByAppendingString:@"_on"];
@@ -81,7 +94,7 @@
         yIdx = idx / 5;
         xIdx = idx % 5;
         
-        button.center = CGPointMake(xIdx*(35+30)+15, yIdx*(20+30)+20);
+        button.center = CGPointMake((xIdx*(35 + 30) + 15) * scale, (yIdx*(20 + 30) + 20) * scale);
         
         if ([iconName isEqualToString:_selecteIconName]) {
             [button setSelected:YES];
