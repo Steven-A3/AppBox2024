@@ -178,6 +178,7 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 
 			self.photoInfo = candidates[photoIndex];
 			NSURL *photoURL = [NSURL URLWithString:self.photoInfo[@"url"]];
+			FNLOG(@"%@", photoURL);
 
 			NSURLRequest *request = [NSURLRequest requestWithURL:photoURL];
 			self.downloadTask = [self.session downloadTaskWithRequest:request];

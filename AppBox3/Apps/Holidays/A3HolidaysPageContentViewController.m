@@ -14,11 +14,12 @@
 #import "A3HolidaysCell.h"
 #import "NSDate+daysleft.h"
 #import "A3HolidaysFlickrDownloadManager.h"
-#import "DKLiveBlurView.h"
 #import "UIViewController+A3Addition.h"
 #import "A3BackgroundWithPatternView.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "A3UserDefaults.h"
+#import "ALDBlurImageProcessor.h"
+#import "NTRMath.h"
 
 typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	HolidaysHeaderViewSegmentedControl = 1000,
@@ -28,10 +29,11 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	HolidaysHeaderViewCountryLabel
 };
 
-@interface A3HolidaysPageContentViewController () <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, A3ViewControllerProtocol>
+@interface A3HolidaysPageContentViewController () <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, A3ViewControllerProtocol, ALDBlurImageProcessorDelegate>
 
 @property (nonatomic, strong) NSArray *holidays;
-@property (nonatomic, strong) DKLiveBlurView *imageView;
+@property (nonatomic, strong) ALDBlurImageProcessor *blurImageProcessor;
+@property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) A3BackgroundWithPatternView *backgroundView;
 @property (nonatomic, strong) UIView *coverViewOnBlur;
@@ -86,7 +88,6 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 }
 
 - (void)removeObserver {
-	[_imageView setScrollView:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3HolidaysFlickrDownloadManagerDownloadComplete object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
@@ -142,6 +143,20 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	[self.tableView reloadData];
 }
 
+#pragma mark - Image Processing
+
+- (ALDBlurImageProcessor *)blurImageProcessor {
+	if (!_blurImageProcessor) {
+		_blurImageProcessor = [[ALDBlurImageProcessor alloc] init];
+		_blurImageProcessor.delegate = self;
+	}
+	return _blurImageProcessor;
+}
+
+- (void)onALDBlurImageProcessor:(ALDBlurImageProcessor *)blurImageProcessor newBlurrredImage:(UIImage *)image {
+	self.imageView.image = image;
+}
+
 - (void)imageDownloaded:(NSNotification *)notification {
 	NSString *downloadedCountryCode = notification.userInfo[@"CountryCode"];
 	if ([_countryCode isEqualToString:@"jewish"] && [downloadedCountryCode isEqualToString:@"il"]) {
@@ -150,7 +165,8 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	if ([downloadedCountryCode isEqualToString:_countryCode]) {
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[_pageViewController updatePhotoLabelText];
-			_imageView.originalImage = [[A3HolidaysFlickrDownloadManager sharedInstance] imageForCountryCode:_countryCode];
+			_imageView.image = [[A3HolidaysFlickrDownloadManager sharedInstance] imageForCountryCode:_countryCode];
+			self.blurImageProcessor.imageToProcess = _imageView.image;
 			[self alertAcknowledgment];
 		});
 	}
@@ -191,8 +207,8 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	[self.tableView reloadData];
 	if (redrawImage) {
 		[_pageViewController updatePhotoLabelText];
-		_imageView.originalImage = [[A3HolidaysFlickrDownloadManager sharedInstance] imageForCountryCode:_countryCode];
-		[_imageView setScrollView:_tableView];
+		_imageView.image = [[A3HolidaysFlickrDownloadManager sharedInstance] imageForCountryCode:_countryCode];
+		self.blurImageProcessor.imageToProcess = _imageView.image;
 	}
 }
 
@@ -211,7 +227,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 }
 
 - (void)setupImageView {
-	_imageView = [DKLiveBlurView new];
+	_imageView = [UIImageView new];
 	_imageView.contentMode = UIViewContentModeScaleAspectFill;
 	_imageView.userInteractionEnabled = NO;
 	[self.view insertSubview:_imageView aboveSubview:_backgroundView];
@@ -233,11 +249,11 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	[_imageView addMotionEffect:interpolationHorizontal];
 	[_imageView addMotionEffect:interpolationVertical];
 
-	[_imageView setScrollView:_tableView];
 	A3HolidaysFlickrDownloadManager *downloadManager = [A3HolidaysFlickrDownloadManager sharedInstance];
 	UIImage *image = [downloadManager imageForCountryCode:_countryCode];
 	if (image) {
-		_imageView.originalImage = image;
+		_imageView.image = image;
+		self.blurImageProcessor.imageToProcess = _imageView.image;
 	}
 }
 
@@ -723,6 +739,9 @@ static NSString *const CellIdentifier = @"holidaysCell";
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+	uint32_t radius = scrollView.contentOffset.y < 100 ? 0 : lerp(scrollView.contentOffset.y / scrollView.contentSize.height, 20, 30);
+	[self.blurImageProcessor asyncBlurWithRadius:radius iterations:5 cancelingLastOperation:YES];
+
 	if (scrollView.contentOffset.y == 0) {
 		[UIView animateWithDuration:1.0 animations:^{
 			[self.coverViewOnBlur setAlpha:0.0];

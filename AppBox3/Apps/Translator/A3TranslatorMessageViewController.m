@@ -449,7 +449,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		make.top.equalTo(contentsView.top).with.offset(37.0);
 		make.left.equalTo(contentsView.left).with.offset(IS_IPHONE ? 15.0 : 28.0);
 		make.right.equalTo(contentsView.right);
-		make.height.equalTo( IS_RETINA ? @0.5 : @1.0 );
+		make.height.equalTo(@(1.0 / [[UIScreen mainScreen] scale]));
 	}];
 
 	_targetLanguageSelectTextField = [self textFieldForLanguageSelect];

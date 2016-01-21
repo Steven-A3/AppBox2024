@@ -133,14 +133,10 @@
 	}
     [self makeBackButtonEmptyArrow];
 
-    UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
-	UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    self.navigationItem.rightBarButtonItems = @[edit, space, [self instructionHelpBarButton]];
-    
     if ( IS_IPHONE ) {
         if (IS_RETINA) {
             CGRect rect = _headerView.frame;
-            rect.size.height += 0.5;
+			rect.size.height += 1.0 / [[UIScreen mainScreen] scale];
             _headerView.frame = rect;
         }
         [self.tableView setTableHeaderView:_headerView];
@@ -217,6 +213,10 @@
 
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
         [self setupInstructionView];
+		
+		UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
+		UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+		[self.navigationItem setRightBarButtonItems:@[edit, space, [self instructionHelpBarButton]] animated:NO];
     }
 
 	self.navigationController.delegate = nil;
@@ -225,6 +225,7 @@
 
 	[[A3UserDefaults standardUserDefaults] setInteger:2 forKey:A3DaysCounterLastOpenedMainIndex];
 	[[A3UserDefaults standardUserDefaults] synchronize];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -247,6 +248,10 @@
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
         [self setupBannerViewForAdUnitID:AdMobAdUnitIDDaysCounter keywords:nil gender:kGADGenderUnknown];
     }
+	
+	UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
+	UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+	[self.navigationItem setRightBarButtonItems:@[edit, space, [self instructionHelpBarButton]] animated:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

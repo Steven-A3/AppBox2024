@@ -69,14 +69,14 @@
 	for (UIView *line in _horLines) {
 		CGRect rect = line.frame;
 		rect.origin.y = isRetina ? 55.5 : 55;
-		rect.size.height = isRetina ? 0.5f : 1.0;
+		rect.size.height = 1.0 / [[UIScreen mainScreen] scale];
 		line.frame = rect;
 	}
 
 	for (UIView *line in _vertLines) {
 		CGRect rect = line.frame;
-		rect.origin.y = isRetina ? 0.5 : 1.0;
-		rect.size.width = isRetina ? 0.5 : 1.0;
+		rect.origin.y = 1.0 / [[UIScreen mainScreen] scale];
+		rect.size.width = 1.0 / [[UIScreen mainScreen] scale];
 		rect.size.height = isRetina ? 55 : 55;
 		line.frame = rect;
 	}

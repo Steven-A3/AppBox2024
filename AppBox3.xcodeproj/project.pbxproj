@@ -351,6 +351,7 @@
 		68476949177D309800EBE7CF /* WeatherIcons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68476948177D309800EBE7CF /* WeatherIcons.xcassets */; };
 		6848249319D2723700E5184C /* A3SettingsBackupRestoreiTunesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6848249219D2723700E5184C /* A3SettingsBackupRestoreiTunesViewController.m */; };
 		6848249A19D272A100E5184C /* A3SettingsiTunesSelectBackupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6848249919D272A100E5184C /* A3SettingsiTunesSelectBackupViewController.m */; };
+		6848ED6B1C50FD7B0067B93A /* ALDBlurImageProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6848ED6A1C50FD7B0067B93A /* ALDBlurImageProcessor.m */; };
 		6848FB8D17A39C1100EBDBED /* NSMutableArray+A3Sort.m in Sources */ = {isa = PBXBuildFile; fileRef = 6848FB8C17A39C1100EBDBED /* NSMutableArray+A3Sort.m */; };
 		684A71BB1852E0100004A9FE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 684A71BA1852E0100004A9FE /* Security.framework */; };
 		684A71BD1852E0250004A9FE /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 684A71BC1852E0250004A9FE /* libc++.dylib */; };
@@ -701,7 +702,6 @@
 		68D1AC9C17977FCE0047D4BF /* A3CurrencyTVEqualCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68D1AC9B17977FCE0047D4BF /* A3CurrencyTVEqualCell.xib */; };
 		68D3561A1845CF94008409B4 /* UIImage+imageWithColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D356191845CF94008409B4 /* UIImage+imageWithColor.m */; };
 		68D455961886DD8C004F3877 /* A3AppDelegate+appearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D455951886DD8C004F3877 /* A3AppDelegate+appearance.m */; };
-		68D61BD817F53FB400EF4B5E /* DKLiveBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D61BD717F53FB400EF4B5E /* DKLiveBlurView.m */; };
 		68D6E903199ECC0A00166A47 /* LadyCalendarAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D6E902199ECC0A00166A47 /* LadyCalendarAccount.m */; };
 		68D6E90C199EE0A200166A47 /* WalletCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D6E90B199EE0A200166A47 /* WalletCategory.m */; };
 		68D6E90F199EE0A200166A47 /* WalletField.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D6E90E199EE0A200166A47 /* WalletField.m */; };
@@ -1550,6 +1550,9 @@
 		6848249219D2723700E5184C /* A3SettingsBackupRestoreiTunesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsBackupRestoreiTunesViewController.m; path = Settings/A3SettingsBackupRestoreiTunesViewController.m; sourceTree = "<group>"; };
 		6848249819D272A100E5184C /* A3SettingsiTunesSelectBackupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsiTunesSelectBackupViewController.h; path = Settings/A3SettingsiTunesSelectBackupViewController.h; sourceTree = "<group>"; };
 		6848249919D272A100E5184C /* A3SettingsiTunesSelectBackupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsiTunesSelectBackupViewController.m; path = Settings/A3SettingsiTunesSelectBackupViewController.m; sourceTree = "<group>"; };
+		6848ED691C50FD7B0067B93A /* ALDBlurImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALDBlurImageProcessor.h; sourceTree = "<group>"; };
+		6848ED6A1C50FD7B0067B93A /* ALDBlurImageProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALDBlurImageProcessor.m; sourceTree = "<group>"; };
+		6848ED711C5102210067B93A /* NTRMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTRMath.h; sourceTree = "<group>"; };
 		6848FB8B17A39C1100EBDBED /* NSMutableArray+A3Sort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+A3Sort.h"; sourceTree = "<group>"; };
 		6848FB8C17A39C1100EBDBED /* NSMutableArray+A3Sort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+A3Sort.m"; sourceTree = "<group>"; };
 		684A71BA1852E0100004A9FE /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -2254,8 +2257,6 @@
 		68D37A381C23F48E00E2FAF9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Launch_iPhone.strings; sourceTree = "<group>"; };
 		68D455941886DD8C004F3877 /* A3AppDelegate+appearance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "A3AppDelegate+appearance.h"; path = "AppDelegate/A3AppDelegate+appearance.h"; sourceTree = "<group>"; };
 		68D455951886DD8C004F3877 /* A3AppDelegate+appearance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "A3AppDelegate+appearance.m"; path = "AppDelegate/A3AppDelegate+appearance.m"; sourceTree = "<group>"; };
-		68D61BD617F53FB400EF4B5E /* DKLiveBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DKLiveBlurView.h; path = External/DKLiveBlur/LiveBlur/LiveBlur/DKLiveBlurView.h; sourceTree = "<group>"; };
-		68D61BD717F53FB400EF4B5E /* DKLiveBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DKLiveBlurView.m; path = External/DKLiveBlur/LiveBlur/LiveBlur/DKLiveBlurView.m; sourceTree = "<group>"; };
 		68D6E901199ECC0A00166A47 /* LadyCalendarAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LadyCalendarAccount.h; sourceTree = "<group>"; };
 		68D6E902199ECC0A00166A47 /* LadyCalendarAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LadyCalendarAccount.m; sourceTree = "<group>"; };
 		68D6E90A199EE0A200166A47 /* WalletCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletCategory.h; sourceTree = "<group>"; };
@@ -3765,15 +3766,6 @@
 			name = MBProgressHUD;
 			sourceTree = "<group>";
 		};
-		683224B717CE1AB900973F34 /* DKLiveBlur */ = {
-			isa = PBXGroup;
-			children = (
-				68D61BD617F53FB400EF4B5E /* DKLiveBlurView.h */,
-				68D61BD717F53FB400EF4B5E /* DKLiveBlurView.m */,
-			);
-			name = DKLiveBlur;
-			sourceTree = "<group>";
-		};
 		683A291519A1B20900265484 /* DateCalculation */ = {
 			isa = PBXGroup;
 			children = (
@@ -3847,6 +3839,7 @@
 		683B953D15EB233500575377 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				6848ED711C5102210067B93A /* NTRMath.h */,
 				681E1282193448230077DCFA /* AAAZip.h */,
 				681E1283193448230077DCFA /* AAAZip.m */,
 				681E1222193440540077DCFA /* NSData-AES.h */,
@@ -3953,6 +3946,16 @@
 			);
 			name = Model;
 			path = Translator/Model;
+			sourceTree = "<group>";
+		};
+		6848ED681C50FD7B0067B93A /* ALDBlurImageProcessor */ = {
+			isa = PBXGroup;
+			children = (
+				6848ED691C50FD7B0067B93A /* ALDBlurImageProcessor.h */,
+				6848ED6A1C50FD7B0067B93A /* ALDBlurImageProcessor.m */,
+			);
+			name = ALDBlurImageProcessor;
+			path = External/ALDBlurImageProcessor;
 			sourceTree = "<group>";
 		};
 		684D929F18BC1EFE005016F7 /* BatteryStatus */ = {
@@ -4899,11 +4902,11 @@
 		68CC1594174F764C0000870F /* External */ = {
 			isa = PBXGroup;
 			children = (
+				6848ED681C50FD7B0067B93A /* ALDBlurImageProcessor */,
 				684CA4D71C1A6D75001ECF4E /* GoogleMobileAds.framework */,
 				68F04CA01B40F825004FDD7B /* RMStore */,
 				68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */,
 				689C9A261839CD7F007C97EE /* AFNetworking */,
-				683224B717CE1AB900973F34 /* DKLiveBlur */,
 				6890AB0B1786B800004FECE4 /* expecta */,
 				68F9391117D0DDA50082234C /* FMMoveTableView */,
 				68521A4317E1FF1C00E08FB1 /* FXLabel */,
@@ -6011,7 +6014,6 @@
 				68F04D081B40F825004FDD7B /* RMStoreAppReceiptVerificator.m in Sources */,
 				686F06E71AA1D9DC0093A6F9 /* A3MarkingsView.m in Sources */,
 				68F14FCC19485E8500159EAD /* A3DaysCounterReminderListViewController.m in Sources */,
-				68D61BD817F53FB400EF4B5E /* DKLiveBlurView.m in Sources */,
 				687F928618F603F1006377B9 /* A3UnitConverterMoreTableViewController.m in Sources */,
 				681E1266193443F00077DCFA /* zip.c in Sources */,
 				68E2A65D18D0B1FC00E834D9 /* A3PercentCalcHeaderView.m in Sources */,
@@ -6150,6 +6152,7 @@
 				6883D5E2183E7ABA00808CD2 /* A3MainViewController.m in Sources */,
 				682FDF2E1981CC0400C6C83D /* MagicalRecord+iCloud.m in Sources */,
 				684D92ED18BC1FBC005016F7 /* A3DateCalcAddSubButton.m in Sources */,
+				6848ED6B1C50FD7B0067B93A /* ALDBlurImageProcessor.m in Sources */,
 				684D92FC18BC1FBC005016F7 /* A3DateCalcResultCursorView.m in Sources */,
 				682FDF041981CC0400C6C83D /* MagicalImportFunctions.m in Sources */,
 				689C9A511839CD7F007C97EE /* AFURLResponseSerialization.m in Sources */,

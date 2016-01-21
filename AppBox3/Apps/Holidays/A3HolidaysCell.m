@@ -212,7 +212,7 @@
 				switch (_cellType) {
 					case A3HolidayCellTypeSingleLine:
 					case A3HolidayCellTypeLunar1:
-						[self.mutableConstraints addObject:make.left.equalTo(self.right).with.offset(-113)];
+						[self.mutableConstraints addObject:make.right.equalTo(_dateLabel.left).with.offset(-5)];
 						break;
 					case A3HolidayCellTypeDoubleLine:
 					case A3HolidayCellTypeLunar2:
