@@ -6,6 +6,6 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-@interface A3TipCalcMainTableViewController : UIViewController
+@interface A3TipCalcMainTableViewController : UITableViewController
 
 @end

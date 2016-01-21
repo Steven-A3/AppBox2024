@@ -16,7 +16,7 @@
 - (void)useAppBoxButtonPressedInViewController:(UIViewController *)viewController;
 @end
 
-@interface A3LaunchViewController : UIViewController <A3LaunchSceneViewControllerDelegate>
+@interface A3LaunchViewController : UIViewController
 
 @property (nonatomic, assign) BOOL showAsWhatsNew;
 

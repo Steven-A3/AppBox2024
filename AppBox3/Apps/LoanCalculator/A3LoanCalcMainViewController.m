@@ -130,7 +130,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
 	}
 
-	self.automaticallyAdjustsScrollViewInsets = NO;
+	self.automaticallyAdjustsScrollViewInsets = YES;
 	self.tableView.contentInset = UIEdgeInsetsMake(64.0, 0, 0, 0);
     
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 2)];
@@ -152,6 +152,12 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 
     [self registerContentSizeCategoryDidChangeNotification];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+}
+
+- (void)keyboardDidHide:(NSNotification *)notification {
+	self.tableView.contentInset = UIEdgeInsetsMake(64, 0, [self bannerView] ? 50 : 0, 0);
 }
 
 - (void)cloudStoreDidImport {
@@ -177,6 +183,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3LoanCalcCurrencyCodeChanged object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
 
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
@@ -210,6 +217,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		[self leftBarButtonAppsButton];
 	}
     [self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/5665624549" keywords:nil gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
+
+	if ([self isMovingToParentViewController]) {
+		self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

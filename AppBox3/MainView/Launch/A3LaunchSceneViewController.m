@@ -89,6 +89,13 @@
 		[self.lunarImage setHidden:YES];
 		[self.lunarLineView setHidden:YES];
 	}
+	for (UIView *view in self.contentView.subviews) {
+		for (NSLayoutConstraint *constraint in view.constraints) {
+			if (constraint.firstItem == view && constraint.firstAttribute == NSLayoutAttributeHeight && constraint.constant <= 1) {
+				constraint.constant = 1/[[UIScreen mainScreen] scale];
+			}
+		}
+	}
 }
 
 - (CGFloat)topOffset {

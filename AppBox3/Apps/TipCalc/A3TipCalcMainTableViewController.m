@@ -60,7 +60,6 @@ A3TipCalcHistorySelectDelegate, A3JHSelectTableViewControllerProtocol, A3TableVi
 A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewControllerProtocol, UIPopoverPresentationControllerDelegate
 >
 
-@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) A3JHTableViewRootElement *tableDataSource;
 @property (nonatomic, strong) NSArray * tableSectionTitles;
 @property (nonatomic, strong) CellTextInputBlock cellTextInputBeginBlock;
@@ -85,6 +84,15 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 	A3TableViewInputElement *_taxElement;
 
 	BOOL _barButtonEnabled;
+}
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+	self = [super initWithStyle:UITableViewStyleGrouped];
+	if (self) {
+
+	}
+
+	return self;
 }
 
 - (A3TipCalcDataManager *)dataManager {
@@ -114,7 +122,11 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[self registerContentSizeCategoryDidChangeNotification];
-	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+}
+
+- (void)keyboardDidHide:(NSNotification *)notification {
+	self.tableView.contentInset = UIEdgeInsetsMake(64, 0, [self bannerView] ? 50 : 0, 0);
 }
 
 /*! Tip Calculator 의 경우에는 KeyValueStore 에는 CurrencyCode 만 저장이 된다.
@@ -137,6 +149,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 
 - (void)removeObserver {
 	FNLOG();
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
@@ -156,6 +169,10 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+
+	if ([self isMovingToParentViewController]) {
+		self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+	}
 
 	[self enableControls:YES];
 }
@@ -214,15 +231,6 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 - (void)initialize {
 	_barButtonEnabled = YES;
 
-	_tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
-	_tableView.dataSource = self;
-	_tableView.delegate = self;
-	[self.view addSubview:_tableView];
-	
-	[_tableView makeConstraints:^(MASConstraintMaker *make) {
-		make.edges.equalTo(self.view);
-	}];
-	
     [self makeBackButtonEmptyArrow];
 	
 	if (IS_IPAD || IS_PORTRAIT) {
@@ -234,8 +242,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
     [self rightBarButtons];
     self.title = NSLocalizedString(A3AppName_TipCalculator, nil);
 
-	self.automaticallyAdjustsScrollViewInsets = NO;
-	self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+	self.automaticallyAdjustsScrollViewInsets = YES;
 	
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.showsHorizontalScrollIndicator = NO;

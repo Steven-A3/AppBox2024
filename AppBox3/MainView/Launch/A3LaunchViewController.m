@@ -59,21 +59,21 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 	backgroundImageView.image = [UIImage imageNamed:[[A3AppDelegate instance] getLaunchImageName]];
 	[self.view addSubview:backgroundImageView];
 
-	if ([[A3AppDelegate instance] shouldMigrateV1Data]) {
-		[[A3UserDefaults standardUserDefaults] setBool:NO forKey:A3UserDefaultsDidShowWhatsNew_3_0];
-		[[A3UserDefaults standardUserDefaults] synchronize];
-	}
-
-	if (_showAsWhatsNew || ![[A3UserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowWhatsNew_3_0]) {
-		_sceneNumber = 0;
-
-		_launchStoryboard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Launch_iPhone" : @"Launch_iPad" bundle:nil];
-		_currentSceneViewController = [_launchStoryboard instantiateViewControllerWithIdentifier:@"LaunchScene0"];
-		_currentSceneViewController.sceneNumber = _sceneNumber;
-		_currentSceneViewController.delegate = self;
-		[self.view addSubview:_currentSceneViewController.view];
-		[self addChildViewController:_currentSceneViewController];
-	}
+//	if ([[A3AppDelegate instance] shouldMigrateV1Data]) {
+//		[[A3UserDefaults standardUserDefaults] setBool:NO forKey:A3UserDefaultsDidShowWhatsNew_3_0];
+//		[[A3UserDefaults standardUserDefaults] synchronize];
+//	}
+//
+//	if (_showAsWhatsNew || ![[A3UserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowWhatsNew_3_0]) {
+//		_sceneNumber = 0;
+//
+//		_launchStoryboard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Launch_iPhone" : @"Launch_iPad" bundle:nil];
+//		_currentSceneViewController = [_launchStoryboard instantiateViewControllerWithIdentifier:@"LaunchScene0"];
+//		_currentSceneViewController.sceneNumber = _sceneNumber;
+//		_currentSceneViewController.delegate = self;
+//		[self.view addSubview:_currentSceneViewController.view];
+//		[self addChildViewController:_currentSceneViewController];
+//	}
 }
 
 - (void)didReceiveMemoryWarning
@@ -85,54 +85,34 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-    if (_migrationIsInProgress) return;
-    
 	if ([self isMovingToParentViewController] ) {
 		A3AppDelegate *appDelegate = [A3AppDelegate instance];
 		A3MainMenuTableViewController *mainMenuTableViewController = [[A3AppDelegate instance] mainMenuViewController];
-		if (!_showAsWhatsNew && [[A3UserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowWhatsNew_3_0]) {
-            mainMenuTableViewController.pushClockViewControllerOnPasscodeFailure = YES;
-
-			if (![appDelegate showLockScreen]) {
-				[appDelegate updateStartOption];
-				if ([[A3AppDelegate instance] startOptionOpenClockOnce] ||
-					![[[A3AppDelegate instance] mainMenuViewController] openRecentlyUsedMenu:YES]) {
-					[[A3AppDelegate instance] setStartOptionOpenClockOnce:NO];
-					[mainMenuTableViewController openClockApp];
-				}
-			}
-			[appDelegate downloadDataFiles];
-			[self askRestorePurchase];
-		}
-		else
-		{
-			[self.navigationController setNavigationBarHidden:YES animated:NO];
-			[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
-			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
-			
-			UIImage *image = [UIImage new];
-			[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
-			[self.navigationController.navigationBar setShadowImage:image];
-			
-			if ([appDelegate shouldMigrateV1Data]) {
-                [_currentSceneViewController hideButtons];
-
-                _migrationIsInProgress = YES;
-				self.migrationManager = [[A3DataMigrationManager alloc] init];
-				self.migrationManager.delegate = self;
-				if ([_migrationManager walletDataFileExists] && ![_migrationManager walletDataWithPassword:nil]) {
-					_migrationManager.delegate = self;
-					[_migrationManager askWalletPassword];
-				} else {
-					[_migrationManager migrateV1DataWithPassword:nil];
-				}
+		
+		mainMenuTableViewController.pushClockViewControllerOnPasscodeFailure = YES;
+		
+		if (!_migrationIsInProgress && [appDelegate shouldMigrateV1Data]) {
+			_migrationIsInProgress = YES;
+			self.migrationManager = [[A3DataMigrationManager alloc] init];
+			self.migrationManager.delegate = self;
+			if ([_migrationManager walletDataFileExists] && ![_migrationManager walletDataWithPassword:nil]) {
+				_migrationManager.delegate = self;
+				[_migrationManager askWalletPassword];
 			} else {
-                [[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidShowWhatsNew_3_0];
-                [[A3UserDefaults standardUserDefaults] synchronize];
-                
-				[appDelegate downloadDataFiles];
+				[_migrationManager migrateV1DataWithPassword:nil];
 			}
 		}
+		
+		if (![appDelegate showLockScreen]) {
+			[appDelegate updateStartOption];
+			if ([[A3AppDelegate instance] startOptionOpenClockOnce] ||
+				![[[A3AppDelegate instance] mainMenuViewController] openRecentlyUsedMenu:YES]) {
+				[[A3AppDelegate instance] setStartOptionOpenClockOnce:NO];
+				[mainMenuTableViewController openClockApp];
+			}
+		}
+		[appDelegate downloadDataFiles];
+		[self askRestorePurchase];
 	}
 }
 
@@ -149,86 +129,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kA3ApplicationLastRunVersion];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
-    [appDelegate showLockScreen];
-	[appDelegate downloadDataFiles];
-    
     _migrationIsInProgress = NO;
-}
-
-- (void)useICloudButtonPressedInViewController:(UIViewController *)viewController {
-	if (!_cloudButtonUsed) {
-		_cloudButtonUsed = YES;
-		[_currentSceneViewController.rightButton setTitle:NSLocalizedString(@"Continue", @"Continue") forState:UIControlStateNormal];
-		[_currentSceneViewController.leftButton setTitle:NSLocalizedString(@"Use AppBox Pro", @"Use AppBox Pro") forState:UIControlStateNormal];
-		[_currentSceneViewController.leftButton removeTarget:_currentSceneViewController action:NULL forControlEvents:UIControlEventTouchUpInside];
-		[_currentSceneViewController.leftButton addTarget:_currentSceneViewController action:NSSelectorFromString(@"useAppBoxProAction:") forControlEvents:UIControlEventTouchUpInside];
-
-		if (![[A3SyncManager sharedSyncManager] isCloudAvailable]) {
-			[self alertCloudNotEnabled];
-			return;
-		}
-
-		NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
-		[keyValueStore synchronize];
-
-		if (![[A3SyncManager sharedSyncManager] canSyncStart]) return;
-
-		[[A3AppDelegate instance] setCloudEnabled:YES ];
-	} else {
-		[self continueButtonPressedInViewController:_currentSceneViewController];
-	}
-}
-
-- (void)continueButtonPressedInViewController:(UIViewController *)viewController {
-	_sceneNumber++;
-	A3LaunchSceneViewController *nextSceneViewController = [_launchStoryboard instantiateViewControllerWithIdentifier:[NSString stringWithFormat:@"LaunchScene%ld", (long) _sceneNumber]];
-	nextSceneViewController.sceneNumber = _sceneNumber;
-	nextSceneViewController.delegate = self;
-	nextSceneViewController.showAsWhatsNew = _showAsWhatsNew;
-
-	self.view.backgroundColor = [nextSceneViewController.view backgroundColor];
-	CGRect currentViewFrame = _currentSceneViewController.view.frame;
-
-	nextSceneViewController.view.frame = CGRectMake(currentViewFrame.size.width, 0, currentViewFrame.size.width, currentViewFrame.size.height);
-	[self.view addSubview:nextSceneViewController.view];
-
-	[UIView animateWithDuration:1.0
-						  delay:0.0
-		 usingSpringWithDamping:.8
-		  initialSpringVelocity:6.0
-						options:UIViewAnimationOptionCurveEaseIn
-					 animations:^{
-						 nextSceneViewController.view.frame = currentViewFrame;
-					 }
-			completion:^(BOOL finished) {
-				[_currentSceneViewController.view removeFromSuperview];
-				[_currentSceneViewController removeFromParentViewController];
-				_currentSceneViewController = nil;
-
-				[self addChildViewController:nextSceneViewController];
-				_currentSceneViewController = nextSceneViewController;
-			}
-	];
-}
-
-- (void)useAppBoxButtonPressedInViewController:(UIViewController *)viewController {
-	if (!_showAsWhatsNew) {
-		[viewController.view removeFromSuperview];
-		_currentSceneViewController = nil;
-		_launchStoryboard = nil;
-
-		A3AppDelegate *appDelegate = [A3AppDelegate instance];
-		appDelegate.firstRunAfterInstall = NO;
-		[[appDelegate mainMenuViewController] openClockApp];
-		
-		[self askRestorePurchase];
-	} else {
-		[self dismissViewControllerAnimated:YES completion:nil];
-	}
-}
-
-- (BOOL)hidesNavigationBar {
-	return YES;
 }
 
 #pragma mark - Ask Restore Purchase
