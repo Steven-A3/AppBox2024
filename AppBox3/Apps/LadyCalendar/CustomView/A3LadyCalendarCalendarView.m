@@ -211,14 +211,16 @@
 
 - (void)updateDates
 {
-    _year = [A3DateHelper yearFromDate:_dateMonth];
-    _month = [A3DateHelper monthFromDate:_dateMonth];
+	NSDateComponents *components = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitYear|NSCalendarUnitMonth fromDate:_dateMonth];
+    _year = components.year;
+    _month = components.month;
     NSDate *date = [NSDate date];
-    if ( _year == [A3DateHelper yearFromDate:date] && _month == [A3DateHelper monthFromDate:date] )
+	components = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
+    if ( _year == components.year && _month == components.month )
         _isCurrentMonth = YES;
     else
         _isCurrentMonth = NO;
-    _today = [A3DateHelper dayFromDate:date];
+    _today = components.day;
 }
 
 - (void)setDateMonth:(NSDate *)dateMonth
@@ -230,8 +232,11 @@
 
 - (void)addLineFromDate:(NSDate*)stDate endDate:(NSDate*)edDate toArray:(NSMutableArray*)array withColor:(UIColor*)color isStartMargin:(BOOL)isStartMargin isEndMargin:(BOOL)isEndMargin
 {
-    NSInteger stDay = [A3DateHelper dayFromDate:stDate];
-    NSInteger edDay = [A3DateHelper dayFromDate:edDate];
+	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
+	NSDateComponents *components = [calendar components:NSCalendarUnitDay fromDate:stDate];
+    NSInteger stDay = components.day;
+	components = [calendar components:NSCalendarUnitDay fromDate:edDate];
+    NSInteger edDay = components.day;
     BOOL unlinkedAtLastWeekday = NO;
 
 	// TODO: Locale 고려한 년 월 표시
@@ -245,7 +250,6 @@
     if ( [endMonthStr integerValue] > [curMonthStr integerValue] ) {
         edDay = [A3DateHelper lastDaysOfMonth:_dateMonth];
 
-		NSCalendar *calendar = [[A3AppDelegate instance] calendar];
         NSDateComponents *dateComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:edDate];
         dateComp.day = 1;
         NSDate *firstDateOfMonth = [calendar dateFromComponents:dateComp];
@@ -313,10 +317,9 @@
 
 - (void)addCircleAtDay:(NSDate *)date color:(UIColor *)circleColor isAlphaCircleShow:(BOOL)isAlphaCircleShow alignment:(NSTextAlignment)alignment toArray:(NSMutableArray*)array
 {
-    NSInteger day = [A3DateHelper dayFromDate:date];
-//    if ( [A3DateHelper monthFromDate:date] != _month )
-//        return;
-    
+	NSDateComponents *components = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitDay fromDate:date];
+	NSInteger day = components.day;
+	
     NSInteger week = ((day-1) + _firstDayStartIndex) / 7;
     NSInteger weekday = ((day-1) + _firstDayStartIndex) % 7;
     
@@ -377,7 +380,11 @@
 		UIColor *greenColor = [UIColor colorWithRed:44.0/255.0 green:201.0/255.0 blue:144.0/255.0 alpha:alpha];
 		UIColor *yellowColor = [UIColor colorWithRed:227.0/255.0 green:186.0/255.0 blue:5.0/255.0 alpha:alpha];
 
-		if ( [A3DateHelper monthFromDate:period.startDate] == _month || [A3DateHelper monthFromDate:period.endDate] == _month ) {
+		NSDateComponents *startDateComponents = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitMonth fromDate:period.startDate];
+		NSDateComponents *endDateComponents = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitMonth fromDate:period.endDate];
+		NSDateComponents *prevOvulationComponents = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitMonth fromDate:prevOvulationDate];
+		NSDateComponents *pregnantStartDateComponents = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitMonth fromDate:pregnantStartDate];
+		if ( startDateComponents.month == _month || endDateComponents.month == _month ) {
 			[self addLineFromDate:period.startDate
                           endDate:period.endDate
                           toArray:_redLines
@@ -385,29 +392,32 @@
                     isStartMargin:YES
                       isEndMargin:YES];
             
-			if ( [A3DateHelper monthFromDate:period.startDate] == _month )
+			if ( startDateComponents.month == _month )
 				[self addCircleAtDay:period.startDate color:[UIColor colorWithRed:252.0 / 255.0 green:96.0 / 255.0 blue:66.0 / 255.0 alpha:alphaForRed] isAlphaCircleShow:NO alignment:NSTextAlignmentLeft toArray:_circleArray];
-			if ( [A3DateHelper monthFromDate:period.endDate] == _month )
+			if ( endDateComponents.month == _month )
 				[self addCircleAtDay:period.endDate color:[UIColor colorWithRed:252.0 / 255.0 green:96.0 / 255.0 blue:66.0 / 255.0 alpha:alphaForRed] isAlphaCircleShow:NO alignment:NSTextAlignmentRight toArray:_circleArray];
 		}
 
-		if ([A3DateHelper monthFromDate:pregnantStartDate] == _month || [A3DateHelper monthFromDate:prevOvulationDate] == _month ) {
+		if (pregnantStartDateComponents.month == _month || prevOvulationComponents.month == _month ) {
 			[self addLineFromDate:pregnantStartDate endDate:prevOvulationDate toArray:_greenLines withColor:greenColor isStartMargin:YES isEndMargin:NO];
-			if ([A3DateHelper monthFromDate:pregnantStartDate] == _month )
+			if (pregnantStartDateComponents.month == _month )
 				[self addCircleAtDay:pregnantStartDate color:[UIColor colorWithRed:44.0 / 255.0 green:201.0 / 255.0 blue:144.0 / 255.0 alpha:alpha] isAlphaCircleShow:NO alignment:NSTextAlignmentLeft toArray:_circleArray];
 		}
-		if ([A3DateHelper monthFromDate:nextOvulationDate] == _month || [A3DateHelper monthFromDate:pregnantEndDate] == _month ) {
+		NSDateComponents *nextOvulationComponents = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitMonth fromDate:nextOvulationDate];
+		NSDateComponents *pregnantEndComponents = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitMonth fromDate:pregnantEndDate];
+		if (nextOvulationComponents.month == _month || pregnantEndComponents.month == _month ) {
 			[self addLineFromDate:nextOvulationDate
                           endDate:pregnantEndDate
                           toArray:_greenLines
                         withColor:greenColor
                     isStartMargin:NO
-                      isEndMargin:[A3DateHelper monthFromDate:nextOvulationDate] != [A3DateHelper monthFromDate:pregnantEndDate] ? NO : YES];
+                      isEndMargin:nextOvulationComponents.month != pregnantEndComponents.month ? NO : YES];
             
-			if ([A3DateHelper monthFromDate:pregnantEndDate] == _month )
+			if (pregnantEndComponents.month == _month )
 				[self addCircleAtDay:pregnantEndDate color:[UIColor colorWithRed:44.0 / 255.0 green:201.0 / 255.0 blue:144.0 / 255.0 alpha:alpha] isAlphaCircleShow:NO alignment:NSTextAlignmentRight toArray:_circleArray];
 		}
-		if ( [A3DateHelper monthFromDate:ovulationDate] == _month ) {
+		NSDateComponents *ovulationComponents = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitMonth fromDate:ovulationDate];
+		if ( ovulationComponents.month == _month ) {
 			[self addLineFromDate:ovulationDate endDate:ovulationDate toArray:_yellowLines withColor:yellowColor isStartMargin:NO isEndMargin:NO];
 			[self addCircleAtDay:ovulationDate color:[UIColor colorWithRed:227.0 / 255.0 green:186.0 / 255.0 blue:5.0 / 255.0 alpha:alpha] isAlphaCircleShow:YES alignment:NSTextAlignmentCenter toArray:_circleArray];
 		}

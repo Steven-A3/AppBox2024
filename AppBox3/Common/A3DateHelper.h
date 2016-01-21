@@ -13,9 +13,6 @@
 + (NSString*)dateStringFromDate:(NSDate*)date;
 + (NSString*)dateStringFromDate:(NSDate*)date withFormat:(NSString*)format;
 
-+ (NSInteger)yearFromDate:(NSDate*)date;
-+ (NSInteger)monthFromDate:(NSDate*)date;
-+ (NSInteger)dayFromDate:(NSDate*)date;
 + (NSInteger)weekdayFromDate:(NSDate*)date;
 
 + (NSInteger)diffDaysFromDate:(NSDate*)fromDate toDate:(NSDate*)toDate;

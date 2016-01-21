@@ -26,30 +26,6 @@
 	return [df stringFromDate:date];
 }
 
-+ (NSInteger)yearFromDate:(NSDate*)date
-{
-	NSDateFormatter *df = [[NSDateFormatter alloc] init];
-	[df setDateFormat:@"yyyy"];
-	NSString *str = [df stringFromDate:date];
-	return [str intValue];
-}
-
-+ (NSInteger)monthFromDate:(NSDate*)date
-{
-	NSDateFormatter *df = [[NSDateFormatter alloc] init];
-	[df setDateFormat:@"MM"];
-	NSString *str = [df stringFromDate:date];
-	return [str intValue];
-}
-
-+ (NSInteger)dayFromDate:(NSDate*)date
-{
-	NSDateFormatter *df = [[NSDateFormatter alloc] init];
-	[df setDateFormat:@"dd"];
-	NSString *str = [df stringFromDate:date];
-	return [str intValue];
-}
-
 + (NSInteger)weekdayFromDate:(NSDate*)date
 {
     NSDateComponents *comp = [[[A3AppDelegate instance] calendar] components:NSWeekdayCalendarUnit fromDate:date];
@@ -282,7 +258,8 @@
 + (NSInteger)numberOfWeeksOfMonth:(NSDate*)month
 {
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
-	NSDate *startDate = [A3DateHelper dateFromYear:[A3DateHelper yearFromDate:month] month:[A3DateHelper monthFromDate:month] day:1 hour:12 minute:0 second:0];
+	NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth fromDate:month];
+	NSDate *startDate = [A3DateHelper dateFromYear:components.year month:components.month day:1 hour:12 minute:0 second:0];
 	NSRange range = [calendar rangeOfUnit:NSWeekCalendarUnit inUnit:NSMonthCalendarUnit forDate:startDate];
 	
 	return range.length;
@@ -291,7 +268,8 @@
 + (NSInteger)lastDaysOfMonth:(NSDate*)month
 {
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
-	NSDate *startDate = [A3DateHelper dateFromYear:[A3DateHelper yearFromDate:month] month:[A3DateHelper monthFromDate:month] day:1 hour:12 minute:0 second:0];
+	NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth fromDate:month];
+	NSDate *startDate = [A3DateHelper dateFromYear:components.year month:components.month day:1 hour:12 minute:0 second:0];
 	NSRange range = [calendar rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:startDate];
 	
 	return range.length;

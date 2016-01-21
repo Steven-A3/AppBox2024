@@ -75,7 +75,7 @@
 - (void)setDate:(NSDate *)date
 {
     _date = date;
-    _dateLabelTop.text = [NSString stringWithFormat:@"%ld", (long)[A3DateHelper dayFromDate:date]];
+    _dateLabelTop.text = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:date withFormat:@"dd"]];
     _dateLabelBottom.text = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:date withFormat:@"EEE"]];
 }
 

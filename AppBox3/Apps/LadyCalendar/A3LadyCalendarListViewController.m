@@ -76,7 +76,8 @@
     NSMutableArray *groupedArray = [NSMutableArray array];
     NSMutableDictionary *groupInfo = [NSMutableDictionary dictionary];
     for (LadyCalendarPeriod *item in array) {
-        NSInteger year = [A3DateHelper yearFromDate:item.startDate];
+		NSDateComponents *components = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitYear fromDate:item.startDate];
+        NSInteger year = components.year;
         NSString *key = [NSString stringWithFormat:@"%ld", (long)year];
         NSMutableArray *items = [groupInfo objectForKey:key];
         if ( items == nil ) {

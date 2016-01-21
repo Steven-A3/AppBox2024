@@ -67,6 +67,8 @@ A3CalendarViewDelegate>
 	[super viewDidLoad];
 	// Do any additional setup after loading the view from its nib.
 	
+	self.collectionView.frame = [[[A3AppDelegate instance] window] bounds];
+	
 	self.title = NSLocalizedString(A3AppName_LadiesCalendar, nil);
 
 	if (IS_IPAD || IS_PORTRAIT) {
@@ -175,12 +177,12 @@ A3CalendarViewDelegate>
 
 	_chartBarButton.enabled = ([self.dataManager numberOfPeriodsWithAccountID:[self.dataManager currentAccount].uniqueID] > 0);
 
-	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+	dispatch_async(dispatch_get_main_queue(), ^{
 		if (_isBeingClose) return;
-
+		
 		[self setupNavigationTitle];
 		[self.collectionView reloadData];
-
+		
 		NSDate *currentWatchingDate = [self.dataManager currentAccount].watchingDate;
 		if (!currentWatchingDate) {
 			LadyCalendarPeriod *lastPeriod = [[_dataManager periodListSortedByStartDateIsAscending:YES] lastObject];
@@ -191,11 +193,11 @@ A3CalendarViewDelegate>
 				currentWatchingDate = [A3DateHelper dateMakeMonthFirstDayAtDate:[lastPeriod startDate]];
 			}
 		}
-
+		
 		_currentMonth = currentWatchingDate;
-
+		
 		[self.dataManager setWatchingDateForCurrentAccount:currentWatchingDate];
-
+		
 		[self moveToCurrentWatchingDate];
 		[self updateCurrentMonthLabel];
 	});
@@ -480,12 +482,14 @@ A3CalendarViewDelegate>
 }
 
 - (void)scrollToDate:(NSDate *)date {
-	NSInteger year = [A3DateHelper yearFromDate:date];
-	NSInteger month = [A3DateHelper monthFromDate:date];
+	NSDateComponents *components = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitYear|NSCalendarUnitMonth fromDate:date];
+	NSInteger year = components.year;
+	NSInteger month = components.month;
 	if (year < _startYear) {
         date = [self.dataManager startDateForCurrentAccount];
-        year = [A3DateHelper yearFromDate:date];
-        month = [A3DateHelper monthFromDate:date];
+		components = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitYear|NSCalendarUnitMonth fromDate:date];
+		year = components.year;
+		month = components.month;
     }
 
 	NSInteger section = year - _startYear;
@@ -565,8 +569,8 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
     self.instructionViewController = nil;
 }
 
-
 #pragma mark - UICollectionViewDataSource
+
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
     return  (_endYear - _startYear) + 1;

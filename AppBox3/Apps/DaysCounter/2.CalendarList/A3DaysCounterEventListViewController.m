@@ -514,7 +514,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
     ((A3DaysCounterEventListSectionHeader *)headerView).monthLeadingConst.constant = IS_IPHONE ? 15 : 28;
     
     NSDate *date = [dict objectForKey:EventKey_Date];
-    yearLabel.text = [NSString stringWithFormat:@"%ld", (long)[A3DateHelper yearFromDate:date]];
+    yearLabel.text = [A3DateHelper dateStringFromDate:date withFormat:@"yyyy"];
     monthLabel.text = [A3DateHelper dateStringFromDate:date withFormat:@"MMMM"];
     
     return headerView;
