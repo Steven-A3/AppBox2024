@@ -122,6 +122,11 @@ NSString *const A3SyncManagerEmptyObject = @"(!_^_!Empty!_^_!_#+129)";
 	[[A3UserDefaults standardUserDefaults] setObject:userDefaultsFormat forKey:key];
 	[[A3UserDefaults standardUserDefaults] synchronize];
 
+	if ([key isEqualToString:A3MainMenuDataEntityAllMenu] ||
+		[key isEqualToString:A3MainMenuDataEntityFavorites]) {
+		return;
+	}
+	
 	if (state == A3DataObjectStateModified && [self isCloudEnabled]) {
 		NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
 		[keyValueStore setObject:userDefaultsFormat forKey:key];

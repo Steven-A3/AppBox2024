@@ -274,13 +274,7 @@ NSString *const A3AppName_Settings = @"Settings";
 			modifiedDictionary[kA3AppsExpandableChildren] = newArray;
 			dictionary = modifiedDictionary;
 
-			NSDictionary *userDefaultsFormat = @{
-					A3KeyValueDBDataObject : modifiedDictionary,
-					A3KeyValueDBState : @(A3DataObjectStateModified),
-					A3KeyValueDBUpdateDate : [NSDate date]
-			};
-			[[A3UserDefaults standardUserDefaults] setObject:userDefaultsFormat forKey:A3MainMenuDataEntityFavorites];
-			[[A3UserDefaults standardUserDefaults] synchronize];
+			[[A3SyncManager sharedSyncManager] setObject:dictionary forKey:A3MainMenuDataEntityFavorites state:A3DataObjectStateInitialized];
 		}
 	}
     [self updateApplicationShortcutItems];

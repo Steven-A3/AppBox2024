@@ -128,6 +128,8 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 	[self prepareDirectories];
 	[A3SyncManager sharedSyncManager];
 
+	[[NSUbiquitousKeyValueStore defaultStore] removeObjectForKey:A3MainMenuDataEntityAllMenu];
+	[[NSUbiquitousKeyValueStore defaultStore] removeObjectForKey:A3MainMenuDataEntityFavorites];
 	[[NSUbiquitousKeyValueStore defaultStore] synchronize];
 
 	[self setupContext];
