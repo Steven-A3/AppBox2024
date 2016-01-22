@@ -221,6 +221,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	if ([self isMovingToParentViewController]) {
 		self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
 	}
+	[self keyboardDidHide:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -808,7 +809,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	_isShowMoreMenu = NO;
 
 	[self rightButtonMoreButton];
-	[self dismissMoreMenuView:_moreMenuView pullDownView:self.tableView];
+	[self dismissMoreMenuView:_moreMenuView pullDownView:self.tableView completion:^{
+		[self keyboardDidHide:nil];
+	}];
 	if (gestureRecognizer) {
 		[self.view removeGestureRecognizer:gestureRecognizer];
 	}

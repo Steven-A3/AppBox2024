@@ -86,7 +86,6 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 	BOOL _barButtonEnabled;
 }
 
-
 - (instancetype)init {
 	self = [super initWithStyle:UITableViewStyleGrouped];
 	if (self) {
@@ -1150,7 +1149,9 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 	_isShowMoreMenu = NO;
 
 	[self rightButtonMoreButton];
-	[self dismissMoreMenuView:_moreMenuView pullDownView:self.view];
+	[self dismissMoreMenuView:_moreMenuView pullDownView:self.view completion:^{
+		[self keyboardDidHide:nil];
+	}];
 	[self.view removeGestureRecognizer:gestureRecognizer];
 }
 

@@ -391,7 +391,7 @@ NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
 	return clippingView;
 }
 
-- (void)dismissMoreMenuView:(UIView *)moreMenuView pullDownView:(UIView *)pullDownView {
+- (void)dismissMoreMenuView:(UIView *)moreMenuView pullDownView:(UIView *)pullDownView completion:(void (^)())completion {
 	UIView *menuView = moreMenuView.subviews[0];
     
 	[UIView animateWithDuration:0.3 animations:^{
@@ -412,6 +412,9 @@ NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
 	} completion:^(BOOL finished) {
 		[moreMenuView removeFromSuperview];
 		[self.navigationItem.leftBarButtonItem setEnabled:YES];
+		if (completion) {
+			completion();
+		}
 	}];
 }
 

@@ -120,7 +120,8 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 		} else {
 			pullDownView = _pickerStyleViewController.view;
 		}
-		[self dismissMoreMenuView:_moreMenuView pullDownView:pullDownView];
+		[self dismissMoreMenuView:_moreMenuView pullDownView:pullDownView completion:^{
+		}];
 	}
 
 	[[NSUserDefaults standardUserDefaults] setInteger:control.selectedSegmentIndex forKey:A3CurrencyConverterSelectedViewIndex];
@@ -237,7 +238,8 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 	
 	[self.view removeGestureRecognizer:gestureRecognizer];
 	[self rightButtonMoreButton];
-	[self dismissMoreMenuView:_moreMenuView pullDownView:[self pullDownView]];
+	[self dismissMoreMenuView:_moreMenuView pullDownView:[self pullDownView] completion:^{
+	}];
 }
 
 - (UIView *)pullDownView {

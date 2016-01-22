@@ -59,7 +59,8 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 - (void)addFourButtons:(NSArray *)buttons toView:(UIView *)view;
 - (UIView *)moreMenuViewWithButtons:(NSArray *)buttonsArray;
 - (UIView *)presentMoreMenuWithButtons:(NSArray *)buttons pullDownView:(UIView *)pullDownView;
-- (void)dismissMoreMenuView:(UIView *)moreMenuView pullDownView:(UIView *)pullDownView;
+
+- (void)dismissMoreMenuView:(UIView *)moreMenuView pullDownView:(UIView *)pullDownView completion:(void (^)())completion;
 - (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer;
 - (UIButton *)shareButton;
 - (void)shareButtonAction:(id)sender;

@@ -417,7 +417,8 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 	_isShowMoreMenu = NO;
 
 	[self rightButtonMoreButton];
-	[self dismissMoreMenuView:_moreMenuView pullDownView:_fmMoveTableView];
+	[self dismissMoreMenuView:_moreMenuView pullDownView:_fmMoveTableView completion:^{
+	}];
 	[self.view removeGestureRecognizer:gestureRecognizer];
 }
 

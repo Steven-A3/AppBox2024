@@ -739,8 +739,10 @@ static NSString *const CellIdentifier = @"holidaysCell";
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-	uint32_t radius = scrollView.contentOffset.y < 100 ? 0 : lerp(scrollView.contentOffset.y / scrollView.contentSize.height, 20, 30);
-	[self.blurImageProcessor asyncBlurWithRadius:radius iterations:5 cancelingLastOperation:YES];
+	if (self.imageView.image && self.blurImageProcessor.imageToProcess) {
+		uint32_t radius = scrollView.contentOffset.y < 100 ? 0 : lerp(scrollView.contentOffset.y / scrollView.contentSize.height, 20, 30);
+		[self.blurImageProcessor asyncBlurWithRadius:radius iterations:5 cancelingLastOperation:YES];
+	}
 
 	if (scrollView.contentOffset.y == 0) {
 		[UIView animateWithDuration:1.0 animations:^{

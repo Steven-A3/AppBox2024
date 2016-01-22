@@ -435,7 +435,8 @@
 	_isShowMoreMenu = NO;
     
 	[self rightButtonMoreButton];
-	[self dismissMoreMenuView:_moreMenuView pullDownView:nil];
+	[self dismissMoreMenuView:_moreMenuView pullDownView:nil completion:^{
+	}];
 	[self.view removeGestureRecognizer:gestureRecognizer];
 }
 

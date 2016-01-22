@@ -220,7 +220,8 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 - (BOOL)resignFirstResponder {
 	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
 	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_ExpenseList]) {
-		[self dismissMoreMenuView:_moreMenuView pullDownView:nil];
+		[self dismissMoreMenuView:_moreMenuView pullDownView:nil completion:^{
+		}];
 		[self.instructionViewController.view removeFromSuperview];
 		self.instructionViewController = nil;
 	}
@@ -518,7 +519,8 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 - (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer {
 	[self rightButtonMoreButton];
-	[self dismissMoreMenuView:_moreMenuView pullDownView:nil];
+	[self dismissMoreMenuView:_moreMenuView pullDownView:nil completion:^{
+	}];
 	[self.view removeGestureRecognizer:gestureRecognizer];
     
     UIEdgeInsets inset = self.tableView.contentInset;

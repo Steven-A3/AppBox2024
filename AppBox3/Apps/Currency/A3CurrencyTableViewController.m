@@ -406,7 +406,8 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 
 	[self.view removeGestureRecognizer:gestureRecognizer];
 	[self rightButtonMoreButton];
-	[self dismissMoreMenuView:_moreMenuView pullDownView:self.tableView];
+	[self dismissMoreMenuView:_moreMenuView pullDownView:self.tableView completion:^{
+	}];
 }
 
 - (void)shareButtonAction:(id)sender {
