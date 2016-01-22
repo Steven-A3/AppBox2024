@@ -153,7 +153,8 @@
 - (void)didSelectSectionTwoAtRow:(NSInteger)row {
 	switch (row) {
 		case 1:{
-			[self presentLaunchViewController];
+			NSURL *url = [NSURL URLWithString:@"http://www.allaboutapps.net/wordpress/archives/category/whats-new"];
+			[self presentWebViewControllerURL:url];
 			break;
 		}
 		case 2: {
@@ -192,6 +193,21 @@
 			break;
 		}
 
+	}
+}
+
+- (void)presentWebViewControllerURL:(NSURL *)url {
+	if (![[A3AppDelegate instance].reachability isReachable]) {
+		[self alertInternetConnectionIsNotAvailable];
+		return;
+	}
+	A3BasicWebViewController *viewController = [[A3BasicWebViewController alloc] init];
+	viewController.url = url;
+	if (IS_IPHONE) {
+		[self.navigationController pushViewController:viewController animated:YES];
+	} else {
+		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		[[[A3AppDelegate instance] rootViewController] presentViewController:navigationController animated:YES completion:NULL];
 	}
 }
 
