@@ -186,6 +186,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
 		[self setupBannerViewForAdUnitID:AdMobAdUnitIDTipCalc keywords:nil gender:kGADGenderUnknown];
 	}
+	[self keyboardDidHide:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
