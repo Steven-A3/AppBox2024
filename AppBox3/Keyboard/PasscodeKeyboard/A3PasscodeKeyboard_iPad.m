@@ -12,16 +12,18 @@
 @implementation A3PasscodeKeyboard_iPad
 
 - (void)viewWillLayoutSubviews {
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	CGFloat col_1, col_2, col_3, col_4, col_5;
 	CGFloat row_1, row_2, row_3, row_4;
 	CGFloat width_small, height_small, width_big, height_big;
 	CGFloat width_extra;
 	
 	if (IS_PORTRAIT) {
-		CGFloat space1 = 16.0, space2 = 30.0;
-		width_big = 124.0, height_big = 118.0;
-		width_small = 108.0, height_small = 57.0;
-		col_1 = (768.0 - (width_small * 5 + space1 * 2 + space2 * 2)) / 2.0;
+		CGFloat scaleX = bounds.size.height != 1024 ? 1.25 : 1.0;
+		CGFloat space1 = 16.0 * scaleX, space2 = 30.0 * scaleX;
+		width_big = 124.0 * scaleX, height_big = 118.0 * scaleX;
+		width_small = 108.0 * scaleX, height_small = 57.0 * scaleX;
+		col_1 = (bounds.size.width - (width_small * 5 + space1 * 2 + space2 * 2)) / 2.0;
 		col_2 = col_1 + width_small + space2;
 		col_3 = col_2 + width_small + space1;
 		col_4 = col_3 + width_small + space1;
@@ -32,11 +34,14 @@
 		row_4 = row_3 + height_small + 6.0;
 		width_extra = width_small * 2 + space1;
 	} else {
-		width_big = 145.0, height_big = 164.0;
-		width_small = 145.0, height_small = 76.0;
-		col_1 = 114.0; col_2 = 275.0; col_3 = 440.0; col_4 = 605.0, col_5 = 790.0;
-		row_1 = 10.0; row_2 = 98.0; row_3 = 182.0; row_4 = 268.0;
-		width_extra = 308.0;
+		CGFloat scaleX = bounds.size.height != 768 ? bounds.size.height / 768 : 1.0;
+		CGFloat positionScaleY = bounds.size.height != 768 ? 1.16 : 1.0;
+		CGFloat heightScaleY = bounds.size.height != 768 ? 1.16 : 1.0;
+		width_big = 145.0 * scaleX, height_big = 164.0 * heightScaleY;
+		width_small = 145.0 * scaleX, height_small = 76.0 * heightScaleY;
+		col_1 = 114.0 * scaleX; col_2 = 275.0 * scaleX; col_3 = 440.0 * scaleX; col_4 = 605.0 * scaleX, col_5 = 790.0 * scaleX;
+		row_1 = 11.0 * positionScaleY; row_2 = 98.0 * positionScaleY; row_3 = 182.0 * positionScaleY; row_4 = 268.0 * positionScaleY;
+		width_extra = 308.0 * scaleX;
 	}
 	
 	[self.num7Button setFrame:CGRectMake(col_2, row_1, width_small, height_small)];

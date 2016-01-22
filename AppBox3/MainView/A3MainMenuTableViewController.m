@@ -443,7 +443,11 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 			nibName = menuElement.nibName_iPhone;
 		}
 
-		targetViewController = [[class alloc] initWithNibName:nibName bundle:nil];
+		if (nibName) {
+			targetViewController = [[class alloc] initWithNibName:nibName bundle:nil];
+		} else {
+			targetViewController = [[class alloc] init];
+		}
 	} else if ([menuElement.storyboardName_iPhone length]) {
 		NSString *storyboardName;
 		if (IS_IPAD) {

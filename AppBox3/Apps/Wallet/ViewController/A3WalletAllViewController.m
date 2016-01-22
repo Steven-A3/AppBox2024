@@ -631,7 +631,13 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
         _mySearchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
 		_mySearchDisplayController.searchResultsTableView.showsVerticalScrollIndicator = NO;
         _mySearchDisplayController.searchResultsTableView.rowHeight = 48;
-        
+		if ([_mySearchDisplayController.searchResultsTableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+			_mySearchDisplayController.searchResultsTableView.cellLayoutMarginsFollowReadableWidth = NO;
+		}
+		if ([_mySearchDisplayController.searchResultsTableView respondsToSelector:@selector(layoutMargins)]) {
+			_mySearchDisplayController.searchResultsTableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+		}
+		
         [_mySearchDisplayController.searchResultsTableView registerClass:[A3WalletListPhotoCell class] forCellReuseIdentifier:A3WalletPhotoCellID];
 
 	}

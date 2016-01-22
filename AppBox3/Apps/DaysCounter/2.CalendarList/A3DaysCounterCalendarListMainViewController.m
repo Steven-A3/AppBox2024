@@ -1044,6 +1044,12 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 		_mySearchDisplayController.searchResultsTableView.dataSource = self;
 		_mySearchDisplayController.searchResultsTableView.showsVerticalScrollIndicator = NO;
         _mySearchDisplayController.searchResultsTableView.tableFooterView = [UIView new];
+		if ([_mySearchDisplayController.searchResultsTableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+			_mySearchDisplayController.searchResultsTableView.cellLayoutMarginsFollowReadableWidth = NO;
+		}
+		if ([_mySearchDisplayController.searchResultsTableView respondsToSelector:@selector(layoutMargins)]) {
+			_mySearchDisplayController.searchResultsTableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+		}
 	}
 	return _mySearchDisplayController;
 }

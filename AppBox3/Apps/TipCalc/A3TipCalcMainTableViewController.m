@@ -86,7 +86,8 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 	BOOL _barButtonEnabled;
 }
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+
+- (instancetype)init {
 	self = [super initWithStyle:UITableViewStyleGrouped];
 	if (self) {
 

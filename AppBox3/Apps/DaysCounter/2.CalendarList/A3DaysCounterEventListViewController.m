@@ -855,6 +855,12 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 		_mySearchDisplayController.searchResultsTableView.showsVerticalScrollIndicator = NO;
         _mySearchDisplayController.searchResultsTableView.tableFooterView = [UIView new];
         _mySearchDisplayController.searchResultsTableView.separatorInset = A3UITableViewSeparatorInset;
+		if ([_mySearchDisplayController.searchResultsTableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+			_mySearchDisplayController.searchResultsTableView.cellLayoutMarginsFollowReadableWidth = NO;
+		}
+		if ([_mySearchDisplayController.searchResultsTableView respondsToSelector:@selector(layoutMargins)]) {
+			_mySearchDisplayController.searchResultsTableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+		}
 	}
 	return _mySearchDisplayController;
 }

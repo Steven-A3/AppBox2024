@@ -98,6 +98,11 @@ static char const *const key_navigationControllerForKeyboard	= "key_navigationCo
 	} else {
 		viewController = [[A3PasscodeKeyboard_iPad alloc] initWithNibName:@"A3PasscodeKeyboard_iPad" bundle:nil];
 	}
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	if (IS_IPHONE) {
+		CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+		viewController.view.bounds = CGRectMake(0, 0, bounds.size.width, 216 * scale);
+	}
 	viewController.keyboardType = A3NumberKeyboardTypePasscode;
 	viewController.delegate = self;
 	return viewController;

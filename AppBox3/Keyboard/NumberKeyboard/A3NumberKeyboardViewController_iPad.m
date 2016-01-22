@@ -38,6 +38,14 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	if (IS_PORTRAIT) {
+		CGFloat scaleY = bounds.size.height != 1024 ? 1.25 : 1.0;
+		self.view.bounds = CGRectMake(0, 0, bounds.size.width, 264 * scaleY);
+	} else {
+		CGFloat scaleY = bounds.size.height != 768 ? bounds.size.height / 768 : 1.0;
+		self.view.bounds = CGRectMake(0, 0, bounds.size.width, 352 * scaleY);
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -75,23 +83,36 @@
 }
 
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	if (IS_PORTRAIT) {
+		CGFloat scaleY = bounds.size.height != 1024 ? 1.25 : 1.0;
+		self.view.bounds = CGRectMake(0, 0, bounds.size.width, 264 * scaleY);
+	} else {
+		CGFloat scaleY = bounds.size.height != 768 ? bounds.size.height / 768 : 1.0;
+		self.view.bounds = CGRectMake(0, 0, bounds.size.width, 352 * scaleY);
+	}
+
 	CGFloat col_1, col_2, col_3, col_4, col_5;
 	CGFloat row_1, row_2, row_3, row_4;
 	CGFloat width_small, height_small, width_big, height_big;
 	if (IS_PORTRAIT) {
-		width_big = 124.0, height_big = 118.0;
-		width_small = 89.0, height_small = 57.0;
-		col_1 = 74.0; col_2 = 237.0; col_3 = 338.0; col_4 = 440.0, col_5 = 570.0;
-		row_1 = 6.0; row_2 = 72.0; row_3 = 137.0; row_4 = 201.0;
+		CGFloat scaleX = bounds.size.height != 1024 ? bounds.size.width / 768 : 1.0;
+		CGFloat scaleY = bounds.size.height != 1024 ? 1.22 : 1.0;
+		width_big = 124.0 * scaleX, height_big = 118.0 * scaleX;
+		width_small = 89.0 * scaleX, height_small = 57.0 * scaleX;
+		col_1 = 74.0 * scaleX; col_2 = 237.0 * scaleX; col_3 = 338.0 * scaleX; col_4 = 440.0 * scaleX; col_5 = 570.0 * scaleX;
+		row_1 = 7.0 * scaleY; row_2 = 72.0 * scaleY; row_3 = 137.0 * scaleY; row_4 = 201.0 * scaleY;
 
-		[_markView setFrame:CGRectMake(755.0, 219.0, 8.0, 24.0)];
+		[_markView setFrame:CGRectMake(755.0 * scaleX, 219.0 * scaleY, 8.0 * scaleX, 24.0 * scaleY)];
 	} else {
-		width_big = 172.0, height_big = 164.0;
-		width_small = 108.0, height_small = 77.0;
-		col_1 = 114.0; col_2 = 332.0; col_3 = 455.0; col_4 = 578.0, col_5 = 735.0;
-		row_1 = 8.0; row_2 = 94.0; row_3 = 179.0; row_4 = 265.0;
+		CGFloat scaleX = bounds.size.height != 768 ? bounds.size.height / 768 : 1.0;
+		CGFloat positionScaleY = bounds.size.height != 768 ? 1.16 : 1.0;
+		width_big = 172.0 * scaleX, height_big = 164.0 * positionScaleY;
+		width_small = 108.0 * scaleX, height_small = 77.0 * positionScaleY;
+		col_1 = 114.0 * scaleX; col_2 = 332.0 * scaleX; col_3 = 455.0 * scaleX; col_4 = 578.0 * scaleX; col_5 = 735.0 * scaleX;
+		row_1 = 8.0 * positionScaleY; row_2 = 94.0 * positionScaleY; row_3 = 179.0 * positionScaleY; row_4 = 265.0 * positionScaleY;
 
-		[_markView setFrame:CGRectMake(999.0, 282.0, 10.0, 24.0)];
+		[_markView setFrame:CGRectMake(999.0 * scaleX, 282.0 * positionScaleY, 10.0 * scaleX, 24.0 * positionScaleY)];
 	}
 	[self.bigButton1 setFrame:CGRectMake(col_1, row_1, width_big, height_big)];
 	[self.bigButton2 setFrame:CGRectMake(col_1, row_3, width_big, height_big)];

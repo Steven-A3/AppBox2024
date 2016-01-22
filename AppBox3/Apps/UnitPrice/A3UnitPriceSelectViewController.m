@@ -212,7 +212,12 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 		_mySearchDisplayController.searchResultsTableView.dataSource = self;
 		_mySearchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.2];
 		_mySearchDisplayController.searchResultsTableView.showsVerticalScrollIndicator = NO;
-        
+		if ([_mySearchDisplayController.searchResultsTableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+			_mySearchDisplayController.searchResultsTableView.cellLayoutMarginsFollowReadableWidth = NO;
+		}
+		if ([_mySearchDisplayController.searchResultsTableView respondsToSelector:@selector(layoutMargins)]) {
+			_mySearchDisplayController.searchResultsTableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+		}
 	}
 	return _mySearchDisplayController;
 }

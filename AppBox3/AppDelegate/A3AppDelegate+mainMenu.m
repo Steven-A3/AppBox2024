@@ -108,15 +108,15 @@ NSString *const A3AppName_Settings = @"Settings";
 						 ]
 				 };
 	NSMutableArray *utilityApps = [@[
-									@{kA3AppsMenuName : A3AppName_Clock, kA3AppsClassName_iPhone : @"A3ClockMainViewController", kA3AppsMenuImageName : @"Clock"},
-									@{kA3AppsMenuName : A3AppName_BatteryStatus, kA3AppsClassName_iPhone : @"A3BatteryStatusMainViewController", kA3AppsMenuImageName : @"BatteryStatus"},
-									@{kA3AppsMenuName : A3AppName_Mirror, kA3AppsClassName_iPhone : @"A3MirrorViewController", kA3AppsNibName_iPhone :@"A3MirrorViewController", kA3AppsMenuImageName : @"Mirror"},
-									@{kA3AppsMenuName : A3AppName_Magnifier, kA3AppsClassName_iPhone : @"A3MagnifierViewController", kA3AppsNibName_iPhone:@"A3MagnifierViewController", kA3AppsMenuImageName : @"Magnifier"},
-									@{kA3AppsMenuName : A3AppName_Flashlight, kA3AppsClassName_iPhone : @"A3FlashViewController", kA3AppsNibName_iPhone:@"A3FlashViewController", kA3AppsMenuImageName : @"Flashlight"},
-									@{kA3AppsMenuName : A3AppName_Random, kA3AppsClassName_iPhone : @"A3RandomViewController", kA3AppsNibName_iPhone:@"A3RandomViewController", kA3AppsMenuImageName : @"Random"},
-									@{kA3AppsMenuName : A3AppName_Ruler, kA3AppsClassName_iPhone : @"A3RulerViewController", kA3AppsMenuImageName : @"Ruler"},
-									@{kA3AppsMenuName : A3AppName_Level, kA3AppsClassName_iPhone : @"InclinometerViewController", kA3AppsMenuImageName : @"Level"},
-									] mutableCopy];
+			@{kA3AppsMenuName : A3AppName_Clock, kA3AppsClassName_iPhone : @"A3ClockMainViewController", kA3AppsMenuImageName : @"Clock"},
+			@{kA3AppsMenuName : A3AppName_BatteryStatus, kA3AppsClassName_iPhone : @"A3BatteryStatusMainViewController", kA3AppsMenuImageName : @"BatteryStatus"},
+			@{kA3AppsMenuName : A3AppName_Mirror, kA3AppsClassName_iPhone : @"A3MirrorViewController", kA3AppsNibName_iPhone :@"A3MirrorViewController", kA3AppsMenuImageName : @"Mirror"},
+			@{kA3AppsMenuName : A3AppName_Magnifier, kA3AppsClassName_iPhone : @"A3MagnifierViewController", kA3AppsNibName_iPhone:@"A3MagnifierViewController", kA3AppsMenuImageName : @"Magnifier"},
+			@{kA3AppsMenuName : A3AppName_Flashlight, kA3AppsClassName_iPhone : @"A3FlashViewController", kA3AppsNibName_iPhone:@"A3FlashViewController", kA3AppsMenuImageName : @"Flashlight"},
+			@{kA3AppsMenuName : A3AppName_Random, kA3AppsClassName_iPhone : @"A3RandomViewController", kA3AppsNibName_iPhone:@"A3RandomViewController", kA3AppsMenuImageName : @"Random"},
+			@{kA3AppsMenuName : A3AppName_Ruler, kA3AppsClassName_iPhone : @"A3RulerViewController", kA3AppsMenuImageName : @"Ruler"},
+			@{kA3AppsMenuName : A3AppName_Level, kA3AppsClassName_iPhone : @"InclinometerViewController", kA3AppsMenuImageName : @"Level"},
+	] mutableCopy];
 	if (IS_IPAD) {
 		[self removeMenu:@"Level" inMenus:utilityApps];
 	}
@@ -164,7 +164,6 @@ NSString *const A3AppName_Settings = @"Settings";
 					}
 					if (hasFlashlight && hasRuler && hasLevel) break;
 				}
-				if (hasFlashlight && hasRuler && hasLevel) break;
 
 				NSMutableArray *newMenus = [section[kA3AppsExpandableChildren] mutableCopy];
 				if (!hasFlashlight) {

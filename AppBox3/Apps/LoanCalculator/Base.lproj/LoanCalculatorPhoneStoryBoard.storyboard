@@ -620,7 +620,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YhY-ow-e5p">
-                                            <rect key="frame" x="0.0" y="27" width="320" height="162"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="216"/>
                                         </pickerView>
                                     </subviews>
                                 </tableViewCellContentView>

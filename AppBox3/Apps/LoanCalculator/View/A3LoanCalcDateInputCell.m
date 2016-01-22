@@ -30,19 +30,22 @@
 {
     [super awakeFromNib];
 
-	[_picker makeConstraints:^(MASConstraintMaker *make) {
+	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+	[_picker remakeConstraints:^(MASConstraintMaker *make) {
 		if (IS_IPHONE) {
 			make.left.equalTo(self.left);
 			make.right.equalTo(self.right);
 			make.centerY.equalTo(self.centerY);
-			make.height.equalTo(@216);
+			make.height.equalTo(@(216 * scale));
 		} else {
 			make.centerX.equalTo(self.centerX);
 			make.centerY.equalTo(self.centerY);
 			make.width.equalTo(@320);
-			make.height.equalTo(@216);
+			make.height.equalTo(@(216 * scale));
 		}
 	}];
+	
+	[self layoutIfNeeded];
 }
 
 @end

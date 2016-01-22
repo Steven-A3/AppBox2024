@@ -79,9 +79,10 @@ enum A3TableElementCellType {
 	BOOL _barButtonEnabled;
 }
 
-- (id)init {
+- (instancetype)init {
 	self = [super initWithStyle:UITableViewStyleGrouped];
 	if (self) {
+		
 	}
 	
 	return self;
