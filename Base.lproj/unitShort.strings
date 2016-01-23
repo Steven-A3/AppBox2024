@@ -367,3 +367,10 @@
 "tons(UK or long)" = "T";
 "tons(US or short)" = "T";
 "tonnes" = "T";
+"°C" = "°C";
+"°F" = "°F";
+"kelvin" = "K";
+"rankine" = "°R";
+"réaumure" = "°Ré";
+"celsius" = "°C";
+"fahrenheit" = "°F";

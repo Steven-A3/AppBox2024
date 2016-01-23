@@ -230,6 +230,11 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
             float celsiusValue = [TemperatureConverter convertToCelsiusFromUnit:sourceUnitName andTemperature:unitHistory.value.floatValue];
             float targetValue = [TemperatureConverter convertCelsius:celsiusValue toUnit:targetUnitName];
             ((UILabel *) cell.leftLabels[index]).text = [self.decimalFormatter stringFromNumber:@(targetValue)];
+			((UILabel *) cell.rightLabels[index]).text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@", nil),
+														  NSLocalizedStringFromTable(sourceUnitName, @"unitShort", nil),
+														  NSLocalizedStringFromTable(targetUnitName, @"unitShort", nil)];
+			FNLOG(@"%@, %@", sourceUnitName, NSLocalizedStringFromTable(sourceUnitName, @"unitShort", nil));
+			FNLOG(@"%@, %@", targetUnitName, NSLocalizedStringFromTable(targetUnitName, @"unitShort", nil));
         }
         else if (categoryID == 8) {
             float targetValue = [self getFuelValue:sourceID value:unitHistory.value.floatValue];
@@ -249,7 +254,7 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
             ((UILabel *) cell.leftLabels[index]).text = [self.decimalFormatter stringFromNumber:@(targetValue)];
             ((UILabel *) cell.rightLabels[index]).text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@", nil),
                                                                                     NSLocalizedStringFromTable(sourceUnitName, @"unitShort", nil),
-                                                                                    NSLocalizedStringFromTable(targetUnitName, @"unitSHort", nil)];
+                                                                                    NSLocalizedStringFromTable(targetUnitName, @"unitShort", nil)];
         }
         else
         {
@@ -272,7 +277,7 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
             else {
                 ((UILabel *) cell.rightLabels[index]).text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@ = %@", @"%@ to %@ = %@"),
                                                                                         NSLocalizedStringFromTable(sourceUnitName, @"unitShort", nil),
-                                                                                        NSLocalizedStringFromTable(targetUnitName, @"unitSHort", nil),
+                                                                                        NSLocalizedStringFromTable(targetUnitName, @"unitShort", nil),
                                                                                         [self.decimalFormatter stringFromNumber:@(rate)]];
             }
         }

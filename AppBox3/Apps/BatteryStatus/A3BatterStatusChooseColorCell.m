@@ -42,7 +42,7 @@
                        [UIColor colorWithRed:198.0/255.0 green:156.0/255.0 blue:109.0/255.0 alpha:1.0],
                        nil];
 
-		CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+		CGFloat scale = IS_IPHONE ? [A3UIDevice scaleToOriginalDesignDimension] : 1.0;
         NSMutableArray * colorViewArray = [NSMutableArray new];
         NSInteger index = 0;
         for (UIColor *aColor in _colorArray) {
@@ -79,7 +79,7 @@
 }
 
 - (void)adjustConstraintLayout {
-	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+	CGFloat scale = IS_IPHONE ? [A3UIDevice scaleToOriginalDesignDimension] : 1.0;
 	NSInteger row;
 	NSInteger column;
 	CGFloat offsetX;

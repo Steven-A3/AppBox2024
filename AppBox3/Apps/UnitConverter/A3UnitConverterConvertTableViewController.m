@@ -1762,7 +1762,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	NSIndexPath *sourceIndexPath = [_fmMoveTableView indexPathForCell:cell];
 	NSIndexPath *targetIndexPath;
 	if (sourceIndexPath.row == 0) {
-		targetIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
+		targetIndexPath = [NSIndexPath indexPathForRow:_adItem ? 3 : 2 inSection:0];
 	} else {
 		targetIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
 	}

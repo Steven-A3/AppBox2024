@@ -11,7 +11,6 @@
 "months(Synodic)" = "mo";
 "km/second" = "km/s";
 "years(Tropical)" = "yr";
-"rankine" = "°R";
 "carats(metric)" = "ct";
 "tea spoons" = "tsp";
 "feet/hour" = "ft/h";
@@ -324,17 +323,14 @@
 "gallon [US]" = "gal";
 "kgf/m²" = "kgf/m²";
 "watt seconds" = "Ws";
-"réaumure" = "°Ré";
 "barleycorns" = "barleycorns";
 "feet(UK&US)" = "ft";
 "mil(Soviet Union)" = "mil";
 "centimeters" = "cm";
 "fluid ounces(US)" = "fl oz";
-"celsius" = "°C";
 "feet/second" = "ft/s";
 "volt/ohm" = "volt/ohm";
 "decimeters" = "dm";
-"kelvin" = "K";
 "kgf/cm²" = "kgf/cm²";
 "picoseconds" = "ps";
 "petabytes" = "PB";
@@ -357,3 +353,11 @@
 "squares(of timber)" = "squares";
 "kg-force meters" = "kgf m";
 "decades" = "decades";
+
+"°C" = "°C";
+"°F" = "°F";
+"kelvin" = "K";
+"rankine" = "°R";
+"réaumure" = "°Ré";
+"celsius" = "°C";
+"fahrenheit" = "°F";

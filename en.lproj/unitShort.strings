@@ -291,8 +291,8 @@
 "yards/hour" = "yd/h";
 "yards/minute" = "yd/m";
 "yards/second" = "yd/s";
-"celsius" = "°C";
-"fahrenheit" = "°F";
+"°C" = "°C";
+"°F" = "°F";
 "kelvin" = "K";
 "rankine" = "°R";
 "réaumure" = "°Ré";
@@ -367,3 +367,5 @@
 "tons(UK or long)" = "T";
 "tons(US or short)" = "T";
 "tonnes" = "T";
+"celsius" = "°C";
+"fahrenheit" = "°F";

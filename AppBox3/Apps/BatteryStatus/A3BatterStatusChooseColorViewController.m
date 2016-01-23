@@ -54,7 +54,7 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+	CGFloat scale = IS_IPHONE ? [A3UIDevice scaleToOriginalDesignDimension] : 1.0;
     return 453.0 * scale;
 }
 
