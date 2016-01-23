@@ -198,6 +198,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     self.tableView.delegate = nil;
     self.tableView.dataSource = nil;
     [self removeObserver];
+	[self.bannerView removeFromSuperview];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -227,6 +228,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
+	[self.bannerView removeFromSuperview];
+	
 	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
 		FNLOG();
 		[self removeObserver];
@@ -2920,6 +2923,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 #pragma mark - AdMob
 
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+	if (self != [self.navigationController visibleViewController]) {
+		[bannerView removeFromSuperview];
+		return;
+	}
 	[self.view.superview addSubview:bannerView];
 
 	UIView *superview = self.view;

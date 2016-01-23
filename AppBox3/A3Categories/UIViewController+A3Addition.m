@@ -789,7 +789,7 @@ NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
  *  @param bannerView <#bannerView description#>
  */
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
-	FNLOG(@"%@", bannerView.adUnitID);
+	[bannerView removeFromSuperview];
 	objc_setAssociatedObject(self, key_adBannerView, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
