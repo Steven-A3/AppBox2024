@@ -42,14 +42,27 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
 
 	[self setupLocale];
-
 	[self.doneButton setTitle:NSLocalizedString(@"DoneButton", nil) forState:UIControlStateNormal];
 
 	CGRect screenBounds = [[UIScreen mainScreen] bounds];
 	self.view.bounds = CGRectMake(0, 0, screenBounds.size.width, [self keyboardHeight]);
+	FNLOGRECT(self.view.bounds);
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	CGRect screenBounds = [[UIScreen mainScreen] bounds];
+	self.view.bounds = CGRectMake(0, 0, screenBounds.size.width, [self keyboardHeight]);
+	FNLOGRECT(self.view.bounds);
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	FNLOGRECT(self.view.bounds);
 }
 
 - (void)didReceiveMemoryWarning

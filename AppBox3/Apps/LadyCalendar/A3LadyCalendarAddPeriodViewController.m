@@ -93,6 +93,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
 	}
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+	[self.tableView registerClass:[A3WalletNoteCell class] forCellReuseIdentifier:A3WalletItemFieldNoteCellID];
 
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 																						  target:self
@@ -100,46 +102,38 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	[self rightBarButtonDoneButton];
 	[self initSectionsArray];
 
-    if ( _isEditMode /*&& ![_periodItem.isPredict boolValue]*/ ) {
+	if ( _isEditMode /*&& ![_periodItem.isPredict boolValue]*/ ) {
 		[self.sectionsArray addObject:@{ItemKey_Items : [NSMutableArray arrayWithArray:@[
-				@{
-						ItemKey_Title : NSLocalizedString(@"Delete Period", @"Delete Period"),
+																						 @{
+                        ItemKey_Title : NSLocalizedString(@"Delete Period", @"Delete Period"),
 						ItemKey_Type : @(PeriodCellType_Delete)
-				}]]}];
-        self.prevPeriod = [_dataManager previousPeriodFromDate:_periodItem.startDate];
-        LadyCalendarPeriod *latestPeriod = [[_dataManager periodListSortedByStartDateIsAscending:YES] lastObject];
-        _isLatestPeriod = [_periodItem.startDate isEqualToDate:latestPeriod.startDate];
+						}]]}];
+		self.prevPeriod = [_dataManager previousPeriodFromDate:_periodItem.startDate];
+		LadyCalendarPeriod *latestPeriod = [[_dataManager periodListSortedByStartDateIsAscending:YES] lastObject];
+		_isLatestPeriod = [_periodItem.startDate isEqualToDate:latestPeriod.startDate];
 	} else {
-        A3LadyCalendarModelManager *modelManager = [A3LadyCalendarModelManager new];
-        NSInteger cycleLength = [modelManager cycleLengthConsideringUserOption];
-
-        self.prevPeriod = [_dataManager lastPeriod];
-
+		A3LadyCalendarModelManager *modelManager = [A3LadyCalendarModelManager new];
+		NSInteger cycleLength = [modelManager cycleLengthConsideringUserOption];
+		
+		self.prevPeriod = [_dataManager lastPeriod];
+		
 		_periodItem = [LadyCalendarPeriod MR_createEntityInContext:[NSManagedObjectContext MR_defaultContext]];
 		_periodItem.updateDate = [NSDate date];
-        _periodItem.cycleLength = cycleLength == 0 ? @28 : @(cycleLength);
+		_periodItem.cycleLength = cycleLength == 0 ? @28 : @(cycleLength);
 		_periodItem.isPredict = @NO;
 		_periodItem.accountID = _dataManager.currentAccount.uniqueID;
-
-        if (_prevPeriod) {
-            _periodItem.startDate = [A3DateHelper dateByAddingDays:cycleLength fromDate:_prevPeriod.startDate];
-            _periodItem.endDate = [A3DateHelper dateByAddingDays:4 fromDate:_periodItem.startDate];
-        } else {
-            _periodItem.startDate = [A3DateHelper dateMake12PM:[NSDate date]];
-            _periodItem.endDate = [A3DateHelper dateByAddingDays:4 fromDate:_periodItem.startDate];
-        }
-
-        NSInteger ovulationDays = 14;
-        _periodItem.ovulation = [A3DateHelper dateByAddingDays:ovulationDays fromDate:_periodItem.startDate];
-        if (self.prevPeriod) {
-            [self calculateCycleLengthFromDate:_periodItem.startDate];
-        }
-    }
-
-	self.tableView.separatorInset = A3UITableViewSeparatorInset;
-
-	[self.tableView registerClass:[A3WalletNoteCell class] forCellReuseIdentifier:A3WalletItemFieldNoteCellID];
-
+		
+		if (_prevPeriod) {
+			_periodItem.startDate = [A3DateHelper dateByAddingDays:cycleLength fromDate:_prevPeriod.startDate];
+			_periodItem.endDate = [A3DateHelper dateByAddingDays:4 fromDate:_periodItem.startDate];
+		} else {
+			_periodItem.startDate = [A3DateHelper dateMake12PM:[NSDate date]];
+			_periodItem.endDate = [A3DateHelper dateByAddingDays:4 fromDate:_periodItem.startDate];
+		}
+		
+		NSInteger ovulationDays = 14;
+		_periodItem.ovulation = [A3DateHelper dateByAddingDays:ovulationDays fromDate:_periodItem.startDate];
+	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
 }
 
@@ -154,6 +148,14 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 {
 	[super viewWillAppear:animated];
 	[self.tableView reloadData];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+
+	if (!_isEditMode && self.prevPeriod) {
+		[self calculateCycleLengthFromDate:_periodItem.startDate];
+	}
 }
 
 - (void)didReceiveMemoryWarning
