@@ -203,6 +203,7 @@
 		68143D7D18E51ABB00569691 /* A3NumberKeyboardSimplePrevNextClearVC_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68143D7B18E51ABB00569691 /* A3NumberKeyboardSimplePrevNextClearVC_iPad.xib */; };
 		68143D7E18E51ABB00569691 /* A3NumberKeyboardSimplePrevNextClearVC_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68143D7C18E51ABB00569691 /* A3NumberKeyboardSimplePrevNextClearVC_iPhone.xib */; };
 		68144BC61743381600FD22CF /* A3PlacemarkBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68144BC51743381600FD22CF /* A3PlacemarkBackgroundView.m */; };
+		681542EB1C57147F0058C0C7 /* A3HexagonButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 681542EA1C57147F0058C0C7 /* A3HexagonButton.m */; };
 		6817825316253640008A6E4B /* A3SegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 6817825216253640008A6E4B /* A3SegmentedControl.m */; };
 		6817830F1902823D003E1BB9 /* A3WalletItemTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6817830E1902823D003E1BB9 /* A3WalletItemTitleCell.m */; };
 		6819A86F18A6092B00E63C8B /* NSDateFormatter+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4255AEBE358EED319031E /* NSDateFormatter+A3Addition.m */; };
@@ -1344,6 +1345,8 @@
 		68143D7C18E51ABB00569691 /* A3NumberKeyboardSimplePrevNextClearVC_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3NumberKeyboardSimplePrevNextClearVC_iPhone.xib; sourceTree = "<group>"; };
 		68144BC41743381600FD22CF /* A3PlacemarkBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3PlacemarkBackgroundView.h; sourceTree = "<group>"; };
 		68144BC51743381600FD22CF /* A3PlacemarkBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3PlacemarkBackgroundView.m; sourceTree = "<group>"; };
+		681542E91C57147F0058C0C7 /* A3HexagonButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3HexagonButton.h; sourceTree = "<group>"; };
+		681542EA1C57147F0058C0C7 /* A3HexagonButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3HexagonButton.m; sourceTree = "<group>"; };
 		6817825116253640008A6E4B /* A3SegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3SegmentedControl.h; sourceTree = "<group>"; };
 		6817825216253640008A6E4B /* A3SegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SegmentedControl.m; sourceTree = "<group>"; };
 		6817830D1902823D003E1BB9 /* A3WalletItemTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletItemTitleCell.h; sourceTree = "<group>"; };
@@ -3363,6 +3366,15 @@
 			path = A3TableViewController;
 			sourceTree = "<group>";
 		};
+		681542E81C57147F0058C0C7 /* Hexagon Menu */ = {
+			isa = PBXGroup;
+			children = (
+				681542E91C57147F0058C0C7 /* A3HexagonButton.h */,
+				681542EA1C57147F0058C0C7 /* A3HexagonButton.m */,
+			);
+			path = "Hexagon Menu";
+			sourceTree = "<group>";
+		};
 		6819A86A18A6084600E63C8B /* Formatter */ = {
 			isa = PBXGroup;
 			children = (
@@ -3904,6 +3916,7 @@
 				68B635BD17B504C100570B09 /* A3RootViewController_iPad.h */,
 				68B635BE17B504C100570B09 /* A3RootViewController_iPad.m */,
 				684E9EF4188A203B00FAA48E /* About */,
+				681542E81C57147F0058C0C7 /* Hexagon Menu */,
 				574B60FE193F69980043FC34 /* Instruction */,
 				68F319F318D83D1F0003BE62 /* Launch */,
 				17D4299D03A949FAB9E57E4D /* Settings */,
@@ -6320,6 +6333,7 @@
 				68F14FF219485E8500159EAD /* A3DaysCounterSetupCalendarCell.m in Sources */,
 				689C9A4A1839CD7F007C97EE /* AFHTTPRequestOperation.m in Sources */,
 				68ADE14A17D83D28009618A7 /* UIViewController+MMDrawerController.m in Sources */,
+				681542EB1C57147F0058C0C7 /* A3HexagonButton.m in Sources */,
 				68236CD6186A8D75006F442B /* A3PasscodeViewController.m in Sources */,
 				6825365018A7AA4C00EAFB84 /* MASConstraint.m in Sources */,
 				68E2A66118D0B1FC00E834D9 /* A3PercentCalcHistoryViewController.m in Sources */,
