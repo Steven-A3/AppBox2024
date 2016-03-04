@@ -307,12 +307,9 @@ NSString *const A3AppName_Settings = @"Settings";
         return;
     NSArray *favoriteMenus = [self favoriteItems];
     NSMutableArray *newShortcutItems = [NSMutableArray new];
-	NSArray *appsHasSeparateIconFor3DTouch = @[A3AppName_CurrencyConverter, A3AppName_DateCalculator, A3AppName_LoanCalculator, A3AppName_Magnifier, A3AppName_PercentCalculator];
+	
     for (NSDictionary *favoriteItem in favoriteMenus) {
 		NSString *iconName = favoriteItem[kA3AppsMenuImageName];
-		if ([appsHasSeparateIconFor3DTouch containsObject:favoriteItem[kA3AppsMenuName]]) {
-			iconName = [iconName stringByAppendingString:@"_3DTouch"];
-		}
         UIApplicationShortcutItem *shortcutItem = [[UIApplicationShortcutItem alloc] initWithType:[NSString stringWithFormat:@"net.allaboutapps.%@", favoriteItem[kA3AppsMenuName]]
                                                                                    localizedTitle:NSLocalizedString(favoriteItem[kA3AppsMenuName], nil)
                                                                                 localizedSubtitle:Nil
