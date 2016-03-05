@@ -81,9 +81,23 @@ extern NSString *const A3AppName_Magnifier;
 extern NSString *const A3AppName_Flashlight;
 extern NSString *const A3AppName_Random;
 extern NSString *const A3AppName_Ruler;
+extern NSString *const A3AppName_Level;
 extern NSString *const A3AppName_Settings;
+extern NSString *const A3AppName_None;
 
 extern NSString *const A3InAppPurchaseRemoveAdsProductIdentifier;
+
+/**
+ *  메뉴 그룹별 컬러를 적용하기 위해서 그룹 이름을 Key로 사용하기 위하여 정의 하였다.
+ */
+extern NSString *const kA3AppsGroupName;
+
+extern NSString *const A3AppGroupNameUtility;
+extern NSString *const A3AppGroupNameCalculator;
+extern NSString *const A3AppGroupNameConverter;
+extern NSString *const A3AppGroupNameReference;
+extern NSString *const A3AppGroupNameProductivity;
+extern NSString *const A3AppGroupNameNone;
 
 @protocol A3ViewControllerProtocol <NSObject>
 @optional

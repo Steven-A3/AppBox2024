@@ -58,6 +58,18 @@ NSString *const A3AppName_Ruler = @"Ruler";
 NSString *const A3AppName_Level = @"Level";
 NSString *const A3AppName_Settings = @"Settings";
 
+// 아래 줄 이하는 새로 정의한 상수
+NSString *const A3AppName_None = @"None";
+
+NSString *const kA3AppsGroupName = @"kA3AppsGroupName";
+
+NSString *const A3AppGroupNameUtility = @"A3AppGroupNameUtility";
+NSString *const A3AppGroupNameCalculator = @"A3AppGroupNameCalculator";
+NSString *const A3AppGroupNameConverter = @"A3AppGroupNameConverter";
+NSString *const A3AppGroupNameReference = @"A3AppGroupNameReference";
+NSString *const A3AppGroupNameProductivity = @"A3AppGroupNameProductivity";
+NSString *const A3AppGroupNameNone = @"A3AppGroupNameNone";
+
 - (NSArray *)allMenu {
 	NSDictionary *calcGroup =
 	@{

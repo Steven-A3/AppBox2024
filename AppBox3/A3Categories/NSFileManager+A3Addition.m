@@ -35,27 +35,29 @@ static NSString *const A3CacheStoreFilename = @"AppBoxCacheStore.sqlite";
 
 - (void)setupCacheStoreFile {
 	NSString *cacheStorePath = [self cacheStorePath];
-	if (![self fileExistsAtPath:self.storePath]) {
-		NSError *error = nil;
-		@try {
-			NSString *bundlePath = [[NSBundle mainBundle] pathForResource:A3CacheStoreFilename ofType:nil];
-			NSString *applicationSupportPath = self.applicationSupportPath;
-			[self createDirectoryAtPath:applicationSupportPath withIntermediateDirectories:YES attributes:nil error:NULL];
-			[self copyItemAtPath:bundlePath toPath:cacheStorePath error:&error];
 
-			NSString *sharedMemoryPath = [bundlePath stringByAppendingString:@"-shm"];
-			NSString *targetPath = [cacheStorePath stringByAppendingString:@"-shm"];
-			[self copyItemAtPath:sharedMemoryPath toPath:targetPath error:&error];
-
-			NSString *WALPath = [bundlePath stringByAppendingString:@"-wal"];
-			targetPath = [cacheStorePath stringByAppendingString:@"-wal"];
-			[self copyItemAtPath:WALPath toPath:targetPath error:&error];
-		}
-		@catch (id exception) {
-			FNLOG(@"FAILD to COPY %@ from Bundle to Cache Directory.", A3CacheStoreFilename);
-			FNLOG(@"%@", [(id<NSObject>)exception description]);
-		}
-	}
+    NSError *error = nil;
+    @try {
+        NSString *bundlePath = [[NSBundle mainBundle] pathForResource:A3CacheStoreFilename ofType:nil];
+        NSString *applicationSupportPath = self.applicationSupportPath;
+        [self createDirectoryAtPath:applicationSupportPath withIntermediateDirectories:YES attributes:nil error:NULL];
+        [self removeItemAtPath:cacheStorePath error:&error];
+        [self copyItemAtPath:bundlePath toPath:cacheStorePath error:&error];
+        
+        NSString *sharedMemoryPath = [bundlePath stringByAppendingString:@"-shm"];
+        NSString *targetPath = [cacheStorePath stringByAppendingString:@"-shm"];
+        [self removeItemAtPath:targetPath error:&error];
+        [self copyItemAtPath:sharedMemoryPath toPath:targetPath error:&error];
+        
+        NSString *WALPath = [bundlePath stringByAppendingString:@"-wal"];
+        targetPath = [cacheStorePath stringByAppendingString:@"-wal"];
+        [self removeItemAtPath:targetPath error:&error];
+        [self copyItemAtPath:WALPath toPath:targetPath error:&error];
+    }
+    @catch (id exception) {
+        FNLOG(@"FAILD to COPY %@ from Bundle to Cache Directory.", A3CacheStoreFilename);
+        FNLOG(@"%@", [(id<NSObject>)exception description]);
+    }
 }
 
 - (NSString *)cacheStorePath {
