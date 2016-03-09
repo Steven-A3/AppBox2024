@@ -298,8 +298,8 @@
         [self dismissViewControllerAnimated:YES completion:nil];
     }
     else {
-        [[[A3AppDelegate instance] rootViewController] dismissCenterViewController];
-        [[[A3AppDelegate instance] rootViewController].centerNavigationController viewWillAppear:YES];
+        [[[A3AppDelegate instance] rootViewController_iPad] dismissCenterViewController];
+        [[[A3AppDelegate instance] rootViewController_iPad].centerNavigationController viewWillAppear:YES];
     }
 }
 
@@ -388,7 +388,7 @@
         [self presentViewController:navCtrl animated:YES completion:nil];
     }
     else {
-        [[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewCtrl];
+        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewCtrl];
     }
 }
 

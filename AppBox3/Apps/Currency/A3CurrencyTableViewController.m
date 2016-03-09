@@ -365,16 +365,22 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 	[self setFirstResponder:nil];
 
 	if (IS_IPHONE) {
-		[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+		if ([A3AppDelegate instance].drawerController) {
+			[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+		} else {
+			UINavigationController *navigationController = [A3AppDelegate instance].currentMainNavigationController;
+			[navigationController popViewControllerAnimated:YES];
+			[navigationController setToolbarHidden:YES];
+		}
 
 		if ([_moreMenuView superview]) {
 			[self dismissMoreMenu];
 			[self rightButtonMoreButton];
 		}
 	} else {
-		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController_iPad];
 		[self enableControls: rootViewController.showLeftView ];
-		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
+		[[[A3AppDelegate instance] rootViewController_iPad] toggleLeftMenuViewOnOff];
 	}
 }
 
@@ -783,7 +789,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 			[self.navigationController pushViewController:_currencySelectViewController animated:YES];
 			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencySelectViewDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:_currencySelectViewController];
 		} else {
-			[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:_currencySelectViewController];
+			[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:_currencySelectViewController];
 		}
 	} else {
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -822,7 +828,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencySelectViewDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:_currencySelectViewController];
 	} else {
-		[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:_currencySelectViewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:_currencySelectViewController];
 	}
 }
 

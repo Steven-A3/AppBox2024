@@ -88,7 +88,7 @@ NSString *const A3UnitPriceSegmentIndex = @"A3UnitPriceSegmentIndex";
 		[self.selectedViewController.presentedViewController dismissViewControllerAnimated:YES completion:NULL];
 	}
 	else {
-		[[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] dismissRightSideViewController];
 	}
 }
 

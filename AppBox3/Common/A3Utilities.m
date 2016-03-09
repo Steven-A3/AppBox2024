@@ -19,6 +19,17 @@ NSString *const A3KeyValueDBUpdateDate	 = @"A3KeyValueDBUpdateDate";
 
 NSString *const A3SettingsUserDefaultsThemeColorIndex = @"A3SettingsUserDefaultsThemeColorIndex";
 NSString *const A3SettingsUseKoreanCalendarForLunarConversion = @"A3SettingsUseKoreanCalendarForLunarConversion";
+/**
+ *  AppBox Pro의 메인 메뉴 스타일을 두가지가 2015년 2월에 추가되었다.
+ *  이날 이전에는 왼쪽 측면에서 화면이 밀고 들어오는 테이블 뷰 방식의 메뉴가 3.0 최초에 적용된 스타일 하나가 있었다.
+ *  Version이 4.0이 되면서 메뉴 스타일 두가지, 헥사곤 스타일과 둥근 사각형 그리드 스타일 두가지가 추가 되었다.
+ *  Version 4.0 디폴트는 헥사곤 스타일이다.
+ *  설정은 아래의 키에 저장을 하고, 값은 A3SettingsMainMenuStyleTable, A3SettingsMainMenuStyleHexagon, A3SettingsMainMenuStyleGrid를 갖는다.
+ */
+NSString *const kA3SettingsMainMenuStyle = @"kA3SettingsMainMenuStyle";
+NSString *const A3SettingsMainMenuStyleTable = @"tableStyle";
+NSString *const A3SettingsMainMenuStyleHexagon = @"hexagon";
+NSString *const A3SettingsMainMenuStyleIconGrid = @"iconGrid";
 
 #pragma mark ------ Main Menu
 NSString *const A3MainMenuDataEntityFavorites 				= @"A3MainMenuDataEntityFavorites";

@@ -370,7 +370,7 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
 	viewController.countryCode = _countries[_pageControl.currentPage];
     
     if (IS_IPAD) {
-        A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+        A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController_iPad];
         [rootViewController presentCenterViewController:[[A3NavigationController alloc] initWithRootViewController:viewController]
                                      fromViewController:self
                                          withCompletion:^{

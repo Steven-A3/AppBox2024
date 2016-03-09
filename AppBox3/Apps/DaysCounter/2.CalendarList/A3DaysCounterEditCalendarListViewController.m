@@ -256,7 +256,7 @@
     [self presentViewController:navCtrl animated:YES completion:nil];
 
 	if (IS_IPAD) {
-		[A3AppDelegate instance].rootViewController.modalPresentedInRightNavigationViewController = navCtrl;
+		[A3AppDelegate instance].rootViewController_iPad.modalPresentedInRightNavigationViewController = navCtrl;
 	}
 }
 

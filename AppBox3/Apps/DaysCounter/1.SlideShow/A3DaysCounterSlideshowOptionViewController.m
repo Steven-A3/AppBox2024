@@ -269,7 +269,7 @@
             }];
         }
         else {
-            [[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
+            [[[A3AppDelegate instance] rootViewController_iPad] dismissRightSideViewController];
 
             A3DaysCounterSlideshowViewController *viewCtrl = [[A3DaysCounterSlideshowViewController alloc] initWithNibName:nil bundle:nil];
             viewCtrl.optionDict = self.optionDict;
@@ -288,7 +288,7 @@
         [self dismissViewControllerAnimated:YES completion:nil];
     }
     else {
-        [[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
+        [[[A3AppDelegate instance] rootViewController_iPad] dismissRightSideViewController];
     }
 }
 

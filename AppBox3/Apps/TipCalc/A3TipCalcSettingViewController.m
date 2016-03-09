@@ -58,7 +58,7 @@
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
 	if (IS_IPAD) {
-		[[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] dismissRightSideViewController];
 	} else {
 		[self dismissViewControllerAnimated:YES completion:nil];
 	}

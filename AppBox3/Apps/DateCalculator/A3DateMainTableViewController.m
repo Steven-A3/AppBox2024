@@ -428,7 +428,7 @@
 	[self clearEverything];
 	[super appsButtonAction:barButtonItem];
 	if (IS_IPAD) {
-		[self enableControls:![[A3AppDelegate instance] rootViewController].showLeftView];
+		[self enableControls:![[A3AppDelegate instance] rootViewController_iPad].showLeftView];
 	}
 }
 
@@ -442,7 +442,7 @@
         [self.navigationController pushViewController:viewController animated:YES];
     } else {
 		[self enableControls:NO];
-		[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
     }
 }
 
@@ -1595,7 +1595,7 @@
             [self.navigationController pushViewController:viewController animated:YES];
         } else {
 			[self enableControls:NO];
-			[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewController];
+			[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
 		}
     }
     else if (indexPath.section == 3 && indexPath.row == 0) {
@@ -1614,7 +1614,7 @@
         }
         else {
 			[self enableControls:NO];
-			[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewController];
+			[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
 		}
     }
 }

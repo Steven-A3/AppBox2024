@@ -152,7 +152,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
             [self updateEditedInfo];
         }
 
-		[[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] dismissRightSideViewController];
         
         if (_delegate && [_delegate respondsToSelector:@selector(dismissedViewController:)]) {
             [_delegate dismissedViewController:self];

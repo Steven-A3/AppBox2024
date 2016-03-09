@@ -1806,7 +1806,7 @@ EXIT_FUCTION:
         [self presentViewController:navCtrl animated:YES completion:nil];
     }
     else {
-		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController_iPad];
         A3NavigationController *nav = [[A3NavigationController alloc] initWithRootViewController:viewCtrl];
         nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [rootViewController presentCenterViewController:nav

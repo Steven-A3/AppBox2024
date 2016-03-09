@@ -59,7 +59,7 @@ NSString *const CellIdentifier = @"Cell";
 - (void)doneButtonAction:(UIBarButtonItem *)button {
 	if (IS_IPAD) {
 		A3AppDelegate *appDelegate = (A3AppDelegate *) [[UIApplication sharedApplication] delegate];
-		[appDelegate.rootViewController dismissRightSideViewController];
+		[appDelegate.rootViewController_iPad dismissRightSideViewController];
 	} else {
 		[self dismissViewControllerAnimated:YES completion:nil];
 	}

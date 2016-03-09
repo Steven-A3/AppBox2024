@@ -173,9 +173,9 @@
 	[self updateNavigationTitle];
 
 	if ( IS_IPAD && UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-		[[[A3AppDelegate instance] rootViewController] animateHideLeftViewForFullScreenCenterView:YES];
+		[[[A3AppDelegate instance] rootViewController_iPad] animateHideLeftViewForFullScreenCenterView:YES];
 	}
-	if ( [[A3AppDelegate instance] rootViewController].showRightView ) {
+	if ([[A3AppDelegate instance] rootViewController_iPad].showRightView ) {
 		if ( self.navigationController.navigationBarHidden )
 			[self tapPhotoViewScreen:nil];
 	}
@@ -305,8 +305,9 @@
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
 	[super appsButtonAction:barButtonItem];
+	
 	if (IS_IPAD) {
-		[self enableControls:![[A3AppDelegate instance] rootViewController].showLeftView];
+		[self enableControls:![[A3AppDelegate instance] rootViewController_iPad].showLeftView];
 	}
 }
 
@@ -613,7 +614,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
 
     A3DaysCounterCalendarListMainViewController *viewCtrl = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListMainViewController" bundle:nil];
     viewCtrl.sharedManager = _sharedManager;
-    [self popToRootAndPushViewController:viewCtrl];
+    [self popToRootAndPushViewController:viewCtrl animated:NO];
 }
 
 - (IBAction)addEventAction:(id)sender {
@@ -640,7 +641,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
 
 	A3DaysCounterReminderListViewController *viewCtrl = [[A3DaysCounterReminderListViewController alloc] initWithNibName:@"A3DaysCounterReminderListViewController" bundle:nil];
     viewCtrl.sharedManager = _sharedManager;
-    [self popToRootAndPushViewController:viewCtrl];
+    [self popToRootAndPushViewController:viewCtrl animated:NO];
 }
 
 - (IBAction)favoriteAction:(id)sender {
@@ -650,7 +651,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
 
     A3DaysCounterFavoriteListViewController *viewCtrl = [[A3DaysCounterFavoriteListViewController alloc] initWithNibName:@"A3DaysCounterFavoriteListViewController" bundle:nil];
     viewCtrl.sharedManager = _sharedManager;
-    [self popToRootAndPushViewController:viewCtrl];
+    [self popToRootAndPushViewController:viewCtrl animated:NO];
 }
 
 - (void)shareOtherAction:(id)sender
@@ -691,7 +692,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
 					[self presentViewController:_modalNavigationController animated:YES completion:NULL];
 					[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(optionViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 				} else {
-					[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewController];
+					[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
 					double delayInSeconds = 0.6;
 					dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 					dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -717,7 +718,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
 {
     if ( [viewController isKindOfClass:[A3MainViewController class]]) {
         if ( IS_IPAD && UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-            [[[A3AppDelegate instance] rootViewController] animateHideLeftViewForFullScreenCenterView:NO];
+            [[[A3AppDelegate instance] rootViewController_iPad] animateHideLeftViewForFullScreenCenterView:NO];
         }
     }
 }

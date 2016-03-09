@@ -9,7 +9,7 @@
 @protocol ClinometerToolbarViewControllerDelegate<NSObject>
 @optional
 
-- (void)exitToHome;
+- (void)appsButtonAction;
 - (void)setToDegree;
 - (void)setToSlope;
 - (void)setToPitch;
@@ -24,7 +24,6 @@
 
 @property (nonatomic, weak) id<ClinometerToolbarViewControllerDelegate> delegate;
 
-- (void)exitToHome;
 - (void)setToDegree;
 - (void)setToSlope;
 - (void)setToPitch;

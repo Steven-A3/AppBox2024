@@ -182,7 +182,7 @@
 	[super appsButtonAction:barButtonItem];
 
 	if (IS_IPAD) {
-		[self enableControls:![[A3AppDelegate instance] rootViewController].showLeftView];
+		[self enableControls:![[A3AppDelegate instance] rootViewController_iPad].showLeftView];
 	}
 }
 

@@ -11,15 +11,19 @@
 
 @interface A3AppDelegate (mainMenu)
 
+- (NSDictionary *)appInfoDictionary;
+- (NSString *)imageNameForApp:(NSString *)appName;
 - (NSArray *)allMenu;
 - (NSArray *)allMenuItems;
 - (NSArray *)allMenuArrayFromStoredDataFile;
-
 - (NSDictionary *)favoriteMenuDictionary;
 - (NSArray *)favoriteItems;
-
 - (NSUInteger)maximumRecentlyUsedMenus;
 - (void)storeMaximumNumberRecentlyUsedMenus:(NSUInteger)maxNumber;
 - (void)clearRecentlyUsedMenus;
+- (void)setupMainMenuViewController;
 
+- (BOOL)launchAppNamed:(NSString *)appName verifyPasscode:(BOOL)verifyPasscode animated:(BOOL)animated;
+
+- (UIViewController *)getViewControllerForAppNamed:(NSString *)appName;
 @end

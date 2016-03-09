@@ -48,8 +48,8 @@
 	[mainView setUserInteractionEnabled:YES];
 	mainView.backgroundColor = [UIColor clearColor];
 	[self.view addSubview:mainView];
-	
-	[self addToolbuttonWithImageName:@"bt_clinometer_exit" atIndex:0 withAction:@selector(exitToHome)];
+
+	[self addToolbuttonWithImageName:@"bt_clinometer_exit" atIndex:0 withAction:@selector(appsButtonAction)];
 	[self addToolbuttonWithImageName:@"bt_clinometer_degree_on" atIndex:1 withAction:@selector(setToDegree)];
 	[self addToolbuttonWithImageName:@"bt_clinometer_slope" atIndex:2 withAction:@selector(setToSlope)];
 	[self addToolbuttonWithImageName:@"bt_clinometer_pitch" atIndex:3 withAction:@selector(setToPitch)];
@@ -65,9 +65,9 @@
 }
 */
 
-- (void)exitToHome {
-	if ([_delegate respondsToSelector:@selector(exitToHome)]) {
-		[_delegate exitToHome];
+- (void)appsButtonAction {
+	if ([_delegate respondsToSelector:@selector(appsButtonAction)]) {
+		[_delegate appsButtonAction];
 	}
 }
 

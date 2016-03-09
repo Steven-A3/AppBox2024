@@ -115,7 +115,8 @@ NSString *const kA3AppsMenuNameForGrid = @"kA3AppsMenuNameForGrid";
 
 	NSDictionary *menuInfo = self.menuItems[indexPath.row];
 	cell.borderColor = self.groupColors[menuInfo[kA3AppsGroupName]];
-	cell.imageName = [self.imageNameDictionary[menuInfo[kA3AppsMenuName]] stringByAppendingString:@"_Large"];
+	
+	cell.imageName = [[[A3AppDelegate instance] appInfoDictionary][menuInfo[kA3AppsMenuName]] stringByAppendingString:@"_Large"];
 	cell.titleLabel.text = menuInfo[kA3AppsMenuNameForGrid];
 	
     return cell;

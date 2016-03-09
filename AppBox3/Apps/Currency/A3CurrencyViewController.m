@@ -192,16 +192,22 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 	}
 
 	if (IS_IPHONE) {
-		[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+		if ([A3AppDelegate instance].drawerController) {
+			[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+		} else {
+			UINavigationController *navigationController = [A3AppDelegate instance].currentMainNavigationController;
+			[navigationController popViewControllerAnimated:YES];
+			[navigationController setToolbarHidden:YES];
+		}
 
 		if ([_moreMenuView superview]) {
 			[self dismissMoreMenu];
 			[self rightButtonMoreButton];
 		}
 	} else {
-		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController_iPad];
 		[self enableControls: rootViewController.showLeftView ];
-		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
+		[[[A3AppDelegate instance] rootViewController_iPad] toggleLeftMenuViewOnOff];
 	}
 }
 
@@ -268,7 +274,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 		
 	} else {
 		[self enableControls:NO];
-		[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:_settingsViewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:_settingsViewController];
 	}
 }
 
@@ -310,7 +316,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(historyViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:_historyViewController];
 	} else {
 		[self enableControls:NO];
-		[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:_historyViewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:_historyViewController];
 	}
 }
 

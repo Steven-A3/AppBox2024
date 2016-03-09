@@ -175,8 +175,9 @@
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
 	[super appsButtonAction:barButtonItem];
+	
 	if (IS_IPAD) {
-		[self enableControls:![[A3AppDelegate instance] rootViewController].showLeftView];
+		[self enableControls:![[A3AppDelegate instance] rootViewController_iPad].showLeftView];
 	}
 }
 
@@ -443,7 +444,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
 
 	A3DaysCounterSlideShowMainViewController *viewCtrl = [[A3DaysCounterSlideShowMainViewController alloc] initWithNibName:@"A3DaysCounterSlideShowMainViewController" bundle:nil];
     viewCtrl.sharedManager = _sharedManager;
-    [self popToRootAndPushViewController:viewCtrl];
+    [self popToRootAndPushViewController:viewCtrl animated:NO];
 }
 
 - (IBAction)calendarViewAction:(id)sender {
@@ -451,7 +452,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
 
 	A3DaysCounterCalendarListMainViewController *viewCtrl = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListMainViewController" bundle:nil];
     viewCtrl.sharedManager = _sharedManager;
-    [self popToRootAndPushViewController:viewCtrl];
+    [self popToRootAndPushViewController:viewCtrl animated:NO];
 }
 
 - (IBAction)addEventAction:(id)sender {
@@ -473,7 +474,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
 
     A3DaysCounterReminderListViewController *viewCtrl = [[A3DaysCounterReminderListViewController alloc] initWithNibName:@"A3DaysCounterReminderListViewController" bundle:nil];
     viewCtrl.sharedManager = _sharedManager;
-    [self popToRootAndPushViewController:viewCtrl];
+    [self popToRootAndPushViewController:viewCtrl animated:NO];
 }
 
 - (void)editAction:(id)sender

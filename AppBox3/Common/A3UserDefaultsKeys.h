@@ -27,6 +27,11 @@ extern NSString *const A3KeyValueDBUpdateDate;
 extern NSString *const A3SettingsUserDefaultsThemeColorIndex;
 extern NSString *const A3SettingsUseKoreanCalendarForLunarConversion;
 
+extern NSString *const kA3SettingsMainMenuStyle;
+extern NSString *const A3SettingsMainMenuStyleTable;
+extern NSString *const A3SettingsMainMenuStyleHexagon;
+extern NSString *const A3SettingsMainMenuStyleIconGrid;
+
 #pragma mark ------ Main Menu
 extern NSString *const A3MainMenuDataEntityFavorites;
 extern NSString *const A3MainMenuDataEntityRecentlyUsed;

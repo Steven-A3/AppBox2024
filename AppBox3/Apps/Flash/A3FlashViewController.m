@@ -756,10 +756,16 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     }
     
     if (IS_IPHONE) {
-		[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:NULL];
+		if ([A3AppDelegate instance].drawerController) {
+			[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:NULL];
+		} else {
+			UINavigationController *navigationController = [A3AppDelegate instance].currentMainNavigationController;
+			[navigationController popViewControllerAnimated:YES];
+			[navigationController setToolbarHidden:YES];
+		}
 	}
     else {
-		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
+		[[[A3AppDelegate instance] rootViewController_iPad] toggleLeftMenuViewOnOff];
 	}
 }
 

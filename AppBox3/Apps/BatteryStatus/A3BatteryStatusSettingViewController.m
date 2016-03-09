@@ -99,7 +99,7 @@ NSString *const A3BatteryTitleKey = @"title";
 #pragma mark - Actions
 -(void)doneButtonAction:(id)sender {
 	if (IS_IPAD) {
-		[[A3AppDelegate instance].rootViewController dismissRightSideViewController];
+		[[A3AppDelegate instance].rootViewController_iPad dismissRightSideViewController];
 	} else {
 		[self.navigationController dismissViewControllerAnimated:YES completion:nil];
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationChildViewControllerDidDismiss object:self];
@@ -273,7 +273,7 @@ NSString *const A3BatteryTitleKey = @"title";
 		[self.navigationController pushViewController:viewController animated:YES];
 	} else {
 		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-		[[[A3AppDelegate instance] rootViewController] presentViewController:navigationController animated:YES completion:NULL];
+		[[[A3AppDelegate instance] rootViewController_iPad] presentViewController:navigationController animated:YES completion:NULL];
 	}
 }
 

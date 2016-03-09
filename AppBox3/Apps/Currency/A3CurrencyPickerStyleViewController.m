@@ -436,7 +436,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:_currencySelectViewController];
 		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
 	} else {
-		[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:_currencySelectViewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:_currencySelectViewController];
 	}
 }
 

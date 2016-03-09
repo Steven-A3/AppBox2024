@@ -159,7 +159,7 @@
         [self dismissViewControllerAnimated:YES completion:nil];
     }
     else {
-        [[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
+        [[[A3AppDelegate instance] rootViewController_iPad] dismissRightSideViewController];
     }
 }
 

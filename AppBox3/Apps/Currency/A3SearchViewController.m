@@ -73,7 +73,7 @@
 	}
 
 	if (IS_IPAD) {
-		[[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] dismissRightSideViewController];
 	} else {
 		if (_shouldPopViewController) {
 			[self.navigationController popViewControllerAnimated:YES];
@@ -126,8 +126,8 @@
 	} else {
 		if (self.showCancelButton) {
 			[self dismissViewControllerAnimated:YES completion:nil];
-		} else if ([[A3AppDelegate instance] rootViewController].showRightView) {
-			[[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
+		} else if ([[A3AppDelegate instance] rootViewController_iPad].showRightView) {
+			[[[A3AppDelegate instance] rootViewController_iPad] dismissRightSideViewController];
 		} else {
 			[self dismissViewControllerAnimated:YES completion:nil];
 		}

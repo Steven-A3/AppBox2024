@@ -813,7 +813,7 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
         [self presentViewController:navCtrl animated:YES completion:nil];
     }
     else {
-        [[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewCtrl];
+        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewCtrl];
     }
 }
 

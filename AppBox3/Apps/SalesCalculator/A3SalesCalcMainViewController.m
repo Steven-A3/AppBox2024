@@ -267,7 +267,7 @@ enum A3TableElementCellType {
 
 	[super appsButtonAction:barButtonItem];
 	if (IS_IPAD) {
-		[self enableControls:![[A3AppDelegate instance] rootViewController].showLeftView];
+		[self enableControls:![[A3AppDelegate instance] rootViewController_iPad].showLeftView];
 	}
 }
 
@@ -335,7 +335,7 @@ enum A3TableElementCellType {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(historyViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 	} else {
 		[self enableControls:NO];
-		[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
 	}
 }
 

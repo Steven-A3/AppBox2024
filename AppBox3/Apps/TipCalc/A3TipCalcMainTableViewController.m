@@ -861,7 +861,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
     [self.tableView reloadData];
     [_headerView showDetailInfoButton];
 
-	if (IS_IPAD && [[A3AppDelegate instance] rootViewController].showRightView) {
+	if (IS_IPAD && [[A3AppDelegate instance] rootViewController_iPad].showRightView) {
 		[self enableControls:NO];
 	}
 }
@@ -1086,7 +1086,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
             }
             else {
 				[self enableControls:NO];
-				[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:selectTableViewController];
+				[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:selectTableViewController];
 				[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 			}
             
@@ -1106,14 +1106,20 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 	[self disposeInitializedCondition];
 	
 	if (IS_IPHONE) {
-		[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+		if ([A3AppDelegate instance].drawerController) {
+			[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+		} else {
+			UINavigationController *navigationController = [A3AppDelegate instance].currentMainNavigationController;
+			[navigationController popViewControllerAnimated:YES];
+			[navigationController setToolbarHidden:YES];
+		}
 		
 		if ([_moreMenuView superview]) {
 			[self rightBarButtons];
 		}
 	}
 	else {
-		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
+		[[[A3AppDelegate instance] rootViewController_iPad] toggleLeftMenuViewOnOff];
 		[self enableControls:NO];
 	}
 }
@@ -1208,7 +1214,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(historyViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 	} else {
-		[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
 }
@@ -1231,7 +1237,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 	} else {
-		[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
 }

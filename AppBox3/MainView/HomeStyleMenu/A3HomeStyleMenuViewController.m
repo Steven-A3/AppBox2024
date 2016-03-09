@@ -84,21 +84,6 @@
 	return [UIColor colorWithRed:116.0/255.0 green:124.0/255.0 blue:127.0/255.0 alpha:1.0];
 }
 
-- (NSMutableDictionary *)imageNameDictionary {
-	if (!_imageNameDictionary) {
-		A3AppDelegate *appDelegate = [A3AppDelegate instance];
-		NSArray<NSDictionary *> *allMenu = [appDelegate allMenu];
-
-		_imageNameDictionary = [NSMutableDictionary new];
-		for (NSDictionary *group in allMenu) {
-			for (NSDictionary *menuInfo in group[kA3AppsExpandableChildren]) {
-				_imageNameDictionary[menuInfo[kA3AppsMenuName]] = menuInfo[kA3AppsMenuImageName];
-			}
-		}
-	}
-	return _imageNameDictionary;
-}
-
 - (UIView *)backgroundView {
 	UIView *backgroundView = [UIView new];
 	backgroundView.backgroundColor = [UIColor colorWithRed:42.0/255.0 green:54.0/255.0 blue:59.0/255.0 alpha:1.0];
@@ -119,6 +104,7 @@
 
 	UIButton *settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	[settingsButton setBackgroundImage:[[UIImage imageNamed:@"general"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+	[settingsButton addTarget:self action:@selector(settingsButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 	settingsButton.tintColor = [UIColor whiteColor];
 	[backgroundView addSubview:settingsButton];
 
@@ -157,6 +143,10 @@
 						position:0.7];
 
 	return backgroundView;
+}
+
+- (void)settingsButtonAction:(UIButton *)button {
+	[[A3AppDelegate instance] launchAppNamed:A3AppName_Settings verifyPasscode:YES animated:YES];
 }
 
 - (void)addAppLinkButtonToView:(UIView *)targetView title:(NSString *)title imageName:(NSString *)imageName position:(CGFloat)position {

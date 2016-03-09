@@ -427,9 +427,15 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 
 - (IBAction)appsButtonAction:(id)sender {
     if (IS_IPHONE) {
-		[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+		if ([A3AppDelegate instance].drawerController) {
+			[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+		} else {
+			UINavigationController *navigationController = [A3AppDelegate instance].currentMainNavigationController;
+			[navigationController popViewControllerAnimated:YES];
+			[navigationController setToolbarHidden:YES];
+		}
 	} else {
-		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
+		[[[A3AppDelegate instance] rootViewController_iPad] toggleLeftMenuViewOnOff];
 	}
 }
 

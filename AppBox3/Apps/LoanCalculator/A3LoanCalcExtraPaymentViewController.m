@@ -220,7 +220,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 - (void)doneButtonAction:(id)button {
 	[self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];
-	[[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
+	[[[A3AppDelegate instance] rootViewController_iPad] dismissRightSideViewController];
 }
 
 - (UITextField *)previousTextField:(UITextField *) current

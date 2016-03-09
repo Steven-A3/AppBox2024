@@ -191,46 +191,9 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 	NSFileManager *fileManager = [NSFileManager new];
 	[fileManager setupCacheStoreFile];
 
-	UIViewController *rootViewController;
-	if (IS_IPAD) {
-		_rootViewController = [[A3RootViewController_iPad alloc] initWithNibName:nil bundle:nil];
-		rootViewController = _rootViewController;
-		_mainMenuViewController = _rootViewController.mainMenuViewController;
-		[_rootViewController view];
-		_currentMainNavigationController = _rootViewController.centerNavigationController;
-	} else {
-		_mainMenuViewController = [[A3MainMenuTableViewController alloc] init];
-		UINavigationController *menuNavigationController = [[UINavigationController alloc] initWithRootViewController:_mainMenuViewController];
-
-		UIViewController *viewController = [A3MainViewController new];
-		A3NavigationController *navigationController = [[A3NavigationController alloc] initWithRootViewController:viewController];
-		_currentMainNavigationController = navigationController;
-
-		_drawerController = [[MMDrawerController alloc] initWithCenterViewController:navigationController leftDrawerViewController:menuNavigationController];
-		_rootViewController_iPhone = _drawerController;
-
-		[_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeBezelPanningCenterView];
-		[_drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
-		[_drawerController setDrawerVisualStateBlock:[self slideAndScaleVisualStateBlock]];
-		[_drawerController setCenterHiddenInteractionMode:MMDrawerOpenCenterInteractionModeFull];
-		[_drawerController setGestureCompletionBlock:^(MMDrawerController *drawerController, UIGestureRecognizer *gesture) {
-			[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
-			if (drawerController.openSide != MMDrawerSideLeft) {
-				[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationMainMenuDidHide object:nil];
-			}
-		}];
-		
-		CGRect screenBounds = [[UIScreen mainScreen] bounds];
-		[_drawerController setMaximumLeftDrawerWidth:screenBounds.size.width];
-		[_drawerController setShowsShadow:NO];
-
-		_drawerController.view.frame = screenBounds;
-
-		rootViewController = _drawerController;
-	}
 
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	self.window.rootViewController = rootViewController;
+	[self setupMainMenuViewController];
 	self.window.backgroundColor = [UIColor whiteColor];
 
 	NSNumber *selectedColor = [[A3SyncManager sharedSyncManager] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
@@ -360,7 +323,8 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 			NSString *moduleName = [[components lastObject] lowercaseString];
 			NSArray *allMenus = [self allMenuItems];
 			NSInteger indexOfMenu = [allMenus indexOfObjectPassingTest:^BOOL(NSDictionary * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-				return [[obj[kA3AppsMenuImageName] lowercaseString] isEqualToString:moduleName];
+				NSDictionary *appInfo = [self appInfoDictionary][obj[kA3AppsMenuName]];
+				return [[appInfo[kA3AppsMenuImageName] lowercaseString] isEqualToString:moduleName];
 			}];
 			if (indexOfMenu != NSNotFound) {
 				NSDictionary *menuItem = allMenus[indexOfMenu];
@@ -570,37 +534,11 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 
 #pragma mark
 
-- (MMDrawerControllerDrawerVisualStateBlock)slideAndScaleVisualStateBlock{
-	MMDrawerControllerDrawerVisualStateBlock visualStateBlock =
-			^(MMDrawerController * drawerController, MMDrawerSide drawerSide, CGFloat percentVisible){
-				CGFloat minScale = .95;
-				CGFloat scale = minScale + (percentVisible*(1.0-minScale));
-				CATransform3D scaleTransform =  CATransform3DMakeScale(scale, scale, scale);
-
-				CGFloat maxDistance = 10;
-				CGFloat distance = maxDistance * percentVisible;
-				CATransform3D translateTransform;
-				UIViewController * sideDrawerViewController;
-				if(drawerSide == MMDrawerSideLeft) {
-					sideDrawerViewController = drawerController.leftDrawerViewController;
-					translateTransform = CATransform3DMakeTranslation((maxDistance-distance), 0.0, 0.0);
-				}
-				else if(drawerSide == MMDrawerSideRight){
-					sideDrawerViewController = drawerController.rightDrawerViewController;
-					translateTransform = CATransform3DMakeTranslation(-(maxDistance-distance), 0.0, 0.0);
-				}
-
-				[sideDrawerViewController.view.layer setTransform:CATransform3DConcat(scaleTransform, translateTransform)];
-				[sideDrawerViewController.view setAlpha:percentVisible];
-			};
-	return visualStateBlock;
-}
-
 - (UINavigationController *)navigationController {
 	if (IS_IPHONE) {
-		return (UINavigationController *)self.drawerController.centerViewController;
+		return self.currentMainNavigationController;
 	} else {
-		return self.rootViewController.centerNavigationController;
+		return self.rootViewController_iPad.centerNavigationController;
 	}
 }
 

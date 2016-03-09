@@ -84,7 +84,7 @@
 	_longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(handleLongPress:)];
 	_panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(handlePanGesture:)];
 	_longPress.delegate = self;
-	_longPress.minimumPressDuration = 0.1;
+	_longPress.minimumPressDuration = 0.5;
 	_panGesture.delegate = self;
 	_panGesture.maximumNumberOfTouches = 1;
 	NSArray *gestures = [self.collectionView gestureRecognizers];

@@ -91,7 +91,7 @@
 	} else {
 		NSDictionary *menuItem = self.allMenuItems[indexPath.row - 1];
 		cell.textLabel.text = NSLocalizedString(menuItem[kA3AppsMenuName], nil);
-		cell.imageView.image = [UIImage imageNamed:menuItem[kA3AppsMenuImageName]];
+		cell.imageView.image = [UIImage imageNamed:[[A3AppDelegate instance] imageNameForApp:menuItem[kA3AppsMenuName]]];
 		if ([startingAppName isEqualToString:menuItem[kA3AppsMenuName]]) {
 			cell.accessoryType = UITableViewCellAccessoryCheckmark;
 		} else {

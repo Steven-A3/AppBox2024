@@ -200,7 +200,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 	if (IS_IPHONE) {
         [self.navigationController pushViewController:viewController animated:YES];
 	} else {
-		[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
 	}
 }
 

@@ -50,7 +50,8 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 - (CGRect)screenBoundsAdjustedWithOrientation;
 - (void)callPrepareCloseOnActiveMainAppViewController;
 - (void)dismissModalViewControllerOnMainViewController;
-- (void)popToRootAndPushViewController:(UIViewController *)viewController;
+
+- (void)popToRootAndPushViewController:(UIViewController *)viewController animated:(BOOL)animated;
 - (void)leftBarButtonAppsButton;
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem;
 - (void)leftBarButtonCancelButton;

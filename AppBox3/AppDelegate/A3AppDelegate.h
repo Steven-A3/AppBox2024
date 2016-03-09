@@ -34,6 +34,7 @@ extern NSString *const kA3AppsStoryboard_iPhone;
 extern NSString *const kA3AppsStoryboard_iPad;
 extern NSString *const kA3AppsMenuExpandable;
 extern NSString *const kA3AppsMenuNeedSecurityCheck;
+extern NSString *const kA3AppsDoNotKeepAsRecent;
 
 extern NSString *const kA3AppsMenuArray;
 extern NSString *const kA3AppsDataUpdateDate;
@@ -83,6 +84,9 @@ extern NSString *const A3AppName_Random;
 extern NSString *const A3AppName_Ruler;
 extern NSString *const A3AppName_Level;
 extern NSString *const A3AppName_Settings;
+extern NSString *const A3AppName_About;
+extern NSString *const A3AppName_RemoveAds;
+extern NSString *const A3AppName_RestorePurchase;
 extern NSString *const A3AppName_None;
 
 extern NSString *const A3InAppPurchaseRemoveAdsProductIdentifier;
@@ -109,11 +113,13 @@ extern NSString *const A3AppGroupNameNone;
 @interface A3AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+
 @property (strong, nonatomic) MMDrawerController *drawerController;
-@property (strong, nonatomic) A3RootViewController_iPad *rootViewController;
+@property (strong, nonatomic) A3RootViewController_iPad *rootViewController_iPad;
 @property (strong, nonatomic) UIViewController *rootViewController_iPhone;
 @property (strong, nonatomic) UINavigationController *currentMainNavigationController;
 @property (strong, nonatomic) A3MainMenuTableViewController *mainMenuViewController;
+
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) NSDate *wakeUpTime;
 @property (strong, nonatomic) MBProgressHUD *hud;

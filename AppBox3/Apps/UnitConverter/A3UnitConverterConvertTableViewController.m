@@ -372,15 +372,21 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 	[self setFirstResponder:nil];
 
 	if (IS_IPHONE) {
-		[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+		if ([A3AppDelegate instance].drawerController) {
+			[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+		} else {
+			UINavigationController *navigationController = [A3AppDelegate instance].currentMainNavigationController;
+			[navigationController popViewControllerAnimated:YES];
+			[navigationController setToolbarHidden:YES];
+		}
 
 		if ([_moreMenuView superview]) {
 			[self dismissMoreMenu];
 			[self rightButtonMoreButton];
 		}
 	} else {
-		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
-		[self enableControls:![[A3AppDelegate instance] rootViewController].showLeftView];
+		[[[A3AppDelegate instance] rootViewController_iPad] toggleLeftMenuViewOnOff];
+		[self enableControls:![[A3AppDelegate instance] rootViewController_iPad].showLeftView];
 	}
 }
 
@@ -439,7 +445,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(historyViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 	} else {
 		[self enableControls:NO];
-		[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
 	}
 }
 

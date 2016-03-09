@@ -123,7 +123,7 @@
 			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
 			self.touchIDBackgroundViewController = [UIViewController new];
-			[self.rootViewController presentViewController:self.touchIDBackgroundViewController animated:NO completion:NULL];
+			[self.rootViewController_iPad presentViewController:self.touchIDBackgroundViewController animated:NO completion:NULL];
 
 			[context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
 					localizedReason:NSLocalizedString(@"Unlock AppBox Pro", @"Unlock AppBox Pro")
@@ -181,8 +181,8 @@
 	if (IS_IPHONE) {
 		[self.drawerController closeDrawerAnimated:NO completion:nil];
 	} else {
-		if (IS_PORTRAIT && self.rootViewController.showLeftView) {
-			[self.rootViewController toggleLeftMenuViewOnOff];
+		if (IS_PORTRAIT && self.rootViewController_iPad.showLeftView) {
+			[self.rootViewController_iPad toggleLeftMenuViewOnOff];
 		}
 	}
 }

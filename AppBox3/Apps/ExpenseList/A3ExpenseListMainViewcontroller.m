@@ -374,7 +374,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
 	[super appsButtonAction:barButtonItem];
 	if (IS_IPAD) {
-		[self enableControls:![[A3AppDelegate instance] rootViewController].showLeftView];
+		[self enableControls:![[A3AppDelegate instance] rootViewController_iPad].showLeftView];
 	}
 }
 
@@ -623,7 +623,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(expenseHistoryViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 	} else {
-		[[[A3AppDelegate instance] rootViewController] presentRightSideViewController:viewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
 	}
 }
 
@@ -666,7 +666,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         }];
     }
     else {
-		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController_iPad];
         [rootViewController presentCenterViewController:[[A3NavigationController alloc] initWithRootViewController:viewController] fromViewController:self withCompletion:^{
             [viewController showKeyboard];
         }];

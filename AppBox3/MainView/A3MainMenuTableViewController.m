@@ -39,9 +39,6 @@ NSString *const A3MainMenuBecameFirstResponder = @"A3MainMenuBecameFirstResponde
 NSString *const A3NotificationMainMenuDidShow = @"A3NotificationMainMenuDidShow";
 NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide";
 
-NSString *const A3AppName_RemoveAds = @"Remove Ads";
-NSString *const A3AppName_RestorePurchase = @"Restore Purchase";
-
 @interface A3MainMenuTableViewController () <UISearchDisplayDelegate, UISearchBarDelegate, A3PasscodeViewControllerDelegate, A3TableViewExpandableElementDelegate>
 
 @property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
@@ -202,28 +199,26 @@ NSString *const A3AppName_RestorePurchase = @"Restore Purchase";
 	return [self sectionWithData:[[A3AppDelegate instance] allMenuArrayFromStoredDataFile]];
 }
 
-NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
-
 - (id)bottomSection {
 	NSArray *bottomSection;
 
 	if ([[A3AppDelegate instance] isIAPRemoveAdsAvailable]) {
 		bottomSection = @[
-				@{kA3AppsMenuName : A3AppName_RemoveAds, kA3AppsMenuNeedSecurityCheck : @NO, kA3AppsDoNotKeepAsRecent : @YES},
-				@{kA3AppsMenuName : A3AppName_RestorePurchase, kA3AppsMenuNeedSecurityCheck : @NO, kA3AppsDoNotKeepAsRecent : @YES},
-				@{kA3AppsMenuName : A3AppName_Settings, kA3AppsStoryboard_iPhone : @"A3Settings", kA3AppsStoryboard_iPad:@"A3Settings", kA3AppsMenuNeedSecurityCheck : @YES, kA3AppsDoNotKeepAsRecent : @YES},
-				@{kA3AppsMenuName : @"About", kA3AppsStoryboard_iPhone : @"about", kA3AppsStoryboard_iPad:@"about", kA3AppsDoNotKeepAsRecent:@YES},
+				@{kA3AppsMenuName : A3AppName_RemoveAds},
+				@{kA3AppsMenuName : A3AppName_RestorePurchase},
+				@{kA3AppsMenuName : A3AppName_Settings},
+				@{kA3AppsMenuName : A3AppName_About},
 		];
 	} else if ([[A3AppDelegate instance] shouldPresentAd]) {
 		bottomSection = @[
-				@{kA3AppsMenuName : A3AppName_RestorePurchase, kA3AppsMenuNeedSecurityCheck : @NO, kA3AppsDoNotKeepAsRecent : @YES},
-				@{kA3AppsMenuName : A3AppName_Settings, kA3AppsStoryboard_iPhone : @"A3Settings", kA3AppsStoryboard_iPad:@"A3Settings", kA3AppsMenuNeedSecurityCheck : @YES, kA3AppsDoNotKeepAsRecent : @YES},
-				@{kA3AppsMenuName : @"About", kA3AppsStoryboard_iPhone : @"about", kA3AppsStoryboard_iPad:@"about", kA3AppsDoNotKeepAsRecent:@YES},
+				@{kA3AppsMenuName : A3AppName_RestorePurchase},
+				@{kA3AppsMenuName : A3AppName_Settings},
+				@{kA3AppsMenuName : A3AppName_About},
 		];
 	} else {
 		bottomSection = @[
-				@{kA3AppsMenuName : A3AppName_Settings, kA3AppsStoryboard_iPhone : @"A3Settings", kA3AppsStoryboard_iPad:@"A3Settings", kA3AppsMenuNeedSecurityCheck : @YES, kA3AppsDoNotKeepAsRecent : @YES},
-				@{kA3AppsMenuName : @"About", kA3AppsStoryboard_iPhone : @"about", kA3AppsStoryboard_iPad:@"about", kA3AppsDoNotKeepAsRecent:@YES},
+				@{kA3AppsMenuName : A3AppName_Settings},
+				@{kA3AppsMenuName : A3AppName_About},
 		];
 	}
 
@@ -251,23 +246,12 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 		} else {
 			A3TableViewMenuElement *element = [A3TableViewMenuElement new];
 			element.title = elementDescription[kA3AppsMenuName];
-			element.imageName = elementDescription[kA3AppsMenuImageName];
-			element.className_iPhone = elementDescription[kA3AppsClassName_iPhone];
-			element.className_iPad = elementDescription[kA3AppsClassName_iPad];
-			element.storyboardName_iPhone = elementDescription[kA3AppsStoryboard_iPhone];
-			element.storyboardName_iPad = elementDescription[kA3AppsStoryboard_iPad];
-			element.nibName_iPhone = elementDescription[kA3AppsNibName_iPhone];
-			element.nibName_iPad = elementDescription[kA3AppsNibName_iPad];
-			element.needSecurityCheck = [elementDescription[kA3AppsMenuNeedSecurityCheck] boolValue];
-			element.doNotKeepAsRecent = [elementDescription[kA3AppsDoNotKeepAsRecent] boolValue];
 
 			__typeof(self) __weak weakSelf = self;
 
 			element.onSelected = ^(A3TableViewElement *elementObject, BOOL verifyPasscode) {
 				FNLOG(@"self.activeAppName = %@", self.activeAppName);
 				A3TableViewMenuElement *menuElement = (A3TableViewMenuElement *) elementObject;
-
-				BOOL proceedPasscodeCheck = NO;
 
 				if ([elementObject.title isEqualToString:A3AppName_RemoveAds]) {
 					[self didSelectRemoveAdsRow];
@@ -279,57 +263,11 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 
 				// Check active view controller
 				if (![self.activeAppName isEqualToString:elementObject.title]) {
-					if (   verifyPasscode
-                        && [A3KeychainUtils getPassword]
-						&& [menuElement securitySettingsIsOn]
-						&& [[A3AppDelegate instance] didPasscodeTimerEnd]
-						)
-					{
-						proceedPasscodeCheck = YES;
-
-						if ([menuElement.storyboardName_iPhone isEqualToString:@"A3Settings"]) {
-							proceedPasscodeCheck &= [[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForSettings];
-						}
-					}
-					if (proceedPasscodeCheck) {
-						weakSelf.selectedElement = menuElement;
-						if (IS_IOS7 || ![[A3AppDelegate instance] useTouchID]) {
-							[weakSelf presentLockScreen];
-						} else {
-							[[A3AppDelegate instance] addSecurityCoverView];
-							
-							LAContext *context = [LAContext new];
-							NSError *error;
-							if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
-								[[UIApplication sharedApplication] setStatusBarHidden:YES];
-								[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-								[context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
-										localizedReason:[NSString stringWithFormat:NSLocalizedString(@"Unlock %@", @"Unlock %@"), NSLocalizedString(self.selectedElement.title, nil)]
-												  reply:^(BOOL success, NSError *error) {
-													  dispatch_async(dispatch_get_main_queue(), ^{
-														  [[UIApplication sharedApplication] setStatusBarHidden:NO];
-														  [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-
-														  if (success) {
-															  [[A3AppDelegate instance] removeSecurityCoverView];
-															  [self passcodeViewControllerDidDismissWithSuccess:YES];
-														  } else {
-															  [self presentLockScreen];
-														  }
-													  });
-
-												  }];
-							} else {
-								[self presentLockScreen];
-							}
-						}
+					if ([[A3AppDelegate instance] launchAppNamed:elementObject.title verifyPasscode:verifyPasscode animated:NO]) {
+						self.selectedElement = menuElement;
 					} else {
-						[self callPrepareCloseOnActiveMainAppViewController];
-
-						UIViewController *targetViewController= [self getViewControllerForElement:menuElement];
-						[weakSelf popToRootAndPushViewController:targetViewController];
 						[weakSelf updateRecentlyUsedAppsWithElement:menuElement];
-
+						
 						if (IS_IPHONE) {
 							[self.mm_drawerController closeDrawerAnimated:YES completion:^(BOOL finished) {
 								[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationMainMenuDidHide object:nil];
@@ -345,9 +283,9 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 							[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationMainMenuDidHide object:nil];
 						}];
 					} else if (IS_IPAD) {
-						A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+						A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController_iPad];
 						if (rootViewController.showLeftView) {
-							[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
+							[[[A3AppDelegate instance] rootViewController_iPad] toggleLeftMenuViewOnOff];
 						}
 					}
 				}
@@ -357,19 +295,6 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 		}
 	}
 	return elementsArray;
-}
-
-- (void)presentLockScreen {
-	[self dismissModalViewControllerOnMainViewController];
-
-	self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
-	UIViewController *passcodeTargetViewController;
-	if (IS_IPHONE) {
-		passcodeTargetViewController = [self mm_drawerController];
-	} else {
-		passcodeTargetViewController = [[A3AppDelegate instance] rootViewController];
-	}
-	[_passcodeViewController showLockScreenInViewController:passcodeTargetViewController];
 }
 
 - (NSArray *)dataFromElements:(NSArray *)elements {
@@ -386,79 +311,10 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 			A3TableViewMenuElement *menuElement = object;
 			NSMutableDictionary *newDescription = [NSMutableDictionary new];
 			if (menuElement.title) newDescription[kA3AppsMenuName] = menuElement.title;
-			if (menuElement.imageName) newDescription[kA3AppsMenuImageName] = menuElement.imageName;
-			if (menuElement.className_iPhone) newDescription[kA3AppsClassName_iPhone] = menuElement.className_iPhone;
-			if (menuElement.className_iPad) newDescription[kA3AppsClassName_iPad] = menuElement.className_iPad;
-			if (menuElement.storyboardName_iPhone) newDescription[kA3AppsStoryboard_iPhone] = menuElement.storyboardName_iPhone;
-			if (menuElement.storyboardName_iPad) newDescription[kA3AppsStoryboard_iPad] = menuElement.storyboardName_iPad;
-			if (menuElement.nibName_iPhone) newDescription[kA3AppsNibName_iPhone] = menuElement.nibName_iPhone;
-			if (menuElement.nibName_iPad) newDescription[kA3AppsNibName_iPad] = menuElement.nibName_iPad;
-			if (menuElement.needSecurityCheck) newDescription[kA3AppsMenuNeedSecurityCheck] = @YES;
-			if (menuElement.doNotKeepAsRecent) newDescription[kA3AppsDoNotKeepAsRecent] = @YES;
 			[descriptionsArray addObject:newDescription];
 		}
 	}
 	return descriptionsArray;
-}
-
-- (UIViewController *)getViewControllerForElement:(A3TableViewMenuElement *)menuElement {
-	UIViewController *targetViewController;
-
-	if ([menuElement.imageName isEqualToString:@"DaysCounter"]) {
-        A3DaysCounterModelManager *sharedManager = [[A3DaysCounterModelManager alloc] init];
-		[sharedManager prepareInContext:[A3AppDelegate instance].managedObjectContext];
-
-        NSInteger lastOpenedMainIndex = [[A3UserDefaults standardUserDefaults] integerForKey:A3DaysCounterLastOpenedMainIndex];
-        switch (lastOpenedMainIndex) {
-            case 1:
-                targetViewController = [[A3DaysCounterSlideShowMainViewController alloc] initWithNibName:@"A3DaysCounterSlideShowMainViewController" bundle:nil];
-                ((A3DaysCounterSlideShowMainViewController *)targetViewController).sharedManager = sharedManager;
-                break;
-            case 3:
-                targetViewController = [[A3DaysCounterReminderListViewController alloc] initWithNibName:@"A3DaysCounterReminderListViewController" bundle:nil];
-                ((A3DaysCounterReminderListViewController *)targetViewController).sharedManager = sharedManager;
-                break;
-            case 4:
-                targetViewController = [[A3DaysCounterFavoriteListViewController alloc] initWithNibName:@"A3DaysCounterFavoriteListViewController" bundle:nil];
-                ((A3DaysCounterFavoriteListViewController *)targetViewController).sharedManager = sharedManager;
-                break;
-                
-            default:
-                targetViewController = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListMainViewController" bundle:nil];
-                ((A3DaysCounterCalendarListMainViewController *)targetViewController).sharedManager = sharedManager;
-                break;
-        }
-
-		return targetViewController;
-	}
-
-	if ([menuElement.className_iPhone length]) {
-		Class class;
-		NSString *nibName;
-		if (IS_IPAD) {
-			class = NSClassFromString(menuElement.className_iPad ? menuElement.className_iPad : menuElement.className_iPhone);
-			nibName = menuElement.nibName_iPad ? menuElement.nibName_iPad : menuElement.nibName_iPhone;
-		} else {
-			class = NSClassFromString(menuElement.className_iPhone);
-			nibName = menuElement.nibName_iPhone;
-		}
-
-		if (nibName) {
-			targetViewController = [[class alloc] initWithNibName:nibName bundle:nil];
-		} else {
-			targetViewController = [[class alloc] init];
-		}
-	} else if ([menuElement.storyboardName_iPhone length]) {
-		NSString *storyboardName;
-		if (IS_IPAD) {
-			storyboardName = menuElement.storyboardName_iPad ? menuElement.storyboardName_iPad : menuElement.storyboardName_iPhone;
-		} else {
-			storyboardName = menuElement.storyboardName_iPhone;
-		}
-		UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
-		targetViewController = [storyboard instantiateInitialViewController];
-	}
-	return targetViewController;
 }
 
 - (BOOL)isActiveViewController:(Class)aClass {
@@ -467,7 +323,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 	if (IS_IPHONE) {
 		navigationController = (UINavigationController *) self.mm_drawerController.centerViewController;
 	} else {
-		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController_iPad];
 		navigationController = [rootViewController centerNavigationController];
 	}
 	for (UIViewController *viewController in navigationController.viewControllers) {
@@ -532,8 +388,8 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 
 		self.activeAppName = _selectedElement.title;
 
-		UIViewController *viewController = [self getViewControllerForElement:(A3TableViewMenuElement *) _selectedElement];
-		[self popToRootAndPushViewController:viewController];
+		UIViewController *viewController = [[A3AppDelegate instance] getViewControllerForAppNamed:_selectedElement.title];
+		[self popToRootAndPushViewController:viewController animated:NO];
 		[self updateRecentlyUsedAppsWithElement:(A3TableViewMenuElement *) _selectedElement];
 	}
 	_selectedElement = nil;
@@ -541,7 +397,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 
 - (void)openClockApp {
 	A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
-	[self popToRootAndPushViewController:clockVC];
+	[self popToRootAndPushViewController:clockVC animated:NO];
 	self.activeAppName = A3AppName_Clock;
 }
 
@@ -591,7 +447,8 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 }
 
 - (void)updateRecentlyUsedAppsWithElement:(A3TableViewMenuElement *)element {
-	if (![element isKindOfClass:[A3TableViewMenuElement class]] || element.doNotKeepAsRecent) {
+	NSDictionary *appInfo = [[A3AppDelegate instance] appInfoDictionary][element.title];
+	if (![element isKindOfClass:[A3TableViewMenuElement class]] || [appInfo[kA3AppsDoNotKeepAsRecent] boolValue]) {
 		return;
 	}
 	NSMutableDictionary *recentlyUsed = [[[A3SyncManager sharedSyncManager] objectForKey:A3MainMenuDataEntityRecentlyUsed] mutableCopy];
@@ -660,7 +517,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 		} else {
 			if ([startingAppName isEqualToString:A3AppName_LunarConverter]) {
 				A3LunarConverterViewController *viewController = [[A3LunarConverterViewController alloc] init];
-				[self popToRootAndPushViewController:viewController];
+				[self popToRootAndPushViewController:viewController animated:NO];
 				self.activeAppName = startingAppName;
 				return YES;
 			}

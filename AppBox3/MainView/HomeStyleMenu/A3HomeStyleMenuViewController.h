@@ -13,7 +13,6 @@
 @property (nonatomic, strong) UIColor *utilityColor, *calculatorColor, *referenceColor;
 @property (nonatomic, strong) UIColor *converterColor, *productivityColor;
 @property (nonatomic, strong) NSDictionary *groupColors;
-@property (nonatomic, strong) NSMutableDictionary *imageNameDictionary;
 
 - (UIView *)backgroundView;
 

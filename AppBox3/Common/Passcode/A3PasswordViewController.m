@@ -264,7 +264,7 @@
 
 	UIWindow *mainWindow = [UIApplication sharedApplication].keyWindow;
 	if (!mainWindow) {
-		UIViewController *rootViewController = IS_IPAD ? [[A3AppDelegate instance] rootViewController] : [[A3AppDelegate instance] rootViewController_iPhone];
+		UIViewController *rootViewController = IS_IPAD ? [[A3AppDelegate instance] rootViewController_iPad] : [[A3AppDelegate instance] rootViewController_iPhone];
 		[rootViewController presentViewController:self animated:NO completion:NULL];
 		_shouldDismissViewController = YES;
 	} else {

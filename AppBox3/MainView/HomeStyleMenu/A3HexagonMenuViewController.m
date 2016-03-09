@@ -68,7 +68,7 @@
 
 	NSDictionary *menuInfo = self.menuItems[indexPath.row];
 	cell.borderColor = self.groupColors[menuInfo[kA3AppsGroupName]];
-	cell.imageName = self.imageNameDictionary[menuInfo[kA3AppsMenuName]];
+	cell.imageName = [[A3AppDelegate instance] imageNameForApp:menuInfo[kA3AppsMenuName]];
 
 	return cell;
 }
@@ -79,6 +79,9 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 	FNLOG();
 	self.appTitleLabel.text = @"";
+	
+	NSDictionary *menuInfo = self.menuItems[indexPath.row];
+	[[A3AppDelegate instance] launchAppNamed:menuInfo[kA3AppsMenuName] verifyPasscode:YES animated:YES];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView layout:(A3CollectionViewFlowLayout *)collectionViewLayout didEndDraggingItemAtIndexPath:(NSIndexPath *)indexPath {

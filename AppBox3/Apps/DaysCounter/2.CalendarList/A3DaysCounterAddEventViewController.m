@@ -1243,7 +1243,7 @@
         [self.navigationController pushViewController:nextVC animated:YES];
     }
     else {
-        [[[A3AppDelegate instance] rootViewController] presentRightSideViewController:nextVC];
+        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:nextVC];
     }
     
     [self closeDatePickerCell];
@@ -1267,7 +1267,7 @@
         [self.navigationController pushViewController:nextVC animated:YES];
     }
     else {
-        [[[A3AppDelegate instance] rootViewController] presentRightSideViewController:nextVC];
+        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:nextVC];
     }
     [self closeDatePickerCell];
 }
@@ -1339,7 +1339,7 @@
         [self.navigationController pushViewController:nextVC animated:YES];
     }
     else {
-        [[[A3AppDelegate instance] rootViewController] presentRightSideViewController:nextVC];
+        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:nextVC];
     }
     [self closeDatePickerCell];
 }
@@ -1375,7 +1375,7 @@
         [self.navigationController pushViewController:nextVC animated:YES];
     }
     else {
-        [[[A3AppDelegate instance] rootViewController] presentRightSideViewController:nextVC];
+        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:nextVC];
     }
     [self closeDatePickerCell];
 }
@@ -1400,7 +1400,7 @@
     if ( IS_IPHONE )
         [self.navigationController pushViewController:nextVC animated:YES];
     else
-        [[[A3AppDelegate instance] rootViewController] presentRightSideViewController:nextVC];
+        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:nextVC];
     [self closeDatePickerCell];
 }
 
@@ -1637,7 +1637,7 @@
     [A3DaysCounterModelManager reloadAlertDateListForLocalNotification:_savingContext ];
 
     if (IS_IPAD) {
-        [[[A3AppDelegate instance] rootViewController] dismissCenterViewController];
+        [[[A3AppDelegate instance] rootViewController_iPad] dismissCenterViewController];
     }
     else {
         [self dismissViewControllerAnimated:YES completion:nil];
@@ -1654,7 +1654,7 @@
 	}
 
 	if (IS_IPAD) {
-		[[[A3AppDelegate instance] rootViewController] dismissCenterViewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] dismissCenterViewController];
 	}
 	else {
 		[self dismissViewControllerAnimated:YES completion:nil];
@@ -2386,7 +2386,7 @@
     }
     
     if (IS_IPAD) {
-        A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+        A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController_iPad];
         [rootViewController dismissCenterViewController];
     }
     else {

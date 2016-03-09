@@ -6,12 +6,22 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <LocalAuthentication/LocalAuthentication.h>
 #import "A3AppDelegate+mainMenu.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3UserDefaults.h"
-
-@implementation A3AppDelegate (mainMenu)
+#import "A3MainMenuTableViewController.h"
+#import "A3MainViewController.h"
+#import "MMDrawerController.h"
+#import "A3HexagonMenuViewController.h"
+#import "A3KeychainUtils.h"
+#import "A3DaysCounterModelManager.h"
+#import "A3DaysCounterSlideShowMainViewController.h"
+#import "A3DaysCounterReminderListViewController.h"
+#import "A3DaysCounterFavoriteListViewController.h"
+#import "A3DaysCounterCalendarListMainViewController.h"
+#import "UIViewController+A3Addition.h"
 
 NSString *const kA3ApplicationLastRunVersion = @"kLastRunVersion";
 NSString *const kA3AppsMenuName = @"kA3AppsMenuName";
@@ -26,6 +36,7 @@ NSString *const kA3AppsStoryboard_iPhone = @"kA3AppsStoryboard_iPhone";
 NSString *const kA3AppsStoryboard_iPad = @"kA3AppsStoryboard_iPad";
 NSString *const kA3AppsMenuExpandable = @"kA3AppsMenuExpandable";
 NSString *const kA3AppsMenuNeedSecurityCheck = @"kA3AppsMenuNeedSecurityCheck";
+NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 
 NSString *const kA3AppsMenuArray = @"kA3AppsMenuArray";
 NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
@@ -57,6 +68,9 @@ NSString *const A3AppName_Random = @"Random";
 NSString *const A3AppName_Ruler = @"Ruler";
 NSString *const A3AppName_Level = @"Level";
 NSString *const A3AppName_Settings = @"Settings";
+NSString *const A3AppName_About = @"About";
+NSString *const A3AppName_RemoveAds = @"Remove Ads";
+NSString *const A3AppName_RestorePurchase = @"Restore Purchase";
 
 // 아래 줄 이하는 새로 정의한 상수
 NSString *const A3AppName_None = @"None";
@@ -70,6 +84,45 @@ NSString *const A3AppGroupNameReference = @"A3AppGroupNameReference";
 NSString *const A3AppGroupNameProductivity = @"A3AppGroupNameProductivity";
 NSString *const A3AppGroupNameNone = @"A3AppGroupNameNone";
 
+@implementation A3AppDelegate (mainMenu)
+
+- (NSDictionary *)appInfoDictionary {
+	return @{
+			 A3AppName_DateCalculator : @{kA3AppsClassName_iPhone : @"A3DateMainTableViewController", kA3AppsMenuImageName : @"DateCalculator"},
+			 A3AppName_LoanCalculator : @{kA3AppsStoryboard_iPhone:@"LoanCalculatorPhoneStoryBoard", kA3AppsStoryboard_iPad:@"LoanCalculatorPadStoryBoard",kA3AppsMenuImageName : @"LoanCalculator"},
+			 A3AppName_SalesCalculator : @{kA3AppsClassName_iPhone : @"A3SalesCalcMainViewController", kA3AppsMenuImageName : @"SalesCalculator"},
+			 A3AppName_TipCalculator : @{kA3AppsClassName_iPhone : @"A3TipCalcMainTableViewController", kA3AppsMenuImageName : @"TipCalculator"},
+			 A3AppName_UnitPrice : @{kA3AppsStoryboard_iPhone:@"UnitPriceStoryboard", kA3AppsStoryboard_iPad:@"UnitPriceStoryboard_iPad", kA3AppsMenuImageName : @"UnitPrice"},
+			 A3AppName_Calculator : @{kA3AppsClassName_iPhone : @"A3CalculatorViewController_iPhone", kA3AppsClassName_iPad:@"A3CalculatorViewController_iPad",  kA3AppsMenuImageName : @"Calculator"},
+			 A3AppName_PercentCalculator : @{kA3AppsClassName_iPhone : @"A3PercentCalcMainViewController", kA3AppsMenuImageName : @"PercentCalculator"},
+			 A3AppName_CurrencyConverter : @{kA3AppsClassName_iPhone : @"A3CurrencyViewController", kA3AppsMenuImageName : @"Currency"},
+			 A3AppName_LunarConverter : @{kA3AppsClassName_iPhone : @"A3LunarConverterViewController", kA3AppsNibName_iPhone : @"A3LunarConverterViewController", kA3AppsMenuImageName : @"LunarConverter"},
+			 A3AppName_Translator : @{kA3AppsClassName_iPhone : @"A3TranslatorViewController", kA3AppsMenuImageName : @"Translator"},
+			 A3AppName_UnitConverter : @{kA3AppsStoryboard_iPhone:@"UnitConverterPhoneStoryboard", kA3AppsStoryboard_iPad:@"UnitConverterPhoneStoryboard", kA3AppsMenuImageName : @"UnitConverter"},
+			 A3AppName_DaysCounter : @{kA3AppsClassName_iPhone : @"", kA3AppsMenuImageName : @"DaysCounter", kA3AppsMenuNeedSecurityCheck : @YES},
+			 A3AppName_LadiesCalendar : @{kA3AppsClassName_iPhone : @"A3LadyCalendarViewController", kA3AppsNibName_iPhone:@"A3LadyCalendarViewController", kA3AppsMenuImageName : @"LadyCalendar", kA3AppsMenuNeedSecurityCheck : @YES},
+			 A3AppName_Wallet : @{kA3AppsClassName_iPhone : @"A3WalletMainTabBarController", kA3AppsMenuImageName : @"Wallet", kA3AppsMenuNeedSecurityCheck : @YES},
+			 A3AppName_ExpenseList : @{kA3AppsClassName_iPhone : @"A3ExpenseListMainViewController", kA3AppsMenuImageName : @"ExpenseList"},
+			 A3AppName_Holidays : @{kA3AppsClassName_iPhone : @"A3HolidaysPageViewController", kA3AppsMenuImageName : @"Holidays"},
+			 A3AppName_Clock : @{kA3AppsClassName_iPhone : @"A3ClockMainViewController", kA3AppsMenuImageName : @"Clock"},
+			 A3AppName_BatteryStatus : @{kA3AppsClassName_iPhone : @"A3BatteryStatusMainViewController", kA3AppsMenuImageName : @"BatteryStatus"},
+			 A3AppName_Mirror : @{kA3AppsClassName_iPhone : @"A3MirrorViewController", kA3AppsNibName_iPhone :@"A3MirrorViewController", kA3AppsMenuImageName : @"Mirror"},
+			 A3AppName_Magnifier : @{kA3AppsClassName_iPhone : @"A3MagnifierViewController", kA3AppsNibName_iPhone:@"A3MagnifierViewController", kA3AppsMenuImageName : @"Magnifier"},
+			 A3AppName_Flashlight : @{kA3AppsClassName_iPhone : @"A3FlashViewController", kA3AppsNibName_iPhone:@"A3FlashViewController", kA3AppsMenuImageName : @"Flashlight"},
+			 A3AppName_Random : @{kA3AppsClassName_iPhone : @"A3RandomViewController", kA3AppsNibName_iPhone:@"A3RandomViewController", kA3AppsMenuImageName : @"Random"},
+			 A3AppName_Ruler : @{kA3AppsClassName_iPhone : @"A3RulerViewController", kA3AppsMenuImageName : @"Ruler"},
+			 A3AppName_Level : @{kA3AppsClassName_iPhone : @"InclinometerViewController", kA3AppsMenuImageName : @"Level"},
+			 A3AppName_Settings : @{kA3AppsStoryboard_iPhone : @"A3Settings", kA3AppsStoryboard_iPad:@"A3Settings", kA3AppsMenuNeedSecurityCheck : @YES, kA3AppsDoNotKeepAsRecent : @YES},
+			 A3AppName_About : @{kA3AppsStoryboard_iPhone : @"about", kA3AppsStoryboard_iPad:@"about", kA3AppsDoNotKeepAsRecent:@YES},
+			 A3AppName_RemoveAds : @{kA3AppsMenuNeedSecurityCheck : @NO, kA3AppsDoNotKeepAsRecent : @YES},
+			 A3AppName_RestorePurchase : @{kA3AppsMenuNeedSecurityCheck : @NO, kA3AppsDoNotKeepAsRecent : @YES},
+			 };
+}
+
+- (NSString *)imageNameForApp:(NSString *)appName {
+	return [self appInfoDictionary][appName][kA3AppsMenuImageName];
+}
+
 - (NSArray *)allMenu {
 	NSDictionary *calcGroup =
 	@{
@@ -77,13 +130,13 @@ NSString *const A3AppGroupNameNone = @"A3AppGroupNameNone";
 	  kA3AppsMenuCollapsed : @NO,
 	  kA3AppsMenuName : @"CalculatorGroup",
 	  kA3AppsExpandableChildren :	@[
-			  @{kA3AppsMenuName : A3AppName_DateCalculator, kA3AppsClassName_iPhone : @"A3DateMainTableViewController", kA3AppsMenuImageName : @"DateCalculator"},
-			  @{kA3AppsMenuName : A3AppName_LoanCalculator, kA3AppsStoryboard_iPhone:@"LoanCalculatorPhoneStoryBoard", kA3AppsStoryboard_iPad:@"LoanCalculatorPadStoryBoard",kA3AppsMenuImageName : @"LoanCalculator"},
-			  @{kA3AppsMenuName : A3AppName_SalesCalculator, kA3AppsClassName_iPhone : @"A3SalesCalcMainViewController", kA3AppsMenuImageName : @"SalesCalculator"},
-			  @{kA3AppsMenuName : A3AppName_TipCalculator, kA3AppsClassName_iPhone : @"A3TipCalcMainTableViewController", kA3AppsMenuImageName : @"TipCalculator"},
-			  @{kA3AppsMenuName : A3AppName_UnitPrice, kA3AppsStoryboard_iPhone:@"UnitPriceStoryboard", kA3AppsStoryboard_iPad:@"UnitPriceStoryboard_iPad", kA3AppsMenuImageName : @"UnitPrice"},
-			  @{kA3AppsMenuName : A3AppName_Calculator, kA3AppsClassName_iPhone : @"A3CalculatorViewController_iPhone", kA3AppsClassName_iPad:@"A3CalculatorViewController_iPad",  kA3AppsMenuImageName : @"Calculator"},
-			  @{kA3AppsMenuName : A3AppName_PercentCalculator, kA3AppsClassName_iPhone : @"A3PercentCalcMainViewController", kA3AppsMenuImageName : @"PercentCalculator"}
+			  @{kA3AppsMenuName : A3AppName_DateCalculator},
+			  @{kA3AppsMenuName : A3AppName_LoanCalculator},
+			  @{kA3AppsMenuName : A3AppName_SalesCalculator},
+			  @{kA3AppsMenuName : A3AppName_TipCalculator},
+			  @{kA3AppsMenuName : A3AppName_UnitPrice},
+			  @{kA3AppsMenuName : A3AppName_Calculator},
+			  @{kA3AppsMenuName : A3AppName_PercentCalculator}
 			  ]
 	  };
 	NSDictionary *converterGroup =
@@ -92,10 +145,10 @@ NSString *const A3AppGroupNameNone = @"A3AppGroupNameNone";
 				 kA3AppsMenuCollapsed : @NO,
 				 kA3AppsMenuName : @"Converter",
 				 kA3AppsExpandableChildren : @[
-						 @{kA3AppsMenuName : A3AppName_CurrencyConverter, kA3AppsClassName_iPhone : @"A3CurrencyViewController", kA3AppsMenuImageName : @"Currency"},
-						 @{kA3AppsMenuName : A3AppName_LunarConverter, kA3AppsClassName_iPhone : @"A3LunarConverterViewController", kA3AppsNibName_iPhone : @"A3LunarConverterViewController", kA3AppsMenuImageName : @"LunarConverter"},
-						 @{kA3AppsMenuName : A3AppName_Translator, kA3AppsClassName_iPhone : @"A3TranslatorViewController", kA3AppsMenuImageName : @"Translator"},
-						 @{kA3AppsMenuName : A3AppName_UnitConverter, kA3AppsStoryboard_iPhone:@"UnitConverterPhoneStoryboard", kA3AppsStoryboard_iPad:@"UnitConverterPhoneStoryboard", kA3AppsMenuImageName : @"UnitConverter"},
+						 @{kA3AppsMenuName : A3AppName_CurrencyConverter},
+						 @{kA3AppsMenuName : A3AppName_LunarConverter},
+						 @{kA3AppsMenuName : A3AppName_Translator},
+						 @{kA3AppsMenuName : A3AppName_UnitConverter},
 						 ]
 				 };
 	NSDictionary *productivityGroup =
@@ -104,10 +157,10 @@ NSString *const A3AppGroupNameNone = @"A3AppGroupNameNone";
 				 kA3AppsMenuCollapsed : @NO,
 				 kA3AppsMenuName : @"Productivity",
 				 kA3AppsExpandableChildren : @[
-						 @{kA3AppsMenuName : A3AppName_DaysCounter, kA3AppsClassName_iPhone : @"", kA3AppsMenuImageName : @"DaysCounter", kA3AppsMenuNeedSecurityCheck : @YES},
-						 @{kA3AppsMenuName : A3AppName_LadiesCalendar, kA3AppsClassName_iPhone : @"A3LadyCalendarViewController", kA3AppsNibName_iPhone:@"A3LadyCalendarViewController", kA3AppsMenuImageName : @"LadyCalendar", kA3AppsMenuNeedSecurityCheck : @YES},
-						 @{kA3AppsMenuName : A3AppName_Wallet, kA3AppsClassName_iPhone : @"A3WalletMainTabBarController", kA3AppsMenuImageName : @"Wallet", kA3AppsMenuNeedSecurityCheck : @YES},
-						 @{kA3AppsMenuName : A3AppName_ExpenseList, kA3AppsClassName_iPhone : @"A3ExpenseListMainViewController", kA3AppsMenuImageName : @"ExpenseList"},
+						 @{kA3AppsMenuName : A3AppName_DaysCounter},
+						 @{kA3AppsMenuName : A3AppName_LadiesCalendar},
+						 @{kA3AppsMenuName : A3AppName_Wallet},
+						 @{kA3AppsMenuName : A3AppName_ExpenseList},
 						 ]
 				 };
 	NSDictionary *ReferenceGroup =
@@ -116,18 +169,18 @@ NSString *const A3AppGroupNameNone = @"A3AppGroupNameNone";
 				 kA3AppsMenuCollapsed : @NO,
 				 kA3AppsMenuName : @"Reference",
 				 kA3AppsExpandableChildren : @[
-						 @{kA3AppsMenuName : A3AppName_Holidays, kA3AppsClassName_iPhone : @"A3HolidaysPageViewController", kA3AppsMenuImageName : @"Holidays"},
+						 @{kA3AppsMenuName : A3AppName_Holidays},
 						 ]
 				 };
 	NSMutableArray *utilityApps = [@[
-			@{kA3AppsMenuName : A3AppName_Clock, kA3AppsClassName_iPhone : @"A3ClockMainViewController", kA3AppsMenuImageName : @"Clock"},
-			@{kA3AppsMenuName : A3AppName_BatteryStatus, kA3AppsClassName_iPhone : @"A3BatteryStatusMainViewController", kA3AppsMenuImageName : @"BatteryStatus"},
-			@{kA3AppsMenuName : A3AppName_Mirror, kA3AppsClassName_iPhone : @"A3MirrorViewController", kA3AppsNibName_iPhone :@"A3MirrorViewController", kA3AppsMenuImageName : @"Mirror"},
-			@{kA3AppsMenuName : A3AppName_Magnifier, kA3AppsClassName_iPhone : @"A3MagnifierViewController", kA3AppsNibName_iPhone:@"A3MagnifierViewController", kA3AppsMenuImageName : @"Magnifier"},
-			@{kA3AppsMenuName : A3AppName_Flashlight, kA3AppsClassName_iPhone : @"A3FlashViewController", kA3AppsNibName_iPhone:@"A3FlashViewController", kA3AppsMenuImageName : @"Flashlight"},
-			@{kA3AppsMenuName : A3AppName_Random, kA3AppsClassName_iPhone : @"A3RandomViewController", kA3AppsNibName_iPhone:@"A3RandomViewController", kA3AppsMenuImageName : @"Random"},
-			@{kA3AppsMenuName : A3AppName_Ruler, kA3AppsClassName_iPhone : @"A3RulerViewController", kA3AppsMenuImageName : @"Ruler"},
-			@{kA3AppsMenuName : A3AppName_Level, kA3AppsClassName_iPhone : @"InclinometerViewController", kA3AppsMenuImageName : @"Level"},
+			@{kA3AppsMenuName : A3AppName_Clock},
+			@{kA3AppsMenuName : A3AppName_BatteryStatus},
+			@{kA3AppsMenuName : A3AppName_Mirror},
+			@{kA3AppsMenuName : A3AppName_Magnifier},
+			@{kA3AppsMenuName : A3AppName_Flashlight},
+			@{kA3AppsMenuName : A3AppName_Random},
+			@{kA3AppsMenuName : A3AppName_Ruler},
+			@{kA3AppsMenuName : A3AppName_Level},
 	] mutableCopy];
 	if (IS_IPAD) {
 		[self removeMenu:@"Level" inMenus:utilityApps];
@@ -180,19 +233,19 @@ NSString *const A3AppGroupNameNone = @"A3AppGroupNameNone";
 				NSMutableArray *newMenus = [section[kA3AppsExpandableChildren] mutableCopy];
 				if (!hasFlashlight) {
 					NSArray *newItems = @[
-							@{kA3AppsMenuName : A3AppName_Flashlight, kA3AppsClassName_iPhone : @"A3FlashViewController", kA3AppsNibName_iPhone:@"A3FlashViewController", kA3AppsMenuImageName : @"Flashlight"},
-							@{kA3AppsMenuName : A3AppName_Random, kA3AppsClassName_iPhone : @"A3RandomViewController", kA3AppsNibName_iPhone:@"A3RandomViewController", kA3AppsMenuImageName : @"Random"},
+							@{kA3AppsMenuName : A3AppName_Flashlight},
+							@{kA3AppsMenuName : A3AppName_Random},
 					];
 					[newMenus addObjectsFromArray:newItems];
 				}
 				if (!hasRuler) {
 					NSArray *newItems = @[
-							@{kA3AppsMenuName : A3AppName_Ruler, kA3AppsClassName_iPhone : @"A3RulerViewController", kA3AppsMenuImageName : @"Ruler"},
+							@{kA3AppsMenuName : A3AppName_Ruler},
 					];
 					[newMenus addObjectsFromArray:newItems];
 				}
 				if (IS_IPHONE && !hasLevel) {
-					NSDictionary *levelItem = @{kA3AppsMenuName: A3AppName_Level, kA3AppsClassName_iPhone : @"InclinometerViewController", kA3AppsMenuImageName : @"Level"};
+					NSDictionary *levelItem = @{kA3AppsMenuName: A3AppName_Level};
 					[newMenus addObject:levelItem];
 				}
 				if (IS_IPAD && hasLevel) {
@@ -251,17 +304,17 @@ NSString *const A3AppGroupNameNone = @"A3AppGroupNameNone";
 		NSArray *menus;
 		if (IS_IPHONE) {
 			menus =
-			@[@{kA3AppsMenuName : A3AppName_CurrencyConverter, kA3AppsClassName_iPhone : @"A3CurrencyViewController", kA3AppsMenuImageName : @"Currency"},
-			  @{kA3AppsMenuName : A3AppName_Level, kA3AppsClassName_iPhone : @"InclinometerViewController", kA3AppsMenuImageName : @"Level"},
-			  @{kA3AppsMenuName : A3AppName_UnitConverter, kA3AppsStoryboard_iPhone:@"UnitConverterPhoneStoryboard", kA3AppsStoryboard_iPad:@"UnitConverterPhoneStoryboard", kA3AppsMenuImageName : @"UnitConverter"},
-			  @{kA3AppsMenuName : A3AppName_Wallet, kA3AppsClassName_iPhone : @"A3WalletMainTabBarController", kA3AppsMenuImageName : @"Wallet", kA3AppsMenuNeedSecurityCheck : @YES},
+			@[@{kA3AppsMenuName : A3AppName_CurrencyConverter},
+			  @{kA3AppsMenuName : A3AppName_Level},
+			  @{kA3AppsMenuName : A3AppName_UnitConverter},
+			  @{kA3AppsMenuName : A3AppName_Wallet},
 			  ];
 		} else {
 			menus =
-			@[@{kA3AppsMenuName : A3AppName_CurrencyConverter, kA3AppsClassName_iPhone : @"A3CurrencyViewController", kA3AppsMenuImageName : @"Currency"},
-			@{kA3AppsMenuName : A3AppName_LoanCalculator, kA3AppsStoryboard_iPhone:@"LoanCalculatorPhoneStoryBoard", kA3AppsStoryboard_iPad:@"LoanCalculatorPadStoryBoard",kA3AppsMenuImageName : @"LoanCalculator"},
-			@{kA3AppsMenuName : A3AppName_UnitConverter, kA3AppsStoryboard_iPhone:@"UnitConverterPhoneStoryboard", kA3AppsStoryboard_iPad:@"UnitConverterPhoneStoryboard", kA3AppsMenuImageName : @"UnitConverter"},
-			@{kA3AppsMenuName : A3AppName_Wallet, kA3AppsClassName_iPhone : @"A3WalletMainTabBarController", kA3AppsMenuImageName : @"Wallet", kA3AppsMenuNeedSecurityCheck : @YES},
+			@[@{kA3AppsMenuName : A3AppName_CurrencyConverter},
+			@{kA3AppsMenuName : A3AppName_LoanCalculator},
+			@{kA3AppsMenuName : A3AppName_UnitConverter},
+			@{kA3AppsMenuName : A3AppName_Wallet},
 			];
 		}
 		dictionary = @{
@@ -319,9 +372,10 @@ NSString *const A3AppGroupNameNone = @"A3AppGroupNameNone";
         return;
     NSArray *favoriteMenus = [self favoriteItems];
     NSMutableArray *newShortcutItems = [NSMutableArray new];
-	
+
+	NSDictionary *appInfoDictionary = [self appInfoDictionary];
     for (NSDictionary *favoriteItem in favoriteMenus) {
-		NSString *iconName = favoriteItem[kA3AppsMenuImageName];
+		NSString *iconName = appInfoDictionary[kA3AppsMenuImageName];
         UIApplicationShortcutItem *shortcutItem = [[UIApplicationShortcutItem alloc] initWithType:[NSString stringWithFormat:@"net.allaboutapps.%@", favoriteItem[kA3AppsMenuName]]
                                                                                    localizedTitle:NSLocalizedString(favoriteItem[kA3AppsMenuName], nil)
                                                                                 localizedSubtitle:Nil
@@ -331,6 +385,211 @@ NSString *const A3AppGroupNameNone = @"A3AppGroupNameNone";
 		[newShortcutItems addObject:shortcutItem];
     }
     [[UIApplication sharedApplication] setShortcutItems:newShortcutItems];
+}
+
+- (void)setupMainMenuViewController {
+	NSArray *menuTypes = @[A3SettingsMainMenuStyleTable, A3SettingsMainMenuStyleHexagon, A3SettingsMainMenuStyleIconGrid];
+	NSString *userSetting = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
+	NSInteger idx = [menuTypes indexOfObject:userSetting];
+	switch (idx) {
+		case 0:
+			[self setupTableStyleMainMenuViewController];
+			break;
+		case 1:
+			[self setupHexagonStyleMainViewController];
+			break;
+		case 2:
+			break;
+		default:
+			[self setupHexagonStyleMainViewController];
+			break;
+	}
+}
+
+- (void)setupHexagonStyleMainViewController {
+	if (IS_IPHONE) {
+		A3HexagonMenuViewController *hexagonMenuViewController;
+
+		hexagonMenuViewController = [A3HexagonMenuViewController new];
+		A3NavigationController *navigationController = [[A3NavigationController alloc] initWithRootViewController:hexagonMenuViewController];
+		self.window.rootViewController = navigationController;
+		self.currentMainNavigationController = navigationController;
+		self.rootViewController_iPhone = navigationController;
+	}
+}
+
+- (void)setupTableStyleMainMenuViewController {
+	UIViewController *rootViewController;
+	if (IS_IPAD) {
+		A3RootViewController_iPad *rootViewController_iPad = [[A3RootViewController_iPad alloc] initWithNibName:nil bundle:nil];
+		[rootViewController view];
+		rootViewController = rootViewController_iPad;
+		self.rootViewController_iPad = rootViewController_iPad;
+		self.mainMenuViewController = rootViewController_iPad.mainMenuViewController;
+		self.currentMainNavigationController = rootViewController_iPad.centerNavigationController;
+	} else {
+		self.mainMenuViewController = [[A3MainMenuTableViewController alloc] init];
+		UINavigationController *menuNavigationController = [[UINavigationController alloc] initWithRootViewController:self.mainMenuViewController];
+
+		UIViewController *viewController = [A3MainViewController new];
+		A3NavigationController *navigationController = [[A3NavigationController alloc] initWithRootViewController:viewController];
+		self.currentMainNavigationController = navigationController;
+
+		MMDrawerController *drawerController = [[MMDrawerController alloc] initWithCenterViewController:navigationController leftDrawerViewController:menuNavigationController];
+		self.drawerController = drawerController;
+		self.rootViewController_iPhone = self.drawerController;
+
+		[drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeBezelPanningCenterView];
+		[drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
+		[drawerController setDrawerVisualStateBlock:[self slideAndScaleVisualStateBlock]];
+		[drawerController setCenterHiddenInteractionMode:MMDrawerOpenCenterInteractionModeFull];
+		[drawerController setGestureCompletionBlock:^(MMDrawerController *drawerController, UIGestureRecognizer *gesture) {
+			[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
+			if (drawerController.openSide != MMDrawerSideLeft) {
+				[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationMainMenuDidHide object:nil];
+			}
+		}];
+
+		CGRect screenBounds = [[UIScreen mainScreen] bounds];
+		[drawerController setMaximumLeftDrawerWidth:screenBounds.size.width];
+		[drawerController setShowsShadow:NO];
+
+		drawerController.view.frame = screenBounds;
+
+		rootViewController = drawerController;
+	}
+	self.window.rootViewController = rootViewController;
+}
+
+- (MMDrawerControllerDrawerVisualStateBlock)slideAndScaleVisualStateBlock{
+	MMDrawerControllerDrawerVisualStateBlock visualStateBlock =
+			^(MMDrawerController * drawerController, MMDrawerSide drawerSide, CGFloat percentVisible){
+				CGFloat minScale = .95;
+				CGFloat scale = minScale + (percentVisible*(1.0-minScale));
+				CATransform3D scaleTransform =  CATransform3DMakeScale(scale, scale, scale);
+
+				CGFloat maxDistance = 10;
+				CGFloat distance = maxDistance * percentVisible;
+				CATransform3D translateTransform;
+				UIViewController * sideDrawerViewController;
+				if(drawerSide == MMDrawerSideLeft) {
+					sideDrawerViewController = drawerController.leftDrawerViewController;
+					translateTransform = CATransform3DMakeTranslation((maxDistance-distance), 0.0, 0.0);
+				}
+				else if(drawerSide == MMDrawerSideRight){
+					sideDrawerViewController = drawerController.rightDrawerViewController;
+					translateTransform = CATransform3DMakeTranslation(-(maxDistance-distance), 0.0, 0.0);
+				}
+
+				[sideDrawerViewController.view.layer setTransform:CATransform3DConcat(scaleTransform, translateTransform)];
+				[sideDrawerViewController.view setAlpha:percentVisible];
+			};
+	return visualStateBlock;
+}
+
+- (BOOL)launchAppNamed:(NSString *)appName verifyPasscode:(BOOL)verifyPasscode animated:(BOOL)animated {
+	BOOL appLaunched = NO;
+	BOOL proceedPasscodeCheck = NO;
+
+	NSDictionary *appInfo = [self appInfoDictionary][appName];
+	if (   verifyPasscode
+		&& [A3KeychainUtils getPassword]
+		&& [self securitySettingIsOnForAppNamed:appName]
+		&& [[A3AppDelegate instance] didPasscodeTimerEnd]
+		)
+	{
+		proceedPasscodeCheck = YES;
+		
+		if ([appInfo[kA3AppsStoryboard_iPhone] isEqualToString:@"A3Settings"]) {
+			proceedPasscodeCheck &= [[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForSettings];
+		}
+	}
+	if (proceedPasscodeCheck) {
+		[self presentLockScreen];
+	} else {
+		UIViewController *targetViewController= [self getViewControllerForAppNamed:appName];
+		[targetViewController callPrepareCloseOnActiveMainAppViewController];
+		[targetViewController popToRootAndPushViewController:targetViewController animated:animated];
+		appLaunched = YES;
+	}
+	return appLaunched;
+}
+
+- (UIViewController *)getViewControllerForAppNamed:(NSString *)appName {
+	UIViewController *targetViewController;
+
+	NSDictionary *appInfo = [self appInfoDictionary][appName];
+	if ([appInfo[kA3AppsMenuImageName] isEqualToString:@"DaysCounter"]) {
+		A3DaysCounterModelManager *sharedManager = [[A3DaysCounterModelManager alloc] init];
+		[sharedManager prepareInContext:[A3AppDelegate instance].managedObjectContext];
+
+		NSInteger lastOpenedMainIndex = [[A3UserDefaults standardUserDefaults] integerForKey:A3DaysCounterLastOpenedMainIndex];
+		switch (lastOpenedMainIndex) {
+			case 1:
+				targetViewController = [[A3DaysCounterSlideShowMainViewController alloc] initWithNibName:@"A3DaysCounterSlideShowMainViewController" bundle:nil];
+				((A3DaysCounterSlideShowMainViewController *)targetViewController).sharedManager = sharedManager;
+				break;
+			case 3:
+				targetViewController = [[A3DaysCounterReminderListViewController alloc] initWithNibName:@"A3DaysCounterReminderListViewController" bundle:nil];
+				((A3DaysCounterReminderListViewController *)targetViewController).sharedManager = sharedManager;
+				break;
+			case 4:
+				targetViewController = [[A3DaysCounterFavoriteListViewController alloc] initWithNibName:@"A3DaysCounterFavoriteListViewController" bundle:nil];
+				((A3DaysCounterFavoriteListViewController *)targetViewController).sharedManager = sharedManager;
+				break;
+
+			default:
+				targetViewController = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListMainViewController" bundle:nil];
+				((A3DaysCounterCalendarListMainViewController *)targetViewController).sharedManager = sharedManager;
+				break;
+		}
+
+		return targetViewController;
+	}
+
+	if ([appInfo[kA3AppsClassName_iPhone] length]) {
+		Class class;
+		NSString *nibName;
+		if (IS_IPAD) {
+			class = NSClassFromString(appInfo[kA3AppsClassName_iPad] ? appInfo[kA3AppsClassName_iPad] : appInfo[kA3AppsClassName_iPhone]);
+			nibName = appInfo[kA3AppsNibName_iPad] ? appInfo[kA3AppsNibName_iPad] : appInfo[kA3AppsNibName_iPhone];
+		} else {
+			class = NSClassFromString(appInfo[kA3AppsClassName_iPhone]);
+			nibName = appInfo[kA3AppsNibName_iPhone];
+		}
+
+		if (nibName) {
+			targetViewController = [[class alloc] initWithNibName:nibName bundle:nil];
+		} else {
+			targetViewController = [[class alloc] init];
+		}
+	} else if ([appInfo[kA3AppsStoryboard_iPhone] length]) {
+		NSString *storyboardName;
+		if (IS_IPAD) {
+			storyboardName = appInfo[kA3AppsStoryboard_iPad] ? appInfo[kA3AppsStoryboard_iPad] : appInfo[kA3AppsStoryboard_iPhone];
+		} else {
+			storyboardName = appInfo[kA3AppsStoryboard_iPhone];
+		}
+		UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
+		targetViewController = [storyboard instantiateInitialViewController];
+	}
+	return targetViewController;
+}
+
+- (BOOL)securitySettingIsOnForAppNamed:(NSString *)appName {
+	NSDictionary *appInfo = [self appInfoDictionary][appName];
+
+	if (![appInfo[kA3AppsMenuNeedSecurityCheck] boolValue]) return NO;
+	if ([appName isEqualToString:A3AppName_DaysCounter]) {
+		return [[A3AppDelegate instance] shouldAskPasscodeForDaysCounter];
+	} else if ([appName isEqualToString:A3AppName_LadiesCalendar]) {
+		return [[A3AppDelegate instance] shouldAskPasscodeForLadyCalendar];
+	} else if ([appName isEqualToString:A3AppName_Wallet]) {
+		return [[A3AppDelegate instance] shouldAskPasscodeForWallet];
+	} else if ([appName isEqualToString:A3AppName_Settings]) {
+		return [[A3AppDelegate instance] shouldAskPasscodeForSettings];
+	}
+	return NO;
 }
 
 @end

@@ -144,7 +144,7 @@
     // Configure the cell...
 	NSDictionary *menuItem = self.allMenuItems[indexPath.row];
 	cell.textLabel.text = NSLocalizedString(menuItem[kA3AppsMenuName], nil);
-	cell.imageView.image = [UIImage imageNamed:menuItem[kA3AppsMenuImageName]];
+	cell.imageView.image = [UIImage imageNamed:[[A3AppDelegate instance] imageNameForApp:menuItem[kA3AppsMenuName]]];
 
 	BOOL isFavoriteItem = [self indexOfMenuInFavorites:menuItem] != NSNotFound;
 

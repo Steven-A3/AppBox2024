@@ -72,7 +72,7 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
 	if (IS_IPAD) {
-		[[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] dismissRightSideViewController];
 		if ([_delegate respondsToSelector:@selector(dismissDateCalcDurationViewController)]) {
 			[_delegate performSelector:@selector(dismissDateCalcDurationViewController)];
 		}

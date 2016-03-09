@@ -360,7 +360,7 @@
         [self presentViewController:nav animated:YES completion:NULL];
     } else {
         [self enableControls:NO];
-        [[[A3AppDelegate instance] rootViewController] presentRightSideViewController:settingsViewController];
+        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:settingsViewController];
     }
 }
 
@@ -378,7 +378,7 @@
 
 	UIView *superview;
 	if ( IS_IPAD ){
-		UIViewController *rootViewController = [[A3AppDelegate instance] rootViewController];
+		UIViewController *rootViewController = [[A3AppDelegate instance] rootViewController_iPad];
 		[rootViewController.view addSubview:self.dateKeyboardVC.view];
 
 		superview = rootViewController.view;
@@ -508,7 +508,7 @@
 
 	UIView *superview;
 	if ( IS_IPAD ){
-		UIViewController *rootViewController = [[A3AppDelegate instance] rootViewController];
+		UIViewController *rootViewController = [[A3AppDelegate instance] rootViewController_iPad];
 		[rootViewController.view addSubview:self.dateKeyboardVC.view];
 
 		superview = rootViewController.view;
@@ -1103,7 +1103,7 @@
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
 	[super appsButtonAction:barButtonItem];
 
-	[self enableControls:![[A3AppDelegate instance] rootViewController].showLeftView];
+	[self enableControls:![[A3AppDelegate instance] rootViewController_iPad].showLeftView];
 	if (IS_IPAD) {
 		[self dateKeyboardDoneButtonPressed:nil ];
 	}

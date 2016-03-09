@@ -320,8 +320,8 @@
     _eventModel.repeatType = self.originalValue;
     
     if ( IS_IPAD ) {
-        [[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
-        [[[A3AppDelegate instance] rootViewController].centerNavigationController viewWillAppear:YES];
+        [[[A3AppDelegate instance] rootViewController_iPad] dismissRightSideViewController];
+        [[[A3AppDelegate instance] rootViewController_iPad].centerNavigationController viewWillAppear:YES];
     }
     else {
         [self.navigationController popViewControllerAnimated:YES];
@@ -331,8 +331,8 @@
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
     if ( IS_IPAD ) {
-        [[[A3AppDelegate instance] rootViewController] dismissRightSideViewController];
-        [[[A3AppDelegate instance] rootViewController].centerNavigationController viewWillAppear:YES];
+        [[[A3AppDelegate instance] rootViewController_iPad] dismissRightSideViewController];
+        [[[A3AppDelegate instance] rootViewController_iPad].centerNavigationController viewWillAppear:YES];
     }
     else {
         [self.navigationController popViewControllerAnimated:YES];

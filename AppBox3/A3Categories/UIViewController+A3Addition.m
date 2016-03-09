@@ -103,7 +103,7 @@ NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
 		navigationController = (UINavigationController *) self.mm_drawerController.centerViewController;
 		[self.mm_drawerController closeDrawerAnimated:YES completion:nil];
 	} else {
-		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController_iPad];
 		[rootViewController dismissRightSideViewController];
 
 		navigationController = [rootViewController centerNavigationController];
@@ -129,7 +129,7 @@ NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
 	}
 }
 
-- (void)popToRootAndPushViewController:(UIViewController *)viewController {
+- (void)popToRootAndPushViewController:(UIViewController *)viewController animated:(BOOL)animated {
 	UINavigationController *navigationController;
 	A3AppDelegate *appDelegate = [A3AppDelegate instance];
 	[appDelegate popStartingAppInfo];
@@ -138,7 +138,7 @@ NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
 	if (IS_IPHONE) {
 		[appDelegate.drawerController closeDrawerAnimated:YES completion:nil];
 	} else {
-		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController_iPad];
 		[rootViewController dismissRightSideViewController];
 
         // KJH
@@ -216,12 +216,12 @@ NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
     navigationController.navigationBar.tintColor = [A3AppDelegate instance].themeColor;
 
 	if (IS_IPAD) {
-		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController_iPad];
 		[rootViewController animateHideLeftViewForFullScreenCenterView:YES];
 	}
 
     if (viewController) {
-        [navigationController pushViewController:viewController animated:NO];
+        [navigationController pushViewController:viewController animated:animated];
     }
 	[[A3AppDelegate instance] didFinishPushViewController];
 }
@@ -233,9 +233,15 @@ NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
 	[self.firstResponder resignFirstResponder];
 	if (IS_IPHONE) {
-		[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+		if (self.mm_drawerController) {
+			[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+		} else {
+			UINavigationController *navigationController = [A3AppDelegate instance].currentMainNavigationController;
+			[navigationController popViewControllerAnimated:YES];
+			[navigationController setToolbarHidden:YES];
+		}
 	} else {
-		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
+		[[[A3AppDelegate instance] rootViewController_iPad] toggleLeftMenuViewOnOff];
 	}
 }
 

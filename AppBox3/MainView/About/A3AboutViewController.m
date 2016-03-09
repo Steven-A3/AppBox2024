@@ -207,7 +207,7 @@
 		[self.navigationController pushViewController:viewController animated:YES];
 	} else {
 		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-		[[[A3AppDelegate instance] rootViewController] presentViewController:navigationController animated:YES completion:NULL];
+		[[[A3AppDelegate instance] rootViewController_iPad] presentViewController:navigationController animated:YES completion:NULL];
 	}
 }
 
