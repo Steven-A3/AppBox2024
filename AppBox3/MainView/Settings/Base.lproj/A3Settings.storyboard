@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="go4-fr-Ah2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="go4-fr-Ah2">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Settings-->
@@ -104,37 +106,96 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection id="kKz-LW-AL6">
+                            <tableViewSection headerTitle="HOME SCREEN STYLE" id="4kk-Sh-oCc">
                                 <cells>
-                                    <tableViewCell tag="3100" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="Of0-YK-9dc" detailTextLabel="WZi-Up-6bJ" style="IBUITableViewCellStyleValue1" id="FiU-Nr-rfH" customClass="A3StandardTableViewCell">
-                                        <rect key="frame" x="0.0" y="299.5" width="320" height="44"/>
+                                    <tableViewCell tag="5200" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="160" id="w9G-1V-Z0I" customClass="A3SettingsHomeStyleSelectTableViewCell">
+                                        <rect key="frame" x="0.0" y="321.5" width="320" height="160"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FiU-Nr-rfH" id="ALU-IG-lNe">
-                                            <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="w9G-1V-Z0I" id="lru-Uv-67d">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="159.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Default App" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Of0-YK-9dc">
-                                                    <rect key="frame" x="15" y="12" width="90.5" height="20.5"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="WZi-Up-6bJ">
-                                                    <rect key="frame" x="241" y="12" width="44" height="20.5"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="azc-pz-0Ra">
+                                                    <rect key="frame" x="38" y="11" width="52" height="109"/>
+                                                    <state key="normal" backgroundImage="HomeScreenStyle_list"/>
+                                                    <connections>
+                                                        <action selector="listButtonSelected:" destination="w9G-1V-Z0I" eventType="touchUpInside" id="tgM-LZ-DUD"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Hw-ek-qge">
+                                                    <rect key="frame" x="134" y="11" width="52" height="109"/>
+                                                    <state key="normal" backgroundImage="HomeScreenStyle_hexagon"/>
+                                                    <connections>
+                                                        <action selector="hexagonButtonSelected:" destination="w9G-1V-Z0I" eventType="touchUpInside" id="cuj-jh-x7i"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lgX-gr-2rr">
+                                                    <rect key="frame" x="224" y="11" width="52" height="109"/>
+                                                    <state key="normal" backgroundImage="HomeScreenStyle_grid"/>
+                                                    <connections>
+                                                        <action selector="gridButtonSelected:" destination="w9G-1V-Z0I" eventType="touchUpInside" id="6aJ-xc-Yvb"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l7a-V1-SMB">
+                                                    <rect key="frame" x="29" y="130" width="71" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="71" id="DO7-qm-K7b"/>
+                                                        <constraint firstAttribute="height" constant="21" id="TdI-8o-fZa"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <state key="normal" title="List"/>
+                                                    <connections>
+                                                        <action selector="listButtonSelected:" destination="w9G-1V-Z0I" eventType="touchUpInside" id="Ogm-AC-ZqO"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Xh-7R-BIO">
+                                                    <rect key="frame" x="125" y="130" width="71" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="21" id="9am-ry-Y5M"/>
+                                                        <constraint firstAttribute="width" constant="71" id="Wcf-yg-9Mb"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <state key="normal" title="Hexagon"/>
+                                                    <connections>
+                                                        <action selector="hexagonButtonSelected:" destination="w9G-1V-Z0I" eventType="touchUpInside" id="XUM-ep-Ciw"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1J3-ea-Ni3">
+                                                    <rect key="frame" x="215" y="130" width="71" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="71" id="4ae-eU-h0L"/>
+                                                        <constraint firstAttribute="height" constant="21" id="pGk-VY-Msu"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <state key="normal" title="Grid"/>
+                                                    <connections>
+                                                        <action selector="gridButtonSelected:" destination="w9G-1V-Z0I" eventType="touchUpInside" id="V4P-5y-YGa"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="1J3-ea-Ni3" firstAttribute="baseline" secondItem="9Xh-7R-BIO" secondAttribute="baseline" id="0Uz-ds-SHw"/>
+                                                <constraint firstItem="lgX-gr-2rr" firstAttribute="centerX" secondItem="lru-Uv-67d" secondAttribute="rightMargin" multiplier="0.8" id="2Gj-e3-o9a"/>
+                                                <constraint firstItem="1Hw-ek-qge" firstAttribute="top" secondItem="azc-pz-0Ra" secondAttribute="top" id="47i-zH-RaB"/>
+                                                <constraint firstItem="1J3-ea-Ni3" firstAttribute="centerX" secondItem="lgX-gr-2rr" secondAttribute="centerX" id="RwY-ry-9xD"/>
+                                                <constraint firstItem="lgX-gr-2rr" firstAttribute="top" secondItem="1Hw-ek-qge" secondAttribute="top" id="ZnI-92-R7S"/>
+                                                <constraint firstItem="azc-pz-0Ra" firstAttribute="centerX" secondItem="lru-Uv-67d" secondAttribute="right" multiplier="0.2" id="dfd-iR-rqs"/>
+                                                <constraint firstItem="9Xh-7R-BIO" firstAttribute="baseline" secondItem="l7a-V1-SMB" secondAttribute="baseline" id="gx0-ED-SgA"/>
+                                                <constraint firstItem="9Xh-7R-BIO" firstAttribute="centerX" secondItem="1Hw-ek-qge" secondAttribute="centerX" id="h6Q-MQ-Feh"/>
+                                                <constraint firstItem="l7a-V1-SMB" firstAttribute="centerX" secondItem="azc-pz-0Ra" secondAttribute="centerX" id="lpo-29-kbK"/>
+                                                <constraint firstItem="azc-pz-0Ra" firstAttribute="centerY" secondItem="lru-Uv-67d" secondAttribute="centerY" constant="-15" id="rG9-Ls-yw5"/>
+                                                <constraint firstItem="1Hw-ek-qge" firstAttribute="centerX" secondItem="lru-Uv-67d" secondAttribute="centerX" id="whI-8r-cux"/>
+                                                <constraint firstItem="l7a-V1-SMB" firstAttribute="top" secondItem="azc-pz-0Ra" secondAttribute="bottom" constant="10" id="y7V-Il-LPy"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="vRJ-7t-sk5" kind="push" id="1GQ-Dd-Aw3"/>
+                                            <outlet property="gridTitleButton" destination="1J3-ea-Ni3" id="pXY-ZV-9kb"/>
+                                            <outlet property="hexagonTitleButton" destination="9Xh-7R-BIO" id="Fmb-Fd-gs7"/>
+                                            <outlet property="listTitleButton" destination="l7a-V1-SMB" id="S3G-Mg-uZW"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell tag="3200" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="m3s-eA-4WD" style="IBUITableViewCellStyleDefault" id="bN8-Zi-geh" customClass="A3StandardTableViewCell">
-                                        <rect key="frame" x="0.0" y="343.5" width="320" height="44"/>
+                                    <tableViewCell tag="3200" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="m3s-eA-4WD" style="IBUITableViewCellStyleDefault" id="bN8-Zi-geh" userLabel="Favorites STD CELL" customClass="A3StandardTableViewCell">
+                                        <rect key="frame" x="0.0" y="481.5" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bN8-Zi-geh" id="Tep-KN-CeD">
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
@@ -153,8 +214,8 @@
                                             <segue destination="vRR-Rd-eut" kind="push" id="AWL-eZ-2q7"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell tag="3300" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="BGG-KB-Wog" detailTextLabel="UKS-0H-yut" style="IBUITableViewCellStyleValue1" id="HzD-k5-cgj" customClass="A3StandardTableViewCell">
-                                        <rect key="frame" x="0.0" y="387.5" width="320" height="44"/>
+                                    <tableViewCell tag="3300" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="BGG-KB-Wog" detailTextLabel="UKS-0H-yut" style="IBUITableViewCellStyleValue1" id="HzD-k5-cgj" userLabel="Recent to Keep STD CELL" customClass="A3StandardTableViewCell">
+                                        <rect key="frame" x="0.0" y="525.5" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HzD-k5-cgj" id="eZT-eZ-B4Z">
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
@@ -182,10 +243,37 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection id="BNJ-4X-PwF">
+                            <tableViewSection id="kKz-LW-AL6">
                                 <cells>
-                                    <tableViewCell tag="4100" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="Vgb-6m-SyM" style="IBUITableViewCellStyleDefault" id="6HN-jy-OKz" customClass="A3StandardTableViewCell">
-                                        <rect key="frame" x="0.0" y="451.5" width="320" height="44"/>
+                                    <tableViewCell tag="3100" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="Of0-YK-9dc" detailTextLabel="WZi-Up-6bJ" style="IBUITableViewCellStyleValue1" id="FiU-Nr-rfH" userLabel="Default App STD CELL" customClass="A3StandardTableViewCell">
+                                        <rect key="frame" x="0.0" y="589.5" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FiU-Nr-rfH" id="ALU-IG-lNe">
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Default App" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Of0-YK-9dc">
+                                                    <rect key="frame" x="15" y="12" width="90.5" height="20.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="WZi-Up-6bJ">
+                                                    <rect key="frame" x="241" y="12" width="44" height="20.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="vRJ-7t-sk5" kind="push" id="1GQ-Dd-Aw3"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell tag="4100" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="Vgb-6m-SyM" style="IBUITableViewCellStyleDefault" id="6HN-jy-OKz" userLabel="Theme Color STD CELL" customClass="A3StandardTableViewCell">
+                                        <rect key="frame" x="0.0" y="633.5" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6HN-jy-OKz" id="ZqQ-ey-pbQ">
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
@@ -203,6 +291,44 @@
                                         <connections>
                                             <segue destination="RpU-td-Vej" kind="push" identifier="themeColor" id="hth-dH-ZeS"/>
                                         </connections>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection id="BNJ-4X-PwF">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="yfZ-vk-zWG" style="IBUITableViewCellStyleDefault" id="75h-zV-g9e" userLabel="Remove Ads STD CELL" customClass="A3StandardTableViewCell">
+                                        <rect key="frame" x="0.0" y="697.5" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="75h-zV-g9e" id="a28-0F-nef">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Remove Ads" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yfZ-vk-zWG">
+                                                    <rect key="frame" x="15" y="0.0" width="290" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="C7v-Sr-wgh" style="IBUITableViewCellStyleDefault" id="dA1-eu-ZdN" userLabel="Restore Purchase STD CELL" customClass="A3StandardTableViewCell">
+                                        <rect key="frame" x="0.0" y="741.5" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dA1-eu-ZdN" id="nbu-Fi-0vW">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Restore Purchase" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="C7v-Sr-wgh">
+                                                    <rect key="frame" x="15" y="0.0" width="290" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -1288,6 +1414,11 @@ Deleting the app will delete the backup file in your device together.</string>
             <point key="canvasLocation" x="1045" y="679"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="HomeScreenStyle_grid" width="52" height="109"/>
+        <image name="HomeScreenStyle_hexagon" width="52" height="109"/>
+        <image name="HomeScreenStyle_list" width="52" height="109"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

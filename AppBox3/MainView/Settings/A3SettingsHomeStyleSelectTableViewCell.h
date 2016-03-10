@@ -10,4 +10,6 @@
 
 @interface A3SettingsHomeStyleSelectTableViewCell : UITableViewCell
 
+@property (nonatomic, weak) UITableView *tableView;
+
 @end

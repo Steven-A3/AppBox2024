@@ -1376,4 +1376,16 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+- (MBProgressHUD *)hudView {
+	if (!_hudView) {
+		_hudView = [MBProgressHUD showHUDAddedTo:[[self visibleViewController] view] animated:YES];
+		_hudView.minShowTime = 2;
+		_hudView.removeFromSuperViewOnHide = YES;
+		_hudView.completionBlock = ^{
+			_hudView = nil;
+		};
+	}
+	return _hudView;
+}
+
 @end

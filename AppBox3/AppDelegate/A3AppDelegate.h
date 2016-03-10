@@ -123,6 +123,7 @@ extern NSString *const A3AppGroupNameNone;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) NSDate *wakeUpTime;
 @property (strong, nonatomic) MBProgressHUD *hud;
+@property (nonatomic, strong) MBProgressHUD *hudView;
 @property (strong, nonatomic) UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
 @property (strong, nonatomic) Reachability *reachability;
 @property (strong, nonatomic) NSCalendar *calendar;

@@ -73,9 +73,6 @@
 	return cell;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(A3HexagonCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
-}
-
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 	FNLOG();
 	self.appTitleLabel.text = @"";

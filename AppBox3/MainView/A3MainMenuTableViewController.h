@@ -22,5 +22,4 @@
 - (void)openClockApp;
 - (BOOL)openRecentlyUsedMenu:(BOOL)verifyPasscode;
 
-- (void)didSelectRestorePurchase;
 @end

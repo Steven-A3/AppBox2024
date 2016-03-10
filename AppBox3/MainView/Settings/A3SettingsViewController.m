@@ -15,6 +15,7 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "Reachability.h"
 #import "A3SyncManager.h"
+#import "A3SettingsHomeStyleSelectTableViewCell.h"
 
 typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	A3SettingsRowUseiCloud = 1100,
@@ -24,7 +25,8 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	A3SettingsRowEditFavorites = 3200,
 	A3SettingsRowRecentToKeep = 3300,
 	A3SettingsRowThemeColor = 4100,
-	sA3SettingsRowLunarCalendar = 4200,
+	A3SettingsRowLunarCalendar = 4200,
+	A3SettingsRowMainMenuStyle = 5200,
 };
 
 @interface A3SettingsViewController () <A3PasscodeViewControllerDelegate, UIActionSheetDelegate>
@@ -33,6 +35,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 @property (nonatomic, strong) UIButton *colorButton;
 @property (nonatomic, strong) UISwitch *iCloudSwitch;
 @property (nonatomic, strong) MBProgressHUD *HUD;
+@property (nonatomic, copy) NSString *previousMainMenuStyle;
 
 @end
 
@@ -43,6 +46,10 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
+		_previousMainMenuStyle = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
+		if (!_previousMainMenuStyle) {
+			_previousMainMenuStyle = A3SettingsMainMenuStyleHexagon;
+		}
     }
     return self;
 }
@@ -91,6 +98,20 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	return [self standardHeightForFooterIsLastSection:isLastSection];
 }
 
+- (BOOL)isMainMenuStyleList {
+	NSString *mainMenuStyle = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
+	return [mainMenuStyle isEqualToString:A3SettingsMainMenuStyleTable];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 2 && indexPath.row == 0) return 160.0;
+
+	if (indexPath.section == 2 && indexPath.row > 0) {
+		return [self isMainMenuStyleList] ? UITableViewAutomaticDimension : 0.0;
+	}
+	return UITableViewAutomaticDimension;
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	A3SettingsTableViewRow row = (A3SettingsTableViewRow) cell.tag;
 	switch (row) {
@@ -117,9 +138,27 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 			break;
 		}
 		case A3SettingsRowEditFavorites:
+			if ([self isMainMenuStyleList]) {
+				[cell.textLabel setHidden:NO];
+				[cell.detailTextLabel setHidden:NO];
+				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			} else {
+				[cell.textLabel setHidden:YES];
+				[cell.detailTextLabel setHidden:YES];
+				cell.accessoryType = UITableViewCellAccessoryNone;
+			}
 			break;
 		case A3SettingsRowRecentToKeep:
 			cell.detailTextLabel.text = [[A3UserDefaults standardUserDefaults] stringForRecentToKeep];
+			if ([self isMainMenuStyleList]) {
+				[cell.textLabel setHidden:NO];
+				[cell.detailTextLabel setHidden:NO];
+				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			} else {
+				[cell.textLabel setHidden:YES];
+				[cell.detailTextLabel setHidden:YES];
+				cell.accessoryType = UITableViewCellAccessoryNone;
+			}
 			break;
 		case A3SettingsRowThemeColor: {
 			if (!_colorButton) {
@@ -142,50 +181,80 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 			}
 			break;
 		}
-		case sA3SettingsRowLunarCalendar:
+		case A3SettingsRowLunarCalendar:
 			break;
+		case A3SettingsRowMainMenuStyle: {
+			A3SettingsHomeStyleSelectTableViewCell *homeStyleSelectCell = (A3SettingsHomeStyleSelectTableViewCell *) cell;
+			homeStyleSelectCell.tableView = tableView;
+			if ([self isMainMenuStyleList]) {
+				cell.separatorInset = A3UITableViewSeparatorInset;
+			} else {
+				cell.separatorInset = UIEdgeInsetsZero;
+				cell.indentationWidth = 0;
+			}
+			break;
+		}
 	}
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row == 0 && indexPath.section == 1) {
-		if ([A3KeychainUtils getPassword] != nil) {
-			void(^presentPasscodeViewControllerBlock)(void) = ^(){
-				_passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
-				[_passcodeViewController showLockScreenInViewController:self];
-			};
-			if (IS_IOS7 || ![[A3AppDelegate instance] useTouchID]) {
-				presentPasscodeViewControllerBlock();
-			} else {
-				LAContext *context = [LAContext new];
-				NSError *error;
-				if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
-					[[A3AppDelegate instance] addSecurityCoverView];
-					[[UIApplication sharedApplication] setStatusBarHidden:YES];
-					[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-					[context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
-							localizedReason:NSLocalizedString(@"Unlock AppBox Pro", @"Unlock AppBox Pro")
-									  reply:^(BOOL success, NSError *error) {
-										  dispatch_async(dispatch_get_main_queue(), ^{
-											  [[UIApplication sharedApplication] setStatusBarHidden:NO];
-											  [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-
-											  [[A3AppDelegate instance] removeSecurityCoverView];
-											  if (success) {
-												  [self performSegueWithIdentifier:@"passcode" sender:nil];
-											  } else {
-												  presentPasscodeViewControllerBlock();
-											  }
-										  });
-
-									  }];
+	switch (indexPath.section) {
+		case 1:
+			if (indexPath.row == 0) {
+				if ([A3KeychainUtils getPassword] != nil) {
+					void(^presentPasscodeViewControllerBlock)(void) = ^(){
+						_passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
+						[_passcodeViewController showLockScreenInViewController:self];
+					};
+					if (IS_IOS7 || ![[A3AppDelegate instance] useTouchID]) {
+						presentPasscodeViewControllerBlock();
+					} else {
+						LAContext *context = [LAContext new];
+						NSError *error;
+						if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
+							[[A3AppDelegate instance] addSecurityCoverView];
+							[[UIApplication sharedApplication] setStatusBarHidden:YES];
+							[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+							[context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
+									localizedReason:NSLocalizedString(@"Unlock AppBox Pro", @"Unlock AppBox Pro")
+											  reply:^(BOOL success, NSError *error) {
+												  dispatch_async(dispatch_get_main_queue(), ^{
+													  [[UIApplication sharedApplication] setStatusBarHidden:NO];
+													  [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+													  
+													  [[A3AppDelegate instance] removeSecurityCoverView];
+													  if (success) {
+														  [self performSegueWithIdentifier:@"passcode" sender:nil];
+													  } else {
+														  presentPasscodeViewControllerBlock();
+													  }
+												  });
+												  
+											  }];
+						} else {
+							presentPasscodeViewControllerBlock();
+						}
+					}
 				} else {
-					presentPasscodeViewControllerBlock();
+					[self performSegueWithIdentifier:@"passcode" sender:nil];
 				}
 			}
-		} else {
-			[self performSegueWithIdentifier:@"passcode" sender:nil];
-		}
+			break;
+		case 4:
+			switch (indexPath.row) {
+				case 0:
+					[[A3AppDelegate instance] startRemoveAds];
+					break;
+				case 1:
+					[[A3AppDelegate instance] startRestorePurchase];
+					break;
+				default:
+					break;
+			}
+			[tableView deselectRowAtIndexPath:indexPath animated:YES];
+			break;
+		default:
+			break;
 	}
 }
 
@@ -212,6 +281,17 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
     if (success) {
         [self performSegueWithIdentifier:@"passcode" sender:nil];
     }
+}
+
+- (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
+	[super appsButtonAction:barButtonItem];
+
+	NSString *currentMainMenuStyle = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
+	if (currentMainMenuStyle && ![currentMainMenuStyle isEqualToString:_previousMainMenuStyle]) {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[[A3AppDelegate instance] reloadRootViewController];
+		});
+	}
 }
 
 #pragma mark - UIActionSheet Delegate

@@ -933,6 +933,7 @@
 		68F9391A17D0DDBB0082234C /* FMMoveTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F9391817D0DDBB0082234C /* FMMoveTableViewCell.m */; };
 		68F967BF1818D74300D64A0A /* NSArray+validation.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F967BE1818D74300D64A0A /* NSArray+validation.m */; };
 		68FB683F1C8FC1170074ACF8 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68FB683E1C8FC1170074ACF8 /* GoogleMobileAds.framework */; };
+		68FB684A1C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FB68491C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.m */; };
 		68FC3AF01C19336000EC9348 /* A3CurrencyPickerStyle.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68FC3AF21C19336000EC9348 /* A3CurrencyPickerStyle.storyboard */; };
 		8079DFBC190F93B90084BD89 /* A3DateLunarTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8079DFBB190F93B90084BD89 /* A3DateLunarTest.m */; };
 		808DA9EB196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 808DA9EA196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.m */; };
@@ -2782,6 +2783,8 @@
 		68F967BD1818D74300D64A0A /* NSArray+validation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+validation.h"; sourceTree = "<group>"; };
 		68F967BE1818D74300D64A0A /* NSArray+validation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+validation.m"; sourceTree = "<group>"; };
 		68FB683E1C8FC1170074ACF8 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = "External/GoogleMobileAdsSdkiOS-7.7.0/GoogleMobileAds.framework"; sourceTree = "<group>"; };
+		68FB68481C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsHomeStyleSelectTableViewCell.h; path = Settings/A3SettingsHomeStyleSelectTableViewCell.h; sourceTree = "<group>"; };
+		68FB68491C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsHomeStyleSelectTableViewCell.m; path = Settings/A3SettingsHomeStyleSelectTableViewCell.m; sourceTree = "<group>"; };
 		68FC3AF11C19336000EC9348 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/A3CurrencyPickerStyle.storyboard; sourceTree = "<group>"; };
 		68FC3AF81C19337000EC9348 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/A3CurrencyPickerStyle.strings; sourceTree = "<group>"; };
 		68FC3AFA1C19337300EC9348 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/A3CurrencyPickerStyle.strings"; sourceTree = "<group>"; };
@@ -3014,6 +3017,8 @@
 				17D428DF00D5F3259675E3CB /* A3SettingsDropboxSelectBackupViewController.m */,
 				17D422D483CFDAB932E71595 /* A3SettingsFavoritesViewController.h */,
 				17D42D0A5D39188F17DC84CF /* A3SettingsFavoritesViewController.m */,
+				68FB68481C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.h */,
+				68FB68491C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.m */,
 				6848249819D272A100E5184C /* A3SettingsiTunesSelectBackupViewController.h */,
 				6848249919D272A100E5184C /* A3SettingsiTunesSelectBackupViewController.m */,
 				17D42B32D0B5C1A2CA8C6E43 /* A3SettingsLunarViewController.h */,
@@ -6567,6 +6572,7 @@
 				68F1C8FE18D7FA41009FAE8A /* MPFoldSegue.m in Sources */,
 				17D4262AB96A4454B8EF3B49 /* A3LanguagePickerController.m in Sources */,
 				68143D7018E3ED9B00569691 /* A3Weather.m in Sources */,
+				68FB684A1C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.m in Sources */,
 				680D639618CFF9D400938AD0 /* A3CalculatorHistoryViewController.m in Sources */,
 				17D42FD84048A09B5EE00DE4 /* A3TranslatorCircleView.m in Sources */,
 				6874847819780DCE00EA8F74 /* UnitPriceHistory+extension.m in Sources */,

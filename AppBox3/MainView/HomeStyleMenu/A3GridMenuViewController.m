@@ -82,7 +82,11 @@ NSString *const kA3AppsMenuNameForGrid = @"kA3AppsMenuNameForGrid";
 - (A3GridCollectionViewFlowLayout *)flowLayout {
     if (!_flowLayout) {
         _flowLayout = [A3GridCollectionViewFlowLayout new];
-        _flowLayout.itemSize = CGSizeMake(78.0, 102.0);
+		if ([[UIScreen mainScreen] scale] == 3) {
+			_flowLayout.itemSize = CGSizeMake(78.0, 102.0);
+		} else {
+			_flowLayout.itemSize = CGSizeMake(70.0, 93.0);
+		}
         _flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
 		_flowLayout.delegate = self;
 		_flowLayout.dataSource = self;
@@ -116,10 +120,15 @@ NSString *const kA3AppsMenuNameForGrid = @"kA3AppsMenuNameForGrid";
 	NSDictionary *menuInfo = self.menuItems[indexPath.row];
 	cell.borderColor = self.groupColors[menuInfo[kA3AppsGroupName]];
 	
-	cell.imageName = [[[A3AppDelegate instance] appInfoDictionary][menuInfo[kA3AppsMenuName]] stringByAppendingString:@"_Large"];
+	cell.imageName = [[[A3AppDelegate instance] imageNameForApp:menuInfo[kA3AppsMenuName]] stringByAppendingString:@"_Large"];
 	cell.titleLabel.text = menuInfo[kA3AppsMenuNameForGrid];
 	
     return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+	NSDictionary *menuInfo = self.menuItems[indexPath.row];
+	[[A3AppDelegate instance] launchAppNamed:menuInfo[kA3AppsMenuName] verifyPasscode:YES animated:YES];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView layout:(A3CollectionViewFlowLayout *)collectionViewLayout didBeginDraggingItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -141,9 +150,6 @@ NSString *const kA3AppsMenuNameForGrid = @"kA3AppsMenuNameForGrid";
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 		[collectionViewLayout.deleteZoneView setHidden:YES];
 	});
-}
-
-- (void)collectionView:(UICollectionView *)collectionView itemAtIndexPath:(NSIndexPath *)fromIndexPath willMoveToIndexPath:(NSIndexPath *)toIndexPath {
 }
 
 - (void)collectionView:(UICollectionView *)collectionView itemAtIndexPath:(NSIndexPath *)fromIndexPath didMoveToIndexPath:(NSIndexPath *)toIndexPath {

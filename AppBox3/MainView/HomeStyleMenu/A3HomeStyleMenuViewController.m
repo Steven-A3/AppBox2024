@@ -86,7 +86,8 @@
 
 - (UIView *)backgroundView {
 	UIView *backgroundView = [UIView new];
-	backgroundView.backgroundColor = [UIColor colorWithRed:42.0/255.0 green:54.0/255.0 blue:59.0/255.0 alpha:1.0];
+	// 56	63	73
+	backgroundView.backgroundColor = [UIColor colorWithRed:56.0/255.0 green:63.0/255.0 blue:74.0/255.0 alpha:1.0];
 
 	UIButton *helpButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	[helpButton setBackgroundImage:[[UIImage imageNamed:@"help"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
@@ -127,20 +128,11 @@
 		make.top.equalTo(superview.top).with.offset(32);
 	}];
 
-	[self addAppLinkButtonToView:backgroundView
-						   title:@"AppBox"
-					   imageName:@"iPad_AppBox"
-						position:0.3];
+	[self addAppLinkButtonToView:backgroundView title:@"AppBox" imageName:@"iPad_AppBox" position:0.2 selector:@selector(openITUNESAppBox)];
 
-	[self addAppLinkButtonToView:backgroundView
-						   title:@"Numpad"
-					   imageName:@"iPad_Numpad"
-						position:0.5];
+	[self addAppLinkButtonToView:backgroundView title:@"Numpad" imageName:@"iPad_Numpad" position:0.5 selector:@selector(openITUNESNumpad)];
 
-	[self addAppLinkButtonToView:backgroundView
-						   title:@"Moment"
-					   imageName:@"iPad_Moment"
-						position:0.7];
+	[self addAppLinkButtonToView:backgroundView title:@"Moment" imageName:@"iPad_Moment" position:0.8 selector:@selector(openITUNESMoment)];
 
 	return backgroundView;
 }
@@ -149,7 +141,7 @@
 	[[A3AppDelegate instance] launchAppNamed:A3AppName_Settings verifyPasscode:YES animated:YES];
 }
 
-- (void)addAppLinkButtonToView:(UIView *)targetView title:(NSString *)title imageName:(NSString *)imageName position:(CGFloat)position {
+- (void)addAppLinkButtonToView:(UIView *)targetView title:(NSString *)title imageName:(NSString *)imageName position:(CGFloat)position selector:(SEL)selector {
 	UILabel *appTitle = [UILabel new];
 	appTitle.textColor = [UIColor whiteColor];
 	appTitle.font = [UIFont systemFontOfSize:11];
@@ -170,11 +162,27 @@
 		make.centerX.equalTo(targetView.right).with.multipliedBy(position);
 		make.bottom.equalTo(appTitle.top).with.offset(-10);
 	}];
+
+	if (selector) {
+		[appButton addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
+	}
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
 	[self setNeedsStatusBarAppearanceUpdate];
 	return UIStatusBarStyleLightContent;
+}
+
+- (void)openITUNESAppBox {
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id307094023"]];
+}
+
+- (void)openITUNESMoment {
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id998244903"]];
+}
+
+- (void)openITUNESNumpad {
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id967194299"]];
 }
 
 @end

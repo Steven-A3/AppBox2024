@@ -195,7 +195,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 }
 
 - (void)proceedRestorePurchase {
-	[[A3AppDelegate instance].mainMenuViewController didSelectRestorePurchase];
+	[[A3AppDelegate instance] startRestorePurchase];
 }
 
 @end

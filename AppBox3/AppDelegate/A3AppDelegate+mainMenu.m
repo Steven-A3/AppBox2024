@@ -22,6 +22,8 @@
 #import "A3DaysCounterFavoriteListViewController.h"
 #import "A3DaysCounterCalendarListMainViewController.h"
 #import "UIViewController+A3Addition.h"
+#import "A3GridMenuViewController.h"
+#import "RMAppReceipt.h"
 
 NSString *const kA3ApplicationLastRunVersion = @"kLastRunVersion";
 NSString *const kA3AppsMenuName = @"kA3AppsMenuName";
@@ -387,8 +389,16 @@ NSString *const A3AppGroupNameNone = @"A3AppGroupNameNone";
     [[UIApplication sharedApplication] setShortcutItems:newShortcutItems];
 }
 
+- (NSArray *)availableMenuTypes {
+	return @[A3SettingsMainMenuStyleTable, A3SettingsMainMenuStyleHexagon, A3SettingsMainMenuStyleIconGrid];
+}
+
+- (void)reloadRootViewController {
+	[self setupMainMenuViewController];
+}
+
 - (void)setupMainMenuViewController {
-	NSArray *menuTypes = @[A3SettingsMainMenuStyleTable, A3SettingsMainMenuStyleHexagon, A3SettingsMainMenuStyleIconGrid];
+	NSArray *menuTypes = [self availableMenuTypes];
 	NSString *userSetting = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
 	NSInteger idx = [menuTypes indexOfObject:userSetting];
 	switch (idx) {
@@ -399,10 +409,23 @@ NSString *const A3AppGroupNameNone = @"A3AppGroupNameNone";
 			[self setupHexagonStyleMainViewController];
 			break;
 		case 2:
+			[self setupGridStyleMainViewController];
 			break;
 		default:
 			[self setupHexagonStyleMainViewController];
 			break;
+	}
+}
+
+- (void)setupGridStyleMainViewController {
+	if (IS_IPHONE) {
+		A3GridMenuViewController *gridMenuViewController;
+
+		gridMenuViewController = [A3GridMenuViewController new];
+		A3NavigationController *navigationController = [[A3NavigationController alloc] initWithRootViewController:gridMenuViewController];
+		self.window.rootViewController = navigationController;
+		self.currentMainNavigationController = navigationController;
+		self.rootViewController_iPhone = navigationController;
 	}
 }
 
@@ -590,6 +613,201 @@ NSString *const A3AppGroupNameNone = @"A3AppGroupNameNone";
 		return [[A3AppDelegate instance] shouldAskPasscodeForSettings];
 	}
 	return NO;
+}
+
+#pragma mark In App Purchase
+
+- (void)startRemoveAds {
+	A3AppDelegate *appDelegate = [A3AppDelegate instance];
+	appDelegate.inAppPurchaseInProgress = YES;
+
+	[self showProcessingHUD];
+
+	if ([appDelegate.receiptVerificator verifyAppReceipt]) {
+		// 영수증을 다시 확인을 한다.
+		// 영수증이 정상인데, 이 멤버가 호출이 되었다는 것은,
+		// 사용자가 3.6 이후 버전을 구매했다는 의미 이므로 인앱 구매를 진행한다.
+		// App Store에서 구매한 실 사용자라면 이 흐름으로 진행이 된다.
+
+		[self executePurchaseRemoveAds];
+	} else {
+		// App Review 상황이거나, 앱을 App Store를 통해서 설치하지 않은 경우,
+		// iTunes를 통해서 설치한 경우, 영수증이 없는 경우가 있다.
+
+		// 앱 심사 과정의 Reject된 상황을 고려할 때 refreshReceipt가 App Review과정에서 실패하는 것으로
+		// 추정이 된다.
+		[[RMStore defaultStore] refreshReceiptOnSuccess:^{
+			RMAppReceipt *appReceipt = [RMAppReceipt bundleReceipt];
+			if ([appDelegate isPaidAppVersionCustomer:appReceipt]) {
+				[self hideProcessingHUD];
+				[self finishRemoveAds];
+				appDelegate.inAppPurchaseInProgress = NO;
+				[self alertPaidAppCustomer];
+			} else if ([appDelegate isIAPPurchasedCustomer:appReceipt]) {
+				[self hideProcessingHUD];
+				[self finishRemoveAds];
+				appDelegate.inAppPurchaseInProgress = NO;
+				[self alertAlreadyPurchased];
+			} else {
+				[self executePurchaseRemoveAds];
+			}
+			[appDelegate makeReceiptBackup];
+		} failure:^(NSError *error) {
+			// 탈옥폰이라면 다음에 진행될 인앱 구매 진행이 실패할 것이다.
+			// 앱 리뷰시 영수증 리프레시에 실패하여 이 코드가 실행이 된다.
+			[self executePurchaseRemoveAds];
+		}];
+		return;
+	}
+}
+
+- (void)executePurchaseRemoveAds {
+	A3AppDelegate *appDelegate = [A3AppDelegate instance];
+
+	[[RMStore defaultStore] addPayment:A3InAppPurchaseRemoveAdsProductIdentifier success:^(SKPaymentTransaction *transaction) {
+		[self hideProcessingHUD];
+
+		[self finishRemoveAds];
+		appDelegate.inAppPurchaseInProgress = NO;
+		[[A3AppDelegate instance] makeReceiptBackup];
+	} failure:^(SKPaymentTransaction *transaction, NSError *error) {
+		[self hideProcessingHUD];
+
+		[self alertTransactionFailed];
+		appDelegate.inAppPurchaseInProgress = NO;
+	}];
+}
+
+- (void)startRestorePurchase {
+	// App Receipt가 정상적으로 Validate가 되었는지 확인한다.
+	self.inAppPurchaseInProgress = YES;
+
+	[self showProcessingHUD];
+
+	if (![self.receiptVerificator verifyAppReceipt]) {
+		[[RMStore defaultStore] refreshReceiptOnSuccess:^{
+			[self hideProcessingHUD];
+
+			RMAppReceipt *appReceipt = [RMAppReceipt bundleReceipt];
+			if ([self isPaidAppVersionCustomer:appReceipt]) {
+				[self finishRemoveAds];
+				[self alertPaidAppCustomer];
+				self.inAppPurchaseInProgress = NO;
+			} else if ([self isIAPPurchasedCustomer:appReceipt]) {
+				[self finishRemoveAds];
+				[self alertAlreadyPurchased];
+				self.inAppPurchaseInProgress = NO;
+			} else {
+				[self executeRestoreTransaction];
+			}
+			[self makeReceiptBackup];
+		} failure:^(NSError *error) {
+			[self executeRestoreTransaction];
+		}];
+		return;
+	} else {
+		[self executeRestoreTransaction];
+	}
+}
+
+- (void)executeRestoreTransaction {
+	A3AppDelegate *appDelegate = [A3AppDelegate instance];
+	[[RMStore defaultStore] restoreTransactionsOnSuccess:^(NSArray *transactions) {
+		[self hideProcessingHUD];
+
+		BOOL isTransactionRestored = NO;
+		for (SKPaymentTransaction *transaction in transactions) {
+			SKPayment *payment = transaction.payment;
+			if ([payment.productIdentifier isEqualToString:A3InAppPurchaseRemoveAdsProductIdentifier]) {
+				isTransactionRestored = YES;
+				break;
+			}
+		}
+
+		if (isTransactionRestored) {
+			[self finishRemoveAds];
+			[self alertRestoreSuccess];
+		} else {
+			[self alertRestoreFailed];
+		}
+		appDelegate.inAppPurchaseInProgress = NO;
+	} failure:^(NSError *error) {
+		[self hideProcessingHUD];
+
+		appDelegate.inAppPurchaseInProgress = NO;
+	}];
+}
+
+- (void)finishRemoveAds {
+	self.shouldPresentAd = NO;
+	self.isIAPRemoveAdsAvailable = NO;
+
+	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:nil];
+}
+
+- (void)alertPaidAppCustomer {
+	UIAlertView *alertAlreadyPurchased = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Thank You", nil)
+																	message:NSLocalizedString(@"Your paid app receipt has been validated. Thank you very much.", nil)
+																   delegate:nil
+														  cancelButtonTitle:NSLocalizedString(@"OK", nil)
+														  otherButtonTitles:nil];
+	[alertAlreadyPurchased show];
+}
+
+- (void)alertAlreadyPurchased {
+	UIAlertView *alertAlreadyPurchased = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Thank You", nil)
+																	message:NSLocalizedString(@"You've already purchased this. Your purchases has been restored.", nil)
+																   delegate:nil
+														  cancelButtonTitle:NSLocalizedString(@"OK", nil)
+														  otherButtonTitles:nil];
+	[alertAlreadyPurchased show];
+}
+
+- (void)alertRestoreSuccess {
+	UIAlertView *thanksAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Thanks", @"Thanks")
+															  message:NSLocalizedString(@"Thank you very much for purchasing the AppBox Pro.", @"Thank you very much for purchasing the AppBox Pro.")
+															 delegate:nil
+													cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+													otherButtonTitles:nil];
+	[thanksAlertView show];
+}
+
+- (void)alertRestoreFailed {
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", nil)
+														message:NSLocalizedString(@"No Transactions to Restore", @"No Transactions to Restore")
+													   delegate:nil
+											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+											  otherButtonTitles:nil];
+	[alertView show];
+}
+
+- (void)alertTransactionFailed {
+	UIAlertView *purchaseFailed = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+															 message:NSLocalizedString(@"Transaction failed. Try again later.", @"Transaction failed. Try again later.")
+															delegate:nil
+												   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+												   otherButtonTitles:nil];
+	[purchaseFailed show];
+}
+
+- (void)showProcessingHUD {
+	if (IS_IPHONE) {
+		self.hudView.labelText = NSLocalizedString(@"Processing", @"Processing");
+		[self.hudView show:YES];
+	} else {
+		A3AppDelegate *appDelegate = [A3AppDelegate instance];
+		appDelegate.hud.labelText = NSLocalizedString(@"Processing", @"Processing");
+		[appDelegate.hud show:YES];
+	}
+}
+
+- (void)hideProcessingHUD {
+	if (IS_IPHONE) {
+		[self.hudView hide:NO];
+	} else {
+		A3AppDelegate *appDelegate = [A3AppDelegate instance];
+		[appDelegate.hud hide:NO];
+	}
 }
 
 @end
