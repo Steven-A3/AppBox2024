@@ -29,25 +29,48 @@
 
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
-	CGFloat horizontalInset = 15;
+	CGFloat horizontalInset = IS_IPHONE ? 15 : 0;
     _flowLayout = [A3HexagonCollectionViewFlowLayout new];
 	_flowLayout.delegate = self;
 	_flowLayout.dataSource = self;
-    _flowLayout.minimumInteritemSpacing = 6;
-    _flowLayout.minimumLineSpacing = 6;
-    CGFloat itemSize = ([[UIScreen mainScreen] bounds].size.width - _flowLayout.minimumInteritemSpacing * 7 - horizontalInset * 2) / 6;
-    _flowLayout.itemSize = CGSizeMake(itemSize, itemSize * 1.1);
-    
+	_flowLayout.minimumInteritemSpacing = IS_IPHONE ? 6 : 10;
+	_flowLayout.minimumLineSpacing = IS_IPHONE ? 6 : 10;
+	_flowLayout.sectionInset = UIEdgeInsetsZero;
+	if (IS_IPHONE) {
+		CGFloat itemSize;
+		itemSize = ([[UIScreen mainScreen] bounds].size.width - _flowLayout.minimumInteritemSpacing * 7 - horizontalInset * 2) / 6;
+		_flowLayout.itemSize = CGSizeMake(itemSize, itemSize * 1.1);
+	} else {
+		_flowLayout.itemSize = CGSizeMake(88, 100);
+	}
+
     _collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:_flowLayout];
 	// 42	54	59
 	_collectionView.backgroundView = self.backgroundView;
+	_collectionView.backgroundView.backgroundColor = [UIColor colorWithRed:42.0/255.0 green:54.0/255.0 blue:59.0/255.0 alpha:1.0];
 	
     _collectionView.dataSource = self;
     _collectionView.delegate = self;
     [_collectionView registerClass:[A3HexagonCell class] forCellWithReuseIdentifier:@"HexagonCell"];
     CGSize contentSize = [_flowLayout collectionViewContentSize];
-    _collectionView.contentInset = UIEdgeInsetsMake((self.view.bounds.size.height - contentSize.height)/2, horizontalInset, (self.view.bounds.size.height - contentSize.height)/2, horizontalInset);
+	if (IS_IPHONE) {
+		_collectionView.contentInset = UIEdgeInsetsMake((self.view.bounds.size.height - contentSize.height)/2, horizontalInset, (self.view.bounds.size.height - contentSize.height)/2, horizontalInset);
+	} else {
+		if (IS_PORTRAIT) {
+			_collectionView.contentInset = UIEdgeInsetsMake((self.view.bounds.size.height - contentSize.height)/2 + 80, 0, (self.view.bounds.size.height - contentSize.height)/2 - 80, 0);
+		} else {
+			_collectionView.contentInset = UIEdgeInsetsMake((self.view.bounds.size.height - contentSize.height)/2 + 19, 0, (self.view.bounds.size.height - contentSize.height)/2 - 19, 0);
+		}
+	}
     [self.view addSubview:_collectionView];
+
+	[self.collectionView makeConstraints:^(MASConstraintMaker *make) {
+		make.edges.equalTo(self.view);
+	}];
+	
+	if ([self.collectionView respondsToSelector:@selector(layoutMargins)]) {
+		self.collectionView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+	}
 }
 
 - (void)didReceiveMemoryWarning {
@@ -68,7 +91,11 @@
 
 	NSDictionary *menuInfo = self.menuItems[indexPath.row];
 	cell.borderColor = self.groupColors[menuInfo[kA3AppsGroupName]];
-	cell.imageName = [[A3AppDelegate instance] imageNameForApp:menuInfo[kA3AppsMenuName]];
+	NSString *imageName = [[A3AppDelegate instance] imageNameForApp:menuInfo[kA3AppsMenuName]];
+	if (IS_IPAD) {
+		imageName = [imageName stringByAppendingString:@"_Large"];
+	}
+	cell.imageName = imageName;
 
 	return cell;
 }
@@ -184,6 +211,32 @@
 		] mutableCopy];
 	}
 	return _menuItems;
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator {
+	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+	if (IS_IPAD) {
+		CGSize contentSize = [_flowLayout collectionViewContentSize];
+		if (size.width < size.height) {
+			_collectionView.contentInset = UIEdgeInsetsMake((self.view.bounds.size.height - contentSize.height)/2 + 80, 0, (self.view.bounds.size.height - contentSize.height)/2 - 80, 0);
+		} else {
+			_collectionView.contentInset = UIEdgeInsetsMake((self.view.bounds.size.height - contentSize.height)/2 + 19, 0, (self.view.bounds.size.height - contentSize.height)/2 - 19, 0);
+		}
+	}
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (IS_IPAD) {
+		CGSize contentSize = [_flowLayout collectionViewContentSize];
+		if (IS_PORTRAIT) {
+			_collectionView.contentInset = UIEdgeInsetsMake((self.view.bounds.size.height - contentSize.height)/2 + 80, 0, (self.view.bounds.size.height - contentSize.height)/2 - 80, 0);
+		} else {
+			_collectionView.contentInset = UIEdgeInsetsMake((self.view.bounds.size.height - contentSize.height)/2 + 19, 0, (self.view.bounds.size.height - contentSize.height)/2 - 19, 0);
+		}
+	}
 }
 
 @end

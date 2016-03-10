@@ -15,6 +15,8 @@
 #import "A3MainViewController.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIViewController+NumberKeyboard.h"
+#import "A3HexagonMenuViewController.h"
+#import "A3GridMenuViewController.h"
 
 @interface A3RootViewController_iPad ()
 
@@ -39,14 +41,39 @@
 
 	self.view.backgroundColor = [UIColor whiteColor];
 
-	A3MainViewController *mainViewController = [[A3MainViewController alloc] initWithNibName:nil bundle:nil];
-	_centerNavigationController = [[A3NavigationController alloc] initWithRootViewController:mainViewController];
-	[self addChildViewController:_centerNavigationController];
-	[self.view addSubview:_centerNavigationController.view];
+	NSArray *menuTypes = [[A3AppDelegate instance] availableMenuTypes];
+	NSString *mainMenuStyle = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
+	if (!mainMenuStyle) mainMenuStyle = A3SettingsMainMenuStyleHexagon;
+	NSInteger idx = [menuTypes indexOfObject:mainMenuStyle];
+	switch (idx) {
+		case 0:	{
+			A3MainViewController *mainViewController = [[A3MainViewController alloc] initWithNibName:nil bundle:nil];
+			_centerNavigationController = [[A3NavigationController alloc] initWithRootViewController:mainViewController];
+			[self addChildViewController:_centerNavigationController];
+			[self.view addSubview:_centerNavigationController.view];
 
-	_leftNavigationController = [[A3NavigationController alloc] initWithRootViewController:self.mainMenuViewController];
-	[self addChildViewController:_leftNavigationController];
-	[self.view addSubview:_leftNavigationController.view];
+			_leftNavigationController = [[A3NavigationController alloc] initWithRootViewController:self.mainMenuViewController];
+			[self addChildViewController:_leftNavigationController];
+			[self.view addSubview:_leftNavigationController.view];
+			break;
+		}
+		case 1: {
+			A3HexagonMenuViewController *menuViewController = [A3HexagonMenuViewController new];
+			_centerNavigationController = [[A3NavigationController alloc] initWithRootViewController:menuViewController];
+			[self addChildViewController:_centerNavigationController];
+			[self.view addSubview:_centerNavigationController.view];
+			break;
+		}
+		case 2:{
+			A3GridMenuViewController *menuViewController = [A3GridMenuViewController new];
+			_centerNavigationController = [[A3NavigationController alloc] initWithRootViewController:menuViewController];
+			[self addChildViewController:_centerNavigationController];
+			[self.view addSubview:_centerNavigationController.view];
+			break;
+		}
+		default:
+			break;
+	}
 
 	[self centerCoverView];
 
@@ -224,9 +251,13 @@ static const CGFloat kSideViewWidth = 320.0;
 }
 
 - (void)toggleLeftMenuViewOnOff {
-	self.showLeftView = !self.showLeftView;
-
-	[self animateLeftView];
+	if (_leftNavigationController) {
+		self.showLeftView = !self.showLeftView;
+		
+		[self animateLeftView];
+	} else {
+		[_centerNavigationController popViewControllerAnimated:YES];
+	}
 }
 
 - (UIView *)centerCoverView {

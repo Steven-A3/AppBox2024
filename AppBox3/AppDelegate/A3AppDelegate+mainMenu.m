@@ -398,22 +398,33 @@ NSString *const A3AppGroupNameNone = @"A3AppGroupNameNone";
 }
 
 - (void)setupMainMenuViewController {
-	NSArray *menuTypes = [self availableMenuTypes];
-	NSString *userSetting = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
-	NSInteger idx = [menuTypes indexOfObject:userSetting];
-	switch (idx) {
-		case 0:
-			[self setupTableStyleMainMenuViewController];
-			break;
-		case 1:
-			[self setupHexagonStyleMainViewController];
-			break;
-		case 2:
-			[self setupGridStyleMainViewController];
-			break;
-		default:
-			[self setupHexagonStyleMainViewController];
-			break;
+	if (IS_IPHONE) {
+		NSArray *menuTypes = [self availableMenuTypes];
+		NSString *userSetting = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
+		if (!userSetting) userSetting = A3SettingsMainMenuStyleHexagon;
+		NSInteger idx = [menuTypes indexOfObject:userSetting];
+		switch (idx) {
+			case 0:
+				[self setupTableStyleMainMenuViewController];
+				break;
+			case 1:
+				[self setupHexagonStyleMainViewController];
+				break;
+			case 2:
+				[self setupGridStyleMainViewController];
+				break;
+			default:
+				[self setupHexagonStyleMainViewController];
+				break;
+		}
+	} else {
+		A3RootViewController_iPad *rootViewController_iPad = [[A3RootViewController_iPad alloc] initWithNibName:nil bundle:nil];
+		[rootViewController_iPad view];
+		self.rootViewController_iPad = rootViewController_iPad;
+		self.mainMenuViewController = rootViewController_iPad.mainMenuViewController;
+		self.currentMainNavigationController = rootViewController_iPad.centerNavigationController;
+
+		self.window.rootViewController = rootViewController_iPad;
 	}
 }
 
@@ -442,46 +453,35 @@ NSString *const A3AppGroupNameNone = @"A3AppGroupNameNone";
 }
 
 - (void)setupTableStyleMainMenuViewController {
-	UIViewController *rootViewController;
-	if (IS_IPAD) {
-		A3RootViewController_iPad *rootViewController_iPad = [[A3RootViewController_iPad alloc] initWithNibName:nil bundle:nil];
-		[rootViewController view];
-		rootViewController = rootViewController_iPad;
-		self.rootViewController_iPad = rootViewController_iPad;
-		self.mainMenuViewController = rootViewController_iPad.mainMenuViewController;
-		self.currentMainNavigationController = rootViewController_iPad.centerNavigationController;
-	} else {
-		self.mainMenuViewController = [[A3MainMenuTableViewController alloc] init];
-		UINavigationController *menuNavigationController = [[UINavigationController alloc] initWithRootViewController:self.mainMenuViewController];
+	self.mainMenuViewController = [[A3MainMenuTableViewController alloc] init];
+	UINavigationController *menuNavigationController = [[UINavigationController alloc] initWithRootViewController:self.mainMenuViewController];
 
-		UIViewController *viewController = [A3MainViewController new];
-		A3NavigationController *navigationController = [[A3NavigationController alloc] initWithRootViewController:viewController];
-		self.currentMainNavigationController = navigationController;
+	UIViewController *viewController = [A3MainViewController new];
+	A3NavigationController *navigationController = [[A3NavigationController alloc] initWithRootViewController:viewController];
+	self.currentMainNavigationController = navigationController;
 
-		MMDrawerController *drawerController = [[MMDrawerController alloc] initWithCenterViewController:navigationController leftDrawerViewController:menuNavigationController];
-		self.drawerController = drawerController;
-		self.rootViewController_iPhone = self.drawerController;
+	MMDrawerController *drawerController = [[MMDrawerController alloc] initWithCenterViewController:navigationController leftDrawerViewController:menuNavigationController];
+	self.drawerController = drawerController;
+	self.rootViewController_iPhone = self.drawerController;
 
-		[drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeBezelPanningCenterView];
-		[drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
-		[drawerController setDrawerVisualStateBlock:[self slideAndScaleVisualStateBlock]];
-		[drawerController setCenterHiddenInteractionMode:MMDrawerOpenCenterInteractionModeFull];
-		[drawerController setGestureCompletionBlock:^(MMDrawerController *drawerController, UIGestureRecognizer *gesture) {
-			[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
-			if (drawerController.openSide != MMDrawerSideLeft) {
-				[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationMainMenuDidHide object:nil];
-			}
-		}];
+	[drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeBezelPanningCenterView];
+	[drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
+	[drawerController setDrawerVisualStateBlock:[self slideAndScaleVisualStateBlock]];
+	[drawerController setCenterHiddenInteractionMode:MMDrawerOpenCenterInteractionModeFull];
+	[drawerController setGestureCompletionBlock:^(MMDrawerController *drawerController, UIGestureRecognizer *gesture) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
+		if (drawerController.openSide != MMDrawerSideLeft) {
+			[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationMainMenuDidHide object:nil];
+		}
+	}];
 
-		CGRect screenBounds = [[UIScreen mainScreen] bounds];
-		[drawerController setMaximumLeftDrawerWidth:screenBounds.size.width];
-		[drawerController setShowsShadow:NO];
+	CGRect screenBounds = [[UIScreen mainScreen] bounds];
+	[drawerController setMaximumLeftDrawerWidth:screenBounds.size.width];
+	[drawerController setShowsShadow:NO];
 
-		drawerController.view.frame = screenBounds;
+	drawerController.view.frame = screenBounds;
 
-		rootViewController = drawerController;
-	}
-	self.window.rootViewController = rootViewController;
+	self.window.rootViewController = drawerController;
 }
 
 - (MMDrawerControllerDrawerVisualStateBlock)slideAndScaleVisualStateBlock{

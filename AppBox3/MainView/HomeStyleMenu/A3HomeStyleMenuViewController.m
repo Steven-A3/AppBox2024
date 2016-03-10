@@ -90,6 +90,7 @@
 	backgroundView.backgroundColor = [UIColor colorWithRed:56.0/255.0 green:63.0/255.0 blue:74.0/255.0 alpha:1.0];
 
 	UIButton *helpButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	[helpButton addTarget:self action:@selector(helpButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 	[helpButton setBackgroundImage:[[UIImage imageNamed:@"help"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
 	helpButton.tintColor = [UIColor whiteColor];
 
@@ -128,17 +129,21 @@
 		make.top.equalTo(superview.top).with.offset(32);
 	}];
 
-	[self addAppLinkButtonToView:backgroundView title:@"AppBox" imageName:@"iPad_AppBox" position:0.2 selector:@selector(openITUNESAppBox)];
+	[self addAppLinkButtonToView:backgroundView title:@"AppBox" imageName:@"iPad_AppBox" position:IS_IPHONE ? 0.2 : 0.25 selector:@selector(openAppStoreAppBox)];
 
-	[self addAppLinkButtonToView:backgroundView title:@"Numpad" imageName:@"iPad_Numpad" position:0.5 selector:@selector(openITUNESNumpad)];
+	[self addAppLinkButtonToView:backgroundView title:@"Numpad" imageName:@"iPad_Numpad" position:0.5 selector:@selector(openAppStoreNumpad)];
 
-	[self addAppLinkButtonToView:backgroundView title:@"Moment" imageName:@"iPad_Moment" position:0.8 selector:@selector(openITUNESMoment)];
+	[self addAppLinkButtonToView:backgroundView title:@"Moment" imageName:@"iPad_Moment" position:IS_IPHONE ? 0.8 : 0.75 selector:@selector(openAppStoreMoment)];
 
 	return backgroundView;
 }
 
 - (void)settingsButtonAction:(UIButton *)button {
 	[[A3AppDelegate instance] launchAppNamed:A3AppName_Settings verifyPasscode:YES animated:YES];
+}
+
+- (void)helpButtonAction:(id)sender {
+	[[A3AppDelegate instance] launchAppNamed:A3AppName_About verifyPasscode:NO animated:YES];
 }
 
 - (void)addAppLinkButtonToView:(UIView *)targetView title:(NSString *)title imageName:(NSString *)imageName position:(CGFloat)position selector:(SEL)selector {
@@ -173,15 +178,15 @@
 	return UIStatusBarStyleLightContent;
 }
 
-- (void)openITUNESAppBox {
+- (void)openAppStoreAppBox {
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id307094023"]];
 }
 
-- (void)openITUNESMoment {
+- (void)openAppStoreMoment {
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id998244903"]];
 }
 
-- (void)openITUNESNumpad {
+- (void)openAppStoreNumpad {
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id967194299"]];
 }
 

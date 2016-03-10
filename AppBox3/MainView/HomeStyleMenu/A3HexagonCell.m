@@ -72,8 +72,8 @@
     [super drawRect:rect];
 
     UIBezierPath *borderPath = [self borderPath];
-    borderPath.lineWidth = 6;
-    
+	borderPath.lineWidth = IS_IPHONE ? 6 : 10;
+	
 	[self.borderColor setStroke];
     [borderPath stroke];
 }
@@ -87,6 +87,10 @@
 		[_imageView makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(self.centerX);
 			make.centerY.equalTo(self.centerY);
+			if (IS_IPAD) {
+				make.width.equalTo(@58);
+				make.height.equalTo(@58);
+			}
 		}];
 	}
 	return _imageView;

@@ -20,19 +20,46 @@
 - (instancetype)init {
 	self = [super init];
 	if (self) {
-		_lineConfiguration = @[@4, @5, @6, @5, @4];
 		_maxColumn = 6;
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarOrientationDidChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
 	}
 	
 	return self;
+}
+
+- (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+}
+
+- (void)statusBarOrientationDidChange:(id)notification {
+	_lineConfiguration = nil;
+}
+
+- (NSArray *)lineConfiguration {
+	if (!_lineConfiguration) {
+		if (IS_IPHONE) {
+			_lineConfiguration = @[@4, @5, @6, @5, @4];
+			_maxColumn = 6;
+		} else {
+			if (IS_PORTRAIT) {
+				_lineConfiguration =  @[@4, @5, @6, @5, @4];
+				_maxColumn = 6;
+			} else {
+				_lineConfiguration = @[@8, @9, @8];
+				_maxColumn = 9;
+			}
+		}
+	}
+	return _lineConfiguration;
 }
 
 - (NSDictionary *)coordinateFromIndexPath:(NSIndexPath *)indexPath {
 	NSInteger row = 0;
 	NSInteger sum = 0;
 	NSInteger offset = 0;
-	for (NSNumber *count in _lineConfiguration) {
-		offset = (_maxColumn - [count integerValue]) / 2;
+	NSArray *lineConfiguration = [self lineConfiguration];
+	for (NSNumber *count in lineConfiguration) {
+		offset = (_maxColumn - [count integerValue]) / 2.0;
 		if (indexPath.row < sum + [count integerValue]) {
 			return @{@"row" : @(row), @"col":@(indexPath.row - sum + offset)};
 		}
@@ -44,18 +71,27 @@
 
 - (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+	CGRect screenBounds = [[UIScreen mainScreen] bounds];
+	CGFloat contentWidth = self.itemSize.width * _maxColumn + self.minimumInteritemSpacing * (_maxColumn - 1);
+	CGFloat margin = (screenBounds.size.width - self.collectionView.contentInset.left - self.collectionView.contentInset.right - contentWidth) / 2;
+
 	NSDictionary *coordinate = [self coordinateFromIndexPath:indexPath];
 	NSInteger row = [coordinate[@"row"] integerValue];
 	NSInteger col = [coordinate[@"col"] integerValue];
 	
-	//    FNLOG(@"row = %ld, col = %ld, indexPath.row = %ld", row, col, indexPath.row);
-	
-	CGFloat horiOffset = ((row % 2) == 0) ? 0 : self.itemSize.width * 0.5f + self.minimumInteritemSpacing / 2.0;
+//	FNLOG(@"row = %ld, col = %ld, indexPath.row = %ld", row, col, indexPath.row);
+
+	CGFloat horiOffset;
+	if ((_maxColumn %2) == 0) {
+		horiOffset = ((row % 2) == 0) ? 0 : self.itemSize.width * 0.5f + self.minimumInteritemSpacing / 2.0;
+	} else {
+		horiOffset = ((row % 2) == 1) ? 0 : self.itemSize.width * 0.5f + self.minimumInteritemSpacing / 2.0;
+	}
 	CGFloat vertOffset = 0;
 	
 	UICollectionViewLayoutAttributes *attributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
 	attributes.size = self.itemSize;
-	attributes.center = CGPointMake( ( (col * self.itemSize.width) + (0.5f * self.itemSize.width) + horiOffset) + self.minimumInteritemSpacing + col * self.minimumInteritemSpacing,
+	attributes.center = CGPointMake(margin + ( (col * self.itemSize.width) + (0.5f * self.itemSize.width) + horiOffset) + col * self.minimumInteritemSpacing,
 									( ( (row * 0.75f) * self.itemSize.height) + (0.5f * self.itemSize.height) + vertOffset) + self.minimumLineSpacing + row * self.minimumLineSpacing);
 	return attributes;
 }
@@ -63,7 +99,7 @@
 - (CGSize)collectionViewContentSize
 {
 	CGFloat contentWidth = self.collectionView.bounds.size.width - self.collectionView.contentInset.left - self.collectionView.contentInset.right;
-	CGFloat contentHeight = ([_lineConfiguration count] * 0.75f) * self.itemSize.height + (0.5f + self.itemSize.height) + self.minimumLineSpacing * (1 + [_lineConfiguration count]);
+	CGFloat contentHeight = ([self.lineConfiguration count] * 0.75f) * self.itemSize.height + (0.5f + self.itemSize.height) + self.minimumLineSpacing * (1 + [self.lineConfiguration count]);
 	
 	return CGSizeMake(contentWidth, contentHeight);
 }
