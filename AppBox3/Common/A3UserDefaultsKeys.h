@@ -38,6 +38,9 @@ extern NSString *const A3MainMenuDataEntityRecentlyUsed;
 extern NSString *const A3MainMenuDataEntityAllMenu;
 extern NSString *const A3MainMenuUserDefaultsMaxRecentlyUsed;
 
+extern NSString *const A3MainMenuHexagonMenuItems;
+extern NSString *const A3MainMenuGridMenuItems;
+
 #pragma mark ------ Battery
 extern NSString *const A3BatteryChosenThemeIndex;
 extern NSString *const A3BatteryChosenTheme;

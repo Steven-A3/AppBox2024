@@ -40,6 +40,7 @@ extern NSString *const kA3AppsMenuArray;
 extern NSString *const kA3AppsDataUpdateDate;
 extern NSString *const kA3AppsStartingAppName;
 extern NSString *const kA3AppsOriginalStartingAppName;
+extern NSString *const kA3AppsMenuNameForGrid;
 
 /* Notifications */
 extern NSString *const A3NotificationAppsMainMenuContentsChanged;

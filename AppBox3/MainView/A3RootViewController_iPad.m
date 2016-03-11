@@ -17,6 +17,7 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "A3HexagonMenuViewController.h"
 #import "A3GridMenuViewController.h"
+#import "A3NavigationController.h"
 
 @interface A3RootViewController_iPad ()
 
@@ -52,21 +53,21 @@
 			[self addChildViewController:_centerNavigationController];
 			[self.view addSubview:_centerNavigationController.view];
 
-			_leftNavigationController = [[A3NavigationController alloc] initWithRootViewController:self.mainMenuViewController];
+			_leftNavigationController = [[UINavigationController alloc] initWithRootViewController:self.mainMenuViewController];
 			[self addChildViewController:_leftNavigationController];
 			[self.view addSubview:_leftNavigationController.view];
 			break;
 		}
 		case 1: {
 			A3HexagonMenuViewController *menuViewController = [A3HexagonMenuViewController new];
-			_centerNavigationController = [[A3NavigationController alloc] initWithRootViewController:menuViewController];
+			_centerNavigationController = [[UINavigationController alloc] initWithRootViewController:menuViewController];
 			[self addChildViewController:_centerNavigationController];
 			[self.view addSubview:_centerNavigationController.view];
 			break;
 		}
 		case 2:{
 			A3GridMenuViewController *menuViewController = [A3GridMenuViewController new];
-			_centerNavigationController = [[A3NavigationController alloc] initWithRootViewController:menuViewController];
+			_centerNavigationController = [[UINavigationController alloc] initWithRootViewController:menuViewController];
 			[self addChildViewController:_centerNavigationController];
 			[self.view addSubview:_centerNavigationController.view];
 			break;
@@ -432,6 +433,8 @@ static const CGFloat kSideViewWidth = 320.0;
 	[self willRotateToInterfaceOrientation:orientation duration: 0];
 	
 	[self layoutSubviews];
+
+
 }
 #endif
 

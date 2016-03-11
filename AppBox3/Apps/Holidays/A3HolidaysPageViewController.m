@@ -28,6 +28,7 @@
 #import "A3HolidaysFlickrDownloadManager.h"
 #import "A3InstructionViewController.h"
 #import "A3UserDefaults.h"
+#import "A3NavigationController.h"
 
 @interface A3HolidaysPageViewController () <UIPageViewControllerDelegate, UIPageViewControllerDataSource,
 		A3HolidaysEditViewControllerDelegate, FXPageControlDelegate, A3HolidaysCountryViewControllerDelegate,

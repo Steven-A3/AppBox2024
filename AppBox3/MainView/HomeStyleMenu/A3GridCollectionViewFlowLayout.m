@@ -15,9 +15,8 @@
 	self = [super init];
 	if (self) {
 		_numberOfItemsPerRow = 4;
-		_numberOfRowsPerPage = 4;
-		_contentHeight = 356.0;
-		_numberOfItemsPerPage = 16;
+		_numberOfRowsPerPage = IS_IPHONE ? 4 : 5;
+		_numberOfItemsPerPage = IS_IPHONE ? 16 : 20;
 	}
 	
 	return self;
@@ -33,7 +32,7 @@
 	//    FNLOG(@"row = %ld, col = %ld, indexPath.row = %ld", row, col, indexPath.row);
 	
 	CGFloat horiOffset = indexPath.row / _numberOfItemsPerPage * [UIScreen mainScreen].bounds.size.width;
-	CGFloat horizontalMarginOnPage = 10.0;
+	CGFloat horizontalMarginOnPage = IS_IPHONE ? 10.0 : IS_PORTRAIT ? 32.0 : 21;
 	
 	UICollectionViewLayoutAttributes *attributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
 	attributes.size = self.itemSize;

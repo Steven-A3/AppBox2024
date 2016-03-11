@@ -37,6 +37,13 @@ NSString *const A3MainMenuDataEntityRecentlyUsed 			= @"A3MainMenuDataEntityRece
 NSString *const A3MainMenuDataEntityAllMenu 				= @"A3MainMenuDataEntityAllMenu";
 NSString *const A3MainMenuUserDefaultsMaxRecentlyUsed 		= @"A3MainMenuUserDefaultsMaxRecentlyUsed";
 
+// A3UserDefault에 저장을 하면 iCloud를 통한 동기화가 이루어 집니다.
+// Core Data에 저장할 필요는 없습니다.
+// 아래의 두 값은 디바이스간 동기화 방지를 위해서 NSUserDefaults에 저장합니다.
+// 백업에는 포함해서 백업을 한다. 복원이 되어야 합니다.
+NSString *const A3MainMenuHexagonMenuItems					= @"A3MainMenuHexagonMenuItems";
+NSString *const A3MainMenuGridMenuItems						= @"A3MainMenuGridMenuItems";
+
 #pragma mark ------ Battery
 NSString *const A3BatteryChosenThemeIndex 					= @"A3BatteryChosenThemeIndex";
 NSString *const A3BatteryChosenTheme 						= @"A3BatteryChosenTheme";

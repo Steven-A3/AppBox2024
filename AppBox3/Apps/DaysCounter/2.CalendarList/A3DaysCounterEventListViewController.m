@@ -28,6 +28,7 @@
 #import "DaysCounterEvent+extension.h"
 #import "A3UserDefaults.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3NavigationController.h"
 
 @interface A3DaysCounterEventListViewController ()
 		<UINavigationControllerDelegate, UISearchDisplayDelegate, UISearchBarDelegate,

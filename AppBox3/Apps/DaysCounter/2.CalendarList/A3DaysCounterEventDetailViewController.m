@@ -28,6 +28,7 @@
 #import "NSDateFormatter+A3Addition.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "DaysCounterCalendar.h"
+#import "A3NavigationController.h"
 
 @interface A3DaysCounterEventDetailViewController () <UIAlertViewDelegate, UIPopoverControllerDelegate, UIActionSheetDelegate, UIActivityItemSource, A3DaysCounterAddEventViewControllerDelegate>
 @property (strong, nonatomic) NSMutableArray *itemArray;

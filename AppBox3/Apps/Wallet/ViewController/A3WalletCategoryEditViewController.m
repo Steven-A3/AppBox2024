@@ -29,6 +29,7 @@
 #import "WalletField.h"
 #import "NSMutableArray+A3Sort.h"
 #import "NSManagedObject+extension.h"
+#import "A3NavigationController.h"
 
 @interface A3WalletCategoryEditViewController () <UIActionSheetDelegate, WalletIconSelectDelegate, WalletEditFieldDelegate,  UITextFieldDelegate>
 

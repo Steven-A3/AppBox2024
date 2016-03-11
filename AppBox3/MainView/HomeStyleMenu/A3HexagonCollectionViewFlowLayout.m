@@ -37,18 +37,8 @@
 
 - (NSArray *)lineConfiguration {
 	if (!_lineConfiguration) {
-		if (IS_IPHONE) {
-			_lineConfiguration = @[@4, @5, @6, @5, @4];
-			_maxColumn = 6;
-		} else {
-			if (IS_PORTRAIT) {
-				_lineConfiguration =  @[@4, @5, @6, @5, @4];
-				_maxColumn = 6;
-			} else {
-				_lineConfiguration = @[@8, @9, @8];
-				_maxColumn = 9;
-			}
-		}
+		_lineConfiguration = @[@4, @5, @6, @5, @4];
+		_maxColumn = 6;
 	}
 	return _lineConfiguration;
 }

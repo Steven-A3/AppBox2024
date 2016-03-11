@@ -36,6 +36,7 @@
 #import "A3SyncManager.h"
 #import "NSMutableArray+A3Sort.h"
 #import "WalletField.h"
+#import "A3NavigationController.h"
 
 #import <CoreLocation/CoreLocation.h>
 #import <ImageIO/ImageIO.h>

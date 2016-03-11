@@ -37,6 +37,7 @@
 #import "RMAppReceipt.h"
 #import "UIViewController+A3Addition.h"
 #import "A3LadyCalendarModelManager.h"
+#import "A3NavigationController.h"
 
 NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";

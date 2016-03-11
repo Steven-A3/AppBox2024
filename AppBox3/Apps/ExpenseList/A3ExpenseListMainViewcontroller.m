@@ -31,6 +31,7 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3UserDefaults.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3NavigationController.h"
 
 #define kDefaultItemCount_iPhone    9
 #define kDefaultItemCount_iPad      18
