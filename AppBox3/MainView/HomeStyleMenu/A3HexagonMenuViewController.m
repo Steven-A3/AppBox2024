@@ -102,7 +102,7 @@
 
 	NSDictionary *menuInfo = self.menuItems[indexPath.row];
 	NSDictionary *appInfo = [[A3AppDelegate instance] appInfoDictionary][menuInfo[kA3AppsMenuName]];
-	cell.borderColor = self.groupColors[appInfo[kA3AppsGroupName]];
+	cell.borderColor = [A3AppDelegate instance].groupColors[appInfo[kA3AppsGroupName]];
 	NSString *imageName = [[A3AppDelegate instance] imageNameForApp:menuInfo[kA3AppsMenuName]];
 	if (IS_IPAD) {
 		imageName = [imageName stringByAppendingString:@"_Large"];
@@ -145,7 +145,7 @@
 	NSDictionary *menuInfo = self.menuItems[fromIndexPath.row];
 	NSDictionary *appInfo = [[A3AppDelegate instance] appInfoDictionary][menuInfo[kA3AppsMenuName]];
 	[_flowLayout insertDeleteZoneToView:self.collectionView.backgroundView];
-	_flowLayout.deleteZoneView.backgroundColor = self.groupColors[appInfo[kA3AppsGroupName]];
+	_flowLayout.deleteZoneView.backgroundColor = [A3AppDelegate instance].groupColors[appInfo[kA3AppsGroupName]];
 	[_flowLayout.deleteZoneView setHidden:NO];
 }
 
@@ -164,7 +164,7 @@
 		NSDictionary *menuInfo = self.menuItems[indexPath.row];
 		NSDictionary *appInfo = [[A3AppDelegate instance] appInfoDictionary][menuInfo[kA3AppsMenuName]];
 		[collectionViewLayout insertDeleteZoneToView:self.collectionView.backgroundView];
-		collectionViewLayout.deleteZoneView.backgroundColor = self.groupColors[appInfo[kA3AppsGroupName]];
+		collectionViewLayout.deleteZoneView.backgroundColor = [A3AppDelegate instance].groupColors[appInfo[kA3AppsGroupName]];
 		[collectionViewLayout.deleteZoneView setHidden:NO];
 	});
 }
@@ -214,7 +214,7 @@
 	NSDictionary *menuInfo = self.menuItems[indexPath.row];
 	NSDictionary *appInfo = [[A3AppDelegate instance] appInfoDictionary][menuInfo[kA3AppsMenuName]];
 	self.appTitleLabel.text = menuInfo[kA3AppsMenuName];
-	self.appTitleLabel.textColor = self.groupColors[appInfo[kA3AppsGroupName]];
+	self.appTitleLabel.textColor = [A3AppDelegate instance].groupColors[appInfo[kA3AppsGroupName]];
 }
 
 - (UILabel *)appTitleLabel {

@@ -40,49 +40,6 @@
 	[navigationController.navigationBar setShadowImage:image];
 }
 
-- (NSDictionary *)groupColors {
-	if (!_groupColors) {
-		_groupColors = @{
-				A3AppGroupNameCalculator:self.calculatorColor,
-				A3AppGroupNameProductivity:self.productivityColor,
-				A3AppGroupNameConverter:self.converterColor,
-				A3AppGroupNameUtility:self.utilityColor,
-				A3AppGroupNameReference:self.referenceColor,
-				A3AppGroupNameNone:self.noneColor,
-		};
-	}
-	return _groupColors;
-}
-
-- (UIColor *)utilityColor {
-	// 253	148	38
-	return [UIColor colorWithRed:253.0/255.0 green:148.0/255.0 blue:38.0/255.0 alpha:1.0];
-}
-
-- (UIColor *)calculatorColor {
-	// 21	126	251
-	return [UIColor colorWithRed:21.0/255.0 green:126.0/255.0 blue:251.0/255.0 alpha:1.0];
-}
-
-- (UIColor *)referenceColor {
-	// 252	49	89
-	return [UIColor colorWithRed:252.0/255.0 green:49.0/255.0 blue:89.0/255.0 alpha:1.0];
-}
-
-- (UIColor *)converterColor {
-	// 89	90	211
-	return [UIColor colorWithRed:89.0/255.0 green:90.0/255.0 blue:211.0/255.0 alpha:1.0];
-}
-
-- (UIColor *)productivityColor {
-	// 104	216	69
-	return [UIColor colorWithRed:104.0/255.0 green:216.0/255.0 blue:69.0/255.0 alpha:1.0];
-}
-
-- (UIColor *)noneColor {
-	// 116	124	127
-	return [UIColor colorWithRed:116.0/255.0 green:124.0/255.0 blue:127.0/255.0 alpha:1.0];
-}
 
 - (UIView *)backgroundView {
 	UIView *backgroundView = [UIView new];

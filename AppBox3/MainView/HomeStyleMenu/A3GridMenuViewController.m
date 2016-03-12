@@ -144,7 +144,7 @@ NSString *const A3GridMenuCellID = @"gridCell";
 
 	NSDictionary *menuInfo = self.menuItems[indexPath.row];
 	NSDictionary *appInfo = [[A3AppDelegate instance] appInfoDictionary][menuInfo[kA3AppsMenuName]];
-	cell.borderColor = self.groupColors[appInfo[kA3AppsGroupName]];
+	cell.borderColor = [A3AppDelegate instance].groupColors[appInfo[kA3AppsGroupName]];
 	if ([menuInfo[kA3AppsMenuName] isEqualToString:A3AppName_None]) {
 		cell.imageName = @"add01";
 		cell.titleLabel.text = @"Add";
@@ -199,7 +199,7 @@ NSString *const A3GridMenuCellID = @"gridCell";
 		NSDictionary *menuInfo = _menuItems[indexPath.row];
 		NSDictionary *appInfo = [[A3AppDelegate instance] appInfoDictionary][menuInfo[kA3AppsMenuName]];
 		[collectionViewLayout insertDeleteZoneToView:self.collectionView.backgroundView];
-		collectionViewLayout.deleteZoneView.backgroundColor = self.groupColors[appInfo[kA3AppsGroupName]];
+		collectionViewLayout.deleteZoneView.backgroundColor = [A3AppDelegate instance].groupColors[appInfo[kA3AppsGroupName]];
 		[collectionViewLayout.deleteZoneView setHidden:NO];
 	});
 }

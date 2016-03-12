@@ -11,6 +11,7 @@
 
 @interface A3AppDelegate (mainMenu)
 
+- (NSDictionary *)groupColors;
 - (NSDictionary *)appInfoDictionary;
 - (NSString *)imageNameForApp:(NSString *)appName;
 - (NSArray *)allMenu;
@@ -21,18 +22,12 @@
 - (NSUInteger)maximumRecentlyUsedMenus;
 - (void)storeMaximumNumberRecentlyUsedMenus:(NSUInteger)maxNumber;
 - (void)clearRecentlyUsedMenus;
-
 - (NSArray *)availableMenuTypes;
-
 - (void)reloadRootViewController;
-
 - (void)setupMainMenuViewController;
-
 - (BOOL)launchAppNamed:(NSString *)appName verifyPasscode:(BOOL)verifyPasscode animated:(BOOL)animated;
-
 - (UIViewController *)getViewControllerForAppNamed:(NSString *)appName;
-
 - (void)startRemoveAds;
-
 - (void)startRestorePurchase;
+
 @end

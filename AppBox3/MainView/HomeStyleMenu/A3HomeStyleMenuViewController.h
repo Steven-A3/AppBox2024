@@ -10,10 +10,6 @@
 
 @interface A3HomeStyleMenuViewController : UIViewController
 
-@property (nonatomic, strong) UIColor *utilityColor, *calculatorColor, *referenceColor;
-@property (nonatomic, strong) UIColor *converterColor, *productivityColor;
-@property (nonatomic, strong) NSDictionary *groupColors;
-
 - (UIView *)backgroundView;
 
 @end

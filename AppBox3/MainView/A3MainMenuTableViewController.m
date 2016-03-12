@@ -262,7 +262,7 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 
 				// Check active view controller
 				if (![self.activeAppName isEqualToString:elementObject.title]) {
-					if ([[A3AppDelegate instance] launchAppNamed:elementObject.title verifyPasscode:verifyPasscode animated:NO]) {
+					if (![[A3AppDelegate instance] launchAppNamed:elementObject.title verifyPasscode:verifyPasscode animated:NO]) {
 						self.selectedElement = menuElement;
 					} else {
 						[weakSelf updateRecentlyUsedAppsWithElement:menuElement];
@@ -354,6 +354,18 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 			cell.imageView.image= [UIImage imageNamed:imageName];
 			cell.imageView.tintColor = nil;
 		}
+	} else if ([element isKindOfClass:[A3TableViewExpandableElement class]]) {
+		A3TableViewExpandableElement *expandableElement = (id)element;
+		cell.imageView.image = [UIImage imageNamed:expandableElement.isCollapsed ? @"add03" : @"delete02"];
+		if (![element.title isEqualToString:@"Favorites"] && ![element.title isEqualToString:@"Recent"]) {
+			if (expandableElement.isCollapsed) {
+				A3TableViewMenuElement *childElement = [[expandableElement elements] lastObject];
+				NSString *groupName = [A3AppDelegate instance].appInfoDictionary[childElement.title][kA3AppsGroupName];
+				cell.textLabel.textColor = [A3AppDelegate instance].groupColors[groupName];
+			} else {
+				cell.textLabel.textColor = [UIColor blackColor];
+			}
+		}
 	}
 }
 
@@ -433,7 +445,7 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 												   state:A3DataObjectStateModified];
 		}
 	} else if (indexPath.section == 1) {
-		NSMutableArray *allMenus = [[[A3AppDelegate instance] allMenuArrayFromStoredDataFile]	mutableCopy];
+		NSMutableArray *allMenus = [[[A3AppDelegate instance] allMenuArrayFromStoredDataFile] mutableCopy];
 		NSUInteger idx = [allMenus indexOfObjectPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
 			return [obj[kA3AppsMenuName]  isEqualToString:element.title];
 		}];
@@ -443,6 +455,21 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 			[allMenus replaceObjectAtIndex:idx withObject:expandableMenuDictionary];
 			[[A3SyncManager sharedSyncManager] setObject:allMenus forKey:A3MainMenuDataEntityAllMenu state:A3DataObjectStateModified];
 		}
+		
+		if (![element.title isEqualToString:@"Favorites"] && ![element.title isEqualToString:@"Recent"]) {
+			if (element.isCollapsed) {
+				A3TableViewMenuElement *childElement = [[element elements] lastObject];
+				NSString *groupName = [A3AppDelegate instance].appInfoDictionary[childElement.title][kA3AppsGroupName];
+				element.cell.textLabel.textColor = [A3AppDelegate instance].groupColors[groupName];
+			} else {
+				element.cell.textLabel.textColor = [UIColor blackColor];
+			}
+		}
+	}
+	if (element.isCollapsed) {
+		element.cell.imageView.image = [UIImage imageNamed:@"add03"];
+	} else {
+		element.cell.imageView.image = [UIImage imageNamed:@"delete02"];
 	}
 }
 
