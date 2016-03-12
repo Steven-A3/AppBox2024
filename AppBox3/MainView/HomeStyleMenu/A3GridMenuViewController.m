@@ -55,6 +55,13 @@ NSString *const A3GridMenuCellID = @"gridCell";
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	_menuItems = nil;
+	[self.collectionView reloadData];
+}
+
 - (void)setupCollectionView {
 
 	UIView *superview = self.view;

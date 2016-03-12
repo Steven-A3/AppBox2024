@@ -75,6 +75,8 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
+	_menuItems = nil;
+	
 	CGSize contentSize = [_flowLayout collectionViewContentSize];
 	if (IS_IPHONE) {
 		_collectionView.contentInset = UIEdgeInsetsMake((self.view.bounds.size.height - contentSize.height)/2, 0, (self.view.bounds.size.height - contentSize.height)/2, 0);
@@ -82,6 +84,7 @@
 		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 		[self setupCollectionViewContentInsetWithSize:screenBounds.size];
 	}
+	[self.collectionView reloadData];
 }
 
 #pragma mark - UICollectionViewDataSource

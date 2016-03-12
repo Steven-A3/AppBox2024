@@ -27,7 +27,18 @@ NSString *const A3BackupFileVersionKey = @"ApplicationVersion";
 NSString *const A3BackupFileDateKey = @"BackupDate";
 NSString *const A3BackupFileOSVersionKey = @"OSVersion";
 NSString *const A3BackupFileSystemModelKey = @"Model";
+/**
+ *  UserDefaultsKey는 A3UserDefaults로 저장되는 내역을 백업합니다.
+ *  A3UserDefaults에 저장되는 내용은 iCloud를 사용하는 경우, 
+ *  동기화에 적용이 됩니다.
+ *  Device 동기화를 지원하지 않는 설정의 경우에는 NSUserDefaults에 저장되는데,
+ *  이는 A3BackupFileDeviceUserDefaultsKey로 저장합니다.
+ */
 NSString *const A3BackupFileUserDefaultsKey = @"UserDefaults";
+/**
+ *  NSUserDefaults에 저장하는 값 중에서 백업이 필요한 Data를 보관하는 키 입니다.
+ */
+NSString *const A3BackupFileDeviceUserDefaultsKey = @"DeviceUserDefaults";
 NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 @interface A3BackupRestoreManager () <AAAZipDelegate, DBRestClientDelegate, A3DataMigrationManagerDelegate>
@@ -144,7 +155,8 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 			A3BackupFileDateKey : [NSDate date],
 			A3BackupFileOSVersionKey : [[UIDevice currentDevice] systemVersion],
 			A3BackupFileSystemModelKey : [A3UIDevice platform],
-			A3BackupFileUserDefaultsKey : [self userDefaultsDictionary]
+			A3BackupFileUserDefaultsKey : [self userDefaultsDictionary],
+			A3BackupFileDeviceUserDefaultsKey : [self deviceUserDefaultsDictionary],
 	};
 
 	FNLOG(@"%@", backupInfoDictionary);
@@ -280,6 +292,19 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 		[self addKey:[downloadManager dateKeyForCountryCode:countryCode] ifHasValueTo:keysAndValues];
 	}
 	return keysAndValues;
+}
+
+- (NSDictionary *)deviceUserDefaultsDictionary {
+	NSMutableDictionary *dictionary = [NSMutableDictionary new];
+	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+	NSArray *targetKeyArray = @[A3MainMenuHexagonMenuItems, A3MainMenuGridMenuItems];
+	for (NSString *key in targetKeyArray) {
+		id value = [userDefaults objectForKey:key];
+		if (value) {
+			[dictionary setObject:value forKey:key];
+		}
+	}
+	return dictionary;
 }
 
 - (void)addKey:(NSString *)key ifHasValueTo:(NSMutableDictionary *)target {
@@ -465,6 +490,12 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 		[standardUserDefaults removeObjectForKey:A3SyncManagerCloudEnabled];
 		[standardUserDefaults synchronize];
 
+		NSDictionary *deviceUserDefaultsBackup = backupInfo[A3BackupFileDeviceUserDefaultsKey];
+		NSUserDefaults *deviceUserDefaults = [NSUserDefaults standardUserDefaults];
+		for (id key in [deviceUserDefaultsBackup allKeys]) {
+			[deviceUserDefaults setObject:deviceUserDefaultsBackup[key] forKey:key];
+		}
+		
 		NSNumber *selectedColor = [[A3SyncManager sharedSyncManager] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
 		if (selectedColor) {
 			[A3AppDelegate instance].window.tintColor = [[A3AppDelegate instance] themeColor];
