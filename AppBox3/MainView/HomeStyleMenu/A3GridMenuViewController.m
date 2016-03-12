@@ -37,6 +37,8 @@ NSString *const A3GridMenuCellID = @"gridCell";
  */
 @property (nonatomic, strong) NSIndexPath *selectedIndexPath;
 
+@property (nonatomic, strong) UIPageControl *pageControl;
+
 @end
 
 @implementation A3GridMenuViewController {
@@ -74,6 +76,23 @@ NSString *const A3GridMenuCellID = @"gridCell";
 	self.collectionView.backgroundView = [self backgroundView];
 	
 	[self setupContentHeightWithIsPortrait:self.view.bounds.size.height > self.view.bounds.size.width];
+	
+	_pageControl = [UIPageControl new];
+	_pageControl.numberOfPages = 2;
+	_pageControl.currentPage = 0;
+	[_pageControl addTarget:self action:@selector(pageControlValueChanged:) forControlEvents:UIControlEventValueChanged];
+	[self.view addSubview:_pageControl];
+	
+	[_pageControl makeConstraints:^(MASConstraintMaker *make) {
+		make.bottom.equalTo(self.view.bottom).with.offset(-103);
+		make.centerX.equalTo(_collectionView.centerX);
+	}];
+}
+
+- (void)pageControlValueChanged:(UIPageControl *)pageControl {
+	CGPoint offset = self.collectionView.contentOffset;
+	offset = CGPointMake(pageControl.currentPage * self.collectionView.bounds.size.width, offset.y);
+	[self.collectionView setContentOffset:offset animated:YES];
 }
 
 - (A3GridCollectionViewFlowLayout *)flowLayout {
@@ -240,6 +259,10 @@ NSString *const A3GridMenuCellID = @"gridCell";
 	[[NSUserDefaults standardUserDefaults] setObject:_menuItems forKey:A3MainMenuGridMenuItems];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 	return NO;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+	_pageControl.currentPage = scrollView.contentOffset.x / scrollView.bounds.size.width;
 }
 
 - (NSArray *)originalMenuItems {
