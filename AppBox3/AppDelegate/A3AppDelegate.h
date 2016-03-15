@@ -147,6 +147,7 @@ extern NSString *const A3AppGroupNameNone;
 @property (nonatomic, assign) BOOL inAppPurchaseInProgress;
 @property (nonatomic, assign) BOOL firstRunAfterInstall;
 @property (nonatomic, assign) BOOL adDisplayedAfterApplicationDidBecomeActive;
+@property (nonatomic, weak) id<A3PasscodeViewControllerDelegate> otherPasscodeDelegate;
 
 @property (nonatomic, copy) NSString *previousVersion;
 

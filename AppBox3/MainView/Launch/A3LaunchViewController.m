@@ -16,7 +16,6 @@
 #import "A3MainMenuTableViewController.h"
 #import "A3UserDefaults.h"
 #import "A3KeychainUtils.h"
-#import "A3PasscodeViewControllerProtocol.h"
 
 NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhatsNew_3_0";
 
@@ -105,10 +104,18 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 		
 		if (![appDelegate showLockScreen]) {
 			[appDelegate updateStartOption];
-			if ([[A3AppDelegate instance] startOptionOpenClockOnce] ||
-				![[[A3AppDelegate instance] mainMenuViewController] openRecentlyUsedMenu:YES]) {
-				[[A3AppDelegate instance] setStartOptionOpenClockOnce:NO];
-				[mainMenuTableViewController openClockApp];
+			
+			if ([[A3AppDelegate instance] isMainMenuStyleList]) {
+				if ([[A3AppDelegate instance] startOptionOpenClockOnce] ||
+					![[[A3AppDelegate instance] mainMenuViewController] openRecentlyUsedMenu:YES]) {
+					[[A3AppDelegate instance] setStartOptionOpenClockOnce:NO];
+					[mainMenuTableViewController openClockApp];
+				}
+			} else {
+				NSString *startingApp = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+				if (startingApp) {
+					[appDelegate launchAppNamed:startingApp verifyPasscode:NO delegate:self animated:NO];
+				}
 			}
 		}
 		[appDelegate downloadDataFiles];

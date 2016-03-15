@@ -12,4 +12,6 @@
 
 @property (nonatomic, weak) UITableView *tableView;
 
+- (void)reloadButtonBorderColor;
+
 @end

@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
+#import "A3SettingsViewController.h"
+#import "UIViewController+NumberKeyboard.h"
 #import <LocalAuthentication/LocalAuthentication.h>
 #import "A3AppDelegate+mainMenu.h"
 #import "A3SyncManager.h"
@@ -695,7 +697,7 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 	return visualStateBlock;
 }
 
-- (BOOL)launchAppNamed:(NSString *)appName verifyPasscode:(BOOL)verifyPasscode animated:(BOOL)animated {
+- (BOOL)launchAppNamed:(NSString *)appName verifyPasscode:(BOOL)verifyPasscode delegate:(id <A3PasscodeViewControllerDelegate>)delegate animated:(BOOL)animated {
 	BOOL appLaunched = NO;
 	BOOL proceedPasscodeCheck = NO;
 
@@ -713,7 +715,7 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 		}
 	}
 	if (proceedPasscodeCheck) {
-		[self presentLockScreen];
+		[self presentLockScreen:delegate];
 	} else {
 		UIViewController *targetViewController= [self getViewControllerForAppNamed:appName];
 		[targetViewController callPrepareCloseOnActiveMainAppViewController];
@@ -1043,4 +1045,8 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 	}
 }
 
+- (BOOL)isMainMenuStyleList {
+	NSString *mainMenuStyle = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
+	return [mainMenuStyle isEqualToString:A3SettingsMainMenuStyleTable];
+}
 @end

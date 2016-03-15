@@ -28,8 +28,6 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 	
 	UINavigationController *navigationController = self.navigationController;
@@ -38,6 +36,8 @@
 	UIImage *image = [UIImage new];
 	[navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
 	[navigationController.navigationBar setShadowImage:image];
+
+	[super viewWillAppear:animated];
 }
 
 
@@ -96,17 +96,19 @@
 }
 
 - (void)settingsButtonAction:(UIButton *)button {
-	[[A3AppDelegate instance] launchAppNamed:A3AppName_Settings verifyPasscode:YES animated:YES];
+	if (![[A3AppDelegate instance] launchAppNamed:A3AppName_Settings verifyPasscode:YES delegate:self animated:YES]) {
+		self.selectedAppName = A3AppName_Settings;
+	}
 }
 
 - (void)helpButtonAction:(id)sender {
-	[[A3AppDelegate instance] launchAppNamed:A3AppName_About verifyPasscode:NO animated:YES];
+	[[A3AppDelegate instance] launchAppNamed:A3AppName_About verifyPasscode:NO delegate:nil animated:YES];
 }
 
 - (void)addAppLinkButtonToView:(UIView *)targetView title:(NSString *)title imageName:(NSString *)imageName position:(CGFloat)position selector:(SEL)selector {
 	UILabel *appTitle = [UILabel new];
 	appTitle.textColor = [UIColor whiteColor];
-	appTitle.font = [UIFont systemFontOfSize:11];
+	appTitle.font = [UIFont systemFontOfSize:IS_IPHONE ? 11 : 13];
 	appTitle.text = title;
 	appTitle.textAlignment = NSTextAlignmentCenter;
 	[targetView addSubview:appTitle];
@@ -122,7 +124,7 @@
 
 	[appButton makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(targetView.right).with.multipliedBy(position);
-		make.bottom.equalTo(appTitle.top).with.offset(-10);
+		make.bottom.equalTo(appTitle.top).with.offset(-4);
 	}];
 
 	if (selector) {
@@ -145,6 +147,13 @@
 
 - (void)openAppStoreNumpad {
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id967194299"]];
+}
+
+- (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
+	if (success && _selectedAppName) {
+		[[A3AppDelegate instance] launchAppNamed:_selectedAppName verifyPasscode:NO delegate:nil animated:YES];
+	}
+	_selectedAppName = nil;
 }
 
 @end

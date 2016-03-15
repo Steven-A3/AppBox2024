@@ -334,7 +334,7 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 				[self pushStartingAppInfo];
 				
 				if ([self shouldAskPasscodeForStarting] || [self requirePasscodeForStartingApp]) {
-					[self presentLockScreen];
+					[self presentLockScreen:self];
 				} else {
 					[self removeSecurityCoverView];
 					[self.mainMenuViewController openRecentlyUsedMenu:YES];
@@ -372,7 +372,7 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
     _shortcutItem = nil;
     
 	if ([self shouldAskPasscodeForStarting] || [self requirePasscodeForStartingApp]) {
-		[self presentLockScreen];
+		[self presentLockScreen:self];
 	} else {
 		[self removeSecurityCoverView];
 		[self.mainMenuViewController openRecentlyUsedMenu:YES];

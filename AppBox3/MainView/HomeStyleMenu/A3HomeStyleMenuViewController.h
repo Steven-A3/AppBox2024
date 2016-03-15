@@ -7,8 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "A3PasscodeViewControllerProtocol.h"
+#import "A3LaunchViewController.h"
 
-@interface A3HomeStyleMenuViewController : UIViewController
+@protocol A3PasscodeViewControllerDelegate;
+
+@interface A3HomeStyleMenuViewController : A3LaunchViewController <A3PasscodeViewControllerDelegate>
+
+@property (nonatomic, copy) NSString *selectedAppName;
 
 - (UIView *)backgroundView;
 

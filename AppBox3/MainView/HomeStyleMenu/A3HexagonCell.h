@@ -12,5 +12,6 @@
 
 @property (nonatomic, copy) NSString *imageName;
 @property (nonatomic, copy) UIColor *borderColor;
+@property (nonatomic, assign) BOOL enabled;
 
 @end

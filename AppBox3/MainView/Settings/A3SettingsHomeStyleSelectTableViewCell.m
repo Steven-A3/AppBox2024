@@ -26,23 +26,7 @@
 	[self setupBorderStyle:_hexagonTitleButton];
 	[self setupBorderStyle:_gridTitleButton];
 
-	NSArray *menuTypes = [[A3AppDelegate instance] availableMenuTypes];
-	NSString *style = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
-	NSInteger idx = [menuTypes indexOfObject:style];
-	switch (idx) {
-		case 0:
-			[self listButtonSelected:nil];
-			break;
-		case 1:
-			[self hexagonButtonSelected:nil];
-			break;
-		case 2:
-			[self gridButtonSelected:nil];
-			break;
-		default:
-			[self hexagonButtonSelected:nil];
-			break;
-	}
+	[self reloadButtonBorderColor];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -52,10 +36,6 @@
 }
 
 - (IBAction)listButtonSelected:(id)sender {
-	_listTitleButton.layer.borderColor = [[A3AppDelegate instance] themeColor].CGColor;
-	_hexagonTitleButton.layer.borderColor = [UIColor clearColor].CGColor;
-	_gridTitleButton.layer.borderColor = [UIColor clearColor].CGColor;
-
 	if (sender) {
 		[[NSUserDefaults standardUserDefaults] setObject:A3SettingsMainMenuStyleTable forKey:kA3SettingsMainMenuStyle];
 		[[NSUserDefaults standardUserDefaults] synchronize];
@@ -64,10 +44,6 @@
 }
 
 - (IBAction)hexagonButtonSelected:(id)sender {
-	_listTitleButton.layer.borderColor = [UIColor clearColor].CGColor;
-	_hexagonTitleButton.layer.borderColor = [[A3AppDelegate instance] themeColor].CGColor;
-	_gridTitleButton.layer.borderColor = [UIColor clearColor].CGColor;
-
 	if (sender) {
 		[[NSUserDefaults standardUserDefaults] setObject:A3SettingsMainMenuStyleHexagon forKey:kA3SettingsMainMenuStyle];
 		[[NSUserDefaults standardUserDefaults] synchronize];
@@ -76,10 +52,6 @@
 }
 
 - (IBAction)gridButtonSelected:(id)sender {
-	_listTitleButton.layer.borderColor = [UIColor clearColor].CGColor;
-	_hexagonTitleButton.layer.borderColor = [UIColor clearColor].CGColor;
-	_gridTitleButton.layer.borderColor = [[A3AppDelegate instance] themeColor].CGColor;
-
 	if (sender) {
 		[[NSUserDefaults standardUserDefaults] setObject:A3SettingsMainMenuStyleIconGrid forKey:kA3SettingsMainMenuStyle];
 		[[NSUserDefaults standardUserDefaults] synchronize];
@@ -90,6 +62,33 @@
 - (void)setupBorderStyle:(UIButton *)button {
 	button.layer.cornerRadius = 10;
 	button.layer.borderWidth = 1.0;
+}
+
+- (void)reloadButtonBorderColor {
+	NSArray *menuTypes = [[A3AppDelegate instance] availableMenuTypes];
+	NSString *style = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
+	if (!style) style = A3SettingsMainMenuStyleHexagon;
+	NSInteger idx = [menuTypes indexOfObject:style];
+
+	switch (idx) {
+		case 0:
+			_listTitleButton.layer.borderColor = [[A3AppDelegate instance] themeColor].CGColor;
+			_hexagonTitleButton.layer.borderColor = [UIColor clearColor].CGColor;
+			_gridTitleButton.layer.borderColor = [UIColor clearColor].CGColor;
+			break;
+		case 1:
+			_listTitleButton.layer.borderColor = [UIColor clearColor].CGColor;
+			_hexagonTitleButton.layer.borderColor = [[A3AppDelegate instance] themeColor].CGColor;
+			_gridTitleButton.layer.borderColor = [UIColor clearColor].CGColor;
+			break;
+		case 2:
+			_listTitleButton.layer.borderColor = [UIColor clearColor].CGColor;
+			_hexagonTitleButton.layer.borderColor = [UIColor clearColor].CGColor;
+			_gridTitleButton.layer.borderColor = [[A3AppDelegate instance] themeColor].CGColor;
+			break;
+		default:
+			break;
+	}
 }
 
 @end

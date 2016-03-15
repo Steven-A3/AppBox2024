@@ -201,25 +201,10 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 - (id)bottomSection {
 	NSArray *bottomSection;
 
-	if ([[A3AppDelegate instance] isIAPRemoveAdsAvailable]) {
-		bottomSection = @[
-				@{kA3AppsMenuName : A3AppName_RemoveAds},
-				@{kA3AppsMenuName : A3AppName_RestorePurchase},
-				@{kA3AppsMenuName : A3AppName_Settings},
-				@{kA3AppsMenuName : A3AppName_About},
-		];
-	} else if ([[A3AppDelegate instance] shouldPresentAd]) {
-		bottomSection = @[
-				@{kA3AppsMenuName : A3AppName_RestorePurchase},
-				@{kA3AppsMenuName : A3AppName_Settings},
-				@{kA3AppsMenuName : A3AppName_About},
-		];
-	} else {
-		bottomSection = @[
-				@{kA3AppsMenuName : A3AppName_Settings},
-				@{kA3AppsMenuName : A3AppName_About},
-		];
-	}
+	bottomSection = @[
+					  @{kA3AppsMenuName : A3AppName_Settings},
+					  @{kA3AppsMenuName : A3AppName_About},
+					  ];
 
 	return [self sectionWithData:bottomSection];
 }
@@ -252,17 +237,9 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 				FNLOG(@"self.activeAppName = %@", self.activeAppName);
 				A3TableViewMenuElement *menuElement = (A3TableViewMenuElement *) elementObject;
 
-				if ([elementObject.title isEqualToString:A3AppName_RemoveAds]) {
-					[[A3AppDelegate instance] startRemoveAds];
-					return;
-				} else if ([elementObject.title isEqualToString:A3AppName_RestorePurchase]) {
-					[[A3AppDelegate instance] startRestorePurchase];
-					return;
-				}
-
 				// Check active view controller
 				if (![self.activeAppName isEqualToString:elementObject.title]) {
-					if (![[A3AppDelegate instance] launchAppNamed:elementObject.title verifyPasscode:verifyPasscode animated:NO]) {
+					if (![[A3AppDelegate instance] launchAppNamed:elementObject.title verifyPasscode:verifyPasscode delegate:self animated:NO]) {
 						self.selectedElement = menuElement;
 					} else {
 						[weakSelf updateRecentlyUsedAppsWithElement:menuElement];
@@ -355,16 +332,15 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 			cell.imageView.tintColor = nil;
 		}
 	} else if ([element isKindOfClass:[A3TableViewExpandableElement class]]) {
+		A3TableViewExpandableCell *expandableCell = (id)cell;
+		[expandableCell.expandButton setHidden:YES];
 		A3TableViewExpandableElement *expandableElement = (id)element;
-		cell.imageView.image = [UIImage imageNamed:expandableElement.isCollapsed ? @"add03" : @"delete02"];
+		cell.imageView.image = [[UIImage imageNamed:expandableElement.isCollapsed ? @"Category_open" : @"Category_close"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+		cell.imageView.tintColor = [[A3AppDelegate instance] themeColor];
 		if (![element.title isEqualToString:@"Favorites"] && ![element.title isEqualToString:@"Recent"]) {
-			if (expandableElement.isCollapsed) {
-				A3TableViewMenuElement *childElement = [[expandableElement elements] lastObject];
-				NSString *groupName = [A3AppDelegate instance].appInfoDictionary[childElement.title][kA3AppsGroupName];
-				cell.textLabel.textColor = [A3AppDelegate instance].groupColors[groupName];
-			} else {
-				cell.textLabel.textColor = [UIColor blackColor];
-			}
+			A3TableViewMenuElement *childElement = [[expandableElement elements] lastObject];
+			NSString *groupName = [A3AppDelegate instance].appInfoDictionary[childElement.title][kA3AppsGroupName];
+			cell.textLabel.textColor = [A3AppDelegate instance].groupColors[groupName];
 		}
 	}
 }
@@ -457,25 +433,22 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 		}
 		
 		if (![element.title isEqualToString:@"Favorites"] && ![element.title isEqualToString:@"Recent"]) {
-			if (element.isCollapsed) {
-				A3TableViewMenuElement *childElement = [[element elements] lastObject];
-				NSString *groupName = [A3AppDelegate instance].appInfoDictionary[childElement.title][kA3AppsGroupName];
-				element.cell.textLabel.textColor = [A3AppDelegate instance].groupColors[groupName];
-			} else {
-				element.cell.textLabel.textColor = [UIColor blackColor];
-			}
+			A3TableViewMenuElement *childElement = [[element elements] lastObject];
+			NSString *groupName = [A3AppDelegate instance].appInfoDictionary[childElement.title][kA3AppsGroupName];
+			element.cell.textLabel.textColor = [A3AppDelegate instance].groupColors[groupName];
 		}
 	}
 	if (element.isCollapsed) {
-		element.cell.imageView.image = [UIImage imageNamed:@"add03"];
+		element.cell.imageView.image = [[UIImage imageNamed:@"Category_open"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 	} else {
-		element.cell.imageView.image = [UIImage imageNamed:@"delete02"];
+		element.cell.imageView.image = [[UIImage imageNamed:@"Category_close"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 	}
 }
 
 - (void)updateRecentlyUsedAppsWithElement:(A3TableViewMenuElement *)element {
 	NSDictionary *appInfo = [[A3AppDelegate instance] appInfoDictionary][element.title];
 	if (![element isKindOfClass:[A3TableViewMenuElement class]] || [appInfo[kA3AppsDoNotKeepAsRecent] boolValue]) {
+		_mostRecentMenuElement = nil;
 		return;
 	}
 	NSMutableDictionary *recentlyUsed = [[[A3SyncManager sharedSyncManager] objectForKey:A3MainMenuDataEntityRecentlyUsed] mutableCopy];
@@ -552,6 +525,8 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 	}
 	else if (_mostRecentMenuElement) {
 		_mostRecentMenuElement.onSelected(_mostRecentMenuElement, verifyPasscode);
+		return YES;
+	} else if ([_activeAppName isEqualToString:A3AppName_Settings] || [_activeAppName isEqualToString:A3AppName_About]) {
 		return YES;
 	}
 	return NO;

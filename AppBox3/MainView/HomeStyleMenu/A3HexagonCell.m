@@ -54,6 +54,8 @@
 
 - (void)configureLayerForHexagon
 {
+	_enabled = YES;
+	
     CGFloat red, green, blue, alpha;
 	[self.borderColor getRed:&red green:&green blue:&blue alpha:&alpha];
 	[UIColor colorWithRed:red green:green blue:blue alpha:0.6];
@@ -101,14 +103,20 @@
 		[_imageView removeFromSuperview];
 		_imageView = nil;
 
-		[self addSubview:self.noneLabel];
+		if (_enabled) {
+			[self addSubview:self.noneLabel];
+			
+			[_noneLabel makeConstraints:^(MASConstraintMaker *make) {
+				make.centerX.equalTo(self.centerX);
+				make.centerY.equalTo(self.centerY).with.offset(-12);
+			}];
+			
+			_noneLabel.textColor = _borderColor;
+		} else {
+			[self.noneLabel removeFromSuperview];
+			_noneLabel = nil;
+		}
 
-		[_noneLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.centerX.equalTo(self.centerX);
-			make.centerY.equalTo(self.centerY).with.offset(-12);
-		}];
-
-		_noneLabel.textColor = _borderColor;
 		self.backgroundColor = [UIColor clearColor];
 		return;
 	}

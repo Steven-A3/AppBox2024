@@ -6,9 +6,6 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#ifndef AppBox3_A3PasscodeViewControllerProtocol_h
-#define AppBox3_A3PasscodeViewControllerProtocol_h
-
 @protocol A3PasscodeViewControllerDelegate <NSObject>
 @optional
 - (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success;
@@ -33,5 +30,3 @@
 - (void)cancelAndDismissMe;
 
 @end
-
-#endif

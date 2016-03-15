@@ -84,7 +84,7 @@
 
 	BOOL presentLockScreen = [self shouldProtectScreen];
 	if (presentLockScreen) {
-        [self presentLockScreen];
+        [self presentLockScreen:self];
         return YES;
 	} else {
 		[self showReceivedLocalNotifications];
@@ -92,10 +92,13 @@
     return NO;
 }
 
-- (void)presentLockScreen {
+- (void)presentLockScreen:(id <A3PasscodeViewControllerDelegate>)delegate {
 	if (self.passcodeViewController || self.isTouchIDEvaluationInProgress) return;
 	FNLOG(@"appDelegate.passcodeViewController must nil = %@", self.passcodeViewController);
 
+	if (delegate != self) {
+		self.otherPasscodeDelegate = delegate;
+	}
 	void(^presentPasscodeViewControllerBlock)(void) = ^(){
 		[self removeSecurityCoverView];
 
@@ -219,10 +222,14 @@
 			NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
 			if ([startingAppName length]) {
 				if ([self requirePasscodeForStartingApp]) {
-					[self presentLockScreen];
+					[self presentLockScreen:self];
 				} else {
 					[self removeSecurityCoverView];
-					[self.mainMenuViewController openRecentlyUsedMenu:YES];
+					if (![self isMainMenuStyleList]) {
+						[self.mainMenuViewController openRecentlyUsedMenu:YES];
+					} else {
+						[self launchAppNamed:startingAppName verifyPasscode:NO delegate:nil animated:NO];
+					}
 				}
 			} else {
 				[self showLockScreen];
@@ -316,37 +323,55 @@
 	}
 }
 
+#pragma mark - A3PasscodeViewControllerDelegate
+/**
+ *  Home Screen에서 앱이 열릴때, 암호 확인 후 호출이 된다.
+ *  Default App 설정이 있는 경우에 Default App을 실행해야 한다.
+ *
+ *  @param success 암호 확인이 성공했는지 여부를 알려준다.
+ */
 - (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
+	if (self.otherPasscodeDelegate) {
+		id <A3PasscodeViewControllerDelegate> o = self.otherPasscodeDelegate;
+		if ([o respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
+			[o passcodeViewControllerDidDismissWithSuccess:success];
+		}
+		return;
+	}
 	[self removeSecurityCoverView];
 
 	[self updateStartOption];
 
-	if (self.startOptionOpenClockOnce) {
+	if ([self isMainMenuStyleList] && self.startOptionOpenClockOnce) {
 		[self.mainMenuViewController openClockApp];
 		[self setStartOptionOpenClockOnce:NO];
 		return;
 	}
 
 	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
-    if (!success && self.pushClockViewControllerIfFailPasscode) {
-		if (self.parentOfPasscodeViewController.navigationController != self.navigationController) {
-			[self.navigationController dismissViewControllerAnimated:NO completion:NULL];
-		}
-
-		if (![startingAppName length]) {
-			[self.mainMenuViewController openClockApp];
-		} else {
-			if ([self requirePasscodeForStartingApp]) {
+	if ([self isMainMenuStyleList]) {
+		if (!success && self.pushClockViewControllerIfFailPasscode) {
+			if (self.parentOfPasscodeViewController.navigationController != self.navigationController) {
+				[self.navigationController dismissViewControllerAnimated:NO completion:NULL];
+			}
+			
+			if (![startingAppName length]) {
 				[self.mainMenuViewController openClockApp];
 			} else {
-				[self.mainMenuViewController openRecentlyUsedMenu:YES];
+				if ([self requirePasscodeForStartingApp]) {
+					[self.mainMenuViewController openClockApp];
+				} else {
+					[self.mainMenuViewController openRecentlyUsedMenu:YES];
+				}
 			}
+			[self showReceivedLocalNotifications];
+			return;
 		}
-		[self showReceivedLocalNotifications];
-		return;
-	}
-	if (![self.mainMenuViewController openRecentlyUsedMenu:NO]) {
-		[self.mainMenuViewController openClockApp];
+		if (![self.mainMenuViewController openRecentlyUsedMenu:NO]) {
+			[self.mainMenuViewController openClockApp];
+		}
+	} else if (success && startingAppName) {
+		[self launchAppNamed:startingAppName verifyPasscode:NO delegate:nil animated:YES];
 	}
 	[self presentInterstitialAds];
 	FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
@@ -355,6 +380,11 @@
 - (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {
 	FNLOG();
 	self.passcodeViewController = nil;
+	id <A3PasscodeViewControllerDelegate> otherPasscodeDelegate = self.otherPasscodeDelegate;
+	if (otherPasscodeDelegate && [otherPasscodeDelegate respondsToSelector:@selector(passcodeViewDidDisappearWithSuccess:)]) {
+		[otherPasscodeDelegate passcodeViewDidDisappearWithSuccess:success];
+	}
+	self.otherPasscodeDelegate = nil;
 }
 
 - (BOOL)requirePasscodeForStartingApp {

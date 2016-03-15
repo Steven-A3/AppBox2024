@@ -41,22 +41,14 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 
 @implementation A3SettingsViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-		_previousMainMenuStyle = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
-		if (!_previousMainMenuStyle) {
-			_previousMainMenuStyle = A3SettingsMainMenuStyleHexagon;
-		}
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+	_previousMainMenuStyle = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
+	if (!_previousMainMenuStyle) {
+		_previousMainMenuStyle = A3SettingsMainMenuStyleHexagon;
+	}
 
 	[self makeBackButtonEmptyArrow];
 	[self leftBarButtonAppsButton];
@@ -70,6 +62,8 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
 		self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
 	}
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableView) name:A3NotificationAppsMainMenuContentsChanged object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -87,6 +81,31 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
     // Dispose of any resources that can be recreated.
 }
 
+- (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationAppsMainMenuContentsChanged object:nil];
+}
+
+- (void)reloadTableView {
+	[self.tableView reloadData];
+}
+
+#pragma mark - UITableViewDataSource
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	if (section == 2) {
+		return [[A3AppDelegate instance] isMainMenuStyleList] ? 3 : 1;
+	}
+	if (section == 4) {
+		if ([[A3AppDelegate instance] shouldPresentAd]) {
+			return 2;
+		}
+		return 0;
+	}
+	return [super tableView:tableView numberOfRowsInSection:section];
+}
+
+#pragma mark - UITableViewDelegate
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
 	if (section == 1) return 0;
 	return [self standardHeightForHeaderInSection:section];
@@ -95,20 +114,20 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
 	if (section == 0) return UITableViewAutomaticDimension;
 	BOOL isLastSection = ([self.tableView numberOfSections] - 1) == section;
+	if (isLastSection && ![[A3AppDelegate instance] shouldPresentAd]) {
+		return 3;
+	}
 	return [self standardHeightForFooterIsLastSection:isLastSection];
-}
-
-- (BOOL)isMainMenuStyleList {
-	NSString *mainMenuStyle = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
-	return [mainMenuStyle isEqualToString:A3SettingsMainMenuStyleTable];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 2 && indexPath.row == 0) return 160.0;
-
-	if (indexPath.section == 2 && indexPath.row > 0) {
-		return [self isMainMenuStyleList] ? UITableViewAutomaticDimension : 0.0;
+	if (indexPath.section == 4) {
+		if (indexPath.row == 0 && ![[A3AppDelegate instance] isIAPRemoveAdsAvailable]) {
+			return 0.0;
+		}
 	}
+
 	return UITableViewAutomaticDimension;
 }
 
@@ -138,7 +157,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 			break;
 		}
 		case A3SettingsRowEditFavorites:
-			if ([self isMainMenuStyleList]) {
+			if ([[A3AppDelegate instance] isMainMenuStyleList]) {
 				[cell.textLabel setHidden:NO];
 				[cell.detailTextLabel setHidden:NO];
 				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -150,7 +169,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 			break;
 		case A3SettingsRowRecentToKeep:
 			cell.detailTextLabel.text = [[A3UserDefaults standardUserDefaults] stringForRecentToKeep];
-			if ([self isMainMenuStyleList]) {
+			if ([[A3AppDelegate instance] isMainMenuStyleList]) {
 				[cell.textLabel setHidden:NO];
 				[cell.detailTextLabel setHidden:NO];
 				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -184,14 +203,10 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 		case A3SettingsRowLunarCalendar:
 			break;
 		case A3SettingsRowMainMenuStyle: {
-			A3SettingsHomeStyleSelectTableViewCell *homeStyleSelectCell = (A3SettingsHomeStyleSelectTableViewCell *) cell;
+			A3SettingsHomeStyleSelectTableViewCell *homeStyleSelectCell = (id) cell;
 			homeStyleSelectCell.tableView = tableView;
-			if ([self isMainMenuStyleList]) {
-				cell.separatorInset = A3UITableViewSeparatorInset;
-			} else {
-				cell.separatorInset = UIEdgeInsetsZero;
-				cell.indentationWidth = 0;
-			}
+			[homeStyleSelectCell reloadButtonBorderColor];
+			
 			break;
 		}
 	}

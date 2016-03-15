@@ -16,7 +16,8 @@
 - (BOOL)useTouchID;
 - (void)setUseTouchID:(BOOL)use;
 - (BOOL)showLockScreen;
-- (void)presentLockScreen;
+
+- (void)presentLockScreen:(id <A3PasscodeViewControllerDelegate>)delegate;
 - (BOOL)shouldProtectScreen;
 - (void)applicationDidEnterBackground_passcode;
 

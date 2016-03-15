@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@protocol A3PasscodeViewControllerProtocol;
+#import "A3PasscodeViewControllerProtocol.h"
 
 @protocol A3LaunchSceneViewControllerDelegate <NSObject>
 - (void)useICloudButtonPressedInViewController:(UIViewController *)viewController;
@@ -16,7 +15,7 @@
 - (void)useAppBoxButtonPressedInViewController:(UIViewController *)viewController;
 @end
 
-@interface A3LaunchViewController : UIViewController
+@interface A3LaunchViewController : UIViewController <A3PasscodeViewControllerDelegate>
 
 @property (nonatomic, assign) BOOL showAsWhatsNew;
 

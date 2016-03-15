@@ -22,6 +22,8 @@ NSString *const A3GridMenuCellID = @"gridCell";
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) A3GridCollectionViewFlowLayout *flowLayout;
 @property (nonatomic, strong) NSMutableArray *menuItems;
+@property (nonatomic, strong) NSArray *availableMenuItems;
+
 /**
  *  앱을 삭제하는 경우에 원래 있던 자리에서 삭제가 되도록 하기 위해서, 드래그를 시작하면 시작전 상태를 저장해 둡니다.
  *  드래그를 시작하기 전 상태와 최초 선택된 indexPath를 기록해 두었다가, 삭제 행위가 발생하면, 
@@ -74,8 +76,8 @@ NSString *const A3GridMenuCellID = @"gridCell";
     }];
 	
 	self.collectionView.backgroundView = [self backgroundView];
-	
-	[self setupContentHeightWithIsPortrait:self.view.bounds.size.height > self.view.bounds.size.width];
+
+	[self setupContentHeightWithSize:self.view.bounds.size];
 	
 	_pageControl = [UIPageControl new];
 	_pageControl.numberOfPages = 2;
@@ -84,7 +86,7 @@ NSString *const A3GridMenuCellID = @"gridCell";
 	[self.view addSubview:_pageControl];
 	
 	[_pageControl makeConstraints:^(MASConstraintMaker *make) {
-		make.bottom.equalTo(self.view.bottom).with.offset(-103);
+		make.bottom.equalTo(self.view.bottom).with.offset(IS_IPHONE ? -103 : -114);
 		make.centerX.equalTo(_collectionView.centerX);
 	}];
 }
@@ -112,29 +114,6 @@ NSString *const A3GridMenuCellID = @"gridCell";
 		_flowLayout.dataSource = self;
     }
     return _flowLayout;
-}
-
-- (void)setupContentHeightWithIsPortrait:(BOOL)isPortrait {
-	CGFloat offset;
-	if (IS_IPHONE) {
-		_flowLayout.contentHeight = 454.0;
-		offset = 26;
-	} else {
-		if (isPortrait) {
-			_flowLayout.contentHeight = 808;
-			_flowLayout.numberOfItemsPerRow = 4;
-			_flowLayout.numberOfRowsPerPage = 5;
-			offset = 51;
-		} else {
-			_flowLayout.contentHeight = 530;
-			_flowLayout.numberOfItemsPerRow = 5;
-			_flowLayout.numberOfRowsPerPage = 4;
-			offset = 34;
-		}
-	}
-	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-	CGFloat verticalMargin = (screenBounds.size.height - self.flowLayout.contentHeight) / 2;
-	self.collectionView.contentInset = UIEdgeInsetsMake(verticalMargin - offset, 0, verticalMargin + offset, 0);
 }
 
 - (UICollectionView *)collectionView {
@@ -187,12 +166,15 @@ NSString *const A3GridMenuCellID = @"gridCell";
 		A3NavigationController *navigationController = [[A3NavigationController alloc] initWithRootViewController:viewController];
 		[self presentViewController:navigationController animated:YES completion:nil];
 	} else {
-		[[A3AppDelegate instance] launchAppNamed:menuInfo[kA3AppsMenuName] verifyPasscode:YES animated:YES];
+		if (![[A3AppDelegate instance] launchAppNamed:menuInfo[kA3AppsMenuName] verifyPasscode:YES delegate:self animated:YES]) {
+			self.selectedAppName = [menuInfo[kA3AppsMenuName] copy];
+		}
 	}
 }
 
 - (void)viewController:(UIViewController *)viewController didSelectAppNamed:(NSString *)appName {
 	[_menuItems insertObject:@{kA3AppsMenuName:appName} atIndex:_selectedIndexPath.row];
+	_availableMenuItems = nil;
 
 	if (![[self availableMenuItems] count]) {
 		[_menuItems removeLastObject];
@@ -212,10 +194,12 @@ NSString *const A3GridMenuCellID = @"gridCell";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView layout:(A3CollectionViewFlowLayout *)collectionViewLayout didBeginDraggingItemAtIndexPath:(NSIndexPath *)indexPath {
+	NSDictionary *menuInfo = _menuItems[indexPath.row];
+	if ([menuInfo[kA3AppsMenuName] isEqualToString:A3AppName_None]) return;
+	
 	double delayInSeconds = 0.3;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		NSDictionary *menuInfo = _menuItems[indexPath.row];
 		NSDictionary *appInfo = [[A3AppDelegate instance] appInfoDictionary][menuInfo[kA3AppsMenuName]];
 		[collectionViewLayout insertDeleteZoneToView:self.collectionView.backgroundView];
 		collectionViewLayout.deleteZoneView.backgroundColor = [A3AppDelegate instance].groupColors[appInfo[kA3AppsGroupName]];
@@ -247,6 +231,7 @@ NSString *const A3GridMenuCellID = @"gridCell";
 	_menuItems = [_previousMenuItemsBeforeMovingCell mutableCopy];
 
 	[_menuItems removeObjectAtIndex:_movingCellOriginalIndexPath.row];
+	_availableMenuItems = nil;
 	
 	[collectionViewLayout removeCellFakeView:nil];
 
@@ -300,25 +285,60 @@ NSString *const A3GridMenuCellID = @"gridCell";
 		if (!_menuItems) {
 			_menuItems = [[self originalMenuItems] mutableCopy];
 		}
+		if (IS_IPAD) {
+			NSInteger levelIndex = [_menuItems indexOfObject:@{kA3AppsMenuName:A3AppName_Level}];
+			if (levelIndex != NSNotFound) {
+				[_menuItems replaceObjectAtIndex:levelIndex withObject:@{kA3AppsMenuName:A3AppName_None}];
+			}
+		}
 	}
 	return _menuItems;
 }
 
 - (NSArray *)availableMenuItems {
-	NSMutableArray *availableMenuItems = [[self originalMenuItems] mutableCopy];
-	[availableMenuItems removeObjectsInArray:[self menuItems]];
-	return availableMenuItems;
+	if (!_availableMenuItems) {
+		NSMutableArray *availableMenuItems = [[self originalMenuItems] mutableCopy];
+		[availableMenuItems removeObjectsInArray:[self menuItems]];
+		if (IS_IPAD) {
+			[availableMenuItems removeObject:@{kA3AppsMenuName:A3AppName_Level}];
+		}
+		_availableMenuItems = availableMenuItems;
+	}
+	return _availableMenuItems;
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator {
 	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 
-	[self setupContentHeightWithIsPortrait:size.width < size.height];
+	[self setupContentHeightWithSize:size];
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-	[self setupContentHeightWithIsPortrait:IS_PORTRAIT];
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	[self setupContentHeightWithSize:screenBounds.size];
+}
+
+- (void)setupContentHeightWithSize:(CGSize)toSize {
+	CGFloat offset;
+	if (IS_IPHONE) {
+		_flowLayout.contentHeight = 454.0;
+		offset = 26;
+	} else {
+		if (toSize.width < toSize.height) {
+			_flowLayout.contentHeight = 808;
+			_flowLayout.numberOfItemsPerRow = 4;
+			_flowLayout.numberOfRowsPerPage = 5;
+			offset = 51;
+		} else {
+			_flowLayout.contentHeight = 530;
+			_flowLayout.numberOfItemsPerRow = 5;
+			_flowLayout.numberOfRowsPerPage = 4;
+			offset = 34;
+		}
+	}
+	CGFloat verticalMargin = (toSize.height - self.flowLayout.contentHeight) / 2;
+	self.collectionView.contentInset = UIEdgeInsetsMake(verticalMargin - offset, 0, verticalMargin + offset, 0);
 }
 
 @end

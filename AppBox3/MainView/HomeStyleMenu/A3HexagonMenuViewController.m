@@ -23,6 +23,7 @@
 @property (nonatomic, strong) NSIndexPath *movingCellOriginalIndexPath;
 @property (nonatomic, strong) NSIndexPath *selectedIndexPath;
 @property (nonatomic, copy) NSMutableArray *previousMenuItemsBeforeMovingCell;
+@property (nonatomic, strong) NSArray *availableMenuItems;
 
 @end
 
@@ -99,6 +100,7 @@
 //	FNLOG(@"%f", flowLayout.minimumInteritemSpacing);
 //	FNLOG(@"%f", flowLayout.minimumLineSpacing);
 	A3HexagonCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"HexagonCell" forIndexPath:indexPath];
+	cell.enabled = [[self availableMenuItems] count] > 0;
 
 	NSDictionary *menuInfo = self.menuItems[indexPath.row];
 	NSDictionary *appInfo = [[A3AppDelegate instance] appInfoDictionary][menuInfo[kA3AppsMenuName]];
@@ -119,7 +121,7 @@
 	self.appTitleLabel.text = @"";
 
 	NSDictionary *menuInfo = self.menuItems[indexPath.row];
-	if ([menuInfo[kA3AppsMenuName] isEqualToString:A3AppName_None]) {
+	if ([menuInfo[kA3AppsMenuName] isEqualToString:A3AppName_None] && [[self availableMenuItems] count] > 0) {
 		_selectedIndexPath = indexPath;
 
 		A3AppSelectTableViewController *viewController = [[A3AppSelectTableViewController alloc] initWithArray:[self availableMenuItems]];
@@ -127,12 +129,15 @@
 		A3NavigationController *navigationController = [[A3NavigationController alloc] initWithRootViewController:viewController];
 		[self presentViewController:navigationController animated:YES completion:nil];
 	} else {
-		[[A3AppDelegate instance] launchAppNamed:menuInfo[kA3AppsMenuName] verifyPasscode:YES animated:YES];
+		if (![[A3AppDelegate instance] launchAppNamed:menuInfo[kA3AppsMenuName] verifyPasscode:YES delegate:self animated:YES]) {
+			self.selectedAppName = [menuInfo[kA3AppsMenuName] copy];
+		}
 	}
 }
 
 - (void)viewController:(UIViewController *)viewController didSelectAppNamed:(NSString *)appName {
 	[self.menuItems replaceObjectAtIndex:_selectedIndexPath.row withObject:@{kA3AppsMenuName:appName}];
+	_availableMenuItems = nil;
 	[self.collectionView reloadItemsAtIndexPaths:@[_selectedIndexPath]];
 
 	[[NSUserDefaults standardUserDefaults] setObject:_menuItems forKey:A3MainMenuHexagonMenuItems];
@@ -143,6 +148,8 @@
 
 - (void)collectionView:(UICollectionView *)collectionView itemAtIndexPath:(NSIndexPath *)fromIndexPath willMoveToIndexPath:(NSIndexPath *)toIndexPath {
 	NSDictionary *menuInfo = self.menuItems[fromIndexPath.row];
+	if ([menuInfo[kA3AppsMenuName] isEqualToString:A3AppName_None]) return;
+	
 	NSDictionary *appInfo = [[A3AppDelegate instance] appInfoDictionary][menuInfo[kA3AppsMenuName]];
 	[_flowLayout insertDeleteZoneToView:self.collectionView.backgroundView];
 	_flowLayout.deleteZoneView.backgroundColor = [A3AppDelegate instance].groupColors[appInfo[kA3AppsGroupName]];
@@ -158,10 +165,12 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView layout:(A3CollectionViewFlowLayout *)collectionViewLayout didBeginDraggingItemAtIndexPath:(NSIndexPath *)indexPath {
+	NSDictionary *menuInfo = self.menuItems[indexPath.row];
+	if ([menuInfo[kA3AppsMenuName] isEqualToString:A3AppName_None]) return;
+	
 	double delayInSeconds = 0.3;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		NSDictionary *menuInfo = self.menuItems[indexPath.row];
 		NSDictionary *appInfo = [[A3AppDelegate instance] appInfoDictionary][menuInfo[kA3AppsMenuName]];
 		[collectionViewLayout insertDeleteZoneToView:self.collectionView.backgroundView];
 		collectionViewLayout.deleteZoneView.backgroundColor = [A3AppDelegate instance].groupColors[appInfo[kA3AppsGroupName]];
@@ -197,6 +206,7 @@
 
 	_menuItems = [_previousMenuItemsBeforeMovingCell mutableCopy];
 	[_menuItems replaceObjectAtIndex:_movingCellOriginalIndexPath.row withObject:@{kA3AppsMenuName:A3AppName_None}];
+	_availableMenuItems = nil;
 
 	[collectionViewLayout removeCellFakeView:^{
 		[self.collectionView reloadItemsAtIndexPaths:@[_movingCellOriginalIndexPath]];
@@ -268,14 +278,26 @@
 		if (!_menuItems) {
 			_menuItems = [[self originalMenuItems] mutableCopy];
 		}
+		if (IS_IPAD) {
+			NSInteger levelIndex = [_menuItems indexOfObject:@{kA3AppsMenuName:A3AppName_Level}];
+			if (levelIndex != NSNotFound) {
+				[_menuItems replaceObjectAtIndex:levelIndex withObject:@{kA3AppsMenuName:A3AppName_None}];
+			}
+		}
 	}
 	return _menuItems;
 }
 
 - (NSArray *)availableMenuItems {
-	NSMutableArray *availableMenuItems = [[self originalMenuItems] mutableCopy];
-	[availableMenuItems removeObjectsInArray:[self menuItems]];
-	return availableMenuItems;
+	if (!_availableMenuItems) {
+		NSMutableArray *availableMenuItems = [[self originalMenuItems] mutableCopy];
+		[availableMenuItems removeObjectsInArray:[self menuItems]];
+		if (IS_IPAD) {
+			[availableMenuItems removeObject:@{kA3AppsMenuName:A3AppName_Level}];
+		}
+		_availableMenuItems = availableMenuItems;
+	}
+	return _availableMenuItems;
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator {
