@@ -624,6 +624,7 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 		self.window.rootViewController = navigationController;
 		self.currentMainNavigationController = navigationController;
 		self.rootViewController_iPhone = navigationController;
+		self.homeStyleMainMenuViewController = (id)gridMenuViewController;
 	}
 }
 
@@ -636,6 +637,7 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 		self.window.rootViewController = navigationController;
 		self.currentMainNavigationController = navigationController;
 		self.rootViewController_iPhone = navigationController;
+		self.homeStyleMainMenuViewController = (id)hexagonMenuViewController;
 	}
 }
 

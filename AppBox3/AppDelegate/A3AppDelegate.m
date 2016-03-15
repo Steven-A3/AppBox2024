@@ -38,6 +38,7 @@
 #import "UIViewController+A3Addition.h"
 #import "A3LadyCalendarModelManager.h"
 #import "A3NavigationController.h"
+#import "A3HomeStyleMenuViewController.h"
 
 NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
@@ -50,6 +51,7 @@ NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
 NSString *const A3NotificationCloudKeyValueStoreDidImport = @"A3CloudKeyValueStoreDidImport";
 NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataStoreDidImport";
 NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3NotificationsUserNotificationSettingsRegistered";
+NSString *const A3NotificationsAdsWillDismissScreen = @"A3NotificationAdsWillDismissScreen";
 NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.AppBox3.removeAds";
 NSString *const A3NumberOfTimesOpeningSubApp = @"A3NumberOfTimesOpeningSubApp";
 NSString *const A3AdsDisplayTime = @"A3AdsDisplayTime";
@@ -1341,6 +1343,10 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3AdsDisplayTime];
 	[[NSUserDefaults standardUserDefaults] setInteger:0 forKey:A3NumberOfTimesOpeningSubApp];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)interstitialWillDismissScreen:(GADInterstitial *)ad {
+	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationsAdsWillDismissScreen object:nil];
 }
 
 - (BOOL)presentInterstitialAds {

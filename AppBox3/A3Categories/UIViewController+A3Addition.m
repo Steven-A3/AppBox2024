@@ -18,6 +18,7 @@
 #import "NSDateFormatter+A3Addition.h"
 #import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
+#import "A3HomeStyleMenuViewController.h"
 #import <objc/runtime.h>
 
 static char const *const key_firstActionSheet = "key_firstActionSheet";
@@ -199,19 +200,7 @@ NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
         [navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
         [navigationController.navigationBar setShadowImage:image];
     } else {
-		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-
-		[navigationController setNavigationBarHidden:NO animated:YES];
-		[navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-		[navigationController.navigationBar setShadowImage:nil];
-
-		[navigationController setToolbarHidden:NO];
-		[navigationController setNavigationBarHidden:YES animated:NO];
-
-		[navigationController setToolbarHidden:YES];
-		[navigationController setNavigationBarHidden:NO animated:NO];
-
+		[self showNavigationBar];
 	}
     navigationController.navigationBar.tintColor = [A3AppDelegate instance].themeColor;
 
@@ -224,6 +213,22 @@ NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
         [navigationController pushViewController:viewController animated:animated];
     }
 	[[A3AppDelegate instance] didFinishPushViewController];
+}
+
+- (void)showNavigationBar {
+	UINavigationController *navigationController = [[A3AppDelegate instance] currentMainNavigationController];
+	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+
+	[navigationController setNavigationBarHidden:NO animated:YES];
+	[navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+	[navigationController.navigationBar setShadowImage:nil];
+
+	[navigationController setToolbarHidden:NO];
+	[navigationController setNavigationBarHidden:YES animated:NO];
+
+	[navigationController setToolbarHidden:YES];
+	[navigationController setNavigationBarHidden:NO animated:NO];
 }
 
 - (void)leftBarButtonAppsButton {

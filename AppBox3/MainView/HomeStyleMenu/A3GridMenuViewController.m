@@ -168,6 +168,8 @@ NSString *const A3GridMenuCellID = @"gridCell";
 	} else {
 		if (![[A3AppDelegate instance] launchAppNamed:menuInfo[kA3AppsMenuName] verifyPasscode:YES delegate:self animated:YES]) {
 			self.selectedAppName = [menuInfo[kA3AppsMenuName] copy];
+		} else {
+			self.activeAppName = [menuInfo[kA3AppsMenuName] copy];
 		}
 	}
 }

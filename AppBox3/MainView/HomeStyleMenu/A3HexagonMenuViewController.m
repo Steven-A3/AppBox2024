@@ -117,7 +117,6 @@
 #pragma mark - UICollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-	FNLOG();
 	self.appTitleLabel.text = @"";
 
 	NSDictionary *menuInfo = self.menuItems[indexPath.row];
@@ -131,6 +130,8 @@
 	} else {
 		if (![[A3AppDelegate instance] launchAppNamed:menuInfo[kA3AppsMenuName] verifyPasscode:YES delegate:self animated:YES]) {
 			self.selectedAppName = [menuInfo[kA3AppsMenuName] copy];
+		} else {
+			self.activeAppName = [menuInfo[kA3AppsMenuName] copy];
 		}
 	}
 }
@@ -146,6 +147,10 @@
 
 #pragma mark - A3CollectionViewFlowLayoutDelegate
 
+- (void)collectionView:(UICollectionView *)collectionView layout:(A3CollectionViewFlowLayout *)collectionViewLayout willTouchesBeginItemAtIndexPath:(NSIndexPath *)indexPath {
+	[self setAppTitleTextAtIndexPath:indexPath];
+}
+
 - (void)collectionView:(UICollectionView *)collectionView itemAtIndexPath:(NSIndexPath *)fromIndexPath willMoveToIndexPath:(NSIndexPath *)toIndexPath {
 	NSDictionary *menuInfo = self.menuItems[fromIndexPath.row];
 	if ([menuInfo[kA3AppsMenuName] isEqualToString:A3AppName_None]) return;
@@ -157,7 +162,6 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout willBeginDraggingItemAtIndexPath:(NSIndexPath *)indexPath {
-	FNLOG();
 	_movingCellOriginalIndexPath = [indexPath copy];
 	_previousMenuItemsBeforeMovingCell = [[self menuItems] copy];
 
@@ -179,7 +183,6 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView layout:(A3CollectionViewFlowLayout *)collectionViewLayout didEndDraggingItemAtIndexPath:(NSIndexPath *)indexPath {
-	FNLOG();
 	self.appTitleLabel.text = @"";
 	[collectionViewLayout.deleteZoneView setHidden:YES];
 	double delayInSeconds = 0.3;
@@ -202,8 +205,6 @@
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView layout:(A3CollectionViewFlowLayout *)collectionViewLayout didSelectDeleteAtIndexPath:(NSIndexPath *)indexPath {
-	FNLOG();
-
 	_menuItems = [_previousMenuItemsBeforeMovingCell mutableCopy];
 	[_menuItems replaceObjectAtIndex:_movingCellOriginalIndexPath.row withObject:@{kA3AppsMenuName:A3AppName_None}];
 	_availableMenuItems = nil;
@@ -222,6 +223,8 @@
 
 - (void)setAppTitleTextAtIndexPath:(NSIndexPath *)indexPath {
 	NSDictionary *menuInfo = self.menuItems[indexPath.row];
+	if ([menuInfo[kA3AppsMenuName] isEqualToString:A3AppName_None]) return;
+
 	NSDictionary *appInfo = [[A3AppDelegate instance] appInfoDictionary][menuInfo[kA3AppsMenuName]];
 	self.appTitleLabel.text = menuInfo[kA3AppsMenuName];
 	self.appTitleLabel.textColor = [A3AppDelegate instance].groupColors[appInfo[kA3AppsGroupName]];
@@ -318,7 +321,6 @@
 		if (size.width < size.height) {
 			_collectionView.contentInset = UIEdgeInsetsMake((size.height - contentSize.height)/2 + 80, 0, (size.height - contentSize.height)/2 - 80, 0);
 		} else {
-			FNLOGRECT(self.view.bounds);
 			CGFloat offset = 40;
 			_collectionView.contentInset = UIEdgeInsetsMake((size.height - contentSize.height)/2 + offset, 0, (size.height - contentSize.height)/2 - offset, 0);
 		}

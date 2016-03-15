@@ -79,6 +79,8 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>NSUbiquitousContainerName</key>
+	<string>com.e2ndesign.TPremium2</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

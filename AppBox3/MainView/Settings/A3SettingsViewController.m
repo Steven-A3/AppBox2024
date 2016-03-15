@@ -64,6 +64,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	}
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableView) name:A3NotificationAppsMainMenuContentsChanged object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(adWillDismissScreen) name:A3NotificationsAdsWillDismissScreen object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -75,6 +76,10 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	}
 }
 
+- (void)adWillDismissScreen {
+	[self showNavigationBar];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -83,6 +88,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationAppsMainMenuContentsChanged object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationsAdsWillDismissScreen object:nil];
 }
 
 - (void)reloadTableView {

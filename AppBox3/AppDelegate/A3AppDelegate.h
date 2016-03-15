@@ -13,6 +13,7 @@
 #import "A3DataMigrationManager.h"
 #import <GoogleMobileAds/GoogleMobileAds.h>
 #import "RMStoreAppReceiptVerificator.h"
+#import "A3HomeStyleMenuViewController.h"
 
 @class MMDrawerController;
 @protocol A3PasscodeViewControllerProtocol;
@@ -20,6 +21,7 @@
 @class A3DataMigrationManager;
 @class A3MainMenuTableViewController;
 @class RMAppReceipt;
+@class A3HomeStyleMenuViewController;
 
 extern NSString *const kA3ApplicationLastRunVersion;
 extern NSString *const kA3AppsMenuName;
@@ -53,6 +55,7 @@ extern NSString *const A3DropboxLoginFailed;
 extern NSString *const A3NotificationCloudKeyValueStoreDidImport;
 extern NSString *const A3NotificationCloudCoreDataStoreDidImport;
 extern NSString *const A3NotificationsUserNotificationSettingsRegistered;
+extern NSString *const A3NotificationsAdsWillDismissScreen;
 
 /* Global Settings */
 extern NSString *const A3LocalNotificationOwner;
@@ -120,6 +123,7 @@ extern NSString *const A3AppGroupNameNone;
 @property (strong, nonatomic) UIViewController *rootViewController_iPhone;
 @property (strong, nonatomic) UINavigationController *currentMainNavigationController;
 @property (strong, nonatomic) A3MainMenuTableViewController *mainMenuViewController;
+@property (strong, nonatomic) A3HomeStyleMenuViewController *homeStyleMainMenuViewController;
 
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) NSDate *wakeUpTime;

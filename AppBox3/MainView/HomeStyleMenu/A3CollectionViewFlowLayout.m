@@ -82,17 +82,20 @@
 		return;
 	}
 	_longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(handleLongPress:)];
-	_panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(handlePanGesture:)];
 	_longPress.delegate = self;
 	_longPress.minimumPressDuration = 0.5;
+
+	_panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(handlePanGesture:)];
 	_panGesture.delegate = self;
 	_panGesture.maximumNumberOfTouches = 1;
+
 	NSArray *gestures = [self.collectionView gestureRecognizers];
 	[gestures enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 		if ([obj isKindOfClass:[UILongPressGestureRecognizer class]]) {
-			[(UILongPressGestureRecognizer *)obj requireGestureRecognizerToFail:_longPress];
+			[(UIGestureRecognizer *)obj requireGestureRecognizerToFail:_longPress];
 		}
 	}];
+	
 	[self.collectionView addGestureRecognizer:_longPress];
 	[self.collectionView addGestureRecognizer:_panGesture];
 }
@@ -324,7 +327,21 @@
 	}
 }
 
-// gesture recognize delegate
+#pragma mark - Gesture recognizer delegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+	if (gestureRecognizer.state == UIGestureRecognizerStatePossible) {
+		CGPoint location = [touch locationInView:self.collectionView];
+		NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:location];
+		if (indexPath) {
+			if ([_delegate respondsToSelector:@selector(collectionView:layout:willTouchesBeginItemAtIndexPath:)]) {
+				[_delegate collectionView:self.collectionView layout:self willTouchesBeginItemAtIndexPath:indexPath];
+			}
+		}
+	}
+	return YES;
+}
+
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer{
 	
 	// allow move item
@@ -338,7 +355,7 @@
 			}
 		}
 	}
-	
+
 	if([gestureRecognizer isEqual:_longPress]){
 		if (self.collectionView.panGestureRecognizer.state != UIGestureRecognizerStatePossible && self.collectionView.panGestureRecognizer.state != UIGestureRecognizerStateFailed) {
 			return NO;
@@ -371,6 +388,7 @@
 }
 
 #pragma mark - observer
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
 	if ([keyPath isEqualToString:@"collectionView"]) {
 		[self setUpGestureRecognizers];

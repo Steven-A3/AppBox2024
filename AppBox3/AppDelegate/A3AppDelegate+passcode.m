@@ -21,6 +21,7 @@
 #import "A3WalletMainTabBarController.h"
 #import "A3UserDefaults.h"
 #import "A3MainMenuTableViewController.h"
+#import "A3HomeStyleMenuViewController.h"
 
 @implementation A3AppDelegate (passcode)
 
@@ -160,7 +161,13 @@
 	} else {
 		if ([self requirePasscodeForStartingApp]) return YES;
 
-		NSString *activeAppName = self.mainMenuViewController.activeAppName;
+		NSString *activeAppName;
+		if ([self isMainMenuStyleList]) {
+			activeAppName = self.mainMenuViewController.activeAppName;
+		} else {
+			activeAppName = self.homeStyleMainMenuViewController.activeAppName;
+		}
+
 		if ([activeAppName isEqualToString:A3AppName_Settings]) {
 			presentLockScreen = [self shouldAskPasscodeForSettings];
 		}
@@ -229,6 +236,7 @@
 						[self.mainMenuViewController openRecentlyUsedMenu:YES];
 					} else {
 						[self launchAppNamed:startingAppName verifyPasscode:NO delegate:nil animated:NO];
+						self.homeStyleMainMenuViewController.activeAppName = [startingAppName copy];
 					}
 				}
 			} else {
@@ -372,6 +380,7 @@
 		}
 	} else if (success && startingAppName) {
 		[self launchAppNamed:startingAppName verifyPasscode:NO delegate:nil animated:YES];
+		self.homeStyleMainMenuViewController.activeAppName = [startingAppName copy];
 	}
 	[self presentInterstitialAds];
 	FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");

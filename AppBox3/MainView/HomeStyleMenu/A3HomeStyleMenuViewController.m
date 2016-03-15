@@ -40,6 +40,20 @@
 	[super viewWillAppear:animated];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	self.activeAppName = nil;
+	FNLOG(@"activeAppName = nil");
+	
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+	
+	double delayInSeconds = 2.0;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+	});
+}
 
 - (UIView *)backgroundView {
 	UIView *backgroundView = [UIView new];
@@ -152,6 +166,7 @@
 - (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
 	if (success && _selectedAppName) {
 		[[A3AppDelegate instance] launchAppNamed:_selectedAppName verifyPasscode:NO delegate:nil animated:YES];
+		self.activeAppName = [_selectedAppName copy];
 	}
 	_selectedAppName = nil;
 }

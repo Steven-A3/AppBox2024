@@ -36,15 +36,16 @@
 - (void)collectionView:(UICollectionView *)collectionView layout:(A3CollectionViewFlowLayout *)collectionViewLayout willEndDraggingItemAtIndexPath:(NSIndexPath *)indexPath;
 - (void)collectionView:(UICollectionView *)collectionView layout:(A3CollectionViewFlowLayout *)collectionViewLayout didEndDraggingItemAtIndexPath:(NSIndexPath *)indexPath;
 - (BOOL)collectionView:(UICollectionView *)collectionView layout:(A3CollectionViewFlowLayout *)collectionViewLayout didSelectDeleteAtIndexPath:(NSIndexPath *)indexPath;
+- (void)collectionView:(UICollectionView *)collectionView layout:(A3CollectionViewFlowLayout *)collectionViewLayout willTouchesBeginItemAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
 @interface A3CollectionViewFlowLayout : UICollectionViewFlowLayout
 
-@property (nonatomic, weak)id<A3ReorderableLayoutDelegate> delegate;
-@property (nonatomic, weak)id<A3ReorderableLayoutDataSource> dataSource;
-@property (nonatomic, strong)UILongPressGestureRecognizer *longPress;
-@property (nonatomic, strong)UIPanGestureRecognizer *panGesture;
+@property (nonatomic, weak) id<A3ReorderableLayoutDelegate> delegate;
+@property (nonatomic, weak) id<A3ReorderableLayoutDataSource> dataSource;
+@property (nonatomic, strong) UILongPressGestureRecognizer *longPress;
+@property (nonatomic, strong) UIPanGestureRecognizer *panGesture;
 @property (nonatomic, strong) UIView *deleteZoneView;
 
 - (void)removeCellFakeView:(void(^)(void))completion;

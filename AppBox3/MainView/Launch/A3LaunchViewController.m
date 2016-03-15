@@ -115,6 +115,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 				NSString *startingApp = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
 				if (startingApp) {
 					[appDelegate launchAppNamed:startingApp verifyPasscode:NO delegate:self animated:NO];
+					appDelegate.homeStyleMainMenuViewController.activeAppName = [startingApp copy];
 				}
 			}
 		}
