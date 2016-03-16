@@ -455,7 +455,26 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 				allMenuArray = newAllMenu;
 
 				[[A3SyncManager sharedSyncManager] setObject:allMenuArray forKey:A3MainMenuDataEntityAllMenu state:A3DataObjectStateModified];
-				break;
+			} else if ([section[kA3AppsMenuName] isEqualToString:@"Converter"]) {
+				BOOL hasLunarConverter = NO;
+				for (NSDictionary *menus in section[kA3AppsExpandableChildren]) {
+					if ([menus[kA3AppsMenuName] isEqualToString:A3AppName_LunarConverter]) {
+						hasLunarConverter = YES;
+						break;
+					}
+				}
+				if (!hasLunarConverter) {
+					NSMutableArray *updatedMenus = [section[kA3AppsExpandableChildren] mutableCopy];
+					[updatedMenus addObject:@{kA3AppsMenuName:A3AppName_LunarConverter}];
+					
+					NSMutableDictionary *newSection = [section mutableCopy];
+					newSection[kA3AppsExpandableChildren] = updatedMenus;
+					
+					NSMutableArray *newAllMenu = [allMenuArray mutableCopy];
+					NSInteger idx = [allMenuArray indexOfObject:section];
+					[newAllMenu replaceObjectAtIndex:idx withObject:newSection];
+					allMenuArray = newAllMenu;
+				}
 			}
 		}
 	}
@@ -468,9 +487,6 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 			[originalMenus sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 				return [NSLocalizedString(obj1[kA3AppsMenuName], nil) compare:NSLocalizedString(obj2[kA3AppsMenuName], nil)];
 			}];
-			if (![A3UIDevice shouldSupportLunarCalendar]) {
-				[self removeMenu:A3AppName_LunarConverter inMenus:originalMenus];
-			}
 			modifiedSection[kA3AppsExpandableChildren] = originalMenus;
 			[sortedMenuArray addObject:modifiedSection];
 		}
