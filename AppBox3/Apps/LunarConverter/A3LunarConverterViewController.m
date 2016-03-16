@@ -367,13 +367,16 @@
 #pragma mark - Keyboard Layout
 
 - (void)addDateKeyboard {
-	if (self.dateKeyboardVC) return;
-
-	if (IS_IPAD) {
-		self.dateKeyboardVC = [[A3DateKeyboardViewController_iPad alloc] initWithNibName:@"A3DateKeyboardViewController_iPad" bundle:nil];
-	} else {
-		self.dateKeyboardVC = [[A3DateKeyboardViewController_iPhone alloc] initWithNibName:@"A3DateKeyboardViewController_iPhone" bundle:nil];
+	if (self.dateKeyboardVC.view.superview) return;
+	
+	if (!self.dateKeyboardVC) {
+		if (IS_IPAD) {
+			self.dateKeyboardVC = [[A3DateKeyboardViewController_iPad alloc] initWithNibName:@"A3DateKeyboardViewController_iPad" bundle:nil];
+		} else {
+			self.dateKeyboardVC = [[A3DateKeyboardViewController_iPhone alloc] initWithNibName:@"A3DateKeyboardViewController_iPhone" bundle:nil];
+		}
 	}
+
 	self.dateKeyboardVC.delegate = self;
 
 	UIView *superview;
@@ -483,7 +486,7 @@
 	}
     
 	[_keyboardTopConstraint uninstall];
-    
+	
 	[self.dateKeyboardVC.view makeConstraints:^(MASConstraintMaker *make) {
 		_keyboardTopConstraint =  make.top.equalTo(self.dateKeyboardVC.view.superview.bottom).with.offset(-self.dateKeyboardVC.view.frame.size.height);
 	}];
