@@ -86,7 +86,22 @@ NSString *const A3GridMenuCellID = @"gridCell";
 	[self.view addSubview:_pageControl];
 	
 	[_pageControl makeConstraints:^(MASConstraintMaker *make) {
-		make.bottom.equalTo(self.view.bottom).with.offset(IS_IPHONE ? -103 : -114);
+		CGFloat offset;
+		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+		if (IS_IPHONE) {
+			if (screenBounds.size.height == 568) {
+				// 4" : 5, 5s, iPod Touch 5
+				offset = -84;
+			} else if (screenBounds.size.height == 480) {
+				// 3.5" : iPhone 4, 4s
+				offset = -63;
+			} else {
+				offset = -103;
+			}
+		} else {
+			offset = -114;
+		}
+		make.bottom.equalTo(self.view.bottom).with.offset(offset);
 		make.centerX.equalTo(_collectionView.centerX);
 	}];
 }
@@ -104,7 +119,14 @@ NSString *const A3GridMenuCellID = @"gridCell";
 			if ([[UIScreen mainScreen] scale] == 3) {
 				_flowLayout.itemSize = CGSizeMake(78.0, 102.0);
 			} else {
-				_flowLayout.itemSize = CGSizeMake(70.0, 93.0);
+				CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+				if (screenBounds.size.height == 667) {
+					_flowLayout.itemSize = CGSizeMake(70.0, 93.0);
+				} else if (screenBounds.size.height == 568) {
+					_flowLayout.itemSize = CGSizeMake(60.0, 78.0);
+				} else {
+					_flowLayout.itemSize = CGSizeMake(50.0, 65.0);
+				}
 			}
 		} else {
 			_flowLayout.itemSize = CGSizeMake(76.0, 100.0);
@@ -147,7 +169,12 @@ NSString *const A3GridMenuCellID = @"gridCell";
 		cell.imageName = @"add01";
 		cell.titleLabel.text = @"Add";
 	} else {
-		cell.imageName = [appInfo[kA3AppsMenuImageName] stringByAppendingString:@"_Large"];
+		NSString *imageName = appInfo[kA3AppsMenuImageName];
+		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+		if (screenBounds.size.height > 568) {
+			imageName = [imageName stringByAppendingString:@"_Large"];
+		}
+		cell.imageName = imageName;
 		cell.titleLabel.text = appInfo[kA3AppsMenuNameForGrid];
 	}
 
@@ -324,8 +351,16 @@ NSString *const A3GridMenuCellID = @"gridCell";
 - (void)setupContentHeightWithSize:(CGSize)toSize {
 	CGFloat offset;
 	if (IS_IPHONE) {
-		_flowLayout.contentHeight = 454.0;
 		offset = 26;
+		if (toSize.height >= 667) {
+			_flowLayout.contentHeight = 454.0;
+		} else if (toSize.height == 568) {
+			_flowLayout.contentHeight = 354.0;
+			offset = 20;
+		} else {
+			_flowLayout.contentHeight = 312.0;
+			offset = 11;
+		}
 	} else {
 		if (toSize.width < toSize.height) {
 			_flowLayout.contentHeight = 808;

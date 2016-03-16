@@ -60,6 +60,8 @@
 	// 56	63	73
 	backgroundView.backgroundColor = [UIColor colorWithRed:56.0/255.0 green:63.0/255.0 blue:74.0/255.0 alpha:1.0];
 
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+
 	UIButton *helpButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	[helpButton addTarget:self action:@selector(helpButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 	[helpButton setBackgroundImage:[[UIImage imageNamed:@"help"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
@@ -71,8 +73,8 @@
 	[helpButton mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(superview.left).with.offset(15);
 		make.top.equalTo(superview.top).with.offset(30);
-		make.width.equalTo(@35);
-		make.height.equalTo(@35);
+		make.width.equalTo(screenBounds.size.height <= 568 ? @30 : @35);
+		make.height.equalTo(screenBounds.size.height <= 568 ? @30 : @35);
 	}];
 
 	UIButton *settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -84,14 +86,14 @@
 	[settingsButton makeConstraints:^(MASConstraintMaker *make) {
 		make.top.equalTo(superview.top).with.offset(30);
 		make.right.equalTo(superview.right).with.offset(-15);
-		make.width.equalTo(@35);
-		make.height.equalTo(@35);
+		make.width.equalTo(screenBounds.size.height <= 568 ? @30 : @35);
+		make.height.equalTo(screenBounds.size.height <= 568 ? @30 : @35);
 	}];
 
 	UILabel *titleLabel = [UILabel new];
 	titleLabel.text = @"AppBox Pro®";
 	titleLabel.textColor = [UIColor whiteColor];
-	titleLabel.font = [UIFont systemFontOfSize:26];
+	titleLabel.font = [UIFont systemFontOfSize:screenBounds.size.height <= 568 ? 22 : 26];
 	titleLabel.textAlignment = NSTextAlignmentCenter;
 	[backgroundView addSubview:titleLabel];
 
@@ -100,11 +102,15 @@
 		make.top.equalTo(superview.top).with.offset(32);
 	}];
 
-	[self addAppLinkButtonToView:backgroundView title:@"AppBox" imageName:@"iPad_AppBox" position:IS_IPHONE ? 0.2 : 0.25 selector:@selector(openAppStoreAppBox)];
-
-	[self addAppLinkButtonToView:backgroundView title:@"Numpad" imageName:@"iPad_Numpad" position:0.5 selector:@selector(openAppStoreNumpad)];
-
-	[self addAppLinkButtonToView:backgroundView title:@"Moment" imageName:@"iPad_Moment" position:IS_IPHONE ? 0.8 : 0.75 selector:@selector(openAppStoreMoment)];
+	if (screenBounds.size.height > 568) {
+		[self addAppLinkButtonToView:backgroundView title:@"AppBox" imageName:@"iPad_AppBox" position:IS_IPHONE ? 0.2 : 0.25 selector:@selector(openAppStoreAppBox)];
+		[self addAppLinkButtonToView:backgroundView title:@"Numpad" imageName:@"iPad_Numpad" position:0.5 selector:@selector(openAppStoreNumpad)];
+		[self addAppLinkButtonToView:backgroundView title:@"Moment" imageName:@"iPad_Moment" position:IS_IPHONE ? 0.8 : 0.75 selector:@selector(openAppStoreMoment)];
+	} else {
+		[self addAppLinkButtonToView:backgroundView title:@"AppBox" imageName:@"iPhone_AppBox" position:0.25 selector:@selector(openAppStoreAppBox)];
+		[self addAppLinkButtonToView:backgroundView title:@"Numpad" imageName:@"iPhone_Numpad" position:0.5 selector:@selector(openAppStoreNumpad)];
+		[self addAppLinkButtonToView:backgroundView title:@"Moment" imageName:@"iPhone_Moment" position:0.75 selector:@selector(openAppStoreMoment)];
+	}
 
 	return backgroundView;
 }
@@ -120,6 +126,8 @@
 }
 
 - (void)addAppLinkButtonToView:(UIView *)targetView title:(NSString *)title imageName:(NSString *)imageName position:(CGFloat)position selector:(SEL)selector {
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	
 	UILabel *appTitle = [UILabel new];
 	appTitle.textColor = [UIColor whiteColor];
 	appTitle.font = [UIFont systemFontOfSize:IS_IPHONE ? 11 : 13];
@@ -129,7 +137,7 @@
 
 	[appTitle makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(targetView.right).with.multipliedBy(position);
-		make.bottom.equalTo(targetView.bottom).with.offset(-15);
+		make.bottom.equalTo(targetView.bottom).with.offset(screenBounds.size.height == 480 ? -5 : -15);
 	}];
 
 	UIButton *appButton = [UIButton buttonWithType:UIButtonTypeCustom];

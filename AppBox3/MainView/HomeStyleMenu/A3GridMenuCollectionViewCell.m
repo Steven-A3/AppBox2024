@@ -35,9 +35,10 @@
 
 - (void)setupSubviews {
 	if (!_roundedRectView) {
+		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 		_roundedRectView = [UIView new];
-		_roundedRectView.layer.cornerRadius = 15.0;
-		_roundedRectView.layer.borderWidth = 3.0;
+		_roundedRectView.layer.cornerRadius = screenBounds.size.height == 480 ? 10.0 : 15.0;
+		_roundedRectView.layer.borderWidth = screenBounds.size.height == 480 ? 2.3 : 3.0;
 		[self addSubview:_roundedRectView];
 
 		[_roundedRectView makeConstraints:^(MASConstraintMaker *make) {
@@ -57,7 +58,14 @@
 
 		_titleLabel = [UILabel new];
 		_titleLabel.textColor = [UIColor whiteColor];
-		_titleLabel.font = [UIFont systemFontOfSize:13];
+		
+		CGFloat fontSize;
+		if (screenBounds.size.height > 568) {
+			fontSize = 13;
+		} else {
+			fontSize = 11;
+		}
+		_titleLabel.font = [UIFont systemFontOfSize:fontSize];
 		_titleLabel.textAlignment = NSTextAlignmentCenter;
 		_titleLabel.text = @"Unassigned";
 		[self addSubview:_titleLabel];
