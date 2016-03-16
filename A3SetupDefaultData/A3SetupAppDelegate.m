@@ -9,9 +9,7 @@
 #import "A3SetupAppDelegate.h"
 #import "A3YahooCurrency.h"
 #import "NSFileManager+A3Addition.h"
-#import "CurrencyRateItem.h"
 #import "Reachability.h"
-#import "A3CacheStoreManager.h"
 
 @implementation A3SetupAppDelegate
 
@@ -129,22 +127,6 @@
 	[validLocales sortUsingComparator:comparator];
 
 	NSDate *updated = nil;
-	for (id obj in yahooArray) {
-		A3YahooCurrency *yahooCurrency = [[A3YahooCurrency alloc] initWithObject:obj];
-		CurrencyRateItem *entity = [CurrencyRateItem MR_createEntity];
-		entity.currencyCode = yahooCurrency.currencyCode;
-		entity.flagImageName = [self countryNameForCurrencyCode:entity.currencyCode];
-		entity.rateToUSD = yahooCurrency.rateToUSD;
-		entity.updateDate = yahooCurrency.updated;
-		updated = [yahooCurrency.updated laterDate:updated];
-		NSUInteger idx = [validLocales indexOfObject:@{NSLocaleCurrencyCode:yahooCurrency.currencyCode}
-										 inSortedRange:NSMakeRange(0, [validLocales count])
-											   options:NSBinarySearchingFirstEqual
-									   usingComparator:comparator];
-		if (idx != NSNotFound) {
-			entity.currencySymbol = validLocales[idx][NSLocaleCurrencySymbol];
-		}
-	}
 
 	NSArray *exceptionList = @[
 			@{NSLocaleCurrencyCode : @"ALL", NSLocaleCurrencySymbol : @"Lek"},
@@ -179,20 +161,6 @@
 			@{NSLocaleCurrencyCode : @"KPW", NSLocaleCurrencySymbol : @"₩"},
 			@{NSLocaleCurrencyCode : @"XPF", NSLocaleCurrencySymbol : @"F"},
 	];
-
-	[exceptionList enumerateObjectsUsingBlock:^(NSDictionary *object, NSUInteger idx, BOOL *stop) {
-		NSArray *fetched = [CurrencyRateItem MR_findByAttribute:@"currencyCode" withValue:object[NSLocaleCurrencyCode]];
-		if ([fetched count]) {
-			CurrencyRateItem *item = fetched[0];
-			item.currencySymbol = object[NSLocaleCurrencySymbol];
-		}
-	}];
-
-	NSArray *results = [CurrencyRateItem MR_findAll];
-	for (CurrencyRateItem *entity in results) {
-		NSLog(@"Code: %@, Country name %@, symbol = %@, rate = %.4f", entity.currencyCode, entity.flagImageName, entity.currencySymbol, [entity.rateToUSD floatValue]);
-	}
-	NSLog(@"Number of currencies :%ld", (long)[CurrencyRateItem MR_countOfEntities]);
 }
 
 - (NSString *)countryNameForCurrencyCode:(NSString *)code {

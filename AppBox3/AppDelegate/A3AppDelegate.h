@@ -9,7 +9,6 @@
 #import "A3RootViewController_iPad.h"
 #import "MBProgressHUD.h"
 #import "A3PasscodeViewControllerProtocol.h"
-#import "A3CacheStoreManager.h"
 #import "A3DataMigrationManager.h"
 #import <GoogleMobileAds/GoogleMobileAds.h>
 #import "RMStoreAppReceiptVerificator.h"
@@ -132,7 +131,6 @@ extern NSString *const A3AppGroupNameNone;
 @property (strong, nonatomic) UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
 @property (strong, nonatomic) Reachability *reachability;
 @property (strong, nonatomic) NSCalendar *calendar;
-@property (strong, nonatomic) A3CacheStoreManager *cacheStoreManager;
 @property (strong, nonatomic) UIImageView *coverView;
 @property (assign, nonatomic) BOOL shouldMigrateV1Data;
 @property (strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;

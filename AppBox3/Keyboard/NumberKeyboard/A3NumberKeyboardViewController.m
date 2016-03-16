@@ -9,8 +9,8 @@
 #import "A3CalculatorViewController_iPad.h"
 #import "A3NumberKeyboardViewController_iPhone.h"
 #import "A3AppDelegate.h"
-#import "CurrencyRateItem.h"
 #import "UIViewController+NumberKeyboard.h"
+#import "A3CurrencyDataManager.h"
 
 @interface A3NumberKeyboardViewController ()
 
@@ -239,11 +239,9 @@
 
 - (void)setCurrencyCode:(NSString *)currencyCode {
 	_currencyCode = currencyCode;
-	NSManagedObjectContext *context = [A3AppDelegate instance].cacheStoreManager.context;
-	CurrencyRateItem *currencyInfo = [CurrencyRateItem MR_findFirstByAttribute:@"currencyCode" withValue:currencyCode inContext:context];
-	_currencySymbol = currencyInfo.currencySymbol;
-	FNLOG(@"%@, %@", _currencyCode, _currencySymbol);
-
+	A3CurrencyDataManager *currencyDataManager = [A3CurrencyDataManager new];
+	_currencySymbol = [currencyDataManager symbolForCode:currencyCode];
+	
 	[self setupLocale];
 }
 

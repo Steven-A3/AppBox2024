@@ -191,10 +191,6 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 	[self.reachability startNotifier];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
 
-	NSFileManager *fileManager = [NSFileManager new];
-	[fileManager setupCacheStoreFile];
-
-
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	[self setupMainMenuViewController];
 	self.window.backgroundColor = [UIColor whiteColor];
@@ -557,13 +553,6 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 	return _calendar;
 }
 
-- (A3CacheStoreManager *)cacheStoreManager {
-	if (!_cacheStoreManager) {
-		_cacheStoreManager = [A3CacheStoreManager new];
-	}
-	return _cacheStoreManager;
-}
-
 - (NSMetadataQuery *)metadataQuery {
 	if (!_metadataQuery) {
 		_metadataQuery = [[NSMetadataQuery alloc] init];
@@ -915,8 +904,6 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 }
 
 - (void)managedObjectContextDidSave:(NSNotification *)notification {
-	if (notification.object == self.cacheStoreManager.context) return;
-
     if (notification.object == [NSManagedObjectContext MR_defaultContext]) {
         NSManagedObjectContext *rootContext = [NSManagedObjectContext MR_rootSavingContext];
         [rootContext performBlockAndWait:^{

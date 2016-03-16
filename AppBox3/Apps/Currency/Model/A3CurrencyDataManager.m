@@ -21,10 +21,12 @@ NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRat
 NSString *const A3NotificationCurrencyRatesUpdateFailed = @"A3NotificationCurrencyRatesUpdateFailed";
 NSString *const A3CurrencyRatesDataFilename = @"currencyRates";
 NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
+NSString *const kA3CurrencyDataFlagName = @"flagName";
+NSString *const kA3CurrencyDataSymbol = @"symbol";
 
 @interface A3CurrencyDataManager ()
 
-@property (nonatomic, strong) NSArray *dataArray;
+@property (nonatomic, strong) NSDictionary *currencyInfoDictionary;
 
 @end
 
@@ -132,7 +134,7 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 
 					[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdated object:nil];
 
-					self.dataArray = nil;
+					_dataArray = nil;
 
 					if (success) {
 						success();
@@ -160,7 +162,7 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 	[operation start];
 }
 
-- (A3YahooCurrency *)dataForCurrencyCode:(NSString *)code {
+- (NSArray *)dataArray {
 	if (!_dataArray) {
 		NSString *path = [A3CurrencyRatesDataFilename pathInCachesDataDirectory];
 		if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
@@ -168,8 +170,12 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 		}
 		_dataArray = [NSArray arrayWithContentsOfFile:path];
 	}
+	return _dataArray;
+}
+
+- (A3YahooCurrency *)dataForCurrencyCode:(NSString *)code {
 	__block A3YahooCurrency *result = nil;
-	[_dataArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+	[self.dataArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 		A3YahooCurrency *currencyData = [[A3YahooCurrency alloc] initWithObject:obj];
 		if ([currencyData.currencyCode isEqualToString:code]) {
 			result = currencyData;
@@ -190,6 +196,28 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 
 	NSString *string = [formatter stringFromNumber:value];
 	return [string stringByTrimmingSpaceCharacters];
+}
+
+- (NSDictionary *)currencyInfoDictionary
+{
+	if (!_currencyInfoDictionary){
+		NSString *filePath = [[NSBundle mainBundle] pathForResource:@"CurrencyInfo" ofType:@"dictionary"];
+		_currencyInfoDictionary = [[NSDictionary alloc] initWithContentsOfFile:filePath];
+	}
+	return _currencyInfoDictionary;
+}
+
+- (NSString *)flagImageNameForCode:(NSString *)currencyCode {
+	return self.currencyInfoDictionary[currencyCode][kA3CurrencyDataFlagName];
+}
+
+- (NSString *)symbolForCode:(NSString *)currencyCode {
+	return self.currencyInfoDictionary[currencyCode][kA3CurrencyDataFlagName];
+}
+
+- (void)purgeRetainingObjects {
+	_dataArray = nil;
+	_currencyInfoDictionary = nil;
 }
 
 @end

@@ -14,8 +14,6 @@
 - (NSString *)documentDirectoryPath;
 - (NSString *)storePath;
 - (NSString *)storeName;
-- (void)setupCacheStoreFile;
-- (NSString *)cacheStorePath;
 
 - (NSString *)humanReadableFileSize:(unsigned long long)size;
 @end

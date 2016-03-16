@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@class CurrencyRateItem;
 @class A3YahooCurrency;
 
 extern NSString *const A3NotificationCurrencyRatesUpdated;
@@ -18,12 +17,15 @@ extern NSString *const A3CurrencyUpdateDate;
 
 @interface A3CurrencyDataManager : NSObject
 
+@property (nonatomic, strong) NSArray *dataArray;
+
 + (void)setupFavorites;
 - (void)updateCurrencyRatesOnSuccess:(void (^)())success failure:(void (^)())failure;
 - (A3YahooCurrency *)dataForCurrencyCode:(NSString *)code;
-
 - (NSString *)stringFromNumber:(NSNumber *)value withCurrencyCode:(NSString *)currencyCode isShare:(BOOL)isShare;
-
 - (NSString *)localizedNameForCode:(NSString *)currencyCode;
+- (NSString *)flagImageNameForCode:(NSString *)currencyCode;
+- (NSString *)symbolForCode:(NSString *)currencyCode;
+- (void)purgeRetainingObjects;
 
 @end

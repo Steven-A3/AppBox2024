@@ -25,7 +25,6 @@
 #import "NSString+conversion.h"
 #import "UIViewController+A3Addition.h"
 #import "A3CurrencyDataManager.h"
-#import "CurrencyRateItem.h"
 #import "NSDate+TimeAgo.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIColor+A3Addition.h"
@@ -696,7 +695,6 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	CurrencyFavorite *favorite = self.favorites[dataIndex];
 	NSString *currencyCode = favorite.uniqueID;
 	A3YahooCurrency *favoriteInfo = [_currencyDataManager dataForCurrencyCode:currencyCode];
-	CurrencyRateItem *favoriteMetaInfo = [[[A3AppDelegate instance] cacheStoreManager] currencyInfoWithCode:currencyCode];
 
 	[self.textFields setObject:dataCell.valueField forKey:currencyCode];
 
@@ -707,7 +705,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		dataCell.valueField.textColor = [[A3AppDelegate instance] themeColor];
 		[dataCell.valueField setEnabled:YES];
 		if (IS_IPHONE) {
-			dataCell.rateLabel.text = favoriteMetaInfo.currencySymbol;
+			dataCell.rateLabel.text = [_currencyDataManager symbolForCode:currencyCode];
 		} else {
 			dataCell.rateLabel.text = @"";
 		}
@@ -719,7 +717,6 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 				break;
 			}
 		}
-//		CurrencyRateItem *zeroInfo = [[[A3AppDelegate instance] cacheStoreManager] currencyInfoWithCode:favoriteZero];
 		A3YahooCurrency *zeroInfo = [_currencyDataManager dataForCurrencyCode:favoriteZero];
 
 		float rate = [favoriteInfo.rateToUSD floatValue] / [zeroInfo.rateToUSD floatValue];
@@ -727,9 +724,9 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		value = @(isnan(result) ? 0.0 : result);
 
 		if (IS_IPHONE) {
-			NSString *symbol;
-			if ([favoriteMetaInfo.currencySymbol length]) {
-				symbol = [NSString stringWithFormat:@"%@, ", favoriteMetaInfo.currencySymbol];
+			NSString *symbol = [_currencyDataManager symbolForCode:currencyCode];
+			if ([symbol length]) {
+				symbol = [NSString stringWithFormat:@"%@, ", symbol];
 			} else {
 				symbol = @"";
 			}
@@ -741,7 +738,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		[dataCell.valueField setEnabled:NO];
 	}
 	if ([[A3UserDefaults standardUserDefaults] currencyShowNationalFlag]) {
-		dataCell.flagImageView.image = [UIImage imageNamed:favoriteMetaInfo.flagImageName];
+		dataCell.flagImageView.image = [UIImage imageNamed:[_currencyDataManager flagImageNameForCode:currencyCode]];
 	} else {
 		dataCell.flagImageView.image = nil;
 	}

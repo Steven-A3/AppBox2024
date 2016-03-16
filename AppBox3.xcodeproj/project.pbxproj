@@ -142,7 +142,6 @@
 		681170971AC03D4C0079F4F9 /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A351839CD7F007C97EE /* AFURLRequestSerialization.m */; };
 		681170981AC03D4C0079F4F9 /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A371839CD7F007C97EE /* AFURLResponseSerialization.m */; };
 		681170991AC03D4C0079F4F9 /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A391839CD7F007C97EE /* AFURLSessionManager.m */; };
-		6811709F1AC041F60079F4F9 /* currencyRates in Resources */ = {isa = PBXBuildFile; fileRef = 6811709E1AC041F60079F4F9 /* currencyRates */; };
 		6811D3561C1317A200B3B114 /* Level.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6811D3551C1317A200B3B114 /* Level.xcassets */; };
 		68143CF718E3EC1F00569691 /* appbox.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68143CC518E3EC1F00569691 /* appbox.ttf */; };
 		68143CF818E3EC1F00569691 /* Digit.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68143CC618E3EC1F00569691 /* Digit.ttf */; };
@@ -223,7 +222,6 @@
 		6823F6FC1863294700E6E90D /* A3YahooCurrency.m in Sources */ = {isa = PBXBuildFile; fileRef = 6823F6F51863294700E6E90D /* A3YahooCurrency.m */; };
 		6823F6FE1863294700E6E90D /* CurrencyHistory+handler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6823F6F91863294700E6E90D /* CurrencyHistory+handler.m */; };
 		6823F702186329DC00E6E90D /* A3CurrencyDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6823F701186329DC00E6E90D /* A3CurrencyDataManager.m */; };
-		6823F70B186358A200E6E90D /* A3CacheStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6831EC151862055000BAF15B /* A3CacheStoreManager.m */; };
 		6823F70D186358CC00E6E90D /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 686FCF441775CD1300F19332 /* Reachability.m */; };
 		6823F70E186358F500E6E90D /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A281839CD7F007C97EE /* AFHTTPRequestOperation.m */; };
 		6823F70F186358F500E6E90D /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A2A1839CD7F007C97EE /* AFHTTPRequestOperationManager.m */; };
@@ -341,11 +339,7 @@
 		6831DF0B16C3D30100EABB2A /* A3ActionMenuBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6831DF0A16C3D30100EABB2A /* A3ActionMenuBackgroundView.m */; };
 		6831EBF518617CCF00BAF15B /* NSFileManager+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 682968841850401200B70E13 /* NSFileManager+A3Addition.m */; };
 		6831EBFB18619CC800BAF15B /* AppBox3.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6831EBF618619CC800BAF15B /* AppBox3.xcdatamodeld */; };
-		6831EBFC18619CC800BAF15B /* AppBoxCacheStore.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 6831EBF818619CC800BAF15B /* AppBoxCacheStore.sqlite */; };
-		6831EBFD18619CC800BAF15B /* AppBoxCacheStore.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 6831EBF918619CC800BAF15B /* AppBoxCacheStore.sqlite-shm */; };
-		6831EBFE18619CC800BAF15B /* AppBoxCacheStore.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 6831EBFA18619CC800BAF15B /* AppBoxCacheStore.sqlite-wal */; };
 		6831EC131861EB7C00BAF15B /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 6831EC121861EB7C00BAF15B /* MBProgressHUD.m */; };
-		6831EC161862055000BAF15B /* A3CacheStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6831EC151862055000BAF15B /* A3CacheStoreManager.m */; };
 		683224BD17CE1B7800973F34 /* A3HolidaysCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 683224BC17CE1B7800973F34 /* A3HolidaysCell.m */; };
 		6832ADE216A8D38500BEEEE6 /* A3CurrencySelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6832ADE116A8D38500BEEEE6 /* A3CurrencySelectViewController.m */; };
 		6835659418FA663100C3494C /* A3WalletMoreTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6835659318FA663100C3494C /* A3WalletMoreTableViewController.m */; };
@@ -433,7 +427,6 @@
 		6874847819780DCE00EA8F74 /* UnitPriceHistory+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874847719780DCE00EA8F74 /* UnitPriceHistory+extension.m */; };
 		6874847B19780EFC00EA8F74 /* UnitPriceInfo+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874847A19780EFC00EA8F74 /* UnitPriceInfo+extension.m */; };
 		687484901978256A00EA8F74 /* UnitHistory+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874848F1978256A00EA8F74 /* UnitHistory+extension.m */; };
-		6874849319783B7800EA8F74 /* CurrencyRateItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874849219783B7800EA8F74 /* CurrencyRateItem.m */; };
 		6874849919783B7900EA8F74 /* CurrencyHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874849819783B7900EA8F74 /* CurrencyHistory.m */; };
 		6874849C19783B7900EA8F74 /* CurrencyHistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874849B19783B7900EA8F74 /* CurrencyHistoryItem.m */; };
 		687484A519783B9D00EA8F74 /* DaysCounterEventLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484A419783B9D00EA8F74 /* DaysCounterEventLocation.m */; };
@@ -448,7 +441,6 @@
 		687484DE19783C3000EA8F74 /* TipCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484DD19783C3000EA8F74 /* TipCalcHistory.m */; };
 		687484DF197842BE00EA8F74 /* CurrencyHistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874849B19783B7900EA8F74 /* CurrencyHistoryItem.m */; };
 		687484E0197842BE00EA8F74 /* CurrencyHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874849819783B7900EA8F74 /* CurrencyHistory.m */; };
-		687484E2197842BE00EA8F74 /* CurrencyRateItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874849219783B7800EA8F74 /* CurrencyRateItem.m */; };
 		6874892F1854430C008972CC /* NationalFlags.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6874892E1854430C008972CC /* NationalFlags.xcassets */; };
 		687489301854477F008972CC /* NationalFlags.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6874892E1854430C008972CC /* NationalFlags.xcassets */; };
 		6876D6FB17A75DAE00E16991 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 687C193B1783DF0F00415FCE /* XCTest.framework */; };
@@ -696,7 +688,6 @@
 		68B9DE701C17E1DF002E0D34 /* A3CurrencyPickerStyleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9DE6F1C17E1DF002E0D34 /* A3CurrencyPickerStyleViewController.m */; };
 		68C1ABFA18B1C05200021001 /* NSDateFormatter+LunarDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C1ABF918B1C05200021001 /* NSDateFormatter+LunarDate.m */; };
 		68C7E1081BE20C1C00861AFD /* A3CurrencyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C7E1071BE20C1C00861AFD /* A3CurrencyViewController.m */; };
-		68C7E10E1BE2178C00861AFD /* CurrencyPickerStyle_OLD.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68C7E10D1BE2178C00861AFD /* CurrencyPickerStyle_OLD.storyboard */; };
 		68C802D819571A0200BC19EE /* WalletCategoryPreset.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68C802D719571A0200BC19EE /* WalletCategoryPreset.plist */; };
 		68C802DB19571A2000BC19EE /* WalletPreset.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68C802DD19571A2000BC19EE /* WalletPreset.strings */; };
 		68C9E3FE1882EF1B007E4697 /* A3AppDelegate+mainMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C9E3FD1882EF1B007E4697 /* A3AppDelegate+mainMenu.m */; };
@@ -734,8 +725,6 @@
 		68E213BE1986615B00A82BBA /* UnitHistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E213BD1986615B00A82BBA /* UnitHistoryItem.m */; };
 		68E2777E19D177DB000EC931 /* MWPhotoBrowser+rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2777D19D177DB000EC931 /* MWPhotoBrowser+rotation.m */; };
 		68E2778519D180FE000EC931 /* A3ClockAutoDimViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2778419D180FE000EC931 /* A3ClockAutoDimViewController.m */; };
-		68E27C831987AD3C00CA873D /* Currency.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 68E27C811987AD3C00CA873D /* Currency.xcdatamodeld */; };
-		68E27C841987AF8B00CA873D /* Currency.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 68E27C811987AD3C00CA873D /* Currency.xcdatamodeld */; };
 		68E2A5DB18D0AC5200E834D9 /* A3DateMainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A5D818D0AC5200E834D9 /* A3DateMainTableViewController.m */; };
 		68E2A64618D0B1FC00E834D9 /* A3ExpenseListAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A60418D0B1FC00E834D9 /* A3ExpenseListAccessoryView.m */; };
 		68E2A64718D0B1FC00E834D9 /* A3ExpenseListAddBudgetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A60618D0B1FC00E834D9 /* A3ExpenseListAddBudgetViewController.m */; };
@@ -935,6 +924,8 @@
 		68F967BF1818D74300D64A0A /* NSArray+validation.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F967BE1818D74300D64A0A /* NSArray+validation.m */; };
 		68FB683F1C8FC1170074ACF8 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68FB683E1C8FC1170074ACF8 /* GoogleMobileAds.framework */; };
 		68FB684A1C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FB68491C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.m */; };
+		68FB8E9E1C990922008CAB7A /* CurrencyInfo.dictionary in Resources */ = {isa = PBXBuildFile; fileRef = 68FB8E9C1C990922008CAB7A /* CurrencyInfo.dictionary */; };
+		68FB8E9F1C990922008CAB7A /* currencyRates in Resources */ = {isa = PBXBuildFile; fileRef = 68FB8E9D1C990922008CAB7A /* currencyRates */; };
 		68FC3AF01C19336000EC9348 /* A3CurrencyPickerStyle.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68FC3AF21C19336000EC9348 /* A3CurrencyPickerStyle.storyboard */; };
 		8079DFBC190F93B90084BD89 /* A3DateLunarTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8079DFBB190F93B90084BD89 /* A3DateLunarTest.m */; };
 		808DA9EB196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 808DA9EA196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.m */; };
@@ -1230,7 +1221,6 @@
 		680FF7111980B88D00C736F5 /* A3SyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SyncManager.h; path = AppDelegate/A3SyncManager.h; sourceTree = "<group>"; };
 		680FF7121980B88D00C736F5 /* A3SyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SyncManager.m; path = AppDelegate/A3SyncManager.m; sourceTree = "<group>"; };
 		6810C64519D9246F00BE75A9 /* Flashlight.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Flashlight.xcassets; path = "AppBox3/Asset Catalogs/Flashlight.xcassets"; sourceTree = "<group>"; };
-		6811709E1AC041F60079F4F9 /* currencyRates */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = currencyRates; path = "AppBox3/Data Management/currencyRates"; sourceTree = "<group>"; };
 		6811D3551C1317A200B3B114 /* Level.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Level.xcassets; path = "AppBox3/Asset Catalogs/Level.xcassets"; sourceTree = "<group>"; };
 		681361331A6CADC000E13F51 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3CurrencyChartViewController.strings; sourceTree = "<group>"; };
 		681361341A6CADC000E13F51 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3CurrencySettings.strings; sourceTree = "<group>"; };
@@ -1541,13 +1531,8 @@
 		6831DF0916C3D30100EABB2A /* A3ActionMenuBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ActionMenuBackgroundView.h; sourceTree = "<group>"; };
 		6831DF0A16C3D30100EABB2A /* A3ActionMenuBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ActionMenuBackgroundView.m; sourceTree = "<group>"; };
 		6831EBF718619CC800BAF15B /* AppBox3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AppBox3.xcdatamodel; sourceTree = "<group>"; };
-		6831EBF818619CC800BAF15B /* AppBoxCacheStore.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = AppBoxCacheStore.sqlite; sourceTree = "<group>"; };
-		6831EBF918619CC800BAF15B /* AppBoxCacheStore.sqlite-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AppBoxCacheStore.sqlite-shm"; sourceTree = "<group>"; };
-		6831EBFA18619CC800BAF15B /* AppBoxCacheStore.sqlite-wal */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AppBoxCacheStore.sqlite-wal"; sourceTree = "<group>"; };
 		6831EC111861EB7C00BAF15B /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = External/MBProgressHUD/MBProgressHUD.h; sourceTree = "<group>"; };
 		6831EC121861EB7C00BAF15B /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = External/MBProgressHUD/MBProgressHUD.m; sourceTree = "<group>"; };
-		6831EC141862055000BAF15B /* A3CacheStoreManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CacheStoreManager.h; sourceTree = "<group>"; };
-		6831EC151862055000BAF15B /* A3CacheStoreManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CacheStoreManager.m; sourceTree = "<group>"; };
 		683224BB17CE1B7800973F34 /* A3HolidaysCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3HolidaysCell.h; path = Holidays/A3HolidaysCell.h; sourceTree = "<group>"; };
 		683224BC17CE1B7800973F34 /* A3HolidaysCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3HolidaysCell.m; path = Holidays/A3HolidaysCell.m; sourceTree = "<group>"; };
 		6832ADE016A8D38500BEEEE6 /* A3CurrencySelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencySelectViewController.h; path = Apps/Currency/A3CurrencySelectViewController.h; sourceTree = "<group>"; };
@@ -1706,8 +1691,6 @@
 		6874847A19780EFC00EA8F74 /* UnitPriceInfo+extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UnitPriceInfo+extension.m"; sourceTree = "<group>"; };
 		6874848E1978256A00EA8F74 /* UnitHistory+extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UnitHistory+extension.h"; sourceTree = "<group>"; };
 		6874848F1978256A00EA8F74 /* UnitHistory+extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UnitHistory+extension.m"; sourceTree = "<group>"; };
-		6874849119783B7800EA8F74 /* CurrencyRateItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CurrencyRateItem.h; path = Apps/Currency/Model/CurrencyRateItem.h; sourceTree = "<group>"; };
-		6874849219783B7800EA8F74 /* CurrencyRateItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CurrencyRateItem.m; path = Apps/Currency/Model/CurrencyRateItem.m; sourceTree = "<group>"; };
 		6874849719783B7900EA8F74 /* CurrencyHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CurrencyHistory.h; path = Apps/Currency/Model/CurrencyHistory.h; sourceTree = "<group>"; };
 		6874849819783B7900EA8F74 /* CurrencyHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CurrencyHistory.m; path = Apps/Currency/Model/CurrencyHistory.m; sourceTree = "<group>"; };
 		6874849A19783B7900EA8F74 /* CurrencyHistoryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CurrencyHistoryItem.h; path = Apps/Currency/Model/CurrencyHistoryItem.h; sourceTree = "<group>"; };
@@ -2234,9 +2217,6 @@
 		68C1ABF918B1C05200021001 /* NSDateFormatter+LunarDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+LunarDate.m"; sourceTree = "<group>"; };
 		68C7E1061BE20C1C00861AFD /* A3CurrencyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyViewController.h; path = Apps/Currency/A3CurrencyViewController.h; sourceTree = "<group>"; };
 		68C7E1071BE20C1C00861AFD /* A3CurrencyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyViewController.m; path = Apps/Currency/A3CurrencyViewController.m; sourceTree = "<group>"; };
-		68C7E10D1BE2178C00861AFD /* CurrencyPickerStyle_OLD.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = CurrencyPickerStyle_OLD.storyboard; path = Apps/Currency/CurrencyPickerStyle_OLD.storyboard; sourceTree = "<group>"; };
-		68C7E10F1BE217AF00861AFD /* A3CurrencyPickerStyleViewController_OLD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyPickerStyleViewController_OLD.h; path = Apps/Currency/A3CurrencyPickerStyleViewController_OLD.h; sourceTree = "<group>"; };
-		68C7E1101BE217AF00861AFD /* A3CurrencyPickerStyleViewController_OLD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyPickerStyleViewController_OLD.m; path = Apps/Currency/A3CurrencyPickerStyleViewController_OLD.m; sourceTree = "<group>"; };
 		68C802D719571A0200BC19EE /* WalletCategoryPreset.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WalletCategoryPreset.plist; sourceTree = "<group>"; };
 		68C802DC19571A2000BC19EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/WalletPreset.strings; sourceTree = "<group>"; };
 		68C802DF19571A2C00BC19EE /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/WalletPreset.strings; sourceTree = "<group>"; };
@@ -2318,7 +2298,6 @@
 		68E2777D19D177DB000EC931 /* MWPhotoBrowser+rotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MWPhotoBrowser+rotation.m"; sourceTree = "<group>"; };
 		68E2778319D180FE000EC931 /* A3ClockAutoDimViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ClockAutoDimViewController.h; sourceTree = "<group>"; };
 		68E2778419D180FE000EC931 /* A3ClockAutoDimViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ClockAutoDimViewController.m; sourceTree = "<group>"; };
-		68E27C821987AD3C00CA873D /* Currency.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Currency.xcdatamodel; sourceTree = "<group>"; };
 		68E2A5D718D0AC5200E834D9 /* A3DateMainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateMainTableViewController.h; sourceTree = "<group>"; };
 		68E2A5D818D0AC5200E834D9 /* A3DateMainTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = A3DateMainTableViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		68E2A60218D0B1FC00E834D9 /* A3CommonColorDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CommonColorDefine.h; sourceTree = "<group>"; };
@@ -2788,6 +2767,8 @@
 		68FB683E1C8FC1170074ACF8 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = "External/GoogleMobileAdsSdkiOS-7.7.0/GoogleMobileAds.framework"; sourceTree = "<group>"; };
 		68FB68481C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsHomeStyleSelectTableViewCell.h; path = Settings/A3SettingsHomeStyleSelectTableViewCell.h; sourceTree = "<group>"; };
 		68FB68491C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsHomeStyleSelectTableViewCell.m; path = Settings/A3SettingsHomeStyleSelectTableViewCell.m; sourceTree = "<group>"; };
+		68FB8E9C1C990922008CAB7A /* CurrencyInfo.dictionary */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = CurrencyInfo.dictionary; path = Apps/Currency/Model/CurrencyInfo.dictionary; sourceTree = "<group>"; };
+		68FB8E9D1C990922008CAB7A /* currencyRates */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = currencyRates; path = Apps/Currency/Model/currencyRates; sourceTree = "<group>"; };
 		68FC3AF11C19336000EC9348 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/A3CurrencyPickerStyle.storyboard; sourceTree = "<group>"; };
 		68FC3AF81C19337000EC9348 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/A3CurrencyPickerStyle.strings; sourceTree = "<group>"; };
 		68FC3AFA1C19337300EC9348 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/A3CurrencyPickerStyle.strings"; sourceTree = "<group>"; };
@@ -3459,14 +3440,14 @@
 		6823F6F21863288D00E6E90D /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				68FB8E9C1C990922008CAB7A /* CurrencyInfo.dictionary */,
+				68FB8E9D1C990922008CAB7A /* currencyRates */,
 				68B62EBD199E532B006384E1 /* CurrencyFavorite.h */,
 				68B62EBE199E532B006384E1 /* CurrencyFavorite.m */,
 				6874849A19783B7900EA8F74 /* CurrencyHistoryItem.h */,
 				6874849B19783B7900EA8F74 /* CurrencyHistoryItem.m */,
 				6874849719783B7900EA8F74 /* CurrencyHistory.h */,
 				6874849819783B7900EA8F74 /* CurrencyHistory.m */,
-				6874849119783B7800EA8F74 /* CurrencyRateItem.h */,
-				6874849219783B7800EA8F74 /* CurrencyRateItem.m */,
 				6823F700186329DC00E6E90D /* A3CurrencyDataManager.h */,
 				6823F701186329DC00E6E90D /* A3CurrencyDataManager.m */,
 				6823F6F41863294700E6E90D /* A3YahooCurrency.h */,
@@ -3848,7 +3829,6 @@
 				68E878F21C32B13E00935E62 /* unit.strings */,
 				68E878F41C32B13E00935E62 /* unitShort.strings */,
 				684E1BE41AC1406E00925771 /* openSourceLicenses.txt */,
-				6811709E1AC041F60079F4F9 /* currencyRates */,
 				68143CC418E3EC1F00569691 /* Fonts */,
 				6864D5FE17BBBA6300A215D7 /* AppIcons.xcassets */,
 				68476948177D309800EBE7CF /* WeatherIcons.xcassets */,
@@ -3946,12 +3926,6 @@
 			children = (
 				681E11FA1932E1F50077DCFA /* MigrationV1V3 */,
 				6831EBF618619CC800BAF15B /* AppBox3.xcdatamodeld */,
-				6831EBF818619CC800BAF15B /* AppBoxCacheStore.sqlite */,
-				6831EBF918619CC800BAF15B /* AppBoxCacheStore.sqlite-shm */,
-				6831EBFA18619CC800BAF15B /* AppBoxCacheStore.sqlite-wal */,
-				6831EC141862055000BAF15B /* A3CacheStoreManager.h */,
-				6831EC151862055000BAF15B /* A3CacheStoreManager.m */,
-				68E27C811987AD3C00CA873D /* Currency.xcdatamodeld */,
 			);
 			path = "Data Management";
 			sourceTree = "<group>";
@@ -4401,8 +4375,6 @@
 				68E6F37717B2A1DE00F10ED9 /* A3CurrencyHistoryViewController.h */,
 				68E6F37817B2A1DE00F10ED9 /* A3CurrencyHistoryViewController.m */,
 				68FC3AF21C19336000EC9348 /* A3CurrencyPickerStyle.storyboard */,
-				68C7E10F1BE217AF00861AFD /* A3CurrencyPickerStyleViewController_OLD.h */,
-				68C7E1101BE217AF00861AFD /* A3CurrencyPickerStyleViewController_OLD.m */,
 				68B9DE6E1C17E1DF002E0D34 /* A3CurrencyPickerStyleViewController.h */,
 				68B9DE6F1C17E1DF002E0D34 /* A3CurrencyPickerStyleViewController.m */,
 				6832ADE016A8D38500BEEEE6 /* A3CurrencySelectViewController.h */,
@@ -4426,7 +4398,6 @@
 				68C7E1071BE20C1C00861AFD /* A3CurrencyViewController.m */,
 				17D422F078FF20AC13BDAE74 /* A3SearchViewController.h */,
 				17D4263A1F905EB73EA573B2 /* A3SearchViewController.m */,
-				68C7E10D1BE2178C00861AFD /* CurrencyPickerStyle_OLD.storyboard */,
 				6823F6F21863288D00E6E90D /* Model */,
 			);
 			name = Currency;
@@ -5845,11 +5816,9 @@
 				68315CF6195696560095CF7A /* A3DaysCounterCalendarListMainViewController.xib in Resources */,
 				68F1C8C018D7F37D009FAE8A /* A3LadyCalendarAddAccountCell.xib in Resources */,
 				68B6A33518CEC76D004084EF /* A3WalletListTextCell.xib in Resources */,
-				6831EBFC18619CC800BAF15B /* AppBoxCacheStore.sqlite in Resources */,
 				68F150FB194C27B900159EAD /* LoanCalculatorPhoneStoryBoard.storyboard in Resources */,
 				684E1BE51AC1406E00925771 /* openSourceLicenses.txt in Resources */,
 				68F14FEC19485E8500159EAD /* A3DaysCounterHeaderFooterView.xib in Resources */,
-				68C7E10E1BE2178C00861AFD /* CurrencyPickerStyle_OLD.storyboard in Resources */,
 				684D92EF18BC1FBC005016F7 /* A3DateCalcAddSubCell1.xib in Resources */,
 				6825367418A7B89F00EAFB84 /* LunarConverterCell.xib in Resources */,
 				68FC3AF01C19336000EC9348 /* A3CurrencyPickerStyle.storyboard in Resources */,
@@ -5872,11 +5841,12 @@
 				68F14FF119485E8500159EAD /* A3DaysCounterSetupAlertViewController.xib in Resources */,
 				68143D0418E3EC1F00569691 /* A3NumberKeyboardSimpleVC_iPhone.xib in Resources */,
 				68143D7E18E51ABB00569691 /* A3NumberKeyboardSimplePrevNextClearVC_iPhone.xib in Resources */,
+				68FB8E9F1C990922008CAB7A /* currencyRates in Resources */,
 				682B37C318AB365D00C6BD66 /* Calculator.xcassets in Resources */,
 				682B37C518AB369500C6BD66 /* Unit.xcassets in Resources */,
 				68B6A46818CEE781004084EF /* MWPhotoBrowser.bundle in Resources */,
-				6831EBFD18619CC800BAF15B /* AppBoxCacheStore.sqlite-shm in Resources */,
 				68459BB21C4CE1B1000A2092 /* Launch Screen~iphone.storyboard in Resources */,
+				68FB8E9E1C990922008CAB7A /* CurrencyInfo.dictionary in Resources */,
 				6810C64619D9246F00BE75A9 /* Flashlight.xcassets in Resources */,
 				68F1C8CC18D7F37D009FAE8A /* A3LadyCalendarListViewController.xib in Resources */,
 				68F14FE919485E8500159EAD /* A3DaysCounterEventListNameCell.xib in Resources */,
@@ -5921,7 +5891,6 @@
 				68E878FB1C32B13E00935E62 /* unit.strings in Resources */,
 				68F1500E19485E8500159EAD /* A3DaysCounterLocationPopupViewController.xib in Resources */,
 				68F14FD819485E8500159EAD /* A3DaysCounterAddEventEventInfoCell_iPad.xib in Resources */,
-				6831EBFE18619CC800BAF15B /* AppBoxCacheStore.sqlite-wal in Resources */,
 				68F1C8C718D7F37D009FAE8A /* A3LadyCalendarChartViewController.xib in Resources */,
 				680D639218CFF9D400938AD0 /* A3CalculatorButtonsInScientificViewController_iPad.xib in Resources */,
 				68B6A2ED18CEC76D004084EF /* A3UnitPriceHistoryCell.xib in Resources */,
@@ -5962,7 +5931,6 @@
 				68F14FFB19485E8500159EAD /* A3DaysCounterSetupEndRepeatViewController.xib in Resources */,
 				68F14FCB19485E8500159EAD /* A3DaysCounterEventListViewController.xib in Resources */,
 				68F14FD419485E8500159EAD /* A3DaysCounterAddEventDateCell.xib in Resources */,
-				6811709F1AC041F60079F4F9 /* currencyRates in Resources */,
 				6886791C18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib in Resources */,
 				68F1C8C518D7F37D009FAE8A /* A3LadyCalendarChartCell.xib in Resources */,
 				6825367118A7B89F00EAFB84 /* A3LunarConverterViewController.xib in Resources */,
@@ -6008,7 +5976,6 @@
 				682FDF271981CC0400C6C83D /* NSPersistentStore+MagicalRecord.m in Sources */,
 				6823F70E186358F500E6E90D /* AFHTTPRequestOperation.m in Sources */,
 				682FDF4419820F5900C6C83D /* DaysCounterEvent.m in Sources */,
-				687484E2197842BE00EA8F74 /* CurrencyRateItem.m in Sources */,
 				687484E0197842BE00EA8F74 /* CurrencyHistory.m in Sources */,
 				682FDF371981CC0400C6C83D /* MagicalRecord.m in Sources */,
 				682FDF351981CC0400C6C83D /* MagicalRecord+ShorthandSupport.m in Sources */,
@@ -6019,14 +5986,12 @@
 				682FDF171981CC0400C6C83D /* NSManagedObject+MagicalFinders.m in Sources */,
 				6823F716186358F500E6E90D /* AFURLSessionManager.m in Sources */,
 				682FDF131981CC0400C6C83D /* NSManagedObject+MagicalAggregation.m in Sources */,
-				68E27C841987AF8B00CA873D /* Currency.xcdatamodeld in Sources */,
 				687484DF197842BE00EA8F74 /* CurrencyHistoryItem.m in Sources */,
 				682FDF151981CC0400C6C83D /* NSManagedObject+MagicalDataImport.m in Sources */,
 				6823F714186358F500E6E90D /* AFURLRequestSerialization.m in Sources */,
 				6823F70F186358F500E6E90D /* AFHTTPRequestOperationManager.m in Sources */,
 				682FDF231981CC0400C6C83D /* NSManagedObjectContext+MagicalThreading.m in Sources */,
 				682FDF1F1981CC0400C6C83D /* NSManagedObjectContext+MagicalRecord.m in Sources */,
-				6823F70B186358A200E6E90D /* A3CacheStoreManager.m in Sources */,
 				6831EBF518617CCF00BAF15B /* NSFileManager+A3Addition.m in Sources */,
 				682FDF091981CC0400C6C83D /* NSEntityDescription+MagicalDataImport.m in Sources */,
 				682FDF071981CC0400C6C83D /* NSAttributeDescription+MagicalDataImport.m in Sources */,
@@ -6090,7 +6055,6 @@
 				68B6A46318CEE781004084EF /* UIButton+WebCache.m in Sources */,
 				684D92BD18BC1EFE005016F7 /* A3BatteryStatusListPageSectionView.m in Sources */,
 				68B6A33318CEC76D004084EF /* A3WalletListPhotoCell.m in Sources */,
-				6831EC161862055000BAF15B /* A3CacheStoreManager.m in Sources */,
 				680886DE1891751B0093FD97 /* A3ClockWaveCircleMiddleView.m in Sources */,
 				680886D31891751B0093FD97 /* A3ChooseColorView.m in Sources */,
 				3E21D15518FB1BF100B88D62 /* FrameRateCalculator.m in Sources */,
@@ -6120,7 +6084,6 @@
 				68B6A2EC18CEC76D004084EF /* A3UnitPriceHistoryCell.m in Sources */,
 				68E6F37517B2A09C00F10ED9 /* A3CurrencyHistory3RowCell.m in Sources */,
 				6829A01D1C89882F0006DB96 /* A3HomeStyleMenuViewController.m in Sources */,
-				6874849319783B7800EA8F74 /* CurrencyRateItem.m in Sources */,
 				68E2A66218D0B1FC00E834D9 /* A3PercentCalcMainViewController.m in Sources */,
 				68B6A2CD18CEC76D004084EF /* A3UnitConverterAddViewController.m in Sources */,
 				68E2A65918D0B1FC00E834D9 /* A3OverlappedCircleView.m in Sources */,
@@ -6393,7 +6356,6 @@
 				68E2A66118D0B1FC00E834D9 /* A3PercentCalcHistoryViewController.m in Sources */,
 				684D92BC18BC1EFE005016F7 /* A3BatterStatusChooseColorViewController.m in Sources */,
 				68B6A44C18CEE781004084EF /* PSTCollectionViewCell.m in Sources */,
-				68E27C831987AD3C00CA873D /* Currency.xcdatamodeld in Sources */,
 				680886E41891751B0093FD97 /* SBGradientOverlayLayer.m in Sources */,
 				682FDF061981CC0400C6C83D /* NSAttributeDescription+MagicalDataImport.m in Sources */,
 				68143CFA18E3EC1F00569691 /* A3DateKeyboardViewController.m in Sources */,
@@ -7558,16 +7520,6 @@
 			);
 			currentVersion = 6831EBF718619CC800BAF15B /* AppBox3.xcdatamodel */;
 			path = AppBox3.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-		68E27C811987AD3C00CA873D /* Currency.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				68E27C821987AD3C00CA873D /* Currency.xcdatamodel */,
-			);
-			currentVersion = 68E27C821987AD3C00CA873D /* Currency.xcdatamodel */;
-			path = Currency.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

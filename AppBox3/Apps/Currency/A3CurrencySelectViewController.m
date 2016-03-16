@@ -8,13 +8,12 @@
 
 #import "A3CurrencySelectViewController.h"
 #import "UIViewController+NumberKeyboard.h"
-#import "A3CacheStoreManager.h"
-#import "CurrencyRateItem.h"
 #import "A3CurrencyDataManager.h"
 #import "UIViewController+A3Addition.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "CurrencyFavorite.h"
+#import "A3YahooCurrency.h"
 
 NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCodeSelected";
 
@@ -95,8 +94,8 @@ NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCod
 	if (!allData) {
 		allData = [NSMutableArray new];
 		A3CurrencyDataManager *currencyDataManager = [A3CurrencyDataManager new];
-		NSArray *allCurrencies = [CurrencyRateItem MR_findAllInContext:[A3AppDelegate instance].cacheStoreManager.context];
-		for (CurrencyRateItem *item in allCurrencies) {
+		for (id obj in currencyDataManager.dataArray) {
+			A3YahooCurrency *item = [[A3YahooCurrency alloc] initWithObject:obj];
 			A3SearchTargetItem *searchTargetItem = [A3SearchTargetItem new];
 			searchTargetItem.code = item.currencyCode;
 			searchTargetItem.name = [currencyDataManager localizedNameForCode:item.currencyCode];
