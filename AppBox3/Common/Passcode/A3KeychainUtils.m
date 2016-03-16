@@ -60,9 +60,9 @@ static NSString *kA3KeychainAccountName = @"A3AppBox3Passcode";
 
 + (NSString *)getPassword {
 #warning If you want test passcode on the device, uncomment following 3 lines.
-#ifdef DEBUG
-	return @"p";
-#endif
+//#ifdef DEBUG
+//	return @"p";
+//#endif
 	NSMutableDictionary *query = [[self query] mutableCopy];
 	[query setObject:@YES forKey:(__bridge_transfer NSString *)kSecReturnData];
 	

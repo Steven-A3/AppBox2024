@@ -31,23 +31,24 @@ class AppBox3UITests: XCTestCase {
     func testExample() {
         // Use recording to get started writing UI tests.
 		
-		let app = XCUIApplication()
-		let button = app.buttons["Close Advertisement"]
-		if button.exists {
-			button.tap()
-		}
-		
-		app.navigationBars.matchingPredicate(NSPredicate(format: "NOT (title BEGINSWITH 'AppBox')")).buttons["Apps"].tap()
-		
-		let table = app.tables.matchingIdentifier("MainMenuTable")
-		let currencyCell = table.cells.matchingPredicate(NSPredicate(format: "title BEGINSWITH 'Currency'"))
-		let firstCurrencyCell = currencyCell.elementBoundByIndex(0)
+//		let app = XCUIApplication()
+//		let button = app.buttons["Close Advertisement"]
+//		if button.exists {
+//			button.tap()
+//		}
+//		
+//		app.navigationBars.matchingPredicate(NSPredicate(format: "NOT (title BEGINSWITH 'AppBox')")).buttons["Apps"].tap()
+//		
+//		let table = app.tables.matchingIdentifier("MainMenuTable")
+//		let currencyCell = table.cells.matchingPredicate(NSPredicate(format: "title BEGINSWITH 'Currency'"))
+//		let firstCurrencyCell = currencyCell.elementBoundByIndex(0)
 //		let currencyText = firstCurrencyCell
-		firstCurrencyCell.staticTexts.elementBoundByIndex(0).tap()
+//		firstCurrencyCell.staticTexts.elementBoundByIndex(0).tap()
+//		
+//
+//		self.waitForExpectationsWithTimeout(10, handler: nil)
+//		Use XCTAssert and related functions to verify your tests produce the correct results.
 		
-
-		self.waitForExpectationsWithTimeout(10, handler: nil)
-		// Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
+	}
     
 }
