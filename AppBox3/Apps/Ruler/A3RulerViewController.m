@@ -148,24 +148,24 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		// iPod touch 5
 		CGFloat pixelsInInch = 326.7;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (screenHeight / 960.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
-		_inchAsPoints = (screenHeight / 960.0) * pixelsInInch;
+		_centimeterAsPoints = (screenHeight / 1136.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
+		_inchAsPoints = (screenHeight / 1136.0) * pixelsInInch;
 		_redLineWidth = 0.5;
 		_resetPosition = _centimeterPositionRightBottom ? 8.0 : 3.0;
 	} else if ([model isEqualToString:@"iPhone 5"]) {
 		// iPhone 5
 		CGFloat pixelsInInch = 327.0;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (screenHeight / 960.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
-		_inchAsPoints = (screenHeight / 960.0) * pixelsInInch;
+		_centimeterAsPoints = (screenHeight / 1136.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
+		_inchAsPoints = (screenHeight / 1136.0) * pixelsInInch;
 		_redLineWidth = 0.5;
 		_resetPosition = _centimeterPositionRightBottom ? 8.0 : 3.0;
 	} else if ([model isEqualToString:@"iPhone 5s"]) {
 		// iPhone 5s
 		CGFloat pixelsInInch = 326.5;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (screenHeight / 960.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
-		_inchAsPoints = (screenHeight / 960.0) * pixelsInInch;
+		_centimeterAsPoints = (screenHeight / 1136.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
+		_inchAsPoints = (screenHeight / 1136.0) * pixelsInInch;
 		_redLineWidth = 0.5;
 		_resetPosition = _centimeterPositionRightBottom ? 8.0 : 3.0;
 	} else if ([model isEqualToString:@"iPhone 4"])	{
