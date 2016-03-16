@@ -163,9 +163,12 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 	self.rootElement = [A3TableViewRootElement new];
 	self.rootElement.tableView = self.tableView;
 
-	NSDictionary *favoritesDict = [[A3AppDelegate instance] favoriteMenuDictionary];
 	NSMutableArray *section0 = [NSMutableArray new];
-	[section0 addObject:favoritesDict];
+	
+	NSDictionary *favoritesDict = [[A3AppDelegate instance] favoriteMenuDictionary];
+	if ([favoritesDict[kA3AppsExpandableChildren] count]) {
+		[section0 addObject:favoritesDict];
+	}
 
 	NSInteger maxRecent = [[A3AppDelegate instance] maximumRecentlyUsedMenus];
 	NSArray *recentMenuItems = nil;
@@ -191,7 +194,11 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 		_mostRecentMenuElement = nil;
 	}
 
-	self.rootElement.sectionsArray = @[[self sectionWithData:section0], self.appSection, self.bottomSection];
+	if ([section0 count]) {
+		self.rootElement.sectionsArray = @[[self sectionWithData:section0], self.appSection, self.bottomSection];
+	} else {
+		self.rootElement.sectionsArray = @[self.appSection, self.bottomSection];
+	}
 }
 
 - (id)appSection {
