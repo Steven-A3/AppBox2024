@@ -13,6 +13,8 @@
 #import "A3AppDelegate+appearance.h"
 #import "A3DefaultColorDefines.h"
 #import "A3UserDefaults.h"
+#import "A3NumberKeyboardViewController.h"
+#import "UIViewController+NumberKeyboard.h"
 
 #define kAccelerometerFrequency			25 //Hz
 #define kFilteringFactorForErase		0.1
@@ -26,26 +28,30 @@ NSString *const A3RandomLastValueKey = @"A3RandomLastValueKey";
 NSString *const A3RandomRangeMinimumKey = @"A3RandomRangeMinimumKey";
 NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 
-@interface A3RandomViewController () <UIAccelerometerDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIScrollViewDelegate>
+@interface A3RandomViewController () <UIAccelerometerDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIScrollViewDelegate, UITextFieldDelegate, A3KeyboardDelegate>
 
 - (IBAction)randomButtonTouchUp:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UIView *resultPanelView;
-@property (weak, nonatomic) IBOutlet UIView *controlPanelView;
 @property (weak, nonatomic) IBOutlet UILabel *resultPrintLabel;
 @property (weak, nonatomic) IBOutlet UIPickerView *limitNumberPickerView;
 @property (weak, nonatomic) IBOutlet UIButton *generatorButton;
-@property (weak, nonatomic) IBOutlet UILabel *orShakeLabel;
+@property (weak, nonatomic) IBOutlet UITextField *minimumValueTextField;
+@property (weak, nonatomic) IBOutlet UITextField *maximumValueTextField;
+@property (weak, nonatomic) IBOutlet UILabel *minimumValueLabel;
+@property (weak, nonatomic) IBOutlet UILabel *maximumValueLabel;
 
-@property (strong, nonatomic) CMMotionManager *motionManager;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *controlPanelViewHeightConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *limitPickerViewSeparatorWidthConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *limitPickerViewSeparatorTopHeightConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *limitPickerViewSeparatorBottomHeightConst;
-
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *generateButtonWidthConst;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *generateButtonHeightConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *minValueTopLineHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *maxValueTopLineHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *resultViewTopConst;
+
+@property (strong, nonatomic) NSNumberFormatter *numberFormatter;
+@property (strong, nonatomic) CMMotionManager *motionManager;
+@property (strong, nonatomic) A3NumberKeyboardViewController *simpleNormalNumberKeyboard;
+@property (copy, nonatomic) NSString *textBeforeEditingTextField;
 
 @end
 
@@ -90,8 +96,14 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 		self.navigationItem.hidesBackButton = YES;
 	}
 
-    [_generatorButton setTitle:NSLocalizedString(@"Tap", nil) forState:UIControlStateNormal];
-    _orShakeLabel.text = NSLocalizedString(@"or Shake!", nil);
+	[_generatorButton setTitle:NSLocalizedString(@"TAP OR SHAKE TO GENERATE", @"TAP OR SHAKE TO GENERATE") forState:UIControlStateNormal];
+	_minimumValueLabel.text = NSLocalizedString(@"Minimum Value", @"Minimum Value");
+	_maximumValueLabel.text = NSLocalizedString(@"Maximum Value", @"Maximum Value");
+
+	UIColor *themeColor = [[A3AppDelegate instance] themeColor];
+	_generatorButton.backgroundColor = themeColor;
+	_minimumValueTextField.textColor = themeColor;
+	_maximumValueTextField.textColor = themeColor;
 
     _resultPanelView.backgroundColor = COLOR_HEADERVIEW_BG;
 
@@ -106,6 +118,9 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 	}
     [_limitNumberPickerView selectRow:minimum inComponent:MINCOLUMN animated:YES];
     [_limitNumberPickerView selectRow:maximum inComponent:MAXCOLUMN animated:YES];
+	_minimumValueTextField.text = [self.numberFormatter stringFromNumber:@(minimum)];
+	_maximumValueTextField.text = [self.numberFormatter stringFromNumber:@(maximum)];
+
     _resultPrintLabel.adjustsFontSizeToFitWidth = YES;
     _resultPrintLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:80];
 
@@ -114,20 +129,15 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 		_resultPrintLabel.text = [NSString stringWithFormat:@"%ld", [lastResult longValue]];
 	}
 
-    _limitPickerViewSeparatorWidthConst.constant =IS_RETINA ? 0.5 : 1.0;
-    _limitPickerViewSeparatorTopHeightConst.constant =IS_RETINA ? 0.5 : 1.0;
-    _limitPickerViewSeparatorBottomHeightConst.constant =IS_RETINA ? 0.5 : 1.0;
-    [_generatorButton setTitleColor:[A3AppDelegate instance].themeColor forState:UIControlStateNormal];
-    
-    _controlPanelView.backgroundColor = [UIColor colorWithRed:239/255.0 green:239/255.0 blue:244/255.0 alpha:1.0];
-    _controlPanelViewHeightConst.constant = 103;
-    
+	CGFloat scale = [UIScreen mainScreen].scale;
+	_limitPickerViewSeparatorWidthConst.constant = 1.0 / scale;
+    _limitPickerViewSeparatorTopHeightConst.constant = 1.0 / scale;
+    _limitPickerViewSeparatorBottomHeightConst.constant = 1.0 / scale;
+	_minValueTopLineHeightConstraint.constant = 1.0 / scale;
+	_maxValueTopLineHeightConstraint.constant = 1.0 / scale;
+
     if (IS_IPAD) {
-        _generateButtonWidthConst.constant = 111;
-        _generateButtonHeightConst.constant = 111;
         _generatorButton.titleLabel.font = [UIFont systemFontOfSize:22];
-        _orShakeLabel.font = [UIFont systemFontOfSize:22];
-        _controlPanelViewHeightConst.constant = 226;
         _resultPrintLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:152.0];
     }
     
@@ -146,14 +156,6 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
     
     [self setupMotionManager];
 
-	if (IS_IPAD) {
-		_generatorButton.layer.cornerRadius = 111.0 / 2.0;
-	} else {
-		_generatorButton.layer.cornerRadius = CGRectGetWidth(_generatorButton.frame) / 2.0;
-	}
-	_generatorButton.layer.borderColor = [[A3AppDelegate instance].themeColor CGColor];
-	_generatorButton.layer.borderWidth = 1.5;
-	_generatorButton.backgroundColor = [UIColor whiteColor];
 
 	_resultViewTopConst.constant = CGRectGetHeight(self.navigationController.navigationBar.bounds) + 20;
 }
@@ -309,10 +311,16 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
     if (minValue > maxValue) {
         [pickerView selectRow:minValue inComponent:MAXCOLUMN animated:YES];
         [pickerView selectRow:maxValue inComponent:MINCOLUMN animated:YES];
+		NSInteger temp = minValue;
+		minValue = maxValue;
+		maxValue = temp;
     }
 	[[A3UserDefaults standardUserDefaults] setObject:@(minValue) forKey:A3RandomRangeMinimumKey];
 	[[A3UserDefaults standardUserDefaults] setObject:@(maxValue) forKey:A3RandomRangeMaximumKey];
 	[[A3UserDefaults standardUserDefaults] synchronize];
+	
+	_minimumValueTextField.text = [self.numberFormatter stringFromNumber:@(minValue)];
+	_maximumValueTextField.text = [self.numberFormatter stringFromNumber:@(maxValue)];
 }
 
 - (void)setRandomNumber:(NSTimer *)timer {
@@ -357,6 +365,56 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 		frame.size.width = screenBounds.size.height;
 		_limitNumberPickerView.frame = frame;
 	}
+}
+
+- (NSNumberFormatter *)numberFormatter {
+	if (!_numberFormatter) {
+		_numberFormatter = [NSNumberFormatter new];
+		[_numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+	}
+	return _numberFormatter;
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+	if (_simpleNormalNumberKeyboard == nil) {
+		_simpleNormalNumberKeyboard = [self simplePrevNextClearNumberKeyboard];
+		_simpleNormalNumberKeyboard.keyboardType = A3NumberKeyboardTypeInteger;
+	}
+	
+	textField.inputView = _simpleNormalNumberKeyboard.view;
+	if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
+		textField.inputAssistantItem.leadingBarButtonGroups = @[];
+		textField.inputAssistantItem.trailingBarButtonGroups = @[];
+	}
+	_simpleNormalNumberKeyboard.textInputTarget = textField;
+	_simpleNormalNumberKeyboard.delegate = self;
+	return YES;
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+	self.textBeforeEditingTextField = [textField.text copy];
+	textField.text = @"";
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+	if (![textField.text length]) textField.text = _textBeforeEditingTextField;
+	NSInteger number = [[self.numberFormatter numberFromString:textField.text] integerValue];
+	NSInteger component = textField == _minimumValueTextField ? 0 : 1;
+	[_limitNumberPickerView selectRow:number inComponent:component animated:YES];
+	[self pickerView:_limitNumberPickerView didSelectRow:number inComponent:component];
+	_simpleNormalNumberKeyboard = nil;
+}
+
+- (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
+	[keyInputDelegate resignFirstResponder];
+}
+
+#pragma mark - Extension Keyboard를 사용하지 못하게 합니다.
+
+- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
+	return NO;
 }
 
 @end
