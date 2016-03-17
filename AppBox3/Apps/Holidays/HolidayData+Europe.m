@@ -1180,24 +1180,65 @@
 	holidayName = NSLocalizedStringFromTable(@"Republic Day", kHolidaysResourceName, nil);
 	date = [HolidayData dateWithDay:29 month:10 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+
+	{
+		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
+		[offsetDC setDay:-1];
+		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
+		holidayName = NSLocalizedStringFromTable(@"Republic Day Eve", kHolidaysResourceName, nil);
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	}
+	
+	holidayName = NSLocalizedStringFromTable(@"Ataturk Memorial Day", kHolidaysResourceName, nil);
+	date = [HolidayData dateWithDay:10 month:11 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = NSLocalizedStringFromTable(@"Ramadan Feast", kHolidaysResourceName, nil);
 	date = [HolidayData getRamadanFeast:year withCalendar:gregorian option:0];
+	if (year == 2017) {
+		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
+		[offsetDC setDay:1];
+		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
+	}
 	if (date != nil) {
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
 		[offsetDC setDay:-1];
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		
+		holidayName = NSLocalizedStringFromTable(@"Ramadan Feast Eve", kHolidaysResourceName, nil);
+		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = NSLocalizedStringFromTable(@"Eid al-Adha", kHolidaysResourceName, nil);
+	holidayName = NSLocalizedStringFromTable(@"Sacrifice Feast Eve", kHolidaysResourceName, nil);
 	date = [HolidayData getSacrificeFeast:year withCalendar:gregorian];
-	if (date != nil) {
+	if (year == 2017) {
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
 		[offsetDC setDay:-1];
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
+	}
+	if (date != nil) {
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
+		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
+		[offsetDC setDay:1];
+
+		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
+		holidayName = NSLocalizedStringFromTable(@"Sacrifice Feast", kHolidaysResourceName, nil);
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		
+		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
+		holidayName = NSLocalizedStringFromTable(@"Sacrifice Feast Day 2", kHolidaysResourceName, nil);
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+
+		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
+		holidayName = NSLocalizedStringFromTable(@"Sacrifice Feast Day 3", kHolidaysResourceName, nil);
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+
+		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
+		holidayName = NSLocalizedStringFromTable(@"Sacrifice Feast Day 4", kHolidaysResourceName, nil);
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	

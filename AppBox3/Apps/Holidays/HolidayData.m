@@ -308,7 +308,7 @@ static int orthodoxEasterSunday[][2] = {
 	return date;
 }
 
-// Islamic New Year for 1989~2012, with {month, day} format
+// Islamic New Year for 1989~2017, with {month, day} format
 // TODO: Update yearly
 static NSUInteger islamicNewYear[][2] = {
 	/*1989,1410*/{ 8, 2},{ 7,23}, 
@@ -316,9 +316,9 @@ static NSUInteger islamicNewYear[][2] = {
 	/*2001,1422*/{ 3,26},{ 3,15},{ 3, 4},{ 2,22},{ 2,10},{ 1,31},{ 1,20},{12,28},{12,17},{12, 7},
 	/*2011,1432*/{11,26},{11,14},{11, 4},{10,24},{10,14},{10, 3},{ 9,22}};
 
-// From year 2008-2015, {month, day}, Eidul Fitr or Ramadan Feast
+// From year 2008-2017, {month, day}, Eidul Fitr or Ramadan Feast
 // TODO: Update yearly
-static NSUInteger Eidul_Fitr[][2] = {{10, 1}, {9, 20}, {9, 10}, {8, 31}, {8, 19}, {8, 8}, {7, 29}, {7, 19}};
+static NSUInteger Eidul_Fitr[][2] = {{10, 1}, {9, 20}, {9, 10}, {8, 31}, {8, 19}, {8, 8}, {7, 29}, {7, 19}, {7, 6},{6,25}};
 
 // From year 1980-2021, {month, day}, Sacrifice Feast or Eid al-Adha
 // TODO: Update yearly
@@ -339,7 +339,7 @@ static NSUInteger Eid_al_adha[][2] = {
 // option:1 Holiday falling on a Sunday are observed the following Monday
 + (NSDate *)getRamadanFeast:(NSUInteger)year withCalendar:(NSCalendar *)calendar option:(int)option
 {
-	if ((year < 2008) || (year > 2015)) return nil;
+	if ((year < 2008) || (year > 2017)) return nil;
 	return [self dateWithDay:Eidul_Fitr[year - 2008][1] month:Eidul_Fitr[year - 2008][0] year:year withCalendar:calendar option:option];
 }
 
