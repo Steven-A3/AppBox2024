@@ -99,7 +99,11 @@ NSString *const A3GridMenuCellID = @"gridCell";
 				offset = -103;
 			}
 		} else {
-			offset = -114;
+			if (IS_IPAD_PRO) {
+				offset = -160;
+			} else {
+				offset = -114;
+			}
 		}
 		make.bottom.equalTo(self.view.bottom).with.offset(offset);
 		make.centerX.equalTo(_collectionView.centerX);
@@ -115,11 +119,11 @@ NSString *const A3GridMenuCellID = @"gridCell";
 - (A3GridCollectionViewFlowLayout *)flowLayout {
     if (!_flowLayout) {
         _flowLayout = [A3GridCollectionViewFlowLayout new];
+		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 		if (IS_IPHONE) {
 			if ([[UIScreen mainScreen] scale] == 3) {
 				_flowLayout.itemSize = CGSizeMake(78.0, 102.0);
 			} else {
-				CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 				if (screenBounds.size.height == 667) {
 					_flowLayout.itemSize = CGSizeMake(70.0, 93.0);
 				} else if (screenBounds.size.height == 568) {
@@ -129,7 +133,11 @@ NSString *const A3GridMenuCellID = @"gridCell";
 				}
 			}
 		} else {
-			_flowLayout.itemSize = CGSizeMake(76.0, 100.0);
+			if (IS_IPAD_PRO) {
+				_flowLayout.itemSize = CGSizeMake(100.0, 132.0);
+			} else {
+				_flowLayout.itemSize = CGSizeMake(76.0, 100.0);
+			}
 		}
         _flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
 		_flowLayout.delegate = self;
@@ -280,32 +288,60 @@ NSString *const A3GridMenuCellID = @"gridCell";
 }
 
 - (NSArray *)originalMenuItems {
-	return @[
-			 @{kA3AppsMenuName:A3AppName_Level},
-			 @{kA3AppsMenuName:A3AppName_CurrencyConverter},
-			 @{kA3AppsMenuName:A3AppName_LoanCalculator},
-			 @{kA3AppsMenuName:A3AppName_Wallet},
-			 @{kA3AppsMenuName:A3AppName_Ruler},
-			 @{kA3AppsMenuName:A3AppName_UnitConverter},
-			 @{kA3AppsMenuName:A3AppName_Calculator},
-			 @{kA3AppsMenuName:A3AppName_LadiesCalendar},
-			 @{kA3AppsMenuName:A3AppName_BatteryStatus},
-			 @{kA3AppsMenuName:A3AppName_Translator},
-			 @{kA3AppsMenuName:A3AppName_TipCalculator},
-			 @{kA3AppsMenuName:A3AppName_DaysCounter},
-			 @{kA3AppsMenuName:A3AppName_Clock},
-			 @{kA3AppsMenuName:A3AppName_Holidays},
-			 @{kA3AppsMenuName:A3AppName_DateCalculator},
-			 @{kA3AppsMenuName:A3AppName_ExpenseList},
-			 @{kA3AppsMenuName:A3AppName_Flashlight},
-			 @{kA3AppsMenuName:A3AppName_Mirror},
-			 @{kA3AppsMenuName:A3AppName_Magnifier},
-			 @{kA3AppsMenuName:A3AppName_Random},
-			 @{kA3AppsMenuName:A3AppName_SalesCalculator},
-			 @{kA3AppsMenuName:A3AppName_UnitPrice},
-			 @{kA3AppsMenuName:A3AppName_PercentCalculator},
-			 @{kA3AppsMenuName:A3AppName_LunarConverter},
-			 ];
+	if (IS_IPAD) {
+		return @[
+				 @{kA3AppsMenuName:A3AppName_BatteryStatus},
+				 @{kA3AppsMenuName:A3AppName_CurrencyConverter},
+				 @{kA3AppsMenuName:A3AppName_LoanCalculator},
+				 @{kA3AppsMenuName:A3AppName_Wallet},
+				 @{kA3AppsMenuName:A3AppName_Clock},
+				 @{kA3AppsMenuName:A3AppName_UnitConverter},
+				 @{kA3AppsMenuName:A3AppName_Calculator},
+				 @{kA3AppsMenuName:A3AppName_LadiesCalendar},
+				 @{kA3AppsMenuName:A3AppName_Mirror},
+				 @{kA3AppsMenuName:A3AppName_Translator},
+				 @{kA3AppsMenuName:A3AppName_TipCalculator},
+				 @{kA3AppsMenuName:A3AppName_DaysCounter},
+				 @{kA3AppsMenuName:A3AppName_Ruler},
+				 @{kA3AppsMenuName:A3AppName_Holidays},
+				 @{kA3AppsMenuName:A3AppName_DateCalculator},
+				 @{kA3AppsMenuName:A3AppName_ExpenseList},
+				 @{kA3AppsMenuName:A3AppName_Flashlight},
+				 @{kA3AppsMenuName:A3AppName_Magnifier},
+				 @{kA3AppsMenuName:A3AppName_Random},
+				 @{kA3AppsMenuName:A3AppName_SalesCalculator},
+				 @{kA3AppsMenuName:A3AppName_UnitPrice},
+				 @{kA3AppsMenuName:A3AppName_PercentCalculator},
+				 @{kA3AppsMenuName:A3AppName_LunarConverter},
+				 ];
+	} else {
+		return @[
+				 @{kA3AppsMenuName:A3AppName_Level},
+				 @{kA3AppsMenuName:A3AppName_CurrencyConverter},
+				 @{kA3AppsMenuName:A3AppName_LoanCalculator},
+				 @{kA3AppsMenuName:A3AppName_Wallet},
+				 @{kA3AppsMenuName:A3AppName_Ruler},
+				 @{kA3AppsMenuName:A3AppName_UnitConverter},
+				 @{kA3AppsMenuName:A3AppName_Calculator},
+				 @{kA3AppsMenuName:A3AppName_LadiesCalendar},
+				 @{kA3AppsMenuName:A3AppName_BatteryStatus},
+				 @{kA3AppsMenuName:A3AppName_Translator},
+				 @{kA3AppsMenuName:A3AppName_TipCalculator},
+				 @{kA3AppsMenuName:A3AppName_DaysCounter},
+				 @{kA3AppsMenuName:A3AppName_Clock},
+				 @{kA3AppsMenuName:A3AppName_Holidays},
+				 @{kA3AppsMenuName:A3AppName_DateCalculator},
+				 @{kA3AppsMenuName:A3AppName_ExpenseList},
+				 @{kA3AppsMenuName:A3AppName_Flashlight},
+				 @{kA3AppsMenuName:A3AppName_Mirror},
+				 @{kA3AppsMenuName:A3AppName_Magnifier},
+				 @{kA3AppsMenuName:A3AppName_Random},
+				 @{kA3AppsMenuName:A3AppName_SalesCalculator},
+				 @{kA3AppsMenuName:A3AppName_UnitPrice},
+				 @{kA3AppsMenuName:A3AppName_PercentCalculator},
+				 @{kA3AppsMenuName:A3AppName_LunarConverter},
+				 ];
+	}
 }
 
 - (NSMutableArray *)menuItems {
@@ -315,10 +351,7 @@ NSString *const A3GridMenuCellID = @"gridCell";
 			_menuItems = [[self originalMenuItems] mutableCopy];
 		}
 		if (IS_IPAD) {
-			NSInteger levelIndex = [_menuItems indexOfObject:@{kA3AppsMenuName:A3AppName_Level}];
-			if (levelIndex != NSNotFound) {
-				[_menuItems replaceObjectAtIndex:levelIndex withObject:@{kA3AppsMenuName:A3AppName_None}];
-			}
+			[_menuItems removeObject:@{kA3AppsMenuName:A3AppName_Level}];
 		}
 	}
 	return _menuItems;
@@ -362,16 +395,30 @@ NSString *const A3GridMenuCellID = @"gridCell";
 			offset = 11;
 		}
 	} else {
-		if (toSize.width < toSize.height) {
-			_flowLayout.contentHeight = 808;
-			_flowLayout.numberOfItemsPerRow = 4;
-			_flowLayout.numberOfRowsPerPage = 5;
-			offset = 51;
+		if (IS_IPAD_PRO) {
+			if (toSize.width < toSize.height) {
+				_flowLayout.contentHeight = 1085;
+				_flowLayout.numberOfItemsPerRow = 4;
+				_flowLayout.numberOfRowsPerPage = 5;
+				offset = 70;
+			} else {
+				_flowLayout.contentHeight = 756;
+				_flowLayout.numberOfItemsPerRow = 5;
+				_flowLayout.numberOfRowsPerPage = 4;
+				offset = 46;
+			}
 		} else {
-			_flowLayout.contentHeight = 530;
-			_flowLayout.numberOfItemsPerRow = 5;
-			_flowLayout.numberOfRowsPerPage = 4;
-			offset = 34;
+			if (toSize.width < toSize.height) {
+				_flowLayout.contentHeight = 808;
+				_flowLayout.numberOfItemsPerRow = 4;
+				_flowLayout.numberOfRowsPerPage = 5;
+				offset = 51;
+			} else {
+				_flowLayout.contentHeight = 530;
+				_flowLayout.numberOfItemsPerRow = 5;
+				_flowLayout.numberOfRowsPerPage = 4;
+				offset = 34;
+			}
 		}
 	}
 	CGFloat verticalMargin = (toSize.height - self.flowLayout.contentHeight) / 2;

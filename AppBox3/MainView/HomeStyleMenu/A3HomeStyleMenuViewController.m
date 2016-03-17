@@ -65,10 +65,17 @@
 
 	UIView *superview = backgroundView;
 	[helpButton mas_makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(superview.left).with.offset(15);
-		make.top.equalTo(superview.top).with.offset(30);
-		make.width.equalTo(screenBounds.size.height <= 568 ? @30 : @35);
-		make.height.equalTo(screenBounds.size.height <= 568 ? @30 : @35);
+		if (IS_IPAD_PRO) {
+			make.left.equalTo(superview.left).with.offset(25);
+			make.top.equalTo(superview.top).with.offset(30);
+			make.width.equalTo(@40);
+			make.height.equalTo(@40);
+		} else {
+			make.left.equalTo(superview.left).with.offset(15);
+			make.top.equalTo(superview.top).with.offset(30);
+			make.width.equalTo(screenBounds.size.height <= 568 ? @30 : @35);
+			make.height.equalTo(screenBounds.size.height <= 568 ? @30 : @35);
+		}
 	}];
 
 	UIButton *settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -78,16 +85,29 @@
 	[backgroundView addSubview:settingsButton];
 
 	[settingsButton makeConstraints:^(MASConstraintMaker *make) {
-		make.top.equalTo(superview.top).with.offset(30);
-		make.right.equalTo(superview.right).with.offset(-15);
-		make.width.equalTo(screenBounds.size.height <= 568 ? @30 : @35);
-		make.height.equalTo(screenBounds.size.height <= 568 ? @30 : @35);
+		if (IS_IPAD_PRO) {
+			make.top.equalTo(superview.top).with.offset(25);
+			make.right.equalTo(superview.right).with.offset(-30);
+			make.width.equalTo(@40);
+			make.height.equalTo(@40);
+		} else {
+			make.top.equalTo(superview.top).with.offset(30);
+			make.right.equalTo(superview.right).with.offset(-15);
+			make.width.equalTo(screenBounds.size.height <= 568 ? @30 : @35);
+			make.height.equalTo(screenBounds.size.height <= 568 ? @30 : @35);
+		}
 	}];
 
 	UILabel *titleLabel = [UILabel new];
 	titleLabel.text = @"AppBox Pro®";
 	titleLabel.textColor = [UIColor whiteColor];
-	titleLabel.font = [UIFont systemFontOfSize:screenBounds.size.height <= 568 ? 22 : 26];
+	CGFloat fontSize;
+	if (IS_IPAD_PRO) {
+		fontSize = 31;
+	} else {
+		fontSize = screenBounds.size.height <= 568 ? 22 : 26;
+	}
+	titleLabel.font = [UIFont systemFontOfSize:fontSize];
 	titleLabel.textAlignment = NSTextAlignmentCenter;
 	[backgroundView addSubview:titleLabel];
 
@@ -124,14 +144,26 @@
 	
 	UILabel *appTitle = [UILabel new];
 	appTitle.textColor = [UIColor whiteColor];
-	appTitle.font = [UIFont systemFontOfSize:IS_IPHONE ? 11 : 13];
+	CGFloat fontSize;
+	if (IS_IPAD_PRO) {
+		fontSize = 17;
+	} else {
+		fontSize = IS_IPHONE ? 11 : 13;
+	}
+	appTitle.font = [UIFont systemFontOfSize:fontSize];
 	appTitle.text = title;
 	appTitle.textAlignment = NSTextAlignmentCenter;
 	[targetView addSubview:appTitle];
 
 	[appTitle makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(targetView.right).with.multipliedBy(position);
-		make.bottom.equalTo(targetView.bottom).with.offset(screenBounds.size.height == 480 ? -5 : -15);
+		CGFloat offset;
+		if (IS_IPAD_PRO) {
+			offset = -18;
+		} else {
+			offset = screenBounds.size.height == 480 ? -5 : -15;
+		}
+		make.bottom.equalTo(targetView.bottom).with.offset(offset);
 	}];
 
 	UIButton *appButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -141,6 +173,10 @@
 	[appButton makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(targetView.right).with.multipliedBy(position);
 		make.bottom.equalTo(appTitle.top).with.offset(-4);
+		if (IS_IPAD_PRO) {
+			make.width.equalTo(@80);
+			make.height.equalTo(@80);
+		}
 	}];
 
 	if (selector) {

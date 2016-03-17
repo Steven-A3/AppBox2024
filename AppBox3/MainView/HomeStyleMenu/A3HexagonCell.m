@@ -75,7 +75,11 @@
 
     UIBezierPath *borderPath = [self borderPath];
 	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-	borderPath.lineWidth = IS_IPHONE ? (screenBounds.size.height <= 568 ? 5 : 6) : 10;
+	if (IS_IPAD_PRO) {
+		borderPath.lineWidth = 13;
+	} else {
+		borderPath.lineWidth = IS_IPHONE ? (screenBounds.size.height <= 568 ? 5 : 6) : 10;
+	}
 	
 	[self.borderColor setStroke];
     [borderPath stroke];
@@ -90,7 +94,10 @@
 		[_imageView makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(self.centerX);
 			make.centerY.equalTo(self.centerY);
-			if (IS_IPAD) {
+			if (IS_IPAD_PRO) {
+				make.width.equalTo(@80);
+				make.height.equalTo(@80);
+			} else if (IS_IPAD) {
 				make.width.equalTo(@58);
 				make.height.equalTo(@58);
 			}

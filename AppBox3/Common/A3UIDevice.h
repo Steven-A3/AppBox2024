@@ -35,6 +35,7 @@
 #define A3_TEXT_COLOR_DEFAULT				[UIColor blackColor]
 
 #define IS_IPAD    	([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+#define IS_IPAD_PRO	([[UIScreen mainScreen] nativeBounds].size.height == 2732)
 #define IS_IPHONE   ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
 #define IS_IPHONE35 ([[UIScreen mainScreen] bounds].size.height == 480)
 

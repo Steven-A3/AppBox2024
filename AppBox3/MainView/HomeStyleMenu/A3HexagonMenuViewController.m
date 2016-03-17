@@ -39,15 +39,19 @@
     _flowLayout = [A3HexagonCollectionViewFlowLayout new];
 	_flowLayout.delegate = self;
 	_flowLayout.dataSource = self;
-	_flowLayout.minimumInteritemSpacing = IS_IPHONE ? (screenBounds.size.height <= 568 ? 5 : 6) : 10;
-	_flowLayout.minimumLineSpacing = IS_IPHONE ? (screenBounds.size.height <= 568 ? 5 : 6) : 10;
+	_flowLayout.minimumInteritemSpacing = IS_IPHONE ? (screenBounds.size.height <= 568 ? 5 : 6) : IS_IPAD_PRO ? 13 : 10;
+	_flowLayout.minimumLineSpacing = IS_IPHONE ? (screenBounds.size.height <= 568 ? 5 : 6) : IS_IPAD_PRO ? 13 : 10;
 	_flowLayout.sectionInset = UIEdgeInsetsZero;
 	if (IS_IPHONE) {
 		CGFloat itemSize;
 		itemSize = (screenBounds.size.width - _flowLayout.minimumInteritemSpacing * 7 - horizontalInset * 2) / 6;
 		_flowLayout.itemSize = CGSizeMake(itemSize, itemSize * 1.13);
 	} else {
-		_flowLayout.itemSize = CGSizeMake(88, 100);
+		if (IS_IPAD_PRO) {
+			_flowLayout.itemSize = CGSizeMake(117, 132);
+		} else {
+			_flowLayout.itemSize = CGSizeMake(88, 100);
+		}
 	}
 
     _collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:_flowLayout];
@@ -322,14 +326,23 @@
 }
 
 - (void)setupCollectionViewContentInsetWithSize:(CGSize)size {
-	if (IS_IPAD) {
-		CGSize contentSize = [_flowLayout collectionViewContentSize];
+	CGSize contentSize = [_flowLayout collectionViewContentSize];
+	if (IS_IPAD_PRO) {
+		CGFloat offset = 40;
 		if (size.width < size.height) {
-			_collectionView.contentInset = UIEdgeInsetsMake((size.height - contentSize.height)/2 + 80, 0, (size.height - contentSize.height)/2 - 80, 0);
+			offset = 100;
 		} else {
-			CGFloat offset = 40;
-			_collectionView.contentInset = UIEdgeInsetsMake((size.height - contentSize.height)/2 + offset, 0, (size.height - contentSize.height)/2 - offset, 0);
+			offset = 40;
 		}
+		_collectionView.contentInset = UIEdgeInsetsMake((size.height - contentSize.height)/2 + offset, 0, (size.height - contentSize.height)/2 - offset, 0);
+	} else if (IS_IPAD) {
+		CGFloat offset = 40;
+		if (size.width < size.height) {
+			offset = 80;
+		} else {
+			offset = 40;
+		}
+		_collectionView.contentInset = UIEdgeInsetsMake((size.height - contentSize.height)/2 + offset, 0, (size.height - contentSize.height)/2 - offset, 0);
 	}
 }
 

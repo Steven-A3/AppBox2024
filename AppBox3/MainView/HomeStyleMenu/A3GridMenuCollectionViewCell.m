@@ -36,9 +36,15 @@
 - (void)setupSubviews {
 	if (!_roundedRectView) {
 		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+		CGRect nativeBounds = [[UIScreen mainScreen] nativeBounds];
 		_roundedRectView = [UIView new];
-		_roundedRectView.layer.cornerRadius = screenBounds.size.height == 480 ? 10.0 : 15.0;
-		_roundedRectView.layer.borderWidth = screenBounds.size.height == 480 ? 2.3 : 3.0;
+		if (nativeBounds.size.height / 2 > 1024) {
+			_roundedRectView.layer.cornerRadius = 22;
+			_roundedRectView.layer.borderWidth = 4;
+		} else {
+			_roundedRectView.layer.cornerRadius = screenBounds.size.height == 480 ? 10.0 : 15.0;
+			_roundedRectView.layer.borderWidth = screenBounds.size.height == 480 ? 2.3 : 3.0;
+		}
 		[self addSubview:_roundedRectView];
 
 		[_roundedRectView makeConstraints:^(MASConstraintMaker *make) {
@@ -54,13 +60,22 @@
 		[_imageView makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(_roundedRectView.centerX);
 			make.centerY.equalTo(_roundedRectView.centerY);
+			if (IS_IPAD_PRO) {
+				make.width.equalTo(@58);
+				make.height.equalTo(@58);
+			} else if (IS_IPAD) {
+				make.width.equalTo(@58);
+				make.height.equalTo(@58);
+			}
 		}];
 
 		_titleLabel = [UILabel new];
 		_titleLabel.textColor = [UIColor whiteColor];
 		
 		CGFloat fontSize;
-		if (screenBounds.size.height > 568) {
+		if ([[UIScreen mainScreen] nativeBounds].size.height / 2 > 1024) {
+			fontSize = 18;
+		} else if (screenBounds.size.height > 568) {
 			fontSize = 13;
 		} else {
 			fontSize = 11;
