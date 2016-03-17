@@ -1069,4 +1069,10 @@ static NSString *const A3V3InstructionDidShowForCurrencyPicker = @"A3V3Instructi
 	self.instructionViewController = nil;
 }
 
+#pragma mark - Extension Keyboard를 사용하지 못하게 합니다.
+
+- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
+	return NO;
+}
+
 @end

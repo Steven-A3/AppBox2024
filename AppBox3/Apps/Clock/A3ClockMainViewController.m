@@ -445,7 +445,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
     [self turnOffAutoDim];
 
 	if (IS_IPHONE) {
-		if ([A3AppDelegate instance].drawerController) {
+		if ([[A3AppDelegate instance] isMainMenuStyleList]) {
 			[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:^(BOOL finished) {
 				[self.scrollView setScrollEnabled:self.mm_drawerController.openSide == MMDrawerSideNone];
 				[[UIApplication sharedApplication] setStatusBarHidden:NO];

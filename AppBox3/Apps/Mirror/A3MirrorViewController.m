@@ -1064,8 +1064,8 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 
 - (IBAction)appsButton:(id)sender {
 	if (IS_IPHONE) {
-		if ([A3AppDelegate instance].drawerController) {
-			[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+		if ([[A3AppDelegate instance] isMainMenuStyleList]) {
+			[[A3AppDelegate instance].drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 		} else {
 			UINavigationController *navigationController = [A3AppDelegate instance].currentMainNavigationController;
 			[navigationController popViewControllerAnimated:YES];

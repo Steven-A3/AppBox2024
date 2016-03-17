@@ -52,7 +52,7 @@ static NSString *CellIdentifier = @"Cell";
 					NSLocalizedString(@"Years", @"Years"),
 					NSLocalizedString(@"Months", @"Months"),
 					NSLocalizedString(@"Weeks", @"Weeks"),
-					NSLocalizedString(@"Days", @"Days")
+					[NSString stringWithFormat:@"%@(%@)", NSLocalizedString(@"Days", @"Days"), NSLocalizedString(@"Default", @"Default")],
 	]
 	];
     

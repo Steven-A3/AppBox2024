@@ -251,8 +251,8 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 					} else {
 						[weakSelf updateRecentlyUsedAppsWithElement:menuElement];
 						
-						if (IS_IPHONE) {
-							[self.mm_drawerController closeDrawerAnimated:YES completion:^(BOOL finished) {
+						if (IS_IPHONE && [[A3AppDelegate instance] isMainMenuStyleList]) {
+							[[A3AppDelegate instance].drawerController closeDrawerAnimated:YES completion:^(BOOL finished) {
 								[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationMainMenuDidHide object:nil];
 							}];
 						}
@@ -261,8 +261,8 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 				}
                 else
 				{
-					if (IS_IPHONE) {
-						[self.mm_drawerController closeDrawerAnimated:YES completion:^(BOOL finished) {
+					if (IS_IPHONE && [[A3AppDelegate instance] isMainMenuStyleList]) {
+						[[A3AppDelegate instance].drawerController closeDrawerAnimated:YES completion:^(BOOL finished) {
 							[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationMainMenuDidHide object:nil];
 						}];
 					} else if (IS_IPAD) {
@@ -304,7 +304,7 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 	UINavigationController *navigationController;
 
 	if (IS_IPHONE) {
-		navigationController = (UINavigationController *) self.mm_drawerController.centerViewController;
+		navigationController = [A3AppDelegate instance].currentMainNavigationController;
 	} else {
 		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController_iPad];
 		navigationController = [rootViewController centerNavigationController];
@@ -366,8 +366,8 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 }
 
 - (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
-    if (IS_IPHONE) {
-        [self.mm_drawerController closeDrawerAnimated:NO completion:^(BOOL finished) {
+    if (IS_IPHONE && [[A3AppDelegate instance] isMainMenuStyleList]) {
+        [[A3AppDelegate instance].drawerController closeDrawerAnimated:NO completion:^(BOOL finished) {
             [[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
         }];
     }

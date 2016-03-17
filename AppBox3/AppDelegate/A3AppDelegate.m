@@ -293,15 +293,12 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 }
 
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-
 	NSUInteger orientations;
 
 	if (IS_IPAD) {
 		orientations = UIInterfaceOrientationMaskAll;
 	} else {
-		A3NavigationController *navigationController = (A3NavigationController *) _drawerController.centerViewController;
-
-		id<A3ViewControllerProtocol>visibleViewController = (id <A3ViewControllerProtocol>) [navigationController visibleViewController];
+		id<A3ViewControllerProtocol>visibleViewController = (id <A3ViewControllerProtocol>) [_currentMainNavigationController visibleViewController];
 		if ([visibleViewController respondsToSelector:@selector(a3SupportedInterfaceOrientations)]) {
 			orientations = [visibleViewController a3SupportedInterfaceOrientations];
 		} else {

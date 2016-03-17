@@ -192,7 +192,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 	}
 
 	if (IS_IPHONE) {
-		if ([A3AppDelegate instance].drawerController) {
+		if ([[A3AppDelegate instance] isMainMenuStyleList]) {
 			[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 		} else {
 			UINavigationController *navigationController = [A3AppDelegate instance].currentMainNavigationController;

@@ -597,6 +597,8 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 }
 
 - (void)reloadRootViewController {
+	self.mainMenuViewController = nil;
+	self.drawerController = nil;
 	[self setupMainMenuViewController];
 }
 

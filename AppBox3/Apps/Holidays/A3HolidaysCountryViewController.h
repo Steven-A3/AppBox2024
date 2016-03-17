@@ -13,7 +13,7 @@
 
 @interface A3HolidaysCountryViewController : UIViewController
 
-@property (nonatomic, weak) id<A3HolidaysPageViewControllerProtocol> pageViewController;
+@property (nonatomic, weak) UIViewController<A3HolidaysPageViewControllerProtocol> *pageViewController;
 @property (nonatomic, weak) id<A3HolidaysCountryViewControllerDelegate> delegate;
 
 @end

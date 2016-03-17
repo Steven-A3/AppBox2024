@@ -101,8 +101,8 @@ NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
 	UINavigationController *navigationController;
 
 	if (IS_IPHONE) {
-		navigationController = (UINavigationController *) self.mm_drawerController.centerViewController;
-		[self.mm_drawerController closeDrawerAnimated:YES completion:nil];
+		navigationController = [A3AppDelegate instance].currentMainNavigationController;
+		[[A3AppDelegate instance].drawerController closeDrawerAnimated:YES completion:nil];
 	} else {
 		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController_iPad];
 		[rootViewController dismissRightSideViewController];
@@ -238,8 +238,8 @@ NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
 	[self.firstResponder resignFirstResponder];
 	if (IS_IPHONE) {
-		if (self.mm_drawerController) {
-			[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+		if ([A3AppDelegate instance].drawerController) {
+			[[A3AppDelegate instance].drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 		} else {
 			UINavigationController *navigationController = [A3AppDelegate instance].currentMainNavigationController;
 			[navigationController popViewControllerAnimated:YES];

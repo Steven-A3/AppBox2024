@@ -39,6 +39,17 @@ extern NSString *const A3CurrencyActionCellID;
 {
 	[super viewDidLoad];
 
+	self.title = NSLocalizedString(@"Holidays", nil);
+	
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+	[[UIApplication sharedApplication] setStatusBarHidden:NO];
+
+	[self leftBarButtonAppsButton];
+	
+	UIBarButtonItem *helpButton = [self instructionHelpBarButton];
+	UIBarButtonItem *plusButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"add03"] style:UIBarButtonItemStylePlain target:self action:@selector(plusButtonAction)];
+	self.navigationItem.rightBarButtonItems = @[plusButton, helpButton];
+
 	_countryEdited = NO;
 
 	_tableView = [[FMMoveTableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
@@ -49,10 +60,6 @@ extern NSString *const A3CurrencyActionCellID;
 	[_tableView makeConstraints:^(MASConstraintMaker *make) {
 		make.edges.equalTo(self.view);
 	}];
-
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[self.navigationController setNavigationBarHidden:YES];
 
 	self.view.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1.0];
 
@@ -98,6 +105,11 @@ extern NSString *const A3CurrencyActionCellID;
 	}
 }
 
+- (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
+	[self dismissViewControllerAnimated:NO completion:nil];
+	[self.pageViewController appsButtonAction:nil];
+}
+
 - (BOOL)resignFirstResponder {
 	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
 	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_Holidays]) {
@@ -122,7 +134,6 @@ extern NSString *const A3CurrencyActionCellID;
 		[self removeObserver];
 	}
 }
-
 
 - (void)didReceiveMemoryWarning
 {
@@ -175,7 +186,7 @@ static NSString *const A3V3InstructionDidShowForHolidaysCountryView = @"A3V3Inst
 - (NSInteger)tableView:(FMMoveTableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	// Return the number of rows in the section.
-	NSInteger numberOfRows = [self.userSelectedCountries count] + 1;
+	NSInteger numberOfRows = [self.userSelectedCountries count];
 
 	return numberOfRows;
 }

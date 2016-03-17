@@ -411,10 +411,10 @@
 }
 
 - (NSUInteger)a3SupportedInterfaceOrientations {
-    if (IS_IPHONE && self.mm_drawerController.openSide == MMDrawerSideLeft) {
-        return UIInterfaceOrientationMaskPortrait;
-    }
-    
+	if (IS_IPHONE && [[A3AppDelegate instance] isMainMenuStyleList] && self.mm_drawerController.openSide == MMDrawerSideLeft) {
+		return UIInterfaceOrientationMaskPortrait;
+	}
+	
     return UIInterfaceOrientationMaskAllButUpsideDown;
 }
 

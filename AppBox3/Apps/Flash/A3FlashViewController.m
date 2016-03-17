@@ -756,8 +756,8 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     }
     
     if (IS_IPHONE) {
-		if ([A3AppDelegate instance].drawerController) {
-			[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:NULL];
+		if ([[A3AppDelegate instance] isMainMenuStyleList]) {
+			[[A3AppDelegate instance].drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:NULL];
 		} else {
 			UINavigationController *navigationController = [A3AppDelegate instance].currentMainNavigationController;
 			[navigationController popViewControllerAnimated:YES];
