@@ -1001,3 +1001,7 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 "Paid User" = "bezahlte Benutzer";
 "Bought Remove Ads" = "Gekauft Werbungen entfernen";
 "Continue without Verification" = "Weiter ohne Prüfung";
+"Default" = "Standard";
+"TAP OR SHAKE TO GENERATE" = "Tippen oder schütteln zu erzeugen";
+"Minimum Value" = "Minimalwert";
+"Maximum Value" = "Maximalwert";
