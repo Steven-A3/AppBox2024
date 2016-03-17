@@ -74,7 +74,8 @@
     [super drawRect:rect];
 
     UIBezierPath *borderPath = [self borderPath];
-	borderPath.lineWidth = IS_IPHONE ? 6 : 10;
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	borderPath.lineWidth = IS_IPHONE ? (screenBounds.size.height <= 568 ? 5 : 6) : 10;
 	
 	[self.borderColor setStroke];
     [borderPath stroke];

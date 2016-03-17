@@ -34,17 +34,18 @@
 
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
-	CGFloat horizontalInset = IS_IPHONE ? 15 : 0;
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGFloat horizontalInset = IS_IPHONE ? (screenBounds.size.height <= 568 ? 10 : 15) : 0;
     _flowLayout = [A3HexagonCollectionViewFlowLayout new];
 	_flowLayout.delegate = self;
 	_flowLayout.dataSource = self;
-	_flowLayout.minimumInteritemSpacing = IS_IPHONE ? 6 : 10;
-	_flowLayout.minimumLineSpacing = IS_IPHONE ? 6 : 10;
+	_flowLayout.minimumInteritemSpacing = IS_IPHONE ? (screenBounds.size.height <= 568 ? 5 : 6) : 10;
+	_flowLayout.minimumLineSpacing = IS_IPHONE ? (screenBounds.size.height <= 568 ? 5 : 6) : 10;
 	_flowLayout.sectionInset = UIEdgeInsetsZero;
 	if (IS_IPHONE) {
 		CGFloat itemSize;
-		itemSize = ([[UIScreen mainScreen] bounds].size.width - _flowLayout.minimumInteritemSpacing * 7 - horizontalInset * 2) / 6;
-		_flowLayout.itemSize = CGSizeMake(itemSize, itemSize * 1.1);
+		itemSize = (screenBounds.size.width - _flowLayout.minimumInteritemSpacing * 7 - horizontalInset * 2) / 6;
+		_flowLayout.itemSize = CGSizeMake(itemSize, itemSize * 1.13);
 	} else {
 		_flowLayout.itemSize = CGSizeMake(88, 100);
 	}
@@ -80,7 +81,12 @@
 	
 	CGSize contentSize = [_flowLayout collectionViewContentSize];
 	if (IS_IPHONE) {
-		_collectionView.contentInset = UIEdgeInsetsMake((self.view.bounds.size.height - contentSize.height)/2, 0, (self.view.bounds.size.height - contentSize.height)/2, 0);
+		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+		CGFloat offset = screenBounds.size.height <= 568 ? 24 : 0;
+		if (screenBounds.size.height == 480) {
+			offset = 48;
+		}
+		_collectionView.contentInset = UIEdgeInsetsMake((self.view.bounds.size.height - contentSize.height)/2 + offset, 0, (self.view.bounds.size.height - contentSize.height)/2 - offset, 0);
 	} else {
 		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 		[self setupCollectionViewContentInsetWithSize:screenBounds.size];
