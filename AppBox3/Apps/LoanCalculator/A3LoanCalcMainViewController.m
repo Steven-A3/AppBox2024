@@ -599,26 +599,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     if (!_advancedTitleView) {
         _advancedTitleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, IS_RETINA ? 54.5 : 55.0)];
         _advancedTitleView.backgroundColor = [UIColor clearColor];
-        
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.frame = _advancedTitleView.bounds;
-        button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-        button.contentEdgeInsets = UIEdgeInsetsMake(26, 0, 0, 13.5);
-        if (self.loanData.showAdvanced) {
-            [SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:17]];
-            [SFKImage setDefaultColor:[UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0]];
-            UIImage *image = [SFKImage imageNamed:@"i"];
-            [button setImage:image forState:UIControlStateNormal];
-        } else {
-            [SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:17]];
-            [SFKImage setDefaultColor:[UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0]];
-            UIImage *image = [SFKImage imageNamed:@"j"];
-            [button setImage:image forState:UIControlStateNormal];
-        }
-        button.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        [button addTarget:self action:@selector(advButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-        [_advancedTitleView addSubview:button];
-
+		
         UILabel *adv = [[UILabel alloc] initWithFrame:CGRectMake(IS_IPAD ? 28:([[UIScreen mainScreen] scale] > 2 ? 20 : 15), 18.5, 200, 35)];
         adv.text = NSLocalizedString(@"ADVANCED", @"ADVANCED");
         adv.tag = 1234;
@@ -629,16 +610,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         bottomLine.backgroundColor = [self tableViewSeparatorColor];
         [_advancedTitleView addSubview:bottomLine];
         
-        if (self.loanData.showAdvanced) {
-            //adv.textColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0];
-            adv.textColor = [A3AppDelegate instance].themeColor;
-            bottomLine.hidden = YES;
-        }
-        else {
-            adv.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
-            bottomLine.hidden = NO;
-        }
-        
+		//adv.textColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0];
+		adv.textColor = [A3AppDelegate instance].themeColor;
+		bottomLine.hidden = YES;
+		
         adv.font = [UIFont systemFontOfSize:14];
         [_advancedTitleView addSubview:adv];
     }
@@ -846,44 +821,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	if (IS_IPAD) {
 		[self enableControls:NO];
 	}
-}
-
-- (void)advButtonAction:(UIButton *)sender
-{
-	self.loanData.showAdvanced = !self.loanData.showAdvanced;
-    
-    [LoanCalcPreference setShowAdvanced:self.loanData.showAdvanced];
-    
-    if (self.loanData.showAdvanced) {
-        [SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:17]];
-        [SFKImage setDefaultColor:[UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0]];
-        UIImage *image = [SFKImage imageNamed:@"i"];
-        [sender setImage:image forState:UIControlStateNormal];
-    } else {
-        [SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:17]];
-        [SFKImage setDefaultColor:[UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0]];
-        UIImage *image = [SFKImage imageNamed:@"j"];
-        [sender setImage:image forState:UIControlStateNormal];
-    }
-    
-    UILabel *adv = (UILabel *)[self.advancedTitleView viewWithTag:1234];
-    UIView *bottomLine = [self.advancedTitleView viewWithTag:5678];
-    if (self.loanData.showAdvanced) {
-        adv.textColor = [A3AppDelegate instance].themeColor;
-        bottomLine.hidden = YES;
-    }
-    else {
-        [_advItems removeObject:self.dateInputItem];
-        adv.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
-        bottomLine.hidden = NO;
-    }
-    
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly ? 4 : 3] withRowAnimation:UITableViewRowAnimationFade];
-    
-    if (self.loanData.showAdvanced) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly ? 4 : 3] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    }
-	[self saveLoanData];
 }
 
 - (void)settingsButtonAction:(UIButton *)button
@@ -2373,12 +2310,12 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                 return self.extraPaymentItems.count;
             }
             else {
-                return self.loanData.showAdvanced ? self.advItems.count:0;
+                return self.advItems.count;
             }
         }
         else if (section == 4){
             // advanced
-            return self.loanData.showAdvanced ? self.advItems.count:0;
+            return self.advItems.count;
         }
     }
     
@@ -2482,7 +2419,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		height = 38;
     }
     else if (!_isComparisonMode && section == (self.loanData.showExtraPayment && self.loanData.frequencyIndex == A3LC_FrequencyMonthly ? 4 : 3)) {
-		height = (self.loanData.showAdvanced) ? 38 : (IS_RETINA ? 39.5 : 38);
+		height = 38;
     }
 
 	FNLOG(@"%f", height);
