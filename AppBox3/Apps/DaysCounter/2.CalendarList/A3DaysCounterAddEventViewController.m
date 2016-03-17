@@ -112,10 +112,11 @@
                          @"calendarCell", @"value1Cell", @"value1Cell", @"notesCell", @"dateInputCell", // 10 ~ 14
                          @"", @"", @"advancedCell", @"", @"switchCell"];    // 15 ~ 19
     
+	_isAdvancedCellOpen = YES;
+	
     if (_eventItem) {
 		_isAddingEvent = NO;
         self.title = NSLocalizedString(@"Edit Event", @"Edit Event");
-        _isAdvancedCellOpen = [self hasAdvancedData];
         _isDurationInitialized = YES;
 
 		[_eventItem copyImagesToTemporaryDirectory];
@@ -124,7 +125,6 @@
     else {
 		_isAddingEvent = YES;
         self.title = NSLocalizedString(@"Add Event", @"Add Event");
-        _isAdvancedCellOpen = NO;
         _eventItem = [DaysCounterEvent MR_createEntityInContext:_savingContext];
 
 		// 사진 저장 및 기타 연관 정보 저장을 위해서
@@ -622,9 +622,9 @@
 				}
                 case EventCellType_Advanced:{
 					A3JHTableViewExpandableHeaderCell *expandableCell = [[A3JHTableViewExpandableHeaderCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-					expandableCell.expandButton.transform = CGAffineTransformRotate(CGAffineTransformIdentity, (CGFloat) DegreesToRadians(_isAdvancedCellOpen ? -179.9 : 0 ));
 					expandableCell.delegate = self;
 					expandableCell.titleLabel.text = NSLocalizedString(@"ADVANCED", @"ADVANCED");
+					[expandableCell.expandButton setHidden:YES];
 					cell = expandableCell;
 					break;
 				}
@@ -642,10 +642,6 @@
     }
     
     return cell;
-}
-
-- (void)expandButtonPressed:(UIButton *)expandButton {
-	[self advancedRowTouchedUp:[self.tableView indexPathForCellSubview:expandButton]];
 }
 
 - (void)updateTableViewCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
@@ -1132,7 +1128,6 @@
             break;
         case EventCellType_Advanced:
         {
-            [self advancedRowTouchedUp:indexPath];
         }
             break;
     }
@@ -2113,77 +2108,6 @@
         [self.tableView endUpdates];
         [CATransaction commit];
     }
-}
-
-- (void)advancedRowTouchedUp:(NSIndexPath*)indexPath
-{
-    [self resignAllAction];
-    
-    A3JHTableViewExpandableHeaderCell *expandableCell = (A3JHTableViewExpandableHeaderCell *) [self.tableView cellForRowAtIndexPath:indexPath];
-
-    NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
-    
-    _isAdvancedCellOpen = !_isAdvancedCellOpen;
-    
-    [UIView animateWithDuration:0.35 animations:^{
-        expandableCell.expandButton.transform = CGAffineTransformRotate(CGAffineTransformIdentity, DegreesToRadians((_isAdvancedCellOpen ?  0 : -179.9)));
-    }];
-
-	if (IS_IOS7) {
-		// fix for separators bug in iOS 7
-		self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-		self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-	}
-
-    [CATransaction begin];
-    [CATransaction setCompletionBlock:^{
-        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
-        if (_isAdvancedCellOpen) {
-            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-        }
-    }];
-
-    [self.tableView beginUpdates];
-    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:(indexPath.row - 1) inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
-    
-    if (!_isAdvancedCellOpen) {
-        NSUInteger advancedCellRowIndex = [self indexOfRowForItemType:EventCellType_Advanced atSectionArray:section1_items];
-        expandableCell.titleLabel.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
-        // remove Advanced Rows
-        NSMutableArray *indexPathsToRemove = [NSMutableArray array];
-        for (NSInteger row = advancedCellRowIndex + 1; row < [section1_items count]; row++) {
-            [indexPathsToRemove addObject:[NSIndexPath indexPathForRow:row inSection:AddSection_Section_1]];
-        }
-        [section1_items removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(advancedCellRowIndex + 1, [section1_items count] - (advancedCellRowIndex + 1))]];
-
-        [self.tableView deleteRowsAtIndexPaths:indexPathsToRemove withRowAnimation:UITableViewRowAnimationMiddle];
-    }
-    else {
-        NSMutableArray *advancedRows = [NSMutableArray new];
-        [advancedRows addObject:@{ EventRowTitle : NSLocalizedString(@"Repeat", @"Repeat"), EventRowType : @(EventCellType_RepeatType)}];
-        if ( [_eventItem.repeatType integerValue] != 0 ) {
-            [advancedRows addObject:@{ EventRowTitle : NSLocalizedString(@"End Repeat", @"End Repeat"), EventRowType : @(EventCellType_EndRepeatDate)}];
-        }
-        [advancedRows addObject:@{ EventRowTitle : NSLocalizedString(@"Alert", @"Alert"), EventRowType : @(EventCellType_Alert)}];
-        [advancedRows addObject:@{ EventRowTitle : NSLocalizedString(@"Calendar", @"Calendar"), EventRowType : @(EventCellType_Calendar)}];
-        [advancedRows addObject:@{ EventRowTitle : NSLocalizedString(@"Duration Option", @"Duration Option"), EventRowType : @(EventCellType_DurationOption)}];
-        [advancedRows addObject:@{ EventRowTitle : NSLocalizedString(@"Location", @"Location"), EventRowType : @(EventCellType_Location)}];
-        [advancedRows addObject:@{ EventRowTitle : NSLocalizedString(@"Notes", @"Notes"), EventRowType : @(EventCellType_Notes)}];
-        
-        expandableCell.titleLabel.textColor = [A3AppDelegate instance].themeColor;
-        NSMutableArray *indexPathsToAdd = [NSMutableArray array];
-        for (NSInteger row = [section1_items count]; row < ([section1_items count] + [advancedRows count]); row++) {
-            [indexPathsToAdd addObject:[NSIndexPath indexPathForRow:row inSection:AddSection_Section_1]];
-        }
-        
-        [section1_items addObjectsFromArray:advancedRows];
-        [self.tableView insertRowsAtIndexPaths:indexPathsToAdd withRowAnimation:UITableViewRowAnimationMiddle];
-        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    }
-    
-    [self.tableView endUpdates];
-    [CATransaction commit];
-
 }
 
 #pragma mark - UITextField Related

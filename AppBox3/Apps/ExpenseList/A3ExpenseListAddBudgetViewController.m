@@ -444,7 +444,7 @@ enum A3ExpenseListAddBudgetCellType {
         _advancedElement = [A3JHTableViewExpandableElement new];
         _advancedElement.title = NSLocalizedString(@"ADVANCED", @"ADVANCED");
         _advancedElement.onExpandCompletion = [self cellExpandedBlock];
-        _advancedElement.collapsed = (_currentBudget.title.length>0 || _currentBudget.date || _currentBudget.notes.length>0) ? NO : YES;
+        _advancedElement.collapsed = NO;
     }
     
     return _advancedElement;
@@ -648,6 +648,7 @@ static NSString *CellIdentifier = @"Cell";
                 ((A3JHTableViewEntryCell *)cell).textField.font = [UIFont systemFontOfSize:17.0];
             }
             else if ([cell isKindOfClass:[A3JHTableViewExpandableHeaderCell class]]) {
+				[((A3JHTableViewExpandableHeaderCell *)cell).expandButton setHidden:YES];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
             }
@@ -681,9 +682,12 @@ static NSString *CellIdentifier = @"Cell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     [self.firstResponder resignFirstResponder];
-    
+	
     A3JHTableViewElement *element = [self.root elementForIndexPath:indexPath];
 
+	if ([element isKindOfClass:[A3JHTableViewExpandableElement class]]) {
+		return;
+	}
     if (element.identifier != AddBudgetCellID_Date) {
         [self hideDatePickerViewCell];
     }
