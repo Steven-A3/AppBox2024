@@ -247,7 +247,7 @@
 		});
 	}
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        [self setupBannerViewForAdUnitID:AdMobAdUnitIDDaysCounter keywords:nil gender:kGADGenderUnknown];
+        [self setupBannerViewForAdUnitID:AdMobAdUnitIDDaysCounter keywords:nil gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
     }
 	
 	UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
@@ -1113,6 +1113,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 }
 
 #pragma mark - UISearchBarDelegate
+
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     self.searchResultArray = [_itemArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"calendarName contains[cd] %@",searchText]];
@@ -1120,6 +1121,33 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
     [self.searchDisplayController.searchResultsTableView reloadData];
     self.searchDisplayController.searchResultsTableView.separatorInset = UIEdgeInsetsZero;
     self.searchDisplayController.searchBar.backgroundColor = self.navigationController.navigationBar.backgroundColor;
+}
+
+#pragma mark - AdMob
+
+- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+	[self.view addSubview:bannerView];
+	
+	UIView *superview = self.view;
+	[bannerView remakeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(superview.left);
+		make.right.equalTo(superview.right);
+		make.bottom.equalTo(superview.bottom).with.offset(-44);
+		make.height.equalTo(@(bannerView.bounds.size.height));
+	}];
+	
+	[_addEventButton remakeConstraints:^(MASConstraintMaker *make) {
+		make.centerX.equalTo(self.view.centerX);
+		make.bottom.equalTo(self.view.bottom).with.offset(-(55 + (IS_IPHONE ? 50 : 90)));
+		make.width.equalTo(@44);
+		make.height.equalTo(@44);
+	}];
+	
+	UIEdgeInsets contentInset = self.tableView.contentInset;
+	contentInset.bottom = bannerView.bounds.size.height;
+	self.tableView.contentInset = contentInset;
+	
+	[self.view layoutIfNeeded];
 }
 
 @end

@@ -132,7 +132,7 @@
 		[self leftBarButtonAppsButton];
 	}
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDBattery keywords:nil gender:kGADGenderUnknown];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDBattery keywords:nil gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
 	}
 }
 
@@ -532,6 +532,27 @@ static NSString *CellIdentifier = @"Cell";
     }
     
     [self.tableView reloadData];
+}
+
+#pragma mark - AdMob
+
+- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+	if (self != [self.navigationController visibleViewController]) {
+		[bannerView removeFromSuperview];
+		return;
+	}
+	[self.view.superview addSubview:bannerView];
+	
+	UIView *superview = self.view;
+	[bannerView remakeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(superview.left);
+		make.right.equalTo(superview.right);
+		make.bottom.equalTo(superview.bottom);
+		make.height.equalTo(@(bannerView.bounds.size.height));
+	}];
+	UIEdgeInsets contentInset = self.tableView.contentInset;
+	contentInset.bottom = bannerView.bounds.size.height;
+	self.tableView.contentInset = contentInset;
 }
 
 @end
