@@ -160,7 +160,7 @@
 			repayment = 0;
 		}
 	} else {
-		repayment = principal / termsInFrequency;
+		repayment = (principal - downPayment) / termsInFrequency;
 	}
 
 	FNLOG("principal = %f\nmonthlyPayment = %f\nmonthlyInterestRate = %f\nterminMonth = %f\ndownPayment = %f", principal, repayment, interestRateOfFrequency, termsInFrequency, downPayment);
