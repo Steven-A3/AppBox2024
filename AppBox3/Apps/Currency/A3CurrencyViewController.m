@@ -365,4 +365,9 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 	}
 }
 
+- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
+	FNLOG();
+	return NO;
+}
+
 @end
