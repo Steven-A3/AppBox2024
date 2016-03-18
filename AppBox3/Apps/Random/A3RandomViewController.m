@@ -404,7 +404,6 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 	NSInteger component = textField == _minimumValueTextField ? 0 : 1;
 	[_limitNumberPickerView selectRow:number inComponent:component animated:YES];
 	[self pickerView:_limitNumberPickerView didSelectRow:number inComponent:component];
-	_simpleNormalNumberKeyboard = nil;
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
