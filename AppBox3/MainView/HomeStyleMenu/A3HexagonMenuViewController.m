@@ -24,6 +24,7 @@
 @property (nonatomic, strong) NSIndexPath *selectedIndexPath;
 @property (nonatomic, copy) NSMutableArray *previousMenuItemsBeforeMovingCell;
 @property (nonatomic, strong) NSArray *availableMenuItems;
+@property (nonatomic, strong) MASConstraint *appTitleTopConstraint;
 
 @end
 
@@ -250,7 +251,7 @@
 		UIView *superview = _collectionView.backgroundView;
 		[_appTitleLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(superview.centerX);
-			make.top.equalTo(superview.bottom).with.multipliedBy(0.2);
+			_appTitleTopConstraint =  make.top.equalTo(superview.bottom).with.multipliedBy(IS_PORTRAIT ? 0.2 : 0.13);
 		}];
 	}
 	return _appTitleLabel;
@@ -344,6 +345,10 @@
 		}
 		_collectionView.contentInset = UIEdgeInsetsMake((size.height - contentSize.height)/2 + offset, 0, (size.height - contentSize.height)/2 - offset, 0);
 	}
+	[_appTitleTopConstraint uninstall];
+	[_appTitleLabel makeConstraints:^(MASConstraintMaker *make) {
+		make.top.equalTo(self.view.bottom).with.multipliedBy(size.width < size.height ? 0.2 : 0.13);
+	}];
 }
 
 @end
