@@ -503,30 +503,34 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 	}
 }
 
+- (NSArray *)defaultFavorites {
+	NSArray *menus;
+	if (IS_IPHONE) {
+		menus =
+		@[@{kA3AppsMenuName : A3AppName_CurrencyConverter},
+		  @{kA3AppsMenuName : A3AppName_Level},
+		  @{kA3AppsMenuName : A3AppName_UnitConverter},
+		  @{kA3AppsMenuName : A3AppName_Wallet},
+		  ];
+	} else {
+		menus =
+		@[@{kA3AppsMenuName : A3AppName_CurrencyConverter},
+		  @{kA3AppsMenuName : A3AppName_LoanCalculator},
+		  @{kA3AppsMenuName : A3AppName_UnitConverter},
+		  @{kA3AppsMenuName : A3AppName_Wallet},
+		  ];
+	}
+	return menus;
+}
+
 - (NSDictionary *)favoriteMenuDictionary {
 	NSDictionary *dictionary = [[A3SyncManager sharedSyncManager] objectForKey:A3MainMenuDataEntityFavorites];
 	if (!dictionary) {
-		NSArray *menus;
-		if (IS_IPHONE) {
-			menus =
-			@[@{kA3AppsMenuName : A3AppName_CurrencyConverter},
-			  @{kA3AppsMenuName : A3AppName_Level},
-			  @{kA3AppsMenuName : A3AppName_UnitConverter},
-			  @{kA3AppsMenuName : A3AppName_Wallet},
-			  ];
-		} else {
-			menus =
-			@[@{kA3AppsMenuName : A3AppName_CurrencyConverter},
-			@{kA3AppsMenuName : A3AppName_LoanCalculator},
-			@{kA3AppsMenuName : A3AppName_UnitConverter},
-			@{kA3AppsMenuName : A3AppName_Wallet},
-			];
-		}
 		dictionary = @{
 				kA3AppsMenuName : @"Favorites",
 				kA3AppsMenuCollapsed : @NO,
 				kA3AppsMenuExpandable : @YES,
-				kA3AppsExpandableChildren : menus,
+				kA3AppsExpandableChildren : [self defaultFavorites],
 		};
 		[[A3SyncManager sharedSyncManager] setObject:dictionary forKey:A3MainMenuDataEntityFavorites state:A3DataObjectStateInitialized];
 	}
@@ -576,6 +580,9 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
     if (![[UIApplication sharedApplication] respondsToSelector:NSSelectorFromString(@"shortcutItems")])
         return;
     NSArray *favoriteMenus = [self favoriteItems];
+	if (![favoriteMenus count]) {
+		favoriteMenus = [self defaultFavorites];
+	}
     NSMutableArray *newShortcutItems = [NSMutableArray new];
 
 	NSDictionary *appInfoDictionary = [self appInfoDictionary];
