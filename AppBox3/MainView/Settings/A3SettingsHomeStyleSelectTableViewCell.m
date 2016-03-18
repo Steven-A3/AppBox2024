@@ -41,6 +41,7 @@
 		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
 	[_tableView reloadData];
+	[_tableView scrollRectToVisible:self.frame animated:YES];
 }
 
 - (IBAction)hexagonButtonSelected:(id)sender {
@@ -49,6 +50,7 @@
 		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
 	[_tableView reloadData];
+	[_tableView scrollRectToVisible:self.frame animated:YES];
 }
 
 - (IBAction)gridButtonSelected:(id)sender {
@@ -57,6 +59,7 @@
 		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
 	[_tableView reloadData];
+	[_tableView scrollRectToVisible:self.frame animated:YES];
 }
 
 - (void)setupBorderStyle:(UIButton *)button {

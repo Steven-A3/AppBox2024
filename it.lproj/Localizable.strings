@@ -6,13 +6,18 @@
  */
 
 "Calculator" = "Calcolatrice";
-"Date Calculator" = "Calcolatrice Data";
+"Date Calculator" = "Calcola Data";
+"Date Calc" = "Calcola Data";
 "Loan Calculator" = "Calcolatrice Prestito";
+"Loan Calc" = "Prestito";
 "Sales Calculator" = "Calcolatrice Sconti";
 "Sales Calculator_Short" = "Calcolatrice Sconti";
+"Sales Calc" = "Calcola Sconti";
 "Percent Calculator" = "Calcolatrice Percentuale";
 "Percent Calculator_Short" = "Calcolatrice Percentuale";
+"Percent Calc" = "Percentuale";
 "Tip Calculator" = "Calcolatrice Mancia";
+"Tip Calc" = "Calcola Mancia";
 "Unit Price" = "Prezzo unitario";
 
 "Currency Converter" = "Convertitore Valuta";
@@ -23,12 +28,15 @@
 
 "Expense List" = "Lista Spesa";
 "Days Counter" = "Conta Giorni";
+"DaysCounter" = "Conta Giorni";
 "Ladies Calendar" = "Calendario femminile";
+"L Calendar" = "L Calendario";
 "Wallet" = "Portafoglio";
 
 "Holidays" = "Festività";
 
 "Battery Status" = "Stato Batteria";
+"Battery" = "Batteria";
 "Clock" = "Orologio";
 "Magnifier" = "Lente d'ingrandimento";
 "Mirror" = "Specchio";

@@ -1,3 +1,21 @@
+"Date Calculator" = "日期計算";
+"Date Calc" = "日期計算";
+"Loan Calculator" = "貸款計算";
+"Loan Calc" = "Loan Calc";
+"Sales Calculator" = "折扣價格計算";
+"Sales Calculator_Short" = "折扣價格計算";
+"Sales Calc" = "折扣價格計算";
+"Tip Calculator" = "小費計算";
+"Tip Calc" = "小費計算";
+"Percent Calculator" = "百分比計算器";
+"Percent Calc" = "百分比計算器";
+"Days Counter" = "天計數器";
+"DaysCounter" = "天計數器";
+"Ladies Calendar" = "淑女日曆";
+"L Calendar" = "淑女日曆";
+"Battery Status" = "電池狀態";
+"Battery" = "電池狀態";
+
 "Level" = "確定水平";
 "Ruler" = "尺子";
 "Turn Passcode On" = "打開密碼";
@@ -175,7 +193,6 @@
 "Calendar" = "日曆";
 "Share Days Counter Data" = "共享日期計算數據";
 "Date, Principal, Payment, Interest, Balance" = "日期, 本金, 支付, 利率, 帳戶餘額";
-"Loan Calculator" = "貸款計算";
 "Origami" = "折紙效果";
 "Recent" = "最近記錄";
 "30 minutes" = "30分鐘";
@@ -197,7 +214,6 @@
 "Starts-Ends" = "開始-結束";
 "Add Account" = "增加帳戶";
 "The best unit price is B at %@" = "%@時 最好的單位價格是B";
-"Date Calculator" = "日期計算";
 "9 Months" = "9個月";
 "Chrome" = "鉻黃";
 "No Photos" = "沒有照片";
@@ -379,7 +395,6 @@
 "Shopping" = "購物";
 "OK" = "確認";
 "Notice" = "通知";
-"Ladies Calendar" = "淑女日曆";
 "Caution Flare" = "注意標誌";
 "INTEREST" = "利息";
 "Acknowledgement" = "確認";
@@ -410,7 +425,6 @@
 "Wipe" = "擦除";
 "I'd like to share a conversion with you." = "我想和你分享一段對話";
 "Shuffle" = "隨機播放";
-"Tip Calculator" = "小費計算";
 "Duration Time" = "持續時間";
 "List_Upcoming" = "即將到來";
 "Tip" = "小費";
@@ -458,7 +472,6 @@
 "%ld of %ld" = "%ld / %ld";
 "Low" = "低";
 "Methods" = "方法";
-"Percent Calculator" = "百分比計算器";
 "day(s)" = "天";
 "Add Period" = "增加週期";
 "Now" = "現在";
@@ -474,7 +487,6 @@
 "Food" = "食物";
 "None_Mirror" = "無";
 "Since" = "從";
-"Sales Calculator_Short" = "折扣價格計算";
 "2 years" = "2年";
 "Sun" = "星期天";
 "Increase" = "增加";
@@ -496,7 +508,6 @@
 "Share Currency Converter Data" = "共享貨幣轉換數據";
 "Converter" = "轉換器";
 "Use AppBox Pro" = "使用 AppBox Pro";
-"Sales Calculator" = "折扣價格計算";
 "ADVANCED" = "高級";
 "Category" = "種類";
 "Result" = "結果";
@@ -516,7 +527,6 @@
 "Add" = "增加";
 "Prev" = "上一個";
 "day(s) before" = "天前";
-"Days Counter" = "天計數器";
 "Work" = "工作";
 "Calculator using AppBox Pro" = "使用AppBox Pro的計算器";
 "Leap Month" = "閏月";
@@ -633,7 +643,6 @@
 "Dissolve" = "漸隱";
 "Tax" = "稅金";
 "Edit Budget" = "修改預算";
-"Battery Status" = "電池狀態";
 "Storage" = "儲存設備";
 "You can convert more in the AppBox Pro." = "你可以在 AppBox Pro.轉換更多";
 "Add Field" = "增加項目";

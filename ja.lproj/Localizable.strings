@@ -7,12 +7,17 @@
 
 "Calculator" = "計算機";
 "Date Calculator" = "日付計算";
+"Date Calc" = "日付計算";
 "Loan Calculator" = "ローン計算";
+"Loan Calc" = "ローン計算";
 "Percent Calculator" = "パーセント計算";
 "Percent Calculator_Short" = "パーセント計算";
+"Percent Calc" = "パーセント計算";
 "Sales Calculator" = "割引価格計算";
 "Sales Calculator_Short" = "割引価格計算";
+"Sales Calc" = "割引価格計算";
 "Tip Calculator" = "チップ計算";
+"Tip Calc" = "チップ計算";
 "Unit Price" = "単価比較";
 
 "Currency Converter" = "為替換算";
@@ -23,12 +28,15 @@
 
 "Expense List" = "費用リスト";
 "Days Counter" = "イベントカレンダー";
+"DaysCounter" = "イベントカレンダー";
 "Ladies Calendar" = "レディースカレンダー";
+"L Calendar" = "レディースカレンダー";
 "Wallet" = "電子財布";
 
 "Holidays" = "祝日";
 
 "Battery Status" = "バッテリー状態";
+"Battery" = "バッテリー状態";
 "Clock" = "時計";
 "Magnifier" = "拡大鏡";
 "Mirror" = "ミラー";
@@ -1003,3 +1011,4 @@
 "TAP OR SHAKE TO GENERATE" = "タップやシェイク";
 "Minimum Value" = "最小値";
 "Maximum Value" = "最大値";
+

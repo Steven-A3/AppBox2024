@@ -942,3 +942,12 @@ Enter Encryption Key for Wallet.";
 "TAP OR SHAKE TO GENERATE" = "TAP OR SHAKE TO GENERATE";
 "Minimum Value" = "Minimum Value";
 "Maximum Value" = "Maximum Value";
+
+"Date Calc" = "Date Calc";
+"Loan Calc" = "Loan Calc";
+"Sales Calc" = "Sales Calc";
+"Tip Calc" = "Tip Calc";
+"Percent Calc" = "Percent Calc";
+"DaysCounter" = "DaysCounter";
+"L Calendar" = "L Calendar";
+"Battery" = "Battery";

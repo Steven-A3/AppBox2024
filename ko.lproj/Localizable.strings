@@ -7,12 +7,17 @@
 
 "Calculator" = "일반/공학용 계산기";
 "Date Calculator" = "날짜 계산";
+"Date Calc" = "날짜 계산";
 "Loan Calculator" = "대출 계산";
+"Loan Calc" = "대출 계산";
 "Sales Calculator" = "할인가격 계산";
 "Sales Calculator_Short" = "할인가격 계산";
+"Sales Calc" = "할인가격 계산";
 "Percent Calculator" = "퍼센트 계산";
 "Percent Calculator_Short" = "퍼센트 계산";
+"Percent Calc" = "퍼센트 계산";
 "Tip Calculator" = "팁 계산";
+"Tip Calc" = "팁 계산";
 "Unit Price" = "단가 비교";
 
 "Currency Converter" = "환율";
@@ -23,12 +28,15 @@
 
 "Expense List" = "지출 관리";
 "Days Counter" = "이벤트 캘린더";
+"DaysCounter" = "이벤트 캘린더";
 "Ladies Calendar" = "레이디 캘린더";
+"L Calendar" = "레이디 캘린더";
 "Wallet" = "전자지갑";
 
 "Holidays" = "세계휴일/기념일";
 
 "Battery Status" = "배터리 정보";
+"Battery" = "배터리 정보";
 "Clock" = "시계";
 "Mirror" = "거울";
 "Magnifier" = "돋보기";

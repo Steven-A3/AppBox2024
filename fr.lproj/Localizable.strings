@@ -7,12 +7,17 @@
 
 "Calculator" = "Calculette";
 "Date Calculator" = "Calculette de date";
+"Date Calc" = "Date Calc";
 "Loan Calculator" = "Calculette du prêt";
+"Loan Calc" = "Prêt";
 "Percent Calculator" = "Calculette de pourcentage";
 "Percent Calculator_Short" = "Pourcentage";
+"Percent Calc" = "Pourcentage";
 "Sales Calculator" = "Calculette de ventes";
 "Sales Calculator_Short" = "Calc de ventes";
+"Sales Calc" = "Calc de ventes";
 "Tip Calculator" = "Calculette du pourboire";
+"Tip Calc" = "Pourboires";
 "Unit Price" = "Prix à l'unité";
 
 "Currency Converter" = "Convertisseur de devises";
@@ -23,12 +28,15 @@
 
 "Expense List" = "Liste de dépense";
 "Days Counter" = "Événements";
+"DaysCounter" = "Événements";
 "Ladies Calendar" = "Calendrier féminin";
+"L Calendar" = "L Calendrier";
 "Wallet" = "Portefeuille";
 
 "Holidays" = "Jours fériés";
 
 "Battery Status" = "Batterie";
+"Battery" = "Batterie";
 "Clock" = "Horloge";
 "Mirror" = "Miroir";
 "Magnifier" = "Magnifier";

@@ -7,12 +7,17 @@
 
 "Calculator" = "计算器";
 "Date Calculator" = "日期计算";
+"Date Calc" = "日期计算";
 "Loan Calculator" = "贷款计算";
+"Loan Calc" = "贷款计算";
 "Sales Calculator" = "折扣价格计算";
 "Sales Calculator_Short" = "折扣价格计算";
+"Sales Calc" = "折扣价格计算";
 "Percent Calculator" = "百分比计算器";
 "Percent Calculator_Short" = "百分比计算器";
+"Percent Calc" = "百分比计算器";
 "Tip Calculator" = "小费计算";
+"Tip Calc" = "小费计算";
 "Unit Price" = "单价";
 
 "Currency Converter" = "币种转换器";
@@ -23,12 +28,15 @@
 
 "Expense List" = "费用清单";
 "Days Counter" = "天计数器";
+"DaysCounter" = "天计数器";
 "Ladies Calendar" = "淑女日历";
+"L Calendar" = "淑女日历";
 "Wallet" = "电子钱包";
 
 "Holidays" = "节假日/纪念日";
 
 "Battery Status" = "电池状态";
+"Battery" = "电池状态";
 "Clock" = "时钟";
 "Mirror" = "镜子";
 "Magnifier" = "放大镜";
