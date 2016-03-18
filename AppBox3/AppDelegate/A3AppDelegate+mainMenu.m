@@ -587,7 +587,7 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 
 	NSDictionary *appInfoDictionary = [self appInfoDictionary];
     for (NSDictionary *favoriteItem in favoriteMenus) {
-		NSString *iconName = appInfoDictionary[kA3AppsMenuImageName];
+		NSString *iconName = appInfoDictionary[favoriteItem[kA3AppsMenuName]][kA3AppsMenuImageName];
         UIApplicationShortcutItem *shortcutItem = [[UIApplicationShortcutItem alloc] initWithType:[NSString stringWithFormat:@"net.allaboutapps.%@", favoriteItem[kA3AppsMenuName]]
                                                                                    localizedTitle:NSLocalizedString(favoriteItem[kA3AppsMenuName], nil)
                                                                                 localizedSubtitle:Nil
