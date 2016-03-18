@@ -114,6 +114,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
 	if (section == 1) return 0;
+	if (section == 2) return 38.5;
 	return [self standardHeightForHeaderInSection:section];
 }
 
