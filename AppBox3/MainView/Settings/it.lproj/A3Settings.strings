@@ -214,3 +214,20 @@
 /* Class = "IBUITableViewSection"; footerTitle = "IMPORTANT: If you forget your passcode, you must delete the app and reinstall it. (Your data will be deleted if you reinstall the app.)"; ObjectID = "Sb9-sM-r8l"; */
 "Sb9-sM-r8l.footerTitle" = "IMPORTANTE: Se si dimentica il codice di accesso, è necessario eliminare l'applicazione e reinstallarla. (I vostri dati saranno cancellati, se si reinstalla l'applicazione.)";
 
+/* Class = "UIButton"; normalTitle = "Grid"; ObjectID = "1J3-ea-Ni3"; */
+"1J3-ea-Ni3.normalTitle" = "Griglia";
+
+/* Class = "UITableViewSection"; headerTitle = "HOME SCREEN STYLE"; ObjectID = "4kk-Sh-oCc"; */
+"4kk-Sh-oCc.headerTitle" = "Casa in stile schermo";
+
+/* Class = "UIButton"; normalTitle = "Hexagon"; ObjectID = "9Xh-7R-BIO"; */
+"9Xh-7R-BIO.normalTitle" = "Esagono";
+
+/* Class = "UILabel"; text = "Restore Purchase"; ObjectID = "C7v-Sr-wgh"; */
+"C7v-Sr-wgh.text" = "Ripristinare Acquisto Precedente";
+
+/* Class = "UIButton"; normalTitle = "List"; ObjectID = "l7a-V1-SMB"; */
+"l7a-V1-SMB.normalTitle" = "Lista";
+
+/* Class = "UILabel"; text = "Remove Ads"; ObjectID = "yfZ-vk-zWG"; */
+"yfZ-vk-zWG.text" = "Rimuovi pubbl.";

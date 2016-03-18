@@ -222,3 +222,20 @@
 /* Class = "IBUITableViewSection"; footerTitle = "IMPORTANT: If you forget your passcode, you must delete the app and reinstall it. (Your data will be deleted if you reinstall the app.)"; ObjectID = "Sb9-sM-r8l"; */
 "Sb9-sM-r8l.footerTitle" = "重要事项：如果您忘记了密码，则必须删除该应用程序，并重新安装。（您的数据将被删除，如果重新安装应用程序。）";
 
+/* Class = "UIButton"; normalTitle = "Grid"; ObjectID = "1J3-ea-Ni3"; */
+"1J3-ea-Ni3.normalTitle" = "格";
+
+/* Class = "UITableViewSection"; headerTitle = "HOME SCREEN STYLE"; ObjectID = "4kk-Sh-oCc"; */
+"4kk-Sh-oCc.headerTitle" = "主屏幕的风格";
+
+/* Class = "UIButton"; normalTitle = "Hexagon"; ObjectID = "9Xh-7R-BIO"; */
+"9Xh-7R-BIO.normalTitle" = "六边形";
+
+/* Class = "UILabel"; text = "Restore Purchase"; ObjectID = "C7v-Sr-wgh"; */
+"C7v-Sr-wgh.text" = "恢复上次购买";
+
+/* Class = "UIButton"; normalTitle = "List"; ObjectID = "l7a-V1-SMB"; */
+"l7a-V1-SMB.normalTitle" = "名单";
+
+/* Class = "UILabel"; text = "Remove Ads"; ObjectID = "yfZ-vk-zWG"; */
+"yfZ-vk-zWG.text" = "移除广告";

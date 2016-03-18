@@ -236,7 +236,7 @@
 	if ([menuInfo[kA3AppsMenuName] isEqualToString:A3AppName_None]) return;
 
 	NSDictionary *appInfo = [[A3AppDelegate instance] appInfoDictionary][menuInfo[kA3AppsMenuName]];
-	self.appTitleLabel.text = menuInfo[kA3AppsMenuName];
+	self.appTitleLabel.text = NSLocalizedString(menuInfo[kA3AppsMenuName], nil);
 	self.appTitleLabel.textColor = [A3AppDelegate instance].groupColors[appInfo[kA3AppsGroupName]];
 }
 

@@ -1,4 +1,4 @@
-﻿"qcD-FX-Y5d.title" = "需要密碼";
+"qcD-FX-Y5d.title" = "需要密碼";
 "2E1-Z8-v5l.title" = "選擇備份";
 "5tS-iN-3NI.title" = "Dropbox 文件";
 "oSP-yD-m2L.title" = "設定";
@@ -72,3 +72,20 @@
 "LOI-Yd-hc0.footerTitle" = "為農曆轉換器";
 "1dJ-y3-yh7.footerTitle" = "同步或備份每個應用的歷史記錄、天數計算事件、費用清單、淑女日曆週期和錢包資訊。
 ";
+/* Class = "UIButton"; normalTitle = "Grid"; ObjectID = "1J3-ea-Ni3"; */
+"1J3-ea-Ni3.normalTitle" = "格";
+
+/* Class = "UITableViewSection"; headerTitle = "HOME SCREEN STYLE"; ObjectID = "4kk-Sh-oCc"; */
+"4kk-Sh-oCc.headerTitle" = "主屏幕的風格";
+
+/* Class = "UIButton"; normalTitle = "Hexagon"; ObjectID = "9Xh-7R-BIO"; */
+"9Xh-7R-BIO.normalTitle" = "六邊形";
+
+/* Class = "UILabel"; text = "Restore Purchase"; ObjectID = "C7v-Sr-wgh"; */
+"C7v-Sr-wgh.text" = "還原先前的購買項目";
+
+/* Class = "UIButton"; normalTitle = "List"; ObjectID = "l7a-V1-SMB"; */
+"l7a-V1-SMB.normalTitle" = "名單";
+
+/* Class = "UILabel"; text = "Remove Ads"; ObjectID = "yfZ-vk-zWG"; */
+"yfZ-vk-zWG.text" = "移除廣告";

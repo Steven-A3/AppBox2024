@@ -183,7 +183,7 @@ NSString *const A3GridMenuCellID = @"gridCell";
 			imageName = [imageName stringByAppendingString:@"_Large"];
 		}
 		cell.imageName = imageName;
-		cell.titleLabel.text = appInfo[kA3AppsMenuNameForGrid];
+		cell.titleLabel.text = NSLocalizedString(appInfo[kA3AppsMenuNameForGrid], nil);
 	}
 
     return cell;

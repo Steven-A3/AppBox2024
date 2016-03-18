@@ -1228,7 +1228,6 @@
 		681361361A6CADC000E13F51 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LoanCalculatorPhoneStoryBoard.strings; sourceTree = "<group>"; };
 		681361371A6CADC000E13F51 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/UnitPriceStoryboard.strings; sourceTree = "<group>"; };
 		681361381A6CADC000E13F51 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/UnitPriceStoryboard_iPad.strings; sourceTree = "<group>"; };
-		6813613E1A6CADC100E13F51 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3Settings.strings; sourceTree = "<group>"; };
 		681361421A6CADDA00E13F51 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/A3CurrencyChartViewController.strings"; sourceTree = "<group>"; };
 		681361431A6CADDA00E13F51 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/A3CurrencySettings.strings"; sourceTree = "<group>"; };
 		681361471A6CADE200E13F51 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LoanCalculatorPadStoryBoard.strings"; sourceTree = "<group>"; };
@@ -1633,6 +1632,7 @@
 		684E9F0D188A4BB100FAA48E /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		68507F7E191CA72400C1C895 /* A3AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3AppDelegate.h; path = AppDelegate/A3AppDelegate.h; sourceTree = "<group>"; };
 		68507F7F191CA72400C1C895 /* A3AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3AppDelegate.m; path = AppDelegate/A3AppDelegate.m; sourceTree = "<group>"; };
+		68516F271C9BE98E00814963 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3Settings.strings; sourceTree = "<group>"; };
 		68521A3917E1EBB200E08FB1 /* NSDate-Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate-Utilities.h"; path = "External/NSDate-Extensions/NSDate-Utilities.h"; sourceTree = "<group>"; };
 		68521A3A17E1EBB200E08FB1 /* NSDate-Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate-Utilities.m"; path = "External/NSDate-Extensions/NSDate-Utilities.m"; sourceTree = "<group>"; };
 		68521A4417E1FF2E00E08FB1 /* FXLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FXLabel.h; path = External/FXLabel/FXLabel/FXLabel.h; sourceTree = "<group>"; };
@@ -7014,8 +7014,8 @@
 				68F150B0194C0E0E00159EAD /* fr */,
 				68F150B2194C0E1100159EAD /* pl */,
 				68F150B4194C0E1200159EAD /* es */,
-				6813613E1A6CADC100E13F51 /* en */,
 				681361501A6CADE300E13F51 /* zh-Hant */,
+				68516F271C9BE98E00814963 /* en */,
 			);
 			name = A3Settings.storyboard;
 			path = Settings;
