@@ -119,6 +119,7 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 	_shouldPresentAd = YES;
 
 	_isIAPRemoveAdsAvailable = NO;
+	_doneAskingRestorePurchase = NO;
 
 	[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
 

@@ -143,6 +143,8 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 #pragma mark - Ask Restore Purchase
 
 - (void)askRestorePurchase {
+	if ([A3AppDelegate instance].doneAskingRestorePurchase) return;
+	
 	// previousVersion과 currentVersion을 비교하여 다르다면 앱이 설치/업데이트 후 최초 실행중임을 알 수 있다.
 	NSString *currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
 	if ([currentVersion isEqualToString:[A3AppDelegate instance].previousVersion]) {
@@ -158,6 +160,8 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 		return;
 	}
 
+	[A3AppDelegate instance].doneAskingRestorePurchase = YES;
+	
 	if (!IS_IOS7 && IS_IPAD) {
 		UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Verification Required", @"Verification Required")
 																				 message:nil
