@@ -55,8 +55,7 @@
 		CLLocationManagerDelegate,
 		UIPopoverControllerDelegate,
 		UIPopoverControllerDelegate,
-		A3DateKeyboardDelegate,
-		A3TableViewExpandableHeaderCellProtocol
+		A3DateKeyboardDelegate
 		>
 
 @property (strong, nonatomic) NSArray *cellIDArray;
@@ -622,7 +621,6 @@
 				}
                 case EventCellType_Advanced:{
 					A3JHTableViewExpandableHeaderCell *expandableCell = [[A3JHTableViewExpandableHeaderCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-					expandableCell.delegate = self;
 					expandableCell.titleLabel.text = NSLocalizedString(@"ADVANCED", @"ADVANCED");
 					[expandableCell.expandButton setHidden:YES];
 					cell = expandableCell;
