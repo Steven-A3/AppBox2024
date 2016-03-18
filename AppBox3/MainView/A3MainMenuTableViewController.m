@@ -544,9 +544,11 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 - (A3TableViewMenuElement *)menuElementWithName:(NSString *)name {
 	A3TableViewSection *appMenuSection = self.rootElement.sectionsArray[1];
 	for (A3TableViewExpandableElement *menuGroup in appMenuSection.elements) {
-		for (A3TableViewMenuElement *menuElement in menuGroup.elements) {
-			if ([menuElement.title isEqualToString:name]) {
-				return menuElement;
+		if ([menuGroup isKindOfClass:[A3TableViewExpandableElement class]]) {
+			for (A3TableViewMenuElement *menuElement in menuGroup.elements) {
+				if ([menuElement.title isEqualToString:name]) {
+					return menuElement;
+				}
 			}
 		}
 	}
