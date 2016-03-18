@@ -232,7 +232,7 @@
 					[self presentLockScreen:self];
 				} else {
 					[self removeSecurityCoverView];
-					if (![self isMainMenuStyleList]) {
+					if ([self isMainMenuStyleList]) {
 						[self.mainMenuViewController openRecentlyUsedMenu:YES];
 					} else {
 						[self launchAppNamed:startingAppName verifyPasscode:NO delegate:nil animated:NO];
