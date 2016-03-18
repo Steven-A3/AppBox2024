@@ -348,6 +348,8 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 			A3TableViewMenuElement *childElement = [[expandableElement elements] lastObject];
 			NSString *groupName = [A3AppDelegate instance].appInfoDictionary[childElement.title][kA3AppsGroupName];
 			cell.textLabel.textColor = [A3AppDelegate instance].groupColors[groupName];
+		} else {
+			cell.textLabel.textColor = [UIColor blackColor];
 		}
 	}
 }
