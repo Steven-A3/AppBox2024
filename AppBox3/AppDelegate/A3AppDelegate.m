@@ -136,6 +136,7 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 	[[NSUbiquitousKeyValueStore defaultStore] synchronize];
 
 	[self setupContext];
+	[self favoriteMenuDictionary];
 
 	UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
 	if (localNotification) {
