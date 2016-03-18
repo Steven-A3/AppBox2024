@@ -36,9 +36,8 @@
 - (void)setupSubviews {
 	if (!_roundedRectView) {
 		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-		CGRect nativeBounds = [[UIScreen mainScreen] nativeBounds];
 		_roundedRectView = [UIView new];
-		if (nativeBounds.size.height / 2 > 1024) {
+		if (IS_IPAD_PRO) {
 			_roundedRectView.layer.cornerRadius = 22;
 			_roundedRectView.layer.borderWidth = 4;
 		} else {
@@ -73,7 +72,7 @@
 		_titleLabel.textColor = [UIColor whiteColor];
 		
 		CGFloat fontSize;
-		if ([[UIScreen mainScreen] nativeBounds].size.height / 2 > 1024) {
+		if (IS_IPAD_PRO) {
 			fontSize = 18;
 		} else if (screenBounds.size.height > 568) {
 			fontSize = 13;
