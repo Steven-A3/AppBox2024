@@ -27,6 +27,7 @@
 "Wallet" = "Wallet";
 
 "Holidays" = "Holidays";
+"Holidays Short" = "Holidays";
 
 "Battery Status" = "Battery Status";
 "Clock" = "Clock";
@@ -951,3 +952,8 @@ Enter Encryption Key for Wallet.";
 "DaysCounter" = "DaysCounter";
 "L Calendar" = "L Calendar";
 "Battery" = "Battery";
+
+"Drag here to hide" = "Drag here to hide";
+"Expense" = "Expense";
+"Flashlight Short" = "Flashlight";
+"Unit Price Short" = "Unit Price";

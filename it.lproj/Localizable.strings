@@ -19,6 +19,7 @@
 "Tip Calculator" = "Calcolatrice Mancia";
 "Tip Calc" = "Calcola Mancia";
 "Unit Price" = "Prezzo unitario";
+"Unit Price Short" = "Unitario";
 
 "Currency Converter" = "Convertitore Valuta";
 "Lunar Converter" = "Convertitore Lunare";
@@ -34,6 +35,7 @@
 "Wallet" = "Portafoglio";
 
 "Holidays" = "Festività";
+"Holidays Short" = "Festività";
 
 "Battery Status" = "Stato Batteria";
 "Battery" = "Batteria";
@@ -41,6 +43,7 @@
 "Magnifier" = "Lente d'ingrandimento";
 "Mirror" = "Specchio";
 "Flashlight" = "Torcia";
+"Flashlight Short" = "Torcia";
 "Random" = "Casuale";
 "Ruler" = "Righello";
 "Level" = "Livello";
@@ -997,3 +1000,6 @@ Inserire chiave di crittografia per il portafoglio.";
 "TAP OR SHAKE TO GENERATE" = "Toccare o Scuotere";
 "Minimum Value" = "Valore minimo";
 "Maximum Value" = "Valore massimo";
+
+"Drag here to hide" = "Trascinare qui per nascondere";
+"Expense" = "Spesa";

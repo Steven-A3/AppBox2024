@@ -15,10 +15,11 @@
 "Percent Calc" = "Pourcentage";
 "Sales Calculator" = "Calculette de ventes";
 "Sales Calculator_Short" = "Calc de ventes";
-"Sales Calc" = "Calc de ventes";
+"Sales Calc" = "Ventes";
 "Tip Calculator" = "Calculette du pourboire";
 "Tip Calc" = "Pourboires";
 "Unit Price" = "Prix à l'unité";
+"Unit Price Short" = "Unité";
 
 "Currency Converter" = "Convertisseur de devises";
 "Lunar Converter" = "Convertisseur lunaire";
@@ -34,6 +35,7 @@
 "Wallet" = "Portefeuille";
 
 "Holidays" = "Jours fériés";
+"Holidays Short" = "Jours fériés";
 
 "Battery Status" = "Batterie";
 "Battery" = "Batterie";
@@ -41,6 +43,7 @@
 "Mirror" = "Miroir";
 "Magnifier" = "Magnifier";
 "Flashlight" = "Lampe de poche";
+"Flashlight Short" = "Poche";
 "Random" = "Aléatoire";
 "Ruler" = "Règle";
 "Level" = "Niveau";
@@ -1002,3 +1005,6 @@
 "TAP OR SHAKE TO GENERATE" = "Taper ou Secouer";
 "Minimum Value" = "Valeur minimale";
 "Maximum Value" = "Valeur maximum";
+
+"Drag here to hide" = "Faites glisser ici pour cacher";
+"Expense" = "Dépense";

@@ -42,6 +42,7 @@
 " by %@" = " 提供 %@";
 "Change Passcode" = "更改密碼";
 "Flashlight" = "手電燈";
+"Flashlight Short" = "手電燈";
 "Delete Photo" = "刪除照片";
 "How To Enable Data Protection" = "如何啟動數據保護";
 "Delete Event" = "刪除事件";
@@ -677,6 +678,8 @@
 "To: " = "到: ";
 "Starts" = "開始日";
 "Unit Price" = "單價";
+"Unit Price Short" = "單價";
+
 "Slideshow Options" = "幻燈片顯示選項";
 " Total Per Person" = " 總計/人";
 "You can calculate more in the AppBox Pro." = "你可以在 AppBox Pro中做更多計算。";
@@ -715,6 +718,7 @@
 "4 hours" = "4個小時";
 "Continue" = "繼續";
 "Holidays" = "節假日/紀念日";
+"Holidays Short" = "節假日/紀念日";
 "FaceTime" = "FaceTime";
 "All-day" = "全天";
 "Enter The Number!" = "輸入號碼";
@@ -832,3 +836,6 @@
 "TAP OR SHAKE TO GENERATE" = "點擊或動搖";
 "Minimum Value" = "最小值";
 "Maximum Value" = "最大值";
+
+"Drag here to hide" = "拖到這裡隱藏";
+"Expense" = "費用清單";

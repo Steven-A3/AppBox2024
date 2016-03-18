@@ -95,7 +95,7 @@ NSString *const A3AppNameGrid_DateCalculator = @"Date Calc";
 NSString *const A3AppNameGrid_LoanCalculator = @"Loan Calc";
 NSString *const A3AppNameGrid_SalesCalculator = @"Sales Calc";
 NSString *const A3AppNameGrid_TipCalculator = @"Tip Calc";
-NSString *const A3AppNameGrid_UnitPrice = @"Unit Price";
+NSString *const A3AppNameGrid_UnitPrice = @"Unit Price Short";
 NSString *const A3AppNameGrid_Calculator = @"Calculator";
 NSString *const A3AppNameGrid_PercentCalculator = @"Percent Calc";
 NSString *const A3AppNameGrid_CurrencyConverter = @"Currency";
@@ -105,13 +105,13 @@ NSString *const A3AppNameGrid_UnitConverter = @"Unit";
 NSString *const A3AppNameGrid_DaysCounter = @"DaysCounter";
 NSString *const A3AppNameGrid_LadiesCalendar = @"L Calendar";
 NSString *const A3AppNameGrid_Wallet = @"Wallet";
-NSString *const A3AppNameGrid_ExpenseList = @"Expense List";
-NSString *const A3AppNameGrid_Holidays = @"Holidays";
+NSString *const A3AppNameGrid_ExpenseList = @"Expense";
+NSString *const A3AppNameGrid_Holidays = @"Holidays Short";
 NSString *const A3AppNameGrid_Clock = @"Clock";
 NSString *const A3AppNameGrid_BatteryStatus = @"Battery";
 NSString *const A3AppNameGrid_Mirror = @"Mirror";
 NSString *const A3AppNameGrid_Magnifier = @"Magnifier";
-NSString *const A3AppNameGrid_Flashlight = @"Flashlight";
+NSString *const A3AppNameGrid_Flashlight = @"Flashlight Short";
 NSString *const A3AppNameGrid_Random = @"Random";
 NSString *const A3AppNameGrid_Ruler = @"Ruler";
 NSString *const A3AppNameGrid_Level = @"Level";
@@ -613,7 +613,6 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 	if (IS_IPHONE) {
 		NSArray *menuTypes = [self availableMenuTypes];
 		NSString *userSetting = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
-		if (!userSetting) userSetting = A3SettingsMainMenuStyleHexagon;
 		NSInteger idx = [menuTypes indexOfObject:userSetting];
 		switch (idx) {
 			case 0:

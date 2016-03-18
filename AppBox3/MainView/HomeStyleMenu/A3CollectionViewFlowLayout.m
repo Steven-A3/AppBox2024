@@ -425,18 +425,22 @@
 		make.top.equalTo(superview.top);
 		make.left.equalTo(superview.left);
 		make.right.equalTo(superview.right);
-		make.height.equalTo(superview.height).with.multipliedBy(0.12);
+		make.height.equalTo(superview.height).with.multipliedBy(0.11);
 	}];
 	
 	UILabel *textLabel = [UILabel new];
-	textLabel.text = @"✕Remove";
+	textLabel.text = NSLocalizedString(@"Drag here to hide", @"Drag here to hide");
 	textLabel.textColor = [UIColor whiteColor];
-	textLabel.font = [UIFont systemFontOfSize:32];
+	textLabel.font = [UIFont systemFontOfSize:24];
+	textLabel.adjustsFontSizeToFitWidth = YES;
+	textLabel.minimumScaleFactor = 0.4;
+	textLabel.textAlignment = NSTextAlignmentCenter;
 	[_deleteZoneView addSubview:textLabel];
 	
 	[textLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.centerX.equalTo(_deleteZoneView.centerX);
-		make.centerY.equalTo(_deleteZoneView.centerY);
+		make.bottom.equalTo(_deleteZoneView.bottom).with.offset(-10);
+		make.left.equalTo(_deleteZoneView.left).with.offset(10);
+		make.right.equalTo(_deleteZoneView.right).with.offset(-10);
 	}];
 }
 

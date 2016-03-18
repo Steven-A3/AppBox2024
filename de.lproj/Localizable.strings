@@ -7,18 +7,19 @@
 
 "Calculator" = "Rechner";
 "Date Calculator" = "Datumsrechner";
-"Date Calc" = "Datumsrechner";
+"Date Calc" = "Datum";
 "Loan Calculator" = "Darlehensrechner";
-"Loan Calc" = "Darlehensrechner";
+"Loan Calc" = "Darlehen";
 "Sales Calculator" = "Kaufpreisrechner";
 "Sales Calculator_Short" = "Kaufpreisrechner";
-"Sales Calc" = "Kaufpreisrechner";
+"Sales Calc" = "Kaufpreis";
 "Percent Calculator" = "Prozentrechner";
 "Percent Calculator_Short" = "Prozentrechner";
-"Percent Calc" = "Prozentrechner";
+"Percent Calc" = "Prozent";
 "Tip Calculator" = "Trinkgeldrechner";
-"Tip Calc" = "Trinkgeldrechner";
+"Tip Calc" = "Trinkgeld";
 "Unit Price" = "Stückpreis";
+"Unit Price Short" = "Stückpreis";
 
 "Currency Converter" = "Währungsrechner";
 "Lunar Converter" = "Lunar Umrechner";
@@ -27,23 +28,26 @@
 "Unit Converter" = "Einheitenrechner";
 
 "Expense List" = "Ausgabenliste";
+"Expense" = "Ausgabe";
 "Days Counter" = "Tageszähler";
 "DaysCounter" = "Tageszähler";
 "Ladies Calendar" = "Damen-Kalender";
-"L Calendar" = "Damen-Kalender";
+"L Calendar" = "D-Kalender";
 "Wallet" = "Geldbörse";
 
 "Holidays" = "Feiertage";
+"Holidays Short" = "Feiertage";
 
 "Battery Status" = "Batteriestatus";
-"Battery" = "Batteriestatus";
+"Battery" = "Batterie";
 "Clock" = "Uhr";
 "Mirror" = "Spiegel";
 "Magnifier" = "Lupe";
 "Flashlight"  = "Taschenlampe";
+"Flashlight Short" = "Taschenlampe";
 "Random"  = "Zufallszahl";
 "Ruler" = "Lineal";
-"Level"  = "Wasserwaage";
+"Level"  = "Ebene";
 
 "Select Currency" = "Währung wählen";
 "Principal" = "Betrag";
@@ -1013,3 +1017,5 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 "TAP OR SHAKE TO GENERATE" = "Tippen oder schütteln zu erzeugen";
 "Minimum Value" = "Minimalwert";
 "Maximum Value" = "Maximalwert";
+
+"Drag here to hide" = "Ziehen Sie hier verstecken";

@@ -19,6 +19,7 @@
 "Tip Calculator" = "Napiwki";
 "Tip Calc" = "Napiwki";
 "Unit Price" = "Cena jednostkowa";
+"Unit Price Short" = "Jednostkowa";
 
 "Currency Converter" = "Przelicznik walut";
 "Lunar Converter" = "Konwerter księżycowy";
@@ -34,6 +35,7 @@
 "Wallet" = "Portfel";
 
 "Holidays" = "Dni wolne";
+"Holidays Short" = "Dni wolne";
 
 "Battery Status" = "Bateria";
 "Battery" = "Battery";
@@ -41,6 +43,7 @@
 "Mirror" = "Lustro";
 "Magnifier" = "Lupa";
 "Flashlight" = "Latarka";
+"Flashlight Short" = "Latarka";
 "Random" = "Losowanie";
 "Ruler" = "Linijka";
 "Level" = "Poziomnica";
@@ -1003,3 +1006,6 @@ Wprowadź klucz szyfrowania dla portfela.";
 "TAP OR SHAKE TO GENERATE" = "Dotknij lub Wstrząsnąć";
 "Minimum Value" = "Wartość minimalna";
 "Maximum Value" = "Wartość maksymalna";
+
+"Drag here to hide" = "Przeciągnij, aby ukryć";
+"Expense" = "Wydatków";

@@ -19,6 +19,7 @@
 "Tip Calculator" = "팁 계산";
 "Tip Calc" = "팁 계산";
 "Unit Price" = "단가 비교";
+"Unit Price Short" = "단가 비교";
 
 "Currency Converter" = "환율";
 "Lunar Converter" = "양력/음력 변환";
@@ -34,6 +35,7 @@
 "Wallet" = "전자지갑";
 
 "Holidays" = "세계휴일/기념일";
+"Holidays Short" = "세계휴일/기념일";
 
 "Battery Status" = "배터리 정보";
 "Battery" = "배터리 정보";
@@ -41,6 +43,7 @@
 "Mirror" = "거울";
 "Magnifier" = "돋보기";
 "Flashlight" = "손전등";
+"Flashlight Short" = "손전등";
 "Random" = "난수생성";
 "Ruler" = "자";
 "Level" = "수평계";
@@ -1012,3 +1015,6 @@
 "TAP OR SHAKE TO GENERATE" = "터치하거나 흔들어 주세요.";
 "Minimum Value" = "최소값";
 "Maximum Value" = "최대값";
+
+"Drag here to hide" = "여기로 끌어서 숨김";
+"Expense" = "지출 관리";

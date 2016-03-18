@@ -70,7 +70,6 @@
 - (void)reloadButtonBorderColor {
 	NSArray *menuTypes = [[A3AppDelegate instance] availableMenuTypes];
 	NSString *style = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
-	if (!style) style = A3SettingsMainMenuStyleHexagon;
 	NSInteger idx = [menuTypes indexOfObject:style];
 
 	switch (idx) {

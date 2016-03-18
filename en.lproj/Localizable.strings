@@ -14,6 +14,7 @@
 "Percent Calculator_Short" = "Percent Calculator";
 "Tip Calculator" = "Tip Calculator";
 "Unit Price" = "Unit Price";
+"Unit Price Short" = "Unit Price";
 
 "Currency Converter" = "Currency Converter";
 "Lunar Converter" = "Lunar Converter";
@@ -27,6 +28,7 @@
 "Wallet" = "Wallet";
 
 "Holidays" = "Holidays";
+"Holidays Short" = "Holidays";
 
 "Battery Status" = "Battery Status";
 "Clock" = "Clock";
@@ -951,3 +953,7 @@ Enter Encryption Key for Wallet.";
 "Battery" = "Battery";
 "Ruler" = "Ruler";
 "Level" = "Level";
+"Drag here to hide" = "Drag here to hide";
+"Expense" = "Expense";
+"Flashlight Short" = "Flashlight";
+

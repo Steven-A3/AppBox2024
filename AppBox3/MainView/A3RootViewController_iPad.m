@@ -44,7 +44,6 @@
 
 	NSArray *menuTypes = [[A3AppDelegate instance] availableMenuTypes];
 	NSString *mainMenuStyle = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
-	if (!mainMenuStyle) mainMenuStyle = A3SettingsMainMenuStyleHexagon;
 	NSInteger idx = [menuTypes indexOfObject:mainMenuStyle];
 	switch (idx) {
 		case 0:	{

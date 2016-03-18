@@ -46,9 +46,6 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
     [super viewDidLoad];
 
 	_previousMainMenuStyle = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
-	if (!_previousMainMenuStyle) {
-		_previousMainMenuStyle = A3SettingsMainMenuStyleHexagon;
-	}
 
 	[self makeBackButtonEmptyArrow];
 	[self leftBarButtonAppsButton];

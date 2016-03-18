@@ -19,6 +19,7 @@
 "Tip Calculator" = "チップ計算";
 "Tip Calc" = "チップ計算";
 "Unit Price" = "単価比較";
+"Unit Price Short" = "単価比較";
 
 "Currency Converter" = "為替換算";
 "Lunar Converter" = "旧暦変換";
@@ -34,6 +35,7 @@
 "Wallet" = "電子財布";
 
 "Holidays" = "祝日";
+"Holidays Short" = "祝日";
 
 "Battery Status" = "バッテリー状態";
 "Battery" = "バッテリー状態";
@@ -41,6 +43,7 @@
 "Magnifier" = "拡大鏡";
 "Mirror" = "ミラー";
 "Flashlight" = "懐中電灯";
+"Flashlight Short" = "懐中電灯";
 "Random" = "乱数生成";
 "Ruler" = "ルーラー";
 "Level" = "水準器";
@@ -1011,4 +1014,5 @@
 "TAP OR SHAKE TO GENERATE" = "タップやシェイク";
 "Minimum Value" = "最小値";
 "Maximum Value" = "最大値";
-
+"Drag here to hide" = "非表示にするにはここにドラッグします";
+"Expense" = "費用リスト";

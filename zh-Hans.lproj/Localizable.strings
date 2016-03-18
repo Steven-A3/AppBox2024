@@ -19,6 +19,7 @@
 "Tip Calculator" = "小费计算";
 "Tip Calc" = "小费计算";
 "Unit Price" = "单价";
+"Unit Price Short" = "单价";
 
 "Currency Converter" = "币种转换器";
 "Lunar Converter" = "阴历/阳历";
@@ -34,6 +35,7 @@
 "Wallet" = "电子钱包";
 
 "Holidays" = "节假日/纪念日";
+"Holidays Short" = "节假日/纪念日";
 
 "Battery Status" = "电池状态";
 "Battery" = "电池状态";
@@ -41,6 +43,7 @@
 "Mirror" = "镜子";
 "Magnifier" = "放大镜";
 "Flashlight" = "手电灯";
+"Flashlight Short" = "手电灯";
 "Random" = "随机数据生成";
 "Ruler" = "尺子";
 "Level" = "在水平面上";
@@ -1018,3 +1021,6 @@
 "TAP OR SHAKE TO GENERATE" = "点击或动摇";
 "Minimum Value" = "最小值";
 "Maximum Value" = "最大值";
+
+"Drag here to hide" = "拖到这里隐藏";
+"Expense" = "费用清单";

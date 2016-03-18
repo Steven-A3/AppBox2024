@@ -6,8 +6,8 @@
  */
 
 "Calculator" = "Calculadora";
-"Date Calculator" = "Calculo de fechas";
-"Date Calc" = "Calculo de fechas";
+"Date Calculator" = "Fechas";
+"Date Calc" = "Fechas";
 "Loan Calculator" = "Préstamo";
 "Loan Calc" = "Préstamo";
 "Percent Calculator" = "Porcentaje";
@@ -19,6 +19,7 @@
 "Tip Calculator" = "Calculador de propina";
 "Tip Calc" = "Propina";
 "Unit Price" = "Precio unitario";
+"Unit Price Short" = "Unitario";
 
 "Currency Converter" = "Moneda";
 "Lunar Converter" = "Lunar Convertidor";
@@ -27,13 +28,14 @@
 "Unit Converter" = "Unidad";
 
 "Expense List" = "Lista de gastos";
-"Days Counter" = "Contador de días";
-"DaysCounter" = "Contador de días";
+"Days Counter" = "Calendario de eventos";
+"DaysCounter" = "Eventos";
 "Ladies Calendar" = "Calendario femenino";
-"L Calendar" = "L Calendario";
+"L Calendar" = "F Calendario";
 "Wallet" = "Billetera";
 
 "Holidays" = "Días festivos";
+"Holidays Short" = "Festivos";
 
 "Battery Status" = "Batería";
 "Battery" = "Batería";
@@ -41,6 +43,7 @@
 "Mirror" = "Espejo";
 "Magnifier" = "Amplificador";
 "Flashlight" = "Linterna";
+"Flashlight Short" = "Linterna";
 "Random" = "Random";
 "Ruler" = "Regla";
 "Level" = "Nivelar";
@@ -1000,3 +1003,6 @@ Introduzca la clave de cifrado para el bolsillo.";
 "TAP OR SHAKE TO GENERATE" = "TOQUE O SACUDA";
 "Minimum Value" = "Valor mínimo";
 "Maximum Value" = "Valor máximo";
+
+"Drag here to hide" = "Arrastre aquí para ocultar";
+"Expense" = "Gastos";
