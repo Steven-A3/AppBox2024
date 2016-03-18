@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="s55-Nm-cjw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="s55-Nm-cjw">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
     </dependencies>
     <scenes>
         <!--BateryStatus Instruction View Controller-->
@@ -1299,15 +1299,23 @@ then drag it up or down</string>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="JsV-VK-JI3">
-                                <rect key="frame" x="709" y="47" width="42" height="42"/>
+                                <rect key="frame" x="709" y="425" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="42" id="H0O-2l-56O"/>
                                     <constraint firstAttribute="height" constant="42" id="Q2i-yR-ovh"/>
                                 </constraints>
                             </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="u3U-SJ-HoH">
+                                <rect key="frame" x="677" y="20" width="42" height="42"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="cC4-wh-ZqW"/>
+                                    <constraint firstAttribute="width" constant="42" id="ewT-N7-Zce"/>
+                                </constraints>
+                            </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="wPD-aw-xaY">
-                                <rect key="frame" x="363" y="149" width="42" height="42"/>
+                                <rect key="frame" x="363" y="165" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="42" id="cdF-5H-AWl"/>
@@ -1315,14 +1323,14 @@ then drag it up or down</string>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="uas-Op-P3S">
-                                <rect key="frame" x="410" y="149" width="14" height="14"/>
+                                <rect key="frame" x="410" y="165" width="14" height="14"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="14" id="6LP-Zw-1f0"/>
                                     <constraint firstAttribute="height" constant="14" id="9Dl-zT-2NZ"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="699" translatesAutoresizingMaskIntoConstraints="NO" id="0A4-77-7Bu">
-                                <rect key="frame" x="0.0" y="47" width="699" height="42"/>
+                                <rect key="frame" x="0.0" y="425" width="699" height="42"/>
                                 <string key="text">Slide the country to the left,
 then tap Delete</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -1330,15 +1338,19 @@ then tap Delete</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="768" translatesAutoresizingMaskIntoConstraints="NO" id="XDP-Yt-OPK">
-                                <rect key="frame" x="0.0" y="201" width="768" height="40"/>
+                                <rect key="frame" x="0.0" y="217" width="768" height="39.5"/>
                                 <string key="text">Touch and hold a country,
 then drag it up or down</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap the plus button to add a country" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="768" translatesAutoresizingMaskIntoConstraints="NO" id="DU3-Gi-SHf" userLabel="Label - swipe left or right to change keypad for basic/scientific">
-                                <rect key="frame" x="0.0" y="964" width="768" height="20"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap the plus button to add a country" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="768" translatesAutoresizingMaskIntoConstraints="NO" id="DU3-Gi-SHf" userLabel="Tap the plus button ...">
+                                <rect key="frame" x="447" y="20" width="220" height="47"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="220" id="W9f-i3-KE8"/>
+                                    <constraint firstAttribute="height" constant="47" id="deH-Wc-OSL"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -1347,21 +1359,22 @@ then drag it up or down</string>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="JsV-VK-JI3" firstAttribute="top" secondItem="Iyt-v5-pJZ" secondAttribute="top" constant="47" id="1rO-sO-nWw"/>
-                            <constraint firstAttribute="bottom" secondItem="DU3-Gi-SHf" secondAttribute="bottom" constant="40" id="3zb-r7-W8f"/>
+                            <constraint firstItem="JsV-VK-JI3" firstAttribute="top" secondItem="Iyt-v5-pJZ" secondAttribute="top" constant="425" id="1rO-sO-nWw"/>
                             <constraint firstItem="uas-Op-P3S" firstAttribute="top" secondItem="wPD-aw-xaY" secondAttribute="top" id="5bE-dv-erh"/>
                             <constraint firstItem="uas-Op-P3S" firstAttribute="leading" secondItem="wPD-aw-xaY" secondAttribute="trailing" constant="5" id="Bhb-gg-arI"/>
-                            <constraint firstItem="DU3-Gi-SHf" firstAttribute="leading" secondItem="Iyt-v5-pJZ" secondAttribute="leading" id="BpL-Xw-wbb"/>
+                            <constraint firstItem="u3U-SJ-HoH" firstAttribute="top" secondItem="Iyt-v5-pJZ" secondAttribute="top" constant="20" id="FEn-TG-Mvi"/>
                             <constraint firstItem="0A4-77-7Bu" firstAttribute="leading" secondItem="Iyt-v5-pJZ" secondAttribute="leading" id="JQo-ya-5wC"/>
-                            <constraint firstAttribute="trailing" secondItem="DU3-Gi-SHf" secondAttribute="trailing" id="MCY-IP-kUm"/>
+                            <constraint firstAttribute="right" secondItem="u3U-SJ-HoH" secondAttribute="right" constant="49" id="Qvc-9g-mwz"/>
                             <constraint firstAttribute="centerX" secondItem="wPD-aw-xaY" secondAttribute="centerX" id="VOe-Jp-Iox"/>
                             <constraint firstItem="0A4-77-7Bu" firstAttribute="trailing" secondItem="JsV-VK-JI3" secondAttribute="leading" constant="-10" id="WLo-4q-e2S"/>
+                            <constraint firstItem="u3U-SJ-HoH" firstAttribute="leading" secondItem="DU3-Gi-SHf" secondAttribute="trailing" constant="10" id="Yb9-d4-z8r"/>
                             <constraint firstAttribute="trailing" secondItem="JsV-VK-JI3" secondAttribute="trailing" constant="17" id="f9Q-Z1-hmP"/>
-                            <constraint firstItem="wPD-aw-xaY" firstAttribute="top" secondItem="Iyt-v5-pJZ" secondAttribute="top" constant="149" id="jjF-cg-AeZ"/>
+                            <constraint firstItem="wPD-aw-xaY" firstAttribute="top" secondItem="Iyt-v5-pJZ" secondAttribute="top" constant="165" id="jjF-cg-AeZ"/>
                             <constraint firstAttribute="trailing" secondItem="XDP-Yt-OPK" secondAttribute="trailing" id="kH0-hB-i2w"/>
                             <constraint firstItem="XDP-Yt-OPK" firstAttribute="top" secondItem="wPD-aw-xaY" secondAttribute="bottom" constant="10" id="ny5-Xs-da9"/>
                             <constraint firstItem="JsV-VK-JI3" firstAttribute="top" secondItem="0A4-77-7Bu" secondAttribute="top" id="qSv-f8-Yod"/>
                             <constraint firstItem="JsV-VK-JI3" firstAttribute="centerY" secondItem="0A4-77-7Bu" secondAttribute="centerY" id="wLd-Uz-GJj"/>
+                            <constraint firstItem="u3U-SJ-HoH" firstAttribute="top" secondItem="DU3-Gi-SHf" secondAttribute="top" id="xOL-zt-Yqn"/>
                             <constraint firstItem="XDP-Yt-OPK" firstAttribute="leading" secondItem="Iyt-v5-pJZ" secondAttribute="leading" id="yNM-R9-XSG"/>
                         </constraints>
                         <connections>
@@ -1372,6 +1385,7 @@ then drag it up or down</string>
                         <outletCollection property="childImageViews" destination="JsV-VK-JI3" id="X4D-cf-o7O"/>
                         <outletCollection property="childImageViews" destination="uas-Op-P3S" id="e5l-w8-AwU"/>
                         <outletCollection property="childImageViews" destination="wPD-aw-xaY" id="lGp-qk-55c"/>
+                        <outletCollection property="childImageViews" destination="u3U-SJ-HoH" id="iC3-oT-ajw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jv5-RI-xVP" userLabel="First Responder" sceneMemberID="firstResponder"/>

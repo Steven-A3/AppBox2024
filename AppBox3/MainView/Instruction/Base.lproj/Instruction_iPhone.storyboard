@@ -1747,26 +1747,39 @@ then drag it up or down</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap the plus button to add a country" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="nP5-9M-28L" userLabel="Label - swipe left or right to change keypad for basic/scientific">
-                                <rect key="frame" x="10" y="508" width="300" height="20"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap the plus button to add a country" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="nP5-9M-28L" userLabel="Label - swipe left or right to change keypad for basic/scientific">
+                                <rect key="frame" x="6.5" y="20" width="220" height="47"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="47" id="M2m-ye-lgM"/>
+                                    <constraint firstAttribute="width" constant="220" id="nIG-4e-Lhw"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="r3X-mN-bU4">
+                                <rect key="frame" x="238" y="20" width="42" height="42"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="FTG-U0-NVn"/>
+                                    <constraint firstAttribute="width" constant="42" id="fhZ-Z8-vvR"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="zc4-ox-WX3" firstAttribute="leading" secondItem="8Bb-Xt-gYd" secondAttribute="trailing" constant="5" id="4js-46-YQA"/>
                             <constraint firstItem="zc4-ox-WX3" firstAttribute="top" secondItem="8Bb-Xt-gYd" secondAttribute="top" id="AEt-OS-Sd8"/>
-                            <constraint firstAttribute="bottom" secondItem="nP5-9M-28L" secondAttribute="bottom" constant="40" id="B5j-Ie-U56"/>
+                            <constraint firstItem="r3X-mN-bU4" firstAttribute="leading" secondItem="nP5-9M-28L" secondAttribute="trailing" constant="11.5" id="Cr8-AO-RB9"/>
                             <constraint firstAttribute="trailing" secondItem="0ze-pQ-4fo" secondAttribute="trailing" constant="10" id="DoK-bw-RMu"/>
+                            <constraint firstItem="r3X-mN-bU4" firstAttribute="top" secondItem="9Q7-aH-fjF" secondAttribute="top" constant="20" id="IMz-3r-vr2"/>
                             <constraint firstItem="0ze-pQ-4fo" firstAttribute="top" secondItem="8Bb-Xt-gYd" secondAttribute="bottom" constant="10" id="JDO-re-LbB"/>
                             <constraint firstItem="DHT-qK-x4H" firstAttribute="centerY" secondItem="xdE-si-SAi" secondAttribute="centerY" id="NIx-ZU-doL"/>
+                            <constraint firstAttribute="right" secondItem="r3X-mN-bU4" secondAttribute="right" constant="40" id="Qa1-pF-h0y"/>
                             <constraint firstItem="xdE-si-SAi" firstAttribute="top" secondItem="9Q7-aH-fjF" secondAttribute="top" constant="260" id="TI1-Df-iCw"/>
                             <constraint firstItem="0ze-pQ-4fo" firstAttribute="leading" secondItem="9Q7-aH-fjF" secondAttribute="leading" constant="10" id="VLF-gK-bBW"/>
-                            <constraint firstItem="nP5-9M-28L" firstAttribute="leading" secondItem="9Q7-aH-fjF" secondAttribute="leading" constant="10" id="Ybo-sQ-Bry"/>
-                            <constraint firstAttribute="trailing" secondItem="nP5-9M-28L" secondAttribute="trailing" constant="10" id="Z0b-3Q-k9M"/>
+                            <constraint firstItem="r3X-mN-bU4" firstAttribute="top" secondItem="nP5-9M-28L" secondAttribute="top" id="cA0-2o-Ymk"/>
                             <constraint firstAttribute="trailing" secondItem="xdE-si-SAi" secondAttribute="trailing" constant="17" id="fGe-r7-NAk"/>
                             <constraint firstItem="DHT-qK-x4H" firstAttribute="leading" secondItem="9Q7-aH-fjF" secondAttribute="leading" constant="10" id="niU-Qd-s7y"/>
                             <constraint firstAttribute="centerX" secondItem="8Bb-Xt-gYd" secondAttribute="centerX" id="oI2-bC-UNy"/>
@@ -1781,6 +1794,7 @@ then drag it up or down</string>
                         <outletCollection property="childImageViews" destination="xdE-si-SAi" id="P7Z-Ms-Jal"/>
                         <outletCollection property="childImageViews" destination="zc4-ox-WX3" id="g6I-cM-lHS"/>
                         <outletCollection property="childImageViews" destination="8Bb-Xt-gYd" id="tUH-1L-TnI"/>
+                        <outletCollection property="childImageViews" destination="r3X-mN-bU4" id="sCJ-sO-VKp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rjs-1v-vhA" userLabel="First Responder" sceneMemberID="firstResponder"/>
