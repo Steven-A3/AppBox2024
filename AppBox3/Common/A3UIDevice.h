@@ -34,15 +34,15 @@
 #define A3_TEXT_COLOR_DISABLED              [UIColor colorWithRed:201.0/255.0 green:201.0/255.0 blue:201.0/255.0 alpha:1.0]
 #define A3_TEXT_COLOR_DEFAULT				[UIColor blackColor]
 
-#define IS_IPAD    	([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
-#define IS_IPAD_PRO	([[UIScreen mainScreen] nativeBounds].size.height == 2732)
-#define IS_IPHONE   ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
-#define IS_IPHONE35 ([[UIScreen mainScreen] bounds].size.height == 480)
-
 #define IS_IOS7			([[[UIDevice currentDevice] systemVersion] floatValue] < 8.0)
 #define IS_LANDSCAPE	(UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
 #define IS_PORTRAIT		(UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]))
 #define CURRENT_ORIENTATION        [[UIApplication sharedApplication] statusBarOrientation]
+
+#define IS_IPAD    	([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+#define IS_IPAD_PRO	(!IS_IOS7 && [[UIScreen mainScreen] nativeBounds].size.height == 2732)
+#define IS_IPHONE   ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
+#define IS_IPHONE35 ([[UIScreen mainScreen] bounds].size.height == 480)
 
 #define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
 #define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
