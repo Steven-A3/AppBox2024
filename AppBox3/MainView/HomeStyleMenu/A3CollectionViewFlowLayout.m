@@ -425,7 +425,7 @@
 		make.top.equalTo(superview.top);
 		make.left.equalTo(superview.left);
 		make.right.equalTo(superview.right);
-		make.height.equalTo(superview.height).with.multipliedBy(0.11);
+		make.height.equalTo(IS_IPHONE ? @70 : @80);
 	}];
 	
 	UILabel *textLabel = [UILabel new];
