@@ -347,7 +347,7 @@ NSString *const cellID = @"flashEffectID";
         [self.flashBrightnessSlider setFrame:CGRectMake(self.flashBrightnessSlider.frame.origin.x, self.flashBrightnessSlider.frame.origin.y , screenBounds.size.width - 98, self.flashBrightnessSlider.frame.size.height)];
     }
     
-    if (IS_IPAD && (_currentFlashViewMode & A3FlashViewModeTypeColor)) {
+    if (_currentFlashViewMode & A3FlashViewModeTypeColor) {
         if (_showAllMenu) {
             CGFloat offset = CGRectGetHeight(self.view.bounds) - CGRectGetHeight(_topToolBar.bounds) - CGRectGetHeight(_sliderControl.bounds) - CGRectGetHeight(_bottomToolBar.bounds) - CGRectGetHeight(_colorPickerView.bounds) - 20;
             _colorPickerTopConst.constant = offset / 2 + CGRectGetHeight(_topToolBar.bounds) + 10;
@@ -355,7 +355,9 @@ NSString *const cellID = @"flashEffectID";
         else {
             _colorPickerTopConst.constant = CGRectGetHeight(self.view.bounds);
         }
-    }
+	} else {
+		_colorPickerTopConst.constant = CGRectGetHeight(self.view.bounds);
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated
