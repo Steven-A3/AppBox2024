@@ -223,7 +223,12 @@
 
 		if (self.startOptionOpenClockOnce) {
 			[self removeSecurityCoverView];
-			[self.mainMenuViewController openClockApp];
+			if ([self isMainMenuStyleList]) {
+				[self.mainMenuViewController openClockApp];
+			} else {
+				[self launchAppNamed:A3AppName_Clock verifyPasscode:NO delegate:nil animated:NO];
+				self.homeStyleMainMenuViewController.activeAppName = [A3AppName_Clock copy];
+			}
 			[self setStartOptionOpenClockOnce:NO];
 		} else {
 			NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
@@ -350,8 +355,13 @@
 
 	[self updateStartOption];
 
-	if ([self isMainMenuStyleList] && self.startOptionOpenClockOnce) {
-		[self.mainMenuViewController openClockApp];
+	if (self.startOptionOpenClockOnce) {
+		if ([self isMainMenuStyleList]) {
+			[self.mainMenuViewController openClockApp];
+		} else {
+			[self launchAppNamed:A3AppName_Clock verifyPasscode:NO delegate:nil animated:NO];
+			self.homeStyleMainMenuViewController.activeAppName = [A3AppName_Clock copy];
+		}
 		[self setStartOptionOpenClockOnce:NO];
 		return;
 	}

@@ -328,7 +328,8 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 			}];
 			if (indexOfMenu != NSNotFound) {
 				NSDictionary *menuItem = allMenus[indexOfMenu];
-				[[A3UserDefaults standardUserDefaults] setObject:menuItem[kA3AppsMenuName] forKey:kA3AppsStartingAppName];
+				NSString *startingAppName = menuItem[kA3AppsMenuName];
+				[[A3UserDefaults standardUserDefaults] setObject:startingAppName forKey:kA3AppsStartingAppName];
 				
 				[self pushStartingAppInfo];
 				
@@ -336,7 +337,12 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 					[self presentLockScreen:self];
 				} else {
 					[self removeSecurityCoverView];
-					[self.mainMenuViewController openRecentlyUsedMenu:YES];
+					if ([self isMainMenuStyleList]) {
+						[self.mainMenuViewController openRecentlyUsedMenu:YES];
+					} else {
+						[self launchAppNamed:startingAppName verifyPasscode:NO delegate:nil animated:NO];
+						self.homeStyleMainMenuViewController.activeAppName = [startingAppName copy];
+					}
 				}
 			}
 		}
@@ -367,14 +373,20 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
     if (!_shortcutItem) return NO;
 
     [self pushStartingAppInfo];
-    [[A3UserDefaults standardUserDefaults] setObject:_shortcutItem.userInfo[kA3AppsMenuName] forKey:kA3AppsStartingAppName];
+	NSString *startingAppName = (id)_shortcutItem.userInfo[kA3AppsMenuName];
+    [[A3UserDefaults standardUserDefaults] setObject:startingAppName forKey:kA3AppsStartingAppName];
     _shortcutItem = nil;
     
 	if ([self shouldAskPasscodeForStarting] || [self requirePasscodeForStartingApp]) {
 		[self presentLockScreen:self];
 	} else {
 		[self removeSecurityCoverView];
-		[self.mainMenuViewController openRecentlyUsedMenu:YES];
+		if ([self isMainMenuStyleList]) {
+			[self.mainMenuViewController openRecentlyUsedMenu:YES];
+		} else {
+			[self launchAppNamed:startingAppName verifyPasscode:NO delegate:nil animated:NO];
+			self.homeStyleMainMenuViewController.activeAppName = [startingAppName copy];
+		}
 	}
 	
     return YES;
@@ -387,6 +399,11 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
     } else {
         [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:kA3AppsOriginalStartingAppName];
     }
+	if ([self isMainMenuStyleList]) {
+		_mainMenuViewController.activeAppName = nil;
+	} else {
+		_homeStyleMainMenuViewController.activeAppName = nil;
+	}
 }
 
 - (void)popStartingAppInfo {

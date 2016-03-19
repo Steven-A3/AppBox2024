@@ -104,18 +104,27 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 		
 		if (![appDelegate showLockScreen]) {
 			[appDelegate updateStartOption];
-			
-			if ([[A3AppDelegate instance] isMainMenuStyleList]) {
-				if ([[A3AppDelegate instance] startOptionOpenClockOnce] ||
-					![[[A3AppDelegate instance] mainMenuViewController] openRecentlyUsedMenu:YES]) {
-					[[A3AppDelegate instance] setStartOptionOpenClockOnce:NO];
-					[mainMenuTableViewController openClockApp];
+
+			if (appDelegate.startOptionOpenClockOnce) {
+				if ([appDelegate isMainMenuStyleList]) {
+					[appDelegate.mainMenuViewController openClockApp];
+				} else {
+					[appDelegate launchAppNamed:A3AppName_Clock verifyPasscode:NO delegate:nil animated:NO];
+					appDelegate.homeStyleMainMenuViewController.activeAppName = [A3AppName_Clock copy];
 				}
+				[appDelegate setStartOptionOpenClockOnce:NO];
 			} else {
-				NSString *startingApp = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
-				if (startingApp) {
-					[appDelegate launchAppNamed:startingApp verifyPasscode:NO delegate:self animated:NO];
-					appDelegate.homeStyleMainMenuViewController.activeAppName = [startingApp copy];
+				if ([[A3AppDelegate instance] isMainMenuStyleList]) {
+					if (![[[A3AppDelegate instance] mainMenuViewController] openRecentlyUsedMenu:YES]) {
+						[[A3AppDelegate instance] setStartOptionOpenClockOnce:NO];
+						[mainMenuTableViewController openClockApp];
+					}
+				} else {
+					NSString *startingApp = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+					if (startingApp) {
+						[appDelegate launchAppNamed:startingApp verifyPasscode:NO delegate:self animated:NO];
+						appDelegate.homeStyleMainMenuViewController.activeAppName = [startingApp copy];
+					}
 				}
 			}
 		}
