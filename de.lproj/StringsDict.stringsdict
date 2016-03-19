@@ -393,7 +393,7 @@
 			<key>zero</key>
 			<string>Aus</string>
 			<key>one</key>
-			<string>Die 3 neueste</string>
+			<string>Die neueste</string>
 			<key>other</key>
 			<string>Die %ld neueste</string>
 		</dict>
