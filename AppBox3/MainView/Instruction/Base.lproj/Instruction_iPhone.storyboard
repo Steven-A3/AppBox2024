@@ -2230,7 +2230,7 @@ You can reorder the currency list.</string>
                                     <constraint firstAttribute="height" constant="42" id="VlA-TE-0cB"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap and hold to reorder the icon" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="Tgl-EJ-vOi" userLabel="Label - swipe left or right to change keypad for basic/scientific">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Touch and hold an icon, then drag the app to the desired location." lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="Tgl-EJ-vOi" userLabel="Label - Touch and hold an icon, then drag the app to the desired location.">
                                 <rect key="frame" x="9" y="291" width="301" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="6qk-CX-Qcw"/>
@@ -2256,6 +2256,8 @@ You can reorder the currency list.</string>
                     <connections>
                         <outlet property="fingerUpCenterXConstraint" destination="9GV-Rk-sog" id="eUw-Nw-6My"/>
                         <outlet property="fingerUpCenterYConstraint" destination="wAo-jJ-hRN" id="pLb-7i-nXf"/>
+                        <outlet property="helpLabel" destination="Tgl-EJ-vOi" id="f03-dq-r65"/>
+                        <outlet property="helpTextHeightConstraint" destination="6qk-CX-Qcw" id="ksf-Zc-Nv2"/>
                         <outletCollection property="childImageViews" destination="2LL-wt-WZd" id="CZ2-06-5EH"/>
                     </connections>
                 </viewController>

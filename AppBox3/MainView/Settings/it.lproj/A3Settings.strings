@@ -231,3 +231,6 @@
 
 /* Class = "UILabel"; text = "Remove Ads"; ObjectID = "yfZ-vk-zWG"; */
 "yfZ-vk-zWG.text" = "Rimuovi pubbl.";
+
+/* Class = "UILabel"; text = "About"; ObjectID = "b9v-1Y-xnC"; */
+"b9v-1Y-xnC.text" = "Info";

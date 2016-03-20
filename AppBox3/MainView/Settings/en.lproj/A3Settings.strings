@@ -158,6 +158,9 @@
 /* Class = "UILabel"; text = "Korean"; ObjectID = "alM-Rl-6AW"; */
 "alM-Rl-6AW.text" = "Korean";
 
+/* Class = "UILabel"; text = "About"; ObjectID = "b9v-1Y-xnC"; */
+"b9v-1Y-xnC.text" = "About";
+
 /* Class = "UILabel"; text = "3 Most Recent"; ObjectID = "bWw-QS-8Fs"; */
 "bWw-QS-8Fs.text" = "3 Most Recent";
 

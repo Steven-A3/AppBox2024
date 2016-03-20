@@ -84,3 +84,6 @@
 
 /* Class = "UILabel"; text = "Tap to add a currency"; ObjectID = "ilf-hM-2IG"; */
 "ilf-hM-2IG.text" = "輕按以添加貨幣。";
+
+/* Class = "UILabel"; text = "Touch and hold an icon, then drag the app to the desired location."; ObjectID = "Tgl-EJ-vOi"; */
+"Tgl-EJ-vOi.text" = "觸摸並按住某個圖標，然後將應用到所需的位置。";

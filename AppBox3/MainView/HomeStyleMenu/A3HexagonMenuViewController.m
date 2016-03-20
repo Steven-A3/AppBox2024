@@ -406,12 +406,20 @@ static NSString *const A3V3InstructionDidShowForHexagonMenu = @"A3V3InstructionD
 - (void)adjustFingerCenter {
 	if (!_instructionViewController) return;
 	
-	UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:11 inSection:0]];
+	UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:0]];
 	CGPoint centerInView = [self.view convertPoint:cell.center fromView:self.collectionView];
 	FNLOG(@"centerX = %f, centerY = %f", centerInView.x, centerInView.y);
 	FNLOGRECT(cell.frame);
 	_instructionViewController.fingerUpCenterXConstraint.constant = centerInView.x;
 	_instructionViewController.fingerUpCenterYConstraint.constant = centerInView.y + 6;
+	[_instructionViewController.view layoutIfNeeded];
+	
+	NSStringDrawingContext *context = [NSStringDrawingContext new];
+	CGRect textBounds = [_instructionViewController.helpLabel.text boundingRectWithSize:CGSizeMake(_instructionViewController.helpLabel.bounds.size.width, CGFLOAT_MAX)
+																				 options:NSStringDrawingUsesLineFragmentOrigin
+																			  attributes:@{NSFontAttributeName:_instructionViewController.helpLabel.font}
+																				 context:context];
+	_instructionViewController.helpTextHeightConstraint.constant = textBounds.size.height;
 	[_instructionViewController.view layoutIfNeeded];
 }
 

@@ -492,6 +492,14 @@ static NSString *const A3V3InstructionDidShowForGridMenu = @"A3V3InstructionDidS
 	_instructionViewController.fingerUpCenterXConstraint.constant = centerInView.x;
 	_instructionViewController.fingerUpCenterYConstraint.constant = centerInView.y;
 	[_instructionViewController.view layoutIfNeeded];
+
+	NSStringDrawingContext *context = [NSStringDrawingContext new];
+	CGRect textBounds = [_instructionViewController.helpLabel.text boundingRectWithSize:CGSizeMake(_instructionViewController.helpLabel.bounds.size.width, CGFLOAT_MAX)
+																				options:NSStringDrawingUsesLineFragmentOrigin
+																			 attributes:@{NSFontAttributeName:_instructionViewController.helpLabel.font}
+																				context:context];
+	_instructionViewController.helpTextHeightConstraint.constant = textBounds.size.height;
+	[_instructionViewController.view layoutIfNeeded];
 }
 
 @end

@@ -59,6 +59,9 @@
 /* Class = "UILabel"; text = "Pull up to see\nmore holidays"; ObjectID = "RQJ-Od-NDI"; */
 "RQJ-Od-NDI.text" = "Pull up to see\nmore holidays";
 
+/* Class = "UILabel"; text = "Tap and hold to reorder the icon"; ObjectID = "Tgl-EJ-vOi"; */
+"Tgl-EJ-vOi.text" = "Touch and hold an icon, then drag the app to the desired location.";
+
 /* Class = "UILabel"; text = "Tap to add or edit budget"; ObjectID = "U1j-Mc-LaR"; */
 "U1j-Mc-LaR.text" = "Tap to add or edit budget";
 

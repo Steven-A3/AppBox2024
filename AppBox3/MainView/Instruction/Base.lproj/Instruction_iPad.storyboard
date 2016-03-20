@@ -2236,6 +2236,9 @@ You can reorder the currency list.</string>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap and hold to reorder the icon" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="768" translatesAutoresizingMaskIntoConstraints="NO" id="Xpu-b2-hjC" userLabel="Label - swipe left or right to change keypad for basic/scientific">
                                 <rect key="frame" x="26.5" y="204.5" width="741.5" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="yyX-kP-4xI"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -2257,6 +2260,8 @@ You can reorder the currency list.</string>
                     <connections>
                         <outlet property="fingerUpCenterXConstraint" destination="C6Q-GV-z4A" id="mPN-UI-tLF"/>
                         <outlet property="fingerUpCenterYConstraint" destination="MP2-GO-Iz0" id="Zip-Yl-qRc"/>
+                        <outlet property="helpLabel" destination="Xpu-b2-hjC" id="fNS-SR-IBC"/>
+                        <outlet property="helpTextHeightConstraint" destination="yyX-kP-4xI" id="sXK-Hz-aAu"/>
                         <outletCollection property="childImageViews" destination="W5d-QW-cte" id="V51-tl-DgA"/>
                     </connections>
                 </viewController>

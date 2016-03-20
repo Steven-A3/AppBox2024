@@ -1633,7 +1633,6 @@
 		684E9F0D188A4BB100FAA48E /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		68507F7E191CA72400C1C895 /* A3AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3AppDelegate.h; path = AppDelegate/A3AppDelegate.h; sourceTree = "<group>"; };
 		68507F7F191CA72400C1C895 /* A3AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3AppDelegate.m; path = AppDelegate/A3AppDelegate.m; sourceTree = "<group>"; };
-		68516F271C9BE98E00814963 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3Settings.strings; sourceTree = "<group>"; };
 		68521A3917E1EBB200E08FB1 /* NSDate-Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate-Utilities.h"; path = "External/NSDate-Extensions/NSDate-Utilities.h"; sourceTree = "<group>"; };
 		68521A3A17E1EBB200E08FB1 /* NSDate-Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate-Utilities.m"; path = "External/NSDate-Extensions/NSDate-Utilities.m"; sourceTree = "<group>"; };
 		68521A4417E1FF2E00E08FB1 /* FXLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FXLabel.h; path = External/FXLabel/FXLabel/FXLabel.h; sourceTree = "<group>"; };
@@ -1802,6 +1801,9 @@
 		6891D7FB183C5EDD0060B677 /* A3CurrencySettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencySettingsViewController.m; path = Apps/Currency/A3CurrencySettingsViewController.m; sourceTree = "<group>"; };
 		6893E6361C9E3E17009E0A2E /* A3HomeStyleHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3HomeStyleHelpViewController.h; sourceTree = "<group>"; };
 		6893E6371C9E3E17009E0A2E /* A3HomeStyleHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3HomeStyleHelpViewController.m; sourceTree = "<group>"; };
+		6893E6431C9E621F009E0A2E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3Settings.strings; sourceTree = "<group>"; };
+		6893E6451C9E6382009E0A2E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Instruction_iPhone.strings; sourceTree = "<group>"; };
+		6893E6471C9E6C5F009E0A2E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Instruction_iPad.strings; sourceTree = "<group>"; };
 		689421041A04AF34005F3AE3 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = AppBox3/Settings.bundle; sourceTree = "<group>"; };
 		68948B4E17D9760A00BF4BE9 /* A3NavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3NavigationController.h; path = ViewControllers/A3NavigationController.h; sourceTree = "<group>"; };
 		68948B4F17D9760A00BF4BE9 /* A3NavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3NavigationController.m; path = ViewControllers/A3NavigationController.m; sourceTree = "<group>"; };
@@ -1829,8 +1831,6 @@
 		689A203C19AB3650009144B6 /* AppBox3-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AppBox3-Info.plist"; sourceTree = "<group>"; };
 		689A3ADC1961CA30008BC2F4 /* Main_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main_iPad.storyboard; sourceTree = "<group>"; };
 		689A3ADD1961CA30008BC2F4 /* Main_iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main_iPhone.storyboard; sourceTree = "<group>"; };
-		689BC2951C204157008BACDD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Instruction_iPad.strings; sourceTree = "<group>"; };
-		689BC2971C2041BC008BACDD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Instruction_iPhone.strings; sourceTree = "<group>"; };
 		689C9A271839CD7F007C97EE /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
 		689C9A281839CD7F007C97EE /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
 		689C9A291839CD7F007C97EE /* AFHTTPRequestOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperationManager.h; sourceTree = "<group>"; };
@@ -6857,7 +6857,7 @@
 				68CAB49119557DB600A4D2B9 /* fr */,
 				68CAB49319557DB900A4D2B9 /* es */,
 				6813614E1A6CADE300E13F51 /* zh-Hant */,
-				689BC2971C2041BC008BACDD /* en */,
+				6893E6451C9E6382009E0A2E /* en */,
 			);
 			name = Instruction_iPhone.storyboard;
 			path = Instruction;
@@ -6876,7 +6876,7 @@
 				68CAB48119557C9600A4D2B9 /* pl */,
 				68CAB48319557C9800A4D2B9 /* es */,
 				6813614F1A6CADE300E13F51 /* zh-Hant */,
-				689BC2951C204157008BACDD /* en */,
+				6893E6471C9E6C5F009E0A2E /* en */,
 			);
 			name = Instruction_iPad.storyboard;
 			path = Instruction;
@@ -7021,7 +7021,7 @@
 				68F150B2194C0E1100159EAD /* pl */,
 				68F150B4194C0E1200159EAD /* es */,
 				681361501A6CADE300E13F51 /* zh-Hant */,
-				68516F271C9BE98E00814963 /* en */,
+				6893E6431C9E621F009E0A2E /* en */,
 			);
 			name = A3Settings.storyboard;
 			path = Settings;

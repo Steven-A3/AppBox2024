@@ -16,6 +16,7 @@
 #import "Reachability.h"
 #import "A3SyncManager.h"
 #import "A3SettingsHomeStyleSelectTableViewCell.h"
+#import "A3AboutViewController.h"
 
 typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	A3SettingsRowUseiCloud = 1100,
@@ -98,12 +99,6 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	if (section == 2) {
 		return [[A3AppDelegate instance] isMainMenuStyleList] ? 3 : 1;
 	}
-	if (section == 4) {
-		if ([[A3AppDelegate instance] shouldPresentAd]) {
-			return 2;
-		}
-		return 0;
-	}
 	return [super tableView:tableView numberOfRowsInSection:section];
 }
 
@@ -127,6 +122,19 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 2 && indexPath.row == 0) return 160.0;
 	if (indexPath.section == 4) {
+		switch (indexPath.row) {
+			case 0:
+				if (![[A3AppDelegate instance] shouldPresentAd] || ![[A3AppDelegate instance] isIAPRemoveAdsAvailable]) {
+					return 0.0;
+				}
+				break;
+			case 1:
+				if (![[A3AppDelegate instance] shouldPresentAd]) return 0.0;
+				break;
+				
+			default:
+				break;
+		}
 		if (indexPath.row == 0 && ![[A3AppDelegate instance] isIAPRemoveAdsAvailable]) {
 			return 0.0;
 		}
@@ -243,6 +251,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 													  
 													  [[A3AppDelegate instance] removeSecurityCoverView];
 													  if (success) {
+														  [[A3AppDelegate instance] saveTimerStartTime];
 														  [self performSegueWithIdentifier:@"passcode" sender:nil];
 													  } else {
 														  presentPasscodeViewControllerBlock();
@@ -267,6 +276,12 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 				case 1:
 					[[A3AppDelegate instance] startRestorePurchase];
 					break;
+				case 2: {
+					UIStoryboard *aboutStoryboard = [UIStoryboard storyboardWithName:@"about" bundle:nil];
+					A3AboutViewController *viewController = [aboutStoryboard instantiateInitialViewController];
+					[self.navigationController pushViewController:viewController animated:YES];
+					break;
+				}
 				default:
 					break;
 			}

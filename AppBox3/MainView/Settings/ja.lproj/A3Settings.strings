@@ -239,3 +239,6 @@
 
 /* Class = "UILabel"; text = "Remove Ads"; ObjectID = "yfZ-vk-zWG"; */
 "yfZ-vk-zWG.text" = "広告を削除";
+
+/* Class = "UILabel"; text = "About"; ObjectID = "b9v-1Y-xnC"; */
+"b9v-1Y-xnC.text" = "情報";

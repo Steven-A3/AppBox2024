@@ -169,3 +169,6 @@
 
 /* Class = "UILabel"; text = "Tap to add a currency"; ObjectID = "Vy0-r6-Uka"; */
 "Vy0-r6-Uka.text" = "Naciśnij aby dodać walutę";
+
+/* Class = "UILabel"; text = "Touch and hold an icon, then drag the app to the desired location."; ObjectID = "Xpu-b2-hjC"; */
+"Xpu-b2-hjC.text" = "Dotknij i przytrzymaj ikonę, kiedy przeciągnij aplikację do wybranej lokalizacji.";

@@ -240,3 +240,6 @@
 
 /* Class = "UILabel"; text = "Tap to add a currency"; ObjectID = "Vy0-r6-Uka"; */
 "Vy0-r6-Uka.text" = "タップして通話を追加します。";
+
+/* Class = "UILabel"; text = "Touch and hold an icon, then drag the app to the desired location."; ObjectID = "Xpu-b2-hjC"; */
+"Xpu-b2-hjC.text" = "アイコンをタッチして押し続けながらドラッグして順番を変更する事が出来ます。";

@@ -11,4 +11,6 @@
 
 @interface A3AboutViewController : UITableViewController
 
+@property (nonatomic, assign) BOOL isLeftBarButtonAppsButton;
+
 @end

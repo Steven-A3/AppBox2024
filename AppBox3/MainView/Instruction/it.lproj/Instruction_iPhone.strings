@@ -189,3 +189,6 @@ più categorie";
 
 /* Class = "UILabel"; text = "Tap to add a currency"; ObjectID = "ilf-hM-2IG"; */
 "ilf-hM-2IG.text" = "Tocca per aggiungere una valuta";
+
+/* Class = "UILabel"; text = "Tap and hold to reorder the icon"; ObjectID = "Tgl-EJ-vOi"; */
+"Tgl-EJ-vOi.text" = "Toccare e tenere premuto l'icona, quando trascinare l'applicazione nella posizione desiderata.";

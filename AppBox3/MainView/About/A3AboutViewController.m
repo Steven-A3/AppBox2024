@@ -25,8 +25,10 @@
 	[super viewDidLoad];
 
 	[self makeBackButtonEmptyArrow];
-	[self leftBarButtonAppsButton];
-	self.navigationItem.hidesBackButton = YES;
+	if (_isLeftBarButtonAppsButton) {
+		[self leftBarButtonAppsButton];
+		self.navigationItem.hidesBackButton = YES;
+	}
 
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;

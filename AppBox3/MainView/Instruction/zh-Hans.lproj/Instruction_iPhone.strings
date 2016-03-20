@@ -173,3 +173,6 @@
 
 /* Class = "UILabel"; text = "Tap to add a currency"; ObjectID = "ilf-hM-2IG"; */
 "ilf-hM-2IG.text" = "轻按以添加货币。";
+
+/* Class = "UILabel"; text = "Tap and hold to reorder the icon"; ObjectID = "Tgl-EJ-vOi"; */
+"Tgl-EJ-vOi.text" = "触摸并按住某个图标，然后将应用到所需的位置。";

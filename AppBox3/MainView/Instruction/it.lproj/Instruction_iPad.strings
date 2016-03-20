@@ -231,3 +231,6 @@ sinistra, poi tocca Elimina";
 
 /* Class = "UILabel"; text = "Tap to add a currency"; ObjectID = "Vy0-r6-Uka"; */
 "Vy0-r6-Uka.text" = "Tocca per aggiungere una valuta";
+
+/* Class = "UILabel"; text = "Touch and hold an icon, then drag the app to the desired location."; ObjectID = "Xpu-b2-hjC"; */
+"Xpu-b2-hjC.text" = "Toccare e tenere premuto l'icona, quando trascinare l'applicazione nella posizione desiderata.";

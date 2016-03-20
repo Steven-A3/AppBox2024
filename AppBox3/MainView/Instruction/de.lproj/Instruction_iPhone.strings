@@ -172,3 +172,6 @@
 
 /* Class = "UILabel"; text = "Tap to add a currency"; ObjectID = "ilf-hM-2IG"; */
 "ilf-hM-2IG.text" = "Hier tippen um eine Währung hinzuzufügen";
+
+/* Class = "UILabel"; text = "Tap and hold to reorder the icon"; ObjectID = "Tgl-EJ-vOi"; */
+"Tgl-EJ-vOi.text" = "Berühren und halten Sie ein Symbol, dann bewegen Sie die App an die gewünschte Position.";
