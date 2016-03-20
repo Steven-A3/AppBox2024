@@ -14,10 +14,14 @@
 #import "UIView+SBExtras.h"
 #import "A3AppSelectTableViewController.h"
 #import "A3NavigationController.h"
+#import "A3UserDefaults.h"
+#import "A3HomeStyleHelpViewController.h"
 
 NSString *const A3GridMenuCellID = @"gridCell";
 
-@interface A3GridMenuViewController () <UICollectionViewDelegate, UICollectionViewDataSource, A3ReorderableLayoutDelegate, A3ReorderableLayoutDataSource, A3AppSelectViewControllerDelegate>
+@interface A3GridMenuViewController () <UICollectionViewDelegate, UICollectionViewDataSource,
+A3ReorderableLayoutDelegate, A3ReorderableLayoutDataSource, A3AppSelectViewControllerDelegate,
+A3InstructionViewControllerDelegate>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) A3GridCollectionViewFlowLayout *flowLayout;
@@ -40,6 +44,8 @@ NSString *const A3GridMenuCellID = @"gridCell";
 @property (nonatomic, strong) NSIndexPath *selectedIndexPath;
 
 @property (nonatomic, strong) UIPageControl *pageControl;
+
+@property (nonatomic, strong) A3HomeStyleHelpViewController *instructionViewController;
 
 @end
 
@@ -64,6 +70,12 @@ NSString *const A3GridMenuCellID = @"gridCell";
 
 	_menuItems = nil;
 	[self.collectionView reloadData];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	
+	[self setupInstructionView];
 }
 
 - (void)setupCollectionView {
@@ -423,6 +435,63 @@ NSString *const A3GridMenuCellID = @"gridCell";
 	}
 	CGFloat verticalMargin = (toSize.height - self.flowLayout.contentHeight) / 2;
 	self.collectionView.contentInset = UIEdgeInsetsMake(verticalMargin - offset, 0, verticalMargin + offset, 0);
+	
+	if (_instructionViewController) {
+		[self adjustFingerCenter];
+	}
+}
+
+#pragma mark - Instruction View
+
+static NSString *const A3V3InstructionDidShowForGridMenu = @"A3V3InstructionDidShowForGridMenu";
+
+- (void)setupInstructionView
+{
+	if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForGridMenu]) {
+		[self showInstructionView];
+	}
+}
+
+- (void)showInstructionView
+{
+	if (_instructionViewController) {
+		return;
+	}
+	
+	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForGridMenu];
+	
+	UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
+	_instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"HomeStyle"];
+	[_instructionViewController view];
+	[self adjustFingerCenter];
+	
+	self.instructionViewController.delegate = self;
+	[self.navigationController.view addSubview:self.instructionViewController.view];
+	self.instructionViewController.view.frame = self.navigationController.view.frame;
+	self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+}
+
+- (void)dismissInstructionViewController:(UIView *)view
+{
+	[self.instructionViewController.view removeFromSuperview];
+	self.instructionViewController = nil;
+}
+
+- (void)helpButtonAction:(id)sender {
+	[self showInstructionView];
+}
+
+- (void)adjustFingerCenter {
+	if ([self.collectionView numberOfItemsInSection:0] == 0) return;
+
+	NSInteger row = [self.collectionView numberOfItemsInSection:0] >= (6 + _pageControl.currentPage * _flowLayout.numberOfItemsPerPage) ? 5 + _pageControl.currentPage * _flowLayout.numberOfItemsPerPage : _pageControl.currentPage * _flowLayout.numberOfItemsPerPage;
+	UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
+	CGPoint centerInView = [self.view convertPoint:cell.center fromView:self.collectionView];
+	FNLOG(@"centerX = %f, centerY = %f", centerInView.x, centerInView.y);
+	FNLOGRECT(cell.frame);
+	_instructionViewController.fingerUpCenterXConstraint.constant = centerInView.x;
+	_instructionViewController.fingerUpCenterYConstraint.constant = centerInView.y;
+	[_instructionViewController.view layoutIfNeeded];
 }
 
 @end

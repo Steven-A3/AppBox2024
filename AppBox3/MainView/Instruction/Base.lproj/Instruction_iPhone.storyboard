@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -2208,6 +2209,64 @@ You can reorder the currency list.</string>
                 </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-621" y="4469"/>
+        </scene>
+        <!--HomeStyle Instruction View Controller-->
+        <scene sceneID="xhf-Ud-NUc">
+            <objects>
+                <viewController storyboardIdentifier="HomeStyle" useStoryboardIdentifierAsRestorationIdentifier="YES" id="nKj-kS-TxS" userLabel="HomeStyle Instruction View Controller" customClass="A3HomeStyleHelpViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2WY-UX-i3n"/>
+                        <viewControllerLayoutGuide type="bottom" id="KoI-Dv-0Nh"/>
+                    </layoutGuides>
+                    <view key="view" alpha="0.69999998807907104" contentMode="scaleToFill" id="IdM-LR-Lu7">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="2LL-wt-WZd">
+                                <rect key="frame" x="9" y="239" width="42" height="42"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="42" id="Cur-ae-uRr"/>
+                                    <constraint firstAttribute="height" constant="42" id="VlA-TE-0cB"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap and hold to reorder the icon" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="Tgl-EJ-vOi" userLabel="Label - swipe left or right to change keypad for basic/scientific">
+                                <rect key="frame" x="9" y="291" width="301" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="6qk-CX-Qcw"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Tgl-EJ-vOi" secondAttribute="trailing" constant="10" id="0LR-AW-khk"/>
+                            <constraint firstItem="Tgl-EJ-vOi" firstAttribute="top" secondItem="2LL-wt-WZd" secondAttribute="bottom" constant="10" id="8xk-8O-nFD"/>
+                            <constraint firstItem="2LL-wt-WZd" firstAttribute="centerX" secondItem="IdM-LR-Lu7" secondAttribute="left" constant="30" id="9GV-Rk-sog"/>
+                            <constraint firstItem="Tgl-EJ-vOi" firstAttribute="leading" secondItem="2LL-wt-WZd" secondAttribute="leading" id="Jev-eC-2Fy"/>
+                            <constraint firstItem="2LL-wt-WZd" firstAttribute="centerY" secondItem="IdM-LR-Lu7" secondAttribute="top" constant="260" id="wAo-jJ-hRN"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="btk-ed-NYm" appends="YES" id="TJ4-Gc-9zj"/>
+                        </connections>
+                    </view>
+                    <connections>
+                        <outlet property="fingerUpCenterXConstraint" destination="9GV-Rk-sog" id="eUw-Nw-6My"/>
+                        <outlet property="fingerUpCenterYConstraint" destination="wAo-jJ-hRN" id="pLb-7i-nXf"/>
+                        <outletCollection property="childImageViews" destination="2LL-wt-WZd" id="CZ2-06-5EH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kc8-YQ-aRE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="btk-ed-NYm">
+                    <connections>
+                        <action selector="viewTapped:" destination="nKj-kS-TxS" id="wGP-uV-HTS"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="-949" y="7784"/>
         </scene>
     </scenes>
     <resources>

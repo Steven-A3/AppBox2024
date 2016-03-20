@@ -13,8 +13,13 @@
 #import "A3HexagonCollectionViewFlowLayout.h"
 #import "A3AppSelectTableViewController.h"
 #import "A3NavigationController.h"
+#import "A3UserDefaults.h"
+#import "A3InstructionViewController.h"
+#import "A3HomeStyleHelpViewController.h"
 
-@interface A3HexagonMenuViewController () <A3ReorderableLayoutDelegate, A3ReorderableLayoutDataSource,  UICollectionViewDataSource, UICollectionViewDelegate, A3AppSelectViewControllerDelegate>
+@interface A3HexagonMenuViewController () <A3ReorderableLayoutDelegate, A3ReorderableLayoutDataSource,
+UICollectionViewDataSource, UICollectionViewDelegate, A3AppSelectViewControllerDelegate,
+A3InstructionViewControllerDelegate>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) A3CollectionViewFlowLayout *flowLayout;
@@ -25,6 +30,7 @@
 @property (nonatomic, copy) NSMutableArray *previousMenuItemsBeforeMovingCell;
 @property (nonatomic, strong) NSArray *availableMenuItems;
 @property (nonatomic, strong) MASConstraint *appTitleTopConstraint;
+@property (nonatomic, strong) A3HomeStyleHelpViewController *instructionViewController;
 
 @end
 
@@ -97,6 +103,12 @@
 		[self setupCollectionViewContentInsetWithSize:screenBounds.size];
 	}
 	[self.collectionView reloadData];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	
+	[self setupInstructionView];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -349,6 +361,58 @@
 	[_appTitleLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.top.equalTo(self.view.bottom).with.multipliedBy(size.width < size.height ? 0.2 : 0.13);
 	}];
+	[self adjustFingerCenter];
+}
+
+#pragma mark - Instruction View
+
+static NSString *const A3V3InstructionDidShowForHexagonMenu = @"A3V3InstructionDidShowForHexagonMenu";
+
+- (void)setupInstructionView
+{
+	if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForHexagonMenu]) {
+		[self showInstructionView];
+	}
+}
+
+- (void)showInstructionView
+{
+	if (_instructionViewController) {
+		return;
+	}
+	
+	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForHexagonMenu];
+	
+	UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
+	_instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"HomeStyle"];
+	[_instructionViewController view];
+	[self adjustFingerCenter];
+	self.instructionViewController.delegate = self;
+	[self.navigationController.view addSubview:self.instructionViewController.view];
+	self.instructionViewController.view.frame = self.navigationController.view.frame;
+	self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+}
+
+- (void)dismissInstructionViewController:(UIView *)view
+{
+	[self.instructionViewController.view removeFromSuperview];
+	self.instructionViewController = nil;
+}
+
+- (void)helpButtonAction:(id)sender {
+	[self showInstructionView];
+}
+
+- (void)adjustFingerCenter {
+	if (!_instructionViewController) return;
+	
+	UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:11 inSection:0]];
+	CGPoint centerInView = [self.view convertPoint:cell.center fromView:self.collectionView];
+	FNLOG(@"centerX = %f, centerY = %f", centerInView.x, centerInView.y);
+	FNLOGRECT(cell.frame);
+	_instructionViewController.fingerUpCenterXConstraint.constant = centerInView.x;
+	_instructionViewController.fingerUpCenterYConstraint.constant = centerInView.y + 6;
+	[_instructionViewController.view layoutIfNeeded];
 }
 
 @end

@@ -26,5 +26,6 @@
 @property (nonatomic, copy) NSString *activeAppName;
 
 - (UIView *)backgroundView;
+- (void)helpButtonAction:(id)sender ;
 
 @end

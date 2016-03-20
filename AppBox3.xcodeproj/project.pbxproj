@@ -473,6 +473,7 @@
 		6888090E17C63F57008B2856 /* A3FlickrTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6888090D17C63F57008B2856 /* A3FlickrTest.m */; };
 		6890AB321786BA08004FECE4 /* A3CurrencyTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6890AB311786BA08004FECE4 /* A3CurrencyTableViewController.m */; };
 		6891D7FD183C5EDD0060B677 /* A3CurrencySettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6891D7FB183C5EDD0060B677 /* A3CurrencySettingsViewController.m */; };
+		6893E6381C9E3E17009E0A2E /* A3HomeStyleHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6893E6371C9E3E17009E0A2E /* A3HomeStyleHelpViewController.m */; };
 		689421051A04AF34005F3AE3 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 689421041A04AF34005F3AE3 /* Settings.bundle */; };
 		68948B5017D9760A00BF4BE9 /* A3NavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68948B4F17D9760A00BF4BE9 /* A3NavigationController.m */; };
 		6895347C178686AF007061CA /* UIImage+Masking.m in Sources */ = {isa = PBXBuildFile; fileRef = 68953462178686AF007061CA /* UIImage+Masking.m */; };
@@ -1799,6 +1800,8 @@
 		6890AB311786BA08004FECE4 /* A3CurrencyTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = A3CurrencyTableViewController.m; path = Apps/Currency/A3CurrencyTableViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6891D7FA183C5EDD0060B677 /* A3CurrencySettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencySettingsViewController.h; path = Apps/Currency/A3CurrencySettingsViewController.h; sourceTree = "<group>"; };
 		6891D7FB183C5EDD0060B677 /* A3CurrencySettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencySettingsViewController.m; path = Apps/Currency/A3CurrencySettingsViewController.m; sourceTree = "<group>"; };
+		6893E6361C9E3E17009E0A2E /* A3HomeStyleHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3HomeStyleHelpViewController.h; sourceTree = "<group>"; };
+		6893E6371C9E3E17009E0A2E /* A3HomeStyleHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3HomeStyleHelpViewController.m; sourceTree = "<group>"; };
 		689421041A04AF34005F3AE3 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = AppBox3/Settings.bundle; sourceTree = "<group>"; };
 		68948B4E17D9760A00BF4BE9 /* A3NavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3NavigationController.h; path = ViewControllers/A3NavigationController.h; sourceTree = "<group>"; };
 		68948B4F17D9760A00BF4BE9 /* A3NavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3NavigationController.m; path = ViewControllers/A3NavigationController.m; sourceTree = "<group>"; };
@@ -3551,6 +3554,8 @@
 				6829A0151C89882F0006DB96 /* A3MovingCollectionViewCell.m */,
 				68E02E6E1C9286BD00C5A24A /* A3AppSelectTableViewController.h */,
 				68E02E6F1C9286BD00C5A24A /* A3AppSelectTableViewController.m */,
+				6893E6361C9E3E17009E0A2E /* A3HomeStyleHelpViewController.h */,
+				6893E6371C9E3E17009E0A2E /* A3HomeStyleHelpViewController.m */,
 			);
 			path = HomeStyleMenu;
 			sourceTree = "<group>";
@@ -6465,6 +6470,7 @@
 				68143D6918E3EC7C00569691 /* A3TableViewSection.m in Sources */,
 				17D4246179DFD23680382F4E /* NSString+conversion.m in Sources */,
 				6891D7FD183C5EDD0060B677 /* A3CurrencySettingsViewController.m in Sources */,
+				6893E6381C9E3E17009E0A2E /* A3HomeStyleHelpViewController.m in Sources */,
 				68B6A2BF18CEC76D004084EF /* A3LoanCalcGraphView.m in Sources */,
 				68B6A32518CEC76D004084EF /* A3WalletCateTitleView.m in Sources */,
 				68F14FAE19485E8500159EAD /* A3DaysCounterSlideshowMainViewController.m in Sources */,
