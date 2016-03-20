@@ -119,6 +119,7 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 	[[NSUserDefaults standardUserDefaults] registerDefaults:@{kA3SettingsMainMenuStyle:A3SettingsMainMenuStyleIconGrid}];
     
 	_shouldPresentAd = YES;
+	_passcodeFreeBegin = [[NSDate distantPast] timeIntervalSinceReferenceDate];
 
 	_isIAPRemoveAdsAvailable = NO;
 	_doneAskingRestorePurchase = NO;

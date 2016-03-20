@@ -323,6 +323,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	NSString *currentMainMenuStyle = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
 	if (currentMainMenuStyle && ![currentMainMenuStyle isEqualToString:_previousMainMenuStyle]) {
 		dispatch_async(dispatch_get_main_queue(), ^{
+			[[A3AppDelegate instance] setPasscodeFreeBegin:[[NSDate date] timeIntervalSinceReferenceDate]];
 			[[A3AppDelegate instance] reloadRootViewController];
 		});
 	}

@@ -153,6 +153,7 @@ extern NSString *const A3AppGroupNameNone;
 @property (nonatomic, assign) BOOL doneAskingRestorePurchase;
 
 @property (nonatomic, copy) NSString *previousVersion;
+@property (nonatomic, assign) NSTimeInterval passcodeFreeBegin;
 
 + (A3AppDelegate *)instance;
 - (void)updateStartOption;

@@ -48,6 +48,9 @@
 	if ([self timerStartTime] != -1 && (now - [self timerStartTime] < 1)) {
 		return NO;
 	}
+	if ((now - [self passcodeFreeBegin]) < 0.2) {
+		return NO;
+	}
 	// startTime wasn't saved yet (first app use and it crashed, phone force closed, etc) if it returns -1.
 	if (now - [self timerStartTime] >= [self timerDuration] || [self timerStartTime] == -1) return YES;
 	return NO;
