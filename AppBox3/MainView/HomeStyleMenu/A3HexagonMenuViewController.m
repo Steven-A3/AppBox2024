@@ -419,7 +419,7 @@ static NSString *const A3V3InstructionDidShowForHexagonMenu = @"A3V3InstructionD
 																				 options:NSStringDrawingUsesLineFragmentOrigin
 																			  attributes:@{NSFontAttributeName:_instructionViewController.helpLabel.font}
 																				 context:context];
-	_instructionViewController.helpTextHeightConstraint.constant = textBounds.size.height;
+	_instructionViewController.helpTextHeightConstraint.constant = textBounds.size.height + 2;
 	[_instructionViewController.view layoutIfNeeded];
 }
 

@@ -498,7 +498,7 @@ static NSString *const A3V3InstructionDidShowForGridMenu = @"A3V3InstructionDidS
 																				options:NSStringDrawingUsesLineFragmentOrigin
 																			 attributes:@{NSFontAttributeName:_instructionViewController.helpLabel.font}
 																				context:context];
-	_instructionViewController.helpTextHeightConstraint.constant = textBounds.size.height;
+	_instructionViewController.helpTextHeightConstraint.constant = textBounds.size.height + 2;
 	[_instructionViewController.view layoutIfNeeded];
 }
 
