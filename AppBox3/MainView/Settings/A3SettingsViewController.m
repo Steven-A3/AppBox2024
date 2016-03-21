@@ -316,16 +316,18 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
         [self performSegueWithIdentifier:@"passcode" sender:nil];
     }
 }
-
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
-	[super appsButtonAction:barButtonItem];
-
 	NSString *currentMainMenuStyle = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
 	if (currentMainMenuStyle && ![currentMainMenuStyle isEqualToString:_previousMainMenuStyle]) {
 		dispatch_async(dispatch_get_main_queue(), ^{
+			[[A3AppDelegate instance] pushStartingAppInfo];
+			[[A3UserDefaults standardUserDefaults] setObject:@"" forKey:kA3AppsStartingAppName];
+			
 			[[A3AppDelegate instance] setPasscodeFreeBegin:[[NSDate date] timeIntervalSinceReferenceDate]];
 			[[A3AppDelegate instance] reloadRootViewController];
 		});
+	} else {
+		[super appsButtonAction:barButtonItem];
 	}
 }
 

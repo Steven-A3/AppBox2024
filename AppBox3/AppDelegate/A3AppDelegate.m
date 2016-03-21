@@ -328,11 +328,11 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 				return [[appInfo[kA3AppsMenuImageName] lowercaseString] isEqualToString:moduleName];
 			}];
 			if (indexOfMenu != NSNotFound) {
+				[self pushStartingAppInfo];
+				
 				NSDictionary *menuItem = allMenus[indexOfMenu];
 				NSString *startingAppName = menuItem[kA3AppsMenuName];
 				[[A3UserDefaults standardUserDefaults] setObject:startingAppName forKey:kA3AppsStartingAppName];
-				
-				[self pushStartingAppInfo];
 				
 				if ([self shouldAskPasscodeForStarting] || [self requirePasscodeForStartingApp]) {
 					[self presentLockScreen:self];

@@ -396,8 +396,10 @@
 			[self.mainMenuViewController openClockApp];
 		}
 	} else if (success && startingAppName) {
-		[self launchAppNamed:startingAppName verifyPasscode:NO delegate:nil animated:YES];
-		self.homeStyleMainMenuViewController.activeAppName = [startingAppName copy];
+		if (![self.homeStyleMainMenuViewController.activeAppName isEqualToString:startingAppName]) {
+			[self launchAppNamed:startingAppName verifyPasscode:NO delegate:nil animated:YES];
+			self.homeStyleMainMenuViewController.activeAppName = [startingAppName copy];
+		}
 	}
 	[self presentInterstitialAds];
 	FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");

@@ -632,7 +632,11 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 		A3RootViewController_iPad *rootViewController_iPad = [[A3RootViewController_iPad alloc] initWithNibName:nil bundle:nil];
 		[rootViewController_iPad view];
 		self.rootViewController_iPad = rootViewController_iPad;
-		self.mainMenuViewController = rootViewController_iPad.mainMenuViewController;
+		if ([self isMainMenuStyleList]) {
+			self.mainMenuViewController = rootViewController_iPad.mainMenuViewController;
+		} else {
+			self.homeStyleMainMenuViewController = rootViewController_iPad.centerNavigationController.viewControllers[0];
+		}
 		self.currentMainNavigationController = rootViewController_iPad.centerNavigationController;
 
 		self.window.rootViewController = rootViewController_iPad;
@@ -747,6 +751,12 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 		[targetViewController callPrepareCloseOnActiveMainAppViewController];
 		[targetViewController popToRootAndPushViewController:targetViewController animated:animated];
 		appLaunched = YES;
+		
+		if ([[A3AppDelegate instance] isMainMenuStyleList]) {
+			[A3AppDelegate instance].mainMenuViewController.activeAppName = [appName copy];
+		} else {
+			[A3AppDelegate instance].homeStyleMainMenuViewController.activeAppName = [appName copy];
+		}
 	}
 	return appLaunched;
 }

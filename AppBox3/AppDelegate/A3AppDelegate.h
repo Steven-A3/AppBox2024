@@ -157,7 +157,7 @@ extern NSString *const A3AppGroupNameNone;
 
 + (A3AppDelegate *)instance;
 - (void)updateStartOption;
-
+- (void)pushStartingAppInfo;
 - (void)popStartingAppInfo;
 
 - (void)showReceivedLocalNotifications;

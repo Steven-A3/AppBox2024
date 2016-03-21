@@ -31,7 +31,6 @@
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 	
 	UINavigationController *navigationController = self.navigationController;
-	[navigationController setNavigationBarHidden:YES animated:NO];
 
 	UIImage *image = [UIImage new];
 	[navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];

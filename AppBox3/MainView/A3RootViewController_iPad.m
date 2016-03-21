@@ -257,6 +257,7 @@ static const CGFloat kSideViewWidth = 320.0;
 		[self animateLeftView];
 	} else {
 		[_centerNavigationController popViewControllerAnimated:YES];
+		[_centerNavigationController setNavigationBarHidden:YES];
 		[_centerNavigationController setToolbarHidden:YES];
 	}
 }
