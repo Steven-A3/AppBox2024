@@ -56,10 +56,13 @@
 /* Class = "UILabel"; text = "Tap to add an event"; ObjectID = "M89-TC-emC"; */
 "M89-TC-emC.text" = "Tap to add an event";
 
+/* Class = "UILabel"; text = "Change the main menu\nstyle in the settings"; ObjectID = "NQw-dv-DQb"; */
+"NQw-dv-DQb.text" = "Change the main menu\nstyle in the settings";
+
 /* Class = "UILabel"; text = "Pull up to see\nmore holidays"; ObjectID = "RQJ-Od-NDI"; */
 "RQJ-Od-NDI.text" = "Pull up to see\nmore holidays";
 
-/* Class = "UILabel"; text = "Tap and hold to reorder the icon"; ObjectID = "Tgl-EJ-vOi"; */
+/* Class = "UILabel"; text = "Touch and hold an icon, then drag the app to the desired location."; ObjectID = "Tgl-EJ-vOi"; */
 "Tgl-EJ-vOi.text" = "Touch and hold an icon, then drag the app to the desired location.";
 
 /* Class = "UILabel"; text = "Tap to add or edit budget"; ObjectID = "U1j-Mc-LaR"; */
@@ -131,10 +134,8 @@
 /* Class = "UILabel"; text = "Tap to add a unit"; ObjectID = "o5S-tb-Jbp"; */
 "o5S-tb-Jbp.text" = "Tap to add a unit";
 
-/* Class = "UILabel"; text = "Tap the screen to display
-the controls"; ObjectID = "p6a-KD-zgx"; */
-"p6a-KD-zgx.text" = "Tap the screen to display
-the controls";
+/* Class = "UILabel"; text = "Tap the screen to display the controls"; ObjectID = "p6a-KD-zgx"; */
+"p6a-KD-zgx.text" = "Tap the screen to display the controls";
 
 /* Class = "UILabel"; text = "Tap to add a language"; ObjectID = "qDX-1u-CmJ"; */
 "qDX-1u-CmJ.text" = "Tap to add a language";

@@ -172,3 +172,6 @@
 
 /* Class = "UILabel"; text = "Touch and hold an icon, then drag the app to the desired location."; ObjectID = "Xpu-b2-hjC"; */
 "Xpu-b2-hjC.text" = "触摸并按住某个图标，然后将应用到所需的位置。";
+
+/* Class = "UILabel"; text = "Change the main menu\nstyle in the settings"; ObjectID = "dJh-Kp-Sa0"; */
+"dJh-Kp-Sa0.text" = "更改设置主菜单样式";

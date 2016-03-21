@@ -178,3 +178,6 @@ więcej kategorii";
 
 /* Class = "UILabel"; text = "Tap and hold to reorder the icon"; ObjectID = "Tgl-EJ-vOi"; */
 "Tgl-EJ-vOi.text" = "Dotknij i przytrzymaj ikonę, kiedy przeciągnij aplikację do wybranej lokalizacji.";
+
+/* Class = "UILabel"; text = "Change the main menu\nstyle in the settings"; ObjectID = "NQw-dv-DQb"; */
+"NQw-dv-DQb.text" = "Zmień styl menu głównego w ustawieniach";

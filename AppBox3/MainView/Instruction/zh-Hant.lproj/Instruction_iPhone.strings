@@ -87,3 +87,6 @@
 
 /* Class = "UILabel"; text = "Touch and hold an icon, then drag the app to the desired location."; ObjectID = "Tgl-EJ-vOi"; */
 "Tgl-EJ-vOi.text" = "觸摸並按住某個圖標，然後將應用到所需的位置。";
+
+/* Class = "UILabel"; text = "Change the main menu\nstyle in the settings"; ObjectID = "NQw-dv-DQb"; */
+"NQw-dv-DQb.text" = "更改設置主菜單樣式";

@@ -176,3 +176,6 @@
 
 /* Class = "UILabel"; text = "Tap and hold to reorder the icon"; ObjectID = "Tgl-EJ-vOi"; */
 "Tgl-EJ-vOi.text" = "触摸并按住某个图标，然后将应用到所需的位置。";
+
+/* Class = "UILabel"; text = "Change the main menu\nstyle in the settings"; ObjectID = "NQw-dv-DQb"; */
+"NQw-dv-DQb.text" = "更改设置主菜单样式";

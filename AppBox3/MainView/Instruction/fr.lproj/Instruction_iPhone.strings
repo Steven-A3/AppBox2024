@@ -180,3 +180,6 @@ pour ajouter un pays";
 
 /* Class = "UILabel"; text = "Touch and hold an icon, then drag the app to the desired location."; ObjectID = "Tgl-EJ-vOi"; */
 "Tgl-EJ-vOi.text" = "Touchez et maintenez une icône, lorsque faites glisser l'application à l'endroit désiré.";
+
+/* Class = "UILabel"; text = "Change the main menu\nstyle in the settings"; ObjectID = "NQw-dv-DQb"; */
+"NQw-dv-DQb.text" = "Changez le principal style de\nmenu dans les paramètres";

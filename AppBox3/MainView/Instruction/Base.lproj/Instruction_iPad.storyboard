@@ -4,6 +4,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--BateryStatus Instruction View Controller-->
@@ -33,7 +34,7 @@
                                     <constraint firstAttribute="height" constant="14" id="ER9-gS-WTY"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="668" translatesAutoresizingMaskIntoConstraints="NO" id="epj-Cz-Fwd">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="epj-Cz-Fwd">
                                 <rect key="frame" x="0.0" y="32" width="668" height="40"/>
                                 <string key="text">Tap to change 
 color and more</string>
@@ -2234,24 +2235,62 @@ You can reorder the currency list.</string>
                                     <constraint firstAttribute="width" constant="42" id="agR-cQ-I56"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap and hold to reorder the icon" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="768" translatesAutoresizingMaskIntoConstraints="NO" id="Xpu-b2-hjC" userLabel="Label - swipe left or right to change keypad for basic/scientific">
-                                <rect key="frame" x="26.5" y="204.5" width="741.5" height="20"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap and hold to reorder the icon" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xpu-b2-hjC" userLabel="Label - swipe left or right to change keypad for basic/scientific">
+                                <rect key="frame" x="26.5" y="204.5" width="250" height="20"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" constant="250" id="eUl-NF-ntG"/>
                                     <constraint firstAttribute="height" constant="20" id="yyX-kP-4xI"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HomeScreenStyle_list" translatesAutoresizingMaskIntoConstraints="NO" id="Uft-Mu-hGj">
+                                <rect key="frame" x="484" y="82" width="52" height="109"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HomeScreenStyle_hexagon" translatesAutoresizingMaskIntoConstraints="NO" id="zL2-Nv-Ayz">
+                                <rect key="frame" x="548" y="82" width="52" height="109"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HomeScreenStyle_grid" translatesAutoresizingMaskIntoConstraints="NO" id="cAa-hj-aZC">
+                                <rect key="frame" x="612" y="82" width="52" height="109"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dJh-Kp-Sa0">
+                                <rect key="frame" x="487" y="22" width="177" height="52"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="52" id="Wmo-cn-kjy"/>
+                                </constraints>
+                                <string key="text">Change the main menu
+style in the settings</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="wT6-J1-l4U">
+                                <rect key="frame" x="672" y="22" width="42" height="42"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="42" id="1Cl-Wg-GgV"/>
+                                    <constraint firstAttribute="height" constant="42" id="Lxb-WQ-ope"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
+                            <constraint firstItem="cAa-hj-aZC" firstAttribute="trailing" secondItem="dJh-Kp-Sa0" secondAttribute="trailing" id="5sR-L3-ouS"/>
                             <constraint firstItem="W5d-QW-cte" firstAttribute="centerX" secondItem="FhY-yC-Jsk" secondAttribute="left" constant="47" id="C6Q-GV-z4A"/>
-                            <constraint firstAttribute="trailing" secondItem="Xpu-b2-hjC" secondAttribute="trailing" id="Dwi-Ob-Cbk"/>
+                            <constraint firstAttribute="right" secondItem="wT6-J1-l4U" secondAttribute="right" constant="54" id="DFE-MI-RaX"/>
+                            <constraint firstItem="wT6-J1-l4U" firstAttribute="leading" secondItem="dJh-Kp-Sa0" secondAttribute="trailing" constant="8" id="EQb-4V-cHb"/>
                             <constraint firstItem="W5d-QW-cte" firstAttribute="centerY" secondItem="FhY-yC-Jsk" secondAttribute="top" constant="163" id="MP2-GO-Iz0"/>
+                            <constraint firstItem="wT6-J1-l4U" firstAttribute="top" secondItem="FhY-yC-Jsk" secondAttribute="topMargin" constant="22" id="PzF-Ey-BVL"/>
+                            <constraint firstItem="zL2-Nv-Ayz" firstAttribute="leading" secondItem="Uft-Mu-hGj" secondAttribute="trailing" constant="12" id="Sle-y3-bkJ"/>
+                            <constraint firstItem="zL2-Nv-Ayz" firstAttribute="top" secondItem="Uft-Mu-hGj" secondAttribute="top" id="fBT-dL-21Y"/>
                             <constraint firstItem="Xpu-b2-hjC" firstAttribute="top" secondItem="W5d-QW-cte" secondAttribute="bottom" constant="20" id="gia-HG-txg"/>
+                            <constraint firstItem="dJh-Kp-Sa0" firstAttribute="top" secondItem="wT6-J1-l4U" secondAttribute="top" id="jaI-A0-o5S"/>
+                            <constraint firstItem="zL2-Nv-Ayz" firstAttribute="top" secondItem="cAa-hj-aZC" secondAttribute="top" id="nVu-kD-RH2"/>
+                            <constraint firstItem="zL2-Nv-Ayz" firstAttribute="top" secondItem="dJh-Kp-Sa0" secondAttribute="bottom" constant="8" id="t5q-6g-6l6"/>
                             <constraint firstItem="Xpu-b2-hjC" firstAttribute="leading" secondItem="W5d-QW-cte" secondAttribute="leading" id="t7N-2h-gFp"/>
+                            <constraint firstItem="cAa-hj-aZC" firstAttribute="leading" secondItem="zL2-Nv-Ayz" secondAttribute="trailing" constant="12" id="zR6-dn-Sbh"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="z04-Fd-eQY" appends="YES" id="2up-qQ-yW1"/>
@@ -2263,6 +2302,7 @@ You can reorder the currency list.</string>
                         <outlet property="helpLabel" destination="Xpu-b2-hjC" id="fNS-SR-IBC"/>
                         <outlet property="helpTextHeightConstraint" destination="yyX-kP-4xI" id="sXK-Hz-aAu"/>
                         <outletCollection property="childImageViews" destination="W5d-QW-cte" id="V51-tl-DgA"/>
+                        <outletCollection property="childImageViews" destination="wT6-J1-l4U" id="MqH-RO-tbR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="evl-WG-IHY" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2276,6 +2316,9 @@ You can reorder the currency list.</string>
         </scene>
     </scenes>
     <resources>
+        <image name="HomeScreenStyle_grid" width="52" height="109"/>
+        <image name="HomeScreenStyle_hexagon" width="52" height="109"/>
+        <image name="HomeScreenStyle_list" width="52" height="109"/>
         <image name="delete03" width="14" height="14"/>
         <image name="finger_down" width="42" height="42"/>
         <image name="finger_left" width="42" height="42"/>

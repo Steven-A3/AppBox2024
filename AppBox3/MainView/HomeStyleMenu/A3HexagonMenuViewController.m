@@ -406,7 +406,7 @@ static NSString *const A3V3InstructionDidShowForHexagonMenu = @"A3V3InstructionD
 - (void)adjustFingerCenter {
 	if (!_instructionViewController) return;
 	
-	UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:0]];
+	UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:10 inSection:0]];
 	CGPoint centerInView = [self.view convertPoint:cell.center fromView:self.collectionView];
 	FNLOG(@"centerX = %f, centerY = %f", centerInView.x, centerInView.y);
 	FNLOGRECT(cell.frame);

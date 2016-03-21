@@ -484,7 +484,21 @@ static NSString *const A3V3InstructionDidShowForGridMenu = @"A3V3InstructionDidS
 - (void)adjustFingerCenter {
 	if ([self.collectionView numberOfItemsInSection:0] == 0) return;
 
-	NSInteger row = [self.collectionView numberOfItemsInSection:0] >= (6 + _pageControl.currentPage * _flowLayout.numberOfItemsPerPage) ? 5 + _pageControl.currentPage * _flowLayout.numberOfItemsPerPage : _pageControl.currentPage * _flowLayout.numberOfItemsPerPage;
+	BOOL hideImageView;
+	NSInteger row;
+	NSInteger numberOfItems = [self.collectionView numberOfItemsInSection:0];
+	if (_pageControl.currentPage == 0) {
+		row = numberOfItems >= 14 ? 13 : 0;
+		hideImageView = row == 0;
+	} else {
+		row = numberOfItems >= _flowLayout.numberOfItemsPerPage + 6 ? _flowLayout.numberOfItemsPerPage + 5 : _flowLayout.numberOfItemsPerPage;
+		hideImageView = YES;
+	}
+	if (hideImageView) {
+		[_instructionViewController.homeStyleListImageView setHidden:YES];
+		[_instructionViewController.homeStyleHexagonImageView setHidden:YES];
+		[_instructionViewController.homeStyleGridImageView setHidden:YES];
+	}
 	UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
 	CGPoint centerInView = [self.view convertPoint:cell.center fromView:self.collectionView];
 	FNLOG(@"centerX = %f, centerY = %f", centerInView.x, centerInView.y);

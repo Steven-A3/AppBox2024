@@ -277,3 +277,6 @@
 
 /* Class = "UILabel"; text = "Tap and hold and drag it to reorder the icon"; ObjectID = "Tgl-EJ-vOi"; */
 "Tgl-EJ-vOi.text" = "アイコンをタッチして押し続けながらドラッグして順番を変更する事が出来ます。";
+
+/* Class = "UILabel"; text = "Change the main menu\nstyle in the settings"; ObjectID = "NQw-dv-DQb"; */
+"NQw-dv-DQb.text" = "設定では、メインメニューのスタイルを\n変更することができます。";

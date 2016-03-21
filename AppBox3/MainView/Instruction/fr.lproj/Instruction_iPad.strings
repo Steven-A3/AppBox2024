@@ -172,3 +172,6 @@
 
 /* Class = "UILabel"; text = "Touch and hold an icon, then drag the app to the desired location."; ObjectID = "Xpu-b2-hjC"; */
 "Xpu-b2-hjC.text" = "Touchez et maintenez une icône, lorsque faites glisser l'application à l'endroit désiré.";
+
+/* Class = "UILabel"; text = "Change the main menu\nstyle in the settings"; ObjectID = "dJh-Kp-Sa0"; */
+"dJh-Kp-Sa0.text" = "Changez le principal style de\nmenu dans les paramètres";

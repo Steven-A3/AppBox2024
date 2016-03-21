@@ -80,8 +80,8 @@
 /* Class = "UILabel"; text = "Touch and hold a country,\nthen drag it up or down"; ObjectID = "XDP-Yt-OPK"; */
 "XDP-Yt-OPK.text" = "Touch and hold a country,\nthen drag it up or down";
 
-/* Class = "UILabel"; text = "Touch and hold an icon, then drag the app to the desired location."; ObjectID = "Xpu-b2-hjC"; */
-"Xpu-b2-hjC.text" = "Touch and hold an icon, then drag the app to the desired location.";
+/* Class = "UILabel"; text = "Tap and hold to reorder the icon"; ObjectID = "Xpu-b2-hjC"; */
+"Xpu-b2-hjC.text" = "Tap and hold to reorder the icon";
 
 /* Class = "UILabel"; text = "Touch and hold a currency,\nthen drag it up or down"; ObjectID = "ZUB-bK-boD"; */
 "ZUB-bK-boD.text" = "Touch and hold a currency,\nthen drag it up or down";
@@ -106,6 +106,9 @@
 
 /* Class = "UILabel"; text = "Swipe left or right to see\nprev/next events"; ObjectID = "cd9-3W-dMs"; */
 "cd9-3W-dMs.text" = "Swipe left or right to see\nprev/next events";
+
+/* Class = "UILabel"; text = "Change the main menu\nstyle in the settings"; ObjectID = "dJh-Kp-Sa0"; */
+"dJh-Kp-Sa0.text" = "Change the main menu\nstyle in the settings";
 
 /* Class = "UILabel"; text = "Swipe left or right to see\nholidays for another country"; ObjectID = "dP2-Qa-JvS"; */
 "dP2-Qa-JvS.text" = "Swipe left or right to see\nholidays for another country";
