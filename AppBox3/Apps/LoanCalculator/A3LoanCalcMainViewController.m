@@ -610,8 +610,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         bottomLine.backgroundColor = [self tableViewSeparatorColor];
         [_advancedTitleView addSubview:bottomLine];
         
-		//adv.textColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0];
-		adv.textColor = [A3AppDelegate instance].themeColor;
+		adv.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
 		bottomLine.hidden = YES;
 		
         adv.font = [UIFont systemFontOfSize:14];

@@ -32,7 +32,7 @@
 	self.tableView = tableView;
 	self.indexPath = indexPath;
 	self.titleLabel = cell.titleLabel;
-    self.titleLabel.textColor = self.isCollapsed ? [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0] : [A3AppDelegate instance].themeColor;
+    self.titleLabel.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
 
 	return cell;
 }

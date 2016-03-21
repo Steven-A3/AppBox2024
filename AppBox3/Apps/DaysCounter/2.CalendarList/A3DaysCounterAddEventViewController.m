@@ -1032,12 +1032,7 @@
 - (void)advancedTableViewCell:(UITableViewCell *)cell itemType:(NSInteger)itemType
 {
 	A3JHTableViewExpandableHeaderCell *expandableCell = (A3JHTableViewExpandableHeaderCell *) cell;
-    if (_isAdvancedCellOpen) {
-        expandableCell.titleLabel.textColor = [A3AppDelegate instance].themeColor;
-    }
-    else {
-        expandableCell.titleLabel.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
-    }
+    expandableCell.titleLabel.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
     expandableCell.expandButton.transform = CGAffineTransformRotate(CGAffineTransformIdentity, DegreesToRadians((_isAdvancedCellOpen ?  -179.9 : 0)));
     cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
 }
