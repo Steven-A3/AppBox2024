@@ -62,9 +62,6 @@
 			if (IS_IPAD_PRO) {
 				make.width.equalTo(@58);
 				make.height.equalTo(@58);
-			} else if (IS_IPAD) {
-				make.width.equalTo(@58);
-				make.height.equalTo(@58);
 			}
 		}];
 
