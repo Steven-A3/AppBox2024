@@ -191,7 +191,7 @@ A3InstructionViewControllerDelegate>
 	} else {
 		NSString *imageName = appInfo[kA3AppsMenuImageName];
 		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-		if (screenBounds.size.height > 568) {
+		if (!IS_IOS7 && screenBounds.size.height > 568) {
 			imageName = [imageName stringByAppendingString:@"_Large"];
 		}
 		cell.imageName = imageName;

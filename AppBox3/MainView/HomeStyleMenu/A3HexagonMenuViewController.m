@@ -129,7 +129,7 @@ A3InstructionViewControllerDelegate>
 	NSDictionary *appInfo = [[A3AppDelegate instance] appInfoDictionary][menuInfo[kA3AppsMenuName]];
 	cell.borderColor = [A3AppDelegate instance].groupColors[appInfo[kA3AppsGroupName]];
 	NSString *imageName = [[A3AppDelegate instance] imageNameForApp:menuInfo[kA3AppsMenuName]];
-	if (IS_IPAD) {
+	if (!IS_IOS7 && IS_IPAD) {
 		imageName = [imageName stringByAppendingString:@"_Large"];
 	}
 	cell.imageName = imageName;
