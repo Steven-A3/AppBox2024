@@ -173,6 +173,8 @@
 												state:A3DataObjectStateModified];
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:self];
+	
+	[[A3AppDelegate instance] updateApplicationShortcutItems];
 }
 
 @end

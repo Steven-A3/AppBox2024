@@ -19,17 +19,17 @@
 - (NSArray *)allMenuArrayFromStoredDataFile;
 - (NSDictionary *)favoriteMenuDictionary;
 - (NSArray *)favoriteItems;
+- (void)updateApplicationShortcutItems;
 - (NSUInteger)maximumRecentlyUsedMenus;
 - (void)storeMaximumNumberRecentlyUsedMenus:(NSUInteger)maxNumber;
 - (void)clearRecentlyUsedMenus;
 - (NSArray *)availableMenuTypes;
 - (void)reloadRootViewController;
 - (void)setupMainMenuViewController;
-
 - (BOOL)launchAppNamed:(NSString *)appName verifyPasscode:(BOOL)verifyPasscode delegate:(id <A3PasscodeViewControllerDelegate>)delegate animated:(BOOL)animated;
 - (UIViewController *)getViewControllerForAppNamed:(NSString *)appName;
 - (void)startRemoveAds;
 - (void)startRestorePurchase;
-
 - (BOOL)isMainMenuStyleList;
+
 @end

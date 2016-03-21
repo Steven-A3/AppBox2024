@@ -575,7 +575,6 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:nil];
 }
 
-// TODO: 3D Touch 장비 입수후 테스트 필요
 - (void)updateApplicationShortcutItems {
     if (![[UIApplication sharedApplication] respondsToSelector:NSSelectorFromString(@"shortcutItems")])
         return;
@@ -586,7 +585,8 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
     NSMutableArray *newShortcutItems = [NSMutableArray new];
 
 	NSDictionary *appInfoDictionary = [self appInfoDictionary];
-    for (NSDictionary *favoriteItem in favoriteMenus) {
+	
+    for (NSDictionary *favoriteItem in [[favoriteMenus reverseObjectEnumerator] allObjects]) {
 		NSString *iconName = appInfoDictionary[favoriteItem[kA3AppsMenuName]][kA3AppsMenuImageName];
         UIApplicationShortcutItem *shortcutItem = [[UIApplicationShortcutItem alloc] initWithType:[NSString stringWithFormat:@"net.allaboutapps.%@", favoriteItem[kA3AppsMenuName]]
                                                                                    localizedTitle:NSLocalizedString(favoriteItem[kA3AppsMenuName], nil)
