@@ -238,7 +238,7 @@ NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
 	[self.firstResponder resignFirstResponder];
 	if (IS_IPHONE) {
-		if ([A3AppDelegate instance].drawerController) {
+		if ([[A3AppDelegate instance] isMainMenuStyleList]) {
 			[[A3AppDelegate instance].drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 		} else {
 			UINavigationController *navigationController = [A3AppDelegate instance].currentMainNavigationController;
