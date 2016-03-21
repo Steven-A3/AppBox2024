@@ -210,7 +210,6 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 
 	bottomSection = @[
 					  @{kA3AppsMenuName : A3AppName_Settings},
-					  @{kA3AppsMenuName : A3AppName_About},
 					  ];
 
 	return [self sectionWithData:bottomSection];
