@@ -71,6 +71,7 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 	NSTimer *randomNumberTimer;
 	double	numGen;
 	int		numRepeat;
+	CGFloat _viewFrameOffset;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -149,13 +150,16 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
                                              selector:@selector(releaseMotionManager)
                                                  name:UIApplicationDidEnterBackgroundNotification
                                                object:nil];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     [self setupMotionManager];
-
 
 	_resultViewTopConst.constant = CGRectGetHeight(self.navigationController.navigationBar.bounds) + 20;
 }
@@ -202,6 +206,9 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 
 - (void)removeObserver {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
 }
 
 - (void)setNavigationBarHidden:(BOOL)hidden {
@@ -414,6 +421,45 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 
 - (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
 	return NO;
+}
+
+#pragma mark - UIKeyboard Notification
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+	[self makeTextFieldVisibleWithNotification:notification];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification {
+	double duration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+	[UIView animateWithDuration:duration animations:^{
+		CGRect frameEnd = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+		frameEnd = [self.view convertRect:frameEnd fromView:[A3AppDelegate instance].window];
+		FNLOGRECT(frameEnd);
+		FNLOGRECT(self.view.frame);
+		CGRect viewFrame = self.view.frame;
+		viewFrame.origin.y = 0;
+		self.view.frame = viewFrame;
+	}];
+}
+
+- (void)keyboardWillChangeFrame:(NSNotification *)notification {
+	[self makeTextFieldVisibleWithNotification:notification];
+}
+
+- (void)makeTextFieldVisibleWithNotification:(NSNotification *)notification {
+	double duration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+	[UIView animateWithDuration:duration animations:^{
+		CGRect frameEnd = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+		frameEnd = [self.view convertRect:frameEnd fromView:[A3AppDelegate instance].window];
+		CGRect textFieldFrame = [_minimumValueTextField isFirstResponder] ? _minimumValueTextField.frame : _maximumValueTextField.frame;
+		CGFloat diff = textFieldFrame.origin.y + textFieldFrame.size.height - frameEnd.origin.y;
+		if (diff > 0) {
+			_viewFrameOffset = diff + 10;
+			CGRect viewFrame = self.view.frame;
+			viewFrame.origin.y -= _viewFrameOffset;
+			self.view.frame = viewFrame;
+		}
+	}];
 }
 
 @end
