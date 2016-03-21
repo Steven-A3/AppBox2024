@@ -5,7 +5,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Clock1 Instruction View Controller-->
@@ -2241,16 +2240,16 @@ You can reorder the currency list.</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HomeScreenStyle_list" translatesAutoresizingMaskIntoConstraints="NO" id="OwK-qr-2ET">
-                                <rect key="frame" x="70" y="82" width="52" height="109"/>
+                                <rect key="frame" x="115" y="122" width="52" height="109"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HomeScreenStyle_hexagon" translatesAutoresizingMaskIntoConstraints="NO" id="vJG-xW-HbQ">
-                                <rect key="frame" x="134" y="82" width="52" height="109"/>
+                                <rect key="frame" x="179" y="122" width="52" height="109"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HomeScreenStyle_grid" translatesAutoresizingMaskIntoConstraints="NO" id="LZA-xi-RbM">
-                                <rect key="frame" x="198" y="82" width="52" height="109"/>
+                                <rect key="frame" x="243" y="122" width="52" height="109"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NQw-dv-DQb">
-                                <rect key="frame" x="26" y="22" width="202" height="52"/>
+                                <rect key="frame" x="16" y="62" width="279" height="52"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="52" id="vBw-ru-Sq9"/>
                                 </constraints>
@@ -2261,7 +2260,7 @@ style in the settings</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_right" translatesAutoresizingMaskIntoConstraints="NO" id="5gA-BR-AKl">
-                                <rect key="frame" x="236" y="22" width="42" height="42"/>
+                                <rect key="frame" x="233" y="15" width="42" height="42"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="42" id="Qxz-ea-TY3"/>
@@ -2274,28 +2273,28 @@ style in the settings</string>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Tgl-EJ-vOi" secondAttribute="trailing" constant="10" id="0LR-AW-khk"/>
                             <constraint firstItem="vJG-xW-HbQ" firstAttribute="top" secondItem="OwK-qr-2ET" secondAttribute="top" id="0Vb-W0-sqc"/>
-                            <constraint firstItem="5gA-BR-AKl" firstAttribute="top" secondItem="IdM-LR-Lu7" secondAttribute="topMargin" constant="22" id="0gh-4Z-aEP"/>
-                            <constraint firstItem="5gA-BR-AKl" firstAttribute="leading" secondItem="NQw-dv-DQb" secondAttribute="trailing" constant="8" id="2nA-tg-vff"/>
+                            <constraint firstItem="5gA-BR-AKl" firstAttribute="top" secondItem="IdM-LR-Lu7" secondAttribute="topMargin" constant="15" id="0gh-4Z-aEP"/>
+                            <constraint firstItem="5gA-BR-AKl" firstAttribute="right" secondItem="NQw-dv-DQb" secondAttribute="right" constant="-20" id="2nA-tg-vff"/>
                             <constraint firstItem="vJG-xW-HbQ" firstAttribute="leading" secondItem="OwK-qr-2ET" secondAttribute="trailing" constant="12" id="5Yn-cB-XXO"/>
                             <constraint firstItem="Tgl-EJ-vOi" firstAttribute="top" secondItem="2LL-wt-WZd" secondAttribute="bottom" constant="10" id="8xk-8O-nFD"/>
                             <constraint firstItem="2LL-wt-WZd" firstAttribute="centerX" secondItem="IdM-LR-Lu7" secondAttribute="left" constant="30" id="9GV-Rk-sog"/>
                             <constraint firstItem="Tgl-EJ-vOi" firstAttribute="leading" secondItem="2LL-wt-WZd" secondAttribute="leading" id="Jev-eC-2Fy"/>
+                            <constraint firstItem="LZA-xi-RbM" firstAttribute="trailing" secondItem="NQw-dv-DQb" secondAttribute="trailing" id="L17-QY-nRC"/>
                             <constraint firstItem="LZA-xi-RbM" firstAttribute="leading" secondItem="vJG-xW-HbQ" secondAttribute="trailing" constant="12" id="SNz-aS-zYK"/>
                             <constraint firstItem="vJG-xW-HbQ" firstAttribute="top" secondItem="NQw-dv-DQb" secondAttribute="bottom" constant="8" id="UYU-ur-rSd"/>
-                            <constraint firstAttribute="right" secondItem="5gA-BR-AKl" secondAttribute="right" constant="42" id="VpL-Y3-zzV"/>
-                            <constraint firstItem="NQw-dv-DQb" firstAttribute="leading" secondItem="IdM-LR-Lu7" secondAttribute="leadingMargin" constant="10" id="WFB-pE-inw"/>
-                            <constraint firstItem="LZA-xi-RbM" firstAttribute="centerX" secondItem="IdM-LR-Lu7" secondAttribute="right" multiplier="0.7" id="et9-65-0CI"/>
+                            <constraint firstAttribute="right" secondItem="5gA-BR-AKl" secondAttribute="right" constant="45" id="VpL-Y3-zzV"/>
+                            <constraint firstItem="NQw-dv-DQb" firstAttribute="leading" secondItem="IdM-LR-Lu7" secondAttribute="leadingMargin" id="WFB-pE-inw"/>
                             <constraint firstItem="vJG-xW-HbQ" firstAttribute="top" secondItem="LZA-xi-RbM" secondAttribute="top" id="gOF-lM-eCP"/>
-                            <constraint firstItem="OwK-qr-2ET" firstAttribute="centerX" secondItem="IdM-LR-Lu7" secondAttribute="right" multiplier="0.3" id="gaG-7K-7Pl"/>
-                            <constraint firstItem="NQw-dv-DQb" firstAttribute="top" secondItem="5gA-BR-AKl" secondAttribute="top" id="qs3-uj-csF"/>
+                            <constraint firstItem="NQw-dv-DQb" firstAttribute="top" secondItem="5gA-BR-AKl" secondAttribute="bottom" constant="5" id="qs3-uj-csF"/>
                             <constraint firstItem="2LL-wt-WZd" firstAttribute="centerY" secondItem="IdM-LR-Lu7" secondAttribute="top" constant="260" id="wAo-jJ-hRN"/>
-                            <constraint firstItem="vJG-xW-HbQ" firstAttribute="centerX" secondItem="IdM-LR-Lu7" secondAttribute="centerX" id="xd3-Ik-wHT"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="btk-ed-NYm" appends="YES" id="TJ4-Gc-9zj"/>
                         </connections>
                     </view>
                     <connections>
+                        <outlet property="changeStyleLabel" destination="NQw-dv-DQb" id="smm-LV-kgB"/>
+                        <outlet property="fingerRight" destination="5gA-BR-AKl" id="z7v-bu-YUb"/>
                         <outlet property="fingerUpCenterXConstraint" destination="9GV-Rk-sog" id="eUw-Nw-6My"/>
                         <outlet property="fingerUpCenterYConstraint" destination="wAo-jJ-hRN" id="pLb-7i-nXf"/>
                         <outlet property="helpLabel" destination="Tgl-EJ-vOi" id="f03-dq-r65"/>

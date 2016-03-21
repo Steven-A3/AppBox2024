@@ -395,6 +395,7 @@ A3InstructionViewControllerDelegate>
 
 - (void)setupContentHeightWithSize:(CGSize)toSize {
 	CGFloat offset;
+	
 	if (IS_IPHONE) {
 		offset = 26;
 		if (toSize.height >= 667) {
@@ -435,6 +436,12 @@ A3InstructionViewControllerDelegate>
 	}
 	CGFloat verticalMargin = (toSize.height - self.flowLayout.contentHeight) / 2;
 	self.collectionView.contentInset = UIEdgeInsetsMake(verticalMargin - offset, 0, verticalMargin + offset, 0);
+
+	NSInteger currentPage = _pageControl.currentPage;
+	dispatch_async(dispatch_get_main_queue(), ^{
+		FNLOG(@"%ld", (long)_pageControl.currentPage);
+		self.collectionView.contentOffset = CGPointMake(toSize.width * currentPage, -self.collectionView.contentInset.top);
+	});
 	
 	if (_instructionViewController) {
 		[self adjustFingerCenter];
@@ -492,9 +499,11 @@ static NSString *const A3V3InstructionDidShowForGridMenu = @"A3V3InstructionDidS
 		hideImageView = row == 0;
 	} else {
 		row = numberOfItems >= _flowLayout.numberOfItemsPerPage + 6 ? _flowLayout.numberOfItemsPerPage + 5 : _flowLayout.numberOfItemsPerPage;
-		hideImageView = YES;
+		hideImageView = IS_IPHONE;
 	}
 	if (hideImageView) {
+		[_instructionViewController.fingerRight setHidden:YES];
+		[_instructionViewController.changeStyleLabel setHidden:YES];
 		[_instructionViewController.homeStyleListImageView setHidden:YES];
 		[_instructionViewController.homeStyleHexagonImageView setHidden:YES];
 		[_instructionViewController.homeStyleGridImageView setHidden:YES];
