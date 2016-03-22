@@ -1732,8 +1732,11 @@ then tap Delete</string>
                                     <constraint firstAttribute="height" constant="14" id="jnd-ji-eHO"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="241" translatesAutoresizingMaskIntoConstraints="NO" id="DHT-qK-x4H" userLabel="Label - Slide the country to the left then tap Delete">
-                                <rect key="frame" x="10" y="261" width="241" height="41"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="241" translatesAutoresizingMaskIntoConstraints="NO" id="DHT-qK-x4H" userLabel="Label - Slide the country to the left then tap Delete">
+                                <rect key="frame" x="10" y="249" width="241" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="BUY-WL-2UK"/>
+                                </constraints>
                                 <string key="text">Slide the country to the left
 then tap Delete</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -1749,9 +1752,9 @@ then drag it up or down</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap the plus button to add a country" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="nP5-9M-28L" userLabel="Label - swipe left or right to change keypad for basic/scientific">
-                                <rect key="frame" x="6.5" y="20" width="220" height="47"/>
+                                <rect key="frame" x="6" y="20" width="220" height="60"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="47" id="M2m-ye-lgM"/>
+                                    <constraint firstAttribute="height" constant="60" id="lhG-yC-Iew"/>
                                     <constraint firstAttribute="width" constant="220" id="nIG-4e-Lhw"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
