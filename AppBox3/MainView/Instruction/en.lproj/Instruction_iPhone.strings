@@ -56,8 +56,8 @@
 /* Class = "UILabel"; text = "Tap to add an event"; ObjectID = "M89-TC-emC"; */
 "M89-TC-emC.text" = "Tap to add an event";
 
-/* Class = "UILabel"; text = "Change the main menu\nstyle in the settings"; ObjectID = "NQw-dv-DQb"; */
-"NQw-dv-DQb.text" = "Change the main menu\nstyle in the settings";
+/* Class = "UILabel"; text = "Change the home screen\nstyle in the settings"; ObjectID = "NQw-dv-DQb"; */
+"NQw-dv-DQb.text" = "Change the home screen\nstyle in the settings";
 
 /* Class = "UILabel"; text = "Pull up to see\nmore holidays"; ObjectID = "RQJ-Od-NDI"; */
 "RQJ-Od-NDI.text" = "Pull up to see\nmore holidays";

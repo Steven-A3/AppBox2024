@@ -107,8 +107,8 @@
 /* Class = "UILabel"; text = "Swipe left or right to see\nprev/next events"; ObjectID = "cd9-3W-dMs"; */
 "cd9-3W-dMs.text" = "Swipe left or right to see\nprev/next events";
 
-/* Class = "UILabel"; text = "Change the main menu\nstyle in the settings"; ObjectID = "dJh-Kp-Sa0"; */
-"dJh-Kp-Sa0.text" = "Change the main menu\nstyle in the settings";
+/* Class = "UILabel"; text = "Change the home screen\nstyle in the settings"; ObjectID = "dJh-Kp-Sa0"; */
+"dJh-Kp-Sa0.text" = "Change the home screen\nstyle in the settings";
 
 /* Class = "UILabel"; text = "Swipe left or right to see\nholidays for another country"; ObjectID = "dP2-Qa-JvS"; */
 "dP2-Qa-JvS.text" = "Swipe left or right to see\nholidays for another country";

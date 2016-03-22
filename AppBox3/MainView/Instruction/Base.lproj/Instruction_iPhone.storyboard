@@ -2256,7 +2256,7 @@ You can reorder the currency list.</string>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="52" id="vBw-ru-Sq9"/>
                                 </constraints>
-                                <string key="text">Change the main menu
+                                <string key="text">Change the home screen
 style in the settings</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>

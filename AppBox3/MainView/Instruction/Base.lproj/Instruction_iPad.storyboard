@@ -2255,11 +2255,11 @@ You can reorder the currency list.</string>
                                 <rect key="frame" x="612" y="82" width="52" height="109"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dJh-Kp-Sa0">
-                                <rect key="frame" x="487" y="22" width="177" height="52"/>
+                                <rect key="frame" x="471.5" y="22" width="192.5" height="52"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="52" id="Wmo-cn-kjy"/>
                                 </constraints>
-                                <string key="text">Change the main menu
+                                <string key="text">Change the home screen
 style in the settings</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
