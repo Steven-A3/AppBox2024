@@ -416,6 +416,11 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 	[self pickerView:_limitNumberPickerView didSelectRow:number inComponent:component];
 }
 
+- (void)A3KeyboardController:(A3NumberKeyboardViewController *)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
+	UITextField *textField = (id)controller.textInputTarget;
+	textField.text = @"";
+}
+
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
 	[keyInputDelegate resignFirstResponder];
 }
