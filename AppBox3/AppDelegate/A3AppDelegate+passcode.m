@@ -45,7 +45,7 @@
 - (BOOL)didPasscodeTimerEnd {
 	NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
 	FNLOG(@"%f", now - [self timerStartTime]);
-	if ([self timerStartTime] != -1 && (now - [self timerStartTime] < 1)) {
+	if ([self timerStartTime] != -1 && (now - [self timerStartTime] < 1.8)) {
 		return NO;
 	}
 	if ((now - [self passcodeFreeBegin]) < 0.2) {
@@ -224,7 +224,7 @@
 	FNLOG(@"");
 	if (!isAfterLaunch) {
 		FNLOG(@"");
-		if ([self shouldAskPasscodeForStarting]) {
+		if ([self didPasscodeTimerEnd] && [self shouldAskPasscodeForStarting]) {
 			FNLOG(@"showLockScreen");
 			[self showLockScreen];
 		}
