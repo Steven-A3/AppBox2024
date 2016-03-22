@@ -24,7 +24,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 @interface A3CurrencyViewController () <A3CurrencySettingsDelegate>
 
 @property (nonatomic, strong) A3CurrencyPickerStyleViewController *pickerStyleViewController;
-@property (nonatomic, strong) A3CurrencyTableViewController *listStyleViewController;
+@property (nonatomic, strong) A3CurrencyTableViewController<A3ViewControllerProtocol> *listStyleViewController;
 @property (nonatomic, strong) A3CurrencyDataManager *dataManager;
 @property (nonatomic, strong) NSArray *moreMenuButtons;
 @property (nonatomic, strong) A3CurrencySettingsViewController *settingsViewController;
@@ -85,6 +85,13 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 	}
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	[[UIApplication sharedApplication] setStatusBarHidden:NO];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+}
+
 - (void)mainMenuViewDidHide {
 	[self enableControls:YES];
 }
@@ -96,6 +103,10 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)prepareClose {
+	[_listStyleViewController prepareClose];
 }
 
 - (UISegmentedControl *)viewTypeSegmentedControl {
@@ -170,7 +181,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 
 - (A3CurrencyTableViewController *)listStyleViewController {
     if (!_listStyleViewController) {
-        _listStyleViewController = [A3CurrencyTableViewController new];
+        _listStyleViewController = (id)[A3CurrencyTableViewController new];
         _listStyleViewController.currencyDataManager = self.dataManager;
 		_listStyleViewController.mainViewController = self;
     }

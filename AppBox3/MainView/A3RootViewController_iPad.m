@@ -256,6 +256,10 @@ static const CGFloat kSideViewWidth = 320.0;
 		
 		[self animateLeftView];
 	} else {
+		id<A3ViewControllerProtocol> viewController = (id)[_centerNavigationController topViewController];
+		if ([viewController respondsToSelector:@selector(prepareClose)]) {
+			[viewController prepareClose];
+		}
 		[_centerNavigationController popViewControllerAnimated:YES];
 		[_centerNavigationController setNavigationBarHidden:YES];
 		[_centerNavigationController setToolbarHidden:YES];
