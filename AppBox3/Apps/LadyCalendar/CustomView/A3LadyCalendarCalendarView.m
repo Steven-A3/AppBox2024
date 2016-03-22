@@ -344,7 +344,6 @@
 
 - (void)reload
 {
-	FNLOG(@"%@", _dateMonth);
     if ( _dateMonth == nil ) {
         _dateMonth = [NSDate date];
 		[self updateDates];

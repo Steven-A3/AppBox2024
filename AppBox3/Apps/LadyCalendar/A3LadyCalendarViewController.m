@@ -210,6 +210,9 @@ A3CalendarViewDelegate>
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
+	[[UIApplication sharedApplication] setStatusBarHidden:NO];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+
 	static NSString *const A3DisclaimerSigned = @"kDefaultPCalendarWarningMessageSigned";
 	if (![[A3UserDefaults standardUserDefaults] boolForKey:A3DisclaimerSigned]) {
 		[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3DisclaimerSigned];
@@ -596,7 +599,6 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellID forIndexPath:indexPath];
 
     A3LadyCalendarCalendarView *calendarView = (A3LadyCalendarCalendarView *)[cell viewWithTag:10];
-	FNLOG(@"%@", calendarView);
 
 	calendarView.dataManager = self.dataManager;
     calendarView.delegate = self;
@@ -605,9 +607,6 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 	} else {
 		calendarView.cellSize = CGSizeMake(floor(self.view.frame.size.width / 7), (IS_IPHONE ? 37.0 : 55.0 ));
 	}
-    FNLOG(@"cellSize: %@", NSStringFromCGSize(calendarView.cellSize));
-    
-    
     calendarView.isSmallCell = (numberOfMonthInPage > 1);
 	NSInteger month;
 	if (indexPath.section == 0) {

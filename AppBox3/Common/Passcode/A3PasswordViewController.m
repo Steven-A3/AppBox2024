@@ -144,6 +144,9 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
+	[[UIApplication sharedApplication] setStatusBarHidden:NO];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+	
 	if (_isUserEnablingPasscode) {
         if (_aNewPasswordField) {
             [_aNewPasswordField becomeFirstResponder];

@@ -102,24 +102,31 @@
 
 - (void)presentLockScreen:(id <A3PasscodeViewControllerDelegate>)delegate {
 	if (self.passcodeViewController || self.isTouchIDEvaluationInProgress) return;
-	FNLOG(@"appDelegate.passcodeViewController must nil = %@", self.passcodeViewController);
 
 	if (delegate != self) {
 		self.otherPasscodeDelegate = delegate;
 	}
 	void(^presentPasscodeViewControllerBlock)(void) = ^(){
-		[self removeSecurityCoverView];
-
 		self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
 		BOOL showCancelButton = ![[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting];
 		if (showCancelButton) {
-			UIViewController *visibleViewController = [self.navigationController visibleViewController];
-			self.parentOfPasscodeViewController = visibleViewController;
-			[self.passcodeViewController showLockScreenInViewController:visibleViewController];
+			UIViewController *passcodeParentViewController = [self.navigationController visibleViewController];
+			NSString *className = NSStringFromClass([passcodeParentViewController class]);
+			if ([className isEqualToString:@"GADInterstitialViewController"]) {
+				passcodeParentViewController = [self.currentMainNavigationController topViewController];
+				FNLOG(@"%@", passcodeParentViewController);
+			}
+			self.parentOfPasscodeViewController = passcodeParentViewController;
+			[self.passcodeViewController showLockScreenInViewController:passcodeParentViewController];
 			self.pushClockViewControllerIfFailPasscode = YES;
 		} else {
 			[self.passcodeViewController showLockScreenWithAnimation:NO showCacelButton:showCancelButton];
 		}
+		double delayInSeconds = 1.0;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			[self removeSecurityCoverView];
+		});
 	};
 	if (IS_IOS7 || ![self useTouchID]) {
 		presentPasscodeViewControllerBlock();

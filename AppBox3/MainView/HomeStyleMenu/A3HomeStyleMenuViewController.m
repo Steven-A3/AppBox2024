@@ -29,12 +29,14 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-	
-	UINavigationController *navigationController = self.navigationController;
 
-	UIImage *image = [UIImage new];
-	[navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
-	[navigationController.navigationBar setShadowImage:image];
+	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+		UINavigationController *navigationController = self.navigationController;
+		
+		UIImage *image = [UIImage new];
+		[navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+		[navigationController.navigationBar setShadowImage:image];
+	}
 
 	[super viewWillAppear:animated];
 }
