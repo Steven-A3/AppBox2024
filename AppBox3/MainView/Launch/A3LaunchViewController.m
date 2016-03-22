@@ -86,6 +86,13 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 
 	if ([self isMovingToParentViewController] ) {
 		A3AppDelegate *appDelegate = [A3AppDelegate instance];
+		if ([A3AppDelegate instance].isChangingRootViewController) {
+			[A3AppDelegate instance].isChangingRootViewController = NO;
+			if ([appDelegate isMainMenuStyleList]) {
+				[appDelegate.mainMenuViewController openClockApp];
+			}
+			return;
+		}
 		A3MainMenuTableViewController *mainMenuTableViewController = [[A3AppDelegate instance] mainMenuViewController];
 		
 		mainMenuTableViewController.pushClockViewControllerOnPasscodeFailure = YES;

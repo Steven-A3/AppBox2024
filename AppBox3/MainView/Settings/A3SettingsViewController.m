@@ -244,10 +244,14 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 							[[A3AppDelegate instance] addSecurityCoverView];
 							[[UIApplication sharedApplication] setStatusBarHidden:YES];
 							[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
+							[A3AppDelegate instance].isSettingsEvaluatingTouchID = YES;
+							
 							[context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
 									localizedReason:NSLocalizedString(@"Unlock AppBox Pro", @"Unlock AppBox Pro")
 											  reply:^(BOOL success, NSError *error) {
 												  dispatch_async(dispatch_get_main_queue(), ^{
+													  FNLOG();
 													  [[UIApplication sharedApplication] setStatusBarHidden:NO];
 													  [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 													  
@@ -259,7 +263,6 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 														  presentPasscodeViewControllerBlock();
 													  }
 												  });
-												  
 											  }];
 						} else {
 							presentPasscodeViewControllerBlock();
@@ -322,10 +325,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	NSString *currentMainMenuStyle = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
 	if (currentMainMenuStyle && ![currentMainMenuStyle isEqualToString:_previousMainMenuStyle]) {
 		dispatch_async(dispatch_get_main_queue(), ^{
-			[[A3AppDelegate instance] pushStartingAppInfo];
-			[[A3UserDefaults standardUserDefaults] setObject:@"" forKey:kA3AppsStartingAppName];
-			
-			[[A3AppDelegate instance] setPasscodeFreeBegin:[[NSDate date] timeIntervalSinceReferenceDate]];
+			[A3AppDelegate instance].isChangingRootViewController = YES;
 			[[A3AppDelegate instance] reloadRootViewController];
 		});
 	} else {

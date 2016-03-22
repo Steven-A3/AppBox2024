@@ -216,6 +216,11 @@
 }
 
 - (void)applicationDidBecomeActive_passcodeAfterLaunch:(BOOL)isAfterLaunch {
+	if (self.isSettingsEvaluatingTouchID) {
+		self.isSettingsEvaluatingTouchID = NO;
+		return;
+	}
+	
 	FNLOG(@"");
 	if (!isAfterLaunch) {
 		FNLOG(@"");
@@ -250,6 +255,9 @@
 							self.homeStyleMainMenuViewController.activeAppName = [startingAppName copy];
 						}
 					}
+				} else {
+					[self popStartingAppInfo];
+					[self showLockScreen];
 				}
 			}
 		}
@@ -404,6 +412,7 @@
 			[self.mainMenuViewController openClockApp];
 		}
 	} else if (success && startingAppName) {
+		[self popStartingAppInfo];
 		if (![self.homeStyleMainMenuViewController.activeAppName isEqualToString:startingAppName]) {
 			[self launchAppNamed:startingAppName verifyPasscode:NO delegate:nil animated:YES];
 			self.homeStyleMainMenuViewController.activeAppName = [startingAppName copy];
