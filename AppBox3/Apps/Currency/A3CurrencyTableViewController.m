@@ -368,6 +368,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 			[[A3AppDelegate instance].drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 		} else {
 			UINavigationController *navigationController = [A3AppDelegate instance].currentMainNavigationController;
+			[navigationController setNavigationBarHidden:YES];
 			[navigationController popViewControllerAnimated:YES];
 			[navigationController setToolbarHidden:YES];
 		}

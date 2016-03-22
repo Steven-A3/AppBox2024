@@ -376,6 +376,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 			[[A3AppDelegate instance].drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 		} else {
 			UINavigationController *navigationController = [A3AppDelegate instance].currentMainNavigationController;
+			[navigationController setNavigationBarHidden:YES];
 			[navigationController popViewControllerAnimated:YES];
 			[navigationController setToolbarHidden:YES];
 		}

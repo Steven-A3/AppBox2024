@@ -204,6 +204,9 @@
 {
 	[super viewDidAppear:animated];
 
+	[[UIApplication sharedApplication] setStatusBarHidden:NO];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+	
 	[self addDateKeyboard];
     [self shrinkCellScrollView:animated];
 

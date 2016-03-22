@@ -207,6 +207,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 			[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 		} else {
 			UINavigationController *navigationController = [A3AppDelegate instance].currentMainNavigationController;
+			[navigationController setNavigationBarHidden:YES];
 			[navigationController popViewControllerAnimated:YES];
 			[navigationController setToolbarHidden:YES];
 		}

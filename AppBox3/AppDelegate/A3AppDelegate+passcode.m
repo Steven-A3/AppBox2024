@@ -101,6 +101,9 @@
 }
 
 - (void)presentLockScreen:(id <A3PasscodeViewControllerDelegate>)delegate {
+	if (![self didPasscodeTimerEnd]) {
+		return;
+	}
 	if (self.passcodeViewController || self.isTouchIDEvaluationInProgress) return;
 
 	if (delegate != self) {
@@ -214,9 +217,42 @@
 
 - (void)applicationDidBecomeActive_passcodeAfterLaunch:(BOOL)isAfterLaunch {
 	FNLOG(@"");
-	[self showLockScreen];
-
 	if (!isAfterLaunch) {
+		FNLOG(@"");
+		if ([self shouldAskPasscodeForStarting]) {
+			FNLOG(@"showLockScreen");
+			[self showLockScreen];
+		}
+		else
+		{
+			[self updateStartOption];
+			
+			if (self.startOptionOpenClockOnce) {
+				[self removeSecurityCoverView];
+				if ([self isMainMenuStyleList]) {
+					[self.mainMenuViewController openClockApp];
+				} else {
+					[self launchAppNamed:A3AppName_Clock verifyPasscode:NO delegate:nil animated:NO];
+					self.homeStyleMainMenuViewController.activeAppName = [A3AppName_Clock copy];
+				}
+				[self setStartOptionOpenClockOnce:NO];
+			} else {
+				NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+				if ([startingAppName length]) {
+					if ([self requirePasscodeForStartingApp]) {
+						[self presentLockScreen:self];
+					} else {
+						[self removeSecurityCoverView];
+						if ([self isMainMenuStyleList]) {
+							[self.mainMenuViewController openRecentlyUsedMenu:YES];
+						} else {
+							[self launchAppNamed:startingAppName verifyPasscode:NO delegate:nil animated:NO];
+							self.homeStyleMainMenuViewController.activeAppName = [startingAppName copy];
+						}
+					}
+				}
+			}
+		}
 	}
 	dispatch_async(dispatch_get_main_queue(), ^{
 		if (!self.isTouchIDEvaluationInProgress && self.passcodeViewController == nil && self.mainMenuViewController.passcodeViewController == nil) {
@@ -228,41 +264,6 @@
 }
 
 - (void)applicationWillEnterForeground_passcode {
-	FNLOG(@"");
-    if ([self shouldAskPasscodeForStarting]) {
-		FNLOG(@"showLockScreen");
-        [self showLockScreen];
-	}
-	else
-	{
-		[self updateStartOption];
-
-		if (self.startOptionOpenClockOnce) {
-			[self removeSecurityCoverView];
-			if ([self isMainMenuStyleList]) {
-				[self.mainMenuViewController openClockApp];
-			} else {
-				[self launchAppNamed:A3AppName_Clock verifyPasscode:NO delegate:nil animated:NO];
-				self.homeStyleMainMenuViewController.activeAppName = [A3AppName_Clock copy];
-			}
-			[self setStartOptionOpenClockOnce:NO];
-		} else {
-			NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
-			if ([startingAppName length]) {
-				if ([self requirePasscodeForStartingApp]) {
-					[self presentLockScreen:self];
-				} else {
-					[self removeSecurityCoverView];
-					if ([self isMainMenuStyleList]) {
-						[self.mainMenuViewController openRecentlyUsedMenu:YES];
-					} else {
-						[self launchAppNamed:startingAppName verifyPasscode:NO delegate:nil animated:NO];
-						self.homeStyleMainMenuViewController.activeAppName = [startingAppName copy];
-					}
-				}
-			}
-		}
-	}
 }
 
 - (void)applicationWillResignActive_passcode {

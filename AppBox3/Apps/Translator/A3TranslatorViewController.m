@@ -110,6 +110,9 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
+	[[UIApplication sharedApplication] setStatusBarHidden:NO];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+	
 	if (!_viewWillAppearCalled) {
 		_viewWillAppearCalled = YES;
 		if (!_instructionViewController && [TranslatorGroup MR_countOfEntities] == 0) {

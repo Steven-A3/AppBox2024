@@ -378,17 +378,17 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
     [[A3UserDefaults standardUserDefaults] setObject:startingAppName forKey:kA3AppsStartingAppName];
     _shortcutItem = nil;
     
-	if ([self shouldAskPasscodeForStarting] || [self requirePasscodeForStartingApp]) {
-		[self presentLockScreen:self];
-	} else {
-		[self removeSecurityCoverView];
-		if ([self isMainMenuStyleList]) {
-			[self.mainMenuViewController openRecentlyUsedMenu:YES];
-		} else {
-			[self launchAppNamed:startingAppName verifyPasscode:NO delegate:nil animated:NO];
-			self.homeStyleMainMenuViewController.activeAppName = [startingAppName copy];
-		}
-	}
+//	if ([self shouldAskPasscodeForStarting] || [self requirePasscodeForStartingApp]) {
+//		[self presentLockScreen:self];
+//	} else {
+//		[self removeSecurityCoverView];
+//		if ([self isMainMenuStyleList]) {
+//			[self.mainMenuViewController openRecentlyUsedMenu:YES];
+//		} else {
+//			[self launchAppNamed:startingAppName verifyPasscode:NO delegate:nil animated:NO];
+//			self.homeStyleMainMenuViewController.activeAppName = [startingAppName copy];
+//		}
+//	}
 	
     return YES;
 }

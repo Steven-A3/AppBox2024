@@ -244,6 +244,7 @@ NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
 			UINavigationController *navigationController = [A3AppDelegate instance].currentMainNavigationController;
 			id<A3ViewControllerProtocol> viewController = (id)[navigationController topViewController];
 			[viewController prepareClose];
+			[navigationController setNavigationBarHidden:YES];
 			[navigationController popViewControllerAnimated:YES];
 			[navigationController setToolbarHidden:YES];
 		}
