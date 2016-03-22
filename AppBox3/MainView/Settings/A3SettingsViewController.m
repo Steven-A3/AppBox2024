@@ -63,6 +63,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableView) name:A3NotificationAppsMainMenuContentsChanged object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(adWillDismissScreen) name:A3NotificationsAdsWillDismissScreen object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -87,6 +88,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationAppsMainMenuContentsChanged object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationsAdsWillDismissScreen object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 - (void)reloadTableView {
@@ -328,6 +330,13 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 		});
 	} else {
 		[super appsButtonAction:barButtonItem];
+	}
+}
+
+- (void)applicationDidEnterBackground {
+	NSString *currentMainMenuStyle = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
+	if (currentMainMenuStyle && ![currentMainMenuStyle isEqualToString:_previousMainMenuStyle]) {
+		[[A3AppDelegate instance] reloadRootViewController];
 	}
 }
 
