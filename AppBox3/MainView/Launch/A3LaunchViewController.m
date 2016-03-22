@@ -84,15 +84,16 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	if ([self isMovingToParentViewController] ) {
-		A3AppDelegate *appDelegate = [A3AppDelegate instance];
-		if ([A3AppDelegate instance].isChangingRootViewController) {
-			[A3AppDelegate instance].isChangingRootViewController = NO;
-			if ([appDelegate isMainMenuStyleList]) {
-				[appDelegate.mainMenuViewController openClockApp];
-			}
-			return;
+	A3AppDelegate *appDelegate = [A3AppDelegate instance];
+	if ([A3AppDelegate instance].isChangingRootViewController) {
+		[A3AppDelegate instance].isChangingRootViewController = NO;
+		if ([appDelegate isMainMenuStyleList]) {
+			[appDelegate.mainMenuViewController openClockApp];
 		}
+		return;
+	}
+	if (!appDelegate.mainViewControllerDidInitialSetup) {
+		appDelegate.mainViewControllerDidInitialSetup = YES;
 		A3MainMenuTableViewController *mainMenuTableViewController = [[A3AppDelegate instance] mainMenuViewController];
 		
 		mainMenuTableViewController.pushClockViewControllerOnPasscodeFailure = YES;
@@ -135,9 +136,9 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 					}
 				}
 			}
+			[appDelegate downloadDataFiles];
+			[self askRestorePurchase];
 		}
-		[appDelegate downloadDataFiles];
-		[self askRestorePurchase];
 	}
 }
 
