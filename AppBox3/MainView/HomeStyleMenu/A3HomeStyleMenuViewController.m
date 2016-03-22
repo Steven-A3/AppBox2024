@@ -13,7 +13,9 @@
 
 @end
 
-@implementation A3HomeStyleMenuViewController
+@implementation A3HomeStyleMenuViewController {
+	BOOL _initialized;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -30,7 +32,8 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
-	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+	if (!_initialized) {
+		_initialized = YES;
 		UINavigationController *navigationController = self.navigationController;
 		
 		UIImage *image = [UIImage new];

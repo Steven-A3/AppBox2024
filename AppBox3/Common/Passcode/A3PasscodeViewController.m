@@ -357,7 +357,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
             }
         }
     }
-    if (_beingDisplayedAsLockscreen && !self.navigationController && !_shouldDismissViewController) {
+    if (_beingDisplayedAsLockscreen && !_shouldDismissViewController) {
         [self.view removeFromSuperview];
         [self removeFromParentViewController];
 

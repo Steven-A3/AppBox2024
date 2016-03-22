@@ -569,11 +569,11 @@
 }
 
 - (void)dismissMe {
-	if ([self navigationController] || _beingPresentedInViewController || _shouldDismissViewController) {
+	if (_beingPresentedInViewController || _shouldDismissViewController) {
 		if ([self.delegate respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
 			[self.delegate passcodeViewControllerDidDismissWithSuccess:YES];
 		}
-		[self dismissViewControllerAnimated:NO completion:nil];
+		[self.presentingViewController dismissViewControllerAnimated:NO completion:nil];
 	} else {
 		[self.view removeFromSuperview];
 		[self removeFromParentViewController];
