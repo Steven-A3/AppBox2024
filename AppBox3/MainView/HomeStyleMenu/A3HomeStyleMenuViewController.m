@@ -8,6 +8,7 @@
 
 #import "A3AppDelegate.h"
 #import "A3HexagonMenuViewController.h"
+#import "A3HomeScreenButton.h"
 
 @interface A3HomeStyleMenuViewController ()
 
@@ -60,45 +61,45 @@
 
 	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 
-	UIButton *helpButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	A3HomeScreenButton *helpButton = [A3HomeScreenButton buttonWithType:UIButtonTypeCustom];
+	helpButton.contentMode = UIViewContentModeLeft;
+	[helpButton setImage:[[UIImage imageNamed:@"help"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
 	[helpButton addTarget:self action:@selector(helpButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-	[helpButton setBackgroundImage:[[UIImage imageNamed:@"help"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
 	helpButton.tintColor = [UIColor whiteColor];
-
 	[backgroundView addSubview:helpButton];
 
 	UIView *superview = backgroundView;
 	[helpButton mas_makeConstraints:^(MASConstraintMaker *make) {
 		if (IS_IPAD_PRO) {
-			make.left.equalTo(superview.left).with.offset(25);
-			make.top.equalTo(superview.top).with.offset(30);
-			make.width.equalTo(@40);
-			make.height.equalTo(@40);
+			make.left.equalTo(superview.left).with.offset(20);
+			make.top.equalTo(superview.top).with.offset(25);
+			make.width.equalTo(@50);
+			make.height.equalTo(@50);
 		} else {
-			make.left.equalTo(superview.left).with.offset(15);
-			make.top.equalTo(superview.top).with.offset(30);
-			make.width.equalTo(screenBounds.size.height <= 568 ? @30 : @35);
-			make.height.equalTo(screenBounds.size.height <= 568 ? @30 : @35);
+			make.left.equalTo(superview.left).with.offset(8);
+			make.top.equalTo(superview.top).with.offset(23);
+			make.width.equalTo(@44);
+			make.height.equalTo(@44);
 		}
 	}];
 
-	UIButton *settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	[settingsButton setBackgroundImage:[[UIImage imageNamed:@"general"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+	A3HomeScreenButton *settingsButton = [A3HomeScreenButton buttonWithType:UIButtonTypeCustom];
+	[settingsButton setImage:[[UIImage imageNamed:@"general"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
 	[settingsButton addTarget:self action:@selector(settingsButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 	settingsButton.tintColor = [UIColor whiteColor];
 	[backgroundView addSubview:settingsButton];
-
+	
 	[settingsButton makeConstraints:^(MASConstraintMaker *make) {
 		if (IS_IPAD_PRO) {
-			make.top.equalTo(superview.top).with.offset(25);
-			make.right.equalTo(superview.right).with.offset(-30);
-			make.width.equalTo(@40);
-			make.height.equalTo(@40);
+			make.top.equalTo(superview.top).with.offset(20);
+			make.right.equalTo(superview.right).with.offset(-25);
+			make.width.equalTo(@50);
+			make.height.equalTo(@50);
 		} else {
-			make.top.equalTo(superview.top).with.offset(30);
-			make.right.equalTo(superview.right).with.offset(-15);
-			make.width.equalTo(screenBounds.size.height <= 568 ? @30 : @35);
-			make.height.equalTo(screenBounds.size.height <= 568 ? @30 : @35);
+			make.right.equalTo(superview.right).with.offset(-8);
+			make.top.equalTo(superview.top).with.offset(23);
+			make.width.equalTo(@44);
+			make.height.equalTo(@44);
 		}
 	}];
 

@@ -250,6 +250,7 @@
 		6825367A18A7BBF600EAFB84 /* NSDate+LunarConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6825367918A7BBF600EAFB84 /* NSDate+LunarConverter.m */; };
 		6825367D18A7BD4E00EAFB84 /* SQLiteWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6825367C18A7BD4E00EAFB84 /* SQLiteWrapper.m */; };
 		6825367F18A7C1B800EAFB84 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6825367E18A7C1B800EAFB84 /* libsqlite3.0.dylib */; };
+		6826F0291CA17B9800144680 /* A3HomeScreenButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6826F0281CA17B9800144680 /* A3HomeScreenButton.m */; };
 		682961D2174267C6008D025E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682961D1174267C6008D025E /* MapKit.framework */; };
 		682968851850401200B70E13 /* NSFileManager+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 682968841850401200B70E13 /* NSFileManager+A3Addition.m */; };
 		6829688F18505E3900B70E13 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D715EB10B000BD6AD4 /* Foundation.framework */; };
@@ -1421,6 +1422,8 @@
 		6825367B18A7BD4E00EAFB84 /* SQLiteWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLiteWrapper.h; sourceTree = "<group>"; };
 		6825367C18A7BD4E00EAFB84 /* SQLiteWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQLiteWrapper.m; sourceTree = "<group>"; };
 		6825367E18A7C1B800EAFB84 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
+		6826F0271CA17B9800144680 /* A3HomeScreenButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3HomeScreenButton.h; sourceTree = "<group>"; };
+		6826F0281CA17B9800144680 /* A3HomeScreenButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3HomeScreenButton.m; sourceTree = "<group>"; };
 		682961D1174267C6008D025E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		6829687D18503D0E00B70E13 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/AppKit.framework; sourceTree = DEVELOPER_DIR; };
 		682968831850401200B70E13 /* NSFileManager+A3Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+A3Addition.h"; sourceTree = "<group>"; };
@@ -3556,6 +3559,8 @@
 				68E02E6F1C9286BD00C5A24A /* A3AppSelectTableViewController.m */,
 				6893E6361C9E3E17009E0A2E /* A3HomeStyleHelpViewController.h */,
 				6893E6371C9E3E17009E0A2E /* A3HomeStyleHelpViewController.m */,
+				6826F0271CA17B9800144680 /* A3HomeScreenButton.h */,
+				6826F0281CA17B9800144680 /* A3HomeScreenButton.m */,
 			);
 			path = HomeStyleMenu;
 			sourceTree = "<group>";
@@ -6290,6 +6295,7 @@
 				68B6A2F018CEC76D004084EF /* A3UnitPriceInputCell.m in Sources */,
 				68F14FF419485E8500159EAD /* A3DaysCounterSetupCalendarViewController.m in Sources */,
 				68E2A6A618D0B22800E834D9 /* A3SalesCalcMainViewController.m in Sources */,
+				6826F0291CA17B9800144680 /* A3HomeScreenButton.m in Sources */,
 				68143D5E18E3EC7C00569691 /* A3TableViewDateEntryElement.m in Sources */,
 				68D6E903199ECC0A00166A47 /* LadyCalendarAccount.m in Sources */,
 				68E0B31E198CAB6200127229 /* LoanCalcHistory.m in Sources */,
