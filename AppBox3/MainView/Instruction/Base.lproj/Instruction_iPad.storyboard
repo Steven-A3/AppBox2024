@@ -2235,7 +2235,7 @@ You can reorder the currency list.</string>
                                     <constraint firstAttribute="width" constant="42" id="agR-cQ-I56"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap and hold to reorder the icon" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xpu-b2-hjC" userLabel="Label - swipe left or right to change keypad for basic/scientific">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Touch and hold an icon, then drag the app to the desired location." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xpu-b2-hjC" userLabel="Label - swipe left or right to change keypad for basic/scientific">
                                 <rect key="frame" x="26.5" y="204.5" width="250" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="250" id="eUl-NF-ntG"/>
