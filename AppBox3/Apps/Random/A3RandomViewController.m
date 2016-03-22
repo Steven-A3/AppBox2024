@@ -308,7 +308,7 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 
 // returns the # of rows in each component..
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    return 9999;
+    return 10000;
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
@@ -354,7 +354,7 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 	
     //	srand(time(NULL));
 	NSInteger	newNum = arc4random() % (maxNumber - minNumber + 1) + minNumber;
-    _resultPrintLabel.text = [NSString stringWithFormat:@"%ld", (long)newNum];
+	_resultPrintLabel.text = [nf stringFromNumber:@(newNum)];
 
 	[[A3UserDefaults standardUserDefaults] setObject:@(newNum) forKey:A3RandomLastValueKey];
 	[[A3UserDefaults standardUserDefaults] synchronize];
@@ -462,7 +462,7 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 		CGRect textFieldFrame = [_minimumValueTextField isFirstResponder] ? _minimumValueTextField.frame : _maximumValueTextField.frame;
 		CGFloat diff = textFieldFrame.origin.y + textFieldFrame.size.height - frameEnd.origin.y;
 		if (diff > 0) {
-			_viewFrameOffset = diff + 10;
+			_viewFrameOffset = diff;
 			CGRect viewFrame = self.view.frame;
 			viewFrame.origin.y -= _viewFrameOffset;
 			self.view.frame = viewFrame;
