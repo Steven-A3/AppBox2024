@@ -180,6 +180,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 		[self addObserver];
 		[self setupInstructionView];
 	}
+	[self showNavigationBarOn:self.navigationController];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

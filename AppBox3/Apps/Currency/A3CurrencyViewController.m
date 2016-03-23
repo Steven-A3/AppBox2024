@@ -90,6 +90,8 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 
 	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+	
+	[self showNavigationBarOn:self.navigationController];
 }
 
 - (void)mainMenuViewDidHide {

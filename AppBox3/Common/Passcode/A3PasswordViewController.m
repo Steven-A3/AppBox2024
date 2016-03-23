@@ -271,6 +271,7 @@
 		[rootViewController presentViewController:self animated:NO completion:NULL];
 		_shouldDismissViewController = YES;
 	} else {
+		[[A3AppDelegate instance].currentMainNavigationController setNavigationBarHidden:YES];
 		[mainWindow addSubview: self.view];
 		
 		if (IS_IOS7) {
@@ -282,9 +283,10 @@
 													 selector:@selector(statusBarFrameOrOrientationChanged:)
 														 name:UIApplicationDidChangeStatusBarFrameNotification
 													   object:nil];
-			[mainWindow.rootViewController addChildViewController: self];
 			
 			[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
+		} else {
+			[mainWindow.rootViewController addChildViewController: self];
 		}
 	}
 
@@ -576,7 +578,9 @@
 		[self.presentingViewController dismissViewControllerAnimated:NO completion:nil];
 	} else {
 		[self.view removeFromSuperview];
-		[self removeFromParentViewController];
+		if (!IS_IOS7) {
+			[self removeFromParentViewController];
+		}
 
         if ([self.delegate respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
             [self.delegate passcodeViewControllerDidDismissWithSuccess:YES];

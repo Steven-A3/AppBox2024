@@ -226,6 +226,7 @@
 		}
 		self.otherPasscodeDelegate = nil;
 	}
+	[self popStartingAppInfo];
 }
 
 - (void)applicationDidBecomeActive_passcodeAfterLaunch:(BOOL)isAfterLaunch {
@@ -260,7 +261,6 @@
 				NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
 				if ([startingAppName length]) {
 					if ([self didPasscodeTimerEnd] && [self requirePasscodeForStartingApp]) {
-						[self popStartingAppInfo];
 						[self presentLockScreen:self];
 					} else {
 						[self popStartingAppInfo];
@@ -439,36 +439,6 @@
 	}
 	[self showReceivedLocalNotifications];
 	[self presentInterstitialAds];
-	
-//	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
-//	if ([self isMainMenuStyleList]) {
-//		if (!success && self.pushClockViewControllerIfFailPasscode) {
-//			if (self.parentOfPasscodeViewController.navigationController != self.navigationController) {
-//				[self.navigationController dismissViewControllerAnimated:NO completion:NULL];
-//			}
-//			
-//			if (![startingAppName length]) {
-//				[self.mainMenuViewController openClockApp];
-//			} else {
-//				if ([self requirePasscodeForStartingApp]) {
-//					[self.mainMenuViewController openClockApp];
-//				} else {
-//					[self.mainMenuViewController openRecentlyUsedMenu:YES];
-//				}
-//			}
-//			return;
-//		}
-//		if (![self.mainMenuViewController openRecentlyUsedMenu:NO]) {
-//			[self.mainMenuViewController openClockApp];
-//		}
-//	} else if (success && startingAppName) {
-//		if (![self.homeStyleMainMenuViewController.activeAppName isEqualToString:startingAppName]) {
-//			[self launchAppNamed:startingAppName verifyPasscode:NO delegate:nil animated:YES];
-//			self.homeStyleMainMenuViewController.activeAppName = [startingAppName copy];
-//		}
-//	}
-//	[self presentInterstitialAds];
-//	FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 }
 
 - (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {
