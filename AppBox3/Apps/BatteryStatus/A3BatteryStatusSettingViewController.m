@@ -86,6 +86,14 @@ NSString *const A3BatteryTitleKey = @"title";
     [self.tableView reloadData];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self.navigationController setNavigationBarHidden:NO animated:NO];
+	}
+}
+
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
 }

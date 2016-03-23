@@ -190,6 +190,9 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 		[self setupBannerViewForAdUnitID:AdMobAdUnitIDTipCalc keywords:nil gender:kGADGenderUnknown];
 	}
 	[self keyboardDidHide:nil];
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self showNavigationBarOn:self.navigationController];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

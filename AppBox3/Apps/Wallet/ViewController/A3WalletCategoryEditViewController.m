@@ -150,6 +150,9 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 			[_titleTextField becomeFirstResponder];
 		});
 	}
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self.navigationController setNavigationBarHidden:NO animated:NO];
+	}
 }
 
 - (void)contentSizeDidChange:(NSNotification *) notification

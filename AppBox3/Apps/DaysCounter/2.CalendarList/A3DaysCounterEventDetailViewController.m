@@ -137,6 +137,9 @@
 	if (![self isMovingToParentViewController]) {
 		[self.tableView reloadData];
 	}
+    if ([self.navigationController.navigationBar isHidden]) {
+        [self.navigationController setNavigationBarHidden:NO animated:NO];
+    }
 }
 
 - (void)didReceiveMemoryWarning

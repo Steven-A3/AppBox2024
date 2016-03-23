@@ -177,6 +177,9 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
         [self setupBannerViewForAdUnitID:AdMobAdUnitIDExpenseList keywords:nil gender:kGADGenderUnknown];
     }
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self showNavigationBarOn:self.navigationController];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

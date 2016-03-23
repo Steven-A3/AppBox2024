@@ -75,6 +75,14 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	}
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self showNavigationBarOn:self.navigationController];
+	}
+}
+
 - (void)adWillDismissScreen {
 	UINavigationController *target = [[A3AppDelegate instance] currentMainNavigationController];
 	[self showNavigationBarOn:target];

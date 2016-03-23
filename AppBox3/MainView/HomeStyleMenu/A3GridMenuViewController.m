@@ -16,6 +16,7 @@
 #import "A3NavigationController.h"
 #import "A3UserDefaults.h"
 #import "A3HomeStyleHelpViewController.h"
+#import "A3InstructionViewController.h"
 
 NSString *const A3GridMenuCellID = @"gridCell";
 
@@ -56,6 +57,7 @@ A3InstructionViewControllerDelegate>
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+	self.automaticallyAdjustsScrollViewInsets = NO;
     _itemsPerPage = 16;
 	[self setupCollectionView];
 
@@ -81,6 +83,7 @@ A3InstructionViewControllerDelegate>
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	
+	FNLOGINSETS(self.collectionView.contentInset);
 	[self setupInstructionView];
 }
 
@@ -142,7 +145,7 @@ A3InstructionViewControllerDelegate>
 			if ([[UIScreen mainScreen] scale] == 3) {
 				_flowLayout.itemSize = CGSizeMake(78.0, 102.0);
 			} else {
-				if (screenBounds.size.height == 667) {
+				if (screenBounds.size.height >= 647) {
 					_flowLayout.itemSize = CGSizeMake(70.0, 93.0);
 				} else if (screenBounds.size.height == 568) {
 					_flowLayout.itemSize = CGSizeMake(60.0, 78.0);
@@ -404,7 +407,7 @@ A3InstructionViewControllerDelegate>
 	
 	if (IS_IPHONE) {
 		offset = 26;
-		if (toSize.height >= 667) {
+		if (toSize.height >= 647) {
 			_flowLayout.contentHeight = 454.0;
 		} else if (toSize.height == 568) {
 			_flowLayout.contentHeight = 354.0;

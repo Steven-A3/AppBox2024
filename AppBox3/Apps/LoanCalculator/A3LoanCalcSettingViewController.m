@@ -63,6 +63,14 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
 	[self.tableView reloadData];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self.navigationController setNavigationBarHidden:NO animated:NO];
+	}
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 

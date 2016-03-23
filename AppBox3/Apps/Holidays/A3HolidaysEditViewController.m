@@ -103,6 +103,9 @@ static NSString *CellIdentifier = @"Cell";
 	if ([self isMovingToParentViewController]) {
 		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 	}
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self.navigationController setNavigationBarHidden:NO animated:NO];
+	}
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

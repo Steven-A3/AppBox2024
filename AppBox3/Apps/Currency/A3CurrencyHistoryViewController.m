@@ -81,6 +81,14 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 	[self removeContentSizeCategoryDidChangeNotification];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self.navigationController setNavigationBarHidden:NO animated:NO];
+	}
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 

@@ -66,6 +66,10 @@
         [_mapView selectAnnotation:_locationItem animated:YES];
     }
     [_mapView setRegion:MKCoordinateRegionMakeWithDistance(_locationItem.coordinate, 2000.0, 2000.0) animated:NO];
+
+    if ([self.navigationController.navigationBar isHidden]) {
+        [self.navigationController setNavigationBarHidden:NO animated:NO];
+    }
 }
 
 - (void)didReceiveMemoryWarning

@@ -189,6 +189,9 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 			[self loadEventData];
 		});
 	}
+    if ([self.navigationController.navigationBar isHidden]) {
+        [self.navigationController setNavigationBarHidden:NO animated:NO];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

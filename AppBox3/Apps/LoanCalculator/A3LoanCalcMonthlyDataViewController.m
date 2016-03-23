@@ -114,6 +114,9 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
     
     _paymentList = nil;
     [self.tableView reloadData];
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self.navigationController setNavigationBarHidden:NO animated:NO];
+	}
 }
 
 - (NSMutableArray *)paymentList

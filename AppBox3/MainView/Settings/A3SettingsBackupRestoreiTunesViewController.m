@@ -53,6 +53,14 @@
 	}
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self.navigationController setNavigationBarHidden:NO animated:NO];
+	}
+}
+
 - (void)updateBackupInfo {
 	_backupInfoString = NSLocalizedString(@"Backup file does not exist.", @"No backup files.");
 

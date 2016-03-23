@@ -156,6 +156,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	if (!_isEditMode && self.prevPeriod) {
 		[self calculateCycleLengthFromDate:_periodItem.startDate];
 	}
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self.navigationController setNavigationBarHidden:NO animated:NO];
+	}
 }
 
 - (void)didReceiveMemoryWarning

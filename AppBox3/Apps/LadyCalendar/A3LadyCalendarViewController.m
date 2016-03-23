@@ -238,6 +238,10 @@ A3CalendarViewDelegate>
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
 		[self setupBannerViewForAdUnitID:AdMobAdUnitIDLadiesCalendar keywords:nil gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
 	}
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self.navigationController setNavigationBarHidden:NO animated:NO];
+		[self showCalendarHeaderView];
+	}
 }
 
 - (void)removeObserver {
@@ -449,8 +453,8 @@ A3CalendarViewDelegate>
 - (void)showCalendarHeaderView
 {
 	CGFloat navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
-	_calendarHeaderView.frame = CGRectMake(0, 20.0+navigationBarHeight, self.navigationController.navigationBar.frame.size.width, _calendarHeaderView.frame.size.height);
-	[self.navigationController.view insertSubview:_calendarHeaderView belowSubview:self.view];
+	_calendarHeaderView.frame = CGRectMake(0, navigationBarHeight, self.navigationController.navigationBar.frame.size.width, _calendarHeaderView.frame.size.height);
+	[self.navigationController.navigationBar addSubview:_calendarHeaderView];
 
 	UIEdgeInsets insets = _collectionView.contentInset;
 	_collectionView.contentInset = UIEdgeInsetsMake(_calendarHeaderView.frame.size.height+20+navigationBarHeight,insets.left,insets.bottom,insets.right);

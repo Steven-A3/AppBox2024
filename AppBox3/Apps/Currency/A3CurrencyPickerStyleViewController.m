@@ -183,6 +183,13 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	self.tableView.contentInset = UIEdgeInsetsZero;
 	[self makeLinesSinglePixel];
 	[self setupIPADLayoutToInterfaceOrientation:self.interfaceOrientation];
+	
+	if ([self.mainViewController.navigationController.navigationBar isHidden]) {
+		[self.mainViewController showNavigationBarOn:self.mainViewController.navigationController];
+	}
+	if (self.instructionViewController) {
+		[self.navigationController.view bringSubviewToFront:self.instructionViewController.view];
+	}
 }
 
 - (void)setupConstantsFor3_5inchNoAds {

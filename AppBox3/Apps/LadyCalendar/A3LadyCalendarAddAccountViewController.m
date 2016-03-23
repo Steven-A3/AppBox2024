@@ -143,6 +143,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 			[textField becomeFirstResponder];
 		}
 	}
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self.navigationController setNavigationBarHidden:NO animated:NO];
+	}
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {

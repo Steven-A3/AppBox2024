@@ -70,6 +70,14 @@ static NSString *CellIdentifier = @"Cell";
 	}
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self.navigationController setNavigationBarHidden:NO animated:NO];
+	}
+}
+
 - (void)doneButtonAction:(UIBarButtonItem *)button {
 	if (IS_IPAD) {
 		[[[A3AppDelegate instance] rootViewController_iPad] dismissRightSideViewController];

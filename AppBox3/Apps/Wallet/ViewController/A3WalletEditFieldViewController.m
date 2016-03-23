@@ -101,6 +101,9 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 	[super viewDidAppear:animated];
 
 	[self titleKeyboardUp];
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self.navigationController setNavigationBarHidden:NO animated:NO];
+	}
 }
 
 - (void)titleKeyboardUp

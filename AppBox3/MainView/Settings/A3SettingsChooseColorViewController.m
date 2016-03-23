@@ -47,6 +47,14 @@ NSString *const kCellID = @"Cell";                          // UICollectionViewC
 	}
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self.navigationController setNavigationBarHidden:NO animated:NO];
+	}
+}
+
 - (UIImageView *)selectedMarkView {
 	if (!_selectedMarkView) {
 		_selectedMarkView = [UIImageView new];

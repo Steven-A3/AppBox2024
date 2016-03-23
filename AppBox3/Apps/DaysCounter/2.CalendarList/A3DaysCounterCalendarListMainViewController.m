@@ -261,6 +261,10 @@
 	UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
 	UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
 	[self.navigationItem setRightBarButtonItems:@[edit, space, [self instructionHelpBarButton]] animated:YES];
+
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self showNavigationBarOn:self.navigationController];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

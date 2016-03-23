@@ -226,6 +226,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
 	}
 	[self keyboardDidHide:nil];
+	
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self showNavigationBarOn:self.navigationController];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

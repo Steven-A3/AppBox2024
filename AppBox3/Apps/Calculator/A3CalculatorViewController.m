@@ -54,6 +54,9 @@
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
 		[self setupBannerViewForAdUnitID:AdMobAdUnitIDCalculator keywords:nil gender:kGADGenderUnknown];
 	}
+	if (IS_IPHONE && IS_PORTRAIT && [self.navigationController.navigationBar isHidden]) {
+		[self showNavigationBarOn:self.navigationController];
+	}
 }
 
 @end

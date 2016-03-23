@@ -273,6 +273,9 @@
 			isFirstAppear = NO;
 		}
 	}
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self.navigationController setNavigationBarHidden:NO animated:NO];
+	}
 }
 
 - (void)viewWillLayoutSubviews {

@@ -97,6 +97,9 @@
 		self.toolbarItems = _bottomToolbar.items;
 		[self.navigationController setToolbarHidden:NO];
 	}
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self showNavigationBarOn:self.navigationController];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

@@ -172,6 +172,9 @@
 		[self leftBarButtonAppsButton];
 	}
     [self setupBannerViewForAdUnitID:AdMobAdUnitIDPercentCalc keywords:nil gender:kGADGenderUnknown];
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self showNavigationBarOn:self.navigationController];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

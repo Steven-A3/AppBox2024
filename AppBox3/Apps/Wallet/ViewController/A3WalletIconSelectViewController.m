@@ -69,6 +69,14 @@
     [self addIconImages];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self.navigationController setNavigationBarHidden:NO animated:NO];
+	}
+}
+
 - (void)addIconImages
 {
 	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];

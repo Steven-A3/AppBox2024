@@ -174,6 +174,10 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 		[self leftBarButtonAppsButton];
 	}
     [self setupBannerViewForAdUnitID:AdMobAdUnitIDRandom keywords:nil gender:kGADGenderUnknown];
+	
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self showNavigationBarOn:self.navigationController];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

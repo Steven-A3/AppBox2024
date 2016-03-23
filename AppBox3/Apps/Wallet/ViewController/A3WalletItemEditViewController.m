@@ -181,6 +181,9 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	if (_isAddNewItem && ![_titleTextField.text length]) {
 		[_titleTextField becomeFirstResponder];
 	}
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self.navigationController setNavigationBarHidden:NO animated:NO];
+	}
 }
 
 - (void)keyboardDidShow:(NSNotification *)notification {

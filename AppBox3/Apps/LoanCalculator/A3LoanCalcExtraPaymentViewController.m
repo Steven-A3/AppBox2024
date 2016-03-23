@@ -99,6 +99,14 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 	[self removeContentSizeCategoryDidChangeNotification];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+
+    if ([self.navigationController.navigationBar isHidden]) {
+        [self.navigationController setNavigationBarHidden:NO animated:NO];
+    }
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 

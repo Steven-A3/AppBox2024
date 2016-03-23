@@ -181,6 +181,13 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 		[self setupInstructionView];
 	}
 	[self showNavigationBarOn:self.navigationController];
+	
+	if ([self.mainViewController.navigationController.navigationBar isHidden]) {
+		[self.mainViewController showNavigationBarOn:self.mainViewController.navigationController];
+	}
+	if (self.instructionViewController) {
+		[self.navigationController.view bringSubviewToFront:self.instructionViewController.view];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

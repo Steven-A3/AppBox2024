@@ -220,6 +220,10 @@
 		[self leftBarButtonAppsButton];
 	}
 	[self setupBannerViewForAdUnitID:AdMobAdUnitIDLunarConverter keywords:nil gender:kGADGenderUnknown];
+	
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self showNavigationBarOn:self.navigationController];
+	}
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {

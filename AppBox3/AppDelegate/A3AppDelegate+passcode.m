@@ -434,6 +434,8 @@
 				[self launchAppNamed:selectedAppName verifyPasscode:NO delegate:nil animated:YES];
 				self.homeStyleMainMenuViewController.activeAppName = [selectedAppName copy];
 				self.homeStyleMainMenuViewController.selectedAppName = nil;
+			} else {
+				[self.navigationController.topViewController viewDidAppear:NO];
 			}
 		}
 	}

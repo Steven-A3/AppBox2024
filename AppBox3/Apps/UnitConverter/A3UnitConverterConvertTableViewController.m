@@ -313,9 +313,12 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 
 	if ([self isMovingToParentViewController]) {
         [self setupInstructionView];
+		if (IS_IPHONE && IS_PORTRAIT) {
+			[self leftBarButtonAppsButton];
+		}
 	}
-	if (IS_IPHONE && IS_PORTRAIT) {
-		[self leftBarButtonAppsButton];
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self showNavigationBarOn:self.navigationController];
 	}
 }
 

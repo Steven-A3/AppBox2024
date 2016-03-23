@@ -69,6 +69,9 @@
     [super viewDidAppear:animated];
     
     [self.searchBar becomeFirstResponder];
+    if ([self.navigationController.navigationBar isHidden]) {
+        [self.navigationController setNavigationBarHidden:NO animated:NO];
+    }
 }
 
 - (void)didReceiveMemoryWarning

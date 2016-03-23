@@ -67,6 +67,9 @@ NSString *const A3UnitPriceSegmentIndex = @"A3UnitPriceSegmentIndex";
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
         [self setupBannerViewForAdUnitID:AdMobAdUnitIDUnitPrice keywords:nil gender:kGADGenderUnknown];
     }
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self showNavigationBarOn:self.navigationController];
+	}
 }
 
 - (void)didReceiveMemoryWarning

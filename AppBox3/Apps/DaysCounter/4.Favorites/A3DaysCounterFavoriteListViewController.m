@@ -146,6 +146,9 @@
 		[self leftBarButtonAppsButton];
 		self.toolbarItems = _bottomToolbar.items;
 	}
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self showNavigationBarOn:self.navigationController];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

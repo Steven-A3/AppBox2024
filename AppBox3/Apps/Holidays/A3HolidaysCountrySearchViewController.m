@@ -36,6 +36,14 @@ static NSString *const CellIdentifier = @"Cell";
 	[self leftBarButtonCancelButton];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self.navigationController setNavigationBarHidden:NO animated:NO];
+	}
+}
+
 - (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem {
 	[self dismissViewControllerAnimated:YES completion:nil];
 }

@@ -211,6 +211,9 @@ enum A3TableElementCellType {
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
 		[self setupBannerViewForAdUnitID:AdMobAdUnitIDSalesCalc keywords:nil gender:kGADGenderUnknown];
 	}
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self showNavigationBarOn:self.navigationController];
+	}
 }
 
 - (void)rightSideViewWillHide {

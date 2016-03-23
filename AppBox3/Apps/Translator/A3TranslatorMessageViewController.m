@@ -283,6 +283,9 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	if (![[A3AppDelegate instance].reachability isReachable]) {
 		[self networkPrompter];
 	}
+	if ([self.navigationController.navigationBar isHidden]) {
+		[self.navigationController setNavigationBarHidden:NO animated:NO];
+	}
 }
 
 - (void)addTapGestureRecognizer {
