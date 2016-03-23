@@ -1,7 +1,7 @@
 {
     "platform": {
         "i386": "iPhone 6",
-        "x86_64": "iPad Pro",
+        "x86_64": "12.9\" iPad Pro",
         "iPhone1,1": "iPhone 1G",
         "iPhone1,2": "iPhone 3G",
         "iPhone2,1": "iPhone 3GS",
@@ -19,6 +19,7 @@
         "iPhone7,2": "iPhone 6",
         "iPhone8,1": "iPhone 6s",
         "iPhone8,2": "iPhone 6s Plus",
+		"iPhone8,4": "iPhone SE",
         "iPad2,1": "iPad 2 (Wi-Fi)",
         "iPad2,2": "iPad 2",
         "iPad2,3": "iPad 2",
@@ -44,25 +45,35 @@
         "iPad5,2": "iPad mini 4",
         "iPad5,3": "iPad Air 2 (Wi-Fi)",
         "iPad5,4": "iPad Air 2",
-		"iPad6,7": "iPad Pro (Wi-Fi)",
-		"iPad6,8": "iPad Pro",
+		"iPad6,3": "9.7\" iPad Pro (Wi-Fi)",
+		"iPad6,4": "9.7\" iPad Pro",
+		"iPad6,7": "12.9\" iPad Pro (Wi-Fi)",
+		"iPad6,8": "12.9\" iPad Pro",
         "iPod5,1": "iPod Touch (5th generation)",
         "iPod7,1": "iPod Touch (6th generation)"
     },
     "deviceInformation": {
+		"iPhone SE": {
+			"Model": "iPhone SE",
+			"Chips": "A9 with 64-bit architecture\nM9 motion coprocessor",
+			"CPU": "1.85 GHz dual-core Apple-designed ARMv8-A",
+			"GPU": "PowerVR GT7600(Hexa-core, 450MHz)",
+			"Memory": "2GB LPDDR4 DRAM",
+			"PPI": "326"
+		},
         "iPhone 6s": {
             "Model": "iPhone 6s",
             "Chips": "A9 with 64-bit architecture\nM9 motion coprocessor",
-            "CPU": "1.8 GHz dual-core Apple-designed ARMv8-A",
-            "GPU": "PowerVR GT7600(Six-core, 680MHz)",
+			"CPU": "1.85 GHz dual-core Apple-designed ARMv8-A",
+			"GPU": "PowerVR GT7600(Hexa-core, 450MHz)",
             "Memory": "2GB LPDDR4 DRAM",
             "PPI": "326"
         },
         "iPhone 6s Plus": {
             "Model": "iPhone 6s Plus",
             "Chips": "A9 with 64-bit architecture\nM9 motion coprocessor",
-            "CPU": "1.8 GHz dual-core Apple-designed ARMv8-A",
-            "GPU": "PowerVR GT7600(Six-core, 680MHz)",
+			"CPU": "1.85 GHz dual-core Apple-designed ARMv8-A",
+			"GPU": "PowerVR GT7600(Hexa-core, 450MHz)",
             "Memory": "2GB LPDDR4 DRAM",
             "PPI": "401"
         },
@@ -218,16 +229,32 @@
             "Memory": "2 GB LPDDR3 DRAM",
             "PPI": "264"
         },
-		"iPad Pro": {
-			"Model": "iPad Pro",
+		"9.7\" iPad Pro": {
+			"Model": "9.7\" iPad Pro",
 			"Chips": "A9 chip with 64-bit architecture\nM9 motion coprocessor",
 			"CPU": "TBD",
 			"GPU": "TBD",
 			"Memory": "4 GB LPDDR3 DRAM",
 			"PPI": "264"
 		},
-		"iPad Pro (Wi-Fi)": {
-			"Model": "iPad Pro (Wi-Fi)",
+		"9.7\" iPad Pro (Wi-Fi)": {
+			"Model": "9.7\" iPad Pro (Wi-Fi)",
+			"Chips": "A9 chip with 64-bit architecture\nM9 motion coprocessor",
+			"CPU": "TBD",
+			"GPU": "TBD",
+			"Memory": "4 GB LPDDR3 DRAM",
+			"PPI": "264"
+		},
+		"12.9\" iPad Pro": {
+			"Model": "12.9\" iPad Pro",
+			"Chips": "A9 chip with 64-bit architecture\nM9 motion coprocessor",
+			"CPU": "TBD",
+			"GPU": "TBD",
+			"Memory": "4 GB LPDDR3 DRAM",
+			"PPI": "264"
+		},
+		"12.9\" iPad Pro (Wi-Fi)": {
+			"Model": "12.9\" iPad Pro (Wi-Fi)",
 			"Chips": "A9 chip with 64-bit architecture\nM9 motion coprocessor",
 			"CPU": "TBD",
 			"GPU": "TBD",
@@ -332,6 +359,16 @@
         }
     },
     "remainingTimeInfo": {
+		"iPhone SE": {
+			"Model": "iPhone SE",
+			"Talk Time on 3G": 14,
+			"Internet on 3G": 12,
+			"Internet on LTE": 13,
+			"Internet on Wi-Fi": 13,
+			"Video playback": 13,
+			"Audio playback": 50,
+			"Standby": 240
+		},
         "iPhone 6s": {
             "Model": "iPhone 6s",
             "Talk Time on 3G": 14,
@@ -500,15 +537,28 @@
             "Video playback": 10,
             "Audio playback": 10
         },
-		"iPad Pro": {
-			"Model": "iPad Pro",
+		"9.7\" iPad Pro": {
+			"Model": "9.7\" iPad Pro",
 			"Internet on Wi-Fi": 10,
 			"Internet on Cellular": 9,
 			"Video playback": 10,
 			"Audio playback": 10
 		},
-		"iPad Pro (Wi-Fi)": {
-			"Model": "iPad Pro (Wi-Fi)",
+		"9.7\" iPad Pro (Wi-Fi)": {
+			"Model": "9.7\" iPad Pro (Wi-Fi)",
+			"Internet on Wi-Fi": 10,
+			"Video playback": 10,
+			"Audio playback": 10
+		},
+		"12.9\" iPad Pro": {
+			"Model": "12.9\" iPad Pro",
+			"Internet on Wi-Fi": 10,
+			"Internet on Cellular": 9,
+			"Video playback": 10,
+			"Audio playback": 10
+		},
+		"12.9\" iPad Pro (Wi-Fi)": {
+			"Model": "12.9\" iPad Pro (Wi-Fi)",
 			"Internet on Wi-Fi": 10,
 			"Video playback": 10,
 			"Audio playback": 10

@@ -92,7 +92,7 @@ NSString *const A3BatteryStatusThemeColorChanged = @"A3BatteryStatusThemeColorCh
         return nil;
     }
 
-	NSString *modelName = currentDeviceInfo[@"Model"];
+	NSString *modelName = NSLocalizedString(currentDeviceInfo[@"Model"], nil);
     NSString *Chips = currentDeviceInfo[@"Chips"];
     NSString *CPU = currentDeviceInfo[@"CPU"];
     NSString *GPU = currentDeviceInfo[@"GPU"];

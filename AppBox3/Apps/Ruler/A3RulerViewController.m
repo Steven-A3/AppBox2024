@@ -168,6 +168,14 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		_inchAsPoints = (screenHeight / 1136.0) * pixelsInInch;
 		_redLineWidth = 0.5;
 		_resetPosition = _centimeterPositionRightBottom ? 8.0 : 3.0;
+	} else if ([model isEqualToString:@"iPhone SE"]) {
+		// iPhone SE
+		CGFloat pixelsInInch = 326.5;
+		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+		_centimeterAsPoints = (screenHeight / 1136.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
+		_inchAsPoints = (screenHeight / 1136.0) * pixelsInInch;
+		_redLineWidth = 0.5;
+		_resetPosition = _centimeterPositionRightBottom ? 8.0 : 3.0;
 	} else if ([model isEqualToString:@"iPhone 4"])	{
 		// iPhone 4
 		// 326 PPI, 960 pixels, 480 points
@@ -214,6 +222,8 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 			|| [model isEqualToString:@"iPad (3rd generation, Wi-Fi)"]
 			|| [model isEqualToString:@"iPad (4th generation)"]
 			|| [model isEqualToString:@"iPad (4th generation, Wi-Fi)"]
+		    || [model isEqualToString:@"9.7\" iPad Pro"]
+		    || [model isEqualToString:@"9.7\" iPad Pro (Wi-Fi)"]
 			|| [model isEqualToString:@"iPad Air"]
 			|| [model isEqualToString:@"iPad Air (Wi-Fi)"]
 			|| [model isEqualToString:@"iPad Air 2"]
@@ -252,8 +262,8 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		_inchAsPoints = (screenHeight / 2048.0) * pixelsInInch;
 		_resetPosition = _centimeterPositionRightBottom ? 14.0 : 5.5;
 		_redLineWidth = 0.5;
-	} else if ([model isEqualToString:@"iPad Pro"] ||
-			   [model isEqualToString:@"iPad Pro (Wi-Fi)"]) {
+	} else if ([model isEqualToString:@"12.9\" iPad Pro"] ||
+			   [model isEqualToString:@"12.9\" iPad Pro (Wi-Fi)"]) {
 		// iPad Pro
 		CGFloat pixelsInInch = 264.7;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
