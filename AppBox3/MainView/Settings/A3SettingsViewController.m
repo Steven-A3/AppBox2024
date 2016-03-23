@@ -76,7 +76,8 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 }
 
 - (void)adWillDismissScreen {
-	[self showNavigationBar];
+	UINavigationController *target = [[A3AppDelegate instance] currentMainNavigationController];
+	[self showNavigationBarOn:target];
 }
 
 - (void)didReceiveMemoryWarning
@@ -336,7 +337,11 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 - (void)applicationDidEnterBackground {
 	NSString *currentMainMenuStyle = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
 	if (currentMainMenuStyle && ![currentMainMenuStyle isEqualToString:_previousMainMenuStyle]) {
-		[[A3AppDelegate instance] reloadRootViewController];
+		A3AppDelegate *appDelegate = [A3AppDelegate instance];
+		[appDelegate reloadRootViewController];
+		if ([appDelegate shouldProtectScreen]) {
+			[appDelegate addSecurityCoverView];
+		}
 	}
 }
 

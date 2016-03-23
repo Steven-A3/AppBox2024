@@ -58,11 +58,17 @@ A3InstructionViewControllerDelegate>
 
     _itemsPerPage = 16;
 	[self setupCollectionView];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -486,6 +492,10 @@ static NSString *const A3V3InstructionDidShowForGridMenu = @"A3V3InstructionDidS
 
 - (void)helpButtonAction:(id)sender {
 	[self showInstructionView];
+}
+
+- (void)applicationDidEnterBackground {
+	[self dismissInstructionViewController:nil];
 }
 
 - (void)adjustFingerCenter {

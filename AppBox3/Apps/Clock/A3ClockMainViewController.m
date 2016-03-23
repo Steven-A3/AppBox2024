@@ -119,6 +119,11 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationRightSideViewDidDismiss object:nil];
 	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
+- (void)applicationDidEnterBackground {
+	[self dismissInstructionViewController:nil];
 }
 
 - (void)applicationDidBecomeActive {
@@ -130,6 +135,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 }
 
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3DrawerStateChanged object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationClockSettingsChanged object:nil];
@@ -456,6 +462,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 			[navigationController setNavigationBarHidden:YES];
 			[navigationController popViewControllerAnimated:YES];
 			[navigationController setToolbarHidden:YES];
+			[A3AppDelegate instance].homeStyleMainMenuViewController.activeAppName = nil;
 		}
 	} else {
 		[[[A3AppDelegate instance] rootViewController_iPad] toggleLeftMenuViewOnOff];

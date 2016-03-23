@@ -100,7 +100,13 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(batteryThemeChanged)
 												 name:A3BatteryStatusThemeColorChanged
+
 											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
+- (void)applicationDidEnterBackground {
+	[self dismissInstructionViewController:nil];
 }
 
 - (void)removeObserver {
@@ -114,6 +120,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceBatteryLevelDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceBatteryStateDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3BatteryStatusThemeColorChanged object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated

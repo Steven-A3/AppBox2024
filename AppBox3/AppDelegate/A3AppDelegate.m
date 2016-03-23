@@ -1352,6 +1352,9 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 }
 
 - (void)interstitialWillDismissScreen:(GADInterstitial *)ad {
+	[[UIApplication sharedApplication] setStatusBarHidden:NO];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+	
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationsAdsWillDismissScreen object:nil];
 }
 

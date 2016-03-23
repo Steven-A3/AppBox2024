@@ -210,6 +210,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 			[navigationController setNavigationBarHidden:YES];
 			[navigationController popViewControllerAnimated:YES];
 			[navigationController setToolbarHidden:YES];
+			[A3AppDelegate instance].homeStyleMainMenuViewController.activeAppName = nil;
 		}
 
 		if ([_moreMenuView superview]) {

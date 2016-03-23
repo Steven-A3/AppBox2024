@@ -111,6 +111,11 @@
 	_currentPageIndex = NSNotFound;
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(countryListChanged) name:A3NotificationHolidaysCountryListChanged object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
+- (void)applicationDidEnterBackground {
+	[self dismissInstructionViewController:nil];
 }
 
 - (void)countryListChanged {
@@ -173,6 +178,7 @@
 - (void)removeObserver {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

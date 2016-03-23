@@ -186,7 +186,9 @@
 		} else {
 			UINavigationController *navigationController = [A3AppDelegate instance].currentMainNavigationController;
 			[navigationController popViewControllerAnimated:YES];
+			[navigationController setNavigationBarHidden:YES];
 			[navigationController setToolbarHidden:YES];
+			[A3AppDelegate instance].homeStyleMainMenuViewController.activeAppName = nil;
 		}
 		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 	} else {

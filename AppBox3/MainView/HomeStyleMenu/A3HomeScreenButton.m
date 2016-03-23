@@ -13,12 +13,14 @@
 - (void)layoutSubviews {
 	[super layoutSubviews];
 
-	[self.imageView remakeConstraints:^(MASConstraintMaker *make) {
-		make.centerX.equalTo(self.centerX);
-		make.centerY.equalTo(self.centerY);
-		make.width.equalTo(IS_IPHONE ? @30 : IS_IPAD_PRO ? @45 : @40);
-		make.height.equalTo(IS_IPHONE ? @30 : IS_IPAD_PRO ? @45 : @40);
-	}];
+	if (!IS_IOS7) {
+		[self.imageView remakeConstraints:^(MASConstraintMaker *make) {
+			make.centerX.equalTo(self.centerX);
+			make.centerY.equalTo(self.centerY);
+			make.width.equalTo(IS_IPHONE ? @30 : IS_IPAD_PRO ? @45 : @40);
+			make.height.equalTo(IS_IPHONE ? @30 : IS_IPAD_PRO ? @45 : @40);
+		}];
+	}
 }
 
 @end

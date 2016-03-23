@@ -109,6 +109,8 @@
 	if (delegate != self) {
 		self.otherPasscodeDelegate = delegate;
 	}
+	[self prepareStartappBeforeEvaluate];
+
 	void(^presentPasscodeViewControllerBlock)(void) = ^(){
 		self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
 		BOOL showCancelButton = ![[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting];
@@ -149,7 +151,6 @@
 			[context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
 					localizedReason:NSLocalizedString(@"Unlock AppBox Pro", @"Unlock AppBox Pro")
 							  reply:^(BOOL success, NSError *error) {
-						self.isTouchIDEvaluationInProgress = NO;
 						dispatch_async(dispatch_get_main_queue(), ^{
 							[[UIApplication sharedApplication] setStatusBarHidden:NO];
 							[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
@@ -215,15 +216,29 @@
 	}
 }
 
+- (void)prepareStartappBeforeEvaluate {
+	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+	if ([startingAppName length]) {
+		if ([self isMainMenuStyleList]) {
+			self.mainMenuViewController.selectedAppName = [startingAppName copy];
+		} else {
+			self.homeStyleMainMenuViewController.selectedAppName = [startingAppName copy];
+		}
+		self.otherPasscodeDelegate = nil;
+	}
+}
+
 - (void)applicationDidBecomeActive_passcodeAfterLaunch:(BOOL)isAfterLaunch {
 	if (self.isSettingsEvaluatingTouchID) {
 		self.isSettingsEvaluatingTouchID = NO;
 		return;
 	}
-	
-	FNLOG(@"");
+
+	if (self.isTouchIDEvaluationInProgress) {
+		self.isTouchIDEvaluationInProgress = NO;
+		return;
+	}
 	if (!isAfterLaunch) {
-		FNLOG(@"");
 		if ([self didPasscodeTimerEnd] && [self shouldAskPasscodeForStarting]) {
 			FNLOG(@"showLockScreen");
 			[self showLockScreen];
@@ -244,12 +259,14 @@
 			} else {
 				NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
 				if ([startingAppName length]) {
-					if ([self requirePasscodeForStartingApp]) {
+					if ([self didPasscodeTimerEnd] && [self requirePasscodeForStartingApp]) {
+						[self popStartingAppInfo];
 						[self presentLockScreen:self];
 					} else {
+						[self popStartingAppInfo];
 						[self removeSecurityCoverView];
 						if ([self isMainMenuStyleList]) {
-							[self.mainMenuViewController openRecentlyUsedMenu:YES];
+							[self.mainMenuViewController openRecentlyUsedMenu:NO];
 						} else {
 							[self launchAppNamed:startingAppName verifyPasscode:NO delegate:nil animated:NO];
 							self.homeStyleMainMenuViewController.activeAppName = [startingAppName copy];
@@ -290,9 +307,10 @@
 	// 암호 대화 상자가 열려 있다면 커버를 추가하지 않는다.
 	if (self.passcodeViewController || self.isTouchIDEvaluationInProgress) return;
 
-	// 이미 커버가 추가되어 있다면, 추가하지 않는다.
-	if (self.coverView.superview) return;
-
+	if (self.coverView.superview) {
+		[self.coverView removeFromSuperview];
+		self.coverView = nil;
+	}
 	CGRect screenBounds = [[UIScreen mainScreen] bounds];
 	if (IS_IPHONE && IS_LANDSCAPE && IS_IOS7) {
 		CGFloat height = screenBounds.size.height;
@@ -367,6 +385,8 @@
  *  @param success 암호 확인이 성공했는지 여부를 알려준다.
  */
 - (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
+	[self removeSecurityCoverView];
+	
 	if (self.otherPasscodeDelegate) {
 		id <A3PasscodeViewControllerDelegate> o = self.otherPasscodeDelegate;
 		if ([o respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
@@ -374,7 +394,6 @@
 		}
 		return;
 	}
-	[self removeSecurityCoverView];
 
 	[self updateStartOption];
 
@@ -389,37 +408,67 @@
 		return;
 	}
 
-	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
-	if ([self isMainMenuStyleList]) {
-		if (!success && self.pushClockViewControllerIfFailPasscode) {
-			if (self.parentOfPasscodeViewController.navigationController != self.navigationController) {
-				[self.navigationController dismissViewControllerAnimated:NO completion:NULL];
-			}
-			
-			if (![startingAppName length]) {
-				[self.mainMenuViewController openClockApp];
-			} else {
-				if ([self requirePasscodeForStartingApp]) {
-					[self.mainMenuViewController openClockApp];
-				} else {
-					[self.mainMenuViewController openRecentlyUsedMenu:YES];
-				}
-			}
-			[self showReceivedLocalNotifications];
-			return;
-		}
-		if (![self.mainMenuViewController openRecentlyUsedMenu:NO]) {
+	if (!success) {
+		if (self.pushClockViewControllerIfFailPasscode) {
 			[self.mainMenuViewController openClockApp];
 		}
-	} else if (success && startingAppName) {
-		[self popStartingAppInfo];
-		if (![self.homeStyleMainMenuViewController.activeAppName isEqualToString:startingAppName]) {
-			[self launchAppNamed:startingAppName verifyPasscode:NO delegate:nil animated:YES];
-			self.homeStyleMainMenuViewController.activeAppName = [startingAppName copy];
+		return;
+	}
+	// 이곳은 확인 후 성공/실패시 처리를 하는 곳
+	// 선택된 app이 없다면, 커버 만 제거하면 된다.
+	// 리스트 방식인 경우에는 현재 Active 앱이 없는 경우, Clock을 실행한다.
+
+	if ([self isMainMenuStyleList]) {
+		if ([self.mainMenuViewController.selectedAppName length]) {
+			[self.mainMenuViewController openAppNamed:self.mainMenuViewController.selectedAppName];
+			self.mainMenuViewController.selectedAppName = nil;
+		} else {
+			if (![self.mainMenuViewController openRecentlyUsedMenu:NO]) {
+				[self.mainMenuViewController openClockApp];
+			}
+		}
+	} else {
+		NSString *selectedAppName = self.homeStyleMainMenuViewController.selectedAppName;
+		if ([selectedAppName length]) {
+			if (![self.homeStyleMainMenuViewController.activeAppName isEqualToString:selectedAppName]) {
+				[self launchAppNamed:selectedAppName verifyPasscode:NO delegate:nil animated:YES];
+				self.homeStyleMainMenuViewController.activeAppName = [selectedAppName copy];
+				self.homeStyleMainMenuViewController.selectedAppName = nil;
+			}
 		}
 	}
+	[self showReceivedLocalNotifications];
 	[self presentInterstitialAds];
-	FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+	
+//	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+//	if ([self isMainMenuStyleList]) {
+//		if (!success && self.pushClockViewControllerIfFailPasscode) {
+//			if (self.parentOfPasscodeViewController.navigationController != self.navigationController) {
+//				[self.navigationController dismissViewControllerAnimated:NO completion:NULL];
+//			}
+//			
+//			if (![startingAppName length]) {
+//				[self.mainMenuViewController openClockApp];
+//			} else {
+//				if ([self requirePasscodeForStartingApp]) {
+//					[self.mainMenuViewController openClockApp];
+//				} else {
+//					[self.mainMenuViewController openRecentlyUsedMenu:YES];
+//				}
+//			}
+//			return;
+//		}
+//		if (![self.mainMenuViewController openRecentlyUsedMenu:NO]) {
+//			[self.mainMenuViewController openClockApp];
+//		}
+//	} else if (success && startingAppName) {
+//		if (![self.homeStyleMainMenuViewController.activeAppName isEqualToString:startingAppName]) {
+//			[self launchAppNamed:startingAppName verifyPasscode:NO delegate:nil animated:YES];
+//			self.homeStyleMainMenuViewController.activeAppName = [startingAppName copy];
+//		}
+//	}
+//	[self presentInterstitialAds];
+//	FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 }
 
 - (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {

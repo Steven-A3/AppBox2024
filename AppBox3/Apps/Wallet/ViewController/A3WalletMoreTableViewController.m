@@ -94,6 +94,11 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidShow) name:A3NotificationMainMenuDidShow object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
+- (void)applicationDidEnterBackground {
+	[self dismissInstructionViewController:nil];
 }
 
 - (void)applicationWillResignActive {
@@ -134,6 +139,7 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 			[self leftBarButtonAppsButton];
 		}
 	}
+	[self showNavigationBarOn:self.navigationController];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -152,6 +158,7 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidShow object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 	}
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 - (void)dealloc {

@@ -74,6 +74,8 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 }
 
 - (void)applicationDidEnterBackground {
+	[self dismissInstructionViewController:nil];
+
 	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
 	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_Wallet]) {
 		[_mySearchDisplayController setActive:NO];
@@ -134,6 +136,7 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	}
+	[self showNavigationBarOn:self.navigationController];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

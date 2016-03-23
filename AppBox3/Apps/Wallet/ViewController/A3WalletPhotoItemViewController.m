@@ -29,6 +29,7 @@
 #import "WalletFavorite.h"
 #import "WalletFavorite+initialize.h"
 #import "WalletField.h"
+#import "UIViewController+A3Addition.h"
 
 @interface A3WalletPhotoItemViewController () <WalletItemEditDelegate, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, MWPhotoBrowserDelegate>
 
@@ -114,6 +115,12 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 		[self refreshViews];
 	}
 	[self updateMetadataViewWithPage:0];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	
+	[self showNavigationBarOn:self.navigationController];
 }
 
 - (void)initializeViews

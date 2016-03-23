@@ -78,11 +78,17 @@ A3InstructionViewControllerDelegate>
 	if ([self.collectionView respondsToSelector:@selector(layoutMargins)]) {
 		self.collectionView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
 	}
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -401,6 +407,10 @@ static NSString *const A3V3InstructionDidShowForHexagonMenu = @"A3V3InstructionD
 
 - (void)helpButtonAction:(id)sender {
 	[self showInstructionView];
+}
+
+- (void)applicationDidEnterBackground {
+	[self dismissInstructionViewController:nil];
 }
 
 - (void)adjustFingerCenter {

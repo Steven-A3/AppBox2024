@@ -130,6 +130,11 @@
 	noPhotosLabel.text = NSLocalizedString(@"No Photos", nil);
 	UILabel *messageLabel = (UILabel *)[self.view viewWithTag:11];
 	messageLabel.text = NSLocalizedString(@"You can add photos into events.", nil);
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
+- (void)applicationDidEnterBackground {
+	[self dismissInstructionViewController:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -248,6 +253,7 @@
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 	}
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 - (void)prepareClose {

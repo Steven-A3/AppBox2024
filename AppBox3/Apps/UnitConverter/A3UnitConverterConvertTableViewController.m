@@ -164,6 +164,11 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	
 	[self setupBannerViewForAdUnitID:AdMobAdUnitIDUnitConverter keywords:@[@"Shopping"] gender:kGADGenderMale adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
+- (void)applicationDidEnterBackground {
+	[self dismissInstructionViewController:nil];
 }
 
 - (void)applicationWillResignActive {
@@ -187,6 +192,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 	[self removeContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -379,6 +385,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 			[navigationController setNavigationBarHidden:YES];
 			[navigationController popViewControllerAnimated:YES];
 			[navigationController setToolbarHidden:YES];
+			[A3AppDelegate instance].homeStyleMainMenuViewController.activeAppName = nil;
 		}
 
 		if ([_moreMenuView superview]) {

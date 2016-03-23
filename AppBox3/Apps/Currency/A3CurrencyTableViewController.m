@@ -137,6 +137,11 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 		make.width.equalTo(@44);
 		make.height.equalTo(@44);
 	}];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
+- (void)applicationDidEnterBackground {
+	[self dismissInstructionViewController:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -234,6 +239,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 	}
 	[notificationCenter removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:[NSManagedObjectContext MR_defaultContext]];
 	[notificationCenter removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+	[notificationCenter removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 - (void)prepareClose {
@@ -371,6 +377,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 			[navigationController setNavigationBarHidden:YES];
 			[navigationController popViewControllerAnimated:YES];
 			[navigationController setToolbarHidden:YES];
+			[A3AppDelegate instance].homeStyleMainMenuViewController.activeAppName = nil;
 		}
 
 		if ([_moreMenuView superview]) {

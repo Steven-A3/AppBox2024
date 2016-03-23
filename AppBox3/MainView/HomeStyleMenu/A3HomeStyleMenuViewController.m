@@ -48,10 +48,13 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	self.activeAppName = nil;
-	FNLOG(@"activeAppName = nil");
-	
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+	double delayInSeconds = 2.0;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		if ([self.navigationController.viewControllers count] == 1) {
+			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+		}
+	});
 }
 
 - (UIView *)backgroundView {
@@ -141,7 +144,6 @@
 }
 
 - (void)helpButtonAction:(id)sender {
-	[[A3AppDelegate instance] launchAppNamed:A3AppName_About verifyPasscode:NO delegate:nil animated:YES];
 }
 
 - (void)addAppLinkButtonToView:(UIView *)targetView title:(NSString *)title imageName:(NSString *)imageName position:(CGFloat)position selector:(SEL)selector {

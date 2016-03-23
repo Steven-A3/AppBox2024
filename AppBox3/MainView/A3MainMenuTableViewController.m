@@ -247,8 +247,9 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 				if (![self.activeAppName isEqualToString:elementObject.title]) {
 					if (![[A3AppDelegate instance] launchAppNamed:elementObject.title verifyPasscode:verifyPasscode delegate:self animated:NO]) {
 						self.selectedElement = menuElement;
+						self.selectedAppName = [menuElement.title copy];
 					} else {
-						[weakSelf updateRecentlyUsedAppsWithElement:menuElement];
+						[weakSelf updateRecentlyUsedAppsWithAppName:menuElement.title];
 						
 						if (IS_IPHONE && [[A3AppDelegate instance] isMainMenuStyleList]) {
 							[[A3AppDelegate instance].drawerController closeDrawerAnimated:YES completion:^(BOOL finished) {
@@ -380,15 +381,19 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
         return;
     }
 	if (success && _selectedElement) {
-		[self callPrepareCloseOnActiveMainAppViewController];
-
-		self.activeAppName = _selectedElement.title;
-
-		UIViewController *viewController = [[A3AppDelegate instance] getViewControllerForAppNamed:_selectedElement.title];
-		[self popToRootAndPushViewController:viewController animated:NO];
-		[self updateRecentlyUsedAppsWithElement:(A3TableViewMenuElement *) _selectedElement];
+		[self openAppNamed:_selectedElement.title];
 	}
 	_selectedElement = nil;
+}
+
+- (void)openAppNamed:(NSString *)appName {
+	[self callPrepareCloseOnActiveMainAppViewController];
+
+	self.activeAppName = appName;
+
+	UIViewController *viewController = [[A3AppDelegate instance] getViewControllerForAppNamed:appName];
+	[self popToRootAndPushViewController:viewController animated:NO];
+	[self updateRecentlyUsedAppsWithAppName:appName];
 }
 
 - (void)openClockApp {
@@ -453,9 +458,9 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 	}
 }
 
-- (void)updateRecentlyUsedAppsWithElement:(A3TableViewMenuElement *)element {
-	NSDictionary *appInfo = [[A3AppDelegate instance] appInfoDictionary][element.title];
-	if (![element isKindOfClass:[A3TableViewMenuElement class]] || [appInfo[kA3AppsDoNotKeepAsRecent] boolValue]) {
+- (void)updateRecentlyUsedAppsWithAppName:(NSString *)appName {
+	NSDictionary *appInfo = [[A3AppDelegate instance] appInfoDictionary][appName];
+	if ([appInfo[kA3AppsDoNotKeepAsRecent] boolValue]) {
 		_mostRecentMenuElement = nil;
 		return;
 	}
@@ -472,7 +477,7 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 	}
 
 	NSUInteger idx = [appsList indexOfObjectPassingTest:^BOOL(NSDictionary *menuDictionary, NSUInteger idx, BOOL *stop) {
-		if ([element.title isEqualToString:menuDictionary[kA3AppsMenuName]]) {
+		if ([appName isEqualToString:menuDictionary[kA3AppsMenuName]]) {
 			*stop = YES;
 			return YES;
 		}
@@ -487,9 +492,9 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 		NSInteger maxRecent = [[A3AppDelegate instance] maximumRecentlyUsedMenus];
 
 		if (maxRecent <= 1) {
-			recentlyUsed[kA3AppsExpandableChildren] = [self dataFromElements:@[element]];
+			recentlyUsed[kA3AppsExpandableChildren] = @[@{kA3AppsMenuName: appName}];
 		} else {
-			NSArray *newDataArray = [self dataFromElements:@[element]];
+			NSArray *newDataArray = @[@{kA3AppsMenuName: appName}];
 			[appsList insertObject:newDataArray[0] atIndex:0];
 
 			if ([appsList count] > maxRecent) {

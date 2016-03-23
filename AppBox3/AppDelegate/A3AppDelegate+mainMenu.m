@@ -710,7 +710,7 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 
 				CGFloat maxDistance = 10;
 				CGFloat distance = maxDistance * percentVisible;
-				CATransform3D translateTransform;
+				CATransform3D translateTransform = CATransform3DIdentity;
 				UIViewController * sideDrawerViewController;
 				if(drawerSide == MMDrawerSideLeft) {
 					sideDrawerViewController = drawerController.leftDrawerViewController;

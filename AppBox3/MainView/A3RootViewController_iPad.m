@@ -263,6 +263,7 @@ static const CGFloat kSideViewWidth = 320.0;
 		[_centerNavigationController popViewControllerAnimated:YES];
 		[_centerNavigationController setNavigationBarHidden:YES];
 		[_centerNavigationController setToolbarHidden:YES];
+		[A3AppDelegate instance].homeStyleMainMenuViewController.activeAppName = nil;
 	}
 }
 

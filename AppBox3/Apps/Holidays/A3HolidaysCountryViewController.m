@@ -77,6 +77,11 @@ extern NSString *const A3CurrencyActionCellID;
 
 	[self registerContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(countryListChanged) name:A3NotificationHolidaysCountryListChanged object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
+- (void)applicationDidEnterBackground {
+	[self dismissInstructionViewController:nil];
 }
 
 - (void)countryListChanged {
@@ -89,6 +94,7 @@ extern NSString *const A3CurrencyActionCellID;
 - (void)removeObserver {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

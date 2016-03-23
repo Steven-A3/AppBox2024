@@ -200,7 +200,8 @@ NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
         [navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
         [navigationController.navigationBar setShadowImage:image];
     } else {
-		[self showNavigationBar];
+		UINavigationController *target = [[A3AppDelegate instance] currentMainNavigationController];
+		[self showNavigationBarOn:target];
 	}
     navigationController.navigationBar.tintColor = [A3AppDelegate instance].themeColor;
 
@@ -215,20 +216,19 @@ NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
 	[[A3AppDelegate instance] didFinishPushViewController];
 }
 
-- (void)showNavigationBar {
-	UINavigationController *navigationController = [[A3AppDelegate instance] currentMainNavigationController];
+- (void)showNavigationBarOn:(UINavigationController *)targetController {
 	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
 
-	[navigationController setNavigationBarHidden:NO animated:YES];
-	[navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-	[navigationController.navigationBar setShadowImage:nil];
+	[targetController setNavigationBarHidden:NO animated:YES];
+	[targetController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+	[targetController.navigationBar setShadowImage:nil];
 
-	[navigationController setToolbarHidden:NO];
-	[navigationController setNavigationBarHidden:YES animated:NO];
+	[targetController setToolbarHidden:NO];
+	[targetController setNavigationBarHidden:YES animated:NO];
 
-	[navigationController setToolbarHidden:YES];
-	[navigationController setNavigationBarHidden:NO animated:NO];
+	[targetController setToolbarHidden:YES];
+	[targetController setNavigationBarHidden:NO animated:NO];
 }
 
 - (void)leftBarButtonAppsButton {
@@ -247,6 +247,7 @@ NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
 			[navigationController setNavigationBarHidden:YES];
 			[navigationController popViewControllerAnimated:YES];
 			[navigationController setToolbarHidden:YES];
+			[A3AppDelegate instance].homeStyleMainMenuViewController.activeAppName = nil;
 		}
 	} else {
 		[[[A3AppDelegate instance] rootViewController_iPad] toggleLeftMenuViewOnOff];

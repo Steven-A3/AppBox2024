@@ -83,6 +83,8 @@
 }
 
 - (void)applicationDidEnterBackground {
+	[self dismissInstructionViewController:nil];
+
 	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
 	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_Wallet]) {
 		[_mySearchDisplayController setActive:NO];
@@ -168,6 +170,12 @@
 		[self filterContentForSearchText:_searchBar.text];
 		[_mySearchDisplayController.searchResultsTableView reloadData];
 	}
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	[self showNavigationBarOn:self.navigationController];
 }
 
 - (void)cloudStoreDidImport {

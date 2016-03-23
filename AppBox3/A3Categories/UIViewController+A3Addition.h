@@ -53,7 +53,7 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 
 - (void)popToRootAndPushViewController:(UIViewController *)viewController animated:(BOOL)animated;
 
-- (void)showNavigationBar;
+- (void)showNavigationBarOn:(UINavigationController *)targetController;
 
 - (void)leftBarButtonAppsButton;
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem;
