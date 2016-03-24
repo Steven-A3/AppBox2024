@@ -129,6 +129,8 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 		}
 	}
 
+	[self.navigationController setNavigationBarHidden:NO];
+	
 	if (_isEditing) {
 		[self setupInstructionView];
 	}
@@ -139,7 +141,6 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 			[self leftBarButtonAppsButton];
 		}
 	}
-	[self showNavigationBarOn:self.navigationController];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -232,13 +233,15 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 	editingViewController.mainTabBarController = self.mainTabBarController;
 	editingViewController.isEditing = YES;
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editingViewController];
-	[self.mainTabBarController presentViewController:navigationController animated:YES completion:nil];
+	[self.navigationController.view addSubview:navigationController.view];
+	[self.navigationController addChildViewController:navigationController];
 	return;
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
+	FNLOG(@"%@", self.presentingViewController);
+	[self.navigationController.view removeFromSuperview];
 	[self.mainTabBarController setupTabBar];
-	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)addCategoryButtonAction {
@@ -281,7 +284,7 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Wallet_3"];
     self.instructionViewController.delegate = self;
-    [self.navigationController.view addSubview:self.instructionViewController.view];
+    [self.mainTabBarController.view addSubview:self.instructionViewController.view];
     self.instructionViewController.view.frame = self.view.superview.frame;
     self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
     

@@ -147,9 +147,6 @@
 {
     [super viewWillAppear:animated];
 
-	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupInstructionView];
-	}
     [self.view addSubview:self.searchBar];
 
     // 테이블 항목을 선택시에는 카테고리 이름이 backBar Item 이 되고,나머지는 공백.
@@ -175,7 +172,11 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	[self showNavigationBarOn:self.navigationController];
+	[self.navigationController setNavigationBarHidden:NO];
+	
+	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+		[self setupInstructionView];
+	}
 }
 
 - (void)cloudStoreDidImport {
@@ -567,6 +568,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 - (void)dismissInstructionViewController:(UIView *)view
 {
     [self.instructionViewController.view removeFromSuperview];
+	[self.instructionViewController removeFromParentViewController];
     self.instructionViewController = nil;
 }
 

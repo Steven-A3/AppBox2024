@@ -68,7 +68,6 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidShow) name:A3NotificationMainMenuDidShow object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
-    [self setupInstructionView];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
@@ -136,7 +135,11 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	}
-	[self showNavigationBarOn:self.navigationController];
+	[self.navigationController setNavigationBarHidden:NO];
+
+	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+		[self setupInstructionView];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
