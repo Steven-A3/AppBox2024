@@ -115,7 +115,7 @@
 		self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
 		BOOL showCancelButton = ![[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting];
 		if (showCancelButton) {
-			UIViewController *passcodeParentViewController = [self.navigationController visibleViewController];
+			UIViewController *passcodeParentViewController = [self.navigationController topViewController];
 			NSString *className = NSStringFromClass([passcodeParentViewController class]);
 			if ([className isEqualToString:@"GADInterstitialViewController"]) {
 				passcodeParentViewController = [self.currentMainNavigationController topViewController];
