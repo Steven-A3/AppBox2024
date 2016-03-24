@@ -21,12 +21,15 @@
 	UIImageView *_vialLinesView;
 	UILabel *_degreeViewX;
 	UILabel *_degreeViewY;
+	CGFloat _scale;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame mode:(NSUInteger)mode {
     if (self = [super initWithFrame:frame]) {
         // Initialization code
 		self.backgroundColor = [UIColor clearColor];
+
+		_scale = [A3UIDevice screenBoundsAdjustedWithOrientation].size.width / 320.0;
 		_unit = degrees;
 
 		self.autoresizesSubviews = NO;
@@ -65,10 +68,18 @@
 			diffLine = 0.0;
 			
 			_bubbleView = [[UIImageView alloc] initWithImage:circleImage];
-			_bubbleView.center = CGPointMake(self.center.x - 22.0, self.center.y + diffCircle);
+			CGRect bubbleBounds = _bubbleView.bounds;
+			bubbleBounds.size.width *= _scale;
+			bubbleBounds.size.height *= _scale;
+			_bubbleView.bounds = bubbleBounds;
+			_bubbleView.center = CGPointMake(self.center.x - 22.0 * _scale, self.center.y + diffCircle);
 			
 			// set up vial lines view
 			_vialLinesView = [[UIImageView alloc] initWithImage:lineImage];
+			CGRect lineBounds = _vialLinesView.bounds;
+			lineBounds.size.width *= _scale;
+			lineBounds.size.height *= _scale;
+			_vialLinesView.bounds = lineBounds;
 			_vialLinesView.center = CGPointMake(self.center.x, self.center.y + diffLine);
 			
 		}
@@ -121,8 +132,8 @@ const float pitchVsDegree[] = {4.5, 9.5, 14.0, 18.5, 22.5, 26.5, 30.5, 33.75, 37
 #pragma mark -
 
 #define kMaxAngle				90.0
-#define kHalfVialLengthBubble	94.0
-#define kHalfVialLengthSurface	110.0
+#define kHalfVialLengthBubble	(105.0 * _scale)
+#define kHalfVialLengthSurface	(110.0 * _scale)
 
 - (float) zoomAngle:(float)rads {
 	float angle = -RadiansToDegrees(rads);
