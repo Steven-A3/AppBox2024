@@ -51,7 +51,7 @@
 	double delayInSeconds = 2.0;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		if ([self.navigationController.viewControllers count] == 1) {
+		if ([self.navigationController.viewControllers count] == 1 && ![A3AppDelegate instance].passcodeViewController) {
 			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 		}
 	});
@@ -211,6 +211,7 @@
 - (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
 	if (success && _selectedAppName) {
 		[[A3AppDelegate instance] launchAppNamed:_selectedAppName verifyPasscode:NO delegate:nil animated:YES];
+		[[A3AppDelegate instance] updateRecentlyUsedAppsWithAppName:_selectedAppName];
 		self.activeAppName = [_selectedAppName copy];
 	}
 	_selectedAppName = nil;

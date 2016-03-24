@@ -377,21 +377,32 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 	[element didSelectCellInViewController:(id) self tableView:self.tableView atIndexPath:indexPath];
 }
 
-- (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
-    if (IS_IPHONE && [[A3AppDelegate instance] isMainMenuStyleList]) {
-        [[A3AppDelegate instance].drawerController closeDrawerAnimated:NO completion:^(BOOL finished) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
-        }];
-    }
-    if (!success && _pushClockViewControllerOnPasscodeFailure) {
+- (void)passcodeViewControllerDidDismissWithSuccess:(BOOL )success {
+	if (!success) {
 		[self callPrepareCloseOnActiveMainAppViewController];
+		A3AppDelegate *appDelegate = [A3AppDelegate instance];
+		if (IS_IPHONE) {
+			[appDelegate.drawerController openDrawerSide:MMDrawerSideLeft animated:NO completion:nil];
+		} else {
+			if (![appDelegate.mainMenuViewController openRecentlyUsedMenu:YES]) {
+				[appDelegate.mainMenuViewController openClockApp];
+			}
+			[appDelegate.rootViewController_iPad setShowLeftView:YES];
+		}
 
-		_pushClockViewControllerOnPasscodeFailure = NO;
-		[self openClockApp];
-        return;
-    }
-	if (success && _selectedElement) {
-		[self openAppNamed:_selectedElement.title];
+		if (_pushClockViewControllerOnPasscodeFailure) {
+			_pushClockViewControllerOnPasscodeFailure = NO;
+			[self openClockApp];
+		}
+	} else {
+		if (IS_IPHONE && [[A3AppDelegate instance] isMainMenuStyleList]) {
+			[[A3AppDelegate instance].drawerController closeDrawerAnimated:NO completion:^(BOOL finished) {
+				[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
+			}];
+		}
+		if (_selectedElement) {
+			[self openAppNamed:_selectedElement.title];
+		}
 	}
 	_selectedElement = nil;
 }

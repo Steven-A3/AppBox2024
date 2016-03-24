@@ -342,6 +342,7 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 						[self.mainMenuViewController openRecentlyUsedMenu:YES];
 					} else {
 						[self launchAppNamed:startingAppName verifyPasscode:NO delegate:nil animated:NO];
+						[self updateRecentlyUsedAppsWithAppName:startingAppName];
 						self.homeStyleMainMenuViewController.activeAppName = [startingAppName copy];
 					}
 				}

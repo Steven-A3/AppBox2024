@@ -16,6 +16,7 @@
 #import "A3MainMenuTableViewController.h"
 #import "A3UserDefaults.h"
 #import "A3KeychainUtils.h"
+#import "MMDrawerController.h"
 
 NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhatsNew_3_0";
 
@@ -87,8 +88,15 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 	A3AppDelegate *appDelegate = [A3AppDelegate instance];
 	if ([A3AppDelegate instance].isChangingRootViewController) {
 		[A3AppDelegate instance].isChangingRootViewController = NO;
-		if ([appDelegate isMainMenuStyleList]) {
-			[appDelegate.mainMenuViewController openClockApp];
+		if ([[A3AppDelegate instance] isMainMenuStyleList]) {
+			if (IS_IPHONE) {
+				[appDelegate.drawerController openDrawerSide:MMDrawerSideLeft animated:NO completion:nil];
+			} else {
+				if (![appDelegate.mainMenuViewController openRecentlyUsedMenu:YES]) {
+					[appDelegate.mainMenuViewController openClockApp];
+				}
+				[appDelegate.rootViewController_iPad setShowLeftView:YES];
+			}
 		}
 		return;
 	}
@@ -96,7 +104,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 		appDelegate.mainViewControllerDidInitialSetup = YES;
 		A3MainMenuTableViewController *mainMenuTableViewController = [[A3AppDelegate instance] mainMenuViewController];
 		
-		mainMenuTableViewController.pushClockViewControllerOnPasscodeFailure = YES;
+		mainMenuTableViewController.pushClockViewControllerOnPasscodeFailure = NO;
 		
 		if (!_migrationIsInProgress && [appDelegate shouldMigrateV1Data]) {
 			_migrationIsInProgress = YES;
@@ -118,18 +126,26 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 					[appDelegate.mainMenuViewController openClockApp];
 				} else {
 					[appDelegate launchAppNamed:A3AppName_Clock verifyPasscode:NO delegate:nil animated:NO];
+					[appDelegate updateRecentlyUsedAppsWithAppName:A3AppName_Clock];
 					appDelegate.homeStyleMainMenuViewController.activeAppName = [A3AppName_Clock copy];
 				}
 				[appDelegate setStartOptionOpenClockOnce:NO];
 			} else {
-				if ([[A3AppDelegate instance] isMainMenuStyleList]) {
-					if (![[[A3AppDelegate instance] mainMenuViewController] openRecentlyUsedMenu:YES]) {
-						[[A3AppDelegate instance] setStartOptionOpenClockOnce:NO];
-						[mainMenuTableViewController openClockApp];
+				if ([appDelegate isMainMenuStyleList]) {
+					if (![[appDelegate mainMenuViewController] openRecentlyUsedMenu:YES]) {
+						[appDelegate setStartOptionOpenClockOnce:NO];
+						if (IS_IPHONE) {
+							[appDelegate.drawerController openDrawerSide:MMDrawerSideLeft animated:NO completion:nil];
+						} else {
+							if (![appDelegate.mainMenuViewController openRecentlyUsedMenu:YES]) {
+								[appDelegate.mainMenuViewController openClockApp];
+							}
+						}
 					}
+					[appDelegate.rootViewController_iPad setShowLeftView:YES];
 				} else {
 					NSString *startingApp = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
-					[[A3AppDelegate instance] popStartingAppInfo];
+					[appDelegate popStartingAppInfo];
 					if ([startingApp length]) {
 						[appDelegate launchAppNamed:startingApp verifyPasscode:NO delegate:self animated:NO];
 						appDelegate.homeStyleMainMenuViewController.activeAppName = [startingApp copy];
@@ -137,6 +153,7 @@ NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhats
 				}
 			}
 			[appDelegate downloadDataFiles];
+
 			[self askRestorePurchase];
 		}
 	}

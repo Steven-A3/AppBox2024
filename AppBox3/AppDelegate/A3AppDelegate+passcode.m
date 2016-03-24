@@ -254,6 +254,7 @@
 					[self.mainMenuViewController openClockApp];
 				} else {
 					[self launchAppNamed:A3AppName_Clock verifyPasscode:NO delegate:nil animated:NO];
+					[self updateRecentlyUsedAppsWithAppName:A3AppName_Clock];
 					self.homeStyleMainMenuViewController.activeAppName = [A3AppName_Clock copy];
 				}
 				[self setStartOptionOpenClockOnce:NO];
@@ -274,7 +275,18 @@
 					}
 				} else {
 					[self popStartingAppInfo];
-					[self showLockScreen];
+					if (![self showLockScreen]) {
+						if ([self isMainMenuStyleList]) {
+							if (IS_IPHONE) {
+								[self.drawerController openDrawerSide:MMDrawerSideLeft animated:NO completion:nil];
+							} else {
+								if (![self.mainMenuViewController openRecentlyUsedMenu:YES]) {
+									[self.mainMenuViewController openClockApp];
+								}
+								[self.rootViewController_iPad setShowLeftView:YES];
+							}
+						}
+					}
 				}
 			}
 		}
@@ -402,6 +414,7 @@
 			[self.mainMenuViewController openClockApp];
 		} else {
 			[self launchAppNamed:A3AppName_Clock verifyPasscode:NO delegate:nil animated:NO];
+			[self updateRecentlyUsedAppsWithAppName:A3AppName_Clock];
 			self.homeStyleMainMenuViewController.activeAppName = [A3AppName_Clock copy];
 		}
 		[self setStartOptionOpenClockOnce:NO];
@@ -409,8 +422,20 @@
 	}
 
 	if (!success) {
-		if (self.pushClockViewControllerIfFailPasscode) {
-			[self.mainMenuViewController openClockApp];
+		if ([self isMainMenuStyleList]) {
+			if (IS_IPHONE) {
+				[self.drawerController openDrawerSide:MMDrawerSideLeft animated:NO completion:nil];
+			} else {
+				if (![self.mainMenuViewController openRecentlyUsedMenu:YES]) {
+					[self.mainMenuViewController openClockApp];
+				}
+				[self.rootViewController_iPad setShowLeftView:YES];
+			}
+			if (self.pushClockViewControllerIfFailPasscode) {
+				[self.mainMenuViewController openClockApp];
+			}
+		} else {
+			[self.currentMainNavigationController popToRootViewControllerAnimated:NO];
 		}
 		return;
 	}

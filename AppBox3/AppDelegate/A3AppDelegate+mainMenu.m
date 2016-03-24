@@ -27,6 +27,7 @@
 #import "A3GridMenuViewController.h"
 #import "RMAppReceipt.h"
 #import "A3NavigationController.h"
+#import "NSMutableArray+MoveObject.h"
 #import <objc/runtime.h>
 
 NSString *const kA3ApplicationLastRunVersion = @"kLastRunVersion";
@@ -682,7 +683,7 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 	self.rootViewController_iPhone = self.drawerController;
 
 	[drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeBezelPanningCenterView];
-	[drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
+	[drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeNone];
 	[drawerController setDrawerVisualStateBlock:[self slideAndScaleVisualStateBlock]];
 	[drawerController setCenterHiddenInteractionMode:MMDrawerOpenCenterInteractionModeFull];
 	[drawerController setGestureCompletionBlock:^(MMDrawerController *drawerController, UIGestureRecognizer *gesture) {
@@ -1085,4 +1086,56 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 	NSString *mainMenuStyle = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
 	return [mainMenuStyle isEqualToString:A3SettingsMainMenuStyleTable];
 }
+
+- (void)updateRecentlyUsedAppsWithAppName:(NSString *)appName {
+	NSDictionary *appInfo = [[A3AppDelegate instance] appInfoDictionary][appName];
+	if ([appInfo[kA3AppsDoNotKeepAsRecent] boolValue]) {
+		return;
+	}
+	NSMutableDictionary *recentlyUsed = [[[A3SyncManager sharedSyncManager] objectForKey:A3MainMenuDataEntityRecentlyUsed] mutableCopy];
+	if (!recentlyUsed) {
+		recentlyUsed = [NSMutableDictionary new];
+		recentlyUsed[kA3AppsMenuName] = @"Recent";
+		recentlyUsed[kA3AppsMenuCollapsed] = @NO;
+		recentlyUsed[kA3AppsMenuExpandable] = @YES;
+	}
+	NSMutableArray *appsList = [recentlyUsed[kA3AppsExpandableChildren] mutableCopy];
+	if (!appsList) {
+		appsList = [NSMutableArray new];
+	}
+	
+	NSUInteger idx = [appsList indexOfObjectPassingTest:^BOOL(NSDictionary *menuDictionary, NSUInteger idx, BOOL *stop) {
+		if ([appName isEqualToString:menuDictionary[kA3AppsMenuName]]) {
+			*stop = YES;
+			return YES;
+		}
+		return NO;
+	}];
+	if (idx != NSNotFound) {
+		if (idx > 0) {
+			[appsList moveObjectFromIndex:idx toIndex:0];
+			recentlyUsed[kA3AppsExpandableChildren] = appsList;
+		}
+	} else {
+		NSInteger maxRecent = [[A3AppDelegate instance] maximumRecentlyUsedMenus];
+		
+		if (maxRecent <= 1) {
+			recentlyUsed[kA3AppsExpandableChildren] = @[@{kA3AppsMenuName: appName}];
+		} else {
+			NSArray *newDataArray = @[@{kA3AppsMenuName: appName}];
+			[appsList insertObject:newDataArray[0] atIndex:0];
+			
+			if ([appsList count] > maxRecent) {
+				[appsList removeObjectsInRange:NSMakeRange(maxRecent, [appsList count] - maxRecent)];
+			}
+			recentlyUsed[kA3AppsExpandableChildren] = appsList;
+		}
+	}
+	
+	[[A3SyncManager sharedSyncManager] setObject:recentlyUsed
+										  forKey:A3MainMenuDataEntityRecentlyUsed
+										   state:A3DataObjectStateModified];
+	
+}
+
 @end

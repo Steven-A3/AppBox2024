@@ -225,6 +225,7 @@ A3InstructionViewControllerDelegate>
 		if (![[A3AppDelegate instance] launchAppNamed:menuInfo[kA3AppsMenuName] verifyPasscode:YES delegate:self animated:YES]) {
 			self.selectedAppName = [menuInfo[kA3AppsMenuName] copy];
 		} else {
+			[[A3AppDelegate instance] updateRecentlyUsedAppsWithAppName:menuInfo[kA3AppsMenuName]];
 			self.activeAppName = [menuInfo[kA3AppsMenuName] copy];
 		}
 	}

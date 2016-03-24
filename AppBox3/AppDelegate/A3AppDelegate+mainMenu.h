@@ -31,5 +31,6 @@
 - (void)startRemoveAds;
 - (void)startRestorePurchase;
 - (BOOL)isMainMenuStyleList;
+- (void)updateRecentlyUsedAppsWithAppName:(NSString *)appName;
 
 @end
