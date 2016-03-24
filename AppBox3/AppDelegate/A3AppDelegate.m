@@ -1347,6 +1347,8 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 }
 
 - (void)interstitialWillPresentScreen:(GADInterstitial *)ad {
+	[[UIApplication sharedApplication] setStatusBarHidden:YES];
+
 	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3AdsDisplayTime];
 	[[NSUserDefaults standardUserDefaults] setInteger:0 forKey:A3NumberOfTimesOpeningSubApp];
 	[[NSUserDefaults standardUserDefaults] synchronize];
