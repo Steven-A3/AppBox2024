@@ -387,7 +387,6 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 			if (![appDelegate.mainMenuViewController openRecentlyUsedMenu:YES]) {
 				[appDelegate.mainMenuViewController openClockApp];
 			}
-			[appDelegate.rootViewController_iPad setShowLeftView:YES];
 		}
 
 		if (_pushClockViewControllerOnPasscodeFailure) {

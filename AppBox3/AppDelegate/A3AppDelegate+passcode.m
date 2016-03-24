@@ -283,7 +283,6 @@
 								if (![self.mainMenuViewController openRecentlyUsedMenu:YES]) {
 									[self.mainMenuViewController openClockApp];
 								}
-								[self.rootViewController_iPad setShowLeftView:YES];
 							}
 						}
 					}
@@ -429,7 +428,6 @@
 				if (![self.mainMenuViewController openRecentlyUsedMenu:YES]) {
 					[self.mainMenuViewController openClockApp];
 				}
-				[self.rootViewController_iPad setShowLeftView:YES];
 			}
 			if (self.pushClockViewControllerIfFailPasscode) {
 				[self.mainMenuViewController openClockApp];
