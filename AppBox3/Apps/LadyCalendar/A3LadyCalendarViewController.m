@@ -706,7 +706,7 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 
 - (UIView *)moreMenuView {
 	if (!_moreMenuView) {
-		_moreMenuView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
+		_moreMenuView = [[UIView alloc] initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width, 44)];
 		_moreMenuView.backgroundColor = [UIColor colorWithRed:247.0 / 255.0 green:247.0 / 255.0 blue:247.0 / 255.0 alpha:1.0];
         UIButton *helpButton = [self instructionHelpButton];
         [self addFourButtons:@[helpButton, _chartButton, _accountButton, _settingButton] toView:_moreMenuView];
@@ -723,7 +723,7 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 {
 	[self.navigationItem.leftBarButtonItem setEnabled:NO];
 	self.moreMenuView.alpha = 0.0;
-	[_calendarHeaderView addSubview:_moreMenuView];
+	[self.navigationController.view addSubview:_moreMenuView];
 
 	[UIView animateWithDuration:0.3 animations:^{
 		_moreMenuView.alpha = 1.0;
