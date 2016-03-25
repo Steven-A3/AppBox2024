@@ -31,7 +31,7 @@
 	
 	//    FNLOG(@"row = %ld, col = %ld, indexPath.row = %ld", row, col, indexPath.row);
 	
-	CGFloat horiOffset = indexPath.row / _numberOfItemsPerPage * [UIScreen mainScreen].bounds.size.width;
+	CGFloat horiOffset = indexPath.row / _numberOfItemsPerPage * [A3UIDevice screenBoundsAdjustedWithOrientation].size.width;
 	CGFloat horizontalMarginOnPage = IS_IPHONE ? 10.0 : IS_PORTRAIT ? 32.0 : 21;
 	
 	UICollectionViewLayoutAttributes *attributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];

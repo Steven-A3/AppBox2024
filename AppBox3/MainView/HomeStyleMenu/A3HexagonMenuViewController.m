@@ -270,7 +270,8 @@ A3InstructionViewControllerDelegate>
 		UIView *superview = _collectionView.backgroundView;
 		[_appTitleLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(superview.centerX);
-			_appTitleTopConstraint =  make.top.equalTo(superview.bottom).with.multipliedBy(IS_PORTRAIT ? 0.2 : 0.13);
+			CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+			_appTitleTopConstraint =  make.top.equalTo(superview.top).with.offset(screenBounds.size.height * (IS_PORTRAIT ? 0.2 : 0.13));
 		}];
 	}
 	return _appTitleLabel;
@@ -342,6 +343,7 @@ A3InstructionViewControllerDelegate>
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
+	FNLOGRECT(self.view.bounds);
 	[self setupCollectionViewContentInsetWithSize:self.view.bounds.size];
 }
 
@@ -364,10 +366,8 @@ A3InstructionViewControllerDelegate>
 		}
 		_collectionView.contentInset = UIEdgeInsetsMake((size.height - contentSize.height)/2 + offset, 0, (size.height - contentSize.height)/2 - offset, 0);
 	}
-	[_appTitleTopConstraint uninstall];
-	[_appTitleLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.top.equalTo(self.view.bottom).with.multipliedBy(size.width < size.height ? 0.2 : 0.13);
-	}];
+	_appTitleTopConstraint.offset = size.height * (size.width < size.height ? 0.2 : 0.13);
+	
 	[self adjustFingerCenter];
 }
 

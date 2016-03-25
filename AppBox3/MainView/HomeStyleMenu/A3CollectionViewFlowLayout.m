@@ -110,7 +110,7 @@
 		return;
 	}
 	CGFloat coordinateInPage = _cellFakeView.frame.origin.x - self.collectionView.contentOffset.x;
-	CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+	CGFloat screenWidth = [A3UIDevice screenBoundsAdjustedWithOrientation].size.width;
 	if (self.collectionView.contentOffset.x != 0 && coordinateInPage < -30) {
 		[UIView animateWithDuration:0.3 animations:^{
 			_scrollInProgress = YES;

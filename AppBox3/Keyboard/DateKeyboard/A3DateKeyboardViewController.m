@@ -53,7 +53,7 @@
 	[self.dayButton setTitle:NSLocalizedString(@"Day", nil) forState:UIControlStateNormal];
 	[self.doneButton setTitle:NSLocalizedString(@"DoneButton", nil) forState:UIControlStateNormal];
 	
-	CGRect screenBounds = [[UIScreen mainScreen] bounds];
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	self.view.bounds = CGRectMake(0, 0, screenBounds.size.width, [self keyboardHeight]);
 }
 

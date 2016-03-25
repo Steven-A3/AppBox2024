@@ -109,7 +109,7 @@
 	NSArray *centerArray;
 	NSUInteger numberOfViews = [_circleArray count];
 	CGRect bounds = self.view.bounds;
-	CGRect screenBounds = [[UIScreen mainScreen] bounds];
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	CGFloat radiusBase = IS_PORTRAIT ? bounds.size.width : bounds.size.height;
 
 	switch (numberOfViews) {

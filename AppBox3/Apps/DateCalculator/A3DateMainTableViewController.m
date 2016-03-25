@@ -1478,7 +1478,7 @@
                     [self.tableView reloadData];
                     self.tableView.allowsSelection = YES;
                     
-                    if ([UIScreen mainScreen].bounds.size.height==480.0) {
+                    if (IS_IPHONE35) {
                         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]
                                               atScrollPosition:UITableViewScrollPositionBottom
                                                       animated:YES];

@@ -693,7 +693,7 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 		}
 	}];
 
-	CGRect screenBounds = [[UIScreen mainScreen] bounds];
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	[drawerController setMaximumLeftDrawerWidth:screenBounds.size.width];
 	[drawerController setShowsShadow:NO];
 

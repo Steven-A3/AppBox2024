@@ -651,7 +651,7 @@
 		if (!_landscapeView) {
 			[[UIApplication sharedApplication] setStatusBarHidden:YES];
 			[self.navigationController setNavigationBarHidden:YES animated:YES];
-			CGRect frame = [[UIScreen mainScreen] bounds];
+			CGRect frame = [A3UIDevice screenBoundsAdjustedWithOrientation];
 			CGFloat width = frame.size.width;
 			frame.size.width = frame.size.height;
 			frame.size.height = width;
