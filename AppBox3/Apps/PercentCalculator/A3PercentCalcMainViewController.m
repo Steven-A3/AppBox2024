@@ -40,7 +40,7 @@
     NSNumber *_currentFactor;
     NSArray *_formattedFactorValues;
     
-    CGFloat _tableYOffset, _oldTableOffset;
+    CGFloat _tableYOffset;
     A3NumberKeyboardViewController *_simpleNormalNumberKeyboard;
     NSIndexPath *_selectedIndexPath;
     NSIndexPath *_selectedOptionIndexPath;
@@ -112,10 +112,7 @@
 	[self reloadInputData];
     [self setBarButtonEnable:YES];
 
-    self.automaticallyAdjustsScrollViewInsets = NO;
-	_oldTableOffset = self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight];
-	self.tableView.contentInset = UIEdgeInsetsMake(_oldTableOffset, 0, 0, 0);
-	self.tableView.contentOffset = CGPointMake(0.0, -_oldTableOffset);
+	self.tableView.contentOffset = CGPointMake(0.0, -self.tableView.contentInset.top);
 
     _isKeyboardShown = NO;
 
@@ -933,8 +930,6 @@
 
 - (void)scrollTableViewToIndexPath:(NSIndexPath *)indexPath
 {
-    _oldTableOffset = self.tableView.contentOffset.y;
-    
     CGRect cellRect = [self.tableView rectForRowAtIndexPath:indexPath];
     if ((cellRect.origin.y + cellRect.size.height + self.tableView.contentInset.top) < (self.tableView.frame.size.height-_simpleNormalNumberKeyboard.view.bounds.size.height))
         return;
@@ -947,7 +942,7 @@
 	[UIView setAnimationBeginsFromCurrentState:YES];
 	[UIView setAnimationCurve:7];
 	[UIView setAnimationDuration:0.35];
-	self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight]));
+	self.tableView.contentOffset = CGPointMake(0.0, -self.tableView.contentInset.top);
 	[UIView commitAnimations];
 }
 
