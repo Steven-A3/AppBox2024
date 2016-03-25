@@ -236,7 +236,7 @@ A3InstructionViewControllerDelegate>
 	_availableMenuItems = nil;
 
 	if (![[self availableMenuItems] count]) {
-		[_menuItems removeLastObject];
+		[_menuItems removeObject:@{kA3AppsMenuName : A3AppName_None}];
 	}
 
 	[[NSUserDefaults standardUserDefaults] setObject:_menuItems forKey:A3MainMenuGridMenuItems];
@@ -294,7 +294,7 @@ A3InstructionViewControllerDelegate>
 	
 	[collectionViewLayout removeCellFakeView:nil];
 
-	if ([_menuItems count] && ![[_menuItems lastObject][kA3AppsMenuName] isEqualToString:A3AppName_None]) {
+	if ([_menuItems indexOfObject:@{kA3AppsMenuName : A3AppName_None}] == NSNotFound) {
 		[_menuItems addObject:@{kA3AppsMenuName : A3AppName_None}];
 	}
 
