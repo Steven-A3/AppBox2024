@@ -65,42 +65,41 @@
 	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 
 	A3HomeScreenButton *helpButton = [A3HomeScreenButton buttonWithType:UIButtonTypeCustom];
-	helpButton.contentMode = UIViewContentModeLeft;
-	[helpButton setImage:[[UIImage imageNamed:@"help"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-	[helpButton addTarget:self action:@selector(helpButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 	helpButton.tintColor = [UIColor whiteColor];
+	[helpButton setIconNamed:@"help"];
+	[helpButton addTarget:self action:@selector(helpButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 	[backgroundView addSubview:helpButton];
 
 	UIView *superview = backgroundView;
 	[helpButton mas_makeConstraints:^(MASConstraintMaker *make) {
 		if (IS_IPAD_PRO) {
-			make.left.equalTo(superview.left).with.offset(20);
 			make.top.equalTo(superview.top).with.offset(25);
+			make.left.equalTo(superview.left).with.offset(20);
 			make.width.equalTo(@50);
 			make.height.equalTo(@50);
 		} else {
-			make.left.equalTo(superview.left).with.offset(8);
 			make.top.equalTo(superview.top).with.offset(23);
+			make.left.equalTo(superview.left).with.offset(8);
 			make.width.equalTo(@44);
 			make.height.equalTo(@44);
 		}
 	}];
 
 	A3HomeScreenButton *settingsButton = [A3HomeScreenButton buttonWithType:UIButtonTypeCustom];
-	[settingsButton setImage:[[UIImage imageNamed:@"general"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-	[settingsButton addTarget:self action:@selector(settingsButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 	settingsButton.tintColor = [UIColor whiteColor];
+	[settingsButton setIconNamed:@"general"];
+	[settingsButton addTarget:self action:@selector(settingsButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 	[backgroundView addSubview:settingsButton];
 	
 	[settingsButton makeConstraints:^(MASConstraintMaker *make) {
 		if (IS_IPAD_PRO) {
-			make.top.equalTo(superview.top).with.offset(20);
-			make.right.equalTo(superview.right).with.offset(-25);
+			make.top.equalTo(superview.top).with.offset(25);
+			make.right.equalTo(superview.right).with.offset(-20);
 			make.width.equalTo(@50);
 			make.height.equalTo(@50);
 		} else {
-			make.right.equalTo(superview.right).with.offset(-8);
 			make.top.equalTo(superview.top).with.offset(23);
+			make.right.equalTo(superview.right).with.offset(-8);
 			make.width.equalTo(@44);
 			make.height.equalTo(@44);
 		}

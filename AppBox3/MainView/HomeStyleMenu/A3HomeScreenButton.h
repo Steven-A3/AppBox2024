@@ -10,4 +10,6 @@
 
 @interface A3HomeScreenButton : UIButton
 
+- (void)setIconNamed:(NSString *)iconName;
+
 @end
