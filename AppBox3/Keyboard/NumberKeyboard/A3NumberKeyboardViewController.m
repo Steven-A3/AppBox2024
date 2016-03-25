@@ -46,7 +46,7 @@
 	[self setupLocale];
 	[self.doneButton setTitle:NSLocalizedString(@"DoneButton", nil) forState:UIControlStateNormal];
 
-	CGRect screenBounds = [[UIScreen mainScreen] bounds];
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	self.view.bounds = CGRectMake(0, 0, screenBounds.size.width, [self keyboardHeight]);
 	FNLOGRECT(self.view.bounds);
 }
@@ -54,7 +54,7 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	CGRect screenBounds = [[UIScreen mainScreen] bounds];
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	self.view.bounds = CGRectMake(0, 0, screenBounds.size.width, [self keyboardHeight]);
 	FNLOGRECT(self.view.bounds);
 }

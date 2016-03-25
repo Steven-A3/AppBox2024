@@ -141,7 +141,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 
 - (void)setupBasicMeasureForInterfaceOrientation:(BOOL)toPortrait {
 	NSString *model = [A3UIDevice platformString];
-	CGRect screenBounds = [[UIScreen mainScreen] bounds];
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	CGFloat screenHeight = MAX(screenBounds.size.width, screenBounds.size.height);
 
 	if ([model isEqualToString:@"iPod Touch (5th generation)"]) {
