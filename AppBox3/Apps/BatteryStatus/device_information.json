@@ -1,7 +1,7 @@
 {
     "platform": {
-        "i386": "iPhone 6",
-        "x86_64": "12.9\" iPad Pro",
+        "i386": "iPhone Simulator",
+        "x86_64": "iPhone Simulator",
         "iPhone1,1": "iPhone 1G",
         "iPhone1,2": "iPhone 3G",
         "iPhone2,1": "iPhone 3GS",
@@ -47,8 +47,8 @@
         "iPad5,4": "iPad Air 2",
 		"iPad6,3": "9.7\" iPad Pro (Wi-Fi)",
 		"iPad6,4": "9.7\" iPad Pro",
-		"iPad6,7": "12.9\" iPad Pro (Wi-Fi)",
-		"iPad6,8": "12.9\" iPad Pro",
+		"iPad6,7": "iPad Pro (Wi-Fi)",
+		"iPad6,8": "iPad Pro",
         "iPod5,1": "iPod Touch (5th generation)",
         "iPod7,1": "iPod Touch (6th generation)"
     },
@@ -245,16 +245,16 @@
 			"Memory": "4 GB LPDDR3 DRAM",
 			"PPI": "264"
 		},
-		"12.9\" iPad Pro": {
-			"Model": "12.9\" iPad Pro",
+		"iPad Pro": {
+			"Model": "iPad Pro",
 			"Chips": "A9 chip with 64-bit architecture\nM9 motion coprocessor",
 			"CPU": "TBD",
 			"GPU": "TBD",
 			"Memory": "4 GB LPDDR3 DRAM",
 			"PPI": "264"
 		},
-		"12.9\" iPad Pro (Wi-Fi)": {
-			"Model": "12.9\" iPad Pro (Wi-Fi)",
+		"iPad Pro (Wi-Fi)": {
+			"Model": "iPad Pro (Wi-Fi)",
 			"Chips": "A9 chip with 64-bit architecture\nM9 motion coprocessor",
 			"CPU": "TBD",
 			"GPU": "TBD",
@@ -550,15 +550,15 @@
 			"Video playback": 10,
 			"Audio playback": 10
 		},
-		"12.9\" iPad Pro": {
-			"Model": "12.9\" iPad Pro",
+		"iPad Pro": {
+			"Model": "iPad Pro",
 			"Internet on Wi-Fi": 10,
 			"Internet on Cellular": 9,
 			"Video playback": 10,
 			"Audio playback": 10
 		},
-		"12.9\" iPad Pro (Wi-Fi)": {
-			"Model": "12.9\" iPad Pro (Wi-Fi)",
+		"iPad Pro (Wi-Fi)": {
+			"Model": "iPad Pro (Wi-Fi)",
 			"Internet on Wi-Fi": 10,
 			"Video playback": 10,
 			"Audio playback": 10

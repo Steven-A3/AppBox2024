@@ -262,8 +262,8 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		_inchAsPoints = (screenHeight / 2048.0) * pixelsInInch;
 		_resetPosition = _centimeterPositionRightBottom ? 14.0 : 5.5;
 		_redLineWidth = 0.5;
-	} else if ([model isEqualToString:@"12.9\" iPad Pro"] ||
-			   [model isEqualToString:@"12.9\" iPad Pro (Wi-Fi)"]) {
+	} else if ([model isEqualToString:@"iPad Pro"] ||
+			   [model isEqualToString:@"iPad Pro (Wi-Fi)"]) {
 		// iPad Pro
 		CGFloat pixelsInInch = 264.7;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
