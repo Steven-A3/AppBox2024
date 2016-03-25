@@ -212,7 +212,7 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 }
 
 - (NSString *)symbolForCode:(NSString *)currencyCode {
-	return self.currencyInfoDictionary[currencyCode][kA3CurrencyDataFlagName];
+	return self.currencyInfoDictionary[currencyCode][kA3CurrencyDataSymbol];
 }
 
 - (void)purgeRetainingObjects {
