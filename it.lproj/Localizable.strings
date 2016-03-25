@@ -11,13 +11,13 @@
 "Loan Calculator" = "Calcolatrice Prestito";
 "Loan Calc" = "Prestito";
 "Sales Calculator" = "Calcolatrice Sconti";
-"Sales Calculator_Short" = "Calcolatrice Sconti";
-"Sales Calc" = "Calcola Sconti";
+"Sales Calculator_Short" = "Sconti";
+"Sales Calc" = "Sconti";
 "Percent Calculator" = "Calcolatrice Percentuale";
 "Percent Calculator_Short" = "Calcolatrice Percentuale";
 "Percent Calc" = "Percentuale";
 "Tip Calculator" = "Calcolatrice Mancia";
-"Tip Calc" = "Calcola Mancia";
+"Tip Calc" = "Mancia";
 "Unit Price" = "Prezzo unitario";
 "Unit Price Short" = "Unitario";
 
@@ -40,7 +40,7 @@
 "Battery Status" = "Stato Batteria";
 "Battery" = "Batteria";
 "Clock" = "Orologio";
-"Magnifier" = "Lente d'ingrandimento";
+"Magnifier" = "Esaltatore";
 "Mirror" = "Specchio";
 "Flashlight" = "Torcia";
 "Flashlight Short" = "Torcia";
