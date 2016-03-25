@@ -9,6 +9,8 @@
 #import "A3AppDelegate.h"
 #import "A3HexagonMenuViewController.h"
 #import "A3HomeScreenButton.h"
+#import "MMDrawerController.h"
+#import "UIViewController+A3Addition.h"
 
 @interface A3HomeStyleMenuViewController ()
 
@@ -208,10 +210,28 @@
 }
 
 - (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
-	if (success && _selectedAppName) {
-		[[A3AppDelegate instance] launchAppNamed:_selectedAppName verifyPasscode:NO delegate:nil animated:YES];
-		[[A3AppDelegate instance] updateRecentlyUsedAppsWithAppName:_selectedAppName];
-		self.activeAppName = [_selectedAppName copy];
+	if (success) {
+		if (_selectedAppName) {
+			[[A3AppDelegate instance] launchAppNamed:_selectedAppName verifyPasscode:NO delegate:nil animated:YES];
+			[[A3AppDelegate instance] updateRecentlyUsedAppsWithAppName:_selectedAppName];
+			self.activeAppName = [_selectedAppName copy];
+		}
+	} else {
+		A3AppDelegate *appDelegate = [A3AppDelegate instance];
+		UINavigationController *mainNavigationController = appDelegate.currentMainNavigationController;
+		if ([mainNavigationController.viewControllers count] > 1) {
+			UIViewController *appViewController = appDelegate.currentMainNavigationController.viewControllers[1];
+			[mainNavigationController popViewControllerAnimated:NO];
+			[appViewController appsButtonAction:nil];
+		}
+		double delayInSeconds = 0.1;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			[self.navigationController setNavigationBarHidden:YES];
+			UIImage *image = [UIImage new];
+			[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+			[self.navigationController.navigationBar setShadowImage:image];
+		});
 	}
 	_selectedAppName = nil;
 }

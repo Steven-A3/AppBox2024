@@ -45,7 +45,7 @@
 - (BOOL)didPasscodeTimerEnd {
 	NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
 	FNLOG(@"%f", now - [self timerStartTime]);
-	if ([self timerStartTime] != -1 && (now - [self timerStartTime] < 1.8)) {
+	if ([self timerStartTime] != -1 && (now - [self timerStartTime] < 1.0)) {
 		return NO;
 	}
 	if ((now - [self passcodeFreeBegin]) < 0.2) {
@@ -422,18 +422,32 @@
 
 	if (!success) {
 		if ([self isMainMenuStyleList]) {
-			if (IS_IPHONE) {
-				[self.drawerController openDrawerSide:MMDrawerSideLeft animated:NO completion:nil];
-			} else {
-				if (![self.mainMenuViewController openRecentlyUsedMenu:YES]) {
-					[self.mainMenuViewController openClockApp];
+			[self.mainMenuViewController openClockApp];
+			double delayInSeconds = 0.3;
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				if (IS_IPHONE) {
+					[self.drawerController openDrawerSide:MMDrawerSideLeft animated:NO completion:nil];
+				} else {
+					[self.rootViewController_iPad setShowLeftView:NO];
 				}
-			}
-			if (self.pushClockViewControllerIfFailPasscode) {
-				[self.mainMenuViewController openClockApp];
-			}
+			});
+
 		} else {
-			[self.currentMainNavigationController popToRootViewControllerAnimated:NO];
+			if ([self.currentMainNavigationController.viewControllers count] > 1) {
+				UIViewController *appViewController = self.currentMainNavigationController.viewControllers[1];
+				[self.currentMainNavigationController popViewControllerAnimated:NO];
+				[appViewController appsButtonAction:nil];
+				
+				double delayInSeconds = 0.1;
+				dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+				dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+					[self.currentMainNavigationController setNavigationBarHidden:YES];
+					UIImage *image = [UIImage new];
+					[self.currentMainNavigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+					[self.currentMainNavigationController.navigationBar setShadowImage:image];
+				});
+			}
 		}
 		return;
 	}
@@ -461,6 +475,11 @@
 				[self.navigationController.topViewController viewDidAppear:NO];
 			}
 		}
+	}
+	if ([self.currentMainNavigationController.viewControllers count] > 1) {
+		[self.currentMainNavigationController.topViewController viewDidAppear:NO];
+	} else {
+		[self reloadRootViewController];
 	}
 	[self showReceivedLocalNotifications];
 	[self presentInterstitialAds];

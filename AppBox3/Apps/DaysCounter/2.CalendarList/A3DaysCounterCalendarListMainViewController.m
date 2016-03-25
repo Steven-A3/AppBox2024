@@ -265,6 +265,7 @@
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self showNavigationBarOn:self.navigationController];
 	}
+	[self.navigationController setToolbarHidden:NO];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

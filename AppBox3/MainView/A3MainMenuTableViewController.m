@@ -380,19 +380,19 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 - (void)passcodeViewControllerDidDismissWithSuccess:(BOOL )success {
 	if (!success) {
 		[self callPrepareCloseOnActiveMainAppViewController];
-		A3AppDelegate *appDelegate = [A3AppDelegate instance];
-		if (IS_IPHONE) {
-			[appDelegate.drawerController openDrawerSide:MMDrawerSideLeft animated:NO completion:nil];
-		} else {
-			if (![appDelegate.mainMenuViewController openRecentlyUsedMenu:YES]) {
-				[appDelegate.mainMenuViewController openClockApp];
+		[self openClockApp];
+		
+ 		double delayInSeconds = 0.3;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			A3AppDelegate *appDelegate = [A3AppDelegate instance];
+			if (IS_IPHONE) {
+				[appDelegate.drawerController openDrawerSide:MMDrawerSideLeft animated:NO completion:nil];
+			} else {
+				[appDelegate.rootViewController_iPad setShowLeftView:NO];
 			}
-		}
+		});
 
-		if (_pushClockViewControllerOnPasscodeFailure) {
-			_pushClockViewControllerOnPasscodeFailure = NO;
-			[self openClockApp];
-		}
 	} else {
 		if (IS_IPHONE && [[A3AppDelegate instance] isMainMenuStyleList]) {
 			[[A3AppDelegate instance].drawerController closeDrawerAnimated:NO completion:^(BOOL finished) {
@@ -403,6 +403,7 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 			[self openAppNamed:_selectedElement.title];
 		}
 	}
+	_selectedAppName = nil;
 	_selectedElement = nil;
 }
 

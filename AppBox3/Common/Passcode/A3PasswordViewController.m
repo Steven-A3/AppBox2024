@@ -175,10 +175,6 @@
 - (void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
 
-	FNLOG();
-	if ([self.delegate respondsToSelector:@selector(passcodeViewDidDisappearWithSuccess:)]) {
-		[self.delegate passcodeViewDidDisappearWithSuccess:_passcodeValid ];
-	}
 }
 
 #pragma mark - Preparing
@@ -243,7 +239,22 @@
 	if ([self.delegate respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
 		[self.delegate passcodeViewControllerDidDismissWithSuccess:NO];
 	}
-	[self dismissViewControllerAnimated:YES completion:nil];
+	if (_beingPresentedInViewController || _shouldDismissViewController) {
+		[self dismissViewControllerAnimated:YES completion:nil];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			if ([self.delegate respondsToSelector:@selector(passcodeViewDidDisappearWithSuccess:)]) {
+				[self.delegate passcodeViewDidDisappearWithSuccess:NO ];
+			}
+		});
+	} else {
+		[self.view removeFromSuperview];
+		if (!IS_IOS7) {
+			[self removeFromParentViewController];
+		}
+		if ([self.delegate respondsToSelector:@selector(passcodeViewDidDisappearWithSuccess:)]) {
+			[self.delegate passcodeViewDidDisappearWithSuccess:NO ];
+		}
+	}
 }
 
 - (void)showEncryptionKeyScreenInViewController:(UIViewController *)viewController {
@@ -576,6 +587,12 @@
 			[self.delegate passcodeViewControllerDidDismissWithSuccess:YES];
 		}
 		[self.presentingViewController dismissViewControllerAnimated:NO completion:nil];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			if ([self.delegate respondsToSelector:@selector(passcodeViewDidDisappearWithSuccess:)]) {
+				[self.delegate passcodeViewDidDisappearWithSuccess:NO ];
+			}
+		});
+
 	} else {
 		[self.view removeFromSuperview];
 		if (!IS_IOS7) {

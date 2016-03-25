@@ -217,6 +217,7 @@ NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
 }
 
 - (void)showNavigationBarOn:(UINavigationController *)targetController {
+	FNLOG();
 	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
 
