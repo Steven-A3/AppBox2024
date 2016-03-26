@@ -135,21 +135,19 @@ NSString *const A3UserDefaultsDidShowLeftViewOnceiPad = @"A3UserDefaultsDidShowL
 				if ([appDelegate isMainMenuStyleList]) {
 					if (![[appDelegate mainMenuViewController] openRecentlyUsedMenu:YES]) {
 						[appDelegate setStartOptionOpenClockOnce:NO];
-						if (IS_IPHONE) {
-							[appDelegate.drawerController openDrawerSide:MMDrawerSideLeft animated:NO completion:nil];
-						} else {
-							if (![appDelegate.mainMenuViewController openRecentlyUsedMenu:YES]) {
-								[appDelegate.mainMenuViewController openClockApp];
-							}
+						if (![appDelegate.mainMenuViewController openRecentlyUsedMenu:YES]) {
+							[appDelegate.mainMenuViewController openClockApp];
 						}
 					}
-					/**
-					 *  설치 후 처음 한번 Menu 방식을 사용할 때, 왼쪽 메뉴를 보여준다.
-					 */
-					if (![[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowLeftViewOnceiPad]) {
-						[appDelegate.rootViewController_iPad setShowLeftView:YES];
-						[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidShowLeftViewOnceiPad];
-						[[NSUserDefaults standardUserDefaults] synchronize];
+					if (IS_IPAD) {
+						/**
+						 *  설치 후 처음 한번 Menu 방식을 사용할 때, 왼쪽 메뉴를 보여준다.
+						 */
+						if (![[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowLeftViewOnceiPad]) {
+							[appDelegate.rootViewController_iPad setShowLeftView:YES];
+							[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidShowLeftViewOnceiPad];
+							[[NSUserDefaults standardUserDefaults] synchronize];
+						}
 					}
 				} else {
 					NSString *startingApp = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];

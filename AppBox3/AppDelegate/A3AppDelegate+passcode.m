@@ -277,12 +277,8 @@
 					[self popStartingAppInfo];
 					if (![self showLockScreen]) {
 						if ([self isMainMenuStyleList]) {
-							if (IS_IPHONE) {
-								[self.drawerController openDrawerSide:MMDrawerSideLeft animated:NO completion:nil];
-							} else {
-								if (![self.mainMenuViewController openRecentlyUsedMenu:YES]) {
-									[self.mainMenuViewController openClockApp];
-								}
+							if (![self.mainMenuViewController openRecentlyUsedMenu:YES]) {
+								[self.mainMenuViewController openClockApp];
 							}
 						}
 					}
