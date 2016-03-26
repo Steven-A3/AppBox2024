@@ -28,6 +28,8 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	A3SettingsRowThemeColor = 4100,
 	A3SettingsRowLunarCalendar = 4200,
 	A3SettingsRowMainMenuStyle = 5200,
+	A3SettingsRowRemoveAds = 6100,
+	A3SettingsRowRestorePurchase = 6200,
 };
 
 @interface A3SettingsViewController () <A3PasscodeViewControllerDelegate, UIActionSheetDelegate>
@@ -40,7 +42,9 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 
 @end
 
-@implementation A3SettingsViewController
+@implementation A3SettingsViewController {
+	BOOL _didResetHomeScreenLayout;
+}
 
 - (void)viewDidLoad
 {
@@ -108,7 +112,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (section == 2) {
-		return [[A3AppDelegate instance] isMainMenuStyleList] ? 3 : 1;
+		return [[A3AppDelegate instance] isMainMenuStyleList] ? 3 : 2;
 	}
 	return [super tableView:tableView numberOfRowsInSection:section];
 }
@@ -182,10 +186,13 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 		case A3SettingsRowEditFavorites:
 			if ([[A3AppDelegate instance] isMainMenuStyleList]) {
 				[cell.textLabel setHidden:NO];
+				cell.textLabel.text = NSLocalizedString(@"Favorites", @"Favorites");
+				cell.textLabel.textColor = [UIColor blackColor];
 				[cell.detailTextLabel setHidden:NO];
 				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 			} else {
-				[cell.textLabel setHidden:YES];
+				cell.textLabel.text = NSLocalizedString(@"Reset Home Screen Layout", @"Reset Home Screen Layout");
+				cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
 				[cell.detailTextLabel setHidden:YES];
 				cell.accessoryType = UITableViewCellAccessoryNone;
 			}
@@ -232,6 +239,10 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 			
 			break;
 		}
+		case A3SettingsRowRemoveAds:
+		case A3SettingsRowRestorePurchase:
+			cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
+			break;
 	}
 }
 
@@ -282,6 +293,23 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 				}
 			}
 			break;
+		case 2:{
+			if (indexPath.row == 1) {
+				if ([[A3AppDelegate instance] isMainMenuStyleList]) {
+					[self performSegueWithIdentifier:@"editFavorites" sender:nil];
+				} else {
+					UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"This will reset your home screen layout to factory defaults.", @"This will reset your home screen layout to factory defaults.")
+																			 delegate:self
+																	cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+															   destructiveButtonTitle:NSLocalizedString(@"Reset Home Screen", nil)
+																	otherButtonTitles:nil];
+					actionSheet.tag = [[[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle] isEqualToString:A3SettingsMainMenuStyleHexagon] ? 1 : 2;
+					[actionSheet showInView:self.view];
+				}
+				[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+			}
+			break;
+		}
 		case 4:
 			switch (indexPath.row) {
 				case 0:
@@ -303,6 +331,17 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 			break;
 		default:
 			break;
+	}
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if (buttonIndex == actionSheet.destructiveButtonIndex) {
+		if (actionSheet.tag == 1) {
+			[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3MainMenuHexagonMenuItems];
+		} else {
+			[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3MainMenuGridMenuItems];
+		}
+		_didResetHomeScreenLayout = YES;
 	}
 }
 
@@ -332,7 +371,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 }
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
 	NSString *currentMainMenuStyle = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
-	if (currentMainMenuStyle && ![currentMainMenuStyle isEqualToString:_previousMainMenuStyle]) {
+	if (_didResetHomeScreenLayout || (currentMainMenuStyle && ![currentMainMenuStyle isEqualToString:_previousMainMenuStyle])) {
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[A3AppDelegate instance].isChangingRootViewController = YES;
 			[[A3AppDelegate instance] reloadRootViewController];
@@ -344,7 +383,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 
 - (void)applicationDidEnterBackground {
 	NSString *currentMainMenuStyle = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
-	if (currentMainMenuStyle && ![currentMainMenuStyle isEqualToString:_previousMainMenuStyle]) {
+	if (_didResetHomeScreenLayout || (currentMainMenuStyle && ![currentMainMenuStyle isEqualToString:_previousMainMenuStyle])) {
 		A3AppDelegate *appDelegate = [A3AppDelegate instance];
 		[appDelegate reloadRootViewController];
 		if ([appDelegate shouldProtectScreen]) {

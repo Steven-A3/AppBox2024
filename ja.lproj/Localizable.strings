@@ -1021,3 +1021,6 @@
 "9.7\" iPad Pro" = "9.7インチiPad Pro";
 "iPad Pro (Wi-Fi)" = "12.9インチiPad Pro (Wi-Fi)";
 "iPad Pro" = "12.9インチiPad Pro";
+"This will reset your home screen layout to factory defaults." = "ホーム画面のレイアウトを工場出荷時のデフォルト状態にセットします。";
+"Reset Home Screen" = "ホーム画面をリセット";
+"Reset Home Screen Layout" = "ホーム画面のレイアウトをリセット";

@@ -1024,3 +1024,7 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 "9.7\" iPad Pro" = "9,7\" iPad Pro";
 "iPad Pro (Wi-Fi)" = "12,9\" iPad Pro (Wi-Fi)";
 "iPad Pro" = "12,9\" iPad Pro";
+
+"This will reset your home screen layout to factory defaults." = "Hiermit wird die Anordnung der Home-Bildschirmsymbole auf die Werkseinstellung zurückgesetzt.";
+"Reset Home Screen" = "Bildschirm zurücksetzen";
+"Reset Home Screen Layout" = "Zurücksetzen Home-Bildschirm-Layout";
