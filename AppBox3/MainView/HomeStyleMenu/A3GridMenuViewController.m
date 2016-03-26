@@ -98,7 +98,7 @@ A3InstructionViewControllerDelegate>
 	
 	self.collectionView.backgroundView = [self backgroundView];
 
-	[self setupContentHeightWithSize:self.view.bounds.size];
+	[self setupContentHeightWithSize:[A3UIDevice screenBoundsAdjustedWithOrientation].size];
 	
 	_pageControl = [UIPageControl new];
 	_pageControl.numberOfPages = 2;
