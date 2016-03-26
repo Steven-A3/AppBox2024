@@ -145,7 +145,6 @@
 	[super viewWillDisappear:animated];
 
 	if ([self isMovingFromParentViewController]) {
-		[self.navigationController setNavigationBarHidden:NO animated:NO];
 		[self removeObserver];
 	}
 }

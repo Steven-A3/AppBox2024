@@ -318,7 +318,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 		}
 	}
 	if ([self.navigationController.navigationBar isHidden]) {
-		[self showNavigationBarOn:self.navigationController];
+		[self.navigationController setNavigationBarHidden:NO animated:NO];
 	}
 }
 
@@ -377,26 +377,15 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 }
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
-	[self.firstResponder resignFirstResponder];
+	[super appsButtonAction:barButtonItem];
 	[self setFirstResponder:nil];
 
 	if (IS_IPHONE) {
-		if ([[A3AppDelegate instance] isMainMenuStyleList]) {
-			[[A3AppDelegate instance].drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
-		} else {
-			UINavigationController *navigationController = [A3AppDelegate instance].currentMainNavigationController;
-			[navigationController setNavigationBarHidden:YES];
-			[navigationController popViewControllerAnimated:YES];
-			[navigationController setToolbarHidden:YES];
-			[A3AppDelegate instance].homeStyleMainMenuViewController.activeAppName = nil;
-		}
-
 		if ([_moreMenuView superview]) {
 			[self dismissMoreMenu];
 			[self rightButtonMoreButton];
 		}
 	} else {
-		[[[A3AppDelegate instance] rootViewController_iPad] toggleLeftMenuViewOnOff];
 		[self enableControls:![[A3AppDelegate instance] rootViewController_iPad].showLeftView];
 	}
 }
