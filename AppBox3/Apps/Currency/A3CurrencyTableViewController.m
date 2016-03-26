@@ -178,8 +178,8 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 
 	if ([self isMovingToParentViewController]) {
 		[self addObserver];
-		[self setupInstructionView];
 	}
+	[self setupInstructionView];
 	[self showNavigationBarOn:self.navigationController];
 	
 	if ([self.mainViewController.navigationController.navigationBar isHidden]) {

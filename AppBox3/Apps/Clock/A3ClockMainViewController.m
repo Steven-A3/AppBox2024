@@ -209,10 +209,6 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 	
 	[self layoutSubviews];
 	[self.clockDataManager startTimer];
-	[self setupInstructionView];
-	if (self.instructionViewController) {
-		[self adjustInstructionFingerPositionForPortrait:IS_PORTRAIT];
-	}
 	_pageControl.currentPage = [[A3UserDefaults standardUserDefaults] integerForKey:A3ClockUserDefaultsCurrentPage];
 	[self scrollToPage:_pageControl.currentPage];
 	[self gotoPage:_pageControl.currentPage];
@@ -232,6 +228,10 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
     [self resetAndStartAutoDimTimer];
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
 		[self setupBannerViewForAdUnitID:AdMobAdUnitIDClock keywords:nil gender:kGADGenderUnknown];
+	}
+	[self setupInstructionView];
+	if (self.instructionViewController) {
+		[self adjustInstructionFingerPositionForPortrait:IS_PORTRAIT];
 	}
 }
 

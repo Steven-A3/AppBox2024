@@ -746,7 +746,7 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 		}
 	}
 	if (proceedPasscodeCheck) {
-		[self presentLockScreen:delegate];
+		[self presentLockScreen:delegate showCancelButton:YES];
 	} else {
 		UIViewController *targetViewController= [self getViewControllerForAppNamed:appName];
 		[targetViewController callPrepareCloseOnActiveMainAppViewController];

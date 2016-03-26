@@ -308,8 +308,6 @@ NSString *const cellID = @"flashEffectID";
 	}
 	[self configureFlashViewMode:_currentFlashViewMode animation:NO];
 
-	[self setupInstructionView];
-
 	FNLOG(@"[[UIApplication sharedApplication] setIdleTimerDisabled:YES];");
 	[[UIApplication sharedApplication] setIdleTimerDisabled:YES];
 }
@@ -332,6 +330,7 @@ NSString *const cellID = @"flashEffectID";
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
 		[self setupBannerViewForAdUnitID:AdMobAdUnitIDFlashlight keywords:nil gender:kGADGenderUnknown];
 	}
+	[self setupInstructionView];
 }
 
 - (void)viewWillLayoutSubviews {

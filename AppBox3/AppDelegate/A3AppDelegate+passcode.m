@@ -92,7 +92,7 @@
 
 	BOOL presentLockScreen = [self shouldProtectScreen];
 	if (presentLockScreen) {
-        [self presentLockScreen:self];
+        [self presentLockScreen:self showCancelButton:![[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting]];
         return YES;
 	} else {
 		[self showReceivedLocalNotifications];
@@ -100,7 +100,7 @@
     return NO;
 }
 
-- (void)presentLockScreen:(id <A3PasscodeViewControllerDelegate>)delegate {
+- (void)presentLockScreen:(id <A3PasscodeViewControllerDelegate>)delegate showCancelButton:(BOOL)showCancelButton {
 	if (![self didPasscodeTimerEnd]) {
 		return;
 	}
@@ -111,9 +111,8 @@
 	}
 	[self prepareStartappBeforeEvaluate];
 
-	void(^presentPasscodeViewControllerBlock)(void) = ^(){
+	void(^presentPasscodeViewControllerBlock)(BOOL showCancelButton) = ^(BOOL showCancelButton){
 		self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
-		BOOL showCancelButton = ![[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting];
 		if (showCancelButton) {
 			UIViewController *passcodeParentViewController = [self.navigationController topViewController];
 			NSString *className = NSStringFromClass([passcodeParentViewController class]);
@@ -134,7 +133,7 @@
 		});
 	};
 	if (IS_IOS7 || ![self useTouchID]) {
-		presentPasscodeViewControllerBlock();
+		presentPasscodeViewControllerBlock(showCancelButton);
 	} else {
 		LAContext *context = [LAContext new];
 		NSError *error;
@@ -159,13 +158,13 @@
 								[self saveTimerStartTime];
 								[self passcodeViewControllerDidDismissWithSuccess:YES];
 							} else {
-								presentPasscodeViewControllerBlock();
+								presentPasscodeViewControllerBlock(showCancelButton);
 							}
 						});
 					}];
 		} else {
 			[self removeSecurityCoverView];
-			presentPasscodeViewControllerBlock();
+			presentPasscodeViewControllerBlock(showCancelButton);
 		}
 	}
 }
@@ -262,7 +261,7 @@
 				NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
 				if ([startingAppName length]) {
 					if ([self didPasscodeTimerEnd] && [self requirePasscodeForStartingApp]) {
-						[self presentLockScreen:self];
+						[self presentLockScreen:self showCancelButton:YES];
 					} else {
 						[self popStartingAppInfo];
 						[self removeSecurityCoverView];

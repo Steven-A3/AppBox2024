@@ -218,8 +218,6 @@
 	[super viewWillAppear:animated];
 
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        [self setupInstructionView];
-		
 		UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
 		UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
 		[self.navigationItem setRightBarButtonItems:@[edit, space, [self instructionHelpBarButton]] animated:NO];
@@ -266,6 +264,8 @@
 		[self showNavigationBarOn:self.navigationController];
 	}
 	[self.navigationController setToolbarHidden:NO];
+	
+	[self setupInstructionView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

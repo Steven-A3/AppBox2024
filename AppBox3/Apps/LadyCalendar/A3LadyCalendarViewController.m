@@ -206,10 +206,6 @@ A3CalendarViewDelegate>
 		[self moveToCurrentWatchingDate];
 		[self updateCurrentMonthLabel];
 	});
-
-	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupInstructionView];
-	}
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -242,6 +238,7 @@ A3CalendarViewDelegate>
 		[self.navigationController setNavigationBarHidden:NO animated:NO];
 		[self showCalendarHeaderView];
 	}
+	[self setupInstructionView];
 }
 
 - (void)removeObserver {

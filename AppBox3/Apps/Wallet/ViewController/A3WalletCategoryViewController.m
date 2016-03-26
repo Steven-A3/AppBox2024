@@ -174,9 +174,7 @@
 
 	[self.navigationController setNavigationBarHidden:NO];
 	
-	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupInstructionView];
-	}
+	[self setupInstructionView];
 }
 
 - (void)cloudStoreDidImport {

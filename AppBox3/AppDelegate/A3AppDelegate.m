@@ -333,9 +333,10 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 				NSDictionary *menuItem = allMenus[indexOfMenu];
 				NSString *startingAppName = menuItem[kA3AppsMenuName];
 				[[A3UserDefaults standardUserDefaults] setObject:startingAppName forKey:kA3AppsStartingAppName];
-				
-				if ([self shouldAskPasscodeForStarting] || [self requirePasscodeForStartingApp]) {
-					[self presentLockScreen:self];
+
+				BOOL shouldAskPassocodeForStarting = [self shouldAskPasscodeForStarting];
+				if (shouldAskPassocodeForStarting || [self requirePasscodeForStartingApp]) {
+					[self presentLockScreen:self showCancelButton:!shouldAskPassocodeForStarting];
 				} else {
 					[self removeSecurityCoverView];
 					if ([self isMainMenuStyleList]) {

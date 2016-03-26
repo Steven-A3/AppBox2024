@@ -160,8 +160,6 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	_sourceValue = [self lastInputValue];
 	[_pickerView reloadAllComponents];
 	[self didSelectPickerRow];
-
-	[self setupInstructionView];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -187,6 +185,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	if ([self.mainViewController.navigationController.navigationBar isHidden]) {
 		[self.mainViewController showNavigationBarOn:self.mainViewController.navigationController];
 	}
+	[self setupInstructionView];
 	if (self.instructionViewController) {
 		[self.navigationController.view bringSubviewToFront:self.instructionViewController.view];
 	}

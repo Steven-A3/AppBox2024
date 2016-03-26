@@ -61,6 +61,7 @@
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self.navigationController setNavigationBarHidden:NO animated:NO];
 	}
+	[self setupInstructionView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -108,10 +109,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupInstructionView];
-	}
 
 	[self showLeftNavigationBarItems];
     
