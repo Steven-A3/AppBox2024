@@ -298,7 +298,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 				if ([[A3AppDelegate instance] isMainMenuStyleList]) {
 					[self performSegueWithIdentifier:@"editFavorites" sender:nil];
 				} else {
-					UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"This will reset your home screen layout to factory defaults.", @"This will reset your home screen layout to factory defaults.")
+					UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"This will reset your home screen layout to defaults.", @"This will reset your home screen layout to defaults.")
 																			 delegate:self
 																	cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
 															   destructiveButtonTitle:NSLocalizedString(@"Reset Home Screen", nil)
