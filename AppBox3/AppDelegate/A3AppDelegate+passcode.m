@@ -425,8 +425,12 @@
 	if (!success) {
 		[self addSecurityCoverView];
 		
-		if (self.currentMainNavigationController.presentedViewController) {
-			[self.currentMainNavigationController dismissViewControllerAnimated:NO completion:nil];
+		UIViewController *presendteViewController = self.currentMainNavigationController.presentedViewController;
+		if ([presendteViewController isKindOfClass:[UINavigationController class]]) {
+			UIViewController *viewController = ((UINavigationController *)presendteViewController).viewControllers[0];
+			if (![viewController isKindOfClass:[A3PasscodeCommonViewController class]]) {
+				[self.currentMainNavigationController dismissViewControllerAnimated:NO completion:nil];
+			}
 		}
 		if ([self isMainMenuStyleList]) {
 			if (IS_IPHONE) {

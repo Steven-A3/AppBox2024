@@ -382,15 +382,21 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 		A3AppDelegate *appDelegate = [A3AppDelegate instance];
 		[appDelegate addSecurityCoverView];
 		[self callPrepareCloseOnActiveMainAppViewController];
-		
-		if (appDelegate.currentMainNavigationController.presentedViewController) {
-			[appDelegate.currentMainNavigationController dismissViewControllerAnimated:NO completion:nil];
+
+		UIViewController *presendteViewController = appDelegate.currentMainNavigationController.presentedViewController;
+		if ([presendteViewController isKindOfClass:[UINavigationController class]]) {
+			UIViewController *viewController = ((UINavigationController *)presendteViewController).viewControllers[0];
+			if (![viewController isKindOfClass:[A3PasscodeCommonViewController class]]) {
+				[appDelegate.currentMainNavigationController dismissViewControllerAnimated:NO completion:nil];
+			}
 		}
 		if (IS_IPHONE) {
 			[appDelegate.drawerController openDrawerSide:MMDrawerSideLeft animated:NO completion:nil];
-			UIViewController *appViewController = appDelegate.currentMainNavigationController.viewControllers[1];
-			[appDelegate.currentMainNavigationController popViewControllerAnimated:NO];
-			[appViewController appsButtonAction:nil];
+			if (appDelegate.currentMainNavigationController.viewControllers.count > 1) {
+				UIViewController *appViewController = appDelegate.currentMainNavigationController.viewControllers[1];
+				[appDelegate.currentMainNavigationController popViewControllerAnimated:NO];
+				[appViewController appsButtonAction:nil];
+			}
 		} else {
 			[self openClockApp];
 			[appDelegate.rootViewController_iPad setShowLeftView:YES];
