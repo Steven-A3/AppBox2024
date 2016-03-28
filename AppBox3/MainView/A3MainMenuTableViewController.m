@@ -254,7 +254,7 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 				A3TableViewMenuElement *menuElement = (A3TableViewMenuElement *) elementObject;
 
 				// Check active view controller
-				if (![self.activeAppName isEqualToString:elementObject.title]) {
+				if (![self.activeAppName isEqualToString:elementObject.title] || (IS_IPHONE && [[A3AppDelegate instance] securitySettingIsOnForAppNamed:elementObject.title])) {
 					if (![[A3AppDelegate instance] launchAppNamed:elementObject.title verifyPasscode:verifyPasscode delegate:self animated:NO]) {
 						self.selectedElement = menuElement;
 						self.selectedAppName = [menuElement.title copy];
@@ -377,22 +377,29 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 	[element didSelectCellInViewController:(id) self tableView:self.tableView atIndexPath:indexPath];
 }
 
-- (void)passcodeViewControllerDidDismissWithSuccess:(BOOL )success {
+- (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
 	if (!success) {
+		A3AppDelegate *appDelegate = [A3AppDelegate instance];
+		[appDelegate addSecurityCoverView];
 		[self callPrepareCloseOnActiveMainAppViewController];
-		[self openClockApp];
 		
- 		double delayInSeconds = 0.3;
+		if (appDelegate.currentMainNavigationController.presentedViewController) {
+			[appDelegate.currentMainNavigationController dismissViewControllerAnimated:NO completion:nil];
+		}
+		if (IS_IPHONE) {
+			[appDelegate.drawerController openDrawerSide:MMDrawerSideLeft animated:NO completion:nil];
+			UIViewController *appViewController = appDelegate.currentMainNavigationController.viewControllers[1];
+			[appDelegate.currentMainNavigationController popViewControllerAnimated:NO];
+			[appViewController appsButtonAction:nil];
+		} else {
+			[self openClockApp];
+			[appDelegate.rootViewController_iPad setShowLeftView:YES];
+		}
+		double delayInSeconds = 0.3;
 		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-			A3AppDelegate *appDelegate = [A3AppDelegate instance];
-			if (IS_IPHONE) {
-				[appDelegate.drawerController openDrawerSide:MMDrawerSideLeft animated:NO completion:nil];
-			} else {
-				[appDelegate.rootViewController_iPad setShowLeftView:NO];
-			}
+			[appDelegate removeSecurityCoverView];
 		});
-
 	} else {
 		if (IS_IPHONE && [[A3AppDelegate instance] isMainMenuStyleList]) {
 			[[A3AppDelegate instance].drawerController closeDrawerAnimated:NO completion:^(BOOL finished) {

@@ -136,8 +136,10 @@ NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
 	[appDelegate popStartingAppInfo];
 	navigationController = appDelegate.currentMainNavigationController;
 
-	if (IS_IPHONE) {
-		[appDelegate.drawerController closeDrawerAnimated:YES completion:nil];
+	if (IS_IPHONE) {// TODO: mainmenu가 리스트가 아닌경우 처리
+		if ([appDelegate isMainMenuStyleList]) {
+			[appDelegate.drawerController closeDrawerAnimated:YES completion:nil];
+		}
 	} else {
 		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController_iPad];
 		[rootViewController dismissRightSideViewController];

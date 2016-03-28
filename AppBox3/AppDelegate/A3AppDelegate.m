@@ -83,6 +83,8 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 	BOOL _appIsNotActiveYet;
 	BOOL _backgroundDownloadIsInProgress;
 	BOOL _needShowAlertV3_8NewFeature;
+	BOOL _statusBarHiddenBeforeAdsAppear;
+	UIStatusBarStyle _statusBarStyleBeforeAdsAppear;
 }
 
 @synthesize window = _window;
@@ -1348,7 +1350,14 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 }
 
 - (void)interstitialWillPresentScreen:(GADInterstitial *)ad {
-	[[UIApplication sharedApplication] setStatusBarHidden:YES];
+	_statusBarHiddenBeforeAdsAppear = [[UIApplication sharedApplication] isStatusBarHidden];
+	_statusBarStyleBeforeAdsAppear = [[UIApplication sharedApplication] statusBarStyle];
+	
+	double delayInSeconds = 0.3;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		[[UIApplication sharedApplication] setStatusBarHidden:YES];
+	});
 
 	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3AdsDisplayTime];
 	[[NSUserDefaults standardUserDefaults] setInteger:0 forKey:A3NumberOfTimesOpeningSubApp];
@@ -1356,8 +1365,8 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 }
 
 - (void)interstitialWillDismissScreen:(GADInterstitial *)ad {
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+	[[UIApplication sharedApplication] setStatusBarHidden:_statusBarHiddenBeforeAdsAppear];
+	[[UIApplication sharedApplication] setStatusBarStyle:_statusBarStyleBeforeAdsAppear];
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationsAdsWillDismissScreen object:nil];
 }

@@ -32,5 +32,6 @@
 - (void)startRestorePurchase;
 - (BOOL)isMainMenuStyleList;
 - (void)updateRecentlyUsedAppsWithAppName:(NSString *)appName;
+- (BOOL)securitySettingIsOnForAppNamed:(NSString *)appName;
 
 @end

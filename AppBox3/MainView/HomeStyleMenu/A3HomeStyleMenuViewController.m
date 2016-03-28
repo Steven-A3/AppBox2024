@@ -218,7 +218,11 @@
 		}
 	} else {
 		A3AppDelegate *appDelegate = [A3AppDelegate instance];
+		[appDelegate addSecurityCoverView];
 		UINavigationController *mainNavigationController = appDelegate.currentMainNavigationController;
+		if (mainNavigationController.presentedViewController) {
+			[mainNavigationController dismissViewControllerAnimated:NO completion:nil];
+		}
 		if ([mainNavigationController.viewControllers count] > 1) {
 			UIViewController *appViewController = appDelegate.currentMainNavigationController.viewControllers[1];
 			[mainNavigationController popViewControllerAnimated:NO];
@@ -231,6 +235,8 @@
 			UIImage *image = [UIImage new];
 			[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
 			[self.navigationController.navigationBar setShadowImage:image];
+			[self.navigationController setToolbarHidden:YES];
+			[appDelegate removeSecurityCoverView];
 		});
 	}
 	_selectedAppName = nil;

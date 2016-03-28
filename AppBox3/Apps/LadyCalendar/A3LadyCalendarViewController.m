@@ -188,23 +188,7 @@ A3CalendarViewDelegate>
 		[self setupNavigationTitle];
 		[self.collectionView reloadData];
 		
-		NSDate *currentWatchingDate = [self.dataManager currentAccount].watchingDate;
-		if (!currentWatchingDate) {
-			LadyCalendarPeriod *lastPeriod = [[_dataManager periodListSortedByStartDateIsAscending:YES] lastObject];
-			if (!lastPeriod) {
-				currentWatchingDate = [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]];
-			}
-			else {
-				currentWatchingDate = [A3DateHelper dateMakeMonthFirstDayAtDate:[lastPeriod startDate]];
-			}
-		}
-		
-		_currentMonth = currentWatchingDate;
-		
-		[self.dataManager setWatchingDateForCurrentAccount:currentWatchingDate];
-		
-		[self moveToCurrentWatchingDate];
-		[self updateCurrentMonthLabel];
+		[self reloadWatchingDateAndMove];
 	});
 }
 
@@ -239,6 +223,34 @@ A3CalendarViewDelegate>
 		[self showCalendarHeaderView];
 	}
 	[self setupInstructionView];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		if (_isBeingClose) return;
+		
+		[self setupNavigationTitle];
+		[self.collectionView reloadData];
+		
+		[self reloadWatchingDateAndMove];
+	});
+}
+
+- (void)reloadWatchingDateAndMove {
+	NSDate *currentWatchingDate = [self.dataManager currentAccount].watchingDate;
+	if (!currentWatchingDate) {
+		LadyCalendarPeriod *lastPeriod = [[_dataManager periodListSortedByStartDateIsAscending:YES] lastObject];
+		if (!lastPeriod) {
+			currentWatchingDate = [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]];
+		}
+		else {
+			currentWatchingDate = [A3DateHelper dateMakeMonthFirstDayAtDate:[lastPeriod startDate]];
+		}
+	}
+	
+	_currentMonth = currentWatchingDate;
+	
+	[self.dataManager setWatchingDateForCurrentAccount:currentWatchingDate];
+	
+	[self moveToCurrentWatchingDate];
+	[self updateCurrentMonthLabel];
 }
 
 - (void)removeObserver {

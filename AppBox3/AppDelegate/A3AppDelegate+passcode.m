@@ -22,6 +22,8 @@
 #import "A3UserDefaults.h"
 #import "A3MainMenuTableViewController.h"
 #import "A3HomeStyleMenuViewController.h"
+#import "A3SettingsPasscodeViewController.h"
+#import "A3SettingsRequireForViewController.h"
 
 @implementation A3AppDelegate (passcode)
 
@@ -104,7 +106,11 @@
 	if (![self didPasscodeTimerEnd]) {
 		return;
 	}
-	if (self.passcodeViewController || self.isTouchIDEvaluationInProgress) return;
+	if (self.passcodeViewController) {
+		[self removeSecurityCoverView];
+		return;
+	}
+	if (self.isTouchIDEvaluationInProgress) return;
 
 	if (delegate != self) {
 		self.otherPasscodeDelegate = delegate;
@@ -113,8 +119,9 @@
 
 	void(^presentPasscodeViewControllerBlock)(BOOL showCancelButton) = ^(BOOL showCancelButton){
 		self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
+		
 		if (showCancelButton) {
-			UIViewController *passcodeParentViewController = [self.navigationController topViewController];
+			UIViewController *passcodeParentViewController = [self.navigationController visibleViewController];
 			NSString *className = NSStringFromClass([passcodeParentViewController class]);
 			if ([className isEqualToString:@"GADInterstitialViewController"]) {
 				passcodeParentViewController = [self.currentMainNavigationController topViewController];
@@ -310,9 +317,7 @@
 }
 
 - (void)addSecurityCoverView {
-	// 암호 대화 상자가 열려 있다면 커버를 추가하지 않는다.
-	if (self.passcodeViewController || self.isTouchIDEvaluationInProgress) return;
-
+	FNLOG(@"Cover ADDED!");
 	if (self.coverView.superview) {
 		[self.coverView removeFromSuperview];
 		self.coverView = nil;
@@ -391,9 +396,9 @@
  *  @param success 암호 확인이 성공했는지 여부를 알려준다.
  */
 - (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
-	[self removeSecurityCoverView];
-	
 	if (self.otherPasscodeDelegate) {
+		[self removeSecurityCoverView];
+		
 		id <A3PasscodeViewControllerDelegate> o = self.otherPasscodeDelegate;
 		if ([o respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
 			[o passcodeViewControllerDidDismissWithSuccess:success];
@@ -404,6 +409,8 @@
 	[self updateStartOption];
 
 	if (self.startOptionOpenClockOnce) {
+		[self removeSecurityCoverView];
+		
 		if ([self isMainMenuStyleList]) {
 			[self.mainMenuViewController openClockApp];
 		} else {
@@ -416,36 +423,47 @@
 	}
 
 	if (!success) {
+		[self addSecurityCoverView];
+		
+		if (self.currentMainNavigationController.presentedViewController) {
+			[self.currentMainNavigationController dismissViewControllerAnimated:NO completion:nil];
+		}
 		if ([self isMainMenuStyleList]) {
-			[self.mainMenuViewController openClockApp];
-			double delayInSeconds = 0.3;
-			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-				if (IS_IPHONE) {
-					[self.drawerController openDrawerSide:MMDrawerSideLeft animated:NO completion:nil];
-				} else {
-					[self.rootViewController_iPad setShowLeftView:NO];
+			if (IS_IPHONE) {
+				[self.drawerController openDrawerSide:MMDrawerSideLeft animated:NO completion:nil];
+				if ([self.currentMainNavigationController.viewControllers count] > 1) {
+					UIViewController *appViewController = self.currentMainNavigationController.viewControllers[1];
+					[self.currentMainNavigationController popViewControllerAnimated:NO];
+					[appViewController appsButtonAction:nil];
 				}
-			});
-
+			} else {
+				[self.mainMenuViewController openClockApp];
+				[self.rootViewController_iPad setShowLeftView:YES];
+			}
+			[self removeSecurityCoverView];
 		} else {
 			if ([self.currentMainNavigationController.viewControllers count] > 1) {
 				UIViewController *appViewController = self.currentMainNavigationController.viewControllers[1];
 				[self.currentMainNavigationController popViewControllerAnimated:NO];
 				[appViewController appsButtonAction:nil];
-				
-				double delayInSeconds = 0.1;
+
+				double delayInSeconds = 0.3;
 				dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 				dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 					[self.currentMainNavigationController setNavigationBarHidden:YES];
 					UIImage *image = [UIImage new];
 					[self.currentMainNavigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
 					[self.currentMainNavigationController.navigationBar setShadowImage:image];
+					[self.currentMainNavigationController setToolbarHidden:YES];
+					[self removeSecurityCoverView];
 				});
 			}
 		}
 		return;
 	}
+
+	[self removeSecurityCoverView];
+	
 	// 이곳은 확인 후 성공/실패시 처리를 하는 곳
 	// 선택된 app이 없다면, 커버 만 제거하면 된다.
 	// 리스트 방식인 경우에는 현재 Active 앱이 없는 경우, Clock을 실행한다.
@@ -457,23 +475,28 @@
 		} else {
 			if (![self.mainMenuViewController openRecentlyUsedMenu:NO]) {
 				[self.mainMenuViewController openClockApp];
+			} else {
+				[self.currentMainNavigationController.topViewController viewWillAppear:YES];
+				[self.currentMainNavigationController.topViewController viewDidAppear:YES];
 			}
 		}
 	} else {
 		NSString *selectedAppName = self.homeStyleMainMenuViewController.selectedAppName;
 		if ([selectedAppName length]) {
 			if (![self.homeStyleMainMenuViewController.activeAppName isEqualToString:selectedAppName]) {
-				[self launchAppNamed:selectedAppName verifyPasscode:NO delegate:nil animated:YES];
+				[self launchAppNamed:selectedAppName verifyPasscode:NO delegate:nil animated:NO];
 				self.homeStyleMainMenuViewController.activeAppName = [selectedAppName copy];
 				self.homeStyleMainMenuViewController.selectedAppName = nil;
 			} else {
-				[self.navigationController.topViewController viewDidAppear:NO];
+				[self.currentMainNavigationController.topViewController viewWillAppear:YES];
+				[self.currentMainNavigationController.topViewController viewDidAppear:YES];
 			}
+		} else {
+			[self.currentMainNavigationController.topViewController viewWillAppear:YES];
+			[self.currentMainNavigationController.topViewController viewDidAppear:YES];
 		}
 	}
-	if ([self.currentMainNavigationController.viewControllers count] > 1) {
-		[self.currentMainNavigationController.topViewController viewDidAppear:NO];
-	} else {
+	if ([self.currentMainNavigationController.viewControllers count] == 1) {
 		[self reloadRootViewController];
 	}
 	[self showReceivedLocalNotifications];
@@ -549,6 +572,14 @@
 
 - (BOOL)shouldAskPasscodeForSettings {
     if (![A3KeychainUtils getPassword]) return NO;
+	
+	// 암호가 설정되어 있고, 현재 암호 설정 화면에 들어와 있다면, 보호 되어야 한다.
+	id topViewController = self.currentMainNavigationController.topViewController;
+	if ([topViewController isMemberOfClass:[A3SettingsPasscodeViewController class]] ||
+		[topViewController isMemberOfClass:[A3SettingsRequireForViewController class]]) {
+		return YES;
+	}
+	
 	return [[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForSettings];
 }
 
