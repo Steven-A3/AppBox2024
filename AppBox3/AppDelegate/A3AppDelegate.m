@@ -338,13 +338,13 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 
 				BOOL shouldAskPassocodeForStarting = [self shouldAskPasscodeForStarting];
 				if (shouldAskPassocodeForStarting || [self requirePasscodeForStartingApp]) {
-					[self presentLockScreen:self showCancelButton:!shouldAskPassocodeForStarting];
+					[self presentLockScreenShowCancelButton:!shouldAskPassocodeForStarting];
 				} else {
 					[self removeSecurityCoverView];
 					if ([self isMainMenuStyleList]) {
 						[self.mainMenuViewController openRecentlyUsedMenu:YES];
 					} else {
-						[self launchAppNamed:startingAppName verifyPasscode:NO delegate:nil animated:NO];
+						[self launchAppNamed:startingAppName verifyPasscode:NO animated:NO];
 						[self updateRecentlyUsedAppsWithAppName:startingAppName];
 						self.homeStyleMainMenuViewController.activeAppName = [startingAppName copy];
 					}
@@ -1346,7 +1346,16 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 }
 
 - (void)interstitialDidReceiveAd:(GADInterstitial *)ad {
-	[_adInterstitial presentFromRootViewController:self.navigationController];
+	FNLOG(@"%@", self.passcodeViewController.view.superview);
+	if (self.passcodeViewController.view.superview) {
+		FNLOG(@"Cancel presenting Interstitial ads. Visible view controller is Passcode View controller.");
+		return;
+	}
+	UINavigationController *navigationController = self.currentMainNavigationController;
+	while ([navigationController.presentedViewController isKindOfClass:[UINavigationController class]]) {
+		navigationController = (id)navigationController.presentedViewController;
+	}
+	[_adInterstitial presentFromRootViewController:navigationController];
 }
 
 - (void)interstitialWillPresentScreen:(GADInterstitial *)ad {
@@ -1377,6 +1386,7 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 	}
 	FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 	if (self.adDisplayedAfterApplicationDidBecomeActive) {
+		FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 		return NO;
 	}
 	self.adDisplayedAfterApplicationDidBecomeActive = YES;

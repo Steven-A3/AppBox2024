@@ -728,7 +728,7 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 	return visualStateBlock;
 }
 
-- (BOOL)launchAppNamed:(NSString *)appName verifyPasscode:(BOOL)verifyPasscode delegate:(id <A3PasscodeViewControllerDelegate>)delegate animated:(BOOL)animated {
+- (BOOL)launchAppNamed:(NSString *)appName verifyPasscode:(BOOL)verifyPasscode animated:(BOOL)animated {
 	BOOL appLaunched = NO;
 	BOOL proceedPasscodeCheck = NO;
 
@@ -746,7 +746,7 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 		}
 	}
 	if (proceedPasscodeCheck) {
-		[self presentLockScreen:delegate showCancelButton:YES];
+		[self presentLockScreenShowCancelButton:YES];
 	} else {
 		UIViewController *targetViewController= [self getViewControllerForAppNamed:appName];
 		[targetViewController callPrepareCloseOnActiveMainAppViewController];

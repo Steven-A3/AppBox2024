@@ -17,7 +17,7 @@
 - (void)setUseTouchID:(BOOL)use;
 - (BOOL)showLockScreen;
 
-- (void)presentLockScreen:(id <A3PasscodeViewControllerDelegate>)delegate showCancelButton:(BOOL)showCancelButton;
+- (void)presentLockScreenShowCancelButton:(BOOL)showCancelButton;
 - (BOOL)shouldProtectScreen;
 - (void)applicationDidEnterBackground_passcode;
 

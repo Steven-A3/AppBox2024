@@ -126,7 +126,7 @@ NSString *const A3UserDefaultsDidShowLeftViewOnceiPad = @"A3UserDefaultsDidShowL
 				if ([appDelegate isMainMenuStyleList]) {
 					[appDelegate.mainMenuViewController openClockApp];
 				} else {
-					[appDelegate launchAppNamed:A3AppName_Clock verifyPasscode:NO delegate:nil animated:NO];
+					[appDelegate launchAppNamed:A3AppName_Clock verifyPasscode:NO animated:NO];
 					[appDelegate updateRecentlyUsedAppsWithAppName:A3AppName_Clock];
 					appDelegate.homeStyleMainMenuViewController.activeAppName = [A3AppName_Clock copy];
 				}
@@ -153,7 +153,7 @@ NSString *const A3UserDefaultsDidShowLeftViewOnceiPad = @"A3UserDefaultsDidShowL
 					NSString *startingApp = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
 					[appDelegate popStartingAppInfo];
 					if ([startingApp length]) {
-						[appDelegate launchAppNamed:startingApp verifyPasscode:NO delegate:self animated:NO];
+						[appDelegate launchAppNamed:startingApp verifyPasscode:NO animated:NO];
 						appDelegate.homeStyleMainMenuViewController.activeAppName = [startingApp copy];
 					}
 				}

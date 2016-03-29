@@ -94,7 +94,7 @@
 
 	BOOL presentLockScreen = [self shouldProtectScreen];
 	if (presentLockScreen) {
-        [self presentLockScreen:self showCancelButton:![[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting]];
+		[self presentLockScreenShowCancelButton:![[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting]];
         return YES;
 	} else {
 		[self showReceivedLocalNotifications];
@@ -102,34 +102,38 @@
     return NO;
 }
 
-- (void)presentLockScreen:(id <A3PasscodeViewControllerDelegate>)delegate showCancelButton:(BOOL)showCancelButton {
+- (void)presentLockScreenShowCancelButton:(BOOL)showCancelButton {
 	if (![self didPasscodeTimerEnd]) {
 		return;
 	}
-	if (self.passcodeViewController) {
+	if (self.passcodeViewController.view.superview) {
 		[self removeSecurityCoverView];
 		return;
 	}
 	if (self.isTouchIDEvaluationInProgress) return;
 
-	if (delegate != self) {
-		self.otherPasscodeDelegate = delegate;
-	}
 	[self prepareStartappBeforeEvaluate];
 
 	void(^presentPasscodeViewControllerBlock)(BOOL showCancelButton) = ^(BOOL showCancelButton){
 		self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
 		
 		if (showCancelButton) {
-			UIViewController *passcodeParentViewController = [self.navigationController visibleViewController];
-			NSString *className = NSStringFromClass([passcodeParentViewController class]);
-			if ([className isEqualToString:@"GADInterstitialViewController"]) {
-				passcodeParentViewController = [self.currentMainNavigationController topViewController];
-				FNLOG(@"%@", passcodeParentViewController);
+			UINavigationController *navigationController = self.currentMainNavigationController;
+			while ([navigationController.presentedViewController isKindOfClass:[UINavigationController class]]) {
+				navigationController = (id)navigationController.presentedViewController;
 			}
-			self.parentOfPasscodeViewController = passcodeParentViewController;
-			[self.passcodeViewController showLockScreenInViewController:passcodeParentViewController];
-			self.pushClockViewControllerIfFailPasscode = YES;
+			UIViewController *passcodeParentViewController = navigationController;
+			if ([passcodeParentViewController isKindOfClass:[UINavigationController class]]) {
+				UIViewController *visibleViewController = ((UINavigationController *)passcodeParentViewController).visibleViewController;
+				NSString *className = NSStringFromClass([visibleViewController class]);
+				if ([className isEqualToString:@"GADInterstitialViewController"]) {
+					passcodeParentViewController = [((UINavigationController *)passcodeParentViewController) visibleViewController];
+					FNLOG(@"%@", passcodeParentViewController);
+				}
+				self.parentOfPasscodeViewController = passcodeParentViewController;
+				[self.passcodeViewController showLockScreenInViewController:passcodeParentViewController];
+			}
+			self.pushClockViewControllerIfFailPasscode = NO;
 		} else {
 			[self.passcodeViewController showLockScreenWithAnimation:NO showCacelButton:showCancelButton];
 		}
@@ -230,7 +234,6 @@
 		} else {
 			self.homeStyleMainMenuViewController.selectedAppName = [startingAppName copy];
 		}
-		self.otherPasscodeDelegate = nil;
 	}
 	[self popStartingAppInfo];
 }
@@ -259,7 +262,7 @@
 				if ([self isMainMenuStyleList]) {
 					[self.mainMenuViewController openClockApp];
 				} else {
-					[self launchAppNamed:A3AppName_Clock verifyPasscode:NO delegate:nil animated:NO];
+					[self launchAppNamed:A3AppName_Clock verifyPasscode:NO animated:NO];
 					[self updateRecentlyUsedAppsWithAppName:A3AppName_Clock];
 					self.homeStyleMainMenuViewController.activeAppName = [A3AppName_Clock copy];
 				}
@@ -268,14 +271,14 @@
 				NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
 				if ([startingAppName length]) {
 					if ([self didPasscodeTimerEnd] && [self requirePasscodeForStartingApp]) {
-						[self presentLockScreen:self showCancelButton:YES];
+						[self presentLockScreenShowCancelButton:YES];
 					} else {
 						[self popStartingAppInfo];
 						[self removeSecurityCoverView];
 						if ([self isMainMenuStyleList]) {
 							[self.mainMenuViewController openRecentlyUsedMenu:NO];
 						} else {
-							[self launchAppNamed:startingAppName verifyPasscode:NO delegate:nil animated:NO];
+							[self launchAppNamed:startingAppName verifyPasscode:NO animated:NO];
 							self.homeStyleMainMenuViewController.activeAppName = [startingAppName copy];
 						}
 					}
@@ -287,16 +290,21 @@
 								[self.mainMenuViewController openClockApp];
 							}
 						}
+					} else {
+						return;
 					}
 				}
 			}
 		}
 	}
 	dispatch_async(dispatch_get_main_queue(), ^{
-		if (!self.isTouchIDEvaluationInProgress && self.passcodeViewController == nil && self.mainMenuViewController.passcodeViewController == nil) {
+		if (!self.isTouchIDEvaluationInProgress && !self.passcodeViewController.view.superview) {
 			[self removeSecurityCoverView];
 			[self presentInterstitialAds];
 			FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+		} else {
+			FNLOG(@"isTouchIDEvaluationInProgress = %ld", (long)self.isTouchIDEvaluationInProgress);
+			FNLOG(@"%@", self.parentOfPasscodeViewController);
 		}
 	});
 }
@@ -396,16 +404,6 @@
  *  @param success 암호 확인이 성공했는지 여부를 알려준다.
  */
 - (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
-	if (self.otherPasscodeDelegate) {
-		[self removeSecurityCoverView];
-		
-		id <A3PasscodeViewControllerDelegate> o = self.otherPasscodeDelegate;
-		if ([o respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
-			[o passcodeViewControllerDidDismissWithSuccess:success];
-		}
-		return;
-	}
-
 	[self updateStartOption];
 
 	if (self.startOptionOpenClockOnce) {
@@ -414,7 +412,7 @@
 		if ([self isMainMenuStyleList]) {
 			[self.mainMenuViewController openClockApp];
 		} else {
-			[self launchAppNamed:A3AppName_Clock verifyPasscode:NO delegate:nil animated:NO];
+			[self launchAppNamed:A3AppName_Clock verifyPasscode:NO animated:NO];
 			[self updateRecentlyUsedAppsWithAppName:A3AppName_Clock];
 			self.homeStyleMainMenuViewController.activeAppName = [A3AppName_Clock copy];
 		}
@@ -437,7 +435,7 @@
 				[self.drawerController openDrawerSide:MMDrawerSideLeft animated:NO completion:nil];
 				if ([self.currentMainNavigationController.viewControllers count] > 1) {
 					UIViewController *appViewController = self.currentMainNavigationController.viewControllers[1];
-					[self.currentMainNavigationController popViewControllerAnimated:NO];
+					[self.currentMainNavigationController popToRootViewControllerAnimated:NO];
 					[appViewController appsButtonAction:nil];
 				}
 			} else {
@@ -448,29 +446,27 @@
 		} else {
 			if ([self.currentMainNavigationController.viewControllers count] > 1) {
 				UIViewController *appViewController = self.currentMainNavigationController.viewControllers[1];
-				[self.currentMainNavigationController popViewControllerAnimated:NO];
+				if (IS_IPAD) {
+					[self.rootViewController_iPad dismissRightSideViewController];
+				}
+				[self.currentMainNavigationController popToRootViewControllerAnimated:NO];
 				[appViewController appsButtonAction:nil];
-
-				double delayInSeconds = 0.3;
-				dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-				dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-					[self.currentMainNavigationController setNavigationBarHidden:YES];
-					UIImage *image = [UIImage new];
-					[self.currentMainNavigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
-					[self.currentMainNavigationController.navigationBar setShadowImage:image];
-					[self.currentMainNavigationController setToolbarHidden:YES];
-					[self removeSecurityCoverView];
-				});
 			}
+			double delayInSeconds = 0.3;
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				[self.currentMainNavigationController setNavigationBarHidden:YES];
+				UIImage *image = [UIImage new];
+				[self.currentMainNavigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+				[self.currentMainNavigationController.navigationBar setShadowImage:image];
+				[self.currentMainNavigationController setToolbarHidden:YES];
+				[self removeSecurityCoverView];
+			});
 		}
 		return;
 	}
 
 	[self removeSecurityCoverView];
-	
-	// 이곳은 확인 후 성공/실패시 처리를 하는 곳
-	// 선택된 app이 없다면, 커버 만 제거하면 된다.
-	// 리스트 방식인 경우에는 현재 Active 앱이 없는 경우, Clock을 실행한다.
 
 	if ([self isMainMenuStyleList]) {
 		if ([self.mainMenuViewController.selectedAppName length]) {
@@ -488,7 +484,7 @@
 		NSString *selectedAppName = self.homeStyleMainMenuViewController.selectedAppName;
 		if ([selectedAppName length]) {
 			if (![self.homeStyleMainMenuViewController.activeAppName isEqualToString:selectedAppName]) {
-				[self launchAppNamed:selectedAppName verifyPasscode:NO delegate:nil animated:NO];
+				[self launchAppNamed:selectedAppName verifyPasscode:NO animated:NO];
 				self.homeStyleMainMenuViewController.activeAppName = [selectedAppName copy];
 				self.homeStyleMainMenuViewController.selectedAppName = nil;
 			} else {
@@ -500,6 +496,17 @@
 			[self.currentMainNavigationController.topViewController viewDidAppear:YES];
 		}
 	}
+	// 전체광고가 떠 있는 상황에서 앱이 닫혔다가 다시 들어온 경우, StatusBar를 숨겨주어야 합니다.
+	UINavigationController *navigationController = self.currentMainNavigationController;
+	while ([navigationController.presentedViewController isKindOfClass:[UINavigationController class]]) {
+		navigationController = (id)navigationController.presentedViewController;
+	}
+	UIViewController *visibleViewController = navigationController.visibleViewController;
+	NSString *className = NSStringFromClass([visibleViewController class]);
+	if ([className isEqualToString:@"GADInterstitialViewController"]) {
+		[[UIApplication sharedApplication] setStatusBarHidden:YES];
+	}
+	
 	if ([self.currentMainNavigationController.viewControllers count] == 1) {
 		[self reloadRootViewController];
 	}
@@ -510,11 +517,6 @@
 - (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {
 	FNLOG();
 	self.passcodeViewController = nil;
-	id <A3PasscodeViewControllerDelegate> otherPasscodeDelegate = self.otherPasscodeDelegate;
-	if (otherPasscodeDelegate && [otherPasscodeDelegate respondsToSelector:@selector(passcodeViewDidDisappearWithSuccess:)]) {
-		[otherPasscodeDelegate passcodeViewDidDisappearWithSuccess:success];
-	}
-	self.otherPasscodeDelegate = nil;
 }
 
 - (BOOL)requirePasscodeForStartingApp {
