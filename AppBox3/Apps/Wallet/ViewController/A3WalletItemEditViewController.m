@@ -85,6 +85,8 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 @property (nonatomic, weak) UIDatePicker *datePicker;
 @property (nonatomic, weak) UITextField *titleTextField;
 @property (nonatomic, copy) NSString *originalCategoryUniqueID;
+@property (nonatomic, strong) UIActionSheet *actionSheet;
+@property (nonatomic, strong) UIAlertController *alertController;
 
 @end
 
@@ -152,10 +154,31 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
+}
+
+- (void)applicationWillResignActive {
+	if (_actionSheet) {
+		[_actionSheet dismissWithClickedButtonIndex:_actionSheet.cancelButtonIndex animated:NO];
+		_actionSheet = nil;
+	}
+	if (_imagePickerController) {
+		[self dismissViewControllerAnimated:NO completion:nil];
+		_imagePickerController = nil;
+	}
+	if (!IS_IOS7 && _alertController) {
+		[self dismissViewControllerAnimated:NO completion:nil];
+		_alertController = nil;
+	}
+	if (_popOverController) {
+		[_popOverController dismissPopoverAnimated:NO];
+		_popOverController = nil;
+	}
 }
 
 - (void)removeObserver {
 	[self removeContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
@@ -774,12 +797,12 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     fromRect.size = CGSizeZero;
 
 	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-		UIActionSheet *actionSheet = deleteEnable ? [[UIActionSheet alloc] initWithTitle:nil
-																				delegate:self
-																	   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-																  destructiveButtonTitle:NSLocalizedString(@"Delete Video", nil)
-																	   otherButtonTitles:NSLocalizedString(@"Take Video", nil),
-																						 NSLocalizedString(@"Choose Existing", nil), nil] :
+		_actionSheet = deleteEnable ? [[UIActionSheet alloc] initWithTitle:nil
+																  delegate:self
+														 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+													destructiveButtonTitle:NSLocalizedString(@"Delete Video", nil)
+														 otherButtonTitles:NSLocalizedString(@"Take Video", nil),
+																		   NSLocalizedString(@"Choose Existing", nil), nil] :
 				[[UIActionSheet alloc] initWithTitle:nil
 											delegate:self
 								   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
@@ -787,85 +810,91 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 								   otherButtonTitles:NSLocalizedString(@"Take Video", nil),
 													 NSLocalizedString(@"Choose Existing", nil),
 													 nil];
-		actionSheet.tag = ActionTag_PhotoLibraryEdit;
+		_actionSheet.tag = ActionTag_PhotoLibraryEdit;
 
 		if ([cell isKindOfClass:[A3WalletItemRightIconCell class]]) {
-			[actionSheet showFromRect:[((A3WalletItemRightIconCell *)cell).iconImgView bounds] inView:[(A3WalletItemRightIconCell *)cell iconImgView] animated:YES];
+			[_actionSheet showFromRect:[((A3WalletItemRightIconCell *) cell).iconImgView bounds] inView:[(A3WalletItemRightIconCell *) cell iconImgView] animated:YES];
 		}
 		else if ([cell isKindOfClass:[A3WalletItemPhotoFieldCell class]]) {
-			[actionSheet showFromRect:[((A3WalletItemPhotoFieldCell *)cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *)cell photoButton] animated:YES];
+			[_actionSheet showFromRect:[((A3WalletItemPhotoFieldCell *) cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *) cell photoButton] animated:YES];
 		}
 	}
     else {
 		if (deleteEnable) {
-#ifdef __IPHONE_8_0
+#ifdef __IPHONE_8_0_X
             if (!IS_IOS7) {
-                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-                [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:NULL]];
-                [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Video", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-                    [self deleteMediaItem];
-                }]];
-                [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Choose Existing", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                    [self imagePickerActionForButtonIndex:2 destructiveButtonIndex:1 actionSheetTag:2];
-                }]];
+                _alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+                [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+					_alertController = nil;
+				}]];
+                [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Video", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+					[self deleteMediaItem];
+					_alertController = nil;
+				}]];
+                [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Choose Existing", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+					[self imagePickerActionForButtonIndex:2 destructiveButtonIndex:1 actionSheetTag:2];
+					_alertController = nil;
+				}]];
                 
-                UIPopoverPresentationController *popover = alertController.popoverPresentationController;
+                UIPopoverPresentationController *popover = _alertController.popoverPresentationController;
                 popover.sourceView = self.view;
                 popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
-                
-                [self presentViewController:alertController animated:YES completion:NULL];
+
+				[self presentViewController:_alertController animated:YES completion:NULL];
             }
             else
 #endif
             {
-                UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                         delegate:self
-                                                                cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                                                           destructiveButtonTitle:NSLocalizedString(@"Delete Video", nil)
-                                                                otherButtonTitles:
-                                              NSLocalizedString(@"Choose Existing", nil),
-                                              nil];
-                actionSheet.tag = ActionTag_PhotoLibraryEdit;
+				_actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+														   delegate:self
+												  cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+											 destructiveButtonTitle:NSLocalizedString(@"Delete Video", nil)
+												  otherButtonTitles:
+														  NSLocalizedString(@"Choose Existing", nil),
+														  nil];
+
+                _actionSheet.tag = ActionTag_PhotoLibraryEdit;
                 if ([cell isKindOfClass:[A3WalletItemRightIconCell class]]) {
-                    [actionSheet showFromRect:[((A3WalletItemRightIconCell *)cell).iconImgView bounds] inView:[(A3WalletItemRightIconCell *)cell iconImgView] animated:YES];
+                    [_actionSheet showFromRect:[((A3WalletItemRightIconCell *) cell).iconImgView bounds] inView:[(A3WalletItemRightIconCell *) cell iconImgView] animated:YES];
                 }
                 else if ([cell isKindOfClass:[A3WalletItemPhotoFieldCell class]]) {
-                    [actionSheet showFromRect:[((A3WalletItemPhotoFieldCell *)cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *)cell photoButton] animated:YES];
+                    [_actionSheet showFromRect:[((A3WalletItemPhotoFieldCell *) cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *) cell photoButton] animated:YES];
                 }
             }
         }
         else {
-#ifdef __IPHONE_8_0
+#ifdef __IPHONE_8_0_X
             if (!IS_IOS7 && IS_IPAD) {
-                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-                [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:NULL]];
-                [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Choose Existing", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                    [self imagePickerActionForButtonIndex:1 destructiveButtonIndex:-1 actionSheetTag:2];
-                }]];
+                _alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+                [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+					_alertController = nil;
+				}]];
+                [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Choose Existing", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+					[self imagePickerActionForButtonIndex:1 destructiveButtonIndex:-1 actionSheetTag:2];
+					_alertController = nil;
+				}]];
                 
-                UIPopoverPresentationController *popover = alertController.popoverPresentationController;
+                UIPopoverPresentationController *popover = _alertController.popoverPresentationController;
                 popover.sourceView = self.view;
                 popover.sourceRect = fromRect;
                 popover.permittedArrowDirections = UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown;
-                
-                [self presentViewController:alertController animated:YES completion:NULL];
+
+				[self presentViewController:_alertController animated:YES completion:NULL];
             }
             else
 #endif
             {
-                UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                         delegate:self
-                                                                cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                                                           destructiveButtonTitle:nil
-                                                                otherButtonTitles:
-                                              NSLocalizedString(@"Choose Existing", nil),
-                                              nil];
-                actionSheet.tag = ActionTag_PhotoLibraryEdit;
+				_actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+														   delegate:self
+												  cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+											 destructiveButtonTitle:nil
+												  otherButtonTitles:NSLocalizedString(@"Choose Existing", nil), nil];
+                _actionSheet.tag = ActionTag_PhotoLibraryEdit;
                 if ([cell isKindOfClass:[A3WalletItemRightIconCell class]]) {
-                    [actionSheet showFromRect:[((A3WalletItemRightIconCell *)cell).iconImgView bounds] inView:[(A3WalletItemRightIconCell *)cell iconImgView] animated:YES];
+                    [_actionSheet showFromRect:[((A3WalletItemRightIconCell *) cell).iconImgView bounds] inView:[(A3WalletItemRightIconCell *) cell iconImgView] animated:YES];
                 }
                 else if ([cell isKindOfClass:[A3WalletItemPhotoFieldCell class]]) {
-                    [actionSheet showFromRect:[((A3WalletItemPhotoFieldCell *)cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *)cell photoButton] animated:YES];
+                    [_actionSheet showFromRect:[((A3WalletItemPhotoFieldCell *) cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *) cell photoButton] animated:YES];
                 }
             }
         }
@@ -1053,7 +1082,8 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 		self.popOverController = nil;
 	}
 	else {
-		[picker dismissViewControllerAnimated:YES completion:NULL];
+		[self dismissViewControllerAnimated:YES completion:NULL];
+		_imagePickerController = nil;
 	}
     
 	WalletFieldItem *fieldItem = [WalletFieldItem MR_createEntity];
@@ -1247,7 +1277,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 			}
 		}
 		else {
-#ifdef __IPHONE_8_0
+#ifdef __IPHONE_8_0_X
 			if (!IS_IOS7) {
 				_imagePickerController.modalPresentationStyle = UIModalPresentationPopover;
 
@@ -1290,6 +1320,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
+	_actionSheet = nil;
     [self setFirstActionSheet:nil];
     
     if (buttonIndex == actionSheet.cancelButtonIndex) {
@@ -1344,36 +1375,36 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 
 - (void)showDeleteItemActionSheet
 {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                             delegate:self
-                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                               destructiveButtonTitle:NSLocalizedString(@"Delete Item", @"Delete Item")
-                                                    otherButtonTitles:nil];
-    actionSheet.tag = ActionTag_DeleteItem;
-    [actionSheet showInView:self.view];
-    [self setFirstActionSheet:actionSheet];
+	_actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+											   delegate:self
+									  cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+								 destructiveButtonTitle:NSLocalizedString(@"Delete Item", @"Delete Item")
+									  otherButtonTitles:nil];
+    _actionSheet.tag = ActionTag_DeleteItem;
+    [_actionSheet showInView:self.view];
+	[self setFirstActionSheet:_actionSheet];
 }
 
 - (void)showDeleteImageActionSheet {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-															 delegate:self
-													cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-											   destructiveButtonTitle:NSLocalizedString(@"Delete Photo", nil)
-													otherButtonTitles:nil];
-	actionSheet.tag = ActionTag_DeleteImage;
-	[actionSheet showInView:self.view];
-    [self setFirstActionSheet:actionSheet];
+	_actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+											   delegate:self
+									  cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+								 destructiveButtonTitle:NSLocalizedString(@"Delete Photo", nil)
+									  otherButtonTitles:nil];
+	_actionSheet.tag = ActionTag_DeleteImage;
+	[_actionSheet showInView:self.view];
+	[self setFirstActionSheet:_actionSheet];
 }
 
 - (void)showDeleteVideoActionSheet {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-															 delegate:self
-													cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-											   destructiveButtonTitle:NSLocalizedString(@"Delete Video", nil)
-													otherButtonTitles:nil];
-	actionSheet.tag = ActionTag_DeleteVideo;
-	[actionSheet showInView:self.view];
-    [self setFirstActionSheet:actionSheet];
+	_actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+											   delegate:self
+									  cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+								 destructiveButtonTitle:NSLocalizedString(@"Delete Video", nil)
+									  otherButtonTitles:nil];
+	_actionSheet.tag = ActionTag_DeleteVideo;
+	[_actionSheet showInView:self.view];
+	[self setFirstActionSheet:_actionSheet];
 }
 
 #pragma mark - CategorySelect delegate
@@ -1632,65 +1663,71 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
                     [self.tableView reloadRowsAtIndexPaths:@[self.currentIndexPath] withRowAnimation:UITableViewRowAnimationNone];
                 }
                 
-#ifdef __IPHONE_8_0
+#ifdef __IPHONE_8_0_X
                 if (!IS_IOS7 && IS_IPAD) {
-                    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+                    _alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
                     
                     NSInteger hasDestructive = [_currentFieldItem.hasImage boolValue] ? 0 : -1;
                     BOOL hasCamera = [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
                     if ([_currentFieldItem.hasImage boolValue]) {
-                        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Photo", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-                            [self deleteMediaItem];
-                        }]];
+                        [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Photo", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+							[self deleteMediaItem];
+							_alertController = nil;
+						}]];
                     }
                     
                     if (hasCamera) {
-                        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Take Photo", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                            [self imagePickerActionForButtonIndex:hasDestructive == 0 ? 1 : 0 destructiveButtonIndex:hasDestructive actionSheetTag:1];
-                        }]];
+                        [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Take Photo", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+							[self imagePickerActionForButtonIndex:hasDestructive == 0 ? 1 : 0 destructiveButtonIndex:hasDestructive actionSheetTag:1];
+							_alertController = nil;
+						}]];
                     }
                     
-                    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Choose Existing", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                        NSInteger index = 0;
-                        if (hasCamera) {
-                            index++;
-                        }
-                        if (hasDestructive == 0) {
-                            index++;
-                        }
-                        [self imagePickerActionForButtonIndex:index destructiveButtonIndex:hasDestructive actionSheetTag:1];
-                    }]];
-                    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Choose and Resize", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                        NSInteger index = 1;
-                        if (hasCamera) {
-                            index++;
-                        }
-                        if (hasDestructive == 0) {
-                            index++;
-                        }
-                        [self imagePickerActionForButtonIndex:index destructiveButtonIndex:hasDestructive actionSheetTag:1];
-                    }]];
-                    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:NULL]];
+                    [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Choose Existing", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+						NSInteger index = 0;
+						if (hasCamera) {
+							index++;
+						}
+						if (hasDestructive == 0) {
+							index++;
+						}
+						[self imagePickerActionForButtonIndex:index destructiveButtonIndex:hasDestructive actionSheetTag:1];
+						_alertController = nil;
+					}]];
+                    [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Choose and Resize", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+						NSInteger index = 1;
+						if (hasCamera) {
+							index++;
+						}
+						if (hasDestructive == 0) {
+							index++;
+						}
+						[self imagePickerActionForButtonIndex:index destructiveButtonIndex:hasDestructive actionSheetTag:1];
+						_alertController = nil;
+					}]];
+                    [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+						_alertController = nil;
+					}]];
                     
-                    alertController.modalPresentationStyle = UIModalPresentationPopover;
-                    UIPopoverPresentationController *popoverPresentation = [alertController popoverPresentationController];
+                    _alertController.modalPresentationStyle = UIModalPresentationPopover;
+                    UIPopoverPresentationController *popoverPresentation = [_alertController popoverPresentationController];
                     popoverPresentation.permittedArrowDirections = UIPopoverArrowDirectionAny;
                     popoverPresentation.sourceView = [self imageViewInCellForIndexPath:indexPath];
-                    
-                    [self presentViewController:alertController animated:YES completion:NULL];
+
+					[self presentViewController:_alertController animated:YES completion:NULL];
                 }
                 else
 #endif
                 {
                     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-                    UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:[_currentFieldItem.hasImage boolValue] delegate:self];
-                    actionSheet.tag = ActionTag_ImagePickerMenu;
+                    _actionSheet = [self actionSheetAskingImagePickupWithDelete:[_currentFieldItem.hasImage boolValue] delegate:self];
+                    _actionSheet.tag = ActionTag_ImagePickerMenu;
                     
                     if ([cell isKindOfClass:[A3WalletItemRightIconCell class]]) {
-                        [actionSheet showFromRect:[((A3WalletItemRightIconCell *)cell).iconImgView bounds] inView:[(A3WalletItemRightIconCell *)cell iconImgView] animated:YES];
+                        [_actionSheet showFromRect:[((A3WalletItemRightIconCell *) cell).iconImgView bounds] inView:[(A3WalletItemRightIconCell *) cell iconImgView] animated:YES];
                     }
                     else if ([cell isKindOfClass:[A3WalletItemPhotoFieldCell class]]) {
-                        [actionSheet showFromRect:[((A3WalletItemPhotoFieldCell *)cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *)cell photoButton] animated:YES];
+                        [_actionSheet showFromRect:[((A3WalletItemPhotoFieldCell *) cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *) cell photoButton] animated:YES];
                     }
                 }
             }
@@ -1713,17 +1750,20 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 		[self.firstResponder resignFirstResponder];
         
         // delete category
-#ifdef __IPHONE_8_0
+#ifdef __IPHONE_8_0_X
         if (!IS_IOS7 && IS_IPAD) {
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet
+            _alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet
                                                   ];
-            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:NULL]];
-            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Item", @"Delete Item") style:UIAlertActionStyleDestructive     handler:^(UIAlertAction *action) {
-                [self deleteItemByActionSheet];
-            }]];
+            [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+				_alertController = nil;
+			}]];
+            [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Item", @"Delete Item") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+				[self deleteItemByActionSheet];
+				_alertController = nil;
+			}]];
             
-            alertController.modalPresentationStyle = UIModalPresentationPopover;
-            UIPopoverPresentationController *popoverPresentation = [alertController popoverPresentationController];
+            _alertController.modalPresentationStyle = UIModalPresentationPopover;
+            UIPopoverPresentationController *popoverPresentation = [_alertController popoverPresentationController];
             popoverPresentation.permittedArrowDirections = UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown;
             popoverPresentation.sourceView = self.view;
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -1731,8 +1771,8 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
             rect.origin.x = self.view.center.x;
             rect.size = CGSizeZero;
             popoverPresentation.sourceRect = rect;
-            
-            [self presentViewController:alertController animated:YES completion:NULL];
+
+			[self presentViewController:_alertController animated:YES completion:NULL];
         }
         else
 #endif

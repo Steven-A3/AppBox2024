@@ -36,6 +36,7 @@
 #import "WalletField.h"
 #import "WalletCategory.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "MWPhotoBrowserPrivate.h"
 
 
 @interface A3WalletItemViewController () <UITextFieldDelegate, WalletItemEditDelegate, MWPhotoBrowserDelegate, MFMailComposeViewControllerDelegate, UITextViewDelegate, MFMessageComposeViewControllerDelegate>
@@ -47,6 +48,7 @@
 @property (nonatomic, strong) NSMutableArray *albumPhotos;
 @property (nonatomic, weak) id copyingSourceView;
 @property (nonatomic, strong) WalletCategory *category;
+@property (nonatomic, strong) MWPhotoBrowser *photoBrowser;
 
 @end
 
@@ -101,6 +103,13 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 	if (![[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextDidSaveNotification object:nil];
 	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
+}
+
+- (void)applicationWillResignActive {
+	if (_photoBrowser && _photoBrowser.activityViewController) {
+		[_photoBrowser dismissViewControllerAnimated:NO completion:nil];
+	}
 }
 
 - (void)cloudStoreDidImport {
@@ -111,6 +120,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 }
 
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 	if (![[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
 	}
@@ -290,14 +300,13 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 		}];
 	}
 	else if ([fieldItem.hasImage boolValue]) {
-		// Create browser
-		MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
-		browser.displayActionButton = YES;
-		browser.displayNavArrows = NO;
-		browser.zoomPhotosToFill = YES;
-		[browser setCurrentPhotoIndex:sender.tag];
+		_photoBrowser = [[MWPhotoBrowser alloc] initWithDelegate:self];
+		_photoBrowser.displayActionButton = YES;
+		_photoBrowser.displayNavArrows = NO;
+		_photoBrowser.zoomPhotosToFill = YES;
+		[_photoBrowser setCurrentPhotoIndex:sender.tag];
         
-		UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:browser];
+		UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:_photoBrowser];
         
 		[self.navigationController presentViewController:nc animated:YES completion:NULL];
 	}
@@ -522,6 +531,10 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
     if (index < _albumPhotos.count)
         return [_albumPhotos objectAtIndex:index];
     return nil;
+}
+
+- (void)photoBrowserDidFinishModalPresentation:(MWPhotoBrowser *)photoBrowser {
+	_photoBrowser = nil;
 }
 
 #pragma mark - WalletItemEditDelegate

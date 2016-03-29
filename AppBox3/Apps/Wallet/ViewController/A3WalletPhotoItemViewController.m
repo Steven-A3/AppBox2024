@@ -30,6 +30,7 @@
 #import "WalletFavorite+initialize.h"
 #import "WalletField.h"
 #import "UIViewController+A3Addition.h"
+#import "MWPhotoBrowserPrivate.h"
 
 @interface A3WalletPhotoItemViewController () <WalletItemEditDelegate, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, MWPhotoBrowserDelegate>
 
@@ -80,9 +81,17 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
     [self initializeViews];
     
     [self registerContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
+}
+
+- (void)applicationWillResignActive {
+	if (_innerPhotoBrowser && _innerPhotoBrowser.activityViewController) {
+		[_innerPhotoBrowser dismissViewControllerAnimated:NO completion:nil];
+	}
 }
 
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 }
 
@@ -557,14 +566,13 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
     WalletFieldItem *fieldItem = _photoFieldItems[index];
     WalletField *field = [WalletData fieldOfFieldItem:fieldItem];;
     if ([field.type isEqualToString:WalletFieldTypeImage]) {
-        // Create browser
-        MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
-        browser.displayActionButton = YES;
-        browser.displayNavArrows = NO;
-        browser.zoomPhotosToFill = YES;
-        [browser setCurrentPhotoIndex:index];
+        _innerPhotoBrowser = [[MWPhotoBrowser alloc] initWithDelegate:self];
+        _innerPhotoBrowser.displayActionButton = YES;
+        _innerPhotoBrowser.displayNavArrows = NO;
+        _innerPhotoBrowser.zoomPhotosToFill = YES;
+        [_innerPhotoBrowser setCurrentPhotoIndex:index];
         
-        UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:browser];
+        UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:_innerPhotoBrowser];
         
         [self.navigationController presentViewController:nc animated:YES completion:NULL];
     }
@@ -590,6 +598,10 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
     if (index < _alBumPhotos.count)
         return [_alBumPhotos objectAtIndex:index];
     return nil;
+}
+
+- (void)photoBrowserDidFinishModalPresentation:(MWPhotoBrowser *)photoBrowser {
+	_innerPhotoBrowser = nil;
 }
 
 #pragma mark - walletItemEditDelegate
