@@ -186,9 +186,9 @@ NSString *const A3UserDefaultsDidShowLeftViewOnceiPad = @"A3UserDefaultsDidShowL
 - (void)askRestorePurchase {
 	if ([A3AppDelegate instance].doneAskingRestorePurchase) return;
 	
-	// previousVersion과 currentVersion을 비교하여 다르다면 앱이 설치/업데이트 후 최초 실행중임을 알 수 있다.
-	NSString *currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-	if ([currentVersion isEqualToString:[A3AppDelegate instance].previousVersion]) {
+	// PreviousVersion이 있다면 다시 묻지 않는다.
+	// 지우고 설치한 경우에만 물어본다. 업데이트 한 경우는 물어보지 않는다.
+	if ([A3AppDelegate instance].previousVersion) {
 		return;
 	}
 	NSURL *receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
