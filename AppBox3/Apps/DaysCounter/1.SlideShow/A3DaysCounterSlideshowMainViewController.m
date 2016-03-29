@@ -698,11 +698,12 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
 		UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:_activityViewController];
         popoverController.delegate = self;
         self.popoverVC = popoverController;
+		__typeof(self) __weak weakSelf = self;
         [popoverController presentPopoverFromBarButtonItem:button permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         _activityViewController.completionHandler = ^(NSString* activityType, BOOL completed) {
             if ( completed && [activityType isEqualToString:@"Slideshow"] ) {
                 A3DaysCounterSlideshowOptionViewController *viewController = [[A3DaysCounterSlideshowOptionViewController alloc] init];
-                viewController.sharedManager = _sharedManager;
+                viewController.sharedManager = weakSelf.sharedManager;
 
 				if (IS_IPHONE) {
 					_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];

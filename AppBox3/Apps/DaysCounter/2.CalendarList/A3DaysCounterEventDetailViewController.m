@@ -91,7 +91,7 @@
 
 - (void)applicationWillResignActive {
 	if (_activityViewController) {
-		[self dismissViewControllerAnimated:nil completion:^{
+		[self dismissViewControllerAnimated:NO completion:^{
 			_activityViewController = nil;
 		}];
 	}
