@@ -1301,7 +1301,8 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         }
     }];
 
-    NSArray *alertItems = [DaysCounterEvent MR_findAllInContext:context];
+	NSArray *alertItems = [DaysCounterEvent MR_findByAttribute:@"hasReminder" withValue:@YES inContext:context];
+	
 	if (![alertItems count])
         return;
 
