@@ -127,7 +127,6 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 
 	[self registerContentSizeCategoryDidChangeNotification];
-	[self addDateKeyboard];
 }
 
 - (void)cloudStoreDidImport {
@@ -198,6 +197,7 @@
 {
 	[super viewWillAppear:animated];
 
+	[self addDateKeyboard];
 	[self calculateDate];
 }
 
