@@ -239,6 +239,8 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 		[self leftBarButtonAppsButton];
 	}
 	self.detailTableViewController = nil;
+	
+	[self.navigationController setNavigationBarHidden:NO];
 }
 
 - (UIView *)footerView {
