@@ -129,22 +129,13 @@ static const CGFloat kSideViewWidth = 320.0;
 
 - (void)bringUpCenterCoverView {
 	[self.centerCoverView setHidden:NO];
-	_centerCoverView.frame = _centerNavigationController.view.bounds;
-
-    // KJH
-    A3NavigationController *presentedViewController = [_presentViewControllers lastObject];
-    if (presentedViewController) {
-        if (![_centerCoverView.superview isEqual:presentedViewController.view]) {
-            [presentedViewController.view addSubview:_centerCoverView];
-        }
-        [_centerNavigationController.view bringSubviewToFront:_centerCoverView];
-    }
-    else {
-        if (![_centerCoverView.superview isEqual:_centerNavigationController.view]) {
-            [_centerNavigationController.view addSubview:_centerCoverView];
-        }
-        [_centerNavigationController.view bringSubviewToFront:_centerCoverView];
-    }
+	UINavigationController *navigationController = _centerNavigationController;
+	while ([navigationController.presentedViewController isKindOfClass:[UINavigationController class]]) {
+		navigationController = (id)navigationController.presentedViewController;
+	}
+	_centerCoverView.frame = navigationController.view.bounds;
+	[navigationController.view addSubview:self.centerCoverView];
+	[navigationController.view bringSubviewToFront:_centerCoverView];
 }
 
 - (void)viewWillLayoutSubviews {
