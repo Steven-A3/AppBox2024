@@ -139,7 +139,7 @@
 }
 
 - (void)settingsButtonAction:(UIButton *)button {
-	if (![[A3AppDelegate instance] launchAppNamed:A3AppName_Settings verifyPasscode:YES delegate:self animated:YES]) {
+	if (![[A3AppDelegate instance] launchAppNamed:A3AppName_Settings verifyPasscode:YES animated:YES]) {
 		self.selectedAppName = A3AppName_Settings;
 	}
 }
@@ -207,39 +207,6 @@
 
 - (void)openAppStoreNumpad {
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id967194299"]];
-}
-
-- (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
-	if (success) {
-		if (_selectedAppName) {
-			[[A3AppDelegate instance] launchAppNamed:_selectedAppName verifyPasscode:NO delegate:nil animated:YES];
-			[[A3AppDelegate instance] updateRecentlyUsedAppsWithAppName:_selectedAppName];
-			self.activeAppName = [_selectedAppName copy];
-		}
-	} else {
-		A3AppDelegate *appDelegate = [A3AppDelegate instance];
-		[appDelegate addSecurityCoverView];
-		UINavigationController *mainNavigationController = appDelegate.currentMainNavigationController;
-		if (mainNavigationController.presentedViewController) {
-			[mainNavigationController dismissViewControllerAnimated:NO completion:nil];
-		}
-		if ([mainNavigationController.viewControllers count] > 1) {
-			UIViewController *appViewController = appDelegate.currentMainNavigationController.viewControllers[1];
-			[mainNavigationController popViewControllerAnimated:NO];
-			[appViewController appsButtonAction:nil];
-		}
-		double delayInSeconds = 0.1;
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-			[self.navigationController setNavigationBarHidden:YES];
-			UIImage *image = [UIImage new];
-			[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
-			[self.navigationController.navigationBar setShadowImage:image];
-			[self.navigationController setToolbarHidden:YES];
-			[appDelegate removeSecurityCoverView];
-		});
-	}
-	_selectedAppName = nil;
 }
 
 @end

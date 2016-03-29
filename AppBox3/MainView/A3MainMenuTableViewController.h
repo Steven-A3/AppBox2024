@@ -18,8 +18,6 @@
 @property (nonatomic, copy) NSString *activeAppName;
 @property (nonatomic, copy) NSString *selectedAppName;
 
-@property (nonatomic, strong) UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
-
 - (void)openAppNamed:(NSString *)appName;
 
 - (void)openClockApp;

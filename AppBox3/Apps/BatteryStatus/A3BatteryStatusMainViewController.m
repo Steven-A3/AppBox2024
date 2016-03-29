@@ -145,7 +145,7 @@
 		[self setupBannerViewForAdUnitID:AdMobAdUnitIDBattery keywords:nil gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
 	}
 	if ([self.navigationController.navigationBar isHidden]) {
-		[self showNavigationBarOn:self.navigationController];
+		[self.navigationController setNavigationBarHidden:NO];
 	}
 }
 

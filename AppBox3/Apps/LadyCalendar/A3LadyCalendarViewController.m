@@ -524,15 +524,17 @@ A3CalendarViewDelegate>
 	}
 	row = month - (section == 0 ? _startMonth : 1);
 
-	if (section >= _collectionView.numberOfSections) {
-		section = _collectionView.numberOfSections - 1;
+	if (_collectionView.numberOfSections > 0) {
+		if (section >= _collectionView.numberOfSections) {
+			section = MAX(_collectionView.numberOfSections - 1, 0);
+		}
+		
+		NSInteger numberOfRows = [self collectionView:_collectionView numberOfItemsInSection:section];
+		if (row >= numberOfRows) {
+			row = numberOfRows - 1;
+		}
+		[_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
 	}
-
-	NSInteger numberOfRows = [self collectionView:_collectionView numberOfItemsInSection:section];
-	if (row >= numberOfRows) {
-		row = numberOfRows - 1;
-	}
-	[_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
 }
 
 - (LadyCalendarPeriod*)previousPeriodFromIndexPath:(NSIndexPath*)indexPath

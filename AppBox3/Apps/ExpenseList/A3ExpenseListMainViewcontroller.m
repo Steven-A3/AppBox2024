@@ -144,7 +144,6 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	[self reloadBudgetDataWithAnimation:NO saveData:YES];
     [self setupTopWhitePaddingView];
     [self expandContentSizeForAddItem];
-    [self moveToAddBudgetIfBudgetNotExistWithDelay:1.0];
     [self setupInstructionView];
     
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencyCodeChanged:) name:A3NotificationExpenseListCurrencyCodeChanged object:nil];
@@ -444,7 +443,6 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     [self.instructionViewController.view removeFromSuperview];
     if ([self.instructionViewController isFirstInstruction]) {
         [self dismissMoreMenu];
-        [self moveToAddBudgetIfBudgetNotExistWithDelay:1.0];
     }
     self.instructionViewController = nil;
 }

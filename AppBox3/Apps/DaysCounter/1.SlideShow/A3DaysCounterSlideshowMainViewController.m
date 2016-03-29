@@ -52,6 +52,8 @@
 @property (strong, nonatomic) NSString *prevShownEventID;
 @property (strong, nonatomic) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
+@property (strong, nonatomic) UIActivityViewController *activityViewController;
+
 @end
 
 @implementation A3DaysCounterSlideShowMainViewController {
@@ -130,10 +132,19 @@
 	noPhotosLabel.text = NSLocalizedString(@"No Photos", nil);
 	UILabel *messageLabel = (UILabel *)[self.view viewWithTag:11];
 	messageLabel.text = NSLocalizedString(@"You can add photos into events.", nil);
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
 }
 
-- (void)applicationDidEnterBackground {
+- (void)applicationWillResignActive {
+	if (_activityViewController) {
+		[self dismissViewControllerAnimated:NO completion:^{
+			_activityViewController = nil;
+		}];
+	}
+	if (_popoverVC) {
+		[_popoverVC dismissPopoverAnimated:NO];
+		_popoverVC = nil;
+	}
 	[self dismissInstructionViewController:nil];
 }
 
@@ -253,7 +264,7 @@
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 	}
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 }
 
 - (void)prepareClose {
@@ -675,20 +686,20 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
         [self presentViewController:viewCtrl animated:YES completion:nil];
     };
 
-    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:@[slideActivity]];
-    activityController.excludedActivityTypes = @[UIActivityTypeCopyToPasteboard];
+    _activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:@[slideActivity]];
+    _activityViewController.excludedActivityTypes = @[UIActivityTypeCopyToPasteboard];
 	if (IS_IPHONE) {
-		[self presentViewController:activityController animated:YES completion:NULL];
+		[self presentViewController:_activityViewController animated:YES completion:NULL];
 	}
     else {
 		[self enableControls:NO];
 
         UIBarButtonItem *button = (UIBarButtonItem *)sender;
-		UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
+		UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:_activityViewController];
         popoverController.delegate = self;
         self.popoverVC = popoverController;
         [popoverController presentPopoverFromBarButtonItem:button permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        activityController.completionHandler = ^(NSString* activityType, BOOL completed) {
+        _activityViewController.completionHandler = ^(NSString* activityType, BOOL completed) {
             if ( completed && [activityType isEqualToString:@"Slideshow"] ) {
                 A3DaysCounterSlideshowOptionViewController *viewController = [[A3DaysCounterSlideshowOptionViewController alloc] init];
                 viewController.sharedManager = _sharedManager;

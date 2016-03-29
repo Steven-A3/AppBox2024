@@ -138,10 +138,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 }
 
 - (void)applicationWillResignActive {
-	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
-	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_LadiesCalendar]) {
-		[self cancelAction:nil];
-	}
+	[self cancelAction:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated

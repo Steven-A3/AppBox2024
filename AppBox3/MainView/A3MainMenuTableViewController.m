@@ -15,7 +15,6 @@
 #import "A3AppDelegate.h"
 #import "UIViewController+MMDrawerController.h"
 #import "UIViewController+A3Addition.h"
-#import "A3PasscodeViewControllerProtocol.h"
 #import "A3TableViewMenuElement.h"
 #import "A3KeychainUtils.h"
 #import "NSMutableArray+MoveObject.h"
@@ -39,7 +38,7 @@ NSString *const A3MainMenuBecameFirstResponder = @"A3MainMenuBecameFirstResponde
 NSString *const A3NotificationMainMenuDidShow = @"A3NotificationMainMenuDidShow";
 NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide";
 
-@interface A3MainMenuTableViewController () <UISearchDisplayDelegate, UISearchBarDelegate, A3PasscodeViewControllerDelegate, A3TableViewExpandableElementDelegate>
+@interface A3MainMenuTableViewController () <UISearchDisplayDelegate, UISearchBarDelegate, A3TableViewExpandableElementDelegate>
 
 @property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
@@ -69,7 +68,6 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 	self.title = @"AppBox Pro®";
 	self.tableView.accessibilityIdentifier = @"MainMenuTable";
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuContentsChanged) name:A3NotificationAppsMainMenuContentsChanged object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuContentsChanged) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncDidMakeProgress:) name:CDEPersistentStoreEnsembleDidMakeProgressWithActivityNotification object:nil];
@@ -98,7 +96,6 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 - (void)removeObserver {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:CDEPersistentStoreEnsembleDidMakeProgressWithActivityNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationAppsMainMenuContentsChanged object:nil];
 }
 
@@ -255,7 +252,7 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 
 				// Check active view controller
 				if (![self.activeAppName isEqualToString:elementObject.title] || (IS_IPHONE && [[A3AppDelegate instance] securitySettingIsOnForAppNamed:elementObject.title])) {
-					if (![[A3AppDelegate instance] launchAppNamed:elementObject.title verifyPasscode:verifyPasscode delegate:self animated:NO]) {
+					if (![[A3AppDelegate instance] launchAppNamed:elementObject.title verifyPasscode:verifyPasscode animated:NO]) {
 						self.selectedElement = menuElement;
 						self.selectedAppName = [menuElement.title copy];
 					} else {
@@ -377,49 +374,6 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 	[element didSelectCellInViewController:(id) self tableView:self.tableView atIndexPath:indexPath];
 }
 
-- (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
-	if (!success) {
-		A3AppDelegate *appDelegate = [A3AppDelegate instance];
-		[appDelegate addSecurityCoverView];
-		[self callPrepareCloseOnActiveMainAppViewController];
-
-		UIViewController *presendteViewController = appDelegate.currentMainNavigationController.presentedViewController;
-		if ([presendteViewController isKindOfClass:[UINavigationController class]]) {
-			UIViewController *viewController = ((UINavigationController *)presendteViewController).viewControllers[0];
-			if (![viewController isKindOfClass:[A3PasscodeCommonViewController class]]) {
-				[appDelegate.currentMainNavigationController dismissViewControllerAnimated:NO completion:nil];
-			}
-		}
-		if (IS_IPHONE) {
-			[appDelegate.drawerController openDrawerSide:MMDrawerSideLeft animated:NO completion:nil];
-			if (appDelegate.currentMainNavigationController.viewControllers.count > 1) {
-				UIViewController *appViewController = appDelegate.currentMainNavigationController.viewControllers[1];
-				[appDelegate.currentMainNavigationController popViewControllerAnimated:NO];
-				[appViewController appsButtonAction:nil];
-			}
-		} else {
-			[self openClockApp];
-			[appDelegate.rootViewController_iPad setShowLeftView:YES];
-		}
-		double delayInSeconds = 0.3;
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-			[appDelegate removeSecurityCoverView];
-		});
-	} else {
-		if (IS_IPHONE && [[A3AppDelegate instance] isMainMenuStyleList]) {
-			[[A3AppDelegate instance].drawerController closeDrawerAnimated:NO completion:^(BOOL finished) {
-				[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
-			}];
-		}
-		if (_selectedElement) {
-			[self openAppNamed:_selectedElement.title];
-		}
-	}
-	_selectedAppName = nil;
-	_selectedElement = nil;
-}
-
 - (void)openAppNamed:(NSString *)appName {
 	[self callPrepareCloseOnActiveMainAppViewController];
 
@@ -433,19 +387,8 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 - (void)openClockApp {
 	A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
 	[self popToRootAndPushViewController:clockVC animated:NO];
+	[self updateRecentlyUsedAppsWithAppName:A3AppName_Clock];
 	self.activeAppName = A3AppName_Clock;
-}
-
-- (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {
-    _passcodeViewController = nil;
-}
-
-- (void)applicationDidEnterBackground {
-	if (_passcodeViewController) {
-		_passcodeViewController.delegate = nil;
-		[_passcodeViewController cancelAndDismissMe];
-	}
-	_passcodeViewController = nil;
 }
 
 #pragma mark - A3ExpandableElement delegate

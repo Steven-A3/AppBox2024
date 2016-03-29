@@ -69,6 +69,7 @@
 @property (strong, nonatomic) UIImagePickerController *imagePickerController;
 @property (copy, nonatomic) NSString *originalPhotoID;
 @property (strong, nonatomic) id settingsObserver;
+@property (strong, nonatomic) UIActionSheet *actionSheet;
 @end
 
 @implementation A3DaysCounterAddEventViewController {
@@ -197,22 +198,27 @@
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidAppear) name:A3NotificationRightSideViewDidAppear object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
 }
 
-- (void)applicationDidEnterBackground {
-	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
-	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_DaysCounter]) {
-		[self cancelButtonAction:nil];
+- (void)applicationWillResignActive {
+	if (_actionSheet) {
+		[_actionSheet dismissWithClickedButtonIndex:_actionSheet.cancelButtonIndex animated:NO];
+		_actionSheet = nil;
+	}
+	if (_imagePickerController) {
+		[_imagePickerController dismissViewControllerAnimated:NO completion:^{
+			_imagePickerController = nil;
+		}];
 	}
 }
 
 - (void)removeObserver {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewDidAppear object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
@@ -1665,14 +1671,14 @@
 {
     [self resignAllAction];
 
-    UIActionSheet *actionSheet = [self actionSheetAskingImagePickupWithDelete:[_eventItem.photoID length] > 0 delegate:self];
-    actionSheet.tag = ActionTag_Photo;
+    _actionSheet = [self actionSheetAskingImagePickupWithDelete:[_eventItem.photoID length] > 0 delegate:self];
+    _actionSheet.tag = ActionTag_Photo;
     // TODO
     if (IS_IPAD) {
-        [actionSheet showFromRect:[sender bounds] inView:sender animated:NO];
+        [_actionSheet showFromRect:[sender bounds] inView:sender animated:NO];
     }
     else {
-        [actionSheet showInView:self.view];
+        [_actionSheet showInView:self.view];
     }
 }
 
@@ -2316,6 +2322,8 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
+	_actionSheet = nil;
+
     [self setFirstActionSheet:nil];
     
     if ( actionSheet.tag == ActionTag_Photo ) {
@@ -2449,22 +2457,22 @@
 
 - (void)showSearchLocationActionSheet
 {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                             delegate:self
-                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                               destructiveButtonTitle:_eventItem.location ? NSLocalizedString(@"Delete Location", @"Delete Location") : nil
-                                                    otherButtonTitles:NSLocalizedString(@"Use My Location", @"Use My Location"), NSLocalizedString(@"Search Location", @"Search Location"), nil];
-    actionSheet.tag = ActionTag_Location;
-    [actionSheet showInView:self.view];
-    [self setFirstActionSheet:actionSheet];
+    _actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+															  delegate:self
+													 cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+												destructiveButtonTitle:_eventItem.location ? NSLocalizedString(@"Delete Location", @"Delete Location") : nil
+													 otherButtonTitles:NSLocalizedString(@"Use My Location", @"Use My Location"), NSLocalizedString(@"Search Location", @"Search Location"), nil];
+    _actionSheet.tag = ActionTag_Location;
+    [_actionSheet showInView:self.view];
+	[self setFirstActionSheet:_actionSheet];
     [self closeDatePickerCell];
 }
 
 - (void)showDeleteEventActionSheet {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Event", @"Delete Event") otherButtonTitles:nil];
-    actionSheet.tag = ActionTag_DeleteEvent;
-    [actionSheet showInView:self.view];
-    [self setFirstActionSheet:actionSheet];
+    _actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"Delete Event", @"Delete Event") otherButtonTitles:nil];
+    _actionSheet.tag = ActionTag_DeleteEvent;
+    [_actionSheet showInView:self.view];
+	[self setFirstActionSheet:_actionSheet];
 }
 
 

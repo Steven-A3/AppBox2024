@@ -36,6 +36,7 @@
 @property (strong, nonatomic) NSString *initialCalendarID;
 @property (strong, nonatomic) UIView *topWhitePaddingView;
 @property (strong, nonatomic) UILabel *heightCalculateLabel;
+@property (strong, nonatomic) UIActivityViewController *activityViewController;
 
 @end
 
@@ -84,9 +85,24 @@
     self.heightCalculateLabel.hidden = YES;
 
 	[self registerContentSizeCategoryDidChangeNotification];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
+}
+
+- (void)applicationWillResignActive {
+	if (_activityViewController) {
+		[self dismissViewControllerAnimated:nil completion:^{
+			_activityViewController = nil;
+		}];
+	}
+	if (_popoverVC) {
+		[_popoverVC dismissPopoverAnimated:NO];
+		_popoverVC = nil;
+	}
 }
 
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 }
 
@@ -1661,12 +1677,15 @@ EXIT_FUCTION:
 
 - (void)didSelectShareEventRowAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
 {
-    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
+    _activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
+	_activityViewController.completionHandler = ^(NSString *activityType, BOOL completed) {
+		_activityViewController = nil;
+	};
     if (IS_IPHONE) {
-        [self presentViewController:activityController animated:YES completion:NULL];
+		[self presentViewController:_activityViewController animated:YES completion:NULL];
     } else {
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        self.popoverVC = [[UIPopoverController alloc] initWithContentViewController:activityController];
+        self.popoverVC = [[UIPopoverController alloc] initWithContentViewController:_activityViewController];
         self.popoverVC.delegate = self;
         [_popoverVC presentPopoverFromRect:CGRectMake(cell.frame.origin.x, cell.frame.origin.y, cell.frame.size.width, cell.frame.size.height) inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     }

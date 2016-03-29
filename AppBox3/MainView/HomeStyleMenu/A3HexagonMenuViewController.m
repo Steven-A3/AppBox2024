@@ -157,7 +157,7 @@ A3InstructionViewControllerDelegate>
 		A3NavigationController *navigationController = [[A3NavigationController alloc] initWithRootViewController:viewController];
 		[self presentViewController:navigationController animated:YES completion:nil];
 	} else {
-		if (![[A3AppDelegate instance] launchAppNamed:menuInfo[kA3AppsMenuName] verifyPasscode:YES delegate:self animated:YES]) {
+		if (![[A3AppDelegate instance] launchAppNamed:menuInfo[kA3AppsMenuName] verifyPasscode:YES animated:YES]) {
 			self.selectedAppName = [menuInfo[kA3AppsMenuName] copy];
 		} else {
 			[[A3AppDelegate instance] updateRecentlyUsedAppsWithAppName:menuInfo[kA3AppsMenuName]];
