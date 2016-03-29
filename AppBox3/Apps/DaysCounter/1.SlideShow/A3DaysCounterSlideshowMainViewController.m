@@ -706,20 +706,20 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
                 viewController.sharedManager = weakSelf.sharedManager;
 
 				if (IS_IPHONE) {
-					_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-					[self presentViewController:_modalNavigationController animated:YES completion:NULL];
-					[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(optionViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
+					weakSelf.modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+					[weakSelf presentViewController:weakSelf.modalNavigationController animated:YES completion:NULL];
+					[[NSNotificationCenter defaultCenter] addObserver:weakSelf selector:@selector(optionViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 				} else {
 					[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
 					double delayInSeconds = 0.6;
 					dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 					dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-						[self enableControls:NO];
+						[weakSelf enableControls:NO];
 					});
 				}
             }
             else if ([activityType isEqualToString:UIActivityTypeMail]) {
-                [self enableControls:YES];
+                [weakSelf enableControls:YES];
             }
         };
 	}
