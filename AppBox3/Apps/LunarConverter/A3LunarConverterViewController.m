@@ -127,6 +127,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 
 	[self registerContentSizeCategoryDidChangeNotification];
+	[self addDateKeyboard];
 }
 
 - (void)cloudStoreDidImport {
@@ -207,7 +208,6 @@
 	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 	
-	[self addDateKeyboard];
     [self shrinkCellScrollView:animated];
 
 	if ( _dbManager )
@@ -218,6 +218,13 @@
 	}
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
+	}
+	if (IS_IPAD) {
+		if ([A3AppDelegate instance].rootViewController_iPad.showLeftView) {
+			[self hideKeyboardAnimate:NO];
+		} else {
+			[self showKeyboardAnimated:YES];
+		}
 	}
 	[self setupBannerViewForAdUnitID:AdMobAdUnitIDLunarConverter keywords:nil gender:kGADGenderUnknown];
 	
@@ -1111,11 +1118,17 @@
 }
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
-	[super appsButtonAction:barButtonItem];
-
-	[self enableControls:![[A3AppDelegate instance] rootViewController_iPad].showLeftView];
 	if (IS_IPAD) {
-		[self dateKeyboardDoneButtonPressed:nil ];
+		if ([[A3AppDelegate instance] isMainMenuStyleList]) {
+			[self enableControls:![[A3AppDelegate instance] rootViewController_iPad].showLeftView];
+			[super appsButtonAction:barButtonItem];
+			[self dateKeyboardDoneButtonPressed:nil ];
+		} else {
+			[self hideKeyboardAnimate:NO];
+			[super appsButtonAction:barButtonItem];
+		}
+	} else {
+		[super appsButtonAction:barButtonItem];
 	}
 }
 
