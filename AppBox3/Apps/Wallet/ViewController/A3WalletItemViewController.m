@@ -534,6 +534,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 }
 
 - (void)photoBrowserDidFinishModalPresentation:(MWPhotoBrowser *)photoBrowser {
+	[self dismissViewControllerAnimated:YES completion:nil];
 	_photoBrowser = nil;
 }
 

@@ -85,6 +85,9 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 }
 
 - (void)applicationWillResignActive {
+	if ([self.navigationController.presentedViewController isKindOfClass:[UINavigationController class]]) {
+		[self dismissViewControllerAnimated:NO completion:nil];
+	}
 	if (_innerPhotoBrowser && _innerPhotoBrowser.activityViewController) {
 		[_innerPhotoBrowser dismissViewControllerAnimated:NO completion:nil];
 	}
@@ -601,6 +604,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 }
 
 - (void)photoBrowserDidFinishModalPresentation:(MWPhotoBrowser *)photoBrowser {
+	[self dismissViewControllerAnimated:YES completion:nil];
 	_innerPhotoBrowser = nil;
 }
 
