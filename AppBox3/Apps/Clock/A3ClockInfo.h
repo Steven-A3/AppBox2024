@@ -26,13 +26,10 @@
 @property (nonatomic, strong) A3Weather *currentWeather;
 @property (nonatomic, strong) NSString *fullStyleFormatWithoutYear;
 @property (nonatomic, strong) NSString *mediumStyleFormatWithoutYear;
-@property (nonatomic, strong) NSDictionary* weatherAtmosphere;
 
 - (NSString *)fullStyleDateStringWithoutYear;
-
 - (NSString *)mediumStyleDateStringWithoutYear;
-
 - (NSString *)dateStringConsideringOptions;
-
 - (long)hour;
+
 @end

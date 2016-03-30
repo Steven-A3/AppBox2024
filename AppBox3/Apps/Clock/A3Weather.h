@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+#define fahrenheitToCelsius(celsius) roundf((celsius - 32) * 5.0 / 9.0)
+#define celsiusToFahrenheit(fahrenheit) roundf((fahrenheit * 9.0 / 5.0) + 32)
+
 typedef NS_ENUM(NSUInteger, A3WeatherUnit) {
 	SCWeatherUnitNone = 0,
 	SCWeatherUnitCelsius = 1,
@@ -71,9 +74,15 @@ typedef NS_ENUM(NSUInteger, A3WeatherCondition) {
 @property (nonatomic, strong)	NSString *WOEID;
 @property (nonatomic, assign)	A3WeatherUnit unit;
 @property (nonatomic, assign)	A3WeatherCondition condition;
-@property (nonatomic, assign)	NSInteger currentTemperature;
-@property (nonatomic, assign)	NSInteger highTemperature;
-@property (nonatomic, assign)	NSInteger lowTemperature;
+@property (nonatomic, assign)	double currentTemperature;
+@property (nonatomic, assign)	double highTemperature;
+@property (nonatomic, assign)	double lowTemperature;
 @property (nonatomic, strong)	NSString *representation;
+@property (nonatomic, strong)	NSDictionary *weatherAtmosphere;
 
+- (void)setCurrentTemperature:(double)value fromUnit:(NSString *)fromUnit;
+
+- (void)setHighTemperature:(double)value fromUnit:(NSString *)fromUnit;
+
+- (void)setLowTemperature:(double)value fromUnit:(NSString *)fromUnit;
 @end

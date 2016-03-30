@@ -10,15 +10,6 @@
 
 @implementation A3Weather
 
-
-NSInteger fahrenheitToCelsius(NSInteger celsius) {
-	return (NSInteger) roundf((celsius - 32) * 5.0 / 9.0);
-}
-
-NSInteger celsiusToFahrenheit(NSInteger fahrenheit) {
-	return (NSInteger) roundf((fahrenheit * 9.0 / 5.0) + 32);
-}
-
 - (void)setUnit:(A3WeatherUnit)unit {
 	if (_unit == SCWeatherUnitNone || unit == SCWeatherUnitNone) {
 		_unit = unit;
@@ -68,6 +59,30 @@ NSString *const A3WeatherEncodingKeyRepresentation = @"representation";
 		_representation = [coder decodeObjectForKey:A3WeatherEncodingKeyRepresentation];
 	}
 	return nil;
+}
+
+- (void)setCurrentTemperature:(double)value fromUnit:(NSString *)fromUnit {
+	if ([[fromUnit lowercaseString] isEqualToString:@"f"]) {
+		_currentTemperature = _unit == SCWeatherUnitFahrenheit ? value : fahrenheitToCelsius(value);
+	} else {
+		_currentTemperature = _unit == SCWeatherUnitFahrenheit ? celsiusToFahrenheit(value) : value;
+	}
+}
+
+- (void)setHighTemperature:(double)value fromUnit:(NSString *)fromUnit {
+	if ([[fromUnit lowercaseString] isEqualToString:@"f"]) {
+		_highTemperature = _unit == SCWeatherUnitFahrenheit ? value : fahrenheitToCelsius(value);
+	} else {
+		_highTemperature = _unit == SCWeatherUnitFahrenheit ? celsiusToFahrenheit(value) : value;
+	}
+}
+
+- (void)setLowTemperature:(double)value fromUnit:(NSString *)fromUnit {
+	if ([[fromUnit lowercaseString] isEqualToString:@"f"]) {
+		_lowTemperature = _unit == SCWeatherUnitFahrenheit ? value : fahrenheitToCelsius(value);
+	} else {
+		_lowTemperature = _unit == SCWeatherUnitFahrenheit ? celsiusToFahrenheit(value) : value;
+	}
 }
 
 @end

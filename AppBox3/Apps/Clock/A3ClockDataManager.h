@@ -41,7 +41,6 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 @property (nonatomic, strong) A3ClockInfo *clockInfo;
 
 - (void)cleanUp;
-
 - (void)enableWeatherCircle:(BOOL)enable;
 - (void)enableDateCircle:(BOOL)enable;
 - (void)enableWeekdayCircle:(BOOL)enable;
@@ -49,17 +48,14 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 - (void)startTimer;
 - (void)stopTimer;
 - (void)onTimerDateTimeTick;
-
 - (void)refreshWholeClockInfo:(NSDate *)currentTime;
-
 - (NSArray *)waveColors;
 - (NSArray*)flipColors;
 - (NSArray*)ledColors;
 - (UIColor *)LEDColorAtIndex:(NSUInteger)idx alpha:(CGFloat)alpha;
 - (UIImage*)imageForWeatherCondition:(A3WeatherCondition)condition;
 - (void)updateWeather;
-
 - (NSString *)autoDimString;
-
 - (NSString *)autoDimStringWithValue:(NSInteger)autoDimValue;
+
 @end

@@ -364,84 +364,50 @@
 #pragma mark - weather
 
 #define YAHOO_APP_ID	@"YPTRvJjV34GJKXl3pY2LuRNpwY4w2Rv.GpYI9vbPWz_Yk0hgFZUrDIeibzpbg__AKg--"
-#define kA3YahooWeatherXMLKeyConditionTag   @"yweather:condition"
-#define kA3YahooWeatherXMLKeyForecastTag	@"yweather:forecast"
-#define kA3YahooWeatherXMLKeyAtmosphere     @"yweather:atmosphere"
-#define kA3YahooWeatherXMLKeyTemp           @"temp"
-#define kA3YahooWeatherXMLKeyText           @"text"
-#define kA3YahooWeatherXMLKeyCondition      @"code"
-#define	kA3YahooWeatherXMLKeyLow			@"low"
-#define kA3YahooWeatherXMLKeyHigh			@"high"
 
+// select * from weather.forecast where woeid in (select woeid from geo.places(1) where text="nome, ak")
+// https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22nome%2C%20ak%22)&format=json
+- (void)getWeatherWithWOEID:(NSString *)WOEID {
+	NSString *ydnQuery = [NSString stringWithFormat:@"select * from weather.forecast where woeid in (%@)", WOEID];
+	NSString *urlString = [NSString stringWithFormat:@"https://query.yahooapis.com/v1/public/yql?q=%@&format=json", [ydnQuery stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+	FNLOG(@"%@", urlString);
 
-- (void)getWeatherInfoWithWOEID:(NSString *)WOEID {
-	NSString *weatherUnit = [[A3UserDefaults standardUserDefaults] clockUsesFahrenheit] ? @"f" : @"c";
-	NSURL *weatherURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://weather.yahooapis.com/forecastrss?w=%@&u=%@&language=", WOEID, weatherUnit]];
-
-	NSURLRequest *weatherRequest = [NSURLRequest requestWithURL:weatherURL];
-	AFHTTPRequestOperation *weatherOperation = [[AFHTTPRequestOperation alloc] initWithRequest:weatherRequest];
-    
-	[weatherOperation  setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, NSData *response) {
-		NSXMLParser *XMLParser = [[NSXMLParser alloc] initWithData:response];
-		XMLParser.delegate = self;
-
-		_weatherForecast = nil;
-		_weatherCurrentCondition = nil;
-
+	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+	
+	AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+	operation.responseSerializer = [AFJSONResponseSerializer serializer];
+	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id JSON) {
+		
 		self.clockInfo.currentWeather = [A3Weather new];
-		if ([XMLParser parse]) {
-			if (!_weatherForecast || !_weatherCurrentCondition || !self.clockInfo.weatherAtmosphere) {
-				self.clockInfo = nil;
-				FNLOG(@"Failed to load weather with :%@", [_addressCandidates lastObject]);
-				[_addressCandidates removeLastObject];
-				[self getWOEIDWithCandidates];
-				return;
-			}
+		self.clockInfo.currentWeather.unit = [[A3UserDefaults standardUserDefaults] clockUsesFahrenheit] ? SCWeatherUnitFahrenheit : SCWeatherUnitCelsius;
+		// Results Unit
+		NSDictionary *results = JSON[@"query"][@"results"][@"channel"];
+		NSString *resultUnit = results[@"units"][@"temperature"];
+		
+		self.clockInfo.currentWeather.representation = results[@"item"][@"condition"][@"text"];
+		[_clockInfo.currentWeather setCurrentTemperature:[results[@"item"][@"condition"][@"temp"] doubleValue] fromUnit:resultUnit];
+		_clockInfo.currentWeather.condition = (A3WeatherCondition)[results[@"item"][@"condition"][@"code"] integerValue];
 
-//#define LOG_WEATHER	0
-#ifdef LOG_WEATHER
-			NSMutableString *log = [NSMutableString new];
-			[log appendString:[NSString stringWithFormat:@"%@\n", _weatherForecast]];
-			[log appendString:[NSString stringWithFormat:@"%@\n", _weatherCurrentCondition]];
-			[log appendString:[NSString stringWithFormat:@"%@\n", self.clockInfo.weatherAtmosphere]];
-			FNLOG(@"%@", log);
-#endif
+		NSDictionary *forecast = results[@"item"][@"forecast"][0];
+		[_clockInfo.currentWeather setHighTemperature:[forecast[@"high"] doubleValue] fromUnit:resultUnit];
+		[_clockInfo.currentWeather setLowTemperature:[forecast[@"low"] doubleValue] fromUnit:resultUnit];
 
-			self.clockInfo.currentWeather.unit = [[A3UserDefaults standardUserDefaults] clockUsesFahrenheit] ? SCWeatherUnitFahrenheit : SCWeatherUnitCelsius;
-			self.clockInfo.currentWeather.representation = [self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyText];
-			self.clockInfo.currentWeather.currentTemperature = [[self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyTemp] intValue];
-			self.clockInfo.currentWeather.condition = (A3WeatherCondition) [[self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyCondition] intValue];
+		_clockInfo.currentWeather.weatherAtmosphere = results[@"atmosphere"];
 
-			if ([_weatherForecast count]) {
-				NSDictionary *todayForecast = [self.weatherForecast objectAtIndex:0];
-				self.clockInfo.currentWeather.highTemperature = [[todayForecast objectForKey:kA3YahooWeatherXMLKeyHigh] intValue];
-				self.clockInfo.currentWeather.lowTemperature = [[todayForecast objectForKey:kA3YahooWeatherXMLKeyLow] intValue];
-			}
-
-			NSAssert(!(self.clockInfo.currentWeather.currentTemperature == 0 &&
-					self.clockInfo.currentWeather.lowTemperature == 0 &&
-					self.clockInfo.currentWeather.highTemperature == 0), @"Weather current,low,high must not be all ZERO");
-
-			if ([_delegate respondsToSelector:@selector(refreshWeather:)]) {
-				[_delegate refreshWeather:self.clockInfo];
-			}
+		if ([_delegate respondsToSelector:@selector(refreshWeather:)]) {
+			[_delegate refreshWeather:self.clockInfo];
 		}
-
-		_weatherForecast = nil;
-		_weatherCurrentCondition = nil;
-
-		_addressCandidates = nil;
-		_locationManager = nil;
-
-		// TODO: 날씨 업데이트 시점 최종 조정 필요. 디버깅 위해서 10초로 설정
-//		_weatherTimer = [NSTimer scheduledTimerWithTimeInterval:60 * 15 target:self selector:@selector(updateWeather) userInfo:nil repeats:NO];
 		if (!_weatherTimer) {
 			_weatherTimer = [NSTimer scheduledTimerWithTimeInterval:60 * 60 target:self selector:@selector(updateWeather) userInfo:nil repeats:NO];
 		}
+
+		_addressCandidates = nil;
+		_locationManager = nil;
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 		[self.locationManager startUpdatingLocation];
 	}];
-	[weatherOperation start];
+	
+	[operation start];
 }
 
 - (void)getWOEIDWithCandidates {
@@ -459,7 +425,7 @@
 	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id JSON) {
 		NSString *WOEID = [[[[[JSON objectForKey:@"places"] objectForKey:@"place"] objectAtIndex:0] objectForKey:@"locality1 attrs"] objectForKey:@"woeid"];
 		if (WOEID) {
-			[self getWeatherInfoWithWOEID:WOEID];
+			[self getWeatherWithWOEID:WOEID];
 		} else {
 			[_addressCandidates removeLastObject];
 			[self getWOEIDWithCandidates];
@@ -533,24 +499,6 @@
 			[manager startUpdatingLocation];
 		}
 	}];
-}
-
-#pragma mark -
-#pragma mark NSXMLParser delegate methods
-
-- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributeDict {
-	if([elementName isEqualToString:kA3YahooWeatherXMLKeyConditionTag]) {
-		_weatherCurrentCondition = [attributeDict copy];
-	} else if ([elementName isEqualToString:kA3YahooWeatherXMLKeyForecastTag]) {
-		if (!_weatherForecast) {
-			_weatherForecast = [NSMutableArray new];
-		}
-		[_weatherForecast addObject:attributeDict];
-	}
-    else if([elementName isEqualToString:kA3YahooWeatherXMLKeyAtmosphere])
-    {
-        self.clockInfo.weatherAtmosphere = [attributeDict copy];
-    }
 }
 
 - (NSString *)autoDimString {
