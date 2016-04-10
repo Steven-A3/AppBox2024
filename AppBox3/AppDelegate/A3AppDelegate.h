@@ -13,8 +13,9 @@
 #import <GoogleMobileAds/GoogleMobileAds.h>
 #import "RMStoreAppReceiptVerificator.h"
 #import "A3HomeStyleMenuViewController.h"
+#import "MMDrawerController.h"
+#import "Reachability.h"
 
-@class MMDrawerController;
 @protocol A3PasscodeViewControllerProtocol;
 @class Reachability;
 @class A3DataMigrationManager;
@@ -86,6 +87,7 @@ extern NSString *const A3AppName_Flashlight;
 extern NSString *const A3AppName_Random;
 extern NSString *const A3AppName_Ruler;
 extern NSString *const A3AppName_Level;
+extern NSString *const A3AppName_QRCode;
 extern NSString *const A3AppName_Settings;
 extern NSString *const A3AppName_About;
 extern NSString *const A3AppName_RemoveAds;

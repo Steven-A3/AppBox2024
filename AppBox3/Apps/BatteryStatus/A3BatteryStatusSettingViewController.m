@@ -262,27 +262,12 @@ NSString *const A3BatteryTitleKey = @"title";
     }
     else if (indexPath.section == 2) {
         // Battery How to Maximize
-		[self presentWebViewControllerURL:[A3BatteryStatusManager howToMaximizePowerUse]];
+        [self presentWebViewControllerWithURL:[A3BatteryStatusManager howToMaximizePowerUse]];
 	}
     else if (indexPath.section == 3) {
         // More Info About Battery
-		[self presentWebViewControllerURL:[A3BatteryStatusManager moreInformationAboutBatteries]];
+        [self presentWebViewControllerWithURL:[A3BatteryStatusManager moreInformationAboutBatteries]];
     }
-}
-
-- (void)presentWebViewControllerURL:(NSURL *)url {
-	if (![[A3AppDelegate instance].reachability isReachable]) {
-		[self alertInternetConnectionIsNotAvailable];
-		return;
-	}
-	A3BasicWebViewController *viewController = [[A3BasicWebViewController alloc] init];
-	viewController.url = url;
-	if (IS_IPHONE) {
-		[self.navigationController pushViewController:viewController animated:YES];
-	} else {
-		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-		[[[A3AppDelegate instance] rootViewController_iPad] presentViewController:navigationController animated:YES completion:NULL];
-	}
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath

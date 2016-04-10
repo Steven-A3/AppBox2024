@@ -50,11 +50,8 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 - (CGRect)screenBoundsAdjustedWithOrientation;
 - (void)callPrepareCloseOnActiveMainAppViewController;
 - (void)dismissModalViewControllerOnMainViewController;
-
 - (void)popToRootAndPushViewController:(UIViewController *)viewController animated:(BOOL)animated;
-
 - (void)showNavigationBarOn:(UINavigationController *)targetController;
-
 - (void)leftBarButtonAppsButton;
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem;
 - (void)leftBarButtonCancelButton;
@@ -63,7 +60,6 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 - (void)addFourButtons:(NSArray *)buttons toView:(UIView *)view;
 - (UIView *)moreMenuViewWithButtons:(NSArray *)buttonsArray;
 - (UIView *)presentMoreMenuWithButtons:(NSArray *)buttons pullDownView:(UIView *)pullDownView;
-
 - (void)dismissMoreMenuView:(UIView *)moreMenuView pullDownView:(UIView *)pullDownView completion:(void (^)())completion;
 - (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer;
 - (UIButton *)shareButton;
@@ -90,6 +86,7 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 - (void)willDismissFromRightSide;
 - (void)alertCloudNotEnabled;
 - (UIActionSheet *)actionSheetAskingImagePickupWithDelete:(BOOL)deleteEnable delegate:(id <UIActionSheetDelegate>)delegate;
+- (void)presentWebViewControllerWithURL:(NSURL *)url;
 
 #pragma mark - Custom Date String Related
 

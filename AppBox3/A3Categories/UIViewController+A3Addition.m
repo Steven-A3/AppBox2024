@@ -19,6 +19,7 @@
 #import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
 #import "A3HomeStyleMenuViewController.h"
+#import "A3BasicWebViewController.h"
 #import <objc/runtime.h>
 
 static char const *const key_firstActionSheet = "key_firstActionSheet";
@@ -761,6 +762,21 @@ NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
 	[self presentViewController:alertController
 					   animated:YES
 					 completion:NULL];
+}
+
+- (void)presentWebViewControllerWithURL:(NSURL *)url {
+	if (![[A3AppDelegate instance].reachability isReachable]) {
+		[self alertInternetConnectionIsNotAvailable];
+		return;
+	}
+	A3BasicWebViewController *viewController = [[A3BasicWebViewController alloc] init];
+	viewController.url = url;
+	if (IS_IPHONE) {
+		[self.navigationController pushViewController:viewController animated:YES];
+	} else {
+		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] presentViewController:navigationController animated:YES completion:NULL];
+	}
 }
 
 #pragma mark -- Setup Banner view for gathering information

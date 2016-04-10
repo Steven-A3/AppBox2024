@@ -164,7 +164,7 @@
 	switch (row) {
 		case 1:{
 			NSURL *url = [NSURL URLWithString:@"http://www.allaboutapps.net/wordpress/archives/category/whats-new"];
-			[self presentWebViewControllerURL:url];
+			[self presentWebViewControllerWithURL:url];
 			break;
 		}
 		case 2: {
@@ -206,7 +206,7 @@
 	}
 }
 
-- (void)presentWebViewControllerURL:(NSURL *)url {
+- (void)presentWebViewControllerWithURL:(NSURL *)url {
 	if (![[A3AppDelegate instance].reachability isReachable]) {
 		[self alertInternetConnectionIsNotAvailable];
 		return;

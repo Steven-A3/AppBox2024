@@ -278,7 +278,9 @@ A3InstructionViewControllerDelegate>
 }
 
 - (NSArray *)originalMenuItems {
+	if (IS_IPHONE) {
 	return @[
+			 @{kA3AppsMenuName:A3AppName_QRCode},
 			 @{kA3AppsMenuName:A3AppName_Magnifier},
 			 @{kA3AppsMenuName:A3AppName_Random},
 			 @{kA3AppsMenuName:A3AppName_Clock},
@@ -304,6 +306,34 @@ A3InstructionViewControllerDelegate>
 			 @{kA3AppsMenuName:A3AppName_Wallet},
 			 @{kA3AppsMenuName:A3AppName_UnitPrice},
 			 ];
+	} else {
+		return @[
+				 @{kA3AppsMenuName:A3AppName_Magnifier},
+				 @{kA3AppsMenuName:A3AppName_Random},
+				 @{kA3AppsMenuName:A3AppName_Clock},
+				 @{kA3AppsMenuName:A3AppName_Calculator},
+				 @{kA3AppsMenuName:A3AppName_Ruler},
+				 @{kA3AppsMenuName:A3AppName_QRCode},
+				 @{kA3AppsMenuName:A3AppName_BatteryStatus},
+				 @{kA3AppsMenuName:A3AppName_DaysCounter},
+				 @{kA3AppsMenuName:A3AppName_DateCalculator},
+				 @{kA3AppsMenuName:A3AppName_Flashlight},
+				 @{kA3AppsMenuName:A3AppName_Mirror},
+				 @{kA3AppsMenuName:A3AppName_Holidays},
+				 @{kA3AppsMenuName:A3AppName_ExpenseList},
+				 @{kA3AppsMenuName:A3AppName_LoanCalculator},
+				 @{kA3AppsMenuName:A3AppName_PercentCalculator},
+				 @{kA3AppsMenuName:A3AppName_CurrencyConverter},
+				 @{kA3AppsMenuName:A3AppName_UnitConverter},
+				 @{kA3AppsMenuName:A3AppName_LadiesCalendar},
+				 @{kA3AppsMenuName:A3AppName_TipCalculator},
+				 @{kA3AppsMenuName:A3AppName_SalesCalculator},
+				 @{kA3AppsMenuName:A3AppName_Translator},
+				 @{kA3AppsMenuName:A3AppName_LunarConverter},
+				 @{kA3AppsMenuName:A3AppName_Wallet},
+				 @{kA3AppsMenuName:A3AppName_UnitPrice},
+				 ];
+	}
 }
 
 - (NSMutableArray *)menuItems {

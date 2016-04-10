@@ -74,6 +74,7 @@ NSString *const A3AppName_Flashlight = @"Flashlight";
 NSString *const A3AppName_Random = @"Random";
 NSString *const A3AppName_Ruler = @"Ruler";
 NSString *const A3AppName_Level = @"Level";
+NSString *const A3AppName_QRCode = @"QRCode";
 NSString *const A3AppName_Settings = @"Settings";
 NSString *const A3AppName_About = @"About";
 NSString *const A3AppName_RemoveAds = @"Remove Ads";
@@ -116,6 +117,7 @@ NSString *const A3AppNameGrid_Flashlight = @"Flashlight Short";
 NSString *const A3AppNameGrid_Random = @"Random";
 NSString *const A3AppNameGrid_Ruler = @"Ruler";
 NSString *const A3AppNameGrid_Level = @"Level";
+NSString *const A3AppNameGrid_QRCode = @"QRCode";
 
 static char const *const kA3AppsInfoDictionary = "kA3AppsInfoDictionary";
 static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
@@ -283,6 +285,13 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 						kA3AppsGroupName:A3AppGroupNameUtility,
 						kA3AppsMenuNameForGrid:A3AppNameGrid_Level,
 				},
+				A3AppName_QRCode : @{
+						kA3AppsClassName_iPhone : @"A3QRCodeViewController",
+						kA3AppsNibName_iPhone:@"A3QRCodeViewController",
+						kA3AppsMenuImageName : @"QRCode",
+						kA3AppsGroupName:A3AppGroupNameUtility,
+						kA3AppsMenuNameForGrid:A3AppNameGrid_QRCode,
+						},
 				A3AppName_Settings : @{
 						kA3AppsStoryboard_iPhone : @"A3Settings",
 						kA3AppsStoryboard_iPad:@"A3Settings",
@@ -371,6 +380,7 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 			@{kA3AppsMenuName : A3AppName_Random},
 			@{kA3AppsMenuName : A3AppName_Ruler},
 			@{kA3AppsMenuName : A3AppName_Level},
+			@{kA3AppsMenuName : A3AppName_QRCode},
 	] mutableCopy];
 	if (IS_IPAD) {
 		[self removeMenu:@"Level" inMenus:utilityApps];
@@ -407,17 +417,20 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 				BOOL hasFlashlight = NO;
 				BOOL hasRuler = NO;
 				BOOL hasLevel = NO;
+				BOOL hasQRCode = NO;
 				for (NSDictionary *menus in section[kA3AppsExpandableChildren]) {
-					if ([menus[kA3AppsMenuName] isEqualToString:A3AppName_Flashlight]) {
+					if (!hasFlashlight && [menus[kA3AppsMenuName] isEqualToString:A3AppName_Flashlight]) {
 						hasFlashlight = YES;
 					}
-					else if ([menus[kA3AppsMenuName] isEqualToString:A3AppName_Ruler]) {
+					else if (!hasRuler && [menus[kA3AppsMenuName] isEqualToString:A3AppName_Ruler]) {
 						hasRuler = YES;
 					}
-					else if ([menus[kA3AppsMenuName] isEqualToString:A3AppName_Level]) {
+					else if (!hasLevel && [menus[kA3AppsMenuName] isEqualToString:A3AppName_Level]) {
 						hasLevel = YES;
 					}
-					if (hasFlashlight && hasRuler && hasLevel) break;
+					else if (!hasQRCode && [menus[kA3AppsMenuName] isEqualToString:A3AppName_QRCode]) {
+						hasQRCode = YES;
+					}
 				}
 
 				NSMutableArray *newMenus = [section[kA3AppsExpandableChildren] mutableCopy];
@@ -445,6 +458,12 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 					if (indexOfLevelItem != NSNotFound) {
 						[newMenus removeObjectAtIndex:indexOfLevelItem];
 					}
+				}
+				if (!hasQRCode) {
+					NSArray *newItems = @[
+										  @{kA3AppsMenuName : A3AppName_QRCode},
+										  ];
+					[newMenus addObjectsFromArray:newItems];
 				}
 
 				NSMutableDictionary *newSection = [section mutableCopy];

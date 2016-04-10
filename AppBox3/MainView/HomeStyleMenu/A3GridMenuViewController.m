@@ -312,6 +312,7 @@ A3InstructionViewControllerDelegate>
 - (NSArray *)originalMenuItems {
 	if (IS_IPAD) {
 		return @[
+				 @{kA3AppsMenuName:A3AppName_QRCode},
 				 @{kA3AppsMenuName:A3AppName_BatteryStatus},
 				 @{kA3AppsMenuName:A3AppName_CurrencyConverter},
 				 @{kA3AppsMenuName:A3AppName_LoanCalculator},
@@ -338,6 +339,7 @@ A3InstructionViewControllerDelegate>
 				 ];
 	} else {
 		return @[
+				 @{kA3AppsMenuName:A3AppName_QRCode},
 				 @{kA3AppsMenuName:A3AppName_Level},
 				 @{kA3AppsMenuName:A3AppName_CurrencyConverter},
 				 @{kA3AppsMenuName:A3AppName_LoanCalculator},
@@ -374,6 +376,11 @@ A3InstructionViewControllerDelegate>
 		}
 		if (IS_IPAD) {
 			[_menuItems removeObject:@{kA3AppsMenuName:A3AppName_Level}];
+		}
+		NSDictionary *qrcodeMenu = @{kA3AppsMenuName : A3AppName_QRCode};
+		NSInteger qrcodeIndex = [_menuItems indexOfObject:qrcodeMenu];
+		if (qrcodeIndex == NSNotFound) {
+			[_menuItems insertObject:qrcodeMenu atIndex:0];
 		}
 	}
 	return _menuItems;

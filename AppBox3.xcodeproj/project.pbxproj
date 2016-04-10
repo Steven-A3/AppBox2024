@@ -360,6 +360,8 @@
 		684A71BB1852E0100004A9FE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 684A71BA1852E0100004A9FE /* Security.framework */; };
 		684A71BD1852E0250004A9FE /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 684A71BC1852E0250004A9FE /* libc++.dylib */; };
 		684A71C21853464A0004A9FE /* A3AppDelegate+iCloud.m in Sources */ = {isa = PBXBuildFile; fileRef = 684A71C11853464A0004A9FE /* A3AppDelegate+iCloud.m */; };
+		684B44B41CB9B50800B7D264 /* A3QRCodeDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 684B44B31CB9B50800B7D264 /* A3QRCodeDetailViewController.m */; };
+		684B44BB1CB9B53400B7D264 /* A3QRCodeDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 684B44BA1CB9B53400B7D264 /* A3QRCodeDetailCell.m */; };
 		684D92BA18BC1EFE005016F7 /* A3BatterStatusBatteryPanelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92A318BC1EFE005016F7 /* A3BatterStatusBatteryPanelView.m */; };
 		684D92BB18BC1EFE005016F7 /* A3BatterStatusChooseColorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92A518BC1EFE005016F7 /* A3BatterStatusChooseColorCell.m */; };
 		684D92BC18BC1EFE005016F7 /* A3BatterStatusChooseColorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92A718BC1EFE005016F7 /* A3BatterStatusChooseColorViewController.m */; };
@@ -396,6 +398,9 @@
 		68521A4617E1FF2E00E08FB1 /* FXLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 68521A4517E1FF2E00E08FB1 /* FXLabel.m */; };
 		6852298018FFFAD7002D3C0E /* UIViewController+iPad_rightSideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6852297F18FFFAD7002D3C0E /* UIViewController+iPad_rightSideView.m */; };
 		685560061670448D00F200B7 /* A3Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 685560051670448D00F200B7 /* A3Utilities.m */; };
+		6857C7271CB647A000D09177 /* RSCornersView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6857C7241CB647A000D09177 /* RSCornersView.m */; };
+		6857C7281CB647A000D09177 /* RSScannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6857C7261CB647A000D09177 /* RSScannerViewController.m */; };
+		6857C7321CB647EB00D09177 /* A3QRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6857C7311CB647EB00D09177 /* A3QRCodeViewController.m */; };
 		685946D118C371C800528190 /* A3SpeechTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 685946D018C371C800528190 /* A3SpeechTest.m */; };
 		685E319A1791694E001A0EC8 /* A3CurrencyTVActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 685E31991791694E001A0EC8 /* A3CurrencyTVActionCell.xib */; };
 		685E319F17917879001A0EC8 /* A3CurrencyTVActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 685E319E17917879001A0EC8 /* A3CurrencyTVActionCell.m */; };
@@ -476,6 +481,7 @@
 		6891D7FD183C5EDD0060B677 /* A3CurrencySettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6891D7FB183C5EDD0060B677 /* A3CurrencySettingsViewController.m */; };
 		6893E6381C9E3E17009E0A2E /* A3HomeStyleHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6893E6371C9E3E17009E0A2E /* A3HomeStyleHelpViewController.m */; };
 		689421051A04AF34005F3AE3 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 689421041A04AF34005F3AE3 /* Settings.bundle */; };
+		68944FD81CB69D9100493E6A /* A3QRCodeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68944FD71CB69D9100493E6A /* A3QRCodeViewController.xib */; };
 		68948B5017D9760A00BF4BE9 /* A3NavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68948B4F17D9760A00BF4BE9 /* A3NavigationController.m */; };
 		6895347C178686AF007061CA /* UIImage+Masking.m in Sources */ = {isa = PBXBuildFile; fileRef = 68953462178686AF007061CA /* UIImage+Masking.m */; };
 		6895347E178686AF007061CA /* UIImage+Reflection.m in Sources */ = {isa = PBXBuildFile; fileRef = 68953464178686AF007061CA /* UIImage+Reflection.m */; };
@@ -787,6 +793,9 @@
 		68E878FA1C32B13E00935E62 /* StringsDict.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 68E878F01C32B13E00935E62 /* StringsDict.stringsdict */; };
 		68E878FB1C32B13E00935E62 /* unit.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E878F21C32B13E00935E62 /* unit.strings */; };
 		68E878FC1C32B13E00935E62 /* unitShort.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E878F41C32B13E00935E62 /* unitShort.strings */; };
+		68EABE371CB75D8E00219151 /* QRCodeHistory+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EABE341CB75D8E00219151 /* QRCodeHistory+CoreDataProperties.m */; };
+		68EABE381CB75D8E00219151 /* QRCodeHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EABE361CB75D8E00219151 /* QRCodeHistory.m */; };
+		68EABE3B1CB7954E00219151 /* A3QRCodeHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EABE3A1CB7954E00219151 /* A3QRCodeHistoryViewController.m */; };
 		68EC80D616E1ADF800CF672E /* A3Formatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EC80D516E1ADF800CF672E /* A3Formatter.m */; };
 		68F04D031B40F825004FDD7B /* AppleIncRootCertificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 68F04CA21B40F825004FDD7B /* AppleIncRootCertificate.cer */; };
 		68F04D071B40F825004FDD7B /* RMAppReceipt.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F04CF61B40F825004FDD7B /* RMAppReceipt.m */; };
@@ -1576,6 +1585,10 @@
 		684A71BC1852E0250004A9FE /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		684A71C0185346490004A9FE /* A3AppDelegate+iCloud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "A3AppDelegate+iCloud.h"; path = "AppDelegate/A3AppDelegate+iCloud.h"; sourceTree = "<group>"; };
 		684A71C11853464A0004A9FE /* A3AppDelegate+iCloud.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "A3AppDelegate+iCloud.m"; path = "AppDelegate/A3AppDelegate+iCloud.m"; sourceTree = "<group>"; };
+		684B44B21CB9B50800B7D264 /* A3QRCodeDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3QRCodeDetailViewController.h; sourceTree = "<group>"; };
+		684B44B31CB9B50800B7D264 /* A3QRCodeDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3QRCodeDetailViewController.m; sourceTree = "<group>"; };
+		684B44B91CB9B53400B7D264 /* A3QRCodeDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3QRCodeDetailCell.h; sourceTree = "<group>"; };
+		684B44BA1CB9B53400B7D264 /* A3QRCodeDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3QRCodeDetailCell.m; sourceTree = "<group>"; };
 		684D92A218BC1EFE005016F7 /* A3BatterStatusBatteryPanelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BatterStatusBatteryPanelView.h; sourceTree = "<group>"; };
 		684D92A318BC1EFE005016F7 /* A3BatterStatusBatteryPanelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3BatterStatusBatteryPanelView.m; sourceTree = "<group>"; };
 		684D92A418BC1EFE005016F7 /* A3BatterStatusChooseColorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BatterStatusChooseColorCell.h; sourceTree = "<group>"; };
@@ -1644,6 +1657,12 @@
 		6852297F18FFFAD7002D3C0E /* UIViewController+iPad_rightSideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+iPad_rightSideView.m"; sourceTree = "<group>"; };
 		685560041670448D00F200B7 /* A3Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3Utilities.h; sourceTree = "<group>"; };
 		685560051670448D00F200B7 /* A3Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3Utilities.m; sourceTree = "<group>"; };
+		6857C7231CB647A000D09177 /* RSCornersView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSCornersView.h; sourceTree = "<group>"; };
+		6857C7241CB647A000D09177 /* RSCornersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSCornersView.m; sourceTree = "<group>"; };
+		6857C7251CB647A000D09177 /* RSScannerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSScannerViewController.h; sourceTree = "<group>"; };
+		6857C7261CB647A000D09177 /* RSScannerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSScannerViewController.m; sourceTree = "<group>"; };
+		6857C7301CB647EB00D09177 /* A3QRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3QRCodeViewController.h; sourceTree = "<group>"; };
+		6857C7311CB647EB00D09177 /* A3QRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3QRCodeViewController.m; sourceTree = "<group>"; };
 		685946D018C371C800528190 /* A3SpeechTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SpeechTest.m; sourceTree = "<group>"; };
 		685E31991791694E001A0EC8 /* A3CurrencyTVActionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3CurrencyTVActionCell.xib; path = Apps/Currency/A3CurrencyTVActionCell.xib; sourceTree = "<group>"; };
 		685E319D17917879001A0EC8 /* A3CurrencyTVActionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyTVActionCell.h; path = Apps/Currency/A3CurrencyTVActionCell.h; sourceTree = "<group>"; };
@@ -1808,6 +1827,7 @@
 		6893E6371C9E3E17009E0A2E /* A3HomeStyleHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3HomeStyleHelpViewController.m; sourceTree = "<group>"; };
 		6893E6431C9E621F009E0A2E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3Settings.strings; sourceTree = "<group>"; };
 		689421041A04AF34005F3AE3 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = AppBox3/Settings.bundle; sourceTree = "<group>"; };
+		68944FD71CB69D9100493E6A /* A3QRCodeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3QRCodeViewController.xib; sourceTree = "<group>"; };
 		68948B4E17D9760A00BF4BE9 /* A3NavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3NavigationController.h; path = ViewControllers/A3NavigationController.h; sourceTree = "<group>"; };
 		68948B4F17D9760A00BF4BE9 /* A3NavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3NavigationController.m; path = ViewControllers/A3NavigationController.m; sourceTree = "<group>"; };
 		68953461178686AF007061CA /* UIImage+Masking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Masking.h"; sourceTree = "<group>"; };
@@ -2482,6 +2502,13 @@
 		68E879401C32B25C00935E62 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/unitShort.strings; sourceTree = "<group>"; };
 		68E879411C32B25E00935E62 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/unitShort.strings; sourceTree = "<group>"; };
 		68E879421C32B26000935E62 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/unitShort.strings"; sourceTree = "<group>"; };
+		68EABE271CB7515900219151 /* AppBox 2 (Adding QR Code).xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "AppBox 2 (Adding QR Code).xcdatamodel"; sourceTree = "<group>"; };
+		68EABE331CB75D8E00219151 /* QRCodeHistory+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QRCodeHistory+CoreDataProperties.h"; sourceTree = "<group>"; };
+		68EABE341CB75D8E00219151 /* QRCodeHistory+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QRCodeHistory+CoreDataProperties.m"; sourceTree = "<group>"; };
+		68EABE351CB75D8E00219151 /* QRCodeHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRCodeHistory.h; sourceTree = "<group>"; };
+		68EABE361CB75D8E00219151 /* QRCodeHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRCodeHistory.m; sourceTree = "<group>"; };
+		68EABE391CB7954E00219151 /* A3QRCodeHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3QRCodeHistoryViewController.h; sourceTree = "<group>"; };
+		68EABE3A1CB7954E00219151 /* A3QRCodeHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3QRCodeHistoryViewController.m; sourceTree = "<group>"; };
 		68EC80D416E1ADF800CF672E /* A3Formatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3Formatter.h; sourceTree = "<group>"; };
 		68EC80D516E1ADF800CF672E /* A3Formatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3Formatter.m; sourceTree = "<group>"; };
 		68F04CA21B40F825004FDD7B /* AppleIncRootCertificate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = AppleIncRootCertificate.cer; sourceTree = "<group>"; };
@@ -3876,6 +3903,7 @@
 				680D638418CFF9D400938AD0 /* Magnifier */,
 				680D638818CFF9D400938AD0 /* Mirror */,
 				68E2A62A18D0B1FC00E834D9 /* PercentCalculator */,
+				6857C7221CB647A000D09177 /* QRCode */,
 				57E4E1CA19D2DD090037371B /* Random */,
 				688788881A9B29D5008C8567 /* Ruler */,
 				68E2A66718D0B22800E834D9 /* SalesCalculator */,
@@ -4100,6 +4128,27 @@
 				68521A4517E1FF2E00E08FB1 /* FXLabel.m */,
 			);
 			name = FXLabel;
+			sourceTree = "<group>";
+		};
+		6857C7221CB647A000D09177 /* QRCode */ = {
+			isa = PBXGroup;
+			children = (
+				684B44B91CB9B53400B7D264 /* A3QRCodeDetailCell.h */,
+				684B44BA1CB9B53400B7D264 /* A3QRCodeDetailCell.m */,
+				684B44B21CB9B50800B7D264 /* A3QRCodeDetailViewController.h */,
+				684B44B31CB9B50800B7D264 /* A3QRCodeDetailViewController.m */,
+				68EABE391CB7954E00219151 /* A3QRCodeHistoryViewController.h */,
+				68EABE3A1CB7954E00219151 /* A3QRCodeHistoryViewController.m */,
+				6857C7301CB647EB00D09177 /* A3QRCodeViewController.h */,
+				6857C7311CB647EB00D09177 /* A3QRCodeViewController.m */,
+				68944FD71CB69D9100493E6A /* A3QRCodeViewController.xib */,
+				68EABE321CB75D8E00219151 /* Model */,
+				6857C7231CB647A000D09177 /* RSCornersView.h */,
+				6857C7241CB647A000D09177 /* RSCornersView.m */,
+				6857C7251CB647A000D09177 /* RSScannerViewController.h */,
+				6857C7261CB647A000D09177 /* RSScannerViewController.m */,
+			);
+			path = QRCode;
 			sourceTree = "<group>";
 		};
 		68635FF3198BF80E00C3A323 /* Products */ = {
@@ -5174,6 +5223,17 @@
 			name = Data;
 			sourceTree = "<group>";
 		};
+		68EABE321CB75D8E00219151 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				68EABE331CB75D8E00219151 /* QRCodeHistory+CoreDataProperties.h */,
+				68EABE341CB75D8E00219151 /* QRCodeHistory+CoreDataProperties.m */,
+				68EABE351CB75D8E00219151 /* QRCodeHistory.h */,
+				68EABE361CB75D8E00219151 /* QRCodeHistory.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		68F04CA01B40F825004FDD7B /* RMStore */ = {
 			isa = PBXGroup;
 			children = (
@@ -5812,6 +5872,7 @@
 			files = (
 				68E3A2A81AC4F61C004FE7B0 /* IsraelHolidays.plist in Resources */,
 				68636003198BF91300C3A323 /* Ensembles.bundle in Resources */,
+				68944FD81CB69D9100493E6A /* A3QRCodeViewController.xib in Resources */,
 				68143D0318E3EC1F00569691 /* A3NumberKeyboardSimpleVC_iPad.xib in Resources */,
 				68F14FD519485E8500159EAD /* A3DaysCounterAddEventDateInputCell.xib in Resources */,
 				68B6A2F318CEC76D004084EF /* A3UnitPriceInputView_iPad.xib in Resources */,
@@ -6035,6 +6096,7 @@
 			files = (
 				682FDF1A1981CC0400C6C83D /* NSManagedObject+MagicalRequests.m in Sources */,
 				68B6A45E18CEE781004084EF /* SDWebImageDecoder.m in Sources */,
+				6857C7321CB647EB00D09177 /* A3QRCodeViewController.m in Sources */,
 				68E213BB19865C3100A82BBA /* UnitHistory.m in Sources */,
 				808DA9EB196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.m in Sources */,
 				68F1C8DB18D7F37D009FAE8A /* A3LineChartView.m in Sources */,
@@ -6088,6 +6150,7 @@
 				68F1C90318D814F9009FAE8A /* UIColor+A3Addition.m in Sources */,
 				68F319FD18D83D1F0003BE62 /* A3LaunchViewController.m in Sources */,
 				6825365418A7AA4C00EAFB84 /* MASViewConstraint.m in Sources */,
+				6857C7271CB647A000D09177 /* RSCornersView.m in Sources */,
 				684D92F818BC1FBC005016F7 /* A3DateCalcHeaderView.m in Sources */,
 				68143D0E18E3EC1F00569691 /* A3KeyboardButton_iOS7_iPad.m in Sources */,
 				68B9B16317D02B85003ACAD0 /* A3HolidaysCountryViewCell.m in Sources */,
@@ -6202,6 +6265,7 @@
 				68143D5218E3EC7C00569691 /* A3JHTableViewElement.m in Sources */,
 				68143D1018E3EC1F00569691 /* A3KeyboardButton_iPhone.m in Sources */,
 				68B6A33718CEC76D004084EF /* A3WalletMapCell.m in Sources */,
+				6857C7281CB647A000D09177 /* RSScannerViewController.m in Sources */,
 				68B6A46618CEE781004084EF /* UIImage+WebP.m in Sources */,
 				680886E11891751B0093FD97 /* A3ClockWaveCircleView.m in Sources */,
 				6825367A18A7BBF600EAFB84 /* NSDate+LunarConverter.m in Sources */,
@@ -6432,9 +6496,11 @@
 				68E6F34D17B25F5F00F10ED9 /* A3CurrencyChartViewController.m in Sources */,
 				682FDF181981CC0400C6C83D /* NSManagedObject+MagicalRecord.m in Sources */,
 				68E2A6B218D0B22800E834D9 /* A3TipCalcHistoryCell.m in Sources */,
+				684B44BB1CB9B53400B7D264 /* A3QRCodeDetailCell.m in Sources */,
 				68B6A45518CEE781004084EF /* PSTGridLayoutRow.m in Sources */,
 				68B6A2D218CEC76D004084EF /* A3UnitConverterSelectViewController.m in Sources */,
 				68CA9BA61961B881002E58DC /* PercentCalcHistory.m in Sources */,
+				68EABE3B1CB7954E00219151 /* A3QRCodeHistoryViewController.m in Sources */,
 				68B6A2B318CEC76D004084EF /* LoanCalcData+Calculation.m in Sources */,
 				68B6A34C18CEC76D004084EF /* A3WalletItemEditViewController.m in Sources */,
 				686BB86119092D94009163F2 /* A3WalletCategoryEditFieldCell.m in Sources */,
@@ -6548,6 +6614,7 @@
 				68B6A32D18CEC76D004084EF /* A3WalletItemRightIconCell.m in Sources */,
 				17D42129FB82BFB4E56A8D7A /* A3TranslatorLanguage.m in Sources */,
 				680E837119D41D83007CF12C /* A3SettingsStartingAppViewController.m in Sources */,
+				68EABE381CB75D8E00219151 /* QRCodeHistory.m in Sources */,
 				68143D6818E3EC7C00569691 /* A3TableViewRootElement.m in Sources */,
 				68F1C8FE18D7FA41009FAE8A /* MPFoldSegue.m in Sources */,
 				17D4262AB96A4454B8EF3B49 /* A3LanguagePickerController.m in Sources */,
@@ -6562,6 +6629,7 @@
 				68067C8C186E867C00D1A1D1 /* A3PasswordViewController.m in Sources */,
 				571795CE19D7CD6600DEF2FB /* RGB-HSL.m in Sources */,
 				68143D0F18E3EC1F00569691 /* A3KeyboardButton_iOS7_iPhone.m in Sources */,
+				684B44B41CB9B50800B7D264 /* A3QRCodeDetailViewController.m in Sources */,
 				17D427E06C341B1B48478B6A /* A3TranslatorLanguageTVDelegate.m in Sources */,
 				68B6A44D18CEE781004084EF /* PSTCollectionViewController.m in Sources */,
 				68F1500019485E8500159EAD /* A3RoundDateView.m in Sources */,
@@ -6682,6 +6750,7 @@
 				17D421DA97EB3D5480B0586D /* A3SettingsViewController.m in Sources */,
 				17D427D61B3EEB8761EDC0B1 /* TranslatorGroup+manage.m in Sources */,
 				681E1284193448230077DCFA /* AAAZip.m in Sources */,
+				68EABE371CB75D8E00219151 /* QRCodeHistory+CoreDataProperties.m in Sources */,
 				17D42E9D7756E743947E5964 /* A3BackupRestoreManager.m in Sources */,
 				17D42D692E16244D9FFB4B2E /* A3DaysCounterEventListViewController.m in Sources */,
 				68F04D091B40F825004FDD7B /* RMStoreKeychainPersistence.m in Sources */,
@@ -7530,9 +7599,10 @@
 		6831EBF618619CC800BAF15B /* AppBox3.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				68EABE271CB7515900219151 /* AppBox 2 (Adding QR Code).xcdatamodel */,
 				6831EBF718619CC800BAF15B /* AppBox3.xcdatamodel */,
 			);
-			currentVersion = 6831EBF718619CC800BAF15B /* AppBox3.xcdatamodel */;
+			currentVersion = 68EABE271CB7515900219151 /* AppBox 2 (Adding QR Code).xcdatamodel */;
 			path = AppBox3.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
