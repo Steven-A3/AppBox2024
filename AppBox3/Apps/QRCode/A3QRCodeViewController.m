@@ -15,6 +15,7 @@
 #import "AFHTTPRequestOperation.h"
 #import "A3QRCodeDetailViewController.h"
 #import "RSCornersView.h"
+#import "A3QRCodeDataHandler.h"
 
 NSString *const A3QRCodeSettingsPlayAlertSound = @"A3QRCodeSettingsPlayAlertSound";
 NSString *const A3QRCodeSettingsPlayVibrate = @"A3QRCodeSettingsPlayVibrate";
@@ -31,6 +32,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *torchOnOffButton;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *vibrateOnOffButton;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *soundOnOffButton;
+@property (nonatomic, strong) A3QRCodeDataHandler *dataHandler;
 
 @end
 
@@ -149,10 +151,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 						[weakSelf presentDetailViewControllerWithData:history];
 					}
 				} else {
-					NSURL *url = [NSURL URLWithString:barcode.stringValue];
-					if ([[UIApplication sharedApplication] canOpenURL:url]) {
-						[weakSelf presentWebViewControllerWithURL:url];
-					}
+					[weakSelf.dataHandler performActionWithData:barcode.stringValue inViewController:weakSelf];
 				}
 			}];
 		});
@@ -192,14 +191,12 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 
 		[moc MR_saveToPersistentStoreAndWait];
 
-		NSURL *url = [NSURL URLWithString:feature.messageString];
-		if ([[UIApplication sharedApplication] canOpenURL:url]) {
-			[self presentWebViewControllerWithURL:url];
-		}
+		[self.dataHandler performActionWithData:feature.messageString inViewController:self];
+
 	} else {
 		alertBlock = ^() {
 			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info"
-																message:@""
+																message:@"Code not found."
 															   delegate:nil
 													  cancelButtonTitle:@"OK"
 													  otherButtonTitles:nil];
@@ -247,6 +244,13 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	A3QRCodeDetailViewController *viewController = [A3QRCodeDetailViewController new];
 	viewController.historyData = data;
 	[self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (A3QRCodeDataHandler *)dataHandler {
+	if (!_dataHandler) {
+		_dataHandler = [A3QRCodeDataHandler new];
+	}
+	return _dataHandler;
 }
 
 @end

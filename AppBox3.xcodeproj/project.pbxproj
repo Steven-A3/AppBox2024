@@ -456,6 +456,18 @@
 		6876D71217A75E5A00E16991 /* A3CurrencyItemTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876D70F17A75E5A00E16991 /* A3CurrencyItemTest.m */; };
 		6876D71317A75E5A00E16991 /* A3CurrencyViewControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876D71017A75E5A00E16991 /* A3CurrencyViewControllerTest.m */; };
 		6876D78417A760BF00E16991 /* libExpecta-ios-universal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6890AB2A1786B800004FECE4 /* libExpecta-ios-universal.a */; };
+		687AEE991CBB0B7100C2D844 /* A3QRCodeDataHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AEE981CBB0B7100C2D844 /* A3QRCodeDataHandler.m */; };
+		687AEEA01CBB73F900C2D844 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 687AEE9E1CBB73F900C2D844 /* AddressBook.framework */; };
+		687AEEA11CBB73F900C2D844 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 687AEE9F1CBB73F900C2D844 /* AddressBookUI.framework */; };
+		687AEEA71CBBB69B00C2D844 /* A3QRCodeMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AEEA61CBBB69B00C2D844 /* A3QRCodeMapViewController.m */; };
+		687AEEAA1CBBCB5900C2D844 /* A3PlaceAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AEEA91CBBCB5900C2D844 /* A3PlaceAnnotation.m */; };
+		687AEEAD1CBBE88300C2D844 /* A3QRCodeTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AEEAC1CBBE88300C2D844 /* A3QRCodeTextViewController.m */; };
+		687AEEB41CBC489700C2D844 /* MXLCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AEEAF1CBC489700C2D844 /* MXLCalendar.m */; };
+		687AEEB51CBC489700C2D844 /* MXLCalendarEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AEEB11CBC489700C2D844 /* MXLCalendarEvent.m */; };
+		687AEEB61CBC489700C2D844 /* MXLCalendarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AEEB31CBC489700C2D844 /* MXLCalendarManager.m */; };
+		687AEEB71CBC4B8200C2D844 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68AB0ABB1A3E92C8001BFC5D /* EventKit.framework */; };
+		687AEEB81CBC4B8200C2D844 /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68AB0ABD1A3E92D1001BFC5D /* EventKitUI.framework */; };
+		687AEEBB1CBC4E5800C2D844 /* MXLCalendarAttendee.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AEEBA1CBC4E5800C2D844 /* MXLCalendarAttendee.m */; };
 		687D0D0A17CAE519005AB571 /* HolidayData+Africa.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0CFD17CAE519005AB571 /* HolidayData+Africa.m */; };
 		687D0D0B17CAE519005AB571 /* HolidayData+America.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0CFF17CAE519005AB571 /* HolidayData+America.m */; };
 		687D0D0C17CAE519005AB571 /* HolidayData+Asia.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0117CAE519005AB571 /* HolidayData+Asia.m */; };
@@ -1744,6 +1756,24 @@
 		6876D70D17A75E5A00E16991 /* A3NSMutableArrayCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3NSMutableArrayCategory.m; sourceTree = "<group>"; };
 		6876D70F17A75E5A00E16991 /* A3CurrencyItemTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CurrencyItemTest.m; sourceTree = "<group>"; };
 		6876D71017A75E5A00E16991 /* A3CurrencyViewControllerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CurrencyViewControllerTest.m; sourceTree = "<group>"; };
+		687AEE971CBB0B7100C2D844 /* A3QRCodeDataHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3QRCodeDataHandler.h; sourceTree = "<group>"; };
+		687AEE981CBB0B7100C2D844 /* A3QRCodeDataHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3QRCodeDataHandler.m; sourceTree = "<group>"; };
+		687AEE9E1CBB73F900C2D844 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		687AEE9F1CBB73F900C2D844 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
+		687AEEA51CBBB69B00C2D844 /* A3QRCodeMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3QRCodeMapViewController.h; sourceTree = "<group>"; };
+		687AEEA61CBBB69B00C2D844 /* A3QRCodeMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3QRCodeMapViewController.m; sourceTree = "<group>"; };
+		687AEEA81CBBCB5900C2D844 /* A3PlaceAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3PlaceAnnotation.h; sourceTree = "<group>"; };
+		687AEEA91CBBCB5900C2D844 /* A3PlaceAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3PlaceAnnotation.m; sourceTree = "<group>"; };
+		687AEEAB1CBBE88300C2D844 /* A3QRCodeTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3QRCodeTextViewController.h; sourceTree = "<group>"; };
+		687AEEAC1CBBE88300C2D844 /* A3QRCodeTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3QRCodeTextViewController.m; sourceTree = "<group>"; };
+		687AEEAE1CBC489700C2D844 /* MXLCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXLCalendar.h; sourceTree = "<group>"; };
+		687AEEAF1CBC489700C2D844 /* MXLCalendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXLCalendar.m; sourceTree = "<group>"; };
+		687AEEB01CBC489700C2D844 /* MXLCalendarEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXLCalendarEvent.h; sourceTree = "<group>"; };
+		687AEEB11CBC489700C2D844 /* MXLCalendarEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXLCalendarEvent.m; sourceTree = "<group>"; };
+		687AEEB21CBC489700C2D844 /* MXLCalendarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXLCalendarManager.h; sourceTree = "<group>"; };
+		687AEEB31CBC489700C2D844 /* MXLCalendarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXLCalendarManager.m; sourceTree = "<group>"; };
+		687AEEB91CBC4E5800C2D844 /* MXLCalendarAttendee.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXLCalendarAttendee.h; sourceTree = "<group>"; };
+		687AEEBA1CBC4E5800C2D844 /* MXLCalendarAttendee.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXLCalendarAttendee.m; sourceTree = "<group>"; };
 		687C193B1783DF0F00415FCE /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		687D0CFC17CAE519005AB571 /* HolidayData+Africa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "HolidayData+Africa.h"; path = "Holidays/HolidayData+Africa.h"; sourceTree = "<group>"; };
 		687D0CFD17CAE519005AB571 /* HolidayData+Africa.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "HolidayData+Africa.m"; path = "Holidays/HolidayData+Africa.m"; sourceTree = "<group>"; };
@@ -2834,6 +2864,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				687AEEB71CBC4B8200C2D844 /* EventKit.framework in Frameworks */,
+				687AEEB81CBC4B8200C2D844 /* EventKitUI.framework in Frameworks */,
+				687AEEA01CBB73F900C2D844 /* AddressBook.framework in Frameworks */,
+				687AEEA11CBB73F900C2D844 /* AddressBookUI.framework in Frameworks */,
 				68F04D101B40F86B004FDD7B /* libcrypto.a in Frameworks */,
 				68F04D111B40F86B004FDD7B /* libssl.a in Frameworks */,
 				68FB683F1C8FC1170074ACF8 /* GoogleMobileAds.framework in Frameworks */,
@@ -3660,6 +3694,8 @@
 		682EA2D415EB10B000BD6AD4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				687AEE9E1CBB73F900C2D844 /* AddressBook.framework */,
+				687AEE9F1CBB73F900C2D844 /* AddressBookUI.framework */,
 				68F04D0E1B40F86B004FDD7B /* libcrypto.a */,
 				68F04D0F1B40F86B004FDD7B /* libssl.a */,
 				68746E771A4133ED007E74A0 /* CoreFoundation.framework */,
@@ -4133,12 +4169,28 @@
 		6857C7221CB647A000D09177 /* QRCode */ = {
 			isa = PBXGroup;
 			children = (
+				687AEEB91CBC4E5800C2D844 /* MXLCalendarAttendee.h */,
+				687AEEBA1CBC4E5800C2D844 /* MXLCalendarAttendee.m */,
+				687AEEAE1CBC489700C2D844 /* MXLCalendar.h */,
+				687AEEAF1CBC489700C2D844 /* MXLCalendar.m */,
+				687AEEB01CBC489700C2D844 /* MXLCalendarEvent.h */,
+				687AEEB11CBC489700C2D844 /* MXLCalendarEvent.m */,
+				687AEEB21CBC489700C2D844 /* MXLCalendarManager.h */,
+				687AEEB31CBC489700C2D844 /* MXLCalendarManager.m */,
+				687AEEA81CBBCB5900C2D844 /* A3PlaceAnnotation.h */,
+				687AEEA91CBBCB5900C2D844 /* A3PlaceAnnotation.m */,
+				687AEE971CBB0B7100C2D844 /* A3QRCodeDataHandler.h */,
+				687AEE981CBB0B7100C2D844 /* A3QRCodeDataHandler.m */,
 				684B44B91CB9B53400B7D264 /* A3QRCodeDetailCell.h */,
 				684B44BA1CB9B53400B7D264 /* A3QRCodeDetailCell.m */,
 				684B44B21CB9B50800B7D264 /* A3QRCodeDetailViewController.h */,
 				684B44B31CB9B50800B7D264 /* A3QRCodeDetailViewController.m */,
 				68EABE391CB7954E00219151 /* A3QRCodeHistoryViewController.h */,
 				68EABE3A1CB7954E00219151 /* A3QRCodeHistoryViewController.m */,
+				687AEEA51CBBB69B00C2D844 /* A3QRCodeMapViewController.h */,
+				687AEEA61CBBB69B00C2D844 /* A3QRCodeMapViewController.m */,
+				687AEEAB1CBBE88300C2D844 /* A3QRCodeTextViewController.h */,
+				687AEEAC1CBBE88300C2D844 /* A3QRCodeTextViewController.m */,
 				6857C7301CB647EB00D09177 /* A3QRCodeViewController.h */,
 				6857C7311CB647EB00D09177 /* A3QRCodeViewController.m */,
 				68944FD71CB69D9100493E6A /* A3QRCodeViewController.xib */,
@@ -6141,10 +6193,12 @@
 				687484C019783BE100EA8F74 /* WalletItem.m in Sources */,
 				68B6A30418CEC76D004084EF /* UILabel+BaseAlignment.m in Sources */,
 				68F14FCE19485E8500159EAD /* A3DaysCounterFavoriteListViewController.m in Sources */,
+				687AEEBB1CBC4E5800C2D844 /* MXLCalendarAttendee.m in Sources */,
 				6825365718A7AA4C00EAFB84 /* View+MASAdditions.m in Sources */,
 				68953484178686AF007061CA /* UIImage+Saving.m in Sources */,
 				68143CFD18E3EC1F00569691 /* A3DateKeyboardViewController_iPhone.m in Sources */,
 				68143D6A18E3EC7C00569691 /* A3TableViewSelectElement.m in Sources */,
+				687AEEAD1CBBE88300C2D844 /* A3QRCodeTextViewController.m in Sources */,
 				68143D5318E3EC7C00569691 /* A3JHTableViewEntryCell.m in Sources */,
 				68B6A2C918CEC76D004084EF /* A3LoanCalcSettingSwitchCell.m in Sources */,
 				68F1C90318D814F9009FAE8A /* UIColor+A3Addition.m in Sources */,
@@ -6216,6 +6270,7 @@
 				68E2A6A318D0B22800E834D9 /* A3SalesCalcHeaderView.m in Sources */,
 				68B6A32018CEC76D004084EF /* A3WalletCateEditIconCell.m in Sources */,
 				68B7014819789F8200F7CE1E /* TranslatorFavorite.m in Sources */,
+				687AEEB41CBC489700C2D844 /* MXLCalendar.m in Sources */,
 				684E9F05188A43C300FAA48E /* NJKWebViewProgressView.m in Sources */,
 				68F1500D19485E8500159EAD /* A3DaysCounterLocationPopupViewController.m in Sources */,
 				6823F6FE1863294700E6E90D /* CurrencyHistory+handler.m in Sources */,
@@ -6424,6 +6479,7 @@
 				6874840C1977F19D00EA8F74 /* LoanCalcComparisonHistory+extension.m in Sources */,
 				68B6A2AF18CEC76D004084EF /* A3LoanCalcSelectFrequencyViewController.m in Sources */,
 				68F14FF219485E8500159EAD /* A3DaysCounterSetupCalendarCell.m in Sources */,
+				687AEEB61CBC489700C2D844 /* MXLCalendarManager.m in Sources */,
 				689C9A4A1839CD7F007C97EE /* AFHTTPRequestOperation.m in Sources */,
 				68ADE14A17D83D28009618A7 /* UIViewController+MMDrawerController.m in Sources */,
 				68236CD6186A8D75006F442B /* A3PasscodeViewController.m in Sources */,
@@ -6435,6 +6491,7 @@
 				682FDF061981CC0400C6C83D /* NSAttributeDescription+MagicalDataImport.m in Sources */,
 				68143CFA18E3EC1F00569691 /* A3DateKeyboardViewController.m in Sources */,
 				6825367718A7BBE600EAFB84 /* A3DateHelper.m in Sources */,
+				687AEEA71CBBB69B00C2D844 /* A3QRCodeMapViewController.m in Sources */,
 				6831EC131861EB7C00BAF15B /* MBProgressHUD.m in Sources */,
 				68D455961886DD8C004F3877 /* A3AppDelegate+appearance.m in Sources */,
 				68F1C8CF18D7F37D009FAE8A /* A3LadyCalendarSettingViewController.m in Sources */,
@@ -6447,6 +6504,7 @@
 				68E2A64918D0B1FC00E834D9 /* A3ExpenseListHeaderView.m in Sources */,
 				68E2A66318D0B1FC00E834D9 /* A3PercentCalcResultLabelView.m in Sources */,
 				684D92BF18BC1EFE005016F7 /* A3BatteryStatusManager.m in Sources */,
+				687AEEAA1CBBCB5900C2D844 /* A3PlaceAnnotation.m in Sources */,
 				680886D51891751B0093FD97 /* A3ClockFlipViewController.m in Sources */,
 				68F1C8FA18D7FA41009FAE8A /* MPFlipSegue.m in Sources */,
 				68B6A45A18CEE781004084EF /* NSData+GIF.m in Sources */,
@@ -6596,6 +6654,7 @@
 				683224BD17CE1B7800973F34 /* A3HolidaysCell.m in Sources */,
 				68E2A6A918D0B22800E834D9 /* A3TableViewInputElement.m in Sources */,
 				17D42CEB95809CCFCB72DCB2 /* UITableViewCell+accessory.m in Sources */,
+				687AEE991CBB0B7100C2D844 /* A3QRCodeDataHandler.m in Sources */,
 				577707F219D57CB900DC066A /* NPColorPickerView.m in Sources */,
 				17D425D8B8511A61A52DBE3E /* A3SearchViewController.m in Sources */,
 				68F1C8C318D7F37D009FAE8A /* A3LadyCalendarAddPeriodViewController.m in Sources */,
@@ -6659,6 +6718,7 @@
 				68143D5F18E3EC7C00569691 /* A3TableViewElement.m in Sources */,
 				682FDF1C1981CC0400C6C83D /* NSManagedObjectContext+MagicalObserving.m in Sources */,
 				6829A0191C89882F0006DB96 /* A3GridMenuViewController.m in Sources */,
+				687AEEB51CBC489700C2D844 /* MXLCalendarEvent.m in Sources */,
 				682126861843902A009A7964 /* NSNumberExtensions.m in Sources */,
 				687484CF19783C1000EA8F74 /* ExpenseListHistory.m in Sources */,
 				687484031977EE0A00EA8F74 /* ExpenseListHistory+extension.m in Sources */,

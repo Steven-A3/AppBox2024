@@ -62,7 +62,6 @@
 	_sections = sections;
 }
 
-
 - (void)setupTableView {
 	_tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
 	_tableView.delegate = self;

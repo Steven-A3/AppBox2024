@@ -12,6 +12,7 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "UIViewController+A3Addition.h"
 #import "A3QRCodeDetailViewController.h"
+#import "A3QRCodeDataHandler.h"
 
 @interface A3QRCodeHistoryViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -20,6 +21,7 @@
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSArray<QRCodeHistory *> *historyArray;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
+@property (nonatomic, strong) A3QRCodeDataHandler *dataHandler;
 
 @end
 
@@ -39,6 +41,11 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
 
 	[_navigationBarExtensionView setHidden:NO];
 }
@@ -204,10 +211,7 @@
 		viewController.historyData = history;
 		[self.navigationController pushViewController:viewController animated:YES];
 	} else {
-		NSURL *url = [NSURL URLWithString:history.scanData];
-		if ([[UIApplication sharedApplication] canOpenURL:url]) {
-			[self presentWebViewControllerWithURL:url];
-		}
+		[self.dataHandler performActionWithData:history.scanData inViewController:self];
 	}
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -234,6 +238,13 @@
 		[_dateFormatter setDateStyle:NSDateFormatterShortStyle];
 	}
 	return _dateFormatter;
+}
+
+- (A3QRCodeDataHandler *)dataHandler {
+	if (!_dataHandler) {
+		_dataHandler = [A3QRCodeDataHandler new];
+	}
+	return _dataHandler;
 }
 
 @end
