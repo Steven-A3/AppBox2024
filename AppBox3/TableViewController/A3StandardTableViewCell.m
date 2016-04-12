@@ -34,14 +34,14 @@
 	if (![self isEditing]) {
 		CGRect frame = self.textLabel.frame;
 		frame.origin.x = margin;
-		if (self.imageView.bounds.size.width) {
+		if (self.imageView.image) {
 			frame.origin.x += self.imageView.bounds.size.width;
 			if (IS_IPHONE) frame.origin.x += 13.0;
 		}
 		self.textLabel.frame = frame;
 	} else {
 		CGFloat originX = margin;
-		if (self.imageView.bounds.size.width) {
+		if (self.imageView.image) {
 			CGRect frame = self.imageView.frame;
 			frame.origin.x = margin;
 			self.imageView.frame = frame;

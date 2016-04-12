@@ -13,6 +13,7 @@
 #import "UIViewController+A3Addition.h"
 #import "A3QRCodeDetailViewController.h"
 #import "A3QRCodeDataHandler.h"
+#import "NSDate+TimeAgo.h"
 
 @interface A3QRCodeHistoryViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -181,11 +182,15 @@
 	}
 	QRCodeHistory *history = self.historyArray[indexPath.row];
 	cell.textLabel.text = history.scanData;
-	cell.detailTextLabel.text = [self.dateFormatter stringFromDate:history.created];
-	if ([history.dimension isEqualToString:@"1"]) {
-		cell.imageView.image = [UIImage imageNamed:@"BarcodeInList"];
+	cell.detailTextLabel.text = [history.created timeAgoWithLimit:60*60*24*3 dateFormat:NSDateFormatterMediumStyle andTimeFormat:NSDateFormatterShortStyle];
+	if (_segmentedControl.selectedSegmentIndex == 0) {
+		if ([history.dimension isEqualToString:@"1"]) {
+			cell.imageView.image = [UIImage imageNamed:@"BarcodeInList"];
+		} else {
+			cell.imageView.image = [UIImage imageNamed:@"QRCodeInList"];
+		}
 	} else {
-		cell.imageView.image = [UIImage imageNamed:@"QRcodeInList"];
+		cell.imageView.image = nil;
 	}
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	return cell;
@@ -235,7 +240,7 @@
 - (NSDateFormatter *)dateFormatter {
 	if (!_dateFormatter) {
 		_dateFormatter = [NSDateFormatter new];
-		[_dateFormatter setDateStyle:NSDateFormatterShortStyle];
+		[_dateFormatter setDateStyle:NSDateFormatterMediumStyle];
 	}
 	return _dateFormatter;
 }

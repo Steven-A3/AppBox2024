@@ -288,7 +288,7 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 				A3AppName_QRCode : @{
 						kA3AppsClassName_iPhone : @"A3QRCodeViewController",
 						kA3AppsNibName_iPhone:@"A3QRCodeViewController",
-						kA3AppsMenuImageName : @"QRCode",
+						kA3AppsMenuImageName : @"QRCodes",
 						kA3AppsGroupName:A3AppGroupNameUtility,
 						kA3AppsMenuNameForGrid:A3AppNameGrid_QRCode,
 						},

@@ -16,13 +16,15 @@
 #import "A3QRCodeDetailViewController.h"
 #import "RSCornersView.h"
 #import "A3QRCodeDataHandler.h"
+#import "A3QRCodeScanLineView.h"
+#import "A3CornersView.h"
 
 NSString *const A3QRCodeSettingsPlayAlertSound = @"A3QRCodeSettingsPlayAlertSound";
 NSString *const A3QRCodeSettingsPlayVibrate = @"A3QRCodeSettingsPlayVibrate";
-NSString *const A3QRCodeImageSoundOn = @"star01_on";
-NSString *const A3QRCodeImageSoundOff = @"star01";
-NSString *const A3QRCodeImageVibrateOn = @"star01_on";
-NSString *const A3QRCodeImageVibrateOff = @"star01";
+NSString *const A3QRCodeImageSoundOn = @"sound_on";
+NSString *const A3QRCodeImageSoundOff = @"sound_off";
+NSString *const A3QRCodeImageVibrateOn = @"vibrate_on";
+NSString *const A3QRCodeImageVibrateOff = @"vibrate_off";
 NSString *const A3QRCodeImageTorchOn = @"m_flash_on";
 NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 
@@ -32,7 +34,10 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *torchOnOffButton;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *vibrateOnOffButton;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *soundOnOffButton;
+@property (nonatomic, weak) IBOutlet A3CornersView *cornersView;
 @property (nonatomic, strong) A3QRCodeDataHandler *dataHandler;
+@property (nonatomic, strong) AVAudioPlayer *beepPlayer;
+@property (nonatomic, strong) A3QRCodeScanLineView *scanLineView;
 
 @end
 
@@ -69,6 +74,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
+	[self setupScanLineView];
 }
 
 - (IBAction)appsButtonAction:(id)sender {
@@ -122,6 +128,12 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	self.barcodesHandler = ^(NSArray *barcodeObjects) {
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[barcodeObjects enumerateObjectsUsingBlock:^(AVMetadataMachineReadableCodeObject * _Nonnull barcode, NSUInteger idx, BOOL * _Nonnull stop) {
+				if ([[NSUserDefaults standardUserDefaults] boolForKey:A3QRCodeSettingsPlayAlertSound]) {
+					[weakSelf.beepPlayer play];
+				}
+				if ([[NSUserDefaults standardUserDefaults] boolForKey:A3QRCodeSettingsPlayVibrate]) {
+					AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+				}
 				NSManagedObjectContext *moc = [NSManagedObjectContext MR_rootSavingContext];
 				
 				QRCodeHistory *history = [QRCodeHistory MR_findFirstByAttribute:@"scanData" withValue:barcode.stringValue inContext:moc];
@@ -251,6 +263,34 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 		_dataHandler = [A3QRCodeDataHandler new];
 	}
 	return _dataHandler;
+}
+
+- (AVAudioPlayer *)beepPlayer {
+	if (!_beepPlayer) {
+		NSString * wavPath = [[NSBundle mainBundle] pathForResource:@"beep" ofType:@"wav"];
+		NSData* data = [[NSData alloc] initWithContentsOfFile:wavPath];
+		_beepPlayer = [[AVAudioPlayer alloc] initWithData:data error:nil];
+	}
+	return _beepPlayer;
+}
+
+- (void)setupScanLineView {
+	_scanLineView = [[A3QRCodeScanLineView alloc] initWithFrame:CGRectMake(0, _cornersView.bounds.size.height - 60, _cornersView.bounds.size.width, 60)];
+	[_cornersView addSubview:_scanLineView];
+
+	[self animateScanLine];
+}
+
+- (void)animateScanLine {
+	_scanLineView.frame = CGRectMake(0, _cornersView.bounds.size.height, _cornersView.bounds.size.width, 60);
+	[UIView animateWithDuration:5.0 animations:^{
+		_scanLineView.frame = CGRectMake(0, -60, _cornersView.bounds.size.width, 60);
+
+	} completion:^(BOOL finished) {
+		if (finished) {
+			[self animateScanLine];
+		}
+	}];
 }
 
 @end
