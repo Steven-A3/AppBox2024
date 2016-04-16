@@ -75,6 +75,7 @@ extern NSString *const A3AnimationIDKeyboardWillShow;
 
 // KJH
 + (NSString *)platform;
++ (BOOL)canVibrate;
 + (NSDictionary *)deviceInformationDictionary;
 + (NSDictionary *)remainingTimeDictionary;
 + (NSString *)platformString;

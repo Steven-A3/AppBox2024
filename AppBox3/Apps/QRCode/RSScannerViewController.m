@@ -21,7 +21,6 @@ NSString *const AVMetadataObjectTypeFace = @"face";
 @interface RSScannerViewController () <AVCaptureMetadataOutputObjectsDelegate>
 
 @property(nonatomic, strong) AVCaptureSession *session;
-@property(nonatomic, strong) AVCaptureDevice *device;
 @property(nonatomic, strong) AVCaptureDeviceInput *input;
 @property(nonatomic, strong) AVCaptureVideoPreviewLayer *layer;
 @property(nonatomic, strong) AVCaptureMetadataOutput *output;
@@ -53,7 +52,7 @@ NSString *const AVMetadataObjectTypeFace = @"face";
     [self stopRunning];
 }
 
-- (void)__handleTapGesture:(UITapGestureRecognizer *)tapGestureRecognizer {
+- (void)handleTapGesture:(UITapGestureRecognizer *)tapGestureRecognizer {
     CGPoint tapPoint = [tapGestureRecognizer locationInView:self.view];
     CGPoint focusPoint = CGPointMake(tapPoint.x / self.view.bounds.size.width,
                                      tapPoint.y / self.view.bounds.size.height);
@@ -136,10 +135,10 @@ NSString *const AVMetadataObjectTypeFace = @"face";
     
     [self.view bringSubviewToFront:self.highlightView];
     
-    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc]
-                                                    initWithTarget:self
-                                                    action:@selector(__handleTapGesture:)];
-    [self.view addGestureRecognizer:tapGestureRecognizer];
+//    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc]
+//                                                    initWithTarget:self
+//                                                    action:@selector(__handleTapGesture:)];
+//    [self.view addGestureRecognizer:tapGestureRecognizer];
 }
 
 - (BOOL)__isModal {

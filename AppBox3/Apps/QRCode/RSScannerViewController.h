@@ -25,6 +25,7 @@ typedef void (^RSTapGestureHandler)(CGPoint tapPoint);
 }
 
 @property(nonatomic) AVCaptureDevicePosition preferredCameraPosition;
+@property(nonatomic, strong) AVCaptureDevice *device;
 
 @property(nonatomic) BOOL torchState;
 
@@ -73,5 +74,6 @@ typedef void (^RSTapGestureHandler)(CGPoint tapPoint);
 - (void)toggleTorch;
 - (void)switchCamera;
 - (void)exit;
+- (void)handleTapGesture:(UITapGestureRecognizer *)tapGestureRecognizer;
 
 @end

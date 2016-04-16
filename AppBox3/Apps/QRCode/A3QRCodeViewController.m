@@ -21,6 +21,7 @@
 #import "A3UserDefaults.h"
 #import "A3InstructionViewController.h"
 #import "A3BasicWebViewController.h"
+#import "A3UIDevice.h"
 
 NSString *const A3QRCodeSettingsPlayAlertSound = @"A3QRCodeSettingsPlayAlertSound";
 NSString *const A3QRCodeSettingsPlayVibrate = @"A3QRCodeSettingsPlayVibrate";
@@ -34,6 +35,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 @interface A3QRCodeViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, A3InstructionViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UIToolbar *topToolbar;
+@property (nonatomic, weak) IBOutlet UIToolbar *topToolbarWithoutVibrate;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *torchOnOffButton;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *vibrateOnOffButton;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *soundOnOffButton;
@@ -60,7 +62,6 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	self.stopOnFirst = YES;
 
 	[self setupBarcodeHandler];
-	[self setupTapGestureHandler];
 
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	[userDefaults registerDefaults:@{A3QRCodeSettingsPlayVibrate : @YES,
@@ -68,6 +69,16 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	
 	[self.soundOnOffButton setImage:[UIImage imageNamed:[userDefaults boolForKey:A3QRCodeSettingsPlayAlertSound] ? A3QRCodeImageSoundOn : A3QRCodeImageSoundOff]];
 	[self.vibrateOnOffButton setImage:[UIImage imageNamed:[userDefaults boolForKey:A3QRCodeSettingsPlayVibrate] ? A3QRCodeImageVibrateOn : A3QRCodeImageVibrateOff]];
+	
+	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc]
+													initWithTarget:self
+													action:@selector(handleTapGesture:)];
+	[_cornersView addGestureRecognizer:tapGestureRecognizer];
+	
+	if (![A3UIDevice canVibrate]) {
+		[_topToolbar setHidden:YES];
+		[_topToolbarWithoutVibrate setHidden:NO];
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -81,8 +92,20 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 		[self setupInstructionView];
 		[self setupBannerViewForAdUnitID:AdMobAdUnitIDQRCode keywords:@[@"Low Price", @"Shopping", @"Marketing"] gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
 	} else {
-		[self startRunning];
-		[self.cornersView setNeedsDisplay];
+		if (IS_IOS7) {
+			double delayInSeconds = 1.0;
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				[self stopRunning];
+				
+				double delayInSeconds = 0.2;
+				dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+				dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+					[self startRunning];
+				});
+
+			});
+		}
 	}
 }
 
@@ -119,6 +142,8 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 }
 
 - (IBAction)scanFromImage:(id)sender {
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+	
 	UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
 	imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
 	imagePickerController.delegate = self;
@@ -160,8 +185,13 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 					history.created = [NSDate date];
 					history.type = barcode.type;
 					history.scanData = barcode.stringValue;
-					
-					NSArray *qrcodeTypes = @[AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode, AVMetadataObjectTypeDataMatrixCode];
+
+					NSArray *qrcodeTypes;
+					if (IS_IOS7) {
+						qrcodeTypes = @[AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode];
+					} else {
+						qrcodeTypes = @[AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode, AVMetadataObjectTypeDataMatrixCode];
+					}
 					if ([qrcodeTypes indexOfObject:barcode.type] != NSNotFound) {
 						history.dimension = @"2";
 					} else {
@@ -187,12 +217,6 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 				}
 			}];
 		});
-	};
-}
-
-- (void)setupTapGestureHandler {
-	self.tapGestureHandler = ^(CGPoint tapPoint) {
-
 	};
 }
 

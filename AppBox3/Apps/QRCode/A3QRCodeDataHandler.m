@@ -509,6 +509,8 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 		return YES;
 	} else if (match.resultType == NSTextCheckingTypeLink) {
 		if ([[UIApplication sharedApplication] canOpenURL:match.URL]) {
+			[controller.navigationController setNavigationBarHidden:NO];
+			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 			[controller presentWebViewControllerWithURL:match.URL];
 			return YES;
 		}

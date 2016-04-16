@@ -154,6 +154,10 @@ NSString *const A3AnimationIDKeyboardWillShow = @"A3AnimationIDKeyboardWillShow"
 	return platform;
 }
 
++ (BOOL)canVibrate {
+	return [[A3UIDevice platform] hasPrefix:@"iPhone"];
+}
+
 NSString *const A3DeviceInformationFilename = @"device_information.json";
 NSString *const A3DeviceInformationKey = @"deviceInformation";
 NSString *const A3DeviceInformationPlatformKey = @"platform";
