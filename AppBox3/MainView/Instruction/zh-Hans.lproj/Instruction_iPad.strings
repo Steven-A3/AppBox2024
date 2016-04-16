@@ -175,3 +175,6 @@
 
 /* Class = "UILabel"; text = "Change the main menu\nstyle in the settings"; ObjectID = "dJh-Kp-Sa0"; */
 "dJh-Kp-Sa0.text" = "更改设置主菜单样式";
+
+/* Class = "UILabel"; text = "Point at code to scan."; ObjectID = "Jpa-qd-dQK"; */
+"Jpa-qd-dQK.text" = "对准要扫描的条码";

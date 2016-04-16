@@ -10,27 +10,69 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3QRCodeDetailCell.h"
 #import "QRCodeHistory.h"
+#import "UIViewController+A3Addition.h"
+#import "A3QRCodeTextViewController.h"
+#import "A3BasicWebViewController.h"
 
-@interface A3QRCodeDetailViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface A3QRCodeDetailViewController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) UIToolbar *bottomToolbar;
+@property (nonatomic, strong) MASConstraint *bottomBarBottomConstraint;
 
 @end
 
-@implementation A3QRCodeDetailViewController
+@implementation A3QRCodeDetailViewController {
+	BOOL _viewWillAppearDidRun;
+	BOOL _searchDataHasNoResult;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-	self.title = @"Detail";
+	self.title = NSLocalizedString(@"Detail", @"Detail");
 
 	[self setupTableView];
+
+	if (!_historyData.searchData || _searchDataHasNoResult) {
+		UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"]
+																		style:UIBarButtonItemStylePlain
+																	   target:self
+																	   action:@selector(shareButtonAction:)];
+		self.navigationItem.rightBarButtonItem = shareButton;
+
+		UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Search on Google", @"Search on Google") style:UIBarButtonItemStylePlain target:self action:@selector(searchOnGoogleButtonAction:)];
+		UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+		_bottomToolbar = [UIToolbar new];
+		_bottomToolbar.items = @[flexibleSpace, searchButton, flexibleSpace];
+		[self.view addSubview:_bottomToolbar];
+
+		UIView *superview = self.view;
+		[_bottomToolbar makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(superview.left);
+			make.right.equalTo(superview.right);
+			_bottomBarBottomConstraint = make.bottom.equalTo(superview.bottom);
+		}];
+	}
+}
+
+- (void)searchOnGoogleButtonAction:(UIBarButtonItem *)barButton {
+	A3BasicWebViewController *viewController = [A3BasicWebViewController new];
+	viewController.url = [NSURL URLWithString:[NSString stringWithFormat:@"https://www.google.com/search?q=%@", _historyData.scanData]];
+	viewController.titleString = NSLocalizedString(@"Search on Google", @"Search on Google");
+	
+	[self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
 	[self.navigationController setNavigationBarHidden:NO];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+	
+	if (!_viewWillAppearDidRun) {
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDQRCode keywords:@[@"Low Price", @"Shopping", @"Marketing"] gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
+	}
 }
 
 - (void)didReceiveMemoryWarning {
@@ -45,17 +87,27 @@
 		NSDictionary *dataDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:data.searchData];
 		NSArray *resultsArray = dataDictionary[@"responseData"][@"results"];
 		if ([resultsArray count]) {
+			_searchDataHasNoResult = NO;
 			for (NSDictionary *detail in resultsArray) {
 				NSMutableArray *rows = [NSMutableArray new];
-				[rows addObject:@{@"title" : detail[@"title"]}];
-				[rows addObject:@{@"content" : detail[@"content"]}];
-				[rows addObject:@{@"url" : [detail[@"url"] stringByRemovingPercentEncoding]}];
+				[rows addObject:@{NSLocalizedString(@"Barcode", @"Barcode") : _historyData.scanData}];
+				
+				NSString *titleString = [detail[@"title"] stringByReplacingOccurrencesOfString:@"<b>" withString:@""];
+				titleString = [titleString stringByReplacingOccurrencesOfString:@"</b>" withString:@""];
+				[rows addObject:@{NSLocalizedString(@"TITLE", @"TITLE") : titleString}];
+				
+				NSString *contentString = detail[@"content"];
+				contentString = [contentString stringByReplacingOccurrencesOfString:@"<b>" withString:@""];
+				contentString = [contentString stringByReplacingOccurrencesOfString:@"</b>" withString:@""];
+				[rows addObject:@{NSLocalizedString(@"CONTENT", @"CONTENT") : contentString}];
+				[rows addObject:@{NSLocalizedString(@"URL", @"URL") : [detail[@"url"] stringByRemovingPercentEncoding]}];
 				[sections addObject:rows];
 			}
 		} else {
+			_searchDataHasNoResult = YES;
 			NSMutableArray *rows = [NSMutableArray new];
-			[rows addObject:@{@"title" : data.scanData}];
-			[rows addObject:@{@"product name" : @""}];
+			[rows addObject:@{NSLocalizedString(@"TITLE", @"TITLE") : data.scanData}];
+			[rows addObject:@{NSLocalizedString(@"PRODUCT NAME", @"PRODUCT NAME") : _historyData.productName ?: @""}];
 			[sections addObject:rows];
 		}
 	}
@@ -102,9 +154,99 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSDictionary *data = _sections[indexPath.section][indexPath.row];
 	A3QRCodeDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:@"qrcodeDetailCell" forIndexPath:indexPath];
-	cell.valueTextField.placeholder = [data allKeys][0];
-	cell.valueTextField.text = data[[data allKeys][0]];
+	NSString *placeHolder = [data allKeys][0];
+	cell.valueTextField.placeholder = placeHolder;
+	cell.valueTextField.text = data[placeHolder];
+	cell.valueTextField.enabled = _searchDataHasNoResult && [placeHolder isEqualToString:NSLocalizedString(@"PRODUCT NAME", @"PRODUCT NAME")];
+	if (_searchDataHasNoResult && [placeHolder isEqualToString:NSLocalizedString(@"PRODUCT NAME", @"PRODUCT NAME")]) {
+		cell.valueTextField.enabled = YES;
+		cell.valueTextField.delegate = self;
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
+		cell.accessoryType = UITableViewCellAccessoryNone;
+		cell.valueTextField.returnKeyType = UIReturnKeyDone;
+	} else {
+		cell.valueTextField.delegate = nil;
+		cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	}
 	return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+	A3QRCodeDetailCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+	if ([cell.valueTextField.placeholder isEqualToString:NSLocalizedString(@"URL", @"URL")]) {
+		NSDataDetector *dataDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
+		NSTextCheckingResult *match = [dataDetector firstMatchInString:cell.valueTextField.text options:0 range:NSMakeRange(0, [cell.valueTextField.text length])];
+		if ([[UIApplication sharedApplication] canOpenURL:match.URL]) {
+			[self presentWebViewControllerWithURL:match.URL];
+		}
+	} else {
+		A3QRCodeTextViewController *viewController = [A3QRCodeTextViewController new];
+		viewController.text = cell.valueTextField.text;
+		[self.navigationController pushViewController:viewController animated:YES];
+	}
+}
+
+#pragma mark - AdMob
+
+- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+	[self.view addSubview:bannerView];
+
+	UIView *superview = self.view;
+	[bannerView remakeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(superview.left);
+		make.right.equalTo(superview.right);
+		make.bottom.equalTo(superview.bottom);
+		make.height.equalTo(@(bannerView.bounds.size.height));
+	}];
+
+	_bottomBarBottomConstraint.offset = -bannerView.bounds.size.height;
+	
+	UIEdgeInsets contentInset = self.tableView.contentInset;
+	contentInset.bottom = bannerView.bounds.size.height;
+	self.tableView.contentInset = contentInset;
+
+	[self.view layoutIfNeeded];
+}
+
+#pragma mark - ShareButtonAction
+
+- (void)shareButtonAction:(id)sender {
+	[self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completionHandler:nil];
+}
+
+- (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
+{
+	if ([activityType isEqualToString:UIActivityTypeMail]) {
+		return NSLocalizedString(@"QR Codes on AppBox Pro", @"QR Codes on AppBox Pro");
+	}
+	return @"";
+}
+
+- (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
+{
+	return _historyData.scanData;
+}
+
+- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
+{
+	return NSLocalizedString(A3AppName_QRCode, nil);
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+	if ([textField.placeholder isEqualToString:NSLocalizedString(@"PRODUCT NAME", @"PRODUCT NAME")]) {
+		_historyData.productName = textField.text;
+		[_historyData.managedObjectContext MR_saveOnlySelfAndWait];
+	}
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+	[textField resignFirstResponder];
+	return YES;
 }
 
 @end

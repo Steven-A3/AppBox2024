@@ -6,6 +6,7 @@
 //  Copyright © 2016 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <AddressBook/AddressBook.h>
 #import "A3QRCodeHistoryViewController.h"
 #import "QRCodeHistory.h"
 #import "A3StandardTableViewCell.h"
@@ -14,6 +15,8 @@
 #import "A3QRCodeDetailViewController.h"
 #import "A3QRCodeDataHandler.h"
 #import "NSDate+TimeAgo.h"
+#import "MXLCalendarManager.h"
+#import "A3BasicWebViewController.h"
 
 @interface A3QRCodeHistoryViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -26,7 +29,9 @@
 
 @end
 
-@implementation A3QRCodeHistoryViewController
+@implementation A3QRCodeHistoryViewController {
+	BOOL _viewWillAppearDidRun;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -43,12 +48,18 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
+	if (!_viewWillAppearDidRun) {
+		_viewWillAppearDidRun = YES;
+		
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDQRCode keywords:@[@"Low Price", @"Shopping", @"Marketing"] gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
+	}
+	[_navigationBarExtensionView setHidden:NO];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	[_navigationBarExtensionView setHidden:NO];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -131,7 +142,10 @@
 
 - (UISegmentedControl *)segmentedControl {
 	if (!_segmentedControl) {
-		_segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"All", @"Barcode", @"QR Code"]];
+		_segmentedControl = [[UISegmentedControl alloc] initWithItems:@[
+				NSLocalizedString(@"All", @"All"),
+				NSLocalizedString(@"Barcode", @"Barcode"),
+				NSLocalizedString(@"QR Code", @"QR Code")]];
 		_segmentedControl.selectedSegmentIndex = 0;
 		[_segmentedControl addTarget:self action:@selector(segmentedControlValueChanged) forControlEvents:UIControlEventValueChanged];
 	}
@@ -181,7 +195,13 @@
 		cell = [[A3StandardTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"defaultCell"];
 	}
 	QRCodeHistory *history = self.historyArray[indexPath.row];
-	cell.textLabel.text = history.scanData;
+	if 	(	![self processCellForGEOLocation:cell history:history] &&
+			![self processCellForMeCard:cell history:history] &&
+			![self processCellForVCard:cell history:history] &&
+			![self processCellForEvent:cell history:history]) {
+		cell.textLabel.text = history.scanData;
+	}
+	
 	cell.detailTextLabel.text = [history.created timeAgoWithLimit:60*60*24*3 dateFormat:NSDateFormatterMediumStyle andTimeFormat:NSDateFormatterShortStyle];
 	if (_segmentedControl.selectedSegmentIndex == 0) {
 		if ([history.dimension isEqualToString:@"1"]) {
@@ -194,6 +214,96 @@
 	}
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	return cell;
+}
+
+- (BOOL)processCellForVCard:(A3StandardTableViewCell *)cell history:(QRCodeHistory *)history {
+	if (![history.scanData hasPrefix:@"BEGIN:VCARD"]) return NO;
+
+	CFDataRef vCardData = (__bridge CFDataRef)[history.scanData dataUsingEncoding:NSUTF8StringEncoding];
+
+	ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
+
+	ABRecordRef parsedPerson = nil;
+	ABRecordRef defaultSource = ABAddressBookCopyDefaultSource(addressBook);
+	CFArrayRef vCardPeople = ABPersonCreatePeopleInSourceWithVCardRepresentation(defaultSource, vCardData);
+	if (CFArrayGetCount(vCardPeople) > 0) {
+		parsedPerson = CFArrayGetValueAtIndex(vCardPeople, 0);
+	}
+
+	CFRelease(defaultSource);
+	CFRelease(addressBook);
+
+	if (parsedPerson) {
+		cell.textLabel.text = [NSString stringWithFormat:@"VCard: %@", (__bridge_transfer NSString *)ABRecordCopyValue(parsedPerson, kABPersonFirstNameProperty)];
+	} else {
+		cell.textLabel.text = history.scanData;
+	}
+
+	return YES;
+}
+
+- (BOOL)processCellForMeCard:(A3StandardTableViewCell *)cell history:(QRCodeHistory *)history {
+	if (![history.scanData hasPrefix:@"MECARD:"]) return NO;
+
+	NSScanner *scanner = [NSScanner scannerWithString:history.scanData];
+
+	NSString *readString;
+	if ([scanner scanUpToString:@"N:" intoString:nil]) {
+		if ([scanner scanString:@"N:" intoString:nil]) {
+			[scanner scanUpToString:@";" intoString:&readString];
+			cell.textLabel.text = [NSString stringWithFormat:@"MeCARD: %@", readString];
+			return YES;
+		}
+	}
+	cell.textLabel.text = history.scanData;
+
+	return YES;
+}
+
+- (BOOL)processCellForGEOLocation:(A3StandardTableViewCell *)cell history:(QRCodeHistory *)history {
+	if (![history.scanData hasPrefix:@"GEO:"]) { return NO;}
+	
+	NSArray *components = [[history.scanData substringFromIndex:4] componentsSeparatedByString:@","];
+	if ([components count] == 2) {
+		CLLocation *location = [[CLLocation alloc] initWithLatitude:[components[0] floatValue] longitude:[components[1] floatValue]];
+		CLGeocoder *geocoder = [CLGeocoder new];
+		[geocoder reverseGeocodeLocation:location completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
+			CLPlacemark *placemark = [placemarks firstObject];
+			if (placemark) {
+				NSString *userFriendlyName = placemark.name ?: [history.scanData substringFromIndex:4];
+				if (placemark.locality) {
+					userFriendlyName = [userFriendlyName stringByAppendingString:@", "];
+					userFriendlyName = [userFriendlyName stringByAppendingString:placemark.locality];
+				}
+				if (placemark.administrativeArea) {
+					userFriendlyName = [userFriendlyName stringByAppendingString:@", "];
+					userFriendlyName = [userFriendlyName stringByAppendingString:placemark.administrativeArea];
+				}
+				cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Location: %@", @"Location: %@"), userFriendlyName];
+			} else {
+				cell.textLabel.text = history.scanData;
+			}
+		}];
+	}
+
+	return YES;
+}
+
+- (BOOL)processCellForEvent:(A3StandardTableViewCell *)cell history:(QRCodeHistory *)history {
+	if (![history.scanData hasPrefix:@"BEGIN:VCALENDAR"]) return NO;
+	
+	MXLCalendarManager *parser = [MXLCalendarManager new];
+	[parser parseICSString:history.scanData withCompletionHandler:^(MXLCalendar *calendar, NSError *error) {
+		if (error) {
+			cell.textLabel.text = history.scanData;
+			return;
+		}
+
+		MXLCalendarEvent *event = calendar.events[0];
+		cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Event: %@", @"Event: %@"), event.eventDescription];
+	}];
+
+	return YES;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -212,11 +322,16 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	QRCodeHistory *history = self.historyArray[indexPath.row];
 	if ([history.dimension isEqualToString:@"1"]) {
-		A3QRCodeDetailViewController *viewController = [A3QRCodeDetailViewController new];
-		viewController.historyData = history;
+		A3BasicWebViewController *viewController = [A3BasicWebViewController new];
+		viewController.url = [NSURL URLWithString:[NSString stringWithFormat:@"https://www.google.com/search?q=%@", history.scanData]];
+		[self.navigationController setNavigationBarHidden:NO];
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 		[self.navigationController pushViewController:viewController animated:YES];
+//		A3QRCodeDetailViewController *viewController = [A3QRCodeDetailViewController new];
+//		viewController.historyData = history;
+//		[self.navigationController pushViewController:viewController animated:YES];
 	} else {
-		[self.dataHandler performActionWithData:history.scanData inViewController:self];
+		[self.dataHandler performActionWithData:history inViewController:self];
 	}
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -250,6 +365,26 @@
 		_dataHandler = [A3QRCodeDataHandler new];
 	}
 	return _dataHandler;
+}
+
+#pragma mark - AdMob
+
+- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+	[self.view addSubview:bannerView];
+	
+	UIView *superview = self.view;
+	[bannerView remakeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(superview.left);
+		make.right.equalTo(superview.right);
+		make.bottom.equalTo(superview.bottom);
+		make.height.equalTo(@(bannerView.bounds.size.height));
+	}];
+	
+	UIEdgeInsets contentInset = self.tableView.contentInset;
+	contentInset.bottom = bannerView.bounds.size.height;
+	self.tableView.contentInset = contentInset;
+	
+	[self.view layoutIfNeeded];
 }
 
 @end

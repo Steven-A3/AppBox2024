@@ -8,6 +8,7 @@
 
 #import <MapKit/MapKit.h>
 #import "A3QRCodeMapViewController.h"
+#import "UIViewController+A3Addition.h"
 
 @interface A3QRCodeMapViewController () <MKMapViewDelegate>
 
@@ -15,12 +16,33 @@
 
 @end
 
-@implementation A3QRCodeMapViewController
+@implementation A3QRCodeMapViewController {
+	BOOL _viewWillAppearDidRun;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-	self.title = @"Location";
+	self.title = NSLocalizedString(@"Location", @"Location");
+
+	UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"]
+																	style:UIBarButtonItemStylePlain
+																   target:self
+																   action:@selector(shareButtonAction:)];
+	self.navigationItem.rightBarButtonItem = shareButton;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	[self.navigationController setNavigationBarHidden:NO];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+
+	if (!_viewWillAppearDidRun) {
+		_viewWillAppearDidRun = YES;
+
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDQRCode keywords:@[@"Low Price", @"Shopping", @"Marketing"] gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
+	}
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -77,6 +99,46 @@
 		}
 	}
 	return annotationView;
+}
+
+#pragma mark - ShareButtonAction
+
+- (void)shareButtonAction:(id)sender {
+	[self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completionHandler:nil];
+}
+
+- (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
+{
+	if ([activityType isEqualToString:UIActivityTypeMail]) {
+		return NSLocalizedString(@"QR Codes on AppBox Pro", @"QR Codes on AppBox Pro");
+	}
+	return @"";
+}
+
+- (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
+{
+	return _annotation.title;
+}
+
+- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
+{
+	return NSLocalizedString(A3AppName_QRCode, nil);
+}
+
+#pragma mark - AdMob
+
+- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+	[self.view addSubview:bannerView];
+
+	UIView *superview = self.view;
+	[bannerView remakeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(superview.left);
+		make.right.equalTo(superview.right);
+		make.bottom.equalTo(superview.bottom);
+		make.height.equalTo(@(bannerView.bounds.size.height));
+	}];
+
+	[self.view layoutIfNeeded];
 }
 
 @end

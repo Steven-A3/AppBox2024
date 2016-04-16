@@ -1560,6 +1560,8 @@
 		6831EBF718619CC800BAF15B /* AppBox3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AppBox3.xcdatamodel; sourceTree = "<group>"; };
 		6831EC111861EB7C00BAF15B /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = External/MBProgressHUD/MBProgressHUD.h; sourceTree = "<group>"; };
 		6831EC121861EB7C00BAF15B /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = External/MBProgressHUD/MBProgressHUD.m; sourceTree = "<group>"; };
+		68321F351CBE0174005B8FA1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Instruction_iPhone.strings; sourceTree = "<group>"; };
+		68321F371CBE06C1005B8FA1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Instruction_iPad.strings; sourceTree = "<group>"; };
 		683224BB17CE1B7800973F34 /* A3HolidaysCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3HolidaysCell.h; path = Holidays/A3HolidaysCell.h; sourceTree = "<group>"; };
 		683224BC17CE1B7800973F34 /* A3HolidaysCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3HolidaysCell.m; path = Holidays/A3HolidaysCell.m; sourceTree = "<group>"; };
 		6832ADE016A8D38500BEEEE6 /* A3CurrencySelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencySelectViewController.h; path = Apps/Currency/A3CurrencySelectViewController.h; sourceTree = "<group>"; };
@@ -1798,8 +1800,6 @@
 		687F928818F69C74006377B9 /* A3MoreTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3MoreTableViewCell.m; sourceTree = "<group>"; };
 		687FF89817D1931100130ABC /* A3HolidaysCountrySearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3HolidaysCountrySearchViewController.h; path = Holidays/A3HolidaysCountrySearchViewController.h; sourceTree = "<group>"; };
 		687FF89917D1931100130ABC /* A3HolidaysCountrySearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3HolidaysCountrySearchViewController.m; path = Holidays/A3HolidaysCountrySearchViewController.m; sourceTree = "<group>"; };
-		6880CC891C9FC70E007FD9A4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Instruction_iPhone.strings; sourceTree = "<group>"; };
-		6880CC8B1C9FCB48007FD9A4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Instruction_iPad.strings; sourceTree = "<group>"; };
 		688257A817D37863006429D3 /* A3HolidaysEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3HolidaysEditViewController.h; path = Holidays/A3HolidaysEditViewController.h; sourceTree = "<group>"; };
 		688257A917D37863006429D3 /* A3HolidaysEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3HolidaysEditViewController.m; path = Holidays/A3HolidaysEditViewController.m; sourceTree = "<group>"; };
 		688257AF17D37D37006429D3 /* A3HolidaysEditCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3HolidaysEditCell.h; path = Holidays/A3HolidaysEditCell.h; sourceTree = "<group>"; };
@@ -7008,7 +7008,7 @@
 				68CAB49119557DB600A4D2B9 /* fr */,
 				68CAB49319557DB900A4D2B9 /* es */,
 				6813614E1A6CADE300E13F51 /* zh-Hant */,
-				6880CC891C9FC70E007FD9A4 /* en */,
+				68321F351CBE0174005B8FA1 /* en */,
 			);
 			name = Instruction_iPhone.storyboard;
 			path = Instruction;
@@ -7027,7 +7027,7 @@
 				68CAB48119557C9600A4D2B9 /* pl */,
 				68CAB48319557C9800A4D2B9 /* es */,
 				6813614F1A6CADE300E13F51 /* zh-Hant */,
-				6880CC8B1C9FCB48007FD9A4 /* en */,
+				68321F371CBE06C1005B8FA1 /* en */,
 			);
 			name = Instruction_iPad.storyboard;
 			path = Instruction;

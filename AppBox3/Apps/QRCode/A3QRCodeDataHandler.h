@@ -7,8 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "QRCodeHistory.h"
 
 @interface A3QRCodeDataHandler : NSObject
 
-- (void)performActionWithData:(NSString *)data inViewController:(UIViewController *)viewController;
+- (void)performActionWithData:(QRCodeHistory *)history inViewController:(UIViewController *)viewController;
+
 @end

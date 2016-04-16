@@ -408,10 +408,10 @@ didOutputMetadataObjects:(NSArray *)metadataObjects
     
     UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
     
-    CGRect flipButtonRect;
-    CGRect cancelButtonRect;
-    CGRect torchButtonRect;
-    CGRect sidebarRect;
+    CGRect flipButtonRect = CGRectZero;
+    CGRect cancelButtonRect = CGRectZero;
+    CGRect torchButtonRect = CGRectZero;
+    CGRect sidebarRect = CGRectZero;
     
     CGFloat rotationAngle = 0;
     

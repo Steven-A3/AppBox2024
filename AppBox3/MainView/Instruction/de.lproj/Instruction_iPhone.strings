@@ -178,3 +178,6 @@
 
 /* Class = "UILabel"; text = "Change the main menu\nstyle in the settings"; ObjectID = "NQw-dv-DQb"; */
 "NQw-dv-DQb.text" = "Ändern Sie das Hauptmenü -Stil\nin den Einstellungen";
+
+/* Class = "UILabel"; text = "Point at code to scan."; ObjectID = "6kq-Xt-TgA"; */
+"6kq-Xt-TgA.text" = "Code mit Kamera scannen.";

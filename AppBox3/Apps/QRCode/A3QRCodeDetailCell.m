@@ -27,9 +27,11 @@
 	[self.valueTextField makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.left).with.offset(leading);
 		make.centerY.equalTo(self.centerY);
-		make.right.equalTo(self.right).with.offset(-leading);
+		make.right.equalTo(self.right).with.offset(-(leading + 10));
 		make.height.equalTo(@50);
 	}];
+
+	self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 }
 
 - (JVFloatLabeledTextField *)valueTextField {
@@ -37,7 +39,7 @@
 		_valueTextField = [[JVFloatLabeledTextField alloc] initWithFrame:CGRectZero];
 		_valueTextField.floatingLabelTextColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
 		_valueTextField.floatingLabelFont = [UIFont systemFontOfSize:14];
-		[self addSubview:_valueTextField];
+		[self.contentView addSubview:_valueTextField];
 	}
 	return _valueTextField;
 }

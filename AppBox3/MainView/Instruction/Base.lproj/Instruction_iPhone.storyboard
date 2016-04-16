@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="ysT-2a-nae">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="ysT-2a-nae">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -1354,7 +1354,7 @@ prev/next events</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap the screen to display the controls" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="270" translatesAutoresizingMaskIntoConstraints="NO" id="p6a-KD-zgx" userLabel="Label - Tap the screen to display the controls">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap the screen to display the controls" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="270" translatesAutoresizingMaskIntoConstraints="NO" id="p6a-KD-zgx" userLabel="Label - Tap the screen to display the controls">
                                 <rect key="frame" x="50" y="126" width="270" height="40"/>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2251,7 +2251,7 @@ You can reorder the currency list.</string>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HomeScreenStyle_grid" translatesAutoresizingMaskIntoConstraints="NO" id="LZA-xi-RbM">
                                 <rect key="frame" x="243" y="122" width="52" height="109"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NQw-dv-DQb">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="279" translatesAutoresizingMaskIntoConstraints="NO" id="NQw-dv-DQb">
                                 <rect key="frame" x="16" y="62" width="279" height="52"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="52" id="vBw-ru-Sq9"/>
@@ -2317,6 +2317,69 @@ style in the settings</string>
                 </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-949" y="7784"/>
+        </scene>
+        <!--QRCode Instruction View Controller-->
+        <scene sceneID="5hr-NF-Hlp">
+            <objects>
+                <viewController storyboardIdentifier="QRCode" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fOh-sl-Xwa" userLabel="QRCode Instruction View Controller" customClass="A3InstructionViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jl1-mJ-h5t"/>
+                        <viewControllerLayoutGuide type="bottom" id="dJ2-mi-hAx"/>
+                    </layoutGuides>
+                    <view key="view" alpha="0.69999998807907104" contentMode="scaleToFill" id="yt4-fX-AsZ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="Cn9-qj-1rL">
+                                <rect key="frame" x="139" y="243" width="42" height="42"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="4AK-I4-dY8"/>
+                                    <constraint firstAttribute="width" constant="42" id="QNs-Wq-KGA"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="fbL-6Q-Dut">
+                                <rect key="frame" x="186" y="248" width="14" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="14" id="M5t-wc-Bn0"/>
+                                    <constraint firstAttribute="height" constant="14" id="Yrp-vF-HKE"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Point at code to scan." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="6kq-Xt-TgA" userLabel="Label - swipe left or right to change keypad for basic/scientific">
+                                <rect key="frame" x="10" y="295" width="300" height="20"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="fbL-6Q-Dut" firstAttribute="leading" secondItem="Cn9-qj-1rL" secondAttribute="trailing" constant="5" id="4AL-nU-gLK"/>
+                            <constraint firstItem="Cn9-qj-1rL" firstAttribute="centerY" secondItem="yt4-fX-AsZ" secondAttribute="centerY" constant="-20" id="CRL-0b-ZxO"/>
+                            <constraint firstAttribute="trailing" secondItem="6kq-Xt-TgA" secondAttribute="trailing" constant="10" id="Wzi-q3-Uoo"/>
+                            <constraint firstItem="6kq-Xt-TgA" firstAttribute="leading" secondItem="yt4-fX-AsZ" secondAttribute="leading" constant="10" id="ZV7-zW-M2c"/>
+                            <constraint firstAttribute="centerX" secondItem="Cn9-qj-1rL" secondAttribute="centerX" id="Zbd-Ez-gke"/>
+                            <constraint firstItem="6kq-Xt-TgA" firstAttribute="top" secondItem="Cn9-qj-1rL" secondAttribute="bottom" constant="10" id="vu5-0h-H19"/>
+                            <constraint firstItem="Cn9-qj-1rL" firstAttribute="top" secondItem="fbL-6Q-Dut" secondAttribute="top" constant="-5" id="yl8-5O-K0r"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="Lgm-9C-oxy" appends="YES" id="VTx-fS-ehp"/>
+                        </connections>
+                    </view>
+                    <connections>
+                        <outletCollection property="childImageViews" destination="fbL-6Q-Dut" id="43L-Ci-w8g"/>
+                        <outletCollection property="childImageViews" destination="Cn9-qj-1rL" id="3h6-8k-po4"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Q5B-Ss-tPa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="Lgm-9C-oxy">
+                    <connections>
+                        <action selector="viewTapped:" destination="fOh-sl-Xwa" id="Aos-zk-6MN"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="-562" y="7147"/>
         </scene>
     </scenes>
     <resources>

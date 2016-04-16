@@ -2,7 +2,7 @@
 //  QRCodeHistory+CoreDataProperties.m
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 4/10/16.
+//  Created by Byeong Kwon Kwak on 4/15/16.
 //  Copyright © 2016 ALLABOUTAPPS. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -19,5 +19,6 @@
 @dynamic searchData;
 @dynamic type;
 @dynamic uniqueID;
+@dynamic productName;
 
 @end

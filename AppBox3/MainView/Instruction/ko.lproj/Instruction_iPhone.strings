@@ -178,3 +178,6 @@
 
 /* Class = "UILabel"; text = "Change the main menu\nstyle in the settings"; ObjectID = "NQw-dv-DQb"; */
 "NQw-dv-DQb.text" = "설정에서 홈 화면 종류를\n바꿀 수 있습니다.";
+
+/* Class = "UILabel"; text = "Point at code to scan."; ObjectID = "6kq-Xt-TgA"; */
+"6kq-Xt-TgA.text" = "스캔하려면 코드를 화면에 비추어주세요.";

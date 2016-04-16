@@ -90,3 +90,6 @@
 
 /* Class = "UILabel"; text = "Change the main menu\nstyle in the settings"; ObjectID = "NQw-dv-DQb"; */
 "NQw-dv-DQb.text" = "更改設置主菜單樣式";
+
+/* Class = "UILabel"; text = "Point at code to scan."; ObjectID = "6kq-Xt-TgA"; */
+"6kq-Xt-TgA.text" = "對準條碼來掃描。";

@@ -18,6 +18,17 @@
 	CGFloat _cornerWidth, _cornerHeight;
 }
 
+- (void)setFrame:(CGRect)frame {
+	[super setFrame:frame];
+	_cornersPath = nil;
+}
+
+- (void)setBounds:(CGRect)bounds {
+	[super setBounds:bounds];
+
+	_cornersPath = nil;
+}
+
 - (UIBezierPath *)cornersPath {
 	if (!_cornersPath) {
 		CGSize size = self.bounds.size;

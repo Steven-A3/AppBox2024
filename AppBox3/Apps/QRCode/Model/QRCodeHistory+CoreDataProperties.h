@@ -2,7 +2,7 @@
 //  QRCodeHistory+CoreDataProperties.h
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 4/10/16.
+//  Created by Byeong Kwon Kwak on 4/15/16.
 //  Copyright © 2016 ALLABOUTAPPS. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSData *searchData;
 @property (nullable, nonatomic, retain) NSString *type;
 @property (nullable, nonatomic, retain) NSString *uniqueID;
+@property (nullable, nonatomic, retain) NSString *productName;
 
 @end
 

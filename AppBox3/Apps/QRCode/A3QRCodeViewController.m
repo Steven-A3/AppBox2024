@@ -18,6 +18,9 @@
 #import "A3QRCodeDataHandler.h"
 #import "A3QRCodeScanLineView.h"
 #import "A3CornersView.h"
+#import "A3UserDefaults.h"
+#import "A3InstructionViewController.h"
+#import "A3BasicWebViewController.h"
 
 NSString *const A3QRCodeSettingsPlayAlertSound = @"A3QRCodeSettingsPlayAlertSound";
 NSString *const A3QRCodeSettingsPlayVibrate = @"A3QRCodeSettingsPlayVibrate";
@@ -28,7 +31,7 @@ NSString *const A3QRCodeImageVibrateOff = @"vibrate_off";
 NSString *const A3QRCodeImageTorchOn = @"m_flash_on";
 NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 
-@interface A3QRCodeViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface A3QRCodeViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, A3InstructionViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UIToolbar *topToolbar;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *torchOnOffButton;
@@ -38,16 +41,20 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 @property (nonatomic, strong) A3QRCodeDataHandler *dataHandler;
 @property (nonatomic, strong) AVAudioPlayer *beepPlayer;
 @property (nonatomic, strong) A3QRCodeScanLineView *scanLineView;
+@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomToolbarBottomSpaceConstraint;
 
 @end
 
 @implementation A3QRCodeViewController {
 	BOOL _googleSearchInProgress;
+	BOOL _viewWillAppearFirstRunAfterLoad;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+	_viewWillAppearFirstRunAfterLoad = YES;
 	[self.navigationController setNavigationBarHidden:YES];
 	self.isCornersVisible = NO;
 	self.stopOnFirst = YES;
@@ -67,8 +74,16 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	[super viewWillAppear:animated];
 
 	[self.navigationController setNavigationBarHidden:YES];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 	
-	[self startRunning];
+	if (_viewWillAppearFirstRunAfterLoad) {
+		_viewWillAppearFirstRunAfterLoad = NO;
+		[self setupInstructionView];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDQRCode keywords:@[@"Low Price", @"Shopping", @"Marketing"] gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
+	} else {
+		[self startRunning];
+		[self.cornersView setNeedsDisplay];
+	}
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -157,13 +172,18 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 				[moc MR_saveToPersistentStoreAndWait];
 
 				if ([history.dimension isEqualToString:@"1"]) {
-					if (!history.searchData) {
-						[weakSelf searchBarcode:barcode.stringValue];
-					} else {
-						[weakSelf presentDetailViewControllerWithData:history];
-					}
+					A3BasicWebViewController *viewController = [A3BasicWebViewController new];
+					viewController.url = [NSURL URLWithString:[NSString stringWithFormat:@"https://www.google.com/search?q=%@", history.scanData]];
+					[weakSelf.navigationController setNavigationBarHidden:NO];
+					[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+					[weakSelf.navigationController pushViewController:viewController animated:YES];
+//					if (!history.searchData) {
+//						[weakSelf searchBarcode:barcode.stringValue];
+//					} else {
+//						[weakSelf presentDetailViewControllerWithData:history];
+//					}
 				} else {
-					[weakSelf.dataHandler performActionWithData:barcode.stringValue inViewController:weakSelf];
+					[weakSelf.dataHandler performActionWithData:history inViewController:weakSelf];
 				}
 			}];
 		});
@@ -189,11 +209,11 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	if (feature) {
 		NSManagedObjectContext *moc = [NSManagedObjectContext MR_rootSavingContext];
 
-		QRCodeHistory *existingItem = [QRCodeHistory MR_findFirstByAttribute:@"scanData" withValue:feature.messageString inContext:moc];
-		if (existingItem) {
-			existingItem.created = [NSDate date];
+		QRCodeHistory *newItem = [QRCodeHistory MR_findFirstByAttribute:@"scanData" withValue:feature.messageString inContext:moc];
+		if (newItem) {
+			newItem.created = [NSDate date];
 		} else {
-			QRCodeHistory *newItem = [QRCodeHistory MR_createEntityInContext:moc];
+			newItem = [QRCodeHistory MR_createEntityInContext:moc];
 			newItem.uniqueID = [[NSUUID UUID] UUIDString];
 			newItem.created = [NSDate date];
 			newItem.type = feature.type;
@@ -203,14 +223,14 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 
 		[moc MR_saveToPersistentStoreAndWait];
 
-		[self.dataHandler performActionWithData:feature.messageString inViewController:self];
+		[self.dataHandler performActionWithData:newItem inViewController:self];
 
 	} else {
 		alertBlock = ^() {
-			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info"
-																message:@"Code not found."
+			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+																message:NSLocalizedString(@"QR Code not found.", @"QR Code not found.")
 															   delegate:nil
-													  cancelButtonTitle:@"OK"
+													  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 													  otherButtonTitles:nil];
 			[alertView show];
 		};
@@ -291,6 +311,59 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 			[self animateScanLine];
 		}
 	}];
+}
+
+#pragma mark Instruction Related
+
+static NSString *const A3V3InstructionDidShowForQRCode = @"A3V3InstructionDidShowForQRCode";
+
+- (void)setupInstructionView
+{
+	if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForQRCode]) {
+		[self showInstructionView:nil];
+	}
+}
+
+- (IBAction)showInstructionView:(id)sender
+{
+	[self stopRunning];
+	
+	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForQRCode];
+	[[A3UserDefaults standardUserDefaults] synchronize];
+	
+	UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
+	_instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"QRCode"];
+	self.instructionViewController.delegate = self;
+	[self.navigationController.view addSubview:self.instructionViewController.view];
+	self.instructionViewController.view.frame = self.navigationController.view.frame;
+	self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+}
+
+- (void)dismissInstructionViewController:(UIView *)view
+{
+	[self.instructionViewController.view removeFromSuperview];
+	self.instructionViewController = nil;
+	
+	[self startRunning];
+}
+
+#pragma mark - AdMob
+
+- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+	[self.view addSubview:bannerView];
+	
+	UIView *superview = self.view;
+	[bannerView remakeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(superview.left);
+		make.right.equalTo(superview.right);
+		make.bottom.equalTo(superview.bottom);
+		make.height.equalTo(@(bannerView.bounds.size.height));
+	}];
+
+	_bottomToolbarBottomSpaceConstraint.constant = bannerView.bounds.size.height;
+	
+	[self.view layoutIfNeeded];
+	[self.cornersView setNeedsDisplay];
 }
 
 @end

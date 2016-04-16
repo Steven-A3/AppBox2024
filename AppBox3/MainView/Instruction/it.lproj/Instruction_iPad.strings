@@ -237,3 +237,6 @@ sinistra, poi tocca Elimina";
 
 /* Class = "UILabel"; text = "Change the main menu\nstyle in the settings"; ObjectID = "dJh-Kp-Sa0"; */
 "dJh-Kp-Sa0.text" = "Modificare lo stile del menu\nprincipale nelle impostazioni";
+
+/* Class = "UILabel"; text = "Point at code to scan."; ObjectID = "Jpa-qd-dQK"; */
+6"Jpa-qd-dQK.text" = "Inquadra il codice per acquisirlo.";

@@ -87,6 +87,7 @@
 
 	FNLOG();
 
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     _webView.frame = self.view.frame;
 
 	if ([self isMovingToParentViewController]) {

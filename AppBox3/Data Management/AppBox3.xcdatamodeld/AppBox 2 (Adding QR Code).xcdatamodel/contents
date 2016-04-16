@@ -203,6 +203,7 @@
     <entity name="QRCodeHistory" representedClassName="QRCodeHistory" syncable="YES">
         <attribute name="created" attributeType="Date" syncable="YES"/>
         <attribute name="dimension" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="productName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="scanData" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="searchData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
@@ -366,7 +367,7 @@
         <element name="LoanCalcComparisonHistory" positionX="198" positionY="837" width="128" height="148"/>
         <element name="LoanCalcHistory" positionX="441" positionY="531" width="128" height="448"/>
         <element name="PercentCalcHistory" positionX="-783" positionY="15" width="128" height="90"/>
-        <element name="QRCodeHistory" positionX="-576" positionY="-684" width="128" height="135"/>
+        <element name="QRCodeHistory" positionX="-576" positionY="-684" width="128" height="150"/>
         <element name="SalesCalcHistory" positionX="-407" positionY="-327" width="128" height="238"/>
         <element name="TipCalcHistory" positionX="-587" positionY="-310" width="128" height="103"/>
         <element name="TipCalcRecent" positionX="-774" positionY="-306" width="128" height="313"/>

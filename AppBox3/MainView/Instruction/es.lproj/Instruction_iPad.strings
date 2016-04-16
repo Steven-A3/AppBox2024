@@ -175,3 +175,6 @@
 
 /* Class = "UILabel"; text = "Change the main menu\nstyle in the settings"; ObjectID = "dJh-Kp-Sa0"; */
 "dJh-Kp-Sa0.text" = "Cambiar el estilo del menú\nprincipal en la configuración";
+
+/* Class = "UILabel"; text = "Point at code to scan."; ObjectID = "Jpa-qd-dQK"; */
+"Jpa-qd-dQK.text" = "Apunta al código para escanearlo.";

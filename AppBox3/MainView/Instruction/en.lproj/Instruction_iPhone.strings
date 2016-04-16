@@ -23,6 +23,9 @@
 /* Class = "UILabel"; text = "Tap to add an item"; ObjectID = "55x-Hd-Yyy"; */
 "55x-Hd-Yyy.text" = "Tap to add an item";
 
+/* Class = "UILabel"; text = "Point at code to scan."; ObjectID = "6kq-Xt-TgA"; */
+"6kq-Xt-TgA.text" = "Point at code to scan.";
+
 /* Class = "UILabel"; text = "Slide the event to the left,\nthen tap Delete"; ObjectID = "7qV-NL-Ajb"; */
 "7qV-NL-Ajb.text" = "Slide the event to the left,\nthen tap Delete";
 

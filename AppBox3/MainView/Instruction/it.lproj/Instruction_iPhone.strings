@@ -195,3 +195,6 @@ più categorie";
 
 /* Class = "UILabel"; text = "Change the main menu\nstyle in the settings"; ObjectID = "NQw-dv-DQb"; */
 "NQw-dv-DQb.text" = "Modificare lo stile del menu\nprincipale nelle impostazioni";
+
+/* Class = "UILabel"; text = "Point at code to scan."; ObjectID = "6kq-Xt-TgA"; */
+"6kq-Xt-TgA.text" = "Inquadra il codice per acquisirlo.";

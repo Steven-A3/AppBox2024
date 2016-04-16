@@ -74,7 +74,7 @@ NSString *const A3AppName_Flashlight = @"Flashlight";
 NSString *const A3AppName_Random = @"Random";
 NSString *const A3AppName_Ruler = @"Ruler";
 NSString *const A3AppName_Level = @"Level";
-NSString *const A3AppName_QRCode = @"QRCode";
+NSString *const A3AppName_QRCode = @"QR Code";
 NSString *const A3AppName_Settings = @"Settings";
 NSString *const A3AppName_About = @"About";
 NSString *const A3AppName_RemoveAds = @"Remove Ads";
@@ -117,7 +117,7 @@ NSString *const A3AppNameGrid_Flashlight = @"Flashlight Short";
 NSString *const A3AppNameGrid_Random = @"Random";
 NSString *const A3AppNameGrid_Ruler = @"Ruler";
 NSString *const A3AppNameGrid_Level = @"Level";
-NSString *const A3AppNameGrid_QRCode = @"QRCode";
+NSString *const A3AppNameGrid_QRCode = @"QR Code";
 
 static char const *const kA3AppsInfoDictionary = "kA3AppsInfoDictionary";
 static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";

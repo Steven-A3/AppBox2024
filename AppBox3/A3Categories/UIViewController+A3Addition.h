@@ -35,6 +35,7 @@ extern NSString *const AdMobAdUnitIDUnitConverter;
 extern NSString *const AdMobAdUnitIDUnitPrice;
 extern NSString *const AdMobAdUnitIDWallet;
 extern NSString *const AdMobAdUnitIDLevel;
+extern NSString *const AdMobAdUnitIDQRCode;
 
 typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 	A3RightBarButtonTagComposeButton = 1,
