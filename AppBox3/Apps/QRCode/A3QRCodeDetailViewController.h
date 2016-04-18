@@ -14,5 +14,6 @@
 
 @property (nonatomic, strong) QRCodeHistory *historyData;
 @property (nonatomic, strong) NSArray<NSArray *> *sections;
+@property (nonatomic, assign) BOOL showSearchOnGoogleButton;
 
 @end

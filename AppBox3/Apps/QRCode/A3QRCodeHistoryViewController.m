@@ -371,9 +371,6 @@
 		[self.navigationController setNavigationBarHidden:NO];
 		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 		[self.navigationController pushViewController:viewController animated:YES];
-//		A3QRCodeDetailViewController *viewController = [A3QRCodeDetailViewController new];
-//		viewController.historyData = history;
-//		[self.navigationController pushViewController:viewController animated:YES];
 	} else {
 		[self.dataHandler performActionWithData:history inViewController:self];
 	}

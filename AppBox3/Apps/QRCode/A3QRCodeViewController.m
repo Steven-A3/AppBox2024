@@ -32,7 +32,7 @@ NSString *const A3QRCodeImageVibrateOff = @"vibrate_off";
 NSString *const A3QRCodeImageTorchOn = @"m_flash_on";
 NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 
-@interface A3QRCodeViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, A3InstructionViewControllerDelegate>
+@interface A3QRCodeViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, A3InstructionViewControllerDelegate, A3QRCodeDataHandlerDelegate>
 
 @property (nonatomic, weak) IBOutlet UIToolbar *topToolbar;
 @property (nonatomic, weak) IBOutlet UIToolbar *topToolbarWithoutVibrate;
@@ -52,6 +52,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	BOOL _googleSearchInProgress;
 	BOOL _viewWillAppearFirstRunAfterLoad;
 	BOOL _scanIsRunning;
+	BOOL _scanAnimationInProgress;
 }
 
 - (void)viewDidLoad {
@@ -326,6 +327,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 - (A3QRCodeDataHandler *)dataHandler {
 	if (!_dataHandler) {
 		_dataHandler = [A3QRCodeDataHandler new];
+		_dataHandler.delegate = self;
 	}
 	return _dataHandler;
 }
@@ -345,16 +347,17 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 }
 
 - (void)animateScanLine {
-	if (!_scanIsRunning) return;
+	if (!_scanIsRunning || _scanAnimationInProgress) return;
 	
 	_scanLineView.frame = CGRectMake(0, _cornersView.bounds.size.height, _cornersView.bounds.size.width, 60);
 	[_cornersView addSubview:_scanLineView];
 	
 	[UIView animateWithDuration:5.0 animations:^{
 		_scanLineView.frame = CGRectMake(0, -60, _cornersView.bounds.size.width, 60);
-
+		_scanAnimationInProgress = YES;
 	} completion:^(BOOL finished) {
 		if (finished) {
+			_scanAnimationInProgress = NO;
 			[self animateScanLine];
 		}
 	}];
@@ -425,6 +428,11 @@ static NSString *const A3V3InstructionDidShowForQRCode = @"A3V3InstructionDidSho
 	[super stopRunning];
 
 	_scanIsRunning = NO;
+}
+
+- (void)dataHandlerDidFailToPresentViewController {
+	[self startRunning];
+	[self animateScanLine];
 }
 
 @end

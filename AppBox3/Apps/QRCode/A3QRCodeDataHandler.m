@@ -104,11 +104,29 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 }
 
 - (void)presentMessageViewControllerOn:(UIViewController *)controller receipents:(NSArray *)recipients body:(NSString *)body {
-	MFMessageComposeViewController *messageViewController = [MFMessageComposeViewController new];
-	messageViewController.messageComposeDelegate = self;
-	messageViewController.recipients = recipients;
-	messageViewController.body = body;
-	[controller presentViewController:messageViewController animated:YES completion:nil];
+	if (![MFMessageComposeViewController canSendText]) {
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+															message:NSLocalizedString(@"iMessage is not enabled.", @"iMessage is not enabled.")
+														   delegate:nil
+												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+												  otherButtonTitles:nil];
+		[alertView show];
+
+		if ([_delegate respondsToSelector:@selector(dataHandlerDidFailToPresentViewController)]) {
+			[_delegate dataHandlerDidFailToPresentViewController];
+		}
+		return;
+	}
+	MFMessageComposeViewController *messageViewController = [[MFMessageComposeViewController alloc] init];
+	if (messageViewController) {
+		messageViewController.messageComposeDelegate = self;
+		messageViewController.recipients = recipients;
+		messageViewController.body = body;
+		[controller presentViewController:messageViewController animated:YES completion:nil];
+	} else {
+		NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"sms:%@", recipients[0]]];
+		[[UIApplication sharedApplication] openURL:URL];
+	}
 }
 
 - (BOOL)handleMeCard:(QRCodeHistory *)history inViewController:(UIViewController *)viewController {

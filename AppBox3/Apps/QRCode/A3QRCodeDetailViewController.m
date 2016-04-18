@@ -40,7 +40,9 @@
 																	   target:self
 																	   action:@selector(shareButtonAction:)];
 		self.navigationItem.rightBarButtonItem = shareButton;
+	}
 
+	if (_showSearchOnGoogleButton) {
 		UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Search on Google", @"Search on Google") style:UIBarButtonItemStylePlain target:self action:@selector(searchOnGoogleButtonAction:)];
 		UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
 		_bottomToolbar = [UIToolbar new];

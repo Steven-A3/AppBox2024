@@ -9,7 +9,15 @@
 #import <Foundation/Foundation.h>
 #import "QRCodeHistory.h"
 
+@protocol A3QRCodeDataHandlerDelegate <NSObject>
+@optional
+- (void)dataHandlerDidFailToPresentViewController;
+
+@end
+
 @interface A3QRCodeDataHandler : NSObject
+
+@property (nonatomic, weak) id<A3QRCodeDataHandlerDelegate> delegate;
 
 - (void)performActionWithData:(QRCodeHistory *)history inViewController:(UIViewController *)viewController;
 
