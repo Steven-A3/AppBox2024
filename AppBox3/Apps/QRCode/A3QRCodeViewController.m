@@ -51,6 +51,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 @implementation A3QRCodeViewController {
 	BOOL _googleSearchInProgress;
 	BOOL _viewWillAppearFirstRunAfterLoad;
+	BOOL _scanIsRunning;
 }
 
 - (void)viewDidLoad {
@@ -79,12 +80,21 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 		[_topToolbar setHidden:YES];
 		[_topToolbarWithoutVibrate setHidden:NO];
 	}
+	
+	[self setupScanLineView];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
+- (void)applicationDidBecomeActive {
+	[self animateScanLine];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
 	[self.navigationController setNavigationBarHidden:YES];
+	[self.navigationController setToolbarHidden:YES];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 	
 	if (_viewWillAppearFirstRunAfterLoad) {
@@ -112,7 +122,18 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	[self setupScanLineView];
+	[self startRunning];
+	[self animateScanLine];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+	[super viewDidDisappear:animated];
+
+	[self stopRunning];
+}
+
+- (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (IBAction)appsButtonAction:(id)sender {
@@ -319,14 +340,16 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 }
 
 - (void)setupScanLineView {
+	FNLOGRECT(_cornersView.bounds);
 	_scanLineView = [[A3QRCodeScanLineView alloc] initWithFrame:CGRectMake(0, _cornersView.bounds.size.height - 60, _cornersView.bounds.size.width, 60)];
-	[_cornersView addSubview:_scanLineView];
-
-	[self animateScanLine];
 }
 
 - (void)animateScanLine {
+	if (!_scanIsRunning) return;
+	
 	_scanLineView.frame = CGRectMake(0, _cornersView.bounds.size.height, _cornersView.bounds.size.width, 60);
+	[_cornersView addSubview:_scanLineView];
+	
 	[UIView animateWithDuration:5.0 animations:^{
 		_scanLineView.frame = CGRectMake(0, -60, _cornersView.bounds.size.width, 60);
 
@@ -388,6 +411,20 @@ static NSString *const A3V3InstructionDidShowForQRCode = @"A3V3InstructionDidSho
 	
 	[self.view layoutIfNeeded];
 	[self.cornersView setNeedsDisplay];
+}
+
+#pragma mark - Override RSScannerViewController
+
+- (void)startRunning {
+	[super startRunning];
+
+	_scanIsRunning = YES;
+}
+
+- (void)stopRunning {
+	[super stopRunning];
+
+	_scanIsRunning = NO;
 }
 
 @end

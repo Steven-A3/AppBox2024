@@ -18,7 +18,7 @@
 #import "MXLCalendarManager.h"
 #import "A3BasicWebViewController.h"
 
-@interface A3QRCodeHistoryViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface A3QRCodeHistoryViewController () <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate>
 
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
 @property (nonatomic, strong) UIView *navigationBarExtensionView;
@@ -54,6 +54,7 @@
 		[self setupBannerViewForAdUnitID:AdMobAdUnitIDQRCode keywords:@[@"Low Price", @"Shopping", @"Marketing"] gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
 	}
 	[_navigationBarExtensionView setHidden:NO];
+	[self.navigationController setToolbarHidden:YES];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
@@ -90,17 +91,60 @@
 		[_tableView setEditing:YES];
 		
 		UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(editDoneButtonAction:)];
-		self.navigationItem.leftBarButtonItem = doneButton;
-		self.navigationItem.rightBarButtonItem = nil;
+		self.navigationItem.rightBarButtonItem = doneButton;
+		
+		UIBarButtonItem *clearButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Clear", @"Clear")
+																		style:UIBarButtonItemStylePlain
+																	   target:self
+																	   action:@selector(clearButtonAction:)];
+		self.navigationItem.leftBarButtonItem = clearButton;
+	}
+}
+
+- (void)clearButtonAction:(id)clearButtonAction {
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+															 delegate:self
+													cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+											   destructiveButtonTitle:NSLocalizedString(@"Clear History", @"Clear History")
+													otherButtonTitles:nil];
+	[actionSheet showInView:self.view];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if (buttonIndex == actionSheet.destructiveButtonIndex) {
+		NSManagedObjectContext *moc = [NSManagedObjectContext MR_rootSavingContext];
+		switch (_segmentedControl.selectedSegmentIndex) {
+			case 0:
+				[QRCodeHistory MR_truncateAllInContext:moc];
+				break;
+			case 1: {
+				NSPredicate *predicate = [NSPredicate predicateWithFormat:@"dimension == %@", @"1"];
+				[QRCodeHistory MR_deleteAllMatchingPredicate:predicate inContext:moc];
+				break;
+			}
+			case 2:{
+				NSPredicate *predicate = [NSPredicate predicateWithFormat:@"dimension == %@", @"2"];
+				[QRCodeHistory MR_deleteAllMatchingPredicate:predicate inContext:moc];
+				break;
+			}
+			default:
+				break;
+		}
+		[moc MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+			[_tableView setEditing:NO];
+			
+			_historyArray = nil;
+			[_tableView reloadData];
+			[self editDoneButtonAction:nil];
+		}];
 	}
 }
 
 - (void)editDoneButtonAction:(UIBarButtonItem *)editDoneButton {
 	if ([_tableView isEditing]) {
 		[_tableView setEditing:NO];
-		
-		[self setupBarButton];
 	}
+	[self setupBarButton];
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)doneButton {

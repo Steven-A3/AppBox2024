@@ -115,7 +115,7 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 	self.targetHistory = history;
 	self.targetViewController = viewController;
 
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Contacts", @"Contacts")
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
 															 delegate:self
 													cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
 											   destructiveButtonTitle:nil
@@ -282,7 +282,7 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 	_targetHistory = history;
 	_targetViewController = viewController;
 
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Contacts", @"Contacts")
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
 															 delegate:self
 													cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
 											   destructiveButtonTitle:nil
@@ -364,7 +364,7 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 		_parsedEventCalendar = calendar;
 		_targetViewController = viewController;
 		
-		UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Event", @"Event")
+		UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
 																 delegate:self
 														cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
 												   destructiveButtonTitle:nil
@@ -499,7 +499,7 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 		return YES;
 	} else if (match.resultType == NSTextCheckingTypePhoneNumber) {
 		self.phoneNumber = [match.phoneNumber copy];
-		UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:match.phoneNumber
+		UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
 																 delegate:self
 														cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
 												   destructiveButtonTitle:nil
@@ -518,7 +518,9 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 	return NO;
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+#pragma mark - UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
 	if (actionSheet.tag == A3QRCodeActionSheetTypePhoneOrSMS) {
 		if (buttonIndex == actionSheet.cancelButtonIndex) return;
 		

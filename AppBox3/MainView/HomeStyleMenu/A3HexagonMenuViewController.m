@@ -343,11 +343,19 @@ A3InstructionViewControllerDelegate>
 			_menuItems = [[self originalMenuItems] mutableCopy];
 		}
 		if (IS_IPAD) {
-			NSInteger levelIndex = [_menuItems indexOfObject:@{kA3AppsMenuName:A3AppName_Level}];
-			if (levelIndex != NSNotFound) {
-				[_menuItems replaceObjectAtIndex:levelIndex withObject:@{kA3AppsMenuName:A3AppName_None}];
+			[_menuItems removeObject:@{kA3AppsMenuName:A3AppName_Level}];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsMainMenuHexagonShouldAddQRCodeMenu]) {
+			[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3SettingsMainMenuHexagonShouldAddQRCodeMenu];
+			
+			NSInteger idx = [_menuItems indexOfObject:@{kA3AppsMenuName:A3AppName_None}];
+			if (idx != NSNotFound) {
+				[_menuItems replaceObjectAtIndex:idx withObject:@{kA3AppsMenuName:A3AppName_QRCode}];
+			} else {
+				[_menuItems insertObject:@{kA3AppsMenuName:A3AppName_QRCode} atIndex:0];
 			}
 		}
+		FNLOG(@"%@", _menuItems);
 	}
 	return _menuItems;
 }

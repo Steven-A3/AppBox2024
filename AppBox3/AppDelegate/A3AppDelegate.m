@@ -182,6 +182,10 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 	if (_previousVersion && [_previousVersion doubleValue] < 3.8) {
 		_needShowAlertV3_8NewFeature = YES;
 	}
+	if (_previousVersion && [_previousVersion doubleValue] == 4.0) {
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddQRCodeMenu];
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddQRCodeMenu];
+	}
 
 	// AppBox Pro V1.8.4까지는 Days Until 기능의 옵션에 의해서 남은 일자에 대한 배지 기능이 있었습니다.
 	// AppBox Pro V3.0 이후로는 배지 기능을 제공하지 않습니다.

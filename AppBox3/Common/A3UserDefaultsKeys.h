@@ -32,6 +32,15 @@ extern NSString *const A3SettingsMainMenuStyleTable;
 extern NSString *const A3SettingsMainMenuStyleHexagon;
 extern NSString *const A3SettingsMainMenuStyleIconGrid;
 
+/**
+ *  기기간 동기화가 필요없는 없으므로, NSUserDefaults에 저장한다.
+ *  업데이트 설치 후 첫 실행 시 이전 버전이 4.0인 경우에만 아래 설정이 활성화 되어야 한다.
+ *  이전 버전이 4.0 미만인 경우와 4.1 이후에는 해당 메뉴가 포함되어 있으므로 아래 설정이 필요가 없다.
+ *  한번 추가가 된 이후에는 아래 설정이 OFF가 되어야 한다.
+ */
+extern NSString *const A3SettingsMainMenuHexagonShouldAddQRCodeMenu;
+extern NSString *const A3SettingsMainMenuGridShouldAddQRCodeMenu;
+
 #pragma mark ------ Main Menu
 extern NSString *const A3MainMenuDataEntityFavorites;
 extern NSString *const A3MainMenuDataEntityRecentlyUsed;

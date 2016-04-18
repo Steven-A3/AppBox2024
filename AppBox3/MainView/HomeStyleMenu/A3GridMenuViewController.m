@@ -377,10 +377,14 @@ A3InstructionViewControllerDelegate>
 		if (IS_IPAD) {
 			[_menuItems removeObject:@{kA3AppsMenuName:A3AppName_Level}];
 		}
-		NSDictionary *qrcodeMenu = @{kA3AppsMenuName : A3AppName_QRCode};
-		NSInteger qrcodeIndex = [_menuItems indexOfObject:qrcodeMenu];
-		if (qrcodeIndex == NSNotFound) {
-			[_menuItems insertObject:qrcodeMenu atIndex:0];
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsMainMenuGridShouldAddQRCodeMenu]) {
+			[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3SettingsMainMenuGridShouldAddQRCodeMenu];
+			
+			NSDictionary *qrcodeMenu = @{kA3AppsMenuName : A3AppName_QRCode};
+			NSInteger qrcodeIndex = [_menuItems indexOfObject:qrcodeMenu];
+			if (qrcodeIndex == NSNotFound) {
+				[_menuItems insertObject:qrcodeMenu atIndex:0];
+			}
 		}
 	}
 	return _menuItems;

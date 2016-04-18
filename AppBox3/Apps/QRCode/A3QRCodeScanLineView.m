@@ -26,6 +26,18 @@
 	return self;
 }
 
+- (void)setFrame:(CGRect)frame {
+	[super setFrame:frame];
+
+	_gradientLayer.bounds = self.bounds;
+}
+
+- (void)setBounds:(CGRect)bounds {
+	[super setBounds:bounds];
+
+	_gradientLayer.bounds = self.bounds;
+}
+
 - (void)setupSubviews {
 	_topGreenLine = [UIView new];
 	//98	253	48

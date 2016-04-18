@@ -31,6 +31,9 @@ NSString *const A3SettingsMainMenuStyleTable = @"tableStyle";
 NSString *const A3SettingsMainMenuStyleHexagon = @"hexagon";
 NSString *const A3SettingsMainMenuStyleIconGrid = @"iconGrid";
 
+NSString *const A3SettingsMainMenuHexagonShouldAddQRCodeMenu = @"A3SettingsMainMenuHexagonShouldAddQRCodeMenu";
+NSString *const A3SettingsMainMenuGridShouldAddQRCodeMenu = @"A3SettingsMainMenuGridShouldAddQRCodeMenu";
+
 #pragma mark ------ Main Menu
 NSString *const A3MainMenuDataEntityFavorites 				= @"A3MainMenuDataEntityFavorites";
 NSString *const A3MainMenuDataEntityRecentlyUsed 			= @"A3MainMenuDataEntityRecentlyUsed";

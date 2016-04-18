@@ -20,7 +20,6 @@ NSString *const AVMetadataObjectTypeFace = @"face";
 
 @interface RSScannerViewController () <AVCaptureMetadataOutputObjectsDelegate>
 
-@property(nonatomic, strong) AVCaptureSession *session;
 @property(nonatomic, strong) AVCaptureDeviceInput *input;
 @property(nonatomic, strong) AVCaptureVideoPreviewLayer *layer;
 @property(nonatomic, strong) AVCaptureMetadataOutput *output;
@@ -377,7 +376,6 @@ didOutputMetadataObjects:(NSArray *)metadataObjects
     if (self.barcodesHandler) {
         self.barcodesHandler([NSArray arrayWithArray:barcodeObjects]);
     }
-    
 }
 
 #pragma mark - Public
