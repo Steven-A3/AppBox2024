@@ -26,6 +26,12 @@ NSString *const A3NotificationHolidaysCountryListChanged = @"A3NotificationHolid
 
 + (NSArray *)supportedCountries {
 	return @[
+			 @{
+					kHolidayCountryCode : @"ao",
+//					kHolidayCapitalCityName:@"Luanda",
+//					kHolidayTimeZone:@"WAT",
+					kA3TimeZoneName : @"Africa/Luanda",
+					},    // UTC+1
 			@{
 					kHolidayCountryCode : @"ar",
 //					kHolidayCapitalCityName:@"Buenos Aires",
@@ -608,17 +614,12 @@ NSString *const A3NotificationHolidaysCountryListChanged = @"A3NotificationHolid
 //					kHolidayTimeZone : @"CET",
 					kA3TimeZoneName : @"Africa/Tunis",
 			},    // UTC+1, Central Africa Time
-
-//			@"ar", @"au", @"at", @"be", @"bw", @"br", @"cm", @"ca", @"cf", @"cl", // 10
-//			@"cn", @"co", @"hr", @"cz", @"dk", @"do", @"ec", @"eg", @"sv", @"gq", // 20
-//			@"ee", @"fi", @"fr", @"de", @"gr", @"gt", @"gn", @"gw", @"hn", @"hk", // 30
-//			@"hu", @"id", @"ie", @"it", @"ci", @"jm", @"jp", @"il", @"jo", @"ke", // 40
-//			@"lv", @"li", @"lt", @"lu", @"mo", @"mg", @"ml", @"mt", @"mu", @"mx", // 50
-//			@"md", @"nl", @"nz", @"ni", @"ne", @"no", @"pa", @"py", @"pe", @"ph", // 60
-//			@"pl", @"pt", @"pr", @"qa", @"kr", @"re", @"ro", @"ru", @"sa", @"sn", // 70
-//			@"sg", @"sk", @"za", @"es", @"se", @"ch", @"tw", @"tr", @"ae", @"gb", // 80
-//			@"uy", @"us", @"vi", @"ve", @"my", @"cr", @"in", @"ht", @"kw", @"ua", // 90
-//			@"mk", @"et", @"bd", @"bg", @"bs", @"pk", @"th", @"mz",
+			 @{
+					kHolidayCountryCode : @"rs",
+//					kHolidayCapitalCityName : @"Belgrade",
+//					kHolidayTimeZone : @"CET",
+					kA3TimeZoneName : @"Europe/Belgrade",
+					},    // UTC+1
 	];
 }
 
