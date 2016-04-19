@@ -46,7 +46,7 @@
 
 - (CGSize)collectionViewContentSize
 {
-	CGFloat contentWidth = self.collectionView.bounds.size.width * 2;
+	CGFloat contentWidth = self.collectionView.bounds.size.width * (([self.collectionView numberOfItemsInSection:0] - 1) / self.numberOfItemsPerPage + 1);
 	
 	return CGSizeMake(contentWidth, _contentHeight);
 }

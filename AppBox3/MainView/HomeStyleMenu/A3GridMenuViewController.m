@@ -43,9 +43,7 @@ A3InstructionViewControllerDelegate>
  *  이것을 선택한 경우, 앱을 추가할 수 있으며, 앱을 추가하는 뷰 컨트롤러가 표시될때 선택된 indexPath를 기억합니다.
  */
 @property (nonatomic, strong) NSIndexPath *selectedIndexPath;
-
 @property (nonatomic, strong) UIPageControl *pageControl;
-
 @property (nonatomic, strong) A3HomeStyleHelpViewController *instructionViewController;
 
 @end
@@ -101,7 +99,7 @@ A3InstructionViewControllerDelegate>
 	[self setupContentHeightWithSize:[A3UIDevice screenBoundsAdjustedWithOrientation].size];
 	
 	_pageControl = [UIPageControl new];
-	_pageControl.numberOfPages = 2;
+	_pageControl.numberOfPages = [self.menuItems count] / _flowLayout.numberOfItemsPerPage + 1;
 	_pageControl.currentPage = 0;
 	[_pageControl addTarget:self action:@selector(pageControlValueChanged:) forControlEvents:UIControlEventValueChanged];
 	[self.view addSubview:_pageControl];
@@ -129,6 +127,13 @@ A3InstructionViewControllerDelegate>
 		make.bottom.equalTo(self.view.bottom).with.offset(offset);
 		make.centerX.equalTo(_collectionView.centerX);
 	}];
+	[self updatePageControl];
+}
+
+- (void)updatePageControl {
+	_pageControl.numberOfPages = ([self.menuItems count] - 1) / _flowLayout.numberOfItemsPerPage + 1;
+	[_pageControl setHidden:_pageControl.numberOfPages == 1];
+//	_collectionView.contentSize = CGSizeMake(self.view.bounds.size.width * _pageControl.numberOfPages, _flowLayout.contentHeight);
 }
 
 - (void)pageControlValueChanged:(UIPageControl *)pageControl {
@@ -173,6 +178,8 @@ A3InstructionViewControllerDelegate>
 		_collectionView.delegate = self;
 		_collectionView.dataSource = self;
         _collectionView.pagingEnabled = YES;
+		_collectionView.showsVerticalScrollIndicator = NO;
+		_collectionView.showsHorizontalScrollIndicator = NO;
 		[_collectionView registerClass:[A3GridMenuCollectionViewCell class] forCellWithReuseIdentifier:A3GridMenuCellID];
 	}
     return _collectionView;
@@ -242,6 +249,7 @@ A3InstructionViewControllerDelegate>
 	[[NSUserDefaults standardUserDefaults] setObject:_menuItems forKey:A3MainMenuGridMenuItems];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
+	[self updatePageControl];
 	[self.collectionView reloadData];
 }
 
@@ -298,7 +306,9 @@ A3InstructionViewControllerDelegate>
 		[_menuItems addObject:@{kA3AppsMenuName : A3AppName_None}];
 	}
 
+	[_collectionView setCollectionViewLayout:_flowLayout];
 	[self.collectionView reloadData];
+	[self updatePageControl];
 	
 	[[NSUserDefaults standardUserDefaults] setObject:_menuItems forKey:A3MainMenuGridMenuItems];
 	[[NSUserDefaults standardUserDefaults] synchronize];
