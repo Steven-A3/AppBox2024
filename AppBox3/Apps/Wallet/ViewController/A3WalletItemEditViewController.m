@@ -227,7 +227,11 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 		if ([fieldItem.hasImage boolValue]) {
 			NSURL *thumbnailImageURL = [NSURL fileURLWithPath:[fieldItem photoImageThumbnailPathInOriginal:YES]];
             NSURL *thumbnailImageInTempURL = [NSURL fileURLWithPath:[fieldItem photoImageThumbnailPathInOriginal:NO]];
-            
+
+			if (![fileManager fileExistsAtPath:[thumbnailImageURL path]]) {
+				// The source file does not exist and nothing to copy to temporary path.
+				continue;
+			}
             NSFileCoordinator* fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
             NSError *error;
             [fileCoordinator coordinateReadingItemAtURL:thumbnailImageURL
@@ -279,7 +283,11 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 		if ([fieldItem.hasVideo boolValue]) {
 			NSURL *thumbnailImagePathURL = [NSURL fileURLWithPath:[fieldItem videoThumbnailPathInOriginal:YES]];
 			NSURL *thumbnailImageInTempURL = [NSURL fileURLWithPath:[fieldItem videoThumbnailPathInOriginal:NO]];
-            
+
+			if (![fileManager fileExistsAtPath:[thumbnailImagePathURL path]]) {
+				// The source file does not exist and nothing to copy to temporary path.
+				continue;
+			}
             NSFileCoordinator* fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
             [fileCoordinator coordinateReadingItemAtURL:thumbnailImagePathURL
                                                 options:NSFileCoordinatorReadingWithoutChanges
@@ -1082,7 +1090,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 		self.popOverController = nil;
 	}
 	else {
-		[self dismissViewControllerAnimated:YES completion:NULL];
+		[picker dismissViewControllerAnimated:YES completion:NULL];
 		_imagePickerController = nil;
 	}
     
@@ -1233,6 +1241,10 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	_imagePickerController = [[UIImagePickerController alloc] init];
 	if (destructiveButtonIndex >= 0)
 		myButtonIndex--;
+	if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+		myButtonIndex++;
+	}
+
 	switch (myButtonIndex) {
 		case ActionTag_Camera:
 			_imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
