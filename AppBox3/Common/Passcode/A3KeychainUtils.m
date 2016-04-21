@@ -90,7 +90,7 @@ static NSString *kA3KeychainAccountName = @"A3AppBox3Passcode";
 	}
 	NSDictionary *resultDictionary = (__bridge_transfer NSDictionary *)resData;
 	NSString *hint = [resultDictionary objectForKey:(__bridge_transfer NSString *)kSecAttrComment];
-	return hint;
+	return [hint length] ? hint : nil;
 }
 
 + (void)removePassword {
