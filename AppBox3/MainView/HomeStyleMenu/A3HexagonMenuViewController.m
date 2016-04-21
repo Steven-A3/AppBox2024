@@ -359,6 +359,7 @@ A3InstructionViewControllerDelegate>
 			} else {
 				[_menuItems insertObject:@{kA3AppsMenuName:A3AppName_QRCode} atIndex:0];
 			}
+			[[NSUserDefaults standardUserDefaults] setObject:_menuItems forKey:A3MainMenuHexagonMenuItems];
 		}
 		FNLOG(@"%@", _menuItems);
 	}

@@ -410,6 +410,7 @@ A3InstructionViewControllerDelegate>
 			if (qrcodeIndex == NSNotFound) {
 				[_menuItems insertObject:qrcodeMenu atIndex:0];
 			}
+			[[NSUserDefaults standardUserDefaults] setObject:_menuItems forKey:A3MainMenuGridMenuItems];
 		}
 	}
 	return _menuItems;
