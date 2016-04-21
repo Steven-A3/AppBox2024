@@ -471,8 +471,12 @@
 		make.bottom.equalTo(cell.bottom).with.offset(-10);
 		make.right.equalTo(cell.right).with.offset(-50);
 	}];
-	
-	cell.accessoryType = UITableViewCellAccessoryDetailButton;
+
+	if ([A3KeychainUtils getHint]) {
+		cell.accessoryType = UITableViewCellAccessoryDetailButton;
+	} else {
+		cell.accessoryType = UITableViewCellAccessoryNone;
+	}
 }
 
 - (void)makeConstraintForTextField:(UITextField *)textField inCell:(UITableViewCell *)cell {
