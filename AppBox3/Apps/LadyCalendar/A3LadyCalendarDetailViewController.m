@@ -188,7 +188,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
     // predicted 인 경우, rightBarButton 제거.
     LadyCalendarPeriod *period = [array firstObject];
 
-    if (period && [period.isPredict boolValue] && ([A3DateHelper diffDaysFromDate:[NSDate date] toDate:[period startDate] isAllDay:YES] > 0)) {
+    if (period && [period.isPredict boolValue] && ([A3DateHelper diffDaysFromDate:[NSDate date] toDate:[period startDate] isAllDay:YES] > 28)) {
         if (_isFromNotification != YES) {
             self.navigationItem.rightBarButtonItem = nil;
         }
@@ -253,7 +253,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 				A3LadyCalendarDetailViewExpectedTitleCell *titleCell = [tableView dequeueReusableCellWithIdentifier:A3LadyCalendarDetailViewExpectedTitleCellID forIndexPath:indexPath];
 				titleCell.titleLabel.text = rowInfo[ItemKey_Title];
 
-                if ([A3DateHelper diffDaysFromDate:[NSDate date] toDate:[period startDate] isAllDay:YES] > 0) {
+                if ([A3DateHelper diffDaysFromDate:[NSDate date] toDate:[period startDate] isAllDay:YES] > 28) {
                     [titleCell.editButton setHidden:YES];
                 }
                 else {
