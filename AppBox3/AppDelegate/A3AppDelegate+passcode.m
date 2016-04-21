@@ -171,11 +171,13 @@
 							} else {
 								presentPasscodeViewControllerBlock(showCancelButton);
 							}
+							self.isTouchIDEvaluationInProgress = NO;
 						});
 					}];
 		} else {
 			[self removeSecurityCoverView];
 			presentPasscodeViewControllerBlock(showCancelButton);
+			self.isTouchIDEvaluationInProgress = NO;
 		}
 	}
 }
@@ -245,7 +247,6 @@
 	}
 
 	if (self.isTouchIDEvaluationInProgress) {
-		self.isTouchIDEvaluationInProgress = NO;
 		return;
 	}
 	if (!isAfterLaunch) {
