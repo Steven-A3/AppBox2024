@@ -256,14 +256,16 @@
 	UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenBounds.size.width, 35)];
 	
 	UILabel *label = [UILabel new];
-	label.font = [UIFont systemFontOfSize:14];
+	label.font = [UIFont systemFontOfSize:13];
 	label.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
+	label.numberOfLines = 0;
 	[footerView addSubview:label];
 	
 	CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 	[label makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(footerView.left).with.offset(leading);
-		make.centerY.equalTo(footerView.centerY);
+		make.right.equalTo(footerView.right).with.offset(-leading);
+		make.top.equalTo(footerView.top).with.offset(6);
 	}];
 	
     NSDictionary *dict = [_itemArray objectAtIndex:section];
