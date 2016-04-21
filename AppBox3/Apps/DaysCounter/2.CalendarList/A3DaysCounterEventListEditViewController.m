@@ -32,6 +32,7 @@
 @property (strong, nonatomic) UIPopoverController *popoverVC;
 @property (strong, nonatomic) UINavigationController *modalVC;
 @property (assign, nonatomic) NSInteger shareItemTitleIndex;
+@property (strong, nonatomic) UIActivityViewController *activityViewController;
 
 @end
 
@@ -66,9 +67,23 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidAppear) name:A3NotificationRightSideViewDidAppear object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
+}
+
+- (void)applicationWillResignActive {
+	if (_activityViewController) {
+		[self dismissViewControllerAnimated:NO completion:^{
+			_activityViewController = nil;
+		}];
+	}
+	if (_popoverVC) {
+		[_popoverVC dismissPopoverAnimated:NO];
+		_popoverVC = nil;
+	}
 }
 
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewDidAppear object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
@@ -405,21 +420,22 @@
         return;
     }
     
-    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
+    _activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
 	if (IS_IPHONE) {
-		[self presentViewController:activityController animated:YES completion:NULL];
+		[self presentViewController:_activityViewController animated:YES completion:NULL];
 	}
     else {
-		UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
+		UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:_activityViewController];
         popoverController.delegate = self;
         self.popoverVC = popoverController;
         [popoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        activityController.completionHandler = ^(NSString* activityType, BOOL completed) {
+        _activityViewController.completionHandler = ^(NSString* activityType, BOOL completed) {
         };
 	}
 }
 
 #pragma mark - UIPopoverControllerDelegate
+
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
     _trashBarButton.enabled = YES;
@@ -430,6 +446,7 @@
 }
 
 #pragma mark - UIActivityItemSource
+
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
 {
     NSArray *sortedArray = [_selectedArray sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
