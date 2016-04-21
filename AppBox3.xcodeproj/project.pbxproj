@@ -711,6 +711,7 @@
 		68C7E1081BE20C1C00861AFD /* A3CurrencyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C7E1071BE20C1C00861AFD /* A3CurrencyViewController.m */; };
 		68C802D819571A0200BC19EE /* WalletCategoryPreset.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68C802D719571A0200BC19EE /* WalletCategoryPreset.plist */; };
 		68C802DB19571A2000BC19EE /* WalletPreset.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68C802DD19571A2000BC19EE /* WalletPreset.strings */; };
+		68C999AD1CC74FB200BC1B0D /* A3PriceTagLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C999AC1CC74FB200BC1B0D /* A3PriceTagLabel.m */; };
 		68C9E3FE1882EF1B007E4697 /* A3AppDelegate+mainMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C9E3FD1882EF1B007E4697 /* A3AppDelegate+mainMenu.m */; };
 		68CA9B1919618866002E58DC /* Calculation.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CA9B1819618866002E58DC /* Calculation.m */; };
 		68CA9BA61961B881002E58DC /* PercentCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CA9BA51961B881002E58DC /* PercentCalcHistory.m */; };
@@ -2287,6 +2288,8 @@
 		68C802E419571A3700BC19EE /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/WalletPreset.strings; sourceTree = "<group>"; };
 		68C802E519571A3900BC19EE /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/WalletPreset.strings; sourceTree = "<group>"; };
 		68C802E619571A3B00BC19EE /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/WalletPreset.strings; sourceTree = "<group>"; };
+		68C999AB1CC74FB200BC1B0D /* A3PriceTagLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3PriceTagLabel.h; sourceTree = "<group>"; };
+		68C999AC1CC74FB200BC1B0D /* A3PriceTagLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3PriceTagLabel.m; sourceTree = "<group>"; };
 		68C9DBDC16AE329500F34A54 /* A3UserDefaultsKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = A3UserDefaultsKeys.h; sourceTree = "<group>"; };
 		68C9E3FC1882EF1B007E4697 /* A3AppDelegate+mainMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "A3AppDelegate+mainMenu.h"; path = "AppDelegate/A3AppDelegate+mainMenu.h"; sourceTree = "<group>"; };
 		68C9E3FD1882EF1B007E4697 /* A3AppDelegate+mainMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "A3AppDelegate+mainMenu.m"; path = "AppDelegate/A3AppDelegate+mainMenu.m"; sourceTree = "<group>"; };
@@ -4046,6 +4049,8 @@
 				68D073191820DE4200D34870 /* A3TripleCircleView.m */,
 				17D428AB1CD232306110EBB3 /* UIView+A3Drawing.h */,
 				17D426DEC2D6FD7E280056BD /* UIView+A3Drawing.m */,
+				68C999AB1CC74FB200BC1B0D /* A3PriceTagLabel.h */,
+				68C999AC1CC74FB200BC1B0D /* A3PriceTagLabel.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -6290,6 +6295,7 @@
 				684E9F05188A43C300FAA48E /* NJKWebViewProgressView.m in Sources */,
 				68F1500D19485E8500159EAD /* A3DaysCounterLocationPopupViewController.m in Sources */,
 				6823F6FE1863294700E6E90D /* CurrencyHistory+handler.m in Sources */,
+				68C999AD1CC74FB200BC1B0D /* A3PriceTagLabel.m in Sources */,
 				68B6A35918CEDDD1004084EF /* JVFloatLabeledTextView.m in Sources */,
 				68C1ABFA18B1C05200021001 /* NSDateFormatter+LunarDate.m in Sources */,
 				68143D0618E3EC1F00569691 /* A3NumberKeyboardViewController_iPad.m in Sources */,

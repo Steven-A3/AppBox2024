@@ -17,6 +17,7 @@
 #import "A3SyncManager.h"
 #import "A3SettingsHomeStyleSelectTableViewCell.h"
 #import "A3AboutViewController.h"
+#import "A3PriceTagLabel.h"
 
 typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	A3SettingsRowUseiCloud = 1100,
@@ -105,6 +106,8 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 }
 
 - (void)reloadTableView {
+	_didResetHomeScreenLayout = YES;
+
 	[self.tableView reloadData];
 }
 
@@ -113,6 +116,9 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (section == 2) {
 		return [[A3AppDelegate instance] isMainMenuStyleList] ? 3 : 2;
+	}
+	if (section == 4) {
+		return [A3AppDelegate instance].shouldPresentAd ? 3 : 1;
 	}
 	return [super tableView:tableView numberOfRowsInSection:section];
 }
@@ -128,32 +134,11 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
 	if (section == 0) return UITableViewAutomaticDimension;
 	BOOL isLastSection = ([self.tableView numberOfSections] - 1) == section;
-	if (isLastSection && ![[A3AppDelegate instance] shouldPresentAd]) {
-		return 3;
-	}
 	return [self standardHeightForFooterIsLastSection:isLastSection];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 2 && indexPath.row == 0) return 160.0;
-	if (indexPath.section == 4) {
-		switch (indexPath.row) {
-			case 0:
-				if (![[A3AppDelegate instance] shouldPresentAd] || ![[A3AppDelegate instance] isIAPRemoveAdsAvailable]) {
-					return 0.0;
-				}
-				break;
-			case 1:
-				if (![[A3AppDelegate instance] shouldPresentAd]) return 0.0;
-				break;
-				
-			default:
-				break;
-		}
-		if (indexPath.row == 0 && ![[A3AppDelegate instance] isIAPRemoveAdsAvailable]) {
-			return 0.0;
-		}
-	}
 
 	return UITableViewAutomaticDimension;
 }
@@ -239,8 +224,34 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 			
 			break;
 		}
-		case A3SettingsRowRemoveAds:
+		case A3SettingsRowRemoveAds: {
+			if ([A3AppDelegate instance].shouldPresentAd) {
+				NSNumberFormatter *priceFormatter = [NSNumberFormatter new];
+				SKProduct *product = [A3AppDelegate instance].IAPRemoveAdsProductFromiTunes;
+				[priceFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+				[priceFormatter setLocale:product.priceLocale];
+				NSString *priceString = [priceFormatter stringFromNumber:product.price];
+
+				A3PriceTagLabel *priceTagLabel = [[A3PriceTagLabel alloc] initWithFrame:CGRectMake(0, 0, 58, 26)];
+				priceTagLabel.text = priceString;
+				[priceTagLabel sizeToFit];
+				CGRect bounds = priceTagLabel.bounds;
+				bounds.size.width += 20;
+				bounds.size.height = 26;
+				priceTagLabel.bounds = bounds;
+
+				cell.accessoryView = priceTagLabel;
+				cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
+			} else {
+				cell.textLabel.text = NSLocalizedString(@"About", @"About");
+				cell.textLabel.textColor = [UIColor blackColor];
+				cell.accessoryView = nil;
+				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			}
+			break;
+		}
 		case A3SettingsRowRestorePurchase:
+			cell.detailTextLabel.text = NSLocalizedString(@"Free", @"Free");
 			cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
 			break;
 	}
@@ -313,15 +324,17 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 		case 4:
 			switch (indexPath.row) {
 				case 0:
-					[[A3AppDelegate instance] startRemoveAds];
+					if ([A3AppDelegate instance].shouldPresentAd) {
+						[[A3AppDelegate instance] startRemoveAds];
+					} else {
+						[self presentAboutViewController];
+					}
 					break;
 				case 1:
 					[[A3AppDelegate instance] startRestorePurchase];
 					break;
 				case 2: {
-					UIStoryboard *aboutStoryboard = [UIStoryboard storyboardWithName:@"about" bundle:nil];
-					A3AboutViewController *viewController = [aboutStoryboard instantiateInitialViewController];
-					[self.navigationController pushViewController:viewController animated:YES];
+					[self presentAboutViewController];
 					break;
 				}
 				default:
@@ -332,6 +345,12 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 		default:
 			break;
 	}
+}
+
+- (void)presentAboutViewController {
+	UIStoryboard *aboutStoryboard = [UIStoryboard storyboardWithName:@"about" bundle:nil];
+	A3AboutViewController *viewController = [aboutStoryboard instantiateInitialViewController];
+	[self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
