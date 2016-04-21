@@ -178,6 +178,7 @@ extern NSString *const A3AppGroupNameNone;
 - (void)didFinishPushViewController;
 - (NSString *)backupReceiptFilePath;
 - (void)makeReceiptBackup;
+- (RMAppReceipt *)appReceipt;
 - (BOOL)receiptHasRemoveAds;
 - (BOOL)isPaidAppVersionCustomer:(RMAppReceipt *)receipt;
 - (BOOL)isIAPPurchasedCustomer:(RMAppReceipt *)receipt;

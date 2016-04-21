@@ -11,6 +11,7 @@
 #import "A3HomeScreenButton.h"
 #import "MMDrawerController.h"
 #import "UIViewController+A3Addition.h"
+#import "RMAppReceipt.h"
 
 @interface A3HomeStyleMenuViewController ()
 
@@ -25,6 +26,13 @@
     // Do any additional setup after loading the view.
 
 	self.automaticallyAdjustsScrollViewInsets = NO;
+
+	RMAppReceipt *appReceipt = [A3AppDelegate instance].appReceipt;
+	if ([appReceipt verifyReceiptHash] && [[A3AppDelegate instance] isIAPPurchasedCustomer:appReceipt]) {
+		_shouldShowHouseAd = NO;
+	} else {
+		_shouldShowHouseAd = YES;
+	}
 }
 
 - (void)didReceiveMemoryWarning {
@@ -45,18 +53,6 @@
 	}
 
 	[super viewWillAppear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-
-	double delayInSeconds = 2.0;
-	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		if ([self.navigationController.viewControllers count] == 1 && ![A3AppDelegate instance].passcodeViewController) {
-			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-		}
-	});
 }
 
 - (UIView *)backgroundView {
@@ -125,14 +121,16 @@
 		make.top.equalTo(superview.top).with.offset(32);
 	}];
 
-	if (screenBounds.size.height > 568) {
-		[self addAppLinkButtonToView:backgroundView title:@"AppBox" imageName:@"iPad_AppBox" position:IS_IPHONE ? 0.2 : 0.25 selector:@selector(openAppStoreAppBox)];
-		[self addAppLinkButtonToView:backgroundView title:@"Numpad" imageName:@"iPad_Numpad" position:0.5 selector:@selector(openAppStoreNumpad)];
-		[self addAppLinkButtonToView:backgroundView title:@"Moment" imageName:@"iPad_Moment" position:IS_IPHONE ? 0.8 : 0.75 selector:@selector(openAppStoreMoment)];
-	} else {
-		[self addAppLinkButtonToView:backgroundView title:@"AppBox" imageName:@"iPhone_AppBox" position:0.25 selector:@selector(openAppStoreAppBox)];
-		[self addAppLinkButtonToView:backgroundView title:@"Numpad" imageName:@"iPhone_Numpad" position:0.5 selector:@selector(openAppStoreNumpad)];
-		[self addAppLinkButtonToView:backgroundView title:@"Moment" imageName:@"iPhone_Moment" position:0.75 selector:@selector(openAppStoreMoment)];
+	if (_shouldShowHouseAd) {
+		if (screenBounds.size.height > 568) {
+			[self addAppLinkButtonToView:backgroundView title:@"AppBox" imageName:@"iPad_AppBox" position:IS_IPHONE ? 0.2 : 0.25 selector:@selector(openAppStoreAppBox)];
+			[self addAppLinkButtonToView:backgroundView title:@"Numpad" imageName:@"iPad_Numpad" position:0.5 selector:@selector(openAppStoreNumpad)];
+			[self addAppLinkButtonToView:backgroundView title:@"Moment" imageName:@"iPad_Moment" position:IS_IPHONE ? 0.8 : 0.75 selector:@selector(openAppStoreMoment)];
+		} else {
+			[self addAppLinkButtonToView:backgroundView title:@"AppBox" imageName:@"iPhone_AppBox" position:0.25 selector:@selector(openAppStoreAppBox)];
+			[self addAppLinkButtonToView:backgroundView title:@"Numpad" imageName:@"iPhone_Numpad" position:0.5 selector:@selector(openAppStoreNumpad)];
+			[self addAppLinkButtonToView:backgroundView title:@"Moment" imageName:@"iPhone_Moment" position:0.75 selector:@selector(openAppStoreMoment)];
+		}
 	}
 
 	return backgroundView;

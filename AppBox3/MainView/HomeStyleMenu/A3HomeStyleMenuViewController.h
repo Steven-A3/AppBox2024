@@ -25,6 +25,14 @@
  */
 @property (nonatomic, copy) NSString *activeAppName;
 
+/**
+ *  3.5까지 유료 앱 구매자에게는 앱광고를 표시하고
+ *	Remove Ads를 구매한 사용자는 앱광고를 표시하지 않는다.
+ *	아래 값은 Remove Ads를 구매하지 않은 사용자인지를 저장하는 것이다.
+ *	이 값에 따라서 광고표시여부도 결정하고, 표시하지 않음에 따른 상하 여백을 조정한다.
+ */
+@property (nonatomic, assign) BOOL shouldShowHouseAd;
+
 - (UIView *)backgroundView;
 - (void)helpButtonAction:(id)sender ;
 

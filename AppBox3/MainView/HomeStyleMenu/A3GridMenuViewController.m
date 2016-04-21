@@ -50,6 +50,7 @@ A3InstructionViewControllerDelegate>
 
 @implementation A3GridMenuViewController {
     NSInteger _itemsPerPage;
+	NSInteger _pageBeforeViewDisappear;
 }
 
 - (void)viewDidLoad {
@@ -76,6 +77,11 @@ A3InstructionViewControllerDelegate>
 
 	_menuItems = nil;
 	[self.collectionView reloadData];
+
+	dispatch_async(dispatch_get_main_queue(), ^{
+		_pageControl.currentPage = _pageBeforeViewDisappear;
+		[self pageControlValueChanged:_pageControl];
+	});
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -83,6 +89,12 @@ A3InstructionViewControllerDelegate>
 	
 	FNLOGINSETS(self.collectionView.contentInset);
 	[self setupInstructionView];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	_pageBeforeViewDisappear = _pageControl.currentPage;
 }
 
 - (void)setupCollectionView {
@@ -107,22 +119,26 @@ A3InstructionViewControllerDelegate>
 	[_pageControl makeConstraints:^(MASConstraintMaker *make) {
 		CGFloat offset;
 		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-		if (IS_IPHONE) {
-			if (screenBounds.size.height == 568) {
-				// 4" : 5, 5s, iPod Touch 5
-				offset = -84;
-			} else if (screenBounds.size.height == 480) {
-				// 3.5" : iPhone 4, 4s
-				offset = -63;
+		if (self.shouldShowHouseAd) {
+			if (IS_IPHONE) {
+				if (screenBounds.size.height == 568) {
+					// 4" : 5, 5s, iPod Touch 5
+					offset = -84;
+				} else if (screenBounds.size.height == 480) {
+					// 3.5" : iPhone 4, 4s
+					offset = -63;
+				} else {
+					offset = -103;
+				}
 			} else {
-				offset = -103;
+				if (IS_IPAD_PRO) {
+					offset = -160;
+				} else {
+					offset = -114;
+				}
 			}
 		} else {
-			if (IS_IPAD_PRO) {
-				offset = -160;
-			} else {
-				offset = -114;
-			}
+			offset = 0;
 		}
 		make.bottom.equalTo(self.view.bottom).with.offset(offset);
 		make.centerX.equalTo(_collectionView.centerX);
@@ -133,7 +149,6 @@ A3InstructionViewControllerDelegate>
 - (void)updatePageControl {
 	_pageControl.numberOfPages = ([self.menuItems count] - 1) / _flowLayout.numberOfItemsPerPage + 1;
 	[_pageControl setHidden:_pageControl.numberOfPages == 1];
-//	_collectionView.contentSize = CGSizeMake(self.view.bounds.size.width * _pageControl.numberOfPages, _flowLayout.contentHeight);
 }
 
 - (void)pageControlValueChanged:(UIPageControl *)pageControl {
@@ -428,40 +443,85 @@ A3InstructionViewControllerDelegate>
 	CGFloat offset;
 	
 	if (IS_IPHONE) {
-		offset = 26;
-		if (toSize.height >= 647) {
-			_flowLayout.contentHeight = 454.0;
-		} else if (toSize.height == 568) {
-			_flowLayout.contentHeight = 354.0;
-			offset = 20;
-		} else {
-			_flowLayout.contentHeight = 312.0;
-			offset = 11;
-		}
-	} else {
-		if (IS_IPAD_PRO) {
-			if (toSize.width < toSize.height) {
-				_flowLayout.contentHeight = 1085;
-				_flowLayout.numberOfItemsPerRow = 4;
-				_flowLayout.numberOfRowsPerPage = 5;
-				offset = 70;
+		if (self.shouldShowHouseAd) {
+			offset = 26;
+			if (toSize.height >= 647) {
+				_flowLayout.contentHeight = 454.0;
+			} else if (toSize.height == 568) {
+				_flowLayout.contentHeight = 354.0;
+				offset = 20;
 			} else {
-				_flowLayout.contentHeight = 756;
-				_flowLayout.numberOfItemsPerRow = 5;
-				_flowLayout.numberOfRowsPerPage = 4;
-				offset = 46;
+				_flowLayout.contentHeight = 312.0;
+				offset = 11;
 			}
 		} else {
-			if (toSize.width < toSize.height) {
-				_flowLayout.contentHeight = 808;
-				_flowLayout.numberOfItemsPerRow = 4;
-				_flowLayout.numberOfRowsPerPage = 5;
-				offset = 51;
+			offset = 26;
+			if (toSize.height > 667) {
+				_flowLayout.contentHeight = 600.0;
+				offset = -20;
+			} else if (toSize.height >= 647) {
+				_flowLayout.contentHeight = 540.0;
+				offset = -20;
+			} else if (toSize.height == 568) {
+				_flowLayout.contentHeight = 454.0;
+				offset = -20;
 			} else {
-				_flowLayout.contentHeight = 530;
-				_flowLayout.numberOfItemsPerRow = 5;
-				_flowLayout.numberOfRowsPerPage = 4;
-				offset = 34;
+				_flowLayout.contentHeight = 360.0;
+				offset = -20;
+			}
+		}
+	} else {
+		if (self.shouldShowHouseAd) {
+			if (IS_IPAD_PRO) {
+				if (toSize.width < toSize.height) {
+					_flowLayout.contentHeight = 1085;
+					_flowLayout.numberOfItemsPerRow = 4;
+					_flowLayout.numberOfRowsPerPage = 5;
+					offset = 70;
+				} else {
+					_flowLayout.contentHeight = 756;
+					_flowLayout.numberOfItemsPerRow = 5;
+					_flowLayout.numberOfRowsPerPage = 4;
+					offset = 46;
+				}
+			} else {
+				if (toSize.width < toSize.height) {
+					_flowLayout.contentHeight = 808;
+					_flowLayout.numberOfItemsPerRow = 4;
+					_flowLayout.numberOfRowsPerPage = 5;
+					offset = 51;
+				} else {
+					_flowLayout.contentHeight = 530;
+					_flowLayout.numberOfItemsPerRow = 5;
+					_flowLayout.numberOfRowsPerPage = 4;
+					offset = 34;
+				}
+			}
+		} else {
+			if (IS_IPAD_PRO) {
+				if (toSize.width < toSize.height) {
+					_flowLayout.contentHeight = 1085;
+					_flowLayout.numberOfItemsPerRow = 4;
+					_flowLayout.numberOfRowsPerPage = 5;
+					offset = -15;
+				} else {
+					_flowLayout.contentHeight = 756;
+					_flowLayout.numberOfItemsPerRow = 5;
+					_flowLayout.numberOfRowsPerPage = 4;
+					offset = -15;
+				}
+			} else {
+				if (toSize.width < toSize.height) {
+					_flowLayout.contentHeight = 808;
+					_flowLayout.numberOfItemsPerRow = 4;
+					_flowLayout.numberOfRowsPerPage = 5;
+					offset = -15;
+				} else {
+					_flowLayout.contentHeight = 530;
+					_flowLayout.numberOfItemsPerRow = 5;
+					_flowLayout.numberOfRowsPerPage = 4;
+					offset = -15;
+				}
 			}
 		}
 	}

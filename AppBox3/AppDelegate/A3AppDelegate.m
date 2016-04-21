@@ -1261,7 +1261,7 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 	}
 }
 
-- (BOOL)receiptHasRemoveAds {
+- (RMAppReceipt *)appReceipt {
 	RMAppReceipt *receipt = [RMAppReceipt bundleReceipt];
 
 	if (!receipt) {
@@ -1270,9 +1270,15 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 		if (data) {
 			receipt = [[RMAppReceipt alloc] initWithASN1Data:data];
 		}
-		if (!receipt) {
-			return NO;
-		}
+	}
+	return receipt;
+}
+
+- (BOOL)receiptHasRemoveAds {
+	RMAppReceipt *receipt = [self appReceipt];
+
+	if (!receipt) {
+		return NO;
 	}
 
 	if ([self isPaidAppVersionCustomer:receipt]) {
