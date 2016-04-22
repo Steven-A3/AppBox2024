@@ -157,6 +157,9 @@ extern NSString *const A3AppGroupNameNone;
 @property (nonatomic, assign) NSTimeInterval passcodeFreeBegin;
 @property (nonatomic, assign) BOOL isSettingsEvaluatingTouchID;
 @property (nonatomic, assign) BOOL mainViewControllerDidInitialSetup;
+
+@property (nonatomic, assign) BOOL touchIDEvaluationDidFinish;
+
 /**
  *  Settings에서 홈 화면 종류를 바꾼 경우, rootViewController가 초기화되면서
  *  StartApp 설정이 활성화 되지 않도록 하기 위해서 아래 값을 이용한다.

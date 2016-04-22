@@ -152,6 +152,7 @@
 			[self addSecurityCoverView];
 
 			self.isTouchIDEvaluationInProgress = YES;
+			self.touchIDEvaluationDidFinish = NO;
 			[[UIApplication sharedApplication] setStatusBarHidden:YES];
 			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
@@ -171,7 +172,7 @@
 							} else {
 								presentPasscodeViewControllerBlock(showCancelButton);
 							}
-							self.isTouchIDEvaluationInProgress = NO;
+							self.touchIDEvaluationDidFinish = YES;
 						});
 					}];
 		} else {
@@ -247,6 +248,9 @@
 	}
 
 	if (self.isTouchIDEvaluationInProgress) {
+		if (self.touchIDEvaluationDidFinish) {
+			self.isTouchIDEvaluationInProgress = NO;
+		}
 		return;
 	}
 	if (!isAfterLaunch) {
@@ -424,9 +428,9 @@
 	if (!success) {
 		[self addSecurityCoverView];
 		
-		UIViewController *presendteViewController = self.currentMainNavigationController.presentedViewController;
-		if ([presendteViewController isKindOfClass:[UINavigationController class]]) {
-			UIViewController *viewController = ((UINavigationController *)presendteViewController).viewControllers[0];
+		UIViewController *presentedViewController = self.currentMainNavigationController.presentedViewController;
+		if ([presentedViewController isKindOfClass:[UINavigationController class]]) {
+			UIViewController *viewController = ((UINavigationController *)presentedViewController).viewControllers[0];
 			if (![viewController isKindOfClass:[A3PasscodeCommonViewController class]]) {
 				[self.currentMainNavigationController dismissViewControllerAnimated:NO completion:nil];
 			}

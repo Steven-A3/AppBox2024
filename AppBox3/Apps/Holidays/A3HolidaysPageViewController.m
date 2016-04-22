@@ -53,6 +53,7 @@
 @implementation A3HolidaysPageViewController {
 	NSInteger _lastPageIndex, _currentPageIndex;
 	BOOL _isClosing;
+	BOOL _didRunViewWillAppear;
 }
 
 - (void)cleanUp {
@@ -142,7 +143,8 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	if (self.isMovingToParentViewController || self.isBeingPresented) {
+	if (!_didRunViewWillAppear) {
+		_didRunViewWillAppear = YES;
 		[self jumpToPage:0 direction:UIPageViewControllerNavigationDirectionForward animated:NO];
 	} else {
 		if (!_isClosing) {

@@ -39,6 +39,9 @@
 #import "A3LadyCalendarModelManager.h"
 #import "A3NavigationController.h"
 #import "A3HomeStyleMenuViewController.h"
+#import "WalletItem.h"
+#import "WalletFieldItem+initialize.h"
+#import "WalletCategory.h"
 
 NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
@@ -251,7 +254,49 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 		NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_defaultContext];
 		[managedObjectContext performBlock:^{
 			if (managedObjectContext.hasChanges) {
-				[managedObjectContext save:NULL];
+				BOOL shouldSaveChanges = NO;
+				NSArray *insertedObjects = [[managedObjectContext insertedObjects] allObjects];
+				for (id insertedObj in insertedObjects) {
+					if ([insertedObj isKindOfClass:[WalletItem class]]) {
+						WalletItem *insertedWalletItem = insertedObj;
+						if 	(	[[insertedWalletItem.name stringByTrimmingSpaceCharacters] length] ||
+								[[insertedWalletItem.note stringByTrimmingSpaceCharacters] length])
+						{
+							shouldSaveChanges = YES;
+							break;
+						}
+					}
+					if ([insertedObj isKindOfClass:[WalletFieldItem class]]) {
+						WalletFieldItem *fieldItem = insertedObj;
+						if (	[[fieldItem.value stringByTrimmingSpaceCharacters] length] ||
+								fieldItem.hasImage || fieldItem.hasVideo || fieldItem.date)
+						{
+							shouldSaveChanges = YES;
+							break;
+						}
+					}
+					if ([insertedObj isKindOfClass:[WalletCategory class]]) {
+						WalletCategory *category = insertedObj;
+						if ([[category.name stringByTrimmingSpaceCharacters] length]) {
+							shouldSaveChanges = YES;
+							break;
+						}
+					}
+					if ([insertedObj isKindOfClass:[DaysCounterEvent class]]) {
+						DaysCounterEvent *event = insertedObj;
+						if ([[event.eventName stringByTrimmingSpaceCharacters] length] ||
+								[[event.notes stringByTrimmingSpaceCharacters] length] ||
+								event.photoID )
+						{
+							shouldSaveChanges = YES;
+							break;
+						}
+					}
+				}
+				FNLOG(@"Core data changes will be saved: %@", shouldSaveChanges ? @"YES" : @"NO");
+				if (shouldSaveChanges) {
+					[managedObjectContext save:NULL];
+				}
 			}
 
 			[[A3SyncManager sharedSyncManager] synchronizeWithCompletion:^(NSError *error) {
