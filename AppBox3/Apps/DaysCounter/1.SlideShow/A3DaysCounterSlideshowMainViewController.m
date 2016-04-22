@@ -434,6 +434,8 @@
     }
     
 	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons pullDownView:nil];
+	UIView *backgroundColorChangeView = [_moreMenuView viewWithTag:100];
+	backgroundColorChangeView.backgroundColor = [UIColor colorWithRed:247.0 / 255.0 green:247.0 / 255.0 blue:247.0 / 255.0 alpha:0.8];
 	_isShowMoreMenu = YES;
 }
 
