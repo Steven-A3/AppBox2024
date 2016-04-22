@@ -1053,3 +1053,6 @@
 "QR Code not found." = "QR Code를 찾지 못했습니다.";
 "iMessage is not enabled." = "iMessage를 사용할 수 없습니다.";
 "Free" = "무료";
+"SSID" = "SSID";
+"Encryption" = "암호화";
+"Password_QRCODE" = "암호";

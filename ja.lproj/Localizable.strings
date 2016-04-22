@@ -1051,3 +1051,6 @@
 "QR Code not found." = "QRコードが見つかりません。";
 "iMessage is not enabled." = "iMessageがが有効になっていません。";
 "Free" = "無料";
+"SSID" = "SSID";
+"Encryption" = "暗号化";
+"Password_QRCODE" = "パスワード";

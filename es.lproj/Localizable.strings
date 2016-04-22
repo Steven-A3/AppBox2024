@@ -1042,3 +1042,6 @@ Introduzca la clave de cifrado para el bolsillo.";
 "QR Code not found." = "Código QR no encontrado.";
 "iMessage is not enabled." = "iMessage no está activado.";
 "Free" = "Gratis";
+"SSID" = "SSID";
+"Encryption" = "Cifrado";
+"Password_QRCODE" = "Contraseña";

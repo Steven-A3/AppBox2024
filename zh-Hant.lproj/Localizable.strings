@@ -874,3 +874,6 @@
 "QR Code not found." = "QR碼未找到。";
 "iMessage is not enabled." = "iMessage的未啟用。";
 "Free" = "免費";
+"SSID" = "SSID";
+"Encryption" = "加密";
+"Password_QRCODE" = "密碼";

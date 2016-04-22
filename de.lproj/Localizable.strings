@@ -1055,3 +1055,6 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 "QR Code not found." = "QR-Code wurde nicht gefunden.";
 "iMessage is not enabled." = "iMessage nicht aktiviert ist.";
 "Free" = "Kostenlos";
+"SSID" = "SSID";
+"Encryption" = "Verschlüsselung";
+"Password_QRCODE" = "Passwort";

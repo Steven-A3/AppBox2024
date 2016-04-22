@@ -57,6 +57,7 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 	if ([scanData hasPrefix:@"BEGIN:VCARD"] && [self handleVCard:history inViewController:viewController]) {return;};
 	if ([scanData hasPrefix:@"BEGIN:VCALENDAR"] && [self handleVCalendar:history inViewController:viewController]) {return;};
 	if ([scanData hasPrefix:@"MedID:"] && [self handleMedicalID:history inViewController:viewController]) {return;};
+	if ([scanData hasPrefix:@"WIFI:"] && [self handleWiFiDetails:history inViewController:viewController]) {return;};
 	if ([scanData hasPrefix:@"skype:"] && [self handleSkype:history]) {return;};
 	if ([self handleByDataDetector:history inViewController:viewController]) {return;};
 	[self handleText:history inViewController:viewController];
@@ -501,6 +502,45 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 				
 				[rows addObject:@{NSLocalizedString(@"Additional Info", @"Additional Info") : readString} ];
 			}
+		}
+	}
+	[sections addObject:rows];
+	
+	A3QRCodeDetailViewController *viewController = [A3QRCodeDetailViewController new];
+	viewController.historyData = history;
+	viewController.sections = sections;
+	[controller.navigationController pushViewController:viewController animated:YES];
+	return YES;
+}
+
+- (BOOL)handleWiFiDetails:(QRCodeHistory *)history inViewController:(UIViewController *)controller {
+	NSMutableArray<NSArray *> *sections = [NSMutableArray new];
+	NSScanner *scanner = [NSScanner scannerWithString:history.scanData];
+	
+	NSMutableArray *rows = [NSMutableArray new];
+	NSString *readString;
+	if ([scanner scanUpToString:@"S:" intoString:nil]) {
+		if ([scanner scanString:@"S:" intoString:nil]) {
+			[scanner scanUpToString:@";" intoString:&readString];
+			[rows addObject:@{NSLocalizedString(@"SSID", @"SSID") :[readString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] }];
+		}
+	}
+	scanner.scanLocation = 0;
+	readString = nil;
+	if ([scanner scanUpToString:@"T:" intoString:nil]) {
+		if ([scanner scanString:@"T:" intoString:nil]) {
+			[scanner scanUpToString:@";"	 intoString:&readString];
+			
+			[rows addObject:@{NSLocalizedString(@"Encryption", @"Encryption") : readString} ];
+		}
+	}
+	scanner.scanLocation = 0;
+	readString = nil;
+	if ([scanner scanUpToString:@"P:" intoString:nil]) {
+		if ([scanner scanString:@"P:" intoString:nil]) {
+			[scanner scanUpToString:@";"	 intoString:&readString];
+			
+			[rows addObject:@{NSLocalizedString(@"Password_QRCODE", @"Password") : readString} ];
 		}
 	}
 	[sections addObject:rows];

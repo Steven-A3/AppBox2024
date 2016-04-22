@@ -1044,3 +1044,6 @@
 "QR Code not found." = "Code QR introuvable.";
 "iMessage is not enabled." = "iMessage est pas activé.";
 "Free" = "Gratuit";
+"SSID" = "SSID";
+"Encryption" = "Encryption";
+"Password_QRCODE" = "Mot de passe";

@@ -1059,3 +1059,6 @@
 "QR Code not found." = "QR码未找到";
 "iMessage is not enabled." = "iMessage的未启用。";
 "Free" = "免费";
+"SSID" = "SSID";
+"Encryption" = "加密";
+"Password_QRCODE" = "密码";
