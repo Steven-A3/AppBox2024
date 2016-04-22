@@ -129,6 +129,8 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 		}
 	}
 
+	[[UIApplication sharedApplication] setStatusBarHidden:NO];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 	[self.navigationController setNavigationBarHidden:NO];
 	
 	if (_isEditing) {
@@ -233,14 +235,13 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 	editingViewController.mainTabBarController = self.mainTabBarController;
 	editingViewController.isEditing = YES;
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editingViewController];
-	[self.navigationController.view addSubview:navigationController.view];
-	[self.navigationController addChildViewController:navigationController];
+	[self.mainTabBarController presentViewController:navigationController animated:YES completion:nil];
 	return;
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
 	FNLOG(@"%@", self.presentingViewController);
-	[self.navigationController.view removeFromSuperview];
+	[self dismissViewControllerAnimated:YES completion:nil];
 	[self.mainTabBarController setupTabBar];
 }
 
@@ -284,7 +285,11 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Wallet_3"];
     self.instructionViewController.delegate = self;
-    [self.mainTabBarController.view addSubview:self.instructionViewController.view];
+	if (_isEditing) {
+		[self.navigationController.view addSubview:self.instructionViewController.view];
+	} else {
+		[self.mainTabBarController.view addSubview:self.instructionViewController.view];
+	}
     self.instructionViewController.view.frame = self.view.superview.frame;
     self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
     
