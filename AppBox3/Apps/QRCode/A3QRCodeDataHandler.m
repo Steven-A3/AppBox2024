@@ -57,8 +57,14 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 	if ([scanData hasPrefix:@"BEGIN:VCARD"] && [self handleVCard:history inViewController:viewController]) {return;};
 	if ([scanData hasPrefix:@"BEGIN:VCALENDAR"] && [self handleVCalendar:history inViewController:viewController]) {return;};
 	if ([scanData hasPrefix:@"MedID:"] && [self handleMedicalID:history inViewController:viewController]) {return;};
+	if ([scanData hasPrefix:@"skype:"] && [self handleSkype:history]) {return;};
 	if ([self handleByDataDetector:history inViewController:viewController]) {return;};
 	[self handleText:history inViewController:viewController];
+}
+
+- (BOOL)handleSkype:(QRCodeHistory *)history {
+	NSURL *skypeURL = [NSURL URLWithString:history.scanData];
+	return [[UIApplication sharedApplication] openURL:skypeURL];
 }
 
 - (BOOL)handleGEOLocation:(QRCodeHistory *)history inViewController:(UIViewController *)viewController {
