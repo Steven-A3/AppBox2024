@@ -114,7 +114,6 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 				dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 					[self startRunning];
 				});
-
 			});
 		}
 	}
@@ -122,7 +121,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-
+	
 	[self startRunning];
 	[self animateScanLine];
 }
@@ -131,6 +130,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	[super viewDidDisappear:animated];
 
 	[self stopRunning];
+	_scanAnimationInProgress = NO;
 }
 
 - (void)dealloc {
@@ -395,6 +395,7 @@ static NSString *const A3V3InstructionDidShowForQRCode = @"A3V3InstructionDidSho
 	self.instructionViewController = nil;
 	
 	[self startRunning];
+	[self animateScanLine];
 }
 
 #pragma mark - AdMob
