@@ -599,7 +599,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
     
     [self adjustFontSizeOfCell:cell];
     
-    DaysCounterEvent *item = [self itemForTableView:tableView atIndexPath:indexPath];
+    DaysCounterEvent *event = [self itemForTableView:tableView atIndexPath:indexPath];
     
     UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
     UILabel *daysLabel = (UILabel*)[cell viewWithTag:11];
@@ -607,18 +607,32 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
     UIImageView *imageView = (UIImageView*)[cell viewWithTag:13];
     A3RoundDateView *roundDateView = (A3RoundDateView*)[cell viewWithTag:14];
     
-    if ( item ) {
-        NSDate *startDate = item.effectiveStartDate;
+    if ( event ) {
+		DaysCounterDate *startDate = [event startDate];
+        NSDate *nextDate;
         // textLabel
-        textLabel.text = item.eventName;
-        
+        textLabel.text = event.eventName;
+		NSDate *today = [NSDate date];
+
+        if ([event.isLunar boolValue]) {
+            nextDate = [A3DaysCounterModelManager nextSolarDateFromLunarDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:[event startDate]
+                                                                                                                                            toLunar:[event.isLunar boolValue]]
+                                                                             leapMonth:[startDate.isLeapMonth boolValue]
+                                                                              fromDate:today];
+        }
+        else {
+            nextDate = [A3DaysCounterModelManager nextDateWithRepeatOption:[event.repeatType integerValue]
+                                                                 firstDate:[startDate solarDate]
+                                                                  fromDate:today
+                                                                  isAllDay:[event.isAllDay boolValue]];
+        }
+
         // until/since markLabel
-        NSDate *now = [NSDate date];
-        markLabel.text = [A3DateHelper untilSinceStringByFromDate:now
-                                                           toDate:startDate
-                                                     allDayOption:[item.isAllDay boolValue]
-                                                           repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO
-                                                           strict:[A3DaysCounterModelManager hasHourMinDurationOption:[item.durationOption integerValue]]];
+        markLabel.text = [A3DateHelper untilSinceStringByFromDate:today
+                                                           toDate:nextDate
+                                                     allDayOption:[event.isAllDay boolValue]
+                                                           repeat:[event.repeatType integerValue] != RepeatType_Never ? YES : NO
+                                                           strict:[A3DaysCounterModelManager hasHourMinDurationOption:[event.durationOption integerValue]]];
         ((A3DaysCounterEventListNameCell *)cell).untilRoundWidthConst.constant = 42;
         if ([markLabel.text isEqualToString:NSLocalizedString(@"since", @"since")]) {
             markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
@@ -632,10 +646,10 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
             daysLabel.text = @" ";
         }
         else {
-            daysLabel.text = [NSString stringWithFormat:@"%@", [A3DaysCounterModelManager stringOfDurationOption:[item.durationOption integerValue]
-                                                                                                        fromDate:now
-                                                                                                          toDate:startDate //[item startDate]
-                                                                                                        isAllDay:[item.isAllDay boolValue]
+            daysLabel.text = [NSString stringWithFormat:@"%@", [A3DaysCounterModelManager stringOfDurationOption:[event.durationOption integerValue]
+                                                                                                        fromDate:today
+                                                                                                          toDate:nextDate
+                                                                                                        isAllDay:[event.isAllDay boolValue]
                                                                                                     isShortStyle:IS_IPHONE ? YES : NO
                                                                                                isStrictShortType:NO]];
         }
@@ -647,19 +661,19 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
         markLabel.hidden = NO;
         
         // imageView
-        UIImage *image = [item.photoID length] ? [item thumbnailImageInOriginalDirectory:YES] : nil;
+        UIImage *image = [event.photoID length] ? [event thumbnailImageInOriginalDirectory:YES] : nil;
         [self showImageViewOfCell:cell withImage:image];
         imageView.hidden = NO;
         
         // RoundDateView
         if ( self.sortType == EventSortType_Date ) {
             UIImageView *favoriteView = (UIImageView*)[cell viewWithTag:15];
-			DaysCounterCalendar *calendar = [_sharedManager calendarItemByID:item.calendarID];
+			DaysCounterCalendar *calendar = [_sharedManager calendarItemByID:event.calendarID];
 			roundDateView.fillColor = [_sharedManager colorForCalendar:calendar];
             roundDateView.strokColor = roundDateView.fillColor;
-            roundDateView.date = item.effectiveStartDate;
+            roundDateView.date = event.effectiveStartDate;
             roundDateView.hidden = NO;
-            favoriteView.hidden = YES;//favoriteView.hidden = ![item.isFavorite boolValue];
+            favoriteView.hidden = YES;//favoriteView.hidden = ![event.isFavorite boolValue];
             UILabel *dateLabel = (UILabel*)[cell viewWithTag:17];
             dateLabel.hidden = YES;
         }
@@ -667,12 +681,12 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
             if ( IS_IPAD ) {
                 NSDateFormatter *formatter = [NSDateFormatter new];
                 [formatter setDateStyle:NSDateFormatterFullStyle];
-                if (![item.isLunar boolValue] && ![item.isAllDay boolValue]) {
+                if (![event.isLunar boolValue] && ![event.isAllDay boolValue]) {
                     [formatter setTimeStyle:NSDateFormatterShortStyle];
                 }
                 
                 UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
-                dateLabel.text = [A3DateHelper dateStringFromDate:item.effectiveStartDate
+                dateLabel.text = [A3DateHelper dateStringFromDate:event.effectiveStartDate
                                                        withFormat:[formatter dateFormat]];
                 dateLabel.hidden = NO;
                 ((A3DaysCounterEventListNameCell *)cell).titleRightSpaceConst.constant = [dateLabel sizeThatFits:CGSizeMake(500, 30)].width + 5;
