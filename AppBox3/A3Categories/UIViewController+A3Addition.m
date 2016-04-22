@@ -344,6 +344,7 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
 	frame.size.height = 44.0;
 	frame.origin.y = -1.0;
 	UIView *moreMenuView = [[UIView alloc] initWithFrame:frame];
+	moreMenuView.tag = 100;
 	moreMenuView.backgroundColor = [UIColor colorWithRed:247.0 / 255.0 green:247.0 / 255.0 blue:247.0 / 255.0 alpha:1.0];
     //frame.origin.y += 44.0;
 	frame.origin.y += 45.0; // kjh
