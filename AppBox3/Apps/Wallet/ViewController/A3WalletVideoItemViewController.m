@@ -45,6 +45,7 @@
 @property (nonatomic, strong) NSMutableDictionary *photoItem;
 @property (nonatomic, strong) NSMutableDictionary *metadataItem;
 @property (nonatomic, strong) MPMoviePlayerViewController *moviePlayerViewController;
+@property (nonatomic, strong) UIActionSheet *actionSheet;
 
 @property (nonatomic, strong) MBProgressHUD *progressHUD;
 
@@ -81,6 +82,16 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     
     [self registerContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
+}
+
+- (void)applicationWillResignActive {
+	if ([self.navigationController.presentedViewController isKindOfClass:[UINavigationController class]]) {
+		[self dismissViewControllerAnimated:NO completion:nil];
+	}
+	if (_actionSheet) {
+		[_actionSheet dismissWithClickedButtonIndex:_actionSheet.cancelButtonIndex animated:NO];
+	}
 }
 
 - (void)applicationDidEnterBackground {
@@ -92,6 +103,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 
 - (void)removeObserver {
 	[self removeContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 	if (_moviePlayerViewController) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:_moviePlayerViewController.moviePlayer];
@@ -798,16 +810,16 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 #pragma mark -- Save button action
 
 - (void)saveButtonAction:(UIButton *)button {
-	UIActionSheet *confirmSaveSheet = [[UIActionSheet alloc] initWithTitle:nil
-																  delegate:self
-														 cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-													destructiveButtonTitle:nil
-														 otherButtonTitles:NSLocalizedString(@"Save Video", @"Save Video"), nil];
-	confirmSaveSheet.tag = button.tag;
-	[confirmSaveSheet showInView:self.view];
+	_actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+											   delegate:self
+									  cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+								 destructiveButtonTitle:nil
+									  otherButtonTitles:NSLocalizedString(@"Save Video", @"Save Video"), nil];
+	_actionSheet.tag = button.tag;
+	[_actionSheet showInView:self.view];
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
 	if (buttonIndex != actionSheet.cancelButtonIndex) {
 		WalletFieldItem *fieldItem = _videoFieldItems[actionSheet.tag];
 
@@ -820,6 +832,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 			});
 		}
 	}
+	_actionSheet = nil;
 }
 
 - (void)video:(NSString *)path didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
