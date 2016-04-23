@@ -35,6 +35,7 @@
 #define A3_TEXT_COLOR_DEFAULT				[UIColor blackColor]
 
 #define IS_IOS7			([[[UIDevice currentDevice] systemVersion] floatValue] < 8.0)
+#define IS_IOS9			([[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0)
 #define IS_LANDSCAPE	(UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
 #define IS_PORTRAIT		(UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]))
 #define CURRENT_ORIENTATION        [[UIApplication sharedApplication] statusBarOrientation]
