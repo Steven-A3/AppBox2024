@@ -1020,11 +1020,10 @@ Wprowadź klucz szyfrowania dla portfela.";
 
 "Preview" = "Podgląd";
 "Add a contact" = "Dodawanie kontaktów";
-"Contacts" = "Kontakty";
 "Event" = "Wydarzenie";
 "Add to Calendar" = "Dodawanie wydarzenia";
 "Call" = "Wykonywanie połączeń";
-"SMS" = "Wiadomości";
+"Message" = "Wiadomości";
 "Location: %@" = "Położenie: %@";
 "Event: %@" = "Wydarzenie: %@";
 "QR Codes on AppBox Pro" = "Kod QR na AppBox Pro";

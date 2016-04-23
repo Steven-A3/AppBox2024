@@ -1014,11 +1014,10 @@ Inserire chiave di crittografia per il portafoglio.";
 
 "Preview" = "Anteprima";
 "Add a contact" = "Aggiungere contatti";
-"Contacts" = "Contatti";
 "Event" = "Evento";
 "Add to Calendar" = "Aggiungere un evento";
 "Call" = "Effettuare una chiamata";
-"SMS" = "Messaggi";
+"Message" = "Messaggi";
 "Location: %@" = "Posizione: %@";
 "Event: %@" = "Evento: %@";
 "QR Codes on AppBox Pro" = "Codice QR(AppBox Pro)";

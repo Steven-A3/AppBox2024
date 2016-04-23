@@ -1028,11 +1028,10 @@
 "Reset Home Screen Layout" = "홈 화면 레이아웃 재설정";
 "Preview" = "미리보기";
 "Add a contact" = "연락처 추가";
-"Contacts" = "연락처";
 "Event" = "이벤트";
 "Add to Calendar" = "캘린더에 추가";
 "Call" = "전화걸기";
-"SMS" = "메시지보내기";
+"Message" = "메시지보내기";
 "Location: %@" = "위치: %@";
 "Event: %@" = "이벤트: %@";
 "QR Codes on AppBox Pro" = "QR Code (AppBox Pro)";

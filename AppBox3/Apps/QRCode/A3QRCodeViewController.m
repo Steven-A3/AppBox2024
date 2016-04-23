@@ -22,6 +22,10 @@
 #import "A3InstructionViewController.h"
 #import "A3BasicWebViewController.h"
 #import "A3UIDevice.h"
+#import "Reachability.h"
+#import "NSManagedObjectContext+MagicalSaves.h"
+#import "NSManagedObjectContext+MagicalRecord.h"
+#import "A3QRCodeTextViewController.h"
 
 NSString *const A3QRCodeSettingsPlayAlertSound = @"A3QRCodeSettingsPlayAlertSound";
 NSString *const A3QRCodeSettingsPlayVibrate = @"A3QRCodeSettingsPlayVibrate";
@@ -32,7 +36,8 @@ NSString *const A3QRCodeImageVibrateOff = @"vibrate_off";
 NSString *const A3QRCodeImageTorchOn = @"m_flash_on";
 NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 
-@interface A3QRCodeViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, A3InstructionViewControllerDelegate, A3QRCodeDataHandlerDelegate>
+@interface A3QRCodeViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, A3InstructionViewControllerDelegate,
+		A3QRCodeDataHandlerDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, weak) IBOutlet UIToolbar *topToolbar;
 @property (nonatomic, weak) IBOutlet UIToolbar *topToolbarWithoutVibrate;
@@ -45,6 +50,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 @property (nonatomic, strong) A3QRCodeScanLineView *scanLineView;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomToolbarBottomSpaceConstraint;
+@property (nonatomic, copy) NSString *barcodeToSearch;
 
 @end
 
@@ -85,10 +91,16 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	[self setupScanLineView];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 - (void)applicationDidBecomeActive {
 	[self animateScanLine];
+}
+
+- (void)applicationDidEnterBackground {
+	[self stopRunning];
+	_scanAnimationInProgress = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -135,6 +147,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 - (IBAction)appsButtonAction:(id)sender {
@@ -224,11 +237,18 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 				[moc MR_saveToPersistentStoreAndWait];
 
 				if ([history.dimension isEqualToString:@"1"]) {
-					A3BasicWebViewController *viewController = [A3BasicWebViewController new];
-					viewController.url = [NSURL URLWithString:[NSString stringWithFormat:@"https://www.google.com/search?q=%@", history.scanData]];
-					[weakSelf.navigationController setNavigationBarHidden:NO];
-					[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-					[weakSelf.navigationController pushViewController:viewController animated:YES];
+					if ([[[A3AppDelegate instance] reachability] isReachableViaWiFi]) {
+						[weakSelf presentWebViewControllerWithBarCode:history.scanData];
+					} else {
+						_barcodeToSearch = [history.scanData copy];
+						UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+																				 delegate:weakSelf
+																		cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+																   destructiveButtonTitle:nil
+																		otherButtonTitles:NSLocalizedString(@"Search on Google", @"Search on Google"),
+																						  NSLocalizedString(@"Preview", @"Preview"), nil];
+						[actionSheet showInView:weakSelf.view];
+					}
 //					if (!history.searchData) {
 //						[weakSelf searchBarcode:barcode.stringValue];
 //					} else {
@@ -240,6 +260,33 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 			}];
 		});
 	};
+}
+
+- (void)presentWebViewControllerWithBarCode:(NSString *)barcode {
+	if (![[[A3AppDelegate instance] reachability] isReachable]) {
+		[self alertInternetConnectionIsNotAvailable];
+		return;
+	}
+	A3BasicWebViewController *viewController = [A3BasicWebViewController new];
+	viewController.url = [NSURL URLWithString:[NSString stringWithFormat:@"https://www.google.com/search?q=%@", barcode]];
+	[self.navigationController setNavigationBarHidden:NO];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+	[self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+	if (buttonIndex == actionSheet.cancelButtonIndex) {
+		return;
+	}
+	if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Search on Google", @"Search on Google")]) {
+		[self presentWebViewControllerWithBarCode:_barcodeToSearch];
+	} else if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Preview", @"Preview")]) {
+		A3QRCodeTextViewController *viewController = [[A3QRCodeTextViewController alloc] init];
+		viewController.text = _barcodeToSearch;
+		[self.navigationController setNavigationBarHidden:NO];
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+		[self.navigationController pushViewController:viewController animated:YES];
+	}
 }
 
 #pragma mark - UIImagePickerControllerDelegate

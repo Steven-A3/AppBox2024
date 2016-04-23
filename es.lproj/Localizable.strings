@@ -984,7 +984,6 @@ Introduzca la clave de cifrado para el bolsillo.";
 "Calibrate 1" = "Corregir 1";
 "Calibrate 2" = "Corregir 2";
 "Restart" = "Corregir de nuevo";
-"Reset Calibration" = "Restablecer la corrección";
 
 /* Messages */
 "Calibrate1Msg" = "- Mantenga el iPhone en una superficie plana, como se muestra en la figura (al lado superior del  control de volumen).
@@ -1017,11 +1016,10 @@ Introduzca la clave de cifrado para el bolsillo.";
 
 "Preview" = "Vista previa";
 "Add a contact" = "Agregar un contacto";
-"Contacts" = "Contactos";
 "Event" = "Evento";
 "Add to Calendar" = "Agregar al Calendario";
 "Call" = "Llamar";
-"SMS" = "SMS";
+"Message" = "Mensajes";
 "Location: %@" = "Ubicación: %@";
 "Event: %@" = "Evento: %@";
 "QR Codes on AppBox Pro" = "Códigos QR en AppBox Pro";

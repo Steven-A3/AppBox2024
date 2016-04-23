@@ -849,11 +849,10 @@
 "Reset Home Screen Layout" = "重置主畫面佈局";
 "Preview" = "預覽";
 "Add a contact" = "新增聯絡資訊";
-"Contacts" = "聯絡資訊";
 "Event" = "行程";
 "Add to Calendar" = "添加到行事曆";
 "Call" = "通話";
-"SMS" = "SMS";
+"Message" = "訊息";
 "Location: %@" = "位置: %@";
 "Event: %@" = "行程: %@";
 "QR Codes on AppBox Pro" = "QR碼(AppBox Pro)";

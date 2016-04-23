@@ -1026,11 +1026,10 @@
 "Reset Home Screen Layout" = "ホーム画面のレイアウトをリセット";
 "Preview" = "プレビュー";
 "Add a contact" = "連絡先を追加する";
-"Contacts" = "連絡先";
 "Event" = "イベント";
 "Add to Calendar" = "イベントを追加する";
 "Call" = "電話をかける";
-"SMS" = "メッセージ";
+"Message" = "メッセージ";
 "Location: %@" = "ロケーション: %@";
 "Event: %@" = "イベント: %@";
 "QR Codes on AppBox Pro" = "QRコード(AppBox Pro)";

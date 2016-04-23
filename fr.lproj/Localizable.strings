@@ -1019,11 +1019,10 @@
 
 "Preview" = "Aperçu";
 "Add a contact" = "Ajouter des contacts";
-"Contacts" = "Contacts";
 "Event" = "Événement";
 "Add to Calendar" = "Ajouter au calendrier";
 "Call" = "Passer un appel";
-"SMS" = "Messages";
+"Message" = "Messages";
 "Location: %@" = "Position: %@";
 "Event: %@" = "Événement: %@";
 "QR Codes on AppBox Pro" = "Code QR sur AppBox Pro";

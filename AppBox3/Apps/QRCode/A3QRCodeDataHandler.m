@@ -19,12 +19,14 @@
 #import "A3AppDelegate.h"
 #import "A3QRCodeDetailViewController.h"
 #import "QRCodeHistory.h"
+#import "Reachability.h"
 
 typedef NS_ENUM(NSUInteger, A3QRCodeActionSheetType) {
 	A3QRCodeActionSheetTypeAddEvent = 1,
 	A3QRCodeActionSheetTypePhoneOrSMS,
 	A3QRCodeActionSheetTypeMeCardAddContact,
-	A3QRCodeActionSheetTypeVCardAddContact
+	A3QRCodeActionSheetTypeVCardAddContact,
+	A3QRCodeActionSheetTypeSearchOnGoogle,
 };
 
 @interface A3QRCodeDataHandler () < MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate,
@@ -34,6 +36,7 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 @property (nonatomic, weak) UIViewController *targetViewController;
 @property (nonatomic, strong) MXLCalendar *parsedEventCalendar;
 @property (nonatomic, strong) QRCodeHistory *targetHistory;
+@property (nonatomic, strong) NSURL *targetURL;
 
 @end
 
@@ -562,20 +565,40 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 		[controller presentViewController:mailComposeViewController animated:YES completion:nil];
 		return YES;
 	} else if (match.resultType == NSTextCheckingTypePhoneNumber) {
+		_targetHistory = history;
+		_targetViewController = controller;
 		self.phoneNumber = [match.phoneNumber copy];
 		UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
 																 delegate:self
 														cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
 												   destructiveButtonTitle:nil
-														otherButtonTitles:NSLocalizedString(@"Call", @"Call"), NSLocalizedString(@"SMS", @"SMS"), nil];
+														otherButtonTitles:
+									  NSLocalizedString(@"Call", @"Call"),
+									  NSLocalizedString(@"Message", @"Message"),
+									  NSLocalizedString(@"Preview", @"Preview"),
+									  nil];
 		actionSheet.tag = A3QRCodeActionSheetTypePhoneOrSMS;
 		[actionSheet showInView:controller.view];
 		return YES;
 	} else if (match.resultType == NSTextCheckingTypeLink) {
 		if ([[UIApplication sharedApplication] canOpenURL:match.URL]) {
-			[controller.navigationController setNavigationBarHidden:NO];
-			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-			[controller presentWebViewControllerWithURL:match.URL];
+			if ([[[A3AppDelegate instance] reachability] isReachableViaWiFi]) {
+				[controller.navigationController setNavigationBarHidden:NO];
+				[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+				[controller presentWebViewControllerWithURL:match.URL];
+			} else {
+				_targetURL = [match.URL copy];
+				_targetViewController = controller;
+				_targetHistory = history;
+				UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+																		 delegate:self
+																cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+														   destructiveButtonTitle:nil
+																otherButtonTitles:NSLocalizedString(@"Search on Google", @"Search on Google"),
+																				  NSLocalizedString(@"Preview", @"Preview"), nil];
+				actionSheet.tag = A3QRCodeActionSheetTypeSearchOnGoogle;
+				[actionSheet showInView:controller.view];
+			}
 			return YES;
 		}
 	}
@@ -591,8 +614,10 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 		if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Call", @"Call")]) {
 			NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", self.phoneNumber]];
 			[[UIApplication sharedApplication] openURL:url];
-		} else {
+		} else if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Message", @"Message")]) {
 			[self presentMessageViewControllerOn:_targetViewController receipents:@[_phoneNumber] body:@""];
+		} else {
+			[self handleText:_targetHistory inViewController:_targetViewController];
 		}
 	} else if (actionSheet.tag == A3QRCodeActionSheetTypeAddEvent) {
 		if (buttonIndex == actionSheet.cancelButtonIndex) {
@@ -675,6 +700,19 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 		}
 		BOOL isAdd = [[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Add a contact", @"Add a contact")];
 		[self processVCardIsAdd:isAdd];
+	} else if (actionSheet.tag == A3QRCodeActionSheetTypeSearchOnGoogle) {
+		if (buttonIndex == actionSheet.cancelButtonIndex) {
+			_targetHistory = nil;
+			_targetViewController = nil;
+			return;
+		}
+		if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Search on Google", @"Search on Google")]) {
+			[_targetViewController.navigationController setNavigationBarHidden:NO];
+			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+			[_targetViewController presentWebViewControllerWithURL:_targetURL];
+		} else if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Preview", @"Preview")]) {
+			[self handleText:_targetHistory inViewController:_targetViewController];
+		}
 	}
 }
 

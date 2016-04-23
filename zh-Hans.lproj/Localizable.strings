@@ -1034,11 +1034,10 @@
 "Reset Home Screen Layout" = "还原主屏幕布局";
 "Preview" = "预览";
 "Add a contact" = "新建联系人";
-"Contacts" = "通讯录";
 "Event" = "事件";
 "Add to Calendar" = "添加事件";
 "Call" = "通话";
-"SMS" = "短信";
+"Message" = "短信";
 "Location: %@" = "位置: %@";
 "Event: %@" = "事件: %@";
 "QR Codes on AppBox Pro" = "QR码(AppBox Pro)";

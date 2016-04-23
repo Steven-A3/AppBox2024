@@ -17,6 +17,14 @@
 #import "NSDate+TimeAgo.h"
 #import "MXLCalendarManager.h"
 #import "A3BasicWebViewController.h"
+#import "A3QRCodeTextViewController.h"
+#import "Reachability.h"
+
+typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
+	A3QRCodeHistoryActionSheetTypeClearHistory = 1,
+	A3QRCodeHistoryActionSheetTypeSearchOnGoogle
+};
+
 
 @interface A3QRCodeHistoryViewController () <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate>
 
@@ -26,6 +34,7 @@
 @property (nonatomic, strong) NSArray<QRCodeHistory *> *historyArray;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) A3QRCodeDataHandler *dataHandler;
+@property (nonatomic, copy) NSString *barcodeToSearch;
 
 @end
 
@@ -107,36 +116,52 @@
 													cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
 											   destructiveButtonTitle:NSLocalizedString(@"Clear History", @"Clear History")
 													otherButtonTitles:nil];
+	actionSheet.tag = A3QRCodeHistoryActionSheetTypeClearHistory;
 	[actionSheet showInView:self.view];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	if (buttonIndex == actionSheet.destructiveButtonIndex) {
-		NSManagedObjectContext *moc = [NSManagedObjectContext MR_rootSavingContext];
-		switch (_segmentedControl.selectedSegmentIndex) {
-			case 0:
-				[QRCodeHistory MR_truncateAllInContext:moc];
-				break;
-			case 1: {
-				NSPredicate *predicate = [NSPredicate predicateWithFormat:@"dimension == %@", @"1"];
-				[QRCodeHistory MR_deleteAllMatchingPredicate:predicate inContext:moc];
-				break;
+	if (buttonIndex == actionSheet.cancelButtonIndex) {
+		return;
+	}
+	if (actionSheet.tag == A3QRCodeHistoryActionSheetTypeClearHistory) {
+		if (buttonIndex == actionSheet.destructiveButtonIndex) {
+			NSManagedObjectContext *moc = [NSManagedObjectContext MR_rootSavingContext];
+			switch (_segmentedControl.selectedSegmentIndex) {
+				case 0:
+					[QRCodeHistory MR_truncateAllInContext:moc];
+					break;
+				case 1: {
+					NSPredicate *predicate = [NSPredicate predicateWithFormat:@"dimension == %@", @"1"];
+					[QRCodeHistory MR_deleteAllMatchingPredicate:predicate inContext:moc];
+					break;
+				}
+				case 2: {
+					NSPredicate *predicate = [NSPredicate predicateWithFormat:@"dimension == %@", @"2"];
+					[QRCodeHistory MR_deleteAllMatchingPredicate:predicate inContext:moc];
+					break;
+				}
+				default:
+					break;
 			}
-			case 2:{
-				NSPredicate *predicate = [NSPredicate predicateWithFormat:@"dimension == %@", @"2"];
-				[QRCodeHistory MR_deleteAllMatchingPredicate:predicate inContext:moc];
-				break;
-			}
-			default:
-				break;
+			[moc MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+				[_tableView setEditing:NO];
+
+				_historyArray = nil;
+				[_tableView reloadData];
+				[self editDoneButtonAction:nil];
+			}];
 		}
-		[moc MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-			[_tableView setEditing:NO];
-			
-			_historyArray = nil;
-			[_tableView reloadData];
-			[self editDoneButtonAction:nil];
-		}];
+	} else if (actionSheet.tag == A3QRCodeHistoryActionSheetTypeSearchOnGoogle) {
+		if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Search on Google", @"Search on Google")]) {
+			[self presentWebViewControllerWithBarCode:_barcodeToSearch];
+		} else if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Preview", @"Preview")]) {
+			A3QRCodeTextViewController *viewController = [[A3QRCodeTextViewController alloc] init];
+			viewController.text = _barcodeToSearch;
+			[self.navigationController setNavigationBarHidden:NO];
+			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+			[self.navigationController pushViewController:viewController animated:YES];
+		}
 	}
 }
 
@@ -366,15 +391,35 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	QRCodeHistory *history = self.historyArray[indexPath.row];
 	if ([history.dimension isEqualToString:@"1"]) {
-		A3BasicWebViewController *viewController = [A3BasicWebViewController new];
-		viewController.url = [NSURL URLWithString:[NSString stringWithFormat:@"https://www.google.com/search?q=%@", history.scanData]];
-		[self.navigationController setNavigationBarHidden:NO];
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-		[self.navigationController pushViewController:viewController animated:YES];
+		if ([[[A3AppDelegate instance] reachability] isReachableViaWiFi]) {
+			[self presentWebViewControllerWithBarCode:history.scanData];
+		} else {
+			_barcodeToSearch = [history.scanData copy];
+			UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+																	 delegate:self
+															cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+													   destructiveButtonTitle:nil
+															otherButtonTitles:NSLocalizedString(@"Search on Google", @"Search on Google"),
+																			  NSLocalizedString(@"Preview", @"Preview"), nil];
+			actionSheet.tag = A3QRCodeHistoryActionSheetTypeSearchOnGoogle;
+			[actionSheet showInView:self.view];
+		}
 	} else {
 		[self.dataHandler performActionWithData:history inViewController:self];
 	}
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (void)presentWebViewControllerWithBarCode:(NSString *)barcode {
+	if (![[[A3AppDelegate instance] reachability] isReachable]) {
+		[self alertInternetConnectionIsNotAvailable];
+		return;
+	}
+	A3BasicWebViewController *viewController = [A3BasicWebViewController new];
+	viewController.url = [NSURL URLWithString:[NSString stringWithFormat:@"https://www.google.com/search?q=%@", barcode]];
+	[self.navigationController setNavigationBarHidden:NO];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+	[self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark - Data Array
