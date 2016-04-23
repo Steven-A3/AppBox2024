@@ -312,11 +312,11 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 
 // returns the # of rows in each component..
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    return 10000;
+    return 1000000;
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    return [NSString stringWithFormat:@"%ld", (long)row];
+	return [self.numberFormatter stringFromNumber:@(row)];
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
