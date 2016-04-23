@@ -343,14 +343,7 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
 	frame = self.view.frame;
 	frame.size.height = 44.0;
 	frame.origin.y = -1.0;
-	UIView *moreMenuView;
-	if (IS_IOS9) {
-		moreMenuView = [[UINavigationBar alloc] initWithFrame:frame];
-	} else {
-		moreMenuView = [[UIView alloc] initWithFrame:frame];
-		moreMenuView.backgroundColor = [UIColor colorWithRed:247.0 / 255.0 green:247.0 / 255.0 blue:247.0 / 255.0 alpha:1.0];
-	}
-	moreMenuView.tag = 100;
+	UIView *moreMenuView = [[UIToolbar alloc] initWithFrame:frame];
 	frame.origin.y += 45.0; // kjh
 	frame.size.height = 0.5;    // kjh
 	UIView *bottomLineView = [[UIView alloc] initWithFrame:frame];
