@@ -17,6 +17,7 @@
 #import "A3UserDefaults.h"
 #import "A3HomeStyleHelpViewController.h"
 #import "A3InstructionViewController.h"
+#import "RMAppReceipt.h"
 
 NSString *const A3GridMenuCellID = @"gridCell";
 
@@ -59,8 +60,25 @@ A3InstructionViewControllerDelegate>
 	self.automaticallyAdjustsScrollViewInsets = NO;
     _itemsPerPage = 16;
 	[self setupCollectionView];
+	[self setupPageControl];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuContentsDidChange) name:A3NotificationAppsMainMenuContentsChanged object:nil];
+}
+
+- (void)mainMenuContentsDidChange {
+	RMAppReceipt *appReceipt = [A3AppDelegate instance].appReceipt;
+	if ([appReceipt verifyReceiptHash] && [[A3AppDelegate instance] isIAPPurchasedCustomer:appReceipt]) {
+		self.shouldShowHouseAd = NO;
+	} else {
+		self.shouldShowHouseAd = YES;
+	}
+	[self setupContentHeightWithSize:self.view.bounds.size];
+	_collectionView.backgroundView = self.backgroundView;
+	[_collectionView reloadData];
+	[_pageControl removeFromSuperview];
+	_pageControl = nil;
+	[self setupPageControl];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -70,6 +88,7 @@ A3InstructionViewControllerDelegate>
 
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationAppsMainMenuContentsChanged object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -98,7 +117,6 @@ A3InstructionViewControllerDelegate>
 }
 
 - (void)setupCollectionView {
-
 	UIView *superview = self.view;
 	[superview addSubview:self.collectionView];
 
@@ -109,7 +127,9 @@ A3InstructionViewControllerDelegate>
 	self.collectionView.backgroundView = [self backgroundView];
 
 	[self setupContentHeightWithSize:[A3UIDevice screenBoundsAdjustedWithOrientation].size];
-	
+}
+
+- (void)setupPageControl {
 	_pageControl = [UIPageControl new];
 	_pageControl.numberOfPages = [self.menuItems count] / _flowLayout.numberOfItemsPerPage + 1;
 	_pageControl.currentPage = 0;

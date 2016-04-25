@@ -143,6 +143,9 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 
 	[self stopRunning];
 	_scanAnimationInProgress = NO;
+	if (self.torchState) {
+		[self torchOnOff:nil];
+	}
 }
 
 - (void)dealloc {

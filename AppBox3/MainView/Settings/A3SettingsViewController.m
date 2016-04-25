@@ -8,6 +8,7 @@
 
 #import "UIViewController+NumberKeyboard.h"
 #import <LocalAuthentication/LocalAuthentication.h>
+#import <StoreKit/StoreKit.h>
 #import "A3SettingsViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "A3UserDefaults+A3Addition.h"
@@ -18,6 +19,7 @@
 #import "A3SettingsHomeStyleSelectTableViewCell.h"
 #import "A3AboutViewController.h"
 #import "A3PriceTagLabel.h"
+#import "A3AppDelegate.h"
 
 typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	A3SettingsRowUseiCloud = 1100,
@@ -69,6 +71,11 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableView) name:A3NotificationAppsMainMenuContentsChanged object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(adWillDismissScreen) name:A3NotificationsAdsWillDismissScreen object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
+- (void)applicationDidBecomeActive {
+	[self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -103,6 +110,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationAppsMainMenuContentsChanged object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationsAdsWillDismissScreen object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)reloadTableView {
@@ -226,26 +234,35 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 		}
 		case A3SettingsRowRemoveAds: {
 			if ([A3AppDelegate instance].shouldPresentAd) {
-				NSNumberFormatter *priceFormatter = [NSNumberFormatter new];
-				SKProduct *product = [A3AppDelegate instance].IAPRemoveAdsProductFromiTunes;
-				[priceFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-				[priceFormatter setLocale:product.priceLocale];
-				NSString *priceString = [priceFormatter stringFromNumber:product.price];
+				if ([SKPaymentQueue canMakePayments] && [A3AppDelegate instance].IAPRemoveAdsProductFromiTunes) {
+					NSNumberFormatter *priceFormatter = [NSNumberFormatter new];
+					SKProduct *product = [A3AppDelegate instance].IAPRemoveAdsProductFromiTunes;
+					[priceFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+					[priceFormatter setLocale:product.priceLocale];
+					NSString *priceString = [priceFormatter stringFromNumber:product.price];
 
-				A3PriceTagLabel *priceTagLabel = [[A3PriceTagLabel alloc] initWithFrame:CGRectMake(0, 0, 58, 26)];
-				priceTagLabel.text = priceString;
-				[priceTagLabel sizeToFit];
-				CGRect bounds = priceTagLabel.bounds;
-				bounds.size.width += 20;
-				bounds.size.height = 26;
-				priceTagLabel.bounds = bounds;
+					A3PriceTagLabel *priceTagLabel = [[A3PriceTagLabel alloc] initWithFrame:CGRectMake(0, 0, 58, 26)];
+					priceTagLabel.text = priceString;
+					[priceTagLabel sizeToFit];
+					CGRect bounds = priceTagLabel.bounds;
+					bounds.size.width += 20;
+					bounds.size.height = 26;
+					priceTagLabel.bounds = bounds;
 
-				cell.accessoryView = priceTagLabel;
-				cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
+					cell.accessoryView = priceTagLabel;
+					cell.detailTextLabel.text = @"";
+					cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
+				} else {
+					cell.accessoryView = nil;
+					cell.textLabel.textColor = [UIColor colorWithRed:179.0/255.0 green:179.0/255.0 blue:179.0/255.0 alpha:1.0];
+					cell.detailTextLabel.text = NSLocalizedString(@"Restricted", @"Restricted");
+					cell.selectionStyle = UITableViewCellSelectionStyleNone;
+				}
 			} else {
 				cell.textLabel.text = NSLocalizedString(@"About", @"About");
 				cell.textLabel.textColor = [UIColor blackColor];
 				cell.accessoryView = nil;
+				cell.detailTextLabel.text = @"";
 				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 			}
 			break;
@@ -325,7 +342,9 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 			switch (indexPath.row) {
 				case 0:
 					if ([A3AppDelegate instance].shouldPresentAd) {
-						[[A3AppDelegate instance] startRemoveAds];
+						if ([SKPaymentQueue canMakePayments]) {
+							[[A3AppDelegate instance] startRemoveAds];
+						}
 					} else {
 						[self presentAboutViewController];
 					}

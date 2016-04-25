@@ -1056,3 +1056,4 @@
 "Encryption" = "암호화";
 "Password_QRCODE" = "암호";
 "It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes." = "이미지에서 2차원 바코드 (QR 코드, 아즈텍 코드, 데이터 매트릭스)를 감지합니다. 1D 바코드는 검색하지 않습니다.";
+"Restricted" = "앱내구입차단됨";

@@ -16,6 +16,7 @@
 #import "A3UserDefaults.h"
 #import "A3InstructionViewController.h"
 #import "A3HomeStyleHelpViewController.h"
+#import "RMAppReceipt.h"
 
 @interface A3HexagonMenuViewController () <A3ReorderableLayoutDelegate, A3ReorderableLayoutDataSource,
 UICollectionViewDataSource, UICollectionViewDelegate, A3AppSelectViewControllerDelegate,
@@ -80,6 +81,17 @@ A3InstructionViewControllerDelegate>
 	}
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuContentsDidChange) name:A3NotificationAppsMainMenuContentsChanged object:nil];
+}
+
+- (void)mainMenuContentsDidChange {
+	RMAppReceipt *appReceipt = [A3AppDelegate instance].appReceipt;
+	if ([appReceipt verifyReceiptHash] && [[A3AppDelegate instance] isIAPPurchasedCustomer:appReceipt]) {
+		self.shouldShowHouseAd = NO;
+	} else {
+		self.shouldShowHouseAd = YES;
+	}
+	_collectionView.backgroundView = self.backgroundView;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -89,6 +101,7 @@ A3InstructionViewControllerDelegate>
 
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationAppsMainMenuContentsChanged object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -285,7 +298,6 @@ A3InstructionViewControllerDelegate>
 - (NSArray *)originalMenuItems {
 	if (IS_IPHONE) {
 	return @[
-			 @{kA3AppsMenuName:A3AppName_QRCode},
 			 @{kA3AppsMenuName:A3AppName_Magnifier},
 			 @{kA3AppsMenuName:A3AppName_Random},
 			 @{kA3AppsMenuName:A3AppName_Clock},
@@ -310,6 +322,7 @@ A3InstructionViewControllerDelegate>
 			 @{kA3AppsMenuName:A3AppName_LunarConverter},
 			 @{kA3AppsMenuName:A3AppName_Wallet},
 			 @{kA3AppsMenuName:A3AppName_UnitPrice},
+			 @{kA3AppsMenuName:A3AppName_QRCode},
 			 ];
 	} else {
 		return @[
@@ -347,18 +360,19 @@ A3InstructionViewControllerDelegate>
 		if (!_menuItems) {
 			_menuItems = [[self originalMenuItems] mutableCopy];
 		}
-		if (IS_IPAD) {
-			[_menuItems removeObject:@{kA3AppsMenuName:A3AppName_Level}];
-		}
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsMainMenuHexagonShouldAddQRCodeMenu]) {
 			[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3SettingsMainMenuHexagonShouldAddQRCodeMenu];
-			
-			NSInteger idx = [_menuItems indexOfObject:@{kA3AppsMenuName:A3AppName_None}];
-			if (idx != NSNotFound) {
-				[_menuItems replaceObjectAtIndex:idx withObject:@{kA3AppsMenuName:A3AppName_QRCode}];
-			} else {
-				[_menuItems insertObject:@{kA3AppsMenuName:A3AppName_QRCode} atIndex:0];
+
+			if (IS_IPAD && [_menuItems count] == 24) {
+				NSInteger indexOfEmptyMenu = [_menuItems indexOfObject:@{kA3AppsMenuName:A3AppName_None}];
+				if (indexOfEmptyMenu != NSNotFound) {
+					[_menuItems replaceObjectAtIndex:indexOfEmptyMenu withObject:@{kA3AppsMenuName:A3AppName_QRCode}];
+				}
 			}
+			if (([_menuItems count] == 24) && [_menuItems indexOfObject:@{kA3AppsMenuName:A3AppName_QRCode}] == NSNotFound) {
+				[_menuItems addObject:@{kA3AppsMenuName:A3AppName_QRCode}];
+			}
+			
 			[[NSUserDefaults standardUserDefaults] setObject:_menuItems forKey:A3MainMenuHexagonMenuItems];
 		}
 		FNLOG(@"%@", _menuItems);

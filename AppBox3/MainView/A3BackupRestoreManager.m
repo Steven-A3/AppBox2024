@@ -495,6 +495,9 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 		for (id key in [deviceUserDefaultsBackup allKeys]) {
 			[deviceUserDefaults setObject:deviceUserDefaultsBackup[key] forKey:key];
 		}
+		if ([backupInfo[A3BackupFileVersionKey] floatValue] == 4.0) {
+			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddQRCodeMenu];
+		}
 		
 		NSNumber *selectedColor = [[A3SyncManager sharedSyncManager] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
 		if (selectedColor) {

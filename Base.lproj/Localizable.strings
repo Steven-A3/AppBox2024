@@ -995,3 +995,4 @@ Enter Encryption Key for Wallet.";
 "Encryption" = "Encryption";
 "Password_QRCODE" = "Password";
 "It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes." = "It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes.";
+"Restricted" = "Restricted";

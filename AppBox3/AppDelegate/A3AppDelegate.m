@@ -318,6 +318,11 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
 	FNLOG();
+	
+	if (_shouldPresentAd && !_IAPRemoveAdsProductFromiTunes && [SKPaymentQueue canMakePayments]) {
+		[self prepareIAPProducts];
+	}
+	
 	A3SyncManager *syncManager = [A3SyncManager sharedSyncManager];
 	[syncManager synchronizeWithCompletion:NULL];
 	if ([syncManager isCloudEnabled]) {
@@ -1210,7 +1215,7 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 
 - (void)configureStore
 {
-	if (![self.receiptVerificator verifyAppReceipt]) {
+	if (![self.appReceipt verifyReceiptHash]) {
 		NSFileManager *fileManager = [NSFileManager defaultManager];
 		NSString *backupFilePath = [self backupReceiptFilePath];
 
@@ -1381,6 +1386,7 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 			}
 		}
 	} failure:^(NSError *error) {
+		FNLOG();
 	}];
 }
 
