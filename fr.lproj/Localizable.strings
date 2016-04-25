@@ -1046,3 +1046,4 @@
 "SSID" = "SSID";
 "Encryption" = "Encryption";
 "Password_QRCODE" = "Mot de passe";
+"It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes." = "Il détectera 2D Barcodes (Code QR, Code Aztec, Data Matrix) de l'image. Il ne détecte pas les codes à barres 1D.";

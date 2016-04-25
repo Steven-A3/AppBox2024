@@ -876,3 +876,4 @@
 "SSID" = "SSID";
 "Encryption" = "加密";
 "Password_QRCODE" = "密碼";
+"It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes." = "它將從圖像中檢測二維碼（QR碼，Aztec碼，數據矩陣）。它不會檢測的一維條碼。";

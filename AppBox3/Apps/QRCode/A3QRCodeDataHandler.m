@@ -20,6 +20,7 @@
 #import "A3QRCodeDetailViewController.h"
 #import "QRCodeHistory.h"
 #import "Reachability.h"
+#import "A3BasicWebViewController.h"
 
 typedef NS_ENUM(NSUInteger, A3QRCodeActionSheetType) {
 	A3QRCodeActionSheetTypeAddEvent = 1,
@@ -585,7 +586,9 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 			if ([[[A3AppDelegate instance] reachability] isReachableViaWiFi]) {
 				[controller.navigationController setNavigationBarHidden:NO];
 				[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-				[controller presentWebViewControllerWithURL:match.URL];
+				A3BasicWebViewController *viewController = [[A3BasicWebViewController alloc] init];
+				viewController.url = match.URL;
+				[controller.navigationController pushViewController:viewController animated:YES];
 			} else {
 				_targetURL = [match.URL copy];
 				_targetViewController = controller;

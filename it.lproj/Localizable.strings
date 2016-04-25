@@ -904,7 +904,7 @@
 "Use AppBox Pro" = "Usa AppBox Pro";
 "Loading" = "Caricamento in corso";
 
-"DaysCalendar_CalendarDeleteConfirmMsg" = "Vuoi  eliminare il calendario? Tutti gli eventi associati al calendario verranno eliminati.";
+"DaysCalendar_CalendarDeleteConfirmMsg" = "Vuoi eliminare il calendario? Tutti gli eventi associati al calendario verranno eliminati.";
 
 "%@ syncing is in progress. Try after 10 minutes." = "%@ sincronizzazione è in corso. Prova dopo 10 minuti.";
 
@@ -1041,3 +1041,4 @@ Inserire chiave di crittografia per il portafoglio.";
 "SSID" = "SSID";
 "Encryption" = "Crittografia";
 "Password_QRCODE" = "Password";
+"It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes." = "È in grado di rilevare codici a barre 2D (QR Code, Aztec Code, Data Matrix) dall'immagine. Non in grado di rilevare i codici a barre 1D.";

@@ -78,6 +78,13 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 	[_navigationBarExtensionView setHidden:YES];
 }
 
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	_navigationBarExtensionView.frame = CGRectMake(0, self.navigationController.navigationBar.frame.size.height,
+			self.view.bounds.size.width, 52);
+}
+
 - (void)setupBarButton {
 	if ([self.historyArray count]) {
 		UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editButtonAction:)];
@@ -178,7 +185,7 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 
 - (void)setupSegmentedControl {
 	_navigationBarExtensionView = [UIView new];
-	_navigationBarExtensionView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:1.0];
+	_navigationBarExtensionView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:249.0/255.0 blue:249.0/255.0 alpha:1.0];
 	[_navigationBarExtensionView addSubview:self.segmentedControl];
 
 	[_segmentedControl makeConstraints:^(MASConstraintMaker *make) {
@@ -203,10 +210,9 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 		make.height.equalTo(@(1.0 / [[UIScreen mainScreen] scale]));
 	}];
 
-	CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
-	_navigationBarExtensionView.frame = CGRectMake(0, self.navigationController.navigationBar.frame.size.height + statusBarFrame.size.height,
+	_navigationBarExtensionView.frame = CGRectMake(0, self.navigationController.navigationBar.frame.size.height,
 												   self.view.bounds.size.width, 52);
-	[self.navigationController.view addSubview:_navigationBarExtensionView];
+	[self.navigationController.navigationBar addSubview:_navigationBarExtensionView];
 }
 
 - (UISegmentedControl *)segmentedControl {
@@ -234,6 +240,7 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 	_tableView.showsVerticalScrollIndicator = NO;
 	_tableView.separatorColor = A3UITableViewSeparatorColor;
 	_tableView.separatorInset = A3UITableViewSeparatorInset;
+	_tableView.contentInset = UIEdgeInsetsMake(64 + 52, 0, 0, 0);
 
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		_tableView.cellLayoutMarginsFollowReadableWidth = NO;
@@ -247,7 +254,7 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 	[_tableView makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(superview.left);
 		make.right.equalTo(superview.right);
-		make.top.equalTo(superview.top).with.offset(64 + 52);
+		make.top.equalTo(superview.top);
 		make.bottom.equalTo(superview.bottom);
 	}];
 }

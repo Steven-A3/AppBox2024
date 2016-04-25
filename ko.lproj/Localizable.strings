@@ -1034,7 +1034,7 @@
 "Message" = "메시지보내기";
 "Location: %@" = "위치: %@";
 "Event: %@" = "이벤트: %@";
-"QR Codes on AppBox Pro" = "QR Code (AppBox Pro)";
+"QR Codes on AppBox Pro" = "QR코드(AppBox Pro)";
 "PRODUCT NAME" = "제품명";
 "Search on Google" = "구글에서 검색";
 "Barcode" = "바코드";
@@ -1048,10 +1048,11 @@
 "Blood Type" = "혈액형";
 "Additional Info" = "추가정보";
 "All" = "모두";
-"QR Code" = "QR Code";
-"QR Code not found." = "QR Code를 찾지 못했습니다.";
+"QR Code" = "QR코드";
+"QR Code not found." = "QR코드를 찾지 못했습니다.";
 "iMessage is not enabled." = "iMessage를 사용할 수 없습니다.";
 "Free" = "무료";
 "SSID" = "SSID";
 "Encryption" = "암호화";
 "Password_QRCODE" = "암호";
+"It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes." = "이미지에서 2차원 바코드 (QR 코드, 아즈텍 코드, 데이터 매트릭스)를 감지합니다. 1D 바코드는 검색하지 않습니다.";

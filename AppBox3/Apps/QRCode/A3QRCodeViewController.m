@@ -37,7 +37,7 @@ NSString *const A3QRCodeImageTorchOn = @"m_flash_on";
 NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 
 @interface A3QRCodeViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, A3InstructionViewControllerDelegate,
-		A3QRCodeDataHandlerDelegate, UIActionSheetDelegate>
+		A3QRCodeDataHandlerDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIToolbar *topToolbar;
 @property (nonatomic, weak) IBOutlet UIToolbar *topToolbarWithoutVibrate;
@@ -177,8 +177,17 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 }
 
 - (IBAction)scanFromImage:(id)sender {
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+														message:NSLocalizedString(@"It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes.", @"It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes.")
+													   delegate:self
+											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+											  otherButtonTitles:nil];
+
+	[alertView show];
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-	
 	UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
 	imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
 	imagePickerController.delegate = self;
@@ -400,11 +409,13 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	[_cornersView addSubview:_scanLineView];
 	
 	[UIView animateWithDuration:5.0 animations:^{
-		_scanLineView.frame = CGRectMake(0, -60, _cornersView.bounds.size.width, 60);
+		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+		CGFloat width = MAX(screenBounds.size.width, screenBounds.size.height);
+		_scanLineView.frame = CGRectMake(0, -60, width, 60);
 		_scanAnimationInProgress = YES;
 	} completion:^(BOOL finished) {
+		_scanAnimationInProgress = NO;
 		if (finished) {
-			_scanAnimationInProgress = NO;
 			[self animateScanLine];
 		}
 	}];
