@@ -26,12 +26,12 @@ NSString *const A3NotificationHolidaysCountryListChanged = @"A3NotificationHolid
 
 + (NSArray *)supportedCountries {
 	return @[
-			 @{
+			@{
 					kHolidayCountryCode : @"ao",
 //					kHolidayCapitalCityName:@"Luanda",
 //					kHolidayTimeZone:@"WAT",
 					kA3TimeZoneName : @"Africa/Luanda",
-					},    // UTC+1
+			},    // UTC+1
 			@{
 					kHolidayCountryCode : @"ar",
 //					kHolidayCapitalCityName:@"Buenos Aires",
