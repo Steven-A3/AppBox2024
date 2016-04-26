@@ -45,6 +45,8 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+	[self makeBackButtonEmptyArrow];
+	
 	self.title = @"History";
 	self.automaticallyAdjustsScrollViewInsets = NO;
 	

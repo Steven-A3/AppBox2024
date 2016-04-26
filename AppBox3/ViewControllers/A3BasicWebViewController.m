@@ -40,9 +40,6 @@
 
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
-	// Do any additional setup after loading the view.
-    //[self makeBackButtonEmptyArrow];
-    [self makeBackButtonEmptyArrow];
     if (_titleString) {
         self.title = _titleString;
     }
@@ -51,10 +48,6 @@
     }
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(shareAction)];
-
-	if (IS_IPAD || _showDoneButton) {
-		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction)];
-	}
 
     // WebView & Progress
     _progressProxy = [[NJKWebViewProgress alloc] init];
@@ -66,7 +59,7 @@
     _webView.delegate = _progressProxy;
     _webView.scalesPageToFit =  YES; // 100% 이상의 스케일에 대하여, http://stackoverflow.com/questions/16418645/uiwebview-pinch-zoom-not-working-beyond-a-certain-limit
 	_webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
+	
     [self.view addSubview:_webView];
     
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:self.url];
@@ -90,6 +83,9 @@
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     _webView.frame = self.view.frame;
 
+	if (_showDoneButton || [self.navigationController.viewControllers count] == 1) {
+		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction)];
+	}
 	if ([self isMovingToParentViewController]) {
 		CGFloat progressBarHeight = 2.5f;
 		CGRect navigationBarBounds = self.navigationController.navigationBar.bounds;

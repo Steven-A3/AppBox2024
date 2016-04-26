@@ -51,6 +51,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomToolbarBottomSpaceConstraint;
 @property (nonatomic, copy) NSString *barcodeToSearch;
+@property (nonatomic, assign) BOOL scanHandlerInProgress;
 
 @end
 
@@ -69,6 +70,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	self.isCornersVisible = NO;
 	self.stopOnFirst = YES;
 
+	[self makeBackButtonEmptyArrow];
 	[self setupBarcodeHandler];
 
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -213,63 +215,68 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 - (void)setupBarcodeHandler {
 	__typeof(self) __weak weakSelf = self;
 	self.barcodesHandler = ^(NSArray *barcodeObjects) {
+		if (weakSelf.scanHandlerInProgress || ([barcodeObjects count] == 0)) {
+			return;
+		}
+		weakSelf.scanHandlerInProgress = YES;
 		dispatch_async(dispatch_get_main_queue(), ^{
-			[barcodeObjects enumerateObjectsUsingBlock:^(AVMetadataMachineReadableCodeObject * _Nonnull barcode, NSUInteger idx, BOOL * _Nonnull stop) {
-				if ([[NSUserDefaults standardUserDefaults] boolForKey:A3QRCodeSettingsPlayAlertSound]) {
-					[weakSelf.beepPlayer play];
-				}
-				if ([[NSUserDefaults standardUserDefaults] boolForKey:A3QRCodeSettingsPlayVibrate]) {
-					AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-				}
-				NSManagedObjectContext *moc = [NSManagedObjectContext MR_rootSavingContext];
+			AVMetadataMachineReadableCodeObject *barcode = barcodeObjects[0];
+			
+			if ([[NSUserDefaults standardUserDefaults] boolForKey:A3QRCodeSettingsPlayAlertSound]) {
+				[weakSelf.beepPlayer play];
+			}
+			if ([[NSUserDefaults standardUserDefaults] boolForKey:A3QRCodeSettingsPlayVibrate]) {
+				AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+			}
+			NSManagedObjectContext *moc = [NSManagedObjectContext MR_rootSavingContext];
+			
+			QRCodeHistory *history = [QRCodeHistory MR_findFirstByAttribute:@"scanData" withValue:barcode.stringValue inContext:moc];
+			if (history) {
+				history.created = [NSDate date];
+			} else {
+				history = [QRCodeHistory MR_createEntityInContext:moc];
+				history.uniqueID = [[NSUUID UUID] UUIDString];
+				history.created = [NSDate date];
+				history.type = barcode.type;
+				history.scanData = barcode.stringValue;
 				
-				QRCodeHistory *history = [QRCodeHistory MR_findFirstByAttribute:@"scanData" withValue:barcode.stringValue inContext:moc];
-				if (history) {
-					history.created = [NSDate date];
+				NSArray *qrcodeTypes;
+				if (IS_IOS7) {
+					qrcodeTypes = @[AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode];
 				} else {
-					history = [QRCodeHistory MR_createEntityInContext:moc];
-					history.uniqueID = [[NSUUID UUID] UUIDString];
-					history.created = [NSDate date];
-					history.type = barcode.type;
-					history.scanData = barcode.stringValue;
-
-					NSArray *qrcodeTypes;
-					if (IS_IOS7) {
-						qrcodeTypes = @[AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode];
-					} else {
-						qrcodeTypes = @[AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode, AVMetadataObjectTypeDataMatrixCode];
-					}
-					if ([qrcodeTypes indexOfObject:barcode.type] != NSNotFound) {
-						history.dimension = @"2";
-					} else {
-						history.dimension = @"1";
-					}
+					qrcodeTypes = @[AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode, AVMetadataObjectTypeDataMatrixCode];
 				}
-				
-				[moc MR_saveToPersistentStoreAndWait];
-
-				if ([history.dimension isEqualToString:@"1"]) {
-					if ([[[A3AppDelegate instance] reachability] isReachableViaWiFi]) {
-						[weakSelf presentWebViewControllerWithBarCode:history.scanData];
-					} else {
-						_barcodeToSearch = [history.scanData copy];
-						UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-																				 delegate:weakSelf
-																		cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-																   destructiveButtonTitle:nil
-																		otherButtonTitles:NSLocalizedString(@"Search on Google", @"Search on Google"),
-																						  NSLocalizedString(@"Preview", @"Preview"), nil];
-						[actionSheet showInView:weakSelf.view];
-					}
-//					if (!history.searchData) {
-//						[weakSelf searchBarcode:barcode.stringValue];
-//					} else {
-//						[weakSelf presentDetailViewControllerWithData:history];
-//					}
+				if ([qrcodeTypes indexOfObject:barcode.type] != NSNotFound) {
+					history.dimension = @"2";
 				} else {
-					[weakSelf.dataHandler performActionWithData:history inViewController:weakSelf];
+					history.dimension = @"1";
 				}
-			}];
+			}
+			
+			[moc MR_saveToPersistentStoreAndWait];
+			
+			if ([history.dimension isEqualToString:@"1"]) {
+				if ([[[A3AppDelegate instance] reachability] isReachableViaWiFi]) {
+					[weakSelf presentWebViewControllerWithBarCode:history.scanData];
+				} else {
+					_barcodeToSearch = [history.scanData copy];
+					UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+																			 delegate:weakSelf
+																	cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+															   destructiveButtonTitle:nil
+																	otherButtonTitles:NSLocalizedString(@"Search on Google", @"Search on Google"),
+												  NSLocalizedString(@"Preview", @"Preview"), nil];
+					[actionSheet showInView:weakSelf.view];
+				}
+			} else {
+				[weakSelf.dataHandler performActionWithData:history inViewController:weakSelf];
+			}
+			
+			double delayInSeconds = 1.0;
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				weakSelf.scanHandlerInProgress = NO;
+			});
 		});
 	};
 }
@@ -277,6 +284,8 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 - (void)presentWebViewControllerWithBarCode:(NSString *)barcode {
 	if (![[[A3AppDelegate instance] reachability] isReachable]) {
 		[self alertInternetConnectionIsNotAvailable];
+		[self startRunning];
+		[self animateScanLine];
 		return;
 	}
 	A3BasicWebViewController *viewController = [A3BasicWebViewController new];
@@ -288,6 +297,8 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == actionSheet.cancelButtonIndex) {
+		[self startRunning];
+		[self animateScanLine];
 		return;
 	}
 	if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Search on Google", @"Search on Google")]) {

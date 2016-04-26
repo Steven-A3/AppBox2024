@@ -289,7 +289,7 @@ A3InstructionViewControllerDelegate>
 		[_appTitleLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(superview.centerX);
 			CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-			_appTitleTopConstraint =  make.top.equalTo(superview.top).with.offset(screenBounds.size.height * (IS_PORTRAIT ? 0.2 : 0.13));
+			_appTitleTopConstraint =  make.top.equalTo(superview.top).with.offset(screenBounds.size.height * (IS_PORTRAIT ? 0.18 : 0.13));
 		}];
 	}
 	return _appTitleLabel;
