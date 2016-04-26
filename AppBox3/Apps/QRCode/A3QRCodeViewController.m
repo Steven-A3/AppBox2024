@@ -41,9 +41,8 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 
 @property (nonatomic, weak) IBOutlet UIToolbar *topToolbar;
 @property (nonatomic, weak) IBOutlet UIToolbar *topToolbarWithoutVibrate;
-@property (nonatomic, weak) IBOutlet UIBarButtonItem *torchOnOffButton;
+@property (nonatomic, weak) IBOutlet UIToolbar *topToolbarSoundOnly;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *vibrateOnOffButton;
-@property (nonatomic, weak) IBOutlet UIBarButtonItem *soundOnOffButton;
 @property (nonatomic, weak) IBOutlet A3CornersView *cornersView;
 @property (nonatomic, strong) A3QRCodeDataHandler *dataHandler;
 @property (nonatomic, strong) AVAudioPlayer *beepPlayer;
@@ -52,6 +51,8 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomToolbarBottomSpaceConstraint;
 @property (nonatomic, copy) NSString *barcodeToSearch;
 @property (nonatomic, assign) BOOL scanHandlerInProgress;
+@property (nonatomic, strong) IBOutletCollection(UIBarButtonItem) NSArray *soundOnOffButtons;
+@property (nonatomic, strong) IBOutletCollection(UIBarButtonItem) NSArray *torchOnOffButtons;
 
 @end
 
@@ -76,16 +77,21 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	[userDefaults registerDefaults:@{A3QRCodeSettingsPlayVibrate : @YES,
 									 A3QRCodeSettingsPlayAlertSound : @YES}];
-	
-	[self.soundOnOffButton setImage:[UIImage imageNamed:[userDefaults boolForKey:A3QRCodeSettingsPlayAlertSound] ? A3QRCodeImageSoundOn : A3QRCodeImageSoundOff]];
-	[self.vibrateOnOffButton setImage:[UIImage imageNamed:[userDefaults boolForKey:A3QRCodeSettingsPlayVibrate] ? A3QRCodeImageVibrateOn : A3QRCodeImageVibrateOff]];
+
+	[_soundOnOffButtons enumerateObjectsUsingBlock:^(UIBarButtonItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+		[obj setImage:[UIImage imageNamed:[userDefaults boolForKey:A3QRCodeSettingsPlayAlertSound] ? A3QRCodeImageSoundOn : A3QRCodeImageSoundOff]];
+	}];
+		[_vibrateOnOffButton setImage:[UIImage imageNamed:[userDefaults boolForKey:A3QRCodeSettingsPlayVibrate] ? A3QRCodeImageVibrateOn : A3QRCodeImageVibrateOff]];
 	
 	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc]
 													initWithTarget:self
 													action:@selector(handleTapGesture:)];
 	[_cornersView addGestureRecognizer:tapGestureRecognizer];
-	
-	if (![A3UIDevice canVibrate]) {
+
+	if (IS_IPAD) {
+		[_topToolbar setHidden:YES];
+		[_topToolbarSoundOnly setHidden:NO];
+	} else if (![A3UIDevice canVibrate]) {
 		[_topToolbar setHidden:YES];
 		[_topToolbarWithoutVibrate setHidden:NO];
 	}
@@ -171,7 +177,9 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 
 - (IBAction)torchOnOff:(id)sender {
 	[self toggleTorch];
-	[self.torchOnOffButton setImage:[UIImage imageNamed:self.torchState ? A3QRCodeImageTorchOn : A3QRCodeImageTorchOff]];
+	[_torchOnOffButtons enumerateObjectsUsingBlock:^(UIBarButtonItem * _Nonnull button, NSUInteger idx, BOOL * _Nonnull stop) {
+		[button setImage:[UIImage imageNamed:self.torchState ? A3QRCodeImageTorchOn : A3QRCodeImageTorchOff]];
+	}];
 }
 
 - (IBAction)vibrateOnOff:(id)sender {
@@ -209,7 +217,10 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	BOOL soundOn = [[NSUserDefaults standardUserDefaults] boolForKey:A3QRCodeSettingsPlayAlertSound];
 	soundOn = !soundOn;
 	[[NSUserDefaults standardUserDefaults] setBool:soundOn forKey:A3QRCodeSettingsPlayAlertSound];
-	[self.soundOnOffButton setImage:[UIImage imageNamed:soundOn ? A3QRCodeImageSoundOn: A3QRCodeImageSoundOff]];
+	
+	[_soundOnOffButtons enumerateObjectsUsingBlock:^(UIBarButtonItem * _Nonnull button, NSUInteger idx, BOOL * _Nonnull stop) {
+		[button setImage:[UIImage imageNamed:soundOn ? A3QRCodeImageSoundOn: A3QRCodeImageSoundOff]];
+	}];
 }
 
 - (void)setupBarcodeHandler {
