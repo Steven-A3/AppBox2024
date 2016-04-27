@@ -207,6 +207,7 @@
     }
 #endif
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataDidSave) name:NSManagedObjectContextDidSaveNotification object:nil];
 }
 
 - (void)applicationDidEnterBackground {
@@ -246,6 +247,7 @@
 	}
 	if (_addEventButtonPressed) {
 		_addEventButtonPressed = NO;
+		
 		double delayInSeconds = 4.0;
 		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -276,6 +278,10 @@
 	}
 }
 
+- (void)coreDataDidSave {
+	[self reloadTableView];
+}
+
 - (void)cloudDidImportChanges:(NSNotification *)notification {
 	if ([self.navigationController visibleViewController] == self) {
 		[self reloadTableView];
@@ -284,6 +290,7 @@
 
 - (void)removeObserver {
 	[self removeContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
@@ -399,9 +406,9 @@
 - (void)reloadTableView
 {
     self.itemArray = [_sharedManager visibleCalendarList];
-    [self setupHeaderInfo];
     [self.tableView reloadData];
     self.addEventButton.tintColor = [A3AppDelegate instance].themeColor;
+	[self setupHeaderInfo];
 }
 
 #pragma mark Initialize FontSize

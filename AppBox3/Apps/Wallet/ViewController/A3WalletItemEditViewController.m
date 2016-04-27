@@ -699,12 +699,22 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	}
     
 	[self removeTempFiles];
-    
+	
+	NSString *addingItemID = [_item.uniqueID copy];
+	
 	NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
 	if ([context hasChanges]) {
 		[context rollback];
 	}
-    
+	
+ /**
+  *  편집 중에 홈 버튼을 눌러 나갔다 온 경우, 저장이 이루어 집니다.
+  *	 다시 돌아와서 Cancel을 누른 경우에는 저장된 내용을 삭제해야 합니다.
+  */
+	if (_isAddNewItem) {
+		[self deleteWalletItemByID:addingItemID];
+	}
+	
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
@@ -1085,15 +1095,6 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 #pragma mark- UIImagePickerControllerDelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)imageEditInfo {
-	if (IS_IPAD && self.popOverController) {
-		[self.popOverController dismissPopoverAnimated:YES];
-		self.popOverController = nil;
-	}
-	else {
-		[picker dismissViewControllerAnimated:YES completion:NULL];
-		_imagePickerController = nil;
-	}
-    
 	WalletFieldItem *fieldItem = [WalletFieldItem MR_createEntity];
 	fieldItem.uniqueID = [[NSUUID UUID] UUIDString];
 	fieldItem.updateDate = [NSDate date];
@@ -1172,7 +1173,18 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	[self.tableView reloadRowsAtIndexPaths:@[_currentIndexPath] withRowAnimation:UITableViewRowAnimationFade];
 	[self updateDoneButtonEnabled];
     
-	self.imagePickerController = nil;
+	[self dismissImagePickerViewController];
+}
+
+- (void)dismissImagePickerViewController {
+	if (IS_IPAD && self.popOverController) {
+		[self.popOverController dismissPopoverAnimated:YES];
+		self.popOverController = nil;
+	}
+	else {
+		[_imagePickerController dismissViewControllerAnimated:YES completion:NULL];
+	}
+	_imagePickerController = nil;
 }
 
 - (void)saveMetadata:(NSDictionary *)metadata addLocation:(BOOL)addLocation {
@@ -1199,8 +1211,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
-	[picker dismissViewControllerAnimated:YES completion:NULL];
-	self.imagePickerController = nil;
+	[self dismissImagePickerViewController];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
@@ -1225,11 +1236,17 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 		if ([_delegate respondsToSelector:@selector(WalletItemDeleted)]) {
 			[_delegate WalletItemDeleted];
 		}
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemID == %@", self.item.uniqueID];
-		[self.item MR_deleteEntity];
-		[WalletFavorite MR_deleteAllMatchingPredicate:predicate];
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+		[self deleteWalletItemByID:_item.uniqueID];
 	}];
+}
+
+- (void)deleteWalletItemByID:(NSString *)itemID {
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", itemID];
+	NSArray *items = [WalletItem MR_findAllWithPredicate:predicate];
+	for (WalletItem *item in items) {
+		[item deleteWalletItemInContext:item.managedObjectContext];
+	}
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
 
 - (void)imagePickerActionForButtonIndex:(NSInteger)myButtonIndex destructiveButtonIndex:(NSInteger)destructiveButtonIndex actionSheetTag:(NSInteger)actionSheetTag {

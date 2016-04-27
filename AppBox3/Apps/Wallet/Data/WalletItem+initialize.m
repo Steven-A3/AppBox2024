@@ -27,7 +27,6 @@
 	return [WalletFieldItem MR_findAllWithPredicate:predicate inContext:self.managedObjectContext];
 }
 
-
 - (NSArray *)fieldItemsArraySortedByFieldOrder
 {
 	WalletCategory *category = [WalletData categoryItemWithID:self.categoryID inContext:nil];

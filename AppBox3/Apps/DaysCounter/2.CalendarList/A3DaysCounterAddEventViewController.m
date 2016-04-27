@@ -1646,8 +1646,21 @@
 {
     [self resignAllAction];
 
+	NSString *addingEventID = [_eventItem.uniqueID copy];
+	
 	if ([_savingContext hasChanges]) {
 		[_savingContext rollback];
+	}
+
+	if (_isAddingEvent) {
+		// 추가 화면에서 데이터를 입력하고 홈 버튼을 눌러 앱을 빠져나갔다가 온 경우에
+		// 데이터가 저장이 됩니다.
+		// 다시 추가 화면으로 돌아와서 취소를 한 경우에는 해당 데이터를 지워주어야 합니다.
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", addingEventID];
+		NSArray *events = [DaysCounterEvent MR_findAllWithPredicate:predicate inContext:_savingContext];
+		for (DaysCounterEvent *event in events) {
+			[_sharedManager removeEvent:event inContext:_savingContext];
+		}
 	}
 
 	if (IS_IPAD) {
@@ -2543,6 +2556,7 @@
 }
 
 #pragma mark - UIImagePickerControllerDelegate
+
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     if ( IS_IPHONE || picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
