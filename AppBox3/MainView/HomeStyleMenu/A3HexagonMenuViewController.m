@@ -92,6 +92,7 @@ A3InstructionViewControllerDelegate>
 		self.shouldShowHouseAd = YES;
 	}
 	_collectionView.backgroundView = self.backgroundView;
+	_collectionView.backgroundView.backgroundColor = [UIColor colorWithRed:42.0/255.0 green:54.0/255.0 blue:59.0/255.0 alpha:1.0];
 }
 
 - (void)didReceiveMemoryWarning {
