@@ -47,7 +47,7 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 
 	[self makeBackButtonEmptyArrow];
 	
-	self.title = @"History";
+	self.title = NSLocalizedString(@"History", @"History");
 	self.automaticallyAdjustsScrollViewInsets = NO;
 	
 	[self setupSegmentedControl];
