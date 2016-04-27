@@ -185,7 +185,7 @@
 "3V3-lS-rew.text" = "Backup con iTunes-Condivisione File";
 
 /* Class = "IBUINavigationItem"; title = "Backup & Restore on iTunes"; ObjectID = "wZg-tr-J14"; */
-"wZg-tr-J14.title" = "Backup & Restore on iTunes";
+"wZg-tr-J14.title" = "Backup con iTunes-Condivisione File";
 
 /* Class = "IBUINavigationItem"; title = "Select Backup"; ObjectID = "sf0-2F-cNr"; */
 "sf0-2F-cNr.title" = "Seleziona Backup";
@@ -224,7 +224,7 @@
 "9Xh-7R-BIO.normalTitle" = "Esagono";
 
 /* Class = "UILabel"; text = "Restore Purchase"; ObjectID = "C7v-Sr-wgh"; */
-"C7v-Sr-wgh.text" = "Ripristinare Acquisto Precedente";
+"C7v-Sr-wgh.text" = "Ripristinare acquisto";
 
 /* Class = "UIButton"; normalTitle = "List"; ObjectID = "l7a-V1-SMB"; */
 "l7a-V1-SMB.normalTitle" = "Lista";

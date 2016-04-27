@@ -186,6 +186,8 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 			} else {
 				cell.textLabel.text = NSLocalizedString(@"Reset Home Screen Layout", @"Reset Home Screen Layout");
 				cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
+				cell.textLabel.adjustsFontSizeToFitWidth = YES;
+				cell.textLabel.minimumScaleFactor = 0.4;
 				[cell.detailTextLabel setHidden:YES];
 				cell.accessoryType = UITableViewCellAccessoryNone;
 			}

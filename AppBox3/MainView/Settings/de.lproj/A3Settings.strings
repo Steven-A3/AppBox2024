@@ -238,7 +238,7 @@
 "9Xh-7R-BIO.normalTitle" = "Hexagon";
 
 /* Class = "UILabel"; text = "Restore Purchase"; ObjectID = "C7v-Sr-wgh"; */
-"C7v-Sr-wgh.text" = "Erworbene Produkte wiederherstellen";
+"C7v-Sr-wgh.text" = "Wiederherstellen Kauf";
 
 /* Class = "UIButton"; normalTitle = "List"; ObjectID = "l7a-V1-SMB"; */
 "l7a-V1-SMB.normalTitle" = "Liste";
