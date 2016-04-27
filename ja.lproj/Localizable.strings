@@ -29,16 +29,16 @@
 
 "Expense List" = "費用リスト";
 "Days Counter" = "イベントカレンダー";
-"DaysCounter" = "イベントカレンダー";
+"DaysCounter" = "イベント";
 "Ladies Calendar" = "レディースカレンダー";
-"L Calendar" = "レディースカレンダー";
+"L Calendar" = "レディース";
 "Wallet" = "電子財布";
 
 "Holidays" = "祝日";
 "Holidays Short" = "祝日";
 
 "Battery Status" = "バッテリー状態";
-"Battery" = "バッテリー状態";
+"Battery" = "バッテリー";
 "Clock" = "時計";
 "Magnifier" = "拡大鏡";
 "Mirror" = "ミラー";
