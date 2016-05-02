@@ -224,6 +224,8 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 			(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
 	} else {
 		[application registerForRemoteNotifications];
+		UIUserNotificationSettings *userNotificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil];
+		[application registerUserNotificationSettings:userNotificationSettings];
 	}
 
 	return shouldPerformAdditionalDelegateHandling;
@@ -1486,6 +1488,25 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 		};
 	}
 	return _hudView;
+}
+
+#pragma mark - Alert What's New
+
+NSString *const A3UserDefaultsDidAlertWhatsNew4_1 = @"A3UserDefaultsDidAlertWhatsNew4_1";
+
+- (void)alertWhatsNew {
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidAlertWhatsNew4_1]) {
+		return;
+	}
+	
+	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidAlertWhatsNew4_1];
+	
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"What's New in V4.1.1", @"What's New in V4.1.1")
+														message:NSLocalizedString(@"New APP: QR Code", @"New APP: QR Code")
+													   delegate:nil
+											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+											  otherButtonTitles:nil];
+	[alertView show];
 }
 
 @end

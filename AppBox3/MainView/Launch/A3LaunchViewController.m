@@ -163,7 +163,9 @@ NSString *const A3UserDefaultsDidShowLeftViewOnceiPad = @"A3UserDefaultsDidShowL
 			double delayInSeconds = 1.0;
 			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-				[self askRestorePurchase];
+				if (![self askRestorePurchase]) {
+					[[A3AppDelegate instance] alertWhatsNew];
+				}
 			});
 		}
 	}
@@ -187,22 +189,24 @@ NSString *const A3UserDefaultsDidShowLeftViewOnceiPad = @"A3UserDefaultsDidShowL
 
 #pragma mark - Ask Restore Purchase
 
-- (void)askRestorePurchase {
-	if ([A3AppDelegate instance].doneAskingRestorePurchase) return;
+- (BOOL)askRestorePurchase {
+	if ([A3AppDelegate instance].doneAskingRestorePurchase) {
+		return NO;
+	}
 	
 	// PreviousVersion이 있다면 다시 묻지 않는다.
 	// 지우고 설치한 경우에만 물어본다. 업데이트 한 경우는 물어보지 않는다.
 	if ([A3AppDelegate instance].previousVersion) {
-		return;
+		return NO;
 	}
 	NSURL *receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
 	if (receiptURL && [[NSFileManager defaultManager] fileExistsAtPath:[receiptURL path]]) {
-		return;
+		return NO;
 	}
 	
 	NSString *backupReceiptFilepath = [[A3AppDelegate instance] backupReceiptFilePath];
 	if ([[NSFileManager defaultManager] fileExistsAtPath:backupReceiptFilepath]) {
-		return;
+		return NO;
 	}
 
 	[A3AppDelegate instance].doneAskingRestorePurchase = YES;
@@ -243,11 +247,14 @@ NSString *const A3UserDefaultsDidShowLeftViewOnceiPad = @"A3UserDefaultsDidShowL
 																	nil];
 		[alertView show];
 	}
+	return YES;
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex != alertView.cancelButtonIndex) {
 		[self proceedRestorePurchase];
+	} else {
+		[[A3AppDelegate instance] alertWhatsNew];
 	}
 }
 

@@ -1049,3 +1049,5 @@ Wprowadź klucz szyfrowania dla portfela.";
 "Password_QRCODE" = "Hasło";
 "It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes." = "Będzie ona wykrywać kody 2D (QR kod, kod Aztec, Data Matrix) z obrazu. To nie wykryje kodów kreskowych 1D.";
 "Restricted" = "Ograniczony";
+"What's New in V4.1.1" = "Co nowego w wersji 4.1.1";
+"New APP: QR Code" = "\n\nNowa aplikacja: Kod QR\n\n";

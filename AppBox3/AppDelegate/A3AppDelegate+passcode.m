@@ -422,6 +422,7 @@
 			self.homeStyleMainMenuViewController.activeAppName = [A3AppName_Clock copy];
 		}
 		[self setStartOptionOpenClockOnce:NO];
+		[self alertWhatsNew];
 		return;
 	}
 
@@ -468,6 +469,7 @@
 				[self removeSecurityCoverView];
 			});
 		}
+		[self alertWhatsNew];
 		return;
 	}
 
@@ -517,6 +519,7 @@
 	}
 	[self showReceivedLocalNotifications];
 	[self presentInterstitialAds];
+	[self alertWhatsNew];
 }
 
 - (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {

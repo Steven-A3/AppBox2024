@@ -83,7 +83,8 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-	_navigationBarExtensionView.frame = CGRectMake(0, self.navigationController.navigationBar.frame.size.height,
+	CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
+	_navigationBarExtensionView.frame = CGRectMake(0, self.navigationController.navigationBar.frame.size.height + statusBarFrame.size.height,
 			self.view.bounds.size.width, 52);
 }
 
@@ -212,9 +213,10 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 		make.height.equalTo(@(1.0 / [[UIScreen mainScreen] scale]));
 	}];
 
-	_navigationBarExtensionView.frame = CGRectMake(0, self.navigationController.navigationBar.frame.size.height,
+	CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
+	_navigationBarExtensionView.frame = CGRectMake(0, self.navigationController.navigationBar.frame.size.height + statusBarFrame.size.height,
 												   self.view.bounds.size.width, 52);
-	[self.navigationController.navigationBar addSubview:_navigationBarExtensionView];
+	[self.navigationController.view addSubview:_navigationBarExtensionView];
 }
 
 - (UISegmentedControl *)segmentedControl {

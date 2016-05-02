@@ -1059,3 +1059,5 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 "Password_QRCODE" = "Passwort";
 "It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes." = "Es wird 2D-Barcodes (QR-Code, Aztec Code, Data Matrix) aus dem Bild zu erkennen. Es wird nicht 1D-Barcodes erkennen.";
 "Restricted" = "Eingeschränkt";
+"What's New in V4.1.1" = "Neue Funktionen von V4.1.1";
+"New APP: QR Code" = "\n\nNeue APP: QR-Code\n\n";
