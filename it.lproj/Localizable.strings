@@ -1043,5 +1043,5 @@ Inserire chiave di crittografia per il portafoglio.";
 "Password_QRCODE" = "Password";
 "It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes." = "È in grado di rilevare codici a barre 2D (Codice QR, Aztec Code, Data Matrix) dall'immagine. Non in grado di rilevare i codici a barre 1D.";
 "Restricted" = "Ristretto";
-"What's New in V4.1.1" = "Novità nella V4.1.1";
+"What's New in V4.1.1" = "Novità nella V4.1";
 "New APP: QR Code" = "\n\nNuovo APP: Codice QR\n\n";

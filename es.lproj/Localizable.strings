@@ -1045,5 +1045,5 @@ Introduzca la clave de cifrado para el bolsillo.";
 "Password_QRCODE" = "Contraseña";
 "It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes." = "Se detectará códigos de barras 2D (Código QR, Código Azteca, Data Matrix) de la imagen. No detectará códigos de barras 1D.";
 "Restricted" = "Restringido";
-"What's New in V4.1.1" = "Lo nuevo en la V4.1.1";
+"What's New in V4.1.1" = "Lo nuevo en la V4.1";
 "New APP: QR Code" = "\n\nNueva APP: Código QR\n\n";
