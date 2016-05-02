@@ -559,7 +559,9 @@ A3InstructionViewControllerDelegate>
 	});
 	
 	if (_instructionViewController) {
-		[self adjustFingerCenter];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self adjustFingerCenter];
+		});
 	}
 }
 
@@ -620,6 +622,7 @@ static NSString *const A3V3InstructionDidShowForGridMenu = @"A3V3InstructionDidS
 		row = numberOfItems >= _flowLayout.numberOfItemsPerPage + 6 ? _flowLayout.numberOfItemsPerPage + 5 : _flowLayout.numberOfItemsPerPage;
 		hideImageView = IS_IPHONE;
 	}
+	
 	if (hideImageView) {
 		[_instructionViewController.fingerRight setHidden:YES];
 		[_instructionViewController.changeStyleLabel setHidden:YES];
