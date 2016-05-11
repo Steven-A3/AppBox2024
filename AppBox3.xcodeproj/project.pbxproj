@@ -706,7 +706,6 @@
 		68B9B16317D02B85003ACAD0 /* A3HolidaysCountryViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B16217D02B85003ACAD0 /* A3HolidaysCountryViewCell.m */; };
 		68B9B17017D04152003ACAD0 /* NSDate+daysleft.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B16F17D04152003ACAD0 /* NSDate+daysleft.m */; };
 		68B9DE701C17E1DF002E0D34 /* A3CurrencyPickerStyleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9DE6F1C17E1DF002E0D34 /* A3CurrencyPickerStyleViewController.m */; };
-		68BF62451CC72EEC0079EBA6 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68BF62441CC72EEC0079EBA6 /* GoogleMobileAds.framework */; };
 		68C1ABFA18B1C05200021001 /* NSDateFormatter+LunarDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C1ABF918B1C05200021001 /* NSDateFormatter+LunarDate.m */; };
 		68C7E1081BE20C1C00861AFD /* A3CurrencyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C7E1071BE20C1C00861AFD /* A3CurrencyViewController.m */; };
 		68C802D819571A0200BC19EE /* WalletCategoryPreset.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68C802D719571A0200BC19EE /* WalletCategoryPreset.plist */; };
@@ -796,6 +795,7 @@
 		68E3A2A81AC4F61C004FE7B0 /* IsraelHolidays.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68E3A2A71AC4F61C004FE7B0 /* IsraelHolidays.plist */; };
 		68E50B1F1945E18800FAD986 /* Instruction_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68E50B211945E18800FAD986 /* Instruction_iPhone.storyboard */; };
 		68E50B241945E1E600FAD986 /* Instruction_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68E50B261945E1E600FAD986 /* Instruction_iPad.storyboard */; };
+		68E67CAA1CE33537002B022E /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E67CA91CE33537002B022E /* GoogleMobileAds.framework */; };
 		68E6D12018A48C0F00109183 /* A3FormatterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6D11F18A48C0F00109183 /* A3FormatterTest.m */; };
 		68E6F34D17B25F5F00F10ED9 /* A3CurrencyChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F34B17B25F5F00F10ED9 /* A3CurrencyChartViewController.m */; };
 		68E6F35217B2722000F10ED9 /* A3UserDefaults+A3Defaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F35117B2722000F10ED9 /* A3UserDefaults+A3Defaults.m */; };
@@ -2273,7 +2273,6 @@
 		68B9B16F17D04152003ACAD0 /* NSDate+daysleft.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "NSDate+daysleft.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		68B9DE6E1C17E1DF002E0D34 /* A3CurrencyPickerStyleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyPickerStyleViewController.h; path = Apps/Currency/A3CurrencyPickerStyleViewController.h; sourceTree = "<group>"; };
 		68B9DE6F1C17E1DF002E0D34 /* A3CurrencyPickerStyleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyPickerStyleViewController.m; path = Apps/Currency/A3CurrencyPickerStyleViewController.m; sourceTree = "<group>"; };
-		68BF62441CC72EEC0079EBA6 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = "External/GoogleMobileAdsSdkiOS-7.7.1/GoogleMobileAds.framework"; sourceTree = "<group>"; };
 		68C1ABF818B1C05200021001 /* NSDateFormatter+LunarDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+LunarDate.h"; sourceTree = "<group>"; };
 		68C1ABF918B1C05200021001 /* NSDateFormatter+LunarDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+LunarDate.m"; sourceTree = "<group>"; };
 		68C7E1061BE20C1C00861AFD /* A3CurrencyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyViewController.h; path = Apps/Currency/A3CurrencyViewController.h; sourceTree = "<group>"; };
@@ -2455,6 +2454,7 @@
 		68E3A2A71AC4F61C004FE7B0 /* IsraelHolidays.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = IsraelHolidays.plist; path = Holidays/IsraelHolidays.plist; sourceTree = "<group>"; };
 		68E50B201945E18800FAD986 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Instruction_iPhone.storyboard; sourceTree = "<group>"; };
 		68E50B251945E1E600FAD986 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Instruction_iPad.storyboard; sourceTree = "<group>"; };
+		68E67CA91CE33537002B022E /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = "External/GoogleMobileAdsSdkiOS-7.8.0/GoogleMobileAds.framework"; sourceTree = "<group>"; };
 		68E6D11F18A48C0F00109183 /* A3FormatterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3FormatterTest.m; path = Formatter/A3FormatterTest.m; sourceTree = "<group>"; };
 		68E6F34A17B25F5F00F10ED9 /* A3CurrencyChartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyChartViewController.h; path = Apps/Currency/A3CurrencyChartViewController.h; sourceTree = "<group>"; };
 		68E6F34B17B25F5F00F10ED9 /* A3CurrencyChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = A3CurrencyChartViewController.m; path = Apps/Currency/A3CurrencyChartViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -2893,7 +2893,7 @@
 				684A71BD1852E0250004A9FE /* libc++.dylib in Frameworks */,
 				684A71BB1852E0100004A9FE /* Security.framework in Frameworks */,
 				6888090A17C63DBB008B2856 /* CFNetwork.framework in Frameworks */,
-				68BF62451CC72EEC0079EBA6 /* GoogleMobileAds.framework in Frameworks */,
+				68E67CAA1CE33537002B022E /* GoogleMobileAds.framework in Frameworks */,
 				68E6F35617B27B8300F10ED9 /* CoreTelephony.framework in Frameworks */,
 				686FCF721775CF9D00F19332 /* Accelerate.framework in Frameworks */,
 				682380711B312670005F4DD2 /* StoreKit.framework in Frameworks */,
@@ -5065,7 +5065,7 @@
 		68CC1594174F764C0000870F /* External */ = {
 			isa = PBXGroup;
 			children = (
-				68BF62441CC72EEC0079EBA6 /* GoogleMobileAds.framework */,
+				68E67CA91CE33537002B022E /* GoogleMobileAds.framework */,
 				6848ED681C50FD7B0067B93A /* ALDBlurImageProcessor */,
 				68F04CA01B40F825004FDD7B /* RMStore */,
 				68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */,
@@ -7454,7 +7454,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/External/dropbox-ios-sdk-1.3.9",
-					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.7.1",
+					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.8.0",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";
@@ -7491,7 +7491,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/External/dropbox-ios-sdk-1.3.9",
-					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.7.1",
+					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.8.0",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";
