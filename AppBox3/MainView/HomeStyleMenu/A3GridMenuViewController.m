@@ -445,8 +445,8 @@ A3InstructionViewControllerDelegate>
 			}
 			[[NSUserDefaults standardUserDefaults] setObject:_menuItems forKey:A3MainMenuGridMenuItems];
 		}
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsMainMenuGridShouldAddQRCodeMenu]) {
-			[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3SettingsMainMenuGridShouldAddQRCodeMenu];
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsMainMenuGridShouldAddPedometerMenu]) {
+			[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3SettingsMainMenuGridShouldAddPedometerMenu];
 
 			if (isStepCountingAvailable) {
 				NSDictionary *pedometerMenu = @{kA3AppsMenuName : A3AppName_Pedometer};
