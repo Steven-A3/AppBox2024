@@ -106,7 +106,7 @@
                                     <constraint firstAttribute="bottom" secondItem="zdg-Et-DZB" secondAttribute="bottom" constant="12" id="qnr-lz-s4M"/>
                                 </constraints>
                             </view>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Qts-Du-edE">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Qts-Du-edE">
                                 <rect key="frame" x="2" y="240" width="596" height="350"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="zDd-h2-wjh" customClass="A3PedometerCollectionViewFlowLayout">
                                     <size key="itemSize" width="50" height="325"/>

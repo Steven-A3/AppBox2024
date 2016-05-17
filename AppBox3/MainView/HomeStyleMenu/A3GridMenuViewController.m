@@ -429,9 +429,11 @@ A3InstructionViewControllerDelegate>
 		if (IS_IPAD) {
 			[_menuItems removeObject:@{kA3AppsMenuName:A3AppName_Level}];
 		}
-//		if (!isStepCountingAvailable) {
-//			[_menuItems removeObject:@{kA3AppsMenuName:A3AppName_Pedometer}];
-//		}
+#if !TARGET_IPHONE_SIMULATOR
+		if (!isStepCountingAvailable) {
+			[_menuItems removeObject:@{kA3AppsMenuName:A3AppName_Pedometer}];
+		}
+#endif
 
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsMainMenuGridShouldAddQRCodeMenu]) {
 			[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3SettingsMainMenuGridShouldAddQRCodeMenu];

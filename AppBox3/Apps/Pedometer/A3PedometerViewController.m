@@ -85,9 +85,11 @@
 		_collectionViewBackgroundDidSet = YES;
 		[self setupCollectionViewBackgroundView];
 
-		[_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:[self.pedometerItems count] - 1 inSection:0]
-								atScrollPosition:UICollectionViewScrollPositionRight
-										animated:NO];
+		if ([self.pedometerItems count]) {
+			[_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:[self.pedometerItems count] - 1 inSection:0]
+									atScrollPosition:UICollectionViewScrollPositionRight
+											animated:NO];
+		}
 	}
 }
 
