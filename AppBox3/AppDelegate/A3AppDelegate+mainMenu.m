@@ -29,6 +29,7 @@
 #import "A3NavigationController.h"
 #import "NSMutableArray+MoveObject.h"
 #import <objc/runtime.h>
+#import <CoreMotion/CoreMotion.h>
 
 NSString *const kA3ApplicationLastRunVersion = @"kLastRunVersion";
 NSString *const kA3AppsMenuName = @"kA3AppsMenuName";
@@ -75,6 +76,7 @@ NSString *const A3AppName_Random = @"Random";
 NSString *const A3AppName_Ruler = @"Ruler";
 NSString *const A3AppName_Level = @"Level";
 NSString *const A3AppName_QRCode = @"QR Code";
+NSString *const A3AppName_Pedometer = @"Pedometer";
 NSString *const A3AppName_Settings = @"Settings";
 NSString *const A3AppName_About = @"About";
 NSString *const A3AppName_RemoveAds = @"Remove Ads";
@@ -118,6 +120,7 @@ NSString *const A3AppNameGrid_Random = @"Random";
 NSString *const A3AppNameGrid_Ruler = @"Ruler";
 NSString *const A3AppNameGrid_Level = @"Level";
 NSString *const A3AppNameGrid_QRCode = @"QR Code";
+NSString *const A3AppNameGrid_Pedometer = @"Pedometer";
 
 static char const *const kA3AppsInfoDictionary = "kA3AppsInfoDictionary";
 static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
@@ -285,12 +288,22 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 						kA3AppsGroupName:A3AppGroupNameUtility,
 						kA3AppsMenuNameForGrid:A3AppNameGrid_Level,
 				},
+				/**
+				 *  QR Code reader added in V4.1
+				 */
 				A3AppName_QRCode : @{
 						kA3AppsClassName_iPhone : @"A3QRCodeViewController",
 						kA3AppsNibName_iPhone:@"A3QRCodeViewController",
 						kA3AppsMenuImageName : @"QRCodes",
 						kA3AppsGroupName:A3AppGroupNameUtility,
 						kA3AppsMenuNameForGrid:A3AppNameGrid_QRCode,
+						},
+				A3AppName_Pedometer : @{
+						kA3AppsStoryboard_iPhone : @"Pedometer",
+						kA3AppsStoryboard_iPad:@"Pedometer",
+						kA3AppsMenuImageName : @"Pedometer",
+						kA3AppsGroupName:A3AppGroupNameUtility,
+						kA3AppsMenuNameForGrid:A3AppNameGrid_Pedometer,
 						},
 				A3AppName_Settings : @{
 						kA3AppsStoryboard_iPhone : @"A3Settings",
@@ -381,9 +394,13 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 			@{kA3AppsMenuName : A3AppName_Ruler},
 			@{kA3AppsMenuName : A3AppName_Level},
 			@{kA3AppsMenuName : A3AppName_QRCode},
+			@{kA3AppsMenuName : A3AppName_Pedometer},
 	] mutableCopy];
 	if (IS_IPAD) {
-		[self removeMenu:@"Level" inMenus:utilityApps];
+		[self removeMenu:A3AppName_Level inMenus:utilityApps];
+	}
+	if (IS_IOS7 || ![CMPedometer isStepCountingAvailable]) {
+		[self removeMenu:A3AppName_Pedometer inMenus:utilityApps];
 	}
 	NSDictionary *utilityGroup =
 			 @{
@@ -412,12 +429,14 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 	}
 
 	{
+		BOOL pedometerAvailable = !IS_IOS7 && [CMPedometer isStepCountingAvailable];
 		for (NSDictionary *section in allMenuArray) {
 			if ([section[kA3AppsMenuName] isEqualToString:@"Utility"]) {
 				BOOL hasFlashlight = NO;
 				BOOL hasRuler = NO;
 				BOOL hasLevel = NO;
 				BOOL hasQRCode = NO;
+				BOOL hasPedometer = NO;
 				for (NSDictionary *menus in section[kA3AppsExpandableChildren]) {
 					if (!hasFlashlight && [menus[kA3AppsMenuName] isEqualToString:A3AppName_Flashlight]) {
 						hasFlashlight = YES;
@@ -430,6 +449,9 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 					}
 					else if (!hasQRCode && [menus[kA3AppsMenuName] isEqualToString:A3AppName_QRCode]) {
 						hasQRCode = YES;
+					}
+					else if (!hasPedometer && [menus[kA3AppsMenuName] isEqualToString:A3AppName_Pedometer]) {
+						hasPedometer = YES;
 					}
 				}
 
@@ -463,6 +485,12 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 					NSArray *newItems = @[
 										  @{kA3AppsMenuName : A3AppName_QRCode},
 										  ];
+					[newMenus addObjectsFromArray:newItems];
+				}
+				if (pedometerAvailable && !hasPedometer) {
+					NSArray *newItems = @[
+							@{kA3AppsMenuName : A3AppName_Pedometer},
+					];
 					[newMenus addObjectsFromArray:newItems];
 				}
 

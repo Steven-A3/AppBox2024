@@ -40,6 +40,8 @@ extern NSString *const A3SettingsMainMenuStyleIconGrid;
  */
 extern NSString *const A3SettingsMainMenuHexagonShouldAddQRCodeMenu;
 extern NSString *const A3SettingsMainMenuGridShouldAddQRCodeMenu;
+extern NSString *const A3SettingsMainMenuHexagonShouldAddPedometerMenu;
+extern NSString *const A3SettingsMainMenuGridShouldAddPedometerMenu;
 
 #pragma mark ------ Main Menu
 extern NSString *const A3MainMenuDataEntityFavorites;

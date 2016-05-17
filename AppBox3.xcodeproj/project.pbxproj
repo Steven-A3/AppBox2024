@@ -92,6 +92,9 @@
 		57E4E1CF19D2DD360037371B /* A3RandomViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E4E1CD19D2DD360037371B /* A3RandomViewController.xib */; };
 		68024AD81631637600D396F0 /* A3UIDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 68024AD71631637600D396F0 /* A3UIDevice.m */; };
 		68030ABC17F063D100B04487 /* HTCopyableLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 68030ABB17F063D100B04487 /* HTCopyableLabel.m */; };
+		680344601CE19505009C300F /* A3PedometerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6803445F1CE19505009C300F /* A3PedometerViewController.m */; };
+		680344621CE1951D009C300F /* Pedometer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 680344611CE1951D009C300F /* Pedometer.storyboard */; };
+		680344651CE1E46F009C300F /* A3PedometerSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680344641CE1E46F009C300F /* A3PedometerSettingsTableViewController.m */; };
 		68067C8C186E867C00D1A1D1 /* A3PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68067C8B186E867C00D1A1D1 /* A3PasswordViewController.m */; };
 		680886D31891751B0093FD97 /* A3ChooseColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886AA1891751B0093FD97 /* A3ChooseColorView.m */; };
 		680886D41891751B0093FD97 /* A3ClockDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886AC1891751B0093FD97 /* A3ClockDataManager.m */; };
@@ -204,6 +207,7 @@
 		68144BC61743381600FD22CF /* A3PlacemarkBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68144BC51743381600FD22CF /* A3PlacemarkBackgroundView.m */; };
 		6817825316253640008A6E4B /* A3SegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 6817825216253640008A6E4B /* A3SegmentedControl.m */; };
 		6817830F1902823D003E1BB9 /* A3WalletItemTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6817830E1902823D003E1BB9 /* A3WalletItemTitleCell.m */; };
+		681983731CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 681983721CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.m */; };
 		6819A86F18A6092B00E63C8B /* NSDateFormatter+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4255AEBE358EED319031E /* NSDateFormatter+A3Addition.m */; };
 		6819C7B2188A4D64007E0E1B /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 684E9F0D188A4BB100FAA48E /* Social.framework */; };
 		681C511F194EB57400CB653A /* LoanCalculatorPadStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 681C5121194EB57400CB653A /* LoanCalculatorPadStoryBoard.storyboard */; };
@@ -796,6 +800,11 @@
 		68E50B1F1945E18800FAD986 /* Instruction_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68E50B211945E18800FAD986 /* Instruction_iPhone.storyboard */; };
 		68E50B241945E1E600FAD986 /* Instruction_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68E50B261945E1E600FAD986 /* Instruction_iPad.storyboard */; };
 		68E67CAA1CE33537002B022E /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E67CA91CE33537002B022E /* GoogleMobileAds.framework */; };
+		68E67CAD1CE35221002B022E /* A3DashLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E67CAC1CE35221002B022E /* A3DashLineView.m */; };
+		68E67CB41CE4681E002B022E /* Pedometer+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E67CB11CE4681E002B022E /* Pedometer+CoreDataProperties.m */; };
+		68E67CB51CE4681E002B022E /* Pedometer.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E67CB31CE4681E002B022E /* Pedometer.m */; };
+		68E67CB81CE47C6B002B022E /* A3PedometerCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E67CB71CE47C6B002B022E /* A3PedometerCollectionViewCell.m */; };
+		68E67CBB1CE568BC002B022E /* A3BarChartBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E67CBA1CE568BC002B022E /* A3BarChartBarView.m */; };
 		68E6D12018A48C0F00109183 /* A3FormatterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6D11F18A48C0F00109183 /* A3FormatterTest.m */; };
 		68E6F34D17B25F5F00F10ED9 /* A3CurrencyChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F34B17B25F5F00F10ED9 /* A3CurrencyChartViewController.m */; };
 		68E6F35217B2722000F10ED9 /* A3UserDefaults+A3Defaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F35117B2722000F10ED9 /* A3UserDefaults+A3Defaults.m */; };
@@ -950,6 +959,7 @@
 		68F9391917D0DDBB0082234C /* FMMoveTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F9391617D0DDBB0082234C /* FMMoveTableView.m */; };
 		68F9391A17D0DDBB0082234C /* FMMoveTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F9391817D0DDBB0082234C /* FMMoveTableViewCell.m */; };
 		68F967BF1818D74300D64A0A /* NSArray+validation.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F967BE1818D74300D64A0A /* NSArray+validation.m */; };
+		68FABA4C1CE9A8EB00A62B84 /* A3PedometerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FABA4B1CE9A8EB00A62B84 /* A3PedometerHandler.m */; };
 		68FB684A1C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FB68491C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.m */; };
 		68FB8E9E1C990922008CAB7A /* CurrencyInfo.dictionary in Resources */ = {isa = PBXBuildFile; fileRef = 68FB8E9C1C990922008CAB7A /* CurrencyInfo.dictionary */; };
 		68FB8E9F1C990922008CAB7A /* currencyRates in Resources */ = {isa = PBXBuildFile; fileRef = 68FB8E9D1C990922008CAB7A /* currencyRates */; };
@@ -1171,6 +1181,11 @@
 		68024AD71631637600D396F0 /* A3UIDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = A3UIDevice.m; sourceTree = "<group>"; };
 		68030ABA17F063D100B04487 /* HTCopyableLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTCopyableLabel.h; path = External/HTCopyableLabel/HTCopyableLabel.h; sourceTree = "<group>"; };
 		68030ABB17F063D100B04487 /* HTCopyableLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTCopyableLabel.m; path = External/HTCopyableLabel/HTCopyableLabel.m; sourceTree = "<group>"; };
+		6803445E1CE19505009C300F /* A3PedometerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3PedometerViewController.h; path = Pedometer/A3PedometerViewController.h; sourceTree = "<group>"; };
+		6803445F1CE19505009C300F /* A3PedometerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3PedometerViewController.m; path = Pedometer/A3PedometerViewController.m; sourceTree = "<group>"; };
+		680344611CE1951D009C300F /* Pedometer.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Pedometer.storyboard; path = Pedometer/Pedometer.storyboard; sourceTree = "<group>"; };
+		680344631CE1E46F009C300F /* A3PedometerSettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3PedometerSettingsTableViewController.h; path = Pedometer/A3PedometerSettingsTableViewController.h; sourceTree = "<group>"; };
+		680344641CE1E46F009C300F /* A3PedometerSettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3PedometerSettingsTableViewController.m; path = Pedometer/A3PedometerSettingsTableViewController.m; sourceTree = "<group>"; };
 		68067C8A186E867C00D1A1D1 /* A3PasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3PasswordViewController.h; path = Passcode/A3PasswordViewController.h; sourceTree = "<group>"; };
 		68067C8B186E867C00D1A1D1 /* A3PasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3PasswordViewController.m; path = Passcode/A3PasswordViewController.m; sourceTree = "<group>"; };
 		68067C90186E926D00D1A1D1 /* A3PasscodeViewControllerProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = A3PasscodeViewControllerProtocol.h; path = Passcode/A3PasscodeViewControllerProtocol.h; sourceTree = "<group>"; };
@@ -1375,6 +1390,8 @@
 		6817825216253640008A6E4B /* A3SegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SegmentedControl.m; sourceTree = "<group>"; };
 		6817830D1902823D003E1BB9 /* A3WalletItemTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletItemTitleCell.h; sourceTree = "<group>"; };
 		6817830E1902823D003E1BB9 /* A3WalletItemTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletItemTitleCell.m; sourceTree = "<group>"; };
+		681983711CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3PedometerCollectionViewFlowLayout.h; path = Pedometer/A3PedometerCollectionViewFlowLayout.h; sourceTree = "<group>"; };
+		681983721CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3PedometerCollectionViewFlowLayout.m; path = Pedometer/A3PedometerCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		681C5120194EB57400CB653A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LoanCalculatorPadStoryBoard.storyboard; sourceTree = "<group>"; };
 		681C5125194EB58400CB653A /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LoanCalculatorPadStoryBoard.strings; sourceTree = "<group>"; };
 		681C5127194EB58500CB653A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LoanCalculatorPadStoryBoard.strings"; sourceTree = "<group>"; };
@@ -2455,6 +2472,17 @@
 		68E50B201945E18800FAD986 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Instruction_iPhone.storyboard; sourceTree = "<group>"; };
 		68E50B251945E1E600FAD986 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Instruction_iPad.storyboard; sourceTree = "<group>"; };
 		68E67CA91CE33537002B022E /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = "External/GoogleMobileAdsSdkiOS-7.8.0/GoogleMobileAds.framework"; sourceTree = "<group>"; };
+		68E67CAB1CE35221002B022E /* A3DashLineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DashLineView.h; sourceTree = "<group>"; };
+		68E67CAC1CE35221002B022E /* A3DashLineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DashLineView.m; sourceTree = "<group>"; };
+		68E67CAE1CE44E86002B022E /* Add Pedometer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Add Pedometer.xcdatamodel"; sourceTree = "<group>"; };
+		68E67CB01CE4681E002B022E /* Pedometer+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Pedometer+CoreDataProperties.h"; path = "Pedometer/Model/Pedometer+CoreDataProperties.h"; sourceTree = "<group>"; };
+		68E67CB11CE4681E002B022E /* Pedometer+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Pedometer+CoreDataProperties.m"; path = "Pedometer/Model/Pedometer+CoreDataProperties.m"; sourceTree = "<group>"; };
+		68E67CB21CE4681E002B022E /* Pedometer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Pedometer.h; path = Pedometer/Model/Pedometer.h; sourceTree = "<group>"; };
+		68E67CB31CE4681E002B022E /* Pedometer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Pedometer.m; path = Pedometer/Model/Pedometer.m; sourceTree = "<group>"; };
+		68E67CB61CE47C6B002B022E /* A3PedometerCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3PedometerCollectionViewCell.h; path = Pedometer/A3PedometerCollectionViewCell.h; sourceTree = "<group>"; };
+		68E67CB71CE47C6B002B022E /* A3PedometerCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3PedometerCollectionViewCell.m; path = Pedometer/A3PedometerCollectionViewCell.m; sourceTree = "<group>"; };
+		68E67CB91CE568BC002B022E /* A3BarChartBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3BarChartBarView.h; path = Pedometer/A3BarChartBarView.h; sourceTree = "<group>"; };
+		68E67CBA1CE568BC002B022E /* A3BarChartBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3BarChartBarView.m; path = Pedometer/A3BarChartBarView.m; sourceTree = "<group>"; };
 		68E6D11F18A48C0F00109183 /* A3FormatterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3FormatterTest.m; path = Formatter/A3FormatterTest.m; sourceTree = "<group>"; };
 		68E6F34A17B25F5F00F10ED9 /* A3CurrencyChartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyChartViewController.h; path = Apps/Currency/A3CurrencyChartViewController.h; sourceTree = "<group>"; };
 		68E6F34B17B25F5F00F10ED9 /* A3CurrencyChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = A3CurrencyChartViewController.m; path = Apps/Currency/A3CurrencyChartViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -2839,6 +2867,8 @@
 		68F9391817D0DDBB0082234C /* FMMoveTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMMoveTableViewCell.m; sourceTree = "<group>"; };
 		68F967BD1818D74300D64A0A /* NSArray+validation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+validation.h"; sourceTree = "<group>"; };
 		68F967BE1818D74300D64A0A /* NSArray+validation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+validation.m"; sourceTree = "<group>"; };
+		68FABA4A1CE9A8EB00A62B84 /* A3PedometerHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3PedometerHandler.h; path = Pedometer/A3PedometerHandler.h; sourceTree = "<group>"; };
+		68FABA4B1CE9A8EB00A62B84 /* A3PedometerHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3PedometerHandler.m; path = Pedometer/A3PedometerHandler.m; sourceTree = "<group>"; };
 		68FB68481C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsHomeStyleSelectTableViewCell.h; path = Settings/A3SettingsHomeStyleSelectTableViewCell.h; sourceTree = "<group>"; };
 		68FB68491C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsHomeStyleSelectTableViewCell.m; path = Settings/A3SettingsHomeStyleSelectTableViewCell.m; sourceTree = "<group>"; };
 		68FB8E9C1C990922008CAB7A /* CurrencyInfo.dictionary */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = CurrencyInfo.dictionary; path = Apps/Currency/Model/CurrencyInfo.dictionary; sourceTree = "<group>"; };
@@ -3165,6 +3195,29 @@
 				68030ABB17F063D100B04487 /* HTCopyableLabel.m */,
 			);
 			name = HTCopyableLabel;
+			sourceTree = "<group>";
+		};
+		680344591CE19436009C300F /* Pedometer */ = {
+			isa = PBXGroup;
+			children = (
+				68E67CB91CE568BC002B022E /* A3BarChartBarView.h */,
+				68E67CBA1CE568BC002B022E /* A3BarChartBarView.m */,
+				68E67CAB1CE35221002B022E /* A3DashLineView.h */,
+				68E67CAC1CE35221002B022E /* A3DashLineView.m */,
+				68E67CB61CE47C6B002B022E /* A3PedometerCollectionViewCell.h */,
+				68E67CB71CE47C6B002B022E /* A3PedometerCollectionViewCell.m */,
+				681983711CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.h */,
+				681983721CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.m */,
+				68FABA4A1CE9A8EB00A62B84 /* A3PedometerHandler.h */,
+				68FABA4B1CE9A8EB00A62B84 /* A3PedometerHandler.m */,
+				680344631CE1E46F009C300F /* A3PedometerSettingsTableViewController.h */,
+				680344641CE1E46F009C300F /* A3PedometerSettingsTableViewController.m */,
+				6803445E1CE19505009C300F /* A3PedometerViewController.h */,
+				6803445F1CE19505009C300F /* A3PedometerViewController.m */,
+				68E67CAF1CE467E9002B022E /* Model */,
+				680344611CE1951D009C300F /* Pedometer.storyboard */,
+			);
+			name = Pedometer;
 			sourceTree = "<group>";
 		};
 		680886A41891751B0093FD97 /* Clock */ = {
@@ -3950,6 +4003,7 @@
 				6825366618A7B89F00EAFB84 /* LunarConverter */,
 				680D638418CFF9D400938AD0 /* Magnifier */,
 				680D638818CFF9D400938AD0 /* Mirror */,
+				680344591CE19436009C300F /* Pedometer */,
 				68E2A62A18D0B1FC00E834D9 /* PercentCalculator */,
 				6857C7221CB647A000D09177 /* QRCode */,
 				57E4E1CA19D2DD090037371B /* Random */,
@@ -5293,6 +5347,17 @@
 			name = Data;
 			sourceTree = "<group>";
 		};
+		68E67CAF1CE467E9002B022E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				68E67CB01CE4681E002B022E /* Pedometer+CoreDataProperties.h */,
+				68E67CB11CE4681E002B022E /* Pedometer+CoreDataProperties.m */,
+				68E67CB21CE4681E002B022E /* Pedometer.h */,
+				68E67CB31CE4681E002B022E /* Pedometer.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		68EABE321CB75D8E00219151 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -5955,6 +6020,7 @@
 				68B6A35218CEC76D004084EF /* WalletPhoneStoryBoard.storyboard in Resources */,
 				68F150B5194C0E6000159EAD /* Launch_iPad.storyboard in Resources */,
 				68B6A32718CEC76D004084EF /* A3WalletCateTitleView_iPad.xib in Resources */,
+				680344621CE1951D009C300F /* Pedometer.storyboard in Resources */,
 				68B6A31D18CEC76D004084EF /* A3WalletAllTopCell.xib in Resources */,
 				68B6A2E718CEC76D004084EF /* UnitConverterPhoneStoryboard.storyboard in Resources */,
 				68315CF6195696560095CF7A /* A3DaysCounterCalendarListMainViewController.xib in Resources */,
@@ -6258,6 +6324,7 @@
 				68F14FB019485E8500159EAD /* A3DaysCounterSlideshowOptionViewController.m in Sources */,
 				68B6A32918CEC76D004084EF /* A3WalletItemFieldActionCell.m in Sources */,
 				68024AD81631637600D396F0 /* A3UIDevice.m in Sources */,
+				68E67CB41CE4681E002B022E /* Pedometer+CoreDataProperties.m in Sources */,
 				68B6A46218CEE781004084EF /* SDWebImagePrefetcher.m in Sources */,
 				684D92C018BC1EFE005016F7 /* A3BatteryStatusSettingViewController.m in Sources */,
 				68B6A2FB18CEC76D004084EF /* A3UnitPriceSliderCell.m in Sources */,
@@ -6296,6 +6363,7 @@
 				68B7014819789F8200F7CE1E /* TranslatorFavorite.m in Sources */,
 				687AEEB41CBC489700C2D844 /* MXLCalendar.m in Sources */,
 				684E9F05188A43C300FAA48E /* NJKWebViewProgressView.m in Sources */,
+				68E67CB51CE4681E002B022E /* Pedometer.m in Sources */,
 				68F1500D19485E8500159EAD /* A3DaysCounterLocationPopupViewController.m in Sources */,
 				6823F6FE1863294700E6E90D /* CurrencyHistory+handler.m in Sources */,
 				68C999AD1CC74FB200BC1B0D /* A3PriceTagLabel.m in Sources */,
@@ -6378,6 +6446,7 @@
 				68F1500419485E8500159EAD /* DaysCounterEvent+extension.m in Sources */,
 				68B6A2C118CEC76D004084EF /* A3LoanCalcLoanGraphCell.m in Sources */,
 				68EC80D616E1ADF800CF672E /* A3Formatter.m in Sources */,
+				68E67CAD1CE35221002B022E /* A3DashLineView.m in Sources */,
 				68B9B15C17D01EB6003ACAD0 /* A3HolidaysCountryViewController.m in Sources */,
 				682FDF241981CC0400C6C83D /* NSManagedObjectModel+MagicalRecord.m in Sources */,
 				68B6A45018CEE781004084EF /* PSTCollectionViewItemKey.m in Sources */,
@@ -6423,6 +6492,7 @@
 				68F14FC319485E8500159EAD /* A3DaysCounterEventDetailLocationViewController.m in Sources */,
 				68F14FFE19485E8500159EAD /* A3DaysCounterSetupRepeatViewController.m in Sources */,
 				68E2A64D18D0B1FC00E834D9 /* A3ExpenseListMainViewcontroller.m in Sources */,
+				680344651CE1E46F009C300F /* A3PedometerSettingsTableViewController.m in Sources */,
 				68B62EC2199E620B006384E1 /* DaysCounterCalendar.m in Sources */,
 				68E2777E19D177DB000EC931 /* MWPhotoBrowser+rotation.m in Sources */,
 				6874847B19780EFC00EA8F74 /* UnitPriceInfo+extension.m in Sources */,
@@ -6490,6 +6560,7 @@
 				68F1C92318D82500009FAE8A /* NYXProgressiveImageView.m in Sources */,
 				68B635BF17B504C100570B09 /* A3RootViewController_iPad.m in Sources */,
 				68143D6618E3EC7C00569691 /* A3TableViewMenuElement.m in Sources */,
+				68E67CB81CE47C6B002B022E /* A3PedometerCollectionViewCell.m in Sources */,
 				68E6F35217B2722000F10ED9 /* A3UserDefaults+A3Defaults.m in Sources */,
 				68B6A2DA18CEC76D004084EF /* TemperatureConverter.m in Sources */,
 				68B6A2F918CEC76D004084EF /* A3UnitPriceNoteCell.m in Sources */,
@@ -6611,6 +6682,7 @@
 				6823F702186329DC00E6E90D /* A3CurrencyDataManager.m in Sources */,
 				687F928918F69C74006377B9 /* A3MoreTableViewCell.m in Sources */,
 				68F14FB619485E8500159EAD /* A3DaysCounterSlideshowViewController.m in Sources */,
+				681983731CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.m in Sources */,
 				687D0D1017CAE519005AB571 /* HolidayData.m in Sources */,
 				684D92F218BC1FBC005016F7 /* A3DateCalcDurationViewController.m in Sources */,
 				684E1BDD1AC13BA100925771 /* A3OpenSourceLicensesViewController.m in Sources */,
@@ -6660,6 +6732,7 @@
 				68B6A2C318CEC76D004084EF /* A3LoanCalcLoanInfo2Cell.m in Sources */,
 				689D59061C1569BA002CD422 /* ClinometerToolbarViewController.m in Sources */,
 				17D42461C66EA03739D41FA8 /* A3CurrencyTableViewCell.m in Sources */,
+				680344601CE19505009C300F /* A3PedometerViewController.m in Sources */,
 				577707FB19D57E5B00DC066A /* NPPickerIndicator.m in Sources */,
 				17D42B8113D2415FDF33A0DB /* A3CurrencyTVDataCell.m in Sources */,
 				68E2A65E18D0B1FC00E834D9 /* A3PercentCalcHistoryCell.m in Sources */,
@@ -6683,6 +6756,8 @@
 				577707F219D57CB900DC066A /* NPColorPickerView.m in Sources */,
 				17D425D8B8511A61A52DBE3E /* A3SearchViewController.m in Sources */,
 				68F1C8C318D7F37D009FAE8A /* A3LadyCalendarAddPeriodViewController.m in Sources */,
+				68FABA4C1CE9A8EB00A62B84 /* A3PedometerHandler.m in Sources */,
+				68E67CBB1CE568BC002B022E /* A3BarChartBarView.m in Sources */,
 				68F04D0D1B40F825004FDD7B /* RMStore.m in Sources */,
 				68B6A32118CEC76D004084EF /* A3WalletCateEditTitleCell.m in Sources */,
 				68F04D0C1B40F825004FDD7B /* RMStoreUserDefaultsPersistence.m in Sources */,
@@ -7684,10 +7759,11 @@
 		6831EBF618619CC800BAF15B /* AppBox3.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				68E67CAE1CE44E86002B022E /* Add Pedometer.xcdatamodel */,
 				68EABE271CB7515900219151 /* AppBox 2 (Adding QR Code).xcdatamodel */,
 				6831EBF718619CC800BAF15B /* AppBox3.xcdatamodel */,
 			);
-			currentVersion = 68EABE271CB7515900219151 /* AppBox 2 (Adding QR Code).xcdatamodel */;
+			currentVersion = 68E67CAE1CE44E86002B022E /* Add Pedometer.xcdatamodel */;
 			path = AppBox3.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

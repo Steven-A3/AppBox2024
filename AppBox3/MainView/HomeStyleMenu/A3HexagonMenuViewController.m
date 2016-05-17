@@ -6,6 +6,7 @@
 //  Copyright © 2016 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <CoreMotion/CoreMotion.h>
 #import "common.h"
 #import "A3HexagonMenuViewController.h"
 #import "A3HexagonCell.h"
@@ -324,6 +325,7 @@ A3InstructionViewControllerDelegate>
 			 @{kA3AppsMenuName:A3AppName_Wallet},
 			 @{kA3AppsMenuName:A3AppName_UnitPrice},
 			 @{kA3AppsMenuName:A3AppName_QRCode},
+			 @{kA3AppsMenuName:A3AppName_Pedometer},
 			 ];
 	} else {
 		return @[
@@ -351,6 +353,7 @@ A3InstructionViewControllerDelegate>
 				 @{kA3AppsMenuName:A3AppName_LunarConverter},
 				 @{kA3AppsMenuName:A3AppName_Wallet},
 				 @{kA3AppsMenuName:A3AppName_UnitPrice},
+				 @{kA3AppsMenuName:A3AppName_Pedometer},
 				 ];
 	}
 }
@@ -360,6 +363,10 @@ A3InstructionViewControllerDelegate>
 		_menuItems = [[[NSUserDefaults standardUserDefaults] objectForKey:A3MainMenuHexagonMenuItems] mutableCopy];
 		if (!_menuItems) {
 			_menuItems = [[self originalMenuItems] mutableCopy];
+		}
+		BOOL isStepCountingAvailable = !IS_IOS7 && [CMPedometer isStepCountingAvailable];
+		if (!isStepCountingAvailable) {
+			[_menuItems removeObject:@{kA3AppsMenuName:A3AppName_Pedometer}];
 		}
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsMainMenuHexagonShouldAddQRCodeMenu]) {
 			[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3SettingsMainMenuHexagonShouldAddQRCodeMenu];
@@ -375,6 +382,17 @@ A3InstructionViewControllerDelegate>
 			}
 			
 			[[NSUserDefaults standardUserDefaults] setObject:_menuItems forKey:A3MainMenuHexagonMenuItems];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsMainMenuHexagonShouldAddPedometerMenu]) {
+			[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3SettingsMainMenuHexagonShouldAddPedometerMenu];
+
+			if (isStepCountingAvailable) {
+				if ([_menuItems indexOfObject:@{kA3AppsMenuName:A3AppName_Pedometer}] == NSNotFound) {
+					[_menuItems addObject:@{kA3AppsMenuName:A3AppName_Pedometer}];
+				}
+
+				[[NSUserDefaults standardUserDefaults] setObject:_menuItems forKey:A3MainMenuHexagonMenuItems];
+			}
 		}
 		FNLOG(@"%@", _menuItems);
 	}

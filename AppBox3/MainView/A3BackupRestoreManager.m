@@ -495,10 +495,16 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 		for (id key in [deviceUserDefaultsBackup allKeys]) {
 			[deviceUserDefaults setObject:deviceUserDefaultsBackup[key] forKey:key];
 		}
-		if ([backupInfo[A3BackupFileVersionKey] floatValue] == 4.0) {
+		float version = [backupInfo[A3BackupFileVersionKey] floatValue];
+		if (version == 4.0) {
 			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddQRCodeMenu];
+			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddQRCodeMenu];
 		}
-		
+		if (version >= 4.0 && version < 4.2) {
+			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddPedometerMenu];
+			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddPedometerMenu];
+		}
+
 		NSNumber *selectedColor = [[A3SyncManager sharedSyncManager] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
 		if (selectedColor) {
 			[A3AppDelegate instance].window.tintColor = [[A3AppDelegate instance] themeColor];

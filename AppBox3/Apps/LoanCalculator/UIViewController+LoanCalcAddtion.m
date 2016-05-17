@@ -15,7 +15,7 @@
 
 static char const *const key_loanFormatter	= "key_loanFormatter";
 
-@implementation UIViewController (LoanCalcAddtion)
+@implementation UIViewController (LoanCalcAddition)
 
 - (NSNumberFormatter *)loanFormatter {
 	NSNumberFormatter *formatter = objc_getAssociatedObject(self, key_loanFormatter);

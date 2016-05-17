@@ -6,6 +6,7 @@
 //  Copyright © 2016 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <CoreMotion/CoreMotion.h>
 #import "common.h"
 #import "A3GridMenuViewController.h"
 #import "A3AppDelegate.h"
@@ -360,6 +361,7 @@ A3InstructionViewControllerDelegate>
 - (NSArray *)originalMenuItems {
 	if (IS_IPAD) {
 		return @[
+				 @{kA3AppsMenuName:A3AppName_Pedometer},
 				 @{kA3AppsMenuName:A3AppName_QRCode},
 				 @{kA3AppsMenuName:A3AppName_BatteryStatus},
 				 @{kA3AppsMenuName:A3AppName_CurrencyConverter},
@@ -387,6 +389,7 @@ A3InstructionViewControllerDelegate>
 				 ];
 	} else {
 		return @[
+				 @{kA3AppsMenuName:A3AppName_Pedometer},
 				 @{kA3AppsMenuName:A3AppName_QRCode},
 				 @{kA3AppsMenuName:A3AppName_Level},
 				 @{kA3AppsMenuName:A3AppName_CurrencyConverter},
@@ -422,9 +425,14 @@ A3InstructionViewControllerDelegate>
 		if (!_menuItems) {
 			_menuItems = [[self originalMenuItems] mutableCopy];
 		}
+		BOOL isStepCountingAvailable = !IS_IOS7 && [CMPedometer isStepCountingAvailable];
 		if (IS_IPAD) {
 			[_menuItems removeObject:@{kA3AppsMenuName:A3AppName_Level}];
 		}
+//		if (!isStepCountingAvailable) {
+//			[_menuItems removeObject:@{kA3AppsMenuName:A3AppName_Pedometer}];
+//		}
+
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsMainMenuGridShouldAddQRCodeMenu]) {
 			[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3SettingsMainMenuGridShouldAddQRCodeMenu];
 			
@@ -434,6 +442,18 @@ A3InstructionViewControllerDelegate>
 				[_menuItems insertObject:qrcodeMenu atIndex:0];
 			}
 			[[NSUserDefaults standardUserDefaults] setObject:_menuItems forKey:A3MainMenuGridMenuItems];
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsMainMenuGridShouldAddQRCodeMenu]) {
+			[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3SettingsMainMenuGridShouldAddQRCodeMenu];
+
+			if (isStepCountingAvailable) {
+				NSDictionary *pedometerMenu = @{kA3AppsMenuName : A3AppName_Pedometer};
+				NSInteger qrcodeIndex = [_menuItems indexOfObject:pedometerMenu];
+				if (qrcodeIndex == NSNotFound) {
+					[_menuItems insertObject:pedometerMenu atIndex:0];
+				}
+				[[NSUserDefaults standardUserDefaults] setObject:_menuItems forKey:A3MainMenuGridMenuItems];
+			}
 		}
 	}
 	return _menuItems;
