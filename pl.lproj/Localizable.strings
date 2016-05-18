@@ -1051,3 +1051,6 @@ Wprowadź klucz szyfrowania dla portfela.";
 "Restricted" = "Ograniczony";
 "What's New in V4.1.1" = "Co nowego w wersji 4.1";
 "New APP: QR Code" = "\n\nNowa aplikacja: Kod QR\n\n";
+"days" = "days";
+"steps" = "steps";
+"floors" = "floors";

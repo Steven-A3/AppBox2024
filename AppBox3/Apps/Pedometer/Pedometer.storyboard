@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="1ap-m4-2Cb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="1ap-m4-2Cb">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -23,8 +23,8 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="240"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="26,522" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kdl-hB-wMB">
-                                        <rect key="frame" x="115" y="109" width="188.5" height="69.5"/>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="58"/>
+                                        <rect key="frame" x="97" y="102" width="226" height="84"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="70"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -41,8 +41,8 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daily Average 3,108 steps  2.1km  8floors" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zdg-Et-DZB">
-                                        <rect key="frame" x="10" y="207" width="580" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <rect key="frame" x="10" y="210" width="580" height="18"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -57,11 +57,11 @@
                                                 </constraints>
                                                 <state key="normal" image="general"/>
                                                 <connections>
-                                                    <segue destination="iPF-eC-17Q" kind="show" id="fXL-pO-mX6"/>
+                                                    <segue destination="NC4-sl-6kf" kind="showDetail" id="Hh6-ss-19i"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="83h-G6-7ly">
-                                                <rect key="frame" x="15" y="24.5" width="40" height="33"/>
+                                                <rect key="frame" x="15" y="24" width="40" height="33"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <state key="normal" title="Apps">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -71,7 +71,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pedometer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u7B-vo-LXU">
-                                                <rect key="frame" x="250" y="28.5" width="100.5" height="24"/>
+                                                <rect key="frame" x="250" y="28" width="100.5" height="24"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -107,7 +107,7 @@
                                 </constraints>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Qts-Du-edE">
-                                <rect key="frame" x="2" y="240" width="596" height="350"/>
+                                <rect key="frame" x="2" y="240" width="596" height="360"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="zDd-h2-wjh" customClass="A3PedometerCollectionViewFlowLayout">
                                     <size key="itemSize" width="50" height="325"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -116,7 +116,7 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="pedometerCell" id="Nsq-RP-qrg" customClass="A3PedometerCollectionViewCell">
-                                        <rect key="frame" x="0.0" y="12.5" width="50" height="325"/>
+                                        <rect key="frame" x="0.0" y="17.5" width="50" height="325"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="50" height="325"/>
@@ -134,7 +134,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="xjc-lf-G41" firstAttribute="top" secondItem="Qts-Du-edE" secondAttribute="bottom" constant="10" id="4vf-k1-C6c"/>
+                            <constraint firstItem="xjc-lf-G41" firstAttribute="top" secondItem="Qts-Du-edE" secondAttribute="bottom" id="4vf-k1-C6c"/>
                             <constraint firstItem="x9S-Xa-pJz" firstAttribute="top" secondItem="Yug-3k-gIm" secondAttribute="top" id="EAA-Zh-agk"/>
                             <constraint firstItem="Qts-Du-edE" firstAttribute="leading" secondItem="Yug-3k-gIm" secondAttribute="leading" constant="2" id="N5l-32-gNp"/>
                             <constraint firstAttribute="trailing" secondItem="Qts-Du-edE" secondAttribute="trailing" constant="2" id="Sfz-9c-rga"/>
@@ -265,7 +265,6 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="UFX-fk-Vlh"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="pickerView" destination="LsY-Jj-CRJ" id="suI-dw-eW8"/>
@@ -274,6 +273,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ApS-ar-5tX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="672" y="1220"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="HIR-1L-ce9">
+            <objects>
+                <navigationController id="NC4-sl-6kf" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="S2g-9G-ztk">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="iPF-eC-17Q" kind="relationship" relationship="rootViewController" id="gtA-of-HZI"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0Fn-wm-w9i" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-65" y="1220"/>
         </scene>
     </scenes>
     <resources>

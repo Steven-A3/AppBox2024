@@ -21,7 +21,7 @@
 		_breakPath = [UIBezierPath new];
 		CGFloat width = self.bounds.size.width;
 		CGFloat height = self.bounds.size.height * 0.03;
-		CGFloat offset = self.bounds.size.height * 0.1;
+		CGFloat offset = self.bounds.size.height * 0.2;
 		CGFloat controlPointHeight = width / 4;
 		[_breakPath moveToPoint:CGPointMake(0, offset)];
 		[_breakPath addCurveToPoint:CGPointMake(width, offset)

@@ -26,6 +26,7 @@
 
 	self.title = NSLocalizedString(@"Settings", @"Settings");
 	FNLOG(@"%@", self.navigationController.navigationBar.titleTextAttributes);
+	[self rightBarButtonDoneButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -38,6 +39,10 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)doneButtonAction:(UIBarButtonItem *)button {
+	[self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UITableViewDelegate

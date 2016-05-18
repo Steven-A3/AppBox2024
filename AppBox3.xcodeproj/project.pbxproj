@@ -743,6 +743,7 @@
 		68DBF05617CB8AAB009CAC33 /* HolidayData+Europe.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0517CAE519005AB571 /* HolidayData+Europe.m */; };
 		68DBF05717CB8AAB009CAC33 /* HolidayData+MiddleEast.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0717CAE519005AB571 /* HolidayData+MiddleEast.m */; };
 		68DC38251871BD0C0088DDA0 /* A3KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DC38241871BD0C0088DDA0 /* A3KeychainUtils.m */; };
+		68DE21531CEB038D00E31DDF /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68DE21521CEB038D00E31DDF /* HealthKit.framework */; };
 		68E02E701C9286BD00C5A24A /* A3AppSelectTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E02E6F1C9286BD00C5A24A /* A3AppSelectTableViewController.m */; };
 		68E0B31E198CAB6200127229 /* LoanCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E0B31D198CAB6200127229 /* LoanCalcHistory.m */; };
 		68E0B321198CAB8E00127229 /* SalesCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E0B320198CAB8E00127229 /* SalesCalcHistory.m */; };
@@ -2362,6 +2363,7 @@
 		68DBF04A17CB884F009CAC33 /* A3HolidaysTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3HolidaysTest.m; path = Holidays/A3HolidaysTest.m; sourceTree = "<group>"; };
 		68DC38231871BD0C0088DDA0 /* A3KeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3KeychainUtils.h; path = Passcode/A3KeychainUtils.h; sourceTree = "<group>"; };
 		68DC38241871BD0C0088DDA0 /* A3KeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = A3KeychainUtils.m; path = Passcode/A3KeychainUtils.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		68DE21521CEB038D00E31DDF /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		68E02E6E1C9286BD00C5A24A /* A3AppSelectTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3AppSelectTableViewController.h; sourceTree = "<group>"; };
 		68E02E6F1C9286BD00C5A24A /* A3AppSelectTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AppSelectTableViewController.m; sourceTree = "<group>"; };
 		68E0B31C198CAB6200127229 /* LoanCalcHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoanCalcHistory.h; sourceTree = "<group>"; };
@@ -2905,6 +2907,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68DE21531CEB038D00E31DDF /* HealthKit.framework in Frameworks */,
 				687AEEB71CBC4B8200C2D844 /* EventKit.framework in Frameworks */,
 				687AEEB81CBC4B8200C2D844 /* EventKitUI.framework in Frameworks */,
 				687AEEA01CBB73F900C2D844 /* AddressBook.framework in Frameworks */,
@@ -3758,6 +3761,7 @@
 		682EA2D415EB10B000BD6AD4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				68DE21521CEB038D00E31DDF /* HealthKit.framework */,
 				687AEE9E1CBB73F900C2D844 /* AddressBook.framework */,
 				687AEE9F1CBB73F900C2D844 /* AddressBookUI.framework */,
 				68F04D0E1B40F86B004FDD7B /* libcrypto.a */,
@@ -5907,6 +5911,9 @@
 							};
 							com.apple.DataProtection = {
 								enabled = 0;
+							};
+							com.apple.HealthKit = {
+								enabled = 1;
 							};
 							com.apple.InAppPurchase = {
 								enabled = 1;

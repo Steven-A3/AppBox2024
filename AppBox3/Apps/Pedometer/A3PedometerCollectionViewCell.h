@@ -18,4 +18,7 @@
 @property (nonatomic, strong) UILabel *dateLabel;
 @property (nonatomic, weak) A3PedometerHandler *pedometerHandler;
 
+- (void)prepareAnimate;
+
+- (void)animateBarCompletion:(void (^)(BOOL finished))completion;
 @end

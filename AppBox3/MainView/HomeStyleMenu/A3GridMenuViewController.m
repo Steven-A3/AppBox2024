@@ -426,6 +426,7 @@ A3InstructionViewControllerDelegate>
 			_menuItems = [[self originalMenuItems] mutableCopy];
 		}
 		BOOL isStepCountingAvailable = !IS_IOS7 && [CMPedometer isStepCountingAvailable];
+		FNLOG(@"%@", @([CMPedometer isStepCountingAvailable]));
 		if (IS_IPAD) {
 			[_menuItems removeObject:@{kA3AppsMenuName:A3AppName_Level}];
 		}

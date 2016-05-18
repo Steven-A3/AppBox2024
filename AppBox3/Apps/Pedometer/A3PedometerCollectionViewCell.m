@@ -82,7 +82,7 @@
 	if (!_numberOfStepsLabel) {
 		_numberOfStepsLabel = [UILabel new];
 		_numberOfStepsLabel.textAlignment = NSTextAlignmentCenter;
-		_numberOfStepsLabel.font = [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:13];
+		_numberOfStepsLabel.font = IS_IOS9 ? [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:13] : [UIFont boldSystemFontOfSize:13];
 	}
 	return _numberOfStepsLabel;
 }
@@ -91,7 +91,8 @@
 	if (!_barGraphView) {
 		_barGraphView = [A3BarChartBarView new];
 		_barGraphView.backgroundColor = [UIColor greenColor];
-		_barGraphView.layer.cornerRadius = 10;
+		_barGraphView.layer.cornerRadius = 8;
+		_barGraphView.layer.masksToBounds = YES;
 	}
 	return _barGraphView;
 }
@@ -107,7 +108,7 @@
 - (UILabel *)floorsAscendedLabel {
 	if (!_floorsAscendedLabel) {
 		_floorsAscendedLabel = [UILabel new];
-		_floorsAscendedLabel.font = [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:12];
+		_floorsAscendedLabel.font = IS_IOS9 ? [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:12] : [UIFont boldSystemFontOfSize:12];
 		_floorsAscendedLabel.textColor = [UIColor whiteColor];
 		_floorsAscendedLabel.textAlignment = NSTextAlignmentCenter;
 	}
@@ -117,7 +118,7 @@
 - (UILabel *)distanceLabel {
 	if (!_distanceLabel) {
 		_distanceLabel = [UILabel new];
-		_distanceLabel.font = [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:12];
+		_distanceLabel.font = IS_IOS9 ? [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:12] : [UIFont boldSystemFontOfSize:12];
 		_distanceLabel.textAlignment = NSTextAlignmentCenter;
 		_distanceLabel.textColor = [UIColor whiteColor];
 	}
@@ -129,7 +130,7 @@
 		_dateLabel = [UILabel new];
 		_dateLabel.textColor = [UIColor blackColor];
 		_dateLabel.textAlignment = NSTextAlignmentCenter;
-		_dateLabel.font = [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:12];
+		_dateLabel.font = IS_IOS9 ? [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:12] : [UIFont boldSystemFontOfSize:12];
 	}
 	return _dateLabel;
 }
@@ -138,6 +139,7 @@
 	_pedometerData = pedometerData;
 
 	_numberOfStepsLabel.text = [self.pedometerHandler.numberFormatter stringFromNumber:_pedometerData.numberOfSteps];
+	_numberOfStepsLabel.hidden = NO;
 	_floorsAscendedLabel.text = [self.pedometerHandler.numberFormatter stringFromNumber:_pedometerData.floorsAscended];
 	_distanceLabel.text = [self.pedometerHandler stringFromDistance:_pedometerData.distance];
 
@@ -150,9 +152,9 @@
 	// x = (self.itemSize.height - 35) / 1.3;
 	// 100% steps = 10,000 Steps.
 	CGFloat goalSteps = [[NSUserDefaults standardUserDefaults] floatForKey:A3PedometerSettingsNumberOfGoalSteps];
-	CGFloat barPercent = MIN(1.2, [pedometerData.numberOfSteps floatValue] / goalSteps);
+	CGFloat barPercent = MIN(1.1, [pedometerData.numberOfSteps floatValue] / goalSteps);
 	UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *) self.collectionView.collectionViewLayout;
-	CGFloat heightForGoal = (flowLayout.itemSize.height - 35) / 1.3;
+	CGFloat heightForGoal = (flowLayout.itemSize.height - 35) / 1.2;
 	FNLOG(@"height for Goal : %f", heightForGoal);
 	CGFloat barHeight = heightForGoal * barPercent;
 	_barGraphHeightConstraint.equalTo(@(barHeight));
@@ -174,10 +176,27 @@
 	UIColor *color = [self.pedometerHandler colorForPercent:barPercent];
 	_barGraphView.backgroundColor = color;
 	_numberOfStepsLabel.textColor = color;
-	if ([pedometerData.numberOfSteps floatValue] / goalSteps > 1.2) {
+	if ([pedometerData.numberOfSteps floatValue] / goalSteps > 1.15) {
 		_barGraphView.drawBreakMark = YES;
 	}
 	[_barGraphView setNeedsDisplay];
+	[self layoutIfNeeded];
+}
+
+- (void)prepareAnimate {
+	_numberOfStepsLabel.hidden = YES;
+	_floorsImageView.hidden = YES;
+	_floorsAscendedLabel.hidden = YES;
+	_distanceLabel.hidden = YES;
+	_barGraphHeightConstraint.equalTo(@0);
+	[self layoutIfNeeded];
+}
+
+- (void)animateBarCompletion:(void (^)(BOOL finished))completion {
+	[UIView animateWithDuration:0.8
+					 animations:^{
+						 [self setPedometerData:_pedometerData];
+					 } completion:completion];
 }
 
 @end
