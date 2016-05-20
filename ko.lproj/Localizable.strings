@@ -47,6 +47,8 @@
 "Random" = "난수생성";
 "Ruler" = "자";
 "Level" = "수평계";
+"QR Code" = "QR코드";
+"Pedometer" = "만보기";
 
 "Select Currency" = "통화 선택";
 "Principal" = "대출금액";
@@ -1048,7 +1050,6 @@
 "Blood Type" = "혈액형";
 "Additional Info" = "추가정보";
 "All" = "모두";
-"QR Code" = "QR코드";
 "QR Code not found." = "QR코드를 찾지 못했습니다.";
 "iMessage is not enabled." = "iMessage를 사용할 수 없습니다.";
 "Free" = "무료";
@@ -1057,8 +1058,8 @@
 "Password_QRCODE" = "암호";
 "It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes." = "이미지에서 2차원 바코드 (QR 코드, 아즈텍 코드, 데이터 매트릭스)를 감지합니다. 1D 바코드는 검색하지 않습니다.";
 "Restricted" = "앱내구입차단됨";
-"What's New in V4.1.1" = "V4.1의 새로운 기능";
-"New APP: QR Code" = "\n\n새로운 앱: QR코드\n\n";
+"What's New in V4.2" = "V4.2의 새로운 기능";
+"New APP: Pedometer" = "\n\n새로운 앱: 만보기\n\n";
 "days" = "days";
 "steps" = "steps";
 "floors" = "floors";

@@ -36,6 +36,8 @@
 "Magnifier" = "Magnifier";
 "Flashlight" = "Flashlight";
 "Random" = "Random";
+"QR Code" = "QR Code";
+"Pedometer" = "Pedometer";
 
 "Select Currency" = "Select Currency";
 "Principal" = "Principal";
@@ -987,7 +989,6 @@ Enter Encryption Key for Wallet.";
 "Blood Type" = "Blood Type";
 "Additional Info" = "Additional Info";
 "All" = "All";
-"QR Code" = "QR Code";
 "QR Code not found." = "QR Code not found.";
 "iMessage is not enabled." = "iMessage is not enabled.";
 "Free" = "Free";
@@ -996,8 +997,8 @@ Enter Encryption Key for Wallet.";
 "Password_QRCODE" = "Password";
 "It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes." = "It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes.";
 "Restricted" = "Restricted";
-"What's New in V4.1.1" = "What's New in V4.1";
-"New APP: QR Code" = "\n\nNew APP: QR Code\n\n";
+"What's New in V4.2" = "What's New in V4.2";
+"New APP: Pedometer" = "\n\nNew APP: Pedometer\n\n";
 "days" = "days";
 "steps" = "steps";
 "floors" = "floors";

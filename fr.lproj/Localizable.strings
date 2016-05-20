@@ -47,6 +47,8 @@
 "Random" = "Aléatoire";
 "Ruler" = "Règle";
 "Level" = "Niveau";
+"QR Code" = "Code QR";
+"Pedometer" = "Pédomètre";
 
 "Select Currency" = "Sélectionner la devise";
 "Principal" = "Capital de Prêt";
@@ -1039,7 +1041,6 @@
 "Blood Type" = "Groupe sanguin";
 "Additional Info" = "Information additionnelle";
 "All" = "Tout";
-"QR Code" = "Code QR";
 "QR Code not found." = "Code QR introuvable.";
 "iMessage is not enabled." = "iMessage est pas activé.";
 "Free" = "Gratuit";
@@ -1048,8 +1049,8 @@
 "Password_QRCODE" = "Mot de passe";
 "It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes." = "Il détectera 2D Barcodes (Code QR, Code Aztec, Data Matrix) de l'image. Il ne détecte pas les codes à barres 1D.";
 "Restricted" = "Restrictif";
-"What's New in V4.1.1" = "Nouveautés de la V4.1";
-"New APP: QR Code" = "\n\nNew APP: Code QR\n\n";
+"What's New in V4.2" = "Nouveautés de la V4.2";
+"New APP: Pedometer" = "\n\nNew APP: Pédomètre\n\n";
 "days" = "days";
 "steps" = "steps";
 "floors" = "floors";

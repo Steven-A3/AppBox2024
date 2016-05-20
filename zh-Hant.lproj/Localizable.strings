@@ -15,9 +15,11 @@
 "L Calendar" = "淑女日曆";
 "Battery Status" = "電池狀態";
 "Battery" = "電池狀態";
-
 "Level" = "水準管";
 "Ruler" = "尺子";
+"QR Code" = "QR碼";
+"Pedometer" = "計步器";
+
 "Turn Passcode On" = "打開密碼";
 "Category Name" = "種類名稱";
 "Total" = "總額";
@@ -869,7 +871,6 @@
 "Blood Type" = "血型";
 "Additional Info" = "附加信息";
 "All" = "所有";
-"QR Code" = "QR碼";
 "QR Code not found." = "QR碼未找到。";
 "iMessage is not enabled." = "iMessage的未啟用。";
 "Free" = "免費";
@@ -878,8 +879,8 @@
 "Password_QRCODE" = "密碼";
 "It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes." = "它將從圖像中檢測二維碼（QR碼，Aztec碼，數據矩陣）。它不會檢測的一維條碼。";
 "Restricted" = "取用限制";
-"What's New in V4.1.1" = "4.1版本的新內容";
-"New APP: QR Code" = "\n\n新的應用：QR碼\n\n";
+"What's New in V4.2" = "4.2版本的新內容";
+"New APP: Pedometer" = "\n\n新的應用：計步器\n\n";
 "days" = "days";
 "steps" = "steps";
 "floors" = "floors";

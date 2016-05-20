@@ -47,6 +47,8 @@
 "Random" = "随机数据生成";
 "Ruler" = "尺子";
 "Level" = "水准管";
+"QR Code" = "QR码";
+"Pedometer" = "计步器";
 
 "Select Currency" = "选取货币";
 "Principal" = "本金";
@@ -1054,7 +1056,6 @@
 "Blood Type" = "血型";
 "Additional Info" = "附加信息";
 "All" = "所有";
-"QR Code" = "QR码";
 "QR Code not found." = "QR码未找到";
 "iMessage is not enabled." = "iMessage的未启用。";
 "Free" = "免费";
@@ -1063,8 +1064,8 @@
 "Password_QRCODE" = "密码";
 "It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes." = "它将从图像中检测二维码（QR码，Aztec码，数据矩阵）。它不会检测的一维条码。";
 "Restricted" = "访问限制";
-"What's New in V4.1.1" = "版本 4.1 中的新功能";
-"New APP: QR Code" = "\n\n新的应用：QR码\n\n";
+"What's New in V4.2" = "版本 4.2 中的新功能";
+"New APP: Pedometer" = "\n\n新的应用：计步器\n\n";
 "days" = "days";
 "steps" = "steps";
 "floors" = "floors";
