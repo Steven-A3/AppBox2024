@@ -1030,6 +1030,8 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 	NSString *deviceName = [device name];
 	NSString *deviceModel = [A3UIDevice platformString];
 	NSString *deviceSystemVersion = device.systemVersion;
+	NSString *localeIdentifier = [[NSLocale currentLocale] localeIdentifier];
+	NSString *timezone = [[NSTimeZone systemTimeZone] description];
 
 	if (IS_IOS7) {
 		// Check what Notifications the user has turned on.  We registered for all three, but they may have manually disabled some or all of them.
@@ -1040,32 +1042,39 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 		NSString *pushAlert = (rntypes & UIRemoteNotificationTypeAlert) ? @"enabled" : @"disabled";
 		NSString *pushSound = (rntypes & UIRemoteNotificationTypeSound) ? @"enabled" : @"disabled";
 
-		urlString = [[NSString stringWithFormat:@"http://apns.allaboutapps.net/apns/apns.php?task=%@&appname=%@&appversion=%@&deviceuid=%@&devicetoken=%@&devicename=%@&devicemodel=%@&deviceversion=%@&pushbadge=%@&pushalert=%@&pushsound=%@", @"register",
-												appName,
-												appVersion,
-												identifierForVendor,
-												deviceToken,
-												deviceName,
-												deviceModel,
-												deviceSystemVersion,
-												pushBadge,
-												pushAlert,
-												pushSound] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+		urlString = [[NSString stringWithFormat:
+					  @"http://apns.allaboutapps.net/apns/apns.php?task=%@&appname=%@&appversion=%@&deviceuid=%@&devicetoken=%@&devicename=%@&devicemodel=%@&deviceversion=%@&localeIdentifier=%@&timezone=%@&pushbadge=%@&pushalert=%@&pushsound=%@", @"register",
+					  appName,
+					  appVersion,
+					  identifierForVendor,
+					  deviceToken,
+					  deviceName,
+					  deviceModel,
+					  deviceSystemVersion,
+					  localeIdentifier,
+					  timezone,
+					  pushBadge,
+					  pushAlert,
+					  pushSound] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 	} else {
 		NSString *isRegistered = [[UIApplication sharedApplication] isRegisteredForRemoteNotifications] ? @"enabled" : @"disabled";
 
-		urlString = [[NSString stringWithFormat:@"http://apns.allaboutapps.net/apns/apns.php?task=%@&appname=%@&appversion=%@&deviceuid=%@&devicetoken=%@&devicename=%@&devicemodel=%@&deviceversion=%@&pushbadge=%@&pushalert=%@&pushsound=%@", @"register",
-												appName,
-												appVersion,
-												identifierForVendor,
-												deviceToken,
-												deviceName,
-												deviceModel,
-												deviceSystemVersion,
-												isRegistered,
-												isRegistered,
-												isRegistered] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+		urlString = [[NSString stringWithFormat:
+					  @"http://apns.allaboutapps.net/apns/apns.php?task=%@&appname=%@&appversion=%@&deviceuid=%@&devicetoken=%@&devicename=%@&devicemodel=%@&deviceversion=%@&localeIdentifier=%@&timezone=%@&pushbadge=%@&pushalert=%@&pushsound=%@", @"register",
+					  appName,
+					  appVersion,
+					  identifierForVendor,
+					  deviceToken,
+					  deviceName,
+					  deviceModel,
+					  deviceSystemVersion,
+					  localeIdentifier,
+					  timezone,
+					  isRegistered,
+					  isRegistered,
+					  isRegistered] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 	}
+	FNLOG(@"%@", urlString);
 
 	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
 	AFHTTPRequestOperation *registerOperation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
