@@ -253,6 +253,10 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 			[self.collectionView reloadData];
 			[self updateToday];
 			
+			[_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:[self.pedometerItems count] - 1 inSection:0]
+									atScrollPosition:UICollectionViewScrollPositionRight
+											animated:YES];
+			
 			[self startUpdatePedometer];
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[self fillMissingDates];
