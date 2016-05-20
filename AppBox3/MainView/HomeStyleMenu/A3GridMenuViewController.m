@@ -430,7 +430,11 @@ A3InstructionViewControllerDelegate>
 		if (IS_IPAD) {
 			[_menuItems removeObject:@{kA3AppsMenuName:A3AppName_Level}];
 		}
-#if !TARGET_IPHONE_SIMULATOR
+#if TARGET_IPHONE_SIMULATOR
+		if (IS_IPAD) {
+			[_menuItems removeObject:@{kA3AppsMenuName:A3AppName_Pedometer}];
+		}
+#else
 		if (!isStepCountingAvailable) {
 			[_menuItems removeObject:@{kA3AppsMenuName:A3AppName_Pedometer}];
 		}

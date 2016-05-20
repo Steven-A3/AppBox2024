@@ -365,9 +365,15 @@ A3InstructionViewControllerDelegate>
 			_menuItems = [[self originalMenuItems] mutableCopy];
 		}
 		BOOL isStepCountingAvailable = !IS_IOS7 && [CMPedometer isStepCountingAvailable];
+#if TARGET_IPHONE_SIMULATOR
+		if (IS_IPAD) {
+			[_menuItems removeObject:@{kA3AppsMenuName:A3AppName_Pedometer}];
+		}
+#else
 		if (!isStepCountingAvailable) {
 			[_menuItems removeObject:@{kA3AppsMenuName:A3AppName_Pedometer}];
 		}
+#endif
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsMainMenuHexagonShouldAddQRCodeMenu]) {
 			[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3SettingsMainMenuHexagonShouldAddQRCodeMenu];
 
