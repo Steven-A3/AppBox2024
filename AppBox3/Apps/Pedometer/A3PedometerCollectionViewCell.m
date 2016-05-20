@@ -130,7 +130,7 @@
 		_dateLabel = [UILabel new];
 		_dateLabel.textColor = [UIColor blackColor];
 		_dateLabel.textAlignment = NSTextAlignmentCenter;
-		_dateLabel.font = IS_IOS9 ? [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:12] : [UIFont boldSystemFontOfSize:12];
+		_dateLabel.font = [UIFont systemFontOfSize:12];
 	}
 	return _dateLabel;
 }

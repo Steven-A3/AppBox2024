@@ -1061,3 +1061,6 @@
 "days" = "days";
 "steps" = "steps";
 "floors" = "floors";
+
+"In order for AppBox Pro to collect step counts it needs to be given permission in the device Settings app" = "In order for AppBox Pro to collect step counts it needs to be given permission in the device Settings app";
+"Open Settings" = "Open Settings";

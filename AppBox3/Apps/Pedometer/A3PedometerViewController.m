@@ -26,7 +26,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	A3PedometerQueryTypeFlightsClimbed
 };
 
-@interface A3PedometerViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
+@interface A3PedometerViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UIAlertViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIView *stepsBackgroundView;
 @property (nonatomic, weak) IBOutlet UILabel *stepsLabel;
@@ -52,6 +52,8 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	BOOL _viewWillAppearDidRun;
 	NSInteger _numberOfCellsDidAnimate;
 	BOOL _viewDidAppearDidRun;
+	BOOL _userLeftToVisitSettings;
+	NSInteger _remainingNumbersScrollAnimation;
 }
 
 - (void)viewDidLoad {
@@ -72,7 +74,13 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	_settingsButton.tintColor = [UIColor whiteColor];
 	
 	_collectionView.backgroundColor = [UIColor whiteColor];
-	[self updateToday];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+	_remainingNumbersScrollAnimation = 3;
+}
+
+- (void)applicationDidBecomeActive {
+	[self refreshPedometerData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -132,12 +140,18 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	if (!_viewDidAppearDidRun) {
 		_viewDidAppearDidRun = YES;
 		if (!_scrollHelperTimer) {
-			_scrollHelperTimer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(animateScroll) userInfo:nil repeats:YES];
+			_scrollHelperTimer = [NSTimer scheduledTimerWithTimeInterval:6 target:self selector:@selector(animateScroll) userInfo:nil repeats:YES];
 		}
 	}
 }
 
 - (void)animateScroll {
+	if (_remainingNumbersScrollAnimation <= 0) {
+		[_scrollHelperTimer invalidate];
+		_scrollHelperTimer = nil;
+		return;
+	}
+	
 	CGPoint originalOffset = _collectionView.contentOffset;
 	[UIView animateWithDuration:0.4 animations:^{
 		[_collectionView setContentOffset:CGPointMake(originalOffset.x - 35, originalOffset.y)];
@@ -148,6 +162,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 			[_collectionView setContentOffset:originalOffset animated:YES];
 		});
 	}];
+	_remainingNumbersScrollAnimation--;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -155,11 +170,23 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
     // Dispose of any resources that can be recreated.
 }
 
+- (void)prepareClose {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+	[self.pedometer stopPedometerUpdates];
+	self.pedometer = nil;
+}
+
+- (void)dealloc {
+	[self prepareClose];
+}
+
 - (IBAction)appsButtonAction:(UIButton *)button {
 	if (IS_IPHONE) {
 		if ([[A3AppDelegate instance] isMainMenuStyleList]) {
 			[[A3AppDelegate instance].drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 		} else {
+			[self prepareClose];
+			
 			UINavigationController *navigationController = [A3AppDelegate instance].currentMainNavigationController;
 			[navigationController popViewControllerAnimated:YES];
 			[navigationController setToolbarHidden:YES];
@@ -277,6 +304,12 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 
 	[self.pedometer queryPedometerDataFromDate:[dateArray lastObject] toDate:toDate withHandler:^(CMPedometerData *pedometerData, NSError *error) {
 		dispatch_async(dispatch_get_main_queue(), ^{
+			if (error) {
+				if (error.code == CMErrorMotionActivityNotAuthorized) {
+					[self alertMotionActivityNotAuthorized];
+				}
+				return;
+			}
 			NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
 			
 			Pedometer *pedometerItem = [Pedometer MR_findFirstByAttribute:@"date" withValue:[self.searchDateFormatter stringFromDate:pedometerData.startDate] inContext:savingContext];
@@ -301,6 +334,32 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 			}
 		});
 	}];
+}
+
+- (void)alertMotionActivityNotAuthorized {
+	if (_userLeftToVisitSettings) {
+		_userLeftToVisitSettings = NO;
+		return;
+	}
+	UIAlertView *alertView;
+	alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+										   message:NSLocalizedString(@"In order for AppBox Pro to collect step counts it needs to be given permission in the device Settings app", @"In order for AppBox Pro to collect step counts it needs to be given permission in the device Settings app")
+										  delegate:self
+								 cancelButtonTitle:NSLocalizedString(@"Open Settings", @"Open Settings")
+								 otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
+	[alertView show];
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+	if (alertView.tag == 1000) {
+		[self requestAuthorizationForHealthStore];
+		return;
+	}
+	if (buttonIndex == alertView.cancelButtonIndex) {
+		NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+		[[UIApplication sharedApplication] openURL:url];
+		_userLeftToVisitSettings = YES;
+	}
 }
 
 - (void)fillMissingDates {
@@ -511,63 +570,80 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	return _healthStore;
 }
 
+- (void)requestAuthorizationForHealthStore {
+	HKQuantityType *stepsType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierStepCount];
+	HKQuantityType *distanceType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierDistanceWalkingRunning];
+	HKQuantityType *flightAscended = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierFlightsClimbed];
+	
+	NSSet *readDataSet = [NSSet setWithObjects:stepsType, distanceType, flightAscended, nil];
+	
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+
+	[self.healthStore requestAuthorizationToShareTypes:nil
+											 readTypes:readDataSet
+											completion:^(BOOL success, NSError *error) {
+												dispatch_async(dispatch_get_main_queue(), ^{
+													[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+													if (success) {
+														[self refreshStepsFromHealthStore];
+													}
+												});
+											}];
+}
+
+- (void)alertAppWillRequestAuthorization {
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info"
+														message:@"AppBox Pro reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.\n"
+																"\n"
+																"Data collected from HealthKit will not be used for marketing and advertising purposes."
+													   delegate:self
+											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+											  otherButtonTitles:nil];
+	alertView.tag = 1000;
+	[alertView show];
+}
+
 - (void)refreshStepsFromHealthStore {
 	if (IS_IOS7 || ![HKHealthStore isHealthDataAvailable]) return;
 
 	HKQuantityType *stepsType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierStepCount];
-	HKQuantityType *distanceType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierDistanceWalkingRunning];
-	HKQuantityType *flightAscended = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierFlightsClimbed];
 
-	NSSet *readDataSet = [NSSet setWithObjects:stepsType, distanceType, flightAscended, nil];
-
-	HKAuthorizationStatus authorizationStatus = [self.healthStore authorizationStatusForType:stepsType];
-	if (authorizationStatus == HKAuthorizationStatusNotDetermined) {
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-	}
+	HKAuthorizationStatus authorizationStatus =	[self.healthStore authorizationStatusForType:stepsType];
 	
-	[self.healthStore requestAuthorizationToShareTypes:nil
-											 readTypes:readDataSet
-											completion:^(BOOL success, NSError *error) {
-												if (authorizationStatus == HKAuthorizationStatusNotDetermined) {
-													dispatch_async(dispatch_get_main_queue(), ^{
-														[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-													});
-												}
-												if (success) {
-													NSInteger length;
-													BOOL showAlert = NO;
-													if (![[NSUserDefaults standardUserDefaults] boolForKey:A3PedometerSettingsDidSearchHealthStore]) {
-														[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3PedometerSettingsDidSearchHealthStore];
-														length = 1000;
-														showAlert = YES;
-													} else {
-														length = 3;
-													}
-													[self executeQueryFromHealthStoreForType:A3PedometerQueryTypeStepCount length:length completion:^{
-														[self executeQueryFromHealthStoreForType:A3PedometerQueryTypeDistance length:length completion:^{
-															[self executeQueryFromHealthStoreForType:A3PedometerQueryTypeFlightsClimbed length:length completion:^{
-																dispatch_async(dispatch_get_main_queue(), ^{
-																	_pedometerItems = nil;
-																	[_collectionView reloadData];
-																	[self updateToday];
-																	if ([self.pedometerItems count]) {
-																		[_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:[self.pedometerItems count] - 1 inSection:0]
-																								atScrollPosition:UICollectionViewScrollPositionRight
-																										animated:NO];
-																	}
+	if (authorizationStatus == HKAuthorizationStatusNotDetermined) {
+		[self alertAppWillRequestAuthorization];
+		return;
+	}
 
-																	if (showAlert) {
-																		[self alertImportResults];
-																	}
-																});
-															}];
-														}];
-													}];
-												} else {
-													FNLOG(@"*** An error occurred while calculating the statistics: %@ ***",
-														  error.localizedDescription);
-												}
-											}];
+	NSInteger length;
+	BOOL showAlert = NO;
+	if (![[NSUserDefaults standardUserDefaults] boolForKey:A3PedometerSettingsDidSearchHealthStore]) {
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3PedometerSettingsDidSearchHealthStore];
+		length = 1000;
+		showAlert = YES;
+	} else {
+		length = 3;
+	}
+	[self executeQueryFromHealthStoreForType:A3PedometerQueryTypeStepCount length:length completion:^{
+		[self executeQueryFromHealthStoreForType:A3PedometerQueryTypeDistance length:length completion:^{
+			[self executeQueryFromHealthStoreForType:A3PedometerQueryTypeFlightsClimbed length:length completion:^{
+				dispatch_async(dispatch_get_main_queue(), ^{
+					_pedometerItems = nil;
+					[_collectionView reloadData];
+					[self updateToday];
+					if ([self.pedometerItems count]) {
+						[_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:[self.pedometerItems count] - 1 inSection:0]
+												atScrollPosition:UICollectionViewScrollPositionRight
+														animated:NO];
+					}
+
+					if (showAlert) {
+						[self alertImportResults];
+					}
+				});
+			}];
+		}];
+	}];
 }
 
 - (void)executeQueryFromHealthStoreForType:(A3PedometerQueryType)type length:(NSInteger)length completion:(void(^)(void))completion {
@@ -643,10 +719,9 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 			}];
 			if ([savingContext hasChanges]) {
 				[savingContext MR_saveOnlySelfAndWait];
-
-				if (completion) {
-					completion();
-				}
+			}
+			if (completion) {
+				completion();
 			}
 		});
 	};

@@ -210,7 +210,7 @@
 
 Data collected from HealthKit will not be used for marketing and advertising purposes.
 
-You can change app access of HealthKit data in your device Settings &gt; Privacy &gt; Health &gt; Moment.</string>
+You can change app access of HealthKit data in your device Settings &gt; Privacy &gt; Health &gt; AppBox Pro.</string>
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="fH0-gO-UlH" detailTextLabel="MpJ-hD-K37" style="IBUITableViewCellStyleValue1" id="g2F-Mb-qV7">
                                         <rect key="frame" x="0.0" y="237.5" width="600" height="44"/>
