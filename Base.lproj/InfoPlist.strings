@@ -7,3 +7,4 @@
 */
 
 NSLocationWhenInUseUsageDescription = "Your location is used to show weather and holidays. It is used to help you enter your location into the Days Counter.";
+NSMotionUsageDescription = "AppBox Pro uses your iPhone's built-in motion tracking ability to collect step counts as you move without an impact on battery life.";
