@@ -100,7 +100,6 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 - (void)viewDidLayoutSubviews {
 	[super viewDidLayoutSubviews];
 
-	FNLOGRECT(_collectionView.bounds);
 	if (!_collectionViewBackgroundDidSet) {
 		
 		_collectionViewBackgroundDidSet = YES;
@@ -318,10 +317,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 				pedometerItem.uniqueID = [[NSUUID UUID] UUIDString];
 			}
 			pedometerItem.date = [self.searchDateFormatter stringFromDate:pedometerData.startDate];
-			pedometerItem.distance = pedometerData.distance;
-			pedometerItem.numberOfSteps = pedometerData.numberOfSteps;
-			pedometerItem.floorsAscended = pedometerData.floorsAscended;
-			pedometerItem.floorsDescended = pedometerData.floorsDescended;
+			[self mergeValuesFromCoreMotion:pedometerData to:pedometerItem];
 
 			[dateArray removeLastObject];
 			if ([dateArray count]) {
@@ -334,6 +330,21 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 			}
 		});
 	}];
+}
+
+- (void)mergeValuesFromCoreMotion:(CMPedometerData *)pedometerData to:(Pedometer *)pedometerItem {
+	if ([pedometerData.distance doubleValue] > [pedometerItem.distance doubleValue]) {
+		pedometerItem.distance = pedometerData.distance;
+	}
+	if ([pedometerData.numberOfSteps doubleValue] > [pedometerItem.numberOfSteps doubleValue]) {
+		pedometerItem.numberOfSteps = pedometerData.numberOfSteps;
+	}
+	if ([pedometerData.floorsAscended doubleValue] > [pedometerItem.floorsAscended doubleValue]) {
+		pedometerItem.floorsAscended = pedometerData.floorsAscended;
+	}
+	if ([pedometerData.floorsDescended doubleValue] > [pedometerItem.floorsDescended doubleValue]) {
+		pedometerItem.floorsDescended = pedometerData.floorsDescended;
+	}
 }
 
 - (void)alertMotionActivityNotAuthorized {
@@ -374,7 +385,6 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 			components.day += 1;
 			date = [calendar dateFromComponents:components];
 			NSString *dateString = [_searchDateFormatter stringFromDate:date];
-			FNLOG(@"%@", dateString);
 			if (![dateString isEqualToString:todayDate]) {
 				pedometerItem = [Pedometer MR_findFirstByAttribute:@"date" withValue:dateString inContext:savingContext];
 				if (!pedometerItem) {
@@ -408,10 +418,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 					pedometerItem.uniqueID = [[NSUUID UUID] UUIDString];
 				}
 				pedometerItem.date = todayString;
-				pedometerItem.numberOfSteps = pedometerData.numberOfSteps;
-				pedometerItem.distance = pedometerData.distance;
-				pedometerItem.floorsAscended = pedometerData.floorsAscended;
-				pedometerItem.floorsDescended = pedometerItem.floorsDescended;
+				[self mergeValuesFromCoreMotion:pedometerData to:pedometerItem];
 				
 				[savingContext MR_saveOnlySelfAndWait];
 				
@@ -442,6 +449,14 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 - (NSArray *)pedometerItems {
 	if (!_pedometerItems) {
 		_pedometerItems = [Pedometer MR_findAllSortedBy:@"date" ascending:YES];
+#ifdef DEBUG
+		for (Pedometer *item in _pedometerItems) {
+			if ([item.date isEqualToString:@"2016-05-21"]) {
+				FNLOG(@"%@", item);
+				FNLOG(@"%@, %@", item.date, item.numberOfSteps);
+			}
+		}
+#endif
 	}
 	return _pedometerItems;
 }
@@ -681,12 +696,14 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 			NSDate *endDate = [NSDate date];
 			NSDate *startDate = [[endDate dateAtStartOfDay] dateByAddingDays:-1000];
 			NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
+
 			[result enumerateStatisticsFromDate:startDate toDate:endDate withBlock:^(HKStatistics *result, BOOL *stop) {
 				HKQuantity *quantity = result.sumQuantity;
 				if (quantity) {
 					NSString *dateString = [self.searchDateFormatter stringFromDate:result.startDate];
 					Pedometer *pedometerItem = [Pedometer MR_findFirstByAttribute:@"date" withValue:dateString inContext:[NSManagedObjectContext MR_rootSavingContext]];
 					if (!pedometerItem) {
+						FNLOG(@"data not found. need to create new one for: %@", dateString);
 						pedometerItem = [Pedometer MR_createEntityInContext:savingContext];
 						pedometerItem.uniqueID = [[NSUUID UUID] UUIDString];
 						pedometerItem.date = dateString;
@@ -694,6 +711,11 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 					switch (type) {
 						case A3PedometerQueryTypeStepCount:{
 							double stepsFromHealthStore = [quantity doubleValueForUnit:[HKUnit countUnit]];
+#ifdef DEBUG
+							if ([pedometerItem.date isEqualToString:@"2016-05-21"]) {
+								FNLOG(@"%@, %f, %f", pedometerItem.date, stepsFromHealthStore, [pedometerItem.numberOfSteps doubleValue]);
+							}
+#endif
 							if (stepsFromHealthStore > [pedometerItem.numberOfSteps doubleValue]) {
 								pedometerItem.numberOfSteps = @(stepsFromHealthStore);
 							}
@@ -714,7 +736,6 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 							break;
 						}
 					}
-					FNLOG(@"%@", pedometerItem);
 				}
 			}];
 			if ([savingContext hasChanges]) {

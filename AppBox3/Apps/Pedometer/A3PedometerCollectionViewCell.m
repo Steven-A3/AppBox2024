@@ -155,7 +155,6 @@
 	CGFloat barPercent = MIN(1.1, [pedometerData.numberOfSteps floatValue] / goalSteps);
 	UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *) self.collectionView.collectionViewLayout;
 	CGFloat heightForGoal = (flowLayout.itemSize.height - 35) / 1.2;
-	FNLOG(@"height for Goal : %f", heightForGoal);
 	CGFloat barHeight = heightForGoal * barPercent;
 	_barGraphHeightConstraint.equalTo(@(barHeight));
 	

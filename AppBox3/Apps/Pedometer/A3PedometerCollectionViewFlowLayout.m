@@ -17,8 +17,6 @@
 	self.minimumInteritemSpacing = 6;
 	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	self.itemSize = CGSizeMake((screenBounds.size.width - 4 - _interItemSpace * 6) / 7.0, self.collectionView.bounds.size.height);
-	FNLOG(@"height for goal: %f", (self.itemSize.height - 35) / 1.3);
-	FNLOG(@"%f, %f", self.itemSize.width, self.itemSize.height);
 }
 
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
