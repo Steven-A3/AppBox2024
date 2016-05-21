@@ -449,14 +449,6 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 - (NSArray *)pedometerItems {
 	if (!_pedometerItems) {
 		_pedometerItems = [Pedometer MR_findAllSortedBy:@"date" ascending:YES];
-#ifdef DEBUG
-		for (Pedometer *item in _pedometerItems) {
-			if ([item.date isEqualToString:@"2016-05-21"]) {
-				FNLOG(@"%@", item);
-				FNLOG(@"%@, %@", item.date, item.numberOfSteps);
-			}
-		}
-#endif
 	}
 	return _pedometerItems;
 }
@@ -703,7 +695,6 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 					NSString *dateString = [self.searchDateFormatter stringFromDate:result.startDate];
 					Pedometer *pedometerItem = [Pedometer MR_findFirstByAttribute:@"date" withValue:dateString inContext:[NSManagedObjectContext MR_rootSavingContext]];
 					if (!pedometerItem) {
-						FNLOG(@"data not found. need to create new one for: %@", dateString);
 						pedometerItem = [Pedometer MR_createEntityInContext:savingContext];
 						pedometerItem.uniqueID = [[NSUUID UUID] UUIDString];
 						pedometerItem.date = dateString;
@@ -711,11 +702,6 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 					switch (type) {
 						case A3PedometerQueryTypeStepCount:{
 							double stepsFromHealthStore = [quantity doubleValueForUnit:[HKUnit countUnit]];
-#ifdef DEBUG
-							if ([pedometerItem.date isEqualToString:@"2016-05-21"]) {
-								FNLOG(@"%@, %f, %f", pedometerItem.date, stepsFromHealthStore, [pedometerItem.numberOfSteps doubleValue]);
-							}
-#endif
 							if (stepsFromHealthStore > [pedometerItem.numberOfSteps doubleValue]) {
 								pedometerItem.numberOfSteps = @(stepsFromHealthStore);
 							}
