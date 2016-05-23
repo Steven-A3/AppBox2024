@@ -9,73 +9,56 @@
 #import <Foundation/Foundation.h>
 
 @interface A3CalculatorUtil : NSObject
-- (id)stringWithSuperscript:(NSString *)input location:(NSUInteger)loc length:(NSUInteger)len value:(id) index;
-- (id)stringArcTanh;
-- (id)stringArcCosh;
-- (id)stringArcSinh;
-- (id)stringArcTan;
-- (id)stringArcCos;
-- (id)stringArcSin;
-- (id)stringEx;
-- (id)stringLog2;
-- (id)stringLogy;
-- (id)string2X;
-- (id)stringYX;
-- (id)stringLog10;
-- (id)string10X;
-- (id)string10XBigFont;
-- (id)stringXY;
-- (id)stringX3 ;
-- (id)stringX2;
-- (id)stringSecond;
-- (id)stringSecondBigFont;
-- (id)stringSquare;
-- (id) stringSquareroot;
-- (id)stringCube;
-- (id)stringCuberoot;
-- (id)stringArcCot;
-- (id)stringWithSuperscriptMiddleFont:(NSString *)input location:(NSUInteger)loc length:(NSUInteger)len value:(id) index;
-- (id)stringWithSuperscriptSystemFont:(NSString *)input location:(NSUInteger)loc length:(NSUInteger)len value:(id) index;
-- (id)stringArcTanh_h;
 
-- (id)stringArcCosh_h;
+- (NSMutableAttributedString *)stringWithSuperscript:(NSString *)input location:(NSUInteger)loc length:(NSUInteger)len value:(NSNumber *)option;
+- (NSMutableAttributedString *)stringArcTanh;
+- (NSMutableAttributedString *)stringArcCosh;
+- (NSMutableAttributedString *)stringArcSinh;
+- (NSMutableAttributedString *)stringArcTan;
+- (NSMutableAttributedString *)stringArcCos;
+- (NSMutableAttributedString *)stringArcSin;
+- (NSMutableAttributedString *)stringEx;
+- (NSMutableAttributedString *)stringLog2;
+- (NSMutableAttributedString *)stringLogy;
+- (NSMutableAttributedString *)string2X;
+- (NSMutableAttributedString *)stringYX;
+- (NSMutableAttributedString *)stringLog10;
+- (NSMutableAttributedString *)string10X;
+- (NSMutableAttributedString *)string10XBigFont;
+- (NSMutableAttributedString *)stringXY;
+- (NSMutableAttributedString *)stringX3 ;
+- (NSMutableAttributedString *)stringX2;
+- (NSMutableAttributedString *)stringSecond;
+- (NSMutableAttributedString *)stringSecondBigFont;
+- (NSMutableAttributedString *)stringSquare;
+- (NSMutableAttributedString *)stringSquareroot;
+- (NSMutableAttributedString *)stringCube;
+- (NSMutableAttributedString *)stringCuberoot;
+- (NSMutableAttributedString *)stringArcCot;
+- (NSMutableAttributedString *)stringWithSuperscriptMiddleFont:(NSString *)input location:(NSUInteger)loc length:(NSUInteger)len value:(NSNumber *) option;
+- (NSMutableAttributedString *)stringWithSuperscriptSystemFont:(NSString *)input location:(NSUInteger)loc length:(NSUInteger)len value:(NSNumber *) option;
+- (NSMutableAttributedString *)stringArcTanh_h;
+- (NSMutableAttributedString *)stringArcCosh_h;
+- (NSMutableAttributedString *)stringArcSinh_h;
+- (NSMutableAttributedString *)stringArcTan_h;
+- (NSMutableAttributedString *)stringArcCos_h ;
+- (NSMutableAttributedString *)stringArcSin_h ;
+- (NSMutableAttributedString *)stringArcCot_h;
+- (NSMutableAttributedString *)stringEx_h;
+- (NSMutableAttributedString *)stringLog2_h;
+- (NSMutableAttributedString *)stringLogy_h ;
+- (NSMutableAttributedString *)string2X_h;
+- (NSMutableAttributedString *)stringYX_h;
+- (NSMutableAttributedString *)stringLog10_h;
+- (NSMutableAttributedString *)string10X_h;
+- (NSMutableAttributedString *)string10XBigFont_h;
+- (NSMutableAttributedString *)stringXY_h;
+- (NSMutableAttributedString *)stringX3_h;
+- (NSMutableAttributedString *)stringX2_h;
+- (NSMutableAttributedString *)stringSquare_h;
+- (NSMutableAttributedString *)stringCube_h;
+- (NSMutableAttributedString *)stringCubeRoot_h;
+- (NSMutableAttributedString *)stringSquareRoot_h;
+- (NSMutableAttributedString *)invisibleString ;
 
-- (id)stringArcSinh_h;
-- (id)stringArcTan_h;
-
-- (id)stringArcCos_h ;
-
-- (id)stringArcSin_h ;
-
-- (id)stringArcCot_h;
-
-- (id)stringEx_h;
-
-- (id)stringLog2_h;
-
-- (id)stringLogy_h ;
-
-- (id)string2X_h;
-
-- (id)stringYX_h;
-
-- (id)stringLog10_h;
-
-- (id)string10X_h;
-
-- (id)string10XBigFont_h;
-
-- (id)stringXY_h;
-
-- (id)stringX3_h;
-
-- (id)stringX2_h;
-
-- (id)stringSquare_h;
-
-- (id)stringCube_h;
-
-- (id) stringCuberoot_h;
-- (id) stringSquareroot_h;
-- (id) invisibleString ;
 @end

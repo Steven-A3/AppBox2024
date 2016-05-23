@@ -440,7 +440,7 @@ typedef CMathParser<char, double> MathParser;
                 }
                 if((length >= (i + 6)) > 0 &&
                    [currentString isEqualToString:@"sinh-1"]) {
-					[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:bDefault == YES ? [calutil stringArcSinh] : [calutil stringArcSinh_h]]];
+					[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithAttributedString:bDefault == YES ? [calutil stringArcSinh] : [calutil stringArcSinh_h]]];
                 } else {
                     if(length >= (i+5)) {
                         range.length = 5;
@@ -448,7 +448,7 @@ typedef CMathParser<char, double> MathParser;
                     }
                     if((length >= (i+5)) &&
                        [currentString isEqualToString:@"sin-1"]){
-						[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:bDefault == YES ? [calutil stringArcSin] : [calutil stringArcSin_h]]];
+						[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithAttributedString:bDefault == YES ? [calutil stringArcSin] : [calutil stringArcSin_h]]];
                     } else {
                         if(length >= (i+4)) {
                             range.length = 4;
@@ -486,7 +486,7 @@ typedef CMathParser<char, double> MathParser;
                 }
                 if((length >= (i + 6)) > 0 &&
                    [currentString isEqualToString:@"cosh-1"]) {
-					[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:bDefault == YES ? [calutil stringArcCosh] : [calutil stringArcCosh_h]]];
+					[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithAttributedString:bDefault == YES ? [calutil stringArcCosh] : [calutil stringArcCosh_h]]];
                 } else {
                     if(length >= (i+5)) {
                         range.length = 5;
@@ -494,10 +494,10 @@ typedef CMathParser<char, double> MathParser;
                     }
                     if((length >= (i+5)) &&
                        [currentString isEqualToString:@"cos-1"]){
-						[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:bDefault == YES ? [calutil stringArcCos] : [calutil stringArcCos_h]]];
+						[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithAttributedString:bDefault == YES ? [calutil stringArcCos] : [calutil stringArcCos_h]]];
                     } else if((length >= (i+5)) &&
                               [currentString isEqualToString:@"cot-1"]){
-						[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:bDefault == YES ? [calutil stringArcCot] : [calutil stringArcCot_h]]];
+						[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithAttributedString:bDefault == YES ? [calutil stringArcCot] : [calutil stringArcCot_h]]];
                     } else {
                         if(length >= (i+4)) {
                             range.length = 4;
@@ -538,7 +538,7 @@ typedef CMathParser<char, double> MathParser;
                 }
                 if((length >= (i + 6)) > 0 &&
                    [currentString isEqualToString:@"tanh-1"]) {
-					[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:bDefault == YES ? [calutil stringArcTanh] : [calutil stringArcTanh_h]]];
+					[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithAttributedString:bDefault == YES ? [calutil stringArcTanh] : [calutil stringArcTanh_h]]];
                 } else {
                     if(length >= (i+5)) {
                         range.length = 5;
@@ -546,7 +546,8 @@ typedef CMathParser<char, double> MathParser;
                     }
                     if((length >= (i+5)) &&
                        [currentString isEqualToString:@"tan-1"]){
-						[resultExpression appendAttributedString:[[NSAttributedString alloc] initWithString:bDefault == YES ? [calutil stringArcTan] : [calutil stringArcTan_h]]];
+						NSAttributedString *attributedString = [[NSAttributedString alloc] initWithAttributedString:bDefault == YES ? [calutil stringArcTan] : [calutil stringArcTan_h]];
+						[resultExpression appendAttributedString:attributedString];
                     } else {
                         if(length >= (i+4)) {
                             range.length = 4;
@@ -749,7 +750,7 @@ typedef CMathParser<char, double> MathParser;
 						if (bDefault) {
 							[resultExpression appendAttributedString:[calutil stringSquareroot]];
 						} else {
-							[resultExpression appendAttributedString:[calutil stringSquareroot_h]];
+							[resultExpression appendAttributedString:[calutil stringSquareRoot_h]];
 						}
 
                         i+=5;
@@ -776,7 +777,7 @@ typedef CMathParser<char, double> MathParser;
 						if (bDefault) {
 							[resultExpression appendAttributedString:[calutil stringCuberoot]];
 						} else {
-							[resultExpression appendAttributedString:[calutil stringCuberoot_h]];
+							[resultExpression appendAttributedString:[calutil stringCubeRoot_h]];
 						}
 
 						i += 5;

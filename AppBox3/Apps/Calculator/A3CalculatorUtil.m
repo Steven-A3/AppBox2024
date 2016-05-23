@@ -10,8 +10,9 @@
 #import <CoreText/CoreText.h>
 
 @implementation A3CalculatorUtil
+
 - (UIFont *)superscriptFont {
-	return [UIFont systemFontOfSize:13];
+	return [UIFont systemFontOfSize:10];
 }
 
 - (UIFont *)superscriptBigFont {
@@ -26,36 +27,43 @@
 	return [UIFont systemFontOfSize:11];
 }
 
-- (id)stringWithSuperscript:(NSString *)input location:(NSUInteger)loc length:(NSUInteger)len value:(id) index{
+- (void)addSuperSubscriptToAttributedString:(NSMutableAttributedString *)attributedString location:(NSUInteger)loc length:(NSUInteger)length option:(NSNumber *)option {
+	if (IS_IPHONE) {
+		[attributedString addAttribute:NSBaselineOffsetAttributeName value:[option isEqualToNumber:@1] ? @5 : @-5 range:NSMakeRange(loc,length)];
+	} else {
+		[attributedString addAttribute:NSBaselineOffsetAttributeName value:[option isEqualToNumber:@1] ? @8 : @-8 range:NSMakeRange(loc,length)];
+	}
+}
+
+- (NSMutableAttributedString *)stringWithSuperscript:(NSString *)input location:(NSUInteger)loc length:(NSUInteger)len value:(NSNumber *)option {
 	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:input];
-	[string addAttribute:(NSString *)kCTSuperscriptAttributeName value:index   range:NSMakeRange(loc,len)];
+	[self addSuperSubscriptToAttributedString:string location:loc length:len option:option];
 	[string addAttribute:(NSString *)kCTFontAttributeName value:[self superscriptFont] range:NSMakeRange(loc,len)];
 	return string;
 }
 
-- (id)stringWithSuperscriptBigFont:(NSString *)input location:(NSUInteger)loc length:(NSUInteger)len value:(id) index{
+- (NSMutableAttributedString *)stringWithSuperscriptBigFont:(NSString *)input location:(NSUInteger)loc length:(NSUInteger)len value:(NSNumber *)option {
 	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:input];
-	[string addAttribute:(NSString *)kCTSuperscriptAttributeName value:index   range:NSMakeRange(loc,len)];
+	[self addSuperSubscriptToAttributedString:string location:loc length:len option:option];
 	[string addAttribute:(NSString *)kCTFontAttributeName value:[self superscriptBigFont] range:NSMakeRange(loc,len)];
 	return string;
 }
 
-- (id)stringWithSuperscriptMiddleFont:(NSString *)input location:(NSUInteger)loc length:(NSUInteger)len value:(id) index{
+- (NSMutableAttributedString *)stringWithSuperscriptMiddleFont:(NSString *)input location:(NSUInteger)loc length:(NSUInteger)len value:(NSNumber *)option {
 	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:input];
-	[string addAttribute:(NSString *)kCTSuperscriptAttributeName value:index   range:NSMakeRange(loc,len)];
-    //[string addAttribute: NSBaselineOffsetAttributeName value: [NSNumber numberWithFloat: -10.0] range:NSMakeRange(loc,len)];
+	[self addSuperSubscriptToAttributedString:string location:loc length:len option:option];
 	[string addAttribute:(NSString *)kCTFontAttributeName value:[self superscriptMiddleFont] range:NSMakeRange(loc,len)];
 	return string;
 }
 
-- (id)stringWithSuperscriptSystemFont:(NSString *)input location:(NSUInteger)loc length:(NSUInteger)len value:(id) index{
+- (NSMutableAttributedString *)stringWithSuperscriptSystemFont:(NSString *)input location:(NSUInteger)loc length:(NSUInteger)len value:(NSNumber *)option {
 	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:input];
-	[string addAttribute:(NSString *)kCTSuperscriptAttributeName value:index   range:NSMakeRange(loc,len)];
+	[self addSuperSubscriptToAttributedString:string location:loc length:len option:option];
 	[string addAttribute:(NSString *)kCTFontAttributeName value:[self superscriptSystemFont] range:NSMakeRange(loc,len)];
 	return string;
 }
 
-- (id) invisibleString {
+- (NSMutableAttributedString *)invisibleString {
 	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:@"lll"];
     [string addAttribute:NSForegroundColorAttributeName value:[UIColor clearColor] range:NSMakeRange(0,3)];
    // [string addAttribute: NSBaselineOffsetAttributeName value: [NSNumber numberWithFloat: -10.0] range:NSMakeRange(0,1)];
@@ -67,187 +75,188 @@
 	return string;
 }
 
-- (id)stringArcTanh {
+- (NSMutableAttributedString *)stringArcTanh {
 	return [self stringWithSuperscript:@"tanh-1" location:4 length:2 value:@1];
 }
 
-- (id)stringArcCosh {
+- (NSMutableAttributedString *)stringArcCosh {
 	return [self stringWithSuperscript:@"cosh-1" location:4 length:2 value:@1];
 }
 
-- (id)stringArcSinh {
+- (NSMutableAttributedString *)stringArcSinh {
 	return [self stringWithSuperscript:@"sinh-1" location:4 length:2 value:@1];
 }
 
-- (id)stringArcTan {
+- (NSMutableAttributedString *)stringArcTan {
 	return [self stringWithSuperscript:@"tan-1" location:3 length:2 value:@1];
 }
 
-- (id)stringArcCos {
+- (NSMutableAttributedString *)stringArcCos {
 	return [self stringWithSuperscript:@"cos-1" location:3 length:2 value:@1];
 }
 
-- (id)stringArcSin {
+- (NSMutableAttributedString *)stringArcSin {
 	return [self stringWithSuperscript:@"sin-1" location:3 length:2 value:@1];
 }
 
-- (id)stringArcCot {
+- (NSMutableAttributedString *)stringArcCot {
     return [self stringWithSuperscript:@"cot-1" location:3 length:2 value:@1];
 }
 
-- (id)stringEx {
+- (NSMutableAttributedString *)stringEx {
 	return [self stringWithSuperscript:@"ex" location:1 length:1 value:@1];
 }
 
-- (id)stringLog2 {
+- (NSMutableAttributedString *)stringLog2 {
 	return [self stringWithSuperscript:@"log2" location:3 length:1 value:@-1];
 }
 
-- (id)stringLogy {
+- (NSMutableAttributedString *)stringLogy {
 	return [self stringWithSuperscript:@"logy" location:3 length:1 value:@-1];
 }
 
-- (id)string2X {
+- (NSMutableAttributedString *)string2X {
 	return [self stringWithSuperscript:@"2x" location:1 length:1 value:@1];
 }
 
-- (id)stringYX {
+- (NSMutableAttributedString *)stringYX {
 	return [self stringWithSuperscript:@"yx" location:1 length:1 value:@1];
 }
 
-- (id)stringLog10 {
+- (NSMutableAttributedString *)stringLog10 {
 	return [self stringWithSuperscriptMiddleFont:@"log10" location:3 length:2 value:@-1];
 }
 
-- (id)string10X {
+- (NSMutableAttributedString *)string10X {
 	return [self stringWithSuperscriptMiddleFont:@"10x" location:2 length:1 value:@1];
 }
 
-- (id)string10XBigFont {
+- (NSMutableAttributedString *)string10XBigFont {
 	return [self stringWithSuperscriptBigFont:@"10x" location:2 length:1 value:@1];
 }
 
-- (id)stringXY {
+- (NSMutableAttributedString *)stringXY {
 	return [self stringWithSuperscriptMiddleFont:@"xy" location:1 length:1 value:@1];
 }
 
-- (id)stringX3 {
+- (NSMutableAttributedString *)stringX3 {
 	return [self stringWithSuperscriptMiddleFont:@"x3" location:1 length:1 value:@1];
 }
 
-- (id)stringX2 {
+- (NSMutableAttributedString *)stringX2 {
 	return [self stringWithSuperscriptMiddleFont:@"x2" location:1 length:1 value:@1];
 }
 
-- (id)stringSecond {
+- (NSMutableAttributedString *)stringSecond {
 	return [self stringWithSuperscript:@"2nd" location:1 length:2 value:@-1];
 }
 
-- (id)stringSecondBigFont {
+- (NSMutableAttributedString *)stringSecondBigFont {
 	return [self stringWithSuperscriptBigFont:@"2nd" location:1 length:2 value:@-1];
 }
 
-- (id)stringSquare {
+- (NSMutableAttributedString *)stringSquare {
     return [self stringWithSuperscriptMiddleFont:@"2" location:0 length:1 value:@1];
 }
 
-- (id)stringCube {
+- (NSMutableAttributedString *)stringCube {
     return [self stringWithSuperscriptMiddleFont:@"3" location:0 length:1 value:@1];
 }
 
-- (id) stringCuberoot {
+- (NSMutableAttributedString *)stringCuberoot {
     return [self stringWithSuperscriptMiddleFont:@"3√(" location:0 length:1 value:@1];
 }
 
-- (id) stringSquareroot{
+- (NSMutableAttributedString *)stringSquareroot{
     return [self stringWithSuperscriptMiddleFont:@"2√(" location:0 length:1 value:@1];
 }
 
-- (id)stringArcTanh_h {
+- (NSMutableAttributedString *)stringArcTanh_h {
 	return [self stringWithSuperscriptSystemFont:@"tanh-1" location:4 length:2 value:@1];
 }
 
-- (id)stringArcCosh_h {
+- (NSMutableAttributedString *)stringArcCosh_h {
 	return [self stringWithSuperscriptSystemFont:@"cosh-1" location:4 length:2 value:@1];
 }
 
-- (id)stringArcSinh_h {
+- (NSMutableAttributedString *)stringArcSinh_h {
 	return [self stringWithSuperscriptSystemFont:@"sinh-1" location:4 length:2 value:@1];
 }
 
-- (id)stringArcTan_h {
+- (NSMutableAttributedString *)stringArcTan_h {
 	return [self stringWithSuperscriptSystemFont:@"tan-1" location:3 length:2 value:@1];
 }
 
-- (id)stringArcCos_h {
+- (NSMutableAttributedString *)stringArcCos_h {
 	return [self stringWithSuperscriptSystemFont:@"cos-1" location:3 length:2 value:@1];
 }
 
-- (id)stringArcSin_h {
+- (NSMutableAttributedString *)stringArcSin_h {
 	return [self stringWithSuperscriptSystemFont:@"sin-1" location:3 length:2 value:@1];
 }
 
-- (id)stringArcCot_h {
+- (NSMutableAttributedString *)stringArcCot_h {
     return [self stringWithSuperscriptSystemFont:@"cot-1" location:3 length:2 value:@1];
 }
 
-- (id)stringEx_h {
+- (NSMutableAttributedString *)stringEx_h {
 	return [self stringWithSuperscriptSystemFont:@"ex" location:1 length:1 value:@1];
 }
 
-- (id)stringLog2_h {
+- (NSMutableAttributedString *)stringLog2_h {
 	return [self stringWithSuperscriptSystemFont:@"log2" location:3 length:1 value:@-1];
 }
 
-- (id)stringLogy_h {
+- (NSMutableAttributedString *)stringLogy_h {
 	return [self stringWithSuperscriptSystemFont:@"logy" location:3 length:1 value:@-1];
 }
 
-- (id)string2X_h {
+- (NSMutableAttributedString *)string2X_h {
 	return [self stringWithSuperscriptSystemFont:@"2x" location:1 length:1 value:@1];
 }
 
-- (id)stringYX_h {
+- (NSMutableAttributedString *)stringYX_h {
 	return [self stringWithSuperscriptSystemFont:@"yx" location:1 length:1 value:@1];
 }
 
-- (id)stringLog10_h {
+- (NSMutableAttributedString *)stringLog10_h {
 	return [self stringWithSuperscriptSystemFont:@"log10" location:3 length:2 value:@-1];
 }
 
-- (id)string10X_h {
+- (NSMutableAttributedString *)string10X_h {
 	return [self stringWithSuperscriptSystemFont:@"10x" location:2 length:1 value:@1];
 }
 
-- (id)string10XBigFont_h {
+- (NSMutableAttributedString *)string10XBigFont_h {
 	return [self stringWithSuperscriptSystemFont:@"10x" location:2 length:1 value:@1];
 }
 
-- (id)stringXY_h {
+- (NSMutableAttributedString *)stringXY_h {
 	return [self stringWithSuperscriptSystemFont:@"xy" location:1 length:1 value:@1];
 }
 
-- (id)stringX3_h {
+- (NSMutableAttributedString *)stringX3_h {
 	return [self stringWithSuperscriptSystemFont:@"x3" location:1 length:1 value:@1];
 }
 
-- (id)stringX2_h {
+- (NSMutableAttributedString *)stringX2_h {
 	return [self stringWithSuperscriptMiddleFont:@"x2" location:1 length:1 value:@1];
 }
 
-- (id)stringSquare_h {
+- (NSMutableAttributedString *)stringSquare_h {
     return [self stringWithSuperscriptSystemFont:@"2" location:0 length:1 value:@1];
 }
 
-- (id)stringCube_h {
+- (NSMutableAttributedString *)stringCube_h {
     return [self stringWithSuperscriptSystemFont:@"3" location:0 length:1 value:@1];
 }
 
-- (id) stringCuberoot_h {
+- (NSMutableAttributedString *)stringCubeRoot_h {
     return [self stringWithSuperscriptSystemFont:@"3√(" location:0 length:1 value:@1];
 }
 
-- (id) stringSquareroot_h{
+- (NSMutableAttributedString *)stringSquareRoot_h {
     return [self stringWithSuperscriptSystemFont:@"2√(" location:0 length:1 value:@1];
 }
+
 @end
