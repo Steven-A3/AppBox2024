@@ -76,7 +76,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	_collectionView.backgroundColor = [UIColor whiteColor];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
-	_remainingNumbersScrollAnimation = 3;
+	_remainingNumbersScrollAnimation = 2;
 }
 
 - (void)applicationDidBecomeActive {
@@ -119,15 +119,35 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	A3DashLineView *dashLineView = [[A3DashLineView alloc] initWithFrame:CGRectZero];
 	[collectionViewBackgroundView addSubview:dashLineView];
 
+	CGRect bounds = _collectionView.bounds;
+	CGFloat goalSize = (bounds.size.height - 35)/1.2;
+	CGFloat dashPosition = bounds.size.height - goalSize - 35;
 	[dashLineView makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(collectionViewBackgroundView.left);
 		make.right.equalTo(collectionViewBackgroundView.right);
-
-		CGRect bounds = _collectionView.bounds;
-		make.top.equalTo(collectionViewBackgroundView.top).with.offset(bounds.size.height - (bounds.size.height - 35) / 1.2 - 35);
+		make.top.equalTo(collectionViewBackgroundView.top).with.offset(dashPosition);
 		make.height.equalTo(@2);
 	}];
+
+	CGFloat separatorSpace = goalSize / 4;
+	[self addSeparatorToView:collectionViewBackgroundView atPosition:dashPosition + separatorSpace];
+	[self addSeparatorToView:collectionViewBackgroundView atPosition:dashPosition + separatorSpace * 2];
+	[self addSeparatorToView:collectionViewBackgroundView atPosition:dashPosition + separatorSpace * 3];
+
 	_collectionView.backgroundView = collectionViewBackgroundView;
+}
+
+- (void)addSeparatorToView:(UIView *)view atPosition:(CGFloat)position {
+	A3DashLineView *separator = [A3DashLineView new];
+	separator.lineColor = [UIColor lightGrayColor];
+	[view addSubview:separator];
+
+	[separator makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(view.left);
+		make.right.equalTo(view.right);
+		make.top.equalTo(view.top).with.offset(position);
+		make.height.equalTo(@0.5);
+	}];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -496,9 +516,9 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 		CGFloat percent = MIN(1.2,[pedometerData.numberOfSteps floatValue] / goalSteps);
 		UIColor *color = [self.pedometerHandler colorForPercent:percent];
 		_stepsBackgroundView.backgroundColor = color;
-		_stepsLabel.text = [self.pedometerHandler.numberFormatter stringFromNumber:pedometerData.numberOfSteps];
-		floorsAscended = [self.pedometerHandler.numberFormatter stringFromNumber:pedometerData.floorsAscended];
-		distanceInfo = [self.pedometerHandler distanceValueForMeasurementSystemFromDistance:pedometerData.distance];
+		_stepsLabel.text = [self.pedometerHandler.numberFormatter stringFromNumber:pedometerData.numberOfSteps ?: @0];
+		floorsAscended = [self.pedometerHandler.numberFormatter stringFromNumber:pedometerData.floorsAscended ?: @0];
+		distanceInfo = [self.pedometerHandler distanceValueForMeasurementSystemFromDistance:pedometerData.distance ?: @0];
 	} else {
 		UIColor *color = [self.pedometerHandler colorForPercent:0];
 		_stepsBackgroundView.backgroundColor = color;
@@ -746,17 +766,17 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	NSString *dateFormatBefore = self.dateFormatterForCell.dateFormat;
 	[self.dateFormatterForCell setDateStyle:NSDateFormatterMediumStyle];
 	NSString *message = [NSString stringWithFormat:@"%@ %@ %@\n%@ %@\n%@\n%@ %@\n%@ %@",
-					NSLocalizedString(@"Total", @"Total"),
-												   [self.pedometerHandler.numberFormatter stringFromNumber:@(numberOfEntities)],
-					NSLocalizedString(@"days", @"days"),
-												   [self.pedometerHandler.numberFormatter stringFromNumber:totalSteps],
-					NSLocalizedString(@"steps", @"steps"),
-												   [self.pedometerHandler stringFromDistance:totalDistance],
-												   [self.pedometerHandler.numberFormatter stringFromNumber:totalFloorsAscended],
-					NSLocalizedString(@"floors", @"floors"),
-					NSLocalizedString(@"Since", @"Since"),
-												   [self.dateFormatterForCell stringFromDate:firstDate]
-	];
+						 NSLocalizedString(@"Total", @"Total"),
+						 [self.pedometerHandler.numberFormatter stringFromNumber:@(numberOfEntities)],
+						 NSLocalizedString(@"days", @"days"),
+						 [self.pedometerHandler.numberFormatter stringFromNumber:totalSteps ?: @0],
+						 NSLocalizedString(@"steps", @"steps"),
+						 [self.pedometerHandler stringFromDistance:totalDistance],
+						 [self.pedometerHandler.numberFormatter stringFromNumber:totalFloorsAscended],
+						 NSLocalizedString(@"floors", @"floors"),
+						 NSLocalizedString(@"Since", @"Since"),
+						 [self.dateFormatterForCell stringFromDate:firstDate]
+						 ];
 	[self.dateFormatterForCell setDateFormat:dateFormatBefore];
 
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Data Imported"

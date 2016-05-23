@@ -10,4 +10,6 @@
 
 @interface A3DashLineView : UIView
 
+@property (nonatomic, strong) UIColor *lineColor;
+
 @end

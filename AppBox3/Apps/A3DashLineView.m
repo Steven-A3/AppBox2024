@@ -18,6 +18,7 @@
 	self = [super initWithFrame:frame];
 	if (self) {
 		self.backgroundColor = [UIColor clearColor];
+		_lineColor = [UIColor colorWithRed:112.0/255.0 green:182.0/255.0 blue:45.0/255.0 alpha:1.0];
 	}
 	
 	return self;
@@ -26,7 +27,7 @@
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
-	[[UIColor colorWithRed:112.0/255.0 green:182.0/255.0 blue:45.0/255.0 alpha:1.0] setStroke];
+	[_lineColor setStroke];
 	UIBezierPath *path = [UIBezierPath new];
 	[path moveToPoint:CGPointMake(0, 0)];
 	[path addLineToPoint:CGPointMake(rect.size.width, 0)];
