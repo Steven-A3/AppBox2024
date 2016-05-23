@@ -93,7 +93,13 @@
 }
 
 - (void)checkCalendarListToFixExceptionOfOldVersion {
-    NSArray *shownUserCalendarList = [[A3DaysCounterModelManager calendars] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type == %@ AND isShow == %@", @(CalendarCellType_User), @(YES)]];
+	NSArray *allEvents = [DaysCounterEvent MR_findAll];
+	for (DaysCounterEvent *event in allEvents) {
+		[self.sharedManager recalculateEventDatesForEvent:event];
+	}
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+
+	NSArray *shownUserCalendarList = [[A3DaysCounterModelManager calendars] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type == %@ AND isShow == %@", @(CalendarCellType_User), @(YES)]];
     if ([shownUserCalendarList count] > 0) {
         return;
     }
