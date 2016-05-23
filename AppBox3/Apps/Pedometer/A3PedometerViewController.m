@@ -62,6 +62,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 #if TARGET_IPHONE_SIMULATOR
 	[self setupTestData];
 	[self fillMissingDates];
+    [self updateToday];
 #else
 	[self refreshPedometerData];
 #endif
@@ -482,13 +483,13 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 
 - (void)setupTestData {
 	NSArray *testData = @[
-						  @[@"2016-04-27", @2550, @10, @1800],
-						  @[@"2016-04-28", @10000, @0, @1000],
-						  @[@"2016-04-29", @3869, @15, @2600],
-						  @[@"2016-04-30", @26522, @31, @40300],
-						  @[@"2016-05-01", @5782, @18, @3700],
-						  @[@"2016-05-02", @6360, @19, @4300],
-						  @[@"2016-05-03", @503, @0, @0],
+						  @[@"2016-05-17", @2550, @10, @1800],
+						  @[@"2016-05-18", @10000, @0, @1000],
+						  @[@"2016-05-19", @3869, @15, @2600],
+						  @[@"2016-05-20", @26522, @31, @40300],
+						  @[@"2016-05-21", @5782, @18, @3700],
+						  @[@"2016-05-22", @6360, @19, @4300],
+						  @[@"2016-05-23", @503, @0, @0],
 						  ];
 
 	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
