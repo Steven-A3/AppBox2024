@@ -42,6 +42,7 @@
 #import "WalletItem.h"
 #import "WalletFieldItem+initialize.h"
 #import "WalletCategory.h"
+#import <CoreMotion/CoreMotion.h>
 
 NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
@@ -1511,9 +1512,10 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_2 = @"A3UserDefaultsDidAlertWhat
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidAlertWhatsNew4_2]) {
 		return;
 	}
-	
 	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidAlertWhatsNew4_2];
-	
+
+	if (IS_IOS7 || ![CMPedometer isStepCountingAvailable]) return;
+
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"What's New in V4.2", @"What's New in V4.2")
 														message:NSLocalizedString(@"New APP: Pedometer", @"New APP: Pedometer")
 													   delegate:nil
