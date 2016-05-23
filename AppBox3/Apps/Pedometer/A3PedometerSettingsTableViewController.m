@@ -58,6 +58,7 @@
 		if (indexPath.row == 0) {
 			NSNumber *goalSteps = [[NSUserDefaults standardUserDefaults] objectForKey:A3PedometerSettingsNumberOfGoalSteps];
 			cell.detailTextLabel.text = [self.pedometerHandler.numberFormatter stringFromNumber:goalSteps];
+			cell.detailTextLabel.textColor = [[A3AppDelegate instance] themeColor];
 		}
 	}
 }
