@@ -1048,9 +1048,12 @@ Introduzca la clave de cifrado para el bolsillo.";
 "Restricted" = "Restringido";
 "What's New in V4.2" = "Lo nuevo en la V4.2";
 "New APP: Pedometer" = "\n\nNueva APP: Podómetro\n\n";
-"days" = "days";
-"steps" = "steps";
-"floors" = "floors";
+"days" = "días";
+"steps" = "pasos";
+"floors" = "pisos";
 
-"In order for AppBox Pro to collect step counts it needs to be given permission in the device Settings app" = "In order for AppBox Pro to collect step counts it needs to be given permission in the device Settings app";
-"Open Settings" = "Open Settings";
+"In order for AppBox Pro to collect step counts, it needs to be given permission in the device Settings app." = "Para que AppBox Pro pueda hacer el recuento de pasos, debes permitirlo en la aplicación Ajustes.";
+"Open Settings" = "Ajustes";
+"km" = "km";
+"mi" = "mi";
+"Daily Average" = "Promedio diario";

@@ -7,3 +7,5 @@
 */
 
 NSLocationWhenInUseUsageDescription = "Votre information de localisation est utilisée pour afficher la météo et les jours fériés. Il est utilisé pour indiquer votre position à contre-jour.";
+NSMotionUsageDescription = "AppBox Pro utilise la technologie de suivi des mouvements intégrée à votre iPhone et compte vos pas lors de vos déplacements sans incidence sur l'autonomie de la batterie.";
+NSHealthShareUsageDescription = "AppBox Pro reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.\nData collected from HealthKit will not be used for marketing and advertising purposes.";

@@ -7,3 +7,5 @@
 */
 
 NSLocationWhenInUseUsageDescription = "Su información de ubicación se utiliza para mostrar el tiempo y los días festivos. Se utiliza para introducir su ubicación en días mostrador.";
+NSMotionUsageDescription = "AppBox Pro usa el sensor de movimiento del iPhone para recoger el recuento de pasos que das a lo largo del día, sin afectar en absoluto la duración de la batería.";
+NSHealthShareUsageDescription = "AppBox Pro reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.\nData collected from HealthKit will not be used for marketing and advertising purposes.";

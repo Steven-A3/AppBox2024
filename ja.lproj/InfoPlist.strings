@@ -7,3 +7,5 @@
 */
 
 NSLocationWhenInUseUsageDescription = "あなたの位置情報は、天候や祝日を表示するために使用されます。イベントカレンダーの位置情報入力のためにも使用します。";
+NSMotionUsageDescription="AppBox Proは、iPhoneに内蔵されているモーショントラッキング装置から歩数情報を取得します。情報のアクセスを許可しても、これによる追加のバッテリー消耗はありません。";
+NSHealthShareUsageDescription="AppBox Proは、Appleの健康アプリから階段を登る、歩数、歩行+ランニング距離情報を読み取ります。\n\n健康アプリから読んだ情報は、マーケティング目的や広告目的のために使用していません。";

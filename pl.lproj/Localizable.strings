@@ -1052,9 +1052,12 @@ Wprowadź klucz szyfrowania dla portfela.";
 "Restricted" = "Ograniczony";
 "What's New in V4.2" = "Co nowego w wersji 4.2";
 "New APP: Pedometer" = "\n\nNowa aplikacja: Krokomierz\n\n";
-"days" = "days";
-"steps" = "steps";
-"floors" = "floors";
+"days" = "dni";
+"steps" = "kr.";
+"floors" = "p.";
 
-"In order for AppBox Pro to collect step counts it needs to be given permission in the device Settings app" = "In order for AppBox Pro to collect step counts it needs to be given permission in the device Settings app";
-"Open Settings" = "Open Settings";
+"In order for AppBox Pro to collect step counts, it needs to be given permission in the device Settings app." = "Aby AppBox Pro zbierać etap liczy musi mieć uprawnienia w aplikacji ustawienia urządzenia";
+"Open Settings" = "Otwórz Ustawienia";
+"km" = "km";
+"mi" = "mi";
+"Daily Average" = "Średnia dzienna";

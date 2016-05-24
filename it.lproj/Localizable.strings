@@ -1046,9 +1046,12 @@ Inserire chiave di crittografia per il portafoglio.";
 "Restricted" = "Ristretto";
 "What's New in V4.2" = "Novità nella V4.2";
 "New APP: Pedometer" = "\n\nNuovo APP: Pedometro\n\n";
-"days" = "days";
-"steps" = "steps";
-"floors" = "floors";
+"days" = "giorni";
+"steps" = "passi";
+"floors" = "piani";
 
-"In order for AppBox Pro to collect step counts it needs to be given permission in the device Settings app" = "In order for AppBox Pro to collect step counts it needs to be given permission in the device Settings app";
-"Open Settings" = "Open Settings";
+"In order for AppBox Pro to collect step counts, it needs to be given permission in the device Settings app." = "Per far si che AppBox Pro raccolga i conteggi dei passi, è necessario autorizzarlo nell'app Impostazioni principale.";
+"Open Settings" = "Aprire Impostazioni";
+"km" = "km";
+"mi" = "mi";
+"Daily Average" = "Media giornaliera";

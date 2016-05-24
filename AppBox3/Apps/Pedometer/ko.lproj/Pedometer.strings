@@ -1,0 +1,39 @@
+
+/* Class = "UIButton"; normalTitle = "Apps"; ObjectID = "83h-G6-7ly"; */
+"83h-G6-7ly.normalTitle" = "Apps";
+
+/* Class = "UITableViewSection"; headerTitle = "DISTANCE UNIT"; ObjectID = "9Ew-GF-Nc1"; */
+"9Ew-GF-Nc1.headerTitle" = "거리 단위";
+
+/* Class = "UITableViewSection"; footerTitle = "AppBox Pro reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.\n\nData collected from HealthKit will not be used for marketing and advertising purposes.\n\nYou can change app access of HealthKit data in your device Settings > Privacy > Health > AppBox Pro."; ObjectID = "EcZ-Vz-Ima"; */
+"EcZ-Vz-Ima.footerTitle" = "AppBox Pro는 계단오르기, 걸음수, 걷기 + 달리기 거리 등의 정보를 Apple 건강앱에서 가져옵니다.\n\n건강앱에서 가져온 정보는 마케팅이나 광고목적으로 사용하지 않습니다.\n\n데이터 접근 권한은 설정앱 > 개인 정보 보호 > 건강 > AppBox Pro에서 변경할 수 있습니다.";
+
+/* Class = "UILabel"; text = "26,522"; ObjectID = "Kdl-hB-wMB"; */
+"Kdl-hB-wMB.text" = "26,522";
+
+/* Class = "UILabel"; text = "10,000"; ObjectID = "MpJ-hD-K37"; */
+"MpJ-hD-K37.text" = "10,000";
+
+/* Class = "UILabel"; text = "km"; ObjectID = "WP9-zg-lzF"; */
+"WP9-zg-lzF.text" = "km";
+
+/* Class = "UILabel"; text = "mi"; ObjectID = "XmY-2a-Mmn"; */
+"XmY-2a-Mmn.text" = "mi";
+
+/* Class = "UILabel"; text = "Steps Goal"; ObjectID = "fH0-gO-UlH"; */
+"fH0-gO-UlH.text" = "걷기 목표";
+
+/* Class = "UILabel"; text = "31 floors"; ObjectID = "fru-j7-Hmo"; */
+"fru-j7-Hmo.text" = "31 floors";
+
+/* Class = "UITableViewController"; title = "Settings"; ObjectID = "iPF-eC-17Q"; */
+"iPF-eC-17Q.title" = "설정";
+
+/* Class = "UILabel"; text = "18.7 km"; ObjectID = "q3d-go-tDE"; */
+"q3d-go-tDE.text" = "18.7 km";
+
+/* Class = "UILabel"; text = "Pedometer"; ObjectID = "u7B-vo-LXU"; */
+"u7B-vo-LXU.text" = "만보기";
+
+/* Class = "UILabel"; text = "Daily Average 3,108 steps  2.1km  8floors"; ObjectID = "zdg-Et-DZB"; */
+"zdg-Et-DZB.text" = "Daily Average 3,108 steps  2.1km  8floors";

@@ -138,9 +138,9 @@
 - (void)setPedometerData:(Pedometer *)pedometerData {
 	_pedometerData = pedometerData;
 
-	_numberOfStepsLabel.text = [self.pedometerHandler.numberFormatter stringFromNumber:_pedometerData.numberOfSteps];
+	_numberOfStepsLabel.text = [self.pedometerHandler.integerFormatter stringFromNumber:_pedometerData.numberOfSteps];
 	_numberOfStepsLabel.hidden = NO;
-	_floorsAscendedLabel.text = [self.pedometerHandler.numberFormatter stringFromNumber:_pedometerData.floorsAscended];
+	_floorsAscendedLabel.text = [self.pedometerHandler.integerFormatter stringFromNumber:_pedometerData.floorsAscended];
 	_distanceLabel.text = [self.pedometerHandler stringFromDistance:_pedometerData.distance];
 
 	// [UIColor colorWithRed:252.0/255.0 green:82.0/255.0 blue:42.0/255.0 alpha:1.0] // Less than 50%

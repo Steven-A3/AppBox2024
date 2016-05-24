@@ -40,6 +40,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 @property (nonatomic, strong) UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
 @property (nonatomic, strong) UIButton *colorButton;
 @property (nonatomic, strong) UISwitch *iCloudSwitch;
+@property (nonatomic, strong) UISwitch *hideOtherAppLinksSwitch;
 @property (nonatomic, strong) MBProgressHUD *HUD;
 @property (nonatomic, copy) NSString *previousMainMenuStyle;
 
@@ -123,7 +124,12 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (section == 2) {
-		return [[A3AppDelegate instance] isMainMenuStyleList] ? 3 : 2;
+		A3AppDelegate *appDelegate = [A3AppDelegate instance];
+		if ([appDelegate isMainMenuStyleList]) {
+			return 3;
+		}
+		if ([appDelegate shouldPresentAd]) return 2;
+		return [appDelegate isPaidAppVersionCustomer:appDelegate.appReceipt] ? 3 : 2;
 	}
 	if (section == 4) {
 		return [A3AppDelegate instance].shouldPresentAd ? 3 : 1;
@@ -152,6 +158,8 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	A3AppDelegate *appDelegate = [A3AppDelegate instance];
+
 	A3SettingsTableViewRow row = (A3SettingsTableViewRow) cell.tag;
 	switch (row) {
 		case A3SettingsRowUseiCloud:
@@ -193,15 +201,25 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 			}
 			break;
 		case A3SettingsRowRecentToKeep:
-			cell.detailTextLabel.text = [[A3UserDefaults standardUserDefaults] stringForRecentToKeep];
-			if ([[A3AppDelegate instance] isMainMenuStyleList]) {
+			if ([appDelegate isMainMenuStyleList]) {
+				cell.accessoryView = nil;
+				cell.detailTextLabel.text = [[A3UserDefaults standardUserDefaults] stringForRecentToKeep];
 				[cell.textLabel setHidden:NO];
 				[cell.detailTextLabel setHidden:NO];
 				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 			} else {
-				[cell.textLabel setHidden:YES];
-				[cell.detailTextLabel setHidden:YES];
-				cell.accessoryType = UITableViewCellAccessoryNone;
+				if ([appDelegate shouldPresentAd] || ![appDelegate isPaidAppVersionCustomer:appDelegate.appReceipt]) {
+					cell.accessoryView = nil;
+					[cell.textLabel setHidden:YES];
+					[cell.detailTextLabel setHidden:YES];
+					cell.accessoryType = UITableViewCellAccessoryNone;
+				} else {
+					cell.textLabel.text = @"Hide Other App Links";
+					[cell.textLabel setHidden:NO];
+					[cell.detailTextLabel setHidden:YES];
+					cell.accessoryType = UITableViewCellAccessoryNone;
+					cell.accessoryView = self.hideOtherAppLinksSwitch;
+				}
 			}
 			break;
 		case A3SettingsRowThemeColor: {
@@ -444,6 +462,20 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 		}
 	}
 	return YES;
+}
+
+- (UISwitch *)hideOtherAppLinksSwitch {
+	if (!_hideOtherAppLinksSwitch) {
+		_hideOtherAppLinksSwitch = [UISwitch new];
+		[_hideOtherAppLinksSwitch addTarget:self action:@selector(hideOtherAppLinksSwitchValueChanged) forControlEvents:UIControlEventValueChanged];
+		[_hideOtherAppLinksSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kA3AppsHideOtherAppLinks]];
+	}
+	return _hideOtherAppLinksSwitch;
+}
+
+- (void)hideOtherAppLinksSwitchValueChanged {
+	[[NSUserDefaults standardUserDefaults] setBool:_hideOtherAppLinksSwitch.isOn forKey:kA3AppsHideOtherAppLinks];
+	_didResetHomeScreenLayout = YES;
 }
 
 @end

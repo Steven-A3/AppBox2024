@@ -1062,9 +1062,12 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 "Restricted" = "Eingeschränkt";
 "What's New in V4.2" = "Neue Funktionen von V4.2";
 "New APP: Pedometer" = "\n\nNeue APP: Pedometer\n\n";
-"days" = "days";
-"steps" = "steps";
-"floors" = "floors";
+"days" = "Tage";
+"steps" = "Schritte";
+"floors" = "Stockwerke";
 
-"In order for AppBox Pro to collect step counts it needs to be given permission in the device Settings app" = "In order for AppBox Pro to collect step counts it needs to be given permission in the device Settings app";
-"Open Settings" = "Open Settings";
+"In order for AppBox Pro to collect step counts, it needs to be given permission in the device Settings app." = "Damit AppBox Pro Schrittzahlen abrufen kann, benötigt es die Genehmigung hierfür über die Einstellungs-App.";
+"Open Settings" = "Einstellungen öffnen";
+"km" = "km";
+"mi" = "mi";
+"Daily Average" = "Tagesdurchschnitt";

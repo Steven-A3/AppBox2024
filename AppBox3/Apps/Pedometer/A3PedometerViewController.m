@@ -17,6 +17,7 @@
 #import "UIViewController+A3Addition.h"
 #import "A3PedometerSettingsTableViewController.h"
 #import "NSDate-Utilities.h"
+#import "NSDateFormatter+A3Addition.h"
 
 NSString *const A3PedometerSettingsDidSearchHealthStore = @"A3PedometerSettingsDidSearchHealthStore";
 
@@ -261,7 +262,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 - (NSString *)monthDateFormat {
 	if (!_monthDateFormat) {
 		[self.dateFormatterForCell setDateStyle:NSDateFormatterMediumStyle];
-		_monthDateFormat = [_dateFormatterForCell.dateFormat stringByReplacingOccurrencesOfString:@"y" withString:@""];
+		_monthDateFormat = [_dateFormatterForCell formatStringByRemovingYearComponent:_dateFormatterForCell.dateFormat];
 		_monthDateFormat = [_monthDateFormat stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 		_monthDateFormat = [_monthDateFormat stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@",-/."]];
 	}
@@ -375,7 +376,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	}
 	UIAlertView *alertView;
 	alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-										   message:NSLocalizedString(@"In order for AppBox Pro to collect step counts it needs to be given permission in the device Settings app", @"In order for AppBox Pro to collect step counts it needs to be given permission in the device Settings app")
+										   message:NSLocalizedString(@"In order for AppBox Pro to collect step counts, it needs to be given permission in the device Settings app.", @"In order for AppBox Pro to collect step counts, it needs to be given permission in the device Settings app.")
 										  delegate:self
 								 cancelButtonTitle:NSLocalizedString(@"Open Settings", @"Open Settings")
 								 otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
@@ -517,14 +518,14 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 		CGFloat percent = MIN(1.2,[pedometerData.numberOfSteps floatValue] / goalSteps);
 		UIColor *color = [self.pedometerHandler colorForPercent:percent];
 		_stepsBackgroundView.backgroundColor = color;
-		_stepsLabel.text = [self.pedometerHandler.numberFormatter stringFromNumber:pedometerData.numberOfSteps ?: @0];
-		floorsAscended = [self.pedometerHandler.numberFormatter stringFromNumber:pedometerData.floorsAscended ?: @0];
+		_stepsLabel.text = [self.pedometerHandler.integerFormatter stringFromNumber:pedometerData.numberOfSteps ?: @0];
+		floorsAscended = [self.pedometerHandler.integerFormatter stringFromNumber:pedometerData.floorsAscended ?: @0];
 		distanceInfo = [self.pedometerHandler distanceValueForMeasurementSystemFromDistance:pedometerData.distance ?: @0];
 	} else {
 		UIColor *color = [self.pedometerHandler colorForPercent:0];
 		_stepsBackgroundView.backgroundColor = color;
-		_stepsLabel.text = [self.pedometerHandler.numberFormatter stringFromNumber:@0];
-		floorsAscended = [self.pedometerHandler.numberFormatter stringFromNumber:@0];
+		_stepsLabel.text = [self.pedometerHandler.integerFormatter stringFromNumber:@0];
+		floorsAscended = [self.pedometerHandler.integerFormatter stringFromNumber:@0];
 		distanceInfo = [self.pedometerHandler distanceValueForMeasurementSystemFromDistance:@0];
 	}
 	NSDictionary *valueAttribute = @{NSFontAttributeName:IS_IOS9 ? [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:24] : [UIFont boldSystemFontOfSize:24],
@@ -533,7 +534,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 			NSForegroundColorAttributeName:[UIColor whiteColor]};
 	NSMutableAttributedString *floorsAscendedAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ ", floorsAscended]
 																									   attributes:valueAttribute];
-	NSAttributedString *floorUnitAttributedString = [[NSAttributedString alloc] initWithString:@"floors" attributes:unitAttribute];
+	NSAttributedString *floorUnitAttributedString = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"floors", @"floors") attributes:unitAttribute];
 	[floorsAscendedAttributedString appendAttributedString:floorUnitAttributedString];
 	_floorsAscended.attributedText = floorsAscendedAttributedString;
 
@@ -570,14 +571,14 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	averageDistance /= 7.0;
 	averageFloorsAscended /= 7.0;
 
-	NSInteger fractionDigitsBefore = self.pedometerHandler.numberFormatter.maximumFractionDigits;
-	self.pedometerHandler.numberFormatter.maximumFractionDigits = 0;
-	_descriptionLabel.text = [NSString stringWithFormat:@"Daily Average %@steps  %@  %@floors",
-					[self.pedometerHandler.numberFormatter stringFromNumber:@(averageSteps)],
-					[[self.pedometerHandler stringFromDistance:@(averageDistance)] stringByReplacingOccurrencesOfString:@" " withString:@""],
-					[self.pedometerHandler.numberFormatter stringFromNumber:@(averageFloorsAscended)]
+	_descriptionLabel.text = [NSString stringWithFormat:@"%@ %@%@  %@  %@%@",
+					NSLocalizedString(@"Daily Average", @"Daily Average"),
+														[self.pedometerHandler.integerFormatter stringFromNumber:@(averageSteps)],
+					NSLocalizedString(@"steps", @"steps"),
+														[[self.pedometerHandler stringFromDistance:@(averageDistance)] stringByReplacingOccurrencesOfString:@" " withString:@""],
+														[self.pedometerHandler.integerFormatter stringFromNumber:@(averageFloorsAscended)],
+					NSLocalizedString(@"floors", @"floors")
 	];
-	self.pedometerHandler.numberFormatter.maximumFractionDigits = fractionDigitsBefore;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -768,12 +769,12 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	[self.dateFormatterForCell setDateStyle:NSDateFormatterMediumStyle];
 	NSString *message = [NSString stringWithFormat:@"%@ %@ %@\n%@ %@\n%@\n%@ %@\n%@ %@",
 						 NSLocalizedString(@"Total", @"Total"),
-						 [self.pedometerHandler.numberFormatter stringFromNumber:@(numberOfEntities)],
+						 [self.pedometerHandler.integerFormatter stringFromNumber:@(numberOfEntities)],
 						 NSLocalizedString(@"days", @"days"),
-						 [self.pedometerHandler.numberFormatter stringFromNumber:totalSteps ?: @0],
+						 [self.pedometerHandler.integerFormatter stringFromNumber:totalSteps ?: @0],
 						 NSLocalizedString(@"steps", @"steps"),
 						 [self.pedometerHandler stringFromDistance:totalDistance],
-						 [self.pedometerHandler.numberFormatter stringFromNumber:totalFloorsAscended],
+						 [self.pedometerHandler.integerFormatter stringFromNumber:totalFloorsAscended],
 						 NSLocalizedString(@"floors", @"floors"),
 						 NSLocalizedString(@"Since", @"Since"),
 						 [self.dateFormatterForCell stringFromDate:firstDate]

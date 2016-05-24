@@ -1051,9 +1051,13 @@
 "Restricted" = "Restrictif";
 "What's New in V4.2" = "Nouveautés de la V4.2";
 "New APP: Pedometer" = "\n\nNew APP: Pédomètre\n\n";
-"days" = "days";
-"steps" = "steps";
-"floors" = "floors";
+"days" = "jours";
+"steps" = "pas";
+"floors" = "étages";
 
-"In order for AppBox Pro to collect step counts it needs to be given permission in the device Settings app" = "In order for AppBox Pro to collect step counts it needs to be given permission in the device Settings app";
-"Open Settings" = "Open Settings";
+"In order for AppBox Pro to collect step counts, it needs to be given permission in the device Settings app." = "Pour que AppBox Pro puisse compter les pas, il faut lui permettre de le faire dans l'appli Réglages générale.";
+"Open Settings" = "Ouvrez Réglages";
+
+"km" = "km";
+"mi" = "mi";
+"Daily Average" = "Moyenne quotidienne";

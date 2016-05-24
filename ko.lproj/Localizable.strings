@@ -1060,9 +1060,12 @@
 "Restricted" = "앱내구입차단됨";
 "What's New in V4.2" = "V4.2의 새로운 기능";
 "New APP: Pedometer" = "\n\n새로운 앱: 만보기\n\n";
-"days" = "days";
-"steps" = "steps";
-"floors" = "floors";
+"days" = "일";
+"steps" = "걸음";
+"floors" = "층";
 
-"In order for AppBox Pro to collect step counts it needs to be given permission in the device Settings app" = "In order for AppBox Pro to collect step counts it needs to be given permission in the device Settings app";
-"Open Settings" = "Open Settings";
+"In order for AppBox Pro to collect step counts, it needs to be given permission in the device Settings app." = "AppBox Pro가 걸음수 정보를 얻을 수 있도록 설정앱에서 정보 접근을 허용해 주세요.";
+"Open Settings" = "설정앱으로 가기";
+"km" = "km";
+"mi" = "마일";
+"Daily Average" = "일일 평균";

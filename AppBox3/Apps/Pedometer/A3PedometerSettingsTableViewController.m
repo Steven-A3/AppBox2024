@@ -57,7 +57,7 @@
 	} else if (indexPath.section == 1) {
 		if (indexPath.row == 0) {
 			NSNumber *goalSteps = [[NSUserDefaults standardUserDefaults] objectForKey:A3PedometerSettingsNumberOfGoalSteps];
-			cell.detailTextLabel.text = [self.pedometerHandler.numberFormatter stringFromNumber:goalSteps];
+			cell.detailTextLabel.text = [self.pedometerHandler.integerFormatter stringFromNumber:goalSteps];
 			cell.detailTextLabel.textColor = [[A3AppDelegate instance] themeColor];
 		}
 	}
@@ -82,7 +82,7 @@
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-	return [self.pedometerHandler.numberFormatter stringFromNumber:@((row + 1)* 1000)];;
+	return [self.pedometerHandler.integerFormatter stringFromNumber:@((row + 1)* 1000)];;
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {

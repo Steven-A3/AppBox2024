@@ -881,9 +881,12 @@
 "Restricted" = "取用限制";
 "What's New in V4.2" = "4.2版本的新內容";
 "New APP: Pedometer" = "\n\n新的應用：計步器\n\n";
-"days" = "days";
-"steps" = "steps";
-"floors" = "floors";
+"days" = "天";
+"steps" = "步";
+"floors" = "樓";
 
-"In order for AppBox Pro to collect step counts it needs to be given permission in the device Settings app" = "In order for AppBox Pro to collect step counts it needs to be given permission in the device Settings app";
-"Open Settings" = "Open Settings";
+"In order for AppBox Pro to collect step counts, it needs to be given permission in the device Settings app." = "為了AppBox Pro收集步數，它需要在設備設置應用給予許可。";
+"Open Settings" = "打開設置";
+"km" = "公里";
+"mi" = "英里";
+"Daily Average" = "每日平均";

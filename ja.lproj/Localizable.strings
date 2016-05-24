@@ -1058,9 +1058,12 @@
 "Restricted" = "App内課金制限";
 "What's New in V4.2" = "バージョン4.2の新機能";
 "New APP: Pedometer" = "\n\n新しいAPP：歩数計\n\n";
-"days" = "days";
-"steps" = "steps";
-"floors" = "floors";
+"days" = "日";
+"steps" = "歩数";
+"floors" = "階";
 
-"In order for AppBox Pro to collect step counts it needs to be given permission in the device Settings app" = "In order for AppBox Pro to collect step counts it needs to be given permission in the device Settings app";
-"Open Settings" = "Open Settings";
+"In order for AppBox Pro to collect step counts, it needs to be given permission in the device Settings app." = "AppBox Proが歩数情報を得ることができるように設定アプリからの情報へのアクセスを許可してください。";
+"Open Settings" = "[設定]を開きます";
+"km" = "km";
+"mi" = "mi";
+"Daily Average" = "1日平均";

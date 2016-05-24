@@ -28,8 +28,12 @@
 	self.automaticallyAdjustsScrollViewInsets = NO;
 
 	RMAppReceipt *appReceipt = [A3AppDelegate instance].appReceipt;
-	if ([appReceipt verifyReceiptHash] && [[A3AppDelegate instance] isIAPPurchasedCustomer:appReceipt]) {
-		_shouldShowHouseAd = NO;
+	if ([appReceipt verifyReceiptHash]) {
+		if ([[A3AppDelegate instance] isPaidAppVersionCustomer:appReceipt]) {
+			_shouldShowHouseAd = ![[NSUserDefaults standardUserDefaults] boolForKey:kA3AppsHideOtherAppLinks];
+		} else {
+			_shouldShowHouseAd = ![[A3AppDelegate instance] isIAPPurchasedCustomer:appReceipt];
+		}
 	} else {
 		_shouldShowHouseAd = YES;
 	}

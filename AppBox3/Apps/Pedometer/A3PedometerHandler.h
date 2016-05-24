@@ -13,6 +13,7 @@ extern NSString *const A3PedometerSettingsNumberOfGoalSteps;
 
 @interface A3PedometerHandler : NSObject
 
+@property (nonatomic, strong) NSNumberFormatter *integerFormatter;
 @property (nonatomic, strong) NSNumberFormatter *numberFormatter;
 
 - (UIColor *)colorForPercent:(double)barPercent;

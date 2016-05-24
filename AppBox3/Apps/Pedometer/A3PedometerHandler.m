@@ -68,10 +68,10 @@ NSString *const A3PedometerSettingsNumberOfGoalSteps = @"A3PedometerSettingsNumb
 - (NSDictionary *)distanceValueForMeasurementSystemFromDistance:(NSNumber *)distance {
 	if ([self usesMetricSystem]) {
 		double kms = [distance doubleValue] / 1000;
-		return @{@"unit":@"km", @"value": [self.numberFormatter stringFromNumber:@(kms)]};
+		return @{@"unit": NSLocalizedString(@"km", @"km"), @"value": [self.numberFormatter stringFromNumber:@(kms)]};
 	} else {
 		double miles = [distance doubleValue] * 0.00062137119223733398438;
-		return @{@"unit":@"mi", @"value": [self.numberFormatter stringFromNumber:@(miles)]};
+		return @{@"unit": NSLocalizedString(@"mi", @"mi"), @"value": [self.numberFormatter stringFromNumber:@(miles)]};
 	}
 }
 
@@ -82,6 +82,15 @@ NSString *const A3PedometerSettingsNumberOfGoalSteps = @"A3PedometerSettingsNumb
 		_numberFormatter.maximumFractionDigits = 1;
 	}
 	return _numberFormatter;
+}
+
+- (NSNumberFormatter *)integerFormatter {
+	if (!_integerFormatter) {
+		_integerFormatter = [NSNumberFormatter new];
+		[_integerFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+		_integerFormatter.maximumFractionDigits = 0;
+	}
+	return _integerFormatter;
 }
 
 @end
