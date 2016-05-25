@@ -84,10 +84,20 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	_remainingNumbersScrollAnimation = 2;
 
 	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-	if (screenBounds.size.width == 320.0) {
-		_stepsLabel.font = [UIFont fontWithName:@".SFUIDisplay-Medium" size:60];
+	if (!IS_IOS9) {
+		if (screenBounds.size.width == 320.0) {
+			_stepsLabel.font = [UIFont boldSystemFontOfSize:60];
+		} else {
+			_stepsLabel.font = [UIFont boldSystemFontOfSize:70];
+		}
 		_distanceLabelCenterYConstraint.constant = -12;
 		_floorsAscendedLabelCenterYConstraint.constant = 12;
+	} else {
+		if (screenBounds.size.width == 320.0) {
+			_stepsLabel.font = [UIFont fontWithName:@".SFUIDisplay-Medium" size:60];
+			_distanceLabelCenterYConstraint.constant = -12;
+			_floorsAscendedLabelCenterYConstraint.constant = 12;
+		}
 	}
 }
 
@@ -796,7 +806,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	NSString *dateFormatBefore = self.dateFormatterForCell.dateFormat;
 	[self.dateFormatterForCell setDateStyle:NSDateFormatterMediumStyle];
 	NSString *message = [NSString stringWithFormat:@"%@ %@ %@\n%@ %@\n%@\n%@ %@\n%@ %@",
-						 NSLocalizedString(@"Total", @"Total"),
+						 NSLocalizedString(@"Total_Pedometer", @"Total_Pedometer"),
 						 [self.pedometerHandler.integerFormatter stringFromNumber:@(numberOfEntities)],
 						 NSLocalizedString(@"days", @"days"),
 						 [self.pedometerHandler.integerFormatter stringFromNumber:totalSteps ?: @0],
@@ -804,7 +814,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 						 [self.pedometerHandler stringFromDistance:totalDistance],
 						 [self.pedometerHandler.integerFormatter stringFromNumber:totalFloorsAscended],
 						 NSLocalizedString(@"floors", @"floors"),
-						 NSLocalizedString(@"Since", @"Since"),
+						 NSLocalizedString(@"Since_Pedometer", @"Since_Pedometer"),
 						 [self.dateFormatterForCell stringFromDate:firstDate]
 						 ];
 	[self.dateFormatterForCell setDateFormat:dateFormatBefore];
