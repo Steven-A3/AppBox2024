@@ -115,28 +115,28 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="159.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="azc-pz-0Ra">
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="azc-pz-0Ra">
                                                     <rect key="frame" x="38" y="11" width="52" height="109"/>
                                                     <state key="normal" backgroundImage="HomeScreenStyle_list"/>
                                                     <connections>
                                                         <action selector="listButtonSelected:" destination="w9G-1V-Z0I" eventType="touchUpInside" id="tgM-LZ-DUD"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Hw-ek-qge">
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Hw-ek-qge">
                                                     <rect key="frame" x="134" y="11" width="52" height="109"/>
                                                     <state key="normal" backgroundImage="HomeScreenStyle_hexagon"/>
                                                     <connections>
                                                         <action selector="hexagonButtonSelected:" destination="w9G-1V-Z0I" eventType="touchUpInside" id="cuj-jh-x7i"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lgX-gr-2rr">
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lgX-gr-2rr">
                                                     <rect key="frame" x="224" y="11" width="52" height="109"/>
                                                     <state key="normal" backgroundImage="HomeScreenStyle_grid"/>
                                                     <connections>
                                                         <action selector="gridButtonSelected:" destination="w9G-1V-Z0I" eventType="touchUpInside" id="6aJ-xc-Yvb"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l7a-V1-SMB">
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l7a-V1-SMB">
                                                     <rect key="frame" x="29" y="130" width="71" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="71" id="DO7-qm-K7b"/>
@@ -148,7 +148,7 @@
                                                         <action selector="listButtonSelected:" destination="w9G-1V-Z0I" eventType="touchUpInside" id="Ogm-AC-ZqO"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Xh-7R-BIO">
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Xh-7R-BIO">
                                                     <rect key="frame" x="125" y="130" width="71" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="9am-ry-Y5M"/>
@@ -160,7 +160,7 @@
                                                         <action selector="hexagonButtonSelected:" destination="w9G-1V-Z0I" eventType="touchUpInside" id="XUM-ep-Ciw"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1J3-ea-Ni3">
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1J3-ea-Ni3">
                                                     <rect key="frame" x="215" y="130" width="71" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="71" id="4ae-eU-h0L"/>
@@ -234,9 +234,6 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="srb-MD-eSG" kind="push" id="ipT-Df-40g"/>
-                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -371,6 +368,7 @@
                     <connections>
                         <segue destination="KML-Ub-d8M" kind="push" identifier="passcode" id="bec-R4-ywE"/>
                         <segue destination="vRR-Rd-eut" kind="push" identifier="editFavorites" id="EaP-Dc-o1R"/>
+                        <segue destination="srb-MD-eSG" kind="push" identifier="recentToKeep" id="0Yx-ul-0Eo"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sD2-IR-dCF" userLabel="First Responder" sceneMemberID="firstResponder"/>

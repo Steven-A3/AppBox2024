@@ -1067,3 +1067,7 @@
 "km" = "km";
 "mi" = "mi";
 "Daily Average" = "1日平均";
+"Hide" = "隠す";
+"Show" = "表示";
+
+"Hide Other App Links" = "他のアプリのリンクを非表示にします";

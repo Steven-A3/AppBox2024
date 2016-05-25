@@ -207,6 +207,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 				[cell.textLabel setHidden:NO];
 				[cell.detailTextLabel setHidden:NO];
 				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+				cell.selectionStyle = UITableViewCellSelectionStyleDefault;
 			} else {
 				if ([appDelegate shouldPresentAd] || ![appDelegate isPaidAppVersionCustomer:appDelegate.appReceipt]) {
 					cell.accessoryView = nil;
@@ -214,11 +215,14 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 					[cell.detailTextLabel setHidden:YES];
 					cell.accessoryType = UITableViewCellAccessoryNone;
 				} else {
-					cell.textLabel.text = @"Hide Other App Links";
+					cell.textLabel.text = NSLocalizedString(@"Hide Other App Links", @"Hide Other App Links");
+					cell.textLabel.adjustsFontSizeToFitWidth = YES;
+					cell.textLabel.minimumScaleFactor = 0.5;
 					[cell.textLabel setHidden:NO];
 					[cell.detailTextLabel setHidden:YES];
 					cell.accessoryType = UITableViewCellAccessoryNone;
 					cell.accessoryView = self.hideOtherAppLinksSwitch;
+					cell.selectionStyle = UITableViewCellSelectionStyleNone;
 				}
 			}
 			break;
@@ -355,6 +359,10 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 					[actionSheet showInView:self.view];
 				}
 				[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+			} else if (indexPath.row == 2) {
+				if ([[A3AppDelegate instance] isMainMenuStyleList]) {
+					[self performSegueWithIdentifier:@"recentToKeep" sender:nil];
+				}
 			}
 			break;
 		}

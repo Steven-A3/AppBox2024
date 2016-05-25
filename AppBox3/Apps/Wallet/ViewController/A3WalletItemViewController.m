@@ -37,6 +37,7 @@
 #import "WalletCategory.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "MWPhotoBrowserPrivate.h"
+#import "NSString+WalletStyle.h"
 
 
 @interface A3WalletItemViewController () <UITextFieldDelegate, WalletItemEditDelegate, MWPhotoBrowserDelegate, MFMailComposeViewControllerDelegate, UITextViewDelegate, MFMessageComposeViewControllerDelegate>
@@ -49,6 +50,7 @@
 @property (nonatomic, weak) id copyingSourceView;
 @property (nonatomic, strong) WalletCategory *category;
 @property (nonatomic, strong) MWPhotoBrowser *photoBrowser;
+@property (nonatomic, strong) NSMutableDictionary *fieldStyleStatus;
 
 @end
 
@@ -769,8 +771,23 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
                 [self configureFloatingTextField:textCell.valueTextField];
                 
                 textCell.valueTextField.placeholder = field.name;
-                textCell.valueTextField.text = fieldItem.value;
-                
+
+				// 상태가 YES 라면 원래값이 보여진다는 의미
+				// 상태 정보가 없거나 NO이면 스타일에 따른 값을 표시한다.
+				if ([field.style isEqualToString:WalletFieldStyleNormal]) {
+					[textCell.showHideButton setHidden:YES];
+				} else {
+					textCell.fieldItem = fieldItem;
+					textCell.fieldStyle = field.style;
+					textCell.fieldStyleStatus = self.fieldStyleStatus;
+					[textCell addShowHideButton];
+				}
+				if ([self.fieldStyleStatus[fieldItem.uniqueID] boolValue]) {
+					textCell.valueTextField.text = fieldItem.value;
+				} else {
+					textCell.valueTextField.text = [fieldItem.value stringForStyle:field.style];
+				}
+
                 cell = textCell;
             }
         }
@@ -914,6 +931,14 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 	stringToCopy = [_copyingSourceView valueForKey:@"text"];
 
 	[pasteboard setString:stringToCopy];
+}
+
+
+- (NSMutableDictionary *)fieldStyleStatus {
+	if (!_fieldStyleStatus) {
+		_fieldStyleStatus = [NSMutableDictionary new];
+	}
+	return _fieldStyleStatus;
 }
 
 @end
