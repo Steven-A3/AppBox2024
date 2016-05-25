@@ -46,14 +46,16 @@
 	[self addSubview:self.numberOfStepsLabel];
 
 	[_numberOfStepsLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.centerX.equalTo(superview.centerX);
+		make.left.equalTo(superview.left);
+		make.right.equalTo(superview.right);
 		make.bottom.equalTo(_barGraphView.top).with.offset(-4);
 	}];
 
 	[self addSubview:self.distanceLabel];
 
 	[_distanceLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.centerX.equalTo(superview.centerX);
+		make.left.equalTo(superview.left).with.offset(1);
+		make.right.equalTo(superview.right).with.offset(-1);
 		make.bottom.equalTo(_barGraphView.bottom).with.offset(-4);
 	}];
 
@@ -83,6 +85,8 @@
 		_numberOfStepsLabel = [UILabel new];
 		_numberOfStepsLabel.textAlignment = NSTextAlignmentCenter;
 		_numberOfStepsLabel.font = IS_IOS9 ? [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:13] : [UIFont boldSystemFontOfSize:13];
+		_numberOfStepsLabel.adjustsFontSizeToFitWidth = YES;
+		_numberOfStepsLabel.minimumScaleFactor = 0.5;
 	}
 	return _numberOfStepsLabel;
 }
@@ -121,6 +125,8 @@
 		_distanceLabel.font = IS_IOS9 ? [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:12] : [UIFont boldSystemFontOfSize:12];
 		_distanceLabel.textAlignment = NSTextAlignmentCenter;
 		_distanceLabel.textColor = [UIColor whiteColor];
+		_distanceLabel.adjustsFontSizeToFitWidth = YES;
+		_distanceLabel.minimumScaleFactor = 0.5;
 	}
 	return _distanceLabel;
 }
@@ -130,7 +136,8 @@
 		_dateLabel = [UILabel new];
 		_dateLabel.textColor = [UIColor blackColor];
 		_dateLabel.textAlignment = NSTextAlignmentCenter;
-		_dateLabel.font = [UIFont systemFontOfSize:12];
+		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+		_dateLabel.font = [UIFont systemFontOfSize:screenBounds.size.width == 320 ? 10 : 12];
 	}
 	return _dateLabel;
 }

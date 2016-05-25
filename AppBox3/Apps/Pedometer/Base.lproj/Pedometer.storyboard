@@ -148,7 +148,9 @@
                         <outlet property="collectionView" destination="Qts-Du-edE" id="7GF-eg-DoI"/>
                         <outlet property="descriptionLabel" destination="zdg-Et-DZB" id="Xw5-li-r5A"/>
                         <outlet property="distanceLabel" destination="q3d-go-tDE" id="Txj-hZ-fPm"/>
+                        <outlet property="distanceLabelCenterYConstraint" destination="Dwf-Dg-Ady" id="Fid-pi-79b"/>
                         <outlet property="floorsAscended" destination="fru-j7-Hmo" id="IXC-aE-F72"/>
+                        <outlet property="floorsAscendedLabelCenterYConstraint" destination="QAM-3k-SRS" id="1Ei-3X-yYB"/>
                         <outlet property="settingsButton" destination="rZD-ng-GkZ" id="k5h-CU-Miw"/>
                         <outlet property="stepsBackgroundView" destination="x9S-Xa-pJz" id="fAe-mS-szG"/>
                         <outlet property="stepsLabel" destination="Kdl-hB-wMB" id="q3j-gx-9Sa"/>

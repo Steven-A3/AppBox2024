@@ -36,6 +36,8 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UIButton *settingsButton;
 @property (nonatomic, weak) IBOutlet UILabel *descriptionLabel;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *distanceLabelCenterYConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *floorsAscendedLabelCenterYConstraint;
 
 @property (nonatomic, strong) CMPedometer *pedometer;
 @property (nonatomic, strong) NSDateFormatter *searchDateFormatter;
@@ -79,6 +81,13 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
 	_remainingNumbersScrollAnimation = 2;
+
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	if (screenBounds.size.width == 320.0) {
+		_stepsLabel.font = [UIFont fontWithName:@".SFUIDisplay-Medium" size:60];
+		_distanceLabelCenterYConstraint.constant = -12;
+		_floorsAscendedLabelCenterYConstraint.constant = 12;
+	}
 }
 
 - (void)applicationDidBecomeActive {
@@ -148,7 +157,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 		make.left.equalTo(view.left);
 		make.right.equalTo(view.right);
 		make.top.equalTo(view.top).with.offset(position);
-		make.height.equalTo(@0.5);
+		make.height.equalTo(@(1.0 / [[UIScreen mainScreen] scale]));
 	}];
 }
 
@@ -482,15 +491,16 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	return _dateFormatterForCell;
 }
 
+#if TARGET_IPHONE_SIMULATOR
 - (void)setupTestData {
 	NSArray *testData = @[
-						  @[@"2016-05-18", @2453, @4, @1900],
-						  @[@"2016-05-19", @10496, @14, @7100],
-						  @[@"2016-05-20", @3841, @8, @2800],
-						  @[@"2016-05-21", @26522, @11, @19700],
-						  @[@"2016-05-22", @4554, @13, @3300],
-						  @[@"2016-05-23", @6858, @4, @4300],
-						  @[@"2016-05-24", @8860, @9, @6200],
+						  @[@"2016-05-19", @2453, @4, @1900],
+						  @[@"2016-05-20", @10496, @14, @7100],
+						  @[@"2016-05-21", @3841, @8, @2800],
+						  @[@"2016-05-22", @26522, @11, @19700],
+						  @[@"2016-05-23", @4554, @13, @3300],
+						  @[@"2016-05-24", @6858, @4, @4300],
+						  @[@"2016-05-25", @23860, @9, @6200],
 						  ];
 
 	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
@@ -507,6 +517,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	}
 	[savingContext MR_saveOnlySelfAndWait];
 }
+#endif
 
 - (void)updateToday {
 	NSString *today = [self.searchDateFormatter stringFromDate:[NSDate date]];
@@ -528,10 +539,21 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 		floorsAscended = [self.pedometerHandler.integerFormatter stringFromNumber:@0];
 		distanceInfo = [self.pedometerHandler distanceValueForMeasurementSystemFromDistance:@0];
 	}
-	NSDictionary *valueAttribute = @{NSFontAttributeName:IS_IOS9 ? [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:24] : [UIFont boldSystemFontOfSize:24],
-			NSForegroundColorAttributeName:[UIColor whiteColor]};
-	NSDictionary *unitAttribute = @{NSFontAttributeName:IS_IOS9 ? [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:15] : [UIFont boldSystemFontOfSize:15],
-			NSForegroundColorAttributeName:[UIColor whiteColor]};
+	NSDictionary *valueAttribute;
+	NSDictionary *unitAttribute;
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	if (screenBounds.size.width == 320) {
+		valueAttribute = @{NSFontAttributeName:IS_IOS9 ? [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:21] : [UIFont boldSystemFontOfSize:21],
+				NSForegroundColorAttributeName:[UIColor whiteColor]};
+		unitAttribute = @{NSFontAttributeName:IS_IOS9 ? [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:10] : [UIFont boldSystemFontOfSize:10],
+				NSForegroundColorAttributeName:[UIColor whiteColor]};
+	} else {
+		valueAttribute = @{NSFontAttributeName:IS_IOS9 ? [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:24] : [UIFont boldSystemFontOfSize:24],
+				NSForegroundColorAttributeName:[UIColor whiteColor]};
+		unitAttribute = @{NSFontAttributeName:IS_IOS9 ? [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:15] : [UIFont boldSystemFontOfSize:15],
+				NSForegroundColorAttributeName:[UIColor whiteColor]};
+	}
+
 	NSMutableAttributedString *floorsAscendedAttributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ ", floorsAscended]
 																									   attributes:valueAttribute];
 	NSAttributedString *floorUnitAttributedString = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"floors", @"floors") attributes:unitAttribute];
