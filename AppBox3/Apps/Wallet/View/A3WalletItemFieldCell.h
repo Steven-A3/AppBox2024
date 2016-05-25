@@ -9,10 +9,19 @@
 #import <UIKit/UIKit.h>
 #import "JVFloatLabeledTextField.h"
 
+@class WalletFieldItem;
+@class WalletField;
+
 @interface A3WalletItemFieldCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet JVFloatLabeledTextField *valueTextField;
-@property (strong, nonatomic) UIButton *deleteButton;
+@property (nonatomic, weak) WalletFieldItem *fieldItem;
+@property (nonatomic, copy) NSString *fieldStyle;
+@property (nonatomic, weak) IBOutlet JVFloatLabeledTextField *valueTextField;
+@property (nonatomic, strong) UIButton *deleteButton;
+@property (nonatomic, strong) UIButton *showHideButton;
+@property (nonatomic, weak) NSMutableDictionary *fieldStyleStatus;
 
 - (void)addDeleteButton;
+
+- (void)addShowHideButton;
 @end

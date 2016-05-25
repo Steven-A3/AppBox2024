@@ -8,6 +8,9 @@
 
 #import "A3WalletItemFieldCell.h"
 #import "UIImage+imageWithColor.h"
+#import "WalletFieldItem.h"
+#import "WalletField.h"
+#import "NSString+WalletStyle.h"
 
 @implementation A3WalletItemFieldCell
 
@@ -32,6 +35,8 @@
     [super awakeFromNib];
 
 	CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
+	_valueTextField.adjustsFontSizeToFitWidth = YES;
+	_valueTextField.minimumFontSize = 4.0;
 	
 	[_valueTextField makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.left).with.offset(leading);
@@ -59,6 +64,30 @@
 - (void)prepareForReuse {
 	[_deleteButton removeFromSuperview];
 	_deleteButton = nil;
+}
+
+- (void)addShowHideButton {
+	if (!_showHideButton) {
+		_showHideButton = [UIButton buttonWithType:UIButtonTypeSystem];
+		[_showHideButton setTitle:[_fieldStyleStatus[_fieldItem.uniqueID] boolValue] ? NSLocalizedString(@"Hide", @"Hide") : NSLocalizedString(@"Show", @"Show") forState:UIControlStateNormal];
+		[_showHideButton addTarget:self action:@selector(showHideButtonAction) forControlEvents:UIControlEventTouchUpInside];
+		[self addSubview:_showHideButton];
+
+		[_showHideButton makeConstraints:^(MASConstraintMaker *make) {
+			make.right.equalTo(self.right).with.offset(-15);
+			make.top.equalTo(self.top).with.offset(5);
+		}];
+	}
+}
+
+- (void)showHideButtonAction {
+	_fieldStyleStatus[_fieldItem.uniqueID] = [_fieldStyleStatus[_fieldItem.uniqueID] boolValue] ? @NO : @YES;
+	if ([_fieldStyleStatus[_fieldItem.uniqueID] boolValue]) {
+		_valueTextField.text = _fieldItem.value;
+	} else {
+		_valueTextField.text = [_fieldItem.value stringForStyle:_fieldStyle];
+	}
+	[_showHideButton setTitle:[_fieldStyleStatus[_fieldItem.uniqueID] boolValue] ? NSLocalizedString(@"Hide", @"Hide") : NSLocalizedString(@"Show", @"Show") forState:UIControlStateNormal];
 }
 
 @end
