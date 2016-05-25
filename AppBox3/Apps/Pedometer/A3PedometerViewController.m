@@ -20,6 +20,7 @@
 #import "NSDateFormatter+A3Addition.h"
 
 NSString *const A3PedometerSettingsDidSearchHealthStore = @"A3PedometerSettingsDidSearchHealthStore";
+NSString *const A3PedometerNumberOfTimesDidShowScrollHelp = @"A3PedometerNumberOfTimesDidShowScrollHelp";
 
 typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	A3PedometerQueryTypeStepCount,
@@ -169,8 +170,13 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	}
 	if (!_viewDidAppearDidRun) {
 		_viewDidAppearDidRun = YES;
-		if (!_scrollHelperTimer) {
-			_scrollHelperTimer = [NSTimer scheduledTimerWithTimeInterval:6 target:self selector:@selector(animateScroll) userInfo:nil repeats:YES];
+		NSInteger numberOfTimes = [[NSUserDefaults standardUserDefaults] integerForKey:A3PedometerNumberOfTimesDidShowScrollHelp];
+		if (numberOfTimes < 3) {
+			[[NSUserDefaults standardUserDefaults] setInteger:numberOfTimes + 1 forKey:A3PedometerNumberOfTimesDidShowScrollHelp];
+			
+			if (!_scrollHelperTimer) {
+				_scrollHelperTimer = [NSTimer scheduledTimerWithTimeInterval:6 target:self selector:@selector(animateScroll) userInfo:nil repeats:YES];
+			}
 		}
 	}
 }
@@ -803,7 +809,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 						 ];
 	[self.dateFormatterForCell setDateFormat:dateFormatBefore];
 
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Data Imported"
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Data Imported", @"Data Imported")
 														message:message
 													   delegate:nil
 											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
