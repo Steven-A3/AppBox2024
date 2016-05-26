@@ -20,6 +20,7 @@
 #import "UIColor+A3Addition.h"
 #import "A3InstructionViewController.h"
 #import "A3UserDefaults.h"
+#import "WalletFieldItem+initialize.h"
 
 @interface A3WalletAllViewController () <UISearchBarDelegate, UISearchDisplayDelegate, A3InstructionViewControllerDelegate, A3ViewControllerProtocol>
 
@@ -110,7 +111,6 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 {
 	[super viewWillAppear:animated];
 
-	[self.view addSubview:self.searchBar];
 	[self showLeftNavigationBarItems];
 
 	// 데이타 갱신
@@ -135,7 +135,7 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	}
-	[self.navigationController setNavigationBarHidden:NO];
+	[self.navigationController setNavigationBarHidden:[_mySearchDisplayController isActive]];
 
 	[self setupInstructionView];
 }
@@ -143,7 +143,7 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
-	[self.searchBar removeFromSuperview];
+//	[self.searchBar removeFromSuperview];
 
 	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
 		FNLOG();
@@ -660,9 +660,23 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 
 - (void)filterContentForSearchText:(NSString*)searchText
 {
+	NSMutableArray *uniqueIDs = [NSMutableArray new];
+	if (searchText && [searchText length]) {
+		NSPredicate *predicateForValues = [NSPredicate predicateWithFormat:@"value contains[cd] %@", searchText];
+		NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"WalletFieldItem"];
+		fetchRequest.predicate = predicateForValues;
+		fetchRequest.resultType = NSDictionaryResultType;
+		fetchRequest.propertiesToFetch = [WalletFieldItem MR_propertiesNamed:@[@"walletItemID"]];
+		NSError *error;
+		NSArray *results = [[NSManagedObjectContext MR_defaultContext] executeFetchRequest:fetchRequest error:&error];
+		for (NSDictionary *item in results) {
+			[uniqueIDs addObjectsFromArray:[item allValues]];
+		}
+	}
+	
 	NSString *query = searchText;
 	if (query && query.length) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name contains[cd] %@", query];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name contains[cd] %@ OR uniqueID in %@", query, uniqueIDs];
 		_filteredResults = [self.items filteredArrayUsingPredicate:predicate];
 	} else {
 		_filteredResults = nil;

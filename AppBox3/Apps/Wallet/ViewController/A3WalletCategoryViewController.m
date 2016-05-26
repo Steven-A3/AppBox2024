@@ -111,8 +111,6 @@
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
-    [self.searchBar removeFromSuperview];
-
 	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
 		[self removeObserver];
 	}
@@ -147,8 +145,6 @@
 {
     [super viewWillAppear:animated];
 
-    [self.view addSubview:self.searchBar];
-
     // 테이블 항목을 선택시에는 카테고리 이름이 backBar Item 이 되고,나머지는 공백.
     // viewWillAppear 에서 공백으로 초기화해줌 (테이블 항목 선택시, 타이틀을 카테고리 이름으로 함)
 
@@ -172,7 +168,7 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	[self.navigationController setNavigationBarHidden:NO];
+	[self.navigationController setNavigationBarHidden:[_mySearchDisplayController isActive]];
 	
 	[self setupInstructionView];
 }
@@ -622,10 +618,24 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 
 - (void)filterContentForSearchText:(NSString*)searchText
 {
-    FNLOG();
+	NSMutableArray *uniqueIDs = [NSMutableArray new];
+	if (searchText && [searchText length]) {
+		NSPredicate *predicateForValues = [NSPredicate predicateWithFormat:@"value contains[cd] %@", searchText];
+		NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"WalletFieldItem"];
+		fetchRequest.predicate = predicateForValues;
+		fetchRequest.resultType = NSDictionaryResultType;
+		fetchRequest.propertiesToFetch = [WalletFieldItem MR_propertiesNamed:@[@"walletItemID"]];
+		NSError *error;
+		NSArray *results = [[NSManagedObjectContext MR_defaultContext] executeFetchRequest:fetchRequest error:&error];
+		for (NSDictionary *item in results) {
+			[uniqueIDs addObjectsFromArray:[item allValues]];
+		}
+	}
+	
+    FNLOG(@"%@", uniqueIDs);
     NSPredicate *predicate;
     if (searchText && searchText.length) {
-        predicate = [NSPredicate predicateWithFormat:@"categoryID == %@ AND name contains[cd] %@", self.category.uniqueID, searchText];
+        predicate = [NSPredicate predicateWithFormat:@"categoryID == %@ AND (name contains[cd] %@ OR uniqueID in %@)", self.category.uniqueID, searchText, uniqueIDs];
     } else {
         predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", self.category.uniqueID];
     }
