@@ -951,7 +951,24 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 	if ([view isKindOfClass:[UITableViewHeaderFooterView class]]) {
 		UITableViewHeaderFooterView *headerView = (UITableViewHeaderFooterView *) view;
 		headerView.textLabel.font = [UIFont fontWithName:headerView.textLabel.font.fontName size:17];
+		headerView.backgroundColor = [UIColor lightGrayColor];
 	}
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	UIView *view = [UIView new];
+	view.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:1.0];
+
+	UILabel *sectionTitle = [UILabel new];
+	sectionTitle.font = [UIFont boldSystemFontOfSize:17];
+	sectionTitle.text = self.sectionTitles[section];
+	[view addSubview:sectionTitle];
+
+	[sectionTitle makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(view.left).with.offset(IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28);
+		make.centerY.equalTo(view.centerY);
+	}];
+	return view;
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {

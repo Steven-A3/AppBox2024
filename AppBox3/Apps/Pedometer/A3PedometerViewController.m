@@ -510,13 +510,13 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 #if TARGET_IPHONE_SIMULATOR
 - (void)setupTestData {
 	NSArray *testData = @[
-						  @[@"2016-05-19", @2453, @4, @1900],
-                          @[@"2016-05-20", @8860, @9, @6200],
-                          @[@"2016-05-21", @3841, @8, @2800],
-                          @[@"2016-05-22", @26522, @11, @19700],
-                          @[@"2016-05-23", @4554, @13, @3300],
-                          @[@"2016-05-24", @6858, @4, @4300],
-                          @[@"2016-05-25", @10496, @14, @7100],
+						  @[@"2016-05-20", @2453, @4, @1900],
+                          @[@"2016-05-21", @8860, @9, @6200],
+                          @[@"2016-05-22", @3841, @8, @2800],
+                          @[@"2016-05-23", @26522, @11, @19700],
+                          @[@"2016-05-24", @4554, @13, @3300],
+                          @[@"2016-05-25", @6858, @4, @4300],
+                          @[@"2016-05-26", @10496, @99, @7100],
 						  ];
 
 	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
@@ -561,7 +561,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	if (screenBounds.size.width == 320) {
 		valueAttribute = @{NSFontAttributeName:IS_IOS9 ? [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:21] : [UIFont boldSystemFontOfSize:21],
 				NSForegroundColorAttributeName:[UIColor whiteColor]};
-		unitAttribute = @{NSFontAttributeName:IS_IOS9 ? [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:10] : [UIFont boldSystemFontOfSize:10],
+		unitAttribute = @{NSFontAttributeName:IS_IOS9 ? [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:12] : [UIFont boldSystemFontOfSize:12],
 				NSForegroundColorAttributeName:[UIColor whiteColor]};
 	} else {
 		valueAttribute = @{NSFontAttributeName:IS_IOS9 ? [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:24] : [UIFont boldSystemFontOfSize:24],

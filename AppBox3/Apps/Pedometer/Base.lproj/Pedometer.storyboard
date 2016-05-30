@@ -29,13 +29,13 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="18.7 km" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q3d-go-tDE">
-                                        <rect key="frame" x="420" y="117" width="71.5" height="24"/>
+                                        <rect key="frame" x="414" y="117" width="71.5" height="24"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="31 floors" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fru-j7-Hmo">
-                                        <rect key="frame" x="420" y="147" width="79.5" height="24"/>
+                                        <rect key="frame" x="414" y="147" width="79.5" height="24"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -102,7 +102,7 @@
                                     <constraint firstItem="fru-j7-Hmo" firstAttribute="leading" secondItem="q3d-go-tDE" secondAttribute="leading" id="dNM-G1-RJc"/>
                                     <constraint firstItem="zdg-Et-DZB" firstAttribute="leading" secondItem="x9S-Xa-pJz" secondAttribute="leading" constant="10" id="gqt-eY-ggf"/>
                                     <constraint firstAttribute="trailing" secondItem="zdg-Et-DZB" secondAttribute="trailing" constant="10" id="jAQ-Ry-P0Z"/>
-                                    <constraint firstItem="q3d-go-tDE" firstAttribute="leading" secondItem="x9S-Xa-pJz" secondAttribute="trailing" multiplier="0.7" id="leM-hT-xpM"/>
+                                    <constraint firstItem="q3d-go-tDE" firstAttribute="leading" secondItem="x9S-Xa-pJz" secondAttribute="trailing" multiplier="0.69" id="leM-hT-xpM"/>
                                     <constraint firstAttribute="bottom" secondItem="zdg-Et-DZB" secondAttribute="bottom" constant="12" id="qnr-lz-s4M"/>
                                 </constraints>
                             </view>
