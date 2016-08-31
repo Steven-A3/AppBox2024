@@ -957,9 +957,9 @@ NSUInteger const jewishTable[][14][2] = {
 - (NSMutableArray * _Nonnull)il_HolidaysInYear {
 	NSUInteger year = self.year;
 
-	if ((year < 2014) || (year > 2016)) {
+	if ((year < 2014) || (year > 2017)) {
 		NSMutableArray *holidays = [NSMutableArray new];
-		NSDictionary *holidayItem = @{kHolidayName:@"Israel Holidays (2014~2016 only)"};
+		NSDictionary *holidayItem = @{kHolidayName:@"Israel Holidays (2014~2017 only)"};
 		[holidays addObject:holidayItem];
 		return holidays;
 	}
