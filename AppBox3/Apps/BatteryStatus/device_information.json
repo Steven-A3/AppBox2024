@@ -20,6 +20,10 @@
         "iPhone8,1": "iPhone 6s",
         "iPhone8,2": "iPhone 6s Plus",
 		"iPhone8,4": "iPhone SE",
+		"iPhone9,1": "iPhone 7",
+		"iPhone9,3": "iPhone 7",
+		"iPhone9,2": "iPhone 7 Plus",
+		"iPhone9,4": "iPhone 7 Plus",
         "iPad2,1": "iPad 2 (Wi-Fi)",
         "iPad2,2": "iPad 2",
         "iPad2,3": "iPad 2",
@@ -60,6 +64,22 @@
 			"GPU": "PowerVR GT7600(Hexa-core, 450MHz)",
 			"Memory": "2GB LPDDR4 DRAM",
 			"PPI": "326"
+		},
+		"iPhone 7": {
+			"Model": "iPhone 7",
+			"Chips": "A10 Fusion chip with 64-bit architecture\nM10 motion coprocessor",
+			"CPU": "TBD",
+			"GPU": "TBD",
+			"Memory": "2GB",
+			"PPI": "326"
+		},
+		"iPhone 7 Plus": {
+			"Model": "iPhone 6s Plus",
+			"Chips": "A10 Fusion chip with 64-bit architecture\nM10 motion coprocessor",
+			"CPU": "TBD",
+			"GPU": "TBD",
+			"Memory": "2GB",
+			"PPI": "401"
 		},
         "iPhone 6s": {
             "Model": "iPhone 6s",
@@ -368,6 +388,26 @@
 			"Video playback": 13,
 			"Audio playback": 50,
 			"Standby": 240
+		},
+		"iPhone 7": {
+			"Model": "iPhone 7",
+			"Talk Time on 3G": 14,
+			"Internet on 3G": 12,
+			"Internet on LTE": 12,
+			"Internet on Wi-Fi": 14,
+			"Video playback": 13,
+			"Audio playback": 40,
+			"Standby": 240
+		},
+		"iPhone 7 Plus": {
+			"Model": "iPhone 7 Plus",
+			"Talk Time on 3G": 21,
+			"Internet on 3G": 13,
+			"Internet on LTE": 13,
+			"Internet on Wi-Fi": 15,
+			"Video playback": 14,
+			"Audio playback": 60,
+			"Standby": 384
 		},
         "iPhone 6s": {
             "Model": "iPhone 6s",
