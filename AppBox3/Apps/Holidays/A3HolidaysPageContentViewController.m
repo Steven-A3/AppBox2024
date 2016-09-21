@@ -25,6 +25,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	HolidaysHeaderViewSegmentedControl = 1000,
 	HolidaysHeaderViewYearLabel,
 	HolidaysHeaderViewNameLabel,
+	HolidaysHeaderViewDateLabel,
 	HolidaysHeaderViewDaysLeftLabel,
 	HolidaysHeaderViewCountryLabel
 };
@@ -461,6 +462,18 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		make.bottom.equalTo(yearBorderView.top).with.offset(IS_IPHONE ? -62 : -124);
 	}];
 
+	UILabel *dateLabel = [UILabel new];
+	dateLabel.tag = HolidaysHeaderViewDateLabel;
+	dateLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:19];
+	dateLabel.textColor = [UIColor whiteColor];
+	dateLabel.textAlignment = NSTextAlignmentCenter;
+	[headerView addSubview:dateLabel];
+	
+	[dateLabel makeConstraints:^(MASConstraintMaker *make) {
+		make.centerX.equalTo(headerView.centerX);
+		make.bottom.equalTo(nameLabel.top).with.offset(-4);
+	}];
+	
 	UILabel *daysLeftLabel = [UILabel new];
 	daysLeftLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:17];
 	daysLeftLabel.tag = HolidaysHeaderViewDaysLeftLabel;
@@ -471,8 +484,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 
 	[daysLeftLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(headerView.centerX);
-		make.width.equalTo(@(viewWidth - (IS_IPHONE ? 20 : 28 * 2)));
-		make.bottom.equalTo(nameLabel.top).with.offset(4);
+		make.bottom.equalTo(dateLabel.top).with.offset(-4);
 	}];
 
 	UILabel *countryNameLabel = [UILabel new];
@@ -519,6 +531,9 @@ static NSString *const CellIdentifier = @"holidaysCell";
 
 		UILabel *daysLeftLabel = (UILabel *)[headerView viewWithTag:HolidaysHeaderViewDaysLeftLabel];
 		daysLeftLabel.text = [upcomingHoliday[kHolidayDate] daysLeft];
+
+		UILabel *dateLabel = (UILabel *)[headerView viewWithTag:HolidaysHeaderViewDateLabel];
+		dateLabel.text = [self.pageViewController stringFromDate: upcomingHoliday[kHolidayDate]];
 
 		A3FSegmentedControl *segmentedControl = (A3FSegmentedControl *) [headerView viewWithTag:HolidaysHeaderViewSegmentedControl];
 		segmentedControl.items = @[
