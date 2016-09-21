@@ -295,9 +295,15 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 		cell.flagImageView.image = [UIImage imageNamed:[_currencyDataManager flagImageNameForCode:_targetCurrencyCode]];
 
 		cell.valueField.text = self.targetValueString;
-		cell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, Rate = %0.4g", @"%@, Rate = %0.4g"),
-							   [_currencyDataManager symbolForCode:_targetCurrencyCode],
+		NSString *symbol = [_currencyDataManager symbolForCode:_targetCurrencyCode];
+		if ([symbol length]) {
+			cell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, Rate = %0.4g", @"%@, Rate = %0.4g"),
+							   symbol,
 							   self.conversionRate];
+		} else {
+			cell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Rate = %0.4g", @"%@, Rate = %0.4g"),
+								   self.conversionRate];
+		}
 		cell.codeLabel.text = _targetCurrencyCode;
 		_targetTextField = cell.valueField;
 	}
