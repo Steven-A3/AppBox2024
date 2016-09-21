@@ -18,8 +18,8 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
 @interface A3DaysCounterSlideshowViewController ()
-@property (strong, nonatomic) NSArray *itemArray;
 
+@property (strong, nonatomic) NSArray *itemArray;
 @property (strong, nonatomic) UIView *currentView;
 @property (strong, nonatomic) UIView *nextView;
 

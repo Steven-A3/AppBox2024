@@ -369,11 +369,11 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 
 - (void)setupSegmentSortArrow
 {
-    float topViewWidth = self.headerView.bounds.size.width;
+	float topViewWidth = [A3UIDevice screenBoundsAdjustedWithOrientation].size.width;
     float segmentWidth = self.sortTypeSegmentCtrl.frame.size.width;
     float arrowRightMargin = IS_IPAD ? 30 : 15;
     
-    switch (self.sortType) {
+		switch (self.sortType) {
         case EventSortType_Date:
         {
             self.sortArrowImgView.center = CGPointMake(topViewWidth / 2.0 - arrowRightMargin, self.sortTypeSegmentCtrl.center.y);
