@@ -174,6 +174,8 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 						*stop = YES;
 					}
 				}];
+			} else {
+				photoIndex = 0;
 			}
 
 			self.photoInfo = candidates[photoIndex];
