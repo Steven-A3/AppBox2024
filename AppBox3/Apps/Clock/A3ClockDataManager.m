@@ -22,7 +22,7 @@
 @property (nonatomic, strong) NSMutableArray *weatherForecast;
 @property (nonatomic, strong) NSTimer *clockTickTimer;
 @property (nonatomic, strong) NSTimer *weatherTimer;
-@property (nonatomic, strong) NSMutableArray *addressCandidates;
+@property (nonatomic, assign) NSTimeInterval lastRequestTime;
 
 @end
 
@@ -40,6 +40,7 @@
 
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+		_lastRequestTime = 0;
 	}
 
 	return self;
@@ -377,7 +378,7 @@
 	AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
 	operation.responseSerializer = [AFJSONResponseSerializer serializer];
 	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id JSON) {
-		
+//		FNLOG(@"%@", JSON);
 		self.clockInfo.currentWeather = [A3Weather new];
 		self.clockInfo.currentWeather.unit = [[A3UserDefaults standardUserDefaults] clockUsesFahrenheit] ? SCWeatherUnitFahrenheit : SCWeatherUnitCelsius;
 		// Results Unit
@@ -401,7 +402,6 @@
 			_weatherTimer = [NSTimer scheduledTimerWithTimeInterval:60 * 60 target:self selector:@selector(updateWeather) userInfo:nil repeats:NO];
 		}
 
-		_addressCandidates = nil;
 		_locationManager = nil;
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 		[self.locationManager startUpdatingLocation];
@@ -410,32 +410,33 @@
 	[operation start];
 }
 
-- (void)getWOEIDWithCandidates {
-	if (![_addressCandidates count]) {
-		[_locationManager startUpdatingLocation];
+- (void)getWOEIDWithLocation:(CLLocation *)location {
+	if ([[NSDate date] timeIntervalSinceReferenceDate] - _lastRequestTime < 5) {
 		return;
 	}
+	
+	_lastRequestTime = [[NSDate date] timeIntervalSinceReferenceDate];
 
-	NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://where.yahooapis.com/v1/places.q(%@)?appid=%@&format=json", [_addressCandidates lastObject], YAHOO_APP_ID] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://query.yahooapis.com/v1/public/yql?q=select%%20woeid%%20from%%20geo.places%%20where%%20text%%3D%%22(%f,%f)%%22%%20limit%%201&diagnostics=false&format=json",
+									   location.coordinate.latitude, location.coordinate.longitude]];
 
-	NSURLRequest *request = [NSURLRequest requestWithURL:url];
-
-	AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-	operation.responseSerializer = [AFJSONResponseSerializer serializer];
-	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id JSON) {
-		NSString *WOEID = [[[[[JSON objectForKey:@"places"] objectForKey:@"place"] objectAtIndex:0] objectForKey:@"locality1 attrs"] objectForKey:@"woeid"];
-		if (WOEID) {
-			[self getWeatherWithWOEID:WOEID];
-		} else {
-			[_addressCandidates removeLastObject];
-			[self getWOEIDWithCandidates];
+	NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+	NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration];
+	NSURLSessionDataTask *task = [session dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+		if (error) {
+			return;
 		}
-	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		[_addressCandidates removeLastObject];
-		[self getWOEIDWithCandidates];
+		NSError *parseError;
+		NSDictionary *woeidData = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&parseError];
+		if (parseError) {
+			return;
+		}
+		NSString *woeid = woeidData[@"query"][@"results"][@"place"][@"woeid"];
+		if ([woeid length]) {
+			[self getWeatherWithWOEID:woeid];
+		}
 	}];
-
-	[operation start];
+	[task resume];
 
 	return;
 }
@@ -451,54 +452,7 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
 	[manager stopMonitoringSignificantLocationChanges];
 
-	CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
-
-#ifdef  ALERT_LOCATION
-		CLLocation *location = locations[0];
-		NSString *log = [NSString stringWithFormat:@"latitude = %f, longitude = %f", location.coordinate.latitude, location.coordinate.longitude];
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Location" message:log delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[alertView show];
-#endif
-
-	[geoCoder reverseGeocodeLocation:locations[0] completionHandler:^(NSArray *placeMarks, NSError *error) {
-		if (error) {
-#ifdef        ALERT_LOCATION
-			CLLocation *location = locations[0];
-			NSString *log = [NSString stringWithFormat:@"%@\n%f, %f", error.localizedDescription, location.coordinate.latitude, location.coordinate.longitude];
-			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Location" message:log delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-			[alertView show];
-#endif
-			return;
-		}
-		for (CLPlacemark *placeMark in placeMarks) {
-
-			NSMutableString *log = [NSMutableString new];
-
-			[log appendString:[NSString stringWithFormat:@"Description:%@\n", [placeMarks description]]];
-			[log appendString:[NSString stringWithFormat:@"addressDictionary:%@\n", placeMark.addressDictionary]];
-			[log appendString:[NSString stringWithFormat:@"administrativeArea:%@\n", placeMark.administrativeArea]];
-			[log appendString:[NSString stringWithFormat:@"areaOfInterest:%@\n", placeMark.areasOfInterest]];
-			[log appendString:[NSString stringWithFormat:@"locality:%@\n", placeMark.locality]];
-			[log appendString:[NSString stringWithFormat:@"name:%@\n", placeMark.name]];
-			[log appendString:[NSString stringWithFormat:@"subLocality:%@\n", placeMark.subLocality]];
-
-#ifdef  ALERT_LOCATION
-			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Location" message:log delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-			[alertView show];
-#endif
-
-			if (!_addressCandidates) _addressCandidates = [NSMutableArray new];
-			if ([placeMark.subLocality length]) [_addressCandidates addObject:placeMark.subLocality];
-			if ([placeMark.administrativeArea length]) [_addressCandidates addObject:placeMark.administrativeArea];
-			if ([placeMark.locality length]) [_addressCandidates addObject:placeMark.locality];
-		}
-
-		if ([_addressCandidates count]) {
-			[self getWOEIDWithCandidates];
-		} else {
-			[manager startUpdatingLocation];
-		}
-	}];
+	[self getWOEIDWithLocation:locations[0]];
 }
 
 - (NSString *)autoDimString {
