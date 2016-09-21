@@ -44,9 +44,10 @@
     return retImage;
 }
 
-
 - (void)awakeFromNib
 {
+	[super awakeFromNib];
+	
 	[self setThumbImage:[self createCircleThumbImage] forState:UIControlStateNormal];
     [self setMaximumTrackTintColor:[UIColor colorWithRGBRed:203 green:203 blue:203 alpha:255]];
     [self setMinimumTrackTintColor:[[A3AppDelegate instance] themeColor]];

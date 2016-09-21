@@ -111,6 +111,8 @@
 
 - (void)awakeFromNib
 {
+	[super awakeFromNib];
+	
     [self constructView];
 }
 

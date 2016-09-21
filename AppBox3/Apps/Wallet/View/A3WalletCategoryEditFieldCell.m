@@ -24,6 +24,8 @@
 }
 
 - (void)awakeFromNib {
+	[super awakeFromNib];
+	
     if (IS_IOS7) {
         [_arrowImage makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.contentView.right).with.offset(-20);

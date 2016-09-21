@@ -26,6 +26,8 @@
 
 - (void)awakeFromNib
 {
+	[super awakeFromNib];
+	
     // Initialization code
 	CGFloat leadingConstant = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 	_titleLabelLeadingConstraint.constant = leadingConstant;

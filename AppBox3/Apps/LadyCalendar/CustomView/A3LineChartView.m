@@ -40,6 +40,8 @@
 
 - (void)awakeFromNib
 {
+	[super awakeFromNib];
+	
 	self.xAxisColor = [UIColor colorWithRGBRed:200 green:200 blue:200 alpha:255];
 	self.xLabelColor = [UIColor colorWithRGBRed:142 green:142 blue:147 alpha:255];
 	self.yLabelColor = [UIColor colorWithRGBRed:142 green:142 blue:147 alpha:255];

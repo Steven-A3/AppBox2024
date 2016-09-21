@@ -13,6 +13,8 @@
 
 - (void)awakeFromNib
 {
+	[super awakeFromNib];
+	
     self.fillColor = [UIColor colorWithRed:1.0 green:204.0/255.0 blue:0.0 alpha:1.0];
     self.strokColor = self.fillColor;
     

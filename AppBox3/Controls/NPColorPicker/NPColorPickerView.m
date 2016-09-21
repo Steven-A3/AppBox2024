@@ -204,7 +204,9 @@ NSString * kColorProperty = @"color";
 }
 
 -(void)awakeFromNib {
-   [self defaultInitializer_];
+	[super awakeFromNib];
+	
+	[self defaultInitializer_];
 }
 
 //--------------------------------------------------------------------------------------------------------------------

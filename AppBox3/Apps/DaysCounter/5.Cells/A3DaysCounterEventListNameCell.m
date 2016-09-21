@@ -21,6 +21,8 @@
 
 - (void)awakeFromNib
 {
+	[super awakeFromNib];
+	
     // Initialization code
 //    self.titleBottomConst.constant = IS_RETINA ? 37.5 : 37;
 //    self.sinceBottomConst.constant = IS_RETINA ? 20.5 : 20;

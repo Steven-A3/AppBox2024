@@ -21,6 +21,8 @@
 @implementation A3SettingsHomeStyleSelectTableViewCell
 
 - (void)awakeFromNib {
+	[super awakeFromNib];
+	
     // Initialization code
 	[self setupBorderStyle:_listTitleButton];
 	[self setupBorderStyle:_hexagonTitleButton];
