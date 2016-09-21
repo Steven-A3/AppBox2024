@@ -1049,7 +1049,6 @@
 "Password_QRCODE" = "Mot de passe";
 "It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes." = "Il détectera 2D Barcodes (Code QR, Code Aztec, Data Matrix) de l'image. Il ne détecte pas les codes à barres 1D.";
 "Restricted" = "Restrictif";
-"What's New in V4.2" = "Nouveautés de la V4.2";
 "New APP: Pedometer" = "\n\nNew APP: Pédomètre\n\n";
 "days" = "jours";
 "steps" = "pas";
@@ -1089,3 +1088,5 @@
 "Wocu Spot" = "Wocu Spot";
 "South African Cent Spot" = "Cent Afrique du Sud Spot";
 
+"What's New in V4.2.1" = "Nouveautés de la V4.2.1";
+"WhatsNew4_2_1" = "iOS 10 Soutien\niPhone 7 Soutien\nBug fix pour le temps de l'horloge, Monnaie, QR Code, Vacances Update";

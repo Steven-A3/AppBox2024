@@ -1529,18 +1529,18 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 
 #pragma mark - Alert What's New
 
-NSString *const A3UserDefaultsDidAlertWhatsNew4_2 = @"A3UserDefaultsDidAlertWhatsNew4_2";
+NSString *const A3UserDefaultsDidAlertWhatsNew4_2_1 = @"A3UserDefaultsDidAlertWhatsNew4_2_1";
 
 - (void)alertWhatsNew {
-	if ([[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidAlertWhatsNew4_2]) {
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidAlertWhatsNew4_2_1]) {
 		return;
 	}
-	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidAlertWhatsNew4_2];
+	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidAlertWhatsNew4_2_1];
 
 	if (IS_IOS7 || ![CMPedometer isStepCountingAvailable]) return;
 
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"What's New in V4.2", @"What's New in V4.2")
-														message:NSLocalizedString(@"New APP: Pedometer", @"New APP: Pedometer")
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"What's New in V4.2.1", nil)
+														message:NSLocalizedString(@"WhatsNew4_2_1", nil)
 													   delegate:nil
 											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 											  otherButtonTitles:nil];

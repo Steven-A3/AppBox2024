@@ -1046,7 +1046,6 @@ Introduzca la clave de cifrado para el bolsillo.";
 "Password_QRCODE" = "Contraseña";
 "It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes." = "Se detectará códigos de barras 2D (Código QR, Código Azteca, Data Matrix) de la imagen. No detectará códigos de barras 1D.";
 "Restricted" = "Restringido";
-"What's New in V4.2" = "Lo nuevo en la V4.2";
 "New APP: Pedometer" = "\n\nNueva APP: Podómetro\n\n";
 "days" = "días";
 "steps" = "pasos";
@@ -1084,4 +1083,7 @@ Introduzca la clave de cifrado para el bolsillo.";
 "Poland Zloty Reference Rate Spot" = "Polonia Zloty Tasa de Referencia para comer";
 "Wocu Spot" = "Wocu para comer";
 "South African Cent Spot" = "Sudáfrica Cent para comer";
+
+"What's New in V4.2.1" = "Lo nuevo en la V4.2.1";
+"WhatsNew4_2_1" = "iOS 10 textuales\niPhone 7 textuales\nCorrección de errores de tiempo de reloj, moneda, QR, días de fiesta actualización";
 

@@ -1056,7 +1056,6 @@
 "Password_QRCODE" = "パスワード";
 "It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes." = "画像から2Dバーコード（QRコード、アズテックコード、データマトリックス）を検出します。これは、1次元バーコードを検出しません。";
 "Restricted" = "App内課金制限";
-"What's New in V4.2" = "バージョン4.2の新機能";
 "New APP: Pedometer" = "\n\n新しいAPP：歩数計\n\n";
 "days" = "日";
 "steps" = "歩数";
@@ -1094,3 +1093,6 @@
 "Poland Zloty Reference Rate Spot" = "ポーランドズロチ参照レートスポット";
 "Wocu Spot" = "Wocuスポット";
 "South African Cent Spot" = "南アフリカのセントスポット";
+
+"What's New in V4.2.1" = "バージョン4.2.1の新機能";
+"WhatsNew4_2_1" = "iOS10のサポート\niPhone7のサポート\n時計の天候のためのバグ修正、通貨、QRコード、祝日のアップデート";

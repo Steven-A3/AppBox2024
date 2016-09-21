@@ -1044,7 +1044,6 @@ Inserire chiave di crittografia per il portafoglio.";
 "Password_QRCODE" = "Password";
 "It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes." = "È in grado di rilevare codici a barre 2D (Codice QR, Aztec Code, Data Matrix) dall'immagine. Non in grado di rilevare i codici a barre 1D.";
 "Restricted" = "Ristretto";
-"What's New in V4.2" = "Novità nella V4.2";
 "New APP: Pedometer" = "\n\nNuovo APP: Pedometro\n\n";
 "days" = "giorni";
 "steps" = "passi";
@@ -1082,3 +1081,6 @@ Inserire chiave di crittografia per il portafoglio.";
 "Poland Zloty Reference Rate Spot" = "La Polonia Tasso di Riferimento Zloty Spot";
 "Wocu Spot" = "Wocu Spot";
 "South African Cent Spot" = "Sudafricano Cent Spot";
+
+"What's New in V4.2.1" = "Novità nella V4.2.1";
+"WhatsNew4_2_1" = "iOS 10 di sostegno\niPhone 7 supporto\nBug fix per Clock tempo, valuta, QR Code, Vacanze aggiornamento";
