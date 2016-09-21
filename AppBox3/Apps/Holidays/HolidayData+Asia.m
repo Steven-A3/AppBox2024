@@ -9,6 +9,7 @@
 #import "HolidayData+Asia.h"
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
+#import "NSString+conversion.h"
 
 @implementation HolidayData (Asia)
 
@@ -1480,13 +1481,25 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 {
 	NSUInteger year = self.year;
 
-	if ((year < 2006) || (year > 2016)) {
-		return nil;
+	NSString *filepath = [@"data/indian.plist" pathInCachesDirectory];
+	NSDictionary *indianBook = nil;
+	if ([[NSFileManager defaultManager] fileExistsAtPath:filepath]) {
+		indianBook = [NSDictionary dictionaryWithContentsOfFile:filepath];
+	}
+
+	if (!indianBook) {
+		filepath = [[NSBundle mainBundle] pathForResource:@"indian" ofType:@"plist"];
+		indianBook = [NSDictionary dictionaryWithContentsOfFile:filepath];
 	}
 	
-	NSString *filepath = [[NSBundle mainBundle] pathForResource:@"indian" ofType:@"plist"];
-	NSDictionary *indianBook = [NSDictionary dictionaryWithContentsOfFile:filepath];
 	if (indianBook) {
+		NSInteger yearFrom = [indianBook[@"YEAR_FROM"] integerValue];
+		NSInteger yearTo = [indianBook[@"YEAR_TO"] integerValue];
+
+		if ((year < yearFrom) || (year > yearTo)) {
+			return nil;
+		}
+	
 		NSMutableArray *book = [[NSMutableArray alloc] initWithArray:[indianBook objectForKey:[NSString stringWithFormat:@"%lu", (unsigned long)year]]];
 		NSInteger index, count = [book count];
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];

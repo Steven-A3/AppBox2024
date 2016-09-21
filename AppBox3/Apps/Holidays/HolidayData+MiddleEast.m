@@ -8,6 +8,7 @@
 
 #import "HolidayData+MiddleEast.h"
 #import "A3AppDelegate.h"
+#import "NSString+conversion.h"
 
 NSUInteger const jewishTable[][14][2] = {
 	/*2000*/{{1, 22}, {3, 21}, {4, 20}, {5,  2}, {5, 10}, {5, 23}, {6,  9}, {8, 10}, {9, 14}, {10,  9}, {10, 14}, {10, 21}, {10, 22}, {12, 22}},
@@ -957,16 +958,30 @@ NSUInteger const jewishTable[][14][2] = {
 - (NSMutableArray * _Nonnull)il_HolidaysInYear {
 	NSUInteger year = self.year;
 
-	if ((year < 2014) || (year > 2017)) {
-		NSMutableArray *holidays = [NSMutableArray new];
-		NSDictionary *holidayItem = @{kHolidayName:@"Israel Holidays (2014~2017 only)"};
-		[holidays addObject:holidayItem];
-		return holidays;
+	NSString *filepath = [@"data/IsraelHolidays.plist" pathInCachesDirectory];
+	NSDictionary *israelHolidays = nil;
+	if ([[NSFileManager defaultManager] fileExistsAtPath:filepath]) {
+		israelHolidays = [NSDictionary dictionaryWithContentsOfFile:filepath];
+	}
+	
+	if (!israelHolidays) {
+		filepath = [[NSBundle mainBundle] pathForResource:@"IsraelHolidays" ofType:@"plist"];
+		israelHolidays = [NSDictionary dictionaryWithContentsOfFile:filepath];
 	}
 
-	NSString *filepath = [[NSBundle mainBundle] pathForResource:@"IsraelHolidays" ofType:@"plist"];
-	NSDictionary *israelHolidays = [NSDictionary dictionaryWithContentsOfFile:filepath];
+	if (!israelHolidays) {
+		return nil;
+	}
+	
+	NSInteger yearFrom = [israelHolidays[@"YEAR_FROM"] integerValue];
+	NSInteger yearTo = [israelHolidays[@"YEAR_TO"] integerValue];
+
+	if ((year < yearFrom) || (year > yearTo)) {
+		return nil;
+	}
+	
 	if (israelHolidays) {
+
 		NSMutableArray *book = [[NSMutableArray alloc] initWithArray:[israelHolidays objectForKey:[NSString stringWithFormat:@"Y%lu", (unsigned long) year]]];
 		NSInteger index, count = [book count];
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
