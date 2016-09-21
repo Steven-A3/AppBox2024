@@ -194,7 +194,10 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		_inchAsPoints = (screenHeight / 960.0) * pixelsInInch;
 		_redLineWidth = 0.5;
 		_resetPosition = _centimeterPositionRightBottom ? 6.5 : 2.5;
-    } else if ([model isEqualToString:@"iPhone 6"] || [model isEqualToString:@"iPhone 6s"]) {
+    } else if ([model isEqualToString:@"iPhone 6"] ||
+			   [model isEqualToString:@"iPhone 6s"] ||
+			   [model isEqualToString:@"iPhone 7"] ||
+			   [model isEqualToString:@"iPhone (Latest)"]) {
 		// iPhone 6
 		CGFloat pixelsInInch = 326;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
@@ -202,7 +205,9 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		_inchAsPoints = (screenHeight / 1334.0) * pixelsInInch;
 		_resetPosition = _centimeterPositionRightBottom ? 9.5 : 3.5;
 		_redLineWidth = 0.5;
-	} else if ([model isEqualToString:@"iPhone 6 Plus"] || [model isEqualToString:@"iPhone 6s Plus"]) {
+	} else if ([model isEqualToString:@"iPhone 6 Plus"] ||
+			   [model isEqualToString:@"iPhone 6s Plus"] ||
+			   [model isEqualToString:@"iPhone 7 Plus"]) {
 		// iPhone 6 Plus
 		CGFloat pixelsInInch = 401;	// Original value = 401
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
