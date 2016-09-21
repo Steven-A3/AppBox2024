@@ -38,12 +38,32 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 	NSLocale *locale = [NSLocale currentLocale];
 	NSString *name = [locale displayNameForKey:NSLocaleCurrencyCode value:currencyCode];
 	if ((nil == name) || ![name length]) {
-		NSArray *knownSymbols = @[@"XCP", @"ZMW", @"CNH", @"XDR", @"CLF"];
-		NSUInteger index = [knownSymbols indexOfObject:currencyCode];
+		NSArray<NSDictionary *> *knownSymbols = @[@{@"XCP" : @"Copper Highgrade"},
+												  @{@"ZMW" : @"Zambian kwacha"},
+												  @{@"CNH" : @"Offshore Renminbi"},
+												  @{@"XDR" : @"Special Drawing Rights"},
+												  @{@"CLF" : @"Chilean Unidad de Fomento"},
+												  @{@"BRX" : @"Brixmor Property Group Inc"},
+												  @{@"BYN" : @"New Belarusian ruble"},
+												  @{@"CAX" : @"Canadian Dollar Reference Rate Spot"},
+												  @{@"CZX" : @"Czech koruna"},
+												  @{@"DKX" : @"Danish krone"},
+												  @{@"HRX" : @"Croatian Kuna Reference Rate Spot"},
+												  @{@"HUX" : @"Hungary Forint Reference Rate Spot"},
+												  @{@"ILA" : @"Israeli Share Price"},
+												  @{@"INX" : @"INX"},
+												  @{@"ISX" : @"Iceland Krona Reference Rate Spot"},
+												  @{@"MYX" : @"Malaysia Ringgit Reference Rate Spot"},
+												  @{@"PLX" : @"Poland Zloty Reference Rate Spot"},
+												  @{@"XCU" : @"Wocu Spot"},
+												  @{@"ZAC" : @"South African Cent Spot"} ];
+		NSUInteger index = [knownSymbols indexOfObjectPassingTest:^BOOL(NSDictionary* _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+			return [obj.allKeys[0] isEqualToString:currencyCode];
+		}];
 		if (index != NSNotFound) {
-			NSArray *knownNames = @[@"Copper Highgrade", @"Zambian kwacha", @"Offshore Renminbi", @"Special Drawing Rights", @"Unidad de Fomento"];
-			name = [knownNames objectAtIndex:index];
+			name = NSLocalizedString(knownSymbols[index][currencyCode], nil);
 		} else {
+			name = currencyCode;
 			FNLOG(@"Failed to find the name.");
 		}
 	}
@@ -101,7 +121,7 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 }
 
 + (NSURLRequest *)yahooAllCurrenciesURLRequest {
-	NSURL *requestURL = [NSURL URLWithString:@"http://finance.yahoo.com/webservice/v1/symbols/allcurrencies/quote?format=json"];
+	NSURL *requestURL = [NSURL URLWithString:@"https://finance.yahoo.com/webservice/v1/symbols/allcurrencies/quote?format=json"];
 	return [NSURLRequest requestWithURL:requestURL];
 }
 
@@ -129,15 +149,23 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 					NSDictionary *list = JSON[@"list"];
 					NSArray *yahooArray = list[@"resources"];
 
-					NSString *path = [A3CurrencyRatesDataFilename pathInCachesDataDirectory];
-					[yahooArray writeToFile:path atomically:YES];
-
-					[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdated object:nil];
-
-					_dataArray = nil;
-
-					if (success) {
-						success();
+					if ([yahooArray count] > 100) {
+						NSString *path = [A3CurrencyRatesDataFilename pathInCachesDataDirectory];
+						[yahooArray writeToFile:path atomically:YES];
+						
+						[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdated object:nil];
+						
+						_dataArray = nil;
+						
+						if (success) {
+							success();
+						}
+					} else {
+						if (failure) {
+							failure();
+						}
+						FNLOG(@"Update currency rate failed.");
+						[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdateFailed object:nil];
 					}
 
 					FNLOG(@"Update currency rate done successfully.");
