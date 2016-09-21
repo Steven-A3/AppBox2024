@@ -261,6 +261,13 @@
 		<key>symbol</key>
 		<string>CZK</string>
 	</dict>
+	<key>DEM</key>
+	<dict>
+		<key>flagName</key>
+		<string></string>
+		<key>symbol</key>
+		<string>DM</string>
+	</dict>
 	<key>DJF</key>
 	<dict>
 		<key>flagName</key>
