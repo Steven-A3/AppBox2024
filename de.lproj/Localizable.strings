@@ -1060,7 +1060,6 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 "Password_QRCODE" = "Passwort";
 "It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes." = "Es wird 2D-Barcodes (QR-Code, Aztec Code, Data Matrix) aus dem Bild zu erkennen. Es wird nicht 1D-Barcodes erkennen.";
 "Restricted" = "Eingeschränkt";
-"New APP: Pedometer" = "\n\nNeue APP: Pedometer\n\n";
 "days" = "Tage";
 "steps" = "Schritte";
 "floors" = "Stockwerke";
@@ -1098,5 +1097,5 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 "Wocu Spot" = "Wocu Punkt";
 "South African Cent Spot" = "South African Cent-Stelle";
 
-"What's New in V4.2" = "Neue Funktionen von V4.2.1";
+"What's New in V4.2.1" = "Neue Funktionen von V4.2.1";
 "WhatsNew4_2_1" = "iOS 10 Unterstützung\niPhone 7 Unterstützung\n Bug fix für Clock Wetter, Währung, QR Code, Feiertage aktualisieren";

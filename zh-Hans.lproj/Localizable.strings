@@ -1064,8 +1064,6 @@
 "Password_QRCODE" = "密码";
 "It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes." = "它将从图像中检测二维码（QR码，Aztec码，数据矩阵）。它不会检测的一维条码。";
 "Restricted" = "访问限制";
-"What's New in V4.2" = "版本 4.2 中的新功能";
-"New APP: Pedometer" = "\n\n新的应用：计步器\n\n";
 "days" = "天";
 "steps" = "步数";
 "floors" = "楼";
