@@ -33,10 +33,14 @@
 #define kSelectedButtonColor    [A3AppDelegate instance].themeColor
 
 @interface A3DateMainTableViewController ()
-		<UITextFieldDelegate, UIPopoverControllerDelegate, A3DateKeyboardDelegate, A3DateCalcExcludeDelegate,
-		A3DateCalcDurationDelegate, A3DateCalcHeaderViewDelegate, A3DateCalcEditEventDelegate, UIActivityItemSource,
+		<UITableViewDelegate, UITableViewDataSource,
+		UITextFieldDelegate, UIPopoverControllerDelegate,
+		A3DateKeyboardDelegate, A3DateCalcExcludeDelegate,
+		A3DateCalcDurationDelegate, A3DateCalcHeaderViewDelegate,
+		A3DateCalcEditEventDelegate, UIActivityItemSource,
 		A3ViewControllerProtocol>
 
+@property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) A3DateCalcHeaderView *headerView;
 @property (strong, nonatomic) NSArray *sectionTitles;
 @property (strong, nonatomic) NSArray *sections;
@@ -51,12 +55,12 @@
 @property (strong, nonatomic) NSDateComponents* offsetComp;
 @property (strong, nonatomic) NSString * excludeDateString;
 @property (strong, nonatomic) NSString * durationOptionString;
-
 @property (nonatomic, strong) NSArray *moreMenuButtons;
 @property (nonatomic, strong) UIView *moreMenuView;
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
 @property (nonatomic, copy) NSString *textBeforeEditingText;
 @property (nonatomic, copy) NSString *placeholderBeforeEditingText;
+
 @end
 
 @implementation A3DateMainTableViewController {
@@ -75,15 +79,6 @@
 @synthesize offsetDate = _offsetDate;
 
 
-- (instancetype)init {
-	self = [super initWithStyle:UITableViewStyleGrouped];
-	if (self) {
-		
-	}
-	
-	return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -99,6 +94,15 @@
 	}
     [self makeBackButtonEmptyArrow];
 
+	_tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+	_tableView.dataSource = self;
+	_tableView.delegate = self;
+	[self.view addSubview:_tableView];
+	
+	[_tableView makeConstraints:^(MASConstraintMaker *make) {
+		make.edges.equalTo(self.view);
+	}];
+	
 	self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = A3UITableViewSeparatorColor;
@@ -273,15 +277,28 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-
-	if (IS_IPHONE && IS_LANDSCAPE) {
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	
+	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	}
+	
+	if (_isKeyboardShown && self.dateKeyboardViewController.view.superview) {
+		UIView *keyboardView = self.dateKeyboardViewController.view;
+		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
 
-    [self.dateKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+		UIEdgeInsets contentInset = self.tableView.contentInset;
+		contentInset.bottom = keyboardHeight;
+		self.tableView.contentInset = contentInset;
+
+		FNLOGRECT(self.view.bounds);
+		FNLOG(@"%f", keyboardHeight);
+		keyboardView.frame = CGRectMake(0, self.view.bounds.size.height - keyboardHeight, self.view.bounds.size.width, keyboardHeight);
+		[self.dateKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+
+		[self.tableView scrollToRowAtIndexPath:_editingIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+	}
 }
 
 - (void)clearEverything {
@@ -713,16 +730,14 @@
     self.editingIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.editingIndexPath];
     cell.detailTextLabel.textColor = [A3AppDelegate instance].themeColor;
-    UITextField *textField = (UITextField *)[cell.contentView viewWithTag:11];
-    if (self.firstResponder == textField) {
-        return;
-    }
-    
-    [textField becomeFirstResponder];
-    
+	
     cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
     cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
     _isSelectedFromToCell = YES;
+	
+	[self presentDateKeyboad];
+	
+	[self.tableView scrollToRowAtIndexPath:_editingIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
 - (void)moveToToDateCell
@@ -733,20 +748,60 @@
     self.editingIndexPath = [NSIndexPath indexPathForRow:1 inSection:1];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.editingIndexPath];
     cell.detailTextLabel.textColor = [A3AppDelegate instance].themeColor;
-    UITextField *textField = (UITextField *)[cell.contentView viewWithTag:11];
-    if (self.firstResponder == textField) {
-        return;
-    }
-    
-    [textField becomeFirstResponder];
-    
+	
     cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
     cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
     _isSelectedFromToCell = YES;
-    
-    if (IS_IPAD && IS_PORTRAIT) {
-        return;
-    }
+
+	[self presentDateKeyboad];
+	
+	[self.tableView scrollToRowAtIndexPath:_editingIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+}
+
+- (void)presentDateKeyboad {
+	if (_isKeyboardShown) {
+		return;
+	}
+	self.dateKeyboardViewController.delegate = self;
+	
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGFloat keyboardHeight = self.dateKeyboardViewController.keyboardHeight;
+	UIView *keyboardView = self.dateKeyboardViewController.view;
+	[self.view addSubview:keyboardView];
+	[self addChildViewController:self.dateKeyboardViewController];
+
+	UIEdgeInsets contentInset = self.tableView.contentInset;
+	contentInset.bottom += keyboardHeight;
+	self.tableView.contentInset = contentInset;
+	
+	FNLOGRECT(self.view.bounds);
+	keyboardView.frame = CGRectMake(0, self.view.bounds.size.height, bounds.size.width, keyboardHeight);
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = keyboardView.frame;
+		frame.origin.y -= keyboardHeight;
+		keyboardView.frame = frame;
+	} completion:^(BOOL finished) {
+		_isKeyboardShown = YES;
+	}];
+}
+
+- (void)dismissDateKeyboard {
+	CGFloat keyboardHeight = self.dateKeyboardViewController.keyboardHeight;
+	
+	UIEdgeInsets contentInset = self.tableView.contentInset;
+	contentInset.bottom = 0;
+	self.tableView.contentInset = contentInset;
+
+	[UIView animateWithDuration:0.3 animations:^{
+		UIView *keyboardView = self.dateKeyboardViewController.view;
+		CGRect frame = keyboardView.frame;
+		frame.origin.y += keyboardHeight;
+		keyboardView.frame = frame;
+	} completion:^(BOOL finished) {
+		[self.dateKeyboardViewController.view removeFromSuperview];
+		[self.dateKeyboardViewController removeFromParentViewController];
+		_isKeyboardShown = NO;
+	}];
 }
 
 - (void)setResultToHeaderViewWithAnimation:(BOOL)animation
@@ -1053,9 +1108,7 @@
     }
     else {
         // From/To Cell
-        UITextField *selectedTextField = (UITextField *)self.firstResponder;
-        NSIndexPath *selectedIndexPath = [self.tableView indexPathForRowAtPoint:CGPointMake(100, [selectedTextField convertPoint:selectedTextField.center toView:self.tableView].y)];
-        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:selectedIndexPath];
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_editingIndexPath];
         
         if (self.editingIndexPath.row == 0) {
             if (self.isAddSubMode) {
@@ -1137,9 +1190,13 @@
 
 - (void)dateKeyboardDoneButtonPressed:(A3DateKeyboardViewController *)keyboardViewController
 {
-    [self.firstResponder resignFirstResponder];
-    
-    _isKeyboardShown = NO;
+	[self dismissDateKeyboard];
+
+	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_editingIndexPath];
+	if (cell) {
+		cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
+	}
+
 	_editingIndexPath = nil;
     [self setResultToHeaderViewWithAnimation:YES];
 	self.dateKeyboardViewController = nil;

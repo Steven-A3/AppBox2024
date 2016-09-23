@@ -17,6 +17,7 @@ typedef NS_ENUM(NSUInteger, A3NumberKeyboardSimpleLayout) {
 @interface A3NumberKeyboardViewController : UIViewController
 
 @property (nonatomic, weak) UIResponder<UITextInput> *textInputTarget;		// TextField, TextView, ... responder
+
 @property (nonatomic) 		A3NumberKeyboardType keyboardType;
 @property (nonatomic, strong) NSString *currencySymbol;
 @property (nonatomic, strong) NSString *currencyCode;
@@ -35,9 +36,7 @@ typedef NS_ENUM(NSUInteger, A3NumberKeyboardSimpleLayout) {
 @property (nonatomic, assign) BOOL useDotAsClearButton;
 
 - (void)reloadPrevNextButtons;
-
 - (CGFloat)keyboardHeight;
-
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
 - (void)setupLocale;
 - (void)presentCurrencySelectViewController;

@@ -6,6 +6,6 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-@interface A3DateMainTableViewController : UITableViewController
+@interface A3DateMainTableViewController : UIViewController
 
 @end

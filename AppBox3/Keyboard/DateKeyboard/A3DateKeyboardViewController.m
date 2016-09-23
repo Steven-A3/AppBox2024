@@ -59,8 +59,9 @@
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator {
 	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-	
-	self.view.bounds = CGRectMake(0, 0, size.width, [self keyboardHeight]);
+
+	CGFloat keyboardHeight = IS_IPHONE ? 216 : size.width < size.height ? 264 : 352;
+	self.view.bounds = CGRectMake(0, 0, size.width, keyboardHeight);
 	FNLOGRECT(self.view.bounds);
 }
 
