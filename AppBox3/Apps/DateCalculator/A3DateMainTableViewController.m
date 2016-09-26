@@ -60,17 +60,21 @@
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
 @property (nonatomic, copy) NSString *textBeforeEditingText;
 @property (nonatomic, copy) NSString *placeholderBeforeEditingText;
+@property (nonatomic, weak) UITextField *editingTextField;
+@property (nonatomic, copy) UIColor *colorBeforeEditingText;
+@property (nonatomic, strong) A3NumberKeyboardViewController *simpleNormalNumberKeyboard;
 
 @end
 
 @implementation A3DateMainTableViewController {
     BOOL _isShowMoreMenu;
-    BOOL _isKeyboardShown;
+//    BOOL _isKeyboardShown;
+	BOOL _isDateKeyboardVisible;
+	BOOL _isNumberKeyboardVisible;
     BOOL _datePrevShow, _dateNextShow;
     BOOL _isSelectedFromToCell;
     CGFloat _tableYOffset;
     CGFloat _oldTableOffset;
-    A3NumberKeyboardViewController *_simpleNormalNumberKeyboard;
 	NSString *kCalculationString;
 }
 
@@ -109,7 +113,8 @@
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 
 	[self readFromSavedValue];
-    _isKeyboardShown = NO;
+	_isDateKeyboardVisible = NO;
+	_isNumberKeyboardVisible = NO;
 
     [self initializeControl];
     [self reloadTableViewDataWithInitialization:YES];
@@ -218,7 +223,9 @@
 
 - (BOOL)resignFirstResponder {
 	FNLOG();
-	[self.firstResponder resignFirstResponder];
+	[self dismissDateKeyboard];
+	[self dismissNumberKeyboard];
+	
 	return [super resignFirstResponder];
 }
 
@@ -284,7 +291,7 @@
 		[self leftBarButtonAppsButton];
 	}
 	
-	if (_isKeyboardShown && self.dateKeyboardViewController.view.superview) {
+	if (_isDateKeyboardVisible && self.dateKeyboardViewController.view.superview) {
 		UIView *keyboardView = self.dateKeyboardViewController.view;
 		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
 
@@ -308,7 +315,9 @@
 		_editingIndexPath = nil;
 	}
 
-    [self.firstResponder resignFirstResponder];
+	[self dismissNumberKeyboard];
+	[self dismissDateKeyboard];
+	
 	[self dismissMoreMenu];
 }
 
@@ -735,7 +744,7 @@
     cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
     _isSelectedFromToCell = YES;
 	
-	[self presentDateKeyboad];
+	[self presentDateKeyboard];
 	
 	[self.tableView scrollToRowAtIndexPath:_editingIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
@@ -753,14 +762,18 @@
     cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
     _isSelectedFromToCell = YES;
 
-	[self presentDateKeyboad];
+	[self presentDateKeyboard];
 	
 	[self.tableView scrollToRowAtIndexPath:_editingIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
-- (void)presentDateKeyboad {
-	if (_isKeyboardShown) {
+- (void)presentDateKeyboard {
+	if (_isDateKeyboardVisible) {
 		return;
+	}
+	
+	if (!self.dateKeyboardViewController) {
+		self.dateKeyboardViewController = [self newDateKeyboardViewController];
 	}
 	self.dateKeyboardViewController.delegate = self;
 	
@@ -781,7 +794,7 @@
 		frame.origin.y -= keyboardHeight;
 		keyboardView.frame = frame;
 	} completion:^(BOOL finished) {
-		_isKeyboardShown = YES;
+		_isDateKeyboardVisible = YES;
 	}];
 }
 
@@ -800,7 +813,7 @@
 	} completion:^(BOOL finished) {
 		[self.dateKeyboardViewController.view removeFromSuperview];
 		[self.dateKeyboardViewController removeFromParentViewController];
-		_isKeyboardShown = NO;
+		_isDateKeyboardVisible = NO;
 	}];
 }
 
@@ -945,7 +958,7 @@
     
 }
 
--(void)dateCalcHeaderThumbPositionChangeOfAddSubDateComponents:(NSDateComponents *)dateComp
+- (void)dateCalcHeaderThumbPositionChangeOfAddSubDateComponents:(NSDateComponents *)dateComp
 {
     FNLOG(@"%@", dateComp);
 }
@@ -956,7 +969,16 @@
 {
 	if (IS_IPHONE && IS_LANDSCAPE) return NO;
 
-    return YES;
+	if (_editingTextField) {
+		if (_editingTextField != textField) {
+			[self endEditingForTextField:_editingTextField];
+			[self prepareEditingForTextField:textField];
+			_simpleNormalNumberKeyboard.displayObject = (id<A3DisplayObject>)textField;
+		}
+	} else {
+		[self presentNumberKeyboardForTextField:textField];
+	}
+    return NO;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
@@ -1016,7 +1038,7 @@
 		}
 	}
 
-	_isKeyboardShown = YES;
+//	_isKeyboardShown = YES;
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
 }
@@ -1080,7 +1102,120 @@
 	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:NO];
 }
 
-#pragma mark  A3KeyboardViewControllerDelegate
+- (void)presentNumberKeyboardForTextField:(UITextField *)textField {
+	if (_isNumberKeyboardVisible) {
+		return;
+	}
+	[self prepareEditingForTextField:textField];
+	
+	self.simpleNormalNumberKeyboard = [self simplePrevNextNumberKeyboard];
+	if (IS_IPHONE) {
+		((A3NumberKeyboardViewController_iPhone *)_simpleNormalNumberKeyboard).needButtonsReload = NO;
+	}
+	_simpleNormalNumberKeyboard.useDotAsClearButton = YES;
+	_simpleNormalNumberKeyboard.displayObject = (id<A3DisplayObject>)textField;
+	_simpleNormalNumberKeyboard.delegate = self;
+	
+	[_simpleNormalNumberKeyboard reloadPrevNextButtons];
+
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGFloat keyboardHeight = _simpleNormalNumberKeyboard.keyboardHeight;
+	UIView *keyboardView = _simpleNormalNumberKeyboard.view;
+	[self.view addSubview:keyboardView];
+	[self addChildViewController:_simpleNormalNumberKeyboard];
+	
+	UIEdgeInsets contentInset = self.tableView.contentInset;
+	contentInset.bottom += keyboardHeight;
+	self.tableView.contentInset = contentInset;
+
+	FNLOGRECT(self.view.bounds);
+	keyboardView.frame = CGRectMake(0, self.view.bounds.size.height, bounds.size.width, keyboardHeight);
+	[UIView animateWithDuration:0.3 animations:^{
+		[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+		CGRect frame = keyboardView.frame;
+		frame.origin.y -= keyboardHeight;
+		keyboardView.frame = frame;
+	} completion:^(BOOL finished) {
+		_isNumberKeyboardVisible = YES;
+	}];
+	
+}
+
+- (void)dismissNumberKeyboard {
+	NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:CGPointMake(100, [_editingTextField convertPoint:_editingTextField.center toView:self.tableView].y)];
+	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+	if (cell && [indexPath section] == 1) {
+		cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
+	}
+
+	[self endEditingForTextField:_editingTextField];
+	
+	CGFloat keyboardHeight = _simpleNormalNumberKeyboard.keyboardHeight;
+
+	[UIView animateWithDuration:0.3 animations:^{
+		UIEdgeInsets contentInset = self.tableView.contentInset;
+		contentInset.bottom = 0;
+		self.tableView.contentInset = contentInset;
+		
+		UIView *keyboardView = _simpleNormalNumberKeyboard.view;
+		CGRect frame = keyboardView.frame;
+		frame.origin.y += keyboardHeight;
+		keyboardView.frame = frame;
+	} completion:^(BOOL finished) {
+		[_simpleNormalNumberKeyboard.view removeFromSuperview];
+		[_simpleNormalNumberKeyboard removeFromParentViewController];
+		_isNumberKeyboardVisible = NO;
+	}];
+}
+
+- (void)prepareEditingForTextField:(UITextField *)textField {
+	self.editingTextField = textField;
+	self.textBeforeEditingText = textField.text;
+	self.placeholderBeforeEditingText = textField.placeholder;
+	self.colorBeforeEditingText = textField.textColor;
+	
+	textField.text = @"0";
+	textField.placeholder = @"0";
+	textField.textColor = [[A3AppDelegate instance] themeColor];
+	
+	A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+	if (!footerCell) {
+		footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+	}
+	
+	if (textField == footerCell.yearTextField) {
+		_datePrevShow = NO;
+		_dateNextShow = YES;
+	}
+	else if (textField == footerCell.monthTextField) {
+		_datePrevShow = YES;
+		_dateNextShow = YES;
+	}
+	else if (textField == footerCell.dayTextField) {
+		_datePrevShow = YES;
+		_dateNextShow = NO;
+	}
+}
+
+- (void)endEditingForTextField:(UITextField *)textField {
+	if ([textField.text integerValue] == 0 && _textBeforeEditingText) {
+		textField.text = [NSString stringWithFormat:@"%ld", (long)[_textBeforeEditingText floatValueEx]];
+	}
+
+	[self updateOffsetDateCompWithTextField:textField];
+	
+	if ([self isAddSubMode]) {
+		A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+		[footerCell saveInputedTextField:textField];
+	}
+	
+	textField.placeholder = _placeholderBeforeEditingText;
+	textField.textColor = _colorBeforeEditingText;
+	_editingTextField = nil;
+	_textBeforeEditingText = nil;
+}
+
+#pragma mark - A3DateKeyboardViewControllerDelegate
 
 - (void)dateKeyboardValueChangedDate:(NSDate *)date
 {
@@ -1091,16 +1226,16 @@
     }
     
     // 풋터뷰 필드(ADD/SUB모드)
-    if (self.isAddSubMode && (self.firstResponder == footerCell.yearTextField || self.firstResponder == footerCell.monthTextField || self.firstResponder == footerCell.dayTextField)) {
+    if (self.isAddSubMode && (_editingTextField == footerCell.yearTextField || _editingTextField == footerCell.monthTextField || _editingTextField == footerCell.dayTextField)) {
         NSDateComponents *changed = [[A3DateCalcStateManager currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit
                                                                                 fromDate:date];
-        if (self.firstResponder == footerCell.yearTextField) {
+        if (_editingTextField == footerCell.yearTextField) {
             self.offsetComp.year = changed.year;
         }
-        else if (self.firstResponder == footerCell.monthTextField) {
+        else if (_editingTextField == footerCell.monthTextField) {
             self.offsetComp.month = changed.month;
         }
-        else if (self.firstResponder == footerCell.dayTextField) {
+        else if (_editingTextField == footerCell.dayTextField) {
             self.offsetComp.day = changed.day;
         }
         
@@ -1155,14 +1290,19 @@
         footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
     }
     
-	if (self.firstResponder == footerCell.yearTextField) {
-		[footerCell.monthTextField becomeFirstResponder];
+	if (_editingTextField == footerCell.yearTextField) {
+		[self endEditingForTextField:_editingTextField];
+		
+		UITextField *textField = footerCell.monthTextField;
+		[self prepareEditingForTextField:textField];
+		_simpleNormalNumberKeyboard.displayObject = (id<A3DisplayObject>)textField;
 	}
-    else if (self.firstResponder == footerCell.monthTextField) {
-		[footerCell.dayTextField becomeFirstResponder];
-	}
-    else if (self.firstResponder == footerCell.dayTextField) {
-		return;
+    else if (_editingTextField == footerCell.monthTextField) {
+		[self endEditingForTextField:_editingTextField];
+		
+		UITextField *textField = footerCell.dayTextField;
+		[self prepareEditingForTextField:textField];
+		_simpleNormalNumberKeyboard.displayObject = (id<A3DisplayObject>)textField;
 	}
 }
 
@@ -1174,16 +1314,28 @@
         footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
     }
     
-	if (self.firstResponder == footerCell.dayTextField) {
+	if (_editingTextField == footerCell.dayTextField) {
+		[self endEditingForTextField:_editingTextField];
+		
 		footerCell.dayTextField.text = [NSString stringWithFormat:@"%ld", (long)self.offsetComp.day];
-		[footerCell.monthTextField becomeFirstResponder];
+		
+		UITextField *textField = footerCell.monthTextField;
+		[self prepareEditingForTextField:textField];
+		_simpleNormalNumberKeyboard.displayObject = (id<A3DisplayObject>)textField;
 	}
-    else if (self.firstResponder == footerCell.monthTextField) {
+    else if (_editingTextField == footerCell.monthTextField) {
+		[self endEditingForTextField:_editingTextField];
 		footerCell.monthTextField.text = [NSString stringWithFormat:@"%ld", (long)self.offsetComp.month];
-		[footerCell.yearTextField becomeFirstResponder];
+
+		UITextField *textField = footerCell.yearTextField;
+		[self prepareEditingForTextField:textField];
+		_simpleNormalNumberKeyboard.displayObject = (id<A3DisplayObject>)textField;
 	}
-    else if (self.firstResponder == footerCell.yearTextField) {
+    else if (_editingTextField == footerCell.yearTextField) {
+		[self endEditingForTextField:_editingTextField];
 		footerCell.yearTextField.text = [NSString stringWithFormat:@"%ld", (long)self.offsetComp.year];
+		
+		[self dismissNumberKeyboard];
 		[self moveToFromDateCell];
 	}
 }
@@ -1211,14 +1363,14 @@
         footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
     }
 
-	if (self.isAddSubMode && (self.firstResponder == footerCell.yearTextField || self.firstResponder == footerCell.monthTextField || self.firstResponder == footerCell.dayTextField)) {
-		if (self.firstResponder == footerCell.yearTextField) {
+	if (self.isAddSubMode && (_editingTextField == footerCell.yearTextField || _editingTextField == footerCell.monthTextField || _editingTextField == footerCell.dayTextField)) {
+		if (_editingTextField == footerCell.yearTextField) {
 			self.offsetComp.year = footerCell.yearTextField.text.integerValue;
 		}
-        else if (self.firstResponder == footerCell.monthTextField) {
+        else if (_editingTextField == footerCell.monthTextField) {
 			self.offsetComp.month = footerCell.monthTextField.text.integerValue;
 		}
-        else if (self.firstResponder == footerCell.dayTextField) {
+        else if (_editingTextField == footerCell.dayTextField) {
 			self.offsetComp.day = footerCell.dayTextField.text.integerValue;
 		}
 
@@ -1228,19 +1380,20 @@
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
-	if (keyInputDelegate != self.firstResponder) {
-		return;
+	if (controller == self.dateKeyboardViewController) {
+		[self dismissDateKeyboard];
+	} else {
+		[self dismissNumberKeyboard];
 	}
-
-	_isKeyboardShown = NO;
+	
 	_editingIndexPath = nil;
     [self setResultToHeaderViewWithAnimation:YES];
-    [self.firstResponder resignFirstResponder];
-    [self scrollToTopOfTableView];
+
+	[self scrollToTopOfTableView];
 }
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
-    UITextField *selectedTextField = (UITextField *)self.firstResponder;
+    UITextField *selectedTextField = _editingTextField;
     selectedTextField.text = @"";
 	_textBeforeEditingText = nil;
     A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
@@ -1445,7 +1598,7 @@
             }
 
             // 선택된 셀 텍스트 색상 편집 중에만 변경.
-            if (_isKeyboardShown && _editingIndexPath && (indexPath.row==_editingIndexPath.row)) {
+            if (_isDateKeyboardVisible && _editingIndexPath && (indexPath.row==_editingIndexPath.row)) {
                 cell.detailTextLabel.textColor = [A3AppDelegate instance].themeColor;
             } else {
                 cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
