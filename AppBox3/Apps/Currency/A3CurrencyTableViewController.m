@@ -65,20 +65,24 @@ NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChan
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UITableViewController *tableViewController;
 @property (nonatomic, strong) NSManagedObjectContext *savingContext;
+@property (nonatomic, weak) UITextField *editingTextField;
 
 @end
 
 @implementation A3CurrencyTableViewController {
     BOOL 		_draggingFirstRow;
 	NSUInteger 	_selectedRow;
-	BOOL		_isAddingCurrency;
-	BOOL		_isShowMoreMenu;
-	BOOL		_isUpdating;
-	BOOL		_currentValueIsNotFromUser;
+	BOOL			_isAddingCurrency;
+	BOOL			_isShowMoreMenu;
+	BOOL			_isUpdating;
+	BOOL			_currentValueIsNotFromUser;
 	NSUInteger	_shareSourceIndex, _shareTargetIndex;
-	BOOL		_shareAll;
-	BOOL		_barButtonEnabled;
-	BOOL _didFirstTimeRefresh;
+	BOOL			_shareAll;
+	BOOL			_barButtonEnabled;
+	BOOL			_didFirstTimeRefresh;
+	BOOL			_isKeyboardVisible;
+	BOOL			_didPressClearKey;
+	BOOL			_didPressNumberKey;
 }
 
 NSString *const A3CurrencyDataCellID = @"A3CurrencyDataCell";
@@ -994,33 +998,38 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	NSString *favorite = favoriteItem.uniqueID;
 
 	if (textField == _textFields[favorite]) {
-		self.previousValue = textField.text;
-
-		[self.refreshControl endRefreshing];
-		[self.tableView scrollsToTop];
-		[self unSwipeAll];
-
-		textField.text = @"";
-
-		A3NumberKeyboardViewController *keyboardVC = [self simpleNumberKeyboard];
-		self.numberKeyboardViewController = keyboardVC;
-		CurrencyFavorite *favoriteZero = self.favorites[0];
-		self.numberKeyboardViewController.currencyCode = favoriteZero.uniqueID;
-		self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
-		keyboardVC.textInputTarget = textField;
-		keyboardVC.delegate = self;
-		self.numberKeyboardViewController = keyboardVC;
-		textField.inputView = [keyboardVC view];
+		[self presentNumberKeypadForTextField:textField];
 		
-		if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
-			textField.inputAssistantItem.leadingBarButtonGroups = @[];
-			textField.inputAssistantItem.trailingBarButtonGroups = @[];
-		}
+		return NO;
+//		self.previousValue = textField.text;
+//
+//		[self.refreshControl endRefreshing];
+//		[self.tableView scrollsToTop];
+//		[self unSwipeAll];
+//
+//		textField.text = @"";
+//
+//		A3NumberKeyboardViewController *keyboardVC = [self simpleNumberKeyboard];
+//		self.numberKeyboardViewController = keyboardVC;
+//		CurrencyFavorite *favoriteZero = self.favorites[0];
+//		self.numberKeyboardViewController.currencyCode = favoriteZero.uniqueID;
+//		self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
+//		keyboardVC.textInputTarget = textField;
+//		keyboardVC.delegate = self;
+//		self.numberKeyboardViewController = keyboardVC;
+//		textField.inputView = [keyboardVC view];
+//		
+//		if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
+//			textField.inputAssistantItem.leadingBarButtonGroups = @[];
+//			textField.inputAssistantItem.trailingBarButtonGroups = @[];
+//		}
 		
 		return YES;
 	} else {
-		[self.firstResponder resignFirstResponder];
-		[self setFirstResponder:nil];
+		[self dismissNumberKeypad];
+		
+//		[self.firstResponder resignFirstResponder];
+//		[self setFirstResponder:nil];
 
 		// shifted 0 : shift self
 		// shifted 1 and it is me. unshift self
@@ -1086,23 +1095,29 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 #pragma mark - KeyboardViewControllerDelegate
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
+	_didPressClearKey = YES;
 	UITextField *textField = (UITextField *) self.numberKeyboardViewController.textInputTarget;
 	if ([textField isKindOfClass:[UITextField class]]) {
-		textField.text = @"";
+		textField.text = @"0";
 		CurrencyFavorite *favoriteZero = self.favorites[0];
 		self.previousValue = [_currencyDataManager stringFromNumber:@1 withCurrencyCode:favoriteZero.uniqueID isShare:NO];
 	}
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
-	[self.numberKeyboardViewController.textInputTarget resignFirstResponder];
+	[self dismissNumberKeypad];
+}
+
+- (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
+	_didPressNumberKey = YES;
+	[self updateTextFieldsWithSourceTextField:self.editingTextField];
 }
 
 #pragma mark - Number Keyboard Calculator Button Notification
 
 - (void)calculatorButtonAction {
-	_calculatorTargetTextField = (UITextField *) self.firstResponder;
-	[self.firstResponder resignFirstResponder];
+	[self dismissNumberKeypad];
+
 	A3CalculatorViewController *viewController = [self presentCalculatorViewController];
 	viewController.delegate = self;
 }
@@ -1456,13 +1471,26 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	return NO;
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	
 	if (IS_IPHONE && IS_LANDSCAPE) {
 		[self leftBarButtonAppsButton];
 	}
-	self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+
+	UIEdgeInsets contentInset = self.tableView.contentInset;
+	contentInset.top = 64;
+	self.tableView.contentInset = contentInset;
+
+	if (_isKeyboardVisible && self.numberKeyboardViewController.view.superview) {
+		UIView *keyboardView = self.numberKeyboardViewController.view;
+		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+		
+		FNLOGRECT(self.view.bounds);
+		FNLOG(@"%f", keyboardHeight);
+		keyboardView.frame = CGRectMake(0, self.view.bounds.size.height - keyboardHeight, self.view.bounds.size.width, keyboardHeight);
+		[self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+	}
 }
 
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
@@ -1476,6 +1504,115 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	[self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
-#pragma mark - THE END
+#pragma mark - Number Keyboard
+
+- (void)presentNumberKeypadForTextField:(UITextField *) textField {
+	if (_isKeyboardVisible) {
+		return;
+	}
+
+	[self.refreshControl endRefreshing];
+	[self.tableView scrollsToTop];
+	[self unSwipeAll];
+	
+	self.editingTextField = textField;
+	_previousValue = textField.text;
+	textField.text = @"0";
+	
+	[self updateTextFieldsWithSourceTextField:textField];
+	
+	self.numberKeyboardViewController = [self simpleNumberKeyboard];
+	
+	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+	keyboardViewController.delegate = self;
+	keyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
+	keyboardViewController.displayObject = (id<A3DisplayObject>)textField;
+
+	CurrencyFavorite *favorite = self.favorites[0];
+	keyboardViewController.currencyCode = favorite.uniqueID;
+	
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGFloat keyboardHeight = keyboardViewController.keyboardHeight;
+	UIView *keyboardView = keyboardViewController.view;
+	[self.view addSubview:keyboardView];
+	[self addChildViewController:keyboardViewController];
+	
+	_didPressClearKey = NO;
+	_didPressNumberKey = NO;
+	
+	keyboardView.frame = CGRectMake(0, self.view.bounds.size.height, bounds.size.width, keyboardHeight);
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = keyboardView.frame;
+		frame.origin.y -= keyboardHeight;
+		keyboardView.frame = frame;
+	} completion:^(BOOL finished) {
+		[self addNumberKeyboardNotificationObservers];
+		_isKeyboardVisible = YES;
+	}];
+	
+}
+
+- (void)dismissNumberKeypad {
+	if (!_isKeyboardVisible) {
+		return;
+	}
+	
+	[self removeNumberKeyboardNotificationObservers];
+
+	UITextField *textField = self.editingTextField;
+
+	if (_didPressClearKey) {
+		textField.text = @"0";
+		[self putHistoryWithValue:@([self.previousValue floatValueEx])];
+		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+	} else if (!_didPressNumberKey) {
+		textField.text = _previousValue;
+	} else {
+		if (![textField.text isEqualToString:self.previousValue]) {
+			[self putHistoryWithValue:@([self.previousValue floatValueEx])];
+			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+		}
+		_currentValueIsNotFromUser = NO;
+	}
+	
+	if (![textField.text length]) {
+		textField.text = self.previousValue;
+	}
+	CurrencyFavorite *favorite = self.favorites[0];
+	NSNumberFormatter *nf = [self currencyFormatterWithCurrencyCode:favorite.uniqueID];
+	// Reformat source text
+	textField.text = [nf stringFromNumber:@([textField.text floatValueEx])];
+	
+	[self updateTextFieldsWithSourceTextField:textField];
+	self.tableViewController.refreshControl = self.refreshControl;
+	
+	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+	UIView *keyboardView = keyboardViewController.view;
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = keyboardView.frame;
+		frame.origin.y += keyboardViewController.keyboardHeight;
+		keyboardView.frame = frame;
+	} completion:^(BOOL finished) {
+		[keyboardView removeFromSuperview];
+		[keyboardViewController removeFromParentViewController];
+		self.numberKeyboardViewController = nil;
+		_isKeyboardVisible = NO;
+	}];
+}
+
+- (NSNumberFormatter *)currencyFormatterWithCurrencyCode:(NSString *)code {
+	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+	
+	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
+	[nf setCurrencyCode:code];
+	if (IS_IPHONE) {
+		[nf setCurrencySymbol:@""];
+	}
+	return nf;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+	[self dismissNumberKeypad];
+}
 
 @end

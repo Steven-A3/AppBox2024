@@ -32,6 +32,7 @@ typedef NS_ENUM(NSInteger, A3NumberKeyboardType) {
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate;
 - (void)keyboardViewController:(A3NumberKeyboardViewController *)vc fractionButtonPressed:(UIButton *)button;
 - (void)keyboardViewController:(A3NumberKeyboardViewController *)vc plusMinusButtonPressed:(UIButton *)button;
+- (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc;
 
 - (BOOL)isPreviousEntryExists;
 - (BOOL)isNextEntryExists;

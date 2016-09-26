@@ -83,6 +83,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	BOOL _didPressClearKey;
 	BOOL _currentValueIsNotFromUser;
 	BOOL _didFirstTimeRefresh;
+	BOOL _isKeyboardVisible;
 }
 
 #pragma mark - View Lifecycle Management
@@ -279,8 +280,10 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 		_sourceTextField = cell.valueField;
 
 		cell.flagImageView.image = [UIImage imageNamed:[self.currencyDataManager flagImageNameForCode:_sourceCurrencyCode]];
-		NSNumberFormatter *nf = [self currencyFormatterWithCurrencyCode:_sourceCurrencyCode];
-		cell.valueField.text = [nf stringFromNumber:_sourceValue];
+		if (!_isKeyboardVisible) {
+			NSNumberFormatter *nf = [self currencyFormatterWithCurrencyCode:_sourceCurrencyCode];
+			cell.valueField.text = [nf stringFromNumber:_sourceValue];
+		}
 
 		if (IS_IPHONE) {
 			cell.rateLabel.text = [self.currencyDataManager symbolForCode:_sourceCurrencyCode];
@@ -585,6 +588,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 	self.previousValue = textField.text;
 
+	/*
 	A3NumberKeyboardViewController *keyboardVC = [self simpleNumberKeyboard];
 	self.numberKeyboardViewController = keyboardVC;
 	keyboardVC.textInputTarget = textField;
@@ -600,8 +604,15 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 		textField.inputAssistantItem.leadingBarButtonGroups = @[];
 		textField.inputAssistantItem.trailingBarButtonGroups = @[];
 	}
+	
+	textField.keyboardType = UIKeyboardTypeNumberPad;
+	
 	textField.text = @"";
-	return YES;
+	 */
+	
+	[self presentNumberKeypadForObject:(id<A3DisplayObject>)textField];
+	
+	return NO;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
@@ -675,17 +686,26 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
 	_didPressClearKey = YES;
-	if (keyInputDelegate == _sourceTextField) {
-		_sourceTextField.text = @"";
-		_targetTextField.text = self.targetValueString;
-	} else {
-		_targetTextField.text = @"";
-		_sourceTextField.text = self.sourceValueString;
-	}
+	_targetTextField.text = self.targetValueString;
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
-	[keyInputDelegate resignFirstResponder];
+	double value = [_sourceTextField.text floatValueEx];
+	NSNumberFormatter *nf;
+	_sourceValue = @(value);
+	nf = [self currencyFormatterWithCurrencyCode:_sourceCurrencyCode];
+	_sourceTextField.text = [nf stringFromNumber:@(value)];
+	
+	[self dismissNumberKeypad];
+}
+
+- (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
+	_didPressNumberKey = YES;
+	
+	float value = [_sourceTextField.text floatValueEx];
+	_sourceValue = @(value);
+	[[A3SyncManager sharedSyncManager] setObject:@(value) forKey:A3CurrencyUserDefaultsLastInputValue state:A3DataObjectStateModified];
+	_targetTextField.text = [self targetValueString];
 }
 
 #pragma mark - Number Keyboard Calculator Button Notification
@@ -693,7 +713,8 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 - (void)calculatorButtonAction {
 	_didPressClearKey = NO;
 	
-	[self.firstResponder resignFirstResponder];
+	[self dismissNumberKeypad];
+	
 	A3CalculatorViewController *viewController = [self presentCalculatorViewController];
 	viewController.delegate = self;
 }
@@ -965,19 +986,19 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 #pragma mark - iPad Rotation
 
-/**
- *	 Subclasses may override this method to perform additional actions immediately prior to the rotation. For example, 
- *	 you might use this method to disable view interactions, stop media playback, or temporarily turn off expensive drawing or live updates. 
- *	 You might also use it to swap the current view for one that reflects the new interface orientation
- *   When this method is called, the interfaceOrientation property still contains the view's original orientation.
- *	 Your implementation of this method must call super at some point during its execution.
- *
- *  @param toInterfaceOrientation The new orientation for the user interface. The possible values are described in UIInterfaceOrientation.
- *  @param duration               The duration of the pending rotation, measured in seconds.
- */
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	
+	if (_isKeyboardVisible && self.numberKeyboardViewController.view.superview) {
+		UIView *keyboardView = self.numberKeyboardViewController.view;
+		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+		
+		FNLOGRECT(self.view.bounds);
+		FNLOG(@"%f", keyboardHeight);
+		keyboardView.frame = CGRectMake(0, self.view.bounds.size.height - keyboardHeight, self.view.bounds.size.width, keyboardHeight);
+		[self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+	}
+	
 	if (IS_IPHONE) return;
 	[self setupIPADLayoutToInterfaceOrientation:toInterfaceOrientation];
 }
@@ -1096,4 +1117,103 @@ static NSString *const A3V3InstructionDidShowForCurrencyPicker = @"A3V3Instructi
 	return NO;
 }
 
+#pragma mark - Keyboard
+
+- (void)presentNumberKeypadForObject:(id<A3DisplayObject>) displayObject {
+	if (_isKeyboardVisible) {
+		return;
+	}
+	
+	_previousValue = _sourceTextField.text;
+
+	self.numberKeyboardViewController = [self simpleNumberKeyboard];
+	
+	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+	keyboardViewController.delegate = self;
+	keyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
+	keyboardViewController.displayObject = displayObject;
+	
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGFloat keyboardHeight = keyboardViewController.keyboardHeight;
+	UIView *keyboardView = keyboardViewController.view;
+	[self.view addSubview:keyboardView];
+	[self addChildViewController:keyboardViewController];
+
+	_didPressClearKey = NO;
+	_didPressNumberKey = NO;
+	
+	_targetTextField.text = [self targetValueString];
+
+	keyboardView.frame = CGRectMake(0, self.view.bounds.size.height, bounds.size.width, keyboardHeight);
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = keyboardView.frame;
+		frame.origin.y -= keyboardHeight;
+		keyboardView.frame = frame;
+	} completion:^(BOOL finished) {
+		[self addNumberKeyboardNotificationObservers];
+		_isKeyboardVisible = YES;
+	}];
+	
+}
+
+- (void)dismissNumberKeypad {
+	if (!_isKeyboardVisible) {
+		return;
+	}
+
+	[self removeNumberKeyboardNotificationObservers];
+
+	if (_didPressClearKey) {
+		_sourceTextField.text = @"0";
+		[self addHistoryWithValue:_previousValue];
+	} else if (!_didPressNumberKey) {
+		_sourceTextField.text = _previousValue;
+	} else {
+		[self addHistoryWithValue:_previousValue];
+		_currentValueIsNotFromUser = NO;
+	}
+	
+	if (![_sourceTextField.text length]) {
+		_sourceTextField.text = self.previousValue;
+	}
+	_targetTextField.text = [self targetValueString];
+	NSNumberFormatter *nf = [self currencyFormatterWithCurrencyCode:_sourceCurrencyCode];
+	// Reformat source text
+	_sourceTextField.text = [nf stringFromNumber:@([_sourceTextField.text floatValueEx])];
+
+	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+	UIView *keyboardView = keyboardViewController.view;
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = keyboardView.frame;
+		frame.origin.y += keyboardViewController.keyboardHeight;
+		keyboardView.frame = frame;
+	} completion:^(BOOL finished) {
+		[keyboardView removeFromSuperview];
+		[keyboardViewController removeFromParentViewController];
+		self.numberKeyboardViewController = nil;
+		_isKeyboardVisible = NO;
+	}];
+}
+
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

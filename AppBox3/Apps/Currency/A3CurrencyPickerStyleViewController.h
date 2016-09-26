@@ -16,6 +16,6 @@
 
 - (void)resetIntermediateState;
 - (void)shareButtonAction:(id)sender;
-
 - (void)showInstructionView;
+
 @end

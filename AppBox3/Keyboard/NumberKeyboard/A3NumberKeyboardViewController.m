@@ -14,6 +14,10 @@
 
 @interface A3NumberKeyboardViewController ()
 
+@property (nonatomic, strong) NSNumberFormatter *currencyFormatter;
+@property (nonatomic, strong) NSNumberFormatter *decimalFormatter;
+@property (nonatomic, copy) NSString *inputString;
+
 @end
 
 @implementation A3NumberKeyboardViewController
@@ -37,6 +41,34 @@
 	}
 	FNLOG(@"352");
 	return 352;
+}
+
+- (NSNumberFormatter *)currencyFormatter {
+	if (_currencyFormatter == nil) {
+		_currencyFormatter = [NSNumberFormatter new];
+		_currencyFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
+	}
+	if (_currencyCode) {
+		_currencyFormatter.currencyCode = _currencyCode;
+	}
+	if (_currencySymbol) {
+		_currencyFormatter.currencySymbol = _currencySymbol;
+	}
+	return _currencyFormatter;
+}
+
+- (NSNumberFormatter *)decimalFormatter {
+	if (_decimalFormatter == nil) {
+		_decimalFormatter = [NSNumberFormatter new];
+		_decimalFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+	}
+	return _decimalFormatter;
+}
+
+- (void)setDisplayObject:(id<A3DisplayObject>)displayObject {
+	_displayObject = displayObject;
+	_displayObject.text = [self.decimalFormatter stringFromNumber:@0];
+	_inputString = @"";
 }
 
 - (void)viewDidLoad
@@ -89,8 +121,12 @@
 	if (![inputString length]) {
 		return;
 	}
-	BOOL allowedToChange = YES;
 
+	if (_displayObject) {
+		[self handleDisplayObjectWithInput:inputString];
+	}
+	
+	BOOL allowedToChange = YES;
 	if ([_textInputTarget isKindOfClass:[UITextField class]]) {
 		UITextField *textField = (UITextField *) _textInputTarget;
 
@@ -171,11 +207,34 @@
 	if (allowedToChange && [_textInputTarget respondsToSelector:@selector(insertText:)]) {
 		[_textInputTarget insertText:inputString];
 	}
+
+	if ([_delegate respondsToSelector:@selector(keyboardViewControllerDidValueChange:)]) {
+		[_delegate keyboardViewControllerDidValueChange:self];
+	}
+}
+
+- (void)handleDisplayObjectWithInput:(NSString *)inputCharacter {
+	NSNumberFormatter *numberFormatter = self.decimalFormatter;
+	
+	// decimal separator "." 연속 입력은 무시한다.
+	BOOL isInputDecimalSeparator = [inputCharacter isEqualToString:numberFormatter.decimalSeparator];
+	if (isInputDecimalSeparator &&
+		[_inputString length] &&
+		[[_inputString substringFromIndex:[_inputString length] - 1] isEqualToString:numberFormatter.decimalSeparator]) {
+		return;
+	}
+	
+	_inputString = [NSString stringWithFormat:@"%@%@", _inputString, inputCharacter];
+	_displayObject.text = [numberFormatter stringFromNumber:@([_inputString doubleValue])];
 }
 
 - (IBAction)clearButtonAction {
 	[[UIDevice currentDevice] playInputClick];
 
+	if (_displayObject) {
+		_displayObject.text = [self.decimalFormatter stringFromNumber:@0];
+	}
+	
 	if ([_delegate respondsToSelector:@selector(A3KeyboardController:clearButtonPressedTo:)]) {
 		[_delegate A3KeyboardController:(id) self clearButtonPressedTo:_textInputTarget];
 	}
@@ -183,29 +242,41 @@
 
 - (IBAction)backspaceAction:(UIButton *)button {
 	[[UIDevice currentDevice] playInputClick];
-	
-	BOOL allowedToChange = YES;
 
-	if ([_textInputTarget isKindOfClass:[UITextField class]]) {
-		UITextField *textField = (UITextField *) _textInputTarget;
-		UITextRange *selectedRange = textField.selectedTextRange;
-		NSInteger location = [textField offsetFromPosition:textField.beginningOfDocument toPosition:selectedRange.start];
-		NSInteger length = [textField offsetFromPosition:selectedRange.start toPosition:selectedRange.end];
-		if (!location && !length) return;
-
-		if (length == 0) {
-			location = MAX(location - 1, 0);
-			length = 1;
+	if (_displayObject) {
+		if ([_inputString length] == 1) {
+			_inputString = @"";
+		} else if ([_inputString length]) {
+			_inputString = [_inputString substringToIndex:[_inputString length] - 2];
 		}
-		FNLOG(@"%lu, %lu", (unsigned long)location, (unsigned long)length);
-		NSRange range = NSMakeRange(location, length);
-		id <UITextFieldDelegate> o = textField.delegate;
-		if ([o respondsToSelector:@selector(textField:shouldChangeCharactersInRange:replacementString:)]) {
-			allowedToChange = [o textField:textField shouldChangeCharactersInRange:range replacementString:@""];
-		}
+		NSNumberFormatter *numberFormatter = self.decimalFormatter;
+		_displayObject.text = [numberFormatter stringFromNumber:@([_inputString doubleValue])];
 	}
-	if (allowedToChange && [_textInputTarget respondsToSelector:@selector(deleteBackward)]) {
-		[_textInputTarget deleteBackward];
+	
+	if (_textInputTarget) {
+		BOOL allowedToChange = YES;
+		
+		if ([_textInputTarget isKindOfClass:[UITextField class]]) {
+			UITextField *textField = (UITextField *) _textInputTarget;
+			UITextRange *selectedRange = textField.selectedTextRange;
+			NSInteger location = [textField offsetFromPosition:textField.beginningOfDocument toPosition:selectedRange.start];
+			NSInteger length = [textField offsetFromPosition:selectedRange.start toPosition:selectedRange.end];
+			if (!location && !length) return;
+			
+			if (length == 0) {
+				location = MAX(location - 1, 0);
+				length = 1;
+			}
+			FNLOG(@"%lu, %lu", (unsigned long)location, (unsigned long)length);
+			NSRange range = NSMakeRange(location, length);
+			id <UITextFieldDelegate> o = textField.delegate;
+			if ([o respondsToSelector:@selector(textField:shouldChangeCharactersInRange:replacementString:)]) {
+				allowedToChange = [o textField:textField shouldChangeCharactersInRange:range replacementString:@""];
+			}
+		}
+		if (allowedToChange && [_textInputTarget respondsToSelector:@selector(deleteBackward)]) {
+			[_textInputTarget deleteBackward];
+		}
 	}
 }
 
