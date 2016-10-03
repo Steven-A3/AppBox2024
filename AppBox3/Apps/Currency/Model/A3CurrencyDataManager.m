@@ -149,9 +149,16 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 					NSDictionary *list = JSON[@"list"];
 					NSArray *yahooArray = list[@"resources"];
 
+					// 중복된 목록은 삭제한다.
+					// 주요 Currency가 누락된 경우, 이전 파일에서 추가한다.
+					// 이전 파일에 없으면, 배포 파일에서 추가한다.
+					
 					if ([yahooArray count] > 100) {
+						
+						NSArray *verifiedArray = [self verifiedArray:yahooArray];
+						
 						NSString *path = [A3CurrencyRatesDataFilename pathInCachesDataDirectory];
-						[yahooArray writeToFile:path atomically:YES];
+						[verifiedArray writeToFile:path atomically:YES];
 						
 						[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdated object:nil];
 						
@@ -188,6 +195,68 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 	[operation start];
+}
+
+- (NSArray *)verifiedArray:(NSArray *)sourceArray {
+	NSString *bundlePath = [[NSBundle mainBundle] pathForResource:A3CurrencyRatesDataFilename ofType:nil];
+	NSArray *bundleData = [NSArray arrayWithContentsOfFile:bundlePath];
+	NSArray *previousData = [NSArray arrayWithContentsOfFile:[A3CurrencyRatesDataFilename pathInCachesDataDirectory]];
+	NSMutableArray *verifiedArray = [NSMutableArray new];
+	
+	for (NSDictionary *data in sourceArray) {
+		A3YahooCurrency *newData = [[A3YahooCurrency alloc] initWithObject:data];
+		NSInteger indexOfObject = [verifiedArray indexOfObjectPassingTest:^BOOL(NSDictionary *_Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+			A3YahooCurrency *data = [[A3YahooCurrency alloc] initWithObject:obj];
+			return [data.currencyCode isEqualToString:newData.currencyCode];
+		}];
+		if (indexOfObject == NSNotFound) {
+			[verifiedArray addObject:data];
+		} else {
+			FNLOG(@"%@ duplicated data.", newData.currencyCode);
+		}
+	}
+	
+	NSArray<NSString *> *majorArray = @[@"HKD", @"USD", @"EUR", @"GBP", @"JPY", @"CNY",
+										@"AUD", @"NZD", @"CAD", @"SEK", @"CHF", @"HUF",
+										@"SGD", @"KRW", @"INR", @"MXN", @"PHP", @"THB",
+										@"MYR", @"ZAR", @"RUB", @"AED", @"IDR", @"SAR",
+										@"BRL", @"TRY", @"KES", @"EGP", @"NOK", @"KWD",
+										@"DKK", @"PKR", @"ILS", @"PLN", @"QAR"];
+	
+	for (NSString *code in majorArray) {
+		NSInteger indexOfObject = [verifiedArray indexOfObjectPassingTest:^BOOL(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+			A3YahooCurrency *data = [[A3YahooCurrency alloc] initWithObject:obj];
+			return [data.currencyCode isEqualToString:code];
+		}];
+		if (indexOfObject == NSNotFound) {
+			id data = [self dataInArray:previousData currencyCode:code];
+			if (data) {
+				FNLOG(@"%@ added from previous data.", code);
+				[verifiedArray addObject:data];
+			} else {
+				data = [self dataInArray:bundleData currencyCode:code];
+				if (data) {
+					FNLOG(@"%@ added from bundle data.", code);
+					[verifiedArray addObject:data];
+				} else {
+					FNLOG(@"%@ data is missing.", code);
+				}
+			}
+		}
+	}
+	return verifiedArray;
+}
+
+- (id)dataInArray:(NSArray *)array currencyCode:(NSString *)code {
+	if (!array) return nil;
+	NSInteger idxOfCode = [array indexOfObjectPassingTest:^BOOL(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+		A3YahooCurrency *data = [[A3YahooCurrency alloc] initWithObject:obj];
+		return [data.currencyCode isEqualToString:code];
+	}];
+	if (idxOfCode != NSNotFound) {
+		return array[idxOfCode];
+	}
+	return nil;
 }
 
 - (NSArray *)dataArray {
