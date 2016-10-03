@@ -59,4 +59,7 @@ typedef void (^BasicBlock)(id sender);
 @property (nonatomic, copy) BasicBlock doneButtonPressed;
 @property (nonatomic, strong) A3NumberKeyboardViewController * inputViewController;
 
+- (void)textFieldEditingChanged:(UITextField *)textField;
+
+- (void)textFieldDidEndEditing:(UITextField *)textField;
 @end

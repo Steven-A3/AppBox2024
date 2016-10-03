@@ -24,15 +24,26 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
-@interface A3LoanCalcLoanDetailViewController () <LoanCalcSelectFrequencyDelegate, LoanCalcExtraPaymentDelegate,
-		A3KeyboardDelegate, UITextFieldDelegate, A3ViewControllerProtocol>
-{
-    BOOL _isLoanCalcEdited;
-}
+@interface A3LoanCalcLoanDetailViewController ()
+<LoanCalcSelectFrequencyDelegate,
+LoanCalcExtraPaymentDelegate,
+A3KeyboardDelegate,
+UITextFieldDelegate,
+A3ViewControllerProtocol>
+
+@property (nonatomic, copy) NSString *textBeforeEditing;
+@property (nonatomic, weak) UITextField *editingTextField;
+@property (nonatomic, copy) UIColor *textColorBeforeEditing;
 
 @end
 
-@implementation A3LoanCalcLoanDetailViewController
+@implementation A3LoanCalcLoanDetailViewController {
+	BOOL _didPressClearKey;
+	BOOL _didPressNumberKey;
+	BOOL _isNumberKeyboardVisible;
+	
+	BOOL _isLoanCalcEdited;
+}
 
 NSString *const A3LoanCalcSelectCellID2 = @"A3LoanCalcSelectCell";
 NSString *const A3LoanCalcTextInputCellID2 = @"A3LoanCalcTextInputCell";
@@ -200,8 +211,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 }
 
 - (void)clearEverything {
-	[self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+	[self dismissNumberKeyboard];
 }
 
 - (void)presentSubViewController:(UIViewController *)viewController {
@@ -378,23 +388,44 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 }
 
 #pragma mark - TextFieldDelegate
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+	FNLOG();
+	if (IS_IPHONE && IS_LANDSCAPE) return NO;
+
+	if (_isNumberKeyboardVisible) {
+		if (textField != _editingTextField) {
+			[self textFieldDidEndEditing:_editingTextField];
+			[self textFieldDidBeginEditing:textField];
+		}
+	} else {
+		self.scrollToIndexPath = [self.tableView indexPathForCellSubview:textField];
+		[self presentNumberKeyboardForTextField:textField];
+	}
+
+	return NO;
+}
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     self.firstResponder = textField;
-    
-    textField.text = @"";
+	_editingTextField = textField;
+	
+	FNLOG(@"%@, %@", _editingTextField.text, _editingTextField);
+
+	self.textBeforeEditing = textField.text;
+	textField.text = [self.decimalFormatter stringFromNumber:@0];
 	textField.placeholder = @"";
+	
+	self.textColorBeforeEditing = textField.textColor;
+	textField.textColor = [[A3AppDelegate instance] themeColor];
 
 	self.currentIndexPath = [self.tableView indexPathForCellSubview:textField];
 	FNLOG(@"End IP : %ld - %ld", (long)self.currentIndexPath.section, (long)self.currentIndexPath.row);
+	[self.tableView scrollToRowAtIndexPath:self.currentIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 
-	A3NumberKeyboardViewController *keyboardVC = [self normalNumberKeyboard];
-	textField.inputView = [keyboardVC view];
-	if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
-		textField.inputAssistantItem.leadingBarButtonGroups = @[];
-		textField.inputAssistantItem.trailingBarButtonGroups = @[];
-	}
-	self.numberKeyboardViewController = keyboardVC;
+	A3NumberKeyboardViewController *keyboardVC = self.numberKeyboardViewController;
 
 	if (self.currentIndexPath.section == 1) {
 		// calculation items
@@ -448,8 +479,8 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 
 	keyboardVC.textInputTarget = textField;
 	keyboardVC.delegate = self;
-	self.numberKeyboardViewController = keyboardVC;
-
+	[keyboardVC reloadPrevNextButtons];
+	
 	[self addNumberKeyboardNotificationObservers];
 	
 	FNLOGINSETS(self.tableView.contentInset);
@@ -462,10 +493,21 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+	FNLOG(@"%@, %@", _editingTextField.text, _editingTextField);
+	
 	FNLOGINSETS(self.tableView.contentInset);
 
-	[self removeNumberKeyboardNotificationObservers];
+	if (_textColorBeforeEditing) {
+		textField.textColor = _textColorBeforeEditing;
+		_textColorBeforeEditing = nil;
+	}
 
+	if (!_didPressNumberKey && !_didPressClearKey) {
+		textField.text = _textBeforeEditing;
+		_textBeforeEditing = nil;
+		return;
+	}
+	
     NSIndexPath *endIndexPath = self.currentIndexPath;
     
     FNLOG(@"End IP : %ld - %ld", (long)endIndexPath.section, (long)endIndexPath.row);
@@ -556,14 +598,6 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 	[self updateLoanCalculation];
 }
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-	if (IS_IPHONE && IS_LANDSCAPE) return NO;
-
-	self.scrollToIndexPath = [self.tableView indexPathForCellSubview:textField];
-    return YES;
-}
-
 #pragma mark - ScrollView Delegate
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
@@ -571,14 +605,121 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
     [self clearEverything];
 }
 
+#pragma mark - Number Keyboard
+
+- (void)presentNumberKeyboardForTextField:(UITextField *)textField {
+	if (_isNumberKeyboardVisible) {
+		return;
+	}
+
+	A3NumberKeyboardViewController *keyboardVC = [self normalNumberKeyboard];
+	self.numberKeyboardViewController = keyboardVC;
+
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGFloat keyboardHeight = keyboardVC.keyboardHeight;
+	UIView *keyboardView = keyboardVC.view;
+	[self.view.superview addSubview:keyboardView];
+
+	[self textFieldDidBeginEditing:textField];
+
+	_didPressClearKey = NO;
+	_didPressNumberKey = NO;
+	
+	keyboardView.frame = CGRectMake(0, self.view.bounds.size.height, bounds.size.width, keyboardHeight);
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = keyboardView.frame;
+		frame.origin.y -= keyboardHeight;
+		keyboardView.frame = frame;
+
+		UIEdgeInsets contentInset = self.tableView.contentInset;
+		contentInset.bottom = keyboardHeight;
+		self.tableView.contentInset = contentInset;
+		
+		NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:textField];
+		[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+	} completion:^(BOOL finished) {
+		[self addNumberKeyboardNotificationObservers];
+		_isNumberKeyboardVisible = YES;
+	}];
+	
+}
+
+- (void)dismissNumberKeyboard {
+#ifdef DEBUG
+	NSArray *symbols = [NSThread callStackSymbols];
+	for (NSString *symbol in symbols) {
+		NSLog(@"%@", symbol);
+	}
+#endif
+	if (!_isNumberKeyboardVisible) {
+		return;
+	}
+	[self removeNumberKeyboardNotificationObservers];
+	
+	[self textFieldDidEndEditing:_editingTextField];
+	_editingTextField = nil;
+	self.firstResponder = nil;
+	
+	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+	UIView *keyboardView = keyboardViewController.view;
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = keyboardView.frame;
+		frame.origin.y += keyboardViewController.keyboardHeight;
+		keyboardView.frame = frame;
+
+		UIEdgeInsets contentInset = self.tableView.contentInset;
+		contentInset.bottom = 0;
+		self.tableView.contentInset = contentInset;
+
+	} completion:^(BOOL finished) {
+		[keyboardView removeFromSuperview];
+		[keyboardViewController removeFromParentViewController];
+		self.numberKeyboardViewController = nil;
+		_isNumberKeyboardVisible = NO;
+	}];
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	
+	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
+		UIView *keyboardView = self.numberKeyboardViewController.view;
+		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+		
+		FNLOGRECT(self.view.bounds);
+		FNLOG(@"%f", keyboardHeight);
+		keyboardView.frame = CGRectMake(0, self.view.bounds.size.height - keyboardHeight, self.view.bounds.size.width, keyboardHeight);
+		[self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+	}
+}
+
+#pragma mark - Number Keyboard Delegate
+
+- (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
+	[super A3KeyboardController:controller clearButtonPressedTo:keyInputDelegate];
+	_didPressClearKey = YES;
+}
+
+- (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
+	_didPressNumberKey = YES;
+}
+
+- (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
+	[self dismissNumberKeyboard];
+}
+
+- (void)currencySelectButtonAction:(NSNotification *)notification {
+	[self dismissNumberKeyboard];
+
+	[super currencySelectButtonAction:notification];
+}
+
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    [self clearEverything];
-    
+	
     if (indexPath.section == 0) {
         // graph
     }
@@ -588,6 +729,8 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
         A3LoanCalcCalculationItem calcItem = calcItemNum.integerValue;
         
         if (calcItem == A3LC_CalculationItemFrequency) {
+			[self dismissNumberKeyboard];
+			
             A3LoanCalcSelectFrequencyViewController *viewController = [[A3LoanCalcSelectFrequencyViewController alloc] initWithStyle:UITableViewStyleGrouped];
             viewController.delegate = self;
             viewController.currentFrequency = self.loanData.frequencyIndex;
@@ -606,6 +749,8 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
         A3LoanCalcExtraPaymentType exPaymentItem = exPaymentItemNum.integerValue;
         
         if ((exPaymentItem == A3LC_ExtraPaymentYearly) || (exPaymentItem == A3LC_ExtraPaymentOnetime)) {
+			[self dismissNumberKeyboard];
+
             UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"LoanCalculatorPhoneStoryBoard" bundle:nil];
             A3LoanCalcExtraPaymentViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3LoanCalcExtraPaymentViewController"];
             viewController.exPaymentType = exPaymentItem;

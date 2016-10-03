@@ -16,7 +16,6 @@
 #import "A3ExpenseListColumnSectionView.h"
 #import "ExpenseListBudget.h"
 #import "ExpenseListItem.h"
-#import "A3DefaultColorDefines.h"
 #import "ExpenseListHistory.h"
 #import "NSString+conversion.h"
 #import "ExpenseListItem+management.h"
@@ -32,6 +31,8 @@
 #import "A3UserDefaults.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3NavigationController.h"
+#import "A3NumberKeyboardViewController_iPhone.h"
+#import "A3NumberKeyboardSimpleVC_iPad.h"
 
 #define kDefaultItemCount_iPhone    9
 #define kDefaultItemCount_iPad      18
@@ -42,7 +43,7 @@ NSString *const A3NotificationExpenseListCurrencyCodeChanged = @"A3NotificationE
 @interface A3ExpenseListMainViewController () <ATSDragToReorderTableViewControllerDelegate, UIPopoverControllerDelegate,
 		A3ExpenseBudgetSettingDelegate, A3ExpenseListItemCellDelegate, UINavigationControllerDelegate,
 		A3ExpenseListHistoryDelegate, A3CalculatorViewControllerDelegate, A3InstructionViewControllerDelegate,
-		A3ViewControllerProtocol>
+		A3ViewControllerProtocol, A3ExpenseListAccessoryDelegate, A3KeyboardDelegate>
 
 @property (nonatomic, strong) A3ExpenseListHeaderView *headerView;
 @property (nonatomic, strong) UIView *sep1View;
@@ -63,6 +64,15 @@ NSString *const A3NotificationExpenseListCurrencyCodeChanged = @"A3NotificationE
 @property (nonatomic, strong) A3ExpenseListItemCell *calculatorTargetCell;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @property (nonatomic, strong) NSNumberFormatter *decimalFormatter;
+@property (nonatomic, strong) A3ExpenseListAccessoryView *keyboardAccessoryView;
+@property (nonatomic, strong) A3ExpenseListAccessoryView *accessoryForNumberField;
+
+@property (nonatomic, strong) NSIndexPath *editingIndexPath;
+@property (nonatomic, weak) UITextField *editingTextField;
+@property (nonatomic, weak) A3ExpenseListItemCell *editingCell;
+@property (nonatomic, copy) NSString *textBeforeEditingTextField;
+@property (nonatomic, copy) UIColor *textColorBeforeEditing;
+
 @end
 
 @implementation A3ExpenseListMainViewController
@@ -74,6 +84,13 @@ NSString *const A3NotificationExpenseListCurrencyCodeChanged = @"A3NotificationE
 	BOOL _isAutoMovingAddBudgetView;
 	BOOL _barButtonEnabled;
 	CGFloat _tableCellStartY;
+
+	BOOL _nextColumnAvail, _prevColumnAvail;
+
+	/// Number Keyboard Management
+	BOOL _didPressClearKey, _didPressNumberKey;
+	BOOL _isNumberKeyboardVisible;
+	BOOL _isSwitchingTextField;
 }
 
 NSString *const ExpenseListMainCellIdentifier = @"Cell";
@@ -406,6 +423,24 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	}
 }
 
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	
+	if (self.numberKeyboardViewController.view.superview) {
+		UIView *keyboardView = self.numberKeyboardViewController.view;
+		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+		
+		FNLOGRECT(self.view.bounds);
+		FNLOG(@"%f", keyboardHeight);
+		keyboardView.frame = CGRectMake(0, self.view.bounds.size.height - keyboardHeight, self.view.bounds.size.width, keyboardHeight);
+		[self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+
+		if (_accessoryForNumberField) {
+			_accessoryForNumberField.frame = CGRectMake(0, keyboardView.frame.origin.y - 45.0, self.view.bounds.size.width, 45);
+		}
+	}
+}
+
 #pragma mark Instruction Related
 
 static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionDidShowForExpenseList";
@@ -504,8 +539,8 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     [CATransaction setCompletionBlock:^{
         if (focus) {
             A3ExpenseListItemCell *cell = (A3ExpenseListItemCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:focusingRow inSection:0]];
-            cell.nameTextField.userInteractionEnabled = YES;
-            [cell.nameTextField becomeFirstResponder];
+            cell.nameField.userInteractionEnabled = YES;
+            [cell.nameField becomeFirstResponder];
         }
     }];
     [CATransaction commit];
@@ -560,16 +595,16 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         A3ExpenseListItemCell *aCell = (A3ExpenseListItemCell *)[self.tableView cellForRowAtIndexPath:indexPath];
         
         if (tapLocation.x < _sep1View.frame.origin.x) {
-            aCell.nameTextField.userInteractionEnabled = YES;
-            [aCell.nameTextField becomeFirstResponder];
+            aCell.nameField.userInteractionEnabled = YES;
+            [aCell.nameField becomeFirstResponder];
         }
         else if ( tapLocation.x > _sep1View.frame.origin.x && tapLocation.x < _sep2View.frame.origin.x) {
-            aCell.priceTextField.userInteractionEnabled = YES;
-            [aCell.priceTextField becomeFirstResponder];
+            aCell.priceField.userInteractionEnabled = YES;
+            [aCell.priceField becomeFirstResponder];
         }
         else if ( tapLocation.x > _sep2View.frame.origin.x && tapLocation.x < _sep3View.frame.origin.x) {
-            aCell.qtyTextField.userInteractionEnabled = YES;
-            [aCell.qtyTextField becomeFirstResponder];
+            aCell.quantityField.userInteractionEnabled = YES;
+            [aCell.quantityField becomeFirstResponder];
         }
     } else {
         [self addItemWithFocus:YES];
@@ -739,12 +774,12 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         item.itemName = @"";
         item.price = @0;
         item.qty = @1;
-        aCell.nameTextField.text = @"";
-        aCell.priceTextField.text = [self.currencyFormatter stringFromNumber:@0];
-        aCell.qtyTextField.text = @"1";
+        aCell.nameField.text = @"";
+        aCell.priceField.text = [self.currencyFormatter stringFromNumber:@0];
+        aCell.quantityField.text = @"1";
         aCell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:@0];
-        aCell.priceTextField.placeholder = @"";
-        aCell.qtyTextField.placeholder = @"";
+        aCell.priceField.placeholder = @"";
+        aCell.quantityField.placeholder = @"";
     }
     else {
         // 입력 포커스 후
@@ -787,10 +822,10 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
                 nextItem.qty = @1;
                 nextItem.subTotal = @0;
                 
-                nextCell.priceTextField.text = [self.currencyFormatter stringFromNumber:nextItem.price];
+                nextCell.priceField.text = [self.currencyFormatter stringFromNumber:nextItem.price];
                 NSNumberFormatter *formatter = [NSNumberFormatter new];
                 [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-                nextCell.qtyTextField.text = [formatter stringFromNumber:nextItem.qty];
+                nextCell.quantityField.text = [formatter stringFromNumber:nextItem.qty];
                 nextCell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:@(nextItem.price.doubleValue * nextItem.qty.doubleValue)];
             }
         }
@@ -1013,6 +1048,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         cell = [[A3ExpenseListItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ExpenseListMainCellIdentifier];
     }
 	[self setupCell:cell atIndexPath:indexPath];
+	FNLOG();
 
     return cell;
 }
@@ -1034,23 +1070,23 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:indexPath.row];
 	cell.delegate = self;
 
-    cell.nameTextField.userInteractionEnabled = NO;
-    cell.priceTextField.userInteractionEnabled = NO;
-    cell.qtyTextField.userInteractionEnabled = NO;
-    
+//    cell.nameField.userInteractionEnabled = YES;
+//    cell.priceField.userInteractionEnabled = YES;
+//    cell.quantityField.userInteractionEnabled = YES;
+	
 	if ([item.hasData boolValue] || indexPath.row == 0) {    // kjh 추후에 변경하도록
-		cell.nameTextField.text = item.itemName;
-		cell.priceTextField.text = [self.currencyFormatter stringFromNumber:item.price];
-		cell.qtyTextField.text = item.qty.stringValue;
+		cell.nameField.text = item.itemName;
+		cell.priceField.text = [self.currencyFormatter stringFromNumber:item.price];
+		cell.quantityField.text = item.qty.stringValue;
 		cell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:@(item.price.doubleValue * item.qty.doubleValue)];
 	} else {
-		cell.nameTextField.text = @"";
-		cell.priceTextField.text = @"";
-		cell.qtyTextField.text = @"";
+		cell.nameField.text = @"";
+		cell.priceField.text = @"";
+		cell.quantityField.text = @"";
 		cell.subTotalLabel.text = @"";
-		cell.nameTextField.placeholder = @"";
-		cell.priceTextField.placeholder = @"";
-		cell.qtyTextField.placeholder = @"";
+		cell.nameField.placeholder = @"";
+		cell.priceField.placeholder = @"";
+		cell.quantityField.placeholder = @"";
 	}
 }
 
@@ -1135,23 +1171,6 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     return indexPath.row == 0 ? (IS_RETINA ? 43.5 : 43) : 44.0;
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    
-    if (_topWhitePaddingView) {
-        if (scrollView.contentOffset.y < -scrollView.contentInset.top ) {
-            CGRect rect = _topWhitePaddingView.frame;
-            rect.origin.y = -(fabs(scrollView.contentOffset.y) - scrollView.contentInset.top);
-            rect.size.height = fabs(scrollView.contentOffset.y) - scrollView.contentInset.top;
-            _topWhitePaddingView.frame = rect;
-        } else {
-            CGRect rect = _topWhitePaddingView.frame;
-            rect.origin.y = 0.0;
-            rect.size.height = 0.0;
-            _topWhitePaddingView.frame = rect;
-        }
-    }
-}
-
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
 	return YES;
 }
@@ -1180,7 +1199,31 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     [_tableDataSourceArray addObjectsFromArray:emptyDataArray];
 }
 
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+
+	if (_topWhitePaddingView) {
+		if (scrollView.contentOffset.y < -scrollView.contentInset.top ) {
+			CGRect rect = _topWhitePaddingView.frame;
+			rect.origin.y = -(fabs(scrollView.contentOffset.y) - scrollView.contentInset.top);
+			rect.size.height = fabs(scrollView.contentOffset.y) - scrollView.contentInset.top;
+			_topWhitePaddingView.frame = rect;
+		} else {
+			CGRect rect = _topWhitePaddingView.frame;
+			rect.origin.y = 0.0;
+			rect.size.height = 0.0;
+			_topWhitePaddingView.frame = rect;
+		}
+	}
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+	[self dismissNumberKeyboardWithAnimation:YES completion:NULL];
+}
+
 #pragma mark ATSDragToReorderTableViewController Delegate
+
 - (BOOL)dragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController shouldHideDraggableIndicatorForDraggingToRow:(NSIndexPath *)destinationIndexPath {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self re_sort_DataSourceToSeparateValidAndEmpty];
@@ -1225,8 +1268,6 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     
     [self clearCurrentBudget];
 
-    
-    
     // 선택된 히스토리 버젯으로 복원.
     NSManagedObjectContext * savingContext = [NSManagedObjectContext MR_defaultContext];
     NSDate *updateDate = [NSDate date];
@@ -1263,75 +1304,157 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 #pragma mark - A3ExpenseListItemCell Delegate
 
--(void)itemCellTextFieldBeginEditing:(A3ExpenseListItemCell *)aCell textField:(UITextField *)textField
+- (BOOL)cell:(A3ExpenseListItemCell *)cell textFieldShouldBeginEditing:(UITextField *)textField {
+	FNLOG();
+	[self dismissMoreMenu];
+	[self.tableView setEditing:NO animated:YES];
+	
+	if (textField == cell.nameField) {
+		if (_isNumberKeyboardVisible) {
+			_isSwitchingTextField = YES;
+			[self dismissNumberKeyboardWithAnimation:NO completion:^{
+				[textField becomeFirstResponder];
+			}];
+			return NO;
+		}
+		if (_editingTextField && (_editingTextField == _editingCell.nameField)) {
+			_isSwitchingTextField = YES;
+		}
+		return YES;
+	} else {
+		if (_editingTextField == cell.nameField) {
+			[_editingTextField resignFirstResponder];
+		}
+		if (_isNumberKeyboardVisible) {
+			if (_editingTextField != textField) {
+				// textFieldDidEndEditing은 _isSwitchingTextField 플랙을 끈다.
+				_isSwitchingTextField = YES;
+				[self cell:_editingCell textFieldDidEndEditing:_editingTextField];
+				[self cell:cell textFieldDidBeginEditing:textField];
+			}
+		} else {
+			self.editingCell = cell;
+			[self presentNumberKeyboardForTextField:textField];
+		}
+	}
+	return NO;
+}
+
+- (void)cell:(A3ExpenseListItemCell *)cell textFieldDidBeginEditing:(UITextField *)textField
 {
-	[self setFirstResponder:textField];
-    [self dismissMoreMenu];
-    [self.tableView setEditing:NO animated:YES];
-    
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:aCell];
+	FNLOG();
+	
+	self.editingCell = cell;
+	self.firstResponder = textField;
+	self.editingTextField = textField;
+	self.textBeforeEditingTextField = textField.text;
+	self.editingIndexPath = [self.tableView indexPathForCell:cell];
+	FNLOG(@"%ld, %ld", _editingIndexPath.section, _editingIndexPath.row);
+
+	if (textField == cell.nameField) {
+		textField.returnKeyType = UIReturnKeyDefault;
+		textField.inputAccessoryView = [self keyboardAccessoryView];
+		[self.keyboardAccessoryView undoRedoButtonStateChangeFor:textField];
+	}
+	else if (textField == cell.priceField) {
+		A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+
+		keyboardViewController.textInputTarget = textField;
+		keyboardViewController.delegate = self;
+		keyboardViewController.currencyCode = self.defaultCurrencyCode;
+		keyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
+		[keyboardViewController.clearButton setTitle:@"" forState:UIControlStateNormal];
+		[keyboardViewController.clearButton setEnabled:NO];
+	}
+	else if (textField == cell.quantityField) {
+		A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+
+		keyboardViewController.textInputTarget = textField;
+		keyboardViewController.delegate = self;
+		keyboardViewController.keyboardType = A3NumberKeyboardTypeInteger;
+		[keyboardViewController.clearButton setTitle:@"" forState:UIControlStateNormal];
+		[keyboardViewController.clearButton setEnabled:NO];
+	}
+
+	if (cell.nameField != textField) {
+		self.textColorBeforeEditing = textField.textColor;
+
+		textField.placeholder = @"";
+		textField.text = [self.decimalFormatter stringFromNumber:@0];
+		textField.textColor = [[A3AppDelegate instance] themeColor];
+
+		UITextField *quantityField = cell.quantityField;
+		if (quantityField == textField) {
+			quantityField.textAlignment = [quantityField.text length] == 0 ? NSTextAlignmentRight : NSTextAlignmentCenter;
+		}
+	}
+
+	[self.keyboardAccessoryView undoRedoButtonStateChangeFor:textField];
+	[self showEraseButtonIfNeeded];
+	[self changeDirectionButtonStateFor:textField];
+
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:indexPath.row];
     if (![item.hasData boolValue] && _selectedItem != item) {
         item.itemDate = [NSDate date];
         item.price = @0;
         item.qty = @1;
         item.subTotal = @0;
-        
-        aCell.priceTextField.text = [self.currencyFormatter stringFromNumber:item.price];
-        aCell.qtyTextField.text = item.qty.stringValue;
-        aCell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:@(item.price.doubleValue * item.qty.doubleValue)];
+
+		if (_editingTextField != cell.priceField) {
+			cell.priceField.text = [self.currencyFormatter stringFromNumber:item.price];
+		}
+		if (_editingTextField != cell.quantityField) {
+			cell.quantityField.text = item.qty.stringValue;
+		}
+        cell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:@(item.price.doubleValue * item.qty.doubleValue)];
     }
     
     _selectedItem = item;
-	[self addNumberKeyboardNotificationObservers];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
 }
 
-- (void)textFieldDidChange:(NSNotification *)notification
-{
-    UITextField *textField = notification.object;
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:CGPointMake(100, [textField convertPoint:textField.center toView:self.tableView].y)];
-    if (!indexPath) {
-        return;
-    }
-    
-    A3ExpenseListItemCell *aCell = (A3ExpenseListItemCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:indexPath.row];
-	if (textField == aCell.nameTextField) {
-		item.itemName = textField.text;
-	}
-	else if (textField == aCell.priceTextField) {
-		item.price = @([textField.text floatValueEx]);
-	}
-	else if (textField == aCell.qtyTextField) {
-		item.qty = [self.decimalFormatter numberFromString:textField.text];
-	}
-    
-    // price * qty 계산
-    item.subTotal = @(item.price.doubleValue * item.qty.doubleValue);
-    aCell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:item.subTotal];
-    
-    // 전체 항목 계산 & 화면(헤더뷰) 반영.
-//    [self calculateAndDisplayResultWithAnimation:YES];
-}
-
--(void)itemCellTextFieldChanged:(A3ExpenseListItemCell *)aCell textField:(UITextField *)textField
-{
+- (void)cell:(A3ExpenseListItemCell *)cell textFieldValueDidChange:(UITextField *)textField {
 
 }
 
--(void)itemCellTextFieldFinished:(A3ExpenseListItemCell *)aCell textField:(UITextField *)textField
-{
-	FNLOG(@"textField.text = %@", textField.text);
-    if (textField == self.firstResponder) {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
-        [self removeNumberKeyboardNotificationObservers];
-    }
+- (BOOL)cell:(A3ExpenseListItemCell *)cell textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+	[self.keyboardAccessoryView undoRedoButtonStateChangeFor:textField];
+	[self changeDirectionButtonStateFor:textField];
 
-    textField.userInteractionEnabled = NO;
-    
-    NSIndexPath *index = [self.tableView indexPathForCell:aCell];
+	UITextField *quantityField = cell.quantityField;
+	if (quantityField == textField && quantityField.textAlignment != NSTextAlignmentCenter) {
+		quantityField.textAlignment = NSTextAlignmentCenter;
+	}
+
+	NSMutableString *resultString = [textField.text mutableCopy];
+	[resultString replaceCharactersInRange:range withString:string];
+	FNLOG(@"%@", resultString);
+	[self.keyboardAccessoryView showEraseButton:[resultString length] || [_textBeforeEditingTextField length]];
+
+	return YES;
+}
+
+- (void)cell:(A3ExpenseListItemCell *)cell textFieldDidEndEditing:(UITextField *)textField {
+	FNLOG();
+	if (textField != cell.nameField) {
+		if (_textColorBeforeEditing) {
+			textField.textColor = _textColorBeforeEditing;
+			_textColorBeforeEditing = nil;
+		}
+
+		if (!_didPressNumberKey && !_didPressClearKey) {
+			textField.text = _textBeforeEditingTextField;
+			_textBeforeEditingTextField = nil;
+		}
+	}
+
+	if (cell.quantityField == textField) {
+		cell.quantityField.textAlignment = [cell.quantityField.text length] == 0 ? NSTextAlignmentRight : NSTextAlignmentCenter;
+	}
+	
+    NSIndexPath *index = [self.tableView indexPathForCell:cell];
     if ([_tableDataSourceArray count] < [index row]) {
+		_editingTextField = nil;
         self.firstResponder = nil;
         return;
     }
@@ -1339,10 +1462,10 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:index.row];
     NSDate * updateDate = [NSDate date];
 
-	if (textField == aCell.nameTextField) {
+	if (textField == cell.nameField) {
 		item.itemName = textField.text;
 	}
-	else if (textField == aCell.priceTextField) {
+	else if (textField == cell.priceField) {
 		FNLOG(@"%@", self.decimalFormatter);
         item.price = [self.decimalFormatter numberFromString:textField.text];
 		FNLOG(@"item.price = %@", item.price);
@@ -1353,7 +1476,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 		textField.text = [self.currencyFormatter stringFromNumber:item.price];
 		FNLOG(@"textField.text = %@", textField.text);
 	}
-	else if (textField == aCell.qtyTextField) {
+	else if (textField == cell.quantityField) {
 		if (![textField.text length]) {
 			textField.text = [self.decimalFormatter stringFromNumber:@0];
 		}
@@ -1362,7 +1485,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
     // price * qty 계산
     item.subTotal = @(item.price.doubleValue * item.qty.doubleValue);
-    aCell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:item.subTotal];
+    cell.subTotalLabel.text = [self.currencyFormatter stringFromNumber:item.subTotal];
 	item.hasData = @(YES);
 	item.updateDate = updateDate;
     
@@ -1371,10 +1494,10 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     }
 
     // 전체 항목 계산 & 화면(헤더뷰) 반영.
-    [self calculateAndDisplayResultWithAnimation:YES saveData:YES ];
+    [self calculateAndDisplayResultWithAnimation:!_isSwitchingTextField saveData:YES ];
 
     // 유효성 체크, 유효하지 않은 아이템에 기본값 부여.
-    if ([self isEmptyItemRow:item]) {
+    if (!_isSwitchingTextField && [self isEmptyItemRow:item]) {
         // 아무 입력이 없었던 경우
         // 행에 출력된 초기값을 제거하여 공백 셀을 만든다.
         item.hasData = @(NO);
@@ -1384,6 +1507,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
                 self.firstResponder = nil;
                 [self re_sort_DataSourceToSeparateValidAndEmpty];
                 [self.tableView reloadData];
+				FNLOG(@"TableView reload data!!!");
             }
             return;
         }
@@ -1396,41 +1520,51 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         item.qty = nil;
 		item.updateDate = updateDate;
 		
-        aCell.nameTextField.text = @"";
-        aCell.priceTextField.text = @"";
-        aCell.qtyTextField.text = @"";
-        aCell.subTotalLabel.text = @"";
-        aCell.priceTextField.placeholder = @"";
-        aCell.qtyTextField.placeholder = @"";
+        cell.nameField.text = @"";
+        cell.priceField.text = @"";
+        cell.quantityField.text = @"";
+        cell.subTotalLabel.text = @"";
+        cell.priceField.placeholder = @"";
+        cell.quantityField.placeholder = @"";
         if (textField == [self firstResponder]) {
             self.firstResponder = nil;
             [self re_sort_DataSourceToSeparateValidAndEmpty];
             [self.tableView reloadData];
+			FNLOG(@"TableView reload data!!!");
         }
 		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+		_editingTextField = nil;
+		self.firstResponder = nil;
         return;
     }
 
-    // 예외처리, itemName 편집 종료시, top scroll 적용.
-    if (textField == aCell.nameTextField && textField == [self firstResponder]) {
-        [self re_sort_DataSourceToSeparateValidAndEmpty];
-        [self.tableView reloadData];
-        [self scrollToTopOfTableView];
-        self.firstResponder = nil;
-    }
-    else {
-        if (textField == [self firstResponder]) {
-            self.firstResponder = nil;
-            [self re_sort_DataSourceToSeparateValidAndEmpty];
-            [self.tableView reloadData];
-        }
-    }
-    
+	if (!_isSwitchingTextField) {
+		// 예외처리, itemName 편집 종료시, top scroll 적용.
+		if (textField == cell.nameField && textField == [self firstResponder]) {
+			[self re_sort_DataSourceToSeparateValidAndEmpty];
+			[self.tableView reloadData];
+			FNLOG(@"TableView reload data!!!");
+			[self scrollToTopOfTableView];
+			self.firstResponder = nil;
+		}
+		else {
+			if (textField == [self firstResponder]) {
+				self.firstResponder = nil;
+				if (!_isSwitchingTextField) {
+					[self re_sort_DataSourceToSeparateValidAndEmpty];
+					[self.tableView reloadData];
+				}
+			}
+		}
+	}
+	
 	[self enableControls:YES];
     [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+	
+	_editingTextField = nil;
+	self.firstResponder = nil;
+	_isSwitchingTextField = NO;
 }
-
-
 
 - (BOOL)isEmptyItemRow:(ExpenseListItem *)item {
     if (item.itemName.length==0 && (!item.price || [item.price isEqualToNumber:@0]) && (!item.qty || [item.qty isEqualToNumber:@1] || [item.qty isEqualToNumber:@0] )) {
@@ -1444,12 +1578,11 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     if (([self firstResponder] != textField && _selectedItem == item)) {
         return YES;
     }
-    
+
     return NO;
 }
 
--(void)itemCellTextFieldDonePressed:(A3ExpenseListItemCell *)aCell
-{
+- (void)cell:(A3ExpenseListItemCell *)aCell textFieldDidPressDoneButton:(UITextField *)textField {
     self.firstResponder = nil;
     
     NSIndexPath *index = [self.tableView indexPathForCell:aCell];
@@ -1459,43 +1592,40 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     [self reloadBudgetDataWithAnimation:YES saveData:NO ];
 }
 
--(BOOL)upwardRowAvailableFor:(A3ExpenseListItemCell *)sender
+- (BOOL)upwardRowAvailableFor:(A3ExpenseListItemCell *)sender
 {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
 
     return indexPath.row != 0 ? YES : NO;
 }
 
--(BOOL)downwardRowAvailableFor:(A3ExpenseListItemCell *)sender
+- (BOOL)downwardRowAvailableFor:(A3ExpenseListItemCell *)sender
 {
     return YES;
 }
 
--(void)moveUpRowFor:(A3ExpenseListItemCell *)sender textField:(UITextField *)textField
+- (void)moveUpRowFor:(NSIndexPath *)indexPath textField:(UITextField *)textField
 {
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
     indexPath = [NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section];
     
     A3ExpenseListItemCell *cell = (A3ExpenseListItemCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    cell.qtyTextField.userInteractionEnabled = YES;
-    [cell.qtyTextField becomeFirstResponder];
+    cell.quantityField.userInteractionEnabled = YES;
+    [cell.quantityField becomeFirstResponder];
 }
 
--(void)moveDownRowFor:(A3ExpenseListItemCell *)sender textField:(UITextField *)textField
+- (void)moveDownRowFor:(NSIndexPath *)indexPath textField:(UITextField *)textField
 {
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-    
     if (indexPath.row == _tableDataSourceArray.count-1) {
         [self addItemWithFocus:YES];
     } else {
         indexPath = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
         A3ExpenseListItemCell *cell = (A3ExpenseListItemCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-        cell.nameTextField.userInteractionEnabled = YES;
-        [cell.nameTextField becomeFirstResponder];
+        cell.nameField.userInteractionEnabled = YES;
+        [cell.nameField becomeFirstResponder];
     }
 }
 
--(void)removeItemForCell:(A3ExpenseListItemCell *)sender responder:(UIResponder *)keyInputDelegate
+- (void)removeItemForCell:(A3ExpenseListItemCell *)sender responder:(UIResponder *)keyInputDelegate
 {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
     indexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section];
@@ -1503,7 +1633,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 	UITextField *textField = (UITextField *) self.firstResponder;
     textField.text = @"";
-    if (sender.priceTextField == keyInputDelegate) {
+    if (sender.priceField == keyInputDelegate) {
         textField.placeholder = [self.currencyFormatter stringFromNumber:@0];
         aItem.price = @0;
     }
@@ -1511,6 +1641,140 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         textField.placeholder = @"";
         aItem.qty = @0;
     }
+}
+
+#pragma mark - Number Keyboard
+
+- (void)presentNumberKeyboardForTextField:(UITextField *)textField {
+	if (_isNumberKeyboardVisible) {
+		return;
+	}
+	A3NumberKeyboardViewController *keyboardViewController;
+	if (IS_IPHONE) {
+		keyboardViewController = [[A3NumberKeyboardViewController_iPhone alloc] initWithNibName:@"A3NumberKeyboardSimplePrevNextVC_iPhone" bundle:nil];
+	} else {
+		keyboardViewController = [[A3NumberKeyboardSimpleVC_iPad alloc] initWithNibName:@"A3NumberKeyboardSimplePrevNextVC_iPad" bundle:nil];
+	}
+
+	self.numberKeyboardViewController = keyboardViewController;
+	keyboardViewController.delegate = self;
+
+	UIView *superview = IS_IPHONE ? self.view.superview : [[[A3AppDelegate instance] rootViewController_iPad] view];
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGFloat keyboardHeight = keyboardViewController.keyboardHeight;
+	UIView *keyboardView = keyboardViewController.view;
+	[superview addSubview:keyboardView];
+
+	[self cell:_editingCell textFieldDidBeginEditing:textField];
+
+	_didPressClearKey = NO;
+	_didPressNumberKey = NO;
+	_isNumberKeyboardVisible = YES;
+
+	A3ExpenseListAccessoryView *accessoryView = [self accessoryForNumberField];
+	accessoryView.frame = CGRectMake(0, bounds.size.height - 45.0, bounds.size.width, 45.0);
+	[superview addSubview:accessoryView];
+
+	keyboardView.frame = CGRectMake(0, bounds.size.height, bounds.size.width, keyboardHeight);
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = keyboardView.frame;
+		frame.origin.y -= keyboardHeight;
+		keyboardView.frame = frame;
+
+		frame = accessoryView.frame;
+		frame.origin.y -= keyboardHeight;
+		accessoryView.frame = frame;
+
+		FNLOG(@"%@", keyboardView.superview);
+		FNLOG(@"%@", accessoryView.superview);
+
+		FNLOGRECT(keyboardView.frame);
+		FNLOGRECT(accessoryView.frame);
+	} completion:^(BOOL finished) {
+		[self addNumberKeyboardNotificationObservers];
+	}];
+}
+
+- (void)dismissNumberKeyboardWithAnimation:(BOOL)animation completion:(void (^)())completion {
+	if (!_isNumberKeyboardVisible) {
+		return;
+	}
+
+	[self cell:_editingCell textFieldDidEndEditing:_editingTextField];
+
+	_isNumberKeyboardVisible = NO;
+
+	[self removeNumberKeyboardNotificationObservers];
+	
+	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+	UIView *keyboardView = keyboardViewController.view;
+	UIView *accessoryView = [self accessoryForNumberField];
+
+	void(^finalize)() = ^{
+		[keyboardView removeFromSuperview];
+		[keyboardViewController removeFromParentViewController];
+
+		[accessoryView removeFromSuperview];
+
+		self.numberKeyboardViewController = nil;
+
+		if (completion) {
+			completion();
+		}
+	};
+
+	if (animation) {
+		[UIView animateWithDuration:0.3 animations:^{
+			CGFloat keyboardHeight = keyboardViewController.keyboardHeight;
+			CGRect frame = keyboardView.frame;
+			frame.origin.y += keyboardHeight;
+			keyboardView.frame = frame;
+
+			frame = accessoryView.frame;
+			frame.origin.y += keyboardHeight;
+			accessoryView.frame = frame;
+		} completion:^(BOOL finished) {
+			finalize();
+		}];
+	} else {
+		finalize();
+	}
+}
+
+#pragma mark - NumberKeyboard
+
+- (void)handleBigButton1 {
+	if (self.firstResponder == _editingCell.priceField) {
+
+	}
+	else if (self.firstResponder == _editingCell.quantityField) {
+		self.numberKeyboardViewController.bigButton1.selected = NO;
+		self.numberKeyboardViewController.bigButton2.selected = NO;
+	}
+}
+
+- (void)handleBigButton2 {
+	if (self.firstResponder == _editingCell.priceField) {
+		self.numberKeyboardViewController.bigButton1.selected = YES;
+		self.numberKeyboardViewController.bigButton2.selected = NO;
+	}
+	else if (self.firstResponder == _editingCell.quantityField) {
+		self.numberKeyboardViewController.bigButton1.selected = NO;
+		self.numberKeyboardViewController.bigButton2.selected = NO;
+	}
+}
+
+- (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
+	[self dismissNumberKeyboardWithAnimation:YES completion:NULL];
+}
+
+- (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
+	_didPressClearKey = YES;
+}
+
+- (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
+	_didPressNumberKey = YES;
+	_didPressClearKey = NO;
 }
 
 #pragma mark - Number Keyboard, Calculator Button Notification
@@ -1525,13 +1789,138 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 - (void)calculatorDidDismissWithValue:(NSString *)value {
 	_calculatorTargetTextField.text = value;
-	[self itemCellTextFieldFinished:_calculatorTargetCell textField:_calculatorTargetTextField];
+	[self cell:_calculatorTargetCell textFieldDidEndEditing:_calculatorTargetTextField];
 }
 
-#pragma mark - A3ViewControllerProtocol
+- (A3ExpenseListAccessoryView *)keyboardAccessoryView {
+	if (!_keyboardAccessoryView) {
+		_keyboardAccessoryView = [[A3ExpenseListAccessoryView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, 45.0)];
+		_keyboardAccessoryView.delegate = self;
+	}
+	return _keyboardAccessoryView;
+}
 
-- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
+- (A3ExpenseListAccessoryView *)accessoryForNumberField {
+	if (!_accessoryForNumberField) {
+		_accessoryForNumberField = [[A3ExpenseListAccessoryView alloc] initWithFrame:CGRectZero];
+		_accessoryForNumberField.delegate = self;
+	}
+	return _accessoryForNumberField;
+}
+
+- (void)showEraseButtonIfNeeded
+{
+	[self.keyboardAccessoryView showEraseButton:[_editingTextField.text length] || [_textBeforeEditingTextField length]];
+}
+
+- (void)changeDirectionButtonStateFor:(UITextField *)textField
+{
+	_prevColumnAvail = YES;
+	_nextColumnAvail = YES;
+
+	if (textField == _editingCell.nameField) {
+		_prevColumnAvail = [self upwardRowAvailableFor:_editingCell];
+	}
+	else if (textField == _editingCell.quantityField) {
+		_nextColumnAvail = [self downwardRowAvailableFor:_editingCell];
+	}
+	[self.keyboardAccessoryView.prevButton setEnabled:_prevColumnAvail];
+	[self.keyboardAccessoryView.nextButton setEnabled:_nextColumnAvail];
+}
+
+#pragma mark - Accessory button
+
+- (BOOL)isPreviousEntryExists{
 	return NO;
+}
+
+- (BOOL)isNextEntryExists{
+	return NO;
+}
+
+- (void)prevButtonPressed {
+	[self keyboardAccessoryPrevButtonTouchUp:nil];
+}
+
+- (void)nextButtonPressed {
+	[self keyboardAccessoryNextButtonTouchUp:nil];
+}
+
+#pragma mark - KeyboardAccessoryView Delegate
+
+- (void)keyboardAccessoryUndoButtonTouchUp:(id)sender {
+	if ([[_editingTextField undoManager] canUndo]) {
+		[[_editingTextField undoManager] undo];
+
+		[self.keyboardAccessoryView undoRedoButtonStateChangeFor:_editingTextField];
+		[self showEraseButtonIfNeeded];
+	}
+}
+
+- (void)keyboardAccessoryRedoButtonTouchUp:(id)sender {
+	if ([[_editingTextField undoManager] canRedo]) {
+		[[_editingTextField undoManager] redo];
+
+		[self.keyboardAccessoryView undoRedoButtonStateChangeFor:_editingTextField];
+		[self showEraseButtonIfNeeded];
+	}
+}
+
+- (void)keyboardAccessoryPrevButtonTouchUp:(id)sender {
+	if (_editingTextField == _editingCell.quantityField) {
+		_isSwitchingTextField = YES;
+		[self cell:_editingCell textFieldDidEndEditing:_editingTextField];
+		[self cell:_editingCell textFieldDidBeginEditing:_editingCell.priceField];
+		_editingCell.priceField.userInteractionEnabled = YES;
+		_isSwitchingTextField = NO;
+	}
+	else if (_editingTextField == _editingCell.priceField) {
+		_isSwitchingTextField = YES;
+		[self dismissNumberKeyboardWithAnimation:YES completion:^{
+			_editingCell.nameField.userInteractionEnabled = YES;
+			[_editingCell.nameField becomeFirstResponder];
+			_isSwitchingTextField = NO;
+		}];
+	} else if (_editingTextField == _editingCell.nameField) {
+		_isSwitchingTextField = YES;
+		[_editingTextField resignFirstResponder];
+		[self moveUpRowFor:_editingIndexPath textField:_editingTextField];
+		_isSwitchingTextField = NO;
+	}
+}
+
+- (void)keyboardAccessoryNextButtonTouchUp:(id)sender {
+	if (_editingTextField == _editingCell.nameField) {
+		_isSwitchingTextField = YES;
+		[_editingCell.nameField resignFirstResponder];
+		_editingCell.priceField.userInteractionEnabled = YES;
+		[self presentNumberKeyboardForTextField:_editingCell.priceField];
+		_isSwitchingTextField = NO;
+	}
+	else if (_editingTextField == _editingCell.priceField) {
+		_isSwitchingTextField = YES;
+		[self cell:_editingCell textFieldDidEndEditing:_editingCell.priceField];
+		_editingCell.quantityField.userInteractionEnabled = YES;
+		[self cell:_editingCell textFieldDidBeginEditing:_editingCell.quantityField];
+		_isSwitchingTextField = NO;
+	}
+	else if (_editingTextField == _editingCell.quantityField) {
+		_isSwitchingTextField = YES;
+		[self dismissNumberKeyboardWithAnimation:YES completion:^{
+			[self moveDownRowFor:_editingIndexPath textField:_editingTextField];
+			_isSwitchingTextField = NO;
+		}];
+	}
+}
+
+- (void)keyboardAccessoryEraseButtonTouchUp:(id)sender {
+	if (_editingTextField == _editingCell.nameField) {
+		_textBeforeEditingTextField = @"";
+		[self.keyboardAccessoryView undoRedoButtonStateChangeFor:_editingTextField];
+	} else {
+		_textBeforeEditingTextField = [self.decimalFormatter stringFromNumber:@0];
+	}
+	[self showEraseButtonIfNeeded];
 }
 
 @end

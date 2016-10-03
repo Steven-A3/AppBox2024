@@ -417,8 +417,7 @@
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
-
-	[self.numberKeyboardViewController.textInputTarget resignFirstResponder];
+	
 }
 
 #pragma mark --- Response to Calculator Button and result
@@ -504,7 +503,8 @@
 	if (self.firstResponder) {
 		UITextField *prevTxtField = [self previousTextField:(UITextField *) self.firstResponder];
 		if (prevTxtField) {
-			[prevTxtField becomeFirstResponder];
+			[self textFieldDidEndEditing:(UITextField *)self.firstResponder];
+			[self textFieldDidBeginEditing:prevTxtField];
 		}
 	}
 }
@@ -513,9 +513,14 @@
 	if (self.firstResponder) {
 		UITextField *nextTxtField = [self nextTextField:(UITextField *) self.firstResponder];
 		if (nextTxtField) {
-			[nextTxtField becomeFirstResponder];
+			[self textFieldDidEndEditing:(UITextField *)self.firstResponder];
+			[self textFieldDidBeginEditing:nextTxtField];
 		}
 	}
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+	// Subclasses must implement
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {

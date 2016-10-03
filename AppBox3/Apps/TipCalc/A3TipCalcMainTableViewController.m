@@ -35,6 +35,7 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3StandardDetailTableViewController.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "NSString+conversion.h"
 
 #define kColorPlaceHolder [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]
 
@@ -72,6 +73,10 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3TableViewInputElement *calculatorTargetElement;
 @property (nonatomic, strong) NSIndexPath *calculatorTargetIndexPath;
+@property (nonatomic, weak) A3TableViewInputElement *editingElement;
+@property (nonatomic, weak) UITextField *editingTextField;
+@property (nonatomic, strong) UIView *keyboardAccessoryView;
+@property (nonatomic, assign) BOOL isNumberKeyboardVisible;
 
 @end
 
@@ -561,8 +566,10 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 }
 
 #pragma mark KeyboardAccessoryView Button
+
 - (void)keyboardAccessoryButtonTouchedUp:(UIButton *)sender {
-    ((UITextField *)self.firstResponder).text = [NSString stringWithFormat:@"%ld", (long)[sender tag]];
+	_editingTextField.text = [self.decimalFormatter stringFromNumber:@([sender tag])];
+	[_editingElement textFieldEditingChanged:_editingTextField];
 }
 
 #pragma mark - Table Data Configuration
@@ -745,14 +752,21 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
         _cellTextInputBeginBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
             weakSelf.firstResponder = textField;
             [weakSelf dismissMoreMenu];
-			[weakSelf addNumberKeyboardNotificationObservers];
-            
+
+			BOOL animated = YES;
+			if (weakSelf.isNumberKeyboardVisible) {
+				animated = NO;
+				[weakSelf dismissNumberKeyboardAnimated:animated];
+			}
+
+			weakSelf.editingElement = element;
+			weakSelf.editingTextField = textField;
+
+			UIView *accessoryView = nil;
             if (element.identifier == RowElementID_Tip) {
-                textField.inputAccessoryView = [weakSelf keyboardAccessoryView];
+                accessoryView = [weakSelf keyboardAccessoryView];
             }
-            else {
-                textField.inputAccessoryView = nil;
-            }
+			[weakSelf presentNumberKeyboard:element.inputViewController accessoryView:accessoryView forTextField:textField animated:animated];
         };
     }
     
@@ -779,14 +793,13 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
         __weak A3TipCalcMainTableViewController * weakSelf = self;
         
         _cellTextInputFinishedBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
-			[weakSelf removeNumberKeyboardNotificationObservers];
 
             NSNumber *value;
             if ([textField.text length] == 0) {
                 value = [weakSelf.decimalFormatter numberFromString:[element value]];
             }
             else {
-                value = [weakSelf.decimalFormatter numberFromString:textField.text];
+                value = @([textField.text floatValueEx]);
                 element.value = textField.text;
             }
             
@@ -840,6 +853,8 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
     if (!_cellInputDoneButtonPressed) {
         __weak A3TipCalcMainTableViewController * weakSelf = self;
         _cellInputDoneButtonPressed = ^(id sender){
+			[weakSelf dismissNumberKeyboardAnimated:YES];
+			
             if ([weakSelf.dataManager hasCalcData]) {
                 [weakSelf scrollToTopOfTableView];
             }
@@ -856,6 +871,122 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 	[UIView setAnimationDuration:0.35];
 	self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight]));
 	[UIView commitAnimations];
+}
+
+- (void)presentNumberKeyboard:(A3NumberKeyboardViewController *)keyboardVC accessoryView:(UIView *)accessoryView forTextField:(UITextField *)textField animated:(BOOL)animated {
+	if (_isNumberKeyboardVisible) {
+		return;
+	}
+
+	self.numberKeyboardViewController = keyboardVC;
+	self.keyboardAccessoryView = accessoryView;
+
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGFloat keyboardHeight = keyboardVC.keyboardHeight;
+	UIView *keyboardView = keyboardVC.view;
+	[self.view.superview addSubview:keyboardView];
+
+	CGFloat accessoryHeight = 0;
+	if (accessoryView) {
+		[self.view.superview addSubview:accessoryView];
+		accessoryHeight = accessoryView.bounds.size.height;
+	}
+
+	_isNumberKeyboardVisible = YES;
+	[self addNumberKeyboardNotificationObservers];
+
+	void(^adjustTableView)() = ^{
+		UIEdgeInsets contentInset = self.tableView.contentInset;
+		contentInset.bottom = keyboardHeight + accessoryHeight;
+		self.tableView.contentInset = contentInset;
+
+		NSIndexPath *selectedIndexPath = [self.tableView indexPathForCellSubview:textField];
+		[self.tableView scrollToRowAtIndexPath:selectedIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+	};
+	if (animated) {
+		accessoryView.frame = CGRectMake(0, bounds.size.height - accessoryHeight, bounds.size.width, accessoryHeight);
+		keyboardView.frame = CGRectMake(0, bounds.size.height, bounds.size.width, keyboardHeight);
+		[UIView animateWithDuration:0.3 animations:^{
+			CGRect frame = keyboardView.frame;
+			frame.origin.y -= keyboardHeight;
+			keyboardView.frame = frame;
+
+			frame = accessoryView.frame;
+			frame.origin.y -= keyboardHeight;
+			accessoryView.frame = frame;
+
+			adjustTableView();
+		} completion:^(BOOL finished) {
+		}];
+	} else {
+		keyboardView.frame = CGRectMake(0, bounds.size.height - keyboardHeight, bounds.size.width, keyboardHeight);
+		accessoryView.frame = CGRectMake(0, bounds.size.height - keyboardHeight - accessoryHeight, bounds.size.width, accessoryHeight);
+		adjustTableView();
+	}
+}
+
+- (void)dismissNumberKeyboardAnimated:(BOOL)animated {
+	if (!_isNumberKeyboardVisible) {
+		return;
+	}
+
+	[_editingElement textFieldDidEndEditing:_editingTextField];
+
+	[self removeNumberKeyboardNotificationObservers];
+
+	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+	UIView *keyboardView = keyboardViewController.view;
+
+	_isNumberKeyboardVisible = NO;
+
+	void(^completion)() = ^{
+		[keyboardView removeFromSuperview];
+		[_keyboardAccessoryView removeFromSuperview];
+		self.numberKeyboardViewController = nil;
+		self.keyboardAccessoryView = nil;
+	};
+	if (animated) {
+		[UIView animateWithDuration:0.3 animations:^{
+			CGFloat keyboardHeight = keyboardViewController.keyboardHeight;
+			CGRect frame = keyboardView.frame;
+			frame.origin.y += keyboardHeight;
+			keyboardView.frame = frame;
+
+			if (_keyboardAccessoryView) {
+				frame = _keyboardAccessoryView.frame;
+				frame.origin.y += keyboardHeight + _keyboardAccessoryView.bounds.size.height;
+				_keyboardAccessoryView.frame = frame;
+			}
+		} completion:^(BOOL finished) {
+			completion();
+		}];
+	} else {
+		completion();
+	}
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
+		UIView *keyboardView = self.numberKeyboardViewController.view;
+		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+
+		FNLOGRECT(self.view.bounds);
+		FNLOG(@"%f", keyboardHeight);
+
+		CGFloat accessoryHeight = _keyboardAccessoryView.bounds.size.height;
+		UIEdgeInsets contentInset = self.tableView.contentInset;
+		contentInset.bottom = keyboardHeight + (self.bannerView ? self.bannerView.bounds.size.height : 0) + accessoryHeight;
+
+		CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+		keyboardView.frame = CGRectMake(0, bounds.size.height - keyboardHeight, bounds.size.width, keyboardHeight);
+		[self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+
+		if (_keyboardAccessoryView) {
+			_keyboardAccessoryView.frame = CGRectMake(0, bounds.size.height - keyboardHeight - accessoryHeight, bounds.size.width, accessoryHeight);
+		}
+	}
 }
 
 #pragma mark Settings
@@ -1102,6 +1233,10 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
         default:
             break;
     }
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+	_cellInputDoneButtonPressed(_editingElement);
 }
 
 #pragma mark - apps & more button stuff

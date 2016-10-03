@@ -45,13 +45,21 @@
 @property (nonatomic, strong) NSMutableDictionary *dateItem;
 @property (nonatomic, strong) NSMutableDictionary *dateInputItem;
 @property (nonatomic, weak) UITextField *calculatortTargetTextField;
+@property (nonatomic, weak) UITextField *editingTextField;
 
 @property (nonatomic, strong) NSArray *pickerDataSource_0;
 @property (nonatomic, strong) NSArray *pickerDataSource_1;
 
+@property (nonatomic, copy) NSString *textBeforeEditing;
+@property (nonatomic, copy) UIColor *textColorBeforeEditing;
+
 @end
 
-@implementation A3LoanCalcExtraPaymentViewController
+@implementation A3LoanCalcExtraPaymentViewController {
+	BOOL _isNumberKeyboardVisible;
+	BOOL _didPressClearKey;
+	BOOL _didPressNumberKey;
+}
 
 NSString *const A3LoanCalcTextInputCellID1 = @"A3LoanCalcTextInputCell";
 NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
@@ -396,22 +404,65 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 }
 
 #pragma mark - TextFieldDelegate
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+	if (IS_IPHONE && IS_LANDSCAPE) return NO;
+	
+	if ([_items containsObject:self.dateInputItem]) {
+		[_items removeObject:self.dateInputItem];
+		
+		[self.tableView beginUpdates];
+		
+		NSIndexPath *dateIP = [NSIndexPath indexPathForRow:1 inSection:0];
+		NSIndexPath *pickerIP = [NSIndexPath indexPathForRow:2 inSection:0];
+		
+		[self.tableView reloadRowsAtIndexPaths:@[dateIP] withRowAnimation:UITableViewRowAnimationFade];
+		[self.tableView deleteRowsAtIndexPaths:@[pickerIP] withRowAnimation:UITableViewRowAnimationFade];
+		[self.tableView endUpdates];
+		
+		_dateTextField = nil;
+	}
+	
+	NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:textField];
+	if (indexPath.row == 0) {
+		// amount
+		[self presentNumberKeyboardForTextField:textField];
+	}
+	
+	return NO;
+}
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     self.firstResponder = textField;
+	
+	self.textBeforeEditing = textField.text;
+	self.textColorBeforeEditing = textField.textColor;
 
-    textField.text = @"";
+	textField.text = [self.decimalFormatter stringFromNumber:@0];
 	textField.placeholder = @"";
+	
+	textField.textColor = [[A3AppDelegate instance] themeColor];
 
 	_currentIndexPath = [self.tableView indexPathForCellSubview:textField];
 	[self addNumberKeyboardNotificationObservers];
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-    self.firstResponder = nil;
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+	self.firstResponder = nil;
 	[self removeNumberKeyboardNotificationObservers];
-    
+
+	if (_textColorBeforeEditing) {
+		textField.textColor = _textColorBeforeEditing;
+		_textColorBeforeEditing = nil;
+	}
+
+	if (!_didPressNumberKey && !_didPressClearKey) {
+		textField.text = _textBeforeEditing;
+		_textBeforeEditing = nil;
+	}
+	
     // update
     _isExtraPaymentEdited = YES;
 
@@ -447,56 +498,73 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 	}
 }
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-	if (IS_IPHONE && IS_LANDSCAPE) return NO;
-
-    if ([_items containsObject:self.dateInputItem]) {
-        [_items removeObject:self.dateInputItem];
-        
-        [self.tableView beginUpdates];
-        
-        NSIndexPath *dateIP = [NSIndexPath indexPathForRow:1 inSection:0];
-        NSIndexPath *pickerIP = [NSIndexPath indexPathForRow:2 inSection:0];
-
-        [self.tableView reloadRowsAtIndexPaths:@[dateIP] withRowAnimation:UITableViewRowAnimationFade];
-        [self.tableView deleteRowsAtIndexPaths:@[pickerIP] withRowAnimation:UITableViewRowAnimationFade];
-        [self.tableView endUpdates];
-
-        _dateTextField = nil;
-    }
-
-	NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:textField];
-	if (indexPath.row == 0) {
-        // amount
-        A3NumberKeyboardViewController *keyboardVC = [self normalNumberKeyboard];
-        textField.inputView = [keyboardVC view];
-		if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
-			textField.inputAssistantItem.leadingBarButtonGroups = @[];
-			textField.inputAssistantItem.trailingBarButtonGroups = @[];
-		}
-        self.numberKeyboardViewController = keyboardVC;
-		self.numberKeyboardViewController.currencyCode = [self defaultCurrencyCode];
-        self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
-        keyboardVC.textInputTarget = textField;
-        keyboardVC.delegate = self;
-        self.numberKeyboardViewController = keyboardVC;
-    }
-
-    return YES;
-}
-
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
-{
-    return YES;
-}
-
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];
 
 	return YES;
+}
+
+- (void)presentNumberKeyboardForTextField:(UITextField *)textField {
+	if (_isNumberKeyboardVisible) {
+		return;
+	}
+	_editingTextField = textField;
+
+	[self textFieldDidBeginEditing:textField];
+	
+	A3NumberKeyboardViewController *keyboardVC = [self normalNumberKeyboard];
+	self.numberKeyboardViewController = keyboardVC;
+	
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGFloat keyboardHeight = keyboardVC.keyboardHeight;
+	UIView *keyboardView = keyboardVC.view;
+	[self.view.superview addSubview:keyboardView];
+
+	keyboardVC.textInputTarget = textField;
+	keyboardVC.delegate = self;
+	
+	self.numberKeyboardViewController.currencyCode = [self defaultCurrencyCode];
+	self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
+
+	_didPressClearKey = NO;
+	_didPressNumberKey = NO;
+
+	FNLOGRECT(self.view.frame);
+
+	keyboardView.frame = CGRectMake(0, self.view.bounds.size.height, bounds.size.width, keyboardHeight);
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = keyboardView.frame;
+		frame.origin.y -= keyboardHeight;
+		keyboardView.frame = frame;
+	} completion:^(BOOL finished) {
+		[self addNumberKeyboardNotificationObservers];
+		_isNumberKeyboardVisible = YES;
+	}];
+}
+
+- (void)dismissNumberKeyboard {
+	if (!_isNumberKeyboardVisible) {
+		return;
+	}
+	[self textFieldDidEndEditing:_editingTextField];
+	
+	_editingTextField = nil;
+	self.firstResponder = nil;
+	
+	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+	UIView *keyboardView = keyboardViewController.view;
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = keyboardView.frame;
+		frame.origin.y += keyboardViewController.keyboardHeight;
+		keyboardView.frame = frame;
+	} completion:^(BOOL finished) {
+		[keyboardView removeFromSuperview];
+		[keyboardViewController removeFromParentViewController];
+		self.numberKeyboardViewController = nil;
+		_isNumberKeyboardVisible = NO;
+	}];
 }
 
 #pragma mark - Table view delegate
@@ -746,6 +814,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 }
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
+	_didPressClearKey = YES;
 	UITextField *textField = (UITextField *) self.numberKeyboardViewController.textInputTarget;
 	if ([textField isKindOfClass:[UITextField class]]) {
 		textField.text = @"";
@@ -761,8 +830,26 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
-    
-    [self.numberKeyboardViewController.textInputTarget resignFirstResponder];
+	[self dismissNumberKeyboard];
+}
+
+- (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
+	_didPressNumberKey = YES;
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
+		UIView *keyboardView = self.numberKeyboardViewController.view;
+		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+
+		FNLOGRECT(self.view.bounds);
+		FNLOG(@"%f", keyboardHeight);
+
+		keyboardView.frame = CGRectMake(0, self.view.bounds.size.height - keyboardHeight, self.view.bounds.size.width, keyboardHeight);
+		[self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+	}
 }
 
 #pragma mark --- Response to Currency Select Button and result

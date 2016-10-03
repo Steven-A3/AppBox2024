@@ -65,12 +65,6 @@
 	return _decimalFormatter;
 }
 
-- (void)setDisplayObject:(id<A3DisplayObject>)displayObject {
-	_displayObject = displayObject;
-	_displayObject.text = [self.decimalFormatter stringFromNumber:@0];
-	_inputString = @"";
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -122,90 +116,85 @@
 		return;
 	}
 
-	if (_displayObject) {
-		[self handleDisplayObjectWithInput:inputString];
+	BOOL allowedToChange = YES;
+
+	UITextField *textField = _textInputTarget;
+
+	// Setup
+	NSNumberFormatter *numberFormatter = [NSNumberFormatter new];
+	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	if (self.currencyCode) {
+		[numberFormatter setCurrencyCode:self.currencyCode];
 	}
 	
-	BOOL allowedToChange = YES;
-	if ([_textInputTarget isKindOfClass:[UITextField class]]) {
-		UITextField *textField = (UITextField *) _textInputTarget;
-
-		// Setup
-		NSNumberFormatter *numberFormatter = [NSNumberFormatter new];
-		[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-		if (self.currencyCode) {
-			[numberFormatter setCurrencyCode:self.currencyCode];
+	// 0 뒤에 . 이 입력된 경우는 OK
+	// 0 뒤에 0이 들어오면 무시
+	// 0 뒤에 1~9가 들어오면 0을 없앤다.
+	if (_keyboardType != A3NumberKeyboardTypePasscode && [textField.text length] == 1 && [textField.text isEqualToString:@"0"]) {
+		if ([inputString isEqualToString:@"0"]) {
+			// 입력을 처리하지 않는다.
+			return;
 		}
-
-		// 0 뒤에 . 이 입력된 경우는 OK
-		// 0 뒤에 0이 들어오면 무시
-		// 0 뒤에 1~9가 들어오면 0을 없앤다.
-		if (_keyboardType != A3NumberKeyboardTypePasscode && [textField.text length] == 1 && [textField.text isEqualToString:@"0"]) {
-			if ([inputString isEqualToString:@"0"]) {
-				// 입력을 처리하지 않는다.
-				return;
-			}
-			if (![inputString isEqualToString:numberFormatter.decimalSeparator]) {
-				textField.text = @"";
-			}
-		}
-
-		// decimalSeparator 가 두번 들어가지 않도록
-		// 화폐면 화폐별 소수점 이하 이상 입력되지 않도록
-		// 실수면 소수점 3자리 이상 입력되지 않도록
-
-		NSRange testRange = [textField.text rangeOfString:numberFormatter.decimalSeparator];
-		if ([inputString isEqualToString:numberFormatter.decimalSeparator]) {
-			if (testRange.location != NSNotFound) {
-				return;
-			}
-		}
-
-		if (testRange.location != NSNotFound) {
-			NSUInteger maximumFractionDigits = 3;
-			if (self.keyboardType == A3NumberKeyboardTypeCurrency || (self.keyboardType == A3NumberKeyboardTypePercent && [self.bigButton2 isSelected])) {
-				maximumFractionDigits = numberFormatter.maximumFractionDigits;
-			}
-			NSArray *components = [textField.text componentsSeparatedByString:numberFormatter.decimalSeparator];
-			if ([[components lastObject] length] >= maximumFractionDigits) {
-				return;
-			}
-		} else {
-            NSUInteger maximumIntegerDigits;
-            if (numberFormatter.maximumFractionDigits == 0) {
-                maximumIntegerDigits = IS_IPHONE ? 11 : 16;
-            }
-            else {
-                BOOL hasFraction = [textField.text rangeOfString:numberFormatter.decimalSeparator].location != NSNotFound;
-                if ([inputString isEqualToString:numberFormatter.decimalSeparator]) {
-                    hasFraction = YES;
-                }
-                
-                if (hasFraction) {
-                    maximumIntegerDigits = IS_IPHONE ? (11 + 1) : (16 + 1);
-                }
-                else {
-                    maximumIntegerDigits = IS_IPHONE ? (11 - numberFormatter.maximumFractionDigits) : (16 - numberFormatter.maximumFractionDigits);
-                }
-            }
-
-			if ([textField.text length] >= maximumIntegerDigits) {
-				return;
-			}
-		}
-
-		UITextRange *selectedRange = textField.selectedTextRange;
-		NSUInteger location = (NSUInteger) [textField offsetFromPosition:textField.beginningOfDocument toPosition:selectedRange.start];
-		NSUInteger length = (NSUInteger) [textField offsetFromPosition:selectedRange.start toPosition:selectedRange.end];
-		NSRange range = NSMakeRange(location, length);
-		FNLOG(@"%lu, %lu", (unsigned long)location, (unsigned long)length);
-		id <UITextFieldDelegate> delegate = textField.delegate;
-		if ([delegate respondsToSelector:@selector(textField:shouldChangeCharactersInRange:replacementString:)]) {
-			allowedToChange = [delegate textField:textField shouldChangeCharactersInRange:range replacementString:inputString];
+		if (![inputString isEqualToString:numberFormatter.decimalSeparator]) {
+			textField.text = @"";
 		}
 	}
-	if (allowedToChange && [_textInputTarget respondsToSelector:@selector(insertText:)]) {
-		[_textInputTarget insertText:inputString];
+	
+	// decimalSeparator 가 두번 들어가지 않도록
+	// 화폐면 화폐별 소수점 이하 이상 입력되지 않도록
+	// 실수면 소수점 3자리 이상 입력되지 않도록
+	
+	NSRange testRange = [textField.text rangeOfString:numberFormatter.decimalSeparator];
+	if ([inputString isEqualToString:numberFormatter.decimalSeparator]) {
+		if (testRange.location != NSNotFound) {
+			return;
+		}
+	}
+	
+	if (testRange.location != NSNotFound) {
+		NSUInteger maximumFractionDigits = 3;
+		if (self.keyboardType == A3NumberKeyboardTypeCurrency || (self.keyboardType == A3NumberKeyboardTypePercent && [self.bigButton2 isSelected])) {
+			maximumFractionDigits = numberFormatter.maximumFractionDigits;
+		}
+		NSArray *components = [textField.text componentsSeparatedByString:numberFormatter.decimalSeparator];
+		if ([[components lastObject] length] >= maximumFractionDigits) {
+			return;
+		}
+	} else {
+		NSUInteger maximumIntegerDigits;
+		if (numberFormatter.maximumFractionDigits == 0) {
+			maximumIntegerDigits = IS_IPHONE ? 11 : 16;
+		}
+		else {
+			BOOL hasFraction = [textField.text rangeOfString:numberFormatter.decimalSeparator].location != NSNotFound;
+			if ([inputString isEqualToString:numberFormatter.decimalSeparator]) {
+				hasFraction = YES;
+			}
+			
+			if (hasFraction) {
+				maximumIntegerDigits = IS_IPHONE ? (11 + 1) : (16 + 1);
+			}
+			else {
+				maximumIntegerDigits = IS_IPHONE ? (11 - numberFormatter.maximumFractionDigits) : (16 - numberFormatter.maximumFractionDigits);
+			}
+		}
+		
+		if ([textField.text length] >= maximumIntegerDigits) {
+			return;
+		}
+	}
+	
+	UITextRange *selectedRange = textField.selectedTextRange;
+	NSUInteger location = (NSUInteger) [textField offsetFromPosition:textField.beginningOfDocument toPosition:selectedRange.start];
+	NSUInteger length = (NSUInteger) [textField offsetFromPosition:selectedRange.start toPosition:selectedRange.end];
+	NSRange range = NSMakeRange(location, length);
+	FNLOG(@"%lu, %lu", (unsigned long)location, (unsigned long)length);
+	id <UITextFieldDelegate> delegate = textField.delegate;
+	if ([delegate respondsToSelector:@selector(textField:shouldChangeCharactersInRange:replacementString:)]) {
+		allowedToChange = [delegate textField:textField shouldChangeCharactersInRange:range replacementString:inputString];
+	}
+	if (allowedToChange) {
+		_textInputTarget.text = [NSString stringWithFormat:@"%@%@", _textInputTarget.text, inputString];
 	}
 
 	if ([_delegate respondsToSelector:@selector(keyboardViewControllerDidValueChange:)]) {
@@ -225,16 +214,11 @@
 	}
 	
 	_inputString = [NSString stringWithFormat:@"%@%@", _inputString, inputCharacter];
-	_displayObject.text = [numberFormatter stringFromNumber:@([_inputString doubleValue])];
 }
 
 - (IBAction)clearButtonAction {
 	[[UIDevice currentDevice] playInputClick];
 
-	if (_displayObject) {
-		_displayObject.text = [self.decimalFormatter stringFromNumber:@0];
-	}
-	
 	if ([_delegate respondsToSelector:@selector(A3KeyboardController:clearButtonPressedTo:)]) {
 		[_delegate A3KeyboardController:(id) self clearButtonPressedTo:_textInputTarget];
 	}
@@ -243,39 +227,14 @@
 - (IBAction)backspaceAction:(UIButton *)button {
 	[[UIDevice currentDevice] playInputClick];
 
-	if (_displayObject) {
-		if ([_inputString length] == 1) {
-			_inputString = @"";
-		} else if ([_inputString length]) {
-			_inputString = [_inputString substringToIndex:[_inputString length] - 2];
-		}
-		NSNumberFormatter *numberFormatter = self.decimalFormatter;
-		_displayObject.text = [numberFormatter stringFromNumber:@([_inputString doubleValue])];
-	}
-	
 	if (_textInputTarget) {
-		BOOL allowedToChange = YES;
-		
-		if ([_textInputTarget isKindOfClass:[UITextField class]]) {
-			UITextField *textField = (UITextField *) _textInputTarget;
-			UITextRange *selectedRange = textField.selectedTextRange;
-			NSInteger location = [textField offsetFromPosition:textField.beginningOfDocument toPosition:selectedRange.start];
-			NSInteger length = [textField offsetFromPosition:selectedRange.start toPosition:selectedRange.end];
-			if (!location && !length) return;
-			
-			if (length == 0) {
-				location = MAX(location - 1, 0);
-				length = 1;
+		NSString *string = _textInputTarget.text;
+		if ([string length]) {
+			if ([string length] == 1) {
+				_textInputTarget.text = @"";
+			} else {
+				_textInputTarget.text = [string substringToIndex:[string length] - 1];
 			}
-			FNLOG(@"%lu, %lu", (unsigned long)location, (unsigned long)length);
-			NSRange range = NSMakeRange(location, length);
-			id <UITextFieldDelegate> o = textField.delegate;
-			if ([o respondsToSelector:@selector(textField:shouldChangeCharactersInRange:replacementString:)]) {
-				allowedToChange = [o textField:textField shouldChangeCharactersInRange:range replacementString:@""];
-			}
-		}
-		if (allowedToChange && [_textInputTarget respondsToSelector:@selector(deleteBackward)]) {
-			[_textInputTarget deleteBackward];
 		}
 	}
 }
@@ -524,25 +483,23 @@
 			break;
 		case A3NumberKeyboardTypePasscode:break;
 	}
-	if (self.keyboardType == A3NumberKeyboardTypePercent && [_textInputTarget isKindOfClass:[UITextField class]]) {
-		// 화폐 형식으로 입력을 전환하는 경우, 소수점 자리수 조정이 필요
-		// 화폐 형식의 경우, 소수점 이하 자리수는 0~3까지 다양
-		// % 입력시 소수점 이하 최대 자리수는 세자리, 소수점 자리수가 3이 아닌 경우, 화폐 형식에 맞추어 입력된 숫자를 재 포맷한다.
-		UITextField *textField = (UITextField *) _textInputTarget;
-		if ([textField.text doubleValue] != 0) {
-			NSNumberFormatter *numberFormatter = [NSNumberFormatter new];
-			[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-			if (self.currencyCode) {
-				[numberFormatter setCurrencyCode:self.currencyCode];
-			}
-			if ([numberFormatter maximumFractionDigits] != 3) {
-				NSUInteger maximumFractionDigits = numberFormatter.maximumFractionDigits;
-
-				[numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
-				[numberFormatter setMaximumFractionDigits:maximumFractionDigits];
-				[numberFormatter setUsesGroupingSeparator:NO];
-				textField.text = [numberFormatter stringFromNumber:@([textField.text doubleValue])];
-			}
+	// 화폐 형식으로 입력을 전환하는 경우, 소수점 자리수 조정이 필요
+	// 화폐 형식의 경우, 소수점 이하 자리수는 0~3까지 다양
+	// % 입력시 소수점 이하 최대 자리수는 세자리, 소수점 자리수가 3이 아닌 경우, 화폐 형식에 맞추어 입력된 숫자를 재 포맷한다.
+	UITextField *textField = (UITextField *) _textInputTarget;
+	if ([textField.text doubleValue] != 0) {
+		NSNumberFormatter *numberFormatter = [NSNumberFormatter new];
+		[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+		if (self.currencyCode) {
+			[numberFormatter setCurrencyCode:self.currencyCode];
+		}
+		if ([numberFormatter maximumFractionDigits] != 3) {
+			NSUInteger maximumFractionDigits = numberFormatter.maximumFractionDigits;
+			
+			[numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+			[numberFormatter setMaximumFractionDigits:maximumFractionDigits];
+			[numberFormatter setUsesGroupingSeparator:NO];
+			textField.text = [numberFormatter stringFromNumber:@([textField.text doubleValue])];
 		}
 	}
 	[self setupLocale];

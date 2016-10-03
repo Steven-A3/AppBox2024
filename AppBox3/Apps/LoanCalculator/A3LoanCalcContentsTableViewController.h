@@ -32,6 +32,9 @@
 - (void)displayGraphCell:(A3LoanCalcLoanGraphCell *)graphCell;
 - (void)makeGraphCellClear:(A3LoanCalcLoanGraphCell *)graphCell;
 - (NSString *)defaultCurrencyCode;
+
+- (void)currencySelectButtonAction:(NSNotification *)notification;
+
 - (void)changeDefaultCurrencyCode:(NSString *)currencyCode;
 
 @end

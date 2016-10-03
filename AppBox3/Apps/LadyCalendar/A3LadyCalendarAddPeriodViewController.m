@@ -31,9 +31,10 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 @property (strong, nonatomic) NSMutableArray *sectionsArray;
 @property (strong, nonatomic) NSString *inputItemKey;
-@property (strong, nonatomic) A3NumberKeyboardViewController *keyboardVC;
 @property (strong, nonatomic) LadyCalendarPeriod *prevPeriod;
 @property (copy, nonatomic) NSString *textBeforeEditingTextField;
+@property (copy, nonatomic) UIColor *textColorBeforeEditing;
+@property (weak, nonatomic) UITextField *editingTextField;
 
 @end
 
@@ -41,6 +42,10 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 {
     BOOL _isCustomCycleLengthMode;
     BOOL _isLatestPeriod;
+
+	BOOL _isNumberKeyboardVisible;
+	BOOL _didPressClearKey;
+	BOOL _didPressNumberKey;
 }
 
 - (id)init {
@@ -167,12 +172,26 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
-	self.keyboardVC = nil;
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
 	[[[A3AppDelegate instance] rootViewController_iPad] viewWillLayoutSubviews];
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
+		UIView *keyboardView = self.numberKeyboardViewController.view;
+		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+
+		FNLOGRECT(self.view.bounds);
+		FNLOG(@"%f", keyboardHeight);
+		CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+		keyboardView.frame = CGRectMake(0, bounds.size.height - keyboardHeight, bounds.size.width, keyboardHeight);
+		[self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+	}
 }
 
 - (void)reloadItemAtCellType:(NSInteger)cellType
@@ -231,18 +250,15 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)resignAllAction
 {
+	[self dismissNumberKeyboard];
+
     for (NSInteger section=0; section < [_sectionsArray count]; section++) {
         NSArray *items = [[_sectionsArray objectAtIndex:section] objectForKey:ItemKey_Items];
 
         for (NSInteger row = 0; row < [items count]; row++) {
             NSDictionary *item = [items objectAtIndex:row];
             NSInteger cellType = [[item objectForKey:ItemKey_Type] integerValue];
-            if ( cellType == PeriodCellType_CycleLength ) {
-                UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section]];
-                UITextField *textField = (UITextField*)cell.accessoryView;
-                [textField resignFirstResponder];
-            }
-            else if ( cellType == PeriodCellType_Notes ) {
+			if ( cellType == PeriodCellType_Notes ) {
                 UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section]];
                 UITextView *textView = (UITextView*)[cell viewWithTag:10];
                 [textView resignFirstResponder];
@@ -396,8 +412,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
             cell.textLabel.text = [item objectForKey:ItemKey_Title];
             UITextField *textField = (UITextField*)cell.accessoryView;
             textField.text = [NSString stringWithFormat:@"%ld",[_periodItem.cycleLength longValue]];
-            textField.textColor = (!_prevPeriod || _isLatestPeriod) ? [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255] : [UIColor colorWithRed:201/255.0 green:201/255.0 blue:201/255.0 alpha:1.0];
-//            textField.userInteractionEnabled = (!_prevPeriod || _isLatestPeriod) ? YES : NO;
+			textField.textColor = [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255];
 			break;
 		}
 
@@ -619,6 +634,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
+	[self dismissNumberKeyboard];
     [self resignAllAction];
 }
 
@@ -643,60 +659,117 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 #pragma mark - UITextFieldDelegate
 
-- (void)textFieldDidChange:(NSNotification*)noti
-{
-    UITextField *textField = noti.object;
-    NSInteger days = [textField.text integerValue];
-	_periodItem.cycleLength = @(days);
-}
-
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    self.firstResponder = textField;
-
-	self.keyboardVC = [self simplePrevNextClearNumberKeyboard];
-	self.keyboardVC.delegate = self;
-	self.keyboardVC.textInputTarget = textField;
-	self.keyboardVC.delegate = self;
-	textField.inputView = self.keyboardVC.view;
-	if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
-		textField.inputAssistantItem.leadingBarButtonGroups = @[];
-		textField.inputAssistantItem.trailingBarButtonGroups = @[];
-	}
-	[self.keyboardVC setKeyboardType:A3NumberKeyboardTypeInteger];
-    [self closeDateInputCell];
-    return YES;
+	[self closeDateInputCell];
+	[self presentNumberKeyboardForTextField:textField];
+	return NO;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
 	self.textBeforeEditingTextField = textField.text;
-	textField.text = @"";
+	self.textColorBeforeEditing = textField.textColor;
+
+	textField.textColor = [[A3AppDelegate instance] themeColor];
+	textField.text = [self.decimalFormatter stringFromNumber:@0];
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+
+}
+
+- (void)textFieldDidChange:(NSNotification*)noti
+{
+	UITextField *textField = noti.object;
+	NSInteger days = [textField.text integerValue];
+	_periodItem.cycleLength = @(days);
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
-	if (![textField.text length]) {
+	if (!_didPressClearKey && !_didPressNumberKey) {
 		textField.text = _textBeforeEditingTextField;
 	}
 	if (![textField.text length] || [textField.text integerValue] == 0) {
 		textField.text = _textBeforeEditingTextField;
 	}
-    
+	
+	NSInteger days = [textField.text integerValue];
+	_periodItem.cycleLength = @(days);
+
     if (![textField.text isEqualToString:_textBeforeEditingTextField]) {
         _isCustomCycleLengthMode = YES;
     }
-    
-    if (self.firstResponder == textField) {
-        [self.firstResponder resignFirstResponder];
-        self.firstResponder = nil;
-    }
+
+	if (_textColorBeforeEditing) {
+		textField.textColor = _textColorBeforeEditing;
+	}
+}
+
+- (void)presentNumberKeyboardForTextField:(UITextField *)textField {
+	if (_isNumberKeyboardVisible) {
+		return;
+	}
+	_editingTextField = textField;
+	
+	[self textFieldDidBeginEditing:textField];
+
+	A3NumberKeyboardViewController *keyboardVC = [self simplePrevNextNumberKeyboard];
+	self.numberKeyboardViewController = keyboardVC;
+	keyboardVC.useDotAsClearButton = YES;
+	keyboardVC.keyboardType = A3NumberKeyboardTypeInteger;
+	keyboardVC.textInputTarget = textField;
+	keyboardVC.delegate = self;
+	
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGFloat keyboardHeight = keyboardVC.keyboardHeight;
+	UIView *keyboardView = keyboardVC.view;
+	[self.view.superview addSubview:keyboardView];
+
+	[keyboardVC reloadPrevNextButtons];
+
+	_didPressClearKey = NO;
+	_didPressNumberKey = NO;
+	_isNumberKeyboardVisible = YES;
+
+	keyboardView.frame = CGRectMake(0, self.view.bounds.size.height, bounds.size.width, keyboardHeight);
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = keyboardView.frame;
+		frame.origin.y -= keyboardHeight;
+		keyboardView.frame = frame;
+	} completion:^(BOOL finished) {
+		[self addNumberKeyboardNotificationObservers];
+	}];
+}
+
+- (void)dismissNumberKeyboard {
+	if (!_isNumberKeyboardVisible) {
+		return;
+	}
+	[self removeNumberKeyboardNotificationObservers];
+	
+	[self textFieldDidEndEditing:_editingTextField];
+
+	_isNumberKeyboardVisible = NO;
+
+	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+	UIView *keyboardView = keyboardViewController.view;
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = keyboardView.frame;
+		frame.origin.y += keyboardViewController.keyboardHeight;
+		keyboardView.frame = frame;
+	} completion:^(BOOL finished) {
+		[keyboardView removeFromSuperview];
+		self.numberKeyboardViewController = nil;
+	}];
 }
 
 #pragma mark - A3KeyboardDelegate
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
+	_didPressClearKey = YES;
 	UITextField *textField = (UITextField *) keyInputDelegate;
 	textField.text = @"";
 	_textBeforeEditingTextField = @"";
@@ -704,7 +777,13 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate
 {
+	[self dismissNumberKeyboard];
     [self resignAllAction];
+}
+
+- (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
+	_didPressNumberKey = YES;
+	_didPressClearKey = NO;
 }
 
 #pragma mark - action method

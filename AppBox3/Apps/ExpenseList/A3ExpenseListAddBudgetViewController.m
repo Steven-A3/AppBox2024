@@ -33,6 +33,8 @@
 #import "A3UserDefaultsKeys.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "A3NumberKeyboardViewController_iPhone.h"
+#import "A3NumberKeyboardViewController_iPad.h"
 
 enum A3ExpenseListAddBudgetCellType {
     AddBudgetCellID_Budget = 100,
@@ -67,6 +69,11 @@ enum A3ExpenseListAddBudgetCellType {
 @property (nonatomic, strong) A3TableViewInputElement *calculatorTargetElement;
 @property (nonatomic, strong) NSIndexPath *calculatorTargetIndexPath;
 
+@property (nonatomic, weak) A3TableViewInputElement *editingElement;
+@property (nonatomic, weak) UITextField *editingTextField;
+@property (nonatomic, copy) UIColor *textColorBeforeEditing;
+@property (nonatomic, copy) NSString *textBeforeEditing;
+
 @end
 
 @implementation A3ExpenseListAddBudgetViewController
@@ -76,6 +83,10 @@ enum A3ExpenseListAddBudgetCellType {
     BOOL _isCategoryModified;
 	BOOL _isAddBudget;
 	BOOL _barButtonEnabled;
+
+	BOOL _isNumberKeyboardVisible;
+	BOOL _didPressNumberKey;
+	BOOL _didPressClearKey;
 }
 
 #pragma mark -
@@ -245,7 +256,6 @@ enum A3ExpenseListAddBudgetCellType {
 	} else {
 		[self dismissViewControllerAnimated:YES completion:nil];
 	}
-    
 
 	if ([_delegate respondsToSelector:@selector(setExpenseBudgetDataFor:)]) {
 		NSArray *section0 = [self section0_Array];
@@ -792,19 +802,42 @@ static NSString *CellIdentifier = @"Cell";
 	}
 }
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+	[self dismissNumberKeyboard];
+}
+
 #pragma mark - Input Related
+
 - (CellTextInputBlock)cellTextInputBeginBlock {
     if (!_cellTextInputBeginBlock) {
         __weak A3ExpenseListAddBudgetViewController * weakSelf = self;
         _cellTextInputBeginBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
             weakSelf.firstResponder = textField;
             [weakSelf hideDatePickerViewCell];
-			[weakSelf addNumberKeyboardNotificationObservers];
-            
-            if (element.identifier == AddBudgetCellID_Title) {
+
+			if (element.inputType != A3TableViewEntryTypeText) {
+				weakSelf.textBeforeEditing = textField.text;
+				weakSelf.textColorBeforeEditing = textField.textColor;
+
+				textField.text = [weakSelf.decimalFormatter stringFromNumber:@0];
+				textField.textColor = [[A3AppDelegate instance] themeColor];
+
+				A3NumberKeyboardViewController *keyboardVC;
+				if (IS_IPHONE) {
+					keyboardVC = [[A3NumberKeyboardViewController_iPhone alloc] initWithNibName:@"A3NumberKeyboardViewController_iPhone" bundle:nil];
+				} else {
+					keyboardVC = [[A3NumberKeyboardViewController_iPad alloc] initWithNibName:@"A3NumberKeyboardViewController_iPad" bundle:nil];
+				}
+				[weakSelf presentNumberKeyboard:keyboardVC forTextField:textField];
+				[weakSelf addNumberKeyboardNotificationObservers];
+			}
+			weakSelf.editingElement = element;
+			weakSelf.editingTextField = textField;
+
+			if (element.identifier == AddBudgetCellID_Title) {
 				textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-                textField.returnKeyType = UIReturnKeyDefault;
-            }
+				textField.returnKeyType = UIReturnKeyDefault;
+			}
         };
     }
     
@@ -837,21 +870,33 @@ static NSString *CellIdentifier = @"Cell";
                 weakSelf.firstResponder = nil;
             }
 			[weakSelf removeNumberKeyboardNotificationObservers];
-        
+
+			if (element.inputType != A3TableViewEntryTypeText) {
+				if (weakSelf.textColorBeforeEditing) {
+					textField.textColor = weakSelf.textColorBeforeEditing;
+					weakSelf.textColorBeforeEditing = nil;
+				}
+				if (!_didPressClearKey && !_didPressNumberKey && weakSelf.textBeforeEditing) {
+					NSNumber *number = [weakSelf.currencyFormatter numberFromString:weakSelf.textBeforeEditing];
+					textField.text = [weakSelf.decimalFormatter stringFromNumber:number];
+					weakSelf.textBeforeEditing = nil;
+				}
+			}
+
             if (textField.text && textField.text.length != 0 && [element inputType] != A3TableViewEntryTypeText) {
 				NSNumber *number = [weakSelf.decimalFormatter numberFromString:textField.text];
                 element.value = [weakSelf.decimalFormatter stringFromNumber:number];
+
+				textField.text = [weakSelf.currencyFormatter stringFromNumber:number];
             }
             
             switch ([element identifier]) {
                 case AddBudgetCellID_Budget:
-                {
                     if (![element value] || [element.value length] == 0) {
                         element.value = @"0";
                     }
-                }
                     break;
-                    
+
                 default:
                     break;
             }
@@ -920,6 +965,83 @@ static NSString *CellIdentifier = @"Cell";
     return _cellValueChangedBlock;
 }
 
+- (void)presentNumberKeyboard:(A3NumberKeyboardViewController *)keyboardVC forTextField:(UITextField *)textField {
+	if (_isNumberKeyboardVisible) {
+		return;
+	}
+
+	self.numberKeyboardViewController = keyboardVC;
+
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGFloat keyboardHeight = keyboardVC.keyboardHeight;
+	UIView *keyboardView = keyboardVC.view;
+	[self.view.superview addSubview:keyboardView];
+	
+	keyboardVC.delegate = self;
+	keyboardVC.textInputTarget = textField;
+	keyboardVC.keyboardType = A3NumberKeyboardTypeCurrency;
+
+	keyboardView.frame = CGRectMake(0, self.view.bounds.size.height, bounds.size.width, keyboardHeight);
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = keyboardView.frame;
+		frame.origin.y -= keyboardHeight;
+		keyboardView.frame = frame;
+	} completion:^(BOOL finished) {
+		[self addNumberKeyboardNotificationObservers];
+		_isNumberKeyboardVisible = YES;
+	}];
+}
+
+- (void)dismissNumberKeyboard {
+	if (!_isNumberKeyboardVisible) {
+		return;
+	}
+
+	self.cellTextInputFinishedBlock(_editingElement, _editingTextField);
+
+	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+	UIView *keyboardView = keyboardViewController.view;
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = keyboardView.frame;
+		frame.origin.y += keyboardViewController.keyboardHeight;
+		keyboardView.frame = frame;
+	} completion:^(BOOL finished) {
+		[keyboardView removeFromSuperview];
+		self.numberKeyboardViewController = nil;
+		_isNumberKeyboardVisible = NO;
+	}];
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
+		UIView *keyboardView = self.numberKeyboardViewController.view;
+		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+
+		FNLOGRECT(self.view.bounds);
+		FNLOG(@"%f", keyboardHeight);
+		CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+		keyboardView.frame = CGRectMake(0, bounds.size.height - keyboardHeight, bounds.size.width, keyboardHeight);
+		[self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+	}
+}
+
+#pragma mark - A3KeyboardDelegate
+
+- (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
+	_didPressClearKey = YES;
+}
+
+- (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
+	[self dismissNumberKeyboard];
+}
+
+- (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
+	_didPressNumberKey = YES;
+	_didPressClearKey = NO;
+}
+
 #pragma mark - A3SelectTableViewControllerProtocol
 
 - (void)selectTableViewController:(A3JHSelectTableViewController *)viewController selectedItemIndex:(NSInteger)index indexPathOrigin:(NSIndexPath *)indexPathOrigin {
@@ -972,12 +1094,6 @@ static NSString *CellIdentifier = @"Cell";
 
 - (NSNumberFormatter *)currencyFormatterForTableViewInputElement {
 	return self.currencyFormatter;
-}
-
-#pragma mark - A3ViewControllerProtocol
-
-- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
-	return NO;
 }
 
 @end

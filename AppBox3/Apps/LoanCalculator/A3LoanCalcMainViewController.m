@@ -70,6 +70,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 @property (nonatomic, strong) LoanCalcData *loanDataB;
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
+@property (nonatomic, copy) NSString *textBeforeEditing;
+@property (nonatomic, copy) UIColor *textColorBeforeEditing;
+@property (nonatomic, weak) UITextField *editingTextField;
+@property (nonatomic, weak) UIView *bannerView;
 
 @end
 
@@ -80,6 +84,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	BOOL        _isComparisonMode;
 
 	NSDate 		*preDate;
+	
+	BOOL _didPressClearKey;
+	BOOL _didPressNumberKey;
+	BOOL _isNumberKeyboardVisible;
 }
 
 - (void)viewDidLoad
@@ -251,6 +259,25 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		[self leftBarButtonAppsButton];
 	}
     [self.tableView reloadData];
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
+		UIView *keyboardView = self.numberKeyboardViewController.view;
+		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+
+		FNLOGRECT(self.view.bounds);
+		FNLOG(@"%f", keyboardHeight);
+
+		UIEdgeInsets contentInset = self.tableView.contentInset;
+		contentInset.bottom = keyboardHeight + (self.bannerView ? self.bannerView.bounds.size.height : 0);
+
+		CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+		keyboardView.frame = CGRectMake(0, bounds.size.height - keyboardHeight, bounds.size.width, keyboardHeight);
+		[self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+	}
 }
 
 - (void)dealloc {
@@ -644,6 +671,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (void)selectSegmentChanged:(UISegmentedControl*) segment
 {
+	[self dismissNumberKeyboard];
     [self dismissDatePicker];
     [self.firstResponder resignFirstResponder];
     
@@ -678,6 +706,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 }
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
+	[self dismissNumberKeyboard];
 	[self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];
 
@@ -704,6 +733,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 }
 
 - (void)moreButtonAction:(UIBarButtonItem *)button {
+	[self dismissNumberKeyboard];
 	[self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];
 
@@ -861,6 +891,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 }
 
 - (void)clearEverything {
+	[self dismissNumberKeyboard];
 	[self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];
 
@@ -1824,18 +1855,26 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 			return NO;
 		}
 	}
+	self.numberKeyboardViewController = [self normalNumberKeyboard];
+	[self presentNumberKeyboardForTextField:textField];
 
-	return YES;
+	return NO;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
 	[self setFirstResponder:textField];
 
-	textField.text = @"";
+	_editingTextField = textField;
+	self.textBeforeEditing = textField.text;
+	self.textColorBeforeEditing = textField.textColor;
+	
+	textField.text = [self.decimalFormatter stringFromNumber:@0];
+	textField.textColor = [[A3AppDelegate instance] themeColor];
 	textField.placeholder = @"";
 
 	self.currentIndexPath = [self.tableView indexPathForCellSubview:textField];
+	[self.tableView scrollToRowAtIndexPath:self.currentIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 
 	if (self.currentIndexPath.section == 2) {
 
@@ -1843,13 +1882,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		NSNumber *calcItemNum = self.calcItems[self.currentIndexPath.row];
 		A3LoanCalcCalculationItem calcItem = calcItemNum.integerValue;
 
-		A3NumberKeyboardViewController *keyboardVC = [self normalNumberKeyboard];
-		textField.inputView = [keyboardVC view];
-		if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
-			textField.inputAssistantItem.leadingBarButtonGroups = @[];
-			textField.inputAssistantItem.trailingBarButtonGroups = @[];
-		}
-		self.numberKeyboardViewController = keyboardVC;
+		A3NumberKeyboardViewController *keyboardVC = self.numberKeyboardViewController;
 
 		switch (calcItem) {
 			case A3LC_CalculationItemDownPayment:
@@ -1895,24 +1928,16 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 		if (exPaymentItem == A3LC_ExtraPaymentMonthly) {
 
-			A3NumberKeyboardViewController *keyboardVC = [self normalNumberKeyboard];
-			textField.inputView = [keyboardVC view];
-			if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
-				textField.inputAssistantItem.leadingBarButtonGroups = @[];
-				textField.inputAssistantItem.trailingBarButtonGroups = @[];
-			}
-			self.numberKeyboardViewController = keyboardVC;
+			A3NumberKeyboardViewController *keyboardVC = self.numberKeyboardViewController;
 			keyboardVC.currencyCode = [self defaultCurrencyCode];
 			keyboardVC.keyboardType = A3NumberKeyboardTypeCurrency;
 			keyboardVC.textInputTarget = textField;
 			keyboardVC.delegate = self;
-			self.numberKeyboardViewController = keyboardVC;
 
 			[keyboardVC reloadPrevNextButtons];
 		}
 	}
-	[self addNumberKeyboardNotificationObservers];
-	
+
 	FNLOGINSETS(self.tableView.contentInset);
 }
 
@@ -1924,9 +1949,20 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
 	FNLOGINSETS(self.tableView.contentInset);
+
+	if (_textColorBeforeEditing) {
+		textField.textColor = _textColorBeforeEditing;
+		_textColorBeforeEditing = nil;
+	}
 	
-	[self removeNumberKeyboardNotificationObservers];
 	[self setFirstResponder:nil];
+
+	if (!_didPressNumberKey && !_didPressClearKey) {
+		textField.text = _textBeforeEditing;
+		_textBeforeEditing = nil;
+
+		return;
+	}
 
 	NSIndexPath *endIP = self.currentIndexPath;
 	FNLOG(@"End IP : %ld - %ld", (long) endIP.section, (long) endIP.row);
@@ -2010,6 +2046,99 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	}
 
 	[self updateLoanCalculation];
+}
+
+- (void)presentNumberKeyboardForTextField:(UITextField *)textField {
+	if (_isNumberKeyboardVisible) {
+		return;
+	}
+
+	[self addNumberKeyboardNotificationObservers];
+	A3NumberKeyboardViewController *numberKeyboardViewController = self.numberKeyboardViewController;
+	
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGFloat keyboardHeight = numberKeyboardViewController.keyboardHeight;
+	UIView *keyboardView = numberKeyboardViewController.view;
+	[self.view.superview addSubview:keyboardView];
+
+	// KeyboardView를 addSubview를 해야 view가 load된다는 점, 정확히는 view에 access를 해야 load가 된다.
+	// View가 load되기 전에는 IBOutlet이 nil입니다.
+	[self textFieldDidBeginEditing:textField];
+
+	_didPressClearKey = NO;
+	_didPressNumberKey = NO;
+
+	[numberKeyboardViewController reloadPrevNextButtons];
+
+	keyboardView.frame = CGRectMake(0, self.view.bounds.size.height, bounds.size.width, keyboardHeight);
+	[UIView animateWithDuration:0.3 animations:^{
+		UIEdgeInsets contentInset = self.tableView.contentInset;
+		contentInset.bottom += keyboardHeight;
+		self.tableView.contentInset = contentInset;
+
+		CGRect frame = keyboardView.frame;
+		frame.origin.y -= keyboardHeight + (self.bannerView ? self.bannerView.bounds.size.height : 0);
+		keyboardView.frame = frame;
+		
+		NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:textField];
+		[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+		
+	} completion:^(BOOL finished) {
+		[self addNumberKeyboardNotificationObservers];
+		_isNumberKeyboardVisible = YES;
+	}];
+	
+}
+
+- (void)dismissNumberKeyboard {
+	if (!_isNumberKeyboardVisible) {
+		return;
+	}
+
+	[self removeNumberKeyboardNotificationObservers];
+	[self textFieldDidEndEditing:_editingTextField];
+
+	_editingTextField = nil;
+	self.firstResponder = nil;
+
+	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+	UIView *keyboardView = keyboardViewController.view;
+	[UIView animateWithDuration:0.3 animations:^{
+		UIEdgeInsets contentInset = self.tableView.contentInset;
+		contentInset.bottom = self.bannerView ? self.bannerView.bounds.size.height : 0;
+		self.tableView.contentInset = contentInset;
+
+		CGRect frame = keyboardView.frame;
+		frame.origin.y += keyboardViewController.keyboardHeight + (self.bannerView ? self.bannerView.bounds.size.height : 0);
+		keyboardView.frame = frame;
+	} completion:^(BOOL finished) {
+		[keyboardView removeFromSuperview];
+		[keyboardViewController removeFromParentViewController];
+		self.numberKeyboardViewController = nil;
+		_isNumberKeyboardVisible = NO;
+	}];
+}
+
+#pragma mark - Number Keyboard Delegate
+
+- (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
+	[super A3KeyboardController:controller clearButtonPressedTo:keyInputDelegate];
+	_didPressClearKey = YES;
+}
+
+- (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
+	_didPressClearKey = NO;
+	_didPressNumberKey = YES;
+}
+
+- (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
+	[self dismissNumberKeyboard];
+}
+
+- (void)currencySelectButtonAction:(NSNotification *)notification {
+	[self dismissNumberKeyboard];
+
+	[super currencySelectButtonAction:notification];
 }
 
 #pragma mark - LoanCalcHistoryViewController delegate
@@ -2878,6 +3007,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		[bannerView removeFromSuperview];
 		return;
 	}
+	
+	self.bannerView = bannerView;
+	
 	[self.view.superview addSubview:bannerView];
 
 	UIView *superview = self.view;
@@ -2890,6 +3022,13 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	UIEdgeInsets contentInset = self.tableView.contentInset;
 	contentInset.bottom = bannerView.bounds.size.height;
 	self.tableView.contentInset = contentInset;
+
+	if (self.numberKeyboardViewController.view.superview) {
+		UIView *keyboardView = self.numberKeyboardViewController.view;
+		CGRect frame = keyboardView.frame;
+		frame.origin.y = self.view.bounds.size.height - keyboardView.bounds.size.height - bannerView.bounds.size.height;
+		keyboardView.frame = frame;
+	}
 }
 
 @end

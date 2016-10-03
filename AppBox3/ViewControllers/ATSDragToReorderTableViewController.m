@@ -318,7 +318,6 @@ typedef enum {
  *	Defaults to NO, needs to be YES for press and drag to be one continuous action.
  */
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-    FNLOG(@"\ngestureRecognizer: %@\ndragGestureRecognizer : %@\notherGestureRecognizer: %@\n", gestureRecognizer, dragGestureRecognizer, otherGestureRecognizer);
 	return (gestureRecognizer == dragGestureRecognizer || otherGestureRecognizer == dragGestureRecognizer);
 }
 
@@ -327,8 +326,7 @@ typedef enum {
  *	Insure that only one touch and only the same touch reaches both gesture recognizers.
  */
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    FNLOG(@"\ngestureRecognizer: %@\nlongPressGestureRecognizer : %@\n", gestureRecognizer, longPressGestureRecognizer);
-    
+	
 	if( gestureRecognizer == longPressGestureRecognizer || gestureRecognizer == dragGestureRecognizer ) {
 		static UITouch *longPressTouch = nil;
 		

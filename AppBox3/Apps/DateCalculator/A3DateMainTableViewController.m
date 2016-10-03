@@ -306,6 +306,22 @@
 
 		[self.tableView scrollToRowAtIndexPath:_editingIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 	}
+	
+	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
+		UIView *keyboardView = self.simpleNormalNumberKeyboard.view;
+		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+		
+		UIEdgeInsets contentInset = self.tableView.contentInset;
+		contentInset.bottom = keyboardHeight;
+		self.tableView.contentInset = contentInset;
+		
+		FNLOGRECT(self.view.bounds);
+		FNLOG(@"%f", keyboardHeight);
+		keyboardView.frame = CGRectMake(0, self.view.bounds.size.height - keyboardHeight, self.view.bounds.size.width, keyboardHeight);
+		[self.simpleNormalNumberKeyboard rotateToInterfaceOrientation:toInterfaceOrientation];
+		
+		[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+	}
 }
 
 - (void)clearEverything {
@@ -799,6 +815,10 @@
 }
 
 - (void)dismissDateKeyboard {
+	if (!_isDateKeyboardVisible) {
+		return;
+	}
+	
 	CGFloat keyboardHeight = self.dateKeyboardViewController.keyboardHeight;
 	
 	UIEdgeInsets contentInset = self.tableView.contentInset;
@@ -973,7 +993,7 @@
 		if (_editingTextField != textField) {
 			[self endEditingForTextField:_editingTextField];
 			[self prepareEditingForTextField:textField];
-			_simpleNormalNumberKeyboard.displayObject = (id<A3DisplayObject>)textField;
+			_simpleNormalNumberKeyboard.textInputTarget = textField;
 		}
 	} else {
 		[self presentNumberKeyboardForTextField:textField];
@@ -1113,7 +1133,7 @@
 		((A3NumberKeyboardViewController_iPhone *)_simpleNormalNumberKeyboard).needButtonsReload = NO;
 	}
 	_simpleNormalNumberKeyboard.useDotAsClearButton = YES;
-	_simpleNormalNumberKeyboard.displayObject = (id<A3DisplayObject>)textField;
+	_simpleNormalNumberKeyboard.textInputTarget = textField;
 	_simpleNormalNumberKeyboard.delegate = self;
 	
 	[_simpleNormalNumberKeyboard reloadPrevNextButtons];
@@ -1142,6 +1162,10 @@
 }
 
 - (void)dismissNumberKeyboard {
+	if (!_isNumberKeyboardVisible) {
+		return;
+	}
+	
 	NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:CGPointMake(100, [_editingTextField convertPoint:_editingTextField.center toView:self.tableView].y)];
 	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
 	if (cell && [indexPath section] == 1) {
@@ -1295,14 +1319,14 @@
 		
 		UITextField *textField = footerCell.monthTextField;
 		[self prepareEditingForTextField:textField];
-		_simpleNormalNumberKeyboard.displayObject = (id<A3DisplayObject>)textField;
+		_simpleNormalNumberKeyboard.textInputTarget = textField;
 	}
     else if (_editingTextField == footerCell.monthTextField) {
 		[self endEditingForTextField:_editingTextField];
 		
 		UITextField *textField = footerCell.dayTextField;
 		[self prepareEditingForTextField:textField];
-		_simpleNormalNumberKeyboard.displayObject = (id<A3DisplayObject>)textField;
+		_simpleNormalNumberKeyboard.textInputTarget = textField;
 	}
 }
 
@@ -1321,7 +1345,7 @@
 		
 		UITextField *textField = footerCell.monthTextField;
 		[self prepareEditingForTextField:textField];
-		_simpleNormalNumberKeyboard.displayObject = (id<A3DisplayObject>)textField;
+		_simpleNormalNumberKeyboard.textInputTarget = textField;
 	}
     else if (_editingTextField == footerCell.monthTextField) {
 		[self endEditingForTextField:_editingTextField];
@@ -1329,7 +1353,7 @@
 
 		UITextField *textField = footerCell.yearTextField;
 		[self prepareEditingForTextField:textField];
-		_simpleNormalNumberKeyboard.displayObject = (id<A3DisplayObject>)textField;
+		_simpleNormalNumberKeyboard.textInputTarget = textField;
 	}
     else if (_editingTextField == footerCell.yearTextField) {
 		[self endEditingForTextField:_editingTextField];
@@ -1755,8 +1779,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	[self clearEverything];
+	
     if (indexPath.section == 0) {
-        [self clearEverything];
         if ((self.isAddSubMode==YES && indexPath.row==kAddSubRowIndex) || (self.isAddSubMode==NO && indexPath.row==0)) {
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             return;

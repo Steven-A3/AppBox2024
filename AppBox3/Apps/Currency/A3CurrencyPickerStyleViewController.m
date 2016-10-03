@@ -83,7 +83,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	BOOL _didPressClearKey;
 	BOOL _currentValueIsNotFromUser;
 	BOOL _didFirstTimeRefresh;
-	BOOL _isKeyboardVisible;
+	BOOL _isNumberKeyboardVisible;
 }
 
 #pragma mark - View Lifecycle Management
@@ -280,7 +280,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 		_sourceTextField = cell.valueField;
 
 		cell.flagImageView.image = [UIImage imageNamed:[self.currencyDataManager flagImageNameForCode:_sourceCurrencyCode]];
-		if (!_isKeyboardVisible) {
+		if (!_isNumberKeyboardVisible) {
 			NSNumberFormatter *nf = [self currencyFormatterWithCurrencyCode:_sourceCurrencyCode];
 			cell.valueField.text = [nf stringFromNumber:_sourceValue];
 		}
@@ -609,8 +609,8 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	
 	textField.text = @"";
 	 */
-	
-	[self presentNumberKeypadForObject:(id<A3DisplayObject>)textField];
+
+	[self presentNumberKeyboardForTextField:textField];
 	
 	return NO;
 }
@@ -701,6 +701,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 - (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
 	_didPressNumberKey = YES;
+	_didPressClearKey = NO;
 	
 	float value = [_sourceTextField.text floatValueEx];
 	_sourceValue = @(value);
@@ -836,6 +837,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
 	FNLOG();
+	[self dismissNumberKeypad];
 	[self didSelectPickerRow];
 }
 
@@ -989,7 +991,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 	
-	if (_isKeyboardVisible && self.numberKeyboardViewController.view.superview) {
+	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
 		UIView *keyboardView = self.numberKeyboardViewController.view;
 		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
 		
@@ -1119,19 +1121,21 @@ static NSString *const A3V3InstructionDidShowForCurrencyPicker = @"A3V3Instructi
 
 #pragma mark - Keyboard
 
-- (void)presentNumberKeypadForObject:(id<A3DisplayObject>) displayObject {
-	if (_isKeyboardVisible) {
+- (void)presentNumberKeyboardForTextField:(UITextField *) textField {
+	if (_isNumberKeyboardVisible) {
 		return;
 	}
 	
 	_previousValue = _sourceTextField.text;
+	textField.text = [self.decimalFormatter stringFromNumber:@0];
 
 	self.numberKeyboardViewController = [self simpleNumberKeyboard];
 	
 	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
 	keyboardViewController.delegate = self;
 	keyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
-	keyboardViewController.displayObject = displayObject;
+	keyboardViewController.textInputTarget = textField;
+	keyboardViewController.currencyCode = _sourceCurrencyCode;
 	
 	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	CGFloat keyboardHeight = keyboardViewController.keyboardHeight;
@@ -1151,13 +1155,13 @@ static NSString *const A3V3InstructionDidShowForCurrencyPicker = @"A3V3Instructi
 		keyboardView.frame = frame;
 	} completion:^(BOOL finished) {
 		[self addNumberKeyboardNotificationObservers];
-		_isKeyboardVisible = YES;
+		_isNumberKeyboardVisible = YES;
 	}];
 	
 }
 
 - (void)dismissNumberKeypad {
-	if (!_isKeyboardVisible) {
+	if (!_isNumberKeyboardVisible) {
 		return;
 	}
 
@@ -1191,7 +1195,7 @@ static NSString *const A3V3InstructionDidShowForCurrencyPicker = @"A3V3Instructi
 		[keyboardView removeFromSuperview];
 		[keyboardViewController removeFromParentViewController];
 		self.numberKeyboardViewController = nil;
-		_isKeyboardVisible = NO;
+		_isNumberKeyboardVisible = NO;
 	}];
 }
 

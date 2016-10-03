@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="A3NumberKeyboardViewController_iPhone">
@@ -34,7 +34,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="-1" y="-1" width="65" height="110"/>
+                    <rect key="frame" x="-1" y="0.0" width="65" height="109"/>
                     <color key="backgroundColor" red="0.75686274509999996" green="0.76862745099999996" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
                     <state key="normal" title="US$">
@@ -56,7 +56,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="63" y="0.0" width="65.5" height="55"/>
+                    <rect key="frame" x="63" y="0.0" width="65" height="55"/>
                     <color key="backgroundColor" red="0.98823529409999999" green="0.98823529409999999" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
                     <state key="normal" title="7">
@@ -68,7 +68,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="127.5" y="0.0" width="65" height="55"/>
+                    <rect key="frame" x="127" y="0.0" width="66" height="55"/>
                     <color key="backgroundColor" red="0.98823529409999999" green="0.98823529409999999" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
                     <state key="normal" title="8">
@@ -80,7 +80,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="10" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="191.5" y="0.0" width="65.5" height="55"/>
+                    <rect key="frame" x="192" y="0.0" width="65" height="55"/>
                     <color key="backgroundColor" red="0.98823529409999999" green="0.98823529409999999" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
                     <state key="normal" title="9">
@@ -104,7 +104,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="12" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="63" y="54" width="65.5" height="55"/>
+                    <rect key="frame" x="63" y="54" width="65" height="55"/>
                     <color key="backgroundColor" red="0.98823529409999999" green="0.98823529409999999" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
                     <state key="normal" title="4">
@@ -116,7 +116,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="13" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="127.5" y="54" width="65" height="55"/>
+                    <rect key="frame" x="127" y="54" width="66" height="55"/>
                     <color key="backgroundColor" red="0.98823529409999999" green="0.98823529409999999" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
                     <state key="normal" title="5">
@@ -128,7 +128,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="14" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="191.5" y="54" width="65.5" height="55"/>
+                    <rect key="frame" x="192" y="54" width="65" height="55"/>
                     <color key="backgroundColor" red="0.98823529409999999" green="0.98823529409999999" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
                     <state key="normal" title="6">
@@ -173,7 +173,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="16" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="63" y="108" width="65.5" height="55"/>
+                    <rect key="frame" x="63" y="108" width="65" height="55"/>
                     <color key="backgroundColor" red="0.98823529409999999" green="0.98823529409999999" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
                     <state key="normal" title="1">
@@ -185,7 +185,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="17" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="127.5" y="108" width="65" height="55"/>
+                    <rect key="frame" x="127" y="108" width="66" height="55"/>
                     <color key="backgroundColor" red="0.98823529409999999" green="0.98823529409999999" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
                     <state key="normal" title="2">
@@ -197,7 +197,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="18" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="191.5" y="108" width="65.5" height="55"/>
+                    <rect key="frame" x="192" y="108" width="65" height="55"/>
                     <color key="backgroundColor" red="0.98823529409999999" green="0.98823529409999999" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
                     <state key="normal" title="3">
@@ -220,7 +220,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="20" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="63" y="162" width="65.5" height="55"/>
+                    <rect key="frame" x="63" y="162" width="65" height="55"/>
                     <color key="backgroundColor" red="0.98823529409999999" green="0.98823529409999999" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
                     <state key="normal" title="C">
@@ -232,7 +232,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="21" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="127.5" y="162" width="65" height="55"/>
+                    <rect key="frame" x="127" y="162" width="66" height="55"/>
                     <color key="backgroundColor" red="0.98823529409999999" green="0.98823529409999999" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
                     <state key="normal" title="0">
@@ -244,7 +244,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="22" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="191.5" y="162" width="65.5" height="55"/>
+                    <rect key="frame" x="192" y="162" width="65" height="55"/>
                     <color key="backgroundColor" red="0.98823529409999999" green="0.98823529409999999" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
                     <state key="normal" title=".">
@@ -272,7 +272,7 @@
                 <constraint firstItem="17" firstAttribute="leading" secondItem="16" secondAttribute="trailing" constant="-1" id="0Is-74-mY8"/>
                 <constraint firstItem="10" firstAttribute="leading" secondItem="9" secondAttribute="trailing" constant="-1" id="11k-kq-M6q"/>
                 <constraint firstItem="13" firstAttribute="leading" secondItem="12" secondAttribute="trailing" constant="-1" id="2af-dx-h24"/>
-                <constraint firstItem="3" firstAttribute="top" secondItem="1" secondAttribute="top" constant="-1" id="2fa-pP-hbV"/>
+                <constraint firstItem="3" firstAttribute="top" secondItem="1" secondAttribute="top" id="2fa-pP-hbV"/>
                 <constraint firstItem="23" firstAttribute="leading" secondItem="10" secondAttribute="trailing" constant="-1" id="3al-Wa-aTD"/>
                 <constraint firstAttribute="trailing" secondItem="26" secondAttribute="trailing" constant="-1" id="5tY-TO-lBY"/>
                 <constraint firstItem="20" firstAttribute="leading" secondItem="8" secondAttribute="leading" id="6sU-7E-sko"/>

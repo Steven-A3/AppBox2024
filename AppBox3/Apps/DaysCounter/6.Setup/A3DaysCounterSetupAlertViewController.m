@@ -19,17 +19,22 @@
 #import "DaysCounterDate.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "DaysCounterEvent+extension.h"
+#import "UITableView+utility.h"
 
 @interface A3DaysCounterSetupAlertViewController () <A3KeyboardDelegate, UITextFieldDelegate, A3ViewControllerProtocol>
 @property (strong, nonatomic) NSArray *itemArray;
 @property (strong, nonatomic) NSDate *originalValue;
-@property (strong, nonatomic) A3NumberKeyboardViewController *numberKeyboardVC;
 @property (copy, nonatomic) NSString *textBeforeEditingTextField;
+@property (copy, nonatomic) UIColor *textColorBeforeEditing;
 @property (weak, nonatomic) UITextField *editingTextField;
 
 @end
 
-@implementation A3DaysCounterSetupAlertViewController
+@implementation A3DaysCounterSetupAlertViewController {
+	BOOL			_isNumberKeyboardVisible;
+	BOOL			_didPressClearKey;
+	BOOL			_didPressNumberKey;
+}
 
 - (id)init {
 	self = [super initWithStyle:UITableViewStyleGrouped];
@@ -97,7 +102,6 @@
 			@{EventRowTitle : NSLocalizedString(@"Custom", @"Custom"), EventRowType : @(AlertType_Custom)}];
 
 	self.originalValue = _eventModel.alertDatetime;
-	self.numberKeyboardVC = [self simplePrevNextNumberKeyboard];
 }
 
 - (void)didReceiveMemoryWarning
@@ -121,7 +125,10 @@
 
 - (void)willDismissFromRightSide
 {
-	if (IS_IPAD && _dismissCompletionBlock) {
+	if (IS_IPAD) {
+		[self dismissNumberKeyboard];
+	}
+ 	if (IS_IPAD && _dismissCompletionBlock) {
 		_dismissCompletionBlock();
 	}
 }
@@ -396,30 +403,27 @@
 }
 #pragma mark - UITextFieldDelegate
 
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+	[self presentNumberKeyboardForTextField:textField];
+	return NO;
+}
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	self.editingTextField = textField;
 
-	self.numberKeyboardVC.textInputTarget = textField;
-	self.numberKeyboardVC.delegate = self;
-	textField.inputView = self.numberKeyboardVC.view;
-	if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
-		textField.inputAssistantItem.leadingBarButtonGroups = @[];
-		textField.inputAssistantItem.trailingBarButtonGroups = @[];
-	}
 	self.textBeforeEditingTextField = textField.text;
-	textField.text = @"";
-}
+	self.textColorBeforeEditing = textField.textColor;
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-	return YES;
+	textField.text = [self.decimalFormatter stringFromNumber:@0];
+	textField.textColor = [[A3AppDelegate instance] themeColor];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
 	self.editingTextField = nil;
 
-	if (![textField.text length]) {
+	if (!_didPressClearKey && !_didPressNumberKey) {
 		textField.text = _textBeforeEditingTextField;
 	}
 
@@ -445,21 +449,134 @@
 	else {
 		_eventModel.alertType = @(0);
 	}
-    
+
+	if (_textColorBeforeEditing) {
+		textField.textColor = _textColorBeforeEditing;
+		_textColorBeforeEditing = nil;
+	}
 	[self.tableView reloadData];
+}
+
+- (void)presentNumberKeyboardForTextField:(UITextField *) textField {
+	if (_isNumberKeyboardVisible) {
+		return;
+	}
+	
+	self.numberKeyboardViewController = [self simplePrevNextNumberKeyboard];
+	
+	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+	keyboardViewController.delegate = self;
+	keyboardViewController.textInputTarget = textField;
+
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGFloat keyboardHeight = keyboardViewController.keyboardHeight;
+	UIView *keyboardView = keyboardViewController.view;
+	if (IS_IPHONE) {
+		[self.view.superview addSubview:keyboardView];
+	} else {
+		[[A3AppDelegate instance].rootViewController_iPad.view addSubview:keyboardView];
+	}
+
+	_didPressClearKey = NO;
+	_didPressNumberKey = NO;
+	
+	[self textFieldDidBeginEditing:textField];
+	
+	keyboardView.frame = CGRectMake(0, self.view.bounds.size.height, bounds.size.width, keyboardHeight);
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = keyboardView.frame;
+		frame.origin.y -= keyboardHeight;
+		keyboardView.frame = frame;
+
+		UIEdgeInsets contentInset = self.tableView.contentInset;
+		contentInset.bottom = keyboardHeight;
+		self.tableView.contentInset = contentInset;
+		
+		NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:textField];
+		[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+		
+	} completion:^(BOOL finished) {
+		[self addNumberKeyboardNotificationObservers];
+		_isNumberKeyboardVisible = YES;
+	}];
+	
+}
+
+- (void)dismissNumberKeyboard {
+	if (!_isNumberKeyboardVisible) {
+		return;
+	}
+	
+	[self textFieldDidEndEditing:_editingTextField];
+	
+	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+	UIView *keyboardView = keyboardViewController.view;
+	[UIView animateWithDuration:0.3 animations:^{
+		CGFloat keyboardHeight = keyboardViewController.keyboardHeight;
+		CGRect frame = keyboardView.frame;
+		frame.origin.y += keyboardHeight;
+		keyboardView.frame = frame;
+
+		UIEdgeInsets contentInset = self.tableView.contentInset;
+		contentInset.bottom = 0;
+		self.tableView.contentInset = contentInset;
+
+	} completion:^(BOOL finished) {
+		[keyboardView removeFromSuperview];
+		self.numberKeyboardViewController = nil;
+		_isNumberKeyboardVisible = NO;
+	}];
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (IS_IPHONE && IS_LANDSCAPE) {
+		[self leftBarButtonAppsButton];
+	}
+
+	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
+		UIView *keyboardView = self.numberKeyboardViewController.view;
+		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+
+		UIEdgeInsets contentInset = self.tableView.contentInset;
+		contentInset.bottom = keyboardHeight;
+		self.tableView.contentInset = contentInset;
+		
+		NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:_editingTextField];
+		[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+		
+		FNLOGRECT(self.view.bounds);
+		FNLOG(@"%f", keyboardHeight);
+		CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+		keyboardView.frame = CGRectMake(0, bounds.size.height - keyboardHeight, bounds.size.width, keyboardHeight);
+		[self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+	}
 }
 
 #pragma mark - A3KeyboardDelegate
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate;
 {
-	[keyInputDelegate resignFirstResponder];
+	[self dismissNumberKeyboard];
 }
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
 	UITextField *textField = (UITextField *) keyInputDelegate;
-	textField.text = @"";
-	_textBeforeEditingTextField = @"";
+	textField.text = [self.decimalFormatter stringFromNumber:@0];
+	_textBeforeEditingTextField = textField.text;
+	_didPressClearKey = YES;
+}
+
+- (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
+	_didPressClearKey = NO;
+	_didPressNumberKey = YES;
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+	[self dismissNumberKeyboard];
 }
 
 #pragma mark - A3ViewControllerProtocol

@@ -1322,6 +1322,7 @@
     [_sharedManager recalculateEventDatesForEvent:_eventItem];
     nextVC.eventModel = self.eventItem;
     nextVC.sharedManager = _sharedManager;
+	nextVC.rootViewController = self;
     nextVC.dismissCompletionBlock = ^{
         NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
         NSIndexPath *alertIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowForItemType:EventCellType_Alert atSectionArray:section1_items]

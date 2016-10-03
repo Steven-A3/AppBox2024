@@ -14,12 +14,16 @@
 #import "A3NumberKeyboardSimpleVC_iPad.h"
 #import "A3JHTableViewExpandableHeaderCell.h"
 #import "A3WalletNoteCell.h"
+#import "A3AppDelegate.h"
+#import "NSString+conversion.h"
 
 @interface A3TableViewInputElement () <UITextFieldDelegate, A3KeyboardDelegate>
 
 @property (nonatomic, strong) NSNumberFormatter *currencyFormatter;
 @property (nonatomic, strong) NSNumberFormatter *percentFormatter;
 @property (nonatomic, strong) NSNumberFormatter *decimalFormatter;
+@property (nonatomic, copy) NSString *textBeforeEditing;
+@property (nonatomic, copy) UIColor *textColorBeforeEditing;
 
 @end
 
@@ -28,6 +32,8 @@
     UITableView *_rootTableView;
     NSIndexPath *_currentIndexPath;
     UITextField *_firstResponder;   // temp...
+	BOOL _didPressClearKey;
+	BOOL _didPressNumberKey;
 }
 
 - (UITableViewCell *)cellForTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath {
@@ -140,14 +146,10 @@
 			}
 			break;
 	}
+	[_inputViewController view];
 
 	_inputViewController.textInputTarget = textField;
 	_inputViewController.delegate = self;
-	textField.inputView = _inputViewController.view;
-	if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
-		textField.inputAssistantItem.leadingBarButtonGroups = @[];
-		textField.inputAssistantItem.trailingBarButtonGroups = @[];
-	}
 	_inputViewController.currencyCode = self.currencyCode;
 
 	switch (type) {
@@ -173,6 +175,7 @@
 	}
 
 	[_inputViewController reloadPrevNextButtons];
+	
 }
 
 #pragma mark - Keyboard Event
@@ -180,8 +183,6 @@
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
 	FNLOG();
 
-    [textField addTarget:self action:@selector(textFieldEditingChanged:) forControlEvents:UIControlEventEditingChanged];
-    
 	switch (self.inputType) {
 		case A3TableViewEntryTypeText:
             textField.inputView = nil;
@@ -190,7 +191,7 @@
 				textField.inputAssistantItem.trailingBarButtonGroups = @[];
 			}
             textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-			break;
+			return YES;
 		case A3TableViewEntryTypeCurrency:
 		case A3TableViewEntryTypeYears:
 		case A3TableViewEntryTypePercent:
@@ -199,18 +200,18 @@
 			[self setupNumberKeyboardForTextField:textField keyboardType:self.inputType];
             break;
 	}
-    
-	return YES;
-}
-
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
-	FNLOG();
-
 	_firstResponder = textField;
+
+	self.textBeforeEditing = self.value;
+	self.textColorBeforeEditing = textField.textColor;
+	_didPressClearKey = NO;
+	_didPressNumberKey = NO;
+
 	if (_onEditingBegin) {
 		_onEditingBegin(self, textField);
 	}
 
+	textField.textColor = [[A3AppDelegate instance] themeColor];
 	switch (self.inputType) {
 		case A3TableViewEntryTypeText:
 			break;
@@ -219,20 +220,18 @@
 		case A3TableViewEntryTypePercent:
 		case A3TableViewEntryTypeRealNumber:
 		case A3TableViewEntryTypeInteger:
-			textField.text = @"";
+			textField.text = [self.decimalFormatter stringFromNumber:@0];
 			textField.placeholder = @"";
 			break;
 	}
-}
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-	FNLOG(@"%@, %@", textField.text, string);
-
-    return YES;
+	return NO;
 }
 
 - (void)textFieldEditingChanged:(UITextField *)textField {
+	_didPressNumberKey = YES;
+	_didPressClearKey = NO;
+
 	if (self.coreDataObject && self.coreDataKey) {
 		[self.coreDataKey setValue:textField.text forKey:self.coreDataKey];
 	}
@@ -244,7 +243,6 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
 	FNLOG(@"%@", textField.text);
-    [textField removeTarget:self action:@selector(textFieldEditingChanged:) forControlEvents:UIControlEventEditingChanged];
 
 	if (self.inputType == A3TableViewEntryTypePercent) {
 		_valueType = [_inputViewController.bigButton2 isSelected] ? A3TableViewValueTypeCurrency : A3TableViewValueTypePercent;
@@ -252,7 +250,14 @@
 
 	_inputViewController = nil;
 	_firstResponder = nil;
-	
+
+	if (!_didPressClearKey && !_didPressNumberKey) {
+		textField.text = _textBeforeEditing;
+	}
+	if (_textColorBeforeEditing) {
+		textField.textColor = _textColorBeforeEditing;
+	}
+
     if (_onEditingFinishAll) {      // SalesCalc % 관련 부분을 위하여 별도로 추가.
         _onEditingFinishAll(self, textField);
 		
@@ -262,7 +267,7 @@
     if (_onEditingFinished) {
         _onEditingFinished(self, textField);
     }
-    
+
 	switch (self.inputType) {
 		case A3TableViewEntryTypeText: {
             if (self.value == nil && textField.text.length == 0) {
@@ -274,7 +279,7 @@
 			break;
         }
 		case A3TableViewEntryTypeCurrency: {
-			if ([self.value doubleValue] == 0.0) {
+			if ([self.value floatValueEx] == 0.0) {
 				if ([self.placeholder length]) {
 					textField.text = @"";
 					textField.placeholder = self.placeholder;
@@ -282,9 +287,7 @@
 					textField.text = [self.currencyFormatter stringFromNumber:@0];
 				}
 			} else {
-				//textField.text = [self.currencyFormatter stringFromNumber:@([self.value doubleValue])];
-                textField.text = [self.currencyFormatter stringFromNumber:[self.decimalFormatter numberFromString:[self value]]];
-                //textField.text = [self.currencyFormatter stringFromNumber:@([self.value floatValue])];
+                textField.text = [self.currencyFormatter stringFromNumber:@([self.value floatValueEx])];
 			}
 			break;
 		}
@@ -292,7 +295,7 @@
 		{
             if ((![self value] || [textField.text length] == 0) && [self.placeholder length] > 0) {
 				if ([self.placeholder length]) {
-					textField.text = @"";
+					textField.text = [self.decimalFormatter stringFromNumber:@0];
 					textField.placeholder = self.placeholder;
 				} else {
 					textField.text = [self.percentFormatter stringFromNumber:@0];
@@ -366,6 +369,7 @@
 }
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
+	_didPressClearKey = YES;
     self.value = @"0";
     ((UITextField *)keyInputDelegate).text = @"";
     
@@ -374,12 +378,16 @@
     }
 }
 
-- (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
-    [keyInputDelegate resignFirstResponder];
-    
+- (void)A3KeyboardController:(A3NumberKeyboardViewController *)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
     if (_doneButtonPressed) {
         _doneButtonPressed(self);
     }
+}
+
+- (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
+	_didPressNumberKey = YES;
+	_didPressClearKey = NO;
+	[self textFieldEditingChanged:vc.textInputTarget];
 }
 
 - (BOOL)isPreviousEntryExists{
@@ -441,6 +449,10 @@
 	if ([cell isKindOfClass:[A3JHTableViewEntryCell class]]) {
 		[((A3JHTableViewEntryCell *)cell).textField becomeFirstResponder];
 	} else {
+		if (_doneButtonPressed) {
+			_doneButtonPressed(self);
+		}
+
 		[((A3WalletNoteCell *)cell).textView becomeFirstResponder];
 	}
 }

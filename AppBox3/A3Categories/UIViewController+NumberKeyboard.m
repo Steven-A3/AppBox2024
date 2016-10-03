@@ -118,6 +118,15 @@ static char const *const key_navigationControllerForKeyboard	= "key_navigationCo
 }
 
 - (void)setNumberKeyboardViewController:(A3NumberKeyboardViewController *)keyboardViewController {
+	if (keyboardViewController == nil) {
+#ifdef DEBUG
+		NSArray *symbols = [NSThread callStackSymbols];
+		for (NSString *symbol in symbols) {
+			NSLog(@"%@", symbol);
+		}
+		FNLOG(@"🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨 SET numberKeyboardViewController to nil!");
+#endif
+	}
 	objc_setAssociatedObject(self, key_numberKeyboardViewController, keyboardViewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 

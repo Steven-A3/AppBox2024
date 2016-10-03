@@ -69,6 +69,9 @@ enum A3TableElementCellType {
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3TableViewInputElement *calculatorTargetElement;
 @property (nonatomic, strong) NSIndexPath *calculatorTargetIndexPath;
+@property (nonatomic, weak) A3TableViewInputElement *editingElement;
+@property (nonatomic, weak) UITextField *editingTextField;
+@property (nonatomic, assign) BOOL isNumberKeyboardVisible;
 
 @end
 
@@ -563,6 +566,25 @@ enum A3TableElementCellType {
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
 
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
+		UIView *keyboardView = self.numberKeyboardViewController.view;
+		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+
+		FNLOGRECT(self.view.bounds);
+		FNLOG(@"%f", keyboardHeight);
+
+		UIEdgeInsets contentInset = self.tableView.contentInset;
+		contentInset.bottom = keyboardHeight + (self.bannerView ? self.bannerView.bounds.size.height : 0);
+
+		CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+		keyboardView.frame = CGRectMake(0, bounds.size.height - keyboardHeight, bounds.size.width, keyboardHeight);
+		[self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+	}
+}
+
 - (NSString *)defaultCurrencyCode {
 	NSString *currencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3SalesCalcUserDefaultsCurrencyCode];
 	if (!currencyCode) {
@@ -754,7 +776,17 @@ enum A3TableElementCellType {
 		__typeof(self) __weak  weakSelf = self;
         _cellTextInputBeginBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
             weakSelf.firstResponder = textField;
-			[weakSelf addNumberKeyboardNotificationObservers];
+
+			BOOL animated = YES;
+
+			if (weakSelf.isNumberKeyboardVisible) {
+				animated = NO;
+				[weakSelf dismissNumberKeyboardAnimated:animated];
+			}
+			weakSelf.editingElement = element;
+			weakSelf.editingTextField = textField;
+
+			[weakSelf presentNumberKeyboard:element.inputViewController forTextField:textField animated:animated];
         };
     }
     
@@ -784,7 +816,6 @@ enum A3TableElementCellType {
             if (weakSelf.firstResponder == textField) {
                 weakSelf.firstResponder = nil;
             }
-			[weakSelf removeNumberKeyboardNotificationObservers];
 
 			NSNumber *inputNumber = ([textField.text length] == 0 && [element.value length] > 0) ? [weakSelf.decimalFormatter numberFromString:element.value] : [weakSelf.decimalFormatter numberFromString:textField.text];
 
@@ -933,6 +964,7 @@ enum A3TableElementCellType {
     if (!_cellInputDoneButtonPressed) {
         __weak A3SalesCalcMainViewController * weakSelf = self;
         _cellInputDoneButtonPressed = ^(id sender){
+			[weakSelf dismissNumberKeyboardAnimated:NO];
 			weakSelf.firstResponder = nil;
 
             if (weakSelf.preferences.calcData == nil) {
@@ -963,12 +995,82 @@ enum A3TableElementCellType {
     return _cellExpandedBlock;
 }
 
-
 - (void)selectTableViewController:(A3JHSelectTableViewController *)viewController selectedItemIndex:(NSInteger)index indexPathOrigin:(NSIndexPath *)indexPathOrigin {
 	[self.navigationController popViewControllerAnimated:YES];
 	viewController.root.selectedIndex = index;
     
 	[self.tableView reloadRowsAtIndexPaths:@[indexPathOrigin] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (void)presentNumberKeyboard:(A3NumberKeyboardViewController *)keyboardVC forTextField:(UITextField *)textField animated:(BOOL)animated {
+	if (_isNumberKeyboardVisible) {
+		return;
+	}
+	
+	self.numberKeyboardViewController = keyboardVC;
+	
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGFloat keyboardHeight = keyboardVC.keyboardHeight;
+	UIView *keyboardView = keyboardVC.view;
+	[self.view.superview addSubview:keyboardView];
+
+	_isNumberKeyboardVisible = YES;
+	[self addNumberKeyboardNotificationObservers];
+
+	void(^adjustTableView)() = ^{
+		UIEdgeInsets contentInset = self.tableView.contentInset;
+		contentInset.bottom = keyboardHeight;
+		self.tableView.contentInset = contentInset;
+
+		NSIndexPath *selectedIndexPath = [self.tableView indexPathForCellSubview:textField];
+		[self.tableView scrollToRowAtIndexPath:selectedIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+	};
+	if (animated) {
+		keyboardView.frame = CGRectMake(0, bounds.size.height, bounds.size.width, keyboardHeight);
+		[UIView animateWithDuration:0.3 animations:^{
+			CGRect frame = keyboardView.frame;
+			frame.origin.y -= keyboardHeight;
+			keyboardView.frame = frame;
+
+			adjustTableView();
+		} completion:^(BOOL finished) {
+		}];
+	} else {
+		keyboardView.frame = CGRectMake(0, bounds.size.height - keyboardHeight, bounds.size.width, keyboardHeight);
+		adjustTableView();
+	}
+}
+
+- (void)dismissNumberKeyboardAnimated:(BOOL)animated {
+	if (!_isNumberKeyboardVisible) {
+		return;
+	}
+
+	[_editingElement textFieldDidEndEditing:_editingTextField];
+
+	[self removeNumberKeyboardNotificationObservers];
+
+	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+	UIView *keyboardView = keyboardViewController.view;
+
+	_isNumberKeyboardVisible = NO;
+
+	void(^completion)() = ^{
+		[keyboardView removeFromSuperview];
+		self.numberKeyboardViewController = nil;
+	};
+	if (animated) {
+		[UIView animateWithDuration:0.3 animations:^{
+			CGFloat keyboardHeight = keyboardViewController.keyboardHeight;
+			CGRect frame = keyboardView.frame;
+			frame.origin.y += keyboardHeight;
+			keyboardView.frame = frame;
+		} completion:^(BOOL finished) {
+			completion();
+		}];
+	} else {
+		completion();
+	}
 }
 
 #pragma mark - Table view data source
@@ -1129,6 +1231,10 @@ enum A3TableElementCellType {
 	[UIView setAnimationDuration:0.35];
 	self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight]));
 	[UIView commitAnimations];
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+	_cellInputDoneButtonPressed(_editingElement);
 }
 
 #pragma mark - etc_countries Rate List

@@ -54,6 +54,8 @@ typedef NS_ENUM(NSInteger, PriceDiscountType) {
 @property (nonatomic, copy) NSString *textBeforeEditingTextField;
 @property (nonatomic, copy) NSString *placeholderBeforeEditingTextField;
 @property (nonatomic, strong) A3UnitDataManager *unitDataManager;
+@property (nonatomic, weak) UITextField *editingTextField;
+@property (nonatomic, copy) UIColor *textColorBeforeEditing;
 
 @end
 
@@ -64,6 +66,9 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
 @implementation A3UnitPriceDetailTableController {
 	PriceDiscountType _discountType;
+	BOOL			_isNumberKeyboardVisible;
+	BOOL			_didPressClearKey;
+	BOOL			_didPressNumberKey;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -148,6 +153,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
+	[self dismissNumberKeyboardAnimated:NO];
 	[self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];
 
@@ -531,6 +537,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
 	self.price.note = textView.text;
+	self.firstResponder = nil;
 
 	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
@@ -539,23 +546,21 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
 - (void)setupCurrencyKeyboardForTextField:(UITextField *)textField usePercent:(BOOL)usePercent {
 	A3NumberKeyboardViewController *keyboardVC = [self normalNumberKeyboard];
-	[keyboardVC setTextInputTarget:textField];
-	[keyboardVC setDelegate:self];
-	[textField setInputView:[keyboardVC view]];
-	[keyboardVC setCurrencyCode:[self defaultCurrencyCode]];
-	[keyboardVC setKeyboardType:usePercent ? A3NumberKeyboardTypePercent : A3NumberKeyboardTypeCurrency];
+	[keyboardVC view];
+	keyboardVC.delegate = self;
+	keyboardVC.currencyCode = [self defaultCurrencyCode];
+	keyboardVC.keyboardType = usePercent ? A3NumberKeyboardTypePercent : A3NumberKeyboardTypeCurrency;
 	[keyboardVC reloadPrevNextButtons];
-	[self setNumberKeyboardViewController:keyboardVC];
+	self.numberKeyboardViewController = keyboardVC;
 }
 
 - (void)setupDecimalKeyboardForTextField:(UITextField *)textField useFraction:(BOOL)useFraction {
 	A3NumberKeyboardViewController *keyboardVC = [self simplePrevNextClearNumberKeyboard];
-	[keyboardVC setTextInputTarget:textField];
-	[keyboardVC setDelegate:self];
-	[textField setInputView:[keyboardVC view]];
-	[keyboardVC setKeyboardType:useFraction ? A3NumberKeyboardTypeReal : A3NumberKeyboardTypeInteger];
+	[keyboardVC view];
+	keyboardVC.delegate = self;
+	keyboardVC.keyboardType = useFraction ? A3NumberKeyboardTypeReal : A3NumberKeyboardTypeInteger;
 	[keyboardVC reloadPrevNextButtons];
-	[self setNumberKeyboardViewController:keyboardVC];
+	self.numberKeyboardViewController = keyboardVC;
 }
 
 #pragma mark - UITextField delegate
@@ -566,39 +571,23 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	if (self.navigationController.visibleViewController != self) {
 		return NO;
 	}
-	return YES;
+	if (self.firstResponder) {
+		[self.firstResponder resignFirstResponder];
+	}
+	[self presentNumberKeyboardForTextField:textField animated:YES];
+	return NO;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	self.firstResponder = textField;
 
-	_textBeforeEditingTextField = textField.text;
-	_placeholderBeforeEditingTextField = textField.placeholder;
-	textField.text = @"";
+	self.textBeforeEditingTextField = textField.text;
+	self.placeholderBeforeEditingTextField = textField.placeholder;
+	self.textColorBeforeEditing = textField.textColor;
+
+	textField.text = [self.decimalFormatter stringFromNumber:@0];
 	textField.placeholder = @"";
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
-	[self addNumberKeyboardNotificationObservers];
-
-	_currentIndexPath = [self.tableView indexPathForCellSubview:textField];
-
-	if ([self.items objectAtIndex:_currentIndexPath.row] == self.priceItem) {
-		[self setupCurrencyKeyboardForTextField:textField usePercent:NO ];
-	}
-	else if ([self.items objectAtIndex:_currentIndexPath.row] == self.sizeItem) {
-		[self setupDecimalKeyboardForTextField:textField useFraction:YES];
-	}
-	else if ([self.items objectAtIndex:_currentIndexPath.row] == self.quantityItem) {
-		[self setupDecimalKeyboardForTextField:textField useFraction:NO];
-	}
-	else if ([self.items objectAtIndex:_currentIndexPath.row] == self.discountItem) {
-		[self setupCurrencyKeyboardForTextField:textField usePercent:YES ];
-		[self.numberKeyboardViewController.bigButton1 setSelected:_discountType == Price_Percent];
-		[self.numberKeyboardViewController.bigButton2 setSelected:_discountType == Price_Amount];
-	}
-}
-
-- (void)textFieldDidChange:(NSNotification *)notification {
+	textField.textColor = [[A3AppDelegate instance] themeColor];
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
@@ -617,18 +606,117 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
-	[self removeNumberKeyboardNotificationObservers];
-
 	textField.placeholder = _placeholderBeforeEditingTextField;
 
-	if (![textField.text length]) {
+	if (_textColorBeforeEditing) {
+		textField.textColor = _textColorBeforeEditing;
+		_textColorBeforeEditing = nil;
+	}
+	if (!_didPressClearKey && !_didPressNumberKey && _textBeforeEditingTextField) {
 		textField.text = _textBeforeEditingTextField;
 	}
+	_textBeforeEditingTextField = nil;
+
 	[self updateValueTextField:textField];
 	[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+	self.firstResponder = nil;
+}
 
-	[self setFirstResponder:nil];
+- (void)presentNumberKeyboardForTextField:(UITextField *)textField animated:(BOOL)animated {
+	if (_isNumberKeyboardVisible) {
+		return;
+	}
+
+	[self textFieldDidBeginEditing:textField];
+
+	_currentIndexPath = [self.tableView indexPathForCellSubview:textField];
+
+	if ([self.items objectAtIndex:_currentIndexPath.row] == self.priceItem) {
+		[self setupCurrencyKeyboardForTextField:textField usePercent:NO ];
+	}
+	else if ([self.items objectAtIndex:_currentIndexPath.row] == self.sizeItem) {
+		[self setupDecimalKeyboardForTextField:textField useFraction:YES];
+	}
+	else if ([self.items objectAtIndex:_currentIndexPath.row] == self.quantityItem) {
+		[self setupDecimalKeyboardForTextField:textField useFraction:NO];
+	}
+	else if ([self.items objectAtIndex:_currentIndexPath.row] == self.discountItem) {
+		[self setupCurrencyKeyboardForTextField:textField usePercent:YES ];
+		[self.numberKeyboardViewController.bigButton1 setSelected:_discountType == Price_Percent];
+		[self.numberKeyboardViewController.bigButton2 setSelected:_discountType == Price_Amount];
+	}
+
+	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+	keyboardViewController.textInputTarget = textField;
+	
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGFloat keyboardHeight = keyboardViewController.keyboardHeight;
+	UIView *keyboardView = keyboardViewController.view;
+	[self.view.superview addSubview:keyboardView];
+
+	_didPressClearKey = NO;
+	_didPressNumberKey = NO;
+	_isNumberKeyboardVisible = YES;
+	_editingTextField = textField;
+
+	[self addNumberKeyboardNotificationObservers];
+
+	if (animated) {
+		keyboardView.frame = CGRectMake(0, self.view.bounds.size.height, bounds.size.width, keyboardHeight);
+		[UIView animateWithDuration:0.3 animations:^{
+			CGRect frame = keyboardView.frame;
+			frame.origin.y -= keyboardHeight;
+			keyboardView.frame = frame;
+		} completion:^(BOOL finished) {
+		}];
+	} else {
+		keyboardView.frame = CGRectMake(0, self.view.bounds.size.height - keyboardHeight, bounds.size.width, keyboardHeight);
+	}
+}
+
+- (void)dismissNumberKeyboardAnimated:(BOOL)animated {
+	if (!_isNumberKeyboardVisible) {
+		return;
+	}
+
+	[self textFieldDidEndEditing:_editingTextField];
+
+	[self removeNumberKeyboardNotificationObservers];
+	_isNumberKeyboardVisible = NO;
+	
+	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+	UIView *keyboardView = keyboardViewController.view;
+
+	void(^completion)() = ^{
+		[keyboardView removeFromSuperview];
+		self.numberKeyboardViewController = nil;
+	};
+
+	if (animated) {
+		[UIView animateWithDuration:0.3 animations:^{
+			CGRect frame = keyboardView.frame;
+			frame.origin.y += keyboardViewController.keyboardHeight;
+			keyboardView.frame = frame;
+		} completion:^(BOOL finished) {
+			completion();
+		}];
+	} else {
+		completion();
+	}
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	
+	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
+		UIView *keyboardView = self.numberKeyboardViewController.view;
+		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+		
+		FNLOGRECT(self.view.bounds);
+		FNLOG(@"%f", keyboardHeight);
+		keyboardView.frame = CGRectMake(0, self.view.bounds.size.height - keyboardHeight, self.view.bounds.size.width, keyboardHeight);
+		[self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+	}
 }
 
 #pragma mark - A3KeyboardDelegate
@@ -658,61 +746,75 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 }
 
 - (void)prevButtonPressed{
-    if (self.firstResponder && _currentIndexPath) {
+    if (_editingTextField && _currentIndexPath) {
         if ([self.items objectAtIndex:_currentIndexPath.row] == self.sizeItem) {
             NSUInteger index = [self.items indexOfObject:self.priceItem];
             A3UnitPriceInputCell *inputCell = (A3UnitPriceInputCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:1]];
-            [inputCell.textField becomeFirstResponder];
+			[self dismissNumberKeyboardAnimated:NO];
+			[self presentNumberKeyboardForTextField:inputCell.textField animated:NO];
         }
         else if ([self.items objectAtIndex:_currentIndexPath.row] == self.quantityItem) {
             NSUInteger index = [self.items indexOfObject:self.sizeItem];
             A3UnitPriceInputCell *inputCell = (A3UnitPriceInputCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:1]];
-            [inputCell.textField becomeFirstResponder];
+			[self dismissNumberKeyboardAnimated:NO];
+			[self presentNumberKeyboardForTextField:inputCell.textField animated:NO];
         }
         else if ([self.items objectAtIndex:_currentIndexPath.row] == self.discountItem) {
             NSUInteger index = [self.items indexOfObject:self.quantityItem];
             A3UnitPriceInputCell *inputCell = (A3UnitPriceInputCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:1]];
-            [inputCell.textField becomeFirstResponder];
+			[self dismissNumberKeyboardAnimated:NO];
+			[self presentNumberKeyboardForTextField:inputCell.textField animated:NO];
         }
     }
 }
 
 - (void)nextButtonPressed{
-    if (self.firstResponder && _currentIndexPath) {
+    if (_editingTextField && _currentIndexPath) {
         if ([self.items objectAtIndex:_currentIndexPath.row] == self.priceItem) {
             NSUInteger index = [self.items indexOfObject:self.sizeItem];
             A3UnitPriceInputCell *inputCell = (A3UnitPriceInputCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:1]];
-            [inputCell.textField becomeFirstResponder];
+			[self dismissNumberKeyboardAnimated:NO];
+			[self presentNumberKeyboardForTextField:inputCell.textField animated:NO];
         }
         else if ([self.items objectAtIndex:_currentIndexPath.row] == self.sizeItem) {
             NSUInteger index = [self.items indexOfObject:self.quantityItem];
             A3UnitPriceInputCell *inputCell = (A3UnitPriceInputCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:1]];
-            [inputCell.textField becomeFirstResponder];
+			[self dismissNumberKeyboardAnimated:NO];
+			[self presentNumberKeyboardForTextField:inputCell.textField animated:NO];
         }
         else if ([self.items objectAtIndex:_currentIndexPath.row] == self.quantityItem) {
             NSUInteger index = [self.items indexOfObject:self.discountItem];
             A3UnitPriceInputCell *inputCell = (A3UnitPriceInputCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:1]];
-            [inputCell.textField becomeFirstResponder];
+			[self dismissNumberKeyboardAnimated:NO];
+			[self presentNumberKeyboardForTextField:inputCell.textField animated:NO];
         }
         else if ([self.items objectAtIndex:_currentIndexPath.row] == self.discountItem) {
             NSUInteger index = [self.items indexOfObject:self.noteItem];
             A3WalletNoteCell *noteCell = (A3WalletNoteCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:1]];
+			[self dismissNumberKeyboardAnimated:NO];
             [noteCell.textView becomeFirstResponder];
+			self.firstResponder = noteCell.textView;
         }
     }
 }
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
+	_didPressClearKey = YES;
 	UITextField *textField = (UITextField *) self.numberKeyboardViewController.textInputTarget;
 	if ([textField isKindOfClass:[UITextField class]]) {
-		textField.text = @"";
-		_textBeforeEditingTextField = @"";
+		textField.text = [self.decimalFormatter stringFromNumber:@0];
+		_textBeforeEditingTextField = textField.text;
 	}
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
-    [self.numberKeyboardViewController.textInputTarget resignFirstResponder];
-    [self scrollToTopOfTableViewIfNeeded];
+	[self dismissNumberKeyboardAnimated:YES];
+	[self scrollToTopOfTableViewIfNeeded];
+}
+
+- (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
+	_didPressNumberKey = YES;
+	_didPressClearKey = NO;
 }
 
 #pragma mark - A3UnitSelectViewControllerDelegate
@@ -907,12 +1009,6 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 - (void)calculatorDidDismissWithValue:(NSString *)value {
 	_calculatorTargetTextField.text = value;
 	[self textFieldDidEndEditing:_calculatorTargetTextField];
-}
-
-#pragma mark - A3ViewControllerProtocol
-
-- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
-	return NO;
 }
 
 @end

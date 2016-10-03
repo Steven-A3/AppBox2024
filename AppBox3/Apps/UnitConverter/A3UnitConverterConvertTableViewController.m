@@ -61,19 +61,23 @@
 @property (nonatomic, copy) NSString *value2BeforeEditingTextField;
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
+@property (nonatomic, weak) UITextField *editingTextField;
+@property (nonatomic, strong) UIView *keyboardAccessoryView;
+@property (nonatomic, copy) UIColor *textColorBeforeEditing;
 
 @end
 
 @implementation A3UnitConverterConvertTableViewController {
     BOOL 		_draggingFirstRow;
 	NSUInteger 	_selectedRow;
-    BOOL		_isAddingUnit;
-    BOOL		_isShowMoreMenu;
-    
+    BOOL			_isAddingUnit;
+    BOOL			_isShowMoreMenu;
     BOOL        _isTemperatureMode;
-
 	BOOL 		_isSwitchingFractionMode;
-	BOOL		_barButtonEnabled;
+	BOOL			_barButtonEnabled;
+	BOOL			_isNumberKeyboardVisible;
+	BOOL			_didPressClearKey;
+	BOOL			_didPressNumberKey;
 }
 
 NSString *const A3UnitConverterDataCellID = @"A3UnitConverterDataCell";
@@ -373,6 +377,21 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 
 	if (IS_IPHONE && IS_LANDSCAPE) {
 		[self leftBarButtonAppsButton];
+	}
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
+		UIView *keyboardView = self.numberKeyboardViewController.view;
+		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+
+		FNLOGRECT(self.view.bounds);
+		FNLOG(@"%f", keyboardHeight);
+		CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+		keyboardView.frame = CGRectMake(0, bounds.size.height - keyboardHeight, bounds.size.width, keyboardHeight);
+		[self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
 	}
 }
 
@@ -1434,16 +1453,32 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 	if(indexPath.row == 0) {
 		[self unSwipeAll];
-        if (cell.inputType == UnitInput_FeetInch) {
-            if (cell.valueField == textField) {
-                self.value1BeforeEditingTextField = [textField text];
-            }
-            else if (cell.value2Field == textField) {
-                self.value2BeforeEditingTextField = [textField text];
-            }
-        }
-        
-		return YES;
+		if (_isNumberKeyboardVisible) {
+			if (_editingTextField != textField) {
+				_isSwitchingFractionMode = YES;
+				[self textFieldDidEndEditing:_editingTextField];
+				_editingTextField.textColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
+				[self textFieldDidBeginEditing:textField];
+				textField.textColor = [[A3AppDelegate instance] themeColor];
+				_isSwitchingFractionMode = NO;
+
+			}
+		} else {
+			if (cell.inputType == UnitInput_FeetInch) {
+				if (cell.valueField == textField) {
+					self.value1BeforeEditingTextField = [textField text];
+					cell.valueField.textColor = [[A3AppDelegate instance] themeColor];
+					cell.value2Field.textColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
+				}
+				else if (cell.value2Field == textField) {
+					self.value2BeforeEditingTextField = [textField text];
+					cell.valueField.textColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
+					cell.value2Field.textColor = [[A3AppDelegate instance] themeColor];
+				}
+			}
+			[self presentNumberKeyboardForTextField:textField];
+		}
+		return NO;
 	}
     else {
 		// shifted 0 : shift self
@@ -1471,6 +1506,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
 
 	self.firstResponder = textField;
+	_editingTextField = textField;
 
 	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:textField];
 	if (!cell) return;
@@ -1493,32 +1529,36 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 			[self putHistoryWithValue:@(value)];
 		}
 	}
-	textField.text = @"";
+	textField.text = [self.decimalFormatter stringFromNumber:@0];
 
-	A3NumberKeyboardViewController *keyboardVC = [self simpleUnitConverterNumberKeyboard];
-	self.numberKeyboardViewController = keyboardVC;
+	A3NumberKeyboardViewController *keyboardVC = self.numberKeyboardViewController;
 	keyboardVC.textInputTarget = textField;
-	keyboardVC.delegate = self;
-	textField.inputView = [keyboardVC view];
-	if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
-		textField.inputAssistantItem.leadingBarButtonGroups = @[];
-		textField.inputAssistantItem.trailingBarButtonGroups = @[];
-	}
-	self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeReal;
-
+	
 	switch (cell.inputType) {
 		case UnitInput_Normal:
 			textField.inputAccessoryView = nil;
 			break;
 		case UnitInput_Fraction:
 			[keyboardVC.fractionButton setSelected:YES];
-			[self addKeyboardAccessoryToTextField:textField];
+			[self addKeyboardAccessoryView];
 			break;
 		case UnitInput_FeetInch:
-			[self addKeyboardAccessoryToTextField:textField];
 			[keyboardVC.fractionButton setTitle:@"" forState:UIControlStateNormal];
 			[keyboardVC.fractionButton setEnabled:NO];
+			[self addKeyboardAccessoryView];
 			break;
+	}
+	if (cell.inputType != UnitInput_Normal) {
+		if (cell.valueField == textField) {
+			cell.valueField.textColor = [[A3AppDelegate instance] themeColor];
+			cell.value2Field.textColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
+		}
+		else if (cell.value2Field == textField) {
+			cell.valueField.textColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
+			cell.value2Field.textColor = [[A3AppDelegate instance] themeColor];
+		}
+	} else {
+		cell.valueField.textColor = [[A3AppDelegate instance] themeColor];
 	}
 
 	[cell updateMultiTextFieldModeConstraintsWithEditingTextField:textField];
@@ -1544,7 +1584,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		cell.valueField.text = [self.decimalFormatter stringFromNumber:@(value)];
 	}
 
-	if (![textField.text length]) {
+	if (!_didPressClearKey && !_didPressNumberKey) {
 		textField.text = _textBeforeEditingTextField;
 	}
 
@@ -1569,6 +1609,9 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	textField.text = [self.decimalFormatter stringFromNumber:@(value)];
 	[self updateTextFieldsWithSourceTextField:textField];
 	[cell updateMultiTextFieldModeConstraintsWithEditingTextField:nil];
+	
+	cell.valueField.textColor = [[A3AppDelegate instance] themeColor];
+	cell.value2Field.textColor = [[A3AppDelegate instance] themeColor];
 }
 
 - (void)textFieldDidChange:(NSNotification *)notification {
@@ -1722,6 +1765,85 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
             break;
     }
     return result;
+}
+
+- (void)presentNumberKeyboardForTextField:(UITextField *)textField {
+	if (_isNumberKeyboardVisible) {
+		return;
+	}
+	
+	self.numberKeyboardViewController = [self simpleUnitConverterNumberKeyboard];
+	
+	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGFloat keyboardHeight = keyboardViewController.keyboardHeight;
+	UIView *keyboardView = keyboardViewController.view;
+	[self.tabBarController.view addSubview:keyboardView];
+
+	keyboardViewController.delegate = self;
+	keyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
+	keyboardViewController.keyboardType = A3NumberKeyboardTypeReal;
+
+	[self textFieldDidBeginEditing:textField];
+
+	keyboardViewController.textInputTarget = textField;
+
+	_didPressClearKey = NO;
+	_didPressNumberKey = NO;
+	
+	keyboardView.frame = CGRectMake(0, bounds.size.height, bounds.size.width, keyboardHeight);
+	
+	if (_keyboardAccessoryView) {
+		_keyboardAccessoryView.frame = CGRectMake(0, keyboardView.frame.origin.y - 45, bounds.size.width, 45);
+	}
+	
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = keyboardView.frame;
+		frame.origin.y -= keyboardHeight;
+		keyboardView.frame = frame;
+		
+		if (_keyboardAccessoryView) {
+			frame = _keyboardAccessoryView.frame;
+			frame.origin.y -= keyboardHeight;
+			_keyboardAccessoryView.frame = frame;
+		}
+	} completion:^(BOOL finished) {
+		[self addNumberKeyboardNotificationObservers];
+		_isNumberKeyboardVisible = YES;
+	}];
+	
+}
+
+- (void)dismissNumberKeyboard {
+	if (!_isNumberKeyboardVisible) {
+		return;
+	}
+
+	[self textFieldDidEndEditing:_editingTextField];
+	
+	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+	UIView *keyboardView = keyboardViewController.view;
+	[UIView animateWithDuration:0.3 animations:^{
+		CGFloat keyboardHeight = keyboardViewController.keyboardHeight;
+		CGRect frame = keyboardView.frame;
+		frame.origin.y += keyboardHeight;
+		keyboardView.frame = frame;
+		
+		if (_keyboardAccessoryView) {
+			CGRect frame = _keyboardAccessoryView.frame;
+			frame.origin.y += keyboardHeight + _keyboardAccessoryView.frame.size.height;
+			_keyboardAccessoryView.frame = frame;
+		}
+	} completion:^(BOOL finished) {
+		[keyboardView removeFromSuperview];
+		[keyboardViewController removeFromParentViewController];
+		self.numberKeyboardViewController = nil;
+		_isNumberKeyboardVisible = NO;
+		
+		[_keyboardAccessoryView removeFromSuperview];
+		_keyboardAccessoryView = nil;
+	}];
 }
 
 #pragma mark - A3UnitConverterMenuDelegate
@@ -1879,6 +2001,10 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
         [cell.valueField becomeFirstResponder];
     }
 	_isSwitchingFractionMode = NO;
+	
+	[_keyboardAccessoryView removeFromSuperview];
+	_keyboardAccessoryView = nil;
+	[self addKeyboardAccessoryView];
 }
 
 - (void)nextButtonPressed{
@@ -1896,6 +2022,10 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
         [cell.value2Field becomeFirstResponder];
     }
 	_isSwitchingFractionMode = NO;
+	
+	[_keyboardAccessoryView removeFromSuperview];
+	_keyboardAccessoryView = nil;
+	[self addKeyboardAccessoryView];
 }
 
 - (void)keyboardViewController:(A3NumberKeyboardViewController *)vc fractionButtonPressed:(UIButton *)button {
@@ -1906,20 +2036,21 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 			case UnitInput_Normal:
 				[cell setInputType:UnitInput_Fraction];
 				cell.value2Field.text = @"";
-				[self addKeyboardAccessoryToTextField:textField];
+				[self addKeyboardAccessoryView];
 				[textField reloadInputViews];
 				[self.numberKeyboardViewController.fractionButton setSelected:YES];
 				break;
 			case UnitInput_Fraction:
 				[cell setInputType:UnitInput_Normal];
 				_isSwitchingFractionMode = YES;
-				textField.inputAccessoryView = nil;
 				[textField reloadInputViews];
 				if (textField == cell.value2Field) {
-					[textField resignFirstResponder];
-					[cell.valueField becomeFirstResponder];
+					[self textFieldDidEndEditing:textField];
+					[self textFieldDidBeginEditing:cell.valueField];
 				}
 				_isSwitchingFractionMode = NO;
+				[_keyboardAccessoryView removeFromSuperview];
+				_keyboardAccessoryView = nil;
 				[self.numberKeyboardViewController.fractionButton setSelected:NO];
 				break;
 			case UnitInput_FeetInch:
@@ -1928,7 +2059,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	}
 }
 
-- (void)addKeyboardAccessoryToTextField:(UITextField *)field {
+- (UIView *)keyboardAccessoryView {
 	UIToolbar *keyboardAccessoryToolbar = [UIToolbar new];
 	[keyboardAccessoryToolbar sizeToFit];
 	UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -1961,7 +2092,19 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	[nextButtonItem setEnabled:[self isNextEntryExists]];
     nextButtonItem.tintColor = [A3AppDelegate instance].themeColor;
 	keyboardAccessoryToolbar.items = @[flexibleSpace, prevButtonItem, nextButtonItem];
-	field.inputAccessoryView = keyboardAccessoryToolbar;
+
+	return keyboardAccessoryToolbar;
+}
+
+- (void)addKeyboardAccessoryView {
+	if (_keyboardAccessoryView) {
+		return;
+	}
+	UIView *accessoryView = [self keyboardAccessoryView];
+	self.keyboardAccessoryView = accessoryView;
+	CGRect keyboardFrame = self.numberKeyboardViewController.view.frame;
+	accessoryView.frame = CGRectMake(0, keyboardFrame.origin.y - 45, keyboardFrame.size.width, 45);
+	[self.tabBarController.view addSubview:accessoryView];
 }
 
 - (void)keyboardViewController:(A3NumberKeyboardViewController *)vc plusMinusButtonPressed:(UIButton *)button {
@@ -1983,13 +2126,22 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 }
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
+	_didPressClearKey = YES;
 	UITextField *textField = (UITextField *) keyInputDelegate;
 	textField.text = @"";
 	_textBeforeEditingTextField = @"";
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
-    [self.numberKeyboardViewController.textInputTarget resignFirstResponder];
+	[self dismissNumberKeyboard];
+}
+
+- (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
+	[self updateTextFieldsWithSourceTextField:_editingTextField];
+
+	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:_editingTextField];
+	[cell updateMultiTextFieldModeConstraintsWithEditingTextField:_editingTextField];
+	_didPressNumberKey = YES;
 }
 
 #pragma mark - History
@@ -2148,6 +2300,10 @@ const CGFloat kUnitCellVisibleWidth = 100.0;
 
 
 #pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+	[self dismissNumberKeyboard];
+}
 
 - (void)unSwipeAll {
 	FNLOG();

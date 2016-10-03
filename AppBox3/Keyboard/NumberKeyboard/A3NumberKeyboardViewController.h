@@ -14,17 +14,9 @@ typedef NS_ENUM(NSUInteger, A3NumberKeyboardSimpleLayout) {
 	A3NumberKeyboardSimpleLayoutHasPrevNextClear
 };
 
-@protocol A3DisplayObject
-
-@property (nonatomic, copy, readwrite) NSString *text;
-
-@end
-
 @interface A3NumberKeyboardViewController : UIViewController
 
-@property (nonatomic, weak) UIResponder<UITextInput> *textInputTarget;		// TextField, TextView, ... responder
-@property (nonatomic, weak) id<A3DisplayObject> displayObject;				// UITextField, UILabel
-
+@property (nonatomic, weak) UITextField *textInputTarget;		// TextField, TextView, ... responder
 @property (nonatomic) 		A3NumberKeyboardType keyboardType;
 @property (nonatomic, strong) NSString *currencySymbol;
 @property (nonatomic, strong) NSString *currencyCode;

@@ -80,7 +80,7 @@ NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChan
 	BOOL			_shareAll;
 	BOOL			_barButtonEnabled;
 	BOOL			_didFirstTimeRefresh;
-	BOOL			_isKeyboardVisible;
+	BOOL			_isNumberKeyboardVisible;
 	BOOL			_didPressClearKey;
 	BOOL			_didPressNumberKey;
 }
@@ -998,7 +998,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	NSString *favorite = favoriteItem.uniqueID;
 
 	if (textField == _textFields[favorite]) {
-		[self presentNumberKeypadForTextField:textField];
+		[self presentNumberKeyboardForTextField:textField];
 		
 		return NO;
 //		self.previousValue = textField.text;
@@ -1026,7 +1026,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		
 		return YES;
 	} else {
-		[self dismissNumberKeypad];
+		[self dismissNumberKeyboard];
 		
 //		[self.firstResponder resignFirstResponder];
 //		[self setFirstResponder:nil];
@@ -1070,7 +1070,6 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	[self removeNumberKeyboardNotificationObservers];
 
 	[self setFirstResponder:nil];
-	[self setNumberKeyboardViewController:nil];
 
 	BOOL valueChanged = NO;
 	if (![textField.text length]) {
@@ -1098,25 +1097,26 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	_didPressClearKey = YES;
 	UITextField *textField = (UITextField *) self.numberKeyboardViewController.textInputTarget;
 	if ([textField isKindOfClass:[UITextField class]]) {
-		textField.text = @"0";
+		textField.text = [self.decimalFormatter stringFromNumber:@0];
 		CurrencyFavorite *favoriteZero = self.favorites[0];
 		self.previousValue = [_currencyDataManager stringFromNumber:@1 withCurrencyCode:favoriteZero.uniqueID isShare:NO];
 	}
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
-	[self dismissNumberKeypad];
+	[self dismissNumberKeyboard];
 }
 
 - (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
 	_didPressNumberKey = YES;
+	_didPressClearKey = NO;
 	[self updateTextFieldsWithSourceTextField:self.editingTextField];
 }
 
 #pragma mark - Number Keyboard Calculator Button Notification
 
 - (void)calculatorButtonAction {
-	[self dismissNumberKeypad];
+	[self dismissNumberKeyboard];
 
 	A3CalculatorViewController *viewController = [self presentCalculatorViewController];
 	viewController.delegate = self;
@@ -1482,7 +1482,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	contentInset.top = 64;
 	self.tableView.contentInset = contentInset;
 
-	if (_isKeyboardVisible && self.numberKeyboardViewController.view.superview) {
+	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
 		UIView *keyboardView = self.numberKeyboardViewController.view;
 		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
 		
@@ -1506,8 +1506,8 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 #pragma mark - Number Keyboard
 
-- (void)presentNumberKeypadForTextField:(UITextField *) textField {
-	if (_isKeyboardVisible) {
+- (void)presentNumberKeyboardForTextField:(UITextField *) textField {
+	if (_isNumberKeyboardVisible) {
 		return;
 	}
 
@@ -1517,7 +1517,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	
 	self.editingTextField = textField;
 	_previousValue = textField.text;
-	textField.text = @"0";
+	textField.text = [self.decimalFormatter stringFromNumber:@0];
 	
 	[self updateTextFieldsWithSourceTextField:textField];
 	
@@ -1526,7 +1526,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
 	keyboardViewController.delegate = self;
 	keyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
-	keyboardViewController.displayObject = (id<A3DisplayObject>)textField;
+	keyboardViewController.textInputTarget = textField;
 
 	CurrencyFavorite *favorite = self.favorites[0];
 	keyboardViewController.currencyCode = favorite.uniqueID;
@@ -1536,6 +1536,8 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	UIView *keyboardView = keyboardViewController.view;
 	[self.view addSubview:keyboardView];
 	[self addChildViewController:keyboardViewController];
+
+	[self textFieldDidBeginEditing:textField];
 	
 	_didPressClearKey = NO;
 	_didPressNumberKey = NO;
@@ -1547,44 +1549,25 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		keyboardView.frame = frame;
 	} completion:^(BOOL finished) {
 		[self addNumberKeyboardNotificationObservers];
-		_isKeyboardVisible = YES;
+		_isNumberKeyboardVisible = YES;
 	}];
 	
 }
 
-- (void)dismissNumberKeypad {
-	if (!_isKeyboardVisible) {
+- (void)dismissNumberKeyboard {
+	if (!_isNumberKeyboardVisible) {
 		return;
 	}
 	
-	[self removeNumberKeyboardNotificationObservers];
-
 	UITextField *textField = self.editingTextField;
 
 	if (_didPressClearKey) {
 		textField.text = @"0";
-		[self putHistoryWithValue:@([self.previousValue floatValueEx])];
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 	} else if (!_didPressNumberKey) {
 		textField.text = _previousValue;
-	} else {
-		if (![textField.text isEqualToString:self.previousValue]) {
-			[self putHistoryWithValue:@([self.previousValue floatValueEx])];
-			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-		}
-		_currentValueIsNotFromUser = NO;
 	}
-	
-	if (![textField.text length]) {
-		textField.text = self.previousValue;
-	}
-	CurrencyFavorite *favorite = self.favorites[0];
-	NSNumberFormatter *nf = [self currencyFormatterWithCurrencyCode:favorite.uniqueID];
-	// Reformat source text
-	textField.text = [nf stringFromNumber:@([textField.text floatValueEx])];
-	
-	[self updateTextFieldsWithSourceTextField:textField];
-	self.tableViewController.refreshControl = self.refreshControl;
+
+	[self textFieldDidEndEditing:textField];
 	
 	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
 	UIView *keyboardView = keyboardViewController.view;
@@ -1596,7 +1579,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		[keyboardView removeFromSuperview];
 		[keyboardViewController removeFromParentViewController];
 		self.numberKeyboardViewController = nil;
-		_isKeyboardVisible = NO;
+		_isNumberKeyboardVisible = NO;
 	}];
 }
 
@@ -1612,7 +1595,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-	[self dismissNumberKeypad];
+	[self dismissNumberKeyboard];
 }
 
 @end

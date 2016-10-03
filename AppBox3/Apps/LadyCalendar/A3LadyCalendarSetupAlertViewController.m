@@ -23,10 +23,16 @@
 @property (strong, nonatomic) NSArray *itemArray;
 @property (strong, nonatomic) UITextField *customTextField;
 @property (copy, nonatomic) NSString *textBeforeEditingTextField;
+@property (copy, nonatomic) UIColor *textColorBeforeEditing;
+@property (weak, nonatomic) UITextField *editingTextField;
 
 @end
 
-@implementation A3LadyCalendarSetupAlertViewController
+@implementation A3LadyCalendarSetupAlertViewController {
+	BOOL _isNumberKeyboardVisible;
+	BOOL _didPressClearKey;
+	BOOL _didPressNumberKey;
+}
 
 - (id)init {
 	self = [super initWithStyle:UITableViewStyleGrouped];
@@ -62,6 +68,11 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)willDismissFromRightSide
+{
+	[self dismissNumberKeyboard];
 }
 
 #pragma mark - Table view data source
@@ -144,6 +155,12 @@
         [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
+#pragma mark - UIScrollView Delegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+	[self dismissNumberKeyboard];
+}
+
 #pragma mark - UITextField and delegate
 
 - (UITextField *)customTextField {
@@ -156,27 +173,20 @@
 	return _customTextField;
 }
 
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+	[self presentNumberKeyboardForTextField:textField];
+	return NO;
+}
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	self.textBeforeEditingTextField = textField.text;
-	textField.text = @"";
+	self.textColorBeforeEditing = textField.textColor;
 
-	A3NumberKeyboardViewController *keyboardViewController = [self simplePrevNextNumberKeyboard];
-	[keyboardViewController setUseDotAsClearButton:YES];
-	[keyboardViewController setTextInputTarget:textField];
-	[keyboardViewController setDelegate:self];
-	[keyboardViewController setKeyboardType:A3NumberKeyboardTypeInteger];
-	[keyboardViewController reloadPrevNextButtons];
-	self.numberKeyboardViewController = keyboardViewController;
-	textField.inputView = self.numberKeyboardViewController.view;
-	if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
-		textField.inputAssistantItem.leadingBarButtonGroups = @[];
-		textField.inputAssistantItem.trailingBarButtonGroups = @[];
-	}
+	textField.text = [self.decimalFormatter stringFromNumber:@0];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-	self.numberKeyboardViewController = nil;
-	if (![textField.text length] && [_textBeforeEditingTextField length]) {
+	if (!_didPressNumberKey && !_didPressClearKey) {
 		textField.text = _textBeforeEditingTextField;
 		return;
 	}
@@ -191,19 +201,97 @@
 	[self.tableView reloadData];
 }
 
+- (void)presentNumberKeyboardForTextField:(UITextField *)textField {
+	if (_isNumberKeyboardVisible) {
+		return;
+	}
+	_editingTextField = textField;
+	
+	[self textFieldDidBeginEditing:textField];
+	
+	A3NumberKeyboardViewController *keyboardVC = [self simplePrevNextNumberKeyboard];
+	self.numberKeyboardViewController = keyboardVC;
+	keyboardVC.useDotAsClearButton = YES;
+	keyboardVC.keyboardType = A3NumberKeyboardTypeInteger;
+	keyboardVC.textInputTarget = textField;
+	keyboardVC.delegate = self;
+
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGFloat keyboardHeight = keyboardVC.keyboardHeight;
+	UIView *keyboardView = keyboardVC.view;
+	if (IS_IPAD) {
+		[[A3AppDelegate instance].rootViewController_iPad.view addSubview:keyboardView];
+	} else {
+		[self.view.superview addSubview:keyboardView];
+	}
+
+	[keyboardVC reloadPrevNextButtons];
+
+	_didPressClearKey = NO;
+	_didPressNumberKey = NO;
+	_isNumberKeyboardVisible = YES;
+
+	keyboardView.frame = CGRectMake(0, self.view.bounds.size.height, bounds.size.width, keyboardHeight);
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = keyboardView.frame;
+		frame.origin.y -= keyboardHeight;
+		keyboardView.frame = frame;
+	} completion:^(BOOL finished) {
+		[self addNumberKeyboardNotificationObservers];
+	}];
+}
+
+- (void)dismissNumberKeyboard {
+	if (!_isNumberKeyboardVisible) {
+		return;
+	}
+
+	[self textFieldDidEndEditing:_editingTextField];
+	
+	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+	UIView *keyboardView = keyboardViewController.view;
+
+	_isNumberKeyboardVisible = NO;
+
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = keyboardView.frame;
+		frame.origin.y += keyboardViewController.keyboardHeight;
+		keyboardView.frame = frame;
+	} completion:^(BOOL finished) {
+		[keyboardView removeFromSuperview];
+		self.numberKeyboardViewController = nil;
+	}];
+}
+
+#pragma mark - Keyboard Delegate
+
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
-	_customTextField.text = @"";
-	_textBeforeEditingTextField = @"";
+	_customTextField.text = [self.decimalFormatter stringFromNumber:@0];
+	_textBeforeEditingTextField = [self.decimalFormatter stringFromNumber:@0];
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
-	[_customTextField resignFirstResponder];
+	[self dismissNumberKeyboard];
 }
 
-#pragma mark - A3ViewControllerProtocol
+- (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
+	_didPressClearKey = NO;
+	_didPressNumberKey = YES;
+}
 
-- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
-	return NO;
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
+		UIView *keyboardView = self.numberKeyboardViewController.view;
+		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+
+		FNLOGRECT(self.view.bounds);
+		FNLOG(@"%f", keyboardHeight);
+		CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+		keyboardView.frame = CGRectMake(0, bounds.size.height - keyboardHeight, bounds.size.width, keyboardHeight);
+		[self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+	}
 }
 
 @end

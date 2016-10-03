@@ -52,6 +52,8 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 @property (strong, nonatomic) CMMotionManager *motionManager;
 @property (strong, nonatomic) A3NumberKeyboardViewController *simpleNormalNumberKeyboard;
 @property (copy, nonatomic) NSString *textBeforeEditingTextField;
+@property (copy, nonatomic) UIColor *textColorBeforeEditing;
+@property (weak, nonatomic) UITextField *editingTextField;
 
 @end
 
@@ -72,6 +74,10 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 	double	numGen;
 	int		numRepeat;
 	CGFloat _viewFrameOffset;
+	
+	BOOL _isNumberKeyboardVisible;
+	BOOL _didPressClearKey;
+	BOOL _didPressNumberKey;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -381,6 +387,21 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 	}
 }
 
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	
+	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
+		UIView *keyboardView = self.numberKeyboardViewController.view;
+		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+		
+		FNLOGRECT(self.view.bounds);
+		FNLOG(@"%f", keyboardHeight);
+		CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+		keyboardView.frame = CGRectMake(0, bounds.size.height - keyboardHeight, bounds.size.width, keyboardHeight);
+		[self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+	}
+}
+
 - (NSNumberFormatter *)numberFormatter {
 	if (!_numberFormatter) {
 		_numberFormatter = [NSNumberFormatter new];
@@ -392,41 +413,99 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-	if (_simpleNormalNumberKeyboard == nil) {
-		_simpleNormalNumberKeyboard = [self simplePrevNextClearNumberKeyboard];
-		_simpleNormalNumberKeyboard.keyboardType = A3NumberKeyboardTypeInteger;
-	}
-	
-	textField.inputView = _simpleNormalNumberKeyboard.view;
-	if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
-		textField.inputAssistantItem.leadingBarButtonGroups = @[];
-		textField.inputAssistantItem.trailingBarButtonGroups = @[];
-	}
-	_simpleNormalNumberKeyboard.textInputTarget = textField;
-	_simpleNormalNumberKeyboard.delegate = self;
-	return YES;
+	[self presentNumberKeyboardForTextField:textField];
+	return NO;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-	self.textBeforeEditingTextField = [textField.text copy];
-	textField.text = @"";
+	self.textBeforeEditingTextField = textField.text;
+	self.textColorBeforeEditing = textField.textColor;
+	textField.text = [self.decimalFormatter stringFromNumber:@0];
+	textField.textColor = [[A3AppDelegate instance] themeColor];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-	if (![textField.text length]) textField.text = _textBeforeEditingTextField;
+	if (_textColorBeforeEditing) {
+		textField.textColor = _textColorBeforeEditing;
+	}
+	if (!_didPressNumberKey && !_didPressClearKey) {
+		textField.text = _textBeforeEditingTextField;
+	}
+
 	NSInteger number = [[self.numberFormatter numberFromString:textField.text] integerValue];
 	NSInteger component = textField == _minimumValueTextField ? 0 : 1;
 	[_limitNumberPickerView selectRow:number inComponent:component animated:YES];
 	[self pickerView:_limitNumberPickerView didSelectRow:number inComponent:component];
 }
 
+- (void)presentNumberKeyboardForTextField:(UITextField *)textField {
+	if (_isNumberKeyboardVisible) {
+		return;
+	}
+	_editingTextField = textField;
+
+	[self textFieldDidBeginEditing:textField];
+
+	A3NumberKeyboardViewController *keyboardVC = [self simplePrevNextClearNumberKeyboard];
+	self.numberKeyboardViewController = keyboardVC;
+	keyboardVC.keyboardType = A3NumberKeyboardTypeInteger;
+	keyboardVC.textInputTarget = textField;
+	keyboardVC.delegate = self;
+	
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGFloat keyboardHeight = keyboardVC.keyboardHeight;
+	UIView *keyboardView = keyboardVC.view;
+	[self.view addSubview:keyboardView];
+
+	_didPressClearKey = NO;
+	_didPressNumberKey = NO;
+	_isNumberKeyboardVisible = YES;
+
+	keyboardView.frame = CGRectMake(0, self.view.bounds.size.height, bounds.size.width, keyboardHeight);
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = keyboardView.frame;
+		frame.origin.y -= keyboardHeight;
+		keyboardView.frame = frame;
+	} completion:^(BOOL finished) {
+		[self addNumberKeyboardNotificationObservers];
+	}];
+}
+
+- (void)dismissNumberKeyboard {
+	if (!_isNumberKeyboardVisible) {
+		return;
+	}
+	[self textFieldDidEndEditing:_editingTextField];
+	
+	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+	UIView *keyboardView = keyboardViewController.view;
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = keyboardView.frame;
+		frame.origin.y += keyboardViewController.keyboardHeight;
+		keyboardView.frame = frame;
+	} completion:^(BOOL finished) {
+		[keyboardView removeFromSuperview];
+		self.numberKeyboardViewController = nil;
+		_isNumberKeyboardVisible = NO;
+	}];
+}
+
+#pragma mark - Keyboard Delegate
+
 - (void)A3KeyboardController:(A3NumberKeyboardViewController *)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
+	_didPressClearKey = YES;
+	_didPressNumberKey = NO;
 	UITextField *textField = (id)controller.textInputTarget;
-	textField.text = @"";
+	textField.text = [self.decimalFormatter stringFromNumber:@0];
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
-	[keyInputDelegate resignFirstResponder];
+	[self dismissNumberKeyboard];
+}
+
+- (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
+	_didPressClearKey = NO;
+	_didPressNumberKey = YES;
 }
 
 #pragma mark - Extension Keyboard를 사용하지 못하게 합니다.

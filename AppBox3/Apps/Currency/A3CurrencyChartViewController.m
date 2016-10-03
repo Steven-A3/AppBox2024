@@ -43,11 +43,15 @@
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, weak) UITextField *calculatorTargetTextField;
 @property (nonatomic, copy) NSString *sourceCurrencyCode, *targetCurrencyCode;
+@property (nonatomic, weak) UITextField *editingTextField;
 
 @end
 
 @implementation A3CurrencyChartViewController {
-	BOOL _selectionInSource;
+	BOOL			_selectionInSource;
+	BOOL			_isNumberKeyboardVisible;
+	BOOL			_didPressClearKey;
+	BOOL			_didPressNumberKey;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -437,18 +441,10 @@
 
 	self.previousValue = textField.text;
 
-	A3NumberKeyboardViewController *keyboardVC = [self simpleNumberKeyboard];
-	self.numberKeyboardViewController = keyboardVC;
-	keyboardVC.textInputTarget = textField;
-	keyboardVC.delegate = self;
-	keyboardVC.keyboardType = A3NumberKeyboardTypeCurrency;
-	textField.inputView = [keyboardVC view];
-	if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
-		textField.inputAssistantItem.leadingBarButtonGroups = @[];
-		textField.inputAssistantItem.trailingBarButtonGroups = @[];
-	}
-	textField.text = @"";
-	return YES;
+	[self presentNumberKeyboardForTextField:textField];
+
+	textField.text = [self.decimalFormatter stringFromNumber:@0];
+	return NO;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
@@ -470,7 +466,6 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 	[self removeNumberKeyboardNotificationObservers];
-	self.numberKeyboardViewController = nil;
 
     FNLOG(@"%@, %@", textField.text, textField);
 	if (![textField.text length]) {
@@ -507,9 +502,75 @@
 	}
 }
 
+- (void)presentNumberKeyboardForTextField:(UITextField *) textField {
+	if (_isNumberKeyboardVisible) {
+		return;
+	}
+
+	_editingTextField = textField;
+	self.numberKeyboardViewController = [self simpleNumberKeyboard];
+	
+	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+	keyboardViewController.delegate = self;
+	keyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
+	keyboardViewController.textInputTarget = textField;
+
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGFloat keyboardHeight = keyboardViewController.keyboardHeight;
+	UIView *keyboardView = keyboardViewController.view;
+	[self.view addSubview:keyboardView];
+	[self addChildViewController:keyboardViewController];
+	
+	_didPressClearKey = NO;
+	_didPressNumberKey = NO;
+	
+	[self textFieldDidBeginEditing:textField];
+	
+	keyboardView.frame = CGRectMake(0, self.view.bounds.size.height, bounds.size.width, keyboardHeight);
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = keyboardView.frame;
+		frame.origin.y -= keyboardHeight;
+		keyboardView.frame = frame;
+	} completion:^(BOOL finished) {
+		[self addNumberKeyboardNotificationObservers];
+		_isNumberKeyboardVisible = YES;
+	}];
+	
+}
+
+- (void)dismissNumberKeyboard {
+	if (!_isNumberKeyboardVisible) {
+		return;
+	}
+
+	if (_didPressClearKey) {
+		_sourceTextField.text = [self.decimalFormatter stringFromNumber:@0];
+	} else if (!_didPressNumberKey) {
+		_sourceTextField.text = _previousValue;
+	}
+
+	[self textFieldDidEndEditing:_editingTextField];
+	
+	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+	UIView *keyboardView = keyboardViewController.view;
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = keyboardView.frame;
+		frame.origin.y += keyboardViewController.keyboardHeight;
+		keyboardView.frame = frame;
+	} completion:^(BOOL finished) {
+		[keyboardView removeFromSuperview];
+		[keyboardViewController removeFromParentViewController];
+		self.numberKeyboardViewController = nil;
+		_editingTextField = nil;
+		_isNumberKeyboardVisible = NO;
+	}];
+}
+
 #pragma mark A3KeyboardViewControllerDelegate
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
+	_didPressClearKey = YES;
+
 	if (keyInputDelegate == _sourceTextField) {
 		_sourceTextField.text = @"";
 		_targetTextField.text = self.targetValueString;
@@ -520,7 +581,12 @@
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
-	[keyInputDelegate resignFirstResponder];
+	[self dismissNumberKeyboard];
+}
+
+- (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
+	_didPressNumberKey = YES;
+	_didPressClearKey = NO;
 }
 
 #pragma mark - Number Keyboard Calculator Button Notification
