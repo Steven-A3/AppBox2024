@@ -1359,6 +1359,8 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	self.editingTextField = textField;
 	self.textBeforeEditingTextField = textField.text;
 	self.editingIndexPath = [self.tableView indexPathForCell:cell];
+	_didPressNumberKey = NO;
+	_didPressClearKey = NO;
 	FNLOG(@"%ld, %ld", _editingIndexPath.section, _editingIndexPath.row);
 
 	if (textField == cell.nameField) {
