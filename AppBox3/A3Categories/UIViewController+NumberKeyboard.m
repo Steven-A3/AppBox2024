@@ -248,12 +248,12 @@ static char const *const key_navigationControllerForKeyboard	= "key_navigationCo
 	return [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
 }
 
-- (UIResponder *)firstResponder {
+- (UIResponder *)editingObject {
 	return objc_getAssociatedObject(self, key_firstResponder);
 }
 
-- (void)setFirstResponder:(UIResponder *)firstResponder {
-	objc_setAssociatedObject(self, key_firstResponder, firstResponder, OBJC_ASSOCIATION_ASSIGN);
+- (void)setEditingObject:(UIResponder *)editingObject {
+	objc_setAssociatedObject(self, key_firstResponder, editingObject, OBJC_ASSOCIATION_ASSIGN);
 }
 
 - (UINavigationController *)navigationControllerForKeyboard {

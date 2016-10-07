@@ -73,13 +73,18 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
 
 	[self registerContentSizeCategoryDidChangeNotification];
 }
 
+- (void)applicationWillResignActive {
+	[self dismissNumberKeyboard];
+}
+
 - (void)cloudStoreDidImport {
 	// 입력 중에 있다면, reload 하지 않는다.
-	if (self.firstResponder) {
+	if (self.editingObject) {
 		return;
 	}
 	self.calcItems = nil;
@@ -95,6 +100,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 }
 
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
@@ -409,7 +415,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    self.firstResponder = textField;
+    self.editingObject = textField;
 	_editingTextField = textField;
 	
 	FNLOG(@"%@, %@", _editingTextField.text, _editingTextField);
@@ -512,7 +518,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
     
     FNLOG(@"End IP : %ld - %ld", (long)endIndexPath.section, (long)endIndexPath.row);
 
-	[self setFirstResponder:nil];
+	[self setEditingObject:nil];
 
     // update
     if (endIndexPath.section == 1) {
@@ -658,7 +664,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 	
 	[self textFieldDidEndEditing:_editingTextField];
 	_editingTextField = nil;
-	self.firstResponder = nil;
+	self.editingObject = nil;
 	
 	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
 	UIView *keyboardView = keyboardViewController.view;

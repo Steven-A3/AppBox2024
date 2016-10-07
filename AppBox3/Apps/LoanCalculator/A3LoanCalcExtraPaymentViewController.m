@@ -24,6 +24,7 @@
 #import "A3UserDefaultsKeys.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "NSString+conversion.h"
 
 @interface A3LoanCalcExtraPaymentViewController ()
 		<A3KeyboardDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource,
@@ -101,9 +102,15 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
     }
 
     [self registerContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
+}
+
+- (void)applicationWillResignActive {
+	[self dismissNumberKeyboard];
 }
 
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 }
 
@@ -238,8 +245,8 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 }
 
 - (void)doneButtonAction:(id)button {
-	[self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+	[self.editingObject resignFirstResponder];
+	[self setEditingObject:nil];
 	[[[A3AppDelegate instance] rootViewController_iPad] dismissRightSideViewController];
 }
 
@@ -439,7 +446,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    self.firstResponder = textField;
+    self.editingObject = textField;
 	
 	self.textBeforeEditing = textField.text;
 	self.textColorBeforeEditing = textField.textColor;
@@ -454,7 +461,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-	self.firstResponder = nil;
+	self.editingObject = nil;
 	[self removeNumberKeyboardNotificationObservers];
 
 	if (_textColorBeforeEditing) {
@@ -462,7 +469,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 		_textColorBeforeEditing = nil;
 	}
 
-	if (!_didPressNumberKey && !_didPressClearKey) {
+	if (_textBeforeEditing && !_didPressNumberKey && !_didPressClearKey) {
 		textField.text = _textBeforeEditing;
 		_textBeforeEditing = nil;
 	}
@@ -470,7 +477,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
     // update
     _isExtraPaymentEdited = YES;
 
-	NSNumber *inputNum = [self.decimalFormatter numberFromString:textField.text];
+	NSNumber *inputNum = @([textField.text floatValueEx]);
 
     if (_currentIndexPath.row == 0) {
         if (_exPaymentType == A3LC_ExtraPaymentYearly) {
@@ -504,8 +511,8 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+    [self.editingObject resignFirstResponder];
+	[self setEditingObject:nil];
 
 	return YES;
 }
@@ -559,7 +566,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 	[self textFieldDidEndEditing:_editingTextField];
 	
 	_editingTextField = nil;
-	self.firstResponder = nil;
+	self.editingObject = nil;
 	
 	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
 	UIView *keyboardView = keyboardViewController.view;
@@ -586,10 +593,8 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         [inputCell.textField becomeFirstResponder];
     }
     else if (_items[indexPath.row] == self.dateItem) {
-        
-        [self.firstResponder resignFirstResponder];
-		[self setFirstResponder:nil];
-        
+        [self dismissNumberKeyboard];
+
         // toggle
         if ([_items containsObject:self.dateInputItem]) {
             [_items removeObject:self.dateInputItem];   
@@ -804,8 +809,8 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 }
 
 - (void)prevButtonPressed{
-    if (self.firstResponder) {
-        UITextField *prevTxtField = [self previousTextField:(UITextField *) self.firstResponder];
+    if (self.editingObject) {
+        UITextField *prevTxtField = [self previousTextField:(UITextField *) self.editingObject];
         if (prevTxtField) {
             [prevTxtField becomeFirstResponder];
         }
@@ -813,8 +818,8 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 }
 
 - (void)nextButtonPressed{
-    if (self.firstResponder) {
-        UITextField *nextTxtField = [self nextTextField:(UITextField *) self.firstResponder];
+    if (self.editingObject) {
+        UITextField *nextTxtField = [self nextTextField:(UITextField *) self.editingObject];
         if (nextTxtField) {
             [nextTxtField becomeFirstResponder];
         }
@@ -881,9 +886,10 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 }
 
 - (void)calculatorButtonAction {
+
 	_calculatortTargetTextField = _editingTextField;
 	[self dismissNumberKeyboard];
-	
+
 	A3CalculatorViewController *viewController = [self presentCalculatorViewController];
 	viewController.delegate = self;
 }

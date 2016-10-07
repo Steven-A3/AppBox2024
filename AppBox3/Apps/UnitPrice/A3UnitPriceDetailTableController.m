@@ -117,7 +117,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 }
 
 - (void)cloudStoreDidImport {
-	if (self.firstResponder) {
+	if (self.editingObject) {
 		return;
 	}
 
@@ -142,6 +142,11 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	[self removeObserver];
 }
 
+- (BOOL)resignFirstResponder {
+	[self dismissNumberKeyboardAnimated:NO];
+	return [super resignFirstResponder];
+}
+
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
@@ -154,8 +159,8 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	[super viewWillDisappear:animated];
 
 	[self dismissNumberKeyboardAnimated:NO];
-	[self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+	[self.editingObject resignFirstResponder];
+	[self setEditingObject:nil];
 
 	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
 		FNLOG();
@@ -537,7 +542,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
 	self.price.note = textView.text;
-	self.firstResponder = nil;
+	self.editingObject = nil;
 
 	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
@@ -571,8 +576,8 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	if (self.navigationController.visibleViewController != self) {
 		return NO;
 	}
-	if (self.firstResponder) {
-		[self.firstResponder resignFirstResponder];
+	if (self.editingObject) {
+		[self.editingObject resignFirstResponder];
 	}
 	if (_isNumberKeyboardVisible) {
 		[self textFieldDidEndEditing:_editingTextField];
@@ -586,7 +591,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-	self.firstResponder = textField;
+	self.editingObject = textField;
 	_editingTextField = textField;
 	_didPressClearKey = NO;
 	_didPressNumberKey = NO;
@@ -623,7 +628,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-	[self.firstResponder resignFirstResponder];
+	[self.editingObject resignFirstResponder];
 
 	return YES;
 }
@@ -647,7 +652,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
 	[self updateValueTextField:textField];
 	[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-	self.firstResponder = nil;
+	self.editingObject = nil;
 }
 
 - (void)presentNumberKeyboardForTextField:(UITextField *)textField animated:(BOOL)animated {
@@ -824,7 +829,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
             A3WalletNoteCell *noteCell = (A3WalletNoteCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:1]];
 			[self dismissNumberKeyboardAnimated:NO];
             [noteCell.textView becomeFirstResponder];
-			self.firstResponder = noteCell.textView;
+			self.editingObject = noteCell.textView;
         }
     }
 }
@@ -884,8 +889,8 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 			else {
 				self.navigationController.navigationItem.backBarButtonItem.enabled = NO;
 
-				[self.firstResponder resignFirstResponder];
-				[self setFirstResponder:nil];
+				[self.editingObject resignFirstResponder];
+				[self setEditingObject:nil];
 
                 UINavigationController *unitTabBarNavigationController = [[UINavigationController alloc] initWithRootViewController:[self unitsTabBarController]];
                 [self presentViewController:unitTabBarNavigationController animated:YES completion:NULL];
@@ -1032,8 +1037,8 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 #pragma mark - Number Keyboard Calculator Button Notification
 
 - (void)calculatorButtonAction {
-	_calculatorTargetTextField = (UITextField *) self.firstResponder;
-	[self.firstResponder resignFirstResponder];
+	_calculatorTargetTextField = (UITextField *) self.editingObject;
+	[self.editingObject resignFirstResponder];
 	A3CalculatorViewController *viewController = [self presentCalculatorViewController];
 	viewController.delegate = self;
 }

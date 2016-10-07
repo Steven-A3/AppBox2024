@@ -54,6 +54,8 @@
     
     if( [_settingDict objectForKey:SettingItem_CustomAlertTime] == nil )
         [_settingDict setObject:[NSDate date] forKey:SettingItem_CustomAlertTime];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -70,9 +72,21 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)applicationWillResignActive {
+	[self dismissNumberKeyboard];
+}
+
 - (void)willDismissFromRightSide
 {
 	[self dismissNumberKeyboard];
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
+- (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 }
 
 #pragma mark - Table view data source
@@ -182,6 +196,7 @@
 	self.textBeforeEditingTextField = textField.text;
 	self.textColorBeforeEditing = textField.textColor;
 
+	textField.textColor = [[A3AppDelegate instance] themeColor];
 	textField.text = [self.decimalFormatter stringFromNumber:@0];
 }
 
@@ -189,6 +204,11 @@
 	if (!_didPressNumberKey && !_didPressClearKey) {
 		textField.text = _textBeforeEditingTextField;
 		return;
+	}
+
+	if (_textColorBeforeEditing) {
+		textField.textColor = _textColorBeforeEditing;
+		_textColorBeforeEditing = nil;
 	}
 	NSInteger customDay = [textField.text integerValue];
 	[_settingDict setObject:@(AlertType_Custom) forKey:SettingItem_AlertType];

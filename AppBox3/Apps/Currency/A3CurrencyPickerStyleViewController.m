@@ -149,6 +149,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 }
 
 - (void)applicationDidEnterBackground {
+	[self dismissNumberKeypadAnimated:NO];
 	[self dismissInstructionViewController:nil];
 }
 
@@ -451,9 +452,9 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 - (void)plusButtonAction:(UIButton *)button {
 	[self dismissNumberKeypadAnimated:YES];
-	if (self.firstResponder) {
-		[self.firstResponder resignFirstResponder];
-		[self setFirstResponder:nil];
+	if (self.editingObject) {
+		[self.editingObject resignFirstResponder];
+		[self setEditingObject:nil];
 		return;
 	}
 	

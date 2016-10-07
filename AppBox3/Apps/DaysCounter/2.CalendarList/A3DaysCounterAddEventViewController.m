@@ -256,6 +256,11 @@
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 }
 
+- (BOOL)resignFirstResponder {
+	[self dismissDateKeyboardAnimated:NO];
+	return [super resignFirstResponder];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -1584,7 +1589,7 @@
 - (void)resignAllAction
 {
 	[self dismissDateKeyboardAnimated:YES];
-    [[self firstResponder] resignFirstResponder];
+    [[self editingObject] resignFirstResponder];
 	[_editingTextField resignFirstResponder];
     [_textViewResponder resignFirstResponder];
 }
@@ -2161,7 +2166,7 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    [self setFirstResponder:textField];
+    [self setEditingObject:textField];
     if (![_eventItem.isLunar boolValue]) {
         [self closeDatePickerCell];
     }
@@ -2190,8 +2195,8 @@
 
 	_editingTextField = nil;
 	
-    if (textField == self.firstResponder) {
-        self.firstResponder = nil;
+    if (textField == self.editingObject) {
+        self.editingObject = nil;
     }
 }
 
@@ -2240,7 +2245,7 @@
 		self.dateKeyboardViewController = nil;
 		_editingIndexPath = nil;
 		_isDateKeyboardVisible = NO;
-		self.firstResponder = nil;
+		self.editingObject = nil;
 	};
 	if (animated) {
 		[UIView animateWithDuration:0.3 animations:^{
@@ -2700,7 +2705,7 @@
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
-	self.firstResponder = textView;
+	self.editingObject = textView;
 
     if ( [_eventItem.notes length] < 1 ) {
         textView.text = @"";
@@ -2713,7 +2718,7 @@
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
-	self.firstResponder = nil;
+	self.editingObject = nil;
 
     _eventItem.notes = textView.text;
 

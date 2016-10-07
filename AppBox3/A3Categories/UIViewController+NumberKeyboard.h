@@ -27,7 +27,7 @@ extern NSString *const A3NotificationCalculatorButtonPressed;
 @property (nonatomic, strong) NSNumberFormatter *decimalFormatter;
 @property (nonatomic, strong) NSNumberFormatter *percentFormatter;
 @property (nonatomic, strong) UINavigationController *navigationControllerForKeyboard;
-@property (nonatomic, weak) UIResponder *firstResponder;
+@property (nonatomic, weak) UIResponder *editingObject;
 
 - (A3NumberKeyboardViewController *)simpleNumberKeyboard;
 - (A3NumberKeyboardViewController *)simplePrevNextNumberKeyboard;

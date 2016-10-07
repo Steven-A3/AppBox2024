@@ -130,7 +130,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 }
 
 - (void)closeEditing {
-	[self.firstResponder resignFirstResponder];
+	[self.editingObject resignFirstResponder];
 
 	[self updateEditedInfo];
 
@@ -147,8 +147,8 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 
 - (void)doneButtonAction:(id)sender
 {
-	[self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+	[self.editingObject resignFirstResponder];
+	[self setEditingObject:nil];
 
     if (IS_IPAD) {
         if ([_field.name length] > 0 && !_sameFieldNameExists) {
@@ -213,14 +213,14 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-	[self setFirstResponder:textField];
+	[self setEditingObject:textField];
 	textField.returnKeyType = UIReturnKeyDefault;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     _field.name = textField.text;
-	[self setFirstResponder:nil];
+	[self setEditingObject:nil];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -270,7 +270,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	[self.firstResponder resignFirstResponder];
+	[self.editingObject resignFirstResponder];
 
     if (indexPath.section == 1) {
         // field type

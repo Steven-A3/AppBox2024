@@ -454,8 +454,8 @@
 #pragma mark - Number Keyboard Calculator Button Notification
 
 - (void)calculatorButtonAction {
-	_calculatorTargetTextField = (UITextField *) self.firstResponder;
-	[self.firstResponder resignFirstResponder];
+	_calculatorTargetTextField = (UITextField *) self.editingObject;
+	[self.editingObject resignFirstResponder];
 	A3CalculatorViewController *viewController = [self presentCalculatorViewController];
 	viewController.delegate = self;
 }
@@ -482,7 +482,7 @@
 #pragma mark - A3KeyboardDelegate
 
 - (BOOL)isPreviousEntryExists{
-	if ([self previousTextField:(UITextField *) self.firstResponder]) {
+	if ([self previousTextField:(UITextField *) self.editingObject]) {
 		return YES;
 	}
 	else {
@@ -491,7 +491,7 @@
 }
 
 - (BOOL)isNextEntryExists{
-	if ([self nextTextField:(UITextField *) self.firstResponder]) {
+	if ([self nextTextField:(UITextField *) self.editingObject]) {
 		return YES;
 	}
 	else {
@@ -500,20 +500,20 @@
 }
 
 - (void)prevButtonPressed{
-	if (self.firstResponder) {
-		UITextField *prevTxtField = [self previousTextField:(UITextField *) self.firstResponder];
+	if (self.editingObject) {
+		UITextField *prevTxtField = [self previousTextField:(UITextField *) self.editingObject];
 		if (prevTxtField) {
-			[self textFieldDidEndEditing:(UITextField *)self.firstResponder];
+			[self textFieldDidEndEditing:(UITextField *)self.editingObject];
 			[self textFieldDidBeginEditing:prevTxtField];
 		}
 	}
 }
 
 - (void)nextButtonPressed{
-	if (self.firstResponder) {
-		UITextField *nextTxtField = [self nextTextField:(UITextField *) self.firstResponder];
+	if (self.editingObject) {
+		UITextField *nextTxtField = [self nextTextField:(UITextField *) self.editingObject];
 		if (nextTxtField) {
-			[self textFieldDidEndEditing:(UITextField *)self.firstResponder];
+			[self textFieldDidEndEditing:(UITextField *)self.editingObject];
 			[self textFieldDidBeginEditing:nextTxtField];
 		}
 	}

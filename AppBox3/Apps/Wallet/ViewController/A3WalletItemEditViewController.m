@@ -694,8 +694,8 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 - (void)cancelButtonAction:(id)sender
 {
 	// 입력중인거 완료
-	if (self.firstResponder) {
-		[self.firstResponder resignFirstResponder];
+	if (self.editingObject) {
+		[self.editingObject resignFirstResponder];
 	}
     
 	[self removeTempFiles];
@@ -720,8 +720,8 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
-    if (self.firstResponder) {
-        [self.firstResponder resignFirstResponder];
+    if (self.editingObject) {
+        [self.editingObject resignFirstResponder];
     }
     
 	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_defaultContext];
@@ -1500,7 +1500,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
 	FNLOG();
-	self.firstResponder = textField;
+	self.editingObject = textField;
     
 	_currentIndexPath = [self.tableView indexPathForCellSubview:textField];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
@@ -1518,8 +1518,8 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
 	FNLOG();
-    if (textField == self.firstResponder) {
-        self.firstResponder = nil;
+    if (textField == self.editingObject) {
+        self.editingObject = nil;
     }
     
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
@@ -1594,7 +1594,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
-	self.firstResponder = textView;
+	self.editingObject = textView;
 }
 
 - (void)textViewDidChange:(UITextView *)textView
@@ -1606,7 +1606,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
-	self.firstResponder = nil;
+	self.editingObject = nil;
 	NSString *text = [textView.text stringByTrimmingSpaceCharacters];
 	_item.note = [text length] ? text : nil;
     
@@ -1624,7 +1624,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     
 	if (indexPath.section == 0) {
 	    if ([self.sectionItems objectAtIndex:indexPath.row] == self.categoryItem) {
-			[self.firstResponder resignFirstResponder];
+			[self.editingObject resignFirstResponder];
             // category
             A3WalletCategorySelectViewController *viewController = [[A3WalletCategorySelectViewController alloc] initWithStyle:UITableViewStyleGrouped];
             viewController.selectedCategory = self.category;
@@ -1639,7 +1639,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
             }
         }
 		else if ([self.sectionItems[indexPath.row] isKindOfClass:[WalletFieldItem class]]) {
-			[self.firstResponder resignFirstResponder];
+			[self.editingObject resignFirstResponder];
 			WalletFieldItem *fieldItem = _sectionItems[indexPath.row];
 			if ([fieldItem.hasImage boolValue]) {
 				[self askDeleteImage];
@@ -1649,8 +1649,8 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 		}
 		else if ([self.sectionItems objectAtIndex:indexPath.row] == self.noteItem) {
 			A3WalletNoteCell *cell = (A3WalletNoteCell *) [self.tableView cellForRowAtIndexPath:indexPath];
-			if (self.firstResponder != cell.textView) {
-				[self.firstResponder resignFirstResponder];
+			if (self.editingObject != cell.textView) {
+				[self.editingObject resignFirstResponder];
 				[cell.textView becomeFirstResponder];
 			}
 		}
@@ -1659,7 +1659,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 			_currentFieldItem = [self fieldItemForIndexPath:indexPath create:YES];
             
 			if ([field.type isEqualToString:WalletFieldTypeDate]) {
-				[self.firstResponder resignFirstResponder];
+				[self.editingObject resignFirstResponder];
 				if ([_sectionItems containsObject:self.dateInputItem]) {
 					if ([indexPath compare:self.dateInputIndexPath] == NSOrderedSame) {
 						// 현재 셀에 연결된 입력 picker
@@ -1677,7 +1677,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
                 }
             }
             else if ([field.type isEqualToString:WalletFieldTypeImage]) {
-				[self.firstResponder resignFirstResponder];
+				[self.editingObject resignFirstResponder];
                 
                 if ([_sectionItems containsObject:self.dateInputItem]) {
                     if (self.dateInputIndexPath.row < self.currentIndexPath.row) {
@@ -1761,22 +1761,22 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
                 }
             }
             else if ([field.type isEqualToString:WalletFieldTypeVideo]) {
-				[self.firstResponder resignFirstResponder];
+				[self.editingObject resignFirstResponder];
 				[self dismissDatePicker];
                 UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
                 [self askVideoPickupWithDelete:[_currentFieldItem.hasVideo boolValue] withSender:cell];
             }
             else {
                 A3WalletItemFieldCell *inputCell = (A3WalletItemFieldCell *)[tableView cellForRowAtIndexPath:indexPath];
-				if (self.firstResponder != inputCell.valueTextField) {
-					[self.firstResponder resignFirstResponder];
+				if (self.editingObject != inputCell.valueTextField) {
+					[self.editingObject resignFirstResponder];
 					[inputCell.valueTextField becomeFirstResponder];
 				}
             }
         }
     }
     else {
-		[self.firstResponder resignFirstResponder];
+		[self.editingObject resignFirstResponder];
         
         // delete category
 #ifdef __IPHONE_8_0_X

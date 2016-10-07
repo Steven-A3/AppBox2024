@@ -204,8 +204,8 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 
 - (void)doneButtonAction:(id)sender
 {
-	[self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+	[self.editingObject resignFirstResponder];
+	[self setEditingObject:nil];
 
     // 입력값 유효성 체크
     if ([_category.name length] == 0) {
@@ -240,8 +240,8 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 
 - (void)cancelButtonAction:(id)sender
 {
-	[self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+	[self.editingObject resignFirstResponder];
+	[self setEditingObject:nil];
 
 	NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
 	if ([context hasChanges]) {
@@ -315,8 +315,8 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 }
 
 - (void)presentSubViewController:(UIViewController *)viewController {
-	[self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+	[self.editingObject resignFirstResponder];
+	[self setEditingObject:nil];
 
 	if (IS_IPHONE) {
 		[self.navigationController pushViewController:viewController animated:YES];
@@ -402,12 +402,12 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     _category.name = textField.text;
-	[self setFirstResponder:nil];
+	[self setEditingObject:nil];
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-	[self setFirstResponder:textField];
+	[self setEditingObject:textField];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -641,8 +641,8 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	[self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+	[self.editingObject resignFirstResponder];
+	[self setEditingObject:nil];
 
     if (indexPath.section == 0) {
         if (indexPath.row == 1) {

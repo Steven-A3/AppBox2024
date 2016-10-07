@@ -128,6 +128,11 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[self registerContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
+}
+
+- (void)applicationWillResignActive {
+	[self dismissNumberKeyboardAnimated:NO];
 }
 
 - (void)keyboardDidHide:(NSNotification *)notification {
@@ -141,7 +146,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
  * \returns
  */
 - (void)cloudStoreDidImport {
-    if (self.firstResponder) {
+    if (self.editingObject) {
         return;
     }
     
@@ -161,6 +166,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 	}
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 }
 
 - (void)prepareClose {
@@ -276,8 +282,8 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 
 - (void)disposeInitializedCondition
 {
-    [self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+    [self.editingObject resignFirstResponder];
+	[self setEditingObject:nil];
     
     if (IS_IPHONE) {
         [self dismissMoreMenu];
@@ -441,8 +447,8 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
         return;
     }
     
-    if (self.firstResponder) {
-        [self.firstResponder resignFirstResponder];
+    if (self.editingObject) {
+        [self.editingObject resignFirstResponder];
         return;
     }
     
@@ -750,7 +756,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
     if (!_cellTextInputBeginBlock) {
         __weak A3TipCalcMainTableViewController * weakSelf = self;
         _cellTextInputBeginBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
-            weakSelf.firstResponder = textField;
+            weakSelf.editingObject = textField;
             [weakSelf dismissMoreMenu];
 
 			BOOL animated = YES;
@@ -840,8 +846,8 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 			A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *) [weakSelf.tableView cellForCellSubview:textField];
 			[cell setNeedsLayout];
 
-			if (weakSelf.firstResponder == textField) {
-				weakSelf.firstResponder = nil;
+			if (weakSelf.editingObject == textField) {
+				weakSelf.editingObject = nil;
 			}
 		};
     }
@@ -1243,7 +1249,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
 	[self dismissNumberKeyboardAnimated:NO];
-	[self.firstResponder resignFirstResponder];
+	[self.editingObject resignFirstResponder];
 	
 	[self disposeInitializedCondition];
 	
@@ -1448,7 +1454,8 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 #pragma mark - Number Keyboard Currency Button Notification
 
 - (void)currencySelectButtonAction:(NSNotification *)notification {
-	[self.firstResponder resignFirstResponder];
+	[self dismissNumberKeyboardAnimated:NO];
+
 	A3CurrencySelectViewController *viewController = [self presentCurrencySelectViewControllerWithCurrencyCode:notification.object];
 	viewController.delegate = self;
 }
@@ -1467,9 +1474,9 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 #pragma mark - Number Keyboard, Calculator Button Notification
 
 - (void)calculatorButtonAction {
-	_calculatorTargetIndexPath = [self.tableView indexPathForCellSubview:(UIView *) self.firstResponder];
+	_calculatorTargetIndexPath = [self.tableView indexPathForCellSubview:(UIView *) self.editingObject];
 	_calculatorTargetElement = (A3TableViewInputElement *) [self.tableDataSource elementForIndexPath:_calculatorTargetIndexPath];
-	[self.firstResponder resignFirstResponder];
+	[self dismissNumberKeyboardAnimated:NO];
 
 	A3CalculatorViewController *viewController = [self presentCalculatorViewController];
 	viewController.delegate = self;

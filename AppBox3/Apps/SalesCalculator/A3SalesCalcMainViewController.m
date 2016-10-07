@@ -140,10 +140,15 @@ enum A3TableElementCellType {
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[self registerContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
+}
+
+- (void)applicationWillResignActive {
+	[self dismissNumberKeyboardAnimated:NO];
 }
 
 - (void)cloudStoreDidImport {
-	if (self.firstResponder) {
+	if (self.editingObject) {
 		return;
 	}
 
@@ -168,6 +173,7 @@ enum A3TableElementCellType {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 }
 
 - (void)prepareClose {
@@ -239,9 +245,9 @@ enum A3TableElementCellType {
 
 -(void)reloadSalesCalcData:(A3SalesCalcData *)aData
 {
-    [self.firstResponder resignFirstResponder];
+    [self.editingObject resignFirstResponder];
     [self.textViewResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+	[self setEditingObject:nil];
     _textViewResponder = nil;
     
     self.preferences.calcData = aData;
@@ -308,7 +314,7 @@ enum A3TableElementCellType {
 }
 
 - (void)saveToHistory:(id)sender {
-    [self.firstResponder resignFirstResponder];
+    [self.editingObject resignFirstResponder];
     [self.textViewResponder resignFirstResponder];
 
 	[self saveDataToHistoryWithNotes];
@@ -331,8 +337,8 @@ enum A3TableElementCellType {
 
 - (void)historyButtonAction:(id)sender
 {
-    [self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+    [self.editingObject resignFirstResponder];
+	[self setEditingObject:nil];
 
     [self.textViewResponder resignFirstResponder];
     A3SalesCalcHistoryViewController *viewController = [[A3SalesCalcHistoryViewController alloc] initWithStyle:UITableViewStylePlain];
@@ -434,8 +440,8 @@ enum A3TableElementCellType {
 #pragma mark - Detail Popover View Controller
 
 - (void)detailInfoButtonTouchedUp {
-    [self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+    [self.editingObject resignFirstResponder];
+	[self setEditingObject:nil];
     [self.textViewResponder resignFirstResponder];
     
     _headerView.detailInfoButton.enabled = NO;
@@ -775,7 +781,7 @@ enum A3TableElementCellType {
     if (!_cellTextInputBeginBlock) {
 		__typeof(self) __weak  weakSelf = self;
         _cellTextInputBeginBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
-            weakSelf.firstResponder = textField;
+            weakSelf.editingObject = textField;
 
 			BOOL animated = YES;
 
@@ -813,8 +819,8 @@ enum A3TableElementCellType {
         __typeof(self) __weak weakSelf = self;
         
         _cellTextInputFinishAllBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
-            if (weakSelf.firstResponder == textField) {
-                weakSelf.firstResponder = nil;
+            if (weakSelf.editingObject == textField) {
+                weakSelf.editingObject = nil;
             }
 
 			NSNumber *inputNumber = ([textField.text length] == 0 && [element.value length] > 0) ? [weakSelf.decimalFormatter numberFromString:element.value] : [weakSelf.decimalFormatter numberFromString:textField.text];
@@ -965,7 +971,7 @@ enum A3TableElementCellType {
         __weak A3SalesCalcMainViewController * weakSelf = self;
         _cellInputDoneButtonPressed = ^(id sender){
 			[weakSelf dismissNumberKeyboardAnimated:NO];
-			weakSelf.firstResponder = nil;
+			weakSelf.editingObject = nil;
 
             if (weakSelf.preferences.calcData == nil) {
                 return;
@@ -987,7 +993,7 @@ enum A3TableElementCellType {
     if (!_cellExpandedBlock) {
         __weak A3SalesCalcMainViewController * weakSelf = self;
         _cellExpandedBlock = ^(A3JHTableViewExpandableElement *element) {
-            weakSelf.firstResponder = nil;
+            weakSelf.editingObject = nil;
             [weakSelf.tableView reloadData];
         };
     }
@@ -1310,7 +1316,7 @@ enum A3TableElementCellType {
         currency = self.preferences.calcData.discount;
         percent = [A3SalesCalcCalculator discountPercentForCalcData:self.preferences.calcData];
         A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-        if (cell && cell.textField != self.firstResponder) {
+        if (cell && cell.textField != self.editingObject) {
             [self updateTableViewCell:cell atIndexPath:indexPath textFieldTextToCurrency:currency andPercent:percent showPlaceholder:NO ];
         }
     }
@@ -1321,7 +1327,7 @@ enum A3TableElementCellType {
         currency = self.preferences.calcData.additionalOff;
         percent = [A3SalesCalcCalculator additionalOffPercentForCalcData:self.preferences.calcData];
         A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-        if (cell && cell.textField != self.firstResponder) {
+        if (cell && cell.textField != self.editingObject) {
             [self updateTableViewCell:cell atIndexPath:indexPath textFieldTextToCurrency:currency andPercent:percent showPlaceholder:NO ];
         }
     }
@@ -1332,7 +1338,7 @@ enum A3TableElementCellType {
         currency = self.preferences.calcData.tax;
         percent = [A3SalesCalcCalculator taxPercentForCalcData:self.preferences.calcData];
         A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-        if (cell && cell.textField != self.firstResponder) {
+        if (cell && cell.textField != self.editingObject) {
             [self updateTableViewCell:cell atIndexPath:indexPath textFieldTextToCurrency:currency andPercent:percent showPlaceholder:YES ];
         }
     }
@@ -1446,7 +1452,8 @@ enum A3TableElementCellType {
 #pragma mark - Number Keyboard Currency Button Notification
 
 - (void)currencySelectButtonAction:(NSNotification *)notification {
-	[self.firstResponder resignFirstResponder];
+	[self dismissNumberKeyboardAnimated:NO];
+
 	A3CurrencySelectViewController *viewController = [self presentCurrencySelectViewControllerWithCurrencyCode:notification.object];
 	viewController.delegate = self;
 }
@@ -1466,9 +1473,10 @@ enum A3TableElementCellType {
 #pragma mark - Number Keyboard, Calculator Button Notification
 
 - (void)calculatorButtonAction {
-	_calculatorTargetIndexPath = [self.tableView indexPathForCellSubview:(UIView *) self.firstResponder];
+	_calculatorTargetIndexPath = [self.tableView indexPathForCellSubview:(UIView *) self.editingObject];
 	_calculatorTargetElement = (A3TableViewInputElement *) [self.root elementForIndexPath:_calculatorTargetIndexPath];
-	[self.firstResponder resignFirstResponder];
+
+	[self dismissNumberKeyboardAnimated:NO];
 	A3CalculatorViewController *viewController = [self presentCalculatorViewController];
 	viewController.delegate = self;
 }

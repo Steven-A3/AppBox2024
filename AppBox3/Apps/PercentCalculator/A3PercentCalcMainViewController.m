@@ -131,7 +131,7 @@
 }
 
 - (void)cloudStoreDidImport {
-	if (self.firstResponder) {
+	if (self.editingObject) {
 		return;
 	}
 	[self reloadTableDataSource];
@@ -183,13 +183,19 @@
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
-	[self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+	[self.editingObject resignFirstResponder];
+	[self setEditingObject:nil];
 
 	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
 		FNLOG();
 		[self removeObserver];
 	}
+}
+
+- (BOOL)resignFirstResponder {
+	[self dismissNumberKeyboard];
+
+	return [super resignFirstResponder];
 }
 
 - (void)dealloc {
@@ -329,8 +335,8 @@
 	[super appsButtonAction:barButtonItem];
 
 	[self enableControls:![[A3AppDelegate instance] rootViewController_iPad].showLeftView];
-    [self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+    [self.editingObject resignFirstResponder];
+	[self setEditingObject:nil];
 }
 
 - (void)setBarButtonEnable:(BOOL)enable
@@ -411,8 +417,8 @@
 }
 
 - (void)historyButtonAction:(id)sender {
-	[self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+	[self.editingObject resignFirstResponder];
+	[self setEditingObject:nil];
 
 	A3PercentCalcHistoryViewController *viewController = [[A3PercentCalcHistoryViewController alloc] initWithStyle:UITableViewStylePlain];
 	viewController.delegate = self;
@@ -817,12 +823,12 @@
                         case 1:
                         {
                             A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
-                            if (self.firstResponder != cell.textField) {
+                            if (self.editingObject != cell.textField) {
                                 cell.textField.text = [_formattedFactorValues objectAtIndex:ValueIdx_X1];
                             }
                             
                             cell = (A3JHTableViewEntryCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:2]];
-                            if (self.firstResponder != cell.textField) {
+                            if (self.editingObject != cell.textField) {
                                 cell.textField.text = [_formattedFactorValues objectAtIndex:ValueIdx_Y1];
                             }
                         }
@@ -832,7 +838,7 @@
                             break;
                     }
                     
-                    if (!self.firstResponder) {
+                    if (!self.editingObject) {
                         [self showKeyboardIfXFieldIsZeroAtTableView:self.tableView];
                     }
                 }
@@ -1024,7 +1030,7 @@
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-	self.firstResponder = textField;
+	self.editingObject = textField;
 	_editingTextField = textField;
 	//textField.textColor = COLOR_TABLE_TEXT_TYPING;
 	
@@ -1101,8 +1107,8 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    if (textField == self.firstResponder) {
-        [self setFirstResponder:nil];
+    if (textField == self.editingObject) {
+        [self setEditingObject:nil];
     }
 
 	if (_textColorBeforeEditing) {

@@ -241,7 +241,7 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
 }
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
-	[self.firstResponder resignFirstResponder];
+	[self.editingObject resignFirstResponder];
 	if (IS_IPHONE) {
 		if ([[A3AppDelegate instance] isMainMenuStyleList]) {
 			[[A3AppDelegate instance].drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
@@ -738,7 +738,7 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
 }
 
 - (BOOL)resignFirstResponder {
-	[self.firstResponder resignFirstResponder];
+	[self.editingObject resignFirstResponder];
 	return [super resignFirstResponder];
 }
 

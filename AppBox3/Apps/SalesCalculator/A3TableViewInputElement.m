@@ -190,6 +190,9 @@
 				textField.inputAssistantItem.trailingBarButtonGroups = @[];
 			}
             textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+			if (_onEditingBegin) {
+				_onEditingBegin(self, textField);
+			}
 			return YES;
 		case A3TableViewEntryTypeCurrency:
 		case A3TableViewEntryTypeYears:
@@ -250,7 +253,7 @@
 	_inputViewController = nil;
 	_firstResponder = nil;
 
-	if (!_didPressClearKey && !_didPressNumberKey) {
+	if (self.inputType != A3TableViewEntryTypeText && !_didPressClearKey && !_didPressNumberKey) {
 		textField.text = _textBeforeEditing;
 	}
 	if (_textColorBeforeEditing) {

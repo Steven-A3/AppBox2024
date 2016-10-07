@@ -170,7 +170,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (void)cloudStoreDidImport {
 	// 입력 중에 있다면 refresh를 하지 않는다.
-	if (self.firstResponder) {
+	if (self.editingObject) {
 		return;
 	}
 
@@ -674,7 +674,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 {
 	[self dismissNumberKeyboard];
     [self dismissDatePicker];
-    [self.firstResponder resignFirstResponder];
+    [self.editingObject resignFirstResponder];
     
     switch (segment.selectedSegmentIndex) {
         case 0:
@@ -708,8 +708,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
 	[self dismissNumberKeyboard];
-	[self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+	[self.editingObject resignFirstResponder];
+	[self setEditingObject:nil];
 
 	if (IS_IPHONE) {
 		if ([[A3AppDelegate instance] isMainMenuStyleList]) {
@@ -735,8 +735,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (void)moreButtonAction:(UIBarButtonItem *)button {
 	[self dismissNumberKeyboard];
-	[self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+	[self.editingObject resignFirstResponder];
+	[self setEditingObject:nil];
 
 	[self rightBarButtonDoneButton];
 
@@ -895,8 +895,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 }
 
 - (void)clearEverything {
-	[self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+	[self.editingObject resignFirstResponder];
+	[self setEditingObject:nil];
 
 	[self dismissMoreMenu];
 	[_currentTextView resignFirstResponder];
@@ -1797,7 +1797,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [self dismissDatePicker];
     
     _currentTextView = textView;
-	[self setFirstResponder:textView];
+	[self setEditingObject:textView];
 	self.scrollToIndexPath = nil;
     
     return YES;
@@ -1841,7 +1841,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     NSIndexPath *indexPath = [self.tableView indexPathForCell:currentCell];
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
-	[self setFirstResponder:nil];
+	[self setEditingObject:nil];
 }
 
 #pragma mark - TextFieldDelegate
@@ -1875,7 +1875,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-	[self setFirstResponder:textField];
+	[self setEditingObject:textField];
 
 	_editingTextField = textField;
 	self.textBeforeEditing = textField.text;
@@ -1967,7 +1967,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		_textColorBeforeEditing = nil;
 	}
 	
-	[self setFirstResponder:nil];
+	[self setEditingObject:nil];
 
 	if (!_didPressNumberKey && !_didPressClearKey) {
 		textField.text = _textBeforeEditing;
@@ -2111,7 +2111,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	[self textFieldDidEndEditing:_editingTextField];
 
 	_editingTextField = nil;
-	self.firstResponder = nil;
+	self.editingObject = nil;
 
 	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
 	UIView *keyboardView = keyboardViewController.view;

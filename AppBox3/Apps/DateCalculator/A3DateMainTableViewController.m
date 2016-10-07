@@ -1006,8 +1006,8 @@
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField {
-    if (self.firstResponder == textField) {
-        [self setFirstResponder:nil];
+    if (self.editingObject == textField) {
+        [self setEditingObject:nil];
     }
 
     _isSelectedFromToCell = NO;

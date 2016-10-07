@@ -145,6 +145,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 }
 
 - (void)applicationDidEnterBackground {
+	[self dismissNumberKeyboardAnimated:NO];
 	[self dismissInstructionViewController:nil];
 }
 
@@ -211,7 +212,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 }
 
 - (void)cloudDidImportChanges:(NSNotification *)note {
-	if (self.firstResponder) {
+	if (self.editingObject) {
 		return;
 	}
 
@@ -282,7 +283,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 }
 
 - (BOOL)resignFirstResponder {
-	[self.firstResponder resignFirstResponder];
+	[self.editingObject resignFirstResponder];
 
 	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
 	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_CurrencyConverter]) {
@@ -372,15 +373,15 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 - (void)resetIntermediateState {
 	[self unSwipeAll];
 
-	[self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+	[self.editingObject resignFirstResponder];
+	[self setEditingObject:nil];
 
 	[self dismissMoreMenu];
 }
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
-	[self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+	[self.editingObject resignFirstResponder];
+	[self setEditingObject:nil];
 
 	if (IS_IPHONE) {
 		if ([[A3AppDelegate instance] isMainMenuStyleList]) {
@@ -406,8 +407,8 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 
 - (void)moreButtonAction:(UIBarButtonItem *)button {
 	[self dismissNumberKeyboardAnimated:NO];
-	[self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+	[self.editingObject resignFirstResponder];
+	[self setEditingObject:nil];
 
 	[self rightBarButtonDoneButton];
 
@@ -458,7 +459,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 		[self alertInternetConnectionIsNotAvailable];
 		return;
 	}
-	if (self.firstResponder) {
+	if (self.editingObject) {
 		[self.refreshControl endRefreshing];
 		return;
 	}
@@ -478,7 +479,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 
 	[self dismissMoreMenu];
 
-	if (!self.firstResponder && animate && !self.presentedViewController) {
+	if (!self.editingObject && animate && !self.presentedViewController) {
 		[self.refreshControl beginRefreshing];
 	}
 
@@ -782,9 +783,9 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (self.firstResponder) {
-		[self.firstResponder resignFirstResponder];
-		[self setFirstResponder:nil];
+	if (self.editingObject) {
+		[self.editingObject resignFirstResponder];
+		[self setEditingObject:nil];
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 		return;
 	}
@@ -827,9 +828,9 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 - (void)plusButtonAction:(UIButton *)button {
 	[self dismissNumberKeyboardAnimated:YES];
-	if (self.firstResponder) {
-		[self.firstResponder resignFirstResponder];
-		[self setFirstResponder:nil];
+	if (self.editingObject) {
+		[self.editingObject resignFirstResponder];
+		[self setEditingObject:nil];
 		return;
 	}
 
@@ -1036,7 +1037,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	_calculatorTargetTextField = textField;
-	[self setFirstResponder:textField];
+	[self setEditingObject:textField];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:textField];
 	[self addNumberKeyboardNotificationObservers];
@@ -1051,7 +1052,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:textField];
 	[self removeNumberKeyboardNotificationObservers];
 
-	[self setFirstResponder:nil];
+	[self setEditingObject:nil];
 
 	BOOL valueChanged = NO;
 	if (![textField.text length]) {

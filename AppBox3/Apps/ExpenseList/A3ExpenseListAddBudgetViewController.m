@@ -64,7 +64,7 @@ enum A3ExpenseListAddBudgetCellType {
 @property (nonatomic, strong) NSArray *expandableCellElements;
 @property (nonatomic, strong) A3TableViewDatePickerElement* datePickerElement;
 
-@property (nonatomic, strong) UITextView *textViewResponder;
+@property (nonatomic, weak) UITextView *textViewResponder;
 
 @property (nonatomic, strong) A3TableViewInputElement *calculatorTargetElement;
 @property (nonatomic, strong) NSIndexPath *calculatorTargetIndexPath;
@@ -157,10 +157,15 @@ enum A3ExpenseListAddBudgetCellType {
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
+}
+
+- (void)applicationWillResignActive:(NSNotification *)notification {
+	[self dismissNumberKeyboardAnimated:NO];
 }
 
 - (void)cloudStoreDidImport {
-	if (self.firstResponder) {
+	if (self.editingObject) {
 		return;
 	}
 	// reload data
@@ -171,6 +176,7 @@ enum A3ExpenseListAddBudgetCellType {
 }
 
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	FNLOG();
@@ -247,6 +253,8 @@ enum A3ExpenseListAddBudgetCellType {
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
+	[self dismissNumberKeyboardAnimated:NO];
+	
     if (self.textViewResponder) {
         [self.textViewResponder resignFirstResponder];
     }
@@ -512,8 +520,9 @@ enum A3ExpenseListAddBudgetCellType {
         notes.identifier = A3TableElementCellType_Note;
         notes.value = _currentBudget.notes;
         notes.onEditingBegin = ^(A3TextViewElement * element, UITextView *textView){
-            _textViewResponder = textView;
+			[self dismissNumberKeyboardAnimated:YES];
             [self hideDatePickerViewCell];
+			self.textViewResponder = textView;
         };
         __weak A3ExpenseListAddBudgetViewController * weakSelf = self;
         notes.onEditingChange = ^(A3TextViewElement * element, UITextView *textView){
@@ -684,9 +693,9 @@ static NSString *CellIdentifier = @"Cell";
 - (void)hideDatePickerViewCell {
     if (_showDatePicker) {
         _showDatePicker = NO;
-        [self.firstResponder resignFirstResponder];
+        [self.editingObject resignFirstResponder];
         [self.textViewResponder resignFirstResponder];
-        self.firstResponder = nil;
+        self.editingObject = nil;
         self.textViewResponder = nil;
 
         [self.root setSectionsArray:@[[self tableDataSourceWithDatePicker:NO]]];
@@ -698,9 +707,6 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    [self.firstResponder resignFirstResponder];
-	
     A3JHTableViewElement *element = [self.root elementForIndexPath:indexPath];
 
 	if ([element isKindOfClass:[A3JHTableViewExpandableElement class]]) {
@@ -712,6 +718,10 @@ static NSString *CellIdentifier = @"Cell";
 
     // Row 6 Date
     if (element.identifier == AddBudgetCellID_Date) {
+		[_editingTextField resignFirstResponder];
+		[_textViewResponder resignFirstResponder];
+		[self dismissNumberKeyboardAnimated:YES];
+		
         _showDatePicker = !_showDatePicker;
         
         UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -740,7 +750,9 @@ static NSString *CellIdentifier = @"Cell";
     //else if ((indexPath.section == 0 && indexPath.row==1) || (indexPath.section == 0 && indexPath.row==2)) {
     else if (element.identifier == AddBudgetCellID_Categories || element.identifier == AddBudgetCellID_PaymentType) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        
+
+		[self dismissNumberKeyboardAnimated:NO];
+
         if (IS_IPHONE) {
             A3ItemSelectListViewController *selectTableViewController = [[A3ItemSelectListViewController alloc] initWithStyle:UITableViewStyleGrouped];
             selectTableViewController.root = _section0_Array[indexPath.row];
@@ -803,7 +815,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-	[self dismissNumberKeyboard];
+	[self dismissNumberKeyboardAnimated:YES];
 }
 
 #pragma mark - Input Related
@@ -812,10 +824,14 @@ static NSString *CellIdentifier = @"Cell";
     if (!_cellTextInputBeginBlock) {
         __weak A3ExpenseListAddBudgetViewController * weakSelf = self;
         _cellTextInputBeginBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
-            weakSelf.firstResponder = textField;
             [weakSelf hideDatePickerViewCell];
 
 			if (element.inputType != A3TableViewEntryTypeText) {
+				[weakSelf.textViewResponder resignFirstResponder];
+				
+				if (textField != weakSelf.editingTextField) {
+					[weakSelf.editingTextField resignFirstResponder];
+				}
 				weakSelf.textBeforeEditing = textField.text;
 				weakSelf.textColorBeforeEditing = textField.textColor;
 
@@ -830,6 +846,8 @@ static NSString *CellIdentifier = @"Cell";
 				}
 				[weakSelf presentNumberKeyboard:keyboardVC forTextField:textField];
 				[weakSelf addNumberKeyboardNotificationObservers];
+			} else {
+				[weakSelf dismissNumberKeyboardAnimated:YES];
 			}
 			weakSelf.editingElement = element;
 			weakSelf.editingTextField = textField;
@@ -866,9 +884,6 @@ static NSString *CellIdentifier = @"Cell";
     if (!_cellTextInputFinishedBlock) {
         __weak A3ExpenseListAddBudgetViewController * weakSelf = self;
         _cellTextInputFinishedBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
-            if (weakSelf.firstResponder == textField) {
-                weakSelf.firstResponder = nil;
-            }
 			[weakSelf removeNumberKeyboardNotificationObservers];
 
 			if (element.inputType != A3TableViewEntryTypeText) {
@@ -898,10 +913,13 @@ static NSString *CellIdentifier = @"Cell";
                     break;
 
                 default:
+					element.value = textField.text;
                     break;
             }
 
             weakSelf.navigationItem.rightBarButtonItem.enabled = [weakSelf isBudgetModified] ? YES : NO;
+			weakSelf.editingObject = nil;
+			weakSelf.editingTextField = nil;
         };
     }
     
@@ -992,7 +1010,7 @@ static NSString *CellIdentifier = @"Cell";
 	}];
 }
 
-- (void)dismissNumberKeyboard {
+- (void)dismissNumberKeyboardAnimated:(BOOL)animated {
 	if (!_isNumberKeyboardVisible) {
 		return;
 	}
@@ -1001,15 +1019,23 @@ static NSString *CellIdentifier = @"Cell";
 
 	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
 	UIView *keyboardView = keyboardViewController.view;
-	[UIView animateWithDuration:0.3 animations:^{
-		CGRect frame = keyboardView.frame;
-		frame.origin.y += keyboardViewController.keyboardHeight;
-		keyboardView.frame = frame;
-	} completion:^(BOOL finished) {
+
+	void(^completion)() = ^{
 		[keyboardView removeFromSuperview];
 		self.numberKeyboardViewController = nil;
 		_isNumberKeyboardVisible = NO;
-	}];
+	};
+	if (animated) {
+		[UIView animateWithDuration:0.3 animations:^{
+			CGRect frame = keyboardView.frame;
+			frame.origin.y += keyboardViewController.keyboardHeight;
+			keyboardView.frame = frame;
+		} completion:^(BOOL finished) {
+			completion();
+		}];
+	} else {
+		completion();
+	}
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -1036,7 +1062,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
-	[self dismissNumberKeyboard];
+	[self dismissNumberKeyboardAnimated:YES];
 }
 
 - (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
@@ -1061,7 +1087,8 @@ static NSString *CellIdentifier = @"Cell";
 #pragma mark - Number Keyboard Currency Button Notification
 
 - (void)currencySelectButtonAction:(NSNotification *)notification {
-	[self.firstResponder resignFirstResponder];
+	[self dismissNumberKeyboardAnimated:NO];
+	
 	A3CurrencySelectViewController *viewController = [self presentCurrencySelectViewControllerWithCurrencyCode:notification.object];
 	viewController.delegate = self;
 }
@@ -1080,9 +1107,10 @@ static NSString *CellIdentifier = @"Cell";
 #pragma mark - Number Keyboard, Calculator Button Notification
 
 - (void)calculatorButtonAction {
-	_calculatorTargetIndexPath = [self.tableView indexPathForCellSubview:(UIView *) self.firstResponder];
+	_calculatorTargetIndexPath = [self.tableView indexPathForCellSubview:(UIView *) self.editingObject];
 	_calculatorTargetElement = (A3TableViewInputElement *) [self.root elementForIndexPath:_calculatorTargetIndexPath];
-	[self.firstResponder resignFirstResponder];
+	
+	[self dismissNumberKeyboardAnimated:NO];
 	A3CalculatorViewController *viewController = [self presentCalculatorViewController];
 	viewController.delegate = self;
 }

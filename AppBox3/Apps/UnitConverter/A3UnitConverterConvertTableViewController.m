@@ -173,6 +173,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 
 - (void)applicationDidEnterBackground {
 	[self dismissInstructionViewController:nil];
+	[self dismissNumberKeyboard];
 }
 
 - (void)applicationWillResignActive {
@@ -180,7 +181,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 }
 
 - (void)cloudStoreDidImport {
-    if ([self firstResponder]) {
+    if ([self editingObject]) {
         return;
     }
 
@@ -202,6 +203,8 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
+	[self dismissNumberKeyboard];
+	
 	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
 		FNLOG();
 		[self clearEverything];
@@ -216,7 +219,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 }
 
 - (BOOL)resignFirstResponder {
-	[self.firstResponder resignFirstResponder];
+	[self.editingObject resignFirstResponder];
 	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
 	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_UnitConverter]) {
 		[self dismissInstructionViewController:nil];
@@ -345,8 +348,8 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 }
 
 - (void)clearEverything {
-	[self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+	[self.editingObject resignFirstResponder];
+	[self setEditingObject:nil];
 	[self dismissMoreMenu];
 }
 
@@ -397,7 +400,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
 	[super appsButtonAction:barButtonItem];
-	[self setFirstResponder:nil];
+	[self setEditingObject:nil];
 
 	if (IS_IPHONE) {
 		if ([_moreMenuView superview]) {
@@ -411,8 +414,8 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 
 - (void)moreButtonAction:(UIBarButtonItem *)button {
 	[self dismissNumberKeyboard];
-	[self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+	[self.editingObject resignFirstResponder];
+	[self setEditingObject:nil];
 
 	[self rightBarButtonDoneButton];
 
@@ -552,9 +555,9 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 }
 
 - (void)addUnitAction {
-	if ([self.firstResponder isFirstResponder]) {
-		[self.firstResponder resignFirstResponder];
-		[self setFirstResponder:nil];
+	if ([self.editingObject isFirstResponder]) {
+		[self.editingObject resignFirstResponder];
+		[self setEditingObject:nil];
 		return;
 	}
 
@@ -1230,11 +1233,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-	if ([self.firstResponder isFirstResponder]) {
-		[self.firstResponder resignFirstResponder];
-		[self setFirstResponder:nil];
-		return;
-	}
+	[self dismissNumberKeyboard];
 
 	if ([self.swipedCells.allObjects count]) {
 		[self unSwipeAll];
@@ -1508,7 +1507,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	FNLOG();
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
 
-	self.firstResponder = textField;
+	self.editingObject = textField;
 	_editingTextField = textField;
 
 	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:textField];
@@ -1571,7 +1570,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 - (void)textFieldDidEndEditing:(UITextField *)textField {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 
-	[self setFirstResponder:nil];
+	[self setEditingObject:nil];
 
 	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:textField];
 
@@ -1964,7 +1963,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 - (BOOL)isPreviousEntryExists{
 	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-	UIView *viewInRespond = (UIView *) self.firstResponder;
+	UIView *viewInRespond = (UIView *) self.editingObject;
     if ((cell.inputType==UnitInput_Fraction) && (viewInRespond.tag == 2)) {
         return YES;
     }
@@ -1978,7 +1977,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 - (BOOL)isNextEntryExists{
     A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-	UIView *viewInRespond = (UIView *) self.firstResponder;
+	UIView *viewInRespond = (UIView *) self.editingObject;
     if ((cell.inputType==UnitInput_Fraction) && (viewInRespond.tag == 1)) {
         return YES;
     }
@@ -1992,7 +1991,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 - (void)prevButtonPressed{
     A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-	UIView *viewInRespond = (UIView *) self.firstResponder;
+	UIView *viewInRespond = (UIView *) self.editingObject;
 	_isSwitchingFractionMode = YES;
     if ((cell.inputType==UnitInput_Fraction) && (viewInRespond.tag == 2)) {
         [cell.valueField becomeFirstResponder];
@@ -2013,7 +2012,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 - (void)nextButtonPressed{
     A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-	UIView *viewInRespond = (UIView *) self.firstResponder;
+	UIView *viewInRespond = (UIView *) self.editingObject;
 	_isSwitchingFractionMode = YES;
     if ((cell.inputType==UnitInput_Fraction) && (viewInRespond.tag == 1)) {
         [cell.value2Field becomeFirstResponder];
@@ -2033,7 +2032,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 }
 
 - (void)keyboardViewController:(A3NumberKeyboardViewController *)vc fractionButtonPressed:(UIButton *)button {
-	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:(UIView *) self.firstResponder];
+	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:(UIView *) self.editingObject];
 	__weak UITextField *textField = (UITextField *) vc.textInputTarget;
 	if ([cell isKindOfClass:[A3UnitConverterTVDataCell class]]) {
 		switch (cell.inputType) {
@@ -2112,7 +2111,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 }
 
 - (void)keyboardViewController:(A3NumberKeyboardViewController *)vc plusMinusButtonPressed:(UIButton *)button {
-	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:(UIView *) self.firstResponder];
+	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:(UIView *) self.editingObject];
 	if ([cell isKindOfClass:[A3UnitConverterTVDataCell class]]) {
 		__weak UITextField *textField = cell.valueField;
 		if ([textField.text length]) {
@@ -2125,7 +2124,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 			textField.text = @"-";
 		}
 		[self updateTextFieldsWithSourceTextField:textField];
-		[cell updateMultiTextFieldModeConstraintsWithEditingTextField:(UITextField *) self.firstResponder];
+		[cell updateMultiTextFieldModeConstraintsWithEditingTextField:(UITextField *) self.editingObject];
 	}
 }
 
@@ -2219,7 +2218,7 @@ const CGFloat kUnitCellVisibleWidth = 100.0;
 		// find the swiped cell
 		CGPoint location = [recognizer locationInView:_fmMoveTableView];
 		NSIndexPath* indexPath = [_fmMoveTableView indexPathForRowAtPoint:location];
-		if (indexPath.row == 0 && self.firstResponder) return;
+		if (indexPath.row == 0 && self.editingObject) return;
 
 		UITableViewCell<A3FMMoveTableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3FMMoveTableViewSwipeCellDelegate> *) [_fmMoveTableView cellForRowAtIndexPath:indexPath];
 

@@ -204,6 +204,11 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
     }
 }
 
+- (BOOL)resignFirstResponder {
+	[self dismissNumberKeyboard];
+	return [super resignFirstResponder];
+}
+
 - (void)cleanUp {
     [self removeObserver];
 }

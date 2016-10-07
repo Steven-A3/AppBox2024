@@ -250,7 +250,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)resignAllAction
 {
-	[self.firstResponder resignFirstResponder];
+	[self.editingObject resignFirstResponder];
 	[self dismissNumberKeyboard];
 
     for (NSInteger section=0; section < [_sectionsArray count]; section++) {
@@ -488,7 +488,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
         case PeriodCellType_StartDate:
         case PeriodCellType_EndDate:
 		{
-			[self.firstResponder resignFirstResponder];
+			[self.editingObject resignFirstResponder];
 			
             [self resignAllAction];
             NSInteger inputCellType = 0;
@@ -649,7 +649,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
     [self closeDateInputCell];
 	[self dismissNumberKeyboard];
 	
-    self.firstResponder = textView;
+    self.editingObject = textView;
     
     return YES;
 }
@@ -657,9 +657,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
     _periodItem.notes = textView.text;
-    if (self.firstResponder == textView) {
-        [self.firstResponder resignFirstResponder];
-        self.firstResponder = nil;
+    if (self.editingObject == textView) {
+        [self.editingObject resignFirstResponder];
+        self.editingObject = nil;
     }
 }
 
@@ -667,7 +667,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-	[self.firstResponder resignFirstResponder];
+	[self.editingObject resignFirstResponder];
 	
 	[self closeDateInputCell];
 	[self presentNumberKeyboardForTextField:textField];
@@ -865,7 +865,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
     [self resignAllAction];
-    [self.firstResponder resignFirstResponder];
+    [self.editingObject resignFirstResponder];
 
 	NSDateComponents *cycleLengthComponents = [NSDateComponents new];
 	cycleLengthComponents.day = [_periodItem.cycleLength integerValue] - 1;

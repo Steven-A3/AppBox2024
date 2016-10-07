@@ -207,7 +207,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 }
 
 - (void)cloudStoreDidImport {
-	if (self.firstResponder) return;
+	if (self.editingObject) return;
 
 	NSString *currencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3ExpenseListUserDefaultsCurrencyCode];
 	[self.currencyFormatter setCurrencyCode:currencyCode];
@@ -247,6 +247,8 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 }
 
 - (BOOL)resignFirstResponder {
+	[self dismissNumberKeyboardWithAnimation:NO completion:NULL];
+	
 	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
 	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_ExpenseList]) {
 		[self dismissMoreMenuView:_moreMenuView pullDownView:nil completion:^{
@@ -552,8 +554,8 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 - (void)clearEverything {
 	[self dismissMoreMenu];
-	[self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
+	[self.editingObject resignFirstResponder];
+	[self setEditingObject:nil];
     [self.tableView setEditing:NO animated:YES];
 }
 
@@ -729,7 +731,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 - (void)moreButtonAction:(UIButton *)button
 {
 	[self dismissNumberKeyboardWithAnimation:YES completion:NULL];
-	[self.firstResponder resignFirstResponder];
+	[self.editingObject resignFirstResponder];
 
 	if (_isAutoMovingAddBudgetView) {
 		return;
@@ -1353,7 +1355,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	FNLOG();
 	
 	self.editingCell = cell;
-	self.firstResponder = textField;
+	self.editingObject = textField;
 	self.editingTextField = textField;
 	self.textBeforeEditingTextField = textField.text;
 	self.editingIndexPath = [self.tableView indexPathForCell:cell];
@@ -1464,7 +1466,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     NSIndexPath *index = [self.tableView indexPathForCell:cell];
     if ([_tableDataSourceArray count] < [index row]) {
 		_editingTextField = nil;
-        self.firstResponder = nil;
+        self.editingObject = nil;
         return;
     }
 
@@ -1512,8 +1514,8 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         item.hasData = @(NO);
         
         if ([self isSameFocusingOnItemRow:item toTextField:textField] || index.row==0) {
-            if (textField == [self firstResponder]) {
-                self.firstResponder = nil;
+            if (textField == [self editingObject]) {
+                self.editingObject = nil;
                 [self re_sort_DataSourceToSeparateValidAndEmpty];
                 [self.tableView reloadData];
 				FNLOG(@"TableView reload data!!!");
@@ -1535,30 +1537,30 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         cell.subTotalLabel.text = @"";
         cell.priceField.placeholder = @"";
         cell.quantityField.placeholder = @"";
-        if (textField == [self firstResponder]) {
-            self.firstResponder = nil;
+        if (textField == [self editingObject]) {
+            self.editingObject = nil;
             [self re_sort_DataSourceToSeparateValidAndEmpty];
             [self.tableView reloadData];
 			FNLOG(@"TableView reload data!!!");
         }
 		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 		_editingTextField = nil;
-		self.firstResponder = nil;
+		self.editingObject = nil;
         return;
     }
 
 	if (!_isSwitchingTextField) {
 		// 예외처리, itemName 편집 종료시, top scroll 적용.
-		if (textField == cell.nameField && textField == [self firstResponder]) {
+		if (textField == cell.nameField && textField == [self editingObject]) {
 			[self re_sort_DataSourceToSeparateValidAndEmpty];
 			[self.tableView reloadData];
 			FNLOG(@"TableView reload data!!!");
 			[self scrollToTopOfTableView];
-			self.firstResponder = nil;
+			self.editingObject = nil;
 		}
 		else {
-			if (textField == [self firstResponder]) {
-				self.firstResponder = nil;
+			if (textField == [self editingObject]) {
+				self.editingObject = nil;
 				if (!_isSwitchingTextField) {
 					[self re_sort_DataSourceToSeparateValidAndEmpty];
 					[self.tableView reloadData];
@@ -1571,7 +1573,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 	
 	_editingTextField = nil;
-	self.firstResponder = nil;
+	self.editingObject = nil;
 	_isSwitchingTextField = NO;
 }
 
@@ -1584,7 +1586,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 }
 
 - (BOOL)isSameFocusingOnItemRow:(ExpenseListItem *)item toTextField:(UITextField *)textField {
-    if (([self firstResponder] != textField && _selectedItem == item)) {
+    if (([self editingObject] != textField && _selectedItem == item)) {
         return YES;
     }
 
@@ -1592,7 +1594,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 }
 
 - (void)cell:(A3ExpenseListItemCell *)aCell textFieldDidPressDoneButton:(UITextField *)textField {
-    self.firstResponder = nil;
+    self.editingObject = nil;
     
     NSIndexPath *index = [self.tableView indexPathForCell:aCell];
     ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:index.row];
@@ -1640,7 +1642,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     indexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section];
     ExpenseListItem *aItem = _tableDataSourceArray[indexPath.row];
 
-	UITextField *textField = (UITextField *) self.firstResponder;
+	UITextField *textField = (UITextField *) self.editingObject;
     textField.text = @"";
     if (sender.priceField == keyInputDelegate) {
         textField.placeholder = [self.currencyFormatter stringFromNumber:@0];
@@ -1755,21 +1757,21 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 #pragma mark - NumberKeyboard
 
 - (void)handleBigButton1 {
-	if (self.firstResponder == _editingCell.priceField) {
+	if (self.editingObject == _editingCell.priceField) {
 
 	}
-	else if (self.firstResponder == _editingCell.quantityField) {
+	else if (self.editingObject == _editingCell.quantityField) {
 		self.numberKeyboardViewController.bigButton1.selected = NO;
 		self.numberKeyboardViewController.bigButton2.selected = NO;
 	}
 }
 
 - (void)handleBigButton2 {
-	if (self.firstResponder == _editingCell.priceField) {
+	if (self.editingObject == _editingCell.priceField) {
 		self.numberKeyboardViewController.bigButton1.selected = YES;
 		self.numberKeyboardViewController.bigButton2.selected = NO;
 	}
-	else if (self.firstResponder == _editingCell.quantityField) {
+	else if (self.editingObject == _editingCell.quantityField) {
 		self.numberKeyboardViewController.bigButton1.selected = NO;
 		self.numberKeyboardViewController.bigButton2.selected = NO;
 	}
@@ -1792,9 +1794,9 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 #pragma mark - Number Keyboard, Calculator Button Notification
 
 - (void)calculatorButtonAction {
-	_calculatorTargetTextField = (UITextField *) self.firstResponder;
-	_calculatorTargetCell = (A3ExpenseListItemCell *) [self.tableView cellForCellSubview:(UIView *) self.firstResponder];
-	[self.firstResponder resignFirstResponder];
+	_calculatorTargetTextField = (UITextField *) self.editingObject;
+	_calculatorTargetCell = (A3ExpenseListItemCell *) [self.tableView cellForCellSubview:(UIView *) self.editingObject];
+	[self.editingObject resignFirstResponder];
 	A3CalculatorViewController *viewController = [self presentCalculatorViewController];
 	viewController.delegate = self;
 }

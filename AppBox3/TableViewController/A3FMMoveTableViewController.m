@@ -48,7 +48,7 @@ const CGFloat kVisibleWidth = 100.0;
 		// find the swiped cell
 		CGPoint location = [recognizer locationInView:self.tableView];
 		NSIndexPath* indexPath = [self.tableView indexPathForRowAtPoint:location];
-		if (indexPath.row == 0 && self.firstResponder) {
+		if (indexPath.row == 0 && self.editingObject) {
 			return;
 		}
 		UITableViewCell<A3FMMoveTableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3FMMoveTableViewSwipeCellDelegate> *) [self.tableView cellForRowAtIndexPath:indexPath];
