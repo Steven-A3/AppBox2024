@@ -635,7 +635,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
     FNLOG(@"%@", uniqueIDs);
     NSPredicate *predicate;
     if (searchText && searchText.length) {
-        predicate = [NSPredicate predicateWithFormat:@"categoryID == %@ AND (name contains[cd] %@ OR uniqueID in %@)", self.category.uniqueID, searchText, uniqueIDs];
+        predicate = [NSPredicate predicateWithFormat:@"categoryID == %@ AND (note contains[cd] %@ OR name contains[cd] %@ OR uniqueID in %@)", self.category.uniqueID, searchText, searchText, uniqueIDs];
     } else {
         predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", self.category.uniqueID];
     }

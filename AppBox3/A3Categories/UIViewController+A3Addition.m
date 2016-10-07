@@ -387,9 +387,11 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
 
 		if ([pullDownView isKindOfClass:[UIScrollView class]]) {
 			UIScrollView *scrollView = (UIScrollView *) pullDownView;
+			FNLOGINSETS(scrollView.contentInset);
 			UIEdgeInsets insets = scrollView.contentInset;
 			insets.top += clippingViewFrame.size.height;
 			scrollView.contentInset = insets;
+			FNLOGINSETS(scrollView.contentInset);
 
 			if (scrollView.contentOffset.y == -64.0) {
 				CGPoint offset = scrollView.contentOffset;

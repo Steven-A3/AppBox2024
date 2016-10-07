@@ -410,6 +410,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 }
 
 - (void)moreButtonAction:(UIBarButtonItem *)button {
+	[self dismissNumberKeyboard];
 	[self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];
 
@@ -448,12 +449,14 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 }
 
 - (void)shareButtonAction:(id)sender {
+	[self dismissNumberKeyboard];
 	[self clearEverything];
 
 	[self shareAll:sender];
 }
 
 - (void)historyButtonAction:(UIButton *)button {
+	[self dismissNumberKeyboard];
 	[self clearEverything];
 
 	A3UnitConverterHistoryViewController *viewController = [[A3UnitConverterHistoryViewController alloc] initWithNibName:nil bundle:nil];
@@ -1561,6 +1564,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		cell.valueField.textColor = [[A3AppDelegate instance] themeColor];
 	}
 
+	[self updateTextFieldsWithSourceTextField:textField];
 	[cell updateMultiTextFieldModeConstraintsWithEditingTextField:textField];
 }
 
@@ -2127,9 +2131,11 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
 	_didPressClearKey = YES;
+	_didPressNumberKey = NO;
 	UITextField *textField = (UITextField *) keyInputDelegate;
-	textField.text = @"";
-	_textBeforeEditingTextField = @"";
+	textField.text = [self.decimalFormatter stringFromNumber:@0];
+	_textBeforeEditingTextField = textField.text;
+	[self updateTextFieldsWithSourceTextField:textField];
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
@@ -2308,12 +2314,6 @@ const CGFloat kUnitCellVisibleWidth = 100.0;
 - (void)unSwipeAll {
 	FNLOG();
 	[self shiftRight:self.swipedCells];
-}
-
-#pragma mark - A3ViewControllerProtocol
-
-- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
-	return NO;
 }
 
 #pragma mark - AdMob Did Receive Ad

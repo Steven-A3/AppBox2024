@@ -305,7 +305,7 @@
 			if (languageIndex == NSNotFound) {
 				languageIndex = 0;
 			}
-			NSString *urlString = [NSString stringWithFormat:@"http://support.apple.com/kb/HT4175?viewlocale=%@", availableLocales[languageIndex]];
+			NSString *urlString = [NSString stringWithFormat:@"https://support.apple.com/kb/HT4175?viewlocale=%@", availableLocales[languageIndex]];
 			NSURL *url = [NSURL URLWithString:urlString];
 			[[UIApplication sharedApplication] openURL:url];
 		} else if (buttonIndex == 2) {

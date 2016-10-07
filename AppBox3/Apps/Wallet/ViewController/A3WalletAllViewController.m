@@ -676,7 +676,7 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 	
 	NSString *query = searchText;
 	if (query && query.length) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name contains[cd] %@ OR uniqueID in %@", query, uniqueIDs];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"note contains[cd] %@ OR name contains[cd] %@ OR uniqueID in %@", query, query, uniqueIDs];
 		_filteredResults = [self.items filteredArrayUsingPredicate:predicate];
 	} else {
 		_filteredResults = nil;

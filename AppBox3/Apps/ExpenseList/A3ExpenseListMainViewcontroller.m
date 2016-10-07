@@ -262,6 +262,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 }
 
 - (void)rightSideViewDidAppear {
+	[self dismissNumberKeyboardWithAnimation:YES completion:NULL];
 	[self enableControls:NO];
 }
 
@@ -399,6 +400,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 }
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
+	[self dismissNumberKeyboardWithAnimation:NO completion:NULL];
 	[self clearEverything];
 
 	[super appsButtonAction:barButtonItem];
@@ -503,6 +505,8 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 - (void)detailInfoButtonAction:(UIButton *)button
 {
+	[self dismissNumberKeyboardWithAnimation:YES completion:NULL];
+
     if (![self navigationController] || ![[self navigationController] viewControllers] || [[[self navigationController] viewControllers] count] == 0) {
         return;
     }
@@ -621,6 +625,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 - (void)addNewButtonAction:(id)sender
 {
+	[self dismissNumberKeyboardWithAnimation:YES completion:NULL];
     [self clearEverything];
 
     // 현재 상태 저장.
@@ -649,6 +654,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 - (void)historyButtonAction:(id)sender
 {
+	[self dismissNumberKeyboardWithAnimation:YES completion:NULL];
     [self clearEverything];
     
     if (_isAutoMovingAddBudgetView) {
@@ -679,6 +685,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 }
 
 - (void)shareButtonAction:(id)sender {
+	[self dismissNumberKeyboardWithAnimation:YES completion:NULL];
 	[self clearEverything];
 
 	if (_isAutoMovingAddBudgetView) {
@@ -721,6 +728,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 - (void)moreButtonAction:(UIButton *)button
 {
+	[self dismissNumberKeyboardWithAnimation:YES completion:NULL];
 	[self.firstResponder resignFirstResponder];
 
 	if (_isAutoMovingAddBudgetView) {
@@ -1390,6 +1398,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	}
 
 	[self.keyboardAccessoryView undoRedoButtonStateChangeFor:textField];
+	[self.accessoryForNumberField undoRedoButtonStateChangeFor:textField];
 	[self showEraseButtonIfNeeded];
 	[self changeDirectionButtonStateFor:textField];
 
@@ -1665,8 +1674,6 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	UIView *keyboardView = keyboardViewController.view;
 	[superview addSubview:keyboardView];
 
-	[self cell:_editingCell textFieldDidBeginEditing:textField];
-
 	_didPressClearKey = NO;
 	_didPressNumberKey = NO;
 	_isNumberKeyboardVisible = YES;
@@ -1674,6 +1681,9 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	A3ExpenseListAccessoryView *accessoryView = [self accessoryForNumberField];
 	accessoryView.frame = CGRectMake(0, bounds.size.height - 45.0, bounds.size.width, 45.0);
 	[superview addSubview:accessoryView];
+	self.keyboardAccessoryView = accessoryView;
+
+	[self cell:_editingCell textFieldDidBeginEditing:textField];
 
 	keyboardView.frame = CGRectMake(0, bounds.size.height, bounds.size.width, keyboardHeight);
 	[UIView animateWithDuration:0.3 animations:^{
@@ -1716,6 +1726,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 		[accessoryView removeFromSuperview];
 
+		self.accessoryForNumberField = nil;
 		self.numberKeyboardViewController = nil;
 
 		if (completion) {
@@ -1770,6 +1781,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
 	_didPressClearKey = YES;
+	_didPressNumberKey = NO;
 }
 
 - (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
@@ -1915,12 +1927,23 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 - (void)keyboardAccessoryEraseButtonTouchUp:(id)sender {
 	if (_editingTextField == _editingCell.nameField) {
+		[self undoTextFieldEdit:@""];
 		_textBeforeEditingTextField = @"";
 		[self.keyboardAccessoryView undoRedoButtonStateChangeFor:_editingTextField];
 	} else {
-		_textBeforeEditingTextField = [self.decimalFormatter stringFromNumber:@0];
+		_editingTextField.text = [self.decimalFormatter stringFromNumber:@0];
+		_textBeforeEditingTextField = _editingTextField.text;
+		[self.keyboardAccessoryView undoRedoButtonStateChangeFor:_editingTextField];
 	}
 	[self showEraseButtonIfNeeded];
+}
+
+- (void)undoTextFieldEdit: (NSString*)string
+{
+	[_editingTextField.undoManager registerUndoWithTarget:self
+									selector:@selector(undoTextFieldEdit:)
+									  object:_editingTextField.text];
+	_editingTextField.text = string;
 }
 
 @end

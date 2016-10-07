@@ -1190,27 +1190,6 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
     [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationsUserNotificationSettingsRegistered object:notificationSettings];
 }
 
-- (BOOL)application:(UIApplication *)application shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
-	if (_appIsNotActiveYet) {
-		FNLOG(@"NO");
-		return NO;
-	}
-
-	if (self.passcodeViewController) {
-		return NO;
-	}
-
-	UINavigationController *navigationController = [self navigationController];
-	UIViewController <A3ViewControllerProtocol> *visibleViewController = (UIViewController <A3ViewControllerProtocol> *) [navigationController visibleViewController];
-	if ([visibleViewController respondsToSelector:@selector(shouldAllowExtensionPointIdentifier:)]) {
-		BOOL shouldAllow = [visibleViewController shouldAllowExtensionPointIdentifier:extensionPointIdentifier];
-		FNLOG(@"%@, %@", visibleViewController, shouldAllow ? @"YES" : @"NO");
-		return shouldAllow;
-	}
-	FNLOG(@"YES");
-	return YES;
-}
-
 - (void)applicationProtectedDataWillBecomeUnavailable:(UIApplication *)application {
 	FNLOG();
 }

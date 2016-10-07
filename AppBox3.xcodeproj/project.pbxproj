@@ -174,7 +174,6 @@
 		68143D5118E3EC7C00569691 /* A3JHTableViewDateEntryElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 68143D1B18E3EC7C00569691 /* A3JHTableViewDateEntryElement.m */; };
 		68143D5218E3EC7C00569691 /* A3JHTableViewElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 68143D1D18E3EC7C00569691 /* A3JHTableViewElement.m */; };
 		68143D5318E3EC7C00569691 /* A3JHTableViewEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68143D1F18E3EC7C00569691 /* A3JHTableViewEntryCell.m */; };
-		68143D5418E3EC7C00569691 /* A3JHTableViewEntryElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 68143D2118E3EC7C00569691 /* A3JHTableViewEntryElement.m */; };
 		68143D5518E3EC7C00569691 /* A3JHTableViewExpandableElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 68143D2318E3EC7C00569691 /* A3JHTableViewExpandableElement.m */; };
 		68143D5618E3EC7C00569691 /* A3JHTableViewExpandableHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68143D2518E3EC7C00569691 /* A3JHTableViewExpandableHeaderCell.m */; };
 		68143D5718E3EC7C00569691 /* A3JHTableViewMonthEntryElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 68143D2718E3EC7C00569691 /* A3JHTableViewMonthEntryElement.m */; };
@@ -187,7 +186,6 @@
 		68143D5E18E3EC7C00569691 /* A3TableViewDateEntryElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 68143D3618E3EC7C00569691 /* A3TableViewDateEntryElement.m */; };
 		68143D5F18E3EC7C00569691 /* A3TableViewElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 68143D3818E3EC7C00569691 /* A3TableViewElement.m */; };
 		68143D6018E3EC7C00569691 /* A3TableViewEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68143D3A18E3EC7C00569691 /* A3TableViewEntryCell.m */; };
-		68143D6118E3EC7C00569691 /* A3TableViewEntryElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 68143D3C18E3EC7C00569691 /* A3TableViewEntryElement.m */; };
 		68143D6218E3EC7C00569691 /* A3TableViewExpandableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68143D3E18E3EC7C00569691 /* A3TableViewExpandableCell.m */; };
 		68143D6318E3EC7C00569691 /* A3TableViewExpandableDefaultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68143D4018E3EC7C00569691 /* A3TableViewExpandableDefaultCell.m */; };
 		68143D6418E3EC7C00569691 /* A3TableViewExpandableElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 68143D4218E3EC7C00569691 /* A3TableViewExpandableElement.m */; };
@@ -1331,8 +1329,6 @@
 		68143D1D18E3EC7C00569691 /* A3JHTableViewElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3JHTableViewElement.m; sourceTree = "<group>"; };
 		68143D1E18E3EC7C00569691 /* A3JHTableViewEntryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3JHTableViewEntryCell.h; sourceTree = "<group>"; };
 		68143D1F18E3EC7C00569691 /* A3JHTableViewEntryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3JHTableViewEntryCell.m; sourceTree = "<group>"; };
-		68143D2018E3EC7C00569691 /* A3JHTableViewEntryElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3JHTableViewEntryElement.h; sourceTree = "<group>"; };
-		68143D2118E3EC7C00569691 /* A3JHTableViewEntryElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3JHTableViewEntryElement.m; sourceTree = "<group>"; };
 		68143D2218E3EC7C00569691 /* A3JHTableViewExpandableElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3JHTableViewExpandableElement.h; sourceTree = "<group>"; };
 		68143D2318E3EC7C00569691 /* A3JHTableViewExpandableElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3JHTableViewExpandableElement.m; sourceTree = "<group>"; };
 		68143D2418E3EC7C00569691 /* A3JHTableViewExpandableHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3JHTableViewExpandableHeaderCell.h; sourceTree = "<group>"; };
@@ -1357,8 +1353,6 @@
 		68143D3818E3EC7C00569691 /* A3TableViewElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3TableViewElement.m; sourceTree = "<group>"; };
 		68143D3918E3EC7C00569691 /* A3TableViewEntryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TableViewEntryCell.h; sourceTree = "<group>"; };
 		68143D3A18E3EC7C00569691 /* A3TableViewEntryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3TableViewEntryCell.m; sourceTree = "<group>"; };
-		68143D3B18E3EC7C00569691 /* A3TableViewEntryElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TableViewEntryElement.h; sourceTree = "<group>"; };
-		68143D3C18E3EC7C00569691 /* A3TableViewEntryElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3TableViewEntryElement.m; sourceTree = "<group>"; };
 		68143D3D18E3EC7C00569691 /* A3TableViewExpandableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TableViewExpandableCell.h; sourceTree = "<group>"; };
 		68143D3E18E3EC7C00569691 /* A3TableViewExpandableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3TableViewExpandableCell.m; sourceTree = "<group>"; };
 		68143D3F18E3EC7C00569691 /* A3TableViewExpandableDefaultCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TableViewExpandableDefaultCell.h; sourceTree = "<group>"; };
@@ -1636,7 +1630,7 @@
 		684D92AA18BC1EFE005016F7 /* A3BatteryStatusMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BatteryStatusMainViewController.h; sourceTree = "<group>"; };
 		684D92AB18BC1EFE005016F7 /* A3BatteryStatusMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = A3BatteryStatusMainViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		684D92AC18BC1EFE005016F7 /* A3BatteryStatusManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BatteryStatusManager.h; sourceTree = "<group>"; };
-		684D92AD18BC1EFE005016F7 /* A3BatteryStatusManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3BatteryStatusManager.m; sourceTree = "<group>"; };
+		684D92AD18BC1EFE005016F7 /* A3BatteryStatusManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = A3BatteryStatusManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		684D92AE18BC1EFE005016F7 /* A3BatteryStatusSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BatteryStatusSettingViewController.h; sourceTree = "<group>"; };
 		684D92AF18BC1EFE005016F7 /* A3BatteryStatusSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3BatteryStatusSettingViewController.m; sourceTree = "<group>"; };
 		684D92B018BC1EFE005016F7 /* device_information.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = device_information.json; sourceTree = "<group>"; };
@@ -2890,8 +2884,8 @@
 		68FABA4B1CE9A8EB00A62B84 /* A3PedometerHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3PedometerHandler.m; path = Pedometer/A3PedometerHandler.m; sourceTree = "<group>"; };
 		68FB68481C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsHomeStyleSelectTableViewCell.h; path = Settings/A3SettingsHomeStyleSelectTableViewCell.h; sourceTree = "<group>"; };
 		68FB68491C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsHomeStyleSelectTableViewCell.m; path = Settings/A3SettingsHomeStyleSelectTableViewCell.m; sourceTree = "<group>"; };
-		68FB8E9C1C990922008CAB7A /* CurrencyInfo.dictionary */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = CurrencyInfo.dictionary; path = Apps/Currency/Model/CurrencyInfo.dictionary; sourceTree = "<group>"; };
-		68FB8E9D1C990922008CAB7A /* currencyRates */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = currencyRates; path = Apps/Currency/Model/currencyRates; sourceTree = "<group>"; };
+		68FB8E9C1C990922008CAB7A /* CurrencyInfo.dictionary */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; lineEnding = 0; name = CurrencyInfo.dictionary; path = Apps/Currency/Model/CurrencyInfo.dictionary; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xml; };
+		68FB8E9D1C990922008CAB7A /* currencyRates */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; lineEnding = 0; name = currencyRates; path = Apps/Currency/Model/currencyRates; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xml; };
 		68FC3AF11C19336000EC9348 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/A3CurrencyPickerStyle.storyboard; sourceTree = "<group>"; };
 		68FC3AF81C19337000EC9348 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/A3CurrencyPickerStyle.strings; sourceTree = "<group>"; };
 		68FC3AFA1C19337300EC9348 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/A3CurrencyPickerStyle.strings"; sourceTree = "<group>"; };
@@ -3473,8 +3467,6 @@
 				68143D1D18E3EC7C00569691 /* A3JHTableViewElement.m */,
 				68143D1E18E3EC7C00569691 /* A3JHTableViewEntryCell.h */,
 				68143D1F18E3EC7C00569691 /* A3JHTableViewEntryCell.m */,
-				68143D2018E3EC7C00569691 /* A3JHTableViewEntryElement.h */,
-				68143D2118E3EC7C00569691 /* A3JHTableViewEntryElement.m */,
 				68143D2218E3EC7C00569691 /* A3JHTableViewExpandableElement.h */,
 				68143D2318E3EC7C00569691 /* A3JHTableViewExpandableElement.m */,
 				68143D2418E3EC7C00569691 /* A3JHTableViewExpandableHeaderCell.h */,
@@ -3506,8 +3498,6 @@
 				68143D3818E3EC7C00569691 /* A3TableViewElement.m */,
 				68143D3918E3EC7C00569691 /* A3TableViewEntryCell.h */,
 				68143D3A18E3EC7C00569691 /* A3TableViewEntryCell.m */,
-				68143D3B18E3EC7C00569691 /* A3TableViewEntryElement.h */,
-				68143D3C18E3EC7C00569691 /* A3TableViewEntryElement.m */,
 				68143D3D18E3EC7C00569691 /* A3TableViewExpandableCell.h */,
 				68143D3E18E3EC7C00569691 /* A3TableViewExpandableCell.m */,
 				68143D3F18E3EC7C00569691 /* A3TableViewExpandableDefaultCell.h */,
@@ -6313,7 +6303,6 @@
 				3E21D15518FB1BF100B88D62 /* FrameRateCalculator.m in Sources */,
 				68F1C8D518D7F37D009FAE8A /* A3LadyCalendarViewController.m in Sources */,
 				68B6A2B518CEC76D004084EF /* LoanCalcMode.m in Sources */,
-				68143D6118E3EC7C00569691 /* A3TableViewEntryElement.m in Sources */,
 				6817825316253640008A6E4B /* A3SegmentedControl.m in Sources */,
 				68143D0A18E3EC1F00569691 /* A3PasscodeKeyboard_iPad.m in Sources */,
 				688257B117D37D37006429D3 /* A3HolidaysEditCell.m in Sources */,
@@ -6594,7 +6583,6 @@
 				68B6A2AD18CEC76D004084EF /* A3LoanCalcMainViewController.m in Sources */,
 				68B6A2EE18CEC76D004084EF /* A3UnitPriceHistoryViewController.m in Sources */,
 				682E07EA171968A8007112B9 /* ATSDragToReorderTableViewController.m in Sources */,
-				68143D5418E3EC7C00569691 /* A3JHTableViewEntryElement.m in Sources */,
 				682FDF0C1981CC0400C6C83D /* NSObject+MagicalDataImport.m in Sources */,
 				682FDF081981CC0400C6C83D /* NSEntityDescription+MagicalDataImport.m in Sources */,
 				68F1C90418D814F9009FAE8A /* UIPopoverController+Override.m in Sources */,
@@ -7728,7 +7716,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Yoon Jeong Kang (S6YYP4CXSY)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
@@ -7751,7 +7739,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Yoon Jeong Kang (S6YYP4CXSY)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;

@@ -33,6 +33,7 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "Reachability.h"
 #import "A3InstructionViewController.h"
+#import "UIColor+A3Addition.h"
 
 NSString *const A3CurrencyPickerSelectedIndexColumnOne = @"A3CurrencyPickerSelectedIndexColumnOne";
 NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelectedIndexColumnTwo";
@@ -75,6 +76,8 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *sampleTitlesBGViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *sampleValuesBGViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet UIButton *swapButton;
+@property (weak, nonatomic) IBOutlet UIButton *refreshButton;
 
 @end
 
@@ -190,6 +193,12 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	if (self.instructionViewController) {
 		[self.navigationController.view bringSubviewToFront:self.instructionViewController.view];
 	}
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	[self dismissNumberKeypadAnimated:NO];
 }
 
 - (void)setupConstantsFor3_5inchNoAds {
@@ -402,6 +411,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 #pragma mark - Update Button
 
 - (IBAction)updateButtonAction:(UIButton *)sender {
+	[self dismissNumberKeypadAnimated:YES];
 	[self.currencyDataManager updateCurrencyRatesOnSuccess:^{
 		[self didSelectPickerRow];
 		[self refreshUpdateDateLabel];
@@ -440,6 +450,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 }
 
 - (void)plusButtonAction:(UIButton *)button {
+	[self dismissNumberKeypadAnimated:YES];
 	if (self.firstResponder) {
 		[self.firstResponder resignFirstResponder];
 		[self setFirstResponder:nil];
@@ -568,7 +579,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
  */
 - (NSURL *)urlForChartImage {
 	NSArray *types = @[@"1d", @"5d", @"1m", @"5m", @"1y"];
-	NSString *string = [NSString stringWithFormat:@"http://chart.finance.yahoo.com/z?s=%@%@=x&t=%@&z=%@&region=%@&lang=%@",
+	NSString *string = [NSString stringWithFormat:@"https://chart.finance.yahoo.com/z?s=%@%@=x&t=%@&z=%@&region=%@&lang=%@",
 												  _sourceCurrencyCode, _targetCurrencyCode,
 												  types[(NSUInteger) self.termSelectSegmentedControl.selectedSegmentIndex],
 												  IS_IPHONE || (IS_IPHONE && !IS_LANDSCAPE)  ? @"m" : @"l",
@@ -587,28 +598,6 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	if (IS_IPHONE && IS_LANDSCAPE) return NO;
 
 	self.previousValue = textField.text;
-
-	/*
-	A3NumberKeyboardViewController *keyboardVC = [self simpleNumberKeyboard];
-	self.numberKeyboardViewController = keyboardVC;
-	keyboardVC.textInputTarget = textField;
-	keyboardVC.delegate = self;
-	keyboardVC.keyboardType = A3NumberKeyboardTypeCurrency;
-
-	NSInteger fromRow = [_pickerView selectedRowInComponent:0];
-	A3YahooCurrency *fromCurrencyInfo = [self currencyInfoAtRow:fromRow];
-	keyboardVC.currencyCode = fromCurrencyInfo.currencyCode;
-
-	textField.inputView = [keyboardVC view];
-	if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
-		textField.inputAssistantItem.leadingBarButtonGroups = @[];
-		textField.inputAssistantItem.trailingBarButtonGroups = @[];
-	}
-	
-	textField.keyboardType = UIKeyboardTypeNumberPad;
-	
-	textField.text = @"";
-	 */
 
 	[self presentNumberKeyboardForTextField:textField];
 	
@@ -686,6 +675,8 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
 	_didPressClearKey = YES;
+	_didPressNumberKey = NO;
+	_sourceTextField.text = [self.decimalFormatter stringFromNumber:@0];
 	_targetTextField.text = self.targetValueString;
 }
 
@@ -696,7 +687,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	nf = [self currencyFormatterWithCurrencyCode:_sourceCurrencyCode];
 	_sourceTextField.text = [nf stringFromNumber:@(value)];
 	
-	[self dismissNumberKeypad];
+	[self dismissNumberKeypadAnimated:YES];
 }
 
 - (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
@@ -714,7 +705,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 - (void)calculatorButtonAction {
 	_didPressClearKey = NO;
 	
-	[self dismissNumberKeypad];
+	[self dismissNumberKeypadAnimated:YES];
 	
 	A3CalculatorViewController *viewController = [self presentCalculatorViewController];
 	viewController.delegate = self;
@@ -771,6 +762,8 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 			[centerAlignView addSubview:imageView];
 			
 			UILabel *codeNameLabel  = [self currencyCodeLabel];
+			codeNameLabel.text = currencyCode;
+			[codeNameLabel sizeToFit];
 			[centerAlignView addSubview:codeNameLabel];
 			
 			[imageView makeConstraints:^(MASConstraintMaker *make) {
@@ -837,7 +830,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
 	FNLOG();
-	[self dismissNumberKeypad];
+	[self dismissNumberKeypadAnimated:YES];
 	[self didSelectPickerRow];
 }
 
@@ -886,9 +879,11 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 - (void)shareButtonAction:(id)sender {
 	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completionHandler:^(NSString *activityType, BOOL completed) {
 		[_mainViewController enableControls:YES];
+		[self enableControls:YES];
 	}];
 	_sharePopoverController.delegate = self;
 	[_mainViewController enableControls:NO];
+	[self enableControls:NO];
 }
 
 - (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController {
@@ -923,7 +918,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 }
 
 - (IBAction)yahooButtonAction:(UIButton *)sender {
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://finance.yahoo.com"]];
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://finance.yahoo.com"]];
 }
 
 #pragma mark - Ad Received
@@ -1113,12 +1108,6 @@ static NSString *const A3V3InstructionDidShowForCurrencyPicker = @"A3V3Instructi
 	self.instructionViewController = nil;
 }
 
-#pragma mark - Extension Keyboard를 사용하지 못하게 합니다.
-
-- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
-	return NO;
-}
-
 #pragma mark - Keyboard
 
 - (void)presentNumberKeyboardForTextField:(UITextField *) textField {
@@ -1160,7 +1149,7 @@ static NSString *const A3V3InstructionDidShowForCurrencyPicker = @"A3V3Instructi
 	
 }
 
-- (void)dismissNumberKeypad {
+- (void)dismissNumberKeypadAnimated:(BOOL)animated {
 	if (!_isNumberKeyboardVisible) {
 		return;
 	}
@@ -1187,16 +1176,35 @@ static NSString *const A3V3InstructionDidShowForCurrencyPicker = @"A3V3Instructi
 
 	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
 	UIView *keyboardView = keyboardViewController.view;
-	[UIView animateWithDuration:0.3 animations:^{
-		CGRect frame = keyboardView.frame;
-		frame.origin.y += keyboardViewController.keyboardHeight;
-		keyboardView.frame = frame;
-	} completion:^(BOOL finished) {
+
+	void(^completion)() = ^{
 		[keyboardView removeFromSuperview];
 		[keyboardViewController removeFromParentViewController];
 		self.numberKeyboardViewController = nil;
 		_isNumberKeyboardVisible = NO;
-	}];
+	};
+
+	if (animated) {
+		[UIView animateWithDuration:0.3 animations:^{
+			CGRect frame = keyboardView.frame;
+			frame.origin.y += keyboardViewController.keyboardHeight;
+			keyboardView.frame = frame;
+		} completion:^(BOOL finished) {
+			completion();
+		}];
+	} else {
+		completion();
+	}
+}
+
+- (void)enableControls:(BOOL)enable {
+	if (!IS_IPAD) return;
+
+	[self.plusButton setEnabled:enable];
+	[self.refreshButton setEnabled:enable];
+	[self.swapButton setEnabled:enable];
+
+	_sourceTextField.textColor = enable ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
 }
 
 @end

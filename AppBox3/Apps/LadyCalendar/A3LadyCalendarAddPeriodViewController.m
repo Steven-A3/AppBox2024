@@ -250,6 +250,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)resignAllAction
 {
+	[self.firstResponder resignFirstResponder];
 	[self dismissNumberKeyboard];
 
     for (NSInteger section=0; section < [_sectionsArray count]; section++) {
@@ -487,6 +488,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
         case PeriodCellType_StartDate:
         case PeriodCellType_EndDate:
 		{
+			[self.firstResponder resignFirstResponder];
+			
             [self resignAllAction];
             NSInteger inputCellType = 0;
             
@@ -599,6 +602,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 }
 
 #pragma mark ActionSheet Rotation Related
+
 - (void)rotateFirstActionSheet {
     NSInteger currentActionSheetTag = [self.firstActionSheet tag];
     [super rotateFirstActionSheet];
@@ -643,6 +647,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
     [self closeDateInputCell];
+	[self dismissNumberKeyboard];
+	
     self.firstResponder = textView;
     
     return YES;
@@ -661,6 +667,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
+	[self.firstResponder resignFirstResponder];
+	
 	[self closeDateInputCell];
 	[self presentNumberKeyboardForTextField:textField];
 	return NO;
@@ -770,9 +778,10 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
 	_didPressClearKey = YES;
+	_didPressNumberKey = NO;
 	UITextField *textField = (UITextField *) keyInputDelegate;
-	textField.text = @"";
-	_textBeforeEditingTextField = @"";
+	textField.text = [self.decimalFormatter stringFromNumber:@0];
+	_textBeforeEditingTextField = textField.text;
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate
@@ -914,12 +923,6 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	}
 
 	[self dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark - A3ViewControllerProtocol
-
-- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
-	return NO;
 }
 
 @end

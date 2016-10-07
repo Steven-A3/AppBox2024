@@ -1483,10 +1483,4 @@ enum A3TableElementCellType {
 	return self.currencyFormatter;
 }
 
-#pragma mark - A3ViewControllerProtocol
-
-- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
-	return NO;
-}
-
 @end

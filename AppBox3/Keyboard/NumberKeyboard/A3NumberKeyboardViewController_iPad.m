@@ -59,12 +59,32 @@
 - (void)setupFonts:(BOOL)portrait {
 	[self.dotButton.titleLabel setFont:[UIFont systemFontOfSize:portrait ? 28 : 33]];
 
-	NSArray *numbers = @[_num0Button, _num1Button, _num2Button, _num3Button, _num4Button, _num5Button, _num6Button, _num7Button, _num8Button, _num9Button, self.bigButton1, self.bigButton2];
+	NSMutableArray *numbers = [@[_num0Button, _num1Button, _num2Button, _num3Button, _num4Button, _num5Button, _num6Button, _num7Button, _num8Button, _num9Button] mutableCopy];
+	if (self.bigButton1) {
+		[numbers addObject:self.bigButton1];
+	}
+	if (self.bigButton2) {
+		[numbers addObject:self.bigButton2];
+	}
+	
 	[numbers enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop) {
 		button.titleLabel.font = [UIFont systemFontOfSize:portrait ? 22 : 27];
 	}];
 
-	[@[self.clearButton, self.doneButton, self.prevButton, self.nextButton] enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop) {
+	NSMutableArray *functionButtons = [NSMutableArray new];
+	if (self.clearButton) {
+		[functionButtons addObject:self.clearButton];
+	}
+	if (self.doneButton) {
+		[functionButtons addObject:self.doneButton];
+	}
+	if (self.prevButton) {
+		[functionButtons addObject:self.prevButton];
+	}
+	if (self.nextButton) {
+		[functionButtons addObject:self.nextButton];
+	}
+	[functionButtons enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop) {
 		button.titleLabel.font = [UIFont systemFontOfSize:portrait ? 18 : 25];
 	}];
 

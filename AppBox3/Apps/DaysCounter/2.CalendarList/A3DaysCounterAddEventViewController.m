@@ -70,11 +70,16 @@
 @property (copy, nonatomic) NSString *originalPhotoID;
 @property (strong, nonatomic) id settingsObserver;
 @property (strong, nonatomic) UIActionSheet *actionSheet;
+@property (copy, nonatomic) NSIndexPath *editingIndexPath;
+@property (weak, nonatomic) UITextField *editingTextField;
+@property (copy, nonatomic) UIColor *textColorBeforeEditing;
+
 @end
 
 @implementation A3DaysCounterAddEventViewController {
 	BOOL _isAddingEvent;
 	BOOL _ignoreShowKeyboard;
+	BOOL _isDateKeyboardVisible;
 }
 
 - (id)init {
@@ -1063,7 +1068,6 @@
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self resignAllAction];
     if ( _eventItem && indexPath.section == [_sectionTitleArray count] ) {
         [self deleteEventAction:[tableView cellForRowAtIndexPath:indexPath]];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -1144,8 +1148,33 @@
         self.inputDateKey = rowItemType == EventCellType_StartDate ? EventItem_StartDate : EventItem_EndDate;
         
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        UITextField *textField = (UITextField *)[cell viewWithTag:14];
-        [textField becomeFirstResponder];
+		
+		if (_isDateKeyboardVisible) {
+			[self dismissDateKeyboardAnimated:YES];
+			return;
+		} else {
+			[_editingTextField resignFirstResponder];
+			[_textViewResponder resignFirstResponder];
+			
+			NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
+			NSInteger startDateIndex = [self indexOfRowForItemType:EventCellType_StartDate atSectionArray:section1_items];
+			
+			self.dateKeyboardViewController = [self newDateKeyboardViewController];
+			self.dateKeyboardViewController.dateComponents = [A3DaysCounterModelManager dateComponentsFromDateModelObject:indexPath.row == startDateIndex ? _eventItem.startDate : [_eventItem endDateCreateIfNotExist:NO ]
+																												  toLunar:YES];
+			self.dateKeyboardViewController.delegate = self;
+			self.dateKeyboardViewController.isLunarDate = [_eventItem.isLunar boolValue];
+
+			UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+			UILabel *dateTextLabel = [cell viewWithTag:12];
+			self.textColorBeforeEditing = dateTextLabel.textColor;
+			dateTextLabel.textColor = [[A3AppDelegate instance] themeColor];
+
+			self.editingIndexPath = indexPath;
+			self.inputDateKey = indexPath.row == startDateIndex ? EventItem_StartDate : EventItem_EndDate;
+
+			[self presentDateKeyboard];
+		}
     }
     else {
         UIButton *button = (UIButton*)[cell viewWithTag:13];
@@ -1554,8 +1583,10 @@
 
 - (void)resignAllAction
 {
+	[self dismissDateKeyboardAnimated:YES];
     [[self firstResponder] resignFirstResponder];
-    [self.textViewResponder resignFirstResponder];
+	[_editingTextField resignFirstResponder];
+    [_textViewResponder resignFirstResponder];
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
@@ -2127,37 +2158,20 @@
 }
 
 #pragma mark - UITextField Related
+
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
     [self setFirstResponder:textField];
     if (![_eventItem.isLunar boolValue]) {
         [self closeDatePickerCell];
     }
-    
+	[self dismissDateKeyboardAnimated:YES];
+	
     return YES;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:CGPointMake(100, [textField convertPoint:textField.center toView:self.tableView].y)];
-    
-    NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
-    NSInteger startDateIndex = [self indexOfRowForItemType:EventCellType_StartDate atSectionArray:section1_items];
-    NSInteger endDateIndex = [self indexOfRowForItemType:EventCellType_EndDate atSectionArray:section1_items];
-    
-    if ((indexPath.section == 1 && indexPath.row == startDateIndex) || (indexPath.section == 1 && indexPath.row == endDateIndex)) {    // start Date
-        if (!self.dateKeyboardViewController) {
-            self.dateKeyboardViewController = [self newDateKeyboardViewController];
-            self.dateKeyboardViewController.dateComponents = [A3DaysCounterModelManager dateComponentsFromDateModelObject:indexPath.row == startDateIndex ? _eventItem.startDate : [_eventItem endDateCreateIfNotExist:NO ]
-                                                                                                                  toLunar:YES];
-        }
-		self.dateKeyboardViewController.delegate = self;
-        self.dateKeyboardViewController.isLunarDate = [_eventItem.isLunar boolValue];
-        textField.inputView = self.dateKeyboardViewController.view;
-		if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
-			textField.inputAssistantItem.leadingBarButtonGroups = @[];
-			textField.inputAssistantItem.trailingBarButtonGroups = @[];
-		}
-    }
+	self.editingTextField = textField;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -2173,16 +2187,76 @@
     if (indexPath.section == 0 && indexPath.row == 0) {         // event Name
         _eventItem.eventName = textField.text;
     }
-    else {
-        
-    }
-    
+
+	_editingTextField = nil;
+	
     if (textField == self.firstResponder) {
         self.firstResponder = nil;
     }
 }
 
+- (void)presentDateKeyboard {
+	if (_isDateKeyboardVisible) {
+		return;
+	}
+
+	A3DateKeyboardViewController *keyboardViewController = self.dateKeyboardViewController;
+	
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGFloat keyboardHeight = keyboardViewController.keyboardHeight;
+	UIView *keyboardView = keyboardViewController.view;
+	[self.view.superview addSubview:keyboardView];
+	
+	keyboardView.frame = CGRectMake(0, bounds.size.height, bounds.size.width, keyboardHeight);
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = keyboardView.frame;
+		frame.origin.y -= keyboardHeight;
+		keyboardView.frame = frame;
+	} completion:^(BOOL finished) {
+		_isDateKeyboardVisible = YES;
+	}];
+	
+}
+
+- (void)dismissDateKeyboardAnimated:(BOOL)animated {
+	if (!_isDateKeyboardVisible) {
+		return;
+	}
+
+	if (_textColorBeforeEditing) {
+		UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_editingIndexPath];
+		UILabel *detailTextLabel = [cell viewWithTag:12];
+		detailTextLabel.textColor = _textColorBeforeEditing;
+		_textColorBeforeEditing = nil;
+	}
+
+	_inputDateKey = nil;
+	
+	A3DateKeyboardViewController *keyboardViewController = self.dateKeyboardViewController;
+	UIView *keyboardView = keyboardViewController.view;
+
+	void(^completion)() = ^{
+		[keyboardView removeFromSuperview];
+		self.dateKeyboardViewController = nil;
+		_editingIndexPath = nil;
+		_isDateKeyboardVisible = NO;
+		self.firstResponder = nil;
+	};
+	if (animated) {
+		[UIView animateWithDuration:0.3 animations:^{
+			CGRect frame = keyboardView.frame;
+			frame.origin.y += keyboardViewController.keyboardHeight;
+			keyboardView.frame = frame;
+		} completion:^(BOOL finished) {
+			completion();
+		}];
+	} else {
+		completion();
+	}
+}
+
 #pragma mark  A3KeyboardViewControllerDelegate
+
 - (void)dateKeyboardValueChangedDate:(NSDate *)date
 {
     FNLOG(@"%@", date);
@@ -2271,7 +2345,7 @@
 }
 
 - (void)dateKeyboardDoneButtonPressed:(A3DateKeyboardViewController *)keyboardViewController {
-    [self.firstResponder resignFirstResponder];
+	[self dismissDateKeyboardAnimated:YES];
 }
 
 - (void)updateOffsetDateCompWithTextField:(UITextField *)textField {
@@ -2643,7 +2717,7 @@
 
     _eventItem.notes = textView.text;
 
-    self.textViewResponder = nil;
+    _textViewResponder = nil;
 }
 
 @end

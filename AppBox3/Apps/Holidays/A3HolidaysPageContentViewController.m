@@ -168,6 +168,8 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 			[_pageViewController updatePhotoLabelText];
 			_imageView.image = [[A3HolidaysFlickrDownloadManager sharedInstance] imageForCountryCode:_countryCode];
 			self.blurImageProcessor.imageToProcess = _imageView.image;
+			uint32_t radius = self.tableView.contentOffset.y < 100 ? 0 : lerp(self.tableView.contentOffset.y / self.tableView.contentSize.height, 20, 30);
+			[self.blurImageProcessor asyncBlurWithRadius:radius iterations:5 cancelingLastOperation:YES];
 			[self alertAcknowledgment];
 		});
 	}

@@ -41,7 +41,7 @@ NSString *const A3CurrencyRatesDataFilename = @"currencyRates";
 - (void)testDownloadCurrencyDates {
 	XCTestExpectation* expectation = [self expectationWithDescription:@"Download datafile"];
 	
-	NSURL *requestURL = [NSURL URLWithString:@"http://finance.yahoo.com/webservice/v1/symbols/allcurrencies/quote?format=json"];
+	NSURL *requestURL = [NSURL URLWithString:@"https://finance.yahoo.com/webservice/v1/symbols/allcurrencies/quote?format=json"];
 
 	NSURLRequest *request = [NSURLRequest requestWithURL:requestURL];
 	AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];

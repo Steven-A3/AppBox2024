@@ -1242,6 +1242,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 #pragma mark - apps & more button stuff
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
+	[self dismissNumberKeyboardAnimated:NO];
 	[self.firstResponder resignFirstResponder];
 	
 	[self disposeInitializedCondition];
@@ -1267,6 +1268,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 }
 
 - (void)moreButtonAction:(UIBarButtonItem *)button {
+	[self dismissNumberKeyboardAnimated:YES];
 	[self disposeInitializedCondition];
 
 	[self rightBarButtonDoneButton];
@@ -1279,6 +1281,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 }
 
 - (void)composeButtonAction:(UIButton *)button {
+	[self dismissNumberKeyboardAnimated:YES];
 	[self saveToHistoryAndInitialize:button];
 }
 
@@ -1327,6 +1330,8 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 }
 
 - (void)shareButtonAction:(id)sender {
+	[self dismissNumberKeyboardAnimated:YES];
+
     if (self.localPopoverController) {
         [self disposeInitializedCondition];
         return;
@@ -1345,6 +1350,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 }
 
 - (void)historyButtonAction:(UIButton *)button {
+	[self dismissNumberKeyboardAnimated:YES];
     [self disposeInitializedCondition];
 	[self enableControls:NO];
     
@@ -1367,6 +1373,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 }
 
 - (void)settingsButtonAction:(UIButton *)button {
+	[self dismissNumberKeyboardAnimated:YES];
 	[self disposeInitializedCondition];
 	[self enableControls:NO];
 
@@ -1477,12 +1484,6 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 
 - (NSNumberFormatter *)currencyFormatterForTableViewInputElement {
 	return [self.dataManager currencyFormatter];
-}
-
-#pragma mark - A3ViewControllerProtocol
-
-- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
-	return NO;
 }
 
 @end

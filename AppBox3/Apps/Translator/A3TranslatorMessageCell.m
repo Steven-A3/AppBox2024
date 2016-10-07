@@ -520,7 +520,7 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 	return [googleSpeeches member:language] != nil;
 }
 
-static NSString *const GOOGLE_LISTEN_URL	= @"http://translate.google.com/translate_tts?ie=UTF-8&tl=";
+static NSString *const GOOGLE_LISTEN_URL	= @"https://translate.google.com/translate_tts?ie=UTF-8&tl=";
 
 - (void)speakGoogleSpeechWithLanguage {
 	if (![[A3AppDelegate instance].reachability isReachable]) {

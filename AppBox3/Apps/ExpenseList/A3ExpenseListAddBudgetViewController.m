@@ -1030,7 +1030,9 @@ static NSString *CellIdentifier = @"Cell";
 #pragma mark - A3KeyboardDelegate
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
+	_editingTextField.text = [self.decimalFormatter stringFromNumber:@0];
 	_didPressClearKey = YES;
+	_didPressNumberKey = NO;
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {

@@ -23,4 +23,5 @@ extern NSString *const A3CurrencySettingsChangedNotification;
 - (void)resetIntermediateState;
 - (void)showInstructionView;
 
+- (void)dismissNumberKeyboardAnimated:(BOOL)animated;
 @end

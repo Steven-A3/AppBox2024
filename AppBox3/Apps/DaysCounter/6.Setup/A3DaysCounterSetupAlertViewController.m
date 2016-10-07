@@ -479,6 +479,7 @@
 
 	_didPressClearKey = NO;
 	_didPressNumberKey = NO;
+	keyboardViewController.keyboardType = A3NumberKeyboardTypeInteger;
 	
 	[self textFieldDidBeginEditing:textField];
 	
@@ -566,6 +567,7 @@
 	textField.text = [self.decimalFormatter stringFromNumber:@0];
 	_textBeforeEditingTextField = textField.text;
 	_didPressClearKey = YES;
+	_didPressNumberKey = NO;
 }
 
 - (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
@@ -577,12 +579,6 @@
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
 	[self dismissNumberKeyboard];
-}
-
-#pragma mark - A3ViewControllerProtocol
-
-- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
-	return NO;
 }
 
 @end

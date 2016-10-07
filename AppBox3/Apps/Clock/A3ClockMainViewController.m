@@ -352,7 +352,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 }
 
 - (void)yahooButtonAction {
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://weather.yahoo.com"]];
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://weather.yahoo.com"]];
 }
 
 - (void)settingsChanged {

@@ -185,7 +185,6 @@
 
 	switch (self.inputType) {
 		case A3TableViewEntryTypeText:
-            textField.inputView = nil;
 			if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
 				textField.inputAssistantItem.leadingBarButtonGroups = @[];
 				textField.inputAssistantItem.trailingBarButtonGroups = @[];
@@ -370,8 +369,9 @@
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
 	_didPressClearKey = YES;
+	_didPressNumberKey = NO;
     self.value = @"0";
-    ((UITextField *)keyInputDelegate).text = @"";
+    ((UITextField *)keyInputDelegate).text = [self.decimalFormatter stringFromNumber:@0];
     
     if (_onEditingValueChanged) {
         _onEditingValueChanged(self, _firstResponder);
@@ -455,29 +455,6 @@
 
 		[((A3WalletNoteCell *)cell).textView becomeFirstResponder];
 	}
-}
-
-#pragma mark - misc
-
-- (void)moveTableScrollToIndexPath:(NSIndexPath *)indexPath textField:(UITextField *)textField {
-    CGRect cellRect = [_rootTableView rectForRowAtIndexPath:indexPath];
-	CGFloat keyboardHeight;
-	if (textField) {
-		keyboardHeight = textField.inputView.bounds.size.height + textField.inputAccessoryView.bounds.size.height;
-	} else {
-		keyboardHeight = _inputViewController.view.bounds.size.height;
-	}
-    if ((cellRect.origin.y + cellRect.size.height + _rootTableView.contentInset.top) < (_rootTableView.frame.size.height - keyboardHeight)) {
-		return;
-	}
-
-	[UIView beginAnimations:nil context:nil];
-	[UIView setAnimationDuration:0.3];
-
-	CGFloat offset = (cellRect.origin.y + cellRect.size.height) - (_rootTableView.frame.size.height - keyboardHeight);
-    _rootTableView.contentOffset = CGPointMake(0.0, offset);
-
-	[UIView commitAnimations];
 }
 
 #pragma mark --- Response to Currency Select Button and result

@@ -237,6 +237,9 @@
 			}
 		}
 	}
+	if ([_delegate respondsToSelector:@selector(keyboardViewControllerDidValueChange:)]) {
+		[_delegate keyboardViewControllerDidValueChange:self];
+	}
 }
 
 - (IBAction)prevAction {

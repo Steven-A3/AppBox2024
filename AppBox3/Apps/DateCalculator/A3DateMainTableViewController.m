@@ -819,6 +819,10 @@
 		return;
 	}
 	
+	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_editingIndexPath];
+	if (cell) {
+		cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
+	}
 	CGFloat keyboardHeight = self.dateKeyboardViewController.keyboardHeight;
 	
 	UIEdgeInsets contentInset = self.tableView.contentInset;
@@ -1001,68 +1005,6 @@
     return NO;
 }
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
-    self.firstResponder = textField;
-	self.textBeforeEditingText = textField.text;
-	self.placeholderBeforeEditingText = textField.placeholder;
-	textField.text = @"";
-	textField.placeholder = @"0";
-    
-    A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
-    if (!footerCell) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
-        footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
-    }
-
-	if (self.isAddSubMode && [footerCell hasEqualTextField:(UITextField *)self.firstResponder]) {
-		if (_simpleNormalNumberKeyboard==nil) {
-			_simpleNormalNumberKeyboard = [self simplePrevNextNumberKeyboard];
-			if (IS_IPHONE) {
-				((A3NumberKeyboardViewController_iPhone *)_simpleNormalNumberKeyboard).needButtonsReload = NO;
-			}
-			_simpleNormalNumberKeyboard.useDotAsClearButton = YES;
-		}
-
-		_simpleNormalNumberKeyboard.textInputTarget = textField;
-		_simpleNormalNumberKeyboard.delegate = self;
-		textField.inputView = _simpleNormalNumberKeyboard.view;
-
-		if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
-			textField.inputAssistantItem.leadingBarButtonGroups = @[];
-			textField.inputAssistantItem.trailingBarButtonGroups = @[];
-		}
-
-		if (textField == footerCell.yearTextField) {
-			_datePrevShow = NO;
-			_dateNextShow = YES;
-		}
-		else if (textField == footerCell.monthTextField) {
-			_datePrevShow = YES;
-			_dateNextShow = YES;
-		}
-		else if (textField == footerCell.dayTextField) {
-			_datePrevShow = YES;
-			_dateNextShow = NO;
-		}
-
-		[_simpleNormalNumberKeyboard reloadPrevNextButtons];
-	}
-	else {
-		A3DateKeyboardViewController * keyboardVC = [self dateKeyboardViewController];
-		keyboardVC.delegate = self;
-		textField.inputView = keyboardVC.view;
-
-		if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
-			textField.inputAssistantItem.leadingBarButtonGroups = @[];
-			textField.inputAssistantItem.trailingBarButtonGroups = @[];
-		}
-	}
-
-//	_isKeyboardShown = YES;
-
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
-}
-
 -(void)textFieldDidEndEditing:(UITextField *)textField {
     if (self.firstResponder == textField) {
         [self setFirstResponder:nil];
@@ -1116,10 +1058,6 @@
     else {
         FNLOG(@"from/to: %@", notification);
 	}
-}
-
-- (void)keyboardDidHide:(NSNotification *)noti {
-	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:NO];
 }
 
 - (void)presentNumberKeyboardForTextField:(UITextField *)textField {
@@ -1367,11 +1305,6 @@
 - (void)dateKeyboardDoneButtonPressed:(A3DateKeyboardViewController *)keyboardViewController
 {
 	[self dismissDateKeyboard];
-
-	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_editingIndexPath];
-	if (cell) {
-		cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
-	}
 
 	_editingIndexPath = nil;
     [self setResultToHeaderViewWithAnimation:YES];
@@ -1779,7 +1712,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	[self clearEverything];
+	[self dismissMoreMenu];
 	
     if (indexPath.section == 0) {
         if ((self.isAddSubMode==YES && indexPath.row==kAddSubRowIndex) || (self.isAddSubMode==NO && indexPath.row==0)) {
@@ -1806,20 +1739,35 @@
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 		if (IS_IPHONE && IS_LANDSCAPE) return;
-
-        if (!self.dateKeyboardViewController) {
-            self.dateKeyboardViewController = self.newDateKeyboardViewController;
-        }
-
-		[self.dateKeyboardViewController changeInputToYear];
-        if ([indexPath row] == 0) {
-            self.dateKeyboardViewController.date = self.fromDate;
-            [self moveToFromDateCell];
-        }
-        else {
-            self.dateKeyboardViewController.date = self.toDate;
-            [self moveToToDateCell];
-        }
+		
+		if (_isDateKeyboardVisible) {
+			if (_editingIndexPath.row != indexPath.row) {
+				if ([indexPath row] == 0) {
+					self.dateKeyboardViewController.date = self.fromDate;
+					[self moveToFromDateCell];
+				}
+				else {
+					self.dateKeyboardViewController.date = self.toDate;
+					[self moveToToDateCell];
+				}
+			} else {
+				[self dismissDateKeyboard];
+			}
+		} else {
+			if (!self.dateKeyboardViewController) {
+				self.dateKeyboardViewController = self.newDateKeyboardViewController;
+			}
+			
+			[self.dateKeyboardViewController changeInputToYear];
+			if ([indexPath row] == 0) {
+				self.dateKeyboardViewController.date = self.fromDate;
+				[self moveToFromDateCell];
+			}
+			else {
+				self.dateKeyboardViewController.date = self.toDate;
+				[self moveToToDateCell];
+			}
+		}
     }
     else if (indexPath.section == 2 && indexPath.row == 0) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -1893,11 +1841,6 @@
 
 - (void)dismissEditEventViewController {
 	[self enableControls:YES];
-}
-
-- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
-	FNLOG();
-	return NO;
 }
 
 @end

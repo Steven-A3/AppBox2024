@@ -369,6 +369,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (void)appWillResignActive:(NSNotification*)noti
 {
+	[self dismissNumberKeyboard];
     [self clearEverything];
 }
 
@@ -787,6 +788,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (void)composeButtonAction:(id)button
 {
+	[self dismissNumberKeyboard];
 	[self dismissMoreMenu];
 
 	if (!_isComparisonMode) {
@@ -840,6 +842,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 }
 
 - (void)historyButtonAction:(UIButton *)button {
+	[self dismissNumberKeyboard];
 	[self clearEverything];
 
 	UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"LoanCalculatorPhoneStoryBoard" bundle:nil];
@@ -863,6 +866,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (void)settingsButtonAction:(UIButton *)button
 {
+	[self dismissNumberKeyboard];
 	[self clearEverything];
 
 	UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"LoanCalculatorPhoneStoryBoard" bundle:nil];
@@ -891,7 +895,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 }
 
 - (void)clearEverything {
-	[self dismissNumberKeyboard];
 	[self.firstResponder resignFirstResponder];
 	[self setFirstResponder:nil];
 
@@ -1207,6 +1210,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 }
 
 - (void)shareButtonAction:(id)sender {
+	[self dismissNumberKeyboard];
 	[self clearEverything];
 
 	if (_isComparisonMode) {
@@ -1781,6 +1785,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
+	[self dismissNumberKeyboard];
     [self clearEverything];
 }
 
@@ -1855,8 +1860,15 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 			return NO;
 		}
 	}
-	self.numberKeyboardViewController = [self normalNumberKeyboard];
-	[self presentNumberKeyboardForTextField:textField];
+	if (_isNumberKeyboardVisible) {
+		if (_editingTextField != textField) {
+			[self textFieldDidEndEditing:_editingTextField];
+			[self textFieldDidBeginEditing:textField];
+		}
+	} else {
+		self.numberKeyboardViewController = [self normalNumberKeyboard];
+		[self presentNumberKeyboardForTextField:textField];
+	}
 
 	return NO;
 }
@@ -2124,6 +2136,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
 	[super A3KeyboardController:controller clearButtonPressedTo:keyInputDelegate];
 	_didPressClearKey = YES;
+	_didPressNumberKey = NO;
 }
 
 - (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
@@ -2139,6 +2152,18 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	[self dismissNumberKeyboard];
 
 	[super currencySelectButtonAction:notification];
+}
+
+- (void)calculatorButtonAction {
+	[super calculatorButtonAction];
+	self.calculatorTargetTextField = _editingTextField;
+	[self dismissNumberKeyboard];
+}
+
+- (void)calculatorDidDismissWithValue:(NSString *)value {
+	_didPressNumberKey = YES;
+
+	[super calculatorDidDismissWithValue:value];
 }
 
 #pragma mark - LoanCalcHistoryViewController delegate
@@ -2279,6 +2304,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         [inputCell.textField becomeFirstResponder];
     }
     else if ((exPaymentItem == A3LC_ExtraPaymentYearly) || (exPaymentItem == A3LC_ExtraPaymentOnetime)) {
+		[self dismissNumberKeyboard];
+		[self dismissDatePicker];
+		
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"LoanCalculatorPhoneStoryBoard" bundle:nil];
         A3LoanCalcExtraPaymentViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"A3LoanCalcExtraPaymentViewController"];
         viewController.delegate = self;
@@ -2292,7 +2320,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             [self enableControls:NO];
             [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
         }
-        [self dismissDatePicker];
     }
 }
 
@@ -2328,6 +2355,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             
         }
         else if (indexPath.section == 1 || indexPath.section == 2){
+			[self dismissNumberKeyboard];
+			[self dismissDatePicker];
+			
             NSString *storyboardName = IS_IPAD ? @"LoanCalculatorPadStoryBoard" : @"LoanCalculatorPhoneStoryBoard";
             UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
             A3LoanCalcLoanDetailViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3LoanCalcLoanDetailViewController"];
@@ -2343,7 +2373,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             }
             viewController.delegate = self;
             [self.navigationController pushViewController:viewController animated:YES];
-            [self dismissDatePicker];
         }
         
     }
@@ -2352,6 +2381,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             // graph
         }
         else if (indexPath.section == 1) {
+			[self dismissNumberKeyboard];
+			[self dismissDatePicker];
+			
             // calculation for
             A3LoanCalcSelectModeViewController *viewController = [[A3LoanCalcSelectModeViewController alloc] initWithStyle:UITableViewStyleGrouped];
             viewController.delegate = self;
@@ -2364,7 +2396,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 				[self enableControls:NO];
 				[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
 			}
-            [self dismissDatePicker];
         }
         else if (indexPath.section == 2) {
             // calculation items
@@ -2372,6 +2403,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             A3LoanCalcCalculationItem calcItem = calcItemNum.integerValue;
             
             if (calcItem == A3LC_CalculationItemFrequency) {
+				[self dismissNumberKeyboard];
+				[self dismissDatePicker];
+				
                 A3LoanCalcSelectFrequencyViewController *viewController = [[A3LoanCalcSelectFrequencyViewController alloc] initWithStyle:UITableViewStyleGrouped];
                 viewController.delegate = self;
                 viewController.currentFrequency = self.loanData.frequencyIndex;
@@ -2383,12 +2417,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 					[self enableControls:NO];
 					[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
 				}
-                
-                [self dismissDatePicker];
             }
             else {
                 A3LoanCalcTextInputCell *inputCell = (A3LoanCalcTextInputCell *)[tableView cellForRowAtIndexPath:indexPath];
-                [inputCell.textField becomeFirstResponder];
+				[self textFieldShouldBeginEditing:inputCell.textField];
             }
         }
         
@@ -2994,10 +3026,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	if ([customCurrencyCode length]) {
 		[self.loanFormatter setCurrencyCode:customCurrencyCode];
 	}
-}
-
-- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
-	return NO;
 }
 
 #pragma mark - AdMob

@@ -35,8 +35,6 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 @property (nonatomic, strong) NSArray *moreMenuButtons;
 @property (nonatomic, strong) UIView *moreMenuView;
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
-@property (nonatomic, strong) UITextField *textFieldForPlayInputClick;
-@property (nonatomic, strong) A3KeyboardView *inputViewForPlayInputClick;
 @property (nonatomic, strong) UISegmentedControl *calculatorTypeSegment;
 
 @end
@@ -85,8 +83,6 @@ NSString *const A3CalculatorModeScientific = @"scientific";
         [self checkRightButtonDisable];
     }
 
-	[self addTextFieldForPlayInputClick];
-    
     if (IS_IPAD) {
         self.navigationItem.titleView = self.calculatorTypeSegment;
     }
@@ -172,20 +168,6 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 
 - (void)dealloc {
 	[self removeObserver];
-}
-
-- (void)addTextFieldForPlayInputClick {
-	_textFieldForPlayInputClick = [[UITextField alloc] initWithFrame:CGRectZero];
-	_textFieldForPlayInputClick.delegate = self;
-	_inputViewForPlayInputClick = [[A3KeyboardView alloc] initWithFrame:CGRectMake(0, 0, 1, 0.1)];
-	_textFieldForPlayInputClick.inputView = _inputViewForPlayInputClick;
-    if ([_textFieldForPlayInputClick respondsToSelector:@selector(inputAssistantItem)]) {
-        _textFieldForPlayInputClick.inputAssistantItem.leadingBarButtonGroups = @[];
-        _textFieldForPlayInputClick.inputAssistantItem.trailingBarButtonGroups = @[];
-    }
-	[self.view addSubview:_textFieldForPlayInputClick];
-
-	[_textFieldForPlayInputClick becomeFirstResponder];
 }
 
 - (void)rightBarButtons {
@@ -393,8 +375,6 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 }
 
 - (void)keyboardButtonPressed:(NSUInteger)key {
-	[_textFieldForPlayInputClick becomeFirstResponder];
-	[[UIDevice currentDevice] playInputClick];
 
 	NSString *expression;
     if(key == A3E_CALCULATE){

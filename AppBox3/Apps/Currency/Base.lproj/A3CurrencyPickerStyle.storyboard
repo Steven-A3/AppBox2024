@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -607,6 +607,8 @@
                         <outlet property="lineViewPickerTopHeightConstraint_iPad" destination="Hgf-rw-gTn" id="UXD-oQ-Zi1"/>
                         <outlet property="lineViewPickerTop_iPad" destination="adk-L0-PvO" id="oXZ-Ou-fCs"/>
                         <outlet property="pickerView" destination="7eU-kA-9UG" id="Jdd-Ii-PXo"/>
+                        <outlet property="refreshButton" destination="23U-D2-xZ7" id="ihr-bb-ngD"/>
+                        <outlet property="swapButton" destination="bo0-25-jyL" id="sEb-nQ-VvD"/>
                         <outlet property="tableView" destination="d1q-DC-koz" id="Wf7-cC-7jq"/>
                         <outlet property="tableViewHeightConstraint" destination="7fV-gL-JvE" id="roa-fl-EFg"/>
                         <outlet property="termSelectSegmentedControl" destination="9jg-gS-Thf" id="S8Z-DF-UUg"/>

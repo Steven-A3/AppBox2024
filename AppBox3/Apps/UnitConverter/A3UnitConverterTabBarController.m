@@ -211,10 +211,4 @@
     self.viewControllers = viewControllers;
 }
 
-#pragma mark - A3ViewControllerProtocol
-
-- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
-	return NO;
-}
-
 @end

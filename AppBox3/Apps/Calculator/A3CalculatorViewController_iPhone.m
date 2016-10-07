@@ -43,8 +43,6 @@
 @property (nonatomic, strong) MASConstraint *resultLabelRightConstraint;
 @property (nonatomic, strong) MASConstraint *scrollViewHeightConstraint;
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
-@property (nonatomic, strong) UITextField *textFieldForPlayInputClick;
-@property (nonatomic, strong) A3KeyboardView *inputViewForPlayInputClick;
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @end
@@ -101,18 +99,6 @@
         [self checkRightButtonDisable];
     }
     [self setupGestureRecognizer];
-    
-	_textFieldForPlayInputClick = [[UITextField alloc] initWithFrame:CGRectZero];
-	_textFieldForPlayInputClick.delegate = self;
-	_inputViewForPlayInputClick = [[A3KeyboardView alloc] initWithFrame:CGRectMake(0, 0, 1, 0.1)];
-	_textFieldForPlayInputClick.inputView = _inputViewForPlayInputClick;
-	if ([_textFieldForPlayInputClick respondsToSelector:@selector(inputAssistantItem)]) {
-		_textFieldForPlayInputClick.inputAssistantItem.leadingBarButtonGroups = @[];
-		_textFieldForPlayInputClick.inputAssistantItem.trailingBarButtonGroups = @[];
-	}
-	[self.view addSubview:_textFieldForPlayInputClick];
-
-	[_textFieldForPlayInputClick becomeFirstResponder];
     
     if (IS_IPHONE) {
         [self setupInstructionView];
@@ -452,7 +438,6 @@
 			[[UIApplication sharedApplication] setStatusBarHidden:NO];
 			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 		}
-        _inputViewForPlayInputClick.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1.0];
         self.calculator.isLandScape = NO;
     }
     else {
@@ -481,7 +466,6 @@
 			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 		}
 		
-        _inputViewForPlayInputClick.backgroundColor = [UIColor colorWithRed:252.0 / 255.0 green:252.0 / 255.0 blue:253.0 / 255.0 alpha:1.0];
         self.calculator.isLandScape = YES;
     }
     self.evaluatedResultLabel.font = [self getResultLabelFont:screenBounds];
@@ -542,8 +526,6 @@ static NSString *const A3V3InstructionDidShowForCalculator = @"A3V3InstructionDi
 }
 
 - (void)keyboardButtonPressed:(NSUInteger)key {
-	[_textFieldForPlayInputClick becomeFirstResponder];
-	[[UIDevice currentDevice] playInputClick];
     [self dismissMoreMenu];
 
 	NSString *expression;

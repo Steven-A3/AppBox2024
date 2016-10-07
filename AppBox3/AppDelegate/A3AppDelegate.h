@@ -113,7 +113,6 @@ extern NSString *const A3AppGroupNameNone;
 @protocol A3ViewControllerProtocol <NSObject>
 @optional
 - (NSUInteger)a3SupportedInterfaceOrientations;
-- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier;
 - (void)prepareClose;
 @end
 

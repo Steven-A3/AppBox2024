@@ -60,6 +60,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 @interface A3PasscodeViewController () <UITextFieldDelegate>
 
 @property (nonatomic, strong) A3NumberKeyboardViewController *passcodeKeyboardViewController;
+@property (nonatomic, weak) UITextField *editingTextField;
 
 @end
 
@@ -82,6 +83,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	BOOL _timerStartInSeconds;
 	BOOL _passcodeValid;
 	BOOL _shouldDismissViewController;
+	BOOL _isNumberKeyboardVisible;
 }
 
 @dynamic delegate;
@@ -312,7 +314,8 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
 - (void)cancelAndDismissMe {
 	_isCurrentlyOnScreen = NO;
-	[_passcodeTextField resignFirstResponder];
+	[self dismissNumberKeyboard];
+	
 	_isUserBeingAskedForNewPasscode = NO;
 	_isUserChangingPasscode = NO;
 	_isUserConfirmingPasscode = NO;
@@ -336,7 +339,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 - (void)dismissMe {
 	_isCurrentlyOnScreen = NO;
 	[self resetUI];
-	[_passcodeTextField resignFirstResponder];
+	[self dismissNumberKeyboard];
 
 	[[A3AppDelegate instance] saveTimerStartTime];
 
@@ -472,6 +475,37 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	}
 }
 
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
+		UIView *keyboardView = self.numberKeyboardViewController.view;
+		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+
+		FNLOGRECT(self.view.bounds);
+		FNLOG(@"%f", keyboardHeight);
+		CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+		keyboardView.frame = CGRectMake(0, bounds.size.height - keyboardHeight, bounds.size.width, keyboardHeight);
+		[self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+	}
+}
+
+- (void)statusBarFrameOrOrientationChanged:(NSNotification *)notification {
+	[super statusBarFrameOrOrientationChanged:notification];
+
+	UIInterfaceOrientation toInterfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
+		UIView *keyboardView = self.numberKeyboardViewController.view;
+		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+
+		FNLOGRECT(self.view.bounds);
+		FNLOG(@"%f", keyboardHeight);
+		CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+		keyboardView.frame = CGRectMake(0, bounds.size.height - keyboardHeight, bounds.size.width, keyboardHeight);
+		[self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+	}
+}
+
 - (void)prepareNavigationControllerWithController:(UIViewController *)viewController {
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController: self];
 	[viewController presentViewController: navController animated: NO completion: nil];
@@ -547,25 +581,68 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-	_passcodeKeyboardViewController = [self passcodeKeyboard];
-	_passcodeKeyboardViewController.textInputTarget = textField;
-	textField.inputView = _passcodeKeyboardViewController.view;
-	if ([textField respondsToSelector:@selector(inputAssistantItem)]) {
-		textField.inputAssistantItem.leadingBarButtonGroups = @[];
-		textField.inputAssistantItem.trailingBarButtonGroups = @[];
-	}
-	return YES;
+	[self presentNumberKeyboardForTextField:textField];
+
+	return NO;
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
 	return !_isCurrentlyOnScreen;
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-	if ([string isEqualToString: @"\n"]) return NO;
+- (void)presentNumberKeyboardForTextField:(UITextField *)textField {
+	if (_isNumberKeyboardVisible) {
+		return;
+	}
+	_editingTextField = textField;
 
-	NSString *typedString = [textField.text stringByReplacingCharactersInRange: range
-																	withString: string];
+	A3NumberKeyboardViewController *keyboardVC = [self passcodeKeyboard];
+	self.numberKeyboardViewController = keyboardVC;
+	keyboardVC.keyboardType = A3NumberKeyboardTypeInteger;
+	keyboardVC.textInputTarget = textField;
+	keyboardVC.delegate = self;
+
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	FNLOGRECT(bounds);
+	FNLOGRECT(self.view.bounds);
+	CGFloat keyboardHeight = keyboardVC.keyboardHeight;
+	UIView *keyboardView = keyboardVC.view;
+	[[[UIApplication sharedApplication] keyWindow] addSubview:keyboardView];
+
+	_isNumberKeyboardVisible = YES;
+
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+	
+	keyboardView.frame = CGRectMake(0, bounds.size.height, bounds.size.width, keyboardHeight);
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = keyboardView.frame;
+		frame.origin.y -= keyboardHeight;
+		keyboardView.frame = frame;
+	} completion:^(BOOL finished) {
+	}];
+}
+
+- (void)dismissNumberKeyboard {
+	if (!_isNumberKeyboardVisible) {
+		return;
+	}
+
+	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+	UIView *keyboardView = keyboardViewController.view;
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = keyboardView.frame;
+		frame.origin.y += keyboardViewController.keyboardHeight;
+		keyboardView.frame = frame;
+	} completion:^(BOOL finished) {
+		[keyboardView removeFromSuperview];
+		self.numberKeyboardViewController = nil;
+		_isNumberKeyboardVisible = NO;
+	}];
+}
+
+- (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
+	NSString *typedString = _editingTextField.text;
+
 	if (typedString.length >= 1) _firstDigitTextField.secureTextEntry = YES;
 	else _firstDigitTextField.secureTextEntry = NO;
 	if (typedString.length >= 2) _secondDigitTextField.secureTextEntry = YES;
@@ -574,6 +651,15 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	else _thirdDigitTextField.secureTextEntry = NO;
 	if (typedString.length == 4) _fourthDigitTextField.secureTextEntry = YES;
 	else _fourthDigitTextField.secureTextEntry = NO;
+
+	void(^deleteLastCharacter)() = ^{
+		if ([_editingTextField.text length] > 2) {
+			_editingTextField.text = [_editingTextField.text substringToIndex:[_editingTextField.text length] - 2];
+			FNLOG(@"%@", _editingTextField.text);
+		} else {
+			_editingTextField.text = @"";
+		}
+	};
 
 	if (typedString.length == 4) {
 		NSString *savedPasscode = [A3KeychainUtils getPassword];
@@ -590,29 +676,30 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 				// The delay is to give time for the last bullet to appear
 				[self performSelector: @selector(askForConfirmationPasscode) withObject: nil afterDelay: 0.15f];
 			}
-					// User entered his Passcode correctly and we are at the confirming screen.
+				// User entered his Passcode correctly and we are at the confirming screen.
 			else if (_isUserConfirmingPasscode) {
 				// User entered the confirmation Passcode correctly
 				if ([typedString isEqualToString: _tempPasscode]) {
 					[self dismissMe];
 				}
-						// User entered the confirmation Passcode incorrectly, start over.
+					// User entered the confirmation Passcode incorrectly, start over.
 				else {
 					[self performSelector: @selector(reAskForNewPasscode) withObject: nil afterDelay: 0.15f];
 				}
 			}
-					// Changing Passcode and the entered Passcode is correct.
+				// Changing Passcode and the entered Passcode is correct.
 			else if ([typedString isEqualToString: savedPasscode]){
 				[self performSelector: @selector(askForNewPasscode) withObject: nil afterDelay: 0.15f];
 				_failedAttempts = 0;
 			}
-					// Acting as lockscreen and the entered Passcode is incorrect.
+				// Acting as lockscreen and the entered Passcode is incorrect.
 			else {
 				[self performSelector: @selector(denyAccess) withObject: nil afterDelay: 0.15f];
-				return NO;
+				deleteLastCharacter();
+				return;
 			}
 		}
-				// App launch/Turning passcode off: Passcode OK -> dismiss, Passcode incorrect -> deny access.
+			// App launch/Turning passcode off: Passcode OK -> dismiss, Passcode incorrect -> deny access.
 		else {
 			if ([typedString isEqualToString: savedPasscode]) {
 				_passcodeValid = YES;
@@ -620,18 +707,20 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 			}
 			else {
 				[self performSelector: @selector(denyAccess) withObject: nil afterDelay: 0.15f];
-				return NO;
+				deleteLastCharacter();
+				return;
 			}
 		}
 	}
 
-	if (typedString.length > 4) return NO;
-
-	return YES;
+	if (typedString.length > 4) {
+		deleteLastCharacter();
+		return;
+	}
 }
 
-
 #pragma mark - Actions
+
 - (void)askForNewPasscode {
 	_isUserBeingAskedForNewPasscode = YES;
 	_isUserConfirmingPasscode = NO;
@@ -646,7 +735,6 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	[transition setTimingFunction: [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseInEaseOut]];
 	[[_animatingView layer] addAnimation: transition forKey: @"swipe"];
 }
-
 
 - (void)reAskForNewPasscode {
 	_isUserBeingAskedForNewPasscode = YES;

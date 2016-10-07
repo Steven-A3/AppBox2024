@@ -73,7 +73,7 @@
 }
 
 - (NSArray *)yahooCurrencyArray {
-	NSURL *yahooURL = [NSURL URLWithString:@"http://finance.yahoo.com/webservice/v1/symbols/allcurrencies/quote?format=json"];
+	NSURL *yahooURL = [NSURL URLWithString:@"https://finance.yahoo.com/webservice/v1/symbols/allcurrencies/quote?format=json"];
 	NSURLRequest *request = [NSURLRequest requestWithURL:yahooURL];
 	NSURLResponse *response;
 	NSData *yahooData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:NULL];

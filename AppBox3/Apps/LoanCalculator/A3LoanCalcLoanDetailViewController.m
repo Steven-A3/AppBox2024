@@ -698,6 +698,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
 	[super A3KeyboardController:controller clearButtonPressedTo:keyInputDelegate];
 	_didPressClearKey = YES;
+	_didPressNumberKey = NO;
 }
 
 - (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
@@ -712,6 +713,19 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 	[self dismissNumberKeyboard];
 
 	[super currencySelectButtonAction:notification];
+}
+
+- (void)calculatorButtonAction {
+	[super calculatorButtonAction];
+	
+	self.calculatorTargetTextField = _editingTextField;
+	[self dismissNumberKeyboard];
+}
+
+- (void)calculatorDidDismissWithValue:(NSString *)value {
+	_didPressNumberKey = YES;
+	
+	[super calculatorDidDismissWithValue:value];
 }
 
 #pragma mark - Table view delegate
@@ -935,12 +949,6 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 		self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight]));
 	}
 	[UIView commitAnimations];
-}
-
-#pragma mark - A3ViewControllerProtocol
-
-- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
-	return NO;
 }
 
 @end

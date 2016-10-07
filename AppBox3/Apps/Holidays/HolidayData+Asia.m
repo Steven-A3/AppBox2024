@@ -1485,6 +1485,26 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	NSDictionary *indianBook = nil;
 	if ([[NSFileManager defaultManager] fileExistsAtPath:filepath]) {
 		indianBook = [NSDictionary dictionaryWithContentsOfFile:filepath];
+
+//		NSCalendar *korCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+//		NSCalendar *gmtCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+//		[korCalendar setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:3600 * 9]];
+//		[gmtCalendar setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+//		
+//		NSMutableDictionary *newBook = [NSMutableDictionary new];
+//		for (NSInteger y = 2006; y < 2017; y++) {
+//			NSArray *holidays = indianBook[[NSString stringWithFormat:@"%ld", y]];
+//			NSMutableArray *newHolidays = [NSMutableArray new];
+//			for (NSArray *holiday in holidays) {
+//				NSDate *date = holiday[1];
+//				NSDateComponents *components = [korCalendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
+//				NSDate *newDate = [gmtCalendar dateFromComponents:components];
+//				[newHolidays addObject:@[holiday[0], newDate] ];
+//			}
+//			[newBook setObject:newHolidays forKey:[NSString stringWithFormat:@"%ld", y]];
+//		}
+//		
+//		[newBook writeToFile:filepath atomically:YES];
 	}
 
 	if (!indianBook) {
@@ -1502,18 +1522,20 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	
 		NSMutableArray *book = [[NSMutableArray alloc] initWithArray:[indianBook objectForKey:[NSString stringWithFormat:@"%lu", (unsigned long)year]]];
 		NSInteger index, count = [book count];
-		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
+		NSCalendar *gmtCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+		[gmtCalendar setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
 		NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
-		[offsetDC setHour:9 - ([[NSTimeZone systemTimeZone] secondsFromGMT] / 3600)];
 
 		NSMutableArray *holidays = [NSMutableArray new];
 
 		for (index = 0; index < count; index++) {
 			NSMutableArray *item = [NSMutableArray arrayWithArray:[book objectAtIndex:index]];
-			NSDate *newDate = [gregorian dateByAddingComponents:offsetDC toDate:[item objectAtIndex:1] options:0];
+			NSDateComponents *components = [gmtCalendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:item[1]];
+			FNLOG(@"%ld, %ld, %ld", components.year, components.month, components.day);
+			NSDate *newDate = [gregorian dateFromComponents:components];
 
 			[holidays addObject:@{kHolidayName:[item objectAtIndex:0], kHolidayIsPublic:@NO, kHolidayDate:newDate, kHolidayDuration:@1}];
-			}
+		}
 
 		return holidays;
 	}

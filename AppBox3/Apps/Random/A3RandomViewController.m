@@ -418,19 +418,29 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
+	_editingTextField = textField;
 	self.textBeforeEditingTextField = textField.text;
-	self.textColorBeforeEditing = textField.textColor;
 	textField.text = [self.decimalFormatter stringFromNumber:@0];
-	textField.textColor = [[A3AppDelegate instance] themeColor];
+
+	if (textField == _minimumValueTextField) {
+		_maximumValueTextField.textColor = [UIColor colorWithRed:201.0/255.0 green:201.0/255.0 blue:201.0/255.0 alpha:1.0];
+	} else {
+		_minimumValueTextField.textColor = [UIColor colorWithRed:201.0/255.0 green:201.0/255.0 blue:201.0/255.0 alpha:1.0];
+	}
+
+	[self.numberKeyboardViewController reloadPrevNextButtons];
+	self.numberKeyboardViewController.textInputTarget = textField;
+	_didPressClearKey = NO;
+	_didPressNumberKey = NO;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-	if (_textColorBeforeEditing) {
-		textField.textColor = _textColorBeforeEditing;
-	}
 	if (!_didPressNumberKey && !_didPressClearKey) {
 		textField.text = _textBeforeEditingTextField;
 	}
+
+	_minimumValueTextField.textColor = [[A3AppDelegate instance] themeColor];
+	_maximumValueTextField.textColor = [[A3AppDelegate instance] themeColor];
 
 	NSInteger number = [[self.numberFormatter numberFromString:textField.text] integerValue];
 	NSInteger component = textField == _minimumValueTextField ? 0 : 1;
@@ -461,7 +471,7 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 	_didPressNumberKey = NO;
 	_isNumberKeyboardVisible = YES;
 
-	keyboardView.frame = CGRectMake(0, self.view.bounds.size.height, bounds.size.width, keyboardHeight);
+	keyboardView.frame = CGRectMake(0, bounds.size.height, bounds.size.width, keyboardHeight);
 	[UIView animateWithDuration:0.3 animations:^{
 		CGRect frame = keyboardView.frame;
 		frame.origin.y -= keyboardHeight;
@@ -508,10 +518,26 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 	_didPressNumberKey = YES;
 }
 
-#pragma mark - Extension Keyboard를 사용하지 못하게 합니다.
+- (BOOL)isPreviousEntryExists {
+	return _editingTextField == _maximumValueTextField;
+}
 
-- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
-	return NO;
+- (BOOL)isNextEntryExists{
+	return _editingTextField == _minimumValueTextField;
+}
+
+- (void)prevButtonPressed{
+	if (_editingTextField == _maximumValueTextField) {
+		[self textFieldDidEndEditing:_editingTextField];
+		[self textFieldDidBeginEditing:_minimumValueTextField];
+	}
+}
+
+- (void)nextButtonPressed{
+	if (_editingTextField == _minimumValueTextField) {
+		[self textFieldDidEndEditing:_editingTextField];
+		[self textFieldDidBeginEditing:_maximumValueTextField];
+	}
 }
 
 #pragma mark - UIKeyboard Notification

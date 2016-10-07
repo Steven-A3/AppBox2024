@@ -18,4 +18,7 @@
 - (void)shareButtonAction:(id)sender;
 - (void)showInstructionView;
 
+- (void)dismissNumberKeypadAnimated:(BOOL)animated;
+
+- (void)enableControls:(BOOL)enable;
 @end

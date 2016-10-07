@@ -37,4 +37,7 @@
 
 - (void)changeDefaultCurrencyCode:(NSString *)currencyCode;
 
+- (void)calculatorButtonAction;
+
+- (void)calculatorDidDismissWithValue:(NSString *)value;
 @end

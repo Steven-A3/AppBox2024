@@ -984,9 +984,9 @@ NSUInteger const jewishTable[][14][2] = {
 
 		NSMutableArray *book = [[NSMutableArray alloc] initWithArray:[israelHolidays objectForKey:[NSString stringWithFormat:@"Y%lu", (unsigned long) year]]];
 		NSInteger index, count = [book count];
-		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
+		NSCalendar *gmtCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+		[gmtCalendar setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
 		NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
-		[offsetDC setHour:[[NSTimeZone systemTimeZone] secondsFromGMT] / 3600];
 
 		NSMutableArray *holidays = [NSMutableArray new];
 
@@ -1009,7 +1009,9 @@ NSUInteger const jewishTable[][14][2] = {
 			NSMutableArray *item = [NSMutableArray arrayWithArray:[book objectAtIndex:index]];
 			NSString *holidayName = item[0];
 			BOOL isPublicHoliday = [publicHolidayNames indexOfObject:holidayName] != NSNotFound;
-			NSDate *newDate = [gregorian dateByAddingComponents:offsetDC toDate:[item objectAtIndex:1] options:0];
+			NSDateComponents *components = [gmtCalendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:item[1]];
+			FNLOG(@"%ld, %ld, %ld", components.year, components.month, components.day);
+			NSDate *newDate = [gregorian dateFromComponents:components];
 			[holidays addObject:@{kHolidayName:NSLocalizedStringFromTable(holidayName, kHolidaysResourceName, nil), kHolidayIsPublic:@(isPublicHoliday), kHolidayDate:newDate, kHolidayDuration:@1}];
 		}
 

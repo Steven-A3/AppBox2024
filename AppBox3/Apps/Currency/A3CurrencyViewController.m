@@ -232,16 +232,23 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 
 - (void)moreButtonAction:(UIBarButtonItem *)button {
 	if (self.viewTypeSegmentedControl.selectedSegmentIndex == 0) {
+		[_pickerStyleViewController dismissNumberKeypadAnimated:NO];
 		[_pickerStyleViewController resetIntermediateState];
 	} else {
+		[_listStyleViewController dismissNumberKeyboardAnimated:NO];
 		[_listStyleViewController resetIntermediateState];
 	}
-
+	
 	[self rightBarButtonDoneButton];
 
-	_moreMenuButtons = @[[self instructionHelpButton], self.shareButton, [self historyButton:[CurrencyHistory class] ], self.settingsButton];
-	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons pullDownView:[self pullDownView]];
-	_isShowMoreMenu = YES;
+	double delayInSeconds = 0.1;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		_moreMenuButtons = @[[self instructionHelpButton], self.shareButton, [self historyButton:[CurrencyHistory class] ], self.settingsButton];
+		_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons pullDownView:[self pullDownView]];
+		_isShowMoreMenu = YES;
+	});
+
 }
 
 - (void)doneButtonAction:(id)button {
@@ -276,7 +283,11 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 - (void)settingsButtonAction:(UIButton *)button {
 	[self dismissMoreMenu];
 	
-	if (self.viewTypeSegmentedControl.selectedSegmentIndex == 1) {
+	if (self.viewTypeSegmentedControl.selectedSegmentIndex == 0) {
+		[_pickerStyleViewController dismissNumberKeypadAnimated:NO];
+		[_pickerStyleViewController resetIntermediateState];
+	} else {
+		[_listStyleViewController dismissNumberKeyboardAnimated:NO];
 		[_listStyleViewController resetIntermediateState];
 	}
 	
@@ -308,6 +319,14 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 
 - (void)shareButtonAction:(id)sender {
 	[self dismissMoreMenu];
+
+	if (self.viewTypeSegmentedControl.selectedSegmentIndex == 0) {
+		[_pickerStyleViewController dismissNumberKeypadAnimated:NO];
+		[_pickerStyleViewController resetIntermediateState];
+	} else {
+		[_listStyleViewController dismissNumberKeyboardAnimated:NO];
+		[_listStyleViewController resetIntermediateState];
+	}
 	
 	if (self.viewTypeSegmentedControl.selectedSegmentIndex == 0) {
 		[_pickerStyleViewController shareButtonAction:sender];
@@ -320,8 +339,10 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 	[self dismissMoreMenu];
 	
 	if (self.viewTypeSegmentedControl.selectedSegmentIndex == 0) {
+		[_pickerStyleViewController dismissNumberKeypadAnimated:NO];
 		[_pickerStyleViewController resetIntermediateState];
 	} else {
+		[_listStyleViewController dismissNumberKeyboardAnimated:NO];
 		[_listStyleViewController resetIntermediateState];
 	}
 
@@ -367,7 +388,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 		}];
 	}
 	if (self.viewTypeSegmentedControl.selectedSegmentIndex == 0) {
-
+		[_pickerStyleViewController enableControls:enable];
 	} else {
 		[_listStyleViewController enableControls:enable];
 	}
@@ -375,16 +396,20 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 
 - (void)instructionHelpButtonAction:(id)sender {
 	[self dismissMoreMenu];
+
+	if (self.viewTypeSegmentedControl.selectedSegmentIndex == 0) {
+		[_pickerStyleViewController dismissNumberKeypadAnimated:NO];
+		[_pickerStyleViewController resetIntermediateState];
+	} else {
+		[_listStyleViewController dismissNumberKeyboardAnimated:NO];
+		[_listStyleViewController resetIntermediateState];
+	}
+	
 	if (self.viewTypeSegmentedControl.selectedSegmentIndex == 0) {
 		[_pickerStyleViewController showInstructionView];
 	} else {
 		[_listStyleViewController showInstructionView];
 	}
-}
-
-- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
-	FNLOG();
-	return NO;
 }
 
 @end

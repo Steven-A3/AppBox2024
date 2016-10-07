@@ -333,13 +333,15 @@
 	CGFloat keyboardHeight = keyboardVC.keyboardHeight;
 	UIView *keyboardView = keyboardVC.view;
 	if (IS_IPHONE) {
-		[self.view addSubview:keyboardView];
+		[self.view.superview addSubview:keyboardView];
 	} else {
 		[[A3AppDelegate instance].rootViewController_iPad.view addSubview:keyboardView];
 	}
 
 	_didPressClearKey = NO;
 	_didPressNumberKey = NO;
+
+	keyboardVC.keyboardType = A3NumberKeyboardTypeInteger;
 
 	[self textFieldDidBeginEditing:textField];
 
@@ -389,6 +391,7 @@
 	textField.text = [self.decimalFormatter stringFromNumber:@0];
 	self.textBeforeEditingTextField = textField.text;
 	_didPressClearKey = YES;
+	_didPressNumberKey = NO;
 }
 
 - (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
@@ -455,12 +458,6 @@
             _dismissCompletionBlock();
         }
     }
-}
-
-#pragma mark - A3ViewControllerProtocol
-
-- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
-	return NO;
 }
 
 @end

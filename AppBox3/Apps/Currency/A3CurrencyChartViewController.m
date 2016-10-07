@@ -444,6 +444,7 @@
 	[self presentNumberKeyboardForTextField:textField];
 
 	textField.text = [self.decimalFormatter stringFromNumber:@0];
+	_targetTextField.text = [self targetValueString];
 	return NO;
 }
 
@@ -526,7 +527,7 @@
 	
 	[self textFieldDidBeginEditing:textField];
 	
-	keyboardView.frame = CGRectMake(0, self.view.bounds.size.height, bounds.size.width, keyboardHeight);
+	keyboardView.frame = CGRectMake(0, bounds.size.height, bounds.size.width, keyboardHeight);
 	[UIView animateWithDuration:0.3 animations:^{
 		CGRect frame = keyboardView.frame;
 		frame.origin.y -= keyboardHeight;
@@ -570,12 +571,13 @@
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
 	_didPressClearKey = YES;
+	_didPressNumberKey = NO;
 
 	if (keyInputDelegate == _sourceTextField) {
-		_sourceTextField.text = @"";
+		_sourceTextField.text = [self.decimalFormatter stringFromNumber:@0];
 		_targetTextField.text = self.targetValueString;
 	} else {
-		_targetTextField.text = @"";
+		_targetTextField.text = [self.decimalFormatter stringFromNumber:@0];
 		_sourceTextField.text = self.sourceValueString;
 	}
 }
@@ -587,6 +589,7 @@
 - (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
 	_didPressNumberKey = YES;
 	_didPressClearKey = NO;
+	_targetTextField.text = [self targetValueString];
 }
 
 #pragma mark - Number Keyboard Calculator Button Notification
@@ -667,7 +670,7 @@
  */
 - (NSURL *)urlForChartImage {
 	NSArray *types = @[@"1d", @"5d", @"1m", @"5m", @"1y"];
-	NSString *string = [NSString stringWithFormat:@"http://chart.finance.yahoo.com/z?s=%@%@=x&t=%@&z=%@&region=%@&lang=%@",
+	NSString *string = [NSString stringWithFormat:@"https://chart.finance.yahoo.com/z?s=%@%@=x&t=%@&z=%@&region=%@&lang=%@",
 												  _sourceCurrencyCode, _targetCurrencyCode,
 												  types[(NSUInteger) self.segmentedControl.selectedSegmentIndex],
 												  IS_IPHONE || (IS_IPHONE && !IS_LANDSCAPE)  ? @"m" : @"l",
@@ -743,12 +746,6 @@
 	if ([[A3AppDelegate instance].reachability isReachable]) {
 		[self reloadChartImage];
 	}
-}
-
-#pragma mark - A3ViewControllerProtocol
-
-- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
-	return NO;
 }
 
 @end

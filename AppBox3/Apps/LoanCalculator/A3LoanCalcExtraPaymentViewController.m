@@ -115,6 +115,10 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
     }
 }
 
+- (void)willDismissFromRightSide {
+	[self dismissNumberKeyboard];
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
@@ -520,7 +524,11 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	CGFloat keyboardHeight = keyboardVC.keyboardHeight;
 	UIView *keyboardView = keyboardVC.view;
-	[self.view.superview addSubview:keyboardView];
+	if (IS_IPHONE) {
+		[self.view.superview addSubview:keyboardView];
+	} else {
+		[[A3AppDelegate instance].rootViewController_iPad.view addSubview:keyboardView];
+	}
 
 	keyboardVC.textInputTarget = textField;
 	keyboardVC.delegate = self;
@@ -815,10 +823,9 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
 	_didPressClearKey = YES;
-	UITextField *textField = (UITextField *) self.numberKeyboardViewController.textInputTarget;
-	if ([textField isKindOfClass:[UITextField class]]) {
-		textField.text = @"";
-	}
+	_didPressNumberKey = NO;
+	UITextField *textField = self.numberKeyboardViewController.textInputTarget;
+	textField.text = [self.decimalFormatter stringFromNumber:@0];
 	if (_currentIndexPath.row == 0) {
 		if (_exPaymentType == A3LC_ExtraPaymentYearly) {
 			self.loanCalcData.extraPaymentYearly = @0;
@@ -855,7 +862,8 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 #pragma mark --- Response to Currency Select Button and result
 
 - (void)currencySelectButtonAction:(NSNotification *)notification {
-	[self.firstResponder resignFirstResponder];
+	[self dismissNumberKeyboard];
+	
 	A3CurrencySelectViewController *viewController = [self presentCurrencySelectViewControllerWithCurrencyCode:notification.object];
 	viewController.delegate = self;
 }
@@ -873,8 +881,9 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 }
 
 - (void)calculatorButtonAction {
-	_calculatortTargetTextField = (UITextField *) self.firstResponder;
-	[self.firstResponder resignFirstResponder];
+	_calculatortTargetTextField = _editingTextField;
+	[self dismissNumberKeyboard];
+	
 	A3CalculatorViewController *viewController = [self presentCalculatorViewController];
 	viewController.delegate = self;
 }
@@ -890,10 +899,6 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 		code = [A3UIDevice systemCurrencyCode];
 	}
 	return code;
-}
-
-- (BOOL)shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
-	return NO;
 }
 
 @end
