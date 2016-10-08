@@ -220,6 +220,8 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 
 - (BOOL)resignFirstResponder {
 	[self.editingObject resignFirstResponder];
+	[self dismissNumberKeyboard];
+
 	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
 	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_UnitConverter]) {
 		[self dismissInstructionViewController:nil];

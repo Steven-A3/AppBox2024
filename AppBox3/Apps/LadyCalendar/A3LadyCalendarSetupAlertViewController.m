@@ -201,15 +201,16 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
+	if (_textColorBeforeEditing) {
+		textField.textColor = _textColorBeforeEditing;
+		_textColorBeforeEditing = nil;
+	}
+	
 	if (!_didPressNumberKey && !_didPressClearKey) {
 		textField.text = _textBeforeEditingTextField;
 		return;
 	}
 
-	if (_textColorBeforeEditing) {
-		textField.textColor = _textColorBeforeEditing;
-		_textColorBeforeEditing = nil;
-	}
 	NSInteger customDay = [textField.text integerValue];
 	[_settingDict setObject:@(AlertType_Custom) forKey:SettingItem_AlertType];
 	[_settingDict setObject:@(customDay) forKey:SettingItem_CustomAlertDays];

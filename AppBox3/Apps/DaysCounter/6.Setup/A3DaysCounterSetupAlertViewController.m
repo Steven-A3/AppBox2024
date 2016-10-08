@@ -135,6 +135,7 @@
 
 - (BOOL)resignFirstResponder {
 	[self.editingTextField resignFirstResponder];
+	[self dismissNumberKeyboard];
 
 	return [super resignFirstResponder];
 }

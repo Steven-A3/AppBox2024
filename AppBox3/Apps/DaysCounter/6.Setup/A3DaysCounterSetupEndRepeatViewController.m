@@ -72,6 +72,7 @@
 }
 
 #pragma mark -
+
 - (void)updateConstraints
 {
     [self.view removeConstraints:self.view.constraints];
