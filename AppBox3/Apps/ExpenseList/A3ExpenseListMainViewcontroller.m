@@ -1361,7 +1361,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	self.editingIndexPath = [self.tableView indexPathForCell:cell];
 	_didPressNumberKey = NO;
 	_didPressClearKey = NO;
-	FNLOG(@"%ld, %ld", _editingIndexPath.section, _editingIndexPath.row);
+	FNLOG(@"%ld, %ld", (long)_editingIndexPath.section, (long)_editingIndexPath.row);
 
 	if (textField == cell.nameField) {
 		textField.returnKeyType = UIReturnKeyDefault;

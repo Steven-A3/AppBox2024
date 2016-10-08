@@ -1531,7 +1531,7 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 		for (index = 0; index < count; index++) {
 			NSMutableArray *item = [NSMutableArray arrayWithArray:[book objectAtIndex:index]];
 			NSDateComponents *components = [gmtCalendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:item[1]];
-			FNLOG(@"%ld, %ld, %ld", components.year, components.month, components.day);
+			FNLOG(@"%ld, %ld, %ld", (long)components.year, (long)components.month, (long)components.day);
 			NSDate *newDate = [gregorian dateFromComponents:components];
 
 			[holidays addObject:@{kHolidayName:[item objectAtIndex:0], kHolidayIsPublic:@NO, kHolidayDate:newDate, kHolidayDuration:@1}];

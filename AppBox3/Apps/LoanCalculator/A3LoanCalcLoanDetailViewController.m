@@ -417,6 +417,8 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 {
     self.editingObject = textField;
 	_editingTextField = textField;
+	_didPressClearKey = NO;
+	_didPressNumberKey = NO;
 	
 	FNLOG(@"%@, %@", _editingTextField.text, _editingTextField);
 

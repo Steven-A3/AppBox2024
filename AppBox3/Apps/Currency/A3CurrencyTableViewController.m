@@ -283,6 +283,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 }
 
 - (BOOL)resignFirstResponder {
+	[self dismissNumberKeyboardAnimated:NO];
 	[self.editingObject resignFirstResponder];
 
 	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];

@@ -450,6 +450,8 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 	
 	self.textBeforeEditing = textField.text;
 	self.textColorBeforeEditing = textField.textColor;
+	_didPressNumberKey = NO;
+	_didPressClearKey = NO;
 
 	textField.text = [self.decimalFormatter stringFromNumber:@0];
 	textField.placeholder = @"";

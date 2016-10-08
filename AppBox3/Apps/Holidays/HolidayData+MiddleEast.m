@@ -1010,7 +1010,7 @@ NSUInteger const jewishTable[][14][2] = {
 			NSString *holidayName = item[0];
 			BOOL isPublicHoliday = [publicHolidayNames indexOfObject:holidayName] != NSNotFound;
 			NSDateComponents *components = [gmtCalendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:item[1]];
-			FNLOG(@"%ld, %ld, %ld", components.year, components.month, components.day);
+			FNLOG(@"%ld, %ld, %ld", (long)components.year, (long)components.month, (long)components.day);
 			NSDate *newDate = [gregorian dateFromComponents:components];
 			[holidays addObject:@{kHolidayName:NSLocalizedStringFromTable(holidayName, kHolidaysResourceName, nil), kHolidayIsPublic:@(isPublicHoliday), kHolidayDate:newDate, kHolidayDuration:@1}];
 		}

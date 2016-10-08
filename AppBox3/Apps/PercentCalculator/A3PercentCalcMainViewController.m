@@ -1032,6 +1032,8 @@
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	self.editingObject = textField;
 	_editingTextField = textField;
+	_didPressClearKey = NO;
+	_didPressNumberKey = NO;
 	//textField.textColor = COLOR_TABLE_TEXT_TYPING;
 	
 	// 입력하려는 Cell에 이미 데이터가 있는 경우, 지우고 시작하기 위하여.

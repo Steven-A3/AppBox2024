@@ -1880,6 +1880,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	_editingTextField = textField;
 	self.textBeforeEditing = textField.text;
 	self.textColorBeforeEditing = textField.textColor;
+	_didPressNumberKey = NO;
+	_didPressClearKey = NO;
 	
 	textField.text = [self.decimalFormatter stringFromNumber:@0];
 	textField.textColor = [[A3AppDelegate instance] themeColor];
