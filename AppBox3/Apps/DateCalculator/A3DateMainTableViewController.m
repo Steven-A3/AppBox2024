@@ -62,7 +62,6 @@
 @property (nonatomic, copy) NSString *placeholderBeforeEditingText;
 @property (nonatomic, weak) UITextField *editingTextField;
 @property (nonatomic, copy) UIColor *colorBeforeEditingText;
-@property (nonatomic, strong) A3NumberKeyboardViewController *simpleNormalNumberKeyboard;
 
 @end
 
@@ -293,7 +292,7 @@
 	
 	if (_isDateKeyboardVisible && self.dateKeyboardViewController.view.superview) {
 		UIView *keyboardView = self.dateKeyboardViewController.view;
-		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+		CGFloat keyboardHeight = self.dateKeyboardViewController.keyboardHeight;
 
 		UIEdgeInsets contentInset = self.tableView.contentInset;
 		contentInset.bottom = keyboardHeight;
@@ -308,8 +307,8 @@
 	}
 	
 	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
-		UIView *keyboardView = self.simpleNormalNumberKeyboard.view;
-		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+		UIView *keyboardView = self.numberKeyboardViewController.view;
+		CGFloat keyboardHeight = self.numberKeyboardViewController.keyboardHeight;
 		
 		UIEdgeInsets contentInset = self.tableView.contentInset;
 		contentInset.bottom = keyboardHeight;
@@ -318,7 +317,7 @@
 		FNLOGRECT(self.view.bounds);
 		FNLOG(@"%f", keyboardHeight);
 		keyboardView.frame = CGRectMake(0, self.view.bounds.size.height - keyboardHeight, self.view.bounds.size.width, keyboardHeight);
-		[self.simpleNormalNumberKeyboard rotateToInterfaceOrientation:toInterfaceOrientation];
+		[self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
 		
 		[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 	}
@@ -997,7 +996,7 @@
 		if (_editingTextField != textField) {
 			[self endEditingForTextField:_editingTextField];
 			[self prepareEditingForTextField:textField];
-			_simpleNormalNumberKeyboard.textInputTarget = textField;
+			self.numberKeyboardViewController.textInputTarget = textField;
 		}
 	} else {
 		[self presentNumberKeyboardForTextField:textField];
@@ -1066,21 +1065,23 @@
 	}
 	[self prepareEditingForTextField:textField];
 	
-	self.simpleNormalNumberKeyboard = [self simplePrevNextNumberKeyboard];
+	self.numberKeyboardViewController = [self simplePrevNextNumberKeyboard];
+	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+	[keyboardViewController view];
 	if (IS_IPHONE) {
-		((A3NumberKeyboardViewController_iPhone *)_simpleNormalNumberKeyboard).needButtonsReload = NO;
+		((A3NumberKeyboardViewController_iPhone *)keyboardViewController).needButtonsReload = NO;
 	}
-	_simpleNormalNumberKeyboard.useDotAsClearButton = YES;
-	_simpleNormalNumberKeyboard.textInputTarget = textField;
-	_simpleNormalNumberKeyboard.delegate = self;
+	keyboardViewController.useDotAsClearButton = YES;
+	keyboardViewController.textInputTarget = textField;
+	keyboardViewController.delegate = self;
 	
-	[_simpleNormalNumberKeyboard reloadPrevNextButtons];
+	[keyboardViewController reloadPrevNextButtons];
 
 	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-	CGFloat keyboardHeight = _simpleNormalNumberKeyboard.keyboardHeight;
-	UIView *keyboardView = _simpleNormalNumberKeyboard.view;
+	CGFloat keyboardHeight = keyboardViewController.keyboardHeight;
+	UIView *keyboardView = keyboardViewController.view;
 	[self.view addSubview:keyboardView];
-	[self addChildViewController:_simpleNormalNumberKeyboard];
+	[self addChildViewController:keyboardViewController];
 	
 	UIEdgeInsets contentInset = self.tableView.contentInset;
 	contentInset.bottom += keyboardHeight;
@@ -1111,21 +1112,23 @@
 	}
 
 	[self endEditingForTextField:_editingTextField];
-	
-	CGFloat keyboardHeight = _simpleNormalNumberKeyboard.keyboardHeight;
+
+	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+	CGFloat keyboardHeight = keyboardViewController.keyboardHeight;
 
 	[UIView animateWithDuration:0.3 animations:^{
 		UIEdgeInsets contentInset = self.tableView.contentInset;
 		contentInset.bottom = 0;
 		self.tableView.contentInset = contentInset;
 		
-		UIView *keyboardView = _simpleNormalNumberKeyboard.view;
+		UIView *keyboardView = keyboardViewController.view;
 		CGRect frame = keyboardView.frame;
 		frame.origin.y += keyboardHeight;
 		keyboardView.frame = frame;
 	} completion:^(BOOL finished) {
-		[_simpleNormalNumberKeyboard.view removeFromSuperview];
-		[_simpleNormalNumberKeyboard removeFromParentViewController];
+		[keyboardViewController.view removeFromSuperview];
+		[keyboardViewController removeFromParentViewController];
+		self.numberKeyboardViewController = nil;
 		_isNumberKeyboardVisible = NO;
 	}];
 }
@@ -1257,14 +1260,14 @@
 		
 		UITextField *textField = footerCell.monthTextField;
 		[self prepareEditingForTextField:textField];
-		_simpleNormalNumberKeyboard.textInputTarget = textField;
+		self.numberKeyboardViewController.textInputTarget = textField;
 	}
     else if (_editingTextField == footerCell.monthTextField) {
 		[self endEditingForTextField:_editingTextField];
 		
 		UITextField *textField = footerCell.dayTextField;
 		[self prepareEditingForTextField:textField];
-		_simpleNormalNumberKeyboard.textInputTarget = textField;
+		self.numberKeyboardViewController.textInputTarget = textField;
 	}
 }
 
@@ -1283,7 +1286,7 @@
 		
 		UITextField *textField = footerCell.monthTextField;
 		[self prepareEditingForTextField:textField];
-		_simpleNormalNumberKeyboard.textInputTarget = textField;
+		self.numberKeyboardViewController.textInputTarget = textField;
 	}
     else if (_editingTextField == footerCell.monthTextField) {
 		[self endEditingForTextField:_editingTextField];
@@ -1291,7 +1294,7 @@
 
 		UITextField *textField = footerCell.yearTextField;
 		[self prepareEditingForTextField:textField];
-		_simpleNormalNumberKeyboard.textInputTarget = textField;
+		self.numberKeyboardViewController.textInputTarget = textField;
 	}
     else if (_editingTextField == footerCell.yearTextField) {
 		[self endEditingForTextField:_editingTextField];

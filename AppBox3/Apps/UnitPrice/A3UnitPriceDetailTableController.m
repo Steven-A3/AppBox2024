@@ -746,12 +746,19 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	
 	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
 		UIView *keyboardView = self.numberKeyboardViewController.view;
-		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+		CGFloat keyboardHeight = self.numberKeyboardViewController.keyboardHeight;
 		
 		FNLOGRECT(self.view.bounds);
 		FNLOG(@"%f", keyboardHeight);
 		keyboardView.frame = CGRectMake(0, self.view.bounds.size.height - keyboardHeight, self.view.bounds.size.width, keyboardHeight);
 		[self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+
+		UIEdgeInsets contentInset = self.tableView.contentInset;
+		contentInset.bottom = keyboardHeight;
+		self.tableView.contentInset = contentInset;
+		
+		NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:_editingTextField];
+		[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 	}
 }
 

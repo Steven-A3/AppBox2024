@@ -258,7 +258,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	if (IS_IPHONE && IS_LANDSCAPE) {
 		[self leftBarButtonAppsButton];
 	}
-    [self.tableView reloadData];
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -266,13 +265,14 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
 		UIView *keyboardView = self.numberKeyboardViewController.view;
-		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+		CGFloat keyboardHeight = self.numberKeyboardViewController.keyboardHeight;
 
 		FNLOGRECT(self.view.bounds);
 		FNLOG(@"%f", keyboardHeight);
 
 		UIEdgeInsets contentInset = self.tableView.contentInset;
 		contentInset.bottom = keyboardHeight + (self.bannerView ? self.bannerView.bounds.size.height : 0);
+		self.tableView.contentInset = contentInset;
 
 		CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 		keyboardView.frame = CGRectMake(0, bounds.size.height - keyboardHeight, bounds.size.width, keyboardHeight);

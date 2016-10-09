@@ -241,13 +241,20 @@
 
 	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
 		UIView *keyboardView = self.numberKeyboardViewController.view;
-		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+		CGFloat keyboardHeight = self.numberKeyboardViewController.keyboardHeight;
 		
 		FNLOGRECT(self.view.bounds);
 		FNLOG(@"%f", keyboardHeight);
 		CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 		keyboardView.frame = CGRectMake(0, bounds.size.height - keyboardHeight, bounds.size.width, keyboardHeight);
 		[self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+		
+		UIEdgeInsets contentInset = self.tableView.contentInset;
+		contentInset.bottom = keyboardHeight;
+		self.tableView.contentInset = contentInset;
+		
+		NSIndexPath *selectedIndexPath = [self.tableView indexPathForCellSubview:_editingTextField];
+		[self.tableView scrollToRowAtIndexPath:selectedIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 	}
 }
 
@@ -337,6 +344,7 @@
 	[self enableControls:![[A3AppDelegate instance] rootViewController_iPad].showLeftView];
     [self.editingObject resignFirstResponder];
 	[self setEditingObject:nil];
+	[self dismissNumberKeyboard];
 }
 
 - (void)setBarButtonEnable:(BOOL)enable
@@ -417,6 +425,7 @@
 }
 
 - (void)historyButtonAction:(id)sender {
+	[self dismissNumberKeyboard];
 	[self.editingObject resignFirstResponder];
 	[self setEditingObject:nil];
 
@@ -441,6 +450,7 @@
 
 - (void)saveToHistory:(id)sender
 {
+	[self dismissNumberKeyboard];
     [self saveCalcHistoryData:self.headerView.factorValues calcType:self.calcType];
     
     if (self.calcType==PercentCalcType_5) {

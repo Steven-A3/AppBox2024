@@ -282,6 +282,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 
 - (void)disposeInitializedCondition
 {
+	[self dismissNumberKeyboardAnimated:YES];
     [self.editingObject resignFirstResponder];
 	[self setEditingObject:nil];
     
@@ -446,7 +447,8 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
         [self disposeInitializedCondition];
         return;
     }
-    
+
+	[self dismissNumberKeyboardAnimated:YES];
     if (self.editingObject) {
         [self.editingObject resignFirstResponder];
         return;
@@ -976,7 +978,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 
 	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
 		UIView *keyboardView = self.numberKeyboardViewController.view;
-		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+		CGFloat keyboardHeight = self.numberKeyboardViewController.keyboardHeight;
 
 		FNLOGRECT(self.view.bounds);
 		FNLOG(@"%f", keyboardHeight);
@@ -984,6 +986,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 		CGFloat accessoryHeight = _keyboardAccessoryView.bounds.size.height;
 		UIEdgeInsets contentInset = self.tableView.contentInset;
 		contentInset.bottom = keyboardHeight + (self.bannerView ? self.bannerView.bounds.size.height : 0) + accessoryHeight;
+		self.tableView.contentInset = contentInset;
 
 		CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 		keyboardView.frame = CGRectMake(0, bounds.size.height - keyboardHeight, bounds.size.width, keyboardHeight);
@@ -992,6 +995,9 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 		if (_keyboardAccessoryView) {
 			_keyboardAccessoryView.frame = CGRectMake(0, bounds.size.height - keyboardHeight - accessoryHeight, bounds.size.width, accessoryHeight);
 		}
+		
+		NSIndexPath *selectedIndexPath = [self.tableView indexPathForCellSubview:_editingTextField];
+		[self.tableView scrollToRowAtIndexPath:selectedIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 	}
 }
 

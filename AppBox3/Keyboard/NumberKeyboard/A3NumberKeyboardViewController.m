@@ -35,12 +35,11 @@
 	if (IS_IPHONE) {
 		return 216;
 	}
+	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	if (IS_PORTRAIT) {
-		FNLOG(@"264");
-		return 264;
+		return screenBounds.size.height == 1024 ? 264 : 264 * 1.22;
 	}
-	FNLOG(@"352");
-	return 352;
+	return screenBounds.size.height == 768 ? 352 : 352 * 1.16;
 }
 
 - (NSNumberFormatter *)currencyFormatter {

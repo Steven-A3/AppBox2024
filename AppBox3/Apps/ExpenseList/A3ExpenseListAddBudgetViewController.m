@@ -1043,7 +1043,7 @@ static NSString *CellIdentifier = @"Cell";
 
 	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
 		UIView *keyboardView = self.numberKeyboardViewController.view;
-		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+		CGFloat keyboardHeight = self.numberKeyboardViewController.keyboardHeight;
 
 		FNLOGRECT(self.view.bounds);
 		FNLOG(@"%f", keyboardHeight);

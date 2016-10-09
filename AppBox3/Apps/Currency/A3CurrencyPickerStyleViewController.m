@@ -989,7 +989,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	
 	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
 		UIView *keyboardView = self.numberKeyboardViewController.view;
-		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+		CGFloat keyboardHeight = self.numberKeyboardViewController.keyboardHeight;
 		
 		FNLOGRECT(self.view.bounds);
 		FNLOG(@"%f", keyboardHeight);
@@ -1092,6 +1092,9 @@ static NSString *const A3V3InstructionDidShowForCurrencyPicker = @"A3V3Instructi
 
 - (void)showInstructionView
 {
+	[_mainViewController dismissMoreMenu];
+	[self dismissNumberKeypadAnimated:YES];
+	
 	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForCurrencyPicker];
 	[[A3UserDefaults standardUserDefaults] synchronize];
 	

@@ -1,13 +1,14 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="A3RandomViewController">
             <connections>
+                <outlet property="generateButtonBottomConstraint" destination="tYn-28-WyW" id="qF8-9Q-Urq"/>
                 <outlet property="generatorButton" destination="wbP-Mq-Cle" id="gSR-uK-T7J"/>
                 <outlet property="limitNumberPickerView" destination="joO-pL-8Cp" id="KpR-Fr-F2b"/>
                 <outlet property="limitPickerViewSeparatorBottomHeightConst" destination="dBZ-yi-5a2" id="iao-fk-BOQ"/>
@@ -19,6 +20,7 @@
                 <outlet property="minValueTopLineHeightConstraint" destination="rZr-t3-iN9" id="mvY-Hd-ps4"/>
                 <outlet property="minimumValueLabel" destination="e9T-Ab-7bE" id="jou-VN-qoJ"/>
                 <outlet property="minimumValueTextField" destination="D3q-T4-mIO" id="QBY-Ys-Pyj"/>
+                <outlet property="pickerContainerView" destination="KB9-q2-mhA" id="l0b-FS-kpA"/>
                 <outlet property="resultPanelView" destination="BNl-6b-rRD" id="udl-39-BV3"/>
                 <outlet property="resultPrintLabel" destination="lNb-E0-1a7" id="2y7-Dv-ZLu"/>
                 <outlet property="resultViewTopConst" destination="eVD-vP-5mK" id="DIL-ML-ufb"/>
@@ -36,7 +38,7 @@
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="lNb-E0-1a7">
                             <rect key="frame" x="0.0" y="63" width="320" height="92"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="80"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                             <size key="shadowOffset" width="0.0" height="0.0"/>
                         </label>
@@ -58,7 +60,7 @@
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Minimum Value" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e9T-Ab-7bE">
                     <rect key="frame" x="15" y="231" width="116.5" height="20.5"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="D3q-T4-mIO" userLabel="min value Field">
@@ -82,7 +84,7 @@
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Maximum Value" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x7o-tT-W7T">
                     <rect key="frame" x="15" y="276" width="121" height="20.5"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="100" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kOR-fa-zGI" userLabel="max value Text Field">

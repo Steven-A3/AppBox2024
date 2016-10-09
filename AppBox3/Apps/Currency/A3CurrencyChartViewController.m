@@ -748,6 +748,20 @@
 	}
 }
 
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	
+	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
+		UIView *keyboardView = self.numberKeyboardViewController.view;
+		CGFloat keyboardHeight = self.numberKeyboardViewController.keyboardHeight;
+		
+		FNLOGRECT(self.view.bounds);
+		FNLOG(@"%f", keyboardHeight);
+		keyboardView.frame = CGRectMake(0, self.view.bounds.size.height - keyboardHeight, self.view.bounds.size.width, keyboardHeight);
+		[self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+	}
+}
+
 - (void)reachabilityChanged {
 	if ([[A3AppDelegate instance].reachability isReachable]) {
 		[self reloadChartImage];

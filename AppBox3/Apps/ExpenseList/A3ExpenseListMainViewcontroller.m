@@ -432,7 +432,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	
 	if (self.numberKeyboardViewController.view.superview) {
 		UIView *keyboardView = self.numberKeyboardViewController.view;
-		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+		CGFloat keyboardHeight = self.numberKeyboardViewController.keyboardHeight;
 		
 		FNLOGRECT(self.view.bounds);
 		FNLOG(@"%f", keyboardHeight);
@@ -442,6 +442,12 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 		if (_accessoryForNumberField) {
 			_accessoryForNumberField.frame = CGRectMake(0, keyboardView.frame.origin.y - 45.0, self.view.bounds.size.width, 45);
 		}
+		
+		UIEdgeInsets contentInset = self.tableView.contentInset;
+		contentInset.bottom = keyboardHeight + _accessoryForNumberField.frame.size.height;
+		self.tableView.contentInset = contentInset;
+		
+		[self.tableView scrollToRowAtIndexPath:_editingIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 	}
 }
 
@@ -461,6 +467,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 - (void)showInstructionView
 {
+	[self dismissNumberKeyboardWithAnimation:YES completion:NULL];
 	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForExpenseList];
 	[[A3UserDefaults standardUserDefaults] synchronize];
 
@@ -1699,6 +1706,11 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 		frame.origin.y -= keyboardHeight;
 		accessoryView.frame = frame;
 
+		UIEdgeInsets contentInset = self.tableView.contentInset;
+		contentInset.bottom = keyboardHeight + accessoryView.frame.size.height;
+		self.tableView.contentInset = contentInset;
+
+		[self.tableView scrollToRowAtIndexPath:_editingIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 		FNLOG(@"%@", keyboardView.superview);
 		FNLOG(@"%@", accessoryView.superview);
 
@@ -1748,6 +1760,10 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 			frame = accessoryView.frame;
 			frame.origin.y += keyboardHeight;
 			accessoryView.frame = frame;
+			
+			UIEdgeInsets contentInset = self.tableView.contentInset;
+			contentInset.bottom = keyboardHeight;
+			self.tableView.contentInset = contentInset;
 		} completion:^(BOOL finished) {
 			finalize();
 		}];

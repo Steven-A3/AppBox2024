@@ -577,17 +577,21 @@ enum A3TableElementCellType {
 
 	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
 		UIView *keyboardView = self.numberKeyboardViewController.view;
-		CGFloat keyboardHeight = IS_IPAD ? (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 264 : 352) : 216;
+		CGFloat keyboardHeight = self.numberKeyboardViewController.keyboardHeight;
 
 		FNLOGRECT(self.view.bounds);
 		FNLOG(@"%f", keyboardHeight);
 
 		UIEdgeInsets contentInset = self.tableView.contentInset;
 		contentInset.bottom = keyboardHeight + (self.bannerView ? self.bannerView.bounds.size.height : 0);
+		self.tableView.contentInset = contentInset;
 
 		CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 		keyboardView.frame = CGRectMake(0, bounds.size.height - keyboardHeight, bounds.size.width, keyboardHeight);
 		[self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+		
+		NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:_editingTextField];
+		[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 	}
 }
 
@@ -1062,6 +1066,10 @@ enum A3TableElementCellType {
 	_isNumberKeyboardVisible = NO;
 
 	void(^completion)() = ^{
+		UIEdgeInsets contentInset = self.tableView.contentInset;
+		contentInset.bottom = 0;
+		self.tableView.contentInset = contentInset;
+		
 		[keyboardView removeFromSuperview];
 		self.numberKeyboardViewController = nil;
 	};
