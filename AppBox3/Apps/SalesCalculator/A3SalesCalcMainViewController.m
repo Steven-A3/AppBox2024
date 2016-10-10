@@ -71,6 +71,7 @@ enum A3TableElementCellType {
 @property (nonatomic, strong) NSIndexPath *calculatorTargetIndexPath;
 @property (nonatomic, weak) A3TableViewInputElement *editingElement;
 @property (nonatomic, weak) UITextField *editingTextField;
+@property (nonatomic, copy) NSString *textBeforeEditing;
 @property (nonatomic, assign) BOOL isNumberKeyboardVisible;
 
 @end
@@ -278,6 +279,7 @@ enum A3TableElementCellType {
 }
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
+	[self dismissNumberKeyboardAnimated:NO];
 	[self.textViewResponder resignFirstResponder];
 
 	[super appsButtonAction:barButtonItem];
@@ -785,18 +787,20 @@ enum A3TableElementCellType {
     if (!_cellTextInputBeginBlock) {
 		__typeof(self) __weak  weakSelf = self;
         _cellTextInputBeginBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
-            weakSelf.editingObject = textField;
-
-			BOOL animated = YES;
-
-			if (weakSelf.isNumberKeyboardVisible) {
-				animated = NO;
-				[weakSelf dismissNumberKeyboardAnimated:animated];
+			if (weakSelf.editingObject != textField) {
+				weakSelf.editingObject = textField;
+				
+				BOOL animated = YES;
+				
+				if (weakSelf.isNumberKeyboardVisible) {
+					animated = NO;
+					[weakSelf dismissNumberKeyboardAnimated:animated];
+				}
+				weakSelf.editingElement = element;
+				weakSelf.editingTextField = textField;
+				
+				[weakSelf presentNumberKeyboard:element.inputViewController forTextField:textField animated:animated];
 			}
-			weakSelf.editingElement = element;
-			weakSelf.editingTextField = textField;
-
-			[weakSelf presentNumberKeyboard:element.inputViewController forTextField:textField animated:animated];
         };
     }
     

@@ -123,6 +123,12 @@
 	}
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	[self dismissNumberKeyboard];
+}
+
 - (void)willDismissFromRightSide
 {
 	if (IS_IPAD) {

@@ -126,6 +126,8 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
+	[self dismissNumberKeyboard];
+	
 	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
 		FNLOG();
 		[self removeObserver];

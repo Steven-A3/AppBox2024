@@ -1016,6 +1016,10 @@
     FNLOG(@"scrollViewDidEndDragging: %@, decelerate: %d", NSStringFromCGPoint(scrollView.contentOffset), decelerate);
 }
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+	[self dismissNumberKeyboard];
+}
+
 #pragma mark - UITextField Delegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField

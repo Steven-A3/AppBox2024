@@ -1066,6 +1066,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
+	[_editingElement textFieldEditingChanged:_editingTextField];
 	_didPressNumberKey = YES;
 	_didPressClearKey = NO;
 }

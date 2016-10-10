@@ -576,14 +576,9 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	if (self.navigationController.visibleViewController != self) {
 		return NO;
 	}
-	if (self.editingObject) {
-		[self.editingObject resignFirstResponder];
-	}
 	if (_isNumberKeyboardVisible) {
-		[self textFieldDidEndEditing:_editingTextField];
-
-		self.numberKeyboardViewController.textInputTarget = textField;
-		[self textFieldDidBeginEditing:textField];
+		[self dismissNumberKeyboardAnimated:NO];
+		[self presentNumberKeyboardForTextField:textField animated:NO];
 	} else {
 		[self presentNumberKeyboardForTextField:textField animated:YES];
 	}
@@ -592,7 +587,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	self.editingObject = textField;
-	_editingTextField = textField;
+	self.editingTextField = textField;
 	_didPressClearKey = NO;
 	_didPressNumberKey = NO;
 

@@ -199,6 +199,9 @@
 		case A3TableViewEntryTypePercent:
 		case A3TableViewEntryTypeRealNumber:
 		case A3TableViewEntryTypeInteger:
+			if (_inputViewController) {
+				return NO;
+			}
 			[self setupNumberKeyboardForTextField:textField keyboardType:self.inputType];
             break;
 	}
@@ -214,18 +217,7 @@
 	}
 
 	textField.textColor = [[A3AppDelegate instance] themeColor];
-	switch (self.inputType) {
-		case A3TableViewEntryTypeText:
-			break;
-		case A3TableViewEntryTypeCurrency:
-		case A3TableViewEntryTypeYears:
-		case A3TableViewEntryTypePercent:
-		case A3TableViewEntryTypeRealNumber:
-		case A3TableViewEntryTypeInteger:
-			textField.text = [self.decimalFormatter stringFromNumber:@0];
-			textField.placeholder = @"";
-			break;
-	}
+	textField.text = [self.decimalFormatter stringFromNumber:@0];
 
 	return NO;
 }

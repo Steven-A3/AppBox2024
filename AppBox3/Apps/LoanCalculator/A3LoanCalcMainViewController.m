@@ -3049,15 +3049,23 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		make.bottom.equalTo(superview.bottom);
 		make.height.equalTo(@(bannerView.bounds.size.height));
 	}];
-	UIEdgeInsets contentInset = self.tableView.contentInset;
-	contentInset.bottom = bannerView.bounds.size.height;
-	self.tableView.contentInset = contentInset;
 
 	if (self.numberKeyboardViewController.view.superview) {
 		UIView *keyboardView = self.numberKeyboardViewController.view;
 		CGRect frame = keyboardView.frame;
 		frame.origin.y = self.view.bounds.size.height - keyboardView.bounds.size.height - bannerView.bounds.size.height;
 		keyboardView.frame = frame;
+		
+		UIEdgeInsets contentInset = self.tableView.contentInset;
+		contentInset.bottom = bannerView.bounds.size.height + keyboardView.frame.size.height;
+		self.tableView.contentInset = contentInset;
+
+		NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:_editingTextField];
+		[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+	} else {
+		UIEdgeInsets contentInset = self.tableView.contentInset;
+		contentInset.bottom = bannerView.bounds.size.height;
+		self.tableView.contentInset = contentInset;
 	}
 }
 

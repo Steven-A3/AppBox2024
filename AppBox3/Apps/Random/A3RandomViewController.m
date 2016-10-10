@@ -426,7 +426,12 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-	[self presentNumberKeyboardForTextField:textField];
+	if (_isNumberKeyboardVisible) {
+		[self textFieldDidEndEditing:_editingTextField];
+		[self textFieldDidBeginEditing:textField];
+	} else {
+		[self presentNumberKeyboardForTextField:textField];
+	}
 	return NO;
 }
 
