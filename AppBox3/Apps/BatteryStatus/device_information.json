@@ -68,17 +68,17 @@
 		"iPhone 7": {
 			"Model": "iPhone 7",
 			"Chips": "A10 Fusion chip with 64-bit architecture\nM10 motion coprocessor",
-			"CPU": "TBD",
-			"GPU": "TBD",
-			"Memory": "2GB",
+			"CPU": "2.34 GHz quad-core (two used) 64-bit ARMv8-A",
+			"GPU": "hexa-core GPU",
+			"Memory": "2 GB LPDDR4 RAM",
 			"PPI": "326"
 		},
 		"iPhone 7 Plus": {
 			"Model": "iPhone 6s Plus",
 			"Chips": "A10 Fusion chip with 64-bit architecture\nM10 motion coprocessor",
-			"CPU": "TBD",
-			"GPU": "TBD",
-			"Memory": "2GB",
+			"CPU": "2.34 GHz quad-core (two used) 64-bit ARMv8-A",
+			"GPU": "hexa-core GPU",
+			"Memory": "3 GB LPDDR4 RAM",
 			"PPI": "401"
 		},
         "iPhone 6s": {
@@ -252,32 +252,32 @@
 		"9.7\" iPad Pro": {
 			"Model": "9.7\" iPad Pro",
 			"Chips": "A9 chip with 64-bit architecture\nM9 motion coprocessor",
-			"CPU": "TBD",
-			"GPU": "TBD",
-			"Memory": "4 GB LPDDR3 DRAM",
+			"CPU": "2.16GHz dual-core 64-bit",
+			"GPU": "12-core PowerVR Series 7XT",
+			"Memory": "2 GB LPDDR3 DRAM",
 			"PPI": "264"
 		},
 		"9.7\" iPad Pro (Wi-Fi)": {
 			"Model": "9.7\" iPad Pro (Wi-Fi)",
 			"Chips": "A9 chip with 64-bit architecture\nM9 motion coprocessor",
-			"CPU": "TBD",
-			"GPU": "TBD",
-			"Memory": "4 GB LPDDR3 DRAM",
+			"CPU": "2.16GHz dual-core 64-bit",
+			"GPU": "12-core PowerVR Series 7XT",
+			"Memory": "2 GB LPDDR3 DRAM",
 			"PPI": "264"
 		},
 		"iPad Pro": {
 			"Model": "iPad Pro",
 			"Chips": "A9 chip with 64-bit architecture\nM9 motion coprocessor",
-			"CPU": "TBD",
-			"GPU": "TBD",
+			"CPU": "2.24 GHz dual-core 64-bit ARMv8-A",
+			"GPU": "12-core PowerVR Series 7XT",
 			"Memory": "4 GB LPDDR3 DRAM",
 			"PPI": "264"
 		},
 		"iPad Pro (Wi-Fi)": {
 			"Model": "iPad Pro (Wi-Fi)",
 			"Chips": "A9 chip with 64-bit architecture\nM9 motion coprocessor",
-			"CPU": "TBD",
-			"GPU": "TBD",
+			"CPU": "2.24 GHz dual-core 64-bit ARMv8-A",
+			"GPU": "12-core PowerVR Series 7XT",
 			"Memory": "4 GB LPDDR3 DRAM",
 			"PPI": "264"
 		},

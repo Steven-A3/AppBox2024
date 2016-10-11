@@ -47,21 +47,26 @@
 }
 
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	CGFloat col_1, col_2, col_3, col_4, col_5;
 	CGFloat row_1, row_2, row_3, row_4;
 	CGFloat width_small, height_small, width_big, height_big;
 
 	BOOL portrait = UIDeviceOrientationIsPortrait((UIDeviceOrientation)toInterfaceOrientation);
 	if (portrait) {
-		width_big = 124.0; height_big = 118.0;
-		width_small = 89.0; height_small = 57.0;
-		col_1 = 74.0; col_2 = 237.0; col_3 = 338.0; col_4 = 440.0, col_5 = 570.0;
-		row_1 = 6.0; row_2 = 72.0; row_3 = 137.0; row_4 = 201.0;
+		CGFloat scaleX = bounds.size.height != 1024 ? bounds.size.width / 768 : 1.0;
+		CGFloat scaleY = bounds.size.height != 1024 ? 1.22 : 1.0;
+		width_big = 124.0 * scaleX; height_big = 118.0 * scaleY;
+		width_small = 89.0 * scaleX; height_small = 57.0 * scaleY;
+		col_1 = 74.0 * scaleX; col_2 = 237.0 * scaleX; col_3 = 338.0 * scaleX; col_4 = 440.0 * scaleX, col_5 = 570.0 * scaleX;
+		row_1 = 6.0 * scaleY; row_2 = 72.0 * scaleY; row_3 = 137.0 * scaleY; row_4 = 201.0 * scaleY;
 	} else {
-		width_big = 172.0; height_big = 164.0;
-		width_small = 108.0; height_small = 77.0;
-		col_1 = 114.0; col_2 = 332.0; col_3 = 455.0; col_4 = 578.0, col_5 = 735.0;
-		row_1 = 8.0; row_2 = 94.0; row_3 = 179.0; row_4 = 265.0;
+		CGFloat scaleX = bounds.size.height != 768 ? bounds.size.height / 768 : 1.0;
+		CGFloat scaleY = bounds.size.height != 768 ? 1.16 : 1.0;
+		width_big = 172.0 * scaleX; height_big = 164.0 * scaleY;
+		width_small = 108.0 * scaleX; height_small = 77.0 * scaleY;
+		col_1 = 114.0 * scaleX; col_2 = 332.0 * scaleX; col_3 = 455.0 * scaleX; col_4 = 578.0 * scaleX, col_5 = 735.0 * scaleX;
+		row_1 = 8.0 * scaleY; row_2 = 94.0 * scaleY; row_3 = 179.0 * scaleY; row_4 = 265.0 * scaleY;
 	}
 
 	[self.num7_Jan_Button setFrame:CGRectMake(col_2, row_1, width_small, height_small)];

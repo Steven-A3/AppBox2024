@@ -179,6 +179,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	if ([_messageTableView isEditing]) {
 		[self editButtonAction];
 	}
+	[self resignFirstResponder];
 }
 
 - (BOOL)resignFirstResponder {

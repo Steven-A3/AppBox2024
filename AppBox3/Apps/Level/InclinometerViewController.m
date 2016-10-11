@@ -89,7 +89,7 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
-	[self.navigationController setNavigationBarHidden:YES animated:YES];
+	[self.navigationController setNavigationBarHidden:YES animated:NO];
 
 	[self myLayoutSubviews];
 

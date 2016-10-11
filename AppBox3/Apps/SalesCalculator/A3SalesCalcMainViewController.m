@@ -146,6 +146,7 @@ enum A3TableElementCellType {
 
 - (void)applicationWillResignActive {
 	[self dismissNumberKeyboardAnimated:NO];
+	[self.textViewResponder resignFirstResponder];
 }
 
 - (void)cloudStoreDidImport {

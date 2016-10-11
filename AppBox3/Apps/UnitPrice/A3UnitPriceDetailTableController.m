@@ -144,6 +144,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
 - (BOOL)resignFirstResponder {
 	[self dismissNumberKeyboardAnimated:NO];
+	[self.editingObject resignFirstResponder];
 	return [super resignFirstResponder];
 }
 
@@ -524,6 +525,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
+	self.editingObject = textView;
     return YES;
 }
 
@@ -831,7 +833,6 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
             A3WalletNoteCell *noteCell = (A3WalletNoteCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:1]];
 			[self dismissNumberKeyboardAnimated:NO];
             [noteCell.textView becomeFirstResponder];
-			self.editingObject = noteCell.textView;
         }
     }
 }

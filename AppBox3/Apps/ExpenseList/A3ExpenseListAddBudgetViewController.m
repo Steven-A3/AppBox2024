@@ -162,6 +162,8 @@ enum A3ExpenseListAddBudgetCellType {
 
 - (void)applicationWillResignActive:(NSNotification *)notification {
 	[self dismissNumberKeyboardAnimated:NO];
+	[self.editingTextField resignFirstResponder];
+	[self.textViewResponder resignFirstResponder];
 }
 
 - (void)cloudStoreDidImport {
@@ -998,6 +1000,7 @@ static NSString *CellIdentifier = @"Cell";
 	keyboardVC.delegate = self;
 	keyboardVC.textInputTarget = textField;
 	keyboardVC.keyboardType = A3NumberKeyboardTypeCurrency;
+	keyboardVC.currencyCode = [self defaultCurrencyCode];
 
 	keyboardView.frame = CGRectMake(0, self.view.bounds.size.height, bounds.size.width, keyboardHeight);
 	[UIView animateWithDuration:0.3 animations:^{
@@ -1015,7 +1018,7 @@ static NSString *CellIdentifier = @"Cell";
 		return;
 	}
 
-	self.cellTextInputFinishedBlock(_editingElement, _editingTextField);
+	[_editingElement textFieldDidEndEditing:_editingTextField];
 
 	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
 	UIView *keyboardView = keyboardViewController.view;
@@ -1108,7 +1111,7 @@ static NSString *CellIdentifier = @"Cell";
 #pragma mark - Number Keyboard, Calculator Button Notification
 
 - (void)calculatorButtonAction {
-	_calculatorTargetIndexPath = [self.tableView indexPathForCellSubview:(UIView *) self.editingObject];
+	self.calculatorTargetIndexPath = [self.tableView indexPathForCellSubview:_editingTextField];
 	_calculatorTargetElement = (A3TableViewInputElement *) [self.root elementForIndexPath:_calculatorTargetIndexPath];
 	
 	[self dismissNumberKeyboardAnimated:NO];
@@ -1117,10 +1120,13 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)calculatorDidDismissWithValue:(NSString *)value {
-	A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *) [self.root cellForRowAtIndexPath:_calculatorTargetIndexPath];
-	cell.textField.text = value;
-	self.cellTextInputFinishedBlock(_calculatorTargetElement, cell.textField);
-	[self.tableView reloadRowsAtIndexPaths:@[_calculatorTargetIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+	if (_calculatorTargetIndexPath) {
+		A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *) [self.root cellForRowAtIndexPath:_calculatorTargetIndexPath];
+		cell.textField.text = value;
+		self.cellTextInputFinishedBlock(_calculatorTargetElement, cell.textField);
+		[self.tableView reloadRowsAtIndexPaths:@[_calculatorTargetIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+		_calculatorTargetIndexPath = nil;
+	}
 }
 
 - (NSNumberFormatter *)currencyFormatterForTableViewInputElement {
