@@ -1,5 +1,7 @@
+"Currency" = "貨幣";
 "Date Calculator" = "日期計算";
 "Date Calc" = "日期計算";
+"Expense List" = "費用清單";
 "Loan Calculator" = "貸款計算";
 "Loan Calc" = "Loan Calc";
 "Sales Calculator" = "折扣價格計算";
@@ -9,8 +11,8 @@
 "Tip Calc" = "小費計算";
 "Percent Calculator" = "百分比計算器";
 "Percent Calc" = "百分比計算器";
-"Days Counter" = "天計數器";
-"DaysCounter" = "天計數器";
+"Days Counter" = "事件日曆";
+"DaysCounter" = "事件日曆";
 "Ladies Calendar" = "淑女日曆";
 "L Calendar" = "淑女日曆";
 "Battery Status" = "電池狀態";
@@ -19,6 +21,11 @@
 "Ruler" = "尺子";
 "QR Code" = "QR碼";
 "Pedometer" = "計步器";
+"Clock" = "時鐘";
+"Unit Converter" = "單位換算";
+"Unit Price" = "單價";
+"Unit Price Short" = "單價";
+"Random" = "隨機數據生成";
 
 "Turn Passcode On" = "打開密碼";
 "Category Name" = "種類名稱";
@@ -112,7 +119,6 @@
 "DaysCounterDuration_week_abbreviation" = "周";
 "Please turn iCloud sync off." = "請關閉iCloud 同步。";
 "Delete Calendar" = "刪除日曆";
-"Clock" = "時鐘";
 "Months" = "月";
 "Events" = "事件";
 "Tip Calculator using AppBox Pro" = "使用AppBox Pro的小費計算器";
@@ -243,7 +249,6 @@
 "Decrease" = "減少";
 "Holidays for the year %lu is not available." = "%年的假日不可用。";
 "Internet on 3G" = "網際網路 3G";
-"Expense List" = "費用清單";
 "Share Loan Calculator Data" = "共享貸款計算器數據";
 "Info" = "資訊";
 "Cash" = "現金";
@@ -334,7 +339,6 @@
 "DISCOUNT" = "折扣";
 "Please enable alert after enabling notifications for this app." = "請啟用通知這個應用程式後，啟用警報。";
 "%@ to %@" = "%@ 到 %@";
-"Currency" = "貨幣";
 "Dropbox" = "Dropbox";
 "There is no events." = "沒有任何項目。";
 "Every Week" = "每周";
@@ -444,7 +448,6 @@
 "Repeat" = "重複";
 "Same Before Cycle" = "與前一週期相同";
 "since" = "從";
-"Random" = "隨機數據生成";
 "Expected Period(+/-2 days)" = "月經預測日(+/-2 days)";
 "Share Event" = "共享事件";
 "Units in more" = "更多單位";
@@ -673,14 +676,11 @@
 "or Shake!" = "或動搖!";
 "Category Info" = "類別資訊";
 "Show AM/PM" = "顯示上午／下午";
-"Unit Converter" = "單位換算";
 "%@Rate = %0.4f" = "%@比率 = %0.4f";
 "Saved Amount" = "節約金額";
 "%@ to %@ = %@" = "%@ to %@ = %@";
 "To: " = "到: ";
 "Starts" = "開始日";
-"Unit Price" = "單價";
-"Unit Price Short" = "單價";
 
 "Slideshow Options" = "幻燈片顯示選項";
 " Total Per Person" = " 總計/人";
@@ -917,4 +917,12 @@
 "South African Cent Spot" = "南非美分點";
 
 "What's New in V4.2.1" = "4.2.1版本的新內容";
-"WhatsNew4_2_1" = "iOS的10支持\niPhone的7支持\n修復了時鐘天氣，貨幣，QR碼，假期更新";
+"WhatsNew4_2_1" = "支持iOS 10
+支持iPhone 7，iPhone 7 Plus
+電子錢包搜索也包括筆記內容
+世界假期數據更新
+時鍾天氣的錯誤修復
+Bug修復貨幣轉換器
+QR碼閱讀器的錯誤修復：電話號碼和電子郵件地址的問題
+Bug修復數字輸入板問題：
+貨幣，貸款計算，折扣價格計算，日期計算，百分比計算器，單位換算，單價，小費計算，費用清單，淑女日曆，天計數器，隨機數據生成";

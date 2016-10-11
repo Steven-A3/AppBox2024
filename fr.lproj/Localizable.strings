@@ -1089,4 +1089,12 @@
 "South African Cent Spot" = "Cent Afrique du Sud Spot";
 
 "What's New in V4.2.1" = "Nouveautés de la V4.2.1";
-"WhatsNew4_2_1" = "iOS 10 Soutien\niPhone 7 Soutien\nBug fix pour le temps de l'horloge, Monnaie, QR Code, Vacances Update";
+"WhatsNew4_2_1" = "Soutien iOS 10
+Soutien iPhone 7, iPhone 7 Plus
+recherche Wallet comprend des notes contenus trop
+Le monde Vacances à jour des données
+Bug fix pour Clock Météo
+Bug fix pour Currency Converter
+Correction d'un bug pour le code QR lecteur: Problèmes avec numéro de téléphone et adresse e-mail
+Correction d'un bug Nombre de problèmes de pad d'entrée:
+Convertisseur de devises, Calculette du prêt, Calculette de ventes, Calculette de date, Calculette de pourcentage, Convertisseur d’unité, Prix à l'unité, Calculette du pourboire, Liste de dépense, Calendrier féminin, Aléatoire";

@@ -1033,4 +1033,12 @@ Enter Encryption Key for Wallet.";
 "South African Cent Spot" = "South African Cent Spot";
 
 "What's New in V4.2.1" = "What's New in V4.2.1";
-"WhatsNew4_2_1" = "iOS 10 Support\niPhone 7 Support\nBug fix for Clock weather, Currency, QR Code, Holidays Update";
+"WhatsNew4_2_1" = "Support iOS 10
+Support iPhone 7, iPhone 7 Plus
+Wallet search includes notes contents too
+The World Holidays Data Update
+Bug fix for Clock Weather
+Bug fix for Currency Converter
+Bug fix for QR Code reader: Problems with phone number and email addresses
+Bug fix for Number input pad problems:
+Currency Converter, Loan Calculator, Sales Calculator, Date Calculator, Percent Calculator, Unit Converter, Unit Price, Tip Calc, Expense List, Ladies Calendar, Days Counter, Random number";

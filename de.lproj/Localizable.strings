@@ -1098,4 +1098,12 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 "South African Cent Spot" = "South African Cent-Stelle";
 
 "What's New in V4.2.1" = "Neue Funktionen von V4.2.1";
-"WhatsNew4_2_1" = "iOS 10 Unterstützung\niPhone 7 Unterstützung\n Bug fix für Clock Wetter, Währung, QR Code, Feiertage aktualisieren";
+"WhatsNew4_2_1" = "Unterstützung iOS 10
+Unterstützung iPhone 7, iPhone 7 Plus
+Wallet Suche enthält Hinweise Inhalt zu
+Die World Holidays Data Update
+Bug fix für Clock Wetter
+Bug fix für Currency Converter
+Bug fix für QR-Code-Reader: Probleme mit Telefonnummer und E-Mail-Adressen
+Bug fix für Anzahl Eingangs-Pad Probleme:
+Währungsrechner, Darlehensrechner, Kaufpreisrechner, Datumsrechner, Prozentrechner, Einheitenumrechner, Stückpreis, Trinkgeldrechner, Ausgabenliste, Damen-Kalender, Tageszähler, Zufallszahl";

@@ -1050,7 +1050,6 @@ Wprowadź klucz szyfrowania dla portfela.";
 "Password_QRCODE" = "Hasło";
 "It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes." = "Będzie ona wykrywać kody 2D (QR kod, kod Aztec, Data Matrix) z obrazu. To nie wykryje kodów kreskowych 1D.";
 "Restricted" = "Ograniczony";
-"New APP: Pedometer" = "\n\nNowa aplikacja: Krokomierz\n\n";
 "days" = "dni";
 "steps" = "kr.";
 "floors" = "p.";
@@ -1089,4 +1088,12 @@ Wprowadź klucz szyfrowania dla portfela.";
 "South African Cent Spot" = "South African Cent Spot";
 
 "What's New in V4.2.1" = "Co nowego w wersji 4.2.1";
-"WhatsNew4_2_1" = "iOS 10 Pomoc\niPhone 7 Wsparcie\nBug fix dla pogody Zegar, kantor, QR Code, Urlop Aktualizacja";
+"WhatsNew4_2_1" = "iOS 10 nośnego
+Wsparcie dla iPhone 7, iPhone 7 Plus
+Wyszukiwarka Portfel zawiera treść notatki zbyt
+The World Holidays Dane aktualizują
+Bug fix dla Clock pogoda
+Bug fix dla Walutowy
+Bug fix dla czytnika QR Code: Problemy z numerów telefonów i adresów e-mail
+Bug fix dla numeru problemów pad wejściowy:
+Przelicznik walut, Pożyczki, Obniżki, Daty, Kalkulator procentowy, Konwerter jednostek, Cena jednostkowa, Napiwki, Lista wydatków, Kalendarz kobiecy, Odliczacz dni, Losowanie";

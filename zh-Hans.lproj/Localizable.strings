@@ -28,8 +28,8 @@
 "Unit Converter" = "单位换算";
 
 "Expense List" = "费用清单";
-"Days Counter" = "天计数器";
-"DaysCounter" = "天计数器";
+"Days Counter" = "事件日历";
+"DaysCounter" = "事件日历";
 "Ladies Calendar" = "淑女日历";
 "L Calendar" = "淑女日历";
 "Wallet" = "电子钱包";
@@ -1102,4 +1102,11 @@
 "South African Cent Spot" = "南非美分点";
 
 "What's New in V4.2.1" = "版本4.2.1 中的新功能";
-"WhatsNew4_2_1" = "iOS的10支持\niPhone的7支持\n修复了时钟天气，货币，QR码，假期更新";
+"WhatsNew4_2_1" = "支持iOS 10
+支持iPhone 7，iPhone 7 Plus
+电子钱包搜索也包括笔记内容
+世界节日数据更新
+时钟天气的错误修复
+Bug修复货币转换器
+QR码阅读器的错误修复：电话号码和电子邮件地址的问题
+Bug修复数字输入板问题：币种转换器，贷款计算，折扣价格计算，日期计算，百分比计算器，单位换算，单价，小费计算，费用清单，淑女日历，天计数器，随机数据生成";

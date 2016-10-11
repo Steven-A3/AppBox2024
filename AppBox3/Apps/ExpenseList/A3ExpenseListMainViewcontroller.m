@@ -136,7 +136,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
-	
+
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
@@ -175,6 +175,21 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(systemKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(systemKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)systemKeyboardWillShow:(NSNotification *)notification {
+	UIEdgeInsets contentInset = self.tableView.contentInset;
+	contentInset.bottom = 0;
+	self.tableView.contentInset = contentInset;
+}
+
+- (void)systemKeyboardWillHide:(NSNotification *)notification {
+	UIEdgeInsets contentInset = self.tableView.contentInset;
+	contentInset.bottom = self.bannerView ? self.bannerView.bounds.size.height : 0;
+	self.tableView.contentInset = contentInset;
 }
 
 - (void)applicationDidEnterBackground {
@@ -217,6 +232,8 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 }
 
 - (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];

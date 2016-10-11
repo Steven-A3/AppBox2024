@@ -1046,7 +1046,6 @@ Introduzca la clave de cifrado para el bolsillo.";
 "Password_QRCODE" = "Contraseña";
 "It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes." = "Se detectará códigos de barras 2D (Código QR, Código Azteca, Data Matrix) de la imagen. No detectará códigos de barras 1D.";
 "Restricted" = "Restringido";
-"New APP: Pedometer" = "\n\nNueva APP: Podómetro\n\n";
 "days" = "días";
 "steps" = "pasos";
 "floors" = "pisos";
@@ -1085,5 +1084,12 @@ Introduzca la clave de cifrado para el bolsillo.";
 "South African Cent Spot" = "Sudáfrica Cent para comer";
 
 "What's New in V4.2.1" = "Lo nuevo en la V4.2.1";
-"WhatsNew4_2_1" = "iOS 10 textuales\niPhone 7 textuales\nCorrección de errores de tiempo de reloj, moneda, QR, días de fiesta actualización";
-
+"WhatsNew4_2_1" = "apoyo iOS 10
+Soporte iPhone 7, 7 iPhone Plus
+Monedero de búsqueda incluye notas de contenido demasiado
+Los días de fiesta Mundiales de Datos Actualizar
+Corrección de errores de tiempo del reloj
+Corrección de errores para Convertidor de divisas
+Corrección de errores para el lector de código QR: Problemas con números de teléfono y direcciones de correo electrónico
+Corrección de errores de Número problemas atenuador de entrada:
+Moneda, Préstamo, Descuento, Fechas, Porcentaje, Unidad, Precio unitario, Calculador de propina, Lista de gastos, Calendario femenino, Calendario de eventos, Random";

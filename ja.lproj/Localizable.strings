@@ -1056,7 +1056,6 @@
 "Password_QRCODE" = "パスワード";
 "It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes." = "画像から2Dバーコード（QRコード、アズテックコード、データマトリックス）を検出します。これは、1次元バーコードを検出しません。";
 "Restricted" = "App内課金制限";
-"New APP: Pedometer" = "\n\n新しいAPP：歩数計\n\n";
 "days" = "日";
 "steps" = "歩数";
 "floors" = "階";
@@ -1095,4 +1094,12 @@
 "South African Cent Spot" = "南アフリカのセントスポット";
 
 "What's New in V4.2.1" = "バージョン4.2.1の新機能";
-"WhatsNew4_2_1" = "iOS10のサポート\niPhone7のサポート\n時計の天候のためのバグ修正、通貨、QRコード、祝日のアップデート";
+"WhatsNew4_2_1" = "サポートiOS10
+サポートiPhone7、iPhone7プラス
+電子財布の検索があまりにもノートの内容を含んでいます
+世界の休日データ更新
+時計天気のバグが修正されました
+通貨のコンバーターのバグが修正されました
+QRコードリーダーのためのバグ修正：電話番号やメールアドレスの問題
+数値入力パッドの問題のバグが修正されました：
+為替換算、ローン計算、割引価格計算、日付計算、パーセント計算、単位換算、単価、チップ計算、費用リスト、レディースカレンダー、イベントカレンダー、乱数生成";
