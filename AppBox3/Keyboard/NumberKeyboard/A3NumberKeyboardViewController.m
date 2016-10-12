@@ -230,7 +230,7 @@
 		NSString *string = _textInputTarget.text;
 		if ([string length]) {
 			if ([string length] == 1) {
-				_textInputTarget.text = @"";
+				_textInputTarget.text = [self.decimalFormatter stringFromNumber:@0];
 			} else {
 				_textInputTarget.text = [string substringToIndex:[string length] - 1];
 			}

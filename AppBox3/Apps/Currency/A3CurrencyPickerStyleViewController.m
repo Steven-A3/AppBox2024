@@ -1138,7 +1138,8 @@ static NSString *const A3V3InstructionDidShowForCurrencyPicker = @"A3V3Instructi
 
 	_didPressClearKey = NO;
 	_didPressNumberKey = NO;
-	
+	_isNumberKeyboardVisible = YES;
+
 	_targetTextField.text = [self targetValueString];
 
 	keyboardView.frame = CGRectMake(0, self.view.bounds.size.height, bounds.size.width, keyboardHeight);
@@ -1148,7 +1149,6 @@ static NSString *const A3V3InstructionDidShowForCurrencyPicker = @"A3V3Instructi
 		keyboardView.frame = frame;
 	} completion:^(BOOL finished) {
 		[self addNumberKeyboardNotificationObservers];
-		_isNumberKeyboardVisible = YES;
 	}];
 	
 }

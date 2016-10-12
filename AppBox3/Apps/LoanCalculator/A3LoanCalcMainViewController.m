@@ -2066,6 +2066,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	if (_isNumberKeyboardVisible) {
 		return;
 	}
+	_isNumberKeyboardVisible = YES;
 
 	[self addNumberKeyboardNotificationObservers];
 	A3NumberKeyboardViewController *numberKeyboardViewController = self.numberKeyboardViewController;
@@ -2099,7 +2100,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		
 	} completion:^(BOOL finished) {
 		[self addNumberKeyboardNotificationObservers];
-		_isNumberKeyboardVisible = YES;
 	}];
 	
 }

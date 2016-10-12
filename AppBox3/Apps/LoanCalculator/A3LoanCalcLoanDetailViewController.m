@@ -621,6 +621,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 	if (_isNumberKeyboardVisible) {
 		return;
 	}
+	_isNumberKeyboardVisible = YES;
 
 	A3NumberKeyboardViewController *keyboardVC = [self normalNumberKeyboard];
 	self.numberKeyboardViewController = keyboardVC;
@@ -649,7 +650,6 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 		[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 	} completion:^(BOOL finished) {
 		[self addNumberKeyboardNotificationObservers];
-		_isNumberKeyboardVisible = YES;
 	}];
 	
 }

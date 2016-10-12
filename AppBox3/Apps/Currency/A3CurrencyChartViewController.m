@@ -530,7 +530,8 @@
 	
 	_didPressClearKey = NO;
 	_didPressNumberKey = NO;
-	
+	_isNumberKeyboardVisible = YES;
+
 	[self textFieldDidBeginEditing:textField];
 	
 	keyboardView.frame = CGRectMake(0, bounds.size.height, bounds.size.width, keyboardHeight);
@@ -540,7 +541,6 @@
 		keyboardView.frame = frame;
 	} completion:^(BOOL finished) {
 		[self addNumberKeyboardNotificationObservers];
-		_isNumberKeyboardVisible = YES;
 	}];
 	
 }

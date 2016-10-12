@@ -989,6 +989,7 @@ static NSString *CellIdentifier = @"Cell";
 	if (_isNumberKeyboardVisible) {
 		return;
 	}
+	_isNumberKeyboardVisible = YES;
 
 	self.numberKeyboardViewController = keyboardVC;
 
@@ -1009,7 +1010,6 @@ static NSString *CellIdentifier = @"Cell";
 		keyboardView.frame = frame;
 	} completion:^(BOOL finished) {
 		[self addNumberKeyboardNotificationObservers];
-		_isNumberKeyboardVisible = YES;
 	}];
 }
 

@@ -1523,7 +1523,8 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	
 	_didPressClearKey = NO;
 	_didPressNumberKey = NO;
-	
+	_isNumberKeyboardVisible = YES;
+
 	keyboardView.frame = CGRectMake(0, self.view.bounds.size.height, bounds.size.width, keyboardHeight);
 	[UIView animateWithDuration:0.3 animations:^{
 		CGRect frame = keyboardView.frame;
@@ -1531,7 +1532,6 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 		keyboardView.frame = frame;
 	} completion:^(BOOL finished) {
 		[self addNumberKeyboardNotificationObservers];
-		_isNumberKeyboardVisible = YES;
 	}];
 	
 }

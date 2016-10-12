@@ -1063,6 +1063,8 @@
 	if (_isNumberKeyboardVisible) {
 		return;
 	}
+	_isNumberKeyboardVisible = YES;
+
 	[self prepareEditingForTextField:textField];
 	
 	self.numberKeyboardViewController = [self simplePrevNextNumberKeyboard];
@@ -1095,7 +1097,6 @@
 		frame.origin.y -= keyboardHeight;
 		keyboardView.frame = frame;
 	} completion:^(BOOL finished) {
-		_isNumberKeyboardVisible = YES;
 	}];
 	
 }

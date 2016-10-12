@@ -525,6 +525,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 	if (_isNumberKeyboardVisible) {
 		return;
 	}
+	_isNumberKeyboardVisible = YES;
 	_editingTextField = textField;
 
 	[self textFieldDidBeginEditing:textField];
@@ -559,7 +560,6 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 		keyboardView.frame = frame;
 	} completion:^(BOOL finished) {
 		[self addNumberKeyboardNotificationObservers];
-		_isNumberKeyboardVisible = YES;
 	}];
 }
 

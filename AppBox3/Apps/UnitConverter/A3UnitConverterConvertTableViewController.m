@@ -1777,7 +1777,8 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	if (_isNumberKeyboardVisible) {
 		return;
 	}
-	
+	_isNumberKeyboardVisible = YES;
+
 	self.numberKeyboardViewController = [self simpleUnitConverterNumberKeyboard];
 	
 	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
@@ -1816,7 +1817,6 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		}
 	} completion:^(BOOL finished) {
 		[self addNumberKeyboardNotificationObservers];
-		_isNumberKeyboardVisible = YES;
 	}];
 	
 }

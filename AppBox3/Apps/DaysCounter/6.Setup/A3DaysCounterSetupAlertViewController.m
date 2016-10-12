@@ -486,6 +486,7 @@
 
 	_didPressClearKey = NO;
 	_didPressNumberKey = NO;
+	_isNumberKeyboardVisible = YES;
 	keyboardViewController.keyboardType = A3NumberKeyboardTypeInteger;
 	
 	[self textFieldDidBeginEditing:textField];
@@ -505,7 +506,6 @@
 		
 	} completion:^(BOOL finished) {
 		[self addNumberKeyboardNotificationObservers];
-		_isNumberKeyboardVisible = YES;
 	}];
 	
 }

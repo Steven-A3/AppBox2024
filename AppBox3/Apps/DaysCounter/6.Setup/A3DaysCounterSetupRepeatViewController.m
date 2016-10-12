@@ -347,6 +347,7 @@
 
 	_didPressClearKey = NO;
 	_didPressNumberKey = NO;
+	_isNumberKeyboardVisible = YES;
 
 	keyboardVC.keyboardType = A3NumberKeyboardTypeInteger;
 
@@ -367,7 +368,6 @@
 
 	} completion:^(BOOL finished) {
 		[self addNumberKeyboardNotificationObservers];
-		_isNumberKeyboardVisible = YES;
 	}];
 }
 
