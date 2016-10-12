@@ -70,6 +70,7 @@
 
 	[self setupLocale];
 	[self.doneButton setTitle:NSLocalizedString(@"DoneButton", nil) forState:UIControlStateNormal];
+	[self.clearButton setTitle:NSLocalizedString(@"Clear", @"Clear") forState:UIControlStateNormal];
 
 	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	self.view.bounds = CGRectMake(0, 0, screenBounds.size.width, [self keyboardHeight]);
