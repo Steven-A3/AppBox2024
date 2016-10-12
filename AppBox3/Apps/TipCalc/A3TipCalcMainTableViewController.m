@@ -952,6 +952,10 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 		[_keyboardAccessoryView removeFromSuperview];
 		self.numberKeyboardViewController = nil;
 		self.keyboardAccessoryView = nil;
+
+		UIEdgeInsets contentInset = self.tableView.contentInset;
+		contentInset.bottom = 0;
+		self.tableView.contentInset = contentInset;
 	};
 	if (animated) {
 		[UIView animateWithDuration:0.3 animations:^{
@@ -1171,6 +1175,8 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
         case RowElementID_SubTotal:
         case RowElementID_CostsBeforeTax:
         {
+			[self dismissNumberKeyboardAnimated:YES];
+			
             A3TableViewCheckMarkElement *subtotal = (A3TableViewCheckMarkElement *)[self.tableDataSource elementForIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
             A3TableViewCheckMarkElement *beforeTax = (A3TableViewCheckMarkElement *)[self.tableDataSource elementForIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
             UITableViewCell *subtotalCell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];

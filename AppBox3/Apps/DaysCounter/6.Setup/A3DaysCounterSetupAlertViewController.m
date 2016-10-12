@@ -317,9 +317,7 @@
 
 
 	if (indexPath.row == ([_itemArray count] - 1)) {
-		UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-		UITextField *textField = (UITextField *) [cell viewWithTag:12];
-		[textField becomeFirstResponder];
+		[self doneButtonAction:nil];
 	}
 	else {
 		if (alertTimeInterval == -1) {

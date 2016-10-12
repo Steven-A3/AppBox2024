@@ -1276,7 +1276,9 @@
     else {
         [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:nextVC];
     }
-    
+	
+	[self.editingObject resignFirstResponder];
+	[self dismissDateKeyboardAnimated:YES];
     [self closeDatePickerCell];
 }
 
@@ -1300,6 +1302,8 @@
     else {
         [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:nextVC];
     }
+	[self.editingObject resignFirstResponder];
+	[self dismissDateKeyboardAnimated:YES];
     [self closeDatePickerCell];
 }
 
@@ -1373,6 +1377,8 @@
     else {
         [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:nextVC];
     }
+	[self.editingObject resignFirstResponder];
+	[self dismissDateKeyboardAnimated:YES];
     [self closeDatePickerCell];
 }
 
@@ -1409,6 +1415,8 @@
     else {
         [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:nextVC];
     }
+	[self.editingObject resignFirstResponder];
+	[self dismissDateKeyboardAnimated:YES];
     [self closeDatePickerCell];
 }
 
@@ -1433,6 +1441,9 @@
         [self.navigationController pushViewController:nextVC animated:YES];
     else
         [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:nextVC];
+	
+	[self.editingObject resignFirstResponder];
+	[self dismissDateKeyboardAnimated:YES];
     [self closeDatePickerCell];
 }
 
@@ -2388,12 +2399,16 @@
         [self alertInternetConnectionIsNotAvailable];
         return;
     }
-    
+
     A3DaysCounterSetupLocationViewController *nextVC = [[A3DaysCounterSetupLocationViewController alloc] initWithNibName:@"A3DaysCounterSetupLocationViewController" bundle:nil];
     nextVC.eventModel = self.eventItem;
     nextVC.sharedManager = _sharedManager;
     nextVC.savingContext = _savingContext;
     [self.navigationController pushViewController:nextVC animated:YES];
+
+	[self.editingObject resignFirstResponder];
+	[self dismissDateKeyboardAnimated:YES];
+	[self closeDatePickerCell];
 }
 
 - (void)deleteEventActionByActionSheet

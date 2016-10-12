@@ -159,6 +159,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	[self dismissNumberKeyboard];
+	
     NSInteger type = [[_itemArray objectAtIndex:indexPath.row] integerValue];
     
     NSIndexPath *prevIndexPath = [NSIndexPath indexPathForRow:ABS(type) inSection:indexPath.section];

@@ -979,7 +979,7 @@ enum A3TableElementCellType {
     if (!_cellInputDoneButtonPressed) {
         __weak A3SalesCalcMainViewController * weakSelf = self;
         _cellInputDoneButtonPressed = ^(id sender){
-			[weakSelf dismissNumberKeyboardAnimated:NO];
+			[weakSelf dismissNumberKeyboardAnimated:YES];
 			weakSelf.editingObject = nil;
 
             if (weakSelf.preferences.calcData == nil) {
@@ -1190,6 +1190,9 @@ enum A3TableElementCellType {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (indexPath.section == 0) {
+		[self dismissNumberKeyboardAnimated:YES];
+		[_textViewResponder resignFirstResponder];
+		
         A3TableViewCheckMarkElement * row0 = _root.sectionsArray[0][0];
         A3TableViewCheckMarkElement * row1 = _root.sectionsArray[0][1];
         row0.checked = indexPath.row==0 ? YES : NO;

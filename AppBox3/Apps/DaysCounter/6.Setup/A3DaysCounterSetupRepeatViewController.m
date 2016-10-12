@@ -46,27 +46,6 @@
 	return self;
 }
 
-- (void)showNumberKeyboard
-{
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[_itemArray count]-1 inSection:0]];
-    if ( cell == nil )
-        return;
-    
-    UITextField *textField = (UITextField*)[cell viewWithTag:12];
-    textField.delegate = self;
-    [textField becomeFirstResponder];
-}
-
-- (void)hideNumberKeyboard
-{
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[_itemArray count]-1 inSection:0]];
-    if ( cell == nil )
-        return;
-    
-    UITextField *textField = (UITextField*)[cell viewWithTag:12];
-    [textField resignFirstResponder];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -265,19 +244,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if ( ![_eventModel.isLunar boolValue] && indexPath.row == ([_itemArray count]-1) ) {
-		// 키보드 보여주기
-		[self showNumberKeyboard];
-		return;
-	}
-	[self hideNumberKeyboard];
-
     if ([_eventModel.isLunar boolValue]) {
         _eventModel.repeatType = indexPath.row == 0 ? @(RepeatType_Never) : @(RepeatType_EveryYear);
     }
     else {
-        NSInteger value = (indexPath.row == ([_itemArray count]-1)) ? 1 : indexPath.row * -1;
-        _eventModel.repeatType = @(value);
+		if (indexPath.row != [_itemArray count] - 1) {
+			NSInteger value = indexPath.row * -1;
+			_eventModel.repeatType = @(value);
+		}
     }
     
     [self doneButtonAction:nil];
@@ -319,10 +293,6 @@
 	}
 
 	[self.tableView reloadData];
-
-	if (_dismissCompletionBlock) {
-        _dismissCompletionBlock();
-    }
 }
 
 - (void)presentNumberKeyboardForTextField:(UITextField *)textField {

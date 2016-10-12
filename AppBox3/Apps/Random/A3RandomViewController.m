@@ -238,7 +238,14 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 	[self.navigationController setNavigationBarHidden:hidden];
 }
 
+- (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
+	[super appsButtonAction:barButtonItem];
+	
+	[self dismissNumberKeyboard];
+}
+
 #pragma mark - accelerometer Related
+
 - (void)setupMotionManager {
     if (_motionManager) {
         return;
