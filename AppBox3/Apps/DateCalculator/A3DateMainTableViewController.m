@@ -786,6 +786,7 @@
 	if (_isDateKeyboardVisible) {
 		return;
 	}
+	_isDateKeyboardVisible = YES;
 	
 	if (!self.dateKeyboardViewController) {
 		self.dateKeyboardViewController = [self newDateKeyboardViewController];
@@ -809,7 +810,6 @@
 		frame.origin.y -= keyboardHeight;
 		keyboardView.frame = frame;
 	} completion:^(BOOL finished) {
-		_isDateKeyboardVisible = YES;
 	}];
 }
 

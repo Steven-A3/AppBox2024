@@ -2204,6 +2204,7 @@
 	if (_isDateKeyboardVisible) {
 		return;
 	}
+	_isDateKeyboardVisible = YES;
 
 	A3DateKeyboardViewController *keyboardViewController = self.dateKeyboardViewController;
 	
@@ -2218,7 +2219,6 @@
 		frame.origin.y -= keyboardHeight;
 		keyboardView.frame = frame;
 	} completion:^(BOOL finished) {
-		_isDateKeyboardVisible = YES;
 	}];
 	
 }

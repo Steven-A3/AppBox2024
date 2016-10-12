@@ -56,7 +56,7 @@
 "Interest Rate" = "Stopa procentowa";
 "Frequency" = "Częstotliwość";
 "LadyCalendar_Start Date" = "Początek";
-"Notes" = "Notes";
+"Notes" = "Notatki";
 "One-Time" = "Jeden raz";
 "Currency" = "Waluta";
 
@@ -769,7 +769,7 @@
 "Passcode_Off" = "Wył";
 "DaysCounter_All" = "Wszystkie";
 
-"LoanCalc_Start Date" = "Data rozpoczęcia";
+"LoanCalc_Start Date" = "Początek";
 "Immediately" = "Natychmiast";
 "Learn about iOS Security" = "Poczytaj o bezpieczeństwie iOS";
 "CalculatorGroup" = "Kalkulator";
