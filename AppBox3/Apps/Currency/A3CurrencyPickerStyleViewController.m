@@ -284,7 +284,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	
 	if (indexPath.row == 0) {
 		cell.valueField.delegate = self;
-		cell.valueField.textColor = self.tableView.tintColor;
+		cell.valueField.textColor = [[A3AppDelegate instance] themeColor];
 		
 		//		cell.rateLabel.text = self.sourceItem.currencySymbol;
 		cell.codeLabel.text = _sourceCurrencyCode;
