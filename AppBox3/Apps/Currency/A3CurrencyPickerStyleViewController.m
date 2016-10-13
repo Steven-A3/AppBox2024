@@ -78,6 +78,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *sampleValuesBGViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet UIButton *swapButton;
 @property (weak, nonatomic) IBOutlet UIButton *refreshButton;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *pickerBottom_bottomLayoutGuideConstraint;
 
 @end
 
@@ -1005,27 +1006,58 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	if (!IS_IPAD) return;
 	
 	if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+		CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 		[_termSelectSegmentedControl setHidden:NO];
 		[_chartImageView setHidden:NO];
 		if ([self bannerView]) {
-			_lineBottomToSegmentVSpace.constant = 50.0;
-			self.tableView.rowHeight = 84;
-			self.tableViewHeightConstraint.constant = 168;
+			if (bounds.size.height == 1024) {
+				_lineBottomToSegmentVSpace.constant = 30.0;
+				self.tableView.rowHeight = 84;
+				self.tableViewHeightConstraint.constant = 168;
+			} else {
+				_lineBottomToSegmentVSpace.constant = 150.0;
+				self.tableView.rowHeight = 107;
+				self.tableViewHeightConstraint.constant = 214;
+			}
 		} else {
-			_lineBottomToSegmentVSpace.constant = 50.0 + 27.0;
-			self.tableView.rowHeight = 95;
-			self.tableViewHeightConstraint.constant = 190;
+			if (bounds.size.height == 1024) {
+				_lineBottomToSegmentVSpace.constant = 65.0;
+				self.tableView.rowHeight = 95;
+				self.tableViewHeightConstraint.constant = 190;
+			} else {
+				_lineBottomToSegmentVSpace.constant = 190.0;
+				self.tableView.rowHeight = 107;
+				self.tableViewHeightConstraint.constant = 214;
+			}
+		}
+		if (bounds.size.height == 1024) {
+			_pickerBottom_bottomLayoutGuideConstraint.constant = 20;
+		} else {
+			_pickerBottom_bottomLayoutGuideConstraint.constant = 80;
 		}
 		[self.tableView reloadData];
 	} else {
-		if ([[A3AppDelegate instance] shouldPresentAd]) {
+		CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+		if (bounds.size.height == 768) {
 			[_termSelectSegmentedControl setHidden:YES];
 			[_chartImageView setHidden:YES];
+		}
+		if ([self bannerView]) {
+			if (bounds.size.height != 768) {
+				_lineBottomToSegmentVSpace.constant = 10;
+				_pickerBottom_bottomLayoutGuideConstraint.constant = 20;
+			} else {
+				_pickerBottom_bottomLayoutGuideConstraint.constant = 30;
+			}
 			self.tableView.rowHeight = 107;
 			self.tableViewHeightConstraint.constant = 214;
 		} else {
-			[_termSelectSegmentedControl setHidden:YES];
-			[_chartImageView setHidden:YES];
+			if (bounds.size.height != 768) {
+				_lineBottomToSegmentVSpace.constant = 50;
+				_pickerBottom_bottomLayoutGuideConstraint.constant = 30;
+			} else {
+				_pickerBottom_bottomLayoutGuideConstraint.constant = 30;
+			}
 			self.tableView.rowHeight = 107;
 			self.tableViewHeightConstraint.constant = 214;
 		}

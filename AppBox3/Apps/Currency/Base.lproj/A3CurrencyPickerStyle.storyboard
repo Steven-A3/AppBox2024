@@ -606,6 +606,7 @@
                         <outlet property="lineViewAboveAdBGHeightConstraint" destination="FCI-Sn-rwy" id="Cfw-Iu-R8M"/>
                         <outlet property="lineViewPickerTopHeightConstraint_iPad" destination="Hgf-rw-gTn" id="UXD-oQ-Zi1"/>
                         <outlet property="lineViewPickerTop_iPad" destination="adk-L0-PvO" id="oXZ-Ou-fCs"/>
+                        <outlet property="pickerBottom_bottomLayoutGuideConstraint" destination="Txy-re-lTM" id="8he-ZB-hkf"/>
                         <outlet property="pickerView" destination="7eU-kA-9UG" id="Jdd-Ii-PXo"/>
                         <outlet property="refreshButton" destination="23U-D2-xZ7" id="ihr-bb-ngD"/>
                         <outlet property="swapButton" destination="bo0-25-jyL" id="sEb-nQ-VvD"/>
