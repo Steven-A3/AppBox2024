@@ -166,6 +166,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	_sourceValue = [self lastInputValue];
 	[_pickerView reloadAllComponents];
 	[self didSelectPickerRow];
+	[self makeLinesSinglePixel];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -185,7 +186,6 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	}
 
 	self.tableView.contentInset = UIEdgeInsetsZero;
-	[self makeLinesSinglePixel];
 	[self setupIPADLayoutToInterfaceOrientation:self.interfaceOrientation];
 	
 	if ([self.mainViewController.navigationController.navigationBar isHidden]) {
@@ -371,12 +371,13 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 }
 
 - (void)makeLinesSinglePixel {
-	_lineViewAboveAdBGHeightConstraint.constant = 0.5;
-	_lineTopSampleLabelsHeightConstraint.constant = 0.5;
-	_lineBottomSampleLabelsHeightConstraint.constant = 0.5;
-	_lineViewPickerTopHeightConstraint_iPad.constant = 0.5;
-	
-	[self.view layoutIfNeeded];
+	if ([UIScreen mainScreen].scale != 1) {
+		_lineViewAboveAdBGHeightConstraint.constant = 0.5;
+		_lineTopSampleLabelsHeightConstraint.constant = 0.5;
+		_lineBottomSampleLabelsHeightConstraint.constant = 0.5;
+		_lineViewPickerTopHeightConstraint_iPad.constant = 0.5;
+		[self.view layoutIfNeeded];
+	}
 }
 
 #pragma mark - Sample Values
@@ -1012,8 +1013,8 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 		if ([self bannerView]) {
 			if (bounds.size.height == 1024) {
 				_lineBottomToSegmentVSpace.constant = 30.0;
-				self.tableView.rowHeight = 84;
-				self.tableViewHeightConstraint.constant = 168;
+				self.tableView.rowHeight = 95;
+				self.tableViewHeightConstraint.constant = 190;
 			} else {
 				_lineBottomToSegmentVSpace.constant = 150.0;
 				self.tableView.rowHeight = 107;
@@ -1031,7 +1032,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 			}
 		}
 		if (bounds.size.height == 1024) {
-			_pickerBottom_bottomLayoutGuideConstraint.constant = 20;
+			_pickerBottom_bottomLayoutGuideConstraint.constant = 20.5;
 		} else {
 			_pickerBottom_bottomLayoutGuideConstraint.constant = 80;
 		}
