@@ -598,7 +598,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
 	A3NumberKeyboardViewController *keyboardVC = [self passcodeKeyboard];
 	self.numberKeyboardViewController = keyboardVC;
-	keyboardVC.keyboardType = A3NumberKeyboardTypeInteger;
+	keyboardVC.keyboardType = A3NumberKeyboardTypePasscode;
 	keyboardVC.textInputTarget = textField;
 	keyboardVC.delegate = self;
 
