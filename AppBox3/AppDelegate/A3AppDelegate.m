@@ -1516,8 +1516,8 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_2_1 = @"A3UserDefaultsDidAlertWh
 	}
 	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidAlertWhatsNew4_2_1];
 
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"What's New in V4.2.1", nil)
-														message:NSLocalizedString(@"WhatsNew4_2_1", nil)
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"What's New in V4.2.2", nil)
+														message:NSLocalizedString(@"WhatsNew4_2_2", nil)
 													   delegate:nil
 											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 											  otherButtonTitles:nil];
