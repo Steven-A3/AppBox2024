@@ -155,4 +155,15 @@
 	return imageCopy;
 }
 
++ (UIImage *)toolbarBackgroundImage
+{
+	UIGraphicsBeginImageContext(CGSizeMake(1,1));
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	[[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.3] setFill];
+	CGContextFillRect(context, CGRectMake(0, 0, 1, 1));
+	UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	return [image resizableImageWithCapInsets:UIEdgeInsetsZero resizingMode:UIImageResizingModeStretch];
+}
+
 @end

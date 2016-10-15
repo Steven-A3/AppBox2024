@@ -13,6 +13,7 @@
 #import "A3InstructionViewController.h"
 #import "A3UserDefaults.h"
 #import "A3CameraViewController.h"
+#import "UIImage+imageWithColor.h"
 
 #define MAX_ZOOM_FACTOR 	6.0
 
@@ -153,6 +154,14 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 
 	[self setupTopToolbar];
 	[self setupZoomSlider];
+	[self setToolbarTransparent];
+}
+
+- (void)setToolbarTransparent {
+	UIImage *image = [UIImage toolbarBackgroundImage];
+	[_topBar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+	[_bottomBar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+	[_zoomToolBar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 }
 
 - (void)setupPhotoButton {

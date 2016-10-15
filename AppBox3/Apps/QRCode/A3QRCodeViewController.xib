@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="A3QRCodeViewController">
             <connections>
+                <outlet property="bottomToolbar" destination="Egz-QS-v7W" id="OfW-Xs-4JM"/>
                 <outlet property="bottomToolbarBottomSpaceConstraint" destination="9GI-XW-mQA" id="Kbp-ku-HGo"/>
                 <outlet property="cornersView" destination="Udq-9Z-gVw" id="89l-lq-5jU"/>
                 <outlet property="highlightView" destination="it2-1W-4DY" id="hpe-LH-RLi"/>
@@ -30,7 +31,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="it2-1W-4DY" customClass="RSCornersView">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <subviews>
-                        <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DXI-b8-CtY" userLabel="Top Toolbar Sound only">
+                        <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DXI-b8-CtY" userLabel="Top Toolbar Sound only">
                             <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                             <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -52,7 +53,7 @@
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         </toolbar>
-                        <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yhh-Az-zOH" userLabel="Top Toolbar w/o vibrate">
+                        <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yhh-Az-zOH" userLabel="Top Toolbar w/o vibrate">
                             <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                             <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -80,7 +81,7 @@
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         </toolbar>
-                        <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="76b-3P-GoN">
+                        <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="76b-3P-GoN">
                             <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                             <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -114,7 +115,7 @@
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         </toolbar>
-                        <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Egz-QS-v7W" userLabel="Bottom Toolbar">
+                        <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Egz-QS-v7W" userLabel="Bottom Toolbar">
                             <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                             <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
                             <constraints>

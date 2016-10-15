@@ -13,6 +13,7 @@
 #import "FrameRateCalculator.h"
 #import "A3InstructionViewController.h"
 #import "A3UserDefaults.h"
+#import "UIImage+imageWithColor.h"
 
 #define MAX_ZOOM_FACTOR 	6.0
 
@@ -91,6 +92,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     [self loadFirstPhoto];
 
 	_effectiveScale = 1.0;
+	[self setToolbarTransparent];
     [self setupPreview];
     [self setupAVCapture];
     [self setupGestureRecognizer];
@@ -115,6 +117,15 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 
 - (void)prepareClose {
 	[self removeObserver];
+}
+
+- (void)setToolbarTransparent {
+	UIImage *image = [UIImage toolbarBackgroundImage];
+	[_topToolBar setBackgroundImage:image forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+	[_brightnessToolBar setBackgroundImage:image forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+	[_magnifierToolBar setBackgroundImage:image forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+	[_bottomToolBar setBackgroundImage:image forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+	[_flashToolBar setBackgroundImage:image forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
 }
 
 - (BOOL)resignFirstResponder {

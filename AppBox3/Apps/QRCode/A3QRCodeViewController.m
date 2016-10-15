@@ -26,6 +26,7 @@
 #import "NSManagedObjectContext+MagicalSaves.h"
 #import "NSManagedObjectContext+MagicalRecord.h"
 #import "A3QRCodeTextViewController.h"
+#import "UIImage+imageWithColor.h"
 
 NSString *const A3QRCodeSettingsPlayAlertSound = @"A3QRCodeSettingsPlayAlertSound";
 NSString *const A3QRCodeSettingsPlayVibrate = @"A3QRCodeSettingsPlayVibrate";
@@ -44,6 +45,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 @property (nonatomic, weak) IBOutlet UIToolbar *topToolbarSoundOnly;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *vibrateOnOffButton;
 @property (nonatomic, weak) IBOutlet A3CornersView *cornersView;
+@property (nonatomic, weak) IBOutlet UIToolbar *bottomToolbar;
 @property (nonatomic, strong) A3QRCodeDataHandler *dataHandler;
 @property (nonatomic, strong) AVAudioPlayer *beepPlayer;
 @property (nonatomic, strong) A3QRCodeScanLineView *scanLineView;
@@ -100,6 +102,12 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+
+	UIImage *image = [UIImage toolbarBackgroundImage];
+	[_topToolbar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+	[_topToolbarWithoutVibrate setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+	[_topToolbarSoundOnly setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+	[_bottomToolbar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 }
 
 - (void)applicationDidBecomeActive {
