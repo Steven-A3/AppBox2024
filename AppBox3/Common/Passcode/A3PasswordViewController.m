@@ -593,7 +593,7 @@
 		[self.presentingViewController dismissViewControllerAnimated:NO completion:nil];
 		dispatch_async(dispatch_get_main_queue(), ^{
 			if ([self.delegate respondsToSelector:@selector(passcodeViewDidDisappearWithSuccess:)]) {
-				[self.delegate passcodeViewDidDisappearWithSuccess:NO ];
+				[self.delegate passcodeViewDidDisappearWithSuccess:_passcodeValid ];
 			}
 		});
 
@@ -604,7 +604,7 @@
 		}
 
         if ([self.delegate respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
-            [self.delegate passcodeViewControllerDidDismissWithSuccess:YES];
+            [self.delegate passcodeViewControllerDidDismissWithSuccess:_passcodeValid];
         }
 
         if ([self.delegate respondsToSelector:@selector(passcodeViewDidDisappearWithSuccess:)]) {
