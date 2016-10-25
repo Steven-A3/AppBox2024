@@ -6,7 +6,6 @@
 //  Copyright (c) 2011 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <DropboxSDK/DropboxSDK.h>
 #import <CoreLocation/CoreLocation.h>
 #import <AVFoundation/AVFoundation.h>
 #import <Foundation/Foundation.h>
@@ -43,6 +42,8 @@
 #import "WalletFieldItem+initialize.h"
 #import "WalletCategory.h"
 #import <CoreMotion/CoreMotion.h>
+#import "TJDropbox.h"
+#import "ACSimpleKeychain.h"
 
 NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
@@ -337,11 +338,12 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 		[syncManager downloadMediaFilesFromCloud];
 	}
 
-	UINavigationController *navigationController = [self navigationController];
-	UIViewController *topViewController = self.navigationController.topViewController;
-	if ([topViewController isKindOfClass:[A3SettingsBackupRestoreViewController class]] && ![[DBSession sharedSession] isLinked]) {
-		[navigationController popViewControllerAnimated:NO];
-	}
+	// TODO: Dropbox V2 Pending work
+//	UINavigationController *navigationController = [self navigationController];
+//	UIViewController *topViewController = self.navigationController.topViewController;
+//	if ([topViewController isKindOfClass:[A3SettingsBackupRestoreViewController class]] && ![[DBSession sharedSession] isLinked]) {
+//		[navigationController popViewControllerAnimated:NO];
+//	}
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 	[self applicationDidBecomeActive_passcodeAfterLaunch:_appIsNotActiveYet];
 	
@@ -413,13 +415,19 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 			}
 		}
 		return YES;
-    } else if ([[DBSession sharedSession] handleOpenURL:url]) {
-		if ([[DBSession sharedSession] isLinked]) {
+    } else if ([url.absoluteString hasPrefix:@"db-ody0cjvmnaxvob4"]) {
+		NSString *accessToken = [TJDropbox accessTokenFromDropboxAppAuthenticationURL:url];
+		if (accessToken == nil) {
+			accessToken = [TJDropbox accessTokenFromURL:url withRedirectURL:[NSURL URLWithString:@"db-ody0cjvmnaxvob4://"]];
+		}
+		if (accessToken) {
+			[[ACSimpleKeychain defaultKeychain] storeUsername:@"dropboxUser" password:accessToken identifier:@"net.allaboutapps.AppBoxPro" forService:@"Dropbox"];
 			FNLOG(@"App linked successfully!");
 			[[NSNotificationCenter defaultCenter] postNotificationName:A3DropboxLoginWithSuccess object:nil];
 		} else {
 			[[NSNotificationCenter defaultCenter] postNotificationName:A3DropboxLoginFailed object:nil];
 		}
+		
 		return YES;
 	}
 	// Add whatever other url handling code your app requires here

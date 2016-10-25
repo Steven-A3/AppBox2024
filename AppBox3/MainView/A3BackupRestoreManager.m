@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <DropboxSDK/DropboxSDK.h>
 #import "A3BackupRestoreManager.h"
 #import "A3AppDelegate.h"
 #import "NSString+conversion.h"
@@ -20,6 +19,8 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "NSFileManager+A3Addition.h"
 #import "A3UserDefaults.h"
+#import "TJDropbox.h"
+#import "ACSimpleKeychain.h"
 
 NSString *const A3ZipFilename = @"name";
 NSString *const A3ZipNewFilename = @"newname";
@@ -41,11 +42,10 @@ NSString *const A3BackupFileUserDefaultsKey = @"UserDefaults";
 NSString *const A3BackupFileDeviceUserDefaultsKey = @"DeviceUserDefaults";
 NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
-@interface A3BackupRestoreManager () <AAAZipDelegate, DBRestClientDelegate, A3DataMigrationManagerDelegate>
+@interface A3BackupRestoreManager () <AAAZipDelegate, A3DataMigrationManagerDelegate>
 
 @property (nonatomic, strong) MBProgressHUD *HUD;
 @property (nonatomic, strong) NSNumberFormatter *percentFormatter;
-@property (nonatomic, strong) DBRestClient *restClient;
 @property (nonatomic, copy) NSString *backupFilePath;
 @property (nonatomic, copy) NSString *backupCoreDataStorePath;
 @property (nonatomic, strong) A3DataMigrationManager *migrationManager;
@@ -351,7 +351,51 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 		_HUD.labelText = NSLocalizedString(@"Uploading", @"Uploading");
 		_HUD.detailsLabelText = @"";
 
-		[self.restClient uploadFile:[_backupFilePath lastPathComponent] toPath:kDropboxDir withParentRev:nil fromPath:_backupFilePath];
+		ACSimpleKeychain *keychain = [ACSimpleKeychain defaultKeychain];
+		NSDictionary *dropboxLinkInfo = [keychain credentialsForUsername:@"dropboxUser" service:@"Dropbox"];
+		if (dropboxLinkInfo) {
+			NSString *accessToken = [dropboxLinkInfo valueForKey:ACKeychainPassword];
+			
+			[TJDropbox uploadFileAtPath:_backupFilePath
+								 toPath:[NSString stringWithFormat:@"%@/%@", kDropboxDir, [_backupFilePath lastPathComponent]]
+							accessToken:accessToken
+						  progressBlock:^(CGFloat progress) {
+							  _HUD.progress = progress;
+							  _HUD.detailsLabelText = [self.percentFormatter stringFromNumber:@(progress)];
+						  } completion:^(NSDictionary * _Nullable parsedResponse, NSError * _Nullable error) {
+							  FNLOG(@"%@", parsedResponse);
+							  FNLOG(@"%@", error);
+							  FNLOG(@"%@", error.description);
+							  FNLOG(@"%@", error.debugDescription);
+							  dispatch_async(dispatch_get_main_queue(), ^{
+								  if (error == nil) {
+									  [_HUD hide:YES];
+									  _HUD = nil;
+									  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+																					  message:NSLocalizedString(@"Backup file has been uploaded to Dropbox successfully.", @"Backup file has been uploaded to Dropbox successfully.")
+																					 delegate:nil
+																			cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+																			otherButtonTitles:nil];
+									  [alert show];
+									  
+									  [self deleteBackupFile];
+									  
+									  if ([_delegate respondsToSelector:@selector(backupRestoreManager:backupCompleteWithSuccess:)]) {
+										  [_delegate backupRestoreManager:self backupCompleteWithSuccess:YES];
+									  }
+								  } else {
+									  [_HUD hide:YES];
+									  _HUD = nil;
+									  
+									  UIAlertView *alertFail = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:NSLocalizedString(@"Backup process failed to upload backup file to Dropbox.", @"Backup process failed to upload backup file to Dropbox.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+									  [alertFail show];
+									  
+									  [self deleteBackupFile];
+								  }
+							  });
+						  }];
+		}
+		
 	}
 	NSFileManager *fileManager = [[NSFileManager alloc] init];
 	for (NSString *path in _deleteFilesAfterZip) {
@@ -381,48 +425,6 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 		[_percentFormatter setNumberStyle:NSNumberFormatterPercentStyle];
 	}
 	return _percentFormatter;
-}
-
-#pragma mark - Dropbox Rest Client & Delegate
-
-- (DBRestClient *)restClient {
-	if (!_restClient) {
-		_restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
-		_restClient.delegate = self;
-	}
-	return _restClient;
-}
-
-- (void)restClient:(DBRestClient *)client uploadedFile:(NSString *)destPath from:(NSString *)srcPath metadata:(DBMetadata *)metadata {
-	[_HUD hide:YES];
-	_HUD = nil;
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-													message:NSLocalizedString(@"Backup file has been uploaded to Dropbox successfully.", @"Backup file has been uploaded to Dropbox successfully.")
-												   delegate:nil
-										  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-										  otherButtonTitles:nil];
-	[alert show];
-
-	[self deleteBackupFile];
-
-	if ([_delegate respondsToSelector:@selector(backupRestoreManager:backupCompleteWithSuccess:)]) {
-		[_delegate backupRestoreManager:self backupCompleteWithSuccess:YES];
-	}
-}
-
-- (void)restClient:(DBRestClient *)client uploadProgress:(CGFloat)progress forFile:(NSString *)destPath from:(NSString *)srcPath {
-	_HUD.progress = progress;
-	_HUD.detailsLabelText = [self.percentFormatter stringFromNumber:@(progress)];
-}
-
-- (void)restClient:(DBRestClient *)client uploadFileFailedWithError:(NSError *)error {
-	[_HUD hide:YES];
-	_HUD = nil;
-
-	UIAlertView *alertFail = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:NSLocalizedString(@"Backup process failed to upload backup file to Dropbox.", @"Backup process failed to upload backup file to Dropbox.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[alertFail show];
-
-	[self deleteBackupFile];
 }
 
 - (void)deleteBackupFile {

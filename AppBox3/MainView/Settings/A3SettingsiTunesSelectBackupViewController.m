@@ -10,6 +10,7 @@
 #import "NSFileManager+A3Addition.h"
 #import "NSString+conversion.h"
 #import "NSDate+TimeAgo.h"
+#import "UIViewController+tableViewStandardDimension.h"
 #import "UIViewController+A3Addition.h"
 
 @interface A3SettingsiTunesSelectBackupViewController () <UIActionSheetDelegate>
@@ -36,6 +37,14 @@
 {
     [super viewDidLoad];
 
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+	}
+	if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+		self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+	}
 }
 
 - (void)viewDidAppear:(BOOL)animated {

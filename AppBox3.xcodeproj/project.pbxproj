@@ -152,7 +152,6 @@
 		680D639F18CFF9D400938AD0 /* A3MirrorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D638A18CFF9D400938AD0 /* A3MirrorViewController.m */; };
 		680D63A018CFF9D400938AD0 /* A3MirrorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 680D638B18CFF9D400938AD0 /* A3MirrorViewController.xib */; };
 		680D63A318CFFC2500938AD0 /* VerticalSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D63A218CFFC2500938AD0 /* VerticalSlider.m */; };
-		680D63A418D06B3F00938AD0 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D8F4FB1887F0AC008617C6 /* DropboxSDK.framework */; };
 		680E837119D41D83007CF12C /* A3SettingsStartingAppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680E837019D41D83007CF12C /* A3SettingsStartingAppViewController.m */; };
 		680FF7131980B88D00C736F5 /* A3SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 680FF7121980B88D00C736F5 /* A3SyncManager.m */; };
 		6810C64619D9246F00BE75A9 /* Flashlight.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6810C64519D9246F00BE75A9 /* Flashlight.xcassets */; };
@@ -369,6 +368,10 @@
 		6835659418FA663100C3494C /* A3WalletMoreTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6835659318FA663100C3494C /* A3WalletMoreTableViewController.m */; };
 		683A291B19A1B25200265484 /* A3DateCalculationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 683A291A19A1B25200265484 /* A3DateCalculationTest.m */; };
 		683B959315EB252400575377 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683B959215EB252400575377 /* QuartzCore.framework */; };
+		683D68461DBC5C00008C47C9 /* ACSimpleKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 683D68401DBC5C00008C47C9 /* ACSimpleKeychain.m */; };
+		683D68471DBC5C00008C47C9 /* TJDropbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 683D68431DBC5C00008C47C9 /* TJDropbox.m */; };
+		683D68481DBC5C00008C47C9 /* TJDropboxAuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 683D68451DBC5C00008C47C9 /* TJDropboxAuthenticationViewController.m */; };
+		683D684E1DBC5F3A008C47C9 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683D684D1DBC5F3A008C47C9 /* SafariServices.framework */; };
 		68425D581977BD5F007C1AAE /* DaysCounterReminder+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68425D571977BD5F007C1AAE /* DaysCounterReminder+extension.m */; };
 		68425D5B1977BF63007C1AAE /* DaysCounterFavorite+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68425D5A1977BF63007C1AAE /* DaysCounterFavorite+extension.m */; };
 		68459BB21C4CE1B1000A2092 /* Launch Screen~iphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68459BB11C4CE1B1000A2092 /* Launch Screen~iphone.storyboard */; };
@@ -1622,6 +1625,13 @@
 		683A291A19A1B25200265484 /* A3DateCalculationTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3DateCalculationTest.m; path = DateCalculation/A3DateCalculationTest.m; sourceTree = "<group>"; };
 		683B953E15EB233500575377 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = common.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		683B959215EB252400575377 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		683D683F1DBC5C00008C47C9 /* ACSimpleKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACSimpleKeychain.h; sourceTree = "<group>"; };
+		683D68401DBC5C00008C47C9 /* ACSimpleKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACSimpleKeychain.m; sourceTree = "<group>"; };
+		683D68421DBC5C00008C47C9 /* TJDropbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJDropbox.h; sourceTree = "<group>"; };
+		683D68431DBC5C00008C47C9 /* TJDropbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJDropbox.m; sourceTree = "<group>"; };
+		683D68441DBC5C00008C47C9 /* TJDropboxAuthenticationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJDropboxAuthenticationViewController.h; sourceTree = "<group>"; };
+		683D68451DBC5C00008C47C9 /* TJDropboxAuthenticationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJDropboxAuthenticationViewController.m; sourceTree = "<group>"; };
+		683D684D1DBC5F3A008C47C9 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
 		68425D561977BD5F007C1AAE /* DaysCounterReminder+extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DaysCounterReminder+extension.h"; sourceTree = "<group>"; };
 		68425D571977BD5F007C1AAE /* DaysCounterReminder+extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DaysCounterReminder+extension.m"; sourceTree = "<group>"; };
 		68425D591977BF63007C1AAE /* DaysCounterFavorite+extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DaysCounterFavorite+extension.h"; sourceTree = "<group>"; };
@@ -2918,6 +2928,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				683D684E1DBC5F3A008C47C9 /* SafariServices.framework in Frameworks */,
 				68DE21531CEB038D00E31DDF /* HealthKit.framework in Frameworks */,
 				687AEEB71CBC4B8200C2D844 /* EventKit.framework in Frameworks */,
 				687AEEB81CBC4B8200C2D844 /* EventKitUI.framework in Frameworks */,
@@ -2929,7 +2940,6 @@
 				5727A57419D41B9200ADB17C /* CoreMotion.framework in Frameworks */,
 				68636000198BF88F00C3A323 /* libensembles.a in Frameworks */,
 				681E1281193447D70077DCFA /* libz.dylib in Frameworks */,
-				680D63A418D06B3F00938AD0 /* DropboxSDK.framework in Frameworks */,
 				68DBAB6D18C4C2B2003A67E5 /* MediaPlayer.framework in Frameworks */,
 				6831407F18C20C9700896819 /* AVFoundation.framework in Frameworks */,
 				6825367F18A7C1B800EAFB84 /* libsqlite3.0.dylib in Frameworks */,
@@ -3821,6 +3831,7 @@
 		682EA2D415EB10B000BD6AD4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				683D684D1DBC5F3A008C47C9 /* SafariServices.framework */,
 				68DE21521CEB038D00E31DDF /* HealthKit.framework */,
 				687AEE9E1CBB73F900C2D844 /* AddressBook.framework */,
 				687AEE9F1CBB73F900C2D844 /* AddressBookUI.framework */,
@@ -4171,6 +4182,28 @@
 				68C999AC1CC74FB200BC1B0D /* A3PriceTagLabel.m */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		683D683E1DBC5C00008C47C9 /* ACSimpleKeychain */ = {
+			isa = PBXGroup;
+			children = (
+				683D683F1DBC5C00008C47C9 /* ACSimpleKeychain.h */,
+				683D68401DBC5C00008C47C9 /* ACSimpleKeychain.m */,
+			);
+			name = ACSimpleKeychain;
+			path = External/ACSimpleKeychain;
+			sourceTree = "<group>";
+		};
+		683D68411DBC5C00008C47C9 /* TJDropbox */ = {
+			isa = PBXGroup;
+			children = (
+				683D68421DBC5C00008C47C9 /* TJDropbox.h */,
+				683D68431DBC5C00008C47C9 /* TJDropbox.m */,
+				683D68441DBC5C00008C47C9 /* TJDropboxAuthenticationViewController.h */,
+				683D68451DBC5C00008C47C9 /* TJDropboxAuthenticationViewController.m */,
+			);
+			name = TJDropbox;
+			path = External/TJDropbox;
 			sourceTree = "<group>";
 		};
 		683EB02B18BF8DE10044C2E1 /* Model */ = {
@@ -5145,6 +5178,8 @@
 		68CC1594174F764C0000870F /* External */ = {
 			isa = PBXGroup;
 			children = (
+				683D683E1DBC5C00008C47C9 /* ACSimpleKeychain */,
+				683D68411DBC5C00008C47C9 /* TJDropbox */,
 				682879781D925887006EB4D4 /* GoogleMobileAds.framework */,
 				6858DF721D0BDA63006F0142 /* Mediation Adapters */,
 				6848ED681C50FD7B0067B93A /* ALDBlurImageProcessor */,
@@ -6505,6 +6540,7 @@
 				68E2A6A018D0B22800E834D9 /* A3SalesCalcCalculator.m in Sources */,
 				6848FB8D17A39C1100EBDBED /* NSMutableArray+A3Sort.m in Sources */,
 				684A71C21853464A0004A9FE /* A3AppDelegate+iCloud.m in Sources */,
+				683D68461DBC5C00008C47C9 /* ACSimpleKeychain.m in Sources */,
 				68E6F37917B2A1DE00F10ED9 /* A3CurrencyHistoryViewController.m in Sources */,
 				68F14FC119485E8500159EAD /* A3DaysCounterEventChangeCalendarViewController.m in Sources */,
 				68F1C8F618D7FA41009FAE8A /* MPAnimation.m in Sources */,
@@ -6640,6 +6676,7 @@
 				68CC1593174F763E0000870F /* SFKImage.m in Sources */,
 				684D92EE18BC1FBC005016F7 /* A3DateCalcAddSubCell1.m in Sources */,
 				68F14FFC19485E8500159EAD /* A3DaysCounterSetupLocationViewController.m in Sources */,
+				683D68481DBC5C00008C47C9 /* TJDropboxAuthenticationViewController.m in Sources */,
 				68B6A31C18CEC76D004084EF /* A3WalletAllTopCell.m in Sources */,
 				68B6A45918CEE781004084EF /* MKAnnotationView+WebCache.m in Sources */,
 				68B6A44318CEE781004084EF /* MWPhotoBrowser.m in Sources */,
@@ -6762,6 +6799,7 @@
 				688788831A9B29C7008C8567 /* A3RulerViewController.m in Sources */,
 				682FDF361981CC0400C6C83D /* MagicalRecord.m in Sources */,
 				17D42AE1F680213C832FB44C /* A3CurrencyHistoryCell.m in Sources */,
+				683D68471DBC5C00008C47C9 /* TJDropbox.m in Sources */,
 				680D639418CFF9D400938AD0 /* A3CalculatorButtonsViewController_iPad.m in Sources */,
 				17D421ED85AC76F0946457EA /* HolidayData+Country.m in Sources */,
 				68B6A33418CEC76D004084EF /* A3WalletListTextCell.m in Sources */,
@@ -7577,7 +7615,6 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/External/dropbox-ios-sdk-1.3.9",
 					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.11.0",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -7615,7 +7652,6 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/External/dropbox-ios-sdk-1.3.9",
 					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.11.0",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

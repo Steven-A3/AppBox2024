@@ -6,18 +6,19 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <DropboxSDK/DropboxSDK.h>
 #import "A3SettingsDropboxSelectBackupViewController.h"
 #import "NSDate+TimeAgo.h"
 #import "MBProgressHUD.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "UIViewController+A3Addition.h"
+#import "TJDropbox.h"
+#import "NSFileManager+A3Addition.h"
 
-@interface A3SettingsDropboxSelectBackupViewController () <UIActionSheetDelegate, DBRestClientDelegate, MBProgressHUDDelegate>
+@interface A3SettingsDropboxSelectBackupViewController () <UIActionSheetDelegate, MBProgressHUDDelegate>
 
-@property (nonatomic, strong) DBRestClient *restClient;
 @property (nonatomic, strong) MBProgressHUD *hud;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
+@property (nonatomic, strong) NSDateFormatter *parseFormatter;
 
 @end
 
@@ -46,6 +47,10 @@
 	if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
 		self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
 	}
+	
+	self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor blackColor], NSFontAttributeName: [UIFont boldSystemFontOfSize:18]};
+	UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonAction:)];
+	self.navigationItem.rightBarButtonItem = cancelButton;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -80,12 +85,13 @@
 	return _dateFormatter;
 }
 
-- (DBRestClient *)restClient {
-	if (!_restClient) {
-		_restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
-		_restClient.delegate = self;
+- (NSDateFormatter *)parseFormatter {
+	if (!_parseFormatter) {
+		_parseFormatter = [NSDateFormatter new];
+		_parseFormatter.dateFormat = @"y-MM-dd'T'HH:mm:ss'Z'";
+		_parseFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
 	}
-	return _restClient;
+	return _parseFormatter;
 }
 
 #pragma mark - Table view data source
@@ -97,7 +103,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.dropboxMetadata.contents count];
+    return [self.dropboxFolderList count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -113,9 +119,12 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
 
-	DBMetadata *rowData = self.dropboxMetadata.contents[indexPath.row];
-    cell.textLabel.text = rowData.filename;
-	cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@", [rowData.lastModifiedDate timeAgoWithLimit:60*60*24 dateFormatter:self.dateFormatter], rowData.humanReadableSize];
+	NSDictionary *rowData = self.dropboxFolderList[indexPath.row];
+    cell.textLabel.text = rowData[@"name"];
+	NSDate *fileDate = [self.parseFormatter dateFromString:rowData[@"server_modified"]];
+	long long fileSize = [rowData[@"size"] longLongValue];
+	NSString *humanReadableFilesize = [[NSFileManager defaultManager] humanReadableFileSize:fileSize];
+	cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@", [fileDate timeAgoWithLimit:60*60*24 dateFormatter:self.dateFormatter], humanReadableFilesize];
 
 	return cell;
 }
@@ -123,7 +132,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	_selectedIndex = (NSUInteger) indexPath.row;
-
 
 #ifdef __IPHONE_8_0
     if (!IS_IOS7 && IS_IPAD) {
@@ -156,7 +164,7 @@
 }
 
 - (void)selectBackUpFileAction {
-    DBMetadata *selectedData = self.dropboxMetadata.contents[_selectedIndex];
+    NSDictionary *selectedData = self.dropboxFolderList[_selectedIndex];
     if ([_delegate respondsToSelector:@selector(dropboxSelectBackupViewController:backupFileSelected:)]) {
         [_delegate dropboxSelectBackupViewController:self backupFileSelected:selectedData];
     }
@@ -216,47 +224,24 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-		DBMetadata *metadata = self.dropboxMetadata.contents[indexPath.row];
-		[self.restClient deletePath:metadata.path];
-
-		self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-		_hud.removeFromSuperViewOnHide = YES;
-		[self.navigationController.view addSubview:_hud];
-
-		_hud.labelText = NSLocalizedString(@"Deleting", @"Deleting");
-		[_hud show:YES];
+		NSDictionary *metadata = self.dropboxFolderList[indexPath.row];
+		[TJDropbox deleteFileAtPath:metadata[@"path"] accessToken:self.dropboxAccessToken completion:^(NSDictionary * _Nullable parsedResponse, NSError * _Nullable error) {
+			self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+			_hud.removeFromSuperViewOnHide = YES;
+			[self.navigationController.view addSubview:_hud];
+			
+			_hud.labelText = NSLocalizedString(@"Deleting", @"Deleting");
+			[_hud show:YES];
+			
+			[TJDropbox listFolderWithPath:@"" accessToken:self.dropboxAccessToken completion:^(NSArray<NSDictionary *> * _Nullable entries, NSString * _Nullable cursor, NSError * _Nullable error) {
+				self.dropboxFolderList = entries;
+				[self.tableView reloadData];
+			}];
+		}];
 	}
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }
-}
-
-#pragma mark - DBRestClientDelegate
-
-- (void)restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata {
-	self.dropboxMetadata = metadata;
-	[self.tableView reloadData];
-}
-
-extern NSString *const kDropboxDir;
-
-- (void)restClient:(DBRestClient *)client deletedPath:(NSString *)path {
-	[_hud hide:YES];
-	_hud = nil;
-
-	[self.restClient loadMetadata:kDropboxDir];
-}
-
-- (void)restClient:(DBRestClient *)client deletePathFailedWithError:(NSError *)error {
-	[_hud hide:YES];
-	_hud = nil;
-
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Dropbox", @"Dropbox")
-														message:NSLocalizedString(@"Unable to delete selected file. Please try it again.", @"Unable to delete selected file. Please try it again.")
-													   delegate:nil
-											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-											  otherButtonTitles:nil];
-	[alertView show];
 }
 
 @end

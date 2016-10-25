@@ -8,18 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@class DBMetadata;
-@class DBRestClient;
-
 @protocol A3SettingsDropboxSelectBackupDelegate <NSObject>
 
-- (void)dropboxSelectBackupViewController:(UIViewController *)vc backupFileSelected:(DBMetadata *)metadata;
+- (void)dropboxSelectBackupViewController:(UIViewController *)vc backupFileSelected:(NSDictionary *)metadata;
 
 @end
 
 @interface A3SettingsDropboxSelectBackupViewController : UITableViewController
 
-@property (nonatomic, strong) DBMetadata *dropboxMetadata;
+@property (nonatomic, copy) NSString *dropboxAccessToken;
+@property (nonatomic, strong) NSArray<NSDictionary *> *dropboxFolderList;
 @property (nonatomic, weak) id<A3SettingsDropboxSelectBackupDelegate> delegate;
 
 @end
