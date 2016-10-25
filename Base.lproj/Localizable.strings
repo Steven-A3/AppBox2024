@@ -1031,10 +1031,6 @@ Enter Encryption Key for Wallet.";
 "Poland Zloty Reference Rate Spot" = "Poland Zloty Reference Rate Spot";
 "Wocu Spot" = "Wocu Spot";
 "South African Cent Spot" = "South African Cent Spot";
-"What's New in V4.2.2" = "What's New in V4.2.2";
-"WhatsNew4_2_2" = "iOS 10 Support
-iPhone 7, 7 Plus Support
-Wallet search now finds notes contents.
-Bug fix for Clock Weather, Currency, QR Code, Holidays Update
-Bug fix for QR Code reader: Problems with phone number and email addresses
-Bug fix for Number input pad problems in Currency Converter, Loan Calculator, Sales Calculator, Date Calculator, Percent Calculator, Unit Converter, Unit Price, Tip Calc, Expense List, Ladies Calendar, Days Counter, Random number";
+"What's New in V4.2.3" = "What's New in V4.2.3";
+"WhatsNew4_2_3" = "QR Code, Mirror, Flashlight, Magnifier UI change
+Dropbox API V2 Upgrade";

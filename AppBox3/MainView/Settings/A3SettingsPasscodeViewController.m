@@ -292,20 +292,8 @@
 			return;
 		}
 		if (buttonIndex == 1) {
-			NSArray *availableLocales = @[@"en_US", @"cs_CZ", @"da_DK", @"de_DE", @"el_GR", @"es_ES", @"fi_FI", @"fr_FR",
-					@"hr_HR", @"hu_HU", @"id_ID", @"it_IT", @"ja_JP", @"ko_KR", @"nl_NL", @"no_NO", @"pl_PL", @"pt_BR",
-					@"pt_PT", @"ro_RO", @"ru_RU", @"sk_SK", @"sv_SE", @"th_TH", @"tr_TR", @"zh_CN", @"zh_TW"
-			];
-			NSString *currentLanguageCode = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
-			NSUInteger languageIndex = [availableLocales indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-				BOOL result = [currentLanguageCode isEqualToString:[obj substringToIndex:2]];
-				if (result) *stop = YES;
-				return result;
-			}];
-			if (languageIndex == NSNotFound) {
-				languageIndex = 0;
-			}
-			NSString *urlString = [NSString stringWithFormat:@"https://support.apple.com/kb/HT4175?viewlocale=%@", availableLocales[languageIndex]];
+			NSString *language = [NSLocale preferredLanguages][0];
+			NSString *urlString = [NSString stringWithFormat:@"https://help.apple.com/iphone/10/?lang=%@#/iph14a867ae", language];
 			NSURL *url = [NSURL URLWithString:urlString];
 			[[UIApplication sharedApplication] openURL:url];
 		} else if (buttonIndex == 2) {

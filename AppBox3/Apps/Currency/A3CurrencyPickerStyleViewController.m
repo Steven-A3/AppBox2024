@@ -519,7 +519,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 #pragma mark - Term Segmented Control & Chart View
 
 - (void)setupSegmentedControlTitles {
-	if (IS_IPAD && [[NSLocale preferredLanguages][0] isEqualToString:@"it"]) {
+	if (IS_IPAD && [[NSLocale preferredLanguages][0] hasPrefix:@"it"]) {
 		[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days", @"StringsDict", nil), 1] forSegmentAtIndex:0];
 		[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days", @"StringsDict", nil), 5] forSegmentAtIndex:1];
 		[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), 1] forSegmentAtIndex:2];

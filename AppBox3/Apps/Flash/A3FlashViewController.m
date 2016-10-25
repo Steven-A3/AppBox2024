@@ -153,13 +153,13 @@ NSString *const cellID = @"flashEffectID";
 
 @interface A3FlashViewController () <UIAlertViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, NPColorPickerViewDelegate, A3InstructionViewControllerDelegate>
 
+@property (weak, nonatomic) IBOutlet UIToolbar *statusToolbar;
 @property (weak, nonatomic) IBOutlet UIToolbar *topToolBar;
 @property (weak, nonatomic) IBOutlet UIToolbar *sliderToolBar;
 @property (weak, nonatomic) IBOutlet UIToolbar *bottomToolBar;
 @property (weak, nonatomic) IBOutlet UIToolbar *bottomToolBar2;
 @property (weak, nonatomic) IBOutlet UIToolbar *LEDBrightnessToolBar;
 @property (weak, nonatomic) IBOutlet UIView *pickerPanelView;
-@property (weak, nonatomic) IBOutlet UIView *statusBarView;
 @property (weak, nonatomic) IBOutlet NPColorPickerView *colorPickerView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topToolBarTopConst;
 
@@ -269,10 +269,12 @@ NSString *const cellID = @"flashEffectID";
 
 	UIImage *image = [UIImage toolbarBackgroundImage];
 	[_topToolBar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+	[_topToolBar setShadowImage:[UIImage new] forToolbarPosition:UIBarPositionAny];
 	[_sliderToolBar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 	[_LEDBrightnessToolBar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 	[_bottomToolBar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 	[_bottomToolBar2 setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+	[_statusToolbar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 }
 
 - (void)requestAuthorizationForCamera {
@@ -700,11 +702,11 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     _showAllMenu = !_showAllMenu;
     
     if (_showAllMenu) {
-        _statusBarView.hidden = NO;
+        _statusToolbar.hidden = NO;
         [self configureFlashViewMode:_currentFlashViewMode animation:YES];
     }
     else {
-        _statusBarView.hidden = YES;
+        _statusToolbar.hidden = YES;
         [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
         [UIView setAnimationBeginsFromCurrentState:YES];
         [UIView setAnimationCurve:7];
@@ -869,6 +871,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     CGFloat offset = 0.6 - (whiteOffset/2.0);
     UIColor *adjustedColor = [UIColor colorWithRed:offset green:offset blue:offset alpha:0.7 - (whiteOffset/10.0)];
 
+	_statusToolbar.backgroundColor = adjustedColor;
     _topToolBar.backgroundColor = adjustedColor;
     _sliderToolBar.backgroundColor = adjustedColor;
     _pickerPanelView.backgroundColor = adjustedColor;

@@ -75,11 +75,19 @@ TJDropboxAuthenticationViewControllerDelegate>
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dropboxLoginWithSuccess) name:A3DropboxLoginWithSuccess object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dropboxLoginFailed) name:A3DropboxLoginFailed object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)removeObserver {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3DropboxLoginWithSuccess object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3DropboxLoginFailed object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
+- (void)applicationDidBecomeActive {
+	if (_dropboxLoginInProgress) {
+		[self.navigationController popViewControllerAnimated:YES];
+	}
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -104,10 +112,12 @@ TJDropboxAuthenticationViewControllerDelegate>
 }
 
 - (void)dropboxLoginWithSuccess {
+	_dropboxLoginInProgress = NO;
 	[self loadDropboxInfo];
 }
 
 - (void)dropboxLoginFailed {
+	_dropboxLoginInProgress = NO;
 	[self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -237,6 +247,8 @@ TJDropboxAuthenticationViewControllerDelegate>
 }
 
 - (void)linkDropboxAccount {
+	_dropboxLoginInProgress = YES;
+	
 	NSURL *appAuthURL = [TJDropbox dropboxAppAuthenticationURLWithClientIdentifier:kDropboxClientIdentifier];
 	if ([[UIApplication sharedApplication] canOpenURL:appAuthURL]) {
 		[[UIApplication sharedApplication] openURL:appAuthURL];

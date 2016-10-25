@@ -1087,13 +1087,6 @@ Wprowadź klucz szyfrowania dla portfela.";
 "Wocu Spot" = "Wocu Spot";
 "South African Cent Spot" = "South African Cent Spot";
 
-"What's New in V4.2.2" = "Co nowego w wersji 4.2.2";
-"WhatsNew4_2_2" = "iOS 10 nośnego
-Wsparcie dla iPhone 7, iPhone 7 Plus
-Wyszukiwarka Portfel zawiera treść notatki zbyt
-The World Holidays Dane aktualizują
-Bug fix dla Clock pogoda
-Bug fix dla Walutowy
-Bug fix dla czytnika QR Code: Problemy z numerów telefonów i adresów e-mail
-Bug fix dla numeru problemów pad wejściowy:
-Przelicznik walut, Pożyczki, Obniżki, Daty, Kalkulator procentowy, Konwerter jednostek, Cena jednostkowa, Napiwki, Lista wydatków, Kalendarz kobiecy, Odliczacz dni, Losowanie";
+"What's New in V4.2.3" = "Co nowego w wersji 4.2.3";
+"WhatsNew4_2_3" = "Kod QR, Lustro, Latarka, Lupa UI Zmień
+Dropbox API V2 Aktualizacja";

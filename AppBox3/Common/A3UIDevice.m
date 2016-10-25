@@ -351,21 +351,29 @@ https://github.com/andrealufino/ALSystemUtilities/blob/develop/ALSystemUtilities
 	if (IS_IPAD) return NO;
 	NSString *languageCode = [NSLocale preferredLanguages][0];
 	NSArray *languagesNotUsingImage = @[@"en", @"kr", @"zh-Hans", @"zh-Hant"];
-	return [languagesNotUsingImage indexOfObject:languageCode] == NSNotFound;
+	NSInteger indexOfObject = [languagesNotUsingImage indexOfObjectPassingTest:^BOOL(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+		return [languageCode hasPrefix:obj];
+	}];
+	return indexOfObject == NSNotFound;
 }
 
 + (BOOL)shouldSupportLunarCalendar {
 	// Language 가 한글 혹은 중국어인 경우
 	NSArray *languageCodes = @[@"ko", @"zh-hans", @"zh-hant"];
-	if ([languageCodes indexOfObject:[NSLocale preferredLanguages][0]] != NSNotFound) return YES;
+	NSString *language = [NSLocale preferredLanguages][0];
+	NSInteger indexOfObject = [languageCodes indexOfObjectPassingTest:^BOOL(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+		return [language hasPrefix:obj];
+	}];
+	if (indexOfObject != NSNotFound) return YES;
 
 	NSLocale *currentLocale = [NSLocale currentLocale];
+	NSString *countryCode = [currentLocale objectForKey:NSLocaleCountryCode];
 	NSArray *countryCodes = @[@"KR", @"TW", @"CN", @"HK", @"MO", @"SG"];
-	return [countryCodes indexOfObject:[currentLocale objectForKey:NSLocaleCountryCode]] != NSNotFound;
+	return [countryCodes indexOfObject:countryCode] != NSNotFound;
 }
 
 + (BOOL)useKoreanLunarCalendar {
-	return [[NSLocale preferredLanguages][0] isEqualToString:@"ko"] || [[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode] isEqualToString:@"KR"];
+	return [[NSLocale preferredLanguages][0] hasPrefix:@"ko"] || [[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode] isEqualToString:@"KR"];
 }
 
 + (BOOL)useKoreanLunarCalendarForConversion {

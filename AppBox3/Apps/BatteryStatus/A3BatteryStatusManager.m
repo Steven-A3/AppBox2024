@@ -162,68 +162,68 @@ NSString *const A3BatteryStatusThemeColorChanged = @"A3BatteryStatusThemeColorCh
     return array;
 }
 
-+(NSURL *)howToMaximizePowerUse
++ (NSURL *)howToMaximizePowerUse
 {
     NSString *languageCode = [[NSLocale preferredLanguages] objectAtIndex:0];
     NSString *urlString;
     
-    if ([[[UIDevice currentDevice] model] isEqualToString:@"iPod touch"]) {
-        if ([languageCode isEqualToString:@"zh-Hans"] || [languageCode isEqualToString:@"zh-Hant"]) {
+    if ([[[UIDevice currentDevice] model] hasPrefix:@"iPod touch"]) {
+        if ([languageCode hasPrefix:@"zh-Hans"] || [languageCode hasPrefix:@"zh-Hant"]) {
             urlString = @"https://www.apple.com/cn/batteries/iphone.html";
-        } else if ([languageCode isEqualToString:@"fr"]) {
+        } else if ([languageCode hasPrefix:@"fr"]) {
             urlString = @"https://www.apple.com/fr/batteries/iphone.html";
-        } else if ([languageCode isEqualToString:@"de"]) {
+        } else if ([languageCode hasPrefix:@"de"]) {
             urlString = @"https://www.apple.com/de/batteries/iphone.html";
-        } else if ([languageCode isEqualToString:@"it"]) {
+        } else if ([languageCode hasPrefix:@"it"]) {
             urlString = @"https://www.apple.com/it/batteries/iphone.html";
-        } else if ([languageCode isEqualToString:@"ja"]) {
+        } else if ([languageCode hasPrefix:@"ja"]) {
             urlString = @"https://www.apple.com/jp/batteries/iphone.html";
-        } else if ([languageCode isEqualToString:@"ko"]) {
+        } else if ([languageCode hasPrefix:@"ko"]) {
             urlString = @"https://www.apple.com/kr/batteries/iphone.html";
-        } else if ([languageCode isEqualToString:@"pl"]) {
+        } else if ([languageCode hasPrefix:@"pl"]) {
             urlString = @"https://www.apple.com/pl/batteries/iphone.html";
-        } else if ([languageCode isEqualToString:@"es"]) {
+        } else if ([languageCode hasPrefix:@"es"]) {
             urlString = @"https://www.apple.com/es/batteries/iphone.html";
         } else {
             urlString = @"https://www.apple.com/batteries/maximizing-performance/";
         }
         
-    } else if ([[[UIDevice currentDevice] model] isEqualToString:@"iPhone"]) {
-        if ([languageCode isEqualToString:@"zh-Hans"] || [languageCode isEqualToString:@"zh-Hant"]) {
+    } else if ([[[UIDevice currentDevice] model] hasPrefix:@"iPhone"]) {
+        if ([languageCode hasPrefix:@"zh-Hans"] || [languageCode hasPrefix:@"zh-Hant"]) {
             urlString = @"https://www.apple.com/cn/batteries/iphone.html";
-        } else if ([languageCode isEqualToString:@"fr"]) {
+        } else if ([languageCode hasPrefix:@"fr"]) {
             urlString = @"https://www.apple.com/fr/batteries/iphone.html";
-        } else if ([languageCode isEqualToString:@"de"]) {
+        } else if ([languageCode hasPrefix:@"de"]) {
             urlString = @"https://www.apple.com/de/batteries/iphone.html";
-        } else if ([languageCode isEqualToString:@"it"]) {
+        } else if ([languageCode hasPrefix:@"it"]) {
             urlString = @"https://www.apple.com/it/batteries/iphone.html";
-        } else if ([languageCode isEqualToString:@"ja"]) {
+        } else if ([languageCode hasPrefix:@"ja"]) {
             urlString = @"https://www.apple.com/jp/batteries/iphone.html";
-        } else if ([languageCode isEqualToString:@"ko"]) {
+        } else if ([languageCode hasPrefix:@"ko"]) {
             urlString = @"https://www.apple.com/kr/batteries/iphone.html";
-        } else if ([languageCode isEqualToString:@"pl"]) {
+        } else if ([languageCode hasPrefix:@"pl"]) {
             urlString = @"https://www.apple.com/pl/batteries/iphone.html";
-        } else if ([languageCode isEqualToString:@"es"]) {
+        } else if ([languageCode hasPrefix:@"es"]) {
             urlString = @"https://www.apple.com/es/batteries/ipods.html";
         } else {
             urlString = @"https://www.apple.com/batteries/maximizing-performance/";
         }
-    } else if ([[[UIDevice currentDevice] model] isEqualToString:@"iPad"]) {
-        if ([languageCode isEqualToString:@"zh-Hans"] || [languageCode isEqualToString:@"zh-Hant"]) {
+    } else if ([[[UIDevice currentDevice] model] hasPrefix:@"iPad"]) {
+        if ([languageCode hasPrefix:@"zh-Hans"] || [languageCode hasPrefix:@"zh-Hant"]) {
             urlString = @"https://www.apple.com/cn/batteries/ipad.html";
-        } else if ([languageCode isEqualToString:@"fr"]) {
+        } else if ([languageCode hasPrefix:@"fr"]) {
             urlString = @"https://www.apple.com/fr/batteries/ipad.html";
-        } else if ([languageCode isEqualToString:@"de"]) {
+        } else if ([languageCode hasPrefix:@"de"]) {
             urlString = @"https://www.apple.com/de/batteries/ipad.html";
-        } else if ([languageCode isEqualToString:@"it"]) {
+        } else if ([languageCode hasPrefix:@"it"]) {
             urlString = @"https://www.apple.com/it/batteries/ipad.html";
-        } else if ([languageCode isEqualToString:@"ja"]) {
+        } else if ([languageCode hasPrefix:@"ja"]) {
             urlString = @"https://www.apple.com/jp/batteries/ipad.html";
-        } else if ([languageCode isEqualToString:@"ko"]) {
+        } else if ([languageCode hasPrefix:@"ko"]) {
             urlString = @"https://www.apple.com/kr/batteries/ipad.html";
-        } else if ([languageCode isEqualToString:@"pl"]) {
+        } else if ([languageCode hasPrefix:@"pl"]) {
             urlString = @"https://www.apple.com/pl/batteries/ipad.html";
-        } else if ([languageCode isEqualToString:@"es"]) {
+        } else if ([languageCode hasPrefix:@"es"]) {
             urlString = @"https://www.apple.com/es/batteries/ipad.html";
         } else {
             urlString = @"https://www.apple.com/batteries/maximizing-performance/";
@@ -237,25 +237,25 @@ NSString *const A3BatteryStatusThemeColorChanged = @"A3BatteryStatusThemeColorCh
     return url;
 }
 
-+(NSURL *)moreInformationAboutBatteries
++ (NSURL *)moreInformationAboutBatteries
 {
     NSString *languageCode = [NSLocale preferredLanguages][0];
     NSString *urlString;
-    if ([languageCode isEqualToString:@"zh-Hans"] || [languageCode isEqualToString:@"zh-Hant"]) {
+    if ([languageCode hasPrefix:@"zh-Hans"] || [languageCode hasPrefix:@"zh-Hant"]) {
         urlString = @"https://www.apple.com/cn/batteries/";
-    } else if ([languageCode isEqualToString:@"fr"]) {
+    } else if ([languageCode hasPrefix:@"fr"]) {
         urlString = @"https://www.apple.com/fr/batteries/";
-    } else if ([languageCode isEqualToString:@"de"]) {
+    } else if ([languageCode hasPrefix:@"de"]) {
         urlString = @"https://www.apple.com/de/batteries/";
-    } else if ([languageCode isEqualToString:@"it"]) {
+    } else if ([languageCode hasPrefix:@"it"]) {
         urlString = @"https://www.apple.com/it/batteries/";
-    } else if ([languageCode isEqualToString:@"ja"]) {
+    } else if ([languageCode hasPrefix:@"ja"]) {
         urlString = @"https://www.apple.com/jp/batteries/";
-    } else if ([languageCode isEqualToString:@"ko"]) {
+    } else if ([languageCode hasPrefix:@"ko"]) {
         urlString = @"https://www.apple.com/kr/batteries/";
-    } else if ([languageCode isEqualToString:@"pl"]) {
+    } else if ([languageCode hasPrefix:@"pl"]) {
         urlString = @"https://www.apple.com/pl/batteries/";
-    } else if ([languageCode isEqualToString:@"es"]) {
+    } else if ([languageCode hasPrefix:@"es"]) {
         urlString = @"https://www.apple.com/es/batteries/";
     } else {
         urlString = @"https://www.apple.com/batteries/";

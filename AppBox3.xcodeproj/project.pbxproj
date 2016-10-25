@@ -272,7 +272,6 @@
 		6825367D18A7BD4E00EAFB84 /* SQLiteWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6825367C18A7BD4E00EAFB84 /* SQLiteWrapper.m */; };
 		6825367F18A7C1B800EAFB84 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6825367E18A7C1B800EAFB84 /* libsqlite3.0.dylib */; };
 		6826F0291CA17B9800144680 /* A3HomeScreenButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6826F0281CA17B9800144680 /* A3HomeScreenButton.m */; };
-		682879791D925887006EB4D4 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682879781D925887006EB4D4 /* GoogleMobileAds.framework */; };
 		682961D2174267C6008D025E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682961D1174267C6008D025E /* MapKit.framework */; };
 		682968851850401200B70E13 /* NSFileManager+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 682968841850401200B70E13 /* NSFileManager+A3Addition.m */; };
 		6829688F18505E3900B70E13 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D715EB10B000BD6AD4 /* Foundation.framework */; };
@@ -514,6 +513,7 @@
 		6888090A17C63DBB008B2856 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6888090917C63DBB008B2856 /* CFNetwork.framework */; };
 		6888090E17C63F57008B2856 /* A3FlickrTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6888090D17C63F57008B2856 /* A3FlickrTest.m */; };
 		6889D0A21CF3E1EC00B7F90E /* Pedometer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6889D0A41CF3E1EC00B7F90E /* Pedometer.storyboard */; };
+		688CA6831DBEF56700679C43 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 688CA6821DBEF56700679C43 /* GoogleMobileAds.framework */; };
 		6890AB321786BA08004FECE4 /* A3CurrencyTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6890AB311786BA08004FECE4 /* A3CurrencyTableViewController.m */; };
 		6891D7FD183C5EDD0060B677 /* A3CurrencySettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6891D7FB183C5EDD0060B677 /* A3CurrencySettingsViewController.m */; };
 		6893E6381C9E3E17009E0A2E /* A3HomeStyleHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6893E6371C9E3E17009E0A2E /* A3HomeStyleHelpViewController.m */; };
@@ -1501,7 +1501,6 @@
 		6825367E18A7C1B800EAFB84 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		6826F0271CA17B9800144680 /* A3HomeScreenButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3HomeScreenButton.h; sourceTree = "<group>"; };
 		6826F0281CA17B9800144680 /* A3HomeScreenButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3HomeScreenButton.m; sourceTree = "<group>"; };
-		682879781D925887006EB4D4 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = "External/GoogleMobileAdsSdkiOS-7.11.0/GoogleMobileAds.framework"; sourceTree = "<group>"; };
 		682961D1174267C6008D025E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		6829687D18503D0E00B70E13 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/AppKit.framework; sourceTree = DEVELOPER_DIR; };
 		682968831850401200B70E13 /* NSFileManager+A3Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+A3Addition.h"; sourceTree = "<group>"; };
@@ -1741,13 +1740,6 @@
 		6857C7261CB647A000D09177 /* RSScannerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSScannerViewController.m; sourceTree = "<group>"; };
 		6857C7301CB647EB00D09177 /* A3QRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3QRCodeViewController.h; sourceTree = "<group>"; };
 		6857C7311CB647EB00D09177 /* A3QRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3QRCodeViewController.m; sourceTree = "<group>"; };
-		6858DF731D0BDA63006F0142 /* GADMAdNetworkAdapterProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADMAdNetworkAdapterProtocol.h; sourceTree = "<group>"; };
-		6858DF741D0BDA63006F0142 /* GADMAdNetworkConnectorProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADMAdNetworkConnectorProtocol.h; sourceTree = "<group>"; };
-		6858DF751D0BDA63006F0142 /* GADMediationAdRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADMediationAdRequest.h; sourceTree = "<group>"; };
-		6858DF761D0BDA63006F0142 /* GADMEnums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADMEnums.h; sourceTree = "<group>"; };
-		6858DF771D0BDA63006F0142 /* GADMRewardBasedVideoAdNetworkAdapterProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADMRewardBasedVideoAdNetworkAdapterProtocol.h; sourceTree = "<group>"; };
-		6858DF781D0BDA63006F0142 /* GADMRewardBasedVideoAdNetworkConnectorProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADMRewardBasedVideoAdNetworkConnectorProtocol.h; sourceTree = "<group>"; };
-		6858DF791D0BDA63006F0142 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		685946D018C371C800528190 /* A3SpeechTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SpeechTest.m; sourceTree = "<group>"; };
 		685E31991791694E001A0EC8 /* A3CurrencyTVActionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3CurrencyTVActionCell.xib; path = Apps/Currency/A3CurrencyTVActionCell.xib; sourceTree = "<group>"; };
 		685E319D17917879001A0EC8 /* A3CurrencyTVActionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyTVActionCell.h; path = Apps/Currency/A3CurrencyTVActionCell.h; sourceTree = "<group>"; };
@@ -1894,6 +1886,13 @@
 		6889D0B81CF3E20000B7F90E /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Pedometer.strings; sourceTree = "<group>"; };
 		6889D0BA1CF3E20200B7F90E /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Pedometer.strings; sourceTree = "<group>"; };
 		6889D0BC1CF3E20400B7F90E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Pedometer.strings"; sourceTree = "<group>"; };
+		688CA6821DBEF56700679C43 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = "External/GoogleMobileAdsSdkiOS-7.13.1/GoogleMobileAds.framework"; sourceTree = "<group>"; };
+		688CA6851DBEF58400679C43 /* GADMAdNetworkAdapterProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADMAdNetworkAdapterProtocol.h; sourceTree = "<group>"; };
+		688CA6861DBEF58400679C43 /* GADMAdNetworkConnectorProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADMAdNetworkConnectorProtocol.h; sourceTree = "<group>"; };
+		688CA6871DBEF58400679C43 /* GADMediationAdRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADMediationAdRequest.h; sourceTree = "<group>"; };
+		688CA6881DBEF58400679C43 /* GADMEnums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADMEnums.h; sourceTree = "<group>"; };
+		688CA6891DBEF58400679C43 /* GADMRewardBasedVideoAdNetworkAdapterProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADMRewardBasedVideoAdNetworkAdapterProtocol.h; sourceTree = "<group>"; };
+		688CA68A1DBEF58400679C43 /* GADMRewardBasedVideoAdNetworkConnectorProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADMRewardBasedVideoAdNetworkConnectorProtocol.h; sourceTree = "<group>"; };
 		6890AB0C1786B800004FECE4 /* EXPBackwardCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXPBackwardCompatibility.h; sourceTree = "<group>"; };
 		6890AB0D1786B800004FECE4 /* EXPBlockDefinedMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXPBlockDefinedMatcher.h; sourceTree = "<group>"; };
 		6890AB0E1786B800004FECE4 /* EXPDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXPDefines.h; sourceTree = "<group>"; };
@@ -2960,7 +2959,7 @@
 				683B959315EB252400575377 /* QuartzCore.framework in Frameworks */,
 				682EA2D615EB10B000BD6AD4 /* UIKit.framework in Frameworks */,
 				682EA2D815EB10B000BD6AD4 /* Foundation.framework in Frameworks */,
-				682879791D925887006EB4D4 /* GoogleMobileAds.framework in Frameworks */,
+				688CA6831DBEF56700679C43 /* GoogleMobileAds.framework in Frameworks */,
 				682EA2DA15EB10B000BD6AD4 /* CoreGraphics.framework in Frameworks */,
 				682EA2DC15EB10B000BD6AD4 /* CoreData.framework in Frameworks */,
 				17D4235B678996668439565E /* CoreText.framework in Frameworks */,
@@ -4372,21 +4371,6 @@
 			path = QRCode;
 			sourceTree = "<group>";
 		};
-		6858DF721D0BDA63006F0142 /* Mediation Adapters */ = {
-			isa = PBXGroup;
-			children = (
-				6858DF731D0BDA63006F0142 /* GADMAdNetworkAdapterProtocol.h */,
-				6858DF741D0BDA63006F0142 /* GADMAdNetworkConnectorProtocol.h */,
-				6858DF751D0BDA63006F0142 /* GADMediationAdRequest.h */,
-				6858DF761D0BDA63006F0142 /* GADMEnums.h */,
-				6858DF771D0BDA63006F0142 /* GADMRewardBasedVideoAdNetworkAdapterProtocol.h */,
-				6858DF781D0BDA63006F0142 /* GADMRewardBasedVideoAdNetworkConnectorProtocol.h */,
-				6858DF791D0BDA63006F0142 /* README.txt */,
-			);
-			name = "Mediation Adapters";
-			path = "External/GoogleMobileAdsSdkiOS-7.8.1/Mediation Adapters";
-			sourceTree = "<group>";
-		};
 		68635FF3198BF80E00C3A323 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -4532,6 +4516,20 @@
 				68B6A18A17CC398A008E0296 /* indian.plist */,
 			);
 			name = Holidays;
+			sourceTree = "<group>";
+		};
+		688CA6841DBEF58400679C43 /* Mediation Adapters */ = {
+			isa = PBXGroup;
+			children = (
+				688CA6851DBEF58400679C43 /* GADMAdNetworkAdapterProtocol.h */,
+				688CA6861DBEF58400679C43 /* GADMAdNetworkConnectorProtocol.h */,
+				688CA6871DBEF58400679C43 /* GADMediationAdRequest.h */,
+				688CA6881DBEF58400679C43 /* GADMEnums.h */,
+				688CA6891DBEF58400679C43 /* GADMRewardBasedVideoAdNetworkAdapterProtocol.h */,
+				688CA68A1DBEF58400679C43 /* GADMRewardBasedVideoAdNetworkConnectorProtocol.h */,
+			);
+			name = "Mediation Adapters";
+			path = "External/GoogleMobileAdsSdkiOS-7.13.1/Mediation Adapters";
 			sourceTree = "<group>";
 		};
 		6890AB0B1786B800004FECE4 /* expecta */ = {
@@ -5178,10 +5176,10 @@
 		68CC1594174F764C0000870F /* External */ = {
 			isa = PBXGroup;
 			children = (
+				688CA6841DBEF58400679C43 /* Mediation Adapters */,
+				688CA6821DBEF56700679C43 /* GoogleMobileAds.framework */,
 				683D683E1DBC5C00008C47C9 /* ACSimpleKeychain */,
 				683D68411DBC5C00008C47C9 /* TJDropbox */,
-				682879781D925887006EB4D4 /* GoogleMobileAds.framework */,
-				6858DF721D0BDA63006F0142 /* Mediation Adapters */,
 				6848ED681C50FD7B0067B93A /* ALDBlurImageProcessor */,
 				68F04CA01B40F825004FDD7B /* RMStore */,
 				68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */,
@@ -7615,7 +7613,7 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.11.0",
+					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.13.1",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";
@@ -7652,7 +7650,7 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.11.0",
+					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.13.1",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";

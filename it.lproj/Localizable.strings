@@ -1081,13 +1081,6 @@ Inserire chiave di crittografia per il portafoglio.";
 "Wocu Spot" = "Wocu Spot";
 "South African Cent Spot" = "Sudafricano Cent Spot";
 
-"What's New in V4.2.2" = "Novità nella V4.2.2";
-"WhatsNew4_2_2" = "Supporto iOS 10
-Supporto iPhone 7, iPhone 7 Plus
-Ricerca portafoglio include note contenuti troppo
-Le vacanze Mondo dati di aggiornamento
-bug fix per Clock Meteo
-bug fix per il convertitore di valuta
-bug fix per il lettore di QR Code: Problemi con numero di telefono e indirizzi email
-bug fix per problemi di rilievo inserimento del numero:
-Convertitore Valuta, Calcolatrice Prestito, Calcolatrice Sconti, Calcola Data, Calcolatrice Percentuale, Convertitore Unità, Prezzo unitario, Calcolatrice Mancia, Lista Spesa, Calendario femminile, Conta Giorni, Casuale";
+"What's New in V4.2.3" = "Novità nella V4.2.3";
+"WhatsNew4_2_3" = "Codice QR, Specchio, Torcia, Esaltatore UI Change
+Dropbox API V2 aggiornamento";

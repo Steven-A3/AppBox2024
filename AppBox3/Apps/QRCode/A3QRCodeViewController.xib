@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -11,6 +11,7 @@
                 <outlet property="bottomToolbarBottomSpaceConstraint" destination="9GI-XW-mQA" id="Kbp-ku-HGo"/>
                 <outlet property="cornersView" destination="Udq-9Z-gVw" id="89l-lq-5jU"/>
                 <outlet property="highlightView" destination="it2-1W-4DY" id="hpe-LH-RLi"/>
+                <outlet property="statusToolbar" destination="HQ9-gP-ZjY" id="b3I-Gt-E1G"/>
                 <outlet property="topToolbar" destination="76b-3P-GoN" id="gJB-LA-ILe"/>
                 <outlet property="topToolbarSoundOnly" destination="DXI-b8-CtY" id="DDj-LR-5bX"/>
                 <outlet property="topToolbarWithoutVibrate" destination="yhh-Az-zOH" id="Jk2-u5-Vta"/>
@@ -31,6 +32,16 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="it2-1W-4DY" customClass="RSCornersView">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <subviews>
+                        <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HQ9-gP-ZjY">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="20"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="d5j-J5-KfE"/>
+                            </constraints>
+                            <items/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        </toolbar>
                         <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DXI-b8-CtY" userLabel="Top Toolbar Sound only">
                             <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                             <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
@@ -159,7 +170,10 @@
                         <constraint firstAttribute="trailing" secondItem="Egz-QS-v7W" secondAttribute="trailing" id="VyU-Xu-gKf"/>
                         <constraint firstAttribute="trailing" secondItem="76b-3P-GoN" secondAttribute="trailing" id="W56-Lc-LW9"/>
                         <constraint firstItem="Egz-QS-v7W" firstAttribute="leading" secondItem="it2-1W-4DY" secondAttribute="leading" id="XfV-nn-1kR"/>
+                        <constraint firstAttribute="trailing" secondItem="HQ9-gP-ZjY" secondAttribute="trailing" id="ZTb-5a-LTn"/>
                         <constraint firstItem="76b-3P-GoN" firstAttribute="leading" secondItem="it2-1W-4DY" secondAttribute="leading" id="ahX-hu-bpU"/>
+                        <constraint firstItem="HQ9-gP-ZjY" firstAttribute="top" secondItem="it2-1W-4DY" secondAttribute="top" id="eaR-nc-2S3"/>
+                        <constraint firstItem="HQ9-gP-ZjY" firstAttribute="leading" secondItem="it2-1W-4DY" secondAttribute="leading" id="gfG-4M-V3l"/>
                         <constraint firstAttribute="trailing" secondItem="DXI-b8-CtY" secondAttribute="trailing" id="o5b-Ex-0h6"/>
                         <constraint firstItem="yhh-Az-zOH" firstAttribute="leading" secondItem="it2-1W-4DY" secondAttribute="leading" id="ovP-0U-sSM"/>
                         <constraint firstItem="76b-3P-GoN" firstAttribute="top" secondItem="it2-1W-4DY" secondAttribute="top" constant="20" id="s3Q-cz-XGD"/>

@@ -813,7 +813,7 @@ NSString *const A3NotificationHolidaysCountryListChanged = @"A3NotificationHolid
 + (NSString *)displayNameForCountryCode:(NSString *)countryCode {
 	NSString *countryName;
 	if ([countryCode isEqualToString:@"jewish"]) {
-		if ([[NSLocale preferredLanguages][0] isEqualToString:@"he"]) {
+		if ([[NSLocale preferredLanguages][0] hasPrefix:@"he"]) {
 			countryName = @"ימים טובים";
 		} else {
 			countryName = NSLocalizedString(@"Jewish Holidays", @"Jewish Holidays");

@@ -66,10 +66,10 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 	FrameRateCalculator *_frameCalculator;
 }
 
-@property (nonatomic, strong) UIView *statusBarBackground;
-@property (nonatomic, strong) A3InstructionViewController *instructionViewController;
-@property (nonatomic, strong) NSMutableArray *filterViews;
-@property (nonatomic, strong) NSMutableArray *filterLabels;
+@property (weak, nonatomic) IBOutlet UIToolbar *statusToolbar;
+@property (strong, nonatomic) A3InstructionViewController *instructionViewController;
+@property (strong, nonatomic) NSMutableArray *filterViews;
+@property (strong, nonatomic) NSMutableArray *filterLabels;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *snapButton;
 @property (weak, nonatomic) IBOutlet UIToolbar *topBar;
 @property (weak, nonatomic) IBOutlet UIToolbar *bottomBar;
@@ -137,11 +137,7 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 	self.view.bounds = screenBounds;
 	[self.view setBackgroundColor:[UIColor blackColor]];
 
-	self.statusBarBackground = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, screenBounds.size.width, 20)];
-	[self.statusBarBackground setBackgroundColor:[UIColor blackColor]];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-	[self.view addSubview:self.statusBarBackground];
-	[self.statusBarBackground setHidden:YES];
 	_isFlip = YES;
 
 	[self setupAVCaptureSession];
@@ -159,6 +155,7 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 
 - (void)setToolbarTransparent {
 	UIImage *image = [UIImage toolbarBackgroundImage];
+	[_statusToolbar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 	[_topBar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 	[_bottomBar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 	[_zoomToolBar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
@@ -349,7 +346,7 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 	}
 	[_topBar setItems:[self topToolBarBarButtons] animated:YES];
 
-	[self.statusBarBackground setFrame:CGRectMake(self.statusBarBackground.bounds.origin.x, self.statusBarBackground.bounds.origin.y , screenBounds.size.width , self.statusBarBackground.bounds.size.height)];
+	[self.statusToolbar setFrame:CGRectMake(0, 0, screenBounds.size.width , 20)];
 
 	[self setToolBarsHidden:_topBar.hidden];
 }
@@ -850,7 +847,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 - (void)setToolBarsHidden:(BOOL)hidden {
 	self.topBar.hidden = hidden;
 	self.bottomBar.hidden = hidden;
-	self.statusBarBackground.hidden = hidden;
+	self.statusToolbar.hidden = hidden;
 	[[UIApplication sharedApplication] setStatusBarHidden:hidden];
 
 	[self.bottomBar setFrame:CGRectMake(self.bottomBar.bounds.origin.x, self.view.frame.size.height - 74 , self.view.frame.size.width, 74)];

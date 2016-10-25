@@ -1083,13 +1083,6 @@ Introduzca la clave de cifrado para el bolsillo.";
 "Wocu Spot" = "Wocu para comer";
 "South African Cent Spot" = "Sudáfrica Cent para comer";
 
-"What's New in V4.2.2" = "Lo nuevo en la V4.2.2";
-"WhatsNew4_2_2" = "Soporte iOS 10
-Soporte iPhone 7, 7 iPhone Plus
-Monedero de búsqueda incluye notas de contenido demasiado
-Los días de fiesta Mundiales de Datos Actualizar
-Corrección de errores de tiempo del reloj
-Corrección de errores para Convertidor de divisas
-Corrección de errores para el lector de código QR: Problemas con números de teléfono y direcciones de correo electrónico
-Corrección de errores de Número problemas atenuador de entrada:
-Moneda, Préstamo, Descuento, Fechas, Porcentaje, Unidad, Precio unitario, Calculador de propina, Lista de gastos, Calendario femenino, Calendario de eventos, Random";
+"What's New in V4.2.3" = "Lo nuevo en la V4.2.3";
+"WhatsNew4_2_3" = "Código QR, Espejo, Linterna, Amplificador Cambio de interfaz de usuario
+Dropbox API V2 Mejorar";

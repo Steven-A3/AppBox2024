@@ -106,7 +106,7 @@
 
 	[self registerContentSizeCategoryDidChangeNotification];
 
-	if (IS_IPAD && [[NSLocale preferredLanguages][0] isEqualToString:@"it"]) {
+	if (IS_IPAD && [[NSLocale preferredLanguages][0] hasPrefix:@"it"]) {
 		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days", @"StringsDict", nil), 1] forSegmentAtIndex:0];
 		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days", @"StringsDict", nil), 5] forSegmentAtIndex:1];
 		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), 1] forSegmentAtIndex:2];
@@ -676,6 +676,7 @@
  */
 - (NSURL *)urlForChartImage {
 	NSArray *types = @[@"1d", @"5d", @"1m", @"5m", @"1y"];
+
 	NSString *string = [NSString stringWithFormat:@"https://chart.finance.yahoo.com/z?s=%@%@=x&t=%@&z=%@&region=%@&lang=%@",
 												  _sourceCurrencyCode, _targetCurrencyCode,
 												  types[(NSUInteger) self.segmentedControl.selectedSegmentIndex],

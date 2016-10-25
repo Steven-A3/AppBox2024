@@ -53,7 +53,7 @@
 
 #define IS_RETINA	([[UIScreen mainScreen] scale] >= 2)
 
-#define	LANGUAGE_KOREAN	[[NSLocale preferredLanguages][0] isEqualToString:@"ko"]
+#define	LANGUAGE_KOREAN	[[NSLocale preferredLanguages][0] hasPrefix:@"ko"]
 
 extern NSString *const A3AnimationIDKeyboardWillShow;
 

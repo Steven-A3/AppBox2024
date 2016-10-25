@@ -26,6 +26,10 @@
 "Unit Price" = "單價";
 "Unit Price Short" = "單價";
 "Random" = "隨機數據生成";
+"Mirror" = "鏡子";
+"Flashlight" = "手電燈";
+"Flashlight Short" = "手電燈";
+"Magnifier" = "放大鏡";
 
 "Turn Passcode On" = "打開密碼";
 "Category Name" = "種類名稱";
@@ -50,8 +54,6 @@
 "Reminder" = "提醒事項";
 " by %@" = " 提供 %@";
 "Change Passcode" = "更改密碼";
-"Flashlight" = "手電燈";
-"Flashlight Short" = "手電燈";
 "Delete Photo" = "刪除照片";
 "How To Enable Data Protection" = "如何啟動數據保護";
 "Delete Event" = "刪除事件";
@@ -578,7 +580,6 @@
 "Most Recent" = "最新的1集";
 "Error" = "錯誤";
 "Use data stored in iCloud" = "使用iCloud中儲存的數據";
-"Magnifier" = "放大鏡";
 "Hours" = "時間";
 "Cycle Length" = "生理週期";
 "Weekends" = "週末";
@@ -770,7 +771,6 @@
 "Transfer" = "歲月";
 "Process" = "衝印";
 "Add Holidays to \"Days Counter\" app" = "在\"天數計算器\" 應用中增加假日";
-"Mirror" = "鏡子";
 "Month" = "月";
 "Service" = "服務";
 "The unit price is the same at %@" = "%@時單位價格相同";
@@ -916,13 +916,6 @@
 "Wocu Spot" = "Wocu點";
 "South African Cent Spot" = "南非美分點";
 
-"What's New in V4.2.2" = "4.2.2版本的新內容";
-"WhatsNew4_2_2" = "支持iOS 10
-支持iPhone 7，iPhone 7 Plus
-電子錢包搜索也包括筆記內容
-世界假期數據更新
-時鍾天氣的錯誤修復
-Bug修復貨幣轉換器
-QR碼閱讀器的錯誤修復：電話號碼和電子郵件地址的問題
-Bug修復數字輸入板問題：
-貨幣，貸款計算，折扣價格計算，日期計算，百分比計算器，單位換算，單價，小費計算，費用清單，淑女日曆，天計數器，隨機數據生成";
+"What's New in V4.2.3" = "4.2.3版本的新內容";
+"WhatsNew4_2_3" = "QR碼，鏡子，手電燈，放大鏡UI更改
+Dropbox API V2升級";

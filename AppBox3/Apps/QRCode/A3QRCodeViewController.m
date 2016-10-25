@@ -40,6 +40,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 @interface A3QRCodeViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, A3InstructionViewControllerDelegate,
 		A3QRCodeDataHandlerDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
 
+@property (nonatomic, weak) IBOutlet UIToolbar *statusToolbar;
 @property (nonatomic, weak) IBOutlet UIToolbar *topToolbar;
 @property (nonatomic, weak) IBOutlet UIToolbar *topToolbarWithoutVibrate;
 @property (nonatomic, weak) IBOutlet UIToolbar *topToolbarSoundOnly;
@@ -105,9 +106,11 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 
 	UIImage *image = [UIImage toolbarBackgroundImage];
 	[_topToolbar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+	[_topToolbar setShadowImage:[UIImage new] forToolbarPosition:UIToolbarPositionAny];
 	[_topToolbarWithoutVibrate setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 	[_topToolbarSoundOnly setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 	[_bottomToolbar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+	[_statusToolbar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 }
 
 - (void)applicationDidBecomeActive {

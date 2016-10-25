@@ -42,7 +42,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 @property (nonatomic, strong) AVCaptureDevice *videoDevice;
-@property (nonatomic, strong) UIView *statusBarBackground;
+@property (weak, nonatomic) IBOutlet UIToolbar *statusToolbar;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *lightButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *snapButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *cameraRollButton;
@@ -76,11 +76,8 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     // Do any additional setup after loading the view from its nib.
     [self.view setBackgroundColor:[UIColor blackColor]];
     [self.view setBounds:[[UIScreen mainScreen] bounds]];
-    [self setStatusBarBackground:[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, 20)]];
-    [self.statusBarBackground setBackgroundColor:[UIColor blackColor]];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    [self.view addSubview:self.statusBarBackground];
-    
+	
     [self setNavigationBarHidden:YES];
     [self setToolBarsHidden:YES];
 
@@ -121,7 +118,9 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 
 - (void)setToolbarTransparent {
 	UIImage *image = [UIImage toolbarBackgroundImage];
+	[_statusToolbar setBackgroundImage:image forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
 	[_topToolBar setBackgroundImage:image forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+	[_topToolBar setShadowImage:[UIImage new] forToolbarPosition:UIBarPositionAny];
 	[_brightnessToolBar setBackgroundImage:image forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
 	[_magnifierToolBar setBackgroundImage:image forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
 	[_bottomToolBar setBackgroundImage:image forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
@@ -242,7 +241,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
         [self.zoomSlider setFrame:CGRectMake(self.zoomSlider.frame.origin.x, self.zoomSlider.frame.origin.y, screenBounds.size.width - 98, self.zoomSlider.frame.size.height)];
     }
  
-    [self.statusBarBackground setFrame:CGRectMake(self.statusBarBackground.bounds.origin.x, self.statusBarBackground.bounds.origin.y , screenBounds.size.width , self.statusBarBackground.bounds.size.height)];
+	_statusToolbar.frame = CGRectMake(0, 0, screenBounds.size.width, 20);
 	[self setToolBarsHidden:_topToolBar.hidden];
 }
 
@@ -426,7 +425,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 				self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.bottomToolBar.frame.size.height,
 				self.magnifierToolBar.frame.size.width,
 				self.magnifierToolBar.frame.size.height)];        }
-	self.statusBarBackground.hidden = hidden;
+	_statusToolbar.hidden = hidden;
 	[[UIApplication sharedApplication] setStatusBarHidden:hidden];
 }
 
@@ -791,7 +790,6 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
     _previewLayer = nil;
     
     _videoDevice = nil;
-    _statusBarBackground = nil;
     self.lastimageButton = nil;
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
