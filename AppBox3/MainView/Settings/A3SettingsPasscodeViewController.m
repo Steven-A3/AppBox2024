@@ -297,7 +297,8 @@
 			NSURL *url = [NSURL URLWithString:urlString];
 			[[UIApplication sharedApplication] openURL:url];
 		} else if (buttonIndex == 2) {
-			NSURL *url = [NSURL URLWithString:@"https://www.apple.com/iphone/business/it/security.html"];
+			NSString *countryCode = [[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode] lowercaseString];
+			NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://www.apple.com/%@/iphone/business/it/#security", countryCode]];
 			[[UIApplication sharedApplication] openURL:url];
 		}
 	}

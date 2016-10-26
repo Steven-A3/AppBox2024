@@ -18,6 +18,7 @@
 #import "A3BackgroundWithPatternView.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "A3UserDefaults.h"
+#import "A3GradientView.h"
 #import "ALDBlurImageProcessor.h"
 #import "NTRMath.h"
 
@@ -39,6 +40,8 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 @property (nonatomic, strong) A3BackgroundWithPatternView *backgroundView;
 @property (nonatomic, strong) UIView *coverViewOnBlur;
 @property (nonatomic, strong) UIAlertView *acknowledgementAlertView;
+@property (nonatomic, strong) A3GradientView *bottomGradientView;
+
 @end
 
 @implementation A3HolidaysPageContentViewController {
@@ -83,6 +86,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	[self setupBackgroundView];
 	[self setupTableView];
 	[self setupImageView];
+	[self setupBottomGradient];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(imageDownloaded:) name:A3HolidaysFlickrDownloadManagerDownloadComplete object:[A3HolidaysFlickrDownloadManager sharedInstance]];
 	[self registerContentSizeCategoryDidChangeNotification];
@@ -276,6 +280,31 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 		}];
 	}
 	return _coverViewOnBlur;
+}
+
+- (A3GradientView *)bottomGradientView {
+	if (!_bottomGradientView) {
+		_bottomGradientView = [A3GradientView new];
+		_bottomGradientView.locations = @[@0, @0.5, @0.85, @1.0];
+		_bottomGradientView.gradientColors = @[
+											  (id) [UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
+											  (id) [UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
+											  (id) [UIColor colorWithWhite:0.0 alpha:0.3].CGColor,
+											  (id) [UIColor colorWithWhite:0.0 alpha:0.6].CGColor
+											  ];
+		[self.view addSubview:_bottomGradientView];
+		
+	}
+	
+	return _bottomGradientView;
+}
+
+- (void)setupBottomGradient {
+	[self.view insertSubview:self.bottomGradientView belowSubview:self.tableView];
+	
+	[_bottomGradientView makeConstraints:^(MASConstraintMaker *make) {
+		make.edges.equalTo(self.view);
+	}];
 }
 
 - (void)didReceiveMemoryWarning
@@ -760,7 +789,8 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		uint32_t radius = scrollView.contentOffset.y < 100 ? 0 : lerp(scrollView.contentOffset.y / scrollView.contentSize.height, 20, 30);
 		[self.blurImageProcessor asyncBlurWithRadius:radius iterations:5 cancelingLastOperation:YES];
 	}
-
+	[self.bottomGradientView setAlpha: scrollView.contentOffset.y < 100 ? 1.0 : 0];
+	
 	if (scrollView.contentOffset.y == 0) {
 		[UIView animateWithDuration:1.0 animations:^{
 			[self.coverViewOnBlur setAlpha:0.0];
