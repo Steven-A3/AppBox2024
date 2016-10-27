@@ -295,13 +295,83 @@
 			NSString *language = [NSLocale preferredLanguages][0];
 			NSString *urlString = [NSString stringWithFormat:@"https://help.apple.com/iphone/10/?lang=%@#/iph14a867ae", language];
 			NSURL *url = [NSURL URLWithString:urlString];
-			[[UIApplication sharedApplication] openURL:url];
+			[self presentWebViewControllerWithURL:url];
 		} else if (buttonIndex == 2) {
+			// 언어가 영어인 경우에는 지역 코드가 없는 URL을 사용한다.
+			NSString *languageCode = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
 			NSString *countryCode = [[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode] lowercaseString];
-			NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://www.apple.com/%@/iphone/business/it/#security", countryCode]];
-			[[UIApplication sharedApplication] openURL:url];
+
+			if ([languageCode isEqualToString:@"en"]) {
+				if ([countryCode isEqualToString:@"gb"]) {
+					NSURL *url = [self securityInfoURLWithCountryCode:@"uk"];
+					[self presentWebViewControllerWithURL:url];
+					return;
+				}
+				NSArray *countriesSupported = @[@"ae", @"ca", @"au", @"za", @"in", @"ie", @"my", @"nz", @"sg"];
+				NSInteger indexOfCountry = [countriesSupported indexOfObject:countryCode];
+				if (indexOfCountry != NSNotFound) {
+					NSURL *url = [self securityInfoURLWithCountryCode:countryCode];
+					[self presentWebViewControllerWithURL:url];
+					return;
+				}
+				NSURL *url = [self securityInfoURLWithCountryCode:nil];
+				[self presentWebViewControllerWithURL:url];
+				return;
+			}
+			NSDictionary *languageCodes = @{	  @"ko":@"kr",
+											  @"ja":@"jp",
+											  @"zh-hans":@"cn",
+											  @"es":@"es",
+											  @"fr":@"fr",
+											  @"it":@"it",
+											  @"de":@"de",
+											};
+			NSString *targetCountryCode = languageCodes[languageCode];
+			if (targetCountryCode) {
+				if ([countryCode isEqualToString:@"at"]) {
+					NSURL *url = [self securityInfoURLWithCountryCode:countryCode];
+					[self presentWebViewControllerWithURL:url];
+					return;
+				}
+				NSURL *url = [self securityInfoURLWithCountryCode:targetCountryCode];
+				[self presentWebViewControllerWithURL:url];
+				return;
+			}
+			
+			if ([languageCode isEqualToString:@"zh-hant"]) {
+				if ([countryCode isEqualToString:@"tw"]) {
+					NSURL *url = [self securityInfoURLWithCountryCode:countryCode];
+					[self presentWebViewControllerWithURL:url];
+					return;
+				}
+				NSURL *url = [self securityInfoURLWithCountryCode:@"hk"];
+				[self presentWebViewControllerWithURL:url];
+				return;
+			}
+
+			// dk, ko, jp, cn, ae, at, au, ru, no, nl, fi, tw, hk, tr, th, za, it, in, ca,
+			// de, es, fr, uk(for gb), hk, id, ie, my, nl, nz, se, sg
+			NSArray *countrisSupported = @[@"dk", @"ko", @"jp", @"cn", @"ae", @"at",
+										   @"au", @"ru", @"no", @"fi", @"nl", @"tw",
+										   @"hk", @"tr", @"th", @"za", @"it", @"in",
+										   @"ca", @"de", @"es", @"fr", @"id", @"ie",
+										   @"my", @"nl", @"nz", @"se", @"sg"];
+			if ([countrisSupported indexOfObject:countryCode] != NSNotFound) {
+				NSURL *url = [self securityInfoURLWithCountryCode:countryCode];
+				[self presentWebViewControllerWithURL:url];
+				return;
+			}
+			NSURL *url = [self securityInfoURLWithCountryCode:nil];
+			[self presentWebViewControllerWithURL:url];
 		}
 	}
+}
+
+- (NSURL *)securityInfoURLWithCountryCode:(NSString *)countryCode {
+	if (countryCode == nil) {
+		return [NSURL URLWithString:@"https://www.apple.com/iphone/business/it/#security"];
+	}
+	return [NSURL URLWithString:[NSString stringWithFormat:@"https://www.apple.com/%@/iphone/business/it/#security", countryCode]];
 }
 
 - (void)didSelectRowAtSection0:(NSInteger)row {
