@@ -105,10 +105,13 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 
 	UIImage *image = [UIImage toolbarBackgroundImage];
+	UIImage *shadowImage = [UIImage new];
 	[_topToolbar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
-	[_topToolbar setShadowImage:[UIImage new] forToolbarPosition:UIToolbarPositionAny];
+	[_topToolbar setShadowImage:shadowImage forToolbarPosition:UIToolbarPositionAny];
 	[_topToolbarWithoutVibrate setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+	[_topToolbarWithoutVibrate setShadowImage:shadowImage forToolbarPosition:UIBarPositionAny];
 	[_topToolbarSoundOnly setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+	[_topToolbarSoundOnly setShadowImage:shadowImage forToolbarPosition:UIBarPositionAny];
 	[_bottomToolbar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 	[_statusToolbar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 }
