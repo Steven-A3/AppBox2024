@@ -14,6 +14,8 @@
 #import "TJDropbox.h"
 #import "NSFileManager+A3Addition.h"
 
+extern NSString *const kDropboxDir;
+
 @interface A3SettingsDropboxSelectBackupViewController () <UIActionSheetDelegate, MBProgressHUDDelegate>
 
 @property (nonatomic, strong) MBProgressHUD *hud;
@@ -225,18 +227,25 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
 		NSDictionary *metadata = self.dropboxFolderList[indexPath.row];
-		[TJDropbox deleteFileAtPath:metadata[@"path"] accessToken:self.dropboxAccessToken completion:^(NSDictionary * _Nullable parsedResponse, NSError * _Nullable error) {
-			self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-			_hud.removeFromSuperViewOnHide = YES;
-			[self.navigationController.view addSubview:_hud];
-			
-			_hud.labelText = NSLocalizedString(@"Deleting", @"Deleting");
-			[_hud show:YES];
-			
-			[TJDropbox listFolderWithPath:@"" accessToken:self.dropboxAccessToken completion:^(NSArray<NSDictionary *> * _Nullable entries, NSString * _Nullable cursor, NSError * _Nullable error) {
-				self.dropboxFolderList = entries;
-				[self.tableView reloadData];
-			}];
+		self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+		_hud.removeFromSuperViewOnHide = YES;
+		[self.navigationController.view addSubview:_hud];
+		
+		_hud.labelText = NSLocalizedString(@"Deleting", @"Deleting");
+		[_hud show:YES];
+		
+		[TJDropbox deleteFileAtPath:metadata[@"path_display"] accessToken:self.dropboxAccessToken completion:^(NSDictionary * _Nullable parsedResponse, NSError * _Nullable error) {
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[TJDropbox listFolderWithPath:kDropboxDir accessToken:self.dropboxAccessToken completion:^(NSArray<NSDictionary *> * _Nullable entries, NSString * _Nullable cursor, NSError * _Nullable error) {
+					dispatch_async(dispatch_get_main_queue(), ^{
+						[_hud hide:YES];
+						_hud = nil;
+						
+						self.dropboxFolderList = entries;
+						[self.tableView reloadData];
+					});
+				}];
+			});
 		}];
 	}
     else if (editingStyle == UITableViewCellEditingStyleInsert) {

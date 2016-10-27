@@ -388,6 +388,7 @@ TJDropboxAuthenticationViewControllerDelegate>
 		A3SettingsDropboxSelectBackupViewController *viewController = navigationController.viewControllers[0];
 		viewController.delegate = self;
 		viewController.dropboxFolderList	 = self.dropboxFolderList;
+		viewController.dropboxAccessToken = self.dropboxAccessToken;
 	}
 }
 
