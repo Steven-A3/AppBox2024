@@ -108,47 +108,77 @@ NSString *const TJDropboxErrorUserInfoKeyErrorString = @"errorString";
 + (NSURL *)tokenAuthenticationURLWithClientIdentifier:(NSString *const)clientIdentifier redirectURL:(NSURL *const)redirectURL
 {
     // https://www.dropbox.com/developers/documentation/http/documentation#auth
-    
-    NSURLComponents *const components = [NSURLComponents componentsWithURL:[NSURL URLWithString:@"https://www.dropbox.com/1/oauth2/authorize"] resolvingAgainstBaseURL:NO];
-    components.queryItems = @[
-        [NSURLQueryItem queryItemWithName:@"client_id" value:clientIdentifier],
-        [NSURLQueryItem queryItemWithName:@"redirect_uri" value:redirectURL.absoluteString],
-        [NSURLQueryItem queryItemWithName:@"response_type" value:@"token"]
-    ];
-    return components.URL;
+
+	if (IS_IOS7) {
+		NSString *urlString = [NSString stringWithFormat:@"https://www.dropbox.com/1/oauth2/authorize?client_id=%@&redirect_uri=%@&response_type=token", clientIdentifier, redirectURL.absoluteString];
+		NSURLComponents *const components = [NSURLComponents componentsWithURL:[NSURL URLWithString:urlString] resolvingAgainstBaseURL:NO];
+		return components.URL;
+	} else {
+		NSURLComponents *const components = [NSURLComponents componentsWithURL:[NSURL URLWithString:@"https://www.dropbox.com/1/oauth2/authorize"] resolvingAgainstBaseURL:NO];
+		components.queryItems = @[
+								  [NSURLQueryItem queryItemWithName:@"client_id" value:clientIdentifier],
+								  [NSURLQueryItem queryItemWithName:@"redirect_uri" value:redirectURL.absoluteString],
+								  [NSURLQueryItem queryItemWithName:@"response_type" value:@"token"]
+								  ];
+		return components.URL;
+	}
 }
 
 + (nullable NSString *)accessTokenFromURL:(NSURL *const)url withRedirectURL:(NSURL *const)redirectURL
 {
     NSString *accessToken = nil;
-    if ([url.absoluteString hasPrefix:redirectURL.absoluteString]) {
-        NSString *const fragment = url.fragment;
-        NSURLComponents *const components = [NSURLComponents new];
-        components.query = fragment;
-        for (NSURLQueryItem *const item in components.queryItems) {
-            if ([item.name isEqualToString:@"access_token"]) {
-                accessToken = item.value;
-                break;
-            }
-        }
-    }
-    return accessToken;
+	if (IS_IOS7) {
+		if ([url.absoluteString hasPrefix:redirectURL.absoluteString]) {
+			NSArray *components = [url.absoluteString componentsSeparatedByString:@"#"];
+			if ([components count] > 1) {
+				NSString *query = components[1];
+				NSArray *queryItems = [query componentsSeparatedByString:@"&"];
+				for (NSString *queryItem in queryItems) {
+					NSArray *component = [queryItem componentsSeparatedByString:@"="];
+					if ([component[0] isEqualToString:@"access_token"]) {
+						accessToken = component[1];
+					}
+				}
+			}
+		}
+		return accessToken;
+	}
+	if ([url.absoluteString hasPrefix:redirectURL.absoluteString]) {
+		NSString *const fragment = url.fragment;
+		NSURLComponents *const components = [NSURLComponents new];
+		components.query = fragment;
+		for (NSURLQueryItem *const item in components.queryItems) {
+			if ([item.name isEqualToString:@"access_token"]) {
+				accessToken = item.value;
+				break;
+			}
+		}
+	}
+	return accessToken;
 }
 
 + (NSURL *)dropboxAppAuthenticationURLWithClientIdentifier:(NSString *const)clientIdentifier
 {
     // https://github.com/dropbox/SwiftyDropbox/blob/master/Source/OAuth.swift#L288-L303
     // https://github.com/dropbox/SwiftyDropbox/blob/master/Source/OAuth.swift#L274-L282
-    
-    NSURLComponents *const components = [NSURLComponents componentsWithString:@"dbapi-2://1/connect"];
-    NSString *const nonce = [[NSUUID UUID] UUIDString];
-    NSString *const stateString = [NSString stringWithFormat:@"oauth2:%@", nonce];
-    components.queryItems = @[
-        [NSURLQueryItem queryItemWithName:@"k" value:clientIdentifier],
-        [NSURLQueryItem queryItemWithName:@"s" value:@""],
-        [NSURLQueryItem queryItemWithName:@"state" value:stateString]
-    ];
-    return components.URL;
+
+	if (IS_IOS7) {
+		NSString *const nonce = [[NSUUID UUID] UUIDString];
+		NSString *const stateString = [NSString stringWithFormat:@"oauth2:%@", nonce];
+		NSString *urlString = [NSString stringWithFormat:@"dbapi-2://1/connect?k=%@&s=&state=%@", clientIdentifier, stateString];
+		NSURLComponents *const components = [NSURLComponents componentsWithString:urlString];
+		return components.URL;
+	} else {
+		NSURLComponents *const components = [NSURLComponents componentsWithString:@"dbapi-2://1/connect"];
+		NSString *const nonce = [[NSUUID UUID] UUIDString];
+		NSString *const stateString = [NSString stringWithFormat:@"oauth2:%@", nonce];
+		components.queryItems = @[
+								  [NSURLQueryItem queryItemWithName:@"k" value:clientIdentifier],
+								  [NSURLQueryItem queryItemWithName:@"s" value:@""],
+								  [NSURLQueryItem queryItemWithName:@"state" value:stateString]
+								  ];
+		return components.URL;
+	}
 }
 
 + (nullable NSString *)accessTokenFromDropboxAppAuthenticationURL:(NSURL *const)url
@@ -156,15 +186,33 @@ NSString *const TJDropboxErrorUserInfoKeyErrorString = @"errorString";
     // https://github.com/dropbox/SwiftyDropbox/blob/master/Source/OAuth.swift#L360-L383
     
     NSString *accessToken = nil;
-    if ([url.scheme hasPrefix:@"db-"] && [url.host isEqualToString:@"1"] && [url.path isEqualToString:@"/connect"]) {
-        NSURLComponents *const components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
-        for (NSURLQueryItem *queryItem in components.queryItems) {
-            if ([queryItem.name isEqualToString:@"oauth_token_secret"] && queryItem.value.length > 0) {
-                accessToken = queryItem.value;
-                break;
-            }
-        }
-    }
+	if (IS_IOS7) {
+		if ([url.scheme hasPrefix:@"db-"] && [url.host isEqualToString:@"1"] && [url.path isEqualToString:@"/connect"]) {
+			NSArray *components = [url.absoluteString componentsSeparatedByString:@"#"];
+			if ([components count] > 1) {
+				NSString *query = components[1];
+				NSArray *queryItems = [query componentsSeparatedByString:@"&"];
+				for (NSString *queryItem in queryItems) {
+					
+					NSArray *component = [queryItem componentsSeparatedByString:@"="];
+					if ([component[0] isEqualToString:@"oauth_token_secret"]) {
+						accessToken = component[1];
+					}
+				}
+			}
+		}
+		return accessToken;
+	}
+
+	if ([url.scheme hasPrefix:@"db-"] && [url.host isEqualToString:@"1"] && [url.path isEqualToString:@"/connect"]) {
+		NSURLComponents *const components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
+		for (NSURLQueryItem *queryItem in components.queryItems) {
+			if ([queryItem.name isEqualToString:@"oauth_token_secret"] && queryItem.value.length > 0) {
+				accessToken = queryItem.value;
+				break;
+			}
+		}
+	}
     return accessToken;
 }
 

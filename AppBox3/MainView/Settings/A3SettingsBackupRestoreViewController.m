@@ -250,7 +250,7 @@ TJDropboxAuthenticationViewControllerDelegate>
 	_dropboxLoginInProgress = YES;
 	
 	NSURL *appAuthURL = [TJDropbox dropboxAppAuthenticationURLWithClientIdentifier:kDropboxClientIdentifier];
-	if ([[UIApplication sharedApplication] canOpenURL:appAuthURL]) {
+	if (!IS_IOS7 && [[UIApplication sharedApplication] canOpenURL:appAuthURL]) {
 		[[UIApplication sharedApplication] openURL:appAuthURL];
 	} else {
 		NSURL *redirectURL = [NSURL URLWithString:@"https://www.allaboutapps.net/redirect/dropboxAuth.html"];
@@ -308,15 +308,31 @@ TJDropboxAuthenticationViewControllerDelegate>
 					else
 					{
 						_selectBackupInProgress = YES;
+						
+						self.HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+						[self.navigationController.view addSubview:_HUD];
+						
+						_HUD.mode = MBProgressHUDModeIndeterminate;
+						_HUD.removeFromSuperViewOnHide = YES;
+						
+						_HUD.labelText = NSLocalizedString(@"Loading", nil);
+						
+						[_HUD show:YES];
+						
 						[TJDropbox listFolderWithPath:kDropboxDir accessToken:self.dropboxAccessToken completion:^(NSArray<NSDictionary *> * _Nullable entries, NSString * _Nullable cursor, NSError * _Nullable error) {
-							if (error == nil && [entries count]) {
-								self.dropboxFolderList = entries;
-								[self performSegueWithIdentifier:@"dropboxSelectBackup" sender:nil];
-							} else {
-								UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Dropbox", @"Dropbox") message:NSLocalizedString(@"You have no backup files stored in Dropbox.", @"You have no backup files stored in Dropbox.") delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
-								[alertView show];
-							}
-							FNLOG(@"%@", entries);
+							dispatch_async(dispatch_get_main_queue(), ^{
+								[_HUD hide:YES];
+								_HUD = nil;
+								
+								if (error == nil && [entries count]) {
+									self.dropboxFolderList = entries;
+									[self performSegueWithIdentifier:@"dropboxSelectBackup" sender:nil];
+								} else {
+									UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Dropbox", @"Dropbox") message:NSLocalizedString(@"You have no backup files stored in Dropbox.", @"You have no backup files stored in Dropbox.") delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+									[alertView show];
+								}
+								FNLOG(@"%@", entries);
+							});
 						}];
 					}
 					break;
