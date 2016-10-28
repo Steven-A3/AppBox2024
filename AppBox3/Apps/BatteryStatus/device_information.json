@@ -74,7 +74,7 @@
 			"PPI": "326"
 		},
 		"iPhone 7 Plus": {
-			"Model": "iPhone 6s Plus",
+			"Model": "iPhone 7 Plus",
 			"Chips": "A10 Fusion chip with 64-bit architecture\nM10 motion coprocessor",
 			"CPU": "2.34 GHz quad-core (two used) 64-bit ARMv8-A",
 			"GPU": "hexa-core GPU",
