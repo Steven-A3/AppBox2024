@@ -58,6 +58,8 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	BOOL _viewDidAppearDidRun;
 	BOOL _userLeftToVisitSettings;
 	NSInteger _remainingNumbersScrollAnimation;
+	BOOL _healthStoreAuthorizationAlertDone;
+	BOOL _healthStoreUpdateInProgress;
 }
 
 - (void)viewDidLoad {
@@ -449,41 +451,43 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 }
 
 - (void)fillMissingDatesCompletion:(void (^)(void))completion {
-	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
-	Pedometer *pedometerItem = [Pedometer MR_findFirstOrderedByAttribute:@"date" ascending:YES inContext:savingContext];
-	NSString *todayDate = [self.searchDateFormatter stringFromDate:[NSDate date]];
-	NSCalendar *calendar = [NSCalendar currentCalendar];
-	while ([pedometerItem.date compare:todayDate] == NSOrderedAscending) {
-		@autoreleasepool {
-			NSDate *date = [_searchDateFormatter dateFromString:pedometerItem.date];
-			NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
-			components.day += 1;
-			date = [calendar dateFromComponents:components];
-			NSString *dateString = [_searchDateFormatter stringFromDate:date];
-			if (![dateString isEqualToString:todayDate]) {
-				pedometerItem = [Pedometer MR_findFirstByAttribute:@"date" withValue:dateString inContext:savingContext];
-				if (!pedometerItem) {
-					pedometerItem = [Pedometer MR_createEntityInContext:savingContext];
-					pedometerItem.uniqueID = [[NSUUID UUID] UUIDString];
-					pedometerItem.date = dateString;
+	dispatch_async(dispatch_get_main_queue(), ^{
+		NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
+		Pedometer *pedometerItem = [Pedometer MR_findFirstOrderedByAttribute:@"date" ascending:YES inContext:savingContext];
+		NSString *todayDate = [self.searchDateFormatter stringFromDate:[NSDate date]];
+		NSCalendar *calendar = [NSCalendar currentCalendar];
+		while ([pedometerItem.date compare:todayDate] == NSOrderedAscending) {
+			@autoreleasepool {
+				NSDate *date = [_searchDateFormatter dateFromString:pedometerItem.date];
+				NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
+				components.day += 1;
+				date = [calendar dateFromComponents:components];
+				NSString *dateString = [_searchDateFormatter stringFromDate:date];
+				if (![dateString isEqualToString:todayDate]) {
+					pedometerItem = [Pedometer MR_findFirstByAttribute:@"date" withValue:dateString inContext:savingContext];
+					if (!pedometerItem) {
+						pedometerItem = [Pedometer MR_createEntityInContext:savingContext];
+						pedometerItem.uniqueID = [[NSUUID UUID] UUIDString];
+						pedometerItem.date = dateString;
+					}
+				} else {
+					break;
 				}
-			} else {
-				break;
 			}
 		}
-	}
-	if ([savingContext hasChanges]) {
-		[savingContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-			[_collectionView reloadData];
+		if ([savingContext hasChanges]) {
+			[savingContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+				[_collectionView reloadData];
+				if (completion) {
+					completion();
+				}
+			}];
+		} else {
 			if (completion) {
 				completion();
 			}
-		}];
-	} else {
-		if (completion) {
-			completion();
 		}
-	}
+	});
 }
 
 - (void)startUpdatePedometer {
@@ -696,18 +700,23 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 }
 
 - (void)alertAppWillRequestAuthorization {
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info"
-														message:@"AppBox Pro reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.\n"
-																"\n"
-																"Data collected from HealthKit will not be used for marketing and advertising purposes."
-													   delegate:self
-											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-											  otherButtonTitles:nil];
-	alertView.tag = 1000;
-	[alertView show];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info"
+															message:@"AppBox Pro reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.\n"
+								  "\n"
+								  "Data collected from HealthKit will not be used for marketing and advertising purposes."
+														   delegate:self
+												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+												  otherButtonTitles:nil];
+		alertView.tag = 1000;
+		[alertView show];
+	});
 }
 
 - (void)refreshStepsFromHealthStoreCompletion:(void (^)(void))completion {
+	if (_healthStoreUpdateInProgress) {
+		return;
+	}
 	if (IS_IOS7 || ![HKHealthStore isHealthDataAvailable]) {
 		if (completion) {
 			completion();
@@ -720,9 +729,14 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	HKAuthorizationStatus authorizationStatus =	[self.healthStore authorizationStatusForType:stepsType];
 	
 	if (authorizationStatus == HKAuthorizationStatusNotDetermined) {
-		[self alertAppWillRequestAuthorization];
+		if (!_healthStoreAuthorizationAlertDone) {
+			_healthStoreAuthorizationAlertDone = YES;
+			[self alertAppWillRequestAuthorization];
+		}
+		
 		return;
 	}
+	_healthStoreUpdateInProgress = YES;
 
 	BOOL showAlert = NO;
 	if (![[NSUserDefaults standardUserDefaults] boolForKey:A3PedometerSettingsDidSearchHealthStore]) {
@@ -744,6 +758,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 					if (completion) {
 						completion();
 					}
+					_healthStoreUpdateInProgress = NO;
 				});
 			}];
 		}];
