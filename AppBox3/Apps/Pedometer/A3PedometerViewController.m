@@ -108,7 +108,9 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 #else
 	[self setupCollectionViewBackgroundView];
 	[self updateToday];
-	[self refreshPedometerData];
+	[self refreshPedometerData:^{
+		[self refreshStepsFromHealthStore];
+	}];
 #endif
 
 	[self.navigationController setNavigationBarHidden:YES];
@@ -196,7 +198,6 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 			}
 		}
 	}
-	[self refreshStepsFromHealthStore];
 }
 
 - (void)animateScroll {
@@ -317,7 +318,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 
 #pragma mark - Data Gathering
 
-- (void)refreshPedometerData {
+- (void)refreshPedometerData:(void (^)(void))completion {
 	if ([CMPedometer isStepCountingAvailable]) {
 		NSCalendar *calendar = [NSCalendar currentCalendar];
 		NSDate *date = [NSDate date];
@@ -333,9 +334,9 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 
 		[self updatePedometerForDateArray:datesArray completion:^{
 			_pedometerItems = nil;
-//			[self.collectionView reloadData];
+			
 			FNLOG(@"[self.collectionView reloadData];");
-			[self setupCollectionViewBackgroundView];
+			[_collectionView reloadData];
 			[self updateToday];
 			
 			[_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:[self.pedometerItems count] - 1 inSection:0]
@@ -343,9 +344,12 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 											animated:YES];
 
 			[self startUpdatePedometer];
-			dispatch_async(dispatch_get_main_queue(), ^{
-				[self fillMissingDates];
-			});
+
+			[self fillMissingDatesCompletion:^{
+				if (completion) {
+					completion();
+				}
+			}];
 		}];
 	}
 }
@@ -442,7 +446,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	}
 }
 
-- (void)fillMissingDates {
+- (void)fillMissingDatesCompletion:(void (^)(void))completion {
 	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
 	Pedometer *pedometerItem = [Pedometer MR_findFirstOrderedByAttribute:@"date" ascending:YES inContext:savingContext];
 	NSString *todayDate = [self.searchDateFormatter stringFromDate:[NSDate date]];
@@ -467,8 +471,16 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 		}
 	}
 	if ([savingContext hasChanges]) {
-		[savingContext MR_saveOnlySelfAndWait];
-		[_collectionView reloadData];
+		[savingContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+			[_collectionView reloadData];
+			if (completion) {
+				completion();
+			}
+		}];
+	} else {
+		if (completion) {
+			completion();
+		}
 	}
 }
 
@@ -695,7 +707,8 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 
 - (void)refreshStepsFromHealthStore {
 	if (IS_IOS7 || ![HKHealthStore isHealthDataAvailable]) {
-		[self refreshPedometerData];
+		[self refreshPedometerData:^{
+		}];
 		return;
 	}
 
@@ -725,7 +738,8 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 					if (showAlert) {
 						[self alertImportResults];
 					}
-					[self refreshPedometerData];
+					[self refreshPedometerData:^{
+					}];
 				});
 			}];
 		}];
