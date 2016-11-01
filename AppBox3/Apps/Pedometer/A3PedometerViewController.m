@@ -95,7 +95,9 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 }
 
 - (void)applicationDidBecomeActive {
-	[self refreshStepsFromHealthStore];
+	[self refreshStepsFromHealthStoreCompletion:^{
+		[self refreshPedometerData:NULL];
+	}];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -109,7 +111,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	[self setupCollectionViewBackgroundView];
 	[self updateToday];
 	[self refreshPedometerData:^{
-		[self refreshStepsFromHealthStore];
+		[self refreshStepsFromHealthStoreCompletion:NULL];
 	}];
 #endif
 
@@ -687,7 +689,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 												dispatch_async(dispatch_get_main_queue(), ^{
 													[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 													if (success) {
-														[self refreshStepsFromHealthStore];
+														[self refreshStepsFromHealthStoreCompletion:NULL];
 													}
 												});
 											}];
@@ -705,10 +707,11 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	[alertView show];
 }
 
-- (void)refreshStepsFromHealthStore {
+- (void)refreshStepsFromHealthStoreCompletion:(void (^)(void))completion {
 	if (IS_IOS7 || ![HKHealthStore isHealthDataAvailable]) {
-		[self refreshPedometerData:^{
-		}];
+		if (completion) {
+			completion();
+		}
 		return;
 	}
 
@@ -738,8 +741,9 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 					if (showAlert) {
 						[self alertImportResults];
 					}
-					[self refreshPedometerData:^{
-					}];
+					if (completion) {
+						completion();
+					}
 				});
 			}];
 		}];
