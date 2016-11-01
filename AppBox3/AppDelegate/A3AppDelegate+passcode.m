@@ -47,14 +47,18 @@
 - (BOOL)didPasscodeTimerEnd {
 	NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
 	FNLOG(@"%f", now - [self timerStartTime]);
-	if ([self timerStartTime] != -1 && (now - [self timerStartTime] < 1.0)) {
+    NSTimeInterval timerStartTime = [self timerStartTime];
+    if (now - timerStartTime < 0) {
+        return YES;
+    }
+	if (timerStartTime != -1 && (now - timerStartTime < 1.0)) {
 		return NO;
 	}
 	if ((now - [self passcodeFreeBegin]) < 0.2) {
 		return NO;
 	}
 	// startTime wasn't saved yet (first app use and it crashed, phone force closed, etc) if it returns -1.
-	if (now - [self timerStartTime] >= [self timerDuration] || [self timerStartTime] == -1) return YES;
+	if (now - timerStartTime >= [self timerDuration] || timerStartTime == -1) return YES;
 	return NO;
 }
 
