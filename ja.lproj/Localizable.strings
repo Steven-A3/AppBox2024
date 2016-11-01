@@ -1093,6 +1093,7 @@
 "Wocu Spot" = "Wocuスポット";
 "South African Cent Spot" = "南アフリカのセントスポット";
 
-"What's New in V4.2.4" = "バージョン4.2.4の新機能";
-"WhatsNew4_2_4" = "QRコード,ミラー,懐中電灯,拡大鏡UIの変更
-Dropbox API V2アップグレード";
+"What's New in V4.2.5" = "バージョン4.2.5の新機能";
+"WhatsNew4_2_5" = "歩数計のデータエラーを修正（夏時間の変更を反映、地域）
+休日情報の更新
+様々なバグの修正";

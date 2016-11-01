@@ -1088,6 +1088,7 @@
 "Wocu Spot" = "Wocu Spot";
 "South African Cent Spot" = "Cent Afrique du Sud Spot";
 
-"What's New in V4.2.4" = "Nouveautés de la V4.2.4";
-"WhatsNew4_2_4" = "Code QR, Miroir, Lampe de poche, Magnifier UI change
-Dropbox API V2 Surclassement";
+"What's New in V4.2.5" = "Nouveautés de la V4.2.5";
+"WhatsNew4_2_5" = "Correction de bogues pour l'erreur de données de podomètre (changement d'heure d'été)
+Vacances date mise à jour
+Différentes corrections de bugs";

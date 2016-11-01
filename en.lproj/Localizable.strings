@@ -1032,6 +1032,7 @@ Enter Encryption Key for Wallet.";
 "Wocu Spot" = "Wocu Spot";
 "South African Cent Spot" = "South African Cent Spot";
 
-"What's New in V4.2.4" = "What's New in V4.2.4";
-"WhatsNew4_2_4" = "QR Code, Mirror, Flashlight, Magnifier UI change
-Dropbox API V2 Upgrade";
+"What's New in V4.2.5" = "What's New in V4.2.5";
+"WhatsNew4_2_5" = "Bug fix for Pedometer data error(Daylight saving time change)
+Holidays date update
+Various bug fixes";

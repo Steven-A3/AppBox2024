@@ -18,7 +18,7 @@ static NSString *const kPasscodeCharacter = @"\u2014"; // A longer "-"
 static CGFloat const kPasscodeFontSize = 33.0f;
 static CGFloat const kFontSizeModifier = 1.5f;
 static CGFloat const kiPhoneHorizontalGap = 40.0f;
-static CGFloat const kLockAnimationDuration = 0.15f;
+//static CGFloat const kLockAnimationDuration = 0.15f;
 static CGFloat const kSlideAnimationDuration = 0.15f;
 // Set to 0 if you want to skip the check. If you don't, nothing happens,
 // just maxNumberOfAllowedFailedAttempts protocol method is checked for and called.
@@ -91,6 +91,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
 	// Do any additional setup after loading the view.
 	self.view.backgroundColor = kBackgroundColor;
 	if (!_beingDisplayedAsLockscreen) {
@@ -169,7 +170,6 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	_passcodeTextField.hidden = YES;
 	_passcodeTextField.delegate = self;
 	_passcodeTextField.keyboardType = UIKeyboardTypeNumberPad;
-	[_passcodeTextField becomeFirstResponder];
 	[_animatingView addSubview:_passcodeTextField];
 
 	_enterPasscodeLabel.text = _isUserChangingPasscode ? NSLocalizedString(@"Enter your old passcode", @"") : NSLocalizedString(@"Enter your passcode", @"");
@@ -304,6 +304,18 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	[self.view addConstraint:failedAttemptLabelHeight];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	
+	[self presentNumberKeyboardForTextField:_passcodeTextField];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+}
+
 - (void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
 
@@ -417,6 +429,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 		// http://stackoverflow.com/questions/19816142/uialertviews-uiactionsheets-and-keywindow-problems
 		// https://github.com/rolandleth/LTHPasscodeViewController/issues/16
 		// Usually not more than one window is needed, but your needs may vary; modify below.
+
 		UIWindow *mainWindow = [UIApplication sharedApplication].keyWindow;
 		if (!mainWindow) {
 			UIViewController *rootViewController = IS_IPAD ? [[A3AppDelegate instance] rootViewController_iPad] : [[A3AppDelegate instance] rootViewController_iPhone];
@@ -441,7 +454,8 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 				// (having a modal on screen when the user leaves the app, for example).
 				[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
 			}
-			
+
+			/*
 			CGPoint newCenter;
 			if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeLeft) {
 				self.view.center = CGPointMake(self.view.center.x * -1.f, self.view.center.y);
@@ -470,6 +484,8 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 			} else {
 				self.view.center = newCenter;
 			}
+			 */
+			FNLOGRECT(self.view.frame);
 		}
 		_isCurrentlyOnScreen = YES;
 	}
@@ -605,14 +621,13 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	FNLOGRECT(bounds);
 	FNLOGRECT(self.view.bounds);
+	
 	CGFloat keyboardHeight = keyboardVC.keyboardHeight;
 	UIView *keyboardView = keyboardVC.view;
-	[[[UIApplication sharedApplication] keyWindow] addSubview:keyboardView];
+	[self.view addSubview:keyboardView];
 
 	_isNumberKeyboardVisible = YES;
 
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-	
 	keyboardView.frame = CGRectMake(0, bounds.size.height, bounds.size.width, keyboardHeight);
 	[UIView animateWithDuration:0.3 animations:^{
 		CGRect frame = keyboardView.frame;

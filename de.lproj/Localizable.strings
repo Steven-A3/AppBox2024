@@ -1097,6 +1097,8 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 "Wocu Spot" = "Wocu Punkt";
 "South African Cent Spot" = "South African Cent-Stelle";
 
-"What's New in V4.2.4" = "Neue Funktionen von V4.2.4";
-"WhatsNew4_2_4" = "QR-Code, Spiegel, Taschenlampe, Lupe Benutzeroberfläche ändern
-Dropbox API V2 Aktualisierung";
+"What's New in V4.2.5" = "Neue Funktionen von V4.2.5";
+"WhatsNew4_2_5" = "Fehlerbehebung für Pedometer-Datenfehler (Sommerzeitumstellung)
+Datum der Urlaubsaktualisierung
+Verschiedene Bugfixes";
+
