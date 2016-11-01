@@ -97,9 +97,6 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 }
 
 - (void)applicationDidBecomeActive {
-	[self refreshStepsFromHealthStoreCompletion:^{
-		[self refreshPedometerData:NULL];
-	}];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -112,15 +109,20 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 #else
 	[self setupCollectionViewBackgroundView];
 	[self updateToday];
-	[self refreshPedometerData:^{
-		[self refreshStepsFromHealthStoreCompletion:NULL];
-	}];
 #endif
 
 	[self.navigationController setNavigationBarHidden:YES];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+	
 	if (!_viewWillAppearDidRun) {
 		_viewWillAppearDidRun = YES;
+
+		FNLOG();
+		[self refreshPedometerData:^{
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[self refreshStepsFromHealthStoreCompletion:NULL];
+			});
+		}];
 	}
 }
 
@@ -323,6 +325,8 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 #pragma mark - Data Gathering
 
 - (void)refreshPedometerData:(void (^)(void))completion {
+	FNLOG();
+	
 	if ([CMPedometer isStepCountingAvailable]) {
 		NSCalendar *calendar = [NSCalendar currentCalendar];
 		NSDate *date = [NSDate date];
@@ -346,9 +350,9 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 			[_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:[self.pedometerItems count] - 1 inSection:0]
 									atScrollPosition:UICollectionViewScrollPositionRight
 											animated:YES];
-
+			
 			[self startUpdatePedometer];
-
+			
 			[self fillMissingDatesCompletion:^{
 				if (completion) {
 					completion();
@@ -387,20 +391,19 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 			}
 			FNLOG(@"%@, %@, %@", [self.searchDateFormatter stringFromDate:pedometerData.startDate], [self.searchDateFormatter stringFromDate:pedometerData.endDate], pedometerData);
 			FNLOG(@"%@, %@, %@", pedometerItem.date, pedometerItem.numberOfSteps, pedometerItem);
-
+			
 			pedometerItem.date = [self.searchDateFormatter stringFromDate:queryDate];
 			
 			[self mergeValuesFromCoreMotion:pedometerData to:pedometerItem];
-
+			
 			[dateArray removeLastObject];
 			if ([dateArray count]) {
 				[self updatePedometerForDateArray:dateArray completion:completion];
 			} else {
-				[savingContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-					if (completion) {
-						completion();
-					}
-				}];
+				[savingContext MR_saveOnlySelfAndWait];
+				if (completion) {
+					completion();
+				}
 			}
 		});
 	}];
@@ -451,43 +454,36 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 }
 
 - (void)fillMissingDatesCompletion:(void (^)(void))completion {
-	dispatch_async(dispatch_get_main_queue(), ^{
-		NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
-		Pedometer *pedometerItem = [Pedometer MR_findFirstOrderedByAttribute:@"date" ascending:YES inContext:savingContext];
-		NSString *todayDate = [self.searchDateFormatter stringFromDate:[NSDate date]];
-		NSCalendar *calendar = [NSCalendar currentCalendar];
-		while ([pedometerItem.date compare:todayDate] == NSOrderedAscending) {
-			@autoreleasepool {
-				NSDate *date = [_searchDateFormatter dateFromString:pedometerItem.date];
-				NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
-				components.day += 1;
-				date = [calendar dateFromComponents:components];
-				NSString *dateString = [_searchDateFormatter stringFromDate:date];
-				if (![dateString isEqualToString:todayDate]) {
-					pedometerItem = [Pedometer MR_findFirstByAttribute:@"date" withValue:dateString inContext:savingContext];
-					if (!pedometerItem) {
-						pedometerItem = [Pedometer MR_createEntityInContext:savingContext];
-						pedometerItem.uniqueID = [[NSUUID UUID] UUIDString];
-						pedometerItem.date = dateString;
-					}
-				} else {
-					break;
+	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
+	Pedometer *pedometerItem = [Pedometer MR_findFirstOrderedByAttribute:@"date" ascending:YES inContext:savingContext];
+	NSString *todayDate = [self.searchDateFormatter stringFromDate:[NSDate date]];
+	NSCalendar *calendar = [NSCalendar currentCalendar];
+	while ([pedometerItem.date compare:todayDate] == NSOrderedAscending) {
+		@autoreleasepool {
+			NSDate *date = [_searchDateFormatter dateFromString:pedometerItem.date];
+			NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
+			components.day += 1;
+			date = [calendar dateFromComponents:components];
+			NSString *dateString = [_searchDateFormatter stringFromDate:date];
+			if (![dateString isEqualToString:todayDate]) {
+				pedometerItem = [Pedometer MR_findFirstByAttribute:@"date" withValue:dateString inContext:savingContext];
+				if (!pedometerItem) {
+					pedometerItem = [Pedometer MR_createEntityInContext:savingContext];
+					pedometerItem.uniqueID = [[NSUUID UUID] UUIDString];
+					pedometerItem.date = dateString;
 				}
+			} else {
+				break;
 			}
 		}
-		if ([savingContext hasChanges]) {
-			[savingContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-				[_collectionView reloadData];
-				if (completion) {
-					completion();
-				}
-			}];
-		} else {
-			if (completion) {
-				completion();
-			}
-		}
-	});
+	}
+	if ([savingContext hasChanges]) {
+		[savingContext MR_saveOnlySelfAndWait];
+		[_collectionView reloadData];
+	}
+	if (completion) {
+		completion();
+	}
 }
 
 - (void)startUpdatePedometer {
@@ -700,7 +696,9 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 }
 
 - (void)alertAppWillRequestAuthorization {
-	dispatch_async(dispatch_get_main_queue(), ^{
+	double delayInSeconds = 0.3;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info"
 															message:@"AppBox Pro reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.\n"
 								  "\n"
@@ -714,6 +712,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 }
 
 - (void)refreshStepsFromHealthStoreCompletion:(void (^)(void))completion {
+	FNLOG();
 	if (_healthStoreUpdateInProgress) {
 		return;
 	}
@@ -751,6 +750,12 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 					FNLOG(@"time log end");
 
 					_pedometerItems = nil;
+					[_collectionView reloadData];
+					[self updateToday];
+					
+					[_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:[self.pedometerItems count] - 1 inSection:0]
+											atScrollPosition:UICollectionViewScrollPositionRight
+													animated:YES];
 
 					if (showAlert) {
 						[self alertImportResults];
@@ -843,11 +848,10 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 				}
 			}];
 			if ([savingContext hasChanges]) {
-				[savingContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-					if (completion) {
-						completion();
-					}
-				}];
+				[savingContext MR_saveOnlySelfAndWait];
+			}
+			if (completion) {
+				completion();
 			}
 		});
 	};
@@ -880,7 +884,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Data Imported", @"Data Imported")
 														message:message
-													   delegate:self
+													   delegate:nil
 											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 											  otherButtonTitles:nil];
 	[alertView show];
