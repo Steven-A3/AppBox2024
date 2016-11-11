@@ -6,8 +6,6 @@
 //  Copyright 2010 AllAboutApps. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 enum weekdays {
 	Sunday = 1,
 	Monday,

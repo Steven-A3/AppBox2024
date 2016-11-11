@@ -762,7 +762,7 @@
 "Unarchiving" = "反归档";
 "Your data has been restored successfully." = "你的数据已经被成功储存。";
 "Downloading" = "正在下载";
-"Are you going to replace existing data with the backup data?" = "要用备份数据替换已有数据吗？ ";
+"Are you going to replace existing data with the backup data?" = "要用备份数据替换已有数据吗？";
 "Replace" = "替代";
 "Deleting" = "删除";
 "Unable to delete selected file. Please try it again." = "无法删除所选文件。请再试一次。";

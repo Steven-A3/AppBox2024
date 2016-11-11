@@ -6,7 +6,6 @@
 //  Copyright 2010 AllAboutApps. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "HolidayData.h"
 
 @interface HolidayData (Africa)

@@ -1485,26 +1485,6 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	NSDictionary *indianBook = nil;
 	if ([[NSFileManager defaultManager] fileExistsAtPath:filepath]) {
 		indianBook = [NSDictionary dictionaryWithContentsOfFile:filepath];
-
-//		NSCalendar *korCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-//		NSCalendar *gmtCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-//		[korCalendar setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:3600 * 9]];
-//		[gmtCalendar setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-//		
-//		NSMutableDictionary *newBook = [NSMutableDictionary new];
-//		for (NSInteger y = 2006; y < 2017; y++) {
-//			NSArray *holidays = indianBook[[NSString stringWithFormat:@"%ld", y]];
-//			NSMutableArray *newHolidays = [NSMutableArray new];
-//			for (NSArray *holiday in holidays) {
-//				NSDate *date = holiday[1];
-//				NSDateComponents *components = [korCalendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
-//				NSDate *newDate = [gmtCalendar dateFromComponents:components];
-//				[newHolidays addObject:@[holiday[0], newDate] ];
-//			}
-//			[newBook setObject:newHolidays forKey:[NSString stringWithFormat:@"%ld", y]];
-//		}
-//		
-//		[newBook writeToFile:filepath atomically:YES];
 	}
 
 	if (!indianBook) {
