@@ -1075,7 +1075,7 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 		NSString *pushSound = (rntypes & UIRemoteNotificationTypeSound) ? @"enabled" : @"disabled";
 
 		urlString = [[NSString stringWithFormat:
-					  @"http://apns.allaboutapps.net/apns/apns.php?task=%@&appname=%@&appversion=%@&deviceuid=%@&devicetoken=%@&devicename=%@&devicemodel=%@&deviceversion=%@&localeIdentifier=%@&timezone=%@&pushbadge=%@&pushalert=%@&pushsound=%@", @"register",
+					  @"https://apns.allaboutapps.net/apns/apns.php?task=%@&appname=%@&appversion=%@&deviceuid=%@&devicetoken=%@&devicename=%@&devicemodel=%@&deviceversion=%@&localeIdentifier=%@&timezone=%@&pushbadge=%@&pushalert=%@&pushsound=%@", @"register",
 					  appName,
 					  appVersion,
 					  identifierForVendor,
@@ -1092,7 +1092,7 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 		NSString *isRegistered = [[UIApplication sharedApplication] isRegisteredForRemoteNotifications] ? @"enabled" : @"disabled";
 
 		urlString = [[NSString stringWithFormat:
-					  @"http://apns.allaboutapps.net/apns/apns.php?task=%@&appname=%@&appversion=%@&deviceuid=%@&devicetoken=%@&devicename=%@&devicemodel=%@&deviceversion=%@&localeIdentifier=%@&timezone=%@&pushbadge=%@&pushalert=%@&pushsound=%@", @"register",
+					  @"https://apns.allaboutapps.net/apns/apns.php?task=%@&appname=%@&appversion=%@&deviceuid=%@&devicetoken=%@&devicename=%@&devicemodel=%@&deviceversion=%@&localeIdentifier=%@&timezone=%@&pushbadge=%@&pushalert=%@&pushsound=%@", @"register",
 					  appName,
 					  appVersion,
 					  identifierForVendor,
