@@ -60,6 +60,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	NSInteger _remainingNumbersScrollAnimation;
 	BOOL _healthStoreAuthorizationAlertDone;
 	BOOL _healthStoreUpdateInProgress;
+	BOOL _didRefreshAfterSignificantTimeChange;
 }
 
 - (void)viewDidLoad {
@@ -94,9 +95,17 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 			_floorsAscendedLabelCenterYConstraint.constant = 12;
 		}
 	}
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartPedometerUpdate) name:UIApplicationSignificantTimeChangeNotification object:nil];
 }
 
 - (void)applicationDidBecomeActive {
+}
+
+- (void)restartPedometerUpdate {
+	_didRefreshAfterSignificantTimeChange = NO;
+	[self.pedometer stopPedometerUpdates];
+	[self startUpdatePedometer];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -104,12 +113,11 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 
 #if TARGET_IPHONE_SIMULATOR
 	[self setupTestData];
-	[self fillMissingDates];
-	[self updateToday];
-#else
+	[self fillMissingDatesCompletion:NULL];
+#endif
+	
 	[self setupCollectionViewBackgroundView];
 	[self updateToday];
-#endif
 
 	[self.navigationController setNavigationBarHidden:YES];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
@@ -135,9 +143,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 		[self setupCollectionViewBackgroundView];
 
 		if ([self.pedometerItems count]) {
-			[_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:[self.pedometerItems count] - 1 inSection:0]
-									atScrollPosition:UICollectionViewScrollPositionRight
-											animated:NO];
+			[self scrollToToday];
 		}
 	}
 }
@@ -183,9 +189,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	[super viewDidAppear:animated];
 
 	if ([self.pedometerItems count]) {
-		[_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:[self.pedometerItems count] - 1 inSection:0]
-								atScrollPosition:UICollectionViewScrollPositionRight
-										animated:NO];
+		[self scrollToToday];
 	}
 
 	for (A3PedometerCollectionViewCell *cell in _collectionView.visibleCells) {
@@ -232,6 +236,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 }
 
 - (void)prepareClose {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationSignificantTimeChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 	[self.pedometer stopPedometerUpdates];
 	self.pedometer = nil;
@@ -322,6 +327,12 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	}
 }
 
+- (void)scrollToToday {
+	[_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:[self.pedometerItems count] - 1 inSection:0]
+							atScrollPosition:UICollectionViewScrollPositionRight
+									animated:YES];
+}
+
 #pragma mark - Data Gathering
 
 - (void)refreshPedometerData:(void (^)(void))completion {
@@ -347,9 +358,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 			[_collectionView reloadData];
 			[self updateToday];
 			
-			[_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:[self.pedometerItems count] - 1 inSection:0]
-									atScrollPosition:UICollectionViewScrollPositionRight
-											animated:YES];
+			[self scrollToToday];
 			
 			[self startUpdatePedometer];
 			
@@ -369,7 +378,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 
 	NSCalendar *calendar = [NSCalendar currentCalendar];
 	NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:queryDate];
-	components.hour = 2;
+	components.hour = 0;
 	NSDate *fromDate = [calendar dateFromComponents:components];
 
 	NSDate *toDate = [fromDate dateByAddingDays:1];
@@ -389,8 +398,6 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 				pedometerItem = [Pedometer MR_createEntityInContext:savingContext];
 				pedometerItem.uniqueID = [[NSUUID UUID] UUIDString];
 			}
-			FNLOG(@"%@, %@, %@", [self.searchDateFormatter stringFromDate:pedometerData.startDate], [self.searchDateFormatter stringFromDate:pedometerData.endDate], pedometerData);
-			FNLOG(@"%@, %@, %@", pedometerItem.date, pedometerItem.numberOfSteps, pedometerItem);
 			
 			pedometerItem.date = [self.searchDateFormatter stringFromDate:queryDate];
 			
@@ -479,6 +486,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	}
 	if ([savingContext hasChanges]) {
 		[savingContext MR_saveOnlySelfAndWait];
+		_pedometerItems = nil;
 		[_collectionView reloadData];
 	}
 	if (completion) {
@@ -489,7 +497,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 - (void)startUpdatePedometer {
 	NSDate *today = [NSDate date];
 	NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:today];
-	components.hour = 2;
+	components.hour = 0;
 	today = [[NSCalendar currentCalendar] dateFromComponents:components];
 	[self.pedometer startPedometerUpdatesFromDate:today withHandler:^(CMPedometerData * _Nullable pedometerData, NSError * _Nullable error) {
 		if (!error) {
@@ -506,7 +514,15 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 				
 				[savingContext MR_saveOnlySelfAndWait];
 				
+				_pedometerItems = nil;
 				[_collectionView reloadData];
+				
+				if (!_didRefreshAfterSignificantTimeChange) {
+					_didRefreshAfterSignificantTimeChange = YES;
+					
+					[self scrollToToday];
+				}
+				
 				[self updateToday];
 			});
 		} else {
@@ -752,10 +768,8 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 					_pedometerItems = nil;
 					[_collectionView reloadData];
 					[self updateToday];
-					
-					[_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:[self.pedometerItems count] - 1 inSection:0]
-											atScrollPosition:UICollectionViewScrollPositionRight
-													animated:YES];
+
+					[self scrollToToday];
 
 					if (showAlert) {
 						[self alertImportResults];
@@ -774,7 +788,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	// TODO: Daylight Saving 관련 수정해야 할 부분
 	NSCalendar *calendar = [NSCalendar currentCalendar];
 	NSDateComponents *dateComponents = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[NSDate date]];
-	dateComponents.hour = 2;
+	dateComponents.hour = 0;
 	NSDate *anchorDate = [calendar dateFromComponents:dateComponents];
 	
 	NSDateComponents *interval = [NSDateComponents new];
@@ -800,7 +814,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 								 options:HKStatisticsOptionCumulativeSum
 							  anchorDate:anchorDate
 					  intervalComponents:interval];
-	query.initialResultsHandler = ^(HKStatisticsCollectionQuery *query, HKStatisticsCollection *result, NSError *error) {
+	query.initialResultsHandler = ^(HKStatisticsCollectionQuery *query, HKStatisticsCollection *results, NSError *error) {
 		if (error) {
 			FNLOG(@"*** An error occurred while calculating the statistics: %@ ***",
 					error.localizedDescription);
@@ -814,9 +828,22 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 
 			static BOOL dataFound;
 			dataFound = NO;
-			[result enumerateStatisticsFromDate:startDate toDate:endDate withBlock:^(HKStatistics *result, BOOL *stop) {
+			[results enumerateStatisticsFromDate:startDate toDate:endDate withBlock:^(HKStatistics *result, BOOL *stop) {
 				HKQuantity *quantity = result.sumQuantity;
-				if (!dataFound && quantity == 0) {
+				double quantityValue;
+				switch (type) {
+					case A3PedometerQueryTypeStepCount:
+						quantityValue = [quantity doubleValueForUnit:[HKUnit countUnit]];
+						break;
+					case A3PedometerQueryTypeDistance:
+						quantityValue = [quantity doubleValueForUnit:[HKUnit meterUnit]];
+						break;
+					case A3PedometerQueryTypeFlightsClimbed:
+						quantityValue = [quantity doubleValueForUnit:[HKUnit countUnit]];
+						break;
+				}
+				
+				if (!dataFound && quantityValue == 0) {
 					return;
 				}
 				dataFound = YES;
@@ -830,19 +857,15 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 				}
 				switch (type) {
 					case A3PedometerQueryTypeStepCount:{
-						double stepsFromHealthStore = [quantity doubleValueForUnit:[HKUnit countUnit]];
-						FNLOG(@"%@, HealthStore: %@, CMPedometer: %@", pedometerItem.date, @(stepsFromHealthStore), pedometerItem.numberOfSteps);
-						pedometerItem.numberOfSteps = @(stepsFromHealthStore);
+						pedometerItem.numberOfSteps = @(MAX(quantityValue, [pedometerItem.numberOfSteps doubleValue]));
 						break;
 					}
 					case A3PedometerQueryTypeDistance: {
-						double distance = [quantity doubleValueForUnit:[HKUnit meterUnit]];
-						pedometerItem.distance = @(distance);
+						pedometerItem.distance = @(MAX(quantityValue, [pedometerItem.distance doubleValue]));
 						break;
 					}
 					case A3PedometerQueryTypeFlightsClimbed:{
-						double floorsAscended = [quantity doubleValueForUnit:[HKUnit countUnit]];
-						pedometerItem.floorsAscended = @(floorsAscended);
+						pedometerItem.floorsAscended = @(MAX(quantityValue, [pedometerItem.floorsAscended doubleValue]));
 						break;
 					}
 				}
