@@ -144,7 +144,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	CGFloat screenHeight = MAX(screenBounds.size.width, screenBounds.size.height);
 
-	if ([model isEqualToString:@"iPod Touch (5th generation)"]) {
+	if ([model isEqualToString:@"iPod Touch (5th generation)"] || [model isEqualToString:@"iPod Touch (6th generation)"]) {
 		// iPod touch 5
 		CGFloat pixelsInInch = 326.7;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
