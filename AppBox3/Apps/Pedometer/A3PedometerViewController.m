@@ -118,6 +118,9 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	
 	[self setupCollectionViewBackgroundView];
 	[self updateToday];
+	if ([self.pedometerItems count]) {
+		[self scrollToTodayAnimated:NO];
+	}
 
 	[self.navigationController setNavigationBarHidden:YES];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
@@ -143,7 +146,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 		[self setupCollectionViewBackgroundView];
 
 		if ([self.pedometerItems count]) {
-			[self scrollToToday];
+			[self scrollToTodayAnimated:NO];
 		}
 	}
 }
@@ -187,10 +190,6 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-
-	if ([self.pedometerItems count]) {
-		[self scrollToToday];
-	}
 
 	for (A3PedometerCollectionViewCell *cell in _collectionView.visibleCells) {
 		[cell animateBarCompletion:nil];
@@ -327,10 +326,10 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	}
 }
 
-- (void)scrollToToday {
+- (void)scrollToTodayAnimated:(BOOL)animated {
 	[_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:[self.pedometerItems count] - 1 inSection:0]
 							atScrollPosition:UICollectionViewScrollPositionRight
-									animated:YES];
+									animated:animated];
 }
 
 #pragma mark - Data Gathering
@@ -358,7 +357,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 			[_collectionView reloadData];
 			[self updateToday];
 			
-			[self scrollToToday];
+			[self scrollToTodayAnimated:YES];
 			
 			[self startUpdatePedometer];
 			
@@ -520,7 +519,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 				if (!_didRefreshAfterSignificantTimeChange) {
 					_didRefreshAfterSignificantTimeChange = YES;
 					
-					[self scrollToToday];
+					[self scrollToTodayAnimated:YES];
 				}
 				
 				[self updateToday];
@@ -769,7 +768,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 					[_collectionView reloadData];
 					[self updateToday];
 
-					[self scrollToToday];
+					[self scrollToTodayAnimated:YES];
 
 					if (showAlert) {
 						[self alertImportResults];
