@@ -1516,16 +1516,16 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 
 #pragma mark - Alert What's New
 
-NSString *const A3UserDefaultsDidAlertWhatsNew4_2_5 = @"A3UserDefaultsDidAlertWhatsNew4_2_5";
+NSString *const A3UserDefaultsDidAlertWhatsNew4_2_6 = @"A3UserDefaultsDidAlertWhatsNew4_2_6";
 
 - (void)alertWhatsNew {
-	if ([[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidAlertWhatsNew4_2_5]) {
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidAlertWhatsNew4_2_6]) {
 		return;
 	}
-	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidAlertWhatsNew4_2_5];
+	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidAlertWhatsNew4_2_6];
 
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"What's New in V4.2.5", nil)
-														message:NSLocalizedString(@"WhatsNew4_2_5", nil)
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"What's New in V4.2.6", nil)
+														message:NSLocalizedString(@"WhatsNew4_2_6", nil)
 													   delegate:nil
 											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 											  otherButtonTitles:nil];

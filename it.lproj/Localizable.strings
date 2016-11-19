@@ -1081,7 +1081,6 @@ Inserire chiave di crittografia per il portafoglio.";
 "Wocu Spot" = "Wocu Spot";
 "South African Cent Spot" = "Sudafricano Cent Spot";
 
-"What's New in V4.2.5" = "Novità nella V4.2.5";
-"WhatsNew4_2_5" = "Bug fix per l'errore di dati Pedometro (cambio d'ora)
-Vacanze data di aggiornamento
-Varie correzioni di bug";
+"What's New in V4.2.6" = "Novità nella V4.2.6";
+"WhatsNew4_2_6" = "Correzioni di bug: errore di dati Pedometro
+errore di visualizzazione quantità di archiviazione applicazioni Batteria";

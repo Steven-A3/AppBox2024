@@ -1083,7 +1083,6 @@ Introduzca la clave de cifrado para el bolsillo.";
 "Wocu Spot" = "Wocu para comer";
 "South African Cent Spot" = "Sudáfrica Cent para comer";
 
-"What's New in V4.2.5" = "Lo nuevo en la V4.2.5";
-"WhatsNew4_2_5" = "Corrección de errores para el error de datos del podómetro (cambio de horario de verano)
-Fechas de actualización de la fecha
-Varias correcciones de errores";
+"What's New in V4.2.6" = "Lo nuevo en la V4.2.6";
+"WhatsNew4_2_6" = "Solución de errores: Error de datos del podómetro
+Error de visualización de la cantidad de almacenamiento de la aplicación de la batería";

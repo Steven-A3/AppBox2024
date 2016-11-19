@@ -1087,7 +1087,6 @@ Wprowadź klucz szyfrowania dla portfela.";
 "Wocu Spot" = "Wocu Spot";
 "South African Cent Spot" = "South African Cent Spot";
 
-"What's New in V4.2.5" = "Co nowego w wersji 4.2.5";
-"WhatsNew4_2_5" = "Bug fix błędu danych krokomierz (letni zmiany czasu)
-Wakacje data aktualizacji
-Różne poprawki błędów";
+"What's New in V4.2.6" = "Co nowego w wersji 4.2.6";
+"WhatsNew4_2_6" = "Poprawki błędów: błąd danych Krokomierz
+Błąd przechowywania app baterii wyświetlacz kwotę";
