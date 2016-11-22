@@ -1035,3 +1035,4 @@ Enter Encryption Key for Wallet.";
 "WhatsNew4_2_6" = "Bug fix for Pedometer data error(Daylight saving time change)
 Holidays date update
 Various bug fixes";
+"HealthKitAlert" = "AppBox Pro® reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.\nData collected from HealthKit will not be used for marketing and advertising purposes.";

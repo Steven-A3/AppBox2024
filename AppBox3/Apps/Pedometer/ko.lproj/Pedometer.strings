@@ -6,7 +6,7 @@
 "9Ew-GF-Nc1.headerTitle" = "거리 단위";
 
 /* Class = "UITableViewSection"; footerTitle = "AppBox Pro reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.\n\nData collected from HealthKit will not be used for marketing and advertising purposes.\n\nYou can change app access of HealthKit data in your device Settings > Privacy > Health > AppBox Pro."; ObjectID = "EcZ-Vz-Ima"; */
-"EcZ-Vz-Ima.footerTitle" = "AppBox Pro는 계단오르기, 걸음수, 걷기 + 달리기 거리 등의 정보를 Apple 건강앱에서 가져옵니다.\n\n건강앱에서 가져온 정보는 마케팅이나 광고목적으로 사용하지 않습니다.\n\n데이터 접근 권한은 설정앱 > 개인 정보 보호 > 건강 > AppBox Pro에서 변경할 수 있습니다.";
+"EcZ-Vz-Ima.footerTitle" = "AppBox Pro®는 계단오르기, 걸음수, 걷기 + 달리기 거리 등의 정보를 Apple 건강앱에서 가져옵니다.\n\n건강앱에서 가져온 정보는 마케팅이나 광고목적으로 사용하지 않습니다.\n\n데이터 접근 권한은 설정앱 > 개인 정보 보호 > 건강 > AppBox Pro에서 변경할 수 있습니다.";
 
 /* Class = "UILabel"; text = "26,522"; ObjectID = "Kdl-hB-wMB"; */
 "Kdl-hB-wMB.text" = "26,522";

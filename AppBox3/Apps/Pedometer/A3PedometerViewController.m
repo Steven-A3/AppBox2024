@@ -714,10 +714,8 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	double delayInSeconds = 0.3;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info"
-															message:@"AppBox Pro reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.\n"
-								  "\n"
-								  "Data collected from HealthKit will not be used for marketing and advertising purposes."
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", nil)
+															message:NSLocalizedString(@"HealthKitAlert", nil)
 														   delegate:self
 												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 												  otherButtonTitles:nil];

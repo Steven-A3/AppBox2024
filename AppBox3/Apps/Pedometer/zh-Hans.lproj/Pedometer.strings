@@ -6,7 +6,11 @@
 "9Ew-GF-Nc1.headerTitle" = "距离单位";
 
 /* Class = "UITableViewSection"; footerTitle = "AppBox Pro reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.\n\nData collected from HealthKit will not be used for marketing and advertising purposes.\n\nYou can change app access of HealthKit data in your device Settings > Privacy > Health > AppBox Pro."; ObjectID = "EcZ-Vz-Ima"; */
-"EcZ-Vz-Ima.footerTitle" = "AppBox Pro reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.\n\nData collected from HealthKit will not be used for marketing and advertising purposes.\n\nYou can change app access of HealthKit data in your device Settings > Privacy > Health > AppBox Pro.";
+"EcZ-Vz-Ima.footerTitle" = "AppBox Pro®从Apple HealthKit数据中读取楼梯升序，步幅和步行+跑步距离。
+
+从HealthKit收集的数据不会用于营销和广告目的。
+
+您可以在设备设置>隐私>健康>AppBox Pro中更改HealthKit数据的应用访问权限。";
 
 /* Class = "UILabel"; text = "26,522"; ObjectID = "Kdl-hB-wMB"; */
 "Kdl-hB-wMB.text" = "26,522";

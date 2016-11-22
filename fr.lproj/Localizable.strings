@@ -1091,3 +1091,7 @@
 "What's New in V4.2.6" = "Nouveautés de la V4.2.6";
 "WhatsNew4_2_6" = "Correction de bugs: Erreur de données du podomètre
 Erreur d'affichage de la quantité de stockage de l'application batterie";
+
+"HealthKitAlert" = "AppBox Pro® lit les sols montés, les marches et la marche + la distance de parcours des données HealthKit d'Apple.
+
+Les données recueillies auprès de HealthKit ne seront pas utilisées à des fins de marketing et de publicité.";

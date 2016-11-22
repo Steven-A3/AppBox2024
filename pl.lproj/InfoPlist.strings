@@ -7,5 +7,7 @@
 */
 
 NSLocationWhenInUseUsageDescription = "Twoja informacja o lokalizacji jest używany, aby pokazać pogodę i wakacje. Jest on używany do wpisz lokalizację w dzień licznika.";
-NSMotionUsageDescription = "AppBox Pro uses your iPhone's built-in motion tracking ability to collect step counts as you move without an impact on battery life.";
-NSHealthShareUsageDescription = "AppBox Pro reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.\nData collected from HealthKit will not be used for marketing and advertising purposes.";
+NSMotionUsageDescription = "AppBox Pro® wykorzystuje wbudowany w ruchu możliwość śledzenia iPhone zbierania liczy kroku jak poruszać bez wpływu na żywotność baterii.";
+NSHealthShareUsageDescription = "AppBox Pro® czyta Podłoga wniebowstąpionych, Schody i Walking + Running Odległość od danych HealthKit Apple.
+
+Dane zebrane z HealthKit nie będą wykorzystywane w celach marketingowych i reklamowych.";

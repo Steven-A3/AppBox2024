@@ -1090,3 +1090,7 @@ Wprowadź klucz szyfrowania dla portfela.";
 "What's New in V4.2.6" = "Co nowego w wersji 4.2.6";
 "WhatsNew4_2_6" = "Poprawki błędów: błąd danych Krokomierz
 Błąd przechowywania app baterii wyświetlacz kwotę";
+
+"HealthKitAlert" = "AppBox Pro® czyta Podłoga wniebowstąpionych, Schody i Walking + Running Odległość od danych HealthKit Apple.
+
+Dane zebrane z HealthKit nie będą wykorzystywane w celach marketingowych i reklamowych.";

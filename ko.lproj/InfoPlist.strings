@@ -7,5 +7,5 @@
 */
 
 NSLocationWhenInUseUsageDescription = "위치정보는 날씨와 휴일정보를 표시하기 위해서 사용합니다. 이벤트 캘린더의 위치 정보 입력을 위해서도 사용합니다.";
-NSMotionUsageDescription = "AppBox Pro는 아이폰에 내장되어 있는 모션 추적 장치로 부터 걸음수 정보를 얻습니다. 정보 접근에 허용을 해도 이로인한 추가 배터리 소모는 없습니다.";
-NSHealthShareUsageDescription = "AppBox Pro는 Apple 건강앱으로부터 계단오르기, 걸음수, 걷기 + 달리기 거리 정보를 읽습니다. \n\n건강앱으로 부터 읽은 정보는 마케팅 목적이나 광고목적으로 사용하지 않습니다.";
+NSMotionUsageDescription = "AppBox Pro®는 아이폰에 내장되어 있는 모션 추적 장치로 부터 걸음수 정보를 얻습니다. 정보 접근에 허용을 해도 이로인한 추가 배터리 소모는 없습니다.";
+NSHealthShareUsageDescription = "AppBox Pro®는 Apple 건강앱으로부터 계단오르기, 걸음수, 걷기 + 달리기 거리 정보를 읽습니다. \n\n건강앱으로 부터 읽은 정보는 마케팅 목적이나 광고목적으로 사용하지 않습니다.";

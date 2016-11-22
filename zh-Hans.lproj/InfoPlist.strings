@@ -7,5 +7,5 @@
 */
 
 NSLocationWhenInUseUsageDescription = "您的位置信息，用于显示天气和假期。它是用来在天计数器输入你的位置。";
-NSMotionUsageDescription = "AppBox Pro获得步数从内置到iPhone，甚至允许访问的信息没有额外的电池消耗导致的运动跟踪设备信息。";
-NSHealthShareUsageDescription = "AppBox Pro读取爬楼梯，步数，行走在苹果应用程序健康+跑动距离信息。\n\n读取从健康应用的信息不被用于营销目的，或出于广告目的。";
+NSMotionUsageDescription = "AppBox Pro®获得步数从内置到iPhone，甚至允许访问的信息没有额外的电池消耗导致的运动跟踪设备信息。";
+NSHealthShareUsageDescription = "AppBox Pro®读取爬楼梯，步数，行走在苹果应用程序健康+跑动距离信息。\n\n读取从健康应用的信息不被用于营销目的，或出于广告目的。";
