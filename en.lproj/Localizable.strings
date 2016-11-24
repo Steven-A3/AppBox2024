@@ -1034,6 +1034,7 @@ Enter Encryption Key for Wallet.";
 
 "What's New in V4.2.6" = "What's New in V4.2.6";
 "WhatsNew4_2_6" = "Bug fixes: Pedometer data error
-Battery app storage display error";
+Battery app storage display error
+Calculator calculation error";
 
 "HealthKitAlert" = "AppBox Pro® reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.\nData collected from HealthKit will not be used for marketing and advertising purposes.";

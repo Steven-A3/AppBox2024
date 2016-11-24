@@ -1083,7 +1083,8 @@ Inserire chiave di crittografia per il portafoglio.";
 
 "What's New in V4.2.6" = "Novità nella V4.2.6";
 "WhatsNew4_2_6" = "Correzioni di bug: errore di dati Pedometro
-errore di visualizzazione quantità di archiviazione applicazioni Batteria";
+errore di visualizzazione quantità di archiviazione applicazioni Batteria
+Calcolatrice: errore di calcolo";
 
 "HealthKitAlert" = "AppBox Pro® legge pavimenti ascesi, Passi, e Walking + Esecuzione Distanza dai dati HealthKit Apple.
 

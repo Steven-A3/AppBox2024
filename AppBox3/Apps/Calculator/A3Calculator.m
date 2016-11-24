@@ -109,9 +109,9 @@ typedef CMathParser<char, double> MathParser;
 
 - (NSString *)getResultValueString:(double)value shortFormat:(BOOL)isShort{
 
-    NSUInteger maxFractionDigt = 15;
+    NSUInteger maxFractionDigt = 13;
     NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
-    NSUInteger maxDigitLen = 16, maxSignificantDigits = 16;
+    NSUInteger maxDigitLen = 13, maxSignificantDigits = 13;
 //    FNLOG("value   = %.15f %ld", value, (long)nf.roundingMode);
     NSUInteger numLen = [[NSString stringWithFormat:@"%f", value] length];
     NSString *resultString = nil;
