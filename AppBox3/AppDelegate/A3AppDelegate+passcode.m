@@ -282,7 +282,6 @@
 					if ([self didPasscodeTimerEnd] && [self requirePasscodeForStartingApp]) {
 						[self presentLockScreenShowCancelButton:YES];
 					} else {
-						[self popStartingAppInfo];
 						[self removeSecurityCoverView];
 						if ([self isMainMenuStyleList]) {
 							[self.mainMenuViewController openRecentlyUsedMenu:NO];
@@ -290,6 +289,7 @@
 							[self launchAppNamed:startingAppName verifyPasscode:NO animated:NO];
 							self.homeStyleMainMenuViewController.activeAppName = [startingAppName copy];
 						}
+						[self popStartingAppInfo];
 					}
 				} else {
 					[self popStartingAppInfo];
