@@ -11,7 +11,6 @@
 @interface UIColor (A3Addition)
 
 + (UIColor*)colorWithRGBRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha;
-+ (UIColor*)colorWithRGBHexColor:(NSUInteger)color;
-+ (UIColor*)colorWithARGBHexColor:(NSUInteger)color;
++ (UIColor *)colorFromHexString:(NSString *)hexString;
 
 @end

@@ -12,7 +12,7 @@
 
 @property (nonatomic, strong) 	NSArray *gradientColors;
 @property (nonatomic, strong)	NSArray *locations;
-@property (nonatomic)			BOOL vertical;
+@property (nonatomic)			IBInspectable BOOL vertical;
 @property (nonatomic, strong)	UIColor	*startColor, *endColor;
 
 @end

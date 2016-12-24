@@ -361,6 +361,7 @@ A3InstructionViewControllerDelegate>
 - (NSArray *)originalMenuItems {
 	if (IS_IPAD) {
 		return @[
+				 @{kA3AppsMenuName:A3AppName_Abbreviation},
 				 @{kA3AppsMenuName:A3AppName_Pedometer},
 				 @{kA3AppsMenuName:A3AppName_QRCode},
 				 @{kA3AppsMenuName:A3AppName_BatteryStatus},
@@ -389,6 +390,7 @@ A3InstructionViewControllerDelegate>
 				 ];
 	} else {
 		return @[
+				 @{kA3AppsMenuName:A3AppName_Abbreviation},
 				 @{kA3AppsMenuName:A3AppName_Pedometer},
 				 @{kA3AppsMenuName:A3AppName_QRCode},
 				 @{kA3AppsMenuName:A3AppName_Level},
@@ -440,6 +442,7 @@ A3InstructionViewControllerDelegate>
 		}
 #endif
 
+		// NEW_APP: 새앱이 추가되면 수정되어야 하는 영역
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsMainMenuGridShouldAddQRCodeMenu]) {
 			[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3SettingsMainMenuGridShouldAddQRCodeMenu];
 			
@@ -461,6 +464,16 @@ A3InstructionViewControllerDelegate>
 				}
 				[[NSUserDefaults standardUserDefaults] setObject:_menuItems forKey:A3MainMenuGridMenuItems];
 			}
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsMainMenuGridShouldAddAbbreviationMenu]) {
+			[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3SettingsMainMenuGridShouldAddAbbreviationMenu];
+
+			NSDictionary *newMenu = @{kA3AppsMenuName : A3AppName_Abbreviation};
+			NSInteger menuIndex = [_menuItems indexOfObject:newMenu];
+			if (menuIndex == NSNotFound) {
+				[_menuItems insertObject:newMenu atIndex:0];
+			}
+			[[NSUserDefaults standardUserDefaults] setObject:_menuItems forKey:A3MainMenuGridMenuItems];
 		}
 	}
 	return _menuItems;

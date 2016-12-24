@@ -10,8 +10,7 @@
 #import "common.h"
 
 @implementation A3GradientView
-
-@synthesize startColor = _startColor;
+@synthesize gradientColors = _gradientColors;
 
 - (NSArray *)gradientColors {
 	if (nil == _gradientColors) {
@@ -20,6 +19,11 @@
 		(__bridge id)[[UIColor colorWithRed:232.0f/255.0f green:235.0f/255.0f blue:234.0f/255.0f alpha:1.0f] CGColor]];
 	}
 	return _gradientColors;
+}
+
+- (void)setGradientColors:(NSArray *)gradientColors {
+	_gradientColors = gradientColors;
+	[self setNeedsDisplay];
 }
 
 - (id)initWithFrame:(CGRect)frame {
@@ -41,7 +45,6 @@
 }
 
 - (void)initialize {
-	_vertical = NO;
 	self.backgroundColor = [UIColor clearColor];
 	self.contentMode = UIViewContentModeRedraw;
 	self.userInteractionEnabled = NO;
@@ -51,7 +54,7 @@
 	[super awakeFromNib];
 
 	if (_startColor && _endColor) {
-		_gradientColors = @[(__bridge id)_startColor.CGColor, (__bridge id)_endColor.CGColor];
+		self.gradientColors = @[(__bridge id)_startColor.CGColor, (__bridge id)_endColor.CGColor];
 	}
 }
 

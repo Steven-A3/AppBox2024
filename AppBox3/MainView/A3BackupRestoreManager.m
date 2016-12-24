@@ -502,9 +502,15 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddQRCodeMenu];
 			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddQRCodeMenu];
 		}
+		// Hexagon, Grid 스타일 메뉴는 4.0에 추가 되었다.
+		// 백업 파일이 4.0 이전에 만들어 졌다면, Hexagon, Grid 메뉴가 아예 없기 때문에 별도 메뉴 추가를 고려할 필요가 없다.
 		if (version >= 4.0 && version < 4.2) {
 			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddPedometerMenu];
 			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddPedometerMenu];
+		}
+		if (version >= 4.0 && version <= 4.2) {
+			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddAbbreviationMenu];
+			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddAbbreviationMenu];
 		}
 
 		NSNumber *selectedColor = [[A3SyncManager sharedSyncManager] objectForKey:A3SettingsUserDefaultsThemeColorIndex];

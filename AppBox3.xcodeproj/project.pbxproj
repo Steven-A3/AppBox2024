@@ -82,6 +82,7 @@
 		17D42D2B9B9B9067AD8FB1E2 /* UnitConverterPhoneStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 17D426E389E3CEA7050F70DB /* UnitConverterPhoneStoryboard.storyboard */; };
 		17D42D573FAB2BFE604A808F /* A3TranslatorFavoriteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42DF75A3EA2B85378A368 /* A3TranslatorFavoriteDataSource.m */; };
 		17D42D692E16244D9FFB4B2E /* A3DaysCounterEventListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42555D4EFD9D7B167055D /* A3DaysCounterEventListViewController.m */; };
+		17D42D6EF9867AD9E61C1C41 /* Abbreviation.json in Resources */ = {isa = PBXBuildFile; fileRef = 17D42C2349D6911C330C1F3F /* Abbreviation.json */; };
 		17D42DC93704B5A21363A17F /* A3LadyCalendarDetailViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4205C5D769DC62FD84F2E /* A3LadyCalendarDetailViewCell.m */; };
 		17D42DDB19963EC340C1CA17 /* A3BackgroundWithPatternView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42C6AA73D83BD4BCE4868 /* A3BackgroundWithPatternView.m */; };
 		17D42E23FC78EEE74D1E160D /* A3TranslatorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4290B326C03E3DAF080A7 /* A3TranslatorViewController.m */; };
@@ -428,6 +429,7 @@
 		6857C7281CB647A000D09177 /* RSScannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6857C7261CB647A000D09177 /* RSScannerViewController.m */; };
 		6857C7321CB647EB00D09177 /* A3QRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6857C7311CB647EB00D09177 /* A3QRCodeViewController.m */; };
 		685946D118C371C800528190 /* A3SpeechTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 685946D018C371C800528190 /* A3SpeechTest.m */; };
+		685CF1AD1DFFF46300DE2636 /* A3AbbreviationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 685CF1AC1DFFF46300DE2636 /* A3AbbreviationTableViewCell.m */; };
 		685E319A1791694E001A0EC8 /* A3CurrencyTVActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 685E31991791694E001A0EC8 /* A3CurrencyTVActionCell.xib */; };
 		685E319F17917879001A0EC8 /* A3CurrencyTVActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 685E319E17917879001A0EC8 /* A3CurrencyTVActionCell.m */; };
 		685F723C16A64ADD004C7222 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 685F723B16A64ADD004C7222 /* SystemConfiguration.framework */; };
@@ -448,6 +450,7 @@
 		686FCF731775CF9D00F19332 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686FCF711775CF9D00F19332 /* AssetsLibrary.framework */; };
 		686FCF911775CFE400F19332 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 686FCF441775CD1300F19332 /* Reachability.m */; };
 		6870A0D7163647A50059BD2F /* A3GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6870A0D6163647A50059BD2F /* A3GradientView.m */; };
+		687242FE1DF95D5000B7FB6A /* Abbreviation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 687242FD1DF95D5000B7FB6A /* Abbreviation.storyboard */; };
 		6872DD3217B3D56600C1BF44 /* NSDate+TimeAgo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6872DD3017B3D56600C1BF44 /* NSDate+TimeAgo.m */; };
 		6872DD3317B3D56600C1BF44 /* NSDateTimeAgo.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6872DD3117B3D56600C1BF44 /* NSDateTimeAgo.bundle */; };
 		687483E21977E77D00EA8F74 /* ExpenseListBudget+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 687483E11977E77D00EA8F74 /* ExpenseListBudget+extension.m */; };
@@ -493,6 +496,7 @@
 		687AEEB71CBC4B8200C2D844 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68AB0ABB1A3E92C8001BFC5D /* EventKit.framework */; };
 		687AEEB81CBC4B8200C2D844 /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68AB0ABD1A3E92D1001BFC5D /* EventKitUI.framework */; };
 		687AEEBB1CBC4E5800C2D844 /* MXLCalendarAttendee.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AEEBA1CBC4E5800C2D844 /* MXLCalendarAttendee.m */; };
+		687B95361E024A1A00126F9E /* A3AbbreviationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 687B95351E024A1A00126F9E /* A3AbbreviationViewController.m */; };
 		687D0D0A17CAE519005AB571 /* HolidayData+Africa.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0CFD17CAE519005AB571 /* HolidayData+Africa.m */; };
 		687D0D0B17CAE519005AB571 /* HolidayData+America.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0CFF17CAE519005AB571 /* HolidayData+America.m */; };
 		687D0D0C17CAE519005AB571 /* HolidayData+Asia.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0117CAE519005AB571 /* HolidayData+Asia.m */; };
@@ -530,6 +534,7 @@
 		68953488178686AF007061CA /* UIView+Screenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 6895346E178686AF007061CA /* UIView+Screenshot.m */; };
 		68961FE218B311D100C89F16 /* Mirror.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68961FE118B311D100C89F16 /* Mirror.xcassets */; };
 		6896DC971921D64F00FA98F3 /* ExpenseListItem+management.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896DC961921D64F00FA98F3 /* ExpenseListItem+management.m */; };
+		6897B6CF1DFEA01C00238FD3 /* A3AbbreviationCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6897B6CE1DFEA01C00238FD3 /* A3AbbreviationCollectionViewCell.m */; };
 		6898A6E71908AEA50099C09E /* WalletFavorite+initialize.m in Sources */ = {isa = PBXBuildFile; fileRef = 6898A6E61908AEA50099C09E /* WalletFavorite+initialize.m */; };
 		689A3ADA1961C87F008BC2F4 /* A3YahooCurrency.m in Sources */ = {isa = PBXBuildFile; fileRef = 6823F6F51863294700E6E90D /* A3YahooCurrency.m */; };
 		689A3ADB1961C87F008BC2F4 /* CurrencyHistory+handler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6823F6F91863294700E6E90D /* CurrencyHistory+handler.m */; };
@@ -1150,6 +1155,7 @@
 		17D42BFE6234E14E8D9A2970 /* UIViewController+A3Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+A3Addition.h"; sourceTree = "<group>"; };
 		17D42C0234DBB50B50761CE0 /* TranslatorHistory+manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TranslatorHistory+manager.h"; sourceTree = "<group>"; };
 		17D42C025F6B822047EEE466 /* FSVenue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSVenue.h; sourceTree = "<group>"; };
+		17D42C2349D6911C330C1F3F /* Abbreviation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Abbreviation.json; sourceTree = "<group>"; };
 		17D42C482B12F26E75712681 /* A3TranslatorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorViewController.h; path = Translator/A3TranslatorViewController.h; sourceTree = "<group>"; };
 		17D42C6AA73D83BD4BCE4868 /* A3BackgroundWithPatternView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3BackgroundWithPatternView.m; sourceTree = "<group>"; };
 		17D42C7EA29BB9F9F994E776 /* UnitHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitHistory.m; sourceTree = "<group>"; };
@@ -1545,6 +1551,7 @@
 		682EA2DB15EB10B000BD6AD4 /* CoreData.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		682EA2E315EB10B000BD6AD4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = main.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		682EA2E515EB10B000BD6AD4 /* AppBox3-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "AppBox3-Prefix.pch"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		682FB91A1DF265C70099960F /* AppBoxPlayGround.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = AppBoxPlayGround.playground; sourceTree = "<group>"; };
 		682FDEC91981CC0400C6C83D /* MagicalImportFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagicalImportFunctions.h; sourceTree = "<group>"; };
 		682FDECA1981CC0400C6C83D /* MagicalImportFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MagicalImportFunctions.m; sourceTree = "<group>"; };
 		682FDECB1981CC0400C6C83D /* NSAttributeDescription+MagicalDataImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributeDescription+MagicalDataImport.h"; sourceTree = "<group>"; };
@@ -1743,6 +1750,8 @@
 		6857C7301CB647EB00D09177 /* A3QRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3QRCodeViewController.h; sourceTree = "<group>"; };
 		6857C7311CB647EB00D09177 /* A3QRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3QRCodeViewController.m; sourceTree = "<group>"; };
 		685946D018C371C800528190 /* A3SpeechTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SpeechTest.m; sourceTree = "<group>"; };
+		685CF1AB1DFFF46300DE2636 /* A3AbbreviationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3AbbreviationTableViewCell.h; sourceTree = "<group>"; };
+		685CF1AC1DFFF46300DE2636 /* A3AbbreviationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AbbreviationTableViewCell.m; sourceTree = "<group>"; };
 		685E31991791694E001A0EC8 /* A3CurrencyTVActionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3CurrencyTVActionCell.xib; path = Apps/Currency/A3CurrencyTVActionCell.xib; sourceTree = "<group>"; };
 		685E319D17917879001A0EC8 /* A3CurrencyTVActionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyTVActionCell.h; path = Apps/Currency/A3CurrencyTVActionCell.h; sourceTree = "<group>"; };
 		685E319E17917879001A0EC8 /* A3CurrencyTVActionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyTVActionCell.m; path = Apps/Currency/A3CurrencyTVActionCell.m; sourceTree = "<group>"; };
@@ -1770,6 +1779,7 @@
 		686FCF711775CF9D00F19332 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		6870A0D5163647A50059BD2F /* A3GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3GradientView.h; sourceTree = "<group>"; };
 		6870A0D6163647A50059BD2F /* A3GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3GradientView.m; sourceTree = "<group>"; };
+		687242FD1DF95D5000B7FB6A /* Abbreviation.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Abbreviation.storyboard; sourceTree = "<group>"; };
 		6872DD2F17B3D56600C1BF44 /* NSDate+TimeAgo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate+TimeAgo.h"; path = "External/NSDate-TimeAgo/NSDate+TimeAgo.h"; sourceTree = "<group>"; };
 		6872DD3017B3D56600C1BF44 /* NSDate+TimeAgo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate+TimeAgo.m"; path = "External/NSDate-TimeAgo/NSDate+TimeAgo.m"; sourceTree = "<group>"; };
 		6872DD3117B3D56600C1BF44 /* NSDateTimeAgo.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = NSDateTimeAgo.bundle; path = "External/NSDate-TimeAgo/NSDateTimeAgo.bundle"; sourceTree = "<group>"; };
@@ -1839,6 +1849,8 @@
 		687AEEB31CBC489700C2D844 /* MXLCalendarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXLCalendarManager.m; sourceTree = "<group>"; };
 		687AEEB91CBC4E5800C2D844 /* MXLCalendarAttendee.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXLCalendarAttendee.h; sourceTree = "<group>"; };
 		687AEEBA1CBC4E5800C2D844 /* MXLCalendarAttendee.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXLCalendarAttendee.m; sourceTree = "<group>"; };
+		687B95341E024A1A00126F9E /* A3AbbreviationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3AbbreviationViewController.h; sourceTree = "<group>"; };
+		687B95351E024A1A00126F9E /* A3AbbreviationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AbbreviationViewController.m; sourceTree = "<group>"; };
 		687C193B1783DF0F00415FCE /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		687D0CFC17CAE519005AB571 /* HolidayData+Africa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "HolidayData+Africa.h"; path = "Holidays/HolidayData+Africa.h"; sourceTree = "<group>"; };
 		687D0CFD17CAE519005AB571 /* HolidayData+Africa.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "HolidayData+Africa.m"; path = "Holidays/HolidayData+Africa.m"; sourceTree = "<group>"; };
@@ -1956,6 +1968,8 @@
 		68961FE118B311D100C89F16 /* Mirror.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Mirror.xcassets; path = "AppBox3/Asset Catalogs/Mirror.xcassets"; sourceTree = "<group>"; };
 		6896DC951921D64F00FA98F3 /* ExpenseListItem+management.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ExpenseListItem+management.h"; path = "Data/ExpenseListItem+management.h"; sourceTree = "<group>"; };
 		6896DC961921D64F00FA98F3 /* ExpenseListItem+management.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ExpenseListItem+management.m"; path = "Data/ExpenseListItem+management.m"; sourceTree = "<group>"; };
+		6897B6CD1DFEA01C00238FD3 /* A3AbbreviationCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3AbbreviationCollectionViewCell.h; sourceTree = "<group>"; };
+		6897B6CE1DFEA01C00238FD3 /* A3AbbreviationCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AbbreviationCollectionViewCell.m; sourceTree = "<group>"; };
 		6898A0091ACD52B900B3B9A4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Launch_iPad.strings; sourceTree = "<group>"; };
 		6898A6E51908AEA50099C09E /* WalletFavorite+initialize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WalletFavorite+initialize.h"; sourceTree = "<group>"; };
 		6898A6E61908AEA50099C09E /* WalletFavorite+initialize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WalletFavorite+initialize.m"; sourceTree = "<group>"; };
@@ -3023,6 +3037,21 @@
 			path = UnitConverter;
 			sourceTree = "<group>";
 		};
+		17D424A532191B78490DC8D5 /* Abbreviation */ = {
+			isa = PBXGroup;
+			children = (
+				17D42C2349D6911C330C1F3F /* Abbreviation.json */,
+				687242FD1DF95D5000B7FB6A /* Abbreviation.storyboard */,
+				6897B6CD1DFEA01C00238FD3 /* A3AbbreviationCollectionViewCell.h */,
+				6897B6CE1DFEA01C00238FD3 /* A3AbbreviationCollectionViewCell.m */,
+				685CF1AB1DFFF46300DE2636 /* A3AbbreviationTableViewCell.h */,
+				685CF1AC1DFFF46300DE2636 /* A3AbbreviationTableViewCell.m */,
+				687B95341E024A1A00126F9E /* A3AbbreviationViewController.h */,
+				687B95351E024A1A00126F9E /* A3AbbreviationViewController.m */,
+			);
+			path = Abbreviation;
+			sourceTree = "<group>";
+		};
 		17D426FC856AC9AFCB19292B /* Translator */ = {
 			isa = PBXGroup;
 			children = (
@@ -3878,6 +3907,7 @@
 		682EA2DD15EB10B000BD6AD4 /* AppBox3 */ = {
 			isa = PBXGroup;
 			children = (
+				682FB9191DF265C70099960F /* Playground */,
 				17D427F3728DBA525AF95340 /* A3Categories */,
 				682CA31C163F8B0E0052A559 /* AppDelegate */,
 				683B950C15EB233500575377 /* Apps */,
@@ -3905,6 +3935,14 @@
 			);
 			name = "{Supporting Files}";
 			sourceTree = "<group>";
+		};
+		682FB9191DF265C70099960F /* Playground */ = {
+			isa = PBXGroup;
+			children = (
+				682FB91A1DF265C70099960F /* AppBoxPlayGround.playground */,
+			);
+			path = Playground;
+			sourceTree = SOURCE_ROOT;
 		};
 		682FDEC61981CC0400C6C83D /* MagicalRecord */ = {
 			isa = PBXGroup;
@@ -4062,6 +4100,7 @@
 		683B950C15EB233500575377 /* Apps */ = {
 			isa = PBXGroup;
 			children = (
+				17D424A532191B78490DC8D5 /* Abbreviation */,
 				684D929F18BC1EFE005016F7 /* BatteryStatus */,
 				680D636418CFF9D400938AD0 /* Calculator */,
 				680886A41891751B0093FD97 /* Clock */,
@@ -4085,9 +4124,9 @@
 				68E2A66718D0B22800E834D9 /* SalesCalculator */,
 				68E2A68418D0B22800E834D9 /* TipCalc */,
 				17D426FC856AC9AFCB19292B /* Translator */,
+				17D4214A947AD7F1FC503C9F /* UnitConverter */,
 				68B6A1E518CEC76C004084EF /* UnitPrice */,
 				68B6A21D18CEC76C004084EF /* Wallet */,
-				17D4214A947AD7F1FC503C9F /* UnitConverter */,
 			);
 			path = Apps;
 			sourceTree = "<group>";
@@ -5953,7 +5992,7 @@
 			attributes = {
 				CLASSPREFIX = A3;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = ALLABOUTAPPS;
 				TargetAttributes = {
 					6829688D18505E3800B70E13 = {
@@ -6106,6 +6145,7 @@
 				68F14FCD19485E8500159EAD /* A3DaysCounterReminderListViewController.xib in Resources */,
 				6874892F1854430C008972CC /* NationalFlags.xcassets in Resources */,
 				68F14FE019485E8500159EAD /* A3DaysCounterCalendarListMainEditCell.xib in Resources */,
+				687242FE1DF95D5000B7FB6A /* Abbreviation.storyboard in Resources */,
 				68F15110194C281A00159EAD /* UnitPriceStoryboard.storyboard in Resources */,
 				68E878F81C32B13E00935E62 /* Localizable.strings in Resources */,
 				680D639E18CFF9D400938AD0 /* A3MagnifierViewController.xib in Resources */,
@@ -6220,6 +6260,7 @@
 				17D42F6815E145B1F5D4F82A /* A3UnitConverterTVActionCell.xib in Resources */,
 				17D4292114448205A3599223 /* A3UnitConverterTVEqualCell.xib in Resources */,
 				17D42D2B9B9B9067AD8FB1E2 /* UnitConverterPhoneStoryboard.storyboard in Resources */,
+				17D42D6EF9867AD9E61C1C41 /* Abbreviation.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6608,6 +6649,7 @@
 				68F1C8DA18D7F37D009FAE8A /* A3ColoredCircleView.m in Sources */,
 				689D59081C1569BA002CD422 /* InclinometerViewController.m in Sources */,
 				68E2A6A718D0B22800E834D9 /* A3SalesCalcPreferences.m in Sources */,
+				6897B6CF1DFEA01C00238FD3 /* A3AbbreviationCollectionViewCell.m in Sources */,
 				68B6A2AD18CEC76D004084EF /* A3LoanCalcMainViewController.m in Sources */,
 				68B6A2EE18CEC76D004084EF /* A3UnitPriceHistoryViewController.m in Sources */,
 				682E07EA171968A8007112B9 /* ATSDragToReorderTableViewController.m in Sources */,
@@ -6867,6 +6909,7 @@
 				17D42D573FAB2BFE604A808F /* A3TranslatorFavoriteDataSource.m in Sources */,
 				68143D5F18E3EC7C00569691 /* A3TableViewElement.m in Sources */,
 				682FDF1C1981CC0400C6C83D /* NSManagedObjectContext+MagicalObserving.m in Sources */,
+				687B95361E024A1A00126F9E /* A3AbbreviationViewController.m in Sources */,
 				6829A0191C89882F0006DB96 /* A3GridMenuViewController.m in Sources */,
 				687AEEB51CBC489700C2D844 /* MXLCalendarEvent.m in Sources */,
 				682126861843902A009A7964 /* NSNumberExtensions.m in Sources */,
@@ -6909,6 +6952,7 @@
 				68D6E90F199EE0A200166A47 /* WalletField.m in Sources */,
 				68F1C8DC18D7F37D009FAE8A /* A3LinedSlider.m in Sources */,
 				68B6A44218CEE781004084EF /* MWPhoto.m in Sources */,
+				685CF1AD1DFFF46300DE2636 /* A3AbbreviationTableViewCell.m in Sources */,
 				17D42DDB19963EC340C1CA17 /* A3BackgroundWithPatternView.m in Sources */,
 				17D4263785F661F55F888132 /* NSDateFormatter+A3Addition.m in Sources */,
 				68B6A2C718CEC76D004084EF /* A3LoanCalcNoteCell.m in Sources */,
@@ -7512,6 +7556,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -7520,7 +7565,9 @@
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -7546,7 +7593,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$PROJECT_DIR/**";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -7562,6 +7609,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -7570,7 +7618,9 @@
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -7588,12 +7638,13 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$PROJECT_DIR/**";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-ObjC";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/**";
 				VALIDATE_PRODUCT = YES;
@@ -7623,7 +7674,7 @@
 					"External/RMStore/Optional/openssl-1.0.2c/include/**",
 				);
 				INFOPLIST_FILE = "AppBox3/AppBox3-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"${PROJECT_DIR}/External/**",
@@ -7660,7 +7711,7 @@
 					"External/RMStore/Optional/openssl-1.0.2c/include/**",
 				);
 				INFOPLIST_FILE = "AppBox3/AppBox3-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"${PROJECT_DIR}/External/**",

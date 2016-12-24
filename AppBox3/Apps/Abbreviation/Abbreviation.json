@@ -1,0 +1,878 @@
+[
+  {
+    "tags" : "Business",
+    "abbreviation" : "ADN",
+    "meaning" : "Any Day Now"
+  },
+  {
+    "abbreviation" : "AEAP",
+    "meaning" : "As Early as Possible"
+  },
+  {
+    "tags" : "Business",
+    "abbreviation" : "AFAIK",
+    "meaning" : "As Far As I Know"
+  },
+  {
+    "abbreviation" : "ALAP",
+    "meaning" : "As Late as Possible"
+  },
+  {
+    "tags" : "Romance",
+    "abbreviation" : "ALIWanIsU",
+    "meaning" : "All I Want Is You"
+  },
+  {
+    "tags" : "Romance",
+    "abbreviation" : "ALOrO",
+    "meaning" : "All Or Nothing"
+  },
+  {
+    "tags" : "Romance",
+    "abbreviation" : "AML",
+    "meaning" : "All my love"
+  },
+  {
+    "tags" : "Business",
+    "abbreviation" : "ASAP",
+    "meaning" : "As Soon as Possible"
+  },
+  {
+    "abbreviation" : "ASL",
+    "meaning" : "Age \/ Sex \/ Location?"
+  },
+  {
+    "tags" : "Business",
+    "abbreviation" : "ATM",
+    "meaning" : "At The Moment"
+  },
+  {
+    "tags" : "Business",
+    "abbreviation" : "B2B",
+    "meaning" : "Business To Business"
+  },
+  {
+    "abbreviation" : "B3",
+    "meaning" : "Blah, Blah, Blah"
+  },
+  {
+    "tags" : "Top24",
+    "abbreviation" : "B4N",
+    "meaning" : "Bye For Now "
+  },
+  {
+    "abbreviation" : "B4YKI",
+    "meaning" : "Before You Know it"
+  },
+  {
+    "tags" : "Romance",
+    "abbreviation" : "BBSD",
+    "meaning" : "Be Back Soon Darling"
+  },
+  {
+    "tags" : "Top24, Romance",
+    "abbreviation" : "BCNU",
+    "meaning" : "Be Seeing You"
+  },
+  {
+    "tags" : "Top24",
+    "abbreviation" : "BFF",
+    "meaning" : "Best Friends Forever"
+  },
+  {
+    "tags" : "Top24, Romance",
+    "abbreviation" : "BGWM",
+    "meaning" : "Be Gentle With Me"
+  },
+  {
+    "abbreviation" : "BM&Y",
+    "meaning" : "Between Me and You"
+  },
+  {
+    "tags" : "Top24",
+    "abbreviation" : "BRB",
+    "meaning" : "Be Right Back"
+  },
+  {
+    "abbreviation" : "BRT",
+    "meaning" : "Be right There"
+  },
+  {
+    "abbreviation" : "BTAM",
+    "meaning" : "Be that as it May"
+  },
+  {
+    "tags" : "Top24, Business",
+    "abbreviation" : "BTW",
+    "meaning" : "By The Way or Bring The Wheelchair"
+  },
+  {
+    "tags" : "Business",
+    "abbreviation" : "CEO",
+    "meaning" : "Chief Executive Officer"
+  },
+  {
+    "abbreviation" : "C-P",
+    "meaning" : "Sleepy"
+  },
+  {
+    "abbreviation" : "CTN",
+    "meaning" : "Cannot talk now"
+  },
+  {
+    "tags" : "Romance",
+    "abbreviation" : "CUIMD",
+    "meaning" : "See You In My Dreams"
+  },
+  {
+    "abbreviation" : "CUS",
+    "meaning" : "See You Soon"
+  },
+  {
+    "tags" : "Romance",
+    "abbreviation" : "CW2CU",
+    "meaning" : "Can't wait to see you"
+  },
+  {
+    "abbreviation" : "CWOT",
+    "meaning" : "Complete Waste of Time"
+  },
+  {
+    "tags" : "Top24",
+    "abbreviation" : "CYA",
+    "meaning" : "Cover Your Ass or See Ya"
+  },
+  {
+    "abbreviation" : "CYT",
+    "meaning" : "See You Tomorrow"
+  },
+  {
+    "abbreviation" : "DBEYR",
+    "meaning" : "Don't Believe Everything You Read"
+  },
+  {
+    "tags" : "Top24",
+    "abbreviation" : "DC",
+    "meaning" : "Don't Care"
+  },
+  {
+    "abbreviation" : "DBAU",
+    "meaning" : "Doing business as usual"
+  },
+  {
+    "abbreviation" : "DGT",
+    "meaning" : "Don't Go There"
+  },
+  {
+    "abbreviation" : "DILLIGAS",
+    "meaning" : "Do I Look Like I Give A Sh** "
+  },
+  {
+    "abbreviation" : "E123",
+    "meaning" : "Easy as 1, 2, 3"
+  },
+  {
+    "abbreviation" : "EM?",
+    "meaning" : "Excuse Me?"
+  },
+  {
+    "abbreviation" : "EOD",
+    "meaning" : "End Of Day"
+  },
+  {
+    "abbreviation" : "EOL",
+    "meaning" : "End Of Life"
+  },
+  {
+    "abbreviation" : "EVA",
+    "meaning" : "Ever"
+  },
+  {
+    "abbreviation" : "ETA",
+    "meaning" : "Estimated Time of Arrival"
+  },
+  {
+    "tags" : "Romance",
+    "abbreviation" : "F2F",
+    "meaning" : "Face To Face"
+  },
+  {
+    "abbreviation" : "FC",
+    "meaning" : "Fingers Crossed"
+  },
+  {
+    "abbreviation" : "FOAF",
+    "meaning" : "Friend Of A Friend"
+  },
+  {
+    "abbreviation" : "FUD",
+    "meaning" : "Fear, Uncertainty, And Disinformation"
+  },
+  {
+    "tags" : "Business",
+    "abbreviation" : "FYI",
+    "meaning" : "For Your Information"
+  },
+  {
+    "tags" : "Top24",
+    "abbreviation" : "FWIW",
+    "meaning" : "For What It's Worth"
+  },
+  {
+    "tags" : "Romance",
+    "abbreviation" : "4ever",
+    "meaning" : "Forever"
+  },
+  {
+    "tags" : "Romance",
+    "abbreviation" : "4EVRYRS",
+    "meaning" : "Forever Yours"
+  },
+  {
+    "abbreviation" : "GBU",
+    "meaning" : "God Bless Yu"
+  },
+  {
+    "abbreviation" : "GD",
+    "meaning" : "Good"
+  },
+  {
+    "abbreviation" : "GG",
+    "meaning" : "Good Game (online gaming)"
+  },
+  {
+    "tags" : "Top24",
+    "abbreviation" : "GR8",
+    "meaning" : "Great"
+  },
+  {
+    "abbreviation" : "GTG",
+    "meaning" : "Good To Go or Got To Go"
+  },
+  {
+    "tags" : "Romance",
+    "abbreviation" : "((H))",
+    "meaning" : "Hug"
+  },
+  {
+    "tags" : "Romance",
+    "abbreviation" : "H&K",
+    "meaning" : "Hugs And Kisses"
+  },
+  {
+    "abbreviation" : "HAK",
+    "meaning" : "Hugs And Kisses"
+  },
+  {
+    "tags" : "Top24",
+    "abbreviation" : "HUB",
+    "meaning" : "Head Up Butt"
+  },
+  {
+    "tags" : "Business",
+    "abbreviation" : "HTH",
+    "meaning" : "Hope This Helps"
+  },
+  {
+    "abbreviation" : "HUYA",
+    "meaning" : "Head Up Your Ass"
+  },
+  {
+    "abbreviation" : "HV",
+    "meaning" : "Have"
+  },
+  {
+    "abbreviation" : "HW",
+    "meaning" : "Homework"
+  },
+  {
+    "tags" : "Romance",
+    "abbreviation" : "ICLWYL",
+    "meaning" : "I Can't Live Without Your Love"
+  },
+  {
+    "abbreviation" : "IDC",
+    "meaning" : "I Don't Care"
+  },
+  {
+    "abbreviation" : "IDK",
+    "meaning" : "I Don't Know"
+  },
+  {
+    "abbreviation" : "ILU",
+    "meaning" : "I Love You"
+  },
+  {
+    "abbreviation" : "ILY",
+    "meaning" : "I Love You"
+  },
+  {
+    "tags" : "Business",
+    "abbreviation" : "IMO",
+    "meaning" : "In My Opinion"
+  },
+  {
+    "tags" : "Top24",
+    "abbreviation" : "IMHO",
+    "meaning" : "In My Humble Opinion"
+  },
+  {
+    "tags" : "Romance",
+    "abbreviation" : "ImT14U",
+    "meaning" : "I'm The One For You"
+  },
+  {
+    "abbreviation" : "IMU",
+    "meaning" : "I Miss You"
+  },
+  {
+    "abbreviation" : "IRL",
+    "meaning" : "In Real Life"
+  },
+  {
+    "abbreviation" : "ISO",
+    "meaning" : "In Search Of"
+  },
+  {
+    "tags" : "Business",
+    "abbreviation" : "IU2U",
+    "meaning" : "It's Up To You"
+  },
+  {
+    "abbreviation" : "JK",
+    "meaning" : "Just Kidding"
+  },
+  {
+    "abbreviation" : "JC",
+    "meaning" : "Just Checking"
+  },
+  {
+    "abbreviation" : "JFF",
+    "meaning" : "Just For Fun"
+  },
+  {
+    "abbreviation" : "JIC",
+    "meaning" : "Just In Case"
+  },
+  {
+    "abbreviation" : "JTLYK",
+    "meaning" : "Just To Let You Know"
+  },
+  {
+    "abbreviation" : "K",
+    "meaning" : "OK or Is That OK?"
+  },
+  {
+    "abbreviation" : "KFY",
+    "meaning" : "Kiss For You"
+  },
+  {
+    "tags" : "Romance",
+    "abbreviation" : "KIT",
+    "meaning" : "Keep In Touch"
+  },
+  {
+    "tags" : "Romance",
+    "abbreviation" : "KMeQk",
+    "meaning" : "Kiss Me Quick"
+  },
+  {
+    "abbreviation" : "KMN",
+    "meaning" : "Kill Me Now"
+  },
+  {
+    "abbreviation" : "KPC",
+    "meaning" : "Keeping Parents Clueless"
+  },
+  {
+    "tags" : "Top24",
+    "abbreviation" : "L8R",
+    "meaning" : "Later"
+  },
+  {
+    "tags" : "Business",
+    "abbreviation" : "LCH",
+    "meaning" : "Lunch"
+  },
+  {
+    "tags" : "Business",
+    "abbreviation" : "LMK",
+    "meaning" : "Let Me Know"
+  },
+  {
+    "tags" : "Top24",
+    "abbreviation" : "LMAO",
+    "meaning" : "Laughing My Ass Off"
+  },
+  {
+    "abbreviation" : "LMK",
+    "meaning" : "Let Me Know"
+  },
+  {
+    "tags" : "Top24",
+    "abbreviation" : "LOL",
+    "meaning" : "Laughing Out Loud or Lots Of Love or Living On Lipitor"
+  },
+  {
+    "tags" : "Romance",
+    "abbreviation" : "LUV",
+    "meaning" : "Love"
+  },
+  {
+    "tags" : "Romance",
+    "abbreviation" : "Luv Ya",
+    "meaning" : "Love You"
+  },
+  {
+    "abbreviation" : "LYLAS",
+    "meaning" : "Love You Like A Sister"
+  },
+  {
+    "tags" : "Business",
+    "abbreviation" : "MD",
+    "meaning" : "Managing Director"
+  },
+  {
+    "abbreviation" : "MHOTY",
+    "meaning" : "My Hat's Off To You"
+  },
+  {
+    "tags" : "Business",
+    "abbreviation" : "MOB",
+    "meaning" : "Mobile"
+  },
+  {
+    "abbreviation" : "MoF",
+    "meaning" : "Male or Female"
+  },
+  {
+    "tags" : "Business",
+    "abbreviation" : "MSG",
+    "meaning" : "Message"
+  },
+  {
+    "abbreviation" : "MTFBWY",
+    "meaning" : "May The Force Be With You"
+  },
+  {
+    "tags" : "Business",
+    "abbreviation" : "MTNG",
+    "meaning" : "Meeting"
+  },
+  {
+    "abbreviation" : "MYOB",
+    "meaning" : "Mind Your Own Business"
+  },
+  {
+    "abbreviation" : "N-A-Y-L",
+    "meaning" : "In A While"
+  },
+  {
+    "tags" : "Business",
+    "abbreviation" : "NAGI",
+    "meaning" : "Not A Good Idea"
+  },
+  {
+    "abbreviation" : "NAZ",
+    "meaning" : "Name, Address, Zip"
+  },
+  {
+    "abbreviation" : "NC",
+    "meaning" : "No Comment"
+  },
+  {
+    "abbreviation" : "NIMBY",
+    "meaning" : "Not In My Backyard"
+  },
+  {
+    "abbreviation" : "NM",
+    "meaning" : "Never Mind \/ Nothing Much"
+  },
+  {
+    "abbreviation" : "NP",
+    "meaning" : "No Problem"
+  },
+  {
+    "abbreviation" : "NSFW",
+    "meaning" : "Not Safe For Work"
+  },
+  {
+    "abbreviation" : "NTIM",
+    "meaning" : "Not That It Matters"
+  },
+  {
+    "abbreviation" : "NUB",
+    "meaning" : "New person to a site or game"
+  },
+  {
+    "abbreviation" : "NVM",
+    "meaning" : "Never Mind"
+  },
+  {
+    "abbreviation" : "OATUS",
+    "meaning" : "On A Totally Unrelated Subject"
+  },
+  {
+    "abbreviation" : "OIC",
+    "meaning" : "Oh, I See"
+  },
+  {
+    "tags" : "Top24",
+    "abbreviation" : "OMG",
+    "meaning" : "Oh My God"
+  },
+  {
+    "abbreviation" : "OMW",
+    "meaning" : "On My Way"
+  },
+  {
+    "abbreviation" : "OT",
+    "meaning" : "Off Topic"
+  },
+  {
+    "tags" : "Top24",
+    "abbreviation" : "OTL",
+    "meaning" : "Out To Lunch"
+  },
+  {
+    "abbreviation" : "OTP",
+    "meaning" : "On The Phone"
+  },
+  {
+    "abbreviation" : "P911",
+    "meaning" : "Parent Alert"
+  },
+  {
+    "abbreviation" : "PAL",
+    "meaning" : "Parents Are Listening"
+  },
+  {
+    "abbreviation" : "PAW",
+    "meaning" : "Parents Are Watching"
+  },
+  {
+    "abbreviation" : "PIR",
+    "meaning" : "Parent In Room"
+  },
+  {
+    "abbreviation" : "POS",
+    "meaning" : "Parent Over Shoulder"
+  },
+  {
+    "tags" : "Top24",
+    "abbreviation" : "POV",
+    "meaning" : "Point Of View"
+  },
+  {
+    "abbreviation" : "PROP(S)",
+    "meaning" : "Proper Respect or Proper Recognition"
+  },
+  {
+    "abbreviation" : "Q4U",
+    "meaning" : "(I have a) Question For You"
+  },
+  {
+    "abbreviation" : "QIK",
+    "meaning" : "Quick"
+  },
+  {
+    "abbreviation" : "QOTD",
+    "meaning" : "Quote of the day"
+  },
+  {
+    "abbreviation" : "QSL",
+    "meaning" : "Reply "
+  },
+  {
+    "tags" : "Romance",
+    "abbreviation" : "QT",
+    "meaning" : "Cutie"
+  },
+  {
+    "abbreviation" : "RBTL",
+    "meaning" : "Read Between The Lines"
+  },
+  {
+    "tags" : "Business",
+    "abbreviation" : "RGDS",
+    "meaning" : "Regards"
+  },
+  {
+    "abbreviation" : "RN",
+    "meaning" : "Right Now"
+  },
+  {
+    "abbreviation" : "ROFL",
+    "meaning" : "Rolling On Floor Laughing"
+  },
+  {
+    "abbreviation" : "ROTFLMAO",
+    "meaning" : "Rolling On The Floor Laughing My Ass Off"
+  },
+  {
+    "abbreviation" : "R.S.V.P",
+    "meaning" : "Répondez, S'il Vous Plaît, which means \"Please reply.\""
+  },
+  {
+    "abbreviation" : "RT",
+    "meaning" : "Real Time or ReTweet"
+  },
+  {
+    "abbreviation" : "RTFM",
+    "meaning" : "Read The F***ing Manual"
+  },
+  {
+    "abbreviation" : "RTM",
+    "meaning" : "Read The Manual"
+  },
+  {
+    "abbreviation" : "RU",
+    "meaning" : "Are You"
+  },
+  {
+    "tags" : "Romance",
+    "abbreviation" : "RUOK",
+    "meaning" : "Are You Ok"
+  },
+  {
+    "abbreviation" : "SEP",
+    "meaning" : "Someone Else's Problem"
+  },
+  {
+    "abbreviation" : "SH",
+    "meaning" : "Sh** Happens"
+  },
+  {
+    "abbreviation" : "SITD",
+    "meaning" : "Still In The Dark"
+  },
+  {
+    "abbreviation" : "SLAP",
+    "meaning" : "Sounds Like A Plan"
+  },
+  {
+    "abbreviation" : "SMIM",
+    "meaning" : "Send Me An Instant Message"
+  },
+  {
+    "abbreviation" : "SO",
+    "meaning" : "Significant Other"
+  },
+  {
+    "abbreviation" : "SOL",
+    "meaning" : "Sh** Out Of Luck or Sooner Or Later"
+  },
+  {
+    "abbreviation" : "STBY",
+    "meaning" : "Sucks To Be You"
+  },
+  {
+    "abbreviation" : "STFU",
+    "meaning" : "Shut The *Freak* Up"
+  },
+  {
+    "tags" : "Top24",
+    "abbreviation" : "SWAK",
+    "meaning" : "Sent With A Kiss"
+  },
+  {
+    "tags" : "Romance",
+    "abbreviation" : "SWALK",
+    "meaning" : "Sent With A Loving Kiss"
+  },
+  {
+    "abbreviation" : "TFH",
+    "meaning" : "Thread From Hell"
+  },
+  {
+    "tags" : "Business",
+    "abbreviation" : "TIA",
+    "meaning" : "Thanks In Advance"
+  },
+  {
+    "tags" : "Top24",
+    "abbreviation" : "THNX",
+    "meaning" : "Thanks"
+  },
+  {
+    "tags" : "Business",
+    "abbreviation" : "THX",
+    "meaning" : "Thanks"
+  },
+  {
+    "abbreviation" : "TX",
+    "meaning" : "Thanks"
+  },
+  {
+    "abbreviation" : "TKS",
+    "meaning" : "Thanks"
+  },
+  {
+    "abbreviation" : "THKS",
+    "meaning" : "Thanks"
+  },
+  {
+    "tags" : "Top24",
+    "abbreviation" : "TLC",
+    "meaning" : "Tender Loving Care"
+  },
+  {
+    "abbreviation" : "TMI",
+    "meaning" : "Too Much Information"
+  },
+  {
+    "tags" : "Romance",
+    "abbreviation" : "TOY",
+    "meaning" : "Thinking Of You"
+  },
+  {
+    "tags" : "Top24",
+    "abbreviation" : "TTYL",
+    "meaning" : "Talk To You Later or Type To You Later"
+  },
+  {
+    "abbreviation" : "TYVM",
+    "meaning" : "Thank You Very Much"
+  },
+  {
+    "tags" : "Top24",
+    "abbreviation" : "2moro",
+    "meaning" : "Tomorrow"
+  },
+  {
+    "tags" : "Top24",
+    "abbreviation" : "2nite",
+    "meaning" : "Tonight"
+  },
+  {
+    "abbreviation" : "UCMU",
+    "meaning" : "You Crack Me Up"
+  },
+  {
+    "abbreviation" : "UGTBK",
+    "meaning" : "You've Got To Be Kidding"
+  },
+  {
+    "abbreviation" : "UOK",
+    "meaning" : "(Are) You OK?"
+  },
+  {
+    "abbreviation" : "UR",
+    "meaning" : "Your \/ You Are"
+  },
+  {
+    "abbreviation" : "URW",
+    "meaning" : "You Are Welcome"
+  },
+  {
+    "abbreviation" : "VBG",
+    "meaning" : "Very Big Grin"
+  },
+  {
+    "abbreviation" : "VFM",
+    "meaning" : "Value For Money"
+  },
+  {
+    "abbreviation" : "VGC",
+    "meaning" : "Very Good Condition"
+  },
+  {
+    "abbreviation" : "VM",
+    "meaning" : "Voice Mail"
+  },
+  {
+    "abbreviation" : "VSF",
+    "meaning" : "Very Sad Face"
+  },
+  {
+    "abbreviation" : "W8",
+    "meaning" : "Wait"
+  },
+  {
+    "abbreviation" : "WB",
+    "meaning" : "Welcome Back"
+  },
+  {
+    "abbreviation" : "WEG",
+    "meaning" : "Wicked Evil Grin"
+  },
+  {
+    "tags" : "Business",
+    "abbreviation" : "WOTTM",
+    "meaning" : "What Time"
+  },
+  {
+    "tags" : "Top24",
+    "abbreviation" : "WTF",
+    "meaning" : "What The F***"
+  },
+  {
+    "abbreviation" : "WYCM",
+    "meaning" : "Will You Call Me?"
+  },
+  {
+    "abbreviation" : "WYWH",
+    "meaning" : "Wish You Were Here"
+  },
+  {
+    "abbreviation" : "X",
+    "meaning" : "Kiss"
+  },
+  {
+    "abbreviation" : "XLNT",
+    "meaning" : "Excellent"
+  },
+  {
+    "abbreviation" : "XME",
+    "meaning" : "Excuse Me"
+  },
+  {
+    "tags" : "Romance",
+    "abbreviation" : "XOXO",
+    "meaning" : "Hugs And Kisses"
+  },
+  {
+    "abbreviation" : "XYZ",
+    "meaning" : "Examine your zipper"
+  },
+  {
+    "abbreviation" : "Y?",
+    "meaning" : "Why?"
+  },
+  {
+    "abbreviation" : "YARLY",
+    "meaning" : "Ya, really?"
+  },
+  {
+    "abbreviation" : "YD",
+    "meaning" : "Yesterday"
+  },
+  {
+    "abbreviation" : "YTB",
+    "meaning" : "You're The Best"
+  },
+  {
+    "abbreviation" : "Y2K",
+    "meaning" : "You're Too Kind"
+  },
+  {
+    "abbreviation" : "Z",
+    "meaning" : "Zero"
+  },
+  {
+    "abbreviation" : "Z%",
+    "meaning" : "Zoo"
+  },
+  {
+    "abbreviation" : "ZH",
+    "meaning" : "Sleeping Hour"
+  },
+  {
+    "abbreviation" : "ZOT",
+    "meaning" : "Zero Tolerance"
+  },
+  {
+    "abbreviation" : "ZUP",
+    "meaning" : "What's up?"
+  }
+]

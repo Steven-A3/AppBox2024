@@ -300,6 +300,7 @@ A3InstructionViewControllerDelegate>
 - (NSArray *)originalMenuItems {
 	if (IS_IPHONE) {
 	return @[
+			 @{kA3AppsMenuName:A3AppName_Abbreviation},
 			 @{kA3AppsMenuName:A3AppName_Magnifier},
 			 @{kA3AppsMenuName:A3AppName_Random},
 			 @{kA3AppsMenuName:A3AppName_Clock},
@@ -329,6 +330,7 @@ A3InstructionViewControllerDelegate>
 			 ];
 	} else {
 		return @[
+				 @{kA3AppsMenuName:A3AppName_Abbreviation},
 				 @{kA3AppsMenuName:A3AppName_Magnifier},
 				 @{kA3AppsMenuName:A3AppName_Random},
 				 @{kA3AppsMenuName:A3AppName_Clock},
@@ -399,6 +401,16 @@ A3InstructionViewControllerDelegate>
 
 				[[NSUserDefaults standardUserDefaults] setObject:_menuItems forKey:A3MainMenuHexagonMenuItems];
 			}
+		}
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsMainMenuHexagonShouldAddAbbreviationMenu]) {
+			[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3SettingsMainMenuHexagonShouldAddAbbreviationMenu];
+
+			NSDictionary *menuItem = @{kA3AppsMenuName:A3AppName_Pedometer};
+			if ([_menuItems indexOfObject:menuItem] == NSNotFound) {
+				[_menuItems insertObject:menuItem atIndex:0];
+			}
+
+			[[NSUserDefaults standardUserDefaults] setObject:_menuItems forKey:A3MainMenuHexagonMenuItems];
 		}
 		FNLOG(@"%@", _menuItems);
 	}

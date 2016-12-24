@@ -42,6 +42,8 @@ extern NSString *const A3SettingsMainMenuHexagonShouldAddQRCodeMenu;
 extern NSString *const A3SettingsMainMenuGridShouldAddQRCodeMenu;
 extern NSString *const A3SettingsMainMenuHexagonShouldAddPedometerMenu;
 extern NSString *const A3SettingsMainMenuGridShouldAddPedometerMenu;
+extern NSString *const A3SettingsMainMenuHexagonShouldAddAbbreviationMenu;
+extern NSString *const A3SettingsMainMenuGridShouldAddAbbreviationMenu;
 
 #pragma mark ------ Main Menu
 extern NSString *const A3MainMenuDataEntityFavorites;
