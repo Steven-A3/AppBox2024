@@ -23,12 +23,14 @@
 @property (nonatomic, strong) NSTimer *clockTickTimer;
 @property (nonatomic, strong) NSTimer *weatherTimer;
 @property (nonatomic, assign) NSTimeInterval lastRequestTime;
+@property (nonatomic, strong) AFHTTPRequestOperation *weatherOperation;
 
 @end
 
 
 @implementation A3ClockDataManager {
 	BOOL _refreshWholeClock;
+	BOOL _weatherUpdateInProgress;
 }
 
 - (id)init {
@@ -369,72 +371,105 @@
 // select * from weather.forecast where woeid in (select woeid from geo.places(1) where text="nome, ak")
 // https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22nome%2C%20ak%22)&format=json
 - (void)getWeatherWithWOEID:(NSString *)WOEID {
+	if (_weatherOperation) {
+		return;
+	}
 	NSString *ydnQuery = [NSString stringWithFormat:@"select * from weather.forecast where woeid in (%@)", WOEID];
 	NSString *urlString = [NSString stringWithFormat:@"https://query.yahooapis.com/v1/public/yql?q=%@&format=json", [ydnQuery stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 	FNLOG(@"%@", urlString);
 
 	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+
+	_weatherOperation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+	_weatherOperation.responseSerializer = [AFJSONResponseSerializer serializer];
 	
-	AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-	operation.responseSerializer = [AFJSONResponseSerializer serializer];
-	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id JSON) {
-//		FNLOG(@"%@", JSON);
-		self.clockInfo.currentWeather = [A3Weather new];
-		self.clockInfo.currentWeather.unit = [[A3UserDefaults standardUserDefaults] clockUsesFahrenheit] ? SCWeatherUnitFahrenheit : SCWeatherUnitCelsius;
-		// Results Unit
-		NSDictionary *results = JSON[@"query"][@"results"][@"channel"];
-		NSString *resultUnit = results[@"units"][@"temperature"];
+	__typeof(self) __weak weakSelf = self;
+	[_weatherOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id JSON) {
+		/*
+		 
+		 2016-12-29 20:18:56.836 AppBox3[22466:2058763] -[A3ClockDataManager getWeatherWithWOEID:] line 374, https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(56684367)&format=json
+		 2016-12-29 20:18:57.919 AppBox3[22466:2057852] __42-[A3ClockDataManager getWeatherWithWOEID:]_block_invoke line 381, {
+		 query =     {
+			count = 0;
+			created = "2016-12-29T11:18:57Z";
+			lang = "en-us";
+			results = "<null>";
+		 };
+		 }
+		 
+		 */
+		FNLOG(@"%@", JSON);
+
+		if (JSON[@"query"] && ([JSON[@"query"][@"count"] integerValue] > 0) && [JSON[@"query"][@"results"] isKindOfClass:[NSDictionary class]]) {
+			A3ClockInfo *clockInfo = weakSelf.clockInfo;
+			clockInfo.currentWeather = [A3Weather new];
+			clockInfo.currentWeather.unit = [[A3UserDefaults standardUserDefaults] clockUsesFahrenheit] ? SCWeatherUnitFahrenheit : SCWeatherUnitCelsius;
+			// Results Unit
+			NSDictionary *results = JSON[@"query"][@"results"][@"channel"];
+			NSString *resultUnit = results[@"units"][@"temperature"];
+			
+			clockInfo.currentWeather.representation = results[@"item"][@"condition"][@"text"];
+			[clockInfo.currentWeather setCurrentTemperature:[results[@"item"][@"condition"][@"temp"] doubleValue] fromUnit:resultUnit];
+			clockInfo.currentWeather.condition = (A3WeatherCondition)[results[@"item"][@"condition"][@"code"] integerValue];
+			
+			NSDictionary *forecast = results[@"item"][@"forecast"][0];
+			[clockInfo.currentWeather setHighTemperature:[forecast[@"high"] doubleValue] fromUnit:resultUnit];
+			[clockInfo.currentWeather setLowTemperature:[forecast[@"low"] doubleValue] fromUnit:resultUnit];
+			
+			clockInfo.currentWeather.weatherAtmosphere = results[@"atmosphere"];
+			
+			
+			if ([weakSelf.delegate respondsToSelector:@selector(refreshWeather:)]) {
+				[weakSelf.delegate refreshWeather:clockInfo];
+			}
+			[weakSelf.weatherTimer invalidate];
+			weakSelf.weatherTimer = [NSTimer scheduledTimerWithTimeInterval:60 * 60 target:weakSelf selector:@selector(updateWeather) userInfo:nil repeats:NO];
+		} else {
+			[weakSelf.weatherTimer invalidate];
+			weakSelf.weatherTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:weakSelf selector:@selector(updateWeather) userInfo:nil repeats:NO];
+		}
+
+		weakSelf.locationManager = nil;
 		
-		self.clockInfo.currentWeather.representation = results[@"item"][@"condition"][@"text"];
-		[_clockInfo.currentWeather setCurrentTemperature:[results[@"item"][@"condition"][@"temp"] doubleValue] fromUnit:resultUnit];
-		_clockInfo.currentWeather.condition = (A3WeatherCondition)[results[@"item"][@"condition"][@"code"] integerValue];
-
-		NSDictionary *forecast = results[@"item"][@"forecast"][0];
-		[_clockInfo.currentWeather setHighTemperature:[forecast[@"high"] doubleValue] fromUnit:resultUnit];
-		[_clockInfo.currentWeather setLowTemperature:[forecast[@"low"] doubleValue] fromUnit:resultUnit];
-
-		_clockInfo.currentWeather.weatherAtmosphere = results[@"atmosphere"];
-
-		if ([_delegate respondsToSelector:@selector(refreshWeather:)]) {
-			[_delegate refreshWeather:self.clockInfo];
-		}
-		if (!_weatherTimer) {
-			_weatherTimer = [NSTimer scheduledTimerWithTimeInterval:60 * 60 target:self selector:@selector(updateWeather) userInfo:nil repeats:NO];
-		}
-
-		_locationManager = nil;
+		weakSelf.weatherOperation = nil;
+		_weatherUpdateInProgress = NO;
+		
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		[self.locationManager startUpdatingLocation];
+		[weakSelf.locationManager startUpdatingLocation];
+		weakSelf.weatherOperation = nil;
+		_weatherUpdateInProgress = NO;
 	}];
 	
-	[operation start];
+	[_weatherOperation start];
 }
 
 - (void)getWOEIDWithLocation:(CLLocation *)location {
-	if ([[NSDate date] timeIntervalSinceReferenceDate] - _lastRequestTime < 5) {
-		return;
-	}
-	
-	_lastRequestTime = [[NSDate date] timeIntervalSinceReferenceDate];
-
 	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://query.yahooapis.com/v1/public/yql?q=select%%20woeid%%20from%%20geo.places%%20where%%20text%%3D%%22(%f,%f)%%22%%20limit%%201&diagnostics=false&format=json",
 									   location.coordinate.latitude, location.coordinate.longitude]];
 
+	FNLOG(@"%@", url.absoluteString);
+	
 	NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
 	NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration];
 	NSURLSessionDataTask *task = [session dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-		if (error) {
-			return;
-		}
-		NSError *parseError;
-		NSDictionary *woeidData = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&parseError];
-		if (parseError) {
-			return;
-		}
-		NSString *woeid = woeidData[@"query"][@"results"][@"place"][@"woeid"];
-		if ([woeid length]) {
-			[self getWeatherWithWOEID:woeid];
-		}
+		dispatch_async(dispatch_get_main_queue(), ^{
+			if (error) {
+				_weatherUpdateInProgress = NO;
+				return;
+			}
+			NSError *parseError;
+			NSDictionary *woeidData = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&parseError];
+			if (parseError) {
+				_weatherUpdateInProgress = NO;
+				return;
+			}
+			FNLOG(@"%@", woeidData);
+			
+			NSString *woeid = woeidData[@"query"][@"results"][@"place"][@"woeid"];
+			if ([woeid length]) {
+				[self getWeatherWithWOEID:woeid];
+			}
+		});
 	}];
 	[task resume];
 
@@ -442,6 +477,7 @@
 }
 
 - (void)updateWeather {
+	[_weatherTimer invalidate];
 	_weatherTimer = nil;
 
 	if ([[A3AppDelegate instance].reachability isReachable]) {
@@ -452,7 +488,10 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
 	[manager stopMonitoringSignificantLocationChanges];
 
-	[self getWOEIDWithLocation:locations[0]];
+	if (!_weatherUpdateInProgress) {
+		_weatherUpdateInProgress = YES;
+		[self getWOEIDWithLocation:locations[0]];
+	}
 }
 
 - (NSString *)autoDimString {
