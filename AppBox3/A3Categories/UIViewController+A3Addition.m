@@ -217,7 +217,6 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
     if (viewController) {
         [navigationController pushViewController:viewController animated:animated];
     }
-	[[A3AppDelegate instance] didFinishPushViewController];
 }
 
 - (void)showNavigationBarOn:(UINavigationController *)targetController {

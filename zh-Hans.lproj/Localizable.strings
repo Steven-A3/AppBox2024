@@ -935,8 +935,10 @@
 "Syncing...(%@)" = "同步...(%@)";
 "Detail" = "详细";
 
-"Data migration is in progress.\nEnter Encryption Key for Wallet." = "数据迁移正在进行中。\
-输入加密密钥的钱包。 ";
+"Data migration is in progress.\nEnter Encryption Key for Wallet." = "数据迁移正在进行中。
+输入加密密钥的钱包。
+安全设置已更改。
+请在迁移后的设置中再次设置密码。";
 "Data migration is in progress." = "数据迁移正在进行中。";
 "Encryption key did not match." = "加密密钥不匹配。";
 "No hint" = "没有任何提示。";
@@ -975,7 +977,6 @@
 
 "Jewish Holidays" = "犹太假日";
 
-"'%@' is back." = "'%@'又回来了。";
 "Thanks" = "非常感谢";
 "Thank you very much for purchasing the AppBox Pro." = "非常感谢您购买AppBox临。";
 "No Transactions to Restore" = "无可还原交易";

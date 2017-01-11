@@ -93,7 +93,8 @@
                 _headerLabel.text = NSLocalizedString(@"Data migration is in progress.", nil);
             } else {
                 _headerLabel.text = NSLocalizedString(@"Data migration is in progress.\nEnter Encryption Key for Wallet.", nil);
-                _headerLabel.numberOfLines = 2;
+				NSArray *components = [_headerLabel.text componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+				_headerLabel.numberOfLines = [components count];
             }
         } else {
             _headerLabel.text = NSLocalizedString(@"Enter your passcode", @"Enter your passcode");
@@ -662,6 +663,7 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 	if (_isWalletEncryptionKeyMode) {
 		if ([_passwordField.text length] && [self.delegate verifyEncryptionKeyEncryptionKeyCheckViewController:_passwordField.text]) {
+			_passcodeValid = YES;
 			[self dismissMe];
 			return YES;
 		} else {

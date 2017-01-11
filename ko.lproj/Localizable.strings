@@ -930,8 +930,10 @@
 
 "Detail" = "세부 정보";
 
-"Data migration is in progress.\nEnter Encryption Key for Wallet." = "데이터를 변환하고 있습니다.\
-전자지갑 암호키를 입력해 주세요.";
+"Data migration is in progress.\nEnter Encryption Key for Wallet." = "데이터를 변환하고 있습니다.
+전자지갑 암호키를 입력해 주세요.
+보안 설정이 변경됩니다.
+변환 후 설정에서 비밀번호를 다시 설정하십시오.";
 "Data migration is in progress." = "데이터를 변환하고 있습니다.";
 "Encryption key did not match." = "암호키가 일치하지 않습니다.";
 "No hint" = "힌트가 없습니다.";
@@ -970,7 +972,6 @@
 
 "Jewish Holidays" = "유대교 휴일";
 
-"'%@' is back." = "'%@'가 추가되었습니다.";
 "Thanks" = "감사합니다.";
 "Thank you very much for purchasing the AppBox Pro." = "AppBox Pro 구매를 진심으로 감사드립니다.";
 "No Transactions to Restore" = "복원할 구매 내역이 없습니다.";

@@ -35,8 +35,6 @@
 #import "NSManagedObject+extension.h"
 #import "A3PasswordViewController.h"
 
-NSString *const A3NotificationDataMigrationFinished = @"A3NotificationDataMigrationFinished";
-
 NSString *const kKeyForDDayTitle 					= @"kKeyForDDayTitle";
 NSString *const kKeyForDDayDate						= @"kKeyForDDayDate";
 NSString *const kKeyForDDayEnds						= @"kKeyForDDayEnds";
@@ -97,7 +95,6 @@ NSString *const kKeyForDDayShowCountdown			= @"kKeyForDDayShowCountdown";
 	if ([_delegate respondsToSelector:@selector(migrationManager:didFinishMigration:)]) {
 		[_delegate migrationManager:self didFinishMigration:YES];
 	}
-	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationDataMigrationFinished object:nil];
 
 	if (_migrateV1WithDaysCounterPhoto) {
 		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Notice", nil)

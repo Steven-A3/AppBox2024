@@ -927,8 +927,10 @@
 "Syncing...(%@)" = "同期化...(%@)";
 "Detail" = "详细";
 
-"Data migration is in progress.\nEnter Encryption Key for Wallet." = "データを変換しています。\
-電子財布暗号化キーを入力してください。";
+"Data migration is in progress.\nEnter Encryption Key for Wallet." = "データを変換しています。
+電子財布暗号化キーを入力してください。
+セキュリティ設定が変更されます。
+移行後に設定でパスコードを再度設定してください。";
 "Data migration is in progress." = "データを変換しています。";
 "Encryption key did not match." = "無効なキーです。再度入力してください。";
 "No hint" = "ヒントはありません。";
@@ -969,7 +971,6 @@
 
 "Jewish Holidays" = "ユダヤ教の祝日";
 
-"'%@' is back." = "'%@'は戻って追加されます。";
 "Thanks" = "ありがとうございます";
 "Thank you very much for purchasing the AppBox Pro." = "AppBox Proの購入ありがとうございました。";
 "No Transactions to Restore" = "復元するトランザクションはありません";

@@ -97,7 +97,9 @@
 "Payment" = "付款";
 "I'd like to share a calculation with you." = "我想與你分享一個計算。";
 "Data migration is in progress.\nEnter Encryption Key for Wallet." = "數據遷移正在進行中。
-輸入加密密鑰的錢包。";
+輸入加密密鑰的錢包。
+安全設置已更改。
+請在遷移後的設置中再次設置密碼。";
 "Start date is not a lunar date." = "開始日期不是陰曆日期。";
 "Duration" = "期間";
 "Red" = "紅色";
@@ -791,7 +793,6 @@
 
 "Jewish Holidays" = "猶太教假日";
 
-"'%@' is back." = "'%@'又回來了。";
 "Thanks" = "謝謝";
 "Thank you very much for purchasing the AppBox Pro." = "非常感謝您購買AppBox臨。";
 "No Transactions to Restore" = "無可復原交易";

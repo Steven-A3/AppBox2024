@@ -931,8 +931,11 @@ Erneut versuchen.";
 
 "Detail" = "Detail";
 
-"Data migration is in progress.\nEnter Encryption Key for Wallet." = "Datenmigration ist in Arbeit.\
-Geben Sie Verschlüsselung für die Geldbörse.";
+"Data migration is in progress.\nEnter Encryption Key for Wallet." = "Datenmigration ist in Arbeit.
+Geben Sie Verschlüsselung für die Geldbörse.
+Die Sicherheitseinstellungen werden geändert.
+Bitte richten Sie in den Einstellungen nach
+der Migration den Passcode erneut ein.";
 "Data migration is in progress." = "Datenmigration ist in Arbeit.";
 "Encryption key did not match." = "Falscher Schlüssel. Versuchen Sie es erneut.";
 "No hint" = "Kein Hinweis";
@@ -971,7 +974,6 @@ Geben Sie Verschlüsselung für die Geldbörse.";
 
 "Jewish Holidays" = "Jüdische Feiertage";
 
-"'%@' is back." = "'%@' hinzugefügt wird.";
 "Thanks" = "Danke";
 "Thank you very much for purchasing the AppBox Pro." = "Vielen Dank für den Kauf des AppBox Pro.";
 "No Transactions to Restore" = "Keine Transaktionen zum Wiederherstellen";

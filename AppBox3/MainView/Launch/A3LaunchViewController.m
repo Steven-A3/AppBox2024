@@ -18,22 +18,19 @@
 #import "A3KeychainUtils.h"
 #import "MMDrawerController.h"
 
-NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhatsNew_3_0";
 NSString *const A3UserDefaultsDidShowLeftViewOnceiPad = @"A3UserDefaultsDidShowLeftViewOnceiPad";
 
 @interface A3LaunchViewController () <UIViewControllerTransitioningDelegate,
-		UIAlertViewDelegate, A3DataMigrationManagerDelegate>
+		UIAlertViewDelegate>
 
 @property (nonatomic, strong) UIStoryboard *launchStoryboard;
 @property (nonatomic, strong) A3LaunchSceneViewController *currentSceneViewController;
-@property (nonatomic, strong) A3DataMigrationManager *migrationManager;
 
 @end
 
 @implementation A3LaunchViewController {
 	NSUInteger _sceneNumber;
 	BOOL _cloudButtonUsed;
-    BOOL _migrationIsInProgress;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -107,84 +104,61 @@ NSString *const A3UserDefaultsDidShowLeftViewOnceiPad = @"A3UserDefaultsDidShowL
 		
 		mainMenuTableViewController.pushClockViewControllerOnPasscodeFailure = NO;
 		
-		if (!_migrationIsInProgress && [appDelegate shouldMigrateV1Data]) {
-			_migrationIsInProgress = YES;
-			self.migrationManager = [[A3DataMigrationManager alloc] init];
-			self.migrationManager.delegate = self;
-			if ([_migrationManager walletDataFileExists] && ![_migrationManager walletDataWithPassword:nil]) {
-				_migrationManager.delegate = self;
-				[_migrationManager askWalletPassword];
-			} else {
-				[_migrationManager migrateV1DataWithPassword:nil];
-			}
-		}
-		
 		if (![appDelegate showLockScreen]) {
-			[appDelegate updateStartOption];
-
-			if (appDelegate.startOptionOpenClockOnce) {
-				if ([appDelegate isMainMenuStyleList]) {
-					[appDelegate.mainMenuViewController openClockApp];
-				} else {
-					[appDelegate launchAppNamed:A3AppName_Clock verifyPasscode:NO animated:NO];
-					[appDelegate updateRecentlyUsedAppsWithAppName:A3AppName_Clock];
-					appDelegate.homeStyleMainMenuViewController.activeAppName = [A3AppName_Clock copy];
-				}
-				[appDelegate setStartOptionOpenClockOnce:NO];
-			} else {
-				if ([appDelegate isMainMenuStyleList]) {
-					if (![[appDelegate mainMenuViewController] openRecentlyUsedMenu:YES]) {
-						[appDelegate setStartOptionOpenClockOnce:NO];
-						if (![appDelegate.mainMenuViewController openRecentlyUsedMenu:YES]) {
-							[appDelegate.mainMenuViewController openClockApp];
-						}
-					}
-					if (IS_IPAD) {
-						/**
-						 *  설치 후 처음 한번 Menu 방식을 사용할 때, 왼쪽 메뉴를 보여준다.
-						 */
-						if (![[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowLeftViewOnceiPad]) {
-							[appDelegate.rootViewController_iPad setShowLeftView:YES];
-							[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidShowLeftViewOnceiPad];
-							[[NSUserDefaults standardUserDefaults] synchronize];
-						}
-					}
-				} else {
-					NSString *startingApp = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
-					[appDelegate popStartingAppInfo];
-					if ([startingApp length]) {
-						[appDelegate launchAppNamed:startingApp verifyPasscode:NO animated:NO];
-						appDelegate.homeStyleMainMenuViewController.activeAppName = [startingApp copy];
-					}
-				}
-			}
-			[appDelegate downloadDataFiles];
-
-			double delayInSeconds = 1.0;
-			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-				if (![self askRestorePurchase]) {
-					[[A3AppDelegate instance] alertWhatsNew];
-				}
-			});
+			[self setupMainViewController];
 		}
 	}
 }
 
-- (void)migrationManager:(A3DataMigrationManager *)manager didFinishMigration:(BOOL)success {
-    [[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidShowWhatsNew_3_0];
-    [[A3UserDefaults standardUserDefaults] synchronize];
-
-	[_currentSceneViewController showButtons];
-
+- (void)setupMainViewController {
 	A3AppDelegate *appDelegate = [A3AppDelegate instance];
-	appDelegate.shouldMigrateV1Data = NO;
-	_migrationManager = nil;
-
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kA3ApplicationLastRunVersion];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
-    _migrationIsInProgress = NO;
+	[appDelegate updateStartOption];
+	
+	if (appDelegate.startOptionOpenClockOnce) {
+		if ([appDelegate isMainMenuStyleList]) {
+			[appDelegate.mainMenuViewController openClockApp];
+		} else {
+			[appDelegate launchAppNamed:A3AppName_Clock verifyPasscode:NO animated:NO];
+			[appDelegate updateRecentlyUsedAppsWithAppName:A3AppName_Clock];
+			appDelegate.homeStyleMainMenuViewController.activeAppName = [A3AppName_Clock copy];
+		}
+		[appDelegate setStartOptionOpenClockOnce:NO];
+	} else {
+		if ([appDelegate isMainMenuStyleList]) {
+			if (![[appDelegate mainMenuViewController] openRecentlyUsedMenu:YES]) {
+				[appDelegate setStartOptionOpenClockOnce:NO];
+				if (![appDelegate.mainMenuViewController openRecentlyUsedMenu:YES]) {
+					[appDelegate.mainMenuViewController openClockApp];
+				}
+			}
+			if (IS_IPAD) {
+				/**
+				 *  설치 후 처음 한번 Menu 방식을 사용할 때, 왼쪽 메뉴를 보여준다.
+				 */
+				if (![[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowLeftViewOnceiPad]) {
+					[appDelegate.rootViewController_iPad setShowLeftView:YES];
+					[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidShowLeftViewOnceiPad];
+					[[NSUserDefaults standardUserDefaults] synchronize];
+				}
+			}
+		} else {
+			NSString *startingApp = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
+			[appDelegate popStartingAppInfo];
+			if ([startingApp length]) {
+				[appDelegate launchAppNamed:startingApp verifyPasscode:NO animated:NO];
+				appDelegate.homeStyleMainMenuViewController.activeAppName = [startingApp copy];
+			}
+		}
+	}
+	[appDelegate downloadDataFiles];
+	
+	double delayInSeconds = 1.0;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		if (![self askRestorePurchase]) {
+			[[A3AppDelegate instance] alertWhatsNew];
+		}
+	});
 }
 
 #pragma mark - Ask Restore Purchase

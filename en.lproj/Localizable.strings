@@ -858,8 +858,11 @@
 "Syncing...(%@)" = "Syncing...(%@)";
 "Detail" = "Detail";
 
-"Data migration is in progress.\nEnter Encryption Key for Wallet." = "Data migration is in progress.\
-Enter Encryption Key for Wallet.";
+"Data migration is in progress.\nEnter Encryption Key for Wallet." = "Data migration is in progress.
+Enter Encryption Key for Wallet.
+The Security Settings are changed.
+Please set up the passcode in the Settings
+after the migration.";
 "Data migration is in progress." = "Data migration is in progress.";
 "Encryption key did not match." = "Encryption key did not match.";
 "No hint" = "No hint";
@@ -898,7 +901,6 @@ Enter Encryption Key for Wallet.";
 "%@ requires camera access." = "%@ requires camera access.";
 
 "Jewish Holidays" = "Jewish Holidays";
-"'%@' is back." = "'%@' is back.";
 "Thanks" = "Thanks";
 "Thank you very much for purchasing the AppBox Pro." = "Thank you very much for purchasing the AppBox Pro.";
 "No Transactions to Restore" = "No Transactions to Restore";

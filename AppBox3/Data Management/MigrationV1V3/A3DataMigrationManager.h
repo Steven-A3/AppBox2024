@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-extern NSString *const A3NotificationDataMigrationFinished;
-
 @class A3DataMigrationManager;
 
 @protocol A3DataMigrationManagerDelegate <NSObject>

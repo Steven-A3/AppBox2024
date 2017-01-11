@@ -923,7 +923,11 @@
 "Syncing...(%@)" = "Synchronisme(%@)";
 "Detail" = "Détail";
 
-"Data migration is in progress.\nEnter Encryption Key for Wallet." = "La migration des données est en cours. Entrez la clé de cryptage pour le portefeuille.";
+"Data migration is in progress.\nEnter Encryption Key for Wallet." = "La migration des données est en cours. 
+Entrez la clé de cryptage pour le portefeuille.
+Les paramètres de sécurité sont modifiés.
+Veuillez réinitialiser le mot de passe dans
+les paramètres après la migration.";
 "Data migration is in progress." = "La migration des données est en cours.";
 "Encryption key did not match." = "La clé de chiffrement ne correspondent pas.";
 "No hint" = "Aucune indication.";
@@ -960,7 +964,6 @@
 
 "Jewish Holidays" = "Jours fériés juifs";
 
-"'%@' is back." = "'%@' est de retour.";
 "Thanks" = "Merci";
 "Thank you very much for purchasing the AppBox Pro." = "Merci beaucoup pour l'achat de l'AppBox Pro.";
 "No Transactions to Restore" = "Aucune transaction à restaurer";

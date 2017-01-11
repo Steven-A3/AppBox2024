@@ -87,7 +87,6 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 @implementation A3AppDelegate {
 	BOOL _appIsNotActiveYet;
 	BOOL _backgroundDownloadIsInProgress;
-	BOOL _needShowAlertV3_8NewFeature;
 	BOOL _statusBarHiddenBeforeAdsAppear;
 	UIStatusBarStyle _statusBarStyleBeforeAdsAppear;
 }
@@ -183,9 +182,6 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 		if (!_shouldMigrateV1Data) {
 			[self migrateToV3_4_Holidays];
 		}
-	}
-	if (_previousVersion && [_previousVersion doubleValue] < 3.8) {
-		_needShowAlertV3_8NewFeature = YES;
 	}
 	if (_previousVersion && [_previousVersion doubleValue] == 4.0) {
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddQRCodeMenu];
@@ -352,8 +348,6 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 	[self applicationDidBecomeActive_passcodeAfterLaunch:_appIsNotActiveYet];
 	
 	[self fetchPushNotification];
-
-	[self updateHolidayNations];
 
 	if (_appIsNotActiveYet) {
 		_appIsNotActiveYet = NO;
@@ -1210,18 +1204,6 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 	FNLOG();
 }
 
-- (void)didFinishPushViewController {
-	if (_needShowAlertV3_8NewFeature) {
-		_needShowAlertV3_8NewFeature = NO;
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-															message:[NSString stringWithFormat:NSLocalizedString(@"'%@' is back.", @"'%@' is back to AppBox Pro."), NSLocalizedString(@"Level", nil)]
-														   delegate:nil
-												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-												  otherButtonTitles:nil];
-		[alertView show];
-	}
-}
-
 #pragma mark - Google AdMob
 
 - (BOOL)shouldPresentAd {
@@ -1527,13 +1509,25 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_2_6 = @"A3UserDefaultsDidAlertWh
 		return;
 	}
 	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidAlertWhatsNew4_2_6];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"What's New in V4.2.6", nil)
-														message:NSLocalizedString(@"WhatsNew4_2_6", nil)
-													   delegate:nil
-											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-											  otherButtonTitles:nil];
-	[alertView show];
+	double delayInSeconds = 0.5;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"What's New in V4.2.6", nil)
+															message:NSLocalizedString(@"WhatsNew4_2_6", nil)
+														   delegate:self
+												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+												  otherButtonTitles:nil];
+		alertView.tag = 8730394;
+		[alertView show];
+	});
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+	if (alertView.tag == 8730394) {
+		[self updateHolidayNations];
+	}
 }
 
 @end

@@ -916,8 +916,11 @@
 
 "Detail" = "Dettaglio";
 
-"Data migration is in progress.\nEnter Encryption Key for Wallet." = "La migrazione dei dati è in corso.\
-Inserire chiave di crittografia per il portafoglio.";
+"Data migration is in progress.\nEnter Encryption Key for Wallet." = "La migrazione dei dati è in corso.
+Inserire chiave di crittografia per il portafoglio.
+Le impostazioni di sicurezza vengono modificate.
+Si prega di impostare password di nuovo nelle
+impostazioni dopo la migrazione.";
 "Data migration is in progress." = "La migrazione dei dati è in corso.";
 "Encryption key did not match." = "Chiave di crittografia non ha prodotto risultati.";
 "No hint" = "Nessun suggerimento.";
@@ -955,7 +958,6 @@ Inserire chiave di crittografia per il portafoglio.";
 
 "Jewish Holidays" = "Festività ebraiche";
 
-"'%@' is back." = "Si aggiunge la funzione '%@'.";
 "Thanks" = "Grazie";
 "Thank you very much for purchasing the AppBox Pro." = "La ringrazio molto per aver acquistato il AppBox Pro.";
 "No Transactions to Restore" = "Nessuna transazione da ripristinare";

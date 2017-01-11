@@ -8,7 +8,7 @@
 
 #import "A3AppDelegate.h"
 
-@interface A3AppDelegate (passcode) <A3PasscodeViewControllerDelegate>
+@interface A3AppDelegate (passcode) <A3PasscodeViewControllerDelegate, A3DataMigrationManagerDelegate>
 
 - (BOOL)didPasscodeTimerEnd;
 - (void)saveTimerStartTime;

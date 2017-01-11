@@ -922,8 +922,11 @@
 "Syncing...(%@)" = "Synchonizacja...(%@)";
 "Detail" = "Szczegóły";
 
-"Data migration is in progress.\nEnter Encryption Key for Wallet." = "Migracja danych jest w toku.\
-Wprowadź klucz szyfrowania dla portfela.";
+"Data migration is in progress.\nEnter Encryption Key for Wallet." = "Migracja danych jest w toku.
+Wprowadź klucz szyfrowania dla portfela.
+Ustawienia zabezpieczeń są zmieniane.
+Proszę ustawić hasło ponownie w
+ustawieniach po migracji.";
 "Data migration is in progress." = "Migracja danych jest w toku.";
 "Encryption key did not match." = "Klucz szyfrowania nie dało.";
 "No hint" = "Śladu.";
@@ -961,7 +964,6 @@ Wprowadź klucz szyfrowania dla portfela.";
 
 "Jewish Holidays" = "Święta żydowskie";
 
-"'%@' is back." = "'%@' jest z powrotem.";
 "Thanks" = "Dziękujemy";
 "Thank you very much for purchasing the AppBox Pro." = "Dziękuję bardzo za zakup AppBox Pro.";
 "No Transactions to Restore" = "Brak transakcji do odtworzenia";

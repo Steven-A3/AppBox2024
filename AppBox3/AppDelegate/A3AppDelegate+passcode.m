@@ -305,17 +305,44 @@
 				}
 			}
 		}
-	}
-	dispatch_async(dispatch_get_main_queue(), ^{
-		if (!self.isTouchIDEvaluationInProgress && !self.passcodeViewController.view.superview) {
-			[self removeSecurityCoverView];
-			[self presentInterstitialAds];
-			FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+		dispatch_async(dispatch_get_main_queue(), ^{
+			if (!self.isTouchIDEvaluationInProgress && !self.passcodeViewController.view.superview) {
+				[self removeSecurityCoverView];
+				[self presentInterstitialAds];
+				FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+			} else {
+				FNLOG(@"isTouchIDEvaluationInProgress = %ld", (long)self.isTouchIDEvaluationInProgress);
+				FNLOG(@"%@", self.parentOfPasscodeViewController);
+			}
+		});
+	} else {
+		if (self.shouldMigrateV1Data) {
+			self.migrationIsInProgress = YES;
+			A3DataMigrationManager *migrationManager = [A3DataMigrationManager new];
+			self.migrationManager = migrationManager;
+			migrationManager.delegate = self;
+			if ([migrationManager walletDataFileExists] && ![migrationManager walletDataWithPassword:nil]) {
+				[migrationManager askWalletPassword];
+			} else {
+				[migrationManager migrateV1DataWithPassword:nil];
+			}
+			return;
 		} else {
-			FNLOG(@"isTouchIDEvaluationInProgress = %ld", (long)self.isTouchIDEvaluationInProgress);
-			FNLOG(@"%@", self.parentOfPasscodeViewController);
+			[self updateHolidayNations];
 		}
-	});
+	}
+}
+
+- (void)migrationManager:(A3DataMigrationManager *)manager didFinishMigration:(BOOL)success {
+	self.shouldMigrateV1Data = NO;
+	self.migrationManager = nil;
+	
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kA3ApplicationLastRunVersion];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+	
+	self.migrationIsInProgress = NO;
+	
+	[self passcodeViewControllerDidDismissWithSuccess:YES];
 }
 
 - (void)applicationWillEnterForeground_passcode {

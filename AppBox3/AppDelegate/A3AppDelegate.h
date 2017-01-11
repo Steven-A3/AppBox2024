@@ -18,7 +18,6 @@
 
 @protocol A3PasscodeViewControllerProtocol;
 @class Reachability;
-@class A3DataMigrationManager;
 @class A3MainMenuTableViewController;
 @class RMAppReceipt;
 @class A3HomeStyleMenuViewController;
@@ -162,6 +161,8 @@ extern NSString *const A3AppGroupNameNone;
 @property (nonatomic, assign) BOOL mainViewControllerDidInitialSetup;
 
 @property (nonatomic, assign) BOOL touchIDEvaluationDidFinish;
+@property (nonatomic, strong) A3DataMigrationManager *migrationManager;
+@property (nonatomic, assign) BOOL migrationIsInProgress;
 
 /**
  *  Settings에서 홈 화면 종류를 바꾼 경우, rootViewController가 초기화되면서
@@ -181,7 +182,6 @@ extern NSString *const A3AppGroupNameNone;
 - (void)setupContext;
 - (NSURL *)storeURL;
 - (NSString *)storeFileName;
-- (void)didFinishPushViewController;
 - (NSString *)backupReceiptFilePath;
 - (void)makeReceiptBackup;
 - (RMAppReceipt *)appReceipt;
@@ -190,6 +190,7 @@ extern NSString *const A3AppGroupNameNone;
 - (BOOL)isIAPPurchasedCustomer:(RMAppReceipt *)receipt;
 - (BOOL)presentInterstitialAds;
 - (void)alertWhatsNew;
+- (void)updateHolidayNations;
 
 @end
 
