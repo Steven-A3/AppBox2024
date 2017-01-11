@@ -11,16 +11,23 @@
 #import "A3AbbreviationCollectionViewCell.h"
 #import "A3AbbreviationTableViewCell.h"
 #import "UIColor+A3Addition.h"
+#import "A3AbbreviationDrillDownTableViewController.h"
+#import "UIViewController+A3Addition.h"
+#import "A3AbbreviationCopiedViewController.h"
+#import "A3SharePopupViewController.h"
 
 NSString *const A3AbbreviationKeyTag = @"tag";
 NSString *const A3AbbreviationKeyTags = @"tags";
+
 NSString *const A3AbbreviationKeyComponents = @"components";
+NSString *const A3AbbreviationKeySectionTitle = @"sectionTitle";
+
 NSString *const A3AbbreviationKeyAbbreviation = @"abbreviation";
 NSString *const A3AbbreviationKeyLetter = @"letter";
 NSString *const A3AbbreviationKeyMeaning = @"meaning";
 
 @interface A3AbbreviationViewController () <UICollectionViewDelegate, UICollectionViewDataSource,
-UITableViewDataSource, UITableViewDelegate>
+UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
@@ -34,6 +41,9 @@ UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) NSArray<UIColor *> *bodyBGStartColors;
 @property (nonatomic, strong) NSArray<UIColor *> *bodyBGEndColors;
 
+@property (nonatomic, strong) A3AbbreviationCopiedViewController *copiedViewController;
+@property (nonatomic, strong) A3SharePopupViewController *sharePopupViewController;
+
 @end
 
 @implementation A3AbbreviationViewController
@@ -44,6 +54,60 @@ UITableViewDataSource, UITableViewDelegate>
 	[self.navigationController setNavigationBarHidden:YES];
 
 	[self loadData];
+
+	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapCollectionView:)];
+	tapGestureRecognizer.numberOfTapsRequired = 1;
+	tapGestureRecognizer.delegate = self;
+	
+	[self.collectionView addGestureRecognizer:tapGestureRecognizer];
+
+	UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(didLongPressCollectionView:)];
+	longPressGestureRecognizer.minimumPressDuration = 1.0;
+	longPressGestureRecognizer.delegate = self;
+	[self.collectionView addGestureRecognizer:longPressGestureRecognizer];
+}
+
+- (void)didLongPressCollectionView:(UILongPressGestureRecognizer *)gestureRecognizer {
+	if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+		CGPoint location = [gestureRecognizer locationInView:self.collectionView];
+		NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:location];
+		A3AbbreviationCollectionViewCell *cell = (A3AbbreviationCollectionViewCell *) [_collectionView cellForItemAtIndexPath:indexPath];
+		CGPoint pointInCell = [gestureRecognizer locationInView:cell];
+		FNLOG(@"%f, %f", pointInCell.x, pointInCell.y);
+		
+		if (pointInCell.y < cell.roundedRectView.frame.origin.y) {
+			// tag가 선택이 된 경우
+			
+			NSDictionary *section = self.hashTagSections[indexPath.row];
+			
+			A3AbbreviationDrillDownTableViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownTableViewController storyboardID]];
+			viewController.contentsArray = section[A3AbbreviationKeyComponents];
+			viewController.contentsTitle = section[A3AbbreviationKeyTag];
+			[self.navigationController pushViewController:viewController animated:YES];
+		} else {
+			// 섹션 내 상위 3개의 row 중 하나를 선택한 경우
+			CGPoint pointInRoundedRect = [gestureRecognizer locationInView:cell.roundedRectView];
+			NSInteger index = pointInRoundedRect.y / cell.roundedRectView.bounds.size.height / 3;
+			
+			A3SharePopupViewController *viewController = [A3SharePopupViewController storyboardInstance];
+			[self.view addSubview:viewController.view];
+			_sharePopupViewController = viewController;
+			FNLOG();
+		}
+	}
+}
+
+- (void)didTapCollectionView:(UITapGestureRecognizer *)gestureRecognizer {
+	CGPoint location = [gestureRecognizer locationInView:self.collectionView];
+	NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:location];
+	A3AbbreviationCollectionViewCell *cell = (A3AbbreviationCollectionViewCell *) [_collectionView cellForItemAtIndexPath:indexPath];
+	CGPoint pointInCell = [gestureRecognizer locationInView:cell];
+	FNLOG(@"%f, %f", pointInCell.x, pointInCell.y);
+
+	A3AbbreviationCopiedViewController *viewController = [A3AbbreviationCopiedViewController storyboardInstance];
+	[self.view addSubview:viewController.view];
+	_copiedViewController = viewController;
+	
 }
 
 - (void)didReceiveMemoryWarning {
@@ -52,7 +116,7 @@ UITableViewDataSource, UITableViewDelegate>
 }
 
 - (IBAction)appsButtonAction:(id)sender {
-	
+	[super appsButtonAction:nil];
 }
 
 - (IBAction)favoritesButtonAction:(id)sender {
@@ -126,6 +190,16 @@ UITableViewDataSource, UITableViewDelegate>
     return cell;
 }
 
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	NSArray *contents = self.alphabetSections[indexPath.row][A3AbbreviationKeyComponents];
+	A3AbbreviationDrillDownTableViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownTableViewController storyboardID]];
+	viewController.contentsTitle = self.alphabetSections[indexPath.row][A3AbbreviationKeyLetter];
+	viewController.contentsArray = contents;
+	[self.navigationController pushViewController:viewController animated:YES];
+}
+
 #pragma mark - Data Management
 
 - (void)loadData {
@@ -150,6 +224,9 @@ UITableViewDataSource, UITableViewDelegate>
 	self.dataArray = dataArray;
 	[self buildHashTagSections];
 	[self buildAlphabetSections];
+	
+	FNLOG(@"%@", _hasTagSections);
+	FNLOG(@"%@", _alphabetSections);
 }
 
 - (void)buildHashTagSections {
@@ -169,10 +246,73 @@ UITableViewDataSource, UITableViewDelegate>
 	for (NSString *letter in alphabet) {
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", A3AbbreviationKeyAbbreviation, letter];
 		NSArray *components = [self.dataArray filteredArrayUsingPredicate:predicate];
-		[alphabetSections addObject:@{A3AbbreviationKeyLetter:letter, A3AbbreviationKeyComponents:components}];
+		[alphabetSections addObject:@{A3AbbreviationKeyLetter : letter, A3AbbreviationKeyComponents:components}];
 	}
 	_alphabetSections = alphabetSections;
 }
+
+/*
+ /// Hash tag sections
+ (
+	{
+		components =         (
+			 {
+				 abbreviation = B4N;
+				 meaning = "Bye For Now ";
+				 tags = Top24;
+			 },
+			 .... 생략
+		);
+		tag = Top24;
+	},
+	{
+		components =         (
+			{
+				abbreviation = ALIWanIsU;
+				meaning = "All I Want Is You";
+				tags = Romance;
+			},
+			.... 생략
+		);
+		tag = Romance;
+	},
+	{
+		components =         (
+			 {
+				 abbreviation = ADN;
+				 meaning = "Any Day Now";
+				 tags = Business;
+			 },
+		);
+		tag = Business;
+	}
+ )
+ 
+ /// Alphabet List
+ (
+	{
+		 components =         (
+			{
+			 abbreviation = ADN;
+			 meaning = "Any Day Now";
+			 tags = Business;
+			 },
+		 );
+		 letter = A;
+	},
+	{
+		 components =         (
+			 {
+				 abbreviation = B2B;
+				 meaning = "Business To Business";
+				 tags = Business;
+			 },
+		);
+		letter = B;
+	},
+	... Z까지 있음
+ )
+ */
 
 - (NSArray *)hashTagSections {
 	if (!_hasTagSections) {
@@ -186,6 +326,23 @@ UITableViewDataSource, UITableViewDelegate>
 		[self loadData];
 	}
 	return _alphabetSections;
+}
+
+/*
+	{
+		 component =         (
+			 abbreviation = B2B;
+			 meaning = "Business To Business";
+			 tags = Business;
+			 },
+			 );
+		 order = (double value);	새 항목 추가시 마지막 값 + 1.0
+		 다른 항목 사이로 배치를 할 경우에는 위/아래 항목 순서값 / 2
+	},
+ */
+
+- (NSArray *)favorites {
+	return nil;
 }
 
 - (NSArray *)headStartColors {
@@ -289,5 +446,10 @@ UITableViewDataSource, UITableViewDelegate>
 	}
 	return _bodyBGStartColors;
 }
+
+
+#pragma mark - UIGestureRecognizerDelegate
+
+
 
 @end

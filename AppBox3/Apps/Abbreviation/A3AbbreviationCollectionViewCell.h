@@ -18,6 +18,9 @@
 @property (nonatomic, weak) IBOutlet UILabel *row2SubtitleLabel;
 @property (nonatomic, weak) IBOutlet UILabel *row3TitleLabel;
 @property (nonatomic, weak) IBOutlet UILabel *row3SubtitleLabel;
+@property (nonatomic, weak) IBOutlet UIView *firstLineView;
+@property (nonatomic, weak) IBOutlet UIView *secondLineView;
 
 + (NSString *)reuseIdentifier;
+
 @end
