@@ -8,8 +8,24 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol A3SharePopupViewControllerDelegate;
+
 @interface A3SharePopupViewController : UIViewController
+
+@property (nonatomic, assign) BOOL presentationIsInteractive;
+@property (nonatomic, assign) CGFloat interactiveTransitionProgress;
+@property (nonatomic, weak) id<A3SharePopupViewControllerDelegate> delegate;
 
 + (A3SharePopupViewController *)storyboardInstance;
 
+- (void)completeCurrentInteractiveTransition;
+- (void)cancelCurrentInteractiveTransition;
+
 @end
+
+@protocol A3SharePopupViewControllerDelegate <NSObject>
+
+- (void)sharePopupViewControllerWillDismiss:(A3SharePopupViewController *)viewController;
+
+@end
+

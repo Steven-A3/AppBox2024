@@ -27,7 +27,8 @@ NSString *const A3AbbreviationKeyLetter = @"letter";
 NSString *const A3AbbreviationKeyMeaning = @"meaning";
 
 @interface A3AbbreviationViewController () <UICollectionViewDelegate, UICollectionViewDataSource,
-UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
+UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, UIPreviewInteractionDelegate,
+A3SharePopupViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
@@ -41,8 +42,14 @@ UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
 @property (nonatomic, strong) NSArray<UIColor *> *bodyBGStartColors;
 @property (nonatomic, strong) NSArray<UIColor *> *bodyBGEndColors;
 
+@property (nonatomic, strong) UIPreviewInteraction *previewInteraction;
 @property (nonatomic, strong) A3AbbreviationCopiedViewController *copiedViewController;
 @property (nonatomic, strong) A3SharePopupViewController *sharePopupViewController;
+@property (nonatomic, assign) BOOL sharePopupViewControllerIsPresented;
+@property (nonatomic, assign) BOOL previewIsPresented;
+@property (nonatomic, strong) UIVisualEffectView *blurEffectView;
+@property (nonatomic, strong) UIViewPropertyAnimator *animator;
+@property (nonatomic, strong) UIView *previewView;
 
 @end
 
@@ -61,10 +68,15 @@ UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
 	
 	[self.collectionView addGestureRecognizer:tapGestureRecognizer];
 
-	UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(didLongPressCollectionView:)];
-	longPressGestureRecognizer.minimumPressDuration = 1.0;
-	longPressGestureRecognizer.delegate = self;
-	[self.collectionView addGestureRecognizer:longPressGestureRecognizer];
+	if (IS_IOS10 && self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
+		_previewInteraction = [[UIPreviewInteraction alloc] initWithView:self.view];
+		_previewInteraction.delegate = self;
+	} else {
+		UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(didLongPressCollectionView:)];
+		longPressGestureRecognizer.minimumPressDuration = 1.0;
+		longPressGestureRecognizer.delegate = self;
+		[self.collectionView addGestureRecognizer:longPressGestureRecognizer];
+	}
 }
 
 - (void)didLongPressCollectionView:(UILongPressGestureRecognizer *)gestureRecognizer {
@@ -193,11 +205,11 @@ UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSArray *contents = self.alphabetSections[indexPath.row][A3AbbreviationKeyComponents];
-	A3AbbreviationDrillDownTableViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownTableViewController storyboardID]];
-	viewController.contentsTitle = self.alphabetSections[indexPath.row][A3AbbreviationKeyLetter];
-	viewController.contentsArray = contents;
-	[self.navigationController pushViewController:viewController animated:YES];
+//	NSArray *contents = self.alphabetSections[indexPath.row][A3AbbreviationKeyComponents];
+//	A3AbbreviationDrillDownTableViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownTableViewController storyboardID]];
+//	viewController.contentsTitle = self.alphabetSections[indexPath.row][A3AbbreviationKeyLetter];
+//	viewController.contentsArray = contents;
+//	[self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark - Data Management
@@ -451,5 +463,76 @@ UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
 #pragma mark - UIGestureRecognizerDelegate
 
 
+#pragma mark - UIViewControllerPreviewingDelegate
+
+- (BOOL)previewInteractionShouldBegin:(UIPreviewInteraction *)previewInteraction {
+	return !self.sharePopupViewControllerIsPresented;
+}
+
+- (void)previewInteraction:(UIPreviewInteraction *)previewInteraction didUpdatePreviewTransition:(CGFloat)transitionProgress ended:(BOOL)ended {
+	FNLOG(@"%f", transitionProgress);
+
+	if (!_previewIsPresented) {
+		_previewIsPresented = YES;
+		
+		_blurEffectView = [[UIVisualEffectView alloc] init];
+		_blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		_blurEffectView.frame = self.view.bounds;
+		[self.view addSubview:_blurEffectView];
+		
+		_animator = [[UIViewPropertyAnimator alloc] initWithDuration:1.0 curve:UIViewAnimationCurveLinear animations:^{
+			_blurEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+		}];
+
+		CGPoint location = [previewInteraction locationInCoordinateSpace:_tableView];
+		if ([_tableView pointInside:location withEvent:nil]) {
+			CGPoint locationInTableView = [previewInteraction locationInCoordinateSpace:_tableView];
+			NSIndexPath *indexPath = [_tableView indexPathForRowAtPoint:locationInTableView];
+			if (indexPath) {
+				UITableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+				_previewView = [cell snapshotViewAfterScreenUpdates:YES];
+				_previewView.frame = [self.view convertRect:cell.frame fromView:_tableView];
+				[self.view addSubview:_previewView];
+			}
+		}
+	}
+	_animator.fractionComplete = transitionProgress/3;
+	
+	if (ended) {
+		[_previewView removeFromSuperview];
+		_previewIsPresented = NO;
+	}
+	
+}
+
+- (void)previewInteraction:(UIPreviewInteraction *)previewInteraction didUpdateCommitTransition:(CGFloat)transitionProgress ended:(BOOL)ended {
+	if (!self.sharePopupViewControllerIsPresented) {
+		_sharePopupViewController = [A3SharePopupViewController storyboardInstance];
+		_sharePopupViewController.presentationIsInteractive = YES;
+		_sharePopupViewController.delegate = self;
+		[self presentViewController:_sharePopupViewController animated:YES completion:NULL];
+	}
+	_sharePopupViewController.interactiveTransitionProgress = transitionProgress;
+	
+	if (ended) {
+		[_sharePopupViewController completeCurrentInteractiveTransition];
+		[previewInteraction cancelInteraction];
+	}
+}
+
+- (void)previewInteractionDidCancel:(UIPreviewInteraction *)previewInteraction {
+	_previewIsPresented = NO;
+	[_previewView removeFromSuperview];
+	_previewView = nil;
+}
+
+- (BOOL)sharePopupViewControllerIsPresented {
+	return self.presentedViewController != nil;
+}
+
+- (void)sharePopupViewControllerWillDismiss:(A3SharePopupViewController *)viewController {
+	[_blurEffectView removeFromSuperview];
+	_blurEffectView = nil;
+}
 
 @end

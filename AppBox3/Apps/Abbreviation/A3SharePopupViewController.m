@@ -7,10 +7,12 @@
 //
 
 #import "A3SharePopupViewController.h"
+#import "A3SharePopupTransitionDelegate.h"
 
 @interface A3SharePopupViewController ()
 
-@property (nonatomic, strong) UIView *effectView;
+@property (nonatomic, weak) IBOutlet UIView *roundedRectView;
+@property (nonatomic, strong) A3SharePopupTransitionDelegate *customTransitionDelegate;
 
 @end
 
@@ -18,13 +20,17 @@
 
 + (A3SharePopupViewController *)storyboardInstance {
 	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass([self class]) bundle:nil];
-	return [storyboard instantiateInitialViewController];
+	A3SharePopupViewController *viewController = [storyboard instantiateInitialViewController];
+	viewController.modalPresentationStyle = UIModalPresentationCustom;
+	viewController.transitioningDelegate = [viewController customTransitionDelegate];
+	return viewController;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-	
+
+	/*
 	if (IS_IOS_GREATER_THAN_7) {
 		UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
 		UIVisualEffectView *blurView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
@@ -45,15 +51,19 @@
 		}];
 		_effectView = darkView;
 	}
+	 */
 
+	_roundedRectView.layer.cornerRadius = 10;
+	
 	UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureHandler:)];
 	[self.view addGestureRecognizer:gestureRecognizer];
 }
 
 - (void)tapGestureHandler:(UITapGestureRecognizer *)tapGestureHandler {
-	[self.view removeFromSuperview];
-	[_effectView removeFromSuperview];
-	_effectView = nil;
+	if ([_delegate respondsToSelector:@selector(sharePopupViewControllerWillDismiss:)]) {
+		[_delegate sharePopupViewControllerWillDismiss:self];
+	}
+	[self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -61,14 +71,29 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (A3SharePopupTransitionDelegate *)customTransitionDelegate {
+	if (!_customTransitionDelegate) {
+		_customTransitionDelegate = [A3SharePopupTransitionDelegate new];
+	}
+	return _customTransitionDelegate;
 }
-*/
+
+- (void)setPresentationIsInteractive:(BOOL)presentationIsInteractive {
+	_presentationIsInteractive = presentationIsInteractive;
+	_customTransitionDelegate.presentationIsInteractive = presentationIsInteractive;
+}
+
+- (void)setInteractiveTransitionProgress:(CGFloat)interactiveTransitionProgress {
+	_interactiveTransitionProgress = interactiveTransitionProgress;
+	_customTransitionDelegate.currentTransitionProgress = interactiveTransitionProgress;
+}
+
+- (void)completeCurrentInteractiveTransition {
+	[_customTransitionDelegate completeCurrentInteractiveTransition];
+}
+
+- (void)cancelCurrentInteractiveTransition {
+	[_customTransitionDelegate cancelCurrentInteractiveTransition];
+}
 
 @end

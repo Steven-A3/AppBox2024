@@ -114,6 +114,9 @@
                             <constraint firstItem="5TJ-EP-igT" firstAttribute="centerY" secondItem="mkr-3y-Zpj" secondAttribute="centerY" id="bhl-DC-Nkv"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="roundedRectView" destination="5TJ-EP-igT" id="1LW-XL-X9F"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fXd-SI-Svr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
