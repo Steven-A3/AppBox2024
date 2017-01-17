@@ -514,13 +514,13 @@
 		6882801F17E5E8DB000D8069 /* A3HolidaysPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6882801E17E5E8DB000D8069 /* A3HolidaysPageViewController.m */; };
 		6882802617E5ECED000D8069 /* A3HolidaysPageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6882802517E5ECED000D8069 /* A3HolidaysPageContentViewController.m */; };
 		6883D5E2183E7ABA00808CD2 /* A3MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6883D5E1183E7ABA00808CD2 /* A3MainViewController.m */; };
+		6885F5801E2EFAF20092E5FE /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6885F57F1E2EFAF20092E5FE /* GoogleMobileAds.framework */; };
 		6886791C18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6886791A18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib */; };
 		6886791D18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6886791B18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib */; };
 		688788831A9B29C7008C8567 /* A3RulerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688788821A9B29C7008C8567 /* A3RulerViewController.m */; };
 		6888090A17C63DBB008B2856 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6888090917C63DBB008B2856 /* CFNetwork.framework */; };
 		6888090E17C63F57008B2856 /* A3FlickrTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6888090D17C63F57008B2856 /* A3FlickrTest.m */; };
 		6889D0A21CF3E1EC00B7F90E /* Pedometer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6889D0A41CF3E1EC00B7F90E /* Pedometer.storyboard */; };
-		688CA6831DBEF56700679C43 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 688CA6821DBEF56700679C43 /* GoogleMobileAds.framework */; };
 		688CC6CD1E20B85F004374D4 /* A3AbbreviationCopiedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688CC6CC1E20B85F004374D4 /* A3AbbreviationCopiedViewController.m */; };
 		6890AB321786BA08004FECE4 /* A3CurrencyTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6890AB311786BA08004FECE4 /* A3CurrencyTableViewController.m */; };
 		6891D7FD183C5EDD0060B677 /* A3CurrencySettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6891D7FB183C5EDD0060B677 /* A3CurrencySettingsViewController.m */; };
@@ -1893,6 +1893,7 @@
 		68832C9E199A3C8E00AF7C18 /* FlickrRecommendation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = FlickrRecommendation.json; path = Holidays/FlickrRecommendation.json; sourceTree = "<group>"; };
 		6883D5E0183E7ABA00808CD2 /* A3MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3MainViewController.h; sourceTree = "<group>"; };
 		6883D5E1183E7ABA00808CD2 /* A3MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3MainViewController.m; sourceTree = "<group>"; };
+		6885F57F1E2EFAF20092E5FE /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = "External/GoogleMobileAdsSdkiOS-7.16.0/GoogleMobileAds.framework"; sourceTree = "<group>"; };
 		6886791A18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3NumberKeyboardSimpleUnitConverterVC_iPad.xib; sourceTree = "<group>"; };
 		6886791B18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib; sourceTree = "<group>"; };
 		688788811A9B29C7008C8567 /* A3RulerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3RulerViewController.h; path = Ruler/A3RulerViewController.h; sourceTree = "<group>"; };
@@ -1910,7 +1911,6 @@
 		6889D0B81CF3E20000B7F90E /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Pedometer.strings; sourceTree = "<group>"; };
 		6889D0BA1CF3E20200B7F90E /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Pedometer.strings; sourceTree = "<group>"; };
 		6889D0BC1CF3E20400B7F90E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Pedometer.strings"; sourceTree = "<group>"; };
-		688CA6821DBEF56700679C43 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = "External/GoogleMobileAdsSdkiOS-7.13.1/GoogleMobileAds.framework"; sourceTree = "<group>"; };
 		688CA6851DBEF58400679C43 /* GADMAdNetworkAdapterProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADMAdNetworkAdapterProtocol.h; sourceTree = "<group>"; };
 		688CA6861DBEF58400679C43 /* GADMAdNetworkConnectorProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADMAdNetworkConnectorProtocol.h; sourceTree = "<group>"; };
 		688CA6871DBEF58400679C43 /* GADMediationAdRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADMediationAdRequest.h; sourceTree = "<group>"; };
@@ -2993,7 +2993,7 @@
 				683B959315EB252400575377 /* QuartzCore.framework in Frameworks */,
 				682EA2D615EB10B000BD6AD4 /* UIKit.framework in Frameworks */,
 				682EA2D815EB10B000BD6AD4 /* Foundation.framework in Frameworks */,
-				688CA6831DBEF56700679C43 /* GoogleMobileAds.framework in Frameworks */,
+				6885F5801E2EFAF20092E5FE /* GoogleMobileAds.framework in Frameworks */,
 				682EA2DA15EB10B000BD6AD4 /* CoreGraphics.framework in Frameworks */,
 				682EA2DC15EB10B000BD6AD4 /* CoreData.framework in Frameworks */,
 				17D4235B678996668439565E /* CoreText.framework in Frameworks */,
@@ -5248,8 +5248,8 @@
 		68CC1594174F764C0000870F /* External */ = {
 			isa = PBXGroup;
 			children = (
+				6885F57F1E2EFAF20092E5FE /* GoogleMobileAds.framework */,
 				688CA6841DBEF58400679C43 /* Mediation Adapters */,
-				688CA6821DBEF56700679C43 /* GoogleMobileAds.framework */,
 				683D683E1DBC5C00008C47C9 /* ACSimpleKeychain */,
 				683D68411DBC5C00008C47C9 /* TJDropbox */,
 				6848ED681C50FD7B0067B93A /* ALDBlurImageProcessor */,
@@ -7704,7 +7704,7 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.13.1",
+					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.16.0",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";
@@ -7741,7 +7741,7 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.13.1",
+					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.16.0",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";
