@@ -543,6 +543,7 @@
 "Orthodox Easter" = "Orthodox Easter";
 "Orthodox Easter Monday" = "Orthodox Easter Monday";
 "Labor Day Holiday" = "Labor Day Holiday";
+"Labour Day Holiday" = "Labour Day Holiday";
 "Victory Day Holiday" = "Victory Day Holiday";
 "Orthodox Pentecost(Triytsia)" = "Orthodox Pentecost(Triytsia)";
 "Orthodox Pentecost Monday" = "Orthodox Pentecost Monday";
@@ -626,6 +627,7 @@
 "Boxing Day Public Holiday" = "Boxing Day Public Holiday";
 
 "New Year's Day Public Holiday" = "New Year's Day Public Holiday";
+"New Year's Day Holiday" = "New Year's Day Holiday";
 "Second of January Public Holiday(Scotland)" = "Second of January Public Holiday(Scotland)";
 "Australia Day(National Day)" = "Australia Day(National Day)";
 "Australia Day Public Holiday" = "Australia Day Public Holiday";
@@ -697,3 +699,4 @@
 
 "Founding of the Republic of China" = "Founding of the Republic of China";
 "Day of the Mountain" = "Day of the Mountain";
+"Second Day of New Year's Day" = "Second Day of New Year's Day";

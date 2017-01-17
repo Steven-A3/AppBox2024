@@ -543,6 +543,7 @@
 "Orthodox Easter" = "Pâques orthodoxe";
 "Orthodox Easter Monday" = "Lundi de Pâques orthodoxe";
 "Labor Day Holiday" = "Fête du travail";
+"Labour Day Holiday" = "Fête du travail";
 "Victory Day Holiday" = "Jour de la Victoire";
 "Orthodox Pentecost(Triytsia)" = "Pentecôte orthodoxe(Triytsia)";
 "Orthodox Pentecost Monday" = "Lundi de Pentecôte orthodoxe";
@@ -627,6 +628,7 @@
 "Boxing Day Public Holiday" = "Jour férié(Lendemain de Noël)";
 
 "New Year's Day Public Holiday" = "Jour férié(Jour de l'An)";
+"New Year's Day Holiday" = "Jour férié(Jour de l'An)";
 "Second of January Public Holiday(Scotland)" = "Jour férié(Deuxième jour de Janvier,Ecosse)";
 "Australia Day(National Day)" = "Journée de l'Australie(Fête Nationale)";
 "Australia Day Public Holiday" = "Jour férié(Journée de l'Australie)";

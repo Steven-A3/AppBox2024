@@ -544,6 +544,7 @@
 "Orthodox Easter" = "東方正教のイースター";
 "Orthodox Easter Monday" = "東方正教のイースターマンデー";
 "Labor Day Holiday" = "労働の日の祝日";
+"Labour Day Holiday" = "労働の日の祝日";
 "Victory Day Holiday" = "勝利の日の祝日";
 "Orthodox Pentecost(Triytsia)" = "東方正教五旬節(Triytsia)";
 "Orthodox Pentecost Monday" = "東方正教五旬節の月曜日";
@@ -628,6 +629,7 @@
 "Boxing Day Public Holiday" = "ボクシングデーの休日";
 
 "New Year's Day Public Holiday" = "元日の休日";
+"New Year's Day Holiday" = "元日の休日";
 "Second of January Public Holiday(Scotland)" = "休日(1月 2日,スコットランド)";
 "Australia Day(National Day)" = "オーストラリア建国記念日(国慶節)";
 "Australia Day Public Holiday" = "オーストラリア建国記念日の休日";

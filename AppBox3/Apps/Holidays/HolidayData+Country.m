@@ -620,6 +620,12 @@ NSString *const A3NotificationHolidaysCountryListChanged = @"A3NotificationHolid
 //					kHolidayTimeZone : @"CET",
 					kA3TimeZoneName : @"Europe/Belgrade",
 					},    // UTC+1
+			@{
+				kHolidayCountryCode : @"si",
+				//					kHolidayCapitalCityName : @"Ljubljana",
+				//					kHolidayTimeZone : @"CET",
+				kA3TimeZoneName : @"Europe/Ljubljana",
+				},    // UTC+1
 	];
 }
 
