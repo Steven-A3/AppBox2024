@@ -1069,13 +1069,15 @@
 	
 	self.numberKeyboardViewController = [self simplePrevNextNumberKeyboard];
 	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+	keyboardViewController.keyboardType = A3NumberKeyboardTypeInteger;
+	keyboardViewController.useDotAsClearButton = YES;
+	keyboardViewController.textInputTarget = textField;
+	keyboardViewController.delegate = self;
+	
 	[keyboardViewController view];
 	if (IS_IPHONE) {
 		((A3NumberKeyboardViewController_iPhone *)keyboardViewController).needButtonsReload = NO;
 	}
-	keyboardViewController.useDotAsClearButton = YES;
-	keyboardViewController.textInputTarget = textField;
-	keyboardViewController.delegate = self;
 	
 	[keyboardViewController reloadPrevNextButtons];
 

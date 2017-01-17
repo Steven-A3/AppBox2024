@@ -301,6 +301,7 @@
 		} else {
 			self.dotButton.titleLabel.font = [UIFont systemFontOfSize:26];
 		}
+		[self.dotButton setEnabled:YES];
 	} else {
 		switch (_keyboardType) {
 			case A3NumberKeyboardTypeCurrency:
