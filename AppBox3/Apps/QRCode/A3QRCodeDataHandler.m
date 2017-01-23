@@ -323,7 +323,28 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 }
 
 - (void)processVCardIsAdd:(BOOL)isAdd {
-	CFDataRef vCardData = (__bridge CFDataRef)[_targetHistory.scanData dataUsingEncoding:NSUTF8StringEncoding];
+	// Pre-process for some bad formatted source.
+	FNLOG(@"%@", _targetHistory.scanData);
+	NSString *vcardData = nil;
+	NSString *noteString = nil;
+	NSRange range = [_targetHistory.scanData rangeOfString:@"NOTE:"];
+	if (range.location != NSNotFound) {
+		NSRange targetRange = range;
+		targetRange.location += range.length;
+		targetRange.length = [_targetHistory.scanData length] - range.location - range.length;
+		NSRange rangeEnd = [_targetHistory.scanData rangeOfString:@"[A-Z,;=]+:" options:NSRegularExpressionSearch range:targetRange];
+		if (rangeEnd.location != NSNotFound) {
+			NSRange noteRange = NSMakeRange(range.location + range.length, rangeEnd.location - range.location - range.length);
+			noteString = [[_targetHistory.scanData substringWithRange:noteRange] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+			NSRange deleteRange = NSMakeRange(range.location, rangeEnd.location - range.location);
+			vcardData = [_targetHistory.scanData stringByReplacingCharactersInRange:deleteRange withString:@""];
+		}
+	}
+	if (!vcardData) {
+		vcardData = _targetHistory.scanData;
+	}
+	
+	CFDataRef vCardData = (__bridge CFDataRef)[vcardData dataUsingEncoding:NSUTF8StringEncoding];
 
 	ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
 
@@ -333,7 +354,10 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 	if (CFArrayGetCount(vCardPeople)) {
 		parsedPerson = CFArrayGetValueAtIndex(vCardPeople, 0);
 	}
-
+	if (noteString) {
+		ABRecordSetValue(parsedPerson, kABPersonNicknameProperty, (__bridge CFStringRef)noteString, nil);
+	}
+	
 	if (isAdd) {
 		ABNewPersonViewController *personViewController = [ABNewPersonViewController new];
 		personViewController.addressBook = addressBook;
