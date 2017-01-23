@@ -3961,8 +3961,8 @@
 		682EA2DE15EB10B000BD6AD4 /* {Supporting Files} */ = {
 			isa = PBXGroup;
 			children = (
-				689A203C19AB3650009144B6 /* AppBox3-Info.plist */,
 				6830C77818517D2D0075010F /* AppBox3.entitlements */,
+				689A203C19AB3650009144B6 /* AppBox3-Info.plist */,
 				682EA2E315EB10B000BD6AD4 /* main.m */,
 				682EA2E515EB10B000BD6AD4 /* AppBox3-Prefix.pch */,
 			);
