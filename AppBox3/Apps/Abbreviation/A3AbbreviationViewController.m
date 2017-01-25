@@ -34,7 +34,7 @@ A3SharePopupViewControllerDelegate>
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 
 @property (nonatomic, strong) NSArray *dataArray;
-@property (nonatomic, strong) NSArray<NSDictionary *> *hasTagSections;
+@property (nonatomic, strong) NSArray<NSDictionary *> *hashTagSections;
 @property (nonatomic, strong) NSArray<NSDictionary *> *alphabetSections;
 
 @property (nonatomic, strong) NSArray<UIColor *> *headStartColors;
@@ -50,6 +50,8 @@ A3SharePopupViewControllerDelegate>
 @property (nonatomic, strong) UIVisualEffectView *blurEffectView;
 @property (nonatomic, strong) UIViewPropertyAnimator *animator;
 @property (nonatomic, strong) UIView *previewView;
+@property (nonatomic, strong) UIView *previewBottomView;
+@property (nonatomic, copy) NSDictionary *selectedComponent;
 
 @end
 
@@ -62,6 +64,8 @@ A3SharePopupViewControllerDelegate>
 
 	[self loadData];
 
+	self.title = @"Abbreviation";
+	
 	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapCollectionView:)];
 	tapGestureRecognizer.numberOfTapsRequired = 1;
 	tapGestureRecognizer.delegate = self;
@@ -83,6 +87,9 @@ A3SharePopupViewControllerDelegate>
 	if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
 		CGPoint location = [gestureRecognizer locationInView:self.collectionView];
 		NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:location];
+		if (!indexPath) {
+			return;
+		}
 		A3AbbreviationCollectionViewCell *cell = (A3AbbreviationCollectionViewCell *) [_collectionView cellForItemAtIndexPath:indexPath];
 		CGPoint pointInCell = [gestureRecognizer locationInView:cell];
 		FNLOG(@"%f, %f", pointInCell.x, pointInCell.y);
@@ -100,9 +107,12 @@ A3SharePopupViewControllerDelegate>
 			// 섹션 내 상위 3개의 row 중 하나를 선택한 경우
 			CGPoint pointInRoundedRect = [gestureRecognizer locationInView:cell.roundedRectView];
 			NSInteger index = pointInRoundedRect.y / cell.roundedRectView.bounds.size.height / 3;
-			
+
+			NSDictionary *section = self.hashTagSections[indexPath.row];
+
 			A3SharePopupViewController *viewController = [A3SharePopupViewController storyboardInstance];
 			[self.view addSubview:viewController.view];
+
 			_sharePopupViewController = viewController;
 			FNLOG();
 		}
@@ -110,16 +120,40 @@ A3SharePopupViewControllerDelegate>
 }
 
 - (void)didTapCollectionView:(UITapGestureRecognizer *)gestureRecognizer {
+	// Collection View에서 UICollectionViewDelegate의 didSelectItemAtIndexPath를 사용하지 않고 UITapGestureRecognizer를
+	// 별도로 사용한 이유:
+	// 셀 내에서 터치한 영역에 따라 다른 연결 화면으로 이동해야 하기 때문입니다.
 	CGPoint location = [gestureRecognizer locationInView:self.collectionView];
 	NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:location];
+	if (!indexPath) {
+		return;
+	}
+	
 	A3AbbreviationCollectionViewCell *cell = (A3AbbreviationCollectionViewCell *) [_collectionView cellForItemAtIndexPath:indexPath];
 	CGPoint pointInCell = [gestureRecognizer locationInView:cell];
 	FNLOG(@"%f, %f", pointInCell.x, pointInCell.y);
 
-	A3AbbreviationCopiedViewController *viewController = [A3AbbreviationCopiedViewController storyboardInstance];
-	[self.view addSubview:viewController.view];
-	_copiedViewController = viewController;
-	
+	if (pointInCell.y < cell.roundedRectView.frame.origin.y) {
+		NSDictionary *section = self.hashTagSections[indexPath.row];
+		
+		A3AbbreviationDrillDownTableViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownTableViewController storyboardID]];
+		viewController.contentsArray = section[A3AbbreviationKeyComponents];
+		viewController.contentsTitle = section[A3AbbreviationKeyTag];
+		[self.navigationController pushViewController:viewController animated:YES];
+	} else {
+		NSDictionary *section = self.hashTagSections[indexPath.row];
+
+		CGFloat rowHeight = cell.roundedRectView.frame.size.height / 3;
+		NSInteger idx = floor((pointInCell.y - cell.roundedRectView.frame.origin.y) / rowHeight);
+		NSArray *components = section[A3AbbreviationKeyComponents];
+
+		[self removeBlurEffectView];
+		
+		A3AbbreviationCopiedViewController *viewController = [A3AbbreviationCopiedViewController storyboardInstance];
+		viewController.contents = components[idx];
+		[self presentViewController:viewController animated:YES completion:NULL];
+		_copiedViewController = viewController;
+	}
 }
 
 - (void)didReceiveMemoryWarning {
@@ -138,12 +172,12 @@ A3SharePopupViewControllerDelegate>
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return [self.hasTagSections count];
+    return [self.hashTagSections count];
 }
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
 	A3AbbreviationCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[A3AbbreviationCollectionViewCell reuseIdentifier] forIndexPath:indexPath];
-	NSDictionary *section = self.hasTagSections[indexPath.row];
+	NSDictionary *section = self.hashTagSections[indexPath.row];
 
 	cell.groupTitleLabel.text = [NSString stringWithFormat:@"#%@", section[A3AbbreviationKeyTag]];
 	NSArray *components = section[A3AbbreviationKeyComponents];
@@ -187,29 +221,42 @@ A3SharePopupViewControllerDelegate>
 	[baseColor getRed:&red green:&green blue:&blue alpha:&alpha];
 	UIColor *endColor = [UIColor colorWithRed:red - red/10.0 green:green - green/10 blue:blue - blue/10 alpha:1.0];
 
-	cell.backgroundHeadView.gradientColors = @[(__bridge id)baseColor.CGColor, (__bridge id)endColor.CGColor];
 
 	if (indexPath.row > 0) {
 		cell.clipToTrapezoid = NO;
 		cell.alphabetTopView.backgroundColor = self.alphabetBGColors[indexPath.row - 1];
+
+		cell.headBGForFirstRow.gradientColors = nil;
+		cell.headBGForOtherRow.gradientColors = @[(__bridge id)baseColor.CGColor, (__bridge id)endColor.CGColor];
+		
+		cell.bodyBGForFirstRow.gradientColors = nil;
+		cell.bodyBGForOtherRow.gradientColors = @[(__bridge id)self.bodyBGStartColors[indexPath.row].CGColor, (__bridge id)self.alphabetBGColors[indexPath.row].CGColor];
 	} else {
 		cell.alphabetTopView.backgroundColor = [UIColor whiteColor];
 		cell.clipToTrapezoid = YES;
-	}
-	cell.backgroundBodyView.gradientColors = @[(__bridge id)self.bodyBGStartColors[indexPath.row].CGColor, (__bridge id)self.alphabetBGColors[indexPath.row].CGColor];
 
-	[cell.backgroundBodyView setNeedsDisplay];
+		cell.headBGForFirstRow.gradientColors = @[(__bridge id)baseColor.CGColor, (__bridge id)endColor.CGColor];
+		cell.headBGForOtherRow.gradientColors = nil;
+		
+		cell.bodyBGForFirstRow.gradientColors = @[(__bridge id)self.bodyBGStartColors[indexPath.row].CGColor, (__bridge id)self.alphabetBGColors[indexPath.row].CGColor];
+		cell.bodyBGForOtherRow.gradientColors = nil;
+	}
+
+	[cell.bodyBGForFirstRow setNeedsDisplay];
+	[cell.bodyBGForOtherRow setNeedsDisplay];
     return cell;
 }
 
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//	NSArray *contents = self.alphabetSections[indexPath.row][A3AbbreviationKeyComponents];
-//	A3AbbreviationDrillDownTableViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownTableViewController storyboardID]];
-//	viewController.contentsTitle = self.alphabetSections[indexPath.row][A3AbbreviationKeyLetter];
-//	viewController.contentsArray = contents;
-//	[self.navigationController pushViewController:viewController animated:YES];
+	if (!self.presentedViewController) {
+		NSArray *contents = self.alphabetSections[indexPath.row][A3AbbreviationKeyComponents];
+		A3AbbreviationDrillDownTableViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownTableViewController storyboardID]];
+		viewController.contentsTitle = self.alphabetSections[indexPath.row][A3AbbreviationKeyLetter];
+		viewController.contentsArray = contents;
+		[self.navigationController pushViewController:viewController animated:YES];
+	}
 }
 
 #pragma mark - Data Management
@@ -237,7 +284,7 @@ A3SharePopupViewControllerDelegate>
 	[self buildHashTagSections];
 	[self buildAlphabetSections];
 	
-	FNLOG(@"%@", _hasTagSections);
+	FNLOG(@"%@", _hashTagSections);
 	FNLOG(@"%@", _alphabetSections);
 }
 
@@ -249,7 +296,7 @@ A3SharePopupViewControllerDelegate>
 		NSArray *components = [self.dataArray filteredArrayUsingPredicate:predicate];
 		[hashTagSections addObject:@{A3AbbreviationKeyTag : tag, A3AbbreviationKeyComponents : components}];
 	}
-	_hasTagSections = hashTagSections;
+	_hashTagSections = hashTagSections;
 }
 
 - (void)buildAlphabetSections {
@@ -327,10 +374,10 @@ A3SharePopupViewControllerDelegate>
  */
 
 - (NSArray *)hashTagSections {
-	if (!_hasTagSections) {
+	if (!_hashTagSections) {
 		[self loadData];
 	}
-	return _hasTagSections;
+	return _hashTagSections;
 }
 
 - (NSArray *)alphabetSections {
@@ -465,65 +512,139 @@ A3SharePopupViewControllerDelegate>
 
 #pragma mark - UIViewControllerPreviewingDelegate
 
+
 - (BOOL)previewInteractionShouldBegin:(UIPreviewInteraction *)previewInteraction {
-	return !self.sharePopupViewControllerIsPresented;
+	if (self.sharePopupViewControllerIsPresented) {
+		return NO;
+	}
+	CGPoint location = [previewInteraction locationInCoordinateSpace:_collectionView];
+	if ([_collectionView indexPathForItemAtPoint:location]) {
+		return YES;
+	}
+	location = [previewInteraction locationInCoordinateSpace:_tableView];
+	
+	return [_tableView indexPathForRowAtPoint:location] != nil;
 }
 
 - (void)previewInteraction:(UIPreviewInteraction *)previewInteraction didUpdatePreviewTransition:(CGFloat)transitionProgress ended:(BOOL)ended {
-	FNLOG(@"%f", transitionProgress);
+	FNLOG(@"%f, _previewIsPresented = %@, ended = %@", transitionProgress, _previewIsPresented ? @"YES" : @"NO", ended ? @"YES" : @"NO");
 
 	if (!_previewIsPresented) {
 		_previewIsPresented = YES;
 		
-		_blurEffectView = [[UIVisualEffectView alloc] init];
-		_blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		_blurEffectView.frame = self.view.bounds;
-		[self.view addSubview:_blurEffectView];
 		
-		_animator = [[UIViewPropertyAnimator alloc] initWithDuration:1.0 curve:UIViewAnimationCurveLinear animations:^{
-			_blurEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-		}];
+		if (!ended) {
+			_blurEffectView = [[UIVisualEffectView alloc] init];
+			_blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+			_blurEffectView.frame = self.view.bounds;
+			[self.view addSubview:_blurEffectView];
+			
+			_blurEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+			
+			_animator = [[UIViewPropertyAnimator alloc] initWithDuration:1.0 curve:UIViewAnimationCurveLinear animations:^{
+				_blurEffectView.effect = nil;
+			}];
+			
+			CGPoint location = [previewInteraction locationInCoordinateSpace:_tableView];
+			if ([_tableView pointInside:location withEvent:nil]) {
+				CGPoint locationInTableView = [previewInteraction locationInCoordinateSpace:_tableView];
+				NSIndexPath *indexPath = [_tableView indexPathForRowAtPoint:locationInTableView];
+				
+				if (indexPath) {
+					// Save data to use later
+					_selectedComponent = [_alphabetSections[indexPath.row][A3AbbreviationKeyComponents][0] copy];
+					
+					A3AbbreviationTableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+					
+					UIColor *originalColor = cell.alphabetTopView.backgroundColor;
+					if (indexPath.row != 0) {
+						cell.alphabetTopView.backgroundColor = [UIColor clearColor];
+					}
+					_previewView = [cell snapshotViewAfterScreenUpdates:YES];
+					
+					cell.alphabetTopView.backgroundColor = originalColor;
+					
+					_previewView.frame = [self.view convertRect:cell.frame fromView:_tableView];
+					[self.view addSubview:_previewView];
+					
+					_previewBottomView = [UIView new];
+					_previewBottomView.backgroundColor = cell.alphabetBottomView.backgroundColor;
+					CGRect frame = [self.view convertRect:cell.alphabetTopView.frame fromView:cell];
+					frame.origin.y = _previewView.frame.origin.y + _previewView.frame.size.height;
+					_previewBottomView.frame = frame;
+					
+					[self.view addSubview:_previewBottomView];
+				}
+			} else {
+				CGPoint location = [previewInteraction locationInCoordinateSpace:_collectionView];
+				NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:location];
+				if (indexPath) {
+					NSDictionary *hashTagSection = _hashTagSections[indexPath.row];
 
-		CGPoint location = [previewInteraction locationInCoordinateSpace:_tableView];
-		if ([_tableView pointInside:location withEvent:nil]) {
-			CGPoint locationInTableView = [previewInteraction locationInCoordinateSpace:_tableView];
-			NSIndexPath *indexPath = [_tableView indexPathForRowAtPoint:locationInTableView];
-			if (indexPath) {
-				UITableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
-				_previewView = [cell snapshotViewAfterScreenUpdates:YES];
-				_previewView.frame = [self.view convertRect:cell.frame fromView:_tableView];
-				[self.view addSubview:_previewView];
+					A3AbbreviationCollectionViewCell *cell = (A3AbbreviationCollectionViewCell *) [_collectionView cellForItemAtIndexPath:indexPath];
+					if (cell) {
+						CGPoint pointInCell = [previewInteraction locationInCoordinateSpace:cell];
+						CGFloat rowHeight = cell.roundedRectView.frame.size.height / 3;
+						NSInteger idx = floor((pointInCell.y - cell.roundedRectView.frame.origin.y) / rowHeight);
+
+						UIView *rowView = cell.rows[idx];
+						_previewView = [rowView snapshotViewAfterScreenUpdates:YES];
+						_previewView.frame = [self.view convertRect:rowView.frame fromView:cell.roundedRectView];
+						[self.view addSubview:_previewView];
+
+						// Prepare data
+						_selectedComponent = hashTagSection[A3AbbreviationKeyComponents][idx];
+					}
+				}
 			}
+		} else {
+			double delayInSeconds = 0.5;
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				_blurEffectView = [[UIVisualEffectView alloc] init];
+				_blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+				_blurEffectView.frame = self.view.bounds;
+				[self.view addSubview:_blurEffectView];
+				
+				_blurEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+				
+				_animator = [[UIViewPropertyAnimator alloc] initWithDuration:1.0 curve:UIViewAnimationCurveLinear animations:^{
+					_blurEffectView.effect = nil;
+				}];
+				_animator.fractionComplete = 0.75;
+			});
 		}
 	}
-	_animator.fractionComplete = transitionProgress/3;
-	
+
 	if (ended) {
-		[_previewView removeFromSuperview];
-		_previewIsPresented = NO;
+		[self removePreviewView];
+	} else {
+		_animator.fractionComplete = 1.0 - transitionProgress/4;
 	}
-	
 }
 
 - (void)previewInteraction:(UIPreviewInteraction *)previewInteraction didUpdateCommitTransition:(CGFloat)transitionProgress ended:(BOOL)ended {
+	FNLOG(@"%f, sharePopupViewControllerIsPresented = %@, ended = %@", transitionProgress, self.sharePopupViewControllerIsPresented ? @"YES" : @"NO", ended ? @"YES" : @"NO");
+	
 	if (!self.sharePopupViewControllerIsPresented) {
 		_sharePopupViewController = [A3SharePopupViewController storyboardInstance];
 		_sharePopupViewController.presentationIsInteractive = YES;
 		_sharePopupViewController.delegate = self;
+		_sharePopupViewController.contents = _selectedComponent;
 		[self presentViewController:_sharePopupViewController animated:YES completion:NULL];
 	}
 	_sharePopupViewController.interactiveTransitionProgress = transitionProgress;
 	
 	if (ended) {
 		[_sharePopupViewController completeCurrentInteractiveTransition];
-		[previewInteraction cancelInteraction];
 	}
 }
 
 - (void)previewInteractionDidCancel:(UIPreviewInteraction *)previewInteraction {
-	_previewIsPresented = NO;
-	[_previewView removeFromSuperview];
-	_previewView = nil;
+	if (!self.presentedViewController) {
+		[self removeBlurEffectView];
+	}
+	[self removePreviewView];
 }
 
 - (BOOL)sharePopupViewControllerIsPresented {
@@ -531,6 +652,19 @@ A3SharePopupViewControllerDelegate>
 }
 
 - (void)sharePopupViewControllerWillDismiss:(A3SharePopupViewController *)viewController {
+	[self removeBlurEffectView];
+}
+
+- (void)removePreviewView {
+	[_previewView removeFromSuperview];
+	[_previewBottomView removeFromSuperview];
+	_previewView = nil;
+	_previewBottomView = nil;
+	_previewIsPresented = NO;
+}
+
+- (void)removeBlurEffectView {
+	_animator = nil;
 	[_blurEffectView removeFromSuperview];
 	_blurEffectView = nil;
 }

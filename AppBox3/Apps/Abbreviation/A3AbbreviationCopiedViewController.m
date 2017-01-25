@@ -7,8 +7,14 @@
 //
 
 #import "A3AbbreviationCopiedViewController.h"
+#import "A3AbbreviationCopiedTransitionDelegate.h"
+
+extern NSString *const A3AbbreviationKeyAbbreviation;
 
 @interface A3AbbreviationCopiedViewController ()
+
+@property (nonatomic, weak) IBOutlet UILabel *titleLabel;
+@property (nonatomic, strong) A3AbbreviationCopiedTransitionDelegate *customTransitionDelegate;
 
 @end
 
@@ -16,26 +22,44 @@
 
 + (A3AbbreviationCopiedViewController *)storyboardInstance {
 	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Abbreviation" bundle:nil];
-	return [storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
+	A3AbbreviationCopiedViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
+	viewController.modalPresentationStyle = UIModalPresentationCustom;
+	viewController.transitioningDelegate = [viewController customTransitionDelegate];
+	return viewController;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Pattern_Dots"]];
+//	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Pattern_Dots"]];
 	
 	UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureHandler:)];
 	[self.view addGestureRecognizer:gestureRecognizer];
+	
+	_titleLabel.text = _contents[A3AbbreviationKeyAbbreviation];
+}
+
+- (A3AbbreviationCopiedTransitionDelegate *)customTransitionDelegate {
+	if (!_customTransitionDelegate) {
+		_customTransitionDelegate = [A3AbbreviationCopiedTransitionDelegate new];
+	}
+	return _customTransitionDelegate;
 }
 
 - (void)tapGestureHandler:(UITapGestureRecognizer *)gesture {
-	[self.view removeFromSuperview];
+	[self dismissViewControllerAnimated:NO completion:NULL];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)setContents:(NSDictionary *)contents {
+	_contents = [contents copy];
+
+	_titleLabel.text = _contents[A3AbbreviationKeyAbbreviation];
 }
 
 @end

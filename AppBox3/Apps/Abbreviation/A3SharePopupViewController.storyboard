@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="z5r-OI-gfE">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="z5r-OI-gfE">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -35,10 +35,16 @@
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LWV-vf-By3" userLabel="Share Button">
                                         <rect key="frame" x="0.0" y="102" width="337" height="50"/>
+                                        <connections>
+                                            <action selector="shareButtonAction:" destination="z5r-OI-gfE" eventType="touchUpInside" id="mW2-Dn-8zc"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="shU-Cs-29E" userLabel="Favorites Button">
                                         <rect key="frame" x="112" y="152" width="113" height="51"/>
                                         <state key="normal" title="Button"/>
+                                        <connections>
+                                            <action selector="favoriteButtonAction:" destination="z5r-OI-gfE" eventType="touchUpInside" id="aPa-Ed-FXo"/>
+                                        </connections>
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Favorites" translatesAutoresizingMaskIntoConstraints="NO" id="l0T-Vy-hsS">
                                         <rect key="frame" x="112" y="165" width="26" height="25"/>
@@ -115,7 +121,10 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="middleLineHeightConstraint" destination="1cZ-Cx-ics" id="qxc-IG-u1i"/>
                         <outlet property="roundedRectView" destination="5TJ-EP-igT" id="1LW-XL-X9F"/>
+                        <outlet property="secondLineHeightConstraint" destination="Njt-jN-Nq5" id="Bw3-ed-CdD"/>
+                        <outlet property="titleLabel" destination="CRW-zU-aM5" id="hJI-mz-lIC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fXd-SI-Svr" userLabel="First Responder" sceneMemberID="firstResponder"/>

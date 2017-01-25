@@ -9,10 +9,15 @@
 #import "A3SharePopupViewController.h"
 #import "A3SharePopupTransitionDelegate.h"
 
+extern NSString *const A3AbbreviationKeyAbbreviation;
+
 @interface A3SharePopupViewController ()
 
+@property (nonatomic, weak) IBOutlet UILabel *titleLabel;
 @property (nonatomic, weak) IBOutlet UIView *roundedRectView;
 @property (nonatomic, strong) A3SharePopupTransitionDelegate *customTransitionDelegate;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *middleLineHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *secondLineHeightConstraint;
 
 @end
 
@@ -53,10 +58,15 @@
 	}
 	 */
 
+	CGFloat scale = [[UIScreen mainScreen] scale];
+	_middleLineHeightConstraint.constant = 0.7;
+	_secondLineHeightConstraint.constant = 0.7;
 	_roundedRectView.layer.cornerRadius = 10;
 	
 	UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureHandler:)];
 	[self.view addGestureRecognizer:gestureRecognizer];
+	
+	_titleLabel.text = _contents[A3AbbreviationKeyAbbreviation];
 }
 
 - (void)tapGestureHandler:(UITapGestureRecognizer *)tapGestureHandler {
@@ -94,6 +104,19 @@
 
 - (void)cancelCurrentInteractiveTransition {
 	[_customTransitionDelegate cancelCurrentInteractiveTransition];
+}
+
+- (IBAction)shareButtonAction:(id)sender {
+	
+}
+
+- (IBAction)favoriteButtonAction:(id)sender {
+	
+}
+
+- (void)setContents:(NSDictionary *)contents {
+	_contents = [contents copy];
+	_titleLabel.text = _contents[A3AbbreviationKeyAbbreviation];
 }
 
 @end

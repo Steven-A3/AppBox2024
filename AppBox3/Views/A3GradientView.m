@@ -53,6 +53,8 @@
 - (void)awakeFromNib {
 	[super awakeFromNib];
 
+	[self initialize];
+	
 	if (_startColor && _endColor) {
 		self.gradientColors = @[(__bridge id)_startColor.CGColor, (__bridge id)_endColor.CGColor];
 	}
@@ -61,6 +63,10 @@
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
+	if (!_gradientColors) {
+		return;
+	}
+	
 	// Drawing code
 	CGContextRef context = UIGraphicsGetCurrentContext();
 

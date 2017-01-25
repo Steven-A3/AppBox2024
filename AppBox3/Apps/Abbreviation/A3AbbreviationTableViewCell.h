@@ -11,8 +11,10 @@
 
 @interface A3AbbreviationTableViewCell : UITableViewCell
 
-@property (nonatomic, weak) IBOutlet A3GradientView *backgroundHeadView;
-@property (nonatomic, weak) IBOutlet A3GradientView *backgroundBodyView;
+@property (nonatomic, weak) IBOutlet A3GradientView *headBGForFirstRow;
+@property (nonatomic, weak) IBOutlet A3GradientView *headBGForOtherRow;
+@property (nonatomic, weak) IBOutlet A3GradientView *bodyBGForFirstRow;
+@property (nonatomic, weak) IBOutlet A3GradientView *bodyBGForOtherRow;
 @property (nonatomic, weak) IBOutlet A3GradientView *alphabetTopView;
 @property (nonatomic, weak) IBOutlet A3GradientView *alphabetBottomView;
 @property (nonatomic, weak) IBOutlet UILabel *alphabetLabel;

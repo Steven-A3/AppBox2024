@@ -16,6 +16,8 @@
 @property (nonatomic, assign) CGFloat interactiveTransitionProgress;
 @property (nonatomic, weak) id<A3SharePopupViewControllerDelegate> delegate;
 
+@property (nonatomic, copy) NSDictionary *contents;
+
 + (A3SharePopupViewController *)storyboardInstance;
 
 - (void)completeCurrentInteractiveTransition;

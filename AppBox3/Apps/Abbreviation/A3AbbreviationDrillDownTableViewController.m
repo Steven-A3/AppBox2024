@@ -9,15 +9,28 @@
 #import "A3AbbreviationDrillDownTableViewController.h"
 #import "A3AbbreviationDrillDownTableViewCell.h"
 #import "A3AppDelegate.h"
+#import "A3SharePopupViewController.h"
+#import "A3AbbreviationCopiedViewController.h"
 
 extern NSString *const A3AbbreviationKeyAbbreviation;
 extern NSString *const A3AbbreviationKeyMeaning;
 
-@interface A3AbbreviationDrillDownTableViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface A3AbbreviationDrillDownTableViewController ()
+<UITableViewDataSource, UITableViewDelegate, UIPreviewInteractionDelegate,
+UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UIButton *backButton;
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
+@property (nonatomic, strong) UIPreviewInteraction *previewInteraction;
+@property (nonatomic, strong) A3SharePopupViewController *sharePopupViewController;
+@property (nonatomic, assign) BOOL sharePopupViewControllerIsPresented;
+@property (nonatomic, assign) BOOL previewIsPresented;
+@property (nonatomic, strong) UIVisualEffectView *blurEffectView;
+@property (nonatomic, strong) UIViewPropertyAnimator *animator;
+@property (nonatomic, strong) UIView *previewView;
+@property (nonatomic, strong) A3AbbreviationCopiedViewController *copiedViewController;
+@property (nonatomic, assign) NSInteger selectedRow;
 
 @end
 
@@ -33,6 +46,21 @@ extern NSString *const A3AbbreviationKeyMeaning;
 	
 	_titleLabel.text = _contentsTitle;
 	_backButton.tintColor = [[A3AppDelegate instance] themeColor];
+
+	[self.navigationController setNavigationBarHidden:NO];
+	UIImage *image = [UIImage new];
+	[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+	[self.navigationController.navigationBar setShadowImage:image];
+
+	if (IS_IOS10 && self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
+		_previewInteraction = [[UIPreviewInteraction alloc] initWithView:self.view];
+		_previewInteraction.delegate = self;
+	} else {
+		UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(didLongPressTableView:)];
+		longPressGestureRecognizer.minimumPressDuration = 1.0;
+		longPressGestureRecognizer.delegate = self;
+		[self.tableView addGestureRecognizer:longPressGestureRecognizer];
+	}
 }
 
 - (void)didReceiveMemoryWarning {
@@ -40,11 +68,13 @@ extern NSString *const A3AbbreviationKeyMeaning;
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)backButtonAction:(UIButton *)backButton {
-	[self.navigationController popViewControllerAnimated:YES];
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	[self.navigationController setNavigationBarHidden:YES];
 }
 
-- (IBAction)backButtonTouchDown:(UIButton *)sender {
+- (void)didLongPressTableView:(UILongPressGestureRecognizer *)gesture {
 	
 }
 
@@ -75,5 +105,103 @@ extern NSString *const A3AbbreviationKeyMeaning;
 
 #pragma mark - UITableViewDelegate
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	
+	if (self.presentedViewController) {
+		return;
+	}
+
+	A3AbbreviationCopiedViewController *viewController = [A3AbbreviationCopiedViewController storyboardInstance];
+	viewController.contents = _contentsArray[indexPath.row];
+	[self presentViewController:viewController animated:YES completion:NULL];
+	_copiedViewController = viewController;
+}
+
+#pragma mark - UIPreviewInteractionDelegate
+// https://developer.apple.com/reference/uikit/uipreviewinteraction
+// https://developer.apple.com/reference/uikit/uipreviewinteractiondelegate
+
+- (BOOL)previewInteractionShouldBegin:(UIPreviewInteraction *)previewInteraction {
+	return !self.presentedViewController;
+}
+
+- (void)previewInteraction:(UIPreviewInteraction *)previewInteraction didUpdatePreviewTransition:(CGFloat)transitionProgress ended:(BOOL)ended {
+	if (!_previewIsPresented) {
+		_previewIsPresented = YES;
+		
+		_blurEffectView = [[UIVisualEffectView alloc] init];
+		_blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		_blurEffectView.frame = self.view.bounds;
+		[self.view addSubview:_blurEffectView];
+		
+		_blurEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+		
+		_animator = [[UIViewPropertyAnimator alloc] initWithDuration:1.0 curve:UIViewAnimationCurveLinear animations:^{
+			_blurEffectView.effect = nil;
+		}];
+		
+		if (!ended) {
+			CGPoint location = [previewInteraction locationInCoordinateSpace:_tableView];
+			if ([_tableView pointInside:location withEvent:nil]) {
+				CGPoint locationInTableView = [previewInteraction locationInCoordinateSpace:_tableView];
+				NSIndexPath *indexPath = [_tableView indexPathForRowAtPoint:locationInTableView];
+				if (indexPath) {
+					_selectedRow = indexPath.row;
+					A3AbbreviationDrillDownTableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+
+					cell.contentView.backgroundColor = [UIColor whiteColor];
+					_previewView = [cell snapshotViewAfterScreenUpdates:YES];
+					
+					_previewView.frame = [self.view convertRect:cell.frame fromView:_tableView];
+					[self.view addSubview:_previewView];
+				}
+			}
+		}
+	}
+	_animator.fractionComplete = 1.0 - transitionProgress/4;
+	
+	if (ended) {
+		[self removePreviewView];
+	}
+}
+
+- (void)previewInteraction:(UIPreviewInteraction *)previewInteraction didUpdateCommitTransition:(CGFloat)transitionProgress ended:(BOOL)ended {
+	if (!self.sharePopupViewControllerIsPresented) {
+		_sharePopupViewController = [A3SharePopupViewController storyboardInstance];
+		_sharePopupViewController.presentationIsInteractive = YES;
+		_sharePopupViewController.delegate = self;
+		_sharePopupViewController.contents = _contentsArray[_selectedRow];
+		[self presentViewController:_sharePopupViewController animated:YES completion:NULL];
+	}
+	_sharePopupViewController.interactiveTransitionProgress = transitionProgress;
+	
+	if (ended) {
+		[_sharePopupViewController completeCurrentInteractiveTransition];
+	}
+}
+
+- (void)previewInteractionDidCancel:(UIPreviewInteraction *)previewInteraction {
+	if (!self.presentedViewController) {
+		[self removeBlurEffectView];
+	}
+	[self removePreviewView];
+}
+
+- (void)sharePopupViewControllerWillDismiss:(A3SharePopupViewController *)viewController {
+	[self removeBlurEffectView];
+}
+
+- (void)removePreviewView {
+	[_previewView removeFromSuperview];
+	_previewView = nil;
+	_previewIsPresented = NO;
+}
+
+- (void)removeBlurEffectView {
+	_animator = nil;
+	[_blurEffectView removeFromSuperview];
+	_blurEffectView = nil;
+}
 
 @end

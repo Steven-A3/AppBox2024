@@ -424,6 +424,8 @@
 		68521A3B17E1EBB200E08FB1 /* NSDate-Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 68521A3A17E1EBB200E08FB1 /* NSDate-Utilities.m */; };
 		68521A4617E1FF2E00E08FB1 /* FXLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 68521A4517E1FF2E00E08FB1 /* FXLabel.m */; };
 		6852298018FFFAD7002D3C0E /* UIViewController+iPad_rightSideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6852297F18FFFAD7002D3C0E /* UIViewController+iPad_rightSideView.m */; };
+		6853FC591E3715EA004A9A24 /* A3RippleTransitionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6853FC581E3715EA004A9A24 /* A3RippleTransitionController.m */; };
+		6853FC5C1E374211004A9A24 /* A3AbbreviationCopiedTransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6853FC5B1E374211004A9A24 /* A3AbbreviationCopiedTransitionDelegate.m */; };
 		685560061670448D00F200B7 /* A3Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 685560051670448D00F200B7 /* A3Utilities.m */; };
 		68563FEF1DD9A59400563BCD /* A3DashLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68563FEE1DD9A59400563BCD /* A3DashLineView.m */; };
 		6857C7271CB647A000D09177 /* RSCornersView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6857C7241CB647A000D09177 /* RSCornersView.m */; };
@@ -1747,6 +1749,10 @@
 		68521A4517E1FF2E00E08FB1 /* FXLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FXLabel.m; path = External/FXLabel/FXLabel/FXLabel.m; sourceTree = "<group>"; };
 		6852297E18FFFAD7002D3C0E /* UIViewController+iPad_rightSideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+iPad_rightSideView.h"; sourceTree = "<group>"; };
 		6852297F18FFFAD7002D3C0E /* UIViewController+iPad_rightSideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+iPad_rightSideView.m"; sourceTree = "<group>"; };
+		6853FC571E3715EA004A9A24 /* A3RippleTransitionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3RippleTransitionController.h; sourceTree = "<group>"; };
+		6853FC581E3715EA004A9A24 /* A3RippleTransitionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3RippleTransitionController.m; sourceTree = "<group>"; };
+		6853FC5A1E374211004A9A24 /* A3AbbreviationCopiedTransitionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3AbbreviationCopiedTransitionDelegate.h; sourceTree = "<group>"; };
+		6853FC5B1E374211004A9A24 /* A3AbbreviationCopiedTransitionDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AbbreviationCopiedTransitionDelegate.m; sourceTree = "<group>"; };
 		685560041670448D00F200B7 /* A3Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3Utilities.h; sourceTree = "<group>"; };
 		685560051670448D00F200B7 /* A3Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3Utilities.m; sourceTree = "<group>"; };
 		68563FED1DD9A59400563BCD /* A3DashLineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3DashLineView.h; path = Pedometer/A3DashLineView.h; sourceTree = "<group>"; };
@@ -3062,8 +3068,8 @@
 			children = (
 				17D42C2349D6911C330C1F3F /* Abbreviation.json */,
 				687242FD1DF95D5000B7FB6A /* Abbreviation.storyboard */,
-				6897B6CD1DFEA01C00238FD3 /* A3AbbreviationCollectionViewCell.h */,
 				6897B6CE1DFEA01C00238FD3 /* A3AbbreviationCollectionViewCell.m */,
+				6897B6CD1DFEA01C00238FD3 /* A3AbbreviationCollectionViewCell.h */,
 				685CF1AB1DFFF46300DE2636 /* A3AbbreviationTableViewCell.h */,
 				685CF1AC1DFFF46300DE2636 /* A3AbbreviationTableViewCell.m */,
 				687B95341E024A1A00126F9E /* A3AbbreviationViewController.h */,
@@ -3081,6 +3087,10 @@
 				68C9A0701E29B7050065509B /* A3SharePopupTransitionDelegate.m */,
 				68C9A0761E29B85A0065509B /* A3SharePopupPresentationController.h */,
 				68C9A0771E29B85A0065509B /* A3SharePopupPresentationController.m */,
+				6853FC571E3715EA004A9A24 /* A3RippleTransitionController.h */,
+				6853FC581E3715EA004A9A24 /* A3RippleTransitionController.m */,
+				6853FC5A1E374211004A9A24 /* A3AbbreviationCopiedTransitionDelegate.h */,
+				6853FC5B1E374211004A9A24 /* A3AbbreviationCopiedTransitionDelegate.m */,
 			);
 			path = Abbreviation;
 			sourceTree = "<group>";
@@ -6666,6 +6676,7 @@
 				68E2A6AC18D0B22800E834D9 /* UIImage+JHExtension.m in Sources */,
 				6825365118A7AA4C00EAFB84 /* MASConstraintMaker.m in Sources */,
 				68E2A6B718D0B22800E834D9 /* A3TipCalcSettingViewController.m in Sources */,
+				6853FC5C1E374211004A9A24 /* A3AbbreviationCopiedTransitionDelegate.m in Sources */,
 				682968851850401200B70E13 /* NSFileManager+A3Addition.m in Sources */,
 				6882802617E5ECED000D8069 /* A3HolidaysPageContentViewController.m in Sources */,
 				68F1C8D118D7F37D009FAE8A /* A3LadyCalendarSetupAlertViewController.m in Sources */,
@@ -6765,6 +6776,7 @@
 				684D92BB18BC1EFE005016F7 /* A3BatterStatusChooseColorCell.m in Sources */,
 				68B6A34518CEC76D004084EF /* A3WalletCategoryInfoViewController.m in Sources */,
 				680D639F18CFF9D400938AD0 /* A3MirrorViewController.m in Sources */,
+				6853FC591E3715EA004A9A24 /* A3RippleTransitionController.m in Sources */,
 				68B6A2C618CEC76D004084EF /* A3LoanCalcMonthlyTableTitleView.m in Sources */,
 				680D638C18CFF9D400938AD0 /* A3CalcKeyboardView_iPhone.m in Sources */,
 				68B6A44F18CEE781004084EF /* PSTCollectionViewFlowLayout.m in Sources */,

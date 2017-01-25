@@ -20,6 +20,7 @@
 @property (nonatomic, weak) IBOutlet UILabel *row3SubtitleLabel;
 @property (nonatomic, weak) IBOutlet UIView *firstLineView;
 @property (nonatomic, weak) IBOutlet UIView *secondLineView;
+@property (nonatomic, strong) IBOutletCollection(UIView) NSArray<UIView *> *rows;
 
 + (NSString *)reuseIdentifier;
 
