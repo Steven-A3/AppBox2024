@@ -15,6 +15,7 @@
 #import "UIViewController+A3Addition.h"
 #import "A3AbbreviationCopiedViewController.h"
 #import "A3SharePopupViewController.h"
+#import "AbbreviationFavorite+CoreDataClass.h"
 
 NSString *const A3AbbreviationKeyTag = @"tag";
 NSString *const A3AbbreviationKeyTags = @"tags";
@@ -138,7 +139,7 @@ A3SharePopupViewControllerDelegate>
 		
 		A3AbbreviationDrillDownTableViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownTableViewController storyboardID]];
 		viewController.contentsArray = section[A3AbbreviationKeyComponents];
-		viewController.contentsTitle = section[A3AbbreviationKeyTag];
+		viewController.contentsTitle = [NSString stringWithFormat:@"#%@", section[A3AbbreviationKeyTag]];
 		[self.navigationController pushViewController:viewController animated:YES];
 	} else {
 		NSDictionary *section = self.hashTagSections[indexPath.row];
@@ -166,7 +167,10 @@ A3SharePopupViewControllerDelegate>
 }
 
 - (IBAction)favoritesButtonAction:(id)sender {
-	
+	A3AbbreviationDrillDownTableViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownTableViewController storyboardID]];
+	viewController.contentsTitle = @"Favorites";
+	viewController.contentsArray = [self favoritesArray];
+	[self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -262,30 +266,34 @@ A3SharePopupViewControllerDelegate>
 #pragma mark - Data Management
 
 - (void)loadData {
-	NSString *dataFilePath = [@"Abbreviation.json" pathInCachesDirectory];
-	NSFileManager *fileManager = [NSFileManager defaultManager];
-	if (![fileManager fileExistsAtPath:dataFilePath]) {
-		dataFilePath = [[NSBundle mainBundle] pathForResource:@"Abbreviation.json" ofType:nil];
-		if (![fileManager fileExistsAtPath:dataFilePath]) {
-			return;
-		}
-	}
-	NSData *rawData = [NSData dataWithContentsOfFile:dataFilePath];
-	if (!rawData) {
-		return;
-	}
-	NSError *error;
-	NSArray *dataArray = [NSJSONSerialization JSONObjectWithData:rawData options:NSJSONReadingAllowFragments error:&error];
-	if (error) {
-		FNLOG(@"%@", error.localizedDescription);
-		return;
-	}
-	self.dataArray = dataArray;
+	self.dataArray = [self abbreviationsArrayFromDataFile];;
 	[self buildHashTagSections];
 	[self buildAlphabetSections];
 	
 	FNLOG(@"%@", _hashTagSections);
 	FNLOG(@"%@", _alphabetSections);
+}
+
+- (NSArray *)abbreviationsArrayFromDataFile {
+	NSString *dataFilePath = [@"Abbreviation.json" pathInCachesDirectory];
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	if (![fileManager fileExistsAtPath:dataFilePath]) {
+		dataFilePath = [[NSBundle mainBundle] pathForResource:@"Abbreviation.json" ofType:nil];
+		if (![fileManager fileExistsAtPath:dataFilePath]) {
+			return nil;
+		}
+	}
+	NSData *rawData = [NSData dataWithContentsOfFile:dataFilePath];
+	if (!rawData) {
+		return nil;
+	}
+	NSError *error;
+	NSArray *dataArray = [NSJSONSerialization JSONObjectWithData:rawData options:NSJSONReadingAllowFragments error:&error];
+	if (error) {
+		FNLOG(@"%@", error.localizedDescription);
+		return nil;
+	}
+	return dataArray;
 }
 
 - (void)buildHashTagSections {
@@ -308,6 +316,17 @@ A3SharePopupViewControllerDelegate>
 		[alphabetSections addObject:@{A3AbbreviationKeyLetter : letter, A3AbbreviationKeyComponents:components}];
 	}
 	_alphabetSections = alphabetSections;
+}
+
+- (NSArray *)favoritesArray {
+	NSArray *favoriteKeys = [AbbreviationFavorite MR_findAllSortedBy:@"order" ascending:YES];
+	if ([favoriteKeys count] > 1) {
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K in %@", A3AbbreviationKeyAbbreviation, [favoriteKeys valueForKey:@"uniqueID"]];
+		NSArray *favorites = [self.dataArray filteredArrayUsingPredicate:predicate];
+		FNLOG(@"%@", favorites);
+		return favorites;
+	}
+	return nil;
 }
 
 /*
@@ -617,6 +636,7 @@ A3SharePopupViewControllerDelegate>
 	}
 
 	if (ended) {
+		_animator.fractionComplete = 0.75;
 		[self removePreviewView];
 	} else {
 		_animator.fractionComplete = 1.0 - transitionProgress/4;

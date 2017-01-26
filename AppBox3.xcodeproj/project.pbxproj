@@ -116,6 +116,8 @@
 		68030ABC17F063D100B04487 /* HTCopyableLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 68030ABB17F063D100B04487 /* HTCopyableLabel.m */; };
 		680344601CE19505009C300F /* A3PedometerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6803445F1CE19505009C300F /* A3PedometerViewController.m */; };
 		680344651CE1E46F009C300F /* A3PedometerSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680344641CE1E46F009C300F /* A3PedometerSettingsTableViewController.m */; };
+		68057CDD1E39EEDA002A11FE /* AbbreviationFavorite+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 68057CDA1E39EEDA002A11FE /* AbbreviationFavorite+CoreDataClass.m */; };
+		68057CDE1E39EEDA002A11FE /* AbbreviationFavorite+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 68057CDC1E39EEDA002A11FE /* AbbreviationFavorite+CoreDataProperties.m */; };
 		68067C8C186E867C00D1A1D1 /* A3PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68067C8B186E867C00D1A1D1 /* A3PasswordViewController.m */; };
 		680886D31891751B0093FD97 /* A3ChooseColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886AA1891751B0093FD97 /* A3ChooseColorView.m */; };
 		680886D41891751B0093FD97 /* A3ClockDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886AC1891751B0093FD97 /* A3ClockDataManager.m */; };
@@ -1240,6 +1242,11 @@
 		6803445F1CE19505009C300F /* A3PedometerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3PedometerViewController.m; path = Pedometer/A3PedometerViewController.m; sourceTree = "<group>"; };
 		680344631CE1E46F009C300F /* A3PedometerSettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3PedometerSettingsTableViewController.h; path = Pedometer/A3PedometerSettingsTableViewController.h; sourceTree = "<group>"; };
 		680344641CE1E46F009C300F /* A3PedometerSettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3PedometerSettingsTableViewController.m; path = Pedometer/A3PedometerSettingsTableViewController.m; sourceTree = "<group>"; };
+		68057CCD1E39ECB9002A11FE /* Abbreviation and Kaomoji favorites.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Abbreviation and Kaomoji favorites.xcdatamodel"; sourceTree = "<group>"; };
+		68057CD91E39EEDA002A11FE /* AbbreviationFavorite+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "AbbreviationFavorite+CoreDataClass.h"; path = "Model/AbbreviationFavorite+CoreDataClass.h"; sourceTree = "<group>"; };
+		68057CDA1E39EEDA002A11FE /* AbbreviationFavorite+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "AbbreviationFavorite+CoreDataClass.m"; path = "Model/AbbreviationFavorite+CoreDataClass.m"; sourceTree = "<group>"; };
+		68057CDB1E39EEDA002A11FE /* AbbreviationFavorite+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "AbbreviationFavorite+CoreDataProperties.h"; path = "Model/AbbreviationFavorite+CoreDataProperties.h"; sourceTree = "<group>"; };
+		68057CDC1E39EEDA002A11FE /* AbbreviationFavorite+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "AbbreviationFavorite+CoreDataProperties.m"; path = "Model/AbbreviationFavorite+CoreDataProperties.m"; sourceTree = "<group>"; };
 		68067C8A186E867C00D1A1D1 /* A3PasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3PasswordViewController.h; path = Passcode/A3PasswordViewController.h; sourceTree = "<group>"; };
 		68067C8B186E867C00D1A1D1 /* A3PasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3PasswordViewController.m; path = Passcode/A3PasswordViewController.m; sourceTree = "<group>"; };
 		68067C90186E926D00D1A1D1 /* A3PasscodeViewControllerProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = A3PasscodeViewControllerProtocol.h; path = Passcode/A3PasscodeViewControllerProtocol.h; sourceTree = "<group>"; };
@@ -3066,31 +3073,32 @@
 		17D424A532191B78490DC8D5 /* Abbreviation */ = {
 			isa = PBXGroup;
 			children = (
-				17D42C2349D6911C330C1F3F /* Abbreviation.json */,
-				687242FD1DF95D5000B7FB6A /* Abbreviation.storyboard */,
-				6897B6CE1DFEA01C00238FD3 /* A3AbbreviationCollectionViewCell.m */,
 				6897B6CD1DFEA01C00238FD3 /* A3AbbreviationCollectionViewCell.h */,
+				6897B6CE1DFEA01C00238FD3 /* A3AbbreviationCollectionViewCell.m */,
+				6853FC5A1E374211004A9A24 /* A3AbbreviationCopiedTransitionDelegate.h */,
+				6853FC5B1E374211004A9A24 /* A3AbbreviationCopiedTransitionDelegate.m */,
+				688CC6CB1E20B85F004374D4 /* A3AbbreviationCopiedViewController.h */,
+				688CC6CC1E20B85F004374D4 /* A3AbbreviationCopiedViewController.m */,
+				6873B5881E1E5EB600A61AB3 /* A3AbbreviationDrillDownTableViewCell.h */,
+				6873B5891E1E5EB600A61AB3 /* A3AbbreviationDrillDownTableViewCell.m */,
+				68CBBE761E1BA90500E92A8A /* A3AbbreviationDrillDownTableViewController.h */,
+				68CBBE771E1BA90500E92A8A /* A3AbbreviationDrillDownTableViewController.m */,
 				685CF1AB1DFFF46300DE2636 /* A3AbbreviationTableViewCell.h */,
 				685CF1AC1DFFF46300DE2636 /* A3AbbreviationTableViewCell.m */,
 				687B95341E024A1A00126F9E /* A3AbbreviationViewController.h */,
 				687B95351E024A1A00126F9E /* A3AbbreviationViewController.m */,
-				682C96791E15FB7500C3F952 /* A3SharePopupViewController.storyboard */,
-				68CBBE761E1BA90500E92A8A /* A3AbbreviationDrillDownTableViewController.h */,
-				68CBBE771E1BA90500E92A8A /* A3AbbreviationDrillDownTableViewController.m */,
-				6873B5881E1E5EB600A61AB3 /* A3AbbreviationDrillDownTableViewCell.h */,
-				6873B5891E1E5EB600A61AB3 /* A3AbbreviationDrillDownTableViewCell.m */,
-				688CC6CB1E20B85F004374D4 /* A3AbbreviationCopiedViewController.h */,
-				688CC6CC1E20B85F004374D4 /* A3AbbreviationCopiedViewController.m */,
-				68CEFB471E20F03900DAFDCB /* A3SharePopupViewController.h */,
-				68CEFB481E20F03900DAFDCB /* A3SharePopupViewController.m */,
-				68C9A06F1E29B7050065509B /* A3SharePopupTransitionDelegate.h */,
-				68C9A0701E29B7050065509B /* A3SharePopupTransitionDelegate.m */,
-				68C9A0761E29B85A0065509B /* A3SharePopupPresentationController.h */,
-				68C9A0771E29B85A0065509B /* A3SharePopupPresentationController.m */,
 				6853FC571E3715EA004A9A24 /* A3RippleTransitionController.h */,
 				6853FC581E3715EA004A9A24 /* A3RippleTransitionController.m */,
-				6853FC5A1E374211004A9A24 /* A3AbbreviationCopiedTransitionDelegate.h */,
-				6853FC5B1E374211004A9A24 /* A3AbbreviationCopiedTransitionDelegate.m */,
+				68C9A0761E29B85A0065509B /* A3SharePopupPresentationController.h */,
+				68C9A0771E29B85A0065509B /* A3SharePopupPresentationController.m */,
+				68C9A06F1E29B7050065509B /* A3SharePopupTransitionDelegate.h */,
+				68C9A0701E29B7050065509B /* A3SharePopupTransitionDelegate.m */,
+				68CEFB471E20F03900DAFDCB /* A3SharePopupViewController.h */,
+				68CEFB481E20F03900DAFDCB /* A3SharePopupViewController.m */,
+				682C96791E15FB7500C3F952 /* A3SharePopupViewController.storyboard */,
+				17D42C2349D6911C330C1F3F /* Abbreviation.json */,
+				687242FD1DF95D5000B7FB6A /* Abbreviation.storyboard */,
+				68057CD21E39EE01002A11FE /* Model */,
 			);
 			path = Abbreviation;
 			sourceTree = "<group>";
@@ -3366,6 +3374,17 @@
 				6889D0A41CF3E1EC00B7F90E /* Pedometer.storyboard */,
 			);
 			name = Pedometer;
+			sourceTree = "<group>";
+		};
+		68057CD21E39EE01002A11FE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				68057CD91E39EEDA002A11FE /* AbbreviationFavorite+CoreDataClass.h */,
+				68057CDA1E39EEDA002A11FE /* AbbreviationFavorite+CoreDataClass.m */,
+				68057CDB1E39EEDA002A11FE /* AbbreviationFavorite+CoreDataProperties.h */,
+				68057CDC1E39EEDA002A11FE /* AbbreviationFavorite+CoreDataProperties.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		680886A41891751B0093FD97 /* Clock */ = {
@@ -6828,10 +6847,12 @@
 				687D0D1017CAE519005AB571 /* HolidayData.m in Sources */,
 				684D92F218BC1FBC005016F7 /* A3DateCalcDurationViewController.m in Sources */,
 				684E1BDD1AC13BA100925771 /* A3OpenSourceLicensesViewController.m in Sources */,
+				68057CDE1E39EEDA002A11FE /* AbbreviationFavorite+CoreDataProperties.m in Sources */,
 				68B6A44418CEE781004084EF /* MWTapDetectingImageView.m in Sources */,
 				682FDF2C1981CC0400C6C83D /* MagicalRecord+ErrorHandling.m in Sources */,
 				684E9F0C188A447400FAA48E /* A3BasicWebViewController.m in Sources */,
 				68D1AC9917977F960047D4BF /* A3CurrencyTVEqualCell.m in Sources */,
+				68057CDD1E39EEDA002A11FE /* AbbreviationFavorite+CoreDataClass.m in Sources */,
 				689C9A531839CD7F007C97EE /* AFNetworkActivityIndicatorManager.m in Sources */,
 				682FDF261981CC0400C6C83D /* NSPersistentStore+MagicalRecord.m in Sources */,
 				68F04D071B40F825004FDD7B /* RMAppReceipt.m in Sources */,
@@ -7948,11 +7969,12 @@
 		6831EBF618619CC800BAF15B /* AppBox3.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				68057CCD1E39ECB9002A11FE /* Abbreviation and Kaomoji favorites.xcdatamodel */,
 				68E67CAE1CE44E86002B022E /* Add Pedometer.xcdatamodel */,
 				68EABE271CB7515900219151 /* AppBox 2 (Adding QR Code).xcdatamodel */,
 				6831EBF718619CC800BAF15B /* AppBox3.xcdatamodel */,
 			);
-			currentVersion = 68E67CAE1CE44E86002B022E /* Add Pedometer.xcdatamodel */;
+			currentVersion = 68057CCD1E39ECB9002A11FE /* Abbreviation and Kaomoji favorites.xcdatamodel */;
 			path = AppBox3.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

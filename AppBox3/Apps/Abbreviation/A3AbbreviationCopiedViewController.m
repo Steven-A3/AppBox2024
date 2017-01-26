@@ -32,8 +32,6 @@ extern NSString *const A3AbbreviationKeyAbbreviation;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-//	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Pattern_Dots"]];
-	
 	UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureHandler:)];
 	[self.view addGestureRecognizer:gestureRecognizer];
 	
@@ -59,7 +57,10 @@ extern NSString *const A3AbbreviationKeyAbbreviation;
 - (void)setContents:(NSDictionary *)contents {
 	_contents = [contents copy];
 
-	_titleLabel.text = _contents[A3AbbreviationKeyAbbreviation];
+	NSString *stringToCopy = _contents[A3AbbreviationKeyAbbreviation];
+	_titleLabel.text = stringToCopy;
+	UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+	[pasteboard setString:stringToCopy];
 }
 
 @end
