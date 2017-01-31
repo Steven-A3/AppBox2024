@@ -22,9 +22,6 @@
 [submodule "External/HTCopyableLabel"]
 	path = External/HTCopyableLabel
 	url = https://github.com/Steven-A3/HTCopyableLabel.git
-[submodule "External/DKLiveBlur"]
-	path = External/DKLiveBlur
-	url = https://github.com/Steven-A3/DKLiveBlur.git
 [submodule "External/AFNetworking"]
 	path = External/AFNetworking
 	url = https://github.com/AFNetworking/AFNetworking.git
