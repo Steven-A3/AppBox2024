@@ -10,5 +10,6 @@
 
 @interface A3SharePopupPresentationController : UIPresentationController
 
-- (void)updateBlurView:(CGFloat)progress;
+
+- (void)removeBlurView;
 @end

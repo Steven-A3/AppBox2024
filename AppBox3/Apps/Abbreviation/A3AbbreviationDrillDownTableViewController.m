@@ -17,7 +17,7 @@ extern NSString *const A3AbbreviationKeyMeaning;
 
 @interface A3AbbreviationDrillDownTableViewController ()
 <UITableViewDataSource, UITableViewDelegate, UIPreviewInteractionDelegate,
-UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
+UIGestureRecognizerDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UIButton *backButton;
@@ -75,7 +75,14 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 }
 
 - (void)didLongPressTableView:(UILongPressGestureRecognizer *)gesture {
-	
+	CGPoint location = [gesture locationInView:self.tableView];
+	NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:location];
+	if (indexPath) {
+		A3SharePopupViewController *viewController = [A3SharePopupViewController storyboardInstanceWithBlurBackground:YES];
+		viewController.delegate = self.dataManager;
+		viewController.titleString = _contentsArray[indexPath.row][A3AbbreviationKeyAbbreviation];
+		[self presentViewController:viewController animated:YES completion:NULL];
+	}
 }
 
 #pragma mark - UITableViewDataSource
@@ -168,10 +175,10 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 
 - (void)previewInteraction:(UIPreviewInteraction *)previewInteraction didUpdateCommitTransition:(CGFloat)transitionProgress ended:(BOOL)ended {
 	if (!self.sharePopupViewControllerIsPresented) {
-		_sharePopupViewController = [A3SharePopupViewController storyboardInstance];
+		_sharePopupViewController = [A3SharePopupViewController storyboardInstanceWithBlurBackground:NO];
 		_sharePopupViewController.presentationIsInteractive = YES;
-		_sharePopupViewController.delegate = self;
-		_sharePopupViewController.contents = _contentsArray[_selectedRow];
+		_sharePopupViewController.delegate = self.dataManager;
+		_sharePopupViewController.titleString = _contentsArray[_selectedRow][A3AbbreviationKeyAbbreviation];
 		[self presentViewController:_sharePopupViewController animated:YES completion:NULL];
 	}
 	_sharePopupViewController.interactiveTransitionProgress = transitionProgress;

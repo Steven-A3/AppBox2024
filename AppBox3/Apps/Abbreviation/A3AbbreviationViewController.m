@@ -7,36 +7,18 @@
 //
 
 #import "A3AbbreviationViewController.h"
-#import "NSString+conversion.h"
 #import "A3AbbreviationCollectionViewCell.h"
 #import "A3AbbreviationTableViewCell.h"
 #import "UIColor+A3Addition.h"
 #import "A3AbbreviationDrillDownTableViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "A3AbbreviationCopiedViewController.h"
-#import "A3SharePopupViewController.h"
-#import "AbbreviationFavorite+CoreDataClass.h"
-
-NSString *const A3AbbreviationKeyTag = @"tag";
-NSString *const A3AbbreviationKeyTags = @"tags";
-
-NSString *const A3AbbreviationKeyComponents = @"components";
-NSString *const A3AbbreviationKeySectionTitle = @"sectionTitle";
-
-NSString *const A3AbbreviationKeyAbbreviation = @"abbreviation";
-NSString *const A3AbbreviationKeyLetter = @"letter";
-NSString *const A3AbbreviationKeyMeaning = @"meaning";
 
 @interface A3AbbreviationViewController () <UICollectionViewDelegate, UICollectionViewDataSource,
-UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, UIPreviewInteractionDelegate,
-A3SharePopupViewControllerDelegate>
+UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, UIPreviewInteractionDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
-
-@property (nonatomic, strong) NSArray *dataArray;
-@property (nonatomic, strong) NSArray<NSDictionary *> *hashTagSections;
-@property (nonatomic, strong) NSArray<NSDictionary *> *alphabetSections;
 
 @property (nonatomic, strong) NSArray<UIColor *> *headStartColors;
 @property (nonatomic, strong) NSArray<UIColor *> *alphabetBGColors;
@@ -53,6 +35,7 @@ A3SharePopupViewControllerDelegate>
 @property (nonatomic, strong) UIView *previewView;
 @property (nonatomic, strong) UIView *previewBottomView;
 @property (nonatomic, copy) NSDictionary *selectedComponent;
+@property (nonatomic, strong) A3AbbreviationDataManager *dataManager;
 
 @end
 
@@ -62,8 +45,6 @@ A3SharePopupViewControllerDelegate>
     [super viewDidLoad];
 
 	[self.navigationController setNavigationBarHidden:YES];
-
-	[self loadData];
 
 	self.title = @"Abbreviation";
 	
@@ -78,10 +59,25 @@ A3SharePopupViewControllerDelegate>
 		_previewInteraction.delegate = self;
 	} else {
 		UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(didLongPressCollectionView:)];
-		longPressGestureRecognizer.minimumPressDuration = 1.0;
+		longPressGestureRecognizer.minimumPressDuration = 0.5;
 		longPressGestureRecognizer.delegate = self;
 		[self.collectionView addGestureRecognizer:longPressGestureRecognizer];
 	}
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	if (![self isBeingPresented] && ![self isMovingToParentViewController]) {
+		[self removeBlurEffectView];
+	}
+}
+
+- (A3AbbreviationDataManager *)dataManager {
+	if (!_dataManager) {
+		_dataManager = [A3AbbreviationDataManager instance];
+	}
+	return _dataManager;
 }
 
 - (void)didLongPressCollectionView:(UILongPressGestureRecognizer *)gestureRecognizer {
@@ -98,9 +94,10 @@ A3SharePopupViewControllerDelegate>
 		if (pointInCell.y < cell.roundedRectView.frame.origin.y) {
 			// tag가 선택이 된 경우
 			
-			NSDictionary *section = self.hashTagSections[indexPath.row];
+			NSDictionary *section = self.dataManager.hashTagSections[indexPath.row];
 			
 			A3AbbreviationDrillDownTableViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownTableViewController storyboardID]];
+			viewController.dataManager = self.dataManager;
 			viewController.contentsArray = section[A3AbbreviationKeyComponents];
 			viewController.contentsTitle = section[A3AbbreviationKeyTag];
 			[self.navigationController pushViewController:viewController animated:YES];
@@ -109,11 +106,12 @@ A3SharePopupViewControllerDelegate>
 			CGPoint pointInRoundedRect = [gestureRecognizer locationInView:cell.roundedRectView];
 			NSInteger index = pointInRoundedRect.y / cell.roundedRectView.bounds.size.height / 3;
 
-			NSDictionary *section = self.hashTagSections[indexPath.row];
+			NSDictionary *section = self.dataManager.hashTagSections[indexPath.row];
 
-			A3SharePopupViewController *viewController = [A3SharePopupViewController storyboardInstance];
-			[self.view addSubview:viewController.view];
-
+			A3SharePopupViewController *viewController = [A3SharePopupViewController storyboardInstanceWithBlurBackground:YES];
+			viewController.delegate = self.dataManager;
+			viewController.titleString = section[A3AbbreviationKeyComponents][index][A3AbbreviationKeyAbbreviation];
+			[self presentViewController:viewController animated:YES completion:NULL];
 			_sharePopupViewController = viewController;
 			FNLOG();
 		}
@@ -135,14 +133,15 @@ A3SharePopupViewControllerDelegate>
 	FNLOG(@"%f, %f", pointInCell.x, pointInCell.y);
 
 	if (pointInCell.y < cell.roundedRectView.frame.origin.y) {
-		NSDictionary *section = self.hashTagSections[indexPath.row];
+		NSDictionary *section = self.dataManager.hashTagSections[indexPath.row];
 		
 		A3AbbreviationDrillDownTableViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownTableViewController storyboardID]];
+		viewController.dataManager = self.dataManager;
 		viewController.contentsArray = section[A3AbbreviationKeyComponents];
 		viewController.contentsTitle = [NSString stringWithFormat:@"#%@", section[A3AbbreviationKeyTag]];
 		[self.navigationController pushViewController:viewController animated:YES];
 	} else {
-		NSDictionary *section = self.hashTagSections[indexPath.row];
+		NSDictionary *section = self.dataManager.hashTagSections[indexPath.row];
 
 		CGFloat rowHeight = cell.roundedRectView.frame.size.height / 3;
 		NSInteger idx = floor((pointInCell.y - cell.roundedRectView.frame.origin.y) / rowHeight);
@@ -168,20 +167,21 @@ A3SharePopupViewControllerDelegate>
 
 - (IBAction)favoritesButtonAction:(id)sender {
 	A3AbbreviationDrillDownTableViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownTableViewController storyboardID]];
+	viewController.dataManager = self.dataManager;
 	viewController.contentsTitle = @"Favorites";
-	viewController.contentsArray = [self favoritesArray];
+	viewController.contentsArray = [self.dataManager favoritesArray];
 	[self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return [self.hashTagSections count];
+    return [self.dataManager.hashTagSections count];
 }
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
 	A3AbbreviationCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[A3AbbreviationCollectionViewCell reuseIdentifier] forIndexPath:indexPath];
-	NSDictionary *section = self.hashTagSections[indexPath.row];
+	NSDictionary *section = self.dataManager.hashTagSections[indexPath.row];
 
 	cell.groupTitleLabel.text = [NSString stringWithFormat:@"#%@", section[A3AbbreviationKeyTag]];
 	NSArray *components = section[A3AbbreviationKeyComponents];
@@ -208,12 +208,12 @@ A3SharePopupViewControllerDelegate>
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.alphabetSections count];
+    return [self.dataManager.alphabetSections count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	A3AbbreviationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[A3AbbreviationTableViewCell reuseIdentifier] forIndexPath:indexPath];
-	NSDictionary *section = self.alphabetSections[indexPath.row];
+	NSDictionary *section = self.dataManager.alphabetSections[indexPath.row];
 	cell.alphabetLabel.text = section[A3AbbreviationKeyLetter];
 	NSDictionary *component = section[A3AbbreviationKeyComponents][0];
 	cell.abbreviationLabel.text = component[A3AbbreviationKeyAbbreviation];
@@ -255,173 +255,16 @@ A3SharePopupViewControllerDelegate>
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (!self.presentedViewController) {
-		NSArray *contents = self.alphabetSections[indexPath.row][A3AbbreviationKeyComponents];
+		NSArray *contents = self.dataManager.alphabetSections[indexPath.row][A3AbbreviationKeyComponents];
 		A3AbbreviationDrillDownTableViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownTableViewController storyboardID]];
-		viewController.contentsTitle = self.alphabetSections[indexPath.row][A3AbbreviationKeyLetter];
+		viewController.dataManager = self.dataManager;
+		viewController.contentsTitle = self.dataManager.alphabetSections[indexPath.row][A3AbbreviationKeyLetter];
 		viewController.contentsArray = contents;
 		[self.navigationController pushViewController:viewController animated:YES];
 	}
 }
 
 #pragma mark - Data Management
-
-- (void)loadData {
-	self.dataArray = [self abbreviationsArrayFromDataFile];;
-	[self buildHashTagSections];
-	[self buildAlphabetSections];
-	
-	FNLOG(@"%@", _hashTagSections);
-	FNLOG(@"%@", _alphabetSections);
-}
-
-- (NSArray *)abbreviationsArrayFromDataFile {
-	NSString *dataFilePath = [@"Abbreviation.json" pathInCachesDirectory];
-	NSFileManager *fileManager = [NSFileManager defaultManager];
-	if (![fileManager fileExistsAtPath:dataFilePath]) {
-		dataFilePath = [[NSBundle mainBundle] pathForResource:@"Abbreviation.json" ofType:nil];
-		if (![fileManager fileExistsAtPath:dataFilePath]) {
-			return nil;
-		}
-	}
-	NSData *rawData = [NSData dataWithContentsOfFile:dataFilePath];
-	if (!rawData) {
-		return nil;
-	}
-	NSError *error;
-	NSArray *dataArray = [NSJSONSerialization JSONObjectWithData:rawData options:NSJSONReadingAllowFragments error:&error];
-	if (error) {
-		FNLOG(@"%@", error.localizedDescription);
-		return nil;
-	}
-	return dataArray;
-}
-
-- (void)buildHashTagSections {
-	NSMutableArray *hashTagSections = [NSMutableArray new];
-	NSArray *availableTags = @[@"Top24", @"Romance", @"Business"];
-	for (NSString *tag in availableTags) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS %@", A3AbbreviationKeyTags, tag];
-		NSArray *components = [self.dataArray filteredArrayUsingPredicate:predicate];
-		[hashTagSections addObject:@{A3AbbreviationKeyTag : tag, A3AbbreviationKeyComponents : components}];
-	}
-	_hashTagSections = hashTagSections;
-}
-
-- (void)buildAlphabetSections {
-	NSMutableArray *alphabetSections = [NSMutableArray new];
-	NSArray *alphabet = [@"A B C D E F G H I J K L M N O P Q R S T U V W X Y Z" componentsSeparatedByString:@" "];
-	for (NSString *letter in alphabet) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", A3AbbreviationKeyAbbreviation, letter];
-		NSArray *components = [self.dataArray filteredArrayUsingPredicate:predicate];
-		[alphabetSections addObject:@{A3AbbreviationKeyLetter : letter, A3AbbreviationKeyComponents:components}];
-	}
-	_alphabetSections = alphabetSections;
-}
-
-- (NSArray *)favoritesArray {
-	NSArray *favoriteKeys = [AbbreviationFavorite MR_findAllSortedBy:@"order" ascending:YES];
-	if ([favoriteKeys count] > 1) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K in %@", A3AbbreviationKeyAbbreviation, [favoriteKeys valueForKey:@"uniqueID"]];
-		NSArray *favorites = [self.dataArray filteredArrayUsingPredicate:predicate];
-		FNLOG(@"%@", favorites);
-		return favorites;
-	}
-	return nil;
-}
-
-/*
- /// Hash tag sections
- (
-	{
-		components =         (
-			 {
-				 abbreviation = B4N;
-				 meaning = "Bye For Now ";
-				 tags = Top24;
-			 },
-			 .... 생략
-		);
-		tag = Top24;
-	},
-	{
-		components =         (
-			{
-				abbreviation = ALIWanIsU;
-				meaning = "All I Want Is You";
-				tags = Romance;
-			},
-			.... 생략
-		);
-		tag = Romance;
-	},
-	{
-		components =         (
-			 {
-				 abbreviation = ADN;
-				 meaning = "Any Day Now";
-				 tags = Business;
-			 },
-		);
-		tag = Business;
-	}
- )
- 
- /// Alphabet List
- (
-	{
-		 components =         (
-			{
-			 abbreviation = ADN;
-			 meaning = "Any Day Now";
-			 tags = Business;
-			 },
-		 );
-		 letter = A;
-	},
-	{
-		 components =         (
-			 {
-				 abbreviation = B2B;
-				 meaning = "Business To Business";
-				 tags = Business;
-			 },
-		);
-		letter = B;
-	},
-	... Z까지 있음
- )
- */
-
-- (NSArray *)hashTagSections {
-	if (!_hashTagSections) {
-		[self loadData];
-	}
-	return _hashTagSections;
-}
-
-- (NSArray *)alphabetSections {
-	if (!_alphabetSections) {
-		[self loadData];
-	}
-	return _alphabetSections;
-}
-
-/*
-	{
-		 component =         (
-			 abbreviation = B2B;
-			 meaning = "Business To Business";
-			 tags = Business;
-			 },
-			 );
-		 order = (double value);	새 항목 추가시 마지막 값 + 1.0
-		 다른 항목 사이로 배치를 할 경우에는 위/아래 항목 순서값 / 2
-	},
- */
-
-- (NSArray *)favorites {
-	return nil;
-}
 
 - (NSArray *)headStartColors {
 	if (!_headStartColors) {
@@ -560,7 +403,7 @@ A3SharePopupViewControllerDelegate>
 			
 			_blurEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
 			
-			_animator = [[UIViewPropertyAnimator alloc] initWithDuration:1.0 curve:UIViewAnimationCurveLinear animations:^{
+			_animator = [[UIViewPropertyAnimator alloc] initWithDuration:0.1 curve:UIViewAnimationCurveLinear animations:^{
 				_blurEffectView.effect = nil;
 			}];
 			
@@ -571,7 +414,7 @@ A3SharePopupViewControllerDelegate>
 				
 				if (indexPath) {
 					// Save data to use later
-					_selectedComponent = [_alphabetSections[indexPath.row][A3AbbreviationKeyComponents][0] copy];
+					_selectedComponent = [self.dataManager.alphabetSections[indexPath.row][A3AbbreviationKeyComponents][0] copy];
 					
 					A3AbbreviationTableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
 					
@@ -598,7 +441,7 @@ A3SharePopupViewControllerDelegate>
 				CGPoint location = [previewInteraction locationInCoordinateSpace:_collectionView];
 				NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:location];
 				if (indexPath) {
-					NSDictionary *hashTagSection = _hashTagSections[indexPath.row];
+					NSDictionary *hashTagSection = self.dataManager.hashTagSections[indexPath.row];
 
 					A3AbbreviationCollectionViewCell *cell = (A3AbbreviationCollectionViewCell *) [_collectionView cellForItemAtIndexPath:indexPath];
 					if (cell) {
@@ -616,27 +459,15 @@ A3SharePopupViewControllerDelegate>
 					}
 				}
 			}
-		} else {
-			double delayInSeconds = 0.5;
-			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-				_blurEffectView = [[UIVisualEffectView alloc] init];
-				_blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-				_blurEffectView.frame = self.view.bounds;
-				[self.view addSubview:_blurEffectView];
-				
-				_blurEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-				
-				_animator = [[UIViewPropertyAnimator alloc] initWithDuration:1.0 curve:UIViewAnimationCurveLinear animations:^{
-					_blurEffectView.effect = nil;
-				}];
-				_animator.fractionComplete = 0.75;
-			});
 		}
 	}
 
 	if (ended) {
-		_animator.fractionComplete = 0.75;
+		if (!_blurEffectView) {
+			[previewInteraction cancelInteraction];
+		} else {
+			_animator.fractionComplete = 0.75;
+		}
 		[self removePreviewView];
 	} else {
 		_animator.fractionComplete = 1.0 - transitionProgress/4;
@@ -645,12 +476,12 @@ A3SharePopupViewControllerDelegate>
 
 - (void)previewInteraction:(UIPreviewInteraction *)previewInteraction didUpdateCommitTransition:(CGFloat)transitionProgress ended:(BOOL)ended {
 	FNLOG(@"%f, sharePopupViewControllerIsPresented = %@, ended = %@", transitionProgress, self.sharePopupViewControllerIsPresented ? @"YES" : @"NO", ended ? @"YES" : @"NO");
-	
+
 	if (!self.sharePopupViewControllerIsPresented) {
-		_sharePopupViewController = [A3SharePopupViewController storyboardInstance];
+		_sharePopupViewController = [A3SharePopupViewController storyboardInstanceWithBlurBackground:NO];
 		_sharePopupViewController.presentationIsInteractive = YES;
-		_sharePopupViewController.delegate = self;
-		_sharePopupViewController.contents = _selectedComponent;
+		_sharePopupViewController.delegate = self.dataManager;
+		_sharePopupViewController.titleString = _selectedComponent[A3AbbreviationKeyAbbreviation];
 		[self presentViewController:_sharePopupViewController animated:YES completion:NULL];
 	}
 	_sharePopupViewController.interactiveTransitionProgress = transitionProgress;
@@ -669,10 +500,6 @@ A3SharePopupViewControllerDelegate>
 
 - (BOOL)sharePopupViewControllerIsPresented {
 	return self.presentedViewController != nil;
-}
-
-- (void)sharePopupViewControllerWillDismiss:(A3SharePopupViewController *)viewController {
-	[self removeBlurEffectView];
 }
 
 - (void)removePreviewView {

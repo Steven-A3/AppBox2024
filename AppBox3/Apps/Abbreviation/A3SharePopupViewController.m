@@ -7,20 +7,18 @@
 //
 
 #import "A3SharePopupViewController.h"
-#import "A3SharePopupTransitionDelegate.h"
 #import "UIViewController+A3Addition.h"
 #import "AbbreviationFavorite+CoreDataProperties.h"
-#import "NSManagedObject+extension.h"
+#import "A3SharePopupPresentationController.h"
 
 extern NSString *const A3AbbreviationKeyAbbreviation;
 extern NSString *const A3AbbreviationKeyMeaning;
 
 @interface A3SharePopupViewController ()
-<UIActivityItemSource>
+<UIActivityItemSource, UIViewControllerTransitioningDelegate>
 
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
 @property (nonatomic, weak) IBOutlet UIView *roundedRectView;
-@property (nonatomic, strong) A3SharePopupTransitionDelegate *customTransitionDelegate;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *middleLineHeightConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *secondLineHeightConstraint;
 @property (nonatomic, strong) UIPopoverController *popoverController;
@@ -30,15 +28,22 @@ extern NSString *const A3AbbreviationKeyMeaning;
 @property (nonatomic, weak) IBOutlet UIImageView *favoriteImageView;
 @property (nonatomic, weak) IBOutlet UIButton *favoriteButton;
 
+// Custom transition
+@property (nonatomic, strong) UIPercentDrivenInteractiveTransition *currentInteractionController;
+@property (nonatomic, strong) A3SharePopupPresentationController *presentationController;
+@property (nonatomic, assign) CGFloat currentTransitionProgress;
+
 @end
 
 @implementation A3SharePopupViewController
 
-+ (A3SharePopupViewController *)storyboardInstance {
++ (A3SharePopupViewController *)storyboardInstanceWithBlurBackground:(BOOL)insertBlurView {
 	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass([self class]) bundle:nil];
 	A3SharePopupViewController *viewController = [storyboard instantiateInitialViewController];
-	viewController.modalPresentationStyle = UIModalPresentationCustom;
-	viewController.transitioningDelegate = [viewController customTransitionDelegate];
+	if (insertBlurView) {
+		viewController.modalPresentationStyle = UIModalPresentationCustom;
+		viewController.transitioningDelegate = viewController;
+	}
 	return viewController;
 }
 
@@ -58,19 +63,28 @@ extern NSString *const A3AbbreviationKeyMeaning;
 	UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureHandler:)];
 	[self.view addGestureRecognizer:gestureRecognizer];
 	
-	_titleLabel.text = _contents[A3AbbreviationKeyAbbreviation];
+	_titleLabel.text = _titleString;
 }
 
-- (void)viewDidLayoutSubviews {
-	[super viewDidLayoutSubviews];
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	
+	[self setupFavoriteButton];
+}
 
-	[self setupMaskToFavoriteButton];
+- (void)setupFavoriteButton {
+	if ([self contentIsFavorite]) {
+		_favoriteButton.backgroundColor = [[A3AppDelegate instance] themeColor];
+		_favoriteImageView.tintColor = [UIColor whiteColor];
+		_favoriteTitleLabel.textColor = [UIColor whiteColor];
+	} else {
+		_favoriteButton.backgroundColor = [UIColor whiteColor];
+		_favoriteImageView.tintColor = [[A3AppDelegate instance] themeColor];
+		_favoriteTitleLabel.textColor = [[A3AppDelegate instance] themeColor];
+	}
 }
 
 - (void)tapGestureHandler:(UITapGestureRecognizer *)tapGestureHandler {
-	if ([_delegate respondsToSelector:@selector(sharePopupViewControllerWillDismiss:)]) {
-		[_delegate sharePopupViewControllerWillDismiss:self];
-	}
 	[self dismissViewControllerAnimated:YES completion:NULL];
 }
 
@@ -79,29 +93,14 @@ extern NSString *const A3AbbreviationKeyMeaning;
     // Dispose of any resources that can be recreated.
 }
 
-- (A3SharePopupTransitionDelegate *)customTransitionDelegate {
-	if (!_customTransitionDelegate) {
-		_customTransitionDelegate = [A3SharePopupTransitionDelegate new];
-	}
-	return _customTransitionDelegate;
-}
-
-- (void)setPresentationIsInteractive:(BOOL)presentationIsInteractive {
-	_presentationIsInteractive = presentationIsInteractive;
-	_customTransitionDelegate.presentationIsInteractive = presentationIsInteractive;
-}
-
 - (void)setInteractiveTransitionProgress:(CGFloat)interactiveTransitionProgress {
 	_interactiveTransitionProgress = interactiveTransitionProgress;
-	_customTransitionDelegate.currentTransitionProgress = interactiveTransitionProgress;
 }
 
 - (void)completeCurrentInteractiveTransition {
-	[_customTransitionDelegate completeCurrentInteractiveTransition];
 }
 
 - (void)cancelCurrentInteractiveTransition {
-	[_customTransitionDelegate cancelCurrentInteractiveTransition];
 }
 
 #pragma mark - Share button action
@@ -146,7 +145,10 @@ extern NSString *const A3AbbreviationKeyMeaning;
 }
 
 - (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController {
-	return NSLocalizedString(@"Abbreviation Reference on the AppBox Pro", nil);
+	if ([_delegate respondsToSelector:@selector(placeholderForShare:)]) {
+		return [_delegate placeholderForShare:_titleString];
+	}
+	return @"";
 }
 
 - (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(UIActivityType)activityType {
@@ -161,67 +163,102 @@ extern NSString *const A3AbbreviationKeyMeaning;
 }
 
 - (NSString *)stringForShare {
-	return [NSString stringWithFormat:@"%@ means %@", _contents[A3AbbreviationKeyAbbreviation], _contents[A3AbbreviationKeyMeaning]];
+	if ([_delegate respondsToSelector:@selector(stringForShare:)]) {
+		[_delegate stringForShare:_titleString];
+	}
+	return @"";
 }
 
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
 {
-	if ([activityType isEqualToString:UIActivityTypeMail]) {
-		return NSLocalizedString(@"Abbreviation reference using AppBox Pro", nil);
+	if ([_delegate respondsToSelector:@selector(subjectForActivityType:)]) {
+		return [_delegate subjectForActivityType:_titleString];
 	}
-	
+
 	return @"";
 }
 
 - (IBAction)favoriteButtonAction:(id)sender {
-	[self makeAbbreviationFavorite];
+	if ([self contentIsFavorite]) {
+		[self removeFromFavorites];
+	} else {
+		[self addToFavorites];
+	}
+	[self setupFavoriteButton];
 }
 
-- (void)setContents:(NSDictionary *)contents {
-	_contents = [contents copy];
-	_titleLabel.text = _contents[A3AbbreviationKeyAbbreviation];
-}
-
-- (void)setupMaskToFavoriteButton {
-	UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_favoriteButton.bounds byRoundingCorners:UIRectCornerBottomLeft|UIRectCornerBottomRight cornerRadii:CGSizeMake(10, 10)];
-	CAShapeLayer *maskLayer = [CAShapeLayer layer];
-	maskLayer.frame = _favoriteButton.bounds;
-	maskLayer.fillColor = [[A3AppDelegate instance] themeColor].CGColor;
-	maskLayer.path = maskPath.CGPath;
-	
-	_favoriteButton.layer.mask = maskLayer;
+- (void)setTitleString:(NSString *)titleString {
+	_titleString = [titleString copy];
+	_titleLabel.text = _titleString;
 }
 
 - (BOOL)contentIsFavorite {
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"uniqueID", _contents[A3AbbreviationKeyAbbreviation]];
-	NSArray *result = [AbbreviationFavorite MR_findAllWithPredicate:predicate];
-	return [result count] > 0;
+	if ([_delegate respondsToSelector:@selector(isMemberOfFavorites:)]) {
+		return [_delegate isMemberOfFavorites:_titleString];
+	}
+	return NO;
 }
 
-- (void)makeAbbreviationFavorite {
+- (void)addToFavorites {
 	if ([self contentIsFavorite]) {
 		return;
 	}
 
-	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
-	AbbreviationFavorite *favorite = [AbbreviationFavorite MR_createEntityInContext:savingContext];
-	favorite.uniqueID = _contents[A3AbbreviationKeyAbbreviation];
-	[favorite assignOrderAsLastInContext:savingContext];
-	[savingContext MR_saveToPersistentStoreAndWait];
+	if ([_delegate respondsToSelector:@selector(addToFavorites:)]) {
+		[_delegate addToFavorites:_titleString];
+	}
 }
 
-- (void)removeAbbreviationFromFavorite {
-	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"uniqueID", _contents[A3AbbreviationKeyAbbreviation]];
-	NSArray *result = [AbbreviationFavorite MR_findAllWithPredicate:predicate inContext:savingContext];
-	if ([result count]) {
-		for (AbbreviationFavorite *favorite in result) {
-			[favorite MR_deleteEntityInContext:savingContext];
-		}
-		[savingContext MR_saveToPersistentStoreAndWait];
+- (void)removeFromFavorites {
+	if (![self contentIsFavorite]) {
+		return;
 	}
-	
-	
+
+	if ([_delegate respondsToSelector:@selector(removeFromFavorites:)]) {
+		[_delegate removeFromFavorites:_titleString];
+	}
+}
+
+#pragma mark -
+
+- (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
+	return nil;
+}
+
+- (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
+	return nil;
+}
+
+- (id <UIViewControllerInteractiveTransitioning>)interactionControllerForPresentation:(id <UIViewControllerAnimatedTransitioning>)animator {
+	if (_presentationIsInteractive) {
+		_currentInteractionController = [UIPercentDrivenInteractiveTransition new];
+		_currentInteractionController.completionSpeed = 0.5;
+		return _currentInteractionController;
+	}
+	return nil;
+}
+
+- (id <UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id <UIViewControllerAnimatedTransitioning>)animator {
+	return nil;
+}
+
+- (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented presentingViewController:(UIViewController *)presenting sourceViewController:(UIViewController *)source {
+	_presentationController = [[A3SharePopupPresentationController alloc] initWithPresentedViewController:presented presentingViewController:presenting];
+	return _presentationController;
+}
+
+- (void)setCurrentTransitionProgress:(CGFloat)currentTransitionProgress {
+	_currentTransitionProgress = currentTransitionProgress;
+	if (_currentInteractionController) {
+		[_currentInteractionController updateInteractiveTransition:currentTransitionProgress];
+	}
+}
+
+- (A3SharePopupPresentationController *)presentationController {
+	if (!_presentationController) {
+		_presentationController = [A3SharePopupPresentationController new];
+	}
+	return _presentationController;
 }
 
 @end

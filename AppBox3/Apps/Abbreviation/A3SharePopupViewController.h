@@ -12,13 +12,14 @@
 
 @interface A3SharePopupViewController : UIViewController
 
+@property (nonatomic, assign) BOOL shouldInsertBlurView;
 @property (nonatomic, assign) BOOL presentationIsInteractive;
 @property (nonatomic, assign) CGFloat interactiveTransitionProgress;
 @property (nonatomic, weak) id<A3SharePopupViewControllerDelegate> delegate;
 
-@property (nonatomic, copy) NSDictionary *contents;
+@property (nonatomic, copy) NSString *titleString;
 
-+ (A3SharePopupViewController *)storyboardInstance;
++ (A3SharePopupViewController *)storyboardInstanceWithBlurBackground:(BOOL)insertBlurView;
 
 - (void)completeCurrentInteractiveTransition;
 - (void)cancelCurrentInteractiveTransition;
@@ -27,7 +28,12 @@
 
 @protocol A3SharePopupViewControllerDelegate <NSObject>
 
-- (void)sharePopupViewControllerWillDismiss:(A3SharePopupViewController *)viewController;
+- (BOOL)isMemberOfFavorites:(NSString *)titleString;
+- (void)addToFavorites:(NSString *)titleString;
+- (void)removeFromFavorites:(NSString *)titleString;
+
+- (NSString *)stringForShare:(NSString *)titleString;
+- (NSString *)subjectForActivityType:(NSString *)activityType;
+- (NSString *)placeholderForShare:(NSString *)titleString;
 
 @end
-
