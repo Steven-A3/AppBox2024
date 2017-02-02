@@ -17,7 +17,7 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 
-@interface A3DaysCounterSlideshowViewController ()
+@interface A3DaysCounterSlideshowViewController () <CAAnimationDelegate>
 
 @property (strong, nonatomic) NSArray *itemArray;
 @property (strong, nonatomic) UIView *currentView;

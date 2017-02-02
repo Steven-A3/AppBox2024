@@ -7,7 +7,7 @@
 //
 
 #import "A3RandomViewController.h"
-#import <AVFoundation/AVAudioPlayer.h>
+#import <AVFoundation/AVFoundation.h>
 #import "UIViewController+A3Addition.h"
 #import <CoreMotion/CoreMotion.h>
 #import "A3AppDelegate+appearance.h"

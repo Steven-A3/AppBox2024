@@ -742,7 +742,6 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	_failedAttemptLabel.hidden = YES;
 
 	CATransition *transition = [CATransition animation];
-	[transition setDelegate: self];
 	[self performSelector: @selector(resetUI) withObject: nil afterDelay: 0.1f];
 	[transition setType: kCATransitionPush];
 	[transition setSubtype: kCATransitionFromRight];
@@ -757,7 +756,6 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	_tempPasscode = @"";
 
 	CATransition *transition = [CATransition animation];
-	[transition setDelegate: self];
 	[self performSelector: @selector(resetUIForReEnteringNewPasscode) withObject: nil afterDelay: 0.1f];
 	[transition setType: kCATransitionPush];
 	[transition setSubtype: kCATransitionFromRight];
@@ -773,7 +771,6 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	_failedAttemptLabel.hidden = YES;
 
 	CATransition *transition = [CATransition animation];
-	[transition setDelegate: self];
 	[self performSelector: @selector(resetUI) withObject: nil afterDelay: 0.1f];
 	[transition setType: kCATransitionPush];
 	[transition setSubtype: kCATransitionFromRight];

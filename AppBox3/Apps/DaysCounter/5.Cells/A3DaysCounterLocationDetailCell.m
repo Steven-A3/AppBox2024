@@ -19,11 +19,15 @@
     return self;
 }
 
+/*
 - (void)awakeFromNib
 {
+	[super awakeFromNib];
+	
     // Initialization code
 //    self.contentBaselineConst.constant = IS_RETINA ? 14.5 : 14;
 }
+*/
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
