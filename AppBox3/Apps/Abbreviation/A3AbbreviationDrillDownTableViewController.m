@@ -52,7 +52,7 @@ UIGestureRecognizerDelegate>
 	[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
 	[self.navigationController.navigationBar setShadowImage:image];
 
-	if (IS_IOS10 && self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
+	if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9") && self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
 		_previewInteraction = [[UIPreviewInteraction alloc] initWithView:self.view];
 		_previewInteraction.delegate = self;
 	} else {
@@ -60,6 +60,22 @@ UIGestureRecognizerDelegate>
 		longPressGestureRecognizer.minimumPressDuration = 1.0;
 		longPressGestureRecognizer.delegate = self;
 		[self.tableView addGestureRecognizer:longPressGestureRecognizer];
+	}
+}
+
+- (void)viewWillLayoutSubviews {
+	[super viewWillLayoutSubviews];
+
+	if (IS_IPHONE_4_7_INCH) {
+		_tableView.rowHeight = 54;
+		_titleLabel.font = [UIFont boldSystemFontOfSize:21];
+	} else if (IS_IPHONE_4_INCH || IS_IPHONE_3_5_INCH) {
+		_tableView.rowHeight = 46;
+		_titleLabel.font = [UIFont boldSystemFontOfSize:18];
+	} else if (IS_IPAD_12_9_INCH) {
+
+	} else if (IS_IPAD) {
+
 	}
 }
 

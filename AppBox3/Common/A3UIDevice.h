@@ -55,6 +55,17 @@
 
 #define IS_RETINA	([[UIScreen mainScreen] scale] >= 2)
 
+#define SCREEN_WIDTH ([[UIScreen mainScreen] bounds].size.width)
+#define SCREEN_HEIGHT ([[UIScreen mainScreen] bounds].size.height)
+#define SCREEN_MAX_LENGTH (MAX(SCREEN_WIDTH, SCREEN_HEIGHT))
+#define SCREEN_MIN_LENGTH (MIN(SCREEN_WIDTH, SCREEN_HEIGHT))
+
+#define IS_IPHONE_3_5_INCH (IS_IPHONE && SCREEN_MAX_LENGTH < 568.0)			// iPhone 4, 4s
+#define IS_IPHONE_4_INCH (IS_IPHONE && SCREEN_MAX_LENGTH == 568.0)			// iPhone 5, 5s, SE
+#define IS_IPHONE_4_7_INCH (IS_IPHONE && SCREEN_MAX_LENGTH == 667.0)		// iPhone 6, 7
+#define IS_IPHONE_5_5_INCH (IS_IPHONE && SCREEN_MAX_LENGTH == 736.0)		// iPhone 6 Plus, 7 Plus
+#define IS_IPAD_12_9_INCH (IS_IPAD && SCREEN_MAX_LENGTH == 1366)			// iPad Pro 12.9 inch
+
 #define	LANGUAGE_KOREAN	[[NSLocale preferredLanguages][0] hasPrefix:@"ko"]
 
 extern NSString *const A3AnimationIDKeyboardWillShow;

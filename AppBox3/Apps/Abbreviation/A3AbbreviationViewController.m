@@ -19,6 +19,7 @@ UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, UIPrevi
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, weak) IBOutlet UILabel *titleLabel;
 
 @property (nonatomic, strong) NSArray<UIColor *> *headStartColors;
 @property (nonatomic, strong) NSArray<UIColor *> *alphabetBGColors;
@@ -36,6 +37,9 @@ UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, UIPrevi
 @property (nonatomic, strong) UIView *previewBottomView;
 @property (nonatomic, copy) NSDictionary *selectedComponent;
 @property (nonatomic, strong) A3AbbreviationDataManager *dataManager;
+
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *collectionViewHeightContraint;
+@property (nonatomic, weak) IBOutlet UICollectionViewFlowLayout *collectionViewFlowLayout;
 
 @end
 
@@ -62,6 +66,45 @@ UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, UIPrevi
 		longPressGestureRecognizer.minimumPressDuration = 0.5;
 		longPressGestureRecognizer.delegate = self;
 		[self.collectionView addGestureRecognizer:longPressGestureRecognizer];
+	}
+}
+
+- (void)viewWillLayoutSubviews {
+	[super viewWillLayoutSubviews];
+
+	// 아래 조사하는 순서는 사용자가 많을 것으로 추정되는 순서대로 작성을 하였다.
+	if (IS_IPHONE_4_7_INCH) {
+		_collectionViewFlowLayout.itemSize = CGSizeMake(263, 214);
+		if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.2")) {
+			_titleLabel.font = [UIFont systemFontOfSize:39 weight:UIFontWeightHeavy];
+		} else {
+			_titleLabel.font = [UIFont boldSystemFontOfSize:39];
+		}
+		_tableView.rowHeight = 56;
+	} else if (IS_IPHONE_4_INCH) {
+		_collectionViewFlowLayout.itemSize = CGSizeMake(224, 182);
+		if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.2")) {
+			_titleLabel.font = [UIFont systemFontOfSize:33 weight:UIFontWeightHeavy];
+		} else {
+			_titleLabel.font = [UIFont boldSystemFontOfSize:33];
+		}
+		_tableView.rowHeight = 48;
+	} else if (IS_IPHONE_5_5_INCH) {
+//		_collectionViewFlowLayout.itemSize = CGSizeMake(290, 236);
+//		_titleLabel.font = [UIFont systemFontOfSize:42 weight:UIFontWeightHeavy];
+//		_tableView.rowHeight = 62;
+	} else if (IS_IPHONE_3_5_INCH) {
+		_collectionViewFlowLayout.itemSize = CGSizeMake(224, 153);
+		if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.2")) {
+			_titleLabel.font = [UIFont systemFontOfSize:33 weight:UIFontWeightHeavy];
+		} else {
+			_titleLabel.font = [UIFont boldSystemFontOfSize:33];
+		}
+		_tableView.rowHeight = 48;
+	} else if (IS_IPAD) {
+
+	} else if (IS_IPAD_12_9_INCH) {
+
 	}
 }
 
@@ -141,6 +184,8 @@ UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, UIPrevi
 		viewController.contentsTitle = [NSString stringWithFormat:@"#%@", section[A3AbbreviationKeyTag]];
 		[self.navigationController pushViewController:viewController animated:YES];
 	} else {
+		[_collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+		
 		NSDictionary *section = self.dataManager.hashTagSections[indexPath.row];
 
 		CGFloat rowHeight = cell.roundedRectView.frame.size.height / 3;
