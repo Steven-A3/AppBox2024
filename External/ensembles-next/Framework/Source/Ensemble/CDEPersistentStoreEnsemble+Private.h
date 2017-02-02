@@ -19,9 +19,11 @@
 @property (nonatomic, strong, readwrite) CDECloudManager *cloudManager;
 @property (nonatomic, strong, readwrite) id <CDECloudFileSystem> cloudFileSystem;
 
+@property (atomic, readwrite) NSSet *nonCriticalErrorCodes;
+
 @property (nonatomic, strong, readwrite) NSString *ensembleIdentifier;
 
-@property (nonatomic, strong, readwrite) NSURL *storeURL;
+@property (nonatomic, strong, readwrite) NSURL *persistentStoreURL;
 @property (nonatomic, strong, readwrite) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, strong, readwrite) NSURL *managedObjectModelURL;
 @property (nonatomic, strong, readonly) NSString *modelVersionHash;

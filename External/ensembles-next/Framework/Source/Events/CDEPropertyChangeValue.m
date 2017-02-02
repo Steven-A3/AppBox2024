@@ -30,6 +30,8 @@
         NSPropertyDescription *propertyDesc = entity.propertiesByName[propertyName];
         if (propertyDesc.isTransient) continue;
         if ([propertyDesc.userInfo[CDEIgnoredKey] boolValue]) continue;
+        if ([propertyDesc isKindOfClass:[NSFetchedPropertyDescription class]]) continue;
+        
         CDEPropertyChangeValue *change = [[CDEPropertyChangeValue alloc] initWithObject:object propertyDescription:propertyDesc eventStore:newEventStore isPreSave:isPreSave storeValues:storeValues];
         [propertyChanges addObject:change];
     }

@@ -10,12 +10,6 @@
 #import "CDEPersistentStoreEnsemble.h"
 #import "CDELocalCloudFileSystem.h"
 
-@interface CDEPersistentStoreEnsemble (CDESyncTestMethods)
-
-- (void)stopMonitoringSaves;
-
-@end
-
 @interface CDESyncTest () 
 
 @end
@@ -74,8 +68,8 @@
 
 - (void)tearDown
 {    
-    [ensemble1 stopMonitoringSaves];
-    [ensemble2 stopMonitoringSaves];
+    [ensemble1 dismantle];
+    [ensemble2 dismantle];
     
     [context1 reset];
     [context2 reset];
@@ -119,6 +113,30 @@
     [self waitForAsync];
 }
 
+- (NSError *)rebaseEnsemble:(CDEPersistentStoreEnsemble *)ensemble
+{
+    NSLog(@"[%@ %s]", NSStringFromClass([self class]), sel_getName(_cmd));
+    __block NSError *returnError = nil;
+    [ensemble mergeWithOptions:CDEMergeOptionsForceRebase completion:^(NSError *error) {
+        returnError = error;
+        [self completeAsync];
+    }];
+    [self waitForAsync];
+    return returnError;
+}
+
+- (NSError *)mergeEnsembleAndSuppressRebase:(CDEPersistentStoreEnsemble *)ensemble
+{
+    NSLog(@"[%@ %s]", NSStringFromClass([self class]), sel_getName(_cmd));
+    __block NSError *returnError = nil;
+    [ensemble mergeWithOptions:CDEMergeOptionsSuppressRebase completion:^(NSError *error) {
+        returnError = error;
+        [self completeAsync];
+    }];
+    [self waitForAsync];
+    return returnError;
+}
+
 - (NSError *)mergeEnsemble:(CDEPersistentStoreEnsemble *)ensemble
 {
     __block NSError *returnError = nil;
@@ -129,6 +147,25 @@
     [self waitForAsync];
     return returnError;
 }
+
+- (NSError *)syncChangesAndSuppressRebase
+{
+    __block NSError *returnError = nil;
+    returnError = [self mergeEnsembleAndSuppressRebase:ensemble1];
+    if (returnError) return returnError;
+
+    returnError = [self mergeEnsembleAndSuppressRebase:ensemble2];
+    if (returnError) return returnError;
+
+    returnError = [self mergeEnsembleAndSuppressRebase:ensemble1];
+    if (returnError) return returnError;
+
+    returnError = [self mergeEnsembleAndSuppressRebase:ensemble2];
+    if (returnError) return returnError;
+
+    return nil;
+}
+
 
 - (NSError *)syncChanges
 {

@@ -9,13 +9,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import <Ensembles/Ensembles.h>
 
-#if TARGET_OS_IPHONE
-#import "DropboxSDK.h"
-#else
-#import <DropboxOSX/DropboxOSX.h>
-#endif
-
 @class CDEDropboxCloudFileSystem;
+@class DBSession;
 
 
 @protocol CDEDropboxCloudFileSystemDelegate <NSObject>
@@ -25,10 +20,19 @@
 @end
 
 
-@interface CDEDropboxCloudFileSystem : NSObject <CDECloudFileSystem, DBRestClientDelegate>
+@interface CDEDropboxCloudFileSystem : NSObject <CDECloudFileSystem>
 
-@property (readonly) DBSession *session;
-@property (readwrite, weak) id <CDEDropboxCloudFileSystemDelegate> delegate;
+@property (nonatomic, readonly) DBSession *session;
+@property (nonatomic, readwrite, weak) id <CDEDropboxCloudFileSystemDelegate> delegate;
+@property (nonatomic, readwrite) NSUInteger fileUploadMaximumBatchSize;
+@property (nonatomic, readwrite) NSUInteger fileDownloadMaximumBatchSize;
+
+/// When this is YES, subfolders are added to the 'data' folder to prevent exceeding of the Dropbox folder contents limit (10000).
+/// This should only be a problem for apps with very many data blobs. You should not change this setting once your app is in production. Default is NO.
+@property (nonatomic, readwrite) BOOL partitionDataFilesBetweenSubdirectories;
+
+/// Stipulate a subfolder in Dropbox. Default nil (root)
+@property (nonatomic, readwrite, copy) NSString *relativePathToRootInDropbox;
 
 - (instancetype)initWithSession:(DBSession *)session;
 

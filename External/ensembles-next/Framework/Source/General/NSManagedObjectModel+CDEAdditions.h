@@ -10,13 +10,13 @@
 
 @interface NSManagedObjectModel (CDEAdditions)
 
-- (NSString *)cde_modelHash;
-- (NSString *)cde_compressedModelHash;
+- (nonnull NSString *)cde_modelHash;
+- (nonnull NSString *)cde_compressedModelHash;
 
-- (NSString *)cde_entityHashesPropertyList; // XML Dictionary
-+ (NSDictionary *)cde_entityHashesByNameFromPropertyList:(NSString *)propertyList;
+- (nullable NSString *)cde_entityHashesPropertyList; // XML Dictionary
++ (nullable NSDictionary *)cde_entityHashesByNameFromPropertyList:(nullable NSString *)propertyList;
 
-- (NSArray *)cde_entitiesOrderedByMigrationPriority;
+- (nonnull NSArray<NSEntityDescription *> *)cde_entitiesOrderedByMigrationPriority;
 
 @end
 
@@ -24,10 +24,11 @@
 @interface NSEntityDescription (CDEAdditions)
 
 @property (nonatomic, readonly) NSUInteger cde_migrationBatchSize;
-@property (nonatomic, readonly) NSArray *cde_nonRedundantProperties;
-@property (nonatomic, readonly) NSArray *cde_descendantEntities;
+@property (nonatomic, readonly, nonnull) NSArray<NSPropertyDescription *> *cde_nonRedundantProperties;
+@property (nonatomic, readonly, nonnull) NSArray<NSEntityDescription *> *cde_descendantEntities;
+@property (nonatomic, readonly, nonnull) NSArray<NSEntityDescription *> *cde_ancestorEntities;
 
-- (NSArray *)cde_nonRedundantRelationshipsDestinedForEntities:(NSArray *)targetEntities;
+- (nonnull NSArray<NSRelationshipDescription *> *)cde_nonRedundantRelationshipsDestinedForEntities:(nullable NSArray<NSEntityDescription *> *)targetEntities;
 
 @end
 

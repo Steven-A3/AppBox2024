@@ -14,6 +14,7 @@
 
 @interface CDEBaselineConsolidator : NSObject
 
+@property (nonatomic, readonly) BOOL createdCompletelyNewBaseline;
 @property (nonatomic, readonly) CDEEventStore *eventStore;
 @property (nonatomic, weak, readwrite) CDEPersistentStoreEnsemble *ensemble;
 

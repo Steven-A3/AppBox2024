@@ -38,15 +38,18 @@
 
 - (NSString *)expectedHashString
 {
-    NSString *childHash = model.entityVersionHashesByName[@"Child"];
-    NSString *parentHash = model.entityVersionHashesByName[@"Parent"];
-    NSString *batchGrandParent = model.entityVersionHashesByName[@"BatchGrandParent"];
-    NSString *batchParentHash = model.entityVersionHashesByName[@"BatchParent"];
-    NSString *batchChildHash = model.entityVersionHashesByName[@"BatchChild"];
-    NSString *largeDataBlobHash = model.entityVersionHashesByName[@"LargeDataBlob"];
-    NSString *derivedParentHash = model.entityVersionHashesByName[@"DerivedParent"];
-    NSString *derivedChildHash = model.entityVersionHashesByName[@"DerivedChild"];
-    NSString *expectedHash = [NSString stringWithFormat:@"BatchChild_%@__BatchGrandParent_%@__BatchParent_%@__Child_%@__DerivedChild_%@__DerivedParent_%@__LargeDataBlob_%@__Parent_%@", batchChildHash, batchGrandParent, batchParentHash, childHash, derivedChildHash, derivedParentHash, largeDataBlobHash, parentHash];
+    NSData *childHash = model.entityVersionHashesByName[@"Child"];
+    NSData *parentHash = model.entityVersionHashesByName[@"Parent"];
+    NSData *batchGrandParent = model.entityVersionHashesByName[@"BatchGrandParent"];
+    NSData *batchParentHash = model.entityVersionHashesByName[@"BatchParent"];
+    NSData *batchChildHash = model.entityVersionHashesByName[@"BatchChild"];
+    NSData *largeDataBlobHash = model.entityVersionHashesByName[@"LargeDataBlob"];
+    NSData *derivedParentHash = model.entityVersionHashesByName[@"DerivedParent"];
+    NSData *derivedChildHash = model.entityVersionHashesByName[@"DerivedChild"];
+    NSData *aHash = model.entityVersionHashesByName[@"A"];
+    NSData *bHash = model.entityVersionHashesByName[@"B"];
+    NSData *cHash = model.entityVersionHashesByName[@"C"];
+    NSString *expectedHash = [NSString stringWithFormat:@"A_%@__B_%@__BatchChild_%@__BatchGrandParent_%@__BatchParent_%@__C_%@__Child_%@__DerivedChild_%@__DerivedParent_%@__LargeDataBlob_%@__Parent_%@", aHash, bHash, batchChildHash, batchGrandParent, batchParentHash, cHash, childHash, derivedChildHash, derivedParentHash, largeDataBlobHash, parentHash];
     return expectedHash;
 }
 

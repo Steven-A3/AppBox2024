@@ -55,7 +55,10 @@
         return;
     }
     
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     connection = [[NSURLConnection alloc] initWithRequest:mutableRequest delegate:self startImmediately:YES];
+#pragma clang diagnostic pop
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
@@ -88,7 +91,7 @@
     NSHTTPURLResponse *httpResponse = (id)response;
     BOOL success = (httpResponse.statusCode >= 200 && httpResponse.statusCode < 300);
     if (!success) {
-        CDELog(CDELoggingLevelError, @"Error uploading file. Response: %@", response);
+        CDELog(CDELoggingLevelError, @"Error downloading file. Response: %@", response);
         NSDictionary *info = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:@"Status code: %ld", (long)httpResponse.statusCode]};
         responseError = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeServerError userInfo:info];
     }

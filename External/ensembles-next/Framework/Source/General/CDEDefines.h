@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 #pragma mark Exceptions
 
 extern NSString * const CDEException;
@@ -26,6 +28,7 @@ extern NSString * const CDEMigrationBatchSizeKey; /// Batch size to use when han
 extern NSString * const CDEMigrationPriorityKey;  /// Integer stipulating rank of entity in traversal. Larger is earlier.
 extern NSString * const CDEIgnoredKey;            /// With a non-zero value, the entity or property is ignored.
 
+NS_ASSUME_NONNULL_END
 
 #pragma mark Errors
 
@@ -54,13 +57,16 @@ typedef NS_ENUM(NSInteger, CDEErrorCode) {
     /// An attempt to access a file failed.
     CDEErrorCodeFileAccessFailed            = 107,
     
+    /// The requested directory does not exist
+    CDEErrorCodeDirectoryDoeNotExist        = 108,
+    
     /// User changed cloud identity. This forces a deleech.
     CDEErrorCodeCloudIdentityChanged        = 202,
     
     /// Some left over, incomplete data has been found. Probably due to a crash.
     CDEErrorCodeDataCorruptionDetected      = 203,
     
-    /// A model version exists in the cloud that is unknown. Merge will succeed again after update.
+    /// A model version exists in the cloud that is unknown. Will be ignored, but recommend user updates.
     CDEErrorCodeUnknownModelVersion         = 204,
     
     /// The ensemble is no longer registered in the cloud. Usually due to cloud data removal.
@@ -128,9 +134,9 @@ typedef NS_ENUM(NSUInteger, CDELoggingLevel) {
 
 // Log callback support. Use CDESetLogCallback to supply a function that
 // will receive all Ensembles logging.  Default log output goes to NSLog().
-typedef void (*CDELogCallbackFunction)(NSString *format, ...);
-void CDESetLogCallback(CDELogCallbackFunction callback);
-extern CDELogCallbackFunction CDECurrentLogCallbackFunction;
+typedef void (*CDELogCallbackFunction)(NSString * _Nullable format, ...);
+void CDESetLogCallback(CDELogCallbackFunction _Nullable callback);
+extern CDELogCallbackFunction _Nullable CDECurrentLogCallbackFunction;
 
 #define CDELog(level, ...) \
 do { \
@@ -150,13 +156,14 @@ NSUInteger CDECurrentLoggingLevel(void);
 #pragma mark Callbacks
 
 typedef void (^CDECodeBlock)(void);
-typedef void (^CDEBooleanQueryBlock)(NSError *error, BOOL result);
-typedef void (^CDECompletionBlock)(NSError *error);
+typedef void (^CDEBooleanQueryBlock)(NSError * _Nullable error, BOOL result);
+typedef void (^CDECompletionBlock)(NSError * _Nullable error);
+typedef void (^CDEProgressBlock)(NSError * _Nullable error, float progress, BOOL isFinished);
 
 #pragma mark Functions
 
-void CDEDispatchCompletionBlockToMainQueue(CDECompletionBlock block, NSError *error);
-CDECompletionBlock CDEMainQueueCompletionFromCompletion(CDECompletionBlock block);
+void CDEDispatchCompletionBlockToMainQueue(CDECompletionBlock _Nullable block, NSError * _Nullable error);
+CDECompletionBlock _Nullable CDEMainQueueCompletionFromCompletion(CDECompletionBlock _Nullable block);
 
 
 #pragma mark Useful Macros

@@ -135,26 +135,37 @@
         return;
     }
 
-    // Rebase if there are more than 500 object changes, and we can reduce data by more than 50%,
-    // or if there is no baseline at all
+    // Check conditions for rebasing
     NSManagedObjectContext *context = eventStore.managedObjectContext;
-    [context performBlock:^{        
-        BOOL hasManyEvents = [self countOfStoreModificationEvents] > 100;
-        BOOL hasAdequateChanges = [self countOfAllObjectChanges] >= 500;
+    [context performBlock:^{
+        // If there are too many events, rebase
+        NSUInteger countOfEvents = [self countOfStoreModificationEvents];
+        BOOL hasTooManyEvents = countOfEvents > 150;
+        if (hasTooManyEvents) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (completion) completion(YES);
+            });
+            return;
+        }
         
+        // If the conditions are right, rebase
+        BOOL hasManyEvents = countOfEvents > 100;
+        BOOL hasAdequateChanges = [self countOfAllObjectChanges] >= 500;
         [self estimateEventStoreCompactionFollowingRebaseWithCompletion:^(float compaction) {
             BOOL compactionIsAdequate = compaction > 0.5f;
             BOOL result = hasManyEvents || (hasAdequateChanges && compactionIsAdequate);
             
             // Include a stochastic component to reduce likelihood that two devices rebase at the same time
             if (result) {
-                const float PercentageAcceptance = 20.0f;
+                const float PercentageAcceptance = 40.0f;
                 float randomUpToOne = arc4random_uniform(RAND_MAX) / (float)RAND_MAX;
                 BOOL stochasticTestPassed = randomUpToOne < PercentageAcceptance/100.0f;
                 result = result && stochasticTestPassed;
             }
 
-            if (completion) completion(result);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (completion) completion(result);
+            });
         }];
     }];
 }
@@ -178,7 +189,7 @@
         // Keep only integrable events
         CDERevisionManager *revisionManager = [[CDERevisionManager alloc] initWithEventStore:self.eventStore];
         revisionManager.managedObjectModelURL = self.ensemble.managedObjectModelURL;
-        eventsToMerge = [revisionManager integrableEventsFromEvents:eventsToMerge];
+        eventsToMerge = [revisionManager integrableEventsFromEvents:eventsToMerge informativeErrorCodes:NULL];
         
         // If no events, return
         if (eventsToMerge.count == 0) {
@@ -222,6 +233,7 @@
         newBaseline = (id)[context existingObjectWithID:newBaselineID error:&error];
         [newBaseline setRevisionSet:newRevisionSet forPersistentStoreIdentifier:persistentStoreId];
         if (newBaseline.eventRevision.revisionNumber == -1) newBaseline.eventRevision.revisionNumber = 0;
+        CDELog(CDELoggingLevelVerbose, @"Revision Set of rebased baseline: %@", newBaseline.revisionSet);
         
         // Delete events
         NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"CDEStoreModificationEvent"];
@@ -272,6 +284,7 @@
     for (NSManagedObjectID *eventID in eventIDs) {
         @autoreleasepool {
             // Prefetch for performance
+            __block NSError *poolError = nil;
             __block CDEStoreModificationEvent *event = (id)[context objectWithID:eventID];
             [CDEStoreModificationEvent prefetchRelatedObjectsForStoreModificationEvents:@[event]];
             
@@ -286,8 +299,10 @@
                 [self mergeChange:change intoBaselineChange:existingChange withBaseline:baseline objectChangeIDsByGlobalIdentifierIDs:objectChangesByGlobalId];
                 
                 if (count++ % 500 == 0) {
-                    if (![context save:&localError]) {
+                    NSError *blockError = nil;
+                    if (![context save:&blockError]) {
                         *stop = YES;
+                        poolError = blockError;
                         return;
                     }
                     [context reset];
@@ -296,10 +311,12 @@
                 }
             }];
             
-            if (localError) {
-                if (error) *error = localError;
-                return NO;
-            }
+            localError = poolError;
+        }
+        
+        if (localError) {
+            if (error) *error = localError;
+            return NO;
         }
     }
     
@@ -372,31 +389,35 @@
     }];
     
     // Max global count in our range is the minimum of global count from all devices
-    CDEGlobalCount baselineCount = NSNotFound;
+    CDEGlobalCount maximumGlobalCount = [revisionManager maximumGlobalCount];
+    CDEGlobalCount recentGlobalCountCutoff = currentBaselineCount + (maximumGlobalCount - currentBaselineCount) * 0.8;
+    CDEGlobalCount newBaselineCount = maximumGlobalCount;
     for (CDERevision *revision in latestRevisionSet.revisions) {
-        // Ignore stores that haven't updated since the baseline
-        // They will have to do a full integration to catch up
+        // Ignore stores that haven't updated recently
+        // Most will be abandoned; any others will have
+        // to do a full integration to catch up.
         NSString *storeId = revision.persistentStoreIdentifier;
         CDERevision *baselineRevision = [baselineRevisionSet revisionForPersistentStoreIdentifier:storeId];
         if (baselineRevision && baselineRevision.revisionNumber >= revision.revisionNumber) continue;
+        if (revision.globalCount < recentGlobalCountCutoff) continue;
 
         // Find the minimum global count.
-        baselineCount = MIN(baselineCount, revision.globalCount);
+        newBaselineCount = MIN(newBaselineCount, revision.globalCount);
     }
     
-    if (baselineCount == NSNotFound) {
-        baselineCount = 0;
+    if (newBaselineCount == NSNotFound) {
+        newBaselineCount = 0;
     }
     else {
         // Choose the new global count to be in the range from the baseline to the new count
         // leaving some events around, to avoid unnecessary full integrations
-        CDEGlobalCount low = MIN(currentBaselineCount, baselineCount);
-        baselineCount = low + (baselineCount - low) * 0.80f;
-        baselineCount = MAX(baselineCount, 0);
-        if (baselineCount - low == 0) baselineCount++; // Make sure it moves forward
+        CDEGlobalCount low = MIN(currentBaselineCount, newBaselineCount);
+        newBaselineCount = low + (newBaselineCount - low) * 0.90f;
+        newBaselineCount = MAX(newBaselineCount, 0);
+        if (newBaselineCount - low == 0) newBaselineCount++; // Make sure it moves forward
     }
     
-    return baselineCount;
+    return newBaselineCount;
 }
 
 

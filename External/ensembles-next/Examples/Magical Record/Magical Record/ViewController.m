@@ -6,8 +6,9 @@
 //  Copyright (c) 2014 Drew McCormack. All rights reserved.
 //
 
+#import <MagicalRecord/MagicalRecord.h>
+
 #import "ViewController.h"
-#import "CoreData+MagicalRecord.h"
 #import "NumberHolder.h"
 
 @interface ViewController ()

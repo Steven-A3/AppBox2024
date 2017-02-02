@@ -18,11 +18,16 @@
 {
     self = [super init];
     if (self) {
-        path = [aDecoder decodeObjectForKey:@"file"];
+        path = [aDecoder decodeObjectForKey:@"path"];
         name = [aDecoder decodeObjectForKey:@"name"];
         size = [[aDecoder decodeObjectForKey:@"sizeNumber"] unsignedLongLongValue];
     }
     return self;
+}
+
+- (BOOL)canContainChildren
+{
+    return NO;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder

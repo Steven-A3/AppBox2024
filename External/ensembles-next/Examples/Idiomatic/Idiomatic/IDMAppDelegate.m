@@ -7,6 +7,8 @@
 //
 
 #import <CoreData/CoreData.h>
+#import <CloudKit/CloudKit.h>
+
 #import "IDMAppDelegate.h"
 #import "IDMNotesViewController.h"
 #import "IDMTagsViewController.h"
@@ -22,7 +24,15 @@
 @implementation IDMAppDelegate {
     IDMTagsViewController *tagsController;
     NSManagedObjectContext *managedObjectContext;
+    id didSaveObserver;
 }
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:didSaveObserver];
+}
+
+#pragma mark - App Delegate Methods
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -40,7 +50,7 @@
     [syncManager setup];
     
     // Monitor saves
-    [[NSNotificationCenter defaultCenter] addObserverForName:NSManagedObjectContextDidSaveNotification object:managedObjectContext queue:nil usingBlock:^(NSNotification *note) {
+    didSaveObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSManagedObjectContextDidSaveNotification object:managedObjectContext queue:nil usingBlock:^(NSNotification *note) {
         [syncManager synchronizeWithCompletion:NULL];
     }];
     
@@ -54,6 +64,11 @@
     // Pass context
     tagsController.managedObjectContext = managedObjectContext;
     notesController.managedObjectContext = managedObjectContext;
+    
+    // Register for remote notifications to trigger downloads
+    // Used for CloudKit
+    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
     
     return YES;
 }
@@ -82,6 +97,41 @@
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
     return [[IDMSyncManager sharedSyncManager] handleOpenURL:url];
+}
+
+-(void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+    [self retrieveDataWithCompletion:completionHandler];
+}
+
+#pragma mark - CloudKit
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
+        [[IDMSyncManager sharedSyncManager] synchronizeWithCompletion:NULL];
+    }
+    else {
+        [self retrieveDataWithCompletion:completionHandler];
+    }
+}
+
+- (void)retrieveDataWithCompletion:(void (^)(UIBackgroundFetchResult))completion
+{
+    UIBackgroundTaskIdentifier backgroundIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:NULL];
+    [[IDMSyncManager sharedSyncManager] retrieveCloudDataWithCompletion:^(BOOL didDownload, NSError *error) {
+        UIBackgroundFetchResult result = UIBackgroundFetchResultNoData;
+        if (didDownload) result = UIBackgroundFetchResultNewData;
+        if (error) result = UIBackgroundFetchResultFailed;
+        completion(result);
+        [[UIApplication sharedApplication] endBackgroundTask:backgroundIdentifier];
+    }];
+}
+
+- (void)application:(UIApplication *)application userDidAcceptCloudKitShareWithMetadata:(CKShareMetadata *)cloudKitShareMetadata {
+    [[IDMSyncManager sharedSyncManager] prepareToJoinCloudKitShareWithMetadata:cloudKitShareMetadata completion:^{
+        [tagsController connectToCloudService:IDMCloudKitShareParticipantService];
+    }];
 }
 
 #pragma mark - Core Data Stack

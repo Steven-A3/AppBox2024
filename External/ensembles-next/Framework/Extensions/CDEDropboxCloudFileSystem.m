@@ -7,7 +7,17 @@
 
 #import "CDEDropboxCloudFileSystem.h"
 
+#if TARGET_OS_IPHONE
+#import "DropboxSDK.h"
+#else
+#import <DropboxOSX/DropboxOSX.h>
+#endif
+
+
 static const NSUInteger kCDENumberOfRetriesForFailedAttempt = 5;
+static const NSUInteger kCDEMaximumConcurrentRequests = 4;
+static const NSUInteger kCDEMaximumConcurrentDeletions = 10;
+
 
 #pragma mark - File Operations
 
@@ -24,7 +34,6 @@ static const NSUInteger kCDENumberOfRetriesForFailedAttempt = 5;
 
 @end
 
-
 @interface CDEDropboxFileExistenceOperation : CDEDropboxOperation
 
 @property (readonly) NSString *path;
@@ -39,7 +48,7 @@ static const NSUInteger kCDENumberOfRetriesForFailedAttempt = 5;
 @property (readonly) NSString *path;
 @property (readonly) CDEDirectoryContentsCallback directoryContentsCallback;
 
-- (id)initWithSession:(DBSession *)newSession path:(NSString *)newPath directoryContentsCallback:(CDEDirectoryContentsCallback)block;
+- (id)initWithSession:(DBSession *)newSession path:(NSString *)newPath dataFilesArePartitioned:(BOOL)partitioned directoryContentsCallback:(CDEDirectoryContentsCallback)newCallback;
 
 @end
 
@@ -52,49 +61,59 @@ static const NSUInteger kCDENumberOfRetriesForFailedAttempt = 5;
 
 @end
 
-@interface CDEDropboxRemoveItemOperation : CDEDropboxOperation
+@interface CDEDropboxRemoveOperation : CDEDropboxOperation
 
-@property (readonly) NSString *path;
+@property (readonly) NSArray *paths;
 @property (readonly) CDECompletionBlock completionCallback;
 
-- (id)initWithSession:(DBSession *)newSession path:(NSString *)newPath completionCallback:(CDECompletionBlock)block;
+- (id)initWithSession:(DBSession *)newSession paths:(NSArray *)newPaths completionCallback:(CDECompletionBlock)block;
 
 @end
 
 @interface CDEDropboxUploadOperation : CDEDropboxOperation
 
-@property (readonly) NSString *localPath, *toPath;
+@property (readonly) NSArray *localPaths, *toPaths;
 @property (readonly) CDECompletionBlock completionCallback;
 
-- (id)initWithSession:(DBSession *)newSession localPath:(NSString *)newLocalPath toPath:(NSString *)newToPath completionCallback:(CDECompletionBlock)block;
+- (id)initWithSession:(DBSession *)newSession localPaths:(NSArray *)newLocalPaths toPaths:(NSArray *)newToPaths completionCallback:(CDECompletionBlock)block;
 
 @end
 
 @interface CDEDropboxDownloadOperation : CDEDropboxOperation
 
-@property (readonly) NSString *localPath, *fromPath;
+@property (readonly) NSArray *localPaths, *fromPaths;
 @property (readonly) CDECompletionBlock completionCallback;
 
-- (id)initWithSession:(DBSession *)newSession fromPath:(NSString *)fromPath localPath:(NSString *)newLocalPath completionCallback:(CDECompletionBlock)block;
+- (id)initWithSession:(DBSession *)newSession fromPaths:(NSArray *)fromPath localPaths:(NSArray *)newLocalPath completionCallback:(CDECompletionBlock)block;
 
 @end
 
 
 #pragma mark - Main Class
 
+@interface CDEDropboxCloudFileSystem () <DBRestClientDelegate>
+@end
+
+
 @implementation CDEDropboxCloudFileSystem {
     NSOperationQueue *queue;
 }
 
-@synthesize session = session;
+@synthesize session;
+@synthesize fileDownloadMaximumBatchSize, fileUploadMaximumBatchSize;
 
 - (instancetype)initWithSession:(DBSession *)newSession
 {
     self = [super init];
     if (self) {
+        fileUploadMaximumBatchSize = 1;
+        fileDownloadMaximumBatchSize = 1;
         session = newSession;
         queue = [[NSOperationQueue alloc] init];
         queue.maxConcurrentOperationCount = 1;
+        if ([queue respondsToSelector:@selector(setQualityOfService:)]) {
+            [queue setQualityOfService:NSQualityOfServiceUserInitiated];
+        }
     }
     return self;
 }
@@ -103,6 +122,61 @@ static const NSUInteger kCDENumberOfRetriesForFailedAttempt = 5;
 {
     [queue cancelAllOperations];
 }
+
+
+#pragma mark Paths
+
+- (void)setRelativePathToRootInDropbox:(NSString *)newPath
+{
+    if ([newPath hasPrefix:@"/"]) {
+        _relativePathToRootInDropbox = newPath;
+    }
+    else {
+        _relativePathToRootInDropbox = [@"/" stringByAppendingString:newPath];
+    }
+}
+
+- (NSString *)pathIncludingSubfolderForFilePath:(NSString *)path
+{
+    NSString *newPath = path;
+    
+    // Check if path ends with a GUID (32 characters) and located under the 'data' folder
+    NSString *dirName = [[path stringByDeletingLastPathComponent] lastPathComponent];
+    BOOL isInData = [dirName isEqualToString:@"data"];
+    if (path.lastPathComponent.length == 32 && isInData) {
+        NSString *guid = path.lastPathComponent;
+        NSString *dataSubFolder = [guid substringToIndex:2];
+        NSString *dataDir = [path stringByDeletingLastPathComponent];
+        NSString *subDir = [dataDir stringByAppendingPathComponent:dataSubFolder];
+        newPath = [subDir stringByAppendingPathComponent:guid];
+    }
+    
+    return newPath;
+}
+
+- (NSString *)fullDropboxPathForPath:(NSString *)path
+{
+    if (self.relativePathToRootInDropbox) {
+        path = [self.relativePathToRootInDropbox stringByAppendingPathComponent:path];
+    }
+    
+    if (self.partitionDataFilesBetweenSubdirectories) {
+        path = [self pathIncludingSubfolderForFilePath:path];
+    }
+    
+    return path;
+}
+
+- (NSArray *)fullDropboxPathsForPaths:(NSArray *)paths
+{
+    if (self.relativePathToRootInDropbox) {
+        paths = [paths cde_arrayByTransformingObjectsWithBlock:^(NSString *path) {
+            return [self fullDropboxPathForPath:path];
+        }];
+    }
+    return paths;
+}
+
 
 #pragma mark Connecting
 
@@ -125,6 +199,7 @@ static const NSUInteger kCDENumberOfRetriesForFailedAttempt = 5;
     }
 }
 
+
 #pragma mark User Identity
 
 - (void)fetchUserIdentityWithCompletion:(CDEFetchUserIdentityCallback)completion
@@ -135,57 +210,81 @@ static const NSUInteger kCDENumberOfRetriesForFailedAttempt = 5;
     });
 }
 
+
 #pragma mark Checking File Existence
 
 - (void)fileExistsAtPath:(NSString *)path completion:(CDEFileExistenceCallback)block
 {
-    CDEDropboxFileExistenceOperation *operation = [[CDEDropboxFileExistenceOperation alloc] initWithSession:session path:path fileExistenceCallback:block];
+    CDEDropboxFileExistenceOperation *operation = [[CDEDropboxFileExistenceOperation alloc] initWithSession:session path:[self fullDropboxPathForPath:path] fileExistenceCallback:block];
     [queue addOperation:operation];
 }
+
 
 #pragma mark Getting Directory Contents
 
 - (void)contentsOfDirectoryAtPath:(NSString *)path completion:(CDEDirectoryContentsCallback)block
 {
-    CDEDropboxDirectoryContentsOperation *operation = [[CDEDropboxDirectoryContentsOperation alloc] initWithSession:session path:path directoryContentsCallback:block];
+    CDEDropboxDirectoryContentsOperation *operation = [[CDEDropboxDirectoryContentsOperation alloc] initWithSession:session path:[self fullDropboxPathForPath:path] dataFilesArePartitioned:self.partitionDataFilesBetweenSubdirectories directoryContentsCallback:block];
     [queue addOperation:operation];
 }
+
 
 #pragma mark Creating Directories
 
 - (void)createDirectoryAtPath:(NSString *)path completion:(CDECompletionBlock)block
 {
-    CDEDropboxCreateDirectoryOperation *operation = [[CDEDropboxCreateDirectoryOperation alloc] initWithSession:session path:path completionCallback:block];
+    CDEDropboxCreateDirectoryOperation *operation = [[CDEDropboxCreateDirectoryOperation alloc] initWithSession:session path:[self fullDropboxPathForPath:path] completionCallback:block];
     [queue addOperation:operation];
 }
+
 
 #pragma mark Deleting
 
-- (void)removeItemAtPath:(NSString *)path completion:(CDECompletionBlock)block
+- (void)removeItemsAtPaths:(NSArray *)paths completion:(CDECompletionBlock)block
 {
-    CDEDropboxRemoveItemOperation *operation = [[CDEDropboxRemoveItemOperation alloc] initWithSession:session path:path completionCallback:block];
+    CDEDropboxRemoveOperation *operation = [[CDEDropboxRemoveOperation alloc] initWithSession:session paths:[self fullDropboxPathsForPaths:paths] completionCallback:block];
     [queue addOperation:operation];
 }
 
+- (void)removeItemAtPath:(NSString *)path completion:(CDECompletionBlock)block
+{
+    CDEDropboxRemoveOperation *operation = [[CDEDropboxRemoveOperation alloc] initWithSession:session paths:@[[self fullDropboxPathForPath:path]] completionCallback:block];
+    [queue addOperation:operation];
+}
+
+
 #pragma mark Uploading and Downloading
+
+- (void)uploadLocalFiles:(NSArray *)fromPaths toPaths:(NSArray *)toPaths completion:(CDECompletionBlock)block
+{
+    CDEDropboxUploadOperation *operation = [[CDEDropboxUploadOperation alloc] initWithSession:session localPaths:fromPaths toPaths:[self fullDropboxPathsForPaths:toPaths] completionCallback:block];
+    [queue addOperation:operation];
+}
 
 - (void)uploadLocalFile:(NSString *)fromPath toPath:(NSString *)toPath completion:(CDECompletionBlock)block
 {
-    CDEDropboxUploadOperation *operation = [[CDEDropboxUploadOperation alloc] initWithSession:session localPath:fromPath toPath:toPath completionCallback:block];
+    CDEDropboxUploadOperation *operation = [[CDEDropboxUploadOperation alloc] initWithSession:session localPaths:@[fromPath] toPaths:@[[self fullDropboxPathForPath:toPath]] completionCallback:block];
+    [queue addOperation:operation];
+}
+
+- (void)downloadFromPaths:(NSArray *)fromPaths toLocalFiles:(NSArray *)toPaths completion:(CDECompletionBlock)block
+{
+    CDEDropboxDownloadOperation *operation = [[CDEDropboxDownloadOperation alloc] initWithSession:session fromPaths:[self fullDropboxPathsForPaths:fromPaths] localPaths:toPaths completionCallback:block];
     [queue addOperation:operation];
 }
 
 - (void)downloadFromPath:(NSString *)fromPath toLocalFile:(NSString *)toPath completion:(CDECompletionBlock)block
 {
-    CDEDropboxDownloadOperation *operation = [[CDEDropboxDownloadOperation alloc] initWithSession:session fromPath:fromPath localPath:toPath completionCallback:block];
+    CDEDropboxDownloadOperation *operation = [[CDEDropboxDownloadOperation alloc] initWithSession:session fromPaths:@[[self fullDropboxPathForPath:fromPath]] localPaths:@[toPath] completionCallback:block];
     [queue addOperation:operation];
 }
 
 @end
 
 
+#pragma mark - Dropbox Operation Classes
+
 @implementation CDEDropboxOperation {
-    CDEAsynchronousTaskQueue *taskQueue;
     CDEAsynchronousTaskCallbackBlock retryCallbackBlock;
     BOOL isFinished, isExecuting;
 }
@@ -207,7 +306,7 @@ static const NSUInteger kCDENumberOfRetriesForFailedAttempt = 5;
 - (void)beginAsynchronousTask
 {
     [self prepareForNetworkRequests];
-    taskQueue = [[CDEAsynchronousTaskQueue alloc] initWithTask:^(CDEAsynchronousTaskCallbackBlock next) {
+    CDEAsynchronousTaskQueue *taskQueue = [[CDEAsynchronousTaskQueue alloc] initWithTask:^(CDEAsynchronousTaskCallbackBlock next) {
             CDELog(CDELoggingLevelVerbose, @"Attempting network request for operation class: %@", NSStringFromClass(self.class));
             retryCallbackBlock = [next copy];
             [self initiateNetworkRequest];
@@ -309,23 +408,29 @@ static const NSUInteger kCDENumberOfRetriesForFailedAttempt = 5;
 
 @implementation CDEDropboxDirectoryContentsOperation {
     CDECloudDirectory *directory;
+    NSMutableSet *allDataSubdirectories;
+    NSMutableSet *processedDataSubdirectories;
+    NSMutableSet *requestedDataSubdirectories;
+    BOOL dataFilesArePartitioned;
 }
 
 @synthesize path = path;
 @synthesize directoryContentsCallback = directoryContentsCallback;
 
-- (id)initWithSession:(DBSession *)newSession path:(NSString *)newPath directoryContentsCallback:(CDEDirectoryContentsCallback)newCallback
+- (id)initWithSession:(DBSession *)newSession path:(NSString *)newPath dataFilesArePartitioned:(BOOL)partitioned directoryContentsCallback:(CDEDirectoryContentsCallback)newCallback
 {
     self = [super initWithSession:newSession];
     if (self) {
         path = [newPath copy];
         directoryContentsCallback = [newCallback copy];
+        dataFilesArePartitioned = partitioned;
     }
     return self;
 }
 
 - (void)initiateNetworkRequest
 {
+    [self reset];
     [self.restClient loadMetadata:path];
 }
 
@@ -336,11 +441,56 @@ static const NSUInteger kCDENumberOfRetriesForFailedAttempt = 5;
 
 - (void)restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata
 {
-    directory = [CDECloudDirectory new];
-    directory.path = metadata.path;
-    directory.name = metadata.filename;
+    // Create directory only once.
+    // This delegate can be called multiple times when partitionDataFilesBetweenSubdirectories is YES.
+    if (!directory) {
+        directory = [CDECloudDirectory new];
+        directory.path = metadata.path;
+        directory.name = metadata.filename;
+        directory.contents = [[NSMutableArray<CDECloudItem> alloc] init];
+    }
     
-    NSMutableArray *contents = [[NSMutableArray alloc] initWithCapacity:metadata.contents.count];
+    if (dataFilesArePartitioned) {
+        [self processLoadedMetadataWithDataFilesPartitioned:metadata];
+    }
+    else {
+        [self processLoadedMetadata:metadata finished:YES];
+    }
+}
+
+- (void)restClient:(DBRestClient *)client loadMetadataFailedWithError:(NSError *)error
+{
+    [self reset];
+    [self completeNetworkRequestWithError:error];
+}
+
+- (void)processLoadedMetadataWithDataFilesPartitioned:(DBMetadata *)metadata
+{
+    NSString *parentDirPath = [metadata.path stringByDeletingLastPathComponent].lastPathComponent;
+    if ([metadata.path.lastPathComponent isEqualToString:@"data"] && metadata.contents.count > 0) {
+        allDataSubdirectories = [NSMutableSet set];
+        processedDataSubdirectories = [NSMutableSet set];
+        requestedDataSubdirectories = [NSMutableSet set];
+
+        for (DBMetadata *child in metadata.contents) {
+            [allDataSubdirectories addObject:child.path];
+        }
+        
+        [self loadMetadataForNextBatchOfDataSubdirectories];
+    }
+    else if ([parentDirPath isEqualToString:@"data"]) {
+        [processedDataSubdirectories addObject:metadata.path];
+        BOOL finished = [processedDataSubdirectories isEqualToSet:allDataSubdirectories];
+        [self processLoadedMetadata:metadata finished:finished];
+        if (!finished) [self loadMetadataForNextBatchOfDataSubdirectories];
+    }
+    else {
+        [self processLoadedMetadata:metadata finished:YES];
+    }
+}
+
+- (void)processLoadedMetadata:(DBMetadata *)metadata finished:(BOOL)finished
+{
     for (DBMetadata *child in metadata.contents) {
         // Dropbox inserts parenthesized indexes when two files with
         // same name are uploaded. Ignore these files.
@@ -350,24 +500,41 @@ static const NSUInteger kCDENumberOfRetriesForFailedAttempt = 5;
             CDECloudDirectory *dir = [CDECloudDirectory new];
             dir.name = child.filename;
             dir.path = child.path;
-            [contents addObject:dir];
+            [(NSMutableArray<CDECloudItem> *)directory.contents addObject:dir];
         }
         else {
             CDECloudFile *file = [CDECloudFile new];
             file.name = child.filename;
             file.path = child.path;
             file.size = child.totalBytes;
-            [contents addObject:file];
+            [(NSMutableArray<CDECloudItem> *)directory.contents addObject:file];
         }
     }
-    directory.contents = contents;
-    [self completeNetworkRequestWithError:nil];
+    
+    if (finished) [self completeNetworkRequestWithError:nil];
 }
 
-- (void)restClient:(DBRestClient *)client loadMetadataFailedWithError:(NSError *)error
+- (void)loadMetadataForNextBatchOfDataSubdirectories
+{
+    // If all previous 'data' subdir metadata requests arrived, request some more
+    NSUInteger count = 0;
+    if ([requestedDataSubdirectories isEqualToSet:processedDataSubdirectories]) {
+        for (NSString *dataSubFolder in allDataSubdirectories) {
+            if (![requestedDataSubdirectories containsObject:dataSubFolder]) {
+                [requestedDataSubdirectories addObject:dataSubFolder];
+                [self.restClient loadMetadata:dataSubFolder];
+                if (++count == kCDEMaximumConcurrentRequests) break;
+            }
+        }
+    }
+}
+
+- (void)reset
 {
     directory = nil;
-    [self completeNetworkRequestWithError:error];
+    requestedDataSubdirectories = nil;
+    processedDataSubdirectories = nil;
+    allDataSubdirectories = nil;
 }
 
 @end
@@ -375,8 +542,8 @@ static const NSUInteger kCDENumberOfRetriesForFailedAttempt = 5;
 
 @implementation CDEDropboxCreateDirectoryOperation
 
-@synthesize path = path;
-@synthesize completionCallback = completionCallback;
+@synthesize path;
+@synthesize completionCallback;
 
 - (id)initWithSession:(DBSession *)newSession path:(NSString *)newPath completionCallback:(CDECompletionBlock)newCallback
 {
@@ -411,16 +578,20 @@ static const NSUInteger kCDENumberOfRetriesForFailedAttempt = 5;
 @end
 
 
-@implementation CDEDropboxRemoveItemOperation
+@implementation CDEDropboxRemoveOperation {
+    NSUInteger filesRemaining;
+    NSUInteger remainingThisBatch;
+    NSError *lastError;
+}
 
-@synthesize path = path;
-@synthesize completionCallback = completionCallback;
+@synthesize paths;
+@synthesize completionCallback;
 
-- (id)initWithSession:(DBSession *)newSession path:(NSString *)newPath completionCallback:(CDECompletionBlock)newCallback
+- (id)initWithSession:(DBSession *)newSession paths:(NSArray *)newPaths completionCallback:(CDECompletionBlock)newCallback
 {
     self = [super initWithSession:newSession];
     if (self) {
-        path = [newPath copy];
+        paths = [newPaths copy];
         completionCallback = [newCallback copy];
     }
     return self;
@@ -428,39 +599,72 @@ static const NSUInteger kCDENumberOfRetriesForFailedAttempt = 5;
 
 - (void)initiateNetworkRequest
 {
-    [self.restClient deletePath:self.path];
+    filesRemaining = paths.count;
+    lastError = nil;
+    
+    if (filesRemaining == 0) {
+        [self completeNetworkRequestWithError:nil];
+        return;
+    }
+    
+    [self beginNextBatch];
+}
+
+- (void)beginNextBatch
+{
+    remainingThisBatch = MIN(filesRemaining, kCDEMaximumConcurrentDeletions);
+    NSUInteger start = paths.count - filesRemaining;
+    NSArray *batch = [paths subarrayWithRange:NSMakeRange(start, remainingThisBatch)];
+    for (NSString *path in batch) {
+        [self.restClient deletePath:path];
+    }
 }
 
 - (void)completeWithError:(NSError *)error
 {
     self.completionCallback(error);
+}
+
+- (void)completeDeletion
+{
+    if (--filesRemaining == 0) {
+        [self completeNetworkRequestWithError:lastError];
+    }
+    else if (--remainingThisBatch == 0) {
+        [self beginNextBatch];
+    }
 }
 
 - (void)restClient:(DBRestClient *)client deletedPath:(NSString *)path
 {
-    [self completeNetworkRequestWithError:nil];
+    [self completeDeletion];
 }
 
 - (void)restClient:(DBRestClient *)client deletePathFailedWithError:(NSError *)error
 {
-    [self completeNetworkRequestWithError:error];
+    if (error.code != DBErrorFileNotFound && error.code != 404) lastError = error;
+    [self completeDeletion];
 }
 
 @end
 
 
-@implementation CDEDropboxUploadOperation
+@implementation CDEDropboxUploadOperation {
+    NSMutableSet *successfullyUploadedFiles;
+    NSUInteger filesUploading;
+    NSError *lastError;
+}
 
-@synthesize localPath = localPath;
-@synthesize toPath = toPath;
-@synthesize completionCallback = completionCallback;
+@synthesize localPaths;
+@synthesize toPaths;
+@synthesize completionCallback;
 
-- (id)initWithSession:(DBSession *)newSession localPath:(NSString *)newLocalPath toPath:(NSString *)newToPath completionCallback:(CDECompletionBlock)newCallback
+- (id)initWithSession:(DBSession *)newSession localPaths:(NSArray *)newLocalPaths toPaths:(NSArray *)newToPaths completionCallback:(CDECompletionBlock)newCallback
 {
     self = [super initWithSession:newSession];
     if (self) {
-        localPath = [newLocalPath copy];
-        toPath = [newToPath copy];
+        localPaths = [newLocalPaths copy];
+        toPaths = [newToPaths copy];
         completionCallback = [newCallback copy];
     }
     return self;
@@ -468,7 +672,21 @@ static const NSUInteger kCDENumberOfRetriesForFailedAttempt = 5;
 
 - (void)initiateNetworkRequest
 {
-    [self.restClient uploadFile:[toPath lastPathComponent] toPath:[toPath stringByDeletingLastPathComponent] withParentRev:nil fromPath:localPath];
+    lastError = nil;
+    successfullyUploadedFiles = [NSMutableSet set];
+    filesUploading = localPaths.count;
+    
+    if (filesUploading == 0) {
+        [self completeNetworkRequestWithError:nil];
+        return;
+    }
+    
+    NSEnumerator *toEn = [toPaths objectEnumerator];
+    NSEnumerator *localEn = [localPaths objectEnumerator];
+    NSString *toPath, *localPath;
+    while ( (toPath = [toEn nextObject]) && (localPath = [localEn nextObject]) ) {
+        [self.restClient uploadFile:[toPath lastPathComponent] toPath:[toPath stringByDeletingLastPathComponent] withParentRev:nil fromPath:localPath];
+    }
 }
 
 - (void)completeWithError:(NSError *)error
@@ -476,31 +694,51 @@ static const NSUInteger kCDENumberOfRetriesForFailedAttempt = 5;
     self.completionCallback(error);
 }
 
-- (void)restClient:(DBRestClient *)client uploadedFile:(NSString *)destPath from:(NSString *)srcPath
+- (void)completeFileUpload
 {
-    [self completeNetworkRequestWithError:nil];
+    if (--filesUploading == 0) {
+        if (lastError) {
+            for (NSString *file in successfullyUploadedFiles) {
+                [self.restClient deletePath:file];
+            }
+        }
+        
+        [self completeNetworkRequestWithError:lastError];
+    }
+}
+
+- (void)restClient:(DBRestClient *)client uploadedFile:(NSString *)destPath from:(NSString *)srcPath metadata:(DBMetadata *)metadata
+{
+    [successfullyUploadedFiles addObject:destPath];
+    [self completeFileUpload];
 }
 
 - (void)restClient:(DBRestClient *)client uploadFileFailedWithError:(NSError *)error
 {
-    [self completeNetworkRequestWithError:error];
+    CDELog(CDELoggingLevelError, @"Error uploading a file to Dropbox: %@", error);
+    lastError = error;
+    [self completeFileUpload];
 }
 
 @end
 
 
-@implementation CDEDropboxDownloadOperation
+@implementation CDEDropboxDownloadOperation {
+    NSError *lastError;
+    NSMutableSet *successfullyDownloadedFiles;
+    NSUInteger filesDownloading;
+}
 
-@synthesize localPath = localPath;
-@synthesize fromPath = fromPath;
-@synthesize completionCallback = completionCallback;
+@synthesize localPaths;
+@synthesize fromPaths;
+@synthesize completionCallback;
 
-- (id)initWithSession:(DBSession *)newSession fromPath:(NSString *)newFromPath localPath:(NSString *)newLocalPath completionCallback:(CDECompletionBlock)block
+- (id)initWithSession:(DBSession *)newSession fromPaths:(NSArray *)newFromPaths localPaths:(NSArray *)newLocalPaths completionCallback:(CDECompletionBlock)block
 {
     self = [super initWithSession:newSession];
     if (self) {
-        localPath = [newLocalPath copy];
-        fromPath = [newFromPath copy];
+        localPaths = [newLocalPaths copy];
+        fromPaths = [newFromPaths copy];
         completionCallback = [block copy];
     }
     return self;
@@ -508,7 +746,21 @@ static const NSUInteger kCDENumberOfRetriesForFailedAttempt = 5;
 
 - (void)initiateNetworkRequest
 {
-    [self.restClient loadFile:fromPath atRev:nil intoPath:localPath];
+    lastError = nil;
+    successfullyDownloadedFiles = [NSMutableSet set];
+    filesDownloading = fromPaths.count;
+    
+    if (filesDownloading == 0) {
+        [self completeNetworkRequestWithError:nil];
+        return;
+    }
+    
+    NSEnumerator *fromEn = [fromPaths objectEnumerator];
+    NSEnumerator *localEn = [localPaths objectEnumerator];
+    NSString *fromPath, *localPath;
+    while ( (fromPath = [fromEn nextObject]) && (localPath = [localEn nextObject]) ) {
+        [self.restClient loadFile:fromPath atRev:nil intoPath:localPath];
+    }
 }
 
 - (void)completeWithError:(NSError *)error
@@ -516,14 +768,33 @@ static const NSUInteger kCDENumberOfRetriesForFailedAttempt = 5;
     self.completionCallback(error);
 }
 
+- (void)completeFileLoad
+{
+    if (--filesDownloading == 0) {
+        if (lastError) {
+            for (NSString *file in successfullyDownloadedFiles) {
+                NSError *error;
+                if (![[NSFileManager defaultManager] removeItemAtPath:file error:&error]) {
+                    CDELog(CDELoggingLevelError, @"Could not delete a file: %@", error);
+                }
+            }
+        }
+        
+        [self completeNetworkRequestWithError:lastError];
+    }
+}
+
 - (void)restClient:(DBRestClient *)client loadedFile:(NSString *)destPath
 {
-    [self completeNetworkRequestWithError:nil];
+    [successfullyDownloadedFiles addObject:destPath];
+    [self completeFileLoad];
 }
 
 - (void)restClient:(DBRestClient *)client loadFileFailedWithError:(NSError *)error
 {
-    [self completeNetworkRequestWithError:error];
+    CDELog(CDELoggingLevelError, @"Error downloading a file from Dropbox: %@", error);
+    lastError = error;
+    [self completeFileLoad];
 }
 
 @end

@@ -12,7 +12,6 @@
 
 #import <Foundation/Foundation.h>
 #import <Ensembles/Ensembles.h>
-#import "SSZipArchive.h"
 
 @interface CDEZipCloudFileSystem : NSObject <CDECloudFileSystem>
 

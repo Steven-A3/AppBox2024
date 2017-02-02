@@ -1,0 +1,52 @@
+Dropbox API SDK for OS X
+========================
+
+This package contains the OS X SDK for the
+[Dropbox Sync API](https://www.dropbox.com/developers/sync) and 
+[Dropbox Datastore API](https://www.dropbox.com/developers/datastore).
+
+Installing
+----------
+
+The Sync and Datastore APIs are both available as part of a single
+framework.  Installation instructions for Dropbox.framework can be
+found [here](https://www.dropbox.com/developers/datastore/sdks/ios).
+
+This framwork can be used on Mac OS X 10.7 or higher in 64-bit apps.
+You can build your application using Xcode 5 or higher.
+
+Getting Started
+---------------
+
+To learn how to build your first app using the Datastore API, follow the
+Datastore [tutorial](https://www.dropbox.com/developers/datastore/tutorial/osx).
+
+There is also a [Sync API tutorial](https://www.dropbox.com/developers/sync/tutorial/osx)
+to show you how to read and write files from Dropbox.
+
+Examples
+--------
+
+There are two Xcode projects in the Examples directory with examples of how to
+use the Datastore and File Sync API. All examples require Xcode 5.0+ and OS X 10.7+
+(10.8+ for ImageBrowser).
+
+### Examples/Files Examples OSX.xcodeproj: ###
+1. HelloDropbox - Simple app that demonstrates basic functionality of how to 
+   link an account, list a folder, and read/write a file.  
+2. ImageBrowser - A Finder-like app for image preview that demonstrates how to 
+   use the filetypes app permission for accessing only image files, list
+   folders, and retrieve thumbnails for files.  
+3. Notes - A note editing app that demonstrates how to link multiple accounts,
+   read and save files, create/delete/move/rename files and folders, and observe
+   files and folders for changes.
+
+Documentation
+-------------
+
+You can install the Xcode docset by running the following command from
+this directory:
+
+    cp -R com.dropbox.Dropbox.docset ~/Library/Developer/Shared/Documentation/DocSets
+
+Then restart Xcode to complete the installation.

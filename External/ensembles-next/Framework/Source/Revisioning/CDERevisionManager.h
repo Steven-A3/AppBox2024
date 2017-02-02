@@ -30,12 +30,12 @@ extern BOOL CDEPerformIntegrabilityChecks; // Used for tests to disable checks
 - (NSArray *)fetchStoreModificationEventsConcurrentWithEvents:(NSArray *)events error:(NSError * __autoreleasing *)error;
 - (NSArray *)recursivelyFetchStoreModificationEventsConcurrentWithEvents:(NSArray *)events error:(NSError *__autoreleasing *)error;
 
-- (NSArray *)integrableEventsFromEvents:(NSArray *)events;
+- (NSArray *)integrableEventsFromEvents:(NSArray *)events informativeErrorCodes:(NSSet * __autoreleasing *)errorCodes;
 
 - (BOOL)checkModelVersionsOfStoreModificationEvents:(NSArray *)events;
 - (BOOL)checkAllDataFilesExistForStoreModificationEvents:(NSArray *)events;
 
-- (BOOL)checkDependenciesOfBaseline:(CDEStoreModificationEvent *)baseline;
+- (BOOL)checkDependenciesOfBaseline:(CDEStoreModificationEvent *)baseline informativeErrorCode:(CDEErrorCode *)errorCode;
 - (BOOL)checkThatLocalPersistentStoreHasNotBeenAbandoned:(NSError * __autoreleasing *)error;
 
 - (CDEGlobalCount)maximumGlobalCount;

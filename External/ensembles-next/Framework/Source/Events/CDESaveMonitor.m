@@ -160,22 +160,26 @@
     
     // Store changes
     [self asynchronouslyStoreChangesForContext:context changedObjectsDictionary:notif.userInfo];
-    
-    // Notification
-    NSDictionary *userInfo = self.ensemble ? @{@"persistentStoreEnsemble" : self.ensemble} : nil;
-    [[NSNotificationCenter defaultCenter] postNotificationName:CDEMonitoredManagedObjectContextDidSaveNotification object:context userInfo:userInfo];
 }
 
 - (void)asynchronouslyStoreChangesForContext:(NSManagedObjectContext *)context changedObjectsDictionary:(NSDictionary *)changedObjectsDictionary
 {
+    // Register event, so if there is a crash, we can detect it and clean up
+    NSString *saveToken = [[NSProcessInfo processInfo] globallyUniqueString];
+    [self.eventStore registerIncompleteMandatoryEventIdentifier:saveToken];
+    
+    // Notification that monitored store did save
+    NSDictionary *userInfo = self.ensemble ? @{@"persistentStoreEnsemble" : self.ensemble, @"saveToken" : saveToken} : nil;
+    [[NSNotificationCenter defaultCenter] postNotificationName:CDEMonitoredManagedObjectContextDidSaveNotification object:context userInfo:userInfo];
+    
+    // Get changes
     NSSet *insertedObjects = [changedObjectsDictionary objectForKey:NSInsertedObjectsKey];
     NSSet *deletedObjects = [changedObjectsDictionary objectForKey:NSDeletedObjectsKey];
     NSSet *updatedObjects = [changedObjectsDictionary objectForKey:NSUpdatedObjectsKey];
-    if (insertedObjects.count + deletedObjects.count + updatedObjects.count == 0) return;
-    
-    // Register event, so if there is a crash, we can detect it and clean up
-    NSString *newUniqueId = [[NSProcessInfo processInfo] globallyUniqueString];
-    [self.eventStore registerIncompleteMandatoryEventIdentifier:newUniqueId];
+    if (insertedObjects.count + deletedObjects.count + updatedObjects.count == 0) {
+        [self completeAsynchronousStorageForContext:context saveToken:saveToken];
+        return;
+    }
     
     // Reduce to just the objects belonging to the store
     insertedObjects = [self monitoredManagedObjectsInSet:insertedObjects];
@@ -205,10 +209,10 @@
 
     // If there are no changes, we bail early and don't create any save event.
     NSUInteger insertCount = orderedInsertedObjects.count;
-    NSUInteger updateCount = orderedUpdatedObjects.count;
+    NSUInteger updateCount = changedValuesByObjectID.count;
     NSUInteger deleteCount = orderedDeletedObjects.count;
     if (insertCount + updateCount + deleteCount == 0) {
-        [self.eventStore deregisterIncompleteMandatoryEventIdentifier:newUniqueId];
+        [self completeAsynchronousStorageForContext:context saveToken:saveToken];
         return;
     }
     
@@ -219,7 +223,7 @@
         [eventContext reset];
         
         // Add a store mod event
-        [eventBuilder makeNewEventOfType:CDEStoreModificationEventTypeSave uniqueIdentifier:newUniqueId];
+        [eventBuilder makeNewEventOfType:CDEStoreModificationEventTypeSave uniqueIdentifier:saveToken];
         
         // Insert global ids
         NSArray *globalIDObjectIDs = [eventBuilder addGlobalIdentifiersForManagedObjectIDs:insertedObjectIDs identifierStrings:globalIDStrings];
@@ -239,16 +243,31 @@
         // Finalize
         [eventBuilder finalizeNewEvent];
         [self saveEventBuilder:eventBuilder];
+        
+        // Print event revisions
+        CDELog(CDELoggingLevelVerbose, @"Revision Set of saving peer %@: %@", eventBuilder.event.eventRevision.persistentStoreIdentifier, eventBuilder.event.revisionSet);
 
         // Deregister event, and clean up
-        [self.eventStore deregisterIncompleteMandatoryEventIdentifier:eventBuilder.event.uniqueIdentifier];
+        [self completeAsynchronousStorageForContext:context saveToken:saveToken];
     }];
+}
+
+- (void)completeAsynchronousStorageForContext:(NSManagedObjectContext *)context saveToken:(NSString *)saveToken
+{
+    [self.eventStore deregisterIncompleteMandatoryEventIdentifier:saveToken];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSDictionary *userInfo = self.ensemble ? @{@"persistentStoreEnsemble" : self.ensemble, @"saveToken" : saveToken} : nil;
+        [[NSNotificationCenter defaultCenter] postNotificationName:CDEMonitoredManagedObjectContextSaveChangesWereStoredNotification object:context userInfo:userInfo];
+    });
 }
 
 - (void)saveEventBuilder:(CDEEventBuilder *)eventBuilder
 {
     NSError *error;
-    if (![eventBuilder saveAndReset:&error]) CDELog(CDELoggingLevelError, @"Could not save and reset event builder: %@", error);
+    if (![eventBuilder saveAndReset:&error]) {
+        CDELog(CDELoggingLevelError, @"Could not save and reset event builder: %@", error);
+    }
 }
 
 @end

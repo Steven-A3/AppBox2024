@@ -103,4 +103,58 @@
     }];
 }
 
+- (void)testMerging {
+    CDEObjectChange *change1 = [NSEntityDescription insertNewObjectForEntityForName:@"CDEObjectChange" inManagedObjectContext:self.eventStore.managedObjectContext];
+    CDEPropertyChangeValue *value1 = [[CDEPropertyChangeValue alloc] initWithType:CDEPropertyChangeTypeAttribute propertyName:@"a"];
+    value1.value = @"A";
+    change1.propertyChangeValues = @[value1];
+    
+    CDEObjectChange *change2 = [NSEntityDescription insertNewObjectForEntityForName:@"CDEObjectChange" inManagedObjectContext:self.eventStore.managedObjectContext];
+    CDEPropertyChangeValue *value2 = [[CDEPropertyChangeValue alloc] initWithType:CDEPropertyChangeTypeAttribute propertyName:@"a"];
+    value2.value = @"AA";
+    change2.propertyChangeValues = @[value2];
+    
+    [change1 mergeValuesFromObjectChange:change2 treatChangeAsSubordinate:YES];
+    CDEPropertyChangeValue *resultPropertyValue = change1.propertyChangeValues.lastObject;
+    id v = resultPropertyValue.value;
+    XCTAssertEqualObjects(v, @"A");
+    
+    [change1 mergeValuesFromObjectChange:change2 treatChangeAsSubordinate:NO];
+    resultPropertyValue = change1.propertyChangeValues.lastObject;
+    v = resultPropertyValue.value;
+    XCTAssertEqualObjects(v, @"AA");
+}
+
+- (void)testMergingWithDifferingPropertyNames {
+    CDEObjectChange *change1 = [NSEntityDescription insertNewObjectForEntityForName:@"CDEObjectChange" inManagedObjectContext:self.eventStore.managedObjectContext];
+    CDEPropertyChangeValue *value1 = [[CDEPropertyChangeValue alloc] initWithType:CDEPropertyChangeTypeAttribute propertyName:@"a"];
+    value1.value = @"A";
+    change1.propertyChangeValues = @[value1];
+    
+    CDEObjectChange *change2 = [NSEntityDescription insertNewObjectForEntityForName:@"CDEObjectChange" inManagedObjectContext:self.eventStore.managedObjectContext];
+    
+    [change1 mergeValuesFromObjectChange:change2 treatChangeAsSubordinate:YES];
+    CDEPropertyChangeValue *resultPropertyValue = change1.propertyChangeValues.lastObject;
+    id v = resultPropertyValue.value;
+    XCTAssertEqualObjects(v, @"A");
+    
+    [change1 mergeValuesFromObjectChange:change2 treatChangeAsSubordinate:NO];
+    resultPropertyValue = change1.propertyChangeValues.lastObject;
+    v = resultPropertyValue.value;
+    XCTAssertEqualObjects(v, @"A");
+    
+    change1.propertyChangeValues = @[];
+    change2.propertyChangeValues = @[value1];
+    
+    [change1 mergeValuesFromObjectChange:change2 treatChangeAsSubordinate:YES];
+    resultPropertyValue = change1.propertyChangeValues.lastObject;
+    v = resultPropertyValue.value;
+    XCTAssertEqualObjects(v, @"A");
+    
+    [change1 mergeValuesFromObjectChange:change2 treatChangeAsSubordinate:NO];
+    resultPropertyValue = change1.propertyChangeValues.lastObject;
+    v = resultPropertyValue.value;
+    XCTAssertEqualObjects(v, @"A");
+}
+
 @end

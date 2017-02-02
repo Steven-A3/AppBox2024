@@ -7,6 +7,7 @@
 //
 
 #import "CDEEncryptedCloudFileSystem.h"
+#import <CommonCrypto/CommonCrypto.h>
 
 #if TARGET_OS_IPHONE
 #import "RNDecryptor.h"
@@ -16,6 +17,12 @@
 #import <RNCryptor/RNDecryptor.h>
 #import <RNCryptor/RNCryptor.h>
 #endif
+
+extern int
+CCKeyDerivationPBKDF( CCPBKDFAlgorithm algorithm, const char *password, size_t passwordLen,
+                     const uint8_t *salt, size_t saltLen,
+                     CCPseudoRandomAlgorithm prf, uint rounds,
+                     uint8_t *derivedKey, size_t derivedKeyLen) __attribute__((weak_import));
 
 static NSString * const CDEDefaultVaultSalt = @"5L8ibqS3plnRXO2l2QiXh7xFH86m5b5Km4Mo0n3H0rLsHR7eKzSfbti7nW049S3I";
 
@@ -171,9 +178,7 @@ static NSString * const CDEEncryptedPathPrefix = @"/VAULT_";
         
         [self clearTempDir];
     }
-    
-    NSLog(@"WARNING, this encrypted filesystem has not been tested extensively yet and is not ready for production");
-    
+        
     return self;
 }
 

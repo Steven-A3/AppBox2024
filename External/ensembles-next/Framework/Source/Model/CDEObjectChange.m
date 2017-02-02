@@ -86,15 +86,16 @@
 - (void)mergeValuesFromObjectChange:(CDEObjectChange *)change treatChangeAsSubordinate:(BOOL)subordinate
 {
     NSDictionary *existingPropertiesByName = [[NSDictionary alloc] initWithObjects:self.propertyChangeValues forKeys:[self.propertyChangeValues valueForKeyPath:@"propertyName"]];
-    NSMutableArray *newPropertyChangeValues = [[NSMutableArray alloc] init];
+    NSMutableDictionary *newPropertyChangeValuesByName = [[NSMutableDictionary alloc] init];
     
+    // Add values for entries in the other object change
     for (CDEPropertyChangeValue *propertyValue in change.propertyChangeValues) {
         NSString *propertyName = propertyValue.propertyName;
         CDEPropertyChangeValue *existingValue = existingPropertiesByName[propertyName];
         
         // If this property name is not already present, just copy it in
         if (nil == existingValue) {
-            [newPropertyChangeValues addObject:propertyValue];
+            newPropertyChangeValuesByName[propertyName] = propertyValue;
             continue;
         }
         
@@ -103,15 +104,22 @@
         isToMany = isToMany || propertyValue.type == CDEPropertyChangeTypeOrderedToManyRelationship;
         if (isToMany) {
             [existingValue mergeToManyRelationshipFromPropertyChangeValue:propertyValue treatValueAsSubordinate:subordinate];
-            [newPropertyChangeValues addObject:existingValue];
+            newPropertyChangeValuesByName[propertyName] = existingValue;
             continue;
         }
         
         // Both values exist. Choose dominant.
-        [newPropertyChangeValues addObject:(subordinate ? existingValue : propertyValue)];
+        newPropertyChangeValuesByName[propertyName] = (subordinate ? existingValue : propertyValue);
+    }
+    
+    // Check for any property names that do not exist in the other change
+    for (CDEPropertyChangeValue *propertyValue in self.propertyChangeValues) {
+        NSString *propertyName = propertyValue.propertyName;
+        CDEPropertyChangeValue *newValue = newPropertyChangeValuesByName[propertyName];
+        if (!newValue) newPropertyChangeValuesByName[propertyName] = propertyValue;
     }
 
-    self.propertyChangeValues = newPropertyChangeValues;
+    self.propertyChangeValues = newPropertyChangeValuesByName.allValues;
 }
 
 #pragma mark Prefetching

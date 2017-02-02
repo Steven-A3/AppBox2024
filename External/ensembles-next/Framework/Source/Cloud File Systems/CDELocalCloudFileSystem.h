@@ -11,8 +11,8 @@
 
 @interface CDELocalCloudFileSystem : NSObject <CDECloudFileSystem>
 
-@property (readonly, nonatomic) NSString *rootDirectory;
+@property (readonly, nonatomic, nonnull) NSString *rootDirectory;
 
-- (instancetype)initWithRootDirectory:(NSString *)rootDir;
+- (nonnull instancetype)initWithRootDirectory:(nonnull NSString *)rootDir;
 
 @end

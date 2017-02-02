@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6751" systemVersion="14D131" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="15B42" minimumToolsVersion="Xcode 4.3">
+    <entity name="A" syncable="YES">
+        <relationship name="inverseObject" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="A" inverseName="relatedObjects" inverseEntity="A" syncable="YES"/>
+        <relationship name="relatedObjects" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="A" inverseName="inverseObject" inverseEntity="A" syncable="YES"/>
+    </entity>
+    <entity name="B" parentEntity="A" syncable="YES"/>
     <entity name="BatchChild" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="batchGrandParents" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BatchGrandParent" inverseName="batchChildren" inverseEntity="BatchGrandParent" syncable="YES"/>
@@ -28,6 +33,7 @@
             <entry key="CDEMigrationPriorityKey" value="10"/>
         </userInfo>
     </entity>
+    <entity name="C" parentEntity="B" syncable="YES"/>
     <entity name="Child" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="maxedParent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Parent" inverseName="maxedChildren" inverseEntity="Parent" syncable="YES"/>
@@ -73,6 +79,9 @@
         <element name="DerivedChild" positionX="-2" positionY="293" width="128" height="73"/>
         <element name="DerivedParent" positionX="-549" positionY="297" width="128" height="58"/>
         <element name="LargeDataBlob" positionX="414" positionY="-315" width="128" height="73"/>
-        <element name="Parent" positionX="-551" positionY="-25" width="128" height="225"/>
+        <element name="Parent" positionX="-551" positionY="-25" width="128" height="223"/>
+        <element name="A" positionX="351" positionY="-27" width="128" height="73"/>
+        <element name="B" positionX="279" positionY="99" width="128" height="43"/>
+        <element name="C" positionX="279" positionY="191" width="128" height="43"/>
     </elements>
 </model>

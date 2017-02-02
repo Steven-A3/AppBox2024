@@ -298,11 +298,11 @@
     id parent = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];
     
     id child1OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"Child" inManagedObjectContext:context1];
-    [child1OnDevice1 setName:@"child1"];
+    [child1OnDevice1 setValue:@"child1" forKey:@"name"];
     [child1OnDevice1 setValue:parent forKey:@"parentWithSiblings"];
 
     id child2OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"Child" inManagedObjectContext:context1];
-    [child2OnDevice1 setName:@"child2"];
+    [child2OnDevice1 setValue:@"child2" forKey:@"name"];
     [child2OnDevice1 setValue:parent forKey:@"parentWithSiblings"];
     
     XCTAssertTrue([context1 save:NULL], @"Could not save");
@@ -333,9 +333,9 @@
     id child2OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"Child" inManagedObjectContext:context1];
     id child3OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"Child" inManagedObjectContext:context1];
     
-    [child1OnDevice1 setName:@"child1"];
-    [child2OnDevice1 setName:@"child2"];
-    [child3OnDevice1 setName:@"child3"];
+    [child1OnDevice1 setValue:@"child1" forKey:@"name"];
+    [child2OnDevice1 setValue:@"child2" forKey:@"name"];
+    [child3OnDevice1 setValue:@"child3" forKey:@"name"];
     
     NSOrderedSet *set = [NSOrderedSet orderedSetWithArray:@[child1OnDevice1, child2OnDevice1, child3OnDevice1]];
     [parent setValue:set forKey:@"orderedChildren"];
@@ -389,9 +389,9 @@
     id child2OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"Child" inManagedObjectContext:context1];
     id child3OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"Child" inManagedObjectContext:context1];
     
-    [child1OnDevice1 setName:@"child1"];
-    [child2OnDevice1 setName:@"child2"];
-    [child3OnDevice1 setName:@"child3"];
+    [child1OnDevice1 setValue:@"child1" forKey:@"name"];
+    [child2OnDevice1 setValue:@"child2" forKey:@"name"];
+    [child3OnDevice1 setValue:@"child3" forKey:@"name"];
     
     NSOrderedSet *set = [NSOrderedSet orderedSetWithArray:@[ child1OnDevice1, child2OnDevice1, child3OnDevice1]];
     [parent setValue:set forKey:@"orderedChildren"];
@@ -408,7 +408,7 @@
     XCTAssertEqual(childrenOnDevice2.count, (NSUInteger)3, @"Expected 3 children");
 
     id child4OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"Child" inManagedObjectContext:context1];
-    [child4OnDevice1 setName:@"child4"];
+    [child4OnDevice1 setValue:@"child4" forKey:@"name"];
     set = [NSOrderedSet orderedSetWithArray:@[child1OnDevice1, child4OnDevice1, child2OnDevice1, child3OnDevice1]];
     [parent setValue:set forKey:@"orderedChildren"];
     XCTAssertTrue([context1 save:NULL], @"Could not save");
@@ -441,7 +441,7 @@
 
     // Device 1
     id A1 = [NSEntityDescription insertNewObjectForEntityForName:@"Child" inManagedObjectContext:context1];
-    [A1 setName:@"A"];
+    [A1 setValue:@"A" forKey:@"name"];
     
     NSOrderedSet *set = [NSOrderedSet orderedSetWithArray:@[A1]];
     [P1 setValue:set forKey:@"orderedChildren"];
@@ -457,9 +457,9 @@
     id G2 = [NSEntityDescription insertNewObjectForEntityForName:@"Child" inManagedObjectContext:context2];
     id H2 = [NSEntityDescription insertNewObjectForEntityForName:@"Child" inManagedObjectContext:context2];
 
-    [F2 setName:@"F"];
-    [G2 setName:@"G"];
-    [H2 setName:@"H"];
+    [F2 setValue:@"F" forKey:@"name"];
+    [G2 setValue:@"G" forKey:@"name"];
+    [H2 setValue:@"H" forKey:@"name"];
     
     set = [NSOrderedSet orderedSetWithArray:@[F2, G2, H2]];
     [P2 setValue:set forKey:@"orderedChildren"];
@@ -472,10 +472,10 @@
     id D1 = [NSEntityDescription insertNewObjectForEntityForName:@"Child" inManagedObjectContext:context1];
     id E1 = [NSEntityDescription insertNewObjectForEntityForName:@"Child" inManagedObjectContext:context1];
 
-    [B1 setName:@"B"];
-    [C1 setName:@"C"];
-    [D1 setName:@"D"];
-    [E1 setName:@"E"];
+    [B1 setValue:@"B" forKey:@"name"];
+    [C1 setValue:@"C" forKey:@"name"];
+    [D1 setValue:@"D" forKey:@"name"];
+    [E1 setValue:@"E" forKey:@"name"];
     
     set = [NSOrderedSet orderedSetWithArray:@[A1, B1, C1, D1, E1]];
     [P1 setValue:set forKey:@"orderedChildren"];
@@ -644,14 +644,14 @@
     [self leechStores];
     
     id parent = [NSEntityDescription insertNewObjectForEntityForName:@"DerivedParent" inManagedObjectContext:context1];
-    [parent setName:@"item1"];
+    [parent setValue:@"item1" forKey:@"name"];
 
     id child1OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"DerivedChild" inManagedObjectContext:context1];
-    [child1OnDevice1 setName:@"item1"];
+    [child1OnDevice1 setValue:@"item1" forKey:@"name"];
     [child1OnDevice1 setValue:parent forKey:@"parentWithSiblings"];
     
     id child2OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"DerivedChild" inManagedObjectContext:context1];
-    [child2OnDevice1 setName:@"item2"];
+    [child2OnDevice1 setValue:@"item2" forKey:@"name"];
     [child2OnDevice1 setValue:parent forKey:@"parentWithSiblings"];
     
     XCTAssertTrue([context1 save:NULL], @"Could not save");
@@ -676,10 +676,10 @@
     [self leechStores];
     
     id parent = [NSEntityDescription insertNewObjectForEntityForName:@"DerivedParent" inManagedObjectContext:context1];
-    [parent setName:@"item"]; // Deliberately use the same global id for child and parent
+    [parent setValue:@"item" forKey:@"name"]; // Deliberately use the same global id for child and parent
     
     id child1OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"DerivedChild" inManagedObjectContext:context1];
-    [child1OnDevice1 setName:@"item"];
+    [child1OnDevice1 setValue:@"item" forKey:@"name"];
     [child1OnDevice1 setValue:parent forKey:@"parent"];
     
     XCTAssertTrue([context1 save:NULL], @"Could not save");
@@ -697,14 +697,14 @@
     [self leechStores];
     
     id parent = [NSEntityDescription insertNewObjectForEntityForName:@"DerivedParent" inManagedObjectContext:context1];
-    [parent setName:@"item1"];
+    [parent setValue:@"item1" forKey:@"name"];
     
     id child1OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"DerivedChild" inManagedObjectContext:context1];
-    [child1OnDevice1 setName:@"item1"];
+    [child1OnDevice1 setValue:@"item1" forKey:@"name"];
     [child1OnDevice1 setValue:parent forKey:@"derivedParent"];
     
     id child2OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"DerivedChild" inManagedObjectContext:context1];
-    [child2OnDevice1 setName:@"item2"];
+    [child2OnDevice1 setValue:@"item2" forKey:@"name"];
     [child2OnDevice1 setValue:parent forKey:@"derivedParent"];
     
     XCTAssertTrue([context1 save:NULL], @"Could not save");
@@ -729,17 +729,17 @@
     [self leechStores];
     
     id derivedParentOnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"DerivedParent" inManagedObjectContext:context1];
-    [derivedParentOnDevice1 setName:@"dp1"];
+    [derivedParentOnDevice1 setValue:@"dp1" forKey:@"name"];
     id parentOnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];
-    [parentOnDevice1 setName:@"p2"];
+    [parentOnDevice1 setValue:@"p2" forKey:@"name"];
     
     id child1OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"DerivedChild" inManagedObjectContext:context1];
-    [child1OnDevice1 setName:@"dc1"];
+    [child1OnDevice1 setValue:@"dc1" forKey:@"name"];
     [child1OnDevice1 setValue:parentOnDevice1 forKey:@"parent"];
     [child1OnDevice1 setValue:derivedParentOnDevice1 forKey:@"parentWithSiblings"];
 
     id child2OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"Child" inManagedObjectContext:context1];
-    [child2OnDevice1 setName:@"c2"];
+    [child2OnDevice1 setValue:@"c2" forKey:@"name"];
     [child2OnDevice1 setValue:derivedParentOnDevice1 forKey:@"parentWithSiblings"];
     
     XCTAssertTrue([context1 save:NULL], @"Could not save");
@@ -765,13 +765,13 @@
     [self leechStores];
     
     id parent1 = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];
-    [parent1 setName:@"item1"];
+    [parent1 setValue:@"item1" forKey:@"name"];
     
     id parent2 = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];
-    [parent2 setName:@"item2"];
+    [parent2 setValue:@"item2" forKey:@"name"];
     
     id parent3 = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];
-    [parent3 setName:@"item3"];
+    [parent3 setValue:@"item3" forKey:@"name"];
     
     [parent1 setValue:[NSSet setWithObjects:parent2, parent3, nil] forKeyPath:@"relatedParents"];
     
@@ -795,9 +795,9 @@
     id child2OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"Child" inManagedObjectContext:context1];
     id child3OnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"DerivedChild" inManagedObjectContext:context1];
     
-    [child1OnDevice1 setName:@"child1"];
-    [child2OnDevice1 setName:@"child2"];
-    [child3OnDevice1 setName:@"child3"];
+    [child1OnDevice1 setValue:@"child1" forKey:@"name"];
+    [child2OnDevice1 setValue:@"child2" forKey:@"name"];
+    [child3OnDevice1 setValue:@"child3" forKey:@"name"];
     
     NSOrderedSet *set = [NSOrderedSet orderedSetWithArray:@[child1OnDevice1, child2OnDevice1, child3OnDevice1]];
     [parent setValue:set forKey:@"orderedChildren"];
@@ -847,6 +847,89 @@
     
     XCTAssertEqualObjects(orderedChildrenOnDevice1[0], child1OnDevice1, @"Incorrect order");
     XCTAssertEqualObjects(orderedChildrenOnDevice1[1], child2OnDevice1, @"Incorrect order");
+}
+
+- (void)testLeechingWithNoImportOfLocalData
+{
+    // Initial data
+    [NSEntityDescription insertNewObjectForEntityForName:@"DerivedParent" inManagedObjectContext:context1];
+    XCTAssertTrue([context1 save:NULL], @"Could not save");
+
+    [NSEntityDescription insertNewObjectForEntityForName:@"DerivedParent" inManagedObjectContext:context2];
+    XCTAssertTrue([context2 save:NULL], @"Could not save");
+
+    // Leech
+    [ensemble1 leechPersistentStoreWithCompletion:^(NSError *error) {
+        XCTAssertNil(error, @"Error leeching first store");
+        [ensemble2 leechPersistentStoreWithSeedPolicy:CDESeedPolicyExcludeLocalData completion:^(NSError *error) {
+            XCTAssertNil(error, @"Error leeching second store");
+            [self completeAsync];
+        }];
+    }];
+    [self waitForAsync];
+    
+    // Merge
+    XCTAssertNil([self syncChanges], @"Sync failed");
+
+    // Check results
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"DerivedParent"];
+    NSArray *parents = [context2 executeFetchRequest:fetch error:NULL];
+    XCTAssertEqual(parents.count, 1);
+    
+    parents = [context1 executeFetchRequest:fetch error:NULL];
+    XCTAssertEqual(parents.count, 1);
+    
+    // Add more objects
+    [NSEntityDescription insertNewObjectForEntityForName:@"DerivedParent" inManagedObjectContext:context1];
+    XCTAssertTrue([context1 save:NULL], @"Could not save");
+
+    [NSEntityDescription insertNewObjectForEntityForName:@"DerivedParent" inManagedObjectContext:context2];
+    XCTAssertTrue([context2 save:NULL], @"Could not save");
+    
+    // Merge again
+    XCTAssertNil([self syncChanges], @"Sync failed");
+    
+    parents = [context2 executeFetchRequest:fetch error:NULL];
+    XCTAssertEqual(parents.count, 3);
+    
+    parents = [context1 executeFetchRequest:fetch error:NULL];
+    XCTAssertEqual(parents.count, 3);
+}
+
+- (void)testLeavingBehindDevicesInARebase
+{
+    [self leechStores];
+
+    NSError *error;
+    error = [self syncChangesAndSuppressRebase];
+    XCTAssertNil(error, @"Failed sync because %@", error);
+
+    // Add bob to the first device and make sure it syncs to the second device
+    NSManagedObject *parentOnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];
+    [parentOnDevice1 setValue:@"bob" forKey:@"name"];
+    XCTAssertTrue([context1 save:NULL], @"Could not save");
+    XCTAssertNil([self syncChanges], @"First sync failed");
+
+    // Perform multiple rebases, to ensure device 2 is left behind.
+    [self rebaseEnsemble:ensemble1];
+    [self rebaseEnsemble:ensemble1];
+    [self rebaseEnsemble:ensemble1];
+    [self mergeEnsembleAndSuppressRebase:ensemble2];
+
+    // Add object to left-behind device
+    NSManagedObject *parentOnDevice2 = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context2];
+    [parentOnDevice2 setValue:@"fred" forKey:@"name"];
+    XCTAssertTrue([context2 save:NULL], @"Could not save context2");
+
+    // Sync
+    [self mergeEnsembleAndSuppressRebase:ensemble2];
+
+    // Check that object still exists in context2 after it merges in sync changes from device 1
+    // It will do a full integration, because it is left behind
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Parent"];
+    request.predicate = [NSPredicate predicateWithFormat:@"name == %@", @"fred"];
+    NSArray *objectsInContext2AfterSync = [context2 executeFetchRequest:request error:nil];
+    XCTAssertTrue([objectsInContext2AfterSync count] == 1, @"context2 does not contain the Fred. Object was deleted.");
 }
 
 @end

@@ -18,6 +18,7 @@
 @property (nonatomic, assign, readonly) BOOL verifiesStoreRegistrationInCloud;
 
 @property (nonatomic, copy, readonly) NSString *pathToEventDataRootDirectory;
+@property (nonatomic, copy, readwrite) NSString *pathToEventStoreRootDirectory;
 @property (nonatomic, copy, readonly) NSString *pathToTemporaryDirectory;
 
 @property (nonatomic, strong, readonly) NSManagedObjectContext *managedObjectContext;
@@ -44,8 +45,10 @@
 - (instancetype)initWithEnsembleIdentifier:(NSString *)identifier pathToEventDataRootDirectory:(NSString *)rootDirectory;
 
 - (void)flushWithCompletion:(CDECompletionBlock)completion;
+- (void)dismantle;
 
-- (BOOL)removeEventStore;
+- (void)removeEventStoreWithCompletion:(CDECompletionBlock)completion;
+- (BOOL)removeEventStore:(NSError * __autoreleasing *)error;
 - (BOOL)prepareNewEventStore:(NSError * __autoreleasing *)error;
 
 - (void)registerIncompleteMandatoryEventIdentifier:(NSString *)identifier;

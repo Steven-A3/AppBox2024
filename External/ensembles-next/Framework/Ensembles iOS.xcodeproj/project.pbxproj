@@ -18,17 +18,39 @@
 			name = Documentation;
 			productName = Documentation;
 		};
-		07571F041910E57C008479A9 /* Framework iOS */ = {
+		0719E7011C80357200ADAA44 /* Ensembles Universal Module iOS */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = 07571F051910E57C008479A9 /* Build configuration list for PBXAggregateTarget "Framework iOS" */;
+			buildConfigurationList = 0719E7021C80357200ADAA44 /* Build configuration list for PBXAggregateTarget "Ensembles Universal Module iOS" */;
+			buildPhases = (
+				0719E7051C80357A00ADAA44 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = "Ensembles Universal Module iOS";
+			productName = "Ensembles Universal Module iOS";
+		};
+		072AFF0B1DFE9368009BDDE9 /* Ensembles Universal Module tvOS */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 072AFF0C1DFE9368009BDDE9 /* Build configuration list for PBXAggregateTarget "Ensembles Universal Module tvOS" */;
+			buildPhases = (
+				072AFF0F1DFE9395009BDDE9 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = "Ensembles Universal Module tvOS";
+			productName = "Ensembles Universal Module tvOS";
+		};
+		07571F041910E57C008479A9 /* Static Framework iOS */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 07571F051910E57C008479A9 /* Build configuration list for PBXAggregateTarget "Static Framework iOS" */;
 			buildPhases = (
 				07571F0A1910E5B9008479A9 /* ShellScript */,
 			);
 			dependencies = (
+				077969831C44F11000B25198 /* PBXTargetDependency */,
 				07571F1D1910ECF5008479A9 /* PBXTargetDependency */,
-				07571F091910E596008479A9 /* PBXTargetDependency */,
 			);
-			name = "Framework iOS";
+			name = "Static Framework iOS";
 			productName = "Framework iOS";
 		};
 /* End PBXAggregateTarget section */
@@ -76,6 +98,7 @@
 		070D33C718018AAD0054BA23 /* IntegratorUpdateTestsFixture2.json in Resources */ = {isa = PBXBuildFile; fileRef = 070D33A118018AAD0054BA23 /* IntegratorUpdateTestsFixture2.json */; };
 		070D33C918018B8E0054BA23 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07BF37CE17F185DE00C56F64 /* CoreData.framework */; };
 		070D33D21801A0770054BA23 /* CDEGlobalIdentifierTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 070D33D11801A0770054BA23 /* CDEGlobalIdentifierTests.m */; };
+		0722F8FE1E001C4A00528AFD /* CDEEventStoreModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 072BA97C180AACD9003AA94E /* CDEEventStoreModel.xcdatamodeld */; };
 		072BA980180AAD0E003AA94E /* CDEEventStoreModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 072BA97C180AACD9003AA94E /* CDEEventStoreModel.xcdatamodeld */; };
 		0744FEF619179F5200153100 /* CDEEventMigrator.h in Headers */ = {isa = PBXBuildFile; fileRef = 0744FEEE19179F5200153100 /* CDEEventMigrator.h */; };
 		0744FEF719179F5200153100 /* CDEEventMigrator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0744FEEF19179F5200153100 /* CDEEventMigrator.m */; };
@@ -159,6 +182,110 @@
 		07973EFF183BE40A007F48CA /* CDELocalCloudFileSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 07973EFD183BE40A007F48CA /* CDELocalCloudFileSystem.m */; };
 		07AAD7E01B4B01B300411C44 /* CDERandomSyncTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 07AAD7DF1B4B01B300411C44 /* CDERandomSyncTests.m */; };
 		07ABB5A418B24A6B006FC638 /* CDEDataFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 07ABB5A318B24A6B006FC638 /* CDEDataFile.m */; };
+		07AC05351D6D8D8900AF2337 /* CDEDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF379217F1853000C56F64 /* CDEDefines.m */; };
+		07AC05361D6D8D8900AF2337 /* CDEFoundationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF379417F1853000C56F64 /* CDEFoundationAdditions.m */; };
+		07AC05371D6D8D8900AF2337 /* NSMapTable+CDEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF379717F1853000C56F64 /* NSMapTable+CDEAdditions.m */; };
+		07AC05381D6D8D8900AF2337 /* NSFileCoordinator+CDEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DBC8471A726C480031594C /* NSFileCoordinator+CDEAdditions.m */; };
+		07AC05391D6D8D8900AF2337 /* NSManagedObjectModel+CDEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D2D63A182D6846001D24BC /* NSManagedObjectModel+CDEAdditions.m */; };
+		07AC053A1D6D8D8900AF2337 /* NSManagedObjectContext+CDEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D7E5981912405B0086A2AE /* NSManagedObjectContext+CDEAdditions.m */; };
+		07AC053B1D6D8D8900AF2337 /* NSData+CDEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F3D4631948A55B00B74B5A /* NSData+CDEAdditions.m */; };
+		07AC053C1D6D8D8900AF2337 /* CDEAsynchronousOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 075983801A02420000C410FA /* CDEAsynchronousOperation.m */; };
+		07AC053D1D6D8D8900AF2337 /* CDEAsynchronousTaskQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 075983821A02420000C410FA /* CDEAsynchronousTaskQueue.m */; };
+		07AC053E1D6D8D8900AF2337 /* CDEProcedure.m in Sources */ = {isa = PBXBuildFile; fileRef = 075983841A02420000C410FA /* CDEProcedure.m */; };
+		07AC053F1D6D8D8900AF2337 /* CDEProcedureStep.m in Sources */ = {isa = PBXBuildFile; fileRef = 075983861A02420000C410FA /* CDEProcedureStep.m */; };
+		07AC05401D6D8D8900AF2337 /* CDEICloudFileSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 07973EFB183BE40A007F48CA /* CDEICloudFileSystem.m */; };
+		07AC05411D6D8D8900AF2337 /* CDELocalCloudFileSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 07973EFD183BE40A007F48CA /* CDELocalCloudFileSystem.m */; };
+		07AC05421D6D8D8900AF2337 /* CDEFileDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0701770218C1EC4B00C4DA01 /* CDEFileDownloadOperation.m */; };
+		07AC05431D6D8D8900AF2337 /* CDEFileUploadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0701771418C25F2A00C4DA01 /* CDEFileUploadOperation.m */; };
+		07AC05441D6D8D8900AF2337 /* CDEEventFileSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D7E5941912403A0086A2AE /* CDEEventFileSet.m */; };
+		07AC05451D6D8D8900AF2337 /* CDECloudDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF377017F1853000C56F64 /* CDECloudDirectory.m */; };
+		07AC05461D6D8D8900AF2337 /* CDECloudFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF377217F1853000C56F64 /* CDECloudFile.m */; };
+		07AC05471D6D8D8900AF2337 /* CDECloudManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF377517F1853000C56F64 /* CDECloudManager.m */; };
+		07AC05481D6D8D8900AF2337 /* CDEPersistentStoreEnsemble.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF377E17F1853000C56F64 /* CDEPersistentStoreEnsemble.m */; };
+		07AC05491D6D8D8900AF2337 /* CDEPersistentStoreEnsemble+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 07793DC71936208500873C5C /* CDEPersistentStoreEnsemble+Private.m */; };
+		07AC054A1D6D8DAB00AF2337 /* CDEPersistentStoreImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF378017F1853000C56F64 /* CDEPersistentStoreImporter.m */; };
+		07AC054B1D6D8DAB00AF2337 /* CDEEventStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF378917F1853000C56F64 /* CDEEventStore.m */; };
+		07AC054C1D6D8DAB00AF2337 /* CDEEventBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF378317F1853000C56F64 /* CDEEventBuilder.m */; };
+		07AC054D1D6D8DAB00AF2337 /* CDEPropertyChangeValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF378B17F1853000C56F64 /* CDEPropertyChangeValue.m */; };
+		07AC054E1D6D8DAB00AF2337 /* CDESaveMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF378D17F1853000C56F64 /* CDESaveMonitor.m */; };
+		07AC054F1D6D8DAB00AF2337 /* CDEEventExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 07793DCD193620BC00873C5C /* CDEEventExport.m */; };
+		07AC05501D6D8DAB00AF2337 /* CDEJSONEventExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 07793DD1193620BC00873C5C /* CDEJSONEventExport.m */; };
+		07AC05511D6D8DAB00AF2337 /* CDEPersistentStoreEventExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 07793DD3193620BC00873C5C /* CDEPersistentStoreEventExport.m */; };
+		07AC05521D6D8DAB00AF2337 /* CDEEventImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 07793DCF193620BC00873C5C /* CDEEventImport.m */; };
+		07AC05531D6D8DAB00AF2337 /* CDEPersistentStoreEventImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D1B1B619472BC900C04CBF /* CDEPersistentStoreEventImport.m */; };
+		07AC05541D6D8DAB00AF2337 /* CDEJSONEventImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F3D42A19484C3600B74B5A /* CDEJSONEventImport.m */; };
+		07AC05551D6D8DAB00AF2337 /* CDEEventMigrator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0744FEEF19179F5200153100 /* CDEEventMigrator.m */; };
+		07AC05561D6D8DAB00AF2337 /* CDEObjectGraphMigrator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0744FEF119179F5200153100 /* CDEObjectGraphMigrator.m */; };
+		07AC05571D6D8DAB00AF2337 /* CDEEventIntegrator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0744FEFC19179F6300153100 /* CDEEventIntegrator.m */; };
+		07AC05581D6D8DAB00AF2337 /* CDEIntegrationStage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0744FF0219179F6300153100 /* CDEIntegrationStage.m */; };
+		07AC05591D6D8DAB00AF2337 /* CDEInsertStage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0744FF0019179F6300153100 /* CDEInsertStage.m */; };
+		07AC055A1D6D8DAB00AF2337 /* CDEUpdateStage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0744FF0419179F6300153100 /* CDEUpdateStage.m */; };
+		07AC055B1D6D8DAB00AF2337 /* CDEDeleteStage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0744FEFE19179F6300153100 /* CDEDeleteStage.m */; };
+		07AC055C1D6D8DAB00AF2337 /* CDEEventRevision.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF379A17F1853000C56F64 /* CDEEventRevision.m */; };
+		07AC055D1D6D8DAB00AF2337 /* CDEGlobalIdentifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF379E17F1853000C56F64 /* CDEGlobalIdentifier.m */; };
+		07AC055E1D6D8DAB00AF2337 /* CDEObjectChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF37A017F1853000C56F64 /* CDEObjectChange.m */; };
+		07AC055F1D6D8DAB00AF2337 /* CDEStoreModificationEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF37A217F1853000C56F64 /* CDEStoreModificationEvent.m */; };
+		07AC05601D6D8DAB00AF2337 /* CDEDataFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 07ABB5A318B24A6B006FC638 /* CDEDataFile.m */; };
+		07AC05611D6D8DAB00AF2337 /* CDERevision.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF37A517F1853000C56F64 /* CDERevision.m */; };
+		07AC05621D6D8DAB00AF2337 /* CDERevisionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF37A717F1853000C56F64 /* CDERevisionManager.m */; };
+		07AC05631D6D8DAB00AF2337 /* CDERevisionSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF37A917F1853000C56F64 /* CDERevisionSet.m */; };
+		07AC05641D6D8DAB00AF2337 /* CDEBaselineConsolidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D183FC1892824200E89B89 /* CDEBaselineConsolidator.m */; };
+		07AC05651D6D8DAB00AF2337 /* CDERebaser.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D183FE1892824200E89B89 /* CDERebaser.m */; };
+		07AC05DD1D6DC93300AF2337 /* CDEDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF379117F1853000C56F64 /* CDEDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07AC05DE1D6DC93300AF2337 /* CDEAvailabilityMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 34700E9D188B225700FD00B1 /* CDEAvailabilityMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07AC05DF1D6DC93300AF2337 /* CDEFoundationAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF379317F1853000C56F64 /* CDEFoundationAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07AC05E01D6DC93300AF2337 /* NSMapTable+CDEAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF379617F1853000C56F64 /* NSMapTable+CDEAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07AC05E11D6DC94600AF2337 /* NSFileCoordinator+CDEAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 07DBC8461A726C480031594C /* NSFileCoordinator+CDEAdditions.h */; };
+		07AC05E21D6DC94600AF2337 /* NSManagedObjectModel+CDEAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D2D639182D6846001D24BC /* NSManagedObjectModel+CDEAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07AC05E31D6DC94600AF2337 /* NSManagedObjectContext+CDEAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D7E5971912405B0086A2AE /* NSManagedObjectContext+CDEAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07AC05E41D6DC94600AF2337 /* NSData+CDEAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 07F3D4621948A55B00B74B5A /* NSData+CDEAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07AC05E51D6DC95200AF2337 /* CDEAsynchronousOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0759837F1A02420000C410FA /* CDEAsynchronousOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07AC05E61D6DC95200AF2337 /* CDEAsynchronousTaskQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 075983811A02420000C410FA /* CDEAsynchronousTaskQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07AC05E71D6DC95200AF2337 /* CDEProcedure.h in Headers */ = {isa = PBXBuildFile; fileRef = 075983831A02420000C410FA /* CDEProcedure.h */; };
+		07AC05E81D6DC95200AF2337 /* CDEProcedureStep.h in Headers */ = {isa = PBXBuildFile; fileRef = 075983851A02420000C410FA /* CDEProcedureStep.h */; };
+		07AC05E91D6DC95800AF2337 /* CDEICloudFileSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 07973EFA183BE40A007F48CA /* CDEICloudFileSystem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07AC05EA1D6DC95800AF2337 /* CDELocalCloudFileSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 07973EFC183BE40A007F48CA /* CDELocalCloudFileSystem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07AC05EB1D6DC95800AF2337 /* CDEFileDownloadOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0701770118C1EC4B00C4DA01 /* CDEFileDownloadOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07AC05EC1D6DC95800AF2337 /* CDEFileUploadOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0701771318C25F2A00C4DA01 /* CDEFileUploadOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07AC05ED1D6DC95E00AF2337 /* CDEEventFileSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D7E5931912403A0086A2AE /* CDEEventFileSet.h */; };
+		07AC05EE1D6DC95E00AF2337 /* CDECloudFileSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF377317F1853000C56F64 /* CDECloudFileSystem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07AC05EF1D6DC95E00AF2337 /* CDECloudDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF376F17F1853000C56F64 /* CDECloudDirectory.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07AC05F01D6DC95E00AF2337 /* CDECloudFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF377117F1853000C56F64 /* CDECloudFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07AC05F11D6DC95E00AF2337 /* CDECloudManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF377417F1853000C56F64 /* CDECloudManager.h */; };
+		07AC05F21D6DC95E00AF2337 /* CDECloudItem.h in Headers */ = {isa = PBXBuildFile; fileRef = E9A7A7551BF7835C00ADB6F7 /* CDECloudItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07AC05F31D6DC96600AF2337 /* CDEPersistentStoreEnsemble.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF377D17F1853000C56F64 /* CDEPersistentStoreEnsemble.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07AC05F41D6DC96600AF2337 /* CDEPersistentStoreEnsemble+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 07793DC61936208500873C5C /* CDEPersistentStoreEnsemble+Private.h */; };
+		07AC05F51D6DC96600AF2337 /* CDEPersistentStoreImporter.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF377F17F1853000C56F64 /* CDEPersistentStoreImporter.h */; };
+		07AC05F61D6DC96600AF2337 /* CDEProgression.h in Headers */ = {isa = PBXBuildFile; fileRef = 07793DC81936208500873C5C /* CDEProgression.h */; };
+		07AC05F71D6DC9A700AF2337 /* CDEEventStore.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF378817F1853000C56F64 /* CDEEventStore.h */; };
+		07AC05F81D6DC9A700AF2337 /* CDEEventBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF378217F1853000C56F64 /* CDEEventBuilder.h */; };
+		07AC05F91D6DC9A700AF2337 /* CDEPropertyChangeValue.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF378A17F1853000C56F64 /* CDEPropertyChangeValue.h */; };
+		07AC05FA1D6DC9A700AF2337 /* CDESaveMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF378C17F1853000C56F64 /* CDESaveMonitor.h */; };
+		07AC05FB1D6DC9B300AF2337 /* CDEEventExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 07793DCC193620BC00873C5C /* CDEEventExport.h */; };
+		07AC05FC1D6DC9B300AF2337 /* CDEJSONEventExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 07793DD0193620BC00873C5C /* CDEJSONEventExport.h */; };
+		07AC05FD1D6DC9B300AF2337 /* CDEPersistentStoreEventExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 07793DD2193620BC00873C5C /* CDEPersistentStoreEventExport.h */; };
+		07AC05FE1D6DC9B300AF2337 /* CDEEventImport.h in Headers */ = {isa = PBXBuildFile; fileRef = 07793DCE193620BC00873C5C /* CDEEventImport.h */; };
+		07AC05FF1D6DC9B300AF2337 /* CDEPersistentStoreEventImport.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D1B1B519472BC900C04CBF /* CDEPersistentStoreEventImport.h */; };
+		07AC06001D6DC9B300AF2337 /* CDEJSONEventImport.h in Headers */ = {isa = PBXBuildFile; fileRef = 07F3D42919484C3600B74B5A /* CDEJSONEventImport.h */; };
+		07AC06011D6DC9B300AF2337 /* CDEEventMigrator.h in Headers */ = {isa = PBXBuildFile; fileRef = 0744FEEE19179F5200153100 /* CDEEventMigrator.h */; };
+		07AC06021D6DC9B300AF2337 /* CDEObjectGraphMigrator.h in Headers */ = {isa = PBXBuildFile; fileRef = 0744FEF019179F5200153100 /* CDEObjectGraphMigrator.h */; };
+		07AC06031D6DC9BB00AF2337 /* CDEEventIntegrator.h in Headers */ = {isa = PBXBuildFile; fileRef = 0744FEFB19179F6300153100 /* CDEEventIntegrator.h */; };
+		07AC06041D6DC9BB00AF2337 /* CDEIntegrationStage.h in Headers */ = {isa = PBXBuildFile; fileRef = 0744FF0119179F6300153100 /* CDEIntegrationStage.h */; };
+		07AC06051D6DC9BB00AF2337 /* CDEInsertStage.h in Headers */ = {isa = PBXBuildFile; fileRef = 0744FEFF19179F6300153100 /* CDEInsertStage.h */; };
+		07AC06061D6DC9BB00AF2337 /* CDEUpdateStage.h in Headers */ = {isa = PBXBuildFile; fileRef = 0744FF0319179F6300153100 /* CDEUpdateStage.h */; };
+		07AC06071D6DC9BB00AF2337 /* CDEDeleteStage.h in Headers */ = {isa = PBXBuildFile; fileRef = 0744FEFD19179F6300153100 /* CDEDeleteStage.h */; };
+		07AC06081D6DC9C100AF2337 /* CDEEventRevision.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF379917F1853000C56F64 /* CDEEventRevision.h */; };
+		07AC06091D6DC9C100AF2337 /* CDEGlobalIdentifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF379D17F1853000C56F64 /* CDEGlobalIdentifier.h */; };
+		07AC060A1D6DC9C100AF2337 /* CDEObjectChange.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF379F17F1853000C56F64 /* CDEObjectChange.h */; };
+		07AC060B1D6DC9C100AF2337 /* CDEStoreModificationEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF37A117F1853000C56F64 /* CDEStoreModificationEvent.h */; };
+		07AC060C1D6DC9C100AF2337 /* CDEDataFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 07ABB5A218B24A6B006FC638 /* CDEDataFile.h */; };
+		07AC060D1D6DC9C600AF2337 /* CDERevision.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF37A417F1853000C56F64 /* CDERevision.h */; };
+		07AC060E1D6DC9C600AF2337 /* CDERevisionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF37A617F1853000C56F64 /* CDERevisionManager.h */; };
+		07AC060F1D6DC9C600AF2337 /* CDERevisionSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF37A817F1853000C56F64 /* CDERevisionSet.h */; };
+		07AC06101D6DC9CB00AF2337 /* CDEBaselineConsolidator.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D183FB1892824200E89B89 /* CDEBaselineConsolidator.h */; };
+		07AC06111D6DC9F300AF2337 /* Ensembles.h in Headers */ = {isa = PBXBuildFile; fileRef = 07571EDE1910DFB9008479A9 /* Ensembles.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07B6CADA1BADAB2900FAFB29 /* CDEActivityNotificationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B6CAD81BADA87B00FAFB29 /* CDEActivityNotificationTests.m */; };
+		07B9ABF31C731AF8008E564A /* Ensembles.h in Headers */ = {isa = PBXBuildFile; fileRef = 07571EDE1910DFB9008479A9 /* Ensembles.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		07BF374917F184DD00C56F64 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07BF374817F184DD00C56F64 /* Foundation.framework */; };
 		07BF37AA17F1853000C56F64 /* CDECloudDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF377017F1853000C56F64 /* CDECloudDirectory.m */; };
 		07BF37AB17F1853000C56F64 /* CDECloudFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF377217F1853000C56F64 /* CDECloudFile.m */; };
@@ -201,19 +328,121 @@
 		07F001BE18427645001A0504 /* IntegratorMergeTestsFixture.json in Resources */ = {isa = PBXBuildFile; fileRef = 07F001BD18427645001A0504 /* IntegratorMergeTestsFixture.json */; };
 		07F3D42B19484C3600B74B5A /* CDEJSONEventImport.h in Headers */ = {isa = PBXBuildFile; fileRef = 07F3D42919484C3600B74B5A /* CDEJSONEventImport.h */; };
 		07F3D42C19484C3600B74B5A /* CDEJSONEventImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F3D42A19484C3600B74B5A /* CDEJSONEventImport.m */; };
-		07F3D4641948A55B00B74B5A /* NSData+CDEAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 07F3D4621948A55B00B74B5A /* NSData+CDEAdditions.h */; };
+		07F3D4641948A55B00B74B5A /* NSData+CDEAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 07F3D4621948A55B00B74B5A /* NSData+CDEAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		07F3D4651948A55B00B74B5A /* NSData+CDEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F3D4631948A55B00B74B5A /* NSData+CDEAdditions.m */; };
+		E9A7A7561BF7837100ADB6F7 /* CDECloudItem.h in Headers */ = {isa = PBXBuildFile; fileRef = E9A7A7551BF7835C00ADB6F7 /* CDECloudItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E9D630291BFEB37800B60D60 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 07571F151910EC02008479A9 /* InfoPlist.strings */; };
+		E9D6302A1BFEB39700B60D60 /* CDEEventStoreModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 072BA97C180AACD9003AA94E /* CDEEventStoreModel.xcdatamodeld */; };
+		E9D6302B1BFEB3C400B60D60 /* CDEDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF379117F1853000C56F64 /* CDEDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E9D6302C1BFEB3C400B60D60 /* CDEDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF379217F1853000C56F64 /* CDEDefines.m */; };
+		E9D6302D1BFEB3C400B60D60 /* CDEAvailabilityMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 34700E9D188B225700FD00B1 /* CDEAvailabilityMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E9D6302E1BFEB3C400B60D60 /* CDEFoundationAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF379317F1853000C56F64 /* CDEFoundationAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E9D6302F1BFEB3C400B60D60 /* CDEFoundationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF379417F1853000C56F64 /* CDEFoundationAdditions.m */; };
+		E9D630301BFEB3C400B60D60 /* NSMapTable+CDEAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF379617F1853000C56F64 /* NSMapTable+CDEAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E9D630311BFEB3C400B60D60 /* NSMapTable+CDEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF379717F1853000C56F64 /* NSMapTable+CDEAdditions.m */; };
+		E9D630321BFEB3C400B60D60 /* NSFileCoordinator+CDEAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 07DBC8461A726C480031594C /* NSFileCoordinator+CDEAdditions.h */; };
+		E9D630331BFEB3C400B60D60 /* NSFileCoordinator+CDEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DBC8471A726C480031594C /* NSFileCoordinator+CDEAdditions.m */; };
+		E9D630341BFEB3C400B60D60 /* NSManagedObjectModel+CDEAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D2D639182D6846001D24BC /* NSManagedObjectModel+CDEAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E9D630351BFEB3C400B60D60 /* NSManagedObjectModel+CDEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D2D63A182D6846001D24BC /* NSManagedObjectModel+CDEAdditions.m */; };
+		E9D630361BFEB3C400B60D60 /* NSManagedObjectContext+CDEAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D7E5971912405B0086A2AE /* NSManagedObjectContext+CDEAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E9D630371BFEB3C400B60D60 /* NSManagedObjectContext+CDEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D7E5981912405B0086A2AE /* NSManagedObjectContext+CDEAdditions.m */; };
+		E9D630381BFEB3C400B60D60 /* NSData+CDEAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 07F3D4621948A55B00B74B5A /* NSData+CDEAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E9D630391BFEB3C400B60D60 /* NSData+CDEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F3D4631948A55B00B74B5A /* NSData+CDEAdditions.m */; };
+		E9D6303A1BFEB3CE00B60D60 /* CDEAsynchronousOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0759837F1A02420000C410FA /* CDEAsynchronousOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E9D6303B1BFEB3CE00B60D60 /* CDEAsynchronousOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 075983801A02420000C410FA /* CDEAsynchronousOperation.m */; };
+		E9D6303C1BFEB3CE00B60D60 /* CDEAsynchronousTaskQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 075983811A02420000C410FA /* CDEAsynchronousTaskQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E9D6303D1BFEB3CE00B60D60 /* CDEAsynchronousTaskQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 075983821A02420000C410FA /* CDEAsynchronousTaskQueue.m */; };
+		E9D6303E1BFEB3CE00B60D60 /* CDEProcedure.h in Headers */ = {isa = PBXBuildFile; fileRef = 075983831A02420000C410FA /* CDEProcedure.h */; };
+		E9D6303F1BFEB3CE00B60D60 /* CDEProcedure.m in Sources */ = {isa = PBXBuildFile; fileRef = 075983841A02420000C410FA /* CDEProcedure.m */; };
+		E9D630401BFEB3CE00B60D60 /* CDEProcedureStep.h in Headers */ = {isa = PBXBuildFile; fileRef = 075983851A02420000C410FA /* CDEProcedureStep.h */; };
+		E9D630411BFEB3CE00B60D60 /* CDEProcedureStep.m in Sources */ = {isa = PBXBuildFile; fileRef = 075983861A02420000C410FA /* CDEProcedureStep.m */; };
+		E9D630421BFEB3D800B60D60 /* CDEICloudFileSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 07973EFA183BE40A007F48CA /* CDEICloudFileSystem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E9D630431BFEB3D800B60D60 /* CDEICloudFileSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 07973EFB183BE40A007F48CA /* CDEICloudFileSystem.m */; };
+		E9D630441BFEB3D800B60D60 /* CDELocalCloudFileSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 07973EFC183BE40A007F48CA /* CDELocalCloudFileSystem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E9D630451BFEB3D800B60D60 /* CDELocalCloudFileSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 07973EFD183BE40A007F48CA /* CDELocalCloudFileSystem.m */; };
+		E9D630461BFEB3D800B60D60 /* CDEFileDownloadOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0701770118C1EC4B00C4DA01 /* CDEFileDownloadOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E9D630471BFEB3D800B60D60 /* CDEFileDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0701770218C1EC4B00C4DA01 /* CDEFileDownloadOperation.m */; };
+		E9D630481BFEB3D800B60D60 /* CDEFileUploadOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0701771318C25F2A00C4DA01 /* CDEFileUploadOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E9D630491BFEB3D800B60D60 /* CDEFileUploadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0701771418C25F2A00C4DA01 /* CDEFileUploadOperation.m */; };
+		E9D6304A1BFEB3E100B60D60 /* CDEEventFileSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D7E5931912403A0086A2AE /* CDEEventFileSet.h */; };
+		E9D6304B1BFEB3E100B60D60 /* CDEEventFileSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D7E5941912403A0086A2AE /* CDEEventFileSet.m */; };
+		E9D6304C1BFEB3E100B60D60 /* CDECloudFileSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF377317F1853000C56F64 /* CDECloudFileSystem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E9D6304D1BFEB3E100B60D60 /* CDECloudDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF376F17F1853000C56F64 /* CDECloudDirectory.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E9D6304E1BFEB3E100B60D60 /* CDECloudDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF377017F1853000C56F64 /* CDECloudDirectory.m */; };
+		E9D6304F1BFEB3E100B60D60 /* CDECloudFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF377117F1853000C56F64 /* CDECloudFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E9D630501BFEB3E100B60D60 /* CDECloudFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF377217F1853000C56F64 /* CDECloudFile.m */; };
+		E9D630511BFEB3E100B60D60 /* CDECloudManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF377417F1853000C56F64 /* CDECloudManager.h */; };
+		E9D630521BFEB3E100B60D60 /* CDECloudManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF377517F1853000C56F64 /* CDECloudManager.m */; };
+		E9D630531BFEB3E100B60D60 /* CDECloudItem.h in Headers */ = {isa = PBXBuildFile; fileRef = E9A7A7551BF7835C00ADB6F7 /* CDECloudItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E9D630541BFEB3E800B60D60 /* CDEPersistentStoreEnsemble.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF377D17F1853000C56F64 /* CDEPersistentStoreEnsemble.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E9D630551BFEB3E800B60D60 /* CDEPersistentStoreEnsemble.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF377E17F1853000C56F64 /* CDEPersistentStoreEnsemble.m */; };
+		E9D630561BFEB3E800B60D60 /* CDEPersistentStoreEnsemble+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 07793DC61936208500873C5C /* CDEPersistentStoreEnsemble+Private.h */; };
+		E9D630571BFEB3E800B60D60 /* CDEPersistentStoreEnsemble+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 07793DC71936208500873C5C /* CDEPersistentStoreEnsemble+Private.m */; };
+		E9D630581BFEB3E800B60D60 /* CDEPersistentStoreImporter.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF377F17F1853000C56F64 /* CDEPersistentStoreImporter.h */; };
+		E9D630591BFEB3E800B60D60 /* CDEPersistentStoreImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF378017F1853000C56F64 /* CDEPersistentStoreImporter.m */; };
+		E9D6305A1BFEB3E800B60D60 /* CDEProgression.h in Headers */ = {isa = PBXBuildFile; fileRef = 07793DC81936208500873C5C /* CDEProgression.h */; };
+		E9D6305B1BFEB3EE00B60D60 /* CDEEventStore.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF378817F1853000C56F64 /* CDEEventStore.h */; };
+		E9D6305C1BFEB3EE00B60D60 /* CDEEventStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF378917F1853000C56F64 /* CDEEventStore.m */; };
+		E9D6305D1BFEB3EE00B60D60 /* CDEEventBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF378217F1853000C56F64 /* CDEEventBuilder.h */; };
+		E9D6305E1BFEB3EE00B60D60 /* CDEEventBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF378317F1853000C56F64 /* CDEEventBuilder.m */; };
+		E9D6305F1BFEB3EE00B60D60 /* CDEPropertyChangeValue.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF378A17F1853000C56F64 /* CDEPropertyChangeValue.h */; };
+		E9D630601BFEB3EE00B60D60 /* CDEPropertyChangeValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF378B17F1853000C56F64 /* CDEPropertyChangeValue.m */; };
+		E9D630611BFEB3EE00B60D60 /* CDESaveMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF378C17F1853000C56F64 /* CDESaveMonitor.h */; };
+		E9D630621BFEB3EE00B60D60 /* CDESaveMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF378D17F1853000C56F64 /* CDESaveMonitor.m */; };
+		E9D630631BFEB3F400B60D60 /* CDEEventExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 07793DCC193620BC00873C5C /* CDEEventExport.h */; };
+		E9D630641BFEB3F400B60D60 /* CDEEventExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 07793DCD193620BC00873C5C /* CDEEventExport.m */; };
+		E9D630651BFEB3F400B60D60 /* CDEJSONEventExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 07793DD0193620BC00873C5C /* CDEJSONEventExport.h */; };
+		E9D630661BFEB3F400B60D60 /* CDEJSONEventExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 07793DD1193620BC00873C5C /* CDEJSONEventExport.m */; };
+		E9D630671BFEB3F400B60D60 /* CDEPersistentStoreEventExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 07793DD2193620BC00873C5C /* CDEPersistentStoreEventExport.h */; };
+		E9D630681BFEB3F400B60D60 /* CDEPersistentStoreEventExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 07793DD3193620BC00873C5C /* CDEPersistentStoreEventExport.m */; };
+		E9D630691BFEB3F400B60D60 /* CDEEventImport.h in Headers */ = {isa = PBXBuildFile; fileRef = 07793DCE193620BC00873C5C /* CDEEventImport.h */; };
+		E9D6306A1BFEB3F400B60D60 /* CDEEventImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 07793DCF193620BC00873C5C /* CDEEventImport.m */; };
+		E9D6306B1BFEB3F400B60D60 /* CDEPersistentStoreEventImport.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D1B1B519472BC900C04CBF /* CDEPersistentStoreEventImport.h */; };
+		E9D6306C1BFEB3F400B60D60 /* CDEPersistentStoreEventImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D1B1B619472BC900C04CBF /* CDEPersistentStoreEventImport.m */; };
+		E9D6306D1BFEB3F400B60D60 /* CDEJSONEventImport.h in Headers */ = {isa = PBXBuildFile; fileRef = 07F3D42919484C3600B74B5A /* CDEJSONEventImport.h */; };
+		E9D6306E1BFEB3F400B60D60 /* CDEJSONEventImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F3D42A19484C3600B74B5A /* CDEJSONEventImport.m */; };
+		E9D6306F1BFEB3F400B60D60 /* CDEEventMigrator.h in Headers */ = {isa = PBXBuildFile; fileRef = 0744FEEE19179F5200153100 /* CDEEventMigrator.h */; };
+		E9D630701BFEB3F400B60D60 /* CDEEventMigrator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0744FEEF19179F5200153100 /* CDEEventMigrator.m */; };
+		E9D630711BFEB3F400B60D60 /* CDEObjectGraphMigrator.h in Headers */ = {isa = PBXBuildFile; fileRef = 0744FEF019179F5200153100 /* CDEObjectGraphMigrator.h */; };
+		E9D630721BFEB3F400B60D60 /* CDEObjectGraphMigrator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0744FEF119179F5200153100 /* CDEObjectGraphMigrator.m */; };
+		E9D630731BFEB3FA00B60D60 /* CDEEventIntegrator.h in Headers */ = {isa = PBXBuildFile; fileRef = 0744FEFB19179F6300153100 /* CDEEventIntegrator.h */; };
+		E9D630741BFEB3FA00B60D60 /* CDEEventIntegrator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0744FEFC19179F6300153100 /* CDEEventIntegrator.m */; };
+		E9D630751BFEB3FA00B60D60 /* CDEIntegrationStage.h in Headers */ = {isa = PBXBuildFile; fileRef = 0744FF0119179F6300153100 /* CDEIntegrationStage.h */; };
+		E9D630761BFEB3FA00B60D60 /* CDEIntegrationStage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0744FF0219179F6300153100 /* CDEIntegrationStage.m */; };
+		E9D630771BFEB3FA00B60D60 /* CDEInsertStage.h in Headers */ = {isa = PBXBuildFile; fileRef = 0744FEFF19179F6300153100 /* CDEInsertStage.h */; };
+		E9D630781BFEB3FA00B60D60 /* CDEInsertStage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0744FF0019179F6300153100 /* CDEInsertStage.m */; };
+		E9D630791BFEB3FA00B60D60 /* CDEUpdateStage.h in Headers */ = {isa = PBXBuildFile; fileRef = 0744FF0319179F6300153100 /* CDEUpdateStage.h */; };
+		E9D6307A1BFEB3FA00B60D60 /* CDEUpdateStage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0744FF0419179F6300153100 /* CDEUpdateStage.m */; };
+		E9D6307B1BFEB3FA00B60D60 /* CDEDeleteStage.h in Headers */ = {isa = PBXBuildFile; fileRef = 0744FEFD19179F6300153100 /* CDEDeleteStage.h */; };
+		E9D6307C1BFEB3FA00B60D60 /* CDEDeleteStage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0744FEFE19179F6300153100 /* CDEDeleteStage.m */; };
+		E9D6307D1BFEB40100B60D60 /* CDERevision.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF37A417F1853000C56F64 /* CDERevision.h */; };
+		E9D6307E1BFEB40100B60D60 /* CDERevision.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF37A517F1853000C56F64 /* CDERevision.m */; };
+		E9D6307F1BFEB40100B60D60 /* CDERevisionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF37A617F1853000C56F64 /* CDERevisionManager.h */; };
+		E9D630801BFEB40100B60D60 /* CDERevisionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF37A717F1853000C56F64 /* CDERevisionManager.m */; };
+		E9D630811BFEB40100B60D60 /* CDERevisionSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF37A817F1853000C56F64 /* CDERevisionSet.h */; };
+		E9D630821BFEB40100B60D60 /* CDERevisionSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF37A917F1853000C56F64 /* CDERevisionSet.m */; };
+		E9D630831BFEB40800B60D60 /* CDEBaselineConsolidator.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D183FB1892824200E89B89 /* CDEBaselineConsolidator.h */; };
+		E9D630841BFEB40800B60D60 /* CDEBaselineConsolidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D183FC1892824200E89B89 /* CDEBaselineConsolidator.m */; };
+		E9D630851BFEB40800B60D60 /* CDERebaser.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D183FD1892824200E89B89 /* CDERebaser.h */; };
+		E9D630861BFEB40800B60D60 /* CDERebaser.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D183FE1892824200E89B89 /* CDERebaser.m */; };
+		E9D630871BFEB42500B60D60 /* CDEEventRevision.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF379917F1853000C56F64 /* CDEEventRevision.h */; };
+		E9D630881BFEB42500B60D60 /* CDEEventRevision.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF379A17F1853000C56F64 /* CDEEventRevision.m */; };
+		E9D630891BFEB42500B60D60 /* CDEGlobalIdentifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF379D17F1853000C56F64 /* CDEGlobalIdentifier.h */; };
+		E9D6308A1BFEB42500B60D60 /* CDEGlobalIdentifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF379E17F1853000C56F64 /* CDEGlobalIdentifier.m */; };
+		E9D6308B1BFEB42500B60D60 /* CDEObjectChange.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF379F17F1853000C56F64 /* CDEObjectChange.h */; };
+		E9D6308C1BFEB42500B60D60 /* CDEObjectChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF37A017F1853000C56F64 /* CDEObjectChange.m */; };
+		E9D6308D1BFEB42500B60D60 /* CDEStoreModificationEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BF37A117F1853000C56F64 /* CDEStoreModificationEvent.h */; };
+		E9D6308E1BFEB42500B60D60 /* CDEStoreModificationEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BF37A217F1853000C56F64 /* CDEStoreModificationEvent.m */; };
+		E9D6308F1BFEB42500B60D60 /* CDEDataFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 07ABB5A218B24A6B006FC638 /* CDEDataFile.h */; };
+		E9D630901BFEB42500B60D60 /* CDEDataFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 07ABB5A318B24A6B006FC638 /* CDEDataFile.m */; };
+		E9D630911BFEB43F00B60D60 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07BF37CE17F185DE00C56F64 /* CoreData.framework */; };
+		E9D630921BFEB44500B60D60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07C002351809662E0077E204 /* Security.framework */; };
+		E9D630931BFEB44E00B60D60 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07BF374817F184DD00C56F64 /* Foundation.framework */; };
+		E9D630941BFEB45300B60D60 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 075B3FB218096C720089D4D3 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		070D337018018A960054BA23 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 07BF373D17F184DD00C56F64 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 07BF374417F184DD00C56F64;
-			remoteInfo = "Ensembles iOS";
-		};
-		07571F081910E596008479A9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 07BF373D17F184DD00C56F64 /* Project object */;
 			proxyType = 1;
@@ -226,6 +455,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 07571F0E1910EC02008479A9;
 			remoteInfo = "Ensembles Resources iOS";
+		};
+		0758BAB71D984CE8001857FF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 07BF373D17F184DD00C56F64 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 07571F0E1910EC02008479A9;
+			remoteInfo = "Ensembles Resources";
+		};
+		077969821C44F11000B25198 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 07BF373D17F184DD00C56F64 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 07BF374417F184DD00C56F64;
+			remoteInfo = "Ensembles iOS";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -350,6 +593,9 @@
 		07ABB5A118B245CF006FC638 /* CDEEventStoreModel_2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CDEEventStoreModel_2.xcdatamodel; sourceTree = "<group>"; };
 		07ABB5A218B24A6B006FC638 /* CDEDataFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEDataFile.h; sourceTree = "<group>"; };
 		07ABB5A318B24A6B006FC638 /* CDEDataFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEDataFile.m; sourceTree = "<group>"; };
+		07AC052D1D6D8D0E00AF2337 /* Ensembles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Ensembles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		07AC05311D6D8D0E00AF2337 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		07B6CAD81BADA87B00FAFB29 /* CDEActivityNotificationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEActivityNotificationTests.m; sourceTree = "<group>"; };
 		07BF374517F184DD00C56F64 /* libensembles.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libensembles.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		07BF374817F184DD00C56F64 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		07BF376F17F1853000C56F64 /* CDECloudDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDECloudDirectory.h; sourceTree = "<group>"; };
@@ -405,6 +651,8 @@
 		07D2D639182D6846001D24BC /* NSManagedObjectModel+CDEAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectModel+CDEAdditions.h"; sourceTree = "<group>"; };
 		07D2D63A182D6846001D24BC /* NSManagedObjectModel+CDEAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectModel+CDEAdditions.m"; sourceTree = "<group>"; };
 		07D2D63F182D6887001D24BC /* CDEManagedObjectModelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEManagedObjectModelTests.m; sourceTree = "<group>"; };
+		07D6F9E61CB971D60065339F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		07D6F9E91CB971F60065339F /* LICENCE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = LICENCE.md; path = ../LICENCE.md; sourceTree = "<group>"; };
 		07D7E58B19123FE00086A2AE /* CDEEventFileSetTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEEventFileSetTests.m; sourceTree = "<group>"; };
 		07D7E58C19123FE00086A2AE /* CDEEventMigratorMultipleFileTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEEventMigratorMultipleFileTests.m; sourceTree = "<group>"; };
 		07D7E5931912403A0086A2AE /* CDEEventFileSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEEventFileSet.h; sourceTree = "<group>"; };
@@ -413,12 +661,17 @@
 		07D7E5981912405B0086A2AE /* NSManagedObjectContext+CDEAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+CDEAdditions.m"; sourceTree = "<group>"; };
 		07DBC8461A726C480031594C /* NSFileCoordinator+CDEAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileCoordinator+CDEAdditions.h"; sourceTree = "<group>"; };
 		07DBC8471A726C480031594C /* NSFileCoordinator+CDEAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileCoordinator+CDEAdditions.m"; sourceTree = "<group>"; };
+		07E4C4F71B943F78000DDBE3 /* RELEASENOTES.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = RELEASENOTES.md; path = ../RELEASENOTES.md; sourceTree = "<group>"; };
 		07F001BD18427645001A0504 /* IntegratorMergeTestsFixture.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = IntegratorMergeTestsFixture.json; sourceTree = "<group>"; };
 		07F3D42919484C3600B74B5A /* CDEJSONEventImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEJSONEventImport.h; sourceTree = "<group>"; };
 		07F3D42A19484C3600B74B5A /* CDEJSONEventImport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDEJSONEventImport.m; sourceTree = "<group>"; };
 		07F3D4621948A55B00B74B5A /* NSData+CDEAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+CDEAdditions.h"; sourceTree = "<group>"; };
 		07F3D4631948A55B00B74B5A /* NSData+CDEAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+CDEAdditions.m"; sourceTree = "<group>"; };
 		34700E9D188B225700FD00B1 /* CDEAvailabilityMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDEAvailabilityMacros.h; sourceTree = "<group>"; };
+		E9A7A7551BF7835C00ADB6F7 /* CDECloudItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CDECloudItem.h; sourceTree = "<group>"; };
+		E9D6301A1BFEB26300B60D60 /* Ensembles.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Ensembles.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9D630221BFEB29700B60D60 /* Ensembles.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; name = Ensembles.modulemap; path = Source/General/Ensembles.modulemap; sourceTree = SOURCE_ROOT; };
+		E9D630231BFEB2B000B60D60 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Supporting Files/Info.plist"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -444,6 +697,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		07AC05291D6D8D0E00AF2337 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		07BF374217F184DD00C56F64 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -452,6 +712,17 @@
 				07C002361809662E0077E204 /* Security.framework in Frameworks */,
 				07BF37CF17F185DE00C56F64 /* CoreData.framework in Frameworks */,
 				07BF374917F184DD00C56F64 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E9D630161BFEB26300B60D60 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E9D630941BFEB45300B60D60 /* QuartzCore.framework in Frameworks */,
+				E9D630931BFEB44E00B60D60 /* Foundation.framework in Frameworks */,
+				E9D630921BFEB44500B60D60 /* Security.framework in Frameworks */,
+				E9D630911BFEB43F00B60D60 /* CoreData.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -510,9 +781,10 @@
 		070D33CC18018BF80054BA23 /* Unit Tests */ = {
 			isa = PBXGroup;
 			children = (
+				075FDCE3183628F90020E1C9 /* CDEStoreModificationEventTestsModel.xcdatamodeld */,
+				07B6CAD81BADA87B00FAFB29 /* CDEActivityNotificationTests.m */,
 				07D183F61892822200E89B89 /* CDEBaselineConsolidatorTests.m */,
 				07D183F71892822200E89B89 /* CDERebaserTests.m */,
-				075FDCE3183628F90020E1C9 /* CDEStoreModificationEventTestsModel.xcdatamodeld */,
 				070D337618018AAD0054BA23 /* CDEBasicIntegratorRelationshipTests.m */,
 				070D337718018AAD0054BA23 /* CDECloudManagerTests.m */,
 				070D337818018AAD0054BA23 /* CDERevisionSetTests.m */,
@@ -640,11 +912,24 @@
 			path = Source/Asynchronicity;
 			sourceTree = SOURCE_ROOT;
 		};
+		07AC052E1D6D8D0E00AF2337 /* Ensembles tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				07AC05311D6D8D0E00AF2337 /* Info.plist */,
+			);
+			path = "Ensembles tvOS";
+			sourceTree = "<group>";
+		};
 		07BF373C17F184DD00C56F64 = {
 			isa = PBXGroup;
 			children = (
+				07D6F9E91CB971F60065339F /* LICENCE.md */,
+				07D6F9E61CB971D60065339F /* README.md */,
+				07E4C4F71B943F78000DDBE3 /* RELEASENOTES.md */,
 				07BF374A17F184DD00C56F64 /* Source */,
 				07571F121910EC02008479A9 /* Ensembles Resources iOS */,
+				E9D6301B1BFEB26300B60D60 /* Ensembles iOS Module */,
+				07AC052E1D6D8D0E00AF2337 /* Ensembles tvOS */,
 				07BF374717F184DD00C56F64 /* Frameworks */,
 				07BF374617F184DD00C56F64 /* Products */,
 				070D337518018AAD0054BA23 /* Tests */,
@@ -657,6 +942,8 @@
 				07BF374517F184DD00C56F64 /* libensembles.a */,
 				070D336118018A960054BA23 /* Tests iOS.xctest */,
 				07571F0F1910EC02008479A9 /* Ensembles.bundle */,
+				E9D6301A1BFEB26300B60D60 /* Ensembles.framework */,
+				07AC052D1D6D8D0E00AF2337 /* Ensembles.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -678,6 +965,7 @@
 		07BF374A17F184DD00C56F64 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				E9D630221BFEB29700B60D60 /* Ensembles.modulemap */,
 				07571EDE1910DFB9008479A9 /* Ensembles.h */,
 				07BF378E17F1853000C56F64 /* General */,
 				0759837E1A02420000C410FA /* Asynchronicity */,
@@ -707,6 +995,7 @@
 				07BF377217F1853000C56F64 /* CDECloudFile.m */,
 				07BF377417F1853000C56F64 /* CDECloudManager.h */,
 				07BF377517F1853000C56F64 /* CDECloudManager.m */,
+				E9A7A7551BF7835C00ADB6F7 /* CDECloudItem.h */,
 			);
 			name = "Cloud Management";
 			path = Source/Cloud;
@@ -826,6 +1115,14 @@
 			path = Source/Baselines;
 			sourceTree = SOURCE_ROOT;
 		};
+		E9D6301B1BFEB26300B60D60 /* Ensembles iOS Module */ = {
+			isa = PBXGroup;
+			children = (
+				E9D630231BFEB2B000B60D60 /* Info.plist */,
+			);
+			path = "Ensembles iOS Module";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -861,6 +1158,7 @@
 				07793DD8193620BC00873C5C /* CDEJSONEventExport.h in Headers */,
 				0759838D1A02420000C410FA /* CDEProcedureStep.h in Headers */,
 				07571EF21910E171008479A9 /* CDEPersistentStoreImporter.h in Headers */,
+				E9A7A7561BF7837100ADB6F7 /* CDECloudItem.h in Headers */,
 				07571EF31910E171008479A9 /* CDEEventStore.h in Headers */,
 				07793DD4193620BC00873C5C /* CDEEventExport.h in Headers */,
 				07793DD6193620BC00873C5C /* CDEEventImport.h in Headers */,
@@ -886,6 +1184,127 @@
 				07571F001910E171008479A9 /* CDERevisionSet.h in Headers */,
 				07571F011910E171008479A9 /* CDEBaselineConsolidator.h in Headers */,
 				07571F021910E171008479A9 /* CDERebaser.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		07AC052A1D6D8D0E00AF2337 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07AC05DF1D6DC93300AF2337 /* CDEFoundationAdditions.h in Headers */,
+				07AC05FD1D6DC9B300AF2337 /* CDEPersistentStoreEventExport.h in Headers */,
+				07AC060B1D6DC9C100AF2337 /* CDEStoreModificationEvent.h in Headers */,
+				07AC05EC1D6DC95800AF2337 /* CDEFileUploadOperation.h in Headers */,
+				07AC05F91D6DC9A700AF2337 /* CDEPropertyChangeValue.h in Headers */,
+				07AC05FC1D6DC9B300AF2337 /* CDEJSONEventExport.h in Headers */,
+				07AC05E41D6DC94600AF2337 /* NSData+CDEAdditions.h in Headers */,
+				07AC05E61D6DC95200AF2337 /* CDEAsynchronousTaskQueue.h in Headers */,
+				07AC06101D6DC9CB00AF2337 /* CDEBaselineConsolidator.h in Headers */,
+				07AC05E21D6DC94600AF2337 /* NSManagedObjectModel+CDEAdditions.h in Headers */,
+				07AC05F11D6DC95E00AF2337 /* CDECloudManager.h in Headers */,
+				07AC05EF1D6DC95E00AF2337 /* CDECloudDirectory.h in Headers */,
+				07AC05F31D6DC96600AF2337 /* CDEPersistentStoreEnsemble.h in Headers */,
+				07AC05ED1D6DC95E00AF2337 /* CDEEventFileSet.h in Headers */,
+				07AC05FE1D6DC9B300AF2337 /* CDEEventImport.h in Headers */,
+				07AC060E1D6DC9C600AF2337 /* CDERevisionManager.h in Headers */,
+				07AC05DE1D6DC93300AF2337 /* CDEAvailabilityMacros.h in Headers */,
+				07AC05EE1D6DC95E00AF2337 /* CDECloudFileSystem.h in Headers */,
+				07AC060F1D6DC9C600AF2337 /* CDERevisionSet.h in Headers */,
+				07AC06081D6DC9C100AF2337 /* CDEEventRevision.h in Headers */,
+				07AC06001D6DC9B300AF2337 /* CDEJSONEventImport.h in Headers */,
+				07AC05F41D6DC96600AF2337 /* CDEPersistentStoreEnsemble+Private.h in Headers */,
+				07AC05F71D6DC9A700AF2337 /* CDEEventStore.h in Headers */,
+				07AC05F01D6DC95E00AF2337 /* CDECloudFile.h in Headers */,
+				07AC06051D6DC9BB00AF2337 /* CDEInsertStage.h in Headers */,
+				07AC05EB1D6DC95800AF2337 /* CDEFileDownloadOperation.h in Headers */,
+				07AC05E71D6DC95200AF2337 /* CDEProcedure.h in Headers */,
+				07AC05FF1D6DC9B300AF2337 /* CDEPersistentStoreEventImport.h in Headers */,
+				07AC05EA1D6DC95800AF2337 /* CDELocalCloudFileSystem.h in Headers */,
+				07AC060D1D6DC9C600AF2337 /* CDERevision.h in Headers */,
+				07AC05F51D6DC96600AF2337 /* CDEPersistentStoreImporter.h in Headers */,
+				07AC05E31D6DC94600AF2337 /* NSManagedObjectContext+CDEAdditions.h in Headers */,
+				07AC06061D6DC9BB00AF2337 /* CDEUpdateStage.h in Headers */,
+				07AC06021D6DC9B300AF2337 /* CDEObjectGraphMigrator.h in Headers */,
+				07AC05F81D6DC9A700AF2337 /* CDEEventBuilder.h in Headers */,
+				07AC06071D6DC9BB00AF2337 /* CDEDeleteStage.h in Headers */,
+				07AC06091D6DC9C100AF2337 /* CDEGlobalIdentifier.h in Headers */,
+				07AC05F61D6DC96600AF2337 /* CDEProgression.h in Headers */,
+				07AC06041D6DC9BB00AF2337 /* CDEIntegrationStage.h in Headers */,
+				07AC05FB1D6DC9B300AF2337 /* CDEEventExport.h in Headers */,
+				07AC05F21D6DC95E00AF2337 /* CDECloudItem.h in Headers */,
+				07AC05E11D6DC94600AF2337 /* NSFileCoordinator+CDEAdditions.h in Headers */,
+				07AC05E91D6DC95800AF2337 /* CDEICloudFileSystem.h in Headers */,
+				07AC06111D6DC9F300AF2337 /* Ensembles.h in Headers */,
+				07AC06011D6DC9B300AF2337 /* CDEEventMigrator.h in Headers */,
+				07AC05E01D6DC93300AF2337 /* NSMapTable+CDEAdditions.h in Headers */,
+				07AC05E51D6DC95200AF2337 /* CDEAsynchronousOperation.h in Headers */,
+				07AC05FA1D6DC9A700AF2337 /* CDESaveMonitor.h in Headers */,
+				07AC05DD1D6DC93300AF2337 /* CDEDefines.h in Headers */,
+				07AC05E81D6DC95200AF2337 /* CDEProcedureStep.h in Headers */,
+				07AC060C1D6DC9C100AF2337 /* CDEDataFile.h in Headers */,
+				07AC06031D6DC9BB00AF2337 /* CDEEventIntegrator.h in Headers */,
+				07AC060A1D6DC9C100AF2337 /* CDEObjectChange.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E9D630171BFEB26300B60D60 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07B9ABF31C731AF8008E564A /* Ensembles.h in Headers */,
+				E9D630481BFEB3D800B60D60 /* CDEFileUploadOperation.h in Headers */,
+				E9D6303A1BFEB3CE00B60D60 /* CDEAsynchronousOperation.h in Headers */,
+				E9D6304C1BFEB3E100B60D60 /* CDECloudFileSystem.h in Headers */,
+				E9D630301BFEB3C400B60D60 /* NSMapTable+CDEAdditions.h in Headers */,
+				E9D6303C1BFEB3CE00B60D60 /* CDEAsynchronousTaskQueue.h in Headers */,
+				E9D630461BFEB3D800B60D60 /* CDEFileDownloadOperation.h in Headers */,
+				E9D6302E1BFEB3C400B60D60 /* CDEFoundationAdditions.h in Headers */,
+				E9D630541BFEB3E800B60D60 /* CDEPersistentStoreEnsemble.h in Headers */,
+				E9D6304F1BFEB3E100B60D60 /* CDECloudFile.h in Headers */,
+				E9D6304D1BFEB3E100B60D60 /* CDECloudDirectory.h in Headers */,
+				E9D630531BFEB3E100B60D60 /* CDECloudItem.h in Headers */,
+				E9D6302B1BFEB3C400B60D60 /* CDEDefines.h in Headers */,
+				E9D630361BFEB3C400B60D60 /* NSManagedObjectContext+CDEAdditions.h in Headers */,
+				E9D630421BFEB3D800B60D60 /* CDEICloudFileSystem.h in Headers */,
+				E9D630441BFEB3D800B60D60 /* CDELocalCloudFileSystem.h in Headers */,
+				E9D6302D1BFEB3C400B60D60 /* CDEAvailabilityMacros.h in Headers */,
+				E9D630851BFEB40800B60D60 /* CDERebaser.h in Headers */,
+				E9D6307B1BFEB3FA00B60D60 /* CDEDeleteStage.h in Headers */,
+				E9D6308F1BFEB42500B60D60 /* CDEDataFile.h in Headers */,
+				E9D630791BFEB3FA00B60D60 /* CDEUpdateStage.h in Headers */,
+				E9D630611BFEB3EE00B60D60 /* CDESaveMonitor.h in Headers */,
+				E9D6305A1BFEB3E800B60D60 /* CDEProgression.h in Headers */,
+				E9D6308B1BFEB42500B60D60 /* CDEObjectChange.h in Headers */,
+				E9D630771BFEB3FA00B60D60 /* CDEInsertStage.h in Headers */,
+				E9D630401BFEB3CE00B60D60 /* CDEProcedureStep.h in Headers */,
+				E9D6304A1BFEB3E100B60D60 /* CDEEventFileSet.h in Headers */,
+				E9D6308D1BFEB42500B60D60 /* CDEStoreModificationEvent.h in Headers */,
+				E9D6306D1BFEB3F400B60D60 /* CDEJSONEventImport.h in Headers */,
+				E9D630511BFEB3E100B60D60 /* CDECloudManager.h in Headers */,
+				E9D630871BFEB42500B60D60 /* CDEEventRevision.h in Headers */,
+				E9D6303E1BFEB3CE00B60D60 /* CDEProcedure.h in Headers */,
+				E9D6306F1BFEB3F400B60D60 /* CDEEventMigrator.h in Headers */,
+				E9D630751BFEB3FA00B60D60 /* CDEIntegrationStage.h in Headers */,
+				E9D6306B1BFEB3F400B60D60 /* CDEPersistentStoreEventImport.h in Headers */,
+				E9D630631BFEB3F400B60D60 /* CDEEventExport.h in Headers */,
+				E9D630711BFEB3F400B60D60 /* CDEObjectGraphMigrator.h in Headers */,
+				E9D630561BFEB3E800B60D60 /* CDEPersistentStoreEnsemble+Private.h in Headers */,
+				E9D630381BFEB3C400B60D60 /* NSData+CDEAdditions.h in Headers */,
+				E9D6305F1BFEB3EE00B60D60 /* CDEPropertyChangeValue.h in Headers */,
+				E9D630651BFEB3F400B60D60 /* CDEJSONEventExport.h in Headers */,
+				E9D630581BFEB3E800B60D60 /* CDEPersistentStoreImporter.h in Headers */,
+				E9D630831BFEB40800B60D60 /* CDEBaselineConsolidator.h in Headers */,
+				E9D6307D1BFEB40100B60D60 /* CDERevision.h in Headers */,
+				E9D630731BFEB3FA00B60D60 /* CDEEventIntegrator.h in Headers */,
+				E9D630341BFEB3C400B60D60 /* NSManagedObjectModel+CDEAdditions.h in Headers */,
+				E9D630671BFEB3F400B60D60 /* CDEPersistentStoreEventExport.h in Headers */,
+				E9D6305D1BFEB3EE00B60D60 /* CDEEventBuilder.h in Headers */,
+				E9D630811BFEB40100B60D60 /* CDERevisionSet.h in Headers */,
+				E9D630691BFEB3F400B60D60 /* CDEEventImport.h in Headers */,
+				E9D6305B1BFEB3EE00B60D60 /* CDEEventStore.h in Headers */,
+				E9D630321BFEB3C400B60D60 /* NSFileCoordinator+CDEAdditions.h in Headers */,
+				E9D6307F1BFEB40100B60D60 /* CDERevisionManager.h in Headers */,
+				E9D630891BFEB42500B60D60 /* CDEGlobalIdentifier.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -927,6 +1346,24 @@
 			productReference = 07571F0F1910EC02008479A9 /* Ensembles.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
+		07AC052C1D6D8D0E00AF2337 /* Ensembles tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 07AC05341D6D8D0E00AF2337 /* Build configuration list for PBXNativeTarget "Ensembles tvOS" */;
+			buildPhases = (
+				07AC05281D6D8D0E00AF2337 /* Sources */,
+				07AC05291D6D8D0E00AF2337 /* Frameworks */,
+				07AC052A1D6D8D0E00AF2337 /* Headers */,
+				07AC052B1D6D8D0E00AF2337 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Ensembles tvOS";
+			productName = "Ensembles tvOS";
+			productReference = 07AC052D1D6D8D0E00AF2337 /* Ensembles.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		07BF374417F184DD00C56F64 /* Ensembles iOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 07BF376817F184DD00C56F64 /* Build configuration list for PBXNativeTarget "Ensembles iOS" */;
@@ -940,11 +1377,30 @@
 			buildRules = (
 			);
 			dependencies = (
+				0758BAB81D984CE8001857FF /* PBXTargetDependency */,
 			);
 			name = "Ensembles iOS";
 			productName = "Ensembles iOS";
 			productReference = 07BF374517F184DD00C56F64 /* libensembles.a */;
 			productType = "com.apple.product-type.library.static";
+		};
+		E9D630191BFEB26300B60D60 /* Ensembles iOS Module */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E9D630211BFEB26300B60D60 /* Build configuration list for PBXNativeTarget "Ensembles iOS Module" */;
+			buildPhases = (
+				E9D630151BFEB26300B60D60 /* Sources */,
+				E9D630161BFEB26300B60D60 /* Frameworks */,
+				E9D630171BFEB26300B60D60 /* Headers */,
+				E9D630181BFEB26300B60D60 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Ensembles iOS Module";
+			productName = "Ensembles iOS Module";
+			productReference = E9D6301A1BFEB26300B60D60 /* Ensembles.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
@@ -957,6 +1413,21 @@
 				TargetAttributes = {
 					070D336018018A960054BA23 = {
 						TestTargetID = 07BF374417F184DD00C56F64;
+					};
+					0719E7011C80357200ADAA44 = {
+						CreatedOnToolsVersion = 7.2.1;
+					};
+					072AFF0B1DFE9368009BDDE9 = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = P7BXV6PHLD;
+						ProvisioningStyle = Automatic;
+					};
+					07AC052C1D6D8D0E00AF2337 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+					E9D630191BFEB26300B60D60 = {
+						CreatedOnToolsVersion = 7.1.1;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -974,9 +1445,13 @@
 			targets = (
 				07BF374417F184DD00C56F64 /* Ensembles iOS */,
 				07571F0E1910EC02008479A9 /* Ensembles Resources */,
-				07571F041910E57C008479A9 /* Framework iOS */,
+				07571F041910E57C008479A9 /* Static Framework iOS */,
 				070D336018018A960054BA23 /* Tests iOS */,
 				0710512B18C9FB4200C23158 /* Documentation */,
+				E9D630191BFEB26300B60D60 /* Ensembles iOS Module */,
+				0719E7011C80357200ADAA44 /* Ensembles Universal Module iOS */,
+				07AC052C1D6D8D0E00AF2337 /* Ensembles tvOS */,
+				072AFF0B1DFE9368009BDDE9 /* Ensembles Universal Module tvOS */,
 			);
 		};
 /* End PBXProject section */
@@ -1010,9 +1485,50 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		07AC052B1D6D8D0E00AF2337 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E9D630181BFEB26300B60D60 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E9D630291BFEB37800B60D60 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0719E7051C80357A00ADAA44 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\n#!/bin/sh\n\nUNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal\n\n# make sure the output directory exists\nmkdir -p \"${UNIVERSAL_OUTPUTFOLDER}\"\n\n# Step 1. Build Device and Simulator versions\nTARGET_NAME=\"Ensembles iOS Module\"\nPRODUCT_NAME=\"Ensembles\"\nxcodebuild -project \"Ensembles iOS.xcodeproj\" -target \"${TARGET_NAME}\" ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk iphoneos  BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\nxcodebuild -project \"Ensembles iOS.xcodeproj\" -target \"${TARGET_NAME}\" -configuration ${CONFIGURATION} -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\n\n# Step 2. Copy the framework structure (from iphoneos build) to the universal folder\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PRODUCT_NAME}.framework\" \"${UNIVERSAL_OUTPUTFOLDER}/\"\n\n# Step 3. Copy Swift modules from iphonesimulator build (if it exists) to the copied framework directory\nSIMULATOR_SWIFT_MODULES_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PRODUCT_NAME}.framework/Modules/${PRODUCT_NAME}.swiftmodule/.\"\nif [ -d \"${SIMULATOR_SWIFT_MODULES_DIR}\" ]; then\ncp -R \"${SIMULATOR_SWIFT_MODULES_DIR}\" \"${UNIVERSAL_OUTPUTFOLDER}/${PRODUCT_NAME}.framework/Modules/${PRODUCT_NAME}.swiftmodule\"\nfi\n\n# Step 4. Create universal binary file using lipo and place the combined executable in the copied framework directory\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\"\n\n# Step 6. Convenience step to open the project's directory in Finder\nopen \"${UNIVERSAL_OUTPUTFOLDER}\"";
+		};
+		072AFF0F1DFE9395009BDDE9 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\n#!/bin/sh\n\nUNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal\n\n# make sure the output directory exists\nmkdir -p \"${UNIVERSAL_OUTPUTFOLDER}\"\n\n# Step 1. Build Device and Simulator versions\nTARGET_NAME=\"Ensembles tvOS\"\nPRODUCT_NAME=\"Ensembles\"\nxcodebuild -project \"Ensembles iOS.xcodeproj\" -target \"${TARGET_NAME}\" ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk appletvos  BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\nxcodebuild -project \"Ensembles iOS.xcodeproj\" -target \"${TARGET_NAME}\" -configuration ${CONFIGURATION} -sdk appletvsimulator ONLY_ACTIVE_ARCH=NO BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\n\n# Step 2. Copy the framework structure (from appletvos build) to the universal folder\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-appletvos/${PRODUCT_NAME}.framework\" \"${UNIVERSAL_OUTPUTFOLDER}/\"\n\n# Step 3. Copy Swift modules from appletvsimulator build (if it exists) to the copied framework directory\nSIMULATOR_SWIFT_MODULES_DIR=\"${BUILD_DIR}/${CONFIGURATION}-appletvsimulator/${PRODUCT_NAME}.framework/Modules/${PRODUCT_NAME}.swiftmodule/.\"\nif [ -d \"${SIMULATOR_SWIFT_MODULES_DIR}\" ]; then\ncp -R \"${SIMULATOR_SWIFT_MODULES_DIR}\" \"${UNIVERSAL_OUTPUTFOLDER}/${PRODUCT_NAME}.framework/Modules/${PRODUCT_NAME}.swiftmodule\"\nfi\n\n# Step 4. Create universal binary file using lipo and place the combined executable in the copied framework directory\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-appletvsimulator/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-appletvos/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\"\n\n# Step 6. Convenience step to open the project's directory in Finder\nopen \"${UNIVERSAL_OUTPUTFOLDER}\"";
+		};
 		072C2F3618C9FBD900453E78 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1051,7 +1567,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\nset +u\n\n# Avoid recursively calling this script.\nif [[ $SF_MASTER_SCRIPT_RUNNING ]]\nthen\n    exit 0\nfi\nset -u\nexport SF_MASTER_SCRIPT_RUNNING=1\n\nSF_FRAMEWORK_NAME=\"Ensembles\"\nSF_EXECUTABLE_PATH=\"libensembles.a\"\nSF_WRAPPER_NAME=\"Ensembles.framework\"\n\n# The following conditionals come from\n# https://github.com/kstenerud/iOS-Universal-Framework\n\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]\nthen\n    SF_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\n    echo \"Could not find platform name from SDK_NAME: $SDK_NAME\"\n    exit 1\nfi\n\nif [[ \"$SDK_NAME\" =~ ([0-9]+.*$) ]]\nthen\n    SF_SDK_VERSION=${BASH_REMATCH[1]}\nelse\n    echo \"Could not find sdk version from SDK_NAME: $SDK_NAME\"\n    exit 1\nfi\n\nif [[ \"$SF_SDK_PLATFORM\" = \"iphoneos\" ]]\nthen\n    SF_OTHER_PLATFORM=iphonesimulator\nelse\n    SF_OTHER_PLATFORM=iphoneos\nfi\n\nif [[ \"$BUILT_PRODUCTS_DIR\" =~ (.*)$SF_SDK_PLATFORM$ ]]\nthen\n    SF_OTHER_BUILT_PRODUCTS_DIR=\"${BASH_REMATCH[1]}${SF_OTHER_PLATFORM}\"\nelse\n    echo \"Could not find platform name from build products directory: $BUILT_PRODUCTS_DIR\"\n    exit 1\nfi\n\n# Build the other platform.\nxcrun xcodebuild -project \"${PROJECT_FILE_PATH}\" -target \"${TARGET_NAME}\" -configuration \"${CONFIGURATION}\" -sdk ${SF_OTHER_PLATFORM}${SF_SDK_VERSION} BUILD_DIR=\"${BUILD_DIR}\" OBJROOT=\"${OBJROOT}\" BUILD_ROOT=\"${BUILD_ROOT}\" SYMROOT=\"${SYMROOT}\" $ACTION\n\n# Smash the two static libraries into one fat binary and store it in the .framework\nxcrun lipo -create \"${BUILT_PRODUCTS_DIR}/${SF_EXECUTABLE_PATH}\" \"${SF_OTHER_BUILT_PRODUCTS_DIR}/${SF_EXECUTABLE_PATH}\" -output \"${BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_FRAMEWORK_NAME}\"\n\n# Copy the binary to the other architecture folder to have a complete framework in both.\ncp -a \"${BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_FRAMEWORK_NAME}\" \"${SF_OTHER_BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_FRAMEWORK_NAME}\"\n";
+			shellScript = "set -e\nset +u\n\n# Avoid recursively calling this script.\nif [[ $SF_MASTER_SCRIPT_RUNNING ]]\nthen\n    exit 0\nfi\nset -u\nexport SF_MASTER_SCRIPT_RUNNING=1\n\nSF_FRAMEWORK_NAME=\"Ensembles\"\nSF_EXECUTABLE_PATH=\"libensembles.a\"\nSF_WRAPPER_NAME=\"Ensembles.framework\"\n\n# The following conditionals come from\n# https://github.com/kstenerud/iOS-Universal-Framework\n\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]\nthen\n    SF_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\n    echo \"Could not find platform name from SDK_NAME: $SDK_NAME\"\n    exit 1\nfi\n\nif [[ \"$SDK_NAME\" =~ ([0-9]+.*$) ]]\nthen\n    SF_SDK_VERSION=${BASH_REMATCH[1]}\nelse\n    echo \"Could not find sdk version from SDK_NAME: $SDK_NAME\"\n    exit 1\nfi\n\nif [[ \"$SF_SDK_PLATFORM\" = \"iphoneos\" ]]\nthen\n    SF_OTHER_PLATFORM=iphonesimulator\nelse\n    SF_OTHER_PLATFORM=iphoneos\nfi\n\nif [[ \"$BUILT_PRODUCTS_DIR\" =~ (.*)$SF_SDK_PLATFORM$ ]]\nthen\n    SF_OTHER_BUILT_PRODUCTS_DIR=\"${BASH_REMATCH[1]}${SF_OTHER_PLATFORM}\"\nelse\n    echo \"Could not find platform name from build products directory: $BUILT_PRODUCTS_DIR\"\n    exit 1\nfi\n\n# Build the other platform.\nxcrun xcodebuild -project \"${PROJECT_FILE_PATH}\" -target \"${TARGET_NAME}\" -configuration \"${CONFIGURATION}\" -sdk ${SF_OTHER_PLATFORM}${SF_SDK_VERSION} BUILD_DIR=\"${BUILD_DIR}\" OBJROOT=\"${OBJROOT}\" BUILD_ROOT=\"${BUILD_ROOT}\" SYMROOT=\"${SYMROOT}\" $ACTION\n\n# Smash the two static libraries into one fat binary and store it in the .framework\nxcrun lipo -create \"${BUILT_PRODUCTS_DIR}/${SF_EXECUTABLE_PATH}\" \"${SF_OTHER_BUILT_PRODUCTS_DIR}/${SF_EXECUTABLE_PATH}\" -output \"${BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_FRAMEWORK_NAME}\"\n\n# Copy the binary to the other architecture folder to have a complete framework in both.\ncp -a \"${BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_FRAMEWORK_NAME}\" \"${SF_OTHER_BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_FRAMEWORK_NAME}\"\n\nopen \"${SF_OTHER_BUILT_PRODUCTS_DIR}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1086,6 +1602,7 @@
 				075FDCE7183628F90020E1C9 /* CDEPersistentStoreEnsembleMergeTests.m in Sources */,
 				070D33A718018AAD0054BA23 /* CDERevisionTests.m in Sources */,
 				070D33AF18018AAD0054BA23 /* CDEIntegratorUpdateTests.m in Sources */,
+				07B6CADA1BADAB2900FAFB29 /* CDEActivityNotificationTests.m in Sources */,
 				070D33B118018AAD0054BA23 /* CDEObjectChangeTests.m in Sources */,
 				075FDCE8183628F90020E1C9 /* CDEStoreModificationEventTestsModel.xcdatamodeld in Sources */,
 				07AAD7E01B4B01B300411C44 /* CDERandomSyncTests.m in Sources */,
@@ -1108,6 +1625,63 @@
 			buildActionMask = 2147483647;
 			files = (
 				07571F1E1910EDA1008479A9 /* CDEEventStoreModel.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		07AC05281D6D8D0E00AF2337 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0722F8FE1E001C4A00528AFD /* CDEEventStoreModel.xcdatamodeld in Sources */,
+				07AC054A1D6D8DAB00AF2337 /* CDEPersistentStoreImporter.m in Sources */,
+				07AC054B1D6D8DAB00AF2337 /* CDEEventStore.m in Sources */,
+				07AC054C1D6D8DAB00AF2337 /* CDEEventBuilder.m in Sources */,
+				07AC054D1D6D8DAB00AF2337 /* CDEPropertyChangeValue.m in Sources */,
+				07AC054E1D6D8DAB00AF2337 /* CDESaveMonitor.m in Sources */,
+				07AC054F1D6D8DAB00AF2337 /* CDEEventExport.m in Sources */,
+				07AC05501D6D8DAB00AF2337 /* CDEJSONEventExport.m in Sources */,
+				07AC05511D6D8DAB00AF2337 /* CDEPersistentStoreEventExport.m in Sources */,
+				07AC05521D6D8DAB00AF2337 /* CDEEventImport.m in Sources */,
+				07AC05531D6D8DAB00AF2337 /* CDEPersistentStoreEventImport.m in Sources */,
+				07AC05541D6D8DAB00AF2337 /* CDEJSONEventImport.m in Sources */,
+				07AC05551D6D8DAB00AF2337 /* CDEEventMigrator.m in Sources */,
+				07AC05561D6D8DAB00AF2337 /* CDEObjectGraphMigrator.m in Sources */,
+				07AC05571D6D8DAB00AF2337 /* CDEEventIntegrator.m in Sources */,
+				07AC05581D6D8DAB00AF2337 /* CDEIntegrationStage.m in Sources */,
+				07AC05591D6D8DAB00AF2337 /* CDEInsertStage.m in Sources */,
+				07AC055A1D6D8DAB00AF2337 /* CDEUpdateStage.m in Sources */,
+				07AC055B1D6D8DAB00AF2337 /* CDEDeleteStage.m in Sources */,
+				07AC055C1D6D8DAB00AF2337 /* CDEEventRevision.m in Sources */,
+				07AC055D1D6D8DAB00AF2337 /* CDEGlobalIdentifier.m in Sources */,
+				07AC055E1D6D8DAB00AF2337 /* CDEObjectChange.m in Sources */,
+				07AC055F1D6D8DAB00AF2337 /* CDEStoreModificationEvent.m in Sources */,
+				07AC05601D6D8DAB00AF2337 /* CDEDataFile.m in Sources */,
+				07AC05611D6D8DAB00AF2337 /* CDERevision.m in Sources */,
+				07AC05621D6D8DAB00AF2337 /* CDERevisionManager.m in Sources */,
+				07AC05631D6D8DAB00AF2337 /* CDERevisionSet.m in Sources */,
+				07AC05641D6D8DAB00AF2337 /* CDEBaselineConsolidator.m in Sources */,
+				07AC05651D6D8DAB00AF2337 /* CDERebaser.m in Sources */,
+				07AC05351D6D8D8900AF2337 /* CDEDefines.m in Sources */,
+				07AC05361D6D8D8900AF2337 /* CDEFoundationAdditions.m in Sources */,
+				07AC05371D6D8D8900AF2337 /* NSMapTable+CDEAdditions.m in Sources */,
+				07AC05381D6D8D8900AF2337 /* NSFileCoordinator+CDEAdditions.m in Sources */,
+				07AC05391D6D8D8900AF2337 /* NSManagedObjectModel+CDEAdditions.m in Sources */,
+				07AC053A1D6D8D8900AF2337 /* NSManagedObjectContext+CDEAdditions.m in Sources */,
+				07AC053B1D6D8D8900AF2337 /* NSData+CDEAdditions.m in Sources */,
+				07AC053C1D6D8D8900AF2337 /* CDEAsynchronousOperation.m in Sources */,
+				07AC053D1D6D8D8900AF2337 /* CDEAsynchronousTaskQueue.m in Sources */,
+				07AC053E1D6D8D8900AF2337 /* CDEProcedure.m in Sources */,
+				07AC053F1D6D8D8900AF2337 /* CDEProcedureStep.m in Sources */,
+				07AC05401D6D8D8900AF2337 /* CDEICloudFileSystem.m in Sources */,
+				07AC05411D6D8D8900AF2337 /* CDELocalCloudFileSystem.m in Sources */,
+				07AC05421D6D8D8900AF2337 /* CDEFileDownloadOperation.m in Sources */,
+				07AC05431D6D8D8900AF2337 /* CDEFileUploadOperation.m in Sources */,
+				07AC05441D6D8D8900AF2337 /* CDEEventFileSet.m in Sources */,
+				07AC05451D6D8D8900AF2337 /* CDECloudDirectory.m in Sources */,
+				07AC05461D6D8D8900AF2337 /* CDECloudFile.m in Sources */,
+				07AC05471D6D8D8900AF2337 /* CDECloudManager.m in Sources */,
+				07AC05481D6D8D8900AF2337 /* CDEPersistentStoreEnsemble.m in Sources */,
+				07AC05491D6D8D8900AF2337 /* CDEPersistentStoreEnsemble+Private.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1167,6 +1741,63 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E9D630151BFEB26300B60D60 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E9D630881BFEB42500B60D60 /* CDEEventRevision.m in Sources */,
+				E9D630471BFEB3D800B60D60 /* CDEFileDownloadOperation.m in Sources */,
+				E9D6306C1BFEB3F400B60D60 /* CDEPersistentStoreEventImport.m in Sources */,
+				E9D630431BFEB3D800B60D60 /* CDEICloudFileSystem.m in Sources */,
+				E9D630551BFEB3E800B60D60 /* CDEPersistentStoreEnsemble.m in Sources */,
+				E9D6308C1BFEB42500B60D60 /* CDEObjectChange.m in Sources */,
+				E9D6307E1BFEB40100B60D60 /* CDERevision.m in Sources */,
+				E9D6306E1BFEB3F400B60D60 /* CDEJSONEventImport.m in Sources */,
+				E9D630761BFEB3FA00B60D60 /* CDEIntegrationStage.m in Sources */,
+				E9D630781BFEB3FA00B60D60 /* CDEInsertStage.m in Sources */,
+				E9D6304B1BFEB3E100B60D60 /* CDEEventFileSet.m in Sources */,
+				E9D630861BFEB40800B60D60 /* CDERebaser.m in Sources */,
+				E9D630801BFEB40100B60D60 /* CDERevisionManager.m in Sources */,
+				E9D6303F1BFEB3CE00B60D60 /* CDEProcedure.m in Sources */,
+				E9D630371BFEB3C400B60D60 /* NSManagedObjectContext+CDEAdditions.m in Sources */,
+				E9D630821BFEB40100B60D60 /* CDERevisionSet.m in Sources */,
+				E9D6305E1BFEB3EE00B60D60 /* CDEEventBuilder.m in Sources */,
+				E9D6308E1BFEB42500B60D60 /* CDEStoreModificationEvent.m in Sources */,
+				E9D630571BFEB3E800B60D60 /* CDEPersistentStoreEnsemble+Private.m in Sources */,
+				E9D630501BFEB3E100B60D60 /* CDECloudFile.m in Sources */,
+				E9D630411BFEB3CE00B60D60 /* CDEProcedureStep.m in Sources */,
+				E9D6304E1BFEB3E100B60D60 /* CDECloudDirectory.m in Sources */,
+				E9D630901BFEB42500B60D60 /* CDEDataFile.m in Sources */,
+				E9D630641BFEB3F400B60D60 /* CDEEventExport.m in Sources */,
+				E9D630591BFEB3E800B60D60 /* CDEPersistentStoreImporter.m in Sources */,
+				E9D630491BFEB3D800B60D60 /* CDEFileUploadOperation.m in Sources */,
+				E9D630391BFEB3C400B60D60 /* NSData+CDEAdditions.m in Sources */,
+				E9D6305C1BFEB3EE00B60D60 /* CDEEventStore.m in Sources */,
+				E9D630521BFEB3E100B60D60 /* CDECloudManager.m in Sources */,
+				E9D630351BFEB3C400B60D60 /* NSManagedObjectModel+CDEAdditions.m in Sources */,
+				E9D630701BFEB3F400B60D60 /* CDEEventMigrator.m in Sources */,
+				E9D630661BFEB3F400B60D60 /* CDEJSONEventExport.m in Sources */,
+				E9D630601BFEB3EE00B60D60 /* CDEPropertyChangeValue.m in Sources */,
+				E9D6306A1BFEB3F400B60D60 /* CDEEventImport.m in Sources */,
+				E9D630741BFEB3FA00B60D60 /* CDEEventIntegrator.m in Sources */,
+				E9D6308A1BFEB42500B60D60 /* CDEGlobalIdentifier.m in Sources */,
+				E9D6302A1BFEB39700B60D60 /* CDEEventStoreModel.xcdatamodeld in Sources */,
+				E9D630311BFEB3C400B60D60 /* NSMapTable+CDEAdditions.m in Sources */,
+				E9D6302C1BFEB3C400B60D60 /* CDEDefines.m in Sources */,
+				E9D6302F1BFEB3C400B60D60 /* CDEFoundationAdditions.m in Sources */,
+				E9D630621BFEB3EE00B60D60 /* CDESaveMonitor.m in Sources */,
+				E9D6303D1BFEB3CE00B60D60 /* CDEAsynchronousTaskQueue.m in Sources */,
+				E9D630721BFEB3F400B60D60 /* CDEObjectGraphMigrator.m in Sources */,
+				E9D6307A1BFEB3FA00B60D60 /* CDEUpdateStage.m in Sources */,
+				E9D630451BFEB3D800B60D60 /* CDELocalCloudFileSystem.m in Sources */,
+				E9D6303B1BFEB3CE00B60D60 /* CDEAsynchronousOperation.m in Sources */,
+				E9D630841BFEB40800B60D60 /* CDEBaselineConsolidator.m in Sources */,
+				E9D630681BFEB3F400B60D60 /* CDEPersistentStoreEventExport.m in Sources */,
+				E9D6307C1BFEB3FA00B60D60 /* CDEDeleteStage.m in Sources */,
+				E9D630331BFEB3C400B60D60 /* NSFileCoordinator+CDEAdditions.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1175,15 +1806,20 @@
 			target = 07BF374417F184DD00C56F64 /* Ensembles iOS */;
 			targetProxy = 070D337018018A960054BA23 /* PBXContainerItemProxy */;
 		};
-		07571F091910E596008479A9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 07BF374417F184DD00C56F64 /* Ensembles iOS */;
-			targetProxy = 07571F081910E596008479A9 /* PBXContainerItemProxy */;
-		};
 		07571F1D1910ECF5008479A9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 07571F0E1910EC02008479A9 /* Ensembles Resources */;
 			targetProxy = 07571F1C1910ECF5008479A9 /* PBXContainerItemProxy */;
+		};
+		0758BAB81D984CE8001857FF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 07571F0E1910EC02008479A9 /* Ensembles Resources */;
+			targetProxy = 0758BAB71D984CE8001857FF /* PBXContainerItemProxy */;
+		};
+		077969831C44F11000B25198 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 07BF374417F184DD00C56F64 /* Ensembles iOS */;
+			targetProxy = 077969821C44F11000B25198 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1211,7 +1847,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
@@ -1226,7 +1861,6 @@
 					"$(inherited)",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mentalfaculty.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -1236,7 +1870,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
@@ -1247,7 +1880,6 @@
 					"$(inherited)",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mentalfaculty.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -1267,6 +1899,40 @@
 			};
 			name = Release;
 		};
+		0719E7031C80357200ADAA44 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		0719E7041C80357200ADAA44 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		072AFF0D1DFE9368009BDDE9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = P7BXV6PHLD;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SUPPORTED_PLATFORMS = "appletvsimulator appletvos";
+			};
+			name = Debug;
+		};
+		072AFF0E1DFE9368009BDDE9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = P7BXV6PHLD;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SUPPORTED_PLATFORMS = "appletvsimulator appletvos";
+			};
+			name = Release;
+		};
 		07571F061910E57C008479A9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1277,6 +1943,7 @@
 		07571F071910E57C008479A9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEPLOYMENT_POSTPROCESSING = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1321,13 +1988,79 @@
 			};
 			name = Release;
 		};
+		07AC05321D6D8D0E00AF2337 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "Ensembles tvOS/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = $SRCROOT/Source/General/Ensembles.modulemap;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mentalfaculty.Ensembles-tvOS";
+				PRODUCT_NAME = Ensembles;
+				PUBLIC_HEADERS_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Headers";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.2;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		07AC05331D6D8D0E00AF2337 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "Ensembles tvOS/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = $SRCROOT/Source/General/Ensembles.modulemap;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mentalfaculty.Ensembles-tvOS";
+				PRODUCT_NAME = Ensembles;
+				PUBLIC_HEADERS_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Headers";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.2;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		07BF376617F184DD00C56F64 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_MODULES = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -1374,7 +2107,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_MODULES = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -1389,6 +2122,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = NO;
+				DEPLOYMENT_POSTPROCESSING = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1424,12 +2158,86 @@
 		07BF376A17F184DD00C56F64 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /tmp/Ensembles_iOS.dst;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ensembles;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SKIP_INSTALL = YES;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../Vendor/DropboxSDK/DropboxSDK/Classes/**";
+			};
+			name = Release;
+		};
+		E9D6301F1BFEB26300B60D60 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "$(SRCROOT)/Supporting Files/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = $SRCROOT/Source/General/Ensembles.modulemap;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.mentalfaculty.ensembles;
+				PRODUCT_NAME = Ensembles;
+				PUBLIC_HEADERS_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Headers";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		E9D630201BFEB26300B60D60 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "$(SRCROOT)/Supporting Files/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = $SRCROOT/Source/General/Ensembles.modulemap;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.mentalfaculty.ensembles;
+				PRODUCT_NAME = Ensembles;
+				PUBLIC_HEADERS_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Headers";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
@@ -1454,7 +2262,25 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		07571F051910E57C008479A9 /* Build configuration list for PBXAggregateTarget "Framework iOS" */ = {
+		0719E7021C80357200ADAA44 /* Build configuration list for PBXAggregateTarget "Ensembles Universal Module iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0719E7031C80357200ADAA44 /* Debug */,
+				0719E7041C80357200ADAA44 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		072AFF0C1DFE9368009BDDE9 /* Build configuration list for PBXAggregateTarget "Ensembles Universal Module tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				072AFF0D1DFE9368009BDDE9 /* Debug */,
+				072AFF0E1DFE9368009BDDE9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		07571F051910E57C008479A9 /* Build configuration list for PBXAggregateTarget "Static Framework iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				07571F061910E57C008479A9 /* Debug */,
@@ -1468,6 +2294,15 @@
 			buildConfigurations = (
 				07571F1A1910EC02008479A9 /* Debug */,
 				07571F1B1910EC02008479A9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		07AC05341D6D8D0E00AF2337 /* Build configuration list for PBXNativeTarget "Ensembles tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				07AC05321D6D8D0E00AF2337 /* Debug */,
+				07AC05331D6D8D0E00AF2337 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1486,6 +2321,15 @@
 			buildConfigurations = (
 				07BF376917F184DD00C56F64 /* Debug */,
 				07BF376A17F184DD00C56F64 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E9D630211BFEB26300B60D60 /* Build configuration list for PBXNativeTarget "Ensembles iOS Module" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E9D6301F1BFEB26300B60D60 /* Debug */,
+				E9D630201BFEB26300B60D60 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

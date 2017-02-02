@@ -17,22 +17,31 @@
     block = [block copy];
     
     NSError *error = nil;
-    NSUInteger count = [self countForFetchRequest:fetch error:&error];
-    if (count == NSNotFound) {
-        CDELog(CDELoggingLevelError, @"Could not get count: %@", error);
+    NSFetchRequest *objectIDFetch = [fetch copy];
+    objectIDFetch.resultType = NSManagedObjectIDResultType;
+    NSArray *objectIDs = [self executeFetchRequest:objectIDFetch error:&error];
+    if (nil == objectIDs) {
+        CDELog(CDELoggingLevelError, @"Could not fetch object ids: %@", error);
         return NO;
     }
-
+    
+    NSUInteger count = objectIDs.count;
+    if (batchSize == 0) batchSize = count;
+    
     NSUInteger numberOfBatches = count / MAX(1, batchSize) + (count%batchSize ? 1 : 0);
     NSUInteger batchesRemaining = numberOfBatches;
     for (NSUInteger b = 0; b < numberOfBatches; b++) {
         @autoreleasepool {
-            NSFetchRequest *fetchCopy = [fetch copy];
-            fetchCopy.fetchOffset = b * batchSize;
-            fetchCopy.fetchLimit = batchSize;
+            NSUInteger start = b*batchSize;
+            NSUInteger end = MIN((b+1)*batchSize, count);
+            NSArray *batchIDs = [objectIDs subarrayWithRange:NSMakeRange(start, end-start)];
+            
+            NSFetchRequest *objectFetchRequest = [fetch copy];
+            NSPredicate *batchPredicate = [NSPredicate predicateWithFormat:@"SELF IN %@", batchIDs];
+            objectFetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[batchPredicate, fetch.predicate ? : [NSPredicate predicateWithValue:YES]]];
             
             NSError *error = nil;
-            NSArray *objects = [self executeFetchRequest:fetchCopy error:&error];
+            NSArray *objects = [self executeFetchRequest:objectFetchRequest error:&error];
             if (!objects) {
                 CDELog(CDELoggingLevelError, @"Could not get objects: %@", error);
                 return NO;

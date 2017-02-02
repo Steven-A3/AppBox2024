@@ -11,12 +11,6 @@
 #import "CDEPersistentStoreEnsemble.h"
 #import "CDELocalCloudFileSystem.h"
 
-@interface CDEPersistentStoreEnsemble (CDESyncTestMethods)
-
-- (void)stopMonitoringSaves;
-
-@end
-
 @interface CDEDependencySyncTests : CDESyncTest
 
 @end
@@ -48,14 +42,14 @@
     
     cloudFileSystem3 = [[CDELocalCloudFileSystem alloc] initWithRootDirectory:cloudRootDir];
     eventDataRoot3 = [testRootDirectory stringByAppendingPathComponent:@"eventData3"];
-    NSURL *eventDataRoot3URL = [NSURL fileURLWithPath:eventDataRoot1];
+    NSURL *eventDataRoot3URL = [NSURL fileURLWithPath:eventDataRoot3];
     ensemble3 = [[CDEPersistentStoreEnsemble alloc] initWithEnsembleIdentifier:@"com.ensembles.synctest" persistentStoreURL:testStoreURL3 persistentStoreOptions:nil managedObjectModelURL:testModelURL cloudFileSystem:cloudFileSystem3 localDataRootDirectoryURL:eventDataRoot3URL];
     ensemble3.delegate = self;
 }
 
 - (void)tearDown
 {
-    [ensemble3 stopMonitoringSaves];
+    [ensemble3 dismantle];
     [context3 reset];
     [super tearDown];
 }

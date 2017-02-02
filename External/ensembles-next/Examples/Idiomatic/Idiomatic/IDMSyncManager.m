@@ -7,13 +7,14 @@
 //
 
 #import <CoreData/CoreData.h>
-#import <Dropbox/Dropbox.h>
+#import <ObjectiveDropboxOfficial/ObjectiveDropboxOfficial.h>
 #import <Security/Security.h>
 
 #import "IDMSyncManager.h"
-#import "CDEDropboxSyncCloudFileSystem.h"
+#import "CDEDropboxV2CloudFileSystem.h"
 #import "CDENodeCloudFileSystem.h"
 #import "CDEZipCloudFileSystem.h"
+#import "CDECloudKitFileSystem.h"
 #import "IDMNodeSyncSettingsViewController.h"
 #import "CDEEncryptedCloudFileSystem.h"
 #import "CDEMultipeerCloudFileSystem.h"
@@ -27,6 +28,11 @@ NSString * const IDMICloudService = @"icloud";
 NSString * const IDMDropboxService = @"dropbox";
 NSString * const IDMNodeS3Service = @"node";
 NSString * const IDMMultipeerService = @"multipeer";
+NSString * const IDMCloudKitService = @"cloudkit";
+NSString * const IDMCloudKitShareOwnerService = @"cloudkit-share-owner";
+NSString * const IDMCloudKitShareParticipantService = @"cloudkit-share-participant";
+
+NSString * const IDMCloudKitShareOwnerDefaultKey = @"IDMCloudKitShareOwnerDefaultKey";
 
 NSString * const IDMNodeS3EmailDefaultKey = @"IDMNodeS3EmailDefaultKey";
 
@@ -34,18 +40,18 @@ NSString * const IDMNodeS3EmailDefaultKey = @"IDMNodeS3EmailDefaultKey";
 NSString * const IDMDropboxAppKey = @"fjgu077wm7qffv0";
 NSString * const IDMDropboxAppSecret = @"djibc9zfvppronm";
 
-@interface IDMSyncManager () <CDEPersistentStoreEnsembleDelegate, CDEDropboxSyncCloudFileSystemDelegate, CDENodeCloudFileSystemDelegate>
-
+@interface IDMSyncManager () <CDEPersistentStoreEnsembleDelegate, CDEDropboxV2CloudFileSystemDelegate, CDENodeCloudFileSystemDelegate, CDECloudKitFileSystemDelegate>
 @end
 
 @implementation IDMSyncManager {
     id <CDECloudFileSystem> cloudFileSystem;
     NSUInteger activeMergeCount;
     CDECompletionBlock dropboxLinkCompletion;
+    CDECompletionBlock dropboxLinkSessionCompletion;
     CDECompletionBlock nodeCredentialUpdateCompletion;
-    DBAccountManager *dropboxAccountManager;
     IDMMultipeerManager *multipeerManager;
     NSTimer *syncTimer;
+    BOOL cloudConnectionIsNew;
 }
 
 @synthesize ensemble = ensemble;
@@ -67,7 +73,9 @@ NSString * const IDMDropboxAppSecret = @"djibc9zfvppronm";
     self = [super init];
     if (self) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(filesDidDownload:) name:CDEICloudFileSystemDidDownloadFilesNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(filesDidDownload:) name:CDEDropboxSyncCloudFileSystemDidDownloadFilesNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSaveMonitoredManagedObjectContext:) name:CDEMonitoredManagedObjectContextDidSaveNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+        
         syncTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(performSync) userInfo:nil repeats:YES];
     }
     return self;
@@ -88,17 +96,24 @@ NSString * const IDMDropboxAppSecret = @"djibc9zfvppronm";
 
 - (void)reset
 {
+    cloudConnectionIsNew = NO;
+
     [multipeerManager stop];
     [multipeerManager.multipeerCloudFileSystem removeAllFiles];
     multipeerManager = nil;
 
     [self clearNodePassword];
-    
-    [dropboxAccountManager.linkedAccount unlink];
-    
+
+    if ([DropboxClientsManager authorizedClient]) {
+        [DropboxClientsManager unlinkClients];
+    }
+
     ensemble.delegate = nil;
+    [ensemble dismantle];
+    ensemble = nil;
     
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:IDMCloudServiceUserDefaultKey];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:IDMCloudKitShareOwnerDefaultKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -106,6 +121,7 @@ NSString * const IDMDropboxAppSecret = @"djibc9zfvppronm";
 
 - (void)connectToSyncService:(NSString *)serviceId withCompletion:(CDECompletionBlock)completion
 {
+    cloudConnectionIsNew = YES;
     [[NSUserDefaults standardUserDefaults] setObject:serviceId forKey:IDMCloudServiceUserDefaultKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
     [self setupEnsemble];
@@ -146,8 +162,11 @@ NSString * const IDMDropboxAppSecret = @"djibc9zfvppronm";
         newSystem = [[CDEZipCloudFileSystem alloc] initWithCloudFileSystem:encryptedFileSystem];
     }
     else if ([cloudService isEqualToString:IDMDropboxService]) {
-        if (!dropboxAccountManager) dropboxAccountManager = [[DBAccountManager alloc] initWithAppKey:IDMDropboxAppKey secret:IDMDropboxAppSecret];
-        CDEDropboxSyncCloudFileSystem *newDropboxSystem = [[CDEDropboxSyncCloudFileSystem alloc] initWithAccountManager:dropboxAccountManager];
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            [DropboxClientsManager setupWithAppKey:IDMDropboxAppKey];
+        });
+        CDEDropboxV2CloudFileSystem *newDropboxSystem = [[CDEDropboxV2CloudFileSystem alloc] init];
         newDropboxSystem.delegate = self;
         newSystem = newDropboxSystem;
     }
@@ -173,6 +192,24 @@ NSString * const IDMDropboxAppSecret = @"djibc9zfvppronm";
         newSystem = multipeerCloudFileSystem;
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didImportFiles) name:CDEMultipeerCloudFileSystemDidImportFilesNotification object:nil];
+    }
+    else if ([cloudService isEqualToString:IDMCloudKitService]) {
+        CDECloudKitFileSystem *cloudKitFileSystem = [[CDECloudKitFileSystem alloc] initWithPrivateDatabaseForUbiquityContainerIdentifier:@"iCloud.com.mentalfaculty.idiomatic" schemaVersion:CDECloudKitSchemaVersion2];
+        newSystem = [[CDEZipCloudFileSystem alloc] initWithCloudFileSystem:cloudKitFileSystem];
+        [cloudKitFileSystem subscribeForPushNotificationsWithCompletion:NULL]; // Handle these in app delegate
+    }
+    else if ([cloudService isEqualToString:IDMCloudKitShareOwnerService]) {
+        CDECloudKitFileSystem *cloudKitFileSystem = [[CDECloudKitFileSystem alloc] initWithUbiquityContainerIdentifier:@"iCloud.com.mentalfaculty.idiomatic" sharingIdentifier:@"IdiomaticStore" shareOwnerName:CKCurrentUserDefaultName];
+        newSystem = [[CDEZipCloudFileSystem alloc] initWithCloudFileSystem:cloudKitFileSystem];
+        cloudKitFileSystem.delegate = self;
+        [cloudKitFileSystem subscribeForPushNotificationsWithCompletion:NULL]; // Handle these in app delegate
+    }
+    else if ([cloudService isEqualToString:IDMCloudKitShareParticipantService]) {
+        // Note that you can't subscribe to push notifications in the shared DB of CloudKit
+        NSString *shareOwner = [[NSUserDefaults standardUserDefaults] stringForKey:IDMCloudKitShareOwnerDefaultKey];
+        CDECloudKitFileSystem *cloudKitFileSystem = [[CDECloudKitFileSystem alloc] initWithUbiquityContainerIdentifier:@"iCloud.com.mentalfaculty.idiomatic" sharingIdentifier:@"IdiomaticStore" shareOwnerName:shareOwner];
+        cloudKitFileSystem.delegate = self;
+        newSystem = [[CDEZipCloudFileSystem alloc] initWithCloudFileSystem:cloudKitFileSystem];
     }
     
     return newSystem;
@@ -254,6 +291,18 @@ NSString * const IDMDropboxAppSecret = @"djibc9zfvppronm";
     }
 }
 
+#pragma mark - Data Retrieval
+
+- (void)retrieveCloudDataWithCompletion:(void (^)(BOOL, NSError *))completion {
+    NSDate *date = [[NSDate alloc] init];
+    [ensemble mergeWithOptions:CDEMergeOptionsCloudFileRetrievalOnly completion:^(NSError *error) {
+        // No concrete way to know about downloads yet, so just assume that
+        // if it took more than 5s, assume we downloaded data
+        BOOL downloaded = [date timeIntervalSinceNow] < -5.0;
+        if (completion) completion(downloaded, error);
+    }];
+}
+
 #pragma mark - Persistent Store Ensemble Delegate
 
 - (void)persistentStoreEnsemble:(CDEPersistentStoreEnsemble *)ensemble didSaveMergeChangesWithNotification:(NSNotification *)notification
@@ -274,29 +323,111 @@ NSString * const IDMDropboxAppSecret = @"djibc9zfvppronm";
     [self reset];
 }
 
-#pragma mark - Dropbox Session
+#pragma mark - CloudKit Sharing
 
-- (BOOL)handleOpenURL:(NSURL *)url {
-    DBAccount *account = [dropboxAccountManager handleOpenURL:url];
-    if (account) {
-		if ([account isLinked]) {
-            if (dropboxLinkCompletion) dropboxLinkCompletion(nil);
-		}
-        else {
-            NSError *error = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeAuthenticationFailure userInfo:nil];
-            if (dropboxLinkCompletion) dropboxLinkCompletion(error);
-        }
-        dropboxLinkCompletion = NULL;
-		return YES;
-    }
-    return NO;
+- (void)cloudKitFileSystemShareIsAvailable:(CDECloudKitFileSystem *)fileSystem
+{
+    if (!cloudConnectionIsNew || ![fileSystem.shareOwnerName isEqualToString:CKCurrentUserDefaultName]) return;
+    
+    // If the share is new, and we own it, invite participants.
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    UICloudSharingController *controller = [[UICloudSharingController alloc] initWithShare:fileSystem.share container:fileSystem.container];
+    controller.availablePermissions = UICloudSharingPermissionAllowPrivate | UICloudSharingPermissionAllowReadWrite;
+    [window.rootViewController presentViewController:controller animated:YES completion:NULL];
 }
 
-- (void)linkAccountManagerForDropboxSyncCloudFileSystem:(CDEDropboxSyncCloudFileSystem *)fileSystem completion:(CDECompletionBlock)completion
+- (void)prepareToJoinCloudKitShareWithMetadata:(CKShareMetadata *)metadata completion:(CDECodeBlock)completion
 {
-    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-    dropboxLinkCompletion = [completion copy];
-    [fileSystem.accountManager linkFromController:window.rootViewController];
+    [CDECloudKitFileSystem acceptInvitationToShareWithMetadata:metadata completion:^(NSError *error) {
+        if (error) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Failed to Accept Invitation" message:@"An error occurred while accepting invitation." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+            [alert show];
+            NSLog(@"Error joining share: %@", error);
+            if (completion) completion();
+            return;
+        }
+        
+        // Store the name of the share owner
+        NSString *owner = metadata.share.recordID.zoneID.ownerName;
+        
+        if (self.ensemble) {
+            [self disconnectFromSyncServiceWithCompletion:^{
+                [[NSUserDefaults standardUserDefaults] setObject:owner forKey:IDMCloudKitShareOwnerDefaultKey];
+                if (completion) completion();
+            }];
+        }
+        else {
+            [[NSUserDefaults standardUserDefaults] setObject:owner forKey:IDMCloudKitShareOwnerDefaultKey];
+            if (completion) completion();
+        }
+    }];
+}
+
+#pragma mark - Dropbox Session
+
+- (BOOL)handleOpenURL:(NSURL *)url
+{
+    DBOAuthResult *authResult = [DropboxClientsManager handleRedirectURL:url];
+    if (!authResult) {
+        return NO;
+    }
+    
+    if ([authResult isSuccess]) {
+        // Here's an example of injecting a custom API client created from an access token
+        // (e.g. when working in a multi-user environment)
+        if ([cloudFileSystem isKindOfClass:[CDEDropboxV2CloudFileSystem class]]) {
+            CDEDropboxV2CloudFileSystem *dropboxSystem = cloudFileSystem;
+            if (!dropboxSystem.client) {
+                NSString *accessToken = authResult.accessToken.accessToken;
+                dropboxSystem.client = [[DropboxClient alloc] initWithAccessToken:accessToken];
+            }
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (dropboxLinkSessionCompletion) dropboxLinkSessionCompletion(nil);
+            dropboxLinkSessionCompletion = NULL;
+        });
+    }
+    else {
+        NSError *error = [NSError errorWithDomain:CDEErrorDomain
+                                             code:CDEErrorCodeAuthenticationFailure
+                                         userInfo:nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (dropboxLinkSessionCompletion) dropboxLinkSessionCompletion(error);
+            dropboxLinkSessionCompletion = NULL;
+        });
+    }
+
+    return YES;
+}
+
+- (void)linkSessionForDropboxCloudFileSystem:(CDEDropboxV2CloudFileSystem *)fileSystem completion:(CDECompletionBlock)completion
+{
+    // User is already authorized, call the completion block right away
+    if ([DropboxClientsManager authorizedClient] != nil) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion(nil);
+        });
+        return;
+    }
+
+    dropboxLinkSessionCompletion = [completion copy];
+    UIApplication *application = [UIApplication sharedApplication];
+    UIViewController *rootController = [[application keyWindow] rootViewController];
+    [DropboxClientsManager authorizeFromController:application
+                                        controller:rootController
+                                           openURL:^(NSURL *url){ [[UIApplication sharedApplication] openURL:url]; }
+                                       browserAuth:YES];
+}
+
+- (void)applicationDidBecomeActive:(NSNotification *)notif
+{
+    // Need to check if there is a live dropbox link session, because if the user doesn't have the
+    // Dropbox app, and cancels the login in the browser, we get no callback to say it failed.
+    if (dropboxLinkSessionCompletion) {
+        NSError *error = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeAuthenticationFailure userInfo:nil];
+        dropboxLinkSessionCompletion(error);
+        dropboxLinkSessionCompletion = NULL;
+    }
 }
 
 #pragma mark - Node-S3 Backend Delegate Methods
@@ -394,6 +525,15 @@ NSString * const IDMDropboxAppSecret = @"djibc9zfvppronm";
 - (void)didImportFiles
 {
     [self synchronizeWithCompletion:nil];
+}
+
+#pragma mark - CDEMonitoredManagedObjectContext
+
+- (void)didSaveMonitoredManagedObjectContext:(NSNotification *)note {
+    // Notify other peers of new data
+    [self synchronizeWithCompletion:^(NSError *error) {
+        [multipeerManager sendNotificationOfNewlyAvailableDataToAllPeers];
+    }];
 }
 
 @end

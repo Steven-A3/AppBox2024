@@ -9,10 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "CDEDefines.h"
 
-typedef void (^CDEFileExistenceCallback)(BOOL exists, BOOL isDirectory, NSError *error);
-typedef void (^CDEDirectoryExistenceCallback)(BOOL exists, NSError *error);
-typedef void (^CDEDirectoryContentsCallback)(NSArray *contents, NSError *error);
-typedef void (^CDEFetchUserIdentityCallback)(id <NSObject, NSCoding, NSCopying> token, NSError *error);
+typedef void (^CDEFileExistenceCallback)(BOOL exists, BOOL isDirectory, NSError * _Nullable error);
+typedef void (^CDEDirectoryExistenceCallback)(BOOL exists, NSError * _Nullable error);
+typedef void (^CDEDirectoryContentsCallback)(NSArray * _Nullable contents, NSError * _Nullable error);
+typedef void (^CDEFetchUserIdentityCallback)(id <NSObject, NSCoding, NSCopying> _Nullable token, NSError * _Nullable error);
 
 /**
  A cloud file system facilitates data transfer between devices.
@@ -44,7 +44,7 @@ typedef void (^CDEFetchUserIdentityCallback)(id <NSObject, NSCoding, NSCopying> 
  
  @param completion The callback block, which passes back the user token. The last argument is an `NSError`, which should be `nil` if successful.
  */
-- (void)fetchUserIdentityWithCompletion:(CDEFetchUserIdentityCallback)completion;
+- (void)fetchUserIdentityWithCompletion:(nullable CDEFetchUserIdentityCallback)completion;
 
 /**
  Attempts to connect to the cloud backend.
@@ -53,7 +53,7 @@ typedef void (^CDEFetchUserIdentityCallback)(id <NSObject, NSCoding, NSCopying> 
  
  @param completion The completion block called when the connection succeeds or fails.
  */
-- (void)connect:(CDECompletionBlock)completion;
+- (void)connect:(nullable CDECompletionBlock)completion;
 
 ///
 /// @name File Existence
@@ -64,9 +64,10 @@ typedef void (^CDEFetchUserIdentityCallback)(id <NSObject, NSCoding, NSCopying> 
  
  Upon determining whether the file exists, the completion block should be called on the main thread.
  
+ @param path The path to look for the file in the cloud.
  @param block The completion block, which takes `BOOL` arguments for whether the file exists and whether it is a directory. The last argument is an `NSError`, which should be `nil` if successful.
  */
-- (void)fileExistsAtPath:(NSString *)path completion:(CDEFileExistenceCallback)block;
+- (void)fileExistsAtPath:(nonnull NSString *)path completion:(nullable CDEFileExistenceCallback)block;
 
 
 @optional
@@ -82,9 +83,10 @@ typedef void (^CDEFetchUserIdentityCallback)(id <NSObject, NSCoding, NSCopying> 
  
  This method is optional, and is provided as a potential optimization for certain backends (eg zip). If it is available, it will be used; otherwise, the fileExistsAtPath:completion: method will be used instead.
  
+ @param path The path to look for the directory in the cloud.
  @param block The completion block, which takes two arguments. The first is a `BOOL` and indicates whether the directory exists. The second argument is an `NSError`, which should be `nil` if successful.
  */
-- (void)directoryExistsAtPath:(NSString *)path completion:(CDEDirectoryExistenceCallback)block;
+- (void)directoryExistsAtPath:(nonnull NSString *)path completion:(nullable CDEDirectoryExistenceCallback)block;
 
 
 @required
@@ -98,18 +100,20 @@ typedef void (^CDEFetchUserIdentityCallback)(id <NSObject, NSCoding, NSCopying> 
  
  The completion block should be called on the main thread when the creation concludes, passing an error or `nil`.
  
+ @param path The path to create the directory in the cloud.
  @param block The completion block, which takes one argument, an `NSError`. It should be `nil` upon success.
  */
-- (void)createDirectoryAtPath:(NSString *)path completion:(CDECompletionBlock)block;
+- (void)createDirectoryAtPath:(nonnull NSString *)path completion:(nullable CDECompletionBlock)block;
 
 /**
  Determines the contents of a directory at a given path.
  
  The completion block has an `NSArray` as its first parameter. The array should contain `CDECloudFile` and `CDECloudDirectory` objects. The completion block should should be called on the main thread.
  
+ @param path The path to the directory in the cloud.
  @param block The completion block, which takes two arguments. The first is an array of file/directory objects, and the second is an `NSError`. It should be `nil` upon success.
  */
-- (void)contentsOfDirectoryAtPath:(NSString *)path completion:(CDEDirectoryContentsCallback)block;
+- (void)contentsOfDirectoryAtPath:(nonnull NSString *)path completion:(nullable CDEDirectoryContentsCallback)block;
 
 ///
 /// @name Deleting Files and Directories
@@ -120,9 +124,10 @@ typedef void (^CDEFetchUserIdentityCallback)(id <NSObject, NSCoding, NSCopying> 
  
  The completion block takes and `NSError`, which should be `nil` upon successful completion. The block should be called on the main thread.
  
+ @param path The path of the item to remove in the cloud.
  @param block The completion block, which takes one argument, an `NSError`.
  */
-- (void)removeItemAtPath:(NSString *)fromPath completion:(CDECompletionBlock)block;
+- (void)removeItemAtPath:(nonnull NSString *)path completion:(nullable CDECompletionBlock)block;
 
 ///
 /// @name Transferring Files
@@ -137,7 +142,7 @@ typedef void (^CDEFetchUserIdentityCallback)(id <NSObject, NSCoding, NSCopying> 
  @param toPath The path of the file in the cloud file system.
  @param block The completion block, which takes one argument, an `NSError`.
  */
-- (void)uploadLocalFile:(NSString *)fromPath toPath:(NSString *)toPath completion:(CDECompletionBlock)block;
+- (void)uploadLocalFile:(nonnull NSString *)fromPath toPath:(nonnull NSString *)toPath completion:(nullable CDECompletionBlock)block;
 
 /**
  Downloads a cloud file to the local file system.
@@ -148,7 +153,7 @@ typedef void (^CDEFetchUserIdentityCallback)(id <NSObject, NSCoding, NSCopying> 
  @param toPath The path to the file on the device.
  @param block The completion block, which takes one argument, an `NSError`.
  */
-- (void)downloadFromPath:(NSString *)fromPath toLocalFile:(NSString *)toPath completion:(CDECompletionBlock)block;
+- (void)downloadFromPath:(nonnull NSString *)fromPath toLocalFile:(nonnull NSString *)toPath completion:(nullable CDECompletionBlock)block;
 
 
 @optional
@@ -178,11 +183,11 @@ typedef void (^CDEFetchUserIdentityCallback)(id <NSObject, NSCoding, NSCopying> 
  
  The completion block takes an `NSError`, which should be `nil` upon successful completion. The block should be called on the main thread.
  
- @param fromPath The paths to the files on the device.
+ @param fromPaths The paths to the files on the device.
  @param toPaths The paths of the files in the cloud file system.
  @param block The completion block, which takes one argument, an `NSError`.
  */
-- (void)uploadLocalFiles:(NSArray *)fromPaths toPaths:(NSArray *)toPaths completion:(CDECompletionBlock)block;
+- (void)uploadLocalFiles:(nonnull NSArray<NSString *> *)fromPaths toPaths:(nonnull NSArray<NSString *> *)toPaths completion:(nullable CDECompletionBlock)block;
 
 /**
  Downloads files from cloud file system.
@@ -195,7 +200,7 @@ typedef void (^CDEFetchUserIdentityCallback)(id <NSObject, NSCoding, NSCopying> 
  @param toPaths The paths to the files on the device.
  @param block The completion block, which takes one argument, an `NSError`.
  */
-- (void)downloadFromPaths:(NSArray *)fromPaths toLocalFiles:(NSArray *)toPaths completion:(CDECompletionBlock)block;
+- (void)downloadFromPaths:(nonnull NSArray<NSString *> *)fromPaths toLocalFiles:(nonnull NSArray<NSString *> *)toPaths completion:(nullable CDECompletionBlock)block;
 
 /**
  Deletes one or more files or directories.
@@ -209,7 +214,7 @@ typedef void (^CDEFetchUserIdentityCallback)(id <NSObject, NSCoding, NSCopying> 
  @param paths Array of paths for the items to be removed.
  @param block The completion block, which takes one argument, an `NSError`.
  */
-- (void)removeItemsAtPaths:(NSArray *)paths completion:(CDECompletionBlock)block;
+- (void)removeItemsAtPaths:(nonnull NSArray<NSString *> *)paths completion:(nullable CDECompletionBlock)block;
 
 ///
 /// @name Initial Setup
@@ -224,7 +229,23 @@ typedef void (^CDEFetchUserIdentityCallback)(id <NSObject, NSCoding, NSCopying> 
  
  @param block The completion block, which takes one argument, an `NSError`.
  */
-- (void)performInitialPreparation:(CDECompletionBlock)completion;
+- (void)performInitialPreparation:(nullable CDECompletionBlock)block;
+
+///
+/// @name Priming for Activity
+///
+
+/**
+ An optional method which can be implemented to prepare for some activity, like merging or leeching.
+ 
+ Many backends can be made more efficient by fetching and caching all server data, rather than running individual
+ queries. If this is the case, this method can be used to update the cache, before requests are made for files.
+  
+ The completion block takes an `NSError`, which should be `nil` upon successful completion. The block should be called on the main thread.
+ 
+ @param block The completion block, which takes one argument, an `NSError`.
+ */
+- (void)primeForActivityWithCompletion:(nullable CDECompletionBlock)block;
 
 
 ///
@@ -241,7 +262,7 @@ typedef void (^CDEFetchUserIdentityCallback)(id <NSObject, NSCoding, NSCopying> 
  @param ensembleDir Path to the directory of the ensemble.
  @param block The completion block, which takes one argument, an `NSError`.
  */
-- (void)repairEnsembleDirectory:(NSString *)ensembleDir completion:(CDECompletionBlock)completion;
+- (void)repairEnsembleDirectory:(nonnull NSString *)ensembleDir completion:(nullable CDECompletionBlock)block;
 
 
 @end

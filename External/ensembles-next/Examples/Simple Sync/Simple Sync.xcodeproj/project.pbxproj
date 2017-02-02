@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07B6CB051BADB0CB00FAFB29 /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07B6CB031BADB0CB00FAFB29 /* Launch.storyboard */; settings = {ASSET_TAGS = (); }; };
 		07D7E4EA1911174B0086A2AE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07D7E4E91911174B0086A2AE /* Foundation.framework */; };
 		07D7E4EC1911174B0086A2AE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07D7E4EB1911174B0086A2AE /* CoreGraphics.framework */; };
 		07D7E4EE1911174B0086A2AE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07D7E4ED1911174B0086A2AE /* UIKit.framework */; };
@@ -55,6 +56,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		07B6CB041BADB0CB00FAFB29 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Launch.storyboard; sourceTree = "<group>"; };
 		07D7E4E61911174B0086A2AE /* Simple Sync.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Simple Sync.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		07D7E4E91911174B0086A2AE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		07D7E4EB1911174B0086A2AE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -147,6 +149,7 @@
 				07D7E4F41911174B0086A2AE /* InfoPlist.strings */,
 				07D7E4F71911174B0086A2AE /* main.m */,
 				07D7E4F91911174B0086A2AE /* Simple Sync-Prefix.pch */,
+				07B6CB031BADB0CB00FAFB29 /* Launch.storyboard */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -256,6 +259,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				07D7E50A1911174B0086A2AE /* Images.xcassets in Resources */,
+				07B6CB051BADB0CB00FAFB29 /* Launch.storyboard in Resources */,
 				07D7E4F61911174B0086A2AE /* InfoPlist.strings in Resources */,
 				07D7E4FF1911174B0086A2AE /* Main.storyboard in Resources */,
 				07D7E55519111FDB0086A2AE /* Ensembles.bundle in Resources */,
@@ -288,6 +292,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		07B6CB031BADB0CB00FAFB29 /* Launch.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				07B6CB041BADB0CB00FAFB29 /* Base */,
+			);
+			name = Launch.storyboard;
+			sourceTree = "<group>";
+		};
 		07D7E4F41911174B0086A2AE /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -381,11 +393,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "Simple Sync/Simple Sync.entitlements";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Simple Sync/Simple Sync-Prefix.pch";
 				INFOPLIST_FILE = "Simple Sync/Simple Sync-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -395,11 +407,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "Simple Sync/Simple Sync.entitlements";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Simple Sync/Simple Sync-Prefix.pch";
 				INFOPLIST_FILE = "Simple Sync/Simple Sync-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

@@ -13,7 +13,6 @@
 #import "IDMNote.h"
 #import "IDMTag.h"
 #import "CDEZipCloudFileSystem.h"
-#import "CDEEncryptedCloudFileSystem.h"
 
 
 NSString * const IDMSyncActivityDidBeginNotification = @"IDMSyncActivityDidBegin";
@@ -75,7 +74,6 @@ NSString * const IDMSyncActivityDidEndNotification = @"IDMSyncActivityDidEnd";
     
     // Setup Ensemble
     cloudFileSystem = [[CDEICloudFileSystem alloc] initWithUbiquityContainerIdentifier:nil];
-    cloudFileSystem = [[CDEEncryptedCloudFileSystem alloc] initWithCloudFileSystem:cloudFileSystem password:@"secret"];
     cloudFileSystem = [[CDEZipCloudFileSystem alloc] initWithCloudFileSystem:cloudFileSystem];
     ensemble = [[CDEPersistentStoreEnsemble alloc] initWithEnsembleIdentifier:@"MainStore.v2" persistentStoreURL:storeURL managedObjectModelURL:modelURL cloudFileSystem:cloudFileSystem];
     ensemble.delegate = self;

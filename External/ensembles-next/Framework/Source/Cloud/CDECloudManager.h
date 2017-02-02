@@ -29,13 +29,13 @@
 - (void)snapshotRemoteFilesWithCompletion:(CDECompletionBlock)completion;
 - (void)clearSnapshot;
 
-- (void)importNewRemoteNonBaselineEventsWithCompletion:(CDECompletionBlock)completion;
-- (void)importNewBaselineEventsWithCompletion:(CDECompletionBlock)completion;
-- (void)importNewDataFilesWithCompletion:(CDECompletionBlock)completion;
+- (void)importNewRemoteNonBaselineEventsWithProgress:(CDEProgressBlock)progressBlock;
+- (void)importNewBaselineEventsWithProgress:(CDEProgressBlock)progressBlock;
+- (void)importNewDataFilesWithProgress:(CDEProgressBlock)progressBlock;
 
-- (void)exportNewLocalNonBaselineEventsWithCompletion:(CDECompletionBlock)completion;
-- (void)exportNewLocalBaselineWithCompletion:(CDECompletionBlock)completion;
-- (void)exportDataFilesWithCompletion:(CDECompletionBlock)completion;
+- (void)exportNewLocalNonBaselineEventsWithProgress:(CDEProgressBlock)progressBlock;
+- (void)exportNewLocalBaselineWithProgress:(CDEProgressBlock)progressBlock;
+- (void)exportDataFilesWithProgress:(CDEProgressBlock)progressBlock;
 
 - (void)removeLocallyProducedIncompleteRemoteFileSets:(CDECompletionBlock)completion;
 - (void)removeOutdatedRemoteFilesWithCompletion:(CDECompletionBlock)completion;

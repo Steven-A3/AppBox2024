@@ -84,6 +84,20 @@ NSString *const kDiscoveryInfoUniqueIdentifer = @"DiscoveryInfoUniqueIdentifer";
 
 #pragma mark - Syncing Files
 
+- (void)syncFilesWithPeer:(id)peerID {
+    if (peerSession.connectedPeers.count == 0 && (!peerBrowser || !peerAdvertizer) ) {
+        [self start];
+        return;
+    }
+    
+    NSMutableArray *peers = [peerSession.connectedPeers mutableCopy];
+    [peers removeObject:peerSession.myPeerID];
+    
+    if([peers containsObject:peerID]) {
+        [self.multipeerCloudFileSystem retrieveFilesFromPeersWithIDs:@[peerID]];
+    }
+}
+
 - (void)syncFilesWithAllPeers
 {
     if (peerSession.connectedPeers.count == 0 && (!peerBrowser || !peerAdvertizer) ) {
@@ -96,6 +110,17 @@ NSString *const kDiscoveryInfoUniqueIdentifer = @"DiscoveryInfoUniqueIdentifer";
     [self.multipeerCloudFileSystem retrieveFilesFromPeersWithIDs:peers];
 }
 
+- (void)sendNotificationOfNewlyAvailableDataToAllPeers {
+    if (peerSession.connectedPeers.count == 0 && (!peerBrowser || !peerAdvertizer) ) {
+        [self start];
+        return;
+    }
+    
+    NSMutableArray *peers = [peerSession.connectedPeers mutableCopy];
+    [peers removeObject:peerSession.myPeerID];
+    [self.multipeerCloudFileSystem sendNotificationOfNewlyAvailableDataToPeersWithIDs:peers];
+}
+
 - (BOOL)sendAndDiscardFileAtURL:(NSURL *)url toPeerWithID:(id<NSObject,NSCopying,NSCoding>)peerID
 {
     NSProgress *progress = [peerSession sendResourceAtURL:url withName:[url lastPathComponent] toPeer:(id)peerID withCompletionHandler:^(NSError *error) {
@@ -105,6 +130,8 @@ NSString *const kDiscoveryInfoUniqueIdentifer = @"DiscoveryInfoUniqueIdentifer";
     return progress != nil;
 }
 
+#pragma mark - CDEMultipeerConnection
+
 - (BOOL)sendData:(NSData *)data toPeerWithID:(id<NSObject,NSCopying,NSCoding>)peerID
 {
     NSError *error = nil;
@@ -112,6 +139,13 @@ NSString *const kDiscoveryInfoUniqueIdentifer = @"DiscoveryInfoUniqueIdentifer";
     if (!success) CDELog(CDELoggingLevelError, @"Failed to send data to peer: %@", error);
     return success;
 }
+
+- (void)newDataWasAddedOnPeerWithID:(id<NSObject,NSCopying,NSCoding>)peerID
+{
+    [self syncFilesWithPeer:peerID];
+}
+
+#pragma mark - MCSessionDelegate
 
 - (void)session:(MCSession *)session didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID
 {

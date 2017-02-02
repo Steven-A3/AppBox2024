@@ -29,7 +29,11 @@
 
 - (void)prepareToImport
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     importContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSConfinementConcurrencyType];
+#pragma clang diagnostic pop
+    
     NSPersistentStoreCoordinator *mainCoordinator = self.eventStore.managedObjectContext.persistentStoreCoordinator;
     NSPersistentStoreCoordinator *persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mainCoordinator.managedObjectModel];
     importContext.persistentStoreCoordinator = persistentStoreCoordinator;
@@ -37,7 +41,11 @@
 
 - (BOOL)addImportStoreForFileAtURL:(NSURL *)fileURL error:(NSError * __autoreleasing *)localError
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     NSDictionary *metadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:nil URL:fileURL error:localError];
+#pragma clang diagnostic pop
+
     NSString *storeType = metadata[NSStoreTypeKey];
     if (!storeType) return NO;
     

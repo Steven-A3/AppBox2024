@@ -7,9 +7,9 @@
 //
 
 #import <Ensembles/Ensembles.h>
+#import <MagicalRecord/MagicalRecord.h>
 
 #import "AppDelegate.h"
-#import "CoreData+MagicalRecord.h"
 #import "ViewController.h"
 #import "NumberHolder.h"
 

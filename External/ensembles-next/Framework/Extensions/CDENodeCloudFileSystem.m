@@ -30,7 +30,10 @@
         baseURL = newBaseURL;
         loggedIn = NO;
         operationQueue = [[NSOperationQueue alloc] init];
-        operationQueue.maxConcurrentOperationCount = 1;
+        operationQueue.maxConcurrentOperationCount = 5;
+        if ([operationQueue respondsToSelector:@selector(setQualityOfService:)]) {
+            [operationQueue setQualityOfService:NSQualityOfServiceUserInitiated];
+        }
     }
     return self;
 }
@@ -187,6 +190,28 @@
     }];
 }
 
+- (NSUInteger)fileUploadMaximumBatchSize {
+    return 20;
+}
+
+- (void)uploadLocalFiles:(NSArray *)fromPaths toPaths:(NSArray *)toPaths completion:(CDECompletionBlock)block
+{
+    NSParameterAssert(fromPaths.count == toPaths.count);
+    
+    __block NSError *lastError = nil;
+    __block NSUInteger remaining = fromPaths.count;
+    for (NSUInteger i = 0; i < fromPaths.count; i++) {
+        NSString *fromPath = fromPaths[i];
+        NSString *toPath = toPaths[i];
+        [self uploadLocalFile:fromPath toPath:toPath completion:^(NSError *error) {
+            if (error) lastError = error;
+            if (--remaining == 0) {
+                block(lastError);
+            }
+        }];
+    }
+}
+
 - (void)downloadFromPath:(NSString *)fromPath toLocalFile:(NSString *)toPath completion:(CDECompletionBlock)completion
 {
     NSURL *url = [self.baseURL URLByAppendingPathComponent:@"downloadurls" isDirectory:NO];
@@ -205,6 +230,29 @@
         [operationQueue addOperation:operation];
     }];
 }
+
+- (NSUInteger)fileDownloadMaximumBatchSize {
+    return 20;
+}
+
+- (void)downloadFromPaths:(NSArray *)fromPaths toLocalFiles:(NSArray *)toPaths completion:(CDECompletionBlock)block
+{
+    NSParameterAssert(fromPaths.count == toPaths.count);
+    
+    __block NSError *lastError = nil;
+    __block NSUInteger remaining = fromPaths.count;
+    for (NSUInteger i = 0; i < fromPaths.count; i++) {
+        NSString *fromPath = fromPaths[i];
+        NSString *toPath = toPaths[i];
+        [self downloadFromPath:fromPath toLocalFile:toPath completion:^(NSError *error) {
+            if (error) lastError = error;
+            if (--remaining == 0) {
+                block(lastError);
+            }
+        }];
+    }
+}
+
 
 #pragma mark - Signing Up New User
 

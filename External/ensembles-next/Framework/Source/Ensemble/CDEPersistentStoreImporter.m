@@ -68,15 +68,25 @@
         context.persistentStoreCoordinator = coordinator;
         context.undoManager = nil;
         
-        NSError *localError = nil;
+        __block id store;
         NSURL *storeURL = [NSURL fileURLWithPath:persistentStorePath];
         NSDictionary *options = self.persistentStoreOptions;
         if (!options) options = @{NSMigratePersistentStoresAutomaticallyOption: @YES, NSInferMappingModelAutomaticallyOption: @YES};
-        [coordinator lock];
-        id store = [coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&localError];
-        [coordinator unlock];
         
-        if (!store) error = localError;
+        if ([coordinator respondsToSelector:@selector(performBlockAndWait:)]) {
+            [coordinator performBlockAndWait:^{
+                NSError *localError = nil;
+                store = [coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&localError];
+                if (!store) error = localError;
+            }];
+        }
+        else {
+            [(id)coordinator lock];
+            NSError *localError = nil;
+            store = [coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&localError];
+            [(id)coordinator unlock];
+            if (!store) error = localError;
+        }
     }];
     
     if (error) {

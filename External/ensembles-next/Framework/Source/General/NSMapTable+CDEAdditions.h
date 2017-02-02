@@ -10,12 +10,12 @@
 
 @interface NSMapTable (CDEAdditions)
 
-@property (readonly) NSArray *cde_allValues;
-@property (readonly) NSArray *cde_allKeys;
+@property (readonly, nonnull) NSArray *cde_allValues;
+@property (readonly, nonnull) NSArray *cde_allKeys;
 
-+ (instancetype)cde_weakToStrongObjectsMapTable;
-+ (instancetype)cde_strongToStrongObjectsMapTable;
++ (nonnull instancetype)cde_weakToStrongObjectsMapTable;
++ (nonnull instancetype)cde_strongToStrongObjectsMapTable;
 
-- (void)cde_addEntriesFromMapTable:(NSMapTable *)otherTable;
+- (void)cde_addEntriesFromMapTable:(nullable NSMapTable *)otherTable;
 
 @end

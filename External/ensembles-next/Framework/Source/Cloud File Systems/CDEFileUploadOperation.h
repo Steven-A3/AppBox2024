@@ -11,10 +11,10 @@
 
 @interface CDEFileUploadOperation : CDEAsynchronousOperation
 
-@property (nonatomic, copy, readonly) NSString *localPath;
-@property (nonatomic, copy, readonly) NSURLRequest *request;
-@property (nonatomic, copy, readwrite) CDECompletionBlock completion;
+@property (nonatomic, copy, readonly, nonnull) NSString *localPath;
+@property (nonatomic, copy, readonly, nonnull) NSURLRequest *request;
+@property (nonatomic, copy, readwrite, nullable) CDECompletionBlock completion;
 
-- (instancetype)initWithURLRequest:(NSURLRequest *)urlRequest localPath:(NSString *)path;
+- (nonnull instancetype)initWithURLRequest:(nonnull NSURLRequest *)urlRequest localPath:(nonnull NSString *)path;
 
 @end

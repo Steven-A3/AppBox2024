@@ -260,7 +260,8 @@
     NSString *partComponent = components[3];
     NSArray *fraction = [partComponent componentsSeparatedByString:@"of"];
     NSAssert(fraction.count == 2, @"Wrong number of components in part fraction: %@", filename);
-
+    if (fraction.count != 2) return nil;
+    
     return [fraction valueForKeyPath:@"integerValue"];
 }
 

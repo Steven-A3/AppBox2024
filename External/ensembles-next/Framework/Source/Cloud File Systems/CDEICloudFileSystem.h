@@ -9,15 +9,19 @@
 #import <Foundation/Foundation.h>
 #import "CDECloudFileSystem.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 extern NSString * const CDEICloudFileSystemDidDownloadFilesNotification;
 extern NSString * const CDEICloudFileSystemDidMakeDownloadProgressNotification;
 
+NS_ASSUME_NONNULL_END
+
 @interface CDEICloudFileSystem : NSObject <CDECloudFileSystem, NSFilePresenter>
 
-@property (nonatomic, readonly) NSString *relativePathToRootInContainer;
+@property (nonatomic, readonly, nonnull) NSString *relativePathToRootInContainer;
 @property (atomic, readonly) unsigned long long bytesRemainingToDownload;
 
-- (instancetype)initWithUbiquityContainerIdentifier:(NSString *)newIdentifier;
-- (instancetype)initWithUbiquityContainerIdentifier:(NSString *)newIdentifier relativePathToRootInContainer:(NSString *)rootSubPath;
+- (nonnull instancetype)initWithUbiquityContainerIdentifier:(nullable NSString *)newIdentifier;
+- (nonnull instancetype)initWithUbiquityContainerIdentifier:(nullable NSString *)newIdentifier relativePathToRootInContainer:(nullable NSString *)rootSubPath;
 
 @end

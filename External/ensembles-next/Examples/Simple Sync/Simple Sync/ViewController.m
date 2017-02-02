@@ -39,7 +39,6 @@
 - (void)refresh
 {
     self.numberLabel.text = self.numberHolder.number.stringValue;
-
 }
 
 @end

@@ -24,10 +24,10 @@
 
 - (void)migrateNewEventsWhichAreBaselines:(BOOL)areBaselines fromTransitCacheWithCompletion:(CDECompletionBlock)completion;
 
-- (void)transferFilesInTransitCacheToRemoteDirectory:(NSString *)remoteDirectory completion:(CDECompletionBlock)completion;
+- (void)transferFilesInTransitCacheToRemoteDirectory:(NSString *)remoteDirectory progress:(CDEProgressBlock)progressBlock;
 - (void)migrateNewLocalEventsToTransitCacheWithRemoteDirectory:(NSString *)remoteDirectory existingRemoteFilenames:(NSArray *)filenames allowedTypes:(NSArray *)types completion:(CDECompletionBlock)completion;
 
-- (void)transferNewRemoteEventFilesToTransitCacheWithCompletion:(CDECompletionBlock)completion;
+- (void)transferNewRemoteEventFilesToTransitCacheWithProgress:(CDEProgressBlock)progressBlock;
 
 @end
 
@@ -153,9 +153,11 @@
 - (void)testImportFromCloudWithNoData
 {
     [cloudManager snapshotRemoteFilesWithCompletion:^(NSError *error) {
-        [cloudManager importNewRemoteNonBaselineEventsWithCompletion:^(NSError *error) {
-            XCTAssertNil(error, @"Error when trying to import with no data");
-            [self stopWaiting];
+        [cloudManager importNewRemoteNonBaselineEventsWithProgress:^(NSError *error, float progress, BOOL isFinished) {
+            if (error || isFinished) {
+                XCTAssertNil(error, @"Error when trying to import with no data");
+                [self stopWaiting];
+            }
         }];
     }];
     [self waitForAsyncOperation];
@@ -170,9 +172,11 @@
         [cloudFileSystem uploadLocalFile:file toPath:@"/ensemble1/events/0_store1_0" completion:^(NSError *error) {
             [cloudManager snapshotRemoteFilesWithCompletion:^(NSError *error) {
                 XCTAssertNil(error, @"Error uploading file");
-                [cloudManager importNewRemoteNonBaselineEventsWithCompletion:^(NSError *error) {
-                    XCTAssertNotNil(error, @"No error when should be one");
-                    [self stopWaiting];
+                [cloudManager importNewRemoteNonBaselineEventsWithProgress:^(NSError *error, float progress, BOOL isFinished) {
+                    if (error || isFinished) {
+                        XCTAssertNotNil(error, @"No error when should be one");
+                        [self stopWaiting];
+                    }
                 }];
             }];
         }];
@@ -189,14 +193,16 @@
     
     [cloudManager createRemoteDirectoryStructureWithCompletion:^(NSError *error) {
         [cloudManager snapshotRemoteFilesWithCompletion:^(NSError *error) {
-            [cloudManager exportNewLocalNonBaselineEventsWithCompletion:^(NSError *error) {
-                NSString *path = [remoteEnsemblesDir stringByAppendingPathComponent:@"events/0_store1_0.cdeevent"];
-                [cloudFileSystem fileExistsAtPath:path completion:^(BOOL exists, BOOL isDirectory, NSError *error) {
-                    XCTAssert(exists, @"File doesn't exist in cloud");
-                    XCTAssertNil(error, @"Should not be an error");
-                    XCTAssertFalse(isDirectory, @"Should not be a directory");
-                    [self stopWaiting];
-                }];
+            [cloudManager exportNewLocalNonBaselineEventsWithProgress:^(NSError *error, float progress, BOOL isFinished) {
+                if (error || isFinished) {
+                    NSString *path = [remoteEnsemblesDir stringByAppendingPathComponent:@"events/0_store1_0.cdeevent"];
+                    [cloudFileSystem fileExistsAtPath:path completion:^(BOOL exists, BOOL isDirectory, NSError *error) {
+                        XCTAssert(exists, @"File doesn't exist in cloud");
+                        XCTAssertNil(error, @"Should not be an error");
+                        XCTAssertFalse(isDirectory, @"Should not be a directory");
+                        [self stopWaiting];
+                    }];
+                }
             }];
         }];
     }];
@@ -222,16 +228,17 @@
                 NSString *eventsDir = [path stringByDeletingLastPathComponent];
                 XCTAssertEqual([[fileManager contentsOfDirectoryAtPath:eventsDir error:NULL] count], (NSUInteger)2, @"Wrong number of files exported");
                 
-                [cloudManager transferFilesInTransitCacheToRemoteDirectory:cloudManager.remoteEventsDirectory completion:^(NSError *error) {
+                [cloudManager transferFilesInTransitCacheToRemoteDirectory:cloudManager.remoteEventsDirectory progress:^(NSError *error, float progress, BOOL isFinished) {
                     XCTAssertNil(error, @"Error transferring to cloud");
-                    
-                    NSString *remotePath = [remoteEnsemblesDir stringByAppendingPathComponent:@"events/2_store1_1.cdeevent"];
-                    [cloudFileSystem fileExistsAtPath:remotePath completion:^(BOOL exists, BOOL isDirectory, NSError *error) {
-                        XCTAssert(exists, @"File doesn't exist in cloud");
-                        XCTAssertNil(error, @"Should not be an error");
-                        XCTAssertFalse(isDirectory, @"Should not be a directory");
-                        [self stopWaiting];
-                    }];
+                    if (error || isFinished) {
+                        NSString *remotePath = [remoteEnsemblesDir stringByAppendingPathComponent:@"events/2_store1_1.cdeevent"];
+                        [cloudFileSystem fileExistsAtPath:remotePath completion:^(BOOL exists, BOOL isDirectory, NSError *error) {
+                            XCTAssert(exists, @"File doesn't exist in cloud");
+                            XCTAssertNil(error, @"Should not be an error");
+                            XCTAssertFalse(isDirectory, @"Should not be a directory");
+                            [self stopWaiting];
+                        }];
+                    }
                 }];
             }];
         }];
@@ -249,10 +256,12 @@
     
     [cloudManager createRemoteDirectoryStructureWithCompletion:^(NSError *error) {
         [cloudManager snapshotRemoteFilesWithCompletion:^(NSError *error) {
-            [cloudManager exportNewLocalNonBaselineEventsWithCompletion:^(NSError *error) {
-                NSString *eventsDir = [rootDir stringByAppendingPathComponent:@"transitcache/ensemble1/upload"];
-                XCTAssertEqual([[fileManager contentsOfDirectoryAtPath:eventsDir error:NULL] count], (NSUInteger)0, @"Should be no files after a successful export");
-                [self stopWaiting];
+            [cloudManager exportNewLocalNonBaselineEventsWithProgress:^(NSError *error, float progress, BOOL isFinished) {
+                if (error || isFinished) {
+                    NSString *eventsDir = [rootDir stringByAppendingPathComponent:@"transitcache/ensemble1/upload"];
+                    XCTAssertEqual([[fileManager contentsOfDirectoryAtPath:eventsDir error:NULL] count], (NSUInteger)0, @"Should be no files after a successful export");
+                    [self stopWaiting];
+                }
             }];
         }];
     }];
@@ -438,17 +447,19 @@
     [fs createFileAtPath:path2 withData:[NSData data]];
 
     [cloudManager snapshotRemoteFilesWithCompletion:^(NSError *error) {
-        [cloudManager transferNewRemoteEventFilesToTransitCacheWithCompletion:^(NSError *error) {
-            XCTAssertNil(error, @"Should not be error. Should just ignore incomplete files.");
-            
-            NSString *downloadDir = [rootDir stringByAppendingPathComponent:@"transitcache/ensemble1/download"];
-            NSString *path = [downloadDir stringByAppendingPathComponent:@"12_abc_2_1of2.cdeevent"];
-            XCTAssertFalse([fileManager fileExistsAtPath:path], @"Should not download an incomplete file set");
-            
-            path = [downloadDir stringByAppendingPathComponent:@"11_abc_1.cdeevent"];
-            XCTAssertTrue([fileManager fileExistsAtPath:path], @"Did download complete file set");
-            
-            [self stopWaiting];
+        [cloudManager transferNewRemoteEventFilesToTransitCacheWithProgress:^(NSError *error, float progress, BOOL isFinished) {
+            if (error || isFinished) {
+                XCTAssertNil(error, @"Should not be error. Should just ignore incomplete files.");
+                
+                NSString *downloadDir = [rootDir stringByAppendingPathComponent:@"transitcache/ensemble1/download"];
+                NSString *path = [downloadDir stringByAppendingPathComponent:@"12_abc_2_1of2.cdeevent"];
+                XCTAssertFalse([fileManager fileExistsAtPath:path], @"Should not download an incomplete file set");
+                
+                path = [downloadDir stringByAppendingPathComponent:@"11_abc_1.cdeevent"];
+                XCTAssertTrue([fileManager fileExistsAtPath:path], @"Did download complete file set");
+                
+                [self stopWaiting];
+            }
         }];
     }];
     [self waitForAsyncOperation];

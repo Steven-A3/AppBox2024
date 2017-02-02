@@ -12,6 +12,7 @@
 #import <Ensembles/CDEAsynchronousOperation.h>
 #import <Ensembles/CDEAsynchronousTaskQueue.h>
 #import <Ensembles/CDEAvailabilityMacros.h>
+#import <Ensembles/CDECloudItem.h>
 #import <Ensembles/CDECloudDirectory.h>
 #import <Ensembles/CDECloudFile.h>
 #import <Ensembles/CDECloudFileSystem.h>
@@ -24,3 +25,4 @@
 #import <Ensembles/CDEPersistentStoreEnsemble.h>
 #import <Ensembles/NSMapTable+CDEAdditions.h>
 #import <Ensembles/NSManagedObjectModel+CDEAdditions.h>
+#import <Ensembles/NSData+CDEAdditions.h>

@@ -16,14 +16,55 @@
 NSString * const CDEICloudFileSystemDidDownloadFilesNotification = @"CDEICloudFileSystemDidUpdateFilesNotification";
 NSString * const CDEICloudFileSystemDidMakeDownloadProgressNotification = @"CDEICloudFileSystemDidMakeDownloadProgressNotification";
 
+
+/// This class is used to prevent a retain cycle
+@interface CDEICloudFilePresenter : NSObject <NSFilePresenter>
+
+@property (nonatomic, weak) id<NSFilePresenter> delegate;
+
+- (void)stopMonitoring;
+- (void)startMonitoring;
+
+@end
+
+@implementation CDEICloudFilePresenter
+
+- (NSURL *)presentedItemURL
+{
+    return [self.delegate presentedItemURL];
+}
+
+- (NSOperationQueue *)presentedItemOperationQueue
+{
+    return [self.delegate presentedItemOperationQueue];
+}
+
+- (void)presentedSubitemDidChangeAtURL:(NSURL *)url
+{
+    [self.delegate presentedSubitemDidChangeAtURL:url];
+}
+
+- (void)startMonitoring
+{
+    [NSFileCoordinator addFilePresenter:self];
+}
+
+- (void)stopMonitoring
+{
+    [NSFileCoordinator removeFilePresenter:self];
+}
+
+@end
+
+
 @interface CDEICloudFileSystem ()
 
 @property (atomic, readwrite) unsigned long long bytesRemainingToDownload;
 
 @end
 
-
 @implementation CDEICloudFileSystem {
+    CDEICloudFilePresenter *filePresenter;
     NSFileManager *fileManager;
     NSURL *rootDirectoryURL;
     NSMetadataQuery *metadataQuery;
@@ -52,20 +93,35 @@ NSString * const CDEICloudFileSystemDidMakeDownloadProgressNotification = @"CDEI
 {
     self = [super init];
     if (self) {
+        filePresenter = [[CDEICloudFilePresenter alloc] init];
+        filePresenter.delegate = self;
+        
         fileManager = [[NSFileManager alloc] init];
         
         isConnected = NO;
         
         serialQueue = [[NSOperationQueue alloc] init];
         serialQueue.maxConcurrentOperationCount = 1;
+        if ([serialQueue respondsToSelector:@selector(setQualityOfService:)]) {
+            [serialQueue setQualityOfService:NSQualityOfServiceUserInitiated];
+        }
         
         backgroundQueue = [[NSOperationQueue alloc] init];
+        if ([backgroundQueue respondsToSelector:@selector(setQualityOfService:)]) {
+            [backgroundQueue setQualityOfService:NSQualityOfServiceUserInitiated];
+        }
         
         presenterQueue = [[NSOperationQueue alloc] init];
         presenterQueue.maxConcurrentOperationCount = 1;
+        if ([presenterQueue respondsToSelector:@selector(setQualityOfService:)]) {
+            [presenterQueue setQualityOfService:NSQualityOfServiceUserInitiated];
+        }
         
         downloadTrackingQueue = [[NSOperationQueue alloc] init];
         downloadTrackingQueue.maxConcurrentOperationCount = 1;
+        if ([downloadTrackingQueue respondsToSelector:@selector(setQualityOfService:)]) {
+            [downloadTrackingQueue setQualityOfService:NSQualityOfServiceUserInitiated];
+        }
         
         timeOutQueue = dispatch_queue_create("com.mentalfaculty.ensembles.queue.icloudtimeout", DISPATCH_QUEUE_SERIAL);
         initiatingDownloadsQueue = dispatch_queue_create("com.mentalfaculty.ensembles.queue.initiatedownloads", DISPATCH_QUEUE_SERIAL);
@@ -106,6 +162,7 @@ NSString * const CDEICloudFileSystemDidMakeDownloadProgressNotification = @"CDEI
     [serialQueue cancelAllOperations];
 }
 
+
 #pragma mark - User Identity
 
 - (void)fetchUserIdentityWithCompletion:(CDEFetchUserIdentityCallback)completion
@@ -118,6 +175,7 @@ NSString * const CDEICloudFileSystemDidMakeDownloadProgressNotification = @"CDEI
         if (completion) completion(token, nil);
     });
 }
+
 
 #pragma mark - Initial Preparation
 
@@ -161,6 +219,7 @@ NSString * const CDEICloudFileSystemDidMakeDownloadProgressNotification = @"CDEI
     }];
     [serialQueue addOperation:preparationQueue];
 }
+
 
 #pragma mark - Repair
 
@@ -229,7 +288,7 @@ NSString * const CDEICloudFileSystemDidMakeDownloadProgressNotification = @"CDEI
             NSURL *ensembleURL = [NSURL fileURLWithPath:pathInDirectory];
             NSURL *duplicateURL = [NSURL fileURLWithPath:duplicatePath];
             
-            NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:self];
+            NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:filePresenter];
             
             NSError *fileCoordinatorError = nil;
             __block NSError *fileManagerError = nil;
@@ -254,7 +313,7 @@ NSString * const CDEICloudFileSystemDidMakeDownloadProgressNotification = @"CDEI
         }
         
         // Delete the duplicate directory
-        NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:self];
+        NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:filePresenter];
         
         NSURL *dirToMergeURL = [NSURL fileURLWithPath:dirToMerge];
         NSError *coordinatorError = nil;
@@ -293,6 +352,7 @@ NSString * const CDEICloudFileSystemDidMakeDownloadProgressNotification = @"CDEI
     return directoriesForMerging;
 }
 
+
 #pragma mark - Root Directory
 
 - (void)updateRootDirectoryURL
@@ -316,7 +376,7 @@ NSString * const CDEICloudFileSystemDidMakeDownloadProgressNotification = @"CDEI
         NSError *error = nil;
         __block BOOL fileExistsAtPath = NO;
         __block BOOL existingFileIsDirectory = NO;
-        NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:self];
+        NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:filePresenter];
         [coordinator cde_coordinateReadingItemAtURL:rootDirectoryURL options:NSFileCoordinatorReadingWithoutChanges timeout:CDEFileCoordinatorTimeOut error:&error byAccessor:^(NSURL *newURL) {
             fileExistsAtPath = [fileManager fileExistsAtPath:newURL.path isDirectory:&existingFileIsDirectory];
         }];
@@ -362,6 +422,7 @@ NSString * const CDEICloudFileSystemDidMakeDownloadProgressNotification = @"CDEI
     return [rootDirectoryURL.path stringByAppendingPathComponent:path];
 }
 
+
 #pragma mark - Connection
 
 - (void)connect:(CDECompletionBlock)completion
@@ -379,6 +440,7 @@ NSString * const CDEICloudFileSystemDidMakeDownloadProgressNotification = @"CDEI
         }
     }];
 }
+
 
 #pragma mark - Metadata Query to download new files
 
@@ -409,7 +471,7 @@ NSString * const CDEICloudFileSystemDidMakeDownloadProgressNotification = @"CDEI
     
     [metadataQuery startQuery];
     
-    [NSFileCoordinator addFilePresenter:self];
+    [filePresenter startMonitoring];
 }
 
 - (void)stopMonitoring
@@ -425,7 +487,7 @@ NSString * const CDEICloudFileSystemDidMakeDownloadProgressNotification = @"CDEI
     metadataQuery = nil;
     
     [presenterQueue cancelAllOperations];
-    [NSFileCoordinator removeFilePresenter:self];
+    [filePresenter stopMonitoring];
 }
 
 - (void)metadataQueryDidFinishGathering:(NSNotification *)notif
@@ -488,7 +550,7 @@ NSString * const CDEICloudFileSystemDidMakeDownloadProgressNotification = @"CDEI
                     }
                     
                     [downloadTrackingQueue addOperationWithBlock:^{
-                        NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:self];
+                        NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:filePresenter];
                         NSError *error = nil;
                         __block BOOL complete = NO;
                         [coordinator cde_coordinateReadingItemAtURL:url options:0 timeout:CDEFileCoordinatorTimeOut error:&error byAccessor:^(NSURL *newURL) {
@@ -600,6 +662,7 @@ NSString * const CDEICloudFileSystemDidMakeDownloadProgressNotification = @"CDEI
     }
 }
 
+
 #pragma mark - File Operations
 
 static const NSTimeInterval CDEFileCoordinatorTimeOut = 10.0;
@@ -633,7 +696,7 @@ static const NSTimeInterval CDEFileCoordinatorTimeOut = 10.0;
         __block BOOL isDirectory = NO;
         __block BOOL exists = NO;
         
-        NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:self];
+        NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:filePresenter];
         
         NSString *fullPath = [self fullPathForPath:path];
         NSURL *url = [NSURL fileURLWithPath:fullPath];
@@ -662,7 +725,7 @@ static const NSTimeInterval CDEFileCoordinatorTimeOut = 10.0;
         NSError *fileCoordinatorError = nil;
         __block NSError *fileManagerError = nil;
         
-        NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:self];
+        NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:filePresenter];
         
         __block NSArray *contents = nil;
         NSURL *url = [NSURL fileURLWithPath:[self fullPathForPath:path]];
@@ -718,7 +781,7 @@ static const NSTimeInterval CDEFileCoordinatorTimeOut = 10.0;
         NSError *fileCoordinatorError = nil;
         __block NSError *fileManagerError = nil;
         
-        NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:self];
+        NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:filePresenter];
         
         NSURL *url = [NSURL fileURLWithPath:[self fullPathForPath:path]];
         NSString *path = [url.path stringByStandardizingPath];
@@ -749,7 +812,7 @@ static const NSTimeInterval CDEFileCoordinatorTimeOut = 10.0;
         NSError *fileCoordinatorError = nil;
         __block NSError *fileManagerError = nil;
         
-        NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:self];
+        NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:filePresenter];
         
         NSURL *url = [NSURL fileURLWithPath:[self fullPathForPath:path]];
         NSString *path = [url.path stringByStandardizingPath];
@@ -780,7 +843,7 @@ static const NSTimeInterval CDEFileCoordinatorTimeOut = 10.0;
         NSError *fileCoordinatorError = nil;
         __block NSError *fileManagerError = nil;
         
-        NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:self];
+        NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:filePresenter];
         
         NSURL *fromURL = [NSURL fileURLWithPath:fromPath];
         NSURL *toURL = [NSURL fileURLWithPath:[self fullPathForPath:toPath]];
@@ -813,7 +876,7 @@ static const NSTimeInterval CDEFileCoordinatorTimeOut = 10.0;
         NSError *fileCoordinatorError = nil;
         __block NSError *fileManagerError = nil;
         
-        NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:self];
+        NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:filePresenter];
         
         NSURL *fromURL = [NSURL fileURLWithPath:[self fullPathForPath:fromPath]];
         NSURL *toURL = [NSURL fileURLWithPath:toPath];

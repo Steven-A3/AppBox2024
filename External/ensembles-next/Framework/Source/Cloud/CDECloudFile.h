@@ -7,11 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CDECloudItem.h"
 
-@interface CDECloudFile : NSObject <NSCoding, NSCopying>
+@interface CDECloudFile : NSObject <NSCopying, CDECloudItem>
 
-@property (copy) NSString *path;
-@property (copy) NSString *name;
 @property unsigned long long size;
 
 @end

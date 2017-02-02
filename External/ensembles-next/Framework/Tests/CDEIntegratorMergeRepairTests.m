@@ -141,6 +141,7 @@
             NSManagedObject *parent = context.insertedObjects.anyObject;
             parentID = parent.objectID;
         }];
+        if (!parentID) return YES;
         
         [reparationContext performBlockAndWait:^{
             NSManagedObject *repairParent = [reparationContext existingObjectWithID:parentID error:NULL];

@@ -1,0 +1,58 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "5C5D8A505FDFECFB08B614ADAA4A5E6C18C0ACF1",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "5C5D8A505FDFECFB08B614ADAA4A5E6C18C0ACF1" : 0,
+    "65E71B0513DBFB09F39CEEF3A8B769CB93E66994" : 0,
+    "5712713D9680BFCBE1BF3AACF9B3E954EDDE4BE0" : 9223372036854775807,
+    "19AF20DAFBA589639D5357C3C0D8AA0D5AE0D524" : 0,
+    "B7B7AE8B650EB5A02E6F3D897F7BB57B2CB9BF90" : 0,
+    "DEDD58F0BAF28034A74179391A23AC2E0219CDC3" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "A6CBAAEF-8B86-413A-BB2D-F068C8737060",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "5C5D8A505FDFECFB08B614ADAA4A5E6C18C0ACF1" : "EnsemblesNext\/",
+    "65E71B0513DBFB09F39CEEF3A8B769CB93E66994" : "EnsemblesNextVendor\/SSZipArchive",
+    "5712713D9680BFCBE1BF3AACF9B3E954EDDE4BE0" : "EnsemblesNext\/Vendor\/DropboxSDKV2\/",
+    "19AF20DAFBA589639D5357C3C0D8AA0D5AE0D524" : "EnsemblesNext\/Vendor\/DropboxSDK\/",
+    "B7B7AE8B650EB5A02E6F3D897F7BB57B2CB9BF90" : "EnsemblesNext\/Vendor\/SSZipArchive\/",
+    "DEDD58F0BAF28034A74179391A23AC2E0219CDC3" : "EnsemblesNext\/Vendor\/RNCryptor\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Idiomatic",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Examples\/Idiomatic\/Idiomatic.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/drewmccormack\/dropbox-sdk-ios.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "19AF20DAFBA589639D5357C3C0D8AA0D5AE0D524"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/dropbox\/dropbox-sdk-obj-c.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "5712713D9680BFCBE1BF3AACF9B3E954EDDE4BE0"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/mentalfaculty\/ensembles-next.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "5C5D8A505FDFECFB08B614ADAA4A5E6C18C0ACF1"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/soffes\/ssziparchive.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "65E71B0513DBFB09F39CEEF3A8B769CB93E66994"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/mentalfaculty\/SSZipArchive.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "B7B7AE8B650EB5A02E6F3D897F7BB57B2CB9BF90"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/RNCryptor\/RNCryptor.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "DEDD58F0BAF28034A74179391A23AC2E0219CDC3"
+    }
+  ]
+}

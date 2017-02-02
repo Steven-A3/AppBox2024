@@ -99,6 +99,8 @@
 
 - (void)tearDown
 {
+    [ensemble1 dismantle];
+    [ensemble2 dismantle];
     didSaveInfo = nil;
     [[NSFileManager defaultManager] removeItemAtPath:rootTestDir error:NULL];
     [super tearDown];

@@ -68,6 +68,7 @@
     }
         
     __block BOOL success = YES;
+    __block NSError *localError = nil;
     [self.managedObjectContext performBlockAndWait:^{
         @try {
             [objects cde_enumerateObjectsDrainingEveryIterations:100 usingBlock:^(NSManagedObject *object, NSUInteger index, BOOL *stop) {
@@ -93,10 +94,12 @@
             }];
         }
         @catch (NSException *exception) {
-            if (error) *error = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeUnknown userInfo:@{NSLocalizedFailureReasonErrorKey:exception.reason}];
+            localError = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeUnknown userInfo:@{NSLocalizedFailureReasonErrorKey:exception.reason}];
             success = NO;
         }
     }];
+    
+    if (error) *error = localError;
 
     return success;
 }
@@ -227,7 +230,7 @@
         }
         
         // Merge indexes for global ids
-        NSMutableOrderedSet *relatedObjects = [object mutableOrderedSetValueForKey:relationshipChange.propertyName];
+        NSMutableOrderedSet *relatedObjects = [[object valueForKey:relationshipChange.propertyName] mutableCopy];
         NSMapTable *finalIndexesByObject = [NSMapTable cde_strongToStrongObjectsMapTable];
         for (NSUInteger index = 0; index < relatedObjects.count; index++) {
             [finalIndexesByObject setObject:@(index) forKey:relatedObjects[index]];
@@ -288,6 +291,8 @@
             
             return globalIdResult;
         }];
+        
+        [object setValue:relatedObjects forKey:relationshipChange.propertyName];
     }
 }
 

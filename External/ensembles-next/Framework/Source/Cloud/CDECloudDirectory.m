@@ -10,6 +10,30 @@
 
 @implementation CDECloudDirectory
 
+@synthesize path;
+@synthesize name;
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super init];
+    if (self) {
+        path = [aDecoder decodeObjectForKey:@"path"];
+        name = [aDecoder decodeObjectForKey:@"name"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:path forKey:@"path"];
+    [aCoder encodeObject:name forKey:@"name"];
+}
+
+- (BOOL)canContainChildren
+{
+    return YES;
+}
+
 - (NSString *)description
 {
     NSMutableString *result = [NSMutableString string];

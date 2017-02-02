@@ -17,6 +17,11 @@ extern NSString * const IDMICloudService;
 extern NSString * const IDMDropboxService;
 extern NSString * const IDMNodeS3Service;
 extern NSString * const IDMMultipeerService;
+extern NSString * const IDMCloudKitService;
+extern NSString * const IDMCloudKitShareOwnerService;
+extern NSString * const IDMCloudKitShareParticipantService;
+
+extern NSString * const IDMCloudKitShareOwnerDefaultKey;
 
 @interface IDMSyncManager : NSObject
 
@@ -32,10 +37,14 @@ extern NSString * const IDMMultipeerService;
 - (void)synchronizeWithCompletion:(CDECompletionBlock)completion;
 - (BOOL)canSynchronize;
 
+- (void)retrieveCloudDataWithCompletion:(void(^)(BOOL didDownload, NSError *error))completion;
+
 - (void)setup;
 - (void)reset;
 
 - (BOOL)handleOpenURL:(NSURL *)url;
+
+- (void)prepareToJoinCloudKitShareWithMetadata:(CKShareMetadata *)metadata completion:(CDECodeBlock)completion;
 
 - (void)storeNodeCredentials;
 - (void)cancelNodeCredentialsUpdate;

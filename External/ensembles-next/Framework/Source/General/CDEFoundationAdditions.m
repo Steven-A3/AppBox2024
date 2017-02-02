@@ -62,6 +62,16 @@
     return result;
 }
 
+- (NSArray *)cde_arrayByFilteringWithBlock:(BOOL(^)(id))block
+{
+    NSMutableArray *result = [[NSMutableArray alloc] init];
+    for (id object in self) {
+        BOOL include = block(object);
+        if (include) [result addObject:object];
+    }
+    return result;
+}
+
 @end
 
 

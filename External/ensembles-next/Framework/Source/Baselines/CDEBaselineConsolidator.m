@@ -22,17 +22,27 @@
 #import "CDEGlobalIdentifier.h"
 #import "CDEPropertyChangeValue.h"
 
+
+@interface CDEBaselineConsolidator ()
+
+@property (nonatomic, readwrite) BOOL createdCompletelyNewBaseline;
+
+@end
+
+
 @implementation CDEBaselineConsolidator {
 }
 
 @synthesize eventStore = eventStore;
 @synthesize ensemble = ensemble;
+@synthesize createdCompletelyNewBaseline = createdCompletelyNewBaseline;
 
 - (instancetype)initWithEventStore:(CDEEventStore *)newEventStore
 {
     self = [super init];
     if (self) {
         eventStore = newEventStore;
+        createdCompletelyNewBaseline = NO;
     }
     return self;
 }
@@ -66,6 +76,8 @@
 {
     CDELog(CDELoggingLevelTrace, @"Consolidating baselines");
 
+    self.createdCompletelyNewBaseline = NO;
+    
     NSManagedObjectContext *context = self.eventStore.managedObjectContext;
     [context performBlock:^{
         // Fetch existing baselines, ordered beginning with most recent
@@ -84,7 +96,7 @@
             // Don't check baselines created locally
             if ([baseline.eventRevision.persistentStoreIdentifier isEqualToString:self.eventStore.persistentStoreIdentifier]) continue;
             
-            BOOL passes = [revisionManager checkDependenciesOfBaseline:baseline];
+            BOOL passes = [revisionManager checkDependenciesOfBaseline:baseline informativeErrorCode:NULL];
             if (passes && baseline.type == CDEStoreModificationEventTypeBaselineMissingDependencies) {
                 baseline.type = CDEStoreModificationEventTypeBaseline;
             }
@@ -262,7 +274,10 @@
         return [context objectWithID:objectID];
     }];
     
-    CDELog(CDELoggingLevelVerbose, @"Merging baselines with unique ids: %@", [baselines valueForKeyPath:@"uniqueIdentifier"]);
+    for (CDEStoreModificationEvent *baseline in baselines) {
+        CDELog(CDELoggingLevelVerbose, @"Merging baseline with unique id: %@", baseline.uniqueIdentifier);
+        CDELog(CDELoggingLevelVerbose, @"Revisions Set: %@", baseline.revisionSet);
+    }
     
     // Determine which baselines to eliminate and which is the
     // most-recent. That will become the new baseline.
@@ -377,8 +392,11 @@
         CDERevisionSet *newRevisionSet = [CDERevisionSet revisionSetByTakingStoreWiseMaximumOfRevisionSets:[baselines valueForKeyPath:@"revisionSet"]];
         [mergedBaseline setRevisionSet:newRevisionSet forPersistentStoreIdentifier:persistentStoreId];
         if (mergedBaseline.eventRevision.revisionNumber == -1) mergedBaseline.eventRevision.revisionNumber = 0;
+        CDELog(CDELoggingLevelVerbose, @"Revision Set of merged baseline: %@", mergedBaseline.revisionSet);
         
         success = [context save:&localError];
+        
+        if (success) self.createdCompletelyNewBaseline = YES;
     }
 
     if (error) *error = localError;

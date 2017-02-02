@@ -45,7 +45,7 @@ static NSString *rootTestDirectory;
 - (void)tearDown
 {
     [super tearDown];
-    [store removeEventStore];
+    [store removeEventStore:NULL];
 }
 
 - (void)testInitialization

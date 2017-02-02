@@ -33,8 +33,12 @@ static NSString * const kCDELeechDate = @"leechDate";
 
 static NSString * const kCDEMergeTaskInfo = @"Merge";
 
+static NSMutableSet *persistentStoreURLs;
+static NSMutableSet *eventStoreRootDirectories;
+
 NSString * const CDEMonitoredManagedObjectContextWillSaveNotification = @"CDEMonitoredManagedObjectContextWillSaveNotification";
 NSString * const CDEMonitoredManagedObjectContextDidSaveNotification = @"CDEMonitoredManagedObjectContextDidSaveNotification";
+NSString * const CDEMonitoredManagedObjectContextSaveChangesWereStoredNotification = @"CDEMonitoredManagedObjectContextSaveChangesWereStoredNotification";
 NSString * const CDEPersistentStoreEnsembleDidSaveMergeChangesNotification = @"CDEPersistentStoreEnsembleDidSaveMergeChangesNotification";
 NSString * const CDEPersistentStoreEnsembleDidBeginActivityNotification = @"CDEPersistentStoreEnsembleDidBeginActivityNotification";
 NSString * const CDEPersistentStoreEnsembleDidMakeProgressWithActivityNotification = @"CDEPersistentStoreEnsembleDidMakeProgressWithActivityNotification";
@@ -55,7 +59,7 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
 
 @synthesize cloudFileSystem = cloudFileSystem;
 @synthesize ensembleIdentifier = ensembleIdentifier;
-@synthesize storeURL = storeURL;
+@synthesize persistentStoreURL = persistentStoreURL;
 @synthesize persistentStoreOptions = persistentStoreOptions;
 @synthesize cloudManager = cloudManager;
 @synthesize eventStore = eventStore;
@@ -70,36 +74,63 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
 
 #pragma mark - Initialization and Deallocation
 
++ (void)initialize
+{
+    if (self == [CDEPersistentStoreEnsemble class]) {
+        persistentStoreURLs = [NSMutableSet set];
+        eventStoreRootDirectories = [NSMutableSet set];
+    }
+}
+
 - (instancetype)initWithEnsembleIdentifier:(NSString *)identifier persistentStoreURL:(NSURL *)newStoreURL persistentStoreOptions:(NSDictionary *)storeOptions managedObjectModelURL:(NSURL *)modelURL cloudFileSystem:(id <CDECloudFileSystem>)newCloudFileSystem localDataRootDirectoryURL:(NSURL *)eventDataRootURL
 {
     NSParameterAssert(identifier != nil);
     NSParameterAssert(newStoreURL != nil);
     NSParameterAssert(modelURL != nil);
     NSParameterAssert(newCloudFileSystem != nil);
+    
+    // Make sure no two Ensembles share a persistent store
+    if ([persistentStoreURLs containsObject:newStoreURL]) {
+        CDELog(CDELoggingLevelError, @"Attempt to create an Ensemble for a persistent store for which an ensemble is already active: %@. Call 'dismantle' if you want to stop using an Ensemble.", newStoreURL);
+        return nil;
+    }
+    [persistentStoreURLs addObject:newStoreURL];
+    
     self = [super init];
     if (self) {
         persistentStoreOptions = storeOptions;
         
         operationQueue = [[NSOperationQueue alloc] init];
         operationQueue.maxConcurrentOperationCount = 1;
+        if ([operationQueue respondsToSelector:@selector(setQualityOfService:)]) {
+            [operationQueue setQualityOfService:NSQualityOfServiceUserInitiated];
+        }
         
         rebaseCheckDone = NO;
         
         self.compressModelHashes = NO;
         
         self.ensembleIdentifier = identifier;
-        self.storeURL = newStoreURL;
+        self.persistentStoreURL = newStoreURL;
         self.managedObjectModelURL = modelURL;
         self.managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
         self.cloudFileSystem = newCloudFileSystem;
-    
+        
         BOOL success = [self setupEventStoreWithDataRootDirectoryURL:eventDataRootURL];
         if (!success) return nil;
-
+        
+        // Make sure no two Ensembles share an event store location
+        NSString *eventStoreRoot = eventStore.pathToEventStoreRootDirectory;
+        if ([eventStoreRootDirectories containsObject:eventStoreRoot]) {
+            CDELog(CDELoggingLevelError, @"Attempt to create an Ensemble that wants to use the same local data directory as another ensemble: %@", eventStoreRoot);
+            return nil;
+        }
+        [eventStoreRootDirectories addObject:eventStoreRoot];
+        
         self.leeching = NO;
         self.merging = NO;
         self.deleeching = NO;
-
+        
         self.leeched = eventStore.containsEventData;
         if (self.leeched) [self.eventStore removeUnusedDataWithCompletion:NULL];
         
@@ -127,7 +158,7 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
 
 - (void)initializeEventIntegrator
 {
-    NSURL *url = self.storeURL;
+    NSURL *url = self.persistentStoreURL;
     self.eventIntegrator = [[CDEEventIntegrator alloc] initWithStoreURL:url managedObjectModel:self.managedObjectModel eventStore:self.eventStore];
     self.eventIntegrator.ensemble = self;
     self.eventIntegrator.persistentStoreOptions = persistentStoreOptions;
@@ -206,10 +237,18 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
     return YES;
 }
 
-- (void)dealloc
+- (void)dismantle
 {
+    if (persistentStoreURL) [persistentStoreURLs removeObject:persistentStoreURL];
+    if (eventStore.pathToEventStoreRootDirectory) [eventStoreRootDirectories removeObject:eventStore.pathToEventStoreRootDirectory];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [saveMonitor stopMonitoring];
+    [eventStore dismantle];
+}
+
+- (void)dealloc
+{
+    [self dismantle];
 }
 
 #pragma mark - Discovering and Managing Ensembles
@@ -238,7 +277,20 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
         }
         
         NSString *path = [NSString stringWithFormat:@"/%@", identifier];
-        [cloudFileSystem removeItemAtPath:path completion:completion];
+        BOOL shouldPrime = [cloudFileSystem respondsToSelector:@selector(primeForActivityWithCompletion:)];
+        if (shouldPrime) {
+            [cloudFileSystem primeForActivityWithCompletion:^(NSError *error) {
+                if (error) {
+                    completion(error);
+                    return;
+                }
+            
+                [cloudFileSystem removeItemAtPath:path completion:completion];
+            }];
+        }
+        else {
+            [cloudFileSystem removeItemAtPath:path completion:completion];
+        }
     }];
 }
 
@@ -347,7 +399,7 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
             info = @{CDEProgressFractionKey : @(progress), CDEEnsembleActivityKey : @(activity), CDEActivityPhaseKey : phaseNumber};
         else
             info = @{CDEProgressFractionKey : @(progress), CDEEnsembleActivityKey : @(activity)};
-            
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:CDEPersistentStoreEnsembleDidMakeProgressWithActivityNotification object:self userInfo:info];
     });
 }
@@ -365,28 +417,30 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
     NSAssert([NSThread isMainThread], @"leech method called off main thread");
     
     CDELog(CDELoggingLevelTrace, @"Beginning leech");
-
+    
     // Setup procedure of asynchronous steps
     CDEProcedure *procedure = [[CDEProcedure alloc] init];
-
+    
     CDEProcedureStep *setupStep = [self newLeechSetupStep];
     [procedure addProcedureStep:setupStep];
-
+    
     CDEProcedureStep *connectStep = [self newConnectStep];
     [procedure addProcedureStep:connectStep];
-
+    
+    CDEProcedureStep *primeStep = [self newPrimeCloudFileSystemForLeechStep];
+    [procedure addProcedureStep:primeStep];
+    
     CDEProcedureStep *initialPrepStep = [self newInitialPreparationStep];
     [procedure addProcedureStep:initialPrepStep];
-
+    
     CDEProcedureStep *remoteStructureStep = [self newRemoteStructureStep];
     [procedure addProcedureStep:remoteStructureStep];
-
+    
     CDEProcedureStep *eventStoreStep = [self newEventStoreStep];
     [procedure addProcedureStep:eventStoreStep];
-
-    CDEProcedureStep *importStep = [self newImportStoreStep];
+    
+    CDEProcedureStep *importStep = [self newImportStoreStepWithSeedPolicy:policy];
     [procedure addProcedureStep:importStep];
-    importStep.enabled = (policy == CDESeedPolicyMergeAllData);
     
     CDEProcedureStep *completeLeechStep = [self newCompleteLeechStep];
     [procedure addProcedureStep:completeLeechStep];
@@ -400,9 +454,9 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
     // Proceed
     [procedure proceedInOperationQueue:operationQueue withCompletion:^(NSError *error) {
         if (error) CDELog(CDELoggingLevelError, @"Error caused leech to fail: %@", error);
-
+        
         BOOL stateChangeError = (error != nil) && [error.domain isEqualToString:CDEErrorDomain] && error.code == CDEErrorCodeDisallowedStateChange;
-        if (error && !stateChangeError) [eventStore removeEventStore];
+        if (error && !stateChangeError) [eventStore removeEventStore:NULL];
         
         if (self.leeching) {
             [self postWillEndActivity:CDEEnsembleActivityLeeching error:error];
@@ -424,6 +478,8 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
     CDEProcedureStep *setupStep = [[CDEProcedureStep alloc] init];
     setupStep.representedObject = @(CDELeechingPhasePreparation);
     setupStep.executionBlock = ^(CDEProcedureStep *step, CDECompletionBlock next) {
+        self.nonCriticalErrorCodes = nil;
+
         if (self.isLeeched) {
             NSError *error = [[NSError alloc] initWithDomain:CDEErrorDomain code:CDEErrorCodeDisallowedStateChange userInfo:nil];
             next(error);
@@ -435,7 +491,7 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
         
         // Notify of leeching
         [self postDidBeginActivity:CDEEnsembleActivityLeeching];
-
+        
         next(nil);
     };
     return setupStep;
@@ -451,6 +507,19 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
         }];
     };
     return connectStep;
+}
+
+- (CDEProcedureStep *)newPrimeCloudFileSystemForLeechStep
+{
+    CDEProcedureStep *primeStep = [[CDEProcedureStep alloc] init];
+    primeStep.representedObject = @(CDELeechingPhasePreparation);
+    primeStep.enabled = ([self.cloudFileSystem respondsToSelector:@selector(primeForActivityWithCompletion:)]);
+    primeStep.executionBlock = ^(CDEProcedureStep *step, CDECompletionBlock next) {
+        [self.cloudFileSystem primeForActivityWithCompletion:^(NSError *error) {
+            next(error);
+        }];
+    };
+    return primeStep;
 }
 
 - (CDEProcedureStep *)newInitialPreparationStep
@@ -501,16 +570,17 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
     return eventStoreStep;
 }
 
-- (CDEProcedureStep *)newImportStoreStep
+- (CDEProcedureStep *)newImportStoreStepWithSeedPolicy:(CDESeedPolicy)seedPolicy
 {
-    CDEPersistentStoreImporter *importer = [[CDEPersistentStoreImporter alloc] initWithPersistentStoreAtPath:self.storeURL.path managedObjectModel:self.managedObjectModel eventStore:self.eventStore];
+    CDEPersistentStoreImporter *importer = [[CDEPersistentStoreImporter alloc] initWithPersistentStoreAtPath:self.persistentStoreURL.path managedObjectModel:self.managedObjectModel eventStore:self.eventStore];
     importer.persistentStoreOptions = self.persistentStoreOptions;
+    importer.importPersistentStoreData = (seedPolicy == CDESeedPolicyMergeAllData);
     importer.ensemble = self;
     
     CDEProcedureStep *importStep = [[CDEProcedureStep alloc] init];
     importStep.representedObject = @(CDELeechingPhaseImportingPersistentStore);
     importStep.totalUnitCount = importer.numberOfProgressUnits;
-    importStep.progressWeight = 20.0;
+    importStep.progressWeight = 50.0;
     
     __weak typeof(importStep) weakImportStep = importStep;
     importer.progressUnitsCompletionBlock = ^(NSUInteger numberOfNewUnitsCompleted) {
@@ -577,11 +647,13 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
     NSAssert([NSThread isMainThread], @"Deleech method called off main thread");
     
     CDELog(CDELoggingLevelTrace, @"Enqueuing deleech");
-
+    
     __block BOOL firedNotification = NO;
     CDEAsynchronousTaskBlock deleechTask = ^(CDEAsynchronousTaskCallbackBlock next) {
+        self.nonCriticalErrorCodes = nil;
+
         if (!self.isLeeched) {
-            [eventStore removeEventStore];
+            [eventStore removeEventStore:NULL];
             NSError *error = [[NSError alloc] initWithDomain:CDEErrorDomain code:CDEErrorCodeDisallowedStateChange userInfo:nil];
             next(error, NO);
             return;
@@ -593,16 +665,14 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
         self.currentActivity = CDEEnsembleActivityDeleeching;
         self.activityProgress = 0.0f;
         totalUnitsInActivity = 1;
-
+        
         [self postDidBeginActivity:CDEEnsembleActivityDeleeching];
         firedNotification = YES;
         
-        BOOL removedStore = [eventStore removeEventStore];
-        self.leeched = eventStore.containsEventData;
-        
-        NSError *error = nil;
-        if (!removedStore) error = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeUnknown userInfo:nil];
-        next(error, NO);
+        [eventStore removeEventStoreWithCompletion:^(NSError *error) {
+            self.leeched = eventStore.containsEventData;
+            next(error, NO);
+        }];
     };
     
     CDEAsynchronousTaskQueue *deleechQueue = [[CDEAsynchronousTaskQueue alloc] initWithTask:deleechTask completion:^(NSError *error) {
@@ -634,7 +704,7 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
     NSManagedObjectContext *context = notif.object;
     NSArray *stores = context.persistentStoreCoordinator.persistentStores;
     for (NSPersistentStore *store in stores) {
-        NSURL *url1 = [self.storeURL URLByStandardizingPath];
+        NSURL *url1 = [self.persistentStoreURL URLByStandardizingPath];
         NSURL *url2 = [store.URL URLByStandardizingPath];
         if ([url1 isEqual:url2]) {
             saveOccurredDuringImport = YES;
@@ -665,10 +735,11 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
 {
     CDELog(CDELoggingLevelTrace, @"Checking identity in cloud system");
     [self.cloudFileSystem fetchUserIdentityWithCompletion:^(id<NSObject,NSCoding,NSCopying> token, NSError *error) {
-        BOOL identityValid = [token isEqual:self.eventStore.cloudFileSystemIdentityToken];
+        BOOL identityValid = !token || [token isEqual:self.eventStore.cloudFileSystemIdentityToken];
         if (self.leeched && !identityValid && !error) {
+            NSDictionary *info = @{NSLocalizedDescriptionKey : [NSString stringWithFormat:@"Cloud identity changed from %@ to %@. Forced to deleech", self.eventStore.cloudFileSystemIdentityToken, token]};
             CDELog(CDELoggingLevelError, @"Cloud identity changed from %@ to %@. Forced to deleech", self.eventStore.cloudFileSystemIdentityToken, token);
-            NSError *deleechError = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeCloudIdentityChanged userInfo:nil];
+            NSError *deleechError = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeCloudIdentityChanged userInfo:info];
             [self forceDeleechDueToError:deleechError];
             if (completion) completion(deleechError);
         }
@@ -682,7 +753,7 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
 - (void)checkStoreRegistrationInCloudWithCompletion:(CDECompletionBlock)completion
 {
     CDELog(CDELoggingLevelTrace, @"Checking registration info");
-
+    
     if (!self.eventStore.verifiesStoreRegistrationInCloud) {
         [self dispatchCompletion:completion withError:nil];
         return;
@@ -741,12 +812,15 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
     CDEProcedureStep *setupStep = [self newMergeSetupStep];
     [procedure addProcedureStep:setupStep];
     
+    CDEProcedureStep *primeStep = [self newPrimeCloudFileSystemForMergingStep];
+    [procedure addProcedureStep:primeStep];
+    
     CDEProcedureStep *repairStep = [self newRepairStep];
     [procedure addProcedureStep:repairStep];
     
     CDEProcedureStep *checkIdentityStep = [self newCheckIdentityStep];
     [procedure addProcedureStep:checkIdentityStep];
-
+    
     CDEProcedureStep *checkRegistrationStep = [self newCheckRegistrationStep];
     [procedure addProcedureStep:checkRegistrationStep];
     
@@ -757,6 +831,7 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
     [snapshotRemoteFilesStep addDependency:checkRegistrationStep];
     [snapshotRemoteFilesStep addDependency:checkIdentityStep];
     [snapshotRemoteFilesStep addDependency:repairStep];
+    [snapshotRemoteFilesStep addDependency:primeStep];
     [procedure addProcedureStep:snapshotRemoteFilesStep];
     
     CDEProcedureStep *removeIncompleteFilesSetsStep = [self newRemoveIncompleteFileSetsStep];
@@ -766,31 +841,31 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
     CDEProcedureStep *removeOutOfDateNewlyImportedFilesStep = [self newRemoveOutOfDateNewlyImportedFilesStep];
     [removeOutOfDateNewlyImportedFilesStep addDependency:snapshotRemoteFilesStep];
     [procedure addProcedureStep:removeOutOfDateNewlyImportedFilesStep];
-
+    
     CDEProcedureStep *importDataFilesStep = [self newImportDataFilesStep];
     [importDataFilesStep addDependency:snapshotRemoteFilesStep];
     [procedure addProcedureStep:importDataFilesStep];
-   
+    
     CDEProcedureStep *importBaselinesStep = [self newImportBaselinesStep];
     [importBaselinesStep addDependency:snapshotRemoteFilesStep];
     [procedure addProcedureStep:importBaselinesStep];
     
     CDEProcedureStep *mergeBaselinesStep = [self newMergeBaselinesStep];
     [procedure addProcedureStep:mergeBaselinesStep];
-
+    
     CDEProcedureStep *importRemoteEventsStep = [self newImportRemoteEventsStep];
     [importRemoteEventsStep addDependency:snapshotRemoteFilesStep];
     [procedure addProcedureStep:importRemoteEventsStep];
     
     CDEProcedureStep *removeOutdatedEventsStep = [self newRemoveOutdatedEventsStep];
     [procedure addProcedureStep:removeOutdatedEventsStep];
-
+    
     CDEProcedureStep *rebaseStep = [self newRebaseStep];
     [procedure addProcedureStep:rebaseStep];
     
     CDEProcedureStep *mergeEventsStep = [self newMergeEventsStep];
     [procedure addProcedureStep:mergeEventsStep];
-
+    
     CDEProcedureStep *exportDataFilesStep = [self newExportDataFilesStep];
     [exportDataFilesStep addDependency:snapshotRemoteFilesStep];
     [procedure addProcedureStep:exportDataFilesStep];
@@ -798,11 +873,11 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
     CDEProcedureStep *exportBaselinesStep = [self newExportBaselinesStep];
     [exportBaselinesStep addDependency:snapshotRemoteFilesStep];
     [procedure addProcedureStep:exportBaselinesStep];
-
+    
     CDEProcedureStep *exportEventsStep = [self newExportEventsStep];
     [exportEventsStep addDependency:snapshotRemoteFilesStep];
     [procedure addProcedureStep:exportEventsStep];
-
+    
     CDEProcedureStep *removeRemoteFilesStep = [self newRemoveRemoteFilesStep];
     [procedure addProcedureStep:removeRemoteFilesStep];
     
@@ -811,9 +886,10 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
     BOOL suppressRebase = ((CDEMergeOptionsSuppressRebase & mergeOptions) != 0);
     BOOL retrieveCloudFilesOnly = ((CDEMergeOptionsCloudFileRetrievalOnly & mergeOptions) != 0);
     BOOL depositCloudFilesOnly = ((CDEMergeOptionsCloudFileDepositionOnly & mergeOptions) != 0);
-
+    BOOL suppressDeposition = ((CDEMergeOptionsSuppressCloudFileDeposition & mergeOptions) != 0);
+    
     NSAssert(!(retrieveCloudFilesOnly && depositCloudFilesOnly), @"Attempt to only retrieve files and only deposit files in one merge");
-
+    
     if (retrieveCloudFilesOnly) {
         [procedure disableAllSteps];
         importDataFilesStep.enabled = YES;
@@ -836,7 +912,15 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
     else if (suppressRebase) {
         rebaseStep.enabled = NO;
     }
-
+    
+    NSAssert(!(suppressDeposition && depositCloudFilesOnly), @"Attempt suppress deposition and deposit at the same time");
+    
+    if (suppressDeposition) {
+        exportDataFilesStep.enabled = NO;
+        exportBaselinesStep.enabled = NO;
+        exportEventsStep.enabled = NO;
+    }
+    
     // Setup progress monitoring
     __weak typeof(procedure) weakProcedure = procedure;
     procedure.progressUpdateBlock = ^{
@@ -877,6 +961,8 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
     setupStep.executionBlock = ^(CDEProcedureStep *step, CDECompletionBlock next) {
         CDELog(CDELoggingLevelTrace, @"Beginning merge");
         
+        self.nonCriticalErrorCodes = nil;
+        
         if (!self.leeched) {
             NSError *error = [[NSError alloc] initWithDomain:CDEErrorDomain code:CDEErrorCodeDisallowedStateChange userInfo:@{NSLocalizedDescriptionKey : @"Attempt to merge a store that is not leeched."}];
             next(error);
@@ -884,7 +970,7 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
         }
         
         NSFileManager *fileManager = [[NSFileManager alloc] init];
-        if (![fileManager fileExistsAtPath:storeURL.path]) {
+        if (![fileManager fileExistsAtPath:persistentStoreURL.path]) {
             NSError *error = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeMissingStore userInfo:nil];
             next(error);
             return;
@@ -892,9 +978,9 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
         
         self.merging = YES;
         self.currentActivity = CDEEnsembleActivityMerging;
-
+        
         [self postDidBeginActivity:CDEEnsembleActivityMerging];
-
+        
         [self.eventIntegrator startMonitoringSaves]; // Will cancel merge if save occurs
         
         next(nil);
@@ -917,6 +1003,24 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
         }
     };
     return repairStep;
+}
+
+- (CDEProcedureStep *)newPrimeCloudFileSystemForMergingStep
+{
+    CDEProcedureStep *primeStep = [[CDEProcedureStep alloc] init];
+    primeStep.representedObject = @(CDEMergingPhasePreparation);
+    primeStep.enabled = ([self.cloudFileSystem respondsToSelector:@selector(primeForActivityWithCompletion:)]);
+    primeStep.executionBlock = ^(CDEProcedureStep *step, CDECompletionBlock next) {
+        if ([self.cloudFileSystem respondsToSelector:@selector(primeForActivityWithCompletion:)]) {
+            [self.cloudFileSystem primeForActivityWithCompletion:^(NSError *error) {
+                next(error);
+            }];
+        }
+        else {
+            next(nil);
+        }
+    };
+    return primeStep;
 }
 
 - (CDEProcedureStep *)newCheckIdentityStep
@@ -959,6 +1063,7 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
 {
     CDEProcedureStep *snapshotRemoteFilesStep = [[CDEProcedureStep alloc] init];
     snapshotRemoteFilesStep.representedObject = @(CDEMergingPhasePreparation);
+    snapshotRemoteFilesStep.progressWeight = 5.0;
     snapshotRemoteFilesStep.executionBlock = ^(CDEProcedureStep *step, CDECompletionBlock next) {
         [self.cloudManager snapshotRemoteFilesWithCompletion:^(NSError *snapshotError) {
             if (snapshotError) {
@@ -1001,11 +1106,15 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
 - (CDEProcedureStep *)newImportDataFilesStep
 {
     CDEProcedureStep *importDataFilesStep = [[CDEProcedureStep alloc] init];
+    __weak typeof(importDataFilesStep) weakStep = importDataFilesStep;
     importDataFilesStep.representedObject = @(CDEMergingPhaseDataFileRetrieval);
+    importDataFilesStep.progressWeight = 20.0;
+    importDataFilesStep.totalUnitCount = 100;
     importDataFilesStep.executionBlock = ^(CDEProcedureStep *step, CDECompletionBlock next) {
-        [self.cloudManager importNewDataFilesWithCompletion:^(NSError *error) {
+        [self.cloudManager importNewDataFilesWithProgress:^(NSError *error, float progress, BOOL isFinished) {
             if (error) [self.cloudManager setup];
-            next(error);
+            if (!error) weakStep.numberOfUnitsCompleted = progress * weakStep.totalUnitCount;
+            if (error || isFinished) next(error);
         }];
     };
     return importDataFilesStep;
@@ -1014,11 +1123,15 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
 - (CDEProcedureStep *)newImportBaselinesStep
 {
     CDEProcedureStep *importBaselinesStep = [[CDEProcedureStep alloc] init];
+    __weak typeof(importBaselinesStep) weakStep = importBaselinesStep;
     importBaselinesStep.representedObject = @(CDEMergingPhaseBaselineRetrieval);
+    importBaselinesStep.progressWeight = 20.0;
+    importBaselinesStep.totalUnitCount = 100;
     importBaselinesStep.executionBlock = ^(CDEProcedureStep *step, CDECompletionBlock next) {
-        [self.cloudManager importNewBaselineEventsWithCompletion:^(NSError *error) {
+        [self.cloudManager importNewBaselineEventsWithProgress:^(NSError *error, float progress, BOOL isFinished) {
             if (error) [self.cloudManager setup];
-            next(error);
+            if (!error) weakStep.numberOfUnitsCompleted =  progress * weakStep.totalUnitCount;
+            if (error || isFinished) next(error);
         }];
     };
     return importBaselinesStep;
@@ -1028,8 +1141,10 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
 {
     CDEProcedureStep *mergeBaselinesStep = [[CDEProcedureStep alloc] init];
     mergeBaselinesStep.representedObject = @(CDEMergingPhaseBaselineConsolidation);
+    mergeBaselinesStep.progressWeight = 20.0;
     mergeBaselinesStep.executionBlock = ^(CDEProcedureStep *step, CDECompletionBlock next) {
         [self.baselineConsolidator consolidateBaselineWithCompletion:^(NSError *error) {
+            if (self.baselineConsolidator.createdCompletelyNewBaseline) rebaseCheckDone = NO; // Good time to rebase
             next(error);
         }];
     };
@@ -1039,11 +1154,15 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
 - (CDEProcedureStep *)newImportRemoteEventsStep
 {
     CDEProcedureStep *importRemoteEventsStep = [[CDEProcedureStep alloc] init];
+    __weak typeof(importRemoteEventsStep) weakStep = importRemoteEventsStep;
     importRemoteEventsStep.representedObject = @(CDEMergingPhaseEventRetrieval);
+    importRemoteEventsStep.progressWeight = 20.0;
+    importRemoteEventsStep.totalUnitCount = 100;
     importRemoteEventsStep.executionBlock = ^(CDEProcedureStep *step, CDECompletionBlock next) {
-        [self.cloudManager importNewRemoteNonBaselineEventsWithCompletion:^(NSError *error) {
+        [self.cloudManager importNewRemoteNonBaselineEventsWithProgress:^(NSError *error, float progress, BOOL isFinished) {
             if (error) [self.cloudManager setup];
-            next(error);
+            if (!error) weakStep.numberOfUnitsCompleted = progress * weakStep.totalUnitCount;
+            if (error || isFinished) next(error);
         }];
     };
     return importRemoteEventsStep;
@@ -1053,6 +1172,7 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
 {
     CDEProcedureStep *removeOutdatedEventsStep = [[CDEProcedureStep alloc] init];
     removeOutdatedEventsStep.representedObject = @(CDEMergingPhaseEventRetrieval);
+    removeOutdatedEventsStep.progressWeight = 5.0;
     removeOutdatedEventsStep.executionBlock = ^(CDEProcedureStep *step, CDECompletionBlock next) {
         [self.rebaser deleteEventsPreceedingBaselineWithCompletion:^(NSError *error) {
             next(error);
@@ -1066,6 +1186,7 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
     CDEProcedureStep *rebaseStep = [[CDEProcedureStep alloc] init];
     rebaseStep.representedObject = @(CDEMergingPhaseRebasing);
     rebaseStep.enabled = rebaser.forceRebase || !rebaseCheckDone;
+    rebaseStep.progressWeight = 20.0;
     rebaseStep.executionBlock = ^(CDEProcedureStep *step, CDECompletionBlock next) {
         [self.rebaser shouldRebaseWithCompletion:^(BOOL result) {
             if (result) {
@@ -1088,7 +1209,7 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
     CDEProcedureStep *mergeEventsStep = [[CDEProcedureStep alloc] init];
     mergeEventsStep.representedObject = @(CDEMergingPhaseIntegratingEvents);
     mergeEventsStep.totalUnitCount = self.eventIntegrator.numberOfProgressUnits;
-    mergeEventsStep.progressWeight = 5.0;
+    mergeEventsStep.progressWeight = 100.0;
     
     __weak typeof(mergeEventsStep) weakMergeEventsStep = mergeEventsStep;
     self.eventIntegrator.progressUnitsCompletionBlock = ^(NSUInteger numberOfNewUnitsCompleted) {
@@ -1109,11 +1230,15 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
 - (CDEProcedureStep *)newExportDataFilesStep
 {
     CDEProcedureStep *exportDataFilesStep = [[CDEProcedureStep alloc] init];
+    __weak typeof(exportDataFilesStep) weakStep = exportDataFilesStep;
     exportDataFilesStep.representedObject = @(CDEMergingPhaseDataFileDeposition);
+    exportDataFilesStep.progressWeight = 20.0;
+    exportDataFilesStep.totalUnitCount = 100;
     exportDataFilesStep.executionBlock = ^(CDEProcedureStep *step, CDECompletionBlock next) {
         [self.eventStore removeUnreferencedDataFiles];
-        [self.cloudManager exportDataFilesWithCompletion:^(NSError *error) {
-            next(error);
+        [self.cloudManager exportDataFilesWithProgress:^(NSError *error, float progress, BOOL isFinished) {
+            if (!error) weakStep.numberOfUnitsCompleted = progress * weakStep.totalUnitCount;
+            if (error || isFinished) next(error);
         }];
     };
     return exportDataFilesStep;
@@ -1122,10 +1247,14 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
 - (CDEProcedureStep *)newExportBaselinesStep
 {
     CDEProcedureStep *exportBaselinesStep = [[CDEProcedureStep alloc] init];
+    __weak typeof(exportBaselinesStep) weakStep = exportBaselinesStep;
     exportBaselinesStep.representedObject = @(CDEMergingPhaseBaselineDeposition);
+    exportBaselinesStep.progressWeight = 20.0;
+    exportBaselinesStep.totalUnitCount = 100;
     exportBaselinesStep.executionBlock = ^(CDEProcedureStep *step, CDECompletionBlock next) {
-        [self.cloudManager exportNewLocalBaselineWithCompletion:^(NSError *error) {
-            next(error);
+        [self.cloudManager exportNewLocalBaselineWithProgress:^(NSError *error, float progress, BOOL isFinished) {
+            if (!error) weakStep.numberOfUnitsCompleted = progress * weakStep.totalUnitCount;
+            if (error || isFinished) next(error);
         }];
     };
     return exportBaselinesStep;
@@ -1134,10 +1263,14 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
 - (CDEProcedureStep *)newExportEventsStep
 {
     CDEProcedureStep *exportEventsStep = [[CDEProcedureStep alloc] init];
+    __weak typeof(exportEventsStep) weakStep = exportEventsStep;
     exportEventsStep.representedObject = @(CDEMergingPhaseEventDeposition);
+    exportEventsStep.progressWeight = 20.0;
+    exportEventsStep.totalUnitCount = 100;
     exportEventsStep.executionBlock = ^(CDEProcedureStep *step, CDECompletionBlock next) {
-        [self.cloudManager exportNewLocalNonBaselineEventsWithCompletion:^(NSError *error) {
-            next(error);
+        [self.cloudManager exportNewLocalNonBaselineEventsWithProgress:^(NSError *error, float progress, BOOL isFinished) {
+            if (!error) weakStep.numberOfUnitsCompleted = progress * weakStep.totalUnitCount;
+            if (error || isFinished) next(error);
         }];
     };
     return exportEventsStep;
@@ -1147,6 +1280,7 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
 {
     CDEProcedureStep *removeRemoteFilesStep = [[CDEProcedureStep alloc] init];
     removeRemoteFilesStep.representedObject = @(CDEMergingPhaseFileDeletion);
+    removeRemoteFilesStep.progressWeight = 5.0;
     removeRemoteFilesStep.executionBlock = ^(CDEProcedureStep *step, CDECompletionBlock next) {
         [self.cloudManager removeOutdatedRemoteFilesWithCompletion:^(NSError *error) {
             next(error);
@@ -1162,7 +1296,7 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
     NSAssert([NSThread isMainThread], @"Process pending changes invoked off main thread");
     
     CDELog(CDELoggingLevelTrace, @"Processing pending changes in ensemble");
-
+    
     if (!self.leeched) {
         [self dispatchCompletion:completion withError:nil];
         return;
@@ -1173,12 +1307,6 @@ NSString * const CDEProgressFractionKey = @"CDEProgressFractionKey";
             [self dispatchCompletion:completion withError:error];
         }];
     }];
-}
-
-- (void)stopMonitoringSaves
-{
-    NSAssert([NSThread isMainThread], @"stop monitor method called off main thread");
-    [saveMonitor stopMonitoring];
 }
 
 #pragma mark Global Identifiers

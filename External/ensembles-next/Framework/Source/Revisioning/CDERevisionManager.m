@@ -141,28 +141,46 @@ BOOL CDEPerformIntegrabilityChecks = YES;
 
 #pragma mark Integrable Events
 
-- (BOOL)eventPassesBasicIntegrabilityChecks:(CDEStoreModificationEvent *)event
+- (BOOL)eventPassesBasicIntegrabilityChecks:(CDEStoreModificationEvent *)event informativeErrorCode:(CDEErrorCode *)errorCode
 {
+    if (errorCode) *errorCode = 0;
     if (!event) return NO;
-    BOOL isIntegrable = [self checkModelVersionsOfStoreModificationEvents:@[event]];
-    isIntegrable = isIntegrable && [self checkAllDataFilesExistForStoreModificationEvents:@[event]];
-    return isIntegrable;
+    
+    BOOL hasKnownModel = [self checkModelVersionsOfStoreModificationEvents:@[event]];
+    if (!hasKnownModel) {
+        if (errorCode) *errorCode = CDEErrorCodeUnknownModelVersion;
+        return NO;
+    }
+    
+    BOOL hasAllDataFiles = [self checkAllDataFilesExistForStoreModificationEvents:@[event]];
+    return hasAllDataFiles;
 }
 
-- (NSArray *)integrableEventsFromEvents:(NSArray *)events
+- (NSArray *)integrableEventsFromEvents:(NSArray *)events informativeErrorCodes:(NSSet * __autoreleasing *)errorCodes
 {
     CDELog(CDELoggingLevelTrace, @"Determining integrable events");
+    
+    if (errorCodes) *errorCodes = nil;
     
     if (!CDEPerformIntegrabilityChecks) return events;
     
     NSMutableArray *integrableEvents = [events mutableCopy];
+    NSMutableSet *informativeErrorCodes = [NSMutableSet set];
+    
     [eventManagedObjectContext performBlockAndWait:^{
         CDEStoreModificationEvent *baseline = [CDEStoreModificationEvent fetchBaselineEventInManagedObjectContext:eventManagedObjectContext];
         
         // Check baseline
-        BOOL baselineIsIntegrable = [self eventPassesBasicIntegrabilityChecks:baseline];
+        CDEErrorCode errorCode = 0;
+        BOOL baselineIsIntegrable = [self eventPassesBasicIntegrabilityChecks:baseline informativeErrorCode:&errorCode];
         if (!baselineIsIntegrable) {
+            if (errorCode) {
+                [informativeErrorCodes addObject:@(errorCode)];
+                CDELog(CDELoggingLevelVerbose, @"Informative error codes: %@", informativeErrorCodes);
+            }
+            
             CDELog(CDELoggingLevelVerbose, @"Baseline is not integrable. There are no integrable events.");
+            
             [integrableEvents removeAllObjects];
             return;
         }
@@ -170,10 +188,19 @@ BOOL CDEPerformIntegrabilityChecks = YES;
         // Run basic integrability tests
         NSMutableSet *failingEvents = [NSMutableSet set];
         for (CDEStoreModificationEvent *event in [integrableEvents copy]) {
-            if (![self eventPassesBasicIntegrabilityChecks:event]) {
-                [failingEvents addObject:event];
-                [integrableEvents removeObject:event];
-                CDELog(CDELoggingLevelVerbose, @"Not including event because didn't pass integrabililty criteria: %@", event);
+            @autoreleasepool {
+                errorCode = 0;
+                if (![self eventPassesBasicIntegrabilityChecks:event informativeErrorCode:&errorCode]) {
+                    CDELog(CDELoggingLevelVerbose, @"Not including event because didn't pass integrabililty criteria: %@", event);
+                    
+                    if (errorCode) {
+                        [informativeErrorCodes addObject:@(errorCode)];
+                        CDELog(CDELoggingLevelVerbose, @"Informative error code: %li", (long)errorCode);
+                    }
+                    
+                    [failingEvents addObject:event];
+                    [integrableEvents removeObject:event];
+                }
             }
         }
         
@@ -181,75 +208,78 @@ BOOL CDEPerformIntegrabilityChecks = YES;
         // Repeat until there is no change
         NSUInteger eventCount;
         do {
-            eventCount = integrableEvents.count;
-            
-            NSArray *revisionSets = [integrableEvents valueForKeyPath:@"revisionSet"];
-            CDERevisionSet *minimumSet = [CDERevisionSet revisionSetByTakingStoreWiseMinimumOfRevisionSets:revisionSets];
-            CDERevisionSet *maximumSet = [CDERevisionSet revisionSetByTakingStoreWiseMaximumOfRevisionSets:revisionSets];
-            CDERevisionSet *baselineRevisionSet = baseline.revisionSet;
-            
-            NSMutableSet *stores = [[NSMutableSet alloc] init];
-            if (baselineRevisionSet) [stores unionSet:baselineRevisionSet.persistentStoreIdentifiers];
-            if (minimumSet) [stores unionSet:minimumSet.persistentStoreIdentifiers];
-            if (maximumSet) [stores unionSet:maximumSet.persistentStoreIdentifiers];
-            
-            for (NSString *store in stores) {
-                CDELog(CDELoggingLevelVerbose, @"Checking store: %@", store);
+            @autoreleasepool {
+                eventCount = integrableEvents.count;
                 
-                CDERevision *minRevision = [minimumSet revisionForPersistentStoreIdentifier:store];
-                CDERevision *maxRevision = [maximumSet revisionForPersistentStoreIdentifier:store];
-                CDERevision *baselineRevision = [baselineRevisionSet revisionForPersistentStoreIdentifier:store];
-                CDELog(CDELoggingLevelVerbose, @"Revision range: %@ %@", minRevision, maxRevision);
+                NSArray *revisionSets = [integrableEvents valueForKeyPath:@"revisionSet"];
+                CDERevisionSet *minimumSet = [CDERevisionSet revisionSetByTakingStoreWiseMinimumOfRevisionSets:revisionSets];
+                CDERevisionSet *maximumSet = [CDERevisionSet revisionSetByTakingStoreWiseMaximumOfRevisionSets:revisionSets];
+                CDERevisionSet *baselineRevisionSet = baseline.revisionSet;
                 
-                if (!minRevision || !maxRevision) continue;
+                NSMutableSet *stores = [[NSMutableSet alloc] init];
+                if (baselineRevisionSet) [stores unionSet:baselineRevisionSet.persistentStoreIdentifiers];
+                if (minimumSet) [stores unionSet:minimumSet.persistentStoreIdentifiers];
+                if (maximumSet) [stores unionSet:maximumSet.persistentStoreIdentifiers];
                 
-                BOOL discontinuous = (baselineRevision == nil);
-                for (CDERevisionNumber r = minRevision.revisionNumber; r <= maxRevision.revisionNumber; r++) {
+                for (NSString *store in stores) {
+                    CDELog(CDELoggingLevelVerbose, @"Checking store: %@", store);
                     
-                    CDEStoreModificationEvent *event = [CDEStoreModificationEvent fetchNonBaselineEventForPersistentStoreIdentifier:store revisionNumber:r inManagedObjectContext:eventManagedObjectContext];
+                    CDERevision *minRevision = [minimumSet revisionForPersistentStoreIdentifier:store];
+                    CDERevision *maxRevision = [maximumSet revisionForPersistentStoreIdentifier:store];
+                    CDERevision *baselineRevision = [baselineRevisionSet revisionForPersistentStoreIdentifier:store];
+                    CDELog(CDELoggingLevelVerbose, @"Revision range: %@ %@", minRevision, maxRevision);
                     
-                    if (!event) {
-                        // If there is a missing event after the baseline,
-                        // all future events are invalidated by the discontinuity
-                        if (r > baselineRevision.revisionNumber) discontinuous = YES;
-                        continue;
-                    }
-
-                    // Event exists, now check it
-                    if (discontinuous || r <= baselineRevision.revisionNumber) {
-                        [failingEvents addObject:event];
-                        [integrableEvents removeObject:event];
-                        CDELog(CDELoggingLevelVerbose, @"Removed event for revision %lli due to preceeding baseline or discontinuity in history", r);
-                    }
-                    else {
-                        // Check that dependencies are valid
-                        NSSet *otherStoreRevs = event.eventRevisionsOfOtherStores;
-                        for (CDEEventRevision *otherStoreRev in otherStoreRevs) {
-                            CDERevision *otherStoreBaselineRev = [baselineRevisionSet revisionForPersistentStoreIdentifier:otherStoreRev.persistentStoreIdentifier];
-                            if (otherStoreBaselineRev.revisionNumber >= otherStoreRev.revisionNumber) continue;
-                            CDEStoreModificationEvent *dependency = [CDEStoreModificationEvent fetchNonBaselineEventForPersistentStoreIdentifier:otherStoreRev.persistentStoreIdentifier revisionNumber:otherStoreRev.revisionNumber inManagedObjectContext:event.managedObjectContext];
-                            if (!dependency || [failingEvents containsObject:dependency]) {
-                                [failingEvents addObject:event];
-                                [integrableEvents removeObject:event];
-                                CDELog(CDELoggingLevelVerbose, @"Removed event for revision %lli due to invalid or missing dependency", r);
+                    if (!minRevision || !maxRevision) continue;
+                    
+                    BOOL discontinuous = (baselineRevision == nil);
+                    for (CDERevisionNumber r = minRevision.revisionNumber; r <= maxRevision.revisionNumber; r++) {
+                        
+                        CDEStoreModificationEvent *event = [CDEStoreModificationEvent fetchNonBaselineEventForPersistentStoreIdentifier:store revisionNumber:r inManagedObjectContext:eventManagedObjectContext];
+                        
+                        if (!event) {
+                            // If there is a missing event after the baseline,
+                            // all future events are invalidated by the discontinuity
+                            if (r > baselineRevision.revisionNumber) discontinuous = YES;
+                            continue;
+                        }
+                        
+                        // Event exists, now check it
+                        if (discontinuous || r <= baselineRevision.revisionNumber) {
+                            [failingEvents addObject:event];
+                            [integrableEvents removeObject:event];
+                            CDELog(CDELoggingLevelVerbose, @"Removed event for revision %lli due to preceeding baseline or discontinuity in history", r);
+                        }
+                        else {
+                            // Check that dependencies are valid
+                            NSSet *otherStoreRevs = event.eventRevisionsOfOtherStores;
+                            for (CDEEventRevision *otherStoreRev in otherStoreRevs) {
+                                CDERevision *otherStoreBaselineRev = [baselineRevisionSet revisionForPersistentStoreIdentifier:otherStoreRev.persistentStoreIdentifier];
+                                if (otherStoreBaselineRev.revisionNumber >= otherStoreRev.revisionNumber) continue;
+                                CDEStoreModificationEvent *dependency = [CDEStoreModificationEvent fetchNonBaselineEventForPersistentStoreIdentifier:otherStoreRev.persistentStoreIdentifier revisionNumber:otherStoreRev.revisionNumber inManagedObjectContext:event.managedObjectContext];
+                                if (!dependency || [failingEvents containsObject:dependency]) {
+                                    [failingEvents addObject:event];
+                                    [integrableEvents removeObject:event];
+                                    CDELog(CDELoggingLevelVerbose, @"Removed event for revision %lli due to invalid or missing dependency", r);
+                                }
                             }
                         }
+                        
                     }
-                    
                 }
             }
-            
         } while (eventCount != integrableEvents.count);
     }];
     
+    if (errorCodes && informativeErrorCodes.count > 0) *errorCodes = [informativeErrorCodes copy];
+
     return integrableEvents;
 }
 
 #pragma mark Checks
 
-- (BOOL)checkDependenciesOfBaseline:(CDEStoreModificationEvent *)baseline
+- (BOOL)checkDependenciesOfBaseline:(CDEStoreModificationEvent *)baseline informativeErrorCode:(CDEErrorCode *)errorCode
 {
-    return [self eventPassesBasicIntegrabilityChecks:baseline];
+    return [self eventPassesBasicIntegrabilityChecks:baseline informativeErrorCode:errorCode];
 }
 
 - (NSArray *)modelHashesForAllVersionsInModelAtURL:(NSURL *)url hashGenerator:(id(^)(NSManagedObjectModel *model))generator
@@ -360,6 +390,11 @@ BOOL CDEPerformIntegrabilityChecks = YES;
         NSSet *filenamesInEvents = [CDEDataFile filenamesInStoreModificationEvents:events];
         NSSet *filenames = self.eventStore.allDataFilenames;
         result = [filenamesInEvents isSubsetOfSet:filenames];
+        if (!result) {
+            NSMutableSet *missingFilenames = [filenamesInEvents mutableCopy];
+            [missingFilenames minusSet:filenames];
+            CDELog(CDELoggingLevelVerbose, @"Some data files are missing: %@", missingFilenames);
+        }
     }];
     return result;
 }
@@ -417,7 +452,7 @@ BOOL CDEPerformIntegrabilityChecks = YES;
     __block CDERevisionSet *set = nil;
     [eventManagedObjectContext performBlockAndWait:^{
         NSArray *allEvents = [CDEStoreModificationEvent fetchCompleteStoreModificationEventsInManagedObjectContext:eventManagedObjectContext];
-        NSArray *integratableEvents = [self integrableEventsFromEvents:allEvents];
+        NSArray *integratableEvents = [self integrableEventsFromEvents:allEvents informativeErrorCodes:NULL];
         
         NSMutableArray *allRevisions = [NSMutableArray array];
         [allRevisions addObjectsFromArray:[integratableEvents valueForKeyPath:@"eventRevision"]];

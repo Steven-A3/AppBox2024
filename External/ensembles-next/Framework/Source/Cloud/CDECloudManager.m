@@ -65,6 +65,9 @@ const NSUInteger CDEFileDownloadBatchSize = 10;
         
         operationQueue = [[NSOperationQueue alloc] init];
         operationQueue.maxConcurrentOperationCount = 1;
+        if ([operationQueue respondsToSelector:@selector(setQualityOfService:)]) {
+            [operationQueue setQualityOfService:NSQualityOfServiceUserInitiated];
+        }
         
         [self setup];
     }
@@ -122,35 +125,51 @@ const NSUInteger CDEFileDownloadBatchSize = 10;
 
 #pragma mark Importing Remote Files
 
-- (void)importNewRemoteNonBaselineEventsWithCompletion:(CDECompletionBlock)completion
+- (void)importNewRemoteNonBaselineEventsWithProgress:(CDEProgressBlock)progressBlock
 {
     NSAssert([NSThread isMainThread], @"importNewRemote... called off the main thread");
     CDELog(CDELoggingLevelTrace, @"Transferring new events from cloud to event store");
     
-    [self transferNewRemoteEventFilesToTransitCacheWithCompletion:^(NSError *error) {
+    [self transferNewRemoteEventFilesToTransitCacheWithProgress:^(NSError *error, float progress, BOOL isFinished) {
         if (error) {
-            if (completion) completion(error);
+            if (progressBlock) progressBlock(error, progress, NO);
             return;
         }
-        [self migrateNewEventsWhichAreBaselines:NO fromTransitCacheWithCompletion:completion];
+        
+        if (isFinished) {
+            [self migrateNewEventsWhichAreBaselines:NO fromTransitCacheWithCompletion:^(NSError *error) {
+                progressBlock(error, 1.0, YES);
+            }];
+        }
+        else {
+            if (progressBlock) progressBlock(nil, progress, NO);
+        }
     }];
 }
 
-- (void)importNewBaselineEventsWithCompletion:(CDECompletionBlock)completion
+- (void)importNewBaselineEventsWithProgress:(CDEProgressBlock)progressBlock
 {
     NSAssert([NSThread isMainThread], @"importNewBaselineEventsWithCompletion... called off the main thread");
     CDELog(CDELoggingLevelTrace, @"Transferring new baselines from cloud to event store");
     
-    [self transferNewRemoteBaselineFilesToTransitCacheWithCompletion:^(NSError *error) {
+    [self transferNewRemoteBaselineFilesToTransitCacheWithProgress:^(NSError *error, float progress, BOOL isFinished) {
         if (error) {
-            if (completion) completion(error);
+            if (progressBlock) progressBlock(error, progress, NO);
             return;
         }
-        [self migrateNewEventsWhichAreBaselines:YES fromTransitCacheWithCompletion:completion];
+        
+        if (isFinished) {
+            [self migrateNewEventsWhichAreBaselines:YES fromTransitCacheWithCompletion:^(NSError *error) {
+                if (progressBlock) progressBlock(error, 1.0, YES);
+            }];
+        }
+        else {
+            if (progressBlock) progressBlock(nil, progress, NO);
+        }
     }];
 }
 
-- (void)importNewDataFilesWithCompletion:(CDECompletionBlock)completion
+- (void)importNewDataFilesWithProgress:(CDEProgressBlock)progressBlock
 {
     NSAssert([NSThread isMainThread], @"importNewDataFilesWithCompletion... called off the main thread");
     CDELog(CDELoggingLevelTrace, @"Transferring new data files from cloud to event store");
@@ -160,84 +179,92 @@ const NSUInteger CDEFileDownloadBatchSize = 10;
     [toRetrieve minusSet:storeFilenames];
     
     NSArray *filesToDownload = toRetrieve.allObjects;
-    [self downloadFiles:filesToDownload fromRemoteDirectory:self.remoteDataDirectory batchCompletionBlock:^NSError* (NSArray *remotePaths, NSArray *localPaths) {
+    [self downloadFiles:filesToDownload fromRemoteDirectory:self.remoteDataDirectory batchCompletionBlock:^(NSArray *remotePaths, NSArray *localPaths) {
         NSError *error = nil;
         [self migrateNewDataFilesFromTransitCache:&error];
         return error;
     }
-    completion:completion];
+    progress:progressBlock];
 }
 
 
 #pragma mark Downloading Remote Files
 
-- (void)transferNewRemoteEventFilesToTransitCacheWithCompletion:(CDECompletionBlock)completion
+- (void)transferNewRemoteEventFilesToTransitCacheWithProgress:(CDEProgressBlock)progress
 {
     NSAssert(snapshotEventFilenames, @"No snapshot files");
     NSArray *types = @[@(CDEStoreModificationEventTypeSave), @(CDEStoreModificationEventTypeMerge)];
-    [self transferNewFilesToTransitCacheFromRemoteDirectory:self.remoteEventsDirectory availableFilenames:snapshotEventFilenames.allObjects forEventTypes:types completion:completion];
+    [self transferNewFilesToTransitCacheFromRemoteDirectory:self.remoteEventsDirectory availableFilenames:snapshotEventFilenames.allObjects forEventTypes:types progress:progress];
 }
 
-- (void)transferNewRemoteBaselineFilesToTransitCacheWithCompletion:(CDECompletionBlock)completion
+- (void)transferNewRemoteBaselineFilesToTransitCacheWithProgress:(CDEProgressBlock)progressBlock
 {
     NSAssert(snapshotBaselineFilenames, @"No snapshot files");
     NSArray *types = @[@(CDEStoreModificationEventTypeBaseline)];
-    [self transferNewFilesToTransitCacheFromRemoteDirectory:self.remoteBaselinesDirectory availableFilenames:snapshotBaselineFilenames.allObjects forEventTypes:types completion:completion];
+    [self transferNewFilesToTransitCacheFromRemoteDirectory:self.remoteBaselinesDirectory availableFilenames:snapshotBaselineFilenames.allObjects forEventTypes:types progress:progressBlock];
 }
 
-- (void)transferNewFilesToTransitCacheFromRemoteDirectory:(NSString *)remoteDirectory availableFilenames:(NSArray *)filenames forEventTypes:(NSArray *)eventTypes completion:(CDECompletionBlock)completion
+- (void)transferNewFilesToTransitCacheFromRemoteDirectory:(NSString *)remoteDirectory availableFilenames:(NSArray *)filenames forEventTypes:(NSArray *)eventTypes progress:(CDEProgressBlock)progressBlock
 {
-    NSArray *filenamesToRetrieve = [self filesRequiringRetrievalFromAvailableRemoteFiles:filenames allowedEventTypes:eventTypes];
-    [self transferRemoteFiles:filenamesToRetrieve fromRemoteDirectory:remoteDirectory withCompletion:completion];
+    [self filesRequiringRetrievalFromAvailableRemoteFiles:filenames allowedEventTypes:eventTypes completion:^(NSArray *filenamesToRetrieve) {
+        [self transferRemoteFiles:filenamesToRetrieve fromRemoteDirectory:remoteDirectory withProgress:progressBlock];
+    }];
 }
 
-- (void)transferRemoteFiles:(NSArray *)filenames fromRemoteDirectory:(NSString *)remoteDirectory withCompletion:(CDECompletionBlock)completion
+- (void)transferRemoteFiles:(NSArray *)filenames fromRemoteDirectory:(NSString *)remoteDirectory withProgress:(CDEProgressBlock)progressBlock
 {
     // Remove any existing files in the cache first
     NSError *error = nil;
     BOOL success = [self removeFilesInDirectory:self.localDownloadDirectory error:&error];
     if (!success) {
-        if (completion) completion(error);
+        if (progressBlock) progressBlock(error, 0.0, NO);
         return;
     }
     
-    [self downloadFiles:filenames fromRemoteDirectory:remoteDirectory batchCompletionBlock:NULL completion:completion];
+    [self downloadFiles:filenames fromRemoteDirectory:remoteDirectory batchCompletionBlock:NULL progress:progressBlock];
 }
 
-- (NSArray *)filesRequiringRetrievalFromAvailableRemoteFiles:(NSArray *)remoteFiles allowedEventTypes:(NSArray *)eventTypes
+- (void)filesRequiringRetrievalFromAvailableRemoteFiles:(NSArray *)remoteFiles allowedEventTypes:(NSArray *)eventTypes completion:(void(^)(NSArray *filenames))completion
 {
-    BOOL isBaselines = [eventTypes containsObject:@(CDEStoreModificationEventTypeBaseline)];
-    NSSet *localEventFileSets = [self eventFileSetsForEventsWithAllowedTypes:eventTypes createdInStore:nil];
-    NSSet *remoteEventFileSets = [CDEEventFileSet eventFileSetsForFilenames:[NSSet setWithArray:remoteFiles] containingBaselines:isBaselines];
-    NSMutableSet *toRetrieve = [NSMutableSet setWithArray:remoteFiles];
-    
-    // Remove any files that are in an incomplete file set, or are already present locally
-    for (CDEEventFileSet *remoteFileSet in remoteEventFileSets) {
-        BOOL remove = !remoteFileSet.hasAllParts;
-        for (CDEEventFileSet *localFileSet in localEventFileSets) {
-            if (remove) break;
-            remove = [localFileSet representsSameEventAsEventFileSet:remoteFileSet];
+    [operationQueue addOperationWithBlock:^{
+        BOOL isBaselines = [eventTypes containsObject:@(CDEStoreModificationEventTypeBaseline)];
+        NSSet *localEventFileSets = [self eventFileSetsForEventsWithAllowedTypes:eventTypes createdInStore:nil];
+        NSSet *remoteEventFileSets = [CDEEventFileSet eventFileSetsForFilenames:[NSSet setWithArray:remoteFiles] containingBaselines:isBaselines];
+        NSMutableSet *toRetrieve = [NSMutableSet setWithArray:remoteFiles];
+        
+        // Remove any files that are in an incomplete file set, or are already present locally
+        for (CDEEventFileSet *remoteFileSet in remoteEventFileSets) {
+            BOOL remove = !remoteFileSet.hasAllParts;
+            for (CDEEventFileSet *localFileSet in localEventFileSets) {
+                if (remove) break;
+                remove = [localFileSet representsSameEventAsEventFileSet:remoteFileSet];
+            }
+            if (remove) [toRetrieve minusSet:remoteFileSet.allAliases];
         }
-        if (remove) [toRetrieve minusSet:remoteFileSet.allAliases];
-    }
-    
-    return [self sortFilenamesByGlobalCount:toRetrieve.allObjects];
+        
+        NSArray *result = [self sortFilenamesByGlobalCount:toRetrieve.allObjects];
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            completion(result);
+        }];
+    }];
 }
 
-- (void)transferNewRemoteDataFilesToTransitCacheWithCompletion:(CDECompletionBlock)completion
+- (void)transferNewRemoteDataFilesToTransitCacheWithProgress:(CDEProgressBlock)progressBlock
 {
     NSAssert(snapshotDataFilenames, @"No snapshot files");
     NSMutableSet *toRetrieve = [self.snapshotDataFilenames mutableCopy];
     NSSet *storeFilenames = self.eventStore.allDataFilenames;
     [toRetrieve minusSet:storeFilenames];
-    [self transferRemoteFiles:toRetrieve.allObjects fromRemoteDirectory:self.remoteDataDirectory withCompletion:completion];
+    [self transferRemoteFiles:toRetrieve.allObjects fromRemoteDirectory:self.remoteDataDirectory withProgress:progressBlock];
 }
 
-- (void)downloadFiles:(NSArray *)filenames fromRemoteDirectory:(NSString *)remoteDirectory batchCompletionBlock:(NSError* (^)(NSArray *remotePaths, NSArray *localPaths))batchCompletion completion:(CDECompletionBlock)completion
+- (void)downloadFiles:(NSArray *)filenames fromRemoteDirectory:(NSString *)remoteDirectory batchCompletionBlock:(NSError* (^)(NSArray *remotePaths, NSArray *localPaths))batchCompletion progress:(CDEProgressBlock)progressBlock
 {
     NSMutableArray *taskBlocks = [NSMutableArray array];
     
     NSUInteger batchSize = [cloudFileSystem respondsToSelector:@selector(fileDownloadMaximumBatchSize)] ? cloudFileSystem.fileDownloadMaximumBatchSize : CDEFileDownloadBatchSize;
+    NSUInteger totalFiles = filenames.count;
+    __block NSUInteger numberOfFilesDownloaded = 0;
     [filenames cde_enumerateObjectsInBatchesWithBatchSize:batchSize usingBlock:^(NSArray *filesToDownload, NSUInteger batchesRemaining, BOOL *stop) {
         CDEAsynchronousTaskBlock block = ^(CDEAsynchronousTaskCallbackBlock next) {
             NSMutableArray *remotePaths = [[NSMutableArray alloc] init];
@@ -259,6 +286,13 @@ const NSUInteger CDEFileDownloadBatchSize = 10;
                     }
                     
                     if (batchCompletion) error = batchCompletion(remotePaths, localPaths);
+                    
+                    if (progressBlock && !error) {
+                        numberOfFilesDownloaded += filesToDownload.count;
+                        float progress = (float)numberOfFilesDownloaded / totalFiles;
+                        progressBlock(nil, progress, NO);
+                    }
+                    
                     next(error, NO);
                 }];
             }
@@ -275,6 +309,13 @@ const NSUInteger CDEFileDownloadBatchSize = 10;
                             }
                             
                             if (batchCompletion) error = batchCompletion(@[remotePath], @[localPath]);
+                            
+                            if (progressBlock && !error) {
+                                numberOfFilesDownloaded++;
+                                float progress = (float)numberOfFilesDownloaded / totalFiles;
+                                progressBlock(nil, progress, NO);
+                            }
+                            
                             nextFileDownload(error, NO);
                         }];
                     };
@@ -290,7 +331,9 @@ const NSUInteger CDEFileDownloadBatchSize = 10;
         [taskBlocks addObject:block];
     }];
     
-    CDEAsynchronousTaskQueue *taskQueue = [[CDEAsynchronousTaskQueue alloc] initWithTasks:taskBlocks terminationPolicy:CDETaskQueueTerminationPolicyStopOnError completion:completion];
+    CDEAsynchronousTaskQueue *taskQueue = [[CDEAsynchronousTaskQueue alloc] initWithTasks:taskBlocks terminationPolicy:CDETaskQueueTerminationPolicyStopOnError completion:^(NSError *error) {
+        if (progressBlock) progressBlock(error, 1.0, YES);
+    }];
     [operationQueue addOperation:taskQueue];
 }
 
@@ -390,7 +433,7 @@ const NSUInteger CDEFileDownloadBatchSize = 10;
 
 #pragma mark Uploading Local Events
 
-- (void)exportNewLocalNonBaselineEventsWithCompletion:(CDECompletionBlock)completion
+- (void)exportNewLocalNonBaselineEventsWithProgress:(CDEProgressBlock)progressBlock
 {
     NSAssert(snapshotEventFilenames, @"No snapshot");
     CDELog(CDELoggingLevelTrace, @"Transferring events from event store to cloud");
@@ -398,11 +441,11 @@ const NSUInteger CDEFileDownloadBatchSize = 10;
     NSArray *types = @[@(CDEStoreModificationEventTypeMerge), @(CDEStoreModificationEventTypeSave)];
     [self migrateNewLocalEventsToTransitCacheWithRemoteDirectory:self.remoteEventsDirectory existingRemoteFilenames:snapshotEventFilenames.allObjects allowedTypes:types completion:^(NSError *error) {
         if (error) CDELog(CDELoggingLevelWarning, @"Error migrating out events: %@", error);
-        [self transferFilesInTransitCacheToRemoteDirectory:self.remoteEventsDirectory completion:completion];
+        [self transferFilesInTransitCacheToRemoteDirectory:self.remoteEventsDirectory progress:progressBlock];
     }];
 }
 
-- (void)exportNewLocalBaselineWithCompletion:(CDECompletionBlock)completion
+- (void)exportNewLocalBaselineWithProgress:(CDEProgressBlock)progressBlock
 {
     NSAssert(snapshotBaselineFilenames, @"No snapshot");
     CDELog(CDELoggingLevelTrace, @"Transferring baseline from event store to cloud");
@@ -410,11 +453,11 @@ const NSUInteger CDEFileDownloadBatchSize = 10;
     NSArray *types = @[@(CDEStoreModificationEventTypeBaseline)];
     [self migrateNewLocalEventsToTransitCacheWithRemoteDirectory:self.remoteBaselinesDirectory existingRemoteFilenames:snapshotBaselineFilenames.allObjects allowedTypes:types completion:^(NSError *error) {
         if (error) CDELog(CDELoggingLevelWarning, @"Error migrating out baseline: %@", error);
-        [self transferFilesInTransitCacheToRemoteDirectory:self.remoteBaselinesDirectory completion:completion];
+        [self transferFilesInTransitCacheToRemoteDirectory:self.remoteBaselinesDirectory progress:progressBlock];
     }];
 }
 
-- (void)exportDataFilesWithCompletion:(CDECompletionBlock)completion
+- (void)exportDataFilesWithProgress:(CDEProgressBlock)progressBlock
 {
     NSAssert(snapshotDataFilenames, @"No snapshot");
     CDELog(CDELoggingLevelTrace, @"Transferring data files from event store to cloud");
@@ -422,11 +465,11 @@ const NSUInteger CDEFileDownloadBatchSize = 10;
     NSError *error;
     BOOL success = [self migrateNewLocalDataFilesToTransitCache:&error];
     if (!success) {
-        if (completion) completion(error);
+        if (progressBlock) progressBlock(error, 0.0, NO);
         return;
     }
     
-    [self transferFilesInTransitCacheToRemoteDirectory:self.remoteDataDirectory completion:completion];
+    [self transferFilesInTransitCacheToRemoteDirectory:self.remoteDataDirectory progress:progressBlock];
 }
 
 - (void)migrateNewLocalEventsToTransitCacheWithRemoteDirectory:(NSString *)remoteDirectory existingRemoteFilenames:(NSArray *)filenames allowedTypes:(NSArray *)types completion:(CDECompletionBlock)completion
@@ -515,16 +558,18 @@ const NSUInteger CDEFileDownloadBatchSize = 10;
     return YES;
 }
 
-- (void)transferFilesInTransitCacheToRemoteDirectory:(NSString *)remoteDirectory completion:(CDECompletionBlock)completion
+- (void)transferFilesInTransitCacheToRemoteDirectory:(NSString *)remoteDirectory progress:(CDEProgressBlock)progressBlock
 {
     NSError *error = nil;
-    NSArray *files = [fileManager contentsOfDirectoryAtPath:self.localUploadDirectory error:&error];
-    files = [self sortFilenamesByGlobalCount:files];
+    NSArray *filesToUpload = [fileManager contentsOfDirectoryAtPath:self.localUploadDirectory error:&error];
+    filesToUpload = [self sortFilenamesByGlobalCount:filesToUpload];
     
     NSMutableArray *taskBlocks = [NSMutableArray array];
     
+    NSUInteger totalNumberOfFiles = filesToUpload.count;
+    __block NSUInteger numberOfFilesUploaded = 0;
     NSUInteger batchSize = [cloudFileSystem respondsToSelector:@selector(fileUploadMaximumBatchSize)] ? cloudFileSystem.fileUploadMaximumBatchSize : CDEFileUploadBatchSize;
-    [files cde_enumerateObjectsInBatchesWithBatchSize:batchSize usingBlock:^(NSArray *filenames, NSUInteger batchesRemaining, BOOL *stop) {
+    [filesToUpload cde_enumerateObjectsInBatchesWithBatchSize:batchSize usingBlock:^(NSArray *filenames, NSUInteger batchesRemaining, BOOL *stop) {
         CDEAsynchronousTaskBlock block = ^(CDEAsynchronousTaskCallbackBlock next) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSMutableArray *remotePaths = [NSMutableArray array];
@@ -542,6 +587,13 @@ const NSUInteger CDEFileDownloadBatchSize = 10;
                     [self.cloudFileSystem uploadLocalFiles:localPaths toPaths:remotePaths completion:^(NSError *error) {
                         for (NSString *localPath in localPaths) [fileManager removeItemAtPath:localPath error:NULL];
                         if (error) CDELog(CDELoggingLevelError, @"Failed file uploads with error: %@", error);
+                        
+                        if (progressBlock && !error) {
+                            numberOfFilesUploaded += filenames.count;
+                            float progress = (float)numberOfFilesUploaded / totalNumberOfFiles;
+                            progressBlock(nil, progress, NO);
+                        }
+                    
                         next(error, NO);
                     }];
                 }
@@ -553,6 +605,13 @@ const NSUInteger CDEFileDownloadBatchSize = 10;
                             [self.cloudFileSystem uploadLocalFile:localPath toPath:remotePath completion:^(NSError *error) {
                                 [fileManager removeItemAtPath:localPath error:NULL];
                                 if (error) CDELog(CDELoggingLevelError, @"Failed file upload with error: %@", error);
+                                
+                                if (progressBlock && !error) {
+                                    numberOfFilesUploaded++;
+                                    float progress = (float)numberOfFilesUploaded / totalNumberOfFiles;
+                                    progressBlock(nil, progress, NO);
+                                }
+                                
                                 nextFileUpload(error, NO);
                             }];
                         };
@@ -568,7 +627,9 @@ const NSUInteger CDEFileDownloadBatchSize = 10;
         [taskBlocks addObject:block];
     }];
     
-    CDEAsynchronousTaskQueue *taskQueue = [[CDEAsynchronousTaskQueue alloc] initWithTasks:taskBlocks terminationPolicy:CDETaskQueueTerminationPolicyStopOnError completion:completion];
+    CDEAsynchronousTaskQueue *taskQueue = [[CDEAsynchronousTaskQueue alloc] initWithTasks:taskBlocks terminationPolicy:CDETaskQueueTerminationPolicyStopOnError completion:^(NSError *error) {
+        if (progressBlock) progressBlock(error, 1.0, YES);
+    }];
     [operationQueue addOperation:taskQueue];
 }
 

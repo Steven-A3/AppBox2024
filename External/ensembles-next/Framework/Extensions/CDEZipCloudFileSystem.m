@@ -8,6 +8,9 @@
 
 #import "CDEZipCloudFileSystem.h"
 
+#import "SSZipArchive.h"
+
+
 static NSString * const CDEZipFilePathExtension = @"cdezip";
 
 @implementation CDEZipCloudFileSystem {
@@ -63,6 +66,11 @@ static NSString * const CDEZipFilePathExtension = @"cdezip";
 - (void)performInitialPreparation:(CDECompletionBlock)completion
 {
     [cloudFileSystem performInitialPreparation:completion];
+}
+
+- (void)primeForActivityWithCompletion:(CDECompletionBlock)completion
+{
+    [cloudFileSystem primeForActivityWithCompletion:completion];
 }
 
 - (void)repairEnsembleDirectory:(NSString *)ensembleDir completion:(CDECompletionBlock)completion
@@ -174,7 +182,7 @@ static NSString * const CDEZipFilePathExtension = @"cdezip";
         
         NSError *localError;
         NSString *destinationDir = [toPath stringByDeletingLastPathComponent];
-        BOOL unzipSucceeded = [SSZipArchive unzipFileAtPath:tempFilePath toDestination:destinationDir overwrite:NO password:nil error:&localError];
+        BOOL unzipSucceeded = [SSZipArchive unzipFileAtPath:tempFilePath toDestination:destinationDir overwrite:NO password:nil error:&localError uniqueId:nil];
         [fileManager removeItemAtPath:tempFilePath error:NULL];
         
         if (completion) completion(unzipSucceeded ? nil : localError);
@@ -205,7 +213,7 @@ static NSString * const CDEZipFilePathExtension = @"cdezip";
         for (NSString *tempFilePath in tempPaths) {
             NSString *toPath = toPaths[i++];
             NSString *destinationDir = [toPath stringByDeletingLastPathComponent];
-            unzipSucceeded = [SSZipArchive unzipFileAtPath:tempFilePath toDestination:destinationDir overwrite:NO password:nil error:&localError];
+            unzipSucceeded = [SSZipArchive unzipFileAtPath:tempFilePath toDestination:destinationDir overwrite:NO password:nil error:&localError uniqueId:nil];
             [fileManager removeItemAtPath:tempFilePath error:NULL];
             if (!unzipSucceeded) break;
         }
@@ -258,6 +266,7 @@ static NSString * const CDEZipFilePathExtension = @"cdezip";
     if (@selector(removeItemsAtPaths:completion:) == aSelector ||
         @selector(repairEnsembleDirectory:completion:) == aSelector ||
         @selector(performInitialPreparation:) == aSelector ||
+        @selector(primeForActivityWithCompletion:) == aSelector ||
         @selector(fileUploadMaximumBatchSize) == aSelector || @selector(uploadLocalFiles:toPaths:completion:) == aSelector ||
         @selector(fileDownloadMaximumBatchSize) == aSelector || @selector(downloadFromPaths:toLocalFiles:completion:) == aSelector ) {
         result = [cloudFileSystem respondsToSelector:aSelector];

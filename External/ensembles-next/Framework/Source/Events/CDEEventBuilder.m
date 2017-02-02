@@ -187,10 +187,13 @@
 
 - (void)performInContext:(NSManagedObjectContext *)context block:(CDECodeBlock)block
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     if (context.concurrencyType != NSConfinementConcurrencyType)
         [context performBlockAndWait:block];
     else
         block();
+#pragma clang diagnostic pop
 }
 
 - (NSArray *)retrieveGlobalIdentifierStringsForManagedObjects:(NSArray *)objects storedInEventStore:(BOOL)inEventStore
@@ -310,10 +313,13 @@
     };
     
     // Execute the block on the context's thread
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     if (context.concurrencyType != NSConfinementConcurrencyType)
         [context performBlockAndWait:block];
     else
         block();
+#pragma clang diagnostic pop
     
     return changeArrays;
 }

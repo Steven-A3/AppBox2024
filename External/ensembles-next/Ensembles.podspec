@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "Ensembles"
-  s.version      = "2.2.3"
+  s.version      = "2.5.1"
   s.summary      = "A peer-to-peer synchronization framework for Core Data."
 
   s.description  =  <<-DESC
@@ -53,12 +53,14 @@ Pod::Spec.new do |s|
     ss.osx.dependency 'Dropbox-OSX-SDK'
     ss.source_files = 'Framework/Extensions/CDEDropboxCloudFileSystem.{h,m}'
   end
-  
-  s.subspec 'DropboxSync' do |ss|
+
+  s.subspec 'DropboxCoreV2' do |ss|
+    # Bump deployment targets to match ObjectiveDropboxOfficial's
+    ss.ios.deployment_target = '8.0'
+    ss.osx.deployment_target = '10.10'
     ss.dependency 'Ensembles/Core'
-    ss.source_files = 'Framework/Extensions/CDEDropboxSyncCloudFileSystem.{h,m}'
-    ss.ios.frameworks = 'QuartzCore', 'CFNetwork', 'Security', 'SystemConfiguration'
-    ss.ios.libraries = 'c++', 'z'
+    ss.dependency 'ObjectiveDropboxOfficial', '~> 2.0.3'
+    ss.source_files = 'Framework/Extensions/CDEDropboxV2CloudFileSystem.{h,m}'
   end
 
   s.subspec 'Multipeer' do |ss|

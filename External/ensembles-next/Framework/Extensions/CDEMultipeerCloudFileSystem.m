@@ -11,7 +11,8 @@
 
 typedef NS_ENUM (NSInteger, CDEMultipeerMessageType) {
 	CDEMultipeerMessageTypeFileRetrievalRequest = 1,
-    CDEMultipeerMessageTypeFileRetrievalResponse = 2
+    CDEMultipeerMessageTypeFileRetrievalResponse = 2,
+    CDEMultipeerMessageTypeNewDataAvailable = 3
 };
 
 NSString * const CDEMultipeerCloudFileSystemDidImportFilesNotification = @"CDEMultipeerCloudFileSystemDidImportFilesNotification";
@@ -158,6 +159,19 @@ NSString * const CDEMultipeerMessageTypeKey = @"messageType";
     }
 }
 
+- (void)sendNotificationOfNewlyAvailableDataToPeersWithIDs:(NSArray *)peerIDs
+{
+    NSDictionary *peerMessage = @{
+        CDEMultipeerMessageTypeKey : @(CDEMultipeerMessageTypeNewDataAvailable)
+    };
+    NSData *peerMessageData = [NSKeyedArchiver archivedDataWithRootObject:peerMessage];
+    
+    for (id peerID in peerIDs) {
+        BOOL success = [self.multipeerConnection sendData:peerMessageData toPeerWithID:peerID];
+        if (!success) CDELog(CDELoggingLevelError, @"Could not send data to peer: %@", peerID);
+    }
+}
+
 - (NSString *)fullPathForRelativePath:(NSString *)path
 {
 	return [rootDirectory stringByAppendingPathComponent:path];
@@ -182,6 +196,9 @@ NSString * const CDEMultipeerMessageTypeKey = @"messageType";
     if (CDEMultipeerMessageTypeFileRetrievalRequest == messageType) {
         NSSet *remoteFiles = peerMessage[CDEMultipeerFilesPathsKey];
         [self handleFileRetrievalRequestFromPeerWithID:peerID withRemotePaths:remoteFiles];
+    }
+    else if (CDEMultipeerMessageTypeNewDataAvailable == messageType) {
+        [multipeerConnection newDataWasAddedOnPeerWithID:peerID];
     }
 }
 
@@ -213,7 +230,7 @@ NSString * const CDEMultipeerMessageTypeKey = @"messageType";
     NSURL *contentURLDirectory = [[archiveURL URLByDeletingLastPathComponent] URLByAppendingPathComponent:archiveURL.pathExtension];
     CDELog(CDELoggingLevelVerbose, @"Importing zip file: %@", archiveURL.path);
     
-    [SSZipArchive unzipFileAtPath:archiveURL.path toDestination:contentURLDirectory.path delegate:nil];
+    [SSZipArchive unzipFileAtPath:archiveURL.path toDestination:contentURLDirectory.path delegate:nil uniqueId:nil];
     
     NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtURL:contentURLDirectory includingPropertiesForKeys:@[NSURLNameKey, NSURLIsDirectoryKey] options:NSDirectoryEnumerationSkipsHiddenFiles errorHandler:NULL];
     NSURL *rootURL = [[NSURL fileURLWithPath:rootDirectory] URLByResolvingSymlinksInPath];
@@ -318,6 +335,4 @@ NSString * const CDEMultipeerMessageTypeKey = @"messageType";
 }
 
 @end
-
-
 

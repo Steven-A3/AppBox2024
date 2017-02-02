@@ -197,6 +197,35 @@
     XCTAssertEqualObjects([[syncedParent valueForKey:@"children"] anyObject], syncedChild, @"Relationship not set");
 }
 
+- (void)testInheritedOneToManyRelationshipsBetweenDescendedEntities
+{
+    [self leechStores];
+    
+    id bOnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"B" inManagedObjectContext:context1];
+    id cOnDevice1 = [NSEntityDescription insertNewObjectForEntityForName:@"C" inManagedObjectContext:context1];
+    
+    [cOnDevice1 setValue:bOnDevice1 forKey:@"inverseObject"];
+    [bOnDevice1 setValue:cOnDevice1 forKey:@"inverseObject"];
+
+    XCTAssertTrue([context1 save:NULL], @"Could not save");
+    XCTAssertNil([self syncChanges], @"Sync failed");
+    
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"C"];
+    fetch.includesSubentities = NO;
+    NSArray *objects = [context2 executeFetchRequest:fetch error:NULL];
+    id cOnDevice2 = [objects lastObject];
+    XCTAssertNotNil(cOnDevice2);
+    
+    fetch = [NSFetchRequest fetchRequestWithEntityName:@"B"];
+    fetch.includesSubentities = NO;
+    objects = [context2 executeFetchRequest:fetch error:NULL];
+    id bOnDevice2 = [objects lastObject];
+    XCTAssertNotNil(bOnDevice2);
+    
+    XCTAssertEqualObjects([cOnDevice2 valueForKey:@"inverseObject"], bOnDevice2);
+    XCTAssertEqualObjects([bOnDevice2 valueForKey:@"inverseObject"], cOnDevice2);
+}
+
 - (void)testInitialImportWithNoGlobalIdentifiersProvided
 {
     id parent = [NSEntityDescription insertNewObjectForEntityForName:@"Parent" inManagedObjectContext:context1];

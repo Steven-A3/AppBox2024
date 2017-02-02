@@ -30,7 +30,14 @@
 
 - (void)leechStores;
 
+- (NSError *)rebaseEnsemble:(CDEPersistentStoreEnsemble *)ensemble;
+
+- (NSError *)mergeEnsembleAndSuppressRebase:(CDEPersistentStoreEnsemble *)ensemble;
+
 - (NSError *)mergeEnsemble:(CDEPersistentStoreEnsemble *)ensemble;
+
+- (NSError *)syncChangesAndSuppressRebase;
+
 - (NSError *)syncChanges;
 
 @end

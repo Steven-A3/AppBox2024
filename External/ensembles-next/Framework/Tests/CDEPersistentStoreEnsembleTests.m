@@ -72,6 +72,7 @@
 
 - (void)tearDown
 {
+    [ensemble dismantle];
     [[NSFileManager defaultManager] removeItemAtPath:rootDir error:NULL];
     [super tearDown];
 }
@@ -86,6 +87,67 @@
 {
     finishedAsync = YES;
     CFRunLoopStop(CFRunLoopGetCurrent());
+}
+
+- (void)testCannotCreateAnEnsembleThatTriesToSharePersistentDataWithAnExistingEnsemble
+{
+    NSURL *testModelURL = [[NSBundle bundleForClass:self.class] URLForResource:@"CDEStoreModificationEventTestsModel" withExtension:@"momd"];
+    CDEPersistentStoreEnsemble *e = [[CDEPersistentStoreEnsemble alloc] initWithEnsembleIdentifier:@"testensemble" persistentStoreURL:storeURL managedObjectModelURL:testModelURL cloudFileSystem:(id)cloudFileSystem];
+    XCTAssertNil(e);
+
+    e = [[CDEPersistentStoreEnsemble alloc] initWithEnsembleIdentifier:@"testensemble1" persistentStoreURL:storeURL managedObjectModelURL:testModelURL cloudFileSystem:(id)cloudFileSystem];
+    XCTAssertNil(e);
+    
+    NSString *storePath = [rootDir stringByAppendingPathComponent:@"teststore1.sqlite"];
+    NSURL *otherStoreURL = [NSURL fileURLWithPath:storePath];
+    e = [[CDEPersistentStoreEnsemble alloc] initWithEnsembleIdentifier:@"testensemble1" persistentStoreURL:otherStoreURL managedObjectModelURL:testModelURL cloudFileSystem:(id)cloudFileSystem];
+    XCTAssertNotNil(e);
+    
+    [e dismantle];
+}
+
+- (void)testDismantle
+{
+    NSURL *testModelURL = [[NSBundle bundleForClass:self.class] URLForResource:@"CDEStoreModificationEventTestsModel" withExtension:@"momd"];
+    CDEPersistentStoreEnsemble *e = [[CDEPersistentStoreEnsemble alloc] initWithEnsembleIdentifier:@"testensemble" persistentStoreURL:storeURL managedObjectModelURL:testModelURL cloudFileSystem:(id)cloudFileSystem];
+    XCTAssertNil(e);
+
+    [ensemble dismantle];
+    
+    e = [[CDEPersistentStoreEnsemble alloc] initWithEnsembleIdentifier:@"testensemble" persistentStoreURL:storeURL managedObjectModelURL:testModelURL cloudFileSystem:(id)cloudFileSystem];
+    XCTAssertNotNil(e);
+    
+    [e dismantle];
+}
+
+- (void)testReleasedEnsembleGetsDealloced
+{
+    [ensemble dismantle];
+    
+    __weak CDEPersistentStoreEnsemble *weakEnsemble;
+    @autoreleasepool {
+        NSURL *testModelURL = [[NSBundle bundleForClass:self.class] URLForResource:@"CDEStoreModificationEventTestsModel" withExtension:@"momd"];
+        CDEPersistentStoreEnsemble *e = [[CDEPersistentStoreEnsemble alloc] initWithEnsembleIdentifier:@"testensemble" persistentStoreURL:storeURL managedObjectModelURL:testModelURL cloudFileSystem:(id)cloudFileSystem];
+        [e leechPersistentStoreWithCompletion:^(NSError *error) {
+            [e mergeWithCompletion:^(NSError *error) {
+                [self finishAsync];
+            }];
+        }];
+        weakEnsemble = e;
+    }
+    [self waitForAsync];
+
+    finishedAsync = NO;
+    if (weakEnsemble) {
+        [weakEnsemble processPendingChangesWithCompletion:^(NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self finishAsync];
+            });
+        }];
+        [self waitForAsync];
+    }
+    
+    XCTAssertNil(weakEnsemble);
 }
 
 - (void)testInitialization
@@ -171,7 +233,9 @@
     }];
     [self waitForAsync];
     
-    ensemble = [[CDEPersistentStoreEnsemble alloc] initWithEnsembleIdentifier:@"testensemble" persistentStoreURL:ensemble.storeURL managedObjectModelURL:ensemble.managedObjectModelURL cloudFileSystem:(id)cloudFileSystem];
+    [ensemble dismantle];
+    
+    ensemble = [[CDEPersistentStoreEnsemble alloc] initWithEnsembleIdentifier:@"testensemble" persistentStoreURL:ensemble.persistentStoreURL managedObjectModelURL:ensemble.managedObjectModelURL cloudFileSystem:(id)cloudFileSystem];
     ensemble.delegate = self;
     
     [self performSelector:@selector(checkForDeleech) withObject:nil afterDelay:0.5];

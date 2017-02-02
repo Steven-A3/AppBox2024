@@ -46,7 +46,6 @@
 @end
 
 @implementation CDEEventIntegrator {
-    CDECompletionBlock completion;
     NSDictionary *saveInfoDictionary;
     NSOperationQueue *queue;
     id eventStoreChildContextSaveObserver;
@@ -81,6 +80,9 @@
         failedSaveBlock = NULL;
         queue = [[NSOperationQueue alloc] init];
         queue.maxConcurrentOperationCount = 1;
+        if ([queue respondsToSelector:@selector(setQualityOfService:)]) {
+            [queue setQualityOfService:NSQualityOfServiceUserInitiated];
+        }
     }
     return self;
 }
@@ -135,21 +137,32 @@
 
 #pragma mark Merging Store Modification Events
 
-- (void)mergeEventsWithCompletion:(CDECompletionBlock)newCompletion
+- (void)mergeEventsWithCompletion:(CDECompletionBlock)completion
 {
     NSAssert([NSThread isMainThread], @"mergeEvents... called off main thread");
     
-    completion = [newCompletion copy];
     newEventUniqueId = nil;
     
     // Setup a context for accessing the main store
-    NSError *error;
+    __block NSError *error;
     NSPersistentStoreCoordinator *coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:managedObjectModel];
-    [coordinator lock];
-    NSPersistentStore *persistentStore = [coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:self.persistentStoreOptions error:&error];
-    [coordinator unlock];
+    
+    __block NSPersistentStore *persistentStore;
+    if ([coordinator respondsToSelector:@selector(performBlockAndWait:)]) {
+        [coordinator performBlockAndWait:^{
+            NSError *localError = nil;
+            persistentStore = [coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:self.persistentStoreOptions error:&localError];
+            if (!persistentStore) error = localError;
+        }];
+    }
+    else {
+        [(id)coordinator lock];
+        persistentStore = [coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:self.persistentStoreOptions error:&error];
+        [(id)coordinator unlock];
+    }
+    
     if (!persistentStore) {
-        [self failWithError:error];
+        [self failWithCompletion:completion error:error];
         return;
     }
     
@@ -169,18 +182,22 @@
             // What store modification events should be included?
             NSArray *storeModEventIDs = [self storeModificationEventIDsForIntegration:&error];
             if (!storeModEventIDs) {
-                [self failWithError:error];
+                [self failWithCompletion:completion error:error];
                 return;
             }
             
             // Remove any events for which prerequisites are not met
-            storeModEventIDs = [self integrableEventIDsFromEventIDs:storeModEventIDs];
+            NSSet *infoErrorCodes = nil;
+            storeModEventIDs = [self integrableEventIDsFromEventIDs:storeModEventIDs informativeErrorCodes:&infoErrorCodes];
+            if (infoErrorCodes) {
+                self.ensemble.nonCriticalErrorCodes = infoErrorCodes;
+            }
             
             // Do we actually need to integrate the events?
             BOOL integrationNeeded = [self integrationIsNeededForEventIDs:storeModEventIDs];
             if (!integrationNeeded) {
                 if (self.progressUnitsCompletionBlock) self.progressUnitsCompletionBlock(self.numberOfProgressUnits);
-                [self completeSuccessfully];
+                [self completeSuccessfullyWithCompletion:completion];
                 return;
             }
             
@@ -196,7 +213,7 @@
             // Integrate
             BOOL success = [self integrateEventIDs:storeModEventIDs error:&error];
             if (!success) {
-                [self failWithError:error];
+                [self failWithCompletion:completion error:error];
                 return;
             }
             
@@ -207,7 +224,9 @@
                 BOOL isUnique = [self checkUniquenessOfEventWithRevision:revision];
                 if (isUnique && !saveOccurredDuringMerge) {
                     [eventBuilder finalizeNewEvent];
-                    eventSaveSucceeded = [eventStoreContext save:&error];
+                    NSError *saveError = nil;
+                    eventSaveSucceeded = [eventStoreContext save:&saveError];
+                    error = saveError;
                     [eventStoreContext reset];
                 }
                 else {
@@ -215,17 +234,17 @@
                 }
             }];
             if (!eventSaveSucceeded) {
-                [self failWithError:error];
+                [self failWithCompletion:completion error:error];
                 return;
             }
             
             // Complete
-            [self completeSuccessfully];
+            [self completeSuccessfullyWithCompletion:completion];
         }
         @catch (NSException *exception) {
             NSDictionary *info = @{NSLocalizedFailureReasonErrorKey:exception.reason};
             NSError *error = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeUnknown userInfo:info];
-            [self failWithError:error];
+            [self failWithCompletion:completion error:error];
         }
     }];
 }
@@ -246,7 +265,7 @@
 
 #pragma mark Completing Merge
 
-- (void)failWithError:(NSError *)error
+- (void)failWithCompletion:(CDECompletionBlock)completion error:(NSError *)error
 {
     NSManagedObjectContext *eventContext = self.eventStore.managedObjectContext;
     if (newEventUniqueId) {
@@ -270,7 +289,7 @@
     });
 }
 
-- (void)completeSuccessfully
+- (void)completeSuccessfullyWithCompletion:(CDECompletionBlock)completion
 {
     newEventUniqueId = nil;
     eventBuilder = nil;
@@ -311,8 +330,10 @@
     NSManagedObjectContext *eventStoreContext = self.eventStore.managedObjectContext;
     BOOL fullIntegration = [self needsFullIntegration];
     __block NSArray *storeModEventIDs = nil;
+    __block NSError *localError = nil;
     [eventStoreContext performBlockAndWait:^{
         NSArray *storeModEvents = nil;
+        NSError *blockError = nil;
         
         // Get events
         if (fullIntegration) {
@@ -325,23 +346,35 @@
         }
         else {
             // Get all modification events added since the last merge
-            storeModEvents = [revisionManager fetchUncommittedStoreModificationEvents:error];
+            storeModEvents = [revisionManager fetchUncommittedStoreModificationEvents:&blockError];
+            localError = blockError;
             if (storeModEvents.count == 0) return;
             
             // Add any modification events concurrent with the new events. Results are ordered.
             // We repeat this until there is no change in the set. This will be when there are
             // no events existing outside the set that are concurrent with the events in the set.
-            storeModEvents = [revisionManager recursivelyFetchStoreModificationEventsConcurrentWithEvents:storeModEvents error:error];
+            storeModEvents = [revisionManager recursivelyFetchStoreModificationEventsConcurrentWithEvents:storeModEvents error:&blockError];
+            localError = blockError;
+            
+            // If all events are local, no integration is needed.
+            // This is a fast path, to avoid the expensive analysis of events later.
+            NSArray *storeIdentifiers = [storeModEvents valueForKeyPath:@"@distinctUnionOfObjects.eventRevision.persistentStoreIdentifier"];
+            if (storeIdentifiers.count == 1 && [storeIdentifiers.lastObject isEqualToString:eventStore.persistentStoreIdentifier]) {
+                CDELog(CDELoggingLevelVerbose, @"All events are local. Won't integrate.");
+                storeModEvents = @[];
+            }
         }
         
         storeModEventIDs = [storeModEvents valueForKeyPath:@"objectID"];
         CDELog(CDELoggingLevelVerbose, @"Including these events in the integration: %@", storeModEvents);
     }];
     
+    if (error) *error = localError;
+    
     return storeModEventIDs;
 }
 
-- (NSArray *)integrableEventIDsFromEventIDs:(NSArray *)storeModEventIDs
+- (NSArray *)integrableEventIDsFromEventIDs:(NSArray *)storeModEventIDs informativeErrorCodes:(NSSet * __autoreleasing *)errorCodes
 {
     CDELog(CDELoggingLevelTrace, @"Checking which events can be integrated");
     
@@ -349,18 +382,25 @@
     revisionManager.managedObjectModelURL = self.ensemble.managedObjectModelURL;
     
     __block NSArray *integrableIDs = nil;
+    __block NSSet *localErrorCodes = nil;
+    if (errorCodes) *errorCodes = nil;
+
     NSManagedObjectContext *eventStoreContext = self.eventStore.managedObjectContext;
     [eventStoreContext performBlockAndWait:^{
         NSArray *storeModEvents = [storeModEventIDs cde_arrayByTransformingObjectsWithBlock:^(NSManagedObjectID *objectID) {
             return [eventStoreContext objectWithID:objectID];
         }];
         
-        NSArray *integrableEvents = [revisionManager integrableEventsFromEvents:storeModEvents];
+        NSSet *blockErrorCodes = nil;
+        NSArray *integrableEvents = [revisionManager integrableEventsFromEvents:storeModEvents informativeErrorCodes:&blockErrorCodes];
+        localErrorCodes = blockErrorCodes;
         
         integrableIDs = [integrableEvents cde_arrayByTransformingObjectsWithBlock:^(CDEStoreModificationEvent *event) {
             return event.objectID;
         }];
     }];
+
+    if (errorCodes) *errorCodes = localErrorCodes;
     
     return integrableIDs;
 }
@@ -407,9 +447,9 @@
     if (fullIntegration) CDELog(CDELoggingLevelTrace, @"Will perform full integration");
 
     // Iterate entities in order
-    __block NSError *localError = nil;
     NSArray *entities = [managedObjectModel cde_entitiesOrderedByMigrationPriority];
     NSArray *migratedEntities = @[];
+    __block NSError *localError = nil;
     for (NSEntityDescription *entity in entities) {
         CDELog(CDELoggingLevelVerbose, @"Integrating entity: %@", entity.name);
         
@@ -431,65 +471,69 @@
         NSUInteger b = batchSize ? : MAX(1, globalIdentifierIDs.count);
         __block BOOL success = YES;
         [globalIdentifierIDs cde_enumerateObjectsInBatchesWithBatchSize:b usingBlock:^(NSArray *batchGlobalIdentifierIDs, NSUInteger batchesRemaining, BOOL *stop) {
-            @autoreleasepool {
-                CDELog(CDELoggingLevelVerbose, @"Number of objects remaining to integrate for this entity: %lu", (unsigned long)batchesRemaining * batchSize);
+            CDELog(CDELoggingLevelVerbose, @"Number of objects remaining to integrate for this entity: %lu", (unsigned long)batchesRemaining * batchSize);
+            
+            // Fetch the object change ids grouped by event id
+            NSError *blockError = nil;
+            NSMutableDictionary *changeDescsByTypeByEventID = [self fetchObjectChangeDescriptorsForGlobalIdentifierIDs:batchGlobalIdentifierIDs entity:entity groupedByTypeAndEventIDs:storeModEventIDs error:&blockError];
+            if (!changeDescsByTypeByEventID) {
+                localError = blockError;
+                success = NO;
+                *stop = YES;
+                return;
+            }
+            
+            // Remove redundant object changes
+            [self removeRedundantChangesFromChangeDescriptorsByTypeByEventID:changeDescsByTypeByEventID forOrderedEventIDs:storeModEventIDs];
+            
+            // Insert and update objects in all events
+            for (NSManagedObjectID *eventID in storeModEventIDs) {
                 
-                // Fetch the object change ids grouped by event id
-                NSMutableDictionary *changeDescsByTypeByEventID = [self fetchObjectChangeDescriptorsForGlobalIdentifierIDs:batchGlobalIdentifierIDs entity:entity groupedByTypeAndEventIDs:storeModEventIDs error:&localError];
-                if (!changeDescsByTypeByEventID) {
-                    success = NO;
+                // Insert and update objects
+                // Use batch size 0 here, because we are batching over global identifiers, not change ids
+                NSArray *insertChangeDescs = changeDescsByTypeByEventID[eventID][@(CDEObjectChangeTypeInsert)];
+                NSSet *insertedObjectIDs = nil;
+                if (insertChangeDescs.count > 0) {
+                    NSArray *insertChangeIDs = [insertChangeDescs valueForKeyPath:@"changeID"];
+                    success = [self insertAndUpdateObjectsForInsertChangeIDs:insertChangeIDs relationships:relationshipsToMigratedEntities batchSize:0 migratedEntities:migratedEntities objectIDsForInserts:&insertedObjectIDs error:&blockError];
+                }
+                if (!success) {
+                    localError = blockError;
+                    *stop = YES;
+                    return;
+                }
+                if (insertedObjectIDs) [allInsertedObjectIDs unionSet:insertedObjectIDs];
+                
+                // Updates
+                NSArray *updateChangeDescs = changeDescsByTypeByEventID[eventID][@(CDEObjectChangeTypeUpdate)];
+                if (updateChangeDescs.count > 0) {
+                    NSArray *updateChangeIDs = [updateChangeDescs valueForKeyPath:@"changeID"];
+                    success = [self updateObjectsForUpdateChangeIDs:updateChangeIDs relationships:relationshipsToMigratedEntities batchSize:0 error:&blockError];
+                }
+                if (!success) {
+                    localError = blockError;
                     *stop = YES;
                     return;
                 }
                 
-                // Remove redundant object changes
-                [self removeRedundantChangesFromChangeDescriptorsByTypeByEventID:changeDescsByTypeByEventID forOrderedEventIDs:storeModEventIDs];
-                
-                // Insert and update objects in all events
-                for (NSManagedObjectID *eventID in storeModEventIDs) {
-                    
-                    // Insert and update objects
-                    // Use batch size 0 here, because we are batching over global identifiers, not change ids
-                    NSArray *insertChangeDescs = changeDescsByTypeByEventID[eventID][@(CDEObjectChangeTypeInsert)];
-                    NSSet *insertedObjectIDs = nil;
-                    if (insertChangeDescs.count > 0) {
-                        NSArray *insertChangeIDs = [insertChangeDescs valueForKeyPath:@"changeID"];
-                        success = [self insertAndUpdateObjectsForInsertChangeIDs:insertChangeIDs relationships:relationshipsToMigratedEntities batchSize:0 migratedEntities:migratedEntities objectIDsForInserts:&insertedObjectIDs error:&localError];
-                    }
-                    if (!success) {
-                        *stop = YES;
-                        return;
-                    }
-                    if (insertedObjectIDs) [allInsertedObjectIDs unionSet:insertedObjectIDs];
-                    
-                    // Updates
-                    NSArray *updateChangeDescs = changeDescsByTypeByEventID[eventID][@(CDEObjectChangeTypeUpdate)];
-                    if (updateChangeDescs.count > 0) {
-                        NSArray *updateChangeIDs = [updateChangeDescs valueForKeyPath:@"changeID"];
-                        success = [self updateObjectsForUpdateChangeIDs:updateChangeIDs relationships:relationshipsToMigratedEntities batchSize:0 error:&localError];
-                    }
-                    if (!success) {
-                        *stop = YES;
-                        return;
-                    }
-                    
-                    // Deletes
-                    NSArray *deleteChangeDescs = changeDescsByTypeByEventID[eventID][@(CDEObjectChangeTypeDelete)];
-                    if (deleteChangeDescs.count > 0) {
-                        NSArray *deleteChangeIDs = [deleteChangeDescs valueForKeyPath:@"changeID"];
-                        success = [self deleteObjectsForChangeIDs:deleteChangeIDs batchSize:0 error:&localError];
-                    }
-                    if (!success) {
-                        *stop = YES;
-                        return;
-                    }
+                // Deletes
+                NSArray *deleteChangeDescs = changeDescsByTypeByEventID[eventID][@(CDEObjectChangeTypeDelete)];
+                if (deleteChangeDescs.count > 0) {
+                    NSArray *deleteChangeIDs = [deleteChangeDescs valueForKeyPath:@"changeID"];
+                    success = [self deleteObjectsForChangeIDs:deleteChangeIDs batchSize:0 error:&blockError];
                 }
-                
-                if (![self saveAndResetBatchForEntity:entity error:&localError]) {
-                    success = NO;
+                if (!success) {
+                    localError = blockError;
                     *stop = YES;
                     return;
                 }
+            }
+            
+            if (![self saveAndResetBatchForEntity:entity error:&blockError]) {
+                localError = blockError;
+                success = NO;
+                *stop = YES;
+                return;
             }
         }];
         if (!success) {
@@ -500,11 +544,13 @@
         if (self.progressUnitsCompletionBlock) self.progressUnitsCompletionBlock(1);
         
         // Connect any relationships from the migrated entities to the new entity.
-        // Include self-referential relationships
+        // Include self-referential relationships, and relationships that go to an ancestor of the
+        // new entity.
         for (NSEntityDescription *migratedEntity in currentAndMigratedEntities) {
             NSUInteger migratedEntityBatchSize = migratedEntity.cde_migrationBatchSize;
 
-            NSArray *relationshipsFromMigratedEntity = [migratedEntity cde_nonRedundantRelationshipsDestinedForEntities:@[entity]];
+            NSArray *entityAndAncestors = [@[entity] arrayByAddingObjectsFromArray:entity.cde_ancestorEntities];
+            NSArray *relationshipsFromMigratedEntity = [migratedEntity cde_nonRedundantRelationshipsDestinedForEntities:entityAndAncestors];
             if (relationshipsFromMigratedEntity.count == 0) continue;
 
             for (NSManagedObjectID *eventID in storeModEventIDs) {
@@ -636,11 +682,14 @@
     if (!contextHasChanges) return YES;
     
     // Repair inconsistencies caused by integration
-    BOOL repairSucceeded = [self repair:error];
+    NSError *localError = nil;
+    BOOL repairSucceeded = [self repair:&localError];
+    if (error) *error = localError;
     if (!repairSucceeded) return NO;
 
     // Commit (save) the changes
-    BOOL commitSucceeded = [self commit:error];
+    BOOL commitSucceeded = [self commit:&localError];
+    if (error) *error = localError;
     if (!commitSucceeded) return NO;
     
     // Notify of save
@@ -664,31 +713,36 @@
 {
     CDELog(CDELoggingLevelTrace, @"Committing merge changes to store");
     
-    __block BOOL saved = [self saveContext:error];
+    __block NSError *localError = nil;
+    __block BOOL saved = [self saveContext:&localError];
     if (!saved && !saveOccurredDuringMerge) {
-        if ((*error).code != NSManagedObjectMergeError && failedSaveBlock) {
+        if (localError.code != NSManagedObjectMergeError && failedSaveBlock) {
             // Setup a child reparation context
             NSManagedObjectContext *reparationContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
             reparationContext.parentContext = managedObjectContext;
             
             // Inform of failure, and give chance to repair
-            BOOL retry = failedSaveBlock(managedObjectContext, *error, reparationContext);
+            BOOL retry = failedSaveBlock(managedObjectContext, localError, reparationContext);
             
             // If repairs were carried out, add changes to the merge event, and save
             // reparation context
             __block BOOL needExtraSave = NO;
             [reparationContext performBlockAndWait:^{
                 if (retry && reparationContext.hasChanges) {
-                    BOOL success = [eventBuilder addChangesForUnsavedManagedObjectContext:reparationContext error:error];
-                    success = success && [reparationContext save:error];
+                    NSError *blockError = nil;
+                    BOOL success = [eventBuilder addChangesForUnsavedManagedObjectContext:reparationContext error:&blockError];
+                    success = success && [reparationContext save:&blockError];
+                    localError = blockError;
                     if (success) needExtraSave = YES;
                 }
             }];
             
             // Retry save if necessary
-            if (needExtraSave) saved = [self saveContext:error];
+            if (needExtraSave) saved = [self saveContext:&localError];
         }
     }
+    
+    if (error) *error = localError;
     return saved;
 }
 
@@ -701,6 +755,7 @@
     // We can then retrieve the changes and generate a new store mod event to represent the merge.
     __block BOOL merged = YES;
     __block BOOL contextHasChanges = NO;
+    __block NSError *localError = nil;
     
     [managedObjectContext performBlockAndWait:^{
         contextHasChanges = managedObjectContext.hasChanges;
@@ -724,17 +779,25 @@
         // Save any changes made in the reparation context.
         [reparationContext performBlockAndWait:^{
             if (reparationContext.hasChanges) {
-                BOOL success = [eventBuilder addChangesForUnsavedManagedObjectContext:reparationContext error:error];
+                NSError *blockError = nil;
+                BOOL success = [eventBuilder addChangesForUnsavedManagedObjectContext:reparationContext error:&blockError];
                 if (!success) {
+                    localError = blockError;
                     merged = NO;
                     return;
                 }
                 
-                merged = [reparationContext save:error];
-                if (!merged) CDELog(CDELoggingLevelError, @"Saving merge context after willSave changes failed: %@", *error);
+                merged = [reparationContext save:&blockError];
+                if (!merged) {
+                    localError = blockError;
+                    CDELog(CDELoggingLevelError, @"Saving merge context after willSave changes failed: %@", blockError);
+                    return;
+                }
             }
         }];
     }
+    
+    if (error) *error = localError;
     
     return merged;
 }
@@ -743,16 +806,28 @@
 - (BOOL)saveContext:(NSError * __autoreleasing *)error
 {
     __block BOOL saved = NO;
+    __block NSError *localError;
     [managedObjectContext performBlockAndWait:^{
+        NSError *blockError;
         if (saveOccurredDuringMerge) {
-            *error = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeSaveOccurredDuringMerge userInfo:nil];
+            blockError = [NSError errorWithDomain:CDEErrorDomain code:CDEErrorCodeSaveOccurredDuringMerge userInfo:nil];
+            localError = blockError;
             return;
         }
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(storeChangesFromContextDidSaveNotification:) name:NSManagedObjectContextDidSaveNotification object:managedObjectContext];
-        saved = [managedObjectContext save:error];
+        saved = [managedObjectContext save:&blockError];
         [[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:managedObjectContext];
+        
+        if (!saved) {
+            localError = blockError;
+        }
     }];
+    
+    if (!saved && error) {
+        *error = localError;
+    }
+    
     return saved;
 }
 
@@ -772,21 +847,24 @@
     
     do {
         @autoreleasepool {
+            NSError *poolError = nil;
+            
             for (CDEIntegrationStage *stage in stages) {
-                success = [stage applyNextBatchOfChanges:&localError];
+                success = [stage applyNextBatchOfChanges:&poolError];
             }
             
             if (batchSize > 0) {
-                if (success && ![eventBuilder saveAndReset:&localError]) {
+                if (success && ![eventBuilder saveAndReset:&poolError]) {
                     success = NO;
                 }
                     
-                if (success && ![self saveAndResetManagedObjectContext:&localError]) {
+                if (success && ![self saveAndResetManagedObjectContext:&poolError]) {
                     success = NO;
                 }
             }
             
             hasMore = [stages.lastObject numberOfBatchesRemaining] > 0;
+            localError = poolError;
         }
     } while (hasMore && success);
     if (error) *error = localError;
@@ -807,7 +885,9 @@
         insertedObjectUpdater.relationshipsToUpdate = relationships;
         insertedObjectUpdater.updatesAttributes = YES;
         
-        success = [self applyBatchesInStages:@[inserter, insertedObjectUpdater] batchSize:batchSize error:&localError];
+        NSError *blockError = nil;
+        success = [self applyBatchesInStages:@[inserter, insertedObjectUpdater] batchSize:batchSize error:&blockError];
+        localError = blockError;
         
         if (success) {
             localInsertedIDs = [inserter.insertedObjectIDs copy];
@@ -826,10 +906,12 @@
     BOOL success;
     
     @autoreleasepool {
+        NSError *blockError = nil;
         CDEUpdateStage *updater = [[CDEUpdateStage alloc] initWithEventBuilder:eventBuilder objectChangeIDs:updateChangeIDs managedObjectContext:managedObjectContext batchSize:batchSize];
         updater.relationshipsToUpdate = relationships;
         updater.updatesAttributes = YES;
-        success = [self applyBatchesInStages:@[updater] batchSize:batchSize error:&localError];
+        success = [self applyBatchesInStages:@[updater] batchSize:batchSize error:&blockError];
+        localError = blockError;
     }
     
     if (!success && error) *error = localError;
@@ -842,10 +924,12 @@
     BOOL success;
     
     @autoreleasepool {
+        NSError *blockError = nil;
         CDEUpdateStage *relationshipUpdater = [[CDEUpdateStage alloc]  initWithEventBuilder:eventBuilder objectChangeIDs:changeIDs managedObjectContext:managedObjectContext batchSize:batchSize];
         relationshipUpdater.updatesAttributes = NO;
         relationshipUpdater.relationshipsToUpdate = relationships;
-        success = [self applyBatchesInStages:@[relationshipUpdater] batchSize:batchSize error:&localError];
+        success = [self applyBatchesInStages:@[relationshipUpdater] batchSize:batchSize error:&blockError];
+        localError = blockError;
     }
     
     if (!success && error) *error = localError;
@@ -858,8 +942,10 @@
     BOOL success = YES;
     
     @autoreleasepool {
+        NSError *blockError = nil;
         CDEDeleteStage *deleter = [[CDEDeleteStage alloc] initWithEventBuilder:eventBuilder objectChangeIDs:deleteChangeIDs managedObjectContext:managedObjectContext batchSize:batchSize];
-        success = [self applyBatchesInStages:@[deleter] batchSize:batchSize error:&localError];
+        success = [self applyBatchesInStages:@[deleter] batchSize:batchSize error:&blockError];
+        localError = blockError;
     }
     
     if (!success && error) *error = localError;
@@ -871,11 +957,14 @@
     __block BOOL success = YES;
     __block NSError *localError = nil;
     [managedObjectContext performBlockAndWait:^{
+        NSError *blockError = nil;
+
         NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:entity.name];
         fetch.includesSubentities = NO;
         fetch.predicate = [NSPredicate predicateWithFormat:@"NOT (SELF IN %@)", insertedObjectIDs];
-        NSArray *unreferencedObjects = [managedObjectContext executeFetchRequest:fetch error:&localError];
+        NSArray *unreferencedObjects = [managedObjectContext executeFetchRequest:fetch error:&blockError];
         success = (unreferencedObjects != nil);
+        localError = blockError;
         if (!success) return;
         
         for (NSManagedObject *object in unreferencedObjects) {
@@ -900,6 +989,8 @@
     __block NSArray *fetchResult = nil;
     __block NSError *localError = nil;
     [self.eventStore.managedObjectContext performBlockAndWait:^{
+        NSError *blockError = nil;
+        
         NSExpressionDescription *objectIDDesc = [[NSExpressionDescription alloc] init];
         objectIDDesc.name = @"objectID";
         objectIDDesc.expression = [NSExpression expressionForEvaluatedObject];
@@ -915,7 +1006,9 @@
         fetch.sortDescriptors = [CDEObjectChange sortDescriptorsForEventOrder];
         fetch.propertiesToFetch = @[objectIDDesc, storeEventIDDesc];
         fetch.resultType = NSDictionaryResultType;
-        fetchResult = [self.eventStore.managedObjectContext executeFetchRequest:fetch error:&localError];
+        fetchResult = [self.eventStore.managedObjectContext executeFetchRequest:fetch error:&blockError];
+        
+        localError = blockError;
     }];
     
     if (!fetchResult) {
@@ -943,6 +1036,8 @@
     __block NSArray *fetchResult = nil;
     __block NSError *localError = nil;
     [self.eventStore.managedObjectContext performBlockAndWait:^{
+        NSError *blockError = nil;
+        
         NSExpressionDescription *objectIDDesc = [[NSExpressionDescription alloc] init];
         objectIDDesc.name = @"objectID";
         objectIDDesc.expression = [NSExpression expressionForEvaluatedObject];
@@ -968,7 +1063,9 @@
         fetch.sortDescriptors = [CDEObjectChange sortDescriptorsForEventOrder];
         fetch.propertiesToFetch = @[objectIDDesc, storeEventIDDesc, typeDesc, globalIDDesc];
         fetch.resultType = NSDictionaryResultType;
-        fetchResult = [self.eventStore.managedObjectContext executeFetchRequest:fetch error:&localError];
+        fetchResult = [self.eventStore.managedObjectContext executeFetchRequest:fetch error:&blockError];
+        
+        localError = blockError;
     }];
     
     if (!fetchResult) {
@@ -1001,11 +1098,15 @@
     __block NSArray *result = nil;
     __block NSError *localError = nil;
     [self.eventStore.managedObjectContext performBlockAndWait:^{
+        NSError *blockError = nil;
+        
         NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"CDEObjectChange"];
         fetch.predicate = [NSPredicate predicateWithFormat:@"nameOfEntity = %@ && type = %d && storeModificationEvent IN %@ && globalIdentifier IN %@", entity.name, type, eventIDs, globalIdentifierIDs];
         fetch.sortDescriptors = [CDEObjectChange sortDescriptorsForEventOrder];
         fetch.resultType = NSManagedObjectIDResultType;
-        result = [self.eventStore.managedObjectContext executeFetchRequest:fetch error:&localError];
+        result = [self.eventStore.managedObjectContext executeFetchRequest:fetch error:&blockError];
+        
+        localError = blockError;
     }];
     
     if (!result && error) *error = localError;
@@ -1019,13 +1120,16 @@
     __block NSArray *result = nil;
     __block NSError *localError = nil;
     [self.eventStore.managedObjectContext performBlockAndWait:^{
-        NSArray *objectIDs = [self fetchObjectChangeIDsFromStoreModificationEventIDs:storeModEventIDs forEntity:entity error:&localError];
+        NSError *blockError = nil;
+        NSArray *objectIDs = [self fetchObjectChangeIDsFromStoreModificationEventIDs:storeModEventIDs forEntity:entity error:&blockError];
         
         // Fetch
         NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"CDEGlobalIdentifier"];
         fetch.predicate = [NSPredicate predicateWithFormat:@"ANY objectChanges IN %@", objectIDs];
         fetch.resultType = NSManagedObjectIDResultType;
-        result = [self.eventStore.managedObjectContext executeFetchRequest:fetch error:&localError];
+        result = [self.eventStore.managedObjectContext executeFetchRequest:fetch error:&blockError];
+        
+        localError = blockError;
     }];
     
     if (!result && error) *error = localError;
@@ -1037,10 +1141,12 @@
     __block NSArray *result = nil;
     __block NSError *localError = nil;
     [self.eventStore.managedObjectContext performBlockAndWait:^{
+        NSError *blockError = nil;
         NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"CDEObjectChange"];
         fetch.predicate = [NSPredicate predicateWithFormat:@"nameOfEntity = %@ && type = %d && storeModificationEvent = %@", entity.name, type, eventID];
         fetch.resultType = NSManagedObjectIDResultType;
-        result = [self.eventStore.managedObjectContext executeFetchRequest:fetch error:&localError];
+        result = [self.eventStore.managedObjectContext executeFetchRequest:fetch error:&blockError];
+        localError = blockError;
     }];
     
     if (!result && error) *error = localError;
@@ -1052,10 +1158,12 @@
     __block NSArray *result = nil;
     __block NSError *localError = nil;
     [self.eventStore.managedObjectContext performBlockAndWait:^{
+        NSError *blockError = nil;
         NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"CDEObjectChange"];
         fetch.predicate = [NSPredicate predicateWithFormat:@"nameOfEntity = %@ && storeModificationEvent IN %@", entity.name, eventIDs];
         fetch.resultType = NSManagedObjectIDResultType;
-        result = [self.eventStore.managedObjectContext executeFetchRequest:fetch error:&localError];
+        result = [self.eventStore.managedObjectContext executeFetchRequest:fetch error:&blockError];
+        localError = blockError;
     }];
     
     if (error) *error = localError;

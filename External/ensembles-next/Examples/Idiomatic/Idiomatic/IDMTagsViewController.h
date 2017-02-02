@@ -20,4 +20,6 @@
 
 - (IBAction)showNodeServerSettings:(id)sender;
 
+- (void)connectToCloudService:(NSString *)service;
+
 @end

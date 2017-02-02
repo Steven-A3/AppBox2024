@@ -55,6 +55,9 @@ static NSString *kCDEDefaultStoreType;
         storeTypeForNewFiles = kCDEDefaultStoreType;
         queue = [[NSOperationQueue alloc] init];
         queue.maxConcurrentOperationCount = 1;
+        if ([queue respondsToSelector:@selector(setQualityOfService:)]) {
+            [queue setQualityOfService:NSQualityOfServiceUserInitiated];
+        }
     }
     return self;
 }

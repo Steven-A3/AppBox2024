@@ -22,7 +22,7 @@
     const uint8_t b[10001];
     NSData *data = [[NSData alloc] initWithBytes:b length:sizeof(b)];
     for (NSUInteger i = 0; i < 50; i++) {
-        NSUInteger r1 = arc4random_uniform(5);
+        NSUInteger r1 = arc4random_uniform(6);
         BOOL randBool1 = arc4random_uniform(2);
         BOOL randBool2 = arc4random_uniform(2);
         switch (r1) {
@@ -48,7 +48,11 @@
                 [self mergeEnsemble:ensemble2];
                 break;
             }
-            case 4: {
+            case 4:
+                [self deleechEnsemble:ensemble1];
+                [self leechEnsemble:ensemble1];
+                break;
+            case 5: {
                 NSString *dataRoot = [cloudRootDir stringByAppendingPathComponent:@"com.ensembles.synctest/data"];
                 [[NSFileManager defaultManager] removeItemAtPath:dataRoot error:NULL];
                 [[NSFileManager defaultManager] createDirectoryAtPath:dataRoot withIntermediateDirectories:NO attributes:nil error:NULL];
@@ -65,6 +69,28 @@
     NSArray *parents1 = [context1 executeFetchRequest:fetch error:NULL];
     NSArray *parents2 = [context2 executeFetchRequest:fetch error:NULL];
     XCTAssertEqual(parents1.count, parents2.count);
+}
+
+- (NSError *)leechEnsemble:(CDEPersistentStoreEnsemble *)ensemble
+{
+    __block NSError *returnError = nil;
+    [ensemble leechPersistentStoreWithCompletion:^(NSError *error) {
+        returnError = error;
+        [self completeAsync];
+    }];
+    [self waitForAsync];
+    return returnError;
+}
+
+- (NSError *)deleechEnsemble:(CDEPersistentStoreEnsemble *)ensemble
+{
+    __block NSError *returnError = nil;
+    [ensemble deleechPersistentStoreWithCompletion:^(NSError *error) {
+        returnError = error;
+        [self completeAsync];
+    }];
+    [self waitForAsync];
+    return returnError;
 }
 
 @end

@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "CDEDefines.h"
 
-typedef void (^CDEAsynchronousTaskCallbackBlock)(NSError *error, BOOL stop);
-typedef void (^CDEAsynchronousTaskBlock)(CDEAsynchronousTaskCallbackBlock next);
+typedef void (^CDEAsynchronousTaskCallbackBlock)(NSError * _Nullable error, BOOL stop);
+typedef void (^CDEAsynchronousTaskBlock)(CDEAsynchronousTaskCallbackBlock _Nullable next);
 
 typedef enum {
     CDETaskQueueTerminationPolicyStopOnError,
@@ -20,15 +20,15 @@ typedef enum {
 
 @interface CDEAsynchronousTaskQueue : NSOperation
 
-@property (atomic, copy, readonly) NSArray *tasks;
+@property (atomic, copy, readonly, nullable) NSArray<CDEAsynchronousTaskBlock> *tasks;
 @property (atomic, assign, readonly) NSUInteger numberOfTasks;
 @property (atomic, assign, readonly) NSUInteger numberOfTasksCompleted;
 @property (atomic, assign, readonly) CDETaskQueueTerminationPolicy terminationPolicy;
-@property (atomic, strong, readwrite) id <NSObject> info;
+@property (atomic, strong, readwrite, nullable) id <NSObject> info;
 
-- (instancetype)initWithTasks:(NSArray *)tasks terminationPolicy:(CDETaskQueueTerminationPolicy)policy completion:(CDECompletionBlock)completion; // Designated
-- (instancetype)initWithTasks:(NSArray *)tasks completion:(CDECompletionBlock)completion;
-- (instancetype)initWithTask:(CDEAsynchronousTaskBlock)task completion:(CDECompletionBlock)completion;
-- (instancetype)initWithTask:(CDEAsynchronousTaskBlock)task repeatCount:(NSUInteger)count terminationPolicy:(CDETaskQueueTerminationPolicy)policy completion:(CDECompletionBlock)completion;
+- (nonnull instancetype)initWithTasks:(nonnull NSArray<CDEAsynchronousTaskBlock> *)tasks terminationPolicy:(CDETaskQueueTerminationPolicy)policy completion:(nullable CDECompletionBlock)completion; // Designated
+- (nonnull instancetype)initWithTasks:(nonnull NSArray<CDEAsynchronousTaskBlock> *)tasks completion:(nullable CDECompletionBlock)completion;
+- (nonnull instancetype)initWithTask:(nonnull CDEAsynchronousTaskBlock)task completion:(nullable CDECompletionBlock)completion;
+- (nonnull instancetype)initWithTask:(nonnull CDEAsynchronousTaskBlock)task repeatCount:(NSUInteger)count terminationPolicy:(CDETaskQueueTerminationPolicy)policy completion:(nullable CDECompletionBlock)completion;
 
 @end

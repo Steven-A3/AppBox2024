@@ -104,7 +104,7 @@
         }];
     }
     else {
-        syncServiceActionSheet = [[UIActionSheet alloc] initWithTitle:@"What service would you like?" delegate:self cancelButtonTitle:@"None" destructiveButtonTitle:nil otherButtonTitles:@"iCloud", @"Dropbox", @"IdioSync", @"Multipeer", nil];
+        syncServiceActionSheet = [[UIActionSheet alloc] initWithTitle:@"What service would you like?" delegate:self cancelButtonTitle:@"None" destructiveButtonTitle:nil otherButtonTitles:@"iCloud", @"Dropbox", @"IdioSync", @"Multipeer", @"CloudKit", @"CloudKit Share", nil];
         [syncServiceActionSheet showFromToolbar:self.navigationController.toolbar];
         [self updateButtons];
     }
@@ -127,22 +127,26 @@
         else if (buttonIndex == actionSheet.firstOtherButtonIndex+3) {
             service = IDMMultipeerService;
         }
+        else if (buttonIndex == actionSheet.firstOtherButtonIndex+4) {
+            service = IDMCloudKitService;
+        }
+        else if (buttonIndex == actionSheet.firstOtherButtonIndex+5) {
+            service = IDMCloudKitShareOwnerService;
+        }
         
         [self updateButtons];
-
-        IDMSyncManager *syncManager = [IDMSyncManager sharedSyncManager];
-        [syncManager connectToSyncService:service withCompletion:^(NSError *error){
-            [self updateButtons];
-        }];
-        
+        [self connectToCloudService:service];
         syncServiceActionSheet = nil;
     }
 }
 
-- (IDMTag *)tagAtRow:(NSUInteger)row
+- (void)connectToCloudService:(NSString *)service
 {
-    if (row == 0) return nil;
-    return tagsController.fetchedObjects[row-1];
+
+    IDMSyncManager *syncManager = [IDMSyncManager sharedSyncManager];
+    [syncManager connectToSyncService:service withCompletion:^(NSError *error){
+        [self updateButtons];
+    }];
 }
 
 - (IBAction)showNodeServerSettings:(id)sender
@@ -195,6 +199,12 @@
             [self.managedObjectContext save:NULL];
         }];
     }
+}
+
+- (IDMTag *)tagAtRow:(NSUInteger)row
+{
+    if (row == 0) return nil;
+    return tagsController.fetchedObjects[row-1];
 }
 
 #pragma mark - Fetched Results Controller Delegate

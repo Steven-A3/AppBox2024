@@ -27,10 +27,11 @@
     NSManagedObjectContext *moc;
 }
 
-- (void)setUp {
+- (void)setUp
+{
     [super setUp];
 
-    rootTestDir = [NSTemporaryDirectory() stringByAppendingPathComponent:[self className]];
+    rootTestDir = [NSTemporaryDirectory() stringByAppendingPathComponent:NSStringFromClass(self.class)];
     [[NSFileManager defaultManager] removeItemAtPath:rootTestDir error:NULL];
     [[NSFileManager defaultManager] createDirectoryAtPath:rootTestDir withIntermediateDirectories:YES attributes:nil error:NULL];
 
@@ -55,7 +56,15 @@
     ensemble = [[CDEPersistentStoreEnsemble alloc] initWithEnsembleIdentifier:@"testensemble" persistentStoreURL:storeURL managedObjectModelURL:testModelURL cloudFileSystem:(id)cloudFileSystem];
 }
 
-- (void)leech {
+- (void)tearDown
+{
+    [ensemble dismantle];
+    [[NSFileManager defaultManager] removeItemAtPath:rootTestDir error:NULL];
+    [super tearDown];
+}
+
+- (void)leech
+{
     XCTestExpectation *complete = [self expectationWithDescription:@"leech"];
     [ensemble leechPersistentStoreWithCompletion:^(NSError *error) {
         [complete fulfill];
@@ -63,16 +72,18 @@
     [self waitForExpectationsWithTimeout:5.0 handler:nil];
 }
 
-- (void)deleech {
+- (void)deleech
+{
     XCTestExpectation *complete = [self expectationWithDescription:@"deleech"];
     [ensemble deleechPersistentStoreWithCompletion:^(NSError *error) {
-        NSLog(@"deleach done with error %@", error);
+        NSLog(@"deleech done with error %@", error);
         [complete fulfill];
     }];
     [self waitForExpectationsWithTimeout:5.0 handler:nil];
 }
 
-- (void)merge {
+- (void)merge
+{
     XCTestExpectation *complete = [self expectationWithDescription:@"merge"];
     [ensemble mergeWithCompletion:^(NSError *error) {
         [complete fulfill];
@@ -80,20 +91,18 @@
     [self waitForExpectationsWithTimeout:5.0 handler:nil];
 }
 
-- (void)removeCloudDirectory {
+- (void)removeCloudDirectory
+{
     [[NSFileManager defaultManager] removeItemAtPath:cloudDir error:NULL];
 }
 
-- (void)removeEventStore {
-    [[ensemble eventStore] removeEventStore];
+- (void)removeEventStore
+{
+    [[ensemble eventStore] removeEventStore:NULL];
 }
 
-- (void)tearDown {
-    [[NSFileManager defaultManager] removeItemAtPath:rootTestDir error:NULL];
-    [super tearDown];
-}
-
-- (NSArray*)expectationsForActivity:(CDEEnsembleActivity)expectedActivity error:(BOOL)expectError {
+- (NSArray*)expectationsForActivity:(CDEEnsembleActivity)expectedActivity error:(BOOL)expectError
+{
     return
   @[
     [self expectationForNotification:CDEPersistentStoreEnsembleDidBeginActivityNotification object:ensemble handler:^BOOL(NSNotification *notification) {
@@ -109,37 +118,43 @@
     ];
 }
 
-- (void)testDidBeginWillEndNotificationsForLeeching {
+- (void)testDidBeginWillEndNotificationsForLeeching
+{
     [self expectationsForActivity:CDEEnsembleActivityLeeching error:NO];
     [self leech];
 }
 
-- (void)testDidBeginWillEndNotificationsForLeechingWithError {
+- (void)testDidBeginWillEndNotificationsForLeechingWithError
+{
     [self removeCloudDirectory];
     [self expectationsForActivity:CDEEnsembleActivityLeeching error:YES];
     [self leech];
 }
 
-- (void)testDidBeginWillEndNotificationsForMerging {
+- (void)testDidBeginWillEndNotificationsForMerging
+{
     [self leech];
     [self expectationsForActivity:CDEEnsembleActivityMerging error:NO];
     [self merge];
 }
 
-- (void)testDidBeginWillEndNotificationsForMergingWithError {
+- (void)testDidBeginWillEndNotificationsForMergingWithError
+{
     [self leech];
     [self removeCloudDirectory];
     [self expectationsForActivity:CDEEnsembleActivityMerging error:YES];
     [self merge];
 }
 
-- (void)testDidBeginWillEndNotificationsForDeleeching {
+- (void)testDidBeginWillEndNotificationsForDeleeching
+{
     [self leech];
     [self expectationsForActivity:CDEEnsembleActivityDeleeching error:NO];
     [self deleech];
 }
 
-- (void)testDidBeginWillEndNotificationsForDeleechingWithError {
+- (void)testDidBeginWillEndNotificationsForDeleechingWithError
+{
     [self leech];
     [self removeEventStore];
     [self expectationsForActivity:CDEEnsembleActivityDeleeching error:YES];

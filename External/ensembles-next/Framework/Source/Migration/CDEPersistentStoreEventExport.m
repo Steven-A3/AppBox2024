@@ -40,7 +40,11 @@
     NSManagedObjectContext *eventStoreContext = self.eventStore.managedObjectContext;
     
     // Create context for files
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     fileContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSConfinementConcurrencyType];
+#pragma clang diagnostic pop
+    
     NSPersistentStoreCoordinator *mainCoordinator = self.eventStore.managedObjectContext.persistentStoreCoordinator;
     NSPersistentStoreCoordinator *persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mainCoordinator.managedObjectModel];
     fileContext.persistentStoreCoordinator = persistentStoreCoordinator;

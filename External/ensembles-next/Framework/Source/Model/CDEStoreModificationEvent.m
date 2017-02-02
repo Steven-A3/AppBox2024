@@ -295,9 +295,10 @@
 
 + (void)prefetchRelatedObjectsForStoreModificationEvents:(NSArray *)storeModEvents
 {
-    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"CDEStoreModificationEvent"];
-    fetch.predicate = [NSPredicate predicateWithFormat:@"SELF IN %@", storeModEvents];
-    fetch.relationshipKeyPathsForPrefetching = @[@"objectChanges", @"objectChanges.globalIdentifier", @"eventRevision", @"eventRevisionsOfOtherStores"];
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"CDEObjectChange"];
+    fetch.predicate = [NSPredicate predicateWithFormat:@"storeModificationEvent IN %@", storeModEvents];
+    fetch.relationshipKeyPathsForPrefetching = @[@"globalIdentifier"];
+    fetch.fetchLimit = 10000;
     NSManagedObjectContext *context = [storeModEvents.lastObject managedObjectContext];
     [context executeFetchRequest:fetch error:NULL];
 }

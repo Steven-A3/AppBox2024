@@ -1,0 +1,354 @@
+Changes to the Sync API for iOS and OS X
+========================================
+
+Changes in 3.1.2
+----------------
+- Fix a bug where multiple offline writes to a file could a change to a read-only shared
+  folder to still be visible after being denied.
+- iOS: Add armv7s architecture to the framework
+- Fix build failure in source files which do not include Foundation.h
+- Remove the Tasks example in favor of the new Lists sample: https://github.com/dropbox/lists-ios
+
+Changes in 3.1.1
+----------------
+- Remove some test object files from the iOS framework directory.
+- Properly raise DBException on errors, rather than generic NSException.
+- Fix a potential hang when deallocating DBDatastoreManager.
+- iOS: Fix some build dependency issues in Dropbox.framework
+- Fix a bug where failed local changes to read-only folders still
+  appeared to have taken effect.
+- This SDK was built with Xcode 6.
+
+Changes in 3.1.0
+----------------
+**NOTE:** If you downloaded the 3.1.0 SDK on September 16 2014 before
+approximately 6pm US/Pacific time you received a defective
+version. Please download the SDK zipfile again. We apologize for this
+issue.
+
+This is a major release, with API changes which may require updates
+to your application code.  See the "Potentially Breaking Changes" section below
+for more information.
+
+###New Features:
+- __Datastore Sharing__:
+  This release contains a new feature that lets users share their datastores with
+  each other, under control of the app.
+  You can find more details on this feature in the
+  [documentation](https://www.dropbox.com/developers/datastore/docs/ios).
+  Some specifics:
+  - New enum DBDatastore.DBRole.
+  - New NSString constants DBDatastore.DBPrincipalTeam, DBDatastore.DBPrincipalPublic.
+  - New static method DBDatastoreManager.isValidShareableId.
+  - New properties DBDatastore.isWritable, DBDatastore.isShareable, DBDatastore.effectiveRole.
+  - New methods DBDatastore.getRoleForPrincipal, DBDatastore.setRoleForPrincipal,
+    DBDatastore.deleteRoleForPrincipal, DBDatastore.listRoles.
+  - New properties DBDatastoreInfo.role, DBDatastoreInfo.isShareable, DBDatastoreInfo.isWritable.
+- __Local Datastores__:
+  This release contains the final version of a new feature that allows you to create
+  and use datastores locally on a device without linking a Dropbox account first.  When
+  the user logs in and wishes to sync, you can then migrate their datastores to a
+  Dropbox account.
+  You can find more details on this feature in the
+  [documentation](https://www.dropbox.com/developers/datastore/docs/ios).
+  Changes to this feature since the 3.0 release:
+  - New properties DBDatastoreManager.isLocal, DBDatastoreManager.account.
+  - Fix a case where list inserts weren't properly merged when migrating a
+    local datastore to an account.
+  - Fix a case where repeatedly inserting and deleting a record into a
+    local datastore would cause storage to grow indefinitely.
+  - Other bug fixes.
+- __Resuming Uploads__: Datastore changes which are not uploaded before shutdown,
+  will now begin uploading automatically the next time a DBDatastoreManager or
+  DBDatastore is created with the same account.
+- __Platform Support__:
+  Validated compatibility with Xcode 6 (beta 3+), iOS 8, and OS X 10.10.
+
+###Potentially Breaking Changes:
+- -[DBError code] no longer returns a different type from its superclass
+  property, though the NSInteger value is still guaranteed to be one of
+  the values defined by the DBErrorCode enum.  -[DBError dbErrorCode] is now
+  available to access the error code as a DBErrorCode enum.
+
+### Other Changes
+- Fix a bug where attempting to modify a read-only shared folder would fail to
+  upload and block the upload of other changes.  Such changes will now be blocked
+  locally and return DBErrorReadOnly.  Making changes before the read-only
+  state is received from the server will result in those changes being lost.
+- Add DBDatastoreManager.sharedManager singleton, set with DBDatastoreManager.setSharedManager.
+- New error codes DBErrorCancelled, DBErrorReadOnly, DBErrorRetryLater.
+- Fix a case where a datastore is incorrectly marked as "connected" after
+  communication ends.
+- Fix a possible crash when mixing thumbnail and file downloads.
+
+Changes in 3.0.2
+----------------
+- fix crashes and inconsistencies when an app was repeatedly restarted
+  while being flooded with incoming changes
+
+Changes in 3.0.1
+----------------
+- Fix an issue with incorrect DBDatastoreInfo properties (title/mtime) after
+  migration of local datastores.
+- properly shut down DBDatastoreManager when its account is unlinked.
+- OS X: fix error in cache migration due to attempt to move .DS_Store file
+
+Changes in 3.0.0
+----------------
+
+This is a major release, with API changes which may require updates
+to your application code.  See the "Potentially Breaking Changes" section below
+for more information.
+
+###New Features (Files):
+
+- __Configurable Cache Size__:
+  You can now set the maximum size of cached file contents to store locally.  Beyond
+  that size, files are removed in LRU order, so long as they are no longer in use.
+  You can use a cache size of 0 to disable caching of files which are not in use.
+  Files which are in use (open or uploading) are never deleted, and may cause
+  the cache to be temporarily larger than the configured size.
+- __Batching of Operations__:
+  Multiple operations manipulating the filesystem (such as moves or deletes) can be
+  automatically batched to be upload together for faster syncing.  File content changes
+  are still processed individually.
+- __Expanded Sync Status__:
+  DBSyncStatus is now an interface type which includes fields indicating errors in
+  background syncing.
+
+###New Features (Datastores):
+
+- __App-Selected Datastore IDs__:
+  You can now use [DBDatastoreManager openOrCreateDatastore:error:] to create datastores
+  with local IDs like "settings".  The default datastore is no longer a special case, but
+  simply a datastore with the ID "default".
+  ___Backward Compatibility Note: Older SDK versions can open datastores with local IDs.
+  However there is a known issue if the ID of one datastore is a prefix of the ID
+  of another one (e.g. note1 and note11).  In such a situation, when "note1" is
+  deleted, the old SDK will also delete the local cache for "note11".  You should
+  avoid assigning IDs in this way if you need to interoperate with old SDK versions.___
+- __Expanded Datastore Info__:
+  DbxDatastoreInfo now includes fields for title and mtime (last modification time).
+  Title can be set using -[DBDatastore setTitle:], while mtime is set automatically
+  (using the local clock) each time you call -[DBDatastore sync:] with outgoing changes.
+- __Expanded Datastore Status__:
+  DBDatastoreStatus is now an interface type which includes fields indicating errors in
+  background syncing, as well as a new status flag which indicates when a datastore is
+  unable to sync.
+- __Datastore Size Accessors__:
+  There are new accessors to allow you to check the size of your data and avoid the
+  syncing limits.
+- __Datastore Cache Management__:
+  You can use -[DBDatastoreManager uncacheDatastore:error:] to remove a datastore from the
+  cache, in order to save space, or reset it from an unsyncable state.
+- __[Preview Feature] Local Datastores__:
+  This release contains a preview of a new feature that allows you to create and
+  use datastores locally on a device without linking a Dropbox account first.  When
+  the user logs in and wishes to sync, you can then migrate their datastores to a
+  Dropbox account.
+  ___This feature is not ready for production use, and shouldn't be used in production
+  apps.___
+  You can find more details on this feature in the
+  [documentation](https://www.dropbox.com/developers/datastore/docs/android).
+
+###Potentially Breaking Changes:
+
+- DBSyncStatus and DBDatastoreStatus are now interface types.  The flags previously
+  available in the bitfield are now available as BOOL properties.
+- The set of DBError codes has changed.  You may need to adjust your error checking
+  code to use the new enum values.
+- Some failure cases (such as illegal arguments, or use of a closed file) now raise
+  DBException rather than returning DBError (or silently failing in some cases).
+  See the comments in DBError for the list of error codes which typically cause
+  exceptions.
+
+### Other Changes
+
+- Now allows longer IDs to be used for datastores, tables, records, and fields.
+- Fixed bug causing datastores created offline to be lost if not synced before
+  restart.
+- Relocate temp files to be within the primary SyncAPI cache directory.
+  this fixes a failure on OS X with cache and temp dir on different devices
+- OS X: Add missing AppKit import in DBAccountManager.h
+- OS X: Use @loader_path rather than @executable_path for install directory,
+  and build with -headerpad_max_install_names to allow apps to change
+  dependant paths using install_name_tool.
+- Fixed bugs in edge-cases of datastore syncing and conflict resolution.
+- Many general performance and stability improvements.
+
+Changes in 2.1.2
+----------------
+- fix bug where deleting a datastore with ID dsid deletes other datastores
+  whose IDs have dsid as a prefix
+- fix bug where a stale file version is opened after a file is
+  renamed, then written while still open
+
+Changes in 2.1.1
+----------------
+- fix HTTP errors on iOS 5.0 and OS X 10.7
+- avoid extra network requests on unlinked accounts
+- add -[DBFilesystem shutDown] to explicitly stop all syncing
+- make all sample apps compile warning-free in Xcode 5.1
+
+Changes in 2.1.0
+----------------
+- first SDK release for OS X, sharing the same Objective-C interface with iOS
+- enforce strict security settings on SSL communication
+- enable HTTP connection reuse
+- change symbols to avoid conflicts with other uses of sqlite3 library
+- fix bug where datastore cache wasn't being deleted on unlink
+- The following classes now all provide custom isEqual:/hash/copyWithZone:
+  methods for use in NSDictionary/NSSet, plus description methods for
+  debugging: DBAccount, DBAccountInfo, DBFileInfo, DBFileStatus, DBPath,
+  DBRecord, DBTable, DBList.
+  Note: The identity information which defines comparison for these objects
+  is always immutable.  For classes which aren't Info/Status, comparison is
+  based on what they are, not what they contain.  E.g. isEqual: compares the
+  ID of a datastore record (not its fields) and the auth token of an account
+  (not its cached data).  Descriptions are not guaranteed to be complete,
+  unique, or unchanged in future versions.
+- improvements to error reporting
+
+Changes in 2.0.3
+----------------
+- fix possible HTTP 400 when merging a datastore created locally when it
+  already exists on the server
+- improvements to network reachability detection in Airplane mode
+- made small change to login UI
+
+Changes in 2.0.2
+----------------
+- add new method -[DBList moveObjectAtIndex:1 toIndex:]
+- fix bug where tables with no records were still listed after sync
+- ensure stored credentials are accessible in the background (after the
+  first time the device is unlocked)
+- fix potential crash in error logging
+
+Changes in 2.0.1
+----------------
+- Support 64 bit builds on iOS 7
+- reduce memory usage when appending to large files
+
+Changes in 2.0.0
+----------------
+The Sync API now contains both Datastore and File/Folder sync functionality.
+
+### Feature Changes
+- added the new Datastores API
+- added batch downloads for thumbnails
+
+### Bugs Fixed
+- check for reserved path names regardless of case
+- fix duplicate DBSyncStatus definition issue in .mm files
+- fix failure to re-create DBAccountManager after it is destroyed
+- fix circular reference keeping DBAccountManager from being deallocated
+- fix memory leak if DBDatastoreManager is deallocated with uploads or downloads
+  outstanding
+- other stability and performance improvements
+
+Changes in 1.1.3
+----------------
+- ensure compatibility with iOS 7 and Xcode 5
+- handle shutdown during HTTP as failure, not success
+- work around incompatibility with other SDKs using the Jansson JSON parser
+- fix crash on attempt to open a not-yet-uploaded locally-created directory as a file
+- fix error code reported when the user is over quota
+- add public kDBSDKVersion constant, and add version.txt file to Dropbox.framework
+- fix ref-counting assertion when combining some redundant operations offline
+- fix server error with offline mkdir not delivered until after restart
+
+Changes in 1.1.2
+----------------
+- add compatibility with iOS 5.0
+- fix circular reference keeping DBAccountManager from being deallocated
+- fix duplicate DBSyncStatus definition issue in .mm files
+
+Changes in 1.1.1
+----------------
+- fix longpoll timeout calculation when app resumes from suspended state
+- fix failure to re-create DBAccountManager after it is destroyed
+- added Hello Dropbox sample app
+
+Changes in 1.1.0
+----------------
+
+### New Features
+- support for File types applications
+- support for server-generated thumbnails for images
+- support for generating sharable links
+- use long-polling to the server for faster updates and reduced
+  power usage
+- added icon name to DBFileInfo
+- added appendData and appendString methods to DBFile
+
+### Potentially Breaking Changes
+- Dropbox.framework now requires libc++.dylib.  You can include this
+  with the other frameworks in the "Link Binary with Libraries" build
+  phase of your project target.
+- renamed DBSyncStatusOnline to DBSyncStatusActive to properly reflect
+  its meaning
+- files are now not downloaded in the background if the DbxFile is no longer open
+- path listeners are now triggered by file creation
+- path listeners are now not triggered by upload or download completion
+
+### Other Changes
+- added ImageGrid example app to demonstrate use of observers and thumbnails
+- cancel outstanding server requests to avoid delays on unlink or shutdown
+- optimized upload processing to avoid redundant operations
+- fix incorrect calculation of DBFileStatus.progress before
+  upload/download begins, and for large files
+- improved error behavior when attempting to write a non-file path into a DBFile
+- various performance and stability fixes
+
+Changes in 1.0.8
+----------------
+- fix leak of file descriptor during file upload
+- add timeout on HTTP requests, and ensure cleanup of request state
+- allow use of DBFileInfo in hash tables
+- better recovery in case of cache corruption
+
+Changes in 1.0.7
+----------------
+- add the -[DBFilesystem addObserver:block:] method which allows you to get updates when
+  the filesystem's status, shutDown, or completedFirstSync properties change.
+- add -[DBAccountManager linkedAccounts] to allow linking to multiple user accounts
+- fix leak when unlinking accounts
+- fix error on long-running uploads
+- fix leak of file descriptor when writing a file
+
+Changes in 1.0.6
+----------------
+- fix authentication bug
+- rename enum DBSyncStatus to DBSyncStatusFlags to avoid errors when compiling
+  Objective-C++
+
+Changes in 1.0.5
+----------------
+- fix memory leaks
+
+Changes in 1.0.4
+----------------
+- fix unnecessary redownloading of files written locally
+- fix regression from 1.0.3 where files that were closed couldn't be opened again
+- make sure DBSyncStatus always reports uploading when a file is uploading
+- fix a possible hang during DBFilesystem startup
+
+Changes in 1.0.3
+----------------
+- don't call a DBFilesystem path observer if a file's download progress changes
+- better error messages if you try to use a closed file
+- don't warn if -[DBFilesystem fileInfoForPath:error:] is called on a file that doesn't exist
+- don't warn on successful call to -[DBFile update]
+
+Changes in 1.0.2
+----------------
+- actually block when you read an uncached file
+- report the correct download progress
+
+Changes in 1.0.1
+----------------
+- bug fixes
+
+Changes in 1.0
+--------------
+- initial release of Sync API for iOS

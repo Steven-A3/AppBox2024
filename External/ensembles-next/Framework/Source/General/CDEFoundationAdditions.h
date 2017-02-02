@@ -10,16 +10,17 @@
 
 @interface NSArray (CDEFoundationAdditions)
 
-- (void)cde_enumerateObjectsDrainingEveryIterations:(NSUInteger)iterationsBetweenDrains usingBlock:(void (^)(id object, NSUInteger index, BOOL *stop))block;
-- (void)cde_enumerateObjectsInBatchesWithBatchSize:(NSUInteger)batchSize usingBlock:(void (^)(NSArray *batch, NSUInteger batchesRemaining, BOOL *stop))block;
+- (void)cde_enumerateObjectsDrainingEveryIterations:(NSUInteger)iterationsBetweenDrains usingBlock:(nonnull void (^)(id _Nonnull object, NSUInteger index, BOOL *_Nonnull stop))block;
+- (void)cde_enumerateObjectsInBatchesWithBatchSize:(NSUInteger)batchSize usingBlock:(nonnull void (^)(NSArray * _Nonnull batch, NSUInteger batchesRemaining, BOOL * _Nonnull stop))block;
 
-- (NSArray *)cde_arrayByTransformingObjectsWithBlock:(id(^)(id))block;
+- (nonnull NSArray *)cde_arrayByTransformingObjectsWithBlock:(id _Nonnull (^ _Nonnull)(id _Nonnull))block;
+- (nonnull NSArray *)cde_arrayByFilteringWithBlock:(BOOL (^ _Nonnull)(id _Nonnull))block;
 
 @end
 
 
 @interface NSData (CDEFoundationAdditions)
 
-- (NSString *)cde_base64String;
+- (nonnull NSString *)cde_base64String;
 
 @end

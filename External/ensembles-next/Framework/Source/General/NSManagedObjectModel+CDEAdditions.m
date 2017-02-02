@@ -35,10 +35,13 @@
 
 - (NSString *)cde_entityHashesPropertyList
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     NSString *error = nil;
     NSData *data = [NSPropertyListSerialization dataFromPropertyList:self.entityVersionHashesByName format:NSPropertyListXMLFormat_v1_0 errorDescription:&error];
     if (!data) CDELog(CDELoggingLevelError, @"Error generating property list: %@", error);
-    
+#pragma clang diagnostic pop
+
     NSString *string = nil;
     if (data) string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     
@@ -50,10 +53,13 @@
     NSData *data = [propertyList dataUsingEncoding:NSUTF8StringEncoding];
     if (!data) return nil;
     
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     NSString *error;
     NSPropertyListFormat format;
     NSDictionary *entitiesByName = [NSPropertyListSerialization propertyListFromData:data mutabilityOption:NSPropertyListImmutable format:&format errorDescription:&error];
     if (!entitiesByName) CDELog(CDELoggingLevelError, @"Error reading property list: %@", error);
+#pragma clang diagnostic pop
     
     return entitiesByName;
 }
@@ -126,6 +132,16 @@
         [descendants addObjectsFromArray:[subentity cde_descendantEntities]];
     }
     return descendants;
+}
+
+- (NSArray *)cde_ancestorEntities
+{
+    NSMutableArray *ancestors = [[NSMutableArray alloc] init];
+    NSEntityDescription *ancestor = self;
+    while ((ancestor = ancestor.superentity)) {
+        [ancestors addObject:ancestor];
+    }
+    return ancestors;
 }
 
 @end

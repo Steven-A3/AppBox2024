@@ -19,27 +19,32 @@ As long as you are entitled to support, you are additionally entitled to receive
 
 You are additionally entitled to receive documentation for use within your organization. The documentation will be delivered in various electronic formats, and may be distributed within the organization. The documentation may not be shared with third parties, except with contractors, temporary workers or freelancers hired by you to do work for your benefit in which they have a bona fide need to know the documentation.
 
-### License to software
+### Software license
 
-The Ensembles software may be used on an unlimited number of computers within your organization. Further, you may deploy the software for external use by third parties as Software-as-a-Service on servers under your control.
+The supplied software may be used on an unlimited number of computers within your organization, or linked and distributed in binary form in software developed by your organization. Further, you may deploy any of the additional software for external use by third parties as Software-as-a-Service on servers under your control.
 
 It is expressly forbidden to
- * reverse engineer the source code of the software or to decompile the software, except to the extent permitted by mandatory law or applicable open source license;
- * provide copies of the software to third parties;
- * sublicense the software or otherwise make available the software to third parties, except via Software-as-a-Service as mentioned above;
- * remove indications of The Mental Faculty B.V. as copyright holder of the software or to remove or render illegible any part thereof.
+
+* reverse engineer or decompile the software, except to the extent permitted by mandatory law or applicable open source license;
+* provide copies of the provided source code or binaries to third parties;
+* sublicense the software or otherwise make available the software to third parties, except where linked as a library or vended via Software-as-a-Service as mentioned above;
+* remove indications of The Mental Faculty B.V. as copyright holder of the software or to remove or render illegible any part thereof.
  
 You may make a backup copy of the software. This backup copy may not be used or traded or distributed in any way, except in conjunction with the original software.
 
 ### Access to selected source code
 
-Your support package may include access to selected source code for use within your organization. This access includes the right to modify, copy, and distribute within the organization, but does not include the right to provide copies of the software to third parties or to sublicense the software or otherwise make available the software to third parties, except when deployed as Software-as-a-Service on servers under your control.
+Your support package may include access to selected source code for use within your organization. 
+
+This access includes the right to modify, copy, and distribute within the organization, but does not include the right to provide copies of the software to third parties or to sublicense the software or otherwise make available the software to third parties, except when deployed as a linked library or as Software-as-a-Service on servers under your control.
 
 ### Intellectual property
 
-All right, title and interest to Ensembles, the accompanying documentation and all modifications and extensions thereto rest and remain with The Mental Faculty B.V.. You only have the rights and permissions explicitly granted to you by this agreement or granted in writing otherwise. You may not use, copy, distribute or publish the software in any other manner.
+All right, title and interest to Ensembles and additional software, the accompanying documentation and all modifications and extensions thereto rest and remain with The Mental Faculty B.V.. You only have the rights and permissions explicitly granted to you by this agreement or granted in writing otherwise. You may not use, copy, distribute or publish the software in any other manner.
 
 The software includes third-party open source software. The respective third-party rights holders grant you the rights indicated in the applicable open source licenses. These licenses can be found in the documentation.
+
+Some versions of Ensembles have an open source software. Nothing in this agreement is intended to contradict the rights granted under its open source license.
 
 ### Guarantees and liability
 

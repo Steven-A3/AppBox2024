@@ -27,7 +27,6 @@ static NSString *defaultPathToEventDataRootDirectory = nil;
 
 @interface CDEEventStore ()
 
-@property (nonatomic, copy, readwrite) NSString *pathToEventStoreRootDirectory;
 @property (nonatomic, strong, readonly) NSString *pathToEventStore;
 @property (nonatomic, strong, readonly) NSString *pathToDataFileDirectory;
 @property (nonatomic, strong, readonly) NSString *pathToNewlyImportedDataFileDirectory;
@@ -96,7 +95,7 @@ static NSString *defaultPathToEventDataRootDirectory = nil;
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self dismantle];
 }
 
 
@@ -221,8 +220,10 @@ static NSString *defaultPathToEventDataRootDirectory = nil;
 
 - (CDERevisionNumber)lastRevisionSaved
 {
-    NSArray *excludedTypes = @[@(CDEStoreModificationEventTypeBaselineMissingDependencies), @(CDEStoreModificationEventTypeIncomplete)];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"persistentStoreIdentifier = %@ AND NOT (storeModificationEvent.type IN %@)", self.persistentStoreIdentifier, excludedTypes];
+    NSArray *allowedTypes = @[@(CDEStoreModificationEventTypeSave), @(CDEStoreModificationEventTypeMerge)];
+    NSPredicate *saveMergePredicate = [NSPredicate predicateWithFormat:@"persistentStoreIdentifier = %@ AND (storeModificationEvent != NIL AND storeModificationEvent.type IN %@)", self.persistentStoreIdentifier, allowedTypes];
+    NSPredicate *baselinePredicate = [NSPredicate predicateWithFormat:@"(persistentStoreIdentifier = %@) AND ((storeModificationEvent != NIL AND storeModificationEvent.type = %d) OR (storeModificationEventForOtherStores != NIL AND storeModificationEventForOtherStores.type = %d))", self.persistentStoreIdentifier, CDEStoreModificationEventTypeBaseline, CDEStoreModificationEventTypeBaseline];
+    NSPredicate *predicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[saveMergePredicate, baselinePredicate]];
     CDERevisionNumber result = [self lastRevisionNumberSavedForEventRevisionPredicate:predicate];
     return result;
 }
@@ -395,7 +396,7 @@ static NSString *defaultPathToEventDataRootDirectory = nil;
 
 - (BOOL)prepareNewEventStore:(NSError * __autoreleasing *)error
 {
-    [self removeEventStore];
+    [self removeEventStore:NULL];
     
     // Directories
     BOOL success = [self createEventStoreDirectoriesIfNecessary:error];
@@ -414,13 +415,33 @@ static NSString *defaultPathToEventDataRootDirectory = nil;
     return YES;
 }
 
-- (BOOL)removeEventStore
+- (void)dismantle
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [managedObjectContext performBlockAndWait:^{
+        self.persistentStoreIdentifier = nil;
+        mandatoryEventCountedSet = nil;
+        [self tearDownCoreDataStack];
+    }];
+}
+
+- (void)removeEventStoreWithCompletion:(CDECompletionBlock)completion
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        NSError *error = nil;
+        [self removeEventStore:&error];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (completion) completion(error);
+        });
+    });
+}
+
+- (BOOL)removeEventStore:(NSError * __autoreleasing *)error
 {
     CDELog(CDELoggingLevelTrace, @"Removing event store");
-    self.persistentStoreIdentifier = nil;
-    mandatoryEventCountedSet = nil;
-    [self tearDownCoreDataStack];
-    return [fileManager removeItemAtPath:self.pathToEventStoreRootDirectory error:NULL];
+    [self dismantle];
+    BOOL success = [fileManager removeItemAtPath:self.pathToEventStoreRootDirectory error:error];
+    return success;
 }
 
 - (BOOL)containsEventData
@@ -500,7 +521,10 @@ static NSString *defaultPathToEventDataRootDirectory = nil;
     
     // Prevent event store being backed up
 #if !TARGET_OS_IPHONE
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wtautological-pointer-compare"
     if (&NSURLIsExcludedFromBackupKey != NULL) {
+#pragma clang diagnostic pop
 #endif
         NSURL *url = [NSURL fileURLWithPath:self.pathToEventStoreRootDirectory];
         NSError *metadataError;
