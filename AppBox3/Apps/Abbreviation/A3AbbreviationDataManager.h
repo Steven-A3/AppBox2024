@@ -9,7 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "A3SharePopupViewController.h"
 
-@interface A3AbbreviationDataManager : NSObject <A3SharePopupViewDataSource>
+@protocol A3AbbreviationDrillDownDataSource;
+
+@interface A3AbbreviationDataManager : NSObject <A3SharePopupViewDataSource, A3AbbreviationDrillDownDataSource>
 
 @property (nonatomic, strong) NSArray *dataArray;
 @property (nonatomic, strong) NSArray<NSDictionary *> *hashTagSections;
@@ -29,3 +31,5 @@ extern NSString *const A3AbbreviationKeySectionTitle;
 extern NSString *const A3AbbreviationKeyAbbreviation;
 extern NSString *const A3AbbreviationKeyLetter;
 extern NSString *const A3AbbreviationKeyMeaning;
+
+#import "A3AbbreviationDrillDownTableViewController.h"

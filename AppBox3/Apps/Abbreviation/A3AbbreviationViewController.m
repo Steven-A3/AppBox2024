@@ -134,7 +134,7 @@
 			
 			A3AbbreviationDrillDownTableViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownTableViewController storyboardID]];
 			viewController.dataManager = self.dataManager;
-			viewController.contentsArray = section[A3AbbreviationKeyComponents];
+			viewController.contentsArray = [section[A3AbbreviationKeyComponents] mutableCopy];
 			viewController.contentsTitle = section[A3AbbreviationKeyTag];
 			[self.navigationController pushViewController:viewController animated:YES];
 		} else {
@@ -174,7 +174,7 @@
 		
 		A3AbbreviationDrillDownTableViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownTableViewController storyboardID]];
 		viewController.dataManager = self.dataManager;
-		viewController.contentsArray = section[A3AbbreviationKeyComponents];
+		viewController.contentsArray = [section[A3AbbreviationKeyComponents] mutableCopy];
 		viewController.contentsTitle = [NSString stringWithFormat:@"#%@", section[A3AbbreviationKeyTag]];
 		[self.navigationController pushViewController:viewController animated:YES];
 	} else {
@@ -206,9 +206,11 @@
 
 - (IBAction)favoritesButtonAction:(id)sender {
 	A3AbbreviationDrillDownTableViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownTableViewController storyboardID]];
+	viewController.dataSource = self.dataManager;
+	viewController.allowsEditing = YES;
 	viewController.dataManager = self.dataManager;
 	viewController.contentsTitle = @"Favorites";
-	viewController.contentsArray = [self.dataManager favoritesArray];
+	viewController.contentsArray = [[self.dataManager favoritesArray] mutableCopy];
 	[self.navigationController pushViewController:viewController animated:YES];
 }
 
@@ -298,7 +300,7 @@
 		A3AbbreviationDrillDownTableViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownTableViewController storyboardID]];
 		viewController.dataManager = self.dataManager;
 		viewController.contentsTitle = self.dataManager.alphabetSections[indexPath.row][A3AbbreviationKeyLetter];
-		viewController.contentsArray = contents;
+		viewController.contentsArray = [contents mutableCopy];
 		[self.navigationController pushViewController:viewController animated:YES];
 	}
 }

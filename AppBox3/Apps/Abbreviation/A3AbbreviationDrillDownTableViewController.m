@@ -11,13 +11,14 @@
 #import "A3AppDelegate.h"
 #import "A3SharePopupViewController.h"
 #import "A3AbbreviationCopiedViewController.h"
+#import "NSMutableArray+MoveObject.h"
 
 extern NSString *const A3AbbreviationKeyAbbreviation;
 extern NSString *const A3AbbreviationKeyMeaning;
 
 @interface A3AbbreviationDrillDownTableViewController ()
 <UITableViewDataSource, UITableViewDelegate, UIPreviewInteractionDelegate,
-UIGestureRecognizerDelegate>
+UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UIButton *backButton;
@@ -77,6 +78,31 @@ UIGestureRecognizerDelegate>
 	} else if (IS_IPAD) {
 
 	}
+	[self setupRightBarButtonItem];
+}
+
+- (void)setupRightBarButtonItem {
+	if (_allowsEditing && self.tableView) {
+		if (!self.tableView.isEditing) {
+			self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+																														target:self
+																														action:@selector(editButtonAction:)];
+		} else {
+			self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+																														target:self
+																														action:@selector(doneButtonAction:)];
+		}
+	}
+}
+
+- (void)editButtonAction:(UIBarButtonItem *)editButtonAction {
+	[self.tableView setEditing:YES animated:YES];
+	[self setupRightBarButtonItem];
+}
+
+- (void)doneButtonAction:(UIBarButtonItem *)editButtonAction {
+	[self.tableView setEditing:NO animated:YES];
+	[self setupRightBarButtonItem];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -126,6 +152,26 @@ UIGestureRecognizerDelegate>
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (editingStyle == UITableViewCellEditingStyleDelete) {
+		if ([_dataSource respondsToSelector:@selector(deleteItemForContent:)]) {
+			NSDictionary *content = _contentsArray[indexPath.row];
+			[_dataSource deleteItemForContent:content];
+		}
+		[_contentsArray removeObjectAtIndex:indexPath.row];
+		[_tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+	}
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+	NSDictionary *content = _contentsArray[sourceIndexPath.row];
+	if ([_dataSource respondsToSelector:@selector(moveItemForContent:fromIndex:toIndex:)]) {
+		[_dataSource moveItemForContent:content fromIndex:sourceIndexPath.row toIndex:destinationIndexPath.row];
+	}
+	[_contentsArray moveObjectFromIndex:sourceIndexPath.row toIndex:destinationIndexPath.row];
+	[self.tableView moveRowAtIndexPath:sourceIndexPath toIndexPath:destinationIndexPath];
+}
+
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -146,7 +192,7 @@ UIGestureRecognizerDelegate>
 // https://developer.apple.com/reference/uikit/uipreviewinteractiondelegate
 
 - (BOOL)previewInteractionShouldBegin:(UIPreviewInteraction *)previewInteraction {
-	return !self.presentedViewController;
+	return !self.presentedViewController && !self.tableView.isEditing;
 }
 
 - (void)previewInteraction:(UIPreviewInteraction *)previewInteraction didUpdatePreviewTransition:(CGFloat)transitionProgress ended:(BOOL)ended {
@@ -156,7 +202,7 @@ UIGestureRecognizerDelegate>
 		_blurEffectView = [[UIVisualEffectView alloc] init];
 		_blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		_blurEffectView.frame = self.view.bounds;
-		[self.view addSubview:_blurEffectView];
+		[self.navigationController.view addSubview:_blurEffectView];
 		
 		_blurEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
 		
@@ -194,6 +240,7 @@ UIGestureRecognizerDelegate>
 		_sharePopupViewController = [A3SharePopupViewController storyboardInstanceWithBlurBackground:NO];
 		_sharePopupViewController.presentationIsInteractive = YES;
 		_sharePopupViewController.dataSource = self.dataManager;
+		_sharePopupViewController.delegate = self;
 		_sharePopupViewController.titleString = _contentsArray[_selectedRow][A3AbbreviationKeyAbbreviation];
 		[self presentViewController:_sharePopupViewController animated:YES completion:NULL];
 	}

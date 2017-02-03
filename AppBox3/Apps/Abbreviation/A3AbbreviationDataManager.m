@@ -10,6 +10,7 @@
 #import "NSString+conversion.h"
 #import "AbbreviationFavorite+CoreDataClass.h"
 #import "NSManagedObject+extension.h"
+#import "NSMutableArray+A3Sort.h"
 
 NSString *const A3AbbreviationKeyTag = @"tag";
 NSString *const A3AbbreviationKeyTags = @"tags";
@@ -85,9 +86,16 @@ NSString *const A3AbbreviationKeyMeaning = @"meaning";
 
 - (NSArray *)favoritesArray {
 	NSArray *favoriteKeys = [AbbreviationFavorite MR_findAllSortedBy:@"order" ascending:YES];
+	
 	if ([favoriteKeys count] > 0) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K in %@", A3AbbreviationKeyAbbreviation, [favoriteKeys valueForKey:@"uniqueID"]];
-		NSArray *favorites = [self.dataArray filteredArrayUsingPredicate:predicate];
+		NSMutableArray *favorites = [NSMutableArray new];
+		for (AbbreviationFavorite *favorite in favoriteKeys) {
+			@autoreleasepool {
+				NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", A3AbbreviationKeyAbbreviation, favorite.uniqueID];
+				NSArray *results = [self.dataArray filteredArrayUsingPredicate:predicate];
+				[favorites addObjectsFromArray:results];
+			}
+		}
 		FNLOG(@"%@", favorites);
 		return favorites;
 	}
@@ -239,6 +247,29 @@ NSString *const A3AbbreviationKeyMeaning = @"meaning";
 
 - (NSString *)placeholderForShare:(NSString *)titleString {
 	return NSLocalizedString(@"Abbreviation Reference on the AppBox Pro", nil);
+}
+
+#pragma mark - A3AbbreviationDrillDownDataSource
+// Favorites can delete or reorder the items
+
+- (void)deleteItemForContent:(NSDictionary *)content {
+	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
+	NSArray *results = [AbbreviationFavorite MR_findByAttribute:@"uniqueID" withValue:content[A3AbbreviationKeyAbbreviation]];
+	if ([results count] > 0) {
+		for (AbbreviationFavorite *favorite in results) {
+			[favorite MR_deleteEntityInContext:savingContext];
+		}
+		[savingContext MR_saveToPersistentStoreAndWait];
+	}
+}
+
+- (void)moveItemForContent:(id)content fromIndex:(NSInteger)fromIndex toIndex:(NSInteger)toIndex {
+	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
+	NSMutableArray *favoriteKeys = [[AbbreviationFavorite MR_findAllSortedBy:@"order" ascending:YES inContext:savingContext] mutableCopy];
+	FNLOG(@"%@", favoriteKeys);
+	[favoriteKeys moveItemInSortedArrayFromIndex:fromIndex toIndex:toIndex];
+	FNLOG(@"%@", favoriteKeys);
+	[savingContext MR_saveToPersistentStoreAndWait];
 }
 
 @end

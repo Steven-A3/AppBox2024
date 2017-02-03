@@ -9,11 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "A3AbbreviationDataManager.h"
 
+@protocol A3AbbreviationDrillDownDataSource;
+
 @interface A3AbbreviationDrillDownTableViewController : UIViewController
 
 @property (nonatomic, copy) NSString *contentsTitle;
-@property (nonatomic, copy) NSArray<NSDictionary *> *contentsArray;
+@property (nonatomic, strong) NSMutableArray<NSDictionary *> *contentsArray;
 @property (nonatomic, weak) A3AbbreviationDataManager *dataManager;
+@property (nonatomic, assign) BOOL allowsEditing;
+@property (nonatomic, weak) id<A3AbbreviationDrillDownDataSource> dataSource;
 
 /* Expected Dictionary
 (
@@ -27,5 +31,12 @@
 */
 
 + (NSString *)storyboardID;
+
+@end
+
+@protocol A3AbbreviationDrillDownDataSource <NSObject>
+
+- (void)deleteItemForContent:(id)content;
+- (void)moveItemForContent:(id)content fromIndex:(NSInteger)fromIndex toIndex:(NSInteger)toIndex;
 
 @end
