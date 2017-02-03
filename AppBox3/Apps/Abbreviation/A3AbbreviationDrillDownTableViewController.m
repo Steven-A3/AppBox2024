@@ -95,7 +95,7 @@ UIGestureRecognizerDelegate>
 	NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:location];
 	if (indexPath) {
 		A3SharePopupViewController *viewController = [A3SharePopupViewController storyboardInstanceWithBlurBackground:YES];
-		viewController.delegate = self.dataManager;
+		viewController.dataSource = self.dataManager;
 		viewController.titleString = _contentsArray[indexPath.row][A3AbbreviationKeyAbbreviation];
 		[self presentViewController:viewController animated:YES completion:NULL];
 	}
@@ -193,7 +193,7 @@ UIGestureRecognizerDelegate>
 	if (!self.sharePopupViewControllerIsPresented) {
 		_sharePopupViewController = [A3SharePopupViewController storyboardInstanceWithBlurBackground:NO];
 		_sharePopupViewController.presentationIsInteractive = YES;
-		_sharePopupViewController.delegate = self.dataManager;
+		_sharePopupViewController.dataSource = self.dataManager;
 		_sharePopupViewController.titleString = _contentsArray[_selectedRow][A3AbbreviationKeyAbbreviation];
 		[self presentViewController:_sharePopupViewController animated:YES completion:NULL];
 	}

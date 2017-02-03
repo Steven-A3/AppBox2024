@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "A3SharePopupViewController.h"
 
-@interface A3AbbreviationDataManager : NSObject <A3SharePopupViewControllerDelegate>
+@interface A3AbbreviationDataManager : NSObject <A3SharePopupViewDataSource>
 
 @property (nonatomic, strong) NSArray *dataArray;
 @property (nonatomic, strong) NSArray<NSDictionary *> *hashTagSections;

@@ -989,6 +989,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		685B760B1E4458E600AFA882 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9D6301A1BFEB26300B60D60;
+			remoteInfo = "Ensembles iOS Module";
+		};
+		685B760D1E4458E600AFA882 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 07AC052D1D6D8D0E00AF2337;
+			remoteInfo = "Ensembles tvOS";
+		};
 		68635FFA198BF80E00C3A323 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */;
@@ -3085,6 +3099,8 @@
 				6853FC5B1E374211004A9A24 /* A3AbbreviationCopiedTransitionDelegate.m */,
 				688CC6CB1E20B85F004374D4 /* A3AbbreviationCopiedViewController.h */,
 				688CC6CC1E20B85F004374D4 /* A3AbbreviationCopiedViewController.m */,
+				68E44AD71E408EC500FBC931 /* A3AbbreviationDataManager.h */,
+				68E44AD81E408EC500FBC931 /* A3AbbreviationDataManager.m */,
 				6873B5881E1E5EB600A61AB3 /* A3AbbreviationDrillDownTableViewCell.h */,
 				6873B5891E1E5EB600A61AB3 /* A3AbbreviationDrillDownTableViewCell.m */,
 				68CBBE761E1BA90500E92A8A /* A3AbbreviationDrillDownTableViewController.h */,
@@ -3095,6 +3111,8 @@
 				687B95351E024A1A00126F9E /* A3AbbreviationViewController.m */,
 				6853FC571E3715EA004A9A24 /* A3RippleTransitionController.h */,
 				6853FC581E3715EA004A9A24 /* A3RippleTransitionController.m */,
+				68C0F0761E3F4A9200B04E8B /* A3SharePopupFavoriteButton.h */,
+				68C0F0771E3F4A9200B04E8B /* A3SharePopupFavoriteButton.m */,
 				68C9A0761E29B85A0065509B /* A3SharePopupPresentationController.h */,
 				68C9A0771E29B85A0065509B /* A3SharePopupPresentationController.m */,
 				68CEFB471E20F03900DAFDCB /* A3SharePopupViewController.h */,
@@ -3103,10 +3121,6 @@
 				17D42C2349D6911C330C1F3F /* Abbreviation.json */,
 				687242FD1DF95D5000B7FB6A /* Abbreviation.storyboard */,
 				68057CD21E39EE01002A11FE /* Model */,
-				68C0F0761E3F4A9200B04E8B /* A3SharePopupFavoriteButton.h */,
-				68C0F0771E3F4A9200B04E8B /* A3SharePopupFavoriteButton.m */,
-				68E44AD71E408EC500FBC931 /* A3AbbreviationDataManager.h */,
-				68E44AD81E408EC500FBC931 /* A3AbbreviationDataManager.m */,
 			);
 			path = Abbreviation;
 			sourceTree = "<group>";
@@ -4486,6 +4500,8 @@
 				68635FFB198BF80E00C3A323 /* libensembles.a */,
 				68635FFD198BF80E00C3A323 /* Ensembles.bundle */,
 				68635FFF198BF80E00C3A323 /* Tests iOS.xctest */,
+				685B760C1E4458E600AFA882 /* Ensembles.framework */,
+				685B760E1E4458E600AFA882 /* Ensembles.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -6153,6 +6169,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		685B760C1E4458E600AFA882 /* Ensembles.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Ensembles.framework;
+			remoteRef = 685B760B1E4458E600AFA882 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		685B760E1E4458E600AFA882 /* Ensembles.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Ensembles.framework;
+			remoteRef = 685B760D1E4458E600AFA882 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		68635FFB198BF80E00C3A323 /* libensembles.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;

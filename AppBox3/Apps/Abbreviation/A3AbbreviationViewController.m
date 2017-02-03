@@ -15,7 +15,8 @@
 #import "A3AbbreviationCopiedViewController.h"
 
 @interface A3AbbreviationViewController () <UICollectionViewDelegate, UICollectionViewDataSource,
-UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, UIPreviewInteractionDelegate>
+		UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, UIPreviewInteractionDelegate,
+		A3SharePopupViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
@@ -108,14 +109,6 @@ UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, UIPrevi
 	}
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-
-	if (![self isBeingPresented] && ![self isMovingToParentViewController]) {
-		[self removeBlurEffectView];
-	}
-}
-
 - (A3AbbreviationDataManager *)dataManager {
 	if (!_dataManager) {
 		_dataManager = [A3AbbreviationDataManager instance];
@@ -152,7 +145,8 @@ UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, UIPrevi
 			NSDictionary *section = self.dataManager.hashTagSections[indexPath.row];
 
 			A3SharePopupViewController *viewController = [A3SharePopupViewController storyboardInstanceWithBlurBackground:YES];
-			viewController.delegate = self.dataManager;
+			viewController.delegate = self;
+			viewController.dataSource = self.dataManager;
 			viewController.titleString = section[A3AbbreviationKeyComponents][index][A3AbbreviationKeyAbbreviation];
 			[self presentViewController:viewController animated:YES completion:NULL];
 			_sharePopupViewController = viewController;
@@ -439,7 +433,6 @@ UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, UIPrevi
 	if (!_previewIsPresented) {
 		_previewIsPresented = YES;
 		
-		
 		if (!ended) {
 			_blurEffectView = [[UIVisualEffectView alloc] init];
 			_blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -525,7 +518,8 @@ UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, UIPrevi
 	if (!self.sharePopupViewControllerIsPresented) {
 		_sharePopupViewController = [A3SharePopupViewController storyboardInstanceWithBlurBackground:NO];
 		_sharePopupViewController.presentationIsInteractive = YES;
-		_sharePopupViewController.delegate = self.dataManager;
+		_sharePopupViewController.delegate = self;
+		_sharePopupViewController.dataSource = self.dataManager;
 		_sharePopupViewController.titleString = _selectedComponent[A3AbbreviationKeyAbbreviation];
 		[self presentViewController:_sharePopupViewController animated:YES completion:NULL];
 	}
@@ -540,6 +534,8 @@ UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, UIPrevi
 	if (!self.presentedViewController) {
 		[self removeBlurEffectView];
 	}
+	[_sharePopupViewController cancelCurrentInteractiveTransition];
+	
 	[self removePreviewView];
 }
 
@@ -559,6 +555,12 @@ UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, UIPrevi
 	_animator = nil;
 	[_blurEffectView removeFromSuperview];
 	_blurEffectView = nil;
+}
+
+#pragma mark - A3SharePopupViewControllerDelegate
+
+- (void)sharePopupViewControllerWillDismiss:(A3SharePopupViewController *)viewController {
+	[self removeBlurEffectView];
 }
 
 @end

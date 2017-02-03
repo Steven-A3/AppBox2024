@@ -32,6 +32,7 @@ extern NSString *const A3AbbreviationKeyMeaning;
 @property (nonatomic, strong) UIPercentDrivenInteractiveTransition *currentInteractionController;
 @property (nonatomic, strong) A3SharePopupPresentationController *presentationController;
 @property (nonatomic, assign) CGFloat currentTransitionProgress;
+@property (nonatomic, assign) BOOL insertBlurViewWhileTransition;
 
 @end
 
@@ -40,10 +41,9 @@ extern NSString *const A3AbbreviationKeyMeaning;
 + (A3SharePopupViewController *)storyboardInstanceWithBlurBackground:(BOOL)insertBlurView {
 	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass([self class]) bundle:nil];
 	A3SharePopupViewController *viewController = [storyboard instantiateInitialViewController];
-	if (insertBlurView) {
-		viewController.modalPresentationStyle = UIModalPresentationCustom;
-		viewController.transitioningDelegate = viewController;
-	}
+	viewController.insertBlurViewWhileTransition = insertBlurView;
+	viewController.modalPresentationStyle = UIModalPresentationCustom;
+	viewController.transitioningDelegate = viewController;
 	return viewController;
 }
 
@@ -85,6 +85,9 @@ extern NSString *const A3AbbreviationKeyMeaning;
 }
 
 - (void)tapGestureHandler:(UITapGestureRecognizer *)tapGestureHandler {
+	if ([_delegate respondsToSelector:@selector(sharePopupViewControllerWillDismiss:)]) {
+		[_delegate sharePopupViewControllerWillDismiss:self];
+	}
 	[self dismissViewControllerAnimated:YES completion:NULL];
 }
 
@@ -95,12 +98,15 @@ extern NSString *const A3AbbreviationKeyMeaning;
 
 - (void)setInteractiveTransitionProgress:(CGFloat)interactiveTransitionProgress {
 	_interactiveTransitionProgress = interactiveTransitionProgress;
+	[_currentInteractionController updateInteractiveTransition:interactiveTransitionProgress];
 }
 
 - (void)completeCurrentInteractiveTransition {
+	[_currentInteractionController finishInteractiveTransition];
 }
 
 - (void)cancelCurrentInteractiveTransition {
+	[_currentInteractionController cancelInteractiveTransition];
 }
 
 #pragma mark - Share button action
@@ -145,8 +151,8 @@ extern NSString *const A3AbbreviationKeyMeaning;
 }
 
 - (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController {
-	if ([_delegate respondsToSelector:@selector(placeholderForShare:)]) {
-		return [_delegate placeholderForShare:_titleString];
+	if ([_dataSource respondsToSelector:@selector(placeholderForShare:)]) {
+		return [_dataSource placeholderForShare:_titleString];
 	}
 	return @"";
 }
@@ -163,16 +169,16 @@ extern NSString *const A3AbbreviationKeyMeaning;
 }
 
 - (NSString *)stringForShare {
-	if ([_delegate respondsToSelector:@selector(stringForShare:)]) {
-		[_delegate stringForShare:_titleString];
+	if ([_dataSource respondsToSelector:@selector(stringForShare:)]) {
+		[_dataSource stringForShare:_titleString];
 	}
 	return @"";
 }
 
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
 {
-	if ([_delegate respondsToSelector:@selector(subjectForActivityType:)]) {
-		return [_delegate subjectForActivityType:_titleString];
+	if ([_dataSource respondsToSelector:@selector(subjectForActivityType:)]) {
+		return [_dataSource subjectForActivityType:_titleString];
 	}
 
 	return @"";
@@ -193,8 +199,8 @@ extern NSString *const A3AbbreviationKeyMeaning;
 }
 
 - (BOOL)contentIsFavorite {
-	if ([_delegate respondsToSelector:@selector(isMemberOfFavorites:)]) {
-		return [_delegate isMemberOfFavorites:_titleString];
+	if ([_dataSource respondsToSelector:@selector(isMemberOfFavorites:)]) {
+		return [_dataSource isMemberOfFavorites:_titleString];
 	}
 	return NO;
 }
@@ -204,8 +210,8 @@ extern NSString *const A3AbbreviationKeyMeaning;
 		return;
 	}
 
-	if ([_delegate respondsToSelector:@selector(addToFavorites:)]) {
-		[_delegate addToFavorites:_titleString];
+	if ([_dataSource respondsToSelector:@selector(addToFavorites:)]) {
+		[_dataSource addToFavorites:_titleString];
 	}
 }
 
@@ -214,8 +220,8 @@ extern NSString *const A3AbbreviationKeyMeaning;
 		return;
 	}
 
-	if ([_delegate respondsToSelector:@selector(removeFromFavorites:)]) {
-		[_delegate removeFromFavorites:_titleString];
+	if ([_dataSource respondsToSelector:@selector(removeFromFavorites:)]) {
+		[_dataSource removeFromFavorites:_titleString];
 	}
 }
 
@@ -243,8 +249,11 @@ extern NSString *const A3AbbreviationKeyMeaning;
 }
 
 - (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented presentingViewController:(UIViewController *)presenting sourceViewController:(UIViewController *)source {
-	_presentationController = [[A3SharePopupPresentationController alloc] initWithPresentedViewController:presented presentingViewController:presenting];
-	return _presentationController;
+	if (_insertBlurViewWhileTransition) {
+		_presentationController = [[A3SharePopupPresentationController alloc] initWithPresentedViewController:presented presentingViewController:presenting];
+		return _presentationController;
+	}
+	return nil;
 }
 
 - (void)setCurrentTransitionProgress:(CGFloat)currentTransitionProgress {
