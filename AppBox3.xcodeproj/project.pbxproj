@@ -543,6 +543,7 @@
 		6896DC971921D64F00FA98F3 /* ExpenseListItem+management.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896DC961921D64F00FA98F3 /* ExpenseListItem+management.m */; };
 		6897B6CF1DFEA01C00238FD3 /* A3AbbreviationCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6897B6CE1DFEA01C00238FD3 /* A3AbbreviationCollectionViewCell.m */; };
 		6898A6E71908AEA50099C09E /* WalletFavorite+initialize.m in Sources */ = {isa = PBXBuildFile; fileRef = 6898A6E61908AEA50099C09E /* WalletFavorite+initialize.m */; };
+		6898D8181E45722800B7BEEA /* A3KaomojiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6898D8171E45722800B7BEEA /* A3KaomojiViewController.m */; };
 		689A3ADA1961C87F008BC2F4 /* A3YahooCurrency.m in Sources */ = {isa = PBXBuildFile; fileRef = 6823F6F51863294700E6E90D /* A3YahooCurrency.m */; };
 		689A3ADB1961C87F008BC2F4 /* CurrencyHistory+handler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6823F6F91863294700E6E90D /* CurrencyHistory+handler.m */; };
 		689A3ADE1961CA30008BC2F4 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 689A3ADC1961CA30008BC2F4 /* Main_iPad.storyboard */; };
@@ -2014,6 +2015,8 @@
 		6898A0091ACD52B900B3B9A4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Launch_iPad.strings; sourceTree = "<group>"; };
 		6898A6E51908AEA50099C09E /* WalletFavorite+initialize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WalletFavorite+initialize.h"; sourceTree = "<group>"; };
 		6898A6E61908AEA50099C09E /* WalletFavorite+initialize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WalletFavorite+initialize.m"; sourceTree = "<group>"; };
+		6898D8161E45722800B7BEEA /* A3KaomojiViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3KaomojiViewController.h; path = Kaomoji/A3KaomojiViewController.h; sourceTree = "<group>"; };
+		6898D8171E45722800B7BEEA /* A3KaomojiViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3KaomojiViewController.m; path = Kaomoji/A3KaomojiViewController.m; sourceTree = "<group>"; };
 		6899C2661AC986B4008B64C1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = en; path = en.lproj/about.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
 		689A203C19AB3650009144B6 /* AppBox3-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AppBox3-Info.plist"; sourceTree = "<group>"; };
 		689A3ADC1961CA30008BC2F4 /* Main_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main_iPad.storyboard; sourceTree = "<group>"; };
@@ -4184,6 +4187,7 @@
 		683B950C15EB233500575377 /* Apps */ = {
 			isa = PBXGroup;
 			children = (
+				6898D8211E45723000B7BEEA /* Kaomoji */,
 				17D424A532191B78490DC8D5 /* Abbreviation */,
 				684D929F18BC1EFE005016F7 /* BatteryStatus */,
 				680D636418CFF9D400938AD0 /* Calculator */,
@@ -4717,6 +4721,15 @@
 				6895346E178686AF007061CA /* UIView+Screenshot.m */,
 			);
 			path = Categories;
+			sourceTree = "<group>";
+		};
+		6898D8211E45723000B7BEEA /* Kaomoji */ = {
+			isa = PBXGroup;
+			children = (
+				6898D8161E45722800B7BEEA /* A3KaomojiViewController.h */,
+				6898D8171E45722800B7BEEA /* A3KaomojiViewController.m */,
+			);
+			name = Kaomoji;
 			sourceTree = "<group>";
 		};
 		689C9A261839CD7F007C97EE /* AFNetworking */ = {
@@ -6780,6 +6793,7 @@
 				68E67CB81CE47C6B002B022E /* A3PedometerCollectionViewCell.m in Sources */,
 				68E6F35217B2722000F10ED9 /* A3UserDefaults+A3Defaults.m in Sources */,
 				68B6A2F918CEC76D004084EF /* A3UnitPriceNoteCell.m in Sources */,
+				6898D8181E45722800B7BEEA /* A3KaomojiViewController.m in Sources */,
 				684D932E18BC20E1005016F7 /* NSDate+formatting.m in Sources */,
 				684D92F418BC1FBC005016F7 /* A3DateCalcExcludeViewController.m in Sources */,
 				17D4236A30D866AEE7D3F6B2 /* UIView+A3Drawing.m in Sources */,
