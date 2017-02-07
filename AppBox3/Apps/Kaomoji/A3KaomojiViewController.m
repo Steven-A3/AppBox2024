@@ -110,6 +110,11 @@
 	}
 }
 
+- (void)applicationDidBecomeActive {
+	[[UIApplication sharedApplication] setStatusBarHidden:NO];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -239,7 +244,13 @@
 - (BOOL)previewInteractionShouldBegin:(UIPreviewInteraction *)previewInteraction {
 	CGPoint location = [previewInteraction locationInCoordinateSpace:_collectionView];
 	NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:location];
-	return (indexPath != nil);
+	if (indexPath != nil) {
+		A3KaomojiCollectionViewCell *cell = (A3KaomojiCollectionViewCell *)[_collectionView cellForItemAtIndexPath:indexPath];
+		CGPoint locationInCollectionView = [previewInteraction locationInCoordinateSpace:cell.roundedRectView];
+		
+		return [cell.roundedRectView pointInside:locationInCollectionView withEvent:nil];
+	}
+	return NO;
 }
 
 - (void)previewInteraction:(UIPreviewInteraction *)previewInteraction didUpdatePreviewTransition:(CGFloat)transitionProgress ended:(BOOL)ended {
@@ -250,7 +261,7 @@
 			_blurEffectView = [[UIVisualEffectView alloc] init];
 			_blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 			_blurEffectView.frame = self.view.bounds;
-			[self.view addSubview:_blurEffectView];
+			[self.navigationController.view addSubview:_blurEffectView];
 
 			_blurEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
 
@@ -272,7 +283,7 @@
 					UIView *rowView = cell.rows[idx];
 					_previewView = [rowView snapshotViewAfterScreenUpdates:YES];
 					_previewView.frame = [self.view convertRect:rowView.frame fromView:cell.roundedRectView];
-					[self.view addSubview:_previewView];
+					[_blurEffectView addSubview:_previewView];
 
 					// Prepare Data
 					_selectedKaomoji = category[A3KaomojiKeyContents][idx];

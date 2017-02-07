@@ -205,7 +205,7 @@
 					_previewView = [cell snapshotViewAfterScreenUpdates:YES];
 
 					_previewView.frame = [self.view convertRect:cell.frame fromView:_tableView];
-					[self.navigationController.view addSubview:_previewView];
+					[_blurEffectView addSubview:_previewView];
 				}
 			}
 		}

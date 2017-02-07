@@ -433,8 +433,12 @@
 		return NO;
 	}
 	CGPoint location = [previewInteraction locationInCoordinateSpace:_collectionView];
-	if ([_collectionView indexPathForItemAtPoint:location]) {
-		return YES;
+	NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:location];
+	if (indexPath != nil) {
+		A3AbbreviationCollectionViewCell *cell = (A3AbbreviationCollectionViewCell *)[_collectionView cellForItemAtIndexPath:indexPath];
+		CGPoint locationInCollectionView = [previewInteraction locationInCoordinateSpace:cell.roundedRectView];
+		
+		return [cell.roundedRectView pointInside:locationInCollectionView withEvent:nil];
 	}
 	location = [previewInteraction locationInCoordinateSpace:_tableView];
 	
@@ -451,7 +455,7 @@
 			_blurEffectView = [[UIVisualEffectView alloc] init];
 			_blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 			_blurEffectView.frame = self.view.bounds;
-			[self.view addSubview:_blurEffectView];
+			[self.navigationController.view addSubview:_blurEffectView];
 			
 			_blurEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
 			
@@ -479,7 +483,7 @@
 					cell.alphabetTopView.backgroundColor = originalColor;
 					
 					_previewView.frame = [self.view convertRect:cell.frame fromView:_tableView];
-					[self.view addSubview:_previewView];
+					[_blurEffectView addSubview:_previewView];
 					
 					_previewBottomView = [UIView new];
 					_previewBottomView.backgroundColor = cell.alphabetBottomView.backgroundColor;
@@ -487,7 +491,7 @@
 					frame.origin.y = _previewView.frame.origin.y + _previewView.frame.size.height;
 					_previewBottomView.frame = frame;
 					
-					[self.view addSubview:_previewBottomView];
+					[_blurEffectView addSubview:_previewBottomView];
 				}
 			} else {
 				CGPoint location = [previewInteraction locationInCoordinateSpace:_collectionView];
@@ -504,7 +508,7 @@
 						UIView *rowView = cell.rows[idx];
 						_previewView = [rowView snapshotViewAfterScreenUpdates:YES];
 						_previewView.frame = [self.view convertRect:rowView.frame fromView:cell.roundedRectView];
-						[self.view addSubview:_previewView];
+						[_blurEffectView addSubview:_previewView];
 
 						// Prepare data
 						_selectedComponent = hashTagSection[A3AbbreviationKeyComponents][idx];
