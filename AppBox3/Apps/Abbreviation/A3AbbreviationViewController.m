@@ -530,6 +530,7 @@
 	FNLOG(@"%f, sharePopupViewControllerIsPresented = %@, ended = %@", transitionProgress, self.sharePopupViewControllerIsPresented ? @"YES" : @"NO", ended ? @"YES" : @"NO");
 
 	if (!self.sharePopupViewControllerIsPresented) {
+		_sharePopupViewControllerIsPresented = YES;
 		_sharePopupViewController = [A3SharePopupViewController storyboardInstanceWithBlurBackground:NO];
 		_sharePopupViewController.presentationIsInteractive = YES;
 		_sharePopupViewController.delegate = self;
@@ -549,12 +550,9 @@
 		[self removeBlurEffectView];
 	}
 	[_sharePopupViewController cancelCurrentInteractiveTransition];
+	_sharePopupViewControllerIsPresented = NO;
 	
 	[self removePreviewView];
-}
-
-- (BOOL)sharePopupViewControllerIsPresented {
-	return self.presentedViewController != nil;
 }
 
 - (void)removePreviewView {
@@ -574,6 +572,7 @@
 #pragma mark - A3SharePopupViewControllerDelegate
 
 - (void)sharePopupViewControllerWillDismiss:(A3SharePopupViewController *)viewController {
+	_sharePopupViewControllerIsPresented = NO;
 	[self removeBlurEffectView];
 }
 

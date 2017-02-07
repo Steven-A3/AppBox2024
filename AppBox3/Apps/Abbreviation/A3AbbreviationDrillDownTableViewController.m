@@ -231,6 +231,7 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 
 - (void)previewInteraction:(UIPreviewInteraction *)previewInteraction didUpdateCommitTransition:(CGFloat)transitionProgress ended:(BOOL)ended {
 	if (!self.sharePopupViewControllerIsPresented) {
+		_sharePopupViewControllerIsPresented = YES;
 		_sharePopupViewController = [A3SharePopupViewController storyboardInstanceWithBlurBackground:NO];
 		_sharePopupViewController.presentationIsInteractive = YES;
 		_sharePopupViewController.dataSource = self.dataManager;
@@ -249,10 +250,13 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 	if (!self.presentedViewController) {
 		[self removeBlurEffectView];
 	}
+	[_sharePopupViewController cancelCurrentInteractiveTransition];
+	_sharePopupViewControllerIsPresented = NO;
 	[self removePreviewView];
 }
 
 - (void)sharePopupViewControllerWillDismiss:(A3SharePopupViewController *)viewController {
+	_sharePopupViewControllerIsPresented = NO;
 	[self removeBlurEffectView];
 }
 

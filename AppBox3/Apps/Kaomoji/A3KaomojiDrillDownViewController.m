@@ -219,6 +219,7 @@
 
 - (void)previewInteraction:(UIPreviewInteraction *)previewInteraction didUpdateCommitTransition:(CGFloat)transitionProgress ended:(BOOL)ended {
 	if (!self.sharePopupViewControllerIsPresented) {
+		_sharePopupViewControllerIsPresented = YES;
 		_sharePopupViewController = [A3SharePopupViewController storyboardInstanceWithBlurBackground:NO];
 		_sharePopupViewController.presentationIsInteractive = YES;
 		_sharePopupViewController.dataSource = self.dataManager;
@@ -237,10 +238,13 @@
 	if (!self.presentedViewController) {
 		[self removeBlurEffectView];
 	}
+	[_sharePopupViewController cancelCurrentInteractiveTransition];
 	[self removePreviewView];
+	_sharePopupViewControllerIsPresented = NO;
 }
 
 - (void)sharePopupViewControllerWillDismiss:(A3SharePopupViewController *)viewController {
+	_sharePopupViewControllerIsPresented = NO;
 	[self removeBlurEffectView];
 }
 
