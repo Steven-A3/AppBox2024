@@ -85,6 +85,7 @@ NSString *const A3AppName_Level = @"Level";
 NSString *const A3AppName_QRCode = @"QR Code";
 NSString *const A3AppName_Pedometer = @"Pedometer";
 NSString *const A3AppName_Abbreviation = @"Abbreviation";
+NSString *const A3AppName_Kaomoji = @"Kaomoji";
 
 NSString *const A3AppName_Settings = @"Settings";
 NSString *const A3AppName_About = @"About";
@@ -131,6 +132,7 @@ NSString *const A3AppNameGrid_Level = @"Level";
 NSString *const A3AppNameGrid_QRCode = @"QR Code";
 NSString *const A3AppNameGrid_Pedometer = @"Pedometer";
 NSString *const A3AppNameGrid_Abbreviation = @"Abbreviation";
+NSString *const A3AppNameGrid_Kaomoji = @"Kaomoji";
 
 static char const *const kA3AppsInfoDictionary = "kA3AppsInfoDictionary";
 static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
@@ -323,6 +325,13 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 						kA3AppsGroupName:A3AppGroupNameUtility,
 						kA3AppsMenuNameForGrid:A3AppNameGrid_Abbreviation,
 						},
+				A3AppName_Kaomoji : @{
+						kA3AppsStoryboard_iPhone : @"Kaomoji",
+						kA3AppsStoryboard_iPad:@"Kaomoji",
+						kA3AppsMenuImageName : @"Kaomoji",
+						kA3AppsGroupName:A3AppGroupNameUtility,
+						kA3AppsMenuNameForGrid:A3AppNameGrid_Kaomoji,
+						},
 				A3AppName_Settings : @{
 						kA3AppsStoryboard_iPhone : @"A3Settings",
 						kA3AppsStoryboard_iPad:@"A3Settings",
@@ -414,6 +423,7 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 			@{kA3AppsMenuName : A3AppName_QRCode},
 			@{kA3AppsMenuName : A3AppName_Pedometer},
 			@{kA3AppsMenuName : A3AppName_Abbreviation},
+			@{kA3AppsMenuName : A3AppName_Kaomoji},
 	] mutableCopy];
 	if (IS_IPAD) {
 		[self removeMenu:A3AppName_Level inMenus:utilityApps];
@@ -519,6 +529,7 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 				if (!hasAbbreviation) {
 					NSArray *newItems = @[
 							@{kA3AppsMenuName : A3AppName_Abbreviation},
+							@{kA3AppsMenuName : A3AppName_Kaomoji},
 					];
 					[newMenus addObjectsFromArray:newItems];
 				}

@@ -362,6 +362,7 @@ A3InstructionViewControllerDelegate>
 	if (IS_IPAD) {
 		return @[
 				 @{kA3AppsMenuName:A3AppName_Abbreviation},
+				 @{kA3AppsMenuName:A3AppName_Kaomoji},
 				 @{kA3AppsMenuName:A3AppName_Pedometer},
 				 @{kA3AppsMenuName:A3AppName_QRCode},
 				 @{kA3AppsMenuName:A3AppName_BatteryStatus},
@@ -391,6 +392,7 @@ A3InstructionViewControllerDelegate>
 	} else {
 		return @[
 				 @{kA3AppsMenuName:A3AppName_Abbreviation},
+				 @{kA3AppsMenuName:A3AppName_Kaomoji},
 				 @{kA3AppsMenuName:A3AppName_Pedometer},
 				 @{kA3AppsMenuName:A3AppName_QRCode},
 				 @{kA3AppsMenuName:A3AppName_Level},
@@ -472,6 +474,7 @@ A3InstructionViewControllerDelegate>
 			NSInteger menuIndex = [_menuItems indexOfObject:newMenu];
 			if (menuIndex == NSNotFound) {
 				[_menuItems insertObject:newMenu atIndex:0];
+				[_menuItems insertObject:@{kA3AppsMenuName: A3AppName_Kaomoji} atIndex:1];
 			}
 			[[NSUserDefaults standardUserDefaults] setObject:_menuItems forKey:A3MainMenuGridMenuItems];
 		}

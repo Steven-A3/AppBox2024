@@ -170,7 +170,7 @@ extern NSString *const A3AbbreviationKeyMeaning;
 
 - (NSString *)stringForShare {
 	if ([_dataSource respondsToSelector:@selector(stringForShare:)]) {
-		[_dataSource stringForShare:_titleString];
+		return [_dataSource stringForShare:_titleString];
 	}
 	return @"";
 }

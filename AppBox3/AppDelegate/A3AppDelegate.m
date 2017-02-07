@@ -1502,20 +1502,20 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 
 #pragma mark - Alert What's New
 
-NSString *const A3UserDefaultsDidAlertWhatsNew4_2_6 = @"A3UserDefaultsDidAlertWhatsNew4_2_6";
+NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhatsNew4_5";
 
 - (void)alertWhatsNew {
-	if ([[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidAlertWhatsNew4_2_6]) {
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidAlertWhatsNew4_5]) {
 		return;
 	}
-	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidAlertWhatsNew4_2_6];
+	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidAlertWhatsNew4_5];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	double delayInSeconds = 0.5;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"What's New in V4.2.6", nil)
-															message:NSLocalizedString(@"WhatsNew4_2_6", nil)
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"What's New in V4.5", nil)
+															message:NSLocalizedString(@"WhatsNew4_5", nil)
 														   delegate:self
 												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 												  otherButtonTitles:nil];

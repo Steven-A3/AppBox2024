@@ -1033,10 +1033,11 @@ after the migration.";
 "Poland Zloty Reference Rate Spot" = "Poland Zloty Reference Rate Spot";
 "Wocu Spot" = "Wocu Spot";
 "South African Cent Spot" = "South African Cent Spot";
-"What's New in V4.2.6" = "What's New in V4.2.6";
-"WhatsNew4_2_6" = "Bug fix for Pedometer data error(Daylight saving time change)
-Holidays date update
-Various bug fixes";
 "HealthKitAlert" = "AppBox Pro® reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.\nData collected from HealthKit will not be used for marketing and advertising purposes.";
 
 "means" = "means";
+"Kaomoji" = "Kaomoji";
+"What's New in V4.5" = "What's New in V4.5";
+"WhatsNew4_5" = "New App: Abbreviation, Kaomoji";
+
+"Abbreviation" = "Abbreviation";

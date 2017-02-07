@@ -140,7 +140,7 @@
         <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
-    <entity name="KaomojiFavorite" syncable="YES">
+    <entity name="KaomojiFavorite" representedClassName="KaomojiFavorite" syncable="YES">
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
@@ -364,6 +364,7 @@
         <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <elements>
+        <element name="AbbreviationFavorite" positionX="-576" positionY="-684" width="128" height="75"/>
         <element name="Calculation" positionX="-783" positionY="-441" width="128" height="105"/>
         <element name="CurrencyFavorite" positionX="-576" positionY="-684" width="128" height="73"/>
         <element name="CurrencyHistory" positionX="207" positionY="-549" width="128" height="118"/>
@@ -378,6 +379,7 @@
         <element name="ExpenseListBudgetLocation" positionX="540" positionY="-322" width="153" height="193"/>
         <element name="ExpenseListHistory" positionX="196" positionY="-342" width="128" height="90"/>
         <element name="ExpenseListItem" positionX="196" positionY="-235" width="128" height="193"/>
+        <element name="KaomojiFavorite" positionX="-567" positionY="-675" width="128" height="75"/>
         <element name="LadyCalendarAccount" positionX="-576" positionY="-684" width="128" height="133"/>
         <element name="LadyCalendarPeriod" positionX="-585" positionY="873" width="128" height="208"/>
         <element name="LoanCalcComparisonHistory" positionX="198" positionY="837" width="128" height="148"/>
@@ -400,7 +402,5 @@
         <element name="WalletField" positionX="-558" positionY="-666" width="128" height="133"/>
         <element name="WalletFieldItem" positionX="-506" positionY="558" width="128" height="208"/>
         <element name="WalletItem" positionX="-702" positionY="636" width="128" height="133"/>
-        <element name="AbbreviationFavorite" positionX="-576" positionY="-684" width="128" height="75"/>
-        <element name="KaomojiFavorite" positionX="-567" positionY="-675" width="128" height="75"/>
     </elements>
 </model>

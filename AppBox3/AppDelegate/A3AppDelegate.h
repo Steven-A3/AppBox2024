@@ -90,6 +90,7 @@ extern NSString *const A3AppName_Level;
 extern NSString *const A3AppName_QRCode;
 extern NSString *const A3AppName_Pedometer;
 extern NSString *const A3AppName_Abbreviation;
+extern NSString *const A3AppName_Kaomoji;
 
 extern NSString *const A3AppName_Settings;
 extern NSString *const A3AppName_About;

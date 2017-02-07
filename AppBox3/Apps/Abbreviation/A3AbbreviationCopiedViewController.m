@@ -35,7 +35,7 @@ extern NSString *const A3AbbreviationKeyAbbreviation;
 	UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureHandler:)];
 	[self.view addGestureRecognizer:gestureRecognizer];
 	
-	_titleLabel.text = _contents[A3AbbreviationKeyAbbreviation];
+	_titleLabel.text = _titleString;
 }
 
 - (A3AbbreviationCopiedTransitionDelegate *)customTransitionDelegate {
@@ -54,13 +54,12 @@ extern NSString *const A3AbbreviationKeyAbbreviation;
     // Dispose of any resources that can be recreated.
 }
 
-- (void)setContents:(NSDictionary *)contents {
-	_contents = [contents copy];
+- (void)setTitleString:(NSString *)titleString {
+	_titleString = [titleString copy];
 
-	NSString *stringToCopy = _contents[A3AbbreviationKeyAbbreviation];
-	_titleLabel.text = stringToCopy;
+	_titleLabel.text = titleString;
 	UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-	[pasteboard setString:stringToCopy];
+	[pasteboard setString:titleString];
 }
 
 @end

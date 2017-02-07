@@ -49,17 +49,30 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-	[self.navigationController setNavigationBarHidden:YES];
+	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Abbreviation", @"Abbreviation") style:UIBarButtonItemStylePlain target:nil action:nil];
 
-	self.title = @"Abbreviation";
+	[self.navigationController setNavigationBarHidden:NO];
+	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 	
+	UIImage *image = [UIImage new];
+	[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+	[self.navigationController.navigationBar setShadowImage:image];
+	
+	[self leftBarButtonAppsButton];
+	
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"♥︎ Favorites"
+																			  style:UIBarButtonItemStylePlain
+																			 target:self
+																			 action:@selector(favoritesButtonAction:)];
+
 	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapCollectionView:)];
 	tapGestureRecognizer.numberOfTapsRequired = 1;
 	tapGestureRecognizer.delegate = self;
 	
 	[self.collectionView addGestureRecognizer:tapGestureRecognizer];
 
-	if (IS_IOS10 && self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
+	if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10") && self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
 		_previewInteraction = [[UIPreviewInteraction alloc] initWithView:self.view];
 		_previewInteraction.delegate = self;
 	} else {
@@ -68,6 +81,10 @@
 		longPressGestureRecognizer.delegate = self;
 		[self.collectionView addGestureRecognizer:longPressGestureRecognizer];
 	}
+}
+
+- (BOOL)hidesNavigationBar {
+	return YES;
 }
 
 - (void)viewWillLayoutSubviews {
@@ -189,7 +206,7 @@
 		[self removeBlurEffectView];
 		
 		A3AbbreviationCopiedViewController *viewController = [A3AbbreviationCopiedViewController storyboardInstance];
-		viewController.contents = components[idx];
+		viewController.titleString = components[idx][A3AbbreviationKeyAbbreviation];
 		[self presentViewController:viewController animated:YES completion:NULL];
 		_copiedViewController = viewController;
 	}
@@ -200,11 +217,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)appsButtonAction:(id)sender {
-	[super appsButtonAction:nil];
-}
-
-- (IBAction)favoritesButtonAction:(id)sender {
+- (void)favoritesButtonAction:(id)sender {
 	A3AbbreviationDrillDownTableViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownTableViewController storyboardID]];
 	viewController.dataSource = self.dataManager;
 	viewController.allowsEditing = YES;
@@ -413,8 +426,7 @@
 #pragma mark - UIGestureRecognizerDelegate
 
 
-#pragma mark - UIViewControllerPreviewingDelegate
-
+#pragma mark - UIPreviewInteractionDelegate
 
 - (BOOL)previewInteractionShouldBegin:(UIPreviewInteraction *)previewInteraction {
 	if (self.sharePopupViewControllerIsPresented) {

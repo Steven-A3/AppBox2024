@@ -1,29 +1,22 @@
 //
-//  A3AbbreviationDrillDownTableViewController.m
+//  A3KaomojiDrillDownViewController.m
 //  AppBox3
 //
-//  Created by Byeong-Kwon Kwak on 1/3/17.
+//  Created by Byeong-Kwon Kwak on 2/7/17.
 //  Copyright © 2017 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3AbbreviationDrillDownTableViewController.h"
-#import "A3AbbreviationDrillDownTableViewCell.h"
-#import "A3AppDelegate.h"
-#import "A3SharePopupViewController.h"
+#import "A3KaomojiDrillDownViewController.h"
+#import "A3KaomojiDataManager.h"
+#import "A3KaomojiDrillDownTableViewCell.h"
 #import "A3AbbreviationCopiedViewController.h"
 #import "NSMutableArray+MoveObject.h"
-#import "UIViewController+A3Addition.h"
 
-extern NSString *const A3AbbreviationKeyAbbreviation;
-extern NSString *const A3AbbreviationKeyMeaning;
+@interface A3KaomojiDrillDownViewController () <UITableViewDelegate, UITableViewDataSource, UIPreviewInteractionDelegate,
+		UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 
-@interface A3AbbreviationDrillDownTableViewController ()
-<UITableViewDataSource, UITableViewDelegate, UIPreviewInteractionDelegate,
-UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
-
-@property (nonatomic, weak) IBOutlet UITableView *tableView;
-@property (nonatomic, weak) IBOutlet UIButton *backButton;
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) UIPreviewInteraction *previewInteraction;
 @property (nonatomic, strong) A3SharePopupViewController *sharePopupViewController;
 @property (nonatomic, assign) BOOL sharePopupViewControllerIsPresented;
@@ -36,18 +29,19 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 
 @end
 
-@implementation A3AbbreviationDrillDownTableViewController
+@implementation A3KaomojiDrillDownViewController
 
-+ (NSString *)storyboardID {
-	return @"A3AbbreviationDrillDownTableViewController";
++ (A3KaomojiDrillDownViewController *)storyboardInstance {
+	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Kaomoji" bundle:nil];
+	A3KaomojiDrillDownViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
+	return viewController;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-	
-	_titleLabel.text = _contentsTitle;
 
+	_titleLabel.text = _contentsTitle;
+	
 	[self.navigationController setNavigationBarHidden:NO];
 	UIImage *image = [UIImage new];
 	[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
@@ -81,16 +75,22 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 	[self setupRightBarButtonItem];
 }
 
+- (void)setContentsTitle:(NSString *)contentsTitle {
+	_contentsTitle = [contentsTitle copy];
+
+	_titleLabel.text = _contentsTitle;
+}
+
 - (void)setupRightBarButtonItem {
 	if (_allowsEditing && self.tableView) {
 		if (!self.tableView.isEditing) {
 			self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-																														target:self
-																														action:@selector(editButtonAction:)];
+																								   target:self
+																								   action:@selector(editButtonAction:)];
 		} else {
 			self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-																														target:self
-																														action:@selector(doneButtonAction:)];
+																								   target:self
+																								   action:@selector(doneButtonAction:)];
 		}
 	}
 }
@@ -116,33 +116,21 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 	if (indexPath) {
 		A3SharePopupViewController *viewController = [A3SharePopupViewController storyboardInstanceWithBlurBackground:YES];
 		viewController.dataSource = self.dataManager;
-		viewController.titleString = _contentsArray[indexPath.row][A3AbbreviationKeyAbbreviation];
+		viewController.titleString = _contentsArray[indexPath.row];
 		[self presentViewController:viewController animated:YES completion:NULL];
 	}
 }
 
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.contentsArray count];
+    return [_contentsArray count];
 }
 
-/* Expected Dictionary
- (
- {
- abbreviation = B4N;
- meaning = "Bye For Now ";
- tags = Top24;
- },
- .... 생략
- )
- */
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    A3AbbreviationDrillDownTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[A3AbbreviationDrillDownTableViewCell reuseIdentifier] forIndexPath:indexPath];
-	NSDictionary *content = _contentsArray[indexPath.row];
-	cell.titleLabel.text = content[A3AbbreviationKeyAbbreviation];
-	cell.subtitleLabel.text = content[A3AbbreviationKeyMeaning];
+	A3KaomojiDrillDownTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[A3KaomojiDrillDownTableViewCell  reuseIdentifier] forIndexPath:indexPath];
+	cell.titleLabel.text = _contentsArray[indexPath.row];
     return cell;
 }
 
@@ -170,13 +158,13 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	
+
 	if (self.presentedViewController) {
 		return;
 	}
 
 	A3AbbreviationCopiedViewController *viewController = [A3AbbreviationCopiedViewController storyboardInstance];
-	viewController.titleString = _contentsArray[indexPath.row][A3AbbreviationKeyAbbreviation];
+	viewController.titleString = _contentsArray[indexPath.row];
 	[self presentViewController:viewController animated:YES completion:NULL];
 	_copiedViewController = viewController;
 }
@@ -192,18 +180,18 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 - (void)previewInteraction:(UIPreviewInteraction *)previewInteraction didUpdatePreviewTransition:(CGFloat)transitionProgress ended:(BOOL)ended {
 	if (!_previewIsPresented) {
 		_previewIsPresented = YES;
-		
+
 		_blurEffectView = [[UIVisualEffectView alloc] init];
 		_blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		_blurEffectView.frame = self.view.bounds;
 		[self.navigationController.view addSubview:_blurEffectView];
-		
+
 		_blurEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-		
+
 		_animator = [[UIViewPropertyAnimator alloc] initWithDuration:1.0 curve:UIViewAnimationCurveLinear animations:^{
 			_blurEffectView.effect = nil;
 		}];
-		
+
 		if (!ended) {
 			CGPoint location = [previewInteraction locationInCoordinateSpace:_tableView];
 			if ([_tableView pointInside:location withEvent:nil]) {
@@ -211,11 +199,11 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 				NSIndexPath *indexPath = [_tableView indexPathForRowAtPoint:locationInTableView];
 				if (indexPath) {
 					_selectedRow = indexPath.row;
-					A3AbbreviationDrillDownTableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+					A3KaomojiDrillDownTableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
 
 					cell.contentView.backgroundColor = [UIColor whiteColor];
 					_previewView = [cell snapshotViewAfterScreenUpdates:YES];
-					
+
 					_previewView.frame = [self.view convertRect:cell.frame fromView:_tableView];
 					[self.navigationController.view addSubview:_previewView];
 				}
@@ -223,7 +211,7 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 		}
 	}
 	_animator.fractionComplete = 1.0 - transitionProgress/4;
-	
+
 	if (ended) {
 		[self removePreviewView];
 	}
@@ -235,11 +223,11 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 		_sharePopupViewController.presentationIsInteractive = YES;
 		_sharePopupViewController.dataSource = self.dataManager;
 		_sharePopupViewController.delegate = self;
-		_sharePopupViewController.titleString = _contentsArray[_selectedRow][A3AbbreviationKeyAbbreviation];
+		_sharePopupViewController.titleString = _contentsArray[_selectedRow];
 		[self presentViewController:_sharePopupViewController animated:YES completion:NULL];
 	}
 	_sharePopupViewController.interactiveTransitionProgress = transitionProgress;
-	
+
 	if (ended) {
 		[_sharePopupViewController completeCurrentInteractiveTransition];
 	}

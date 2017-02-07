@@ -301,6 +301,7 @@ A3InstructionViewControllerDelegate>
 	if (IS_IPHONE) {
 	return @[
 			 @{kA3AppsMenuName:A3AppName_Abbreviation},
+			 @{kA3AppsMenuName:A3AppName_Kaomoji},
 			 @{kA3AppsMenuName:A3AppName_Magnifier},
 			 @{kA3AppsMenuName:A3AppName_Random},
 			 @{kA3AppsMenuName:A3AppName_Clock},
@@ -331,6 +332,7 @@ A3InstructionViewControllerDelegate>
 	} else {
 		return @[
 				 @{kA3AppsMenuName:A3AppName_Abbreviation},
+				 @{kA3AppsMenuName:A3AppName_Kaomoji},
 				 @{kA3AppsMenuName:A3AppName_Magnifier},
 				 @{kA3AppsMenuName:A3AppName_Random},
 				 @{kA3AppsMenuName:A3AppName_Clock},
@@ -405,9 +407,10 @@ A3InstructionViewControllerDelegate>
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsMainMenuHexagonShouldAddAbbreviationMenu]) {
 			[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3SettingsMainMenuHexagonShouldAddAbbreviationMenu];
 
-			NSDictionary *menuItem = @{kA3AppsMenuName:A3AppName_Pedometer};
+			NSDictionary *menuItem = @{kA3AppsMenuName:A3AppName_Abbreviation};
 			if ([_menuItems indexOfObject:menuItem] == NSNotFound) {
 				[_menuItems insertObject:menuItem atIndex:0];
+				[_menuItems insertObject:@{kA3AppsMenuName:A3AppName_Kaomoji} atIndex:1];
 			}
 
 			[[NSUserDefaults standardUserDefaults] setObject:_menuItems forKey:A3MainMenuHexagonMenuItems];

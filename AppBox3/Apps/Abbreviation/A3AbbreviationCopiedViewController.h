@@ -10,7 +10,7 @@
 
 @interface A3AbbreviationCopiedViewController : UIViewController
 
-@property (nonatomic, copy) NSDictionary *contents;
+@property (nonatomic, copy) NSString *titleString;
 
 + (A3AbbreviationCopiedViewController *)storyboardInstance;
 

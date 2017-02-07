@@ -17,7 +17,7 @@
 @property (nonatomic, strong) NSMutableArray<NSDictionary *> *contentsArray;
 @property (nonatomic, weak) A3AbbreviationDataManager *dataManager;
 @property (nonatomic, assign) BOOL allowsEditing;
-@property (nonatomic, weak) id<A3AbbreviationDrillDownDataSource> dataSource;
+@property (nonatomic, weak) id<A3DrillDownDataSource> dataSource;
 
 /* Expected Dictionary
 (
@@ -34,9 +34,3 @@
 
 @end
 
-@protocol A3AbbreviationDrillDownDataSource <NSObject>
-
-- (void)deleteItemForContent:(id)content;
-- (void)moveItemForContent:(id)content fromIndex:(NSInteger)fromIndex toIndex:(NSInteger)toIndex;
-
-@end

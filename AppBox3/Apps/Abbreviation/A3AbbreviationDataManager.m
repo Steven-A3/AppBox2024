@@ -11,6 +11,7 @@
 #import "AbbreviationFavorite+CoreDataClass.h"
 #import "NSManagedObject+extension.h"
 #import "NSMutableArray+A3Sort.h"
+#import "A3AbbreviationDrillDownTableViewController.h"
 
 NSString *const A3AbbreviationKeyTag = @"tag";
 NSString *const A3AbbreviationKeyTags = @"tags";
@@ -191,10 +192,6 @@ NSString *const A3AbbreviationKeyMeaning = @"meaning";
  다른 항목 사이로 배치를 할 경우에는 위/아래 항목 순서값 / 2
 	},
  */
-
-- (NSArray *)favorites {
-	return nil;
-}
 
 #pragma mark - A3SharePopupViewControllerDelegate
 

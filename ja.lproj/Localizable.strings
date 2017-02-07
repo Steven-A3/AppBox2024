@@ -1094,11 +1094,11 @@
 "Wocu Spot" = "Wocuスポット";
 "South African Cent Spot" = "南アフリカのセントスポット";
 
-"What's New in V4.2.6" = "バージョン4.2.6の新機能";
-"WhatsNew4_2_6" = "バグ修正：歩数計のデータエラー
-バッテリーアプリの保存量の表示エラー
-計算機：計算エラー";
-
 "HealthKitAlert" = "AppBox Pro®は、Appleの健康アプリから階段を登る、歩数、歩行+ランニング距離情報を読み取ります。\n\n健康アプリから読んだ情報は、マーケティング目的や広告目的のために使用していません。";
 
 "means" = "means";
+"Kaomoji" = "Kaomoji";
+"What's New in V4.5" = "What's New in V4.5";
+"WhatsNew4_5" = "New App: Abbreviation, Kaomoji";
+
+"Abbreviation" = "Abbreviation";
