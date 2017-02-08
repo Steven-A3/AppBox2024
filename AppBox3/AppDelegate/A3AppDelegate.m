@@ -192,7 +192,8 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddPedometerMenu];
 	}
 	// TODO: Abbreviation
-	if (_previousVersion && [_previousVersion doubleValue] <= 4.2) {
+	if (_previousVersion && [_previousVersion doubleValue] <= 4.5) {
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddAbbreviationMenu];
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddAbbreviationMenu];
 	}
 
