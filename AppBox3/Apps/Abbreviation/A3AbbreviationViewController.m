@@ -262,11 +262,28 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.dataManager.alphabetSections count];
+	return [self.dataManager.alphabetSections count] + 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	A3AbbreviationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[A3AbbreviationTableViewCell reuseIdentifier] forIndexPath:indexPath];
+
+	if (indexPath.row == ([_tableView numberOfRowsInSection:0] - 1)) {
+		cell.alphabetLabel.text = nil;
+		cell.abbreviationLabel.text = nil;
+		cell.meaningLabel.text = nil;
+
+		cell.clipToTrapezoid = NO;
+		cell.alphabetTopView.backgroundColor = self.alphabetBGColors[indexPath.row - 1];
+		cell.alphabetBottomView.backgroundColor = [UIColor whiteColor];
+		cell.headBGForFirstRow.gradientColors = nil;
+		cell.headBGForOtherRow.gradientColors = nil;
+		
+		cell.bodyBGForFirstRow.gradientColors = nil;
+		cell.bodyBGForOtherRow.gradientColors = nil;
+		
+		return cell;
+	}
 	NSDictionary *section = self.dataManager.alphabetSections[indexPath.row];
 	cell.alphabetLabel.text = section[A3AbbreviationKeyLetter];
 	NSDictionary *component = section[A3AbbreviationKeyComponents][0];
@@ -279,25 +296,24 @@
 	[baseColor getRed:&red green:&green blue:&blue alpha:&alpha];
 	UIColor *endColor = [UIColor colorWithRed:red - red/10.0 green:green - green/10 blue:blue - blue/10 alpha:1.0];
 
-
-	if (indexPath.row > 0) {
-		cell.clipToTrapezoid = NO;
-		cell.alphabetTopView.backgroundColor = self.alphabetBGColors[indexPath.row - 1];
-
-		cell.headBGForFirstRow.gradientColors = nil;
-		cell.headBGForOtherRow.gradientColors = @[(__bridge id)baseColor.CGColor, (__bridge id)endColor.CGColor];
-		
-		cell.bodyBGForFirstRow.gradientColors = nil;
-		cell.bodyBGForOtherRow.gradientColors = @[(__bridge id)self.bodyBGStartColors[indexPath.row].CGColor, (__bridge id)self.alphabetBGColors[indexPath.row].CGColor];
-	} else {
+	if (indexPath.row == 0) {
 		cell.alphabetTopView.backgroundColor = [UIColor whiteColor];
 		cell.clipToTrapezoid = YES;
-
+		
 		cell.headBGForFirstRow.gradientColors = @[(__bridge id)baseColor.CGColor, (__bridge id)endColor.CGColor];
 		cell.headBGForOtherRow.gradientColors = nil;
 		
 		cell.bodyBGForFirstRow.gradientColors = @[(__bridge id)self.bodyBGStartColors[indexPath.row].CGColor, (__bridge id)self.alphabetBGColors[indexPath.row].CGColor];
 		cell.bodyBGForOtherRow.gradientColors = nil;
+	} else {
+		cell.clipToTrapezoid = NO;
+		cell.alphabetTopView.backgroundColor = self.alphabetBGColors[indexPath.row - 1];
+		
+		cell.headBGForFirstRow.gradientColors = nil;
+		cell.headBGForOtherRow.gradientColors = @[(__bridge id)baseColor.CGColor, (__bridge id)endColor.CGColor];
+		
+		cell.bodyBGForFirstRow.gradientColors = nil;
+		cell.bodyBGForOtherRow.gradientColors = @[(__bridge id)self.bodyBGStartColors[indexPath.row].CGColor, (__bridge id)self.alphabetBGColors[indexPath.row].CGColor];
 	}
 
 	[cell.bodyBGForFirstRow setNeedsDisplay];
@@ -308,6 +324,9 @@
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.row >= [self tableView:tableView numberOfRowsInSection:0] - 1) {
+		return;
+	}
 	if (!self.presentedViewController) {
 		NSArray *contents = self.dataManager.alphabetSections[indexPath.row][A3AbbreviationKeyComponents];
 		A3AbbreviationDrillDownTableViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownTableViewController storyboardID]];
@@ -441,8 +460,9 @@
 		return [cell.roundedRectView pointInside:locationInCollectionView withEvent:nil];
 	}
 	location = [previewInteraction locationInCoordinateSpace:_tableView];
-	
-	return [_tableView indexPathForRowAtPoint:location] != nil;
+
+	indexPath = [_tableView indexPathForRowAtPoint:location];
+	return (indexPath != nil) && (indexPath.row < ([self tableView:_tableView numberOfRowsInSection:0] - 1));
 }
 
 - (void)previewInteraction:(UIPreviewInteraction *)previewInteraction didUpdatePreviewTransition:(CGFloat)transitionProgress ended:(BOOL)ended {
