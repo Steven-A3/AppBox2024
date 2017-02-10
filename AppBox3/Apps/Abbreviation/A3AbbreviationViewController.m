@@ -18,9 +18,10 @@
 		UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, UIPreviewInteractionDelegate,
 		A3SharePopupViewControllerDelegate>
 
-@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, strong) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
+@property (nonatomic, weak) IBOutlet UIView *topLineView;
 
 @property (nonatomic, strong) NSArray<UIColor *> *headStartColors;
 @property (nonatomic, strong) NSArray<UIColor *> *alphabetBGColors;
@@ -39,8 +40,9 @@
 @property (nonatomic, copy) NSDictionary *selectedComponent;
 @property (nonatomic, strong) A3AbbreviationDataManager *dataManager;
 
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *collectionViewHeightContraint;
 @property (nonatomic, weak) IBOutlet UICollectionViewFlowLayout *collectionViewFlowLayout;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *titleLabelBaselineConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *topLineTopConstraint;
 
 @end
 
@@ -89,9 +91,11 @@
 
 - (void)viewWillLayoutSubviews {
 	[super viewWillLayoutSubviews];
-
+	
 	// 아래 조사하는 순서는 사용자가 많을 것으로 추정되는 순서대로 작성을 하였다.
 	if (IS_IPHONE_4_7_INCH) {
+		_tableView.contentInset = UIEdgeInsetsMake(-38, 0, 0, 0);
+		_collectionView.bounds = CGRectMake(0, 0, _tableView.bounds.size.width, 281);
 		_collectionViewFlowLayout.itemSize = CGSizeMake(263, 214);
 		if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.2")) {
 			_titleLabel.font = [UIFont systemFontOfSize:39 weight:UIFontWeightHeavy];
@@ -100,6 +104,8 @@
 		}
 		_tableView.rowHeight = 56;
 	} else if (IS_IPHONE_4_INCH) {
+		_tableView.contentInset = UIEdgeInsetsMake(-30, 0, 0, 0);
+		_collectionView.bounds = CGRectMake(0, 0, _tableView.bounds.size.width, 236);
 		_collectionViewFlowLayout.itemSize = CGSizeMake(224, 182);
 		if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.2")) {
 			_titleLabel.font = [UIFont systemFontOfSize:33 weight:UIFontWeightHeavy];
@@ -108,21 +114,49 @@
 		}
 		_tableView.rowHeight = 48;
 	} else if (IS_IPHONE_5_5_INCH) {
-//		_collectionViewFlowLayout.itemSize = CGSizeMake(290, 236);
+		_tableView.contentInset = UIEdgeInsetsMake(-40, 0, 0, 0);
+		_collectionView.bounds = CGRectMake(0, 0, _tableView.bounds.size.width, 308);
+		_collectionViewFlowLayout.itemSize = CGSizeMake(290, 236);
 //		_titleLabel.font = [UIFont systemFontOfSize:42 weight:UIFontWeightHeavy];
 //		_tableView.rowHeight = 62;
 	} else if (IS_IPHONE_3_5_INCH) {
+		_tableView.contentInset = UIEdgeInsetsMake(-20, 0, 0, 0);
+		_collectionView.bounds = CGRectMake(0, 0, _tableView.bounds.size.width, 200);
 		_collectionViewFlowLayout.itemSize = CGSizeMake(224, 153);
+		_tableView.tableHeaderView = nil;
+		_tableView.tableHeaderView = _collectionView;
 		if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.2")) {
 			_titleLabel.font = [UIFont systemFontOfSize:33 weight:UIFontWeightHeavy];
 		} else {
 			_titleLabel.font = [UIFont boldSystemFontOfSize:33];
 		}
 		_tableView.rowHeight = 48;
+		[_tableView layoutIfNeeded];
 	} else if (IS_IPAD) {
+		[self.view removeConstraints:@[_titleLabelBaselineConstraint, _topLineTopConstraint]];
+		
+		NSLayoutConstraint *titleLabelBaselineConstraint = [NSLayoutConstraint constraintWithItem:_titleLabel
+																						attribute:NSLayoutAttributeBaseline
+																						relatedBy:NSLayoutRelationEqual
+																						   toItem:self.view
+																						attribute:NSLayoutAttributeBottom
+																					   multiplier:IS_PORTRAIT ? 0.10 : 0.13
+																						 constant:0];
+		NSLayoutConstraint *topLineTopConstraint = [NSLayoutConstraint constraintWithItem:_topLineView
+																				attribute:NSLayoutAttributeTop
+																				relatedBy:NSLayoutRelationEqual
+																				   toItem:self.view
+																				attribute:NSLayoutAttributeBottom
+																			   multiplier:IS_PORTRAIT ? 0.12 : 0.15
+																				 constant:0];
+		[self.view addConstraints:@[titleLabelBaselineConstraint, topLineTopConstraint]];
+		
+		_titleLabelBaselineConstraint = titleLabelBaselineConstraint;
+		_topLineTopConstraint = topLineTopConstraint;
 
-	} else if (IS_IPAD_12_9_INCH) {
-
+		_tableView.contentInset = UIEdgeInsetsMake(-30, 0, 0, 0);
+		_collectionView.bounds = CGRectMake(0, 0, _tableView.bounds.size.width, 308);
+		_collectionViewFlowLayout.itemSize = CGSizeMake(310, 236);
 	}
 }
 
@@ -237,6 +271,18 @@
 	A3AbbreviationCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[A3AbbreviationCollectionViewCell reuseIdentifier] forIndexPath:indexPath];
 	NSDictionary *section = self.dataManager.hashTagSections[indexPath.row];
 
+	switch (indexPath.row) {
+		case 0:
+			cell.roundedRectView.backgroundColor = [UIColor colorFromHexString:@"FFE3E3"];
+			break;
+		case 1:
+			cell.roundedRectView.backgroundColor = [UIColor colorFromHexString:@"FFDEEB"];
+			break;
+		case 2:
+			cell.roundedRectView.backgroundColor = [UIColor colorFromHexString:@"F3D9FA"];
+			break;
+	}
+	
 	cell.groupTitleLabel.text = [NSString stringWithFormat:@"#%@", section[A3AbbreviationKeyTag]];
 	NSArray *components = section[A3AbbreviationKeyComponents];
 	for (NSInteger index = 0; index < 3; index++) {
@@ -282,8 +328,12 @@
 		cell.bodyBGForFirstRow.gradientColors = nil;
 		cell.bodyBGForOtherRow.gradientColors = nil;
 		
+		cell.customAccessoryView.hidden = YES;
+		
 		return cell;
 	}
+	cell.customAccessoryView.hidden = NO;
+	
 	NSDictionary *section = self.dataManager.alphabetSections[indexPath.row];
 	cell.alphabetLabel.text = section[A3AbbreviationKeyLetter];
 	NSDictionary *component = section[A3AbbreviationKeyComponents][0];

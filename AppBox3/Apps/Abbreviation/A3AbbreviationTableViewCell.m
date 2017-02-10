@@ -10,6 +10,8 @@
 
 @interface A3AbbreviationTableViewCell ()
 
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *alphabetWidthConstraint;
+
 @end
 
 @implementation A3AbbreviationTableViewCell
@@ -27,7 +29,10 @@
 		_abbreviationLabel.font = [UIFont systemFontOfSize:19];
 		_meaningLabel.font = [UIFont systemFontOfSize:15];
 	 */
-	if (IS_IPHONE_4_7_INCH) {
+	if (IS_IPHONE_5_5_INCH) {
+		_alphabetWidthConstraint.constant = 60;
+	} else if (IS_IPHONE_4_7_INCH) {
+		_alphabetWidthConstraint.constant = 60;
 		if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.2")) {
 			_alphabetLabel.font = [UIFont systemFontOfSize:36 weight:UIFontWeightHeavy];
 		} else {
@@ -36,6 +41,7 @@
 		_abbreviationLabel.font = [UIFont systemFontOfSize:17];
 		_meaningLabel.font = [UIFont systemFontOfSize:14];
 	} else if (IS_IPHONE_4_INCH || IS_IPHONE_3_5_INCH) {
+		_alphabetWidthConstraint.constant = 60;
 		if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.2")) {
 			_alphabetLabel.font = [UIFont systemFontOfSize:31 weight:UIFontWeightHeavy];
 		} else {
@@ -43,10 +49,8 @@
 		}
 		_abbreviationLabel.font = [UIFont systemFontOfSize:15];
 		_meaningLabel.font = [UIFont systemFontOfSize:12];
-	} else if (IS_IPAD_12_9_INCH) {
-		
 	} else if (IS_IPAD) {
-		
+		_alphabetWidthConstraint.constant = 80;
 	}
 }
 
@@ -57,36 +61,11 @@
 }
 
 - (void)addTrapezoidShape {
-	CGRect bounds = self.alphabetTopView.bounds;
-	UIBezierPath *trapezoidPath = [UIBezierPath new];
-	[trapezoidPath moveToPoint:CGPointMake(7, 0)];
-	[trapezoidPath addLineToPoint:CGPointMake(0, bounds.size.height)];
-	[trapezoidPath addLineToPoint:CGPointMake(bounds.size.width, bounds.size.height)];
-	[trapezoidPath addLineToPoint:CGPointMake(bounds.size.width - 6, 0)];
-	[trapezoidPath closePath];
-	
-	CAShapeLayer *trapezoidShapeLayer = [CAShapeLayer layer];
-	trapezoidShapeLayer.frame = self.alphabetTopView.bounds;
-	trapezoidShapeLayer.fillColor = [UIColor whiteColor].CGColor;
-	trapezoidShapeLayer.path = trapezoidPath.CGPath;
-	self.alphabetTopView.layer.mask = trapezoidShapeLayer;
 }
 
 - (void)setClipToTrapezoid:(BOOL)clipToTrapezoid {
 	_clipToTrapezoid = clipToTrapezoid;
-	if (_clipToTrapezoid) {
-		[self addTrapezoidShape];
-	} else {
-		self.alphabetTopView.layer.mask = nil;
-	}
-}
-
-- (void)setFrame:(CGRect)frame {
-	[super setFrame:frame];
-
-	if (_clipToTrapezoid) {
-		[self addTrapezoidShape];
-	}
+	[self.alphabetTopView setTrapezoidMaskEnabled:clipToTrapezoid];
 }
 
 @end

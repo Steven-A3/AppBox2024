@@ -37,10 +37,18 @@
 		_row3TitleLabel.font = [UIFont systemFontOfSize:17];
 		_row3SubtitleLabel.font = [UIFont systemFontOfSize:13];
 	} else if (IS_IPHONE_4_INCH || IS_IPHONE_3_5_INCH) {
-		if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.2")) {
-			_groupTitleLabel.font = [UIFont systemFontOfSize:19 weight:UIFontWeightMedium];
+		if (IS_IPHONE_3_5_INCH) {
+			if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.2")) {
+				_groupTitleLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
+			} else {
+				_groupTitleLabel.font = [UIFont boldSystemFontOfSize:18];
+			}
 		} else {
-			_groupTitleLabel.font = [UIFont boldSystemFontOfSize:19];
+			if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.2")) {
+				_groupTitleLabel.font = [UIFont systemFontOfSize:19 weight:UIFontWeightMedium];
+			} else {
+				_groupTitleLabel.font = [UIFont boldSystemFontOfSize:19];
+			}
 		}
 		_row1TitleLabel.font = [UIFont systemFontOfSize:15];
 		_row1SubtitleLabel.font = [UIFont systemFontOfSize:11];
