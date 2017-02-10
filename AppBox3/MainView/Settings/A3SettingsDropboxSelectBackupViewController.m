@@ -231,14 +231,14 @@ extern NSString *const kDropboxDir;
 		_hud.removeFromSuperViewOnHide = YES;
 		[self.navigationController.view addSubview:_hud];
 		
-		_hud.labelText = NSLocalizedString(@"Deleting", @"Deleting");
-		[_hud show:YES];
+		_hud.label.text = NSLocalizedString(@"Deleting", @"Deleting");
+		[_hud showAnimated:YES];
 		
 		[TJDropbox deleteFileAtPath:metadata[@"path_display"] accessToken:self.dropboxAccessToken completion:^(NSDictionary * _Nullable parsedResponse, NSError * _Nullable error) {
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[TJDropbox listFolderWithPath:kDropboxDir accessToken:self.dropboxAccessToken completion:^(NSArray<NSDictionary *> * _Nullable entries, NSString * _Nullable cursor, NSError * _Nullable error) {
 					dispatch_async(dispatch_get_main_queue(), ^{
-						[_hud hide:YES];
+						[_hud hideAnimated:YES];
 						_hud = nil;
 						
 						self.dropboxFolderList = entries;

@@ -34,6 +34,8 @@ extern NSString *const A3AbbreviationKeyMeaning;
 @property (nonatomic, assign) CGFloat currentTransitionProgress;
 @property (nonatomic, assign) BOOL insertBlurViewWhileTransition;
 
+@property (nonatomic, strong) MBProgressHUD *hudView;
+
 @end
 
 @implementation A3SharePopupViewController
@@ -85,6 +87,10 @@ extern NSString *const A3AbbreviationKeyMeaning;
 }
 
 - (void)tapGestureHandler:(UITapGestureRecognizer *)tapGestureHandler {
+	[self dismissViewController];
+}
+
+- (void)dismissViewController {
 	if ([_delegate respondsToSelector:@selector(sharePopupViewControllerWillDismiss:)]) {
 		[_delegate sharePopupViewControllerWillDismiss:self];
 	}
@@ -185,12 +191,27 @@ extern NSString *const A3AbbreviationKeyMeaning;
 }
 
 - (IBAction)favoriteButtonAction:(id)sender {
+	_hudView = [MBProgressHUD showHUDAddedTo:[[UIApplication sharedApplication] keyWindow] animated:YES];
+	_hudView.square = YES;
+	_hudView.mode = MBProgressHUDModeCustomView;
+	UIImage *image = [[UIImage imageNamed:@"Favorites"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+	_hudView.customView = [[UIImageView alloc] initWithImage:image];
+
+	__weak typeof(self) weakSelf = self;
+	_hudView.completionBlock = ^{
+		[weakSelf dismissViewController];
+	};
+
 	if ([self contentIsFavorite]) {
+		_hudView.label.text = @"Removed from Favorites";
 		[self removeFromFavorites];
 	} else {
+		_hudView.label.text = @"Added to Favorites";
 		[self addToFavorites];
 	}
-	[self setupFavoriteButton];
+
+	self.view.hidden = YES;
+	[_hudView hideAnimated:YES afterDelay:2];
 }
 
 - (void)setTitleString:(NSString *)titleString {

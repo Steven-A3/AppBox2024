@@ -30,8 +30,8 @@
 	}
 	[self enableCloudForFiles:enable];
 
-	self.hud.labelText = enable ? NSLocalizedString(@"Enabling iCloud", @"Enabling iCloud") : NSLocalizedString(@"Disabling iCloud", @"Disableing iCloud");
-	[self.hud show:YES];
+	self.hud.label.text = enable ? NSLocalizedString(@"Enabling iCloud", @"Enabling iCloud") : NSLocalizedString(@"Disabling iCloud", @"Disableing iCloud");
+	[self.hud showAnimated:YES];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(persistentStoreActivityWillEndActivity:) name:CDEPersistentStoreEnsembleWillEndActivityNotification object:nil];
 }
@@ -42,7 +42,7 @@
 	CDEEnsembleActivity activity = (CDEEnsembleActivity) [[notification.userInfo objectForKey:CDEEnsembleActivityKey] unsignedIntegerValue];
 	if (activity == CDEEnsembleActivityLeeching || activity == CDEEnsembleActivityDeleeching) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:CDEPersistentStoreEnsembleWillEndActivityNotification object:nil];
-		[self.hud hide:YES];
+		[self.hud hideAnimated:YES];
 	}
 }
 

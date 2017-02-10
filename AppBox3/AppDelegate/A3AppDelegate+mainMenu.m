@@ -322,14 +322,14 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 						kA3AppsStoryboard_iPhone : @"Abbreviation",
 						kA3AppsStoryboard_iPad:@"Abbreviation",
 						kA3AppsMenuImageName : @"Abbreviation",
-						kA3AppsGroupName:A3AppGroupNameUtility,
+						kA3AppsGroupName:A3AppGroupNameReference,
 						kA3AppsMenuNameForGrid:A3AppNameGrid_Abbreviation,
 						},
 				A3AppName_Kaomoji : @{
 						kA3AppsStoryboard_iPhone : @"Kaomoji",
 						kA3AppsStoryboard_iPad:@"Kaomoji",
 						kA3AppsMenuImageName : @"Kaomoji",
-						kA3AppsGroupName:A3AppGroupNameUtility,
+						kA3AppsGroupName:A3AppGroupNameReference,
 						kA3AppsMenuNameForGrid:A3AppNameGrid_Kaomoji,
 						},
 				A3AppName_Settings : @{
@@ -402,29 +402,28 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 						 @{kA3AppsMenuName : A3AppName_ExpenseList},
 						 ]
 				 };
-	NSDictionary *ReferenceGroup =
-			 @{
-				 kA3AppsMenuExpandable : @YES,
-				 kA3AppsMenuCollapsed : @NO,
-				 kA3AppsMenuName : @"Reference",
-				 kA3AppsExpandableChildren : @[
-						 @{kA3AppsMenuName : A3AppName_Holidays},
-						 ]
-				 };
+	NSDictionary *ReferenceGroup = @{
+									 kA3AppsMenuExpandable : @YES,
+									 kA3AppsMenuCollapsed : @NO,
+									 kA3AppsMenuName : @"Reference",
+									 kA3AppsExpandableChildren : @[
+											 @{kA3AppsMenuName : A3AppName_Holidays},
+											 @{kA3AppsMenuName : A3AppName_Abbreviation},
+											 @{kA3AppsMenuName : A3AppName_Kaomoji},
+											 ]
+									 };
 	NSMutableArray *utilityApps = [@[
-			@{kA3AppsMenuName : A3AppName_Clock},
-			@{kA3AppsMenuName : A3AppName_BatteryStatus},
-			@{kA3AppsMenuName : A3AppName_Mirror},
-			@{kA3AppsMenuName : A3AppName_Magnifier},
-			@{kA3AppsMenuName : A3AppName_Flashlight},
-			@{kA3AppsMenuName : A3AppName_Random},
-			@{kA3AppsMenuName : A3AppName_Ruler},
-			@{kA3AppsMenuName : A3AppName_Level},
-			@{kA3AppsMenuName : A3AppName_QRCode},
-			@{kA3AppsMenuName : A3AppName_Pedometer},
-			@{kA3AppsMenuName : A3AppName_Abbreviation},
-			@{kA3AppsMenuName : A3AppName_Kaomoji},
-	] mutableCopy];
+									 @{kA3AppsMenuName : A3AppName_Clock},
+									 @{kA3AppsMenuName : A3AppName_BatteryStatus},
+									 @{kA3AppsMenuName : A3AppName_Mirror},
+									 @{kA3AppsMenuName : A3AppName_Magnifier},
+									 @{kA3AppsMenuName : A3AppName_Flashlight},
+									 @{kA3AppsMenuName : A3AppName_Random},
+									 @{kA3AppsMenuName : A3AppName_Ruler},
+									 @{kA3AppsMenuName : A3AppName_Level},
+									 @{kA3AppsMenuName : A3AppName_QRCode},
+									 @{kA3AppsMenuName : A3AppName_Pedometer},
+									 ] mutableCopy];
 	if (IS_IPAD) {
 		[self removeMenu:A3AppName_Level inMenus:utilityApps];
 	}
@@ -466,7 +465,6 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 				BOOL hasLevel = NO;
 				BOOL hasQRCode = NO;
 				BOOL hasPedometer = NO;
-				BOOL hasAbbreviation = NO;
 				for (NSDictionary *menus in section[kA3AppsExpandableChildren]) {
 					if (!hasFlashlight && [menus[kA3AppsMenuName] isEqualToString:A3AppName_Flashlight]) {
 						hasFlashlight = YES;
@@ -482,9 +480,6 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 					}
 					else if (!hasPedometer && [menus[kA3AppsMenuName] isEqualToString:A3AppName_Pedometer]) {
 						hasPedometer = YES;
-					}
-					else if (!hasAbbreviation && [menus[kA3AppsMenuName] isEqualToString:A3AppName_Abbreviation]) {
-						hasAbbreviation = YES;
 					}
 				}
 
@@ -526,13 +521,6 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 					];
 					[newMenus addObjectsFromArray:newItems];
 				}
-				if (!hasAbbreviation) {
-					NSArray *newItems = @[
-							@{kA3AppsMenuName : A3AppName_Abbreviation},
-							@{kA3AppsMenuName : A3AppName_Kaomoji},
-					];
-					[newMenus addObjectsFromArray:newItems];
-				}
 
 				NSMutableDictionary *newSection = [section mutableCopy];
 				newSection[kA3AppsExpandableChildren] = newMenus;
@@ -563,6 +551,32 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 					[newAllMenu replaceObjectAtIndex:idx withObject:newSection];
 					allMenuArray = newAllMenu;
 				}
+			} else if ([section[kA3AppsMenuName] isEqualToString:@"Reference"]) {
+				BOOL hasAbbreviation = NO;
+				for (NSDictionary *menus in section[kA3AppsExpandableChildren]) {
+					if (!hasAbbreviation && [menus[kA3AppsMenuName] isEqualToString:A3AppName_Abbreviation]) {
+						hasAbbreviation = YES;
+					}
+				}
+				
+				NSMutableArray *newMenus = [section[kA3AppsExpandableChildren] mutableCopy];
+				if (!hasAbbreviation) {
+					NSArray *newItems = @[
+										  @{kA3AppsMenuName : A3AppName_Abbreviation},
+										  @{kA3AppsMenuName : A3AppName_Kaomoji},
+										  ];
+					[newMenus addObjectsFromArray:newItems];
+				}
+				
+				NSMutableDictionary *newSection = [section mutableCopy];
+				newSection[kA3AppsExpandableChildren] = newMenus;
+				
+				NSMutableArray *newAllMenu = [allMenuArray mutableCopy];
+				NSInteger idx = [allMenuArray indexOfObject:section];
+				[newAllMenu replaceObjectAtIndex:idx withObject:newSection];
+				allMenuArray = newAllMenu;
+				
+				[[A3SyncManager sharedSyncManager] setObject:allMenuArray forKey:A3MainMenuDataEntityAllMenu state:A3DataObjectStateModified];
 			}
 		}
 	}
@@ -1154,21 +1168,21 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 
 - (void)showProcessingHUD {
 	if (IS_IPHONE) {
-		self.hudView.labelText = NSLocalizedString(@"Processing", @"Processing");
-		[self.hudView show:YES];
+		self.hudView.label.text = NSLocalizedString(@"Processing", @"Processing");
+		[self.hudView showAnimated:YES];
 	} else {
 		A3AppDelegate *appDelegate = [A3AppDelegate instance];
-		appDelegate.hud.labelText = NSLocalizedString(@"Processing", @"Processing");
-		[appDelegate.hud show:YES];
+		appDelegate.hud.label.text = NSLocalizedString(@"Processing", @"Processing");
+		[appDelegate.hud showAnimated:YES];
 	}
 }
 
 - (void)hideProcessingHUD {
 	if (IS_IPHONE) {
-		[self.hudView hide:NO];
+		[self.hudView hideAnimated:NO];
 	} else {
 		A3AppDelegate *appDelegate = [A3AppDelegate instance];
-		[appDelegate.hud hide:NO];
+		[appDelegate.hud hideAnimated:NO];
 	}
 }
 

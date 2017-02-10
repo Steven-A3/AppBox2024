@@ -737,13 +737,13 @@ static NSString *const A3V3InstructionDidShowForCalculator = @"A3V3InstructionDi
     
     // Set custom view mode
     HUD.mode = MBProgressHUDModeCustomView;
-    HUD.yOffset = -(screenBounds.size.height/4.0);
+    HUD.offset = CGPointMake(HUD.offset.x, -(screenBounds.size.height/4.0));
     
     HUD.delegate = self;
-    HUD.labelText = message;
+    HUD.label.text = message;
     
-    [HUD show:YES];
-    [HUD hide:YES afterDelay:3];
+    [HUD showAnimated:YES];
+    [HUD hideAnimated:YES afterDelay:3];
 }
 
 #pragma mark -- THE END

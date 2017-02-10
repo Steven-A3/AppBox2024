@@ -426,9 +426,9 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 		_sameCategoryNameExists = NO;
 	}
 	if (_sameCategoryNameExists) {
-		[self.alertHUD show:YES];
+		[self.alertHUD showAnimated:YES];
 	} else {
-		[self.alertHUD hide:YES];
+		[self.alertHUD hideAnimated:YES];
 	}
 
 	_category.name = changed;

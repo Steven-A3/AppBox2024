@@ -238,9 +238,9 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 		_sameFieldNameExists = NO;
 	}
 	if (_sameFieldNameExists) {
-		[self.alertHUD show:YES];
+		[self.alertHUD showAnimated:YES];
 	} else {
-		[self.alertHUD hide:YES];
+		[self.alertHUD hideAnimated:YES];
 	}
 	return YES;
 }
@@ -252,17 +252,17 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 		// Configure for text only and offset down
 		_alertHUD.mode = MBProgressHUDModeText;
 		_alertHUD.margin = 2.0;
-		_alertHUD.cornerRadius = 10.0;
-		_alertHUD.labelText = [NSString stringWithFormat:@" %@ ", NSLocalizedString(@"Field name already exists.", nil)];
-		_alertHUD.labelFont = [UIFont fontWithName:@"Avenir-Light" size:14.0];
-		_alertHUD.labelColor = [UIColor whiteColor];
-		_alertHUD.color = [UIColor colorWithRed:0.8f green:0.1f blue:0.2f alpha:1.000f];
+		_alertHUD.bezelView.layer.cornerRadius = 10.0;
+		_alertHUD.label.text = [NSString stringWithFormat:@" %@ ", NSLocalizedString(@"Field name already exists.", nil)];
+		_alertHUD.label.font = [UIFont fontWithName:@"Avenir-Light" size:14.0];
+		_alertHUD.label.textColor = [UIColor whiteColor];
+		_alertHUD.bezelView.color = [UIColor colorWithRed:0.8f green:0.1f blue:0.2f alpha:1.000f];
 		_alertHUD.userInteractionEnabled = NO;
 
 		[self.navigationController.view addSubview:_alertHUD];
 	}
 	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
-	_alertHUD.yOffset = -(screenBounds.size.height/2.0 - 64 - 18.0);
+	_alertHUD.offset = CGPointMake(_alertHUD.offset.x, -(screenBounds.size.height/2.0 - 64 - 18.0));
 	return _alertHUD;
 }
 

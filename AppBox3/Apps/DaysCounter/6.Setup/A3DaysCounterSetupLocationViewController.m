@@ -299,7 +299,7 @@
     [_infoTableView reloadData];
 
 	self.progressHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-	self.progressHud.labelText = NSLocalizedString(@"Searching", @"Searching");
+	self.progressHud.label.text = NSLocalizedString(@"Searching", @"Searching");
 	self.progressHud.minShowTime = 2;
 	self.progressHud.removeFromSuperViewOnHide = YES;
 	__typeof(self) __weak weakSelf = self;
@@ -322,7 +322,7 @@
                                     radius:@(radius)
                                 categoryId:nil
                                   callback:^(BOOL success, id result) {
-                                      [self.progressHud hide:YES];
+                                      [self.progressHud hideAnimated:YES];
                                       
                                       if (success) {
                                           isLoading = NO;
@@ -437,7 +437,7 @@
     [searchBar resignFirstResponder];
     
 	self.progressHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-	self.progressHud.labelText = NSLocalizedString(@"Searching", @"Searching");
+	self.progressHud.label.text = NSLocalizedString(@"Searching", @"Searching");
 	self.progressHud.minShowTime = 2;
 	self.progressHud.removeFromSuperViewOnHide = YES;
 	__typeof(self) __weak weakSelf = self;
@@ -777,7 +777,7 @@
     FNLOG(@"location updated");
 
 	self.progressHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-	self.progressHud.labelText = NSLocalizedString(@"Searching", @"Searching");
+	self.progressHud.label.text = NSLocalizedString(@"Searching", @"Searching");
 	self.progressHud.minShowTime = 2;
 	self.progressHud.removeFromSuperViewOnHide = YES;
 	__typeof(self) __weak weakSelf = self;
@@ -905,7 +905,7 @@
 {
     [searchBar setShowsCancelButton:NO animated:YES];
     if (self.progressHud) {
-        [self.progressHud hide:YES];
+        [self.progressHud hideAnimated:YES];
     }
 
     if ( !isSearchActive ) {

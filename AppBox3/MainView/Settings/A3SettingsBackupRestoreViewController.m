@@ -315,13 +315,13 @@ TJDropboxAuthenticationViewControllerDelegate>
 						_HUD.mode = MBProgressHUDModeIndeterminate;
 						_HUD.removeFromSuperViewOnHide = YES;
 						
-						_HUD.labelText = NSLocalizedString(@"Loading", nil);
+						_HUD.label.text = NSLocalizedString(@"Loading", nil);
 						
-						[_HUD show:YES];
+						[_HUD showAnimated:YES];
 						
 						[TJDropbox listFolderWithPath:kDropboxDir accessToken:self.dropboxAccessToken completion:^(NSArray<NSDictionary *> * _Nullable entries, NSString * _Nullable cursor, NSError * _Nullable error) {
 							dispatch_async(dispatch_get_main_queue(), ^{
-								[_HUD hide:YES];
+								[_HUD hideAnimated:YES];
 								_HUD = nil;
 								
 								if (error == nil && [entries count]) {
@@ -356,11 +356,11 @@ TJDropboxAuthenticationViewControllerDelegate>
 - (void)decompressProgress:(float)currentByte total:(float)totalByte {
 	_HUD.progress = currentByte / totalByte;
 	[self.percentFormatter setMaximumFractionDigits:0];
-	_HUD.detailsLabelText = [self.percentFormatter stringFromNumber:@(_HUD.progress)];
+	_HUD.detailsLabel.text = [self.percentFormatter stringFromNumber:@(_HUD.progress)];
 }
 
 - (void)completedUnzipProcess:(BOOL)bResult{
-	[_HUD hide:YES];
+	[_HUD hideAnimated:YES];
 	_HUD = nil;
 	NSFileManager *fileManager = [NSFileManager new];
 	[fileManager removeItemAtPath:_downloadFilePath error:NULL];
@@ -428,22 +428,24 @@ TJDropboxAuthenticationViewControllerDelegate>
 	_HUD.mode = MBProgressHUDModeDeterminate;
 	_HUD.removeFromSuperViewOnHide = YES;
 
-	_HUD.labelText = NSLocalizedString(@"Downloading", @"Downloading");
+	_HUD.label.text = NSLocalizedString(@"Downloading", @"Downloading");
 
-	[_HUD show:YES];
+	[_HUD showAnimated:YES];
 
 	_totalBytes = [metadata[@"size"] doubleValue];
 	[TJDropbox downloadFileAtPath:metadata[@"path_display"] toPath:_downloadFilePath accessToken:self.dropboxAccessToken
 					progressBlock:^(CGFloat progress) {
-						_HUD.progress = progress;
-						[self.percentFormatter setMaximumFractionDigits:0];
-						_HUD.detailsLabelText = [self.percentFormatter stringFromNumber:@(progress)];
+						dispatch_async(dispatch_get_main_queue(), ^{
+							_HUD.progress = progress;
+							[self.percentFormatter setMaximumFractionDigits:0];
+							_HUD.detailsLabel.text = [self.percentFormatter stringFromNumber:@(progress)];
+						});
 					}
 					   completion:^(NSDictionary * _Nullable parsedResponse, NSError * _Nullable error) {
 						   dispatch_async(dispatch_get_main_queue(), ^{
 							   if (error == nil) {
 								   _restoreInProgress = YES;
-								   _HUD.labelText = NSLocalizedString(@"Unarchiving", @"Unarchiving");
+								   _HUD.label.text = NSLocalizedString(@"Unarchiving", @"Unarchiving");
 								   AAAZip *zipArchive = [[AAAZip alloc] init];
 								   zipArchive.delegate = self;
 								   [zipArchive unzipFile:_downloadFilePath unzipFileto:[@"restore" pathInCachesDirectory]];
@@ -455,7 +457,7 @@ TJDropboxAuthenticationViewControllerDelegate>
 																			 cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 																			 otherButtonTitles:nil];
 								   [alertView show];
-								   [_HUD hide:YES];
+								   [_HUD hideAnimated:YES];
 								   _HUD = nil;
 							   }
 						   });

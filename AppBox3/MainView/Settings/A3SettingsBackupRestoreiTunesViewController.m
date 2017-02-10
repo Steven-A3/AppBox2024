@@ -234,9 +234,9 @@
 	_HUD.mode = MBProgressHUDModeDeterminate;
 	_HUD.removeFromSuperViewOnHide = YES;
 
-	_HUD.labelText = NSLocalizedString(@"Unarchiving", @"Unarchiving");
+	_HUD.label.text = NSLocalizedString(@"Unarchiving", @"Unarchiving");
 
-	[_HUD show:YES];
+	[_HUD showAnimated:YES];
 
 	AAAZip *zipArchive = [[AAAZip alloc] init];
 	zipArchive.delegate = self;
@@ -246,11 +246,11 @@
 - (void)decompressProgress:(float)currentByte total:(float)totalByte {
 	_HUD.progress = (float) MIN(currentByte / totalByte, 1.0);
 	[self.percentFormatter setMaximumFractionDigits:0];
-	_HUD.detailsLabelText = [self.percentFormatter stringFromNumber:@(_HUD.progress)];
+	_HUD.detailsLabel.text = [self.percentFormatter stringFromNumber:@(_HUD.progress)];
 }
 
 - (void)completedUnzipProcess:(BOOL)bResult{
-	[_HUD hide:YES];
+	[_HUD hideAnimated:YES];
 	_HUD = nil;
 
 	self.backupRestoreManager.delegate = self;

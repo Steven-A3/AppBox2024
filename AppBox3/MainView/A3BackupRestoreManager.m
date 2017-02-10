@@ -167,10 +167,10 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 	}];
 	[_deleteFilesAfterZip addObject:[A3BackupInfoFilename pathInDocumentDirectory]];
 
-	self.HUD.labelText = NSLocalizedString(@"Compressing", @"Compressing");
+	self.HUD.label.text = NSLocalizedString(@"Compressing", @"Compressing");
 	self.HUD.progress = 0;
 	[_hostingView addSubview:self.HUD];
-	[self.HUD show:YES];
+	[self.HUD showAnimated:YES];
 
 	AAAZip *zip = [AAAZip new];
 	zip.delegate = self;
@@ -325,17 +325,17 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 - (void)compressProgress:(float)currentByte total:(float)totalByte {
 	_HUD.progress = currentByte / totalByte;
-	_HUD.detailsLabelText = [self.percentFormatter stringFromNumber:@(_HUD.progress)];
+	_HUD.detailsLabel.text = [self.percentFormatter stringFromNumber:@(_HUD.progress)];
 }
 
 - (void)decompressProgress:(float)currentByte total:(float)totalByte {
 	_HUD.progress = currentByte / totalByte;
-	_HUD.detailsLabelText = [self.percentFormatter stringFromNumber:@(_HUD.progress)];
+	_HUD.detailsLabel.text = [self.percentFormatter stringFromNumber:@(_HUD.progress)];
 }
 
 - (void)completedZipProcess:(BOOL)bResult {
 	if (_backupToDocumentDirectory) {
-		[_HUD hide:YES];
+		[_HUD hideAnimated:YES];
 
 		if ([_delegate respondsToSelector:@selector(backupRestoreManager:backupCompleteWithSuccess:)]) {
 			[_delegate backupRestoreManager:self backupCompleteWithSuccess:YES];
@@ -348,8 +348,8 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 											  otherButtonTitles:nil];
 		[alert show];
 	} else {
-		_HUD.labelText = NSLocalizedString(@"Uploading", @"Uploading");
-		_HUD.detailsLabelText = @"";
+		_HUD.label.text = NSLocalizedString(@"Uploading", @"Uploading");
+		_HUD.detailsLabel.text = @"";
 
 		ACSimpleKeychain *keychain = [ACSimpleKeychain defaultKeychain];
 		NSDictionary *dropboxLinkInfo = [keychain credentialsForUsername:@"dropboxUser" service:@"Dropbox"];
@@ -360,8 +360,10 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 								 toPath:[NSString stringWithFormat:@"%@/%@", kDropboxDir, [_backupFilePath lastPathComponent]]
 							accessToken:accessToken
 						  progressBlock:^(CGFloat progress) {
-							  _HUD.progress = progress;
-							  _HUD.detailsLabelText = [self.percentFormatter stringFromNumber:@(progress)];
+							  dispatch_async(dispatch_get_main_queue(), ^{
+								  _HUD.progress = progress;
+								  _HUD.detailsLabel.text = [self.percentFormatter stringFromNumber:@(progress)];
+							  });
 						  } completion:^(NSDictionary * _Nullable parsedResponse, NSError * _Nullable error) {
 							  FNLOG(@"%@", parsedResponse);
 							  FNLOG(@"%@", error);
@@ -369,7 +371,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 							  FNLOG(@"%@", error.debugDescription);
 							  dispatch_async(dispatch_get_main_queue(), ^{
 								  if (error == nil) {
-									  [_HUD hide:YES];
+									  [_HUD hideAnimated:YES];
 									  _HUD = nil;
 									  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
 																					  message:NSLocalizedString(@"Backup file has been uploaded to Dropbox successfully.", @"Backup file has been uploaded to Dropbox successfully.")
@@ -384,7 +386,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 										  [_delegate backupRestoreManager:self backupCompleteWithSuccess:YES];
 									  }
 								  } else {
-									  [_HUD hide:YES];
+									  [_HUD hideAnimated:YES];
 									  _HUD = nil;
 									  
 									  UIAlertView *alertFail = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:NSLocalizedString(@"Backup process failed to upload backup file to Dropbox.", @"Backup process failed to upload backup file to Dropbox.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];

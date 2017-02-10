@@ -135,7 +135,7 @@
     
     
 	self.progressHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-	self.progressHud.labelText = NSLocalizedString(@"Searching", @"Searching");
+	self.progressHud.label.text = NSLocalizedString(@"Searching", @"Searching");
 	self.progressHud.minShowTime = 2;
 	self.progressHud.removeFromSuperViewOnHide = YES;
 	__typeof(self) __weak weakSelf = self;
