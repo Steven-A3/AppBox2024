@@ -10,7 +10,7 @@
 #import "A3AbbreviationCollectionViewCell.h"
 #import "A3AbbreviationTableViewCell.h"
 #import "UIColor+A3Addition.h"
-#import "A3AbbreviationDrillDownTableViewController.h"
+#import "A3AbbreviationDrillDownViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "A3AbbreviationCopiedViewController.h"
 
@@ -22,11 +22,6 @@
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
 @property (nonatomic, weak) IBOutlet UIView *topLineView;
-
-@property (nonatomic, strong) NSArray<UIColor *> *headStartColors;
-@property (nonatomic, strong) NSArray<UIColor *> *alphabetBGColors;
-@property (nonatomic, strong) NSArray<UIColor *> *bodyBGStartColors;
-@property (nonatomic, strong) NSArray<UIColor *> *bodyBGEndColors;
 
 @property (nonatomic, strong) UIPreviewInteraction *previewInteraction;
 @property (nonatomic, strong) A3AbbreviationCopiedViewController *copiedViewController;
@@ -43,6 +38,7 @@
 @property (nonatomic, weak) IBOutlet UICollectionViewFlowLayout *collectionViewFlowLayout;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *titleLabelBaselineConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *topLineTopConstraint;
+@property (nonatomic, strong) NSDate *cancelTime3DTouch;
 
 @end
 
@@ -183,7 +179,7 @@
 			
 			NSDictionary *section = self.dataManager.hashTagSections[indexPath.row];
 			
-			A3AbbreviationDrillDownTableViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownTableViewController storyboardID]];
+			A3AbbreviationDrillDownViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownViewController storyboardID]];
 			viewController.dataManager = self.dataManager;
 			viewController.contentsArray = [section[A3AbbreviationKeyComponents] mutableCopy];
 			viewController.contentsTitle = section[A3AbbreviationKeyTag];
@@ -223,7 +219,7 @@
 	if (pointInCell.y < cell.roundedRectView.frame.origin.y) {
 		NSDictionary *section = self.dataManager.hashTagSections[indexPath.row];
 		
-		A3AbbreviationDrillDownTableViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownTableViewController storyboardID]];
+		A3AbbreviationDrillDownViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownViewController storyboardID]];
 		viewController.dataManager = self.dataManager;
 		viewController.contentsArray = [section[A3AbbreviationKeyComponents] mutableCopy];
 		viewController.contentsTitle = [NSString stringWithFormat:@"#%@", section[A3AbbreviationKeyTag]];
@@ -252,7 +248,7 @@
 }
 
 - (void)favoritesButtonAction:(id)sender {
-	A3AbbreviationDrillDownTableViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownTableViewController storyboardID]];
+	A3AbbreviationDrillDownViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownViewController storyboardID]];
 	viewController.dataSource = self.dataManager;
 	viewController.allowsEditing = YES;
 	viewController.dataManager = self.dataManager;
@@ -320,7 +316,7 @@
 		cell.meaningLabel.text = nil;
 
 		cell.clipToTrapezoid = NO;
-		cell.alphabetTopView.backgroundColor = self.alphabetBGColors[indexPath.row - 1];
+		cell.alphabetTopView.backgroundColor = self.dataManager.alphabetBGColors[indexPath.row - 1];
 		cell.alphabetBottomView.backgroundColor = [UIColor whiteColor];
 		cell.headBGForFirstRow.gradientColors = nil;
 		cell.headBGForOtherRow.gradientColors = nil;
@@ -340,7 +336,7 @@
 	cell.abbreviationLabel.text = component[A3AbbreviationKeyAbbreviation];
 	cell.meaningLabel.text = component[A3AbbreviationKeyMeaning];
 
-	UIColor *baseColor = self.alphabetBGColors[indexPath.row];
+	UIColor *baseColor = self.dataManager.alphabetBGColors[indexPath.row];
 	cell.alphabetBottomView.backgroundColor = baseColor;
 	CGFloat red, green, blue, alpha;
 	[baseColor getRed:&red green:&green blue:&blue alpha:&alpha];
@@ -353,17 +349,17 @@
 		cell.headBGForFirstRow.gradientColors = @[(__bridge id)baseColor.CGColor, (__bridge id)endColor.CGColor];
 		cell.headBGForOtherRow.gradientColors = nil;
 		
-		cell.bodyBGForFirstRow.gradientColors = @[(__bridge id)self.bodyBGStartColors[indexPath.row].CGColor, (__bridge id)self.alphabetBGColors[indexPath.row].CGColor];
+		cell.bodyBGForFirstRow.gradientColors = @[(__bridge id)self.dataManager.bodyBGStartColors[indexPath.row].CGColor, (__bridge id)self.dataManager.alphabetBGColors[indexPath.row].CGColor];
 		cell.bodyBGForOtherRow.gradientColors = nil;
 	} else {
 		cell.clipToTrapezoid = NO;
-		cell.alphabetTopView.backgroundColor = self.alphabetBGColors[indexPath.row - 1];
+		cell.alphabetTopView.backgroundColor = self.dataManager.alphabetBGColors[indexPath.row - 1];
 		
 		cell.headBGForFirstRow.gradientColors = nil;
 		cell.headBGForOtherRow.gradientColors = @[(__bridge id)baseColor.CGColor, (__bridge id)endColor.CGColor];
 		
 		cell.bodyBGForFirstRow.gradientColors = nil;
-		cell.bodyBGForOtherRow.gradientColors = @[(__bridge id)self.bodyBGStartColors[indexPath.row].CGColor, (__bridge id)self.alphabetBGColors[indexPath.row].CGColor];
+		cell.bodyBGForOtherRow.gradientColors = @[(__bridge id)self.dataManager.bodyBGStartColors[indexPath.row].CGColor, (__bridge id)self.dataManager.alphabetBGColors[indexPath.row].CGColor];
 	}
 
 	[cell.bodyBGForFirstRow setNeedsDisplay];
@@ -374,123 +370,23 @@
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (_cancelTime3DTouch && [[NSDate date] timeIntervalSinceDate:_cancelTime3DTouch] < 0.1) {
+		// 3D Touch 반응을 시작했다가 취소한 경우 도착한 이벤트는 무시한다.
+		return;
+	}
+	FNLOG();
 	if (indexPath.row >= [self tableView:tableView numberOfRowsInSection:0] - 1) {
 		return;
 	}
 	if (!self.presentedViewController) {
 		NSArray *contents = self.dataManager.alphabetSections[indexPath.row][A3AbbreviationKeyComponents];
-		A3AbbreviationDrillDownTableViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownTableViewController storyboardID]];
+		A3AbbreviationDrillDownViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownViewController storyboardID]];
 		viewController.dataManager = self.dataManager;
 		viewController.contentsTitle = self.dataManager.alphabetSections[indexPath.row][A3AbbreviationKeyLetter];
 		viewController.contentsArray = [contents mutableCopy];
 		[self.navigationController pushViewController:viewController animated:YES];
 	}
 }
-
-#pragma mark - Data Management
-
-- (NSArray *)headStartColors {
-	if (!_headStartColors) {
-		_headStartColors = @[
-				[UIColor colorFromHexString:@"F03E3E"],	// A
-				[UIColor colorFromHexString:@"D6336C"],	// B
-				[UIColor colorFromHexString:@"AE3EC9"],	// C
-				[UIColor colorFromHexString:@"7048E8"],	// D
-				[UIColor colorFromHexString:@"4263E8"],	// E
-				[UIColor colorFromHexString:@"1C7CD6"],	// F
-				[UIColor colorFromHexString:@"1098AD"],	// G
-				[UIColor colorFromHexString:@"0CA678"],	// H
-				[UIColor colorFromHexString:@"37B24D"],	// I
-				[UIColor colorFromHexString:@"74B816"],	// J
-				[UIColor colorFromHexString:@"F59F00"],	// K
-				[UIColor colorFromHexString:@"F76707"],	// L
-				[UIColor colorFromHexString:@"F03E3E"],	// M
-				[UIColor colorFromHexString:@"D6336C"],	// N
-				[UIColor colorFromHexString:@"AE3EC9"],	// O
-				[UIColor colorFromHexString:@"7048E8"],	// P
-				[UIColor colorFromHexString:@"4263E8"],	// Q
-				[UIColor colorFromHexString:@"1C7CD6"],	// R
-				[UIColor colorFromHexString:@"1098AD"],	// S
-				[UIColor colorFromHexString:@"0CA678"],	// T
-				[UIColor colorFromHexString:@"37B24D"],	// U
-				[UIColor colorFromHexString:@"74B816"],	// V
-				[UIColor colorFromHexString:@"F59F00"],	// W
-				[UIColor colorFromHexString:@"F76707"],	// X
-				[UIColor colorFromHexString:@"F03E3E"],	// Y
-				[UIColor colorFromHexString:@"D6336C"],	// Z
-		];
-	}
-	return _headStartColors;
-}
-
-- (NSArray *)alphabetBGColors {
-	if (!_alphabetBGColors) {
-		_alphabetBGColors = @[
-				[UIColor colorFromHexString:@"F03E3E"],	// A
-				[UIColor colorFromHexString:@"D6336C"],	// B
-				[UIColor colorFromHexString:@"AE3EC9"],	// C
-				[UIColor colorFromHexString:@"7048E8"],	// D
-				[UIColor colorFromHexString:@"4263E8"],	// E
-				[UIColor colorFromHexString:@"1C7CD6"],	// F
-				[UIColor colorFromHexString:@"1098AD"],	// G
-				[UIColor colorFromHexString:@"0CA678"],	// H
-				[UIColor colorFromHexString:@"37B24D"],	// I
-				[UIColor colorFromHexString:@"74B816"],	// J
-				[UIColor colorFromHexString:@"F59F00"],	// K
-				[UIColor colorFromHexString:@"F76707"],	// L
-				[UIColor colorFromHexString:@"F03E3E"],	// M
-				[UIColor colorFromHexString:@"D6336C"],	// N
-				[UIColor colorFromHexString:@"AE3EC9"],	// O
-				[UIColor colorFromHexString:@"7048E8"],	// P
-				[UIColor colorFromHexString:@"4263E8"],	// Q
-				[UIColor colorFromHexString:@"1C7CD6"],	// R
-				[UIColor colorFromHexString:@"1098AD"],	// S
-				[UIColor colorFromHexString:@"0CA678"],	// T
-				[UIColor colorFromHexString:@"37B24D"],	// U
-				[UIColor colorFromHexString:@"74B816"],	// V
-				[UIColor colorFromHexString:@"F59F00"],	// W
-				[UIColor colorFromHexString:@"F76707"],	// X
-				[UIColor colorFromHexString:@"F03E3E"],	// Y
-				[UIColor colorFromHexString:@"D6336C"],	// Z
-		];
-	}
-	return _alphabetBGColors;
-}
-
-- (NSArray *)bodyBGStartColors {
-	if (!_bodyBGStartColors) {
-		_bodyBGStartColors = @[
-				[UIColor colorFromHexString:@"C92A2A"],	// A
-				[UIColor colorFromHexString:@"A61E4D"],	// B
-				[UIColor colorFromHexString:@"862E9C"],	// C
-				[UIColor colorFromHexString:@"5F3DC4"],	// D
-				[UIColor colorFromHexString:@"364FC7"],	// E
-				[UIColor colorFromHexString:@"1862AB"],	// F
-				[UIColor colorFromHexString:@"0B7285"],	// G
-				[UIColor colorFromHexString:@"087F5B"],	// H
-				[UIColor colorFromHexString:@"2B8A3E"],	// I
-				[UIColor colorFromHexString:@"5C940D"],	// J
-				[UIColor colorFromHexString:@"E67700"],	// K
-				[UIColor colorFromHexString:@"D9480F"],	// L
-				[UIColor colorFromHexString:@"C92A2A"],	// M
-				[UIColor colorFromHexString:@"A61E4D"],	// N
-				[UIColor colorFromHexString:@"862E9C"],	// O
-				[UIColor colorFromHexString:@"5F3DC4"],	// P
-				[UIColor colorFromHexString:@"364FC7"],	// Q
-				[UIColor colorFromHexString:@"1862AB"],	// R
-				[UIColor colorFromHexString:@"0B7285"],	// S
-				[UIColor colorFromHexString:@"087F5B"],	// T
-				[UIColor colorFromHexString:@"2B8A3E"],	// U
-				[UIColor colorFromHexString:@"5C940D"],	// V
-				[UIColor colorFromHexString:@"E67700"],	// W
-				[UIColor colorFromHexString:@"D9480F"],	// X
-				[UIColor colorFromHexString:@"C92A2A"],	// Y
-				[UIColor colorFromHexString:@"A61E4D"],	// Z
-		];
-	}
-	return _bodyBGStartColors;
-}
-
 
 #pragma mark - UIGestureRecognizerDelegate
 
@@ -516,7 +412,8 @@
 }
 
 - (void)previewInteraction:(UIPreviewInteraction *)previewInteraction didUpdatePreviewTransition:(CGFloat)transitionProgress ended:(BOOL)ended {
-	FNLOG(@"%f, _previewIsPresented = %@, ended = %@", transitionProgress, _previewIsPresented ? @"YES" : @"NO", ended ? @"YES" : @"NO");
+//	FNLOG(@"%f, _previewIsPresented = %@, ended = %@", transitionProgress, _previewIsPresented ? @"YES" : @"NO", ended ? @"YES" : @"NO");
+	_cancelTime3DTouch = nil;
 
 	if (!_previewIsPresented) {
 		_previewIsPresented = YES;
@@ -533,8 +430,36 @@
 				_blurEffectView.effect = nil;
 			}];
 			
-			CGPoint location = [previewInteraction locationInCoordinateSpace:_tableView];
-			if ([_tableView pointInside:location withEvent:nil]) {
+			CGPoint location = [previewInteraction locationInCoordinateSpace:_collectionView];
+			if ([_collectionView pointInside:location withEvent:nil]) {
+				// 3D Touch가 시작되면 화면이 스크롤되지 않도록 합니다.
+				_collectionView.scrollEnabled = NO;
+				
+				CGPoint location = [previewInteraction locationInCoordinateSpace:_collectionView];
+				FNLOG(@"%f, %f", location.x, location.y);
+				NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:location];
+				if (indexPath) {
+					NSDictionary *hashTagSection = self.dataManager.hashTagSections[indexPath.row];
+					
+					A3AbbreviationCollectionViewCell *cell = (A3AbbreviationCollectionViewCell *) [_collectionView cellForItemAtIndexPath:indexPath];
+					if (cell) {
+						CGPoint pointInCell = [previewInteraction locationInCoordinateSpace:cell];
+						CGFloat rowHeight = cell.roundedRectView.frame.size.height / 3;
+						NSInteger idx = floor((pointInCell.y - cell.roundedRectView.frame.origin.y) / rowHeight);
+						
+						UIView *rowView = cell.rows[idx];
+						_previewView = [rowView snapshotViewAfterScreenUpdates:YES];
+						_previewView.frame = [self.view convertRect:rowView.frame fromView:cell.roundedRectView];
+						[_blurEffectView addSubview:_previewView];
+						
+						// Prepare data
+						_selectedComponent = hashTagSection[A3AbbreviationKeyComponents][idx];
+					}
+				}
+			} else {
+				// 3D Touch가 시작되면 화면이 스크롤되지 않도록 합니다.
+				_tableView.scrollEnabled = NO;
+				
 				CGPoint locationInTableView = [previewInteraction locationInCoordinateSpace:_tableView];
 				NSIndexPath *indexPath = [_tableView indexPathForRowAtPoint:locationInTableView];
 				
@@ -562,27 +487,6 @@
 					_previewBottomView.frame = frame;
 					
 					[_blurEffectView addSubview:_previewBottomView];
-				}
-			} else {
-				CGPoint location = [previewInteraction locationInCoordinateSpace:_collectionView];
-				NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:location];
-				if (indexPath) {
-					NSDictionary *hashTagSection = self.dataManager.hashTagSections[indexPath.row];
-
-					A3AbbreviationCollectionViewCell *cell = (A3AbbreviationCollectionViewCell *) [_collectionView cellForItemAtIndexPath:indexPath];
-					if (cell) {
-						CGPoint pointInCell = [previewInteraction locationInCoordinateSpace:cell];
-						CGFloat rowHeight = cell.roundedRectView.frame.size.height / 3;
-						NSInteger idx = floor((pointInCell.y - cell.roundedRectView.frame.origin.y) / rowHeight);
-
-						UIView *rowView = cell.rows[idx];
-						_previewView = [rowView snapshotViewAfterScreenUpdates:YES];
-						_previewView.frame = [self.view convertRect:rowView.frame fromView:cell.roundedRectView];
-						[_blurEffectView addSubview:_previewView];
-
-						// Prepare data
-						_selectedComponent = hashTagSection[A3AbbreviationKeyComponents][idx];
-					}
 				}
 			}
 		}
@@ -620,6 +524,9 @@
 }
 
 - (void)previewInteractionDidCancel:(UIPreviewInteraction *)previewInteraction {
+	_cancelTime3DTouch = [NSDate date];
+	FNLOG();
+	
 	if (!self.presentedViewController) {
 		[self removeBlurEffectView];
 	}
@@ -630,6 +537,10 @@
 }
 
 - (void)removePreviewView {
+	// 3D Touch 동작이 끝나면 스크롤을 활성화 합니다.
+	_tableView.scrollEnabled = YES;
+	_collectionView.scrollEnabled = YES;
+	
 	[_previewView removeFromSuperview];
 	[_previewBottomView removeFromSuperview];
 	_previewView = nil;

@@ -384,7 +384,7 @@
         <!--Abbreviation Drill Down Table View Controller-->
         <scene sceneID="vw0-lT-8Yh">
             <objects>
-                <viewController storyboardIdentifier="A3AbbreviationDrillDownTableViewController" id="ubF-Eq-ODP" customClass="A3AbbreviationDrillDownTableViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="A3AbbreviationDrillDownViewController" id="ubF-Eq-ODP" customClass="A3AbbreviationDrillDownViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9WQ-qK-z78"/>
                         <viewControllerLayoutGuide type="bottom" id="PsQ-ns-zY3"/>

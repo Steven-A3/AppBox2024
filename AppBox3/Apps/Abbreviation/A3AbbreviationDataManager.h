@@ -16,6 +16,10 @@
 @property (nonatomic, strong) NSArray<NSDictionary *> *hashTagSections;
 @property (nonatomic, strong) NSArray<NSDictionary *> *alphabetSections;
 @property (nonatomic, strong) NSArray<NSDictionary *> *favoritesArray;
+@property (nonatomic, strong) NSArray<UIColor *> *headStartColors;
+@property (nonatomic, strong) NSArray<UIColor *> *alphabetBGColors;
+@property (nonatomic, strong) NSArray<UIColor *> *bodyBGStartColors;
+@property (nonatomic, strong) NSArray<UIColor *> *bodyBGEndColors;
 
 + (A3AbbreviationDataManager *)instance;
 

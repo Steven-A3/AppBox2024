@@ -14,6 +14,7 @@
 
 @protocol A3DrillDownDataSource <NSObject>
 
+@optional
 - (void)deleteItemForContent:(id)content;
 - (void)moveItemForContent:(id)content fromIndex:(NSInteger)fromIndex toIndex:(NSInteger)toIndex;
 

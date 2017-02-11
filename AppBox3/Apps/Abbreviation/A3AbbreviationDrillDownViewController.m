@@ -1,12 +1,12 @@
 //
-//  A3AbbreviationDrillDownTableViewController.m
+//  A3AbbreviationDrillDownViewController.m
 //  AppBox3
 //
 //  Created by Byeong-Kwon Kwak on 1/3/17.
 //  Copyright © 2017 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3AbbreviationDrillDownTableViewController.h"
+#import "A3AbbreviationDrillDownViewController.h"
 #import "A3AbbreviationDrillDownTableViewCell.h"
 #import "A3AppDelegate.h"
 #import "A3SharePopupViewController.h"
@@ -17,7 +17,7 @@
 extern NSString *const A3AbbreviationKeyAbbreviation;
 extern NSString *const A3AbbreviationKeyMeaning;
 
-@interface A3AbbreviationDrillDownTableViewController ()
+@interface A3AbbreviationDrillDownViewController ()
 <UITableViewDataSource, UITableViewDelegate, UIPreviewInteractionDelegate,
 UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 
@@ -35,13 +35,14 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 @property (nonatomic, assign) NSInteger selectedRow;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *titleLabelBottomConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *tableViewTopConstraint;
+@property (nonatomic, strong) NSDate *cancelTime3DTouch;
 
 @end
 
-@implementation A3AbbreviationDrillDownTableViewController
+@implementation A3AbbreviationDrillDownViewController
 
 + (NSString *)storyboardID {
-	return @"A3AbbreviationDrillDownTableViewController";
+	return @"A3AbbreviationDrillDownViewController";
 }
 
 - (void)viewDidLoad {
@@ -210,7 +211,11 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	
+
+	// 3D Touch 동작이 시작되었다가 취소 된 직후에 발생한 이벤트는 무시한다.
+	if (_cancelTime3DTouch && [[NSDate date] timeIntervalSinceDate:_cancelTime3DTouch] < 0.1) {
+		return;
+	}
 	if (self.presentedViewController) {
 		return;
 	}
@@ -226,10 +231,17 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 // https://developer.apple.com/reference/uikit/uipreviewinteractiondelegate
 
 - (BOOL)previewInteractionShouldBegin:(UIPreviewInteraction *)previewInteraction {
-	return !self.presentedViewController && !self.tableView.isEditing;
+	if (self.presentedViewController || self.tableView.isEditing) {
+		return NO;
+	}
+	CGPoint location = [previewInteraction locationInCoordinateSpace:_tableView];
+	NSIndexPath *indexPath = [_tableView indexPathForRowAtPoint:location];
+	return indexPath != nil;
 }
 
 - (void)previewInteraction:(UIPreviewInteraction *)previewInteraction didUpdatePreviewTransition:(CGFloat)transitionProgress ended:(BOOL)ended {
+	_cancelTime3DTouch = nil;
+
 	if (!_previewIsPresented) {
 		_previewIsPresented = YES;
 		
@@ -287,6 +299,8 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 }
 
 - (void)previewInteractionDidCancel:(UIPreviewInteraction *)previewInteraction {
+	_cancelTime3DTouch = [NSDate date];
+
 	if (!self.presentedViewController) {
 		[self removeBlurEffectView];
 	}

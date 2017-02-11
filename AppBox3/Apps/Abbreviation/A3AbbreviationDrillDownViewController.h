@@ -1,5 +1,5 @@
 	//
-//  A3AbbreviationDrillDownTableViewController.h
+//  A3AbbreviationDrillDownViewController.h
 //  AppBox3
 //
 //  Created by Byeong-Kwon Kwak on 1/3/17.
@@ -9,9 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "A3AbbreviationDataManager.h"
 
-@protocol A3AbbreviationDrillDownDataSource;
-
-@interface A3AbbreviationDrillDownTableViewController : UIViewController
+@interface A3AbbreviationDrillDownViewController : UIViewController
 
 @property (nonatomic, copy) NSString *contentsTitle;
 @property (nonatomic, strong) NSMutableArray<NSDictionary *> *contentsArray;

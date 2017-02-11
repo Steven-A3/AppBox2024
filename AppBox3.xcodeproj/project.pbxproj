@@ -748,7 +748,7 @@
 		68CA9B1919618866002E58DC /* Calculation.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CA9B1819618866002E58DC /* Calculation.m */; };
 		68CA9BA61961B881002E58DC /* PercentCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CA9BA51961B881002E58DC /* PercentCalcHistory.m */; };
 		68CB7982183DB8A800255AE3 /* NYXImagesHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CB7980183DB8A800255AE3 /* NYXImagesHelper.m */; };
-		68CBBE781E1BA90500E92A8A /* A3AbbreviationDrillDownTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CBBE771E1BA90500E92A8A /* A3AbbreviationDrillDownTableViewController.m */; };
+		68CBBE781E1BA90500E92A8A /* A3AbbreviationDrillDownViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CBBE771E1BA90500E92A8A /* A3AbbreviationDrillDownViewController.m */; };
 		68CC1593174F763E0000870F /* SFKImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CC1592174F763E0000870F /* SFKImage.m */; };
 		68CEFB491E20F03900DAFDCB /* A3SharePopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CEFB481E20F03900DAFDCB /* A3SharePopupViewController.m */; };
 		68CF607E1CBCF78C00F8E9B9 /* beep.wav in Resources */ = {isa = PBXBuildFile; fileRef = 68CF607D1CBCF78C00F8E9B9 /* beep.wav */; };
@@ -2446,8 +2446,8 @@
 		68CAB49319557DB900A4D2B9 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Instruction_iPhone.strings; sourceTree = "<group>"; };
 		68CB797F183DB8A800255AE3 /* NYXImagesHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYXImagesHelper.h; sourceTree = "<group>"; };
 		68CB7980183DB8A800255AE3 /* NYXImagesHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYXImagesHelper.m; sourceTree = "<group>"; };
-		68CBBE761E1BA90500E92A8A /* A3AbbreviationDrillDownTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3AbbreviationDrillDownTableViewController.h; sourceTree = "<group>"; };
-		68CBBE771E1BA90500E92A8A /* A3AbbreviationDrillDownTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AbbreviationDrillDownTableViewController.m; sourceTree = "<group>"; };
+		68CBBE761E1BA90500E92A8A /* A3AbbreviationDrillDownViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3AbbreviationDrillDownViewController.h; sourceTree = "<group>"; };
+		68CBBE771E1BA90500E92A8A /* A3AbbreviationDrillDownViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AbbreviationDrillDownViewController.m; sourceTree = "<group>"; };
 		68CC1591174F763E0000870F /* SFKImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SFKImage.h; path = External/SymbolFontKit/SymbolFontKit/SFKImage.h; sourceTree = "<group>"; };
 		68CC1592174F763E0000870F /* SFKImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SFKImage.m; path = External/SymbolFontKit/SymbolFontKit/SFKImage.m; sourceTree = "<group>"; };
 		68CEFB471E20F03900DAFDCB /* A3SharePopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3SharePopupViewController.h; sourceTree = "<group>"; };
@@ -3133,8 +3133,8 @@
 				68E44AD81E408EC500FBC931 /* A3AbbreviationDataManager.m */,
 				6873B5881E1E5EB600A61AB3 /* A3AbbreviationDrillDownTableViewCell.h */,
 				6873B5891E1E5EB600A61AB3 /* A3AbbreviationDrillDownTableViewCell.m */,
-				68CBBE761E1BA90500E92A8A /* A3AbbreviationDrillDownTableViewController.h */,
-				68CBBE771E1BA90500E92A8A /* A3AbbreviationDrillDownTableViewController.m */,
+				68CBBE761E1BA90500E92A8A /* A3AbbreviationDrillDownViewController.h */,
+				68CBBE771E1BA90500E92A8A /* A3AbbreviationDrillDownViewController.m */,
 				685CF1AB1DFFF46300DE2636 /* A3AbbreviationTableViewCell.h */,
 				685CF1AC1DFFF46300DE2636 /* A3AbbreviationTableViewCell.m */,
 				687B95341E024A1A00126F9E /* A3AbbreviationViewController.h */,
@@ -7019,7 +7019,7 @@
 				6817830F1902823D003E1BB9 /* A3WalletItemTitleCell.m in Sources */,
 				68B6A2C318CEC76D004084EF /* A3LoanCalcLoanInfo2Cell.m in Sources */,
 				689D59061C1569BA002CD422 /* ClinometerToolbarViewController.m in Sources */,
-				68CBBE781E1BA90500E92A8A /* A3AbbreviationDrillDownTableViewController.m in Sources */,
+				68CBBE781E1BA90500E92A8A /* A3AbbreviationDrillDownViewController.m in Sources */,
 				17D42461C66EA03739D41FA8 /* A3CurrencyTableViewCell.m in Sources */,
 				68563FEF1DD9A59400563BCD /* A3DashLineView.m in Sources */,
 				680344601CE19505009C300F /* A3PedometerViewController.m in Sources */,

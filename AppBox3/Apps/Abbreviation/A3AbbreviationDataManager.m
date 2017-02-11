@@ -11,7 +11,8 @@
 #import "AbbreviationFavorite+CoreDataClass.h"
 #import "NSManagedObject+extension.h"
 #import "NSMutableArray+A3Sort.h"
-#import "A3AbbreviationDrillDownTableViewController.h"
+#import "A3AbbreviationDrillDownViewController.h"
+#import "UIColor+A3Addition.h"
 
 NSString *const A3AbbreviationKeyTag = @"tag";
 NSString *const A3AbbreviationKeyTags = @"tags";
@@ -193,6 +194,108 @@ NSString *const A3AbbreviationKeyMeaning = @"meaning";
 	},
  */
 
+- (NSArray *)headStartColors {
+	if (!_headStartColors) {
+		_headStartColors = @[
+							 [UIColor colorFromHexString:@"F03E3E"],	// A
+							 [UIColor colorFromHexString:@"D6336C"],	// B
+							 [UIColor colorFromHexString:@"AE3EC9"],	// C
+							 [UIColor colorFromHexString:@"7048E8"],	// D
+							 [UIColor colorFromHexString:@"4263E8"],	// E
+							 [UIColor colorFromHexString:@"1C7CD6"],	// F
+							 [UIColor colorFromHexString:@"1098AD"],	// G
+							 [UIColor colorFromHexString:@"0CA678"],	// H
+							 [UIColor colorFromHexString:@"37B24D"],	// I
+							 [UIColor colorFromHexString:@"74B816"],	// J
+							 [UIColor colorFromHexString:@"F59F00"],	// K
+							 [UIColor colorFromHexString:@"F76707"],	// L
+							 [UIColor colorFromHexString:@"F03E3E"],	// M
+							 [UIColor colorFromHexString:@"D6336C"],	// N
+							 [UIColor colorFromHexString:@"AE3EC9"],	// O
+							 [UIColor colorFromHexString:@"7048E8"],	// P
+							 [UIColor colorFromHexString:@"4263E8"],	// Q
+							 [UIColor colorFromHexString:@"1C7CD6"],	// R
+							 [UIColor colorFromHexString:@"1098AD"],	// S
+							 [UIColor colorFromHexString:@"0CA678"],	// T
+							 [UIColor colorFromHexString:@"37B24D"],	// U
+							 [UIColor colorFromHexString:@"74B816"],	// V
+							 [UIColor colorFromHexString:@"F59F00"],	// W
+							 [UIColor colorFromHexString:@"F76707"],	// X
+							 [UIColor colorFromHexString:@"F03E3E"],	// Y
+							 [UIColor colorFromHexString:@"D6336C"],	// Z
+							 ];
+	}
+	return _headStartColors;
+}
+
+- (NSArray *)alphabetBGColors {
+	if (!_alphabetBGColors) {
+		_alphabetBGColors = @[
+							  [UIColor colorFromHexString:@"F03E3E"],	// A
+							  [UIColor colorFromHexString:@"D6336C"],	// B
+							  [UIColor colorFromHexString:@"AE3EC9"],	// C
+							  [UIColor colorFromHexString:@"7048E8"],	// D
+							  [UIColor colorFromHexString:@"4263E8"],	// E
+							  [UIColor colorFromHexString:@"1C7CD6"],	// F
+							  [UIColor colorFromHexString:@"1098AD"],	// G
+							  [UIColor colorFromHexString:@"0CA678"],	// H
+							  [UIColor colorFromHexString:@"37B24D"],	// I
+							  [UIColor colorFromHexString:@"74B816"],	// J
+							  [UIColor colorFromHexString:@"F59F00"],	// K
+							  [UIColor colorFromHexString:@"F76707"],	// L
+							  [UIColor colorFromHexString:@"F03E3E"],	// M
+							  [UIColor colorFromHexString:@"D6336C"],	// N
+							  [UIColor colorFromHexString:@"AE3EC9"],	// O
+							  [UIColor colorFromHexString:@"7048E8"],	// P
+							  [UIColor colorFromHexString:@"4263E8"],	// Q
+							  [UIColor colorFromHexString:@"1C7CD6"],	// R
+							  [UIColor colorFromHexString:@"1098AD"],	// S
+							  [UIColor colorFromHexString:@"0CA678"],	// T
+							  [UIColor colorFromHexString:@"37B24D"],	// U
+							  [UIColor colorFromHexString:@"74B816"],	// V
+							  [UIColor colorFromHexString:@"F59F00"],	// W
+							  [UIColor colorFromHexString:@"F76707"],	// X
+							  [UIColor colorFromHexString:@"F03E3E"],	// Y
+							  [UIColor colorFromHexString:@"D6336C"],	// Z
+							  ];
+	}
+	return _alphabetBGColors;
+}
+
+- (NSArray *)bodyBGStartColors {
+	if (!_bodyBGStartColors) {
+		_bodyBGStartColors = @[
+							   [UIColor colorFromHexString:@"C92A2A"],	// A
+							   [UIColor colorFromHexString:@"A61E4D"],	// B
+							   [UIColor colorFromHexString:@"862E9C"],	// C
+							   [UIColor colorFromHexString:@"5F3DC4"],	// D
+							   [UIColor colorFromHexString:@"364FC7"],	// E
+							   [UIColor colorFromHexString:@"1862AB"],	// F
+							   [UIColor colorFromHexString:@"0B7285"],	// G
+							   [UIColor colorFromHexString:@"087F5B"],	// H
+							   [UIColor colorFromHexString:@"2B8A3E"],	// I
+							   [UIColor colorFromHexString:@"5C940D"],	// J
+							   [UIColor colorFromHexString:@"E67700"],	// K
+							   [UIColor colorFromHexString:@"D9480F"],	// L
+							   [UIColor colorFromHexString:@"C92A2A"],	// M
+							   [UIColor colorFromHexString:@"A61E4D"],	// N
+							   [UIColor colorFromHexString:@"862E9C"],	// O
+							   [UIColor colorFromHexString:@"5F3DC4"],	// P
+							   [UIColor colorFromHexString:@"364FC7"],	// Q
+							   [UIColor colorFromHexString:@"1862AB"],	// R
+							   [UIColor colorFromHexString:@"0B7285"],	// S
+							   [UIColor colorFromHexString:@"087F5B"],	// T
+							   [UIColor colorFromHexString:@"2B8A3E"],	// U
+							   [UIColor colorFromHexString:@"5C940D"],	// V
+							   [UIColor colorFromHexString:@"E67700"],	// W
+							   [UIColor colorFromHexString:@"D9480F"],	// X
+							   [UIColor colorFromHexString:@"C92A2A"],	// Y
+							   [UIColor colorFromHexString:@"A61E4D"],	// Z
+							   ];
+	}
+	return _bodyBGStartColors;
+}
+
 #pragma mark - A3SharePopupViewControllerDelegate
 
 - (BOOL)isMemberOfFavorites:(NSString *)titleString {
@@ -246,7 +349,7 @@ NSString *const A3AbbreviationKeyMeaning = @"meaning";
 	return NSLocalizedString(@"Abbreviation Reference on the AppBox Pro", nil);
 }
 
-#pragma mark - A3AbbreviationDrillDownDataSource
+#pragma mark - A3DrillDownDataSource
 // Favorites can delete or reorder the items
 
 - (void)deleteItemForContent:(NSDictionary *)content {
