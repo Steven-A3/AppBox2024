@@ -10,4 +10,6 @@
 
 @interface A3HexagonCollectionViewFlowLayout : A3CollectionViewFlowLayout
 
+@property (nonatomic, assign) CGFloat verticalOffset;
+
 @end

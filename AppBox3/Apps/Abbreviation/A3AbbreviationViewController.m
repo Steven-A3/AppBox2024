@@ -122,12 +122,34 @@
 		_tableView.tableHeaderView = nil;
 		_tableView.tableHeaderView = _collectionView;
 		if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.2")) {
-			_titleLabel.font = [UIFont systemFontOfSize:33 weight:UIFontWeightHeavy];
+			_titleLabel.font = [UIFont systemFontOfSize:23 weight:UIFontWeightHeavy];
 		} else {
-			_titleLabel.font = [UIFont boldSystemFontOfSize:33];
+			_titleLabel.font = [UIFont boldSystemFontOfSize:23];
 		}
 		_tableView.rowHeight = 48;
 		[_tableView layoutIfNeeded];
+
+		[self.view removeConstraints:@[_titleLabelBaselineConstraint, _topLineTopConstraint]];
+		
+		NSLayoutConstraint *titleLabelBaselineConstraint = [NSLayoutConstraint constraintWithItem:_titleLabel
+																						attribute:NSLayoutAttributeBaseline
+																						relatedBy:NSLayoutRelationEqual
+																						   toItem:self.view
+																						attribute:NSLayoutAttributeBottom
+																					   multiplier:0.17
+																						 constant:0];
+		NSLayoutConstraint *topLineTopConstraint = [NSLayoutConstraint constraintWithItem:_topLineView
+																				attribute:NSLayoutAttributeTop
+																				relatedBy:NSLayoutRelationEqual
+																				   toItem:self.view
+																				attribute:NSLayoutAttributeBottom
+																			   multiplier:0.185
+																				 constant:0];
+		[self.view addConstraints:@[titleLabelBaselineConstraint, topLineTopConstraint]];
+		
+		_titleLabelBaselineConstraint = titleLabelBaselineConstraint;
+		_topLineTopConstraint = topLineTopConstraint;
+
 	} else if (IS_IPAD) {
 		[self.view removeConstraints:@[_titleLabelBaselineConstraint, _topLineTopConstraint]];
 		
@@ -170,6 +192,8 @@
 		if (!indexPath) {
 			return;
 		}
+		[_collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+		
 		A3AbbreviationCollectionViewCell *cell = (A3AbbreviationCollectionViewCell *) [_collectionView cellForItemAtIndexPath:indexPath];
 		CGPoint pointInCell = [gestureRecognizer locationInView:cell];
 		FNLOG(@"%f, %f", pointInCell.x, pointInCell.y);
@@ -186,15 +210,15 @@
 			[self.navigationController pushViewController:viewController animated:YES];
 		} else {
 			// 섹션 내 상위 3개의 row 중 하나를 선택한 경우
-			CGPoint pointInRoundedRect = [gestureRecognizer locationInView:cell.roundedRectView];
-			NSInteger index = pointInRoundedRect.y / cell.roundedRectView.bounds.size.height / 3;
+			CGFloat rowHeight = cell.roundedRectView.frame.size.height / 3;
+			NSInteger idx = floor((pointInCell.y - cell.roundedRectView.frame.origin.y) / rowHeight);
 
 			NSDictionary *section = self.dataManager.hashTagSections[indexPath.row];
 
 			A3SharePopupViewController *viewController = [A3SharePopupViewController storyboardInstanceWithBlurBackground:YES];
 			viewController.delegate = self;
 			viewController.dataSource = self.dataManager;
-			viewController.titleString = section[A3AbbreviationKeyComponents][index][A3AbbreviationKeyAbbreviation];
+			viewController.titleString = section[A3AbbreviationKeyComponents][idx][A3AbbreviationKeyAbbreviation];
 			[self presentViewController:viewController animated:YES completion:NULL];
 			_sharePopupViewController = viewController;
 			FNLOG();

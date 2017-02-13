@@ -29,13 +29,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Nq-ZK-fi5" userLabel="Line On Top of TableView">
-                                <rect key="frame" x="20" y="127" width="355" height="0.0"/>
+                                <rect key="frame" x="20" y="124" width="355" height="0.0"/>
                                 <color key="backgroundColor" red="0.83137254900000002" green="0.83137254900000002" blue="0.84313725490000002" alpha="1" colorSpace="deviceRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="0.5" id="hLz-Qm-P11"/>
                                 </constraints>
                             </view>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="QaS-RV-kE1">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" directionalLockEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="QaS-RV-kE1">
                                 <rect key="frame" x="0.0" y="127" width="375" height="540"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="20" id="P8x-Am-8aY" customClass="A3KaomojiCollectionViewFlowLayout">
@@ -46,7 +46,7 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="kaomojiCollectionViewCell" id="smj-Jr-6N3" customClass="A3KaomojiCollectionViewCell">
-                                        <rect key="frame" x="42.5" y="0.0" width="290" height="236"/>
+                                        <rect key="frame" x="43" y="0.0" width="290" height="236"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="290" height="236"/>
@@ -76,7 +76,7 @@
                                                             <rect key="frame" x="29" y="61" width="261" height="63"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(*^▽^*)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="92Y-gB-aFO" userLabel="Title">
-                                                                    <rect key="frame" x="0.0" y="19" width="75.5" height="26"/>
+                                                                    <rect key="frame" x="0.0" y="19" width="76" height="26"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -190,18 +190,21 @@
                             <constraint firstItem="EfT-G1-lH4" firstAttribute="leading" secondItem="gpl-OM-hII" secondAttribute="leading" constant="20" id="0qZ-m2-Gme"/>
                             <constraint firstItem="QaS-RV-kE1" firstAttribute="leading" secondItem="gpl-OM-hII" secondAttribute="leading" id="2oc-6r-jd7"/>
                             <constraint firstAttribute="trailing" secondItem="7Nq-ZK-fi5" secondAttribute="trailing" id="HXP-uS-i4m"/>
-                            <constraint firstItem="QaS-RV-kE1" firstAttribute="top" secondItem="gpl-OM-hII" secondAttribute="bottom" multiplier="0.19" id="HXW-KG-5QY"/>
-                            <constraint firstItem="EfT-G1-lH4" firstAttribute="bottom" secondItem="gpl-OM-hII" secondAttribute="bottom" multiplier="0.17" id="Tcs-zK-S72"/>
+                            <constraint firstItem="QaS-RV-kE1" firstAttribute="top" secondItem="7Nq-ZK-fi5" secondAttribute="bottom" id="OyY-ed-6Z5"/>
+                            <constraint firstItem="EfT-G1-lH4" firstAttribute="baseline" secondItem="gpl-OM-hII" secondAttribute="bottom" multiplier="0.156" id="Tcs-zK-S72"/>
                             <constraint firstItem="7Nq-ZK-fi5" firstAttribute="leading" secondItem="EfT-G1-lH4" secondAttribute="leading" id="g0r-fk-JK6"/>
-                            <constraint firstItem="7Nq-ZK-fi5" firstAttribute="bottom" secondItem="QaS-RV-kE1" secondAttribute="top" id="gtp-FK-zBy"/>
                             <constraint firstItem="yui-bn-AbC" firstAttribute="top" secondItem="QaS-RV-kE1" secondAttribute="bottom" id="hB4-Bl-yeM"/>
                             <constraint firstAttribute="trailing" secondItem="QaS-RV-kE1" secondAttribute="trailing" id="iw1-Tl-rka"/>
+                            <constraint firstItem="7Nq-ZK-fi5" firstAttribute="top" secondItem="gpl-OM-hII" secondAttribute="bottom" multiplier="0.186" id="xFH-vr-BJn"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="QaS-RV-kE1" id="sT2-dw-1oz"/>
                         <outlet property="collectionViewFlowLayout" destination="P8x-Am-8aY" id="NV7-GX-HcS"/>
                         <outlet property="titleLabel" destination="EfT-G1-lH4" id="5mP-cx-4S2"/>
+                        <outlet property="titleLabelBaselineConstraint" destination="Tcs-zK-S72" id="oML-9F-lPV"/>
+                        <outlet property="topLineTopConstraint" destination="xFH-vr-BJn" id="Alu-We-An9"/>
+                        <outlet property="topLineView" destination="7Nq-ZK-fi5" id="svp-HJ-8aa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="544-i9-pDh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -235,7 +238,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qsm-OZ-Ndb" id="Spu-Bl-yU5">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="59"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ALIWanIsU" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OTx-Z8-5g4">

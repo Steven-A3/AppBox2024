@@ -24,7 +24,7 @@ UICollectionViewDataSource, UICollectionViewDelegate, A3AppSelectViewControllerD
 A3InstructionViewControllerDelegate>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
-@property (nonatomic, strong) A3CollectionViewFlowLayout *flowLayout;
+@property (nonatomic, strong) A3HexagonCollectionViewFlowLayout *flowLayout;
 @property (nonatomic, strong) UILabel *appTitleLabel;
 @property (nonatomic, strong) NSMutableArray<NSDictionary *> *menuItems;
 @property (nonatomic, strong) NSIndexPath *movingCellOriginalIndexPath;
@@ -39,8 +39,8 @@ A3InstructionViewControllerDelegate>
 @implementation A3HexagonMenuViewController
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-
+	[super viewDidLoad];
+	
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
 	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
@@ -83,6 +83,10 @@ A3InstructionViewControllerDelegate>
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuContentsDidChange) name:A3NotificationAppsMainMenuContentsChanged object:nil];
+
+	if (IS_IPHONE_3_5_INCH) {
+		_flowLayout.verticalOffset = 40;
+	}
 }
 
 - (void)mainMenuContentsDidChange {
@@ -91,6 +95,9 @@ A3InstructionViewControllerDelegate>
 		self.shouldShowHouseAd = NO;
 	} else {
 		self.shouldShowHouseAd = YES;
+	}
+	if (IS_IPHONE_3_5_INCH) {
+		self.shouldShowHouseAd = NO;
 	}
 	_collectionView.backgroundView = self.backgroundView;
 	_collectionView.backgroundView.backgroundColor = [UIColor colorWithRed:42.0/255.0 green:54.0/255.0 blue:59.0/255.0 alpha:1.0];
@@ -291,7 +298,7 @@ A3InstructionViewControllerDelegate>
 		[_appTitleLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(superview.centerX);
 			CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-			_appTitleTopConstraint =  make.top.equalTo(superview.top).with.offset(screenBounds.size.height * (IS_PORTRAIT ? 0.18 : 0.13));
+			_appTitleTopConstraint =  make.top.equalTo(superview.top).with.offset(screenBounds.size.height * (IS_PORTRAIT ? 0.15 : 0.11));
 		}];
 	}
 	return _appTitleLabel;

@@ -18,6 +18,7 @@
 		A3SharePopupViewControllerDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
+@property (nonatomic, weak) IBOutlet UIView *topLineView;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) A3KaomojiDataManager *dataManager;
 @property (nonatomic, strong) UIPreviewInteraction *previewInteraction;
@@ -31,6 +32,8 @@
 @property (nonatomic, strong) UIView *previewBottomView;
 @property (nonatomic, copy) NSString *selectedKaomoji;
 @property (nonatomic, weak) IBOutlet UICollectionViewFlowLayout *collectionViewFlowLayout;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *titleLabelBaselineConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *topLineTopConstraint;
 
 @end
 
@@ -99,14 +102,51 @@
 	} else if (IS_IPHONE_3_5_INCH) {
 		_collectionViewFlowLayout.itemSize = CGSizeMake(224, 153);
 		if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.2")) {
-			_titleLabel.font = [UIFont systemFontOfSize:33 weight:UIFontWeightHeavy];
+			_titleLabel.font = [UIFont systemFontOfSize:23 weight:UIFontWeightHeavy];
 		} else {
-			_titleLabel.font = [UIFont boldSystemFontOfSize:33];
+			_titleLabel.font = [UIFont boldSystemFontOfSize:23];
 		}
+		[self.view removeConstraints:@[_titleLabelBaselineConstraint, _topLineTopConstraint]];
+		
+		NSLayoutConstraint *titleLabelBaselineConstraint = [NSLayoutConstraint constraintWithItem:_titleLabel
+																						attribute:NSLayoutAttributeBaseline
+																						relatedBy:NSLayoutRelationEqual
+																						   toItem:self.view
+																						attribute:NSLayoutAttributeBottom
+																					   multiplier:0.17
+																						 constant:0];
+		NSLayoutConstraint *topLineTopConstraint = [NSLayoutConstraint constraintWithItem:_topLineView
+																				attribute:NSLayoutAttributeTop
+																				relatedBy:NSLayoutRelationEqual
+																				   toItem:self.view
+																				attribute:NSLayoutAttributeBottom
+																			   multiplier:0.185
+																				 constant:0];
+		[self.view addConstraints:@[titleLabelBaselineConstraint, topLineTopConstraint]];
+		
+		_titleLabelBaselineConstraint = titleLabelBaselineConstraint;
+		_topLineTopConstraint = topLineTopConstraint;
 	} else if (IS_IPAD) {
-
-	} else if (IS_IPAD_12_9_INCH) {
-
+		[self.view removeConstraints:@[_titleLabelBaselineConstraint, _topLineTopConstraint]];
+		
+		NSLayoutConstraint *titleLabelBaselineConstraint = [NSLayoutConstraint constraintWithItem:_titleLabel
+																						attribute:NSLayoutAttributeBaseline
+																						relatedBy:NSLayoutRelationEqual
+																						   toItem:self.view
+																						attribute:NSLayoutAttributeBottom
+																					   multiplier:IS_PORTRAIT ? 0.10 : 0.13
+																						 constant:0];
+		NSLayoutConstraint *topLineTopConstraint = [NSLayoutConstraint constraintWithItem:_topLineView
+																				attribute:NSLayoutAttributeTop
+																				relatedBy:NSLayoutRelationEqual
+																				   toItem:self.view
+																				attribute:NSLayoutAttributeBottom
+																			   multiplier:IS_PORTRAIT ? 0.12 : 0.15
+																				 constant:0];
+		[self.view addConstraints:@[titleLabelBaselineConstraint, topLineTopConstraint]];
+		
+		_titleLabelBaselineConstraint = titleLabelBaselineConstraint;
+		_topLineTopConstraint = topLineTopConstraint;
 	}
 }
 
@@ -138,6 +178,8 @@
 		CGPoint pointInCell = [gestureRecognizer locationInView:cell];
 		FNLOG(@"%f, %f", pointInCell.x, pointInCell.y);
 
+		[_collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+		
 		if (pointInCell.y < cell.roundedRectView.frame.origin.y) {
 			// tag가 선택이 된 경우
 
@@ -150,15 +192,15 @@
 			[self.navigationController pushViewController:viewController animated:YES];
 		} else {
 			// 섹션 내 상위 3개의 row 중 하나를 선택한 경우
-			CGPoint pointInRoundedRect = [gestureRecognizer locationInView:cell.roundedRectView];
-			NSInteger index = pointInRoundedRect.y / cell.roundedRectView.bounds.size.height / 3;
+			CGFloat rowHeight = cell.roundedRectView.frame.size.height / 3;
+			NSInteger idx = floor((pointInCell.y - cell.roundedRectView.frame.origin.y) / rowHeight);
 
 			NSDictionary *section = self.dataManager.contentsArray[indexPath.row];
 
 			A3SharePopupViewController *viewController = [A3SharePopupViewController storyboardInstanceWithBlurBackground:YES];
 			viewController.delegate = self;
 			viewController.dataSource = self.dataManager;
-			viewController.titleString = section[A3KaomojiKeyContents][index];
+			viewController.titleString = section[A3KaomojiKeyContents][idx];
 			[self presentViewController:viewController animated:YES completion:NULL];
 			_sharePopupViewController = viewController;
 			FNLOG();

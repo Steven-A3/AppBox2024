@@ -37,6 +37,9 @@
 	} else {
 		_shouldShowHouseAd = YES;
 	}
+	if (IS_IPHONE_3_5_INCH) {
+		self.shouldShowHouseAd = NO;
+	}
 }
 
 - (void)didReceiveMemoryWarning {

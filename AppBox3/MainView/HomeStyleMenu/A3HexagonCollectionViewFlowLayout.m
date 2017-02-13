@@ -37,7 +37,7 @@
 
 - (NSArray *)lineConfiguration {
 	if (!_lineConfiguration) {
-		_lineConfiguration = @[@4, @5, @6, @5, @4];
+		_lineConfiguration = @[@3, @4, @5, @6, @5, @4, @3];
 		_maxColumn = 6;
 	}
 	return _lineConfiguration;
@@ -72,12 +72,12 @@
 //	FNLOG(@"row = %ld, col = %ld, indexPath.row = %ld", row, col, indexPath.row);
 
 	CGFloat horiOffset;
-	if ((_maxColumn %2) == 0) {
-		horiOffset = ((row % 2) == 0) ? 0 : self.itemSize.width * 0.5f + self.minimumInteritemSpacing / 2.0;
-	} else {
+	if ([self.lineConfiguration count] % 2 == 1) {
 		horiOffset = ((row % 2) == 1) ? 0 : self.itemSize.width * 0.5f + self.minimumInteritemSpacing / 2.0;
+	} else {
+		horiOffset = ((row % 2) == 0) ? 0 : self.itemSize.width * 0.5f + self.minimumInteritemSpacing / 2.0;
 	}
-	CGFloat vertOffset = 0;
+	CGFloat vertOffset = _verticalOffset;
 	
 	UICollectionViewLayoutAttributes *attributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
 	attributes.size = self.itemSize;
@@ -88,7 +88,7 @@
 
 - (CGSize)collectionViewContentSize
 {
-	FNLOGRECT(self.collectionView.bounds);
+//	FNLOGRECT(self.collectionView.bounds);
 	CGFloat contentWidth = self.collectionView.bounds.size.width - self.collectionView.contentInset.left - self.collectionView.contentInset.right;
 	CGFloat contentHeight = ([self.lineConfiguration count] * 0.75f) * self.itemSize.height + (0.5f + self.itemSize.height) + self.minimumLineSpacing * (1 + [self.lineConfiguration count]);
 	
