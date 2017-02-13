@@ -222,6 +222,8 @@
 	CGPoint pointInCell = [gestureRecognizer locationInView:cell];
 	FNLOG(@"%f, %f", pointInCell.x, pointInCell.y);
 
+	[_collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+
 	if (pointInCell.y < cell.roundedRectView.frame.origin.y) {
 		NSDictionary *section = self.dataManager.contentsArray[indexPath.row];
 
@@ -231,7 +233,6 @@
 		viewController.contentsTitle = section[A3KaomojiKeyCategory];
 		[self.navigationController pushViewController:viewController animated:YES];
 	} else {
-		[_collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
 
 		NSDictionary *section = self.dataManager.contentsArray[indexPath.row];
 

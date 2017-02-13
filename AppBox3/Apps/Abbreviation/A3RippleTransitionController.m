@@ -34,6 +34,7 @@
 	patternBackgroundView.frame = fromViewController.view.bounds;
 	patternBackgroundView.opaque = 0.0;
 	patternBackgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Pattern_Dots"]];
+	patternBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[fromViewController.view addSubview:patternBackgroundView];
 	_patternBackgroundView = patternBackgroundView;
 

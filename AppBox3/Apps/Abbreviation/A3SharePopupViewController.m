@@ -211,7 +211,7 @@ extern NSString *const A3AbbreviationKeyMeaning;
 	}
 
 	self.view.hidden = YES;
-	[_hudView hideAnimated:YES afterDelay:2];
+	[_hudView hideAnimated:YES afterDelay:1.5];
 }
 
 - (void)setTitleString:(NSString *)titleString {
