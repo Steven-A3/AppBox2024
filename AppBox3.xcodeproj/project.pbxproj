@@ -119,6 +119,7 @@
 		68057CDD1E39EEDA002A11FE /* AbbreviationFavorite+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 68057CDA1E39EEDA002A11FE /* AbbreviationFavorite+CoreDataClass.m */; };
 		68057CDE1E39EEDA002A11FE /* AbbreviationFavorite+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 68057CDC1E39EEDA002A11FE /* AbbreviationFavorite+CoreDataProperties.m */; };
 		68067C8C186E867C00D1A1D1 /* A3PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68067C8B186E867C00D1A1D1 /* A3PasswordViewController.m */; };
+		6807C61E1E53EF73009892C9 /* WhatsNew4_5.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6807C61D1E53EF73009892C9 /* WhatsNew4_5.storyboard */; };
 		680886D31891751B0093FD97 /* A3ChooseColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886AA1891751B0093FD97 /* A3ChooseColorView.m */; };
 		680886D41891751B0093FD97 /* A3ClockDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886AC1891751B0093FD97 /* A3ClockDataManager.m */; };
 		680886D51891751B0093FD97 /* A3ClockFlipViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886AE1891751B0093FD97 /* A3ClockFlipViewController.m */; };
@@ -982,6 +983,8 @@
 		68F1C90318D814F9009FAE8A /* UIColor+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C90018D814F9009FAE8A /* UIColor+A3Addition.m */; };
 		68F1C90418D814F9009FAE8A /* UIPopoverController+Override.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C90218D814F9009FAE8A /* UIPopoverController+Override.m */; };
 		68F1C92318D82500009FAE8A /* NYXProgressiveImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C92218D82500009FAE8A /* NYXProgressiveImageView.m */; };
+		68F2444B1E542E9B00E99A7D /* A3AbbreviationHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F2444A1E542E9B00E99A7D /* A3AbbreviationHelpViewController.m */; };
+		68F244561E54325B00E99A7D /* A3WhatsNew4_5ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F244551E54325B00E99A7D /* A3WhatsNew4_5ViewController.m */; };
 		68F319FC18D83D1F0003BE62 /* A3LaunchSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F319F718D83D1F0003BE62 /* A3LaunchSceneViewController.m */; };
 		68F319FD18D83D1F0003BE62 /* A3LaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F319F918D83D1F0003BE62 /* A3LaunchViewController.m */; };
 		68F32E51188AC3C600248F16 /* UIViewController+tableViewStandardDimension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F32E50188AC3C600248F16 /* UIViewController+tableViewStandardDimension.m */; };
@@ -1276,6 +1279,7 @@
 		68067C8A186E867C00D1A1D1 /* A3PasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3PasswordViewController.h; path = Passcode/A3PasswordViewController.h; sourceTree = "<group>"; };
 		68067C8B186E867C00D1A1D1 /* A3PasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3PasswordViewController.m; path = Passcode/A3PasswordViewController.m; sourceTree = "<group>"; };
 		68067C90186E926D00D1A1D1 /* A3PasscodeViewControllerProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = A3PasscodeViewControllerProtocol.h; path = Passcode/A3PasscodeViewControllerProtocol.h; sourceTree = "<group>"; };
+		6807C61D1E53EF73009892C9 /* WhatsNew4_5.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = WhatsNew4_5.storyboard; path = AppDelegate/WhatsNew4_5.storyboard; sourceTree = "<group>"; };
 		680886A91891751B0093FD97 /* A3ChooseColorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ChooseColorView.h; sourceTree = "<group>"; };
 		680886AA1891751B0093FD97 /* A3ChooseColorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ChooseColorView.m; sourceTree = "<group>"; };
 		680886AB1891751B0093FD97 /* A3ClockDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ClockDataManager.h; sourceTree = "<group>"; };
@@ -2972,6 +2976,10 @@
 		68F1C91F18D8248A009FAE8A /* NYXImagesKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYXImagesKit.h; sourceTree = "<group>"; };
 		68F1C92118D82500009FAE8A /* NYXProgressiveImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYXProgressiveImageView.h; sourceTree = "<group>"; };
 		68F1C92218D82500009FAE8A /* NYXProgressiveImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYXProgressiveImageView.m; sourceTree = "<group>"; };
+		68F244491E542E9B00E99A7D /* A3AbbreviationHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3AbbreviationHelpViewController.h; sourceTree = "<group>"; };
+		68F2444A1E542E9B00E99A7D /* A3AbbreviationHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AbbreviationHelpViewController.m; sourceTree = "<group>"; };
+		68F244541E54325B00E99A7D /* A3WhatsNew4_5ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3WhatsNew4_5ViewController.h; path = AppDelegate/A3WhatsNew4_5ViewController.h; sourceTree = "<group>"; };
+		68F244551E54325B00E99A7D /* A3WhatsNew4_5ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3WhatsNew4_5ViewController.m; path = AppDelegate/A3WhatsNew4_5ViewController.m; sourceTree = "<group>"; };
 		68F319F618D83D1F0003BE62 /* A3LaunchSceneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LaunchSceneViewController.h; sourceTree = "<group>"; };
 		68F319F718D83D1F0003BE62 /* A3LaunchSceneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LaunchSceneViewController.m; sourceTree = "<group>"; };
 		68F319F818D83D1F0003BE62 /* A3LaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LaunchViewController.h; sourceTree = "<group>"; };
@@ -3154,6 +3162,8 @@
 				68057CD21E39EE01002A11FE /* Model */,
 				689055741E4D68410065215B /* A3TrapezoidView.h */,
 				689055751E4D68410065215B /* A3TrapezoidView.m */,
+				68F244491E542E9B00E99A7D /* A3AbbreviationHelpViewController.h */,
+				68F2444A1E542E9B00E99A7D /* A3AbbreviationHelpViewController.m */,
 			);
 			path = Abbreviation;
 			sourceTree = "<group>";
@@ -3944,6 +3954,9 @@
 				680FF7121980B88D00C736F5 /* A3SyncManager.m */,
 				17D429B3F3A6137477940274 /* A3SyncManager+NSUbiquitousKeyValueStore.h */,
 				17D42D1AA1C9348634F8FEF1 /* A3SyncManager+NSUbiquitousKeyValueStore.m */,
+				6807C61D1E53EF73009892C9 /* WhatsNew4_5.storyboard */,
+				68F244541E54325B00E99A7D /* A3WhatsNew4_5ViewController.h */,
+				68F244551E54325B00E99A7D /* A3WhatsNew4_5ViewController.m */,
 			);
 			name = AppDelegate;
 			sourceTree = "<group>";
@@ -6330,6 +6343,7 @@
 				680D639E18CFF9D400938AD0 /* A3MagnifierViewController.xib in Resources */,
 				68B6A32618CEC76D004084EF /* A3WalletCateTitleView.xib in Resources */,
 				68F14FF119485E8500159EAD /* A3DaysCounterSetupAlertViewController.xib in Resources */,
+				6807C61E1E53EF73009892C9 /* WhatsNew4_5.storyboard in Resources */,
 				68143D0418E3EC1F00569691 /* A3NumberKeyboardSimpleVC_iPhone.xib in Resources */,
 				68143D7E18E51ABB00569691 /* A3NumberKeyboardSimplePrevNextClearVC_iPhone.xib in Resources */,
 				68FB8E9F1C990922008CAB7A /* currencyRates in Resources */,
@@ -6753,6 +6767,7 @@
 				68F14FBB19485E8500159EAD /* A3DaysCounterAddEventViewController.m in Sources */,
 				68143D5618E3EC7C00569691 /* A3JHTableViewExpandableHeaderCell.m in Sources */,
 				68F14FE519485E8500159EAD /* A3DaysCounterEventListDateCell.m in Sources */,
+				68F2444B1E542E9B00E99A7D /* A3AbbreviationHelpViewController.m in Sources */,
 				68B6A33118CEC76D004084EF /* A3WalletListBigPhotoCell.m in Sources */,
 				68B6A2C818CEC76D004084EF /* A3LoanCalcPaymentInfoCell.m in Sources */,
 				68B6A44518CEE781004084EF /* MWTapDetectingView.m in Sources */,
@@ -6761,6 +6776,7 @@
 				680D63A318CFFC2500938AD0 /* VerticalSlider.m in Sources */,
 				682FDF201981CC0400C6C83D /* NSManagedObjectContext+MagicalSaves.m in Sources */,
 				68F04D0A1B40F825004FDD7B /* RMStoreTransaction.m in Sources */,
+				68F244561E54325B00E99A7D /* A3WhatsNew4_5ViewController.m in Sources */,
 				68E2A6A018D0B22800E834D9 /* A3SalesCalcCalculator.m in Sources */,
 				6848FB8D17A39C1100EBDBED /* NSMutableArray+A3Sort.m in Sources */,
 				684A71C21853464A0004A9FE /* A3AppDelegate+iCloud.m in Sources */,

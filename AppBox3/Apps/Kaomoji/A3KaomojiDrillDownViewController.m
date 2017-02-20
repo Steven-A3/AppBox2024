@@ -26,6 +26,8 @@
 @property (nonatomic, strong) UIView *previewView;
 @property (nonatomic, strong) A3AbbreviationCopiedViewController *copiedViewController;
 @property (nonatomic, assign) NSInteger selectedRow;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *titleLabelBottomConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *tableViewTopConstraint;
 
 @end
 
@@ -68,9 +70,47 @@
 		_tableView.rowHeight = 46;
 		_titleLabel.font = [UIFont boldSystemFontOfSize:18];
 	} else if (IS_IPAD_12_9_INCH) {
-
+		[self.view removeConstraints:@[_titleLabelBottomConstraint, _tableViewTopConstraint]];
+		
+		NSLayoutConstraint *titleLabelBottomConstraint = [NSLayoutConstraint constraintWithItem:_titleLabel
+																					  attribute:NSLayoutAttributeBaseline
+																					  relatedBy:NSLayoutRelationEqual
+																						 toItem:self.view
+																					  attribute:NSLayoutAttributeBottom
+																					 multiplier:IS_PORTRAIT ? 0.09 : 0.12
+																					   constant:0];
+		NSLayoutConstraint *tableViewTopConstraint = [NSLayoutConstraint constraintWithItem:_tableView
+																				  attribute:NSLayoutAttributeTop
+																				  relatedBy:NSLayoutRelationEqual
+																					 toItem:self.view
+																				  attribute:NSLayoutAttributeBottom
+																				 multiplier:IS_PORTRAIT ? 0.11 : 0.14
+																				   constant:0];
+		[self.view addConstraints:@[titleLabelBottomConstraint, tableViewTopConstraint]];
+		
+		_titleLabelBottomConstraint = titleLabelBottomConstraint;
+		_tableViewTopConstraint = tableViewTopConstraint;
 	} else if (IS_IPAD) {
-
+		[self.view removeConstraints:@[_titleLabelBottomConstraint, _tableViewTopConstraint]];
+		
+		NSLayoutConstraint *titleLabelBottomConstraint = [NSLayoutConstraint constraintWithItem:_titleLabel
+																					  attribute:NSLayoutAttributeBaseline
+																					  relatedBy:NSLayoutRelationEqual
+																						 toItem:self.view
+																					  attribute:NSLayoutAttributeBottom
+																					 multiplier:IS_PORTRAIT ? 0.10 : 0.13
+																					   constant:0];
+		NSLayoutConstraint *tableViewTopConstraint = [NSLayoutConstraint constraintWithItem:_tableView
+																				  attribute:NSLayoutAttributeTop
+																				  relatedBy:NSLayoutRelationEqual
+																					 toItem:self.view
+																				  attribute:NSLayoutAttributeBottom
+																				 multiplier:IS_PORTRAIT ? 0.12 : 0.15
+																				   constant:0];
+		[self.view addConstraints:@[titleLabelBottomConstraint, tableViewTopConstraint]];
+		
+		_titleLabelBottomConstraint = titleLabelBottomConstraint;
+		_tableViewTopConstraint = tableViewTopConstraint;
 	}
 	[self setupRightBarButtonItem];
 }

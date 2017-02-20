@@ -14,6 +14,9 @@
 #import "A3LaunchViewController.h"
 #import <Social/Social.h>
 #import <MessageUI/MessageUI.h>
+#import "A3WhatsNew4_5ViewController.h"
+#import "UIView+SBExtras.h"
+#import "FXBlurView.h"
 
 @interface A3AboutViewController () <MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate>
 @property (nonatomic, strong) A3LaunchViewController *whatsNewViewController;
@@ -163,8 +166,12 @@
 - (void)didSelectSectionTwoAtRow:(NSInteger)row {
 	switch (row) {
 		case 1:{
-			NSURL *url = [NSURL URLWithString:@"http://www.allaboutapps.net/wordpress/archives/category/whats-new"];
-			[self presentWebViewControllerWithURL:url];
+			UIImageView *imageView = [UIImageView new];
+			imageView.image = [[[A3AppDelegate instance].window image] blurredImageWithRadius:40 iterations:1 tintColor:nil];
+			A3WhatsNew4_5ViewController *viewController = [A3WhatsNew4_5ViewController storyboardInstanceWithSnapshotView:imageView];
+			[self presentViewController:viewController animated:YES completion:NULL];
+//			NSURL *url = [NSURL URLWithString:@"http://www.allaboutapps.net/wordpress/archives/category/whats-new"];
+//			[self presentWebViewControllerWithURL:url];
 			break;
 		}
 		case 2: {

@@ -59,7 +59,7 @@
 	
 	[self leftBarButtonAppsButton];
 	
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"♥︎ Favorites"
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"♥︎ Favorites", @"♥︎ Favorites")
 																			  style:UIBarButtonItemStylePlain
 																			 target:self
 																			 action:@selector(favoritesButtonAction:)];
@@ -78,6 +78,11 @@
 		longPressGestureRecognizer.minimumPressDuration = 0.5;
 		longPressGestureRecognizer.delegate = self;
 		[self.collectionView addGestureRecognizer:longPressGestureRecognizer];
+		
+		UILongPressGestureRecognizer *longPressGestureRecognizerOnTableView = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(didLongPressTableView:)];
+		longPressGestureRecognizerOnTableView.minimumPressDuration = 0.5;
+		longPressGestureRecognizer.delegate = self;
+		[self.tableView addGestureRecognizer:longPressGestureRecognizerOnTableView];
 	}
 }
 
@@ -235,35 +240,15 @@
 	if (!indexPath) {
 		return;
 	}
-	
-	A3AbbreviationCollectionViewCell *cell = (A3AbbreviationCollectionViewCell *) [_collectionView cellForItemAtIndexPath:indexPath];
-	CGPoint pointInCell = [gestureRecognizer locationInView:cell];
-	FNLOG(@"%f, %f", pointInCell.x, pointInCell.y);
 
-	if (pointInCell.y < cell.roundedRectView.frame.origin.y) {
-		NSDictionary *section = self.dataManager.hashTagSections[indexPath.row];
-		
-		A3AbbreviationDrillDownViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownViewController storyboardID]];
-		viewController.dataManager = self.dataManager;
-		viewController.contentsArray = [section[A3AbbreviationKeyComponents] mutableCopy];
-		viewController.contentsTitle = [NSString stringWithFormat:@"#%@", section[A3AbbreviationKeyTag]];
-		[self.navigationController pushViewController:viewController animated:YES];
-	} else {
-		[_collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
-		
-		NSDictionary *section = self.dataManager.hashTagSections[indexPath.row];
+	[_collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
 
-		CGFloat rowHeight = cell.roundedRectView.frame.size.height / 3;
-		NSInteger idx = floor((pointInCell.y - cell.roundedRectView.frame.origin.y) / rowHeight);
-		NSArray *components = section[A3AbbreviationKeyComponents];
-
-		[self removeBlurEffectView];
-		
-		A3AbbreviationCopiedViewController *viewController = [A3AbbreviationCopiedViewController storyboardInstance];
-		viewController.titleString = components[idx][A3AbbreviationKeyAbbreviation];
-		[self presentViewController:viewController animated:YES completion:NULL];
-		_copiedViewController = viewController;
-	}
+	NSDictionary *section = self.dataManager.hashTagSections[indexPath.row];
+	A3AbbreviationDrillDownViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownViewController storyboardID]];
+	viewController.dataManager = self.dataManager;
+	viewController.contentsArray = [section[A3AbbreviationKeyComponents] mutableCopy];
+	viewController.contentsTitle = [NSString stringWithFormat:@"#%@", section[A3AbbreviationKeyTag]];
+	[self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -414,6 +399,22 @@
 
 #pragma mark - UIGestureRecognizerDelegate
 
+- (void)didLongPressTableView:(UILongPressGestureRecognizer *)gestureRecognizer {
+	if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+		CGPoint location = [gestureRecognizer locationInView:_tableView];
+		NSIndexPath *indexPath = [_tableView indexPathForRowAtPoint:location];
+		if (indexPath) {
+			A3SharePopupViewController *viewController = [A3SharePopupViewController storyboardInstanceWithBlurBackground:YES];
+			viewController.delegate = self;
+			viewController.dataSource = self.dataManager;
+			viewController.titleString = self.dataManager.alphabetSections[indexPath.row][A3AbbreviationKeyComponents][0][A3AbbreviationKeyAbbreviation];
+			[self presentViewController:viewController animated:YES completion:NULL];
+			_sharePopupViewController = viewController;
+			
+			_cancelTime3DTouch = [NSDate date];
+		}
+	}
+}
 
 #pragma mark - UIPreviewInteractionDelegate
 

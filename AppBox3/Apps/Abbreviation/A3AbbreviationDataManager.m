@@ -34,7 +34,9 @@ NSString *const A3AbbreviationKeyMeaning = @"meaning";
 }
 
 - (void)prepareData {
-	self.dataArray = [self abbreviationsArrayFromDataFile];;
+	self.dataArray = [self abbreviationsArrayFromDataFile];
+//	FNLOG(@"Total: %ld", (long)[_dataArray count]);
+	
 	[self buildHashTagSections];
 	[self buildAlphabetSections];
 	

@@ -260,6 +260,13 @@ NSString *const A3KaomojiKeyContents = @"contents";
 				]},
 
 		];
+#ifdef DEBUG
+		NSInteger numberOfKaomoji = 0;
+		for (NSDictionary *group in _contentsArray) {
+			numberOfKaomoji += [group[A3KaomojiKeyContents] count];
+		}
+		FNLOG(@"Total: %ld", (long)numberOfKaomoji);
+#endif
 	}
 	return _contentsArray;
 }

@@ -55,7 +55,7 @@
 
 	[self leftBarButtonAppsButton];
 	
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"♥︎ Favorites"
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"♥︎ Favorites", @"♥︎ Favorites")
 																			  style:UIBarButtonItemStylePlain
 																			 target:self
 																			 action:@selector(favoritesButtonAction:)];
@@ -127,6 +127,9 @@
 		_titleLabelBaselineConstraint = titleLabelBaselineConstraint;
 		_topLineTopConstraint = topLineTopConstraint;
 	} else if (IS_IPAD) {
+		if (IS_IPAD_12_9_INCH) {
+			_collectionViewFlowLayout.itemSize = CGSizeMake(300, 250);
+		}
 		[self.view removeConstraints:@[_titleLabelBaselineConstraint, _topLineTopConstraint]];
 		
 		NSLayoutConstraint *titleLabelBaselineConstraint = [NSLayoutConstraint constraintWithItem:_titleLabel
@@ -222,31 +225,17 @@
 	CGPoint pointInCell = [gestureRecognizer locationInView:cell];
 	FNLOG(@"%f, %f", pointInCell.x, pointInCell.y);
 
-	[_collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+	[_collectionView scrollToItemAtIndexPath:indexPath
+							atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally | UICollectionViewScrollPositionCenteredVertically
+									animated:YES];
 
-	if (pointInCell.y < cell.roundedRectView.frame.origin.y) {
-		NSDictionary *section = self.dataManager.contentsArray[indexPath.row];
-
-		A3KaomojiDrillDownViewController *viewController = [A3KaomojiDrillDownViewController storyboardInstance];
-		viewController.dataManager = self.dataManager;
-		viewController.contentsArray = [section[A3KaomojiKeyContents] mutableCopy];
-		viewController.contentsTitle = section[A3KaomojiKeyCategory];
-		[self.navigationController pushViewController:viewController animated:YES];
-	} else {
-
-		NSDictionary *section = self.dataManager.contentsArray[indexPath.row];
-
-		CGFloat rowHeight = cell.roundedRectView.frame.size.height / 3;
-		NSInteger idx = floor((pointInCell.y - cell.roundedRectView.frame.origin.y) / rowHeight);
-		NSArray *components = section[A3KaomojiKeyContents];
-
-		[self removeBlurEffectView];
-
-		A3AbbreviationCopiedViewController *viewController = [A3AbbreviationCopiedViewController storyboardInstance];
-		viewController.titleString = components[idx];
-		[self presentViewController:viewController animated:YES completion:NULL];
-		_copiedViewController = viewController;
-	}
+	NSDictionary *section = self.dataManager.contentsArray[indexPath.row];
+	
+	A3KaomojiDrillDownViewController *viewController = [A3KaomojiDrillDownViewController storyboardInstance];
+	viewController.dataManager = self.dataManager;
+	viewController.contentsArray = [section[A3KaomojiKeyContents] mutableCopy];
+	viewController.contentsTitle = section[A3KaomojiKeyCategory];
+	[self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark - UICollectionViewDataSource

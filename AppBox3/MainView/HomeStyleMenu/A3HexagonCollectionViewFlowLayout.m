@@ -37,7 +37,11 @@
 
 - (NSArray *)lineConfiguration {
 	if (!_lineConfiguration) {
-		_lineConfiguration = @[@3, @4, @5, @6, @5, @4, @3];
+		if (IS_IPHONE) {
+			_lineConfiguration = @[@3, @4, @5, @6, @5, @4, @3];
+		} else {
+			_lineConfiguration = @[@4, @5, @6, @5, @4, @3];
+		}
 		_maxColumn = 6;
 	}
 	return _lineConfiguration;
