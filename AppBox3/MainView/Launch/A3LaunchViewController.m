@@ -201,7 +201,9 @@ NSString *const A3UserDefaultsDidShowLeftViewOnceiPad = @"A3UserDefaultsDidShowL
 															 }];
 		UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Continue without Verification", @"Continue without Verification")
 															   style:UIAlertActionStyleCancel
-															 handler:nil];
+															 handler:^(UIAlertAction *action) {
+																 [[A3AppDelegate instance] alertWhatsNew];
+															 }];
 
 		[alertController addAction:paidCustomer];
 		[alertController addAction:boughtRemoveAds];
@@ -233,6 +235,7 @@ NSString *const A3UserDefaultsDidShowLeftViewOnceiPad = @"A3UserDefaultsDidShowL
 }
 
 - (void)proceedRestorePurchase {
+	[[A3AppDelegate instance] alertWhatsNew];
 	[[A3AppDelegate instance] startRestorePurchase];
 }
 

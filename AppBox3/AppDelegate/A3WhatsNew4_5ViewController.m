@@ -31,6 +31,7 @@
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomDescriptionVerticalSpaceConstraint;
 @property (nonatomic, weak) IBOutlet UIButton *abbreviationButton;
 @property (nonatomic, weak) IBOutlet UIButton *kaomojiButton;
+@property (nonatomic, strong) IBOutletCollection(NSLayoutConstraint) NSArray<NSLayoutConstraint *> *interDescriptionVSpaceConstraints;
 
 @end
 
@@ -63,116 +64,108 @@
 
 - (void)setupLayoutAttributes {
 	if (IS_IPHONE_3_5_INCH) {
-		_titleVerticalSpaceConstraint.constant = 10;
-		_imageVerticalSpaceConstraint.constant = 80;
+		_topSpaceConstraint.constant = 30;
+		_titleVerticalSpaceConstraint.constant = 15;
+		_imageVerticalSpaceConstraint.constant = 40;
 
-		_titleLabel.font = [UIFont fontWithName:@"MarkerFelt-Thin" size:20];
-		_subtitleLabel.font = [UIFont fontWithName:@"MarkerFelt-Thin" size:18];
-		UIFont *contentFont = [UIFont fontWithName:@"Copperplate-Bold" size:13];
-		for (UILabel *label in _contentLabels) {
-			label.font = contentFont;
-		}
-	}
-	if (IS_IPHONE_4_INCH || IS_IPHONE_3_5_INCH) {
+		_titleLabel.font = [UIFont systemFontOfSize:20];
+		_subtitleLabel.font = [UIFont systemFontOfSize:18];
+		[self setContentsFont:[UIFont systemFontOfSize:14]];
+		_abbreviationDescriptionTopConstraint.constant = 20;
+		_kaomojiDescriptionTopConstraint.constant = 18;
+		_bottomDescriptionVerticalSpaceConstraint.constant = 30;
+	} else if (IS_IPHONE_4_INCH) {
+		_topSpaceConstraint.constant = 50;
 		_centerHorizontalSpaceConstraint.constant = 15;
-		_imageVerticalSpaceConstraint.constant = 130;
+		_imageVerticalSpaceConstraint.constant = 50;
+		_abbreviationDescriptionTopConstraint.constant = 20;
+		_kaomojiDescriptionTopConstraint.constant = 18;
+		[self setInterDescriptionVSpace:20];
 	} else if (IS_IPHONE_4_7_INCH) {
 		_topSpaceConstraint.constant = 50;
-		_imageVerticalSpaceConstraint.constant = 150;
-		UIFont *contentFont = [UIFont fontWithName:@"MarkerFelt-Wide" size:17];
-		for (UILabel *label in _contentLabels) {
-			label.font = contentFont;
-		}
+		_imageVerticalSpaceConstraint.constant = 90;
+		[self setContentsFont:[UIFont systemFontOfSize:17]];
+		_abbreviationDescriptionTopConstraint.constant = 22;
+		_kaomojiDescriptionTopConstraint.constant = 22;
+		[self setInterDescriptionVSpace:25];
 	} else if (IS_IPHONE_5_5_INCH) {
 		_topSpaceConstraint.constant = 60;
-		_imageVerticalSpaceConstraint.constant = 170;
+		_imageVerticalSpaceConstraint.constant = 110;
 		
-		UIFont *contentFont = [UIFont fontWithName:@"MarkerFelt-Wide" size:19];
-		for (UILabel *label in _contentLabels) {
-			label.font = contentFont;
-		}
+		[self setContentsFont:[UIFont systemFontOfSize:19]];
+		_abbreviationDescriptionTopConstraint.constant = 25;
+		_kaomojiDescriptionTopConstraint.constant = 25;
+		
+		[self setInterDescriptionVSpace:28];
+		
 	} else if (IS_IPAD_12_9_INCH) {
 		_topSpaceConstraint.constant = IS_PORTRAIT ? 200 : 50;
 		_imageVerticalSpaceConstraint.constant = IS_PORTRAIT ? 50 : 10;
 		_centerHorizontalSpaceConstraint.constant = 50;
-		
-		[self.view removeConstraints:@[_descriptionLeadingConstraint, _abbreviationImageWidthConstraint, _kaomojiImageWidthConstraint]];
-		_descriptionLeadingConstraint = [NSLayoutConstraint constraintWithItem:_firstDescriptionLabel
-																	 attribute:NSLayoutAttributeLeading
-																	 relatedBy:NSLayoutRelationEqual
-																		toItem:self.view
-																	 attribute:NSLayoutAttributeTrailing
-																	multiplier:0.5
-																	  constant:0];
-		CGFloat imageSize = SCREEN_MIN_LENGTH * 0.3;
-		_abbreviationImageWidthConstraint = [NSLayoutConstraint constraintWithItem:_abbreviationImageView
-																		 attribute:NSLayoutAttributeWidth
-																		 relatedBy:NSLayoutRelationEqual
-																			toItem:nil
-																		 attribute:NSLayoutAttributeNotAnAttribute
-																		multiplier:1.0
-																		  constant:imageSize];
-		_kaomojiImageWidthConstraint = [NSLayoutConstraint constraintWithItem:_kaomojiImageView
-																	attribute:NSLayoutAttributeWidth
-																	relatedBy:NSLayoutRelationEqual
-																	   toItem:nil
-																	attribute:NSLayoutAttributeNotAnAttribute
-																   multiplier:1.0
-																	 constant:imageSize];
 
-		[self.view addConstraints:@[_descriptionLeadingConstraint, _abbreviationImageWidthConstraint, _kaomojiImageWidthConstraint]];
+		[self setImageSizeForiPad];
 		
 		_titleLabel.font = [UIFont systemFontOfSize:40];
 		_subtitleLabel.font = [UIFont systemFontOfSize:35];
-		UIFont *contentFont = [UIFont systemFontOfSize:30];
-		for (UILabel *label in _contentLabels) {
-			label.font = contentFont;
-		}
-		
+		[self setContentsFont:[UIFont systemFontOfSize:30]];
+
+		[self setInterDescriptionVSpace:30];
+
 		_abbreviationDescriptionTopConstraint.constant = 100;
 		_kaomojiDescriptionTopConstraint.constant = 100;
 		
-		_abbreviationButton.titleLabel.font = [UIFont systemFontOfSize:20];
-		_kaomojiButton.titleLabel.font = [UIFont systemFontOfSize:20];
+		_abbreviationButton.titleLabel.font = [UIFont systemFontOfSize:25];
+		_kaomojiButton.titleLabel.font = [UIFont systemFontOfSize:25];
 	} else if (IS_IPAD) {
-		_topSpaceConstraint.constant = 70;
-		_imageVerticalSpaceConstraint.constant = 50;
-		
-		[self.view removeConstraints:@[_descriptionLeadingConstraint, _abbreviationImageWidthConstraint, _kaomojiImageWidthConstraint]];
-		_descriptionLeadingConstraint = [NSLayoutConstraint constraintWithItem:_firstDescriptionLabel
-																	 attribute:NSLayoutAttributeLeading
-																	 relatedBy:NSLayoutRelationEqual
-																		toItem:self.view
-																	 attribute:NSLayoutAttributeTrailing
-																	multiplier:0.5
-																	  constant:0];
-		CGFloat imageSize = SCREEN_MIN_LENGTH * 0.3;
-		_abbreviationImageWidthConstraint = [NSLayoutConstraint constraintWithItem:_abbreviationImageView
-																		 attribute:NSLayoutAttributeWidth
-																		 relatedBy:NSLayoutRelationEqual
-																			toItem:nil
-																		 attribute:NSLayoutAttributeNotAnAttribute
-																		multiplier:1.0
-																		  constant:imageSize];
-		_kaomojiImageWidthConstraint = [NSLayoutConstraint constraintWithItem:_kaomojiImageView
-																	attribute:NSLayoutAttributeWidth
-																	relatedBy:NSLayoutRelationEqual
-																	   toItem:nil
-																	attribute:NSLayoutAttributeNotAnAttribute
-																   multiplier:1.0
-																	 constant:imageSize];
-		[self.view addConstraints:@[_descriptionLeadingConstraint, _abbreviationImageWidthConstraint, _kaomojiImageWidthConstraint]];
+		_topSpaceConstraint.constant = IS_PORTRAIT ? 100 : 30;
+		_imageVerticalSpaceConstraint.constant = IS_PORTRAIT ? 70 : 10;
+
+		[self setImageSizeForiPad];
 
 		_titleLabel.font = [UIFont systemFontOfSize:30];
 		_subtitleLabel.font = [UIFont systemFontOfSize:28];
-		UIFont *contentFont = [UIFont systemFontOfSize:24];
-		for (UILabel *label in _contentLabels) {
-			label.font = contentFont;
-		}
+		[self setContentsFont:[UIFont systemFontOfSize:24]];
+
+		[self setInterDescriptionVSpace:30];
 		
 		_abbreviationDescriptionTopConstraint.constant = 60;
 		_kaomojiDescriptionTopConstraint.constant = 60;
+		
+		_abbreviationButton.titleLabel.font = [UIFont systemFontOfSize:20];
+		_kaomojiButton.titleLabel.font = [UIFont systemFontOfSize:20];
 	}
+}
+
+- (void)setContentsFont:(UIFont *)contentFont {
+	for (UILabel *label in _contentLabels) {
+		label.font = contentFont;
+	}
+}
+
+- (void)setInterDescriptionVSpace:(CGFloat)space {
+	for (NSLayoutConstraint *vspace in _interDescriptionVSpaceConstraints) {
+		vspace.constant = space;
+	}
+}
+
+- (void)setImageSizeForiPad {
+	[self.view removeConstraints:@[_abbreviationImageWidthConstraint, _kaomojiImageWidthConstraint]];
+	CGFloat imageSize = SCREEN_MIN_LENGTH * 0.3;
+	_abbreviationImageWidthConstraint = [NSLayoutConstraint constraintWithItem:_abbreviationImageView
+																	 attribute:NSLayoutAttributeWidth
+																	 relatedBy:NSLayoutRelationEqual
+																		toItem:nil
+																	 attribute:NSLayoutAttributeNotAnAttribute
+																	multiplier:1.0
+																	  constant:imageSize];
+	_kaomojiImageWidthConstraint = [NSLayoutConstraint constraintWithItem:_kaomojiImageView
+																attribute:NSLayoutAttributeWidth
+																relatedBy:NSLayoutRelationEqual
+																   toItem:nil
+																attribute:NSLayoutAttributeNotAnAttribute
+															   multiplier:1.0
+																 constant:imageSize];
+	[self.view addConstraints:@[_abbreviationImageWidthConstraint, _kaomojiImageWidthConstraint]];
 }
 
 - (void)didReceiveMemoryWarning {

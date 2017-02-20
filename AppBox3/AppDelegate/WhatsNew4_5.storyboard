@@ -24,7 +24,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Abbreviation_Large" translatesAutoresizingMaskIntoConstraints="NO" id="Exi-dV-TVH">
-                                <rect key="frame" x="13" y="111.5" width="132" height="132"/>
+                                <rect key="frame" x="36" y="112" width="132" height="132"/>
                                 <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" secondItem="Exi-dV-TVH" secondAttribute="width" multiplier="1:1" id="ubw-8d-zHZ"/>
@@ -34,19 +34,19 @@
                                 </connections>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What's New in V4.5" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="1024" translatesAutoresizingMaskIntoConstraints="NO" id="8l9-dx-Ce8">
-                                <rect key="frame" x="91.5" y="31" width="193" height="26.5"/>
+                                <rect key="frame" x="91" y="31" width="193" height="27"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Two New Beautiful Reference Apps" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="1024" translatesAutoresizingMaskIntoConstraints="NO" id="UU0-RT-2uG">
-                                <rect key="frame" x="30.5" y="72.5" width="314.5" height="24"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 New Beautiful Reference Apps" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="1024" translatesAutoresizingMaskIntoConstraints="NO" id="UU0-RT-2uG">
+                                <rect key="frame" x="43" y="73" width="289" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Kaomoji_Large" translatesAutoresizingMaskIntoConstraints="NO" id="jN7-Y4-6mT">
-                                <rect key="frame" x="13" y="356.5" width="132" height="132"/>
+                                <rect key="frame" x="36" y="357" width="132" height="132"/>
                                 <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" secondItem="jN7-Y4-6mT" secondAttribute="width" multiplier="1:1" id="mcj-eR-JUf"/>
@@ -56,16 +56,16 @@
                                 </connections>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="1024" translatesAutoresizingMaskIntoConstraints="NO" id="oMz-eD-JcQ">
-                                <rect key="frame" x="165" y="111.5" width="146" height="54"/>
-                                <string key="text">202 Selected 
-Frequntly used 
-English abbreviations</string>
+                                <rect key="frame" x="188" y="112" width="156" height="54"/>
+                                <string key="text">202 Carefully Selected
+A Commonly Used
+English Abbreviations</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="1024" translatesAutoresizingMaskIntoConstraints="NO" id="CdG-ag-qvT">
-                                <rect key="frame" x="165" y="175.5" width="146" height="36"/>
+                                <rect key="frame" x="188" y="176" width="146" height="36"/>
                                 <string key="text">#Top24, #Romaintic, 
 #Business</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -73,39 +73,41 @@ English abbreviations</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enjoy Fun Kaomoji" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="1024" translatesAutoresizingMaskIntoConstraints="NO" id="wfT-dA-2xN">
-                                <rect key="frame" x="165" y="356" width="125" height="18"/>
+                                <rect key="frame" x="188" y="357" width="125" height="18"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="183 Fun and Famous" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="1024" translatesAutoresizingMaskIntoConstraints="NO" id="VGP-4L-iMd">
-                                <rect key="frame" x="165" y="384" width="142" height="18"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="1024" translatesAutoresizingMaskIntoConstraints="NO" id="VGP-4L-iMd">
+                                <rect key="frame" x="188" y="385" width="135" height="36"/>
+                                <string key="text">183 Cool and Fancy
+Text Emoticons</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12 Emotion Groups" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="1024" translatesAutoresizingMaskIntoConstraints="NO" id="QA1-hq-odc">
-                                <rect key="frame" x="165" y="412" width="129.5" height="18"/>
+                                <rect key="frame" x="188" y="431" width="130" height="18"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4bq-wy-bcM">
-                                <rect key="frame" x="35.5" y="240.5" width="87" height="30"/>
+                                <rect key="frame" x="59" y="241" width="87" height="30"/>
                                 <state key="normal" title="Abbreviation"/>
                                 <connections>
                                     <action selector="openAbbreviationApp:" destination="7e8-uX-jmO" eventType="touchUpInside" id="Zkb-hH-5LA"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q0L-1L-Rtz">
-                                <rect key="frame" x="51.5" y="484.5" width="55" height="30"/>
+                                <rect key="frame" x="75" y="485" width="55" height="30"/>
                                 <state key="normal" title="Kaomoji"/>
                                 <connections>
                                     <action selector="openKaomojiApp:" destination="7e8-uX-jmO" eventType="touchUpInside" id="hk2-uS-e7y"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="1024" translatesAutoresizingMaskIntoConstraints="NO" id="Poz-2N-5ed">
-                                <rect key="frame" x="76" y="548.5" width="224" height="54"/>
+                                <rect key="frame" x="76" y="549" width="224" height="54"/>
                                 <string key="text">Tap to Copy
 Paste it to iMessage, Whatsapp,
 Instagram, Twitter and Facebook</string>
@@ -134,7 +136,7 @@ Instagram, Twitter and Facebook</string>
                             <constraint firstItem="4bq-wy-bcM" firstAttribute="top" secondItem="Exi-dV-TVH" secondAttribute="bottom" constant="-3" id="Upp-Ys-Rys"/>
                             <constraint firstItem="QA1-hq-odc" firstAttribute="leading" secondItem="VGP-4L-iMd" secondAttribute="leading" id="biC-yx-MIO"/>
                             <constraint firstItem="UU0-RT-2uG" firstAttribute="top" secondItem="8l9-dx-Ce8" secondAttribute="bottom" constant="15" id="csg-30-eLR"/>
-                            <constraint firstItem="oMz-eD-JcQ" firstAttribute="leading" secondItem="7XR-nM-fG9" secondAttribute="trailing" multiplier="0.44" id="ddD-FK-DB1"/>
+                            <constraint firstItem="oMz-eD-JcQ" firstAttribute="leading" secondItem="7XR-nM-fG9" secondAttribute="trailing" multiplier="0.5" id="ddD-FK-DB1"/>
                             <constraint firstItem="wfT-dA-2xN" firstAttribute="leading" secondItem="CdG-ag-qvT" secondAttribute="leading" id="eJD-u9-hAI"/>
                             <constraint firstItem="UU0-RT-2uG" firstAttribute="centerX" secondItem="8l9-dx-Ce8" secondAttribute="centerX" id="eMk-5z-3uV"/>
                             <constraint firstItem="Exi-dV-TVH" firstAttribute="top" secondItem="UU0-RT-2uG" secondAttribute="bottom" constant="15" id="ecM-O8-guS"/>
@@ -172,6 +174,9 @@ Instagram, Twitter and Facebook</string>
                         <outletCollection property="contentLabels" destination="VGP-4L-iMd" id="Ipv-wk-Wih"/>
                         <outletCollection property="contentLabels" destination="Poz-2N-5ed" id="7JQ-PH-TAU"/>
                         <outletCollection property="contentLabels" destination="QA1-hq-odc" id="Aac-sF-H2D"/>
+                        <outletCollection property="interDescriptionVSpaceConstraints" destination="2FV-f6-CnM" id="oAO-z1-SrR"/>
+                        <outletCollection property="interDescriptionVSpaceConstraints" destination="q8T-nn-12g" id="uTa-xL-zbd"/>
+                        <outletCollection property="interDescriptionVSpaceConstraints" destination="EfV-zy-JCS" id="KHq-1R-UBD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0nb-oy-tx4" userLabel="First Responder" sceneMemberID="firstResponder"/>
