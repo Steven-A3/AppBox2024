@@ -13,6 +13,7 @@
 #import "A3AbbreviationCopiedViewController.h"
 #import "NSMutableArray+MoveObject.h"
 #import "UIViewController+A3Addition.h"
+#import "A3DrillDownHelpViewController.h"
 
 extern NSString *const A3AbbreviationKeyAbbreviation;
 extern NSString *const A3AbbreviationKeyMeaning;
@@ -36,6 +37,7 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *titleLabelBottomConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *tableViewTopConstraint;
 @property (nonatomic, strong) NSDate *cancelTime3DTouch;
+@property (nonatomic, strong) A3DrillDownHelpViewController *helpViewController;
 
 @end
 
@@ -120,6 +122,16 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 		_tableViewTopConstraint = tableViewTopConstraint;
 	}
 	[self setupRightBarButtonItem];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	
+	double delayInSeconds = 0.2;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		[self showHelpView];
+	});
 }
 
 - (void)setupRightBarButtonItem {
@@ -324,6 +336,34 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 	_animator = nil;
 	[_blurEffectView removeFromSuperview];
 	_blurEffectView = nil;
+}
+
+- (IBAction)helpButtonAction:(id)sender {
+	if (_helpViewController) {
+		return;
+	}
+	_helpViewController = [A3DrillDownHelpViewController storyboardInstance];
+	_helpViewController.imageName = @"sharepopup";
+	[self.navigationController.view addSubview:_helpViewController.view];
+	[self.navigationController addChildViewController:_helpViewController];
+
+	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnHelpView)];
+	[_helpViewController.view addGestureRecognizer:tapGestureRecognizer];
+}
+
+- (void)didTapOnHelpView {
+	[_helpViewController.view removeFromSuperview];
+	[_helpViewController removeFromParentViewController];
+	_helpViewController = nil;
+}
+
+- (void)showHelpView {
+	NSString *userDefaultKey = [NSString stringWithFormat:@"%@HelpDidShow", NSStringFromClass([self class])];
+	if (![[NSUserDefaults standardUserDefaults] boolForKey:userDefaultKey]) {
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:userDefaultKey];
+
+		[self helpButtonAction:self];
+	}
 }
 
 @end

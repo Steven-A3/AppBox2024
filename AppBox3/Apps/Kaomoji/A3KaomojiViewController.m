@@ -13,6 +13,7 @@
 #import "A3AbbreviationCopiedViewController.h"
 #import "A3SharePopupViewController.h"
 #import "A3KaomojiDrillDownViewController.h"
+#import "A3KaomojiHelpViewController.h"
 
 @interface A3KaomojiViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UIPreviewInteractionDelegate,
 		A3SharePopupViewControllerDelegate, UIGestureRecognizerDelegate>
@@ -34,6 +35,7 @@
 @property (nonatomic, weak) IBOutlet UICollectionViewFlowLayout *collectionViewFlowLayout;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *titleLabelBaselineConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *topLineTopConstraint;
+@property (nonatomic, strong) A3KaomojiHelpViewController *helpViewController;
 
 @end
 
@@ -90,6 +92,7 @@
 		}
 	} else if (IS_IPHONE_4_INCH) {
 		_collectionViewFlowLayout.itemSize = CGSizeMake(224, 182);
+		_collectionViewFlowLayout.minimumLineSpacing = 5;
 		if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.2")) {
 			_titleLabel.font = [UIFont systemFontOfSize:33 weight:UIFontWeightHeavy];
 		} else {
@@ -151,6 +154,16 @@
 		_titleLabelBaselineConstraint = titleLabelBaselineConstraint;
 		_topLineTopConstraint = topLineTopConstraint;
 	}
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	
+	double delayInSeconds = 0.2;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		[self showHelpView];
+	});
 }
 
 - (void)applicationDidBecomeActive {
@@ -380,6 +393,34 @@
 - (void)sharePopupViewControllerWillDismiss:(A3SharePopupViewController *)viewController {
 	_sharePopupViewControllerIsPresented = NO;
 	[self removeBlurEffectView];
+}
+
+- (IBAction)helpButtonAction:(id)sender {
+	if (_helpViewController) {
+		return;
+	}
+	_helpViewController = [A3KaomojiHelpViewController storyboardInstance];
+	[self.navigationController.view addSubview:_helpViewController.view];
+	[self.navigationController addChildViewController:_helpViewController];
+
+	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnHelpView)];
+	[_helpViewController.view addGestureRecognizer:tapGestureRecognizer];
+}
+
+- (void)didTapOnHelpView {
+	[_helpViewController.view removeFromSuperview];
+	[_helpViewController removeFromParentViewController];
+
+	_helpViewController = nil;
+}
+
+- (void)showHelpView {
+		NSString *userDefaultKey = [NSString stringWithFormat:@"%@HelpDidShow", NSStringFromClass([self class])];
+		if (![[NSUserDefaults standardUserDefaults] boolForKey:userDefaultKey]) {
+			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:userDefaultKey];
+	
+	[self helpButtonAction:self];
+		}
 }
 
 @end

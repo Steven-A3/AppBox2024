@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -38,7 +39,7 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="QaS-RV-kE1">
                                 <rect key="frame" x="0.0" y="124" width="375" height="543"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="20" id="P8x-Am-8aY" customClass="A3KaomojiCollectionViewFlowLayout">
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" minimumInteritemSpacing="20" id="P8x-Am-8aY" customClass="A3KaomojiCollectionViewFlowLayout">
                                     <size key="itemSize" width="290" height="236"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -46,7 +47,7 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="kaomojiCollectionViewCell" id="smj-Jr-6N3" customClass="A3KaomojiCollectionViewCell">
-                                        <rect key="frame" x="42.5" y="0.0" width="290" height="236"/>
+                                        <rect key="frame" x="43" y="0.0" width="290" height="236"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="290" height="236"/>
@@ -184,15 +185,28 @@
                                     <outlet property="delegate" destination="wbd-gM-3Nm" id="OrD-yF-04N"/>
                                 </connections>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g8Q-69-uWa">
+                                <rect key="frame" x="176" y="71" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="fQj-jd-5jl"/>
+                                    <constraint firstAttribute="width" constant="40" id="jYb-DF-KeF"/>
+                                </constraints>
+                                <state key="normal" image="help"/>
+                                <connections>
+                                    <action selector="helpButtonAction:" destination="wbd-gM-3Nm" eventType="touchUpInside" id="pOg-ax-ul5"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="EfT-G1-lH4" firstAttribute="leading" secondItem="gpl-OM-hII" secondAttribute="leading" constant="20" id="0qZ-m2-Gme"/>
                             <constraint firstItem="QaS-RV-kE1" firstAttribute="leading" secondItem="gpl-OM-hII" secondAttribute="leading" id="2oc-6r-jd7"/>
+                            <constraint firstItem="g8Q-69-uWa" firstAttribute="centerY" secondItem="EfT-G1-lH4" secondAttribute="centerY" id="Bxd-Dd-Rag"/>
                             <constraint firstAttribute="trailing" secondItem="7Nq-ZK-fi5" secondAttribute="trailing" id="HXP-uS-i4m"/>
                             <constraint firstItem="QaS-RV-kE1" firstAttribute="top" secondItem="7Nq-ZK-fi5" secondAttribute="bottom" id="OyY-ed-6Z5"/>
                             <constraint firstItem="EfT-G1-lH4" firstAttribute="baseline" secondItem="gpl-OM-hII" secondAttribute="bottom" multiplier="0.156" id="Tcs-zK-S72"/>
                             <constraint firstItem="7Nq-ZK-fi5" firstAttribute="leading" secondItem="EfT-G1-lH4" secondAttribute="leading" id="g0r-fk-JK6"/>
+                            <constraint firstItem="g8Q-69-uWa" firstAttribute="leading" secondItem="EfT-G1-lH4" secondAttribute="trailing" constant="5" id="g3I-Lt-PRy"/>
                             <constraint firstItem="yui-bn-AbC" firstAttribute="top" secondItem="QaS-RV-kE1" secondAttribute="bottom" id="hB4-Bl-yeM"/>
                             <constraint firstAttribute="trailing" secondItem="QaS-RV-kE1" secondAttribute="trailing" id="iw1-Tl-rka"/>
                             <constraint firstItem="7Nq-ZK-fi5" firstAttribute="top" secondItem="gpl-OM-hII" secondAttribute="bottom" multiplier="0.186" id="xFH-vr-BJn"/>
@@ -238,7 +252,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qsm-OZ-Ndb" id="Spu-Bl-yU5">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="59"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ALIWanIsU" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OTx-Z8-5g4">
@@ -270,6 +284,17 @@
                                     <constraint firstAttribute="height" constant="0.5" id="zby-rq-gTc"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ced-6o-Tn7">
+                                <rect key="frame" x="102" y="80" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="ewt-Qh-2qV"/>
+                                    <constraint firstAttribute="height" constant="40" id="q61-kn-EuG"/>
+                                </constraints>
+                                <state key="normal" image="help"/>
+                                <connections>
+                                    <action selector="helpButtonAction:" destination="lsk-3L-9he" eventType="touchUpInside" id="gfc-TP-F6C"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -278,6 +303,8 @@
                             <constraint firstItem="Frx-IL-Yyo" firstAttribute="top" secondItem="eGb-wy-BhD" secondAttribute="bottom" id="Spq-ym-cfV"/>
                             <constraint firstItem="u7Q-uG-4b9" firstAttribute="top" secondItem="Frx-IL-Yyo" secondAttribute="bottom" id="U5u-lb-6kA"/>
                             <constraint firstItem="NPU-XA-g7r" firstAttribute="leading" secondItem="l7O-tB-sge" secondAttribute="leading" constant="25" id="VBv-fE-WRm"/>
+                            <constraint firstItem="ced-6o-Tn7" firstAttribute="leading" secondItem="NPU-XA-g7r" secondAttribute="trailing" constant="5" id="cR9-My-NID"/>
+                            <constraint firstItem="ced-6o-Tn7" firstAttribute="centerY" secondItem="NPU-XA-g7r" secondAttribute="centerY" id="hQi-TB-CBP"/>
                             <constraint firstItem="Frx-IL-Yyo" firstAttribute="top" secondItem="l7O-tB-sge" secondAttribute="bottom" multiplier="0.19" id="phI-mp-Lc6"/>
                             <constraint firstItem="eGb-wy-BhD" firstAttribute="leading" secondItem="Frx-IL-Yyo" secondAttribute="leading" constant="25" id="pxf-hv-vyb"/>
                             <constraint firstAttribute="trailing" secondItem="Frx-IL-Yyo" secondAttribute="trailing" id="q8f-2r-Zgq"/>
@@ -295,8 +322,64 @@
             </objects>
             <point key="canvasLocation" x="-1023" y="1137"/>
         </scene>
+        <!--Kaomoji Help View Controller-->
+        <scene sceneID="Acd-Mp-EXC">
+            <objects>
+                <viewController storyboardIdentifier="A3KaomojiHelpViewController" id="wCP-LR-W5O" customClass="A3KaomojiHelpViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="s9h-1m-j2U"/>
+                        <viewControllerLayoutGuide type="bottom" id="cAV-Od-P9d"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Oca-ym-l4G">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="187" translatesAutoresizingMaskIntoConstraints="NO" id="Wef-yt-2Ug">
+                                <rect key="frame" x="100" y="230" width="187" height="60"/>
+                                <string key="text">Tap to view the list
+Or Tap and hold to view 
+the action menu</string>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="7In-1b-oH5">
+                                <rect key="frame" x="50" y="230" width="42" height="42"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kaomojipopover" translatesAutoresizingMaskIntoConstraints="NO" id="g4b-3K-n41">
+                                <rect key="frame" x="68" y="310" width="240" height="240"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="5XO-Cf-QXM"/>
+                                    <constraint firstAttribute="width" secondItem="g4b-3K-n41" secondAttribute="height" multiplier="1:1" id="ZkA-Qd-M5k"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.6955265410958904" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="Wef-yt-2Ug" firstAttribute="top" secondItem="s9h-1m-j2U" secondAttribute="bottom" constant="210" id="9NA-at-lH0"/>
+                            <constraint firstItem="Wef-yt-2Ug" firstAttribute="leading" secondItem="Oca-ym-l4G" secondAttribute="leading" constant="100" id="EcU-b8-HbM"/>
+                            <constraint firstItem="g4b-3K-n41" firstAttribute="centerX" secondItem="Oca-ym-l4G" secondAttribute="centerX" id="GiT-Yo-A7H"/>
+                            <constraint firstItem="g4b-3K-n41" firstAttribute="top" secondItem="Wef-yt-2Ug" secondAttribute="bottom" constant="20" id="VKC-tT-ssi"/>
+                            <constraint firstItem="Wef-yt-2Ug" firstAttribute="leading" secondItem="7In-1b-oH5" secondAttribute="trailing" constant="8" id="ZoG-he-dMf"/>
+                            <constraint firstItem="7In-1b-oH5" firstAttribute="top" secondItem="Wef-yt-2Ug" secondAttribute="top" id="vXh-l6-alH"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="imageWidthConstraint" destination="5XO-Cf-QXM" id="m4W-mz-Qvj"/>
+                        <outlet property="topLeadingConstraint" destination="EcU-b8-HbM" id="PIn-JI-QyL"/>
+                        <outlet property="topSpaceConstraint" destination="9NA-at-lH0" id="VRe-rr-cGb"/>
+                        <outletCollection property="imageViews" destination="7In-1b-oH5" id="UDR-zG-JqG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="25D-ES-ciI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1023" y="1818"/>
+        </scene>
     </scenes>
     <resources>
         <image name="arrow" width="8" height="13"/>
+        <image name="finger_up" width="42" height="42"/>
+        <image name="help" width="25" height="25"/>
+        <image name="kaomojipopover" width="319" height="319"/>
     </resources>
 </document>

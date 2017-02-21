@@ -107,7 +107,7 @@ A3InstructionViewControllerDelegate>
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	double delayInSeconds = 0.5;
+	double delayInSeconds = 0.1;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 		[self setupInstructionView];
@@ -118,6 +118,11 @@ A3InstructionViewControllerDelegate>
 	[super viewWillDisappear:animated];
 
 	_pageBeforeViewDisappear = _pageControl.currentPage;
+	
+	if (_instructionViewController && _instructionViewController.view.superview) {
+		[[A3UserDefaults standardUserDefaults] setBool:NO forKey:A3V3InstructionDidShowForGridMenu];
+		[self dismissInstructionViewController:nil];
+	}
 }
 
 - (void)setupCollectionView {
@@ -614,6 +619,9 @@ static NSString *const A3V3InstructionDidShowForGridMenu = @"A3V3InstructionDidS
 
 - (void)setupInstructionView
 {
+	if (![self.navigationController.visibleViewController isKindOfClass:[self class]]) {
+		return;
+	}
 	if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForGridMenu]) {
 		[self showInstructionView];
 	}

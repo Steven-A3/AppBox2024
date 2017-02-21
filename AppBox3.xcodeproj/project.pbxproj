@@ -437,6 +437,8 @@
 		6857C7281CB647A000D09177 /* RSScannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6857C7261CB647A000D09177 /* RSScannerViewController.m */; };
 		6857C7321CB647EB00D09177 /* A3QRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6857C7311CB647EB00D09177 /* A3QRCodeViewController.m */; };
 		685946D118C371C800528190 /* A3SpeechTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 685946D018C371C800528190 /* A3SpeechTest.m */; };
+		6859F9FF1E5BCDBB0064BAD7 /* A3KaomojiHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6859F9FE1E5BCDBB0064BAD7 /* A3KaomojiHelpViewController.m */; };
+		6859FA0A1E5BDD040064BAD7 /* A3DrillDownHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6859FA091E5BDD040064BAD7 /* A3DrillDownHelpViewController.m */; };
 		685CF1AD1DFFF46300DE2636 /* A3AbbreviationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 685CF1AC1DFFF46300DE2636 /* A3AbbreviationTableViewCell.m */; };
 		685E319A1791694E001A0EC8 /* A3CurrencyTVActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 685E31991791694E001A0EC8 /* A3CurrencyTVActionCell.xib */; };
 		685E319F17917879001A0EC8 /* A3CurrencyTVActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 685E319E17917879001A0EC8 /* A3CurrencyTVActionCell.m */; };
@@ -1805,6 +1807,10 @@
 		6857C7301CB647EB00D09177 /* A3QRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3QRCodeViewController.h; sourceTree = "<group>"; };
 		6857C7311CB647EB00D09177 /* A3QRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3QRCodeViewController.m; sourceTree = "<group>"; };
 		685946D018C371C800528190 /* A3SpeechTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SpeechTest.m; sourceTree = "<group>"; };
+		6859F9FD1E5BCDBB0064BAD7 /* A3KaomojiHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3KaomojiHelpViewController.h; path = Kaomoji/A3KaomojiHelpViewController.h; sourceTree = "<group>"; };
+		6859F9FE1E5BCDBB0064BAD7 /* A3KaomojiHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3KaomojiHelpViewController.m; path = Kaomoji/A3KaomojiHelpViewController.m; sourceTree = "<group>"; };
+		6859FA081E5BDD040064BAD7 /* A3DrillDownHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DrillDownHelpViewController.h; sourceTree = "<group>"; };
+		6859FA091E5BDD040064BAD7 /* A3DrillDownHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DrillDownHelpViewController.m; sourceTree = "<group>"; };
 		685CF1AB1DFFF46300DE2636 /* A3AbbreviationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3AbbreviationTableViewCell.h; sourceTree = "<group>"; };
 		685CF1AC1DFFF46300DE2636 /* A3AbbreviationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AbbreviationTableViewCell.m; sourceTree = "<group>"; };
 		685E31991791694E001A0EC8 /* A3CurrencyTVActionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3CurrencyTVActionCell.xib; path = Apps/Currency/A3CurrencyTVActionCell.xib; sourceTree = "<group>"; };
@@ -3164,6 +3170,8 @@
 				689055751E4D68410065215B /* A3TrapezoidView.m */,
 				68F244491E542E9B00E99A7D /* A3AbbreviationHelpViewController.h */,
 				68F2444A1E542E9B00E99A7D /* A3AbbreviationHelpViewController.m */,
+				6859FA081E5BDD040064BAD7 /* A3DrillDownHelpViewController.h */,
+				6859FA091E5BDD040064BAD7 /* A3DrillDownHelpViewController.m */,
 			);
 			path = Abbreviation;
 			sourceTree = "<group>";
@@ -4783,6 +4791,8 @@
 				689B950D1E49816A0005A43A /* A3KaomojiDrillDownTableViewCell.m */,
 				689B95171E4981D30005A43A /* A3KaomojiDrillDownViewController.h */,
 				689B95181E4981D30005A43A /* A3KaomojiDrillDownViewController.m */,
+				6859F9FD1E5BCDBB0064BAD7 /* A3KaomojiHelpViewController.h */,
+				6859F9FE1E5BCDBB0064BAD7 /* A3KaomojiHelpViewController.m */,
 			);
 			name = Kaomoji;
 			sourceTree = "<group>";
@@ -6712,6 +6722,7 @@
 				68143D5218E3EC7C00569691 /* A3JHTableViewElement.m in Sources */,
 				68143D1018E3EC1F00569691 /* A3KeyboardButton_iPhone.m in Sources */,
 				68B6A33718CEC76D004084EF /* A3WalletMapCell.m in Sources */,
+				6859F9FF1E5BCDBB0064BAD7 /* A3KaomojiHelpViewController.m in Sources */,
 				6857C7281CB647A000D09177 /* RSScannerViewController.m in Sources */,
 				68B6A46618CEE781004084EF /* UIImage+WebP.m in Sources */,
 				680886E11891751B0093FD97 /* A3ClockWaveCircleView.m in Sources */,
@@ -6831,6 +6842,7 @@
 				68B6A44B18CEE781004084EF /* PSTCollectionView.m in Sources */,
 				68E2A6AC18D0B22800E834D9 /* UIImage+JHExtension.m in Sources */,
 				6825365118A7AA4C00EAFB84 /* MASConstraintMaker.m in Sources */,
+				6859FA0A1E5BDD040064BAD7 /* A3DrillDownHelpViewController.m in Sources */,
 				68E2A6B718D0B22800E834D9 /* A3TipCalcSettingViewController.m in Sources */,
 				6853FC5C1E374211004A9A24 /* A3AbbreviationCopiedTransitionDelegate.m in Sources */,
 				682968851850401200B70E13 /* NSFileManager+A3Addition.m in Sources */,

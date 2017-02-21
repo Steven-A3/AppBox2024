@@ -1,37 +1,35 @@
 //
-//  A3AbbreviationHelpViewController.m
+//  A3KaomojiHelpViewController.m
 //  AppBox3
 //
-//  Created by Byeong-Kwon Kwak on 2/15/17.
-//  Copyright © 2017 ALLABOUTAPPS. All rights reserved.
+//  Created by Byeong-Kwon Kwak on 2017. 2. 21..
+//  Copyright © 2017년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3AbbreviationHelpViewController.h"
+#import "A3KaomojiHelpViewController.h"
 #import "A3AppDelegate.h"
 
-@interface A3AbbreviationHelpViewController ()
+@interface A3KaomojiHelpViewController ()
 
 @property (nonatomic, strong) IBOutletCollection(UIImageView) NSArray<UIImageView *> *imageViews;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *topSpaceConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *topLeadingConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomLeadingConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomSpaceConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *imageWidthConstraint;
 
 @end
 
-@implementation A3AbbreviationHelpViewController
+@implementation A3KaomojiHelpViewController
 
 + (instancetype)storyboardInstance {
-	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Abbreviation" bundle:nil];
-	A3AbbreviationHelpViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
+	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Kaomoji" bundle:nil];
+	A3KaomojiHelpViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
 	return viewController;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-	
+
 	for (UIImageView *imageView in _imageViews) {
 		imageView.tintColor = [[A3AppDelegate instance] themeColor];
 	}
@@ -39,21 +37,14 @@
 
 - (void)viewWillLayoutSubviews {
 	if (IS_IPHONE_4_7_INCH) {
-		_imageWidthConstraint.constant = 240;
 		_topSpaceConstraint.constant = 190;
-		_bottomSpaceConstraint.constant = 40;
 	} else if (IS_IPHONE_4_INCH) {
-		_imageWidthConstraint.constant = 160;
-		_topSpaceConstraint.constant = 160;
-		_bottomSpaceConstraint.constant = 30;
-		_topLeadingConstraint.constant = 50; // 82 iPhone 7 Plus
-		_bottomLeadingConstraint.constant = 110; // 165 iPhone 7 Plus
+		_topSpaceConstraint.constant = 165;
 	} else if (IS_IPHONE_3_5_INCH) {
-		_imageWidthConstraint.constant = 130;
 		_topSpaceConstraint.constant = 140;
-		_bottomSpaceConstraint.constant = 30;
-		_topLeadingConstraint.constant = 50; // 82 iPhone 7 Plus
-		_bottomLeadingConstraint.constant = 50; // 165 iPhone 7 Plus
+	} else if (IS_IPAD_12_9_INCH) {
+	} else if (IS_IPAD) {
+
 	}
 }
 
