@@ -234,10 +234,6 @@
 		return;
 	}
 
-	A3KaomojiCollectionViewCell *cell = (A3KaomojiCollectionViewCell *) [_collectionView cellForItemAtIndexPath:indexPath];
-	CGPoint pointInCell = [gestureRecognizer locationInView:cell];
-	FNLOG(@"%f, %f", pointInCell.x, pointInCell.y);
-
 	[_collectionView scrollToItemAtIndexPath:indexPath
 							atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally | UICollectionViewScrollPositionCenteredVertically
 									animated:YES];
