@@ -56,6 +56,10 @@
 
 	[[UIApplication sharedApplication] setStatusBarHidden:YES];
 
+	if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+		_abbreviationImageView.image = [UIImage imageNamed:@"Abbreviation"];
+		_kaomojiImageView.image = [UIImage imageNamed:@"Kaomoji"];
+	}
 }
 
 - (void)viewWillLayoutSubviews {
