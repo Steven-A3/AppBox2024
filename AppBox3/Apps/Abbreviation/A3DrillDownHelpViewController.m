@@ -51,7 +51,7 @@
 		_topSpaceConstraint.constant = 107;
 	} else if (IS_IPAD_12_9_INCH) {
 	} else if (IS_IPAD) {
-		
+		_topSpaceConstraint.constant = 145;
 	}
 }
 

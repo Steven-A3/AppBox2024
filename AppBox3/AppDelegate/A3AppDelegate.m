@@ -1510,11 +1510,11 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhatsNew4_5";
 
 - (void)alertWhatsNew {
-//	if ([[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidAlertWhatsNew4_5]) {
-//		return;
-//	}
-//	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidAlertWhatsNew4_5];
-//	[[NSUserDefaults standardUserDefaults] synchronize];
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidAlertWhatsNew4_5]) {
+		return;
+	}
+	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidAlertWhatsNew4_5];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	double delayInSeconds = 0.1;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));

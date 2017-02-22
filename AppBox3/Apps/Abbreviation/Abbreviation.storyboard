@@ -54,7 +54,7 @@
                                     </collectionViewFlowLayout>
                                     <cells>
                                         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="abbreviationCollectionViewCell" id="k8r-Z6-avJ" customClass="A3AbbreviationCollectionViewCell">
-                                            <rect key="frame" x="20" y="9.6666666666666661" width="290" height="236"/>
+                                            <rect key="frame" x="20" y="10" width="290" height="236"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                                 <rect key="frame" x="0.0" y="0.0" width="290" height="236"/>
@@ -421,7 +421,7 @@
                                         <rect key="frame" x="0.0" y="28" width="414" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="R2V-yf-0kL" id="DBn-8O-MtY">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="59.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="59"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ALIWanIsU" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Mh-Iy-WXF">
@@ -606,7 +606,7 @@ the action menu</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sharepopup" translatesAutoresizingMaskIntoConstraints="NO" id="VEm-Bm-9Q9">
-                                <rect key="frame" x="135" y="320" width="240" height="240"/>
+                                <rect key="frame" x="87" y="320" width="240" height="240"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="240" id="5mh-Ct-FE8"/>
                                     <constraint firstAttribute="width" secondItem="VEm-Bm-9Q9" secondAttribute="height" multiplier="1:1" id="Din-If-QdD"/>
@@ -624,7 +624,6 @@ the action menu</string>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.71005458047945202" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="VEm-Bm-9Q9" secondAttribute="trailing" constant="19" id="11d-gg-LT1"/>
                             <constraint firstItem="GxA-7q-dBV" firstAttribute="top" secondItem="vZb-Ta-5CE" secondAttribute="bottom" constant="210" id="1Pu-oM-ncf"/>
                             <constraint firstItem="gpJ-X9-B9K" firstAttribute="top" secondItem="YRS-d6-X7Z" secondAttribute="top" id="1nf-Lc-JBO"/>
                             <constraint firstItem="gpJ-X9-B9K" firstAttribute="leading" secondItem="KxB-wK-Shj" secondAttribute="leading" constant="110" id="Cmf-zu-Hha"/>
@@ -634,6 +633,7 @@ the action menu</string>
                             <constraint firstItem="0Ex-vG-dWN" firstAttribute="top" secondItem="YRS-d6-X7Z" secondAttribute="bottom" constant="50" id="oMm-OX-CJG"/>
                             <constraint firstItem="T8M-0h-cUF" firstAttribute="leading" secondItem="GxA-7q-dBV" secondAttribute="trailing" constant="8" id="q0k-t4-GPa"/>
                             <constraint firstItem="VEm-Bm-9Q9" firstAttribute="top" secondItem="T8M-0h-cUF" secondAttribute="bottom" constant="30" id="qlY-Yw-s3U"/>
+                            <constraint firstItem="VEm-Bm-9Q9" firstAttribute="centerX" secondItem="KxB-wK-Shj" secondAttribute="centerX" id="rxw-Zr-P1i"/>
                         </constraints>
                     </view>
                     <connections>
