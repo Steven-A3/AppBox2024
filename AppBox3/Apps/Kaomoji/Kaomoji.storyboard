@@ -365,7 +365,10 @@ the action menu</string>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="fingerUpImageView" destination="7In-1b-oH5" id="vE7-kH-yf7"/>
+                        <outlet property="imageHorizontalPositionConstraint" destination="GiT-Yo-A7H" id="7Hf-hG-jDJ"/>
                         <outlet property="imageWidthConstraint" destination="5XO-Cf-QXM" id="m4W-mz-Qvj"/>
+                        <outlet property="popoverImageView" destination="g4b-3K-n41" id="W2l-3o-HUa"/>
                         <outlet property="topLeadingConstraint" destination="EcU-b8-HbM" id="PIn-JI-QyL"/>
                         <outlet property="topSpaceConstraint" destination="9NA-at-lH0" id="VRe-rr-cGb"/>
                         <outletCollection property="imageViews" destination="7In-1b-oH5" id="UDR-zG-JqG"/>
@@ -380,6 +383,6 @@ the action menu</string>
         <image name="arrow" width="8" height="13"/>
         <image name="finger_up" width="42" height="42"/>
         <image name="help" width="25" height="25"/>
-        <image name="kaomojipopover" width="319" height="319"/>
+        <image name="kaomojipopover" width="317" height="317"/>
     </resources>
 </document>

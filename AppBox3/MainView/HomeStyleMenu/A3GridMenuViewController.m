@@ -633,7 +633,8 @@ static NSString *const A3V3InstructionDidShowForGridMenu = @"A3V3InstructionDidS
 		return;
 	}
 	
-	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForGridMenu];
+	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForGridMenu];\
+	[[A3UserDefaults standardUserDefaults] synchronize];
 	
 	UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
 	_instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"HomeStyle"];

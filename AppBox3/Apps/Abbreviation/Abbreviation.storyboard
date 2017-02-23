@@ -54,7 +54,7 @@
                                     </collectionViewFlowLayout>
                                     <cells>
                                         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="abbreviationCollectionViewCell" id="k8r-Z6-avJ" customClass="A3AbbreviationCollectionViewCell">
-                                            <rect key="frame" x="20" y="10" width="290" height="236"/>
+                                            <rect key="frame" x="20" y="9.6666666666666661" width="290" height="236"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                                 <rect key="frame" x="0.0" y="0.0" width="290" height="236"/>
@@ -421,7 +421,7 @@
                                         <rect key="frame" x="0.0" y="28" width="414" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="R2V-yf-0kL" id="DBn-8O-MtY">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="59"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="59.666666666666664"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ALIWanIsU" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Mh-Iy-WXF">
@@ -605,7 +605,7 @@ the action menu</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sharepopup" translatesAutoresizingMaskIntoConstraints="NO" id="VEm-Bm-9Q9">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="abbreviationpopover" translatesAutoresizingMaskIntoConstraints="NO" id="VEm-Bm-9Q9">
                                 <rect key="frame" x="87" y="320" width="240" height="240"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="240" id="5mh-Ct-FE8"/>
@@ -639,7 +639,10 @@ the action menu</string>
                     <connections>
                         <outlet property="bottomLeadingConstraint" destination="Cmf-zu-Hha" id="SYF-t7-Wzv"/>
                         <outlet property="bottomSpaceConstraint" destination="oMm-OX-CJG" id="eQp-tP-IZX"/>
+                        <outlet property="fingerUpImageView" destination="GxA-7q-dBV" id="hr9-u5-rbl"/>
+                        <outlet property="imageHPositionConstraint" destination="rxw-Zr-P1i" id="60s-TK-k9B"/>
                         <outlet property="imageWidthConstraint" destination="5mh-Ct-FE8" id="iJ7-2G-9N0"/>
+                        <outlet property="popoverImageView" destination="VEm-Bm-9Q9" id="4ZL-Lq-M6O"/>
                         <outlet property="topLeadingConstraint" destination="cJy-Vd-2gU" id="JZ7-Jv-aoV"/>
                         <outlet property="topSpaceConstraint" destination="1Pu-oM-ncf" id="MkV-8s-Rf2"/>
                         <outletCollection property="imageViews" destination="GxA-7q-dBV" id="h5h-ec-s3B"/>
@@ -694,6 +697,8 @@ the action menu</string>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="fingerUpImageView" destination="LUB-dm-dJ3" id="QKM-qR-cDS"/>
+                        <outlet property="imageHPositionConstraint" destination="pC9-D1-nYH" id="XqZ-Mx-CDE"/>
                         <outlet property="imageWidthConstraint" destination="2yv-t6-GBa" id="FZP-9E-JeN"/>
                         <outlet property="popupImageView" destination="LpF-m7-53F" id="kat-UZ-a1e"/>
                         <outlet property="topLeadingConstraint" destination="1LW-HI-mBb" id="tZg-Xa-aZU"/>
@@ -708,10 +713,10 @@ the action menu</string>
     </scenes>
     <resources>
         <image name="Ballon" width="1140" height="978"/>
+        <image name="abbreviationpopover" width="317" height="317"/>
         <image name="arrow" width="8" height="13"/>
         <image name="finger_up" width="42" height="42"/>
         <image name="help" width="25" height="25"/>
-        <image name="kaomojipopover" width="319" height="319"/>
-        <image name="sharepopup" width="319" height="321"/>
+        <image name="kaomojipopover" width="317" height="317"/>
     </resources>
 </document>

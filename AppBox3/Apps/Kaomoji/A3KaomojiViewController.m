@@ -131,7 +131,9 @@
 		_topLineTopConstraint = topLineTopConstraint;
 	} else if (IS_IPAD) {
 		if (IS_IPAD_12_9_INCH) {
-			_collectionViewFlowLayout.itemSize = CGSizeMake(300, 250);
+			_collectionViewFlowLayout.itemSize = CGSizeMake(314, IS_PORTRAIT ? 283 : 295);
+			_collectionViewFlowLayout.minimumLineSpacing = 15;
+			_collectionView.contentInset = UIEdgeInsetsMake(0, 2, 5, 2);
 		}
 		[self.view removeConstraints:@[_titleLabelBaselineConstraint, _topLineTopConstraint]];
 		
@@ -401,6 +403,8 @@
 
 	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnHelpView)];
 	[_helpViewController.view addGestureRecognizer:tapGestureRecognizer];
+	
+	[_collectionView scrollsToTop];
 }
 
 - (void)didTapOnHelpView {

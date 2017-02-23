@@ -166,9 +166,7 @@
 - (void)didSelectSectionTwoAtRow:(NSInteger)row {
 	switch (row) {
 		case 1:{
-			UIImageView *imageView = [UIImageView new];
-			imageView.image = [[[A3AppDelegate instance].window image] blurredImageWithRadius:40 iterations:1 tintColor:nil];
-			A3WhatsNew4_5ViewController *viewController = [A3WhatsNew4_5ViewController storyboardInstanceWithSnapshotView:imageView];
+			A3WhatsNew4_5ViewController *viewController = [A3WhatsNew4_5ViewController storyboardInstanceWithSnapshotView:nil];
 			[self presentViewController:viewController animated:YES completion:NULL];
 //			NSURL *url = [NSURL URLWithString:@"http://www.allaboutapps.net/wordpress/archives/category/whats-new"];
 //			[self presentWebViewControllerWithURL:url];

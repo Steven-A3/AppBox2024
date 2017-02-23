@@ -17,6 +17,9 @@
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomLeadingConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomSpaceConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *imageWidthConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *imageHPositionConstraint;
+@property (nonatomic, weak) IBOutlet UIImageView *popoverImageView;
+@property (nonatomic, weak) IBOutlet UIImageView *fingerUpImageView;
 
 @end
 
@@ -54,7 +57,36 @@
 		_bottomSpaceConstraint.constant = 30;
 		_topLeadingConstraint.constant = 50; // 82 iPhone 7 Plus
 		_bottomLeadingConstraint.constant = 50; // 165 iPhone 7 Plus
-	}
+	} else if (IS_IPAD_12_9_INCH) {
+		_topSpaceConstraint.constant = 240;
+		_bottomSpaceConstraint.constant = 100;
+		_topLeadingConstraint.constant = 60; // 82 iPhone 7 Plus
+		_bottomLeadingConstraint.constant = 150; // 165 iPhone 7 Plus
+		
+		[self.view removeConstraint:_imageHPositionConstraint];
+		_imageHPositionConstraint = [NSLayoutConstraint constraintWithItem:_popoverImageView
+																 attribute:NSLayoutAttributeLeading
+																 relatedBy:NSLayoutRelationEqual
+																	toItem:_fingerUpImageView
+																 attribute:NSLayoutAttributeLeading
+																multiplier:1.0 constant:0];
+		[self.view addConstraint:_imageHPositionConstraint];
+		
+	} else if (IS_IPAD) {
+		_topSpaceConstraint.constant = 200;
+		_bottomSpaceConstraint.constant = 100;
+		_topLeadingConstraint.constant = 50; // 82 iPhone 7 Plus
+		_bottomLeadingConstraint.constant = 140; // 165 iPhone 7 Plus
+
+		[self.view removeConstraint:_imageHPositionConstraint];
+		_imageHPositionConstraint = [NSLayoutConstraint constraintWithItem:_popoverImageView
+																 attribute:NSLayoutAttributeLeading
+																 relatedBy:NSLayoutRelationEqual
+																	toItem:_fingerUpImageView
+																 attribute:NSLayoutAttributeLeading
+																multiplier:1.0 constant:0];
+		[self.view addConstraint:_imageHPositionConstraint];
+}
 }
 
 - (void)didReceiveMemoryWarning {

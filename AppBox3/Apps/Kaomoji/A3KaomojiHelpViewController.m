@@ -12,9 +12,12 @@
 @interface A3KaomojiHelpViewController ()
 
 @property (nonatomic, strong) IBOutletCollection(UIImageView) NSArray<UIImageView *> *imageViews;
+@property (nonatomic, weak) IBOutlet UIImageView *fingerUpImageView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *topSpaceConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *topLeadingConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *imageWidthConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *imageHorizontalPositionConstraint;
+@property (nonatomic, weak) IBOutlet UIImageView *popoverImageView;
 
 @end
 
@@ -43,6 +46,17 @@
 	} else if (IS_IPHONE_3_5_INCH) {
 		_topSpaceConstraint.constant = 140;
 	} else if (IS_IPAD_12_9_INCH) {
+		_topSpaceConstraint.constant = 250;
+		_topLeadingConstraint.constant = 115;
+		[self.view removeConstraint:_imageHorizontalPositionConstraint];
+		_imageHorizontalPositionConstraint = [NSLayoutConstraint constraintWithItem:_popoverImageView
+																		  attribute:NSLayoutAttributeLeading
+																		  relatedBy:NSLayoutRelationEqual
+																			 toItem:_fingerUpImageView
+																		  attribute:NSLayoutAttributeLeading
+																		 multiplier:1.0
+																		   constant:0];
+		[self.view addConstraint:_imageHorizontalPositionConstraint];
 	} else if (IS_IPAD) {
 
 	}

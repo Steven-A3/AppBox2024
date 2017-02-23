@@ -35,6 +35,7 @@
 }
 
 - (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
+	_numberOfColumns = IS_PORTRAIT ? 3 : 4;
 	NSInteger row = indexPath.row / _numberOfColumns;
 	NSInteger col = indexPath.row % _numberOfColumns;
 

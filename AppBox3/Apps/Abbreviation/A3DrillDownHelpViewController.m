@@ -16,6 +16,8 @@
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *topLeadingConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *imageWidthConstraint;
 @property (nonatomic, weak) IBOutlet UIImageView *popupImageView;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *imageHPositionConstraint;
+@property (nonatomic, weak) IBOutlet UIImageView *fingerUpImageView;
 
 @end
 
@@ -50,6 +52,16 @@
 	} else if (IS_IPHONE_3_5_INCH) {
 		_topSpaceConstraint.constant = 107;
 	} else if (IS_IPAD_12_9_INCH) {
+		_topSpaceConstraint.constant = 165;
+		[self.view removeConstraint:_imageHPositionConstraint];
+		_imageHPositionConstraint = [NSLayoutConstraint constraintWithItem:_popupImageView
+																 attribute:NSLayoutAttributeLeading
+																 relatedBy:NSLayoutRelationEqual
+																	toItem:_fingerUpImageView
+																 attribute:NSLayoutAttributeLeading
+																multiplier:1.0
+																  constant:0.0];
+		[self.view addConstraint:_imageHPositionConstraint];
 	} else if (IS_IPAD) {
 		_topSpaceConstraint.constant = 145;
 	}

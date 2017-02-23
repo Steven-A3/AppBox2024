@@ -323,6 +323,8 @@
 	
 	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnHelpView)];
 	[_helpViewController.view addGestureRecognizer:tapGestureRecognizer];
+	
+	[_tableView scrollsToTop];
 }
 
 - (void)didTapOnHelpView {
