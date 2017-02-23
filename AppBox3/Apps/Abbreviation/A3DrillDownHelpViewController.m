@@ -53,28 +53,23 @@
 		_topSpaceConstraint.constant = 107;
 	} else if (IS_IPAD_12_9_INCH) {
 		_topSpaceConstraint.constant = 165;
-		[self.view removeConstraint:_imageHPositionConstraint];
-		_imageHPositionConstraint = [NSLayoutConstraint constraintWithItem:_popupImageView
-																 attribute:NSLayoutAttributeLeading
-																 relatedBy:NSLayoutRelationEqual
-																	toItem:_fingerUpImageView
-																 attribute:NSLayoutAttributeLeading
-																multiplier:1.0
-																  constant:0.0];
-		[self.view addConstraint:_imageHPositionConstraint];
+		[self replacePopoverImageHPositionConstraint];
 	} else if (IS_IPAD) {
 		_topSpaceConstraint.constant = 145;
+		[self replacePopoverImageHPositionConstraint];
 	}
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)replacePopoverImageHPositionConstraint {
+	[self.view removeConstraint:_imageHPositionConstraint];
+	_imageHPositionConstraint = [NSLayoutConstraint constraintWithItem:_popupImageView
+															 attribute:NSLayoutAttributeLeading
+															 relatedBy:NSLayoutRelationEqual
+																toItem:_fingerUpImageView
+															 attribute:NSLayoutAttributeLeading
+															multiplier:1.0
+															  constant:0.0];
+	[self.view addConstraint:_imageHPositionConstraint];
 }
-*/
 
 @end

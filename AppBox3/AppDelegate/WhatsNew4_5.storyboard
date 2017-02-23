@@ -116,7 +116,7 @@ Instagram, Twitter and Facebook</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to close" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GKy-w8-dEQ">
-                                <rect key="frame" x="145.5" y="615" width="83.5" height="18"/>
+                                <rect key="frame" x="145.5" y="633" width="83.5" height="18"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -133,7 +133,7 @@ Instagram, Twitter and Facebook</string>
                             <constraint firstItem="Q0L-1L-Rtz" firstAttribute="centerX" secondItem="jN7-Y4-6mT" secondAttribute="centerX" id="7XV-wE-VwJ"/>
                             <constraint firstItem="8l9-dx-Ce8" firstAttribute="centerX" secondItem="7XR-nM-fG9" secondAttribute="centerX" id="7gZ-dA-XD3"/>
                             <constraint firstItem="VGP-4L-iMd" firstAttribute="leading" secondItem="wfT-dA-2xN" secondAttribute="leading" id="A4c-aV-XKO"/>
-                            <constraint firstItem="GKy-w8-dEQ" firstAttribute="top" secondItem="Poz-2N-5ed" secondAttribute="bottom" constant="12" id="BDN-3i-5za"/>
+                            <constraint firstItem="GKy-w8-dEQ" firstAttribute="top" secondItem="Poz-2N-5ed" secondAttribute="bottom" constant="30" id="BDN-3i-5za"/>
                             <constraint firstItem="Poz-2N-5ed" firstAttribute="top" secondItem="jN7-Y4-6mT" secondAttribute="bottom" constant="60" id="D0E-zA-bgk"/>
                             <constraint firstItem="QA1-hq-odc" firstAttribute="top" secondItem="VGP-4L-iMd" secondAttribute="bottom" constant="10" id="EfV-zy-JCS"/>
                             <constraint firstItem="oMz-eD-JcQ" firstAttribute="top" secondItem="Exi-dV-TVH" secondAttribute="top" id="GMU-os-mie"/>

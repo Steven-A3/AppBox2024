@@ -48,18 +48,24 @@
 	} else if (IS_IPAD_12_9_INCH) {
 		_topSpaceConstraint.constant = 250;
 		_topLeadingConstraint.constant = 115;
-		[self.view removeConstraint:_imageHorizontalPositionConstraint];
-		_imageHorizontalPositionConstraint = [NSLayoutConstraint constraintWithItem:_popoverImageView
-																		  attribute:NSLayoutAttributeLeading
-																		  relatedBy:NSLayoutRelationEqual
-																			 toItem:_fingerUpImageView
-																		  attribute:NSLayoutAttributeLeading
-																		 multiplier:1.0
-																		   constant:0];
-		[self.view addConstraint:_imageHorizontalPositionConstraint];
+		[self replaceImageHPositionConstraint];
 	} else if (IS_IPAD) {
-
+		_topSpaceConstraint.constant = 200;
+		_topLeadingConstraint.constant = 110;
+		[self replaceImageHPositionConstraint];
 	}
+}
+
+- (void)replaceImageHPositionConstraint {
+	[self.view removeConstraint:_imageHorizontalPositionConstraint];
+	_imageHorizontalPositionConstraint = [NSLayoutConstraint constraintWithItem:_popoverImageView
+																	  attribute:NSLayoutAttributeLeading
+																	  relatedBy:NSLayoutRelationEqual
+																		 toItem:_fingerUpImageView
+																	  attribute:NSLayoutAttributeLeading
+																	 multiplier:1.0
+																	   constant:0];
+	[self.view addConstraint:_imageHorizontalPositionConstraint];
 }
 
 - (void)didReceiveMemoryWarning {
