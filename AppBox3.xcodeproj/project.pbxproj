@@ -378,6 +378,7 @@
 		683D684E1DBC5F3A008C47C9 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683D684D1DBC5F3A008C47C9 /* SafariServices.framework */; };
 		68425D581977BD5F007C1AAE /* DaysCounterReminder+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68425D571977BD5F007C1AAE /* DaysCounterReminder+extension.m */; };
 		68425D5B1977BF63007C1AAE /* DaysCounterFavorite+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68425D5A1977BF63007C1AAE /* DaysCounterFavorite+extension.m */; };
+		684310CB1E6FF3FF00405ED0 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 684310CA1E6FF3FF00405ED0 /* GoogleMobileAds.framework */; };
 		68459BB21C4CE1B1000A2092 /* Launch Screen~iphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68459BB11C4CE1B1000A2092 /* Launch Screen~iphone.storyboard */; };
 		68459BB61C4CE8C4000A2092 /* Launch Screen~ipad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68459BB51C4CE8C4000A2092 /* Launch Screen~ipad.storyboard */; };
 		68459BB91C4CE9AC000A2092 /* A3FMMoveTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68459BB81C4CE9AC000A2092 /* A3FMMoveTableViewController.m */; };
@@ -525,7 +526,6 @@
 		6882802617E5ECED000D8069 /* A3HolidaysPageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6882802517E5ECED000D8069 /* A3HolidaysPageContentViewController.m */; };
 		6883D5E2183E7ABA00808CD2 /* A3MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6883D5E1183E7ABA00808CD2 /* A3MainViewController.m */; };
 		68857D361E6D1A6E009E4ABC /* currencyRates.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68857D341E6D1A6E009E4ABC /* currencyRates.plist */; };
-		6885F5801E2EFAF20092E5FE /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6885F57F1E2EFAF20092E5FE /* GoogleMobileAds.framework */; };
 		6886791C18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6886791A18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib */; };
 		6886791D18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6886791B18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib */; };
 		688788831A9B29C7008C8567 /* A3RulerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688788821A9B29C7008C8567 /* A3RulerViewController.m */; };
@@ -1692,6 +1692,7 @@
 		68425D571977BD5F007C1AAE /* DaysCounterReminder+extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DaysCounterReminder+extension.m"; sourceTree = "<group>"; };
 		68425D591977BF63007C1AAE /* DaysCounterFavorite+extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DaysCounterFavorite+extension.h"; sourceTree = "<group>"; };
 		68425D5A1977BF63007C1AAE /* DaysCounterFavorite+extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DaysCounterFavorite+extension.m"; sourceTree = "<group>"; };
+		684310CA1E6FF3FF00405ED0 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = "External/GoogleMobileAdsSdkiOS-7.18.0/GoogleMobileAds.framework"; sourceTree = "<group>"; };
 		68459BB11C4CE1B1000A2092 /* Launch Screen~iphone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = "Launch Screen~iphone.storyboard"; path = "AppBox3/MainView/Launch Screen~iphone.storyboard"; sourceTree = "<group>"; };
 		68459BB51C4CE8C4000A2092 /* Launch Screen~ipad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = "Launch Screen~ipad.storyboard"; path = "AppBox3/MainView/Launch Screen~ipad.storyboard"; sourceTree = "<group>"; };
 		68459BB71C4CE9AC000A2092 /* A3FMMoveTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3FMMoveTableViewController.h; sourceTree = "<group>"; };
@@ -1949,7 +1950,6 @@
 		6883D5E0183E7ABA00808CD2 /* A3MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3MainViewController.h; sourceTree = "<group>"; };
 		6883D5E1183E7ABA00808CD2 /* A3MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3MainViewController.m; sourceTree = "<group>"; };
 		68857D341E6D1A6E009E4ABC /* currencyRates.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = currencyRates.plist; path = Apps/Currency/Model/currencyRates.plist; sourceTree = "<group>"; };
-		6885F57F1E2EFAF20092E5FE /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = "External/GoogleMobileAdsSdkiOS-7.16.0/GoogleMobileAds.framework"; sourceTree = "<group>"; };
 		6886791A18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3NumberKeyboardSimpleUnitConverterVC_iPad.xib; sourceTree = "<group>"; };
 		6886791B18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib; sourceTree = "<group>"; };
 		688788811A9B29C7008C8567 /* A3RulerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3RulerViewController.h; path = Ruler/A3RulerViewController.h; sourceTree = "<group>"; };
@@ -3040,6 +3040,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				684310CB1E6FF3FF00405ED0 /* GoogleMobileAds.framework in Frameworks */,
 				6878361E1E6E4D7000828BA8 /* WebKit.framework in Frameworks */,
 				683D684E1DBC5F3A008C47C9 /* SafariServices.framework in Frameworks */,
 				68DE21531CEB038D00E31DDF /* HealthKit.framework in Frameworks */,
@@ -3073,7 +3074,6 @@
 				683B959315EB252400575377 /* QuartzCore.framework in Frameworks */,
 				682EA2D615EB10B000BD6AD4 /* UIKit.framework in Frameworks */,
 				682EA2D815EB10B000BD6AD4 /* Foundation.framework in Frameworks */,
-				6885F5801E2EFAF20092E5FE /* GoogleMobileAds.framework in Frameworks */,
 				682EA2DA15EB10B000BD6AD4 /* CoreGraphics.framework in Frameworks */,
 				682EA2DC15EB10B000BD6AD4 /* CoreData.framework in Frameworks */,
 				17D4235B678996668439565E /* CoreText.framework in Frameworks */,
@@ -5394,8 +5394,8 @@
 		68CC1594174F764C0000870F /* External */ = {
 			isa = PBXGroup;
 			children = (
+				684310CA1E6FF3FF00405ED0 /* GoogleMobileAds.framework */,
 				68E44AD31E406D4B00FBC931 /* FXBlurView */,
-				6885F57F1E2EFAF20092E5FE /* GoogleMobileAds.framework */,
 				688CA6841DBEF58400679C43 /* Mediation Adapters */,
 				683D683E1DBC5C00008C47C9 /* ACSimpleKeychain */,
 				683D68411DBC5C00008C47C9 /* TJDropbox */,
@@ -7897,7 +7897,7 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.16.0",
+					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.18.0",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";
@@ -7935,7 +7935,7 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.16.0",
+					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.18.0",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";
