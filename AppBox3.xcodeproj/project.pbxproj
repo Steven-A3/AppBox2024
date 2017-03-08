@@ -495,6 +495,7 @@
 		6876D71217A75E5A00E16991 /* A3CurrencyItemTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876D70F17A75E5A00E16991 /* A3CurrencyItemTest.m */; };
 		6876D71317A75E5A00E16991 /* A3CurrencyViewControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876D71017A75E5A00E16991 /* A3CurrencyViewControllerTest.m */; };
 		6876D78417A760BF00E16991 /* libExpecta-ios-universal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6890AB2A1786B800004FECE4 /* libExpecta-ios-universal.a */; };
+		6878361E1E6E4D7000828BA8 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6878361D1E6E4D7000828BA8 /* WebKit.framework */; };
 		687AEE991CBB0B7100C2D844 /* A3QRCodeDataHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AEE981CBB0B7100C2D844 /* A3QRCodeDataHandler.m */; };
 		687AEEA01CBB73F900C2D844 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 687AEE9E1CBB73F900C2D844 /* AddressBook.framework */; };
 		687AEEA11CBB73F900C2D844 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 687AEE9F1CBB73F900C2D844 /* AddressBookUI.framework */; };
@@ -523,6 +524,7 @@
 		6882801F17E5E8DB000D8069 /* A3HolidaysPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6882801E17E5E8DB000D8069 /* A3HolidaysPageViewController.m */; };
 		6882802617E5ECED000D8069 /* A3HolidaysPageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6882802517E5ECED000D8069 /* A3HolidaysPageContentViewController.m */; };
 		6883D5E2183E7ABA00808CD2 /* A3MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6883D5E1183E7ABA00808CD2 /* A3MainViewController.m */; };
+		68857D361E6D1A6E009E4ABC /* currencyRates.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68857D341E6D1A6E009E4ABC /* currencyRates.plist */; };
 		6885F5801E2EFAF20092E5FE /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6885F57F1E2EFAF20092E5FE /* GoogleMobileAds.framework */; };
 		6886791C18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6886791A18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib */; };
 		6886791D18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6886791B18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib */; };
@@ -997,7 +999,6 @@
 		68FABA4C1CE9A8EB00A62B84 /* A3PedometerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FABA4B1CE9A8EB00A62B84 /* A3PedometerHandler.m */; };
 		68FB684A1C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FB68491C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.m */; };
 		68FB8E9E1C990922008CAB7A /* CurrencyInfo.dictionary in Resources */ = {isa = PBXBuildFile; fileRef = 68FB8E9C1C990922008CAB7A /* CurrencyInfo.dictionary */; };
-		68FB8E9F1C990922008CAB7A /* currencyRates in Resources */ = {isa = PBXBuildFile; fileRef = 68FB8E9D1C990922008CAB7A /* currencyRates */; };
 		68FC3AF01C19336000EC9348 /* A3CurrencyPickerStyle.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68FC3AF21C19336000EC9348 /* A3CurrencyPickerStyle.storyboard */; };
 		8079DFBC190F93B90084BD89 /* A3DateLunarTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8079DFBB190F93B90084BD89 /* A3DateLunarTest.m */; };
 		808DA9EB196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 808DA9EA196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.m */; };
@@ -1894,6 +1895,7 @@
 		6876D70D17A75E5A00E16991 /* A3NSMutableArrayCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3NSMutableArrayCategory.m; sourceTree = "<group>"; };
 		6876D70F17A75E5A00E16991 /* A3CurrencyItemTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CurrencyItemTest.m; sourceTree = "<group>"; };
 		6876D71017A75E5A00E16991 /* A3CurrencyViewControllerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CurrencyViewControllerTest.m; sourceTree = "<group>"; };
+		6878361D1E6E4D7000828BA8 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		687AEE971CBB0B7100C2D844 /* A3QRCodeDataHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3QRCodeDataHandler.h; sourceTree = "<group>"; };
 		687AEE981CBB0B7100C2D844 /* A3QRCodeDataHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3QRCodeDataHandler.m; sourceTree = "<group>"; };
 		687AEE9E1CBB73F900C2D844 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
@@ -1946,6 +1948,7 @@
 		68832C9E199A3C8E00AF7C18 /* FlickrRecommendation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = FlickrRecommendation.json; path = Holidays/FlickrRecommendation.json; sourceTree = "<group>"; };
 		6883D5E0183E7ABA00808CD2 /* A3MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3MainViewController.h; sourceTree = "<group>"; };
 		6883D5E1183E7ABA00808CD2 /* A3MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3MainViewController.m; sourceTree = "<group>"; };
+		68857D341E6D1A6E009E4ABC /* currencyRates.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = currencyRates.plist; path = Apps/Currency/Model/currencyRates.plist; sourceTree = "<group>"; };
 		6885F57F1E2EFAF20092E5FE /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = "External/GoogleMobileAdsSdkiOS-7.16.0/GoogleMobileAds.framework"; sourceTree = "<group>"; };
 		6886791A18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3NumberKeyboardSimpleUnitConverterVC_iPad.xib; sourceTree = "<group>"; };
 		6886791B18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib; sourceTree = "<group>"; };
@@ -3005,7 +3008,6 @@
 		68FB68481C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsHomeStyleSelectTableViewCell.h; path = Settings/A3SettingsHomeStyleSelectTableViewCell.h; sourceTree = "<group>"; };
 		68FB68491C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsHomeStyleSelectTableViewCell.m; path = Settings/A3SettingsHomeStyleSelectTableViewCell.m; sourceTree = "<group>"; };
 		68FB8E9C1C990922008CAB7A /* CurrencyInfo.dictionary */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; lineEnding = 0; name = CurrencyInfo.dictionary; path = Apps/Currency/Model/CurrencyInfo.dictionary; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xml; };
-		68FB8E9D1C990922008CAB7A /* currencyRates */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; lineEnding = 0; name = currencyRates; path = Apps/Currency/Model/currencyRates; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xml; };
 		68FC3AF11C19336000EC9348 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/A3CurrencyPickerStyle.storyboard; sourceTree = "<group>"; };
 		68FC3AF81C19337000EC9348 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/A3CurrencyPickerStyle.strings; sourceTree = "<group>"; };
 		68FC3AFA1C19337300EC9348 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/A3CurrencyPickerStyle.strings"; sourceTree = "<group>"; };
@@ -3038,6 +3040,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6878361E1E6E4D7000828BA8 /* WebKit.framework in Frameworks */,
 				683D684E1DBC5F3A008C47C9 /* SafariServices.framework in Frameworks */,
 				68DE21531CEB038D00E31DDF /* HealthKit.framework in Frameworks */,
 				687AEEB71CBC4B8200C2D844 /* EventKit.framework in Frameworks */,
@@ -3807,8 +3810,8 @@
 		6823F6F21863288D00E6E90D /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				68857D341E6D1A6E009E4ABC /* currencyRates.plist */,
 				68FB8E9C1C990922008CAB7A /* CurrencyInfo.dictionary */,
-				68FB8E9D1C990922008CAB7A /* currencyRates */,
 				68B62EBD199E532B006384E1 /* CurrencyFavorite.h */,
 				68B62EBE199E532B006384E1 /* CurrencyFavorite.m */,
 				6874849A19783B7900EA8F74 /* CurrencyHistoryItem.h */,
@@ -3997,6 +4000,7 @@
 		682EA2D415EB10B000BD6AD4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6878361D1E6E4D7000828BA8 /* WebKit.framework */,
 				686FCF701775CF9D00F19332 /* Accelerate.framework */,
 				687AEE9E1CBB73F900C2D844 /* AddressBook.framework */,
 				687AEE9F1CBB73F900C2D844 /* AddressBookUI.framework */,
@@ -6356,7 +6360,6 @@
 				6807C61E1E53EF73009892C9 /* WhatsNew4_5.storyboard in Resources */,
 				68143D0418E3EC1F00569691 /* A3NumberKeyboardSimpleVC_iPhone.xib in Resources */,
 				68143D7E18E51ABB00569691 /* A3NumberKeyboardSimplePrevNextClearVC_iPhone.xib in Resources */,
-				68FB8E9F1C990922008CAB7A /* currencyRates in Resources */,
 				682B37C318AB365D00C6BD66 /* Calculator.xcassets in Resources */,
 				682B37C518AB369500C6BD66 /* Unit.xcassets in Resources */,
 				68B6A46818CEE781004084EF /* MWPhotoBrowser.bundle in Resources */,
@@ -6401,6 +6404,7 @@
 				68143D0118E3EC1F00569691 /* A3NumberKeyboardSimplePrevNextVC_iPhone.xib in Resources */,
 				68F14FDB19485E8500159EAD /* A3DaysCounterAddEventPhotoCell.xib in Resources */,
 				68F14FDA19485E8500159EAD /* A3DaysCounterAddEventNotesDisplayCell.xib in Resources */,
+				68857D361E6D1A6E009E4ABC /* currencyRates.plist in Resources */,
 				684D92F118BC1FBC005016F7 /* A3DateCalcAddSubCell2.xib in Resources */,
 				68E878FB1C32B13E00935E62 /* unit.strings in Resources */,
 				68F1500E19485E8500159EAD /* A3DaysCounterLocationPopupViewController.xib in Resources */,
@@ -7889,6 +7893,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7902,7 +7907,7 @@
 					"External/RMStore/Optional/openssl-1.0.2c/include/**",
 				);
 				INFOPLIST_FILE = "AppBox3/AppBox3-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"${PROJECT_DIR}/External/**",
@@ -7926,6 +7931,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7939,7 +7945,7 @@
 					"External/RMStore/Optional/openssl-1.0.2c/include/**",
 				);
 				INFOPLIST_FILE = "AppBox3/AppBox3-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"${PROJECT_DIR}/External/**",

@@ -19,7 +19,7 @@
 NSString *const A3KeyCurrencyCode = @"currencyCode";
 NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRatesUdpated";
 NSString *const A3NotificationCurrencyRatesUpdateFailed = @"A3NotificationCurrencyRatesUpdateFailed";
-NSString *const A3CurrencyRatesDataFilename = @"currencyRates";
+NSString *const A3CurrencyRatesDataFilename = @"currencyRates.plist";
 NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 NSString *const kA3CurrencyDataFlagName = @"flagName";
 NSString *const kA3CurrencyDataSymbol = @"symbol";
@@ -153,13 +153,11 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 					// 주요 Currency가 누락된 경우, 이전 파일에서 추가한다.
 					// 이전 파일에 없으면, 배포 파일에서 추가한다.
 					
-					if ([yahooArray count] > 100) {
-						
-						NSArray *verifiedArray = [self verifiedArray:yahooArray];
-						
+					if ([yahooArray count] > 10) {
+                        NSArray *verifiedArray = [self verifiedArray:yahooArray];
 						NSString *path = [A3CurrencyRatesDataFilename pathInCachesDataDirectory];
 						[verifiedArray writeToFile:path atomically:YES];
-						
+
 						[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdated object:nil];
 						
 						_dataArray = nil;
@@ -198,6 +196,8 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 }
 
 - (NSArray *)verifiedArray:(NSArray *)sourceArray {
+    // Find missing currency
+    // If found one, fill from the previous list or from the bundle list.
 	NSString *bundlePath = [[NSBundle mainBundle] pathForResource:A3CurrencyRatesDataFilename ofType:nil];
 	NSArray *bundleData = [NSArray arrayWithContentsOfFile:bundlePath];
 	NSArray *previousData = [NSArray arrayWithContentsOfFile:[A3CurrencyRatesDataFilename pathInCachesDataDirectory]];
@@ -216,19 +216,10 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 		}
 	}
 	
-	NSArray<NSString *> *majorArray = @[@"HKD", @"USD", @"EUR", @"GBP", @"JPY", @"CNY",
-										@"AUD", @"NZD", @"CAD", @"SEK", @"CHF", @"HUF",
-										@"SGD", @"KRW", @"INR", @"MXN", @"PHP", @"THB",
-										@"MYR", @"ZAR", @"RUB", @"AED", @"IDR", @"SAR",
-										@"BRL", @"TRY", @"KES", @"EGP", @"NOK", @"KWD",
-										@"DKK", @"PKR", @"ILS", @"PLN", @"QAR"];
-	
-	for (NSString *code in majorArray) {
-		NSInteger indexOfObject = [verifiedArray indexOfObjectPassingTest:^BOOL(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-			A3YahooCurrency *data = [[A3YahooCurrency alloc] initWithObject:obj];
-			return [data.currencyCode isEqualToString:code];
-		}];
-		if (indexOfObject == NSNotFound) {
+	for (NSDictionary *currencyInBundleDictionary in bundleData) {
+        A3YahooCurrency *currencyInBundleObj = [[A3YahooCurrency alloc] initWithObject:currencyInBundleDictionary];
+        NSString *code = currencyInBundleObj.currencyCode;
+		if ([self dataInArray:sourceArray currencyCode:code] == nil) {
 			id data = [self dataInArray:previousData currencyCode:code];
 			if (data) {
 				FNLOG(@"%@ added from previous data.", code);
@@ -259,11 +250,15 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 	return nil;
 }
 
+- (NSString *)bundlePath {
+	return [[NSBundle mainBundle] pathForResource:A3CurrencyRatesDataFilename ofType:nil];
+}
+
 - (NSArray *)dataArray {
 	if (!_dataArray) {
 		NSString *path = [A3CurrencyRatesDataFilename pathInCachesDataDirectory];
 		if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
-			path = [[NSBundle mainBundle] pathForResource:A3CurrencyRatesDataFilename ofType:nil];
+			path = [self bundlePath];
 		}
 		_dataArray = [NSArray arrayWithContentsOfFile:path];
 	}

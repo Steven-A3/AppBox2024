@@ -20,6 +20,7 @@ extern NSString *const A3CurrencyUpdateDate;
 @property (nonatomic, strong) NSArray *dataArray;
 
 + (void)setupFavorites;
+- (NSString *)bundlePath;
 - (void)updateCurrencyRatesOnSuccess:(void (^)())success failure:(void (^)())failure;
 - (A3YahooCurrency *)dataForCurrencyCode:(NSString *)code;
 - (NSString *)stringFromNumber:(NSNumber *)value withCurrencyCode:(NSString *)currencyCode isShare:(BOOL)isShare;
