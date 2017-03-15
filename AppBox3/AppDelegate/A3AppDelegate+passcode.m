@@ -328,7 +328,8 @@
 			}
 			return;
 		} else {
-			[self updateHolidayNations];
+            [self presentInterstitialAds];
+            [self updateHolidayNations];
 		}
 	}
 }
