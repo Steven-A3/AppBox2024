@@ -41,6 +41,12 @@
 
 @implementation A3KaomojiViewController
 
++ (A3KaomojiViewController *)storyboardInstance {
+	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Kaomoji" bundle:nil];
+	A3KaomojiViewController *viewController = [storyboard instantiateInitialViewController];
+	return viewController;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.

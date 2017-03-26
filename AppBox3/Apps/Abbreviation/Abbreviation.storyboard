@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -421,7 +420,7 @@
                                         <rect key="frame" x="0.0" y="28" width="414" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="R2V-yf-0kL" id="DBn-8O-MtY">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="59.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="59.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ALIWanIsU" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Mh-Iy-WXF">
@@ -605,7 +604,7 @@ the action menu</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="abbreviationpopover" translatesAutoresizingMaskIntoConstraints="NO" id="VEm-Bm-9Q9">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AbbreviationPopover" translatesAutoresizingMaskIntoConstraints="NO" id="VEm-Bm-9Q9">
                                 <rect key="frame" x="87" y="320" width="240" height="240"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="240" id="5mh-Ct-FE8"/>
@@ -677,7 +676,7 @@ the action menu</string>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="LUB-dm-dJ3">
                                 <rect key="frame" x="40" y="180" width="42" height="42"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kaomojipopover" translatesAutoresizingMaskIntoConstraints="NO" id="LpF-m7-53F">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="KaomojiPopover" translatesAutoresizingMaskIntoConstraints="NO" id="LpF-m7-53F">
                                 <rect key="frame" x="87" y="271" width="240" height="240"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="240" id="2yv-t6-GBa"/>
@@ -712,11 +711,11 @@ the action menu</string>
         </scene>
     </scenes>
     <resources>
+        <image name="AbbreviationPopover" width="320" height="320"/>
         <image name="Ballon" width="1140" height="978"/>
-        <image name="abbreviationpopover" width="317" height="317"/>
+        <image name="KaomojiPopover" width="320" height="320"/>
         <image name="arrow" width="8" height="13"/>
         <image name="finger_up" width="42" height="42"/>
         <image name="help" width="25" height="25"/>
-        <image name="kaomojipopover" width="317" height="317"/>
     </resources>
 </document>

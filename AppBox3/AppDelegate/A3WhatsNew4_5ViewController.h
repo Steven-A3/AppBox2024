@@ -2,7 +2,7 @@
 //  A3WhatsNew4_5ViewController.h
 //  AppBox3
 //
-//  Created by Byeong-Kwon Kwak on 2/15/17.
+//  Created by BYEONG KWON KWAK on 13/03/2017.
 //  Copyright © 2017 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -10,6 +10,6 @@
 
 @interface A3WhatsNew4_5ViewController : UIViewController
 
-+ (instancetype)storyboardInstanceWithSnapshotView:(UIView *)snapshotView;
++ (A3WhatsNew4_5ViewController *)storyboardInstanceWithImage:(UIImage *)bgImage;
 
 @end

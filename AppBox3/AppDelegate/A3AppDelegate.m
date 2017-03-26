@@ -48,6 +48,7 @@
 #import "UIView+SBExtras.h"
 #import "FXBlurView.h"
 #import "UIImage+imageWithColor.h"
+#import "NYXImagesKit.h"
 
 NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
@@ -1510,16 +1511,17 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhatsNew4_5";
 
 - (void)alertWhatsNew {
-	if ([[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidAlertWhatsNew4_5]) {
-		return;
-	}
-	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidAlertWhatsNew4_5];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+//	if ([[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidAlertWhatsNew4_5]) {
+//		return;
+//	}
+//	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidAlertWhatsNew4_5];
+//	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	double delayInSeconds = 0.1;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		A3WhatsNew4_5ViewController *viewController = [A3WhatsNew4_5ViewController storyboardInstanceWithSnapshotView:nil];
+        UIImage *bgImage = [self.navigationController.view imageByRenderingView];
+		A3WhatsNew4_5ViewController *viewController = [A3WhatsNew4_5ViewController storyboardInstanceWithImage:bgImage];
 		[self.navigationController presentViewController:viewController animated:YES completion:NULL];
 	});
 }

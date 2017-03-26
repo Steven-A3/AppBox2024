@@ -10,4 +10,6 @@
 
 @interface A3KaomojiViewController : UIViewController
 
++ (A3KaomojiViewController *)storyboardInstance;
+
 @end

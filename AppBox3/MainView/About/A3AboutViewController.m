@@ -166,7 +166,7 @@
 - (void)didSelectSectionTwoAtRow:(NSInteger)row {
 	switch (row) {
 		case 1:{
-			A3WhatsNew4_5ViewController *viewController = [A3WhatsNew4_5ViewController storyboardInstanceWithSnapshotView:nil];
+			A3WhatsNew4_5ViewController *viewController = [A3WhatsNew4_5ViewController storyboardInstanceWithImage:nil];
 			[self presentViewController:viewController animated:YES completion:NULL];
 //			NSURL *url = [NSURL URLWithString:@"http://www.allaboutapps.net/wordpress/archives/category/whats-new"];
 //			[self presentWebViewControllerWithURL:url];

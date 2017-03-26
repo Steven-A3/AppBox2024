@@ -10,4 +10,7 @@
 
 @interface A3AbbreviationViewController : UIViewController
 
++ (A3AbbreviationViewController *)storyboardInstance;
+
+- (IBAction)helpButtonAction:(id)sender;
 @end

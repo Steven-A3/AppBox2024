@@ -46,6 +46,12 @@
 
 @implementation A3AbbreviationViewController
 
++ (A3AbbreviationViewController *)storyboardInstance {
+	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Abbreviation" bundle:nil];
+	A3AbbreviationViewController *viewController = [storyboard instantiateInitialViewController];
+	return viewController;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -603,8 +609,12 @@
 		return;
 	}
 	A3AbbreviationHelpViewController *viewController = [A3AbbreviationHelpViewController storyboardInstance];
-	[self.navigationController.view addSubview:viewController.view];
-	[self.navigationController addChildViewController:viewController];
+    if (self.navigationController) {
+        [self.navigationController.view addSubview:viewController.view];
+        [self.navigationController addChildViewController:viewController];
+    } else {
+        [self.view addSubview:viewController.view];
+    }
 	_helpViewController = viewController;
 
 	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnHelpView)];
