@@ -136,8 +136,9 @@
 		_titleLabelBaselineConstraint = titleLabelBaselineConstraint;
 		_topLineTopConstraint = topLineTopConstraint;
 	} else if (IS_IPAD) {
+        BOOL isPortrait  = self.view.bounds.size.width < self.view.bounds.size.height;
 		if (IS_IPAD_12_9_INCH) {
-			_collectionViewFlowLayout.itemSize = CGSizeMake(314, IS_PORTRAIT ? 283 : 295);
+			_collectionViewFlowLayout.itemSize = CGSizeMake(314, isPortrait ? 283 : 295);
 			_collectionViewFlowLayout.minimumLineSpacing = 15;
 			_collectionView.contentInset = UIEdgeInsetsMake(0, 2, 5, 2);
 		}
@@ -148,14 +149,14 @@
 																						relatedBy:NSLayoutRelationEqual
 																						   toItem:self.view
 																						attribute:NSLayoutAttributeBottom
-																					   multiplier:IS_PORTRAIT ? 0.10 : 0.13
+																					   multiplier:isPortrait ? 0.10 : 0.13
 																						 constant:0];
 		NSLayoutConstraint *topLineTopConstraint = [NSLayoutConstraint constraintWithItem:_topLineView
 																				attribute:NSLayoutAttributeTop
 																				relatedBy:NSLayoutRelationEqual
 																				   toItem:self.view
 																				attribute:NSLayoutAttributeBottom
-																			   multiplier:IS_PORTRAIT ? 0.12 : 0.15
+																			   multiplier:isPortrait ? 0.12 : 0.15
 																				 constant:0];
 		[self.view addConstraints:@[titleLabelBaselineConstraint, topLineTopConstraint]];
 		

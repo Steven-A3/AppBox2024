@@ -68,6 +68,7 @@ NSString *const A3AdsDisplayTime = @"A3AdsDisplayTime";
 NSString *const A3InterstitialAdUnitID = @"ca-app-pub-0532362805885914/2537692543";
 NSString *const A3AppStoreReceiptBackupFilename = @"AppStoreReceiptBackup";
 NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
+NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhatsNew4_5";
 
 @interface A3AppDelegate () <UIAlertViewDelegate, NSURLSessionDownloadDelegate, CLLocationManagerDelegate
 		, GADInterstitialDelegate
@@ -1507,8 +1508,6 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 }
 
 #pragma mark - Alert What's New
-
-NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhatsNew4_5";
 
 - (void)alertWhatsNew {
 //	if ([[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidAlertWhatsNew4_5]) {

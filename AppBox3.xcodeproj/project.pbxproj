@@ -3966,8 +3966,6 @@
 		682CA31C163F8B0E0052A559 /* AppDelegate */ = {
 			isa = PBXGroup;
 			children = (
-				68A6BA7B1E7FC29500889051 /* A3WhatsNewFirstPageViewController.h */,
-				68A6BA7C1E7FC29500889051 /* A3WhatsNewFirstPageViewController.m */,
 				68507F7E191CA72400C1C895 /* A3AppDelegate.h */,
 				68507F7F191CA72400C1C895 /* A3AppDelegate.m */,
 				68D455941886DD8C004F3877 /* A3AppDelegate+appearance.h */,
@@ -3984,13 +3982,15 @@
 				680FF7121980B88D00C736F5 /* A3SyncManager.m */,
 				17D429B3F3A6137477940274 /* A3SyncManager+NSUbiquitousKeyValueStore.h */,
 				17D42D1AA1C9348634F8FEF1 /* A3SyncManager+NSUbiquitousKeyValueStore.m */,
-				6807C61D1E53EF73009892C9 /* WhatsNew4_5.storyboard */,
+				6813BD831E7959CE0098BCC5 /* A3WhatsNew4_5PageViewController.h */,
+				6813BD841E7959CE0098BCC5 /* A3WhatsNew4_5PageViewController.m */,
 				680513E91E761F6B009E2A1D /* A3WhatsNew4_5ViewController.h */,
 				680513EA1E761F6B009E2A1D /* A3WhatsNew4_5ViewController.m */,
 				6853C7501E776DFB005341A1 /* A3WhatsNewAppScreenViewController.h */,
 				6853C7511E776DFB005341A1 /* A3WhatsNewAppScreenViewController.m */,
-				6813BD831E7959CE0098BCC5 /* A3WhatsNew4_5PageViewController.h */,
-				6813BD841E7959CE0098BCC5 /* A3WhatsNew4_5PageViewController.m */,
+				68A6BA7B1E7FC29500889051 /* A3WhatsNewFirstPageViewController.h */,
+				68A6BA7C1E7FC29500889051 /* A3WhatsNewFirstPageViewController.m */,
+				6807C61D1E53EF73009892C9 /* WhatsNew4_5.storyboard */,
 			);
 			name = AppDelegate;
 			sourceTree = "<group>";

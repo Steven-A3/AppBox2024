@@ -35,7 +35,8 @@
 }
 
 - (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
-	_numberOfColumns = IS_PORTRAIT ? 3 : 4;
+    CGSize size = self.collectionView.bounds.size;
+	_numberOfColumns = size.width < size.height ? 3 : 4;
 	NSInteger row = indexPath.row / _numberOfColumns;
 	NSInteger col = indexPath.row % _numberOfColumns;
 

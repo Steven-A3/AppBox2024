@@ -19,6 +19,7 @@
 @property (nonatomic, weak) IBOutlet UIImageView *screenImageView;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *screenImageViewAspectRatioConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *screenImageFrameViewAspectRatioConstraint;
+@property (nonatomic, strong) UIViewController *currentImageViewController;
 
 @end
 
@@ -30,8 +31,36 @@
     self.view.backgroundColor = [UIColor clearColor];
     
     _screenImageFrameView.layer.cornerRadius = 10;
+
+    [self setupConstraintWithSize:[UIScreen mainScreen].bounds.size];
+}
+
+- (void)viewWillLayoutSubviews {
     
-    CGFloat topOffset = SCREEN_WIDTH < 375 ? 44 : 64;
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator {
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+    [self setupConstraintWithSize:size];
+    [self.view layoutIfNeeded];
+    
+    if (_currentImageViewController) {
+        _currentImageViewController.view.bounds = CGRectMake(0, 0, size.width, size.height);
+        [_currentImageViewController viewWillLayoutSubviews];
+        [_currentImageViewController.view layoutIfNeeded];
+        _screenShotImageView.image = [_currentImageViewController.view imageByRenderingView];
+    }
+}
+
+- (void)setupConstraintWithSize:(CGSize)size {
+
+    CGFloat topOffset;
+    if (IS_IPHONE) {
+        topOffset = size.width < 375 ? 44 : 64;
+    } else {
+        topOffset = 54;
+    }
 
     [_screenImageFrameView removeConstraint:_screenImageFrameViewAspectRatioConstraint];
     _screenImageFrameViewAspectRatioConstraint =
@@ -40,7 +69,7 @@
                                  relatedBy:NSLayoutRelationEqual
                                     toItem:_screenImageFrameView
                                  attribute:NSLayoutAttributeHeight
-                                multiplier:SCREEN_WIDTH / (SCREEN_HEIGHT - topOffset)
+                                multiplier:size.width / (size.height - topOffset)
                                   constant:0];
     [_screenImageFrameView addConstraint:_screenImageFrameViewAspectRatioConstraint];
     
@@ -51,7 +80,7 @@
                                  relatedBy:NSLayoutRelationEqual
                                     toItem:_screenImageView
                                  attribute:NSLayoutAttributeHeight
-                                multiplier:SCREEN_WIDTH / SCREEN_HEIGHT
+                                multiplier:size.width / size.height
                                   constant:0];
     [_screenImageView addConstraint:_screenImageViewAspectRatioConstraint];
 }
@@ -67,6 +96,7 @@
     [viewController viewWillLayoutSubviews];
     [viewController.view layoutIfNeeded];
     _screenShotImageView.image = [viewController.view imageByRenderingView];
+    _currentImageViewController = viewController;
     FNLOG(@"%f, %f", _screenShotImageView.image.size.width, _screenShotImageView.image.size.height);
 }
 
@@ -76,6 +106,7 @@
     [viewController viewWillLayoutSubviews];
     [viewController.view layoutIfNeeded];
     _screenShotImageView.image = [viewController.view imageByRenderingView];
+    _currentImageViewController = viewController;
     FNLOG(@"%f, %f", _screenShotImageView.image.size.width, _screenShotImageView.image.size.height);
 }
 

@@ -144,42 +144,48 @@
 
 		[self.view removeConstraints:@[_titleLabelBaselineConstraint, _topLineTopConstraint]];
 		
-		NSLayoutConstraint *titleLabelBaselineConstraint = [NSLayoutConstraint constraintWithItem:_titleLabel
-																						attribute:NSLayoutAttributeBaseline
-																						relatedBy:NSLayoutRelationEqual
-																						   toItem:self.view
-																						attribute:NSLayoutAttributeBottom
-																					   multiplier:0.17
-																						 constant:0];
-		NSLayoutConstraint *topLineTopConstraint = [NSLayoutConstraint constraintWithItem:_topLineView
-																				attribute:NSLayoutAttributeTop
-																				relatedBy:NSLayoutRelationEqual
-																				   toItem:self.view
-																				attribute:NSLayoutAttributeBottom
-																			   multiplier:0.185
-																				 constant:0];
+		NSLayoutConstraint *titleLabelBaselineConstraint =
+        [NSLayoutConstraint constraintWithItem:_titleLabel
+                                     attribute:NSLayoutAttributeBaseline
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.view
+                                     attribute:NSLayoutAttributeBottom
+                                    multiplier:0.17
+                                      constant:0];
+		NSLayoutConstraint *topLineTopConstraint =
+        [NSLayoutConstraint constraintWithItem:_topLineView
+                                     attribute:NSLayoutAttributeTop
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.view
+                                     attribute:NSLayoutAttributeBottom
+                                    multiplier:0.185
+                                      constant:0];
 		[self.view addConstraints:@[titleLabelBaselineConstraint, topLineTopConstraint]];
 		
 		_titleLabelBaselineConstraint = titleLabelBaselineConstraint;
 		_topLineTopConstraint = topLineTopConstraint;
 
 	} else if (IS_IPAD) {
+        BOOL isPortrait  = self.view.bounds.size.width < self.view.bounds.size.height;
+        
 		[self.view removeConstraints:@[_titleLabelBaselineConstraint, _topLineTopConstraint]];
 		
-		NSLayoutConstraint *titleLabelBaselineConstraint = [NSLayoutConstraint constraintWithItem:_titleLabel
-																						attribute:NSLayoutAttributeBaseline
-																						relatedBy:NSLayoutRelationEqual
-																						   toItem:self.view
-																						attribute:NSLayoutAttributeBottom
-																					   multiplier:IS_PORTRAIT ? 0.10 : 0.13
-																						 constant:0];
-		NSLayoutConstraint *topLineTopConstraint = [NSLayoutConstraint constraintWithItem:_topLineView
-																				attribute:NSLayoutAttributeTop
-																				relatedBy:NSLayoutRelationEqual
-																				   toItem:self.view
-																				attribute:NSLayoutAttributeBottom
-																			   multiplier:IS_PORTRAIT ? 0.12 : 0.15
-																				 constant:0];
+		NSLayoutConstraint *titleLabelBaselineConstraint =
+        [NSLayoutConstraint constraintWithItem:_titleLabel
+                                     attribute:NSLayoutAttributeBaseline
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.view
+                                     attribute:NSLayoutAttributeBottom
+                                    multiplier:isPortrait ? 0.10 : 0.13
+                                      constant:0];
+		NSLayoutConstraint *topLineTopConstraint =
+        [NSLayoutConstraint constraintWithItem:_topLineView
+                                     attribute:NSLayoutAttributeTop
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.view
+                                     attribute:NSLayoutAttributeBottom
+                                    multiplier:isPortrait ? 0.12 : 0.15
+                                      constant:0];
 		[self.view addConstraints:@[titleLabelBaselineConstraint, topLineTopConstraint]];
 		
 		_titleLabelBaselineConstraint = titleLabelBaselineConstraint;

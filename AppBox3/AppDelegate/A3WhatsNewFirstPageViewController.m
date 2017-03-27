@@ -9,9 +9,12 @@
 #import "A3WhatsNewFirstPageViewController.h"
 #import "BEMCheckBox.h"
 
-@interface A3WhatsNewFirstPageViewController ()
+extern NSString *const A3UserDefaultsDidAlertWhatsNew4_5;
+
+@interface A3WhatsNewFirstPageViewController () <BEMCheckBoxDelegate>
 
 @property (nonatomic, weak) IBOutlet BEMCheckBox *checkBox;
+@property (nonatomic, weak) IBOutlet UILabel *doNotShowLabel;
 
 @end
 
@@ -25,6 +28,12 @@
     _checkBox.onAnimationType = BEMAnimationTypeFill;
     _checkBox.offAnimationType = BEMAnimationTypeBounce;
     _checkBox.boxType = BEMBoxTypeSquare;
+    _checkBox.delegate = self;
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidAlertWhatsNew4_5]) {
+        _checkBox.hidden = YES;
+        _doNotShowLabel.hidden = YES;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -34,6 +43,20 @@
 
 - (IBAction)didPressNextButton:(id)sender {
     _nextButtonAction();
+}
+
+- (IBAction)didTapDoNotShowNextTime:(id)sender {
+    [_checkBox setOn:!_checkBox.on animated:YES];
+    [self didTapCheckBox:_checkBox];
+}
+
+- (void)didTapCheckBox:(BEMCheckBox *)checkBox {
+    if (checkBox.on) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidAlertWhatsNew4_5];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    } else {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:A3UserDefaultsDidAlertWhatsNew4_5];
+    }
 }
 
 @end
