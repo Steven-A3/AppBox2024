@@ -1510,9 +1510,9 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 #pragma mark - Alert What's New
 
 - (void)alertWhatsNew {
-//	if ([[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidAlertWhatsNew4_5]) {
-//		return;
-//	}
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidAlertWhatsNew4_5]) {
+		return;
+	}
 //	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidAlertWhatsNew4_5];
 //	[[NSUserDefaults standardUserDefaults] synchronize];
 
