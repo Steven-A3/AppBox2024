@@ -239,7 +239,6 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
                               completionHandler:^(BOOL granted, NSError * _Nullable error) {
                                   [application registerForRemoteNotifications];
                               }];
-        [self registerNotificationCategory];
     }
 //    else if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7")) {
 //        [application registerForRemoteNotificationTypes:
@@ -1211,19 +1210,6 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationsUserNotificationSettingsRegistered object:notificationSettings];
-}
-
-/**
- *
- */
-- (void)registerNotificationCategory {
-    UNNotificationCategory *category =
-    [UNNotificationCategory categoryWithIdentifier:A3NotificationsCategoryPedometer
-                                           actions:@[]
-                                 intentIdentifiers:@[]
-                                           options:UNNotificationCategoryOptionCustomDismissAction];
-    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-    [center setNotificationCategories:[NSSet setWithObjects:category, nil]];
 }
 
 - (void)applicationProtectedDataWillBecomeUnavailable:(UIApplication *)application {
