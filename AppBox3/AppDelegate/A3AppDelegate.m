@@ -49,6 +49,7 @@
 #import "FXBlurView.h"
 #import "UIImage+imageWithColor.h"
 #import "NYXImagesKit.h"
+@import UserNotifications;
 
 NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
@@ -232,15 +233,27 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 	[[A3UserDefaults standardUserDefaults] setObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] forKey:kA3ApplicationLastRunVersion];
 	[[A3UserDefaults standardUserDefaults] synchronize];
 
-	if (IS_IOS7) {
-		[application registerForRemoteNotificationTypes:
-			(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
-	} else {
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10")) {
+        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+        [center requestAuthorizationWithOptions:UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge
+                              completionHandler:^(BOOL granted, NSError * _Nullable error) {
+                                  [application registerForRemoteNotifications];
+                              }];
+        [self registerNotificationCategory];
+    }
+//    else if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7")) {
+//        [application registerForRemoteNotificationTypes:
+//         (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+//    }
+    else {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 		[application registerForRemoteNotifications];
 		UIUserNotificationSettings *userNotificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil];
 		[application registerUserNotificationSettings:userNotificationSettings];
+#pragma GCC diagnostic pop
 	}
-
+    
 	return shouldPerformAdditionalDelegateHandling;
 }
 
@@ -1047,100 +1060,97 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)devToken {
-	// Get Bundle Info for Remote Registration (handy if you have more than one app)
-	NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
-	NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"")) {
+        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+        [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+            [self registerDeviceTokenToAPNServerWithToken:devToken
+                                             userSettings:
+             @[settings.badgeSetting == UNNotificationSettingEnabled ? @"enabled" : @"disabled",
+               settings.alertSetting == UNNotificationSettingEnabled ? @"enabled" : @"disabled",
+               settings.soundSetting == UNNotificationSettingEnabled ? @"enabled" : @"disabled",
+               ]
+             ];
+        }];
+    } else {
+        UIUserNotificationSettings *settings = [[UIApplication sharedApplication] currentUserNotificationSettings];
+        [self registerDeviceTokenToAPNServerWithToken:devToken
+                                         userSettings:
+         @[settings.types & UIUserNotificationTypeBadge ? @"enabled" : @"disabled",
+           settings.types & UIUserNotificationTypeAlert ? @"enabled" : @"disabled",
+           settings.types & UIUserNotificationTypeSound ? @"enabled" : @"disabled",]
+         ];
+    }
+}
 
-	NSString *urlString;
-
-	// Prepare the Device Token for Registration (remove spaces and < >)
-	NSString *deviceToken = [[[[devToken description]
-			stringByReplacingOccurrencesOfString:@"<"withString:@""]
-			stringByReplacingOccurrencesOfString:@">" withString:@""]
-			stringByReplacingOccurrencesOfString: @" " withString: @""];
-	_deviceToken = deviceToken;
-
-	// Get the users Device Model, Display Name, Unique ID, Token & Version Number
-	UIDevice *device = [UIDevice currentDevice];
-	NSString *identifierForVendor = [[device identifierForVendor] UUIDString];
-
-	NSString *deviceName = [device name];
-	NSString *deviceModel = [A3UIDevice platformString];
-	NSString *deviceSystemVersion = device.systemVersion;
-	NSString *localeIdentifier = [[NSLocale currentLocale] localeIdentifier];
-	NSString *timezone = [[NSTimeZone systemTimeZone] description];
-
-	if (IS_IOS7) {
-		// Check what Notifications the user has turned on.  We registered for all three, but they may have manually disabled some or all of them.
-		NSUInteger rntypes = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
-
-		// Set the defaults to disabled unless we find otherwise...
-		NSString *pushBadge = (rntypes & UIRemoteNotificationTypeBadge) ? @"enabled" : @"disabled";
-		NSString *pushAlert = (rntypes & UIRemoteNotificationTypeAlert) ? @"enabled" : @"disabled";
-		NSString *pushSound = (rntypes & UIRemoteNotificationTypeSound) ? @"enabled" : @"disabled";
-
-		urlString = [[NSString stringWithFormat:
-					  @"https://apns.allaboutapps.net/apns/apns.php?task=%@&appname=%@&appversion=%@&deviceuid=%@&devicetoken=%@&devicename=%@&devicemodel=%@&deviceversion=%@&localeIdentifier=%@&timezone=%@&pushbadge=%@&pushalert=%@&pushsound=%@", @"register",
-					  appName,
-					  appVersion,
-					  identifierForVendor,
-					  deviceToken,
-					  deviceName,
-					  deviceModel,
-					  deviceSystemVersion,
-					  localeIdentifier,
-					  timezone,
-					  pushBadge,
-					  pushAlert,
-					  pushSound] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-	} else {
-		NSString *isRegistered = [[UIApplication sharedApplication] isRegisteredForRemoteNotifications] ? @"enabled" : @"disabled";
-
-		urlString = [[NSString stringWithFormat:
-					  @"https://apns.allaboutapps.net/apns/apns.php?task=%@&appname=%@&appversion=%@&deviceuid=%@&devicetoken=%@&devicename=%@&devicemodel=%@&deviceversion=%@&localeIdentifier=%@&timezone=%@&pushbadge=%@&pushalert=%@&pushsound=%@", @"register",
-					  appName,
-					  appVersion,
-					  identifierForVendor,
-					  deviceToken,
-					  deviceName,
-					  deviceModel,
-					  deviceSystemVersion,
-					  localeIdentifier,
-					  timezone,
-					  isRegistered,
-					  isRegistered,
-					  isRegistered] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-	}
-	FNLOG(@"%@", urlString);
-
-	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
-	AFHTTPRequestOperation *registerOperation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-	[registerOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-		[self fetchPushNotification];
-	} failure:NULL];
-	
-	[registerOperation start];
-	
-	/*
-	 // !!! CHANGE "/apns.php?" TO THE PATH TO WHERE apns.php IS INSTALLED
-	 // !!! ( MUST START WITH / AND END WITH ? ).
-	 // !!! SAMPLE: "/path/to/apns.php?"
-	 NSString *urlString = [NSString stringWithFormat:@"/apns/apns.php?task=%@&appname=%@&appversion=%@&deviceuid=%@&devicetoken=%@&devicename=%@&devicemodel=%@&deviceversion=%@&pushbadge=%@&pushalert=%@&pushsound=%@", @"register", appName,appVersion, deviceUuid, deviceToken, deviceName, deviceModel, deviceSystemVersion, pushBadge, pushAlert, pushSound];
-	 
-	 // Build URL String for Registration
-	 // !!! CHANGE "www.mywebsite.com" TO YOUR WEBSITE. Leave out the http://
-	 // !!! SAMPLE: "secure.awesomeapp.com"
-	 NSString *host = @"apns.allaboutapps.net";
-	 
-	 // Register the Device Data
-	 // !!! CHANGE "http" TO "https" IF YOU ARE USING HTTPS PROTOCOL
-	 NSURL *url = [[NSURL alloc] initWithScheme:@"http" host:host path:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-	 NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
-	 NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-	 NSLog(@"Register URL: %@", url);
-	 NSLog(@"Return Data: %@", returnData);
-	 */
-
+- (void)registerDeviceTokenToAPNServerWithToken:(NSData *)deviceTokenData userSettings:(NSArray<NSString *> *)userSettings {
+    // Get Bundle Info for Remote Registration (handy if you have more than one app)
+    NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    
+    NSString *urlString;
+    
+    // Prepare the Device Token for Registration (remove spaces and < >)
+    NSString *deviceToken = [[[[deviceTokenData description]
+                               stringByReplacingOccurrencesOfString:@"<"withString:@""]
+                              stringByReplacingOccurrencesOfString:@">" withString:@""]
+                             stringByReplacingOccurrencesOfString: @" " withString: @""];
+    _deviceToken = deviceToken;
+    
+    // Get the users Device Model, Display Name, Unique ID, Token & Version Number
+    UIDevice *device = [UIDevice currentDevice];
+    NSString *identifierForVendor = [[device identifierForVendor] UUIDString];
+    
+    NSString *deviceName = [device name];
+    NSString *deviceModel = [A3UIDevice platformString];
+    NSString *deviceSystemVersion = device.systemVersion;
+    NSString *localeIdentifier = [[NSLocale currentLocale] localeIdentifier];
+    NSString *timezone = [[NSTimeZone systemTimeZone] description];
+    
+    urlString = [[NSString stringWithFormat:
+                  @"https://apns.allaboutapps.net/apns/apns.php?task=%@&appname=%@&appversion=%@&deviceuid=%@&devicetoken=%@&devicename=%@&devicemodel=%@&deviceversion=%@&localeIdentifier=%@&timezone=%@&pushbadge=%@&pushalert=%@&pushsound=%@", @"register",
+                  appName,
+                  appVersion,
+                  identifierForVendor,
+                  deviceToken,
+                  deviceName,
+                  deviceModel,
+                  deviceSystemVersion,
+                  localeIdentifier,
+                  timezone,
+                  userSettings[0],  // Badge
+                  userSettings[1],  // Alert
+                  userSettings[2]   // Sound
+                  ]
+                 stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    FNLOG(@"%@", urlString);
+    
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    AFHTTPRequestOperation *registerOperation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    [registerOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self fetchPushNotification];
+    } failure:NULL];
+    
+    [registerOperation start];
+    
+    /*
+     // !!! CHANGE "/apns.php?" TO THE PATH TO WHERE apns.php IS INSTALLED
+     // !!! ( MUST START WITH / AND END WITH ? ).
+     // !!! SAMPLE: "/path/to/apns.php?"
+     NSString *urlString = [NSString stringWithFormat:@"/apns/apns.php?task=%@&appname=%@&appversion=%@&deviceuid=%@&devicetoken=%@&devicename=%@&devicemodel=%@&deviceversion=%@&pushbadge=%@&pushalert=%@&pushsound=%@", @"register", appName,appVersion, deviceUuid, deviceToken, deviceName, deviceModel, deviceSystemVersion, pushBadge, pushAlert, pushSound];
+     
+     // Build URL String for Registration
+     // !!! CHANGE "www.mywebsite.com" TO YOUR WEBSITE. Leave out the http://
+     // !!! SAMPLE: "secure.awesomeapp.com"
+     NSString *host = @"apns.allaboutapps.net";
+     
+     // Register the Device Data
+     // !!! CHANGE "http" TO "https" IF YOU ARE USING HTTPS PROTOCOL
+     NSURL *url = [[NSURL alloc] initWithScheme:@"http" host:host path:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
+     NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+     NSLog(@"Register URL: %@", url);
+     NSLog(@"Return Data: %@", returnData);
+     */
 }
 
 - (void)fetchPushNotification {
@@ -1201,6 +1211,19 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationsUserNotificationSettingsRegistered object:notificationSettings];
+}
+
+/**
+ *
+ */
+- (void)registerNotificationCategory {
+    UNNotificationCategory *category =
+    [UNNotificationCategory categoryWithIdentifier:A3NotificationsCategoryPedometer
+                                           actions:@[]
+                                 intentIdentifiers:@[]
+                                           options:UNNotificationCategoryOptionCustomDismissAction];
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+    [center setNotificationCategories:[NSSet setWithObjects:category, nil]];
 }
 
 - (void)applicationProtectedDataWillBecomeUnavailable:(UIApplication *)application {
