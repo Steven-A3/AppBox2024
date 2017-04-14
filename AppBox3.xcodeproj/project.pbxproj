@@ -231,9 +231,6 @@
 		6817830F1902823D003E1BB9 /* A3WalletItemTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6817830E1902823D003E1BB9 /* A3WalletItemTitleCell.m */; };
 		681983731CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 681983721CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.m */; };
 		6819A86F18A6092B00E63C8B /* NSDateFormatter+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4255AEBE358EED319031E /* NSDateFormatter+A3Addition.m */; };
-		681AB7C71E95D2100015F57D /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 681AB7C61E95D2100015F57D /* UserNotifications.framework */; };
-		681AB7C91E95D2100015F57D /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 681AB7C81E95D2100015F57D /* UserNotificationsUI.framework */; };
-		681AB7D31E95D2100015F57D /* AppBoxPoNotificationContentExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 681AB7C51E95D2100015F57D /* AppBoxPoNotificationContentExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		681C511F194EB57400CB653A /* LoanCalculatorPadStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 681C5121194EB57400CB653A /* LoanCalculatorPadStoryBoard.storyboard */; };
 		681E11FD1932E2250077DCFA /* A3DataMigrationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 681E11FC1932E2250077DCFA /* A3DataMigrationManager.m */; };
 		681E1224193440540077DCFA /* NSData-AES.m in Sources */ = {isa = PBXBuildFile; fileRef = 681E1223193440540077DCFA /* NSData-AES.m */; };
@@ -986,13 +983,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		681AB7D11E95D2100015F57D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 682EA2C815EB10B000BD6AD4 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 681AB7C41E95D2100015F57D;
-			remoteInfo = AppBoxPoNotificationContentExtension;
-		};
 		685B760B1E4458E600AFA882 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */;
@@ -1058,7 +1048,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				681AB7D31E95D2100015F57D /* AppBoxPoNotificationContentExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1489,7 +1478,6 @@
 		6817830E1902823D003E1BB9 /* A3WalletItemTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletItemTitleCell.m; sourceTree = "<group>"; };
 		681983711CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3PedometerCollectionViewFlowLayout.h; path = Pedometer/A3PedometerCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		681983721CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3PedometerCollectionViewFlowLayout.m; path = Pedometer/A3PedometerCollectionViewFlowLayout.m; sourceTree = "<group>"; };
-		681AB7C51E95D2100015F57D /* AppBoxPoNotificationContentExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = AppBoxPoNotificationContentExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		681AB7C61E95D2100015F57D /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		681AB7C81E95D2100015F57D /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
 		681C5120194EB57400CB653A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LoanCalculatorPadStoryBoard.storyboard; sourceTree = "<group>"; };
@@ -3039,15 +3027,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		681AB7C21E95D2100015F57D /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				681AB7C91E95D2100015F57D /* UserNotificationsUI.framework in Frameworks */,
-				681AB7C71E95D2100015F57D /* UserNotifications.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		6829688B18505E3800B70E13 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -3992,7 +3971,6 @@
 				6876D6FA17A75DAE00E16991 /* AppBox3 Tests.xctest */,
 				6829688E18505E3800B70E13 /* A3SetupDefaultData.app */,
 				689D9F9D1BD2195600096D07 /* AppBox3UITests.xctest */,
-				681AB7C51E95D2100015F57D /* AppBoxPoNotificationContentExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -6108,23 +6086,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		681AB7C41E95D2100015F57D /* AppBoxPoNotificationContentExtension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 681AB7DE1E95D2100015F57D /* Build configuration list for PBXNativeTarget "AppBoxPoNotificationContentExtension" */;
-			buildPhases = (
-				681AB7C11E95D2100015F57D /* Sources */,
-				681AB7C21E95D2100015F57D /* Frameworks */,
-				681AB7C31E95D2100015F57D /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = AppBoxPoNotificationContentExtension;
-			productName = AppBoxPoNotificationContentExtension;
-			productReference = 681AB7C51E95D2100015F57D /* AppBoxPoNotificationContentExtension.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
 		6829688D18505E3800B70E13 /* A3SetupDefaultData */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 682968C218505E3900B70E13 /* Build configuration list for PBXNativeTarget "A3SetupDefaultData" */;
@@ -6155,7 +6116,6 @@
 			);
 			dependencies = (
 				68636002198BF8F400C3A323 /* PBXTargetDependency */,
-				681AB7D21E95D2100015F57D /* PBXTargetDependency */,
 			);
 			name = AppBox3;
 			productName = AppBox3;
@@ -6209,11 +6169,6 @@
 				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = ALLABOUTAPPS;
 				TargetAttributes = {
-					681AB7C41E95D2100015F57D = {
-						CreatedOnToolsVersion = 8.3;
-						DevelopmentTeam = 84XB754BWU;
-						ProvisioningStyle = Automatic;
-					};
 					6829688D18505E3800B70E13 = {
 						DevelopmentTeam = 84XB754BWU;
 					};
@@ -6286,7 +6241,6 @@
 				6876D6F917A75DAE00E16991 /* AppBox3 Tests */,
 				6829688D18505E3800B70E13 /* A3SetupDefaultData */,
 				689D9F9C1BD2195600096D07 /* AppBox3UITests */,
-				681AB7C41E95D2100015F57D /* AppBoxPoNotificationContentExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -6330,13 +6284,6 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
-		681AB7C31E95D2100015F57D /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		6829688C18505E3800B70E13 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -6527,13 +6474,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		681AB7C11E95D2100015F57D /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		6829688A18505E3800B70E13 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -7363,11 +7303,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		681AB7D21E95D2100015F57D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 681AB7C41E95D2100015F57D /* AppBoxPoNotificationContentExtension */;
-			targetProxy = 681AB7D11E95D2100015F57D /* PBXContainerItemProxy */;
-		};
 		68636002198BF8F400C3A323 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Ensembles Resources";
@@ -7792,62 +7727,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		681AB7D41E95D2100015F57D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 84XB754BWU;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = AppBoxPoNotificationContentExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2.AppBoxPoNotificationContentExtension;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
-			};
-			name = Debug;
-		};
-		681AB7D51E95D2100015F57D /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 84XB754BWU;
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = AppBoxPoNotificationContentExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2.AppBoxPoNotificationContentExtension;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
-			};
-			name = Release;
-		};
 		682968BB18505E3900B70E13 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -8192,15 +8071,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		681AB7DE1E95D2100015F57D /* Build configuration list for PBXNativeTarget "AppBoxPoNotificationContentExtension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				681AB7D41E95D2100015F57D /* Debug */,
-				681AB7D51E95D2100015F57D /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		682968C218505E3900B70E13 /* Build configuration list for PBXNativeTarget "A3SetupDefaultData" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
