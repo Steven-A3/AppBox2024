@@ -12,7 +12,6 @@
 		17D420FD697D545A9027AB7C /* A3PasscodeCommonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42647DF41660948614893 /* A3PasscodeCommonViewController.m */; };
 		17D42129FB82BFB4E56A8D7A /* A3TranslatorLanguage.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42302F11861C375A0D627 /* A3TranslatorLanguage.m */; };
 		17D4216A09E4D61E12AAA257 /* UnitHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42C7EA29BB9F9F994E776 /* UnitHistory.m */; };
-		17D421789FF0D787F9D7911C /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17D42835AF604EA6A37B16D4 /* MessageUI.framework */; };
 		17D421A32B6A37CE2B18CADC /* A3UnitConverterHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42129EBDA29BB8B3E7473 /* A3UnitConverterHistoryCell.m */; };
 		17D421BB5B4B7768F710218D /* A3UnitConverterMoreTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D429F456B03A431D03BE94 /* A3UnitConverterMoreTableViewController.m */; };
 		17D421DA97EB3D5480B0586D /* A3SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42E0A671D2A779483EA05 /* A3SettingsViewController.m */; };
@@ -21,7 +20,6 @@
 		17D422DE9F0A0F9C66BD0E35 /* TemperatureConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D424BF501B6E037C902ACC /* TemperatureConverter.m */; };
 		17D422FD93B3678E215BACCB /* A3SettingsFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42D0A5D39188F17DC84CF /* A3SettingsFavoritesViewController.m */; };
 		17D423113B5E0448C539636D /* FSConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D423B50DFFA540C31E72FC /* FSConverter.m */; };
-		17D4235B678996668439565E /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17D4227E7D59F72869C3BE40 /* CoreText.framework */; };
 		17D4236A30D866AEE7D3F6B2 /* UIView+A3Drawing.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D426DEC2D6FD7E280056BD /* UIView+A3Drawing.m */; };
 		17D4237EB40E1456E494D076 /* TranslatorHistory+manager.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D421064EA823E51FA60A9B /* TranslatorHistory+manager.m */; };
 		17D423916758FF055E340EE7 /* A3SettingsBackupRestoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42AADDEA67C2204FB400B /* A3SettingsBackupRestoreViewController.m */; };
@@ -99,7 +97,6 @@
 		571795CE19D7CD6600DEF2FB /* RGB-HSL.m in Sources */ = {isa = PBXBuildFile; fileRef = 571795CD19D7CD6600DEF2FB /* RGB-HSL.m */; };
 		57213EFB19C328FD005AD0ED /* CLLocationManager+authorization.m in Sources */ = {isa = PBXBuildFile; fileRef = 57213EFA19C328FD005AD0ED /* CLLocationManager+authorization.m */; };
 		5727A57219D411F100ADB17C /* Erase.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5727A57119D411F100ADB17C /* Erase.caf */; };
-		5727A57419D41B9200ADB17C /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5727A57319D41B9200ADB17C /* CoreMotion.framework */; };
 		5733FBCD19E8061800A7357E /* ExpenseListBudget.m in Sources */ = {isa = PBXBuildFile; fileRef = 5733FBCC19E8061800A7357E /* ExpenseListBudget.m */; };
 		5733FBD019E8061800A7357E /* ExpenseListBudgetLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5733FBCF19E8061800A7357E /* ExpenseListBudgetLocation.m */; };
 		5733FBD319E8061900A7357E /* ExpenseListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5733FBD219E8061900A7357E /* ExpenseListItem.m */; };
@@ -140,6 +137,7 @@
 		680886E41891751B0093FD97 /* SBGradientOverlayLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886CC1891751B0093FD97 /* SBGradientOverlayLayer.m */; };
 		680886E51891751B0093FD97 /* SBTickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886CE1891751B0093FD97 /* SBTickerView.m */; };
 		680886E61891751B0093FD97 /* UIView+SBExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886D01891751B0093FD97 /* UIView+SBExtras.m */; };
+		680B59D71E9777C8004362AC /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68DE21521CEB038D00E31DDF /* HealthKit.framework */; };
 		680D638C18CFF9D400938AD0 /* A3CalcKeyboardView_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D636618CFF9D400938AD0 /* A3CalcKeyboardView_iPhone.m */; };
 		680D638D18CFF9D400938AD0 /* A3Calculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D636818CFF9D400938AD0 /* A3Calculator.m */; };
 		680D638E18CFF9D400938AD0 /* A3CalculatorButtonsInBasicViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D636A18CFF9D400938AD0 /* A3CalculatorButtonsInBasicViewController_iPad.m */; };
@@ -233,7 +231,9 @@
 		6817830F1902823D003E1BB9 /* A3WalletItemTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6817830E1902823D003E1BB9 /* A3WalletItemTitleCell.m */; };
 		681983731CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 681983721CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.m */; };
 		6819A86F18A6092B00E63C8B /* NSDateFormatter+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4255AEBE358EED319031E /* NSDateFormatter+A3Addition.m */; };
-		6819C7B2188A4D64007E0E1B /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 684E9F0D188A4BB100FAA48E /* Social.framework */; };
+		681AB7C71E95D2100015F57D /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 681AB7C61E95D2100015F57D /* UserNotifications.framework */; };
+		681AB7C91E95D2100015F57D /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 681AB7C81E95D2100015F57D /* UserNotificationsUI.framework */; };
+		681AB7D31E95D2100015F57D /* AppBoxPoNotificationContentExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 681AB7C51E95D2100015F57D /* AppBoxPoNotificationContentExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		681C511F194EB57400CB653A /* LoanCalculatorPadStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 681C5121194EB57400CB653A /* LoanCalculatorPadStoryBoard.storyboard */; };
 		681E11FD1932E2250077DCFA /* A3DataMigrationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 681E11FC1932E2250077DCFA /* A3DataMigrationManager.m */; };
 		681E1224193440540077DCFA /* NSData-AES.m in Sources */ = {isa = PBXBuildFile; fileRef = 681E1223193440540077DCFA /* NSData-AES.m */; };
@@ -246,7 +246,6 @@
 		682126861843902A009A7964 /* NSNumberExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 682126851843902A009A7964 /* NSNumberExtensions.m */; };
 		68236CD6186A8D75006F442B /* A3PasscodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68236CD5186A8D75006F442B /* A3PasscodeViewController.m */; };
 		68236CDD186AA7B4006F442B /* A3AppDelegate+passcode.m in Sources */ = {isa = PBXBuildFile; fileRef = 68236CDC186AA7B4006F442B /* A3AppDelegate+passcode.m */; };
-		682380711B312670005F4DD2 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68AB0ABF1A3E92E9001BFC5D /* StoreKit.framework */; };
 		6823F6FC1863294700E6E90D /* A3YahooCurrency.m in Sources */ = {isa = PBXBuildFile; fileRef = 6823F6F51863294700E6E90D /* A3YahooCurrency.m */; };
 		6823F6FE1863294700E6E90D /* CurrencyHistory+handler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6823F6F91863294700E6E90D /* CurrencyHistory+handler.m */; };
 		6823F702186329DC00E6E90D /* A3CurrencyDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6823F701186329DC00E6E90D /* A3CurrencyDataManager.m */; };
@@ -279,7 +278,6 @@
 		6825367D18A7BD4E00EAFB84 /* SQLiteWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6825367C18A7BD4E00EAFB84 /* SQLiteWrapper.m */; };
 		6825367F18A7C1B800EAFB84 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6825367E18A7C1B800EAFB84 /* libsqlite3.0.dylib */; };
 		6826F0291CA17B9800144680 /* A3HomeScreenButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6826F0281CA17B9800144680 /* A3HomeScreenButton.m */; };
-		682961D2174267C6008D025E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682961D1174267C6008D025E /* MapKit.framework */; };
 		682968851850401200B70E13 /* NSFileManager+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 682968841850401200B70E13 /* NSFileManager+A3Addition.m */; };
 		6829688F18505E3900B70E13 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D715EB10B000BD6AD4 /* Foundation.framework */; };
 		6829689018505E3900B70E13 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D915EB10B000BD6AD4 /* CoreGraphics.framework */; };
@@ -289,7 +287,6 @@
 		682968A618505E3900B70E13 /* A3SetupDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 682968A518505E3900B70E13 /* A3SetupDataViewController.m */; };
 		682968A818505E3900B70E13 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 682968A718505E3900B70E13 /* Images.xcassets */; };
 		682969251850746900B70E13 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2DB15EB10B000BD6AD4 /* CoreData.framework */; };
-		6829762F1A1A19CC00E06E87 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6829762E1A1A19CC00E06E87 /* LocalAuthentication.framework */; };
 		6829A0161C89882F0006DB96 /* A3CollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 6829A0051C89882F0006DB96 /* A3CollectionViewFlowLayout.m */; };
 		6829A0171C89882F0006DB96 /* A3GridCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 6829A0071C89882F0006DB96 /* A3GridCollectionViewFlowLayout.m */; };
 		6829A0181C89882F0006DB96 /* A3GridMenuCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6829A0091C89882F0006DB96 /* A3GridMenuCollectionViewCell.m */; };
@@ -304,10 +301,6 @@
 		682B37C718AB36B600C6BD66 /* Wallet.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 682B37C618AB36B600C6BD66 /* Wallet.xcassets */; };
 		682C967A1E15FB7500C3F952 /* A3SharePopupViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 682C96791E15FB7500C3F952 /* A3SharePopupViewController.storyboard */; };
 		682E07EA171968A8007112B9 /* ATSDragToReorderTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 682E07E9171968A8007112B9 /* ATSDragToReorderTableViewController.m */; };
-		682EA2D615EB10B000BD6AD4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D515EB10B000BD6AD4 /* UIKit.framework */; };
-		682EA2D815EB10B000BD6AD4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D715EB10B000BD6AD4 /* Foundation.framework */; };
-		682EA2DA15EB10B000BD6AD4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D915EB10B000BD6AD4 /* CoreGraphics.framework */; };
-		682EA2DC15EB10B000BD6AD4 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2DB15EB10B000BD6AD4 /* CoreData.framework */; };
 		682EA2E415EB10B000BD6AD4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 682EA2E315EB10B000BD6AD4 /* main.m */; };
 		682FDF041981CC0400C6C83D /* MagicalImportFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 682FDECA1981CC0400C6C83D /* MagicalImportFunctions.m */; };
 		682FDF051981CC0400C6C83D /* MagicalImportFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 682FDECA1981CC0400C6C83D /* MagicalImportFunctions.m */; };
@@ -364,7 +357,6 @@
 		682FDF4319820F5900C6C83D /* DaysCounterEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 682FDF4219820F5900C6C83D /* DaysCounterEvent.m */; };
 		682FDF4419820F5900C6C83D /* DaysCounterEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 682FDF4219820F5900C6C83D /* DaysCounterEvent.m */; };
 		6830C7871851A26E0075010F /* A3UserDefaults+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6830C7861851A26E0075010F /* A3UserDefaults+A3Addition.m */; };
-		6831407F18C20C9700896819 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6831407E18C20C9700896819 /* AVFoundation.framework */; };
 		68315CF6195696560095CF7A /* A3DaysCounterCalendarListMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68315CF5195696560095CF7A /* A3DaysCounterCalendarListMainViewController.xib */; };
 		6831DF0B16C3D30100EABB2A /* A3ActionMenuBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6831DF0A16C3D30100EABB2A /* A3ActionMenuBackgroundView.m */; };
 		6831EBF518617CCF00BAF15B /* NSFileManager+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 682968841850401200B70E13 /* NSFileManager+A3Addition.m */; };
@@ -374,11 +366,9 @@
 		6832ADE216A8D38500BEEEE6 /* A3CurrencySelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6832ADE116A8D38500BEEEE6 /* A3CurrencySelectViewController.m */; };
 		6835659418FA663100C3494C /* A3WalletMoreTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6835659318FA663100C3494C /* A3WalletMoreTableViewController.m */; };
 		683A291B19A1B25200265484 /* A3DateCalculationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 683A291A19A1B25200265484 /* A3DateCalculationTest.m */; };
-		683B959315EB252400575377 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683B959215EB252400575377 /* QuartzCore.framework */; };
 		683D68461DBC5C00008C47C9 /* ACSimpleKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 683D68401DBC5C00008C47C9 /* ACSimpleKeychain.m */; };
 		683D68471DBC5C00008C47C9 /* TJDropbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 683D68431DBC5C00008C47C9 /* TJDropbox.m */; };
 		683D68481DBC5C00008C47C9 /* TJDropboxAuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 683D68451DBC5C00008C47C9 /* TJDropboxAuthenticationViewController.m */; };
-		683D684E1DBC5F3A008C47C9 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683D684D1DBC5F3A008C47C9 /* SafariServices.framework */; };
 		68425D581977BD5F007C1AAE /* DaysCounterReminder+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68425D571977BD5F007C1AAE /* DaysCounterReminder+extension.m */; };
 		68425D5B1977BF63007C1AAE /* DaysCounterFavorite+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68425D5A1977BF63007C1AAE /* DaysCounterFavorite+extension.m */; };
 		684310CB1E6FF3FF00405ED0 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 684310CA1E6FF3FF00405ED0 /* GoogleMobileAds.framework */; };
@@ -391,7 +381,6 @@
 		6848249A19D272A100E5184C /* A3SettingsiTunesSelectBackupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6848249919D272A100E5184C /* A3SettingsiTunesSelectBackupViewController.m */; };
 		6848ED6B1C50FD7B0067B93A /* ALDBlurImageProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6848ED6A1C50FD7B0067B93A /* ALDBlurImageProcessor.m */; };
 		6848FB8D17A39C1100EBDBED /* NSMutableArray+A3Sort.m in Sources */ = {isa = PBXBuildFile; fileRef = 6848FB8C17A39C1100EBDBED /* NSMutableArray+A3Sort.m */; };
-		684A71BB1852E0100004A9FE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 684A71BA1852E0100004A9FE /* Security.framework */; };
 		684A71BD1852E0250004A9FE /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 684A71BC1852E0250004A9FE /* libc++.dylib */; };
 		684A71C21853464A0004A9FE /* A3AppDelegate+iCloud.m in Sources */ = {isa = PBXBuildFile; fileRef = 684A71C11853464A0004A9FE /* A3AppDelegate+iCloud.m */; };
 		684AB7B51E48488F00F2C3EC /* A3KaomojiCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 684AB7B41E48488F00F2C3EC /* A3KaomojiCollectionViewFlowLayout.m */; };
@@ -447,8 +436,6 @@
 		685CF1AD1DFFF46300DE2636 /* A3AbbreviationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 685CF1AC1DFFF46300DE2636 /* A3AbbreviationTableViewCell.m */; };
 		685E319A1791694E001A0EC8 /* A3CurrencyTVActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 685E31991791694E001A0EC8 /* A3CurrencyTVActionCell.xib */; };
 		685E319F17917879001A0EC8 /* A3CurrencyTVActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 685E319E17917879001A0EC8 /* A3CurrencyTVActionCell.m */; };
-		685F723C16A64ADD004C7222 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 685F723B16A64ADD004C7222 /* SystemConfiguration.framework */; };
-		685F723E16A64C91004C7222 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 685F723D16A64C91004C7222 /* MobileCoreServices.framework */; };
 		6862375F1974E7C300001DE7 /* LadyCalendarPeriod.m in Sources */ = {isa = PBXBuildFile; fileRef = 6862375E1974E7C300001DE7 /* LadyCalendarPeriod.m */; };
 		68636000198BF88F00C3A323 /* libensembles.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68635FFB198BF80E00C3A323 /* libensembles.a */; };
 		68636003198BF91300C3A323 /* Ensembles.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 68635FFD198BF80E00C3A323 /* Ensembles.bundle */; };
@@ -459,10 +446,6 @@
 		686BC1D31846343100FA5C94 /* A3CurrencySettings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 686BC1D51846343100FA5C94 /* A3CurrencySettings.storyboard */; };
 		686BC1DB184639CA00FA5C94 /* A3CurrencyChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 686BC1DD184639CA00FA5C94 /* A3CurrencyChartViewController.xib */; };
 		686F06E71AA1D9DC0093A6F9 /* A3MarkingsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 686F06E61AA1D9DC0093A6F9 /* A3MarkingsView.m */; };
-		686FCF6D1775CEFE00F19332 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686FCF6C1775CEFE00F19332 /* CoreImage.framework */; };
-		686FCF6F1775CF9100F19332 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686FCF6E1775CF9100F19332 /* ImageIO.framework */; };
-		686FCF721775CF9D00F19332 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686FCF701775CF9D00F19332 /* Accelerate.framework */; };
-		686FCF731775CF9D00F19332 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686FCF711775CF9D00F19332 /* AssetsLibrary.framework */; };
 		686FCF911775CFE400F19332 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 686FCF441775CD1300F19332 /* Reachability.m */; };
 		6870A0D7163647A50059BD2F /* A3GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6870A0D6163647A50059BD2F /* A3GradientView.m */; };
 		687242FE1DF95D5000B7FB6A /* Abbreviation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 687242FD1DF95D5000B7FB6A /* Abbreviation.storyboard */; };
@@ -500,18 +483,13 @@
 		6876D71217A75E5A00E16991 /* A3CurrencyItemTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876D70F17A75E5A00E16991 /* A3CurrencyItemTest.m */; };
 		6876D71317A75E5A00E16991 /* A3CurrencyViewControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876D71017A75E5A00E16991 /* A3CurrencyViewControllerTest.m */; };
 		6876D78417A760BF00E16991 /* libExpecta-ios-universal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6890AB2A1786B800004FECE4 /* libExpecta-ios-universal.a */; };
-		6878361E1E6E4D7000828BA8 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6878361D1E6E4D7000828BA8 /* WebKit.framework */; };
 		687AEE991CBB0B7100C2D844 /* A3QRCodeDataHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AEE981CBB0B7100C2D844 /* A3QRCodeDataHandler.m */; };
-		687AEEA01CBB73F900C2D844 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 687AEE9E1CBB73F900C2D844 /* AddressBook.framework */; };
-		687AEEA11CBB73F900C2D844 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 687AEE9F1CBB73F900C2D844 /* AddressBookUI.framework */; };
 		687AEEA71CBBB69B00C2D844 /* A3QRCodeMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AEEA61CBBB69B00C2D844 /* A3QRCodeMapViewController.m */; };
 		687AEEAA1CBBCB5900C2D844 /* A3PlaceAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AEEA91CBBCB5900C2D844 /* A3PlaceAnnotation.m */; };
 		687AEEAD1CBBE88300C2D844 /* A3QRCodeTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AEEAC1CBBE88300C2D844 /* A3QRCodeTextViewController.m */; };
 		687AEEB41CBC489700C2D844 /* MXLCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AEEAF1CBC489700C2D844 /* MXLCalendar.m */; };
 		687AEEB51CBC489700C2D844 /* MXLCalendarEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AEEB11CBC489700C2D844 /* MXLCalendarEvent.m */; };
 		687AEEB61CBC489700C2D844 /* MXLCalendarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AEEB31CBC489700C2D844 /* MXLCalendarManager.m */; };
-		687AEEB71CBC4B8200C2D844 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68AB0ABB1A3E92C8001BFC5D /* EventKit.framework */; };
-		687AEEB81CBC4B8200C2D844 /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68AB0ABD1A3E92D1001BFC5D /* EventKitUI.framework */; };
 		687AEEBB1CBC4E5800C2D844 /* MXLCalendarAttendee.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AEEBA1CBC4E5800C2D844 /* MXLCalendarAttendee.m */; };
 		687B95361E024A1A00126F9E /* A3AbbreviationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 687B95351E024A1A00126F9E /* A3AbbreviationViewController.m */; };
 		687D0D0A17CAE519005AB571 /* HolidayData+Africa.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0CFD17CAE519005AB571 /* HolidayData+Africa.m */; };
@@ -533,7 +511,6 @@
 		6886791C18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6886791A18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib */; };
 		6886791D18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6886791B18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib */; };
 		688788831A9B29C7008C8567 /* A3RulerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688788821A9B29C7008C8567 /* A3RulerViewController.m */; };
-		6888090A17C63DBB008B2856 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6888090917C63DBB008B2856 /* CFNetwork.framework */; };
 		6888090E17C63F57008B2856 /* A3FlickrTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6888090D17C63F57008B2856 /* A3FlickrTest.m */; };
 		6889D0A21CF3E1EC00B7F90E /* Pedometer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6889D0A41CF3E1EC00B7F90E /* Pedometer.storyboard */; };
 		688CC6CD1E20B85F004374D4 /* A3AbbreviationCopiedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688CC6CC1E20B85F004374D4 /* A3AbbreviationCopiedViewController.m */; };
@@ -600,7 +577,6 @@
 		68ADE14917D83D28009618A7 /* MMDrawerVisualState.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE14417D83D28009618A7 /* MMDrawerVisualState.m */; };
 		68ADE14A17D83D28009618A7 /* UIViewController+MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE14617D83D28009618A7 /* UIViewController+MMDrawerController.m */; };
 		68AE58C91A118A4B0021E489 /* A3StandardDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68AE58C81A118A4B0021E489 /* A3StandardDetailTableViewController.m */; };
-		68AF607D162BCCEE00E98002 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68AF607C162BCCEE00E98002 /* CoreLocation.framework */; };
 		68B62EBF199E532B006384E1 /* CurrencyFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B62EBE199E532B006384E1 /* CurrencyFavorite.m */; };
 		68B62EC2199E620B006384E1 /* DaysCounterCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B62EC1199E620B006384E1 /* DaysCounterCalendar.m */; };
 		68B635BF17B504C100570B09 /* A3RootViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B635BE17B504C100570B09 /* A3RootViewController_iPad.m */; };
@@ -778,7 +754,6 @@
 		68D6E90C199EE0A200166A47 /* WalletCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D6E90B199EE0A200166A47 /* WalletCategory.m */; };
 		68D6E90F199EE0A200166A47 /* WalletField.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D6E90E199EE0A200166A47 /* WalletField.m */; };
 		68DA1E2519DE7CA30058AF50 /* A3CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DA1E2419DE7CA30058AF50 /* A3CameraViewController.m */; };
-		68DBAB6D18C4C2B2003A67E5 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68DBAB6C18C4C2B2003A67E5 /* MediaPlayer.framework */; };
 		68DBF04B17CB884F009CAC33 /* A3HolidaysTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DBF04A17CB884F009CAC33 /* A3HolidaysTest.m */; };
 		68DBF05017CB8AA0009CAC33 /* HolidayData.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0917CAE519005AB571 /* HolidayData.m */; };
 		68DBF05217CB8AAB009CAC33 /* HolidayData+Africa.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0CFD17CAE519005AB571 /* HolidayData+Africa.m */; };
@@ -788,7 +763,6 @@
 		68DBF05617CB8AAB009CAC33 /* HolidayData+Europe.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0517CAE519005AB571 /* HolidayData+Europe.m */; };
 		68DBF05717CB8AAB009CAC33 /* HolidayData+MiddleEast.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0717CAE519005AB571 /* HolidayData+MiddleEast.m */; };
 		68DC38251871BD0C0088DDA0 /* A3KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DC38241871BD0C0088DDA0 /* A3KeychainUtils.m */; };
-		68DE21531CEB038D00E31DDF /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68DE21521CEB038D00E31DDF /* HealthKit.framework */; };
 		68E02E701C9286BD00C5A24A /* A3AppSelectTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E02E6F1C9286BD00C5A24A /* A3AppSelectTableViewController.m */; };
 		68E0B31E198CAB6200127229 /* LoanCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E0B31D198CAB6200127229 /* LoanCalcHistory.m */; };
 		68E0B321198CAB8E00127229 /* SalesCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E0B320198CAB8E00127229 /* SalesCalcHistory.m */; };
@@ -852,7 +826,6 @@
 		68E6D12018A48C0F00109183 /* A3FormatterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6D11F18A48C0F00109183 /* A3FormatterTest.m */; };
 		68E6F34D17B25F5F00F10ED9 /* A3CurrencyChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F34B17B25F5F00F10ED9 /* A3CurrencyChartViewController.m */; };
 		68E6F35217B2722000F10ED9 /* A3UserDefaults+A3Defaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F35117B2722000F10ED9 /* A3UserDefaults+A3Defaults.m */; };
-		68E6F35617B27B8300F10ED9 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E6F35517B27B8300F10ED9 /* CoreTelephony.framework */; };
 		68E6F37217B2A06600F10ED9 /* A3CurrencyHistory2RowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F37117B2A06600F10ED9 /* A3CurrencyHistory2RowCell.m */; };
 		68E6F37517B2A09C00F10ED9 /* A3CurrencyHistory3RowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F37417B2A09C00F10ED9 /* A3CurrencyHistory3RowCell.m */; };
 		68E6F37917B2A1DE00F10ED9 /* A3CurrencyHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F37817B2A1DE00F10ED9 /* A3CurrencyHistoryViewController.m */; };
@@ -1013,6 +986,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		681AB7D11E95D2100015F57D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 682EA2C815EB10B000BD6AD4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 681AB7C41E95D2100015F57D;
+			remoteInfo = AppBoxPoNotificationContentExtension;
+		};
 		685B760B1E4458E600AFA882 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */;
@@ -1070,6 +1050,20 @@
 			remoteInfo = AppBox3;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		681AB7DF1E95D2100015F57D /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				681AB7D31E95D2100015F57D /* AppBoxPoNotificationContentExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		17D42020AA362D23330F9A40 /* A3SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsViewController.h; path = Settings/A3SettingsViewController.h; sourceTree = "<group>"; };
@@ -1495,6 +1489,9 @@
 		6817830E1902823D003E1BB9 /* A3WalletItemTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletItemTitleCell.m; sourceTree = "<group>"; };
 		681983711CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3PedometerCollectionViewFlowLayout.h; path = Pedometer/A3PedometerCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		681983721CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3PedometerCollectionViewFlowLayout.m; path = Pedometer/A3PedometerCollectionViewFlowLayout.m; sourceTree = "<group>"; };
+		681AB7C51E95D2100015F57D /* AppBoxPoNotificationContentExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = AppBoxPoNotificationContentExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		681AB7C61E95D2100015F57D /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		681AB7C81E95D2100015F57D /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
 		681C5120194EB57400CB653A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LoanCalculatorPadStoryBoard.storyboard; sourceTree = "<group>"; };
 		681C5125194EB58400CB653A /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LoanCalculatorPadStoryBoard.strings; sourceTree = "<group>"; };
 		681C5127194EB58500CB653A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LoanCalculatorPadStoryBoard.strings"; sourceTree = "<group>"; };
@@ -3042,6 +3039,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		681AB7C21E95D2100015F57D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				681AB7C91E95D2100015F57D /* UserNotificationsUI.framework in Frameworks */,
+				681AB7C71E95D2100015F57D /* UserNotifications.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6829688B18505E3800B70E13 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -3058,43 +3064,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				684310CB1E6FF3FF00405ED0 /* GoogleMobileAds.framework in Frameworks */,
-				6878361E1E6E4D7000828BA8 /* WebKit.framework in Frameworks */,
-				683D684E1DBC5F3A008C47C9 /* SafariServices.framework in Frameworks */,
-				68DE21531CEB038D00E31DDF /* HealthKit.framework in Frameworks */,
-				687AEEB71CBC4B8200C2D844 /* EventKit.framework in Frameworks */,
-				687AEEB81CBC4B8200C2D844 /* EventKitUI.framework in Frameworks */,
-				687AEEA01CBB73F900C2D844 /* AddressBook.framework in Frameworks */,
-				687AEEA11CBB73F900C2D844 /* AddressBookUI.framework in Frameworks */,
 				68F04D101B40F86B004FDD7B /* libcrypto.a in Frameworks */,
 				68F04D111B40F86B004FDD7B /* libssl.a in Frameworks */,
-				6829762F1A1A19CC00E06E87 /* LocalAuthentication.framework in Frameworks */,
-				5727A57419D41B9200ADB17C /* CoreMotion.framework in Frameworks */,
 				68636000198BF88F00C3A323 /* libensembles.a in Frameworks */,
 				681E1281193447D70077DCFA /* libz.dylib in Frameworks */,
-				68DBAB6D18C4C2B2003A67E5 /* MediaPlayer.framework in Frameworks */,
-				6831407F18C20C9700896819 /* AVFoundation.framework in Frameworks */,
+				680B59D71E9777C8004362AC /* HealthKit.framework in Frameworks */,
 				6825367F18A7C1B800EAFB84 /* libsqlite3.0.dylib in Frameworks */,
-				6819C7B2188A4D64007E0E1B /* Social.framework in Frameworks */,
 				684A71BD1852E0250004A9FE /* libc++.dylib in Frameworks */,
-				684A71BB1852E0100004A9FE /* Security.framework in Frameworks */,
-				6888090A17C63DBB008B2856 /* CFNetwork.framework in Frameworks */,
-				68E6F35617B27B8300F10ED9 /* CoreTelephony.framework in Frameworks */,
-				686FCF721775CF9D00F19332 /* Accelerate.framework in Frameworks */,
-				682380711B312670005F4DD2 /* StoreKit.framework in Frameworks */,
-				686FCF731775CF9D00F19332 /* AssetsLibrary.framework in Frameworks */,
-				686FCF6F1775CF9100F19332 /* ImageIO.framework in Frameworks */,
-				686FCF6D1775CEFE00F19332 /* CoreImage.framework in Frameworks */,
-				682961D2174267C6008D025E /* MapKit.framework in Frameworks */,
-				685F723E16A64C91004C7222 /* MobileCoreServices.framework in Frameworks */,
-				685F723C16A64ADD004C7222 /* SystemConfiguration.framework in Frameworks */,
-				68AF607D162BCCEE00E98002 /* CoreLocation.framework in Frameworks */,
-				683B959315EB252400575377 /* QuartzCore.framework in Frameworks */,
-				682EA2D615EB10B000BD6AD4 /* UIKit.framework in Frameworks */,
-				682EA2D815EB10B000BD6AD4 /* Foundation.framework in Frameworks */,
-				682EA2DA15EB10B000BD6AD4 /* CoreGraphics.framework in Frameworks */,
-				682EA2DC15EB10B000BD6AD4 /* CoreData.framework in Frameworks */,
-				17D4235B678996668439565E /* CoreText.framework in Frameworks */,
-				17D421789FF0D787F9D7911C /* MessageUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4016,6 +3992,7 @@
 				6876D6FA17A75DAE00E16991 /* AppBox3 Tests.xctest */,
 				6829688E18505E3800B70E13 /* A3SetupDefaultData.app */,
 				689D9F9D1BD2195600096D07 /* AppBox3UITests.xctest */,
+				681AB7C51E95D2100015F57D /* AppBoxPoNotificationContentExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4065,6 +4042,8 @@
 				685F723B16A64ADD004C7222 /* SystemConfiguration.framework */,
 				682EA2D515EB10B000BD6AD4 /* UIKit.framework */,
 				687C193B1783DF0F00415FCE /* XCTest.framework */,
+				681AB7C61E95D2100015F57D /* UserNotifications.framework */,
+				681AB7C81E95D2100015F57D /* UserNotificationsUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -6129,6 +6108,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		681AB7C41E95D2100015F57D /* AppBoxPoNotificationContentExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 681AB7DE1E95D2100015F57D /* Build configuration list for PBXNativeTarget "AppBoxPoNotificationContentExtension" */;
+			buildPhases = (
+				681AB7C11E95D2100015F57D /* Sources */,
+				681AB7C21E95D2100015F57D /* Frameworks */,
+				681AB7C31E95D2100015F57D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AppBoxPoNotificationContentExtension;
+			productName = AppBoxPoNotificationContentExtension;
+			productReference = 681AB7C51E95D2100015F57D /* AppBoxPoNotificationContentExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		6829688D18505E3800B70E13 /* A3SetupDefaultData */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 682968C218505E3900B70E13 /* Build configuration list for PBXNativeTarget "A3SetupDefaultData" */;
@@ -6153,11 +6149,13 @@
 				682EA2CD15EB10B000BD6AD4 /* Sources */,
 				682EA2CE15EB10B000BD6AD4 /* Frameworks */,
 				682EA2CF15EB10B000BD6AD4 /* Resources */,
+				681AB7DF1E95D2100015F57D /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				68636002198BF8F400C3A323 /* PBXTargetDependency */,
+				681AB7D21E95D2100015F57D /* PBXTargetDependency */,
 			);
 			name = AppBox3;
 			productName = AppBox3;
@@ -6207,10 +6205,15 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = A3;
-				LastSwiftUpdateCheck = 0700;
+				LastSwiftUpdateCheck = 0830;
 				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = ALLABOUTAPPS;
 				TargetAttributes = {
+					681AB7C41E95D2100015F57D = {
+						CreatedOnToolsVersion = 8.3;
+						DevelopmentTeam = 84XB754BWU;
+						ProvisioningStyle = Automatic;
+					};
 					6829688D18505E3800B70E13 = {
 						DevelopmentTeam = 84XB754BWU;
 					};
@@ -6221,7 +6224,7 @@
 								enabled = 1;
 							};
 							com.apple.DataProtection = {
-								enabled = 0;
+								enabled = 1;
 							};
 							com.apple.HealthKit = {
 								enabled = 1;
@@ -6283,6 +6286,7 @@
 				6876D6F917A75DAE00E16991 /* AppBox3 Tests */,
 				6829688D18505E3800B70E13 /* A3SetupDefaultData */,
 				689D9F9C1BD2195600096D07 /* AppBox3UITests */,
+				681AB7C41E95D2100015F57D /* AppBoxPoNotificationContentExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -6326,6 +6330,13 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		681AB7C31E95D2100015F57D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6829688C18505E3800B70E13 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -6516,6 +6527,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		681AB7C11E95D2100015F57D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6829688A18505E3800B70E13 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -7345,6 +7363,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		681AB7D21E95D2100015F57D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 681AB7C41E95D2100015F57D /* AppBoxPoNotificationContentExtension */;
+			targetProxy = 681AB7D11E95D2100015F57D /* PBXContainerItemProxy */;
+		};
 		68636002198BF8F400C3A323 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Ensembles Resources";
@@ -7769,6 +7792,62 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		681AB7D41E95D2100015F57D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 84XB754BWU;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = AppBoxPoNotificationContentExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2.AppBoxPoNotificationContentExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		681AB7D51E95D2100015F57D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 84XB754BWU;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = AppBoxPoNotificationContentExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2.AppBoxPoNotificationContentExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
 		682968BB18505E3900B70E13 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -7941,7 +8020,7 @@
 					"External/RMStore/Optional/openssl-1.0.2c/include/**",
 				);
 				INFOPLIST_FILE = "AppBox3/AppBox3-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"${PROJECT_DIR}/External/**",
@@ -7979,7 +8058,7 @@
 					"External/RMStore/Optional/openssl-1.0.2c/include/**",
 				);
 				INFOPLIST_FILE = "AppBox3/AppBox3-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"${PROJECT_DIR}/External/**",
@@ -8113,6 +8192,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		681AB7DE1E95D2100015F57D /* Build configuration list for PBXNativeTarget "AppBoxPoNotificationContentExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				681AB7D41E95D2100015F57D /* Debug */,
+				681AB7D51E95D2100015F57D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		682968C218505E3900B70E13 /* Build configuration list for PBXNativeTarget "A3SetupDefaultData" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
