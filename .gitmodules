@@ -31,9 +31,6 @@
 [submodule "External/JVFloatLabeledTextField"]
 	path = External/JVFloatLabeledTextField
 	url = https://github.com/Steven-A3/JVFloatLabeledTextField.git
-[submodule "External/MWPhotoBrowser"]
-	path = External/MWPhotoBrowser
-	url = https://github.com/Steven-A3/MWPhotoBrowser.git
 [submodule "External/MPFoldTransition"]
 	path = External/MPFoldTransition
 	url = https://github.com/Steven-A3/MPFoldTransition.git
