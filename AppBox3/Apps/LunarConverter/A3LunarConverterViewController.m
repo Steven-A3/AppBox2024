@@ -143,7 +143,7 @@
 - (void)reloadDataFromStore {
 	_inputDateComponents = [[A3SyncManager sharedSyncManager] dateComponentsForKey:A3LunarConverterLastInputDateComponents];
 	if (!_inputDateComponents) {
-		_inputDateComponents = [_calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit fromDate:[NSDate date]];
+		_inputDateComponents = [_calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitWeekday fromDate:[NSDate date]];
 	}
 	_isLunarInput = [[A3SyncManager sharedSyncManager] boolForKey:A3LunarConverterLastInputDateIsLunar];
 }
@@ -1090,7 +1090,7 @@
 			NSDateComponents *verifyingComponents = [_inputDateComponents copy];
 			verifyingComponents.day = 1;
 			NSDate *verifyingDate = [self.calendar dateFromComponents:verifyingComponents];
-			NSRange range = [self.calendar rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:verifyingDate];
+			NSRange range = [self.calendar rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:verifyingDate];
 			if (_inputDateComponents.day > range.length) {
 				_inputDateComponents.day = range.length;
 			}

@@ -429,8 +429,6 @@
         popoverController.delegate = self;
         self.popoverVC = popoverController;
         [popoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        _activityViewController.completionHandler = ^(NSString* activityType, BOOL completed) {
-        };
 	}
 }
 

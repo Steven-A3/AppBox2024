@@ -15,14 +15,18 @@
 #import "A3UnitDataManager.h"
 #import "A3StandardTableViewCell.h"
 
-@interface A3UnitPriceSelectViewController () <UISearchDisplayDelegate, A3UnitPriceAddViewControllerDelegate>
+@interface A3UnitPriceSelectViewController () <UISearchControllerDelegate, UISearchResultsUpdating, A3UnitPriceAddViewControllerDelegate>
 {
     BOOL isEdited;
 }
 
 @property (nonatomic, strong) UITableView *tableView;
+/* TODO: 아래 Property는 삭제 돠어야 한다. UISearchController.searchBar를 사용하기 때문
+ * TODO: Before delete the following property, make sure all required codes are converted.
 @property (nonatomic, strong) UISearchBar *searchBar;
-@property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
+ */
+@property (nonatomic, strong) UISearchController *searchController;
+@property (nonatomic, strong) UITableViewController *searchResultTableViewController;
 @property (nonatomic, strong) NSArray *filteredResults;
 @property (nonatomic, strong) NSMutableArray *allData;
 @property (nonatomic, strong) NSMutableArray *favorites;
@@ -42,12 +46,14 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     
     self.view.backgroundColor = [UIColor whiteColor];
     [self.allData insertObject:self.noneItem atIndex:0];
+
+    self.definesPresentationContext = YES;
+    FNLOGRECT(self.view.bounds);
     
 	self.tableView = [UITableView new];
 	_tableView.frame = self.view.bounds;
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
-	_tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	_tableView.showsVerticalScrollIndicator = NO;
 	_tableView.separatorColor = A3UITableViewSeparatorColor;
 	_tableView.separatorInset = A3UITableViewSeparatorInset;
@@ -59,12 +65,15 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 		_tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
 	}
 	[self.view addSubview:_tableView];
+
+    [_tableView makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"A3UnitConverterTVActionCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3UnitPriceActionCellID2];
     
-	[self.view addSubview:self.searchBar];
-	[self mySearchDisplayController];
-    
+	self.tableView.tableHeaderView = self.searchController.searchBar;
+
     if ((!_shouldPopViewController && IS_IPHONE) || IS_IPAD) {
         self.tabBarController.navigationItem.leftBarButtonItem = self.cancelItem;
     }
@@ -88,7 +97,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 
 - (void)applicationDidEnterBackground {
 	if ([[A3AppDelegate instance] shouldProtectScreen]) {
-		[_searchBar resignFirstResponder];
+		[self.searchController.searchBar resignFirstResponder];
 	}
 }
 
@@ -125,7 +134,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 	[super viewWillAppear:animated];
     
 	if ([_placeHolder length]) {
-		self.searchBar.text = _placeHolder;
+		self.searchController.searchBar.text = _placeHolder;
 		[self filterContentForSearchText:_placeHolder];
 	}
     
@@ -143,6 +152,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     else {
         self.tabBarController.navigationItem.leftBarButtonItem = self.plusItem;
     }
+    FNLOGINSETS(self.tableView.contentInset);
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -151,6 +161,8 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self.navigationController setNavigationBarHidden:NO animated:NO];
 	}
+    FNLOG(@"%f", _tableView.contentOffset.y);
+    FNLOGINSETS(_tableView.contentInset);
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -211,25 +223,37 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     return _plusItem;
 }
 
-- (UISearchDisplayController *)mySearchDisplayController {
-	if (!_mySearchDisplayController) {
-		_mySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-		_mySearchDisplayController.delegate = self;
-		_mySearchDisplayController.searchBar.delegate = self;
-		_mySearchDisplayController.searchResultsTableView.delegate = self;
-		_mySearchDisplayController.searchResultsTableView.dataSource = self;
-		_mySearchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.2];
-		_mySearchDisplayController.searchResultsTableView.showsVerticalScrollIndicator = NO;
-		if ([_mySearchDisplayController.searchResultsTableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
-			_mySearchDisplayController.searchResultsTableView.cellLayoutMarginsFollowReadableWidth = NO;
+- (UITableViewController *)searchResultTableViewController {
+	if (!_searchResultTableViewController) {
+		_searchResultTableViewController = [[UITableViewController alloc] init];
+		_searchResultTableViewController.tableView.dataSource = self;
+		_searchResultTableViewController.tableView.delegate = self;
+		_searchResultTableViewController.tableView.showsVerticalScrollIndicator = NO;
+		/*
+		 * TODO: 이 코드는 iPad에서 필요한 사항인지 확인 후 적용합니다.
+		if ([_searchResultTableViewController.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+			_searchResultTableViewController.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 		}
-		if ([_mySearchDisplayController.searchResultsTableView respondsToSelector:@selector(layoutMargins)]) {
-			_mySearchDisplayController.searchResultsTableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+		if ([_searchResultTableViewController.tableView respondsToSelector:@selector(layoutMargins)]) {
+			_searchResultTableViewController.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
 		}
+		*/
 	}
-	return _mySearchDisplayController;
+	return _searchResultTableViewController;
 }
 
+- (UISearchController *)searchController {
+	if (!_searchController) {
+		_searchController = [[UISearchController alloc] initWithSearchResultsController:self.searchResultTableViewController];
+		_searchController.delegate = self;
+		_searchController.searchBar.delegate = self;
+        _searchController.searchResultsUpdater = self;
+		[_searchController.searchBar sizeToFit];
+	}
+	return _searchController;
+}
+
+/*
 - (UISearchBar *)searchBar {
 	if (!_searchBar) {
         
@@ -241,20 +265,24 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 	}
 	return _searchBar;
 }
+*/
 
 - (void)setIsFavoriteMode:(BOOL)isFavoriteMode
 {
+	/* TODO: Confirm this code really executed
+	 */
     _isFavoriteMode = isFavoriteMode;
     
     if (_isFavoriteMode) {
-        self.searchBar.hidden = YES;
+		self.tableView.tableHeaderView = nil;
         self.tableView.frame = self.view.bounds;
         [_tableView reloadData];
         
         self.tabBarController.navigationItem.rightBarButtonItem = self.editButtonItem;
     }
     else {
-        self.searchBar.hidden = NO;
+		self.tableView.tableHeaderView = self.searchController.searchBar;
+
         if (IS_RETINA) {
             self.tableView.frame = CGRectMake(0, kSearchBarHeight+3.5, self.view.bounds.size.width, self.view.bounds.size.height -kSearchBarHeight-3.5);
         }
@@ -380,7 +408,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 	} else {
 		_filteredResults = nil;
 	}
-	[self.tableView reloadData];
+	[self.searchResultTableViewController.tableView reloadData];
 }
 
 - (void)updateEditedDataToDelegate
@@ -408,16 +436,12 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
-		return [_filteredResults count];
-	}
-    else {
-        if (_isFavoriteMode) {
-            return self.favorites.count;
-        }
-        else {
+    if (_isFavoriteMode) {
+        return self.favorites.count;
+    } else {
+        if (_filteredResults) {
+            return [_filteredResults count];
+        } else {
             return self.allData.count;
         }
     }
@@ -428,15 +452,14 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     static NSString *CellIdentifier = @"Cell";
 	UITableViewCell *toCell=nil;
 
-	if (!_isFavoriteMode && (tableView != self.searchDisplayController.searchResultsTableView) && ([self.allData objectAtIndex:indexPath.row] == self.noneItem)) {
+	if (!_isFavoriteMode && !_filteredResults && ([self.allData objectAtIndex:indexPath.row] == self.noneItem)) {
 		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (cell == nil) {
 			cell = [[A3StandardTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
 		}
 		[self configureNoneCell:cell];
 		toCell = cell;
-	}
-	else {
+	} else {
 		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (cell == nil) {
 			cell = [[A3StandardTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
@@ -447,7 +470,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 		BOOL checkedItem = NO;
 		NSUInteger unitID;
 		NSString *unitName;
-		if (tableView == self.searchDisplayController.searchResultsTableView) {
+		if (_filteredResults) {
 			unitID = [self.filteredResults[indexPath.row][ID_KEY] unsignedIntegerValue];
 			unitName = self.filteredResults[indexPath.row][NAME_KEY];
 			cell.textLabel.text = unitName;
@@ -549,16 +572,17 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if (!_isFavoriteMode && (tableView != self.searchDisplayController.searchResultsTableView) && ([self.allData objectAtIndex:indexPath.row] == self.noneItem)) {
+	if (!_isFavoriteMode && !_filteredResults && ([self.allData objectAtIndex:indexPath.row] == self.noneItem)) {
 		[self callDelegate:NSNotFound];
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 	else {
 		NSUInteger selectedUnitID = NSNotFound;
-		if (tableView == self.searchDisplayController.searchResultsTableView) {
+		if (_filteredResults) {
 			selectedUnitID = [self.filteredResults[indexPath.row][ID_KEY] unsignedIntegerValue];
-			[self.searchDisplayController setActive:NO animated:NO];
-
+			/* TODO: Delete after test, if it is not required.
+			self.searchController.active = YES;
+			 */
 		} else {
 			if (_isFavoriteMode) {
 				selectedUnitID = [_favorites[indexPath.row] unsignedIntegerValue];
@@ -590,6 +614,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 	}
 }
 
+/*
 #pragma mark- UISearchDisplayControllerDelegate
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)tableView {
@@ -625,12 +650,15 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 	frame.origin.y = 64.0;
 	_searchBar.frame = frame;
 }
+*/
 
 #pragma mark - SearchBarDelegate
 
+/*
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
 	_searchBar.text = @"";
 }
+ */
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
 	[self filterContentForSearchText:searchText];
@@ -645,6 +673,33 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
 	[searchBar resignFirstResponder];
+}
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+    [self filterContentForSearchText:searchController.searchBar.text];
+}
+
+#pragma mark - UISearchControllerDelegate
+
+- (void)willPresentSearchController:(UISearchController *)searchController {
+    [self.tabBarController.navigationController setNavigationBarHidden:YES animated:YES];
+    [self.tabBarController.tabBar setHidden:YES];
+}
+
+- (void)didPresentSearchController:(UISearchController *)searchController {
+}
+
+- (void)willDismissSearchController:(UISearchController *)searchController {
+    [self.tabBarController.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.tabBarController.tabBar setHidden:NO];
+}
+
+- (void)didDismissSearchController:(UISearchController *)searchController {
+
+}
+
+- (void)presentSearchController:(UISearchController *)searchController {
+
 }
 
 @end

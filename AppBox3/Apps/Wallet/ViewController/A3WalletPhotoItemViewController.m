@@ -379,8 +379,11 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
         NSDictionary *metadata;
 		if (fieldItem.imageMetaData) {
 			NSPropertyListFormat format;
-			NSString *errorDescription;
-			metadata = [NSPropertyListSerialization propertyListFromData:fieldItem.imageMetaData mutabilityOption:NSPropertyListImmutable format:&format errorDescription:&errorDescription];
+            NSError *error;
+            metadata = [NSPropertyListSerialization propertyListWithData:fieldItem.imageMetaData
+                                                                 options:NSPropertyListImmutable
+                                                                  format:&format
+                                                                   error:&error];
 		}
         if (metadata) {
 			NSDictionary *exifMetadata = [metadata objectForKey:(id)kCGImagePropertyExifDictionary];

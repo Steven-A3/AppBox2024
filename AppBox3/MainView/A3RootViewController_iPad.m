@@ -427,11 +427,8 @@ static const CGFloat kSideViewWidth = 320.0;
 	[super viewWillTransitionToSize:size withTransitionCoordinator:transitionCoordinator];
 	UIInterfaceOrientation orientation;
 	orientation = size.width < size.height ? UIInterfaceOrientationPortrait : UIInterfaceOrientationLandscapeLeft;
-	[self willRotateToInterfaceOrientation:orientation duration: 0];
 	
 	[self layoutSubviews];
-
-
 }
 #endif
 

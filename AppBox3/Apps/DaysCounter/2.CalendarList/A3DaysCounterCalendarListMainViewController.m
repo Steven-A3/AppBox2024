@@ -35,7 +35,7 @@
 @interface A3DaysCounterCalendarListMainViewController ()
         <
         UINavigationControllerDelegate, UISearchBarDelegate,
-		UISearchDisplayDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate,
+		UISearchControllerDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate,
 		UIActionSheetDelegate, A3InstructionViewControllerDelegate, UIPopoverPresentationControllerDelegate,
 		A3ViewControllerProtocol
 		>
@@ -43,7 +43,8 @@
 @property (strong, nonatomic) NSArray *itemArray;
 @property (strong, nonatomic) NSArray *searchResultArray;
 @property (nonatomic, strong) UISearchBar *searchBar;
-@property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
+@property (nonatomic, strong) UISearchController *searchController;
+@property (nonatomic, strong) UITableViewController *searchResultsTableViewController;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 
 @property (strong, nonatomic) IBOutlet UIToolbar *bottomToolbar;
@@ -193,9 +194,6 @@
         make.width.equalTo(@44);
         make.height.equalTo(@44);
     }];
-    
-    [self.view addSubview:self.searchBar];
-    [self mySearchDisplayController];
     
     [A3DaysCounterModelManager reloadAlertDateListForLocalNotification:[NSManagedObjectContext MR_rootSavingContext]];
     
@@ -1010,7 +1008,9 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
     if ( !decelerate )
         [self scrollViewDidEndDecelerating:scrollView];
 }
+
 #pragma mark - UIActionSheetDelegate
+
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     [self setFirstActionSheet:nil];
@@ -1063,23 +1063,14 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 }
 
 #pragma mark - UISearchDisplayDelegate
-- (UISearchDisplayController *)mySearchDisplayController {
-	if (!_mySearchDisplayController) {
-		_mySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-		_mySearchDisplayController.delegate = self;
-		_mySearchDisplayController.searchBar.delegate = self;
-		_mySearchDisplayController.searchResultsTableView.delegate = self;
-		_mySearchDisplayController.searchResultsTableView.dataSource = self;
-		_mySearchDisplayController.searchResultsTableView.showsVerticalScrollIndicator = NO;
-        _mySearchDisplayController.searchResultsTableView.tableFooterView = [UIView new];
-		if ([_mySearchDisplayController.searchResultsTableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
-			_mySearchDisplayController.searchResultsTableView.cellLayoutMarginsFollowReadableWidth = NO;
-		}
-		if ([_mySearchDisplayController.searchResultsTableView respondsToSelector:@selector(layoutMargins)]) {
-			_mySearchDisplayController.searchResultsTableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
-		}
+
+- (UISearchController *)searchController {
+	if (!_searchController) {
+        _searchController = [[UISearchController alloc] initWithSearchResultsController:self.searchResultsTableViewController];
+		_searchController.delegate = self;
+		_searchController.searchBar.delegate = self;
 	}
-	return _mySearchDisplayController;
+	return _searchController;
 }
 
 - (UISearchBar *)searchBar {
@@ -1090,36 +1081,6 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 		_searchBar.delegate = self;
 	}
 	return _searchBar;
-}
-
-#pragma mark- UISearchDisplayControllerDelegate
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)tableView {
-	[self.tableView setHidden:YES];
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
-	[self.tableView setHidden:NO];
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
-    
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller didHideSearchResultsTableView:(UITableView *)tableView {
-    
-}
-
-- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
-	CGRect frame = _searchBar.frame;
-	frame.origin.y = 20.0;
-	_searchBar.frame = frame;
-}
-
-- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
-	CGRect frame = _searchBar.frame;
-	frame.origin.y = 0.0;
-	_searchBar.frame = frame;
 }
 
 #pragma mark - SearchBarDelegate
@@ -1144,10 +1105,11 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     self.searchResultArray = [_itemArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"calendarName contains[cd] %@",searchText]];
-    self.searchDisplayController.searchResultsTableView.tableFooterView = [UIView new];
-    [self.searchDisplayController.searchResultsTableView reloadData];
-    self.searchDisplayController.searchResultsTableView.separatorInset = UIEdgeInsetsZero;
-    self.searchDisplayController.searchBar.backgroundColor = self.navigationController.navigationBar.backgroundColor;
+    UITableView *tableView = self.searchResultsTableViewController.tableView;
+    tableView.tableFooterView = [UIView new];
+    [tableView reloadData];
+    tableView.separatorInset = UIEdgeInsetsZero;
+    self.searchController.searchBar.backgroundColor = self.navigationController.navigationBar.backgroundColor;
 }
 
 #pragma mark - AdMob

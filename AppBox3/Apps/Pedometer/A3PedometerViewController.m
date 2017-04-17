@@ -784,7 +784,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 - (void)executeQueryFromHealthStoreForType:(A3PedometerQueryType)type completion:(void (^)(void))completion {
 	// TODO: Daylight Saving 관련 수정해야 할 부분
 	NSCalendar *calendar = [NSCalendar currentCalendar];
-	NSDateComponents *dateComponents = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[NSDate date]];
+	NSDateComponents *dateComponents = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:[NSDate date]];
 	dateComponents.hour = 0;
 	NSDate *anchorDate = [calendar dateFromComponents:dateComponents];
 	

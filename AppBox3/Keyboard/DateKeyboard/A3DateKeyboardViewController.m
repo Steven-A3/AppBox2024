@@ -179,7 +179,7 @@
 
 - (NSCalendar *)gregorian {
 	if (!_gregorian) {
-		_gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+		_gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
 	}
 	return _gregorian;
 }
@@ -202,7 +202,7 @@
 			NSDateComponents *verifyingComponents = [self.dateComponents copy];
 			verifyingComponents.day = 1;
 			NSDate *verifyingDate = [self.gregorian dateFromComponents:verifyingComponents];
-			range = [self.gregorian rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:verifyingDate];
+			range = [self.gregorian rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:verifyingDate];
 		}
         
 		if (day > range.length) {
@@ -242,7 +242,7 @@
 			NSDateComponents *verifyingComponents = [self.dateComponents copy];
 			verifyingComponents.day = 1;
 			NSDate *verifyingDate = [self.gregorian dateFromComponents:verifyingComponents];
-			range = [self.gregorian rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:verifyingDate];
+			range = [self.gregorian rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:verifyingDate];
 		}
 		if ((entered == 0 || entered > 2) && day > range.length) {
 			day %= 100;
@@ -257,9 +257,9 @@
 }
 
 - (void)updateResult {
-	self.dateComponents.weekday = NSUndefinedDateComponent;
+	self.dateComponents.weekday = NSDateComponentUndefined;
 	NSDate *displayDate = [self.gregorian dateFromComponents:self.dateComponents];
-	NSDateComponents *temporary = [self.gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit fromDate:displayDate];
+	NSDateComponents *temporary = [self.gregorian components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitWeekday fromDate:displayDate];
 	self.dateComponents.weekday = temporary.weekday;
 	if (!_isLunarDate) {
 		_displayLabel.text = [self.dateFormatter stringFromDateComponents:self.dateComponents];
@@ -315,7 +315,7 @@
 - (void)setDate:(NSDate *)date {
 	_date = date;
 	if (date) {
-		_dateComponents = [self.gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit fromDate:date];
+		_dateComponents = [self.gregorian components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitWeekday fromDate:date];
 	} else {
 		_dateComponents = nil;
 	}
@@ -323,7 +323,7 @@
 
 - (NSDateComponents *)dateComponents {
 	if (!_dateComponents) {
-		_dateComponents = [self.gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit fromDate:[NSDate date]];
+		_dateComponents = [self.gregorian components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitWeekday fromDate:[NSDate date]];
 	}
 	return _dateComponents;
 }

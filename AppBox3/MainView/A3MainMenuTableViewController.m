@@ -38,10 +38,8 @@ NSString *const A3MainMenuBecameFirstResponder = @"A3MainMenuBecameFirstResponde
 NSString *const A3NotificationMainMenuDidShow = @"A3NotificationMainMenuDidShow";
 NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide";
 
-@interface A3MainMenuTableViewController () <UISearchDisplayDelegate, UISearchBarDelegate, A3TableViewExpandableElementDelegate>
+@interface A3MainMenuTableViewController () <A3TableViewExpandableElementDelegate>
 
-@property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
-@property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 @property (nonatomic, strong) A3TableViewElement *selectedElement;
 @property (nonatomic, strong) A3TableViewElement *mostRecentMenuElement;
 @property (nonatomic, strong) NSTimer *titleResetTimer;
@@ -147,15 +145,6 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)addTapGestureRecognizer {
-	_tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
-	[self.view addGestureRecognizer:_tapGestureRecognizer];
-}
-
-- (void)handleTapGesture:(UITapGestureRecognizer *)gestureRecognizer {
-	[_mySearchDisplayController.searchBar resignFirstResponder];
 }
 
 #pragma mark - Data Handler
@@ -324,11 +313,6 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 	return NO;
 }
 
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
-	[_mySearchDisplayController setActive:YES];
-	return YES;
-}
-
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	A3TableViewMenuElement *element = (A3TableViewMenuElement *) [self elementAtIndexPath:indexPath];
 
@@ -362,8 +346,6 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	[self.mySearchDisplayController.searchBar resignFirstResponder];
-
 	A3TableViewExpandableElement *expandableElement = (A3TableViewExpandableElement *) [self elementAtIndexPath:indexPath];
 	if ([expandableElement isKindOfClass:[A3TableViewExpandableElement class]]) {
 		A3TableViewExpandableCell *cell = (A3TableViewExpandableCell *) [tableView cellForRowAtIndexPath:indexPath];
@@ -394,8 +376,6 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 #pragma mark - A3ExpandableElement delegate
 
 - (void)element:(A3TableViewExpandableElement *)element cellStateChangedAtIndexPath:(NSIndexPath *)indexPath {
-	[self.mySearchDisplayController.searchBar resignFirstResponder];
-
 	if (indexPath.section == 0) {
 		if (indexPath.row == 0) {
 			NSMutableDictionary *favoriteDictionary = [[[A3AppDelegate instance] favoriteMenuDictionary] mutableCopy];

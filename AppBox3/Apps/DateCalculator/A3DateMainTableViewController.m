@@ -357,7 +357,7 @@
 -(void)setFromDate:(NSDate *)fromDate
 {
     _fromDate = [fromDate copy];
-    NSDateComponents *comp = [[A3DateCalcStateManager currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit
+    NSDateComponents *comp = [[A3DateCalcStateManager currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit
                                                                          fromDate:_fromDate];
     comp.hour = 0;
     comp.minute = 0;
@@ -369,7 +369,7 @@
 -(void)setToDate:(NSDate *)toDate
 {
     _toDate = [toDate copy];
-    NSDateComponents *comp = [[A3DateCalcStateManager currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit
+    NSDateComponents *comp = [[A3DateCalcStateManager currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit
                                                                          fromDate:_toDate];
     comp.hour = 0;
     comp.minute = 0;
@@ -404,8 +404,8 @@
 
 - (NSDateComponents *)betweenDateCalculatedFromTo
 {
-    NSUInteger unitFlags = NSDayCalendarUnit;
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSUInteger unitFlags =NSCalendarUnitDay;
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     NSDateComponents *components = [calendar components:unitFlags fromDate:self.fromDate toDate:self.toDate options:0];
     return components;
 }
@@ -1195,7 +1195,7 @@
     
     // 풋터뷰 필드(ADD/SUB모드)
     if (self.isAddSubMode && (_editingTextField == footerCell.yearTextField || _editingTextField == footerCell.monthTextField || _editingTextField == footerCell.dayTextField)) {
-        NSDateComponents *changed = [[A3DateCalcStateManager currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit
+        NSDateComponents *changed = [[A3DateCalcStateManager currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay
                                                                                 fromDate:date];
         if (_editingTextField == footerCell.yearTextField) {
             self.offsetComp.year = changed.year;

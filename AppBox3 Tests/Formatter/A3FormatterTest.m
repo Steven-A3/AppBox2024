@@ -82,7 +82,7 @@
 - (void)testStringFromDateComponents {
 	NSDateFormatter *df = [NSDateFormatter new];
 	NSDate *today = [NSDate date];
-	NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:today];
+	NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:today];
 	
 	NSMutableString *log = [NSMutableString new];
 	NSArray *localeIdentifiers = [[NSLocale availableLocaleIdentifiers] sortedArrayUsingSelector:@selector(compare:)];
@@ -251,7 +251,7 @@
 //	toComponents.hour = 12;
 	NSDate *toDate = [calendar dateFromComponents:toComponents];
 	
-	NSDateComponents *diffComponents = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit fromDate:fromDate toDate:toDate options:0];
+	NSDateComponents *diffComponents = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:fromDate toDate:toDate options:0];
 	NSLog(@"%@", diffComponents);
 	
 	fromComponents.year = 2013;
@@ -260,7 +260,7 @@
 //	fromComponents.hour = 12;
 	fromDate = [calendar dateFromComponents:fromComponents];
 	
-	diffComponents = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit fromDate:fromDate toDate:toDate options:0];
+	diffComponents = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:fromDate toDate:toDate options:0];
 	NSLog(@"%@", diffComponents);
 }
 

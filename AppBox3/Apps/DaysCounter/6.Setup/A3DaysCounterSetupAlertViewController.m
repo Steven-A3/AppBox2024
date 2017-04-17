@@ -373,7 +373,7 @@
 	}
     
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
-	NSDateComponents *dateComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:datePicker.date];
+	NSDateComponents *dateComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:datePicker.date];
 	dateComp.second = 0;
 	_eventModel.alertDatetime = [calendar dateFromComponents:dateComp];
 	[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[_itemArray count]-1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];

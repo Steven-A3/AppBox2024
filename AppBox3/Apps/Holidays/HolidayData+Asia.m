@@ -1502,7 +1502,7 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	
 		NSMutableArray *book = [[NSMutableArray alloc] initWithArray:[indianBook objectForKey:[NSString stringWithFormat:@"%lu", (unsigned long)year]]];
 		NSInteger index, count = [book count];
-		NSCalendar *gmtCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+		NSCalendar *gmtCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
 		[gmtCalendar setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
 		NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
 
@@ -1510,7 +1510,7 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 
 		for (index = 0; index < count; index++) {
 			NSMutableArray *item = [NSMutableArray arrayWithArray:[book objectAtIndex:index]];
-			NSDateComponents *components = [gmtCalendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:item[1]];
+			NSDateComponents *components = [gmtCalendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:item[1]];
 			FNLOG(@"%ld, %ld, %ld", (long)components.year, (long)components.month, (long)components.day);
 			NSDate *newDate = [gregorian dateFromComponents:components];
 

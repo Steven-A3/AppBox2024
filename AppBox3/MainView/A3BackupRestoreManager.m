@@ -408,7 +408,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 - (NSString *)uniqueBackupFilename {
 	NSDate *date = [NSDate date];
-	NSDateComponents *components = [[[A3AppDelegate instance] calendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:date];
+	NSDateComponents *components = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:date];
 	NSString *seedFilename = [NSString stringWithFormat:@"AppBoxBackup-%0ld-%02ld-%02ld-%02ld-%02ld", (long) components.year, (long) components.month, (long) components.day, (long) components.hour, (long) components.minute];
 	NSString *filename = seedFilename;
 	NSString *path = [[filename stringByAppendingPathExtension:@"backup"] pathInDocumentDirectory];

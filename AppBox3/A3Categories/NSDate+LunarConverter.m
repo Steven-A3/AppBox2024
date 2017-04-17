@@ -433,7 +433,7 @@ static arrayOfMonths lunarMonthTable_Chinese[] = {
 			[resultComponents setYear:solYear];
 
 			NSDate *date = [[A3AppDelegate instance].calendar dateFromComponents:resultComponents];
-			resultComponents = [[A3AppDelegate instance].calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit fromDate:date];
+			resultComponents = [[A3AppDelegate instance].calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitWeekday fromDate:date];
 
             if( resultLeapMonth != NULL )
                 *resultLeapMonth = lunLeapMonth;

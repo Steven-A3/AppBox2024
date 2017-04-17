@@ -255,14 +255,14 @@
 
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
 	NSDate *startDate = self.startDate ? self.startDate : [NSDate date];
-	NSDateComponents *components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:startDate];
+	NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth fromDate:startDate];
 	NSInteger startYear = components.year;
 	NSInteger startMonth = components.month;
 
-	components = [calendar components:NSMonthCalendarUnit fromDate:self.extraPaymentYearlyDate ? self.extraPaymentYearlyDate : [NSDate date]];
+	components = [calendar components:NSCalendarUnitMonth fromDate:self.extraPaymentYearlyDate ? self.extraPaymentYearlyDate : [NSDate date]];
 	NSInteger extraPaymentYearlyMonth = components.month;
 
-	components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:self.extraPaymentOneTimeDate ? self.extraPaymentOneTimeDate : [NSDate date]];
+	components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth fromDate:self.extraPaymentOneTimeDate ? self.extraPaymentOneTimeDate : [NSDate date]];
 	NSInteger extraPaymentOneTimeYear = components.year;
 	NSInteger extraPaymentOneTimeMonth = components.month;
 

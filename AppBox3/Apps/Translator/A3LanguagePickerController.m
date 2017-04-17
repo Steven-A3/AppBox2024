@@ -49,7 +49,7 @@ static NSString *CellIdentifier = @"Cell";
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
-	[self.mySearchDisplayController.searchResultsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
+	[self.searchResultsTableViewController.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
 
 	if (IS_IPHONE) {
 		[self leftBarButtonCancelButton];
@@ -60,8 +60,8 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)applicationDidEnterBackground {
-	if ([self.mySearchDisplayController isActive]) {
-		[self.mySearchDisplayController setActive:NO];
+	if ([self.searchController isActive]) {
+		[self.searchController setActive:NO];
 	}
 }
 
@@ -104,7 +104,7 @@ static NSString *CellIdentifier = @"Cell";
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
 
 	A3SearchTargetItem *data;
-	if (tableView == self.searchDisplayController.searchResultsTableView) {
+	if (tableView == self.searchResultsTableViewController.tableView) {
 		data = self.filteredResults[indexPath.row];
 	} else {
 		NSArray *rowsInSection = (self.sectionsArray)[indexPath.section];
@@ -136,7 +136,7 @@ static NSString *CellIdentifier = @"Cell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	A3SearchTargetItem *data;
-	if (tableView == self.searchDisplayController.searchResultsTableView) {
+	if (tableView == self.searchResultsTableViewController.tableView) {
 		data = self.filteredResults[indexPath.row];
 	} else {
 		NSArray *countriesInSection = (self.sectionsArray)[indexPath.section];

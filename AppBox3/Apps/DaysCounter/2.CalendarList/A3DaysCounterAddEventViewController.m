@@ -140,8 +140,8 @@
 		_eventItem.updateDate = [NSDate date];
 
 		NSCalendar *calendar = [[A3AppDelegate instance] calendar];
-        [A3DaysCounterModelManager setDateModelObjectForDateComponents:[calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:[NSDate date]] withEventModel:_eventItem endDate:NO];
-        [A3DaysCounterModelManager setDateModelObjectForDateComponents:[calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:[NSDate date]] withEventModel:_eventItem endDate:YES];
+        [A3DaysCounterModelManager setDateModelObjectForDateComponents:[calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit fromDate:[NSDate date]] withEventModel:_eventItem endDate:NO];
+        [A3DaysCounterModelManager setDateModelObjectForDateComponents:[calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit fromDate:[NSDate date]] withEventModel:_eventItem endDate:YES];
 
         _eventItem.isAllDay = @(YES);
         _eventItem.isLunar = @(NO);
@@ -2040,13 +2040,13 @@
     NSCalendar *calendar = [[A3AppDelegate instance] calendar];
     NSDateComponents *dateComp;
     if ([_eventItem.isAllDay boolValue]) {
-        dateComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[datePicker date]];
+        dateComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:[datePicker date]];
         dateComp.hour = 0;
         dateComp.minute = 0;
         dateComp.second = 0;
     }
     else {
-        dateComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:[datePicker date]];
+        dateComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:[datePicker date]];
         dateComp.second = 0;
         DaysCounterDate *dateData = [self.inputDateKey isEqualToString:EventItem_StartDate] ? _eventItem.startDate : [_eventItem endDateCreateIfNotExist:NO ];
         if ([dateData.hour integerValue] != dateComp.hour || [dateData.minute integerValue] != dateComp.minute) {

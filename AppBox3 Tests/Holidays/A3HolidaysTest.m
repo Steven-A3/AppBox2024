@@ -36,7 +36,7 @@
 
 - (void)testDataForAllCountry
 {
-	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
 
     NSArray *allCountry = [HolidayData supportedCountries];
     NSLog(@"%lu", (unsigned long)[allCountry count]);
@@ -53,7 +53,7 @@
 			expect(date).notTo.beNil;
 			expect([date isMemberOfClass:[NSDate class]]).beTruthy;
 
-			NSDateComponents *components = [calendar components:NSYearCalendarUnit fromDate:date];
+			NSDateComponents *components = [calendar components:NSCalendarUnitYear fromDate:date];
 			expect(components.year).to.equal(2014);
 
 			id public = [obj objectForKey:kHolidayIsPublic];

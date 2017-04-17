@@ -755,8 +755,8 @@
 - (void)calculateBetweenFromAndTo
 {
     NSInteger minDayCount = 0;
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSDateComponents *result = [calendar components:NSDayCalendarUnit fromDate:_minDate toDate:_maxDate options:0];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *result = [calendar components:NSCalendarUnitDay fromDate:_minDate toDate:_maxDate options:0];
     NSInteger maxDayCount = result.day;
     
     CGFloat offsetFrom = minDayCount + ((_fromValue-SLIDER_OFFSET) / (_maxValue-SLIDER_OFFSET)) * maxDayCount;
@@ -813,25 +813,25 @@
     NSDate *toDate;
     NSCalendar *calendar = [[A3AppDelegate instance] calendar];
     
-    [calendar rangeOfUnit:NSDayCalendarUnit startDate:&fromDate
+    [calendar rangeOfUnit:NSCalendarUnitDay startDate:&fromDate
                  interval:NULL forDate:fromDateTime];
-    [calendar rangeOfUnit:NSDayCalendarUnit startDate:&toDate
+    [calendar rangeOfUnit:NSCalendarUnitDay startDate:&toDate
                  interval:NULL forDate:toDateTime];
     
     DurationType durationType = [A3DateCalcStateManager durationType];
     NSCalendarUnit calUnit;
     
     if (durationType == DurationType_Month) {
-        calUnit = NSMonthCalendarUnit | NSDayCalendarUnit;
+        calUnit = NSCalendarUnitMonth |NSCalendarUnitDay;
     }
     else if (durationType == DurationType_Week) {
-        calUnit = NSWeekdayCalendarUnit;
+        calUnit = NSCalendarUnitWeekday;
     }
     else if (durationType == DurationType_Day) {
-        calUnit = NSDayCalendarUnit;
+        calUnit =NSCalendarUnitDay;
     }
     else {
-        calUnit = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
+        calUnit = NSCalendarUnitYear | NSCalendarUnitMonth |NSCalendarUnitDay;
     }
     NSDateComponents *result = [calendar components:calUnit
                                                fromDate:fromDate toDate:toDate options:0];

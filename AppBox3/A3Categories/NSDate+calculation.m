@@ -16,7 +16,7 @@
 
 - (NSDate *)firstDateOfMonth {
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
-	NSDateComponents *components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:self];
+	NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:self];
 	components.day = 1;
 	components.hour = 12;
 	return [calendar dateFromComponents:components];

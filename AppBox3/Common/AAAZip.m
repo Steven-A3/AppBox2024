@@ -95,8 +95,8 @@
 		{
 			// some application does use dosDate, but tmz_date instead
 			NSCalendar* currCalendar = [[A3AppDelegate instance] calendar];
-			NSCalendarUnit flags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit |
-            NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit ;
+			NSCalendarUnit flags = NSCalendarUnitYear | NSCalendarUnitMonth |NSCalendarUnitDay |
+           NSCalendarUnitHour |NSCalendarUnitMinute |NSCalendarUnitSecond ;
 			NSDateComponents* dc = [currCalendar components:flags fromDate:fileDate];
 			zipInfo.tmz_date.tm_sec = (uInt) [dc second];
 			zipInfo.tmz_date.tm_min = (uInt) [dc minute];
@@ -533,7 +533,7 @@ done:
                 dc.year = fileInfo.tmu_date.tm_year;
                 
                 NSCalendar *gregorian = [[NSCalendar alloc] 
-                                         initWithCalendarIdentifier:NSGregorianCalendar];
+                                         initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
                 
                 orgDate = [gregorian dateFromComponents:dc] ;
 

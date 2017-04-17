@@ -121,7 +121,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 		averageCycleLength = 28;
 	}
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
-	NSDateComponents *difference = [calendar components:NSDayCalendarUnit fromDate:period.periodEnds toDate:today options:0];
+	NSDateComponents *difference = [calendar components:NSCalendarUnitDay fromDate:period.periodEnds toDate:today options:0];
 	NSInteger numberOfPredictToMake = difference.day / averageCycleLength + 1;
 
 	if (numberOfPredictToMake) {
@@ -508,7 +508,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 	for (LadyCalendarPeriod *period in predictPeriods) {
 		@autoreleasepool {
 			NSDate *fireDate = [calendar dateByAddingComponents:fireDateComponents toDate:period.startDate options:0];
-			NSDateComponents *components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:fireDate];
+			NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:fireDate];
 			components.hour = 9;
 			fireDate = [calendar dateFromComponents:components];
 

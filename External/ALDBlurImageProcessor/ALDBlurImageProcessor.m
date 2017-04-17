@@ -386,7 +386,7 @@ NSString * const ALDBlurImageProcessorImageProcessingErrorNotificationErrorCodeK
     // TODO : These 2 NSBlockOperation properties, queuePriority and threadPriority, could
     // be parameterized
     blurOperation.queuePriority = NSOperationQueuePriorityVeryHigh;
-    blurOperation.threadPriority = 1.0f;
+    blurOperation.qualityOfService = NSOperationQualityOfServiceUserInteractive;
     
     [imageBlurProcessingQueue addOperation: blurOperation];
     

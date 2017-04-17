@@ -20,7 +20,7 @@
 }
 
 - (void)reassignUniqueIDWithStartDate {
-	NSDateComponents *components = [[A3AppDelegate instance].calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:self.startDate];
+	NSDateComponents *components = [[A3AppDelegate instance].calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:self.startDate];
 	self.uniqueID = [NSString stringWithFormat:@"%ld-%02ld-%02ld", (long)components.year, (long)components.month, (long)components.day];
 }
 

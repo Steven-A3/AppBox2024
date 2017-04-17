@@ -33,7 +33,7 @@ NSString *const kHolidaysResourceName = @"holidays";
 {
 	NSDate *result = nil;
 	if (option == 6) {
-		NSDateComponents *originalDC = [calendar components:NSWeekdayCalendarUnit|NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit fromDate:date];
+		NSDateComponents *originalDC = [calendar components:NSCalendarUnitWeekday|NSCalendarUnitDay|NSCalendarUnitMonth|NSCalendarUnitYear fromDate:date];
 		switch ([originalDC weekday]) {
 			case Sunday:
 			case Saturday:
@@ -45,7 +45,7 @@ NSString *const kHolidaysResourceName = @"holidays";
 			}
 		}
 	} else if (option == 5) {
-		NSDateComponents *originalDC = [calendar components:NSWeekdayCalendarUnit|NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit fromDate:date];
+		NSDateComponents *originalDC = [calendar components:NSCalendarUnitWeekday|NSCalendarUnitDay|NSCalendarUnitMonth|NSCalendarUnitYear fromDate:date];
 		switch ([originalDC weekday]) {
 			case Sunday:
 			case Monday:
@@ -73,14 +73,14 @@ NSString *const kHolidaysResourceName = @"holidays";
 			}
 		}
 	} else if (option == 4) {
-		NSDateComponents *originalDC = [calendar components:NSWeekdayCalendarUnit|NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit fromDate:date];
+		NSDateComponents *originalDC = [calendar components:NSCalendarUnitWeekday|NSCalendarUnitDay|NSCalendarUnitMonth|NSCalendarUnitYear fromDate:date];
 		if ([originalDC weekday] != Monday) {
 			NSDateComponents *offsetdc = [[NSDateComponents alloc] init];
 			[offsetdc setDay:([originalDC weekday] == 1)?1:(9 - [originalDC weekday])];
 			result = [calendar dateByAddingComponents:offsetdc toDate:date options:0];
 		}
 	} else if (option != 0) {
-		NSDateComponents *originalDC = [calendar components:NSWeekdayCalendarUnit|NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit fromDate:date];
+		NSDateComponents *originalDC = [calendar components:NSCalendarUnitWeekday|NSCalendarUnitDay|NSCalendarUnitMonth|NSCalendarUnitYear fromDate:date];
 		int offset = 0;
 		if ([originalDC weekday] == Saturday) {
 			if (option == 1)
@@ -124,7 +124,7 @@ NSString *const kHolidaysResourceName = @"holidays";
 	[dateComponents setYear:year];
 	NSDate *date = [calendar dateFromComponents:dateComponents];
 	if (ordinal >= 5) {
-		NSDateComponents *verifyDC = [calendar components:NSMonthCalendarUnit fromDate:date];
+		NSDateComponents *verifyDC = [calendar components:NSCalendarUnitMonth fromDate:date];
 		if ([verifyDC month] != month) {
 			[dateComponents setWeekdayOrdinal:ordinal - 1];
 			date = [calendar dateFromComponents:dateComponents];
@@ -639,7 +639,7 @@ static NSUInteger Eid_al_adha[][2] = {
 	[dc setYear:year];
 	date = [calendar dateFromComponents:dc];
 	
-	NSRange range = [calendar rangeOfUnit:NSWeekdayOrdinalCalendarUnit inUnit:NSMonthCalendarUnit forDate:date];
+	NSRange range = [calendar rangeOfUnit:NSWeekdayOrdinalCalendarUnit inUnit:NSCalendarUnitMonth forDate:date];
 	[dc setWeekday:weekday];
 	[dc setWeekdayOrdinal:(range.location - 1) + range.length];
 	[dc setMonth:month];
@@ -647,7 +647,7 @@ static NSUInteger Eid_al_adha[][2] = {
 	
 	NSDate *dateReturn = [calendar dateFromComponents:dc];
 	
-	NSDateComponents *dcForMonth = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:dateReturn];
+	NSDateComponents *dcForMonth = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:dateReturn];
 	if (month != [dcForMonth month]) {
 		NSDateComponents *newDC = [[NSDateComponents alloc] init];
 		[newDC setWeekday:weekday];
@@ -1173,7 +1173,7 @@ static arrayOfMonths lunarMonthTable_Chinese[] = {
 {
 	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];;
 
-	NSDateComponents *lunarComponents = [gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
+	NSDateComponents *lunarComponents = [gregorian components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
 	NSDate *newDate = [self lunarCalcWithComponents:lunarComponents gregorianToLunar:YES leapMonth:NO korean:YES];
 	
 	return newDate;
@@ -1181,7 +1181,7 @@ static arrayOfMonths lunarMonthTable_Chinese[] = {
 
 + (NSDate *)justDateWithDate:(NSDate *)date {
 	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
-	NSDateComponents *components = [gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
+	NSDateComponents *components = [gregorian components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
 	NSDate *dateReturn = [gregorian dateFromComponents:components];
 	
 	return dateReturn;
@@ -1196,11 +1196,11 @@ static arrayOfMonths lunarMonthTable_Chinese[] = {
 
 + (NSDate *)dateFrom:(NSDate *)from withOffset:(NSInteger)offset {
 	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
-    NSDateComponents *sourceComponents = [gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit fromDate:from];
+    NSDateComponents *sourceComponents = [gregorian components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:from];
     sourceComponents.day += offset;
     sourceComponents.hour = 12;
     NSDate *date = [gregorian dateFromComponents:sourceComponents];
-    sourceComponents = [gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
+    sourceComponents = [gregorian components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
     date = [gregorian dateFromComponents:sourceComponents];
     
 	

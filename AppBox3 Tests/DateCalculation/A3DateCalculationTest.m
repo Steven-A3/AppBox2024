@@ -23,7 +23,7 @@
     [super setUp];
 	
     // Put setup code here. This method is called before the invocation of each test method in the class.
-	_gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	_gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
 	NSDateComponents *components = [NSDateComponents new];
 	components.month = -2;
 	_olderDate = [_gregorian dateByAddingComponents:components toDate:[NSDate date] options:0];

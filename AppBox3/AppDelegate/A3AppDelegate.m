@@ -657,7 +657,7 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 
 - (NSCalendar *)calendar {
 	if (!_calendar) {
-		_calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+		_calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
 	}
 	return _calendar;
 }

@@ -97,9 +97,9 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 }
 
 - (BOOL)isDayForCountryCode:(NSString *)countryCode {
-	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
 	[calendar setTimeZone:[HolidayData timeZoneForCountryCode:countryCode]];
-	NSDateComponents *dateComponents = [calendar components:NSHourCalendarUnit fromDate:[NSDate date]];
+	NSDateComponents *dateComponents = [calendar components:NSCalendarUnitHour fromDate:[NSDate date]];
 	return (dateComponents.hour >= 6 && dateComponents.hour < 18);
 }
 

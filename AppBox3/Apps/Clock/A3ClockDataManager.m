@@ -165,7 +165,7 @@
 	NSDate *currentTime = [NSDate date];
 
 	self.clockInfo.date = currentTime;
-	_clockInfo.dateComponents = [self.clockInfo.calendar components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekdayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:currentTime];
+	_clockInfo.dateComponents = [self.clockInfo.calendar components:NSCalendarUnitYear | NSCalendarUnitMonth |NSCalendarUnitDay | NSCalendarUnitWeekday |NSCalendarUnitHour |NSCalendarUnitMinute |NSCalendarUnitSecond fromDate:currentTime];
 	if (_clockInfo.dateComponents.second == 0 || forceRefreshAll) _refreshWholeClock = YES;
 
 	if (_refreshWholeClock) {
@@ -190,8 +190,8 @@
 	[formatter setDateFormat:@"dd"];
 	_clockInfo.day = [formatter stringFromDate:currentTime];
 
-	NSRange days = [self.clockInfo.calendar rangeOfUnit:NSDayCalendarUnit
-									   inUnit:NSMonthCalendarUnit
+	NSRange days = [self.clockInfo.calendar rangeOfUnit:NSCalendarUnitDay
+									   inUnit:NSCalendarUnitMonth
 									  forDate:currentTime];
 	_clockInfo.maxDay = [NSString stringWithFormat:@"%lu", (unsigned long)days.length];
 

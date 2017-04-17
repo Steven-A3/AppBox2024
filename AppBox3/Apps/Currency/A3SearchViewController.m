@@ -15,7 +15,7 @@
 @implementation A3SearchTargetItem
 @end
 
-@interface A3SearchViewController () <UISearchDisplayDelegate>
+@interface A3SearchViewController () <UISearchDisplayDelegate, UISearchControllerDelegate, UISearchResultsUpdating>
 
 @property (nonatomic) UILocalizedIndexedCollation *collation;
 @property (nonatomic, strong) NSArray *sectionTitles;
@@ -40,8 +40,11 @@
 	_tableView.separatorColor = A3UITableViewSeparatorColor;
 	_tableView.separatorInset = A3UITableViewSeparatorInset;
 	_tableView.contentInset = UIEdgeInsetsMake(kSearchBarHeight + 4, 0, 0, 0);
-	_tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self.view addSubview:_tableView];
+
+	[_tableView makeConstraints:^(MASConstraintMaker *make) {
+		make.edges.equalTo(self.view);
+	}];
 
 	if ([_tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		_tableView.cellLayoutMarginsFollowReadableWidth = NO;
@@ -49,21 +52,20 @@
 	if ([_tableView respondsToSelector:@selector(layoutMargins)]) {
 		_tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
 	}
-	[self.view addSubview:self.searchBar];
-	[self mySearchDisplayController];
+    _tableView.tableHeaderView = self.searchController.searchBar;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
 	if ([_placeHolder length]) {
-		self.searchBar.text = _placeHolder;
+		self.searchController.searchBar.text = _placeHolder;
 		[self filterContentForSearchText:_placeHolder];
 	}
 }
 
 - (BOOL)resignFirstResponder {
-	[_searchBar resignFirstResponder];
+	[self.searchController.searchBar resignFirstResponder];
 	return [super resignFirstResponder];
 }
 
@@ -83,34 +85,34 @@
 	}
 }
 
-- (UISearchDisplayController *)mySearchDisplayController {
-	if (!_mySearchDisplayController) {
-		_mySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-		_mySearchDisplayController.delegate = self;
-		_mySearchDisplayController.searchBar.delegate = self;
-		_mySearchDisplayController.searchResultsTableView.delegate = self;
-		_mySearchDisplayController.searchResultsTableView.dataSource = self;
-		_mySearchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.2];
-		_mySearchDisplayController.searchResultsTableView.showsVerticalScrollIndicator = NO;
-		_mySearchDisplayController.searchResultsTableView.separatorInset = A3UITableViewSeparatorInset;
-		if ([_mySearchDisplayController.searchResultsTableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
-			_mySearchDisplayController.searchResultsTableView.cellLayoutMarginsFollowReadableWidth = NO;
-		}
-		if ([_mySearchDisplayController.searchResultsTableView respondsToSelector:@selector(layoutMargins)]) {
-			_mySearchDisplayController.searchResultsTableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
-		}
+- (UITableViewController *)searchResultsTableViewController {
+	if (!_searchResultsTableViewController) {
+		_searchResultsTableViewController = [UITableViewController new];
+        UITableView *tableView = _searchResultsTableViewController.tableView;
+		tableView.delegate = self;
+        tableView.dataSource = self;
+        tableView.showsVerticalScrollIndicator = NO;
+        tableView.separatorInset = A3UITableViewSeparatorInset;
+        if ([tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+            tableView.cellLayoutMarginsFollowReadableWidth = NO;
+        }
+        if ([tableView respondsToSelector:@selector(layoutMargins)]) {
+            tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+        }
 	}
-	return _mySearchDisplayController;
+	return _searchResultsTableViewController;
 }
 
-- (UISearchBar *)searchBar {
-	if (!_searchBar) {
-		_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 64.0, self.view.bounds.size.width, kSearchBarHeight)];
-		_searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		_searchBar.backgroundColor = self.navigationController.navigationBar.backgroundColor;
-		_searchBar.delegate = self;
+- (UISearchController *)searchController {
+	if (!_searchController) {
+		_searchController = [[UISearchController alloc] initWithSearchResultsController:self.searchResultsTableViewController];
+        _searchController.delegate = self;
+		_searchController.searchBar.delegate = self;
+        _searchController.searchResultsUpdater = self;
+        [_searchController.searchBar sizeToFit];
+
 	}
-	return _searchBar;
+	return _searchController;
 }
 
 - (void)callDelegate:(NSString *)selectedItem {
@@ -135,7 +137,7 @@
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-	_searchBar.text = @"";
+	self.searchController.searchBar.text = @"";
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
@@ -151,37 +153,6 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
 	[searchBar resignFirstResponder];
-}
-
-#pragma mark UISearchDisplayControllerDelegate
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)tableView {
-	[self.tableView setHidden:YES];
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
-	[self.tableView setHidden:NO];
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
-
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller didHideSearchResultsTableView:(UITableView *)tableView {
-
-}
-
-- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
-
-	CGRect frame = _searchBar.frame;
-	frame.origin.y = 20.0;
-	_searchBar.frame = frame;
-}
-
-- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
-	CGRect frame = _searchBar.frame;
-	frame.origin.y = 64.0;
-	_searchBar.frame = frame;
 }
 
 - (UILocalizedIndexedCollation *)collation {
@@ -229,7 +200,9 @@
 
 		if ([dataArrayForSection count]) {
 			// If the table view or its contents were editable, you would make a mutable copy here.
-			NSArray *sortedDataArrayForSection = [self.collation sortedArrayFromArray:dataArrayForSection collationStringSelector:NSSelectorFromString(@"displayName")];
+			NSArray *sortedDataArrayForSection = [self.collation
+                    sortedArrayFromArray:dataArrayForSection
+                 collationStringSelector:NSSelectorFromString(@"displayName")];
 
 			A3SearchTargetItem *firstItem = sortedDataArrayForSection[0];
 			NSString *firstLetter = [[[firstItem displayName] substringToIndex:1] componentsSeparatedByKorean];
@@ -256,18 +229,19 @@
 {
 	NSString *query = searchText;
 	if (query && query.length) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"displayName contains[cd] %@", query];
+		NSPredicate *predicate =
+                [NSPredicate predicateWithFormat:@"displayName contains[cd] %@", query];
 		_filteredResults = [self.allData filteredArrayUsingPredicate:predicate];
 	} else {
 		_filteredResults = nil;
 	}
-	[self.tableView reloadData];
+	[_searchResultsTableViewController.tableView reloadData];
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	if (tableView == self.searchDisplayController.searchResultsTableView) {
+	if (tableView == _searchResultsTableViewController.tableView) {
 		return 1;
 	} else {
 		return [self.sectionTitles count];
@@ -275,7 +249,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	if (tableView == self.searchDisplayController.searchResultsTableView) {
+	if (tableView == _searchResultsTableViewController.tableView) {
 		return [_filteredResults count];
 	} else {
 		NSArray *rowsInSection = (self.sectionsArray)[section];
@@ -304,6 +278,34 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return nil;
+}
+
+#pragma mark - UISearchResutsUpdating
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+    [self filterContentForSearchText:searchController.searchBar.text];
+}
+
+#pragma mark - UISearchControllerDelegate
+
+- (void)willPresentSearchController:(UISearchController *)searchController {
+
+}
+
+- (void)didPresentSearchController:(UISearchController *)searchController {
+
+}
+
+- (void)willDismissSearchController:(UISearchController *)searchController {
+
+}
+
+- (void)didDismissSearchController:(UISearchController *)searchController {
+
+}
+
+- (void)presentSearchController:(UISearchController *)searchController {
+
 }
 
 @end

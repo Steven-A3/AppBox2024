@@ -732,7 +732,7 @@ NSString *const A3NotificationHolidaysCountryListChanged = @"A3NotificationHolid
 
 + (NSInteger)thisYear {
 	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];;
-	NSDateComponents *components = [gregorian components:NSYearCalendarUnit fromDate:[NSDate date]];
+	NSDateComponents *components = [gregorian components:NSCalendarUnitYear fromDate:[NSDate date]];
 	return [components year];
 }
 
@@ -801,7 +801,7 @@ NSString *const A3NotificationHolidaysCountryListChanged = @"A3NotificationHolid
 - (NSDictionary *)firstUpcomingHolidaysForCountry:(NSString *)countryCode {
 	NSInteger thisYear;
 	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
-	NSDateComponents *components = [gregorian components:NSYearCalendarUnit fromDate:[NSDate date]];
+	NSDateComponents *components = [gregorian components:NSCalendarUnitYear fromDate:[NSDate date]];
 	thisYear = [components year];
 	NSMutableArray *holidaysThisYear = [self holidaysForCountry:countryCode year:thisYear fullSet:NO ];
 

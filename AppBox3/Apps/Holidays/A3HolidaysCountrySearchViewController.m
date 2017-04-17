@@ -27,10 +27,10 @@ static NSString *const CellIdentifier = @"Cell";
 {
     [super viewDidLoad];
 
-	self.searchBar.placeholder = NSLocalizedString(@"Search", @"Search");
+	self.searchController.searchBar.placeholder = NSLocalizedString(@"Search", @"Search");
 	self.title = NSLocalizedString(@"Select Country", @"Select Country");
 
-	[self.mySearchDisplayController.searchResultsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
+	[self.searchResultsTableViewController.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
 	[self.tableView registerClass:[A3StandardTableViewCell class] forCellReuseIdentifier:CellIdentifier];
 
 	[self leftBarButtonCancelButton];
@@ -79,7 +79,7 @@ static NSString *const CellIdentifier = @"Cell";
     A3StandardTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
 
 	A3SearchTargetItem *data;
-	if (tableView == self.searchDisplayController.searchResultsTableView) {
+	if (tableView == self.searchResultsTableViewController.tableView) {
 		data = self.filteredResults[indexPath.row];
 	} else {
 		NSArray *countriesInSection = (self.sectionsArray)[indexPath.section];
@@ -101,7 +101,7 @@ static NSString *const CellIdentifier = @"Cell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	A3SearchTargetItem *data;
-	if (tableView == self.searchDisplayController.searchResultsTableView) {
+	if (tableView == self.searchResultsTableViewController.tableView) {
 		data = self.filteredResults[indexPath.row];
 	} else {
 		NSArray *countriesInSection = (self.sectionsArray)[indexPath.section];

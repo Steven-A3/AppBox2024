@@ -122,7 +122,7 @@
 
     if (yearlyDate) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        NSDateComponents *dateComp = [[[A3AppDelegate instance] calendar] components:NSMonthCalendarUnit fromDate:yearlyDate];
+        NSDateComponents *dateComp = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitMonth fromDate:yearlyDate];
         NSString *month = IS_IPHONE ? [[formatter shortMonthSymbols] objectAtIndex:dateComp.month - 1] : [[formatter monthSymbols] objectAtIndex:dateComp.month - 1];
         dateText = month;
     }

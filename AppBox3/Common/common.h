@@ -15,7 +15,7 @@
 #define FNLOG(p,...)		NSLog(@"%s line %d, " p, __FUNCTION__, __LINE__, ##__VA_ARGS__)
 #define FNLOGRECT(rect)		NSLog(@"%s line %d, (%.1fx%.1f)-(%.1fx%.1f)", __FUNCTION__, __LINE__, rect.origin.x, rect.origin.y, \
  rect.size.width, rect.size.height)
-#define FNLOGINSETS(insets)	NSLog(@"%s line %d, (%.1fx%.1f)-(%.1fx%.1f)", __FUNCTION__, __LINE__, insets.top, insets.left, insets.bottom, insets.right)
+#define FNLOGINSETS(insets)	NSLog(@"%s line %d, (top:%.1f, left:%.1f, right:%.1f, bottom:%.1f)", __FUNCTION__, __LINE__, insets.top, insets.left, insets.bottom, insets.right)
 #else
 #define FNLOG(p,...)
 #define FNLOGRECT(rect)

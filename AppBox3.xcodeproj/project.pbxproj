@@ -680,44 +680,6 @@
 		68B6A35218CEC76D004084EF /* WalletPhoneStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A2A918CEC76D004084EF /* WalletPhoneStoryBoard.storyboard */; };
 		68B6A35818CEDDD1004084EF /* JVFloatLabeledTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A35518CEDDD1004084EF /* JVFloatLabeledTextField.m */; };
 		68B6A35918CEDDD1004084EF /* JVFloatLabeledTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A35718CEDDD1004084EF /* JVFloatLabeledTextView.m */; };
-		68B6A43F18CEE781004084EF /* MWCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A3E418CEE781004084EF /* MWCaptionView.m */; };
-		68B6A44018CEE781004084EF /* MWGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A3E718CEE781004084EF /* MWGridCell.m */; };
-		68B6A44118CEE781004084EF /* MWGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A3E918CEE781004084EF /* MWGridViewController.m */; };
-		68B6A44218CEE781004084EF /* MWPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A3EB18CEE781004084EF /* MWPhoto.m */; };
-		68B6A44318CEE781004084EF /* MWPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A3ED18CEE781004084EF /* MWPhotoBrowser.m */; };
-		68B6A44418CEE781004084EF /* MWTapDetectingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A3F118CEE781004084EF /* MWTapDetectingImageView.m */; };
-		68B6A44518CEE781004084EF /* MWTapDetectingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A3F318CEE781004084EF /* MWTapDetectingView.m */; };
-		68B6A44618CEE781004084EF /* MWZoomingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A3F518CEE781004084EF /* MWZoomingScrollView.m */; };
-		68B6A44718CEE781004084EF /* DACircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A3F918CEE781004084EF /* DACircularProgressView.m */; };
-		68B6A44A18CEE781004084EF /* NSIndexPath+PSTCollectionViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A40018CEE781004084EF /* NSIndexPath+PSTCollectionViewAdditions.m */; };
-		68B6A44B18CEE781004084EF /* PSTCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A40218CEE781004084EF /* PSTCollectionView.m */; };
-		68B6A44C18CEE781004084EF /* PSTCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A40418CEE781004084EF /* PSTCollectionViewCell.m */; };
-		68B6A44D18CEE781004084EF /* PSTCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A40718CEE781004084EF /* PSTCollectionViewController.m */; };
-		68B6A44E18CEE781004084EF /* PSTCollectionViewData.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A40918CEE781004084EF /* PSTCollectionViewData.m */; };
-		68B6A44F18CEE781004084EF /* PSTCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A40B18CEE781004084EF /* PSTCollectionViewFlowLayout.m */; };
-		68B6A45018CEE781004084EF /* PSTCollectionViewItemKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A40D18CEE781004084EF /* PSTCollectionViewItemKey.m */; };
-		68B6A45118CEE781004084EF /* PSTCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A41018CEE781004084EF /* PSTCollectionViewLayout.m */; };
-		68B6A45218CEE781004084EF /* PSTCollectionViewUpdateItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A41218CEE781004084EF /* PSTCollectionViewUpdateItem.m */; };
-		68B6A45318CEE781004084EF /* PSTGridLayoutInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A41418CEE781004084EF /* PSTGridLayoutInfo.m */; };
-		68B6A45418CEE781004084EF /* PSTGridLayoutItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A41618CEE781004084EF /* PSTGridLayoutItem.m */; };
-		68B6A45518CEE781004084EF /* PSTGridLayoutRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A41818CEE781004084EF /* PSTGridLayoutRow.m */; };
-		68B6A45618CEE781004084EF /* PSTGridLayoutSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A41A18CEE781004084EF /* PSTGridLayoutSection.m */; };
-		68B6A45918CEE781004084EF /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A42018CEE781004084EF /* MKAnnotationView+WebCache.m */; };
-		68B6A45A18CEE781004084EF /* NSData+GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A42218CEE781004084EF /* NSData+GIF.m */; };
-		68B6A45B18CEE781004084EF /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A42418CEE781004084EF /* NSData+ImageContentType.m */; };
-		68B6A45C18CEE781004084EF /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A42618CEE781004084EF /* SDImageCache.m */; };
-		68B6A45D18CEE781004084EF /* SDWebImageCompat.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A42818CEE781004084EF /* SDWebImageCompat.m */; };
-		68B6A45E18CEE781004084EF /* SDWebImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A42A18CEE781004084EF /* SDWebImageDecoder.m */; };
-		68B6A45F18CEE781004084EF /* SDWebImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A42C18CEE781004084EF /* SDWebImageDownloader.m */; };
-		68B6A46018CEE781004084EF /* SDWebImageDownloaderOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A42E18CEE781004084EF /* SDWebImageDownloaderOperation.m */; };
-		68B6A46118CEE781004084EF /* SDWebImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A43018CEE781004084EF /* SDWebImageManager.m */; };
-		68B6A46218CEE781004084EF /* SDWebImagePrefetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A43318CEE781004084EF /* SDWebImagePrefetcher.m */; };
-		68B6A46318CEE781004084EF /* UIButton+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A43518CEE781004084EF /* UIButton+WebCache.m */; };
-		68B6A46418CEE781004084EF /* UIImage+GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A43718CEE781004084EF /* UIImage+GIF.m */; };
-		68B6A46518CEE781004084EF /* UIImage+MultiFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A43918CEE781004084EF /* UIImage+MultiFormat.m */; };
-		68B6A46618CEE781004084EF /* UIImage+WebP.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A43B18CEE781004084EF /* UIImage+WebP.m */; };
-		68B6A46718CEE781004084EF /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A43D18CEE781004084EF /* UIImageView+WebCache.m */; };
-		68B6A46818CEE781004084EF /* MWPhotoBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A43E18CEE781004084EF /* MWPhotoBrowser.bundle */; };
 		68B7014819789F8200F7CE1E /* TranslatorFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B7014719789F8200F7CE1E /* TranslatorFavorite.m */; };
 		68B9B15717CF4D8F003ACAD0 /* FXPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B15617CF4D8F003ACAD0 /* FXPageControl.m */; };
 		68B9B15C17D01EB6003ACAD0 /* A3HolidaysCountryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B15B17D01EB6003ACAD0 /* A3HolidaysCountryViewController.m */; };
@@ -2325,89 +2287,6 @@
 		68B6A35518CEDDD1004084EF /* JVFloatLabeledTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JVFloatLabeledTextField.m; sourceTree = "<group>"; };
 		68B6A35618CEDDD1004084EF /* JVFloatLabeledTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JVFloatLabeledTextView.h; sourceTree = "<group>"; };
 		68B6A35718CEDDD1004084EF /* JVFloatLabeledTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JVFloatLabeledTextView.m; sourceTree = "<group>"; };
-		68B6A3E318CEE781004084EF /* MWCaptionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWCaptionView.h; sourceTree = "<group>"; };
-		68B6A3E418CEE781004084EF /* MWCaptionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWCaptionView.m; sourceTree = "<group>"; };
-		68B6A3E518CEE781004084EF /* MWCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWCommon.h; sourceTree = "<group>"; };
-		68B6A3E618CEE781004084EF /* MWGridCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWGridCell.h; sourceTree = "<group>"; };
-		68B6A3E718CEE781004084EF /* MWGridCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWGridCell.m; sourceTree = "<group>"; };
-		68B6A3E818CEE781004084EF /* MWGridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWGridViewController.h; sourceTree = "<group>"; };
-		68B6A3E918CEE781004084EF /* MWGridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWGridViewController.m; sourceTree = "<group>"; };
-		68B6A3EA18CEE781004084EF /* MWPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWPhoto.h; sourceTree = "<group>"; };
-		68B6A3EB18CEE781004084EF /* MWPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWPhoto.m; sourceTree = "<group>"; };
-		68B6A3EC18CEE781004084EF /* MWPhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWPhotoBrowser.h; sourceTree = "<group>"; };
-		68B6A3ED18CEE781004084EF /* MWPhotoBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWPhotoBrowser.m; sourceTree = "<group>"; };
-		68B6A3EE18CEE781004084EF /* MWPhotoBrowserPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWPhotoBrowserPrivate.h; sourceTree = "<group>"; };
-		68B6A3EF18CEE781004084EF /* MWPhotoProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWPhotoProtocol.h; sourceTree = "<group>"; };
-		68B6A3F018CEE781004084EF /* MWTapDetectingImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWTapDetectingImageView.h; sourceTree = "<group>"; };
-		68B6A3F118CEE781004084EF /* MWTapDetectingImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWTapDetectingImageView.m; sourceTree = "<group>"; };
-		68B6A3F218CEE781004084EF /* MWTapDetectingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWTapDetectingView.h; sourceTree = "<group>"; };
-		68B6A3F318CEE781004084EF /* MWTapDetectingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWTapDetectingView.m; sourceTree = "<group>"; };
-		68B6A3F418CEE781004084EF /* MWZoomingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZoomingScrollView.h; sourceTree = "<group>"; };
-		68B6A3F518CEE781004084EF /* MWZoomingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWZoomingScrollView.m; sourceTree = "<group>"; };
-		68B6A3F818CEE781004084EF /* DACircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DACircularProgressView.h; sourceTree = "<group>"; };
-		68B6A3F918CEE781004084EF /* DACircularProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DACircularProgressView.m; sourceTree = "<group>"; };
-		68B6A3FF18CEE781004084EF /* NSIndexPath+PSTCollectionViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexPath+PSTCollectionViewAdditions.h"; sourceTree = "<group>"; };
-		68B6A40018CEE781004084EF /* NSIndexPath+PSTCollectionViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+PSTCollectionViewAdditions.m"; sourceTree = "<group>"; };
-		68B6A40118CEE781004084EF /* PSTCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSTCollectionView.h; sourceTree = "<group>"; };
-		68B6A40218CEE781004084EF /* PSTCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSTCollectionView.m; sourceTree = "<group>"; };
-		68B6A40318CEE781004084EF /* PSTCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSTCollectionViewCell.h; sourceTree = "<group>"; };
-		68B6A40418CEE781004084EF /* PSTCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSTCollectionViewCell.m; sourceTree = "<group>"; };
-		68B6A40518CEE781004084EF /* PSTCollectionViewCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSTCollectionViewCommon.h; sourceTree = "<group>"; };
-		68B6A40618CEE781004084EF /* PSTCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSTCollectionViewController.h; sourceTree = "<group>"; };
-		68B6A40718CEE781004084EF /* PSTCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSTCollectionViewController.m; sourceTree = "<group>"; };
-		68B6A40818CEE781004084EF /* PSTCollectionViewData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSTCollectionViewData.h; sourceTree = "<group>"; };
-		68B6A40918CEE781004084EF /* PSTCollectionViewData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSTCollectionViewData.m; sourceTree = "<group>"; };
-		68B6A40A18CEE781004084EF /* PSTCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSTCollectionViewFlowLayout.h; sourceTree = "<group>"; };
-		68B6A40B18CEE781004084EF /* PSTCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSTCollectionViewFlowLayout.m; sourceTree = "<group>"; };
-		68B6A40C18CEE781004084EF /* PSTCollectionViewItemKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSTCollectionViewItemKey.h; sourceTree = "<group>"; };
-		68B6A40D18CEE781004084EF /* PSTCollectionViewItemKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSTCollectionViewItemKey.m; sourceTree = "<group>"; };
-		68B6A40E18CEE781004084EF /* PSTCollectionViewLayout+Internals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PSTCollectionViewLayout+Internals.h"; sourceTree = "<group>"; };
-		68B6A40F18CEE781004084EF /* PSTCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSTCollectionViewLayout.h; sourceTree = "<group>"; };
-		68B6A41018CEE781004084EF /* PSTCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSTCollectionViewLayout.m; sourceTree = "<group>"; };
-		68B6A41118CEE781004084EF /* PSTCollectionViewUpdateItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSTCollectionViewUpdateItem.h; sourceTree = "<group>"; };
-		68B6A41218CEE781004084EF /* PSTCollectionViewUpdateItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSTCollectionViewUpdateItem.m; sourceTree = "<group>"; };
-		68B6A41318CEE781004084EF /* PSTGridLayoutInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSTGridLayoutInfo.h; sourceTree = "<group>"; };
-		68B6A41418CEE781004084EF /* PSTGridLayoutInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSTGridLayoutInfo.m; sourceTree = "<group>"; };
-		68B6A41518CEE781004084EF /* PSTGridLayoutItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSTGridLayoutItem.h; sourceTree = "<group>"; };
-		68B6A41618CEE781004084EF /* PSTGridLayoutItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSTGridLayoutItem.m; sourceTree = "<group>"; };
-		68B6A41718CEE781004084EF /* PSTGridLayoutRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSTGridLayoutRow.h; sourceTree = "<group>"; };
-		68B6A41818CEE781004084EF /* PSTGridLayoutRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSTGridLayoutRow.m; sourceTree = "<group>"; };
-		68B6A41918CEE781004084EF /* PSTGridLayoutSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSTGridLayoutSection.h; sourceTree = "<group>"; };
-		68B6A41A18CEE781004084EF /* PSTGridLayoutSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSTGridLayoutSection.m; sourceTree = "<group>"; };
-		68B6A41C18CEE781004084EF /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		68B6A41D18CEE781004084EF /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
-		68B6A41F18CEE781004084EF /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
-		68B6A42018CEE781004084EF /* MKAnnotationView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKAnnotationView+WebCache.m"; sourceTree = "<group>"; };
-		68B6A42118CEE781004084EF /* NSData+GIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+GIF.h"; sourceTree = "<group>"; };
-		68B6A42218CEE781004084EF /* NSData+GIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+GIF.m"; sourceTree = "<group>"; };
-		68B6A42318CEE781004084EF /* NSData+ImageContentType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ImageContentType.h"; sourceTree = "<group>"; };
-		68B6A42418CEE781004084EF /* NSData+ImageContentType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+ImageContentType.m"; sourceTree = "<group>"; };
-		68B6A42518CEE781004084EF /* SDImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCache.h; sourceTree = "<group>"; };
-		68B6A42618CEE781004084EF /* SDImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDImageCache.m; sourceTree = "<group>"; };
-		68B6A42718CEE781004084EF /* SDWebImageCompat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWebImageCompat.h; sourceTree = "<group>"; };
-		68B6A42818CEE781004084EF /* SDWebImageCompat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDWebImageCompat.m; sourceTree = "<group>"; };
-		68B6A42918CEE781004084EF /* SDWebImageDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWebImageDecoder.h; sourceTree = "<group>"; };
-		68B6A42A18CEE781004084EF /* SDWebImageDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDWebImageDecoder.m; sourceTree = "<group>"; };
-		68B6A42B18CEE781004084EF /* SDWebImageDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWebImageDownloader.h; sourceTree = "<group>"; };
-		68B6A42C18CEE781004084EF /* SDWebImageDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDWebImageDownloader.m; sourceTree = "<group>"; };
-		68B6A42D18CEE781004084EF /* SDWebImageDownloaderOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWebImageDownloaderOperation.h; sourceTree = "<group>"; };
-		68B6A42E18CEE781004084EF /* SDWebImageDownloaderOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDWebImageDownloaderOperation.m; sourceTree = "<group>"; };
-		68B6A42F18CEE781004084EF /* SDWebImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWebImageManager.h; sourceTree = "<group>"; };
-		68B6A43018CEE781004084EF /* SDWebImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDWebImageManager.m; sourceTree = "<group>"; };
-		68B6A43118CEE781004084EF /* SDWebImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWebImageOperation.h; sourceTree = "<group>"; };
-		68B6A43218CEE781004084EF /* SDWebImagePrefetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWebImagePrefetcher.h; sourceTree = "<group>"; };
-		68B6A43318CEE781004084EF /* SDWebImagePrefetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDWebImagePrefetcher.m; sourceTree = "<group>"; };
-		68B6A43418CEE781004084EF /* UIButton+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+WebCache.h"; sourceTree = "<group>"; };
-		68B6A43518CEE781004084EF /* UIButton+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+WebCache.m"; sourceTree = "<group>"; };
-		68B6A43618CEE781004084EF /* UIImage+GIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+GIF.h"; sourceTree = "<group>"; };
-		68B6A43718CEE781004084EF /* UIImage+GIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+GIF.m"; sourceTree = "<group>"; };
-		68B6A43818CEE781004084EF /* UIImage+MultiFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+MultiFormat.h"; sourceTree = "<group>"; };
-		68B6A43918CEE781004084EF /* UIImage+MultiFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+MultiFormat.m"; sourceTree = "<group>"; };
-		68B6A43A18CEE781004084EF /* UIImage+WebP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+WebP.h"; sourceTree = "<group>"; };
-		68B6A43B18CEE781004084EF /* UIImage+WebP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+WebP.m"; sourceTree = "<group>"; };
-		68B6A43C18CEE781004084EF /* UIImageView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+WebCache.h"; sourceTree = "<group>"; };
-		68B6A43D18CEE781004084EF /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
-		68B6A43E18CEE781004084EF /* MWPhotoBrowser.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = MWPhotoBrowser.bundle; path = External/MWPhotoBrowser/MWPhotoBrowser/MWPhotoBrowser.bundle; sourceTree = "<group>"; };
 		68B7014619789F8200F7CE1E /* TranslatorFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TranslatorFavorite.h; sourceTree = "<group>"; };
 		68B7014719789F8200F7CE1E /* TranslatorFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TranslatorFavorite.m; sourceTree = "<group>"; };
 		68B9B15517CF4D8F003ACAD0 /* FXPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FXPageControl.h; path = External/FXPageControl/FXPageControl/FXPageControl.h; sourceTree = "<group>"; };
@@ -5215,146 +5094,6 @@
 			path = External/JVFloatLabeledTextField/JVFloatLabeledTextField/JVFloatLabeledTextField;
 			sourceTree = "<group>";
 		};
-		68B6A3E118CEE763004084EF /* MWPhotoBrowser */ = {
-			isa = PBXGroup;
-			children = (
-				68B6A3E218CEE781004084EF /* Classes */,
-				68B6A3F618CEE781004084EF /* Libraries */,
-				68B6A43E18CEE781004084EF /* MWPhotoBrowser.bundle */,
-			);
-			name = MWPhotoBrowser;
-			sourceTree = "<group>";
-		};
-		68B6A3E218CEE781004084EF /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				68B6A3E318CEE781004084EF /* MWCaptionView.h */,
-				68B6A3E418CEE781004084EF /* MWCaptionView.m */,
-				68B6A3E518CEE781004084EF /* MWCommon.h */,
-				68B6A3E618CEE781004084EF /* MWGridCell.h */,
-				68B6A3E718CEE781004084EF /* MWGridCell.m */,
-				68B6A3E818CEE781004084EF /* MWGridViewController.h */,
-				68B6A3E918CEE781004084EF /* MWGridViewController.m */,
-				68B6A3EA18CEE781004084EF /* MWPhoto.h */,
-				68B6A3EB18CEE781004084EF /* MWPhoto.m */,
-				68B6A3EC18CEE781004084EF /* MWPhotoBrowser.h */,
-				68B6A3ED18CEE781004084EF /* MWPhotoBrowser.m */,
-				68B6A3EE18CEE781004084EF /* MWPhotoBrowserPrivate.h */,
-				68B6A3EF18CEE781004084EF /* MWPhotoProtocol.h */,
-				68B6A3F018CEE781004084EF /* MWTapDetectingImageView.h */,
-				68B6A3F118CEE781004084EF /* MWTapDetectingImageView.m */,
-				68B6A3F218CEE781004084EF /* MWTapDetectingView.h */,
-				68B6A3F318CEE781004084EF /* MWTapDetectingView.m */,
-				68B6A3F418CEE781004084EF /* MWZoomingScrollView.h */,
-				68B6A3F518CEE781004084EF /* MWZoomingScrollView.m */,
-			);
-			name = Classes;
-			path = External/MWPhotoBrowser/MWPhotoBrowser/Classes;
-			sourceTree = "<group>";
-		};
-		68B6A3F618CEE781004084EF /* Libraries */ = {
-			isa = PBXGroup;
-			children = (
-				68B6A3F718CEE781004084EF /* DACircularProgress */,
-				68B6A3FE18CEE781004084EF /* PSTCollectionView */,
-				68B6A41B18CEE781004084EF /* SDWebImage */,
-			);
-			name = Libraries;
-			path = External/MWPhotoBrowser/MWPhotoBrowser/Libraries;
-			sourceTree = "<group>";
-		};
-		68B6A3F718CEE781004084EF /* DACircularProgress */ = {
-			isa = PBXGroup;
-			children = (
-				68B6A3F818CEE781004084EF /* DACircularProgressView.h */,
-				68B6A3F918CEE781004084EF /* DACircularProgressView.m */,
-			);
-			path = DACircularProgress;
-			sourceTree = "<group>";
-		};
-		68B6A3FE18CEE781004084EF /* PSTCollectionView */ = {
-			isa = PBXGroup;
-			children = (
-				68B6A3FF18CEE781004084EF /* NSIndexPath+PSTCollectionViewAdditions.h */,
-				68B6A40018CEE781004084EF /* NSIndexPath+PSTCollectionViewAdditions.m */,
-				68B6A40118CEE781004084EF /* PSTCollectionView.h */,
-				68B6A40218CEE781004084EF /* PSTCollectionView.m */,
-				68B6A40318CEE781004084EF /* PSTCollectionViewCell.h */,
-				68B6A40418CEE781004084EF /* PSTCollectionViewCell.m */,
-				68B6A40518CEE781004084EF /* PSTCollectionViewCommon.h */,
-				68B6A40618CEE781004084EF /* PSTCollectionViewController.h */,
-				68B6A40718CEE781004084EF /* PSTCollectionViewController.m */,
-				68B6A40818CEE781004084EF /* PSTCollectionViewData.h */,
-				68B6A40918CEE781004084EF /* PSTCollectionViewData.m */,
-				68B6A40A18CEE781004084EF /* PSTCollectionViewFlowLayout.h */,
-				68B6A40B18CEE781004084EF /* PSTCollectionViewFlowLayout.m */,
-				68B6A40C18CEE781004084EF /* PSTCollectionViewItemKey.h */,
-				68B6A40D18CEE781004084EF /* PSTCollectionViewItemKey.m */,
-				68B6A40E18CEE781004084EF /* PSTCollectionViewLayout+Internals.h */,
-				68B6A40F18CEE781004084EF /* PSTCollectionViewLayout.h */,
-				68B6A41018CEE781004084EF /* PSTCollectionViewLayout.m */,
-				68B6A41118CEE781004084EF /* PSTCollectionViewUpdateItem.h */,
-				68B6A41218CEE781004084EF /* PSTCollectionViewUpdateItem.m */,
-				68B6A41318CEE781004084EF /* PSTGridLayoutInfo.h */,
-				68B6A41418CEE781004084EF /* PSTGridLayoutInfo.m */,
-				68B6A41518CEE781004084EF /* PSTGridLayoutItem.h */,
-				68B6A41618CEE781004084EF /* PSTGridLayoutItem.m */,
-				68B6A41718CEE781004084EF /* PSTGridLayoutRow.h */,
-				68B6A41818CEE781004084EF /* PSTGridLayoutRow.m */,
-				68B6A41918CEE781004084EF /* PSTGridLayoutSection.h */,
-				68B6A41A18CEE781004084EF /* PSTGridLayoutSection.m */,
-			);
-			path = PSTCollectionView;
-			sourceTree = "<group>";
-		};
-		68B6A41B18CEE781004084EF /* SDWebImage */ = {
-			isa = PBXGroup;
-			children = (
-				68B6A41C18CEE781004084EF /* LICENSE */,
-				68B6A41D18CEE781004084EF /* README.md */,
-				68B6A41E18CEE781004084EF /* SDWebImage */,
-			);
-			path = SDWebImage;
-			sourceTree = "<group>";
-		};
-		68B6A41E18CEE781004084EF /* SDWebImage */ = {
-			isa = PBXGroup;
-			children = (
-				68B6A41F18CEE781004084EF /* MKAnnotationView+WebCache.h */,
-				68B6A42018CEE781004084EF /* MKAnnotationView+WebCache.m */,
-				68B6A42118CEE781004084EF /* NSData+GIF.h */,
-				68B6A42218CEE781004084EF /* NSData+GIF.m */,
-				68B6A42318CEE781004084EF /* NSData+ImageContentType.h */,
-				68B6A42418CEE781004084EF /* NSData+ImageContentType.m */,
-				68B6A42518CEE781004084EF /* SDImageCache.h */,
-				68B6A42618CEE781004084EF /* SDImageCache.m */,
-				68B6A42718CEE781004084EF /* SDWebImageCompat.h */,
-				68B6A42818CEE781004084EF /* SDWebImageCompat.m */,
-				68B6A42918CEE781004084EF /* SDWebImageDecoder.h */,
-				68B6A42A18CEE781004084EF /* SDWebImageDecoder.m */,
-				68B6A42B18CEE781004084EF /* SDWebImageDownloader.h */,
-				68B6A42C18CEE781004084EF /* SDWebImageDownloader.m */,
-				68B6A42D18CEE781004084EF /* SDWebImageDownloaderOperation.h */,
-				68B6A42E18CEE781004084EF /* SDWebImageDownloaderOperation.m */,
-				68B6A42F18CEE781004084EF /* SDWebImageManager.h */,
-				68B6A43018CEE781004084EF /* SDWebImageManager.m */,
-				68B6A43118CEE781004084EF /* SDWebImageOperation.h */,
-				68B6A43218CEE781004084EF /* SDWebImagePrefetcher.h */,
-				68B6A43318CEE781004084EF /* SDWebImagePrefetcher.m */,
-				68B6A43418CEE781004084EF /* UIButton+WebCache.h */,
-				68B6A43518CEE781004084EF /* UIButton+WebCache.m */,
-				68B6A43618CEE781004084EF /* UIImage+GIF.h */,
-				68B6A43718CEE781004084EF /* UIImage+GIF.m */,
-				68B6A43818CEE781004084EF /* UIImage+MultiFormat.h */,
-				68B6A43918CEE781004084EF /* UIImage+MultiFormat.m */,
-				68B6A43A18CEE781004084EF /* UIImage+WebP.h */,
-				68B6A43B18CEE781004084EF /* UIImage+WebP.m */,
-				68B6A43C18CEE781004084EF /* UIImageView+WebCache.h */,
-				68B6A43D18CEE781004084EF /* UIImageView+WebCache.m */,
-			);
-			path = SDWebImage;
-			sourceTree = "<group>";
-		};
 		68B9B15217CF4D6B003ACAD0 /* FXPageControl */ = {
 			isa = PBXGroup;
 			children = (
@@ -5397,7 +5136,6 @@
 				6831EC101861EB6900BAF15B /* MBProgressHUD */,
 				68F1B11A1778560B00E81257 /* MMDrawerController */,
 				68F1C8DF18D7FA41009FAE8A /* MPFoldTransition */,
-				68B6A3E118CEE763004084EF /* MWPhotoBrowser */,
 				684E9EFF188A43C300FAA48E /* NJKWebViewProgress */,
 				68521A3617E1EB9B00E08FB1 /* NSDate-Extensions */,
 				6872DD2D17B3D53F00C1BF44 /* NSDate-TimeAgo */,
@@ -6346,7 +6084,6 @@
 				68143D7E18E51ABB00569691 /* A3NumberKeyboardSimplePrevNextClearVC_iPhone.xib in Resources */,
 				682B37C318AB365D00C6BD66 /* Calculator.xcassets in Resources */,
 				682B37C518AB369500C6BD66 /* Unit.xcassets in Resources */,
-				68B6A46818CEE781004084EF /* MWPhotoBrowser.bundle in Resources */,
 				68459BB21C4CE1B1000A2092 /* Launch Screen~iphone.storyboard in Resources */,
 				68FB8E9E1C990922008CAB7A /* CurrencyInfo.dictionary in Resources */,
 				6810C64619D9246F00BE75A9 /* Flashlight.xcassets in Resources */,
@@ -6532,7 +6269,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				682FDF1A1981CC0400C6C83D /* NSManagedObject+MagicalRequests.m in Sources */,
-				68B6A45E18CEE781004084EF /* SDWebImageDecoder.m in Sources */,
 				6857C7321CB647EB00D09177 /* A3QRCodeViewController.m in Sources */,
 				808DA9EB196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.m in Sources */,
 				68F1C8DB18D7F37D009FAE8A /* A3LineChartView.m in Sources */,
@@ -6545,8 +6281,6 @@
 				682FDF161981CC0400C6C83D /* NSManagedObject+MagicalFinders.m in Sources */,
 				68F1C8D918D7F37D009FAE8A /* A3LadyCalendarCalendarView.m in Sources */,
 				682FDF101981CC0400C6C83D /* NSString+MagicalDataImport.m in Sources */,
-				68B6A44718CEE781004084EF /* DACircularProgressView.m in Sources */,
-				68B6A45218CEE781004084EF /* PSTCollectionViewUpdateItem.m in Sources */,
 				68D0732018210B5100D34870 /* A3RoundedSideButton.m in Sources */,
 				684AB7C01E48819500F2C3EC /* A3KaomojiCollectionViewCell.m in Sources */,
 				68F04D081B40F825004FDD7B /* RMStoreAppReceiptVerificator.m in Sources */,
@@ -6559,8 +6293,6 @@
 				689C9A501839CD7F007C97EE /* AFURLRequestSerialization.m in Sources */,
 				68B6A2FA18CEC76D004084EF /* A3UnitPriceSelectViewController.m in Sources */,
 				68E2A6B418D0B22800E834D9 /* A3TipCalcMainTableViewController.m in Sources */,
-				68B6A45118CEE781004084EF /* PSTCollectionViewLayout.m in Sources */,
-				68B6A46318CEE781004084EF /* UIButton+WebCache.m in Sources */,
 				684D92BD18BC1EFE005016F7 /* A3BatteryStatusListPageSectionView.m in Sources */,
 				68B6A33318CEC76D004084EF /* A3WalletListPhotoCell.m in Sources */,
 				680886DE1891751B0093FD97 /* A3ClockWaveCircleMiddleView.m in Sources */,
@@ -6614,18 +6346,15 @@
 				68F1C8C818D7F37D009FAE8A /* A3LadyCalendarDetailViewController.m in Sources */,
 				68F1500919485E8500159EAD /* A3DaysCounterChangeLocationViewController.m in Sources */,
 				68143D5718E3EC7C00569691 /* A3JHTableViewMonthEntryElement.m in Sources */,
-				68B6A44618CEE781004084EF /* MWZoomingScrollView.m in Sources */,
 				68F14FB019485E8500159EAD /* A3DaysCounterSlideshowOptionViewController.m in Sources */,
 				68B6A32918CEC76D004084EF /* A3WalletItemFieldActionCell.m in Sources */,
 				68024AD81631637600D396F0 /* A3UIDevice.m in Sources */,
 				68E67CB41CE4681E002B022E /* Pedometer+CoreDataProperties.m in Sources */,
-				68B6A46218CEE781004084EF /* SDWebImagePrefetcher.m in Sources */,
 				684D92C018BC1EFE005016F7 /* A3BatteryStatusSettingViewController.m in Sources */,
 				68B6A2FB18CEC76D004084EF /* A3UnitPriceSliderCell.m in Sources */,
 				68B9B15717CF4D8F003ACAD0 /* FXPageControl.m in Sources */,
 				6870A0D7163647A50059BD2F /* A3GradientView.m in Sources */,
 				684E9EFA188A20E800FAA48E /* A3HelpViewController.m in Sources */,
-				68B6A45418CEE781004084EF /* PSTGridLayoutItem.m in Sources */,
 				68B6A33218CEC76D004084EF /* A3WalletListBigVideoCell.m in Sources */,
 				68E2A65A18D0B1FC00E834D9 /* A3PercentCalcData.m in Sources */,
 				682FDF301981CC0400C6C83D /* MagicalRecord+Options.m in Sources */,
@@ -6684,7 +6413,6 @@
 				689C9A581839CD7F007C97EE /* UIProgressView+AFNetworking.m in Sources */,
 				5733FBD319E8061900A7357E /* ExpenseListItem.m in Sources */,
 				68B6A2BB18CEC76D004084EF /* UIViewController+LoanCalcAddtion.m in Sources */,
-				68B6A45618CEE781004084EF /* PSTGridLayoutSection.m in Sources */,
 				68E2A5DB18D0AC5200E834D9 /* A3DateMainTableViewController.m in Sources */,
 				68E2A65018D0B1FC00E834D9 /* A3TableViewDatePickerCell.m in Sources */,
 				68B6A33918CEC76D004084EF /* A3WalletPhotoItemTitleView.m in Sources */,
@@ -6713,7 +6441,6 @@
 				68B6A33718CEC76D004084EF /* A3WalletMapCell.m in Sources */,
 				6859F9FF1E5BCDBB0064BAD7 /* A3KaomojiHelpViewController.m in Sources */,
 				6857C7281CB647A000D09177 /* RSScannerViewController.m in Sources */,
-				68B6A46618CEE781004084EF /* UIImage+WebP.m in Sources */,
 				680886E11891751B0093FD97 /* A3ClockWaveCircleView.m in Sources */,
 				6825367A18A7BBF600EAFB84 /* NSDate+LunarConverter.m in Sources */,
 				68CB7982183DB8A800255AE3 /* NYXImagesHelper.m in Sources */,
@@ -6750,14 +6477,12 @@
 				68EC80D616E1ADF800CF672E /* A3Formatter.m in Sources */,
 				68B9B15C17D01EB6003ACAD0 /* A3HolidaysCountryViewController.m in Sources */,
 				682FDF241981CC0400C6C83D /* NSManagedObjectModel+MagicalRecord.m in Sources */,
-				68B6A45018CEE781004084EF /* PSTCollectionViewItemKey.m in Sources */,
 				68425D581977BD5F007C1AAE /* DaysCounterReminder+extension.m in Sources */,
 				68E0B327198CAE3500127229 /* LoanCalcComparisonHistory.m in Sources */,
 				680886E51891751B0093FD97 /* SBTickerView.m in Sources */,
 				682FDF2A1981CC0400C6C83D /* MagicalRecord+Actions.m in Sources */,
 				68B6A32C18CEC76D004084EF /* A3WalletItemPhotoFieldCell.m in Sources */,
 				689C9A561839CD7F007C97EE /* UIButton+AFNetworking.m in Sources */,
-				68B6A45F18CEE781004084EF /* SDWebImageDownloader.m in Sources */,
 				687484AB19783B9D00EA8F74 /* DaysCounterFavorite.m in Sources */,
 				689C9A551839CD7F007C97EE /* UIAlertView+AFNetworking.m in Sources */,
 				682FDF121981CC0400C6C83D /* NSManagedObject+MagicalAggregation.m in Sources */,
@@ -6772,9 +6497,7 @@
 				68F2444B1E542E9B00E99A7D /* A3AbbreviationHelpViewController.m in Sources */,
 				68B6A33118CEC76D004084EF /* A3WalletListBigPhotoCell.m in Sources */,
 				68B6A2C818CEC76D004084EF /* A3LoanCalcPaymentInfoCell.m in Sources */,
-				68B6A44518CEE781004084EF /* MWTapDetectingView.m in Sources */,
 				682FDF281981CC0400C6C83D /* NSPersistentStoreCoordinator+MagicalRecord.m in Sources */,
-				68B6A44A18CEE781004084EF /* NSIndexPath+PSTCollectionViewAdditions.m in Sources */,
 				680D63A318CFFC2500938AD0 /* VerticalSlider.m in Sources */,
 				682FDF201981CC0400C6C83D /* NSManagedObjectContext+MagicalSaves.m in Sources */,
 				68F04D0A1B40F825004FDD7B /* RMStoreTransaction.m in Sources */,
@@ -6804,7 +6527,6 @@
 				68953482178686AF007061CA /* UIImage+Rotating.m in Sources */,
 				6895347C178686AF007061CA /* UIImage+Masking.m in Sources */,
 				68E2A64F18D0B1FC00E834D9 /* A3ItemSelectListViewController.m in Sources */,
-				68B6A46118CEE781004084EF /* SDWebImageManager.m in Sources */,
 				68507F80191CA72400C1C895 /* A3AppDelegate.m in Sources */,
 				68143D5C18E3EC7C00569691 /* A3TableViewCell.m in Sources */,
 				68F14FB819485E8500159EAD /* A3SlideshowActivity.m in Sources */,
@@ -6831,7 +6553,6 @@
 				68B6A34A18CEC76D004084EF /* A3WalletFieldTypeSelectViewController.m in Sources */,
 				68B6A2EA18CEC76D004084EF /* A3UnitPriceCompareSliderCell.m in Sources */,
 				68030ABC17F063D100B04487 /* HTCopyableLabel.m in Sources */,
-				68B6A44B18CEE781004084EF /* PSTCollectionView.m in Sources */,
 				68E2A6AC18D0B22800E834D9 /* UIImage+JHExtension.m in Sources */,
 				6825365118A7AA4C00EAFB84 /* MASConstraintMaker.m in Sources */,
 				6859FA0A1E5BDD040064BAD7 /* A3DrillDownHelpViewController.m in Sources */,
@@ -6841,7 +6562,6 @@
 				6882802617E5ECED000D8069 /* A3HolidaysPageContentViewController.m in Sources */,
 				68F1C8D118D7F37D009FAE8A /* A3LadyCalendarSetupAlertViewController.m in Sources */,
 				68B6A2B718CEC76D004084EF /* LoanCalcString.m in Sources */,
-				68B6A45D18CEE781004084EF /* SDWebImageCompat.m in Sources */,
 				68C7E1081BE20C1C00861AFD /* A3CurrencyViewController.m in Sources */,
 				68143D5118E3EC7C00569691 /* A3JHTableViewDateEntryElement.m in Sources */,
 				68E2A6A118D0B22800E834D9 /* A3SalesCalcData.m in Sources */,
@@ -6875,7 +6595,6 @@
 				684D932E18BC20E1005016F7 /* NSDate+formatting.m in Sources */,
 				684D92F418BC1FBC005016F7 /* A3DateCalcExcludeViewController.m in Sources */,
 				17D4236A30D866AEE7D3F6B2 /* UIView+A3Drawing.m in Sources */,
-				68B6A45318CEE781004084EF /* PSTGridLayoutInfo.m in Sources */,
 				68B6A2FE18CEC76D004084EF /* A3UnitPriceUnitTabBarController.m in Sources */,
 				68B6A31718CEC76D004084EF /* A3WalletSegmentedControl.m in Sources */,
 				68E44AD91E408EC500FBC931 /* A3AbbreviationDataManager.m in Sources */,
@@ -6890,7 +6609,6 @@
 				6825365018A7AA4C00EAFB84 /* MASConstraint.m in Sources */,
 				68E2A66118D0B1FC00E834D9 /* A3PercentCalcHistoryViewController.m in Sources */,
 				684D92BC18BC1EFE005016F7 /* A3BatterStatusChooseColorViewController.m in Sources */,
-				68B6A44C18CEE781004084EF /* PSTCollectionViewCell.m in Sources */,
 				680886E41891751B0093FD97 /* SBGradientOverlayLayer.m in Sources */,
 				682FDF061981CC0400C6C83D /* NSAttributeDescription+MagicalDataImport.m in Sources */,
 				68143CFA18E3EC1F00569691 /* A3DateKeyboardViewController.m in Sources */,
@@ -6910,14 +6628,12 @@
 				687AEEAA1CBBCB5900C2D844 /* A3PlaceAnnotation.m in Sources */,
 				680886D51891751B0093FD97 /* A3ClockFlipViewController.m in Sources */,
 				68F1C8FA18D7FA41009FAE8A /* MPFlipSegue.m in Sources */,
-				68B6A45A18CEE781004084EF /* NSData+GIF.m in Sources */,
 				68B6A30E18CEC76D004084EF /* WalletFieldItem+initialize.m in Sources */,
 				68953480178686AF007061CA /* UIImage+Resizing.m in Sources */,
 				680886DD1891751B0093FD97 /* A3ClockViewController.m in Sources */,
 				68144BC61743381600FD22CF /* A3PlacemarkBackgroundView.m in Sources */,
 				687D0D0F17CAE519005AB571 /* HolidayData+MiddleEast.m in Sources */,
 				68D0731A1820DE4200D34870 /* A3TripleCircleView.m in Sources */,
-				68B6A46718CEE781004084EF /* UIImageView+WebCache.m in Sources */,
 				688257B817D3AFFB006429D3 /* A3HolidaysAddToDaysCounterViewController.m in Sources */,
 				689C9A591839CD7F007C97EE /* UIWebView+AFNetworking.m in Sources */,
 				68E2A6AA18D0B22800E834D9 /* A3TextViewElement.m in Sources */,
@@ -6929,8 +6645,6 @@
 				68F14FFC19485E8500159EAD /* A3DaysCounterSetupLocationViewController.m in Sources */,
 				683D68481DBC5C00008C47C9 /* TJDropboxAuthenticationViewController.m in Sources */,
 				68B6A31C18CEC76D004084EF /* A3WalletAllTopCell.m in Sources */,
-				68B6A45918CEE781004084EF /* MKAnnotationView+WebCache.m in Sources */,
-				68B6A44318CEE781004084EF /* MWPhotoBrowser.m in Sources */,
 				68143D0218E3EC1F00569691 /* A3NumberKeyboardSimpleVC_iPad.m in Sources */,
 				68B6A34218CEC76D004084EF /* A3WalletAllViewController.m in Sources */,
 				68E2A64B18D0B1FC00E834D9 /* A3ExpenseListHistoryViewController.m in Sources */,
@@ -6943,7 +6657,6 @@
 				6853FC591E3715EA004A9A24 /* A3RippleTransitionController.m in Sources */,
 				68B6A2C618CEC76D004084EF /* A3LoanCalcMonthlyTableTitleView.m in Sources */,
 				680D638C18CFF9D400938AD0 /* A3CalcKeyboardView_iPhone.m in Sources */,
-				68B6A44F18CEE781004084EF /* PSTCollectionViewFlowLayout.m in Sources */,
 				5733FBCD19E8061800A7357E /* ExpenseListBudget.m in Sources */,
 				68B6A32E18CEC76D004084EF /* A3WalletItemTitleView.m in Sources */,
 				68F14FB919485E8500159EAD /* A3DaysCounterAddAndEditCalendarViewController.m in Sources */,
@@ -6958,7 +6671,6 @@
 				682FDF181981CC0400C6C83D /* NSManagedObject+MagicalRecord.m in Sources */,
 				68E2A6B218D0B22800E834D9 /* A3TipCalcHistoryCell.m in Sources */,
 				684B44BB1CB9B53400B7D264 /* A3QRCodeDetailCell.m in Sources */,
-				68B6A45518CEE781004084EF /* PSTGridLayoutRow.m in Sources */,
 				68CA9BA61961B881002E58DC /* PercentCalcHistory.m in Sources */,
 				68EABE3B1CB7954E00219151 /* A3QRCodeHistoryViewController.m in Sources */,
 				68B6A2B318CEC76D004084EF /* LoanCalcData+Calculation.m in Sources */,
@@ -6993,7 +6705,6 @@
 				684D92F218BC1FBC005016F7 /* A3DateCalcDurationViewController.m in Sources */,
 				684E1BDD1AC13BA100925771 /* A3OpenSourceLicensesViewController.m in Sources */,
 				68057CDE1E39EEDA002A11FE /* AbbreviationFavorite+CoreDataProperties.m in Sources */,
-				68B6A44418CEE781004084EF /* MWTapDetectingImageView.m in Sources */,
 				682FDF2C1981CC0400C6C83D /* MagicalRecord+ErrorHandling.m in Sources */,
 				684E9F0C188A447400FAA48E /* A3BasicWebViewController.m in Sources */,
 				68D1AC9917977F960047D4BF /* A3CurrencyTVEqualCell.m in Sources */,
@@ -7009,12 +6720,9 @@
 				68B6A2BF18CEC76D004084EF /* A3LoanCalcGraphView.m in Sources */,
 				68B6A32518CEC76D004084EF /* A3WalletCateTitleView.m in Sources */,
 				68F14FAE19485E8500159EAD /* A3DaysCounterSlideshowMainViewController.m in Sources */,
-				68B6A46518CEE781004084EF /* UIImage+MultiFormat.m in Sources */,
 				680D638D18CFF9D400938AD0 /* A3Calculator.m in Sources */,
-				68B6A45C18CEE781004084EF /* SDImageCache.m in Sources */,
 				68B6A2FC18CEC76D004084EF /* A3UnitPriceSliderView.m in Sources */,
 				682FDF4319820F5900C6C83D /* DaysCounterEvent.m in Sources */,
-				68B6A43F18CEE781004084EF /* MWCaptionView.m in Sources */,
 				6890AB321786BA08004FECE4 /* A3CurrencyTableViewController.m in Sources */,
 				68F1500B19485E8500159EAD /* A3DaysCounterLocationDetailViewController.m in Sources */,
 				68F14FEA19485E8500159EAD /* A3DaysCounterEventListSectionHeader.m in Sources */,
@@ -7048,7 +6756,6 @@
 				17D42B8113D2415FDF33A0DB /* A3CurrencyTVDataCell.m in Sources */,
 				68E2A65E18D0B1FC00E834D9 /* A3PercentCalcHistoryCell.m in Sources */,
 				68B6A31A18CEC76D004084EF /* A3WalletAddPhotoThumbCell.m in Sources */,
-				68B6A46018CEE781004084EF /* SDWebImageDownloaderOperation.m in Sources */,
 				680886DC1891751B0093FD97 /* A3ClockSettingsViewController.m in Sources */,
 				68B6A2E918CEC76D004084EF /* A3UnitPriceAddViewController.m in Sources */,
 				6831EBFB18619CC800BAF15B /* AppBox3.xcdatamodeld in Sources */,
@@ -7102,7 +6809,6 @@
 				68143D0F18E3EC1F00569691 /* A3KeyboardButton_iOS7_iPhone.m in Sources */,
 				684B44B41CB9B50800B7D264 /* A3QRCodeDetailViewController.m in Sources */,
 				17D427E06C341B1B48478B6A /* A3TranslatorLanguageTVDelegate.m in Sources */,
-				68B6A44D18CEE781004084EF /* PSTCollectionViewController.m in Sources */,
 				68F1500019485E8500159EAD /* A3RoundDateView.m in Sources */,
 				68143D1218E3EC1F00569691 /* A3KeyboardView.m in Sources */,
 				68459BB91C4CE9AC000A2092 /* A3FMMoveTableViewController.m in Sources */,
@@ -7123,7 +6829,6 @@
 				57E4E1CE19D2DD360037371B /* A3RandomViewController.m in Sources */,
 				68143D6218E3EC7C00569691 /* A3TableViewExpandableCell.m in Sources */,
 				17D42E23FC78EEE74D1E160D /* A3TranslatorViewController.m in Sources */,
-				68B6A44018CEE781004084EF /* MWGridCell.m in Sources */,
 				68B6A34318CEC76D004084EF /* A3WalletCategoryEditViewController.m in Sources */,
 				17D42D573FAB2BFE604A808F /* A3TranslatorFavoriteDataSource.m in Sources */,
 				68143D5F18E3EC7C00569691 /* A3TableViewElement.m in Sources */,
@@ -7136,14 +6841,12 @@
 				687484031977EE0A00EA8F74 /* ExpenseListHistory+extension.m in Sources */,
 				68B6A2C418CEC76D004084EF /* A3LoanCalcLoanInfo3Cell.m in Sources */,
 				687483E21977E77D00EA8F74 /* ExpenseListBudget+extension.m in Sources */,
-				68B6A46418CEE781004084EF /* UIImage+GIF.m in Sources */,
 				68F1C8CD18D7F37D009FAE8A /* A3LadyCalendarModelManager.m in Sources */,
 				17D42A39FA849C645CB674DD /* A3TranslatorFavoriteCell.m in Sources */,
 				681E1224193440540077DCFA /* NSData-AES.m in Sources */,
 				689C9A4D1839CD7F007C97EE /* AFNetworkReachabilityManager.m in Sources */,
 				68143D6D18E3ECB700569691 /* A3ImageCropperViewController.m in Sources */,
 				6852298018FFFAD7002D3C0E /* UIViewController+iPad_rightSideView.m in Sources */,
-				68B6A45B18CEE781004084EF /* NSData+ImageContentType.m in Sources */,
 				68B6A32218CEC76D004084EF /* A3WalletCateInfoFieldCell.m in Sources */,
 				68F1C8BB18D7F37D009FAE8A /* A3LadyCalendarAccountListViewController.m in Sources */,
 				680886E31891751B0093FD97 /* SBDoubleSidedLayer.m in Sources */,
@@ -7152,7 +6855,6 @@
 				68F14FED19485E8500159EAD /* A3DaysCounterLocationDetailCell.m in Sources */,
 				17D42A4A49204D56E526E117 /* A3TranslatorListCell.m in Sources */,
 				68B6A31618CEC76D004084EF /* UIImage+Extension2.m in Sources */,
-				68B6A44118CEE781004084EF /* MWGridViewController.m in Sources */,
 				17D4269E6891386E9B4ADD5C /* NSMutableArray+MoveObject.m in Sources */,
 				682FDF321981CC0400C6C83D /* MagicalRecord+Setup.m in Sources */,
 				68143D1118E3EC1F00569691 /* A3KeyboardMoveMarkView.m in Sources */,
@@ -7171,13 +6873,11 @@
 				68F1C8C618D7F37D009FAE8A /* A3LadyCalendarChartViewController.m in Sources */,
 				68D6E90F199EE0A200166A47 /* WalletField.m in Sources */,
 				68F1C8DC18D7F37D009FAE8A /* A3LinedSlider.m in Sources */,
-				68B6A44218CEE781004084EF /* MWPhoto.m in Sources */,
 				685CF1AD1DFFF46300DE2636 /* A3AbbreviationTableViewCell.m in Sources */,
 				17D42DDB19963EC340C1CA17 /* A3BackgroundWithPatternView.m in Sources */,
 				17D4263785F661F55F888132 /* NSDateFormatter+A3Addition.m in Sources */,
 				68B6A2C718CEC76D004084EF /* A3LoanCalcNoteCell.m in Sources */,
 				68F1C89818D7F37D009FAE8A /* A3DaysCounterModelManager.m in Sources */,
-				68B6A44E18CEE781004084EF /* PSTCollectionViewData.m in Sources */,
 				686BB8671909676A009163F2 /* A3WalletFieldEditTitleCell.m in Sources */,
 				68E2A64718D0B1FC00E834D9 /* A3ExpenseListAddBudgetViewController.m in Sources */,
 				17D4237EB40E1456E494D076 /* TranslatorHistory+manager.m in Sources */,

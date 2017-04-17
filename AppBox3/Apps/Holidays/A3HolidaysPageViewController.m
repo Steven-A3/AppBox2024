@@ -758,7 +758,7 @@ extern NSString *const kA3HolidayScreenImageURL;		// USE key + country code
 }
 
 - (NSString *)lunarStringFromDate:(NSDate *)date isKorean:(BOOL)isKorean {
-	NSDateComponents *dateComponents = [[A3AppDelegate instance].calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit fromDate:date];
+	NSDateComponents *dateComponents = [[A3AppDelegate instance].calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitWeekday fromDate:date];
 	NSDateComponents *lunarComponents = [NSDate lunarCalcWithComponents:dateComponents
 													   gregorianToLunar:YES
 															  leapMonth:NO

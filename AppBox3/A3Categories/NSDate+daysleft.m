@@ -14,7 +14,7 @@
 
 - (NSString *)daysLeft {
 	NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
-	NSDateComponents *components = [gregorian components:NSDayCalendarUnit fromDate:[HolidayData justDateWithDate:[NSDate date]] toDate:self options:NSWrapCalendarComponents];
+	NSDateComponents *components = [gregorian components:NSCalendarUnitDay fromDate:[HolidayData justDateWithDate:[NSDate date]] toDate:self options:NSWrapCalendarComponents];
 
 	return [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld Days Left", @"StringsDict", nil), (long)components.day];
 }

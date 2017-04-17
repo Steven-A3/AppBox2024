@@ -88,7 +88,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
     [self configureDatePickerDataSource];
     
     NSCalendar *calendar = [[A3AppDelegate instance] calendar];
-	NSDateComponents *firstDayComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[NSDate date]];
+	NSDateComponents *firstDayComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:[NSDate date]];
     firstDayComp.day = 1;
     _defaultYearlyMonthDate = [A3DateHelper dateByAddingMonth:1 fromDate:[calendar dateFromComponents:firstDayComp]];
     _defaultOnetimeYearMonthDate = [A3DateHelper dateByAddingYears:1 fromDate:_defaultYearlyMonthDate];

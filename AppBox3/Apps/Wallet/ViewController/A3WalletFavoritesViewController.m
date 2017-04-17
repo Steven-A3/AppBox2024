@@ -103,7 +103,7 @@
 	if (!IS_IPAD) return;
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 	UIColor *disabledColor = [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
-	self.tabBarController.tabBar.selectedImageTintColor = enable ? nil : disabledColor;
+	self.tabBarController.tabBar.tintColor = enable ? nil : disabledColor;
 }
 
 - (void)viewWillAppear:(BOOL)animated

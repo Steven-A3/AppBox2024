@@ -28,7 +28,7 @@
 
 + (NSInteger)weekdayFromDate:(NSDate*)date
 {
-    NSDateComponents *comp = [[[A3AppDelegate instance] calendar] components:NSWeekdayCalendarUnit fromDate:date];
+    NSDateComponents *comp = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitWeekday fromDate:date];
     
     return [comp weekday];
 }
@@ -39,7 +39,7 @@
 		return 0;
     
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
-	NSDateComponents *diffComponent = [calendar components:NSDayCalendarUnit
+	NSDateComponents *diffComponent = [calendar components:NSCalendarUnitDay
 												  fromDate:fromDate
 													toDate:toDate options:0];
 
@@ -64,8 +64,8 @@
 {
     if (isAllDay) {
         NSCalendar *calendar = [[A3AppDelegate instance] calendar];
-        NSDateComponents *fromComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:fromDate];
-        NSDateComponents *toComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:toDate];
+        NSDateComponents *fromComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:fromDate];
+        NSDateComponents *toComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:toDate];
         
         if (isRepeat && [fromComp month] == [toComp month] && [fromComp day] == [toComp day]) {
             return NSLocalizedString(@"Today", @"Today");
@@ -78,7 +78,7 @@
         toComp.minute = 0;
         toComp.second = 0;
         
-        NSDateComponents *daysGapComp = [calendar components:NSDayCalendarUnit
+        NSDateComponents *daysGapComp = [calendar components:NSCalendarUnitDay
                                                     fromDate:[calendar dateFromComponents:fromComp]
                                                       toDate:[calendar dateFromComponents:toComp]
                                                      options:0];
@@ -96,8 +96,8 @@
     }
     else {
         NSCalendar *calendar = [[A3AppDelegate instance] calendar];
-        NSDateComponents *fromComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:fromDate];
-        NSDateComponents *toComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:toDate];
+        NSDateComponents *fromComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:fromDate];
+        NSDateComponents *toComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:toDate];
         
         if (isRepeat && [fromComp month] == [toComp month] && [fromComp day] == [toComp day] &&
             [fromComp hour] == [toComp hour] && [fromComp minute] == [toComp minute]) {
@@ -150,8 +150,8 @@
     }
     
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
-    NSDateComponents *fromComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:fromDate];
-    NSDateComponents *toComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:toDate];
+    NSDateComponents *fromComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:fromDate];
+    NSDateComponents *toComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:toDate];
     
     fromComp.hour = 0;
     fromComp.minute = 0;
@@ -160,7 +160,7 @@
     toComp.minute = 0;
     toComp.second = 0;
     
-    NSDateComponents *diffComponent = [calendar components:NSDayCalendarUnit
+    NSDateComponents *diffComponent = [calendar components:NSCalendarUnitDay
                                                   fromDate:[calendar dateFromComponents:fromComp]
                                                     toDate:[calendar dateFromComponents:toComp]
                                                    options:0];
@@ -187,7 +187,7 @@
 		return 0;
     
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
-	NSDateComponents *diffComponent = [calendar components:NSMonthCalendarUnit
+	NSDateComponents *diffComponent = [calendar components:NSCalendarUnitMonth
 												  fromDate:fromDate
 													toDate:toDate options:0];
 	
@@ -200,7 +200,7 @@
 		return 0;
     
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
-	NSDateComponents *diffComponent = [calendar components:NSYearCalendarUnit
+	NSDateComponents *diffComponent = [calendar components:NSCalendarUnitYear
 												  fromDate:fromDate
 													toDate:toDate options:0];
 	
@@ -260,7 +260,7 @@
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
 	NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth fromDate:month];
 	NSDate *startDate = [A3DateHelper dateFromYear:components.year month:components.month day:1 hour:12 minute:0 second:0];
-	NSRange range = [calendar rangeOfUnit:NSWeekCalendarUnit inUnit:NSMonthCalendarUnit forDate:startDate];
+	NSRange range = [calendar rangeOfUnit:NSWeekCalendarUnit inUnit:NSCalendarUnitMonth forDate:startDate];
 	
 	return range.length;
 }
@@ -270,28 +270,28 @@
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
 	NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth fromDate:month];
 	NSDate *startDate = [A3DateHelper dateFromYear:components.year month:components.month day:1 hour:12 minute:0 second:0];
-	NSRange range = [calendar rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:startDate];
+	NSRange range = [calendar rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:startDate];
 	
 	return range.length;
 }
 
 + (NSDate*)dateMake12PM:(NSDate*)date
 {
-    NSDateComponents *comps = [[[A3AppDelegate instance] calendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:date];
+    NSDateComponents *comps = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:date];
     
     return [A3DateHelper dateFromYear:[comps year] month:[comps month] day:[comps day] hour:12 minute:0 second:0];
 }
 
 + (NSDate*)dateMakeMonthFirstDayAtDate:(NSDate*)date
 {
-    NSDateComponents *comps = [[[A3AppDelegate instance] calendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:date];
+    NSDateComponents *comps = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:date];
     
     return [A3DateHelper dateFromYear:[comps year] month:[comps month] day:1 hour:12 minute:0 second:0];
 }
 
 + (NSDate *)midnightForDate:(NSDate *)date
 {
-    NSDateComponents *comp = [[[A3AppDelegate instance] calendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit
+    NSDateComponents *comp = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit|NSSecondCalendarUnit
                                                              fromDate:date];
     comp.hour = 0;
     comp.minute = 0;

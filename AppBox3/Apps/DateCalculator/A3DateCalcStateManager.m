@@ -68,16 +68,16 @@ static DurationType g_currentDurationType;
     DurationType durationType = (DurationType) [[A3SyncManager sharedSyncManager] integerForKey:A3DateCalcDefaultsDurationType];
  
     if (durationType & DurationType_Year) {
-        calUnit |= NSYearCalendarUnit;
+        calUnit |= NSCalendarUnitYear;
     }
     if (durationType & DurationType_Month) {
-        calUnit |= NSMonthCalendarUnit;
+        calUnit |= NSCalendarUnitMonth;
     }
     if (durationType & DurationType_Week) {
-        calUnit |= NSWeekOfYearCalendarUnit;
+        calUnit |=NSCalendarUnitWeekOfYear;
     }
     if (durationType & DurationType_Day) {
-        calUnit |= NSDayCalendarUnit;
+        calUnit |=NSCalendarUnitDay;
     }
     
     return calUnit;
@@ -176,13 +176,13 @@ static DurationType g_currentDurationType;
 
 + (NSCalendar *)currentCalendar
 {
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     return calendar;
 }
 
 + (NSDateComponents *)dateComponentByAddingDay:(NSInteger)aDay toDate:(NSDate *)fromDate
 {
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     NSDateComponents *comp = [NSDateComponents new];
     comp.day = aDay;
     // 날짜 더하기
@@ -193,7 +193,7 @@ static DurationType g_currentDurationType;
 
 + (NSDateComponents *)dateComponentBySubtractingDay:(NSInteger)aDay toDate:(NSDate *)fromDate
 {
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     NSDateComponents *comp = [NSDateComponents new];
     comp.day = -aDay;
     // 날짜 더하기
@@ -204,7 +204,7 @@ static DurationType g_currentDurationType;
 
 + (NSDate *)dateByAddingDay:(NSInteger)aDay toDate:(NSDate *)fromDate
 {
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     NSDateComponents *comp = [NSDateComponents new];
     comp.day = aDay;
     // 날짜 더하기
@@ -214,7 +214,7 @@ static DurationType g_currentDurationType;
 
 + (NSDate *)dateBySubtractingDay:(NSInteger)aDay toDate:(NSDate *)fromDate
 {
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     NSDateComponents *comp = [NSDateComponents new];
     comp.day = -aDay;
     // 날짜 더하기
@@ -229,17 +229,17 @@ static DurationType g_currentDurationType;
 + (NSDateComponents *)dateComponentFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
 {
     FNLOG(@"\nfromDate: %@ \ntoDate: %@", fromDate, toDate);
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     
     // 제외 날짜 계산. 일요일, 토요일
     ExcludeOptions exclude = [A3DateCalcStateManager excludeOptions];
     NSInteger excludeOffset = 0;
     NSInteger resultDays = 0;
     
-    NSDateComponents *rangeDayComp = [calendar components:NSDayCalendarUnit fromDate:fromDate toDate:toDate options:0];
+    NSDateComponents *rangeDayComp = [calendar components:NSCalendarUnitDay fromDate:fromDate toDate:toDate options:0];
     NSDateComponents *weeks = [calendar components:NSWeekOfYearCalendarUnit fromDate:fromDate toDate:toDate options:0];
-    NSDateComponents *fromWeekDay = [calendar components:NSWeekdayCalendarUnit fromDate:fromDate];
-    NSDateComponents *toWeekDay = [calendar components:NSWeekdayCalendarUnit fromDate:toDate];
+    NSDateComponents *fromWeekDay = [calendar components:NSCalendarUnitWeekday fromDate:fromDate];
+    NSDateComponents *toWeekDay = [calendar components:NSCalendarUnitWeekday fromDate:toDate];
     NSInteger totalWeeks = 0;
 
     if ( (rangeDayComp.day % 7 == 0) || (fromWeekDay.weekday < toWeekDay.weekday) ) {
@@ -325,28 +325,28 @@ static DurationType g_currentDurationType;
 
 + (NSInteger)dayCountToDate:(NSDate *)date
 {
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSDateComponents *result = [calendar components:NSDayCalendarUnit fromDate:date];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *result = [calendar components:NSCalendarUnitDay fromDate:date];
     return result.day;
 }
 
 + (NSInteger)dayCountToDate:(NSDate *)date from:(NSDate *)from
 {
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSDateComponents *result = [calendar components:NSDayCalendarUnit fromDate:from toDate:date options:0];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *result = [calendar components:NSCalendarUnitDay fromDate:from toDate:date options:0];
     return result.day;
 }
 
 
 + (NSString *)fullStyleDateStringFromDate:(NSDate *)date
 {
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSDateComponents *comp1 = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[NSDate date]];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *comp1 = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:[NSDate date]];
     comp1.hour = 0;
     comp1.minute = 0;
     NSDate *today = [calendar dateFromComponents:comp1];
-    comp1 = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:today];
-    NSDateComponents *comp2 = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
+    comp1 = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:today];
+    NSDateComponents *comp2 = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
     if (comp1.year==comp2.year && comp1.month==comp2.month && comp1.day==comp2.day) {
         return NSLocalizedString(@"Today  ", @"Today  ");
     }
@@ -356,13 +356,13 @@ static DurationType g_currentDurationType;
 
 + (NSString *)fullCustomStyleDateStringFromDate:(NSDate *)date
 {
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSDateComponents *comp1 = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[NSDate date]];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *comp1 = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:[NSDate date]];
     comp1.hour = 0;
     comp1.minute = 0;
     NSDate *today = [calendar dateFromComponents:comp1];
-    comp1 = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:today];
-    NSDateComponents *comp2 = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
+    comp1 = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:today];
+    NSDateComponents *comp2 = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
     if (comp1.year==comp2.year && comp1.month==comp2.month && comp1.day==comp2.day) {
         return NSLocalizedString(@"Today  ", @"Today  ");
     }

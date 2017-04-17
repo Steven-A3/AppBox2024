@@ -252,10 +252,10 @@
     if ( [endMonthStr integerValue] > [curMonthStr integerValue] ) {
         edDay = [A3DateHelper lastDaysOfMonth:_dateMonth];
 
-        NSDateComponents *dateComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:edDate];
+        NSDateComponents *dateComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:edDate];
         dateComp.day = 1;
         NSDate *firstDateOfMonth = [calendar dateFromComponents:dateComp];
-        dateComp = [calendar components:NSWeekdayCalendarUnit fromDate:firstDateOfMonth];
+        dateComp = [calendar components:NSCalendarUnitWeekday fromDate:firstDateOfMonth];
         
         if ([dateComp weekday] == 1) {
             unlinkedAtLastWeekday = YES;

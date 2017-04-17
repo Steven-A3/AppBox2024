@@ -402,7 +402,7 @@ A3CalendarViewDelegate>
 }
 
 - (void)setupCalendarHeaderViewFrame {
-    if ( UIInterfaceOrientationIsLandscape(self.interfaceOrientation) ) {
+    if (IS_PORTRAIT) {
         _calendarHeaderView.frame = CGRectMake(_calendarHeaderView.frame.origin.x, _calendarHeaderView.frame.origin.y, self.view.frame.size.width, _calendarHeaderView.frame.size.height);
     }
     else{
@@ -429,14 +429,14 @@ A3CalendarViewDelegate>
 
 - (void)setupCalendarRange {
 	NSCalendar *defaultCalendar = [[A3AppDelegate instance] calendar];
-	NSDateComponents *startComponents = [defaultCalendar components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:[self.dataManager startDateForCurrentAccount]];
+	NSDateComponents *startComponents = [defaultCalendar components:NSCalendarUnitYear|NSCalendarUnitMonth fromDate:[self.dataManager startDateForCurrentAccount]];
 	_startYear = startComponents.year;
 	_startMonth = startComponents.month;
-	NSDateComponents *endComponents = [defaultCalendar components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:[self.dataManager endDateForCurrentAccount]];
+	NSDateComponents *endComponents = [defaultCalendar components:NSCalendarUnitYear|NSCalendarUnitMonth fromDate:[self.dataManager endDateForCurrentAccount]];
 	_endYear = endComponents.year;
 	_endMonth = endComponents.month;
 	NSDateComponents *difference =
-	[defaultCalendar components:NSMonthCalendarUnit
+	[defaultCalendar components:NSCalendarUnitMonth
 					   fromDate:[self.dataManager startDateForCurrentAccount]
 						 toDate:[self.dataManager endDateForCurrentAccount]
 						options:0];
@@ -445,7 +445,7 @@ A3CalendarViewDelegate>
 		NSDate *updatedEndDate = [defaultCalendar dateByAddingComponents:difference
 																  toDate:[self.dataManager startDateForCurrentAccount]
 																 options:0];
-		endComponents = [defaultCalendar components:NSYearCalendarUnit|NSMonthCalendarUnit
+		endComponents = [defaultCalendar components:NSCalendarUnitYear|NSCalendarUnitMonth
 										   fromDate:updatedEndDate];
 		_endYear = endComponents.year;
 		_endMonth = endComponents.month;
@@ -709,7 +709,11 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
     A3LadyCalendarDetailViewController *viewController = [[A3LadyCalendarDetailViewController alloc] init];
     viewController.month = period.startDate;
     viewController.periodItems = [NSMutableArray arrayWithArray:periods];
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[A3DateHelper dateStringFromDate:calendarView.dateMonth withFormat:@"MMMM"] style:UIBarButtonItemStyleBordered target:nil action:nil];
+    self.navigationItem.backBarButtonItem =
+    [[UIBarButtonItem alloc] initWithTitle:[A3DateHelper dateStringFromDate:calendarView.dateMonth withFormat:@"MMMM"]
+                                     style:UIBarButtonItemStylePlain
+                                    target:nil
+                                    action:nil];
 	[self.navigationController pushViewController:viewController animated:YES];
 }
 

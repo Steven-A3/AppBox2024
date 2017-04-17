@@ -36,7 +36,7 @@ NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCod
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-	self.searchBar.placeholder = NSLocalizedString(@"Search", @"Search");
+	self.searchController.searchBar.placeholder = NSLocalizedString(@"Search", @"Search");
 	self.title = NSLocalizedString(@"Select Currency", @"Select Currency");
 
 	[self registerContentSizeCategoryDidChangeNotification];
@@ -132,7 +132,7 @@ NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCod
 
 	// Configure the cell...
 	A3SearchTargetItem *data;
-	if (tableView == self.searchDisplayController.searchResultsTableView) {
+	if (tableView == self.searchResultsTableViewController.tableView) {
 		data = self.filteredResults[indexPath.row];
 	} else {
 		NSArray *dataInSection = (self.sectionsArray)[indexPath.section];
@@ -200,7 +200,7 @@ NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCod
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     A3SearchTargetItem *data;
-	if (tableView == self.searchDisplayController.searchResultsTableView) {
+	if (tableView == self.searchResultsTableViewController.tableView) {
 		data = self.filteredResults[indexPath.row];
 	} else {
 		NSArray *dataInSection = (self.sectionsArray)[indexPath.section];

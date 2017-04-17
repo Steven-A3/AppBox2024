@@ -38,8 +38,8 @@
     if (self) {
 		self.selectionStyle = UITableViewCellSelectionStyleNone;
 
-		NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-		NSDateComponents *components = [gregorian components:NSYearCalendarUnit fromDate:[NSDate date]];
+		NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+		NSDateComponents *components = [gregorian components:NSCalendarUnitYear fromDate:[NSDate date]];
 		_thisYear = [components year];
 
 		// Initialization code

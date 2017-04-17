@@ -64,7 +64,7 @@
 				continue;
 		}
 	}
-	if (dateComponents.year != NSUndefinedDateComponent && yearRange.location != NSNotFound) {
+	if (dateComponents.year != NSDateComponentUndefined && yearRange.location != NSNotFound) {
 		NSString *year = [NSString stringWithFormat:@"%ld", (long) dateComponents.year];
 		[dateFormat replaceOccurrencesOfString:[dateFormat substringWithRange:yearRange] withString:year options:0 range:yearRange];
 		yearRange.length = [year length] - yearRange.length;
@@ -73,7 +73,7 @@
 		dayRange = [self updateRange:dayRange withChangedRange:yearRange];
 		weekdayRange = [self updateRange:weekdayRange withChangedRange:yearRange];
 	}
-	if (dateComponents.month != NSUndefinedDateComponent && monthRange.location != NSNotFound) {
+	if (dateComponents.month != NSDateComponentUndefined && monthRange.location != NSNotFound) {
 		NSString *month;
 		if (monthRange.length == 1) {
 			month = [NSString stringWithFormat:@"%ld", (long)dateComponents.month];
@@ -90,7 +90,7 @@
 		dayRange = [self updateRange:dayRange withChangedRange:monthRange];
 		weekdayRange = [self updateRange:weekdayRange withChangedRange:monthRange];
 	}
-	if (dateComponents.day != NSUndefinedDateComponent && dayRange.location != NSNotFound) {
+	if (dateComponents.day != NSDateComponentUndefined && dayRange.location != NSNotFound) {
 		NSString *dayFormat = [NSString stringWithFormat:@"%%%ldld", (long) dayRange.length];
 		NSString *day = [NSString stringWithFormat:dayFormat, dateComponents.day];
 		[dateFormat replaceOccurrencesOfString:[dateFormat substringWithRange:dayRange] withString:day options:0 range:dayRange];
@@ -98,7 +98,7 @@
 		dayRange.length = [day length] - dayRange.length;
 		weekdayRange = [self updateRange:weekdayRange withChangedRange:dayRange];
 	}
-	if (dateComponents.weekday != NSUndefinedDateComponent && weekdayRange.location != NSNotFound) {
+	if (dateComponents.weekday != NSDateComponentUndefined && weekdayRange.location != NSNotFound) {
 		NSString *weekday;
 		if (weekdayRange.length > 3) {
 			weekday = self.weekdaySymbols[dateComponents.weekday - 1];
