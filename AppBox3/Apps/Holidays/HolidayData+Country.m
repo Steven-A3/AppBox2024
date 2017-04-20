@@ -614,18 +614,24 @@ NSString *const A3NotificationHolidaysCountryListChanged = @"A3NotificationHolid
 //					kHolidayTimeZone : @"CET",
 					kA3TimeZoneName : @"Africa/Tunis",
 			},    // UTC+1, Central Africa Time
-			 @{
+			@{
 					kHolidayCountryCode : @"rs",
 //					kHolidayCapitalCityName : @"Belgrade",
 //					kHolidayTimeZone : @"CET",
 					kA3TimeZoneName : @"Europe/Belgrade",
-					},    // UTC+1
+			},    // UTC+1
 			@{
-				kHolidayCountryCode : @"si",
-				//					kHolidayCapitalCityName : @"Ljubljana",
-				//					kHolidayTimeZone : @"CET",
-				kA3TimeZoneName : @"Europe/Ljubljana",
-				},    // UTC+1
+					kHolidayCountryCode : @"si",
+					//					kHolidayCapitalCityName : @"Ljubljana",
+					//					kHolidayTimeZone : @"CET",
+					kA3TimeZoneName : @"Europe/Ljubljana",
+			},    // UTC+1
+			@{
+					kHolidayCountryCode : @"lb",
+					//					kHolidayCapitalCityName : @"Beirut",
+					//					kHolidayTimeZone : @"EET",
+					kA3TimeZoneName : @"Asia/Beirut",
+			},    // UTC+1
 	];
 }
 

@@ -9,6 +9,7 @@
 #import "HolidayData+MiddleEast.h"
 #import "A3AppDelegate.h"
 #import "NSString+conversion.h"
+#import "NSDate-Utilities.h"
 
 NSUInteger const jewishTable[][14][2] = {
 	/*2000*/{{1, 22}, {3, 21}, {4, 20}, {5,  2}, {5, 10}, {5, 23}, {6,  9}, {8, 10}, {9, 14}, {10,  9}, {10, 14}, {10, 21}, {10, 22}, {12, 22}},
@@ -1018,6 +1019,149 @@ NSUInteger const jewishTable[][14][2] = {
 		return holidays;
 	}
 	return nil;
+}
+
+/* Lebanon Holidays
+ */
+
+- (NSMutableArray *)lb_HolidaysInYear
+{
+    NSUInteger year = self.year;
+    
+    NSMutableArray *holidays = [[NSMutableArray alloc] init];
+    NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
+    
+    NSString *holidayName;
+    NSDate *date;
+    
+    // New years day
+    holidayName = NSLocalizedStringFromTable(@"New Year's Day", kHolidaysResourceName, nil);
+    date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
+    [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
+    holidayName = NSLocalizedStringFromTable(@"Orthodox Christmas", kHolidaysResourceName, nil);
+    date = [HolidayData dateWithDay:9 month:1 year:year withCalendar:gregorian option:0];
+    [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
+    holidayName = NSLocalizedStringFromTable(@"St Maron's Day", kHolidaysResourceName, nil);
+    date = [HolidayData dateWithDay:9 month:2 year:year withCalendar:gregorian option:0];
+    [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
+    holidayName = NSLocalizedStringFromTable(@"Teacher's Day", kHolidaysResourceName, nil);
+    date = [HolidayData dateWithDay:9 month:3 year:year withCalendar:gregorian option:0];
+    [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
+    holidayName = NSLocalizedStringFromTable(@"Mother's Day", kHolidaysResourceName, nil);
+    date = [HolidayData dateWithDay:21 month:3 year:year withCalendar:gregorian option:0];
+    [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
+    holidayName = NSLocalizedStringFromTable(@"Feast of the Annunciation", kHolidaysResourceName, nil);
+    date = [HolidayData dateWithDay:25 month:3 year:year withCalendar:gregorian option:0];
+    [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
+    holidayName = NSLocalizedStringFromTable(@"Daylight Saving Time Begins", kHolidaysResourceName, nil);
+    date = [HolidayData dateWithWeekday:Sunday ordinal:4 month:3 year:year withCalendar:gregorian];
+    [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
+   
+    date = [HolidayData getGoodFriday:year western:NO withCalendar:gregorian];
+    if (date != nil) {
+        holidayName = NSLocalizedStringFromTable(@"Orthodox Good Friday", kHolidaysResourceName, nil);
+        [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
+    }
+    
+    // Good Friday
+    holidayName = NSLocalizedStringFromTable(@"Good Friday", kHolidaysResourceName, nil);
+    date = [HolidayData getGoodFriday:year western:YES withCalendar:gregorian];
+    if (date != nil) {
+        [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    }
+    
+    date = [HolidayData getOrthodoxEaster:year withCalendar:gregorian];
+    if (date != nil) {
+        holidayName = NSLocalizedStringFromTable(@"Orthodox Easter", kHolidaysResourceName, nil);
+        [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
+    }
+    
+    // Easter Day
+    holidayName = NSLocalizedStringFromTable(@"Easter", kHolidaysResourceName, nil);
+    date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
+    if (date != nil) {
+        [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    }
+
+    holidayName = NSLocalizedStringFromTable(@"Easter Monday", kHolidaysResourceName, nil);
+    date = [HolidayData getEasterMonday:year western:YES withCalendar:gregorian];
+    if (date != nil) {
+        [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    }
+    
+    holidayName = NSLocalizedStringFromTable(@"Worker's Day", kHolidaysResourceName, nil);
+    date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
+    [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
+    holidayName = NSLocalizedStringFromTable(@"Martyr's Day", kHolidaysResourceName, nil);
+    date = [HolidayData dateWithDay:6 month:5 year:year withCalendar:gregorian option:0];
+    [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
+    holidayName = NSLocalizedStringFromTable(@"Ascension Day", kHolidaysResourceName, nil);
+    date = [HolidayData getAscensionDay:year western:YES withCalendar:gregorian];
+    if (date != nil) {
+        [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    }
+
+    holidayName = NSLocalizedStringFromTable(@"Liberation and Resistance Day", kHolidaysResourceName, nil);
+    date = [HolidayData dateWithDay:25 month:5 year:year withCalendar:gregorian option:0];
+    [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
+    holidayName = NSLocalizedStringFromTable(@"Feast of Assumption", kHolidaysResourceName, nil);
+    date = [HolidayData dateWithDay:15 month:8 year:year withCalendar:gregorian option:0];
+    [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
+    holidayName = NSLocalizedStringFromTable(@"Eid al-Adha", kHolidaysResourceName, nil);
+    date = [HolidayData getSacrificeFeast:year withCalendar:gregorian];
+    if (date != nil) {
+        [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:[date dateByAddingDays:1], kHolidayDuration:@1}];
+    }
+
+    holidayName = NSLocalizedStringFromTable(@"Nativity of Mary", kHolidaysResourceName, nil);
+    date = [HolidayData dateWithDay:8 month:9 year:year withCalendar:gregorian option:0];
+    [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
+    holidayName = [NSLocalizedStringFromTable(@"Muharram(Islamic New Year)", kHolidaysResourceName, nil) stringByAppendingFormat:@"(%lu)", (unsigned long) year - ((year > 2007) ? 578 : 579)];
+    date = [HolidayData getIslamicNewYear:year withCalendar:gregorian];
+    if (date != nil) {
+        [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    }
+
+    if (year == 2017) {
+        holidayName = NSLocalizedStringFromTable(@"First Day of Ashura", kHolidaysResourceName, nil);
+        date = [HolidayData dateWithDay:30 month:9 year:year withCalendar:gregorian option:0];
+        [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
+    }
+    
+    holidayName = NSLocalizedStringFromTable(@"Daylight Saving Time Ends", kHolidaysResourceName, nil);
+    date = [HolidayData dateWithWeekday:Sunday ordinal:5 month:10 year:year withCalendar:gregorian];
+    [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
+    
+    holidayName = NSLocalizedStringFromTable(@"All Saints' Day", kHolidaysResourceName, nil);
+    date = [HolidayData dateWithDay:1 month:11 year:year withCalendar:gregorian option:0];
+    [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
+    
+    holidayName = NSLocalizedStringFromTable(@"Independence Day", kHolidaysResourceName, nil);
+    date = [HolidayData dateWithDay:22 month:11 year:year withCalendar:gregorian option:0];
+    [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
+    
+    holidayName = NSLocalizedStringFromTable(@"Prophet's Birthday", kHolidaysResourceName, nil);
+    NSArray *mohamedBirthday = [HolidayData getMohamedBirthday:year];
+    for (NSDate *birthday in mohamedBirthday) {
+        [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:birthday, kHolidayDuration:@1}];
+    }
+    
+    holidayName = NSLocalizedStringFromTable(@"Christmas Day", kHolidaysResourceName, nil);
+    date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
+    [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
+    return holidays;
 }
 
 @end

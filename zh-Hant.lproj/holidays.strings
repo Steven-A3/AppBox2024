@@ -148,6 +148,7 @@
 "Young Cadets" = "年輕的軍校學員";
 "Victoria Day" = "維多利亞日";
 "Martyrs' Day" = "殉教者日";
+"Martyr's Day" = "殉教者日";
 "Declaration of Independence of Quito (1809)" = "基多獨立宣言日(1809)";
 "Benito Juárez's Birthday" = "薩林納斯誕辰";
 "Shrove Tuesday" = "懺悔星期二";
@@ -403,6 +404,7 @@
 "Twelfth Night" = "第十二夜";
 "Marine Day" = "海洋日";
 "All Saints Day" = "萬聖節";
+"All Saints' Day" = "萬聖節";
 "New Year's Day(Jan 1~2)" = "新年（1～2日）";
 "2nd Day of Christmas" = "聖誕節第二天";
 "Afternoon before Christmas Eve" = "聖誕前夜下午";
@@ -691,3 +693,9 @@
 "Spring Festival(Sham El Nessim)" = "春節（深水薩爾瓦多奈西姆）";
 "Guatemala City only" = "只有危地馬拉城";
 "Day of the Mountain" = "山天";
+
+"Liberation and Resistance Day" = "解放抵抗日";
+"St Maron's Day" = "聖馬龍節";
+"Feast of the Annunciation" = "天使報喜";
+"Nativity of Mary" = "瑪麗的誕生";
+"First Day of Ashura" = "阿修羅的第一天";

@@ -16,6 +16,7 @@
 "Afternoon before Victory Day" = "胜利纪念日前夜下午";
 "Air Force Day" = "空军节";
 "All Saints Day" = "万圣节";
+"All Saints' Day" = "万圣节";
 "All Souls Day" = "万灵节";
 "All Souls Day(Dia de Finados)" = "万灵节";
 "Anniversary of Liberation" = "解放纪念日";
@@ -201,6 +202,7 @@
 "Marine Day" = "海洋日";
 "Martin of Tours" = "都尔的马丁纪念日";
 "Martyrs' Day" = "殉教者日";
+"Martyr's Day" = "殉教者日";
 "Maundy Thursday" = "圣星期四";
 "Memorial Day" = "阵亡将士纪念日";
 "Memory/Parents' Day(Pastele Blanjinilor)" = "父母节";
@@ -704,3 +706,9 @@
 "Spring Festival(Sham El Nessim)" = "春节（深水萨尔瓦多奈西姆）";
 "Guatemala City only" = "只有危地马拉城";
 "Day of the Mountain" = "山天";
+
+"Liberation and Resistance Day" = "解放抵抗日";
+"St Maron's Day" = "圣马龙节";
+"Feast of the Annunciation" = "天使报喜";
+"Nativity of Mary" = "玛丽的诞生";
+"First Day of Ashura" = "阿修罗的第一天";

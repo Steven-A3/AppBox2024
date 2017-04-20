@@ -100,6 +100,7 @@ static NSString *const CellIdentifier = @"Cell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    self.searchController.active = NO;
 	A3SearchTargetItem *data;
 	if (tableView == self.searchResultsTableViewController.tableView) {
 		data = self.filteredResults[indexPath.row];

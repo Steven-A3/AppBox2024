@@ -26,6 +26,7 @@
 "Afternoon before Victory Day" = "Nachmittag vor dem Tag des Sieges";
 "Air Force Day" = "Luftwaffen Tage";
 "All Saints Day" = "Allerheiligen";
+"All Saints' Day" = "Allerheiligen";
 "All Souls Day" = "Allerseelen";
 "All Souls Day(Dia de Finados)" = "Allerseelen (Da de Finados)";
 "Americas' Day" = "Amerika Tag";
@@ -278,6 +279,7 @@
 "Martin Luther King Day" = "Tag des Martin-Luther-King";
 "Martin of Tours" = "Martin von Tours";
 "Martyrs' Day" = "Tag des Märtyrers";
+"Martyr's Day" = "Tag des Märtyrers";
 "Mary's Birthday (Nativity of Our Lady)" = "Maria Geburtstag (Geburt der Jungfrau Maria)";
 "Maundy Thursday" = "Gründonnerstag";
 "Mawlid al-Navi (Prophet's Birthday)" = "Mawlid Al-Navi (Geburtstag des Propheten)";
@@ -741,3 +743,9 @@
 "Evacuation Day" = "Tag der Evakuierung";
 "Founding of the Republic of China" = "Founding of the Republic of China";
 "Day of the Mountain" = "Tag des Berges";
+
+"Liberation and Resistance Day" = "Befreiungs- und Widerstandstag";
+"St Maron's Day" = "St. Maron's Day";
+"Feast of the Annunciation" = "Fest der Verkündigung";
+"Nativity of Mary" = "Mariä Geburt";
+"First Day of Ashura" = "Erster Tag von Ashura";

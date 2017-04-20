@@ -26,6 +26,7 @@
 "Afternoon before Victory Day"  = "승리기념일 전날 오후";
 "Air Force Day"  = "공군의 날";
 "All Saints Day"  = "만성절";
+"All Saints' Day" = "만성절";
 "All Souls Day"  = "위령의 날";
 "All Souls Day(Dia de Finados)"  = "위령의 날";
 "Americas' Day"  = "아메리카 기념일";
@@ -255,6 +256,7 @@
 "Martin Luther King Day"  = "마틴 루터 킹 기념일";
 "Martin of Tours"  = "뚜르의 마르텡의 날";
 "Martyrs' Day"  = "순교자의 날";
+"Martyr's Day" = "순교자의 날";
 "Mary's Birthday (Nativity of Our Lady)"  = "성모 마리아 탄생일";
 "Maundy Thursday"  = "성 목요일";
 "Moundy Thursday"  = "성 목요일";
@@ -701,3 +703,9 @@
 "Evacuation Day" = "피난 기념일";
 "Founding of the Republic of China" = "Founding of the Republic of China";
 "Day of the Mountain" = "산의 날";
+
+"Liberation and Resistance Day" = "해방과 저항의 날";
+"St Maron's Day" = "세인트 마론의 날";
+"Feast of the Annunciation" = "성모 영보 대축일";
+"Nativity of Mary" = "메리의 탄생";
+"First Day of Ashura" = "아수라 첫날";
