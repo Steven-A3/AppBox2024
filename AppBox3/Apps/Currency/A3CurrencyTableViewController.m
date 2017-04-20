@@ -873,7 +873,6 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	if (selectedIndex >= 0 && selectedIndex <= ([_favorites count] - 1) ) {
 		CurrencyFavorite *selectedFavorite = _favorites[selectedIndex];
 		NSString *selectedItem = selectedFavorite.uniqueID;
-		viewController.placeHolder = selectedItem;
         viewController.selectedCurrencyCode = selectedItem;
 	}
 	return viewController;
@@ -1310,10 +1309,13 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 - (void)shareAll:(id)sender {
 	_shareAll = YES;
-	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completionHandler:^(NSString *activityType, BOOL completed) {
-		[self unSwipeAll];
-		[self enableControls:YES];
-	}];
+	_sharePopoverController =
+			[self presentActivityViewControllerWithActivityItems:@[self]
+											   fromBarButtonItem:sender
+											   completionHandler:^() {
+												   [self unSwipeAll];
+												   [self enableControls:YES];
+											   }];
 	_sharePopoverController.delegate = self;
 	if (IS_IPAD) {
 		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {

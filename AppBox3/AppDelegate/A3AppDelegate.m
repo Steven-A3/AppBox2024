@@ -697,13 +697,8 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 
 - (NSURLSession *)backgroundDownloadSession {
 	if (!_backgroundDownloadSession) {
-		if (IS_IOS7) {
-			NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration backgroundSessionConfiguration:@"net.allaboutapps.backgroundTransfer.backgroundSession"];
-			_backgroundDownloadSession = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
-		} else {
-			NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:@"net.allaboutapps.backgroundTransfer.backgroundSession"];
-			_backgroundDownloadSession = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
-		}
+        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:@"net.allaboutapps.backgroundTransfer.backgroundSession"];
+        _backgroundDownloadSession = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
 	}
 	return _backgroundDownloadSession;
 }
@@ -866,12 +861,10 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 				_locationManager.delegate = self;
 			}
 
-			if ([CLLocationManager authorizationStatus] < kCLAuthorizationStatusAuthorized) {
+			if ([CLLocationManager authorizationStatus] < kCLAuthorizationStatusAuthorizedAlways) {
 				[HolidayData resetFirstCountryWithLocale];
 
-				if (!IS_IOS7 && [_locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
-					[_locationManager requestWhenInUseAuthorization];
-				}
+                [_locationManager requestWhenInUseAuthorization];
 			}
 
 			[_locationManager startUpdatingLocation];

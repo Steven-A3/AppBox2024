@@ -373,7 +373,7 @@
 	}
     
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
-	NSDateComponents *dateComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:datePicker.date];
+	NSDateComponents *dateComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond fromDate:datePicker.date];
 	dateComp.second = 0;
 	_eventModel.alertDatetime = [calendar dateFromComponents:dateComp];
 	[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[_itemArray count]-1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
@@ -435,7 +435,7 @@
 	NSInteger days = [textField.text integerValue];
 	if (days > 0) {
 		NSDate *alertDate = [A3DateHelper dateByAddingDays:-days fromDate:_eventModel.effectiveStartDate];
-		NSDateComponents *alertIntervalComp = [[[A3AppDelegate instance] calendar] components:NSMinuteCalendarUnit fromDate:_eventModel.effectiveStartDate
+		NSDateComponents *alertIntervalComp = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitMinute fromDate:_eventModel.effectiveStartDate
 																				toDate:alertDate
 																			   options:0];
 		_eventModel.alertDatetime = alertDate;

@@ -191,7 +191,7 @@ NSString *const V1AlarmMP3DirectoryName = @"mp3";
 			startDate.solarDate = v1Item[kKeyForDDayDate];
 			newEvent.effectiveStartDate = startDate.solarDate;
 
-			NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit fromDate:newEvent.startDate.solarDate];
+			NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute fromDate:newEvent.startDate.solarDate];
 			startDate.year = @(components.year);
 			startDate.month = @(components.month);
 			startDate.day = @(components.day);
@@ -203,7 +203,7 @@ NSString *const V1AlarmMP3DirectoryName = @"mp3";
 				DaysCounterDate *endDate = [newEvent endDateCreateIfNotExist:YES ];
 				endDate.solarDate = V1endDate;
 
-				components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit fromDate:V1endDate];
+				components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute fromDate:V1endDate];
 				endDate.year = @(components.year);
 				endDate.month = @(components.month);
 				endDate.day = @(components.day);

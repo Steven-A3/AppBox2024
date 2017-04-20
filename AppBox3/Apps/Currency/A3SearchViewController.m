@@ -13,6 +13,11 @@
 #import "A3AppDelegate.h"
 
 @implementation A3SearchTargetItem
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"code: %@, name: %@, displayName: %@", _code, _name, _displayName];
+}
+
 @end
 
 @interface A3SearchViewController () <UISearchDisplayDelegate, UISearchControllerDelegate, UISearchResultsUpdating>
@@ -39,7 +44,6 @@
 	_tableView.showsVerticalScrollIndicator = NO;
 	_tableView.separatorColor = A3UITableViewSeparatorColor;
 	_tableView.separatorInset = A3UITableViewSeparatorInset;
-	_tableView.contentInset = UIEdgeInsetsMake(kSearchBarHeight + 4, 0, 0, 0);
 	[self.view addSubview:_tableView];
 
 	[_tableView makeConstraints:^(MASConstraintMaker *make) {
@@ -53,6 +57,8 @@
 		_tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
 	}
     _tableView.tableHeaderView = self.searchController.searchBar;
+    
+    self.definesPresentationContext = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -87,7 +93,7 @@
 
 - (UITableViewController *)searchResultsTableViewController {
 	if (!_searchResultsTableViewController) {
-		_searchResultsTableViewController = [UITableViewController new];
+		_searchResultsTableViewController = [[UITableViewController alloc] init];
         UITableView *tableView = _searchResultsTableViewController.tableView;
 		tableView.delegate = self;
         tableView.dataSource = self;
@@ -230,7 +236,8 @@
 	NSString *query = searchText;
 	if (query && query.length) {
 		NSPredicate *predicate =
-                [NSPredicate predicateWithFormat:@"displayName contains[cd] %@", query];
+                [NSPredicate predicateWithFormat:@"displayName contains[cd] %@",
+                 query];
 		_filteredResults = [self.allData filteredArrayUsingPredicate:predicate];
 	} else {
 		_filteredResults = nil;
@@ -289,7 +296,6 @@
 #pragma mark - UISearchControllerDelegate
 
 - (void)willPresentSearchController:(UISearchController *)searchController {
-
 }
 
 - (void)didPresentSearchController:(UISearchController *)searchController {
@@ -297,11 +303,9 @@
 }
 
 - (void)willDismissSearchController:(UISearchController *)searchController {
-
 }
 
 - (void)didDismissSearchController:(UISearchController *)searchController {
-
 }
 
 - (void)presentSearchController:(UISearchController *)searchController {

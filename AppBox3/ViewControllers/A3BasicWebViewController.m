@@ -141,16 +141,16 @@
 		[self.navigationItem.rightBarButtonItem setEnabled:NO];
 		[self.navigationController presentViewController:activityController animated:YES completion:NULL];
         
-        [activityController setCompletionHandler:^(NSString *activityType, BOOL completed){
-			[self.navigationItem.rightBarButtonItem setEnabled:YES];
-        }];
+        activityController.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+            [self.navigationItem.rightBarButtonItem setEnabled:YES];
+        };
 	} else {
 		[self.navigationItem.leftBarButtonItem setEnabled:NO];
 		[self.navigationItem.rightBarButtonItem setEnabled:NO];
-		activityController.completionHandler = ^(NSString *activityType, BOOL completed) {
-			[self.navigationItem.leftBarButtonItem setEnabled:YES];
-			[self.navigationItem.rightBarButtonItem setEnabled:YES];
-		};
+        activityController.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+            [self.navigationItem.leftBarButtonItem setEnabled:YES];
+            [self.navigationItem.rightBarButtonItem setEnabled:YES];
+        };
 
 		self.popoverVC = [[UIPopoverController alloc] initWithContentViewController:activityController];
 		[self.popoverVC presentPopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem

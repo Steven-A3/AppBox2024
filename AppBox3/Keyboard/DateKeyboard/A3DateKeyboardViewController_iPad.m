@@ -43,7 +43,7 @@
 - (void)viewWillLayoutSubviews {
 	[super viewWillLayoutSubviews];
 
-	[self rotateToInterfaceOrientation:self.interfaceOrientation];
+	[self rotateToInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
 }
 
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {

@@ -357,7 +357,7 @@
 -(void)setFromDate:(NSDate *)fromDate
 {
     _fromDate = [fromDate copy];
-    NSDateComponents *comp = [[A3DateCalcStateManager currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit
+    NSDateComponents *comp = [[A3DateCalcStateManager currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute
                                                                          fromDate:_fromDate];
     comp.hour = 0;
     comp.minute = 0;
@@ -369,7 +369,7 @@
 -(void)setToDate:(NSDate *)toDate
 {
     _toDate = [toDate copy];
-    NSDateComponents *comp = [[A3DateCalcStateManager currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit
+    NSDateComponents *comp = [[A3DateCalcStateManager currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute
                                                                          fromDate:_toDate];
     comp.hour = 0;
     comp.minute = 0;
@@ -504,9 +504,12 @@
 - (void)shareButtonAction:(id)sender {
     [self clearEverything];
 
-	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completionHandler:^(NSString *activityType, BOOL completed) {
-		[self enableControls:YES];
-	}];
+	_sharePopoverController =
+			[self presentActivityViewControllerWithActivityItems:@[self]
+											   fromBarButtonItem:sender
+											   completionHandler:^() {
+												   [self enableControls:YES];
+											   }];
 	_sharePopoverController.delegate = self;
     if (IS_IPAD) {
         _sharePopoverController.delegate = self;

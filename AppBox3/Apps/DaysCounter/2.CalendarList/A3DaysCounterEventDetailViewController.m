@@ -1696,9 +1696,9 @@ EXIT_FUCTION:
 - (void)didSelectShareEventRowAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
 {
     _activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
-	_activityViewController.completionHandler = ^(NSString *activityType, BOOL completed) {
-		_activityViewController = nil;
-	};
+    _activityViewController.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+        _activityViewController = nil;
+    };
     if (IS_IPHONE) {
 		[self presentViewController:_activityViewController animated:YES completion:NULL];
     } else {

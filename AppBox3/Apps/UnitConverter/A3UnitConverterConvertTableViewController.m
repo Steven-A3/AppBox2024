@@ -276,7 +276,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 
     
 	[self.addButton setEnabled:enable];
-	self.tabBarController.tabBar.selectedImageTintColor = enable ? nil : disabledColor;
+	self.tabBarController.tabBar.tintColor = enable ? nil : disabledColor;
 	self.navigationItem.leftBarButtonItem.enabled = enable;
 
 	NSIndexPath *firstRowIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
@@ -824,10 +824,10 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 
 	if (IS_IPHONE) {
 		UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
-		[activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
-			[self enableControls:YES];
-			FNLOG(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
-		}];
+        activityController.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+            [self enableControls:YES];
+            FNLOG(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
+        };
 		[self presentViewController:activityController animated:YES completion:NULL];
 	}
     else {
@@ -838,10 +838,10 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
         }
         else {
 			UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
-			[activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
-				[self enableControls:YES];
-				FNLOG(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
-			}];
+            activityController.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+                [self enableControls:YES];
+                FNLOG(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
+            };
             UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
             [popoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
             _sharePopoverController = popoverController;

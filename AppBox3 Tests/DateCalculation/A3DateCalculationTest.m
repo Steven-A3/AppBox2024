@@ -44,16 +44,16 @@
 	resultComponents = [_gregorian components:NSWeekOfMonthCalendarUnit fromDate:[NSDate date] toDate:_futureDate options:0];
 	NSLog(@"%ld", (long)resultComponents.weekOfMonth);
 
-	resultComponents = [_gregorian components:NSWeekOfYearCalendarUnit fromDate:[NSDate date] toDate:_olderDate options:0];
+	resultComponents = [_gregorian components:NSCalendarUnitWeekOfYear fromDate:[NSDate date] toDate:_olderDate options:0];
 	NSLog(@"%ld", (long)resultComponents.weekOfYear);
-	resultComponents = [_gregorian components:NSWeekOfYearCalendarUnit fromDate:[NSDate date] toDate:_futureDate options:0];
+	resultComponents = [_gregorian components:NSCalendarUnitWeekOfYear fromDate:[NSDate date] toDate:_futureDate options:0];
 	NSLog(@"%ld", (long)resultComponents.weekOfYear);
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-	resultComponents = [_gregorian components:NSWeekCalendarUnit fromDate:[NSDate date] toDate:_olderDate options:0];
+	resultComponents = [_gregorian components:NSCalendarUnitWeek fromDate:[NSDate date] toDate:_olderDate options:0];
 	NSLog(@"%ld, %ld, %ld", (long)resultComponents.week, (long)resultComponents.weekOfMonth, (long)resultComponents.weekOfYear);
-	resultComponents = [_gregorian components:NSWeekCalendarUnit fromDate:[NSDate date] toDate:_futureDate options:0];
+	resultComponents = [_gregorian components:NSCalendarUnitWeek fromDate:[NSDate date] toDate:_futureDate options:0];
 	NSLog(@"%ld, %ld, %ld", (long)resultComponents.week, (long)resultComponents.weekOfMonth, (long)resultComponents.weekOfYear);
 	
 	NSDateComponents *addingComponents = [NSDateComponents new];

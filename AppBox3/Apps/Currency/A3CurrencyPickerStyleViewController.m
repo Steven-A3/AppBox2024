@@ -186,7 +186,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	}
 
 	self.tableView.contentInset = UIEdgeInsetsZero;
-	[self setupIPADLayoutToInterfaceOrientation:self.interfaceOrientation];
+	[self setupIPADLayoutToInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
 	
 	if ([self.mainViewController.navigationController.navigationBar isHidden]) {
 		[self.mainViewController showNavigationBarOn:self.mainViewController.navigationController];
@@ -537,6 +537,9 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 }
 
 - (void)reloadChartImage {
+    if (!_chartImageView || _chartImageView.isHidden) {
+        return;
+    }
 	NSURLRequest *request = [NSURLRequest requestWithURL:self.urlForChartImage];
 	[self.chartImageView setImageWithURLRequest:request
 							   placeholderImage:nil
@@ -880,10 +883,13 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 #pragma mark - Share
 
 - (void)shareButtonAction:(id)sender {
-	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completionHandler:^(NSString *activityType, BOOL completed) {
-		[_mainViewController enableControls:YES];
-		[self enableControls:YES];
-	}];
+	_sharePopoverController =
+			[self presentActivityViewControllerWithActivityItems:@[self]
+											   fromBarButtonItem:sender
+											   completionHandler:^() {
+												   [_mainViewController enableControls:YES];
+												   [self enableControls:YES];
+											   }];
 	_sharePopoverController.delegate = self;
 	[_mainViewController enableControls:NO];
 	[self enableControls:NO];
@@ -970,7 +976,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 		[_adBackgroundView setHidden:NO];
 		[_lineAboveAdBackgroundView setHidden:NO];
 		_adBackgroundViewHeightConstraint.constant = 90;
-		[self setupIPADLayoutToInterfaceOrientation:self.interfaceOrientation];
+		[self setupIPADLayoutToInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
 		
 		FNLOGRECT(bannerView.frame);
 		[self.view addSubview:bannerView];

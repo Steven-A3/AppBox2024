@@ -324,26 +324,6 @@ static NSString *const A3V3InstructionDidShowForBattery = @"A3V3InstructionDidSh
 	return _headerView;
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-	if (IS_IPHONE && IS_LANDSCAPE) {
-		[self leftBarButtonAppsButton];
-	}
-	CGRect rect = self.headerView.frame;
-	if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-		rect.size.height = 275.0;
-	}
-	else {
-		rect.size.height = 321.0;
-	}
-	_headerView.frame = rect;
-	[UIView animateWithDuration:duration animations:^{
-		[self.tableView setTableHeaderView:_headerView];
-	}];
-
-	[self refreshHeaderView];
-}
-
-#ifdef __IPHONE_8_0
 /*! If you override this method in your custom view controllers, always call super at some point in
  *  your implementation so that UIKit can forward the size change message appropriately. 
  *  View controllers forward the size change message to their views and child view controllers. 
@@ -356,9 +336,21 @@ static NSString *const A3V3InstructionDidShowForBattery = @"A3V3InstructionDidSh
 
 	UIInterfaceOrientation orientation;
 	orientation = size.width < size.height ? UIInterfaceOrientationPortrait : UIInterfaceOrientationLandscapeLeft;
-	[self willRotateToInterfaceOrientation:orientation duration: 0];
+    if (IS_IPHONE && IS_LANDSCAPE) {
+        [self leftBarButtonAppsButton];
+    }
+    CGRect rect = self.headerView.frame;
+    if (size.width > size.height) {
+        rect.size.height = 275.0;
+    }
+    else {
+        rect.size.height = 321.0;
+    }
+    _headerView.frame = rect;
+    [self.tableView setTableHeaderView:_headerView];
+    
+    [self refreshHeaderView];
 }
-#endif
 
 #pragma mark - Actions
 

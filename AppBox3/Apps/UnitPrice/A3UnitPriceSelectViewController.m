@@ -152,7 +152,6 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     else {
         self.tabBarController.navigationItem.leftBarButtonItem = self.plusItem;
     }
-    FNLOGINSETS(self.tableView.contentInset);
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -161,8 +160,6 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self.navigationController setNavigationBarHidden:NO animated:NO];
 	}
-    FNLOG(@"%f", _tableView.contentOffset.y);
-    FNLOGINSETS(_tableView.contentInset);
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -252,20 +249,6 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 	}
 	return _searchController;
 }
-
-/*
-- (UISearchBar *)searchBar {
-	if (!_searchBar) {
-        
-        float startY = IS_RETINA ? 63.5 : 63.0;
-		_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, startY, self.view.bounds.size.width, kSearchBarHeight)];
-		_searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		_searchBar.backgroundColor = self.navigationController.navigationBar.backgroundColor;
-		_searchBar.delegate = self;
-	}
-	return _searchBar;
-}
-*/
 
 - (void)setIsFavoriteMode:(BOOL)isFavoriteMode
 {
@@ -613,44 +596,6 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 }
-
-/*
-#pragma mark- UISearchDisplayControllerDelegate
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)tableView {
-	[self.tableView setHidden:YES];
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
-	[self.tableView setHidden:NO];
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
-    
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller didHideSearchResultsTableView:(UITableView *)tableView {
-    
-}
-
-- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
-    [self.tabBarController.navigationController setNavigationBarHidden:YES animated:YES];
-    self.tabBarController.tabBar.hidden = YES;
-
-	CGRect frame = _searchBar.frame;
-	frame.origin.y = 20.0;
-	_searchBar.frame = frame;
-}
-
-- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
-    [self.tabBarController.navigationController setNavigationBarHidden:NO animated:YES];
-    self.tabBarController.tabBar.hidden = NO;
-
-	CGRect frame = _searchBar.frame;
-	frame.origin.y = 64.0;
-	_searchBar.frame = frame;
-}
-*/
 
 #pragma mark - SearchBarDelegate
 

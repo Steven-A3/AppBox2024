@@ -114,7 +114,7 @@
 
 - (BOOL)usesFullScreenInLandscape
 {
-    return (IS_IPAD && UIInterfaceOrientationIsLandscape(self.interfaceOrientation));
+    return (IS_IPAD && IS_LANDSCAPE);
 }
 
 - (void)dealloc
@@ -168,28 +168,14 @@
 - (void)origamiTransition
 {
     CGSize size = self.view.frame.size;
-    if ( UIInterfaceOrientationIsLandscape(self.interfaceOrientation) )
+    if (IS_LANDSCAPE) {
         size = CGSizeMake(self.view.frame.size.height, self.view.frame.size.width);
-    //    self.currentView.bounds = CGRectMake(0, 0, size.width, size.height);
-    //    self.nextView.bounds = self.currentView.bounds;
+    }
     self.currentView.frame = CGRectMake(0, 0, size.width, size.height);
     self.nextView.frame = self.currentView.frame;
     
     [self addView:self.nextView];
     [self.nextView removeFromSuperview];
-    
-    
-    //    MPFoldTransition *foldTransition = [[MPFoldTransition alloc] initWithSourceView:self.currentView destinationView:self.nextView duration:0.7 style:MPFoldStyleDefault completionAction:MPTransitionActionNone];
-    //    foldTransition.rect = self.nextView.frame;
-    //    [foldTransition perform:^(BOOL finished) {
-    //        if ( finished ) {
-    //            [self.currentView removeFromSuperview];
-    //            [self addView:self.nextView];
-    //            self.currentView = self.nextView;
-    //            [self startTimer];
-    //        }
-    //    }];
-    
     
     [MPFoldTransition transitionFromView:self.currentView toView:self.nextView duration:0.7 style:MPFoldStyleDefault transitionAction:MPTransitionActionNone completion:^(BOOL finished) {
         if ( finished ) {
@@ -292,7 +278,7 @@
     
     currentIndex = (currentIndex+1) % [_itemArray count];
     self.nextView = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterSlideshowEventSummaryView" owner:nil options:nil] objectAtIndex:0];
-    CGSize size = ( UIInterfaceOrientationIsLandscape(self.interfaceOrientation) ? CGSizeMake(self.view.frame.size.height, self.view.frame.size.width) : self.view.frame.size );
+    CGSize size = IS_LANDSCAPE ? CGSizeMake(self.view.frame.size.height, self.view.frame.size.width) : self.view.frame.size;
     _nextView.frame = CGRectMake(0, 0, size.width, size.height);
     
     [_sharedManager setupEventSummaryInfo:[_itemArray objectAtIndex:currentIndex] toView:self.nextView];

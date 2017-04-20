@@ -29,7 +29,10 @@
 #import "NSString+conversion.h"
 #import "A3WalletListPhotoCell.h"
 
-@interface A3WalletCategoryViewController () <UIActionSheetDelegate, UIActivityItemSource, UIPopoverControllerDelegate, FMMoveTableViewDelegate, FMMoveTableViewDataSource, A3InstructionViewControllerDelegate, NSFileManagerDelegate, UISearchDisplayDelegate, UISearchBarDelegate>
+@interface A3WalletCategoryViewController () <UIActionSheetDelegate, UIActivityItemSource,
+		UIPopoverControllerDelegate, FMMoveTableViewDelegate, FMMoveTableViewDataSource,
+		A3InstructionViewControllerDelegate, NSFileManagerDelegate,
+		UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating>
 
 @property (nonatomic, strong) UIView *moreMenuView;
 @property (nonatomic, strong) UIButton *infoButton;
@@ -44,8 +47,8 @@
 @property (nonatomic, strong) NSMutableArray *sectionIndexTitles;
 @property (nonatomic, strong) NSArray *filteredResults;
 
-@property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
-@property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, strong) UISearchController *searchController;
+@property (nonatomic, strong) UITableViewController *searchResultsTableViewController;
 @property (nonatomic, strong) UIBarButtonItem *searchItem;
 
 @end
@@ -60,15 +63,12 @@
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.category.name style:UIBarButtonItemStylePlain target:nil action:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidShow) name:A3NotificationMainMenuDidShow object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
-        self.navigationItem.rightBarButtonItems = @[self.searchItem, [[UIBarButtonItem alloc] initWithCustomView:self.infoButton], [self instructionHelpBarButton]];
+        self.navigationItem.rightBarButtonItems = @[[[UIBarButtonItem alloc] initWithCustomView:self.infoButton], [self instructionHelpBarButton]];
     }
     else {
         [self makeBackButtonEmptyArrow];
-        self.navigationItem.rightBarButtonItems = @[self.searchItem, [[UIBarButtonItem alloc] initWithCustomView:self.infoButton]];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.infoButton];
     }
-
-    [self.view addSubview:self.searchBar];
-    [self mySearchDisplayController];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
     
@@ -87,14 +87,14 @@
 
 	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
 	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_Wallet]) {
-		[_mySearchDisplayController setActive:NO];
-		_mySearchDisplayController.delegate = nil;
-		_mySearchDisplayController.searchResultsDelegate = nil;
-		_mySearchDisplayController.searchResultsDataSource = nil;
-		_mySearchDisplayController = nil;
+		[_searchController setActive:NO];
+		_searchController.delegate = nil;
+		_searchResultsTableViewController.tableView.delegate = nil;
+		_searchResultsTableViewController.tableView.dataSource = nil;
+		_searchController = nil;
 	} else {
-		if ([[A3AppDelegate instance] shouldProtectScreen] && [_mySearchDisplayController isActive]) {
-			[_mySearchDisplayController setActive:NO];
+		if ([[A3AppDelegate instance] shouldProtectScreen] && [_searchController isActive]) {
+			[_searchController setActive:NO];
 		}
 	}
 }
@@ -138,7 +138,7 @@
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 	[self.navigationItem.rightBarButtonItem setEnabled:enable];
 	[self.addButton setEnabled:enable];
-	self.tabBarController.tabBar.selectedImageTintColor = enable ? nil : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
+	self.tabBarController.tabBar.tintColor = enable ? nil : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -159,18 +159,28 @@
     // more button 활성화여부
     [self itemCountCheck];
 
-	if ([_mySearchDisplayController isActive]) {
-		[self filterContentForSearchText:_searchBar.text];
-		[_mySearchDisplayController.searchResultsTableView reloadData];
+	if ([_searchController isActive]) {
+		[self filterContentForSearchText:_searchController.searchBar.text];
+		[_searchResultsTableViewController.tableView reloadData];
 	}
 }
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	[self.navigationController setNavigationBarHidden:[_mySearchDisplayController isActive]];
+	[self.navigationController setNavigationBarHidden:[_searchController isActive]];
 	
 	[self setupInstructionView];
+
+    if (!_searchController.active && ([self.items count] > 0) && self.tableView.contentOffset.y == -64) {
+        [UIView animateWithDuration:0.3
+                         animations:^{
+                             CGPoint offset = self.tableView.contentOffset;
+                             offset.y = -20;
+                             self.tableView.contentOffset = offset;
+                         }
+                         completion:nil];
+    }
 }
 
 - (void)cloudStoreDidImport {
@@ -199,6 +209,7 @@
 {
     BOOL itemHave = (self.items.count>0) ? YES:NO;
     self.editButtonItem.enabled = itemHave;
+    [self setupSearchBar];
 }
 
 - (void)updateNavigationBarTitle {
@@ -392,11 +403,11 @@
 	}
 
 	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
-	[activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
-		FNLOG(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
-
-		[self editCancelAction:nil];
-	}];
+    activityController.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+        FNLOG(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
+        
+        [self editCancelAction:nil];
+    };
 
 	[activityController setValue:@"My Subject Text" forKey:@"subject"];
 	if (IS_IPHONE) {
@@ -469,11 +480,11 @@
 	}
 
 	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
-	[activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
-		FNLOG(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
-
-		[self editCancelAction:nil];
-	}];
+    activityController.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+        FNLOG(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
+        
+        [self editCancelAction:nil];
+    };
 
 	[activityController setValue:@"My Subject Text" forKey:@"subject"];
 	if (IS_IPHONE) {
@@ -506,8 +517,8 @@
 - (void)refreshItems
 {
     self.items = nil;
-    if ([self.searchBar.text length] > 0 ) {
-        [self filterContentForSearchText:self.searchBar.text];
+    if ([self.searchController.searchBar.text length] > 0 ) {
+        [self filterContentForSearchText:self.searchController.searchBar.text];
     } else {
         [self configureSections];
         [self.tableView reloadData];
@@ -568,6 +579,14 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 
 #pragma mark - Search relative
 
+- (void)setupSearchBar {
+    if ([self.items count] > 0) {
+        self.tableView.tableHeaderView = self.searchController.searchBar;
+    } else {
+        self.tableView.tableHeaderView = nil;
+    }
+}
+
 - (UIBarButtonItem *)searchItem {
     if (!_searchItem) {
         _searchItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchButtonAction:)];
@@ -577,43 +596,44 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 
 - (void)searchButtonAction:(id)sender
 {
-    [self.searchBar becomeFirstResponder];
+    [self.searchController.searchBar becomeFirstResponder];
 }
 
-- (UISearchDisplayController *)mySearchDisplayController {
-    if (!_mySearchDisplayController) {
-        _mySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-        _mySearchDisplayController.delegate = self;
-        _mySearchDisplayController.searchBar.delegate = self;
-        _mySearchDisplayController.searchResultsTableView.delegate = self;
-        _mySearchDisplayController.searchResultsTableView.dataSource = self;
-        _mySearchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:1.0];
-        _mySearchDisplayController.searchResultsTableView.showsVerticalScrollIndicator = NO;
-        _mySearchDisplayController.searchResultsTableView.rowHeight = 48;
-		if ([_mySearchDisplayController.searchResultsTableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
-			_mySearchDisplayController.searchResultsTableView.cellLayoutMarginsFollowReadableWidth = NO;
+- (UITableViewController *)searchResultsTableViewController {
+	if (!_searchResultsTableViewController) {
+		_searchResultsTableViewController = [UITableViewController new];
+		UITableView *tableView = _searchResultsTableViewController.tableView;
+		tableView.delegate = self;
+		tableView.dataSource = self;
+		tableView.showsVerticalScrollIndicator = NO;
+		tableView.rowHeight = 48;
+		if ([tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+			tableView.cellLayoutMarginsFollowReadableWidth = NO;
 		}
-		if ([_mySearchDisplayController.searchResultsTableView respondsToSelector:@selector(layoutMargins)]) {
-			_mySearchDisplayController.searchResultsTableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+		if ([tableView respondsToSelector:@selector(layoutMargins)]) {
+			tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
 		}
-
-		UITableView *searchResultTableView = _mySearchDisplayController.searchResultsTableView;
-		[searchResultTableView registerClass:[A3WalletListBigVideoCell class] forCellReuseIdentifier:A3WalletBigVideoCellID1];
-		[searchResultTableView registerClass:[A3WalletListBigPhotoCell class] forCellReuseIdentifier:A3WalletBigPhotoCellID1];
-		[searchResultTableView registerClass:[A3WalletListPhotoCell class] forCellReuseIdentifier:A3WalletPhotoCellID];
-		[searchResultTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:A3WalletNormalCellID];
-    }
-    return _mySearchDisplayController;
+		[tableView registerClass:[A3WalletListBigVideoCell class] forCellReuseIdentifier:A3WalletBigVideoCellID1];
+		[tableView registerClass:[A3WalletListBigPhotoCell class] forCellReuseIdentifier:A3WalletBigPhotoCellID1];
+		[tableView registerClass:[A3WalletListPhotoCell class] forCellReuseIdentifier:A3WalletPhotoCellID];
+		[tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:A3WalletNormalCellID];
+	}
+	return _searchResultsTableViewController;
 }
 
-- (UISearchBar *)searchBar {
-    if (!_searchBar) {
-        _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, kSearchBarHeight)];
-        _searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        _searchBar.backgroundColor = self.navigationController.navigationBar.backgroundColor;
-        _searchBar.delegate = self;
+- (UISearchController *)searchController {
+    if (!_searchController) {
+        _searchController = [[UISearchController alloc] initWithSearchResultsController:self.searchResultsTableViewController];
+		_searchController.delegate = self;
+		_searchController.searchResultsUpdater = self;
+		[_searchController.searchBar sizeToFit];
+		_searchController.searchBar.delegate = self;
     }
-    return _searchBar;
+    return _searchController;
+}
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+	[self filterContentForSearchText:searchController.searchBar.text];
 }
 
 - (void)filterContentForSearchText:(NSString*)searchText
@@ -641,45 +661,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
     }
     self.items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:@"name" ascending:YES withPredicate:predicate]];
     [self configureSections];
-    [self.tableView reloadData];
-}
-
-#pragma mark- UISearchDisplayControllerDelegate
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)tableView {
-    [self.tableView setHidden:YES];
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
-    [self.tableView setHidden:NO];
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
-
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller didHideSearchResultsTableView:(UITableView *)tableView {
-
-}
-
-- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
-    CGRect frame = _searchBar.frame;
-    frame.origin.y = 20.0;
-    _searchBar.frame = frame;
-
-    frame = self.tableView.frame;
-    frame.origin.y += 20.0;
-    self.tableView.frame = frame;
-}
-
-- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
-    CGRect frame = _searchBar.frame;
-    frame.origin.y = 0.0;
-    _searchBar.frame = frame;
-
-    frame = self.tableView.frame;
-    frame.origin.y -= 20.0;
-    self.tableView.frame = frame;
+    [_searchResultsTableViewController.tableView reloadData];
 }
 
 #pragma mark - SearchBarDelegate
@@ -924,6 +906,8 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
         return;
     }
 
+    self.searchController.active = NO;
+    
     NSArray *section = self.sectionsArray[indexPath.section];
 	[super tableView:tableView didSelectRowAtIndexPath:indexPath withItem:section[indexPath.row]];
 }

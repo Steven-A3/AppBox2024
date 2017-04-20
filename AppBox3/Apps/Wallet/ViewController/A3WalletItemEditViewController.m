@@ -1204,8 +1204,12 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 		[mutableMetadata setObject:GPS forKey:(NSString *)kCGImagePropertyGPSDictionary];
 		_imageMetadata = mutableMetadata;
 	}
-	NSString *errorDescription = nil;
-	NSData *data = [NSPropertyListSerialization dataFromPropertyList:_imageMetadata format:NSPropertyListXMLFormat_v1_0 errorDescription:&errorDescription];
+    NSError *error;
+    NSData *data = [NSPropertyListSerialization dataWithPropertyList:_imageMetadata
+                                                              format:NSPropertyListXMLFormat_v1_0
+                                                             options:0
+                                                               error:&error];
+    
 	_currentFieldItem.imageMetaData = data;
 }
 

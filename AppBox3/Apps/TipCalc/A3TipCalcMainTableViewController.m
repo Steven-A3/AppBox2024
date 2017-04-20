@@ -1357,10 +1357,13 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 
 	[self disposeInitializedCondition];
 
-	self.localPopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completionHandler:^(NSString *activityType, BOOL completed) {
-		[self enableControls:YES];
-		self.localPopoverController = nil;
-	}];
+	self.localPopoverController =
+			[self presentActivityViewControllerWithActivityItems:@[self]
+											   fromBarButtonItem:sender
+											   completionHandler:^() {
+												   [self enableControls:YES];
+												   self.localPopoverController = nil;
+											   }];
 	self.localPopoverController.delegate = self;
     if (IS_IPAD) {
 		[self enableControls:NO];

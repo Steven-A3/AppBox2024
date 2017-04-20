@@ -38,6 +38,7 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "MWPhotoBrowserPrivate.h"
 #import "NSString+WalletStyle.h"
+@import MessageUI;
 
 
 @interface A3WalletItemViewController () <UITextFieldDelegate, WalletItemEditDelegate, MWPhotoBrowserDelegate, MFMailComposeViewControllerDelegate, UITextViewDelegate, MFMessageComposeViewControllerDelegate>

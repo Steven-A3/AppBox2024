@@ -140,8 +140,8 @@
 		_eventItem.updateDate = [NSDate date];
 
 		NSCalendar *calendar = [[A3AppDelegate instance] calendar];
-        [A3DaysCounterModelManager setDateModelObjectForDateComponents:[calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit fromDate:[NSDate date]] withEventModel:_eventItem endDate:NO];
-        [A3DaysCounterModelManager setDateModelObjectForDateComponents:[calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit fromDate:[NSDate date]] withEventModel:_eventItem endDate:YES];
+        [A3DaysCounterModelManager setDateModelObjectForDateComponents:[calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute fromDate:[NSDate date]] withEventModel:_eventItem endDate:NO];
+        [A3DaysCounterModelManager setDateModelObjectForDateComponents:[calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute fromDate:[NSDate date]] withEventModel:_eventItem endDate:YES];
 
         _eventItem.isAllDay = @(YES);
         _eventItem.isLunar = @(NO);
@@ -310,7 +310,7 @@
 
 - (BOOL)usesFullScreenInLandscape
 {
-    return (IS_IPAD && UIInterfaceOrientationIsLandscape(self.interfaceOrientation) && _landscapeFullScreen);
+    return (IS_IPAD && IS_LANDSCAPE && _landscapeFullScreen);
 }
 
 - (void)didReceiveMemoryWarning
@@ -2046,7 +2046,7 @@
         dateComp.second = 0;
     }
     else {
-        dateComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:[datePicker date]];
+        dateComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond fromDate:[datePicker date]];
         dateComp.second = 0;
         DaysCounterDate *dateData = [self.inputDateKey isEqualToString:EventItem_StartDate] ? _eventItem.startDate : [_eventItem endDateCreateIfNotExist:NO ];
         if ([dateData.hour integerValue] != dateComp.hour || [dateData.minute integerValue] != dateComp.minute) {

@@ -418,7 +418,7 @@
 	_isShowKeyboard = YES;
 
 	[UIView animateWithDuration:0.3 animations:^{
-		[self layoutKeyboardToOrientation:self.interfaceOrientation];
+		[self layoutKeyboardToOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
 	}];
 }
 
@@ -426,7 +426,7 @@
 	if (IS_IPHONE) {
 		return 216;
 	} else {
-		return UIInterfaceOrientationIsLandscape(self.interfaceOrientation) ? 352 : 264;
+		return UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]) ? 352 : 264;
 	}
 }
 
@@ -540,7 +540,7 @@
 		_keyboardTopConstraint =  make.top.equalTo(superview.bottom);
 		_keyboardHeightConstraint =  make.height.equalTo(@(keyboardHeight));
 	}];
-	[self layoutKeyboardToOrientation:self.interfaceOrientation];
+	[self layoutKeyboardToOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
 	[superview layoutIfNeeded];
 
 	_isShowKeyboard = YES;
@@ -891,10 +891,13 @@
 	[self enableControls:NO];
 	[self dateKeyboardDoneButtonPressed:nil];
 
-	self.popoverVC = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender completionHandler:^(NSString *activityType, BOOL completed) {
-		[self showKeyboardAnimated:YES];
-		[self enableControls:YES];
-	}];
+	self.popoverVC =
+			[self presentActivityViewControllerWithActivityItems:@[self]
+											   fromBarButtonItem:sender
+											   completionHandler:^() {
+												   [self showKeyboardAnimated:YES];
+												   [self enableControls:YES];
+											   }];
 	self.popoverVC.delegate = self;
     if (IS_IPAD) {
         self.popoverVC.delegate = self;

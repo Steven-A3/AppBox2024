@@ -122,7 +122,6 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 	_tableView = [[FMMoveTableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
-	_tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	_tableView.showsVerticalScrollIndicator = NO;
 	_tableView.rowHeight = 48.0;
 	_tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -144,6 +143,10 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 	[_tableView registerClass:[A3WalletListBigPhotoCell class] forCellReuseIdentifier:A3WalletBigPhotoCellID1];
 	[_tableView registerClass:[A3WalletListPhotoCell class] forCellReuseIdentifier:A3WalletPhotoCellID];
 	[_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:A3WalletNormalCellID];
+    
+    [_tableView makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
 }
 
 - (void)viewWillLayoutSubviews {

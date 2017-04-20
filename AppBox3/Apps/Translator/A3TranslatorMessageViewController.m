@@ -1437,9 +1437,12 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 #pragma mark - Share action
 
 - (void)shareActionFromToolbar:(UIBarButtonItem *)barButtonItem {
-	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:barButtonItem completionHandler:^(NSString *activityType, BOOL completed) {
-		_sharePopoverController = nil;
-	}];
+	_sharePopoverController =
+			[self presentActivityViewControllerWithActivityItems:@[self]
+											   fromBarButtonItem:barButtonItem
+											   completionHandler:^() {
+												   _sharePopoverController = nil;
+											   }];
 	_sharePopoverController.delegate = self;
 }
 

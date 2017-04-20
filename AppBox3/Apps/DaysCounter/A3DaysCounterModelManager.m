@@ -887,9 +887,9 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     NSDateComponents *diffComponent;
 
     if (isAllDay) {
-        NSDateComponents *fromComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit|NSSecondCalendarUnit
+        NSDateComponents *fromComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond
                                                  fromDate:fromDate];
-        NSDateComponents *toComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit|NSSecondCalendarUnit
+        NSDateComponents *toComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond
                                                fromDate:toDate];
         fromComp.hour = 0;
         fromComp.minute = 0;
@@ -1170,7 +1170,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (DaysCounterEvent *)closestEventObjectOfCalendar:(DaysCounterCalendar *)calendar
 {
-    NSDateComponents *nowComp = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:[NSDate date]];
+    NSDateComponents *nowComp = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond fromDate:[NSDate date]];
     nowComp.hour = 0;
     nowComp.minute = 0;
     nowComp.second = 0;
@@ -1278,7 +1278,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         NSDateComponents *alertIntervalComp = [NSDateComponents new];
         alertIntervalComp.minute = -labs([eventModel.alertInterval integerValue]);
         NSDate *alertDate = [calendar dateByAddingComponents:alertIntervalComp toDate:eventModel.effectiveStartDate options:0];
-        NSDateComponents *alertDateComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:alertDate];
+        NSDateComponents *alertDateComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond fromDate:alertDate];
         alertDateComp.second = 0;
         
         eventModel.alertDatetime = [calendar dateFromComponents:alertDateComp];
@@ -1317,7 +1317,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
     // 얼럿 생성 & 등록.
-    NSDateComponents *nowDateComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:[NSDate date]];
+    NSDateComponents *nowDateComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond fromDate:[NSDate date]];
     nowDateComp.second = 0;
     __block NSDate *now = [calendar dateFromComponents:nowDateComp];
     NSMutableArray *localNotifications = [NSMutableArray new];

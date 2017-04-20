@@ -639,7 +639,7 @@ static NSUInteger Eid_al_adha[][2] = {
 	[dc setYear:year];
 	date = [calendar dateFromComponents:dc];
 	
-	NSRange range = [calendar rangeOfUnit:NSWeekdayOrdinalCalendarUnit inUnit:NSCalendarUnitMonth forDate:date];
+	NSRange range = [calendar rangeOfUnit:NSCalendarUnitWeekdayOrdinal inUnit:NSCalendarUnitMonth forDate:date];
 	[dc setWeekday:weekday];
 	[dc setWeekdayOrdinal:(range.location - 1) + range.length];
 	[dc setMonth:month];

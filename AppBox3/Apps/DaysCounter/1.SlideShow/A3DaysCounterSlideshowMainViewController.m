@@ -158,7 +158,7 @@
 	NSDate *now = [NSDate date];
 
 	// Start Timer 화면 갱신.
-	NSDateComponents *nowComp = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:now];
+	NSDateComponents *nowComp = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond fromDate:now];
 	[self performSelector:@selector(startTimer) withObject:nil afterDelay:60 - [nowComp second]];
 
 	if ( [_sharedManager numberOfEventContainedImage] > 0 ) {
@@ -188,7 +188,7 @@
 	[self.navigationController setToolbarHidden:self.navigationController.navigationBarHidden];
 	[self updateNavigationTitle];
 
-	if ( IS_IPAD && UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+	if ( IS_IPAD && IS_LANDSCAPE) {
 		[[[A3AppDelegate instance] rootViewController_iPad] animateHideLeftViewForFullScreenCenterView:YES];
 	}
 	if ([[A3AppDelegate instance] rootViewController_iPad].showRightView ) {
@@ -340,7 +340,7 @@
         self.isFirstViewLoad = NO;
         __block NSInteger indexOfTodayPhoto = -1;
         
-        NSDateComponents *nowComp = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:[NSDate date]];
+        NSDateComponents *nowComp = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond fromDate:[NSDate date]];
         nowComp.hour = 0;
         nowComp.minute = 0;
         nowComp.second = 0;
@@ -487,7 +487,7 @@
 
 - (BOOL)usesFullScreenInLandscape
 {
-    return (IS_IPAD && UIInterfaceOrientationIsLandscape(self.interfaceOrientation));
+    return (IS_IPAD && IS_LANDSCAPE);
 }
 
 - (BOOL)hidesNavigationBar
@@ -700,23 +700,23 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
         self.popoverVC = popoverController;
 		__typeof(self) __weak weakSelf = self;
         [popoverController presentPopoverFromBarButtonItem:button permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        _activityViewController.completionHandler = ^(NSString* activityType, BOOL completed) {
+        _activityViewController.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
             if ( completed && [activityType isEqualToString:@"Slideshow"] ) {
                 A3DaysCounterSlideshowOptionViewController *viewController = [[A3DaysCounterSlideshowOptionViewController alloc] init];
                 viewController.sharedManager = weakSelf.sharedManager;
-
-				if (IS_IPHONE) {
-					weakSelf.modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-					[weakSelf presentViewController:weakSelf.modalNavigationController animated:YES completion:NULL];
-					[[NSNotificationCenter defaultCenter] addObserver:weakSelf selector:@selector(optionViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
-				} else {
-					[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
-					double delayInSeconds = 0.6;
-					dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-					dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-						[weakSelf enableControls:NO];
-					});
-				}
+                
+                if (IS_IPHONE) {
+                    weakSelf.modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+                    [weakSelf presentViewController:weakSelf.modalNavigationController animated:YES completion:NULL];
+                    [[NSNotificationCenter defaultCenter] addObserver:weakSelf selector:@selector(optionViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
+                } else {
+                    [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
+                    double delayInSeconds = 0.6;
+                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                        [weakSelf enableControls:NO];
+                    });
+                }
             }
             else if ([activityType isEqualToString:UIActivityTypeMail]) {
                 [weakSelf enableControls:YES];
@@ -735,7 +735,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     if ( [viewController isKindOfClass:[A3MainViewController class]]) {
-        if ( IS_IPAD && UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+        if ( IS_IPAD && IS_LANDSCAPE) {
             [[[A3AppDelegate instance] rootViewController_iPad] animateHideLeftViewForFullScreenCenterView:NO];
         }
     }

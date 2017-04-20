@@ -31,16 +31,16 @@
 #import "A3NavigationController.h"
 
 @interface A3DaysCounterEventListViewController ()
-		<UINavigationControllerDelegate, UISearchDisplayDelegate, UISearchBarDelegate,
+		<UINavigationControllerDelegate, UISearchControllerDelegate, UISearchBarDelegate,
 		UITableViewDataSource, UITableViewDelegate, A3DaysCounterEventDetailViewControllerDelegate,
-		A3ViewControllerProtocol>
+		A3ViewControllerProtocol, UISearchResultsUpdating>
 @property (nonatomic, strong) NSArray *itemArray;
 @property (nonatomic, strong) NSArray *sourceArray;
 @property (nonatomic, strong) NSArray *searchResultArray;
 @property (nonatomic, strong) NSString *changedCalendarID;
 @property (nonatomic, strong) UIImageView *sortArrowImgView;
-@property (nonatomic, strong) UISearchBar *searchBar;
-@property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
+@property (nonatomic, strong) UISearchController *searchController;
+@property (nonatomic, strong) UITableViewController *searchResultsTableViewController;
 @property (nonatomic, assign) NSInteger sortType;
 @property (nonatomic, assign) BOOL isAscending;
 
@@ -69,6 +69,9 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 {
     [super viewDidLoad];
 
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+    
 	if ([_calendarItem.type integerValue] == CalendarCellType_User) {
 		self.title = [NSString stringWithFormat:@"%@", _calendarItem.name];
 	} else {
@@ -113,8 +116,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
         [self.headerView addSubview:self.sortArrowImgView];
     }
     
-    [self.view addSubview:self.searchBar];
-    [self mySearchDisplayController];
+    [self.view addSubview:self.searchController.searchBar];
 
     [self.view layoutIfNeeded];
 
@@ -126,10 +128,10 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 - (void)applicationDidEnterBackground {
 	NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
 	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_DaysCounter]) {
-		[self deactivateSearchDisplayController];
+        [self deactivateSearchController];
 	} else {
-		if ([[A3AppDelegate instance] shouldProtectScreen] && [_mySearchDisplayController isActive]) {
-			[_mySearchDisplayController setActive:NO];
+		if ([[A3AppDelegate instance] shouldProtectScreen] && [_searchController isActive]) {
+			[_searchController setActive:NO];
 		}
 	}
 }
@@ -172,9 +174,9 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 
 	[self loadEventData];
 
-	if ([self.mySearchDisplayController isActive]) {
-		[self makeSearchResultArray:_searchBar.text];
-		[self.mySearchDisplayController.searchResultsTableView reloadData];
+	if ([self.searchController isActive]) {
+		[self makeSearchResultArray:_searchController.searchBar.text];
+		[self.searchResultsTableViewController.tableView reloadData];
 	}
 }
 
@@ -732,7 +734,9 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
     if ( item == nil ) {
         return;
     }
-    
+
+    self.searchController.active = NO;
+
     A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] init];
     viewCtrl.eventItem = item;
     viewCtrl.sharedManager = _sharedManager;
@@ -861,66 +865,45 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
     self.changedCalendarID = ctrl.eventItem.calendarID;
 }
 
-#pragma mark - UISearchDisplayDelegate
-- (UISearchDisplayController *)mySearchDisplayController {
-	if (!_mySearchDisplayController) {
-		_mySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-		_mySearchDisplayController.delegate = self;
-		_mySearchDisplayController.searchBar.delegate = self;
-		_mySearchDisplayController.searchResultsTableView.delegate = self;
-		_mySearchDisplayController.searchResultsTableView.dataSource = self;
-        //		_mySearchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.2f];
-		_mySearchDisplayController.searchResultsTableView.showsVerticalScrollIndicator = NO;
-        _mySearchDisplayController.searchResultsTableView.tableFooterView = [UIView new];
-        _mySearchDisplayController.searchResultsTableView.separatorInset = A3UITableViewSeparatorInset;
-		if ([_mySearchDisplayController.searchResultsTableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
-			_mySearchDisplayController.searchResultsTableView.cellLayoutMarginsFollowReadableWidth = NO;
-		}
-		if ([_mySearchDisplayController.searchResultsTableView respondsToSelector:@selector(layoutMargins)]) {
-			_mySearchDisplayController.searchResultsTableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
-		}
+#pragma mark - UISearchController
+
+- (UITableViewController *)searchResultsTableViewController {
+    if (!_searchResultsTableViewController) {
+        _searchResultsTableViewController = [UITableViewController new];
+        UITableView *tableView = _searchResultsTableViewController.tableView;
+        tableView.delegate = self;
+        tableView.dataSource = self;
+        tableView.showsVerticalScrollIndicator = NO;
+        tableView.tableFooterView = [UIView new];
+        tableView.separatorInset = A3UITableViewSeparatorInset;
+        if ([tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+            tableView.cellLayoutMarginsFollowReadableWidth = NO;
+        }
+        if ([tableView respondsToSelector:@selector(layoutMargins)]) {
+            tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+        }
+        tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    }
+    return _searchResultsTableViewController;
+}
+
+- (UISearchController *)searchController {
+	if (!_searchController) {
+		_searchController = [[UISearchController alloc] initWithSearchResultsController:self.searchResultsTableViewController];
+        _searchController.delegate = self;
+        _searchController.searchResultsUpdater = self;
+		_searchController.searchBar.delegate = self;
+        [_searchController.searchBar sizeToFit];
 	}
-	return _mySearchDisplayController;
+	return _searchController;
 }
 
-- (UISearchBar *)searchBar {
-	if (!_searchBar) {
-		_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, kSearchBarHeight)];
-		_searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		_searchBar.backgroundColor = self.navigationController.navigationBar.backgroundColor;
-		_searchBar.delegate = self;
-	}
-	return _searchBar;
-}
+#pragma mark - UISearchResultsUpdating
 
-#pragma mark- UISearchDisplayControllerDelegate
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)tableView {
-	[self.tableView setHidden:YES];
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
-	[self.tableView setHidden:NO];
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
-    
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller didHideSearchResultsTableView:(UITableView *)tableView {
-    
-}
-
-- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
-	CGRect frame = _searchBar.frame;
-	frame.origin.y = 20.0;
-	_searchBar.frame = frame;
-}
-
-- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
-	CGRect frame = _searchBar.frame;
-	frame.origin.y = 0.0;
-	_searchBar.frame = frame;
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+    [self makeSearchResultArray:searchController.searchBar.text];
+    _searchResultsTableViewController.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+    [_searchResultsTableViewController.tableView reloadData];
 }
 
 #pragma mark - SearchBarDelegate
@@ -947,7 +930,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 - (void)makeSearchResultArray:(NSString *)searchText {
 	_searchResultArray = nil;
 	self.searchResultArray = [_sourceArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"eventName contains[cd] %@",searchText]];
-	FNLOG(@"%s %@ : %ld",__FUNCTION__,searchText, (long)[_searchResultArray count]);
+//	FNLOG(@"%s %@ : %ld",__FUNCTION__,searchText, (long)[_searchResultArray count]);
 }
 
 #pragma mark - action method
@@ -968,8 +951,13 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 
 - (IBAction)searchAction:(id)sender
 {
-	self.searchBar.text = @"";
-    [self.searchBar becomeFirstResponder];
+	self.searchController.searchBar.text = @"";
+    self.searchController.active = YES;
+    double delayInSeconds = 0.1;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self.searchController.searchBar becomeFirstResponder];
+    });
 }
 
 - (IBAction)editAction:(id)sender {
@@ -1001,19 +989,19 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 //    }
 }
 
-- (void)deactivateSearchDisplayController {
-	if ([_mySearchDisplayController isActive]) {
-		[_mySearchDisplayController setActive:NO];
-		_mySearchDisplayController.searchResultsDelegate = nil;
-		_mySearchDisplayController.searchResultsDataSource = nil;
-		_mySearchDisplayController = nil;
+- (void)deactivateSearchController {
+	if ([_searchController isActive]) {
+		[_searchController setActive:NO];
+        _searchResultsTableViewController.tableView.delegate = nil;
+        _searchResultsTableViewController.tableView.dataSource = nil;
+		_searchController = nil;
 	}
 }
 
 #pragma mark - action method
 
 - (IBAction)photoViewAction:(id)sender {
-	[self deactivateSearchDisplayController];
+    [self deactivateSearchController];
 	[self callPrepareCloseOnActiveMainAppViewController];
 
 	A3DaysCounterSlideShowMainViewController *viewCtrl = [[A3DaysCounterSlideShowMainViewController alloc] initWithNibName:@"A3DaysCounterSlideShowMainViewController" bundle:nil];
@@ -1022,7 +1010,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 }
 
 - (IBAction)reminderAction:(id)sender {
-	[self deactivateSearchDisplayController];
+    [self deactivateSearchController];
 	[self callPrepareCloseOnActiveMainAppViewController];
 
 	A3DaysCounterReminderListViewController *viewCtrl = [[A3DaysCounterReminderListViewController alloc] initWithNibName:@"A3DaysCounterReminderListViewController" bundle:nil];
@@ -1031,7 +1019,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 }
 
 - (IBAction)favoriteAction:(id)sender {
-	[self deactivateSearchDisplayController];
+    [self deactivateSearchController];
 	[self callPrepareCloseOnActiveMainAppViewController];
 
     A3DaysCounterFavoriteListViewController *viewCtrl = [[A3DaysCounterFavoriteListViewController alloc] initWithNibName:@"A3DaysCounterFavoriteListViewController" bundle:nil];
@@ -1067,6 +1055,30 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
                                              [viewCtrl showKeyboard];
                                          }];
     }
+}
+
+#pragma mark - UISearchControllDelegate
+
+- (void)willPresentSearchController:(UISearchController *)searchController {
+    FNLOGINSETS(self.tableView.contentInset);
+    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+}
+
+- (void)didPresentSearchController:(UISearchController *)searchController {
+    self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+    FNLOGINSETS(self.tableView.contentInset);
+}
+
+- (void)willDismissSearchController:(UISearchController *)searchController {
+    FNLOGINSETS(self.tableView.contentInset);
+}
+
+- (void)didDismissSearchController:(UISearchController *)searchController {
+    FNLOGINSETS(self.tableView.contentInset);
+}
+
+- (void)presentSearchController:(UISearchController *)searchController {
+
 }
 
 @end

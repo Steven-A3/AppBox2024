@@ -350,7 +350,10 @@
     A3LadyCalendarDetailViewController *viewCtrl = [[A3LadyCalendarDetailViewController alloc] init];
     viewCtrl.month = item.startDate;
     viewCtrl.periodItems = [self sameMonthItemFromIndexPath:indexPath];
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:monthStr style:UIBarButtonItemStyleBordered target:nil action:nil];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:monthStr
+                                                                             style:UIBarButtonItemStylePlain
+                                                                            target:nil
+                                                                            action:nil];
     [self.navigationController pushViewController:viewCtrl animated:YES];
 }
 

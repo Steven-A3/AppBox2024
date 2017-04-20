@@ -352,16 +352,29 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 }
 
 - (UIBarButtonItem *)appsBarButton {
-    UIBarButtonItem *appButton = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStyleBordered target:self action:@selector(appsButton:)];
+    UIBarButtonItem *appButton = [[UIBarButtonItem alloc] initWithTitle:@"Apps"
+                                                                  style:UIBarButtonItemStylePlain
+                                                                 target:self
+                                                                 action:@selector(appsButton:)];
     return appButton;
 }
 
 - (NSArray *)topToolBarBarButtons {
-    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    UIBarButtonItem *help = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"help"] style:UIBarButtonItemStyleBordered target:self action:@selector(showInstructionView:)];
-    UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                                   target:nil
+                                                                                   action:nil];
+    UIBarButtonItem *help = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"help"]
+                                                             style:UIBarButtonItemStylePlain
+                                                            target:self
+                                                            action:@selector(showInstructionView:)];
+    UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                                                                target:nil
+                                                                                action:nil];
     fixedSpace.width = 24;
-    UIBarButtonItem *flip = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"m_horizon"] style:UIBarButtonItemStyleBordered target:self action:@selector(flipButton:)];
+    UIBarButtonItem *flip = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"m_horizon"]
+                                                             style:UIBarButtonItemStylePlain
+                                                            target:self
+                                                            action:@selector(flipButton:)];
     return @[[self appsBarButton], flexibleSpace, help, fixedSpace, flip];
 }
 

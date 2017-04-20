@@ -718,9 +718,12 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 		return;
 	}
 
-	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[@"test"] fromBarButtonItem:sender completionHandler:^(NSString *activityType, BOOL completed) {
-		[self enableControls:YES];
-	}];
+	_sharePopoverController =
+			[self presentActivityViewControllerWithActivityItems:@[@"test"]
+											   fromBarButtonItem:sender
+											   completionHandler:^() {
+												   [self enableControls:YES];
+											   }];
 	_sharePopoverController.delegate = self;
 	if (IS_IPAD) {
 		_sharePopoverController.delegate = self;

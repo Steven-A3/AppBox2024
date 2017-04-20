@@ -17,7 +17,8 @@
 #import "A3StandardTableViewCell.h"
 #import "A3UserDefaultsKeys.h"
 
-@interface A3UnitConverterSelectViewController () <UISearchDisplayDelegate, A3UnitConverterAddViewControllerDelegate>
+@interface A3UnitConverterSelectViewController () <UISearchControllerDelegate,
+		A3UnitConverterAddViewControllerDelegate, UISearchResultsUpdating>
 {
     BOOL isFavoriteMode;
     BOOL isEdited;
@@ -28,8 +29,8 @@
 @property (nonatomic, strong) UIBarButtonItem *cancelItem;
 @property (nonatomic, strong) UIBarButtonItem *plusBarButtonItem;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
-@property (nonatomic, strong) UISearchBar *searchBar;
-@property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
+@property (nonatomic, strong) UISearchController *searchController;
+@property (nonatomic, strong) UITableViewController *searchResultsTableViewController;
 @property (nonatomic, strong) NSArray *filteredResults;
 @property (nonatomic, strong) NSMutableArray *sectionsArray;
 @property (nonatomic, strong) NSMutableArray *allData;
@@ -54,7 +55,6 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
     _tableView.rowHeight = 44.0;
-	_tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	_tableView.showsVerticalScrollIndicator = NO;
 
 	_tableView.separatorColor = A3UITableViewSeparatorColor;
@@ -67,31 +67,32 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 		FNLOGINSETS(_tableView.layoutMargins);
 		_tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
 	}
-
 	[self.view addSubview:_tableView];
-    
+	[_tableView makeConstraints:^(MASConstraintMaker *make) {
+		make.edges.equalTo(self.view);
+	}];
+
     [self.tableView registerNib:[UINib nibWithNibName:@"A3UnitConverterTVActionCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3UnitConverterActionCellID2];
     
     self.navigationItem.titleView = self.selectSegment;
     [self selectSegmentChanged:self.selectSegment];
-	[self.view addSubview:self.searchBar];
-	[self mySearchDisplayController];
-    
+
+	self.tableView.tableHeaderView = self.searchController.searchBar;
+
     if ((!_isModal && IS_IPHONE) || IS_IPAD) {
         self.navigationItem.leftBarButtonItem = self.cancelItem;
     }
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
     
-#ifdef __IPHONE_8_0
 	if ([self.tableView respondsToSelector:@selector(layoutMargins)])
 	{
 		UIEdgeInsets layoutMargins = self.tableView.layoutMargins;
 		layoutMargins.left = 0;
 		self.tableView.layoutMargins = layoutMargins;
 	}
-#endif
-    self.tableView.separatorInset = A3UITableViewSeparatorInset;
+
+    _tableView.separatorInset = A3UITableViewSeparatorInset;
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
@@ -99,7 +100,7 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 
 - (void)applicationDidEnterBackground {
 	if ([[A3AppDelegate instance] shouldProtectScreen]) {
-		[_searchBar resignFirstResponder];
+		[self.searchController.searchBar resignFirstResponder];
 	}
 }
 
@@ -114,7 +115,7 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 	[super viewWillAppear:animated];
     
 	if ([_placeHolder length]) {
-		self.searchBar.text = _placeHolder;
+		self.searchController.searchBar.text = _placeHolder;
 		[self filterContentForSearchText:_placeHolder];
 	}
     
@@ -179,7 +180,7 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 }
 
 - (BOOL)resignFirstResponder {
-	[_searchBar resignFirstResponder];
+	[_searchController.searchBar resignFirstResponder];
 	return [super resignFirstResponder];
 }
 
@@ -210,35 +211,33 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
     return _plusBarButtonItem;
 }
 
-- (UISearchDisplayController *)mySearchDisplayController {
-	if (!_mySearchDisplayController) {
-		_mySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-		_mySearchDisplayController.delegate = self;
-		_mySearchDisplayController.searchBar.delegate = self;
-		_mySearchDisplayController.searchResultsTableView.delegate = self;
-		_mySearchDisplayController.searchResultsTableView.dataSource = self;
-		_mySearchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.2];
-		_mySearchDisplayController.searchResultsTableView.showsVerticalScrollIndicator = NO;
-		if ([_mySearchDisplayController.searchResultsTableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
-			_mySearchDisplayController.searchResultsTableView.cellLayoutMarginsFollowReadableWidth = NO;
+- (UITableViewController *)searchResultsTableViewController {
+	if (!_searchResultsTableViewController) {
+		_searchResultsTableViewController = [UITableViewController new];
+		UITableView *tableView = _searchResultsTableViewController.tableView;
+		tableView.delegate = self;
+		tableView.dataSource = self;
+		tableView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.2];
+		tableView.showsVerticalScrollIndicator = NO;
+		if ([tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+			tableView.cellLayoutMarginsFollowReadableWidth = NO;
 		}
-		if ([_mySearchDisplayController.searchResultsTableView respondsToSelector:@selector(layoutMargins)]) {
-			_mySearchDisplayController.searchResultsTableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+		if ([tableView respondsToSelector:@selector(layoutMargins)]) {
+			tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
 		}
 	}
-	return _mySearchDisplayController;
+	return _searchResultsTableViewController;
 }
 
-- (UISearchBar *)searchBar {
-	if (!_searchBar) {
-        
-        float startY = IS_RETINA ? 63.5 : 63.0;
-		_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, startY, self.view.bounds.size.width, kSearchBarHeight)];
-		_searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		_searchBar.backgroundColor = self.navigationController.navigationBar.backgroundColor;
-		_searchBar.delegate = self;
+- (UISearchController *)searchController {
+	if (!_searchController) {
+		_searchController = [[UISearchController alloc] initWithSearchResultsController:self.searchResultsTableViewController];
+		_searchController.delegate = self;
+		_searchController.searchResultsUpdater = self;
+		_searchController.searchBar.delegate = self;
+		[_searchController.searchBar sizeToFit];
 	}
-	return _searchBar;
+	return _searchController;
 }
 
 - (UISegmentedControl *)selectSegment
@@ -265,7 +264,6 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
     switch (segment.selectedSegmentIndex) {
         case 0:
         {
-            self.searchBar.hidden = NO;
             isFavoriteMode = NO;
             
             float heightGap = IS_RETINA ? kSearchBarHeight+3.5:kSearchBarHeight+3.0;
@@ -282,7 +280,6 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
         }
         case 1:
         {
-            self.searchBar.hidden = YES;
             isFavoriteMode = YES;
             
             _tableView.frame = self.view.bounds;
@@ -448,7 +445,7 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 {
     // Return the number of rows in the section.
     
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
+    if (tableView == self.searchResultsTableViewController.tableView) {
 		return [_filteredResults count];
 	}
     else {
@@ -476,7 +473,7 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 	BOOL checkedItem = NO;
 	NSUInteger unitID;
 	NSString *unitName;
-	if (tableView == self.searchDisplayController.searchResultsTableView) {
+	if (tableView == self.searchResultsTableViewController.tableView) {
 		NSDictionary *data = self.filteredResults[indexPath.row];
 		unitID = [data[ID_KEY] unsignedIntegerValue];
 		unitName = data[NAME_KEY];
@@ -568,7 +565,7 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 	NSUInteger selectedUnitID;
-	if (tableView == self.searchDisplayController.searchResultsTableView) {
+	if (tableView == self.searchResultsTableViewController.tableView) {
 		selectedUnitID = [self.filteredResults[indexPath.row][ID_KEY] unsignedIntegerValue];
 	} else {
 		if (isFavoriteMode) {
@@ -597,40 +594,16 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 	[self callDelegate:selectedUnitID];
 }
 
-#pragma mark- UISearchDisplayControllerDelegate
+#pragma mark - UISearchResultsUpdating
 
-- (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)tableView {
-    
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
-
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
-    
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller didHideSearchResultsTableView:(UITableView *)tableView {
-    
-}
-
-- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
-	CGRect frame = _searchBar.frame;
-	frame.origin.y = 20.0;
-	_searchBar.frame = frame;
-}
-
-- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
-	CGRect frame = _searchBar.frame;
-	frame.origin.y = 64.0;
-	_searchBar.frame = frame;
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+	[self filterContentForSearchText:searchController.searchBar.text];
 }
 
 #pragma mark - SearchBarDelegate
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-	_searchBar.text = @"";
+	_searchController.searchBar.text = @"";
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {

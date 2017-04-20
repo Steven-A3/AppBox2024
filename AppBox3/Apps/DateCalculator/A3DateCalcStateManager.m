@@ -237,7 +237,7 @@ static DurationType g_currentDurationType;
     NSInteger resultDays = 0;
     
     NSDateComponents *rangeDayComp = [calendar components:NSCalendarUnitDay fromDate:fromDate toDate:toDate options:0];
-    NSDateComponents *weeks = [calendar components:NSWeekOfYearCalendarUnit fromDate:fromDate toDate:toDate options:0];
+    NSDateComponents *weeks = [calendar components:NSCalendarUnitWeekOfYear fromDate:fromDate toDate:toDate options:0];
     NSDateComponents *fromWeekDay = [calendar components:NSCalendarUnitWeekday fromDate:fromDate];
     NSDateComponents *toWeekDay = [calendar components:NSCalendarUnitWeekday fromDate:toDate];
     NSInteger totalWeeks = 0;
