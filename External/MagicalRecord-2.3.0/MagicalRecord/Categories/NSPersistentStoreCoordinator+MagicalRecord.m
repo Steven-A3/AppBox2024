@@ -220,9 +220,14 @@ NSString * const kMagicalRecordPSCDidCompleteiCloudSetupNotification = @"kMagica
             MRLogWarn(@"iCloud is not enabled");
         }
         
+        [self performBlockAndWait:^{
+            [self MR_addSqliteStoreNamed:localStoreName withOptions:options];
+        }];
+        /*
         [self lock];
         [self MR_addSqliteStoreNamed:localStoreName withOptions:options];
         [self unlock];
+         */
 
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([NSPersistentStore MR_defaultPersistentStore] == nil)
