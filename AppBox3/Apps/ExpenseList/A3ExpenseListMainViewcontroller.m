@@ -73,6 +73,14 @@ NSString *const A3NotificationExpenseListCurrencyCodeChanged = @"A3NotificationE
 @property (nonatomic, copy) NSString *textBeforeEditingTextField;
 @property (nonatomic, copy) UIColor *textColorBeforeEditing;
 
+/*
+ * NumberPad 키보드를 UIInputView로 처리하면 iOS 시스템 이벤트에 따라 처리할 수 있지만,
+ * 키보드 확장자의 간섭을 피할 수 없어, 별도 처리를 하기 위해서 이름 입력후에 가격/수량 입력을 위한 
+ * 별도 처리를 위하여 아래의 변수가 필요하게 되었다.
+ */
+@property (nonatomic, weak) UITextField *nextEditingTextField;
+@property (nonatomic, weak) A3ExpenseListItemCell *nextEditingCell;
+
 @end
 
 @implementation A3ExpenseListMainViewController
@@ -1359,8 +1367,14 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 		}
 		return YES;
 	} else {
-		if (_editingTextField == cell.nameField) {
+		if (_editingTextField == _editingCell.nameField) {
+            if (textField == cell.priceField || textField == cell.quantityField) {
+                _isSwitchingTextField = YES;
+                self.nextEditingCell = cell;
+                self.nextEditingTextField = textField;
+            }
 			[_editingTextField resignFirstResponder];
+            return YES;
 		}
 		if (_isNumberKeyboardVisible) {
 			if (_editingTextField != textField) {
@@ -1420,6 +1434,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 		textField.placeholder = @"";
 		textField.text = [self.decimalFormatter stringFromNumber:@0];
+        FNLOG(@"%@", textField.text);
 		textField.textColor = [[A3AppDelegate instance] themeColor];
 
 		UITextField *quantityField = cell.quantityField;
@@ -1475,6 +1490,16 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 }
 
 - (void)cell:(A3ExpenseListItemCell *)cell textFieldDidEndEditing:(UITextField *)textField {
+    void (^finalize)() = ^(){
+        if (_nextEditingCell && _nextEditingTextField) {
+            self.editingCell = _nextEditingCell;
+            [self presentNumberKeyboardForTextField:_nextEditingTextField];
+            
+            _nextEditingCell = nil;
+            _nextEditingTextField = nil;
+        }
+    };
+    
 	FNLOG();
 	if (textField != cell.nameField) {
 		if (_textColorBeforeEditing) {
@@ -1496,6 +1521,10 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     if ([_tableDataSourceArray count] < [index row]) {
 		_editingTextField = nil;
         self.editingObject = nil;
+        _isSwitchingTextField = NO;
+        
+        finalize();
+        
         return;
     }
 
@@ -1549,6 +1578,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
                 [self.tableView reloadData];
 				FNLOG(@"TableView reload data!!!");
             }
+            
             return;
         }
 
@@ -1575,6 +1605,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 		_editingTextField = nil;
 		self.editingObject = nil;
+        
         return;
     }
 
@@ -1604,6 +1635,8 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	_editingTextField = nil;
 	self.editingObject = nil;
 	_isSwitchingTextField = NO;
+    
+    finalize();
 }
 
 - (BOOL)isEmptyItemRow:(ExpenseListItem *)item {
