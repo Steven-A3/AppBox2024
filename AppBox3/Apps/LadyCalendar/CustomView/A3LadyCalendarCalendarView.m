@@ -12,6 +12,7 @@
 #import "LadyCalendarPeriod.h"
 #import "A3AppDelegate+appearance.h"
 #import "LadyCalendarAccount.h"
+#import "HolidayData.h"
 
 @implementation LineDisplayModel
 
@@ -58,6 +59,7 @@
 	NSInteger _lastDayIndex;
 	NSInteger _lastWeekday;
 	NSInteger _lastDay;
+    BOOL    _weekdayStartsFromSunday;
 
 	NSInteger _dateBGHeight;
 	NSArray *_periods;
@@ -143,7 +145,8 @@
 				CGContextRestoreGState(context);
             }
             else {
-                [str drawInRect:CGRectMake(xPos, yPos + (IS_IPHONE ? 9.0 : 15.0), _cellSize.width, _dateBGHeight + 5.0) withAttributes:(x==0 || x==6 ? weekendTextAttr :textAttr)];
+                [str drawInRect:CGRectMake(xPos, yPos + (IS_IPHONE ? 9.0 : 15.0), _cellSize.width, _dateBGHeight + 5.0)
+                 withAttributes:_weekdayStartsFromSunday ? (x==0 || x==6 ? weekendTextAttr :textAttr) : (x >= 5 ? weekendTextAttr :textAttr)];
             }
             xPos += _cellSize.width;
         }
@@ -352,7 +355,10 @@
     }
 	_numberOfWeeks = [A3DateHelper numberOfWeeksOfMonth:_dateMonth];
 	NSInteger weekday = [A3DateHelper weekdayFromDate:[A3DateHelper dateMakeMonthFirstDayAtDate:_dateMonth]];
-	_firstDayStartIndex = weekday-1;
+
+    _weekdayStartsFromSunday = [[NSCalendar currentCalendar] firstWeekday] == Sunday;
+	_firstDayStartIndex = weekday - [[NSCalendar currentCalendar] firstWeekday];
+    
 	_lastDay = [A3DateHelper lastDaysOfMonth:_dateMonth];
 	_lastDayIndex = _firstDayStartIndex + _lastDay - 1;
 	NSDate *lastDate = [A3DateHelper dateByAddingDays:(_lastDay-1) fromDate:_dateMonth];

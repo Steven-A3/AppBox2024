@@ -27,6 +27,8 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3UserDefaults.h"
 #import "LadyCalendarAccount.h"
+#import "HolidayData.h"
+#import "CGColor+Additions.h"
 
 @interface A3LadyCalendarViewController ()
 <A3InstructionViewControllerDelegate,
@@ -49,7 +51,7 @@ A3CalendarViewDelegate>
 @property (strong, nonatomic) NSIndexPath *currentIndexPath;
 @property (strong, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
-@property (weak, nonatomic) IBOutlet UILabel *sunLabel, *monLabel, *tueLabel, *wedLabel, *thuLabel, *friLabel, *satLabel;
+@property (weak, nonatomic) IBOutlet UILabel *weekdayColumn0, *weekdayColumn1, *weekdayColumn2, *weekdayColumn3, *weekdayColumn4, *weekdayColumn5, *weekdayColumn6;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *todayButtonInToolbar;
 
 @end
@@ -152,7 +154,19 @@ A3CalendarViewDelegate>
 - (void)setupWeekdayLabels {
 	NSDateFormatter *dateFormatter = [NSDateFormatter new];
 	NSArray *weekdaySymbols = [dateFormatter shortWeekdaySymbols];
-	NSArray *labels = @[_sunLabel, _monLabel, _tueLabel, _wedLabel, _thuLabel, _friLabel, _satLabel];
+	FNLOG(@"%@", weekdaySymbols);
+
+	NSArray *labels;
+	if ([[NSCalendar currentCalendar] firstWeekday] == Sunday) {
+		labels = @[_weekdayColumn0, _weekdayColumn1, _weekdayColumn2, _weekdayColumn3, _weekdayColumn4, _weekdayColumn5, _weekdayColumn6];
+		_weekdayColumn0.textColor = [UIColor colorWithRGBHexString:@"8E8E93"];
+		_weekdayColumn6.textColor = [UIColor colorWithRGBHexString:@"8E8E93"];
+	} else {
+		labels = @[_weekdayColumn6, _weekdayColumn0, _weekdayColumn1, _weekdayColumn2, _weekdayColumn3, _weekdayColumn4, _weekdayColumn5];
+		_weekdayColumn0.textColor = [UIColor blackColor];
+		_weekdayColumn5.textColor = [UIColor colorWithRGBHexString:@"8E8E93"];
+		_weekdayColumn6.textColor = [UIColor colorWithRGBHexString:@"8E8E93"];
+	}
 	[labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop) {
 		label.text = weekdaySymbols[idx];
 	}];
