@@ -26,8 +26,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Abbreviation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tsC-ao-yu4">
-                                <rect key="frame" x="20" y="74" width="266" height="51"/>
-                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="42"/>
+                                <rect key="frame" x="20" y="88.333333333333314" width="178.66666666666666" height="33.666666666666671"/>
+                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="28"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -354,7 +354,7 @@
                                 </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UOk-3a-FoY">
-                                <rect key="frame" x="291" y="80" width="40" height="40"/>
+                                <rect key="frame" x="203.66666666666666" y="86" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="2Za-Mg-YZS"/>
                                     <constraint firstAttribute="width" constant="40" id="fyk-pd-ZUz"/>
@@ -528,13 +528,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copied." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZzU-K6-u5t">
-                                <rect key="frame" x="167" y="381" width="79" height="26"/>
+                                <rect key="frame" x="167" y="373.33333333333331" width="79" height="26"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Paste it!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jnI-ac-1OB">
-                                <rect key="frame" x="166" y="414" width="82" height="26"/>
+                                <rect key="frame" x="166" y="399" width="82" height="26"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -542,10 +542,10 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="ZzU-K6-u5t" firstAttribute="centerY" secondItem="kyT-Jd-n0h" secondAttribute="centerY" multiplier="1.07" id="3DS-4d-pCC"/>
+                            <constraint firstItem="ZzU-K6-u5t" firstAttribute="centerY" secondItem="kyT-Jd-n0h" secondAttribute="centerY" multiplier="1.05" id="3DS-4d-pCC"/>
                             <constraint firstItem="Smu-aR-oOo" firstAttribute="centerX" secondItem="kyT-Jd-n0h" secondAttribute="centerX" id="7cz-tZ-tGV"/>
                             <constraint firstItem="Smu-aR-oOo" firstAttribute="centerY" secondItem="kyT-Jd-n0h" secondAttribute="centerY" multiplier="0.92" id="LlE-GA-DXh"/>
-                            <constraint firstItem="jnI-ac-1OB" firstAttribute="centerY" secondItem="kyT-Jd-n0h" secondAttribute="centerY" multiplier="1.16" id="Qf2-jA-QEK"/>
+                            <constraint firstItem="jnI-ac-1OB" firstAttribute="centerY" secondItem="kyT-Jd-n0h" secondAttribute="centerY" multiplier="1.12" id="Qf2-jA-QEK"/>
                             <constraint firstItem="kyT-Jd-n0h" firstAttribute="width" secondItem="JZV-8Z-lqr" secondAttribute="width" multiplier="0.9" id="SoW-d4-jNU"/>
                             <constraint firstItem="ZzU-K6-u5t" firstAttribute="centerX" secondItem="Smu-aR-oOo" secondAttribute="centerX" id="Uta-i9-NOq"/>
                             <constraint firstItem="jnI-ac-1OB" firstAttribute="centerX" secondItem="kyT-Jd-n0h" secondAttribute="centerX" id="aBM-X7-mt1"/>

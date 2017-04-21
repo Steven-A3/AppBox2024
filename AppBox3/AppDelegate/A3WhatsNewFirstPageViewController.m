@@ -15,6 +15,9 @@ extern NSString *const A3UserDefaultsDidAlertWhatsNew4_5;
 
 @property (nonatomic, weak) IBOutlet BEMCheckBox *checkBox;
 @property (nonatomic, weak) IBOutlet UILabel *doNotShowLabel;
+@property (nonatomic, weak) IBOutlet UILabel *titleLabel;
+@property (nonatomic, weak) IBOutlet UILabel *abbreviationsAppNameLabel;
+@property (nonatomic, weak) IBOutlet UILabel *kaomojiAppNameLabel;
 
 @end
 
@@ -33,6 +36,14 @@ extern NSString *const A3UserDefaultsDidAlertWhatsNew4_5;
     if ([[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidAlertWhatsNew4_5]) {
         _checkBox.hidden = YES;
         _doNotShowLabel.hidden = YES;
+    }
+    
+    if (IS_IPAD) {
+        NSString *fontName = @"Chalkduster";
+        _titleLabel.font = [UIFont fontWithName:fontName size:50];
+        _abbreviationsAppNameLabel.font = [UIFont fontWithName:fontName size:30];
+        _kaomojiAppNameLabel.font = [UIFont fontWithName:fontName size:30];
+        _doNotShowLabel.font = [UIFont fontWithName:fontName size:20];
     }
 }
 
