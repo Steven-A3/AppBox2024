@@ -1,0 +1,22 @@
+
+/* Class = "UILabel"; text = "Tap to view the list\nOr Tap and hold to view \nthe action menu"; ObjectID = "T8M-0h-cUF"; */
+"T8M-0h-cUF.text" = "Dotknij, aby wyświetlić listę 
+Lub Stuknij i przytrzymaj,
+aby wyświetlić menu czynności";
+
+/* Class = "UILabel"; text = "Tap to Copy or\nTap and Hold to view \nthe action menu"; ObjectID = "WKJ-ey-HYe"; */
+"WKJ-ey-HYe.text" = "Dotknij, aby skopiować 
+lub stuknij i przytrzymaj,
+aby wyświetlić menu czynności";
+
+/* Class = "UILabel"; text = "Tap to view the list\nOr Tap and hold to view \nthe action menu"; ObjectID = "YRS-d6-X7Z"; */
+"YRS-d6-X7Z.text" = "Dotknij, aby wyświetlić listę
+Lub Stuknij i przytrzymaj,
+aby wyświetlić menu czynności";
+
+/* Class = "UILabel"; text = "Copied."; ObjectID = "ZzU-K6-u5t"; */
+"ZzU-K6-u5t.text" = "Skopiowane.";
+
+/* Class = "UILabel"; text = "Paste it!"; ObjectID = "jnI-ac-1OB"; */
+"jnI-ac-1OB.text" = "Wklej to!";
+

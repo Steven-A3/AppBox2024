@@ -214,7 +214,7 @@ NSString *const A3KaomojiKeyContents = @"contents";
 						@"(´・＿・`)",
 				]},
 				@{
-						A3KaomojiKeyCategory: @"Disatisfied",
+						A3KaomojiKeyCategory: @"Dissatisfied",
 						A3KaomojiKeyContents: @[
 						@"(*￣m￣)",
 						@"(￢_￢;)",

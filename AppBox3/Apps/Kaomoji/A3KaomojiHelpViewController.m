@@ -18,6 +18,7 @@
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *imageWidthConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *imageHorizontalPositionConstraint;
 @property (nonatomic, weak) IBOutlet UIImageView *popoverImageView;
+@property (nonatomic, weak) IBOutlet UILabel *helpLabel;
 
 @end
 
@@ -36,6 +37,9 @@
 	for (UIImageView *imageView in _imageViews) {
 		imageView.tintColor = [[A3AppDelegate instance] themeColor];
 	}
+    
+    _helpLabel.text = NSLocalizedString(@"KaomojiHelpString", nil);
+	[_helpLabel sizeToFit];
 }
 
 - (void)viewWillLayoutSubviews {

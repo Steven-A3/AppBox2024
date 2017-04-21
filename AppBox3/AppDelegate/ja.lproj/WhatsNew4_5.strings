@@ -1,0 +1,30 @@
+
+/* Class = "UILabel"; text = "12 Emotion Groups"; ObjectID = "8jk-DF-6Oh"; */
+"8jk-DF-6Oh.text" = "12個の感情グループ";
+
+/* Class = "UILabel"; text = "Do not show next time"; ObjectID = "GLA-Zf-YtI"; */
+"GLA-Zf-YtI.text" = "次回は表示しない";
+
+/* Class = "UIButton"; normalTitle = "NEXT"; ObjectID = "Gym-eK-RzS"; */
+"Gym-eK-RzS.normalTitle" = "次へ";
+
+/* Class = "UILabel"; text = "2 New Apps"; ObjectID = "HeF-RF-nsD"; */
+"HeF-RF-nsD.text" = "2つの新しいアプリ";
+
+/* Class = "UILabel"; text = "183 Text Emoticons"; ObjectID = "Uwa-oe-vJB"; */
+"Uwa-oe-vJB.text" = "183テキストの絵文字";
+
+/* Class = "UILabel"; text = "Kaomoji"; ObjectID = "ojM-KF-b4n"; */
+"ojM-KF-b4n.text" = "カオモジ";
+
+/* Class = "UIButton"; normalTitle = "DONE"; ObjectID = "sEY-v9-786"; */
+"sEY-v9-786.normalTitle" = "完了";
+
+/* Class = "UILabel"; text = "202 English Abbreviations"; ObjectID = "svg-n3-7pO"; */
+"svg-n3-7pO.text" = "202英語略語";
+
+/* Class = "UILabel"; text = "Abbreviation"; ObjectID = "vsO-bh-jZG"; */
+"vsO-bh-jZG.text" = "英語略語";
+
+/* Class = "UIButton"; normalTitle = "NEXT"; ObjectID = "vwu-hV-99k"; */
+"vwu-hV-99k.normalTitle" = "次へ";

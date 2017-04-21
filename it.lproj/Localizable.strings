@@ -5,6 +5,10 @@
  * Time: 9:34 PM
  */
 
+"Abbreviation" = "Abbreviazione inglese";
+"Abbreviation_Grid" = "Abbreviazione";
+"Kaomoji" = "Kaomoji";
+
 "Calculator" = "Calcolatrice";
 "Date Calculator" = "Calcola Data";
 "Date Calc" = "Calcola Data";
@@ -423,7 +427,7 @@
 " over of " = " sopra a ";
 " left of " = " a sinistra di ";
 
-"Done" = "Conferma";
+"Done" = "Fine";
 "Add Holidays to \"Days Counter\" app" = "Aggiungi vacanze all’app \"Conta giorni\"";
 
 /* Public Holiday */
@@ -760,7 +764,7 @@
 "Move and Scale" = "Sposta ed ordina";
 
 "CALCULATION" = "CALCOLO";
-"DoneButton" = "vicino";
+"DoneButton" = "Fine";
 "Off" = "No";
 "Passcode_Off" = "No";
 
@@ -1087,11 +1091,27 @@ impostazioni dopo la migrazione.";
 
 I dati raccolti da HealthKit non saranno utilizzati per scopi di marketing e pubblicità.";
 
-
 "means" = "means";
-"Kaomoji" = "Kaomoji";
 "What's New in V4.5" = "What's New in V4.5";
 "WhatsNew4_5" = "New App: Abbreviation, Kaomoji";
 
-"Abbreviation" = "Abbreviation";
-"♥︎ Favorites" = "♥︎ Favorites";
+"Top24" = "Top24";
+"Romance" = "Romanza";
+"Business" = "Ufficio";
+
+"Happy" = "Contento";
+"Smug" = "Compiaciuto";
+"Shy" = "Timido";
+"Sad" = "Triste";
+"Surprised" = "Sorpreso";
+"Love" = "Amore";
+"Worried" = "Preoccupato";
+"Depressed" = "Depresso";
+"Dissatisfied" = "Insoddisfatto";
+"Mellow" = "Mellow";
+"Laughing" = "Ridendo";
+"Apologizing" = "Apologando";
+
+"KaomojiHelpString" = "Toccare per visualizzare l'elenco
+oppure toccare e tenere premuto
+per visualizzare il menu azione";

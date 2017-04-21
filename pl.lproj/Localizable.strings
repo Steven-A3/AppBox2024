@@ -5,6 +5,11 @@
  * Time: 9:34 PM
  */
 
+
+"Abbreviation" = "Angielskie Skróty";
+"Abbreviation_Grid" = "Skróty";
+"Kaomoji" = "Kaomoji";
+
 "Calculator" = "Kalkulator";
 "Date Calculator" = "Daty";
 "Date Calc" = "Daty";
@@ -1094,9 +1099,26 @@ ustawieniach po migracji.";
 Dane zebrane z HealthKit nie będą wykorzystywane w celach marketingowych i reklamowych.";
 
 "means" = "means";
-"Kaomoji" = "Kaomoji";
 "What's New in V4.5" = "What's New in V4.5";
 "WhatsNew4_5" = "New App: Abbreviation, Kaomoji";
 
-"Abbreviation" = "Abbreviation";
-"♥︎ Favorites" = "♥︎ Favorites";
+"Top24" = "Top24";
+"Romance" = "Romans";
+"Business" = "Biznes";
+
+"Happy" = "Szczęśliwy";
+"Smug" = "kołtuński";
+"Shy" = "Nieśmiały";
+"Sad" = "Smutny";
+"Surprised" = "Zaskoczony";
+"Love" = "Miłość";
+"Worried" = "Zmartwiony";
+"Depressed" = "Przygnębiony";
+"Dissatisfied" = "Niezadowolony";
+"Mellow" = "Łagodny";
+"Laughing" = "Śmiać się";
+"Apologizing" = "Przepraszam";
+
+"KaomojiHelpString" = "Dotknij, aby wyświetlić listę
+Lub Stuknij i przytrzymaj,
+aby wyświetlić menu czynności";

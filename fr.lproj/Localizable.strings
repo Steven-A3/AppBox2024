@@ -5,6 +5,10 @@
  * Time: 9:34 PM
  */
 
+"Abbreviation" = "Abréviations Anglaise";
+"Abbreviation_Grid" = "Abréviations";
+"Kaomoji" = "Kaomoji";
+
 "Calculator" = "Calculette";
 "Date Calculator" = "Calculette de date";
 "Date Calc" = "Date Calc";
@@ -1052,7 +1056,6 @@ les paramètres après la migration.";
 "Password_QRCODE" = "Mot de passe";
 "It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes." = "Il détectera 2D Barcodes (Code QR, Code Aztec, Data Matrix) de l'image. Il ne détecte pas les codes à barres 1D.";
 "Restricted" = "Restrictif";
-"New APP: Pedometer" = "\n\nNew APP: Pédomètre\n\n";
 "days" = "jours";
 "steps" = "pas";
 "floors" = "étages";
@@ -1096,9 +1099,26 @@ les paramètres après la migration.";
 Les données recueillies auprès de HealthKit ne seront pas utilisées à des fins de marketing et de publicité.";
 
 "means" = "means";
-"Kaomoji" = "Kaomoji";
 "What's New in V4.5" = "What's New in V4.5";
 "WhatsNew4_5" = "New App: Abbreviation, Kaomoji";
 
-"Abbreviation" = "Abbreviation";
-"♥︎ Favorites" = "♥︎ Favorites";
+"Top24" = "Top24";
+"Romance" = "Romance";
+"Business" = "Professionnel";
+
+"Happy" = "Content";
+"Smug" = "suffisant";
+"Shy" = "Timide";
+"Sad" = "Triste";
+"Surprised" = "Surpris";
+"Love" = "Amour";
+"Worried" = "Inquiet";
+"Depressed" = "Déprimé";
+"Dissatisfied" = "Mécontent";
+"Mellow" = "Moelleux";
+"Laughing" = "En riant";
+"Apologizing" = "S'excuser";
+
+"KaomojiHelpString" = "Appuyez pour afficher la liste
+ou appuyez et maintenez la touche
+pour afficher le menu d'action";

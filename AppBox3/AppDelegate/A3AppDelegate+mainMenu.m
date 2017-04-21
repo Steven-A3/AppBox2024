@@ -131,7 +131,7 @@ NSString *const A3AppNameGrid_Ruler = @"Ruler";
 NSString *const A3AppNameGrid_Level = @"Level";
 NSString *const A3AppNameGrid_QRCode = @"QR Code";
 NSString *const A3AppNameGrid_Pedometer = @"Pedometer";
-NSString *const A3AppNameGrid_Abbreviation = @"Abbreviation";
+NSString *const A3AppNameGrid_Abbreviation = @"Abbreviation_Grid";
 NSString *const A3AppNameGrid_Kaomoji = @"Kaomoji";
 
 static char const *const kA3AppsInfoDictionary = "kA3AppsInfoDictionary";

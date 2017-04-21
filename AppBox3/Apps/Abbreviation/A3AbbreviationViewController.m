@@ -67,7 +67,8 @@
 	
 	[self leftBarButtonAppsButton];
 	
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"♥︎ Favorites", @"♥︎ Favorites")
+    _titleLabel.text = NSLocalizedString(@"Abbreviation", @"Abbreviation");
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"♥︎ %@", NSLocalizedString(@"Favorites", @"♥︎ Favorites")]
 																			  style:UIBarButtonItemStylePlain
 																			 target:self
 																			 action:@selector(favoritesButtonAction:)];
@@ -235,7 +236,7 @@
 			A3AbbreviationDrillDownViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownViewController storyboardID]];
 			viewController.dataManager = self.dataManager;
 			viewController.contentsArray = [section[A3AbbreviationKeyComponents] mutableCopy];
-			viewController.contentsTitle = section[A3AbbreviationKeyTag];
+			viewController.contentsTitle = NSLocalizedString(section[A3AbbreviationKeyTag], nil);
 			[self.navigationController pushViewController:viewController animated:YES];
 		} else {
 			// 섹션 내 상위 3개의 row 중 하나를 선택한 경우
@@ -271,7 +272,7 @@
 	A3AbbreviationDrillDownViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownViewController storyboardID]];
 	viewController.dataManager = self.dataManager;
 	viewController.contentsArray = [section[A3AbbreviationKeyComponents] mutableCopy];
-	viewController.contentsTitle = [NSString stringWithFormat:@"#%@", section[A3AbbreviationKeyTag]];
+	viewController.contentsTitle = [NSString stringWithFormat:@"#%@", NSLocalizedString(section[A3AbbreviationKeyTag], nil)];
 	[self.navigationController pushViewController:viewController animated:YES];
 }
 
@@ -285,7 +286,7 @@
 	viewController.dataSource = self.dataManager;
 	viewController.allowsEditing = YES;
 	viewController.dataManager = self.dataManager;
-	viewController.contentsTitle = @"Favorites";
+	viewController.contentsTitle = NSLocalizedString(@"Favorites", nil);
 	viewController.contentsArray = [[self.dataManager favoritesArray] mutableCopy];
 	[self.navigationController pushViewController:viewController animated:YES];
 }
@@ -312,7 +313,7 @@
 			break;
 	}
 	
-	cell.groupTitleLabel.text = [NSString stringWithFormat:@"#%@", section[A3AbbreviationKeyTag]];
+	cell.groupTitleLabel.text = [NSString stringWithFormat:@"#%@", NSLocalizedString(section[A3AbbreviationKeyTag], nil)];
 	NSArray *components = section[A3AbbreviationKeyComponents];
 	for (NSInteger index = 0; index < 3; index++) {
 		NSDictionary *component = components[index];
@@ -415,7 +416,7 @@
 		NSArray *contents = self.dataManager.alphabetSections[indexPath.row][A3AbbreviationKeyComponents];
 		A3AbbreviationDrillDownViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownViewController storyboardID]];
 		viewController.dataManager = self.dataManager;
-		viewController.contentsTitle = self.dataManager.alphabetSections[indexPath.row][A3AbbreviationKeyLetter];
+		viewController.contentsTitle = NSLocalizedString(self.dataManager.alphabetSections[indexPath.row][A3AbbreviationKeyLetter], nil);
 		viewController.contentsArray = [contents mutableCopy];
 		[self.navigationController pushViewController:viewController animated:YES];
 	}

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="VZY-c7-HCr">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="VZY-c7-HCr">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -151,7 +152,7 @@
                         <constraints>
                             <constraint firstItem="Nab-Sk-msC" firstAttribute="leading" secondItem="ZXa-gW-pjq" secondAttribute="leading" id="2CT-ip-iKi"/>
                             <constraint firstItem="vsO-bh-jZG" firstAttribute="leading" secondItem="ZXa-gW-pjq" secondAttribute="trailing" constant="20" id="6SN-vx-0aM"/>
-                            <constraint firstItem="GLA-Zf-YtI" firstAttribute="leading" secondItem="9A5-f7-wcE" secondAttribute="trailing" constant="10.999999999999929" id="8lw-eI-BFl"/>
+                            <constraint firstItem="GLA-Zf-YtI" firstAttribute="leading" secondItem="9A5-f7-wcE" secondAttribute="trailing" constant="11" id="8lw-eI-BFl"/>
                             <constraint firstItem="9A5-f7-wcE" firstAttribute="top" secondItem="7XR-nM-fG9" secondAttribute="bottom" multiplier="616/667" id="9lw-2O-pvv"/>
                             <constraint firstItem="MlK-zD-Cwn" firstAttribute="centerX" secondItem="7XR-nM-fG9" secondAttribute="centerX" id="AhQ-GG-c69"/>
                             <constraint firstItem="ojM-KF-b4n" firstAttribute="leading" secondItem="vsO-bh-jZG" secondAttribute="leading" id="Ba1-mf-e7Q"/>

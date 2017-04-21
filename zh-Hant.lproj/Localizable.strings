@@ -1,3 +1,14 @@
+/*
+ * Created by JetBrains AppCode.
+ * User: bkk
+ * Date: 2/4/13
+ * Time: 9:34 PM
+ */
+
+"Abbreviation" = "英文縮寫";
+"Abbreviation_Grid" = "英文縮寫";
+"Kaomoji" = "表情";
+
 "Currency" = "貨幣";
 "Date Calculator" = "日期計算";
 "Date Calc" = "日期計算";
@@ -920,9 +931,25 @@
 "HealthKitAlert" = "AppBox Pro®臨讀取爬樓梯，步數，行走在蘋果應用程序健康+跑動距離信息。\n\n讀取從健康應用的信息不被用於營銷目的，或出於廣告目的。";
 
 "means" = "means";
-"Kaomoji" = "Kaomoji";
 "What's New in V4.5" = "What's New in V4.5";
 "WhatsNew4_5" = "New App: Abbreviation, Kaomoji";
 
-"Abbreviation" = "Abbreviation";
-"♥︎ Favorites" = "♥︎ Favorites";
+"Top24" = "Top24";
+"Romance" = "浪漫";
+"Business" = "商務";
+
+"Happy" = "快樂";
+"Smug" = "躊躇滿志";
+"Shy" = "害羞";
+"Sad" = "傷心";
+"Surprised" = "驚訝";
+"Love" = "愛";
+"Worried" = "擔心";
+"Depressed" = "鬱悶";
+"Dissatisfied" = "不滿意";
+"Mellow" = "醇厚";
+"Laughing" = "笑";
+"Apologizing" = "道歉";
+
+"KaomojiHelpString" = "點擊查看列表或
+點擊並按住查看操作菜單";

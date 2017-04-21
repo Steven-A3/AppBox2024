@@ -5,6 +5,10 @@
  * Time: 9:34 PM
  */
 
+"Abbreviation" = "Abbreviation";
+"Abbreviation_Grid" = "Abbreviation";
+"Kaomoji" = "Kaomoji";
+
 "Calculator" = "Calculator";
 "Date Calculator" = "Date Calculator";
 "Loan Calculator" = "Loan Calculator";
@@ -957,6 +961,7 @@ after the migration.";
 "Battery" = "Battery";
 "Ruler" = "Ruler";
 "Level" = "Level";
+
 "Drag here to hide" = "Drag here to hide";
 "Expense" = "Expense";
 "Flashlight Short" = "Flashlight";
@@ -1037,9 +1042,24 @@ after the migration.";
 "HealthKitAlert" = "AppBox Pro® reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.\nData collected from HealthKit will not be used for marketing and advertising purposes.";
 
 "means" = "means";
-"Kaomoji" = "Kaomoji";
 "What's New in V4.5" = "What's New in V4.5";
 "WhatsNew4_5" = "New App: Abbreviation, Kaomoji";
 
-"Abbreviation" = "Abbreviation";
-"♥︎ Favorites" = "♥︎ Favorites";
+"Top24" = "Top24";
+"Romance" = "Romance";
+"Business" = "Business";
+
+"Happy" = "Happy";
+"Smug" = "Smug";
+"Shy" = "Shy";
+"Sad" = "Sad";
+"Surprised" = "Surprised";
+"Love" = "Love";
+"Worried" = "Worried";
+"Depressed" = "Depressed";
+"Dissatisfied" = "Dissatisfied";
+"Mellow" = "Mellow";
+"Laughing" = "Laughing";
+"Apologizing" = "Apologizing";
+
+"KaomojiHelpString" = "Tap to view the list\nOr Tap and hold to view \nthe action menu";

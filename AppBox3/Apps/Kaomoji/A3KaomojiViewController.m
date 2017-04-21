@@ -52,6 +52,7 @@
     // Do any additional setup after loading the view.
 
 	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Kaomoji", @"Kaomoji") style:UIBarButtonItemStylePlain target:nil action:nil];
+	self.titleLabel.text = NSLocalizedString(@"Kaomoji", @"Kaomoji");
 	
 	[self.navigationController setNavigationBarHidden:NO];
 	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
@@ -63,7 +64,7 @@
 
 	[self leftBarButtonAppsButton];
 	
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"♥︎ Favorites", @"♥︎ Favorites")
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"♥︎ %@", NSLocalizedString(@"Favorites", @"Favorites")]
 																			  style:UIBarButtonItemStylePlain
 																			 target:self
 																			 action:@selector(favoritesButtonAction:)];
@@ -213,7 +214,7 @@
 			A3KaomojiDrillDownViewController *viewController = [A3KaomojiDrillDownViewController storyboardInstance];
 			viewController.dataManager = self.dataManager;
 			viewController.contentsArray = [section[A3KaomojiKeyContents] mutableCopy];
-			viewController.contentsTitle = section[A3KaomojiKeyCategory];
+			viewController.contentsTitle = NSLocalizedString(section[A3KaomojiKeyCategory], nil);
 			[self.navigationController pushViewController:viewController animated:YES];
 		} else {
 			// 섹션 내 상위 3개의 row 중 하나를 선택한 경우
@@ -252,7 +253,7 @@
 	A3KaomojiDrillDownViewController *viewController = [A3KaomojiDrillDownViewController storyboardInstance];
 	viewController.dataManager = self.dataManager;
 	viewController.contentsArray = [section[A3KaomojiKeyContents] mutableCopy];
-	viewController.contentsTitle = section[A3KaomojiKeyCategory];
+	viewController.contentsTitle = NSLocalizedString(section[A3KaomojiKeyCategory], nil);
 	[self.navigationController pushViewController:viewController animated:YES];
 }
 
@@ -266,7 +267,7 @@
 	A3KaomojiCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[A3KaomojiCollectionViewCell reuseIdentifier] forIndexPath:indexPath];
 	NSDictionary *data = self.dataManager.contentsArray[indexPath.row];
 
-	cell.groupTitleLabel.text = data[A3KaomojiKeyCategory];
+	cell.groupTitleLabel.text = NSLocalizedString(data[A3KaomojiKeyCategory], nil);
 	NSArray *contents = data[A3KaomojiKeyContents];
 	cell.row1TitleLabel.text = contents[0];
 	cell.row2TitleLabel.text = contents[1];

@@ -5,6 +5,10 @@
  * Time: 9:34 PM
  */
 
+"Abbreviation" = "英語略語";
+"Abbreviation_Grid" = "英語略語";
+"Kaomoji" = "カオモジ";
+
 "Calculator" = "計算機";
 "Date Calculator" = "日付計算";
 "Date Calc" = "日付計算";
@@ -1097,9 +1101,26 @@
 "HealthKitAlert" = "AppBox Pro®は、Appleの健康アプリから階段を登る、歩数、歩行+ランニング距離情報を読み取ります。\n\n健康アプリから読んだ情報は、マーケティング目的や広告目的のために使用していません。";
 
 "means" = "means";
-"Kaomoji" = "Kaomoji";
 "What's New in V4.5" = "What's New in V4.5";
 "WhatsNew4_5" = "New App: Abbreviation, Kaomoji";
 
-"Abbreviation" = "Abbreviation";
-"♥︎ Favorites" = "♥︎ Favorites";
+"Top24" = "トップ24";
+"Romance" = "ロマンス";
+"Business" = "ビジネス";
+
+"Happy" = "ハッピー";
+"Smug" = "密かに";
+"Shy" = "シャイ";
+"Sad" = "悲しい";
+"Surprised" = "驚いた";
+"Love" = "愛";
+"Worried" = "心配している";
+"Depressed" = "うつ病";
+"Dissatisfied" = "不満";
+"Mellow" = "メロウ";
+"Laughing" = "笑い";
+"Apologizing" = "謝罪する";
+
+"KaomojiHelpString" = "タップしてリストを表示する、
+またはタップ＆ホールドして
+アクションメニューを表示する";
