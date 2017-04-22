@@ -20,6 +20,9 @@
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *screenImageViewAspectRatioConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *screenImageFrameViewAspectRatioConstraint;
 @property (nonatomic, strong) UIViewController *currentImageViewController;
+@property (nonatomic, weak) IBOutlet UIImageView *closeImageView;
+@property (nonatomic, weak) IBOutlet UILabel *textLabel1;
+@property (nonatomic, weak) IBOutlet UILabel *textLabel2;
 
 @end
 
@@ -33,6 +36,23 @@
     _screenImageFrameView.layer.cornerRadius = 10;
 
     [self setupConstraintWithSize:[UIScreen mainScreen].bounds.size];
+
+    _closeImageView.image = [[UIImage imageNamed:@"delete03"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    _closeImageView.tintColor = [UIColor whiteColor];
+    
+    UITapGestureRecognizer *closeImageTapGestureRecognizer =
+    [[UITapGestureRecognizer alloc] initWithTarget:self
+                                            action:@selector(didTapCloseImage)];
+    [_closeImageView addGestureRecognizer:closeImageTapGestureRecognizer];
+    
+    if (IS_IPAD) {
+        _textLabel1.font = [UIFont fontWithName:@"Chalkduster" size:26];
+        _textLabel2.font = [UIFont fontWithName:@"Chalkduster" size:26];
+    }
+}
+
+- (void)didTapCloseImage {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)viewWillLayoutSubviews {

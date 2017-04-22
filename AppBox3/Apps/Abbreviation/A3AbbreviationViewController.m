@@ -257,6 +257,9 @@
 }
 
 - (void)didTapCollectionView:(UITapGestureRecognizer *)gestureRecognizer {
+    if (self.presentedViewController) {
+        return;
+    }
 	// Collection View에서 UICollectionViewDelegate의 didSelectItemAtIndexPath를 사용하지 않고 UITapGestureRecognizer를
 	// 별도로 사용한 이유:
 	// 셀 내에서 터치한 영역에 따라 다른 연결 화면으로 이동해야 하기 때문입니다.

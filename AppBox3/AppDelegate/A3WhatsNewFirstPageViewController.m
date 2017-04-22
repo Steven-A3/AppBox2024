@@ -18,6 +18,7 @@ extern NSString *const A3UserDefaultsDidAlertWhatsNew4_5;
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
 @property (nonatomic, weak) IBOutlet UILabel *abbreviationsAppNameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *kaomojiAppNameLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *closeImageView;
 
 @end
 
@@ -45,11 +46,22 @@ extern NSString *const A3UserDefaultsDidAlertWhatsNew4_5;
         _kaomojiAppNameLabel.font = [UIFont fontWithName:fontName size:30];
         _doNotShowLabel.font = [UIFont fontWithName:fontName size:20];
     }
+    _closeImageView.image = [[UIImage imageNamed:@"delete03"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    _closeImageView.tintColor = [UIColor whiteColor];
+    
+    UITapGestureRecognizer *closeImageTapGestureRecognizer =
+    [[UITapGestureRecognizer alloc] initWithTarget:self
+                                            action:@selector(didTapCloseImage)];
+    [_closeImageView addGestureRecognizer:closeImageTapGestureRecognizer];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)didTapCloseImage {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)didPressNextButton:(id)sender {

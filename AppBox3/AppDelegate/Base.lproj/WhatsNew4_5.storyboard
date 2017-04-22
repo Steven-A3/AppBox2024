@@ -7,6 +7,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -146,6 +147,15 @@
                                     <outletCollection property="gestureRecognizers" destination="fgj-OE-q6t" appends="YES" id="557-Pj-22v"/>
                                 </connections>
                             </label>
+                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="YdE-x4-IpL">
+                                <rect key="frame" x="366" y="25" width="28" height="28"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="28" id="7Eb-0f-BmC"/>
+                                    <constraint firstAttribute="height" constant="28" id="qbD-qD-luD"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
@@ -168,8 +178,10 @@
                             <constraint firstItem="vsO-bh-jZG" firstAttribute="leading" secondItem="7XR-nM-fG9" secondAttribute="trailing" multiplier="141/375" id="Yps-BM-Q94"/>
                             <constraint firstItem="GLA-Zf-YtI" firstAttribute="centerY" secondItem="9A5-f7-wcE" secondAttribute="centerY" id="aB6-7B-8Y1"/>
                             <constraint firstItem="ojM-KF-b4n" firstAttribute="centerY" secondItem="Nab-Sk-msC" secondAttribute="centerY" id="cob-mM-tOb"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="YdE-x4-IpL" secondAttribute="trailing" id="gOx-dz-RST"/>
                             <constraint firstItem="vwu-hV-99k" firstAttribute="centerX" secondItem="7XR-nM-fG9" secondAttribute="centerX" id="hBQ-Ly-SuS"/>
                             <constraint firstItem="vsO-bh-jZG" firstAttribute="leading" secondItem="7XR-nM-fG9" secondAttribute="trailing" multiplier="306/768" id="hnQ-Nm-Ow7"/>
+                            <constraint firstItem="YdE-x4-IpL" firstAttribute="top" secondItem="p1v-nl-oeF" secondAttribute="bottom" constant="5" id="jtS-d5-fgB"/>
                             <constraint firstItem="HeF-RF-nsD" firstAttribute="top" secondItem="7XR-nM-fG9" secondAttribute="bottom" multiplier="145/667" id="n4k-Mx-hAz"/>
                             <constraint firstItem="GLA-Zf-YtI" firstAttribute="leading" secondItem="7XR-nM-fG9" secondAttribute="trailing" multiplier="97/375" id="oq3-vG-cNJ"/>
                             <constraint firstItem="HeF-RF-nsD" firstAttribute="centerX" secondItem="7XR-nM-fG9" secondAttribute="centerX" id="uc2-Bq-iHL"/>
@@ -202,6 +214,7 @@
                     <connections>
                         <outlet property="abbreviationsAppNameLabel" destination="vsO-bh-jZG" id="Aqn-pZ-ert"/>
                         <outlet property="checkBox" destination="9A5-f7-wcE" id="Nql-It-MbV"/>
+                        <outlet property="closeImageView" destination="YdE-x4-IpL" id="owA-OS-Vbz"/>
                         <outlet property="doNotShowLabel" destination="GLA-Zf-YtI" id="fKA-Bw-aO7"/>
                         <outlet property="kaomojiAppNameLabel" destination="ojM-KF-b4n" id="oqx-uF-35D"/>
                         <outlet property="titleLabel" destination="HeF-RF-nsD" id="B4l-KX-SeC"/>
@@ -219,7 +232,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-652" y="37.331334332833585"/>
+            <point key="canvasLocation" x="-652.17391304347836" y="36.684782608695656"/>
         </scene>
         <!--Whats New App Screen View Controller-->
         <scene sceneID="lIo-lA-3oO">
@@ -282,6 +295,15 @@
                                     <constraint firstAttribute="height" constant="187" id="d8f-aK-U60"/>
                                 </constraints>
                             </imageView>
+                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="Arn-De-YMC">
+                                <rect key="frame" x="366" y="25" width="28" height="28"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="28" id="MS6-0F-7na"/>
+                                    <constraint firstAttribute="width" constant="28" id="XcZ-ct-wMB"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
@@ -289,6 +311,7 @@
                             <constraint firstItem="YQ3-uL-4nI" firstAttribute="top" secondItem="0hS-3W-B7I" secondAttribute="bottom" multiplier="80:667" id="4Eu-ea-189"/>
                             <constraint firstItem="Gym-eK-RzS" firstAttribute="centerX" secondItem="0hS-3W-B7I" secondAttribute="centerX" id="5Yg-Ld-Rhb"/>
                             <constraint firstItem="Nmo-wu-X6k" firstAttribute="bottom" secondItem="YQ3-uL-4nI" secondAttribute="bottom" id="8x8-lY-mC5"/>
+                            <constraint firstItem="Arn-De-YMC" firstAttribute="top" secondItem="BNz-ho-pgD" secondAttribute="bottom" constant="5" id="DWZ-ro-5ZY"/>
                             <constraint firstItem="YQ3-uL-4nI" firstAttribute="centerX" secondItem="0hS-3W-B7I" secondAttribute="centerX" id="HKj-Ig-Nu8"/>
                             <constraint firstItem="Gym-eK-RzS" firstAttribute="top" secondItem="0hS-3W-B7I" secondAttribute="bottom" multiplier="560/667" id="HSY-tR-mQT"/>
                             <constraint firstItem="YQ3-uL-4nI" firstAttribute="width" secondItem="0hS-3W-B7I" secondAttribute="width" multiplier="240:375" id="MdK-pv-PqQ"/>
@@ -296,6 +319,7 @@
                             <constraint firstItem="rer-DR-Yeq" firstAttribute="centerX" secondItem="0hS-3W-B7I" secondAttribute="centerX" id="bTE-5g-oOu"/>
                             <constraint firstItem="svg-n3-7pO" firstAttribute="centerX" secondItem="0hS-3W-B7I" secondAttribute="centerX" id="buT-nZ-ogT"/>
                             <constraint firstItem="Nmo-wu-X6k" firstAttribute="trailing" secondItem="YQ3-uL-4nI" secondAttribute="trailing" constant="33" id="fjt-Vl-nxJ"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Arn-De-YMC" secondAttribute="trailing" id="frE-kk-7Zp"/>
                             <constraint firstItem="svg-n3-7pO" firstAttribute="top" secondItem="0hS-3W-B7I" secondAttribute="bottom" multiplier="501:667" id="sQW-yc-6X5"/>
                             <constraint firstItem="rer-DR-Yeq" firstAttribute="top" secondItem="0hS-3W-B7I" secondAttribute="bottom" multiplier="612/667" id="xAR-Nx-OGC"/>
                         </constraints>
@@ -315,11 +339,13 @@
                         </connections>
                     </view>
                     <connections>
+                        <outlet property="closeImageView" destination="Arn-De-YMC" id="Izh-J5-wEU"/>
                         <outlet property="screenImageFrameView" destination="YQ3-uL-4nI" id="lnJ-i4-hct"/>
                         <outlet property="screenImageFrameViewAspectRatioConstraint" destination="KQE-uT-3UR" id="uEb-pu-qC6"/>
                         <outlet property="screenImageView" destination="DMR-1P-DDs" id="35g-K8-Mvz"/>
                         <outlet property="screenImageViewAspectRatioConstraint" destination="4uB-BY-ZYM" id="Mgf-5T-ISL"/>
                         <outlet property="screenShotImageView" destination="DMR-1P-DDs" id="KDe-u0-4gs"/>
+                        <outlet property="textLabel1" destination="svg-n3-7pO" id="pW3-yv-pg9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lhz-MG-WdQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -438,6 +464,8 @@
                         <outlet property="screenImageView" destination="TGy-Af-Byl" id="xEK-gw-FJf"/>
                         <outlet property="screenImageViewAspectRatioConstraint" destination="CAx-Ee-l6E" id="qls-7x-cph"/>
                         <outlet property="screenShotImageView" destination="TGy-Af-Byl" id="hRq-L8-Sgn"/>
+                        <outlet property="textLabel1" destination="Uwa-oe-vJB" id="sD6-xx-CPU"/>
+                        <outlet property="textLabel2" destination="8jk-DF-6Oh" id="je7-a7-szb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Nn-gL-Zrr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -450,5 +478,6 @@
         <image name="AbbreviationPopover" width="320" height="320"/>
         <image name="Kaomoji" width="29" height="29"/>
         <image name="KaomojiCopied" width="320" height="320"/>
+        <image name="delete03" width="14" height="14"/>
     </resources>
 </document>
