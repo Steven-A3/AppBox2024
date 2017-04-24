@@ -24,6 +24,7 @@
 
 static char const *const key_firstActionSheet = "key_firstActionSheet";
 static char const *const key_adBannerView = "key_adBannerView";
+static char const *const key_adNativeExpressView = "key_adNativeExpressView";
 
 NSString *const AdMobAdUnitIDBattery = @"ca-app-pub-0532362805885914/2432956543";
 NSString *const AdMobAdUnitIDCalculator = @"ca-app-pub-0532362805885914/2712158144";
@@ -819,6 +820,23 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
 	if (![[A3AppDelegate instance] shouldPresentAd]) return;
 
 	[self setupBannerViewForAdUnitID:unitID keywords:keywords gender:kGADGenderUnknown adSize:kGADAdSizeBanner];
+}
+
+- (void)prepareNativeExpressAdViewForUnitID:(NSString *)unitID keywords:(NSArray *)keywords delegate:(id<GADNativeExpressAdViewDelegate>)delegate {
+    GADRequest *adRequest = [GADRequest request];
+    adRequest.keywords = keywords;
+    
+    GADNativeExpressAdView *nativeExpressAdView = [GADNativeExpressAdView new];
+    nativeExpressAdView.adUnitID = unitID;
+    nativeExpressAdView.rootViewController = self;
+    nativeExpressAdView.delegate = delegate;
+    [nativeExpressAdView loadRequest:adRequest];
+    
+    objc_setAssociatedObject(self, key_adNativeExpressView, nativeExpressAdView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (GADNativeExpressAdView *)nativeExpressAdView {
+    return objc_getAssociatedObject(self, key_adNativeExpressView);
 }
 
 /**
