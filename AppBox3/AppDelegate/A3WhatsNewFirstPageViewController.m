@@ -54,6 +54,8 @@ extern NSString *const A3UserDefaultsDidAlertWhatsNew4_5;
         _doNotShowLabel.font = [UIFont fontWithName:fontName size:20];
     } else if (isLanguageLikeCJK) {
         _titleLabel.font = [UIFont fontWithName:fontName size:_titleLabel.font.pointSize];
+    } else if ([NSLocalizedString(@"LocalizedLanguage", nil) isEqualToString:@"es"]) {
+        _titleLabel.font = [UIFont fontWithName:fontName size:33];
     }
     _closeImageView.image = [[UIImage imageNamed:@"delete03"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     _closeImageView.tintColor = [UIColor whiteColor];

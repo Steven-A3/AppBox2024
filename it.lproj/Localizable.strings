@@ -5,6 +5,8 @@
  * Time: 9:34 PM
  */
 
+"LocalizedLanguage" = "it";
+
 "Abbreviation" = "Abbreviazione inglese";
 "Abbreviation_Grid" = "Abbreviazione";
 "Kaomoji" = "Kaomoji";
@@ -1093,8 +1095,6 @@ impostazioni dopo la migrazione.";
 I dati raccolti da HealthKit non saranno utilizzati per scopi di marketing e pubblicità.";
 
 "means" = "means";
-"What's New in V4.5" = "What's New in V4.5";
-"WhatsNew4_5" = "New App: Abbreviation, Kaomoji";
 
 "Top24" = "Top24";
 "Romance" = "Romanza";
@@ -1112,4 +1112,3 @@ I dati raccolti da HealthKit non saranno utilizzati per scopi di marketing e pub
 "Mellow" = "Mellow";
 "Laughing" = "Ridendo";
 "Apologizing" = "Apologando";
-

@@ -5,6 +5,8 @@
  * Time: 9:34 PM
  */
 
+"LocalizedLanguage" = "de";
+
 "Abbreviation" = "Englisch Abkürzungen";
 "Abbreviation_Grid" = "Abkürzungen";
 "Kaomoji" = "Kaomoji";
@@ -1126,3 +1128,4 @@ Die von HealthKit gesammelten Daten werden nicht für Marketing- und Werbezwecke
 "Mellow" = "Mellow";
 "Laughing" = "Lachen";
 "Apologizing" = "Entschuldigung";
+

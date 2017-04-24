@@ -317,7 +317,7 @@
 		return;
 	}
 	_helpViewController = [A3DrillDownHelpViewController storyboardInstance];
-	_helpViewController.imageName = @"kaomojipopover";
+	_helpViewController.imageName = @"KaomojiPopover";
 	[self.navigationController.view addSubview:_helpViewController.view];
 	[self.navigationController addChildViewController:_helpViewController];
 	

@@ -65,6 +65,7 @@
 	[self.navigationController.navigationBar setShadowImage:image];
 	
 	[self leftBarButtonAppsButton];
+    [self makeBackButtonEmptyArrow];
 	
     _titleLabel.text = NSLocalizedString(@"Abbreviation", @"Abbreviation");
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"♥︎ %@", NSLocalizedString(@"Favorites", @"♥︎ Favorites")]

@@ -47,7 +47,7 @@
 		_bottomSpaceConstraint.constant = 40;
 	} else if (IS_IPHONE_4_INCH) {
 		_imageWidthConstraint.constant = 160;
-		_topSpaceConstraint.constant = 160;
+		_topSpaceConstraint.constant = 150;
 		_bottomSpaceConstraint.constant = 30;
 		_topLeadingConstraint.constant = 50; // 82 iPhone 7 Plus
 		_bottomLeadingConstraint.constant = 110; // 165 iPhone 7 Plus
@@ -69,7 +69,8 @@
 																 relatedBy:NSLayoutRelationEqual
 																	toItem:_fingerUpImageView
 																 attribute:NSLayoutAttributeLeading
-																multiplier:1.0 constant:0];
+																multiplier:1.0
+                                                                  constant:0];
 		[self.view addConstraint:_imageHPositionConstraint];
 		
 	} else if (IS_IPAD) {
@@ -84,7 +85,8 @@
 																 relatedBy:NSLayoutRelationEqual
 																	toItem:_fingerUpImageView
 																 attribute:NSLayoutAttributeLeading
-																multiplier:1.0 constant:0];
+																multiplier:1.0
+                                                                  constant:0];
 		[self.view addConstraint:_imageHPositionConstraint];
 }
 }
@@ -93,15 +95,5 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

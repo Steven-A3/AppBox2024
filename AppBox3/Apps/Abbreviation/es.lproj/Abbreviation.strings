@@ -1,16 +1,14 @@
 
 /* Class = "UILabel"; text = "Tap to view the list\nOr Tap and hold to view \nthe action menu"; ObjectID = "T8M-0h-cUF"; */
-"T8M-0h-cUF.text" = "Puntee para ver la lista 
-O Puntee sin soltar para
-ver el menú de acción";
+"T8M-0h-cUF.text" = "Puntee para ver la lista O Puntee sin soltar para ver el menú de acción";
 
 /* Class = "UILabel"; text = "Tap to Copy or\nTap and Hold to view \nthe action menu"; ObjectID = "WKJ-ey-HYe"; */
-"WKJ-ey-HYe.text" = "Tap to Copy or\nTap and Hold to view \nthe action menu";
+"WKJ-ey-HYe.text" = "Puntee para copiar o 
+toque y mantenga presionada
+para ver el menú de acción";
 
 /* Class = "UILabel"; text = "Tap to view the list\nOr Tap and hold to view \nthe action menu"; ObjectID = "YRS-d6-X7Z"; */
-"YRS-d6-X7Z.text" = "Puntee para ver la lista
-O Puntee sin soltar para
-ver el menú de acción";
+"YRS-d6-X7Z.text" = "Puntee para ver la lista O Puntee sin soltar para ver el menú de acción";
 
 /* Class = "UILabel"; text = "Copied."; ObjectID = "ZzU-K6-u5t"; */
 "ZzU-K6-u5t.text" = "Copiado.";

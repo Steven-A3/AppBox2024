@@ -343,7 +343,7 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 		return;
 	}
 	_helpViewController = [A3DrillDownHelpViewController storyboardInstance];
-	_helpViewController.imageName = @"abbreviationpopover";
+	_helpViewController.imageName = @"AbbreviationPopover";
 	[self.navigationController.view addSubview:_helpViewController.view];
 	[self.navigationController addChildViewController:_helpViewController];
 

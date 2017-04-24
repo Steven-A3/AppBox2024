@@ -5,6 +5,8 @@
  * Time: 9:34 PM
  */
 
+"LocalizedLanguage" = "zh-Hant";
+
 "Abbreviation" = "英文縮寫";
 "Abbreviation_Grid" = "英文縮寫";
 "Kaomoji" = "表情符號";
@@ -932,8 +934,6 @@
 "HealthKitAlert" = "AppBox Pro®臨讀取爬樓梯，步數，行走在蘋果應用程序健康+跑動距離信息。\n\n讀取從健康應用的信息不被用於營銷目的，或出於廣告目的。";
 
 "means" = "means";
-"What's New in V4.5" = "What's New in V4.5";
-"WhatsNew4_5" = "New App: Abbreviation, Kaomoji";
 
 "Top24" = "Top24";
 "Romance" = "浪漫";

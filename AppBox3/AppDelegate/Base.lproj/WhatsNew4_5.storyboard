@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="VZY-c7-HCr">
-    <device id="retina5_5" orientation="portrait">
+    <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -21,15 +21,15 @@
                         <viewControllerLayoutGuide type="bottom" id="qFp-vG-jAr"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="wB4-D1-klc">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2HQ-hV-z7v">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2X3-sa-Mdm">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.8572078339041096" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -64,37 +64,37 @@
                         <viewControllerLayoutGuide type="bottom" id="9Cy-uG-AfG"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="7XR-nM-fG9">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 New Apps" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HeF-RF-nsD">
-                                <rect key="frame" x="88" y="160" width="238" height="50"/>
+                                <rect key="frame" x="41" y="123.5" width="238" height="50"/>
                                 <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="39"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Kaomoji" translatesAutoresizingMaskIntoConstraints="NO" id="Nab-Sk-msC">
-                                <rect key="frame" x="95" y="358" width="40" height="40"/>
+                                <rect key="frame" x="73.5" y="276" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="5gq-mN-K79"/>
                                     <constraint firstAttribute="height" constant="40" id="Z5g-AH-fUD"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kaomoji" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ojM-KF-b4n" userLabel="Kaomoji Label">
-                                <rect key="frame" x="156" y="362" width="116" height="32"/>
+                                <rect key="frame" x="120.5" y="280" width="116" height="32"/>
                                 <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="25"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Abbreviation" translatesAutoresizingMaskIntoConstraints="NO" id="ZXa-gW-pjq">
-                                <rect key="frame" x="95" y="274" width="40" height="40"/>
+                                <rect key="frame" x="73.5" y="211" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="AWB-Pc-wvw"/>
                                     <constraint firstAttribute="width" constant="40" id="Ur4-wi-h7B"/>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vwu-hV-99k">
-                                <rect key="frame" x="147" y="468" width="120" height="44"/>
+                                <rect key="frame" x="100" y="361" width="120" height="44"/>
                                 <color key="backgroundColor" red="0.99916261434555054" green="0.17425110936164856" blue="0.33470001816749573" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="2ja-Ey-uT7"/>
@@ -107,16 +107,16 @@
                                 </connections>
                             </button>
                             <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="MlK-zD-Cwn">
-                                <rect key="frame" x="188" y="525" width="39" height="37"/>
+                                <rect key="frame" x="140.5" y="405.5" width="39" height="37"/>
                             </pageControl>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Abbreviations" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vsO-bh-jZG" userLabel="Abbreviation Label">
-                                <rect key="frame" x="156" y="278" width="188" height="32"/>
+                                <rect key="frame" x="120.5" y="215" width="188" height="32"/>
                                 <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="25"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9A5-f7-wcE" customClass="BEMCheckBox">
-                                <rect key="frame" x="71" y="679.66666666666663" width="25" height="23"/>
+                                <rect key="frame" x="54.5" y="524.5" width="17.5" height="23"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" red="0.99916261429999997" green="0.17425110939999999" blue="0.3347000182" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <userDefinedRuntimeAttributes>
@@ -138,7 +138,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Do not show next time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GLA-Zf-YtI">
-                                <rect key="frame" x="107" y="680.33333333333348" width="292" height="21.666666666666629"/>
+                                <rect key="frame" x="83" y="525" width="222" height="22"/>
                                 <gestureRecognizers/>
                                 <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -148,7 +148,7 @@
                                 </connections>
                             </label>
                             <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="YdE-x4-IpL">
-                                <rect key="frame" x="366" y="25" width="28" height="28"/>
+                                <rect key="frame" x="276" y="25" width="28" height="28"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -244,14 +244,14 @@
                         <viewControllerLayoutGuide type="bottom" id="u9L-Vb-wqK"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="0hS-3W-B7I">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YQ3-uL-4nI">
-                                <rect key="frame" x="75" y="88" width="264" height="425"/>
+                                <rect key="frame" x="57.5" y="68" width="205" height="330"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DMR-1P-DDs">
-                                        <rect key="frame" x="0.0" y="-45" width="264" height="470"/>
+                                        <rect key="frame" x="0.0" y="-35" width="205" height="365"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="DMR-1P-DDs" secondAttribute="height" multiplier="375:667" id="4uB-BY-ZYM"/>
                                         </constraints>
@@ -266,13 +266,13 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="202 English Abbreviations" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="svg-n3-7pO">
-                                <rect key="frame" x="63" y="553" width="288" height="26"/>
+                                <rect key="frame" x="16" y="426.5" width="288" height="26"/>
                                 <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="20"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gym-eK-RzS">
-                                <rect key="frame" x="147" y="618" width="120" height="44"/>
+                                <rect key="frame" x="100" y="477" width="120" height="44"/>
                                 <color key="backgroundColor" red="0.99916261429999997" green="0.17425110939999999" blue="0.3347000182" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="120" id="iaG-Kd-6Q7"/>
@@ -287,17 +287,17 @@
                                 </connections>
                             </button>
                             <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" currentPage="1" translatesAutoresizingMaskIntoConstraints="NO" id="rer-DR-Yeq">
-                                <rect key="frame" x="188" y="675" width="39" height="37"/>
+                                <rect key="frame" x="140.5" y="521" width="39" height="37"/>
                             </pageControl>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AbbreviationPopover" translatesAutoresizingMaskIntoConstraints="NO" id="Nmo-wu-X6k">
-                                <rect key="frame" x="185" y="326" width="187" height="187"/>
+                                <rect key="frame" x="108.5" y="211" width="187" height="187"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="187" id="Zpa-hA-AGm"/>
                                     <constraint firstAttribute="height" constant="187" id="d8f-aK-U60"/>
                                 </constraints>
                             </imageView>
                             <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="Arn-De-YMC">
-                                <rect key="frame" x="366" y="25" width="28" height="28"/>
+                                <rect key="frame" x="276" y="25" width="28" height="28"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -367,14 +367,14 @@
                         <viewControllerLayoutGuide type="bottom" id="qf9-UR-52g"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="syl-YO-zDh">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ppU-7A-rzd">
-                                <rect key="frame" x="75" y="88" width="264" height="425"/>
+                                <rect key="frame" x="57.5" y="68" width="205" height="330"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="TGy-Af-Byl">
-                                        <rect key="frame" x="0.0" y="-45" width="264" height="470"/>
+                                        <rect key="frame" x="0.0" y="-35" width="205" height="365"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="TGy-Af-Byl" secondAttribute="height" multiplier="375:667" id="CAx-Ee-l6E"/>
                                         </constraints>
@@ -389,20 +389,20 @@
                                 </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="KaomojiCopied" translatesAutoresizingMaskIntoConstraints="NO" id="K9f-XA-9En">
-                                <rect key="frame" x="185" y="326" width="187" height="187"/>
+                                <rect key="frame" x="108.5" y="211" width="187" height="187"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="187" id="Cr5-cd-fx7"/>
                                     <constraint firstAttribute="height" constant="187" id="WfC-WW-AOt"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="183 Text Emoticons" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uwa-oe-vJB">
-                                <rect key="frame" x="95" y="531" width="224" height="26"/>
+                                <rect key="frame" x="48" y="409.5" width="224" height="26"/>
                                 <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="20"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sEY-v9-786">
-                                <rect key="frame" x="147" y="618" width="120" height="44"/>
+                                <rect key="frame" x="100" y="477" width="120" height="44"/>
                                 <color key="backgroundColor" red="0.99916261429999997" green="0.17425110939999999" blue="0.3347000182" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="120" id="4Vj-QQ-Tt7"/>
@@ -417,13 +417,13 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12 Emotion Groups" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8jk-DF-6Oh">
-                                <rect key="frame" x="96" y="572" width="223" height="26"/>
+                                <rect key="frame" x="48.5" y="441" width="223" height="26"/>
                                 <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="20"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" currentPage="2" translatesAutoresizingMaskIntoConstraints="NO" id="Cf5-Aw-MbC">
-                                <rect key="frame" x="188" y="675" width="39" height="37"/>
+                                <rect key="frame" x="140.5" y="521" width="39" height="37"/>
                             </pageControl>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>

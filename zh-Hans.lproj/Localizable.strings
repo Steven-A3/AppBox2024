@@ -5,6 +5,8 @@
  * Time: 9:34 PM
  */
 
+"LocalizedLanguage" = "zh-Hans";
+
 "Abbreviation" = "英文缩写";
 "Abbreviation_Grid" = "英文缩写";
 "Kaomoji" = "颜文字";
@@ -1127,3 +1129,4 @@
 "Mellow" = "醇厚";
 "Laughing" = "笑";
 "Apologizing" = "道歉";
+
