@@ -334,20 +334,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="187" translatesAutoresizingMaskIntoConstraints="NO" id="Wef-yt-2Ug">
-                                <rect key="frame" x="100" y="230" width="259" height="60"/>
-                                <string key="text">Tap to view the list
-Or Tap and hold to view 
-the action menu</string>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to view the list Or Tap and hold to view the action menu" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="187" translatesAutoresizingMaskIntoConstraints="NO" id="Wef-yt-2Ug">
+                                <rect key="frame" x="100" y="210" width="174.5" height="60"/>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="7In-1b-oH5">
-                                <rect key="frame" x="50" y="230" width="42" height="42"/>
+                                <rect key="frame" x="50" y="210" width="42" height="42"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kaomojipopover" translatesAutoresizingMaskIntoConstraints="NO" id="g4b-3K-n41">
-                                <rect key="frame" x="67.5" y="310" width="240" height="240"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="KaomojiPopover" translatesAutoresizingMaskIntoConstraints="NO" id="g4b-3K-n41">
+                                <rect key="frame" x="67.5" y="289.5" width="240" height="240"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="240" id="5XO-Cf-QXM"/>
                                     <constraint firstAttribute="width" secondItem="g4b-3K-n41" secondAttribute="height" multiplier="1:1" id="ZkA-Qd-M5k"/>
@@ -356,13 +353,12 @@ the action menu</string>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.6955265410958904" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="Wef-yt-2Ug" secondAttribute="trailing" id="38O-bY-ZxP"/>
-                            <constraint firstItem="Wef-yt-2Ug" firstAttribute="top" secondItem="s9h-1m-j2U" secondAttribute="bottom" constant="210" id="9NA-at-lH0"/>
+                            <constraint firstItem="7In-1b-oH5" firstAttribute="top" secondItem="Oca-ym-l4G" secondAttribute="top" constant="210" id="EWe-9W-PIm"/>
                             <constraint firstItem="Wef-yt-2Ug" firstAttribute="leading" secondItem="Oca-ym-l4G" secondAttribute="leading" constant="100" id="EcU-b8-HbM"/>
                             <constraint firstItem="g4b-3K-n41" firstAttribute="centerX" secondItem="Oca-ym-l4G" secondAttribute="centerX" id="GiT-Yo-A7H"/>
                             <constraint firstItem="g4b-3K-n41" firstAttribute="top" secondItem="Wef-yt-2Ug" secondAttribute="bottom" constant="20" id="VKC-tT-ssi"/>
                             <constraint firstItem="Wef-yt-2Ug" firstAttribute="leading" secondItem="7In-1b-oH5" secondAttribute="trailing" constant="8" id="ZoG-he-dMf"/>
-                            <constraint firstItem="7In-1b-oH5" firstAttribute="top" secondItem="Wef-yt-2Ug" secondAttribute="top" id="vXh-l6-alH"/>
+                            <constraint firstItem="7In-1b-oH5" firstAttribute="top" secondItem="Wef-yt-2Ug" secondAttribute="top" id="bOE-dn-FS5"/>
                         </constraints>
                     </view>
                     <connections>
@@ -372,19 +368,18 @@ the action menu</string>
                         <outlet property="imageWidthConstraint" destination="5XO-Cf-QXM" id="m4W-mz-Qvj"/>
                         <outlet property="popoverImageView" destination="g4b-3K-n41" id="W2l-3o-HUa"/>
                         <outlet property="topLeadingConstraint" destination="EcU-b8-HbM" id="PIn-JI-QyL"/>
-                        <outlet property="topSpaceConstraint" destination="9NA-at-lH0" id="VRe-rr-cGb"/>
                         <outletCollection property="imageViews" destination="7In-1b-oH5" id="UDR-zG-JqG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="25D-ES-ciI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1023" y="1818"/>
+            <point key="canvasLocation" x="-1023.2" y="1817.5412293853076"/>
         </scene>
     </scenes>
     <resources>
+        <image name="KaomojiPopover" width="320" height="320"/>
         <image name="arrow" width="8" height="13"/>
         <image name="finger_up" width="42" height="42"/>
         <image name="help" width="25" height="25"/>
-        <image name="kaomojipopover" width="317" height="317"/>
     </resources>
 </document>

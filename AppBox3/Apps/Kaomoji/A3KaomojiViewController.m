@@ -54,7 +54,6 @@
 	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Kaomoji", @"Kaomoji") style:UIBarButtonItemStylePlain target:nil action:nil];
 	self.titleLabel.text = NSLocalizedString(@"Kaomoji", @"Kaomoji");
 	
-	[self.navigationController setNavigationBarHidden:NO];
 	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 
@@ -84,6 +83,7 @@
 		longPressGestureRecognizer.delegate = self;
 		[self.collectionView addGestureRecognizer:longPressGestureRecognizer];
 	}
+    [self showHelpView];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -164,16 +164,6 @@
 		_titleLabelBaselineConstraint = titleLabelBaselineConstraint;
 		_topLineTopConstraint = topLineTopConstraint;
 	}
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-	
-	double delayInSeconds = 0.2;
-	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		[self showHelpView];
-	});
 }
 
 - (void)applicationDidBecomeActive {
@@ -288,10 +278,6 @@
 	viewController.contentsTitle = NSLocalizedString(@"Favorites", @"Favorites");
 	viewController.contentsArray = [[self.dataManager favoritesArray] mutableCopy];
 	[self.navigationController pushViewController:viewController animated:YES];
-}
-
-- (BOOL)hidesNavigationBar {
-	return YES;
 }
 
 #pragma mark - UIPreviewInteractionDelegate
@@ -429,12 +415,15 @@
 }
 
 - (void)showHelpView {
-		NSString *userDefaultKey = [NSString stringWithFormat:@"%@HelpDidShow", NSStringFromClass([self class])];
-		if (![[NSUserDefaults standardUserDefaults] boolForKey:userDefaultKey]) {
-			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:userDefaultKey];
-	
-	[self helpButtonAction:self];
-		}
+    [self helpButtonAction:self];
+    return;
+    
+    NSString *userDefaultKey = [NSString stringWithFormat:@"%@HelpDidShow", NSStringFromClass([self class])];
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:userDefaultKey]) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:userDefaultKey];
+        
+        [self helpButtonAction:self];
+    }
 }
 
 @end

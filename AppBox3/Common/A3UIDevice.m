@@ -395,4 +395,10 @@ https://github.com/andrealufino/ALSystemUtilities/blob/develop/ALSystemUtilities
 	return systemCurrencyCode;
 }
 
++ (BOOL)isLanguageLikeCJK {
+    NSString *languageCode = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
+    NSArray *cjkLanguageCodes = @[@"ko", @"ja", @"zh_hans", @"zh_hant", @"zh"];
+    return [cjkLanguageCodes indexOfObject:languageCode] != NSNotFound;
+}
+
 @end

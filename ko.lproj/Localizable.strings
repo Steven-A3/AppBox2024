@@ -90,6 +90,7 @@
 "Remaining Time" = "잔여시간";
 
 "Favorites" = "즐겨찾기";
+"Favorite" = "즐겨찾기";
 
 "Apps" = "Apps";
 "iCloud_goto_settings" = "iCloud 동기화 기능을 사용하시려면 장치의 설정을 열어서 iCloud 도큐멘트 및 데이터를 저장하도록 설정하여 주세요.";
@@ -1102,8 +1103,6 @@
 "HealthKitAlert" = "AppBox Pro®는 Apple 건강앱으로부터 계단오르기, 걸음수, 걷기 + 달리기 거리 정보를 읽습니다. \n\n건강앱으로 부터 읽은 정보는 마케팅 목적이나 광고목적으로 사용하지 않습니다.";
 
 "means" = "means";
-"What's New in V4.5" = "What's New in V4.5";
-"WhatsNew4_5" = "New App: Abbreviation, Kaomoji";
 
 "Top24" = "Top24";
 "Romance" = "로맨스";
@@ -1121,6 +1120,3 @@
 "Mellow" = "감미로운";
 "Laughing" = "웃음";
 "Apologizing" = "사과할때";
-
-"KaomojiHelpString" = "터치하면 목록을 표시하고,
-길게 터치하면 메뉴가 표시됩니다.";

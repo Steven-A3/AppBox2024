@@ -26,7 +26,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Abbreviation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tsC-ao-yu4">
-                                <rect key="frame" x="20" y="88.333333333333314" width="178.66666666666666" height="33.666666666666671"/>
+                                <rect key="frame" x="15" y="88.333333333333314" width="178.66666666666666" height="33.666666666666671"/>
                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="28"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -354,7 +354,7 @@
                                 </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UOk-3a-FoY">
-                                <rect key="frame" x="203.66666666666666" y="86" width="40" height="40"/>
+                                <rect key="frame" x="198.66666666666666" y="86" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="2Za-Mg-YZS"/>
                                     <constraint firstAttribute="width" constant="40" id="fyk-pd-ZUz"/>
@@ -372,7 +372,7 @@
                             <constraint firstItem="UOk-3a-FoY" firstAttribute="centerY" secondItem="tsC-ao-yu4" secondAttribute="centerY" id="FjH-IC-EM5"/>
                             <constraint firstItem="9yt-DC-Cua" firstAttribute="leading" secondItem="Sl2-gZ-utb" secondAttribute="leading" id="P5a-3H-9fr"/>
                             <constraint firstAttribute="trailing" secondItem="14c-fV-Saq" secondAttribute="trailing" id="T26-zF-bYV"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="tsC-ao-yu4" secondAttribute="leading" id="gBC-Rx-PvN"/>
+                            <constraint firstItem="tsC-ao-yu4" firstAttribute="leading" secondItem="Sl2-gZ-utb" secondAttribute="leading" constant="15" id="gBC-Rx-PvN"/>
                             <constraint firstItem="UOk-3a-FoY" firstAttribute="leading" secondItem="tsC-ao-yu4" secondAttribute="trailing" constant="5" id="irv-bA-rIg"/>
                             <constraint firstItem="pT7-HO-dTl" firstAttribute="top" secondItem="9yt-DC-Cua" secondAttribute="bottom" id="kdo-sd-yep"/>
                             <constraint firstAttribute="trailing" secondItem="9yt-DC-Cua" secondAttribute="trailing" id="uT8-pc-jv2"/>
@@ -591,7 +591,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="GxA-7q-dBV">
-                                <rect key="frame" x="82" y="230" width="42" height="42"/>
+                                <rect key="frame" x="82" y="210" width="42" height="42"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finger_up" translatesAutoresizingMaskIntoConstraints="NO" id="gpJ-X9-B9K">
                                 <rect key="frame" x="110" y="626" width="42" height="42"/>
@@ -606,14 +606,14 @@ the action menu</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AbbreviationPopover" translatesAutoresizingMaskIntoConstraints="NO" id="VEm-Bm-9Q9">
-                                <rect key="frame" x="87" y="320" width="240" height="240"/>
+                                <rect key="frame" x="87" y="300" width="240" height="240"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="240" id="5mh-Ct-FE8"/>
                                     <constraint firstAttribute="width" secondItem="VEm-Bm-9Q9" secondAttribute="height" multiplier="1:1" id="Din-If-QdD"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="314" translatesAutoresizingMaskIntoConstraints="NO" id="T8M-0h-cUF">
-                                <rect key="frame" x="132" y="230" width="187" height="60"/>
+                                <rect key="frame" x="132" y="210" width="187" height="60"/>
                                 <string key="text">Tap to view the list
 Or Tap and hold to view 
 the action menu</string>
@@ -624,12 +624,12 @@ the action menu</string>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.71005458047945202" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="GxA-7q-dBV" firstAttribute="top" secondItem="vZb-Ta-5CE" secondAttribute="bottom" constant="210" id="1Pu-oM-ncf"/>
                             <constraint firstItem="gpJ-X9-B9K" firstAttribute="top" secondItem="YRS-d6-X7Z" secondAttribute="top" id="1nf-Lc-JBO"/>
                             <constraint firstItem="gpJ-X9-B9K" firstAttribute="leading" secondItem="KxB-wK-Shj" secondAttribute="leading" constant="110" id="Cmf-zu-Hha"/>
                             <constraint firstItem="T8M-0h-cUF" firstAttribute="top" secondItem="GxA-7q-dBV" secondAttribute="top" id="RhI-F8-VoL"/>
                             <constraint firstItem="YRS-d6-X7Z" firstAttribute="leading" secondItem="gpJ-X9-B9K" secondAttribute="trailing" constant="8" id="VcS-Hl-L9T"/>
                             <constraint firstItem="GxA-7q-dBV" firstAttribute="leading" secondItem="KxB-wK-Shj" secondAttribute="leading" constant="82" id="cJy-Vd-2gU"/>
+                            <constraint firstItem="GxA-7q-dBV" firstAttribute="top" secondItem="KxB-wK-Shj" secondAttribute="top" constant="210" id="gyl-vM-Rer"/>
                             <constraint firstItem="0Ex-vG-dWN" firstAttribute="top" secondItem="YRS-d6-X7Z" secondAttribute="bottom" constant="50" id="oMm-OX-CJG"/>
                             <constraint firstItem="T8M-0h-cUF" firstAttribute="leading" secondItem="GxA-7q-dBV" secondAttribute="trailing" constant="8" id="q0k-t4-GPa"/>
                             <constraint firstItem="VEm-Bm-9Q9" firstAttribute="top" secondItem="T8M-0h-cUF" secondAttribute="bottom" constant="30" id="qlY-Yw-s3U"/>
@@ -644,7 +644,6 @@ the action menu</string>
                         <outlet property="imageWidthConstraint" destination="5mh-Ct-FE8" id="iJ7-2G-9N0"/>
                         <outlet property="popoverImageView" destination="VEm-Bm-9Q9" id="4ZL-Lq-M6O"/>
                         <outlet property="topLeadingConstraint" destination="cJy-Vd-2gU" id="JZ7-Jv-aoV"/>
-                        <outlet property="topSpaceConstraint" destination="1Pu-oM-ncf" id="MkV-8s-Rf2"/>
                         <outletCollection property="imageViews" destination="GxA-7q-dBV" id="h5h-ec-s3B"/>
                         <outletCollection property="imageViews" destination="gpJ-X9-B9K" id="0Yd-rW-GVL"/>
                     </connections>
@@ -696,6 +695,7 @@ the action menu</string>
                             <constraint firstItem="WKJ-ey-HYe" firstAttribute="top" secondItem="LUB-dm-dJ3" secondAttribute="top" id="pvB-dq-ilo"/>
                         </constraints>
                     </view>
+                    <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="fingerUpImageView" destination="LUB-dm-dJ3" id="QKM-qR-cDS"/>
                         <outlet property="imageHPositionConstraint" destination="pC9-D1-nYH" id="XqZ-Mx-CDE"/>

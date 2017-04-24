@@ -12,10 +12,10 @@
 "HeF-RF-nsD.text" = "2新应用";
 
 /* Class = "UILabel"; text = "183 Text Emoticons"; ObjectID = "Uwa-oe-vJB"; */
-"Uwa-oe-vJB.text" = "183文字表情";
+"Uwa-oe-vJB.text" = "183颜文字";
 
 /* Class = "UILabel"; text = "Kaomoji"; ObjectID = "ojM-KF-b4n"; */
-"ojM-KF-b4n.text" = "Kaomoji";
+"ojM-KF-b4n.text" = "颜文字";
 
 /* Class = "UIButton"; normalTitle = "DONE"; ObjectID = "sEY-v9-786"; */
 "sEY-v9-786.normalTitle" = "完成";

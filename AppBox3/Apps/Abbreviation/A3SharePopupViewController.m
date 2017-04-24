@@ -66,6 +66,8 @@ extern NSString *const A3AbbreviationKeyMeaning;
 	[self.view addGestureRecognizer:gestureRecognizer];
 	
 	_titleLabel.text = _titleString;
+    _shareTitleLabel.text = NSLocalizedString(@"Share", nil);
+    _favoriteTitleLabel.text = NSLocalizedString(@"Favorite", nil);
 }
 
 - (void)viewWillAppear:(BOOL)animated {

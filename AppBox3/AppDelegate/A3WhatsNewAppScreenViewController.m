@@ -45,9 +45,20 @@
                                             action:@selector(didTapCloseImage)];
     [_closeImageView addGestureRecognizer:closeImageTapGestureRecognizer];
     
+    NSString *fontName;
+    BOOL isLanguageLikeCJK = [A3UIDevice isLanguageLikeCJK];
+    if (isLanguageLikeCJK) {
+        UIFont *systemFont = [UIFont systemFontOfSize:10];
+        fontName = systemFont.fontName;
+    } else {
+        fontName = @"Chalkduster";
+    }
     if (IS_IPAD) {
-        _textLabel1.font = [UIFont fontWithName:@"Chalkduster" size:26];
-        _textLabel2.font = [UIFont fontWithName:@"Chalkduster" size:26];
+        _textLabel1.font = [UIFont fontWithName:fontName size:26];
+        _textLabel2.font = [UIFont fontWithName:fontName size:26];
+    } else if (isLanguageLikeCJK) {
+        _textLabel1.font = [UIFont fontWithName:fontName size:_textLabel1.font.pointSize];
+        _textLabel2.font = [UIFont fontWithName:fontName size:_textLabel2.font.pointSize];
     }
 }
 

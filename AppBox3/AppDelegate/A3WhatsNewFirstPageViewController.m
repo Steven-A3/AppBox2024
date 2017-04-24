@@ -39,12 +39,21 @@ extern NSString *const A3UserDefaultsDidAlertWhatsNew4_5;
         _doNotShowLabel.hidden = YES;
     }
     
+    NSString *fontName;
+    BOOL isLanguageLikeCJK = [A3UIDevice isLanguageLikeCJK];
+    if (isLanguageLikeCJK) {
+        UIFont *systemFont = [UIFont systemFontOfSize:10];
+        fontName = systemFont.fontName;
+    } else {
+        fontName = @"Chalkduster";
+    }
     if (IS_IPAD) {
-        NSString *fontName = @"Chalkduster";
         _titleLabel.font = [UIFont fontWithName:fontName size:50];
         _abbreviationsAppNameLabel.font = [UIFont fontWithName:fontName size:30];
         _kaomojiAppNameLabel.font = [UIFont fontWithName:fontName size:30];
         _doNotShowLabel.font = [UIFont fontWithName:fontName size:20];
+    } else if (isLanguageLikeCJK) {
+        _titleLabel.font = [UIFont fontWithName:fontName size:_titleLabel.font.pointSize];
     }
     _closeImageView.image = [[UIImage imageNamed:@"delete03"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     _closeImageView.tintColor = [UIColor whiteColor];

@@ -7,7 +7,7 @@
 
 "Abbreviation" = "英文縮寫";
 "Abbreviation_Grid" = "英文縮寫";
-"Kaomoji" = "表情";
+"Kaomoji" = "表情符號";
 
 "Currency" = "貨幣";
 "Date Calculator" = "日期計算";
@@ -342,6 +342,7 @@
 "Currency Converter in the AppBox Pro" = "AppBox Pro中的幣種轉換器";
 "Avg." = "平均。";
 "Favorites" = "個入收藏";
+"Favorite" = "個入收藏";
 "Weeks" = "周";
 "until" = "到";
 "About" = "關於本機";
@@ -950,6 +951,3 @@
 "Mellow" = "醇厚";
 "Laughing" = "笑";
 "Apologizing" = "道歉";
-
-"KaomojiHelpString" = "點擊查看列表或
-點擊並按住查看操作菜單";

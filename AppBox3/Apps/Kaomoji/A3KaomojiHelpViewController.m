@@ -37,9 +37,6 @@
 	for (UIImageView *imageView in _imageViews) {
 		imageView.tintColor = [[A3AppDelegate instance] themeColor];
 	}
-    
-    _helpLabel.text = NSLocalizedString(@"KaomojiHelpString", nil);
-	[_helpLabel sizeToFit];
 }
 
 - (void)viewWillLayoutSubviews {

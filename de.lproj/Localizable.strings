@@ -96,6 +96,7 @@
 "About" = "Über uns";
 "Remaining Time" = "Verbleibende Zeit";
 "Favorites" = "Favoriten";
+"Favorite" = "Favorit";
 
 "Apps" = "Apps";
 /* "Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature."; */
@@ -1108,8 +1109,6 @@ der Migration den Passcode erneut ein.";
 Die von HealthKit gesammelten Daten werden nicht für Marketing- und Werbezwecke verwendet.";
 
 "means" = "means";
-"What's New in V4.5" = "What's New in V4.5";
-"WhatsNew4_5" = "New App: Abbreviation, Kaomoji";
 
 "Top24" = "Top24";
 "Romance" = "Romantik";
@@ -1127,7 +1126,3 @@ Die von HealthKit gesammelten Daten werden nicht für Marketing- und Werbezwecke
 "Mellow" = "Mellow";
 "Laughing" = "Lachen";
 "Apologizing" = "Entschuldigung";
-
-"KaomojiHelpString" = "Tippen Sie auf, um die Liste anzuzeigen.
-Tippen Sie auf und halten Sie sie gedrückt,
-um das Aktionsmenü anzuzeigen";

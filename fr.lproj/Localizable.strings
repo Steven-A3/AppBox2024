@@ -96,6 +96,7 @@
 "Remaining Time" = "Temps restant";
 
 "Favorites" = "Favoris";
+"Favorite" = "Favori";
 "Apps" = "Apps";
 "iCloud_goto_settings" = "Veuillez aller à Réglages de votre dispositif. Activer iCloud et Documents et Stockage de données dans vos réglages pour avoir accès à cette fonctionnalité.";
 
@@ -1118,7 +1119,3 @@ Les données recueillies auprès de HealthKit ne seront pas utilisées à des fi
 "Mellow" = "Moelleux";
 "Laughing" = "En riant";
 "Apologizing" = "S'excuser";
-
-"KaomojiHelpString" = "Appuyez pour afficher la liste
-ou appuyez et maintenez la touche
-pour afficher le menu d'action";

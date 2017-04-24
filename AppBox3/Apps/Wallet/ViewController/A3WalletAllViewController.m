@@ -24,7 +24,6 @@
 
 @interface A3WalletAllViewController () <UISearchBarDelegate, UISearchControllerDelegate, A3InstructionViewControllerDelegate, A3ViewControllerProtocol, UISearchResultsUpdating>
 
-@property (nonatomic, strong) UIBarButtonItem *searchItem;
 @property (nonatomic, strong) NSMutableDictionary *topItem;
 @property (nonatomic, strong) NSMutableDictionary *emptyItem;		// 데이터가 없는 경우, 빈 셀 간격을 유지하기 위한 특별한 아이템
 @property (nonatomic, readwrite) NSUInteger sortingMode;
@@ -266,7 +265,6 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 
 		[_segmentedControlRef setEnabled:enable];
 	}
-	self.navigationItem.rightBarButtonItem.enabled = enable;
     [self setupSearchBar];
 }
 
@@ -310,8 +308,6 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
     [self.tableView setEditing:editing animated:animated];
     
     if (editing) {
-        self.searchItem.enabled = NO;
-        
         if (IS_IPHONE) {
             self.navigationItem.leftBarButtonItem = nil;
         }
@@ -320,19 +316,8 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
         }
     }
     else {
-        self.searchItem.enabled = YES;
-
 		[self leftBarButtonAppsButton];
     }
-}
-
-- (UIBarButtonItem *)searchItem
-{
-    if (!_searchItem) {
-        _searchItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchButtonAction:)];
-	}
-    
-    return _searchItem;
 }
 
 - (UIImageView *)sortArrowImgView
@@ -676,11 +661,9 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 
 - (void)setupSearchBar {
     if (!_dataEmpty) {
-        [self.searchItem setEnabled:YES];
         self.tableView.tableHeaderView = self.searchController.searchBar;
     } else {
         self.tableView.tableHeaderView = nil;
-        [self.searchItem setEnabled:NO];
     }
 }
 

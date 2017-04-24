@@ -7,7 +7,7 @@
 
 "Abbreviation" = "英文缩写";
 "Abbreviation_Grid" = "英文缩写";
-"Kaomoji" = "表情";
+"Kaomoji" = "颜文字";
 
 "Calculator" = "计算器";
 "Date Calculator" = "日期计算";
@@ -98,6 +98,7 @@
 "About" = "关于本机";
 "Remaining Time" = "剩余时间";
 "Favorites" = "个入收藏";
+"Favorite" = "个入收藏";
 
 "Apps" = "Apps";
 
@@ -1109,8 +1110,6 @@
 "HealthKitAlert" = "AppBox Pro®读取爬楼梯，步数，行走在苹果应用程序健康+跑动距离信息。\n\n读取从健康应用的信息不被用于营销目的，或出于广告目的。";
 
 "means" = "means";
-"What's New in V4.5" = "What's New in V4.5";
-"WhatsNew4_5" = "New App: Abbreviation, Kaomoji";
 
 "Top24" = "Top24";
 "Romance" = "浪漫";
@@ -1128,6 +1127,3 @@
 "Mellow" = "醇厚";
 "Laughing" = "笑";
 "Apologizing" = "道歉";
-
-"KaomojiHelpString" = "点击查看列表或点击并
-按住查看操作菜单";

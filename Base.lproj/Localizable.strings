@@ -69,6 +69,7 @@
 "About" = "About";
 "Remaining Time" = "Remaining Time";
 "Favorites" = "Favorites";
+"Favorite" = "Favorite";
 "Apps" = "Apps";
 "iCloud_goto_settings" = "Please enable iCloud, Documents and Data storage in your device Settings to gain access to this feature.";
 "Info" = "Info";
@@ -1040,8 +1041,6 @@ after the migration.";
 "HealthKitAlert" = "AppBox Pro® reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.\nData collected from HealthKit will not be used for marketing and advertising purposes.";
 
 "means" = "means";
-"What's New in V4.5" = "What's New in V4.5";
-"WhatsNew4_5" = "New App: Abbreviation, Kaomoji";
 
 "Top24" = "Top24";
 "Romance" = "Romance";
@@ -1059,5 +1058,3 @@ after the migration.";
 "Mellow" = "Mellow";
 "Laughing" = "Laughing";
 "Apologizing" = "Apologizing";
-
-"KaomojiHelpString" = "Tap to view the list\nOr Tap and hold to view \nthe action menu";

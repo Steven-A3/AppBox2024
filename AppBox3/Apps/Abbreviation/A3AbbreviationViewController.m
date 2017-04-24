@@ -57,7 +57,6 @@
 
 	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Abbreviation", @"Abbreviation") style:UIBarButtonItemStylePlain target:nil action:nil];
 
-	[self.navigationController setNavigationBarHidden:NO];
 	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 	
@@ -93,10 +92,7 @@
 		longPressGestureRecognizer.delegate = self;
 		[self.tableView addGestureRecognizer:longPressGestureRecognizerOnTableView];
 	}
-}
-
-- (BOOL)hidesNavigationBar {
-	return YES;
+    [self showHelpView];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -127,8 +123,6 @@
 		_tableView.contentInset = UIEdgeInsetsMake(-40, 0, 0, 0);
 		_collectionView.bounds = CGRectMake(0, 0, _tableView.bounds.size.width, 308);
 		_collectionViewFlowLayout.itemSize = CGSizeMake(290, 236);
-//		_titleLabel.font = [UIFont systemFontOfSize:42 weight:UIFontWeightHeavy];
-//		_tableView.rowHeight = 62;
 	} else if (IS_IPHONE_3_5_INCH) {
 		_tableView.contentInset = UIEdgeInsetsMake(-20, 0, 0, 0);
 		_collectionView.bounds = CGRectMake(0, 0, _tableView.bounds.size.width, 200);
@@ -196,16 +190,6 @@
 		_collectionView.bounds = CGRectMake(0, 0, _tableView.bounds.size.width, 308);
 		_collectionViewFlowLayout.itemSize = CGSizeMake(310, 236);
 	}
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-
-	double delayInSeconds = 0.2;
-	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		[self showHelpView];
-	});
 }
 
 - (A3AbbreviationDataManager *)dataManager {
@@ -620,8 +604,8 @@
 	}
 	A3AbbreviationHelpViewController *viewController = [A3AbbreviationHelpViewController storyboardInstance];
     if (self.navigationController) {
-        [self.navigationController.view addSubview:viewController.view];
         [self.navigationController addChildViewController:viewController];
+        [self.navigationController.view addSubview:viewController.view];
     } else {
         [self.view addSubview:viewController.view];
     }
@@ -640,6 +624,9 @@
 }
 
 - (void)showHelpView {
+    [self helpButtonAction:self];
+    return;
+    
 	NSString *userDefaultKey = [NSString stringWithFormat:@"%@HelpDidShow", NSStringFromClass([self class])];
 	if (![[NSUserDefaults standardUserDefaults] boolForKey:userDefaultKey]) {
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:userDefaultKey];

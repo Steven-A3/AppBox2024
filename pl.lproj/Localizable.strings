@@ -99,6 +99,7 @@
 "Remaining Time" = "Pozostały czas";
 
 "Favorites" = "Ulubione";
+"Favorite" = "Ulubiony";
 
 "Apps" = "Apps";
 /* "Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature."; */
@@ -1118,7 +1119,3 @@ Dane zebrane z HealthKit nie będą wykorzystywane w celach marketingowych i rek
 "Mellow" = "Łagodny";
 "Laughing" = "Śmiać się";
 "Apologizing" = "Przepraszam";
-
-"KaomojiHelpString" = "Dotknij, aby wyświetlić listę
-Lub Stuknij i przytrzymaj,
-aby wyświetlić menu czynności";
