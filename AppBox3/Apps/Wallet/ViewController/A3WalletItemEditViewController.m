@@ -41,6 +41,8 @@
 #import <CoreLocation/CoreLocation.h>
 #import <ImageIO/ImageIO.h>
 #import <AssetsLibrary/AssetsLibrary.h>
+@import AVFoundation;
+@import Photos;
 
 extern NSString *const A3TableViewCellDefaultCellID;
 NSString *const A3WalletItemTitleCellID = @"A3WalletTitleCell";
@@ -1254,12 +1256,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 }
 
 - (void)imagePickerActionForButtonIndex:(NSInteger)myButtonIndex destructiveButtonIndex:(NSInteger)destructiveButtonIndex actionSheetTag:(NSInteger)actionSheetTag {
-	if (myButtonIndex == ActionTag_Camera && !IS_IOS7 && ![A3UIDevice canAccessCamera]) {
-		[self requestAuthorizationForCamera:NSLocalizedString(A3AppName_Wallet, nil)];
-		return;
-	}
 
-	_imagePickerController = [[UIImagePickerController alloc] init];
 	if (destructiveButtonIndex >= 0)
 		myButtonIndex--;
 	if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
@@ -1267,6 +1264,42 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	}
 
 	switch (myButtonIndex) {
+		case 0:{
+			AVAuthorizationStatus authorizationStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+			if (authorizationStatus != AVAuthorizationStatusAuthorized) {
+				[self requestAuthorizationForCamera:NSLocalizedString(A3AppName_Wallet, nil)
+							 afterAuthorizedHandler:^(BOOL granted) {
+								 if (granted) {
+									 [self presentImagePickerControllerWithOption:myButtonIndex actionSheetTag:actionSheetTag];
+								 }
+							 }];
+			} else {
+				[self presentImagePickerControllerWithOption:myButtonIndex actionSheetTag:actionSheetTag];
+			}
+			break;
+		}
+		case 1:
+		case 2:
+		{
+			PHAuthorizationStatus authorizationStatus = [PHPhotoLibrary authorizationStatus];
+			if (authorizationStatus != PHAuthorizationStatusAuthorized) {
+				[self requestAuthorizationForPhotoLibrary:NSLocalizedString(A3AppName_Wallet, nil)
+								afterAuthorizationHandler:^(BOOL granted) {
+									if (granted) {
+										[self presentImagePickerControllerWithOption:myButtonIndex actionSheetTag:actionSheetTag];
+									}
+								}];
+			} else {
+				[self presentImagePickerControllerWithOption:myButtonIndex actionSheetTag:actionSheetTag];
+			}
+			break;
+		}
+	}
+}
+
+- (void)presentImagePickerControllerWithOption:(NSInteger)option actionSheetTag:(NSInteger)actionSheetTag {
+	_imagePickerController = [[UIImagePickerController alloc] init];
+	switch (option) {
 		case ActionTag_Camera:
 			_imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
 			_imagePickerController.allowsEditing = NO;
@@ -1302,52 +1335,24 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 		if (_imagePickerController.sourceType == UIImagePickerControllerSourceTypeCamera) {
 			_imagePickerController.showsCameraControls = YES;
 
-			if (IS_IOS7) {
-				[self presentViewController:_imagePickerController animated:YES completion:NULL];
-			}
-			else {
-				[self presentViewController:_imagePickerController animated:NO completion:NULL];
-			}
+			[self presentViewController:_imagePickerController animated:NO completion:NULL];
 		}
 		else {
-#ifdef __IPHONE_8_0_X
-			if (!IS_IOS7) {
-				_imagePickerController.modalPresentationStyle = UIModalPresentationPopover;
+			_imagePickerController.modalPresentationStyle = UIModalPresentationPopover;
 
-				UIPopoverPresentationController *presentationController = [_imagePickerController popoverPresentationController];
-				presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
-				presentationController.sourceView = [self imageViewInCellForIndexPath:_currentIndexPath];
-				//CGRect rect = [self frameOfImageViewInCellForIndexPath:_currentIndexPath];
+			UIPopoverPresentationController *presentationController = [_imagePickerController popoverPresentationController];
+			presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+			presentationController.sourceView = [self imageViewInCellForIndexPath:_currentIndexPath];
+			//CGRect rect = [self frameOfImageViewInCellForIndexPath:_currentIndexPath];
 
-				// 이전 화면을 덮었던 ActionSheet 가 사라진 후에도 영향을 주어서, 현재의 스택을 벗어나서 실행하도록 하였습니다.
-				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-					[self presentViewController:_imagePickerController animated:YES completion:NULL];
-				});
-			}
-			else
-#endif
-			{
-
-				self.popOverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
-				self.popOverController.delegate = self;
-
-				UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_currentIndexPath];
-				if ([cell isKindOfClass:[A3WalletItemRightIconCell class]]) {
-					[_popOverController presentPopoverFromRect:[((A3WalletItemRightIconCell *) cell).iconImgView bounds] inView:[(A3WalletItemRightIconCell *) cell iconImgView] permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-				}
-				else if ([cell isKindOfClass:[A3WalletItemPhotoFieldCell class]]) {
-					[_popOverController presentPopoverFromRect:[((A3WalletItemPhotoFieldCell *) cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *) cell photoButton] permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-				}
-			}
+			// 이전 화면을 덮었던 ActionSheet 가 사라진 후에도 영향을 주어서, 현재의 스택을 벗어나서 실행하도록 하였습니다.
+			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+				[self presentViewController:_imagePickerController animated:YES completion:NULL];
+			});
 		}
 	}
 	else {
-		if (IS_IOS7) {
-			[self presentViewController:_imagePickerController animated:YES completion:NULL];
-		}
-		else {
-			[self presentViewController:_imagePickerController animated:NO completion:NULL];
-		}
+		[self presentViewController:_imagePickerController animated:NO completion:NULL];
 	}
 }
 

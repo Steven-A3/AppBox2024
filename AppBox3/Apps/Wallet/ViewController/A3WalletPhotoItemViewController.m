@@ -881,6 +881,13 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 		return MAX(cellHeight, 74.0);
 	}
 	else if ([self.normalFieldItems objectAtIndex:indexPath.row] == self.mapItem) {
+        if (IS_IPHONE_5_5_INCH) {
+            return 250.0;
+        } else if (IS_IPHONE_4_7_INCH) {
+            return 200.0;
+        } else if (IS_IPAD) {
+            return 300.0;
+        }
 		return 140.0;
 	}
 	else {

@@ -975,7 +975,6 @@ der Migration den Passcode erneut ein.";
 "Please enable alert after enabling notifications for this app." = "Bitte aktivieren Benachrichtigung nach der Aktivierung von Benachrichtigungen für diese App.";
 "Unlock AppBox Pro" = "AppBox Pro entsperren";
 "Unlock %@" = "%@ entsperren";
-"Camera access denied" = "Kamera der Zugriff verweigert";
 "To turn on the LED requires camera access." = "Um die LED einschalten erfordert Zugriff auf die Kamera.";
 "%@ requires camera access." = "%@ erfordert Zugriff auf die Kamera.";
 
@@ -1129,3 +1128,7 @@ Die von HealthKit gesammelten Daten werden nicht für Marketing- und Werbezwecke
 "Laughing" = "Lachen";
 "Apologizing" = "Entschuldigung";
 
+
+"Camera access not authorized." = "Kamerazugriff nicht autorisiert.";
+"%@ requires Photo Library access." = "%@ Erfordert den Zugriff auf die Fotofreigabe.";
+"Photo Library access not authorized." = "Fotofreigabe nicht autorisiert.";

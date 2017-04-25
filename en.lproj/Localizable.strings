@@ -903,7 +903,6 @@ after the migration.";
 "Cannot Save Period." = "Cannot Save Period.";
 "Unlock AppBox Pro" = "Unlock AppBox Pro";
 "Unlock %@" = "Unlock %@";
-"Camera access denied" = "Camera access disabled";
 "To turn on the LED requires camera access." = "LED requires camera access.";
 "%@ requires camera access." = "%@ requires camera access.";
 
@@ -1062,3 +1061,7 @@ after the migration.";
 "Mellow" = "Mellow";
 "Laughing" = "Laughing";
 "Apologizing" = "Apologizing";
+
+"Camera access not authorized." = "Camera access not authorized.";
+"%@ requires Photo Library access." = "%@ requires Photo Library access.";
+"Photo Library access not authorized." = "Photo Library access not authorized.";

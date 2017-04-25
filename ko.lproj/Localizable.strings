@@ -973,7 +973,6 @@
 "Please enable alert after enabling notifications for this app." = "이 앱의 알림 설정을 켜신 후에 알림 설정을 진행해주세요.";
 "Unlock AppBox Pro" = "AppBox Pro 잠금 해제";
 "Unlock %@" = "%@ 잠금 해제";
-"Camera access denied" = "카메라를 사용할 수 없습니다";
 "To turn on the LED requires camera access." = "LED를 켜려면 카메라 접근 권한이 필요합니다.";
 "%@ requires camera access." = "%@: 카메라 접근 권한이 필요합니다.";
 
@@ -1122,3 +1121,7 @@
 "Mellow" = "감미로운";
 "Laughing" = "웃음";
 "Apologizing" = "사과할때";
+
+"Camera access not authorized." = "카메라 접근 권한이 없습니다.";
+"%@ requires Photo Library access." = "%@: 사진 보관함 접근 권한이 필요합니다.";
+"Photo Library access not authorized." = "사진 보관함 접근 권한이 없습니다.";

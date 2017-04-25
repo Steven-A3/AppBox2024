@@ -8,6 +8,9 @@
 
 NSLocationWhenInUseUsageDescription = "Votre information de localisation est utilisée pour afficher la météo et les jours fériés. Il est utilisé pour indiquer votre position à contre-jour.";
 NSMotionUsageDescription = "AppBox Pro® utilise la technologie de suivi des mouvements intégrée à votre iPhone et compte vos pas lors de vos déplacements sans incidence sur l'autonomie de la batterie.";
+NSCameraUsageDescription = "AppBox Pro® aimerait accéder à votre appareil photo pour prendre des photos pour QR Code, Miroir, Loupe et Wallet.";
+NSPhotoLibraryUsageDescription = "AppBox Pro® aimerait accéder à votre bibliothèque de photos pour enregistrer des images de miroir, Loupe et Wallet.";
+NSContactsUsageDescription = "AppBox Pro® aimerait accéder aux contacts pour enregistrer un contact avec le lecteur de code QR.";
 NSHealthShareUsageDescription = "AppBox Pro® lit les sols montés, les marches et la marche + la distance de parcours des données HealthKit d'Apple.
 
 Les données recueillies auprès de HealthKit ne seront pas utilisées à des fins de marketing et de publicité.";

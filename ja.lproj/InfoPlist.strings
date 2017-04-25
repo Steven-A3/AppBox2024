@@ -8,4 +8,10 @@
 
 NSLocationWhenInUseUsageDescription = "あなたの位置情報は、天候や祝日を表示するために使用されます。イベントカレンダーの位置情報入力のためにも使用します。";
 NSMotionUsageDescription="AppBox Pro®は、iPhoneに内蔵されているモーショントラッキング装置から歩数情報を取得します。情報のアクセスを許可しても、これによる追加のバッテリー消耗はありません。";
-NSHealthShareUsageDescription="AppBox Pro®は、Appleの健康アプリから階段を登る、歩数、歩行+ランニング距離情報を読み取ります。\n\n健康アプリから読んだ情報は、マーケティング目的や広告目的のために使用していません。";
+NSCameraUsageDescription = "QRコード、鏡、拡大鏡などでカメラを使用します。そして、電子財布に保存写真を撮影するためにカメラのアクセス権が必要です。";
+NSPhotoLibraryUsageDescription = "電子財布に写真を追加したり、鏡、拡大鏡などで写真を保存するために、フォトライブラリのアクセス権が必要です。";
+NSContactsUsageDescription = "QRコードから連絡先情報を格納するためにコンタクトアクセス権が必要です。";
+NSHealthShareUsageDescription =
+"AppBox Pro®は、Appleの健康アプリから階段を登る、歩数、歩行+ランニング距離情報を読み取ります。
+
+健康アプリから読んだ情報は、マーケティング目的や広告目的のために使用していません。";

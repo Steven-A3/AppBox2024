@@ -427,7 +427,7 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 	if (IS_IPAD) {
 		[self removeMenu:A3AppName_Level inMenus:utilityApps];
 	}
-	if (IS_IOS7 || ![CMPedometer isStepCountingAvailable]) {
+	if (![CMPedometer isStepCountingAvailable]) {
 		[self removeMenu:A3AppName_Pedometer inMenus:utilityApps];
 	}
 	NSDictionary *utilityGroup =

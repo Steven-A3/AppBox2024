@@ -746,28 +746,61 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
 	return [super resignFirstResponder];
 }
 
-- (void)requestAuthorizationForCamera:(NSString *)appName {
-	if (IS_IOS7) return;
+- (void)requestAuthorizationForCamera:(NSString *)appName afterAuthorizedHandler:(void (^)(BOOL granted))afterAuthorizedHandler {
 	AVAuthorizationStatus authorizationStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
 	if (authorizationStatus == AVAuthorizationStatusAuthorized) return;
 	if (authorizationStatus == AVAuthorizationStatusNotDetermined) {
-		[AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:nil];
+		[AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:afterAuthorizedHandler];
 		return;
 	}
-	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Camera access denied", nil)
-																			 message:[NSString stringWithFormat:NSLocalizedString(@"%@ requires camera access.", nil), appName]
-																	  preferredStyle:UIAlertControllerStyleAlert];
+	UIAlertController *alertController =
+			[UIAlertController alertControllerWithTitle:NSLocalizedString(@"Camera access not authorized.", nil)
+												message:[NSString stringWithFormat:NSLocalizedString(@"%@ requires camera access.", nil), appName]
+										 preferredStyle:UIAlertControllerStyleAlert];
 	[alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK")
 														style:UIAlertActionStyleCancel
 													  handler:NULL]];
 	[alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(A3AppName_Settings, nil)
 														style:UIAlertActionStyleDefault
 													  handler:^(UIAlertAction *action) {
-														  [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+														  [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]
+                                                                                             options:@{UIApplicationOpenURLOptionUniversalLinksOnly:@NO}
+                                                                                   completionHandler:NULL];
 													  }]];
 	[self presentViewController:alertController
 					   animated:YES
 					 completion:NULL];
+}
+
+- (void)requestAuthorizationForPhotoLibrary:(NSString *)appName afterAuthorizationHandler:(void (^)(BOOL granted))afterAuthorizationHandler {
+    PHAuthorizationStatus authorizationStatus = [PHPhotoLibrary authorizationStatus];
+    if (authorizationStatus == PHAuthorizationStatusAuthorized) return;
+
+    if (authorizationStatus == PHAuthorizationStatusNotDetermined) {
+        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+            if (afterAuthorizationHandler) {
+                afterAuthorizationHandler(status == PHAuthorizationStatusAuthorized);
+            }
+        }];
+    } else {
+        UIAlertController *alertController =
+				[UIAlertController alertControllerWithTitle:NSLocalizedString(@"Photo Library access not authorized.", nil)
+													message:[NSString stringWithFormat:NSLocalizedString(@"%@ requires Photo Library access.", nil), appName]
+											 preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK")
+                                                            style:UIAlertActionStyleCancel
+                                                          handler:NULL]];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(A3AppName_Settings, nil)
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *action) {
+                                                              [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]
+                                                                                                 options:@{UIApplicationOpenURLOptionUniversalLinksOnly:@NO}
+                                                                                       completionHandler:NULL];
+                                                          }]];
+        [self presentViewController:alertController
+                           animated:YES
+                         completion:NULL];
+    }
 }
 
 - (void)presentWebViewControllerWithURL:(NSURL *)url {

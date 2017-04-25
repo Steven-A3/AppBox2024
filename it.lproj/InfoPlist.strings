@@ -8,6 +8,9 @@
 
 NSLocationWhenInUseUsageDescription = "Le informazioni di posizione viene utilizzato per mostrare tempo e feste. E 'utilizzato per inserire la vostra posizione in giorni contatore.";
 NSMotionUsageDescription = "AppBox Pro® utilizza la funzione di monitoraggio del movimento incorporata nel tuo iPhone per contare i passi ogni volta che ti muovi senza alcun impatto sulla durata della batteria.";
+NSCameraUsageDescription = "AppBox Pro® vorrebbe accedere alla macchina fotografica per scattare foto di Codice a barre, Specchio, Magnifier, e Wallet.";
+NSPhotoLibraryUsageDescription = "AppBox Pro® vorrebbe accedere alla libreria di foto per salvare le immagini dal mirror, Magnifier, e Wallet.";
+NSContactsUsageDescription = "AppBox Pro® vorrebbe accedere ai contatti per salvare un contatto con lettore di QR Code.";
 NSHealthShareUsageDescription = "AppBox Pro® legge pavimenti ascesi, Passi, e Walking + Esecuzione Distanza dai dati HealthKit Apple.
 
 I dati raccolti da HealthKit non saranno utilizzati per scopi di marketing e pubblicità.";

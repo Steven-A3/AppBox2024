@@ -27,6 +27,7 @@
 #import "NSManagedObjectContext+MagicalRecord.h"
 #import "A3QRCodeTextViewController.h"
 #import "UIImage+imageWithColor.h"
+@import Photos;
 
 NSString *const A3QRCodeSettingsPlayAlertSound = @"A3QRCodeSettingsPlayAlertSound";
 NSString *const A3QRCodeSettingsPlayVibrate = @"A3QRCodeSettingsPlayVibrate";
@@ -215,6 +216,19 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+
+	PHAuthorizationStatus authorizationStatus = [PHPhotoLibrary authorizationStatus];
+	if (authorizationStatus != PHAuthorizationStatusAuthorized) {
+		[self requestAuthorizationForPhotoLibrary:NSLocalizedString(A3AppName_QRCode, nil)
+						afterAuthorizationHandler:^(BOOL granted) {
+							if (granted) {
+								[self presentImagePickerController];
+							}
+						}];
+	}
+}
+
+- (void)presentImagePickerController {
 	UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
 	imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
 	imagePickerController.delegate = self;

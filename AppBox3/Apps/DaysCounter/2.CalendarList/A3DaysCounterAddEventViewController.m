@@ -39,6 +39,8 @@
 #import "A3StandardLeft15Cell.h"
 #import "A3UserDefaults.h"
 #import "A3StandardTableViewCell.h"
+@import AVFoundation;
+@import Photos;
 
 #define ActionTag_Location      100
 #define ActionTag_Photo         101
@@ -2446,76 +2448,41 @@
 		NSInteger myButtonIndex = buttonIndex;
 		if (actionSheet.destructiveButtonIndex>=0)
 			myButtonIndex--;
-		if (myButtonIndex == 0 && !IS_IOS7 && ![A3UIDevice canAccessCamera]) {
-			[self requestAuthorizationForCamera:NSLocalizedString(A3AppName_DaysCounter, nil)];
-			return;
-		}
-		_imagePickerController = [[UIImagePickerController alloc] init];
-		switch (myButtonIndex) {
-			case 0:
-				_imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-				_imagePickerController.allowsEditing = NO;
-				break;
-			case 1:
-				_imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-				_imagePickerController.allowsEditing = NO;
-				break;
-			case 2:
-				_imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-				_imagePickerController.allowsEditing = YES;
-				break;
-		}
 
-		_imagePickerController.mediaTypes = @[(NSString *) kUTTypeImage];
-		_imagePickerController.navigationBar.barStyle = UIBarStyleDefault;
-		_imagePickerController.delegate = self;
+        switch (myButtonIndex) {
+            case 0: {
+                // Prepare for camera access authorization status
+                AVAuthorizationStatus authorizationStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+                if (authorizationStatus != AVAuthorizationStatusAuthorized) {
+                    [self requestAuthorizationForCamera:NSLocalizedString(A3AppName_DaysCounter, nil)
+                            afterAuthorizedHandler:^(BOOL granted) {
+                                if (granted) {
+                                    [self presentImagePickerControllerWithOption:myButtonIndex];
+                                }
+                    }];
+                } else {
+                    [self presentImagePickerControllerWithOption:myButtonIndex];
+                }
+                break;
+            }
+            case 1:
+            case 2: {
+                // Prepare for Photo Library access authorization status
+                PHAuthorizationStatus authorizationStatus = [PHPhotoLibrary authorizationStatus];
+                if (authorizationStatus == PHAuthorizationStatusAuthorized) {
+                    [self presentImagePickerControllerWithOption:myButtonIndex];
+                } else {
+                    [self requestAuthorizationForPhotoLibrary:NSLocalizedString(A3AppName_DaysCounter, nil)
+                                    afterAuthorizationHandler:^(BOOL granted) {
+                                        if (granted) {
+                                            [self presentImagePickerControllerWithOption:myButtonIndex];
+                                        }
+                                    }];
+                }
+                break;
+            }
+        }
 
-		if (IS_IPAD) {
-			if (_imagePickerController.sourceType == UIImagePickerControllerSourceTypeCamera) {
-				_imagePickerController.showsCameraControls = YES;
-                
-                if (IS_IOS7) {
-                    [self presentViewController:_imagePickerController animated:YES completion:NULL];
-                }
-                else {
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        [self presentViewController:_imagePickerController animated:NO completion:NULL];
-                    });
-                }
-			}
-			else {
-                UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-                UIButton *button = (UIButton*)[cell viewWithTag:11];
-                
-#ifdef __IPHONE_8_0
-                if (!IS_IOS7) {
-                    _imagePickerController.modalPresentationStyle = UIModalPresentationPopover;
-                    
-                    UIPopoverPresentationController *presentationController = [_imagePickerController popoverPresentationController];
-                    presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
-                    presentationController.sourceView = button;
-                    
-                    // 이전 화면을 덮었던 ActionSheet 가 사라진 후에도 영향을 주어서, 현재의 스택을 벗어나서 실행하도록 하였습니다.
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        [self presentViewController:_imagePickerController animated:YES completion:NULL];
-                    });
-                }
-                else
-#endif
-                {
-                    self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
-                    [_imagePickerPopoverController presentPopoverFromRect:[button bounds] inView:button permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-                }
-			}
-		}
-		else {
-            if (IS_IOS7) {
-                [self presentViewController:_imagePickerController animated:YES completion:NULL];
-            }
-            else {
-                [self presentViewController:_imagePickerController animated:NO completion:NULL];
-            }
-		}
     }
     else if ( actionSheet.tag == ActionTag_Location ) {
         if ( buttonIndex == actionSheet.destructiveButtonIndex ) {
@@ -2532,6 +2499,55 @@
         if ( buttonIndex == actionSheet.destructiveButtonIndex ) {
             [self deleteEventActionByActionSheet];
         }
+    }
+}
+
+- (void)presentImagePickerControllerWithOption:(NSInteger)option {
+    _imagePickerController = [[UIImagePickerController alloc] init];
+    switch (option) {
+        case 0:
+            _imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+            _imagePickerController.allowsEditing = NO;
+            break;
+        case 1:
+            _imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            _imagePickerController.allowsEditing = NO;
+            break;
+        case 2:
+            _imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            _imagePickerController.allowsEditing = YES;
+            break;
+    }
+
+    _imagePickerController.mediaTypes = @[(NSString *) kUTTypeImage];
+    _imagePickerController.navigationBar.barStyle = UIBarStyleDefault;
+    _imagePickerController.delegate = self;
+
+    if (IS_IPAD) {
+        if (_imagePickerController.sourceType == UIImagePickerControllerSourceTypeCamera) {
+            _imagePickerController.showsCameraControls = YES;
+
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self presentViewController:_imagePickerController animated:NO completion:NULL];
+            });
+        }
+        else {
+            UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+            UIButton *button = (UIButton*)[cell viewWithTag:11];
+
+            _imagePickerController.modalPresentationStyle = UIModalPresentationPopover;
+
+            UIPopoverPresentationController *presentationController = [_imagePickerController popoverPresentationController];
+            presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+            presentationController.sourceView = button;
+
+            // 이전 화면을 덮었던 ActionSheet 가 사라진 후에도 영향을 주어서, 현재의 스택을 벗어나서 실행하도록 하였습니다.
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self presentViewController:_imagePickerController animated:YES completion:NULL];
+            });
+        }
+    } else {
+        [self presentViewController:_imagePickerController animated:NO completion:NULL];
     }
 }
 

@@ -8,4 +8,10 @@
 
 NSLocationWhenInUseUsageDescription = "Your location is used to show weather and holidays. It is used to help you enter your location into the Days Counter.";
 NSMotionUsageDescription = "AppBox Pro® uses your iPhone's built-in motion tracking ability to collect step counts as you move without an impact on battery life.";
-NSHealthShareUsageDescription = "AppBox Pro® reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.\nData collected from HealthKit will not be used for marketing and advertising purposes.";
+NSCameraUsageDescription = "AppBox Pro would like to access your camera to take pictures for QR Code, Mirror, and Magnifier.";
+NSPhotoLibraryUsageDescription = "AppBox Pro would like to access your Photo Library to save pictures from Mirror and Magnifier.";
+NSContactsUsageDescription = "AppBox Pro would like to access contacts to save contact with QR Code reader.";
+NSHealthShareUsageDescription =
+"AppBox Pro® reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.
+
+Data collected from HealthKit will not be used for marketing and advertising purposes.";

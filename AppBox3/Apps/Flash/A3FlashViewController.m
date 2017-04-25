@@ -286,7 +286,7 @@ NSString *const cellID = @"flashEffectID";
 		[AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:nil];
 		return;
 	}
-	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Camera access denied", nil)
+	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Camera access not authorized.", nil)
 																			 message:NSLocalizedString(@"To turn on the LED requires camera access.", nil)
 																	  preferredStyle:UIAlertControllerStyleAlert];
 	[alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK")

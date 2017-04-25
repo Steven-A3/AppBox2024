@@ -972,7 +972,6 @@
 "Unlock AppBox Pro" = "AppBox Proのロックを解除";
 "Unlock %@" = "%@のロックを解除";
 
-"Camera access denied" = "カメラのアクセスが拒否されました";
 "To turn on the LED requires camera access." = "LEDを点灯するカメラのアクセス権限が必要です。";
 "%@ requires camera access." = "%@、カメラへのアクセスを必要とします。";
 
@@ -1121,3 +1120,7 @@
 "Mellow" = "メロウ";
 "Laughing" = "笑い";
 "Apologizing" = "謝罪する";
+
+"Camera access not authorized." = "カメラアクセスは許可されていません。";
+"%@ requires Photo Library access." = "%@:フォトライブラリにアクセスする必要があります。";
+"Photo Library access not authorized." = "フォトライブラリへのアクセスが許可されていません。";

@@ -272,7 +272,7 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 		if (_isMultipleView) {
 			[self showOneFilterView:_filterIndex];
 		}
-		[self requestAuthorizationForCamera:NSLocalizedString(A3AppName_Mirror, nil)];
+		[self requestAuthorizationForCamera:NSLocalizedString(A3AppName_Mirror, nil) afterAuthorizedHandler:NULL];
 
 		_captureSession = nil;
 		_videoDevice = nil;
@@ -308,7 +308,7 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 			[_captureSession startRunning];
 		});
 	} else {
-		[self requestAuthorizationForCamera:NSLocalizedString(A3AppName_Mirror, nil)];
+		[self requestAuthorizationForCamera:NSLocalizedString(A3AppName_Mirror, nil) afterAuthorizedHandler:NULL];
 	}
 
 	[self setupButtonEnabled];

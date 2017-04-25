@@ -978,7 +978,6 @@
 "Please enable alert after enabling notifications for this app." = "请启用通知这个应用程序后，启用警报。";
 "Unlock AppBox Pro" = "解锁AppBox Pro";
 "Unlock %@" = "解锁%@";
-"Camera access denied" = "相机不能使用";
 "To turn on the LED requires camera access." = "要打开LED，需要摄像头的访问。";
 "%@ requires camera access." = "%@，需要摄像头的访问。";
 
@@ -1130,3 +1129,7 @@
 "Laughing" = "笑";
 "Apologizing" = "道歉";
 
+
+"Camera access not authorized." = "相机访问未经授权。";
+"%@ requires Photo Library access." = "%@需要照片库访问。";
+"Photo Library access not authorized." = "照片库访问未经授权。";

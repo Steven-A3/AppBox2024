@@ -1,3 +1,8 @@
-﻿NSLocationWhenInUseUsageDescription = "您的位置資訊，用於顯示天氣和假期。它是用來在天計數器輸入你的位置。";
+NSLocationWhenInUseUsageDescription = "您的位置資訊，用於顯示天氣和假期。它是用來在天計數器輸入你的位置。";
 NSMotionUsageDescription = "AppBox Pro®臨獲得步數從內置到iPhone，甚至允許訪問的信息沒有額外的電池消耗導致的運動跟踪設備信息。";
-NSHealthShareUsageDescription = "AppBox Pro®臨讀取爬樓梯，步數，行走在蘋果應用程序健康+跑動距離信息。\n\n讀取從健康應用的信息不被用於營銷目的，或出於廣告目的。";
+NSCameraUsageDescription = "使用相機等QR代碼，反射鏡，放大鏡。而這款相機的訪問，你需要採取存儲在錢包裡的照片。";
+NSPhotoLibraryUsageDescription = "這張照片庫的訪問，您需要將您的照片存儲在電子錢包添加，鏡子，照片放大到。";
+NSContactsUsageDescription = "接觸權限是必需的，以便保存在QR碼的聯繫信息。";
+NSHealthShareUsageDescription = "AppBox Pro®臨讀取爬樓梯，步數，行走在蘋果應用程序健康+跑動距離信息。
+
+讀取從健康應用的信息不被用於營銷目的，或出於廣告目的。";

@@ -20,6 +20,8 @@
 #import "UITableView+utility.h"
 #import "A3UserDefaults.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+@import AVFoundation;
+@import Photos;
 
 static const NSInteger A3HolidaysResetActionSheet = 100;
 static const NSInteger A3HolidaysPhotoActionSheet = 200;
@@ -378,68 +380,96 @@ static NSString *CellIdentifier = @"Cell";
 			if (actionSheet.destructiveButtonIndex >= 0)
 				myButtonIndex--;
 
+            switch (myButtonIndex) {
+                case 0: {
+                    AVAuthorizationStatus authorizationStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+                    if (authorizationStatus != AVAuthorizationStatusAuthorized) {
+                        [self requestAuthorizationForPhotoLibrary:NSLocalizedString(A3AppName_Holidays, nil)
+                                        afterAuthorizationHandler:^(BOOL granted) {
+                                            if (granted) {
+                                                [self presentImagePickerControllerWithOption:myButtonIndex];
+                                            }
+                                        }];
+                    } else {
+                        [self presentImagePickerControllerWithOption:myButtonIndex];
+                    }
+                    break;
+                }
+                case 1:
+                case 2:{
+                    PHAuthorizationStatus authorizationStatus = [PHPhotoLibrary authorizationStatus];
+                    if (authorizationStatus != PHAuthorizationStatusAuthorized) {
+                        [self requestAuthorizationForPhotoLibrary:NSLocalizedString(A3AppName_Holidays, nil)
+                                        afterAuthorizationHandler:^(BOOL granted) {
+                                            [self presentImagePickerControllerWithOption:myButtonIndex];
+                                        }];
+                    } else {
+                        [self presentImagePickerControllerWithOption:myButtonIndex];
+                    }
+                    break;
+                }
+            }
+
 			if (myButtonIndex == 0 && !IS_IOS7 && ![A3UIDevice canAccessCamera]) {
 				dispatch_async(dispatch_get_main_queue(), ^{
-					[self requestAuthorizationForCamera:NSLocalizedString(A3AppName_Holidays, nil)];
+					[self requestAuthorizationForCamera:NSLocalizedString(A3AppName_Holidays, nil) afterAuthorizedHandler:NULL];
 				});
 
 				return;
 			}
-			_imagePickerController = [[UIImagePickerController alloc] init];
-			switch (myButtonIndex) {
-				case 0:
-					_imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-					_imagePickerController.allowsEditing = NO;
-					break;
-				case 1:
-					_imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-					_imagePickerController.allowsEditing = NO;
-					break;
-				case 2:
-					_imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-					_imagePickerController.allowsEditing = YES;
-					break;
-			}
-
-			_imagePickerController.mediaTypes = @[(NSString *) kUTTypeImage];
-			_imagePickerController.navigationBar.barStyle = UIBarStyleDefault;
-			_imagePickerController.delegate = self;
-
-			if (IS_IPAD) {
-				if (_imagePickerController.sourceType == UIImagePickerControllerSourceTypeCamera) {
-					_imagePickerController.showsCameraControls = YES;
-
-					double delayInSeconds = 0.0;
-					dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-					dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-						[self presentViewController:_imagePickerController animated:YES completion:NULL];
-					});
-				}
-				else {
-					double delayInSeconds = 0.0;
-					dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-					dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-						self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
-						self.imagePickerPopoverController.delegate = self;
-						UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_currentIndexPath];
-						if (!cell) {
-							return;
-						}
-						[_imagePickerPopoverController presentPopoverFromRect:[cell.accessoryView bounds] inView:[cell accessoryView] permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-					});
-				}
-			}
-			else {
-                if (IS_IOS7) {
-                    [self presentViewController:_imagePickerController animated:YES completion:NULL];
-                }
-                else {
-                    [self presentViewController:_imagePickerController animated:NO completion:NULL];
-                }
-			}
 			break;
 		}
 	}
+}
+
+- (void)presentImagePickerControllerWithOption:(NSInteger)option {
+    _imagePickerController = [[UIImagePickerController alloc] init];
+    switch (option) {
+        case 0:
+            _imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+            _imagePickerController.allowsEditing = NO;
+            break;
+        case 1:
+            _imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            _imagePickerController.allowsEditing = NO;
+            break;
+        case 2:
+            _imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            _imagePickerController.allowsEditing = YES;
+            break;
+    }
+
+    _imagePickerController.mediaTypes = @[(NSString *) kUTTypeImage];
+    _imagePickerController.navigationBar.barStyle = UIBarStyleDefault;
+    _imagePickerController.delegate = self;
+
+    if (IS_IPAD) {
+        if (_imagePickerController.sourceType == UIImagePickerControllerSourceTypeCamera) {
+            _imagePickerController.showsCameraControls = YES;
+
+            double delayInSeconds = 0.0;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [self presentViewController:_imagePickerController animated:YES completion:NULL];
+            });
+        }
+        else {
+            double delayInSeconds = 0.0;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
+                self.imagePickerPopoverController.delegate = self;
+                UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_currentIndexPath];
+                if (!cell) {
+                    return;
+                }
+                [_imagePickerPopoverController presentPopoverFromRect:[cell.accessoryView bounds] inView:[cell accessoryView] permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            });
+        }
+    }
+    else {
+        [self presentViewController:_imagePickerController animated:NO completion:NULL];
+    }
 }
 
 - (void)resetForItemShowHide {

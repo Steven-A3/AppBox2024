@@ -965,7 +965,6 @@ ustawieniach po migracji.";
 "Please enable alert after enabling notifications for this app." = "Proszę włączyć alarm po włączeniu powiadomień dla tej aplikacji.";
 "Unlock AppBox Pro" = "Odblokować AppBox Pro";
 "Unlock %@" = "Odblokować %@";
-"Camera access denied" = "Odmowa dostępu aparatu";
 "To turn on the LED requires camera access." = "Aby włączyć LED wymaga dostępu do kamery.";
 "%@ requires camera access." = "%@ wymaga dostępu do kamery.";
 
@@ -1118,3 +1117,7 @@ Dane zebrane z HealthKit nie będą wykorzystywane w celach marketingowych i rek
 "Mellow" = "Łagodny";
 "Laughing" = "Śmiać się";
 "Apologizing" = "Przepraszam";
+
+"Camera access not authorized." = "Dostęp do aparatu nie jest dozwolony.";
+"%@ requires Photo Library access." = "%@: Wymaga dostępu do Biblioteka zdjęć.";
+"Photo Library access not authorized." = "Dostęp do Biblioteka zdjęć nie jest dozwolony.";
