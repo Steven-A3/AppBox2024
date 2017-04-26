@@ -1141,3 +1141,6 @@
 (3D Touch)";
 
 "rate" = "比率";
+
+"Removed from Favorites" = "从收藏夹中删除";
+"Added to Favorites" = "添加到收藏夹";

@@ -180,7 +180,7 @@ extern NSString *const A3AbbreviationKeyMeaning;
 	if ([_dataSource respondsToSelector:@selector(stringForShare:)]) {
 		return [_dataSource stringForShare:_titleString];
 	}
-	return @"";
+	return _titleString;
 }
 
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
@@ -205,10 +205,10 @@ extern NSString *const A3AbbreviationKeyMeaning;
 	};
 
 	if ([self contentIsFavorite]) {
-		_hudView.label.text = @"Removed from Favorites";
+		_hudView.label.text = NSLocalizedString(@"Removed from Favorites", @"Removed from Favorites");
 		[self removeFromFavorites];
 	} else {
-		_hudView.label.text = @"Added to Favorites";
+		_hudView.label.text = NSLocalizedString(@"Added to Favorites", @"Added to Favorites");
 		[self addToFavorites];
 	}
 

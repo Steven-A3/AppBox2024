@@ -963,3 +963,6 @@
 (3D Touch)";
 
 "rate" = "比率";
+
+"Removed from Favorites" = "從收藏夾中刪除";
+"Added to Favorites" = "添加到收藏夾";
