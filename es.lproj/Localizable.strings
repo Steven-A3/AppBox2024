@@ -1092,7 +1092,7 @@ configuración después de la migración.";
 
 Los datos recopilados de HealthKit no serán utilizados con fines de marketing y publicidad.";
 
-"means" = "means";
+"means" = ":";
 
 "Top24" = "Top24";
 "Romance" = "Romance";
@@ -1128,3 +1128,6 @@ ver el menú de acción";
 
 "Removed from Favorites" = "Eliminado de los favoritos";
 "Added to Favorites" = "Añadido a Favoritos";
+
+"Abbreviation reference on the AppBox Pro" = "Inglés Abreviaturas(AppBox Pro)";
+"Kaomoji reference on the AppBox Pro" = "Kaomoji(AppBox Pro)";

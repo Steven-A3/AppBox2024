@@ -1099,7 +1099,7 @@
 
 "HealthKitAlert" = "AppBox Pro®は、Appleの健康アプリから階段を登る、歩数、歩行+ランニング距離情報を読み取ります。\n\n健康アプリから読んだ情報は、マーケティング目的や広告目的のために使用していません。";
 
-"means" = "means";
+"means" = ":";
 
 "Top24" = "トップ24";
 "Romance" = "ロマンス";
@@ -1135,3 +1135,6 @@
 
 "Removed from Favorites" = "お気に入りから削除されました";
 "Added to Favorites" = "お気に入りに追加されました";
+
+"Abbreviation reference on the AppBox Pro" = "英語略語(AppBox Pro)";
+"Kaomoji reference on the AppBox Pro" = "顔文字(AppBox Pro)";

@@ -17,7 +17,7 @@
 
 @interface A3AbbreviationViewController () <UICollectionViewDelegate, UICollectionViewDataSource,
 		UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, UIPreviewInteractionDelegate,
-		A3SharePopupViewControllerDelegate>
+		A3SharePopupViewControllerDelegate, UIActivityItemSource>
 
 @property (nonatomic, strong) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
@@ -41,6 +41,9 @@
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *topLineTopConstraint;
 @property (nonatomic, strong) NSDate *cancelTime3DTouch;
 @property (nonatomic, strong) A3AbbreviationHelpViewController *helpViewController;
+@property (nonatomic, strong) UIPopoverController *sharePopoverController;
+
+@property (nonatomic, assign) CGRect sourceRectForPopoverView;
 
 @end
 
@@ -129,7 +132,6 @@
 		_tableView.contentInset = UIEdgeInsetsMake(-20, 0, 0, 0);
 		_collectionView.bounds = CGRectMake(0, 0, _tableView.bounds.size.width, 200);
 		_collectionViewFlowLayout.itemSize = CGSizeMake(224, 153);
-		_tableView.tableHeaderView = nil;
 		_tableView.tableHeaderView = _collectionView;
 		if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.2")) {
 			_titleLabel.font = [UIFont systemFontOfSize:23 weight:UIFontWeightHeavy];
@@ -189,8 +191,11 @@
 		_topLineTopConstraint = topLineTopConstraint;
 
 		_tableView.contentInset = UIEdgeInsetsMake(-30, 0, 0, 0);
-		_collectionView.bounds = CGRectMake(0, 0, _tableView.bounds.size.width, 308);
+		_collectionView.frame = CGRectMake(0, 0, _tableView.bounds.size.width, 310);
 		_collectionViewFlowLayout.itemSize = CGSizeMake(310, 236);
+        
+        // Re-assign tableHeaderView to make it recalculate the height of hte tableHeaderView
+        _tableView.tableHeaderView = _collectionView;
 	}
 }
 
@@ -235,6 +240,8 @@
 			viewController.delegate = self;
 			viewController.dataSource = self.dataManager;
 			viewController.titleString = section[A3AbbreviationKeyComponents][idx][A3AbbreviationKeyAbbreviation];
+            _selectedComponent = section[A3AbbreviationKeyComponents][idx];
+            _sourceRectForPopoverView = [self.view convertRect:cell.frame fromView:_collectionView];
 			[self presentViewController:viewController animated:YES completion:NULL];
 			_sharePopupViewController = viewController;
 			FNLOG();
@@ -422,6 +429,10 @@
 			viewController.delegate = self;
 			viewController.dataSource = self.dataManager;
 			viewController.titleString = self.dataManager.alphabetSections[indexPath.row][A3AbbreviationKeyComponents][0][A3AbbreviationKeyAbbreviation];
+            _selectedComponent = self.dataManager.alphabetSections[indexPath.row][A3AbbreviationKeyComponents][0];
+            UITableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+            _sourceRectForPopoverView = [self.view convertRect:cell.frame fromView:_tableView];
+            
 			[self presentViewController:viewController animated:YES completion:NULL];
 			_sharePopupViewController = viewController;
 			
@@ -493,6 +504,7 @@
 						
 						// Prepare data
 						_selectedComponent = hashTagSection[A3AbbreviationKeyComponents][idx];
+                        _sourceRectForPopoverView = [self.view convertRect:cell.frame fromView:_collectionView];
 					}
 				}
 			} else {
@@ -595,9 +607,24 @@
 
 #pragma mark - A3SharePopupViewControllerDelegate
 
-- (void)sharePopupViewControllerWillDismiss:(A3SharePopupViewController *)viewController {
+- (void)sharePopupViewControllerDidDismiss:(A3SharePopupViewController *)viewController didTapShareButton:(BOOL)didTapShareButton {
 	_sharePopupViewControllerIsPresented = NO;
 	[self removeBlurEffectView];
+
+	if (didTapShareButton) {
+		UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
+		if (IS_IPHONE) {
+			[self presentViewController:activityController animated:YES completion:NULL];
+		} else {
+            FNLOGRECT(_sourceRectForPopoverView);
+			UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
+			[popoverController presentPopoverFromRect:_sourceRectForPopoverView
+                                               inView:self.view
+                             permittedArrowDirections:UIPopoverArrowDirectionAny
+                                             animated:YES];
+			_sharePopoverController = popoverController;
+		}
+	}
 }
 
 - (IBAction)helpButtonAction:(id)sender {
@@ -632,6 +659,25 @@
 
 		[self helpButtonAction:self];
 	}
+}
+
+#pragma mark - UIActivityItemSource
+
+- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController {
+	return [self.dataManager placeholderForShare:nil];
+}
+
+- (nullable id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(UIActivityType)activityType {
+	if ([activityType isEqualToString:UIActivityTypeMail]) {
+		return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share a information with you.", nil)
+									   contents:[self.dataManager stringForShare:_selectedComponent[A3AbbreviationKeyAbbreviation]]
+										   tail:NSLocalizedString(@"You can find more in the AppBox Pro.", nil)];
+	}
+    return [self.dataManager stringForShare:_selectedComponent[A3AbbreviationKeyAbbreviation]];
+}
+
+- (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(nullable UIActivityType)activityType {
+	return [self.dataManager subjectForActivityType:activityType];
 }
 
 @end

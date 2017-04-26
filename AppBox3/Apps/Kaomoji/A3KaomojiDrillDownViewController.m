@@ -12,6 +12,7 @@
 #import "A3AbbreviationCopiedViewController.h"
 #import "NSMutableArray+MoveObject.h"
 #import "A3DrillDownHelpViewController.h"
+#import "UIViewController+A3Addition.h"
 
 @interface A3KaomojiDrillDownViewController () <UITableViewDelegate, UITableViewDataSource, UIPreviewInteractionDelegate,
 		UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
@@ -30,6 +31,10 @@
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *titleLabelBottomConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *tableViewTopConstraint;
 @property (nonatomic, strong) A3DrillDownHelpViewController *helpViewController;
+
+@property (nonatomic, strong) UIPopoverController *sharePopoverController;
+@property (nonatomic, copy) NSString *selectedStringToShare;
+@property (nonatomic, assign) CGRect sourceRectForPopover;
 
 @end
 
@@ -167,8 +172,14 @@
 	NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:location];
 	if (indexPath) {
 		A3SharePopupViewController *viewController = [A3SharePopupViewController storyboardInstanceWithBlurBackground:YES];
+		viewController.delegate = self;
 		viewController.dataSource = self.dataManager;
 		viewController.titleString = _contentsArray[indexPath.row];
+
+		_selectedStringToShare = [viewController.titleString copy];
+		UITableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+		_sourceRectForPopover = [self.view convertRect:cell.frame fromView:_tableView];
+
 		[self presentViewController:viewController animated:YES completion:NULL];
 	}
 }
@@ -258,6 +269,9 @@
 
 					_previewView.frame = [self.view convertRect:cell.frame fromView:_tableView];
 					[_blurEffectView addSubview:_previewView];
+
+					_selectedStringToShare = [_contentsArray[_selectedRow] copy];
+					_sourceRectForPopover = [self.view convertRect:cell.frame fromView:_tableView];
 				}
 			}
 		}
@@ -295,9 +309,23 @@
 	_sharePopupViewControllerIsPresented = NO;
 }
 
-- (void)sharePopupViewControllerWillDismiss:(A3SharePopupViewController *)viewController {
+- (void)sharePopupViewControllerDidDismiss:(A3SharePopupViewController *)viewController didTapShareButton:(BOOL)didTapShareButton {
 	_sharePopupViewControllerIsPresented = NO;
 	[self removeBlurEffectView];
+
+	if (didTapShareButton) {
+		UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
+		if (IS_IPHONE) {
+			[self presentViewController:activityController animated:YES completion:NULL];
+		} else {
+			UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
+			[popoverController presentPopoverFromRect:_sourceRectForPopover
+											   inView:self.view
+							 permittedArrowDirections:UIPopoverArrowDirectionAny
+											 animated:YES];
+			_sharePopoverController = popoverController;
+		}
+	}
 }
 
 - (void)removePreviewView {
@@ -340,6 +368,21 @@
 		
 		[self helpButtonAction:self];
 	}
+}
+
+#pragma mark - UIActivityItemSource
+
+- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController {
+	return @"";
+}
+
+- (nullable id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(UIActivityType)activityType {
+	if ([activityType isEqualToString:UIActivityTypeMail]) {
+		return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share a information with you.", nil)
+									   contents:_selectedStringToShare
+										   tail:NSLocalizedString(@"You can find more in the AppBox Pro.", nil)];
+	}
+	return _selectedStringToShare;
 }
 
 @end

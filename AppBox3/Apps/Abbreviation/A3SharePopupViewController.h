@@ -34,15 +34,11 @@
 - (void)addToFavorites:(NSString *)titleString;
 - (void)removeFromFavorites:(NSString *)titleString;
 
-- (NSString *)stringForShare:(NSString *)titleString;
-- (NSString *)subjectForActivityType:(NSString *)activityType;
-- (NSString *)placeholderForShare:(NSString *)titleString;
-
 @end
 
 @protocol A3SharePopupViewControllerDelegate <NSObject>
 @optional
 
-- (void)sharePopupViewControllerWillDismiss:(A3SharePopupViewController *)viewController;
+- (void)sharePopupViewControllerDidDismiss:(A3SharePopupViewController *)viewController didTapShareButton:(BOOL)didTapShareButton;
 
 @end

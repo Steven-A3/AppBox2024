@@ -21,5 +21,8 @@ extern NSString *const A3KaomojiKeyContents;
 @property (nonatomic, strong) NSArray<NSDictionary *> *favoritesArray;
 
 + (A3KaomojiDataManager *)instance;
+- (NSString *)stringForShare:(NSString *)titleString;
+- (NSString *)subjectForActivityType:(NSString *)activityType;
+- (NSString *)placeholderForShare:(NSString *)titleString;
 
 @end

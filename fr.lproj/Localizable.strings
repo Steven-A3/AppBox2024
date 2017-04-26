@@ -1097,9 +1097,7 @@ les paramètres après la migration.";
 
 Les données recueillies auprès de HealthKit ne seront pas utilisées à des fins de marketing et de publicité.";
 
-"means" = "means";
-"What's New in V4.5" = "What's New in V4.5";
-"WhatsNew4_5" = "New App: Abbreviation, Kaomoji";
+"means" = ":";
 
 "Top24" = "Top24";
 "Romance" = "Romance";
@@ -1136,3 +1134,6 @@ afficher le menu d'action";
 
 "Removed from Favorites" = "Supprimé des Favoris";
 "Added to Favorites" = "Ajouté aux favoris";
+
+"Abbreviation reference on the AppBox Pro" = "Abréviations Anglaise(AppBox Pro)";
+"Kaomoji reference on the AppBox Pro" = "Kaomoji(AppBox Pro)";

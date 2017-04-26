@@ -1105,7 +1105,7 @@ der Migration den Passcode erneut ein.";
 
 Die von HealthKit gesammelten Daten werden nicht für Marketing- und Werbezwecke verwendet.";
 
-"means" = "means";
+"means" = ":";
 
 "Top24" = "Top24";
 "Romance" = "Romantik";
@@ -1143,3 +1143,6 @@ um das Aktionsmenü anzuzeigen";
 
 "Removed from Favorites" = "Aus Favoriten entfernt";
 "Added to Favorites" = "Zu Favoriten hinzugefügt";
+
+"Abbreviation reference on the AppBox Pro" = "Englisch Abkürzungen(AppBox Pro)";
+"Kaomoji reference on the AppBox Pro" = "Kaomoji(AppBox Pro)";

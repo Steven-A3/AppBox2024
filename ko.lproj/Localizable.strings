@@ -1100,7 +1100,7 @@
 
 "HealthKitAlert" = "AppBox Pro®는 Apple 건강앱으로부터 계단오르기, 걸음수, 걷기 + 달리기 거리 정보를 읽습니다. \n\n건강앱으로 부터 읽은 정보는 마케팅 목적이나 광고목적으로 사용하지 않습니다.";
 
-"means" = "means";
+"means" = ":";
 
 "Top24" = "Top24";
 "Romance" = "로맨스";
@@ -1136,3 +1136,5 @@
 
 "Removed from Favorites" = "즐겨찾기에서 제외되었습니다.";
 "Added to Favorites" = "즐겨찾기에 추가되었습니다.";
+"Abbreviation reference on the AppBox Pro" = "영어약어참조(AppBox Pro)";
+"Kaomoji reference on the AppBox Pro" = "카오모지(AppBox Pro)";

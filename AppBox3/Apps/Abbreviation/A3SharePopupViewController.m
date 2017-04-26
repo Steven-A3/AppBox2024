@@ -15,7 +15,7 @@ extern NSString *const A3AbbreviationKeyAbbreviation;
 extern NSString *const A3AbbreviationKeyMeaning;
 
 @interface A3SharePopupViewController ()
-<UIActivityItemSource, UIViewControllerTransitioningDelegate>
+<UIViewControllerTransitioningDelegate>
 
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
 @property (nonatomic, weak) IBOutlet UIView *roundedRectView;
@@ -93,10 +93,11 @@ extern NSString *const A3AbbreviationKeyMeaning;
 }
 
 - (void)dismissViewController {
-	if ([_delegate respondsToSelector:@selector(sharePopupViewControllerWillDismiss:)]) {
-		[_delegate sharePopupViewControllerWillDismiss:self];
-	}
-	[self dismissViewControllerAnimated:YES completion:NULL];
+	[self dismissViewControllerAnimated:YES completion:^{
+		if ([_delegate respondsToSelector:@selector(sharePopupViewControllerDidDismiss:didTapShareButton:)]) {
+			[_delegate sharePopupViewControllerDidDismiss:self didTapShareButton:NO];
+		}
+	}];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -148,48 +149,12 @@ extern NSString *const A3AbbreviationKeyMeaning;
 }
 
 - (IBAction)shareButtonAction:(id)sender {
-	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
-	if (IS_IPHONE) {
-		[self presentViewController:activityController animated:YES completion:NULL];
-	} else {
-		UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
-		[popoverController presentPopoverFromRect:self.view.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-		_popoverController = popoverController;
-	}
-}
-
-- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController {
-	if ([_dataSource respondsToSelector:@selector(placeholderForShare:)]) {
-		return [_dataSource placeholderForShare:_titleString];
-	}
-	return @"";
-}
-
-- (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(UIActivityType)activityType {
-	if ([activityType isEqualToString:UIActivityTypeMail]) {
-		return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share a information with you.", nil)
-									   contents:[self stringForShare]
-										   tail:NSLocalizedString(@"You can find more in the AppBox Pro.", nil)];
-	}
-	else {
-		return [self stringForShare];
-	}
-}
-
-- (NSString *)stringForShare {
-	if ([_dataSource respondsToSelector:@selector(stringForShare:)]) {
-		return [_dataSource stringForShare:_titleString];
-	}
-	return _titleString;
-}
-
-- (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
-{
-	if ([_dataSource respondsToSelector:@selector(subjectForActivityType:)]) {
-		return [_dataSource subjectForActivityType:_titleString];
-	}
-
-	return @"";
+	[self dismissViewControllerAnimated:YES completion:^{
+		if ([_delegate respondsToSelector:@selector(sharePopupViewControllerDidDismiss:didTapShareButton:)]) {
+            [_delegate sharePopupViewControllerDidDismiss:self didTapShareButton:YES];
+		}
+	}];
+	return;
 }
 
 - (IBAction)favoriteButtonAction:(id)sender {

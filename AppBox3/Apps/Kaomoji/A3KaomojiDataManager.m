@@ -350,13 +350,13 @@ NSString *const A3KaomojiKeyContents = @"contents";
 
 - (NSString *)subjectForActivityType:(NSString *)activityType {
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
-		return NSLocalizedString(@"Kaomoji reference using AppBox Pro", nil);
+		return NSLocalizedString(@"Kaomoji reference on the AppBox Pro", nil);
 	}
 	return @"";
 }
 
 - (NSString *)placeholderForShare:(NSString *)titleString {
-	return NSLocalizedString(@"Kaomoji Reference on the AppBox Pro", nil);
+	return NSLocalizedString(@"Kaomoji reference on the AppBox Pro", nil);
 }
 
 #pragma mark - A3KaomojiDrillDownDataSource

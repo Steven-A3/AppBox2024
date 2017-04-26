@@ -930,7 +930,7 @@
 
 "HealthKitAlert" = "AppBox Pro®臨讀取爬樓梯，步數，行走在蘋果應用程序健康+跑動距離信息。\n\n讀取從健康應用的信息不被用於營銷目的，或出於廣告目的。";
 
-"means" = "means";
+"means" = ":";
 
 "Top24" = "Top24";
 "Romance" = "浪漫";
@@ -966,3 +966,6 @@
 
 "Removed from Favorites" = "從收藏夾中刪除";
 "Added to Favorites" = "添加到收藏夾";
+
+"Abbreviation reference on the AppBox Pro" = "英文縮寫(AppBox Pro)";
+"Kaomoji reference on the AppBox Pro" = "表情符號(AppBox Pro)";

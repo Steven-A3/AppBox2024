@@ -22,6 +22,9 @@
 @property (nonatomic, strong) NSArray<UIColor *> *bodyBGEndColors;
 
 + (A3AbbreviationDataManager *)instance;
+- (NSString *)stringForShare:(NSString *)titleString;
+- (NSString *)subjectForActivityType:(NSString *)activityType;
+- (NSString *)placeholderForShare:(NSString *)titleString;
 
 @end
 

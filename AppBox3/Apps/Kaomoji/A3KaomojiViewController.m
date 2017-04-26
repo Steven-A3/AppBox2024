@@ -37,6 +37,10 @@
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *topLineTopConstraint;
 @property (nonatomic, strong) A3KaomojiHelpViewController *helpViewController;
 
+@property (nonatomic, strong) UIPopoverController *sharePopoverController;
+@property (nonatomic, copy) NSString *selectedStringToShare;
+@property (nonatomic, assign) CGRect sourceRectForPopover;
+
 @end
 
 @implementation A3KaomojiViewController
@@ -217,6 +221,10 @@
 			viewController.delegate = self;
 			viewController.dataSource = self.dataManager;
 			viewController.titleString = section[A3KaomojiKeyContents][idx];
+
+			_selectedStringToShare = [viewController.titleString copy];
+			_sourceRectForPopover = [self.view convertRect:cell.frame fromView:_collectionView];
+
 			[self presentViewController:viewController animated:YES completion:NULL];
 			_sharePopupViewController = viewController;
 			FNLOG();
@@ -329,6 +337,9 @@
 
 					// Prepare Data
 					_selectedKaomoji = category[A3KaomojiKeyContents][idx];
+
+					_selectedStringToShare = [_sharePopupViewController.titleString copy];
+					_sourceRectForPopover = [self.view convertRect:cell.frame fromView:_collectionView];
 				}
 			}
 		}
@@ -388,9 +399,23 @@
 
 #pragma mark - A3SharePopupViewControllerDelegate
 
-- (void)sharePopupViewControllerWillDismiss:(A3SharePopupViewController *)viewController {
+- (void)sharePopupViewControllerDidDismiss:(A3SharePopupViewController *)viewController didTapShareButton:(BOOL)didTapShareButton {
 	_sharePopupViewControllerIsPresented = NO;
 	[self removeBlurEffectView];
+
+	if (didTapShareButton) {
+		UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
+		if (IS_IPHONE) {
+			[self presentViewController:activityController animated:YES completion:NULL];
+		} else {
+			UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
+			[popoverController presentPopoverFromRect:_sourceRectForPopover
+											   inView:self.view
+							 permittedArrowDirections:UIPopoverArrowDirectionAny
+											 animated:YES];
+			_sharePopoverController = popoverController;
+		}
+	}
 }
 
 - (IBAction)helpButtonAction:(id)sender {
@@ -421,6 +446,25 @@
         
         [self helpButtonAction:self];
     }
+}
+
+#pragma mark - UIActivityItemSource
+
+- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController {
+	return [self.dataManager placeholderForShare:nil];
+}
+
+- (nullable id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(UIActivityType)activityType {
+	if ([activityType isEqualToString:UIActivityTypeMail]) {
+		return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share a information with you.", nil)
+									   contents:[self.dataManager stringForShare:_selectedStringToShare]
+										   tail:NSLocalizedString(@"You can find more in the AppBox Pro.", nil)];
+	}
+	return [self.dataManager stringForShare:_selectedStringToShare];
+}
+
+- (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(nullable UIActivityType)activityType {
+	return [self.dataManager subjectForActivityType:activityType];
 }
 
 @end

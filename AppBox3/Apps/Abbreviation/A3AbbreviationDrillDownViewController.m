@@ -20,7 +20,7 @@ extern NSString *const A3AbbreviationKeyMeaning;
 
 @interface A3AbbreviationDrillDownViewController ()
 <UITableViewDataSource, UITableViewDelegate, UIPreviewInteractionDelegate,
-UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
+UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate, UIActivityItemSource>
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UIButton *backButton;
@@ -38,6 +38,10 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *tableViewTopConstraint;
 @property (nonatomic, strong) NSDate *cancelTime3DTouch;
 @property (nonatomic, strong) A3DrillDownHelpViewController *helpViewController;
+
+@property (nonatomic, copy) NSString *selectedStringToShare;
+@property (nonatomic, assign) CGRect sourceRectForPopover;
+@property (nonatomic, strong) UIPopoverController *sharePopoverController;
 
 @end
 
@@ -169,7 +173,11 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 	if (indexPath) {
 		A3SharePopupViewController *viewController = [A3SharePopupViewController storyboardInstanceWithBlurBackground:YES];
 		viewController.dataSource = self.dataManager;
+        viewController.delegate = self;
 		viewController.titleString = _contentsArray[indexPath.row][A3AbbreviationKeyAbbreviation];
+		UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+		_selectedStringToShare = [viewController.titleString copy];
+		_sourceRectForPopover = [self.view convertRect:cell.frame fromView:self.tableView];
 		[self presentViewController:viewController animated:YES completion:NULL];
 	}
 }
@@ -301,6 +309,11 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 		_sharePopupViewController.dataSource = self.dataManager;
 		_sharePopupViewController.delegate = self;
 		_sharePopupViewController.titleString = _contentsArray[_selectedRow][A3AbbreviationKeyAbbreviation];
+		// Save string and source rect for later use for UIPopoverController
+		_selectedStringToShare = [_sharePopupViewController.titleString copy];
+		UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_selectedRow inSection:0]];
+		_sourceRectForPopover = [self.view convertRect:cell.frame fromView:_tableView];
+
 		[self presentViewController:_sharePopupViewController animated:YES completion:NULL];
 	}
 	_sharePopupViewController.interactiveTransitionProgress = transitionProgress;
@@ -321,9 +334,23 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 	[self removePreviewView];
 }
 
-- (void)sharePopupViewControllerWillDismiss:(A3SharePopupViewController *)viewController {
+- (void)sharePopupViewControllerDidDismiss:(A3SharePopupViewController *)viewController didTapShareButton:(BOOL)didTapShareButton {
 	_sharePopupViewControllerIsPresented = NO;
 	[self removeBlurEffectView];
+
+    if (didTapShareButton) {
+        UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
+        if (IS_IPHONE) {
+            [self presentViewController:activityController animated:YES completion:NULL];
+        } else {
+            UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
+            [popoverController presentPopoverFromRect:_sourceRectForPopover
+                                               inView:self.view
+                             permittedArrowDirections:UIPopoverArrowDirectionAny
+                                             animated:YES];
+            _sharePopoverController = popoverController;
+        }
+    }
 }
 
 - (void)removePreviewView {
@@ -366,6 +393,25 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 
 		[self helpButtonAction:self];
 	}
+}
+
+#pragma mark - UIActivityItemSource
+
+- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController {
+	return [self.dataManager placeholderForShare:nil];
+}
+
+- (nullable id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(UIActivityType)activityType {
+	if ([activityType isEqualToString:UIActivityTypeMail]) {
+		return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share a information with you.", nil)
+									   contents:[self.dataManager stringForShare:_selectedStringToShare]
+										   tail:NSLocalizedString(@"You can find more in the AppBox Pro.", nil)];
+	}
+	return [self.dataManager stringForShare:_selectedStringToShare];
+}
+
+- (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(nullable UIActivityType)activityType {
+	return [self.dataManager subjectForActivityType:activityType];
 }
 
 @end

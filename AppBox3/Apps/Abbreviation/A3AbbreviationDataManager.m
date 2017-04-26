@@ -342,13 +342,13 @@ NSString *const A3AbbreviationKeyMeaning = @"meaning";
 
 - (NSString *)subjectForActivityType:(NSString *)activityType {
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
-		return NSLocalizedString(@"Abbreviation reference using AppBox Pro", nil);
+		return NSLocalizedString(@"Abbreviation reference on the AppBox Pro", nil);
 	}
 	return @"";
 }
 
 - (NSString *)placeholderForShare:(NSString *)titleString {
-	return NSLocalizedString(@"Abbreviation Reference on the AppBox Pro", nil);
+	return NSLocalizedString(@"Abbreviation reference on the AppBox Pro", nil);
 }
 
 #pragma mark - A3DrillDownDataSource
