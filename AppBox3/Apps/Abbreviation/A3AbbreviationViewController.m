@@ -240,7 +240,7 @@
 			viewController.delegate = self;
 			viewController.dataSource = self.dataManager;
 			viewController.titleString = section[A3AbbreviationKeyComponents][idx][A3AbbreviationKeyAbbreviation];
-            _selectedComponent = section[A3AbbreviationKeyComponents][idx];
+            _selectedComponent = [section[A3AbbreviationKeyComponents][idx] copy];
             _sourceRectForPopoverView = [self.view convertRect:cell.frame fromView:_collectionView];
 			[self presentViewController:viewController animated:YES completion:NULL];
 			_sharePopupViewController = viewController;
@@ -429,7 +429,7 @@
 			viewController.delegate = self;
 			viewController.dataSource = self.dataManager;
 			viewController.titleString = self.dataManager.alphabetSections[indexPath.row][A3AbbreviationKeyComponents][0][A3AbbreviationKeyAbbreviation];
-            _selectedComponent = self.dataManager.alphabetSections[indexPath.row][A3AbbreviationKeyComponents][0];
+            _selectedComponent = [self.dataManager.alphabetSections[indexPath.row][A3AbbreviationKeyComponents][0] copy];
             UITableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
             _sourceRectForPopoverView = [self.view convertRect:cell.frame fromView:_tableView];
             
@@ -503,7 +503,7 @@
 						[_blurEffectView addSubview:_previewView];
 						
 						// Prepare data
-						_selectedComponent = hashTagSection[A3AbbreviationKeyComponents][idx];
+						_selectedComponent = [hashTagSection[A3AbbreviationKeyComponents][idx] copy];
                         _sourceRectForPopoverView = [self.view convertRect:cell.frame fromView:_collectionView];
 					}
 				}
@@ -669,11 +669,11 @@
 
 - (nullable id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(UIActivityType)activityType {
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
-		return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share a information with you.", nil)
+		return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share information with you.", nil)
 									   contents:[self.dataManager stringForShare:_selectedComponent[A3AbbreviationKeyAbbreviation]]
 										   tail:NSLocalizedString(@"You can find more in the AppBox Pro.", nil)];
 	}
-    return [self.dataManager stringForShare:_selectedComponent[A3AbbreviationKeyAbbreviation]];
+    return _selectedComponent[A3AbbreviationKeyAbbreviation];
 }
 
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(nullable UIActivityType)activityType {

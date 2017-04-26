@@ -874,7 +874,7 @@
 "Extra Payment(yearly)" = "额外支付(每年)";
 "Extra Payment(one-time)" = "额外支付(一次)";
 
-"I'd like to share an information with you." = "我想和你分享一个信息。";
+"I'd like to share information with you." = "我想和你分享一个信息。";
 "You can manage your information in the AppBox Pro." = "你可以在 AppBox Pro中管理信息。";
 
 "I'd like to share a translation with you." = "我想和你分享一段翻译";
@@ -1147,3 +1147,5 @@
 
 "Abbreviation reference on the AppBox Pro" = "英文缩写(AppBox Pro)";
 "Kaomoji reference on the AppBox Pro" = "颜文字(AppBox Pro)";
+"I'd like to share information with you." = "我想和你分享信息。";
+"You can find more in the AppBox Pro." = "您可以在AppBox Pro中找到更多内容。";

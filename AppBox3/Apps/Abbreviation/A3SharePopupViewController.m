@@ -149,7 +149,7 @@ extern NSString *const A3AbbreviationKeyMeaning;
 }
 
 - (IBAction)shareButtonAction:(id)sender {
-	[self dismissViewControllerAnimated:YES completion:^{
+	[self dismissViewControllerAnimated:NO completion:^{
 		if ([_delegate respondsToSelector:@selector(sharePopupViewControllerDidDismiss:didTapShareButton:)]) {
             [_delegate sharePopupViewControllerDidDismiss:self didTapShareButton:YES];
 		}

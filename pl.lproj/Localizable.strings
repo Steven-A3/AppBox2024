@@ -862,7 +862,7 @@
 "Extra Payment(yearly)" = "Dodakowa płatność (rocznie)";
 "Extra Payment(one-time)" = "Dodatkowa płatność (jednorazowa)";
 
-"I'd like to share an information with you." = "Chcę udsotępnić Tobie informacje.";
+"I'd like to share information with you." = "Chcę udsotępnić Tobie informacje.";
 "You can manage your information in the AppBox Pro." = "Możesz zarządzać swoimi danymi w aplikacji AppBox Pro.";
 
 "I'd like to share a translation with you." = "Chcę udostępnić Tobie tłumaczenie.";
@@ -1135,3 +1135,5 @@ wyświetlić menu czynności";
 
 "Abbreviation reference on the AppBox Pro" = "Angielskie Skróty(AppBox Pro)";
 "Kaomoji reference on the AppBox Pro" = "Kaomoji(AppBox Pro)";
+"I'd like to share information with you." = "Chciałbym z tobą dzielić się informacjami.";
+"You can find more in the AppBox Pro." = "Możesz znaleźć więcej w AppBox Pro.";

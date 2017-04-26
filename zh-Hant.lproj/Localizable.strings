@@ -93,7 +93,7 @@
 "CALENDARS" = "日曆";
 "Location information is not available." = "位置資訊不可用。";
 "Confirm Passcode" = "確認密碼";
-"I'd like to share an information with you." = "我想和你分享一個資訊。";
+"I'd like to share information with you." = "我想和你分享一個資訊。";
 "Annually" = "每年";
 "Up" = "上舍入";
 "6 Mos" = "6個月";
@@ -969,3 +969,5 @@
 
 "Abbreviation reference on the AppBox Pro" = "英文縮寫(AppBox Pro)";
 "Kaomoji reference on the AppBox Pro" = "表情符號(AppBox Pro)";
+"I'd like to share information with you." = "我想和你分享信息。";
+"You can find more in the AppBox Pro." = "您可以在AppBox Pro中找到更多內容。";

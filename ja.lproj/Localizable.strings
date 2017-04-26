@@ -866,7 +866,7 @@
 "Extra Payment(yearly)" = "追加料金（毎年）";
 "Extra Payment(one-time)" = "追加料金(一回)";
 
-"I'd like to share an information with you." = "この情報をあなたと共有したいです。";
+"I'd like to share information with you." = "この情報をあなたと共有したいです。";
 "You can manage your information in the AppBox Pro." = "AppBox Proで情報を管理することが出来ます。";
 
 "I'd like to share a translation with you." = "翻訳結果を共有します。";
@@ -1138,3 +1138,5 @@
 
 "Abbreviation reference on the AppBox Pro" = "英語略語(AppBox Pro)";
 "Kaomoji reference on the AppBox Pro" = "顔文字(AppBox Pro)";
+"I'd like to share information with you." = "情報を共有したいと思います。";
+"You can find more in the AppBox Pro." = "AppBox Proでもっと多くを見つけることができます。";

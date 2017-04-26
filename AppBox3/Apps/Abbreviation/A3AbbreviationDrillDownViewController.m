@@ -403,11 +403,11 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate, UIActivityItemS
 
 - (nullable id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(UIActivityType)activityType {
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
-		return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share a information with you.", nil)
+		return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share information with you.", nil)
 									   contents:[self.dataManager stringForShare:_selectedStringToShare]
 										   tail:NSLocalizedString(@"You can find more in the AppBox Pro.", nil)];
 	}
-	return [self.dataManager stringForShare:_selectedStringToShare];
+	return _selectedStringToShare;
 }
 
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(nullable UIActivityType)activityType {

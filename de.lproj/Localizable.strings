@@ -866,7 +866,7 @@ Erneut versuchen.";
 "Extra Payment(yearly)" = "Extra Zahlungen(Jährlich)";
 "Extra Payment(one-time)" = "Extra Zahlung(Einmalig)";
 
-"I'd like to share an information with you." = "Ich möchte eine Information mit Ihnen teilen.";
+"I'd like to share information with you." = "Ich möchte eine Information mit Ihnen teilen.";
 "You can manage your information in the AppBox Pro." = "Jetzt können Sie auch Ihre Informationen in AppBox Pro bearbeiten.";
 
 "I'd like to share a translation with you." = "Ich möchte eine Übersetzung mit Ihnen teilen.";
@@ -1146,3 +1146,5 @@ um das Aktionsmenü anzuzeigen";
 
 "Abbreviation reference on the AppBox Pro" = "Englisch Abkürzungen(AppBox Pro)";
 "Kaomoji reference on the AppBox Pro" = "Kaomoji(AppBox Pro)";
+"I'd like to share information with you." = "Ich möchte gerne Informationen mit Ihnen teilen.";
+"You can find more in the AppBox Pro." = "Sie finden mehr in der AppBox Pro.";
