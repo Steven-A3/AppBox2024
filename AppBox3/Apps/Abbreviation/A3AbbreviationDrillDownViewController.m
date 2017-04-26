@@ -344,8 +344,8 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>
 	}
 	_helpViewController = [A3DrillDownHelpViewController storyboardInstance];
 	_helpViewController.imageName = @"AbbreviationPopover";
-	[self.navigationController.view addSubview:_helpViewController.view];
 	[self.navigationController addChildViewController:_helpViewController];
+    [self.navigationController.view addSubview:_helpViewController.view];
 
 	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnHelpView)];
 	[_helpViewController.view addGestureRecognizer:tapGestureRecognizer];
