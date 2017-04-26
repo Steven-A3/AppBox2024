@@ -415,9 +415,6 @@
 }
 
 - (void)showHelpView {
-    [self helpButtonAction:self];
-    return;
-    
     NSString *userDefaultKey = [NSString stringWithFormat:@"%@HelpDidShow", NSStringFromClass([self class])];
     if (![[NSUserDefaults standardUserDefaults] boolForKey:userDefaultKey]) {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:userDefaultKey];

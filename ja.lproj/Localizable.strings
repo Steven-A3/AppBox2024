@@ -1124,3 +1124,12 @@
 "Camera access not authorized." = "カメラアクセスは許可されていません。";
 "%@ requires Photo Library access." = "%@:フォトライブラリにアクセスする必要があります。";
 "Photo Library access not authorized." = "フォトライブラリへのアクセスが許可されていません。";
+
+"AbbreviationHelpTapToViewOrPress" =
+"タップしてリストを表示するか、
+(3D Touch)押してアクションメニューを
+表示します";
+"DrillHelpTapToCopyOrPress" =
+"タップしてコピーまたは
+(3D Touch)押して
+アクションメニューを表示する";

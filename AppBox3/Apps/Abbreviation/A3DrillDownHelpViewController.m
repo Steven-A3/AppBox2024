@@ -18,6 +18,7 @@
 @property (nonatomic, weak) IBOutlet UIImageView *popupImageView;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *imageHPositionConstraint;
 @property (nonatomic, weak) IBOutlet UIImageView *fingerUpImageView;
+@property (nonatomic, weak) IBOutlet UILabel *helpLabel;
 
 @end
 
@@ -37,6 +38,10 @@
         imageView.tintColor = [[A3AppDelegate instance] themeColor];
     }
     _popupImageView.image = [UIImage imageNamed:_imageName];
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10") && self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable)
+    {
+        _helpLabel.text = NSLocalizedString(@"DrillHelpTapToCopyOrPress", nil);
+    }
 }
 
 - (void)didReceiveMemoryWarning {

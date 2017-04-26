@@ -1132,3 +1132,13 @@ Die von HealthKit gesammelten Daten werden nicht für Marketing- und Werbezwecke
 "Camera access not authorized." = "Kamerazugriff nicht autorisiert.";
 "%@ requires Photo Library access." = "%@ Erfordert den Zugriff auf die Fotofreigabe.";
 "Photo Library access not authorized." = "Fotofreigabe nicht autorisiert.";
+
+"AbbreviationHelpTapToViewOrPress" =
+"Tippen Sie auf, 
+um die Liste anzuzeigen,
+oder (3D Touch) drücken Sie,
+um das Aktionsmenü anzuzeigen";
+"DrillHelpTapToCopyOrPress" =
+"Tippen Sie auf, um zu kopieren
+oder (3D Touch) drücken Sie,
+um das Aktionsmenü anzuzeigen";

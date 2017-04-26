@@ -614,9 +614,9 @@ the action menu</string>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T8M-0h-cUF">
-                                <rect key="frame" x="132" y="201" width="187" height="60"/>
+                                <rect key="frame" x="132" y="201" width="204" height="60"/>
                                 <string key="text">Tap to view the list
-Or Tap and hold to view 
+Or Touch and hold to view 
 the action menu</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -640,12 +640,14 @@ the action menu</string>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bottomHelpTextLabel" destination="YRS-d6-X7Z" id="wAC-1X-Cvz"/>
                         <outlet property="bottomLeadingConstraint" destination="Cmf-zu-Hha" id="SYF-t7-Wzv"/>
                         <outlet property="bottomSpaceConstraint" destination="oMm-OX-CJG" id="eQp-tP-IZX"/>
                         <outlet property="fingerUpImageView" destination="GxA-7q-dBV" id="hr9-u5-rbl"/>
                         <outlet property="imageHPositionConstraint" destination="rxw-Zr-P1i" id="60s-TK-k9B"/>
                         <outlet property="imageWidthConstraint" destination="5mh-Ct-FE8" id="iJ7-2G-9N0"/>
                         <outlet property="popoverImageView" destination="VEm-Bm-9Q9" id="4ZL-Lq-M6O"/>
+                        <outlet property="topHelpTextLabel" destination="T8M-0h-cUF" id="WZe-O8-rnV"/>
                         <outlet property="topLeadingConstraint" destination="cJy-Vd-2gU" id="JZ7-Jv-aoV"/>
                         <outlet property="topSpaceConstraint" destination="gyl-vM-Rer" id="kLM-iq-xt5"/>
                         <outletCollection property="imageViews" destination="GxA-7q-dBV" id="h5h-ec-s3B"/>
@@ -702,6 +704,7 @@ the action menu</string>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="fingerUpImageView" destination="LUB-dm-dJ3" id="QKM-qR-cDS"/>
+                        <outlet property="helpLabel" destination="WKJ-ey-HYe" id="jAU-P6-2Ea"/>
                         <outlet property="imageHPositionConstraint" destination="pC9-D1-nYH" id="XqZ-Mx-CDE"/>
                         <outlet property="imageWidthConstraint" destination="2yv-t6-GBa" id="FZP-9E-JeN"/>
                         <outlet property="popupImageView" destination="LpF-m7-53F" id="kat-UZ-a1e"/>

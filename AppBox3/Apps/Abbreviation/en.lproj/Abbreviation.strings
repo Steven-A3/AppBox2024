@@ -1,12 +1,12 @@
 
-/* Class = "UILabel"; text = "Tap to view the list\nOr Tap and hold to view \nthe action menu"; ObjectID = "T8M-0h-cUF"; */
-"T8M-0h-cUF.text" = "Tap to view the list\nOr Tap and hold to view \nthe action menu";
+/* Class = "UILabel"; text = "Tap to view the list\nOr Touch and hold to view \nthe action menu"; ObjectID = "T8M-0h-cUF"; */
+"T8M-0h-cUF.text" = "Tap to view the list\nOr Touch and hold to view \nthe action menu";
 
-/* Class = "UILabel"; text = "Tap to Copy or\nTap and Hold to view \nthe action menu"; ObjectID = "WKJ-ey-HYe"; */
-"WKJ-ey-HYe.text" = "Tap to Copy or\nTap and Hold to view \nthe action menu";
+/* Class = "UILabel"; text = "Tap to Copy or\nTouch and Hold to view \nthe action menu"; ObjectID = "WKJ-ey-HYe"; */
+"WKJ-ey-HYe.text" = "Tap to Copy or\nTouch and Hold to view \nthe action menu";
 
 /* Class = "UILabel"; text = "Tap to view the list\nOr Tap and hold to view \nthe action menu"; ObjectID = "YRS-d6-X7Z"; */
-"YRS-d6-X7Z.text" = "Tap to view the list\nOr Tap and hold to view \nthe action menu";
+"YRS-d6-X7Z.text" = "Tap to view the list\nOr Touch and hold to view \nthe action menu";
 
 /* Class = "UILabel"; text = "Copied."; ObjectID = "ZzU-K6-u5t"; */
 "ZzU-K6-u5t.text" = "Copied.";

@@ -123,6 +123,7 @@
 
 - (void)showAbbreviationSnapshotView {
     A3AbbreviationViewController *viewController = [A3AbbreviationViewController storyboardInstance];
+    viewController.doNotShowHelpView = YES;
     viewController.view.bounds = self.view.bounds;
     [viewController viewWillLayoutSubviews];
     [viewController.view layoutIfNeeded];

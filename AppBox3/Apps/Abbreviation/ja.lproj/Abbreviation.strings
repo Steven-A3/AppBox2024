@@ -1,18 +1,19 @@
 
 /* Class = "UILabel"; text = "Tap to view the list\nOr Tap and hold to view \nthe action menu"; ObjectID = "T8M-0h-cUF"; */
-"T8M-0h-cUF.text" = "タップしてリストを表示する、
-またはタップ＆ホールドして
-アクションメニューを表示する";
+"T8M-0h-cUF.text" =
+"タップしてリストを表示するか、
+タッチ＆ホールドして
+アクションメニューを表示します";
 
 /* Class = "UILabel"; text = "Tap to Copy or\nTap and Hold to view \nthe action menu"; ObjectID = "WKJ-ey-HYe"; */
 "WKJ-ey-HYe.text" = "タップしてコピーするか
-タップアンドホールドして
-アクションメニューを表示する";
+タッチアンドホールドして
+アクションメニューを表示します";
 
 /* Class = "UILabel"; text = "Tap to view the list\nOr Tap and hold to view \nthe action menu"; ObjectID = "YRS-d6-X7Z"; */
 "YRS-d6-X7Z.text" = "タップしてリストを表示する、
-またはタップ＆ホールドして
-アクションメニューを表示する";
+またはタッチ＆ホールドして
+アクションメニューを表示します";
 
 /* Class = "UILabel"; text = "Copied."; ObjectID = "ZzU-K6-u5t"; */
 "ZzU-K6-u5t.text" = "コピーされました。";

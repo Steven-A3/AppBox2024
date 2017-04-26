@@ -10,7 +10,9 @@
 
 @interface A3AbbreviationViewController : UIViewController
 
-+ (A3AbbreviationViewController *)storyboardInstance;
+@property (nonatomic, assign) BOOL doNotShowHelpView;
 
++ (A3AbbreviationViewController *)storyboardInstance;
 - (IBAction)helpButtonAction:(id)sender;
+
 @end

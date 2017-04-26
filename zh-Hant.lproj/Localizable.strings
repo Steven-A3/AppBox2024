@@ -954,3 +954,12 @@
 "Camera access not authorized." = "相機訪問未經授權。";
 "%@ requires Photo Library access." = "%@需要圖片庫訪問。";
 "Photo Library access not authorized." = "照片庫訪問未經授權。";
+
+"AbbreviationHelpTapToViewOrPress" =
+"點擊查看列表，
+或按查看操作菜單
+(3D Touch)";
+"DrillHelpTapToCopyOrPress" =
+"點擊複製或
+按查看操作菜單
+(3D Touch)";

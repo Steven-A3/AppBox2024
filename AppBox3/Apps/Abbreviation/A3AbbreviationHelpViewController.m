@@ -20,6 +20,8 @@
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *imageHPositionConstraint;
 @property (nonatomic, weak) IBOutlet UIImageView *popoverImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *fingerUpImageView;
+@property (nonatomic, weak) IBOutlet UILabel *topHelpTextLabel;
+@property (nonatomic, weak) IBOutlet UILabel *bottomHelpTextLabel;
 
 @end
 
@@ -38,6 +40,12 @@
 	for (UIImageView *imageView in _imageViews) {
 		imageView.tintColor = [[A3AppDelegate instance] themeColor];
 	}
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10") &&
+        self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable)
+    {
+        _topHelpTextLabel.text = NSLocalizedString(@"AbbreviationHelpTapToViewOrPress", nil);
+        _bottomHelpTextLabel.text = NSLocalizedString(@"AbbreviationHelpTapToViewOrPress", nil);
+    }
 }
 
 - (void)viewWillLayoutSubviews {

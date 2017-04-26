@@ -1121,3 +1121,12 @@ Dane zebrane z HealthKit nie będą wykorzystywane w celach marketingowych i rek
 "Camera access not authorized." = "Dostęp do aparatu nie jest dozwolony.";
 "%@ requires Photo Library access." = "%@: Wymaga dostępu do Biblioteka zdjęć.";
 "Photo Library access not authorized." = "Dostęp do Biblioteka zdjęć nie jest dozwolony.";
+
+"AbbreviationHelpTapToViewOrPress" =
+"Dotknij, aby wyświetlić listę, 
+lub (3D Touch)naciśnij,
+aby wyświetlić menu czynności";
+"DrillHelpTapToCopyOrPress" =
+"Dotknij, aby skopiować 
+lub (3D Touch)nacisnąć, aby
+wyświetlić menu czynności";

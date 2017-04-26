@@ -1063,3 +1063,11 @@ after the migration.";
 "Camera access not authorized." = "Camera access not authorized.";
 "%@ requires Photo Library access." = "%@ requires Photo Library access.";
 "Photo Library access not authorized." = "Photo Library access not authorized.";
+"AbbreviationHelpTapToViewOrPress" =
+"Tap to view the list
+Or Press(3D Touch) to view
+the action menu";
+"DrillHelpTapToCopyOrPress" =
+"Tap to Copy or
+Press(3D Touch) to view
+the action menu";

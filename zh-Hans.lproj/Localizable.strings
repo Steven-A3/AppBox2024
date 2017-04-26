@@ -1133,3 +1133,12 @@
 "Camera access not authorized." = "相机访问未经授权。";
 "%@ requires Photo Library access." = "%@需要照片库访问。";
 "Photo Library access not authorized." = "照片库访问未经授权。";
+
+"AbbreviationHelpTapToViewOrPress" =
+"点击查看列表，
+或按查看操作菜单
+(3D Touch)";
+"DrillHelpTapToCopyOrPress" =
+"点击复制或
+按查看操作菜单
+(3D Touch)";

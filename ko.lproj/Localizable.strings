@@ -1125,3 +1125,12 @@
 "Camera access not authorized." = "카메라 접근 권한이 없습니다.";
 "%@ requires Photo Library access." = "%@: 사진 보관함 접근 권한이 필요합니다.";
 "Photo Library access not authorized." = "사진 보관함 접근 권한이 없습니다.";
+
+"AbbreviationHelpTapToViewOrPress" =
+"터치하여 목록 화면을 표시하거나,
+3D터치를 누르면
+액션 메뉴가 표시됩니다.";
+"DrillHelpTapToCopyOrPress" =
+"터치하여 복사합니다. 
+3D터치를 누르면
+액션 메뉴가 표시됩니다.";
