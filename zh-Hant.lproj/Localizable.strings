@@ -72,7 +72,7 @@
 "Delete Event" = "刪除事件";
 "Done" = "完成";
 "Compare % Change from X to Y" = "比較 % 從 X 變為 Y";
-"%@, rate = %@" = "%@, rate = %@";
+
 "Fire Truck" = "消防車";
 "Add to Favorites" = "添加到收藏夾";
 "Field Type" = "區域類型";
@@ -83,7 +83,6 @@
 "Interest" = "利息";
 "Tip Per Person" = "小費/人";
 "Hidden" = "全部隱藏";
-"%@, Rate = %0.4f" = "%@, 比率 = %0.4f";
 "Slideshow_Repeat" = "重複播放";
 "Today" = "今天";
 "Old Passcode" = "舊密碼";
@@ -166,7 +165,7 @@
 "Enter your old passcode" = "請輸入舊密碼";
 "Password" = "暗號形式標示";
 "PAYMENT" = "償還金額";
-"Rate = %0.4f" = "比率 = %0.4f";
+"Rate" = "比率";
 "Menstrual Period" = "月經期";
 "DaysCounter_to" = "結束日";
 "%ld w" = "%ld 周";
@@ -693,7 +692,6 @@
 "or Shake!" = "或動搖!";
 "Category Info" = "類別資訊";
 "Show AM/PM" = "顯示上午／下午";
-"%@Rate = %0.4f" = "%@比率 = %0.4f";
 "Saved Amount" = "節約金額";
 "%@ to %@ = %@" = "%@ to %@ = %@";
 "To: " = "到: ";
@@ -963,3 +961,5 @@
 "點擊複製或
 按查看操作菜單
 (3D Touch)";
+
+"rate" = "比率";

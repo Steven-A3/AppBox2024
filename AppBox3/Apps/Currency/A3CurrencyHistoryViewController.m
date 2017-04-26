@@ -20,6 +20,7 @@
 @interface A3CurrencyHistoryViewController () <UIActionSheetDelegate>
 
 @property (nonatomic, strong)	NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, strong) NSNumberFormatter *decimalNumberFormatter;
 
 @end
 
@@ -152,6 +153,15 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 	return _fetchedResultsController;
 }
 
+- (NSNumberFormatter *)decimalNumberFormatter {
+	if (!_decimalNumberFormatter) {
+		_decimalNumberFormatter = [NSNumberFormatter new];
+		_decimalNumberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+		_decimalNumberFormatter.minimumFractionDigits = 4;
+	}
+	return _decimalNumberFormatter;
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -200,7 +210,7 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 		[nf setCurrencyCode:item.currencyCode];
 
 		((UILabel *) cell.leftLabels[index]).text = [nf stringFromNumber:@(currencyHistory.value.floatValue * rate)];
-		((UILabel *) cell.rightLabels[index]).text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@ = %.4f", @"%@ to %@ = %.4f"), currencyHistory.currencyCode, item.currencyCode, rate];
+		((UILabel *) cell.rightLabels[index]).text = [NSString stringWithFormat:@"%@ to %@ = %@", currencyHistory.currencyCode, item.currencyCode, [self.decimalNumberFormatter stringFromNumber:@(rate)]];
 	}
 
     return cell;

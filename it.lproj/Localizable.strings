@@ -176,7 +176,6 @@
 
 "Weather" = "Meteo";
 
-"%@, Rate = %0.4f" = "%@, Tasso = %0.4f";
 "Each history keeps max 4 currencies." = "Ogni cronologia conserva massimo 4 valutari";
 
 "%@ to %@ = %.4f" = "%@ a %@ = %.4f";
@@ -190,8 +189,7 @@
 
 "Updating" = "Aggiornamento";
 "Updated %@" = "Aggiornato %@";
-"%@Rate = %0.4f" = "%@Tasso = %0.4f";
-"Rate = %0.4f" = "Tasso = %0.4f";
+"Rate" = "Tasso";
 
 "Currency Converter in the AppBox Pro" = "Convertitore di valuta nell’AppBox Pro";
 
@@ -648,7 +646,6 @@
 "%@ Units" = "%@ Unità";
 
 "Check out the AppBox Pro!" = "Verifica AppBox Pro!";
-"%@, rate = %@" = "%@, tasso = %@";
 
 "To convert values, need two units." = "Per convertire i valori, occorrono due unità";
 
@@ -1124,3 +1121,5 @@ visualizzare il menu azione";
 "Tocca per copiare o
 (3D Touch) premere per
 visualizzare il menu azione";
+
+"rate" = "tasso";

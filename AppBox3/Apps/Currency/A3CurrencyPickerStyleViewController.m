@@ -79,6 +79,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 @property (weak, nonatomic) IBOutlet UIButton *swapButton;
 @property (weak, nonatomic) IBOutlet UIButton *refreshButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pickerBottom_bottomLayoutGuideConstraint;
+@property (nonatomic, strong) NSNumberFormatter *decimalNumberFormatter;
 
 @end
 
@@ -311,12 +312,18 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 		cell.valueField.text = self.targetValueString;
 		NSString *symbol = [_currencyDataManager symbolForCode:_targetCurrencyCode];
 		if ([symbol length]) {
-			cell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, Rate = %0.4g", @"%@, Rate = %0.4g"),
-							   symbol,
-							   self.conversionRate];
+            cell.rateLabel.text =
+                    [NSString stringWithFormat:@"%@, %@ = %@",
+                                               symbol,
+                                    NSLocalizedString(@"Rate", nil),
+                                               [self.decimalNumberFormatter stringFromNumber:@(self.conversionRate)]
+            ];
 		} else {
-			cell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Rate = %0.4g", @"%@, Rate = %0.4g"),
-								   self.conversionRate];
+            cell.rateLabel.text =
+                    [NSString stringWithFormat:@"%@ = %@",
+                                    NSLocalizedString(@"Rate", nil),
+                                    [self.decimalNumberFormatter stringFromNumber:@(self.conversionRate)]
+            ];
 		}
 		cell.codeLabel.text = _targetCurrencyCode;
 		_targetTextField = cell.valueField;
@@ -368,6 +375,15 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 		[nf setCurrencySymbol:@""];
 	}
 	return nf;
+}
+
+- (NSNumberFormatter *)decimalNumberFormatter {
+    if (!_decimalNumberFormatter) {
+        _decimalNumberFormatter = [NSNumberFormatter new];
+        _decimalNumberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+        _decimalNumberFormatter.minimumFractionDigits = 4;
+    }
+    return _decimalNumberFormatter;
 }
 
 - (void)makeLinesSinglePixel {
@@ -1251,24 +1267,3 @@ static NSString *const A3V3InstructionDidShowForCurrencyPicker = @"A3V3Instructi
 }
 
 @end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

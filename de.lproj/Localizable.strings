@@ -166,7 +166,6 @@
 "Weather" = "Wetter";
 
 /* US$, Rate = 1.3598 */
-"%@, Rate = %0.4f" = "%@, Kurs = %0.4f";
 
 /* EUR to USD = 1.3598 */
 "%@ to %@ = %.4f" = "%@ zu %@ = %.4f";
@@ -180,8 +179,7 @@
 
 "Updating" = "Aktualisieren";
 "Updated %@" = "Aktualisiert %@";
-"%@Rate = %0.4f" = "%@Kurs = %0.4f";
-"Rate = %0.4f" = "Kurs = %0.4f";
+"Rate" = "Kurs";
 
 "Currency Converter in the AppBox Pro" = "Währungsrechner von AppBox Pro";
 "Share Currency Converter Data" = "Daten des Währungsrechners teilen";
@@ -652,8 +650,6 @@
 "Unit Converter using AppBox Pro" = "Einheitenrechner von AppBox Pro";
 "Check out the AppBox Pro!" = "Testen Sie AppBox Pro!";
 "Share Unit Converter data" = "Daten des Einheitenrechners teilen";
-"%@, rate = %@" = "%@, Anteil = %@";
-
 "To convert values, need two units." = "Zum Umrechnen werden zwei Einheiten benötigt.";
 
 "Each history keeps max 4 units." = "Es werden maximal 4 Einheiten gespeichert.";
@@ -1142,3 +1138,5 @@ um das Aktionsmenü anzuzeigen";
 "Tippen Sie auf, um zu kopieren
 oder (3D Touch) drücken Sie,
 um das Aktionsmenü anzuzeigen";
+
+"rate" = "Anteil";

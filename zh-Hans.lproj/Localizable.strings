@@ -169,7 +169,6 @@
 
 "Weather" = "天气";
 
-"%@, Rate = %0.4f" = "%@, 比率 = %0.4f";
 "Each history keeps max 4 currencies." = "每个历史最多保留4种货币。";
 
 "%@ to %@ = %.4f" = "%@ / %@ = %.4f";
@@ -183,8 +182,7 @@
 
 "Updating" = "更新";
 "Updated %@" = "已更新 %@";
-"%@Rate = %0.4f" = "%@比率 = %0.4f";
-"Rate = %0.4f" = "比率 = %0.4f";
+"Rate" = "比率";
 
 "Currency Converter in the AppBox Pro" = "AppBox Pro中的币种转换器";
 "Share Currency Converter Data" = "共享货币转换数据";
@@ -663,7 +661,6 @@
 "Unit Converter using AppBox Pro" = "使用AppBox Pro的单元转换器";
 "Check out the AppBox Pro!" = "查看AppBox Pro!";
 "Share Unit Converter data" = "共享单位转换数据";
-"%@, rate = %@" = "%@, rate = %@";
 
 "To convert values, need two units." = "若要改变值,需要两个单位。";
 
@@ -1142,3 +1139,5 @@
 "点击复制或
 按查看操作菜单
 (3D Touch)";
+
+"rate" = "比率";

@@ -178,7 +178,6 @@
 
 "Weather" = "天気";
 
-"%@, Rate = %0.4f" = "%@, レート= %0.4f";
 "Each history keeps max 4 currencies." = "各履歴は最大4通貨を維持します。";
 "Each history keeps max 4 units." = "各履歴は最大4単位を維持します。";
 
@@ -193,8 +192,7 @@
 
 "Updating" = "アップデイト";
 "Updated %@" = "アップデイト %@";
-"%@Rate = %0.4f" = "%@レート = %0.4f";
-"Rate = %0.4f" = "レート = %0.4f";
+"Rate" = "レート";
 
 "Currency Converter in the AppBox Pro" = "AppBox Proの通貨変換器";
 
@@ -653,7 +651,6 @@
 "%@ Units" = "%@ ユニット";
 
 "Check out the AppBox Pro!" = "AppBox Proを使ってみましょう。";
-"%@, rate = %@" = "%@, レート = %@";
 
 "To convert values, need two units." = "変換するために２つのユニットが必要です";
 
@@ -1133,3 +1130,5 @@
 "タップしてコピーまたは
 (3D Touch)押して
 アクションメニューを表示する";
+
+"rate" = "レート";

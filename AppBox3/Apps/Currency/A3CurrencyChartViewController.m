@@ -44,6 +44,7 @@
 @property (nonatomic, weak) UITextField *calculatorTargetTextField;
 @property (nonatomic, copy) NSString *sourceCurrencyCode, *targetCurrencyCode;
 @property (nonatomic, weak) UITextField *editingTextField;
+@property (nonatomic, strong) NSNumberFormatter *decimalNumberFormatter;
 
 @end
 
@@ -358,8 +359,9 @@
 		cell.valueField.delegate = self;
 		[cell.valueField setEnabled:NO];
 		cell.valueField.text = self.targetValueString;
-//		cell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, Rate = %0.4f", @"%@, Rate = %0.4f"), self.targetItem.currencySymbol, self.conversionRate];
-        cell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Rate = %0.4f", @"Rate = %0.4f"), self.conversionRate];
+        cell.rateLabel.text = [NSString stringWithFormat:@"%@ = %@",
+						NSLocalizedString(@"Rate", @"Rate"),
+						[self.decimalNumberFormatter stringFromNumber:@(self.conversionRate)]];
 		cell.codeLabel.text = _targetCurrencyCode;
 		_targetTextField = cell.valueField;
 	}
@@ -393,6 +395,15 @@
 		[nf setCurrencySymbol:@""];
 	}
 	return [nf stringFromNumber:@(self.sourceValueConvertedFromTarget)];
+}
+
+- (NSNumberFormatter *)decimalNumberFormatter {
+	if (!_decimalNumberFormatter) {
+		_decimalNumberFormatter = [NSNumberFormatter new];
+		_decimalNumberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+		_decimalNumberFormatter.minimumFractionDigits = 4;
+	}
+	return _decimalNumberFormatter;
 }
 
 #pragma mark - UITableViewDelegate

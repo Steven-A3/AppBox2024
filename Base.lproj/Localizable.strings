@@ -124,7 +124,6 @@
 "Show date" = "Show date";
 "Show Weather" = "Show Weather";
 "Weather" = "Weather";
-"%@, Rate = %0.4f" = "%@, Rate = %0.4f";
 "Each history keeps max 4 currencies." = "Each history keeps max 4 currencies.";
 "%@ to %@ = %.4f" = "%@ to %@ = %.4f";
 "Auto Update" = "Auto Update";
@@ -136,8 +135,7 @@
 "Delete" = "Delete";
 "Updating" = "Updating";
 "Updated %@" = "Updated %@";
-"%@Rate = %0.4f" = "%@Rate = %0.4f";
-"Rate = %0.4f" = "Rate = %0.4f";
+"Rate" = "Rate";
 "Currency Converter in the AppBox Pro" = "Currency Converter in the AppBox Pro";
 "Share Currency Converter Data" = "Share Currency Converter Data";
 /* Data Calc duration */
@@ -601,7 +599,6 @@
 "Unit Converter using AppBox Pro" = "Unit Converter using AppBox Pro";
 "Check out the AppBox Pro!" = "Check out the AppBox Pro!";
 "Share Unit Converter data" = "Share Unit Converter data";
-"%@, rate = %@" = "%@, rate = %@";
 
 "To convert values, need two units." = "To convert values, need two units.";
 "Each history keeps max 4 units." = "Each history keeps max 4 units.";
@@ -1071,3 +1068,6 @@ the action menu";
 "Tap to Copy or
 Press(3D Touch) to view
 the action menu";
+
+"Rate" = "Rate";
+"rate" = "rate";

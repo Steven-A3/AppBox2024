@@ -150,6 +150,8 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 	_isTemperatureMode = [[_dataManager categoryNameForID:_categoryID] isEqualToString:@"Temperature"];
 
 	[self.decimalFormatter setLocale:[NSLocale currentLocale]];
+    self.decimalFormatter.minimumFractionDigits = 4;
+    self.decimalFormatter.minimumSignificantDigits = 4;
 
 	[self.view addSubview:self.addButton];
 
@@ -1186,8 +1188,9 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
             dataCell.rateLabel.text = [NSString stringWithFormat:@"%@", NSLocalizedStringFromTable(targetUnitName, @"unitShort", nil)];
         }
 		else {
-			dataCell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, rate = %@", @"%@, rate = %@"),
+			dataCell.rateLabel.text = [NSString stringWithFormat:@"%@, %@ = %@",
 							NSLocalizedStringFromTable(targetUnitName, @"unitShort", nil),
+							NSLocalizedString(@"rate", nil),
 							[self.decimalFormatter stringFromNumber:@(conversionRate)]];
 		}
 	}

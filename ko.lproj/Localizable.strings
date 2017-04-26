@@ -158,7 +158,6 @@
 
 "Weather" = "날씨";
 
-"%@, Rate = %0.4f" = "%@, 환율 = %0.4f";
 "Each history keeps max 4 currencies." = "각각의 히스토리는 최대 4개까지의 환율정보를 저장합니다.";
 
 "%@ to %@ = %.4f" = "%@/%@ = %.4f";
@@ -172,8 +171,7 @@
 
 "Updating" = "업데이트 중";
 "Updated %@" = "최종 업데이트 %@";
-"%@Rate = %0.4f" = "%@환율 = %0.4f";
-"Rate = %0.4f" = "환율 = %0.4f";
+"Rate" = "환율";
 
 "Currency Converter in the AppBox Pro" = "AppBox Pro의 환율 변환";
 "Share Currency Converter Data" = "환율 변환 결과 공유하기";
@@ -643,7 +641,6 @@
 "Unit Converter using AppBox Pro" = "AppBox Pro의 단위 변환";
 "Check out the AppBox Pro!" = "AppBox Pro에서 작성!";
 "Share Unit Converter data" = "단위 변환 결과를 공유";
-"%@, rate = %@" = "%@, 비율 = %@";
 
 "To convert values, need two units." = "단위 변환을 하려면 최소 두개의 단위가 필요합니다.";
 
@@ -1134,3 +1131,5 @@
 "터치하여 복사합니다. 
 3D터치를 누르면
 액션 메뉴가 표시됩니다.";
+
+"rate" = "비율";

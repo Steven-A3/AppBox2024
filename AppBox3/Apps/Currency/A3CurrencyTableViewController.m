@@ -66,6 +66,7 @@ NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChan
 @property (nonatomic, strong) UITableViewController *tableViewController;
 @property (nonatomic, strong) NSManagedObjectContext *savingContext;
 @property (nonatomic, weak) UITextField *editingTextField;
+@property (nonatomic, strong) NSNumberFormatter *decimalNumberFormatter;
 
 @end
 
@@ -641,6 +642,15 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	self.tableView.tableFooterView = (contentsHeight >= viewHeight) ? self.footerView : nil;
 }
 
+- (NSNumberFormatter *)decimalNumberFormatter {
+	if (!_decimalNumberFormatter) {
+		_decimalNumberFormatter = [NSNumberFormatter new];
+		_decimalNumberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+		_decimalNumberFormatter.minimumFractionDigits = 4;
+	}
+	return _decimalNumberFormatter;
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -757,9 +767,11 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 			} else {
 				symbol = @"";
 			}
-			dataCell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@Rate = %0.4g", @"%@Rate = %0.4g"), symbol, rate];
+			dataCell.rateLabel.text = [NSString stringWithFormat:@"%@,%@ = %@",
+							symbol, NSLocalizedString(@"Rate", @"Rate"), [self.decimalNumberFormatter stringFromNumber:@(rate)]];
 		} else {
-			dataCell.rateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Rate = %0.4g", @"Rate = %0.4g"), rate];
+			dataCell.rateLabel.text = [NSString stringWithFormat:@"%@ = %@",
+							NSLocalizedString(@"Rate", @"Rate"), [self.decimalNumberFormatter stringFromNumber:@(rate)]];
 		}
 		dataCell.valueField.textColor = [UIColor blackColor];
 		[dataCell.valueField setEnabled:NO];
@@ -773,7 +785,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	dataCell.codeLabel.text = currencyCode;
 	
 	dataCell.accessibilityValue = currencyCode;
-	dataCell.accessibilityLabel = NSLocalizedString(@"Currency code", @"Currency code");
+	dataCell.accessibilityLabel = NSLocalizedString(@"Currency", @"Currency");
 }
 
 - (A3CurrencyTVEqualCell *)reusableEqualCellForTableView:(UITableView *)tableView {

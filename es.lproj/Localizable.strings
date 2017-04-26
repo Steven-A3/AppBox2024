@@ -166,7 +166,6 @@
 
 "Weather" = "Clima";
 
-"%@, Rate = %0.4f" = "%@, Precio = %0.4f";
 "Each history keeps max 4 currencies." = "Cada historial mantiene 4 monedas como máximo.";
 
 "%@ to %@ = %.4f" = "%@ a %@ = %.4f";
@@ -180,8 +179,7 @@
 
 "Updating" = "Actualizando";
 "Updated %@" = "Actualizado %@";
-"%@Rate = %0.4f" = "%@Precio = %0.4f";
-"Rate = %0.4f" = "Precio = %0.4f";
+"Rate" = "Precio";
 
 "Currency Converter in the AppBox Pro" = "Convertidor de moneda en AppBox Pro";
 "Share Currency Converter Data" = "Compartir datos del convertidor de moneda";
@@ -655,7 +653,6 @@
 "Unit Converter using AppBox Pro" = "Convertidor de unidad de AppBox Pro";
 "Check out the AppBox Pro!" = "¡Descubra las opciones de AppBox Pro!";
 "Share Unit Converter data" = "Compartir los datos de conversión de la unidad";
-"%@, rate = %@" = "%@, rate = %@";
 
 "To convert values, need two units." = "Para convertir los valores es necesario dos unidades.";
 
@@ -1126,3 +1123,5 @@ ver el menú de acción";
 "Presiona para copiar 
 o (3D Touch)presiona para
 ver el menú de acción";
+
+"rate" = "tarifa";
