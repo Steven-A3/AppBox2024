@@ -68,6 +68,16 @@ extern NSString *const A3AbbreviationKeyMeaning;
 	_titleLabel.text = _titleString;
     _shareTitleLabel.text = NSLocalizedString(@"Share", nil);
     _favoriteTitleLabel.text = NSLocalizedString(@"Favorite", nil);
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
+- (void)applicationDidEnterBackground {
+    [self dismissViewController];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

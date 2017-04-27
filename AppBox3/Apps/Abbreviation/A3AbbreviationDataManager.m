@@ -332,7 +332,7 @@ NSString *const A3AbbreviationKeyMeaning = @"meaning";
 	NSArray *filteredArray = [self.dataArray filteredArrayUsingPredicate:predicate];
 	if ([filteredArray count] > 0) {
 		NSDictionary *content = filteredArray[0];
-		return [NSString stringWithFormat:@"%@ %@ %@\n\n",
+		return [NSString stringWithFormat:@"%@ %@ %@",
 										  content[A3AbbreviationKeyAbbreviation],
 						NSLocalizedString(@"means", @"means"),
 										  content[A3AbbreviationKeyMeaning]];;

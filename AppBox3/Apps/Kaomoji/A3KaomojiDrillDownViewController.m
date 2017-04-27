@@ -122,6 +122,12 @@
 	[self setupRightBarButtonItem];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	[self.navigationController setNavigationBarHidden:NO];
+}
+
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	
@@ -383,6 +389,10 @@
 										   tail:NSLocalizedString(@"You can find more in the AppBox Pro.", nil)];
 	}
 	return _selectedStringToShare;
+}
+
+- (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(nullable UIActivityType)activityType {
+    return [self.dataManager subjectForActivityType:activityType];
 }
 
 @end

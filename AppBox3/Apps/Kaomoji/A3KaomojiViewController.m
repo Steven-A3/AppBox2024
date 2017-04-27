@@ -170,6 +170,12 @@
 	}
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	[self.navigationController setNavigationBarHidden:NO];
+}
+
 - (void)applicationDidBecomeActive {
 	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
@@ -336,9 +342,9 @@
 					[_blurEffectView addSubview:_previewView];
 
 					// Prepare Data
-					_selectedKaomoji = category[A3KaomojiKeyContents][idx];
+					_selectedKaomoji = [category[A3KaomojiKeyContents][idx] copy];
 
-					_selectedStringToShare = [_sharePopupViewController.titleString copy];
+					_selectedStringToShare = [category[A3KaomojiKeyContents][idx] copy];
 					_sourceRectForPopover = [self.view convertRect:cell.frame fromView:_collectionView];
 				}
 			}

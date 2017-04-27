@@ -692,9 +692,7 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
 
 - (NSString *)shareMailMessageWithHeader:(NSString *)header contents:(NSString *)contents tail:(NSString *)tail {
 	NSMutableString *txt = [NSMutableString new];
-	[txt appendFormat:@"<html><body>%@<br/><br/>", header];
-	[txt appendString:contents];
-
+	[txt appendFormat:@"<html><body>%@<br/><br/>%@<br/><br/>", header, contents];
 	[txt appendFormat:[self shareMessageFormat], tail];
 	return txt;
 }

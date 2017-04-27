@@ -199,6 +199,12 @@
 	}
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	[self.navigationController setNavigationBarHidden:NO];
+}
+
 - (A3AbbreviationDataManager *)dataManager {
 	if (!_dataManager) {
 		_dataManager = [A3AbbreviationDataManager instance];
