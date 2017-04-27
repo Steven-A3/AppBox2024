@@ -10,6 +10,8 @@
 
 @interface A3AbbreviationCollectionViewCell ()
 
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *firstLineHeightConstraint, *secondLineHeightConstraint;
+
 @end
 
 @implementation A3AbbreviationCollectionViewCell
@@ -21,6 +23,11 @@
 - (void)awakeFromNib {
 	[super awakeFromNib];
 	
+    if ([[UIScreen mainScreen] scale] == 1) {
+        _firstLineHeightConstraint.constant = 1.0;
+        _secondLineHeightConstraint.constant = 1.0;
+    }
+    
 	_roundedRectView.layer.cornerRadius = 10;
 	_roundedRectView.layer.masksToBounds = YES;
 

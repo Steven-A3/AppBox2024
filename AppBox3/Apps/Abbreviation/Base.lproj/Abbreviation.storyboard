@@ -198,6 +198,7 @@
                                                 <constraint firstItem="zgt-pY-jFB" firstAttribute="top" secondItem="k8r-Z6-avJ" secondAttribute="bottom" multiplier="0.22" id="s2g-ud-UP6"/>
                                             </constraints>
                                             <connections>
+                                                <outlet property="firstLineHeightConstraint" destination="l0Y-yP-wTI" id="QKf-Tc-RaL"/>
                                                 <outlet property="firstLineView" destination="3Se-bZ-lzI" id="NPM-zf-4fX"/>
                                                 <outlet property="groupTitleLabel" destination="0TU-Ft-mUM" id="oNd-Kh-2Vf"/>
                                                 <outlet property="roundedRectView" destination="zgt-pY-jFB" id="Dlg-KO-FRk"/>
@@ -207,6 +208,7 @@
                                                 <outlet property="row2TitleLabel" destination="q9X-0f-1TK" id="TaC-1N-Ooj"/>
                                                 <outlet property="row3SubtitleLabel" destination="cZW-RO-s9X" id="OXe-ef-DNF"/>
                                                 <outlet property="row3TitleLabel" destination="ceV-uA-UAI" id="GIm-dI-GZP"/>
+                                                <outlet property="secondLineHeightConstraint" destination="QUz-qN-URl" id="JMb-o5-iW3"/>
                                                 <outlet property="secondLineView" destination="ufU-EO-tMm" id="RdL-T4-8AX"/>
                                                 <outletCollection property="rows" destination="hVK-Vy-pVC" id="4UO-u7-ISm"/>
                                                 <outletCollection property="rows" destination="5lO-ST-Rtb" id="ESQ-HL-cBr"/>
@@ -422,7 +424,7 @@
                                         <rect key="frame" x="0.0" y="28" width="414" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="R2V-yf-0kL" id="DBn-8O-MtY">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="59.666666666666664"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ALIWanIsU" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Mh-Iy-WXF">

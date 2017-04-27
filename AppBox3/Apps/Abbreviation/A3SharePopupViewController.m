@@ -53,8 +53,13 @@ extern NSString *const A3AbbreviationKeyMeaning;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-	_middleLineHeightConstraint.constant = 0.7;
-	_secondLineHeightConstraint.constant = 0.7;
+    if ([[UIScreen mainScreen] scale] == 1) {
+        _middleLineHeightConstraint.constant = 1.0;
+        _secondLineHeightConstraint.constant = 1.0;
+    } else {
+        _middleLineHeightConstraint.constant = 0.7;
+        _secondLineHeightConstraint.constant = 0.7;
+    }
 	_roundedRectView.layer.cornerRadius = 10;
 
 	_shareImageView.tintColor = [[A3AppDelegate instance] themeColor];
@@ -73,7 +78,7 @@ extern NSString *const A3AbbreviationKeyMeaning;
 }
 
 - (void)applicationDidEnterBackground {
-    [self dismissViewController];
+     [self dismissViewController];
 }
 
 - (void)dealloc {
