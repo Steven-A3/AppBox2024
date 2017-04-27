@@ -734,20 +734,19 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (!((tableView == self.tableView) && (indexPath.row == 0))) {
-		NSArray *itemContainingArray;
-		if (tableView == self.searchResultsTableViewController.tableView) {
-			itemContainingArray = _filteredResults;
-            [self.searchController setActive:NO];
-		}
-		else {
-			itemContainingArray = self.items;
-		}
-
-		WalletItem *item = itemContainingArray[indexPath.row];
-
-		[super tableView:tableView didSelectRowAtIndexPath:indexPath withItem:item];
-	}
+    NSArray *itemContainingArray;
+    if (tableView == self.searchResultsTableViewController.tableView) {
+        itemContainingArray = _filteredResults;
+    } else {
+        if (indexPath.row == 0) {
+            return;
+        }
+        itemContainingArray = self.items;
+    }
+    WalletItem *item = itemContainingArray[indexPath.row];
+    
+    [super tableView:tableView didSelectRowAtIndexPath:indexPath withItem:item];
+    [self.searchController setActive:NO];
 }
 
 #pragma mark - Table view data source

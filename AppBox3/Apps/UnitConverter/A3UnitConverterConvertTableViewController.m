@@ -150,8 +150,6 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 	_isTemperatureMode = [[_dataManager categoryNameForID:_categoryID] isEqualToString:@"Temperature"];
 
 	[self.decimalFormatter setLocale:[NSLocale currentLocale]];
-    self.decimalFormatter.minimumFractionDigits = 4;
-    self.decimalFormatter.minimumSignificantDigits = 4;
 
 	[self.view addSubview:self.addButton];
 
@@ -1537,8 +1535,9 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 			[self putHistoryWithValue:@(value)];
 		}
 	}
-	textField.text = [self.decimalFormatter stringFromNumber:@0];
 
+    textField.text = [self.decimalFormatter stringFromNumber:@0];
+    
 	A3NumberKeyboardViewController *keyboardVC = self.numberKeyboardViewController;
 	keyboardVC.textInputTarget = textField;
 	

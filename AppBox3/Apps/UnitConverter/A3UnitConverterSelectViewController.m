@@ -77,8 +77,6 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
     self.navigationItem.titleView = self.selectSegment;
     [self selectSegmentChanged:self.selectSegment];
 
-	self.tableView.tableHeaderView = self.searchController.searchBar;
-
     if ((!_isModal && IS_IPHONE) || IS_IPAD) {
         self.navigationItem.leftBarButtonItem = self.cancelItem;
     }
@@ -266,9 +264,7 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
         {
             isFavoriteMode = NO;
             
-            float heightGap = IS_RETINA ? kSearchBarHeight+3.5:kSearchBarHeight+3.0;
-            _tableView.frame = CGRectMake(0, heightGap, self.view.bounds.size.width, self.view.bounds.size.height-heightGap);
-            
+            self.tableView.tableHeaderView = self.searchController.searchBar;
             [_tableView reloadData];
             
             self.navigationItem.rightBarButtonItem = nil;
@@ -281,8 +277,8 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
         case 1:
         {
             isFavoriteMode = YES;
-            
-            _tableView.frame = self.view.bounds;
+
+            self.tableView.tableHeaderView = nil;
             [_tableView reloadData];
             
             self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -391,7 +387,7 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 	} else {
 		_filteredResults = nil;
 	}
-	[self.tableView reloadData];
+	[self.searchResultsTableViewController.tableView reloadData];
 }
 
 - (void)updateEditedDataToDelegate
@@ -576,6 +572,8 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 		}
 	}
 
+    [self.searchController setActive:NO];
+    
 	if (selectedUnitID == _currentUnitID) {
 		// 원래 아이템을 선택하였으므로 아무일 없이 돌아간다.
 		if (IS_IPHONE) {

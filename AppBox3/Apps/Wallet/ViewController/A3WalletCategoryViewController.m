@@ -906,10 +906,10 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
         return;
     }
 
-    self.searchController.active = NO;
-    
     NSArray *section = self.sectionsArray[indexPath.section];
 	[super tableView:tableView didSelectRowAtIndexPath:indexPath withItem:section[indexPath.row]];
+    
+    self.searchController.active = NO;
 }
 
 #pragma mark - Table view data source

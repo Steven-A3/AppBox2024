@@ -373,8 +373,6 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
  *  Unswipe cell, resign first responder, dismiss more menu
  */
 - (void)resetIntermediateState {
-	[self unSwipeAll];
-
 	[self.editingObject resignFirstResponder];
 	[self setEditingObject:nil];
 
@@ -443,6 +441,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 - (void)shareButtonAction:(id)sender {
 	[self dismissNumberKeyboardAnimated:YES];
 	[self resetIntermediateState];
+    [self unSwipeAll];
 
 	[self enableControls:NO];
 	[self shareAll:sender];
@@ -503,6 +502,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 			}
 		}
 
+        [self unSwipeAll];
 		[self.tableView reloadRowsAtIndexPaths:visibleRows withRowAnimation:UITableViewRowAnimationNone];
 
 		[self finishCurrencyRatesUpdate];
@@ -811,6 +811,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	}
 
 	[self resetIntermediateState];
+    [self unSwipeAll];
 
 	id object = self.favorites[indexPath.row];
 	if (![object isEqual:_equalItem] && ![object isEqual:_adItem]) {
@@ -854,6 +855,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	}
 
 	[self resetIntermediateState];
+    [self unSwipeAll];
 
 	_isAddingCurrency = YES;
 
@@ -1280,6 +1282,9 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	[swipedCell removeMenuView];
 
 	NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    if (!indexPath) {
+        return;
+    }
 	CurrencyFavorite *favorite = self.favorites[indexPath.row];
 	NSString *deletingFavoriteID = favorite.uniqueID;
 
@@ -1493,7 +1498,6 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
 	FNLOGRECT(bannerView.frame);
 	if (_adItem) {
-		[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
 		return;
 	}
 	[_favorites insertObject:[self adItem] atIndex:2];
