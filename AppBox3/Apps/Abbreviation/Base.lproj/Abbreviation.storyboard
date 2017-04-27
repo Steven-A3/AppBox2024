@@ -658,7 +658,7 @@ the action menu</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YGT-oX-KmO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1062.3188405797102" y="2093.4782608695655"/>
+            <point key="canvasLocation" x="-1062" y="2107"/>
         </scene>
         <!--Drill Down Help View Controller-->
         <scene sceneID="vfh-Ao-75e">

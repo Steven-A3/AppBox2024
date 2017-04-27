@@ -16,7 +16,7 @@
 @property (nonatomic, copy) NSString *contentsTitle;
 @property (nonatomic, weak) A3KaomojiDataManager *dataManager;
 @property (nonatomic, strong) NSMutableArray *contentsArray;
-@property (nonatomic, assign) BOOL allowsEditing;
+@property (nonatomic, assign) BOOL isFavoritesList;
 @property (nonatomic, weak) id<A3DrillDownDataSource> dataSource;
 
 + (A3KaomojiDrillDownViewController *)storyboardInstance;

@@ -14,7 +14,7 @@
 @property (nonatomic, copy) NSString *contentsTitle;
 @property (nonatomic, strong) NSMutableArray<NSDictionary *> *contentsArray;
 @property (nonatomic, weak) A3AbbreviationDataManager *dataManager;
-@property (nonatomic, assign) BOOL allowsEditing;
+@property (nonatomic, assign) BOOL isFavoritesList;
 @property (nonatomic, weak) id<A3DrillDownDataSource> dataSource;
 
 /* Expected Dictionary

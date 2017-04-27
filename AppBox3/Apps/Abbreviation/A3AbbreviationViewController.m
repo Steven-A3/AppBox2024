@@ -286,7 +286,7 @@
 - (void)favoritesButtonAction:(id)sender {
 	A3AbbreviationDrillDownViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:[A3AbbreviationDrillDownViewController storyboardID]];
 	viewController.dataSource = self.dataManager;
-	viewController.allowsEditing = YES;
+	viewController.isFavoritesList = YES;
 	viewController.dataManager = self.dataManager;
 	viewController.contentsTitle = NSLocalizedString(@"Favorites", nil);
 	viewController.contentsArray = [[self.dataManager favoritesArray] mutableCopy];

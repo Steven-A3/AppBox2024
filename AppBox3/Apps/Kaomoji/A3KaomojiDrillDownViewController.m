@@ -145,7 +145,7 @@
 }
 
 - (void)setupRightBarButtonItem {
-	if (_allowsEditing && self.tableView) {
+	if (_isFavoritesList && self.tableView) {
 		if (!self.tableView.isEditing) {
 			self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
 																								   target:self
@@ -334,6 +334,13 @@
 	}
 }
 
+- (void)sharePopupViewControllerContentsModified {
+    if (_isFavoritesList) {
+        self.contentsArray = [[self.dataManager favoritesArray] mutableCopy];
+    }
+    [_tableView reloadData];
+}
+
 - (void)removePreviewView {
 	[_previewView removeFromSuperview];
 	_previewView = nil;
@@ -352,8 +359,8 @@
 	}
 	_helpViewController = [A3DrillDownHelpViewController storyboardInstance];
 	_helpViewController.imageName = @"KaomojiPopover";
+    [self.navigationController addChildViewController:_helpViewController];
 	[self.navigationController.view addSubview:_helpViewController.view];
-	[self.navigationController addChildViewController:_helpViewController];
 	
 	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnHelpView)];
 	[_helpViewController.view addGestureRecognizer:tapGestureRecognizer];

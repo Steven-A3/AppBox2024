@@ -1479,18 +1479,18 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 	self.adDisplayedAfterApplicationDidBecomeActive = YES;
 	
 	NSDate *adsDisplayTime = [[NSUserDefaults standardUserDefaults] objectForKey:A3AdsDisplayTime];
-	NSInteger numberOfTimesOpeningSubApp = [[NSUserDefaults standardUserDefaults] integerForKey:A3NumberOfTimesOpeningSubApp];
+//	NSInteger numberOfTimesOpeningSubApp = [[NSUserDefaults standardUserDefaults] integerForKey:A3NumberOfTimesOpeningSubApp];
 	if (adsDisplayTime && [[NSDate date] timeIntervalSinceDate:adsDisplayTime] > 60 * 60) {
 		[self setupAdInterstitialForAdUnitID:A3InterstitialAdUnitID keywords:nil gender:kGADGenderUnknown];
 		return YES;
 	}
 	
-	if (numberOfTimesOpeningSubApp >= 2) {
-		[self setupAdInterstitialForAdUnitID:A3InterstitialAdUnitID keywords:nil gender:kGADGenderUnknown];
-		return YES;
-	} else {
-		[self increaseNumberOfTimesOpenedSubappCount];
-	}
+//	if (numberOfTimesOpeningSubApp >= 2) {
+//		[self setupAdInterstitialForAdUnitID:A3InterstitialAdUnitID keywords:nil gender:kGADGenderUnknown];
+//		return YES;
+//	} else {
+//		[self increaseNumberOfTimesOpenedSubappCount];
+//	}
 	
 	return NO;
 }

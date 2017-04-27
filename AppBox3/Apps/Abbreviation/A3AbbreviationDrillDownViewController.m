@@ -145,7 +145,7 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate, UIActivityItemS
 }
 
 - (void)setupRightBarButtonItem {
-	if (_allowsEditing && self.tableView) {
+	if (_isFavoritesList && self.tableView) {
 		if (!self.tableView.isEditing) {
 			self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
 																														target:self
@@ -357,6 +357,13 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate, UIActivityItemS
             _sharePopoverController = popoverController;
         }
     }
+}
+
+- (void)sharePopupViewControllerContentsModified {
+    if (_isFavoritesList) {
+        self.contentsArray = [[self.dataManager favoritesArray] mutableCopy];
+    }
+    [_tableView reloadData];
 }
 
 - (void)removePreviewView {

@@ -292,7 +292,7 @@
 - (void)favoritesButtonAction:(UIBarButtonItem *)barButton {
 	A3KaomojiDrillDownViewController *viewController = [A3KaomojiDrillDownViewController storyboardInstance];
 	viewController.dataSource = self.dataManager;
-	viewController.allowsEditing = YES;
+	viewController.isFavoritesList = YES;
 	viewController.dataManager = self.dataManager;
 	viewController.contentsTitle = NSLocalizedString(@"Favorites", @"Favorites");
 	viewController.contentsArray = [[self.dataManager favoritesArray] mutableCopy];
@@ -434,8 +434,8 @@
 		return;
 	}
 	_helpViewController = [A3KaomojiHelpViewController storyboardInstance];
+    [self.navigationController addChildViewController:_helpViewController];
 	[self.navigationController.view addSubview:_helpViewController.view];
-	[self.navigationController addChildViewController:_helpViewController];
 
 	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnHelpView)];
 	[_helpViewController.view addGestureRecognizer:tapGestureRecognizer];

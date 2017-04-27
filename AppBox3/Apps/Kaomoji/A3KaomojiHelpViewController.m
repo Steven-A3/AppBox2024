@@ -37,6 +37,8 @@
 	for (UIImageView *imageView in _imageViews) {
 		imageView.tintColor = [[A3AppDelegate instance] themeColor];
 	}
+    _popoverImageView.image = [UIImage imageNamed:@"KaomojiPopover"];
+    
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10") && self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable)
     {
         _helpLabel.text = NSLocalizedString(@"AbbreviationHelpTapToViewOrPress", nil);

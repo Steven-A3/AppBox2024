@@ -40,5 +40,6 @@
 @optional
 
 - (void)sharePopupViewControllerDidDismiss:(A3SharePopupViewController *)viewController didTapShareButton:(BOOL)didTapShareButton;
+- (void)sharePopupViewControllerContentsModified;
 
 @end

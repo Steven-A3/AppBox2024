@@ -173,16 +173,17 @@ extern NSString *const A3AbbreviationKeyMeaning;
 }
 
 - (IBAction)favoriteButtonAction:(id)sender {
+    [self dismissViewControllerAnimated:NO completion:^{
+        if ([_delegate respondsToSelector:@selector(sharePopupViewControllerDidDismiss:didTapShareButton:)]) {
+            [_delegate sharePopupViewControllerDidDismiss:self didTapShareButton:NO];
+        }
+    }];
+    
 	_hudView = [MBProgressHUD showHUDAddedTo:[[UIApplication sharedApplication] keyWindow] animated:YES];
 	_hudView.square = YES;
 	_hudView.mode = MBProgressHUDModeCustomView;
 	UIImage *image = [[UIImage imageNamed:@"Favorites"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 	_hudView.customView = [[UIImageView alloc] initWithImage:image];
-
-	__weak typeof(self) weakSelf = self;
-	_hudView.completionBlock = ^{
-		[weakSelf dismissViewController];
-	};
 
 	if ([self contentIsFavorite]) {
 		_hudView.label.text = NSLocalizedString(@"Removed from Favorites", @"Removed from Favorites");
@@ -192,7 +193,11 @@ extern NSString *const A3AbbreviationKeyMeaning;
 		[self addToFavorites];
 	}
 
-	self.view.hidden = YES;
+    if ([_delegate respondsToSelector:@selector(sharePopupViewControllerContentsModified)]) {
+        [_delegate sharePopupViewControllerContentsModified];
+    }
+
+    self.view.hidden = YES;
 	[_hudView hideAnimated:YES afterDelay:1.5];
 }
 
