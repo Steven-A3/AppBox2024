@@ -8,6 +8,12 @@
 
 #import "A3KaomojiCollectionViewCell.h"
 
+@interface A3KaomojiCollectionViewCell ()
+
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *firstLineHeightConstraint, *secondLineHeightConstraint;
+
+@end
+
 @implementation A3KaomojiCollectionViewCell
 
 + (NSString *)reuseIdentifier {
@@ -17,9 +23,12 @@
 - (void)awakeFromNib {
 	[super awakeFromNib];
 
+    if ([[UIScreen mainScreen] scale] == 1) {
+        _firstLineHeightConstraint.constant = 1.0;
+        _secondLineHeightConstraint.constant = 1.0;
+    }
 	_roundedRectView.layer.cornerRadius = 10;
 	_roundedRectView.layer.masksToBounds = YES;
-
 
 	if (IS_IPHONE_4_7_INCH) {
 		if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.2")) {
