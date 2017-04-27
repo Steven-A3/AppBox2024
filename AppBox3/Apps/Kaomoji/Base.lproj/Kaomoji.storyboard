@@ -219,6 +219,7 @@
                         <outlet property="collectionViewFlowLayout" destination="P8x-Am-8aY" id="NV7-GX-HcS"/>
                         <outlet property="titleLabel" destination="EfT-G1-lH4" id="5mP-cx-4S2"/>
                         <outlet property="titleLabelBaselineConstraint" destination="Tcs-zK-S72" id="oML-9F-lPV"/>
+                        <outlet property="topLineHeightConstraint" destination="hLz-Qm-P11" id="qdK-So-NGW"/>
                         <outlet property="topLineTopConstraint" destination="xFH-vr-BJn" id="Alu-We-An9"/>
                         <outlet property="topLineView" destination="7Nq-ZK-fi5" id="svp-HJ-8aa"/>
                     </connections>

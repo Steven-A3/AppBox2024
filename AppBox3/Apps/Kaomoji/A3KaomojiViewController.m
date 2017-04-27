@@ -35,6 +35,7 @@
 @property (nonatomic, weak) IBOutlet UICollectionViewFlowLayout *collectionViewFlowLayout;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *titleLabelBaselineConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *topLineTopConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *topLineHeightConstraint;
 @property (nonatomic, strong) A3KaomojiHelpViewController *helpViewController;
 
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
@@ -88,6 +89,10 @@
 		[self.collectionView addGestureRecognizer:longPressGestureRecognizer];
 	}
     [self showHelpView];
+    
+    if ([[UIScreen mainScreen] scale] == 1) {
+        _topLineHeightConstraint.constant = 1.0;
+    }
 }
 
 - (void)viewWillLayoutSubviews {
