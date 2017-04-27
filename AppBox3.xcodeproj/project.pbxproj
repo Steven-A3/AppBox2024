@@ -369,7 +369,6 @@
 		683D68481DBC5C00008C47C9 /* TJDropboxAuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 683D68451DBC5C00008C47C9 /* TJDropboxAuthenticationViewController.m */; };
 		68425D581977BD5F007C1AAE /* DaysCounterReminder+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68425D571977BD5F007C1AAE /* DaysCounterReminder+extension.m */; };
 		68425D5B1977BF63007C1AAE /* DaysCounterFavorite+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68425D5A1977BF63007C1AAE /* DaysCounterFavorite+extension.m */; };
-		684310CB1E6FF3FF00405ED0 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 684310CA1E6FF3FF00405ED0 /* GoogleMobileAds.framework */; };
 		68459BB21C4CE1B1000A2092 /* Launch Screen~iphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68459BB11C4CE1B1000A2092 /* Launch Screen~iphone.storyboard */; };
 		68459BB61C4CE8C4000A2092 /* Launch Screen~ipad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68459BB51C4CE8C4000A2092 /* Launch Screen~ipad.storyboard */; };
 		68459BB91C4CE9AC000A2092 /* A3FMMoveTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68459BB81C4CE9AC000A2092 /* A3FMMoveTableViewController.m */; };
@@ -1699,7 +1698,6 @@
 		68425D571977BD5F007C1AAE /* DaysCounterReminder+extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DaysCounterReminder+extension.m"; sourceTree = "<group>"; };
 		68425D591977BF63007C1AAE /* DaysCounterFavorite+extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DaysCounterFavorite+extension.h"; sourceTree = "<group>"; };
 		68425D5A1977BF63007C1AAE /* DaysCounterFavorite+extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DaysCounterFavorite+extension.m"; sourceTree = "<group>"; };
-		684310CA1E6FF3FF00405ED0 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = "External/GoogleMobileAdsSdkiOS-7.18.0/GoogleMobileAds.framework"; sourceTree = "<group>"; };
 		68459BB11C4CE1B1000A2092 /* Launch Screen~iphone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = "Launch Screen~iphone.storyboard"; path = "AppBox3/MainView/Launch Screen~iphone.storyboard"; sourceTree = "<group>"; };
 		68459BB51C4CE8C4000A2092 /* Launch Screen~ipad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = "Launch Screen~ipad.storyboard"; path = "AppBox3/MainView/Launch Screen~ipad.storyboard"; sourceTree = "<group>"; };
 		68459BB71C4CE9AC000A2092 /* A3FMMoveTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3FMMoveTableViewController.h; sourceTree = "<group>"; };
@@ -3032,7 +3030,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				684310CB1E6FF3FF00405ED0 /* GoogleMobileAds.framework in Frameworks */,
 				68F04D101B40F86B004FDD7B /* libcrypto.a in Frameworks */,
 				68F04D111B40F86B004FDD7B /* libssl.a in Frameworks */,
 				68636000198BF88F00C3A323 /* libensembles.a in Frameworks */,
@@ -5318,7 +5315,6 @@
 				68B6F6B71EA5759300C4BB7A /* SDWebImage */,
 				68B6F6A81EA5758200C4BB7A /* DACircularProgress */,
 				68A885A91E7B8C370029D7FB /* BEMCheckBox */,
-				684310CA1E6FF3FF00405ED0 /* GoogleMobileAds.framework */,
 				68E44AD31E406D4B00FBC931 /* FXBlurView */,
 				683D683E1DBC5C00008C47C9 /* ACSimpleKeychain */,
 				683D68411DBC5C00008C47C9 /* TJDropbox */,
