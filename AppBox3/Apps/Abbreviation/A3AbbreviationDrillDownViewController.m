@@ -213,6 +213,10 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate, UIActivityItemS
     return cell;
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+	return _isFavoritesList;
+}
+
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
 		if ([_dataSource respondsToSelector:@selector(deleteItemForContent:)]) {
