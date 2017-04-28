@@ -12,7 +12,7 @@
 點擊並按住查看操作菜單";
 
 /* Class = "UILabel"; text = "Copied."; ObjectID = "ZzU-K6-u5t"; */
-"ZzU-K6-u5t.text" = "已復制。";
+"ZzU-K6-u5t.text" = "已復制";
 
 /* Class = "UILabel"; text = "Paste it!"; ObjectID = "jnI-ac-1OB"; */
 "jnI-ac-1OB.text" = "粘貼吧";

@@ -47,6 +47,12 @@ extern NSString *const A3UserDefaultsDidAlertWhatsNew4_5;
     } else {
         fontName = @"Chalkduster";
     }
+    
+    if (IS_IPHONE_3_5_INCH) {
+        if ([NSLocalizedString(@"LocalizedLanguage", nil) isEqualToString:@"fr"]) {
+            _doNotShowLabel.font = [UIFont fontWithName:fontName size:15];
+        }
+    }
     if (IS_IPAD) {
         _titleLabel.font = [UIFont fontWithName:fontName size:50];
         _abbreviationsAppNameLabel.font = [UIFont fontWithName:fontName size:30];

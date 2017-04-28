@@ -60,6 +60,10 @@
         _textLabel1.font = [UIFont fontWithName:fontName size:_textLabel1.font.pointSize];
         _textLabel2.font = [UIFont fontWithName:fontName size:_textLabel2.font.pointSize];
     }
+    if (IS_IPHONE_3_5_INCH || IS_IPHONE_4_INCH) {
+        _textLabel1.font = [UIFont fontWithName:fontName size:17];
+        _textLabel2.font = [UIFont fontWithName:fontName size:17];
+    }
 }
 
 - (void)didTapCloseImage {

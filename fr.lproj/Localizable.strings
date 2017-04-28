@@ -1116,7 +1116,6 @@ Les données recueillies auprès de HealthKit ne seront pas utilisées à des fi
 "Laughing" = "En riant";
 "Apologizing" = "S'excuser";
 
-
 "Camera access not authorized." = "Accès caméra non autorisé.";
 "%@ requires Photo Library access." = "%@: Nécessite l'accès à la Partage de photos.";
 "Photo Library access not authorized." = "L'accès à la Partage de photos n'est pas autorisé.";
