@@ -381,7 +381,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
     if (!_decimalNumberFormatter) {
         _decimalNumberFormatter = [NSNumberFormatter new];
         _decimalNumberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
-        _decimalNumberFormatter.minimumFractionDigits = 4;
+        _decimalNumberFormatter.minimumFractionDigits = 2;
     }
     return _decimalNumberFormatter;
 }

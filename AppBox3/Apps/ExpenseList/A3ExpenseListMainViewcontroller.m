@@ -1367,7 +1367,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 		}
 		return YES;
 	} else {
-		if (_editingTextField == _editingCell.nameField) {
+		if (_editingTextField && _editingTextField == _editingCell.nameField) {
             if (textField == cell.priceField || textField == cell.quantityField) {
                 _isSwitchingTextField = YES;
                 self.nextEditingCell = cell;
@@ -1377,7 +1377,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
             return YES;
 		}
 		if (_isNumberKeyboardVisible) {
-			if (_editingTextField != textField) {
+			if (_editingTextField && _editingTextField != textField) {
 				// textFieldDidEndEditing은 _isSwitchingTextField 플랙을 끈다.
 				_isSwitchingTextField = YES;
 				[self cell:_editingCell textFieldDidEndEditing:_editingTextField];

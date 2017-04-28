@@ -907,9 +907,8 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
     }
 
     NSArray *section = self.sectionsArray[indexPath.section];
+    [self.searchController setActive:NO];
 	[super tableView:tableView didSelectRowAtIndexPath:indexPath withItem:section[indexPath.row]];
-    
-    self.searchController.active = NO;
 }
 
 #pragma mark - Table view data source
@@ -1155,16 +1154,26 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
     return NO;
 }
 
-/*
-#pragma mark - Navigation
+#pragma mark - UISearchControllerDelegate
 
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)willPresentSearchController:(UISearchController *)searchController {
+    
 }
 
- */
+- (void)didPresentSearchController:(UISearchController *)searchController {
+    
+}
+
+- (void)willDismissSearchController:(UISearchController *)searchController {
+    
+}
+
+- (void)didDismissSearchController:(UISearchController *)searchController {
+    
+}
+
+- (void)presentSearchController:(UISearchController *)searchController {
+    
+}
 
 @end

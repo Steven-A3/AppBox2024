@@ -257,15 +257,18 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate, UIActivityItemS
 // https://developer.apple.com/reference/uikit/uipreviewinteractiondelegate
 
 - (BOOL)previewInteractionShouldBegin:(UIPreviewInteraction *)previewInteraction {
+    FNLOG();
 	if (self.presentedViewController || self.tableView.isEditing) {
 		return NO;
 	}
 	CGPoint location = [previewInteraction locationInCoordinateSpace:_tableView];
 	NSIndexPath *indexPath = [_tableView indexPathForRowAtPoint:location];
+    _selectedRow = indexPath.row;
 	return indexPath != nil;
 }
 
 - (void)previewInteraction:(UIPreviewInteraction *)previewInteraction didUpdatePreviewTransition:(CGFloat)transitionProgress ended:(BOOL)ended {
+    FNLOG();
 	_cancelTime3DTouch = nil;
 
 	if (!_previewIsPresented) {
@@ -308,6 +311,7 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate, UIActivityItemS
 }
 
 - (void)previewInteraction:(UIPreviewInteraction *)previewInteraction didUpdateCommitTransition:(CGFloat)transitionProgress ended:(BOOL)ended {
+    FNLOG();
 	if (!self.sharePopupViewControllerIsPresented) {
 		_sharePopupViewControllerIsPresented = YES;
 		_sharePopupViewController = [A3SharePopupViewController storyboardInstanceWithBlurBackground:NO];
@@ -330,6 +334,7 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate, UIActivityItemS
 }
 
 - (void)previewInteractionDidCancel:(UIPreviewInteraction *)previewInteraction {
+    FNLOG();
 	_cancelTime3DTouch = [NSDate date];
 
 	if (!self.presentedViewController) {

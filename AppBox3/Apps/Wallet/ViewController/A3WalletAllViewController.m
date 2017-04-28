@@ -909,20 +909,15 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 }
 
 - (void)didPresentSearchController:(UISearchController *)searchController {
-//    UIEdgeInsets contentInset = self.tableView.contentInset;
-//    contentInset.top = 64;
-//    self.tableView.contentInset = contentInset;
+
 }
 
 - (void)willDismissSearchController:(UISearchController *)searchController {
+
 }
 
 - (void)didDismissSearchController:(UISearchController *)searchController {
-//    UIEdgeInsets contentInset = self.tableView.contentInset;
-//    contentInset.top = 64;
-//    self.tableView.contentInset = contentInset;
-    FNLOGINSETS(self.tableView.contentInset);
-    FNLOGRECT(self.tableView.frame);
+
 }
 
 - (void)presentSearchController:(UISearchController *)searchController {

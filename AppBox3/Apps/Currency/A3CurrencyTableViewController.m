@@ -646,7 +646,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 	if (!_decimalNumberFormatter) {
 		_decimalNumberFormatter = [NSNumberFormatter new];
 		_decimalNumberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
-		_decimalNumberFormatter.minimumFractionDigits = 4;
+		_decimalNumberFormatter.minimumFractionDigits = 2;
 	}
 	return _decimalNumberFormatter;
 }

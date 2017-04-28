@@ -21,10 +21,6 @@
 }
 
 @property (nonatomic, strong) UITableView *tableView;
-/* TODO: 아래 Property는 삭제 돠어야 한다. UISearchController.searchBar를 사용하기 때문
- * TODO: Before delete the following property, make sure all required codes are converted.
-@property (nonatomic, strong) UISearchBar *searchBar;
- */
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic, strong) UITableViewController *searchResultTableViewController;
 @property (nonatomic, strong) NSArray *filteredResults;
@@ -226,15 +222,13 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 		_searchResultTableViewController.tableView.dataSource = self;
 		_searchResultTableViewController.tableView.delegate = self;
 		_searchResultTableViewController.tableView.showsVerticalScrollIndicator = NO;
-		/*
-		 * TODO: 이 코드는 iPad에서 필요한 사항인지 확인 후 적용합니다.
+
 		if ([_searchResultTableViewController.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 			_searchResultTableViewController.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 		}
 		if ([_searchResultTableViewController.tableView respondsToSelector:@selector(layoutMargins)]) {
 			_searchResultTableViewController.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
 		}
-		*/
 	}
 	return _searchResultTableViewController;
 }
@@ -266,12 +260,6 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     else {
 		self.tableView.tableHeaderView = self.searchController.searchBar;
 
-        if (IS_RETINA) {
-            self.tableView.frame = CGRectMake(0, kSearchBarHeight+3.5, self.view.bounds.size.width, self.view.bounds.size.height -kSearchBarHeight-3.5);
-        }
-        else {
-            self.tableView.frame = CGRectMake(0, kSearchBarHeight+3.0, self.view.bounds.size.width, self.view.bounds.size.height -kSearchBarHeight-3.0);
-        }
         [_tableView reloadData];
         
         self.tabBarController.navigationItem.rightBarButtonItem = nil;

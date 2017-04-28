@@ -243,7 +243,14 @@
 // https://developer.apple.com/reference/uikit/uipreviewinteractiondelegate
 
 - (BOOL)previewInteractionShouldBegin:(UIPreviewInteraction *)previewInteraction {
-	return !self.presentedViewController && !self.tableView.isEditing;
+    FNLOG();
+    if (self.presentedViewController || self.tableView.isEditing) {
+        return NO;
+    }
+    CGPoint location = [previewInteraction locationInCoordinateSpace:_tableView];
+    NSIndexPath *indexPath = [_tableView indexPathForRowAtPoint:location];
+    _selectedRow = indexPath.row;
+    return indexPath != nil;
 }
 
 - (void)previewInteraction:(UIPreviewInteraction *)previewInteraction didUpdatePreviewTransition:(CGFloat)transitionProgress ended:(BOOL)ended {
