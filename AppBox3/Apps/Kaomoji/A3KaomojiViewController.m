@@ -41,6 +41,7 @@
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
 @property (nonatomic, copy) NSString *selectedStringToShare;
 @property (nonatomic, assign) CGRect sourceRectForPopover;
+@property (nonatomic, assign) BOOL popoverNeedBackground;
 
 @end
 
@@ -302,64 +303,69 @@
 #pragma mark - UIPreviewInteractionDelegate
 
 - (BOOL)previewInteractionShouldBegin:(UIPreviewInteraction *)previewInteraction {
-    FNLOG();
 	CGPoint location = [previewInteraction locationInCoordinateSpace:_collectionView];
 	NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:location];
 	if (indexPath != nil) {
 		A3KaomojiCollectionViewCell *cell = (A3KaomojiCollectionViewCell *)[_collectionView cellForItemAtIndexPath:indexPath];
 		CGPoint locationInCollectionView = [previewInteraction locationInCoordinateSpace:cell.roundedRectView];
-		
 		return [cell.roundedRectView pointInside:locationInCollectionView withEvent:nil];
 	}
 	return NO;
 }
 
 - (void)previewInteraction:(UIPreviewInteraction *)previewInteraction didUpdatePreviewTransition:(CGFloat)transitionProgress ended:(BOOL)ended {
-	if (!_previewIsPresented) {
-		_previewIsPresented = YES;
+    FNLOG(@"%f, %ld", transitionProgress, (long)ended);
+    if (!_previewIsPresented) {
+        _previewIsPresented = YES;
+        
+        _popoverNeedBackground = NO;
+        
+        CGPoint location = [previewInteraction locationInCoordinateSpace:_collectionView];
+        NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:location];
+        A3KaomojiCollectionViewCell *cell;
+        NSInteger idx = NSNotFound;
+        if (indexPath) {
+            NSDictionary *category = self.dataManager.contentsArray[indexPath.row];
+            
+            cell = (A3KaomojiCollectionViewCell *) [_collectionView cellForItemAtIndexPath:indexPath];
+            if (cell) {
+                CGPoint pointInCell = [previewInteraction locationInCoordinateSpace:cell];
+                CGFloat rowHeight = cell.roundedRectView.frame.size.height / 3;
+                idx = floor((pointInCell.y - cell.roundedRectView.frame.origin.y) / rowHeight);
+                
+                // Prepare Data
+                _selectedKaomoji = [category[A3KaomojiKeyContents][idx] copy];
+                
+                _selectedStringToShare = [category[A3KaomojiKeyContents][idx] copy];
+                _sourceRectForPopover = [self.view convertRect:cell.frame fromView:_collectionView];
+            }
+        }
+        
+        if (!ended) {
+            _blurEffectView = [[UIVisualEffectView alloc] init];
+            _blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            _blurEffectView.frame = self.view.bounds;
+            [self.navigationController.view addSubview:_blurEffectView];
+            
+            _blurEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+            
+            _animator = [[UIViewPropertyAnimator alloc] initWithDuration:0.1 curve:UIViewAnimationCurveLinear animations:^{
+                _blurEffectView.effect = nil;
+            }];
 
-		if (!ended) {
-			_blurEffectView = [[UIVisualEffectView alloc] init];
-			_blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-			_blurEffectView.frame = self.view.bounds;
-			[self.navigationController.view addSubview:_blurEffectView];
-
-			_blurEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-
-			_animator = [[UIViewPropertyAnimator alloc] initWithDuration:0.1 curve:UIViewAnimationCurveLinear animations:^{
-				_blurEffectView.effect = nil;
-			}];
-
-			CGPoint location = [previewInteraction locationInCoordinateSpace:_collectionView];
-			NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:location];
-			if (indexPath) {
-				NSDictionary *category = self.dataManager.contentsArray[indexPath.row];
-
-				A3KaomojiCollectionViewCell *cell = (A3KaomojiCollectionViewCell *) [_collectionView cellForItemAtIndexPath:indexPath];
-				if (cell) {
-					CGPoint pointInCell = [previewInteraction locationInCoordinateSpace:cell];
-					CGFloat rowHeight = cell.roundedRectView.frame.size.height / 3;
-					NSInteger idx = floor((pointInCell.y - cell.roundedRectView.frame.origin.y) / rowHeight);
-
-					UIView *rowView = cell.rows[idx];
-					_previewView = [rowView snapshotViewAfterScreenUpdates:YES];
-					_previewView.frame = [self.view convertRect:rowView.frame fromView:cell.roundedRectView];
-					[_blurEffectView addSubview:_previewView];
-
-					// Prepare Data
-					_selectedKaomoji = [category[A3KaomojiKeyContents][idx] copy];
-
-					_selectedStringToShare = [category[A3KaomojiKeyContents][idx] copy];
-					_sourceRectForPopover = [self.view convertRect:cell.frame fromView:_collectionView];
-				}
-			}
-		}
-	}
+            if (cell && idx != NSNotFound) {
+                UIView *rowView = cell.rows[idx];
+                _previewView = [rowView snapshotViewAfterScreenUpdates:YES];
+                _previewView.frame = [self.view convertRect:rowView.frame fromView:cell.roundedRectView];
+                [_blurEffectView addSubview:_previewView];
+            }
+        } else {
+            _popoverNeedBackground = YES;
+        }
+    }
 
 	if (ended) {
-		if (!_blurEffectView) {
-			[previewInteraction cancelInteraction];
-		} else {
+		if (_blurEffectView) {
 			_animator.fractionComplete = 0.75;
 		}
 		[self removePreviewView];
@@ -369,9 +375,10 @@
 }
 
 - (void)previewInteraction:(UIPreviewInteraction *)previewInteraction didUpdateCommitTransition:(CGFloat)transitionProgress ended:(BOOL)ended {
+    FNLOG(@"%f, %ld", transitionProgress, (long)ended);
 	if (!self.sharePopupViewControllerIsPresented) {
 		_sharePopupViewControllerIsPresented = YES;
-		_sharePopupViewController = [A3SharePopupViewController storyboardInstanceWithBlurBackground:NO];
+		_sharePopupViewController = [A3SharePopupViewController storyboardInstanceWithBlurBackground:_popoverNeedBackground];
 		_sharePopupViewController.presentationIsInteractive = YES;
 		_sharePopupViewController.delegate = self;
 		_sharePopupViewController.dataSource = self.dataManager;

@@ -42,6 +42,7 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate, UIActivityItemS
 @property (nonatomic, copy) NSString *selectedStringToShare;
 @property (nonatomic, assign) CGRect sourceRectForPopover;
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
+@property (nonatomic, assign) BOOL popoverNeedBackground;
 
 @end
 
@@ -277,35 +278,38 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate, UIActivityItemS
 
 	if (!_previewIsPresented) {
 		_previewIsPresented = YES;
+        _popoverNeedBackground = ended;
 		
-		_blurEffectView = [[UIVisualEffectView alloc] init];
-		_blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		_blurEffectView.frame = self.view.bounds;
-		[self.navigationController.view addSubview:_blurEffectView];
+        if (!ended) {
+            _blurEffectView = [[UIVisualEffectView alloc] init];
+            _blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            _blurEffectView.frame = self.view.bounds;
+            [self.navigationController.view addSubview:_blurEffectView];
+            
+            _blurEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+            
+            _animator = [[UIViewPropertyAnimator alloc] initWithDuration:1.0 curve:UIViewAnimationCurveLinear animations:^{
+                _blurEffectView.effect = nil;
+            }];
+        }
 		
-		_blurEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-		
-		_animator = [[UIViewPropertyAnimator alloc] initWithDuration:1.0 curve:UIViewAnimationCurveLinear animations:^{
-			_blurEffectView.effect = nil;
-		}];
-		
-		if (!ended) {
-			CGPoint location = [previewInteraction locationInCoordinateSpace:_tableView];
-			if ([_tableView pointInside:location withEvent:nil]) {
-				CGPoint locationInTableView = [previewInteraction locationInCoordinateSpace:_tableView];
-				NSIndexPath *indexPath = [_tableView indexPathForRowAtPoint:locationInTableView];
-				if (indexPath) {
-					_selectedRow = indexPath.row;
-					A3AbbreviationDrillDownTableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
-
-					cell.contentView.backgroundColor = [UIColor whiteColor];
-					_previewView = [cell snapshotViewAfterScreenUpdates:YES];
-					
-					_previewView.frame = [self.view convertRect:cell.frame fromView:_tableView];
-					[self.navigationController.view addSubview:_previewView];
-				}
-			}
-		}
+        CGPoint location = [previewInteraction locationInCoordinateSpace:_tableView];
+        if ([_tableView pointInside:location withEvent:nil]) {
+            CGPoint locationInTableView = [previewInteraction locationInCoordinateSpace:_tableView];
+            NSIndexPath *indexPath = [_tableView indexPathForRowAtPoint:locationInTableView];
+            if (indexPath) {
+                _selectedRow = indexPath.row;
+                A3AbbreviationDrillDownTableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+                
+                if (!ended) {
+                    cell.contentView.backgroundColor = [UIColor whiteColor];
+                    _previewView = [cell snapshotViewAfterScreenUpdates:YES];
+                    
+                    _previewView.frame = [self.view convertRect:cell.frame fromView:_tableView];
+                    [self.navigationController.view addSubview:_previewView];
+                }
+            }
+        }
 	}
 	_animator.fractionComplete = 1.0 - transitionProgress/4;
 	
@@ -318,7 +322,7 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate, UIActivityItemS
     FNLOG();
 	if (!self.sharePopupViewControllerIsPresented) {
 		_sharePopupViewControllerIsPresented = YES;
-		_sharePopupViewController = [A3SharePopupViewController storyboardInstanceWithBlurBackground:NO];
+		_sharePopupViewController = [A3SharePopupViewController storyboardInstanceWithBlurBackground:_popoverNeedBackground];
 		_sharePopupViewController.presentationIsInteractive = YES;
 		_sharePopupViewController.dataSource = self.dataManager;
 		_sharePopupViewController.delegate = self;

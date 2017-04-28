@@ -42,6 +42,7 @@
 @property (nonatomic, strong) NSDate *cancelTime3DTouch;
 @property (nonatomic, strong) A3AbbreviationHelpViewController *helpViewController;
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
+@property (nonatomic, assign) BOOL popoverNeedBackground;
 
 @property (nonatomic, assign) CGRect sourceRectForPopoverView;
 
@@ -471,88 +472,92 @@
 //	FNLOG(@"%f, _previewIsPresented = %@, ended = %@", transitionProgress, _previewIsPresented ? @"YES" : @"NO", ended ? @"YES" : @"NO");
 	_cancelTime3DTouch = nil;
 
-	if (!_previewIsPresented) {
-		_previewIsPresented = YES;
-		
-		if (!ended) {
-			_blurEffectView = [[UIVisualEffectView alloc] init];
-			_blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-			_blurEffectView.frame = self.view.bounds;
-			[self.navigationController.view addSubview:_blurEffectView];
-			
-			_blurEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-			
-			_animator = [[UIViewPropertyAnimator alloc] initWithDuration:0.1 curve:UIViewAnimationCurveLinear animations:^{
-				_blurEffectView.effect = nil;
-			}];
-			
-			CGPoint location = [previewInteraction locationInCoordinateSpace:_collectionView];
-			if ([_collectionView pointInside:location withEvent:nil]) {
-				// 3D Touch가 시작되면 화면이 스크롤되지 않도록 합니다.
-				_collectionView.scrollEnabled = NO;
-				
-				CGPoint location = [previewInteraction locationInCoordinateSpace:_collectionView];
-				FNLOG(@"%f, %f", location.x, location.y);
-				NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:location];
-				if (indexPath) {
-					NSDictionary *hashTagSection = self.dataManager.hashTagSections[indexPath.row];
-					
-					A3AbbreviationCollectionViewCell *cell = (A3AbbreviationCollectionViewCell *) [_collectionView cellForItemAtIndexPath:indexPath];
-					if (cell) {
-						CGPoint pointInCell = [previewInteraction locationInCoordinateSpace:cell];
-						CGFloat rowHeight = cell.roundedRectView.frame.size.height / 3;
-						NSInteger idx = floor((pointInCell.y - cell.roundedRectView.frame.origin.y) / rowHeight);
-						
-						UIView *rowView = cell.rows[idx];
-						_previewView = [rowView snapshotViewAfterScreenUpdates:YES];
-						_previewView.frame = [self.view convertRect:rowView.frame fromView:cell.roundedRectView];
-						[_blurEffectView addSubview:_previewView];
-						
-						// Prepare data
-						_selectedComponent = [hashTagSection[A3AbbreviationKeyComponents][idx] copy];
-                        _sourceRectForPopoverView = [self.view convertRect:cell.frame fromView:_collectionView];
-					}
-				}
-			} else {
-				// 3D Touch가 시작되면 화면이 스크롤되지 않도록 합니다.
-				_tableView.scrollEnabled = NO;
-				
-				CGPoint locationInTableView = [previewInteraction locationInCoordinateSpace:_tableView];
-				NSIndexPath *indexPath = [_tableView indexPathForRowAtPoint:locationInTableView];
-				
-				if (indexPath) {
-					// Save data to use later
-					_selectedComponent = [self.dataManager.alphabetSections[indexPath.row][A3AbbreviationKeyComponents][0] copy];
-					
-					A3AbbreviationTableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
-					
-					UIColor *originalColor = cell.alphabetTopView.backgroundColor;
-					if (indexPath.row != 0) {
-						cell.alphabetTopView.backgroundColor = [UIColor clearColor];
-					}
-					_previewView = [cell snapshotViewAfterScreenUpdates:YES];
-					
-					cell.alphabetTopView.backgroundColor = originalColor;
-					
-					_previewView.frame = [self.view convertRect:cell.frame fromView:_tableView];
-					[_blurEffectView addSubview:_previewView];
-					
-					_previewBottomView = [UIView new];
-					_previewBottomView.backgroundColor = cell.alphabetBottomView.backgroundColor;
-					CGRect frame = [self.view convertRect:cell.alphabetTopView.frame fromView:cell];
-					frame.origin.y = _previewView.frame.origin.y + _previewView.frame.size.height;
-					_previewBottomView.frame = frame;
-					
-					[_blurEffectView addSubview:_previewBottomView];
-				}
-			}
-		}
-	}
+    if (!_previewIsPresented) {
+        _previewIsPresented = YES;
+        _popoverNeedBackground = ended;
+        
+        if (!ended) {
+            _blurEffectView = [[UIVisualEffectView alloc] init];
+            _blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            _blurEffectView.frame = self.view.bounds;
+            [self.navigationController.view addSubview:_blurEffectView];
+            
+            _blurEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+            
+            _animator = [[UIViewPropertyAnimator alloc] initWithDuration:0.1 curve:UIViewAnimationCurveLinear animations:^{
+                _blurEffectView.effect = nil;
+            }];
+        }
+ 
+        CGPoint location = [previewInteraction locationInCoordinateSpace:_collectionView];
+        if ([_collectionView pointInside:location withEvent:nil]) {
+            // 3D Touch가 시작되면 화면이 스크롤되지 않도록 합니다.
+            _collectionView.scrollEnabled = NO;
+            
+            CGPoint location = [previewInteraction locationInCoordinateSpace:_collectionView];
+            FNLOG(@"%f, %f", location.x, location.y);
+            NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:location];
+            if (indexPath) {
+                NSDictionary *hashTagSection = self.dataManager.hashTagSections[indexPath.row];
+                
+                A3AbbreviationCollectionViewCell *cell = (A3AbbreviationCollectionViewCell *) [_collectionView cellForItemAtIndexPath:indexPath];
+                if (cell) {
+                    CGPoint pointInCell = [previewInteraction locationInCoordinateSpace:cell];
+                    CGFloat rowHeight = cell.roundedRectView.frame.size.height / 3;
+                    NSInteger idx = floor((pointInCell.y - cell.roundedRectView.frame.origin.y) / rowHeight);
+                    
+                    if (!ended) {
+                        UIView *rowView = cell.rows[idx];
+                        _previewView = [rowView snapshotViewAfterScreenUpdates:YES];
+                        _previewView.frame = [self.view convertRect:rowView.frame fromView:cell.roundedRectView];
+                        [_blurEffectView addSubview:_previewView];
+                    }
+                    
+                    // Prepare data
+                    _selectedComponent = [hashTagSection[A3AbbreviationKeyComponents][idx] copy];
+                    _sourceRectForPopoverView = [self.view convertRect:cell.frame fromView:_collectionView];
+                }
+            }
+        } else {
+            // 3D Touch가 시작되면 화면이 스크롤되지 않도록 합니다.
+            _tableView.scrollEnabled = NO;
+            
+            CGPoint locationInTableView = [previewInteraction locationInCoordinateSpace:_tableView];
+            NSIndexPath *indexPath = [_tableView indexPathForRowAtPoint:locationInTableView];
+            
+            if (indexPath) {
+                // Save data to use later
+                _selectedComponent = [self.dataManager.alphabetSections[indexPath.row][A3AbbreviationKeyComponents][0] copy];
+                
+                A3AbbreviationTableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+                _sourceRectForPopoverView = [self.view convertRect:cell.frame fromView:_tableView];
+                
+                if (!ended) {
+                    UIColor *originalColor = cell.alphabetTopView.backgroundColor;
+                    if (indexPath.row != 0) {
+                        cell.alphabetTopView.backgroundColor = [UIColor clearColor];
+                    }
+                    _previewView = [cell snapshotViewAfterScreenUpdates:YES];
+                    
+                    cell.alphabetTopView.backgroundColor = originalColor;
+                    
+                    _previewView.frame = [self.view convertRect:cell.frame fromView:_tableView];
+                    [_blurEffectView addSubview:_previewView];
+                    
+                    _previewBottomView = [UIView new];
+                    _previewBottomView.backgroundColor = cell.alphabetBottomView.backgroundColor;
+                    CGRect frame = [self.view convertRect:cell.alphabetTopView.frame fromView:cell];
+                    frame.origin.y = _previewView.frame.origin.y + _previewView.frame.size.height;
+                    _previewBottomView.frame = frame;
+                    
+                    [_blurEffectView addSubview:_previewBottomView];
+                }
+            }
+        }
+    }
 
 	if (ended) {
-		if (!_blurEffectView) {
-			[previewInteraction cancelInteraction];
-		} else {
+		if (_blurEffectView) {
 			_animator.fractionComplete = 0.75;
 		}
 		[self removePreviewView];
@@ -566,7 +571,7 @@
 
 	if (!self.sharePopupViewControllerIsPresented) {
 		_sharePopupViewControllerIsPresented = YES;
-		_sharePopupViewController = [A3SharePopupViewController storyboardInstanceWithBlurBackground:NO];
+		_sharePopupViewController = [A3SharePopupViewController storyboardInstanceWithBlurBackground:_popoverNeedBackground];
 		_sharePopupViewController.presentationIsInteractive = YES;
 		_sharePopupViewController.delegate = self;
 		_sharePopupViewController.dataSource = self.dataManager;
