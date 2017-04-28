@@ -257,6 +257,7 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
 	} else {
 		[[[A3AppDelegate instance] rootViewController_iPad] toggleLeftMenuViewOnOff];
 	}
+	[[A3AppDelegate instance] presentInterstitialAds];
 }
 
 - (void)leftBarButtonCancelButton {

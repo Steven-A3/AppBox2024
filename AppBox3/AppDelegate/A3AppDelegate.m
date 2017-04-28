@@ -1481,7 +1481,7 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 	
 	NSDate *adsDisplayTime = [[NSUserDefaults standardUserDefaults] objectForKey:A3AdsDisplayTime];
 //	NSInteger numberOfTimesOpeningSubApp = [[NSUserDefaults standardUserDefaults] integerForKey:A3NumberOfTimesOpeningSubApp];
-	if (adsDisplayTime && [[NSDate date] timeIntervalSinceDate:adsDisplayTime] > 60 * 60) {
+	if (!adsDisplayTime || [[NSDate date] timeIntervalSinceDate:adsDisplayTime] > 60 * 60) {
 		[self setupAdInterstitialForAdUnitID:A3InterstitialAdUnitID keywords:nil gender:kGADGenderUnknown];
 		return YES;
 	}

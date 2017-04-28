@@ -224,6 +224,8 @@
 #pragma mark - Notification Observers
 
 - (void)applicationDidEnterBackground_passcode {
+    self.firstRunAfterInstall = NO;
+    
 	if (IS_IPHONE) {
 		[self.drawerController closeDrawerAnimated:NO completion:nil];
 	} else {
@@ -308,7 +310,9 @@
 		dispatch_async(dispatch_get_main_queue(), ^{
 			if (!self.isTouchIDEvaluationInProgress && !self.passcodeViewController.view.superview) {
 				[self removeSecurityCoverView];
-				[self presentInterstitialAds];
+                if (!self.firstRunAfterInstall) {
+                    [self presentInterstitialAds];
+                }
 				FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 			} else {
 				FNLOG(@"isTouchIDEvaluationInProgress = %ld", (long)self.isTouchIDEvaluationInProgress);
@@ -328,7 +332,9 @@
 			}
 			return;
 		} else {
-            [self presentInterstitialAds];
+            if (!self.firstRunAfterInstall) {
+                [self presentInterstitialAds];
+            }
             [self updateHolidayNations];
 		}
 	}
@@ -550,7 +556,9 @@
 		[self reloadRootViewController];
 	}
 	[self showReceivedLocalNotifications];
-	[self presentInterstitialAds];
+    if (!self.firstRunAfterInstall) {
+        [self presentInterstitialAds];
+    }
 	[self alertWhatsNew];
 }
 

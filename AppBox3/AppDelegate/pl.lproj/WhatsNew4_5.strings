@@ -3,7 +3,7 @@
 "8jk-DF-6Oh.text" = "12 grup emocjonalnych";
 
 /* Class = "UILabel"; text = "Do not show next time"; ObjectID = "GLA-Zf-YtI"; */
-"GLA-Zf-YtI.text" = "Nie pokazuj następnego czasu";
+"GLA-Zf-YtI.text" = "Nie pokazuj ponownie";
 
 /* Class = "UIButton"; normalTitle = "NEXT"; ObjectID = "Gym-eK-RzS"; */
 "Gym-eK-RzS.normalTitle" = "Następny";

@@ -1283,6 +1283,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 		[[[A3AppDelegate instance] rootViewController_iPad] toggleLeftMenuViewOnOff];
 		[self enableControls:NO];
 	}
+	[[A3AppDelegate instance] presentInterstitialAds];
 }
 
 - (void)moreButtonAction:(UIBarButtonItem *)button {

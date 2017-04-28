@@ -474,6 +474,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 		[_buttonsTimer invalidate];
 		_buttonsTimer = nil;
 	}
+	[[A3AppDelegate instance] presentInterstitialAds];
 }
 
 - (void)mainMenuDidHide {

@@ -403,6 +403,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 		[self enableControls: rootViewController.showLeftView ];
 		[[[A3AppDelegate instance] rootViewController_iPad] toggleLeftMenuViewOnOff];
 	}
+    [[A3AppDelegate instance] presentInterstitialAds];
 }
 
 - (void)moreButtonAction:(UIBarButtonItem *)button {

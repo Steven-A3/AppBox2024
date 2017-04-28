@@ -226,6 +226,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 		[self enableControls: rootViewController.showLeftView ];
 		[[[A3AppDelegate instance] rootViewController_iPad] toggleLeftMenuViewOnOff];
 	}
+	[[A3AppDelegate instance] presentInterstitialAds];
 }
 
 #pragma mark - More Menu

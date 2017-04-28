@@ -52,6 +52,7 @@
 		_topSpaceConstraint.constant = 165;
 	} else if (IS_IPHONE_3_5_INCH) {
 		_topSpaceConstraint.constant = 140;
+        _imageWidthConstraint.constant = 130;
 	} else if (IS_IPAD_12_9_INCH) {
 		_topSpaceConstraint.constant = 250;
 		_topLeadingConstraint.constant = 115;

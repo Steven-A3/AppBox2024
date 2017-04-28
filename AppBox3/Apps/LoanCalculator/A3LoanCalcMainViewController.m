@@ -731,6 +731,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		[rootViewController toggleLeftMenuViewOnOff];
 		[self enableControls:!rootViewController.showLeftView];
 	}
+    [[A3AppDelegate instance] presentInterstitialAds];
 }
 
 - (void)moreButtonAction:(UIBarButtonItem *)button {

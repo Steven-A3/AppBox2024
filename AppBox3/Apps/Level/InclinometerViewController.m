@@ -194,6 +194,7 @@
 	} else {
 		[[[A3AppDelegate instance] rootViewController_iPad] toggleLeftMenuViewOnOff];
 	}
+	[[A3AppDelegate instance] presentInterstitialAds];
 }
 
 - (void)gotoSurface {
