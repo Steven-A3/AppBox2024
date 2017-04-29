@@ -1446,6 +1446,14 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 	[_adInterstitial presentFromRootViewController:navigationController];
 }
 
+- (void)interstitial:(GADInterstitial *)ad didFailToReceiveAdWithError:(GADRequestError *)error {
+    FNLOG(@"%@", error.localizedDescription);
+}
+
+- (void)interstitialDidFailToPresentScreen:(GADInterstitial *)ad {
+    FNLOG();
+}
+
 - (void)interstitialWillPresentScreen:(GADInterstitial *)ad {
 	_statusBarHiddenBeforeAdsAppear = [[UIApplication sharedApplication] isStatusBarHidden];
 	_statusBarStyleBeforeAdsAppear = [[UIApplication sharedApplication] statusBarStyle];
@@ -1459,6 +1467,8 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3AdsDisplayTime];
 	[[NSUserDefaults standardUserDefaults] setInteger:0 forKey:A3NumberOfTimesOpeningSubApp];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+    
+    self.adDisplayedAfterApplicationDidBecomeActive = YES;
 }
 
 - (void)interstitialWillDismissScreen:(GADInterstitial *)ad {
@@ -1477,7 +1487,6 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 		FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 		return NO;
 	}
-	self.adDisplayedAfterApplicationDidBecomeActive = YES;
 	
 	NSDate *adsDisplayTime = [[NSUserDefaults standardUserDefaults] objectForKey:A3AdsDisplayTime];
 //	NSInteger numberOfTimesOpeningSubApp = [[NSUserDefaults standardUserDefaults] integerForKey:A3NumberOfTimesOpeningSubApp];

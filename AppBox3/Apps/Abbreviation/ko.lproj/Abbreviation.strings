@@ -1,15 +1,12 @@
 
 /* Class = "UILabel"; text = "Tap to view the list\nOr Tap and hold to view \nthe action menu"; ObjectID = "T8M-0h-cUF"; */
-"T8M-0h-cUF.text" = "터치하면 목록을 표시하고,
-길게 터치하면 메뉴가 표시됩니다.";
+"T8M-0h-cUF.text" = "터치하면 목록을 표시하고, 길게 터치하면 메뉴가 표시됩니다.";
 
 /* Class = "UILabel"; text = "Tap to Copy or\nTap and Hold to view \nthe action menu"; ObjectID = "WKJ-ey-HYe"; */
-"WKJ-ey-HYe.text" = "터치하면 복사되고, 
-길게 터치하면 메뉴가 표시됩니다.";
+"WKJ-ey-HYe.text" = "터치하면 복사되고, 길게 터치하면 메뉴가 표시됩니다.";
 
 /* Class = "UILabel"; text = "Tap to view the list\nOr Tap and hold to view \nthe action menu"; ObjectID = "YRS-d6-X7Z"; */
-"YRS-d6-X7Z.text" = "터치하면 목록을 표시하고,
-길게 터치하면 메뉴가 표시됩니다.";
+"YRS-d6-X7Z.text" = "터치하면 목록을 표시하고, 길게 터치하면 메뉴가 표시됩니다.";
 
 /* Class = "UILabel"; text = "Copied."; ObjectID = "ZzU-K6-u5t"; */
 "ZzU-K6-u5t.text" = "복사되었습니다.";

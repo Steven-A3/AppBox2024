@@ -4,10 +4,7 @@
 
 /* Class = "UILabel"; text = "Tap to Copy or\nTap and Hold to view \nthe action menu"; ObjectID = "WKJ-ey-HYe"; */
 "WKJ-ey-HYe.text" =
-"Appuyez pour copier
-ou appuyez sur et maintenez
-la touche pour afficher le
-menu d'action";
+"Appuyez pour copier ou appuyez sur et maintenez la touche pour afficher le menu d'action";
 
 /* Class = "UILabel"; text = "Tap to view the list\nOr Tap and hold to view \nthe action menu"; ObjectID = "YRS-d6-X7Z"; */
 "YRS-d6-X7Z.text" = "Appuyez pour afficher la liste ou appuyez et maintenez la touche pour afficher le menu d'action";

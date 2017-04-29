@@ -14,6 +14,10 @@ extern NSString *const A3AbbreviationKeyAbbreviation;
 @interface A3AbbreviationCopiedViewController ()
 
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
+@property (nonatomic, weak) IBOutlet UILabel *copiedLabel;
+@property (nonatomic, weak) IBOutlet UILabel *pasteItLabel;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *copiedLabelVerticalSpaceConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *copied_pasteit_verticalSpaceConstraint;
 @property (nonatomic, strong) A3AbbreviationCopiedTransitionDelegate *customTransitionDelegate;
 
 @end
@@ -36,6 +40,24 @@ extern NSString *const A3AbbreviationKeyAbbreviation;
 	[self.view addGestureRecognizer:gestureRecognizer];
 	
 	_titleLabel.text = _titleString;
+    [self setupConstraints];
+}
+
+- (void)setupConstraints {
+    if (IS_IPHONE_3_5_INCH) {
+        _copied_pasteit_verticalSpaceConstraint.constant = 2;
+        if ([NSLocalizedString(@"LocalizedLanguage", nil) isEqualToString:@"ja"]) {
+            _copiedLabel.font = [UIFont boldSystemFontOfSize:17];
+            _pasteItLabel.font = [UIFont boldSystemFontOfSize:17];
+        }
+    } else if (IS_IPHONE_4_7_INCH) {
+        _copiedLabelVerticalSpaceConstraint.constant = 10;
+    } else if (IS_IPHONE_4_INCH) {
+        if ([NSLocalizedString(@"LocalizedLanguage", nil) isEqualToString:@"ja"]) {
+            _copiedLabel.font = [UIFont boldSystemFontOfSize:17];
+            _pasteItLabel.font = [UIFont boldSystemFontOfSize:17];
+        }
+    }
 }
 
 - (A3AbbreviationCopiedTransitionDelegate *)customTransitionDelegate {
