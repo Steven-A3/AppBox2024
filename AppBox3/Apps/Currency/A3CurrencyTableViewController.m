@@ -768,7 +768,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 			} else {
 				symbol = @"";
 			}
-			dataCell.rateLabel.text = [NSString stringWithFormat:@"%@,%@ = %@",
+			dataCell.rateLabel.text = [NSString stringWithFormat:@"%@%@ = %@",
 							symbol, NSLocalizedString(@"Rate", @"Rate"), [self.decimalNumberFormatter stringFromNumber:@(rate)]];
 		} else {
 			dataCell.rateLabel.text = [NSString stringWithFormat:@"%@ = %@",

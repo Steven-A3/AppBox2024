@@ -39,6 +39,7 @@
 @property (nonatomic, strong) A3KaomojiHelpViewController *helpViewController;
 
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
+@property (nonatomic, strong) UIActivityViewController *activityViewController;
 @property (nonatomic, copy) NSString *selectedStringToShare;
 @property (nonatomic, assign) CGRect sourceRectForPopover;
 @property (nonatomic, assign) BOOL popoverNeedBackground;
@@ -417,16 +418,22 @@
 
 #pragma mark - A3SharePopupViewControllerDelegate
 
+- (void)sharePopupViewControllerWillDismiss:(A3SharePopupViewController *)viewController didTapShareButton:(BOOL)didTapShareButton {
+    if (didTapShareButton) {
+        _activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
+        [_activityViewController view];
+    }
+}
+
 - (void)sharePopupViewControllerDidDismiss:(A3SharePopupViewController *)viewController didTapShareButton:(BOOL)didTapShareButton {
 	_sharePopupViewControllerIsPresented = NO;
 	[self removeBlurEffectView];
 
 	if (didTapShareButton) {
-		UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
 		if (IS_IPHONE) {
-			[self presentViewController:activityController animated:YES completion:NULL];
+			[self presentViewController:_activityViewController animated:YES completion:NULL];
 		} else {
-			UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
+			UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:_activityViewController];
 			[popoverController presentPopoverFromRect:_sourceRectForPopover
 											   inView:self.view
 							 permittedArrowDirections:UIPopoverArrowDirectionAny

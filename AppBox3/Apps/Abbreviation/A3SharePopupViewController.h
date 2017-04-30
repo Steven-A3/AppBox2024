@@ -39,6 +39,7 @@
 @protocol A3SharePopupViewControllerDelegate <NSObject>
 @optional
 
+- (void)sharePopupViewControllerWillDismiss:(A3SharePopupViewController *)viewController didTapShareButton:(BOOL)didTapShareButton;
 - (void)sharePopupViewControllerDidDismiss:(A3SharePopupViewController *)viewController didTapShareButton:(BOOL)didTapShareButton;
 - (void)sharePopupViewControllerContentsModified;
 

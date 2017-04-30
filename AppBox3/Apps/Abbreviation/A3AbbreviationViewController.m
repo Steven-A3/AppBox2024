@@ -41,6 +41,7 @@
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *topLineTopConstraint;
 @property (nonatomic, strong) NSDate *cancelTime3DTouch;
 @property (nonatomic, strong) A3AbbreviationHelpViewController *helpViewController;
+@property (nonatomic, strong) UIActivityViewController *activityViewController;
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
 @property (nonatomic, assign) BOOL popoverNeedBackground;
 
@@ -618,17 +619,23 @@
 
 #pragma mark - A3SharePopupViewControllerDelegate
 
+- (void)sharePopupViewControllerWillDismiss:(A3SharePopupViewController *)viewController didTapShareButton:(BOOL)didTapShareButton {
+    if (didTapShareButton) {
+         _activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
+        [_activityViewController view];
+    }
+}
+
 - (void)sharePopupViewControllerDidDismiss:(A3SharePopupViewController *)viewController didTapShareButton:(BOOL)didTapShareButton {
 	_sharePopupViewControllerIsPresented = NO;
 	[self removeBlurEffectView];
 
 	if (didTapShareButton) {
-		UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
 		if (IS_IPHONE) {
-			[self presentViewController:activityController animated:YES completion:NULL];
+			[self presentViewController:_activityViewController animated:YES completion:NULL];
 		} else {
             FNLOGRECT(_sourceRectForPopoverView);
-			UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
+			UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:_activityViewController];
 			[popoverController presentPopoverFromRect:_sourceRectForPopoverView
                                                inView:self.view
                              permittedArrowDirections:UIPopoverArrowDirectionAny

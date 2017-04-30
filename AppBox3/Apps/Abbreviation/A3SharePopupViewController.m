@@ -53,12 +53,13 @@ extern NSString *const A3AbbreviationKeyMeaning;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-    if ([[UIScreen mainScreen] scale] == 1) {
+    CGFloat scale = [[UIScreen mainScreen] scale];
+    if (scale == 1) {
         _middleLineHeightConstraint.constant = 1.0;
         _secondLineHeightConstraint.constant = 1.0;
-    } else {
+    } else if (scale > 2)  {
         _middleLineHeightConstraint.constant = 0.7;
-        _secondLineHeightConstraint.constant = 0.7;
+        _secondLineHeightConstraint.constant = 0.6;
     }
 	_roundedRectView.layer.cornerRadius = 10;
 
@@ -164,7 +165,10 @@ extern NSString *const A3AbbreviationKeyMeaning;
 }
 
 - (IBAction)shareButtonAction:(id)sender {
-	[self dismissViewControllerAnimated:NO completion:^{
+    if ([_delegate respondsToSelector:@selector(sharePopupViewControllerWillDismiss:didTapShareButton:)]) {
+        [_delegate sharePopupViewControllerWillDismiss:self didTapShareButton:YES];
+    }
+	[self dismissViewControllerAnimated:YES completion:^{
 		if ([_delegate respondsToSelector:@selector(sharePopupViewControllerDidDismiss:didTapShareButton:)]) {
             [_delegate sharePopupViewControllerDidDismiss:self didTapShareButton:YES];
 		}

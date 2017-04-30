@@ -1125,12 +1125,10 @@
 
 "AbbreviationHelpTapToViewOrPress" =
 "터치하여 목록 화면을 표시하거나,
-3D터치를 누르면
-액션 메뉴가 표시됩니다.";
+3D터치를 누르면 액션 메뉴가 표시됩니다.";
 "DrillHelpTapToCopyOrPress" =
 "터치하여 복사합니다. 
-3D터치를 누르면
-액션 메뉴가 표시됩니다.";
+3D터치를 누르면 액션 메뉴가 표시됩니다.";
 
 "rate" = "비율";
 
