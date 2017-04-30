@@ -19,3 +19,4 @@ NSHealthUpdateUsageDescription =
 "AppBox Pro® reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.
 
 Data collected from HealthKit will not be used for marketing and advertising purposes.";
+NSCalendarsUsageDescription = "AppBox Pro® would like to access the calendar to save an event read from QR Code reader.";

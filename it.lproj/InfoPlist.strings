@@ -17,3 +17,4 @@ I dati raccolti da HealthKit non saranno utilizzati per scopi di marketing e pub
 NSHealthUpdateUsageDescription = "AppBox Pro® legge pavimenti ascesi, Passi, e Walking + Esecuzione Distanza dai dati HealthKit Apple.
 
 I dati raccolti da HealthKit non saranno utilizzati per scopi di marketing e pubblicità.";
+NSCalendarsUsageDescription = "AppBox Pro® vorrebbe accedere al calendario per salvare un evento letto dal lettore QR Code.";

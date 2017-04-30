@@ -17,3 +17,4 @@ Die von HealthKit gesammelten Daten werden nicht für Marketing- und Werbezwecke
 NSHealthUpdateUsageDescription = "AppBox Pro® liest Fußbodenaufstiege, Schritte und Gehen + Laufende Entfernung von Apple HealthKit Daten.
 
 Die von HealthKit gesammelten Daten werden nicht für Marketing- und Werbezwecke verwendet.";
+NSCalendarsUsageDescription = "AppBox Pro® möchte auf den Kalender zugreifen, um ein Ereignis zu speichern, das aus dem QR-Code-Leser gelesen wurde.";

@@ -17,3 +17,4 @@ Les données recueillies auprès de HealthKit ne seront pas utilisées à des fi
 NSHealthUpdateUsageDescription = "AppBox Pro® lit les sols montés, les marches et la marche + la distance de parcours des données HealthKit d'Apple.
 
 Les données recueillies auprès de HealthKit ne seront pas utilisées à des fins de marketing et de publicité.";
+NSCalendarsUsageDescription = "AppBox Pro® souhaite accéder au calendrier pour enregistrer un événement lue depuis le lecteur QR Code.";

@@ -18,3 +18,4 @@ Dane zebrane z HealthKit nie będą wykorzystywane w celach marketingowych i rek
 NSHealthUpdateUsageDescription = "AppBox Pro® czyta Podłoga wniebowstąpionych, Schody i Walking + Running Odległość od danych HealthKit Apple.
 
 Dane zebrane z HealthKit nie będą wykorzystywane w celach marketingowych i reklamowych.";
+NSCalendarsUsageDescription = "AppBox Pro® chciałby uzyskać dostęp do kalendarza, aby zapisać zdarzenie czytane z czytnika QR Code.";

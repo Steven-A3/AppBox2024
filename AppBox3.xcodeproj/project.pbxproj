@@ -437,6 +437,7 @@
 		68636000198BF88F00C3A323 /* libensembles.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68635FFB198BF80E00C3A323 /* libensembles.a */; };
 		68636003198BF91300C3A323 /* Ensembles.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 68635FFD198BF80E00C3A323 /* Ensembles.bundle */; };
 		6864D60017BBBA6300A215D7 /* AppIcons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6864D5FE17BBBA6300A215D7 /* AppIcons.xcassets */; };
+		68691B7C1EB69007006685B0 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68AB0ABF1A3E92E9001BFC5D /* StoreKit.framework */; };
 		686BB86119092D94009163F2 /* A3WalletCategoryEditFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 686BB86019092D94009163F2 /* A3WalletCategoryEditFieldCell.m */; };
 		686BB864190937F4009163F2 /* A3WalletCategoryEditAddNewFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 686BB863190937F4009163F2 /* A3WalletCategoryEditAddNewFieldCell.m */; };
 		686BB8671909676A009163F2 /* A3WalletFieldEditTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 686BB8661909676A009163F2 /* A3WalletFieldEditTitleCell.m */; };
@@ -3032,6 +3033,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68691B7C1EB69007006685B0 /* StoreKit.framework in Frameworks */,
 				68F04D101B40F86B004FDD7B /* libcrypto.a in Frameworks */,
 				68F04D111B40F86B004FDD7B /* libssl.a in Frameworks */,
 				68F24E481EB170F4003BD014 /* GoogleMobileAds.framework in Frameworks */,
@@ -6118,7 +6120,7 @@
 								enabled = 1;
 							};
 							com.apple.DataProtection = {
-								enabled = 1;
+								enabled = 0;
 							};
 							com.apple.HealthKit = {
 								enabled = 1;

@@ -19,3 +19,4 @@ NSHealthUpdateUsageDescription =
 "AppBox Pro®は、Appleの健康アプリから階段を登る、歩数、歩行+ランニング距離情報を読み取ります。
 
 健康アプリから読んだ情報は、マーケティング目的や広告目的のために使用していません。";
+NSCalendarsUsageDescription = "AppBox Pro®は、QRコードリーダーから読み取ったイベントを保存するためにカレンダーに権が必要です。";

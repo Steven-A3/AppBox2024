@@ -19,3 +19,4 @@ NSHealthUpdateUsageDescription =
 "AppBox Pro®读取爬楼梯，步数，行走在苹果应用程序健康+跑动距离信息。
 
 读取从健康应用的信息不被用于营销目的，或出于广告目的。";
+NSCalendarsUsageDescription = "AppBox Pro®希望访问日历以保存从QR码阅读器读取的事件。";

@@ -36,7 +36,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>4.5.0.0</string>
+	<string>4.5.0.1</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>dbapi-2</string>
@@ -48,22 +48,24 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSCalendarsUsageDescription</key>
+	<string>AppBox Pro® would like to access the calendar to save an event read from QR Code reader.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>AppBox Pro would like to access your camera to take pictures for QR Code, Mirror and Magnifier.</string>
+	<string>AppBox Pro® would like to access your camera to take pictures for QR Code, Mirror and Magnifier.</string>
 	<key>NSContactsUsageDescription</key>
-	<string>AppBox Pro would like to access your Photo Library to save pictures from Mirror and Magnifier.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Your location is used to show weather and holidays.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>AppBox Pro would like to access contacts to save contact with QR Code reader.</string>
-	<key>NSHealthUpdateUsageDescription</key>
-	<string>AppBox Pro® reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.
-
-Data collected from HealthKit will not be used for marketing and advertising purposes.</string>
+	<string>AppBox Pro® would like to access your Photo Library to save pictures from Mirror and Magnifier.</string>
 	<key>NSHealthShareUsageDescription</key>
 	<string>AppBox Pro® reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.
 
 Data collected from HealthKit will not be used for marketing and advertising purposes.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>AppBox Pro® reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.
+
+Data collected from HealthKit will not be used for marketing and advertising purposes.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location is used to show weather and holidays.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>AppBox Pro® would like to access contacts to save contact with QR Code reader.</string>
 	<key>NSUbiquitousContainerName</key>
 	<string>com.e2ndesign.TPremium2</string>
 	<key>NSUbiquitousDisplaySet</key>
