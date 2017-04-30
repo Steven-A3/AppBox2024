@@ -1,14 +1,17 @@
 
 /* Class = "UILabel"; text = "Tap to view the list\nOr Tap and hold to view \nthe action menu"; ObjectID = "T8M-0h-cUF"; */
-"T8M-0h-cUF.text" = "点击查看列表或点击并
+"T8M-0h-cUF.text" =
+"点击查看列表或点击并
 按住查看操作菜单";
 
 /* Class = "UILabel"; text = "Tap to Copy or\nTap and Hold to view \nthe action menu"; ObjectID = "WKJ-ey-HYe"; */
-"WKJ-ey-HYe.text" = "点击复制或点击并按
+"WKJ-ey-HYe.text" =
+"点击复制或点击并按
 住可查看操作菜单";
 
 /* Class = "UILabel"; text = "Tap to view the list\nOr Tap and hold to view \nthe action menu"; ObjectID = "YRS-d6-X7Z"; */
-"YRS-d6-X7Z.text" = "点击查看列表或点击并
+"YRS-d6-X7Z.text" =
+"点击查看列表或点击并
 按住查看操作菜单";
 
 /* Class = "UILabel"; text = "Copied."; ObjectID = "ZzU-K6-u5t"; */

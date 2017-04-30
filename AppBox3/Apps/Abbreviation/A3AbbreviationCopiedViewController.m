@@ -47,19 +47,15 @@ extern NSString *const A3AbbreviationKeyAbbreviation;
     if (IS_IPHONE_3_5_INCH) {
         _copiedLabelVerticalSpaceConstraint.constant = 18;
         _copied_pasteit_verticalSpaceConstraint.constant = 2;
-        NSString *languageCode = NSLocalizedString(@"LocalizedLanguage", nil);
-        if ([@[@"ja", @"ko"] containsObject:languageCode]) {
-            _copiedLabel.font = [UIFont boldSystemFontOfSize:17];
-            _pasteItLabel.font = [UIFont boldSystemFontOfSize:17];
-        }
+        _copiedLabel.font = [UIFont boldSystemFontOfSize:17];
+        _pasteItLabel.font = [UIFont boldSystemFontOfSize:17];
     } else if (IS_IPHONE_4_7_INCH) {
-        _copiedLabelVerticalSpaceConstraint.constant = 10;
+        _copiedLabelVerticalSpaceConstraint.constant = 18;
+        _copied_pasteit_verticalSpaceConstraint.constant = 1;
     } else if (IS_IPHONE_4_INCH) {
-        NSString *languageCode = NSLocalizedString(@"LocalizedLanguage", nil);
-        if ([@[@"ja", @"ko"] containsObject:languageCode]) {
-            _copiedLabel.font = [UIFont boldSystemFontOfSize:17];
-            _pasteItLabel.font = [UIFont boldSystemFontOfSize:17];
-        }
+        _copied_pasteit_verticalSpaceConstraint.constant = -3;
+        _copiedLabel.font = [UIFont boldSystemFontOfSize:17];
+        _pasteItLabel.font = [UIFont boldSystemFontOfSize:17];
     } else if (IS_IPHONE_5_5_INCH) {
         _copiedLabelVerticalSpaceConstraint.constant = 18;
     }

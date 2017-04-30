@@ -46,6 +46,9 @@
         _topHelpTextLabel.text = NSLocalizedString(@"AbbreviationHelpTapToViewOrPress", nil);
         _bottomHelpTextLabel.text = NSLocalizedString(@"AbbreviationHelpTapToViewOrPress", nil);
     }
+    if (IS_IPHONE_4_INCH) {
+        _bottomHelpTextLabel.text = [_bottomHelpTextLabel.text stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    }
 }
 
 - (void)viewWillLayoutSubviews {

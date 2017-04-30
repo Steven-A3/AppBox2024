@@ -5,7 +5,8 @@
 按住查看操作菜單";
 
 /* Class = "UILabel"; text = "Tap to Copy or\nTap and Hold to view \nthe action menu"; ObjectID = "WKJ-ey-HYe"; */
-"WKJ-ey-HYe.text" = "點擊複製或點擊並
+"WKJ-ey-HYe.text" =
+"點擊複製或點擊並
 按住可查看操作菜單";
 
 /* Class = "UILabel"; text = "Tap to view the list\nOr Tap and hold to view \nthe action menu"; ObjectID = "YRS-d6-X7Z"; */

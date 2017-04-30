@@ -531,13 +531,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copied." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZzU-K6-u5t">
-                                <rect key="frame" x="175.66666666666666" y="368" width="79" height="26"/>
+                                <rect key="frame" x="174.66666666666666" y="368" width="79" height="26"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Paste it!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jnI-ac-1OB">
-                                <rect key="frame" x="174.33333333333331" y="398" width="81.999999999999943" height="26"/>
+                                <rect key="frame" x="174" y="398" width="82" height="26"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -550,8 +550,8 @@
                             <constraint firstItem="Smu-aR-oOo" firstAttribute="centerX" secondItem="kyT-Jd-n0h" secondAttribute="centerX" id="7cz-tZ-tGV"/>
                             <constraint firstItem="Smu-aR-oOo" firstAttribute="centerY" secondItem="kyT-Jd-n0h" secondAttribute="centerY" multiplier="0.92" id="LlE-GA-DXh"/>
                             <constraint firstItem="kyT-Jd-n0h" firstAttribute="width" secondItem="JZV-8Z-lqr" secondAttribute="width" multiplier="0.9" id="SoW-d4-jNU"/>
-                            <constraint firstItem="ZzU-K6-u5t" firstAttribute="centerX" secondItem="Smu-aR-oOo" secondAttribute="centerX" multiplier="1.04" id="Uta-i9-NOq"/>
-                            <constraint firstItem="jnI-ac-1OB" firstAttribute="centerX" secondItem="kyT-Jd-n0h" secondAttribute="centerX" multiplier="1.04" id="aBM-X7-mt1"/>
+                            <constraint firstItem="ZzU-K6-u5t" firstAttribute="centerX" secondItem="Smu-aR-oOo" secondAttribute="centerX" constant="8" id="Uta-i9-NOq"/>
+                            <constraint firstItem="jnI-ac-1OB" firstAttribute="centerX" secondItem="kyT-Jd-n0h" secondAttribute="centerX" constant="8" id="aBM-X7-mt1"/>
                             <constraint firstItem="kyT-Jd-n0h" firstAttribute="centerY" secondItem="JZV-8Z-lqr" secondAttribute="centerY" id="jAg-wN-HdX"/>
                             <constraint firstItem="kyT-Jd-n0h" firstAttribute="width" secondItem="JZV-8Z-lqr" secondAttribute="width" multiplier="0.6" id="mcY-A9-ozU"/>
                             <constraint firstItem="kyT-Jd-n0h" firstAttribute="centerX" secondItem="JZV-8Z-lqr" secondAttribute="centerX" id="rDm-js-RvO"/>

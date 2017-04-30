@@ -16,7 +16,7 @@
 "Date Calc" = "日期計算";
 "Expense List" = "費用清單";
 "Loan Calculator" = "貸款計算";
-"Loan Calc" = "Loan Calc";
+"Loan Calc" = "貸款計算";
 "Sales Calculator" = "折扣價格計算";
 "Sales Calculator_Short" = "折扣價格計算";
 "Sales Calc" = "折扣價格計算";
@@ -165,7 +165,7 @@
 "Enter your old passcode" = "請輸入舊密碼";
 "Password" = "暗號形式標示";
 "PAYMENT" = "償還金額";
-"Rate" = "比率";
+"Rate" = "汇率";
 "Menstrual Period" = "月經期";
 "DaysCounter_to" = "結束日";
 "%ld w" = "%ld 周";
