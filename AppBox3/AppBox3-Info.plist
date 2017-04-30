@@ -56,6 +56,14 @@
 	<string>Your location is used to show weather and holidays.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>AppBox Pro would like to access contacts to save contact with QR Code reader.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>AppBox Pro® reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.
+
+Data collected from HealthKit will not be used for marketing and advertising purposes.</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>AppBox Pro® reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.
+
+Data collected from HealthKit will not be used for marketing and advertising purposes.</string>
 	<key>NSUbiquitousContainerName</key>
 	<string>com.e2ndesign.TPremium2</string>
 	<key>NSUbiquitousDisplaySet</key>

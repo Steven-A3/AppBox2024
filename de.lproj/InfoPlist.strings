@@ -14,3 +14,6 @@ NSContactsUsageDescription = "AppBox Pro® möchte Kontakte zuzugreifen einen Ko
 NSHealthShareUsageDescription = "AppBox Pro® liest Fußbodenaufstiege, Schritte und Gehen + Laufende Entfernung von Apple HealthKit Daten.
 
 Die von HealthKit gesammelten Daten werden nicht für Marketing- und Werbezwecke verwendet.";
+NSHealthUpdateUsageDescription = "AppBox Pro® liest Fußbodenaufstiege, Schritte und Gehen + Laufende Entfernung von Apple HealthKit Daten.
+
+Die von HealthKit gesammelten Daten werden nicht für Marketing- und Werbezwecke verwendet.";

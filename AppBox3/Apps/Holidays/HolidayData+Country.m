@@ -656,6 +656,7 @@ NSString *const A3NotificationHolidaysCountryListChanged = @"A3NotificationHolid
 
 + (BOOL)isSupportedCountry:(NSString *)countryCode {
 	NSArray *supportedCountries = [HolidayData supportedCountries];
+    FNLOG(@"Number Of Supported Countries: %ld", (long)[supportedCountries count]);
 	NSInteger indexOfCountry = [supportedCountries indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
 		return [countryCode isEqualToString:obj[kHolidayCountryCode]];
 	}];

@@ -6,3 +6,6 @@ NSContactsUsageDescription = "接觸權限是必需的，以便保存在QR碼的
 NSHealthShareUsageDescription = "AppBox Pro®臨讀取爬樓梯，步數，行走在蘋果應用程序健康+跑動距離信息。
 
 讀取從健康應用的信息不被用於營銷目的，或出於廣告目的。";
+NSHealthUpdateUsageDescription = "AppBox Pro®臨讀取爬樓梯，步數，行走在蘋果應用程序健康+跑動距離信息。
+
+讀取從健康應用的信息不被用於營銷目的，或出於廣告目的。";

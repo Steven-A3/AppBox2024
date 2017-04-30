@@ -14,3 +14,6 @@ NSContactsUsageDescription = "AppBox Pro® vorrebbe accedere ai contatti per sal
 NSHealthShareUsageDescription = "AppBox Pro® legge pavimenti ascesi, Passi, e Walking + Esecuzione Distanza dai dati HealthKit Apple.
 
 I dati raccolti da HealthKit non saranno utilizzati per scopi di marketing e pubblicità.";
+NSHealthUpdateUsageDescription = "AppBox Pro® legge pavimenti ascesi, Passi, e Walking + Esecuzione Distanza dai dati HealthKit Apple.
+
+I dati raccolti da HealthKit non saranno utilizzati per scopi di marketing e pubblicità.";

@@ -15,3 +15,6 @@ NSContactsUsageDescription = "AppBox Pro® chcieliby uzyskać dostęp do kontakt
 NSHealthShareUsageDescription = "AppBox Pro® czyta Podłoga wniebowstąpionych, Schody i Walking + Running Odległość od danych HealthKit Apple.
 
 Dane zebrane z HealthKit nie będą wykorzystywane w celach marketingowych i reklamowych.";
+NSHealthUpdateUsageDescription = "AppBox Pro® czyta Podłoga wniebowstąpionych, Schody i Walking + Running Odległość od danych HealthKit Apple.
+
+Dane zebrane z HealthKit nie będą wykorzystywane w celach marketingowych i reklamowych.";
