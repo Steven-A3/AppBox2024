@@ -1443,7 +1443,9 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 	while ([navigationController.presentedViewController isKindOfClass:[UINavigationController class]]) {
 		navigationController = (id)navigationController.presentedViewController;
 	}
-	[_adInterstitial presentFromRootViewController:navigationController];
+    if (!navigationController.presentedViewController) {
+        [_adInterstitial presentFromRootViewController:navigationController];
+    }
 }
 
 - (void)interstitial:(GADInterstitial *)ad didFailToReceiveAdWithError:(GADRequestError *)error {
