@@ -50,6 +50,7 @@
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic, strong) UITableViewController *searchResultsTableViewController;
 @property (nonatomic, copy) NSString *searchString;
+@property (nonatomic, strong) UIBarButtonItem *searchBarButton;
 
 @end
 
@@ -65,18 +66,18 @@
     self.definesPresentationContext = YES;
     
     self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
-    
+
+    self.searchBarButton = [self searchBarButtonItem];
     if (IS_IPAD) {
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.category.name style:UIBarButtonItemStylePlain target:nil action:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidShow) name:A3NotificationMainMenuDidShow object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
-        self.navigationItem.rightBarButtonItems = @[[[UIBarButtonItem alloc] initWithCustomView:self.infoButton], [self instructionHelpBarButton], [self searchBarButtonItem]];
+        self.navigationItem.rightBarButtonItems = @[[[UIBarButtonItem alloc] initWithCustomView:self.infoButton], [self instructionHelpBarButton], self.searchBarButton];
     }
     else {
         [self makeBackButtonEmptyArrow];
         UIBarButtonItem *infoBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.infoButton];
-        UIBarButtonItem *searchBarButton = [self searchBarButtonItem];
-        self.navigationItem.rightBarButtonItems = @[infoBarButton, searchBarButton];
+        self.navigationItem.rightBarButtonItems = @[infoBarButton, self.searchBarButton];
     }
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
@@ -147,6 +148,7 @@
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 	[self.navigationItem.rightBarButtonItem setEnabled:enable];
 	[self.addButton setEnabled:enable];
+    [self.searchBarButton setEnabled:enable && ([self.items count] > 0)];
 	self.tabBarController.tabBar.tintColor = enable ? nil : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
 }
 
@@ -602,6 +604,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
     } else {
         self.tableView.tableHeaderView = nil;
     }
+    [self.searchBarButton setEnabled:[self.items count] > 0];
 }
 
 - (void)searchAction:(id)sender {

@@ -560,17 +560,6 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
     [[A3UserDefaults standardUserDefaults] synchronize];
 }
 
-- (void)searchButtonAction:(id)sender
-{
-    [self.searchController setActive:YES];
-    double delayInSeconds = 0.1;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self.searchController.searchBar becomeFirstResponder];
-    });
-
-}
-
 - (A3WalletItemEditViewController *)itemAddViewController
 {
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
@@ -693,6 +682,7 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
     } else {
         self.tableView.tableHeaderView = nil;
     }
+    [self.searchBarButton setEnabled:!_dataEmpty];
 }
 
 #pragma mark - UISearchControllerDelegate
