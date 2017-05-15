@@ -564,6 +564,7 @@
 		689D9FA01BD2195600096D07 /* AppBox3UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689D9F9F1BD2195600096D07 /* AppBox3UITests.swift */; };
 		689E9855197C1B99003710C3 /* A3UnitNamesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 689E9854197C1B99003710C3 /* A3UnitNamesTest.m */; };
 		68A6BA7D1E7FC29500889051 /* A3WhatsNewFirstPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A6BA7C1E7FC29500889051 /* A3WhatsNewFirstPageViewController.m */; };
+		68A84B711EC99DFC00CD413B /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68A84B6F1EC99DFC00CD413B /* GoogleMobileAds.framework */; };
 		68A885B21E7B8C370029D7FB /* BEMAnimationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A885AB1E7B8C370029D7FB /* BEMAnimationManager.m */; };
 		68A885B31E7B8C370029D7FB /* BEMCheckBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A885AD1E7B8C370029D7FB /* BEMCheckBox.m */; };
 		68A885B41E7B8C370029D7FB /* BEMCheckBoxGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A885AF1E7B8C370029D7FB /* BEMCheckBoxGroup.m */; };
@@ -955,7 +956,6 @@
 		68F1C90418D814F9009FAE8A /* UIPopoverController+Override.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C90218D814F9009FAE8A /* UIPopoverController+Override.m */; };
 		68F1C92318D82500009FAE8A /* NYXProgressiveImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C92218D82500009FAE8A /* NYXProgressiveImageView.m */; };
 		68F2444B1E542E9B00E99A7D /* A3AbbreviationHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F2444A1E542E9B00E99A7D /* A3AbbreviationHelpViewController.m */; };
-		68F24E481EB170F4003BD014 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68F24E471EB170F4003BD014 /* GoogleMobileAds.framework */; };
 		68F319FC18D83D1F0003BE62 /* A3LaunchSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F319F718D83D1F0003BE62 /* A3LaunchSceneViewController.m */; };
 		68F319FD18D83D1F0003BE62 /* A3LaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F319F918D83D1F0003BE62 /* A3LaunchViewController.m */; };
 		68F32E51188AC3C600248F16 /* UIViewController+tableViewStandardDimension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F32E50188AC3C600248F16 /* UIViewController+tableViewStandardDimension.m */; };
@@ -2112,6 +2112,7 @@
 		689E9854197C1B99003710C3 /* A3UnitNamesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitNamesTest.m; sourceTree = "<group>"; };
 		68A6BA7B1E7FC29500889051 /* A3WhatsNewFirstPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3WhatsNewFirstPageViewController.h; path = AppDelegate/A3WhatsNewFirstPageViewController.h; sourceTree = "<group>"; };
 		68A6BA7C1E7FC29500889051 /* A3WhatsNewFirstPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3WhatsNewFirstPageViewController.m; path = AppDelegate/A3WhatsNewFirstPageViewController.m; sourceTree = "<group>"; };
+		68A84B6F1EC99DFC00CD413B /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMobileAds.framework; sourceTree = "<group>"; };
 		68A885AA1E7B8C370029D7FB /* BEMAnimationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEMAnimationManager.h; sourceTree = "<group>"; };
 		68A885AB1E7B8C370029D7FB /* BEMAnimationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BEMAnimationManager.m; sourceTree = "<group>"; };
 		68A885AC1E7B8C370029D7FB /* BEMCheckBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEMCheckBox.h; sourceTree = "<group>"; };
@@ -2981,7 +2982,6 @@
 		68F1C92218D82500009FAE8A /* NYXProgressiveImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYXProgressiveImageView.m; sourceTree = "<group>"; };
 		68F244491E542E9B00E99A7D /* A3AbbreviationHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3AbbreviationHelpViewController.h; sourceTree = "<group>"; };
 		68F2444A1E542E9B00E99A7D /* A3AbbreviationHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AbbreviationHelpViewController.m; sourceTree = "<group>"; };
-		68F24E471EB170F4003BD014 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = "External/GoogleMobileAdsSdkiOS-7.19.1/GoogleMobileAds.framework"; sourceTree = "<group>"; };
 		68F319F618D83D1F0003BE62 /* A3LaunchSceneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LaunchSceneViewController.h; sourceTree = "<group>"; };
 		68F319F718D83D1F0003BE62 /* A3LaunchSceneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LaunchSceneViewController.m; sourceTree = "<group>"; };
 		68F319F818D83D1F0003BE62 /* A3LaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LaunchViewController.h; sourceTree = "<group>"; };
@@ -3033,10 +3033,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68A84B711EC99DFC00CD413B /* GoogleMobileAds.framework in Frameworks */,
 				68691B7C1EB69007006685B0 /* StoreKit.framework in Frameworks */,
 				68F04D101B40F86B004FDD7B /* libcrypto.a in Frameworks */,
 				68F04D111B40F86B004FDD7B /* libssl.a in Frameworks */,
-				68F24E481EB170F4003BD014 /* GoogleMobileAds.framework in Frameworks */,
 				68636000198BF88F00C3A323 /* libensembles.a in Frameworks */,
 				681E1281193447D70077DCFA /* libz.dylib in Frameworks */,
 				680B59D71E9777C8004362AC /* HealthKit.framework in Frameworks */,
@@ -4830,6 +4830,15 @@
 			path = AppBox3UITests;
 			sourceTree = "<group>";
 		};
+		68A84B6E1EC99DFC00CD413B /* GoogleMobileAdsSdkiOS-7.20.0 */ = {
+			isa = PBXGroup;
+			children = (
+				68A84B6F1EC99DFC00CD413B /* GoogleMobileAds.framework */,
+			);
+			name = "GoogleMobileAdsSdkiOS-7.20.0";
+			path = "External/GoogleMobileAdsSdkiOS-7.20.0";
+			sourceTree = "<group>";
+		};
 		68A885A91E7B8C370029D7FB /* BEMCheckBox */ = {
 			isa = PBXGroup;
 			children = (
@@ -5316,7 +5325,7 @@
 		68CC1594174F764C0000870F /* External */ = {
 			isa = PBXGroup;
 			children = (
-				68F24E471EB170F4003BD014 /* GoogleMobileAds.framework */,
+				68A84B6E1EC99DFC00CD413B /* GoogleMobileAdsSdkiOS-7.20.0 */,
 				68B6F7041EA575C500C4BB7A /* MWPhotoBrowser */,
 				68B6F6B71EA5759300C4BB7A /* SDWebImage */,
 				68B6F6A81EA5758200C4BB7A /* DACircularProgress */,
@@ -7874,7 +7883,7 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.19.1",
+					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.20.0",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";
@@ -7912,7 +7921,7 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.19.1",
+					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.20.0",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";
