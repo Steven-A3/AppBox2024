@@ -49,25 +49,34 @@
 
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic, strong) UITableViewController *searchResultsTableViewController;
-@property (nonatomic, strong) UIBarButtonItem *searchItem;
+@property (nonatomic, copy) NSString *searchString;
 
 @end
 
-@implementation A3WalletCategoryViewController
+@implementation A3WalletCategoryViewController {
+    BOOL _didPassViewDidAppear;
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.definesPresentationContext = YES;
+    
+    self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+    
     if (IS_IPAD) {
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.category.name style:UIBarButtonItemStylePlain target:nil action:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidShow) name:A3NotificationMainMenuDidShow object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
-        self.navigationItem.rightBarButtonItems = @[[[UIBarButtonItem alloc] initWithCustomView:self.infoButton], [self instructionHelpBarButton]];
+        self.navigationItem.rightBarButtonItems = @[[[UIBarButtonItem alloc] initWithCustomView:self.infoButton], [self instructionHelpBarButton], [self searchBarButtonItem]];
     }
     else {
         [self makeBackButtonEmptyArrow];
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.infoButton];
+        UIBarButtonItem *infoBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.infoButton];
+        UIBarButtonItem *searchBarButton = [self searchBarButtonItem];
+        self.navigationItem.rightBarButtonItems = @[infoBarButton, searchBarButton];
     }
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
@@ -159,10 +168,15 @@
     // more button 활성화여부
     [self itemCountCheck];
 
-	if ([_searchController isActive]) {
-		[self filterContentForSearchText:_searchController.searchBar.text];
-		[_searchResultsTableViewController.tableView reloadData];
-	}
+    if ([_searchString length]) {
+        [self.searchController setActive:YES];
+        _searchController.searchBar.text = _searchString;
+        _searchString = nil;
+        [self filterContentForSearchText:_searchController.searchBar.text];
+    }
+    if (!_didPassViewDidAppear) {
+        self.tableView.contentOffset = CGPointMake(0, -64);
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -173,14 +187,17 @@
 	[self setupInstructionView];
 
     if (!_searchController.active && ([self.items count] > 0) && self.tableView.contentOffset.y == -64) {
-        [UIView animateWithDuration:0.3
-                         animations:^{
-                             CGPoint offset = self.tableView.contentOffset;
-                             offset.y = -20;
-                             self.tableView.contentOffset = offset;
-                         }
-                         completion:nil];
+        double delayInSeconds = 0.3;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [UIView animateWithDuration:0.3
+                             animations:^{
+                                 self.tableView.contentOffset = CGPointMake(0, -20);
+                             }
+                             completion:nil];
+        });
     }
+    _didPassViewDidAppear = YES;
 }
 
 - (void)cloudStoreDidImport {
@@ -587,16 +604,15 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
     }
 }
 
-- (UIBarButtonItem *)searchItem {
-    if (!_searchItem) {
-        _searchItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchButtonAction:)];
-    }
-    return _searchItem;
-}
-
-- (void)searchButtonAction:(id)sender
-{
+- (void)searchAction:(id)sender {
+    [self.searchController setActive:YES];
     [self.searchController.searchBar becomeFirstResponder];
+    
+    double delayInSeconds = 0.2;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self.searchController.searchBar becomeFirstResponder];
+    });
 }
 
 - (UITableViewController *)searchResultsTableViewController {
@@ -661,6 +677,8 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
     }
     self.items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:@"name" ascending:YES withPredicate:predicate]];
     [self configureSections];
+    
+    [self.tableView reloadData];
     [_searchResultsTableViewController.tableView reloadData];
 }
 
@@ -839,7 +857,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 				sectionNumber = MAX(0, sectionNumber - 1);
 			}
 		}
-        FNLOG(@"%ld, %ld, %@, %@, %@", (long)sectionNumber, (long)sectionTitlesCount, _collation.sectionTitles[MAX(sectionNumber - 1, 0)], _collation.sectionTitles[MAX(sectionNumber, 0)], _collation.sectionTitles[MIN(sectionNumber + 1, sectionTitlesCount - 1)]);
+//        FNLOG(@"%ld, %ld, %@, %@, %@", (long)sectionNumber, (long)sectionTitlesCount, _collation.sectionTitles[MAX(sectionNumber - 1, 0)], _collation.sectionTitles[MAX(sectionNumber, 0)], _collation.sectionTitles[MIN(sectionNumber + 1, sectionTitlesCount - 1)]);
         // Get the array for the section.
         NSMutableArray *sections = newSectionsArray[sectionNumber];
 
@@ -907,8 +925,9 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
     }
 
     NSArray *section = self.sectionsArray[indexPath.section];
-    [self.searchController setActive:NO];
 	[super tableView:tableView didSelectRowAtIndexPath:indexPath withItem:section[indexPath.row]];
+    self.searchString = self.searchController.searchBar.text;
+    [self.searchController setActive:NO];
 }
 
 #pragma mark - Table view data source
@@ -974,10 +993,9 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if ([[self.items objectAtIndex:indexPath.row] isKindOfClass:[WalletItem class]]) {
-
-        NSArray *section = self.sectionsArray[indexPath.section];
-		WalletItem *item = section[indexPath.row];
+    NSArray *section = self.sectionsArray[indexPath.section];
+    WalletItem *item = section[indexPath.row];
+	if ([item isKindOfClass:[WalletItem class]]) {
 		return [self tableView:tableView cellForRowAtIndexPath:indexPath walletItem:item];
 	}
 	return nil;
@@ -1157,15 +1175,16 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 #pragma mark - UISearchControllerDelegate
 
 - (void)willPresentSearchController:(UISearchController *)searchController {
-    
+    self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
 }
 
 - (void)didPresentSearchController:(UISearchController *)searchController {
-    
+    self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
 }
 
 - (void)willDismissSearchController:(UISearchController *)searchController {
-    
+    self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+    self.tableView.contentOffset = CGPointMake(0, -20);
 }
 
 - (void)didDismissSearchController:(UISearchController *)searchController {

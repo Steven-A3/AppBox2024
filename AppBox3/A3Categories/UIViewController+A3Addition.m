@@ -498,6 +498,15 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
 	return barButtonItem;
 }
 
+- (UIBarButtonItem *)searchBarButtonItem {
+    UIBarButtonItem *search = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchAction:)];
+    return search;
+}
+
+- (void)searchAction:(id)sender {
+    
+}
+
 - (void)instructionHelpButtonAction:(id)sender {
     [self showInstructionView];
 }

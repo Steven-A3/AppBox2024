@@ -70,6 +70,8 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 - (void)historyButtonAction:(UIButton *)button;
 - (UIButton *)settingsButton;
 - (void)settingsButtonAction:(UIButton *)button;
+- (UIBarButtonItem *)searchBarButtonItem;
+- (void)searchAction:(id)sender;
 - (UIButton *)instructionHelpButton;
 - (UIBarButtonItem *)instructionHelpBarButton;
 - (void)instructionHelpButtonAction:(id)sender;
