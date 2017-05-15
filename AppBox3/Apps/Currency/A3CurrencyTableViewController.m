@@ -602,9 +602,9 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
         NSArray *array = [CurrencyFavorite MR_findAllSortedBy:A3CommonPropertyOrder ascending:YES inContext:self.savingContext];
         _favorites = [array mutableCopy];
         [self addEqualItem];
-        if (_admobNativeExpressAdView) {
+        if (_adItem) {
             NSInteger position = [_favorites count] > 3 ? 4 : [_favorites count];
-            [_favorites insertObject:[self adItem] atIndex:position];
+            [_favorites insertObject:_adItem atIndex:position];
         }
     }
     return _favorites;
@@ -908,9 +908,9 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
         [_favorites removeObject:_adItem];
 
         [_favorites insertObject:_equalItem atIndex:1];
-        if (_admobNativeExpressAdView) {
+        if (_adItem) {
             NSInteger position = [_favorites count] > 3 ? 4 : [_favorites count];
-            [_favorites insertObject:[self adItem] atIndex:position];
+            [_favorites insertObject:_adItem atIndex:position];
         }
         [self.tableView reloadData];
     });

@@ -488,9 +488,9 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
         _convertItems = [NSMutableArray arrayWithArray:[self.dataManager unitConvertItemsForCategoryID:_categoryID]];
         
 		[self addEqualAndPlus];
-		if (_admobNativeExpressAdView) {
+		if (_adItem) {
             NSInteger position = [_convertItems count] > 3 ? 4 : [_convertItems count];
-            [_convertItems insertObject:[self adItem] atIndex:position];
+            [_convertItems insertObject:_adItem atIndex:position];
 		}
 	}
 	return _convertItems;
@@ -2291,7 +2291,7 @@ const CGFloat kUnitCellVisibleWidth = 100.0;
 		return;
 	}
     NSInteger position = [_convertItems count] > 3 ? 4 : [_convertItems count];
-    [_convertItems insertObject:_adItem atIndex:position];
+    [_convertItems insertObject:[self adItem] atIndex:position];
     
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:position inSection:0];
 	[_fmMoveTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];

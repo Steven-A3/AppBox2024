@@ -137,7 +137,6 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	if (_viewWillAppearFirstRunAfterLoad) {
 		_viewWillAppearFirstRunAfterLoad = NO;
 		[self setupInstructionView];
-        [self loadRequestAdmobNativeExpressAds];
 	} else {
 		if (IS_IOS7) {
 			double delayInSeconds = 1.0;
@@ -160,6 +159,8 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	
 	[self startRunning];
 	[self animateScanLine];
+    
+    [self loadRequestAdmobNativeExpressAds];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -515,6 +516,7 @@ static NSString *const A3V3InstructionDidShowForQRCode = @"A3V3InstructionDidSho
 - (GADNativeExpressAdView *)admobNativeExpressAdView {
 	if (!_admobNativeExpressAdView) {
 		CGSize adSize = self.view.bounds.size;
+        FNLOGRECT(self.view.bounds);
 		adSize.height = 100;
 		_admobNativeExpressAdView = [[GADNativeExpressAdView alloc] initWithAdSize:GADAdSizeFromCGSize(adSize)];
 		_admobNativeExpressAdView.adUnitID = @"ca-app-pub-0532362805885914/3456432943";
@@ -527,6 +529,8 @@ static NSString *const A3V3InstructionDidShowForQRCode = @"A3V3InstructionDidSho
 - (void)loadRequestAdmobNativeExpressAds {
 	if (![[A3AppDelegate instance] shouldPresentAd]) return;
 
+    if (_admobNativeExpressAdView) return;
+    
 	GADRequest *gadRequest = [GADRequest request];
 	gadRequest.keywords = @[@"price", @"shopping", @"marketing"];
 	[self.admobNativeExpressAdView loadRequest:gadRequest];
