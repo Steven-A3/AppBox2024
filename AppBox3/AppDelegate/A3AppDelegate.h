@@ -190,6 +190,7 @@ extern NSString *const A3AppGroupNameNone;
 - (BOOL)isPaidAppVersionCustomer:(RMAppReceipt *)receipt;
 - (BOOL)isIAPPurchasedCustomer:(RMAppReceipt *)receipt;
 - (BOOL)presentInterstitialAds;
+- (BOOL)shouldPresentWhatsNew;
 - (void)alertWhatsNew;
 - (void)updateHolidayNations;
 

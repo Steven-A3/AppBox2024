@@ -310,7 +310,7 @@
 		dispatch_async(dispatch_get_main_queue(), ^{
 			if (!self.isTouchIDEvaluationInProgress && !self.passcodeViewController.view.superview) {
 				[self removeSecurityCoverView];
-                if (!self.firstRunAfterInstall) {
+                if (!self.firstRunAfterInstall && ![self shouldPresentWhatsNew]) {
                     [self presentInterstitialAds];
                 }
 				FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
@@ -332,7 +332,7 @@
 			}
 			return;
 		} else {
-            if (!self.firstRunAfterInstall) {
+            if (!self.firstRunAfterInstall && ![self shouldPresentWhatsNew]) {
                 [self presentInterstitialAds];
             }
             [self updateHolidayNations];
@@ -556,7 +556,7 @@
 		[self reloadRootViewController];
 	}
 	[self showReceivedLocalNotifications];
-    if (!self.firstRunAfterInstall) {
+    if (!self.firstRunAfterInstall && ![self shouldPresentWhatsNew]) {
         [self presentInterstitialAds];
     }
 	[self alertWhatsNew];

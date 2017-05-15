@@ -205,7 +205,7 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddPedometerMenu];
 	}
 	// TODO: Abbreviation
-	if (_previousVersion && [_previousVersion doubleValue] <= 4.5) {
+	if (_previousVersion && [_previousVersion doubleValue] < 4.5) {
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddAbbreviationMenu];
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddAbbreviationMenu];
 	}
@@ -1528,17 +1528,22 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 
 #pragma mark - Alert What's New
 
+- (BOOL)shouldPresentWhatsNew {
+    return !_whatsNewDidShowInSession && ![[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidAlertWhatsNew4_5];
+}
+
 - (void)alertWhatsNew {
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidAlertWhatsNew4_5]) {
 		return;
 	}
-//	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidAlertWhatsNew4_5];
-//	[[NSUserDefaults standardUserDefaults] synchronize];
 
     if (_whatsNewDidShowInSession) {
         return;
     }
     _whatsNewDidShowInSession = YES;
+    
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidAlertWhatsNew4_5];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     
 	double delayInSeconds = 0.1;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
