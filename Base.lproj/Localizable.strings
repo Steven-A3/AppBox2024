@@ -600,7 +600,6 @@
 "Check out the AppBox Pro!" = "Check out the AppBox Pro!";
 "Share Unit Converter data" = "Share Unit Converter data";
 
-"To convert values, need two units." = "To convert values, need two units.";
 "Each history keeps max 4 units." = "Each history keeps max 4 units.";
 
 "%@ to %@ = %@" = "%@ to %@ = %@";
@@ -1077,3 +1076,4 @@ the action menu";
 "Kaomoji reference on the AppBox Pro" = "Kaomoji reference on the AppBox Pro";
 "I'd like to share information with you." = "I'd like to share information with you.";
 "You can find more in the AppBox Pro." = "You can find more in the AppBox Pro.";
+"You need two units at least to convert values." = "You need two units at least to convert values.";

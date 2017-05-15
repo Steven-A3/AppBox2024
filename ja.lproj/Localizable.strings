@@ -652,8 +652,6 @@
 
 "Check out the AppBox Pro!" = "AppBox Proを使ってみましょう。";
 
-"To convert values, need two units." = "変換するために２つのユニットが必要です";
-
 "%@ to %@ = %@" = "%@ から %@ = %@";
 
 "More" = "その他";
@@ -1140,3 +1138,5 @@
 "Kaomoji reference on the AppBox Pro" = "顔文字(AppBox Pro)";
 "I'd like to share information with you." = "情報を共有したいと思います。";
 "You can find more in the AppBox Pro." = "AppBox Proでもっと多くを見つけることができます。";
+
+"You need two units at least to convert values." = "値を変換するには、少なくとも2つのユニットが必要です。";

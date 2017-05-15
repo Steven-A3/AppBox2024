@@ -21,10 +21,11 @@
 #define kCalibrationOffsetXKeyForSurface		@"kCalibrationOffsetXKeyForSurface"
 #define kCalibrationOffsetYKeyForSurface		@"kCalibrationOffsetYKeyForSurface"
 
-@interface InclinometerViewController () <ClinometerToolbarViewControllerDelegate>
+@interface InclinometerViewController () <ClinometerToolbarViewControllerDelegate, GADNativeExpressAdViewDelegate>
 
 @property (nonatomic, strong) CMMotionManager *motionManager;
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
+@property(nonatomic, strong) GADNativeExpressAdView *admobNativeExpressAdView;
 
 @end
 
@@ -93,18 +94,8 @@
 
 	[self myLayoutSubviews];
 
-	if ([[A3AppDelegate instance] shouldPresentAd]) {
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDLevel keywords:@[@"House"] gender:kGADGenderUnknown];
-		
-		UIView *superview = self.view;
-		[self.view addSubview:self.bannerView];
-		[self.bannerView makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(superview.left);
-			make.top.equalTo(superview.bottom);
-			make.width.equalTo(@320);
-			make.height.equalTo(@50);
-		}];
-	}
+    [self loadRequestAdmobNativeExpressAds];
+
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 }
 
@@ -427,19 +418,56 @@
 	return _operationQueue;
 }
 
-- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
-	[self.view bringSubviewToFront:bannerView];
-	[bannerView setHidden:NO];
-	[UIView animateWithDuration:0.3 animations:^{
-		UIView *superview = self.view;
-		[bannerView remakeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(superview.left);
-			make.right.equalTo(superview.right);
-			make.bottom.equalTo(superview.bottom);
-		}];
-		
-		[self.view layoutIfNeeded];
-	}];
+#pragma mark - Admob Ad
+
+- (GADNativeExpressAdView *)admobNativeExpressAdView {
+	if (!_admobNativeExpressAdView) {
+		CGSize adSize = self.view.bounds.size;
+		adSize.height = 80;
+		_admobNativeExpressAdView = [[GADNativeExpressAdView alloc] initWithAdSize:GADAdSizeFromCGSize(adSize)];
+		_admobNativeExpressAdView.adUnitID = @"ca-app-pub-0532362805885914/4933166148";
+		_admobNativeExpressAdView.delegate = self;
+		_admobNativeExpressAdView.rootViewController = self;
+	}
+	return _admobNativeExpressAdView;
+}
+
+- (void)loadRequestAdmobNativeExpressAds {
+	if (![[A3AppDelegate instance] shouldPresentAd]) return;
+
+	GADRequest *gadRequest = [GADRequest request];
+	gadRequest.keywords = @[@"house", @"architect"];
+	[self.admobNativeExpressAdView loadRequest:gadRequest];
+}
+
+- (void)nativeExpressAdViewDidReceiveAd:(GADNativeExpressAdView *)nativeExpressAdView {
+    if (nativeExpressAdView.superview != self.view) {
+        [self.view addSubview:nativeExpressAdView];
+        
+        [nativeExpressAdView remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.view.left);
+            make.top.equalTo(self.view.bottom);
+            make.right.equalTo(self.view.right);
+            make.height.equalTo(@80);
+        }];
+        [self.view layoutIfNeeded];
+        
+        [UIView animateWithDuration:0.3 animations:^{
+            UIView *superview = self.view;
+            [nativeExpressAdView remakeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(superview.left);
+                make.right.equalTo(superview.right);
+                make.bottom.equalTo(superview.bottom);
+                make.height.equalTo(@80);
+            }];
+            
+            [self.view layoutIfNeeded];
+        }];
+    }
+}
+
+- (void)nativeExpressAdView:(GADNativeExpressAdView *)nativeExpressAdView didFailToReceiveAdWithError:(GADRequestError *)error {
+    FNLOG(@"%@", error.localizedDescription);
 }
 
 @end

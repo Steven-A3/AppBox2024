@@ -184,7 +184,6 @@
 "Text" = "一般文本";
 "Photo" = "照片";
 "Set Passcode" = "設定密碼";
-"To convert values, need two units." = "若要改變值,需要兩個單位。";
 "Please enter new passcode." = "請輸入新密碼";
 "Year %ld month %ld has %ld days." = "年 %ld 月 %ld 有 %ld 天。";
 "Delete Item" = "刪除項目";
@@ -971,3 +970,5 @@
 "Kaomoji reference on the AppBox Pro" = "表情符號(AppBox Pro)";
 "I'd like to share information with you." = "我想和你分享信息。";
 "You can find more in the AppBox Pro." = "您可以在AppBox Pro中找到更多內容。";
+
+"You need two units at least to convert values." = "至少需要兩個單位來轉換值。";

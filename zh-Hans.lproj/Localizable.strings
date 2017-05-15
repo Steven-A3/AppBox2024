@@ -662,8 +662,6 @@
 "Check out the AppBox Pro!" = "查看AppBox Pro!";
 "Share Unit Converter data" = "共享单位转换数据";
 
-"To convert values, need two units." = "若要改变值,需要两个单位。";
-
 "Each history keeps max 4 units." = "每个历史最多保留4个单位。";
 
 /* Example, km to m = 1000 */
@@ -1149,3 +1147,5 @@
 "Kaomoji reference on the AppBox Pro" = "颜文字(AppBox Pro)";
 "I'd like to share information with you." = "我想和你分享信息。";
 "You can find more in the AppBox Pro." = "您可以在AppBox Pro中找到更多内容。";
+
+"You need two units at least to convert values." = "至少需要两个单位来转换值。";

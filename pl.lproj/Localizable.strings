@@ -651,8 +651,6 @@
 "Check out the AppBox Pro!" = "Sprawdź AppBox Pro!";
 "Share Unit Converter data" = "Udostępnij dane konwertera jednostek";
 
-"To convert values, need two units." = "Aby konwertować wartości, wybierz 2 jednostki.";
-
 "Each history keeps max 4 units." = "Historia przechowuje maksymalnie 4 jednostki.";
 
 "%@ to %@ = %@" = "%@ do %@ = %@";
@@ -1137,3 +1135,4 @@ wyświetlić menu czynności";
 "Kaomoji reference on the AppBox Pro" = "Kaomoji(AppBox Pro)";
 "I'd like to share information with you." = "Chciałbym z tobą dzielić się informacjami.";
 "You can find more in the AppBox Pro." = "Możesz znaleźć więcej w AppBox Pro.";
+"You need two units at least to convert values." = "Do konwersji wartości potrzebne są co najmniej dwie jednostki.";

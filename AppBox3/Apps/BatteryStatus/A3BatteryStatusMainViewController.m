@@ -22,11 +22,14 @@
 
 @import GoogleMobileAds;
 
-@interface A3BatteryStatusMainViewController () <A3InstructionViewControllerDelegate>
+@interface A3BatteryStatusMainViewController () <A3InstructionViewControllerDelegate, GADNativeExpressAdViewDelegate>
+
 @property (nonatomic, strong) A3BatteryStatusSettingViewController *settingsViewController;
 @property (nonatomic, strong) A3BatteryStatusListPageSectionView *sectionHeaderView;
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
+@property (nonatomic, strong) GADNativeExpressAdView *admobNativeExpressAdView;
+
 @end
 
 @implementation A3BatteryStatusMainViewController
@@ -34,6 +37,7 @@
     NSArray * _tableDataSourceArray;
     A3BatterStatusBatteryPanelView *_headerView;
     UIView *_topWhitePaddingView;
+    BOOL _didReceiveAds;
 }
 
 - (id)init {
@@ -129,7 +133,6 @@
     
 	[self refreshHeaderView];
     [self reloadTableViewDataSource];
-    [self.tableView reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -142,7 +145,7 @@
 		[self leftBarButtonAppsButton];
 	}
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDBattery keywords:nil gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
+        [self loadRequestAdmobNativeExpressAds];
 	}
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self.navigationController setNavigationBarHidden:NO];
@@ -200,7 +203,6 @@
 	[self enableControls:YES];
 	[self refreshHeaderView];
 	[self reloadTableViewDataSource];
-	[self.tableView reloadData];
 }
 
 - (void)enableControls:(BOOL)enable {
@@ -277,6 +279,13 @@ static NSString *const A3V3InstructionDidShowForBattery = @"A3V3InstructionDidSh
             _tableDataSourceArray = array;
         }
     }
+    if (_didReceiveAds) {
+        NSMutableArray *workingArray = [_tableDataSourceArray mutableCopy];
+        [workingArray insertObject:@{} atIndex:0];
+        _tableDataSourceArray = workingArray;
+    }
+
+    [self.tableView reloadData];
 }
 
 - (void)batteryThemeChanged {
@@ -408,6 +417,8 @@ static NSString *const A3V3InstructionDidShowForBattery = @"A3V3InstructionDidSh
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (_didReceiveAds && indexPath.row == 0) return 100;
+
     if (_sectionHeaderView.tableSegmentButton.selectedSegmentIndex==0) {
         NSString *chips = [_tableDataSourceArray[indexPath.row] objectForKey:@"value"];
         if ([chips rangeOfString:@"\n"].location==NSNotFound) {
@@ -444,7 +455,22 @@ static NSString *CellIdentifier = @"Cell";
         cell.detailTextLabel.numberOfLines = 0;
     }
 	cell.separatorInset = A3UITableViewSeparatorInset;
-    
+
+    if (_didReceiveAds && indexPath.row == 0) {
+        cell.textLabel.text = nil;
+        cell.detailTextLabel.text = nil;
+        
+        [cell addSubview:_admobNativeExpressAdView];
+
+        [_admobNativeExpressAdView makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(cell).insets(UIEdgeInsetsMake(1, 0, 1, 0));
+        }];
+
+        cell.separatorInset = UIEdgeInsetsZero;
+        cell.layoutMargins = UIEdgeInsetsZero;
+        return cell;
+    }
+
     // Configure the cell...
     NSDictionary *rowData = [_tableDataSourceArray objectAtIndex:indexPath.row];
     cell.textLabel.text = NSLocalizedString([rowData objectForKey:@"title"], nil);
@@ -512,52 +538,38 @@ static NSString *CellIdentifier = @"Cell";
 #pragma mark - List Page Section
 
 - (void)sectionSegmentControlChanged:(id)sender {
-    UISegmentedControl *sectionSegment = (UISegmentedControl *)sender;
-    
-    if (sectionSegment.selectedSegmentIndex==0) {
-        _tableDataSourceArray = [A3BatteryStatusManager deviceInfoDataArray];
-    } else {
-        _tableDataSourceArray = [A3BatteryStatusManager remainTimeDataArray];
-        NSArray * adjustedIndex = [A3BatteryStatusManager adjustedIndex];
-        if (adjustedIndex) {
-            //NSAssert(_tableDataSourceArray.count == adjustedIndex.count, @"둘이 같아야 합니다.");
-            
-            NSMutableArray * array = [NSMutableArray arrayWithCapacity:_tableDataSourceArray.count];
-            for (NSDictionary *rowDic in adjustedIndex) {
-                NSNumber *index = [rowDic objectForKey:@"index"];
-                NSNumber *checked = [rowDic objectForKey:@"checked"];
-                
-                if ([checked isEqualToNumber:@1] && (index.integerValue < _tableDataSourceArray.count)) {
-                    [array addObject:[_tableDataSourceArray objectAtIndex:index.integerValue]];
-                }
-            }
-            
-            _tableDataSourceArray = array;
-        }
-    }
-    
-    [self.tableView reloadData];
+    [self reloadTableViewDataSource];
 }
 
 #pragma mark - AdMob
 
-- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
-	if (self != [self.navigationController visibleViewController]) {
-		[bannerView removeFromSuperview];
-		return;
-	}
-	[self.view.superview addSubview:bannerView];
-	
-	UIView *superview = self.view;
-	[bannerView remakeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(superview.left);
-		make.right.equalTo(superview.right);
-		make.bottom.equalTo(superview.bottom);
-		make.height.equalTo(@(bannerView.bounds.size.height));
-	}];
-	UIEdgeInsets contentInset = self.tableView.contentInset;
-	contentInset.bottom = bannerView.bounds.size.height;
-	self.tableView.contentInset = contentInset;
+- (GADNativeExpressAdView *)admobNativeExpressAdView {
+    if (!_admobNativeExpressAdView) {
+        CGSize adSize = self.view.bounds.size;
+        adSize.height = 100;
+        _admobNativeExpressAdView = [[GADNativeExpressAdView alloc] initWithAdSize:GADAdSizeFromCGSize(adSize)];
+        _admobNativeExpressAdView.adUnitID = @"ca-app-pub-0532362805885914/1840098940";
+        _admobNativeExpressAdView.delegate = self;
+        _admobNativeExpressAdView.rootViewController = self;
+    }
+    return _admobNativeExpressAdView;
+}
+
+- (void)loadRequestAdmobNativeExpressAds {
+    if (![[A3AppDelegate instance] shouldPresentAd]) return;
+
+    GADRequest *gadRequest = [GADRequest request];
+    [self.admobNativeExpressAdView loadRequest:gadRequest];
+}
+
+- (void)nativeExpressAdViewDidReceiveAd:(GADNativeExpressAdView *)nativeExpressAdView {
+    _didReceiveAds = YES;
+
+    [self reloadTableViewDataSource];
+}
+
+- (void)nativeExpressAdView:(GADNativeExpressAdView *)nativeExpressAdView didFailToReceiveAdWithError:(GADRequestError *)error {
+    FNLOG(@"%@", error.localizedDescription);
 }
 
 @end

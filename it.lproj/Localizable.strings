@@ -647,8 +647,6 @@
 
 "Check out the AppBox Pro!" = "Verifica AppBox Pro!";
 
-"To convert values, need two units." = "Per convertire i valori, occorrono due unità";
-
 "Each history keeps max 4 units." = "Ogni cronologia conserva massimo 4 unità";
 
 "%@ to %@ = %@" = "%@ a %@ = %@";
@@ -1129,3 +1127,5 @@ visualizzare il menu azione";
 "Kaomoji reference on the AppBox Pro" = "Kaomoji(AppBox Pro)";
 "I'd like to share information with you." = "Vorrei condividere informazioni con te.";
 "You can find more in the AppBox Pro." = "Puoi trovare ulteriori informazioni in AppBox Pro.";
+
+"You need two units at least to convert values." = "Hai bisogno di almeno due unità per convertire i valori.";

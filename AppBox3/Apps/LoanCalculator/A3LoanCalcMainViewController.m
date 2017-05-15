@@ -39,6 +39,7 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "LoanCalcHistory+extension.h"
+#import "CGColor+Additions.h"
 
 #define LoanCalcModeSave @"LoanCalcModeSave"
 
@@ -49,10 +50,12 @@ NSString *const A3LoanCalcLoanGraphCellID = @"A3LoanCalcLoanGraphCell";
 NSString *const A3LoanCalcLoanNoteCellID = @"A3WalletNoteCell";
 NSString *const A3LoanCalcCompareGraphCellID = @"A3LoanCalcCompareGraphCell";
 NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
+NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 
 @interface A3LoanCalcMainViewController () <LoanCalcHistoryViewControllerDelegate, LoanCalcExtraPaymentDelegate,
 		LoanCalcLoanDataDelegate, LoanCalcSelectCalcForDelegate, LoanCalcSelectFrequencyDelegate, A3KeyboardDelegate,
-		UITextFieldDelegate, UITextViewDelegate, UIPopoverControllerDelegate, UIActivityItemSource, A3ViewControllerProtocol>
+		UITextFieldDelegate, UITextViewDelegate, UIPopoverControllerDelegate, UIActivityItemSource, A3ViewControllerProtocol,
+        GADNativeExpressAdViewDelegate>
 
 @property (nonatomic, strong) NSArray *moreMenuButtons;
 @property (nonatomic, strong) UIView *moreMenuView;
@@ -73,7 +76,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 @property (nonatomic, copy) NSString *textBeforeEditing;
 @property (nonatomic, copy) UIColor *textColorBeforeEditing;
 @property (nonatomic, weak) UITextField *editingTextField;
+
 @property (nonatomic, weak) UIView *bannerView;
+@property (nonatomic, strong) GADNativeExpressAdView *admobNativeExpressAdView;
 
 @end
 
@@ -88,6 +93,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	BOOL _didPressClearKey;
 	BOOL _didPressNumberKey;
 	BOOL _isNumberKeyboardVisible;
+    BOOL _didReceiveAds;
 }
 
 - (void)viewDidLoad
@@ -228,7 +234,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	}
-    [self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/5665624549" keywords:nil gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
+    [self loadRequestAdmobNativeExpressAds];
 
 	if ([self isMovingToParentViewController]) {
 		self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
@@ -2471,11 +2477,14 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 {
     // Return the number of rows in the section.
     if (_isComparisonMode) {
+        if (section == 0) {
+            return _didReceiveAds ? 2 : 1;
+        }
         return 1;
     }
     else {
         if (section == 0) {
-            return 1;   // loan graph
+            return _didReceiveAds ? 2 : 1;   // loan graph
         }
         else if (section == 1) {
             return 1;   // calculation
@@ -2504,7 +2513,11 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 {
     if (_isComparisonMode) {
         if (indexPath.section == 0) {
-            return (IS_IPHONE) ? 165 : 225;
+            if (indexPath.row == 0) {
+                return (IS_IPHONE) ? 165 : 225;
+            } else {
+                return 100;
+            }
         }
         else {
             return (IS_IPHONE) ? 160 : 194;
@@ -2512,7 +2525,11 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     }
     else {
         if (indexPath.section == 0) {
-            return (IS_IPHONE) ? 133 : 192;
+            if (indexPath.row == 0) {
+                return (IS_IPHONE) ? 133 : 192;
+            } else {
+                return 100;
+            }
         }
         else if (indexPath.section == 1) {
             if ([self.loanData calculated]) {
@@ -2666,22 +2683,39 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     UITableViewCell *cell=nil;
     
     if (indexPath.section == 0) {
-		[UIView setAnimationsEnabled:NO];
-        A3LoanCalcCompareGraphCell *compareCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcCompareGraphCellID forIndexPath:indexPath];
-        compareCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [compareCell adjustSubviewsFontSize];
-        
-        // loan data A,B
-        if ([_loanDataA calculated] || [_loanDataB calculated]) {
-            [self displayCompareCell:compareCell];
-        }
-        else {
-            [self makeCompareCellClear:compareCell];
-        }
-        
-        cell = compareCell;
+        if (indexPath.row == 0) {
+            [UIView setAnimationsEnabled:NO];
+            A3LoanCalcCompareGraphCell *compareCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcCompareGraphCellID forIndexPath:indexPath];
+            compareCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            [compareCell adjustSubviewsFontSize];
 
-		[UIView setAnimationsEnabled:YES];
+            // loan data A,B
+            if ([_loanDataA calculated] || [_loanDataB calculated]) {
+                [self displayCompareCell:compareCell];
+            } else {
+                [self makeCompareCellClear:compareCell];
+            }
+
+            cell = compareCell;
+
+            [UIView setAnimationsEnabled:YES];
+
+            if (_didReceiveAds) {
+                cell.separatorInset = UIEdgeInsetsZero;
+                cell.layoutMargins = UIEdgeInsetsZero;
+            }
+        } else {
+            cell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcAdCellID forIndexPath:indexPath];
+
+            [cell addSubview:_admobNativeExpressAdView];
+
+            [_admobNativeExpressAdView makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(cell);
+                make.top.equalTo(cell);
+                make.right.equalTo(cell);
+                make.bottom.equalTo(cell).with.offset(-1);
+            }];
+        }
     }
     else if (indexPath.section == 1){
         A3LoanCalcLoanInfoCell *infoCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcLoanInfoCellID forIndexPath:indexPath];
@@ -2741,27 +2775,45 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     switch ([indexPath section]) {
         case 0:
         {
-			[UIView setAnimationsEnabled:NO];
-            // graph
-            A3LoanCalcLoanGraphCell *graphCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcLoanGraphCellID forIndexPath:indexPath];
-            [graphCell.monthlyButton addTarget:self action:@selector(monthlyButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-            [graphCell.totalButton addTarget:self action:@selector(totalButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-            [graphCell.infoButton addTarget:self action:@selector(infoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-            [graphCell adjustSubviewsFontSize];
-            [graphCell adjustSubviewsPosition];
-            
-            if ([self.loanData calculated]) {
-                [self displayGraphCell:graphCell];
-            } else {
-                [self makeGraphCellClear:graphCell];
-            }
-            
-            [graphCell.monthlyButton setTitle:[LoanCalcString titleOfFrequency:self.loanData.frequencyIndex] forState:UIControlStateNormal];
-            graphCell.monthlyButton.titleLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:12] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-            graphCell.totalButton.titleLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:12] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+            if (indexPath.row == 0) {
+                [UIView setAnimationsEnabled:NO];
+                // graph
+                A3LoanCalcLoanGraphCell *graphCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcLoanGraphCellID forIndexPath:indexPath];
+                [graphCell.monthlyButton addTarget:self action:@selector(monthlyButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+                [graphCell.totalButton addTarget:self action:@selector(totalButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+                [graphCell.infoButton addTarget:self action:@selector(infoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+                [graphCell adjustSubviewsFontSize];
+                [graphCell adjustSubviewsPosition];
+                
+                if ([self.loanData calculated]) {
+                    [self displayGraphCell:graphCell];
+                } else {
+                    [self makeGraphCellClear:graphCell];
+                }
+                
+                [graphCell.monthlyButton setTitle:[LoanCalcString titleOfFrequency:self.loanData.frequencyIndex] forState:UIControlStateNormal];
+                graphCell.monthlyButton.titleLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:12] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+                graphCell.totalButton.titleLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:12] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+                
+                cell = graphCell;
+                [UIView setAnimationsEnabled:YES];
 
-            cell = graphCell;
-			[UIView setAnimationsEnabled:YES];
+                if (_didReceiveAds) {
+                    cell.separatorInset = UIEdgeInsetsZero;
+                    cell.layoutMargins = UIEdgeInsetsZero;
+                }
+            } else {
+                cell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcAdCellID forIndexPath:indexPath];
+
+                [cell addSubview:_admobNativeExpressAdView];
+                
+                [_admobNativeExpressAdView makeConstraints:^(MASConstraintMaker *make) {
+                    make.left.equalTo(cell);
+                    make.top.equalTo(cell);
+                    make.right.equalTo(cell);
+                    make.bottom.equalTo(cell).with.offset(-1);
+                }];
+            }
 			break;
 		}
 
@@ -3039,41 +3091,27 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 #pragma mark - AdMob
 
-- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
-	if (self != [self.navigationController visibleViewController]) {
-		[bannerView removeFromSuperview];
-		return;
-	}
-	
-	self.bannerView = bannerView;
-	
-	[self.view.superview addSubview:bannerView];
+- (void)loadRequestAdmobNativeExpressAds {
+    if (![[A3AppDelegate instance] shouldPresentAd]) return;
 
-	UIView *superview = self.view;
-	[bannerView remakeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(superview.left);
-		make.right.equalTo(superview.right);
-		make.bottom.equalTo(superview.bottom);
-		make.height.equalTo(@(bannerView.bounds.size.height));
-	}];
+    CGSize adSize = self.view.bounds.size;
+    adSize.height = 100;
+    _admobNativeExpressAdView = [[GADNativeExpressAdView alloc] initWithAdSize:GADAdSizeFromCGSize(adSize)];
+    _admobNativeExpressAdView.adUnitID = @"ca-app-pub-0532362805885914/3015780944";
+    _admobNativeExpressAdView.delegate = self;
+    _admobNativeExpressAdView.rootViewController = self;
+    GADRequest *gadRequest = [GADRequest request];
+    [_admobNativeExpressAdView loadRequest:gadRequest];
+}
 
-	if (self.numberKeyboardViewController.view.superview) {
-		UIView *keyboardView = self.numberKeyboardViewController.view;
-		CGRect frame = keyboardView.frame;
-		frame.origin.y = self.view.bounds.size.height - keyboardView.bounds.size.height - bannerView.bounds.size.height;
-		keyboardView.frame = frame;
-		
-		UIEdgeInsets contentInset = self.tableView.contentInset;
-		contentInset.bottom = bannerView.bounds.size.height + keyboardView.frame.size.height;
-		self.tableView.contentInset = contentInset;
+- (void)nativeExpressAdViewDidReceiveAd:(GADNativeExpressAdView *)nativeExpressAdView {
+    _didReceiveAds = YES;
 
-		NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:_editingTextField];
-		[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-	} else {
-		UIEdgeInsets contentInset = self.tableView.contentInset;
-		contentInset.bottom = bannerView.bounds.size.height;
-		self.tableView.contentInset = contentInset;
-	}
+    [self.tableView reloadData];
+}
+
+- (void)nativeExpressAdView:(GADNativeExpressAdView *)nativeExpressAdView didFailToReceiveAdWithError:(GADRequestError *)error {
+    FNLOG(@"%@", error.localizedDescription);
 }
 
 @end

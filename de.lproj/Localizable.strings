@@ -650,7 +650,6 @@
 "Unit Converter using AppBox Pro" = "Einheitenrechner von AppBox Pro";
 "Check out the AppBox Pro!" = "Testen Sie AppBox Pro!";
 "Share Unit Converter data" = "Daten des Einheitenrechners teilen";
-"To convert values, need two units." = "Zum Umrechnen werden zwei Einheiten benötigt.";
 
 "Each history keeps max 4 units." = "Es werden maximal 4 Einheiten gespeichert.";
 "Each history keeps max 4 currencies." = "Es werden maximal 4 Währungen gespeichert.";
@@ -1148,3 +1147,4 @@ um das Aktionsmenü anzuzeigen";
 "Kaomoji reference on the AppBox Pro" = "Kaomoji(AppBox Pro)";
 "I'd like to share information with you." = "Ich möchte gerne Informationen mit Ihnen teilen.";
 "You can find more in the AppBox Pro." = "Sie finden mehr in der AppBox Pro.";
+"You need two units at least to convert values." = "Du brauchst mindestens zwei Einheiten.";

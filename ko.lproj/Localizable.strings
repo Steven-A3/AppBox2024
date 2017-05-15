@@ -642,8 +642,6 @@
 "Check out the AppBox Pro!" = "AppBox Pro에서 작성!";
 "Share Unit Converter data" = "단위 변환 결과를 공유";
 
-"To convert values, need two units." = "단위 변환을 하려면 최소 두개의 단위가 필요합니다.";
-
 "Each history keeps max 4 units." = "각각의 히스토리는 최대 4개 단위의 변환값을 저장합니다.";
 
 "%@ to %@ = %@" = "%@ 에서 %@ = %@";
@@ -1138,3 +1136,5 @@
 "Kaomoji reference on the AppBox Pro" = "카오모지(AppBox Pro)";
 "I'd like to share information with you." = "공유하고 싶은게 있습니다.";
 "You can find more in the AppBox Pro." = "AppBox Pro앱에는 더 많은 것들이 있어요.";
+
+"You need two units at least to convert values." = "값을 변환하려면 최소한 두 개의 단위가 필요합니다.";

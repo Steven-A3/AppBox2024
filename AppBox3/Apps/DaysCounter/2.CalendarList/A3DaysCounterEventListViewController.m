@@ -77,7 +77,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 	} else {
 		self.title = [_sharedManager localizedSystemCalendarNameForCalendarID:_calendarItem.uniqueID];
 	}
-    UIBarButtonItem *search = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchAction:)];
+    UIBarButtonItem *search = [self searchBarButtonItem];
     UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
     self.navigationItem.rightBarButtonItems = @[edit, search];
     [self makeBackButtonEmptyArrow];
