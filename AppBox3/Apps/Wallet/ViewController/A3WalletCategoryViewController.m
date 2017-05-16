@@ -1183,6 +1183,17 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 
 - (void)didPresentSearchController:(UISearchController *)searchController {
     self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
+
+    if (SYSTEM_VERSION_LESS_THAN(@"10")) {
+        [self.tabBarController.view addSubview:self.searchController.searchBar];
+        _searchResultsTableViewController.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+
+        double delayInSeconds = 0.1;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self.searchController.searchBar becomeFirstResponder];
+        });
+    }
 }
 
 - (void)willDismissSearchController:(UISearchController *)searchController {
