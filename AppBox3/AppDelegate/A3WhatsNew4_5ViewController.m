@@ -9,12 +9,10 @@
 #import "A3WhatsNew4_5ViewController.h"
 #import "A3WhatsNew4_5PageViewController.h"
 #import "FXBlurView.h"
-#import "BEMCheckBox.h"
 
 @interface A3WhatsNew4_5ViewController ()
 
 @property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
-@property (nonatomic, weak) IBOutlet BEMCheckBox *checkBox;
 @property (nonatomic, strong) A3WhatsNew4_5PageViewController *pageViewController;
 
 @end
@@ -33,10 +31,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-    _checkBox.animationDuration = 0.2;
-    _checkBox.boxType = BEMBoxTypeSquare;
-    _checkBox.onAnimationType = BEMAnimationTypeBounce;
-    _checkBox.offAnimationType = BEMAnimationTypeBounce;
 }
 
 - (void)didReceiveMemoryWarning {

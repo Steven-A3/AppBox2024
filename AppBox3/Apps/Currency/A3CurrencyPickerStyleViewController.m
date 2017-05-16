@@ -90,6 +90,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	BOOL _currentValueIsNotFromUser;
 	BOOL _didFirstTimeRefresh;
 	BOOL _isNumberKeyboardVisible;
+    BOOL _didReceiveAds;
 }
 
 #pragma mark - View Lifecycle Management
@@ -231,7 +232,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 		}
 	}
 	_adBGBottomToLineUpTopConstraint.constant = -1;
-	_lineBottomToPickerSpaceConstraint.constant = 8;
+	_lineBottomToPickerSpaceConstraint.constant = -7;
 	_sampleTitlesBGViewHeightConstraint.constant = 40;
 	_sampleValuesBGViewHeightConstraint.constant = 40;
 
@@ -949,7 +950,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
     if (![[A3AppDelegate instance] shouldPresentAd]) return;
     
     CGSize adSize = self.view.bounds.size;
-    adSize.height = 100;
+    adSize.height = IS_IPHONE_4_INCH ? 80 : 100;
     _admobNativeExpressAdView = [[GADNativeExpressAdView alloc] initWithAdSize:GADAdSizeFromCGSize(adSize)];
     _admobNativeExpressAdView.adUnitID = @"ca-app-pub-0532362805885914/7886632546";
     _admobNativeExpressAdView.delegate = self;
@@ -960,6 +961,8 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 }
 
 - (void)nativeExpressAdViewDidReceiveAd:(GADNativeExpressAdView *)nativeExpressAdView {
+    _didReceiveAds = YES;
+    
     [_mainViewController dismissMoreMenu];
 
     if (IS_IPHONE35) {
@@ -973,20 +976,18 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
         }];
 
         [self.view layoutIfNeeded];
-    } else if (IS_IPHONE) {
+    } else if (IS_IPHONE_4_INCH) {
         FNLOGRECT(nativeExpressAdView.frame);
         [_adBackgroundView setHidden:NO];
         [_lineAboveAdBackgroundView setHidden:NO];
-        _adBackgroundViewHeightConstraint.constant = 100;
+        _adBackgroundViewHeightConstraint.constant = 80;
 
-        if ([[UIScreen mainScreen] scale] > 2) {
-            _tableView.rowHeight = 120.0;
-            _tableViewHeightConstraint.constant = 240.0;
-        } else {
-            _tableView.rowHeight = 84.0;
-            _tableViewHeightConstraint.constant = 168.0;
-        }
-        _lineBottomToPickerSpaceConstraint.constant = -6.0;
+        _tableView.rowHeight = 80.0;
+        _tableViewHeightConstraint.constant = 160.0;
+
+        _lineBottomToPickerSpaceConstraint.constant = -22.0;
+        _sampleTitlesBGViewHeightConstraint.constant = 30;
+        _sampleValuesBGViewHeightConstraint.constant = 30;
 
         [_adBackgroundView addSubview:nativeExpressAdView];
 
@@ -997,6 +998,32 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
             make.bottom.equalTo(_adBackgroundView.bottom);
         }];
 
+        [_tableView reloadData];
+        [self.view layoutIfNeeded];
+    } else if (IS_IPHONE) {
+        FNLOGRECT(nativeExpressAdView.frame);
+        [_adBackgroundView setHidden:NO];
+        [_lineAboveAdBackgroundView setHidden:NO];
+        _adBackgroundViewHeightConstraint.constant = 100;
+        
+        if ([[UIScreen mainScreen] scale] > 2) {
+            _tableView.rowHeight = 120.0;
+            _tableViewHeightConstraint.constant = 240.0;
+        } else {
+            _tableView.rowHeight = 84.0;
+            _tableViewHeightConstraint.constant = 168.0;
+        }
+        _lineBottomToPickerSpaceConstraint.constant = -6.0;
+        
+        [_adBackgroundView addSubview:nativeExpressAdView];
+        
+        [nativeExpressAdView remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_adBackgroundView.top);
+            make.left.equalTo(_adBackgroundView.left);
+            make.right.equalTo(_adBackgroundView.right);
+            make.bottom.equalTo(_adBackgroundView.bottom);
+        }];
+        
         [_tableView reloadData];
         [self.view layoutIfNeeded];
     } else {
@@ -1019,64 +1046,6 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 - (void)nativeExpressAdView:(GADNativeExpressAdView *)nativeExpressAdView didFailToReceiveAdWithError:(GADRequestError *)error {
     FNLOG(@"%@", error.localizedDescription);
-}
-
-- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
-	[_mainViewController dismissMoreMenu];
-	
-	if (IS_IPHONE35) {
-		[self.view addSubview:bannerView];
-		
-		[bannerView remakeConstraints:^(MASConstraintMaker *make) {
-			make.top.equalTo(_lineUpView.top);
-			make.left.equalTo(_lineUpView.left);
-			make.right.equalTo(_lineUpView.right);
-			make.height.equalTo(@50);
-		}];
-		
-		[self.view layoutIfNeeded];
-	} else if (IS_IPHONE) {
-		FNLOGRECT(bannerView.frame);
-		[_adBackgroundView setHidden:NO];
-		[_lineAboveAdBackgroundView setHidden:NO];
-		_adBackgroundViewHeightConstraint.constant = 50;
-
-		if ([[UIScreen mainScreen] scale] > 2) {
-			_tableView.rowHeight = 120.0;
-			_tableViewHeightConstraint.constant = 240.0;
-		} else {
-			_tableView.rowHeight = 84.0;
-			_tableViewHeightConstraint.constant = 168.0;
-		}
-		_lineBottomToPickerSpaceConstraint.constant = -6.0;
-
-		[_adBackgroundView addSubview:bannerView];
-		
-		[bannerView remakeConstraints:^(MASConstraintMaker *make) {
-			make.top.equalTo(_adBackgroundView.top);
-			make.left.equalTo(_adBackgroundView.left);
-			make.right.equalTo(_adBackgroundView.right);
-			make.bottom.equalTo(_adBackgroundView.bottom);
-		}];
-
-		[_tableView reloadData];
-		[self.view layoutIfNeeded];
-	} else {
-		[_adBackgroundView setHidden:NO];
-		[_lineAboveAdBackgroundView setHidden:NO];
-		_adBackgroundViewHeightConstraint.constant = 90;
-		[self setupIPADLayoutToInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
-		
-		FNLOGRECT(bannerView.frame);
-		[self.view addSubview:bannerView];
-		
-		[bannerView remakeConstraints:^(MASConstraintMaker *make) {
-			make.centerX.equalTo(_adBackgroundView.centerX);
-			make.centerY.equalTo(_adBackgroundView.centerY);
-		}];
-		
-		[self.view layoutIfNeeded];
-	}
 }
 
 #pragma mark - iPad Rotation
@@ -1105,9 +1074,9 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 		CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 		[_termSelectSegmentedControl setHidden:NO];
 		[_chartImageView setHidden:NO];
-		if ([self bannerView]) {
+		if (_didReceiveAds) {
 			if (bounds.size.height == 1024) {
-				_lineBottomToSegmentVSpace.constant = 30.0;
+				_lineBottomToSegmentVSpace.constant = 15.0;
 				self.tableView.rowHeight = 95;
 				self.tableViewHeightConstraint.constant = 190;
 			} else {
@@ -1138,7 +1107,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 			[_termSelectSegmentedControl setHidden:YES];
 			[_chartImageView setHidden:YES];
 		}
-		if ([self bannerView]) {
+		if (_didReceiveAds) {
 			if (bounds.size.height != 768) {
 				_lineBottomToSegmentVSpace.constant = 10;
 				_pickerBottom_bottomLayoutGuideConstraint.constant = 20;

@@ -565,10 +565,6 @@
 		689E9855197C1B99003710C3 /* A3UnitNamesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 689E9854197C1B99003710C3 /* A3UnitNamesTest.m */; };
 		68A6BA7D1E7FC29500889051 /* A3WhatsNewFirstPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A6BA7C1E7FC29500889051 /* A3WhatsNewFirstPageViewController.m */; };
 		68A84B711EC99DFC00CD413B /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68A84B6F1EC99DFC00CD413B /* GoogleMobileAds.framework */; };
-		68A885B21E7B8C370029D7FB /* BEMAnimationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A885AB1E7B8C370029D7FB /* BEMAnimationManager.m */; };
-		68A885B31E7B8C370029D7FB /* BEMCheckBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A885AD1E7B8C370029D7FB /* BEMCheckBox.m */; };
-		68A885B41E7B8C370029D7FB /* BEMCheckBoxGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A885AF1E7B8C370029D7FB /* BEMCheckBoxGroup.m */; };
-		68A885B51E7B8C380029D7FB /* BEMPathManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A885B11E7B8C370029D7FB /* BEMPathManager.m */; };
 		68ADE14717D83D28009618A7 /* MMDrawerBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE13F17D83D28009618A7 /* MMDrawerBarButtonItem.m */; };
 		68ADE14817D83D28009618A7 /* MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE14117D83D28009618A7 /* MMDrawerController.m */; };
 		68ADE14917D83D28009618A7 /* MMDrawerVisualState.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE14417D83D28009618A7 /* MMDrawerVisualState.m */; };
@@ -2113,14 +2109,6 @@
 		68A6BA7B1E7FC29500889051 /* A3WhatsNewFirstPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3WhatsNewFirstPageViewController.h; path = AppDelegate/A3WhatsNewFirstPageViewController.h; sourceTree = "<group>"; };
 		68A6BA7C1E7FC29500889051 /* A3WhatsNewFirstPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3WhatsNewFirstPageViewController.m; path = AppDelegate/A3WhatsNewFirstPageViewController.m; sourceTree = "<group>"; };
 		68A84B6F1EC99DFC00CD413B /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMobileAds.framework; sourceTree = "<group>"; };
-		68A885AA1E7B8C370029D7FB /* BEMAnimationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEMAnimationManager.h; sourceTree = "<group>"; };
-		68A885AB1E7B8C370029D7FB /* BEMAnimationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BEMAnimationManager.m; sourceTree = "<group>"; };
-		68A885AC1E7B8C370029D7FB /* BEMCheckBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEMCheckBox.h; sourceTree = "<group>"; };
-		68A885AD1E7B8C370029D7FB /* BEMCheckBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BEMCheckBox.m; sourceTree = "<group>"; };
-		68A885AE1E7B8C370029D7FB /* BEMCheckBoxGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEMCheckBoxGroup.h; sourceTree = "<group>"; };
-		68A885AF1E7B8C370029D7FB /* BEMCheckBoxGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BEMCheckBoxGroup.m; sourceTree = "<group>"; };
-		68A885B01E7B8C370029D7FB /* BEMPathManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEMPathManager.h; sourceTree = "<group>"; };
-		68A885B11E7B8C370029D7FB /* BEMPathManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BEMPathManager.m; sourceTree = "<group>"; };
 		68AB0AB71A3E9261001BFC5D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		68AB0AB91A3E9288001BFC5D /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		68AB0ABB1A3E92C8001BFC5D /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
@@ -4839,22 +4827,6 @@
 			path = "External/GoogleMobileAdsSdkiOS-7.20.0";
 			sourceTree = "<group>";
 		};
-		68A885A91E7B8C370029D7FB /* BEMCheckBox */ = {
-			isa = PBXGroup;
-			children = (
-				68A885AA1E7B8C370029D7FB /* BEMAnimationManager.h */,
-				68A885AB1E7B8C370029D7FB /* BEMAnimationManager.m */,
-				68A885AC1E7B8C370029D7FB /* BEMCheckBox.h */,
-				68A885AD1E7B8C370029D7FB /* BEMCheckBox.m */,
-				68A885AE1E7B8C370029D7FB /* BEMCheckBoxGroup.h */,
-				68A885AF1E7B8C370029D7FB /* BEMCheckBoxGroup.m */,
-				68A885B01E7B8C370029D7FB /* BEMPathManager.h */,
-				68A885B11E7B8C370029D7FB /* BEMPathManager.m */,
-			);
-			name = BEMCheckBox;
-			path = External/BEMCheckBox;
-			sourceTree = "<group>";
-		};
 		68AA75EB16A53B43005742D8 /* Currency */ = {
 			isa = PBXGroup;
 			children = (
@@ -5329,7 +5301,6 @@
 				68B6F7041EA575C500C4BB7A /* MWPhotoBrowser */,
 				68B6F6B71EA5759300C4BB7A /* SDWebImage */,
 				68B6F6A81EA5758200C4BB7A /* DACircularProgress */,
-				68A885A91E7B8C370029D7FB /* BEMCheckBox */,
 				68E44AD31E406D4B00FBC931 /* FXBlurView */,
 				683D683E1DBC5C00008C47C9 /* ACSimpleKeychain */,
 				683D68411DBC5C00008C47C9 /* TJDropbox */,
@@ -6695,7 +6666,6 @@
 				6831DF0B16C3D30100EABB2A /* A3ActionMenuBackgroundView.m in Sources */,
 				6853C7521E776DFB005341A1 /* A3WhatsNewAppScreenViewController.m in Sources */,
 				68F1500419485E8500159EAD /* DaysCounterEvent+extension.m in Sources */,
-				68A885B41E7B8C370029D7FB /* BEMCheckBoxGroup.m in Sources */,
 				68B6A2C118CEC76D004084EF /* A3LoanCalcLoanGraphCell.m in Sources */,
 				6898D82D1E45777B00B7BEEA /* KaomojiFavorite+CoreDataClass.m in Sources */,
 				68EC80D616E1ADF800CF672E /* A3Formatter.m in Sources */,
@@ -6759,7 +6729,6 @@
 				68B6A2F018CEC76D004084EF /* A3UnitPriceInputCell.m in Sources */,
 				68F14FF419485E8500159EAD /* A3DaysCounterSetupCalendarViewController.m in Sources */,
 				68B6F6D51EA5759300C4BB7A /* NSData+ImageContentType.m in Sources */,
-				68A885B31E7B8C370029D7FB /* BEMCheckBox.m in Sources */,
 				68E2A6A618D0B22800E834D9 /* A3SalesCalcMainViewController.m in Sources */,
 				6826F0291CA17B9800144680 /* A3HomeScreenButton.m in Sources */,
 				68143D5E18E3EC7C00569691 /* A3TableViewDateEntryElement.m in Sources */,
@@ -6973,7 +6942,6 @@
 				684E9EF7188A206C00FAA48E /* A3AboutViewController.m in Sources */,
 				680886E01891751B0093FD97 /* A3ClockWaveCircleTimeView.m in Sources */,
 				688257AA17D37863006429D3 /* A3HolidaysEditViewController.m in Sources */,
-				68A885B51E7B8C380029D7FB /* BEMPathManager.m in Sources */,
 				6817830F1902823D003E1BB9 /* A3WalletItemTitleCell.m in Sources */,
 				68B6A2C318CEC76D004084EF /* A3LoanCalcLoanInfo2Cell.m in Sources */,
 				689D59061C1569BA002CD422 /* ClinometerToolbarViewController.m in Sources */,
@@ -7172,7 +7140,6 @@
 				17D427E2FFD30C08F33352DB /* A3UserDefaults.m in Sources */,
 				17D426BC7A3AD946E25DEADB /* A3WalletVideoItemViewController.m in Sources */,
 				17D4258B7D4BF46E0C3369B5 /* A3AppDelegate+migration.m in Sources */,
-				68A885B21E7B8C370029D7FB /* BEMAnimationManager.m in Sources */,
 				17D42FF85AA97A33A049141B /* A3MainMenuTableViewController.m in Sources */,
 				17D4246891B35EE879B90A3E /* A3FractionInputView.m in Sources */,
 				17D427781AE9532AE6E09C7E /* A3UnitConverterAddViewController.m in Sources */,

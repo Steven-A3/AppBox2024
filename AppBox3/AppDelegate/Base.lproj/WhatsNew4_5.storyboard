@@ -118,7 +118,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vwu-hV-99k">
-                                <rect key="frame" x="100" y="361" width="120" height="44"/>
+                                <rect key="frame" x="100" y="477" width="120" height="44"/>
                                 <color key="backgroundColor" red="0.99916261434555054" green="0.17425110936164856" blue="0.33470001816749573" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="2ja-Ey-uT7"/>
@@ -131,58 +131,8 @@
                                 </connections>
                             </button>
                             <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="MlK-zD-Cwn">
-                                <rect key="frame" x="140.5" y="405.5" width="39" height="37"/>
+                                <rect key="frame" x="140.5" y="521" width="39" height="37"/>
                             </pageControl>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rqs-gW-k7E" userLabel="checkbox container view">
-                                <rect key="frame" x="35" y="524" width="249.5" height="20"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9A5-f7-wcE" customClass="BEMCheckBox">
-                                        <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <color key="tintColor" red="0.99916261429999997" green="0.17425110939999999" blue="0.3347000182" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="20" id="i0L-Vb-fTw"/>
-                                            <constraint firstAttribute="height" constant="20" id="n3X-WN-Fdf"/>
-                                        </constraints>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
-                                                <real key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="onTintColor">
-                                                <color key="value" red="0.99916261429999997" green="0.17425110939999999" blue="0.3347000182" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="onFillColor">
-                                                <color key="value" red="0.99916261429999997" green="0.17425110939999999" blue="0.3347000182" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="onCheckColor">
-                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
-                                                <color key="value" red="0.99916261429999997" green="0.17425110939999999" blue="0.3347000182" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </view>
-                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Do not show next time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GLA-Zf-YtI">
-                                        <rect key="frame" x="30" y="-1" width="219.5" height="22"/>
-                                        <gestureRecognizers/>
-                                        <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="17"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
-                                        <connections>
-                                            <outletCollection property="gestureRecognizers" destination="fgj-OE-q6t" appends="YES" id="557-Pj-22v"/>
-                                        </connections>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="GLA-Zf-YtI" firstAttribute="centerY" secondItem="Rqs-gW-k7E" secondAttribute="centerY" id="5Qz-wK-Ckd"/>
-                                    <constraint firstAttribute="height" constant="20" id="CnJ-Mx-hUS"/>
-                                    <constraint firstItem="9A5-f7-wcE" firstAttribute="leading" secondItem="Rqs-gW-k7E" secondAttribute="leading" id="Eui-Pg-wAA"/>
-                                    <constraint firstItem="9A5-f7-wcE" firstAttribute="centerY" secondItem="Rqs-gW-k7E" secondAttribute="centerY" id="GYW-VT-XFa"/>
-                                    <constraint firstAttribute="trailing" secondItem="GLA-Zf-YtI" secondAttribute="trailing" id="e51-u7-fDQ"/>
-                                    <constraint firstAttribute="width" secondItem="GLA-Zf-YtI" secondAttribute="width" constant="30" id="mma-6F-sVg"/>
-                                </constraints>
-                            </view>
                             <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete03" translatesAutoresizingMaskIntoConstraints="NO" id="YdE-x4-IpL">
                                 <rect key="frame" x="276" y="25" width="28" height="28"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -197,16 +147,14 @@
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="MlK-zD-Cwn" firstAttribute="centerX" secondItem="7XR-nM-fG9" secondAttribute="centerX" id="AhQ-GG-c69"/>
-                            <constraint firstItem="vwu-hV-99k" firstAttribute="top" secondItem="7XR-nM-fG9" secondAttribute="bottom" multiplier="424/667" id="FxV-Jq-gre"/>
-                            <constraint firstItem="Rqs-gW-k7E" firstAttribute="top" secondItem="7XR-nM-fG9" secondAttribute="bottom" multiplier="616/667" id="GzZ-rb-yAO"/>
+                            <constraint firstItem="vwu-hV-99k" firstAttribute="top" secondItem="7XR-nM-fG9" secondAttribute="bottom" multiplier="560/667" id="FxV-Jq-gre"/>
                             <constraint firstItem="2dl-Ft-RDE" firstAttribute="centerY" secondItem="7XR-nM-fG9" secondAttribute="centerY" multiplier="0.91" id="Hvo-ju-jQQ"/>
-                            <constraint firstItem="MlK-zD-Cwn" firstAttribute="top" secondItem="7XR-nM-fG9" secondAttribute="bottom" multiplier="476/667" id="KkT-KO-wxw"/>
+                            <constraint firstItem="MlK-zD-Cwn" firstAttribute="top" secondItem="7XR-nM-fG9" secondAttribute="bottom" multiplier="612/667" id="KkT-KO-wxw"/>
                             <constraint firstItem="2dl-Ft-RDE" firstAttribute="centerX" secondItem="7XR-nM-fG9" secondAttribute="centerX" id="PWX-Ma-EHl"/>
                             <constraint firstAttribute="trailingMargin" secondItem="YdE-x4-IpL" secondAttribute="trailing" id="gOx-dz-RST"/>
                             <constraint firstItem="vwu-hV-99k" firstAttribute="centerX" secondItem="7XR-nM-fG9" secondAttribute="centerX" id="hBQ-Ly-SuS"/>
                             <constraint firstItem="YdE-x4-IpL" firstAttribute="top" secondItem="p1v-nl-oeF" secondAttribute="bottom" constant="5" id="jtS-d5-fgB"/>
                             <constraint firstItem="HeF-RF-nsD" firstAttribute="top" secondItem="7XR-nM-fG9" secondAttribute="bottom" multiplier="145/667" id="n4k-Mx-hAz"/>
-                            <constraint firstItem="Rqs-gW-k7E" firstAttribute="centerX" secondItem="7XR-nM-fG9" secondAttribute="centerX" id="pge-Ae-3p7"/>
                             <constraint firstItem="HeF-RF-nsD" firstAttribute="centerX" secondItem="7XR-nM-fG9" secondAttribute="centerX" id="uc2-Bq-iHL"/>
                         </constraints>
                         <connections>
@@ -215,9 +163,7 @@
                     </view>
                     <connections>
                         <outlet property="abbreviationsAppNameLabel" destination="vsO-bh-jZG" id="Aqn-pZ-ert"/>
-                        <outlet property="checkBox" destination="9A5-f7-wcE" id="Nql-It-MbV"/>
                         <outlet property="closeImageView" destination="YdE-x4-IpL" id="owA-OS-Vbz"/>
-                        <outlet property="doNotShowLabel" destination="GLA-Zf-YtI" id="fKA-Bw-aO7"/>
                         <outlet property="kaomojiAppNameLabel" destination="ojM-KF-b4n" id="oqx-uF-35D"/>
                         <outlet property="titleLabel" destination="HeF-RF-nsD" id="B4l-KX-SeC"/>
                     </connections>

@@ -2,9 +2,6 @@
 /* Class = "UILabel"; text = "12 Emotion Groups"; ObjectID = "8jk-DF-6Oh"; */
 "8jk-DF-6Oh.text" = "12情感組";
 
-/* Class = "UILabel"; text = "Do not show next time"; ObjectID = "GLA-Zf-YtI"; */
-"GLA-Zf-YtI.text" = "不顯示下一次";
-
 /* Class = "UIButton"; normalTitle = "NEXT"; ObjectID = "Gym-eK-RzS"; */
 "Gym-eK-RzS.normalTitle" = "下一步";
 
