@@ -539,6 +539,7 @@
 		689A3ADF1961CA30008BC2F4 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 689A3ADD1961CA30008BC2F4 /* Main_iPhone.storyboard */; };
 		689B950E1E49816A0005A43A /* A3KaomojiDrillDownTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689B950D1E49816A0005A43A /* A3KaomojiDrillDownTableViewCell.m */; };
 		689B95191E4981D30005A43A /* A3KaomojiDrillDownViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689B95181E4981D30005A43A /* A3KaomojiDrillDownViewController.m */; };
+		689BA5F31EE94E270097B373 /* chartWidget.html in Resources */ = {isa = PBXBuildFile; fileRef = 689BA5F21EE94E270097B373 /* chartWidget.html */; };
 		689C9A4A1839CD7F007C97EE /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A281839CD7F007C97EE /* AFHTTPRequestOperation.m */; };
 		689C9A4B1839CD7F007C97EE /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A2A1839CD7F007C97EE /* AFHTTPRequestOperationManager.m */; };
 		689C9A4C1839CD7F007C97EE /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A2C1839CD7F007C97EE /* AFHTTPSessionManager.m */; };
@@ -2058,6 +2059,7 @@
 		689B95171E4981D30005A43A /* A3KaomojiDrillDownViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3KaomojiDrillDownViewController.h; path = Kaomoji/A3KaomojiDrillDownViewController.h; sourceTree = "<group>"; };
 		689B95181E4981D30005A43A /* A3KaomojiDrillDownViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3KaomojiDrillDownViewController.m; path = Kaomoji/A3KaomojiDrillDownViewController.m; sourceTree = "<group>"; };
 		689B951A1E49B0400005A43A /* A3DrillDownDataSourceProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = A3DrillDownDataSourceProtocols.h; sourceTree = "<group>"; };
+		689BA5F21EE94E270097B373 /* chartWidget.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = chartWidget.html; path = Apps/Currency/chartWidget.html; sourceTree = "<group>"; };
 		689C9A271839CD7F007C97EE /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
 		689C9A281839CD7F007C97EE /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
 		689C9A291839CD7F007C97EE /* AFHTTPRequestOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperationManager.h; sourceTree = "<group>"; };
@@ -4830,6 +4832,7 @@
 		68AA75EB16A53B43005742D8 /* Currency */ = {
 			isa = PBXGroup;
 			children = (
+				689BA5F21EE94E270097B373 /* chartWidget.html */,
 				68E6F34A17B25F5F00F10ED9 /* A3CurrencyChartViewController.h */,
 				68E6F34B17B25F5F00F10ED9 /* A3CurrencyChartViewController.m */,
 				686BC1DD184639CA00FA5C94 /* A3CurrencyChartViewController.xib */,
@@ -6226,6 +6229,7 @@
 				68EF403E1EAAF2020009D88A /* Kaomoji.storyboard in Resources */,
 				68944FD81CB69D9100493E6A /* A3QRCodeViewController.xib in Resources */,
 				68143D0318E3EC1F00569691 /* A3NumberKeyboardSimpleVC_iPad.xib in Resources */,
+				689BA5F31EE94E270097B373 /* chartWidget.html in Resources */,
 				68F14FD519485E8500159EAD /* A3DaysCounterAddEventDateInputCell.xib in Resources */,
 				68B6A2F318CEC76D004084EF /* A3UnitPriceInputView_iPad.xib in Resources */,
 				684D92C118BC1EFE005016F7 /* device_information.json in Resources */,

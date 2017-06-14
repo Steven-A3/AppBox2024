@@ -245,12 +245,7 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
                               completionHandler:^(BOOL granted, NSError * _Nullable error) {
                                   [application registerForRemoteNotifications];
                               }];
-    }
-//    else if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7")) {
-//        [application registerForRemoteNotificationTypes:
-//         (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
-//    }
-    else {
+    } else {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 		[application registerForRemoteNotifications];
@@ -1058,7 +1053,7 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)devToken {
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"")) {
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10")) {
         UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
         [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
             [self registerDeviceTokenToAPNServerWithToken:devToken
@@ -1152,7 +1147,7 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 }
 
 - (void)fetchPushNotification {
-	NSString *urlString = [NSString stringWithFormat:@"http://apns.allaboutapps.net/apns/apns.php?task=message&devicetoken=%@", _deviceToken];
+	NSString *urlString = [NSString stringWithFormat:@"https://apns.allaboutapps.net/apns/apns.php?task=message&devicetoken=%@", _deviceToken];
 	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
 	AFHTTPRequestOperation *fetchOperation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
 	fetchOperation.responseSerializer = [AFJSONResponseSerializer serializer];

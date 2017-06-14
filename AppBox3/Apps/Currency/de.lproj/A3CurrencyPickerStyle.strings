@@ -27,16 +27,16 @@
 "9jg-gS-Thf.segmentTitles[0]" = "1 Tag";
 
 /* Class = "IBUISegmentedControl"; 9jg-gS-Thf.segmentTitles[1] = "5 Days"; ObjectID = "9jg-gS-Thf"; */
-"9jg-gS-Thf.segmentTitles[1]" = "5 Tage";
+"9jg-gS-Thf.segmentTitles[1]" = "1 M";
 
 /* Class = "IBUISegmentedControl"; 9jg-gS-Thf.segmentTitles[2] = "1 Month"; ObjectID = "9jg-gS-Thf"; */
-"9jg-gS-Thf.segmentTitles[2]" = "1 M";
+"9jg-gS-Thf.segmentTitles[2]" = "3 M";
 
 /* Class = "IBUISegmentedControl"; 9jg-gS-Thf.segmentTitles[3] = "5 Months"; ObjectID = "9jg-gS-Thf"; */
-"9jg-gS-Thf.segmentTitles[3]" = "5 M";
+"9jg-gS-Thf.segmentTitles[3]" = "1 Jahr";
 
 /* Class = "IBUISegmentedControl"; 9jg-gS-Thf.segmentTitles[4] = "1 Year"; ObjectID = "9jg-gS-Thf"; */
-"9jg-gS-Thf.segmentTitles[4]" = "1 Jahr";
+"9jg-gS-Thf.segmentTitles[4]" = "5 Jahre";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "BPd-Vi-mv9"; */
 "BPd-Vi-mv9.text" = "Label";

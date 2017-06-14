@@ -51,9 +51,14 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *sampleTitleLabels;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *sampleValueLabels;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *termSelectSegmentedControl;
-@property (weak, nonatomic) IBOutlet UIImageView *chartImageView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *chartImageViewHeightConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *chartImageViewWidthConstraint;
+
+@property (weak, nonatomic) IBOutlet UIWebView *chartWebView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *chartWebViewWidthConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *chartWebViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet UIView *chartCoverView;
+@property (strong, nonatomic) UIActivityIndicatorView *activityIndicatorView;
+@property (strong, nonatomic) NSTimer *activityIndicatorRemoveTimer;
+
 @property (nonatomic, weak) UITextField *sourceTextField, *targetTextField;
 @property (nonatomic, copy) NSString *sourceCurrencyCode, *targetCurrencyCode;
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
@@ -127,15 +132,14 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 		make.height.equalTo(@44);
 	}];
 	
-	if (IS_IOS7) {
-		[self.tableView remakeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(superview.left);
-			make.right.equalTo(superview.right);
-			make.top.equalTo(superview.top).with.offset(64);
-			make.height.equalTo(IS_IPHONE35 ? @140 : @190);
-		}];
-	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    
+    UITapGestureRecognizer *chartCoverViewTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapChartCoverView)];
+    [_chartCoverView addGestureRecognizer:chartCoverViewTapGestureRecognizer];
+}
+
+- (void)didTapChartCoverView {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://tradingview.go2cloud.org/aff_c?offer_id=2&aff_id=4413"]];
 }
 
 - (void)dealloc {
@@ -535,14 +539,14 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 - (void)setupSegmentedControlTitles {
 	if (IS_IPAD && [[NSLocale preferredLanguages][0] hasPrefix:@"it"]) {
 		[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days", @"StringsDict", nil), 1] forSegmentAtIndex:0];
-		[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days", @"StringsDict", nil), 5] forSegmentAtIndex:1];
-		[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), 1] forSegmentAtIndex:2];
-		[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), 5] forSegmentAtIndex:3];
-		[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld years", @"StringsDict", nil), 1] forSegmentAtIndex:4];
+		[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), 1] forSegmentAtIndex:1];
+		[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), 3] forSegmentAtIndex:2];
+		[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld year", @"StringsDict", nil), 1] forSegmentAtIndex:3];
+		[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld years", @"StringsDict", nil), 5] forSegmentAtIndex:4];
 	} else
 		if (IS_IPHONE35) {
-			[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), 1] forSegmentAtIndex:2];
-			[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), 5] forSegmentAtIndex:3];
+			[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), 3] forSegmentAtIndex:2];
+			[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld year", @"StringsDict", nil), 1] forSegmentAtIndex:3];
 		}
 }
 
@@ -551,20 +555,68 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 }
 
 - (void)reloadChartImage {
-    if (!_chartImageView || _chartImageView.isHidden) {
+    if (!_chartWebView || _chartWebView.isHidden) {
         return;
     }
-	NSURLRequest *request = [NSURLRequest requestWithURL:self.urlForChartImage];
-	[self.chartImageView setImageWithURLRequest:request
-							   placeholderImage:nil
-										success:nil
-										failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-											[self.chartImageView setImage:[self chartNotAvailableImage]];
-										} ];
+
+    [_activityIndicatorRemoveTimer invalidate];
+    _activityIndicatorRemoveTimer = nil;
+    [_activityIndicatorView removeFromSuperview];
+    _activityIndicatorView = nil;
+    
+    _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [_chartCoverView addSubview:_activityIndicatorView];
+    
+    [_activityIndicatorView makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(_chartCoverView);
+    }];
+    
+    [_activityIndicatorView startAnimating];
+    
+    _activityIndicatorRemoveTimer =
+    [NSTimer scheduledTimerWithTimeInterval:2
+                                    repeats:NO
+                                      block:^(NSTimer * _Nonnull timer) {
+                                          [_activityIndicatorView removeFromSuperview];
+                                          _activityIndicatorView = nil;
+                                      }];
+    
+    [self.chartWebView loadHTMLString:[self chartContentHTML] baseURL:nil];
 }
 
+- (NSString *)chartContentHTML {
+    FNLOG(@"%@", [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode]);
+    FNLOG(@"%@", [NSLocale preferredLanguages][0]);
+    
+    NSString *counryCode = [[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode] lowercaseString];
+    NSArray *supportedCountries = @[@"uk", @"in", @"es", @"fr", @"it", @"pl", @"br", @"ru", @"tr", @"kr"];
+    NSString *locale = @"en";
+    if ([supportedCountries containsObject:counryCode]) {
+        locale = counryCode;
+    } else {
+        NSString *languageCode = [NSLocale preferredLanguages][0];
+        NSArray *supportedLanguages = @[@"ja", @"es", @"ko", @"fr", @"it", @"pl", @"ru", @"tr"];
+        if ([supportedLanguages containsObject:languageCode]) {
+            locale = languageCode;
+        }
+    }
+    
+    NSArray *periodsArray = @[@"1d", @"1m", @"3m", @"1y", @"5y"];
+    NSURL *url = [[NSBundle mainBundle] URLForResource:@"chartWidget" withExtension:@"html"];
+    NSString *templateString = [NSString stringWithContentsOfURL:url usedEncoding:NULL error:nil];
+    CGSize chartSize = _chartWebView.frame.size;
+
+    NSString *width = [NSString stringWithFormat:@"%0.0f", chartSize.width];
+    NSString *height = [NSString stringWithFormat:@"%0.0f", chartSize.height];
+    NSString *title = [NSString stringWithFormat:@"%@%@", _sourceCurrencyCode, _targetCurrencyCode];
+    NSString *currencyPair = [NSString stringWithFormat:@"%@%@", _sourceCurrencyCode, _targetCurrencyCode];
+    NSString *periods = periodsArray[_termSelectSegmentedControl.selectedSegmentIndex];
+    return [NSString stringWithFormat:templateString, width, height, title, currencyPair, periods, width, height, locale];
+}
+
+
 - (UIImage *)chartNotAvailableImage {
-	CGSize chartSize = [self chartSize];
+	CGSize chartSize = _chartWebView.frame.size;
 	UILabel *label = [UILabel new];
 	label.frame = CGRectMake(0,0,chartSize.width, chartSize.height);
 	label.numberOfLines = 2;
@@ -576,39 +628,6 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	label.layer.borderColor = [UIColor colorWithWhite:0.0 alpha:0.2].CGColor;
 	label.opaque = NO;
 	return [label imageByRenderingView];
-}
-
-- (CGSize)chartSize {
-	CGSize size;
-	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
-	if (IS_IPHONE) {
-		size.width = screenBounds.size.height == 480 ? 263 : 300;
-		size.height = screenBounds.size.height == 480 ? 154 : 175;
-	} else {
-		size.width = IS_PORTRAIT ?  605 : 555 ;
-		size.height = IS_PORTRAIT ? 268 : 246 ;
-	}
-	return size;
-}
-
-/**
- *  Yahoo Finance API
- *  Build URL preparing to call Yahoo Finance API
- *
- *  @return NSURL object made for Yahoo Finance API, Currency Chart
- */
-- (NSURL *)urlForChartImage {
-	NSArray *types = @[@"1d", @"5d", @"1m", @"5m", @"1y"];
-	NSString *string = [NSString stringWithFormat:@"https://chart.finance.yahoo.com/z?s=%@%@=x&t=%@&z=%@&region=%@&lang=%@",
-												  _sourceCurrencyCode, _targetCurrencyCode,
-												  types[(NSUInteger) self.termSelectSegmentedControl.selectedSegmentIndex],
-												  IS_IPHONE || (IS_IPHONE && !IS_LANDSCAPE)  ? @"m" : @"l",
-												  [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode],
-												  [[NSLocale preferredLanguages] objectAtIndex:0] ];
-
-	FNLOG(@"%@", string);
-
-	return [NSURL URLWithString:string];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -1073,7 +1092,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
 		CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 		[_termSelectSegmentedControl setHidden:NO];
-		[_chartImageView setHidden:NO];
+		[_chartWebView setHidden:NO];
 		if (_didReceiveAds) {
 			if (bounds.size.height == 1024) {
 				_lineBottomToSegmentVSpace.constant = 15.0;
@@ -1105,7 +1124,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 		CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 		if (bounds.size.height == 768) {
 			[_termSelectSegmentedControl setHidden:YES];
-			[_chartImageView setHidden:YES];
+			[_chartWebView setHidden:YES];
 		}
 		if (_didReceiveAds) {
 			if (bounds.size.height != 768) {

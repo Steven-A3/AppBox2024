@@ -8,7 +8,6 @@
 
 #import "A3CurrencyChartViewController.h"
 #import "A3CurrencyTVDataCell.h"
-#import "UIImageView+AFNetworking.h"
 #import "A3CurrencyTableViewController.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "A3NumberKeyboardViewController.h"
@@ -23,7 +22,8 @@
 #import "A3YahooCurrency.h"
 
 @interface A3CurrencyChartViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate,
-		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewControllerProtocol>
+		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewControllerProtocol,
+        UIWebViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UIView *line1;
@@ -31,11 +31,16 @@
 @property (nonatomic, weak) IBOutlet UIView *valueView;
 @property (nonatomic, weak) IBOutlet UIView *line2;
 @property (nonatomic, weak) IBOutlet UISegmentedControl *segmentedControl;
-@property (nonatomic, weak) IBOutlet UIImageView *chartView;
+
+@property (nonatomic, weak) IBOutlet UIWebView *chartWebView;
+@property (nonatomic, weak) IBOutlet UIView *webViewCoverView;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
+@property (nonatomic, strong) NSTimer *activityIndicatorRemoveTimer;
+
 @property (nonatomic, strong) NSMutableArray *titleLabels;
 @property (nonatomic, strong) NSMutableArray *valueLabels;
 @property (nonatomic, weak) UITextField *sourceTextField, *targetTextField;
-@property (nonatomic, strong) UIImageView *landscapeChartView;
+@property (nonatomic, strong) UIWebView *landscapeChartWebView;
 @property (nonatomic, strong) UIScrollView *landscapeView;
 @property (nonatomic, strong) NSNumber *sourceValue;
 @property (nonatomic, copy) NSString *previousValue;
@@ -109,10 +114,10 @@
 
 	if (IS_IPAD && [[NSLocale preferredLanguages][0] hasPrefix:@"it"]) {
 		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days", @"StringsDict", nil), 1] forSegmentAtIndex:0];
-		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days", @"StringsDict", nil), 5] forSegmentAtIndex:1];
-		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), 1] forSegmentAtIndex:2];
-		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), 5] forSegmentAtIndex:3];
-		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld years", @"StringsDict", nil), 1] forSegmentAtIndex:4];
+		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), 1] forSegmentAtIndex:1];
+		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), 3] forSegmentAtIndex:2];
+		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld years", @"StringsDict", nil), 1] forSegmentAtIndex:3];
+		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld years", @"StringsDict", nil), 5] forSegmentAtIndex:4];
 	} else
 	if (IS_IPHONE35) {
 		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), 1] forSegmentAtIndex:2];
@@ -120,6 +125,13 @@
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:kReachabilityChangedNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    
+    UITapGestureRecognizer *chartTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnWebView)];
+    [_webViewCoverView addGestureRecognizer:chartTapRecognizer];
+}
+
+- (void)didTapOnWebView {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://tradingview.go2cloud.org/aff_c?offer_id=2&aff_id=4413"]];
 }
 
 - (void)applicationDidEnterBackground {
@@ -148,6 +160,7 @@
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self.navigationController setNavigationBarHidden:NO animated:NO];
 	}
+    [self updateDisplay];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -237,7 +250,7 @@
 		make.centerX.equalTo(superview.centerX);
 		make.height.equalTo(@28);
 	}];
-	[_chartView makeConstraints:^(MASConstraintMaker *make) {
+	[_chartWebView makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(superview.centerX);
 	}];
 }
@@ -254,29 +267,20 @@
 	[_line1 makeConstraints:^(MASConstraintMaker *make) {
 		[_constraints addObject:make.top.equalTo(_tableView.bottom).with.offset(isIPHONE ? (isIPHONE35 ? 10 : 17) : (isPORTRAIT ? 50 : 33))];
 	}];
-	CGSize chartSize = [self chartSize];
+
 	[_segmentedControl makeConstraints:^(MASConstraintMaker *make) {
 		[_constraints addObject:make.top.equalTo(_line2.bottom).with.offset(isIPHONE ? (isIPHONE35 ? 10 : 17) : (isPORTRAIT ? 50 : 40))];
-		[_constraints addObject:make.width.equalTo(@(chartSize.width))];
+		[_constraints addObject:make.width.equalTo(self.view.width).with.offset(-40)];
 	}];
-	[_chartView makeConstraints:^(MASConstraintMaker *make) {
-		[_constraints addObject:make.top.equalTo(_segmentedControl.bottom).with.offset(isIPHONE ? (isIPHONE35 ? 14 : 18) : (isPORTRAIT ? 20 : 35))];
-		[_constraints addObject:make.width.equalTo(@(chartSize.width))];
-		[_constraints addObject:make.height.equalTo(@(chartSize.height))];
+	[_chartWebView makeConstraints:^(MASConstraintMaker *make) {
+        CGFloat verticalMargin = isIPHONE ? (isIPHONE35 ? 14 : 18) : (isPORTRAIT ? 20 : 35);
+		[_constraints addObject:make.top.equalTo(_segmentedControl.bottom).with.offset(verticalMargin)];
+		[_constraints addObject:make.width.equalTo(self.view.width).with.offset(-40)];
+		[_constraints addObject:make.bottom.equalTo(self.view.bottom).with.offset(-verticalMargin)];
 	}];
-}
-
-- (CGSize)chartSize {
-	CGSize size;
-	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
-	if (IS_IPHONE) {
-		size.width = screenBounds.size.height == 480 ? 263 : 300;
-		size.height = screenBounds.size.height == 480 ? 154 : 175;
-	} else {
-		size.width = IS_PORTRAIT ?  605 : 555 ;
-		size.height = IS_PORTRAIT ? 268 : 246 ;
-	}
-	return size;
+    [_webViewCoverView makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(_chartWebView);
+    }];
 }
 
 - (void)setupFont {
@@ -302,14 +306,6 @@
 	label.adjustsFontSizeToFitWidth = YES;
 	label.minimumScaleFactor = 0.5;
 	return label;
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-
-	FNLOG();
-
-	[self updateDisplay];
 }
 
 - (void)updateDisplay {
@@ -633,17 +629,33 @@
 }
 
 - (void)reloadChartImage {
-	NSURLRequest *request = [NSURLRequest requestWithURL:self.urlForChartImage];
-	[self.chartView setImageWithURLRequest:request
-						  placeholderImage:nil
-								   success:nil
-								   failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-									   [self.chartView setImage:[self chartNotAvailableImage]];
-								   } ];
+    [_activityIndicatorRemoveTimer invalidate];
+    _activityIndicatorRemoveTimer = nil;
+    [_activityIndicatorView removeFromSuperview];
+    _activityIndicatorView = nil;
+    
+    _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [_webViewCoverView addSubview:_activityIndicatorView];
+    
+    [_activityIndicatorView makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(_webViewCoverView);
+    }];
+    
+    [_activityIndicatorView startAnimating];
+    
+    _activityIndicatorRemoveTimer =
+    [NSTimer scheduledTimerWithTimeInterval:2
+                                    repeats:NO
+                                      block:^(NSTimer * _Nonnull timer) {
+                                          [_activityIndicatorView removeFromSuperview];
+                                          _activityIndicatorView = nil;
+                                      }];
+   
+    [self.chartWebView loadHTMLString:[self chartContentHTML] baseURL:nil];
 }
 
 - (UIImage *)chartNotAvailableImage {
-	CGSize chartSize = [self chartSize];
+    CGSize chartSize = _webViewCoverView.frame.size;
 	UILabel *label = [UILabel new];
 	label.frame = CGRectMake(0,0,chartSize.width, chartSize.height);
 	label.numberOfLines = 2;
@@ -678,28 +690,6 @@
 	}
 }
 
-#pragma mark - UIImageView Yahoo Chart
-/**
- *  Yahoo Finance API
- *  Build URL preparing to call Yahoo Finance API
- *
- *  @return NSURL object made for Yahoo Finance API, Currency Chart
- */
-- (NSURL *)urlForChartImage {
-	NSArray *types = @[@"1d", @"5d", @"1m", @"5m", @"1y"];
-
-	NSString *string = [NSString stringWithFormat:@"https://chart.finance.yahoo.com/z?s=%@%@=x&t=%@&z=%@&region=%@&lang=%@",
-												  _sourceCurrencyCode, _targetCurrencyCode,
-												  types[(NSUInteger) self.segmentedControl.selectedSegmentIndex],
-												  IS_IPHONE || (IS_IPHONE && !IS_LANDSCAPE)  ? @"m" : @"l",
-												  [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode],
-												  [[NSLocale preferredLanguages] objectAtIndex:0] ];
-
-	FNLOG(@"%@", string);
-
-	return [NSURL URLWithString:string];
-}
-
 - (NSUInteger)a3SupportedInterfaceOrientations {
 	if (IS_IPHONE) {
 		if ([[Reachability reachabilityWithHostname:@"finance.yahoo.com"] isReachable]) {
@@ -712,12 +702,12 @@
 	}
 }
 
-- (UIImageView *)landscapeChartView {
-	if (!_landscapeChartView) {
-		_landscapeChartView = [[UIImageView alloc] init];
-		[_landscapeChartView setImageWithURL:self.urlForChartImage];
+- (UIWebView *)landscapeChartWebView {
+	if (!_landscapeChartWebView) {
+		_landscapeChartWebView = [[UIWebView alloc] init];
+        [_landscapeChartWebView loadHTMLString:[self chartContentHTML] baseURL:nil];
 	}
-	return _landscapeChartView;
+	return _landscapeChartWebView;
 }
 
 - (UIScrollView *)landscapeView {
@@ -746,16 +736,16 @@
 			self.landscapeView.frame = frame;
 			_landscapeView.contentSize = frame.size;
 			frame = CGRectInset(frame, 20.0, 20.0);
-			self.landscapeChartView.frame = frame;
-			[_landscapeView addSubview:_landscapeChartView];
+			self.landscapeChartWebView.frame = frame;
+			[_landscapeView addSubview:_landscapeChartWebView];
 			[self.view addSubview:self.landscapeView];
 		}
 	} else {
 		[[UIApplication sharedApplication] setStatusBarHidden:NO];
 		[self.navigationController setNavigationBarHidden:NO animated:YES];
-		[_landscapeChartView removeFromSuperview];
+		[_landscapeChartWebView removeFromSuperview];
 		[_landscapeView removeFromSuperview];
-		_landscapeChartView = nil;
+		_landscapeChartWebView = nil;
 		_landscapeView = nil;
 	}
 }
@@ -778,6 +768,56 @@
 	if ([[A3AppDelegate instance].reachability isReachable]) {
 		[self reloadChartImage];
 	}
+}
+
+- (NSString *)chartContentHTML {
+    FNLOG(@"%@", [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode]);
+    FNLOG(@"%@", [NSLocale preferredLanguages][0]);
+    
+    NSString *counryCode = [[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode] lowercaseString];
+    NSArray *supportedCountries = @[@"uk", @"in", @"es", @"fr", @"it", @"pl", @"br", @"ru", @"tr", @"kr"];
+    NSString *locale = @"en";
+    if ([supportedCountries containsObject:counryCode]) {
+        locale = counryCode;
+    } else {
+        NSString *languageCode = [NSLocale preferredLanguages][0];
+        NSArray *supportedLanguages = @[@"ja", @"es", @"ko", @"fr", @"it", @"pl", @"ru", @"tr"];
+        if ([supportedLanguages containsObject:languageCode]) {
+            locale = languageCode;
+        }
+    }
+    
+    NSArray *periodsArray = @[@"1d", @"1m", @"3m", @"1y", @"5y"];
+    NSURL *url = [[NSBundle mainBundle] URLForResource:@"chartWidget" withExtension:@"html"];
+    NSString *templateString = [NSString stringWithContentsOfURL:url usedEncoding:NULL error:nil];
+    CGSize chartSize = _webViewCoverView.frame.size;
+
+    FNLOGRECT(_webViewCoverView.frame);
+    NSString *width = [NSString stringWithFormat:@"%0.0f", chartSize.width];
+    NSString *height = [NSString stringWithFormat:@"%0.0f", chartSize.height];
+    NSString *title = [NSString stringWithFormat:@"%@%@", _originalSourceCode, _originalTargetCode];
+    NSString *currencyPair = [NSString stringWithFormat:@"%@%@", _originalSourceCode, _originalTargetCode];
+    NSString *periods = periodsArray[_segmentedControl.selectedSegmentIndex];
+    return [NSString stringWithFormat:templateString, width, height, title, currencyPair, periods, width, height, locale];
+}
+
+#pragma mark - UIWebViewDelegate
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    FNLOG();
+    return YES;
+}
+
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+    FNLOG();
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    FNLOG();
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    FNLOG();
 }
 
 @end
