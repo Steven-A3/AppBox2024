@@ -863,6 +863,21 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
 	[self setupBannerViewForAdUnitID:unitID keywords:keywords gender:kGADGenderUnknown adSize:kGADAdSizeBanner];
 }
 
+- (CGFloat)bannerHeight {
+    if (IS_IPAD) {
+        return 90;
+    }
+    if (IS_IPHONE35) {
+        return 50;
+    } else if (IS_IPHONE_5_5_INCH) {
+        return 65;
+    } else if (IS_IPHONE_4_7_INCH) {
+        return 60;
+    } else {
+        return 50;
+    }
+}
+
 - (void)prepareNativeExpressAdViewForUnitID:(NSString *)unitID keywords:(NSArray *)keywords delegate:(id<GADNativeExpressAdViewDelegate>)delegate {
     GADRequest *adRequest = [GADRequest request];
     adRequest.keywords = keywords;

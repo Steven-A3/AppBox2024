@@ -2,7 +2,7 @@
 
 import UIKit
 
-var str = "Hello, playground"
+/*
 
 let AbbreviationDatabase =
 [
@@ -209,7 +209,6 @@ let AbbreviationDatabase =
 		["abbreviation" : "ZOT", "meaning" : "Zero Tolerance"],
 		["abbreviation" : "ZUP", "meaning" : "What's up?"]
 ]
-
 do {
 	let data = try JSONSerialization.data(withJSONObject: AbbreviationDatabase, options: .prettyPrinted)
 	if let string = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
@@ -221,5 +220,48 @@ do {
 } catch let error as NSError {
 	
 }
+*/
 
+// device_information.json 파일을 읽습니다.
+// 장치 ID와 이름을 찾고, 해당 device 정보와 battery remaining time 정보가 있는지 확인합니다.
+// 파일이 정상적으로 읽혀지는지를 확인할 수 있습니다.
+// 필요한 정보가 모두 존재하는지 확인할 수 있습니다.
+do {
+    let dataURL = #fileLiteral(resourceName: "device_information.json")
+    let deviceData = try Data(contentsOf: dataURL)
+    let deviceObject = try JSONSerialization.jsonObject(with: deviceData, options: []) as! [String : Any]
 
+    let deviceNames = deviceObject["platform"] as! [String : String]
+    let deviceInformation = deviceObject["deviceInformation"] as! [String : Any]
+    let remainingTimeInfo = deviceObject["remainingTimeInfo"] as! [String : Any]
+    for (identifier, name) in deviceNames {
+        if let a  = deviceInformation[name] {
+        } else {
+            print("Information: \(identifier)/\(name)")
+        }
+        if let a  = remainingTimeInfo[name] {
+        } else {
+            print("Battery: \(identifier)/\(name)")
+        }
+    }
+    for (name, value) in deviceInformation {
+        let values = [String](deviceNames.values)
+        if values.contains(name) {
+            
+        } else {
+            print("\(name)")
+        }
+    }
+    for (name, value) in remainingTimeInfo {
+        let values = [String](deviceNames.values)
+        if values.contains(name) {
+            
+        } else {
+            print("\(name)")
+        }
+    }
+    
+    print("Done")
+} catch let error as NSError {
+    
+}

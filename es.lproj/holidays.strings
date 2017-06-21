@@ -268,7 +268,7 @@
 "Midsummer's Day" = "Día de pleno verano ";
 "Midsummer/Saint John's Day" = "Día de pleno verano /Día de San Juan";
 "Moi Day" = "Día de Me";
-"Mother's Day" = "Día de la Madre";
+"Mother's Day" = "El Dia de la Madre";
 "National 3rd of May Holiday" = "Festival Nacional del 3 de Mayo";
 "National Anthem Day" = "Día del Himno Nacional";
 "National Day (Declaration of Neutrality)" = "Día Nacional(Declaracion de Neutralidad)";
@@ -382,7 +382,7 @@
 "St Patrick's Day(Northern Ireland)" = "Día de San Patrick(Irlanda del Norte)";
 "Saints Cyril and Methodius Day" = "Día de San Cyril y Methodius";
 "St. Cyril and Methodius Day" = "Día de San Cyril y Methodius";
-"St. George's Day / Castile and León Day" = "Día de San George / Día de Castile y León";
+"St. George's Day / Castile and León Day" = "Día de San Jorge / Día de Castile y León";
 "St. James Day" = "Día de San James";
 "St. John's Day" = "Día de Jan Juan";
 "St. John's Day/Day of Dew" = "Día de Jan Juan/Día de Rocío";
@@ -633,7 +633,7 @@
 "Anzac Day Public Holiday" = "Festival Pública(Día de Anzac)";
 
 "Alberta Family Day" = "Día de la Familia en Alberta";
-"Daylight Saving Time Begins" = "Primer día del período de ahorro de energía en horario diurno";
+"Daylight Saving Time Begins" = "Cambio de Horario de Verano";
 "April Fool's Day" = "Día de los Santos Inocentes (abril)";
 "Alberta Heritage Day" = "Día del Patrimonio en Alberta";
 "Civic Holiday" = "Feriado cívico";
@@ -690,7 +690,7 @@
 
 //2014.7.20
 "Día de San Valentin" = "Día de San Valentin";
-"Hispanic Day" = "Fiesta Nacional de España";
+"Hispanic Day" = "Día de la Hispanidad";
 
 "St Stephen's Day / Boxing Day" = "Boxing Day(Día de las Cajas)";
 "Saint-Etienne" = "Boxing Day(Día de las Cajas)";
@@ -708,3 +708,50 @@
 "Feast of the Annunciation" = "Fiesta de la Anunciación";
 "Nativity of Mary" = "Natividad de María";
 "First Day of Ashura" = "Primer día de Ashura";
+"Feast of the Holy Family" = "Día de la Sagrada Familia";
+"regional holiday" = "festivo regional";
+"Day of Andalucía(Andalusia)" = "Día de Andalucía (Andalucía)";
+"Day of the Balearic Islands (Balearic Islands)" = "Dia de las Islas Baleares (Baleares)";
+"Cincomarzada (Zaragoza)" = "Cincomarzada (Zaragoza)";
+"Martyr Vicente's Feast (Valencia)" = "El día de Vicente Mártir (Valencia)";
+"San Jose" = "San José";
+"St. George's Day" = "Día de San Jorge";
+"Catalonia" = "Cataluña";
+"Castile and León Day" = "Día de Castilla y León";
+"Castile-Leon" = "Castilla y León";
+"Day of Aragón (Aragon)" = "Día de Aragón (Aragón)";
+"Day of Madrid (Madrid)" = "Día de la Communidad Madrid (Madrid)";
+"Mothers' Day" = "El Dia de la Madre";
+"Feast Day of St Isidore (Madrid)" = "Dia de San Isidro (Madrid)";
+"Galicia Literature Day (Galicia)" = "Día de las Letras Gallegas (Galicia)";
+"Day of the Canary Islands (Canary Islands)" = "Festividad del Día de Canarias (Canarias)";
+"Canaries day observed (Canary Islands)" = "Correspondiente a la Festividad del Día de Canarias(Canarias)";
+"Day of Castile-La Mancha (Castile-La Mancha)" = "Día de la Región de Castilla-La Mancha (Castilla-La Mancha)";
+"Day of La Rioja (La Rioja)" = "Día de la Rioja (La Rioja)";
+"Day of Murcia (Murcia)" = "Día de la Región de Murcia (Murcia)";
+"San Antonio (Ceuta)" = "San Antonio (Ceuta)";
+"Castile-La Mancha" = "Castilla-La Mancha";
+"Madrid" = "Madrid";
+"Saint John the Baptist Day" = "La revetlla de Sant Joan";
+"Feast of Saint James the Apostle" = "Santiago Apóstol";
+"Day of the Institutions" = "Día de las Instituciones";
+"Cantabria" = "Cantabria";
+"The Day of Our Lady of Africa" = "Día de Nuestra Señora de África";
+"Ceuta" = "Ceuta";
+"The Day of Cantabria" = "Día de Cantabria";
+"Day of the Independent City of Ceuta" = "Día de la Ciudad Autónoma de Ceuta";
+"Day of Asturias" = "Día de Asturias";
+"Asturias" = "Asturias";
+"Day of Extremadura" = "Día de Extremadura";
+"Extremadura" = "Extremadura";
+"Virgin of the Victory" = "Virgen de la Victoria";
+"Melilla" = "Melilla";
+"Day of Catalonia" = "Día Nacional de Cataluña";
+"Nuestra Señora de la Bien Aparecida" = "Nuestra Señora de la Bien Aparecida";
+"Day of Melilla" = "Día de Melilla";
+"Day of the Valencian Community" = "Día de la Comunidad Valenciana";
+"Valencia" = "Valenciana";
+"St. Valero's Feast" = "El día de San Valero";
+"Zaragoza" = "Zaragoza";
+"Day of Navarre" = "Día de Navarra";
+"Navarre" = "Navarra";

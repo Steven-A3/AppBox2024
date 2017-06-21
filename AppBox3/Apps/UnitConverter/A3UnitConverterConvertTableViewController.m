@@ -168,7 +168,9 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 
-    [self loadRequestAdmobNativeExpressAds];
+    [self setupBannerViewForAdUnitID:AdMobAdUnitIDUnitConverter
+                            keywords:@[@"Shopping"]
+                              gender:kGADGenderMale adSize:IS_IPHONE ? kGADAdSizeSmartBannerPortrait : kGADAdSizeLeaderboard];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
@@ -1024,7 +1026,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	}
 
 	if (self.convertItems[indexPath.row] == _adItem) {
-		return 100.0;
+		return [self bannerHeight];
 	}
 	return 84;
 }
@@ -1044,12 +1046,12 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		cell = equalCell;
 	} else if (_convertItems[indexPath.row] == _adItem) {
 		cell = [tableView dequeueReusableCellWithIdentifier:A3UnitConverterAdCellID];
-        [cell addSubview:_admobNativeExpressAdView];
+        UIView *bannerView = [self bannerView];
+        [cell addSubview:bannerView];
 
-		[_admobNativeExpressAdView remakeConstraints:^(MASConstraintMaker *make) {
+		[bannerView remakeConstraints:^(MASConstraintMaker *make) {
 			make.edges.equalTo(cell).insets(UIEdgeInsetsMake(0, 0, 1, 0));
 		}];
-        _admobNativeExpressAdView.backgroundColor = [UIColor clearColor];
 	} else if ([ [self.convertItems objectAtIndex:indexPath.row] isKindOfClass:[NSNumber class] ]) {
 		A3UnitConverterTVDataCell *dataCell;
 		dataCell = [tableView dequeueReusableCellWithIdentifier:A3UnitConverterDataCellID forIndexPath:indexPath];
@@ -2299,6 +2301,17 @@ const CGFloat kUnitCellVisibleWidth = 100.0;
 
 - (void)nativeExpressAdView:(GADNativeExpressAdView *)nativeExpressAdView didFailToReceiveAdWithError:(GADRequestError *)error {
     FNLOG(@"%@", error.localizedDescription);
+}
+
+- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+    if (_adItem && [_convertItems containsObject:_adItem]) {
+        return;
+    }
+    NSInteger position = [_convertItems count] > 3 ? 4 : [_convertItems count];
+    [_convertItems insertObject:[self adItem] atIndex:position];
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:position inSection:0];
+    [_fmMoveTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 @end

@@ -209,6 +209,9 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddAbbreviationMenu];
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddAbbreviationMenu];
 	}
+    if (!_previousVersion) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidAlertWhatsNew4_5];
+    }
 
 	// AppBox Pro V1.8.4까지는 Days Until 기능의 옵션에 의해서 남은 일자에 대한 배지 기능이 있었습니다.
 	// AppBox Pro V3.0 이후로는 배지 기능을 제공하지 않습니다.
@@ -1528,13 +1531,10 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 }
 
 - (void)alertWhatsNew {
-	if ([[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidAlertWhatsNew4_5]) {
+	if (![self shouldPresentWhatsNew]) {
 		return;
 	}
 
-    if (_whatsNewDidShowInSession) {
-        return;
-    }
     _whatsNewDidShowInSession = YES;
     
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidAlertWhatsNew4_5];

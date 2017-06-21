@@ -39,7 +39,7 @@ NSString *const A3QRCodeImageTorchOn = @"m_flash_on";
 NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 
 @interface A3QRCodeViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, A3InstructionViewControllerDelegate,
-		A3QRCodeDataHandlerDelegate, UIActionSheetDelegate, UIAlertViewDelegate, GADNativeExpressAdViewDelegate>
+		A3QRCodeDataHandlerDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIToolbar *statusToolbar;
 @property (nonatomic, weak) IBOutlet UIToolbar *topToolbar;
@@ -57,7 +57,6 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 @property (nonatomic, assign) BOOL scanHandlerInProgress;
 @property (nonatomic, strong) IBOutletCollection(UIBarButtonItem) NSArray *soundOnOffButtons;
 @property (nonatomic, strong) IBOutletCollection(UIBarButtonItem) NSArray *torchOnOffButtons;
-@property(nonatomic, strong) GADNativeExpressAdView *admobNativeExpressAdView;
 
 @end
 
@@ -137,6 +136,10 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	if (_viewWillAppearFirstRunAfterLoad) {
 		_viewWillAppearFirstRunAfterLoad = NO;
 		[self setupInstructionView];
+        [self setupBannerViewForAdUnitID:AdMobAdUnitIDQRCode
+                                keywords:@[@"Low Price", @"Shopping", @"Marketing"]
+                                  gender:kGADGenderUnknown
+                                  adSize:IS_IPHONE ? kGADAdSizeSmartBannerPortrait : kGADAdSizeLeaderboard];
 	} else {
 		if (IS_IOS7) {
 			double delayInSeconds = 1.0;
@@ -159,8 +162,6 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	
 	[self startRunning];
 	[self animateScanLine];
-    
-    [self loadRequestAdmobNativeExpressAds];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -513,48 +514,21 @@ static NSString *const A3V3InstructionDidShowForQRCode = @"A3V3InstructionDidSho
 
 #pragma mark - AdMob
 
-- (GADNativeExpressAdView *)admobNativeExpressAdView {
-	if (!_admobNativeExpressAdView) {
-		CGSize adSize = self.view.bounds.size;
-        FNLOGRECT(self.view.bounds);
-		adSize.height = 100;
-		_admobNativeExpressAdView = [[GADNativeExpressAdView alloc] initWithAdSize:GADAdSizeFromCGSize(adSize)];
-		_admobNativeExpressAdView.adUnitID = @"ca-app-pub-0532362805885914/3456432943";
-		_admobNativeExpressAdView.delegate = self;
-		_admobNativeExpressAdView.rootViewController = self;
-	}
-	return _admobNativeExpressAdView;
-}
-
-- (void)loadRequestAdmobNativeExpressAds {
-	if (![[A3AppDelegate instance] shouldPresentAd]) return;
-
-    if (_admobNativeExpressAdView) return;
+- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+    [self.view addSubview:bannerView];
     
-	GADRequest *gadRequest = [GADRequest request];
-	gadRequest.keywords = @[@"price", @"shopping", @"marketing"];
-	[self.admobNativeExpressAdView loadRequest:gadRequest];
-}
-
-- (void)nativeExpressAdViewDidReceiveAd:(GADNativeExpressAdView *)nativeExpressAdView {
-    [self.view addSubview:nativeExpressAdView];
-
     UIView *superview = self.view;
-    [nativeExpressAdView remakeConstraints:^(MASConstraintMaker *make) {
+    [bannerView remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(superview.left);
         make.right.equalTo(superview.right);
         make.bottom.equalTo(superview.bottom);
-        make.height.equalTo(@(nativeExpressAdView.bounds.size.height));
+        make.height.equalTo(@([self bannerHeight]));
     }];
-
-    _bottomToolbarBottomSpaceConstraint.constant = nativeExpressAdView.bounds.size.height;
-
+    
+    _bottomToolbarBottomSpaceConstraint.constant = bannerView.bounds.size.height;
+    
     [self.view layoutIfNeeded];
     [self.cornersView setNeedsDisplay];
-}
-
-- (void)nativeExpressAdView:(GADNativeExpressAdView *)nativeExpressAdView didFailToReceiveAdWithError:(GADRequestError *)error {
-    FNLOG(@"%@", error.localizedDescription);
 }
 
 #pragma mark - Override RSScannerViewController

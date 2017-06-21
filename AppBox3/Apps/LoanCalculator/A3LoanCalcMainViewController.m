@@ -54,8 +54,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 
 @interface A3LoanCalcMainViewController () <LoanCalcHistoryViewControllerDelegate, LoanCalcExtraPaymentDelegate,
 		LoanCalcLoanDataDelegate, LoanCalcSelectCalcForDelegate, LoanCalcSelectFrequencyDelegate, A3KeyboardDelegate,
-		UITextFieldDelegate, UITextViewDelegate, UIPopoverControllerDelegate, UIActivityItemSource, A3ViewControllerProtocol,
-        GADNativeExpressAdViewDelegate>
+		UITextFieldDelegate, UITextViewDelegate, UIPopoverControllerDelegate, UIActivityItemSource, A3ViewControllerProtocol>
 
 @property (nonatomic, strong) NSArray *moreMenuButtons;
 @property (nonatomic, strong) UIView *moreMenuView;
@@ -76,9 +75,6 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 @property (nonatomic, copy) NSString *textBeforeEditing;
 @property (nonatomic, copy) UIColor *textColorBeforeEditing;
 @property (nonatomic, weak) UITextField *editingTextField;
-
-@property (nonatomic, weak) UIView *bannerView;
-@property (nonatomic, strong) GADNativeExpressAdView *admobNativeExpressAdView;
 
 @end
 
@@ -171,7 +167,6 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 }
 
 - (void)keyboardDidHide:(NSNotification *)notification {
-	self.tableView.contentInset = UIEdgeInsetsMake(64, 0, [self bannerView] ? 50 : 0, 0);
 }
 
 - (void)cloudStoreDidImport {
@@ -212,7 +207,6 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
     self.tableView.delegate = nil;
     self.tableView.dataSource = nil;
     [self removeObserver];
-	[self.bannerView removeFromSuperview];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -234,7 +228,10 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	}
-    [self loadRequestAdmobNativeExpressAds];
+    [self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/5665624549"
+                            keywords:nil
+                              gender:kGADGenderUnknown
+                              adSize:IS_IPHONE ? kGADAdSizeSmartBannerPortrait : kGADAdSizeLeaderboard];
 
 	if ([self isMovingToParentViewController]) {
 		self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
@@ -249,8 +246,6 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
-	[self.bannerView removeFromSuperview];
-	
 	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
 		FNLOG();
 		[self removeObserver];
@@ -275,10 +270,6 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 
 		FNLOGRECT(self.view.bounds);
 		FNLOG(@"%f", keyboardHeight);
-
-		UIEdgeInsets contentInset = self.tableView.contentInset;
-		contentInset.bottom = keyboardHeight + (self.bannerView ? self.bannerView.bounds.size.height : 0);
-		self.tableView.contentInset = contentInset;
 
 		CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 		keyboardView.frame = CGRectMake(0, bounds.size.height - keyboardHeight, bounds.size.width, keyboardHeight);
@@ -2105,7 +2096,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 		self.tableView.contentInset = contentInset;
 
 		CGRect frame = keyboardView.frame;
-		frame.origin.y -= keyboardHeight + (self.bannerView ? self.bannerView.bounds.size.height : 0);
+		frame.origin.y -= keyboardHeight;
 		keyboardView.frame = frame;
 		
 		NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:textField];
@@ -2131,12 +2122,12 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
 	UIView *keyboardView = keyboardViewController.view;
 	[UIView animateWithDuration:0.3 animations:^{
-		UIEdgeInsets contentInset = self.tableView.contentInset;
-		contentInset.bottom = self.bannerView ? self.bannerView.bounds.size.height : 0;
-		self.tableView.contentInset = contentInset;
-
+        UIEdgeInsets contentInset = self.tableView.contentInset;
+        contentInset.bottom = 0;
+        self.tableView.contentInset = contentInset;
+        
 		CGRect frame = keyboardView.frame;
-		frame.origin.y += keyboardViewController.keyboardHeight + (self.bannerView ? self.bannerView.bounds.size.height : 0);
+		frame.origin.y += keyboardViewController.keyboardHeight;
 		keyboardView.frame = frame;
 	} completion:^(BOOL finished) {
 		[keyboardView removeFromSuperview];
@@ -2516,7 +2507,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
             if (indexPath.row == 0) {
                 return (IS_IPHONE) ? 165 : 225;
             } else {
-                return 100;
+                return [self bannerHeight];
             }
         }
         else {
@@ -2528,7 +2519,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
             if (indexPath.row == 0) {
                 return (IS_IPHONE) ? 133 : 192;
             } else {
-                return 100;
+                return [self bannerHeight];
             }
         }
         else if (indexPath.section == 1) {
@@ -2707,9 +2698,10 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
         } else {
             cell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcAdCellID forIndexPath:indexPath];
 
-            [cell addSubview:_admobNativeExpressAdView];
+            UIView *bannerView = [self bannerView];
+            [cell addSubview:bannerView];
 
-            [_admobNativeExpressAdView makeConstraints:^(MASConstraintMaker *make) {
+            [bannerView makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(cell);
                 make.top.equalTo(cell);
                 make.right.equalTo(cell);
@@ -2805,9 +2797,10 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
             } else {
                 cell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcAdCellID forIndexPath:indexPath];
 
-                [cell addSubview:_admobNativeExpressAdView];
+                UIView *bannerView = [self bannerView];
+                [cell addSubview:bannerView];
                 
-                [_admobNativeExpressAdView makeConstraints:^(MASConstraintMaker *make) {
+                [bannerView makeConstraints:^(MASConstraintMaker *make) {
                     make.left.equalTo(cell);
                     make.top.equalTo(cell);
                     make.right.equalTo(cell);
@@ -3091,27 +3084,10 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 
 #pragma mark - AdMob
 
-- (void)loadRequestAdmobNativeExpressAds {
-    if (![[A3AppDelegate instance] shouldPresentAd]) return;
-
-    CGSize adSize = self.view.bounds.size;
-    adSize.height = 100;
-    _admobNativeExpressAdView = [[GADNativeExpressAdView alloc] initWithAdSize:GADAdSizeFromCGSize(adSize)];
-    _admobNativeExpressAdView.adUnitID = @"ca-app-pub-0532362805885914/3015780944";
-    _admobNativeExpressAdView.delegate = self;
-    _admobNativeExpressAdView.rootViewController = self;
-    GADRequest *gadRequest = [GADRequest request];
-    [_admobNativeExpressAdView loadRequest:gadRequest];
-}
-
-- (void)nativeExpressAdViewDidReceiveAd:(GADNativeExpressAdView *)nativeExpressAdView {
+- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
     _didReceiveAds = YES;
-
+    
     [self.tableView reloadData];
-}
-
-- (void)nativeExpressAdView:(GADNativeExpressAdView *)nativeExpressAdView didFailToReceiveAdWithError:(GADRequestError *)error {
-    FNLOG(@"%@", error.localizedDescription);
 }
 
 @end

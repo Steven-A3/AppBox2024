@@ -22,7 +22,7 @@
 
 @import GoogleMobileAds;
 
-@interface A3BatteryStatusMainViewController () <A3InstructionViewControllerDelegate, GADNativeExpressAdViewDelegate>
+@interface A3BatteryStatusMainViewController () <A3InstructionViewControllerDelegate>
 
 @property (nonatomic, strong) A3BatteryStatusSettingViewController *settingsViewController;
 @property (nonatomic, strong) A3BatteryStatusListPageSectionView *sectionHeaderView;
@@ -145,7 +145,10 @@
 		[self leftBarButtonAppsButton];
 	}
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        [self loadRequestAdmobNativeExpressAds];
+        [self setupBannerViewForAdUnitID:AdMobAdUnitIDBattery
+                                keywords:nil
+                                  gender:kGADGenderUnknown
+                                  adSize:IS_IPHONE ? kGADAdSizeSmartBannerPortrait : kGADAdSizeLeaderboard];
 	}
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self.navigationController setNavigationBarHidden:NO];
@@ -417,7 +420,9 @@ static NSString *const A3V3InstructionDidShowForBattery = @"A3V3InstructionDidSh
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (_didReceiveAds && indexPath.row == 0) return 100;
+    if (_didReceiveAds && indexPath.row == 0) {
+        return [self bannerHeight];
+    }
 
     if (_sectionHeaderView.tableSegmentButton.selectedSegmentIndex==0) {
         NSString *chips = [_tableDataSourceArray[indexPath.row] objectForKey:@"value"];
@@ -459,10 +464,11 @@ static NSString *CellIdentifier = @"Cell";
     if (_didReceiveAds && indexPath.row == 0) {
         cell.textLabel.text = nil;
         cell.detailTextLabel.text = nil;
-        
-        [cell addSubview:_admobNativeExpressAdView];
 
-        [_admobNativeExpressAdView makeConstraints:^(MASConstraintMaker *make) {
+        UIView *bannerView = [self bannerView];
+        [cell addSubview:bannerView];
+
+        [bannerView makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(cell).insets(UIEdgeInsetsMake(1, 0, 1, 0));
         }];
 
@@ -543,33 +549,12 @@ static NSString *CellIdentifier = @"Cell";
 
 #pragma mark - AdMob
 
-- (GADNativeExpressAdView *)admobNativeExpressAdView {
-    if (!_admobNativeExpressAdView) {
-        CGSize adSize = self.view.bounds.size;
-        adSize.height = 100;
-        _admobNativeExpressAdView = [[GADNativeExpressAdView alloc] initWithAdSize:GADAdSizeFromCGSize(adSize)];
-        _admobNativeExpressAdView.adUnitID = @"ca-app-pub-0532362805885914/1840098940";
-        _admobNativeExpressAdView.delegate = self;
-        _admobNativeExpressAdView.rootViewController = self;
-    }
-    return _admobNativeExpressAdView;
-}
-
-- (void)loadRequestAdmobNativeExpressAds {
-    if (![[A3AppDelegate instance] shouldPresentAd]) return;
-
-    GADRequest *gadRequest = [GADRequest request];
-    [self.admobNativeExpressAdView loadRequest:gadRequest];
-}
-
-- (void)nativeExpressAdViewDidReceiveAd:(GADNativeExpressAdView *)nativeExpressAdView {
+- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+    FNLOG(@"%f", bannerView.adSize.size.height);
+    
     _didReceiveAds = YES;
-
+    
     [self reloadTableViewDataSource];
-}
-
-- (void)nativeExpressAdView:(GADNativeExpressAdView *)nativeExpressAdView didFailToReceiveAdWithError:(GADRequestError *)error {
-    FNLOG(@"%@", error.localizedDescription);
 }
 
 @end

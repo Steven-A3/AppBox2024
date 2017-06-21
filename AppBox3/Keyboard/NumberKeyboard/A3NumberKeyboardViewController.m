@@ -136,6 +136,13 @@
 	if (_keyboardType != A3NumberKeyboardTypePasscode && [textField.text length] == 1 && [textField.text isEqualToString:@"0"]) {
 		if ([inputString isEqualToString:@"0"]) {
 			// 입력을 처리하지 않는다.
+            // 다만, 사용자가 0을 입력한 경우이므로, 이것은 C를 입력한 것과 같은 효과가 생긴다.
+            // 명시적으로 값을 0으로 만들고 싶다는 것
+            // 사용자가 아무 입력도 하지 않고 키보드를 다시 닫는 경우, 이전 값을 복원하는 경우가 있다.
+            // 이때 사용자가 명시적으로 0를 입력했다는 것을 delegate에게 알려주어야 한다.
+            if ([_delegate respondsToSelector:@selector(A3KeyboardController:clearButtonPressedTo:)]) {
+                [_delegate A3KeyboardController:(id) self clearButtonPressedTo:_textInputTarget];
+            }
 			return;
 		}
 		if (![inputString isEqualToString:numberFormatter.decimalSeparator]) {

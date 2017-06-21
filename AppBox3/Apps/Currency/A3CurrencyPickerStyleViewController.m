@@ -40,7 +40,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 @interface A3CurrencyPickerStyleViewController ()
 		<UITableViewDelegate, UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate,
-		UITextFieldDelegate, UIPopoverControllerDelegate, A3CalculatorViewControllerDelegate, A3SearchViewControllerDelegate, A3InstructionViewControllerDelegate, GADNativeExpressAdViewDelegate>
+		UITextFieldDelegate, UIPopoverControllerDelegate, A3CalculatorViewControllerDelegate, A3SearchViewControllerDelegate, A3InstructionViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewHeightConstraint;
@@ -121,6 +121,16 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	} else {
 		[self setupConstantsForiPad];
 	}
+    
+    double delayInSeconds = 2.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        if (IS_IPHONE) {
+            [self setupBannerViewForAdUnitID:AdMobAdUnitIDCurrencyPicker keywords:@[@"Finance", @"Money", @"Shopping", @"Travel"] gender:kGADGenderUnknown adSize:kGADAdSizeSmartBannerPortrait];
+        } else {
+            [self setupBannerViewForAdUnitID:AdMobAdUnitIDCurrencyPicker keywords:@[@"Finance", @"Money", @"Shopping", @"Travel"] gender:kGADGenderUnknown adSize:kGADAdSizeLeaderboard];
+        }
+    });
 
 	UIView *superview = self.view;
 	[self.view addSubview:self.plusButton];
@@ -180,7 +190,6 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
                 [self.currencyDataManager updateCurrencyRatesOnSuccess:^{
                     [self didSelectPickerRow];
                     [self refreshUpdateDateLabel];
-                    [self loadRequestAdmobNativeExpressAds];
                 } failure:^{
                     
                 }];
@@ -965,65 +974,30 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 #pragma mark - Admob Advertisement
 
-- (void)loadRequestAdmobNativeExpressAds {
-    if (![[A3AppDelegate instance] shouldPresentAd]) return;
+- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+    FNLOGRECT(bannerView.bounds);
+    FNLOG(@"%f", bannerView.adSize.size.height);
     
-    CGSize adSize = self.view.bounds.size;
-    adSize.height = IS_IPHONE_4_INCH ? 80 : 100;
-    _admobNativeExpressAdView = [[GADNativeExpressAdView alloc] initWithAdSize:GADAdSizeFromCGSize(adSize)];
-    _admobNativeExpressAdView.adUnitID = @"ca-app-pub-0532362805885914/7886632546";
-    _admobNativeExpressAdView.delegate = self;
-    _admobNativeExpressAdView.rootViewController = self;
-    GADRequest *gadRequest = [GADRequest request];
-    gadRequest.keywords = @[@"finance", @"money", @"shopping", @"travel"];
-    [_admobNativeExpressAdView loadRequest:gadRequest];
-}
-
-- (void)nativeExpressAdViewDidReceiveAd:(GADNativeExpressAdView *)nativeExpressAdView {
     _didReceiveAds = YES;
     
     [_mainViewController dismissMoreMenu];
-
+    
     if (IS_IPHONE35) {
-        [self.view addSubview:nativeExpressAdView];
-
-        [nativeExpressAdView remakeConstraints:^(MASConstraintMaker *make) {
+        [self.view addSubview:bannerView];
+        
+        [bannerView remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(_lineUpView.top);
             make.left.equalTo(_lineUpView.left);
             make.right.equalTo(_lineUpView.right);
             make.height.equalTo(@50);
         }];
-
-        [self.view layoutIfNeeded];
-    } else if (IS_IPHONE_4_INCH) {
-        FNLOGRECT(nativeExpressAdView.frame);
-        [_adBackgroundView setHidden:NO];
-        [_lineAboveAdBackgroundView setHidden:NO];
-        _adBackgroundViewHeightConstraint.constant = 80;
-
-        _tableView.rowHeight = 80.0;
-        _tableViewHeightConstraint.constant = 160.0;
-
-        _lineBottomToPickerSpaceConstraint.constant = -22.0;
-        _sampleTitlesBGViewHeightConstraint.constant = 30;
-        _sampleValuesBGViewHeightConstraint.constant = 30;
-
-        [_adBackgroundView addSubview:nativeExpressAdView];
-
-        [nativeExpressAdView remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_adBackgroundView.top);
-            make.left.equalTo(_adBackgroundView.left);
-            make.right.equalTo(_adBackgroundView.right);
-            make.bottom.equalTo(_adBackgroundView.bottom);
-        }];
-
-        [_tableView reloadData];
+        
         [self.view layoutIfNeeded];
     } else if (IS_IPHONE) {
-        FNLOGRECT(nativeExpressAdView.frame);
+        FNLOGRECT(bannerView.frame);
         [_adBackgroundView setHidden:NO];
         [_lineAboveAdBackgroundView setHidden:NO];
-        _adBackgroundViewHeightConstraint.constant = 100;
+        _adBackgroundViewHeightConstraint.constant = [self bannerHeight];
         
         if ([[UIScreen mainScreen] scale] > 2) {
             _tableView.rowHeight = 120.0;
@@ -1034,9 +1008,9 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
         }
         _lineBottomToPickerSpaceConstraint.constant = -6.0;
         
-        [_adBackgroundView addSubview:nativeExpressAdView];
+        [_adBackgroundView addSubview:bannerView];
         
-        [nativeExpressAdView remakeConstraints:^(MASConstraintMaker *make) {
+        [bannerView remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(_adBackgroundView.top);
             make.left.equalTo(_adBackgroundView.left);
             make.right.equalTo(_adBackgroundView.right);
@@ -1048,23 +1022,19 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
     } else {
         [_adBackgroundView setHidden:NO];
         [_lineAboveAdBackgroundView setHidden:NO];
-        _adBackgroundViewHeightConstraint.constant = 100;
+        _adBackgroundViewHeightConstraint.constant = 90;
         [self setupIPADLayoutToInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
-
-        FNLOGRECT(nativeExpressAdView.frame);
-        [self.view addSubview:nativeExpressAdView];
-
-        [nativeExpressAdView remakeConstraints:^(MASConstraintMaker *make) {
+        
+        FNLOGRECT(bannerView.frame);
+        [self.view addSubview:bannerView];
+        
+        [bannerView remakeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(_adBackgroundView.centerX);
             make.centerY.equalTo(_adBackgroundView.centerY);
         }];
-
+        
         [self.view layoutIfNeeded];
     }
-}
-
-- (void)nativeExpressAdView:(GADNativeExpressAdView *)nativeExpressAdView didFailToReceiveAdWithError:(GADRequestError *)error {
-    FNLOG(@"%@", error.localizedDescription);
 }
 
 #pragma mark - iPad Rotation

@@ -111,6 +111,7 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 - (void)setupBannerViewForAdUnitID:(NSString *)unitID keywords:(NSArray *)keywords gender:(GADGender)gender;
 - (void)setupBannerViewForAdUnitID:(NSString *)unitID keywords:(NSArray *)keywords;
 - (GADBannerView *)bannerView;
+- (CGFloat)bannerHeight;
 - (void)prepareNativeExpressAdViewForUnitID:(NSString *)unitID keywords:(NSArray *)keywords delegate:(id<GADNativeExpressAdViewDelegate>)delegate;
 - (GADNativeExpressAdView *)nativeExpressAdView;
 

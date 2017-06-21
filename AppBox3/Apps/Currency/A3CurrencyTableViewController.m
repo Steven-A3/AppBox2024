@@ -44,7 +44,7 @@ NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChan
 @interface A3CurrencyTableViewController () <FMMoveTableViewDataSource, FMMoveTableViewDelegate,
         UITextFieldDelegate, A3CurrencyMenuDelegate, A3SearchViewControllerDelegate, A3CurrencyChartViewDelegate,
         UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate, UIActivityItemSource, A3CalculatorViewControllerDelegate,
-        A3InstructionViewControllerDelegate, A3ViewControllerProtocol, GADNativeExpressAdViewDelegate>
+        A3InstructionViewControllerDelegate, A3ViewControllerProtocol>
 
 @property(nonatomic, strong) NSMutableArray *favorites;
 @property(nonatomic, strong) NSMutableDictionary *equalItem;
@@ -67,7 +67,6 @@ NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChan
 @property(nonatomic, strong) NSManagedObjectContext *savingContext;
 @property(nonatomic, weak) UITextField *editingTextField;
 @property(nonatomic, strong) NSNumberFormatter *decimalNumberFormatter;
-@property(nonatomic, strong) GADNativeExpressAdView *admobNativeExpressAdView;
 
 @end
 
@@ -179,7 +178,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
     }
     _favorites = nil;
 
-    [self loadRequestAdmobNativeExpressAds];
+    [self setupBannerViewForAdUnitID:AdMobAdUnitIDCurrencyList keywords:@[@"Finance", @"Money", @"Shopping", @"Travel"] gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeSmartBannerPortrait : kGADAdSizeLeaderboard];
 
     [self.tableView reloadData];
 
@@ -681,7 +680,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     }
 
     if (_favorites[indexPath.row] == _adItem) {
-        return 100;
+        return [self bannerHeight];
     }
     return 84;
 }
@@ -699,9 +698,10 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
         cell = [self.tableView dequeueReusableCellWithIdentifier:A3CurrencyAdCellID];
         cell.layoutMargins = UIEdgeInsetsZero;
 
-        [cell addSubview:_admobNativeExpressAdView];
+        UIView *bannerView = [self bannerView];
+        [cell addSubview:bannerView];
 
-        [_admobNativeExpressAdView remakeConstraints:^(MASConstraintMaker *make) {
+        [bannerView remakeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(cell).insets(UIEdgeInsetsMake(0, 0, 1, 0));
         }];
     } else {
@@ -1434,15 +1434,19 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     history.rate = [_currencyDataManager dataForCurrencyCode:baseCurrency].rateToUSD;
     history.value = value;
 
-    NSInteger historyItemCount = MIN([self.favorites count] - 2 - (_adItem ? 1 : 0), 4);
+    NSInteger historyItemCount = MIN([self.favorites count] - 2, 4);
     NSInteger idx = 0;
     NSMutableSet *targets = [[NSMutableSet alloc] init];
+    
     for (; idx < historyItemCount; idx++) {
+        CurrencyFavorite *favoriteN = self.favorites[idx + 2];
+        if (![favoriteN isKindOfClass:[CurrencyFavorite class]]) {
+            continue;
+        }
         CurrencyHistoryItem *item = [CurrencyHistoryItem MR_createEntity];
         item.uniqueID = [[NSUUID UUID] UUIDString];
         item.updateDate = keyDate;
         item.historyID = history.uniqueID;
-        CurrencyFavorite *favoriteN = self.favorites[idx + 2 + (_adItem ? 1 : 0)];
         NSString *favorite = favoriteN.uniqueID;
         item.currencyCode = favorite;
         item.rate = [_currencyDataManager dataForCurrencyCode:favorite].rateToUSD;
@@ -1479,28 +1483,9 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 #pragma mark - AdMob Ad
 
-- (GADNativeExpressAdView *)admobNativeExpressAdView {
-    if (!_admobNativeExpressAdView) {
-        CGSize adSize = self.view.bounds.size;
-        adSize.height = 100;
-        _admobNativeExpressAdView = [[GADNativeExpressAdView alloc] initWithAdSize:GADAdSizeFromCGSize(adSize)];
-        _admobNativeExpressAdView.adUnitID = @"ca-app-pub-0532362805885914/4031842545";
-        _admobNativeExpressAdView.delegate = self;
-        _admobNativeExpressAdView.rootViewController = self;
-    }
-    return _admobNativeExpressAdView;
-}
-
-- (void)loadRequestAdmobNativeExpressAds {
-    if (![[A3AppDelegate instance] shouldPresentAd]) return;
-
-    GADRequest *gadRequest = [GADRequest request];
-    gadRequest.keywords = @[@"finance", @"money", @"shopping", @"travel"];
-    [self.admobNativeExpressAdView loadRequest:gadRequest];
-}
-
-- (void)nativeExpressAdViewDidReceiveAd:(GADNativeExpressAdView *)nativeExpressAdView {
-    if (_adItem && [_favorites containsObject:_adItem]) {
+- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+    FNLOGRECT(bannerView.frame);
+    if (_adItem) {
         return;
     }
     NSInteger position = [_favorites count] > 3 ? 4 : [_favorites count];
@@ -1508,10 +1493,6 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:position inSection:0];
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-}
-
-- (void)nativeExpressAdView:(GADNativeExpressAdView *)nativeExpressAdView didFailToReceiveAdWithError:(GADRequestError *)error {
-    FNLOG(@"%@", error.localizedDescription);
 }
 
 #pragma mark - Number Keyboard
