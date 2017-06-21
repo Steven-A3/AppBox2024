@@ -960,6 +960,7 @@
 		68F9391917D0DDBB0082234C /* FMMoveTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F9391617D0DDBB0082234C /* FMMoveTableView.m */; };
 		68F9391A17D0DDBB0082234C /* FMMoveTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F9391817D0DDBB0082234C /* FMMoveTableViewCell.m */; };
 		68F967BF1818D74300D64A0A /* NSArray+validation.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F967BE1818D74300D64A0A /* NSArray+validation.m */; };
+		68F9E34F1EFA02040042D5B6 /* libGoogleConversionTracking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68F9E34D1EFA02040042D5B6 /* libGoogleConversionTracking.a */; };
 		68FABA4C1CE9A8EB00A62B84 /* A3PedometerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FABA4B1CE9A8EB00A62B84 /* A3PedometerHandler.m */; };
 		68FB684A1C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FB68491C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.m */; };
 		68FB8E9E1C990922008CAB7A /* CurrencyInfo.dictionary in Resources */ = {isa = PBXBuildFile; fileRef = 68FB8E9C1C990922008CAB7A /* CurrencyInfo.dictionary */; };
@@ -2986,6 +2987,10 @@
 		68F9391817D0DDBB0082234C /* FMMoveTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMMoveTableViewCell.m; sourceTree = "<group>"; };
 		68F967BD1818D74300D64A0A /* NSArray+validation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+validation.h"; sourceTree = "<group>"; };
 		68F967BE1818D74300D64A0A /* NSArray+validation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+validation.m"; sourceTree = "<group>"; };
+		68F9E3481EFA02040042D5B6 /* ACTReporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACTReporter.h; sourceTree = "<group>"; };
+		68F9E34A1EFA02040042D5B6 /* GoogleConversionPing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleConversionPing.h; sourceTree = "<group>"; };
+		68F9E34C1EFA02040042D5B6 /* DCTReporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCTReporter.h; sourceTree = "<group>"; };
+		68F9E34D1EFA02040042D5B6 /* libGoogleConversionTracking.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleConversionTracking.a; sourceTree = "<group>"; };
 		68FABA4A1CE9A8EB00A62B84 /* A3PedometerHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3PedometerHandler.h; path = Pedometer/A3PedometerHandler.h; sourceTree = "<group>"; };
 		68FABA4B1CE9A8EB00A62B84 /* A3PedometerHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3PedometerHandler.m; path = Pedometer/A3PedometerHandler.m; sourceTree = "<group>"; };
 		68FB68481C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsHomeStyleSelectTableViewCell.h; path = Settings/A3SettingsHomeStyleSelectTableViewCell.h; sourceTree = "<group>"; };
@@ -3030,6 +3035,7 @@
 				68636000198BF88F00C3A323 /* libensembles.a in Frameworks */,
 				681E1281193447D70077DCFA /* libz.dylib in Frameworks */,
 				680B59D71E9777C8004362AC /* HealthKit.framework in Frameworks */,
+				68F9E34F1EFA02040042D5B6 /* libGoogleConversionTracking.a in Frameworks */,
 				6825367F18A7C1B800EAFB84 /* libsqlite3.0.dylib in Frameworks */,
 				684A71BD1852E0250004A9FE /* libc++.dylib in Frameworks */,
 			);
@@ -5300,6 +5306,7 @@
 		68CC1594174F764C0000870F /* External */ = {
 			isa = PBXGroup;
 			children = (
+				68F9E3471EFA02040042D5B6 /* GoogleConversionTrackingSDK-iOS-3.4.0 */,
 				68A84B6E1EC99DFC00CD413B /* GoogleMobileAdsSdkiOS-7.20.0 */,
 				68B6F7041EA575C500C4BB7A /* MWPhotoBrowser */,
 				68B6F6B71EA5759300C4BB7A /* SDWebImage */,
@@ -5978,6 +5985,34 @@
 			);
 			name = FMFramework;
 			path = External/FMMoveTableView/FMFramework;
+			sourceTree = "<group>";
+		};
+		68F9E3471EFA02040042D5B6 /* GoogleConversionTrackingSDK-iOS-3.4.0 */ = {
+			isa = PBXGroup;
+			children = (
+				68F9E3481EFA02040042D5B6 /* ACTReporter.h */,
+				68F9E3491EFA02040042D5B6 /* Deprecated */,
+				68F9E34B1EFA02040042D5B6 /* DoubleClick */,
+				68F9E34D1EFA02040042D5B6 /* libGoogleConversionTracking.a */,
+			);
+			name = "GoogleConversionTrackingSDK-iOS-3.4.0";
+			path = "External/GoogleConversionTrackingSDK-iOS-3.4.0";
+			sourceTree = "<group>";
+		};
+		68F9E3491EFA02040042D5B6 /* Deprecated */ = {
+			isa = PBXGroup;
+			children = (
+				68F9E34A1EFA02040042D5B6 /* GoogleConversionPing.h */,
+			);
+			path = Deprecated;
+			sourceTree = "<group>";
+		};
+		68F9E34B1EFA02040042D5B6 /* DoubleClick */ = {
+			isa = PBXGroup;
+			children = (
+				68F9E34C1EFA02040042D5B6 /* DCTReporter.h */,
+			);
+			path = DoubleClick;
 			sourceTree = "<group>";
 		};
 		804C330F18DAE53500DBCE83 /* Cells & Custom */ = {
@@ -7869,6 +7904,7 @@
 					"$(inherited)",
 					"${PROJECT_DIR}/External/**",
 					"$(PROJECT_DIR)/External/RMStore/Optional/openssl-1.0.2c/lib",
+					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7907,6 +7943,7 @@
 					"$(inherited)",
 					"${PROJECT_DIR}/External/**",
 					"$(PROJECT_DIR)/External/RMStore/Optional/openssl-1.0.2c/lib",
+					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -49,6 +49,7 @@
 #import "FXBlurView.h"
 #import "UIImage+imageWithColor.h"
 #import "NYXImagesKit.h"
+#import "ACTReporter.h"
 @import UserNotifications;
 
 NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
@@ -256,6 +257,13 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 		[application registerUserNotificationSettings:userNotificationSettings];
 #pragma GCC diagnostic pop
 	}
+    
+    // 다운로드
+    // Google iOS first open tracking snippet
+    // Add this code to your application delegate's
+    // application:didFinishLaunchingWithOptions: method.
+    
+    [ACTConversionReporter reportWithConversionID:@"964753049" label:@"j_bDCNKruXEQme2DzAM" value:@"1.00" isRepeatable:NO];
     
 	return shouldPerformAdditionalDelegateHandling;
 }
