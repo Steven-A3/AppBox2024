@@ -35,5 +35,6 @@
 
 - (UIView *)backgroundView;
 - (void)helpButtonAction:(id)sender ;
+- (void)updateShouldShowHouseAds;
 
 @end

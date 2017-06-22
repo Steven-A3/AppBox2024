@@ -27,19 +27,24 @@
 
 	self.automaticallyAdjustsScrollViewInsets = NO;
 
-	RMAppReceipt *appReceipt = [A3AppDelegate instance].appReceipt;
-	if ([appReceipt verifyReceiptHash]) {
-		if ([[A3AppDelegate instance] isPaidAppVersionCustomer:appReceipt]) {
-			_shouldShowHouseAd = ![[NSUserDefaults standardUserDefaults] boolForKey:kA3AppsHideOtherAppLinks];
-		} else {
-			_shouldShowHouseAd = ![[A3AppDelegate instance] isIAPPurchasedCustomer:appReceipt];
-		}
-	} else {
-		_shouldShowHouseAd = YES;
-	}
-	if (IS_IPHONE_3_5_INCH) {
-		self.shouldShowHouseAd = NO;
-	}
+    [self updateShouldShowHouseAds];
+}
+
+- (void)updateShouldShowHouseAds {
+    RMAppReceipt *appReceipt = [A3AppDelegate instance].appReceipt;
+    if ([appReceipt verifyReceiptHash]) {
+        if ([[A3AppDelegate instance] isPaidAppVersionCustomer:appReceipt]) {
+            _shouldShowHouseAd = ![[NSUserDefaults standardUserDefaults] boolForKey:kA3AppsHideOtherAppLinks];
+        } else {
+            _shouldShowHouseAd = ![[A3AppDelegate instance] isIAPPurchasedCustomer:appReceipt];
+        }
+    } else {
+        _shouldShowHouseAd = YES;
+    }
+    if (IS_IPHONE_3_5_INCH) {
+        self.shouldShowHouseAd = NO;
+    }
+    _shouldShowHouseAd = NO;
 }
 
 - (void)didReceiveMemoryWarning {

@@ -37,6 +37,8 @@
 	if (!_roundedRectView) {
 		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 		_roundedRectView = [UIView new];
+        _roundedRectView.backgroundColor = [UIColor clearColor];
+        _roundedRectView.layer.borderColor = [UIColor clearColor].CGColor;
 		if (IS_IPAD_PRO) {
 			_roundedRectView.layer.cornerRadius = 22;
 			_roundedRectView.layer.borderWidth = 4;
@@ -48,7 +50,7 @@
 
 		[_roundedRectView makeConstraints:^(MASConstraintMaker *make) {
 			make.left.equalTo(self.left);
-			make.top.equalTo(self.top);
+			make.top.equalTo(self.top).with.offset(5);
 			make.right.equalTo(self.right);
 			make.height.equalTo(self.width);
 		}];
@@ -87,7 +89,7 @@
 
 		[_titleLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(self.centerX);
-			make.bottom.equalTo(self.bottom);
+			make.bottom.equalTo(self.bottom).with.offset(-5);
 		}];
 	}
 }

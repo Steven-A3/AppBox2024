@@ -68,12 +68,8 @@ A3InstructionViewControllerDelegate>
 }
 
 - (void)mainMenuContentsDidChange {
-	RMAppReceipt *appReceipt = [A3AppDelegate instance].appReceipt;
-	if ([appReceipt verifyReceiptHash] && [[A3AppDelegate instance] isIAPPurchasedCustomer:appReceipt]) {
-		self.shouldShowHouseAd = NO;
-	} else {
-		self.shouldShowHouseAd = YES;
-	}
+    [self updateShouldShowHouseAds];
+    
 	[self setupContentHeightWithSize:self.view.bounds.size];
 	_collectionView.backgroundView = self.backgroundView;
 	[_collectionView reloadData];
@@ -244,8 +240,8 @@ A3InstructionViewControllerDelegate>
 
 	NSDictionary *menuInfo = self.menuItems[indexPath.row];
 	NSDictionary *appInfo = [[A3AppDelegate instance] appInfoDictionary][menuInfo[kA3AppsMenuName]];
-	cell.borderColor = [A3AppDelegate instance].groupColors[appInfo[kA3AppsGroupName]];
-	if ([menuInfo[kA3AppsMenuName] isEqualToString:A3AppName_None]) {
+
+    if ([menuInfo[kA3AppsMenuName] isEqualToString:A3AppName_None]) {
 		cell.imageName = @"add01";
 		cell.titleLabel.text = @"Add";
 	} else {
