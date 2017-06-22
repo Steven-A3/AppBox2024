@@ -32,6 +32,7 @@
 #import <CoreMotion/CoreMotion.h>
 
 NSString *const kA3ApplicationLastRunVersion = @"kLastRunVersion";
+NSString *const kA3ApplicationNumberOfDidBecomeActive = @"kA3ApplicationNumberOfDidBecomeActive";
 NSString *const kA3AppsMenuName = @"kA3AppsMenuName";
 NSString *const kA3AppsMenuCollapsed = @"kA3AppsMenuCollapsed";
 NSString *const kA3AppsMenuImageName = @"kA3AppsMenuImageName";

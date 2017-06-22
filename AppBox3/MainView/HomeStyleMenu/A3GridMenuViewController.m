@@ -65,6 +65,7 @@ A3InstructionViewControllerDelegate>
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuContentsDidChange) name:A3NotificationAppsMainMenuContentsChanged object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)mainMenuContentsDidChange {
@@ -85,6 +86,7 @@ A3InstructionViewControllerDelegate>
 
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationAppsMainMenuContentsChanged object:nil];
 }
 
@@ -103,11 +105,7 @@ A3InstructionViewControllerDelegate>
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	double delayInSeconds = 0.1;
-	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		[self setupInstructionView];
-	});
+    [self setupInstructionView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -119,6 +117,11 @@ A3InstructionViewControllerDelegate>
 		[[A3UserDefaults standardUserDefaults] setBool:NO forKey:A3V3InstructionDidShowForGridMenu];
 		[self dismissInstructionViewController:nil];
 	}
+}
+
+- (void)applicationDidBecomeActive {
+    [self mainMenuContentsDidChange];
+    [self setupInstructionView];
 }
 
 - (void)setupCollectionView {
@@ -615,11 +618,22 @@ static NSString *const A3V3InstructionDidShowForGridMenu = @"A3V3InstructionDidS
 
 - (void)setupInstructionView
 {
+    if ([[NSUserDefaults standardUserDefaults] integerForKey:kA3ApplicationNumberOfDidBecomeActive] < 4) {
+        return;
+    }
 	if (![self.navigationController.visibleViewController isKindOfClass:[self class]]) {
 		return;
 	}
 	if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForGridMenu]) {
-		[self showInstructionView];
+        
+        double delayInSeconds = 1.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForGridMenu];
+            [[A3UserDefaults standardUserDefaults] synchronize];
+            
+            [self showInstructionView];
+        });
 	}
 }
 
@@ -628,9 +642,6 @@ static NSString *const A3V3InstructionDidShowForGridMenu = @"A3V3InstructionDidS
 	if (_instructionViewController) {
 		return;
 	}
-	
-	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForGridMenu];\
-	[[A3UserDefaults standardUserDefaults] synchronize];
 	
 	UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
 	_instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"HomeStyle"];
@@ -671,6 +682,9 @@ static NSString *const A3V3InstructionDidShowForGridMenu = @"A3V3InstructionDidS
 		hideImageView = IS_IPHONE;
 	}
 	
+    if (IS_IPHONE35 && row == 13) {
+        row = 9;
+    }
 	if (hideImageView) {
 		[_instructionViewController.fingerRight setHidden:YES];
 		[_instructionViewController.changeStyleLabel setHidden:YES];

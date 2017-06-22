@@ -19,3 +19,4 @@ NSHealthUpdateUsageDescription = "AppBox Pro® czyta Podłoga wniebowstąpionych
 
 Dane zebrane z HealthKit nie będą wykorzystywane w celach marketingowych i reklamowych.";
 NSCalendarsUsageDescription = "AppBox Pro® chciałby uzyskać dostęp do kalendarza, aby zapisać zdarzenie czytane z czytnika QR Code.";
+NSMichphoneUsageDescription = "AppBox Pro® chciałby uzyskać dostęp do swojego mikrofonu, aby robić filmy w Portfelu.";

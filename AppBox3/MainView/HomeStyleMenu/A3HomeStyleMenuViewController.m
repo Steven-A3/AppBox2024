@@ -44,7 +44,9 @@
     if (IS_IPHONE_3_5_INCH) {
         self.shouldShowHouseAd = NO;
     }
-    _shouldShowHouseAd = NO;
+    if (_shouldShowHouseAd) {
+        _shouldShowHouseAd = [[NSUserDefaults standardUserDefaults] integerForKey:kA3ApplicationNumberOfDidBecomeActive] > 8;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -55,6 +57,8 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
+    [self updateShouldShowHouseAds];
+    
 	if (!_initialized) {
 		_initialized = YES;
 		UINavigationController *navigationController = self.navigationController;

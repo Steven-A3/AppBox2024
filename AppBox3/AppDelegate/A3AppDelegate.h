@@ -23,6 +23,7 @@
 @class A3HomeStyleMenuViewController;
 
 extern NSString *const kA3ApplicationLastRunVersion;
+extern NSString *const kA3ApplicationNumberOfDidBecomeActive;
 extern NSString *const kA3AppsMenuName;
 extern NSString *const kA3AppsMenuCollapsed;
 extern NSString *const kA3AppsMenuImageName;

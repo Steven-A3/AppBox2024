@@ -1306,6 +1306,9 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 			_locationManager = [CLLocationManager new];
 			_locationManager.delegate = self;
 			[_locationManager startUpdatingLocation];
+            if (actionSheetTag == ActionTag_PhotoLibraryEdit) {
+                [A3UIDevice verifyAndAlertMicrophoneAvailability];
+            }
 			break;
 		case ActionTag_PhotoLibrary:
 			_imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
@@ -1324,7 +1327,6 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 		// video
 	else if (actionSheetTag == ActionTag_PhotoLibraryEdit) {
 		_imagePickerController.mediaTypes = @[(NSString *) kUTTypeMovie];
-		[A3UIDevice verifyAndAlertMicrophoneAvailability];
 	}
 
 	_imagePickerController.videoQuality = UIImagePickerControllerQualityTypeHigh;

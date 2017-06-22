@@ -356,7 +356,9 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-	FNLOG();
+    NSInteger numberOfDidBecomeAcive = [[NSUserDefaults standardUserDefaults] integerForKey:kA3ApplicationNumberOfDidBecomeActive];
+    [[NSUserDefaults standardUserDefaults] setInteger:numberOfDidBecomeAcive + 1 forKey:kA3ApplicationNumberOfDidBecomeActive];
+	FNLOG(@"Number Of DidBecomeActive = %ld", (long)[[NSUserDefaults standardUserDefaults] integerForKey:kA3ApplicationNumberOfDidBecomeActive]);
 	
 	if (_shouldPresentAd && !_IAPRemoveAdsProductFromiTunes && [SKPaymentQueue canMakePayments]) {
 		[self prepareIAPProducts];

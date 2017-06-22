@@ -10,3 +10,4 @@ NSHealthUpdateUsageDescription = "AppBox Pro®臨讀取爬樓梯，步數，行�
 
 讀取從健康應用的信息不被用於營銷目的，或出於廣告目的。";
 NSCalendarsUsageDescription = "AppBox Pro®希望訪問日曆以保存從QR碼閱讀器讀取的事件。";
+NSMichphoneUsageDescription = "AppBoxPro®想要訪問您的麥克風來為電子錢包拍攝視頻。";

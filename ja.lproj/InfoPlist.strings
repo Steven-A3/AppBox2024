@@ -20,3 +20,4 @@ NSHealthUpdateUsageDescription =
 
 健康アプリから読んだ情報は、マーケティング目的や広告目的のために使用していません。";
 NSCalendarsUsageDescription = "AppBox Pro®は、QRコードリーダーから読み取ったイベントを保存するためにカレンダーに権が必要です。";
+NSMichphoneUsageDescription = "電子財布に保存動画を撮影するために、マイクのアクセス権が必要です。";
