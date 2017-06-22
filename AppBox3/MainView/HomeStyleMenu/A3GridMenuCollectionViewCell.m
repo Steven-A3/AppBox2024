@@ -70,7 +70,12 @@
 				make.height.equalTo(@58);
 			}
 		}];
-
+        _imageView.layer.shadowColor = [UIColor blackColor].CGColor;
+        _imageView.layer.shadowOffset = CGSizeMake(0, 2);
+        _imageView.layer.shadowOpacity = 0.5;
+        _imageView.layer.shadowRadius = 1.0;
+        _imageView.clipsToBounds = NO;
+        
 		_titleLabel = [UILabel new];
 		_titleLabel.textColor = [UIColor whiteColor];
 		
@@ -91,6 +96,11 @@
 			make.centerX.equalTo(self.centerX);
 			make.bottom.equalTo(self.bottom).with.offset(-5);
 		}];
+        
+        _titleLabel.layer.shadowColor = [UIColor blackColor].CGColor;
+        _titleLabel.layer.shadowOffset = CGSizeMake(0, 2);
+        _titleLabel.layer.shadowOpacity = 0.5;
+        _titleLabel.layer.shadowRadius = 1.0;
 	}
 }
 
@@ -107,7 +117,7 @@
 	_imageName = [imageName copy];
 
 	_imageView.image = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-	_imageView.tintColor = [UIColor colorWithWhite:1.0 alpha:0.8];
+	_imageView.tintColor = [UIColor colorWithWhite:1.0 alpha:1.0];
 }
 
 @end
