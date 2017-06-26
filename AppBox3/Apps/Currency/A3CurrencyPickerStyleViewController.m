@@ -582,15 +582,18 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
     
     [_activityIndicatorView startAnimating];
     
-    _activityIndicatorRemoveTimer =
-    [NSTimer scheduledTimerWithTimeInterval:2
-                                    repeats:NO
-                                      block:^(NSTimer * _Nonnull timer) {
-                                          [_activityIndicatorView removeFromSuperview];
-                                          _activityIndicatorView = nil;
-                                      }];
+    _activityIndicatorRemoveTimer = [NSTimer scheduledTimerWithTimeInterval:2
+                                                                     target:self
+                                                                   selector:@selector(removeActivityIndicator)
+                                                                   userInfo:nil
+                                                                    repeats:NO];
     
     [self.chartWebView loadHTMLString:[self chartContentHTML] baseURL:nil];
+}
+
+- (void)removeActivityIndicator {
+    [_activityIndicatorView removeFromSuperview];
+    _activityIndicatorView = nil;
 }
 
 - (NSString *)chartContentHTML {

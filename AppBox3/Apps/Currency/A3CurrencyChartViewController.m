@@ -645,13 +645,17 @@
     
     _activityIndicatorRemoveTimer =
     [NSTimer scheduledTimerWithTimeInterval:2
-                                    repeats:NO
-                                      block:^(NSTimer * _Nonnull timer) {
-                                          [_activityIndicatorView removeFromSuperview];
-                                          _activityIndicatorView = nil;
-                                      }];
+                                     target:self
+                                   selector:@selector(removeActivityIndicator)
+                                   userInfo:nil
+                                    repeats:NO];
    
     [self.chartWebView loadHTMLString:[self chartContentHTML] baseURL:nil];
+}
+
+- (void)removeActivityIndicator {
+    [_activityIndicatorView removeFromSuperview];
+    _activityIndicatorView = nil;
 }
 
 - (UIImage *)chartNotAvailableImage {

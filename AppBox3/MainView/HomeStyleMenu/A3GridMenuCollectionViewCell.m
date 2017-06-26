@@ -7,10 +7,11 @@
 //
 
 #import "A3GridMenuCollectionViewCell.h"
+#import "A3GradientView.h"
 
 @interface A3GridMenuCollectionViewCell ()
 
-@property (nonatomic, strong) UIView *roundedRectView;
+@property (nonatomic, strong) A3GradientView *roundedRectView;
 @property (nonatomic, strong) UIImageView *imageView;
 
 @end
@@ -36,21 +37,15 @@
 - (void)setupSubviews {
 	if (!_roundedRectView) {
 		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-		_roundedRectView = [UIView new];
-        _roundedRectView.backgroundColor = [UIColor clearColor];
-        _roundedRectView.layer.borderColor = [UIColor clearColor].CGColor;
-		if (IS_IPAD_PRO) {
-			_roundedRectView.layer.cornerRadius = 22;
-			_roundedRectView.layer.borderWidth = 4;
-		} else {
-			_roundedRectView.layer.cornerRadius = screenBounds.size.height == 480 ? 10.0 : 15.0;
-			_roundedRectView.layer.borderWidth = screenBounds.size.height == 480 ? 2.3 : 3.0;
-		}
+        _roundedRectView = [A3GradientView new];
+        _roundedRectView.vertical = NO;
+        _roundedRectView.layer.cornerRadius = self.bounds.size.width / 2;
+        _roundedRectView.clipsToBounds = YES;
 		[self addSubview:_roundedRectView];
 
 		[_roundedRectView makeConstraints:^(MASConstraintMaker *make) {
 			make.left.equalTo(self.left);
-			make.top.equalTo(self.top).with.offset(5);
+			make.top.equalTo(self.top);
 			make.right.equalTo(self.right);
 			make.height.equalTo(self.width);
 		}];
@@ -70,11 +65,6 @@
 				make.height.equalTo(@58);
 			}
 		}];
-        _imageView.layer.shadowColor = [UIColor blackColor].CGColor;
-        _imageView.layer.shadowOffset = CGSizeMake(0, 2);
-        _imageView.layer.shadowOpacity = 0.5;
-        _imageView.layer.shadowRadius = 1.0;
-        _imageView.clipsToBounds = NO;
         
 		_titleLabel = [UILabel new];
 		_titleLabel.textColor = [UIColor whiteColor];
@@ -94,7 +84,7 @@
 
 		[_titleLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(self.centerX);
-			make.bottom.equalTo(self.bottom).with.offset(-5);
+			make.bottom.equalTo(self.bottom);
 		}];
         
         _titleLabel.layer.shadowColor = [UIColor blackColor].CGColor;
@@ -107,10 +97,10 @@
 - (void)setBorderColor:(UIColor *)borderColor {
 	_borderColor = [borderColor copy];
 
-	_roundedRectView.layer.borderColor = borderColor.CGColor;
-	CGFloat red, green, blue, alpha;
-	[borderColor getRed:&red green:&green blue:&blue alpha:&alpha];
-	_roundedRectView.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:0.6];
+    CGFloat red, green, blue;
+    [borderColor getRed:&red green:&green blue:&blue alpha:NULL];
+    _roundedRectView.gradientColors = @[(id)borderColor.CGColor, (id)[UIColor colorWithRed:red green:green blue:blue alpha:0.6].CGColor];
+    [_roundedRectView setNeedsDisplay];
 }
 
 - (void)setImageName:(NSString *)imageName {
