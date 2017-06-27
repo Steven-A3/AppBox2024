@@ -12,11 +12,11 @@ NSCameraUsageDescription = "AppBox Pro® chcieliby uzyskać dostęp do aparatu d
 NSPhotoLibraryUsageDescription = "AppBox Pro® chcieliby uzyskać dostęp do biblioteki zdjęć, aby zapisać obrazy z lustrem, Powiększanie i portfel.
 ";
 NSContactsUsageDescription = "AppBox Pro® chcieliby uzyskać dostęp do kontaktów, aby zapisać kontakt z czytnikiem QR Code.";
-NSHealthShareUsageDescription = "AppBox Pro® czyta Podłoga wniebowstąpionych, Schody i Walking + Running Odległość od danych HealthKit Apple.
+NSHealthShareUsageDescription = "AppBox Pro® odnosi się do podłóg wznoszących się, kroków i chodzących + Odstępstwo od danych firmy Apple HealthKit.
 
-Dane zebrane z HealthKit nie będą wykorzystywane w celach marketingowych i reklamowych.";
-NSHealthUpdateUsageDescription = "AppBox Pro® czyta Podłoga wniebowstąpionych, Schody i Walking + Running Odległość od danych HealthKit Apple.
+Dane zebrane z HealthKit nie będą wykorzystywane do celów marketingowych i reklamowych.";
+NSHealthUpdateUsageDescription = "AppBox Pro® odnosi się do podłóg wznoszących się, kroków i chodzących + Odstępstwo od danych firmy Apple HealthKit.
 
-Dane zebrane z HealthKit nie będą wykorzystywane w celach marketingowych i reklamowych.";
+Dane zebrane z HealthKit nie będą wykorzystywane do celów marketingowych i reklamowych.";
 NSCalendarsUsageDescription = "AppBox Pro® chciałby uzyskać dostęp do kalendarza, aby zapisać zdarzenie czytane z czytnika QR Code.";
 NSMichphoneUsageDescription = "AppBox Pro® chciałby uzyskać dostęp do swojego mikrofonu, aby robić filmy w Portfelu.";
