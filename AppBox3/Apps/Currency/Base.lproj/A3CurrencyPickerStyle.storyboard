@@ -514,16 +514,6 @@
                                     <action selector="termSelectValueChanged:" destination="6pQ-aA-bht" eventType="valueChanged" id="4I8-D7-WIc"/>
                                 </connections>
                             </segmentedControl>
-                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7eU-kA-9UG">
-                                <rect key="frame" x="27.5" y="451" width="320" height="216"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="320" id="hBv-qm-iKp"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="dataSource" destination="6pQ-aA-bht" id="nRj-0b-dIe"/>
-                                    <outlet property="delegate" destination="6pQ-aA-bht" id="lBV-Hn-3nJ"/>
-                                </connections>
-                            </pickerView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="adk-L0-PvO" userLabel="Line Picker Top">
                                 <rect key="frame" x="-4" y="450" width="383" height="1"/>
                                 <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -543,8 +533,18 @@
                                 <rect key="frame" x="-113" y="513" width="600" height="260"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7eU-kA-9UG">
+                                <rect key="frame" x="27" y="451" width="320" height="216"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="320" id="hBv-qm-iKp"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="dataSource" destination="6pQ-aA-bht" id="nRj-0b-dIe"/>
+                                    <outlet property="delegate" destination="6pQ-aA-bht" id="lBV-Hn-3nJ"/>
+                                </connections>
+                            </pickerView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bo0-25-jyL" userLabel="Swap Button">
-                                <rect key="frame" x="175.5" y="545" width="25" height="29"/>
+                                <rect key="frame" x="174" y="545" width="25" height="29"/>
                                 <state key="normal" image="swap-1"/>
                                 <connections>
                                     <action selector="swapButtonAction:" destination="6pQ-aA-bht" eventType="touchUpInside" id="PaJ-bm-m4L"/>

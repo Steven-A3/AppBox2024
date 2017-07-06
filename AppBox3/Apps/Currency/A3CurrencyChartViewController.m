@@ -649,8 +649,8 @@
                                    selector:@selector(removeActivityIndicator)
                                    userInfo:nil
                                     repeats:NO];
-   
-    [self.chartWebView loadHTMLString:[self chartContentHTML] baseURL:nil];
+
+	[self.chartWebView loadHTMLString:[self chartContentHTMLForView:_chartWebView] baseURL:nil];
 }
 
 - (void)removeActivityIndicator {
@@ -709,7 +709,7 @@
 - (UIWebView *)landscapeChartWebView {
 	if (!_landscapeChartWebView) {
 		_landscapeChartWebView = [[UIWebView alloc] init];
-        [_landscapeChartWebView loadHTMLString:[self chartContentHTML] baseURL:nil];
+        _landscapeChartWebView.backgroundColor = [UIColor clearColor];
 	}
 	return _landscapeChartWebView;
 }
@@ -743,6 +743,8 @@
 			self.landscapeChartWebView.frame = frame;
 			[_landscapeView addSubview:_landscapeChartWebView];
 			[self.view addSubview:self.landscapeView];
+
+			[_landscapeChartWebView loadHTMLString:[self chartContentHTMLForView:_landscapeChartWebView] baseURL:nil];
 		}
 	} else {
 		[[UIApplication sharedApplication] setStatusBarHidden:NO];
@@ -774,7 +776,7 @@
 	}
 }
 
-- (NSString *)chartContentHTML {
+- (NSString *)chartContentHTMLForView:(UIView *)targetView {
     FNLOG(@"%@", [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode]);
     FNLOG(@"%@", [NSLocale preferredLanguages][0]);
     
@@ -794,9 +796,9 @@
     NSArray *periodsArray = @[@"1d", @"1m", @"3m", @"1y", @"5y"];
     NSURL *url = [[NSBundle mainBundle] URLForResource:@"chartWidget" withExtension:@"html"];
     NSString *templateString = [NSString stringWithContentsOfURL:url usedEncoding:NULL error:nil];
-    CGSize chartSize = _webViewCoverView.frame.size;
+    CGSize chartSize = targetView.frame.size;
 
-    FNLOGRECT(_webViewCoverView.frame);
+    FNLOGRECT(targetView.frame);
     NSString *width = [NSString stringWithFormat:@"%0.0f", chartSize.width];
     NSString *height = [NSString stringWithFormat:@"%0.0f", chartSize.height];
     NSString *title = [NSString stringWithFormat:@"%@%@", _originalSourceCode, _originalTargetCode];

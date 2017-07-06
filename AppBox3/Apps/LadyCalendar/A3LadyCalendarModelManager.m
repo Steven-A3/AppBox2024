@@ -440,8 +440,12 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 - (NSDate *)endDateForCurrentAccount {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountID == %@", self.currentAccount.uniqueID];
-	LadyCalendarPeriod *furthestPeriodEnds = [LadyCalendarPeriod MR_findFirstWithPredicate:predicate sortedBy:@"periodEnds" ascending:NO];
-	return furthestPeriodEnds ? furthestPeriodEnds.periodEnds : [NSDate date];
+	LadyCalendarPeriod *furthestPeriodEnds = [LadyCalendarPeriod MR_findFirstWithPredicate:predicate sortedBy:@"startDate" ascending:NO];
+    FNLOG(@"%@", furthestPeriodEnds.periodEnds);
+    if (!furthestPeriodEnds) {
+        return [NSDate date];
+    }
+    return furthestPeriodEnds.periodEnds;
 }
 
 + (void)resetLocalNotifications {
