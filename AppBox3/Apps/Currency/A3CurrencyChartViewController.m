@@ -629,10 +629,7 @@
 }
 
 - (void)reloadChartImage {
-    [_activityIndicatorRemoveTimer invalidate];
-    _activityIndicatorRemoveTimer = nil;
-    [_activityIndicatorView removeFromSuperview];
-    _activityIndicatorView = nil;
+    [self removeActivityIndicator];
     
     _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [_webViewCoverView addSubview:_activityIndicatorView];
@@ -654,6 +651,8 @@
 }
 
 - (void)removeActivityIndicator {
+    [_activityIndicatorRemoveTimer invalidate];
+    _activityIndicatorRemoveTimer = nil;
     [_activityIndicatorView removeFromSuperview];
     _activityIndicatorView = nil;
 }
@@ -743,6 +742,24 @@
 			self.landscapeChartWebView.frame = frame;
 			[_landscapeView addSubview:_landscapeChartWebView];
 			[self.view addSubview:self.landscapeView];
+
+            [self removeActivityIndicator];
+            
+            _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            [_landscapeView addSubview:_activityIndicatorView];
+            
+            [_activityIndicatorView makeConstraints:^(MASConstraintMaker *make) {
+                make.center.equalTo(_landscapeView);
+            }];
+            
+            [_activityIndicatorView startAnimating];
+            
+            _activityIndicatorRemoveTimer =
+            [NSTimer scheduledTimerWithTimeInterval:3
+                                             target:self
+                                           selector:@selector(removeActivityIndicator)
+                                           userInfo:nil
+                                            repeats:NO];
 
 			[_landscapeChartWebView loadHTMLString:[self chartContentHTMLForView:_landscapeChartWebView] baseURL:nil];
 		}
