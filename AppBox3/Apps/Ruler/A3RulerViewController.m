@@ -144,7 +144,8 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	CGFloat screenHeight = MAX(screenBounds.size.width, screenBounds.size.height);
 
-	if ([model isEqualToString:@"iPod Touch (5th generation)"] || [model isEqualToString:@"iPod Touch (6th generation)"]) {
+	if ([model isEqualToString:@"iPod Touch (5th generation)"]
+        || [model isEqualToString:@"iPod Touch (6th generation)"]) {
 		// iPod touch 5
 		CGFloat pixelsInInch = 326.7;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
@@ -229,6 +230,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 			|| [model isEqualToString:@"iPad (4th generation, Wi-Fi)"]
 		    || [model isEqualToString:@"9.7\" iPad Pro"]
 		    || [model isEqualToString:@"9.7\" iPad Pro (Wi-Fi)"]
+            || [model isEqualToString:@"iPad 2017"]
 			|| [model isEqualToString:@"iPad Air"]
 			|| [model isEqualToString:@"iPad Air (Wi-Fi)"]
 			|| [model isEqualToString:@"iPad Air 2"]
@@ -240,7 +242,8 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		_inchAsPoints = (screenHeight / 2048.0) * pixelsInInch;
 		_resetPosition = _centimeterPositionRightBottom ? 18.0 : 7.0;
 		_redLineWidth = 0.5;
-	} else if ([model isEqualToString:@"iPad mini"] || [model isEqualToString:@"iPad mini (Wi-Fi)"]) {
+	} else if ([model isEqualToString:@"iPad mini"]
+               || [model isEqualToString:@"iPad mini (Wi-Fi)"]) {
 		// iPad mini
 		CGFloat pixelsInInch = 163.4;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
@@ -248,7 +251,8 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		_inchAsPoints = (screenHeight / 1024.0) * pixelsInInch;
 		_resetPosition = _centimeterPositionRightBottom ? 14.0 : 5.5;
 		_redLineWidth = 1.0;
-	} else if ([model isEqualToString:@"iPad mini with Retina display"] || [model isEqualToString:@"iPad mini with Retina display (Wi-Fi)"]) {
+	} else if ([model isEqualToString:@"iPad mini 2"]
+               || [model isEqualToString:@"iPad mini 2 (Wi-Fi)"]) {
 		// iPad mini Retina
 		CGFloat pixelsInInch = 326.8;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
@@ -268,6 +272,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		_resetPosition = _centimeterPositionRightBottom ? 14.0 : 5.5;
 		_redLineWidth = 0.5;
 	} else if ([model isEqualToString:@"iPad Pro"] ||
+               [model isEqualToString:@"iPad Pro 12.9\" 2nd generation"] ||
 			   [model isEqualToString:@"iPad Pro (Wi-Fi)"]) {
 		// iPad Pro
 		CGFloat pixelsInInch = 264.7;
@@ -276,6 +281,15 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		_inchAsPoints = (screenHeight / 2732.0) * pixelsInInch;
 		_resetPosition = _centimeterPositionRightBottom ? 23.0 : 9.0;
 		_redLineWidth = 0.5;
+    } else if ([model isEqualToString:@"iPad Pro 10.5\""] ||
+               [model isEqualToString:@"iPad Pro 10.5\""]) {
+        // iPad Pro
+        CGFloat pixelsInInch = 264.7;
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 2224.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2224.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 18.0 : 7.0;
+        _redLineWidth = 0.5;
 	} else {
 		// Simulator
 
