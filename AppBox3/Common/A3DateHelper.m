@@ -257,7 +257,12 @@
 
 + (NSInteger)numberOfWeeksOfMonth:(NSDate*)month
 {
-	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
+    NSCalendar *calendar;
+    if ([[NSCalendar currentCalendar] firstWeekday] == 2) {
+        calendar = [NSCalendar currentCalendar];
+    } else {
+        calendar = [[A3AppDelegate instance] calendar];
+    }
 	NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth fromDate:month];
 	NSDate *startDate = [A3DateHelper dateFromYear:components.year month:components.month day:1 hour:12 minute:0 second:0];
 	NSRange range = [calendar rangeOfUnit:NSCalendarUnitWeekOfMonth inUnit:NSCalendarUnitMonth forDate:startDate];

@@ -157,7 +157,7 @@ A3CalendarViewDelegate>
 	FNLOG(@"%@", weekdaySymbols);
 
 	NSArray *labels;
-	if ([[NSCalendar currentCalendar] firstWeekday] == Sunday) {
+	if ([[NSCalendar currentCalendar] firstWeekday] != Monday) {
 		labels = @[_weekdayColumn0, _weekdayColumn1, _weekdayColumn2, _weekdayColumn3, _weekdayColumn4, _weekdayColumn5, _weekdayColumn6];
 		_weekdayColumn0.textColor = [UIColor colorWithRGBHexString:@"8E8E93"];
 		_weekdayColumn6.textColor = [UIColor colorWithRGBHexString:@"8E8E93"];
@@ -885,7 +885,7 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 	}];
 
 	UIEdgeInsets contentInset = self.collectionView.contentInset;
-	contentInset.bottom = bannerView.bounds.size.height;
+	contentInset.bottom = bannerView.bounds.size.height + 44;
 	self.collectionView.contentInset = contentInset;
 
 	[self.view layoutIfNeeded];

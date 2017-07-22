@@ -57,7 +57,7 @@
 	NSInteger _numberOfWeeks;
 	NSInteger _firstDayStartIndex;
 	NSInteger _lastDayIndex;
-	NSInteger _lastWeekday;
+	NSInteger _lastWeekdayIndex;
 	NSInteger _lastDay;
     BOOL    _weekdayStartsFromSunday;
 
@@ -157,7 +157,7 @@
         CGContextSetShouldAntialias(context , NO);
         CGContextSetStrokeColorWithColor(context, [[UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0] CGColor]);
         CGContextMoveToPoint(context, xPos, yPos );
-        CGContextAddLineToPoint(context,( (y+1) == _numberOfWeeks ? xPos + _lastWeekday*_cellSize.width : rect.size.width), yPos);
+        CGContextAddLineToPoint(context,( (y+1) == _numberOfWeeks ? xPos + _lastWeekdayIndex*_cellSize.width : rect.size.width), yPos);
         CGContextSetLineWidth(context, 1.0 / [[UIScreen mainScreen] scale]);
         CGContextStrokePath(context);
 //        yPos += 0.5;
@@ -230,6 +230,7 @@
 
 - (void)setDateMonth:(NSDate *)dateMonth
 {
+    FNLOG(@"============================================================================================");
     _dateMonth = dateMonth;
     [self updateDates];
     [self reload];
@@ -269,6 +270,9 @@
     NSInteger edWeek = ((edDay-1) + _firstDayStartIndex) / 7;
     NSInteger edWeekday = ((edDay-1) + _firstDayStartIndex) % 7;
     
+    if (array == _redLines) {
+        FNLOG(@"%@, %ld, %ld, %ld, %ld, %ld", stDate, (long)stWeek, (long)stWeekday, (long)edWeek, (long)edWeekday, (long)_firstDayStartIndex);
+    }
     CGFloat lineHeight = 5.0;
 
 	CGFloat diffFromSeparator = IS_IPHONE ? 22.0 : 25.0;
@@ -281,11 +285,11 @@
                                        (edWeekday-stWeekday+1)*_cellSize.width-(isEndMargin ? 2.0 : 0.0),
                                        lineHeight);
         
-        if (unlinkedAtLastWeekday && (ldpModel.lineRect.origin.x + ldpModel.lineRect.size.width) != CGRectGetWidth(self.frame)) {
-            CGRect lineRect = ldpModel.lineRect;
-            lineRect.size.width = lineRect.size.width + (CGRectGetWidth(self.frame) - (ldpModel.lineRect.origin.x + ldpModel.lineRect.size.width));
-            ldpModel.lineRect = lineRect;
-        }
+//        if (unlinkedAtLastWeekday && (ldpModel.lineRect.origin.x + ldpModel.lineRect.size.width) != CGRectGetWidth(self.frame)) {
+//            CGRect lineRect = ldpModel.lineRect;
+//            lineRect.size.width = lineRect.size.width + (CGRectGetWidth(self.frame) - (ldpModel.lineRect.origin.x + ldpModel.lineRect.size.width));
+//            ldpModel.lineRect = lineRect;
+//        }
         
         [array addObject:ldpModel];
     }
@@ -317,7 +321,7 @@
 			FNLOG(@"%ld %@", (long)i, NSStringFromCGRect(ldpModel.lineRect));
         }
     }
-//    FNLOG(@"%s  %@/%@(%@/%ld,%ld-%ld) %ld/%ld, %ld/%ld (%ld) %@",__FUNCTION__,stDate,edDate,_dateMonth,(long)_month,(long)stDay,(long)edDay,(long)stWeek,(long)stWeekday,(long)edWeek,(long)edWeekday,(long)firstDayStartIndex,array);
+    FNLOG(@"%s  %@/%@(%@/%ld,%ld-%ld) %ld/%ld, %ld/%ld (%ld) %@",__FUNCTION__,stDate,edDate,_dateMonth,(long)_month,(long)stDay,(long)edDay,(long)stWeek,(long)stWeekday,(long)edWeek,(long)edWeekday,(long)_firstDayStartIndex,array);
 }
 
 - (void)addCircleAtDay:(NSDate *)date color:(UIColor *)circleColor isAlphaCircleShow:(BOOL)isAlphaCircleShow alignment:(NSTextAlignment)alignment toArray:(NSMutableArray*)array
@@ -356,13 +360,38 @@
 	_numberOfWeeks = [A3DateHelper numberOfWeeksOfMonth:_dateMonth];
 	NSInteger weekday = [A3DateHelper weekdayFromDate:[A3DateHelper dateMakeMonthFirstDayAtDate:_dateMonth]];
 
-    _weekdayStartsFromSunday = [[NSCalendar currentCalendar] firstWeekday] == Sunday;
-	_firstDayStartIndex = weekday - [[NSCalendar currentCalendar] firstWeekday];
+    _weekdayStartsFromSunday = [[NSCalendar currentCalendar] firstWeekday] != Monday;
+    NSInteger firstWeekday = [[NSCalendar currentCalendar] firstWeekday];
+    if (firstWeekday != 2) {
+        firstWeekday = 1;
+    }
+    if (firstWeekday == Monday) {
+        // Monday(2), ..., Saturday(7), Sunday(1)
+        // Monday == 0
+        // Tuesday == 1
+        if (weekday == Sunday) {
+            _firstDayStartIndex = 6;
+        } else {
+            _firstDayStartIndex = weekday - firstWeekday;
+        }
+    } else {
+        _firstDayStartIndex = weekday - firstWeekday;
+    }
+    
+    FNLOG(@"%ld, %ld", (long)weekday, (long)[[NSCalendar currentCalendar] firstWeekday]);
+    FNLOG(@"%ld", (long)_firstDayStartIndex);
     
 	_lastDay = [A3DateHelper lastDaysOfMonth:_dateMonth];
 	_lastDayIndex = _firstDayStartIndex + _lastDay - 1;
 	NSDate *lastDate = [A3DateHelper dateByAddingDays:(_lastDay-1) fromDate:_dateMonth];
-	_lastWeekday = [A3DateHelper weekdayFromDate:lastDate];
+	_lastWeekdayIndex = [A3DateHelper weekdayFromDate:lastDate];
+    if (firstWeekday != Sunday) {
+        _lastWeekdayIndex -= 1;
+    }
+    if (_lastWeekdayIndex <= 0) {
+        _lastWeekdayIndex = 7;
+    }
+    FNLOG(@"%@, lastWeekday = %ld, numberOfWeeks = %ld", _dateMonth, (long)_lastWeekdayIndex, (long)_numberOfWeeks);
 
 	_dateBGHeight = (IS_IPHONE ? 25.0 : 36.0);
 	_periods = [_dataManager periodListInRangeWithMonth:_dateMonth accountID:self.dataManager.currentAccount.uniqueID];
@@ -430,6 +459,10 @@
 		}
 	}
 	[self setNeedsDisplay];
+    FNLOG(@"%@, %@, %@", _dateMonth, self, _redLines);
+    for (LineDisplayModel *line in _redLines) {
+        FNLOGRECT(line.lineRect);
+    }
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
