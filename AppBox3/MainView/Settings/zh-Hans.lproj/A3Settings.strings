@@ -127,7 +127,7 @@
 /* Class = "IBUILabel"; text = "Korean"; ObjectID = "fHP-u0-inU"; */
 
 /* Class = "IBUINavigationItem"; title = "Favorites"; ObjectID = "fqW-Vk-vP5"; */
-"fqW-Vk-vP5.title" = "个入收藏";
+"fqW-Vk-vP5.title" = "个人收藏";
 
 /* Class = "IBUITableViewController"; title = "Settings"; ObjectID = "go4-fr-Ah2"; */
 "go4-fr-Ah2.title" = "设置";
@@ -136,7 +136,7 @@
 "iav-1w-bex.text" = "取消Dropbox链接";
 
 /* Class = "IBUILabel"; text = "Favorites"; ObjectID = "m3s-eA-4WD"; */
-"m3s-eA-4WD.text" = "个入收藏";
+"m3s-eA-4WD.text" = "个人收藏";
 
 /* Class = "IBUITableViewController"; title = "Sync"; ObjectID = "o9N-EA-Uky"; */
 "o9N-EA-Uky.title" = "同步";
