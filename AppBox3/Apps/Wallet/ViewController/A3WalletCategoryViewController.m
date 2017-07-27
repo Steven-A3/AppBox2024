@@ -56,6 +56,7 @@
 
 @implementation A3WalletCategoryViewController {
     BOOL _didPassViewDidAppear;
+    CGFloat _previousContentOffset;
 }
 
 - (void)viewDidLoad
@@ -66,6 +67,7 @@
     self.definesPresentationContext = YES;
     
     self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+    _previousContentOffset = CGFLOAT_MAX;
 
     self.searchBarButton = [self searchBarButtonItem];
     if (IS_IPAD) {
@@ -173,12 +175,19 @@
     if ([_searchString length]) {
         [self.searchController setActive:YES];
         _searchController.searchBar.text = _searchString;
-        _searchString = nil;
         [self filterContentForSearchText:_searchController.searchBar.text];
     }
     if (!_didPassViewDidAppear) {
         self.tableView.contentOffset = CGPointMake(0, -64);
+    } else {
+        if (_previousContentOffset != CGFLOAT_MAX) {
+            if ([_searchString length] == 0) {
+                self.tableView.contentOffset = CGPointMake(0, _previousContentOffset);
+                _previousContentOffset = CGFLOAT_MAX;
+            }
+        }
     }
+    _searchString = nil;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -927,6 +936,12 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
         return;
     }
 
+    if (self.searchController.isActive) {
+        _previousContentOffset = self.searchResultsTableViewController.tableView.contentOffset.y;
+    } else {
+        _previousContentOffset = self.tableView.contentOffset.y;
+    }
+    
     NSArray *section = self.sectionsArray[indexPath.section];
 	[super tableView:tableView didSelectRowAtIndexPath:indexPath withItem:section[indexPath.row]];
     self.searchString = self.searchController.searchBar.text;
@@ -1184,9 +1199,15 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 - (void)didPresentSearchController:(UISearchController *)searchController {
     self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
 
+    if (_previousContentOffset != CGFLOAT_MAX) {
+        _searchResultsTableViewController.tableView.contentOffset = CGPointMake(0, _previousContentOffset);
+        _previousContentOffset = CGFLOAT_MAX;
+    }
+
     if (SYSTEM_VERSION_LESS_THAN(@"10")) {
         [self.tabBarController.view addSubview:self.searchController.searchBar];
         _searchResultsTableViewController.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+        FNLOGRECT(_searchResultsTableViewController.tableView.frame);
 
         double delayInSeconds = 0.1;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));

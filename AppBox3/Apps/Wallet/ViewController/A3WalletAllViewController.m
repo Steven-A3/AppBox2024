@@ -43,6 +43,7 @@
 @implementation A3WalletAllViewController {
 	BOOL _dataEmpty;
     BOOL _didPassViewDidAppear;
+    CGFloat _previousContentOffset;
 }
 
 enum SortingKind {
@@ -61,6 +62,7 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 
     self.searchBarButton = [self searchBarButtonItem];
     self.navigationItem.rightBarButtonItems = @[[self instructionHelpBarButton], self.searchBarButton];
+    _previousContentOffset = CGFLOAT_MAX;
     
 	self.navigationItem.title = NSLocalizedString(@"All Items", @"All Items");
 	self.showCategoryInDetailViewController = YES;
@@ -129,14 +131,21 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 	if ([_searchString length]) {
         [self.searchController setActive:YES];
         _searchController.searchBar.text = _searchString;
-        _searchString = nil;
 		[self filterContentForSearchText:_searchController.searchBar.text];
 	}
 	[self enableControls:YES];
 
     if (!_didPassViewDidAppear) {
         self.tableView.contentOffset = CGPointMake(0, -64);
+    } else {
+        if (_previousContentOffset != CGFLOAT_MAX) {
+            if ([_searchString length] == 0) {
+                self.tableView.contentOffset = CGPointMake(0, _previousContentOffset);
+                _previousContentOffset = CGFLOAT_MAX;
+            }
+        }
     }
+    _searchString = nil;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -692,6 +701,8 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
     
     if (SYSTEM_VERSION_LESS_THAN(@"10")) {
         [_searchResultsTableViewController.tableView.superview addSubview:self.searchController.searchBar];
+        
+        FNLOGINSETS(_searchResultsTableViewController.tableView.contentInset);
     }
 }
 
@@ -766,6 +777,11 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
         itemContainingArray = self.items;
     }
     WalletItem *item = itemContainingArray[indexPath.row];
+    if (self.searchController.isActive) {
+        _previousContentOffset = self.searchResultsTableViewController.tableView.contentOffset.y;
+    } else {
+        _previousContentOffset = self.tableView.contentOffset.y;
+    }
     
     [super tableView:tableView didSelectRowAtIndexPath:indexPath withItem:item];
     self.searchString = _searchController.searchBar.text;
@@ -933,6 +949,12 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
     FNLOG(@"%f", self.tableView.contentOffset.y);
     FNLOGINSETS(self.tableView.contentInset);
     self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
+    
+    if (_previousContentOffset != CGFLOAT_MAX) {
+        _searchResultsTableViewController.tableView.contentOffset = CGPointMake(0, _previousContentOffset);
+        _previousContentOffset = CGFLOAT_MAX;
+    }
+    FNLOG(@"%f", _searchResultsTableViewController.tableView.contentOffset.y);
 
     if (SYSTEM_VERSION_LESS_THAN(@"10")) {
         [[UIApplication sharedApplication] setStatusBarHidden:YES];
@@ -940,6 +962,8 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
         [self.tabBarController.view addSubview:self.searchController.searchBar];
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
         _searchResultsTableViewController.tableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0);
+        FNLOGRECT(_searchResultsTableViewController.tableView.frame);
+        
         double delayInSeconds = 0.1;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
