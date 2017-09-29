@@ -357,7 +357,6 @@
 		6831DF0B16C3D30100EABB2A /* A3ActionMenuBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6831DF0A16C3D30100EABB2A /* A3ActionMenuBackgroundView.m */; };
 		6831EBF518617CCF00BAF15B /* NSFileManager+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 682968841850401200B70E13 /* NSFileManager+A3Addition.m */; };
 		6831EBFB18619CC800BAF15B /* AppBox3.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6831EBF618619CC800BAF15B /* AppBox3.xcdatamodeld */; };
-		6831EC131861EB7C00BAF15B /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 6831EC121861EB7C00BAF15B /* MBProgressHUD.m */; };
 		683224BD17CE1B7800973F34 /* A3HolidaysCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 683224BC17CE1B7800973F34 /* A3HolidaysCell.m */; };
 		6832ADE216A8D38500BEEEE6 /* A3CurrencySelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6832ADE116A8D38500BEEEE6 /* A3CurrencySelectViewController.m */; };
 		68351DFB1EA8C7870076B11B /* Abbreviation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68351DFD1EA8C7870076B11B /* Abbreviation.storyboard */; };
@@ -430,6 +429,7 @@
 		685946D118C371C800528190 /* A3SpeechTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 685946D018C371C800528190 /* A3SpeechTest.m */; };
 		6859F9FF1E5BCDBB0064BAD7 /* A3KaomojiHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6859F9FE1E5BCDBB0064BAD7 /* A3KaomojiHelpViewController.m */; };
 		6859FA0A1E5BDD040064BAD7 /* A3DrillDownHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6859FA091E5BDD040064BAD7 /* A3DrillDownHelpViewController.m */; };
+		685C50C01F7DD78200BE5BBB /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 685C50BF1F7DD78200BE5BBB /* MBProgressHUD.m */; };
 		685CF1AD1DFFF46300DE2636 /* A3AbbreviationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 685CF1AC1DFFF46300DE2636 /* A3AbbreviationTableViewCell.m */; };
 		685E319A1791694E001A0EC8 /* A3CurrencyTVActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 685E31991791694E001A0EC8 /* A3CurrencyTVActionCell.xib */; };
 		685E319F17917879001A0EC8 /* A3CurrencyTVActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 685E319E17917879001A0EC8 /* A3CurrencyTVActionCell.m */; };
@@ -1645,8 +1645,6 @@
 		6831DF0916C3D30100EABB2A /* A3ActionMenuBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ActionMenuBackgroundView.h; sourceTree = "<group>"; };
 		6831DF0A16C3D30100EABB2A /* A3ActionMenuBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ActionMenuBackgroundView.m; sourceTree = "<group>"; };
 		6831EBF718619CC800BAF15B /* AppBox3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AppBox3.xcdatamodel; sourceTree = "<group>"; };
-		6831EC111861EB7C00BAF15B /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = External/MBProgressHUD/MBProgressHUD.h; sourceTree = "<group>"; };
-		6831EC121861EB7C00BAF15B /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = External/MBProgressHUD/MBProgressHUD.m; sourceTree = "<group>"; };
 		68321F351CBE0174005B8FA1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Instruction_iPhone.strings; sourceTree = "<group>"; };
 		68321F371CBE06C1005B8FA1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Instruction_iPad.strings; sourceTree = "<group>"; };
 		683224BB17CE1B7800973F34 /* A3HolidaysCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3HolidaysCell.h; path = Holidays/A3HolidaysCell.h; sourceTree = "<group>"; };
@@ -1815,6 +1813,8 @@
 		6859F9FE1E5BCDBB0064BAD7 /* A3KaomojiHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3KaomojiHelpViewController.m; path = Kaomoji/A3KaomojiHelpViewController.m; sourceTree = "<group>"; };
 		6859FA081E5BDD040064BAD7 /* A3DrillDownHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DrillDownHelpViewController.h; sourceTree = "<group>"; };
 		6859FA091E5BDD040064BAD7 /* A3DrillDownHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DrillDownHelpViewController.m; sourceTree = "<group>"; };
+		685C50BE1F7DD78200BE5BBB /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		685C50BF1F7DD78200BE5BBB /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		685CF1AB1DFFF46300DE2636 /* A3AbbreviationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3AbbreviationTableViewCell.h; sourceTree = "<group>"; };
 		685CF1AC1DFFF46300DE2636 /* A3AbbreviationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AbbreviationTableViewCell.m; sourceTree = "<group>"; };
 		685E31991791694E001A0EC8 /* A3CurrencyTVActionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3CurrencyTVActionCell.xib; path = Apps/Currency/A3CurrencyTVActionCell.xib; sourceTree = "<group>"; };
@@ -4108,15 +4108,6 @@
 			path = Core;
 			sourceTree = "<group>";
 		};
-		6831EC101861EB6900BAF15B /* MBProgressHUD */ = {
-			isa = PBXGroup;
-			children = (
-				6831EC111861EB7C00BAF15B /* MBProgressHUD.h */,
-				6831EC121861EB7C00BAF15B /* MBProgressHUD.m */,
-			);
-			name = MBProgressHUD;
-			sourceTree = "<group>";
-		};
 		683B94BE15EB230000575377 /* {Resources} */ = {
 			isa = PBXGroup;
 			children = (
@@ -4462,6 +4453,16 @@
 				6857C7261CB647A000D09177 /* RSScannerViewController.m */,
 			);
 			path = QRCode;
+			sourceTree = "<group>";
+		};
+		685C50BD1F7DD78200BE5BBB /* _MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				685C50BE1F7DD78200BE5BBB /* MBProgressHUD.h */,
+				685C50BF1F7DD78200BE5BBB /* MBProgressHUD.m */,
+			);
+			name = _MBProgressHUD;
+			path = External/_MBProgressHUD;
 			sourceTree = "<group>";
 		};
 		68635FF3198BF80E00C3A323 /* Products */ = {
@@ -5176,6 +5177,7 @@
 		68CC1594174F764C0000870F /* External */ = {
 			isa = PBXGroup;
 			children = (
+				685C50BD1F7DD78200BE5BBB /* _MBProgressHUD */,
 				689E0D8A1F0E286800E8D6E9 /* GoogleMobileAdsSdkiOS-7.21.0 */,
 				68F9E3471EFA02040042D5B6 /* GoogleConversionTrackingSDK-iOS-3.4.0 */,
 				68B6F7041EA575C500C4BB7A /* MWPhotoBrowser */,
@@ -5195,7 +5197,6 @@
 				68B6A35318CEDDD1004084EF /* JVFloatLabeledTextField */,
 				682FDEC61981CC0400C6C83D /* MagicalRecord */,
 				6825363818A7AA4C00EAFB84 /* Masonry */,
-				6831EC101861EB6900BAF15B /* MBProgressHUD */,
 				68F1B11A1778560B00E81257 /* MMDrawerController */,
 				68F1C8DF18D7FA41009FAE8A /* MPFoldTransition */,
 				684E9EFF188A43C300FAA48E /* NJKWebViewProgress */,
@@ -6694,6 +6695,7 @@
 				687AEEB61CBC489700C2D844 /* MXLCalendarManager.m in Sources */,
 				689C9A4A1839CD7F007C97EE /* AFHTTPRequestOperation.m in Sources */,
 				68ADE14A17D83D28009618A7 /* UIViewController+MMDrawerController.m in Sources */,
+				685C50C01F7DD78200BE5BBB /* MBProgressHUD.m in Sources */,
 				68236CD6186A8D75006F442B /* A3PasscodeViewController.m in Sources */,
 				6825365018A7AA4C00EAFB84 /* MASConstraint.m in Sources */,
 				68E2A66118D0B1FC00E834D9 /* A3PercentCalcHistoryViewController.m in Sources */,
@@ -6703,7 +6705,6 @@
 				68143CFA18E3EC1F00569691 /* A3DateKeyboardViewController.m in Sources */,
 				6825367718A7BBE600EAFB84 /* A3DateHelper.m in Sources */,
 				687AEEA71CBBB69B00C2D844 /* A3QRCodeMapViewController.m in Sources */,
-				6831EC131861EB7C00BAF15B /* MBProgressHUD.m in Sources */,
 				68D455961886DD8C004F3877 /* A3AppDelegate+appearance.m in Sources */,
 				68F1C8CF18D7F37D009FAE8A /* A3LadyCalendarSettingViewController.m in Sources */,
 				68143D5A18E3EC7C00569691 /* A3JHTableViewSelectElement.m in Sources */,
