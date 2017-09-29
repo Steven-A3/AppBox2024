@@ -44,15 +44,15 @@
 
 	if (IS_PORTRAIT) {
 		[_calculatorkeypadvw setFrame:CGRectMake(0.0,  617.0 * scale, 768.0 * scale, 407.0 * scale)];
-        start_x = 22.0 * scale, start_y = 10.0 * scale, v_space = 11.0 * scale, h_bigspace = 24.0 * scale, h_smallspace = 11.0 * scale;
-        bigbuttonwidth = p_bigbuttonwidth, smallbuttonwidth = p_smallbuttonwidth,buttonheight = p_buttonheight;
+        start_x = 22.0 * scale; start_y = 10.0 * scale; v_space = 11.0 * scale; h_bigspace = 24.0 * scale; h_smallspace = 11.0 * scale;
+        bigbuttonwidth = p_bigbuttonwidth; smallbuttonwidth = p_smallbuttonwidth; buttonheight = p_buttonheight;
 	} else {
 		[_calculatorkeypadvw setFrame:CGRectMake(0.0, 420.0 * scale, 1024.0 * scale, 348.0 * scale)];
-        start_x = 33.0 * scale,start_y = 10.0 * scale, v_space = 11.0 * scale, h_bigspace = 33.0 * scale, h_smallspace = 17.0 * scale;
-        bigbuttonwidth = l_bigbuttonwidth, smallbuttonwidth = l_smallbuttonwidth,buttonheight = l_buttonheight;
+        start_x = 33.0 * scale; start_y = 10.0 * scale; v_space = 11.0 * scale; h_bigspace = 33.0 * scale; h_smallspace = 17.0 * scale;
+        bigbuttonwidth = l_bigbuttonwidth; smallbuttonwidth = l_smallbuttonwidth; buttonheight = l_buttonheight;
 	}
     
-    current_x = start_x, current_y = start_y;
+    current_x = start_x; current_y = start_y;
     [self.percentbutton setFrame:CGRectMake(current_x, current_y, bigbuttonwidth, buttonheight)];
     current_x += (bigbuttonwidth + h_bigspace);
     [self.dividebutton setFrame:CGRectMake(current_x, current_y, bigbuttonwidth, buttonheight)];
@@ -65,7 +65,7 @@
     current_x += (smallbuttonwidth + h_bigspace);
     [self.deletebutton setFrame:CGRectMake(current_x, current_y, bigbuttonwidth, buttonheight)];
     
-    current_x = start_x, current_y = start_y + buttonheight + v_space;
+    current_x = start_x; current_y = start_y + buttonheight + v_space;
     [self.signbutton setFrame:CGRectMake(current_x, current_y, bigbuttonwidth, buttonheight)];
     current_x += (bigbuttonwidth + h_bigspace);
     [self.multiplybutton setFrame:CGRectMake(current_x, current_y, bigbuttonwidth, buttonheight)];
@@ -78,7 +78,7 @@
     current_x += (smallbuttonwidth + h_bigspace);
     [self.clearbutton setFrame:CGRectMake(current_x, current_y, bigbuttonwidth, buttonheight)];
     
-    current_x = start_x, current_y = start_y + buttonheight*2 + v_space*2;
+    current_x = start_x; current_y = start_y + buttonheight*2 + v_space*2;
     [self.leftparenthesisbutton setFrame:CGRectMake(current_x, current_y, bigbuttonwidth, buttonheight)];
     current_x += (bigbuttonwidth + h_bigspace);
     [self.minusbutton setFrame:CGRectMake(current_x, current_y, bigbuttonwidth, buttonheight)];
@@ -92,7 +92,7 @@
     [self.operationendbutton setFrame:CGRectMake(current_x, current_y, bigbuttonwidth, buttonheight*2+
                                                  v_space)];
 
-    current_x = start_x, current_y = start_y + buttonheight*3 + v_space*3;
+    current_x = start_x; current_y = start_y + buttonheight*3 + v_space*3;
     [self.rightparenthesisbutton  setFrame:CGRectMake(current_x, current_y, bigbuttonwidth, buttonheight)];
     current_x += (bigbuttonwidth + h_bigspace);
     [self.plusbutton setFrame:CGRectMake(current_x, current_y, bigbuttonwidth, buttonheight)];

@@ -125,7 +125,7 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 	return [NSURLRequest requestWithURL:requestURL];
 }
 
-- (void)updateCurrencyRatesOnSuccess:(void (^)())success failure:(void (^)())failure {
+- (void)updateCurrencyRatesOnSuccess:(void (^)(void))success failure:(void (^)(void))failure {
 	if (_updating) return;
 	_updating = YES;
 	

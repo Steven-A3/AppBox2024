@@ -235,16 +235,16 @@ do {
     let deviceInformation = deviceObject["deviceInformation"] as! [String : Any]
     let remainingTimeInfo = deviceObject["remainingTimeInfo"] as! [String : Any]
     for (identifier, name) in deviceNames {
-        if let a  = deviceInformation[name] {
+        if let _  = deviceInformation[name] {
         } else {
             print("Information: \(identifier)/\(name)")
         }
-        if let a  = remainingTimeInfo[name] {
+        if let _  = remainingTimeInfo[name] {
         } else {
             print("Battery: \(identifier)/\(name)")
         }
     }
-    for (name, value) in deviceInformation {
+    for (name, _) in deviceInformation {
         let values = [String](deviceNames.values)
         if values.contains(name) {
             
@@ -252,7 +252,7 @@ do {
             print("\(name)")
         }
     }
-    for (name, value) in remainingTimeInfo {
+    for (name, _) in remainingTimeInfo {
         let values = [String](deviceNames.values)
         if values.contains(name) {
             
@@ -262,6 +262,6 @@ do {
     }
     
     print("Done")
-} catch let error as NSError {
+} catch _ as NSError {
     
 }

@@ -10,8 +10,8 @@
 
 @interface A3WhatsNewAppScreenViewController : UIViewController
 
-@property (nonatomic, copy) void(^nextButtonAction)();
-@property (nonatomic, copy) void(^doneButtonAction)();
+@property (nonatomic, copy) void(^nextButtonAction)(void);
+@property (nonatomic, copy) void(^doneButtonAction)(void);
 @property (nonatomic, weak) IBOutlet UIImageView *screenShotImageView;
 
 - (void)showAbbreviationSnapshotView;

@@ -70,7 +70,9 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
     [super viewDidLoad];
 
     self.automaticallyAdjustsScrollViewInsets = NO;
-    self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 44, 0);
+    if SYSTEM_VERSION_LESS_THAN(@"11") {
+        self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 44, 0);
+    }
     
 	if ([_calendarItem.type integerValue] == CalendarCellType_User) {
 		self.title = [NSString stringWithFormat:@"%@", _calendarItem.name];
@@ -902,7 +904,11 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
     [self makeSearchResultArray:searchController.searchBar.text];
-    _searchResultsTableViewController.tableView.contentInset = UIEdgeInsetsMake(64, 0, 44, 0);
+    if SYSTEM_VERSION_LESS_THAN(@"11") {
+        _searchResultsTableViewController.tableView.contentInset = UIEdgeInsetsMake(64, 0, 44, 0);
+    } else {
+        _searchResultsTableViewController.tableView.contentInset = UIEdgeInsetsMake(0, 0, 44, 0);
+    }
     [_searchResultsTableViewController.tableView reloadData];
 }
 
@@ -1065,12 +1071,18 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 }
 
 - (void)didPresentSearchController:(UISearchController *)searchController {
-    self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+    if SYSTEM_VERSION_LESS_THAN(@"11") {
+        self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+    }
     FNLOGINSETS(self.tableView.contentInset);
 }
 
 - (void)willDismissSearchController:(UISearchController *)searchController {
-    self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 44, 0);
+    if SYSTEM_VERSION_LESS_THAN(@"11") {
+        self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 44, 0);
+    } else {
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 44, 0);
+    }
     FNLOGINSETS(self.tableView.contentInset);
 }
 

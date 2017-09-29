@@ -10,7 +10,7 @@
 
 @interface A3WhatsNew4_5PageViewController : UIPageViewController
 
-@property (nonatomic, copy) void(^dismissBlock)();
+@property (nonatomic, copy) void(^dismissBlock)(void);
 
 - (void)showNextPage;
 

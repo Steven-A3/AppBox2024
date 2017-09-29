@@ -1023,7 +1023,7 @@ static NSString *CellIdentifier = @"Cell";
 	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
 	UIView *keyboardView = keyboardViewController.view;
 
-	void(^completion)() = ^{
+    void(^completion)(void) = ^{
 		[keyboardView removeFromSuperview];
 		self.numberKeyboardViewController = nil;
 		_isNumberKeyboardVisible = NO;

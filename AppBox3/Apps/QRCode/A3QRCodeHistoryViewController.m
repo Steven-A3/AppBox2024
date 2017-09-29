@@ -244,7 +244,11 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 	_tableView.showsVerticalScrollIndicator = NO;
 	_tableView.separatorColor = A3UITableViewSeparatorColor;
 	_tableView.separatorInset = A3UITableViewSeparatorInset;
-	_tableView.contentInset = UIEdgeInsetsMake(64 + 52, 0, 0, 0);
+    if SYSTEM_VERSION_LESS_THAN(@"11") {
+        _tableView.contentInset = UIEdgeInsetsMake(64 + 52, 0, 0, 0);
+    } else {
+        _tableView.contentInset = UIEdgeInsetsMake(52, 0, 0, 0);
+    }
 
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		_tableView.cellLayoutMarginsFollowReadableWidth = NO;

@@ -2253,7 +2253,7 @@
 	A3DateKeyboardViewController *keyboardViewController = self.dateKeyboardViewController;
 	UIView *keyboardView = keyboardViewController.view;
 
-	void(^completion)() = ^{
+    void(^completion)(void) = ^{
 		[keyboardView removeFromSuperview];
 		self.dateKeyboardViewController = nil;
 		_editingIndexPath = nil;

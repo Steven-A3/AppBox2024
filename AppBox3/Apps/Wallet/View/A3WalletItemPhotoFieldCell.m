@@ -51,6 +51,8 @@
 }
 
 - (void)prepareForReuse {
+    [super prepareForReuse];
+    
     [_photoButton setBackgroundImage:nil forState:UIControlStateNormal];
 }
 

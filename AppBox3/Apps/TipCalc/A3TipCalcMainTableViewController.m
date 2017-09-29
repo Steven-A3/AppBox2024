@@ -136,7 +136,11 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 }
 
 - (void)keyboardDidHide:(NSNotification *)notification {
-	self.tableView.contentInset = UIEdgeInsetsMake(64, 0, [self bannerView] ? 50 : 0, 0);
+    if SYSTEM_VERSION_LESS_THAN(@"11") {
+        self.tableView.contentInset = UIEdgeInsetsMake(64, 0, [self bannerView] ? 50 : 0, 0);
+    } else {
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, [self bannerView] ? 50 : 0, 0);
+    }
 }
 
 /*! Tip Calculator 의 경우에는 KeyValueStore 에는 CurrencyCode 만 저장이 된다.
@@ -181,7 +185,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	if ([self isMovingToParentViewController]) {
+	if (SYSTEM_VERSION_LESS_THAN(@"11") && [self isMovingToParentViewController]) {
 		self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
 	}
 
@@ -903,7 +907,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 	_isNumberKeyboardVisible = YES;
 	[self addNumberKeyboardNotificationObservers];
 
-	void(^adjustTableView)() = ^{
+    void(^adjustTableView)(void) = ^{
 		UIEdgeInsets contentInset = self.tableView.contentInset;
 		contentInset.bottom = keyboardHeight + accessoryHeight;
 		self.tableView.contentInset = contentInset;
@@ -947,7 +951,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 
 	_isNumberKeyboardVisible = NO;
 
-	void(^completion)() = ^{
+    void(^completion)(void) = ^{
 		[keyboardView removeFromSuperview];
 		[_keyboardAccessoryView removeFromSuperview];
 		self.numberKeyboardViewController = nil;

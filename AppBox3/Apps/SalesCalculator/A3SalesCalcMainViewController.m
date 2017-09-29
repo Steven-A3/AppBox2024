@@ -1032,7 +1032,7 @@ enum A3TableElementCellType {
 	_isNumberKeyboardVisible = YES;
 	[self addNumberKeyboardNotificationObservers];
 
-	void(^adjustTableView)() = ^{
+    void(^adjustTableView)(void) = ^{
 		UIEdgeInsets contentInset = self.tableView.contentInset;
 		contentInset.bottom = keyboardHeight;
 		self.tableView.contentInset = contentInset;
@@ -1070,7 +1070,7 @@ enum A3TableElementCellType {
 
 	_isNumberKeyboardVisible = NO;
 
-	void(^completion)() = ^{
+    void(^completion)(void) = ^{
 		UIEdgeInsets contentInset = self.tableView.contentInset;
 		contentInset.bottom = 0;
 		self.tableView.contentInset = contentInset;

@@ -58,14 +58,14 @@
 		CGFloat scaleY = bounds.size.height != 1024 ? 1.22 : 1.0;
 		width_big = 124.0 * scaleX; height_big = 118.0 * scaleY;
 		width_small = 89.0 * scaleX; height_small = 57.0 * scaleY;
-		col_1 = 74.0 * scaleX; col_2 = 237.0 * scaleX; col_3 = 338.0 * scaleX; col_4 = 440.0 * scaleX, col_5 = 570.0 * scaleX;
+        col_1 = 74.0 * scaleX; col_2 = 237.0 * scaleX; col_3 = 338.0 * scaleX; col_4 = 440.0 * scaleX; col_5 = 570.0 * scaleX;
 		row_1 = 6.0 * scaleY; row_2 = 72.0 * scaleY; row_3 = 137.0 * scaleY; row_4 = 201.0 * scaleY;
 	} else {
 		CGFloat scaleX = bounds.size.height != 768 ? bounds.size.height / 768 : 1.0;
 		CGFloat scaleY = bounds.size.height != 768 ? 1.16 : 1.0;
 		width_big = 172.0 * scaleX; height_big = 164.0 * scaleY;
 		width_small = 108.0 * scaleX; height_small = 77.0 * scaleY;
-		col_1 = 114.0 * scaleX; col_2 = 332.0 * scaleX; col_3 = 455.0 * scaleX; col_4 = 578.0 * scaleX, col_5 = 735.0 * scaleX;
+        col_1 = 114.0 * scaleX; col_2 = 332.0 * scaleX; col_3 = 455.0 * scaleX; col_4 = 578.0 * scaleX; col_5 = 735.0 * scaleX;
 		row_1 = 8.0 * scaleY; row_2 = 94.0 * scaleY; row_3 = 179.0 * scaleY; row_4 = 265.0 * scaleY;
 	}
 

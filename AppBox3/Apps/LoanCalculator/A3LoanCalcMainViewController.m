@@ -141,7 +141,9 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 	}
 
 	self.automaticallyAdjustsScrollViewInsets = YES;
-	self.tableView.contentInset = UIEdgeInsetsMake(64.0, 0, 0, 0);
+    if SYSTEM_VERSION_LESS_THAN(@"11") {
+        self.tableView.contentInset = UIEdgeInsetsMake(64.0, 0, 0, 0);
+    }
     
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 2)];
     line.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:1.0];
@@ -233,7 +235,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
                               gender:kGADGenderUnknown
                               adSize:IS_IPHONE ? kGADAdSizeSmartBannerPortrait : kGADAdSizeLeaderboard];
 
-	if ([self isMovingToParentViewController]) {
+	if (SYSTEM_VERSION_LESS_THAN(@"11") && [self isMovingToParentViewController]) {
 		self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
 	}
 	[self keyboardDidHide:nil];

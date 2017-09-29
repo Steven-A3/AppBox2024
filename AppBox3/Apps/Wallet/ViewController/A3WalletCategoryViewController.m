@@ -66,7 +66,9 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.definesPresentationContext = YES;
     
-    self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+    if SYSTEM_VERSION_LESS_THAN(@"11") {
+        self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+    }
     _previousContentOffset = CGFLOAT_MAX;
 
     self.searchBarButton = [self searchBarButtonItem];
@@ -203,7 +205,7 @@
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             [UIView animateWithDuration:0.3
                              animations:^{
-                                 self.tableView.contentOffset = CGPointMake(0, -20);
+                                 self.tableView.contentOffset = CGPointMake(0, -9);
                              }
                              completion:nil];
         });
@@ -1218,7 +1220,9 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 }
 
 - (void)willDismissSearchController:(UISearchController *)searchController {
-    self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+    if SYSTEM_VERSION_LESS_THAN(@"11") {
+        self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+    }
     self.tableView.contentOffset = CGPointMake(0, -20);
 }
 

@@ -275,10 +275,10 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 
 	CGFloat x, y, width, height;
     if(IS_PORTRAIT) {
-       width = 80 * scale, height = 54 * scale;
+        width = 80 * scale; height = 54 * scale;
         buttonTitle = [self buttonTitlesLevel1_p];
     } else {
-       width = 60 * scale, height = 40 * scale;
+        width = 60 * scale; height = 40 * scale;
         buttonTitle = [self buttonTitlesLevel1_h];
     }
 	for (NSUInteger row = 0; row < 6; row++) {
@@ -345,10 +345,10 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 	NSArray *buttonTitle = nil;
     
     if(IS_PORTRAIT) {
-        width = 80 * scale, height = 54 * scale;
+        width = 80 * scale; height = 54 * scale;
         buttonTitle = bSecondButtonSelected ? [self buttonTitlesLevel2_p]: [self buttonTitlesLevel1_p];
     } else {
-        width = (screenBounds.size.width == 480 ? 60 : 71 * scale), height = 40 * scale;
+        width = (screenBounds.size.width == 480 ? 60 : 71 * scale); height = 40 * scale;
         buttonTitle = bSecondButtonSelected ? [self buttonTitlesLevel2_h]:[self buttonTitlesLevel1_h];
     }
 	for (NSUInteger row = 0; row < 6; row++) {

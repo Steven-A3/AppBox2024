@@ -46,13 +46,13 @@
 	if (IS_PORTRAIT) {
 		[_calculatorkeypadvw setFrame:CGRectMake(0,  448 * scale, 768 * scale, 576 * scale)];
 
-        buttonwidth = p_buttonwidth, buttonheight = p_buttonheight;
+        buttonwidth = p_buttonwidth; buttonheight = p_buttonheight;
 	} else {
 		[_calculatorkeypadvw setFrame:CGRectMake(0, 288 * scale, 1024 * scale, 480 * scale)];
 
-        buttonwidth = l_buttonwidth, buttonheight = l_buttonheight;
+        buttonwidth = l_buttonwidth; buttonheight = l_buttonheight;
 	}
-    current_x = start_x, current_y = start_y;
+    current_x = start_x; current_y = start_y;
     [self.sinbutton setFrame:CGRectMake(current_x, current_y,buttonwidth+ 1+ 1, buttonheight+1)];
     current_x=buttonwidth;
     [self.cosbutton setFrame:CGRectMake(current_x, current_y,buttonwidth+1, buttonheight+1)];
@@ -69,7 +69,7 @@
     current_x+=buttonwidth;
     [self.dividebutton setFrame:CGRectMake(current_x, current_y,buttonwidth+1, buttonheight+1)];
     
-    current_x = start_x, current_y += buttonheight;
+    current_x = start_x; current_y += buttonheight;
     [self.sinhbutton setFrame:CGRectMake(current_x, current_y,buttonwidth+1+1, buttonheight+1)];
     current_x=buttonwidth;
     [self.coshbutton setFrame:CGRectMake(current_x, current_y,buttonwidth+1, buttonheight+1)];
@@ -86,7 +86,7 @@
     current_x+=buttonwidth;
     [self.multiplybutton setFrame:CGRectMake(current_x, current_y,buttonwidth+1, buttonheight+1)];
     
-    current_x = start_x, current_y += buttonheight;
+    current_x = start_x; current_y += buttonheight;
     [self.power2button setFrame:CGRectMake(current_x, current_y,buttonwidth+1+1, buttonheight+1)];
     current_x=buttonwidth;
     [self.power3button setFrame:CGRectMake(current_x, current_y,buttonwidth+1, buttonheight+1)];
@@ -103,7 +103,7 @@
     current_x+=buttonwidth;
     [self.minusbutton setFrame:CGRectMake(current_x, current_y,buttonwidth+1, buttonheight+1)];
     
-    current_x = start_x, current_y += buttonheight;
+    current_x = start_x; current_y += buttonheight;
     [self.squarerootbutton setFrame:CGRectMake(current_x, current_y,buttonwidth+1+1, buttonheight+1)];
     current_x=buttonwidth;
     [self.cuberootbutton setFrame:CGRectMake(current_x, current_y,buttonwidth+1, buttonheight+1)];
@@ -120,7 +120,7 @@
     current_x+=buttonwidth;
     [self.plusbutton setFrame:CGRectMake(current_x, current_y,buttonwidth+1, buttonheight+1)];
     
-    current_x = start_x, current_y += buttonheight;
+    current_x = start_x; current_y += buttonheight;
     [self.dividexbutton setFrame:CGRectMake(current_x, current_y,buttonwidth+1+1, buttonheight+1)];
     current_x=buttonwidth;
     [self.factorialbutton setFrame:CGRectMake(current_x, current_y,buttonwidth+1, buttonheight+1)];
@@ -137,7 +137,7 @@
     current_x+=buttonwidth;
     [self.operationendbutton setFrame:CGRectMake(current_x, current_y,buttonwidth+1, buttonheight*2+1)];
     
-    current_x = start_x, current_y += buttonheight;
+    current_x = start_x; current_y += buttonheight;
     [self.enumberbutton setFrame:CGRectMake(current_x, current_y,buttonwidth+1+1, buttonheight+1)];
     current_x=buttonwidth;
     [self.eenumberbutton setFrame:CGRectMake(current_x, current_y,buttonwidth+1, buttonheight+1)];

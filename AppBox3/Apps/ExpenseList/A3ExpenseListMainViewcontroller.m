@@ -1490,7 +1490,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 }
 
 - (void)cell:(A3ExpenseListItemCell *)cell textFieldDidEndEditing:(UITextField *)textField {
-    void (^finalize)() = ^(){
+    void (^finalize)(void) = ^(){
         if (_nextEditingCell && _nextEditingTextField) {
             self.editingCell = _nextEditingCell;
             [self presentNumberKeyboardForTextField:_nextEditingTextField];
@@ -1774,7 +1774,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	}];
 }
 
-- (void)dismissNumberKeyboardWithAnimation:(BOOL)animation completion:(void (^)())completion {
+- (void)dismissNumberKeyboardWithAnimation:(BOOL)animation completion:(void (^)(void))completion {
 	if (!_isNumberKeyboardVisible) {
 		return;
 	}
@@ -1789,7 +1789,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	UIView *keyboardView = keyboardViewController.view;
 	UIView *accessoryView = [self accessoryForNumberField];
 
-	void(^finalize)() = ^{
+    void(^finalize)(void) = ^{
 		[keyboardView removeFromSuperview];
 		[keyboardViewController removeFromParentViewController];
 

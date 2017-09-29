@@ -62,6 +62,8 @@
 }
 
 - (void)prepareForReuse {
+    [super prepareForReuse];
+    
 	[_deleteButton removeFromSuperview];
 	_deleteButton = nil;
 }

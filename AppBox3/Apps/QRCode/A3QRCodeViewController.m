@@ -363,7 +363,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	CIImage *image = [[CIImage alloc] initWithImage:originalImage];
 	NSArray *features = [detector featuresInImage:image];
 	CIQRCodeFeature *feature = [features firstObject];
-	void(^alertBlock)() = nil;
+	void(^alertBlock)(void) = nil;
 	if (feature) {
 		NSManagedObjectContext *moc = [NSManagedObjectContext MR_rootSavingContext];
 

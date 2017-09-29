@@ -68,7 +68,9 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 	self.showCategoryInDetailViewController = YES;
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.definesPresentationContext = YES;
-    self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+    if SYSTEM_VERSION_LESS_THAN(@"11") {
+        self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+    }
 
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidShow) name:A3NotificationMainMenuDidShow object:nil];
@@ -977,7 +979,9 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
         [[UIApplication sharedApplication] setStatusBarHidden:NO];
         [self.navigationController setNavigationBarHidden:NO];
     }
-    self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+    if SYSTEM_VERSION_LESS_THAN(@"11") {
+        self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+    }
     self.tableView.contentOffset = CGPointMake(0, -20);
     FNLOGINSETS(self.tableView.contentInset);
 }

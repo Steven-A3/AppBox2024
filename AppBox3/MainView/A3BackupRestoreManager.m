@@ -358,7 +358,8 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 			
 			[TJDropbox uploadFileAtPath:_backupFilePath
 								 toPath:[NSString stringWithFormat:@"%@/%@", kDropboxDir, [_backupFilePath lastPathComponent]]
-							accessToken:accessToken
+                      overwriteExisting:YES
+                            accessToken:accessToken
 						  progressBlock:^(CGFloat progress) {
 							  dispatch_async(dispatch_get_main_queue(), ^{
 								  _HUD.progress = progress;

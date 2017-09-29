@@ -1270,7 +1270,7 @@ static NSString *const A3V3InstructionDidShowForCurrencyPicker = @"A3V3Instructi
 	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
 	UIView *keyboardView = keyboardViewController.view;
 
-	void(^completion)() = ^{
+    void(^completion)(void) = ^{
 		[keyboardView removeFromSuperview];
 		[keyboardViewController removeFromParentViewController];
 		self.numberKeyboardViewController = nil;

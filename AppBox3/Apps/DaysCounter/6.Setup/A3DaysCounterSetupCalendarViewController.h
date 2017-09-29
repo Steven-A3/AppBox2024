@@ -12,6 +12,6 @@
 @interface A3DaysCounterSetupCalendarViewController : UITableViewController
 @property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
 @property (strong, nonatomic) DaysCounterEvent *eventModel;
-@property (strong, nonatomic) void (^completionBlock)();
-@property (strong, nonatomic) void (^dismissCompletionBlock)();
+@property (strong, nonatomic) void (^completionBlock)(void);
+@property (strong, nonatomic) void (^dismissCompletionBlock)(void);
 @end

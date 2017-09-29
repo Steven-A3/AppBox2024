@@ -779,7 +779,7 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 }
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location {
-	void (^completionBlock)() = ^() {
+    void (^completionBlock)(void) = ^() {
 		_backgroundDownloadIsInProgress = NO;
 		if ([self.reachability isReachableViaWiFi]) {
 			[self startDownloadDataFiles];
@@ -1254,7 +1254,7 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 		NSFileManager *fileManager = [NSFileManager defaultManager];
 		NSString *backupFilePath = [self backupReceiptFilePath];
 
-		void (^downloadFromCloudBlock)() = ^() {
+        void (^downloadFromCloudBlock)(void) = ^() {
 			CDEICloudFileSystem *cloudFileSystem = [[A3SyncManager sharedSyncManager] cloudFileSystem];
 			[cloudFileSystem connect:^(NSError *error) {
 				if (error) {
@@ -1323,7 +1323,7 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 		[cloudFileSystem connect:^(NSError *error2) {
 			if (!error2) {
 				[cloudFileSystem fileExistsAtPath:A3AppStoreCloudDirectoryName completion:^(BOOL exists, BOOL isDirectory, NSError *error1) {
-					void (^fileCopyBlock)() = ^() {
+                    void (^fileCopyBlock)(void) = ^() {
 						NSString *cloudPath = [A3AppStoreCloudDirectoryName stringByAppendingPathComponent:A3AppStoreReceiptBackupFilename];
 						[cloudFileSystem uploadLocalFile:backupPath toPath:cloudPath completion:^(NSError *error3) {
 							if (error3) {

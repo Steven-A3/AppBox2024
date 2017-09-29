@@ -711,7 +711,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
 	UIView *keyboardView = keyboardViewController.view;
 
-	void(^completion)() = ^{
+    void(^completion)(void) = ^{
 		[keyboardView removeFromSuperview];
 		self.numberKeyboardViewController = nil;
 	};

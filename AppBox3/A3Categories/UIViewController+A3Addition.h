@@ -61,7 +61,7 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 - (void)addFourButtons:(NSArray *)buttons toView:(UIView *)view;
 - (UIView *)moreMenuViewWithButtons:(NSArray *)buttonsArray;
 - (UIView *)presentMoreMenuWithButtons:(NSArray *)buttons pullDownView:(UIView *)pullDownView;
-- (void)dismissMoreMenuView:(UIView *)moreMenuView pullDownView:(UIView *)pullDownView completion:(void (^)())completion;
+- (void)dismissMoreMenuView:(UIView *)moreMenuView pullDownView:(UIView *)pullDownView completion:(void (^)(void))completion;
 - (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer;
 - (UIButton *)shareButton;
 - (void)shareButtonAction:(id)sender;
@@ -82,7 +82,7 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 - (void)rightButtonMoreButton;
 - (void)moreButtonAction:(UIBarButtonItem *)button;
 - (void)makeBackButtonEmptyArrow;
-- (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromBarButtonItem:(UIBarButtonItem *)barButtonItem completionHandler:(void (^)())completionHandler;
+- (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromBarButtonItem:(UIBarButtonItem *)barButtonItem completionHandler:(void (^)(void))completionHandler;
 - (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromSubView:(UIView *)subView completionHandler:(UIActivityViewControllerCompletionHandler)completionHandler;
 - (void)alertInternetConnectionIsNotAvailable;
 + (UIViewController <A3PasscodeViewControllerProtocol> *)passcodeViewControllerWithDelegate:(id <A3PasscodeViewControllerDelegate>)delegate;

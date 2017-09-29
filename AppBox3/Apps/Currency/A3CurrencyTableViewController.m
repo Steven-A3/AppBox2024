@@ -120,7 +120,9 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
     [self.tableView registerNib:[UINib nibWithNibName:@"A3CurrencyTVActionCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3CurrencyActionCellID];
     [self.tableView registerNib:[UINib nibWithNibName:@"A3CurrencyTVEqualCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3CurrencyEqualCellID];
 
-    self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+    if SYSTEM_VERSION_LESS_THAN(@"11") {
+        self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+    }
     self.tableView.rowHeight = 84.0;
     self.tableView.separatorColor = A3UITableViewSeparatorColor;
     self.tableView.separatorInset = UIEdgeInsetsZero;
@@ -1562,7 +1564,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
     UIView *keyboardView = keyboardViewController.view;
 
-    void (^completion)() = ^{
+    void (^completion)(void) = ^{
         [keyboardView removeFromSuperview];
         self.numberKeyboardViewController = nil;
         _isNumberKeyboardVisible = NO;

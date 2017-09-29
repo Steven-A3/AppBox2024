@@ -667,7 +667,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	if (typedString.length == 4) _fourthDigitTextField.secureTextEntry = YES;
 	else _fourthDigitTextField.secureTextEntry = NO;
 
-	void(^deleteLastCharacter)() = ^{
+    void(^deleteLastCharacter)(void) = ^{
 		if ([_editingTextField.text length] > 2) {
 			_editingTextField.text = [_editingTextField.text substringToIndex:[_editingTextField.text length] - 2];
 			FNLOG(@"%@", _editingTextField.text);

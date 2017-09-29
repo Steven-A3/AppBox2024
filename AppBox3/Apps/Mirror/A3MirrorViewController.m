@@ -1280,7 +1280,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 
 	CGFloat x,y;
 	CGFloat widthOffset = (self.view.bounds.size.width - (width*3 + 10))/2;
-	x = widthOffset, y = 20+44;
+    x = widthOffset; y = 20+44;
 	[self setupFilterView:_videoPreviewViewMonoFilter frame:CGRectMake(x, y, width, height)];
 
 	x = x+ width + 5;
@@ -1289,7 +1289,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	x = x+width + 5;
 	[self setupFilterView:_videoPreviewViewNoirFilter frame:CGRectMake(x, y, width, height)];
 
-	x = widthOffset, y = y + height + 5;
+    x = widthOffset; y = y + height + 5;
 	[self setupFilterView:_videoPreviewViewFadeFilter frame:CGRectMake(x, y, width, height)];
 
 	x = x + width + 5;
@@ -1298,7 +1298,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	x = x + width + 5;
 	[self setupFilterView:_videoPreviewViewChromeFilter frame:CGRectMake(x, y, width, height)];
 
-	x = widthOffset, y = y + height +5;
+    x = widthOffset; y = y + height +5;
 	[self setupFilterView:_videoPreviewViewProcessFilter frame:CGRectMake(x, y, width, height)];
 
 	x = x + width + 5;

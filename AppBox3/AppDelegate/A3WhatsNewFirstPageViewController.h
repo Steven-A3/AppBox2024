@@ -10,6 +10,6 @@
 
 @interface A3WhatsNewFirstPageViewController : UIViewController
 
-@property (nonatomic, copy) void(^nextButtonAction)();
+@property (nonatomic, copy) void(^nextButtonAction)(void);
 
 @end

@@ -48,7 +48,7 @@ NSString *const A3CommonPropertyOrder = @"order";
 		return;
 	}
 
-	void (^resetOrder)() = ^() {
+    void (^resetOrder)(void) = ^() {
 		[self moveObjectFromIndex:fromIndex toIndex:toIndex];
 		[self resetAllOrderValue];
 	};

@@ -283,7 +283,7 @@ NSString *const cellID = @"flashEffectID";
 	AVAuthorizationStatus authorizationStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
 	if (authorizationStatus == AVAuthorizationStatusAuthorized) return;
 	if (authorizationStatus == AVAuthorizationStatusNotDetermined) {
-		[AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:nil];
+        [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted){}];
 		return;
 	}
 	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Camera access not authorized.", nil)

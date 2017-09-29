@@ -40,6 +40,8 @@
 }
 
 - (void)prepareForReuse {
+    [super prepareForReuse];
+    
 	[self setupFont];
 }
 

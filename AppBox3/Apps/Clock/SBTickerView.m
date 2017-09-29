@@ -282,10 +282,10 @@
         [CATransaction setAnimationDuration:_duration];
         
         [CATransaction setCompletionBlock:^{
-            [_flipLayer removeFromSuperlayer], _flipLayer = nil;
-            [_topFaceLayer removeFromSuperlayer], _topFaceLayer = nil;
-            [_bottomFaceLayer removeFromSuperlayer], _bottomFaceLayer = nil;
-            [_tickLayer removeFromSuperlayer], _tickLayer = nil;
+            [_flipLayer removeFromSuperlayer]; _flipLayer = nil;
+            [_topFaceLayer removeFromSuperlayer]; _topFaceLayer = nil;
+            [_bottomFaceLayer removeFromSuperlayer]; _bottomFaceLayer = nil;
+            [_tickLayer removeFromSuperlayer]; _tickLayer = nil;
 
             [self _finalizeTick:completion];
         }];
