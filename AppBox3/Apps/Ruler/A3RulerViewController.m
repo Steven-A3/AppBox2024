@@ -141,7 +141,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 
 - (void)setupBasicMeasureForInterfaceOrientation:(BOOL)toPortrait {
 	NSString *model = [A3UIDevice platformString];
-	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+    CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	CGFloat screenHeight = MAX(screenBounds.size.width, screenBounds.size.height);
 
 	if ([model isEqualToString:@"iPod Touch (5th generation)"]
@@ -198,6 +198,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
     } else if ([model isEqualToString:@"iPhone 6"] ||
 			   [model isEqualToString:@"iPhone 6s"] ||
 			   [model isEqualToString:@"iPhone 7"] ||
+               [model isEqualToString:@"iPhone 8"] ||
 			   [model isEqualToString:@"iPhone (Latest)"]) {
 		// iPhone 6
 		CGFloat pixelsInInch = 326;
@@ -208,7 +209,9 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		_redLineWidth = 0.5;
 	} else if ([model isEqualToString:@"iPhone 6 Plus"] ||
 			   [model isEqualToString:@"iPhone 6s Plus"] ||
-			   [model isEqualToString:@"iPhone 7 Plus"]) {
+               [model isEqualToString:@"iPhone 7 Plus"] ||
+               [model isEqualToString:@"iPhone 8 Plus"] ||
+			   [model isEqualToString:@"iPhone X"]) {
 		// iPhone 6 Plus
 		CGFloat pixelsInInch = 401;	// Original value = 401
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
