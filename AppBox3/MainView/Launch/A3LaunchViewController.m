@@ -106,7 +106,9 @@ NSString *const A3UserDefaultsDidShowLeftViewOnceiPad = @"A3UserDefaultsDidShowL
 		
 		if (![appDelegate showLockScreen]) {
 			[self setupMainViewController];
-		}
+        } else {
+            [appDelegate downloadDataFiles];
+        }
 	}
 }
 

@@ -5,7 +5,7 @@
 	<key>YEAR_FROM</key>
 	<string>2014</string>
 	<key>YEAR_TO</key>
-	<string>2017</string>
+	<string>2018</string>
 	<key>Y2014</key>
 	<array>
 		<array>
@@ -564,6 +564,153 @@
 		<array>
 			<string>Hanukkah VIII</string>
 			<date>2017-12-20T00:00:00Z</date>
+		</array>
+	</array>
+	<key>Y2018</key>
+	<array>
+		<array>
+			<string>Purim (Tel Aviv)</string>
+			<date>2018-03-01T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Shushan Purim (Jerusalem)</string>
+			<date>2018-03-02T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Yom HaAliyah</string>
+			<date>2018-03-26T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Pesach I (First day of Passover)</string>
+			<date>2018-03-31T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Pesach II (Passover)</string>
+			<date>2018-04-01T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Pesach III (Passover)</string>
+			<date>2018-04-02T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Pesach IV (Passover)</string>
+			<date>2018-04-03T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Pesach V (Passover)</string>
+			<date>2018-04-04T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Pesach VI (Passover)</string>
+			<date>2018-04-05T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Pesach VII (Last day of Passover)</string>
+			<date>2018-04-06T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Yom HaShoah/Holocaust Memorial Day</string>
+			<date>2018-04-11T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Yom HaZikaron (Memorial Day)</string>
+			<date>2018-04-18T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Yom HaAtzmaut (Independence Day)</string>
+			<date>2018-04-19T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Yom Yerushalayim (Jerusalem Day)</string>
+			<date>2018-05-13T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Shavuot (Pentecost)</string>
+			<date>2018-05-20T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Tisha B&apos;Av</string>
+			<date>2018-07-22T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Rosh Hashana (New Year)</string>
+			<date>2018-09-10T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Rosh Hashana II (New Year day 2)</string>
+			<date>2018-09-11T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Yom Kippur</string>
+			<date>2018-09-19T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Sukkot I</string>
+			<date>2018-09-24T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Sukkot II</string>
+			<date>2018-09-25T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Sukkot III</string>
+			<date>2018-09-26T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Sukkot IV</string>
+			<date>2018-09-27T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Sukkot V</string>
+			<date>2018-09-28T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Sukkot VI</string>
+			<date>2018-09-29T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Sukkot VII/Hoshanah Rabah</string>
+			<date>2018-09-30T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Shmini Atzeret/Simchat Torah</string>
+			<date>2018-10-01T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Yom HaAliyah School Observance</string>
+			<date>2018-10-16T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Hanukkah I (Holiday of lights)</string>
+			<date>2018-12-03T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Hanukkah II</string>
+			<date>2018-12-04T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Hanukkah III</string>
+			<date>2018-12-05T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Hanukkah IV</string>
+			<date>2018-12-06T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Hanukkah V</string>
+			<date>2018-12-07T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Hanukkah VI/Rosh Chodesh Tevet</string>
+			<date>2018-12-08T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Hanukkah VII</string>
+			<date>2018-12-09T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Hanukkah VIII</string>
+			<date>2018-12-10T00:00:00Z</date>
 		</array>
 	</array>
 </dict>

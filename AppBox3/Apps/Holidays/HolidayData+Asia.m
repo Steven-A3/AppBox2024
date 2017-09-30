@@ -9,7 +9,7 @@
 #import "HolidayData+Asia.h"
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
-#import "NSString+conversion.h"
+#import "HolidayData+Country.h"
 
 @implementation HolidayData (Asia)
 
@@ -1476,50 +1476,14 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	return holidays;
 }
 
-// India http://en.wikipedia.org/wiki/Public_holidays_in_India http://holidayyear.com/holidays/India
 - (NSMutableArray *)in_HolidaysInYear
 {
-	NSUInteger year = self.year;
+    return [self holidaysFromPList:@"indian"];
+}
 
-	NSString *filepath = [@"data/indian.plist" pathInCachesDirectory];
-	NSDictionary *indianBook = nil;
-	if ([[NSFileManager defaultManager] fileExistsAtPath:filepath]) {
-		indianBook = [NSDictionary dictionaryWithContentsOfFile:filepath];
-	}
-
-	if (!indianBook) {
-		filepath = [[NSBundle mainBundle] pathForResource:@"indian" ofType:@"plist"];
-		indianBook = [NSDictionary dictionaryWithContentsOfFile:filepath];
-	}
-	
-	if (indianBook) {
-		NSInteger yearFrom = [indianBook[@"YEAR_FROM"] integerValue];
-		NSInteger yearTo = [indianBook[@"YEAR_TO"] integerValue];
-
-		if ((year < yearFrom) || (year > yearTo)) {
-			return nil;
-		}
-	
-		NSMutableArray *book = [[NSMutableArray alloc] initWithArray:[indianBook objectForKey:[NSString stringWithFormat:@"%lu", (unsigned long)year]]];
-		NSInteger index, count = [book count];
-		NSCalendar *gmtCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-		[gmtCalendar setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-		NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
-
-		NSMutableArray *holidays = [NSMutableArray new];
-
-		for (index = 0; index < count; index++) {
-			NSMutableArray *item = [NSMutableArray arrayWithArray:[book objectAtIndex:index]];
-			NSDateComponents *components = [gmtCalendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:item[1]];
-			FNLOG(@"%ld, %ld, %ld", (long)components.year, (long)components.month, (long)components.day);
-			NSDate *newDate = [gregorian dateFromComponents:components];
-
-			[holidays addObject:@{kHolidayName:[item objectAtIndex:0], kHolidayIsPublic:@NO, kHolidayDate:newDate, kHolidayDuration:@1}];
-		}
-
-		return holidays;
-	}
-	return nil;
+- (NSMutableArray *)lk_HolidaysInYear
+{
+    return [self holidaysFromPList:@"SriLanka"];
 }
 
 // Bangladesh

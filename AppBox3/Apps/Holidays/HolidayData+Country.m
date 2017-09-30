@@ -12,6 +12,7 @@
 #import "A3AppDelegate.h"
 #import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
+#import "NSString+conversion.h"
 
 NSString *const kHolidayCountryCode = @"kHolidayCountryCode";
 NSString *const kHolidayCapitalCityName = @"kHolidayCapitalCityName";
@@ -632,6 +633,12 @@ NSString *const A3NotificationHolidaysCountryListChanged = @"A3NotificationHolid
 					//					kHolidayTimeZone : @"EET",
 					kA3TimeZoneName : @"Asia/Beirut",
 			},    // UTC+1
+            @{
+                kHolidayCountryCode : @"lk",
+                //                    kHolidayCapitalCityName : @"Sri Jayawardenepura Kotte",
+                //                    kHolidayTimeZone : @"SLST",
+                kA3TimeZoneName : @"Asia/SriLanka",
+                },    // UTC+5:30
 	];
 }
 
@@ -652,6 +659,51 @@ NSString *const A3NotificationHolidaysCountryListChanged = @"A3NotificationHolid
 		return [obj1[kHolidayDate] compare:obj2[kHolidayDate]];
 	}];
 	return holidays;
+}
+
+- (NSMutableArray *)holidaysFromPList:(NSString *)filename {
+    NSUInteger year = self.year;
+    
+    NSString *pathInDownload = [NSString stringWithFormat:@"data/%@", filename];
+    NSString *filepath = [pathInDownload pathInCachesDirectory];
+    NSDictionary *holidaysBook = nil;
+    if ([[NSFileManager defaultManager] fileExistsAtPath:filepath]) {
+        holidaysBook = [NSDictionary dictionaryWithContentsOfFile:filepath];
+    }
+    
+    if (!holidaysBook) {
+        filepath = [[NSBundle mainBundle] pathForResource:filename ofType:@"plist"];
+        holidaysBook = [NSDictionary dictionaryWithContentsOfFile:filepath];
+    }
+    
+    if (holidaysBook) {
+        NSInteger yearFrom = [holidaysBook[@"YEAR_FROM"] integerValue];
+        NSInteger yearTo = [holidaysBook[@"YEAR_TO"] integerValue];
+        
+        if ((year < yearFrom) || (year > yearTo)) {
+            return nil;
+        }
+        
+        NSMutableArray *book = [[NSMutableArray alloc] initWithArray:[holidaysBook objectForKey:[NSString stringWithFormat:@"%lu", (unsigned long)year]]];
+        NSInteger index, count = [book count];
+        NSCalendar *gmtCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+        [gmtCalendar setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+        NSCalendar *gregorian = [[A3AppDelegate instance] calendar];
+        
+        NSMutableArray *holidays = [NSMutableArray new];
+        
+        for (index = 0; index < count; index++) {
+            NSMutableArray *item = [NSMutableArray arrayWithArray:[book objectAtIndex:index]];
+            NSDateComponents *components = [gmtCalendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:item[1]];
+            FNLOG(@"%ld, %ld, %ld", (long)components.year, (long)components.month, (long)components.day);
+            NSDate *newDate = [gregorian dateFromComponents:components];
+            
+            [holidays addObject:@{kHolidayName:[item objectAtIndex:0], kHolidayIsPublic:@NO, kHolidayDate:newDate, kHolidayDuration:@1}];
+        }
+        
+        return holidays;
+    }
+    return nil;
 }
 
 + (BOOL)isSupportedCountry:(NSString *)countryCode {

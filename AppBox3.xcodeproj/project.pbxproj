@@ -520,6 +520,7 @@
 		68953484178686AF007061CA /* UIImage+Saving.m in Sources */ = {isa = PBXBuildFile; fileRef = 6895346A178686AF007061CA /* UIImage+Saving.m */; };
 		68953486178686AF007061CA /* UIScrollView+Screenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 6895346C178686AF007061CA /* UIScrollView+Screenshot.m */; };
 		68953488178686AF007061CA /* UIView+Screenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 6895346E178686AF007061CA /* UIView+Screenshot.m */; };
+		689573FF1F7E27AE002936E7 /* SriLanka.plist in Resources */ = {isa = PBXBuildFile; fileRef = 689573F61F7E27AD002936E7 /* SriLanka.plist */; };
 		68961FE218B311D100C89F16 /* Mirror.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68961FE118B311D100C89F16 /* Mirror.xcassets */; };
 		6896DC971921D64F00FA98F3 /* ExpenseListItem+management.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896DC961921D64F00FA98F3 /* ExpenseListItem+management.m */; };
 		6897B6CF1DFEA01C00238FD3 /* A3AbbreviationCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6897B6CE1DFEA01C00238FD3 /* A3AbbreviationCollectionViewCell.m */; };
@@ -1993,6 +1994,7 @@
 		6895346C178686AF007061CA /* UIScrollView+Screenshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+Screenshot.m"; sourceTree = "<group>"; };
 		6895346D178686AF007061CA /* UIView+Screenshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Screenshot.h"; sourceTree = "<group>"; };
 		6895346E178686AF007061CA /* UIView+Screenshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Screenshot.m"; sourceTree = "<group>"; };
+		689573F61F7E27AD002936E7 /* SriLanka.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = SriLanka.plist; path = Holidays/SriLanka.plist; sourceTree = "<group>"; };
 		68961FE118B311D100C89F16 /* Mirror.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Mirror.xcassets; path = "AppBox3/Asset Catalogs/Mirror.xcassets"; sourceTree = "<group>"; };
 		6896DC951921D64F00FA98F3 /* ExpenseListItem+management.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ExpenseListItem+management.h"; path = "Data/ExpenseListItem+management.h"; sourceTree = "<group>"; };
 		6896DC961921D64F00FA98F3 /* ExpenseListItem+management.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ExpenseListItem+management.m"; path = "Data/ExpenseListItem+management.m"; sourceTree = "<group>"; };
@@ -4541,6 +4543,7 @@
 		6888091217C640BC008B2856 /* Holidays */ = {
 			isa = PBXGroup;
 			children = (
+				689573F61F7E27AD002936E7 /* SriLanka.plist */,
 				68E3A2A71AC4F61C004FE7B0 /* IsraelHolidays.plist */,
 				68832C9E199A3C8E00AF7C18 /* FlickrRecommendation.json */,
 				688257B617D3AFFB006429D3 /* A3HolidaysAddToDaysCounterViewController.h */,
@@ -6223,6 +6226,7 @@
 				57E4E1CF19D2DD360037371B /* A3RandomViewController.xib in Resources */,
 				6846099F194E10A700FD5F53 /* UnitPriceStoryboard_iPad.storyboard in Resources */,
 				68F14FF919485E8500159EAD /* A3DaysCounterSetupDurationViewController.xib in Resources */,
+				689573FF1F7E27AE002936E7 /* SriLanka.plist in Resources */,
 				6872DD3317B3D56600C1BF44 /* NSDateTimeAgo.bundle in Resources */,
 				68E878F61C32B13E00935E62 /* holidays.strings in Resources */,
 				68F14FFD19485E8500159EAD /* A3DaysCounterSetupLocationViewController.xib in Resources */,

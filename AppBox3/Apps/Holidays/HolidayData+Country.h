@@ -21,6 +21,7 @@ extern NSString *const A3NotificationHolidaysCountryListChanged;
 + (NSArray *)userSelectedCountries;
 - (NSMutableArray *)holidaysForCountry:(NSString *)countryCode year:(NSUInteger)year fullSet:(BOOL)fullSet;
 - (NSDictionary *)firstUpcomingHolidaysForCountry:(NSString *)countryCode;
+- (NSMutableArray *)holidaysFromPList:(NSString *)filename;
 
 + (NSString *)displayNameForCountryCode:(NSString *)countryCode;
 + (id)keyForExcludedHolidaysForCountry:(NSString *)countryCode;
