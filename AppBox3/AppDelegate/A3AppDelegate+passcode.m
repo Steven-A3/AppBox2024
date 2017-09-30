@@ -356,14 +356,20 @@
 }
 
 - (void)applicationWillResignActive_passcode {
-	if ([self shouldProtectScreen]) {
-		FNLOG(@"CoverView added to Window");
-		[[UIApplication sharedApplication] ignoreSnapshotOnNextApplicationLaunch];
-
-		[self addSecurityCoverView];
-	}
 	UIViewController *visibleViewController = [self.currentMainNavigationController visibleViewController];
-	[visibleViewController resignFirstResponder];
+    if ([visibleViewController isKindOfClass:[A3PasswordViewController class]]) {
+        [visibleViewController dismissViewControllerAnimated:NO completion:^{
+            
+        }];
+    } else {
+        [visibleViewController resignFirstResponder];
+    }
+    if ([self shouldProtectScreen]) {
+        FNLOG(@"CoverView added to Window");
+        [[UIApplication sharedApplication] ignoreSnapshotOnNextApplicationLaunch];
+        
+        [self addSecurityCoverView];
+    }
 	return;
 }
 
