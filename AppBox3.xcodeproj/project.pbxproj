@@ -560,8 +560,6 @@
 		689D59071C1569BA002CD422 /* InclinometerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D59021C1569BA002CD422 /* InclinometerView.m */; };
 		689D59081C1569BA002CD422 /* InclinometerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D59041C1569BA002CD422 /* InclinometerViewController.m */; };
 		689D9FA01BD2195600096D07 /* AppBox3UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689D9F9F1BD2195600096D07 /* AppBox3UITests.swift */; };
-		689E0D8D1F0E286800E8D6E9 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689E0D8B1F0E286800E8D6E9 /* GoogleMobileAds.framework */; };
-		689E0D8E1F0E286800E8D6E9 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 689E0D8C1F0E286800E8D6E9 /* README.txt */; };
 		689E9855197C1B99003710C3 /* A3UnitNamesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 689E9854197C1B99003710C3 /* A3UnitNamesTest.m */; };
 		68A6BA7D1E7FC29500889051 /* A3WhatsNewFirstPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A6BA7C1E7FC29500889051 /* A3WhatsNewFirstPageViewController.m */; };
 		68ADE14717D83D28009618A7 /* MMDrawerBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE13F17D83D28009618A7 /* MMDrawerBarButtonItem.m */; };
@@ -2077,8 +2075,6 @@
 		689D9F9D1BD2195600096D07 /* AppBox3UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppBox3UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		689D9F9F1BD2195600096D07 /* AppBox3UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBox3UITests.swift; sourceTree = "<group>"; };
 		689D9FA11BD2195600096D07 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		689E0D8B1F0E286800E8D6E9 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMobileAds.framework; sourceTree = "<group>"; };
-		689E0D8C1F0E286800E8D6E9 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		689E9854197C1B99003710C3 /* A3UnitNamesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitNamesTest.m; sourceTree = "<group>"; };
 		68A6BA7B1E7FC29500889051 /* A3WhatsNewFirstPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3WhatsNewFirstPageViewController.h; path = AppDelegate/A3WhatsNewFirstPageViewController.h; sourceTree = "<group>"; };
 		68A6BA7C1E7FC29500889051 /* A3WhatsNewFirstPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3WhatsNewFirstPageViewController.m; path = AppDelegate/A3WhatsNewFirstPageViewController.m; sourceTree = "<group>"; };
@@ -3005,7 +3001,6 @@
 			files = (
 				68691B7C1EB69007006685B0 /* StoreKit.framework in Frameworks */,
 				68F04D101B40F86B004FDD7B /* libcrypto.a in Frameworks */,
-				689E0D8D1F0E286800E8D6E9 /* GoogleMobileAds.framework in Frameworks */,
 				68F04D111B40F86B004FDD7B /* libssl.a in Frameworks */,
 				68636000198BF88F00C3A323 /* libensembles.a in Frameworks */,
 				681E1281193447D70077DCFA /* libz.dylib in Frameworks */,
@@ -4739,16 +4734,6 @@
 			path = AppBox3UITests;
 			sourceTree = "<group>";
 		};
-		689E0D8A1F0E286800E8D6E9 /* GoogleMobileAdsSdkiOS-7.21.0 */ = {
-			isa = PBXGroup;
-			children = (
-				689E0D8B1F0E286800E8D6E9 /* GoogleMobileAds.framework */,
-				689E0D8C1F0E286800E8D6E9 /* README.txt */,
-			);
-			name = "GoogleMobileAdsSdkiOS-7.21.0";
-			path = "External/GoogleMobileAdsSdkiOS-7.21.0";
-			sourceTree = "<group>";
-		};
 		68AA75EB16A53B43005742D8 /* Currency */ = {
 			isa = PBXGroup;
 			children = (
@@ -5221,7 +5206,6 @@
 			isa = PBXGroup;
 			children = (
 				685C50BD1F7DD78200BE5BBB /* _MBProgressHUD */,
-				689E0D8A1F0E286800E8D6E9 /* GoogleMobileAdsSdkiOS-7.21.0 */,
 				68F9E3471EFA02040042D5B6 /* GoogleConversionTrackingSDK-iOS-3.4.0 */,
 				68B6F7041EA575C500C4BB7A /* MWPhotoBrowser */,
 				68B6F6B71EA5759300C4BB7A /* SDWebImage */,
@@ -6261,7 +6245,6 @@
 				68857D361E6D1A6E009E4ABC /* currencyRates.plist in Resources */,
 				684D92F118BC1FBC005016F7 /* A3DateCalcAddSubCell2.xib in Resources */,
 				68E878FB1C32B13E00935E62 /* unit.strings in Resources */,
-				689E0D8E1F0E286800E8D6E9 /* README.txt in Resources */,
 				68F1500E19485E8500159EAD /* A3DaysCounterLocationPopupViewController.xib in Resources */,
 				68F14FD819485E8500159EAD /* A3DaysCounterAddEventEventInfoCell_iPad.xib in Resources */,
 				68F1C8C718D7F37D009FAE8A /* A3LadyCalendarChartViewController.xib in Resources */,
