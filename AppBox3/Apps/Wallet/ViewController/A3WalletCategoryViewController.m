@@ -1195,11 +1195,18 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 #pragma mark - UISearchControllerDelegate
 
 - (void)willPresentSearchController:(UISearchController *)searchController {
-    self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
+    if SYSTEM_VERSION_LESS_THAN(@"11") {
+        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
+    }
 }
 
 - (void)didPresentSearchController:(UISearchController *)searchController {
-    self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
+    if SYSTEM_VERSION_LESS_THAN(@"11") {
+        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
+    } else {
+        self.tableView.contentInset = UIEdgeInsetsMake(40, 0, 0, 0);
+        _searchResultsTableViewController.tableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0);
+    }
 
     if (_previousContentOffset != CGFLOAT_MAX) {
         _searchResultsTableViewController.tableView.contentOffset = CGPointMake(0, _previousContentOffset);
@@ -1222,8 +1229,10 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 - (void)willDismissSearchController:(UISearchController *)searchController {
     if SYSTEM_VERSION_LESS_THAN(@"11") {
         self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+        self.tableView.contentOffset = CGPointMake(0, -20);
+    } else {
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     }
-    self.tableView.contentOffset = CGPointMake(0, -20);
 }
 
 - (void)didDismissSearchController:(UISearchController *)searchController {

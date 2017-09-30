@@ -942,15 +942,18 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 #pragma mark - UISearchControllerDelegate
 
 - (void)willPresentSearchController:(UISearchController *)searchController {
-    FNLOGINSETS(self.tableView.contentInset);
-    FNLOG(@"%f", self.tableView.contentOffset.y);
-    self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
+    if SYSTEM_VERSION_LESS_THAN(@"11") {
+        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
+    }
 }
 
 - (void)didPresentSearchController:(UISearchController *)searchController {
-    FNLOG(@"%f", self.tableView.contentOffset.y);
-    FNLOGINSETS(self.tableView.contentInset);
-    self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
+    if SYSTEM_VERSION_LESS_THAN(@"11") {
+        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
+    } else {
+        self.tableView.contentInset = UIEdgeInsetsMake(50, 0, 0, 0);
+        _searchResultsTableViewController.tableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0);
+    }
     
     if (_previousContentOffset != CGFLOAT_MAX) {
         _searchResultsTableViewController.tableView.contentOffset = CGPointMake(0, _previousContentOffset);
@@ -964,7 +967,6 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
         [self.tabBarController.view addSubview:self.searchController.searchBar];
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
         _searchResultsTableViewController.tableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0);
-        FNLOGRECT(_searchResultsTableViewController.tableView.frame);
         
         double delayInSeconds = 0.1;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -981,9 +983,10 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
     }
     if SYSTEM_VERSION_LESS_THAN(@"11") {
         self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+    } else {
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     }
     self.tableView.contentOffset = CGPointMake(0, -20);
-    FNLOGINSETS(self.tableView.contentInset);
 }
 
 - (void)didDismissSearchController:(UISearchController *)searchController {

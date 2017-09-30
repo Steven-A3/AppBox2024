@@ -373,7 +373,9 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
     clippingViewFrame.size.height = clippingViewFrame.size.height + 0.5;//kjh
 
 	UIView *clippingView = [[UIView alloc] initWithFrame:clippingViewFrame];
-	clippingView.clipsToBounds = YES;
+    FNLOG(@"%@", clippingView.userInteractionEnabled ? @"YES" : @"NO");
+    
+    clippingView.clipsToBounds = YES;
 	CGRect frame = clippingView.bounds;
 	frame.origin.y -= frame.size.height;
 	moreMenuView.frame = frame;
@@ -404,7 +406,12 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
 			frame.origin.y += moreMenuView.bounds.size.height;
 			pullDownView.frame = frame;
 		}
-	}];
+    } completion:^(BOOL finished) {
+        if (![[moreMenuView.subviews lastObject] isKindOfClass:[UIButton class]]) {
+            UIView *lastView = [moreMenuView.subviews lastObject];
+            lastView.userInteractionEnabled = NO;
+        }
+    }];
 
 	UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(moreMenuDismissAction:)];
 	[self.view addGestureRecognizer:gestureRecognizer];

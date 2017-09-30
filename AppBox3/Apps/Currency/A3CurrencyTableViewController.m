@@ -201,6 +201,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
 
+    [self dismissMoreMenu];
     [self dismissNumberKeyboardAnimated:NO];
     if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
         FNLOG();
@@ -437,8 +438,14 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 
     [self.view removeGestureRecognizer:gestureRecognizer];
     [self rightButtonMoreButton];
-    [self dismissMoreMenuView:_moreMenuView pullDownView:self.tableView completion:^{
-    }];
+    
+    if SYSTEM_VERSION_LESS_THAN(@"11") {
+        [self dismissMoreMenuView:_moreMenuView pullDownView:self.tableView completion:^{
+        }];
+    } else {
+        [self dismissMoreMenuView:_moreMenuView pullDownView:nil completion:^{
+        }];
+    }
 }
 
 - (void)shareButtonAction:(id)sender {

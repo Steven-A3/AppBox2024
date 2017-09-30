@@ -2648,7 +2648,11 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 	[UIView setAnimationCurve:7];
 	[UIView setAnimationDuration:0.35];
 	if (self.tableView.contentInset.top == 0) {
-		self.tableView.contentOffset = CGPointMake(0.0, 0.0);
+        if SYSTEM_VERSION_LESS_THAN(@"11") {
+            self.tableView.contentOffset = CGPointMake(0.0, 0.0);
+        } else {
+            [self.tableView scrollsToTop];
+        }
 	}
 	else {
 		self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight]));
