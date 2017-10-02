@@ -51,6 +51,7 @@
 #import "NYXImagesKit.h"
 #import "ACTReporter.h"
 @import UserNotifications;
+#import <Firebase/Firebase.h>
 
 NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
@@ -129,6 +130,7 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [FIRApp configure];
 #ifdef DEBUG
     FNLOG(@"%@", [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]);
     FNLOG(@"%@", [NSLocale preferredLanguages]);

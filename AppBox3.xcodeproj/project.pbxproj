@@ -474,6 +474,7 @@
 		687484E0197842BE00EA8F74 /* CurrencyHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874849819783B7900EA8F74 /* CurrencyHistory.m */; };
 		6874892F1854430C008972CC /* NationalFlags.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6874892E1854430C008972CC /* NationalFlags.xcassets */; };
 		687489301854477F008972CC /* NationalFlags.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6874892E1854430C008972CC /* NationalFlags.xcassets */; };
+		687671531F7FC7B300182BA1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 687671521F7FC7B300182BA1 /* GoogleService-Info.plist */; };
 		6876D6FB17A75DAE00E16991 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 687C193B1783DF0F00415FCE /* XCTest.framework */; };
 		6876D6FC17A75DAE00E16991 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D715EB10B000BD6AD4 /* Foundation.framework */; };
 		6876D6FD17A75DAE00E16991 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D515EB10B000BD6AD4 /* UIKit.framework */; };
@@ -1899,6 +1900,7 @@
 		687484DC19783C3000EA8F74 /* TipCalcHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TipCalcHistory.h; path = Data/TipCalcHistory.h; sourceTree = "<group>"; };
 		687484DD19783C3000EA8F74 /* TipCalcHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TipCalcHistory.m; path = Data/TipCalcHistory.m; sourceTree = "<group>"; };
 		6874892E1854430C008972CC /* NationalFlags.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = NationalFlags.xcassets; path = "AppBox3/Asset Catalogs/NationalFlags.xcassets"; sourceTree = "<group>"; };
+		687671521F7FC7B300182BA1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6876D6FA17A75DAE00E16991 /* AppBox3 Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AppBox3 Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6876D70017A75DAE00E16991 /* AppBox3 Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AppBox3 Tests-Info.plist"; sourceTree = "<group>"; };
 		6876D70617A75DAE00E16991 /* AppBox3 Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppBox3 Tests-Prefix.pch"; sourceTree = "<group>"; };
@@ -4025,6 +4027,7 @@
 		682EA2DE15EB10B000BD6AD4 /* {Supporting Files} */ = {
 			isa = PBXGroup;
 			children = (
+				687671521F7FC7B300182BA1 /* GoogleService-Info.plist */,
 				6830C77818517D2D0075010F /* AppBox3.entitlements */,
 				689A203C19AB3650009144B6 /* AppBox3-Info.plist */,
 				682EA2E315EB10B000BD6AD4 /* main.m */,
@@ -6251,6 +6254,7 @@
 				680D639218CFF9D400938AD0 /* A3CalculatorButtonsInScientificViewController_iPad.xib in Resources */,
 				68B6A2ED18CEC76D004084EF /* A3UnitPriceHistoryCell.xib in Resources */,
 				689D41FB1966F33900D7F1A7 /* A3DateKeyboardViewController_iPad.xib in Resources */,
+				687671531F7FC7B300182BA1 /* GoogleService-Info.plist in Resources */,
 				68F14FD719485E8500159EAD /* A3DaysCounterAddEventEventInfoCell.xib in Resources */,
 				68476949177D309800EBE7CF /* WeatherIcons.xcassets in Resources */,
 				68F14FDF19485E8500159EAD /* A3DaysCounterCalendarCell.xib in Resources */,
@@ -6349,13 +6353,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AppBox3-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		2035B51A4777CEE8E317D1C1 /* [CP] Check Pods Manifest.lock */ = {
@@ -6364,13 +6371,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-A3SetupDefaultData-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		31B4F8548A7A31AD8C1AB973 /* [CP] Embed Pods Frameworks */ = {
@@ -6409,13 +6419,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AppBox3UITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		6C98F81B6F26CE1464FA759B /* [CP] Check Pods Manifest.lock */ = {
@@ -6424,13 +6437,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AppBox3 Tests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		728C3CEC2405A8817F17BC5C /* [CP] Copy Pods Resources */ = {
@@ -7972,10 +7988,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.21.0",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -8012,10 +8025,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/External/GoogleMobileAdsSdkiOS-7.21.0",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";
 				HEADER_SEARCH_PATHS = (

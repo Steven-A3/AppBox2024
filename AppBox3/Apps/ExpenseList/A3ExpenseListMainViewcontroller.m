@@ -602,14 +602,17 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 }
 
 - (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer {
+    FNLOGINSETS(self.tableView.contentInset);
 	[self rightButtonMoreButton];
-	[self dismissMoreMenuView:_moreMenuView pullDownView:nil completion:^{
+	[self dismissMoreMenuView:_moreMenuView pullDownView:self.tableView completion:^{
 	}];
 	[self.view removeGestureRecognizer:gestureRecognizer];
     
-    UIEdgeInsets inset = self.tableView.contentInset;
-    inset.top = 64;
-    self.tableView.contentInset = inset;
+    if SYSTEM_VERSION_LESS_THAN(@"11") {
+        UIEdgeInsets inset = self.tableView.contentInset;
+        inset.top = 64;
+        self.tableView.contentInset = inset;
+    }
 }
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
