@@ -23,7 +23,6 @@
 @property (nonatomic, copy) NSString *placeHolder;
 @property (nonatomic)		BOOL allowChooseFavorite;
 @property (nonatomic)		BOOL shouldPopViewController;
-@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic, strong) NSArray *filteredResults;
 @property (nonatomic) NSMutableArray *sectionsArray;

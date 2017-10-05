@@ -536,6 +536,7 @@
 	return holidays;
 }
 
+
 /*! Equatorial Guinea
  */
 - (NSMutableArray *)gq_HolidaysInYear
