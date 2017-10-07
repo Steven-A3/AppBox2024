@@ -511,7 +511,7 @@
                         UIView *rowView = cell.rows[idx];
                         _previewView = [rowView snapshotViewAfterScreenUpdates:YES];
                         _previewView.frame = [self.view convertRect:rowView.frame fromView:cell.roundedRectView];
-                        [_blurEffectView addSubview:_previewView];
+                        [_blurEffectView.contentView addSubview:_previewView];
                     }
                     
                     // Prepare data
@@ -543,7 +543,7 @@
                     cell.alphabetTopView.backgroundColor = originalColor;
                     
                     _previewView.frame = [self.view convertRect:cell.frame fromView:_tableView];
-                    [_blurEffectView addSubview:_previewView];
+                    [_blurEffectView.contentView addSubview:_previewView];
                     
                     _previewBottomView = [UIView new];
                     _previewBottomView.backgroundColor = cell.alphabetBottomView.backgroundColor;
@@ -551,7 +551,7 @@
                     frame.origin.y = _previewView.frame.origin.y + _previewView.frame.size.height;
                     _previewBottomView.frame = frame;
                     
-                    [_blurEffectView addSubview:_previewBottomView];
+                    [_blurEffectView.contentView addSubview:_previewBottomView];
                 }
             }
         }
@@ -612,6 +612,7 @@
 }
 
 - (void)removeBlurEffectView {
+    [_animator stopAnimation:YES];
 	_animator = nil;
 	[_blurEffectView removeFromSuperview];
 	_blurEffectView = nil;

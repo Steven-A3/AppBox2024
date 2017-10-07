@@ -358,7 +358,7 @@
                 UIView *rowView = cell.rows[idx];
                 _previewView = [rowView snapshotViewAfterScreenUpdates:YES];
                 _previewView.frame = [self.view convertRect:rowView.frame fromView:cell.roundedRectView];
-                [_blurEffectView addSubview:_previewView];
+                [_blurEffectView.contentView addSubview:_previewView];
             }
         } else {
             _popoverNeedBackground = YES;
@@ -411,6 +411,7 @@
 }
 
 - (void)removeBlurEffectView {
+    [_animator stopAnimation:YES];
 	_animator = nil;
 	[_blurEffectView removeFromSuperview];
 	_blurEffectView = nil;

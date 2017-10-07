@@ -393,6 +393,7 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate, UIActivityItemS
 }
 
 - (void)removeBlurEffectView {
+    [_animator stopAnimation:YES];
 	_animator = nil;
 	[_blurEffectView removeFromSuperview];
 	_blurEffectView = nil;

@@ -296,7 +296,7 @@
             _previewView = [cell snapshotViewAfterScreenUpdates:YES];
             
             _previewView.frame = [self.view convertRect:cell.frame fromView:_tableView];
-            [_blurEffectView addSubview:_previewView];
+            [_blurEffectView.contentView addSubview:_previewView];
         }
 	}
 
@@ -372,6 +372,7 @@
 }
 
 - (void)removeBlurEffectView {
+    [_animator stopAnimation:YES];
 	_animator = nil;
 	[_blurEffectView removeFromSuperview];
 	_blurEffectView = nil;
