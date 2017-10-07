@@ -15,6 +15,7 @@
 #import "CurrencyFavorite.h"
 #import "NSString+conversion.h"
 #import "A3UserDefaults.h"
+#import "A3NumberFormatter.h"
 
 NSString *const A3KeyCurrencyCode = @"currencyCode";
 NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRatesUdpated";
@@ -56,7 +57,9 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 												  @{@"MYX" : @"Malaysia Ringgit Reference Rate Spot"},
 												  @{@"PLX" : @"Poland Zloty Reference Rate Spot"},
 												  @{@"XCU" : @"Wocu Spot"},
-												  @{@"ZAC" : @"South African Cent Spot"} ];
+												  @{@"ZAC" : @"South African Cent Spot"},
+                                                  @{@"BTC" : @"Bitcoin"}
+                                                  ];
 		NSUInteger index = [knownSymbols indexOfObjectPassingTest:^BOOL(NSDictionary* _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
 			return [obj.allKeys[0] isEqualToString:currencyCode];
 		}];
@@ -120,7 +123,64 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 	return YES;
 }
 
-+ (NSURLRequest *)yahooAllCurrenciesURLRequest {
+- (NSURLRequest *)coinbaseExchangeRatesURLRequest {
+    NSURL *requestURL = [NSURL URLWithString:@"https://api.coinbase.com/v2/exchange-rates"];
+    return [NSURLRequest requestWithURL:requestURL];
+}
+
+- (NSDictionary *)bitcoinItemWithRate:(NSNumber *)rate withTemplate:(NSDictionary *)template {
+    NSMutableDictionary *fields = [[NSMutableDictionary alloc] initWithDictionary:template[@"resource"][@"fields"]];
+    fields[@"price"] = rate;
+    fields[@"name"] = @"USD/BTC";
+    fields[@"symbol"] = @"BTC=X";
+    return @{@"resource": @{
+                     @"classname" : @"Quote",
+                     @"fields" : fields
+                     }};
+}
+
+- (void)updateCoinbaseExchangeRatesOnCompletion:(void (^)(BOOL success))completion {
+    NSURLRequest *request = [self coinbaseExchangeRatesURLRequest];
+    
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    if ([operation respondsToSelector:@selector(setQualityOfService:)]) {
+        [operation setQualityOfService:NSQualityOfServiceUserInteractive];
+    }
+    operation.responseSerializer = [AFJSONResponseSerializer serializer];
+    
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *requestOperation, id JSON) {
+        NSDictionary *ratesDictionary = JSON[@"data"][@"rates"];
+        if (ratesDictionary[@"BTC"]) {
+            NSMutableArray *storedData = [[self ratesFromStoredFile] mutableCopy];
+            NSInteger indexOfBitcoinInStoredData = [storedData indexOfObjectPassingTest:^BOOL(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                A3YahooCurrency *currency = [[A3YahooCurrency alloc] initWithObject:obj];
+                return [currency.currencyCode isEqualToString:@"BTC"];
+            }];
+            NSDictionary *bitcoinItem = [self bitcoinItemWithRate:ratesDictionary[@"BTC"] withTemplate:storedData[0]];
+            if (indexOfBitcoinInStoredData != NSNotFound) {
+                FNLOG(@"%@", storedData[indexOfBitcoinInStoredData]);
+                storedData[indexOfBitcoinInStoredData] = bitcoinItem;
+            } else {
+                [storedData addObject:bitcoinItem];
+            }
+            NSString *path = [A3CurrencyRatesDataFilename pathInCachesDataDirectory];
+            if (![storedData writeToFile:path atomically:YES]) {
+                FNLOG(@"Fail to write updated contents");
+            }
+        }
+        if (completion) {
+            completion(YES);
+        }
+    }
+                                     failure:^(AFHTTPRequestOperation *requestOperation, NSError *error) {
+                                         if (completion) {
+                                             completion(NO);
+                                         }
+                                     }];
+    [operation start];
+}
+
+- (NSURLRequest *)yahooAllCurrenciesURLRequest {
 	NSURL *requestURL = [NSURL URLWithString:@"https://finance.yahoo.com/webservice/v1/symbols/allcurrencies/quote?format=json"];
 	return [NSURLRequest requestWithURL:requestURL];
 }
@@ -131,7 +191,7 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 	
 	if (![[self class] yahooNetworkAvailable]) return;
 
-	NSURLRequest *request = [[self class] yahooAllCurrenciesURLRequest];
+	NSURLRequest *request = [self yahooAllCurrenciesURLRequest];
 
 	AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
 	if ([operation respondsToSelector:@selector(setQualityOfService:)]) {
@@ -157,14 +217,16 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
                         NSArray *verifiedArray = [self verifiedArray:yahooArray];
 						NSString *path = [A3CurrencyRatesDataFilename pathInCachesDataDirectory];
 						[verifiedArray writeToFile:path atomically:YES];
-
-						[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdated object:nil];
-						
-						_dataArray = nil;
-						
-						if (success) {
-							success();
-						}
+                        
+                        [self updateCoinbaseExchangeRatesOnCompletion:^(BOOL successUpdate) {
+                            [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdated object:nil];
+                            
+                            _dataArray = nil;
+                            
+                            if (success) {
+                                success();
+                            }
+                        }];
 					} else {
 						if (failure) {
 							failure();
@@ -175,6 +237,7 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 
 					FNLOG(@"Update currency rate done successfully.");
 					_updating = NO;
+                    
 				});
 			}
 			failure:^(AFHTTPRequestOperation *requestOperation, NSError *error) {
@@ -195,14 +258,21 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 	[operation start];
 }
 
+- (NSString *)bundlePath {
+    return [[NSBundle mainBundle] pathForResource:A3CurrencyRatesDataFilename ofType:nil];
+}
+
+- (NSArray *)ratesFromStoredFile {
+    return [NSArray arrayWithContentsOfFile:[A3CurrencyRatesDataFilename pathInCachesDataDirectory]];
+}
+
 - (NSArray *)verifiedArray:(NSArray *)sourceArray {
     // Find missing currency
     // If found one, fill from the previous list or from the bundle list.
-	NSString *bundlePath = [[NSBundle mainBundle] pathForResource:A3CurrencyRatesDataFilename ofType:nil];
-	NSArray *bundleData = [NSArray arrayWithContentsOfFile:bundlePath];
-	NSArray *previousData = [NSArray arrayWithContentsOfFile:[A3CurrencyRatesDataFilename pathInCachesDataDirectory]];
 	NSMutableArray *verifiedArray = [NSMutableArray new];
-	
+    NSArray *bundleData = [NSArray arrayWithContentsOfFile:[self bundlePath]];
+    NSArray *previousData = [self ratesFromStoredFile];
+    
 	for (NSDictionary *data in sourceArray) {
 		A3YahooCurrency *newData = [[A3YahooCurrency alloc] initWithObject:data];
 		NSInteger indexOfObject = [verifiedArray indexOfObjectPassingTest:^BOOL(NSDictionary *_Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -250,10 +320,6 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 	return nil;
 }
 
-- (NSString *)bundlePath {
-	return [[NSBundle mainBundle] pathForResource:A3CurrencyRatesDataFilename ofType:nil];
-}
-
 - (NSArray *)dataArray {
 	if (!_dataArray) {
 		NSString *path = [A3CurrencyRatesDataFilename pathInCachesDataDirectory];
@@ -278,7 +344,7 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 }
 
 - (NSString *)stringFromNumber:(NSNumber *)value withCurrencyCode:(NSString *)currencyCode isShare:(BOOL)isShare {
-	NSNumberFormatter *formatter = [NSNumberFormatter new];
+	A3NumberFormatter *formatter = [A3NumberFormatter new];
 	[formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 	[formatter setCurrencyCode:currencyCode];
 

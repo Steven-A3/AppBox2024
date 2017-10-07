@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "A3NumberFormatter.h"
 
 @protocol A3TipCalcDataManagerDelegate <NSObject>
 - (void)dataManager:(id)manager taxValueUpdated:(NSNumber *)taxRate;
@@ -77,7 +78,7 @@ typedef NS_ENUM (NSInteger, TCRoundingMethodOption) {
 @property (nonatomic, assign, getter = isTaxOptionOn) BOOL taxOption;
 @property (nonatomic, assign, getter = isSplitOptionOn) BOOL splitOption;
 @property (nonatomic, assign, getter = isRoundingOptionSwitchOn) BOOL RoundingOption;
-@property (nonatomic, strong) NSNumberFormatter *currencyFormatter;
+@property (nonatomic, strong) A3NumberFormatter *currencyFormatter;
 
 #pragma mark Manipulate TipCalc Data
 - (void)setTipCalcDataForMainTableView;

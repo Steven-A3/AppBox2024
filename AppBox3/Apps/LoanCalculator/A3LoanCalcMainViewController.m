@@ -40,6 +40,7 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "LoanCalcHistory+extension.h"
 #import "CGColor+Additions.h"
+#import "A3NumberFormatter.h"
 
 #define LoanCalcModeSave @"LoanCalcModeSave"
 
@@ -1574,7 +1575,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 
 - (void)displayCompareCell:(A3LoanCalcCompareGraphCell *)compareCell
 {
-    NSNumberFormatter *nonSymobolCurrencyFormatter = [NSNumberFormatter new];
+    A3NumberFormatter *nonSymobolCurrencyFormatter = [A3NumberFormatter new];
     [nonSymobolCurrencyFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
     [nonSymobolCurrencyFormatter setCurrencyCode:[self.loanFormatter currencyCode]];
     [nonSymobolCurrencyFormatter setCurrencySymbol:@""];

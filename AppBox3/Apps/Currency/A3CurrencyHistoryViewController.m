@@ -16,6 +16,7 @@
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "CurrencyHistory+handler.h"
+#import "A3NumberFormatter.h"
 
 @interface A3CurrencyHistoryViewController () <UIActionSheetDelegate>
 
@@ -186,7 +187,7 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 {
 	CurrencyHistory *currencyHistory = [_fetchedResultsController objectAtIndexPath:indexPath];
 
-	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+	A3NumberFormatter *nf = [[A3NumberFormatter alloc] init];
 	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
 
 	A3CurrencyHistory3RowCell *cell = [tableView dequeueReusableCellWithIdentifier:A3CurrencyHistory3RowCellID forIndexPath:indexPath];

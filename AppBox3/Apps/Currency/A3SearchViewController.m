@@ -91,32 +91,14 @@
 	}
 }
 
-- (UITableViewController *)searchResultsTableViewController {
-	if (!_searchResultsTableViewController) {
-		_searchResultsTableViewController = [[UITableViewController alloc] init];
-        UITableView *tableView = _searchResultsTableViewController.tableView;
-		tableView.delegate = self;
-        tableView.dataSource = self;
-        tableView.showsVerticalScrollIndicator = NO;
-        tableView.separatorInset = A3UITableViewSeparatorInset;
-        if ([tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
-            tableView.cellLayoutMarginsFollowReadableWidth = NO;
-        }
-        if ([tableView respondsToSelector:@selector(layoutMargins)]) {
-            tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
-        }
-	}
-	return _searchResultsTableViewController;
-}
-
 - (UISearchController *)searchController {
 	if (!_searchController) {
-		_searchController = [[UISearchController alloc] initWithSearchResultsController:self.searchResultsTableViewController];
+		_searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
         _searchController.delegate = self;
 		_searchController.searchBar.delegate = self;
         _searchController.searchResultsUpdater = self;
+        _searchController.dimsBackgroundDuringPresentation = NO;
         [_searchController.searchBar sizeToFit];
-
 	}
 	return _searchController;
 }
@@ -242,13 +224,13 @@
 	} else {
 		_filteredResults = nil;
 	}
-	[_searchResultsTableViewController.tableView reloadData];
+	[_tableView reloadData];
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	if (tableView == _searchResultsTableViewController.tableView) {
+	if (_filteredResults) {
 		return 1;
 	} else {
 		return [self.sectionTitles count];
@@ -256,7 +238,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	if (tableView == _searchResultsTableViewController.tableView) {
+	if (_filteredResults) {
 		return [_filteredResults count];
 	} else {
 		NSArray *rowsInSection = (self.sectionsArray)[section];
@@ -266,14 +248,14 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	if (tableView == self.tableView) {
+	if (_filteredResults == nil) {
 		return self.sectionTitles[section];
 	}
 	return nil;
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-	if (tableView == self.tableView) {
+    if (_filteredResults == nil) {
 		return self.sectionIndexTitles;
 	}
 	return nil;
@@ -299,13 +281,30 @@
 }
 
 - (void)didPresentSearchController:(UISearchController *)searchController {
-
+    FNLOGRECT(searchController.view.frame);
+    CGRect frame = searchController.searchBar.frame;
+    frame.origin.y = 20;
+    searchController.searchBar.frame = frame;
+    FNLOGRECT(searchController.searchBar.frame);
+    if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11") {
+        UIEdgeInsets contentInset = self.tableView.contentInset;
+        FNLOGINSETS(contentInset);
+        contentInset.top -= 6;
+        self.tableView.contentInset = contentInset;
+    }
 }
 
 - (void)willDismissSearchController:(UISearchController *)searchController {
+    if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11") {
+        UIEdgeInsets contentInset = self.tableView.contentInset;
+        FNLOGINSETS(contentInset);
+        contentInset.top += 6;
+        self.tableView.contentInset = contentInset;
+    }
 }
 
 - (void)didDismissSearchController:(UISearchController *)searchController {
+    self.tableView.contentOffset = CGPointMake(0, -64);
 }
 
 - (void)presentSearchController:(UISearchController *)searchController {

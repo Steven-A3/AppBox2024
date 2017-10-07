@@ -11,6 +11,7 @@
 #import "A3AppDelegate.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "A3CurrencyDataManager.h"
+#import "A3NumberFormatter.h"
 
 @interface A3NumberKeyboardViewController ()
 
@@ -124,7 +125,7 @@
 	UITextField *textField = _textInputTarget;
 
 	// Setup
-	NSNumberFormatter *numberFormatter = [NSNumberFormatter new];
+	A3NumberFormatter *numberFormatter = [A3NumberFormatter new];
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 	if (self.currencyCode) {
 		[numberFormatter setCurrencyCode:self.currencyCode];
@@ -293,7 +294,7 @@
 }
 
 - (void)setupLocale {
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+	A3NumberFormatter *numberFormatter = [[A3NumberFormatter alloc] init];
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 	if ([_currencyCode length]) {
 		[numberFormatter setCurrencyCode:_currencyCode];
@@ -506,7 +507,7 @@
 	// % 입력시 소수점 이하 최대 자리수는 세자리, 소수점 자리수가 3이 아닌 경우, 화폐 형식에 맞추어 입력된 숫자를 재 포맷한다.
 	UITextField *textField = (UITextField *) _textInputTarget;
 	if ([textField.text doubleValue] != 0) {
-		NSNumberFormatter *numberFormatter = [NSNumberFormatter new];
+		A3NumberFormatter *numberFormatter = [A3NumberFormatter new];
 		[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 		if (self.currencyCode) {
 			[numberFormatter setCurrencyCode:self.currencyCode];

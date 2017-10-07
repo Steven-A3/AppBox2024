@@ -22,6 +22,7 @@
 #import "A3CalculatorViewController_iPhone.h"
 #import "A3CalculatorViewController_iPad.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "A3NumberFormatter.h"
 
 NSString *const A3NotificationCurrencyButtonPressed = @"A3NotificationCurrencyButtonPressed";
 NSString *const A3NotificationCalculatorButtonPressed = @"A3NotificationCalculatorButtonPressed";
@@ -156,9 +157,9 @@ static char const *const key_navigationControllerForKeyboard	= "key_navigationCo
 }
 
 - (NSNumberFormatter *)currencyFormatter {
-	NSNumberFormatter *formatter = objc_getAssociatedObject(self, key_currencyFormatter);
+	A3NumberFormatter *formatter = objc_getAssociatedObject(self, key_currencyFormatter);
 	if (nil == formatter) {
-		formatter = [[NSNumberFormatter alloc] init];
+		formatter = [[A3NumberFormatter alloc] init];
 		NSString *userCurrencyCode = nil;
 		if ([self respondsToSelector:@selector(defaultCurrencyCode)]) {
 			userCurrencyCode = [self defaultCurrencyCode];

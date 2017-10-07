@@ -40,6 +40,8 @@ NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCod
 	self.title = NSLocalizedString(@"Select Currency", @"Select Currency");
 
 	[self registerContentSizeCategoryDidChangeNotification];
+    self.searchController.dimsBackgroundDuringPresentation = NO;
+    self.definesPresentationContext = YES;
 }
 
 - (void)removeObserver {
@@ -132,7 +134,7 @@ NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCod
 
 	// Configure the cell...
 	A3SearchTargetItem *data;
-	if (tableView == self.searchResultsTableViewController.tableView) {
+	if (self.filteredResults) {
 		data = self.filteredResults[indexPath.row];
 	} else {
 		NSArray *dataInSection = (self.sectionsArray)[indexPath.section];
@@ -200,7 +202,7 @@ NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCod
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     A3SearchTargetItem *data;
-	if (tableView == self.searchResultsTableViewController.tableView) {
+	if (self.filteredResults) {
 		data = self.filteredResults[indexPath.row];
 	} else {
 		NSArray *dataInSection = (self.sectionsArray)[indexPath.section];

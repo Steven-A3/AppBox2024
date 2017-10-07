@@ -12,15 +12,16 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import <objc/runtime.h>
+#import "A3NumberFormatter.h"
 
 static char const *const key_loanFormatter	= "key_loanFormatter";
 
 @implementation UIViewController (LoanCalcAddition)
 
 - (NSNumberFormatter *)loanFormatter {
-	NSNumberFormatter *formatter = objc_getAssociatedObject(self, key_loanFormatter);
+	A3NumberFormatter *formatter = objc_getAssociatedObject(self, key_loanFormatter);
 	if (nil == formatter) {
-		formatter = [[NSNumberFormatter alloc] init];
+		formatter = [[A3NumberFormatter alloc] init];
 		NSString *userCurrencyCode = nil;
 		if ([self respondsToSelector:@selector(defaultLoanCurrencyCode)]) {
 			userCurrencyCode = [self performSelector:@selector(defaultLoanCurrencyCode)];

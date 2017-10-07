@@ -19,7 +19,6 @@
 @interface A3SearchViewController : UIViewController <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, weak) id<A3SearchViewControllerDelegate> delegate;
-@property (nonatomic, strong) UITableViewController *searchResultsTableViewController;
 @property (nonatomic, copy) NSString *placeHolder;
 @property (nonatomic)		BOOL allowChooseFavorite;
 @property (nonatomic)		BOOL shouldPopViewController;

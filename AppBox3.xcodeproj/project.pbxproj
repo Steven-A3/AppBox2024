@@ -562,6 +562,7 @@
 		689D59081C1569BA002CD422 /* InclinometerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D59041C1569BA002CD422 /* InclinometerViewController.m */; };
 		689D9FA01BD2195600096D07 /* AppBox3UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689D9F9F1BD2195600096D07 /* AppBox3UITests.swift */; };
 		689E9855197C1B99003710C3 /* A3UnitNamesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 689E9854197C1B99003710C3 /* A3UnitNamesTest.m */; };
+		68A5CD661F8772BE008B8F78 /* A3NumberFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A5CD651F8772BE008B8F78 /* A3NumberFormatter.m */; };
 		68A6BA7D1E7FC29500889051 /* A3WhatsNewFirstPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A6BA7C1E7FC29500889051 /* A3WhatsNewFirstPageViewController.m */; };
 		68ADE14717D83D28009618A7 /* MMDrawerBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE13F17D83D28009618A7 /* MMDrawerBarButtonItem.m */; };
 		68ADE14817D83D28009618A7 /* MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE14117D83D28009618A7 /* MMDrawerController.m */; };
@@ -2078,6 +2079,8 @@
 		689D9F9F1BD2195600096D07 /* AppBox3UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBox3UITests.swift; sourceTree = "<group>"; };
 		689D9FA11BD2195600096D07 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		689E9854197C1B99003710C3 /* A3UnitNamesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitNamesTest.m; sourceTree = "<group>"; };
+		68A5CD641F8772BE008B8F78 /* A3NumberFormatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = A3NumberFormatter.h; sourceTree = "<group>"; };
+		68A5CD651F8772BE008B8F78 /* A3NumberFormatter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = A3NumberFormatter.m; sourceTree = "<group>"; };
 		68A6BA7B1E7FC29500889051 /* A3WhatsNewFirstPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3WhatsNewFirstPageViewController.h; path = AppDelegate/A3WhatsNewFirstPageViewController.h; sourceTree = "<group>"; };
 		68A6BA7C1E7FC29500889051 /* A3WhatsNewFirstPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3WhatsNewFirstPageViewController.m; path = AppDelegate/A3WhatsNewFirstPageViewController.m; sourceTree = "<group>"; };
 		68AB0AB71A3E9261001BFC5D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -4241,6 +4244,8 @@
 				684E9F06188A43DF00FAA48E /* UIActivities */,
 				17D42AD04B59DF86D9533046 /* A3UserDefaults.h */,
 				17D42AEEAAA58B008893DA5A /* A3UserDefaults.m */,
+				68A5CD641F8772BE008B8F78 /* A3NumberFormatter.h */,
+				68A5CD651F8772BE008B8F78 /* A3NumberFormatter.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -6615,6 +6620,7 @@
 				680886DE1891751B0093FD97 /* A3ClockWaveCircleMiddleView.m in Sources */,
 				680886D31891751B0093FD97 /* A3ChooseColorView.m in Sources */,
 				68B6F6E01EA5759300C4BB7A /* UIImageView+HighlightedWebCache.m in Sources */,
+				68A5CD661F8772BE008B8F78 /* A3NumberFormatter.m in Sources */,
 				3E21D15518FB1BF100B88D62 /* FrameRateCalculator.m in Sources */,
 				68F1C8D518D7F37D009FAE8A /* A3LadyCalendarViewController.m in Sources */,
 				68B6A2B518CEC76D004084EF /* LoanCalcMode.m in Sources */,

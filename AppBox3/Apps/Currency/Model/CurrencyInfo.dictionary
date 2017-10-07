@@ -1178,5 +1178,12 @@
 		<key>symbol</key>
 		<string>$</string>
 	</dict>
+    <key>BTC</key>
+    <dict>
+        <key>flagName</key>
+        <string>bitcoin</string>
+        <key>symbol</key>
+        <string>₿</string>
+    </dict>
 </dict>
 </plist>

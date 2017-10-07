@@ -38,6 +38,7 @@
 #import "common.h"
 #import "A3YahooCurrency.h"
 #import "A3CurrencyViewController.h"
+#import "A3NumberFormatter.h"
 
 NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChangedNotification";
 
@@ -1590,8 +1591,8 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     }
 }
 
-- (NSNumberFormatter *)currencyFormatterWithCurrencyCode:(NSString *)code {
-    NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+- (A3NumberFormatter *)currencyFormatterWithCurrencyCode:(NSString *)code {
+    A3NumberFormatter *nf = [[A3NumberFormatter alloc] init];
 
     [nf setNumberStyle:NSNumberFormatterCurrencyStyle];
     [nf setCurrencyCode:code];

@@ -8,6 +8,7 @@
 
 #import "NSString+conversion.h"
 #import "common.h"
+#import "A3NumberFormatter.h"
 
 @implementation NSString (conversion)
 
@@ -20,7 +21,7 @@
 }
 
 - (NSNumber *)numberFromCurrencyFormattedStringWithCurrencyCode:(NSString *)currencyCode {
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+	A3NumberFormatter *numberFormatter = [[A3NumberFormatter alloc] init];
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 	NSString *myCurrencyCode = currencyCode;
 	if (myCurrencyCode == nil) {

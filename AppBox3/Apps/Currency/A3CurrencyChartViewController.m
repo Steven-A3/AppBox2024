@@ -20,6 +20,7 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3CalculatorViewController.h"
 #import "A3YahooCurrency.h"
+#import "A3NumberFormatter.h"
 
 @interface A3CurrencyChartViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate,
 		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewControllerProtocol,
@@ -370,7 +371,7 @@
 }
 
 - (NSString *)targetValueString {
-	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+	A3NumberFormatter *nf = [[A3NumberFormatter alloc] init];
 	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
 	[nf setCurrencyCode:_targetCurrencyCode];
 	if (IS_IPHONE) {
@@ -384,7 +385,7 @@
 }
 
 - (NSString *)sourceValueString {
-	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+	A3NumberFormatter *nf = [[A3NumberFormatter alloc] init];
 	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
 	[nf setCurrencyCode:_sourceCurrencyCode];
 	if (IS_IPHONE) {
@@ -468,7 +469,7 @@
 }
 
 - (NSNumberFormatter *)currencyFormatterWithCurrencyCode:(NSString *)code {
-	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+	A3NumberFormatter *nf = [[A3NumberFormatter alloc] init];
 	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
 	[nf setCurrencyCode:code];
 	if (IS_IPHONE) {
@@ -676,7 +677,7 @@
 
 - (void)fillCurrencyTable {
 	float rate = self.conversionRate;
-	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+	A3NumberFormatter *nf = [[A3NumberFormatter alloc] init];
 	[nf setCurrencyCode:_sourceCurrencyCode];
     [nf setNumberStyle:NSNumberFormatterCurrencyStyle];
 	NSArray *titles = @[@5, @10, @25, @50, @100];

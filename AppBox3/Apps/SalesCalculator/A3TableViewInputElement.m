@@ -16,10 +16,11 @@
 #import "A3WalletNoteCell.h"
 #import "A3AppDelegate.h"
 #import "NSString+conversion.h"
+#import "A3NumberFormatter.h"
 
 @interface A3TableViewInputElement () <UITextFieldDelegate, A3KeyboardDelegate>
 
-@property (nonatomic, strong) NSNumberFormatter *currencyFormatter;
+@property (nonatomic, strong) A3NumberFormatter *currencyFormatter;
 @property (nonatomic, strong) NSNumberFormatter *percentFormatter;
 @property (nonatomic, strong) NSNumberFormatter *decimalFormatter;
 @property (nonatomic, copy) NSString *textBeforeEditing;
@@ -454,14 +455,14 @@
 
 #pragma mark --- Response to Currency Select Button and result
 
-- (NSNumberFormatter *)currencyFormatter {
+- (A3NumberFormatter *)currencyFormatter {
 	id <A3TableViewInputElementDelegate> delegate = self.delegate;
 	if ([delegate respondsToSelector:@selector(currencyFormatterForTableViewInputElement)]) {
 
 		return [delegate currencyFormatterForTableViewInputElement];
 	}
 	if (!_currencyFormatter) {
-		_currencyFormatter = [NSNumberFormatter new];
+		_currencyFormatter = [A3NumberFormatter new];
 		[_currencyFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 		[_currencyFormatter setRoundingMode:NSNumberFormatterRoundDown];
 		if (self.currencyCode) {

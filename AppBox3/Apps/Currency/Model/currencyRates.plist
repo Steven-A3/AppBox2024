@@ -12,15 +12,15 @@
 				<key>name</key>
 				<string>USD/KRW</string>
 				<key>price</key>
-				<string>1144.170044</string>
+				<string>1141.869995</string>
 				<key>symbol</key>
 				<string>KRW=X</string>
 				<key>ts</key>
-				<string>1488957585</string>
+				<string>1507271902</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:19:45+0000</string>
+				<string>2017-10-06T06:38:22+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -36,15 +36,15 @@
 				<key>name</key>
 				<string>SILVER 1 OZ 999 NY</string>
 				<key>price</key>
-				<string>0.057110</string>
+				<string>0.060223</string>
 				<key>symbol</key>
 				<string>XAG=X</string>
 				<key>ts</key>
-				<string>1488957601</string>
+				<string>1507271902</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:01+0000</string>
+				<string>2017-10-06T06:38:22+0000</string>
 				<key>volume</key>
 				<string>36</string>
 			</dict>
@@ -60,15 +60,15 @@
 				<key>name</key>
 				<string>USD/VND</string>
 				<key>price</key>
-				<string>22794.000000</string>
+				<string>22726.000000</string>
 				<key>symbol</key>
 				<string>VND=X</string>
 				<key>ts</key>
-				<string>1488950161</string>
+				<string>1507262968</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T05:16:01+0000</string>
+				<string>2017-10-06T04:09:28+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -88,11 +88,11 @@
 				<key>symbol</key>
 				<string>BOB=X</string>
 				<key>ts</key>
-				<string>1488950481</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T05:21:21+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -108,15 +108,15 @@
 				<key>name</key>
 				<string>USD/MOP</string>
 				<key>price</key>
-				<string>7.999200</string>
+				<string>8.040200</string>
 				<key>symbol</key>
 				<string>MOP=X</string>
 				<key>ts</key>
-				<string>1488957601</string>
+				<string>1507271700</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:01+0000</string>
+				<string>2017-10-06T06:35:00+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -132,15 +132,15 @@
 				<key>name</key>
 				<string>USD/BDT</string>
 				<key>price</key>
-				<string>79.699997</string>
+				<string>81.379997</string>
 				<key>symbol</key>
 				<string>BDT=X</string>
 				<key>ts</key>
-				<string>1488956538</string>
+				<string>1507271281</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:02:18+0000</string>
+				<string>2017-10-06T06:28:01+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -156,15 +156,15 @@
 				<key>name</key>
 				<string>USD/MDL</string>
 				<key>price</key>
-				<string>19.735001</string>
+				<string>17.485001</string>
 				<key>symbol</key>
 				<string>MDL=X</string>
 				<key>ts</key>
-				<string>1488946107</string>
+				<string>1507268720</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:27+0000</string>
+				<string>2017-10-06T05:45:20+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -180,15 +180,15 @@
 				<key>name</key>
 				<string>USD/VEF</string>
 				<key>price</key>
-				<string>9.975000</string>
+				<string>9.974500</string>
 				<key>symbol</key>
 				<string>VEF=X</string>
 				<key>ts</key>
-				<string>1488946107</string>
+				<string>1507262054</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:27+0000</string>
+				<string>2017-10-06T03:54:14+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -204,15 +204,15 @@
 				<key>name</key>
 				<string>USD/GEL</string>
 				<key>price</key>
-				<string>2.449600</string>
+				<string>2.469200</string>
 				<key>symbol</key>
 				<string>GEL=X</string>
 				<key>ts</key>
-				<string>1488931260</string>
+				<string>1507233602</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T00:01:00+0000</string>
+				<string>2017-10-05T20:00:02+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -228,15 +228,15 @@
 				<key>name</key>
 				<string>USD/ISK</string>
 				<key>price</key>
-				<string>108.650002</string>
+				<string>105.800003</string>
 				<key>symbol</key>
 				<string>ISK=X</string>
 				<key>ts</key>
-				<string>1488905378</string>
+				<string>1507230585</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-07T16:49:38+0000</string>
+				<string>2017-10-05T19:09:45+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -276,15 +276,15 @@
 				<key>name</key>
 				<string>USD/THB</string>
 				<key>price</key>
-				<string>35.189999</string>
+				<string>33.410000</string>
 				<key>symbol</key>
 				<string>THB=X</string>
 				<key>ts</key>
-				<string>1488957601</string>
+				<string>1507271897</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:01+0000</string>
+				<string>2017-10-06T06:38:17+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -300,15 +300,15 @@
 				<key>name</key>
 				<string>USD/MXV</string>
 				<key>price</key>
-				<string>3.420267</string>
+				<string>3.133467</string>
 				<key>symbol</key>
 				<string>MXV=X</string>
 				<key>ts</key>
-				<string>1488893400</string>
+				<string>1507210201</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-07T13:30:00+0000</string>
+				<string>2017-10-05T13:30:01+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -324,15 +324,15 @@
 				<key>name</key>
 				<string>USD/TND</string>
 				<key>price</key>
-				<string>2.303400</string>
+				<string>2.485100</string>
 				<key>symbol</key>
 				<string>TND=X</string>
 				<key>ts</key>
-				<string>1488957604</string>
+				<string>1507271909</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:04+0000</string>
+				<string>2017-10-06T06:38:29+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -348,15 +348,15 @@
 				<key>name</key>
 				<string>USD/JMD</string>
 				<key>price</key>
-				<string>128.039993</string>
+				<string>128.350006</string>
 				<key>symbol</key>
 				<string>JMD=X</string>
 				<key>ts</key>
-				<string>1488946107</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:27+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -372,15 +372,15 @@
 				<key>name</key>
 				<string>USD/DKK</string>
 				<key>price</key>
-				<string>7.033600</string>
+				<string>6.364590</string>
 				<key>symbol</key>
 				<string>DKK=X</string>
 				<key>ts</key>
-				<string>1488957605</string>
+				<string>1507271909</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:05+0000</string>
+				<string>2017-10-06T06:38:29+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -396,15 +396,15 @@
 				<key>name</key>
 				<string>USD/SRD</string>
 				<key>price</key>
-				<string>7.480000</string>
+				<string>7.370000</string>
 				<key>symbol</key>
 				<string>SRD=X</string>
 				<key>ts</key>
-				<string>1488946109</string>
+				<string>1507262056</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:29+0000</string>
+				<string>2017-10-06T03:54:16+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -420,15 +420,15 @@
 				<key>name</key>
 				<string>USD/BWP</string>
 				<key>price</key>
-				<string>10.390000</string>
+				<string>10.357700</string>
 				<key>symbol</key>
 				<string>BWP=X</string>
 				<key>ts</key>
-				<string>1488875400</string>
+				<string>1507194000</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-07T08:30:00+0000</string>
+				<string>2017-10-05T09:00:00+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -444,15 +444,15 @@
 				<key>name</key>
 				<string>USD/NOK</string>
 				<key>price</key>
-				<string>8.461140</string>
+				<string>8.018800</string>
 				<key>symbol</key>
 				<string>NOK=X</string>
 				<key>ts</key>
-				<string>1488957605</string>
+				<string>1507271909</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:05+0000</string>
+				<string>2017-10-06T06:38:29+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -468,15 +468,15 @@
 				<key>name</key>
 				<string>USD/MUR</string>
 				<key>price</key>
-				<string>35.410000</string>
+				<string>34.049999</string>
 				<key>symbol</key>
 				<string>MUR=X</string>
 				<key>ts</key>
-				<string>1488957433</string>
+				<string>1507271756</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:17:13+0000</string>
+				<string>2017-10-06T06:35:56+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -492,15 +492,15 @@
 				<key>name</key>
 				<string>USD/AZN</string>
 				<key>price</key>
-				<string>1.747000</string>
+				<string>1.699700</string>
 				<key>symbol</key>
 				<string>AZN=X</string>
 				<key>ts</key>
-				<string>1488174307</string>
+				<string>1507269610</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-02-27T05:45:07+0000</string>
+				<string>2017-10-06T06:00:10+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -516,15 +516,15 @@
 				<key>name</key>
 				<string>USD/INR</string>
 				<key>price</key>
-				<string>66.633003</string>
+				<string>65.218002</string>
 				<key>symbol</key>
 				<string>INR=X</string>
 				<key>ts</key>
-				<string>1488957604</string>
+				<string>1507271907</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:04+0000</string>
+				<string>2017-10-06T06:38:27+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -540,15 +540,15 @@
 				<key>name</key>
 				<string>USD/MGA</string>
 				<key>price</key>
-				<string>3098.000000</string>
+				<string>3185.000000</string>
 				<key>symbol</key>
 				<string>MGA=X</string>
 				<key>ts</key>
-				<string>1488948279</string>
+				<string>1497286343</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:44:39+0000</string>
+				<string>2017-06-12T16:52:23+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -564,15 +564,15 @@
 				<key>name</key>
 				<string>USD/CAD</string>
 				<key>price</key>
-				<string>1.340690</string>
+				<string>1.259180</string>
 				<key>symbol</key>
 				<string>CAD=X</string>
 				<key>ts</key>
-				<string>1488957605</string>
+				<string>1507271909</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:05+0000</string>
+				<string>2017-10-06T06:38:29+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -588,15 +588,15 @@
 				<key>name</key>
 				<string>USD/XAF</string>
 				<key>price</key>
-				<string>620.169983</string>
+				<string>560.510010</string>
 				<key>symbol</key>
 				<string>XAF=X</string>
 				<key>ts</key>
-				<string>1488957601</string>
+				<string>1507271700</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:01+0000</string>
+				<string>2017-10-06T06:35:00+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -612,15 +612,15 @@
 				<key>name</key>
 				<string>USD/LBP</string>
 				<key>price</key>
-				<string>1504.000000</string>
+				<string>1505.500000</string>
 				<key>symbol</key>
 				<string>LBP=X</string>
 				<key>ts</key>
-				<string>1488948241</string>
+				<string>1507262056</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:44:01+0000</string>
+				<string>2017-10-06T03:54:16+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -636,15 +636,15 @@
 				<key>name</key>
 				<string>USD/XDR</string>
 				<key>price</key>
-				<string>0.741765</string>
+				<string>0.709771</string>
 				<key>symbol</key>
 				<string>XDR=X</string>
 				<key>ts</key>
-				<string>1488897301</string>
+				<string>1507208700</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-07T14:35:01+0000</string>
+				<string>2017-10-05T13:05:00+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -660,15 +660,15 @@
 				<key>name</key>
 				<string>USD/IDR</string>
 				<key>price</key>
-				<string>13338.000000</string>
+				<string>13501.000000</string>
 				<key>symbol</key>
 				<string>IDR=X</string>
 				<key>ts</key>
-				<string>1488956538</string>
+				<string>1507271702</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:02:18+0000</string>
+				<string>2017-10-06T06:35:02+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -708,15 +708,15 @@
 				<key>name</key>
 				<string>USD/AUD</string>
 				<key>price</key>
-				<string>1.317000</string>
+				<string>1.288100</string>
 				<key>symbol</key>
 				<string>AUD=X</string>
 				<key>ts</key>
-				<string>1488957600</string>
+				<string>1507271897</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:00+0000</string>
+				<string>2017-10-06T06:38:17+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -732,15 +732,15 @@
 				<key>name</key>
 				<string>USD/MMK</string>
 				<key>price</key>
-				<string>1359.000000</string>
+				<string>1361.000000</string>
 				<key>symbol</key>
 				<string>MMK=X</string>
 				<key>ts</key>
-				<string>1488955583</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T06:46:23+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -756,15 +756,15 @@
 				<key>name</key>
 				<string>USD/LYD</string>
 				<key>price</key>
-				<string>1.428700</string>
+				<string>1.368000</string>
 				<key>symbol</key>
 				<string>LYD=X</string>
 				<key>ts</key>
-				<string>1488954789</string>
+				<string>1507271614</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T06:33:09+0000</string>
+				<string>2017-10-06T06:33:34+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -780,15 +780,15 @@
 				<key>name</key>
 				<string>USD/ZAR</string>
 				<key>price</key>
-				<string>12.962400</string>
+				<string>13.699700</string>
 				<key>symbol</key>
 				<string>ZAR=X</string>
 				<key>ts</key>
-				<string>1488957605</string>
+				<string>1507271909</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:05+0000</string>
+				<string>2017-10-06T06:38:29+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -804,15 +804,15 @@
 				<key>name</key>
 				<string>USD/IQD</string>
 				<key>price</key>
-				<string>1181.000000</string>
+				<string>1167.000000</string>
 				<key>symbol</key>
 				<string>IQD=X</string>
 				<key>ts</key>
-				<string>1488946107</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:27+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -828,15 +828,15 @@
 				<key>name</key>
 				<string>USD/XPF</string>
 				<key>price</key>
-				<string>112.349998</string>
+				<string>101.339996</string>
 				<key>symbol</key>
 				<string>XPF=X</string>
 				<key>ts</key>
-				<string>1488957427</string>
+				<string>1507267465</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:17:07+0000</string>
+				<string>2017-10-06T05:24:25+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -852,15 +852,15 @@
 				<key>name</key>
 				<string>USD/TJS</string>
 				<key>price</key>
-				<string>8.013400</string>
+				<string>8.800500</string>
 				<key>symbol</key>
 				<string>TJS=X</string>
 				<key>ts</key>
-				<string>1488938417</string>
+				<string>1507255216</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T02:00:17+0000</string>
+				<string>2017-10-06T02:00:16+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -880,11 +880,11 @@
 				<key>symbol</key>
 				<string>CUP=X</string>
 				<key>ts</key>
-				<string>1488956400</string>
+				<string>1507269600</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:00:00+0000</string>
+				<string>2017-10-06T06:00:00+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -900,15 +900,15 @@
 				<key>name</key>
 				<string>USD/UGX</string>
 				<key>price</key>
-				<string>3589.000000</string>
+				<string>3605.000000</string>
 				<key>symbol</key>
 				<string>UGX=X</string>
 				<key>ts</key>
-				<string>1488946108</string>
+				<string>1507271778</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:28+0000</string>
+				<string>2017-10-06T06:36:18+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -924,15 +924,15 @@
 				<key>name</key>
 				<string>USD/NGN</string>
 				<key>price</key>
-				<string>315.000000</string>
+				<string>353.000000</string>
 				<key>symbol</key>
 				<string>NGN=X</string>
 				<key>ts</key>
-				<string>1488919666</string>
+				<string>1507113377</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-07T20:47:46+0000</string>
+				<string>2017-10-04T10:36:17+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -948,15 +948,15 @@
 				<key>name</key>
 				<string>USD/PGK</string>
 				<key>price</key>
-				<string>3.172100</string>
+				<string>3.177200</string>
 				<key>symbol</key>
 				<string>PGK=X</string>
 				<key>ts</key>
-				<string>1488957601</string>
+				<string>1507271700</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:01+0000</string>
+				<string>2017-10-06T06:35:00+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -972,15 +972,15 @@
 				<key>name</key>
 				<string>USD/TOP</string>
 				<key>price</key>
-				<string>2.252300</string>
+				<string>2.222200</string>
 				<key>symbol</key>
 				<string>TOP=X</string>
 				<key>ts</key>
-				<string>1488947700</string>
+				<string>1507269300</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:35:00+0000</string>
+				<string>2017-10-06T05:55:00+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -996,15 +996,15 @@
 				<key>name</key>
 				<string>USD/TMT</string>
 				<key>price</key>
-				<string>3.400000</string>
+				<string>3.410000</string>
 				<key>symbol</key>
 				<string>TMT=X</string>
 				<key>ts</key>
-				<string>1488903014</string>
+				<string>1507230516</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-07T16:10:14+0000</string>
+				<string>2017-10-05T19:08:36+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1020,15 +1020,15 @@
 				<key>name</key>
 				<string>USD/KES</string>
 				<key>price</key>
-				<string>102.300003</string>
+				<string>102.900002</string>
 				<key>symbol</key>
 				<string>KES=X</string>
 				<key>ts</key>
-				<string>1488957051</string>
+				<string>1507269541</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:10:51+0000</string>
+				<string>2017-10-06T05:59:01+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1044,15 +1044,15 @@
 				<key>name</key>
 				<string>USD/CRC</string>
 				<key>price</key>
-				<string>550.309998</string>
+				<string>569.599976</string>
 				<key>symbol</key>
 				<string>CRC=X</string>
 				<key>ts</key>
-				<string>1488955024</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T06:37:04+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1068,15 +1068,15 @@
 				<key>name</key>
 				<string>USD/MZN</string>
 				<key>price</key>
-				<string>70.440002</string>
+				<string>60.450001</string>
 				<key>symbol</key>
 				<string>MZN=X</string>
 				<key>ts</key>
-				<string>1488946107</string>
+				<string>1507268668</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:27+0000</string>
+				<string>2017-10-06T05:44:28+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1092,15 +1092,15 @@
 				<key>name</key>
 				<string>USD/BYN</string>
 				<key>price</key>
-				<string>1.900000</string>
+				<string>1.940000</string>
 				<key>symbol</key>
 				<string>BYN=X</string>
 				<key>ts</key>
-				<string>1488946107</string>
+				<string>1507262054</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:27+0000</string>
+				<string>2017-10-06T03:54:14+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1120,11 +1120,11 @@
 				<key>symbol</key>
 				<string>SYP=X</string>
 				<key>ts</key>
-				<string>1488946107</string>
+				<string>1507262056</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:27+0000</string>
+				<string>2017-10-06T03:54:16+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1140,15 +1140,15 @@
 				<key>name</key>
 				<string>USD/ANG</string>
 				<key>price</key>
-				<string>1.777500</string>
+				<string>1.780000</string>
 				<key>symbol</key>
 				<string>ANG=X</string>
 				<key>ts</key>
-				<string>1488957076</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:11:16+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1164,15 +1164,15 @@
 				<key>name</key>
 				<string>USD/ZMW</string>
 				<key>price</key>
-				<string>9.650000</string>
+				<string>9.560000</string>
 				<key>symbol</key>
 				<string>ZMW=X</string>
 				<key>ts</key>
-				<string>1488946108</string>
+				<string>1507270642</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:28+0000</string>
+				<string>2017-10-06T06:17:22+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1188,15 +1188,15 @@
 				<key>name</key>
 				<string>USD/BRL</string>
 				<key>price</key>
-				<string>3.119200</string>
+				<string>3.153600</string>
 				<key>symbol</key>
 				<string>BRL=X</string>
 				<key>ts</key>
-				<string>1488946108</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:28+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1216,11 +1216,11 @@
 				<key>symbol</key>
 				<string>BSD=X</string>
 				<key>ts</key>
-				<string>1488946107</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:27+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1236,15 +1236,15 @@
 				<key>name</key>
 				<string>USD/NIO</string>
 				<key>price</key>
-				<string>29.587999</string>
+				<string>30.438499</string>
 				<key>symbol</key>
 				<string>NIO=X</string>
 				<key>ts</key>
-				<string>1488955854</string>
+				<string>1507270875</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T06:50:54+0000</string>
+				<string>2017-10-06T06:21:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1260,15 +1260,15 @@
 				<key>name</key>
 				<string>USD/GNF</string>
 				<key>price</key>
-				<string>9347.900391</string>
+				<string>8888.000000</string>
 				<key>symbol</key>
 				<string>GNF=X</string>
 				<key>ts</key>
-				<string>1488950398</string>
+				<string>1507262056</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T05:19:58+0000</string>
+				<string>2017-10-06T03:54:16+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1288,11 +1288,11 @@
 				<key>symbol</key>
 				<string>BMD=X</string>
 				<key>ts</key>
-				<string>1488956400</string>
+				<string>1507269600</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:00:00+0000</string>
+				<string>2017-10-06T06:00:00+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1308,15 +1308,15 @@
 				<key>name</key>
 				<string>USD/SLL</string>
 				<key>price</key>
-				<string>7441.000000</string>
+				<string>7620.000000</string>
 				<key>symbol</key>
 				<string>SLL=X</string>
 				<key>ts</key>
-				<string>1488946108</string>
+				<string>1507262056</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:28+0000</string>
+				<string>2017-10-06T03:54:16+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1332,15 +1332,15 @@
 				<key>name</key>
 				<string>USD/MKD</string>
 				<key>price</key>
-				<string>57.930000</string>
+				<string>52.360001</string>
 				<key>symbol</key>
 				<string>MKD=X</string>
 				<key>ts</key>
-				<string>1488957589</string>
+				<string>1507271907</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:19:49+0000</string>
+				<string>2017-10-06T06:38:27+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1356,15 +1356,15 @@
 				<key>name</key>
 				<string>USD/BIF</string>
 				<key>price</key>
-				<string>1689.349976</string>
+				<string>1735.479980</string>
 				<key>symbol</key>
 				<string>BIF=X</string>
 				<key>ts</key>
-				<string>1488946108</string>
+				<string>1507262054</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:28+0000</string>
+				<string>2017-10-06T03:54:14+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1380,15 +1380,15 @@
 				<key>name</key>
 				<string>USD/LAK</string>
 				<key>price</key>
-				<string>8195.799805</string>
+				<string>8282.000000</string>
 				<key>symbol</key>
 				<string>LAK=X</string>
 				<key>ts</key>
-				<string>1488946108</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:28+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1404,15 +1404,15 @@
 				<key>name</key>
 				<string>USD/BHD</string>
 				<key>price</key>
-				<string>0.376900</string>
+				<string>0.377100</string>
 				<key>symbol</key>
 				<string>BHD=X</string>
 				<key>ts</key>
-				<string>1488957074</string>
+				<string>1507270897</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:11:14+0000</string>
+				<string>2017-10-06T06:21:37+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1428,15 +1428,15 @@
 				<key>name</key>
 				<string>USD/SHP</string>
 				<key>price</key>
-				<string>0.819300</string>
+				<string>0.763700</string>
 				<key>symbol</key>
 				<string>SHP=X</string>
 				<key>ts</key>
-				<string>1488949200</string>
+				<string>1507262400</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T05:00:00+0000</string>
+				<string>2017-10-06T04:00:00+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1452,15 +1452,15 @@
 				<key>name</key>
 				<string>USD/BGN</string>
 				<key>price</key>
-				<string>1.849300</string>
+				<string>1.665700</string>
 				<key>symbol</key>
 				<string>BGN=X</string>
 				<key>ts</key>
-				<string>1488899714</string>
+				<string>1507212914</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-07T15:15:14+0000</string>
+				<string>2017-10-05T14:15:14+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1476,15 +1476,15 @@
 				<key>name</key>
 				<string>USD/SGD</string>
 				<key>price</key>
-				<string>1.410260</string>
+				<string>1.366640</string>
 				<key>symbol</key>
 				<string>SGD=X</string>
 				<key>ts</key>
-				<string>1488957605</string>
+				<string>1507271910</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:05+0000</string>
+				<string>2017-10-06T06:38:30+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1500,15 +1500,15 @@
 				<key>name</key>
 				<string>USD/CNY</string>
 				<key>price</key>
-				<string>6.901000</string>
+				<string>6.653200</string>
 				<key>symbol</key>
 				<string>CNY=X</string>
 				<key>ts</key>
-				<string>1488957603</string>
+				<string>1507271880</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:03+0000</string>
+				<string>2017-10-06T06:38:00+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1524,15 +1524,15 @@
 				<key>name</key>
 				<string>USD/EUR</string>
 				<key>price</key>
-				<string>0.946000</string>
+				<string>0.855000</string>
 				<key>symbol</key>
 				<string>EUR=X</string>
 				<key>ts</key>
-				<string>1488957600</string>
+				<string>1507271879</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:00+0000</string>
+				<string>2017-10-06T06:37:59+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1548,15 +1548,15 @@
 				<key>name</key>
 				<string>USD/TTD</string>
 				<key>price</key>
-				<string>6.689500</string>
+				<string>6.749200</string>
 				<key>symbol</key>
 				<string>TTD=X</string>
 				<key>ts</key>
-				<string>1488955037</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T06:37:17+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1572,15 +1572,15 @@
 				<key>name</key>
 				<string>USD/SCR</string>
 				<key>price</key>
-				<string>13.310000</string>
+				<string>13.274000</string>
 				<key>symbol</key>
 				<string>SCR=X</string>
 				<key>ts</key>
-				<string>1488946117</string>
+				<string>1507263381</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:37+0000</string>
+				<string>2017-10-06T04:16:21+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1600,11 +1600,11 @@
 				<key>symbol</key>
 				<string>BBD=X</string>
 				<key>ts</key>
-				<string>1488956400</string>
+				<string>1507269600</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:00:00+0000</string>
+				<string>2017-10-06T06:00:00+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1620,15 +1620,15 @@
 				<key>name</key>
 				<string>USD/SBD</string>
 				<key>price</key>
-				<string>7.773500</string>
+				<string>7.810000</string>
 				<key>symbol</key>
 				<string>SBD=X</string>
 				<key>ts</key>
-				<string>1488840000</string>
+				<string>1507232100</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-06T22:40:00+0000</string>
+				<string>2017-10-05T19:35:00+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1644,15 +1644,15 @@
 				<key>name</key>
 				<string>USD/MAD</string>
 				<key>price</key>
-				<string>10.097100</string>
+				<string>9.466500</string>
 				<key>symbol</key>
 				<string>MAD=X</string>
 				<key>ts</key>
-				<string>1488957591</string>
+				<string>1507271898</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:19:51+0000</string>
+				<string>2017-10-06T06:38:18+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1668,15 +1668,15 @@
 				<key>name</key>
 				<string>USD/GTQ</string>
 				<key>price</key>
-				<string>7.370000</string>
+				<string>7.313500</string>
 				<key>symbol</key>
 				<string>GTQ=X</string>
 				<key>ts</key>
-				<string>1488946107</string>
+				<string>1507262054</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:27+0000</string>
+				<string>2017-10-06T03:54:14+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1692,15 +1692,15 @@
 				<key>name</key>
 				<string>USD/MWK</string>
 				<key>price</key>
-				<string>716.880005</string>
+				<string>713.559998</string>
 				<key>symbol</key>
 				<string>MWK=X</string>
 				<key>ts</key>
-				<string>1488956418</string>
+				<string>1507271136</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:00:18+0000</string>
+				<string>2017-10-06T06:25:36+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1716,15 +1716,15 @@
 				<key>name</key>
 				<string>USD/PKR</string>
 				<key>price</key>
-				<string>104.809998</string>
+				<string>105.410004</string>
 				<key>symbol</key>
 				<string>PKR=X</string>
 				<key>ts</key>
-				<string>1488956538</string>
+				<string>1507264891</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:02:18+0000</string>
+				<string>2017-10-06T04:41:31+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1764,15 +1764,15 @@
 				<key>name</key>
 				<string>USD/PEN</string>
 				<key>price</key>
-				<string>3.278500</string>
+				<string>3.257200</string>
 				<key>symbol</key>
 				<string>PEN=X</string>
 				<key>ts</key>
-				<string>1488957080</string>
+				<string>1507262056</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:11:20+0000</string>
+				<string>2017-10-06T03:54:16+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1788,15 +1788,15 @@
 				<key>name</key>
 				<string>USD/AED</string>
 				<key>price</key>
-				<string>3.672300</string>
+				<string>3.672700</string>
 				<key>symbol</key>
 				<string>AED=X</string>
 				<key>ts</key>
-				<string>1488957081</string>
+				<string>1507266667</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:11:21+0000</string>
+				<string>2017-10-06T05:11:07+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1836,15 +1836,15 @@
 				<key>name</key>
 				<string>PALLADIUM 1 OZ</string>
 				<key>price</key>
-				<string>0.001294</string>
+				<string>0.001069</string>
 				<key>symbol</key>
 				<string>XPD=X</string>
 				<key>ts</key>
-				<string>1488957601</string>
+				<string>1507271482</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:01+0000</string>
+				<string>2017-10-06T06:31:22+0000</string>
 				<key>volume</key>
 				<string>145</string>
 			</dict>
@@ -1860,15 +1860,15 @@
 				<key>name</key>
 				<string>USD/UAH</string>
 				<key>price</key>
-				<string>26.940001</string>
+				<string>26.770000</string>
 				<key>symbol</key>
 				<string>UAH=X</string>
 				<key>ts</key>
-				<string>1488946108</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:28+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1908,15 +1908,15 @@
 				<key>name</key>
 				<string>USD/LRD</string>
 				<key>price</key>
-				<string>90.000000</string>
+				<string>117.500000</string>
 				<key>symbol</key>
 				<string>LRD=X</string>
 				<key>ts</key>
-				<string>1488946107</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:27+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1932,15 +1932,15 @@
 				<key>name</key>
 				<string>USD/LSL</string>
 				<key>price</key>
-				<string>12.970000</string>
+				<string>13.690000</string>
 				<key>symbol</key>
 				<string>LSL=X</string>
 				<key>ts</key>
-				<string>1488902853</string>
+				<string>1507230210</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-07T16:07:33+0000</string>
+				<string>2017-10-05T19:03:30+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1956,15 +1956,15 @@
 				<key>name</key>
 				<string>USD/SEK</string>
 				<key>price</key>
-				<string>9.015000</string>
+				<string>8.147000</string>
 				<key>symbol</key>
 				<string>SEK=X</string>
 				<key>ts</key>
-				<string>1488957605</string>
+				<string>1507271909</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:05+0000</string>
+				<string>2017-10-06T06:38:29+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -1980,15 +1980,15 @@
 				<key>name</key>
 				<string>USD/RON</string>
 				<key>price</key>
-				<string>4.290300</string>
+				<string>3.909300</string>
 				<key>symbol</key>
 				<string>RON=X</string>
 				<key>ts</key>
-				<string>1488957594</string>
+				<string>1507271897</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:19:54+0000</string>
+				<string>2017-10-06T06:38:17+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2004,15 +2004,15 @@
 				<key>name</key>
 				<string>USD/XOF</string>
 				<key>price</key>
-				<string>625.200012</string>
+				<string>551.000000</string>
 				<key>symbol</key>
 				<string>XOF=X</string>
 				<key>ts</key>
-				<string>1488946107</string>
+				<string>1507262056</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:27+0000</string>
+				<string>2017-10-06T03:54:16+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2028,15 +2028,15 @@
 				<key>name</key>
 				<string>USD/COP</string>
 				<key>price</key>
-				<string>2950.699951</string>
+				<string>2924.100098</string>
 				<key>symbol</key>
 				<string>COP=X</string>
 				<key>ts</key>
-				<string>1488946108</string>
+				<string>1507271445</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:28+0000</string>
+				<string>2017-10-06T06:30:45+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2052,15 +2052,15 @@
 				<key>name</key>
 				<string>USD/CDF</string>
 				<key>price</key>
-				<string>1317.000000</string>
+				<string>1565.500000</string>
 				<key>symbol</key>
 				<string>CDF=X</string>
 				<key>ts</key>
-				<string>1488946108</string>
+				<string>1507262054</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:28+0000</string>
+				<string>2017-10-06T03:54:14+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2080,11 +2080,11 @@
 				<key>symbol</key>
 				<string>USD=X</string>
 				<key>ts</key>
-				<string>1488956400</string>
+				<string>1507269600</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:00:00+0000</string>
+				<string>2017-10-06T06:00:00+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2100,15 +2100,15 @@
 				<key>name</key>
 				<string>USD/TZS</string>
 				<key>price</key>
-				<string>2227.000000</string>
+				<string>2238.000000</string>
 				<key>symbol</key>
 				<string>TZS=X</string>
 				<key>ts</key>
-				<string>1488955031</string>
+				<string>1507266917</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T06:37:11+0000</string>
+				<string>2017-10-06T05:15:17+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2124,15 +2124,15 @@
 				<key>name</key>
 				<string>USD/GHS</string>
 				<key>price</key>
-				<string>4.728500</string>
+				<string>4.418500</string>
 				<key>symbol</key>
 				<string>GHS=X</string>
 				<key>ts</key>
-				<string>1488946108</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:28+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2148,15 +2148,15 @@
 				<key>name</key>
 				<string>USD/NPR</string>
 				<key>price</key>
-				<string>108.599998</string>
+				<string>104.250000</string>
 				<key>symbol</key>
 				<string>NPR=X</string>
 				<key>ts</key>
-				<string>1484906400</string>
+				<string>1507200781</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-01-20T10:00:00+0000</string>
+				<string>2017-10-05T10:53:01+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2196,15 +2196,15 @@
 				<key>name</key>
 				<string>USD/SOS</string>
 				<key>price</key>
-				<string>549.000000</string>
+				<string>557.000000</string>
 				<key>symbol</key>
 				<string>SOS=X</string>
 				<key>ts</key>
-				<string>1488919803</string>
+				<string>1507230401</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-07T20:50:03+0000</string>
+				<string>2017-10-05T19:06:41+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2220,15 +2220,15 @@
 				<key>name</key>
 				<string>USD/DZD</string>
 				<key>price</key>
-				<string>109.857002</string>
+				<string>113.329002</string>
 				<key>symbol</key>
 				<string>DZD=X</string>
 				<key>ts</key>
-				<string>1488957603</string>
+				<string>1507271901</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:03+0000</string>
+				<string>2017-10-06T06:38:21+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2244,15 +2244,15 @@
 				<key>name</key>
 				<string>USD/FKP</string>
 				<key>price</key>
-				<string>0.819100</string>
+				<string>0.763500</string>
 				<key>symbol</key>
 				<string>FKP=X</string>
 				<key>ts</key>
-				<string>1488949200</string>
+				<string>1507262400</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T05:00:00+0000</string>
+				<string>2017-10-06T04:00:00+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2268,15 +2268,15 @@
 				<key>name</key>
 				<string>USD/LKR</string>
 				<key>price</key>
-				<string>151.350006</string>
+				<string>153.199997</string>
 				<key>symbol</key>
 				<string>LKR=X</string>
 				<key>ts</key>
-				<string>1488956538</string>
+				<string>1507271281</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:02:18+0000</string>
+				<string>2017-10-06T06:28:01+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2292,15 +2292,15 @@
 				<key>name</key>
 				<string>USD/JPY</string>
 				<key>price</key>
-				<string>113.662003</string>
+				<string>113.039001</string>
 				<key>symbol</key>
 				<string>JPY=X</string>
 				<key>ts</key>
-				<string>1488957605</string>
+				<string>1507271909</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:05+0000</string>
+				<string>2017-10-06T06:38:29+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2316,15 +2316,15 @@
 				<key>name</key>
 				<string>USD/CHF</string>
 				<key>price</key>
-				<string>1.013270</string>
+				<string>0.979850</string>
 				<key>symbol</key>
 				<string>CHF=X</string>
 				<key>ts</key>
-				<string>1488957605</string>
+				<string>1507271909</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:05+0000</string>
+				<string>2017-10-06T06:38:29+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2344,11 +2344,11 @@
 				<key>symbol</key>
 				<string>KYD=X</string>
 				<key>ts</key>
-				<string>1488956400</string>
+				<string>1507269600</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:00:00+0000</string>
+				<string>2017-10-06T06:00:00+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2364,15 +2364,15 @@
 				<key>name</key>
 				<string>USD/CLP</string>
 				<key>price</key>
-				<string>658.169983</string>
+				<string>628.440002</string>
 				<key>symbol</key>
 				<string>CLP=X</string>
 				<key>ts</key>
-				<string>1488923902</string>
+				<string>1507233113</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-07T21:58:22+0000</string>
+				<string>2017-10-05T19:51:53+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2388,15 +2388,15 @@
 				<key>name</key>
 				<string>USD/IRR</string>
 				<key>price</key>
-				<string>32416.000000</string>
+				<string>34002.000000</string>
 				<key>symbol</key>
 				<string>IRR=X</string>
 				<key>ts</key>
-				<string>1488951241</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T05:34:01+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2412,15 +2412,15 @@
 				<key>name</key>
 				<string>USD/AFN</string>
 				<key>price</key>
-				<string>66.639999</string>
+				<string>68.099998</string>
 				<key>symbol</key>
 				<string>AFN=X</string>
 				<key>ts</key>
-				<string>1488946108</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:28+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2436,15 +2436,15 @@
 				<key>name</key>
 				<string>USD/DJF</string>
 				<key>price</key>
-				<string>177.910004</string>
+				<string>177.740005</string>
 				<key>symbol</key>
 				<string>DJF=X</string>
 				<key>ts</key>
-				<string>1488946108</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:28+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2460,15 +2460,15 @@
 				<key>name</key>
 				<string>USD/SVC</string>
 				<key>price</key>
-				<string>8.722000</string>
+				<string>8.750000</string>
 				<key>symbol</key>
 				<string>SVC=X</string>
 				<key>ts</key>
-				<string>1488946107</string>
+				<string>1507269600</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:27+0000</string>
+				<string>2017-10-06T06:00:00+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2484,15 +2484,15 @@
 				<key>name</key>
 				<string>USD/PLN</string>
 				<key>price</key>
-				<string>4.073100</string>
+				<string>3.678300</string>
 				<key>symbol</key>
 				<string>PLN=X</string>
 				<key>ts</key>
-				<string>1488957605</string>
+				<string>1507271909</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:05+0000</string>
+				<string>2017-10-06T06:38:29+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2508,15 +2508,15 @@
 				<key>name</key>
 				<string>USD/PYG</string>
 				<key>price</key>
-				<string>5393.799805</string>
+				<string>5636.000000</string>
 				<key>symbol</key>
 				<string>PYG=X</string>
 				<key>ts</key>
-				<string>1488946108</string>
+				<string>1507262056</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:28+0000</string>
+				<string>2017-10-06T03:54:16+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2532,15 +2532,15 @@
 				<key>name</key>
 				<string>USD/ERN</string>
 				<key>price</key>
-				<string>15.290000</string>
+				<string>15.280000</string>
 				<key>symbol</key>
 				<string>ERN=X</string>
 				<key>ts</key>
-				<string>1488946107</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:27+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2556,15 +2556,15 @@
 				<key>name</key>
 				<string>USD/ETB</string>
 				<key>price</key>
-				<string>22.648500</string>
+				<string>23.400000</string>
 				<key>symbol</key>
 				<string>ETB=X</string>
 				<key>ts</key>
-				<string>1488894306</string>
+				<string>1507230560</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-07T13:45:06+0000</string>
+				<string>2017-10-05T19:09:20+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2580,15 +2580,15 @@
 				<key>name</key>
 				<string>USD/ILS</string>
 				<key>price</key>
-				<string>3.673400</string>
+				<string>3.511600</string>
 				<key>symbol</key>
 				<string>ILS=X</string>
 				<key>ts</key>
-				<string>1488957597</string>
+				<string>1507271906</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:19:57+0000</string>
+				<string>2017-10-06T06:38:26+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2604,15 +2604,15 @@
 				<key>name</key>
 				<string>USD/TWD</string>
 				<key>price</key>
-				<string>30.855000</string>
+				<string>30.364000</string>
 				<key>symbol</key>
 				<string>TWD=X</string>
 				<key>ts</key>
-				<string>1488957604</string>
+				<string>1507271874</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:04+0000</string>
+				<string>2017-10-06T06:37:54+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2632,11 +2632,11 @@
 				<key>symbol</key>
 				<string>KPW=X</string>
 				<key>ts</key>
-				<string>1488956400</string>
+				<string>1507269600</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:00:00+0000</string>
+				<string>2017-10-06T06:00:00+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2676,15 +2676,15 @@
 				<key>name</key>
 				<string>USD/GIP</string>
 				<key>price</key>
-				<string>0.819300</string>
+				<string>0.763700</string>
 				<key>symbol</key>
 				<string>GIP=X</string>
 				<key>ts</key>
-				<string>1488949200</string>
+				<string>1507262400</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T05:00:00+0000</string>
+				<string>2017-10-06T04:00:00+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2700,15 +2700,15 @@
 				<key>name</key>
 				<string>USD/BND</string>
 				<key>price</key>
-				<string>1.409600</string>
+				<string>1.361100</string>
 				<key>symbol</key>
 				<string>BND=X</string>
 				<key>ts</key>
-				<string>1488957574</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:19:34+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2724,15 +2724,15 @@
 				<key>name</key>
 				<string>USD/HNL</string>
 				<key>price</key>
-				<string>23.469999</string>
+				<string>23.336000</string>
 				<key>symbol</key>
 				<string>HNL=X</string>
 				<key>ts</key>
-				<string>1488946108</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:28+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2748,15 +2748,15 @@
 				<key>name</key>
 				<string>USD/CZK</string>
 				<key>price</key>
-				<string>25.567900</string>
+				<string>22.070200</string>
 				<key>symbol</key>
 				<string>CZK=X</string>
 				<key>ts</key>
-				<string>1488957605</string>
+				<string>1507271909</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:05+0000</string>
+				<string>2017-10-06T06:38:29+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2772,15 +2772,15 @@
 				<key>name</key>
 				<string>USD/HUF</string>
 				<key>price</key>
-				<string>293.239990</string>
+				<string>266.369995</string>
 				<key>symbol</key>
 				<string>HUF=X</string>
 				<key>ts</key>
-				<string>1488957602</string>
+				<string>1507271908</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:02+0000</string>
+				<string>2017-10-06T06:38:28+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2796,15 +2796,15 @@
 				<key>name</key>
 				<string>USD/BZD</string>
 				<key>price</key>
-				<string>1.997700</string>
+				<string>1.998000</string>
 				<key>symbol</key>
 				<string>BZD=X</string>
 				<key>ts</key>
-				<string>1488946107</string>
+				<string>1507262054</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:27+0000</string>
+				<string>2017-10-06T03:54:14+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2844,15 +2844,15 @@
 				<key>name</key>
 				<string>USD/JOD</string>
 				<key>price</key>
-				<string>0.708300</string>
+				<string>0.708000</string>
 				<key>symbol</key>
 				<string>JOD=X</string>
 				<key>ts</key>
-				<string>1488957074</string>
+				<string>1507262056</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:11:14+0000</string>
+				<string>2017-10-06T03:54:16+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2868,15 +2868,15 @@
 				<key>name</key>
 				<string>USD/RWF</string>
 				<key>price</key>
-				<string>815.919983</string>
+				<string>828.849976</string>
 				<key>symbol</key>
 				<string>RWF=X</string>
 				<key>ts</key>
-				<string>1488946107</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:27+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2916,15 +2916,15 @@
 				<key>name</key>
 				<string>USD/RUB</string>
 				<key>price</key>
-				<string>58.155998</string>
+				<string>57.722000</string>
 				<key>symbol</key>
 				<string>RUB=X</string>
 				<key>ts</key>
-				<string>1488957605</string>
+				<string>1507271907</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:05+0000</string>
+				<string>2017-10-06T06:38:27+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2940,15 +2940,15 @@
 				<key>name</key>
 				<string>USD/RSD</string>
 				<key>price</key>
-				<string>116.482697</string>
+				<string>100.999702</string>
 				<key>symbol</key>
 				<string>RSD=X</string>
 				<key>ts</key>
-				<string>1488875415</string>
+				<string>1507192216</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-07T08:30:15+0000</string>
+				<string>2017-10-05T08:30:16+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2964,15 +2964,15 @@
 				<key>name</key>
 				<string>USD/WST</string>
 				<key>price</key>
-				<string>2.574200</string>
+				<string>2.523400</string>
 				<key>symbol</key>
 				<string>WST=X</string>
 				<key>ts</key>
-				<string>1488950400</string>
+				<string>1507269300</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T05:20:00+0000</string>
+				<string>2017-10-06T05:55:00+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -2988,15 +2988,15 @@
 				<key>name</key>
 				<string>PLATINUM 1 UZ 999</string>
 				<key>price</key>
-				<string>0.001039</string>
+				<string>0.001090</string>
 				<key>symbol</key>
 				<string>XPT=X</string>
 				<key>ts</key>
-				<string>1488957601</string>
+				<string>1507271902</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:01+0000</string>
+				<string>2017-10-06T06:38:22+0000</string>
 				<key>volume</key>
 				<string>490</string>
 			</dict>
@@ -3012,15 +3012,15 @@
 				<key>name</key>
 				<string>USD/NAD</string>
 				<key>price</key>
-				<string>13.044000</string>
+				<string>13.697000</string>
 				<key>symbol</key>
 				<string>NAD=X</string>
 				<key>ts</key>
-				<string>1488957080</string>
+				<string>1507271906</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:11:20+0000</string>
+				<string>2017-10-06T06:38:26+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3040,11 +3040,11 @@
 				<key>symbol</key>
 				<string>PAB=X</string>
 				<key>ts</key>
-				<string>1488956400</string>
+				<string>1507269600</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:00:00+0000</string>
+				<string>2017-10-06T06:00:00+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3060,15 +3060,15 @@
 				<key>name</key>
 				<string>USD/DOP</string>
 				<key>price</key>
-				<string>46.880001</string>
+				<string>47.160000</string>
 				<key>symbol</key>
 				<string>DOP=X</string>
 				<key>ts</key>
-				<string>1488946108</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:28+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3084,15 +3084,15 @@
 				<key>name</key>
 				<string>USD/ALL</string>
 				<key>price</key>
-				<string>127.480003</string>
+				<string>113.900002</string>
 				<key>symbol</key>
 				<string>ALL=X</string>
 				<key>ts</key>
-				<string>1488905372</string>
+				<string>1507230580</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-07T16:49:32+0000</string>
+				<string>2017-10-05T19:09:40+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3108,15 +3108,15 @@
 				<key>name</key>
 				<string>USD/HTG</string>
 				<key>price</key>
-				<string>64.949997</string>
+				<string>61.310001</string>
 				<key>symbol</key>
 				<string>HTG=X</string>
 				<key>ts</key>
-				<string>1488946108</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:28+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3132,15 +3132,15 @@
 				<key>name</key>
 				<string>USD/AMD</string>
 				<key>price</key>
-				<string>486.119995</string>
+				<string>477.950012</string>
 				<key>symbol</key>
 				<string>AMD=X</string>
 				<key>ts</key>
-				<string>1488889329</string>
+				<string>1507204535</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-07T12:22:09+0000</string>
+				<string>2017-10-05T11:55:35+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3156,15 +3156,15 @@
 				<key>name</key>
 				<string>USD/KMF</string>
 				<key>price</key>
-				<string>461.000000</string>
+				<string>417.269989</string>
 				<key>symbol</key>
 				<string>KMF=X</string>
 				<key>ts</key>
-				<string>1488946108</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:28+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3180,15 +3180,15 @@
 				<key>name</key>
 				<string>USD/MRO</string>
 				<key>price</key>
-				<string>355.500000</string>
+				<string>361.000000</string>
 				<key>symbol</key>
 				<string>MRO=X</string>
 				<key>ts</key>
-				<string>1488950405</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T05:20:05+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3204,15 +3204,15 @@
 				<key>name</key>
 				<string>USD/HRK</string>
 				<key>price</key>
-				<string>7.005700</string>
+				<string>6.414700</string>
 				<key>symbol</key>
 				<string>HRK=X</string>
 				<key>ts</key>
-				<string>1488957601</string>
+				<string>1507271822</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:01+0000</string>
+				<string>2017-10-06T06:37:02+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3228,15 +3228,15 @@
 				<key>name</key>
 				<string>USD/KHR</string>
 				<key>price</key>
-				<string>3995.600098</string>
+				<string>4040.000000</string>
 				<key>symbol</key>
 				<string>KHR=X</string>
 				<key>ts</key>
-				<string>1488946108</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:28+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3252,15 +3252,15 @@
 				<key>name</key>
 				<string>USD/PHP</string>
 				<key>price</key>
-				<string>50.279999</string>
+				<string>51.119999</string>
 				<key>symbol</key>
 				<string>PHP=X</string>
 				<key>ts</key>
-				<string>1488957363</string>
+				<string>1507271784</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:16:03+0000</string>
+				<string>2017-10-06T06:36:24+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3300,15 +3300,15 @@
 				<key>name</key>
 				<string>USD/KWD</string>
 				<key>price</key>
-				<string>0.305300</string>
+				<string>0.302000</string>
 				<key>symbol</key>
 				<string>KWD=X</string>
 				<key>ts</key>
-				<string>1488945681</string>
+				<string>1507266401</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:01:21+0000</string>
+				<string>2017-10-06T05:06:41+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3328,11 +3328,11 @@
 				<key>symbol</key>
 				<string>XCD=X</string>
 				<key>ts</key>
-				<string>1488956400</string>
+				<string>1507269600</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:00:00+0000</string>
+				<string>2017-10-06T06:00:00+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3348,15 +3348,15 @@
 				<key>name</key>
 				<string>COPPER HIGHGRADE</string>
 				<key>price</key>
-				<string>0.381752</string>
+				<string>0.328785</string>
 				<key>symbol</key>
 				<string>XCP=X</string>
 				<key>ts</key>
-				<string>1488957601</string>
+				<string>1507271902</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:01+0000</string>
+				<string>2017-10-06T06:38:22+0000</string>
 				<key>volume</key>
 				<string>20</string>
 			</dict>
@@ -3372,15 +3372,15 @@
 				<key>name</key>
 				<string>USD/CNH</string>
 				<key>price</key>
-				<string>6.903900</string>
+				<string>6.656500</string>
 				<key>symbol</key>
 				<string>CNH=X</string>
 				<key>ts</key>
-				<string>1488957603</string>
+				<string>1507271909</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:03+0000</string>
+				<string>2017-10-06T06:38:29+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3396,15 +3396,15 @@
 				<key>name</key>
 				<string>USD/SDG</string>
 				<key>price</key>
-				<string>6.399700</string>
+				<string>6.659900</string>
 				<key>symbol</key>
 				<string>SDG=X</string>
 				<key>ts</key>
-				<string>1488946108</string>
+				<string>1507262054</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:28+0000</string>
+				<string>2017-10-06T03:54:14+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3420,15 +3420,15 @@
 				<key>name</key>
 				<string>USD/CLF</string>
 				<key>price</key>
-				<string>0.024680</string>
+				<string>0.023320</string>
 				<key>symbol</key>
 				<string>CLF=X</string>
 				<key>ts</key>
-				<string>1488924300</string>
+				<string>1507234800</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-07T22:05:00+0000</string>
+				<string>2017-10-05T20:20:00+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3444,15 +3444,15 @@
 				<key>name</key>
 				<string>USD/KZT</string>
 				<key>price</key>
-				<string>315.750000</string>
+				<string>343.570007</string>
 				<key>symbol</key>
 				<string>KZT=X</string>
 				<key>ts</key>
-				<string>1488957079</string>
+				<string>1507271778</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:11:19+0000</string>
+				<string>2017-10-06T06:36:18+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3468,15 +3468,15 @@
 				<key>name</key>
 				<string>USD/TRY</string>
 				<key>price</key>
-				<string>3.678800</string>
+				<string>3.602200</string>
 				<key>symbol</key>
 				<string>TRY=X</string>
 				<key>ts</key>
-				<string>1488957605</string>
+				<string>1507271910</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:05+0000</string>
+				<string>2017-10-06T06:38:30+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3492,15 +3492,15 @@
 				<key>name</key>
 				<string>USD/FJD</string>
 				<key>price</key>
-				<string>2.081800</string>
+				<string>2.040000</string>
 				<key>symbol</key>
 				<string>FJD=X</string>
 				<key>ts</key>
-				<string>1488838484</string>
+				<string>1507230642</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-06T22:14:44+0000</string>
+				<string>2017-10-05T19:10:42+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3516,15 +3516,15 @@
 				<key>name</key>
 				<string>USD/NZD</string>
 				<key>price</key>
-				<string>1.432900</string>
+				<string>1.409100</string>
 				<key>symbol</key>
 				<string>NZD=X</string>
 				<key>ts</key>
-				<string>1488957600</string>
+				<string>1507271879</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:00+0000</string>
+				<string>2017-10-06T06:37:59+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3540,15 +3540,15 @@
 				<key>name</key>
 				<string>USD/BAM</string>
 				<key>price</key>
-				<string>1.853300</string>
+				<string>1.675000</string>
 				<key>symbol</key>
 				<string>BAM=X</string>
 				<key>ts</key>
-				<string>1488957600</string>
+				<string>1507271700</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:00+0000</string>
+				<string>2017-10-06T06:35:00+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3564,15 +3564,15 @@
 				<key>name</key>
 				<string>USD/BTN</string>
 				<key>price</key>
-				<string>66.675003</string>
+				<string>64.974998</string>
 				<key>symbol</key>
 				<string>BTN=X</string>
 				<key>ts</key>
-				<string>1488942018</string>
+				<string>1507262993</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T03:00:18+0000</string>
+				<string>2017-10-06T04:09:53+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3588,15 +3588,15 @@
 				<key>name</key>
 				<string>USD/STD</string>
 				<key>price</key>
-				<string>23187.500000</string>
+				<string>20954.400391</string>
 				<key>symbol</key>
 				<string>STD=X</string>
 				<key>ts</key>
-				<string>1488957605</string>
+				<string>1507271909</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:05+0000</string>
+				<string>2017-10-06T06:38:29+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3612,15 +3612,15 @@
 				<key>name</key>
 				<string>USD/VUV</string>
 				<key>price</key>
-				<string>107.000000</string>
+				<string>104.739998</string>
 				<key>symbol</key>
 				<string>VUV=X</string>
 				<key>ts</key>
-				<string>1488946147</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:09:07+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3636,15 +3636,15 @@
 				<key>name</key>
 				<string>USD/MVR</string>
 				<key>price</key>
-				<string>15.500000</string>
+				<string>15.520000</string>
 				<key>symbol</key>
 				<string>MVR=X</string>
 				<key>ts</key>
-				<string>1488946107</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:27+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3660,15 +3660,15 @@
 				<key>name</key>
 				<string>USD/AOA</string>
 				<key>price</key>
-				<string>165.082993</string>
+				<string>165.095993</string>
 				<key>symbol</key>
 				<string>AOA=X</string>
 				<key>ts</key>
-				<string>1488841218</string>
+				<string>1507245001</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-06T23:00:18+0000</string>
+				<string>2017-10-05T23:10:01+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3684,15 +3684,15 @@
 				<key>name</key>
 				<string>USD/EGP</string>
 				<key>price</key>
-				<string>17.400000</string>
+				<string>17.610001</string>
 				<key>symbol</key>
 				<string>EGP=X</string>
 				<key>ts</key>
-				<string>1488910704</string>
+				<string>1507230027</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-07T18:18:24+0000</string>
+				<string>2017-10-05T19:00:27+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3708,15 +3708,15 @@
 				<key>name</key>
 				<string>USD/QAR</string>
 				<key>price</key>
-				<string>3.640800</string>
+				<string>3.706100</string>
 				<key>symbol</key>
 				<string>QAR=X</string>
 				<key>ts</key>
-				<string>1488955953</string>
+				<string>1507262056</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T06:52:33+0000</string>
+				<string>2017-10-06T03:54:16+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3736,11 +3736,11 @@
 				<key>symbol</key>
 				<string>OMR=X</string>
 				<key>ts</key>
-				<string>1488957074</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:11:14+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3756,15 +3756,15 @@
 				<key>name</key>
 				<string>USD/CVE</string>
 				<key>price</key>
-				<string>104.349998</string>
+				<string>94.300003</string>
 				<key>symbol</key>
 				<string>CVE=X</string>
 				<key>ts</key>
-				<string>1488957605</string>
+				<string>1507271909</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:05+0000</string>
+				<string>2017-10-06T06:38:29+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3780,15 +3780,15 @@
 				<key>name</key>
 				<string>USD/KGS</string>
 				<key>price</key>
-				<string>69.165001</string>
+				<string>68.553001</string>
 				<key>symbol</key>
 				<string>KGS=X</string>
 				<key>ts</key>
-				<string>1488880824</string>
+				<string>1507197625</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-07T10:00:24+0000</string>
+				<string>2017-10-05T10:00:25+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3804,15 +3804,15 @@
 				<key>name</key>
 				<string>USD/MXN</string>
 				<key>price</key>
-				<string>19.462200</string>
+				<string>18.512600</string>
 				<key>symbol</key>
 				<string>MXN=X</string>
 				<key>ts</key>
-				<string>1488957605</string>
+				<string>1507271909</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:05+0000</string>
+				<string>2017-10-06T06:38:29+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3828,15 +3828,15 @@
 				<key>name</key>
 				<string>USD/MYR</string>
 				<key>price</key>
-				<string>4.450000</string>
+				<string>4.236500</string>
 				<key>symbol</key>
 				<string>MYR=X</string>
 				<key>ts</key>
-				<string>1488956538</string>
+				<string>1507271360</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:02:18+0000</string>
+				<string>2017-10-06T06:29:20+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3852,15 +3852,15 @@
 				<key>name</key>
 				<string>USD/GYD</string>
 				<key>price</key>
-				<string>204.490005</string>
+				<string>203.610001</string>
 				<key>symbol</key>
 				<string>GYD=X</string>
 				<key>ts</key>
-				<string>1488946107</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:27+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3876,15 +3876,15 @@
 				<key>name</key>
 				<string>USD/SZL</string>
 				<key>price</key>
-				<string>12.940000</string>
+				<string>13.698000</string>
 				<key>symbol</key>
 				<string>SZL=X</string>
 				<key>ts</key>
-				<string>1488954954</string>
+				<string>1507271909</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T06:35:54+0000</string>
+				<string>2017-10-06T06:38:29+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3900,15 +3900,15 @@
 				<key>name</key>
 				<string>USD/YER</string>
 				<key>price</key>
-				<string>250.199997</string>
+				<string>249.949997</string>
 				<key>symbol</key>
 				<string>YER=X</string>
 				<key>ts</key>
-				<string>1488951199</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T05:33:19+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3924,15 +3924,15 @@
 				<key>name</key>
 				<string>USD/SAR</string>
 				<key>price</key>
-				<string>3.748600</string>
+				<string>3.749900</string>
 				<key>symbol</key>
 				<string>SAR=X</string>
 				<key>ts</key>
-				<string>1488957277</string>
+				<string>1507266512</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:14:37+0000</string>
+				<string>2017-10-06T05:08:32+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3948,15 +3948,15 @@
 				<key>name</key>
 				<string>USD/UYU</string>
 				<key>price</key>
-				<string>28.299999</string>
+				<string>29.150000</string>
 				<key>symbol</key>
 				<string>UYU=X</string>
 				<key>ts</key>
-				<string>1488946107</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:27+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3972,15 +3972,15 @@
 				<key>name</key>
 				<string>USD/GBP</string>
 				<key>price</key>
-				<string>0.819380</string>
+				<string>0.764700</string>
 				<key>symbol</key>
 				<string>GBP=X</string>
 				<key>ts</key>
-				<string>1488957600</string>
+				<string>1507271879</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:00+0000</string>
+				<string>2017-10-06T06:37:59+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -3996,15 +3996,15 @@
 				<key>name</key>
 				<string>USD/UZS</string>
 				<key>price</key>
-				<string>3445.000000</string>
+				<string>8050.000000</string>
 				<key>symbol</key>
 				<string>UZS=X</string>
 				<key>ts</key>
-				<string>1488838470</string>
+				<string>1507230640</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-06T22:14:30+0000</string>
+				<string>2017-10-05T19:10:40+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -4020,15 +4020,15 @@
 				<key>name</key>
 				<string>USD/GMD</string>
 				<key>price</key>
-				<string>43.770000</string>
+				<string>44.889999</string>
 				<key>symbol</key>
 				<string>GMD=X</string>
 				<key>ts</key>
-				<string>1488910727</string>
+				<string>1507230058</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-07T18:18:47+0000</string>
+				<string>2017-10-05T19:00:58+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -4044,15 +4044,15 @@
 				<key>name</key>
 				<string>USD/AWG</string>
 				<key>price</key>
-				<string>1.790000</string>
+				<string>1.780000</string>
 				<key>symbol</key>
 				<string>AWG=X</string>
 				<key>ts</key>
-				<string>1488928409</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-07T23:13:29+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -4068,15 +4068,15 @@
 				<key>name</key>
 				<string>USD/MNT</string>
 				<key>price</key>
-				<string>2463.000000</string>
+				<string>2456.000000</string>
 				<key>symbol</key>
 				<string>MNT=X</string>
 				<key>ts</key>
-				<string>1488946108</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:28+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -4092,15 +4092,15 @@
 				<key>name</key>
 				<string>XAU=X</string>
 				<key>price</key>
-				<string>0.000822</string>
+				<string>0.000787</string>
 				<key>symbol</key>
 				<string>XAU=X</string>
 				<key>ts</key>
-				<string>1488957601</string>
+				<string>1507271902</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:20:01+0000</string>
+				<string>2017-10-06T06:38:22+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -4116,15 +4116,15 @@
 				<key>name</key>
 				<string>USD/HKD</string>
 				<key>price</key>
-				<string>7.766590</string>
+				<string>7.806580</string>
 				<key>symbol</key>
 				<string>HKD=X</string>
 				<key>ts</key>
-				<string>1488957585</string>
+				<string>1507271905</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T07:19:45+0000</string>
+				<string>2017-10-06T06:38:25+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -4140,15 +4140,15 @@
 				<key>name</key>
 				<string>USD/ARS</string>
 				<key>price</key>
-				<string>15.531000</string>
+				<string>17.389000</string>
 				<key>symbol</key>
 				<string>ARS=X</string>
 				<key>ts</key>
-				<string>1488946108</string>
+				<string>1507262055</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-08T04:08:28+0000</string>
+				<string>2017-10-06T03:54:15+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -4164,15 +4164,15 @@
 				<key>name</key>
 				<string>USD/HUX</string>
 				<key>price</key>
-				<string>293.040009</string>
+				<string>264.390015</string>
 				<key>symbol</key>
 				<string>HUX=X</string>
 				<key>ts</key>
-				<string>1488883512</string>
+				<string>1507199414</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-07T10:45:12+0000</string>
+				<string>2017-10-05T10:30:14+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -4188,15 +4188,15 @@
 				<key>name</key>
 				<string>USD/BRX</string>
 				<key>price</key>
-				<string>3.117900</string>
+				<string>3.134100</string>
 				<key>symbol</key>
 				<string>BRX=X</string>
 				<key>ts</key>
-				<string>1488903307</string>
+				<string>1507220105</string>
 				<key>type</key>
 				<string>currency</string>
 				<key>utctime</key>
-				<string>2017-03-07T16:15:07+0000</string>
+				<string>2017-10-05T16:15:05+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>
@@ -4221,6 +4221,30 @@
 				<string>currency</string>
 				<key>utctime</key>
 				<string>2017-02-24T19:27:22+0000</string>
+				<key>volume</key>
+				<string>0</string>
+			</dict>
+		</dict>
+	</dict>
+	<dict>
+		<key>resource</key>
+		<dict>
+			<key>classname</key>
+			<string>Quote</string>
+			<key>fields</key>
+			<dict>
+				<key>name</key>
+				<string>USD/BTC</string>
+				<key>price</key>
+				<string>0.00022800</string>
+				<key>symbol</key>
+				<string>BTC=X</string>
+				<key>ts</key>
+				<string>1507271902</string>
+				<key>type</key>
+				<string>currency</string>
+				<key>utctime</key>
+				<string>2017-10-06T06:38:22+0000</string>
 				<key>volume</key>
 				<string>0</string>
 			</dict>

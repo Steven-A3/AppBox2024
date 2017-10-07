@@ -857,9 +857,9 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 	return currencyCode;
 }
 
-- (NSNumberFormatter *)currencyFormatter {
+- (A3NumberFormatter *)currencyFormatter {
 	if (!_currencyFormatter) {
-		_currencyFormatter = [NSNumberFormatter new];
+		_currencyFormatter = [A3NumberFormatter new];
 		[_currencyFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 		[_currencyFormatter setCurrencyCode:self.currencyCode];
 	}

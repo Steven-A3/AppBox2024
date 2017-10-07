@@ -34,6 +34,7 @@
 #import "Reachability.h"
 #import "A3InstructionViewController.h"
 #import "UIColor+A3Addition.h"
+#import "A3NumberFormatter.h"
 
 NSString *const A3CurrencyPickerSelectedIndexColumnOne = @"A3CurrencyPickerSelectedIndexColumnOne";
 NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelectedIndexColumnTwo";
@@ -354,7 +355,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 }
 
 - (NSString *)targetValueString {
-	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+	A3NumberFormatter *nf = [[A3NumberFormatter alloc] init];
 	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
 	[nf setCurrencyCode:_targetCurrencyCode];
 	if (IS_IPHONE) {
@@ -368,7 +369,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 }
 
 - (NSString *)sourceValueString {
-	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+	A3NumberFormatter *nf = [[A3NumberFormatter alloc] init];
 	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
 	[nf setCurrencyCode:_sourceCurrencyCode];
 	if (IS_IPHONE) {
@@ -378,7 +379,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 }
 
 - (NSNumberFormatter *)currencyFormatterWithCurrencyCode:(NSString *)code {
-	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+	A3NumberFormatter *nf = [[A3NumberFormatter alloc] init];
 	
 	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
 	[nf setCurrencyCode:code];
@@ -421,7 +422,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 - (void)updateSampleCurrencyLabels {
 	float rate = self.conversionRate;
-	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+	A3NumberFormatter *nf = [[A3NumberFormatter alloc] init];
 	[nf setCurrencyCode:_sourceCurrencyCode];
 	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
 	NSArray *titles = @[@5, @10, @25, @50, @100];
