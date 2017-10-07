@@ -44,7 +44,6 @@
 @property (strong, nonatomic) NSArray *searchResultArray;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) UISearchController *searchController;
-@property (nonatomic, strong) UITableViewController *searchResultsTableViewController;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
 
 @property (strong, nonatomic) IBOutlet UIToolbar *bottomToolbar;
@@ -604,7 +603,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ( tableView != self.tableView ) {
+    if (_searchResultArray) {
         return [_searchResultArray count];
     }
     
@@ -620,7 +619,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (tableView != self.tableView) {
+    if (_searchResultArray) {
         return 0;
     }
         
@@ -629,7 +628,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (tableView != self.tableView) {
+    if (_searchResultArray) {
         return 0;
     }
     
@@ -732,11 +731,11 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DaysCounterCalendar *calendarItem;
-    if (tableView == self.tableView && (indexPath.row >= [_itemArray count])) {
+    if (!_searchResultArray && (indexPath.row >= [_itemArray count])) {
         calendarItem = nil;
     }
     else {
-        if (tableView == self.tableView) {
+        if (!_searchResultArray) {
             calendarItem = [_itemArray objectAtIndex:[indexPath row]];
         }
         else {
@@ -911,7 +910,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
     if (IS_IPHONE && IS_LANDSCAPE) {
         return;
     }
-    if ( tableView == self.tableView && (indexPath.row >= [_itemArray count]) ) {
+    if ( !_searchResultArray && (indexPath.row >= [_itemArray count]) ) {
         return;
     }
     
@@ -1066,9 +1065,12 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 
 - (UISearchController *)searchController {
 	if (!_searchController) {
-        _searchController = [[UISearchController alloc] initWithSearchResultsController:self.searchResultsTableViewController];
+        _searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
 		_searchController.delegate = self;
 		_searchController.searchBar.delegate = self;
+        _searchController.searchResultsUpdater = self;
+        _searchController.dimsBackgroundDuringPresentation = NO;
+        [_searchController.searchBar sizeToFit];
 	}
 	return _searchController;
 }
@@ -1105,10 +1107,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     self.searchResultArray = [_itemArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"calendarName contains[cd] %@",searchText]];
-    UITableView *tableView = self.searchResultsTableViewController.tableView;
-    tableView.tableFooterView = [UIView new];
-    [tableView reloadData];
-    tableView.separatorInset = UIEdgeInsetsZero;
+    [self.tableView reloadData];
     self.searchController.searchBar.backgroundColor = self.navigationController.navigationBar.backgroundColor;
 }
 

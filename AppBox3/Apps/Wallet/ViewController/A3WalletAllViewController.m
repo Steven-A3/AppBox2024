@@ -31,7 +31,6 @@
 @property (nonatomic, strong) UIImageView *sortArrowImgView;
 
 @property (nonatomic, strong) UISearchController *searchController;
-@property (nonatomic, strong) UITableViewController *searchResultsTableViewController;
 @property (nonatomic, strong) NSArray *filteredResults;
 @property (nonatomic, weak) UISegmentedControl *segmentedControlRef;
 @property (nonatomic, weak) A3WalletAllTopView *topViewRef;
@@ -66,11 +65,8 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
     
 	self.navigationItem.title = NSLocalizedString(@"All Items", @"All Items");
 	self.showCategoryInDetailViewController = YES;
-    self.automaticallyAdjustsScrollViewInsets = NO;
+
     self.definesPresentationContext = YES;
-    if SYSTEM_VERSION_LESS_THAN(@"11") {
-        self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
-    }
 
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidShow) name:A3NotificationMainMenuDidShow object:nil];
@@ -88,8 +84,6 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 	if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_Wallet]) {
 		[_searchController setActive:NO];
 		_searchController.delegate = nil;
-        _searchResultsTableViewController.tableView.delegate = nil;
-        _searchResultsTableViewController.tableView.dataSource = nil;
 		_searchController = nil;
 	} else {
 		if ([[A3AppDelegate instance] shouldProtectScreen] && [_searchController isActive]) {
@@ -162,19 +156,16 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 
     FNLOG(@"%f", self.tableView.contentOffset.y);
     
-    if (!_searchController.active && !_dataEmpty && self.tableView.contentOffset.y == -64) {
+    if (!_searchController.active && !_dataEmpty && self.tableView.contentOffset.y < -63.5) {
         double delayInSeconds = 0.3;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             [UIView animateWithDuration:0.5
                              animations:^{
-                                 self.tableView.contentOffset = CGPointMake(0, -20);
+                                 self.tableView.contentOffset = CGPointMake(0, -8);
                              }
                              completion:nil];
         });
-    }
-    if ([_searchController isActive]) {
-        FNLOGINSETS(_searchResultsTableViewController.tableView.contentInset);
     }
     _didPassViewDidAppear = YES;
 }
@@ -656,32 +647,13 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
     });
 }
 
-- (UITableViewController *)searchResultsTableViewController {
-    if (!_searchResultsTableViewController) {
-        _searchResultsTableViewController = [UITableViewController new];
-        UITableView *tableView = _searchResultsTableViewController.tableView;
-        tableView.delegate = self;
-        tableView.dataSource = self;
-        tableView.showsVerticalScrollIndicator = NO;
-        tableView.rowHeight = 48;
-        if ([tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
-            tableView.cellLayoutMarginsFollowReadableWidth = NO;
-        }
-        if ([tableView respondsToSelector:@selector(layoutMargins)]) {
-            tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
-        }
-
-        [tableView registerClass:[A3WalletListPhotoCell class] forCellReuseIdentifier:A3WalletPhotoCellID];
-    }
-    return _searchResultsTableViewController;
-}
-
 - (UISearchController *)searchController {
 	if (!_searchController) {
-		_searchController = [[UISearchController alloc] initWithSearchResultsController:self.searchResultsTableViewController];
+		_searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
         _searchController.searchResultsUpdater = self;
         _searchController.delegate = self;
 		_searchController.searchBar.delegate = self;
+        _searchController.dimsBackgroundDuringPresentation = NO;
         [_searchController.searchBar sizeToFit];
 	}
 	return _searchController;
@@ -700,12 +672,6 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
     [self filterContentForSearchText:searchController.searchBar.text];
-    
-    if (SYSTEM_VERSION_LESS_THAN(@"10")) {
-        [_searchResultsTableViewController.tableView.superview addSubview:self.searchController.searchBar];
-        
-        FNLOGINSETS(_searchResultsTableViewController.tableView.contentInset);
-    }
 }
 
 - (void)filterContentForSearchText:(NSString*)searchText
@@ -731,7 +697,7 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 	} else {
 		_filteredResults = nil;
 	}
-	[_searchResultsTableViewController.tableView reloadData];
+	[self.tableView reloadData];
 }
 
 #pragma mark - SearchBarDelegate
@@ -770,7 +736,7 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSArray *itemContainingArray;
-    if (tableView == self.searchResultsTableViewController.tableView) {
+    if (_filteredResults) {
         itemContainingArray = _filteredResults;
     } else {
         if (indexPath.row == 0) {
@@ -779,12 +745,8 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
         itemContainingArray = self.items;
     }
     WalletItem *item = itemContainingArray[indexPath.row];
-    if (self.searchController.isActive) {
-        _previousContentOffset = self.searchResultsTableViewController.tableView.contentOffset.y;
-    } else {
-        _previousContentOffset = self.tableView.contentOffset.y;
-    }
-    
+    _previousContentOffset = self.tableView.contentOffset.y;
+
     [super tableView:tableView didSelectRowAtIndexPath:indexPath withItem:item];
     self.searchString = _searchController.searchBar.text;
     FNLOG(@"%@", _searchController.searchBar.text);
@@ -796,7 +758,7 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ((tableView == self.tableView) && ([self.items objectAtIndex:indexPath.row] == self.topItem)) {
+    if (!_filteredResults && ([self.items objectAtIndex:indexPath.row] == self.topItem)) {
         return 104;
     }
     else {
@@ -807,7 +769,7 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	FNLOG(@"%ld", (long)[self.items count]);
-	if (tableView == self.searchResultsTableViewController.tableView) {
+	if (_filteredResults) {
 		return [_filteredResults count];
 	}
     else {
@@ -819,7 +781,7 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 {
 	UITableViewCell *cell = nil;
 	NSArray *itemContainArray;
-	if (tableView == self.searchResultsTableViewController.tableView) {
+	if (_filteredResults) {
 		itemContainArray = _filteredResults;
 	}
 	else {
@@ -887,7 +849,7 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
 		WalletItem *item;
-		if ([_filteredResults count]) {
+		if (_filteredResults) {
 			item = _filteredResults[indexPath.row];
 
 			NSMutableArray *newArray = [_filteredResults mutableCopy];
@@ -942,37 +904,25 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 #pragma mark - UISearchControllerDelegate
 
 - (void)willPresentSearchController:(UISearchController *)searchController {
-    if SYSTEM_VERSION_LESS_THAN(@"11") {
-        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
-    }
+    FNLOGINSETS(self.tableView.contentInset);
 }
 
 - (void)didPresentSearchController:(UISearchController *)searchController {
-    if SYSTEM_VERSION_LESS_THAN(@"11") {
-        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
-    } else {
-        self.tableView.contentInset = UIEdgeInsetsMake(50, 0, 0, 0);
-        _searchResultsTableViewController.tableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0);
-    }
-    
-    if (_previousContentOffset != CGFLOAT_MAX) {
-        _searchResultsTableViewController.tableView.contentOffset = CGPointMake(0, _previousContentOffset);
-        _previousContentOffset = CGFLOAT_MAX;
-    }
-    FNLOG(@"%f", _searchResultsTableViewController.tableView.contentOffset.y);
-
-    if (SYSTEM_VERSION_LESS_THAN(@"10")) {
-        [[UIApplication sharedApplication] setStatusBarHidden:YES];
-        [self.navigationController setNavigationBarHidden:YES];
-        [self.tabBarController.view addSubview:self.searchController.searchBar];
-        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-        _searchResultsTableViewController.tableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0);
+    if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11") {
+        CGRect frame = searchController.searchBar.frame;
+        frame.origin.y = 20;
+        searchController.searchBar.frame = frame;
+        FNLOGRECT(searchController.searchBar.frame);
         
-        double delayInSeconds = 0.1;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self.searchController.searchBar becomeFirstResponder];
-        });
+        UIEdgeInsets contentInset = self.tableView.contentInset;
+        FNLOGINSETS(contentInset);
+        contentInset.top -= 6;
+        self.tableView.contentInset = contentInset;
+    }
+
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10") && SYSTEM_VERSION_LESS_THAN(@"11")) {
+        FNLOGINSETS(self.tableView.contentInset);
+        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
     }
 }
 
@@ -981,22 +931,22 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
         [[UIApplication sharedApplication] setStatusBarHidden:NO];
         [self.navigationController setNavigationBarHidden:NO];
     }
-    if SYSTEM_VERSION_LESS_THAN(@"11") {
-        self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
-    } else {
-        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11") {
+        UIEdgeInsets contentInset = self.tableView.contentInset;
+        FNLOGINSETS(contentInset);
+        contentInset.top += 6;
+        self.tableView.contentInset = contentInset;
     }
-    self.tableView.contentOffset = CGPointMake(0, -20);
 }
 
 - (void)didDismissSearchController:(UISearchController *)searchController {
-    FNLOGINSETS(self.tableView.contentInset);
+    self.tableView.contentOffset = CGPointMake(0, -64);
     _searchController = nil;
     self.tableView.tableHeaderView = self.searchController.searchBar;
+    FNLOGINSETS(self.tableView.contentInset);
 }
 
 - (void)presentSearchController:(UISearchController *)searchController {
-    FNLOGINSETS(self.tableView.contentInset);
 }
 
 @end

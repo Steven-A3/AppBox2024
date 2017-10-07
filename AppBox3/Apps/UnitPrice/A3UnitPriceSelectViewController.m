@@ -239,6 +239,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 		_searchController.delegate = self;
 		_searchController.searchBar.delegate = self;
         _searchController.searchResultsUpdater = self;
+        _searchController.dimsBackgroundDuringPresentation = NO;
 		[_searchController.searchBar sizeToFit];
 	}
 	return _searchController;

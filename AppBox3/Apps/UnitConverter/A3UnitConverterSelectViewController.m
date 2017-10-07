@@ -30,7 +30,6 @@
 @property (nonatomic, strong) UIBarButtonItem *plusBarButtonItem;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) UISearchController *searchController;
-@property (nonatomic, strong) UITableViewController *searchResultsTableViewController;
 @property (nonatomic, strong) NSArray *filteredResults;
 @property (nonatomic, strong) NSMutableArray *sectionsArray;
 @property (nonatomic, strong) NSMutableArray *allData;
@@ -209,30 +208,13 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
     return _plusBarButtonItem;
 }
 
-- (UITableViewController *)searchResultsTableViewController {
-	if (!_searchResultsTableViewController) {
-		_searchResultsTableViewController = [UITableViewController new];
-		UITableView *tableView = _searchResultsTableViewController.tableView;
-		tableView.delegate = self;
-		tableView.dataSource = self;
-		tableView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.2];
-		tableView.showsVerticalScrollIndicator = NO;
-		if ([tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
-			tableView.cellLayoutMarginsFollowReadableWidth = NO;
-		}
-		if ([tableView respondsToSelector:@selector(layoutMargins)]) {
-			tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
-		}
-	}
-	return _searchResultsTableViewController;
-}
-
 - (UISearchController *)searchController {
 	if (!_searchController) {
-		_searchController = [[UISearchController alloc] initWithSearchResultsController:self.searchResultsTableViewController];
+		_searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
 		_searchController.delegate = self;
 		_searchController.searchResultsUpdater = self;
 		_searchController.searchBar.delegate = self;
+        _searchController.dimsBackgroundDuringPresentation = NO;
 		[_searchController.searchBar sizeToFit];
 	}
 	return _searchController;
@@ -293,7 +275,7 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (void) setEditing:(BOOL)editing animated:(BOOL)animated
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
     [super setEditing:editing animated:animated];
 
@@ -387,7 +369,7 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 	} else {
 		_filteredResults = nil;
 	}
-	[self.searchResultsTableViewController.tableView reloadData];
+	[self.tableView reloadData];
 }
 
 - (void)updateEditedDataToDelegate
@@ -441,7 +423,7 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 {
     // Return the number of rows in the section.
     
-    if (tableView == self.searchResultsTableViewController.tableView) {
+    if (_filteredResults) {
 		return [_filteredResults count];
 	}
     else {
@@ -469,7 +451,7 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 	BOOL checkedItem = NO;
 	NSUInteger unitID;
 	NSString *unitName;
-	if (tableView == self.searchResultsTableViewController.tableView) {
+	if (_filteredResults) {
 		NSDictionary *data = self.filteredResults[indexPath.row];
 		unitID = [data[ID_KEY] unsignedIntegerValue];
 		unitName = data[NAME_KEY];
@@ -561,7 +543,7 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 	NSUInteger selectedUnitID;
-	if (tableView == self.searchResultsTableViewController.tableView) {
+	if (_filteredResults) {
 		selectedUnitID = [self.filteredResults[indexPath.row][ID_KEY] unsignedIntegerValue];
 	} else {
 		if (isFavoriteMode) {
