@@ -40,7 +40,7 @@
 @interface A3UnitConverterConvertTableViewController () <UITextFieldDelegate,
 		A3UnitSelectViewControllerDelegate, A3UnitConverterFavoriteEditDelegate, A3UnitConverterMenuDelegate,
 		UIPopoverControllerDelegate, UIActivityItemSource, FMMoveTableViewDelegate, FMMoveTableViewDataSource,
-		A3InstructionViewControllerDelegate, A3ViewControllerProtocol, GADNativeExpressAdViewDelegate>
+		A3InstructionViewControllerDelegate, A3ViewControllerProtocol>
 
 @property (nonatomic, strong) FMMoveTableView *fmMoveTableView;
 @property (nonatomic, strong) NSMutableSet *swipedCells;
@@ -64,7 +64,6 @@
 @property (nonatomic, weak) UITextField *editingTextField;
 @property (nonatomic, strong) UIView *keyboardAccessoryView;
 @property (nonatomic, copy) UIColor *textColorBeforeEditing;
-@property (nonatomic, strong) GADNativeExpressAdView *admobNativeExpressAdView;
 
 @end
 
@@ -168,9 +167,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 
-    [self setupBannerViewForAdUnitID:AdMobAdUnitIDUnitConverter
-                            keywords:@[@"Shopping"]
-                              gender:kGADGenderMale adSize:IS_IPHONE ? kGADAdSizeSmartBannerPortrait : kGADAdSizeLeaderboard];
+    [self setupBannerViewForAdUnitID:AdMobAdUnitIDUnitConverter keywords:@[@"Shopping"] gender:kGADGenderMale adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
@@ -490,7 +487,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
         _convertItems = [NSMutableArray arrayWithArray:[self.dataManager unitConvertItemsForCategoryID:_categoryID]];
         
 		[self addEqualAndPlus];
-		if (_adItem) {
+		if ([self bannerView]) {
             NSInteger position = [_convertItems count] > 3 ? 4 : [_convertItems count];
             [_convertItems insertObject:_adItem atIndex:position];
 		}
@@ -2268,49 +2265,14 @@ const CGFloat kUnitCellVisibleWidth = 100.0;
 
 #pragma mark - AdMob Did Receive Ad
 
-- (GADNativeExpressAdView *)admobNativeExpressAdView {
-	if (!_admobNativeExpressAdView) {
-		CGSize adSize = self.view.bounds.size;
-		adSize.height = 100;
-		_admobNativeExpressAdView = [[GADNativeExpressAdView alloc] initWithAdSize:GADAdSizeFromCGSize(adSize)];
-		_admobNativeExpressAdView.adUnitID = @"ca-app-pub-0532362805885914/9363365741";
-		_admobNativeExpressAdView.delegate = self;
-		_admobNativeExpressAdView.rootViewController = self;
-	}
-	return _admobNativeExpressAdView;
-}
-
-- (void)loadRequestAdmobNativeExpressAds {
-	if (![[A3AppDelegate instance] shouldPresentAd]) return;
-
-	GADRequest *gadRequest = [GADRequest request];
-	gadRequest.keywords = @[@"finance", @"money", @"shopping", @"travel"];
-	[self.admobNativeExpressAdView loadRequest:gadRequest];
-}
-
-- (void)nativeExpressAdViewDidReceiveAd:(GADNativeExpressAdView *)nativeExpressAdView {
-	if (_adItem && [_convertItems containsObject:_adItem]) {
-		return;
-	}
-    NSInteger position = [_convertItems count] > 3 ? 4 : [_convertItems count];
-    [_convertItems insertObject:[self adItem] atIndex:position];
-    
-	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:position inSection:0];
-	[_fmMoveTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-}
-
-- (void)nativeExpressAdView:(GADNativeExpressAdView *)nativeExpressAdView didFailToReceiveAdWithError:(GADRequestError *)error {
-    FNLOG(@"%@", error.localizedDescription);
-}
-
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
-    if (_adItem && [_convertItems containsObject:_adItem]) {
+    FNLOGRECT(bannerView.frame);
+    if (_adItem) {
+        [_fmMoveTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
         return;
     }
-    NSInteger position = [_convertItems count] > 3 ? 4 : [_convertItems count];
-    [_convertItems insertObject:[self adItem] atIndex:position];
-    
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:position inSection:0];
+    [_convertItems insertObject:[self adItem] atIndex:2];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:2 inSection:0];
     [_fmMoveTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
