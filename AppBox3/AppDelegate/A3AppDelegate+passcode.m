@@ -248,6 +248,8 @@
 }
 
 - (void)applicationDidBecomeActive_passcodeAfterLaunch:(BOOL)isAfterLaunch {
+    FNLOG();
+    
 	if (self.isSettingsEvaluatingTouchID) {
 		self.isSettingsEvaluatingTouchID = NO;
 		return;
@@ -353,11 +355,14 @@
 }
 
 - (void)applicationWillEnterForeground_passcode {
+    FNLOG();
 }
 
 - (void)applicationWillResignActive_passcode {
+    FNLOG();
+    
 	UIViewController *visibleViewController = [self.currentMainNavigationController visibleViewController];
-    if ([visibleViewController isKindOfClass:[A3PasswordViewController class]]) {
+    if ([visibleViewController isKindOfClass:[A3PasscodeCommonViewController class]]) {
         [visibleViewController dismissViewControllerAnimated:NO completion:^{
             
         }];

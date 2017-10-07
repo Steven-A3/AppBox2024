@@ -8,8 +8,25 @@
 
 #import "A3PasscodeCommonViewController.h"
 #import "A3AppDelegate.h"
+#import "A3UserDefaults.h"
 
 @implementation A3PasscodeCommonViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
+}
+
+- (void)applicationWillEnterForeground {
+    if ([[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting]) {
+        [self.navigationController setNavigationBarHidden:YES];
+    }
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
+}
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
 	if (IS_IPHONE) {
