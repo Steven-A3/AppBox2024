@@ -487,7 +487,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
         _convertItems = [NSMutableArray arrayWithArray:[self.dataManager unitConvertItemsForCategoryID:_categoryID]];
         
 		[self addEqualAndPlus];
-		if ([self bannerView]) {
+		if (_adItem) {
             NSInteger position = [_convertItems count] > 3 ? 4 : [_convertItems count];
             [_convertItems insertObject:_adItem atIndex:position];
 		}
@@ -2266,13 +2266,13 @@ const CGFloat kUnitCellVisibleWidth = 100.0;
 #pragma mark - AdMob Did Receive Ad
 
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
-    FNLOGRECT(bannerView.frame);
-    if (_adItem) {
-        [_fmMoveTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    if (_adItem && [_convertItems containsObject:_adItem]) {
         return;
     }
-    [_convertItems insertObject:[self adItem] atIndex:2];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:2 inSection:0];
+    NSInteger position = [_convertItems count] > 3 ? 4 : [_convertItems count];
+    [_convertItems insertObject:[self adItem] atIndex:position];
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:position inSection:0];
     [_fmMoveTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
