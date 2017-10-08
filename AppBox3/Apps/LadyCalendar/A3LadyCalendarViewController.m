@@ -480,7 +480,11 @@ A3CalendarViewDelegate>
 	[self.navigationController.navigationBar addSubview:_calendarHeaderView];
 
 	UIEdgeInsets insets = _collectionView.contentInset;
-	_collectionView.contentInset = UIEdgeInsetsMake(_calendarHeaderView.frame.size.height+20+navigationBarHeight,insets.left,insets.bottom,insets.right);
+    CGFloat offset = 0;
+    if SYSTEM_VERSION_LESS_THAN(@"11") {
+        offset = 64;
+    }
+	_collectionView.contentInset = UIEdgeInsetsMake(_calendarHeaderView.frame.size.height + offset,insets.left,insets.bottom,insets.right);
 }
 
 - (void)updateCurrentMonthLabel
