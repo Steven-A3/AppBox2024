@@ -72,6 +72,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
     if SYSTEM_VERSION_LESS_THAN(@"11") {
         self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 44, 0);
     }
+    self.tableView.rowHeight = 62;
     
 	if ([_calendarItem.type integerValue] == CalendarCellType_User) {
 		self.title = [NSString stringWithFormat:@"%@", _calendarItem.name];
@@ -428,7 +429,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    if ( _searchResultArray ) {
+    if ( [self.searchController.searchBar.text length] ) {
         return 1;
     }
     
@@ -438,7 +439,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if ( _searchResultArray )
+    if ( _searchResultArray && [self.searchController.searchBar.text length])
         return [_searchResultArray count];
     
 
@@ -487,7 +488,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if ( _searchResultArray ) {
+    if ( _searchResultArray && [self.searchController.searchBar.text length]) {
         return nil;
     }
     
@@ -529,7 +530,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if ( _searchResultArray ) {
+    if ( _searchResultArray && [self.searchController.searchBar.text length]) {
         return 0;
     }
     if (!_itemArray || [_itemArray count] == 0) {
@@ -547,7 +548,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if ( _searchResultArray ) {
+    if ( _searchResultArray && [self.searchController.searchBar.text length]) {
         return 0;
     }
     
@@ -564,7 +565,9 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 {
     // Configure the cell...
     DaysCounterEvent *item = nil;
-    if ( !_searchResultArray ) {
+    if ( _searchResultArray && [self.searchController.searchBar.text length]) {
+        item = [_searchResultArray objectAtIndex:indexPath.row];
+    } else {
         if ( indexPath.section < [_itemArray count] ) {
             NSDictionary *dict = [_itemArray objectAtIndex:indexPath.section];
             NSArray *items = [dict objectForKey:EventKey_Items];
@@ -572,9 +575,6 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
                 item = [items objectAtIndex:indexPath.row];
             }
         }
-    }
-    else {
-        item = [_searchResultArray objectAtIndex:indexPath.row];
     }
 
     
@@ -736,7 +736,9 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
         return;
     }
 
-    self.searchController.active = NO;
+    if ([self.searchController isActive]) {
+        self.searchController.active = NO;
+    }
 
     A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] init];
     viewCtrl.eventItem = item;
@@ -911,7 +913,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 - (void)makeSearchResultArray:(NSString *)searchText {
 	_searchResultArray = nil;
 	self.searchResultArray = [_sourceArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"eventName contains[cd] %@",searchText]];
-//	FNLOG(@"%s %@ : %ld",__FUNCTION__,searchText, (long)[_searchResultArray count]);
+    //	FNLOG(@"%s %@ : %ld",__FUNCTION__,searchText, (long)[_searchResultArray count]);
 }
 
 #pragma mark - action method
@@ -1044,6 +1046,22 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 }
 
 - (void)didPresentSearchController:(UISearchController *)searchController {
+    if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11") {
+        FNLOGRECT(searchController.view.frame);
+        CGRect frame = searchController.searchBar.frame;
+        frame.origin.y = 20;
+        searchController.searchBar.frame = frame;
+        FNLOGRECT(searchController.searchBar.frame);
+
+        UIEdgeInsets contentInset = self.tableView.contentInset;
+        FNLOGINSETS(contentInset);
+        contentInset.top += 49;
+        self.tableView.contentInset = contentInset;
+        
+        CGPoint contentOffset = self.tableView.contentOffset;
+        contentOffset.y = -69;
+        self.tableView.contentOffset = contentOffset;
+    }
     if SYSTEM_VERSION_LESS_THAN(@"11") {
         self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
     }
@@ -1051,10 +1069,14 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 }
 
 - (void)willDismissSearchController:(UISearchController *)searchController {
+    if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11") {
+        UIEdgeInsets contentInset = self.tableView.contentInset;
+        FNLOGINSETS(contentInset);
+        contentInset.top -= 49;
+        self.tableView.contentInset = contentInset;
+    }
     if SYSTEM_VERSION_LESS_THAN(@"11") {
         self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 44, 0);
-    } else {
-        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 44, 0);
     }
     FNLOGINSETS(self.tableView.contentInset);
 }
@@ -1065,6 +1087,10 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 
 - (void)presentSearchController:(UISearchController *)searchController {
 
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    FNLOG(@"%f", scrollView.contentOffset.y);
 }
 
 @end

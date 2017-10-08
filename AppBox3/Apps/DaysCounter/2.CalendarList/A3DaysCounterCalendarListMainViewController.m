@@ -37,7 +37,7 @@
         UINavigationControllerDelegate, UISearchBarDelegate,
 		UISearchControllerDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate,
 		UIActionSheetDelegate, A3InstructionViewControllerDelegate, UIPopoverPresentationControllerDelegate,
-		A3ViewControllerProtocol
+		A3ViewControllerProtocol, UISearchResultsUpdating
 		>
 
 @property (strong, nonatomic) NSArray *itemArray;
@@ -1136,6 +1136,10 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 	self.tableView.contentInset = contentInset;
 	
 	[self.view layoutIfNeeded];
+}
+
+- (void)updateSearchResultsForSearchController:(nonnull UISearchController *)searchController {
+    
 }
 
 @end
