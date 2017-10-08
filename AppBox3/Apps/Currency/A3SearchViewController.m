@@ -281,12 +281,13 @@
 }
 
 - (void)didPresentSearchController:(UISearchController *)searchController {
-    FNLOGRECT(searchController.view.frame);
-    CGRect frame = searchController.searchBar.frame;
-    frame.origin.y = 20;
-    searchController.searchBar.frame = frame;
-    FNLOGRECT(searchController.searchBar.frame);
     if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11") {
+        FNLOGRECT(searchController.view.frame);
+        CGRect frame = searchController.searchBar.frame;
+        frame.origin.y = 20;
+        searchController.searchBar.frame = frame;
+        FNLOGRECT(searchController.searchBar.frame);
+        
         UIEdgeInsets contentInset = self.tableView.contentInset;
         FNLOGINSETS(contentInset);
         contentInset.top -= 6;
