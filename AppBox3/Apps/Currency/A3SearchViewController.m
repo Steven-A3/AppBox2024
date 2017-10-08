@@ -114,6 +114,9 @@
 			[self.navigationController dismissViewControllerAnimated:YES completion:nil];
 		}
 	} else {
+        if ([self.searchController isActive]) {
+            [self.searchController setActive:NO];
+        }
 		if (self.showCancelButton) {
 			[self dismissViewControllerAnimated:YES completion:nil];
 		} else if ([[A3AppDelegate instance] rootViewController_iPad].showRightView) {

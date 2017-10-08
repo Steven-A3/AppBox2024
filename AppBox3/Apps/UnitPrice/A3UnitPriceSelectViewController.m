@@ -22,7 +22,6 @@
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UISearchController *searchController;
-@property (nonatomic, strong) UITableViewController *searchResultTableViewController;
 @property (nonatomic, strong) NSArray *filteredResults;
 @property (nonatomic, strong) NSMutableArray *allData;
 @property (nonatomic, strong) NSMutableArray *favorites;
@@ -91,6 +90,18 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
+- (void)scrollViewDidChangeAdjustedContentInset:(UIScrollView *)scrollView {
+    FNLOGINSETS(scrollView.contentInset);
+    if (@available(iOS 11, *)) {
+        FNLOGINSETS(scrollView.adjustedContentInset);
+    }
+    if (![self.searchController isActive]) {
+        scrollView.contentInset = UIEdgeInsetsMake(-44, 0, 0, 0 );
+        FNLOG(@"%f", scrollView.contentOffset.y);
+        scrollView.contentOffset = CGPointMake(0, 0);
+    }
+}
+
 - (void)applicationDidEnterBackground {
 	if ([[A3AppDelegate instance] shouldProtectScreen]) {
 		[self.searchController.searchBar resignFirstResponder];
@@ -156,6 +167,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self.navigationController setNavigationBarHidden:NO animated:NO];
 	}
+    FNLOGINSETS(self.tableView.contentInset);
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -216,26 +228,9 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     return _plusItem;
 }
 
-- (UITableViewController *)searchResultTableViewController {
-	if (!_searchResultTableViewController) {
-		_searchResultTableViewController = [[UITableViewController alloc] init];
-		_searchResultTableViewController.tableView.dataSource = self;
-		_searchResultTableViewController.tableView.delegate = self;
-		_searchResultTableViewController.tableView.showsVerticalScrollIndicator = NO;
-
-		if ([_searchResultTableViewController.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
-			_searchResultTableViewController.tableView.cellLayoutMarginsFollowReadableWidth = NO;
-		}
-		if ([_searchResultTableViewController.tableView respondsToSelector:@selector(layoutMargins)]) {
-			_searchResultTableViewController.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
-		}
-	}
-	return _searchResultTableViewController;
-}
-
 - (UISearchController *)searchController {
 	if (!_searchController) {
-		_searchController = [[UISearchController alloc] initWithSearchResultsController:self.searchResultTableViewController];
+		_searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
 		_searchController.delegate = self;
 		_searchController.searchBar.delegate = self;
         _searchController.searchResultsUpdater = self;
@@ -260,6 +255,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     }
     else {
 		self.tableView.tableHeaderView = self.searchController.searchBar;
+        _tableView.contentOffset = CGPointMake(0, 0);
 
         [_tableView reloadData];
         
@@ -267,7 +263,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     }
 }
 
-- (void) setEditing:(BOOL)editing animated:(BOOL)animated
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
     [super setEditing:editing animated:animated];
     
@@ -380,7 +376,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 	} else {
 		_filteredResults = nil;
 	}
-	[self.searchResultTableViewController.tableView reloadData];
+	[self.tableView reloadData];
 }
 
 - (void)updateEditedDataToDelegate
@@ -545,6 +541,9 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if (!_isFavoriteMode && !_filteredResults && ([self.allData objectAtIndex:indexPath.row] == self.noneItem)) {
+        if ([self.searchController isActive]) {
+            [self.searchController setActive:NO];
+        }
 		[self callDelegate:NSNotFound];
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
@@ -564,6 +563,9 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 			}
 		}
 
+        if ([self.searchController isActive]) {
+            [self.searchController setActive:NO];
+        }
 		if (_currentUnitID == selectedUnitID) {
 			[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
@@ -621,9 +623,27 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 }
 
 - (void)didPresentSearchController:(UISearchController *)searchController {
+    if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11") {
+        FNLOGRECT(searchController.view.frame);
+        CGRect frame = searchController.searchBar.frame;
+        frame.origin.y = 20;
+        searchController.searchBar.frame = frame;
+        FNLOGRECT(searchController.searchBar.frame);
+        
+        UIEdgeInsets contentInset = self.tableView.contentInset;
+        FNLOGINSETS(contentInset);
+        contentInset.top += 42;
+        self.tableView.contentInset = contentInset;
+    }
 }
 
 - (void)willDismissSearchController:(UISearchController *)searchController {
+    if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11") {
+        UIEdgeInsets contentInset = self.tableView.contentInset;
+        FNLOGINSETS(contentInset);
+        contentInset.top -= 42;
+        self.tableView.contentInset = contentInset;
+    }
     [self.tabBarController.navigationController setNavigationBarHidden:NO animated:YES];
     [self.tabBarController.tabBar setHidden:NO];
 }

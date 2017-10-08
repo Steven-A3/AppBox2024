@@ -28,7 +28,6 @@
 @property (nonatomic, strong) UISegmentedControl *selectSegment;
 @property (nonatomic, strong) UIBarButtonItem *cancelItem;
 @property (nonatomic, strong) UIBarButtonItem *plusBarButtonItem;
-@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic, strong) NSArray *filteredResults;
 @property (nonatomic, strong) NSMutableArray *sectionsArray;
@@ -50,7 +49,8 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
     self.view.backgroundColor = [UIColor whiteColor];
     
 	self.tableView = [UITableView new];
-	_tableView.frame = self.view.bounds;
+
+    _tableView.frame = self.view.bounds;
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
     _tableView.rowHeight = 44.0;
@@ -362,6 +362,8 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 
 - (void)filterContentForSearchText:(NSString*)searchText
 {
+    FNLOG(@"%@", self.allData);
+    
 	NSString *query = searchText;
 	if (query && query.length) {
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K contains[cd] %@", NAME_KEY, query];
@@ -588,26 +590,53 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
 	[self filterContentForSearchText:searchText];
-    
-    if (self.filteredResults.count > 0) {
-        self.tableView.hidden = YES;
-    }
-    else {
-        self.tableView.hidden = NO;
-    }
 }
 
 // called when cancel button pressed
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-    FNLOG(@"canceled");
-    
-    self.tableView.hidden = NO;
 }
 
 // called when Search (in our case "Done") button pressed
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
 	[searchBar resignFirstResponder];
+}
+
+#pragma mark - UISearchControllerDelegate
+
+- (void)willPresentSearchController:(UISearchController *)searchController {
+}
+
+- (void)didPresentSearchController:(UISearchController *)searchController {
+    if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11") {
+        FNLOGRECT(searchController.view.frame);
+        CGRect frame = searchController.searchBar.frame;
+        frame.origin.y = 20;
+        searchController.searchBar.frame = frame;
+        FNLOGRECT(searchController.searchBar.frame);
+        
+        UIEdgeInsets contentInset = self.tableView.contentInset;
+        FNLOGINSETS(contentInset);
+        contentInset.top -= 6;
+        self.tableView.contentInset = contentInset;
+    }
+}
+
+- (void)willDismissSearchController:(UISearchController *)searchController {
+    if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11") {
+        UIEdgeInsets contentInset = self.tableView.contentInset;
+        FNLOGINSETS(contentInset);
+        contentInset.top += 6;
+        self.tableView.contentInset = contentInset;
+    }
+}
+
+- (void)didDismissSearchController:(UISearchController *)searchController {
+
+}
+
+- (void)presentSearchController:(UISearchController *)searchController {
+    
 }
 
 @end

@@ -603,7 +603,6 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
     viewController.editingDelegate = self;
     viewController.hidesBottomBarWhenPushed = YES;
 	if (selectedIndex >= 0 && selectedIndex <= ([_convertItems count] - 1) ) {
-		viewController.placeHolder = [_dataManager localizedUnitNameForUnitID:[_convertItems[selectedIndex] integerValue] categoryID:_categoryID];
         viewController.currentUnitID = [_convertItems[selectedIndex] unsignedIntegerValue];
 	}
     
