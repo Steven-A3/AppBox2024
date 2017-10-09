@@ -243,7 +243,9 @@ A3InstructionViewControllerDelegate>
 
 	NSDictionary *menuInfo = self.menuItems[indexPath.row];
 	NSDictionary *appInfo = [[A3AppDelegate instance] appInfoDictionary][menuInfo[kA3AppsMenuName]];
-    cell.borderColor = [A3AppDelegate instance].groupColors[appInfo[kA3AppsGroupName]];
+    if (![[A3UserDefaults standardUserDefaults] boolForKey:kA3AppsUseGrayIconsOnGridMenu]) {
+        cell.borderColor = [A3AppDelegate instance].groupColors[appInfo[kA3AppsGroupName]];
+    }
 
     if ([menuInfo[kA3AppsMenuName] isEqualToString:A3AppName_None]) {
 		cell.imageName = @"add01";

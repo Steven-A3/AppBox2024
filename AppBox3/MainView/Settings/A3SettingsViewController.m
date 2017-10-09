@@ -41,6 +41,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 @property (nonatomic, strong) UIButton *colorButton;
 @property (nonatomic, strong) UISwitch *iCloudSwitch;
 @property (nonatomic, strong) UISwitch *hideOtherAppLinksSwitch;
+@property (nonatomic, strong) UISwitch *useGrayIconsSwitch;
 @property (nonatomic, strong) MBProgressHUD *HUD;
 @property (nonatomic, copy) NSString *previousMainMenuStyle;
 
@@ -128,8 +129,23 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 		if ([appDelegate isMainMenuStyleList]) {
 			return 3;
 		}
-		if ([appDelegate shouldPresentAd]) return 2;
-		return [appDelegate isPaidAppVersionCustomer:appDelegate.appReceipt] ? 3 : 2;
+        RMAppReceipt *appReceipt = [A3AppDelegate instance].appReceipt;
+        NSString *menuStyle = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
+        if ([menuStyle isEqualToString:A3SettingsMainMenuStyleHexagon]) {
+            // row 0: Style
+            // row 1: Reset Home Screen Layout
+            // row 2: Hide Other app Icons ( 광고를 표시하지 않는 경우에만 표시 )
+            // 다른 앱 광고는 기존 앱 사용자에게만 보여준다. 인앱 사용자에게는 보여주지 않는다.
+            return [[A3AppDelegate instance] isPaidAppVersionCustomer:appReceipt] ? 3 : 2;
+        }
+
+        // Home Style Grid
+        // row 0: Style
+        // row 1: Reset Home Screen Layout
+        // row 2: Use gray color icons
+        // row 3: Hide other app icons ( 광고를 표시하지 않는 경우에만 표시 )
+        // 다른 앱 광고는 기존 앱 사용자에게만 보여준다. 인앱 사용자에게는 보여주지 않는다.
+        return [[A3AppDelegate instance] isPaidAppVersionCustomer:appReceipt] ? 4 : 3;
 	}
 	if (section == 4) {
 		return [A3AppDelegate instance].shouldPresentAd ? 3 : 1;
@@ -157,9 +173,84 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	return UITableViewAutomaticDimension;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	A3AppDelegate *appDelegate = [A3AppDelegate instance];
+- (void)prepareCellForResetHomeScreenLayout:(UITableViewCell *)cell {
+    cell.textLabel.text = NSLocalizedString(@"Reset Home Screen Layout", @"Reset Home Screen Layout");
+    cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
+    cell.textLabel.adjustsFontSizeToFitWidth = YES;
+    cell.textLabel.minimumScaleFactor = 0.4;
+    [cell.detailTextLabel setHidden:YES];
+    cell.accessoryType = UITableViewCellAccessoryNone;
+}
 
+- (void)prepareCellForHideOtherApps:(UITableViewCell *)cell {
+    cell.textLabel.text = NSLocalizedString(@"Hide Other App Links", @"Hide Other App Links");
+    cell.textLabel.adjustsFontSizeToFitWidth = YES;
+    cell.textLabel.minimumScaleFactor = 0.5;
+    [cell.textLabel setHidden:NO];
+    [cell.detailTextLabel setHidden:YES];
+    cell.accessoryType = UITableViewCellAccessoryNone;
+    cell.accessoryView = self.hideOtherAppLinksSwitch;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 2 && indexPath.row > 0) {
+        NSString *menuStyle = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
+        if ([menuStyle isEqualToString:A3SettingsMainMenuStyleTable]) {
+            switch (indexPath.row) {
+                case 1:
+                    [cell.textLabel setHidden:NO];
+                    cell.textLabel.text = NSLocalizedString(@"Favorites", @"Favorites");
+                    cell.textLabel.textColor = [UIColor blackColor];
+                    [cell.detailTextLabel setHidden:NO];
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    break;
+                case 2:
+                    cell.textLabel.text = NSLocalizedString(@"Recent to Keep", nil);
+                    cell.accessoryView = nil;
+                    cell.detailTextLabel.text = [[A3UserDefaults standardUserDefaults] stringForRecentToKeep];
+                    [cell.textLabel setHidden:NO];
+                    [cell.detailTextLabel setHidden:NO];
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+                    break;
+            }
+            return;
+        }
+        if ([menuStyle isEqualToString:A3SettingsMainMenuStyleHexagon]) {
+            switch (indexPath.row) {
+                case 1:
+                    [self prepareCellForResetHomeScreenLayout:cell];
+                    break;
+                case 2:
+                    [self prepareCellForHideOtherApps:cell];
+                    break;
+            }
+            return;
+        }
+        if ([menuStyle isEqualToString:A3SettingsMainMenuStyleIconGrid]) {
+            switch (indexPath.row) {
+                case 1:
+                    [self prepareCellForResetHomeScreenLayout:cell];
+                    break;
+                case 2:
+                    cell.textLabel.text = NSLocalizedString(@"Use Gray Icons", nil);
+                    cell.textLabel.adjustsFontSizeToFitWidth = YES;
+                    cell.textLabel.minimumScaleFactor = 0.5;
+                    [cell.textLabel setHidden:NO];
+                    [cell.detailTextLabel setHidden:YES];
+                    cell.accessoryType = UITableViewCellAccessoryNone;
+                    cell.accessoryView = self.useGrayIconsSwitch;
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    break;
+                case 3:
+                    [self prepareCellForHideOtherApps:cell];
+                    break;
+            }
+        }
+        return;
+    }
+    
 	A3SettingsTableViewRow row = (A3SettingsTableViewRow) cell.tag;
 	switch (row) {
 		case A3SettingsRowUseiCloud:
@@ -184,49 +275,13 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 			}
 			break;
 		}
-		case A3SettingsRowEditFavorites:
-			if ([[A3AppDelegate instance] isMainMenuStyleList]) {
-				[cell.textLabel setHidden:NO];
-				cell.textLabel.text = NSLocalizedString(@"Favorites", @"Favorites");
-				cell.textLabel.textColor = [UIColor blackColor];
-				[cell.detailTextLabel setHidden:NO];
-				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-			} else {
-				cell.textLabel.text = NSLocalizedString(@"Reset Home Screen Layout", @"Reset Home Screen Layout");
-				cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
-				cell.textLabel.adjustsFontSizeToFitWidth = YES;
-				cell.textLabel.minimumScaleFactor = 0.4;
-				[cell.detailTextLabel setHidden:YES];
-				cell.accessoryType = UITableViewCellAccessoryNone;
-			}
-			break;
-		case A3SettingsRowRecentToKeep:
-			if ([appDelegate isMainMenuStyleList]) {
-				cell.accessoryView = nil;
-				cell.detailTextLabel.text = [[A3UserDefaults standardUserDefaults] stringForRecentToKeep];
-				[cell.textLabel setHidden:NO];
-				[cell.detailTextLabel setHidden:NO];
-				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-				cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-			} else {
-				if ([appDelegate shouldPresentAd] || ![appDelegate isPaidAppVersionCustomer:appDelegate.appReceipt]) {
-					cell.accessoryView = nil;
-					[cell.textLabel setHidden:YES];
-					[cell.detailTextLabel setHidden:YES];
-					cell.accessoryType = UITableViewCellAccessoryNone;
-				} else {
-					cell.textLabel.text = NSLocalizedString(@"Hide Other App Links", @"Hide Other App Links");
-					cell.textLabel.adjustsFontSizeToFitWidth = YES;
-					cell.textLabel.minimumScaleFactor = 0.5;
-					[cell.textLabel setHidden:NO];
-					[cell.detailTextLabel setHidden:YES];
-					cell.accessoryType = UITableViewCellAccessoryNone;
-					cell.accessoryView = self.hideOtherAppLinksSwitch;
-					cell.selectionStyle = UITableViewCellSelectionStyleNone;
-				}
-			}
-			break;
-		case A3SettingsRowThemeColor: {
+        case A3SettingsRowEditFavorites:
+            // Section 2, indexPath > 0 에서 처리
+            break;
+        case A3SettingsRowRecentToKeep:
+            // Section 2, indexPath > 0 에서 처리
+            break;
+        case A3SettingsRowThemeColor: {
 			if (!_colorButton) {
 				_colorButton = [UIButton buttonWithType:UIButtonTypeSystem];
 				_colorButton.bounds = CGRectMake(0, 0, 30, 30);
@@ -486,4 +541,19 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	_didResetHomeScreenLayout = YES;
 }
 
+- (UISwitch *)useGrayIconsSwitch {
+    if (!_useGrayIconsSwitch) {
+        _useGrayIconsSwitch = [UISwitch new];
+        [_useGrayIconsSwitch addTarget:self action:@selector(useGrayIconsSwitchValueChanged) forControlEvents:UIControlEventValueChanged];
+        [_useGrayIconsSwitch setOn:[[A3UserDefaults standardUserDefaults] boolForKey:kA3AppsUseGrayIconsOnGridMenu]];
+    }
+    return _useGrayIconsSwitch;
+}
+
+- (void)useGrayIconsSwitchValueChanged {
+    [[A3UserDefaults standardUserDefaults] setBool:_useGrayIconsSwitch.isOn forKey:kA3AppsUseGrayIconsOnGridMenu];
+    [[A3UserDefaults standardUserDefaults] synchronize];
+    _didResetHomeScreenLayout = YES;
+}
+    
 @end

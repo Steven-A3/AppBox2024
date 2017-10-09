@@ -58,6 +58,7 @@ NSString *const kA3AppsOriginalStartingAppName = @"kA3AppsOriginalStartingAppNam
  *  Free version 사용자의 경우 아래 설정과 관계없이 해당 Icon을 표시한다.
  */
 NSString *const kA3AppsHideOtherAppLinks = @"kA3AppsHideOtherAppLinks";
+NSString *const kA3AppsUseGrayIconsOnGridMenu = @"kA3AppsUseGrayIconsOnGridMenu";
 
 NSString *const A3AppName_DateCalculator = @"Date Calculator";
 NSString *const A3AppName_LoanCalculator = @"Loan Calculator";

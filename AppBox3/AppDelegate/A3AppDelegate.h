@@ -44,6 +44,7 @@ extern NSString *const kA3AppsStartingAppName;
 extern NSString *const kA3AppsOriginalStartingAppName;
 extern NSString *const kA3AppsMenuNameForGrid;
 extern NSString *const kA3AppsHideOtherAppLinks;
+extern NSString *const kA3AppsUseGrayIconsOnGridMenu;
 
 /* Notifications */
 extern NSString *const A3NotificationAppsMainMenuContentsChanged;
