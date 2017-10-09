@@ -29,8 +29,9 @@
 @end
 
 @implementation A3SearchViewController {
-
+    BOOL _didAdjustContentInset;
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -290,20 +291,25 @@
         frame.origin.y = 20;
         searchController.searchBar.frame = frame;
         FNLOGRECT(searchController.searchBar.frame);
-        
-        UIEdgeInsets contentInset = self.tableView.contentInset;
-        FNLOGINSETS(contentInset);
-        contentInset.top -= 6;
-        self.tableView.contentInset = contentInset;
+    
+        if (!_didAdjustContentInset) {
+            UIEdgeInsets contentInset = self.tableView.contentInset;
+            FNLOGINSETS(contentInset);
+            contentInset.top -= 6;
+            self.tableView.contentInset = contentInset;
+            
+            _didAdjustContentInset = YES;
+        }
     }
 }
 
 - (void)willDismissSearchController:(UISearchController *)searchController {
-    if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11") {
+    if (_didAdjustContentInset) {
         UIEdgeInsets contentInset = self.tableView.contentInset;
         FNLOGINSETS(contentInset);
         contentInset.top += 6;
         self.tableView.contentInset = contentInset;
+        _didAdjustContentInset = NO;
     }
 }
 

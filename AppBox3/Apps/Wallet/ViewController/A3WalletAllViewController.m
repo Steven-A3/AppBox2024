@@ -43,6 +43,7 @@
 	BOOL _dataEmpty;
     BOOL _didPassViewDidAppear;
     CGFloat _previousContentOffset;
+    BOOL _didAdjustContentInset;
 }
 
 enum SortingKind {
@@ -914,10 +915,13 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
         searchController.searchBar.frame = frame;
         FNLOGRECT(searchController.searchBar.frame);
         
-        UIEdgeInsets contentInset = self.tableView.contentInset;
-        FNLOGINSETS(contentInset);
-        contentInset.top -= 6;
-        self.tableView.contentInset = contentInset;
+        if (!_didAdjustContentInset) {
+            UIEdgeInsets contentInset = self.tableView.contentInset;
+            FNLOGINSETS(contentInset);
+            contentInset.top -= 6;
+            self.tableView.contentInset = contentInset;
+            _didAdjustContentInset = YES;
+        }
     }
 
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10") && SYSTEM_VERSION_LESS_THAN(@"11")) {
@@ -931,11 +935,13 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
         [[UIApplication sharedApplication] setStatusBarHidden:NO];
         [self.navigationController setNavigationBarHidden:NO];
     }
-    if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11") {
+    if (_didAdjustContentInset) {
         UIEdgeInsets contentInset = self.tableView.contentInset;
         FNLOGINSETS(contentInset);
         contentInset.top += 6;
         self.tableView.contentInset = contentInset;
+        
+        _didAdjustContentInset = NO;
     }
 }
 

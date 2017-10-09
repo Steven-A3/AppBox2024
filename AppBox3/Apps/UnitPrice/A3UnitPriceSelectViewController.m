@@ -31,7 +31,9 @@
 
 @end
 
-@implementation A3UnitPriceSelectViewController
+@implementation A3UnitPriceSelectViewController {
+    BOOL _didAdjustContentInset;
+}
 
 NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 
@@ -629,20 +631,25 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
         frame.origin.y = 20;
         searchController.searchBar.frame = frame;
         FNLOGRECT(searchController.searchBar.frame);
-        
-        UIEdgeInsets contentInset = self.tableView.contentInset;
-        FNLOGINSETS(contentInset);
-        contentInset.top += 42;
-        self.tableView.contentInset = contentInset;
+
+        if (!_didAdjustContentInset) {
+            UIEdgeInsets contentInset = self.tableView.contentInset;
+            FNLOGINSETS(contentInset);
+            contentInset.top += 42;
+            self.tableView.contentInset = contentInset;
+            _didAdjustContentInset = YES;
+        }
     }
 }
 
 - (void)willDismissSearchController:(UISearchController *)searchController {
-    if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11") {
+    if (_didAdjustContentInset) {
         UIEdgeInsets contentInset = self.tableView.contentInset;
         FNLOGINSETS(contentInset);
         contentInset.top -= 42;
         self.tableView.contentInset = contentInset;
+        
+        _didAdjustContentInset = NO;
     }
     [self.tabBarController.navigationController setNavigationBarHidden:NO animated:YES];
     [self.tabBarController.tabBar setHidden:NO];

@@ -56,6 +56,7 @@
 @implementation A3WalletCategoryViewController {
     BOOL _didPassViewDidAppear;
     CGFloat _previousContentOffset;
+    BOOL _didAdjustContentInset;
 }
 
 - (void)viewDidLoad
@@ -1163,11 +1164,13 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 }
 
 - (void)didPresentSearchController:(UISearchController *)searchController {
-    if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11") {
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11") && !_didAdjustContentInset) {
         UIEdgeInsets contentInset = self.tableView.contentInset;
         FNLOGINSETS(contentInset);
         contentInset.top -= 6;
         self.tableView.contentInset = contentInset;
+
+        _didAdjustContentInset = YES;
     }
 
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10") && SYSTEM_VERSION_LESS_THAN(@"11")) {
@@ -1183,11 +1186,13 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 }
 
 - (void)willDismissSearchController:(UISearchController *)searchController {
-    if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11") {
+    if (_didAdjustContentInset) {
         UIEdgeInsets contentInset = self.tableView.contentInset;
         FNLOGINSETS(contentInset);
         contentInset.top += 6;
         self.tableView.contentInset = contentInset;
+
+        _didAdjustContentInset = NO;
     }
 }
 

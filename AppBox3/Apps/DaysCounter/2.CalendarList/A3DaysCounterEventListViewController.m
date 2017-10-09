@@ -53,6 +53,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 @implementation A3DaysCounterEventListViewController {
 	BOOL _addEventButtonPressed;
 	BOOL _isBeingDismiss;
+    BOOL _didAdjustContentInset;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -1053,14 +1054,12 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
         searchController.searchBar.frame = frame;
         FNLOGRECT(searchController.searchBar.frame);
 
-        UIEdgeInsets contentInset = self.tableView.contentInset;
-        FNLOGINSETS(contentInset);
-        contentInset.top += 49;
-        self.tableView.contentInset = contentInset;
-        
-        CGPoint contentOffset = self.tableView.contentOffset;
-        contentOffset.y = -69;
-        self.tableView.contentOffset = contentOffset;
+        if (!_didAdjustContentInset) {
+            CGPoint contentOffset = self.tableView.contentOffset;
+            contentOffset.y = -20;
+            self.tableView.contentOffset = contentOffset;
+            _didAdjustContentInset =YES;
+        }
     }
     if SYSTEM_VERSION_LESS_THAN(@"11") {
         self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
@@ -1069,11 +1068,12 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 }
 
 - (void)willDismissSearchController:(UISearchController *)searchController {
-    if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11") {
+    if (_didAdjustContentInset) {
         UIEdgeInsets contentInset = self.tableView.contentInset;
         FNLOGINSETS(contentInset);
-        contentInset.top -= 49;
+        contentInset.top += 20;
         self.tableView.contentInset = contentInset;
+        _didAdjustContentInset = NO;
     }
     if SYSTEM_VERSION_LESS_THAN(@"11") {
         self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 44, 0);
