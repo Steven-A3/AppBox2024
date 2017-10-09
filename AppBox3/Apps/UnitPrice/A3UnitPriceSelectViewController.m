@@ -305,7 +305,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 
 - (void)configureNoneCell:(UITableViewCell *)cell {
 	cell.textLabel.text = NSLocalizedString(@"None", @"None");
-    if (_currentUnitID == NSNotFound) {
+    if (_selectedUnitID == NSNotFound) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
         cell.textLabel.font = [UIFont boldSystemFontOfSize:17];
     }
@@ -458,7 +458,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 			}
 		}
 
-		if (_currentUnitID == unitID) {
+		if (_categoryID == _selectedCategoryID && _selectedUnitID == unitID) {
 			checkedItem = YES;
 			cell.textLabel.font = [UIFont boldSystemFontOfSize:17];
 		}
@@ -568,7 +568,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
         if ([self.searchController isActive]) {
             [self.searchController setActive:NO];
         }
-		if (_currentUnitID == selectedUnitID) {
+		if (_categoryID == _selectedCategoryID && _selectedUnitID == selectedUnitID) {
 			[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 			// 원래 아이템을 선택하였으므로 아무일 없이 돌아간다.

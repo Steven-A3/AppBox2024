@@ -202,7 +202,8 @@ NSString *const A3UnitPriceSegmentIndex = @"A3UnitPriceSegmentIndex";
 	viewController.delegate = tossedDelegate;
 	viewController.shouldPopViewController = YES;
     viewController.categoryID = categoryID;
-	viewController.currentUnitID = validUnit(_price.unitID) ? [_price.unitID unsignedIntegerValue] : NSNotFound;
+    viewController.selectedCategoryID = [_price.unitCategoryID unsignedIntegerValue];
+	viewController.selectedUnitID = validUnit(_price.unitID) ? [_price.unitID unsignedIntegerValue] : NSNotFound;
 	viewController.dataManager = self.dataManager;
 
 	return viewController;
