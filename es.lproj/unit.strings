@@ -1,4 +1,4 @@
-﻿/* 
+/* 
    unit.strings
    AppBox Pro
 
@@ -384,7 +384,7 @@
 "Power" = "Poder";
 "Pressure" = "Presión";
 "Speed" = "Velocidad";
-"Temperature" = "Tempuratura";
+"Temperature" = "Temperatura";
 "Time" = "Tiempo";
 "Volume" = "Volumen";
 "Weight" = "Peso";
