@@ -658,7 +658,7 @@
         cell.textField.tag = 0;
         
         if (self.calcType==PercentCalcType_5) {
-            CGRect rect = [self.tableView rectForRowAtIndexPath:indexPath];
+            CGRect rect = cell.frame;
             if (IS_IPAD) {
                 CGRect aRect = _sectionALabel.frame;
                 aRect.origin.x = 28.0;
@@ -713,7 +713,7 @@
         cell.textField.tag = 2;
         
         if (self.calcType==PercentCalcType_5) {
-            CGRect rect = [self.tableView rectForRowAtIndexPath:indexPath];
+            CGRect rect = cell.frame;
             if (IS_IPAD) {
                 CGRect aRect = _sectionBLabel.frame;
                 aRect.origin.x = 28.0;
@@ -826,7 +826,7 @@
 
                     _formattedFactorValues = [factorData formattedStringValuesByCalcType];
                     self.headerView.factorValues = factorData;
-                    [self.tableView.tableHeaderView setNeedsLayout];
+                    [self.tableView reloadData];
                     
                     switch ([_selectedIndexPath row]) {
                         case 0:
@@ -888,7 +888,9 @@
             default:
                 break;
         }
-        
+        CGPoint offset = self.tableView.contentOffset;
+        offset.y = -64;
+        self.tableView.contentOffset = offset;
     } else {
         _selectedIndexPath = [indexPath copy];
         
@@ -1578,6 +1580,10 @@
 
 - (void)dismissHistoryViewController {
     [self setBarButtonEnable:YES];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    FNLOG(@"%f", scrollView.contentOffset.y);
 }
 
 @end

@@ -97,9 +97,6 @@
 		longPressGestureRecognizer.delegate = self;
 		[self.tableView addGestureRecognizer:longPressGestureRecognizerOnTableView];
 	}
-    if (!_doNotShowHelpView) {
-        [self showHelpView];
-    }
 }
 
 - (void)viewWillLayoutSubviews {
@@ -205,6 +202,14 @@
 	[super viewWillAppear:animated];
 
 	[self.navigationController setNavigationBarHidden:NO];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    if (!_doNotShowHelpView) {
+        [self showHelpView];
+    }
 }
 
 - (A3AbbreviationDataManager *)dataManager {

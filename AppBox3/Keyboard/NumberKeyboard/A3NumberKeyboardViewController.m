@@ -391,6 +391,14 @@
 	[self setupLocale];
 }
 
+- (void)setHidesLeftBigButtons:(BOOL)hidesLeftBigButtons {
+    _hidesLeftBigButtons = hidesLeftBigButtons;
+    if (IS_IPAD) {
+        [self.bigButton1 setHidden: _hidesLeftBigButtons];
+        [self.bigButton2 setHidden:_hidesLeftBigButtons];
+    }
+}
+
 - (void)setKeyboardType:(A3NumberKeyboardType)keyboardType {
 	_keyboardType = keyboardType;
 
@@ -452,6 +460,7 @@
 		case A3NumberKeyboardTypePasscode:break;
 	}
 	[self setupLocale];
+    [self setHidesLeftBigButtons:_hidesLeftBigButtons];
 }
 
 - (IBAction)bigButton1Action {

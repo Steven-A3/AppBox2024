@@ -72,6 +72,7 @@ NSString *const A3InterstitialAdUnitID = @"ca-app-pub-0532362805885914/253769254
 NSString *const A3AppStoreReceiptBackupFilename = @"AppStoreReceiptBackup";
 NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhatsNew4_5";
+NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstall";
 
 @interface A3AppDelegate () <UIAlertViewDelegate, NSURLSessionDownloadDelegate, CLLocationManagerDelegate
 		, GADInterstitialDelegate
@@ -1405,6 +1406,33 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 	} else {
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:nil];
 	}
+    
+    RMAppReceipt *receipt = [self appReceipt];
+    if ([receipt.appVersion isEqualToString:receipt.originalAppVersion])
+    {
+        void(^writeCredential)(void) = ^(){
+            [[ACSimpleKeychain defaultKeychain] storeUsername:@"AppInstall"
+                                                     password:@"password"
+                                                   identifier:@"net.allaboutapps.AppBoxPro"
+                                                         info:@{kA3TheDateFirstRunAfterInstall:[NSDate date]}
+                                                   forService:@"Application"];
+            
+        };
+        
+        NSDictionary *credential = [[ACSimpleKeychain defaultKeychain] credentialsForUsername:@"AppInstall" service:@"Application"];
+        if (credential) {
+            NSDate *date = credential[ACKeychainInfo][kA3TheDateFirstRunAfterInstall];
+            if (!date) {
+                writeCredential();
+                _shouldPresentAd = NO;
+            } else if ([[NSDate date] timeIntervalSinceDate:date] < 60*60*24*7) {
+                _shouldPresentAd = NO;
+            }
+        } else {
+            writeCredential();
+            _shouldPresentAd = NO;
+        }
+    }
 }
 
 - (void)prepareIAPProducts {

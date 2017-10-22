@@ -403,7 +403,7 @@
 		[self.view addSubview:self.dateKeyboardVC.view];
 		superview = self.view;
 	}
-	CGFloat keyboardHeight = [self keyboardHeight];
+	CGFloat keyboardHeight = [self keyboardHeightForInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
 	[self.dateKeyboardVC.view makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(superview.left);
 		make.right.equalTo(superview.right);
@@ -422,25 +422,30 @@
 	}];
 }
 
-- (CGFloat)keyboardHeight {
-	if (IS_IPHONE) {
-		return 216;
-	} else {
-		return UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]) ? 352 : 264;
-	}
+- (CGFloat)keyboardHeightForInterfaceOrientation:(UIInterfaceOrientation)orientation {
+    if (IS_IPHONE) {
+        return 216;
+    }
+    if SYSTEM_VERSION_LESS_THAN(@"11") {
+        return UIInterfaceOrientationIsLandscape(orientation) ? 352 : 264;
+    }
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    if (UIInterfaceOrientationIsPortrait(orientation) && screenBounds.size.width > screenBounds.size.height) {
+        CGFloat temp = screenBounds.size.width;
+        screenBounds.size.height = screenBounds.size.width;
+        screenBounds.size.width = temp;
+    }
+    if (UIInterfaceOrientationIsPortrait(orientation)) {
+        return screenBounds.size.height == 1024 ? 264 : 264 * 1.22;
+    }
+    return screenBounds.size.height == 768 ? 352 : 352 * 1.16;
 }
 
 - (void)layoutKeyboardToOrientation:(UIInterfaceOrientation)toOrientation
 {
 	if (!_isShowKeyboard) return;
 
-	CGFloat keyboardHeight;
-
-	if (IS_IPHONE) {
-		keyboardHeight = 216;
-	} else {
-		keyboardHeight = UIInterfaceOrientationIsLandscape(toOrientation) ? 352 : 264;
-	}
+	CGFloat keyboardHeight = [self keyboardHeightForInterfaceOrientation:toOrientation];
 
 	[_keyboardTopConstraint uninstall];
 	[_keyboardHeightConstraint uninstall];
@@ -533,14 +538,15 @@
 		[self.view addSubview:self.dateKeyboardVC.view];
 		superview = self.view;
 	}
-	CGFloat keyboardHeight = [self keyboardHeight];
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+	CGFloat keyboardHeight = [self keyboardHeightForInterfaceOrientation:orientation];
 	[self.dateKeyboardVC.view makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(superview.left);
 		make.right.equalTo(superview.right);
 		_keyboardTopConstraint =  make.top.equalTo(superview.bottom);
 		_keyboardHeightConstraint =  make.height.equalTo(@(keyboardHeight));
 	}];
-	[self layoutKeyboardToOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+	[self layoutKeyboardToOrientation:orientation];
 	[superview layoutIfNeeded];
 
 	_isShowKeyboard = YES;

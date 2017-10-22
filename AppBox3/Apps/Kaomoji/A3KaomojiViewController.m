@@ -90,8 +90,7 @@
 		longPressGestureRecognizer.delegate = self;
 		[self.collectionView addGestureRecognizer:longPressGestureRecognizer];
 	}
-    [self showHelpView];
-    
+   
     if ([[UIScreen mainScreen] scale] == 1) {
         _topLineHeightConstraint.constant = 1.0;
     }
@@ -181,6 +180,12 @@
 	[super viewWillAppear:animated];
 
 	[self.navigationController setNavigationBarHidden:NO];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self showHelpView];
 }
 
 - (void)applicationDidBecomeActive {

@@ -442,7 +442,7 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 	FNLOG(@"%ld - %ld, %ld - %ld", (long)fromIndexPath.section, (long)fromIndexPath.row, (long)toIndexPath.section, (long)toIndexPath.row);
 
 	NSInteger fromIndex = fromIndexPath.section * [self numberOfItemsOnTapBar] + fromIndexPath.row;
-	NSInteger toIndex = toIndexPath.section > 0 ? [self numberOfItemsOnTapBar] + toIndexPath.row - 1 : toIndexPath.row;
+	NSInteger toIndex = toIndexPath.section > 0 ? [self numberOfItemsOnTapBar] + toIndexPath.row : toIndexPath.row;
 	[self.categories moveItemInSortedArrayFromIndex:fromIndex toIndex:toIndex];
 
 	if (fromIndexPath.section != toIndexPath.section && fromIndexPath.section == 1) {

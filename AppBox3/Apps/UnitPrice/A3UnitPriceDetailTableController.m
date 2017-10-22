@@ -154,6 +154,9 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self.navigationController setNavigationBarHidden:NO animated:NO];
 	}
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
+                          atScrollPosition:UITableViewScrollPositionTop
+                                  animated:NO];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -1049,6 +1052,10 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 - (void)calculatorDidDismissWithValue:(NSString *)value {
 	_calculatorTargetTextField.text = value;
 	[self textFieldDidEndEditing:_calculatorTargetTextField];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    FNLOG(@"%f", scrollView.contentOffset.y);
 }
 
 @end

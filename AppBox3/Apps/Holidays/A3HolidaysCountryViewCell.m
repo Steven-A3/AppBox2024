@@ -22,8 +22,7 @@
 
 @property (nonatomic, strong) UIView *coverOnImageView;
 @property (nonatomic, strong) UILabel *countryName;
-@property (nonatomic, strong) FXLabel *upcomingHoliday;
-@property (nonatomic, strong) FXLabel *daysLeft;
+@property (nonatomic, strong) UILabel *upcomingHoliday;
 @property (nonatomic, strong) FXLabel *numberOfHolidays;
 
 @end
@@ -87,33 +86,16 @@
 		}];
 		[_countryName setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
 
-		_upcomingHoliday = [FXLabel new];
+		_upcomingHoliday = [UILabel new];
 		_upcomingHoliday.textColor = [UIColor whiteColor];
-		[self setupShadow:_upcomingHoliday];
 		[self.contentView addSubview:_upcomingHoliday];
 
 		[_upcomingHoliday makeConstraints:^(MASConstraintMaker *make) {
 			make.top.equalTo(_countryName.bottom);
 			make.left.equalTo(_countryName.left);
+            make.right.equalTo(_numberOfHolidays.left);
 		}];
 
-		_daysLeft = [FXLabel new];
-		_daysLeft.textColor = [UIColor colorWithWhite:1.0 alpha:0.7];
-		[self setupShadow:_daysLeft];
-		[self.contentView addSubview:_daysLeft];
-
-		[_daysLeft makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(_upcomingHoliday.right).with.offset(1);
-			if (IS_IPHONE) {
-				make.right.lessThanOrEqualTo(_numberOfHolidays.left);
-			}
-			make.baseline.equalTo(_upcomingHoliday);
-		}];
-		if (IS_IPHONE) {
-			[_daysLeft setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-		}
-
-		[self setFontsForLabels];
 		[self layoutIfNeeded];
 	}
     return self;
@@ -130,15 +112,17 @@
 	[super prepareForReuse];
 
 	_coverOnImageView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
-	[self setFontsForLabels];
 
 	[_locationImageView removeFromSuperview];
 	_locationImageView = nil;
 }
 
-- (void)setFontsForLabels {
-	_upcomingHoliday.font = IS_IPHONE? [UIFont systemFontOfSize:13] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-	_daysLeft.font = IS_IPHONE ? [UIFont systemFontOfSize:11] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+- (UIFont *)holidayNameFont {
+    return IS_IPHONE ? [UIFont systemFontOfSize:13] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+}
+
+- (UIFont *)daysLeftFont {
+    return IS_IPHONE ? [UIFont systemFontOfSize:11] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
 }
 
 - (void)setCountryCode:(NSString *)countryCode {
@@ -150,15 +134,23 @@
 	NSArray *holidays = [holidayData holidaysForCountry:_countryCode year:_thisYear fullSet:NO];
 	NSDictionary *upcomingHoliday = [holidayData firstUpcomingHolidaysForCountry:_countryCode];
 
+
 	if (upcomingHoliday) {
 		_upcomingHoliday.text = upcomingHoliday[kHolidayName];
+        NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:upcomingHoliday[kHolidayName]
+                                                                     attributes:@{NSFontAttributeName:[self holidayNameFont], NSForegroundColorAttributeName: [UIColor whiteColor]}];
 		if (IS_IPHONE) {
-			_daysLeft.text = [NSString stringWithFormat:@", %@", [upcomingHoliday[kHolidayDate] daysLeft]];
+            NSAttributedString *string2 = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@", %@", [upcomingHoliday[kHolidayDate] daysLeft]]
+                                                                          attributes:@{NSFontAttributeName:[self daysLeftFont], NSForegroundColorAttributeName : [UIColor colorWithWhite:1.0 alpha:0.7]}];
+            [string appendAttributedString:string2];
 		} else {
 			NSDateFormatter *dateFormatter = [NSDateFormatter new];
 			[dateFormatter setDateStyle:NSDateFormatterShortStyle];
-			_daysLeft.text = [NSString stringWithFormat:@", %@, %@", [upcomingHoliday[kHolidayDate] daysLeft], [dateFormatter stringFromDate:upcomingHoliday[kHolidayDate] ] ];
+            NSAttributedString *string2 = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@", %@, %@", [upcomingHoliday[kHolidayDate] daysLeft], [dateFormatter stringFromDate:upcomingHoliday[kHolidayDate] ] ]
+                                                                          attributes:@{NSFontAttributeName:[self daysLeftFont], NSForegroundColorAttributeName : [UIColor colorWithWhite:1.0 alpha:0.7]}];
+            [string appendAttributedString:string2];
 		}
+        _upcomingHoliday.attributedText = string;
 		_numberOfHolidays.text = [NSString stringWithFormat:@"%lu", (unsigned long)[holidays count]];
 	}
 
@@ -173,7 +165,6 @@
 	_coverOnImageView.backgroundColor = [UIColor whiteColor];
 	_countryName.text = @"";
 	_upcomingHoliday.text = @"";
-	_daysLeft.text = @"";
 	_numberOfHolidays.text = @"";
 	[_locationImageView removeFromSuperview];
 	_locationImageView = nil;

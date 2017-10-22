@@ -266,6 +266,8 @@
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
+    [_eventModel deleteLocation];
+    
     DaysCounterEventLocation *locItem = [DaysCounterEventLocation MR_createEntityInContext:self.eventModel.managedObjectContext];
 	locItem.uniqueID = [[NSUUID UUID] UUIDString];
 	locItem.updateDate = [NSDate date];

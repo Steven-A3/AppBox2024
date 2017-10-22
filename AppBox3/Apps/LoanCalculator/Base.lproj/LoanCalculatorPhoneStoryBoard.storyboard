@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="GsH-Ch-cYD">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="GsH-Ch-cYD">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -80,7 +80,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$0.00/mo" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AGB-zu-eGI" userLabel="paymentValue">
-                                            <rect key="frame" x="265.5" y="11.5" width="80.5" height="20.5"/>
+                                            <rect key="frame" x="265" y="11.5" width="81" height="20.5"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
@@ -122,7 +122,7 @@
                                         <constraint firstItem="AGB-zu-eGI" firstAttribute="centerY" secondItem="pkB-Ld-hTf" secondAttribute="centerY" id="SDk-RW-52t"/>
                                         <constraint firstItem="dia-aD-hhJ" firstAttribute="trailing" secondItem="pkB-Ld-hTf" secondAttribute="trailing" id="T0B-FI-XCG"/>
                                         <constraint firstItem="VUn-if-gNc" firstAttribute="trailing" secondItem="dia-aD-hhJ" secondAttribute="trailing" id="TID-qR-WkP"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="pkB-Ld-hTf" secondAttribute="trailing" constant="7" id="VFA-VZ-wRF"/>
+                                        <constraint firstAttribute="trailing" secondItem="pkB-Ld-hTf" secondAttribute="trailing" constant="15" id="VFA-VZ-wRF"/>
                                         <constraint firstItem="pkB-Ld-hTf" firstAttribute="leading" secondItem="AGB-zu-eGI" secondAttribute="trailing" constant="6" id="a4E-Mt-Vo6"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="d6h-S4-SGt" secondAttribute="trailing" constant="-8" id="aHy-5E-PqJ"/>
                                         <constraint firstItem="Fy1-yu-fhd" firstAttribute="baseline" secondItem="M1Y-kB-iSk" secondAttribute="baseline" id="ds4-Hv-fEC"/>
@@ -519,7 +519,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dVZ-hl-bzs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-417" y="-113"/>
+            <point key="canvasLocation" x="-417.5" y="-113.5"/>
         </scene>
         <!--Loan Calc Setting View Controller-->
         <scene sceneID="8sr-b6-Bu0">
@@ -540,7 +540,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="iZ2-Fs-g9k">
-                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
+                                                    <rect key="frame" x="16" y="0.0" width="344" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -561,7 +561,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dC7-5A-um3">
-                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
+                                                    <rect key="frame" x="16" y="0.0" width="344" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -607,7 +607,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="TextHere" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Bc7-HQ-V9f">
-                                            <rect key="frame" x="297.5" y="13" width="62.5" height="17"/>
+                                            <rect key="frame" x="298" y="13" width="62" height="17"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                         </textField>
@@ -670,7 +670,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="awV-GM-G7o">
-                                            <rect key="frame" x="15" y="12" width="42" height="20.5"/>
+                                            <rect key="frame" x="16" y="12" width="42" height="20.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -823,7 +823,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FDb-2K-buX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="818" y="-118"/>
+            <point key="canvasLocation" x="916" y="-121"/>
         </scene>
         <!--Loan Calc Monthly Data View Controller-->
         <scene sceneID="gT4-II-6X7">
@@ -961,7 +961,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TRY-lO-JES" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1193" y="-118"/>
+            <point key="canvasLocation" x="1308" y="-120"/>
         </scene>
         <!--Loan Calc History View Controller-->
         <scene sceneID="UX0-Sl-XE2">
@@ -1110,16 +1110,11 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vwz-04-rFN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1567" y="-114"/>
+            <point key="canvasLocation" x="1714" y="-119"/>
         </scene>
     </scenes>
     <resources>
         <image name="arrow" width="8" height="13"/>
         <image name="information" width="25" height="25"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
-    </simulatedMetricsContainer>
 </document>

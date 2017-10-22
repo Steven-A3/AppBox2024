@@ -8003,7 +8003,7 @@
 					"External/RMStore/Optional/openssl-1.0.2c/include/**",
 				);
 				INFOPLIST_FILE = "AppBox3/AppBox3-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"${PROJECT_DIR}/External/**",
@@ -8040,7 +8040,7 @@
 					"External/RMStore/Optional/openssl-1.0.2c/include/**",
 				);
 				INFOPLIST_FILE = "AppBox3/AppBox3-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"${PROJECT_DIR}/External/**",

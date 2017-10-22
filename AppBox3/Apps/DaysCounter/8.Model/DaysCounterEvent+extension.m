@@ -234,4 +234,12 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 	self.photoID = nil;
 }
 
+- (void)deleteLocation {
+    NSManagedObjectContext *editingContext = self.managedObjectContext;
+    NSArray *previousLocations = [DaysCounterEventLocation MR_findByAttribute:@"eventID" withValue:self.uniqueID inContext:editingContext];
+    for (NSManagedObject *location in previousLocations) {
+        [location MR_deleteEntityInContext:editingContext];
+    }
+}
+
 @end

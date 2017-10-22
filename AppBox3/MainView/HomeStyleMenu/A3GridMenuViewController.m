@@ -621,10 +621,13 @@ static NSString *const A3V3InstructionDidShowForGridMenu = @"A3V3InstructionDidS
 
 - (void)setupInstructionView
 {
-    if ([[NSUserDefaults standardUserDefaults] integerForKey:kA3ApplicationNumberOfDidBecomeActive] < 4) {
+    FNLOG();
+    if ([[NSUserDefaults standardUserDefaults] integerForKey:kA3ApplicationNumberOfDidBecomeActive] < 2) {
+        FNLOG();
         return;
     }
 	if (![self.navigationController.visibleViewController isKindOfClass:[self class]]) {
+        FNLOG();
 		return;
 	}
 	if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForGridMenu]) {
@@ -699,6 +702,9 @@ static NSString *const A3V3InstructionDidShowForGridMenu = @"A3V3InstructionDidS
 	CGPoint centerInView = [self.view convertPoint:cell.center fromView:self.collectionView];
 	FNLOG(@"centerX = %f, centerY = %f", centerInView.x, centerInView.y);
 	FNLOGRECT(cell.frame);
+    if (centerInView.x == 0) {
+        return;
+    }
 	_instructionViewController.fingerUpCenterXConstraint.constant = centerInView.x;
 	_instructionViewController.fingerUpCenterYConstraint.constant = centerInView.y;
 	[_instructionViewController.view layoutIfNeeded];

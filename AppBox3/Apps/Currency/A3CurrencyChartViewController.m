@@ -609,7 +609,8 @@
 #pragma mark - Number Keyboard Calculator Button Notification
 
 - (void)calculatorButtonAction {
-	[self.editingObject resignFirstResponder];
+    [self dismissNumberKeyboard];
+    
 	A3CalculatorViewController *viewController = [self presentCalculatorViewController];
 	viewController.delegate = self;
 }

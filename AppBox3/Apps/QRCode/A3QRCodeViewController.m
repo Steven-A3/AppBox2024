@@ -228,7 +228,9 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 								[self presentImagePickerController];
 							}
 						}];
-	}
+    } else {
+        [self presentImagePickerController];
+    }
 }
 
 - (void)presentImagePickerController {

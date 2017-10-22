@@ -821,7 +821,9 @@
             [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, size.height == 0 ? 44 : 274) animated:YES];
         };
         viewCtrl.dismissCompletionBlock = ^(FSVenue *locationItem) {
-            DaysCounterEventLocation *locItem = [DaysCounterEventLocation MR_createEntity];
+            [_eventModel deleteLocation];
+            
+            DaysCounterEventLocation *locItem = [DaysCounterEventLocation MR_createEntityInContext:_eventModel.managedObjectContext];
 			locItem.uniqueID = [[NSUUID UUID] UUIDString];
 			locItem.updateDate = [NSDate date];
             locItem.eventID = _eventModel.uniqueID;

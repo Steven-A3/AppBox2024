@@ -90,15 +90,7 @@ A3InstructionViewControllerDelegate>
 }
 
 - (void)mainMenuContentsDidChange {
-	RMAppReceipt *appReceipt = [A3AppDelegate instance].appReceipt;
-	if ([appReceipt verifyReceiptHash] && [[A3AppDelegate instance] isIAPPurchasedCustomer:appReceipt]) {
-		self.shouldShowHouseAd = NO;
-	} else {
-		self.shouldShowHouseAd = YES;
-	}
-	if (IS_IPHONE_3_5_INCH) {
-		self.shouldShowHouseAd = NO;
-	}
+    [self updateShouldShowHouseAds];
 	_collectionView.backgroundView = self.backgroundView;
 	_collectionView.backgroundView.backgroundColor = [UIColor colorWithRed:42.0/255.0 green:54.0/255.0 blue:59.0/255.0 alpha:1.0];
 }

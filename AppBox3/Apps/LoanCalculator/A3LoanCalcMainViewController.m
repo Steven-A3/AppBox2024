@@ -1951,6 +1951,9 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 
 			A3NumberKeyboardViewController *keyboardVC = self.numberKeyboardViewController;
 			keyboardVC.currencyCode = [self defaultCurrencyCode];
+            if (IS_IPAD) {
+                keyboardVC.hidesLeftBigButtons = YES;
+            }
 			keyboardVC.keyboardType = A3NumberKeyboardTypeCurrency;
 			keyboardVC.textInputTarget = textField;
 			keyboardVC.delegate = self;

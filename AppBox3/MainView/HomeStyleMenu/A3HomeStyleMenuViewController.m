@@ -31,6 +31,10 @@
 }
 
 - (void)updateShouldShowHouseAds {
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:kA3AppsHideOtherAppLinks]) {
+        _shouldShowHouseAd = ![[NSUserDefaults standardUserDefaults] boolForKey:kA3AppsHideOtherAppLinks];
+        return;
+    }
     RMAppReceipt *appReceipt = [A3AppDelegate instance].appReceipt;
     if ([appReceipt verifyReceiptHash]) {
         if ([[A3AppDelegate instance] isPaidAppVersionCustomer:appReceipt]) {

@@ -1050,7 +1050,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		}];
 	} else if ([ [self.convertItems objectAtIndex:indexPath.row] isKindOfClass:[NSNumber class] ]) {
 		A3UnitConverterTVDataCell *dataCell;
-		dataCell = [tableView dequeueReusableCellWithIdentifier:A3UnitConverterDataCellID forIndexPath:indexPath];
+		dataCell = [tableView dequeueReusableCellWithIdentifier:A3UnitConverterDataCellID];
 
 		[self configureDataCell:dataCell atIndexPath:indexPath];
 
@@ -1284,7 +1284,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 }
 
 - (BOOL)moveTableView:(FMMoveTableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-	return indexPath.row != 1 && indexPath.row != 2;
+	return indexPath.row != 1 && (self.convertItems[indexPath.row] != _adItem);
 }
 
 - (NSIndexPath *)moveTableView:(FMMoveTableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {

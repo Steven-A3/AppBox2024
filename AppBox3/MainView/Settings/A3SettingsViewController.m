@@ -136,6 +136,9 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
             // row 1: Reset Home Screen Layout
             // row 2: Hide Other app Icons ( 광고를 표시하지 않는 경우에만 표시 )
             // 다른 앱 광고는 기존 앱 사용자에게만 보여준다. 인앱 사용자에게는 보여주지 않는다.
+            if ([[NSUserDefaults standardUserDefaults] integerForKey:kA3ApplicationNumberOfDidBecomeActive] <= 8) {
+                return 2;
+            }
             return [[A3AppDelegate instance] isPaidAppVersionCustomer:appReceipt] ? 3 : 2;
         }
 
@@ -145,6 +148,9 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
         // row 2: Use gray color icons
         // row 3: Hide other app icons ( 광고를 표시하지 않는 경우에만 표시 )
         // 다른 앱 광고는 기존 앱 사용자에게만 보여준다. 인앱 사용자에게는 보여주지 않는다.
+        if ([[NSUserDefaults standardUserDefaults] integerForKey:kA3ApplicationNumberOfDidBecomeActive] <= 8) {
+            return 3;
+        }
         return [[A3AppDelegate instance] isPaidAppVersionCustomer:appReceipt] ? 4 : 3;
 	}
 	if (section == 4) {

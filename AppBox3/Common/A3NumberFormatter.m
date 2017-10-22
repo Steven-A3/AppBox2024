@@ -13,7 +13,11 @@
 - (void)setCurrencyCode:(NSString *)currencyCode {
     if ([currencyCode isEqualToString:@"BTC"]) {
         [super setCurrencyCode:@"USD"];
-        [self setCurrencySymbol:@"₿"];
+        if SYSTEM_VERSION_LESS_THAN(@"10") {
+            [self setCurrencySymbol:@""];
+        } else {
+            [self setCurrencySymbol:@"₿"];
+        }
         [self setMinimumFractionDigits:4];
     } else {
         [super setCurrencyCode:currencyCode];

@@ -1044,6 +1044,16 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 - (void)willPresentSearchController:(UISearchController *)searchController {
     FNLOGINSETS(self.tableView.contentInset);
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+
+    if (SYSTEM_VERSION_LESS_THAN(@"10")) {
+        [self.tabBarController.view addSubview:self.searchController.searchBar];
+        FNLOGINSETS(self.tableView.contentInset);
+        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
+        UIView *searchBarContainerView = self.searchController.searchBar.superview;
+        CGRect frame = searchBarContainerView.frame;
+        frame.origin.y = 0;
+        searchBarContainerView.frame = frame;
+    }
 }
 
 - (void)didPresentSearchController:(UISearchController *)searchController {
@@ -1065,6 +1075,17 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
         self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
     }
     FNLOGINSETS(self.tableView.contentInset);
+    if (SYSTEM_VERSION_LESS_THAN(@"10")) {
+        [self.tabBarController.view addSubview:self.searchController.searchBar];
+        FNLOGINSETS(self.tableView.contentInset);
+        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
+        UIView *searchBarContainerView = self.searchController.searchBar.superview;
+        CGRect frame = searchBarContainerView.frame;
+        frame.origin.y = 0;
+        searchBarContainerView.frame = frame;
+    }
+    FNLOG(@"%@", searchController.searchBar.superview);
+    FNLOGRECT(self.searchController.searchBar.frame);
 }
 
 - (void)willDismissSearchController:(UISearchController *)searchController {

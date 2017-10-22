@@ -546,6 +546,9 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 	keyboardVC.delegate = self;
 	
 	self.numberKeyboardViewController.currencyCode = [self defaultCurrencyCode];
+    if (IS_IPAD) {
+        self.numberKeyboardViewController.hidesLeftBigButtons = YES;
+    }
 	self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
 
 	_didPressClearKey = NO;

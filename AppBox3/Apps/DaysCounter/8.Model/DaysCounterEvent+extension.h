@@ -39,5 +39,6 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 - (void)copyImagesToTemporaryDirectory;
 - (void)moveImagesToOriginalDirectory;
 - (void)deletePhoto;
+- (void)deleteLocation;
 
 @end

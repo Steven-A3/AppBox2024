@@ -483,6 +483,9 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 
 		if (exPaymentItem == A3LC_ExtraPaymentMonthly) {
 			keyboardVC.currencyCode = [self defaultCurrencyCode];
+            if (IS_IPAD) {
+                self.numberKeyboardViewController.hidesLeftBigButtons = YES;
+            }
 			self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
 		}
 	}

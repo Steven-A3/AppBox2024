@@ -170,6 +170,8 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 		[self.navigationController setNavigationBarHidden:NO animated:NO];
 	}
     FNLOGINSETS(self.tableView.contentInset);
+    
+    [self setIsFavoriteMode:_isFavoriteMode];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -257,10 +259,9 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     }
     else {
 		self.tableView.tableHeaderView = self.searchController.searchBar;
-        _tableView.contentOffset = CGPointMake(0, 0);
-
+        self.tableView.contentOffset = CGPointMake(0, -64);
         [_tableView reloadData];
-        
+
         self.tabBarController.navigationItem.rightBarButtonItem = nil;
     }
 }
@@ -319,7 +320,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 	if ([_delegate respondsToSelector:@selector(selectViewController:didSelectCategoryID:unitID:)]) {
 		[_delegate selectViewController:self didSelectCategoryID:_categoryID unitID:selectedUnitID];
 	}
-    
+
     if (IS_IPHONE) {
         if (_shouldPopViewController) {
             [self.tabBarController.navigationController popViewControllerAnimated:YES];
@@ -328,6 +329,9 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
         }
     }
     else {
+        if ([_searchController isActive]) {
+            [_searchController setActive:NO];
+        }
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
@@ -565,20 +569,20 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 			}
 		}
 
-        if ([self.searchController isActive]) {
-            [self.searchController setActive:NO];
-        }
 		if (_categoryID == _selectedCategoryID && _selectedUnitID == selectedUnitID) {
 			[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 			// 원래 아이템을 선택하였으므로 아무일 없이 돌아간다.
 			if (IS_IPHONE) {
 				if (_shouldPopViewController) {
-					[self.navigationController popViewControllerAnimated:YES];
+					[self.tabBarController.navigationController popViewControllerAnimated:YES];
 				} else {
 					[self dismissViewControllerAnimated:YES completion:nil];
 				}
 			} else {
+                if ([_searchController isActive]) {
+                    [_searchController setActive:NO];
+                }
 				[[[A3AppDelegate instance] rootViewController_iPad] dismissRightSideViewController];
 			}
 
@@ -640,6 +644,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
             _didAdjustContentInset = YES;
         }
     }
+    _tableView.contentOffset = CGPointMake(0, -18);
 }
 
 - (void)willDismissSearchController:(UISearchController *)searchController {
@@ -661,6 +666,10 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 
 - (void)presentSearchController:(UISearchController *)searchController {
 
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    FNLOG(@"%f", scrollView.contentOffset.y);
 }
 
 @end

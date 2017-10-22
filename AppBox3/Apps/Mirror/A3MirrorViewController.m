@@ -259,26 +259,29 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 }
 
 - (void)applicationDidBecomeActive {
-	if ([A3UIDevice canAccessCamera]) {
-		if (_captureSession) {
-			[self setupAVCaptureSession];
-			[self setupFilterView];
-			[self setupZoomSlider];
-			[self configureLayout];
-		}
-		[_captureSession startRunning];
-		[self applyZoomFactor];
-	} else {
+	if (![A3UIDevice canAccessCamera]) {
 		if (_isMultipleView) {
 			[self showOneFilterView:_filterIndex];
 		}
-		[self requestAuthorizationForCamera:NSLocalizedString(A3AppName_Mirror, nil) afterAuthorizedHandler:NULL];
+        [self requestAuthorizationForCamera:NSLocalizedString(A3AppName_Mirror, nil) afterAuthorizedHandler:^(BOOL granted) {
+            double delayInSeconds = 0.2;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [self startCamera];
+            });
+        }];
 
 		_captureSession = nil;
 		_videoDevice = nil;
 		_stillImageOutput = nil;
 	}
 	[self setupButtonEnabled];
+}
+
+ - (void)startCamera {
+    [self setupAVCaptureSession];
+    [self setupPreview];
+    [self applyZoomFactor];
 }
 
 - (void)applyZoomFactor {
@@ -308,7 +311,13 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 			[_captureSession startRunning];
 		});
 	} else {
-		[self requestAuthorizationForCamera:NSLocalizedString(A3AppName_Mirror, nil) afterAuthorizedHandler:NULL];
+        [self requestAuthorizationForCamera:NSLocalizedString(A3AppName_Mirror, nil) afterAuthorizedHandler:^(BOOL granted) {
+            double delayInSeconds = 0.2;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [self startCamera];
+            });
+        }];
 	}
 
 	[self setupButtonEnabled];
@@ -1309,53 +1318,24 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 }
 
 - (void)addFilterLabels {
-	[self.view addSubview:_monoLabel];
-	[_monoLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.bottom.equalTo(_videoPreviewViewMonoFilter.bottom);
-		make.left.equalTo(_videoPreviewViewMonoFilter.left);
-	}];
-	[self.view addSubview:_tonalLabel];
-	[_tonalLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.bottom.equalTo(_videoPreviewViewTonalFilter.bottom);
-		make.left.equalTo(_videoPreviewViewTonalFilter.left);
-	}];
-	[self.view addSubview:_noirLabel];
-	[_noirLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.bottom.equalTo(_videoPreviewViewNoirFilter.bottom);
-		make.left.equalTo(_videoPreviewViewNoirFilter.left);
-	}];
-	[self.view addSubview:_fadeLabel];
-	[_fadeLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.bottom.equalTo(_videoPreviewViewFadeFilter.bottom);
-		make.left.equalTo(_videoPreviewViewFadeFilter.left);
-	}];
-	[self.view addSubview:_noneLabel];
-	[_noneLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.bottom.equalTo(_videoPreviewViewNoFilter.bottom);
-		make.left.equalTo(_videoPreviewViewNoFilter.left);
-	}];
-	[self.view addSubview:_chromeLabel];
-	[_chromeLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.bottom.equalTo(_videoPreviewViewChromeFilter.bottom);
-		make.left.equalTo(_videoPreviewViewChromeFilter.left);
-	}];
-	[self.view addSubview:_processLabel];
-	[_processLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.bottom.equalTo(_videoPreviewViewProcessFilter.bottom);
-		make.left.equalTo(_videoPreviewViewProcessFilter.left);
-	}];
-	[self.view addSubview:_transferLabel];
-	[_transferLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.bottom.equalTo(_videoPreviewViewTransferFilter.bottom);
-		make.left.equalTo(_videoPreviewViewTransferFilter.left);
-	}];
-	[self.view addSubview:_instantLabel];
-	[_instantLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.bottom.equalTo(_videoPreviewViewInstantFilter.bottom);
-		make.left.equalTo(_videoPreviewViewInstantFilter.left);
-	}];
+    NSArray *filterLabels = @[_monoLabel, _tonalLabel, _noirLabel,
+                              _fadeLabel, _noneLabel, _chromeLabel,
+                              _processLabel, _transferLabel, _instantLabel];
+    NSArray *filterViews = @[_videoPreviewViewMonoFilter, _videoPreviewViewTonalFilter, _videoPreviewViewNoirFilter,
+                             _videoPreviewViewFadeFilter, _videoPreviewViewNoFilter, _videoPreviewViewChromeFilter,
+                             _videoPreviewViewProcessFilter, _videoPreviewViewTransferFilter, _videoPreviewViewInstantFilter];
 
-	[self.view layoutIfNeeded];
+    [filterLabels enumerateObjectsUsingBlock:^(UILabel* _Nonnull label, NSUInteger idx, BOOL * _Nonnull stop) {
+        [self.view addSubview:label];
+        [label sizeToFit];
+        
+        UIView *view = filterViews[idx];
+        CGRect frame = view.frame;
+        label.frame = CGRectMake(frame.origin.x + frame.size.width / 2 - label.frame.size.width / 2,
+                                 frame.origin.y + frame.size.height - label.frame.size.height,
+                                 label.frame.size.width,
+                                 label.frame.size.height);
+    }];
 }
 
 - (void)showMultipleViews:(BOOL)bSizeChange {

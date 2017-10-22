@@ -33,6 +33,7 @@ typedef NS_ENUM(NSUInteger, A3NumberKeyboardSimpleLayout) {
 
 @property (nonatomic, strong) NSNumber *simpleKeyboardLayout;
 @property (nonatomic, assign) BOOL useDotAsClearButton;
+@property (nonatomic, assign) BOOL hidesLeftBigButtons;
 
 - (void)reloadPrevNextButtons;
 - (CGFloat)keyboardHeight;
