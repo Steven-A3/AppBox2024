@@ -415,57 +415,64 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 
 #pragma mark - Handle Open URL
 
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+    return [self handleOpenURL:url];
+}
+
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    return [self handleOpenURL:url];
+}
+
+- (BOOL)handleOpenURL:(NSURL *)url {
     if ([[[url absoluteString] lowercaseString] hasPrefix:@"appboxpro://"]) {
         FNLOG(@"%@", url);
-		NSArray *components = [[url absoluteString] componentsSeparatedByString:@"://"];
-		if ([components count] > 1) {
-			NSString *moduleName = [[components lastObject] lowercaseString];
-			NSArray *allMenus = [self allMenuItems];
-			NSInteger indexOfMenu = [allMenus indexOfObjectPassingTest:^BOOL(NSDictionary * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-				NSDictionary *appInfo = [self appInfoDictionary][obj[kA3AppsMenuName]];
-				return [[appInfo[kA3AppsMenuImageName] lowercaseString] isEqualToString:moduleName];
-			}];
-			if (indexOfMenu != NSNotFound) {
-				[self pushStartingAppInfo];
-				
-				NSDictionary *menuItem = allMenus[indexOfMenu];
-				NSString *startingAppName = menuItem[kA3AppsMenuName];
-				[[A3UserDefaults standardUserDefaults] setObject:startingAppName forKey:kA3AppsStartingAppName];
-
-				BOOL shouldAskPassocodeForStarting = [self shouldAskPasscodeForStarting];
-				if (shouldAskPassocodeForStarting || [self requirePasscodeForStartingApp]) {
-					[self presentLockScreenShowCancelButton:!shouldAskPassocodeForStarting];
-				} else {
-					[self removeSecurityCoverView];
-					if ([self isMainMenuStyleList]) {
-						[self.mainMenuViewController openRecentlyUsedMenu:YES];
-					} else {
-						[self launchAppNamed:startingAppName verifyPasscode:NO animated:NO];
-						[self updateRecentlyUsedAppsWithAppName:startingAppName];
-						self.homeStyleMainMenuViewController.activeAppName = [startingAppName copy];
-					}
-				}
-			}
-		}
-		return YES;
+        NSArray *components = [[url absoluteString] componentsSeparatedByString:@"://"];
+        if ([components count] > 1) {
+            NSString *moduleName = [[components lastObject] lowercaseString];
+            NSArray *allMenus = [self allMenuItems];
+            NSInteger indexOfMenu = [allMenus indexOfObjectPassingTest:^BOOL(NSDictionary * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                NSDictionary *appInfo = [self appInfoDictionary][obj[kA3AppsMenuName]];
+                return [[appInfo[kA3AppsMenuImageName] lowercaseString] isEqualToString:moduleName];
+            }];
+            if (indexOfMenu != NSNotFound) {
+                [self pushStartingAppInfo];
+                
+                NSDictionary *menuItem = allMenus[indexOfMenu];
+                NSString *startingAppName = menuItem[kA3AppsMenuName];
+                [[A3UserDefaults standardUserDefaults] setObject:startingAppName forKey:kA3AppsStartingAppName];
+                
+                BOOL shouldAskPassocodeForStarting = [self shouldAskPasscodeForStarting];
+                if (shouldAskPassocodeForStarting || [self requirePasscodeForStartingApp]) {
+                    [self presentLockScreenShowCancelButton:!shouldAskPassocodeForStarting];
+                } else {
+                    [self removeSecurityCoverView];
+                    if ([self isMainMenuStyleList]) {
+                        [self.mainMenuViewController openRecentlyUsedMenu:YES];
+                    } else {
+                        [self launchAppNamed:startingAppName verifyPasscode:NO animated:NO];
+                        [self updateRecentlyUsedAppsWithAppName:startingAppName];
+                        self.homeStyleMainMenuViewController.activeAppName = [startingAppName copy];
+                    }
+                }
+            }
+        }
+        return YES;
     } else if ([url.absoluteString hasPrefix:@"db-ody0cjvmnaxvob4"]) {
-		NSString *accessToken = [TJDropbox accessTokenFromDropboxAppAuthenticationURL:url];
-		if (accessToken == nil) {
-			accessToken = [TJDropbox accessTokenFromURL:url withRedirectURL:[NSURL URLWithString:@"db-ody0cjvmnaxvob4://"]];
-		}
-		if (accessToken) {
-			[[ACSimpleKeychain defaultKeychain] storeUsername:@"dropboxUser" password:accessToken identifier:@"net.allaboutapps.AppBoxPro" forService:@"Dropbox"];
-			FNLOG(@"App linked successfully!");
-			[[NSNotificationCenter defaultCenter] postNotificationName:A3DropboxLoginWithSuccess object:nil];
-		} else {
-			[[NSNotificationCenter defaultCenter] postNotificationName:A3DropboxLoginFailed object:nil];
-		}
-		
-		return YES;
-	}
-	// Add whatever other url handling code your app requires here
-	return NO;
+        NSString *accessToken = [TJDropbox accessTokenFromDropboxAppAuthenticationURL:url];
+        if (accessToken == nil) {
+            accessToken = [TJDropbox accessTokenFromURL:url withRedirectURL:[NSURL URLWithString:@"db-ody0cjvmnaxvob4://"]];
+        }
+        if (accessToken) {
+            [[ACSimpleKeychain defaultKeychain] storeUsername:@"dropboxUser" password:accessToken identifier:@"net.allaboutapps.AppBoxPro" forService:@"Dropbox"];
+            FNLOG(@"App linked successfully!");
+            [[NSNotificationCenter defaultCenter] postNotificationName:A3DropboxLoginWithSuccess object:nil];
+        } else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:A3DropboxLoginFailed object:nil];
+        }
+        
+        return YES;
+    }
+    return NO;
 }
 
 #pragma mark - UIApplicationShortcutItem 처리
