@@ -20,4 +20,5 @@ NSHealthUpdateUsageDescription =
 
 Data collected from HealthKit will not be used for marketing and advertising purposes.";
 NSCalendarsUsageDescription = "AppBox Pro® would like to access the calendar to save an event read from QR Code reader.";
-NSMichphoneUsageDescription = "AppBox Pro® would like to access your microphone to take videos for Wallet.";
+NSMicrophoneUsageDescription = "AppBox Pro® would like to access your microphone to take videos for Wallet.";
+NSFaceIDUsageDescription = "AppBox Pro® would like to access Face ID to unlock the app.";

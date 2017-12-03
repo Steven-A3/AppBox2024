@@ -33,6 +33,9 @@
 }
 
 - (CGFloat)keyboardHeight {
+    if (IS_IPHONEX) {
+        return 216 + 40;
+    }
 	if (IS_IPHONE) {
 		return 216;
 	}

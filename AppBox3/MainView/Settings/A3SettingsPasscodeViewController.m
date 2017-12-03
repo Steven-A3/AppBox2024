@@ -148,6 +148,9 @@
 					[_touchIDSwitch addTarget:self action:@selector(touchIDSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
 				}
 				[_touchIDSwitch setOn:[[A3AppDelegate instance] useTouchID]];
+                if (IS_IPHONEX) {
+                    cell.textLabel.text = NSLocalizedString(@"Face ID", nil);
+                }
 				cell.accessoryView = _touchIDSwitch;
 			}
 			break;

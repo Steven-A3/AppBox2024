@@ -42,6 +42,7 @@
 	self.view.backgroundColor = [UIColor clearColor];
 	CGRect frame = CGRectMake(0.0, 0.0, self.view.bounds.size.width, 41.0 * scale);
 	self.view.frame = frame;
+    
 	UIImage *toolbarBackgroundImage = [UIImage imageNamed:@"bg_Inclinometer_toolbar"];
 	UIImageView *mainView = [[UIImageView alloc] initWithImage:toolbarBackgroundImage];
 	[mainView setFrame:frame];

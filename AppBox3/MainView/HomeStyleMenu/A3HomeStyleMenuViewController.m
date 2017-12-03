@@ -89,14 +89,17 @@
 	[backgroundView addSubview:helpButton];
 
 	UIView *superview = backgroundView;
+    CGFloat statusBarHeight = [A3UIDevice statusBarHeightPortrait];
+    FNLOG(@"%f", statusBarHeight);
+    
 	[helpButton mas_makeConstraints:^(MASConstraintMaker *make) {
 		if (IS_IPAD_PRO) {
-			make.top.equalTo(superview.top).with.offset(25);
+			make.top.equalTo(superview.top).with.offset(statusBarHeight + 5);
 			make.left.equalTo(superview.left).with.offset(20);
 			make.width.equalTo(@50);
 			make.height.equalTo(@50);
 		} else {
-			make.top.equalTo(superview.top).with.offset(23);
+			make.top.equalTo(superview.top).with.offset(statusBarHeight + 3);
 			make.left.equalTo(superview.left).with.offset(8);
 			make.width.equalTo(@44);
 			make.height.equalTo(@44);
@@ -111,12 +114,12 @@
 	
 	[settingsButton makeConstraints:^(MASConstraintMaker *make) {
 		if (IS_IPAD_PRO) {
-			make.top.equalTo(superview.top).with.offset(25);
+			make.top.equalTo(superview.top).with.offset(statusBarHeight + 5);
 			make.right.equalTo(superview.right).with.offset(-20);
 			make.width.equalTo(@50);
 			make.height.equalTo(@50);
 		} else {
-			make.top.equalTo(superview.top).with.offset(23);
+			make.top.equalTo(superview.top).with.offset(statusBarHeight + 3);
 			make.right.equalTo(superview.right).with.offset(-8);
 			make.width.equalTo(@44);
 			make.height.equalTo(@44);
@@ -138,7 +141,7 @@
 
 	[titleLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(superview.centerX);
-		make.top.equalTo(superview.top).with.offset(32);
+		make.top.equalTo(superview.top).with.offset(statusBarHeight + 12);
 	}];
 
 	if (_shouldShowHouseAd) {

@@ -60,7 +60,6 @@
     UIButton *_helpButton;
 }
 
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -213,6 +212,9 @@
 }
 
 - (CGFloat)getSVbottomOffSet:(CGRect) screenBounds {
+    if (IS_IPHONEX) {
+        return IS_LANDSCAPE ? 0 : -60;
+    }
     return IS_LANDSCAPE ? 0 : -20;
 }
 
@@ -245,8 +247,15 @@
     return IS_PORTRAIT ? (screenBounds.size.height == 480 ? @60 : @83) : @44;
 }
 
+- (CGFloat)iPhoneXLandscapeKeyboardHeight {
+    return 260;
+}
+
 - (id)getSVHeight:(CGRect) screenBounds {
 	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+    if (IS_LANDSCAPE && IS_IPHONEX) {
+        return @([self iPhoneXLandscapeKeyboardHeight]);
+    }
     return IS_LANDSCAPE ? @(240 * scale): @(324 * scale);
 }
 
@@ -272,7 +281,7 @@
 	[_pageControl makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.view.left);
 		make.right.equalTo(self.view.right);
-		make.bottom.equalTo(self.view.bottom);
+        make.bottom.equalTo(self.view.bottom).with.offset(IS_IPHONEX ? -40 : 0);
 		make.height.equalTo(@20);
 	}];
 
@@ -449,12 +458,15 @@
         frame.origin.x = 0.0;
         frame.size.width = screenBounds.size.width;
         frame.size.height = 240.0 * scale;
+        if (IS_IPHONEX) {
+            frame.size.height = [self iPhoneXLandscapeKeyboardHeight];
+        }
         frame.origin.y = 0.0;
         _keyboardView.frame = frame;
         
         self.pageControl.hidden = YES;
         
-        _scrollView.contentSize = CGSizeMake(screenBounds.size.width, 240.0 * scale);
+        _scrollView.contentSize = CGSizeMake(screenBounds.size.width, frame.size.height);
         _scrollView.scrollEnabled = NO;
         _navGestureRecognizer.enabled = NO;
 

@@ -46,6 +46,7 @@
 #define IS_IPAD_PRO	(!IS_IOS7 && [[UIScreen mainScreen] nativeBounds].size.height == 2732)
 #define IS_IPHONE   ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
 #define IS_IPHONE35 ([A3UIDevice screenBoundsAdjustedWithOrientation].size.height == 480)
+#define IS_IPHONEX  ([UIScreen mainScreen].nativeBounds.size.height == 2436)
 
 #define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
 #define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
@@ -77,6 +78,7 @@ extern NSString *const A3AnimationIDKeyboardWillShow;
 + (CGFloat)scaleToOriginalDesignDimension;
 
 + (CGFloat)statusBarHeight;
++ (CGFloat)statusBarHeightPortrait;
 + (double)memoryUsage;
 + (double)storageUsage;
 + (UIInterfaceOrientation)deviceOrientation;

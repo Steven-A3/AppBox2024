@@ -87,6 +87,8 @@ A3InstructionViewControllerDelegate>
 	if (IS_IPHONE_3_5_INCH) {
 		_flowLayout.verticalOffset = 40;
 	}
+    
+    _collectionView.scrollEnabled = NO;
 }
 
 - (void)mainMenuContentsDidChange {
@@ -120,9 +122,15 @@ A3InstructionViewControllerDelegate>
 			offset = 20;
 		} else if (screenBounds.size.height >= 667) {
 			offset = 30;
-		}
+        } else if (screenBounds.size.height == 812) {
+            contentSize.height += 100;
+        }
 
+        FNLOGRECT(self.view.bounds);
+        FNLOGRECT(_collectionView.bounds);
 		_collectionView.contentInset = UIEdgeInsetsMake((self.view.bounds.size.height - contentSize.height)/2 + offset, 0, (self.view.bounds.size.height - contentSize.height)/2 - offset, 0);
+        FNLOG(@"%f", _collectionView.contentInset.top + _collectionView.contentInset.bottom + contentSize.height);
+        FNLOGINSETS(_collectionView.contentInset);
 	} else {
 		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 		[self setupCollectionViewContentInsetWithSize:screenBounds.size];
@@ -192,6 +200,11 @@ A3InstructionViewControllerDelegate>
 
 	[[NSUserDefaults standardUserDefaults] setObject:_menuItems forKey:A3MainMenuHexagonMenuItems];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    FNLOGRECT(_collectionView.bounds);
+    FNLOGINSETS(_collectionView.contentInset);
 }
 
 #pragma mark - A3CollectionViewFlowLayoutDelegate
@@ -465,6 +478,8 @@ A3InstructionViewControllerDelegate>
 	}
 	_appTitleTopConstraint.offset = size.height * (size.width < size.height ? 0.2 : 0.13);
 	
+    FNLOGRECT(_collectionView.bounds);
+
 	[self adjustFingerCenter];
 }
 

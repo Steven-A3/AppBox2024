@@ -39,6 +39,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 @property (nonatomic, weak) IBOutlet UILabel *descriptionLabel;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *distanceLabelCenterYConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *floorsAscendedLabelCenterYConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *customNavigationBarHeightConstraint;
 
 @property (nonatomic, strong) CMPedometer *pedometer;
 @property (nonatomic, strong) NSDateFormatter *searchDateFormatter;
@@ -96,6 +97,9 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 		}
 	}
 	
+    if (screenBounds.size.height == 812) {
+        _customNavigationBarHeightConstraint.constant = 84;
+    }
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartPedometerUpdate) name:UIApplicationSignificantTimeChangeNotification object:nil];
 }
 

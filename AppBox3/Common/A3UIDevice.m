@@ -72,6 +72,14 @@ NSString *const A3AnimationIDKeyboardWillShow = @"A3AnimationIDKeyboardWillShow"
 	#endif
 }
 
++ (CGFloat)statusBarHeightPortrait {
+    CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+    if (screenBounds.size.height == 812) {
+        return 40.0;
+    }
+    return 20.0;
+}
+
 + (double)memoryUsage {
 	vm_statistics_data_t	vm_stat;
 	mach_msg_type_number_t	count;

@@ -10,6 +10,8 @@
 
 @interface A3HomeStyleHelpViewController ()
 
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *topSpaceConstraint;
+
 @end
 
 @implementation A3HomeStyleHelpViewController
@@ -17,6 +19,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+    if (screenBounds.size.height == 812) {
+        CGFloat statusBarHeight = [A3UIDevice statusBarHeightPortrait];
+        
+        _topSpaceConstraint.constant = statusBarHeight + 3;
+    }
 }
 
 - (void)didReceiveMemoryWarning {

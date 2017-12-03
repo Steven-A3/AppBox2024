@@ -166,7 +166,11 @@ A3InstructionViewControllerDelegate>
 				}
 			}
 		} else {
-			offset = 0;
+            if (screenBounds.size.height == 812) {
+                offset = -20;
+            } else {
+                offset = 0;
+            }
 		}
 		make.bottom.equalTo(self.view.bottom).with.offset(offset);
 		make.centerX.equalTo(_collectionView.centerX);

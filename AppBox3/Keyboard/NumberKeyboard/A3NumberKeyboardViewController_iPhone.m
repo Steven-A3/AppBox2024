@@ -22,6 +22,7 @@
 @property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *num9Button;
 @property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *num0Button;
 @property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *doneButton;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomSpaceConstraint;
 
 @end
 
@@ -45,6 +46,9 @@
 	[super viewDidLoad];
 	// Do any additional setup after loading the view from its nib.
 
+    if (IS_IPHONEX) {
+        _bottomSpaceConstraint.constant = 40;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {

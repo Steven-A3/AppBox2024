@@ -136,9 +136,13 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	UIView *superview = self.view;
 	[self.view addSubview:self.plusButton];
 	
+    CGFloat verticalOffset = 0;
+    if (IS_IPHONEX) {
+        verticalOffset = 40;
+    }
 	[self.plusButton makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(superview.centerX);
-		make.centerY.equalTo(superview.bottom).with.offset(-32);
+		make.centerY.equalTo(superview.bottom).with.offset(-32 - verticalOffset);
 		make.width.equalTo(@44);
 		make.height.equalTo(@44);
 	}];
@@ -1231,7 +1235,7 @@ static NSString *const A3V3InstructionDidShowForCurrencyPicker = @"A3V3Instructi
 	_isNumberKeyboardVisible = YES;
 
 	_targetTextField.text = [self targetValueString];
-
+    
 	keyboardView.frame = CGRectMake(0, self.view.bounds.size.height, bounds.size.width, keyboardHeight);
 	[UIView animateWithDuration:0.3 animations:^{
 		CGRect frame = keyboardView.frame;

@@ -21,7 +21,14 @@
 }
 
 - (id)initWithMode:(int)mode viewController:(InclinometerViewController *)aController {
-    self = [super initWithFrame:[A3UIDevice screenBoundsAdjustedWithOrientation]];
+    CGRect frame = [A3UIDevice screenBoundsAdjustedWithOrientation];
+    CGFloat topOffset = 0;
+    if (frame.size.height == 812) {
+        topOffset = 40;
+        frame.origin.y += topOffset;
+        frame.size.height -= 80;
+    }
+    self = [super initWithFrame:frame];
     if (self != nil) {
 		viewMode = mode;
         _viewController = aController;
@@ -53,9 +60,17 @@
 - (void)setupSubviews {
 	UIImage *backgroundImage;
 	if (viewMode == surfaceMode) {
-		backgroundImage = [UIImage imageNamed:IS_IPHONE35 ? @"bg_Inclinometer_surface_cal_480" : @"bg_Inclinometer_surface_cal"];
+        if (IS_IPHONEX) {
+            backgroundImage = [UIImage imageNamed:@"bg_Inclinometer_surface_cal_iPhoneX"];
+        } else {
+            backgroundImage = [UIImage imageNamed:IS_IPHONE35 ? @"bg_Inclinometer_surface_cal_480" : @"bg_Inclinometer_surface_cal"];
+        }
 	} else {
-		backgroundImage = [UIImage imageNamed:IS_IPHONE35 ? @"bg_Inclinometer_bubble_cal_480" : @"bg_Inclinometer_bubble_cal"];
+        if (IS_IPHONEX) {
+            backgroundImage = [UIImage imageNamed:@"bg_Inclinometer_bubble_cal_iPhoneX"];
+        } else {
+            backgroundImage = [UIImage imageNamed:IS_IPHONE35 ? @"bg_Inclinometer_bubble_cal_480" : @"bg_Inclinometer_bubble_cal"];
+        }
 	}
 	
 	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
@@ -76,9 +91,13 @@
 	[self addSubview:exitButton];
 
 	UIImage *imageNormal = [UIImage imageNamed:@"bt_input"];
+    
     // set up Calibrate1 button
 	CGFloat x = 200.5 * scale;
 	CGFloat yOffset = IS_IPHONE35 ? 0 : 45.0 * scale;
+    if (IS_IPHONEX) {
+        yOffset = 85;
+    }
 	CGRect buttonFrame = CGRectMake(x, 340.0 * scale + yOffset, imageNormal.size.width * scale, imageNormal.size.height * scale);
     calibration1Button = [self buttonWithTitle:NSLocalizedString(@"Calibrate 1", nil)
 										target:self 

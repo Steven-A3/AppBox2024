@@ -20,4 +20,5 @@ NSHealthUpdateUsageDescription =
 
 读取从健康应用的信息不被用于营销目的，或出于广告目的。";
 NSCalendarsUsageDescription = "AppBox Pro®希望访问日历以保存从QR码阅读器读取的事件。";
-NSMichphoneUsageDescription = "AppBoxPro®想要访问您的麦克风来为电子钱包拍摄视频。";
+NSMicrophoneUsageDescription = "AppBoxPro®想要访问您的麦克风来为电子钱包拍摄视频。";
+NSFaceIDUsageDescription = "AppBoxPro®想要使用Face ID来解锁应用程序。";

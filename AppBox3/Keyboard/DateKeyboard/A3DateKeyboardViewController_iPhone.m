@@ -13,6 +13,8 @@
 
 @interface A3DateKeyboardViewController_iPhone ()
 
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomSpaceConstraint;
+
 @end
 
 @implementation A3DateKeyboardViewController_iPhone
@@ -24,6 +26,14 @@
         // Custom initialization
     }
     return self;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    if (IS_IPHONEX) {
+        _bottomSpaceConstraint.constant = 40;
+    }
 }
 
 - (void)didReceiveMemoryWarning

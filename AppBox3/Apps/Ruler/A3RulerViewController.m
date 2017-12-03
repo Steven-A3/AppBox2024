@@ -210,8 +210,8 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 	} else if ([model isEqualToString:@"iPhone 6 Plus"] ||
 			   [model isEqualToString:@"iPhone 6s Plus"] ||
                [model isEqualToString:@"iPhone 7 Plus"] ||
-               [model isEqualToString:@"iPhone 8 Plus"] ||
-			   [model isEqualToString:@"iPhone X"]) {
+               [model isEqualToString:@"iPhone 8 Plus"])
+    {
 		// iPhone 6 Plus
 		CGFloat pixelsInInch = 401;	// Original value = 401
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
@@ -219,6 +219,13 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		_inchAsPoints = (screenHeight / 1920.0) * pixelsInInch;
 		_resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
 		_redLineWidth = 0.5;
+    } else if ([model isEqualToString:@"iPhone X"]) {
+        CGFloat pixelsInInch = 459.3;    // Original value = 458
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 2436.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2436.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
+        _redLineWidth = 0.5;
 	} else if ([model isEqualToString:@"iPad 2"] || [model isEqualToString:@"iPad 2 (Wi-Fi)"]) {
 		// iPad 2
 		CGFloat pixelsInInch = 132.7;	// Announced PPI: 132
@@ -296,12 +303,12 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 	} else {
 		// Simulator
 
-		CGFloat pixelsInInch = 264;
-		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (1024.0 / 2732.0) * pixelsInCentimeter;
-		_inchAsPoints = (1024.0 / 2732.0) * pixelsInInch;
-		_resetPosition = _centimeterPositionRightBottom ? 23.0 : 9.0;
-		_redLineWidth = 0.5;
+        CGFloat pixelsInInch = 458;    // Original value = 458
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 2436.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2436.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
+        _redLineWidth = 0.5;
 	}
 
 	if ((IS_PORTRAIT && toPortrait) || (IS_LANDSCAPE && !toPortrait)) {

@@ -107,16 +107,28 @@
     }
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
+    
+    self.view.backgroundColor = [UIColor blackColor];
 }
 
 - (void)mainMenuDidHide {
-	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    if (IS_IPHONEX) {
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    } else {
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    if (IS_IPHONEX) {
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    } else {
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    }
 	
 	[self setupMotionManager];
 }
@@ -146,6 +158,12 @@
 
 - (void)myLayoutSubviews {
 	CGRect frame = self.view.bounds;
+    CGFloat topOffset = 0;
+    if (frame.size.height == 812) {
+        topOffset = 40;
+        frame.origin.y += topOffset;
+        frame.size.height -= 80;
+    }
 	surfaceView = [[InclinometerView alloc] initWithFrame:frame mode:surfaceMode];
 	surfaceView.viewController = self;
 	[self.view addSubview:surfaceView];
@@ -162,7 +180,7 @@
 	
 	toolbarVC = [[ClinometerToolbarViewController alloc] init];
 	toolbarVC.delegate = self;
-	toolbarVC.view.frame = CGRectMake(0.0, 0.0, self.view.bounds.size.width, 41.0 * scale);
+	toolbarVC.view.frame = CGRectMake(0.0, topOffset, self.view.bounds.size.width, 41.0 * scale);
 	[self.view addSubview:[toolbarVC view]];
 	
 	[toolbarVC updateTimer];
@@ -433,6 +451,12 @@
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
     FNLOGRECT(bannerView.frame);
     FNLOG(@"%f", bannerView.adSize.size.height);
+
+    CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+    CGFloat bottomOffset = 0;
+    if (screenBounds.size.height == 812) {
+        bottomOffset = 40;
+    }
     
     [self.view bringSubviewToFront:bannerView];
     [bannerView setHidden:NO];
@@ -441,7 +465,7 @@
         [bannerView remakeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(superview.left);
             make.right.equalTo(superview.right);
-            make.bottom.equalTo(superview.bottom);
+            make.bottom.equalTo(superview.bottom).with.offset(-bottomOffset);
         }];
         
         [self.view layoutIfNeeded];

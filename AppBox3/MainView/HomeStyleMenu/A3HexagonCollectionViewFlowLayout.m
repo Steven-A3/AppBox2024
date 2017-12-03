@@ -92,10 +92,11 @@
 
 - (CGSize)collectionViewContentSize
 {
-//	FNLOGRECT(self.collectionView.bounds);
 	CGFloat contentWidth = self.collectionView.bounds.size.width - self.collectionView.contentInset.left - self.collectionView.contentInset.right;
 	CGFloat contentHeight = ([self.lineConfiguration count] * 0.75f) * self.itemSize.height + (0.5f + self.itemSize.height) + self.minimumLineSpacing * (1 + [self.lineConfiguration count]);
 	
+    FNLOGRECT(self.collectionView.bounds);
+    FNLOG(@"%f, %f", contentWidth, contentHeight);
 	return CGSizeMake(contentWidth, contentHeight);
 }
 

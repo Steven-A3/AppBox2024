@@ -48,6 +48,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *vibrateOnOffButton;
 @property (nonatomic, weak) IBOutlet A3CornersView *cornersView;
 @property (nonatomic, weak) IBOutlet UIToolbar *bottomToolbar;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *statusToolbarHeightConstraint;
 @property (nonatomic, strong) A3QRCodeDataHandler *dataHandler;
 @property (nonatomic, strong) AVAudioPlayer *beepPlayer;
 @property (nonatomic, strong) A3QRCodeScanLineView *scanLineView;
@@ -115,6 +116,13 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	[_topToolbarSoundOnly setShadowImage:shadowImage forToolbarPosition:UIBarPositionAny];
 	[_bottomToolbar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 	[_statusToolbar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+    
+    CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+    if (screenBounds.size.height == 812) {
+        _statusToolbarHeightConstraint.constant = [A3UIDevice statusBarHeightPortrait];
+        _bottomToolbarBottomSpaceConstraint.constant = 40;
+    }
+    [self.view layoutIfNeeded];
 }
 
 - (void)applicationDidBecomeActive {
@@ -519,15 +527,20 @@ static NSString *const A3V3InstructionDidShowForQRCode = @"A3V3InstructionDidSho
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
     [self.view addSubview:bannerView];
     
+    CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+    CGFloat bottomOffset = 0;
+    if (screenBounds.size.height == 812) {
+        bottomOffset = 40;
+    }
     UIView *superview = self.view;
     [bannerView remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(superview.left);
         make.right.equalTo(superview.right);
-        make.bottom.equalTo(superview.bottom);
+        make.bottom.equalTo(superview.bottom).with.offset(-bottomOffset);
         make.height.equalTo(@([self bannerHeight]));
     }];
     
-    _bottomToolbarBottomSpaceConstraint.constant = bannerView.bounds.size.height;
+    _bottomToolbarBottomSpaceConstraint.constant = bannerView.bounds.size.height + bottomOffset;
     
     [self.view layoutIfNeeded];
     [self.cornersView setNeedsDisplay];

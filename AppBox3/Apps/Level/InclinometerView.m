@@ -37,33 +37,51 @@
 		_inclinometerMode = mode;
 
 		UIImage *circleImage, *lineImage;
+        CGRect backgroundViewFrame = [A3UIDevice screenBoundsAdjustedWithOrientation];
+        CGFloat verticalOffset = 0;
+        if (backgroundViewFrame.size.height == 812) {
+            backgroundViewFrame.size.height -= 80;
+            verticalOffset = 40;
+        }
 		CGFloat diffCircle, diffLine;
 		if (_inclinometerMode == surfaceMode) {
-			NSString *imageName = IS_IPHONE35 ? @"bg_Inclinometer_surface_480" : @"bg_Inclinometer_surface";
+            NSString *imageName;
+            if (IS_IPHONEX) {
+                imageName = @"bg_Inclinometer_surface_iPhoneX";
+            } else {
+                imageName = IS_IPHONE35 ? @"bg_Inclinometer_surface_480" : @"bg_Inclinometer_surface";
+            }
 			UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
-			imageView.frame = [A3UIDevice screenBoundsAdjustedWithOrientation];
+
+            imageView.frame = backgroundViewFrame;
+
 			[self addSubview:imageView];
 			
-			circleImage = [UIImage imageNamed:@"surface_circle"];
-			lineImage = [UIImage imageNamed:@"surface_grid"];
+            circleImage = [UIImage imageNamed:IS_IPHONEX ? @"surface_circle_iPhoneX" : @"surface_circle"];
+			lineImage = [UIImage imageNamed:IS_IPHONEX ? @"surface_grid_iPhoneX" : @"surface_grid"];
 			diffCircle = 3.0;
 			diffLine = 1.0;
 			
 			_bubbleView = [[UIImageView alloc] initWithImage:circleImage];
-			_bubbleView.center = CGPointMake(self.center.x + 6.0, self.center.y + diffCircle);
+			_bubbleView.center = CGPointMake(self.center.x + 6.0, self.center.y + diffCircle - verticalOffset);
 			
 			// set up vial lines view
 			_vialLinesView = [[UIImageView alloc] initWithImage:lineImage];
-			_vialLinesView.center = CGPointMake(self.center.x + 1.0, self.center.y + diffLine);
+			_vialLinesView.center = CGPointMake(self.center.x + 1.0, self.center.y + diffLine - verticalOffset);
 			
 		} else {
-			NSString *imageName = IS_IPHONE35 ? @"bg_Inclinometer_bubble_480" : @"bg_Inclinometer_bubble";
+            NSString *imageName;
+            if (IS_IPHONEX) {
+                imageName = @"bg_Inclinometer_bubble_iPhoneX";
+            } else {
+                imageName = IS_IPHONE35 ? @"bg_Inclinometer_bubble_480" : @"bg_Inclinometer_bubble";
+            }
 			UIImageView *imageViewBubble = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
-			imageViewBubble.frame = [A3UIDevice screenBoundsAdjustedWithOrientation];
+            imageViewBubble.frame = backgroundViewFrame;
 			[self addSubview:imageViewBubble];
 			
-			circleImage = [UIImage imageNamed:@"bubble_circle"];
-			lineImage = [UIImage imageNamed:@"bubble_bar"];
+			circleImage = [UIImage imageNamed:IS_IPHONEX ? @"bubble_circle_iPhoneX" : @"bubble_circle"];
+            lineImage = [UIImage imageNamed:IS_IPHONEX ? @"bubble_bar_iPhoneX" : @"bubble_bar"];
 			diffCircle = 0.0;
 			diffLine = 0.0;
 			
@@ -72,23 +90,30 @@
 			bubbleBounds.size.width *= _scale;
 			bubbleBounds.size.height *= _scale;
 			_bubbleView.bounds = bubbleBounds;
-			_bubbleView.center = CGPointMake(self.center.x - 22.0 * _scale, self.center.y + diffCircle);
+			_bubbleView.center = CGPointMake(self.center.x - 22.0 * _scale, self.center.y + diffCircle - verticalOffset);
 			
 			// set up vial lines view
 			_vialLinesView = [[UIImageView alloc] initWithImage:lineImage];
 			CGRect lineBounds = _vialLinesView.bounds;
 			lineBounds.size.width *= _scale;
 			lineBounds.size.height *= _scale;
+            if (IS_IPHONEX) {
+                lineBounds.size.width -= 14;
+            }
 			_vialLinesView.bounds = lineBounds;
-			_vialLinesView.center = CGPointMake(self.center.x, self.center.y + diffLine);
+			_vialLinesView.center = CGPointMake(self.center.x, self.center.y + diffLine - verticalOffset);
 			
 		}
 #define	LABEL_WIDTH		150
 #define LABEL_HEIGHT	20
 #define BAR_HEIGHT		30
 		
-		CGRect frameLabel = CGRectMake(CGRectGetWidth(frame)/2 - LABEL_WIDTH/2  - 50, 
-									   CGRectGetHeight(frame)/2 - LABEL_HEIGHT/2, 
+        CGFloat offsetY = 0;
+        if (IS_IPHONEX) {
+            offsetY = -70;
+        }
+		CGRect frameLabel = CGRectMake(CGRectGetWidth(frame)/2 - LABEL_WIDTH/2  - 50,
+									   CGRectGetHeight(frame)/2 - LABEL_HEIGHT/2 + offsetY,
 									   LABEL_WIDTH, 
 									   LABEL_HEIGHT);
 		_degreeViewX = [[UILabel alloc] initWithFrame:frameLabel];
@@ -99,8 +124,8 @@
 
 		if (_inclinometerMode == surfaceMode)
 		{
-			frameLabel = CGRectMake(CGRectGetWidth(frame)/2 - LABEL_WIDTH/2  - 50 + 25.0, 
-									CGRectGetHeight(frame)/2 - LABEL_HEIGHT/2, 
+			frameLabel = CGRectMake(CGRectGetWidth(frame)/2 - LABEL_WIDTH/2  - 50 + 25.0,
+									CGRectGetHeight(frame)/2 - LABEL_HEIGHT/2 + offsetY,
 									LABEL_WIDTH, 
 									LABEL_HEIGHT);
 			_degreeViewY = [[UILabel alloc] initWithFrame:frameLabel];
@@ -146,9 +171,17 @@ const float pitchVsDegree[] = {4.5, 9.5, 14.0, 18.5, 22.5, 26.5, 30.5, 33.75, 37
 }
 
 - (void)updateBubbleForRadian:(float)rads {
-    float newY = self.center.y - sin(DegreesToRadians([self zoomAngle:rads])) * kHalfVialLengthBubble + 0.0;
+    CGFloat halfViralLengthBubble = kHalfVialLengthBubble;
+    if (IS_IPHONEX) {
+        halfViralLengthBubble = 102 * _scale;
+    }
+    float newY = self.center.y - sin(DegreesToRadians([self zoomAngle:rads])) * halfViralLengthBubble + 0.0;
     
-    _bubbleView.center = CGPointMake(_bubbleView.center.x, newY);
+    CGFloat offsetY = 0;
+    if (IS_IPHONEX) {
+        offsetY = -40;
+    }
+    _bubbleView.center = CGPointMake(_bubbleView.center.x, newY + offsetY);
 }
 
 - (NSString *) radianToPitchString:(float)radian {
@@ -204,7 +237,11 @@ const float pitchVsDegree[] = {4.5, 9.5, 14.0, 18.5, 22.5, 26.5, 30.5, 33.75, 37
     float newX = self.center.x - maxX + 6.0;
     float newY = self.center.y - maxY + 3.0;
 	
-    _bubbleView.center = CGPointMake(newX, newY);
+    CGFloat offsetY = 0;
+    if (IS_IPHONEX) {
+        offsetY = -40;
+    }
+    _bubbleView.center = CGPointMake(newX, newY + offsetY);
 }
 
 - (void)updateReadoutForSurfaceWithRadianX:(float)radX radianY:(float)radY {
