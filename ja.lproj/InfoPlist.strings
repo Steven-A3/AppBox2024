@@ -22,3 +22,4 @@ NSHealthUpdateUsageDescription =
 NSCalendarsUsageDescription = "AppBox Pro®は、QRコードリーダーから読み取ったイベントを保存するためにカレンダーに権が必要です。";
 NSMicrophoneUsageDescription = "電子財布に保存動画を撮影するために、マイクのアクセス権が必要です。";
 NSFaceIDUsageDescription = "AppBoxPro®は、アプリのロックを解除するためにFace IDにアクセスします。";
+NSPhotoLibraryAddUsageDescription = "電子財布に写真を追加したり、鏡、拡大鏡などで写真を保存するために、フォトライブラリのアクセス権が必要です。";

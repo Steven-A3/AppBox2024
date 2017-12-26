@@ -188,13 +188,20 @@
 	
 	[self setupInstructionView];
 
-    if (!_searchController.active && ([self.items count] > 0) && self.tableView.contentOffset.y <= -63) {
+    if (!IS_IPHONEX &&
+        !_searchController.active &&
+        ([self.items count] > 0) &&
+        self.tableView.contentOffset.y <= -63) {
         double delayInSeconds = 0.3;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             [UIView animateWithDuration:0.3
                              animations:^{
-                                 self.tableView.contentOffset = CGPointMake(0, -8);
+                                 CGFloat verticalOffset = 0;
+                                 if (IS_IPHONEX) {
+                                     verticalOffset = 24;
+                                 }
+                                 self.tableView.contentOffset = CGPointMake(0, -(8 + verticalOffset));
                              }
                              completion:nil];
         });
@@ -599,12 +606,26 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 #pragma mark - Search relative
 
 - (void)setupSearchBar {
+    void(^final)(void) = ^ {
+        [self.searchBarButton setEnabled:[self.items count] > 0];
+    };
+    if (IS_IPHONEX) {
+        // For iOS 11 and later, we place the search bar in the navigation bar.
+        self.navigationController.navigationBar.prefersLargeTitles = NO;
+        self.navigationItem.searchController = self.searchController;
+        
+        // We want the search bar visible all the time.
+        self.navigationItem.hidesSearchBarWhenScrolling = NO;
+        
+        final();
+        return;
+    }
     if ([self.items count] > 0) {
         self.tableView.tableHeaderView = self.searchController.searchBar;
     } else {
         self.tableView.tableHeaderView = nil;
     }
-    [self.searchBarButton setEnabled:[self.items count] > 0];
+    final();
 }
 
 - (void)searchAction:(id)sender {
@@ -1158,16 +1179,24 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 #pragma mark - UISearchControllerDelegate
 
 - (void)willPresentSearchController:(UISearchController *)searchController {
+    if (IS_IPHONEX) return;
+    
     if SYSTEM_VERSION_LESS_THAN(@"11") {
         self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
     }
 }
 
 - (void)didPresentSearchController:(UISearchController *)searchController {
+    if (IS_IPHONEX) return;
+    
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11") && !_didAdjustContentInset) {
         UIEdgeInsets contentInset = self.tableView.contentInset;
         FNLOGINSETS(contentInset);
-        contentInset.top -= 6;
+        if (IS_IPHONEX) {
+            contentInset.top -= 4;
+        } else {
+            contentInset.top -= 6;
+        }
         self.tableView.contentInset = contentInset;
 
         _didAdjustContentInset = YES;
@@ -1186,10 +1215,16 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 }
 
 - (void)willDismissSearchController:(UISearchController *)searchController {
+    if (IS_IPHONEX) return;
+    
     if (_didAdjustContentInset) {
         UIEdgeInsets contentInset = self.tableView.contentInset;
         FNLOGINSETS(contentInset);
-        contentInset.top += 6;
+        if (IS_IPHONEX) {
+            contentInset.top += 4;
+        } else {
+            contentInset.top += 6;
+        }
         self.tableView.contentInset = contentInset;
 
         _didAdjustContentInset = NO;
@@ -1197,6 +1232,8 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 }
 
 - (void)didDismissSearchController:(UISearchController *)searchController {
+    if (IS_IPHONEX) return;
+    
     self.searchController = nil;
     self.tableView.tableHeaderView = self.searchController.searchBar;
 }

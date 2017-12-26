@@ -472,18 +472,33 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
 	[self.view addSubview:bannerView];
-	
+
+    CGFloat verticalOffset = 0;
+    if (IS_IPHONEX) {
+        verticalOffset = 40;
+    }
+    
 	UIView *superview = self.view;
 	[bannerView remakeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(superview.left);
 		make.right.equalTo(superview.right);
-		make.bottom.equalTo(superview.bottom);
+		make.bottom.equalTo(superview.bottom).with.offset(-verticalOffset);
 		make.height.equalTo(@(bannerView.bounds.size.height));
 	}];
 	
-	UIEdgeInsets contentInset = self.tableView.contentInset;
-	contentInset.bottom = bannerView.bounds.size.height;
-	self.tableView.contentInset = contentInset;
+    if (IS_IPHONEX) {
+        UIView *superview = _tableView.superview;
+        [_tableView remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(superview.left);
+            make.right.equalTo(superview.right);
+            make.top.equalTo(superview.top);
+            make.bottom.equalTo(superview.bottom).with.offset(-(bannerView.bounds.size.height + verticalOffset));
+        }];
+    } else {
+        UIEdgeInsets contentInset = self.tableView.contentInset;
+        contentInset.bottom = bannerView.bounds.size.height;
+        self.tableView.contentInset = contentInset;
+    }
 	
 	[self.view layoutIfNeeded];
 }

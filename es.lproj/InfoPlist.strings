@@ -20,3 +20,4 @@ Los datos recopilados de HealthKit no serán utilizados con fines de marketing y
 NSCalendarsUsageDescription = "AppBox Pro® quisiera tener acceso al calendario para ahorrar un acontecimiento leído del lector del código de QR.";
 NSMicrophoneUsageDescription = "AppBox Pro® desea acceder a su micrófono para tomar videos para Wallet.";
 NSFaceIDUsageDescription = "A AppBox Pro® le gustaría acceder a Face ID para desbloquear la aplicación.";
+NSPhotoLibraryAddUsageDescription = "AppBox Pro® le gustaría tener acceso a su biblioteca de fotos para guardar las imágenes de espejo, lupa, y Billetera.";

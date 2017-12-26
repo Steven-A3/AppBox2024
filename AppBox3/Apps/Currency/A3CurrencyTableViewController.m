@@ -138,9 +138,13 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
     UIView *superview = self.view;
     [self.view addSubview:self.plusButton];
 
+    CGFloat verticalOffset = 0;
+    if (IS_IPHONEX) {
+        verticalOffset = 40;
+    }
     [self.plusButton makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(superview.centerX);
-        make.centerY.equalTo(superview.bottom).with.offset(-32);
+        make.centerY.equalTo(superview.bottom).with.offset(-32 - verticalOffset);
         make.width.equalTo(@44);
         make.height.equalTo(@44);
     }];

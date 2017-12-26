@@ -20,3 +20,4 @@ Die von HealthKit gesammelten Daten werden nicht für Marketing- und Werbezwecke
 NSCalendarsUsageDescription = "AppBox Pro® möchte auf den Kalender zugreifen, um ein Ereignis zu speichern, das aus dem QR-Code-Leser gelesen wurde.";
 NSMicrophoneUsageDescription = "AppBox Pro® möchte auf Ihr Mikrofon zugreifen, um Videos für Wallet zu machen.";
 NSFaceIDUsageDescription = "AppBox Pro® möchte auf die Gesichtserkennung zugreifen, um die App zu entsperren.";
+NSPhotoLibraryAddUsageDescription = "AppBox Pro® möchten Ihr Foto-Bibliothek zugreifen Bilder von Spiegel, Lupe zu speichern, und Geldbörse.";

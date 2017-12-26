@@ -142,9 +142,6 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 	[[NSUserDefaults standardUserDefaults] registerDefaults:@{kA3SettingsMainMenuStyle:A3SettingsMainMenuStyleIconGrid}];
 
     _shouldPresentAd = YES;
-#warning TEST PURPOSE ONLY
-//    _shouldPresentAd = NO;
-#warning TEST PURPOSE ONLY
     
 	_passcodeFreeBegin = [[NSDate distantPast] timeIntervalSinceReferenceDate];
 

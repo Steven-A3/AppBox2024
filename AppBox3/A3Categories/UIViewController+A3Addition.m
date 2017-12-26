@@ -369,7 +369,11 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
 - (UIView *)presentMoreMenuWithButtons:(NSArray *)buttons pullDownView:(UIView *)pullDownView {
 	UIView *moreMenuView = [self moreMenuViewWithButtons:buttons];
 	CGRect clippingViewFrame = moreMenuView.frame;
-	clippingViewFrame.origin.y = 20.0 + 44.0 - 1.0;
+    CGFloat vertifcalOffset = 0;
+    if (IS_IPHONEX) {
+        vertifcalOffset = 25;
+    }
+    clippingViewFrame.origin.y = 20.0 + 44.0 - 1.0 + vertifcalOffset;
     clippingViewFrame.size.height = clippingViewFrame.size.height + 0.5;//kjh
 
 	UIView *clippingView = [[UIView alloc] initWithFrame:clippingViewFrame];

@@ -22,3 +22,4 @@ NSHealthUpdateUsageDescription =
 NSCalendarsUsageDescription = "AppBox Pro®는 QR코드에서 읽은 이벤트를 저장하기 위해서 캘린더 접근이 필요합니다.";
 NSMicrophoneUsageDescription = "전자지갑에 저장할 동영상을 촬영하기 위해서 마이크 접근 권한이 필요합니다.";
 NSFaceIDUsageDescription = "AppBox Pro®는 앱의 잠금을 해제하기 위해 Face ID에 액세스하려고합니다.";
+NSPhotoLibraryAddUsageDescription = "전자지갑에 사진을 추가하거나, 거울, 돋보기 등에서 사진을 저장하기 위해서 사진 보관함 접근 권한이 필요합니다.";

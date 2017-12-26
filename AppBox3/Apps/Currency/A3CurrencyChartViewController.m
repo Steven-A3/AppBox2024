@@ -217,9 +217,13 @@
 - (void)makeFixedConstraint {
 	BOOL isIPHONE35 = IS_IPHONE35;
 
+    CGFloat verticalOffset = 0;
+    if (IS_IPHONEX) {
+        verticalOffset = 24;
+    }
 	UIView *superview = _tableView.superview;
 	[_tableView makeConstraints:^(MASConstraintMaker *make) {
-		make.top.equalTo(superview.top).with.offset(64);
+		make.top.equalTo(superview.top).with.offset(64 + verticalOffset);
 		make.left.equalTo(superview.left);
 		make.right.equalTo(superview.right);
 		make.height.equalTo(isIPHONE35 ? @140 : @168 );
