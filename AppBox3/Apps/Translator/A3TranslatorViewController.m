@@ -261,8 +261,12 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 	[_segmentedControl addTarget:self action:@selector(segmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
 	[self.view addSubview:_segmentedControl];
 
+    CGFloat verticalOffset = 0;
+    if (IS_IPHONEX) {
+        verticalOffset = 24;
+    }
 	[_segmentedControl makeConstraints:^(MASConstraintMaker *make) {
-		make.top.equalTo(self.view.top).with.offset(64.0 + 10.0);
+		make.top.equalTo(self.view.top).with.offset(64.0 + 10.0 + verticalOffset);
 		make.centerX.equalTo(self.view.centerX);
 		make.width.equalTo(@(IS_IPHONE ? 170.0 : 300.0));
 		make.height.equalTo(@28);
@@ -273,7 +277,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 	[self.view addSubview:line];
 
 	[line makeConstraints:^(MASConstraintMaker *make) {
-		make.top.equalTo(self.view.top).with.offset(64.0 + (IS_RETINA ? 47.5 : 47.0));
+		make.top.equalTo(self.view.top).with.offset(64.0 + (IS_RETINA ? 47.5 : 47.0) + verticalOffset);
 		make.centerX.equalTo(self.view.centerX);
 		make.width.equalTo(self.view.width);
 		make.height.equalTo(IS_RETINA ? @0.5 : @1);
@@ -302,11 +306,14 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 	[_addButton addTarget:self action:@selector(addButtonAction) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:_addButton];
 
+    if (IS_IPHONEX) {
+        verticalOffset = -40;
+    }
 	[_addButton makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(self.view.centerX);
 		make.width.equalTo(@44);
 		make.height.equalTo(@44);
-		make.bottom.equalTo(self.view.bottom).with.offset(IS_RETINA ? -10.5 : -10);
+		make.bottom.equalTo(self.view.bottom).with.offset((IS_RETINA ? -10.5 : -10) + verticalOffset);
 	}];
 }
 
@@ -481,17 +488,22 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
 	[self.view addSubview:bannerView];
 	
+    CGFloat verticalOffset = 0;
+    if (IS_IPHONEX) {
+        verticalOffset = -40;
+    }
+    
 	UIView *superview = self.view;
 	[bannerView remakeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(superview.left);
 		make.right.equalTo(superview.right);
-		make.bottom.equalTo(superview.bottom);
+		make.bottom.equalTo(superview.bottom).with.offset(verticalOffset);
 		make.height.equalTo(@(bannerView.bounds.size.height));
 	}];
 
 	[_addButton remakeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(self.view.centerX);
-		make.bottom.equalTo(self.view.bottom).with.offset(-(10 + (IS_IPHONE ? 50 : 90)));
+		make.bottom.equalTo(self.view.bottom).with.offset(-(10 + (IS_IPHONE ? 50 : 90)) + verticalOffset);
 		make.width.equalTo(@44);
 		make.height.equalTo(@44);
 	}];

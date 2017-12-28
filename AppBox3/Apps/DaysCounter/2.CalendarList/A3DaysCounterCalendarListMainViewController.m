@@ -186,10 +186,15 @@
         _headerSeparator2_TopConst_iPad.constant = 0.5;
     }
     
+    CGFloat verticalOffset = 0;
+    if (IS_IPHONEX) {
+        verticalOffset = -40;
+    }
+    
     [self.view addSubview:_addEventButton];
     [_addEventButton makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view.centerX);
-        make.bottom.equalTo(self.view.bottom).with.offset(-(CGRectGetHeight(self.bottomToolbar.frame) + 11));
+        make.bottom.equalTo(self.view.bottom).with.offset(-(CGRectGetHeight(self.bottomToolbar.frame) + 11) + verticalOffset);
         make.width.equalTo(@44);
         make.height.equalTo(@44);
     }];
@@ -1116,17 +1121,21 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
 	[self.view addSubview:bannerView];
 	
+    CGFloat verticalOffset = 0;
+    if (IS_IPHONEX) {
+        verticalOffset = -40;
+    }
 	UIView *superview = self.view;
 	[bannerView remakeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(superview.left);
 		make.right.equalTo(superview.right);
-		make.bottom.equalTo(superview.bottom).with.offset(-44);
+		make.bottom.equalTo(superview.bottom).with.offset(-44 + verticalOffset);
 		make.height.equalTo(@(bannerView.bounds.size.height));
 	}];
 	
 	[_addEventButton remakeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(self.view.centerX);
-		make.bottom.equalTo(self.view.bottom).with.offset(-(55 + (IS_IPHONE ? 50 : 90)));
+		make.bottom.equalTo(self.view.bottom).with.offset(-(55 + (IS_IPHONE ? 50 : 90)) + verticalOffset);
 		make.width.equalTo(@44);
 		make.height.equalTo(@44);
 	}];

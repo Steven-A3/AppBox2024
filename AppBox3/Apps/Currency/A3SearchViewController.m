@@ -57,7 +57,16 @@
 	if ([_tableView respondsToSelector:@selector(layoutMargins)]) {
 		_tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
 	}
-    _tableView.tableHeaderView = self.searchController.searchBar;
+    if (IS_IPHONEX) {
+        // For iOS 11 and later, we place the search bar in the navigation bar.
+        self.navigationController.navigationBar.prefersLargeTitles = NO;
+        self.navigationItem.searchController = self.searchController;
+        
+        // We want the search bar visible all the time.
+        self.navigationItem.hidesSearchBarWhenScrolling = NO;
+    } else {
+        _tableView.tableHeaderView = self.searchController.searchBar;
+    }
     
     self.definesPresentationContext = YES;
 }
@@ -285,6 +294,8 @@
 }
 
 - (void)didPresentSearchController:(UISearchController *)searchController {
+    if (IS_IPHONEX) return;
+    
     if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11") {
         FNLOGRECT(searchController.view.frame);
         CGRect frame = searchController.searchBar.frame;
@@ -304,6 +315,8 @@
 }
 
 - (void)willDismissSearchController:(UISearchController *)searchController {
+    if (IS_IPHONEX) return;
+    
     if (_didAdjustContentInset) {
         UIEdgeInsets contentInset = self.tableView.contentInset;
         FNLOGINSETS(contentInset);
@@ -314,6 +327,8 @@
 }
 
 - (void)didDismissSearchController:(UISearchController *)searchController {
+    if (IS_IPHONEX) return;
+    
     self.tableView.contentOffset = CGPointMake(0, -64);
 }
 

@@ -80,9 +80,15 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 	} else {
 		self.title = [_sharedManager localizedSystemCalendarNameForCalendarID:_calendarItem.uniqueID];
 	}
-    UIBarButtonItem *search = [self searchBarButtonItem];
-    UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
-    self.navigationItem.rightBarButtonItems = @[edit, search];
+    
+    if (IS_IPHONEX) {
+        UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
+        self.navigationItem.rightBarButtonItem = edit;
+    } else {
+        UIBarButtonItem *search = [self searchBarButtonItem];
+        UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
+        self.navigationItem.rightBarButtonItems = @[edit, search];
+    }
     [self makeBackButtonEmptyArrow];
 
     _sortTypeSegmentCtrl.selectedSegmentIndex = self.sortType;
@@ -106,11 +112,15 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 
 	_segmentControlWidthConst.constant = ( IS_IPHONE ? 171 : 300.0);
 
+    CGFloat verticalOffset = 0;
+    if (IS_IPHONEX) {
+        verticalOffset = -40;
+    }
     [self.view addSubview:_addEventButton];
     _addEventButton.tintColor = [A3AppDelegate instance].themeColor;
     [_addEventButton makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view.centerX);
-        make.bottom.equalTo(self.view.bottom).with.offset(-(CGRectGetHeight(self.bottomToolbar.frame) + 11));
+        make.bottom.equalTo(self.view.bottom).with.offset(-(CGRectGetHeight(self.bottomToolbar.frame) + 11) + verticalOffset);
         make.width.equalTo(@44);
         make.height.equalTo(@44);
     }];
@@ -119,7 +129,16 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
         [self.headerView addSubview:self.sortArrowImgView];
     }
     
-    [self.view addSubview:self.searchController.searchBar];
+    if (IS_IPHONEX) {
+        // For iOS 11 and later, we place the search bar in the navigation bar.
+        self.navigationController.navigationBar.prefersLargeTitles = NO;
+        self.navigationItem.searchController = self.searchController;
+        
+        // We want the search bar visible all the time.
+        self.navigationItem.hidesSearchBarWhenScrolling = NO;
+    } else {
+        [self.view addSubview:self.searchController.searchBar];
+    }
 
     [self.view layoutIfNeeded];
 
@@ -327,10 +346,14 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
     _sortTypeSegmentCtrl.enabled = ([_sourceArray count] > 0);
     _sortTypeSegmentCtrl.tintColor =(_sortTypeSegmentCtrl.enabled ? nil : [UIColor colorWithRed:147.0/255.0 green:147.0/255.0 blue:147.0/255.0 alpha:1.0]);
     
-    UIBarButtonItem *edit = [self.navigationItem.rightBarButtonItems objectAtIndex:0];
-    UIBarButtonItem *search = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
-    edit.enabled = ([_sourceArray count] > 0);
-    search.enabled = ([_sourceArray count] > 0);
+    if (IS_IPHONEX) {
+        self.navigationItem.rightBarButtonItem.enabled = ([_sourceArray count] > 0);
+    } else {
+        UIBarButtonItem *edit = [self.navigationItem.rightBarButtonItems objectAtIndex:0];
+        UIBarButtonItem *search = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
+        edit.enabled = ([_sourceArray count] > 0);
+        search.enabled = ([_sourceArray count] > 0);
+    }
 }
 
 #pragma mark - Sort
@@ -1042,6 +1065,8 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 #pragma mark - UISearchControllDelegate
 
 - (void)willPresentSearchController:(UISearchController *)searchController {
+    if (IS_IPHONEX) return;
+    
     FNLOGINSETS(self.tableView.contentInset);
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
 
@@ -1057,6 +1082,8 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 }
 
 - (void)didPresentSearchController:(UISearchController *)searchController {
+    if (IS_IPHONEX) return;
+    
     if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11") {
         FNLOGRECT(searchController.view.frame);
         CGRect frame = searchController.searchBar.frame;
@@ -1089,6 +1116,8 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 }
 
 - (void)willDismissSearchController:(UISearchController *)searchController {
+    if (IS_IPHONEX) return;
+
     if (_didAdjustContentInset) {
         UIEdgeInsets contentInset = self.tableView.contentInset;
         FNLOGINSETS(contentInset);
@@ -1103,6 +1132,8 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 }
 
 - (void)didDismissSearchController:(UISearchController *)searchController {
+    if (IS_IPHONEX) return;
+    
     FNLOGINSETS(self.tableView.contentInset);
 }
 

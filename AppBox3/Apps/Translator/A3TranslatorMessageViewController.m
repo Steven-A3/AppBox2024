@@ -43,8 +43,8 @@ const NSInteger kTranslatorAlertViewType_DeleteAll = 2;
 @property (nonatomic, strong) UIView *textEntryBarView;
 @property (nonatomic, strong) UIButton *translateButton;
 @property (nonatomic, strong) UITextView *textView;
-@property (nonatomic, strong) NSLayoutConstraint *textEntryBarViewBottomConstraint;
-@property (nonatomic, strong) NSLayoutConstraint *textEntryBarViewHeightConstraint;
+@property (nonatomic, strong) MASConstraint *textEntryBarViewBottomConstraint;
+@property (nonatomic, strong) MASConstraint *textEntryBarViewHeightConstraint;
 @property (nonatomic, strong) UITableView *messageTableView;
 @property (nonatomic, strong) NSArray *messages;
 @property (nonatomic, copy) NSString *originalText;
@@ -412,8 +412,12 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	_languageSelectView.clipsToBounds = YES;
 	[self.view addSubview:_languageSelectView];
 
+    CGFloat verticalOffset = 0;
+    if (IS_IPHONEX) {
+        verticalOffset = 24;
+    }
 	[_languageSelectView makeConstraints:^(MASConstraintMaker *make) {
-		make.top.equalTo(@64.0);
+		make.top.equalTo(@(64.0 + verticalOffset));
 		make.width.equalTo(self.view.width);
 		make.height.equalTo(@74.0);
 		make.centerX.equalTo(self.view.centerX);
@@ -720,8 +724,13 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 
 		[self.view addSubview:_searchResultsTableView];
 
+        CGFloat verticalOffset = 0;
+        if (IS_IPHONEX) {
+            verticalOffset = 24;
+        }
+        
 		[_searchResultsTableView makeConstraints:^(MASConstraintMaker *make) {
-			make.top.equalTo(self.view.top).with.offset(64 + 74);
+			make.top.equalTo(self.view.top).with.offset(64 + 74 + verticalOffset);
 			make.left.equalTo(self.view.left);
 			make.right.equalTo(self.view.right);
 			make.bottom.equalTo(_textEntryBarView.top);
@@ -802,24 +811,26 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	_textEntryBarView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:1.0];
 	[self.view addSubview:_textEntryBarView];
 
+    CGFloat verticalOffset = 0;
+    if (IS_IPHONEX) {
+        verticalOffset = 40;
+        UIView *bottomView = [UIView new];
+        bottomView.backgroundColor = _textEntryBarView.backgroundColor;
+        [_textEntryBarView addSubview:bottomView];
+        
+        [bottomView makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_textEntryBarView.bottom);
+            make.left.equalTo(_textEntryBarView.left);
+            make.right.equalTo(_textEntryBarView.right);
+            make.bottom.equalTo(self.view.bottom);
+        }];
+    }
 	[_textEntryBarView makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.view.left);
 		make.right.equalTo(self.view.right);
+        _textEntryBarViewBottomConstraint = make.bottom.equalTo(self.view.bottom);
+        _textEntryBarViewHeightConstraint = make.height.equalTo(@(44 + verticalOffset));
 	}];
-	_textEntryBarViewBottomConstraint = [NSLayoutConstraint constraintWithItem:_textEntryBarView
-																	 attribute:NSLayoutAttributeBottom
-																	 relatedBy:NSLayoutRelationEqual
-																		toItem:self.view
-																	 attribute:NSLayoutAttributeBottom
-																	multiplier:1.0 constant:0.0];
-	[self.view addConstraint:_textEntryBarViewBottomConstraint];
-	_textEntryBarViewHeightConstraint = [NSLayoutConstraint constraintWithItem:_textEntryBarView
-																	 attribute:NSLayoutAttributeHeight
-																	 relatedBy:NSLayoutRelationEqual
-																		toItem:nil
-																	 attribute:NSLayoutAttributeNotAnAttribute
-																	multiplier:0.0 constant:44.0];
-	[self.view addConstraint:_textEntryBarViewHeightConstraint];
 
 	UIView *line = [UIView new];
     line.layer.borderColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0].CGColor;
@@ -1110,7 +1121,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 	_keyboardHeight = height;
 
 	[UIView animateWithDuration:animationDuration animations:^{
-		_textEntryBarViewBottomConstraint.constant = -height;
+		_textEntryBarViewBottomConstraint.offset = -height;
 		[self.view layoutIfNeeded];
 	} completion:^(BOOL finished) {
 		if (_messageTableView) {
@@ -1124,7 +1135,11 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 	NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 
 	[UIView animateWithDuration:animationDuration animations:^{
-		_textEntryBarViewBottomConstraint.constant = 0.0;
+        CGFloat verticalOffset = 0;
+        if (IS_IPHONEX) {
+            verticalOffset = -40;
+        }
+		_textEntryBarViewBottomConstraint.offset = verticalOffset;
         
 		[self.view layoutIfNeeded];
 	}];
@@ -1170,7 +1185,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
     _textView.contentInset = UIEdgeInsetsMake(-4.0, 0, 0, 0);
 	CGRect boundingRect = [_textView.layoutManager usedRectForTextContainer:_textView.textContainer];
     FNLOGRECT(boundingRect);
-	_textEntryBarViewHeightConstraint.constant = MAX(boundingRect.size.height, 16.0) + 8.0 * 2.0 + 5.0 * 2.0;
+	_textEntryBarViewHeightConstraint.offset = MAX(boundingRect.size.height, 16.0) + 8.0 * 2.0 + 5.0 * 2.0;
 	_textView.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
 	[self.view setNeedsLayout];
     

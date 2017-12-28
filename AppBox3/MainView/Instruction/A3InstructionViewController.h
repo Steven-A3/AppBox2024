@@ -34,5 +34,6 @@ extern NSString *const StoryBoardID_Calculator;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *wallet3_finger2BottomConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *wallet3_finger3BottomConst;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *batteryTopConstraint;
 
 @end

@@ -248,7 +248,12 @@ static NSString *const A3V3InstructionDidShowForBattery = @"A3V3InstructionDidSh
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"BatteryStatus"];
     self.instructionViewController.delegate = self;
+    [self.instructionViewController view];
+    if (IS_IPHONEX) {
+        self.instructionViewController.batteryTopConstraint.constant = 40;
+    }
     [self.navigationController.view addSubview:self.instructionViewController.view];
+    [self.instructionViewController.view layoutIfNeeded];
     self.instructionViewController.view.frame = self.navigationController.view.frame;
     self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
 }
