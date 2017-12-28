@@ -927,7 +927,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     txtFd.floatingLabelTextColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:1.0];
     txtFd.font = [UIFont systemFontOfSize:17.0];
     txtFd.floatingLabelFont = [UIFont systemFontOfSize:14];
-    txtFd.floatingLabelYPadding = @(-6);
+    txtFd.floatingLabelYPadding = -6;
     txtFd.delegate = self;
 }
 

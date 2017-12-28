@@ -590,7 +590,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
     txtFd.floatingLabelTextColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:1.0];
     txtFd.font = [UIFont systemFontOfSize:17.0];
     txtFd.floatingLabelFont = [UIFont systemFontOfSize:14];
-    txtFd.floatingLabelYPadding = @(0);
+    txtFd.floatingLabelYPadding = 0;
     txtFd.delegate = self;
 }
 

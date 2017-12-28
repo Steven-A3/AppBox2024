@@ -1431,10 +1431,12 @@ typedef CMathParser<char, double> MathParser;
                 }
             }
             
-            NSString *lastChar = [mathexpression substringFromIndex:[mathexpression length] - 1];
-            NSRange range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"(x/+-="]];
-            if (range.location == NSNotFound) {
-                mathexpression = [mathexpression stringByAppendingString:@"="];
+            if ([mathexpression length]) {
+                NSString *lastChar = [mathexpression substringFromIndex:[mathexpression length] - 1];
+                NSRange range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"(x/+-="]];
+                if (range.location == NSNotFound) {
+                    mathexpression = [mathexpression stringByAppendingString:@"="];
+                }
             }
             [self convertMathExpressionToAttributedString];
             [self evaluateAndSet];

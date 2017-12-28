@@ -572,8 +572,12 @@ A3CalendarViewDelegate>
     if ( ![_addButton isDescendantOfView:self.view] ) {
         [self.view addSubview:_addButton];
 		[_addButton makeConstraints:^(MASConstraintMaker *make) {
+            CGFloat verticalOffset = 0;
+            if (IS_IPHONEX) {
+                verticalOffset = -40;
+            }
 			make.centerX.equalTo(self.view.centerX);
-			make.bottom.equalTo(self.view.bottom).with.offset(-55);
+			make.bottom.equalTo(self.view.bottom).with.offset(-55 + verticalOffset);
 			make.width.equalTo(@44);
 			make.height.equalTo(@44);
 		}];
@@ -739,7 +743,11 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 
 - (UIView *)moreMenuView {
 	if (!_moreMenuView) {
-		_moreMenuView = [[UIView alloc] initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width, 44)];
+        CGFloat verticalOffset = 0;
+        if (IS_IPHONEX) {
+            verticalOffset = 24;
+        }
+		_moreMenuView = [[UIView alloc] initWithFrame:CGRectMake(0, 64 + verticalOffset, self.view.bounds.size.width, 44)];
 		_moreMenuView.backgroundColor = [UIColor colorWithRed:247.0 / 255.0 green:247.0 / 255.0 blue:247.0 / 255.0 alpha:1.0];
         UIButton *helpButton = [self instructionHelpButton];
         [self addFourButtons:@[helpButton, _chartButton, _accountButton, _settingButton] toView:_moreMenuView];
@@ -873,17 +881,21 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
 	[self.view addSubview:bannerView];
 	
+    CGFloat verticalOffset = 0;
+    if (IS_IPHONEX) {
+        verticalOffset = -40;
+    }
 	UIView *superview = self.view;
 	[bannerView remakeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(superview.left);
 		make.right.equalTo(superview.right);
-		make.bottom.equalTo(superview.bottom).with.offset(-44);
+		make.bottom.equalTo(superview.bottom).with.offset(-44 + verticalOffset);
 		make.height.equalTo(@(bannerView.bounds.size.height));
 	}];
 
 	[_addButton remakeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(self.view.centerX);
-		make.bottom.equalTo(self.view.bottom).with.offset(-(55 + (IS_IPHONE ? 50 : 90)));
+		make.bottom.equalTo(self.view.bottom).with.offset(-(55 + (IS_IPHONE ? 50 : 90)) + verticalOffset);
 		make.width.equalTo(@44);
 		make.height.equalTo(@44);
 	}];

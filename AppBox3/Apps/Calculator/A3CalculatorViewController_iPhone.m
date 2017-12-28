@@ -224,11 +224,25 @@
 }
 
 - (CGFloat)getExpressionLabelRightOffSet:(CGRect) screenBounds {
+    if (IS_IPHONEX && IS_LANDSCAPE) {
+        if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationLandscapeRight) {
+            return -10;
+        } else {
+            return -30;
+        }
+    }
 	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
     return IS_PORTRAIT ? (screenBounds.size.height == 480 ? -6.5 : -6.5 * scale) : 0.5 * scale;
 }
 
 - (CGFloat)getResultLabelRightOffSet:(CGRect) screenBounds {
+    if (IS_IPHONEX && IS_LANDSCAPE) {
+        if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationLandscapeRight) {
+            return -10;
+        } else {
+            return -30;
+        }
+    }
 	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
     return IS_PORTRAIT ? (screenBounds.size.height == 480 ? -15 : -14 * scale) : -8.5 * scale;
 }
@@ -316,11 +330,15 @@
     }
     
     if (IS_LANDSCAPE) {
-
 		[self.view addSubview:self.degreeRadianLabel];
         [_degreeRadianLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(self.view.left).with.offset(12);
-			//self.degreeLabelBottomConstraint =  make.bottom.equalTo(_keyboardView.top).with.offset([self getDegreeLabelBottomOffset:screenBounds]);
+            CGFloat leftOffset = 12;
+            if (IS_IPHONEX) {
+                if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationLandscapeRight) {
+                    leftOffset = 42;
+                }
+            }
+			make.left.equalTo(self.view.left).with.offset(leftOffset);
 			make.bottom.equalTo(_keyboardView.top).with.offset(-8.0);
 		}];
     } else {
@@ -419,8 +437,9 @@
     return UIInterfaceOrientationMaskAllButUpsideDown;
 }
 
-
 - (void)viewWillLayoutSubviews {
+    FNLOG();
+    
     CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
     
@@ -455,12 +474,19 @@
         }
         
         CGRect frame = _keyboardView.frame;
-        frame.origin.x = 0.0;
         frame.size.width = screenBounds.size.width;
         frame.size.height = 240.0 * scale;
+        
+        // iPhone X
         if (IS_IPHONEX) {
+            if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationLandscapeRight) {
+                frame.origin.x = 30;
+            } else {
+                frame.origin.x = 0.0;
+            }
             frame.size.height = [self iPhoneXLandscapeKeyboardHeight];
         }
+        
         frame.origin.y = 0.0;
         _keyboardView.frame = frame;
         

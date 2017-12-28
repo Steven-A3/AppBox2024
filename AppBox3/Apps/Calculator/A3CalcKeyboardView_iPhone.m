@@ -348,9 +348,11 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
         width = 80 * scale; height = 54 * scale;
         buttonTitle = bSecondButtonSelected ? [self buttonTitlesLevel2_p]: [self buttonTitlesLevel1_p];
     } else {
-        width = (screenBounds.size.width == 480 ? 60 : 71 * scale); height = 40 * scale;
         if (IS_IPHONEX) {
-            height = self.bounds.size.height / 5;
+            width = (screenBounds.size.width - 30) / 8;
+            height = 40 * scale;
+        } else {
+            width = (screenBounds.size.width == 480 ? 60 : 71 * scale); height = 40 * scale;
         }
         buttonTitle = bSecondButtonSelected ? [self buttonTitlesLevel2_h]:[self buttonTitlesLevel1_h];
     }
@@ -362,7 +364,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 			x = (column == 0) ? -1 : column * width;
 			y = row == 0 ? 1 : row * height;
 			CGRect frame = CGRectMake(x, y, width + (column == 0 ? 2 : 1), height + (row == 0 ? 0 : 1));
-			if (idx == 39 && IS_PORTRAIT) {    //"=" button
+			if (idx == 39) {    //"=" button
 				frame.size.height = height * 2 + 1;
 			}
             if (idx == 46) {

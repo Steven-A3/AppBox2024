@@ -450,7 +450,7 @@
 	textField.floatingLabelTextColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:1.0];
 	textField.font = [UIFont systemFontOfSize:17];
 	textField.floatingLabelFont = [UIFont systemFontOfSize:13];
-	textField.floatingLabelYPadding = @(0);
+	textField.floatingLabelYPadding = 0;
 	textField.secureTextEntry = YES;
 	textField.keyboardType = UIKeyboardTypeDefault;
 	textField.delegate = self;
