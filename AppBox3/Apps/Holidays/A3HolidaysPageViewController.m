@@ -54,6 +54,7 @@
 	NSInteger _lastPageIndex, _currentPageIndex;
 	BOOL _isClosing;
 	BOOL _didRunViewWillAppear;
+    CGFloat _verticalOffset;
 }
 
 - (void)cleanUp {
@@ -87,6 +88,11 @@
 	[super viewDidLoad];
 
 	FNLOG();
+    
+    if (IS_IPHONEX) {
+        _verticalOffset = -40;
+    }
+    
 	[self prepareDateFormat];
 
 	_viewControllerCache = [NSMutableDictionary new];
@@ -515,7 +521,7 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
 	[line makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.view.left).with.offset(-1);
 		make.right.equalTo(self.view.right);
-		make.bottom.equalTo(self.view.bottom).with.offset(-44);
+		make.bottom.equalTo(self.view.bottom).with.offset(-44 + _verticalOffset);
 		make.height.equalTo(@1);
 	}];
 
@@ -534,7 +540,7 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
 		make.width.equalTo(@44);
 		make.height.equalTo(@44);
 		make.right.equalTo(self.footerView.right).with.offset(-leading);
-		make.centerY.equalTo(_footerView.centerY);
+		make.centerY.equalTo(_footerView.centerY).with.offset(_verticalOffset);
 	}];
 }
 
@@ -555,7 +561,7 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
 			_pageControlWidth = make.width.equalTo(@(size.width));
 			make.height.equalTo(@30);
 			make.centerX.equalTo(_footerView.centerX);
-			make.centerY.equalTo(_footerView.centerY);
+			make.centerY.equalTo(_footerView.centerY).with.offset(_verticalOffset);
 		}];
 
 		[_pageControl setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
@@ -576,7 +582,7 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
 		[_photoLabel1 makeConstraints:^(MASConstraintMaker *make) {
 			make.left.equalTo(_footerView.left).with.offset(leading);
 			make.right.lessThanOrEqualTo(self.pageControl.left).with.offset(-5);
-			make.centerY.equalTo(_footerView.centerY).with.offset(-7);
+			make.centerY.equalTo(_footerView.centerY).with.offset(-7 + _verticalOffset);
 		}];
 
 		[_photoLabel1 setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
@@ -594,7 +600,7 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
 		[_photoLabel2 makeConstraints:^(MASConstraintMaker *make) {
 			make.left.equalTo(_footerView.left).with.offset(leading);
 			make.right.lessThanOrEqualTo(_pageControl.left).with.offset(-5);
-			make.centerY.equalTo(_footerView.centerY).with.offset(7);
+			make.centerY.equalTo(_footerView.centerY).with.offset(7 + _verticalOffset);
 		}];
 		[_photoLabel2 setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
 

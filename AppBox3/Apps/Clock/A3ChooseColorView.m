@@ -41,9 +41,13 @@ NSString *const ClockColorChooseCell = @"ClockColorCell";
 			make.height.equalTo(@44);
 		}];
         
+        CGFloat horizontalOffset = 0;
+        if (IS_IPHONEX) {
+            horizontalOffset = 20;
+        }
         UILabel* lbCaption = [[UILabel alloc] initWithFrame:viewCaption.frame];
         
-        lbCaption.center = CGPointMake(self.center.x + 16, viewCaption.center.y);
+        lbCaption.center = CGPointMake(self.center.x + 16 + horizontalOffset, viewCaption.center.y);
         lbCaption.textAlignment = NSTextAlignmentLeft;
         lbCaption.textColor = [UIColor colorWithRed:109.f/255.f green:109.f/255.f blue:114.f/255.f alpha:1.f];
 		lbCaption.font = [UIFont systemFontOfSize:16];

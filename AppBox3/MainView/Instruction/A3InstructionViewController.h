@@ -36,4 +36,6 @@ extern NSString *const StoryBoardID_Calculator;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *batteryTopConstraint;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topConstraint;
+
 @end

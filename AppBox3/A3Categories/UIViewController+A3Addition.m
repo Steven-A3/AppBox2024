@@ -852,6 +852,9 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
 	GADRequest *adRequest = [GADRequest request];
 	adRequest.keywords = keywords;
 	adRequest.gender = gender;
+#if TARGET_IPHONE_SIMULATOR
+    adRequest.testDevices = @[ kGADSimulatorID ];
+#endif
 
 	GADBannerView *bannerView = [GADBannerView new];
 	bannerView.adUnitID = unitID;

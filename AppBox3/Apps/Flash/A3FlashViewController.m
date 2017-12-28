@@ -1001,14 +1001,20 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 - (void)adjustConfigurationLayoutValueForFlashViewMode:(A3FlashViewModeType)type {
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
-    _topToolBarTopConst.constant = 20;
+    CGFloat verticalOffset = 0;
+    CGFloat verticalBottomOffset = 0;
+    if (IS_IPHONEX) {
+        verticalOffset = 30;
+        verticalBottomOffset = -40;
+    }
+    _topToolBarTopConst.constant = 20 + verticalOffset;
     
     if (_currentFlashViewMode == A3FlashViewModeTypeNone) {
         [_sliderControl setMinimumValue:0.0];
         [_sliderControl setMaximumValue:100.0];
         [_sliderControl setValue:_blackWhiteValue];
         
-        _bottomToolBarBottomConst.constant = 0;
+        _bottomToolBarBottomConst.constant = verticalBottomOffset;
         _pickerViewBottomConst.constant = -(CGRectGetHeight(_pickerPanelView.bounds) - kBottomToolBarHeight);
         _colorPickerTopConst.constant = CGRectGetHeight(self.view.bounds);
         _sliderToolBar.hidden = NO;

@@ -634,14 +634,19 @@
 	self.weatherLabel.font = [UIFont systemFontOfSize:(IS_IPHONE ? 13 : 15) * scale];
 	[self.view addSubview:self.weatherLabel];
 
+    CGFloat verticalOffset = 0;
+    if (IS_IPHONEX) {
+        verticalOffset = -30;
+    }
+    
 	[self.weatherImageView makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.view.left).with.offset(IS_IPHONE ? 12 : 25);
-		make.bottom.equalTo(self.view.bottom).with.offset(IS_IPHONE ? -8 : -25);
+		make.bottom.equalTo(self.view.bottom).with.offset((IS_IPHONE ? -8 : -25) + verticalOffset);
 	}];
 
 	[self.weatherLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.weatherImageView.right).with.offset(2);
-		make.baseline.equalTo(self.view.bottom).with.offset(IS_IPHONE ? -14 : -32);
+		make.baseline.equalTo(self.view.bottom).with.offset((IS_IPHONE ? -14 : -32) + verticalOffset);
 	}];
 }
 

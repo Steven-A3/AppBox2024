@@ -1805,6 +1805,7 @@ then drag it up or down</string>
                         </connections>
                     </view>
                     <connections>
+                        <outlet property="topConstraint" destination="IMz-3r-vr2" id="gBA-xn-9ya"/>
                         <outletCollection property="childImageViews" destination="xdE-si-SAi" id="P7Z-Ms-Jal"/>
                         <outletCollection property="childImageViews" destination="zc4-ox-WX3" id="g6I-cM-lHS"/>
                         <outletCollection property="childImageViews" destination="8Bb-Xt-gYd" id="tUH-1L-TnI"/>

@@ -318,8 +318,12 @@ static NSString *const CellIdentifier = @"holidaysCell";
 - (void)setupTableView {
 	[self.view addSubview:self.tableView];
 
+    CGFloat verticalOffset = 0;
+    if (IS_IPHONEX) {
+        verticalOffset = 31;
+    }
 	[_tableView makeConstraints:^(MASConstraintMaker *make) {
-		make.edges.equalTo(self.view).insets(UIEdgeInsetsMake(0, 0, 54, 0));
+		make.edges.equalTo(self.view).insets(UIEdgeInsetsMake(0, 0, 54 + verticalOffset, 0));
 	}];
 
 	[self updateTableHeaderView:_tableView.tableHeaderView];
@@ -373,9 +377,13 @@ static NSString *const CellIdentifier = @"holidaysCell";
 	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 	FNLOGRECT(screenBounds);
 
+    CGFloat verticalOffset = 0;
+    if (IS_IPHONEX) {
+        verticalOffset = -90;
+    }
 	CGFloat viewHeight = screenBounds.size.height;
 	CGFloat viewWidth = screenBounds.size.width;
-	viewHeight += 97.0;
+	viewHeight += 97.0 + verticalOffset;
 	viewHeight -= 54.0;
 	if (IS_IPAD) {
 		viewHeight += 62.0;

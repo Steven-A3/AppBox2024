@@ -92,11 +92,15 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 
 	[self setButtonTintColor];
 
+    CGFloat verticalOffset = 0;
+    if (IS_IPHONEX) {
+        verticalOffset = -30;
+    }
 	CGRect bounds = [self screenBoundsAdjustedWithOrientation];
     [_pageControl makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(self.view.centerX);
 		if (IS_IPHONE) {
-			make.bottom.equalTo(self.view.bottom).with.offset(bounds.size.height == 480 ? 5 : 0);
+			make.bottom.equalTo(self.view.bottom).with.offset(bounds.size.height == 480 ? 5 : verticalOffset);
 		} else {
 			make.bottom.equalTo(self.view.bottom).with.offset(0);
 		}
@@ -281,9 +285,14 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 		[_clockAppsButton setHidden:YES];
 		[self.view addSubview:_clockAppsButton];
 
+        CGFloat verticalOffset = 0;
+        if (IS_IPHONEX) {
+            verticalOffset = 30;
+        }
 		[_clockAppsButton makeConstraints:^(MASConstraintMaker *make) {
 			make.left.equalTo(self.view).with.offset(8);
-			_appsButtonTop = make.top.equalTo(self.view.top).with.offset(26);
+            // Top Offset은 변수로 저장해 두었다가, 매번 새로 설정합니다.
+			_appsButtonTop = make.top.equalTo(self.view.top).with.offset(26 + verticalOffset);
             make.width.equalTo(@44);
             make.height.equalTo(@44);
 		}];
@@ -342,9 +351,14 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 		[_yahooButton sizeToFit];
 		[self.view addSubview:_yahooButton];
 
+        CGFloat verticalOffset = 0;
+        if (IS_IPHONEX) {
+            verticalOffset = -30;
+        }
+
 		[_yahooButton makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(self.view.right).offset(IS_IPHONE ? -40 : -56);
-			make.centerY.equalTo(self.view.bottom).offset(IS_IPHONE ? -18 : -36);
+			make.centerY.equalTo(self.view.bottom).offset((IS_IPHONE ? -18 : -36) + verticalOffset);
 			make.height.equalTo(@40);
 		}];
 	}
@@ -371,9 +385,14 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 	[_chooseColorButton setHidden:YES];
 	[self.view addSubview:_chooseColorButton];
 
+    CGFloat verticalOffset = 0;
+    if (IS_IPHONEX) {
+        verticalOffset = -30;
+    }
+
 	[_chooseColorButton makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(self.view.right).offset(-28);
-		make.centerY.equalTo(self.view.bottom).offset(-28);
+		make.centerY.equalTo(self.view.bottom).offset(-28 + verticalOffset);
 		make.width.equalTo(@40);
 		make.height.equalTo(@40);
 	}];
@@ -913,12 +932,16 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 	_scrollView.contentOffset = CGPointMake(bounds.size.width * _pageControl.currentPage, 0);
 	_scrollView.contentSize = CGSizeMake(bounds.size.width * 4, bounds.size.height);
 
+    CGFloat verticalOffset = 0;
+    if (IS_IPHONEX) {
+        verticalOffset = 13;
+    }
 	if (IS_IPHONE && IS_LANDSCAPE) {
 		_appsButtonTop.with.offset(5);
 		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 	} else {
 		BOOL hideStatusBar = [_clockAppsButton isHidden] || ![[A3AppDelegate instance] rootViewController_iPad].showLeftView;
-		_appsButtonTop.with.offset(26);
+		_appsButtonTop.with.offset(26 + verticalOffset);
 		[[UIApplication sharedApplication] setStatusBarHidden:hideStatusBar withAnimation:UIStatusBarAnimationNone];
 		[self determineStatusBarStyle];
 	}
