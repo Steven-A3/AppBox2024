@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="A3FlashViewController">
@@ -36,6 +40,7 @@
                 <outlet property="sliderControl" destination="e0I-jN-Ngd" id="Pxj-us-8Lu"/>
                 <outlet property="sliderToolBar" destination="2hZ-lZ-LJE" id="arC-Mo-Yfw"/>
                 <outlet property="statusToolbar" destination="2ip-Fz-ldt" id="JpD-3l-1Vn"/>
+                <outlet property="statusToolbarHeightConstraint" destination="a4S-83-5pL" id="xiT-d3-caW"/>
                 <outlet property="topToolBar" destination="x8x-tH-EhC" id="bQs-93-7N3"/>
                 <outlet property="topToolBarTopConst" destination="izJ-ZD-Rlh" id="tDn-BU-wSs"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -51,17 +56,17 @@
                 </imageView>
                 <toolbar clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="2ip-Fz-ldt">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="20"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="20" id="a4S-83-5pL"/>
                     </constraints>
                     <items/>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </toolbar>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DZe-m5-3wU" userLabel="color picker - View" customClass="NPColorPickerView">
                     <rect key="frame" x="0.0" y="84" width="320" height="500"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="500" id="2CE-Uw-5TJ"/>
                         <constraint firstAttribute="width" constant="320" id="IEV-Yt-dOZ"/>
@@ -69,7 +74,7 @@
                 </view>
                 <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="x8x-tH-EhC" userLabel="top - Toolbar">
                     <rect key="frame" x="0.0" y="20" width="320" height="44"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="DaN-t7-L8u"/>
                         <constraint firstAttribute="height" constant="44" id="FdY-Fs-nzI"/>
@@ -87,8 +92,8 @@
                             </connections>
                         </barButtonItem>
                     </items>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </toolbar>
                 <toolbar clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="gPl-q8-ipV" userLabel="flash brightness slider - Toolbar">
                     <rect key="frame" x="0.0" y="190" width="320" height="44"/>
@@ -96,19 +101,20 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Ork-QR-NrK"/>
                         <barButtonItem style="plain" id="rFI-Ju-V3m">
                             <view key="customView" contentMode="scaleToFill" id="pZg-zV-kOv">
-                                <rect key="frame" x="9" y="11" width="23" height="23"/>
+                                <rect key="frame" x="18.5" y="10.5" width="23" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="m_flash_left" translatesAutoresizingMaskIntoConstraints="NO" id="9f0-Qb-wCA">
                                         <rect key="frame" x="0.0" y="0.0" width="23" height="23"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                         </barButtonItem>
                         <barButtonItem style="plain" id="yyU-2o-ceP">
                             <slider key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" id="bb1-Zu-W86">
-                                <rect key="frame" x="42" y="7" width="237" height="31"/>
+                                <rect key="frame" x="41.5" y="5" width="237" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="sliderControlValueChanged:" destination="-1" eventType="valueChanged" id="ExH-jg-jEe"/>
@@ -117,20 +123,21 @@
                         </barButtonItem>
                         <barButtonItem style="plain" id="qAz-HD-YHg">
                             <view key="customView" contentMode="scaleToFill" id="iyf-1J-m5E">
-                                <rect key="frame" x="289" y="11" width="23" height="23"/>
+                                <rect key="frame" x="278.5" y="10.5" width="23" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="m_flash_right" translatesAutoresizingMaskIntoConstraints="NO" id="qdC-1j-MBb">
                                         <rect key="frame" x="0.0" y="0.0" width="23" height="23"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="5ot-mR-2lr"/>
                     </items>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </toolbar>
                 <toolbar clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="2hZ-lZ-LJE" userLabel="screen brightness slider - Toolbar">
                     <rect key="frame" x="0.0" y="234" width="320" height="44"/>
@@ -138,19 +145,20 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Dbf-D9-gSo"/>
                         <barButtonItem style="plain" id="cdQ-wh-t1A">
                             <view key="customView" contentMode="scaleToFill" id="OIb-pd-MWr">
-                                <rect key="frame" x="9" y="11" width="23" height="23"/>
+                                <rect key="frame" x="18.5" y="10.5" width="23" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="f_flash_black" translatesAutoresizingMaskIntoConstraints="NO" id="AMX-fA-AyD">
                                         <rect key="frame" x="0.0" y="0.0" width="23" height="23"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                         </barButtonItem>
                         <barButtonItem style="plain" id="Bf5-gJ-Ykt">
                             <slider key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" id="e0I-jN-Ngd">
-                                <rect key="frame" x="42" y="7" width="237" height="31"/>
+                                <rect key="frame" x="41.5" y="5" width="237" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="sliderControlValueChanged:" destination="-1" eventType="valueChanged" id="pBt-Tl-vHL"/>
@@ -159,27 +167,28 @@
                         </barButtonItem>
                         <barButtonItem style="plain" id="I76-Ah-G6Z">
                             <view key="customView" contentMode="scaleToFill" id="nC2-wl-KUm">
-                                <rect key="frame" x="289" y="11" width="23" height="23"/>
+                                <rect key="frame" x="278.5" y="10.5" width="23" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="f_flash_white" translatesAutoresizingMaskIntoConstraints="NO" id="ael-h3-guQ">
                                         <rect key="frame" x="0.0" y="0.0" width="23" height="23"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="1Bk-S8-Azd"/>
                     </items>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </toolbar>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lV0-Pf-aVj" userLabel="pickerPanel - View">
                     <rect key="frame" x="0.0" y="278" width="320" height="216"/>
                     <subviews>
                         <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vNj-3P-xTb">
                             <rect key="frame" x="10" y="0.0" width="300" height="216"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="300" id="9qC-Ge-3pd"/>
                                 <constraint firstAttribute="height" constant="216" id="tLU-mq-rYn"/>
@@ -191,14 +200,14 @@
                         </pickerView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jmb-gS-sDi" userLabel="separator - View">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                            <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="0.65000000000000002" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="0.65000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="KC6-NS-6KP"/>
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="Jmb-gS-sDi" firstAttribute="leading" secondItem="lV0-Pf-aVj" secondAttribute="leading" id="15K-CV-Paq"/>
                         <constraint firstAttribute="height" constant="216" id="QSV-t1-TNy"/>
@@ -232,8 +241,8 @@
                             </connections>
                         </barButtonItem>
                     </items>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </toolbar>
                 <toolbar clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="xzf-yf-ykM" userLabel="bottom - Toolbar 2">
                     <rect key="frame" x="0.0" y="494" width="320" height="74"/>
@@ -255,11 +264,11 @@
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="qme-6q-M4l"/>
                     </items>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </toolbar>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="CyN-5t-mnB" secondAttribute="bottom" id="0eR-6N-myT"/>
                 <constraint firstAttribute="trailing" secondItem="2ip-Fz-ldt" secondAttribute="trailing" id="3X8-Np-mPs"/>

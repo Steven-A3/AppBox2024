@@ -308,7 +308,9 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 		double delayInSeconds = 1.0;
 		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+#if !TARGET_IPHONE_SIMULATOR
 			[_captureSession startRunning];
+#endif
 		});
 	} else {
         [self requestAuthorizationForCamera:NSLocalizedString(A3AppName_Mirror, nil) afterAuthorizedHandler:^(BOOL granted) {
@@ -358,6 +360,13 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 	[self.statusToolbar setFrame:CGRectMake(0, 0, screenBounds.size.width , 20)];
 
 	[self setToolBarsHidden:_topBar.hidden];
+    
+    if (IS_IPHONEX) {
+        _topBar.frame = CGRectMake(0, 40, screenBounds.size.width, 44);
+        _statusToolbar.frame = CGRectMake(0, 0, screenBounds.size.width, 40);
+        _bottomBar.frame = CGRectMake(0, screenBounds.size.height - 40, screenBounds.size.width, 44);
+        _zoomToolBar.frame = CGRectMake(0, screenBounds.size.height - 44 - 40, screenBounds.size.width, 44);
+    }
 }
 
 - (UIBarButtonItem *)appsBarButton {
@@ -567,7 +576,9 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 	double delayInSeconds = 0.1;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+#if !TARGET_IPHONE_SIMULATOR
 		[_captureSession startRunning];
+#endif
 	});
 }
 
@@ -872,15 +883,19 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	self.statusToolbar.hidden = hidden;
 	[[UIApplication sharedApplication] setStatusBarHidden:hidden];
 
-	[self.bottomBar setFrame:CGRectMake(self.bottomBar.bounds.origin.x, self.view.frame.size.height - 74 , self.view.frame.size.width, 74)];
+    CGFloat verticalOffset = 0;
+    if (IS_IPHONEX) {
+        verticalOffset = -40;
+    }
+	[self.bottomBar setFrame:CGRectMake(self.bottomBar.bounds.origin.x, self.view.frame.size.height - 74 + verticalOffset, self.view.frame.size.width, 74)];
 	if(hidden == YES) {
 		[self.zoomToolBar setFrame:CGRectMake(self.zoomToolBar.frame.origin.x,
-				self.view.frame.size.height - self.zoomToolBar.frame.size.height,
+				self.view.frame.size.height - self.zoomToolBar.frame.size.height + verticalOffset,
 				self.zoomToolBar.frame.size.width,
 				self.zoomToolBar.frame.size.height)];
 	} else {
 		[self.zoomToolBar setFrame:CGRectMake(self.zoomToolBar.frame.origin.x,
-				self.view.frame.size.height - self.zoomToolBar.frame.size.height - self.bottomBar.frame.size.height,
+				self.view.frame.size.height - self.zoomToolBar.frame.size.height - self.bottomBar.frame.size.height + verticalOffset,
 				self.zoomToolBar.frame.size.width,
 				self.zoomToolBar.frame.size.height)];
 	}
@@ -1201,7 +1216,9 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 				[self.assetLibrary writeImageToSavedPhotosAlbum:cgimg metadata:[_ciImage properties] completionBlock:^(NSURL *assetURL, NSError *error) {
 					self.capturedPhotoURL = assetURL;
 					[self setImageOnCameraRollButton:[UIImage imageWithCGImage:cgimg]];
+#if !TARGET_IPHONE_SIMULATOR
 					[_captureSession startRunning];
+#endif
 				}];
 			}
 		}];

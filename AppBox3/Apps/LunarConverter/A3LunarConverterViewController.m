@@ -84,10 +84,14 @@
 
 	CGFloat viewHeight = 84 * 3 + 1;
 
+    CGFloat verticalOffset = 0;
+    if (IS_IPHONEX) {
+        verticalOffset = 30;
+    }
 	[_mainScrollView makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.view.left);
 		make.right.equalTo(self.view.right);
-		make.top.equalTo(self.view.top).with.offset(64);
+		make.top.equalTo(self.view.top).with.offset(64 + verticalOffset);
 		make.height.equalTo(@(viewHeight));
 	}];
 

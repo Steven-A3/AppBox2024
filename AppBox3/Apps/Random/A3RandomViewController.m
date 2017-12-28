@@ -162,6 +162,10 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    
+    if (IS_IPHONEX) {
+        _generateButtonBottomConstraint.constant = 40;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -523,7 +527,7 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 		frame.origin.y += keyboardViewController.keyboardHeight;
 		keyboardView.frame = frame;
 		
-		_generateButtonBottomConstraint.constant = 0;
+        _generateButtonBottomConstraint.constant = IS_IPHONEX ? 40 : 0;
 	} completion:^(BOOL finished) {
 		[keyboardView removeFromSuperview];
 		self.numberKeyboardViewController = nil;

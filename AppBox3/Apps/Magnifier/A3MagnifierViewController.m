@@ -146,7 +146,9 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 	[self configureLayout];
 
 	if ([A3UIDevice canAccessCamera]) {
+#if !TARGET_IPHONE_SIMULATOR
 		[_captureSession startRunning];
+#endif
 	} else {
 		[self requestAuthorizationForCamera:NSLocalizedString(A3AppName_Magnifier, nil) afterAuthorizedHandler:NULL];
 	}
@@ -169,7 +171,9 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 			[self setupBrightness];
 			[self setupZoomSlider];
 		}
+#if !TARGET_IPHONE_SIMULATOR
 		[_captureSession startRunning];
+#endif
 		[self applyZoomScale];
 
 		if (_isLightOn) {
@@ -227,6 +231,12 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 
 - (void)configureLayout {
     CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+    CGFloat verticalBottomOffset = 0;
+    if (IS_IPHONEX) {
+        verticalBottomOffset = -40;
+        _topToolBar.frame = CGRectMake(0, 40, screenBounds.size.width, 44);
+        _bottomToolBar.frame = CGRectMake(0, screenBounds.size.height - verticalBottomOffset, screenBounds.size.width, 44);
+    }
     if(!IS_IPHONE) {
         [self setPreviewRotation:screenBounds];
         [self.flashBrightSlider setFrame:CGRectMake(self.flashBrightSlider.frame.origin.x, self.flashBrightSlider.frame.origin.y, screenBounds.size.width - 106, self.flashBrightSlider.frame.size.height)];
@@ -236,12 +246,12 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     }
     else {
 		[self setPreviewRotation:screenBounds];
-        [self.flashBrightSlider setFrame:CGRectMake(self.flashBrightSlider.frame.origin.x, self.flashBrightSlider.frame.origin.y, screenBounds.size.width - 98, self.flashBrightSlider.frame.size.height)];
-        [self.brightnessSlider setFrame:CGRectMake(self.brightnessSlider.frame.origin.x, self.brightnessSlider.frame.origin.y, screenBounds.size.width - 98, self.brightnessSlider.frame.size.height)];
-        [self.zoomSlider setFrame:CGRectMake(self.zoomSlider.frame.origin.x, self.zoomSlider.frame.origin.y, screenBounds.size.width - 98, self.zoomSlider.frame.size.height)];
+        [self.flashBrightSlider setFrame:CGRectMake(self.flashBrightSlider.frame.origin.x, self.flashBrightSlider.frame.origin.y + verticalBottomOffset, screenBounds.size.width - 98, self.flashBrightSlider.frame.size.height)];
+        [self.brightnessSlider setFrame:CGRectMake(self.brightnessSlider.frame.origin.x, self.brightnessSlider.frame.origin.y + verticalBottomOffset, screenBounds.size.width - 98, self.brightnessSlider.frame.size.height)];
+        [self.zoomSlider setFrame:CGRectMake(self.zoomSlider.frame.origin.x, self.zoomSlider.frame.origin.y + verticalBottomOffset, screenBounds.size.width - 98, self.zoomSlider.frame.size.height)];
     }
  
-	_statusToolbar.frame = CGRectMake(0, 0, screenBounds.size.width, 20);
+    _statusToolbar.frame = CGRectMake(0, 0, screenBounds.size.width, 20 + IS_IPHONEX ? 20 : 0);
 	[self setToolBarsHidden:_topToolBar.hidden];
 }
 
@@ -398,31 +408,36 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 	self.topToolBar.hidden = hidden;
 	self.bottomToolBar.hidden = hidden;
 
-	[self.bottomToolBar setFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.size.height - 74 , self.view.frame.size.width, 74)];
+    CGFloat verticalBottomOffset = 0;
+    if (IS_IPHONEX) {
+        verticalBottomOffset = -40;
+    }
+    
+	[self.bottomToolBar setFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.size.height - 74 + verticalBottomOffset , self.view.frame.size.width, 74)];
 	if (hidden == YES) {
 		[self.flashToolBar setFrame:CGRectMake(self.flashToolBar.frame.origin.x,
-				self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.brightnessToolBar.frame.size.height - self.flashToolBar.frame.size.height,
+				self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.brightnessToolBar.frame.size.height - self.flashToolBar.frame.size.height + verticalBottomOffset,
 				self.flashToolBar.frame.size.width,
 				self.flashToolBar.frame.size.height)];
 		[self.brightnessToolBar setFrame:CGRectMake(self.brightnessToolBar.frame.origin.x,
-				self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.brightnessToolBar.frame.size.height,
+				self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.brightnessToolBar.frame.size.height + verticalBottomOffset,
 				self.brightnessToolBar.frame.size.width,
 				self.brightnessToolBar.frame.size.height)];
 		[self.magnifierToolBar setFrame:CGRectMake(self.magnifierToolBar.frame.origin.x,
-				self.view.frame.size.height - self.magnifierToolBar.frame.size.height,
+				self.view.frame.size.height - self.magnifierToolBar.frame.size.height + verticalBottomOffset,
 				self.magnifierToolBar.frame.size.width,
 				self.magnifierToolBar.frame.size.height)];
 	} else {
 		[self.flashToolBar setFrame:CGRectMake(self.flashToolBar.frame.origin.x,
-				self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.brightnessToolBar.frame.size.height - self.bottomToolBar.frame.size.height-self.flashToolBar.frame.size.height,
+				self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.brightnessToolBar.frame.size.height - self.bottomToolBar.frame.size.height-self.flashToolBar.frame.size.height + verticalBottomOffset,
 				self.flashToolBar.frame.size.width,
 				self.flashToolBar.frame.size.height)];
 		[self.brightnessToolBar setFrame:CGRectMake(self.brightnessToolBar.frame.origin.x,
-				self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.brightnessToolBar.frame.size.height - self.bottomToolBar.frame.size.height,
+				self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.brightnessToolBar.frame.size.height - self.bottomToolBar.frame.size.height + verticalBottomOffset,
 				self.brightnessToolBar.frame.size.width,
 				self.brightnessToolBar.frame.size.height)];
 		[self.magnifierToolBar setFrame:CGRectMake(self.magnifierToolBar.frame.origin.x,
-				self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.bottomToolBar.frame.size.height,
+				self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.bottomToolBar.frame.size.height + verticalBottomOffset,
 				self.magnifierToolBar.frame.size.width,
 				self.magnifierToolBar.frame.size.height)];        }
 	_statusToolbar.hidden = hidden;
@@ -769,7 +784,9 @@ static NSString *const A3V3InstructionDidShowForMagnifier = @"A3V3InstructionDid
 	_effectiveScale = 1.0;
     
     [_frameCalculator reset];
+#if !TARGET_IPHONE_SIMULATOR
 	[_captureSession startRunning];
+#endif
 }
 
 - (void)cleanUp

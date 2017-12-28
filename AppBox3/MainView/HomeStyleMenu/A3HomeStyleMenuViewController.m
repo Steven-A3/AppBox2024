@@ -192,6 +192,9 @@
 		} else {
 			offset = screenBounds.size.height == 480 ? -5 : -15;
 		}
+        if (IS_IPHONEX) {
+            offset = -40;
+        }
 		make.bottom.equalTo(targetView.bottom).with.offset(offset);
 	}];
 
