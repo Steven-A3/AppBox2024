@@ -363,9 +363,6 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
     
     if (IS_IPHONEX) {
         _topBar.frame = CGRectMake(0, 40, screenBounds.size.width, 44);
-        _statusToolbar.frame = CGRectMake(0, 0, screenBounds.size.width, 40);
-        _bottomBar.frame = CGRectMake(0, screenBounds.size.height - 40, screenBounds.size.width, 44);
-        _zoomToolBar.frame = CGRectMake(0, screenBounds.size.height - 44 - 40, screenBounds.size.width, 44);
     }
 }
 

@@ -102,6 +102,8 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     _isLightOn = NO;
     self.flashBrightSlider.value = 0.5;
     [self setupInstructionView];
+
+    [self configureLayout];
 }
 
 - (void)removeObserver {
@@ -143,7 +145,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	[self configureLayout];
+    [self setToolBarsHidden:_topToolBar.hidden];
 
 	if ([A3UIDevice canAccessCamera]) {
 #if !TARGET_IPHONE_SIMULATOR
@@ -251,7 +253,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
         [self.zoomSlider setFrame:CGRectMake(self.zoomSlider.frame.origin.x, self.zoomSlider.frame.origin.y + verticalBottomOffset, screenBounds.size.width - 98, self.zoomSlider.frame.size.height)];
     }
  
-    _statusToolbar.frame = CGRectMake(0, 0, screenBounds.size.width, 20 + IS_IPHONEX ? 20 : 0);
+    _statusToolbar.frame = CGRectMake(0, 0, screenBounds.size.width, 20 + (IS_IPHONEX ? 20 : 0));
 	[self setToolBarsHidden:_topToolBar.hidden];
 }
 
@@ -439,7 +441,11 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 		[self.magnifierToolBar setFrame:CGRectMake(self.magnifierToolBar.frame.origin.x,
 				self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.bottomToolBar.frame.size.height + verticalBottomOffset,
 				self.magnifierToolBar.frame.size.width,
-				self.magnifierToolBar.frame.size.height)];        }
+				self.magnifierToolBar.frame.size.height)];
+    }
+    FNLOGRECT(_flashToolBar.frame);
+    FNLOGRECT(_brightnessToolBar.frame);
+    FNLOGRECT(_magnifierToolBar.frame);
 	_statusToolbar.hidden = hidden;
 	[[UIApplication sharedApplication] setStatusBarHidden:hidden];
 }
