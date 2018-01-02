@@ -10,6 +10,7 @@
 
 @protocol A3CalcKeyboardViewDelegate <NSObject>
 - (void)keyboardButtonPressed:(NSUInteger)key;
+- (BOOL)radian;
 @end
 
 @class A3KeyboardButton_iOS7_iPhone;

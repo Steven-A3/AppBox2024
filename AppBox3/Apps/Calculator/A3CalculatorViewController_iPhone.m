@@ -203,12 +203,11 @@
     if([self radian]) {
         [_calculator setRadian:FALSE];
         self.radian = NO;
-        _degreeRadianLabel.text = @"Deg";
     } else {
         [_calculator setRadian:TRUE];
         self.radian = YES;
-        _degreeRadianLabel.text = @"Rad";
     }
+    _degreeRadianLabel.text = self.radian ? @"Rad" : @"Deg";
 }
 
 - (CGFloat)getSVbottomOffSet:(CGRect) screenBounds {

@@ -336,6 +336,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
             }
 		}
 	}
+    [self setDegreeRadianButtonTitle];
 }
 
 - (void)layoutSubviews {
@@ -391,6 +392,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
             }
         }
     }
+    [self setDegreeRadianButtonTitle];
 }
 
 - (void)setTitle:(NSDictionary *)titleInfo forButton:(A3KeyboardButton_iOS7_iPhone *)button {
@@ -464,6 +466,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 				}
 			}
 		}
+        [self setDegreeRadianButtonTitle];
 	}];
 }
 
@@ -479,16 +482,20 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 
 	} else {
 		if ([_delegate respondsToSelector:@selector(keyboardButtonPressed:)]) {
+            [_delegate keyboardButtonPressed:input];
             if (input == A3E_RADIAN_DEGREE) {
-                if([button.titleLabel.text isEqualToString:@"Rad"]) {
-                    [button setTitle:@"Deg" forState:UIControlStateNormal];
-                } else {
-                    [button setTitle:@"Rad" forState:UIControlStateNormal];
-                }
+                [self setDegreeRadianButtonTitle];
             }
-			[_delegate keyboardButtonPressed:input];
 		}
 	}
+}
+
+- (void)setDegreeRadianButtonTitle {    
+    if([_delegate radian]) {
+        [_radianDegreeButton setTitle:@"Deg" forState:UIControlStateNormal];
+    } else {
+        [_radianDegreeButton setTitle:@"Rad" forState:UIControlStateNormal];
+    }
 }
 
 /*
