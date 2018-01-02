@@ -337,7 +337,7 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 	if (IS_IPHONE && IS_LANDSCAPE) {
 		[self setToolBarsHidden:YES];
 	}
-	[self setupBannerViewForAdUnitID:AdMobAdUnitIDMirror keywords:nil gender:kGADGenderUnknown];
+	[self setupBannerViewForAdUnitID:AdMobAdUnitIDMirror keywords:@[@"mirror", @"ladies"] gender:kGADGenderUnknown];
 }
 
 - (void)setupButtonEnabled {

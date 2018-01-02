@@ -446,6 +446,7 @@
 
 - (JVFloatLabeledTextField *)setupPasscodeField {
 	JVFloatLabeledTextField *textField = [JVFloatLabeledTextField new];
+    textField.clipsToBounds = NO;
 	textField.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
 	textField.floatingLabelTextColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:1.0];
 	textField.font = [UIFont systemFontOfSize:17];

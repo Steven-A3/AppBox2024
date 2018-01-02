@@ -387,7 +387,7 @@
         _degreeRadianLabel.textAlignment = NSTextAlignmentLeft;
         _degreeRadianLabel.backgroundColor = [UIColor clearColor];
 //        _degreeRadianLabel.baselineAdjustment = UIBaselineAdjustmentAlignBaselines;
-        _degreeRadianLabel.text = @"Rad";
+        _degreeRadianLabel.text = self.radian ? @"Rad" : @"Deg";
     }
     
     return _degreeRadianLabel;

@@ -230,7 +230,7 @@
 			[self showKeyboardAnimated:YES];
 		}
 	}
-	[self setupBannerViewForAdUnitID:AdMobAdUnitIDLunarConverter keywords:nil gender:kGADGenderUnknown];
+	[self setupBannerViewForAdUnitID:AdMobAdUnitIDLunarConverter keywords:@[@"chinese", @"korean", @"lunar"] gender:kGADGenderUnknown];
 	
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self showNavigationBarOn:self.navigationController];

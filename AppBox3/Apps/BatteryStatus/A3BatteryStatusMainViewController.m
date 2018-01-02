@@ -146,7 +146,7 @@
 	}
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
         [self setupBannerViewForAdUnitID:AdMobAdUnitIDBattery
-                                keywords:nil
+                                keywords:@[@"battery"]
                                   gender:kGADGenderUnknown
                                   adSize:IS_IPHONE ? kGADAdSizeSmartBannerPortrait : kGADAdSizeLeaderboard];
 	}

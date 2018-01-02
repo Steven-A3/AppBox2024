@@ -179,7 +179,7 @@
 		[self leftBarButtonAppsButton];
 	}
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        [self setupBannerViewForAdUnitID:AdMobAdUnitIDDateCalc keywords:nil gender:kGADGenderUnknown];
+        [self setupBannerViewForAdUnitID:AdMobAdUnitIDDateCalc keywords:@[@"calendar"] gender:kGADGenderUnknown];
     }
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self showNavigationBarOn:self.navigationController];

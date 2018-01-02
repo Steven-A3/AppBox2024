@@ -161,7 +161,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 	[super viewDidAppear:animated];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
-	[self setupBannerViewForAdUnitID:AdMobAdUnitIDMagnifier keywords:nil gender:kGADGenderUnknown];
+	[self setupBannerViewForAdUnitID:AdMobAdUnitIDMagnifier keywords:@[@"magnifier", @"glasses"] gender:kGADGenderUnknown];
 }
 
 - (void)applicationDidBecomeActive {

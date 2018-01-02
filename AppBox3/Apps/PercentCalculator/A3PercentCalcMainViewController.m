@@ -174,7 +174,7 @@
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	}
-    [self setupBannerViewForAdUnitID:AdMobAdUnitIDPercentCalc keywords:nil gender:kGADGenderUnknown];
+    [self setupBannerViewForAdUnitID:AdMobAdUnitIDPercentCalc keywords:@[@"sale", @"discount"] gender:kGADGenderUnknown];
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self showNavigationBarOn:self.navigationController];
 	}

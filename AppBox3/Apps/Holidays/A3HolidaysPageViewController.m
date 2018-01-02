@@ -179,7 +179,7 @@
 
 		[self alertDisclaimer];
 
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDHolidays keywords:nil gender:kGADGenderUnknown];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDHolidays keywords:@[@"holidays"] gender:kGADGenderUnknown];
 	}
 }
 

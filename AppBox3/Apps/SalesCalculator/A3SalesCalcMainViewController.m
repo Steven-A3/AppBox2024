@@ -220,7 +220,7 @@ enum A3TableElementCellType {
 		[self leftBarButtonAppsButton];
 	}
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDSalesCalc keywords:nil gender:kGADGenderUnknown];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDSalesCalc keywords:@[@"sale", @"price"] gender:kGADGenderUnknown];
 	}
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self showNavigationBarOn:self.navigationController];

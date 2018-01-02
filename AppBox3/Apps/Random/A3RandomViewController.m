@@ -185,7 +185,7 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	}
-    [self setupBannerViewForAdUnitID:AdMobAdUnitIDRandom keywords:nil gender:kGADGenderUnknown];
+    [self setupBannerViewForAdUnitID:AdMobAdUnitIDRandom keywords:@[@"random", @"lottery"] gender:kGADGenderUnknown];
 	
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self showNavigationBarOn:self.navigationController];

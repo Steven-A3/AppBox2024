@@ -133,7 +133,7 @@
 		[self leftBarButtonAppsButton];
 	}
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDTranslator keywords:nil gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDTranslator keywords:@[@"translator", @"language"] gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
 	}
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self showNavigationBarOn:self.navigationController];

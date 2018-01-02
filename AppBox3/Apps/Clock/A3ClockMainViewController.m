@@ -231,7 +231,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 	}
     [self resetAndStartAutoDimTimer];
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDClock keywords:nil gender:kGADGenderUnknown];
+        [self setupBannerViewForAdUnitID:AdMobAdUnitIDClock keywords:@[@"clock"] gender:kGADGenderUnknown];
 	}
 	[self setupInstructionView];
 	if (self.instructionViewController) {

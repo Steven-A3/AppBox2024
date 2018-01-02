@@ -263,7 +263,7 @@
 		});
 	}
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        [self setupBannerViewForAdUnitID:AdMobAdUnitIDDaysCounter keywords:nil gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
+        [self setupBannerViewForAdUnitID:AdMobAdUnitIDDaysCounter keywords:@[@"calendar", @"anniversary"] gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
     }
 	
 	UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];

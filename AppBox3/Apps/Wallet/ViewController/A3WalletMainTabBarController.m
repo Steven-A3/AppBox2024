@@ -139,7 +139,7 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 	
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDWallet keywords:nil gender:kGADGenderUnknown];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDWallet keywords:@[@"wallet", @"security", @"privacy", @"notes"] gender:kGADGenderUnknown];
 	}
 }
 

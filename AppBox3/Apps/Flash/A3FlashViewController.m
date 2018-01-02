@@ -342,7 +342,7 @@ NSString *const cellID = @"flashEffectID";
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDFlashlight keywords:nil gender:kGADGenderUnknown];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDFlashlight keywords:@[@"torch", @"flashlight"] gender:kGADGenderUnknown];
 	}
 	[self setupInstructionView];
 }

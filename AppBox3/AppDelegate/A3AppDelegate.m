@@ -1539,7 +1539,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 	NSDate *adsDisplayTime = [[NSUserDefaults standardUserDefaults] objectForKey:A3AdsDisplayTime];
 //	NSInteger numberOfTimesOpeningSubApp = [[NSUserDefaults standardUserDefaults] integerForKey:A3NumberOfTimesOpeningSubApp];
 	if (!adsDisplayTime || [[NSDate date] timeIntervalSinceDate:adsDisplayTime] > 60 * 60) {
-		[self setupAdInterstitialForAdUnitID:A3InterstitialAdUnitID keywords:nil gender:kGADGenderUnknown];
+		[self setupAdInterstitialForAdUnitID:A3InterstitialAdUnitID keywords:@[@"shopping", @"currency", @"wallet", @"holidays", @"calendar"] gender:kGADGenderUnknown];
 		return YES;
 	}
 	

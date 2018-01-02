@@ -52,7 +52,7 @@
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDCalculator keywords:nil gender:kGADGenderUnknown];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDCalculator keywords:@[@"calculator"] gender:kGADGenderUnknown];
 	}
 	if (IS_IPHONE && IS_PORTRAIT && [self.navigationController.navigationBar isHidden]) {
 		[self showNavigationBarOn:self.navigationController];

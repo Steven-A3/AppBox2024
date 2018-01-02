@@ -214,7 +214,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 		[self leftBarButtonAppsButton];
 	}
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        [self setupBannerViewForAdUnitID:AdMobAdUnitIDExpenseList keywords:nil gender:kGADGenderUnknown];
+        [self setupBannerViewForAdUnitID:AdMobAdUnitIDExpenseList keywords:@[@"expense"] gender:kGADGenderUnknown];
     }
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self showNavigationBarOn:self.navigationController];

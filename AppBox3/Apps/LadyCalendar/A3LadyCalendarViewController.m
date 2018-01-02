@@ -230,7 +230,7 @@ A3CalendarViewDelegate>
 	[self updateCurrentMonthLabel];
 
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDLadiesCalendar keywords:nil gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDLadiesCalendar keywords:@[@"menstruation", @"ladies"] gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
 	}
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self.navigationController setNavigationBarHidden:NO animated:NO];

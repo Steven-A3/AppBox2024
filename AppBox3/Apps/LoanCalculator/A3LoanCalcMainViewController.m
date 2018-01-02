@@ -232,7 +232,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 		[self leftBarButtonAppsButton];
 	}
     [self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/5665624549"
-                            keywords:nil
+                            keywords:@[@"loan", @"finance", @"banking"]
                               gender:kGADGenderUnknown
                               adSize:IS_IPHONE ? kGADAdSizeSmartBannerPortrait : kGADAdSizeLeaderboard];
 

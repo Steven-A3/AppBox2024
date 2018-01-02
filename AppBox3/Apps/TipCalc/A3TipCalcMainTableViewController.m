@@ -202,7 +202,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 		[self leftBarButtonAppsButton];
 	}
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDTipCalc keywords:nil gender:kGADGenderUnknown];
+        [self setupBannerViewForAdUnitID:AdMobAdUnitIDTipCalc keywords:@[@"restaurant", @"tip"] gender:kGADGenderUnknown];
 	}
 	[self keyboardDidHide:nil];
 	if ([self.navigationController.navigationBar isHidden]) {

@@ -554,6 +554,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 
 - (void)configureFloatingTextField:(JVFloatLabeledTextField *)txtFd
 {
+    txtFd.clipsToBounds = NO;
     txtFd.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
     txtFd.floatingLabelTextColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:1.0];
     txtFd.font = [UIFont systemFontOfSize:17.0];
