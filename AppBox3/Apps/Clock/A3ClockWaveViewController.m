@@ -772,6 +772,10 @@
 - (void)refreshWholeClock:(A3ClockInfo *)clockInfo {
 	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
 	
+    if (IS_IPHONEX) {
+        CGRect screenBounds = [[UIScreen mainScreen] bounds];
+        scale = MIN(screenBounds.size.width, screenBounds.size.height) / 320;
+    }
 	if([[A3UserDefaults standardUserDefaults] clockUse24hourClock])
 		self.am_pm24Label.text = @"24";
 	else

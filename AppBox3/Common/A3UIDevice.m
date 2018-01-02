@@ -45,11 +45,7 @@ NSString *const A3AnimationIDKeyboardWillShow = @"A3AnimationIDKeyboardWillShow"
 	CGFloat scale;
 	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
     if (IS_IPHONEX) {
-        if (IS_PORTRAIT) {
-            scale = bounds.size.width / 320;
-        } else {
-            scale = bounds.size.width / 812;
-        }
+        scale = MIN(bounds.size.width, bounds.size.height) / 320;
     } else if (IS_IPHONE) {
 		if (IS_PORTRAIT) {
 			scale = bounds.size.width / 320;

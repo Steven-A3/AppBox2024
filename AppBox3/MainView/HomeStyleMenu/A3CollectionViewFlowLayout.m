@@ -421,11 +421,17 @@
 	
 	[superview addSubview:self.deleteZoneView];
 	
+    CGFloat verticalOffset = 0;
+    if (IS_IPHONEX) {
+        verticalOffset = 20;
+    }
+    
 	[_deleteZoneView makeConstraints:^(MASConstraintMaker *make) {
 		make.top.equalTo(superview.top);
 		make.left.equalTo(superview.left);
 		make.right.equalTo(superview.right);
-		make.height.equalTo(IS_IPHONE ? @70 : @80);
+        CGFloat height = (IS_IPHONE ? 70 : 80) + verticalOffset;
+		make.height.equalTo(@(height));
 	}];
 	
 	UILabel *textLabel = [UILabel new];

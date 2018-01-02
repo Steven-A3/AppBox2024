@@ -277,7 +277,9 @@ NSString *const cellID = @"flashEffectID";
 	[_bottomToolBar2 setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 	[_statusToolbar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
     
-    _statusToolbarHeightConstraint.constant = 40;
+    if (IS_IPHONEX) {
+        _statusToolbarHeightConstraint.constant = 40;
+    }
 }
 
 - (void)requestAuthorizationForCamera {
