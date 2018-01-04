@@ -1,4 +1,4 @@
-﻿/* 
+/* 
    unit.strings
    AppBox Pro
 
@@ -377,7 +377,7 @@
 "Earth masses" = "massa della Terra";
 "grains" = "grani";
 "grams" = "grammi";
-"hundredweights" = "quintali";
+"hundredweights" = "hudredweights";
 "kilograms" = "chilogrammi";
 "ounces(US & UK)" = "oncie(US & UK)";
 "ounces(troy)" = "oncie(troia)";

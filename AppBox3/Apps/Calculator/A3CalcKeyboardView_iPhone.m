@@ -490,7 +490,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 	}
 }
 
-- (void)setDegreeRadianButtonTitle {    
+- (void)setDegreeRadianButtonTitle {
     if([_delegate radian]) {
         [_radianDegreeButton setTitle:@"Deg" forState:UIControlStateNormal];
     } else {

@@ -720,7 +720,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
         }];
     } else {
         A3CurrencyTVDataCell *dataCell;
-        dataCell = [tableView dequeueReusableCellWithIdentifier:A3CurrencyDataCellID forIndexPath:indexPath];
+        dataCell = [tableView dequeueReusableCellWithIdentifier:A3CurrencyDataCellID];
 
         [self configureDataCell:dataCell atIndexPath:indexPath];
 
