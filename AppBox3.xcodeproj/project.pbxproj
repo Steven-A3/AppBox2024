@@ -708,6 +708,7 @@
 		68B9B17017D04152003ACAD0 /* NSDate+daysleft.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B16F17D04152003ACAD0 /* NSDate+daysleft.m */; };
 		68B9DE701C17E1DF002E0D34 /* A3CurrencyPickerStyleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9DE6F1C17E1DF002E0D34 /* A3CurrencyPickerStyleViewController.m */; };
 		68C0F0781E3F4A9200B04E8B /* A3SharePopupFavoriteButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C0F0771E3F4A9200B04E8B /* A3SharePopupFavoriteButton.m */; };
+		68C149481FFEF9E100545EB6 /* NSString+TextDirectionality.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C149471FFEF9E100545EB6 /* NSString+TextDirectionality.m */; };
 		68C1ABFA18B1C05200021001 /* NSDateFormatter+LunarDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C1ABF918B1C05200021001 /* NSDateFormatter+LunarDate.m */; };
 		68C7E1081BE20C1C00861AFD /* A3CurrencyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C7E1071BE20C1C00861AFD /* A3CurrencyViewController.m */; };
 		68C802D819571A0200BC19EE /* WalletCategoryPreset.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68C802D719571A0200BC19EE /* WalletCategoryPreset.plist */; };
@@ -2364,6 +2365,8 @@
 		68B9DE6F1C17E1DF002E0D34 /* A3CurrencyPickerStyleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyPickerStyleViewController.m; path = Apps/Currency/A3CurrencyPickerStyleViewController.m; sourceTree = "<group>"; };
 		68C0F0761E3F4A9200B04E8B /* A3SharePopupFavoriteButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3SharePopupFavoriteButton.h; sourceTree = "<group>"; };
 		68C0F0771E3F4A9200B04E8B /* A3SharePopupFavoriteButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SharePopupFavoriteButton.m; sourceTree = "<group>"; };
+		68C1493E1FFEF9E100545EB6 /* NSString+TextDirectionality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TextDirectionality.h"; sourceTree = "<group>"; };
+		68C149471FFEF9E100545EB6 /* NSString+TextDirectionality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TextDirectionality.m"; sourceTree = "<group>"; };
 		68C1ABF818B1C05200021001 /* NSDateFormatter+LunarDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+LunarDate.h"; sourceTree = "<group>"; };
 		68C1ABF918B1C05200021001 /* NSDateFormatter+LunarDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+LunarDate.m"; sourceTree = "<group>"; };
 		68C7E1061BE20C1C00861AFD /* A3CurrencyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyViewController.h; path = Apps/Currency/A3CurrencyViewController.h; sourceTree = "<group>"; };
@@ -5095,6 +5098,8 @@
 		68B6A35318CEDDD1004084EF /* JVFloatLabeledTextField */ = {
 			isa = PBXGroup;
 			children = (
+				68C1493E1FFEF9E100545EB6 /* NSString+TextDirectionality.h */,
+				68C149471FFEF9E100545EB6 /* NSString+TextDirectionality.m */,
 				68B6A35418CEDDD1004084EF /* JVFloatLabeledTextField.h */,
 				68B6A35518CEDDD1004084EF /* JVFloatLabeledTextField.m */,
 				68B6A35618CEDDD1004084EF /* JVFloatLabeledTextView.h */,
@@ -7140,6 +7145,7 @@
 				6898D8281E45769B00B7BEEA /* A3KaomojiDataManager.m in Sources */,
 				57E4E1C819D2DCC20037371B /* A3FlashViewController.m in Sources */,
 				68B6A31318CEC76D004084EF /* GCPlaceholderTextView.m in Sources */,
+				68C149481FFEF9E100545EB6 /* NSString+TextDirectionality.m in Sources */,
 				68B6A2BE18CEC76D004084EF /* A3LoanCalcDateInputCell.m in Sources */,
 				68067C8C186E867C00D1A1D1 /* A3PasswordViewController.m in Sources */,
 				571795CE19D7CD6600DEF2FB /* RGB-HSL.m in Sources */,
