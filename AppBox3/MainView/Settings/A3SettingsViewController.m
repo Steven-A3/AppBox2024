@@ -389,7 +389,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 													  [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 													  
 													  [[A3AppDelegate instance] removeSecurityCoverView];
-													  if (success) {
+													  if (success && !error) {
 														  [[A3AppDelegate instance] saveTimerStartTime];
 														  [self performSegueWithIdentifier:@"passcode" sender:nil];
 													  } else {

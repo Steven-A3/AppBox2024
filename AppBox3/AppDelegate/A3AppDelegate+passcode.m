@@ -48,17 +48,23 @@
 	NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
 	FNLOG(@"%f", now - [self timerStartTime]);
     NSTimeInterval timerStartTime = [self timerStartTime];
-    if (now - timerStartTime < 0) {
+
+    [self addLog:[NSString stringWithFormat:@"%s, NOW: %f, timerStartTime: %f", __FUNCTION__, now, timerStartTime]];
+    [self addCallStackLog];
+
+    if ((now - timerStartTime) < 0) {
         return YES;
     }
-	if (timerStartTime != -1 && (now - timerStartTime < 1.0)) {
+	if ((timerStartTime != -1) && (now - timerStartTime < 1.0)) {
 		return NO;
 	}
 	if ((now - [self passcodeFreeBegin]) < 0.2) {
 		return NO;
 	}
 	// startTime wasn't saved yet (first app use and it crashed, phone force closed, etc) if it returns -1.
-	if (now - timerStartTime >= [self timerDuration] || timerStartTime == -1) return YES;
+	if ((now - timerStartTime >= [self timerDuration]) || timerStartTime == -1) {
+        return YES;
+    }
 	return NO;
 }
 
@@ -93,7 +99,9 @@
 - (BOOL)showLockScreen {
 	BOOL passwordEnabled = [A3KeychainUtils getPassword] != nil;
 	BOOL passcodeTimerEnd = [self didPasscodeTimerEnd];
-
+    
+    [self addLog:[NSString stringWithFormat:@"passwordEnabled: %@, passcodeTimerEnd: %@", passwordEnabled ? @"YES": @"NO", passcodeTimerEnd ? @"YES":@"NO"]];
+    
 	if (!passwordEnabled || !passcodeTimerEnd) return NO;
 
 	BOOL presentLockScreen = [self shouldProtectScreen];
@@ -103,14 +111,18 @@
 	} else {
 		[self showReceivedLocalNotifications];
 	}
+    [self addLog:@"showLockScreen returns NO"];
     return NO;
 }
 
 - (void)presentLockScreenShowCancelButton:(BOOL)showCancelButton {
+    [self addLog:[NSString stringWithFormat:@"%s", __FUNCTION__]];
+    
 	if (![self didPasscodeTimerEnd]) {
 		return;
 	}
 	if (self.passcodeViewController.view.superview) {
+        [self addLog:[NSString stringWithFormat:@"%s returns removeSecurityCoverView for self.passcodeViewController.view.superview has value", __FUNCTION__]];
 		[self removeSecurityCoverView];
 		return;
 	}
@@ -166,18 +178,18 @@
 			[context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
 					localizedReason:NSLocalizedString(@"Unlock AppBox Pro", @"Unlock AppBox Pro")
 							  reply:^(BOOL success, NSError *error) {
-						dispatch_async(dispatch_get_main_queue(), ^{
-							[[UIApplication sharedApplication] setStatusBarHidden:NO];
-							[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-							[self.touchIDBackgroundViewController dismissViewControllerAnimated:NO completion:NULL];
-							if (success) {
-								[self saveTimerStartTime];
-								[self passcodeViewControllerDidDismissWithSuccess:YES];
-							} else {
-								presentPasscodeViewControllerBlock(showCancelButton);
-							}
-							self.touchIDEvaluationDidFinish = YES;
-						});
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                      [[UIApplication sharedApplication] setStatusBarHidden:NO];
+                                      [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+                                      [self.touchIDBackgroundViewController dismissViewControllerAnimated:NO completion:NULL];
+                                      if (success && !error) {
+                                          [self saveTimerStartTime];
+                                          [self passcodeViewControllerDidDismissWithSuccess:YES];
+                                      } else {
+                                          presentPasscodeViewControllerBlock(showCancelButton);
+                                      }
+                                      self.touchIDEvaluationDidFinish = YES;
+                                  });
 					}];
 		} else {
 			[self removeSecurityCoverView];
@@ -248,6 +260,9 @@
 }
 
 - (void)applicationDidBecomeActive_passcodeAfterLaunch:(BOOL)isAfterLaunch {
+    [self addLog:[NSString stringWithFormat:@"%s", __FUNCTION__]];
+    [self addCallStackLog];
+    
     FNLOG();
     
 	if (self.isSettingsEvaluatingTouchID) {
@@ -441,6 +456,9 @@
 
 - (void)removeSecurityCoverView {
 	FNLOG();
+    [self addLog:[NSString stringWithFormat:@"%s", __FUNCTION__]];
+    [self addCallStackLog];
+    
 	if (self.coverView) {
 		[self.coverView removeFromSuperview];
 		self.coverView = nil;
@@ -458,6 +476,8 @@
  *  @param success 암호 확인이 성공했는지 여부를 알려준다.
  */
 - (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success {
+    [self addLog:[NSString stringWithFormat:@"%s", __FUNCTION__]];
+    
 	[self updateStartOption];
 
 	if (self.startOptionOpenClockOnce) {

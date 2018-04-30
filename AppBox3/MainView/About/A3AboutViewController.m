@@ -156,10 +156,21 @@
 
 	UIDevice *currentDevice = [UIDevice currentDevice];
 	NSLocale *currentLocale = [NSLocale currentLocale];
+#warning debug start
+    /* Original
 	NSString *body = [NSString stringWithFormat:@"\n\n\n\n\nModel: %@ (%@)\niOS Version: %@\n%@\n",
 					[A3UIDevice platformString], [A3UIDevice platform],
 					[currentDevice systemVersion],
 					[currentLocale displayNameForKey:NSLocaleIdentifier value:[currentLocale localeIdentifier]]];
+     */
+    
+    NSString *body = [NSString stringWithFormat:@"\n\n\n\n\nModel: %@ (%@)\niOS Version: %@\n%@\n%@",
+                      [A3UIDevice platformString], [A3UIDevice platform],
+                      [currentDevice systemVersion],
+                      [currentLocale displayNameForKey:NSLocaleIdentifier value:[currentLocale localeIdentifier]],
+                      [A3AppDelegate instance].debugLogString ];
+#warning debug ends
+
 	[self openMailComposerWithSubject:emailSubject withBody:body withRecipient:@"support@allaboutapps.net" isHTML:NO ];
 }
 

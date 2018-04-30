@@ -928,4 +928,16 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
 	return objc_getAssociatedObject(self, key_adBannerView);
 }
 
+- (void)presentAlertWithTitle:(NSString *)title message:(NSString *)message {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                             message:message
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK")
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:^(UIAlertAction *action) {
+                                                          [alertController dismissViewControllerAnimated:YES completion:NULL];
+                                                      }]];
+    [self.navigationController presentViewController:alertController animated:YES completion:NULL];
+}
+
 @end

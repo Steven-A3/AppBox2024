@@ -173,6 +173,11 @@ extern NSString *const A3AppGroupNameNone;
  */
 @property (nonatomic, assign) BOOL isChangingRootViewController;
 
+// log textView for debugging
+@property (nonatomic, strong) NSString *debugLogString;
+- (void)addLog:(NSString *)message;
+- (void)addCallStackLog;
+
 + (A3AppDelegate *)instance;
 - (void)updateStartOption;
 - (void)pushStartingAppInfo;

@@ -114,5 +114,6 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 - (CGFloat)bannerHeight;
 - (void)prepareNativeExpressAdViewForUnitID:(NSString *)unitID keywords:(NSArray *)keywords delegate:(id<GADNativeExpressAdViewDelegate>)delegate;
 - (GADNativeExpressAdView *)nativeExpressAdView;
+- (void)presentAlertWithTitle:(NSString *)title message:(NSString *)message;
 
 @end
