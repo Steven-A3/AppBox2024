@@ -272,27 +272,6 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 	return shouldPerformAdditionalDelegateHandling;
 }
 
-#warning START
-- (void)addLog:(NSString *)message
-{
-    if (!_debugLogString) {
-        _debugLogString = message;
-    } else {
-        _debugLogString = [NSString stringWithFormat:@"%@\n%@", _debugLogString, message];
-    }
-}
-
-- (void)addCallStackLog {
-    NSArray *symbols = [NSThread callStackSymbols];
-    for (NSString *symbol in symbols) {
-        if ([symbol containsString:@"AppBox3"]) {
-            [self addLog:symbol];
-        }
-    }
-}
-
-#warning END
-
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
