@@ -26,24 +26,26 @@
 #define kValues2Tag 12
 #define kValues1_1Tag 13
 
+@interface A3PercentCalcHeaderView ()
+
+@property (assign, nonatomic) CGFloat padding;
+@property (strong, nonatomic) MASConstraint *sliderThumb1LeadingCenter;
+@property (strong, nonatomic) MASConstraint *sliderThumb2LeadingCenter;
+@property (strong, nonatomic) NSMutableArray *factorViews;
+@property (strong, nonatomic) NSMutableArray *operators;
+@property (strong, nonatomic) NSArray *slider1MeterViews;
+@property (strong, nonatomic) NSArray *slider1MeterLabelViews;
+@property (strong, nonatomic) NSArray *slider1MeterLeadingConstArray;
+@property (strong, nonatomic) NSArray *slider2MeterViews;
+@property (strong, nonatomic) NSArray *slider2MeterLabelViews;
+@property (strong, nonatomic) NSArray *slider2MeterLeadingConstArray;
+
+@property (strong, nonatomic) MASConstraint *sliderLine1TopConst;
+@property (strong, nonatomic) MASConstraint *sliderLine2TopCont;
+
+@end
 
 @implementation A3PercentCalcHeaderView
-{
-    NSMutableArray *_factorViews;
-    NSMutableArray *_operators;
-    CGFloat _padding;
-    NSArray *_slider1MeterViews;
-    NSArray *_slider1MeterLabelViews;
-    NSArray *_slider1MeterLeadingConstArray;
-    NSArray *_slider2MeterViews;
-    NSArray *_slider2MeterLabelViews;
-    NSArray *_slider2MeterLeadingConstArray;
-    
-    MASConstraint *_sliderThumb1LeadingCenter;
-    MASConstraint *_sliderThumb2LeadingCenter;
-    MASConstraint *_sliderLine1TopConst;
-    MASConstraint *_sliderLine2TopCont;
-}
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -413,10 +415,10 @@
                 case kAnswer1Tag:
                 {
                     if (results==nil || results.count==0) {
-                        _sliderThumb1Label.text = @"";
-                        _sliderThumb2Label.text = @"";
-                        _sliderLine1GaugeView.backgroundColor = COLOR_DEFAULT_GRAY;
-                        _sliderLine2GaugeView.backgroundColor = COLOR_DEFAULT_GRAY;
+                        self.sliderThumb1Label.text = @"";
+                        self.sliderThumb2Label.text = @"";
+                        self.sliderLine1GaugeView.backgroundColor = COLOR_DEFAULT_GRAY;
+                        self.sliderLine2GaugeView.backgroundColor = COLOR_DEFAULT_GRAY;
                         break;
                     }
                     
@@ -427,18 +429,18 @@
                         [self showMeterViews:YES lineIndex:1];
                         // 애니메이션 적용.
                         [UIView animateWithDuration:0.4 animations:^{
-                            _sliderLine1Thumb.alpha = 0.0;
-                            _sliderThumb1Label.alpha = 0.0;
+                            self.sliderLine1Thumb.alpha = 0.0;
+                            self.sliderThumb1Label.alpha = 0.0;
                         }];
                         // 위치조정.
-                        _sliderThumb1LeadingCenter.equalTo(@(-22));
-                        [_sliderLine1Thumb setNeedsUpdateConstraints];
-                        [_sliderThumb1Label setNeedsUpdateConstraints];
-                        [_sliderLine1GaugeView setNeedsUpdateConstraints];
+                        self.sliderThumb1LeadingCenter.equalTo(@(-22));
+                        [self.sliderLine1Thumb setNeedsUpdateConstraints];
+                        [self.sliderThumb1Label setNeedsUpdateConstraints];
+                        [self.sliderLine1GaugeView setNeedsUpdateConstraints];
                         [UIView animateWithDuration:0.3 animations:^{
-                            [_sliderLine1Thumb layoutIfNeeded];
-                            [_sliderThumb1Label layoutIfNeeded];
-                            [_sliderLine1GaugeView layoutIfNeeded];
+                            [self.sliderLine1Thumb layoutIfNeeded];
+                            [self.sliderThumb1Label layoutIfNeeded];
+                            [self.sliderLine1GaugeView layoutIfNeeded];
                         }];
                         
                         break;
@@ -449,43 +451,43 @@
                     if ([rNumber doubleValue] > 0.0) {
                         aLabel.layer.borderColor = [COLOR_POSITIVE CGColor];
                         aLabel.textColor = COLOR_POSITIVE;
-                        _sliderThumb1Label.text = NSLocalizedString(@"Increase", @"Increase");
-                        _sliderLine1GaugeView.backgroundColor = COLOR_POSITIVE;
-                        _sliderLine1Thumb.centerColorType = CenterColorType_Positive;
+                        self.sliderThumb1Label.text = NSLocalizedString(@"Increase", @"Increase");
+                        self.sliderLine1GaugeView.backgroundColor = COLOR_POSITIVE;
+                        self.sliderLine1Thumb.centerColorType = CenterColorType_Positive;
                     } else {
                         aLabel.layer.borderColor = [COLOR_NEGATIVE CGColor];
                         aLabel.textColor = COLOR_NEGATIVE;
-                        _sliderThumb1Label.text = NSLocalizedString(@"Decrease", @"Decrease");
-                        _sliderLine1GaugeView.backgroundColor = COLOR_NEGATIVE;
-                        _sliderLine1Thumb.centerColorType = CenterColorType_Negative;
+                        self.sliderThumb1Label.text = NSLocalizedString(@"Decrease", @"Decrease");
+                        self.sliderLine1GaugeView.backgroundColor = COLOR_NEGATIVE;
+                        self.sliderLine1Thumb.centerColorType = CenterColorType_Negative;
                     }
                     
                     if (fabsl(rNumber.doubleValue) > 100.0) {
-                        _sliderThumb1LeadingCenter.equalTo(@(self.frame.size.width - 22.0));
+                        self.sliderThumb1LeadingCenter.equalTo(@(self.frame.size.width - 22.0));
                         [self showMeterViews:NO lineIndex:1];
                     } else {
                         CGFloat leading = (self.frame.size.width / 100.0) * fabsl(rNumber.doubleValue);
-                        _sliderThumb1LeadingCenter.equalTo(@(leading-22));
+                        self.sliderThumb1LeadingCenter.equalTo(@(leading-22));
                         [self showMeterViews:YES lineIndex:1];
                     }
 
-                    [_sliderLine1Thumb setNeedsUpdateConstraints];
-                    [_sliderThumb1Label setNeedsUpdateConstraints];
-                    [_sliderLine1GaugeView setNeedsUpdateConstraints];
+                    [self.sliderLine1Thumb setNeedsUpdateConstraints];
+                    [self.sliderThumb1Label setNeedsUpdateConstraints];
+                    [self.sliderLine1GaugeView setNeedsUpdateConstraints];
                     [UIView animateWithDuration:0.3 animations:^{
-                        _sliderLine1Thumb.alpha = 1.0;
-                        _sliderThumb1Label.alpha = 1.0;
-                        [_sliderLine1Thumb layoutIfNeeded];
-                        [_sliderThumb1Label layoutIfNeeded];
-                        [_sliderLine1GaugeView layoutIfNeeded];
+                        self.sliderLine1Thumb.alpha = 1.0;
+                        self.sliderThumb1Label.alpha = 1.0;
+                        [self.sliderLine1Thumb layoutIfNeeded];
+                        [self.sliderThumb1Label layoutIfNeeded];
+                        [self.sliderLine1GaugeView layoutIfNeeded];
                     }];
                 }
                     break;
                 case kAnswer2Tag:
                 {
                     if (results==nil || results.count==0) {
-                        _sliderThumb1Label.text = @"";
-                        _sliderThumb2Label.text = @"";
+                        self.sliderThumb1Label.text = @"";
+                        self.sliderThumb2Label.text = @"";
                         break;
                     }
                     
@@ -496,19 +498,19 @@
                         [self showMeterViews:YES lineIndex:2];
                         // 애니메이션 적용.
                         [UIView animateWithDuration:0.4 animations:^{
-                            _sliderThumb2Label.alpha = 0.0;
-                            _sliderLine2Thumb.alpha = 0.0;
+                            self.sliderThumb2Label.alpha = 0.0;
+                            self.sliderLine2Thumb.alpha = 0.0;
                         }];
                         
                         // 위치 조정.
-                        _sliderThumb2LeadingCenter.equalTo(@(-22));
-                        [_sliderLine2Thumb setNeedsUpdateConstraints];
-                        [_sliderThumb2Label setNeedsUpdateConstraints];
-                        [_sliderLine2GaugeView setNeedsUpdateConstraints];
+                        self.sliderThumb2LeadingCenter.equalTo(@(-22));
+                        [self.sliderLine2Thumb setNeedsUpdateConstraints];
+                        [self.sliderThumb2Label setNeedsUpdateConstraints];
+                        [self.sliderLine2GaugeView setNeedsUpdateConstraints];
                         [UIView animateWithDuration:0.3 animations:^{
-                            [_sliderLine2Thumb layoutIfNeeded];
-                            [_sliderThumb2Label layoutIfNeeded];
-                            [_sliderLine2GaugeView layoutIfNeeded];
+                            [self.sliderLine2Thumb layoutIfNeeded];
+                            [self.sliderThumb2Label layoutIfNeeded];
+                            [self.sliderLine2GaugeView layoutIfNeeded];
                         }];
                         
                         break;
@@ -519,38 +521,38 @@
                     if (rNumber.doubleValue > 0.0) {
                         aLabel.layer.borderColor = [COLOR_POSITIVE CGColor];
                         aLabel.textColor = COLOR_POSITIVE;
-                        _sliderThumb2Label.text = NSLocalizedString(@"Increase", @"Increase");
-                        _sliderLine2GaugeView.backgroundColor = COLOR_POSITIVE;
-                        _sliderLine2Thumb.centerColorType = CenterColorType_Positive;
+                        self.sliderThumb2Label.text = NSLocalizedString(@"Increase", @"Increase");
+                        self.sliderLine2GaugeView.backgroundColor = COLOR_POSITIVE;
+                        self.sliderLine2Thumb.centerColorType = CenterColorType_Positive;
                     } else {
                         aLabel.layer.borderColor = [COLOR_NEGATIVE CGColor];
                         aLabel.textColor = COLOR_NEGATIVE;
-                        _sliderThumb2Label.text = NSLocalizedString(@"Decrease", @"Decrease");
-                        _sliderLine2GaugeView.backgroundColor = COLOR_NEGATIVE;
-                        _sliderLine2Thumb.centerColorType = CenterColorType_Negative;
+                        self.sliderThumb2Label.text = NSLocalizedString(@"Decrease", @"Decrease");
+                        self.sliderLine2GaugeView.backgroundColor = COLOR_NEGATIVE;
+                        self.sliderLine2Thumb.centerColorType = CenterColorType_Negative;
                     }
                     
                     if (fabsl(rNumber.doubleValue) > 100.0) {
-                        _sliderThumb2LeadingCenter.equalTo(@(self.frame.size.width-22));
+                        self.sliderThumb2LeadingCenter.equalTo(@(self.frame.size.width-22));
                         [self showMeterViews:NO lineIndex:2];
                     } else {
                         CGFloat leading = (self.frame.size.width / 100.0) * fabsl(rNumber.doubleValue);
-                        _sliderThumb2LeadingCenter.equalTo(@(leading-22));
+                        self.sliderThumb2LeadingCenter.equalTo(@(leading-22));
                         [self showMeterViews:YES lineIndex:2];
                     }
 
 //                    [self adjustSliderThumbLimitedPosition];
 
-                    [_sliderLine2Thumb setNeedsUpdateConstraints];
-                    [_sliderThumb2Label setNeedsUpdateConstraints];
-                    [_sliderLine2GaugeView setNeedsUpdateConstraints];
+                    [self.sliderLine2Thumb setNeedsUpdateConstraints];
+                    [self.sliderThumb2Label setNeedsUpdateConstraints];
+                    [self.sliderLine2GaugeView setNeedsUpdateConstraints];
                     [UIView animateWithDuration:0.3 animations:^{
-                        _sliderThumb2Label.alpha = 1.0;
-                        _sliderLine2Thumb.alpha = 1.0;
-                        _sliderThumb2Label.alpha = 1.0;
-                        [_sliderLine2Thumb layoutIfNeeded];
-                        [_sliderThumb2Label layoutIfNeeded];
-                        [_sliderLine2GaugeView layoutIfNeeded];
+                        self.sliderThumb2Label.alpha = 1.0;
+                        self.sliderLine2Thumb.alpha = 1.0;
+                        self.sliderThumb2Label.alpha = 1.0;
+                        [self.sliderLine2Thumb layoutIfNeeded];
+                        [self.sliderThumb2Label layoutIfNeeded];
+                        [self.sliderLine2GaugeView layoutIfNeeded];
                     }];
                 }
                     break;
@@ -678,13 +680,13 @@
             _sliderThumb1LeadingCenter.equalTo(@(-22));
             [self showMeterViews:YES lineIndex:1];
             [UIView animateWithDuration:0.4 animations:^{
-                _sliderLine1Thumb.alpha = 0.0;
-                _sliderThumb1Label.alpha = 0.0;
+                self.sliderLine1Thumb.alpha = 0.0;
+                self.sliderThumb1Label.alpha = 0.0;
             }];
             [UIView animateWithDuration:0.3 animations:^{
-                [_sliderLine1Thumb layoutIfNeeded];
-                [_sliderThumb1Label layoutIfNeeded];
-                [_sliderLine1GaugeView layoutIfNeeded];
+                [self.sliderLine1Thumb layoutIfNeeded];
+                [self.sliderThumb1Label layoutIfNeeded];
+                [self.sliderLine1GaugeView layoutIfNeeded];
             }];
             
         } else {
@@ -712,11 +714,11 @@
             }
 
             [UIView animateWithDuration:0.3 animations:^{
-                _sliderLine1Thumb.alpha = 1.0;
-                _sliderThumb1Label.alpha = 1.0;
-                [_sliderLine1Thumb layoutIfNeeded];
-                [_sliderThumb1Label layoutIfNeeded];
-                [_sliderLine1GaugeView layoutIfNeeded];
+                self.sliderLine1Thumb.alpha = 1.0;
+                self.sliderThumb1Label.alpha = 1.0;
+                [self.sliderLine1Thumb layoutIfNeeded];
+                [self.sliderThumb1Label layoutIfNeeded];
+                [self.sliderLine1GaugeView layoutIfNeeded];
             }];
         }
     }
@@ -777,13 +779,13 @@
                     [aView makeConstraints:^(MASConstraintMaker *make) {
                         make.width.lessThanOrEqualTo(@(rect.size.width));
                         make.height.greaterThanOrEqualTo(@25);
-                        make.right.equalTo(self.right).with.offset(-_padding);
+                        make.right.equalTo(self.right).with.offset(-self.padding);
                         make.centerY.equalTo(nextView.centerY);
                     }];
                 } else {
                     [aView makeConstraints:^(MASConstraintMaker *make) {
                         make.width.lessThanOrEqualTo(@(rect.size.width));
-                        make.right.equalTo(self.right).with.offset(-_padding);
+                        make.right.equalTo(self.right).with.offset(-self.padding);
                         make.baseline.equalTo(self.top).with.offset(centerY);
                     }];
                 }
@@ -836,7 +838,7 @@
             // 결과 뷰 위치 지정.
             if (i==0) {
                 [aView makeConstraints:^(MASConstraintMaker *make) {
-                    make.right.equalTo(self.right).with.offset(-_padding);
+                    make.right.equalTo(self.right).with.offset(-self.padding);
 
                     if (aView.tag==kAnswer1Tag || aView.tag==kAnswer2Tag) {
                         UILabel *nextView = [views objectAtIndex:1];
@@ -863,7 +865,7 @@
                 
                 [aView makeConstraints:^(MASConstraintMaker *make) {
                     if (i == views.count-1) {
-                        make.leading.greaterThanOrEqualTo(@(_padding));
+                        make.leading.greaterThanOrEqualTo(@(self.padding));
                     }
                     make.right.equalTo(preView.left).with.offset(0);
                     
@@ -1031,32 +1033,32 @@
         make.left.equalTo(self.left);
         make.right.equalTo(self.right);
         if (IS_IPHONE) {
-            _sliderLine1TopConst = make.top.equalTo(@40);
+            self.sliderLine1TopConst = make.top.equalTo(@40);
         } else {
-            _sliderLine1TopConst = make.top.equalTo(@65);
+            self.sliderLine1TopConst = make.top.equalTo(@65);
         }
     }];
     [_sliderLine1Thumb makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@44);
         make.height.equalTo(@44);
-        make.centerY.equalTo(_sliderLine1View.centerY);
+        make.centerY.equalTo(self.sliderLine1View.centerY);
         //_sliderThumb1LeadingCenter = make.leading.equalTo(@0);
         _sliderThumb1LeadingCenter = make.left.equalTo(self.left);
     }];
     [_sliderLine1GaugeView makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.left);
-        make.right.equalTo(_sliderLine1Thumb.left).with.offset(22.0);
-        make.centerY.equalTo(_sliderLine1View.centerY);
-        make.height.equalTo(_sliderLine1View.height);
+        make.right.equalTo(self.sliderLine1Thumb.left).with.offset(22.0);
+        make.centerY.equalTo(self.sliderLine1View.centerY);
+        make.height.equalTo(self.sliderLine1View.height);
     }];
     [_slider1AMarkLabel makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@20);
         make.height.equalTo(@20);
-        make.centerY.equalTo(_sliderLine1View.centerY);
+        make.centerY.equalTo(self.sliderLine1View.centerY);
         make.right.equalTo(self.right).with.offset(-15);
     }];
     [_sliderThumb1Label makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(_sliderLine1Thumb.centerX);
+        make.centerX.equalTo(self.sliderLine1Thumb.centerX);
         if (IS_IPHONE) {
             //make.baseline.equalTo(self.bottom).with.offset(-135.0);
             //make.baseline.equalTo(self.bottom).with.offset(-135.0);
@@ -1073,31 +1075,31 @@
         make.left.equalTo(self.left);
         make.right.equalTo(self.right);
         if (IS_IPHONE) {
-            _sliderLine2TopCont = make.top.equalTo(@107);
+            self.sliderLine2TopCont = make.top.equalTo(@107);
         } else {
-            _sliderLine2TopCont = make.top.equalTo(@152);
+            self.sliderLine2TopCont = make.top.equalTo(@152);
         }
     }];
     [_sliderLine2GaugeView makeConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(_sliderLine2View.height);
+        make.height.equalTo(self.sliderLine2View.height);
         make.leading.equalTo(@0);
-        make.right.equalTo(_sliderLine2Thumb.centerX);
-        make.centerY.equalTo(_sliderLine2View.centerY);
+        make.right.equalTo(self.sliderLine2Thumb.centerX);
+        make.centerY.equalTo(self.sliderLine2View.centerY);
     }];
     [_slider2BMarkLabel makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@20);
         make.height.equalTo(@20);
-        make.centerY.equalTo(_sliderLine2View.centerY);
+        make.centerY.equalTo(self.sliderLine2View.centerY);
         make.right.equalTo(self.right).with.offset(-15);
     }];
     [_sliderLine2Thumb makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@44);
         make.height.equalTo(@44);
-        make.centerY.equalTo(_sliderLine2View.centerY);
-        _sliderThumb2LeadingCenter = make.leading.equalTo(@0);
+        make.centerY.equalTo(self.sliderLine2View.centerY);
+        self.sliderThumb2LeadingCenter = make.leading.equalTo(@0);
     }];
     [_sliderThumb2Label makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(_sliderLine2Thumb.centerX);
+        make.centerX.equalTo(self.sliderLine2Thumb.centerX);
         if (IS_IPHONE) {
             make.baseline.equalTo(self.top).with.offset(98);
         } else {
@@ -1167,11 +1169,11 @@
                 [meterView makeConstraints:^(MASConstraintMaker *make) {
                     make.width.equalTo(IS_RETINA? @0.5 : @1.0);
                     make.height.equalTo(@18);
-                    make.top.equalTo(_sliderLine1View.bottom);
+                    make.top.equalTo(self.sliderLine1View.bottom);
                     MASConstraint *leading = make.leading.equalTo(@((self.sliderLine1View.frame.size.width / 5.0)  * (idx+1)));
                     [meterLeadings addObject:leading];
                 }];
-                _slider1MeterLeadingConstArray = meterLeadings;
+                self.slider1MeterLeadingConstArray = meterLeadings;
                 
                 UILabel *meterLabel = _slider1MeterLabelViews[idx];
                 meterLabel.text = [NSString stringWithFormat:@"%ld%%", (long)20 * (idx+1)];
@@ -1179,7 +1181,7 @@
                 meterLabel.textColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
                 [meterLabel sizeToFit];
                 [meterLabel makeConstraints:^(MASConstraintMaker *make) {
-                    make.baseline.equalTo(_sliderLine1View.bottom).with.offset(13);
+                    make.baseline.equalTo(self.sliderLine1View.bottom).with.offset(13);
                     make.right.equalTo(meterView.left).with.offset(IS_RETINA ? -4.5 : -5);
                 }];
             }];
@@ -1190,19 +1192,19 @@
                 [meterView makeConstraints:^(MASConstraintMaker *make) {
                     make.width.equalTo(IS_RETINA? @0.5 : @1.0);
                     make.height.equalTo(@18);
-                    make.top.equalTo(_sliderLine2View.bottom);
+                    make.top.equalTo(self.sliderLine2View.bottom);
                     MASConstraint *leading = make.leading.equalTo(@((self.sliderLine2View.frame.size.width / 5.0)  * (idx+1)));
                     [meterLeadings addObject:leading];
                 }];
-                _slider2MeterLeadingConstArray = meterLeadings;
+                self.slider2MeterLeadingConstArray = meterLeadings;
                 
-                UILabel *meterLabel = _slider2MeterLabelViews[idx];
+                UILabel *meterLabel = self.slider2MeterLabelViews[idx];
                 meterLabel.text = [NSString stringWithFormat:@"%ld%%", (long)20 * (idx+1)];
                 meterLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
                 meterLabel.textColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
                 [meterLabel sizeToFit];
                 [meterLabel makeConstraints:^(MASConstraintMaker *make) {
-                    make.baseline.equalTo(_sliderLine2View.bottom).with.offset(13);
+                    make.baseline.equalTo(self.sliderLine2View.bottom).with.offset(13);
                     make.right.equalTo(meterView.left).with.offset(IS_RETINA ? -4.5 : -5);
                 }];
 

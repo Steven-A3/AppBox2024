@@ -130,12 +130,14 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
     }
     
     if (IS_IPHONEX) {
-        // For iOS 11 and later, we place the search bar in the navigation bar.
-        self.navigationController.navigationBar.prefersLargeTitles = NO;
-        self.navigationItem.searchController = self.searchController;
-        
-        // We want the search bar visible all the time.
-        self.navigationItem.hidesSearchBarWhenScrolling = NO;
+        if (@available(iOS 11.0, *)) {
+            // For iOS 11 and later, we place the search bar in the navigation bar.
+            self.navigationController.navigationBar.prefersLargeTitles = NO;
+            self.navigationItem.searchController = self.searchController;
+            
+            // We want the search bar visible all the time.
+            self.navigationItem.hidesSearchBarWhenScrolling = NO;
+        }
     } else {
         [self.view addSubview:self.searchController.searchBar];
     }

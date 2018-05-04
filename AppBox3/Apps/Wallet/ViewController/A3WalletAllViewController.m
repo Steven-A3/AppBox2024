@@ -671,16 +671,19 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
     void(^final)(void) = ^{
         [self.searchBarButton setEnabled:!_dataEmpty];
     };
+    
     if (IS_IPHONEX) {
-        // For iOS 11 and later, we place the search bar in the navigation bar.
-        self.navigationController.navigationBar.prefersLargeTitles = NO;
-        self.navigationItem.searchController = self.searchController;
-        
-        // We want the search bar visible all the time.
-        self.navigationItem.hidesSearchBarWhenScrolling = NO;
-        
-        final();
-        return;
+        if (@available(iOS 11.0, *)) {
+            // For iOS 11 and later, we place the search bar in the navigation bar.
+            self.navigationController.navigationBar.prefersLargeTitles = NO;
+            self.navigationItem.searchController = self.searchController;
+            
+            // We want the search bar visible all the time.
+            self.navigationItem.hidesSearchBarWhenScrolling = NO;
+            
+            final();
+            return;
+        }
     }
     if (!_dataEmpty) {
         self.tableView.tableHeaderView = self.searchController.searchBar;

@@ -311,7 +311,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 				if ([[[A3AppDelegate instance] reachability] isReachableViaWiFi]) {
 					[weakSelf presentWebViewControllerWithBarCode:history.scanData];
 				} else {
-					_barcodeToSearch = [history.scanData copy];
+                    weakSelf.barcodeToSearch = [history.scanData copy];
 					UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
 																			 delegate:weakSelf
 																	cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
