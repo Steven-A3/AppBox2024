@@ -67,11 +67,16 @@ static NSString *kA3KeychainAccountName = @"A3AppBox3Passcode";
 	[query setObject:@YES forKey:(__bridge_transfer NSString *)kSecReturnData];
 	
 	CFTypeRef resData = NULL;
-	OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, (CFTypeRef*)&resData);
-	while (status != noErr) {
+	OSStatus status;
+	do {
         [NSThread sleepForTimeInterval:0.1];
         status = SecItemCopyMatching((__bridge CFDictionaryRef)query, (CFTypeRef*)&resData);
-	}
+    } while ((status != noErr) && (status != errSecItemNotFound));
+    
+    if (status == errSecItemNotFound) {
+        return nil;
+    }
+    
 	NSData *resultData = (__bridge_transfer NSData *)resData;
 	NSString *password = nil;
 	if (resultData) {
