@@ -8,10 +8,12 @@
 
 #import "WalletData.h"
 #import "WalletFieldItem+initialize.h"
+#import "WalletItem+initialize.h"
 #import "NSString+conversion.h"
 #import "WalletCategory.h"
 #import "NSManagedObject+extension.h"
 #import "WalletField.h"
+#import "WalletItem.h"
 #import "NSMutableArray+A3Sort.h"
 #import <AVFoundation/AVFoundation.h>
 
@@ -282,6 +284,45 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 
 + (WalletField *)fieldOfFieldItem:(WalletFieldItem *)fieldItem {
 	return [WalletField MR_findFirstByAttribute:@"uniqueID" withValue:fieldItem.fieldID];
+}
+
++ (NSString *)stringRepresentationOfContents {
+    NSMutableString *contents = [[NSMutableString alloc] init];
+    
+    NSArray *categories = [WalletCategory MR_findAllSortedBy:@"order" ascending:YES];
+    [categories enumerateObjectsUsingBlock:^(WalletCategory * _Nonnull category, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSArray *fields = [WalletField MR_findByAttribute:@"categoryID" withValue:category.uniqueID inContext:category.managedObjectContext];
+        if ([fields count]) {
+            NSArray *items = [WalletItem MR_findByAttribute:@"categoryID" withValue:category.uniqueID inContext:category.managedObjectContext];
+            // Add category name here
+            [contents appendString:[NSString stringWithFormat:@"%@: %@\n", [NSLocalizedString(@"Category", nil) uppercaseString], category.name]];
+            // Add field header here
+            [contents appendString:[NSString stringWithFormat:@"%@\n", [NSLocalizedString(@"Columns Header", nil) uppercaseString]]];
+            [fields enumerateObjectsUsingBlock:^(WalletField * _Nonnull field, NSUInteger idx, BOOL * _Nonnull stop) {
+                [contents appendString:[NSString stringWithFormat:@"%@ (%@, %@), ",
+                                        field.name,
+                                        NSLocalizedString(field.type, nil),
+                                        NSLocalizedString(field.style, nil)]];
+            }];
+            [contents deleteCharactersInRange:NSMakeRange(contents.length - 2, 2)];
+            [contents appendString:@"\n"];
+            [items enumerateObjectsUsingBlock:^(WalletItem * _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
+                NSArray *fieldItems = [item fieldItemsArraySortedByFieldOrder];
+                // Add field items
+                if ([fieldItems count]) {
+                    [fieldItems enumerateObjectsUsingBlock:^(WalletFieldItem * _Nonnull fieldItem, NSUInteger idx, BOOL * _Nonnull stop) {
+                        [contents appendString:fieldItem.value ? fieldItem.value : @""];
+                        [contents appendString:@", "];
+                    }];
+                    [contents deleteCharactersInRange:NSMakeRange(contents.length - 2, 2)];
+                    [contents appendString:@"\n"];
+                }
+            }];
+            [contents appendString:@"\n\n"];
+        }
+    }];
+    
+    return contents;
 }
 
 @end

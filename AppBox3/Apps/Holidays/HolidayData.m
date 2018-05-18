@@ -259,7 +259,6 @@ static int orthodoxEasterSunday[][2] = {
 	return date;
 }
 
-
 + (NSDate *)getPentecost:(NSUInteger)y western:(BOOL)western withCalendar:(NSCalendar *)calendar
 {
 	NSDate *date;
@@ -308,17 +307,23 @@ static int orthodoxEasterSunday[][2] = {
 	return date;
 }
 
-// Islamic New Year for 1989~2017, with {month, day} format
+// Islamic New Year for 1989~2020, with {month, day} format
 // TODO: Update yearly
 static NSUInteger islamicNewYear[][2] = {
 	/*1989,1410*/{ 8, 2},{ 7,23}, 
 	/*1991,1412*/{ 7,12},{ 7, 1},{ 6,20},{ 6,10},{ 5,30},{ 5,19},{ 5, 8},{ 4,28},{ 4,17},{ 4, 5},
 	/*2001,1422*/{ 3,26},{ 3,15},{ 3, 4},{ 2,22},{ 2,10},{ 1,31},{ 1,20},{12,28},{12,17},{12, 7},
-	/*2011,1432*/{11,26},{11,14},{11, 4},{10,24},{10,14},{10, 3},{ 9,22}};
+    /*2011,1432*/{11,26},{11,14},{11, 4},{10,24},{10,14},{10, 3},{ 9,21}, {9, 12},{9, 1},{8, 20}};
 
-// From year 2008-2017, {month, day}, Eidul Fitr or Ramadan Feast
+// From year 2008-2029, {month, day}, Eidul Fitr or Ramadan Feast
 // TODO: Update yearly
-static NSUInteger Eidul_Fitr[][2] = {{10, 1}, {9, 20}, {9, 10}, {8, 31}, {8, 19}, {8, 8}, {7, 29}, {7, 19}, {7, 6},{6,25}};
+// https://en.wikipedia.org/wiki/Eid_al-Fitr
+static NSUInteger Eidul_Fitr[][2] = {
+    /*2008*/{10, 1},/*2009*/{9, 20},/*2010*/{9, 10},/*2011*/{8, 31},/*2012*/{8, 19},/*2013*/{8, 8},/*2014*/{7, 29},
+    /*2015*/{7, 19},/*2016*/{7, 6},/*2017*/{6,25},
+    /*2018*/{6, 15},/*2019*/{6,4},/*2020*/{5,24},/*2021*/{5,13},/*2022*/{5,2},/*2023*/{4,21},/*2024*/{4,10},/*2025*/{3,30},
+    /*2026*/{3,20},/*2027*/{3,9},/*2028*/{2,26},/*2029*/{2,14},
+};
 
 // From year 1980-2021, {month, day}, Sacrifice Feast or Eid al-Adha
 // TODO: Update yearly
@@ -331,7 +336,7 @@ static NSUInteger Eid_al_adha[][2] = {
 
 + (NSDate *)getIslamicNewYear:(NSUInteger)year withCalendar:(NSCalendar *)calendar
 {
-	if ((year < 1989) || (year > 2017)) return nil;
+	if ((year < 1989) || (year > 2020)) return nil;
 	return [self dateWithDay:islamicNewYear[year - 1989][1] month:islamicNewYear[year - 1989][0] year:year withCalendar:calendar option:0];
 }
 
@@ -339,7 +344,7 @@ static NSUInteger Eid_al_adha[][2] = {
 // option:1 Holiday falling on a Sunday are observed the following Monday
 + (NSDate *)getRamadanFeast:(NSUInteger)year withCalendar:(NSCalendar *)calendar option:(int)option
 {
-	if ((year < 2008) || (year > 2017)) return nil;
+	if ((year < 2008) || (year > 2029)) return nil;
 	return [self dateWithDay:Eidul_Fitr[year - 2008][1] month:Eidul_Fitr[year - 2008][0] year:year withCalendar:calendar option:option];
 }
 
@@ -501,7 +506,9 @@ static NSUInteger Eid_al_adha[][2] = {
 	@"2014":@"2014-05-13",
 	@"2015":@"2015-06-01",
 	@"2016":@"2016-05-20",
-	@"2017":@"2017-05-10"
+	@"2017":@"2017-05-10",
+    @"2018":@"2018-05-29",
+    @"2019":@"2019-05-18",
 	};
 	NSDictionary *singapore = @{
 	@"2001":@"2001-05-07",
@@ -520,7 +527,9 @@ static NSUInteger Eid_al_adha[][2] = {
 	@"2014":@"2014-05-13",
 	@"2015":@"2015-06-01",
 	@"2016":@"2016-05-20",
-	@"2017":@"2017-05-10"
+	@"2017":@"2017-05-10",
+    @"2018":@"2018-05-29",
+    @"2019":@"2019-05-19",
 	};
 	NSDictionary *indonesia = @{
 	@"2007":@"2007-06-01",
@@ -534,6 +543,8 @@ static NSUInteger Eid_al_adha[][2] = {
 	@"2015":@"2015-06-02",
 	@"2016":@"2016-05-22",
 	@"2017":@"2017-05-11",
+    @"2018":@"2018-05-29",
+    @"2019":@"2019-05-19",
 	};
 	NSDictionary *malaysia = @{
 	@"2008":@"2008-05-19",
@@ -546,6 +557,8 @@ static NSUInteger Eid_al_adha[][2] = {
 	@"2015":@"2015-06-01",
 	@"2016":@"2016-05-21",
 	@"2017":@"2017-05-10",
+    @"2018":@"2018-05-29",
+    @"2019":@"2019-05-19",
 	};
 	NSDictionary *bangladesh = @{
 	@"2004":@"2004-05-03",
@@ -561,6 +574,9 @@ static NSUInteger Eid_al_adha[][2] = {
 	@"2014":@"2014-05-14",
 	@"2015":@"2015-05-03",
 	@"2016":@"2016-05-21",
+    @"2017":@"2017-05-10",
+    @"2018":@"2018-05-22",
+    @"2019":@"2019-05-19",
 	};
 
 	NSDictionary *vesak = @{
@@ -608,7 +624,9 @@ static NSUInteger Eid_al_adha[][2] = {
 	@"2014":@"2014-10-22",
 	@"2015":@"2015-11-10",
 	@"2016":@"2016-10-29",
-	@"2017":@"2016-10-20",
+	@"2017":@"2017-10-20",
+    @"2018":@"2018-11-06",
+    @"2019":@"2019-10-27",
 	};
 
 	NSDate *resultDate = [self getDate:year dictionary:deepavali];

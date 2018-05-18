@@ -415,10 +415,16 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 
 	date = [HolidayData getVesakDay:year forCountryCode:@"sg" withCalendar:gregorian];
 	if (date) {
-		holidayName = NSLocalizedStringFromTable(@"Buddha's Birthday", kHolidaysResourceName, nil);
+		holidayName = NSLocalizedStringFromTable(@"Vesak Day", kHolidaysResourceName, nil);
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
+    if (year == 2019) {
+        holidayName = NSLocalizedStringFromTable(@"Vesak Day Holiday", kHolidaysResourceName, nil);
+        date = [HolidayData dateWithDay:20 month:5 year:year withCalendar:gregorian option:0];
+        [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    }
+    
 	holidayName = NSLocalizedStringFromTable(@"National Day", kHolidaysResourceName, nil);
 	date = [HolidayData dateWithDay:9 month:8 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -1417,10 +1423,16 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 
 	date = [HolidayData getVesakDay:year forCountryCode:@"my" withCalendar:gregorian];
 	if (date) {
-		holidayName = NSLocalizedStringFromTable(@"Buddha's Birthday", kHolidaysResourceName, nil);
+		holidayName = NSLocalizedStringFromTable(@"Wesak Day", kHolidaysResourceName, nil);
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
+    if (year == 2019) {
+        holidayName = NSLocalizedStringFromTable(@"Wesak Day Holiday", kHolidaysResourceName, nil);
+        date = [HolidayData dateWithDay:20 month:5 year:year withCalendar:gregorian option:0];
+        [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    }
+    
 	holidayName = NSLocalizedStringFromTable(@"King's Birthday", kHolidaysResourceName, nil);
 	date = [HolidayData dateWithDay:1 month:6 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -1835,9 +1847,14 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	
 	date = [HolidayData getVesakDay:year forCountryCode:@"th" withCalendar:gregorian];
 	if (date) {
-		holidayName = NSLocalizedStringFromTable(@"Buddha's Birthday", kHolidaysResourceName, nil);
+		holidayName = NSLocalizedStringFromTable(@"Visakha Bucha Day", kHolidaysResourceName, nil);
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
+    if (year == 2019) {
+        holidayName = NSLocalizedStringFromTable(@"Visakha Bucha Holiday", kHolidaysResourceName, nil);
+        date = [HolidayData dateWithDay:20 month:5 year:year withCalendar:gregorian option:0];
+        [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    }
 	
 	holidayName = NSLocalizedStringFromTable(@"Mid Year Bank Holiday", kHolidaysResourceName, nil);
 	date = [HolidayData dateWithDay:1 month:7 year:year withCalendar:gregorian option:0];

@@ -20,6 +20,8 @@
 #import "A3AboutViewController.h"
 #import "A3PriceTagLabel.h"
 #import "A3AppDelegate.h"
+#import "WalletData.h"
+@import MessageUI;
 
 typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	A3SettingsRowUseiCloud = 1100,
@@ -35,7 +37,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	A3SettingsRowRestorePurchase = 6200,
 };
 
-@interface A3SettingsViewController () <A3PasscodeViewControllerDelegate, UIActionSheetDelegate>
+@interface A3SettingsViewController () <A3PasscodeViewControllerDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
 
 @property (nonatomic, strong) UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
 @property (nonatomic, strong) UIButton *colorButton;
@@ -361,6 +363,11 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	switch (indexPath.section) {
+        case 0: {
+            [self exportWalletContents];
+            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+            break;
+        }
 		case 1:
 			if (indexPath.row == 0) {
 				if ([A3KeychainUtils getPassword] != nil) {
@@ -453,6 +460,30 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 		default:
 			break;
 	}
+}
+
+- (void)exportWalletContents {
+    if (![[A3AppDelegate instance].reachability isReachable]) {
+        [self alertInternetConnectionIsNotAvailable];
+        return;
+    }
+    NSString *emailSubject = [NSString stringWithFormat:@"%@ %@", @"AppBox Pro®", NSLocalizedString(@"Wallet Contents", nil)];
+    NSString *body = [WalletData stringRepresentationOfContents];
+
+    MFMailComposeViewController *viewController = [[MFMailComposeViewController alloc] init];
+    if (viewController) {
+        viewController.mailComposeDelegate = self;
+        
+        [viewController setSubject:emailSubject];
+        
+        [viewController setMessageBody:body isHTML:NO];
+        
+        [self presentViewController:viewController animated:YES completion:nil];
+    }
+}
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+    [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)presentAboutViewController {
