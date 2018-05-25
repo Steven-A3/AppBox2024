@@ -364,7 +364,9 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	switch (indexPath.section) {
         case 0: {
-            [self exportWalletContents];
+            if (indexPath.row == 3) {
+                [self exportWalletContents];
+            }
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             break;
         }
