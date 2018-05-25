@@ -16,6 +16,7 @@ target 'AppBox3' do
   # Pods for AppBox3
 pod 'Firebase/Core'
 pod 'Firebase/AdMob'
+pod 'PersonalizedAdConsent'
 
   target 'AppBox3 Tests' do
     inherit! :search_paths
