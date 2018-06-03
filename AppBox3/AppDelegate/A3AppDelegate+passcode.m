@@ -472,8 +472,9 @@
 			self.homeStyleMainMenuViewController.activeAppName = [A3AppName_Clock copy];
 		}
 		[self setStartOptionOpenClockOnce:NO];
-		[self alertWhatsNew];
-		return;
+        [self askPersonalizedAdConsent];
+
+        return;
 	}
 
 	if (!success) {
@@ -519,7 +520,7 @@
 				[self removeSecurityCoverView];
 			});
 		}
-		[self alertWhatsNew];
+		[self askPersonalizedAdConsent];
 		return;
 	}
 

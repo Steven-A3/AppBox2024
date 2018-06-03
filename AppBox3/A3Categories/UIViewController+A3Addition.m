@@ -850,6 +850,11 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
 	if (![[A3AppDelegate instance] shouldPresentAd]) return;
 
 	GADRequest *adRequest = [GADRequest request];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kA3AdsUserDidSelectPersonalizedAds]) {
+        GADExtras *extras = [[GADExtras alloc] init];
+        extras.additionalParameters = @{@"npa": @"1"};
+        [adRequest registerAdNetworkExtras:extras];
+    }
 	adRequest.keywords = keywords;
 	adRequest.gender = gender;
 #if TARGET_IPHONE_SIMULATOR
@@ -894,6 +899,11 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
 
 - (void)prepareNativeExpressAdViewForUnitID:(NSString *)unitID keywords:(NSArray *)keywords delegate:(id<GADNativeExpressAdViewDelegate>)delegate {
     GADRequest *adRequest = [GADRequest request];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kA3AdsUserDidSelectPersonalizedAds]) {
+        GADExtras *extras = [[GADExtras alloc] init];
+        extras.additionalParameters = @{@"npa": @"1"};
+        [adRequest registerAdNetworkExtras:extras];
+    }
     adRequest.keywords = keywords;
     
     GADNativeExpressAdView *nativeExpressAdView = [GADNativeExpressAdView new];

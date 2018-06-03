@@ -101,6 +101,7 @@ extern NSString *const A3AppName_RestorePurchase;
 extern NSString *const A3AppName_None;
 
 extern NSString *const A3InAppPurchaseRemoveAdsProductIdentifier;
+extern NSString *const kA3AdsUserDidSelectPersonalizedAds;
 
 /**
  *  메뉴 그룹별 컬러를 적용하기 위해서 그룹 이름을 Key로 사용하기 위하여 정의 하였다.
@@ -195,6 +196,7 @@ extern NSString *const A3AppGroupNameNone;
 - (BOOL)shouldPresentWhatsNew;
 - (void)alertWhatsNew;
 - (void)updateHolidayNations;
+- (void)askPersonalizedAdConsent;
 
 @end
 

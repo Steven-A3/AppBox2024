@@ -52,6 +52,8 @@
 #import "ACTReporter.h"
 @import UserNotifications;
 #import <Firebase/Firebase.h>
+#import <PersonalizedAdConsent/PersonalizedAdConsent.h>
+#import <AdSupport/AdSupport.h>
 
 NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
@@ -73,6 +75,7 @@ NSString *const A3AppStoreReceiptBackupFilename = @"AppStoreReceiptBackup";
 NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhatsNew4_5";
 NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstall";
+NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPersonalizedAds";
 
 @interface A3AppDelegate () <UIAlertViewDelegate, NSURLSessionDownloadDelegate, CLLocationManagerDelegate
 		, GADInterstitialDelegate
@@ -1467,6 +1470,11 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 
 - (GADRequest *)adRequestWithKeywords:(NSArray *)keywords gender:(GADGender)gender {
 	GADRequest *adRequest = [GADRequest request];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kA3AdsUserDidSelectPersonalizedAds]) {
+        GADExtras *extras = [[GADExtras alloc] init];
+        extras.additionalParameters = @{@"npa": @"1"};
+        [adRequest registerAdNetworkExtras:extras];
+    }
 	adRequest.keywords = keywords;
 	adRequest.gender = gender;
 	return adRequest;
@@ -1566,7 +1574,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 		_hudView.minShowTime = 2;
 		_hudView.removeFromSuperViewOnHide = YES;
 		_hudView.completionBlock = ^{
-			_hudView = nil;
+		_hudView = nil;
 		};
 	}
 	return _hudView;
@@ -1578,23 +1586,56 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     return !_whatsNewDidShowInSession && ![[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidAlertWhatsNew4_5];
 }
 
-- (void)alertWhatsNew {
-	if (![self shouldPresentWhatsNew]) {
-		return;
-	}
+- (void)askPersonalizedAdConsent {
+    if (![self shouldPresentAd])
+        return;
+    
+//    PACConsentInformation.sharedInstance.debugIdentifiers =
+//    @[ ASIdentifierManager.sharedManager.advertisingIdentifier.UUIDString ];
+//
+//    PACConsentInformation.sharedInstance.debugGeography = PACDebugGeographyEEA;
+    
+    [PACConsentInformation.sharedInstance
+     requestConsentInfoUpdateForPublisherIdentifiers:@[ @"pub-0532362805885914" ]
+     completionHandler:^(NSError *_Nullable error) {
+         if (error) {
+             // Consent info update failed.
+         } else {
+             // Consent info update succeeded. The shared PACConsentInformation
+             // instance has been updated.
+             if (PACConsentInformation.sharedInstance.consentStatus == PACConsentStatusUnknown) {
+                 NSURL *privacyURL = [NSURL URLWithString:@"https://policies.google.com/privacy"];
+                 PACConsentForm *form = [[PACConsentForm alloc] initWithApplicationPrivacyPolicyURL:privacyURL];
+                 form.shouldOfferPersonalizedAds = YES;
+                 form.shouldOfferNonPersonalizedAds = YES;
+                 form.shouldOfferAdFree = NO;
+                 [form loadWithCompletionHandler:^(NSError *_Nullable error) {
+                     NSLog(@"Load complete. Error: %@", error);
+                     if (error) {
+                         // Handle error.
+                     } else {
+                         // Load successful.
+                         [form presentFromViewController:IS_IPHONE ? self.rootViewController_iPhone : self.rootViewController_iPad
+                                       dismissCompletion:^(NSError *_Nullable error, BOOL userPrefersAdFree) {
+                                           if (error) {
+                                               // Handle error.
+                                           } else {
+                                               // Check the user's consent choice.
+                                               PACConsentStatus status = PACConsentInformation.sharedInstance.consentStatus;
+                                               [[NSUserDefaults standardUserDefaults]
+                                                setBool:status == PACConsentStatusPersonalized
+                                                forKey:kA3AdsUserDidSelectPersonalizedAds];
+                                           }
+                                       }];
+                     }
+                 }];
+                 
+             }
+         }
+     }];
+}
 
-    _whatsNewDidShowInSession = YES;
-    
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidAlertWhatsNew4_5];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-	double delayInSeconds = 0.1;
-	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        UIImage *bgImage = [self.navigationController.view imageByRenderingView];
-		A3WhatsNew4_5ViewController *viewController = [A3WhatsNew4_5ViewController storyboardInstanceWithImage:bgImage];
-		[self.navigationController presentViewController:viewController animated:YES completion:NULL];
-	});
+- (void)alertWhatsNew {
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {

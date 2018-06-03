@@ -158,7 +158,7 @@ NSString *const A3UserDefaultsDidShowLeftViewOnceiPad = @"A3UserDefaultsDidShowL
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 		if (![self askRestorePurchase]) {
-			[[A3AppDelegate instance] alertWhatsNew];
+			[[A3AppDelegate instance] askPersonalizedAdConsent];
 		}
 	});
 }
@@ -232,12 +232,12 @@ NSString *const A3UserDefaultsDidShowLeftViewOnceiPad = @"A3UserDefaultsDidShowL
 	if (buttonIndex != alertView.cancelButtonIndex) {
 		[self proceedRestorePurchase];
 	} else {
-		[[A3AppDelegate instance] alertWhatsNew];
+		[[A3AppDelegate instance] askPersonalizedAdConsent];
 	}
 }
 
 - (void)proceedRestorePurchase {
-	[[A3AppDelegate instance] alertWhatsNew];
+	[[A3AppDelegate instance] askPersonalizedAdConsent];
 	[[A3AppDelegate instance] startRestorePurchase];
 }
 
