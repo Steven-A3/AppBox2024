@@ -437,6 +437,9 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
         } else {
             self.updateCandidates = nil;
 
+            [[A3UserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3CurrencyUpdateDate];
+            [[A3UserDefaults standardUserDefaults] synchronize];
+            
             [self updateCoinbaseExchangeRatesOnCompletion:^(BOOL successUpdate) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdated object:nil];
                 
