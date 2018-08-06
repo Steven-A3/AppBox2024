@@ -498,30 +498,58 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
         [self.refreshControl beginRefreshing];
     }
 
-    [self.currencyDataManager updateCurrencyRatesOnSuccess:^{
-        NSMutableArray *visibleRows = [[self.tableView indexPathsForVisibleRows] mutableCopy];
-        NSUInteger firstRowIdx = [visibleRows indexOfObjectPassingTest:^BOOL(NSIndexPath *obj, NSUInteger idx, BOOL *stop) {
-            return obj.row == 0;
-        }];
-        if (firstRowIdx != NSNotFound) {
-            [visibleRows removeObjectAtIndex:firstRowIdx];
-        }
-        if ([self.swipedCells count]) {
-            NSIndexPath *swipedCellIndexPath = [self.tableView indexPathForCell:[self.swipedCells anyObject]];
-            NSUInteger swipedCellIndex = [visibleRows indexOfObjectPassingTest:^BOOL(NSIndexPath *obj, NSUInteger idx, BOOL *stop) {
-                return obj.row == swipedCellIndexPath.row;
+//    [self.currencyDataManager updateCurrencyRatesOnSuccess:^{
+//        NSMutableArray *visibleRows = [[self.tableView indexPathsForVisibleRows] mutableCopy];
+//        NSUInteger firstRowIdx = [visibleRows indexOfObjectPassingTest:^BOOL(NSIndexPath *obj, NSUInteger idx, BOOL *stop) {
+//            return obj.row == 0;
+//        }];
+//        if (firstRowIdx != NSNotFound) {
+//            [visibleRows removeObjectAtIndex:firstRowIdx];
+//        }
+//        if ([self.swipedCells count]) {
+//            NSIndexPath *swipedCellIndexPath = [self.tableView indexPathForCell:[self.swipedCells anyObject]];
+//            NSUInteger swipedCellIndex = [visibleRows indexOfObjectPassingTest:^BOOL(NSIndexPath *obj, NSUInteger idx, BOOL *stop) {
+//                return obj.row == swipedCellIndexPath.row;
+//            }];
+//            if (swipedCellIndex != NSNotFound) {
+//                [visibleRows removeObjectAtIndex:swipedCellIndex];
+//            }
+//        }
+//
+//        [self unSwipeAll];
+//        [self.tableView reloadRowsAtIndexPaths:visibleRows withRowAnimation:UITableViewRowAnimationNone];
+//
+//        [self finishCurrencyRatesUpdate];
+//    }                                              failure:^{
+//        [self finishCurrencyRatesUpdate];
+//    }];
+    // TODO: Call new API
+    [self.currencyDataManager updateCurrencyRatesFromFreeCurrencyRatesAPIOnCompletion:^(BOOL success) {
+        if (success) {
+            NSMutableArray *visibleRows = [[self.tableView indexPathsForVisibleRows] mutableCopy];
+            NSUInteger firstRowIdx = [visibleRows indexOfObjectPassingTest:^BOOL(NSIndexPath *obj, NSUInteger idx, BOOL *stop) {
+                return obj.row == 0;
             }];
-            if (swipedCellIndex != NSNotFound) {
-                [visibleRows removeObjectAtIndex:swipedCellIndex];
+            if (firstRowIdx != NSNotFound) {
+                [visibleRows removeObjectAtIndex:firstRowIdx];
             }
+            if ([self.swipedCells count]) {
+                NSIndexPath *swipedCellIndexPath = [self.tableView indexPathForCell:[self.swipedCells anyObject]];
+                NSUInteger swipedCellIndex = [visibleRows indexOfObjectPassingTest:^BOOL(NSIndexPath *obj, NSUInteger idx, BOOL *stop) {
+                    return obj.row == swipedCellIndexPath.row;
+                }];
+                if (swipedCellIndex != NSNotFound) {
+                    [visibleRows removeObjectAtIndex:swipedCellIndex];
+                }
+            }
+            
+            [self unSwipeAll];
+            [self.tableView reloadRowsAtIndexPaths:visibleRows withRowAnimation:UITableViewRowAnimationNone];
+            
+            [self finishCurrencyRatesUpdate];
+        } else {
+            [self finishCurrencyRatesUpdate];
         }
-
-        [self unSwipeAll];
-        [self.tableView reloadRowsAtIndexPaths:visibleRows withRowAnimation:UITableViewRowAnimationNone];
-
-        [self finishCurrencyRatesUpdate];
-    }                                              failure:^{
-        [self finishCurrencyRatesUpdate];
     }];
 }
 

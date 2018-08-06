@@ -16,6 +16,7 @@
 #import "NSString+conversion.h"
 #import "A3UserDefaults.h"
 #import "A3NumberFormatter.h"
+#import "NSMutableArray+A3Sort.h"
 
 NSString *const A3KeyCurrencyCode = @"currencyCode";
 NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRatesUdpated";
@@ -28,12 +29,13 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 @interface A3CurrencyDataManager ()
 
 @property (nonatomic, strong) NSDictionary *currencyInfoDictionary;
+@property (nonatomic, strong) NSMutableArray *updateCandidates;
+@property (nonatomic, strong) void (^APIUpdateCompletionBlock)(BOOL);
+@property (nonatomic, assign) BOOL updating;
 
 @end
 
-@implementation A3CurrencyDataManager {
-	BOOL _updating;
-}
+@implementation A3CurrencyDataManager
 
 - (NSString *)localizedNameForCode:(NSString *)currencyCode {
 	NSLocale *locale = [NSLocale currentLocale];
@@ -171,6 +173,7 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
         if (completion) {
             completion(YES);
         }
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     }
                                      failure:^(AFHTTPRequestOperation *requestOperation, NSError *error) {
                                          if (completion) {
@@ -221,7 +224,7 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
                         [self updateCoinbaseExchangeRatesOnCompletion:^(BOOL successUpdate) {
                             [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdated object:nil];
                             
-                            _dataArray = nil;
+                            self.dataArray = nil;
                             
                             if (success) {
                                 success();
@@ -236,7 +239,7 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 					}
 
 					FNLOG(@"Update currency rate done successfully.");
-					_updating = NO;
+					self.updating = NO;
                     
 				});
 			}
@@ -249,7 +252,7 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 					}
 					FNLOG(@"Update currency rate failed.");
 					[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdateFailed object:nil];
-					_updating = NO;
+					self.updating = NO;
 				});
 			}
 	 ];
@@ -376,6 +379,128 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 - (void)purgeRetainingObjects {
 	_dataArray = nil;
 	_currencyInfoDictionary = nil;
+}
+
+// https://free.currencyconverterapi.com/api/v6/convert?q=USD_PHP&compact=y
+// returns {"USD_PHP":{"val":53.098255}}
+// It allows only one and two pairs of currencies per call for free license.
+// Number of favorites - number of USD occurrences (i.e, if it has USD, it does not require to get the USD_USD currency rates
+
+- (void)updateCurrencyRatesFromFreeCurrencyRatesAPIOnCompletion:(void (^)(BOOL))completion {
+    if (_updateCandidates)
+        return;
+    
+    _updateCandidates = [[CurrencyFavorite MR_findAllSortedBy:A3CommonPropertyOrder ascending:YES] mutableCopy];
+    _APIUpdateCompletionBlock = completion;
+    
+    // Get the index of the USD
+    NSInteger indexOfUSD = [_updateCandidates indexOfObjectPassingTest:^BOOL(CurrencyFavorite * _Nonnull favorite, NSUInteger idx, BOOL * _Nonnull stop) {
+        return [favorite.uniqueID isEqualToString:@"USD"];
+    }];
+    if (indexOfUSD != NSNotFound) {
+        [_updateCandidates removeObjectAtIndex:indexOfUSD];
+    }
+    [self updateCurrencyRateForCandidate];
+}
+
+- (void)updateCurrencyRateForCandidate {
+    if ([_updateCandidates count] == 0) {
+        return;
+    }
+    CurrencyFavorite *favorite = _updateCandidates[0];
+    NSString *URLString = [NSString stringWithFormat:@"https://free.currencyconverterapi.com/api/v6/convert?q=USD_%@&compact=y", favorite.uniqueID];
+    
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URLString]];
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    if ([operation respondsToSelector:@selector(setQualityOfService:)]) {
+        [operation setQualityOfService:NSQualityOfServiceUserInteractive];
+    }
+    operation.responseSerializer = [AFJSONResponseSerializer serializer];
+    
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *requestOperation, id JSON) {
+        // returns {"USD_PHP":{"val":53.098255}}
+        FNLOG(@"%@", JSON);
+        
+        CurrencyFavorite *favorite = self.updateCandidates[0];
+        NSString *code = favorite.uniqueID;
+        NSString *key = [NSString stringWithFormat:@"USD_%@", code];
+        id newValue = JSON[key][@"val"];
+        if (newValue) {
+            [self updateRateForCurrency:code value:newValue];
+        }
+        
+        if ([self.updateCandidates count] > 0) {
+            [self.updateCandidates removeObjectAtIndex:0];
+        }
+        if ([self.updateCandidates count] > 0) {
+            [self updateCurrencyRateForCandidate];
+        } else {
+            self.updateCandidates = nil;
+
+            [self updateCoinbaseExchangeRatesOnCompletion:^(BOOL successUpdate) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdated object:nil];
+                
+                self.dataArray = nil;
+                
+                self.APIUpdateCompletionBlock(YES);
+            }];
+        }
+    }
+                                     failure:^(AFHTTPRequestOperation *requestOperation, NSError *error) {
+                                         if (error) {
+                                             FNLOG(@"%@", error.localizedDescription);
+                                         }
+                                         self.updateCandidates = nil;
+                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                             self.APIUpdateCompletionBlock(NO);
+                                             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                                         });
+
+                                     }];
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [operation start];
+}
+
+- (void)updateRateForCurrency:(NSString *)code value:(id)value {
+    NSMutableArray *storedData = [[self ratesFromStoredFile] mutableCopy];
+    if (storedData == nil) {
+        storedData = [[NSArray arrayWithContentsOfFile:[self bundlePath]] mutableCopy];
+    }
+    NSInteger indexOfCurrency = [storedData indexOfObjectPassingTest:^BOOL(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        A3YahooCurrency *currency = [[A3YahooCurrency alloc] initWithObject:obj];
+        return [currency.currencyCode isEqualToString:code];
+    }];
+    if (indexOfCurrency != NSNotFound) {
+        NSDictionary *newInfo = [self currencyInfoWithExistingInfo:storedData[indexOfCurrency] code:code withValue:value];
+        storedData[indexOfCurrency] = newInfo;
+    } else {
+        NSDictionary *newInfo = [self currencyInfoWithExistingInfo:nil code:code withValue:value];
+        [storedData addObject:newInfo];
+    }
+    NSString *path = [A3CurrencyRatesDataFilename pathInCachesDataDirectory];
+    if (![storedData writeToFile:path atomically:YES]) {
+        FNLOG(@"Fail to write updated contents");
+    }
+}
+
+- (NSDictionary *)currencyInfoWithExistingInfo:(NSDictionary *)currencyInfo code:(id) code withValue:(id)value {
+    FNLOG(@"%@", currencyInfo);
+    
+    NSMutableDictionary *newFields;
+    if (currencyInfo) {
+        newFields = [[NSMutableDictionary alloc] initWithDictionary:currencyInfo[@"resource"][@"fields"]];
+    } else {
+        newFields = [[NSMutableDictionary alloc] init];
+        newFields[@"name"] = [NSString stringWithFormat:@"USD/%@", code];
+        newFields[@"symbol"] = [NSString stringWithFormat:@"%@=X", code];
+    }
+    newFields[@"price"] = value;
+    newFields[@"ts"] = [NSString stringWithFormat:@"%0.0f", [[NSDate date] timeIntervalSince1970]];
+    return @{@"resource":@{
+                     @"classname" : @"Quote",
+                     @"fields" : newFields,
+                     }
+             };
 }
 
 @end

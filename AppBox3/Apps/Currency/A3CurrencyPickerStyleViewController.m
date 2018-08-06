@@ -192,11 +192,18 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 		if ([[A3UserDefaults standardUserDefaults] currencyAutoUpdate]) {
 			if ([reachability isReachableViaWiFi] ||
 					([userDefaults currencyUseCellularData] && [A3UIDevice hasCellularNetwork])) {
-                [self.currencyDataManager updateCurrencyRatesOnSuccess:^{
-                    [self didSelectPickerRow];
-                    [self refreshUpdateDateLabel];
-                } failure:^{
-                    
+//                [self.currencyDataManager updateCurrencyRatesOnSuccess:^{
+//                    [self didSelectPickerRow];
+//                    [self refreshUpdateDateLabel];
+//                } failure:^{
+//                    
+//                }];
+                // TODO: Call new API
+                [self.currencyDataManager updateCurrencyRatesFromFreeCurrencyRatesAPIOnCompletion:^(BOOL success) {
+                    if (success) {
+                        [self didSelectPickerRow];
+                        [self refreshUpdateDateLabel];
+                    }
                 }];
 			}
 		}
@@ -447,12 +454,20 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 - (IBAction)updateButtonAction:(UIButton *)sender {
 	[self dismissNumberKeypadAnimated:YES];
-	[self.currencyDataManager updateCurrencyRatesOnSuccess:^{
-		[self didSelectPickerRow];
-		[self refreshUpdateDateLabel];
-	} failure:^{
-		
-	}];
+//    [self.currencyDataManager updateCurrencyRatesOnSuccess:^{
+//        [self didSelectPickerRow];
+//        [self refreshUpdateDateLabel];
+//    } failure:^{
+//
+//    }];
+    
+    // TODO: Call new API
+    [self.currencyDataManager updateCurrencyRatesFromFreeCurrencyRatesAPIOnCompletion:^(BOOL success) {
+        if (success) {
+            [self didSelectPickerRow];
+            [self refreshUpdateDateLabel];
+        }
+    }];
 }
 
 - (void)refreshUpdateDateLabel {
