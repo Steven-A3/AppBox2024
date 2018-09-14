@@ -356,49 +356,71 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 		if (dropboxLinkInfo) {
 			NSString *accessToken = [dropboxLinkInfo valueForKey:ACKeychainPassword];
 			
-			[TJDropbox uploadFileAtPath:_backupFilePath
-								 toPath:[NSString stringWithFormat:@"%@/%@", kDropboxDir, [_backupFilePath lastPathComponent]]
-                      overwriteExisting:YES
-                            accessToken:accessToken
-						  progressBlock:^(CGFloat progress) {
-							  dispatch_async(dispatch_get_main_queue(), ^{
-								  _HUD.progress = progress;
-								  _HUD.detailsLabel.text = [self.percentFormatter stringFromNumber:@(progress)];
-							  });
-						  } completion:^(NSDictionary * _Nullable parsedResponse, NSError * _Nullable error) {
-							  FNLOG(@"%@", parsedResponse);
-							  FNLOG(@"%@", error);
-							  FNLOG(@"%@", error.description);
-							  FNLOG(@"%@", error.debugDescription);
-							  dispatch_async(dispatch_get_main_queue(), ^{
-								  if (error == nil) {
-									  [_HUD hideAnimated:YES];
-									  _HUD = nil;
-									  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-																					  message:NSLocalizedString(@"Backup file has been uploaded to Dropbox successfully.", @"Backup file has been uploaded to Dropbox successfully.")
-																					 delegate:nil
-																			cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-																			otherButtonTitles:nil];
-									  [alert show];
-									  
-									  [self deleteBackupFile];
-									  
-									  if ([_delegate respondsToSelector:@selector(backupRestoreManager:backupCompleteWithSuccess:)]) {
-										  [_delegate backupRestoreManager:self backupCompleteWithSuccess:YES];
-									  }
-								  } else {
-									  [_HUD hideAnimated:YES];
-									  _HUD = nil;
-									  
-									  UIAlertView *alertFail = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:NSLocalizedString(@"Backup process failed to upload backup file to Dropbox.", @"Backup process failed to upload backup file to Dropbox.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-									  [alertFail show];
-									  
-									  [self deleteBackupFile];
-								  }
-							  });
-						  }];
+            NSFileManager *fileManager = [NSFileManager defaultManager];
+            unsigned long long filesize = [[fileManager attributesOfItemAtPath:_backupFilePath error:nil] fileSize];
+            
+            void (^progressBlock)(CGFloat) = ^(CGFloat progress) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self.HUD.progress = progress;
+                    self.HUD.detailsLabel.text = [self.percentFormatter stringFromNumber:@(progress)];
+                });
+            };
+            void (^completionBlock)(NSDictionary * _Nullable parsedResponse, NSError * _Nullable error) = ^(NSDictionary * _Nullable parsedResponse, NSError * _Nullable error) {
+                FNLOG(@"%@", parsedResponse);
+                FNLOG(@"%@", error);
+                FNLOG(@"%@", error.description);
+                FNLOG(@"%@", error.debugDescription);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (error == nil) {
+                        [self.HUD hideAnimated:YES];
+                        self.HUD = nil;
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+                                                                        message:NSLocalizedString(@"Backup file has been uploaded to Dropbox successfully.", @"Backup file has been uploaded to Dropbox successfully.")
+                                                                       delegate:nil
+                                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                              otherButtonTitles:nil];
+                        [alert show];
+                        
+                        [self deleteBackupFile];
+                        
+                        if ([self.delegate respondsToSelector:@selector(backupRestoreManager:backupCompleteWithSuccess:)]) {
+                            [self.delegate backupRestoreManager:self backupCompleteWithSuccess:YES];
+                        }
+                    } else {
+                        [self.HUD hideAnimated:YES];
+                        self.HUD = nil;
+                        
+                        UIAlertView *alertFail = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:NSLocalizedString(@"Backup process failed to upload backup file to Dropbox.", @"Backup process failed to upload backup file to Dropbox.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                        [alertFail show];
+                        
+                        [self deleteBackupFile];
+                        FNLOG(@"%@", error.description);
+                    }
+                });
+            };
+            
+            NSString *toPath = [NSString stringWithFormat:@"%@/%@", kDropboxDir, [_backupFilePath lastPathComponent]];
+            [TJDropbox uploadLargeFileAtPath:_backupFilePath
+                                      toPath:toPath
+                                 accessToken:accessToken
+                                  completion:^(NSDictionary * _Nullable parsedResponse, NSError * _Nullable error) {
+                                  }];
+            if (filesize > 1500000) {
+                [TJDropbox uploadLargeFileAtPath:_backupFilePath
+                                          toPath:[NSString stringWithFormat:@"%@/%@", kDropboxDir, [_backupFilePath lastPathComponent]]
+                               overwriteExisting:NO
+                                     accessToken:accessToken
+                                   progressBlock:progressBlock
+                                      completion:completionBlock];
+            } else {
+                [TJDropbox uploadFileAtPath:_backupFilePath
+                                     toPath:toPath
+                          overwriteExisting:NO
+                                accessToken:accessToken
+                              progressBlock:progressBlock
+                                 completion:completionBlock];
+            }
 		}
-		
 	}
 	NSFileManager *fileManager = [[NSFileManager alloc] init];
 	for (NSString *path in _deleteFilesAfterZip) {
