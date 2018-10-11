@@ -27,6 +27,10 @@
         "iPhone10,5": "iPhone 8 Plus",
         "iPhone10,3": "iPhone X",
         "iPhone10,6": "iPhone X",
+        "iPhone11,2": "iPhone XS",
+        "iPhone11,4": "iPhone XS Max",
+        "iPhone11,6": "iPhone XS Max",
+        "iPhone11,8": "iPhone XR",
         "iPad2,1": "iPad 2 (Wi-Fi)",
         "iPad2,2": "iPad 2",
         "iPad2,3": "iPad 2",
@@ -67,10 +71,34 @@
         "iPod7,1": "iPod Touch (6th generation)"
     },
     "deviceInformation": {
+        "iPhone XS": {
+            "Model": "iPhone XS",
+            "Chips": "A12 Bionic chip, Next-generation Neural Engine",
+            "CPU": "2.49 GHz hexa-core 64-bit",
+            "GPU": "hexa-core GPU",
+            "Memory": "4 GB LPDDR4 RAM",
+            "PPI": "458"
+        },
+        "iPhone XS Max": {
+            "Model": "iPhone XS Max",
+            "Chips": "A12 Bionic chip, Next-generation Neural Engine",
+            "CPU": "2.49 GHz hexa-core 64-bit",
+            "GPU": "hexa-core GPU",
+            "Memory": "4 GB LPDDR4 RAM",
+            "PPI": "458"
+        },
+        "iPhone XR": {
+            "Model": "iPhone XR",
+            "Chips": "A12 Bionic chip, Next-generation Neural Engine",
+            "CPU": "2.49 GHz hexa-core 64-bit",
+            "GPU": "hexa-core GPU",
+            "Memory": "3 GB LPDDR4 RAM",
+            "PPI": "458"
+        },
         "iPhone X": {
             "Model": "iPhone X",
             "Chips": "A11 Bionic chip, Neural Engine\nEmbedded M11 motion coprocessor",
-            "CPU": "GHz hexa-core 64-bit",
+            "CPU": "2.39 GHz hexa-core 64-bit",
             "GPU": "hexa-core GPU",
             "Memory": "3 GB LPDDR4 RAM",
             "PPI": "326"
@@ -78,7 +106,7 @@
         "iPhone 8": {
             "Model": "iPhone 8",
             "Chips": "A11 Bionic chip, Neural Engine\nEmbedded M11 motion coprocessor",
-            "CPU": "GHz hexa-core 64-bit",
+            "CPU": "2.39 GHz hexa-core 64-bit",
             "GPU": "hexa-core GPU",
             "Memory": "2 GB LPDDR4 RAM",
             "PPI": "326"
@@ -86,7 +114,7 @@
         "iPhone 8 Plus": {
             "Model": "iPhone 8 Plus",
             "Chips": "A11 Bionic chip, Neural Engine\nEmbedded M11 motion coprocessor",
-            "CPU": "GHz hexa-core 64-bit",
+            "CPU": "2.39 GHz hexa-core 64-bit",
             "GPU": "hexa-core GPU",
             "Memory": "3 GB LPDDR4 RAM",
             "PPI": "401"
@@ -437,6 +465,36 @@
         }
     },
     "remainingTimeInfo": {
+        "iPhone XS": {
+            "Model": "iPhone XS",
+            "Talk Time on 3G": 20,
+            "Internet on 3G": 12,
+            "Internet on LTE": 12,
+            "Internet on Wi-Fi": 15,
+            "Video playback": 14,
+            "Audio playback": 60,
+            "Standby": 384
+        },
+        "iPhone XS Max": {
+            "Model": "iPhone XS Max",
+            "Talk Time on 3G": 25,
+            "Internet on 3G": 13,
+            "Internet on LTE": 13,
+            "Internet on Wi-Fi": 15,
+            "Video playback": 15,
+            "Audio playback": 65,
+            "Standby": 384
+        },
+        "iPhone XR": {
+            "Model": "iPhone XR",
+            "Talk Time on 3G": 25,
+            "Internet on 3G": 15,
+            "Internet on LTE": 15,
+            "Internet on Wi-Fi": 15,
+            "Video playback": 16,
+            "Audio playback": 65,
+            "Standby": 384
+        },
         "iPhone X": {
             "Model": "iPhone X",
             "Talk Time on 3G": 21,
