@@ -226,6 +226,27 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
         _inchAsPoints = (screenHeight / 2436.0) * pixelsInInch;
         _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
         _redLineWidth = 0.5;
+    } else if ([model isEqualToString:@"iPhone XS"]) {
+        CGFloat pixelsInInch = 459.3;    // Original value = 458
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 2436.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2436.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
+        _redLineWidth = 0.5;
+    } else if ([model isEqualToString:@"iPhone XS Max"]) {
+        CGFloat pixelsInInch = 459.3;    // Original value = 458
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 2688.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2688.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
+        _redLineWidth = 0.5;
+    } else if ([model isEqualToString:@"iPhone XR"]) {
+        CGFloat pixelsInInch = 326;     // Original value = 326
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 1792.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 1792.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
+        _redLineWidth = 0.5;
 	} else if ([model isEqualToString:@"iPad 2"] || [model isEqualToString:@"iPad 2 (Wi-Fi)"]) {
 		// iPad 2
 		CGFloat pixelsInInch = 132.7;	// Announced PPI: 132
@@ -264,7 +285,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 	} else if ([model isEqualToString:@"iPad mini 2"]
                || [model isEqualToString:@"iPad mini 2 (Wi-Fi)"]) {
 		// iPad mini Retina
-		CGFloat pixelsInInch = 326.8;
+		CGFloat pixelsInInch = 326.8;               // 326
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
 		_centimeterAsPoints = (screenHeight / 2048.0) * pixelsInCentimeter;
 		_inchAsPoints = (screenHeight / 2048.0) * pixelsInInch;
