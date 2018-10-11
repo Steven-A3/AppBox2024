@@ -563,6 +563,9 @@
 		689D9FA01BD2195600096D07 /* AppBox3UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689D9F9F1BD2195600096D07 /* AppBox3UITests.swift */; };
 		689E9855197C1B99003710C3 /* A3UnitNamesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 689E9854197C1B99003710C3 /* A3UnitNamesTest.m */; };
 		68A5CD661F8772BE008B8F78 /* A3NumberFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A5CD651F8772BE008B8F78 /* A3NumberFormatter.m */; };
+		68A69A1221674F6000AF1DC5 /* UIImage+Blurring.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A69A0D21674F6000AF1DC5 /* UIImage+Blurring.m */; };
+		68A69A1321674F6000AF1DC5 /* UIImage+Filtering.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A69A0E21674F6000AF1DC5 /* UIImage+Filtering.m */; };
+		68A69A1421674F6000AF1DC5 /* UIImage+Enhancing.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A69A0F21674F6000AF1DC5 /* UIImage+Enhancing.m */; };
 		68A6BA7D1E7FC29500889051 /* A3WhatsNewFirstPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A6BA7C1E7FC29500889051 /* A3WhatsNewFirstPageViewController.m */; };
 		68ADE14717D83D28009618A7 /* MMDrawerBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE13F17D83D28009618A7 /* MMDrawerBarButtonItem.m */; };
 		68ADE14817D83D28009618A7 /* MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE14117D83D28009618A7 /* MMDrawerController.m */; };
@@ -2082,6 +2085,12 @@
 		689E9854197C1B99003710C3 /* A3UnitNamesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitNamesTest.m; sourceTree = "<group>"; };
 		68A5CD641F8772BE008B8F78 /* A3NumberFormatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = A3NumberFormatter.h; sourceTree = "<group>"; };
 		68A5CD651F8772BE008B8F78 /* A3NumberFormatter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = A3NumberFormatter.m; sourceTree = "<group>"; };
+		68A69A0421674F5F00AF1DC5 /* UIImage+Filtering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Filtering.h"; sourceTree = "<group>"; };
+		68A69A0D21674F6000AF1DC5 /* UIImage+Blurring.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Blurring.m"; sourceTree = "<group>"; };
+		68A69A0E21674F6000AF1DC5 /* UIImage+Filtering.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Filtering.m"; sourceTree = "<group>"; };
+		68A69A0F21674F6000AF1DC5 /* UIImage+Enhancing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Enhancing.m"; sourceTree = "<group>"; };
+		68A69A1021674F6000AF1DC5 /* UIImage+Enhancing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Enhancing.h"; sourceTree = "<group>"; };
+		68A69A1121674F6000AF1DC5 /* UIImage+Blurring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Blurring.h"; sourceTree = "<group>"; };
 		68A6BA7B1E7FC29500889051 /* A3WhatsNewFirstPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3WhatsNewFirstPageViewController.h; path = AppDelegate/A3WhatsNewFirstPageViewController.h; sourceTree = "<group>"; };
 		68A6BA7C1E7FC29500889051 /* A3WhatsNewFirstPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3WhatsNewFirstPageViewController.m; path = AppDelegate/A3WhatsNewFirstPageViewController.m; sourceTree = "<group>"; };
 		68AB0AB71A3E9261001BFC5D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -4634,6 +4643,12 @@
 		6895345A178686AF007061CA /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				68A69A1121674F6000AF1DC5 /* UIImage+Blurring.h */,
+				68A69A0D21674F6000AF1DC5 /* UIImage+Blurring.m */,
+				68A69A1021674F6000AF1DC5 /* UIImage+Enhancing.h */,
+				68A69A0F21674F6000AF1DC5 /* UIImage+Enhancing.m */,
+				68A69A0421674F5F00AF1DC5 /* UIImage+Filtering.h */,
+				68A69A0E21674F6000AF1DC5 /* UIImage+Filtering.m */,
 				68953461178686AF007061CA /* UIImage+Masking.h */,
 				68953462178686AF007061CA /* UIImage+Masking.m */,
 				68953463178686AF007061CA /* UIImage+Reflection.h */,
@@ -6749,6 +6764,7 @@
 				68F14FFE19485E8500159EAD /* A3DaysCounterSetupRepeatViewController.m in Sources */,
 				68E2A64D18D0B1FC00E834D9 /* A3ExpenseListMainViewcontroller.m in Sources */,
 				680344651CE1E46F009C300F /* A3PedometerSettingsTableViewController.m in Sources */,
+				68A69A1321674F6000AF1DC5 /* UIImage+Filtering.m in Sources */,
 				68B62EC2199E620B006384E1 /* DaysCounterCalendar.m in Sources */,
 				68E2777E19D177DB000EC931 /* MWPhotoBrowser+rotation.m in Sources */,
 				6874847B19780EFC00EA8F74 /* UnitPriceInfo+extension.m in Sources */,
@@ -6865,6 +6881,7 @@
 				687D0D0F17CAE519005AB571 /* HolidayData+MiddleEast.m in Sources */,
 				68D0731A1820DE4200D34870 /* A3TripleCircleView.m in Sources */,
 				688257B817D3AFFB006429D3 /* A3HolidaysAddToDaysCounterViewController.m in Sources */,
+				68A69A1221674F6000AF1DC5 /* UIImage+Blurring.m in Sources */,
 				689C9A591839CD7F007C97EE /* UIWebView+AFNetworking.m in Sources */,
 				68E2A6AA18D0B22800E834D9 /* A3TextViewElement.m in Sources */,
 				687D0D0E17CAE519005AB571 /* HolidayData+Europe.m in Sources */,
@@ -7136,6 +7153,7 @@
 				17D42BAD7D2B6C3853B466B5 /* A3LocationPlacemarkView.m in Sources */,
 				17D4287AB63C166472C101FE /* UIViewController+NumberKeyboard.m in Sources */,
 				68B6F6DC1EA5759300C4BB7A /* SDWebImagePrefetcher.m in Sources */,
+				68A69A1421674F6000AF1DC5 /* UIImage+Enhancing.m in Sources */,
 				17D426A26D07018A5660B225 /* A3StandardLeft15Cell.m in Sources */,
 				17D42B5255C77BCC6928C271 /* A3StandardTableViewCell.m in Sources */,
 				17D426431E7AC7B8D2D21A72 /* A3CalculatorViewController.m in Sources */,
