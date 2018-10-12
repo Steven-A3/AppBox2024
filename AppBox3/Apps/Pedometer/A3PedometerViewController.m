@@ -67,6 +67,8 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    [self purgeInvalidData];
+    
 	[[NSUserDefaults standardUserDefaults] registerDefaults:@{A3PedometerSettingsNumberOfGoalSteps:@10000}];
 
 	[self makeBackButtonEmptyArrow];
@@ -567,25 +569,34 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 - (void)setupTestData {
 	NSArray *testData = @[
 						  @[@"2016-05-20", @2453, @4, @1900],
-                          @[@"2016-05-21", @8860, @9, @6200],
+                          @[@"2016-05-21", @886000, @9, @6200],
                           @[@"2016-05-22", @3841, @8, @2800],
                           @[@"2016-05-23", @26522, @11, @19700],
-                          @[@"2016-05-24", @4554, @13, @3300],
+                          @[@"2016-05-24", @455400, @13, @3300],
                           @[@"2016-05-25", @6858, @4, @4300],
-                          @[@"2016-05-26", @10496, @99, @7100],
+                          @[@"2016-05-26", @104960, @99, @7100],
 						  ];
 
+    NSDate *date = [NSDate date];
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
+    components.day -= 7;
+    
 	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
 	for (NSArray *item in testData) {
-		Pedometer *pedometer = [Pedometer MR_findFirstByAttribute:@"date" withValue:item[0] inContext:savingContext];
+        NSDate *date = [calendar dateFromComponents:components];
+        components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
+        NSString *dateString = [NSString stringWithFormat:@"%ld-%02ld-%02ld", components.year, components.month, components.day];
+		Pedometer *pedometer = [Pedometer MR_findFirstByAttribute:@"date" withValue:dateString inContext:savingContext];
 		if (!pedometer) {
 			pedometer = [Pedometer MR_createEntityInContext:savingContext];
 			pedometer.uniqueID = [[NSUUID UUID] UUIDString];
+            pedometer.date = dateString;
+            pedometer.numberOfSteps = item[1];
+            pedometer.floorsAscended = item[2];
+            pedometer.distance = item[3];
 		}
-		pedometer.date = item[0];
-		pedometer.numberOfSteps = item[1];
-		pedometer.floorsAscended = item[2];
-		pedometer.distance = item[3];
+        components.day += 1;
 	}
 	[savingContext MR_saveOnlySelfAndWait];
 }
@@ -858,15 +869,15 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 				}
 				switch (type) {
 					case A3PedometerQueryTypeStepCount:{
-						pedometerItem.numberOfSteps = @(MAX(quantityValue, [pedometerItem.numberOfSteps doubleValue]));
+						pedometerItem.numberOfSteps = @(MIN(MAX(quantityValue, [pedometerItem.numberOfSteps doubleValue]),100000));
 						break;
 					}
 					case A3PedometerQueryTypeDistance: {
-						pedometerItem.distance = @(MAX(quantityValue, [pedometerItem.distance doubleValue]));
+						pedometerItem.distance = @(MIN(MAX(quantityValue, [pedometerItem.distance doubleValue]), 100000));
 						break;
 					}
 					case A3PedometerQueryTypeFlightsClimbed:{
-						pedometerItem.floorsAscended = @(MAX(quantityValue, [pedometerItem.floorsAscended doubleValue]));
+						pedometerItem.floorsAscended = @(MIN(MAX(quantityValue, [pedometerItem.floorsAscended doubleValue]), 100000));
 						break;
 					}
 				}
@@ -912,6 +923,20 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 											  otherButtonTitles:nil];
 	[alertView show];
+}
+
+- (void)purgeInvalidData {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"numberOfSteps >= 100000"];
+    NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
+    NSArray *invalidItems = [Pedometer MR_findAllWithPredicate:predicate inContext:savingContext];
+    if ([invalidItems count]) {
+        for (Pedometer *item in invalidItems) {
+            item.numberOfSteps = @0;
+        }
+        if ([savingContext hasChanges]) {
+            [savingContext MR_saveOnlySelfAndWait];
+        }
+    }
 }
 
 @end
