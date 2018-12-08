@@ -3272,15 +3272,6 @@
 			<key>classname</key>
 			<string>Quote</string>
 			<key>fields</key>
-			<dict/>
-		</dict>
-	</dict>
-	<dict>
-		<key>resource</key>
-		<dict>
-			<key>classname</key>
-			<string>Quote</string>
-			<key>fields</key>
 			<dict>
 				<key>name</key>
 				<string>USD/KWD</string>

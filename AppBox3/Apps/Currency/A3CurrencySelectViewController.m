@@ -108,11 +108,13 @@ NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCod
 		NSArray *dataArray = [NSArray arrayWithContentsOfFile:path];
 		for (id obj in dataArray) {
 			A3YahooCurrency *item = [[A3YahooCurrency alloc] initWithObject:obj];
+            if (item.currencyCode == nil) continue;
 			A3SearchTargetItem *searchTargetItem = [A3SearchTargetItem new];
 			searchTargetItem.code = item.currencyCode;
 			searchTargetItem.name = [currencyDataManager localizedNameForCode:item.currencyCode];
 			// displayName will be used for search target.
 			searchTargetItem.displayName = [NSString stringWithFormat:@"%@ %@", searchTargetItem.code, searchTargetItem.name];
+            FNLOG(@"%@, %@, %@, %@", item.currencyCode, searchTargetItem.code, searchTargetItem.name, searchTargetItem.displayName);
 			[allData addObject:searchTargetItem];
 		}
 		[super setAllData:allData];
