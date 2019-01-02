@@ -250,6 +250,7 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
 	[[A3UserDefaults standardUserDefaults] setObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] forKey:kA3ApplicationLastRunVersion];
 	[[A3UserDefaults standardUserDefaults] synchronize];
 
+    /*
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10")) {
         UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
         [center requestAuthorizationWithOptions:UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge
@@ -264,6 +265,7 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
 		[application registerUserNotificationSettings:userNotificationSettings];
 #pragma GCC diagnostic pop
 	}
+     */
     
     // 다운로드
     // Google iOS first open tracking snippet
@@ -750,21 +752,25 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
 
 - (void)downloadDataFiles {
 	_downloadList = [NSMutableArray new];
-	[_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/FlickrRecommendation.json"]];
-	[_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/device_information.json"]];
-	[_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/IsraelHolidays.plist"]];
-	[_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/indian.plist"]];
+//    [_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/FlickrRecommendation.json"]];
+//    [_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/device_information.json"]];
+//    [_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/IsraelHolidays.plist"]];
+//    [_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/indian.plist"]];
 
-	NSFileManager *fileManager = [NSFileManager new];
 	if ([A3UIDevice shouldSupportLunarCalendar]) {
+        NSFileManager *fileManager = [NSFileManager new];
 		NSString *kanjiDataFile = [@"data/LunarConverter.sqlite" pathInCachesDirectory];
 		if (![fileManager fileExistsAtPath:kanjiDataFile]) {
-			[_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/LunarConverter.sqlite"]];
+			[_downloadList addObject:[NSURL URLWithString:@"https://www.allaboutapps.net/data/LunarConverter.sqlite"]];
 		}
 	}
 //	[_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/message.plist"]];
 
-	[self startDownloadDataFiles];
+    if ([_downloadList count] > 0) {
+        [self startDownloadDataFiles];
+    } else {
+        _downloadList = nil;
+    }
 }
 
 - (void)startDownloadDataFiles {

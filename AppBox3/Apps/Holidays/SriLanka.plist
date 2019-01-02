@@ -5,7 +5,7 @@
 	<key>YEAR_FROM</key>
 	<string>2017</string>
 	<key>YEAR_TO</key>
-	<string>2018</string>
+	<string>2019</string>
 	<key>2017</key>
 	<array>
 		<array>
@@ -256,5 +256,128 @@
 			<date>2018-12-25T00:00:00Z</date>
 		</array>
 	</array>
+    <key>2019</key>
+    <array>
+        <array>
+            <string>Tamil Thai Pongal Day</string>
+            <date>2019-01-15T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Duruthu Full Moon Poya Day</string>
+            <date>2019-01-20T00:00:00Z</date>
+        </array>
+        <array>
+            <string>National Day</string>
+            <date>2019-02-04T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Valentine&apos;s Day</string>
+            <date>2019-02-14T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Navam Full Moon Poya Day</string>
+            <date>2019-02-19T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Mahasivarathri Day</string>
+            <date>2019-03-04T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Madin Full Moon Poya Day</string>
+            <date>2019-03-20T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Sinhala and Tamil New Year&apos;s Eve</string>
+            <date>2019-04-13T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Sinhala and Tamil New Year&apos;s Day</string>
+            <date>2019-04-14T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Bak Full Moon Poya Day</string>
+            <date>2019-04-19T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Good Friday</string>
+            <date>2019-04-19T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Easter Sunday</string>
+            <date>2019-04-21T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Labour Day</string>
+            <date>2019-05-01T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Mother&apos;s Day</string>
+            <date>2019-05-12T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Vesak Full Moon Poya Day</string>
+            <date>2019-05-18T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Day after Vesak Full Moon Poya Day</string>
+            <date>2019-05-20T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Eid-al-Fitr (End of Ramadan)</string>
+            <date>2019-06-05T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Father&apos;s Day</string>
+            <date>2019-06-16T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Poson Full Moon Poya Day</string>
+            <date>2019-06-16T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Esala Full Moon Poya Day</string>
+            <date>2019-07-16T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Eid-al-Adha (Feast of Sacrifice)</string>
+            <date>2019-08-12T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Nikini Full Moon Poya Day</string>
+            <date>2019-08-14T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Binara Full Moon Poya Day</string>
+            <date>2019-09-13T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Vap Full Moon Poya Day</string>
+            <date>2019-10-13T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Deepavali</string>
+            <date>2019-10-27T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Milad-Un-Nabi (Holy Prophet&apos;s Birthday)</string>
+            <date>2019-11-10T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Il Full Moon Poya Day</string>
+            <date>2019-11-12T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Unduvap Full Moon Poya Day</string>
+            <date>2019-12-11T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Christmas Eve</string>
+            <date>2019-12-24T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Christmas</string>
+            <date>2019-12-25T00:00:00Z</date>
+        </array>
+    </array>
 </dict>
 </plist>

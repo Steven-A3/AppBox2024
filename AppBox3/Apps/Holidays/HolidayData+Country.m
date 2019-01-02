@@ -664,17 +664,10 @@ NSString *const A3NotificationHolidaysCountryListChanged = @"A3NotificationHolid
 - (NSMutableArray *)holidaysFromPList:(NSString *)filename {
     NSUInteger year = self.year;
     
-    NSString *pathInDownload = [NSString stringWithFormat:@"data/%@", filename];
-    NSString *filepath = [pathInDownload pathInCachesDirectory];
     NSDictionary *holidaysBook = nil;
-    if ([[NSFileManager defaultManager] fileExistsAtPath:filepath]) {
-        holidaysBook = [NSDictionary dictionaryWithContentsOfFile:filepath];
-    }
     
-    if (!holidaysBook) {
-        filepath = [[NSBundle mainBundle] pathForResource:filename ofType:@"plist"];
-        holidaysBook = [NSDictionary dictionaryWithContentsOfFile:filepath];
-    }
+    NSString *filepath = [[NSBundle mainBundle] pathForResource:filename ofType:@"plist"];
+    holidaysBook = [NSDictionary dictionaryWithContentsOfFile:filepath];
     
     if (holidaysBook) {
         NSInteger yearFrom = [holidaysBook[@"YEAR_FROM"] integerValue];

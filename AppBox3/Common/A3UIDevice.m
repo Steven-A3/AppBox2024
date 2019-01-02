@@ -179,11 +179,7 @@ NSString *const A3DeviceInformationRemainingTimeKey = @"remainingTimeInfo";
 }
 
 + (NSString *)deviceInfoFilepath {
-	NSString *dataFilePath = [A3DeviceInformationFilename pathInCachesDataDirectory];
-	if (![[NSFileManager defaultManager] fileExistsAtPath:dataFilePath]) {
-		return [A3UIDevice dataFilePathFromBundle];
-	}
-	return dataFilePath;
+    return [A3UIDevice dataFilePathFromBundle];
 }
 
 + (NSString *)modelNameFromDeviceInfo:(NSDictionary *)rootDictionary {
@@ -328,17 +324,23 @@ https://github.com/andrealufino/ALSystemUtilities/blob/develop/ALSystemUtilities
 + (NSString *)capacity {
 	double space = [[[[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:nil] objectForKey:NSFileSystemSize] doubleValue];
 	double gigabytes = 1024 * 1024 * 1024;
-	if (space > 128.0 * gigabytes) {
-		return @"256GB";
-	} else if (space > 64.0 * gigabytes) {
-		return @"128GB";
-	} else if (space > 32.0 * gigabytes) {
-		return @"64GB";
-	} else if (space > 16.0 * gigabytes) {
-		return @"32GB";
-	} else if (space > 8.0 * gigabytes) {
-		return @"16GB";
-	}
+    if (space > 1024.0 * gigabytes) {
+        return @"2TB";
+    } else if (space > 512.0 * gigabytes) {
+        return @"1TB";
+    } else if (space > 256.0 * gigabytes) {
+        return @"512GB";
+    } else if (space > 128.0 * gigabytes) {
+        return @"256GB";
+    } else if (space > 64.0 * gigabytes) {
+        return @"128GB";
+    } else if (space > 32.0 * gigabytes) {
+        return @"64GB";
+    } else if (space > 16.0 * gigabytes) {
+        return @"32GB";
+    } else if (space > 8.0 * gigabytes) {
+        return @"16GB";
+    }
 	return @"8GB";
 }
 

@@ -118,14 +118,17 @@ NSString *const A3BatteryStatusThemeColorChanged = @"A3BatteryStatusThemeColorCh
     if (GPU) {
         [array addObject:@{@"title" : NSLocalizedString(@"GPU", @"GPU"), @"value" : GPU}];
     }
-    // Memory.
-    if (Memory) {
-        [array addObject:@{@"title" : NSLocalizedString(@"Memory", @"Memory"), @"value" : Memory}];
-    }
     // Storage.
     NSString * storage = [A3UIDevice capacity];
     [array addObject:@{@"title" : NSLocalizedString(@"Storage", @"Storage"), @"value" : storage}];
     
+    if ([storage isEqualToString:@"1TB"] && [[modelName substringToIndex:3] isEqualToString:@"iPad"]) {
+        Memory = @"6 GB 1600MHz LPDDR4 DRAM";
+    }
+    // Memory.
+    if (Memory) {
+        [array addObject:@{@"title" : NSLocalizedString(@"Memory", @"Memory"), @"value" : Memory}];
+    }
     return array;
 }
 

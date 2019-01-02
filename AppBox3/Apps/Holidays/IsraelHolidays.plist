@@ -5,7 +5,7 @@
 	<key>YEAR_FROM</key>
 	<string>2014</string>
 	<key>YEAR_TO</key>
-	<string>2018</string>
+	<string>2019</string>
 	<key>Y2014</key>
 	<array>
 		<array>
@@ -570,7 +570,7 @@
 	<array>
 		<array>
 			<string>Purim (Tel Aviv)</string>
-			<date>2018-03-01T00:00:00Z</date>
+			<date>2019-03-01T00:00:00Z</date>
 		</array>
 		<array>
 			<string>Shushan Purim (Jerusalem)</string>
@@ -713,5 +713,168 @@
 			<date>2018-12-10T00:00:00Z</date>
 		</array>
 	</array>
+    <key>Y2019</key>
+    <array>
+        <array>
+            <string>Erev Purim</string>
+            <date>2019-03-20T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Yom HaAliyah</string>
+            <date>2019-04-15T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Erev Pesach</string>
+            <date>2019-04-19T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Pesach I (First day of Passover)</string>
+            <date>2019-04-20T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Pesach II (Passover)</string>
+            <date>2019-04-21T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Pesach III (Passover)</string>
+            <date>2019-04-22T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Pesach IV (Passover)</string>
+            <date>2019-04-23T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Pesach V (Passover)</string>
+            <date>2019-04-24T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Pesach VI (Passover)</string>
+            <date>2019-04-25T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Pesach VII (Last day of Passover)</string>
+            <date>2019-04-26T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Yom HaShoah/Holocaust Memorial Day</string>
+            <date>2019-05-01T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Yom HaZikaron (Memorial Day)</string>
+            <date>2019-05-08T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Yom HaAtzmaut (Independence Day)</string>
+            <date>2019-05-09T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Erev Shavuot</string>
+            <date>2019-06-08T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Shavuot (Pentecost)</string>
+            <date>2019-06-09T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Erev Tisha B&apos;Av</string>
+            <date>2019-08-10T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Tisha B&apos;Av</string>
+            <date>2019-08-11T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Erev Rosh Hashana</string>
+            <date>2019-09-29T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Rosh Hashana (New Year)</string>
+            <date>2019-09-30T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Rosh Hashana II (New Year day 2)</string>
+            <date>2019-10-01T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Erev Yom Kippur</string>
+            <date>2019-10-08T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Yom Kippur</string>
+            <date>2019-10-09T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Erev Sukkot</string>
+            <date>2019-10-13T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Sukkot I</string>
+            <date>2019-10-14T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Sukkot II</string>
+            <date>2019-10-15T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Sukkot III</string>
+            <date>2019-10-16T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Sukkot IV</string>
+            <date>2019-10-17T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Sukkot V</string>
+            <date>2019-10-18T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Sukkot VI</string>
+            <date>2019-10-19T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Sukkot VII/Hoshanah Rabah</string>
+            <date>2019-10-20T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Shmini Atzeret/Simchat Torah</string>
+            <date>2019-10-21T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Yom HaAliyah School Observance</string>
+            <date>2019-11-05T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Hanukkah I (Holiday of lights)</string>
+            <date>2019-12-23T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Hanukkah II</string>
+            <date>2019-12-24T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Hanukkah III</string>
+            <date>2019-12-25T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Hanukkah IV</string>
+            <date>2019-12-26T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Hanukkah V</string>
+            <date>2019-12-27T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Hanukkah VI/Rosh Chodesh Tevet</string>
+            <date>2019-12-28T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Hanukkah VII</string>
+            <date>2019-12-29T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Hanukkah VIII</string>
+            <date>2019-12-30T00:00:00Z</date>
+        </array>
+    </array>
 </dict>
 </plist>

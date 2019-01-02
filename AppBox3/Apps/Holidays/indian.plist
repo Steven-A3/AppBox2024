@@ -5,7 +5,7 @@
 	<key>YEAR_FROM</key>
 	<string>2006</string>
 	<key>YEAR_TO</key>
-	<string>2018</string>
+	<string>2019</string>
 	<key>2006</key>
 	<array>
 		<array>
@@ -2555,6 +2555,221 @@
 		<array>
 			<string>Christmas (G)</string>
 			<date>2018-12-25T00:00:00Z</date>
+		</array>
+	</array>
+	<key>2019</key>
+	<array>
+		<array>
+			<string>New Year&apos;s Day</string>
+			<date>2019-01-01T00:00:00Z</date>
+		</array>
+        <array>
+            <string>Guru Govind Singh Jayanti</string>
+            <date>2019-01-13T00:00:00Z</date>
+        </array>
+		<array>
+			<string>Lohri</string>
+			<date>2019-01-13T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Makar Sankranti</string>
+			<date>2019-01-14T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Pongal</string>
+			<date>2019-01-15T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Republic Day</string>
+			<date>2019-01-26T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Vasant Panchami</string>
+			<date>2019-02-10T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Guru Ravidas Jayanti</string>
+			<date>2019-02-19T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Shivaji Jayanti</string>
+			<date>2019-02-19T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Maharishi Dayanand Saraswati Jayanti</string>
+			<date>2019-03-01T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Maha Shivaratri/Shivaratri</string>
+			<date>2019-03-04T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Holika Dahana</string>
+			<date>2019-03-20T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Dolyatra</string>
+			<date>2019-03-21T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Hazarat Ali&apos;s Birthday</string>
+			<date>2019-03-21T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Holi</string>
+			<date>2019-03-21T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Chaitra Sukhladi</string>
+			<date>2019-04-06T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Rama Navami</string>
+			<date>2019-04-13T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Ambedkar Jayanti</string>
+			<date>2019-04-14T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Mesadi/Vaisakhadi</string>
+			<date>2019-04-14T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Vaisakhi</string>
+			<date>2019-04-14T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Mahavir Jayanti</string>
+			<date>2019-04-17T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Good Friday</string>
+			<date>2019-04-19T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Easter Day</string>
+			<date>2019-04-21T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Birthday of Ravindranath</string>
+			<date>2019-05-07T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Buddha Purnima/Vesak</string>
+			<date>2019-05-18T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Jamat Ul-Vida</string>
+			<date>2019-05-31T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Ramzan Id/Eid-ul-Fitar</string>
+			<date>2019-06-05T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Rath Yatra</string>
+			<date>2019-07-04T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Bakr Id/Eid ul-Adha</string>
+			<date>2019-08-12T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Independence Day</string>
+			<date>2019-08-15T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Raksha Bandhan (Rakhi)</string>
+			<date>2019-08-15T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Parsi New Year</string>
+			<date>2019-08-17T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Janmashtami</string>
+			<date>2019-08-24T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Ganesh Chaturthi/Vinayaka Chaturthi</string>
+			<date>2019-09-02T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Muharram/Ashura</string>
+			<date>2019-09-10T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Onam</string>
+			<date>2019-09-11T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Mahatma Gandhi Jayanti</string>
+			<date>2019-10-02T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Maha Saptami</string>
+			<date>2019-10-05T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Maha Ashtami</string>
+			<date>2019-10-06T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Maha Navami</string>
+			<date>2019-10-07T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Dussehra</string>
+			<date>2019-10-08T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Maharishi Valmiki Jayanti</string>
+			<date>2019-10-13T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Karaka Chaturthi (Karva Chauth)</string>
+			<date>2019-10-17T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Diwali/Deepavali</string>
+			<date>2019-10-27T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Naraka Chaturdasi</string>
+			<date>2019-10-27T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Govardhan Puja</string>
+			<date>2019-10-28T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Bhai Duj</string>
+			<date>2019-10-29T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Chhat Puja (Pratihar Sashthi/Surya Sashthi)</string>
+			<date>2019-11-02T00:00:00Z</date>
+		</array>
+        <array>
+            <string>Milad un-Nabi/Id-e-Milad</string>
+            <date>2019-11-10T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Guru Nanak Jayanti</string>
+            <date>2019-11-12T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Guru Tegh Bahadur's Martyrdom Day</string>
+            <date>2019-11-24T00:00:00Z</date>
+        </array>
+		<array>
+			<string>Christmas Eve</string>
+			<date>2019-12-24T00:00:00Z</date>
+		</array>
+		<array>
+			<string>Christmas</string>
+			<date>2019-12-25T00:00:00Z</date>
 		</array>
 	</array>
 </dict>

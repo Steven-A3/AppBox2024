@@ -304,6 +304,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		_redLineWidth = 0.5;
 	} else if ([model isEqualToString:@"iPad Pro"] ||
                [model isEqualToString:@"iPad Pro 12.9\" 2nd generation"] ||
+               [model isEqualToString:@"iPad Pro 12.9\" 3rd generation"] ||
 			   [model isEqualToString:@"iPad Pro (Wi-Fi)"]) {
 		// iPad Pro
 		CGFloat pixelsInInch = 264.7;
@@ -313,7 +314,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		_resetPosition = _centimeterPositionRightBottom ? 23.0 : 9.0;
 		_redLineWidth = 0.5;
     } else if ([model isEqualToString:@"iPad Pro 10.5\""] ||
-               [model isEqualToString:@"iPad Pro 10.5\""]) {
+               [model isEqualToString:@"iPad Pro 11\""]) {
         // iPad Pro
         CGFloat pixelsInInch = 264.7;
         CGFloat pixelsInCentimeter = pixelsInInch / 2.54;

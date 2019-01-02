@@ -106,7 +106,8 @@ NSString *const A3UserDefaultsDidShowLeftViewOnceiPad = @"A3UserDefaultsDidShowL
 		
 		if (![appDelegate showLockScreen]) {
 			[self setupMainViewController];
-        } else {
+        }
+        else {
             [appDelegate downloadDataFiles];
         }
 	}
@@ -152,7 +153,7 @@ NSString *const A3UserDefaultsDidShowLeftViewOnceiPad = @"A3UserDefaultsDidShowL
 			}
 		}
 	}
-	[appDelegate downloadDataFiles];
+    [appDelegate downloadDataFiles];
 	
 	double delayInSeconds = 1.0;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));

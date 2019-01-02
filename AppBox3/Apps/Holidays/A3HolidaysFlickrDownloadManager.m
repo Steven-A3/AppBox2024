@@ -140,7 +140,8 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 		self.downloadInProgress = YES;
 
 		NSFileManager *fileManager = [NSFileManager new];
-		NSString *filePath = [@"FlickrRecommendation.json" pathInCachesDataDirectory];
+        NSString *filePath = [[NSBundle mainBundle] pathForResource:@"FlickrRecommendation" ofType:@"json"];
+
 		if (![fileManager fileExistsAtPath:filePath]) {
 			FNLOG(@"FlickrRecommendation.json file did not downloaded yet.");
 			return;

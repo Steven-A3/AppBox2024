@@ -45,14 +45,7 @@ NSString *const A3AbbreviationKeyMeaning = @"meaning";
 }
 
 - (NSArray *)abbreviationsArrayFromDataFile {
-	NSString *dataFilePath = [@"Abbreviation.json" pathInCachesDirectory];
-	NSFileManager *fileManager = [NSFileManager defaultManager];
-	if (![fileManager fileExistsAtPath:dataFilePath]) {
-		dataFilePath = [[NSBundle mainBundle] pathForResource:@"Abbreviation.json" ofType:nil];
-		if (![fileManager fileExistsAtPath:dataFilePath]) {
-			return nil;
-		}
-	}
+	NSString *dataFilePath = [[NSBundle mainBundle] pathForResource:@"Abbreviation.json" ofType:nil];
 	NSData *rawData = [NSData dataWithContentsOfFile:dataFilePath];
 	if (!rawData) {
 		return nil;
