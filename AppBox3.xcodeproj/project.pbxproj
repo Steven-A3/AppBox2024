@@ -478,6 +478,8 @@
 		6876D6FB17A75DAE00E16991 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 687C193B1783DF0F00415FCE /* XCTest.framework */; };
 		6876D6FC17A75DAE00E16991 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D715EB10B000BD6AD4 /* Foundation.framework */; };
 		6876D6FD17A75DAE00E16991 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D515EB10B000BD6AD4 /* UIKit.framework */; };
+		687AAFE221F1D53100CE1DF3 /* TDOAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AAFE021F1D53000CE1DF3 /* TDOAuth.m */; };
+		687AAFE321F1D53100CE1DF3 /* OMGUserAgent.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AAFE121F1D53100CE1DF3 /* OMGUserAgent.m */; };
 		687AEE991CBB0B7100C2D844 /* A3QRCodeDataHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AEE981CBB0B7100C2D844 /* A3QRCodeDataHandler.m */; };
 		687AEEA71CBBB69B00C2D844 /* A3QRCodeMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AEEA61CBBB69B00C2D844 /* A3QRCodeMapViewController.m */; };
 		687AEEAA1CBBCB5900C2D844 /* A3PlaceAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AEEA91CBBCB5900C2D844 /* A3PlaceAnnotation.m */; };
@@ -1910,6 +1912,10 @@
 		6876D70017A75DAE00E16991 /* AppBox3 Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AppBox3 Tests-Info.plist"; sourceTree = "<group>"; };
 		6876D70617A75DAE00E16991 /* AppBox3 Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppBox3 Tests-Prefix.pch"; sourceTree = "<group>"; };
 		6878361D1E6E4D7000828BA8 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		687AAFD621F1D53000CE1DF3 /* TDOAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDOAuth.h; sourceTree = "<group>"; };
+		687AAFDF21F1D53000CE1DF3 /* OMGUserAgent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OMGUserAgent.h; sourceTree = "<group>"; };
+		687AAFE021F1D53000CE1DF3 /* TDOAuth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDOAuth.m; sourceTree = "<group>"; };
+		687AAFE121F1D53100CE1DF3 /* OMGUserAgent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OMGUserAgent.m; sourceTree = "<group>"; };
 		687AEE971CBB0B7100C2D844 /* A3QRCodeDataHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3QRCodeDataHandler.h; sourceTree = "<group>"; };
 		687AEE981CBB0B7100C2D844 /* A3QRCodeDataHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3QRCodeDataHandler.m; sourceTree = "<group>"; };
 		687AEE9E1CBB73F900C2D844 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
@@ -3430,6 +3436,10 @@
 		680886A41891751B0093FD97 /* Clock */ = {
 			isa = PBXGroup;
 			children = (
+				687AAFDF21F1D53000CE1DF3 /* OMGUserAgent.h */,
+				687AAFE121F1D53100CE1DF3 /* OMGUserAgent.m */,
+				687AAFD621F1D53000CE1DF3 /* TDOAuth.h */,
+				687AAFE021F1D53000CE1DF3 /* TDOAuth.m */,
 				68143D6E18E3ED9B00569691 /* A3Weather.h */,
 				68143D6F18E3ED9B00569691 /* A3Weather.m */,
 				680886A91891751B0093FD97 /* A3ChooseColorView.h */,
@@ -6605,6 +6615,7 @@
 				68F14FFA19485E8500159EAD /* A3DaysCounterSetupEndRepeatViewController.m in Sources */,
 				684D92F018BC1FBC005016F7 /* A3DateCalcAddSubCell2.m in Sources */,
 				6829A0181C89882F0006DB96 /* A3GridMenuCollectionViewCell.m in Sources */,
+				687AAFE221F1D53100CE1DF3 /* TDOAuth.m in Sources */,
 				68CF60821CBD105C00F8E9B9 /* A3CornersView.m in Sources */,
 				680886DF1891751B0093FD97 /* A3ClockWaveCircleSmallView.m in Sources */,
 				6898A6E71908AEA50099C09E /* WalletFavorite+initialize.m in Sources */,
@@ -7101,6 +7112,7 @@
 				689C9A4D1839CD7F007C97EE /* AFNetworkReachabilityManager.m in Sources */,
 				68143D6D18E3ECB700569691 /* A3ImageCropperViewController.m in Sources */,
 				6852298018FFFAD7002D3C0E /* UIViewController+iPad_rightSideView.m in Sources */,
+				687AAFE321F1D53100CE1DF3 /* OMGUserAgent.m in Sources */,
 				68B6F7621EA575C500C4BB7A /* MWCaptionView.m in Sources */,
 				68B6A32218CEC76D004084EF /* A3WalletCateInfoFieldCell.m in Sources */,
 				68F1C8BB18D7F37D009FAE8A /* A3LadyCalendarAccountListViewController.m in Sources */,

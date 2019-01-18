@@ -14,6 +14,7 @@
 #import "A3UserDefaultsKeys.h"
 #import "A3AppDelegate.h"
 #import "Reachability.h"
+#import "TDOAuth.h"
 
 @interface A3ClockDataManager () <CLLocationManagerDelegate>
 
@@ -476,6 +477,73 @@
 	return;
 }
 
+- (void)getWeatherWithLocation:(CLLocation *)location {
+    __typeof(self) __weak weakSelf = self;
+
+    NSMutableDictionary *parameters = [NSMutableDictionary new];
+    parameters[@"lat"] = [NSString stringWithFormat:@"%.4f", location.coordinate.latitude];
+    parameters[@"lon"] = [NSString stringWithFormat:@"%.4f", location.coordinate.longitude];
+    parameters[@"format"] = @"json";
+    
+    NSMutableDictionary *headers = [NSMutableDictionary new];
+    headers[@"Yahoo-App-Id"] = @"B5tmZF36";
+    
+    NSURLRequest *request = [TDOAuth URLRequestForPath:@"/forecastrss"
+                                            parameters:parameters
+                                                  host:@"weather-ydn-yql.media.yahoo.com"
+                                           consumerKey:@"dj0yJmk9Uk42dGdBRXYxeTdjJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTdh"
+                                        consumerSecret:@"b6682084548c87ae7bd157145bdcd8ec6c0ab102"
+                                           accessToken:nil
+                                           tokenSecret:nil
+                                                scheme:@"https"
+                                         requestMethod:@"GET"
+                                          dataEncoding:TDOAuthContentTypeUrlEncodedForm
+                                          headerValues:headers
+                                       signatureMethod:TDOAuthSignatureMethodHmacSha1];
+    
+    NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration];
+    
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            FNLOG(@"%@", error.localizedDescription);
+            
+            return;
+        }
+        NSError *parseError;
+        NSDictionary *weatherData = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&parseError];
+        if (!parseError && [weatherData isKindOfClass:[NSDictionary class]] && weatherData[@"current_observation"] && weatherData[@"forecasts"]) {
+            FNLOG(@"%@", weatherData);
+            
+            A3ClockInfo *clockInfo = weakSelf.clockInfo;
+            clockInfo.currentWeather = [A3Weather new];
+            clockInfo.currentWeather.unit = [[A3UserDefaults standardUserDefaults] clockUsesFahrenheit] ? SCWeatherUnitFahrenheit : SCWeatherUnitCelsius;
+            // Results Unit
+            NSString *resultUnit = @"f";
+            
+            clockInfo.currentWeather.representation = weatherData[@"current_observation"][@"condition"][@"text"];
+            [clockInfo.currentWeather setCurrentTemperature:[weatherData[@"current_observation"][@"condition"][@"temperature"] doubleValue] fromUnit:resultUnit];
+            clockInfo.currentWeather.condition = (A3WeatherCondition)[weatherData[@"current_observation"][@"condition"][@"code"] integerValue];
+            
+            NSDictionary *forecast = weatherData[@"forecasts"][0];
+            [clockInfo.currentWeather setHighTemperature:[forecast[@"high"] doubleValue] fromUnit:resultUnit];
+            [clockInfo.currentWeather setLowTemperature:[forecast[@"low"] doubleValue] fromUnit:resultUnit];
+            
+            clockInfo.currentWeather.weatherAtmosphere = weatherData[@"current_observation"][@"atmosphere"];
+            
+            if ([weakSelf.delegate respondsToSelector:@selector(refreshWeather:)]) {
+                [weakSelf.delegate refreshWeather:clockInfo];
+            }
+            [weakSelf.weatherTimer invalidate];
+            weakSelf.weatherTimer = [NSTimer scheduledTimerWithTimeInterval:60 * 60 target:weakSelf selector:@selector(updateWeather) userInfo:nil repeats:NO];
+
+        }
+    }];
+    [task resume];
+    
+    return;
+}
+
 - (void)updateWeather {
 	[_weatherTimer invalidate];
 	_weatherTimer = nil;
@@ -490,7 +558,7 @@
 
 	if (!_weatherUpdateInProgress) {
 		_weatherUpdateInProgress = YES;
-		[self getWOEIDWithLocation:locations[0]];
+		[self getWeatherWithLocation:locations[0]];
 	}
 }
 
