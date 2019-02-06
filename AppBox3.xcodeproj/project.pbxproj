@@ -715,6 +715,7 @@
 		68C0F0781E3F4A9200B04E8B /* A3SharePopupFavoriteButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C0F0771E3F4A9200B04E8B /* A3SharePopupFavoriteButton.m */; };
 		68C149481FFEF9E100545EB6 /* NSString+TextDirectionality.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C149471FFEF9E100545EB6 /* NSString+TextDirectionality.m */; };
 		68C1ABFA18B1C05200021001 /* NSDateFormatter+LunarDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C1ABF918B1C05200021001 /* NSDateFormatter+LunarDate.m */; };
+		68C36051220AC68600F9AC4D /* FlickrRecommendation.json in Resources */ = {isa = PBXBuildFile; fileRef = 68832C9E199A3C8E00AF7C18 /* FlickrRecommendation.json */; };
 		68C7E1081BE20C1C00861AFD /* A3CurrencyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C7E1071BE20C1C00861AFD /* A3CurrencyViewController.m */; };
 		68C802D819571A0200BC19EE /* WalletCategoryPreset.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68C802D719571A0200BC19EE /* WalletCategoryPreset.plist */; };
 		68C802DB19571A2000BC19EE /* WalletPreset.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68C802DD19571A2000BC19EE /* WalletPreset.strings */; };
@@ -6263,6 +6264,7 @@
 				68F14FEB19485E8500159EAD /* A3DaysCounterEventListSectionHeader.xib in Resources */,
 				68F1C8D618D7F37D009FAE8A /* A3LadyCalendarViewController.xib in Resources */,
 				689D41FC1966F33900D7F1A7 /* A3DateKeyboardViewController_iPhone.xib in Resources */,
+				68C36051220AC68600F9AC4D /* FlickrRecommendation.json in Resources */,
 				6864D60017BBBA6300A215D7 /* AppIcons.xcassets in Resources */,
 				68143D0B18E3EC1F00569691 /* A3PasscodeKeyboard_iPad.xib in Resources */,
 				68B6A2FD18CEC76D004084EF /* A3UnitPriceSliderView.xib in Resources */,
