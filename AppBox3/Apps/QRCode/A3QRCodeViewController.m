@@ -118,7 +118,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	[_statusToolbar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
     
     CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-    if (screenBounds.size.height == 812) {
+    if (screenBounds.size.height == 812 || screenBounds.size.height == 896) {
         _statusToolbarHeightConstraint.constant = [A3UIDevice statusBarHeightPortrait];
         _bottomToolbarBottomSpaceConstraint.constant = 40;
     }
@@ -529,7 +529,7 @@ static NSString *const A3V3InstructionDidShowForQRCode = @"A3V3InstructionDidSho
     
     CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
     CGFloat bottomOffset = 0;
-    if (screenBounds.size.height == 812) {
+    if (screenBounds.size.height == 812 || screenBounds.size.height == 896) {
         bottomOffset = 40;
     }
     UIView *superview = self.view;

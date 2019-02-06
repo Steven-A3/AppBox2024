@@ -76,7 +76,7 @@ NSString *const A3AnimationIDKeyboardWillShow = @"A3AnimationIDKeyboardWillShow"
 
 + (CGFloat)statusBarHeightPortrait {
     CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-    if (screenBounds.size.height == 812) {
+    if (screenBounds.size.height == 812.0 || screenBounds.size.height == 896.0) {
         return 40.0;
     }
     return 20.0;

@@ -23,7 +23,7 @@
 - (id)initWithMode:(int)mode viewController:(InclinometerViewController *)aController {
     CGRect frame = [A3UIDevice screenBoundsAdjustedWithOrientation];
     CGFloat topOffset = 0;
-    if (frame.size.height == 812) {
+    if (frame.size.height == 812 || frame.size.height == 896) {
         topOffset = 40;
         frame.origin.y += topOffset;
         frame.size.height -= 80;

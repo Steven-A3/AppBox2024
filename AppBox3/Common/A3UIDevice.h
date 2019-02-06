@@ -43,10 +43,10 @@
 #define CURRENT_ORIENTATION        [[UIApplication sharedApplication] statusBarOrientation]
 
 #define IS_IPAD    	([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
-#define IS_IPAD_PRO	(!IS_IOS7 && [[UIScreen mainScreen] nativeBounds].size.height == 2732)
+#define IS_IPAD_PRO	(!IS_IOS7 && [[UIScreen mainScreen] nativeBounds].size.height == 2732.0)
 #define IS_IPHONE   ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
-#define IS_IPHONE35 ([A3UIDevice screenBoundsAdjustedWithOrientation].size.height == 480)
-#define IS_IPHONEX  ([UIScreen mainScreen].nativeBounds.size.height == 2436)
+#define IS_IPHONE35 ([A3UIDevice screenBoundsAdjustedWithOrientation].size.height == 480.0)
+#define IS_IPHONEX  (([UIScreen mainScreen].nativeBounds.size.height == 2436.0) || ([UIScreen mainScreen].nativeBounds.size.height == 1792.0))
 
 #define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
 #define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
@@ -65,7 +65,7 @@
 #define IS_IPHONE_4_INCH (IS_IPHONE && SCREEN_MAX_LENGTH == 568.0)			// iPhone 5, 5s, SE
 #define IS_IPHONE_4_7_INCH (IS_IPHONE && SCREEN_MAX_LENGTH == 667.0)		// iPhone 6, 7
 #define IS_IPHONE_5_5_INCH (IS_IPHONE && SCREEN_MAX_LENGTH == 736.0)		// iPhone 6 Plus, 7 Plus
-#define IS_IPAD_12_9_INCH (IS_IPAD && SCREEN_MAX_LENGTH == 1366)			// iPad Pro 12.9 inch
+#define IS_IPAD_12_9_INCH (IS_IPAD && SCREEN_MAX_LENGTH == 1366.)			// iPad Pro 12.9 inch
 
 #define	LANGUAGE_KOREAN	[[NSLocale preferredLanguages][0] hasPrefix:@"ko"]
 

@@ -149,7 +149,7 @@ A3InstructionViewControllerDelegate>
 		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 		if (self.shouldShowHouseAd) {
 			if (IS_IPHONE) {
-                if (screenBounds.size.height == 812) {
+                if (screenBounds.size.height == 812 || screenBounds.size.height == 896) {
                     offset = -143;
                 } else if (screenBounds.size.height == 568) {
 					// 4" : 5, 5s, iPod Touch 5
@@ -168,7 +168,7 @@ A3InstructionViewControllerDelegate>
 				}
 			}
 		} else {
-            if (screenBounds.size.height == 812) {
+            if (screenBounds.size.height == 812 || screenBounds.size.height == 896) {
                 offset = -20;
             } else {
                 offset = 0;

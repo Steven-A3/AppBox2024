@@ -99,7 +99,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 		}
 	}
 	
-    if (screenBounds.size.height == 812) {
+    if (screenBounds.size.height == 812 || screenBounds.size.height == 896) {
         _customNavigationBarHeightConstraint.constant = 84;
     }
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartPedometerUpdate) name:UIApplicationSignificantTimeChangeNotification object:nil];

@@ -344,7 +344,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
     CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
     if (IS_IPHONEX && IS_LANDSCAPE) {
-        scale = MAX(screenBounds.size.width, screenBounds.size.height) / 812;
+        scale = 1.0;
     }
 	NSArray *buttonTitle = nil;
     

@@ -236,6 +236,8 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
 	[self.reachability startNotifier];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
 
+    FNLOGRECT([[UIScreen mainScreen] nativeBounds]);
+    
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	[self setupMainMenuViewController];
 	self.window.backgroundColor = [UIColor whiteColor];

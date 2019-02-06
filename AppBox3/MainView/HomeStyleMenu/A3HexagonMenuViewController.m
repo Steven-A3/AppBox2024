@@ -122,7 +122,7 @@ A3InstructionViewControllerDelegate>
 			offset = 20;
 		} else if (screenBounds.size.height >= 667) {
 			offset = 30;
-        } else if (screenBounds.size.height == 812) {
+        } else if (screenBounds.size.height == 812 || screenBounds.size.height == 896) {
             contentSize.height += 100;
         }
 

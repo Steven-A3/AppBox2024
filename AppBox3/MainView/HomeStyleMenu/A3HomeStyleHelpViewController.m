@@ -21,7 +21,7 @@
     // Do any additional setup after loading the view.
     
     CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-    if (screenBounds.size.height == 812) {
+    if (screenBounds.size.height == 812 || screenBounds.size.height == 896) {
         CGFloat statusBarHeight = [A3UIDevice statusBarHeightPortrait];
         
         _topSpaceConstraint.constant = statusBarHeight + 3;

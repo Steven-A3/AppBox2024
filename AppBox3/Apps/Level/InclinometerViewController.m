@@ -159,7 +159,7 @@
 - (void)myLayoutSubviews {
 	CGRect frame = self.view.bounds;
     CGFloat topOffset = 0;
-    if (frame.size.height == 812) {
+    if (frame.size.height == 812 || frame.size.height == 896) {
         topOffset = 40;
         frame.origin.y += topOffset;
         frame.size.height -= 80;
@@ -454,7 +454,7 @@
 
     CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
     CGFloat bottomOffset = 0;
-    if (screenBounds.size.height == 812) {
+    if (screenBounds.size.height == 812 || screenBounds.size.height == 896) {
         bottomOffset = 40;
     }
     
