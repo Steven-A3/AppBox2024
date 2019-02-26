@@ -381,11 +381,71 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 	_currencyInfoDictionary = nil;
 }
 
+// http://apilayer.net/api/live?access_key=e2834bb6da9ca145c7b276f5aa522022&currencies=EUR,GBP,CAD,PLN&source=USD&format=1
+//
+//{
+//    "success":true,
+//    "terms":"https:\/\/currencylayer.com\/terms",
+//    "privacy":"https:\/\/currencylayer.com\/privacy",
+//    "timestamp":1550154246,
+//    "source":"USD",
+//    "quotes":{
+//        "USDEUR":0.885035,
+//        "USDGBP":0.780315,
+//        "USDCAD":1.33205,
+//        "USDPLN":3.84073
+//    }
+//}
+
+- (void)updateCurrencyRatesFromCurrencyLayerOnCompletion:(void (^)(BOOL))completion {
+    NSArray *targetCurrencies = [CurrencyFavorite MR_findAllSortedBy:A3CommonPropertyOrder ascending:YES];
+    NSMutableString *currenciesString = [NSMutableString new];
+    for (CurrencyFavorite *favorite in targetCurrencies) {
+        [currenciesString appendFormat:@"%@,", favorite.uniqueID];
+    }
+    [currenciesString deleteCharactersInRange:NSMakeRange([currenciesString length]-1, 1)];
+    NSString *URLString = [NSString stringWithFormat:@"http://apilayer.net/api/live?access_key=e2834bb6da9ca145c7b276f5aa522022&currencies=%@&source=USD&format=1", currenciesString];
+    
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URLString]];
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    if ([operation respondsToSelector:@selector(setQualityOfService:)]) {
+        [operation setQualityOfService:NSQualityOfServiceUserInteractive];
+    }
+    operation.responseSerializer = [AFJSONResponseSerializer serializer];
+    
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *requestOperation, id JSON)
+     {
+         NSDictionary *quotes = JSON[@"quotes"];
+         for (NSString *key in [quotes allKeys]) {
+             [self updateRateForCurrency:[key substringFromIndex:3] value:quotes[key]];
+         }
+         [[A3UserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3CurrencyUpdateDate];
+         [[A3UserDefaults standardUserDefaults] synchronize];
+         
+         [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdated object:nil];
+         
+         self.dataArray = nil;
+         
+         completion(YES);
+     }
+                                     failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error)
+     {
+         dispatch_async(dispatch_get_main_queue(), ^{
+             completion(NO);
+             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+         });
+     }];
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [operation start];
+}
+
 // https://free.currencyconverterapi.com/api/v6/convert?q=USD_PHP&compact=y
 // returns {"USD_PHP":{"val":53.098255}}
 // It allows only one and two pairs of currencies per call for free license.
 // Number of favorites - number of USD occurrences (i.e, if it has USD, it does not require to get the USD_USD currency rates
 
+/*
 - (void)updateCurrencyRatesFromFreeCurrencyRatesAPIOnCompletion:(void (^)(BOOL))completion {
     if (_updateCandidates)
         return;
@@ -463,6 +523,7 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     [operation start];
 }
+*/
 
 - (void)updateRateForCurrency:(NSString *)code value:(id)value {
     NSMutableArray *storedData = [[self ratesFromStoredFile] mutableCopy];

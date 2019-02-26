@@ -28,6 +28,6 @@ extern NSString *const A3CurrencyUpdateDate;
 - (NSString *)flagImageNameForCode:(NSString *)currencyCode;
 - (NSString *)symbolForCode:(NSString *)currencyCode;
 - (void)purgeRetainingObjects;
-- (void)updateCurrencyRatesFromFreeCurrencyRatesAPIOnCompletion:(void (^)(BOOL))completion;
+- (void)updateCurrencyRatesFromCurrencyLayerOnCompletion:(void (^)(BOOL))completion;
 
 @end

@@ -524,7 +524,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 //        [self finishCurrencyRatesUpdate];
 //    }];
     // TODO: Call new API
-    [self.currencyDataManager updateCurrencyRatesFromFreeCurrencyRatesAPIOnCompletion:^(BOOL success) {
+    [self.currencyDataManager updateCurrencyRatesFromCurrencyLayerOnCompletion:^(BOOL success) {
         if (success) {
             NSMutableArray *visibleRows = [[self.tableView indexPathsForVisibleRows] mutableCopy];
             NSUInteger firstRowIdx = [visibleRows indexOfObjectPassingTest:^BOOL(NSIndexPath *obj, NSUInteger idx, BOOL *stop) {

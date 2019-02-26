@@ -199,7 +199,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 //                    
 //                }];
                 // TODO: Call new API
-                [self.currencyDataManager updateCurrencyRatesFromFreeCurrencyRatesAPIOnCompletion:^(BOOL success) {
+                [self.currencyDataManager updateCurrencyRatesFromCurrencyLayerOnCompletion:^(BOOL success) {
                     if (success) {
                         [self didSelectPickerRow];
                         [self refreshUpdateDateLabel];
@@ -462,7 +462,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 //    }];
     
     // TODO: Call new API
-    [self.currencyDataManager updateCurrencyRatesFromFreeCurrencyRatesAPIOnCompletion:^(BOOL success) {
+    [self.currencyDataManager updateCurrencyRatesFromCurrencyLayerOnCompletion:^(BOOL success) {
         if (success) {
             [self didSelectPickerRow];
             [self refreshUpdateDateLabel];
