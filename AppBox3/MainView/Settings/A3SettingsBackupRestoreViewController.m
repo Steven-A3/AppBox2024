@@ -177,6 +177,8 @@ TJDropboxAuthenticationViewControllerDelegate>
 				dateFormatter.dateFormat = @"y-MM-dd'T'HH:mm:ss'Z'";
 				dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
 				for (NSDictionary *file in entries) {
+                    if (![[[file[@"name"] componentsSeparatedByString:@"."] lastObject] isEqualToString:@"backup"]) continue;
+                    
 					NSDate *fileDate = [dateFormatter dateFromString:file[@"server_modified"]];
 					if (recentModified == nil) {
 						recentModified = fileDate;
@@ -320,12 +322,14 @@ TJDropboxAuthenticationViewControllerDelegate>
 						[_HUD showAnimated:YES];
 						
 						[TJDropbox listFolderWithPath:kDropboxDir accessToken:self.dropboxAccessToken completion:^(NSArray<NSDictionary *> * _Nullable entries, NSString * _Nullable cursor, NSError * _Nullable error) {
+                            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K endsWith[cd] '.backup'", @"name"];
+                            NSArray *backupFiles = [entries filteredArrayUsingPredicate:predicate];
 							dispatch_async(dispatch_get_main_queue(), ^{
 								[_HUD hideAnimated:YES];
 								_HUD = nil;
 								
-								if (error == nil && [entries count]) {
-									self.dropboxFolderList = entries;
+								if (error == nil && [backupFiles count]) {
+									self.dropboxFolderList = backupFiles;
 									[self performSegueWithIdentifier:@"dropboxSelectBackup" sender:nil];
 								} else {
 									UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Dropbox", @"Dropbox") message:NSLocalizedString(@"You have no backup files stored in Dropbox.", @"You have no backup files stored in Dropbox.") delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
@@ -339,6 +343,9 @@ TJDropboxAuthenticationViewControllerDelegate>
 				case 1: {
 					[self.backupRestoreManager backupData];
 					break;
+                case 2:
+                    [self.backupRestoreManager exportPhotosVideos];
+                    break;
 				}
 			}
 			break;

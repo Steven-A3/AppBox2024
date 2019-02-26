@@ -56,5 +56,6 @@ extern NSString *const A3WalletUUIDMemoCategory;
 + (WalletCategory *)categoryItemWithID:(NSString *)categoryID inContext:(NSManagedObjectContext *)context;
 + (WalletField *)fieldOfFieldItem:(WalletFieldItem *)fieldItem;
 + (NSString *)stringRepresentationOfContents;
++ (NSString *)htmlRepresentationOfContents;
 
 @end

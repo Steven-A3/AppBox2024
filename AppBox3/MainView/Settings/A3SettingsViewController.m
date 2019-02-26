@@ -470,7 +470,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
         return;
     }
     NSString *emailSubject = [NSString stringWithFormat:@"%@ %@", @"AppBox Pro®", NSLocalizedString(@"Wallet Contents", nil)];
-    NSString *body = [WalletData stringRepresentationOfContents];
+    NSString *body = [WalletData htmlRepresentationOfContents];
 
     MFMailComposeViewController *viewController = [[MFMailComposeViewController alloc] init];
     if (viewController) {
@@ -478,7 +478,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
         
         [viewController setSubject:emailSubject];
         
-        [viewController setMessageBody:body isHTML:NO];
+        [viewController setMessageBody:body isHTML:YES];
         
         [self presentViewController:viewController animated:YES completion:nil];
     }

@@ -36,6 +36,7 @@
 	{
 		_zipFile = NULL ;
 		_fileManager = [NSFileManager new];
+        _encryptZip = YES;
 	}
 	return self;
 }
@@ -349,7 +350,7 @@ done:
     _currentByte = 0;
     
     if(_totalByte > 0) {
-        if ([self createZipFile2:target Password:DEFAULT_SECURITY_KEY])
+        if ([self createZipFile2:target Password:self.encryptZip ? DEFAULT_SECURITY_KEY : nil])
         {
             NSDictionary   *aFileInfo = nil;
             NSString       *filePath = nil;

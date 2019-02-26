@@ -22,6 +22,7 @@
 @interface AAAZip : NSObject
 
 @property (nonatomic, strong) id<AAAZipDelegate> delegate;
+@property (nonatomic, assign) BOOL encryptZip;
 
 - (BOOL)createZipFile:(NSString *)zipFile withArray:(NSMutableArray *)fileList;
 - (BOOL)unzipFile:(NSString *)zipFile unzipFileto:(NSString *)path;

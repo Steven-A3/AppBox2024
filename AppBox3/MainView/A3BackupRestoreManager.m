@@ -21,6 +21,9 @@
 #import "A3UserDefaults.h"
 #import "TJDropbox.h"
 #import "ACSimpleKeychain.h"
+#import "WalletField.h"
+#import "WalletItem.h"
+#import "WalletCategory.h"
 
 NSString *const A3ZipFilename = @"name";
 NSString *const A3ZipNewFilename = @"newname";
@@ -76,6 +79,79 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 	return [path stringByAppendingPathComponent:[[A3AppDelegate instance] storeFileName]];
 }
 
+- (void)addDaysCounterPhotosWith:(NSFileManager *)fileManager fileList:(NSMutableArray *)fileList forBackup:(BOOL)forBackup {
+    NSArray *daysCounterEvents = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"photoID != NULL"]];
+    [daysCounterEvents enumerateObjectsUsingBlock:^(DaysCounterEvent * _Nonnull event, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSString *photoPath = [[event photoURLInOriginalDirectory:YES] path];
+        if (![fileManager fileExistsAtPath:photoPath]) return;
+        NSString *filename = forBackup ?
+        [NSString stringWithFormat:@"%@/%@", A3DaysCounterImageDirectory, event.photoID]
+        : [NSString stringWithFormat:@"%@/DaysCounterPhoto-%ld.jpg", A3DaysCounterImageDirectory, (long)idx + 1]
+        ;
+        [fileList addObject:
+         @{
+           A3ZipFilename : photoPath,
+           A3ZipNewFilename : filename
+           }];
+    }];
+}
+
+- (void)addWalletPhotosVideosWith:(NSFileManager *)fileManager fileList:(NSMutableArray *)fileList forBackup:(BOOL)forBackup {
+    NSArray *walletImages = [WalletFieldItem MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"hasImage == YES"]];
+    [walletImages enumerateObjectsUsingBlock:^(WalletFieldItem * _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSString *photoPath = [[item photoImageURLInOriginalDirectory:YES] path];
+        if (![fileManager fileExistsAtPath:photoPath]) return;
+        NSString *filename = forBackup ?
+            [NSString stringWithFormat:@"%@/%@", A3WalletImageDirectory, item.uniqueID] :
+            [NSString stringWithFormat:@"%@/WalletPhoto-%ld.jpg", A3WalletImageDirectory, (long)idx + 1];
+        [fileList addObject:
+         @{
+           A3ZipFilename : photoPath,
+           A3ZipNewFilename : filename
+           }];
+    }];
+
+    NSArray *walletVideos = [WalletFieldItem MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"hasVideo == YES"]];
+    [walletVideos enumerateObjectsUsingBlock:^(WalletFieldItem * _Nonnull video, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSArray *items = [WalletItem MR_findByAttribute:@"uniqueID" withValue:video.walletItemID];
+        if ([items count] == 0) return;
+        
+        NSString *videoFilePath = [[video videoFileURLInOriginal:YES] path];
+        if (![fileManager fileExistsAtPath:videoFilePath]) return;
+        NSString *filename = forBackup ?
+            [NSString stringWithFormat:@"%@/%@-video.%@", A3WalletVideoDirectory, video.uniqueID, video.videoExtension] :
+            [NSString stringWithFormat:@"%@/WalletVideo-%ld.%@", A3WalletVideoDirectory, (long)idx + 1, video.videoExtension];
+        [fileList addObject:
+         @{
+           A3ZipFilename : videoFilePath,
+           A3ZipNewFilename : filename
+           }];
+    }];
+}
+
+- (void)exportPhotosVideos {
+    _backupToDocumentDirectory = NO;
+    
+    NSMutableArray *fileList = [NSMutableArray new];
+    _deleteFilesAfterZip = [NSMutableArray new];
+
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+
+    [self addDaysCounterPhotosWith:fileManager fileList:fileList forBackup:NO];
+    [self addWalletPhotosVideosWith:fileManager fileList:fileList forBackup:NO];
+
+    self.HUD.label.text = NSLocalizedString(@"Compressing", @"Compressing");
+    self.HUD.progress = 0;
+    [_hostingView addSubview:self.HUD];
+    [self.HUD showAnimated:YES];
+    
+    AAAZip *zip = [AAAZip new];
+    zip.delegate = self;
+    zip.encryptZip = NO;
+    _backupFilePath = [self uniqueBackupFilenameWithPrefix:@"PhotosVideos" extension:@"zip"];
+    [zip createZipFile:_backupFilePath withArray:fileList];
+}
+
 - (void)backupCoreDataStore {
 	NSMutableArray *fileList = [NSMutableArray new];
 	_deleteFilesAfterZip = [NSMutableArray new];
@@ -100,17 +176,8 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 	}
 
 	// Backup data files
-	NSArray *daysCounterEvents = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"photoID != NULL"]];
-	for (DaysCounterEvent *event in daysCounterEvents) {
-		NSString *photoPath = [[event photoURLInOriginalDirectory:YES] path];
-		if (![fileManager fileExistsAtPath:photoPath]) continue;
-		[fileList addObject:
-			@{
-				A3ZipFilename : photoPath,
-				A3ZipNewFilename : [NSString stringWithFormat:@"%@/%@", A3DaysCounterImageDirectory, event.photoID]
-			}];
-	}
-
+    [self addDaysCounterPhotosWith:fileManager fileList:fileList forBackup:YES];
+    
 	NSArray *holidayCountries = [HolidayData userSelectedCountries];
 	A3HolidaysFlickrDownloadManager *holidaysFlickrDownloadManager = [A3HolidaysFlickrDownloadManager sharedInstance];
 	for (NSString *countryCode in holidayCountries) {
@@ -128,27 +195,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 		}
 	}
 
-	NSArray *walletImages = [WalletFieldItem MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"hasImage == YES"]];
-	for (WalletFieldItem *item in walletImages) {
-		NSString *photoPath = [[item photoImageURLInOriginalDirectory:YES] path];
-		if (![fileManager fileExistsAtPath:photoPath]) continue;
-		[fileList addObject:
-			@{
-				A3ZipFilename : photoPath,
-				A3ZipNewFilename : [NSString stringWithFormat:@"%@/%@", A3WalletImageDirectory, item.uniqueID]
-			}];
-	}
-
-	NSArray *walletVideos = [WalletFieldItem MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"hasVideo == YES"]];
-	for (WalletFieldItem *video in walletVideos) {
-		NSString *videoFilePath = [[video videoFileURLInOriginal:YES] path];
-		if (![fileManager fileExistsAtPath:videoFilePath]) continue;
-		[fileList addObject:
-			@{
-				A3ZipFilename : videoFilePath,
-				A3ZipNewFilename : [NSString stringWithFormat:@"%@/%@-video.%@", A3WalletVideoDirectory, video.uniqueID, video.videoExtension]
-			}];
-	}
+    [self addWalletPhotosVideosWith:fileManager fileList:fileList forBackup:YES];
 
 	NSDictionary *backupInfoDictionary = @{
 			A3BackupFileVersionKey : [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"],
@@ -174,7 +221,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 	AAAZip *zip = [AAAZip new];
 	zip.delegate = self;
-	_backupFilePath = [self uniqueBackupFilename];
+    _backupFilePath = [self uniqueBackupFilenameWithPrefix:nil extension:nil];
 	[zip createZipFile:_backupFilePath withArray:fileList];
 }
 
@@ -429,17 +476,17 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 	_deleteFilesAfterZip = nil;
 }
 
-- (NSString *)uniqueBackupFilename {
+- (NSString *)uniqueBackupFilenameWithPrefix:(NSString *)prefix extension:(NSString *)extension {
 	NSDate *date = [NSDate date];
 	NSDateComponents *components = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond fromDate:date];
-	NSString *seedFilename = [NSString stringWithFormat:@"AppBoxBackup-%0ld-%02ld-%02ld-%02ld-%02ld", (long) components.year, (long) components.month, (long) components.day, (long) components.hour, (long) components.minute];
+    NSString *seedFilename = [NSString stringWithFormat:@"%@-%0ld-%02ld-%02ld-%02ld-%02ld", prefix ?: @"AppBoxBackup", (long) components.year, (long) components.month, (long) components.day, (long) components.hour, (long) components.minute];
 	NSString *filename = seedFilename;
-	NSString *path = [[filename stringByAppendingPathExtension:@"backup"] pathInDocumentDirectory];
+    NSString *path = [[filename stringByAppendingPathExtension:extension ?:@"backup"] pathInDocumentDirectory];
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSInteger option = 1;
 	while ([fileManager fileExistsAtPath:path]) {
 		filename = [seedFilename stringByAppendingFormat:@"-%ld", (long)option++];
-		path = [[filename stringByAppendingPathExtension:@"backup"] pathInDocumentDirectory];
+        path = [[filename stringByAppendingPathExtension:extension ?: @"backup"] pathInDocumentDirectory];
 	}
 	return path;
 }

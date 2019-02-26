@@ -325,4 +325,114 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
     return contents;
 }
 
++ (NSArray *)sortedArrayUsingCollation:(NSArray *)array {
+    UILocalizedIndexedCollation *collation = [UILocalizedIndexedCollation currentCollation];
+    
+    NSInteger index, sectionTitlesCount = [[collation sectionTitles] count];
+    
+    NSMutableArray *newSectionsArray = [[NSMutableArray alloc] initWithCapacity:sectionTitlesCount];
+    
+    // Set up the sections array: elements are mutable arrays that will contain the time zones for that section.
+    for (index = 0; index < sectionTitlesCount; index++) {
+        NSMutableArray *array = [[NSMutableArray alloc] init];
+        [newSectionsArray addObject:array];
+    }
+
+    BOOL needAdjustment = LANGUAGE_KOREAN;
+    // Segregate the time zones into the appropriate arrays.
+    for (WalletItem *object in array) {
+        if (!object.name) {
+            object.name = @"";
+        }
+        
+        // Ask the collation which section number the time zone belongs in, based on its locale name.
+        NSInteger sectionNumber = [collation sectionForObject:object collationStringSelector:NSSelectorFromString(@"name")];
+        
+        // Language가 Korean인 경우, 영어에서 sectionNumber가 실제보다 1 크게 결과가 나오는 오류가 있어서 보정함
+        if (needAdjustment && [object.name length]) {
+            NSRange range = [[object.name substringToIndex:1] rangeOfString:[collation.sectionTitles[sectionNumber] substringToIndex:1] options:NSCaseInsensitiveSearch];
+            if (range.location == NSNotFound) {
+                sectionNumber = MAX(0, sectionNumber - 1);
+            }
+        }
+
+        // Get the array for the section.
+        NSMutableArray *sections = newSectionsArray[sectionNumber];
+        
+        //  Add the time zone to the section.
+        [sections addObject:object];
+    }
+    NSMutableArray *result = [NSMutableArray new];
+    for (index = 0; index < sectionTitlesCount; index++) {
+        
+        NSMutableArray *dataArrayForSection = newSectionsArray[index];
+        
+        if ([dataArrayForSection count]) {
+            // If the table view or its contents were editable, you would make a mutable copy here.
+            NSArray *sortedDataArrayForSection = [collation sortedArrayFromArray:dataArrayForSection collationStringSelector:NSSelectorFromString(@"name")];
+            [result addObjectsFromArray:sortedDataArrayForSection];
+        }
+    }
+
+    return result;
+}
+
+/*
+ 
+ */
++ (NSString *)htmlRepresentationOfContents {
+    NSMutableString *contents = [[NSMutableString alloc] init];
+    [contents appendString:NSLocalizedStringFromTable(@"exportHeader", @"walletExport", nil)];
+    
+    NSArray *categories = [WalletCategory MR_findAllSortedBy:@"order" ascending:YES];
+    for (WalletCategory *category in categories) {
+        if ([category.uniqueID isEqualToString:A3WalletUUIDAllCategory] || [category.uniqueID isEqualToString:A3WalletUUIDFavoriteCategory]) continue;
+        
+        FNLOG(@"%@", category.uniqueID);
+        FNLOG(@"%@", category.name);
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", category.uniqueID];
+        NSArray *allRows = [WalletItem MR_findAllSortedBy:@"name" ascending:YES withPredicate:predicate];
+        
+        if ([allRows count] == 0) continue;
+        
+        allRows = [WalletData sortedArrayUsingCollation:allRows];
+        
+        [contents appendString:[NSString stringWithFormat:@"<h2>%@ (%d)</h2>", category.name, [allRows count]]];
+
+        [contents appendString:@"<table>"];
+        
+        NSArray *fields = [WalletField MR_findByAttribute:@"categoryID" withValue:category.uniqueID inContext:category.managedObjectContext];
+        [contents appendString:@"<tr>"];
+        [contents appendString:[NSString stringWithFormat:@"<th style=\"border: 1px solid #dddddd;text-align: left;padding: 8px;\">%@</th>", NSLocalizedString(@"Title", nil)]];
+        for (WalletField *field in fields) {
+            [contents appendString:[NSString stringWithFormat:@"<th style=\"border: 1px solid #dddddd;text-align: left;padding: 8px;\">%@</th>", field.name ?: @""]];
+        }
+        [contents appendString:[NSString stringWithFormat:@"<th style=\"border: 1px solid #dddddd;text-align: left;padding: 8px;\">%@</th>", NSLocalizedString(@"Memo", nil)]];
+        [contents appendString:@"</tr>"];
+
+        // Append table header row
+        for (WalletItem *row in allRows) {
+            [contents appendString:@"<tr>"];
+            [contents appendString:[NSString stringWithFormat:@"<td style=\"border: 1px solid #dddddd;text-align: left;padding: 8px;\">%@</td>", row.name ?: @""]];
+            for (WalletField *field in fields) {
+                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@ AND fieldID == %@", row.uniqueID, field.uniqueID];
+                NSArray *fieldItems = [WalletFieldItem MR_findAllWithPredicate:predicate inContext:category.managedObjectContext];
+                if ([fieldItems count]) {
+                    WalletFieldItem *fieldItem = fieldItems[0];
+                    [contents appendString:[NSString stringWithFormat:@"<td style=\"border: 1px solid #dddddd;text-align: left;padding: 8px;\">%@</td>", fieldItem.value ?: @""]];
+                } else {
+                    [contents appendString:@"<td style=\"border: 1px solid #dddddd;text-align: left;padding: 8px;\"></td>"];
+                }
+            }
+            [contents appendString:[NSString stringWithFormat:@"<td style=\"border: 1px solid #dddddd;text-align: left;padding: 8px;\">%@</td>", row.note ?: @""]];
+            [contents appendString:@"</tr>"];
+        }
+
+        [contents appendString:@"</table>"];
+    }
+    [contents appendString:NSLocalizedStringFromTable(@"exportTail", @"walletExport", nil)];
+    
+    return contents;
+}
+
 @end

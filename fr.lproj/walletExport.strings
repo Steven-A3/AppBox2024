@@ -1,0 +1,39 @@
+/* 
+  walletExport.strings
+  AppBox3
+
+  Created by BYEONG KWON KWAK on 16/02/2019.
+  Copyright © 2019 ALLABOUTAPPS. All rights reserved.
+*/
+
+exportHeader="<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+h2 {
+    text-align: left;
+}
+</style>
+</head>
+<body>
+";
+exportTail="
+<p>Pour les photos et vidéos, appuyez sur Sauvegarder et restaurer sur Dropbox> Exporter des photos et des vidéos.</p>
+</body>
+</html>
+";

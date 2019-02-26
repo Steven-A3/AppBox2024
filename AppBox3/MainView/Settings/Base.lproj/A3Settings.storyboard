@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="go4-fr-Ah2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="go4-fr-Ah2">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -137,28 +135,28 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="azc-pz-0Ra">
-                                                    <rect key="frame" x="49" y="10" width="52" height="109"/>
+                                                    <rect key="frame" x="49" y="10.5" width="52" height="109"/>
                                                     <state key="normal" backgroundImage="HomeScreenStyle_list"/>
                                                     <connections>
                                                         <action selector="listButtonSelected:" destination="w9G-1V-Z0I" eventType="touchUpInside" id="tgM-LZ-DUD"/>
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Hw-ek-qge">
-                                                    <rect key="frame" x="161.5" y="10" width="52" height="109"/>
+                                                    <rect key="frame" x="161.5" y="10.5" width="52" height="109"/>
                                                     <state key="normal" backgroundImage="HomeScreenStyle_hexagon"/>
                                                     <connections>
                                                         <action selector="hexagonButtonSelected:" destination="w9G-1V-Z0I" eventType="touchUpInside" id="cuj-jh-x7i"/>
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lgX-gr-2rr">
-                                                    <rect key="frame" x="261" y="10" width="52" height="109"/>
+                                                    <rect key="frame" x="261" y="10.5" width="52" height="109"/>
                                                     <state key="normal" backgroundImage="HomeScreenStyle_grid"/>
                                                     <connections>
                                                         <action selector="gridButtonSelected:" destination="w9G-1V-Z0I" eventType="touchUpInside" id="6aJ-xc-Yvb"/>
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l7a-V1-SMB">
-                                                    <rect key="frame" x="39.5" y="129" width="71" height="21"/>
+                                                    <rect key="frame" x="39.5" y="129.5" width="71" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="71" id="DO7-qm-K7b"/>
                                                         <constraint firstAttribute="height" constant="21" id="TdI-8o-fZa"/>
@@ -170,7 +168,7 @@
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Xh-7R-BIO">
-                                                    <rect key="frame" x="152" y="129" width="71" height="21"/>
+                                                    <rect key="frame" x="152" y="129.5" width="71" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="9am-ry-Y5M"/>
                                                         <constraint firstAttribute="width" constant="71" id="Wcf-yg-9Mb"/>
@@ -182,7 +180,7 @@
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1J3-ea-Ni3">
-                                                    <rect key="frame" x="251.5" y="129" width="71" height="21"/>
+                                                    <rect key="frame" x="251.5" y="129.5" width="71" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="71" id="4ae-eU-h0L"/>
                                                         <constraint firstAttribute="height" constant="21" id="pGk-VY-Msu"/>
@@ -411,7 +409,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sD2-IR-dCF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-36" y="119"/>
+            <point key="canvasLocation" x="-57.600000000000001" y="107.0464767616192"/>
         </scene>
         <!--Sync-->
         <scene sceneID="q6d-Uf-u36">
@@ -487,12 +485,29 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="GEH-Cj-vBA" style="IBUITableViewCellStyleDefault" id="Tcj-XN-Y42" customClass="A3StandardTableViewCell">
+                                        <rect key="frame" x="0.0" y="187" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Tcj-XN-Y42" id="sCd-nB-szG">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Backup Photos &amp; Videos" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="GEH-Cj-vBA">
+                                                    <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection id="Yhl-WE-sDK">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="iav-1w-bex" style="IBUITableViewCellStyleDefault" id="oeF-FL-g1C" customClass="A3StandardTableViewCell">
-                                        <rect key="frame" x="0.0" y="207" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="251" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oeF-FL-g1C" id="mqB-bh-N0I">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -523,7 +538,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hih-an-hgV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="505" y="119"/>
+            <point key="canvasLocation" x="808" y="107.0464767616192"/>
         </scene>
         <!--Select Backup-->
         <scene sceneID="ZQd-XN-EPE">
@@ -575,7 +590,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a8h-YZ-IMS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1571" y="119"/>
+            <point key="canvasLocation" x="2513.5999999999999" y="107.0464767616192"/>
         </scene>
         <!--Passcode Lock-->
         <scene sceneID="N8J-lo-eBg">
@@ -811,7 +826,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bUg-dd-zte" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="505" y="1267"/>
+            <point key="canvasLocation" x="808" y="1139.7301349325339"/>
         </scene>
         <!--Require Passcode-->
         <scene sceneID="nKi-gm-Rnp">
@@ -939,7 +954,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c88-Zr-Hf2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1045" y="1267"/>
+            <point key="canvasLocation" x="1672" y="1139.7301349325339"/>
         </scene>
         <!--Edit Favorites-->
         <scene sceneID="JoA-kY-rVI">
@@ -984,7 +999,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zG8-VR-Hek" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="505" y="1930"/>
+            <point key="canvasLocation" x="808" y="1736.1319340329837"/>
         </scene>
         <!--Apps-->
         <scene sceneID="U03-os-oC5">
@@ -1025,7 +1040,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yH0-wz-cW5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1510" y="1930"/>
+            <point key="canvasLocation" x="2416" y="1736.1319340329837"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="xWH-uz-M9i">
@@ -1041,7 +1056,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XUp-f5-qDM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1045" y="1930"/>
+            <point key="canvasLocation" x="1672" y="1736.1319340329837"/>
         </scene>
         <!--Recent To Keep-->
         <scene sceneID="vpw-Gw-8gr">
@@ -1173,7 +1188,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="odb-53-1ah" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="505" y="2592"/>
+            <point key="canvasLocation" x="808" y="2331.6341829085459"/>
         </scene>
         <!--Theme Color-->
         <scene sceneID="3Nt-Kd-f0R">
@@ -1207,7 +1222,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EFp-N7-5wf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="505" y="3261"/>
+            <point key="canvasLocation" x="808" y="2933.4332833583212"/>
         </scene>
         <!--Lunar Calendar-->
         <scene sceneID="mcD-Z5-2cl">
@@ -1267,7 +1282,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZC0-D8-eaa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="505" y="3918"/>
+            <point key="canvasLocation" x="808" y="3524.4377811094455"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="MkS-6P-QRt">
@@ -1285,7 +1300,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kry-mx-M4b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1045" y="119"/>
+            <point key="canvasLocation" x="1672" y="107.0464767616192"/>
         </scene>
         <!--Default App-->
         <scene sceneID="lu0-G7-0sG">
@@ -1323,7 +1338,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eQn-Mn-pTd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-36" y="752"/>
+            <point key="canvasLocation" x="-57.600000000000001" y="676.46176911544228"/>
         </scene>
         <!--Table View Controller - iTunes-->
         <scene sceneID="qhX-35-zee">
@@ -1409,7 +1424,7 @@ Deleting the app will delete the backup file in your device together.</string>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="68r-a2-zJF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="505" y="679"/>
+            <point key="canvasLocation" x="808" y="610.79460269865069"/>
         </scene>
         <!--Select Backup-->
         <scene sceneID="3Tu-ua-wMK">
@@ -1460,7 +1475,7 @@ Deleting the app will delete the backup file in your device together.</string>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lgz-jh-WgY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1571" y="679"/>
+            <point key="canvasLocation" x="2513.5999999999999" y="610.79460269865069"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="2sl-ga-jiv">
@@ -1477,7 +1492,7 @@ Deleting the app will delete the backup file in your device together.</string>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VQJ-HH-exK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1045" y="679"/>
+            <point key="canvasLocation" x="1672" y="610.79460269865069"/>
         </scene>
     </scenes>
     <resources>
