@@ -18,9 +18,17 @@
 
 @interface A3TranslatorFavoriteDataSource ()
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, strong) A3TranslatorLanguage *languageListManager;
 @end
 
 @implementation A3TranslatorFavoriteDataSource
+
+- (A3TranslatorLanguage *)languageListManager {
+    if (!_languageListManager) {
+        _languageListManager = [A3TranslatorLanguage new];
+    }
+    return _languageListManager;
+}
 
 - (void)resetData {
 	_fetchedResultsController = nil;
@@ -50,8 +58,8 @@
 	TranslatorFavorite *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	TranslatorHistory *history = [TranslatorHistory MR_findFirstByAttribute:@"uniqueID" withValue:item.historyID];
 	TranslatorGroup *group = [TranslatorGroup MR_findFirstByAttribute:@"uniqueID" withValue:history.groupID];
-	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@", @"%@ to %@"), [A3TranslatorLanguage localizedNameForCode:group.sourceLanguage],
-													 [A3TranslatorLanguage localizedNameForCode:group.targetLanguage]];
+	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@", @"%@ to %@"), [self.languageListManager localizedNameForCode:group.sourceLanguage],
+													 [self.languageListManager localizedNameForCode:group.targetLanguage]];
 	cell.detailTextLabel.text = history.originalText;
 	if (IS_IPAD) {
 		cell.dateLabel.text = [history.updateDate timeAgo];

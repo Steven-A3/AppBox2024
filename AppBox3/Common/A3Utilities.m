@@ -165,7 +165,6 @@ NSString *const kUserDefaultsKeyForPasscodeTimerDuration 	= @"kUserRequirePassco
 NSString *const kUserDefaultsKeyForUseSimplePasscode 		= @"kUserUseSimplePasscode";
 NSString *const kUserDefaultsKeyForUseTouchID 				= @"kUserDefaultsKeyForUseTouchID";
 NSString *const kUserDefaultsKeyForAskPasscodeForStarting 	= @"kUserRequirePasscodeAppBoxPro";
-NSString *const kUserDefaultsKeyForAskPasscodeForSettings 	= @"kUserRequirePasscodeSettiings";
 NSString *const kUserDefaultsKeyForAskPasscodeForDaysCounter = @"kUserRequirePasscodeDaysUntil";
 NSString *const kUserDefaultsKeyForAskPasscodeForLadyCalendar = @"kUserRequirePasscodePCalendar";
 NSString *const kUserDefaultsKeyForAskPasscodeForWallet 	= @"passcodeAskPasscodeForWallet";

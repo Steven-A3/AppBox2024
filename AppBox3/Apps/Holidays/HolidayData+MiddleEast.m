@@ -959,17 +959,12 @@ NSUInteger const jewishTable[][14][2] = {
 - (NSMutableArray * _Nonnull)il_HolidaysInYear {
 	NSUInteger year = self.year;
 
-	NSString *filepath = [@"data/IsraelHolidays.plist" pathInCachesDirectory];
+	NSString *filepath = [[NSBundle mainBundle] pathForResource:@"IsraelHolidays" ofType:@"plist"];
 	NSDictionary *israelHolidays = nil;
 	if ([[NSFileManager defaultManager] fileExistsAtPath:filepath]) {
 		israelHolidays = [NSDictionary dictionaryWithContentsOfFile:filepath];
 	}
 	
-	if (!israelHolidays) {
-		filepath = [[NSBundle mainBundle] pathForResource:@"IsraelHolidays" ofType:@"plist"];
-		israelHolidays = [NSDictionary dictionaryWithContentsOfFile:filepath];
-	}
-
 	if (!israelHolidays) {
 		return nil;
 	}

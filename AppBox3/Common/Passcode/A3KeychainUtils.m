@@ -166,8 +166,6 @@ NSString *const kUserUseSimplePasscode				= @"kUserUseSimplePasscode";
         BOOL appLockEnabled = NO;
         if ([[NSUserDefaults standardUserDefaults] boolForKey:kUserRequirePasscodeSettings]) {
             appLockEnabled = YES;
-            [[A3UserDefaults standardUserDefaults] setBool:YES
-                                                    forKey:kUserDefaultsKeyForAskPasscodeForSettings];
         }
         if ([[NSUserDefaults standardUserDefaults] boolForKey:kUserRequirePasscodeDaysUntil]) {
             appLockEnabled = YES;

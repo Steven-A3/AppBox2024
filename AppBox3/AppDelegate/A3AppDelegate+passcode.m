@@ -39,6 +39,7 @@
 
 - (void)saveTimerStartTime {
 	[[A3UserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kUserDefaultTimerStart];
+    [[A3UserDefaults standardUserDefaults] synchronize];
 	FNLOG(@"**************************************************************");
 	FNLOG(@"%@", [NSDate date]);
 	FNLOG(@"**************************************************************");
@@ -51,7 +52,7 @@
     if (now - timerStartTime < 0) {
         return YES;
     }
-	if (timerStartTime != -1 && (now - timerStartTime < 1.0)) {
+	if (timerStartTime != -1 && (now - timerStartTime < 1.5)) {
 		return NO;
 	}
 	if ((now - [self passcodeFreeBegin]) < 0.2) {
@@ -248,6 +249,9 @@
 }
 
 - (void)applicationDidBecomeActive_passcodeAfterLaunch:(BOOL)isAfterLaunch {
+    self.counterPassedDidBecomeActive++;
+    FNLOG(@"counterPassedDidBecomeActive=%ld", (long) self.counterPassedDidBecomeActive);
+    
     FNLOG();
     
 	if (self.isSettingsEvaluatingTouchID) {
@@ -259,8 +263,10 @@
 		if (self.touchIDEvaluationDidFinish) {
 			self.isTouchIDEvaluationInProgress = NO;
 		}
+        self.isTouchIDEvaluationInProgress = NO;
 		return;
 	}
+    
 	if (!isAfterLaunch) {
 		if ([self didPasscodeTimerEnd] && [self shouldAskPasscodeForStarting]) {
 			FNLOG(@"showLockScreen");
@@ -630,7 +636,6 @@
 - (void)initializePasscodeUserDefaults {
     [[A3UserDefaults standardUserDefaults] setBool:NO forKey:kUserDefaultsKeyForUseSimplePasscode];
 	[[A3UserDefaults standardUserDefaults] setBool:NO forKey:kUserDefaultsKeyForAskPasscodeForStarting];
-	[[A3UserDefaults standardUserDefaults] setBool:NO forKey:kUserDefaultsKeyForAskPasscodeForSettings];
 	[[A3UserDefaults standardUserDefaults] setBool:NO forKey:kUserDefaultsKeyForAskPasscodeForDaysCounter];
 	[[A3UserDefaults standardUserDefaults] setBool:NO forKey:kUserDefaultsKeyForAskPasscodeForLadyCalendar];
 	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:kUserDefaultsKeyForAskPasscodeForWallet];
@@ -640,14 +645,8 @@
 - (BOOL)shouldAskPasscodeForSettings {
     if (![A3KeychainUtils getPassword]) return NO;
 	
-	// 암호가 설정되어 있고, 현재 암호 설정 화면에 들어와 있다면, 보호 되어야 한다.
-	id topViewController = self.currentMainNavigationController.topViewController;
-	if ([topViewController isMemberOfClass:[A3SettingsPasscodeViewController class]] ||
-		[topViewController isMemberOfClass:[A3SettingsRequireForViewController class]]) {
-		return YES;
-	}
-	
-	return [[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForSettings];
+    // 암호가 설정되어 있다면 설정 화면 진입 시, 내부에서든, 외부에서든 암호를 확인하여야 한다.
+	return YES;
 }
 
 - (BOOL)shouldAskPasscodeForDaysCounter {

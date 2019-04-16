@@ -16,6 +16,78 @@ static NSString *const kTranslatorLocalizedName = @"localizedName";
 
 @implementation A3TranslatorLanguage
 
+- (NSString *)microsoftAzureSubscriptionKey {
+    return @"cec86caa6cb24b95ac9b99aee75848c4";
+}
+
+- (NSString *)languageListFilename {
+    return @"azureLanguageList.plist";
+}
+
+- (NSString *)languageListPath {
+    return [[self languageListFilename] pathInCachesDirectory];
+}
+
+- (void)updateLangaugeListCompletion:(void(^)(BOOL success))completion {
+    NSString *urlString = @"https://api.cognitive.microsofttranslator.com/languages?api-version=3.0";
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    [request setHTTPMethod:@"GET"];
+    [request setValue:[self microsoftAzureSubscriptionKey] forHTTPHeaderField:@"Ocp-Apim-Subscription-Key"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSError *parseError;
+        NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&parseError];
+        if (!parseError) {
+            NSDictionary *languagesDict = jsonResponse[@"translation"];
+            NSString *path = [self languageListPath];
+            [languagesDict writeToFile:path atomically:YES];
+            if (completion) {
+                completion(YES);
+            }
+        } else {
+            if (completion) {
+                completion(NO);
+            }
+        }
+    }];
+    [task resume];
+}
+
+- (NSArray *)translationLanguageAddingDetectLanguage:(BOOL)addDetectLanguage {
+    NSString *filePath = [self languageListPath];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+        return [self translationLanguageAddingDetectLanguage:addDetectLanguage withPath:filePath];
+    }
+    return [self translationLanguageAddingDetectLanguage:addDetectLanguage withPath:[[NSBundle mainBundle] pathForResource:[self languageListFilename] ofType:nil]];
+}
+
+- (NSArray *)translationLanguageAddingDetectLanguage:(BOOL)addDetectLanguage withPath:(NSString *)path {
+    NSDictionary *languagesDict = [[NSDictionary alloc] initWithContentsOfFile:path];
+    NSMutableArray *translationLanguages = [NSMutableArray new];
+    for (NSString *code in [languagesDict allKeys]) {
+        A3TranslatorLanguage *language = [A3TranslatorLanguage new];
+        language.code = code;
+        language.name = [self localizedNameForCode:code];
+        if ([language.name length] == 0) {
+            language.name = languagesDict[code][@"name"];
+        }
+        [translationLanguages addObject:language];
+        FNLOG(@"%@, %@, %@", language.code, language.name, languagesDict[code][@"name"]);
+    }
+    [translationLanguages sortUsingComparator:^NSComparisonResult(A3TranslatorLanguage *obj1, A3TranslatorLanguage *obj2) {
+        return [obj1.name compare:obj2.name];
+    }];
+    if (addDetectLanguage) {
+        A3TranslatorLanguage *detectLanguage = [A3TranslatorLanguage new];
+        detectLanguage.name = NSLocalizedString(@"Detect Language", @"Detect Language");
+        detectLanguage.code = @"Detect";
+        [translationLanguages insertObject:detectLanguage atIndex:0];
+    }
+    return translationLanguages;
+}
+
+/*
 + (NSArray *)findAllWithDetectLanguage:(BOOL)addDetectLanguage {
 	NSArray *languageCodes = @[
 			@{kTranslatorAppleCode:@"af"},		// Afrikaans, 2009-09-22
@@ -95,8 +167,8 @@ static NSString *const kTranslatorLocalizedName = @"localizedName";
 	}
 	return newArray;
 }
-
-+ (NSString *)localizedNameForCode:(NSString *)code {
+*/
+- (NSString *)localizedNameForCode:(NSString *)code {
     if ([code isEqualToString:@"Detect"]) return NSLocalizedString(@"Detect Language", @"Detect Language");
 	if ([code isEqualToString:@"zh-Hans"]) return NSLocalizedString(@"Simplified Chinese", @"Simplified Chinese");
 	if ([code isEqualToString:@"zh-Hant"]) return NSLocalizedString(@"Traditional Chinese", @"Traditional Chinese");

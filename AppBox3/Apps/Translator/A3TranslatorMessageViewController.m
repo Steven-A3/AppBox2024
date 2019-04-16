@@ -71,6 +71,7 @@ const NSInteger kTranslatorAlertViewType_DeleteAll = 2;
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3LanguagePickerController *languagePickerController;
+@property (nonatomic, strong) A3TranslatorLanguage *languageListManager;
 
 @end
 
@@ -107,7 +108,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	} else {
 		self.title = NSLocalizedString(@"New Translator", @"New Translator");
 
-		_languages = [A3TranslatorLanguage findAllWithDetectLanguage:YES ];
+        _languages = [self.languageListManager translationLanguageAddingDetectLanguage:YES];
         
 		[self addLanguageSelectView];
 		[self searchResultsTableView];
@@ -206,6 +207,13 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	}
 }
 
+- (A3TranslatorLanguage *)languageListManager {
+    if (!_languageListManager) {
+        _languageListManager = [A3TranslatorLanguage new];
+    }
+    return _languageListManager;
+}
+
 - (void)cleanUp {
 	FNLOG();
 	[self removeObserver];
@@ -223,8 +231,8 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 
 - (void)setTitleWithSelectedLanguage {
 	self.title = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@", @"%@ to %@"),
-											[A3TranslatorLanguage localizedNameForCode:_originalTextLanguage],
-											[A3TranslatorLanguage localizedNameForCode:_translatedTextLanguage]];
+											[self.languageListManager localizedNameForCode:_originalTextLanguage],
+											[self.languageListManager localizedNameForCode:_translatedTextLanguage]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -520,7 +528,8 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 }
 
 - (A3LanguagePickerController *)presentLanguagePickerControllerWithDetectLanguage:(BOOL)detectLanguage {
-	A3LanguagePickerController *viewController = [[A3LanguagePickerController alloc] initWithLanguages:[A3TranslatorLanguage findAllWithDetectLanguage:detectLanguage]];
+    
+	A3LanguagePickerController *viewController = [[A3LanguagePickerController alloc] initWithLanguages:[self.languageListManager translationLanguageAddingDetectLanguage:detectLanguage]];
 	viewController.delegate = self;
     
     NSMutableArray *selectedCodes = [NSMutableArray new];
@@ -554,11 +563,11 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
 	if (viewController == _sourceLanguagePicker) {
 		_originalTextLanguage = selectedItem;
-		_sourceLanguageSelectTextField.text = [A3TranslatorLanguage localizedNameForCode:selectedItem];
+		_sourceLanguageSelectTextField.text = [self.languageListManager localizedNameForCode:selectedItem];
 		[_sourceLanguageSelectTextField becomeFirstResponder];
 	} else {
 		[self setTranslatedTextLanguage:selectedItem];
-		_targetLanguageSelectTextField.text = [A3TranslatorLanguage localizedNameForCode:selectedItem];
+		_targetLanguageSelectTextField.text = [self.languageListManager localizedNameForCode:selectedItem];
 		[_targetLanguageSelectTextField becomeFirstResponder];
 	}
 	[self layoutLanguageSelectView];
@@ -1010,46 +1019,51 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	}];
 }
 
-static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.com/language/translate/v2?key=AIzaSyC_0kMLRm92yGQlDz5fvPOVHwWJiw8EVdY&target=";
+static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to=";
 
 - (void)askTranslateWithText:(NSString *)originalText {
-	NSMutableString *urlString = [NSMutableString stringWithString:GOOGLE_TRANSLATE_API_V2_URL];
-	[urlString appendString:[A3TranslatorLanguage googleCodeFromAppleCode:_translatedTextLanguage]];
-	if (![_originalTextLanguage isEqualToString:kTranslatorDetectLanguageCode]) {
-		[urlString appendString:@"&source="];
-		[urlString appendString:[A3TranslatorLanguage googleCodeFromAppleCode:_originalTextLanguage]];
-	}
-	[urlString appendString:@"&q="];
-	[urlString appendString:[originalText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] ];
+    NSMutableString *urlString = [NSMutableString stringWithString:AZURE_TRANSLATE_API_V3_URL];
+    [urlString appendString:_translatedTextLanguage];
+    if (![_originalTextLanguage isEqualToString:@"Detect"]) {
+        [urlString appendFormat:@"&from=%@", _originalTextLanguage];
+    }
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:[self.languageListManager microsoftAzureSubscriptionKey] forHTTPHeaderField:@"Ocp-Apim-Subscription-Key"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:@[@{@"Text":originalText}] options:NSJSONWritingPrettyPrinted error:&error];
+    
+    [request setHTTPBody:jsonData];
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            FNLOG(@"%@", error.localizedDescription);
+            return;
+        }
+        NSError *parseError;
+        NSArray *jsonData = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&parseError];
+        if (parseError) {
+            FNLOG(@"%@", parseError.localizedDescription);
+            return;
+        }
+        NSDictionary *result = jsonData[0];
+        
+        NSString *detectedLanguage = _originalTextLanguage;
+        if (result[@"detectedLanguage"]) {
+            detectedLanguage = result[@"detectedLanguage"][@"language"];
+        }
+        NSString *translatedString = result[@"translations"][0][@"text"];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self addTranslatedString:translatedString detectedSourceLanguage:detectedLanguage];
+        });
 
-	NSURL *url = [NSURL URLWithString:urlString];
-	FNLOG(@"%@", urlString);
-
-	NSURLRequest *translateRequest = [NSURLRequest requestWithURL:url];
-	AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:translateRequest];
-	operation.responseSerializer = [AFJSONResponseSerializer serializer];
-	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id JSON) {
-		NSArray *translations = [[JSON objectForKey:@"data"] objectForKey:@"translations"];
-
-		FNLOG(@"Detected Language: %@", [[translations lastObject] objectForKey:@"detectedSourceLanguage"]);
-		FNLOG(@"Translated Text: %@", [[translations lastObject] objectForKey:@"translatedText"]);
-		NSString *translatedString = [[[translations lastObject] objectForKey:@"translatedText"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-		if (![translatedString length]) {
-			translatedString = @"?";
-		}
-
-		NSString *detectedLanguage = [A3TranslatorLanguage appleCodeFromGoogleCode:
-				[[translations lastObject] objectForKey:@"detectedSourceLanguage"] ] ;
-		if (![detectedLanguage length]) {
-			detectedLanguage = [_originalTextLanguage isEqualToString:kTranslatorDetectLanguageCode] ? @"en" : _originalTextLanguage;
-		}
-		[self addTranslatedString:translatedString detectedSourceLanguage:detectedLanguage];
-	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		FNLOG(@"****************************************************\nFail to translation: %@\n**********************************************************", operation.response.description);
-		FNLOG(@"%@%@%@%@", [error localizedDescription], [error localizedFailureReason], [error localizedRecoveryOptions], [error localizedRecoverySuggestion]);
-	}];
-
-	[operation start];
+    }];
+    [task resume];
 }
 
 - (void)addTranslatedString:(NSString *)translatedString detectedSourceLanguage:(NSString *)detectedLanguage {
@@ -1469,7 +1483,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 	for (NSIndexPath *indexPath in selectedIndexPaths) {
 		TranslatorHistory *item = _messages[indexPath.row];
 		TranslatorGroup *group = [TranslatorGroup MR_findFirstByAttribute:@"uniqueID" withValue:item.groupID];
-		translatedLanguage = [A3TranslatorLanguage localizedNameForCode:group.targetLanguage];
+		translatedLanguage = [self.languageListManager localizedNameForCode:group.targetLanguage];
 		if ([item.originalText length] && [item.translatedText length] && [translatedLanguage length]) {
 			[shareMessage appendString:[NSString stringWithFormat:@"\"%@\" is \"%@\"%@", item.originalText, item.translatedText, lineBreak]];
 		}

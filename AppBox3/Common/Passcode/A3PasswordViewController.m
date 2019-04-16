@@ -76,6 +76,7 @@
 	}
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeNone;
 	self.tableView.scrollEnabled = NO;
+    self.tableView.rowHeight = 48;
 	[self.view addSubview:self.tableView];
 
 	[self.tableView makeConstraints:^(MASConstraintMaker *make) {

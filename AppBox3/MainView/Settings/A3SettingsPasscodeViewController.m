@@ -148,8 +148,11 @@
 					[_touchIDSwitch addTarget:self action:@selector(touchIDSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
 				}
 				[_touchIDSwitch setOn:[[A3AppDelegate instance] useTouchID]];
-                if (IS_IPHONEX) {
-                    cell.textLabel.text = NSLocalizedString(@"Face ID", nil);
+                if (@available(iOS 11.0, *)) {
+                    LAContext *context = [LAContext new];
+                    if (context.biometryType == LABiometryTypeFaceID) {
+                        cell.textLabel.text = NSLocalizedString(@"Face ID", nil);
+                    }
                 }
 				cell.accessoryView = _touchIDSwitch;
 			}
@@ -180,15 +183,6 @@
 			cell.accessoryView = _askPasscodeForStarting;
 			break;
 		case 1:
-			if (!_askPasscodeForSettings) {
-				_askPasscodeForSettings = [UISwitch new];
-				[_askPasscodeForSettings addTarget:self action:@selector(askPasscodeForSettingsValueChanged:) forControlEvents:UIControlEventValueChanged];
-			}
-			[_askPasscodeForSettings setEnabled:passcodeEnabled];
-			[_askPasscodeForSettings setOn:[[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForSettings]];
-			cell.accessoryView = _askPasscodeForSettings;
-			break;
-		case 2:
 			if (!_askPasscodeForDaysCounter) {
 				_askPasscodeForDaysCounter = [UISwitch new];
 				[_askPasscodeForDaysCounter addTarget:self action:@selector(askPasscodeForDaysCounterValueChanged:) forControlEvents:UIControlEventValueChanged];
@@ -197,7 +191,7 @@
 			[_askPasscodeForDaysCounter setOn:[[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForDaysCounter]];
 			cell.accessoryView = _askPasscodeForDaysCounter;
 			break;
-		case 3:
+		case 2:
 			if (!_askPasscodeForLadyCalendar) {
 				_askPasscodeForLadyCalendar = [UISwitch new];
 				[_askPasscodeForLadyCalendar addTarget:self action:@selector(askPasscodeForLadyCalendarValuedChanged:) forControlEvents:UIControlEventValueChanged];
@@ -206,7 +200,7 @@
 			[_askPasscodeForLadyCalendar setOn:[[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForLadyCalendar]];
 			cell.accessoryView = _askPasscodeForLadyCalendar;
 			break;
-		case 4:
+		case 3:
 			if (!_askPasscodeForWallet) {
 				_askPasscodeForWallet = [UISwitch new];
 				[_askPasscodeForWallet addTarget:self action:@selector(askPasscodeForWalletValuedChanged:) forControlEvents:UIControlEventValueChanged];
@@ -231,12 +225,6 @@
 - (void)askPasscodeForStartingValueChanged:(UISwitch *)control {
 	[[A3AppDelegate instance] setEnableAskPasscodeForStarting:control.on];
 	[self.tableView reloadData];
-}
-
-- (void)askPasscodeForSettingsValueChanged:(UISwitch *)control {
-	A3UserDefaults *defaults = [A3UserDefaults standardUserDefaults];
-	[defaults setBool:control.isOn forKey:kUserDefaultsKeyForAskPasscodeForSettings];
-	[defaults synchronize];
 }
 
 - (void)askPasscodeForDaysCounterValueChanged:(UISwitch *)control {

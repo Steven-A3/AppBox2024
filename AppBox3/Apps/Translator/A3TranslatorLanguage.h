@@ -12,18 +12,16 @@
 
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *code;
-@property (nonatomic, copy) NSString *googleCode;
 
-+ (NSArray *)findAllWithDetectLanguage:(BOOL)addDetectLanguage;
+- (NSString *)microsoftAzureSubscriptionKey;
+- (void)updateLangaugeListCompletion:(void(^)(BOOL success))completion;
+- (NSArray *)translationLanguageAddingDetectLanguage:(BOOL)addDetectLanguage;
+- (NSArray *)translationLanguageAddingDetectLanguage:(BOOL)addDetectLanguage withPath:(NSString *)path;
+- (NSString *)localizedNameForCode:(NSString *)code;
 
 + (NSArray *)filteredArrayWithArray:(NSArray *)array searchString:(NSString *)searchString includeDetectLanguage:(BOOL)includeDetectLanguage;
-
 + (A3TranslatorLanguage *)findLanguageInArray:(NSArray *)array searchString:(NSString *)searchString;
-
 + (NSString *)googleCodeFromAppleCode:(NSString *)appleCode;
-
 + (NSString *)appleCodeFromGoogleCode:(NSString *)googleCode;
-
-+ (NSString *)localizedNameForCode:(NSString *)code;
 
 @end

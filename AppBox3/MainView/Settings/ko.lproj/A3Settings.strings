@@ -133,7 +133,7 @@
 "go4-fr-Ah2.title" = "설정";
 
 /* Class = "IBUILabel"; text = "Unlink from Dropbox"; ObjectID = "iav-1w-bex"; */
-"iav-1w-bex.text" = "계정 삭제";
+"iav-1w-bex.text" = "연결 해제";
 
 /* Class = "IBUILabel"; text = "Favorites"; ObjectID = "m3s-eA-4WD"; */
 "m3s-eA-4WD.text" = "즐겨찾기";

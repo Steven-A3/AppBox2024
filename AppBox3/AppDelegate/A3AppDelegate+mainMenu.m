@@ -835,7 +835,6 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 	BOOL appLaunched = NO;
 	BOOL proceedPasscodeCheck = NO;
 
-	NSDictionary *appInfo = [self appInfoDictionary][appName];
 	if (   verifyPasscode
 		&& [A3KeychainUtils getPassword]
 		&& [self securitySettingIsOnForAppNamed:appName]
@@ -843,10 +842,6 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 		)
 	{
 		proceedPasscodeCheck = YES;
-		
-		if ([appInfo[kA3AppsStoryboard_iPhone] isEqualToString:@"A3Settings"]) {
-			proceedPasscodeCheck &= [[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForSettings];
-		}
 	}
 	if (proceedPasscodeCheck) {
 		[self presentLockScreenShowCancelButton:YES];
@@ -933,14 +928,16 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 	NSDictionary *appInfo = [self appInfoDictionary][appName];
 
 	if (![appInfo[kA3AppsMenuNeedSecurityCheck] boolValue]) return NO;
-	if ([appName isEqualToString:A3AppName_DaysCounter]) {
+    if ([appName isEqualToString:A3AppName_Settings]) {
+        // 만약 암호가 활성화 되어 있다면, 설정에 들어갈때는 무조건 암호를 확인해야 한다.
+        // 백업 기능을 보호하기 위해서 이다.
+        return YES;
+    } else if ([appName isEqualToString:A3AppName_DaysCounter]) {
 		return [[A3AppDelegate instance] shouldAskPasscodeForDaysCounter];
 	} else if ([appName isEqualToString:A3AppName_LadiesCalendar]) {
 		return [[A3AppDelegate instance] shouldAskPasscodeForLadyCalendar];
 	} else if ([appName isEqualToString:A3AppName_Wallet]) {
 		return [[A3AppDelegate instance] shouldAskPasscodeForWallet];
-	} else if ([appName isEqualToString:A3AppName_Settings]) {
-		return [[A3AppDelegate instance] shouldAskPasscodeForSettings];
 	}
 	return NO;
 }

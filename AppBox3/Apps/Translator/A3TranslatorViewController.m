@@ -31,6 +31,7 @@
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) A3TranslatorFavoriteDataSource *favoriteDataSource;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
+@property (nonatomic, strong) A3TranslatorLanguage *languageListManager;
 @end
 
 @implementation A3TranslatorViewController {
@@ -53,6 +54,8 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
+    [self.languageListManager updateLangaugeListCompletion:NULL];
+    
 	self.view.backgroundColor = [UIColor whiteColor];
 	self.navigationItem.hidesBackButton = YES;
     self.tableView.showsVerticalScrollIndicator = NO;
@@ -74,6 +77,13 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
     [self setupInstructionView];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
+- (A3TranslatorLanguage *)languageListManager {
+    if (!_languageListManager) {
+        _languageListManager = [A3TranslatorLanguage new];
+    }
+    return _languageListManager;
 }
 
 - (void)applicationDidEnterBackground {
@@ -413,8 +423,8 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 	}
 
 	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@", @"%@ to %@"),
-													 [A3TranslatorLanguage localizedNameForCode:group.sourceLanguage],
-													 [A3TranslatorLanguage localizedNameForCode:group.targetLanguage]];
+													 [self.languageListManager localizedNameForCode:group.sourceLanguage],
+													 [self.languageListManager localizedNameForCode:group.targetLanguage]];
 
 	A3TranslatorCircleView *circleView = [[A3TranslatorCircleView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
     circleView.textLabel.text = [NSString stringWithFormat:@"%ld", (long)[TranslatorHistory MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"groupID == %@", group.uniqueID]]];

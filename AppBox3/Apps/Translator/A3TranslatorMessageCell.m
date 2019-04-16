@@ -39,6 +39,7 @@ NSString *const A3TranslatorKayLanguage = @"language";
 @property (nonatomic, strong) UIButton *speakButton;
 @property (nonatomic, strong) AVSpeechSynthesizer *speechSynthesizer;
 @property (nonatomic, strong) MPMoviePlayerController *googleSpeechPlayer;
+@property (nonatomic, strong) A3TranslatorLanguage *languageListManager;
 
 @end
 
@@ -358,6 +359,13 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 	return _speechSynthesizer;
 }
 
+- (A3TranslatorLanguage *)languageListManager {
+    if (!_languageListManager) {
+        _languageListManager = [A3TranslatorLanguage new];
+    }
+    return _languageListManager;
+}
+
 - (void)setSpeakButtonDefault {
 	[_speakButton setTitle:@"b" forState:UIControlStateNormal];
 }
@@ -405,15 +413,9 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 			return;
 		}
 
-        NSArray *languages = [A3TranslatorLanguage findAllWithDetectLanguage:NO];
+        NSArray *languages = [self.languageListManager translationLanguageAddingDetectLanguage:NO];
 		TranslatorGroup *group = [TranslatorGroup MR_findFirstByAttribute:@"uniqueID" withValue:_messageEntity.groupID];
         __block NSString *targetLanguage = group.targetLanguage;
-        [languages enumerateObjectsUsingBlock:^(A3TranslatorLanguage *languageItem, NSUInteger idx, BOOL *stop) {
-            if ([languageItem.code isEqualToString:targetLanguage]) {
-                *stop = YES;
-                targetLanguage = [languageItem googleCode];
-            }
-        }];
 		AVSpeechSynthesisVoice *voice = [AVSpeechSynthesisVoice voiceWithLanguage:[self speechLanguageForLanguage:targetLanguage]];
 		AVSpeechUtterance *utterance = [[AVSpeechUtterance alloc] initWithString:_messageEntity.translatedText];
 		utterance.rate = AVSpeechUtteranceDefaultSpeechRate;
@@ -453,7 +455,7 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
         return YES;
     }
     
-    NSArray *languages = [A3TranslatorLanguage findAllWithDetectLanguage:NO];
+    NSArray *languages = [self.languageListManager translationLanguageAddingDetectLanguage:NO];
     __block BOOL result = NO;
     [languages enumerateObjectsUsingBlock:^(A3TranslatorLanguage *languageItem, NSUInteger idx, BOOL *stop) {
         if ([languageItem.code isEqualToString:language]) {

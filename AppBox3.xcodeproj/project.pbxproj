@@ -93,7 +93,6 @@
 		17D42F9D1879F6925F0A7A02 /* A3SettingsChooseColorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4228D8D938C6FD778BB35 /* A3SettingsChooseColorViewController.m */; };
 		17D42FD84048A09B5EE00DE4 /* A3TranslatorCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42DEFB63D5877A0449693 /* A3TranslatorCircleView.m */; };
 		17D42FF85AA97A33A049141B /* A3MainMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42FB24E3CE9119EAA77D3 /* A3MainMenuTableViewController.m */; };
-		1AEF0A0598A37B348F55A7FF /* libPods-AppBox3UITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 254F46D73C5E370476B7A982 /* libPods-AppBox3UITests.a */; };
 		3E21D15518FB1BF100B88D62 /* FrameRateCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E21D15418FB1BF100B88D62 /* FrameRateCalculator.m */; };
 		571795CE19D7CD6600DEF2FB /* RGB-HSL.m in Sources */ = {isa = PBXBuildFile; fileRef = 571795CD19D7CD6600DEF2FB /* RGB-HSL.m */; };
 		57213EFB19C328FD005AD0ED /* CLLocationManager+authorization.m in Sources */ = {isa = PBXBuildFile; fileRef = 57213EFA19C328FD005AD0ED /* CLLocationManager+authorization.m */; };
@@ -563,7 +562,6 @@
 		689D59061C1569BA002CD422 /* ClinometerToolbarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D59001C1569BA002CD422 /* ClinometerToolbarViewController.m */; };
 		689D59071C1569BA002CD422 /* InclinometerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D59021C1569BA002CD422 /* InclinometerView.m */; };
 		689D59081C1569BA002CD422 /* InclinometerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D59041C1569BA002CD422 /* InclinometerViewController.m */; };
-		689D9FA01BD2195600096D07 /* AppBox3UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689D9F9F1BD2195600096D07 /* AppBox3UITests.swift */; };
 		689E9855197C1B99003710C3 /* A3UnitNamesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 689E9854197C1B99003710C3 /* A3UnitNamesTest.m */; };
 		68A5CD661F8772BE008B8F78 /* A3NumberFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A5CD651F8772BE008B8F78 /* A3NumberFormatter.m */; };
 		68A69A1221674F6000AF1DC5 /* UIImage+Blurring.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A69A0D21674F6000AF1DC5 /* UIImage+Blurring.m */; };
@@ -837,6 +835,7 @@
 		68F04D0D1B40F825004FDD7B /* RMStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F04D021B40F825004FDD7B /* RMStore.m */; };
 		68F04D101B40F86B004FDD7B /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68F04D0E1B40F86B004FDD7B /* libcrypto.a */; };
 		68F04D111B40F86B004FDD7B /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68F04D0F1B40F86B004FDD7B /* libssl.a */; };
+		68F0AEF82224FFA6004A354E /* azureLanguageList.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68F0AEEF2224FFA6004A354E /* azureLanguageList.plist */; };
 		68F14FAC19485E8500159EAD /* A3DaysCounterSlideshowEventSummaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F14F1619485E8500159EAD /* A3DaysCounterSlideshowEventSummaryView.m */; };
 		68F14FAD19485E8500159EAD /* A3DaysCounterSlideshowEventSummaryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F14F1719485E8500159EAD /* A3DaysCounterSlideshowEventSummaryView.xib */; };
 		68F14FAE19485E8500159EAD /* A3DaysCounterSlideshowMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F14F1919485E8500159EAD /* A3DaysCounterSlideshowMainViewController.m */; };
@@ -1019,13 +1018,6 @@
 			remoteInfo = "Ensembles Resources";
 		};
 		6876D70717A75DAE00E16991 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 682EA2C815EB10B000BD6AD4 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 682EA2D015EB10B000BD6AD4;
-			remoteInfo = AppBox3;
-		};
-		689D9FA21BD2195600096D07 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 682EA2C815EB10B000BD6AD4 /* Project object */;
 			proxyType = 1;
@@ -2097,9 +2089,6 @@
 		689D59021C1569BA002CD422 /* InclinometerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InclinometerView.m; sourceTree = "<group>"; };
 		689D59031C1569BA002CD422 /* InclinometerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InclinometerViewController.h; sourceTree = "<group>"; };
 		689D59041C1569BA002CD422 /* InclinometerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InclinometerViewController.m; sourceTree = "<group>"; };
-		689D9F9D1BD2195600096D07 /* AppBox3UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppBox3UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		689D9F9F1BD2195600096D07 /* AppBox3UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBox3UITests.swift; sourceTree = "<group>"; };
-		689D9FA11BD2195600096D07 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		689E9854197C1B99003710C3 /* A3UnitNamesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitNamesTest.m; sourceTree = "<group>"; };
 		68A5CD641F8772BE008B8F78 /* A3NumberFormatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = A3NumberFormatter.h; sourceTree = "<group>"; };
 		68A5CD651F8772BE008B8F78 /* A3NumberFormatter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = A3NumberFormatter.m; sourceTree = "<group>"; };
@@ -2715,6 +2704,7 @@
 		68F04D021B40F825004FDD7B /* RMStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMStore.m; sourceTree = "<group>"; };
 		68F04D0E1B40F86B004FDD7B /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "External/RMStore/Optional/openssl-1.0.2c/lib/libcrypto.a"; sourceTree = "<group>"; };
 		68F04D0F1B40F86B004FDD7B /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "External/RMStore/Optional/openssl-1.0.2c/lib/libssl.a"; sourceTree = "<group>"; };
+		68F0AEEF2224FFA6004A354E /* azureLanguageList.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = azureLanguageList.plist; path = Translator/azureLanguageList.plist; sourceTree = "<group>"; };
 		68F14F1519485E8500159EAD /* A3DaysCounterSlideshowEventSummaryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterSlideshowEventSummaryView.h; sourceTree = "<group>"; };
 		68F14F1619485E8500159EAD /* A3DaysCounterSlideshowEventSummaryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterSlideshowEventSummaryView.m; sourceTree = "<group>"; };
 		68F14F1719485E8500159EAD /* A3DaysCounterSlideshowEventSummaryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DaysCounterSlideshowEventSummaryView.xib; sourceTree = "<group>"; };
@@ -3058,14 +3048,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		689D9F9A1BD2195600096D07 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				1AEF0A0598A37B348F55A7FF /* libPods-AppBox3UITests.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -3164,6 +3146,7 @@
 		17D426FC856AC9AFCB19292B /* Translator */ = {
 			isa = PBXGroup;
 			children = (
+				68F0AEEF2224FFA6004A354E /* azureLanguageList.plist */,
 				683EB02B18BF8DE10044C2E1 /* Model */,
 				17D42C482B12F26E75712681 /* A3TranslatorViewController.h */,
 				17D4290B326C03E3DAF080A7 /* A3TranslatorViewController.m */,
@@ -3967,7 +3950,6 @@
 				68D319461A3BFF78003B9F54 /* AppBox3 Free */,
 				6876D6FE17A75DAE00E16991 /* AppBox3 Tests */,
 				6829689218505E3900B70E13 /* A3SetupDefaultData */,
-				689D9F9E1BD2195600096D07 /* AppBox3UITests */,
 				682EA2D415EB10B000BD6AD4 /* Frameworks */,
 				682EA2D215EB10B000BD6AD4 /* Products */,
 				04078E3123C5E5B8E25C33DD /* Pods */,
@@ -3980,7 +3962,6 @@
 				682EA2D115EB10B000BD6AD4 /* AppBox3.app */,
 				6876D6FA17A75DAE00E16991 /* AppBox3 Tests.xctest */,
 				6829688E18505E3800B70E13 /* A3SetupDefaultData.app */,
-				689D9F9D1BD2195600096D07 /* AppBox3UITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4772,15 +4753,6 @@
 			);
 			name = "UIKit+AFNetworking";
 			path = "External/AFNetworking/UIKit+AFNetworking";
-			sourceTree = "<group>";
-		};
-		689D9F9E1BD2195600096D07 /* AppBox3UITests */ = {
-			isa = PBXGroup;
-			children = (
-				689D9F9F1BD2195600096D07 /* AppBox3UITests.swift */,
-				689D9FA11BD2195600096D07 /* Info.plist */,
-			);
-			path = AppBox3UITests;
 			sourceTree = "<group>";
 		};
 		68AA75EB16A53B43005742D8 /* Currency */ = {
@@ -6035,25 +6007,6 @@
 			productReference = 6876D6FA17A75DAE00E16991 /* AppBox3 Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		689D9F9C1BD2195600096D07 /* AppBox3UITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 689D9FA41BD2195600096D07 /* Build configuration list for PBXNativeTarget "AppBox3UITests" */;
-			buildPhases = (
-				6794B83AEF11D9FFEE20D341 /* [CP] Check Pods Manifest.lock */,
-				689D9F991BD2195600096D07 /* Sources */,
-				689D9F9A1BD2195600096D07 /* Frameworks */,
-				689D9F9B1BD2195600096D07 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				689D9FA31BD2195600096D07 /* PBXTargetDependency */,
-			);
-			name = AppBox3UITests;
-			productName = AppBox3UITests;
-			productReference = 689D9F9D1BD2195600096D07 /* AppBox3UITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -6097,11 +6050,6 @@
 					6876D6F917A75DAE00E16991 = {
 						TestTargetID = 682EA2D015EB10B000BD6AD4;
 					};
-					689D9F9C1BD2195600096D07 = {
-						CreatedOnToolsVersion = 7.0.1;
-						LastSwiftMigration = 0900;
-						TestTargetID = 682EA2D015EB10B000BD6AD4;
-					};
 				};
 			};
 			buildConfigurationList = 682EA2CB15EB10B000BD6AD4 /* Build configuration list for PBXProject "AppBox3" */;
@@ -6136,7 +6084,6 @@
 				682EA2D015EB10B000BD6AD4 /* AppBox3 */,
 				6876D6F917A75DAE00E16991 /* AppBox3 Tests */,
 				6829688D18505E3800B70E13 /* A3SetupDefaultData */,
-				689D9F9C1BD2195600096D07 /* AppBox3UITests */,
 			);
 		};
 /* End PBXProject section */
@@ -6251,6 +6198,7 @@
 				68F14FE919485E8500159EAD /* A3DaysCounterEventListNameCell.xib in Resources */,
 				68143D0718E3EC1F00569691 /* A3NumberKeyboardViewController_iPad.xib in Resources */,
 				6811D3561C1317A200B3B114 /* Level.xcassets in Resources */,
+				68F0AEF82224FFA6004A354E /* azureLanguageList.plist in Resources */,
 				68143D7918E40D7A00569691 /* A3NumberKeyboardSimplePrevNextVC_iPad.xib in Resources */,
 				68F14FE619485E8500159EAD /* A3DaysCounterEventListDateCell.xib in Resources */,
 				68F1C8CA18D7F37D009FAE8A /* A3LadyCalendarListCell.xib in Resources */,
@@ -6365,13 +6313,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		689D9F9B1BD2195600096D07 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -6423,24 +6364,6 @@
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-A3SetupDefaultData-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6794B83AEF11D9FFEE20D341 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-AppBox3UITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -7270,14 +7193,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		689D9F991BD2195600096D07 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				689D9FA01BD2195600096D07 /* AppBox3UITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -7290,11 +7205,6 @@
 			isa = PBXTargetDependency;
 			target = 682EA2D015EB10B000BD6AD4 /* AppBox3 */;
 			targetProxy = 6876D70717A75DAE00E16991 /* PBXContainerItemProxy */;
-		};
-		689D9FA31BD2195600096D07 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 682EA2D015EB10B000BD6AD4 /* AppBox3 */;
-			targetProxy = 689D9FA21BD2195600096D07 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -8090,55 +8000,6 @@
 			};
 			name = Release;
 		};
-		689D9FA51BD2195600096D07 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 153CCFF315CB93F0EB2F32E2 /* Pods-AppBox3UITests.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = AppBox3UITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = net.allaboutapps.AppBox3UITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
-				TEST_TARGET_NAME = AppBox3;
-				USES_XCTRUNNER = YES;
-			};
-			name = Debug;
-		};
-		689D9FA61BD2195600096D07 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A3A0CA42792CDD1C9AE5079B /* Pods-AppBox3UITests.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = AppBox3UITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = net.allaboutapps.AppBox3UITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
-				TEST_TARGET_NAME = AppBox3;
-				USES_XCTRUNNER = YES;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -8174,15 +8035,6 @@
 			buildConfigurations = (
 				6876D70A17A75DAE00E16991 /* Debug */,
 				6876D70B17A75DAE00E16991 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		689D9FA41BD2195600096D07 /* Build configuration list for PBXNativeTarget "AppBox3UITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				689D9FA51BD2195600096D07 /* Debug */,
-				689D9FA61BD2195600096D07 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

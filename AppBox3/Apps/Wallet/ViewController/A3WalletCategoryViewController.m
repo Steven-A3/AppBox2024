@@ -192,20 +192,25 @@
         !_searchController.active &&
         ([self.items count] > 0) &&
         self.tableView.contentOffset.y <= -63) {
-        double delayInSeconds = 0.3;
+        double delayInSeconds = 0.6;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [UIView animateWithDuration:0.3
-                             animations:^{
-                                 CGFloat verticalOffset = 0;
-                                 if (IS_IPHONEX) {
-                                     verticalOffset = 24;
+            FNLOG(@"%@", self.tableView);
+            FNLOG(@"%@", self.tableView.dataSource);
+            if (self.tableView.dataSource != nil) {
+                [UIView animateWithDuration:0.3
+                                 animations:^{
+                                     CGFloat verticalOffset = 0;
+                                     if (IS_IPHONEX) {
+                                         verticalOffset = 24;
+                                     }
+                                     self.tableView.contentOffset = CGPointMake(0, -(8 + verticalOffset));
                                  }
-                                 self.tableView.contentOffset = CGPointMake(0, -(8 + verticalOffset));
-                             }
-                             completion:nil];
+                                 completion:nil];
+            }
         });
     }
+
     _didPassViewDidAppear = YES;
 }
 

@@ -167,6 +167,7 @@ extern NSString *const A3AppGroupNameNone;
 @property (nonatomic, assign) BOOL touchIDEvaluationDidFinish;
 @property (nonatomic, strong) A3DataMigrationManager *migrationManager;
 @property (nonatomic, assign) BOOL migrationIsInProgress;
+@property (nonatomic, assign) NSUInteger counterPassedDidBecomeActive;
 
 /**
  *  Settings에서 홈 화면 종류를 바꾼 경우, rootViewController가 초기화되면서

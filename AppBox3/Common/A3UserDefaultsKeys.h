@@ -165,7 +165,6 @@ extern NSString *const kUserDefaultsKeyForPasscodeTimerDuration;
 extern NSString *const kUserDefaultsKeyForUseSimplePasscode;
 extern NSString *const kUserDefaultsKeyForUseTouchID;
 extern NSString *const kUserDefaultsKeyForAskPasscodeForStarting;
-extern NSString *const kUserDefaultsKeyForAskPasscodeForSettings;
 extern NSString *const kUserDefaultsKeyForAskPasscodeForDaysCounter;
 extern NSString *const kUserDefaultsKeyForAskPasscodeForLadyCalendar;
 extern NSString *const kUserDefaultsKeyForAskPasscodeForWallet;

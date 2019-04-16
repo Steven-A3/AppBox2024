@@ -120,8 +120,8 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 - (void)initializeViews
 {
 	_tableView = [[FMMoveTableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
-	_tableView.delegate = self;
 	_tableView.dataSource = self;
+    _tableView.delegate = self;
 	_tableView.showsVerticalScrollIndicator = NO;
 	_tableView.rowHeight = 48.0;
 	_tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);

@@ -370,7 +370,7 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
 	UIView *moreMenuView = [self moreMenuViewWithButtons:buttons];
 	CGRect clippingViewFrame = moreMenuView.frame;
     CGFloat vertifcalOffset = 0;
-    if (IS_IPHONEX) {
+    if (IS_IPHONEX || IS_IPHONEXsMAX) {
         vertifcalOffset = 25;
     }
     clippingViewFrame.origin.y = 20.0 + 44.0 - 1.0 + vertifcalOffset;
