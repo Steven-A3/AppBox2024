@@ -167,7 +167,7 @@
 
 - (UIFont *)bigFont {
 	if (!_bigFont) {
-		_bigFont = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:IS_IPHONE ? 88 : 176];
+		_bigFont = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:IS_IPHONE ? 88 : 176];
 	}
 	return _bigFont;
 }

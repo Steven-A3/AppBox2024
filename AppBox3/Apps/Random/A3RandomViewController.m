@@ -131,7 +131,7 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 	_maximumValueTextField.text = [self.numberFormatter stringFromNumber:@(maximum)];
 
     _resultPrintLabel.adjustsFontSizeToFitWidth = YES;
-    _resultPrintLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:80];
+    _resultPrintLabel.font = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:80];
 
 	NSNumber *lastResult = [[A3UserDefaults standardUserDefaults] objectForKey:A3RandomLastValueKey];
 	if (lastResult) {
@@ -147,7 +147,7 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 
     if (IS_IPAD) {
         _generatorButton.titleLabel.font = [UIFont systemFontOfSize:22];
-        _resultPrintLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:152.0];
+        _resultPrintLabel.font = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:152.0];
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self

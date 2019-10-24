@@ -308,7 +308,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 	if (!super.evaluatedResultLabel) {
 		HTCopyableLabel *evaluatedResultLabel = [HTCopyableLabel new];
 		evaluatedResultLabel.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0];
-		evaluatedResultLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:110];
+		evaluatedResultLabel.font = [UIFont fontWithName:@"HelveticaNeue-Thin" size:110];
 		evaluatedResultLabel.textColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:1.0];
 		evaluatedResultLabel.textAlignment = NSTextAlignmentRight;
 		evaluatedResultLabel.text = @"0";
@@ -324,7 +324,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 		_expressionLabel = [HTCopyableLabel new];
         _expressionLabel.copyingEnabled = NO;
 		_expressionLabel.backgroundColor =[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0];
-		_expressionLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:22];
+		_expressionLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:22];
 		_expressionLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
 		_expressionLabel.textAlignment = NSTextAlignmentRight;
 		_expressionLabel.text = @"";

@@ -145,7 +145,8 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 	CGFloat screenHeight = MAX(screenBounds.size.width, screenBounds.size.height);
 
 	if ([model isEqualToString:@"iPod Touch (5th generation)"]
-        || [model isEqualToString:@"iPod Touch (6th generation)"]) {
+        || [model isEqualToString:@"iPod Touch (6th generation)"]
+        || [model isEqualToString:@"iPod Touch (7th generation)"]) {
 		// iPod touch 5
 		CGFloat pixelsInInch = 326.7;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
@@ -198,8 +199,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
     } else if ([model isEqualToString:@"iPhone 6"] ||
 			   [model isEqualToString:@"iPhone 6s"] ||
 			   [model isEqualToString:@"iPhone 7"] ||
-               [model isEqualToString:@"iPhone 8"] ||
-			   [model isEqualToString:@"iPhone (Latest)"]) {
+               [model isEqualToString:@"iPhone 8"]) {
 		// iPhone 6
 		CGFloat pixelsInInch = 326;
 		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
@@ -245,6 +245,28 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
         CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
         _centimeterAsPoints = (screenHeight / 1792.0) * pixelsInCentimeter;
         _inchAsPoints = (screenHeight / 1792.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
+        _redLineWidth = 0.5;
+    } else if ([model isEqualToString:@"iPhone 11"]) {
+        CGFloat pixelsInInch = 326;    // Original value = 458
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 1792.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 1792.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
+        _redLineWidth = 0.5;
+    } else if ([model isEqualToString:@"iPhone 11 Pro"] ||
+               [model isEqualToString:@"iPhone (Latest)"]) {
+        CGFloat pixelsInInch = 458;    // Original value = 458
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 2436.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2436.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
+        _redLineWidth = 0.5;
+    } else if ([model isEqualToString:@"iPhone 11 Pro Max"]) {
+        CGFloat pixelsInInch = 458;     // Original value = 326
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 2688.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2688.0) * pixelsInInch;
         _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
         _redLineWidth = 0.5;
 	} else if ([model isEqualToString:@"iPad 2"] || [model isEqualToString:@"iPad 2 (Wi-Fi)"]) {
@@ -322,7 +344,23 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
         _inchAsPoints = (screenHeight / 2224.0) * pixelsInInch;
         _resetPosition = _centimeterPositionRightBottom ? 18.0 : 7.0;
         _redLineWidth = 0.5;
-	} else {
+    } else if ([model isEqualToString:@"iPad 6th generation"]) {
+        // iPad Pro
+        CGFloat pixelsInInch = 264.7;
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 2048.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2048.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 18.0 : 7.0;
+        _redLineWidth = 0.5;
+    } else if ([model isEqualToString:@"iPad 7th Gen 10.2-inch"]) {
+        // iPad Pro
+        CGFloat pixelsInInch = 264.7;
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 2160.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2160.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 18.0 : 7.0;
+        _redLineWidth = 0.5;
+    } else {
 		// Simulator
 
         CGFloat pixelsInInch = 458;    // Original value = 458

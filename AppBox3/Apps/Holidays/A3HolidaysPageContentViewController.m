@@ -488,7 +488,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 	UILabel *nameLabel = [UILabel new];
 	nameLabel.tag = HolidaysHeaderViewNameLabel;
 	nameLabel.textColor = [UIColor whiteColor];
-	nameLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Light" size:26];
+	nameLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:26];
 	nameLabel.textAlignment = NSTextAlignmentCenter;
 	nameLabel.lineBreakMode = NSLineBreakByClipping;
 	nameLabel.adjustsFontSizeToFitWidth = YES;
@@ -503,7 +503,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 
 	UILabel *dateLabel = [UILabel new];
 	dateLabel.tag = HolidaysHeaderViewDateLabel;
-	dateLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:19];
+	dateLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:19];
 	dateLabel.textColor = [UIColor whiteColor];
 	dateLabel.textAlignment = NSTextAlignmentCenter;
 	[headerView addSubview:dateLabel];
@@ -514,7 +514,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 	}];
 	
 	UILabel *daysLeftLabel = [UILabel new];
-	daysLeftLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:17];
+	daysLeftLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:17];
 	daysLeftLabel.tag = HolidaysHeaderViewDaysLeftLabel;
 	daysLeftLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.8];
 	daysLeftLabel.textAlignment = NSTextAlignmentCenter;

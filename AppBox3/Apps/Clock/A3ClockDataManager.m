@@ -531,9 +531,12 @@
             
             clockInfo.currentWeather.weatherAtmosphere = weatherData[@"current_observation"][@"atmosphere"];
             
-            if ([weakSelf.delegate respondsToSelector:@selector(refreshWeather:)]) {
-                [weakSelf.delegate refreshWeather:clockInfo];
-            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if ([weakSelf.delegate respondsToSelector:@selector(refreshWeather:)]) {
+                    [weakSelf.delegate refreshWeather:clockInfo];
+                }
+            });
+
             [weakSelf.weatherTimer invalidate];
             weakSelf.weatherTimer = [NSTimer scheduledTimerWithTimeInterval:60 * 60 target:weakSelf selector:@selector(updateWeather) userInfo:nil repeats:NO];
 

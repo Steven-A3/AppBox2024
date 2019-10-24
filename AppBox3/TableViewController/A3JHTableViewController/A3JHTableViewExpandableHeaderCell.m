@@ -30,7 +30,7 @@
 - (void)addTitleLabel {
 	if (!_titleLabel) {
 		_titleLabel = [UILabel new];
-		_titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:14.0];
+		_titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:14.0];
 		_titleLabel.textColor = [UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1.0];
 		[self addSubview:_titleLabel];
 

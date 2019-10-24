@@ -111,6 +111,10 @@
     self.view.backgroundColor = [UIColor blackColor];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+
 - (void)mainMenuDidHide {
     if (IS_IPHONEX) {
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];

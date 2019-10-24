@@ -556,8 +556,8 @@
 	}
 	self.weekCircle.delegate = self;
 	self.weekCircle.isShowWave = YES;
-	self.weekCircle.bigFont = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:88 * scale];
-	self.weekCircle.smallFont = [UIFont fontWithName:@".HelveticaNeueInterface-Light" size:18 * scale];
+	self.weekCircle.bigFont = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:88 * scale];
+	self.weekCircle.smallFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:18 * scale];
 	[self.view addSubview:self.weekCircle];
 
 	self.weekBottomLabel = [[UILabel alloc] init];
@@ -787,8 +787,8 @@
 	}
 
 	UIFont *timeFont;
-	NSString *letterFontName = @".HelveticaNeueInterface-UltraLightP2";
-	NSString *smallFontName = @".HelveticaNeueInterface-Light";
+	NSString *letterFontName = @"HelveticaNeue-UltraLight";
+	NSString *smallFontName = @"HelveticaNeue-Light";
 	if(self.showSeconds) {
 		if (self.timeCircle.position == ClockWaveLocationBig) {
 			// Big Circle and big font

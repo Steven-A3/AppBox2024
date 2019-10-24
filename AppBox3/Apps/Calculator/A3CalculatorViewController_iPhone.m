@@ -253,7 +253,7 @@
 
 - (UIFont *)getResultLabelFont:(CGRect) screenBounds {
 	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
-    return [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:IS_LANDSCAPE ? 44 * scale : screenBounds.size.height == 480 ? 62 : 84 * scale];
+    return [UIFont fontWithName:@"HelveticaNeue-Thin" size:IS_LANDSCAPE ? 44 * scale : screenBounds.size.height == 480 ? 62 : 84 * scale];
 }
 
 - (id)getResultLabelHeight:(CGRect) screenBounds {
@@ -352,7 +352,7 @@
 - (HTCopyableLabel *)expressionLabel {
 	if (!_expressionLabel) {
 		_expressionLabel = [HTCopyableLabel new];
-		_expressionLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:15];
+		_expressionLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:15];
 		_expressionLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
 		_expressionLabel.textAlignment = NSTextAlignmentRight;
 		_expressionLabel.text = @"";

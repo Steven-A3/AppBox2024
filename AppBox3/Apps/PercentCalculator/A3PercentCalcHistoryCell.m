@@ -69,7 +69,7 @@
 //    (lldb) po text
 //    1.25 = 5 × 25%{
 //        NSColor = "UIDeviceWhiteColorSpace 0 1";
-//        NSFont = "<UICTFont: 0xde33f30> font-family: \".HelveticaNeueInterface-M3\"; font-weight: normal; font-style: normal; font-size: 12.00pt";
+//        NSFont = "<UICTFont: 0xde33f30> font-family: \"HelveticaNeue-Medium\"; font-weight: normal; font-style: normal; font-size: 12.00pt";
 //        NSParagraphStyle = "Alignment 0, LineSpacing 0, ParagraphSpacing 0, ParagraphSpacingBefore 0, HeadIndent 0, TailIndent 0, FirstLineHeadIndent 0, LineHeight 0/0, LineHeightMultiple 0, LineBreakMode 4, Tabs (\n    28L,\n    56L,\n    84L,\n    112L,\n    140L,\n    168L,\n    196L,\n    224L,\n    252L,\n    280L,\n    308L,\n    336L\n), DefaultTabInterval 0, Blocks (null), Lists (null), BaseWritingDirection -1, HyphenationFactor 0, TighteningFactor 0, HeaderLevel 0";
 //        NSShadow = "NSShadow {0, -1} color = {(null)}";
 }

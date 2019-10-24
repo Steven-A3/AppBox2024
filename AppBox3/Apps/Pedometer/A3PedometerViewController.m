@@ -93,7 +93,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 		_floorsAscendedLabelCenterYConstraint.constant = 12;
 	} else {
 		if (screenBounds.size.width == 320.0) {
-			_stepsLabel.font = [UIFont fontWithName:@".SFUIDisplay-Medium" size:60];
+			_stepsLabel.font = [UIFont boldSystemFontOfSize:60];
 			_distanceLabelCenterYConstraint.constant = -12;
 			_floorsAscendedLabelCenterYConstraint.constant = 12;
 		}
@@ -103,6 +103,10 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
         _customNavigationBarHeightConstraint.constant = 84;
     }
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartPedometerUpdate) name:UIApplicationSignificantTimeChangeNotification object:nil];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 - (void)applicationDidBecomeActive {
@@ -626,14 +630,14 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	NSDictionary *unitAttribute;
 	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	if (screenBounds.size.width == 320) {
-		valueAttribute = @{NSFontAttributeName:IS_IOS9 ? [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:21] : [UIFont boldSystemFontOfSize:21],
+		valueAttribute = @{NSFontAttributeName:[UIFont boldSystemFontOfSize:21],
 				NSForegroundColorAttributeName:[UIColor whiteColor]};
-		unitAttribute = @{NSFontAttributeName:IS_IOS9 ? [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:12] : [UIFont boldSystemFontOfSize:12],
+		unitAttribute = @{NSFontAttributeName:[UIFont boldSystemFontOfSize:12],
 				NSForegroundColorAttributeName:[UIColor whiteColor]};
 	} else {
-		valueAttribute = @{NSFontAttributeName:IS_IOS9 ? [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:24] : [UIFont boldSystemFontOfSize:24],
+		valueAttribute = @{NSFontAttributeName:[UIFont boldSystemFontOfSize:24],
 				NSForegroundColorAttributeName:[UIColor whiteColor]};
-		unitAttribute = @{NSFontAttributeName:IS_IOS9 ? [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:15] : [UIFont boldSystemFontOfSize:15],
+		unitAttribute = @{NSFontAttributeName:[UIFont boldSystemFontOfSize:15],
 				NSForegroundColorAttributeName:[UIColor whiteColor]};
 	}
 

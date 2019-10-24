@@ -44,7 +44,7 @@
     
 	if (!cell) {
 		cell = [[A3JHTableViewEntryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
-        cell.textLabel.font = [UIFont fontWithName:cell.textLabel.font.fontName size:17.0];
+//        cell.textLabel.font = [UIFont fontWithName:cell.textLabel.font.fontName size:17.0];
 		_currentIndexPath = nil;
 		_firstResponder = nil;
 		_inputViewController = nil;

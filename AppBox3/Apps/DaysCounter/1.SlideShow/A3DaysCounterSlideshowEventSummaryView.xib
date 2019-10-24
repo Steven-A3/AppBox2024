@@ -1,8 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
-        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -15,55 +17,47 @@
                 <subviews>
                     <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yFA-J0-wtx">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </imageView>
                     <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6KW-wd-wxa" userLabel="Label - forCountBaseline">
                         <rect key="frame" x="6" y="99" width="42" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9999" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8PY-bc-aDl" userLabel="Label - Count">
                         <rect key="frame" x="62" y="38" width="196" height="101"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="88"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.59999999999999998" tag="12" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="none" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="44" translatesAutoresizingMaskIntoConstraints="NO" id="yoV-Pe-VFu" userLabel="Label - Days Since">
-                        <rect key="frame" x="263" y="67" width="44" height="31"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <rect key="frame" x="263" y="67" width="44" height="34"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="44" id="Yoz-Qk-yBW"/>
                         </constraints>
                         <string key="text">Days
 Since</string>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MAh-48-eiP" userLabel="Label - forDateBaseline">
                         <rect key="frame" x="7" y="147" width="42" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="13" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thursday, August 6, 2009" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qgs-xV-Oz7">
-                        <rect key="frame" x="0.0" y="152" width="320" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <rect key="frame" x="0.0" y="151.5" width="320" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="14" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Release AppBox" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="19" translatesAutoresizingMaskIntoConstraints="NO" id="lWv-jq-Rqh">
-                        <rect key="frame" x="76" y="520" width="169" height="28"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <rect key="frame" x="79" y="520" width="162.5" height="28"/>
                         <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
                 <constraint firstItem="Qgs-xV-Oz7" firstAttribute="leading" secondItem="Pw2-No-a6D" secondAttribute="leading" id="481-r3-cRI"/>
@@ -78,12 +72,10 @@ Since</string>
                 <constraint firstItem="MAh-48-eiP" firstAttribute="leading" secondItem="Pw2-No-a6D" secondAttribute="leading" constant="7" id="SK4-hp-zYL"/>
                 <constraint firstAttribute="centerX" secondItem="8PY-bc-aDl" secondAttribute="centerX" id="Xkt-sd-HXp"/>
                 <constraint firstItem="yoV-Pe-VFu" firstAttribute="top" secondItem="Pw2-No-a6D" secondAttribute="top" constant="67" id="bTe-U7-8ck"/>
-                <constraint firstItem="lWv-jq-Rqh" firstAttribute="leading" secondItem="Pw2-No-a6D" secondAttribute="leading" constant="76" id="d0z-Xd-CZk"/>
                 <constraint firstAttribute="trailing" secondItem="Qgs-xV-Oz7" secondAttribute="trailing" id="dyp-KR-DBH"/>
                 <constraint firstItem="6KW-wd-wxa" firstAttribute="bottom" secondItem="8PY-bc-aDl" secondAttribute="baseline" id="fG7-21-vxf"/>
                 <constraint firstItem="MAh-48-eiP" firstAttribute="bottom" secondItem="Pw2-No-a6D" secondAttribute="top" constant="168" id="hq4-6W-3aF"/>
                 <constraint firstItem="6KW-wd-wxa" firstAttribute="leading" secondItem="Pw2-No-a6D" secondAttribute="leading" constant="6" id="uax-3n-Mnm"/>
-                <constraint firstAttribute="trailing" secondItem="lWv-jq-Rqh" secondAttribute="trailing" constant="75" id="ugW-Tj-aZr"/>
                 <constraint firstItem="yFA-J0-wtx" firstAttribute="top" secondItem="Pw2-No-a6D" secondAttribute="top" id="vsP-6E-zks"/>
                 <constraint firstItem="MAh-48-eiP" firstAttribute="bottom" secondItem="Qgs-xV-Oz7" secondAttribute="baseline" id="xRE-Na-yqe"/>
             </constraints>
@@ -94,9 +86,8 @@ Since</string>
                 <outlet property="daysSinceLabel" destination="yoV-Pe-VFu" id="tqg-sd-N2x"/>
                 <outlet property="daysSinceTopSpaceConst" destination="bTe-U7-8ck" id="e21-vH-Kju"/>
                 <outlet property="photoImageView" destination="yFA-J0-wtx" id="Ij7-H7-2qU"/>
-                <outlet property="titleLeadingSpaceConst" destination="d0z-Xd-CZk" id="ZJG-fS-zMG"/>
-                <outlet property="titleTrailingSpaceConst" destination="ugW-Tj-aZr" id="b2C-6w-VZz"/>
             </connections>
+            <point key="canvasLocation" x="139" y="116"/>
         </collectionViewCell>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
     </objects>

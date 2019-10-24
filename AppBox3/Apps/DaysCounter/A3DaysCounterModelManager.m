@@ -1038,7 +1038,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
                                                withFormat:[self dateFormatForPhotoWithIsAllDays:[item.isLunar boolValue] ? YES : [item.isAllDay boolValue]]];
         daysLabel.text = [NSString stringWithFormat:@" %@ ", [untilSinceString isEqualToString:NSLocalizedString(@"Today", @"Today")] ? NSLocalizedString(@"Today", @"Today") : NSLocalizedString(@"Now", @"Now")];
         markLabel.text = @"";
-        daysLabel.font = IS_IPHONE ? [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:88.0] : [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:116.0];
+        daysLabel.font = IS_IPHONE ? [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:88.0] : [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:116.0];
     }
     else {
         dateLabel.text = [A3DateHelper dateStringFromDate:item.effectiveStartDate
@@ -1055,14 +1055,14 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
         if ( IS_IPHONE ) {
             if ( labs(diffDays) > 9999 ) {
-                daysLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:84.0];
+                daysLabel.font = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:84.0];
             }
             else {
-                daysLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:88.0];
+                daysLabel.font = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:88.0];
             }
         }
         else {
-            daysLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:116.0];
+            daysLabel.font = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:116.0];
         }
     }
     

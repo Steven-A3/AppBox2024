@@ -459,7 +459,7 @@
     UILabel *countLabel = (UILabel*)[cell viewWithTag:11];
     
     textLabel.font = [UIFont systemFontOfSize:30];
-    countLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:65];
+    countLabel.font = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:65];
 }
 
 #pragma mark Instruction Related

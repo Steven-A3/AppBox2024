@@ -69,14 +69,16 @@ A3InstructionViewControllerDelegate>
 }
 
 - (void)mainMenuContentsDidChange {
-    [self updateShouldShowHouseAds];
-    
-	[self setupContentHeightWithSize:self.view.bounds.size];
-	_collectionView.backgroundView = self.backgroundView;
-	[_collectionView reloadData];
-	[_pageControl removeFromSuperview];
-	_pageControl = nil;
-	[self setupPageControl];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self updateShouldShowHouseAds];
+        
+        [self setupContentHeightWithSize:self.view.bounds.size];
+        self.collectionView.backgroundView = self.backgroundView;
+        [self.collectionView reloadData];
+        [self.pageControl removeFromSuperview];
+        self.pageControl = nil;
+        [self setupPageControl];
+    });
 }
 
 - (void)didReceiveMemoryWarning {

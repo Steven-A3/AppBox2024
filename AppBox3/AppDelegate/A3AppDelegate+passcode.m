@@ -108,6 +108,9 @@
 }
 
 - (void)presentLockScreenShowCancelButton:(BOOL)showCancelButton {
+    if (self.appWillResignActive) {
+        return;
+    }
 	if (![self didPasscodeTimerEnd]) {
 		return;
 	}
@@ -446,8 +449,13 @@
 }
 
 - (void)removeSecurityCoverView {
-	FNLOG();
-    
+#ifdef DEBUG
+    NSArray *symbols = [NSThread callStackSymbols];
+    for (NSString *symbol in symbols) {
+        NSLog(@"%@", symbol);
+    }
+#endif
+
 	if (self.coverView) {
 		[self.coverView removeFromSuperview];
 		self.coverView = nil;

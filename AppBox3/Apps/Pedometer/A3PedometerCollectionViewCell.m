@@ -84,7 +84,7 @@
 	if (!_numberOfStepsLabel) {
 		_numberOfStepsLabel = [UILabel new];
 		_numberOfStepsLabel.textAlignment = NSTextAlignmentCenter;
-		_numberOfStepsLabel.font = IS_IOS9 ? [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:13] : [UIFont boldSystemFontOfSize:13];
+		_numberOfStepsLabel.font = [UIFont boldSystemFontOfSize:13];
 		_numberOfStepsLabel.adjustsFontSizeToFitWidth = YES;
 		_numberOfStepsLabel.minimumScaleFactor = 0.5;
 	}
@@ -112,7 +112,7 @@
 - (UILabel *)floorsAscendedLabel {
 	if (!_floorsAscendedLabel) {
 		_floorsAscendedLabel = [UILabel new];
-		_floorsAscendedLabel.font = IS_IOS9 ? [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:12] : [UIFont boldSystemFontOfSize:12];
+		_floorsAscendedLabel.font = [UIFont boldSystemFontOfSize:12];
 		_floorsAscendedLabel.textColor = [UIColor whiteColor];
 		_floorsAscendedLabel.textAlignment = NSTextAlignmentCenter;
 	}
@@ -122,7 +122,7 @@
 - (UILabel *)distanceLabel {
 	if (!_distanceLabel) {
 		_distanceLabel = [UILabel new];
-		_distanceLabel.font = IS_IOS9 ? [UIFont fontWithName:@".SFUIDisplay-SemiBold" size:12] : [UIFont boldSystemFontOfSize:12];
+		_distanceLabel.font = [UIFont boldSystemFontOfSize:12];
 		_distanceLabel.textAlignment = NSTextAlignmentCenter;
 		_distanceLabel.textColor = [UIColor whiteColor];
 		_distanceLabel.adjustsFontSizeToFitWidth = YES;

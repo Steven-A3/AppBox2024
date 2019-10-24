@@ -2271,8 +2271,10 @@ const CGFloat kUnitCellVisibleWidth = 100.0;
     NSInteger position = [_convertItems count] > 3 ? 4 : [_convertItems count];
     [_convertItems insertObject:[self adItem] atIndex:position];
     
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:position inSection:0];
-    [_fmMoveTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    if ([_fmMoveTableView numberOfRowsInSection:0] > 3) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:position inSection:0];
+        [_fmMoveTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
 }
 
 @end

@@ -76,7 +76,6 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     // Do any additional setup after loading the view from its nib.
     [self.view setBackgroundColor:[UIColor blackColor]];
     [self.view setBounds:[[UIScreen mainScreen] bounds]];
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 	
     [self setNavigationBarHidden:YES];
     [self setToolBarsHidden:YES];
@@ -104,6 +103,10 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     [self setupInstructionView];
 
     [self configureLayout];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 - (void)removeObserver {

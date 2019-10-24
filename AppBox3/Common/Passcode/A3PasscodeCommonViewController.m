@@ -97,7 +97,14 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	[[A3AppDelegate instance] removeSecurityCoverView];
+    A3AppDelegate *appDelegate = [A3AppDelegate instance];
+    if (!appDelegate.appWillResignActive) {
+        double delayInSeconds = 1.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [appDelegate removeSecurityCoverView];
+        });
+    }
 }
 
 @end

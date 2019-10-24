@@ -573,7 +573,7 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
 	if (!_photoLabel1) {
 		FNLOG();
 		_photoLabel1 = [UILabel new];
-		_photoLabel1.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:11];
+		_photoLabel1.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:11];
 		_photoLabel1.textColor = [UIColor colorWithWhite:1.0 alpha:0.6];
 		_photoLabel1.userInteractionEnabled = YES;
 		[self.footerView addSubview:_photoLabel1];
@@ -591,7 +591,7 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
 		[_photoLabel1 addGestureRecognizer:tapGestureRecognizer1];
 
 		_photoLabel2 = [UILabel new];
-		_photoLabel2.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:11];
+		_photoLabel2.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:11];
 		_photoLabel2.textColor = [UIColor colorWithWhite:1.0 alpha:0.6];
 		_photoLabel2.text = NSLocalizedString(@"on flickr", @"on flickr");
 		_photoLabel2.userInteractionEnabled = YES;
@@ -672,9 +672,9 @@ extern NSString *const kA3HolidayScreenImageURL;		// USE key + country code
 		if ([license isEqualToString:@"cc"]) {
 			licenseString = [[NSMutableAttributedString alloc] initWithString:@"a" attributes:@{NSFontAttributeName:[UIFont fontWithName:@"appbox" size:10],NSForegroundColorAttributeName:[UIColor colorWithWhite:1.0 alpha:0.6]}];
 		} else {
-			licenseString = [[NSMutableAttributedString alloc] initWithString:@"©" attributes:@{NSFontAttributeName:[UIFont fontWithName:@".HelveticaNeueInterface-M3" size:12],NSForegroundColorAttributeName:[UIColor colorWithWhite:1.0 alpha:0.6]}];
+			licenseString = [[NSMutableAttributedString alloc] initWithString:@"©" attributes:@{NSFontAttributeName:[UIFont fontWithName:@"HelveticaNeue-Medium" size:12],NSForegroundColorAttributeName:[UIColor colorWithWhite:1.0 alpha:0.6]}];
 		}
-		NSAttributedString *text = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@" by %@", @" by %@"), owner] attributes:@{NSFontAttributeName:[UIFont fontWithName:@".HelveticaNeueInterface-M3" size:11], NSForegroundColorAttributeName:[UIColor colorWithWhite:1.0 alpha:0.6]}];
+		NSAttributedString *text = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@" by %@", @" by %@"), owner] attributes:@{NSFontAttributeName:[UIFont fontWithName:@"HelveticaNeue-Medium" size:11], NSForegroundColorAttributeName:[UIColor colorWithWhite:1.0 alpha:0.6]}];
 		[licenseString appendAttributedString:text];
 
 		[self.photoLabel1 setHidden:NO];

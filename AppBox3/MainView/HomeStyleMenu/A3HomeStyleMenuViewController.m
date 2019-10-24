@@ -28,6 +28,8 @@
 	self.automaticallyAdjustsScrollViewInsets = NO;
 
     [self updateShouldShowHouseAds];
+    
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)updateShouldShowHouseAds {
@@ -217,7 +219,6 @@
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-	[self setNeedsStatusBarAppearanceUpdate];
 	return UIStatusBarStyleLightContent;
 }
 

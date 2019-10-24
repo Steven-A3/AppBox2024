@@ -137,7 +137,6 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 	self.view.bounds = screenBounds;
 	[self.view setBackgroundColor:[UIColor blackColor]];
 
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 	_isFlip = YES;
 
 	[self setupAVCaptureSession];
@@ -151,6 +150,10 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 	[self setupTopToolbar];
 	[self setupZoomSlider];
 	[self setToolbarTransparent];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 - (void)setToolbarTransparent {

@@ -283,6 +283,8 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    _appWillResignActive = YES;
+    
 	[self applicationWillResignActive_passcode];
 	FNLOG();
 }
@@ -359,6 +361,7 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
+    _appWillResignActive = NO;
 	_adDisplayedAfterApplicationDidBecomeActive = NO;
 	FNLOG();
 	// Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
@@ -367,6 +370,7 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    _appWillResignActive = NO;
     NSInteger numberOfDidBecomeAcive = [[NSUserDefaults standardUserDefaults] integerForKey:kA3ApplicationNumberOfDidBecomeActive];
     [[NSUserDefaults standardUserDefaults] setInteger:numberOfDidBecomeAcive + 1 forKey:kA3ApplicationNumberOfDidBecomeActive];
 	FNLOG(@"Number Of DidBecomeActive = %ld", (long)[[NSUserDefaults standardUserDefaults] integerForKey:kA3ApplicationNumberOfDidBecomeActive]);

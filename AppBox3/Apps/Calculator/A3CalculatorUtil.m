@@ -16,11 +16,11 @@
 }
 
 - (UIFont *)superscriptBigFont {
-	return [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:20];
+	return [UIFont fontWithName:@"HelveticaNeue-Medium" size:20];
 }
 
 - (UIFont *)superscriptMiddleFont {
-	return [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:IS_IPAD?17:12];
+	return [UIFont fontWithName:@"HelveticaNeue-Medium" size:IS_IPAD?17:12];
 }
 
 - (UIFont *)superscriptSystemFont {

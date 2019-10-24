@@ -27,8 +27,12 @@ static char const *const key_loanFormatter	= "key_loanFormatter";
 			userCurrencyCode = [self performSelector:@selector(defaultLoanCurrencyCode)];
 			if ([userCurrencyCode length]) {
 				[formatter setCurrencyCode:userCurrencyCode];
-			}
-		}
+            } else {
+                [formatter setCurrencyCode:[A3UIDevice systemCurrencyCode]];
+            }
+        } else {
+            [formatter setCurrencyCode:[A3UIDevice systemCurrencyCode]];
+        }
         
 		[formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
         

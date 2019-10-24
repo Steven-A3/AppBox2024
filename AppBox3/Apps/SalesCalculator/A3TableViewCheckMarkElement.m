@@ -20,7 +20,7 @@
 	A3JHTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
 	if (!cell) {
 		cell = [[A3JHTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
-        cell.textLabel.font = [UIFont fontWithName:cell.textLabel.font.fontName size:17.0];
+//        cell.textLabel.font = [UIFont fontWithName:cell.textLabel.font.fontName size:17.0];
 	}
 	cell.textLabel.text = self.title;
 	cell.textLabel.textColor = [UIColor blackColor];

@@ -62,9 +62,6 @@
 
 	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Abbreviation", @"Abbreviation") style:UIBarButtonItemStylePlain target:nil action:nil];
 
-	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-	
 	UIImage *image = [UIImage new];
 	[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
 	[self.navigationController.navigationBar setShadowImage:image];
@@ -97,6 +94,19 @@
 		longPressGestureRecognizer.delegate = self;
 		[self.tableView addGestureRecognizer:longPressGestureRecognizerOnTableView];
 	}
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return NO;
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
+    return UIStatusBarAnimationNone;
 }
 
 - (void)viewWillLayoutSubviews {

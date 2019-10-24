@@ -18,23 +18,29 @@
         "iPhone8,2": "iPhone 6s Plus",
 		"iPhone8,4": "iPhone SE",
 		"iPhone9,1": "iPhone 7",
+        "iPhone9,2": "iPhone 7 Plus",
 		"iPhone9,3": "iPhone 7",
-		"iPhone9,2": "iPhone 7 Plus",
 		"iPhone9,4": "iPhone 7 Plus",
         "iPhone10,1": "iPhone 8",
-        "iPhone10,4": "iPhone 8",
         "iPhone10,2": "iPhone 8 Plus",
-        "iPhone10,5": "iPhone 8 Plus",
         "iPhone10,3": "iPhone X",
+        "iPhone10,4": "iPhone 8",
+        "iPhone10,5": "iPhone 8 Plus",
         "iPhone10,6": "iPhone X",
         "iPhone11,2": "iPhone XS",
         "iPhone11,4": "iPhone XS Max",
         "iPhone11,6": "iPhone XS Max",
         "iPhone11,8": "iPhone XR",
+        "iPhone12,1": "iPhone 11",
+        "iPhone12,3": "iPhone 11 Pro",
+        "iPhone12,5": "iPhone 11 Pro Max",
         "iPad2,1": "iPad 2 (Wi-Fi)",
         "iPad2,2": "iPad 2",
         "iPad2,3": "iPad 2",
         "iPad2,4": "iPad 2 (Wi-Fi)",
+        "iPad2,5": "iPad mini (Wi-Fi)",
+        "iPad2,6": "iPad mini",
+        "iPad2,7": "iPad mini",
         "iPad3,1": "iPad (3rd generation, Wi-Fi)",
         "iPad3,2": "iPad (3rd generation)",
         "iPad3,3": "iPad (3rd generation)",
@@ -44,6 +50,14 @@
         "iPad4,1": "iPad Air (Wi-Fi)",
         "iPad4,2": "iPad Air",
         "iPad4,3": "iPad Air",
+        "iPad4,4": "iPad mini 2 (Wi-Fi)",
+        "iPad4,5": "iPad mini 2",
+        "iPad4,6": "iPad mini 2",
+        "iPad4,7": "iPad mini 3 (Wi-Fi)",
+        "iPad4,8": "iPad mini 3",
+        "iPad4,9": "iPad mini 3",
+        "iPad5,1": "iPad mini 4 (Wi-Fi)",
+        "iPad5,2": "iPad mini 4",
         "iPad5,3": "iPad Air 2 (Wi-Fi)",
         "iPad5,4": "iPad Air 2",
 		"iPad6,3": "9.7\" iPad Pro (Wi-Fi)",
@@ -58,6 +72,8 @@
         "iPad7,4": "iPad Pro 10.5\"",
         "iPad7,5": "iPad 6th generation",
         "iPad7,6": "iPad 6th generation",
+        "iPad7,11": "iPad 7th Gen 10.2-inch",
+        "iPad7,12": "iPad 7th Gen 10.2-inch",
         "iPad8,1": "iPad Pro 11\"",
         "iPad8,2": "iPad Pro 11\"",
         "iPad8,3": "iPad Pro 11\"",
@@ -66,25 +82,39 @@
         "iPad8,6": "iPad Pro 12.9\" 3rd generation",
         "iPad8,7": "iPad Pro 12.9\" 3rd generation",
         "iPad8,8": "iPad Pro 12.9\" 3rd generation",
-        "iPad11,3": "iPad Air 3rd generation",
-        "iPad11,4": "iPad Air 3rd generation",
-        "iPad2,5": "iPad mini (Wi-Fi)",
-        "iPad2,6": "iPad mini",
-        "iPad2,7": "iPad mini",
-        "iPad4,4": "iPad mini 2 (Wi-Fi)",
-        "iPad4,5": "iPad mini 2",
-        "iPad4,6": "iPad mini 2",
-        "iPad4,7": "iPad mini 3 (Wi-Fi)",
-        "iPad4,8": "iPad mini 3",
-        "iPad4,9": "iPad mini 3",
-        "iPad5,1": "iPad mini 4 (Wi-Fi)",
-        "iPad5,2": "iPad mini 4",
         "iPad11,1": "iPad mini 5",
         "iPad11,2": "iPad mini 5",
+        "iPad11,3": "iPad Air 3rd generation",
+        "iPad11,4": "iPad Air 3rd generation",
         "iPod5,1": "iPod Touch (5th generation)",
-        "iPod7,1": "iPod Touch (6th generation)"
+        "iPod7,1": "iPod Touch (6th generation)",
+        "iPod9,1": "iPod Touch (7th Generation)",
     },
     "deviceInformation": {
+        "iPhone 11 Pro Max": {
+            "Model": "iPhone 11 Pro Max",
+            "Chips": "A13 Bionic chip, Thrid-generation Neural Engine",
+            "CPU": "2.66 GHz hexa-core 64-bit",
+            "GPU": "Apple designed Quad-core",
+            "Memory": "4 GB LPDDR4 RAM",
+            "PPI": "458"
+        },
+        "iPhone 11 Pro": {
+            "Model": "iPhone 11 Pro",
+            "Chips": "A13 Bionic chip, Thrid-generation Neural Engine",
+            "CPU": "2.66 GHz hexa-core 64-bit",
+            "GPU": "Apple designed Quad-core",
+            "Memory": "4 GB LPDDR4 RAM",
+            "PPI": "458"
+        },
+        "iPhone 11": {
+            "Model": "iPhone 11",
+            "Chips": "A13 Bionic chip, Thrid-generation Neural Engine",
+            "CPU": "2.66 GHz hexa-core 64-bit",
+            "GPU": "Apple designed Quad-core",
+            "Memory": "4 GB LPDDR4 RAM",
+            "PPI": "326"
+        },
         "iPhone XS": {
             "Model": "iPhone XS",
             "Chips": "A12 Bionic chip, Next-generation Neural Engine",
@@ -245,6 +275,14 @@
             "Memory": "1 GB LPDDR3 RAM",
             "PPI": "326"
         },
+        "iPod Touch (7th generation)": {
+            "Model": "iPod Touch (7th generation)",
+            "Chips": "A8 with 64-bit architecture\nM8 motion coprocessor",
+            "CPU": "1.63 GHz Dual-core Apple Typhoon ARMv8-A",
+            "GPU": "PowerVR Series 7XT GT760 Plus (6-core)",
+            "Memory": "2 GB LPDDR3 RAM",
+            "PPI": "326"
+        },
         "iPad 2": {
             "Model": "iPad 2",
             "Chips": "Dual-core A5 chip",
@@ -379,6 +417,14 @@
             "CPU": "2.34 GHz quad-core ARM processor",
             "GPU": "Hexa-core PowerVR GT7600 Plus",
             "Memory": "2 GB 1600MHz LPDDR4 DRAM",
+            "PPI": "264"
+        },
+        "iPad 7th Gen 10.2-inch": {
+            "Model": "iPad 7th Gen 10.2-inch",
+            "Chips": "A10 chip with 64-bit architecture\nM10 motion coprocessor",
+            "CPU": "2.34 GHz quad-core ARM processor",
+            "GPU": "Hexa-core PowerVR GT7600 Plus",
+            "Memory": "3 GB 1600MHz LPDDR4 DRAM",
             "PPI": "264"
         },
         "iPad Pro 11\"": {
@@ -519,6 +565,36 @@
         }
     },
     "remainingTimeInfo": {
+        "iPhone 11 Pro Max": {
+            "Model": "iPhone 11 Pro Max",
+            "Talk Time on 3G": 20,
+            "Internet on 3G": 12,
+            "Internet on LTE": 12,
+            "Internet on Wi-Fi": 15,
+            "Video playback": 20,
+            "Audio playback": 80,
+            "Standby": 384
+        },
+        "iPhone 11 Pro": {
+            "Model": "iPhone 11 Pro",
+            "Talk Time on 3G": 25,
+            "Internet on 3G": 13,
+            "Internet on LTE": 13,
+            "Internet on Wi-Fi": 15,
+            "Video playback": 18,
+            "Audio playback": 65,
+            "Standby": 384
+        },
+        "iPhone 11": {
+            "Model": "iPhone XR",
+            "Talk Time on 3G": 25,
+            "Internet on 3G": 15,
+            "Internet on LTE": 15,
+            "Internet on Wi-Fi": 15,
+            "Video playback": 17,
+            "Audio playback": 65,
+            "Standby": 384
+        },
         "iPhone XS": {
             "Model": "iPhone XS",
             "Talk Time on 3G": 20,
@@ -712,6 +788,13 @@
             "Charging time": 4,
             "Fast charge": 2
         },
+        "iPod Touch (7th generation)": {
+            "Model": "iPod Touch (7th generation)",
+            "Video playback": 8,
+            "Audio playback": 40,
+            "Charging time": 4,
+            "Fast charge": 2
+        },
         "iPad 2": {
             "Model": "iPad 2",
             "Internet on Wi-Fi": 10,
@@ -826,6 +909,13 @@
         },
         "iPad 6th generation": {
             "Model": "iPad 6th generation",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 140
+        },
+        "iPad 7th Gen 10.2-inch": {
+            "Model": "iPad 7th Gen 10.2-inch",
             "Internet on Wi-Fi": 10,
             "Internet on Cellular": 9,
             "Video playback": 10,

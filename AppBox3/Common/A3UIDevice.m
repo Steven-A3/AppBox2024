@@ -183,7 +183,12 @@ NSString *const A3DeviceInformationRemainingTimeKey = @"remainingTimeInfo";
 }
 
 + (NSString *)modelNameFromDeviceInfo:(NSDictionary *)rootDictionary {
-	NSString *platformString = [A3UIDevice platform];
+#if TARGET_IPHONE_SIMULATOR
+    NSProcessInfo *processInfo = [NSProcessInfo processInfo];
+    NSString *platformString = processInfo.environment[@"SIMULATOR_MODEL_IDENTIFIER"];
+#else
+    NSString *platformString = [A3UIDevice platform];
+#endif
 	NSDictionary *platformDatabase = rootDictionary[A3DeviceInformationPlatformKey];
 	NSString *modelName = platformDatabase[platformString];
 	if (!modelName) {

@@ -98,7 +98,7 @@
 	[self.view addSubview:_weatherCondition];
 
 	_temperature = [[UILabel alloc] init];
-	[_temperature setFont:[UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:IS_IPHONE ? 44 : 88]];
+	[_temperature setFont:[UIFont fontWithName:@"HelveticaNeue-UltraLight" size:IS_IPHONE ? 44 : 88]];
 	[_temperature setTextColor:kColorClockFlipLabel];
 	[self.view addSubview:_temperature];
 
@@ -312,7 +312,7 @@
 				[_weatherConstraints addObject:make.centerX.equalTo(self.view.centerX)];
 				[_weatherConstraints addObject:make.baseline.equalTo(self.view.top).with.offset(125 + verticalOffsetFromTop)];
 			}];
-			[_temperature setFont:[UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:44]];
+			[_temperature setFont:[UIFont fontWithName:@"HelveticaNeue-UltraLight" size:44]];
 		} else {
 			[_weatherCondition makeConstraints:^(MASConstraintMaker *make) {
 				[_weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(15)];
@@ -322,7 +322,7 @@
 				[_weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(15)];
 				[_weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(-11)];
 			}];
-			[_temperature setFont:[UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:64]];
+			[_temperature setFont:[UIFont fontWithName:@"HelveticaNeue-UltraLight" size:64]];
 		}
 
         CGFloat verticalOffset = 0;
@@ -437,7 +437,7 @@
 		}
 	}
 	fontSize *= scale;
-	UIFont *font = isForSecond ? [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:fontSize] : [UIFont boldSystemFontOfSize:fontSize];
+	UIFont *font = isForSecond ? [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:fontSize] : [UIFont boldSystemFontOfSize:fontSize];
 	frontView.font = font;
 	backView.font = font;
 
