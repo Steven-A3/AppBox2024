@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+@import AVKit;
 #import "MBProgressHUD.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "MWGridViewController.h"
@@ -54,7 +55,8 @@
     UIImage *_previousNavigationBarBackgroundImageLandscapePhone;
     
     // Video
-    MPMoviePlayerViewController *_currentVideoPlayerViewController;
+//    MPMoviePlayerViewController *_currentVideoPlayerViewController;
+    AVPlayerViewController *_currentVideoPlayerViewController;
     NSUInteger _currentVideoIndex;
     UIActivityIndicatorView *_currentVideoLoadingIndicator;
     
