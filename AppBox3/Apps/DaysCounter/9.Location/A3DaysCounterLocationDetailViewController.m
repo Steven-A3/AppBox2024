@@ -260,7 +260,7 @@
     viewCtrl.eventModel = self.eventModel;
     viewCtrl.sharedManager = _sharedManager;
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-    navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+    navCtrl.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:navCtrl animated:YES completion:nil];
 }
 

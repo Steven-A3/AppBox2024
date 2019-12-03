@@ -211,6 +211,12 @@
         });
     }
 
+    double delayInSeconds = 3.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self refreshItems];
+    });
+    
     _didPassViewDidAppear = YES;
 }
 
@@ -541,6 +547,7 @@
 
 - (void)addWalletItemAction {
 	A3WalletItemEditViewController *viewController = [self itemEditViewController];
+    viewController.delegate = self;
 	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
 	[self presentViewController:nav animated:YES completion:NULL];
 }
@@ -826,6 +833,10 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 - (void)walletITemAddCanceled
 {
 
+}
+
+- (void)walletItemEdited:(WalletItem *)item {
+    [self refreshItems];
 }
 
 - (UILocalizedIndexedCollation *)collation {

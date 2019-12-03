@@ -7,6 +7,7 @@
 //
 
 #import <MediaPlayer/MediaPlayer.h>
+@import AVKit;
 #import <AVFoundation/AVFoundation.h>
 #import "A3WalletVideoItemViewController.h"
 #import "A3WalletItemEditViewController.h"
@@ -31,7 +32,7 @@
 #import "MBProgressHUD.h"
 #import "UIViewController+A3Addition.h"
 
-@interface A3WalletVideoItemViewController () <WalletItemEditDelegate, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate>
+@interface A3WalletVideoItemViewController () <WalletItemEditDelegate, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, AVPlayerViewControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *videoFieldItems;
 @property (nonatomic, strong) NSMutableArray *normalFieldItems;
@@ -44,7 +45,8 @@
 @property (nonatomic, strong) NSMutableDictionary *noteItem;
 @property (nonatomic, strong) NSMutableDictionary *photoItem;
 @property (nonatomic, strong) NSMutableDictionary *metadataItem;
-@property (nonatomic, strong) MPMoviePlayerViewController *moviePlayerViewController;
+//@property (nonatomic, strong) MPMoviePlayerViewController *moviePlayerViewController;
+@property (nonatomic, strong) AVPlayerViewController *moviePlayerViewController;
 @property (nonatomic, strong) UIActionSheet *actionSheet;
 
 @property (nonatomic, strong) MBProgressHUD *progressHUD;
@@ -105,9 +107,9 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 	[self removeContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
-	if (_moviePlayerViewController) {
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:_moviePlayerViewController.moviePlayer];
-	}
+//	if (_moviePlayerViewController) {
+//		[[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:_moviePlayerViewController.moviePlayer];
+//	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -485,14 +487,14 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     _metadataView.favoriteButton.selected = isFavorite;
 }
 
-- (void)videoFinished:(NSNotification*)aNotification{
-    int value = [[aNotification.userInfo valueForKey:MPMoviePlayerPlaybackDidFinishReasonUserInfoKey] intValue];
-    if (value == MPMovieFinishReasonUserExited) {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:_moviePlayerViewController.moviePlayer];
-        [self dismissMoviePlayerViewControllerAnimated];
-        _moviePlayerViewController = nil;
-    }
-}
+//- (void)videoFinished:(NSNotification*)aNotification{
+//    int value = [[aNotification.userInfo valueForKey:MPMoviePlayerPlaybackDidFinishReasonUserInfoKey] intValue];
+//    if (value == MPMovieFinishReasonUserExited) {
+//        [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:_moviePlayerViewController.moviePlayer];
+//        [self dismissMoviePlayerViewControllerAnimated];
+//        _moviePlayerViewController = nil;
+//    }
+//}
 
 - (void)editButtonAction:(id)sender
 {
@@ -504,7 +506,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 	viewController.alwaysReturnToOriginalCategory = self.alwaysReturnToOriginalCategory;
     
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
-    nav.modalPresentationStyle = UIModalPresentationCurrentContext;
+    nav.modalPresentationStyle = UIModalPresentationFullScreen;
     
     [self presentViewController:nav animated:YES completion:NULL];
 }
@@ -536,20 +538,32 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     if ([field.type isEqualToString:WalletFieldTypeVideo]) {
         if (fieldItem) {
 			NSURL *fileURL = [fieldItem videoFileURLInOriginal:YES ];
-			_moviePlayerViewController = [[MPMoviePlayerViewController alloc] initWithContentURL:fileURL];
-
-			// 재생후에 자동으로 닫히는 것 방지하고, 사용자가 닫을수있도록 함.
-			[[NSNotificationCenter defaultCenter] removeObserver:_moviePlayerViewController name:MPMoviePlayerPlaybackDidFinishNotification object:_moviePlayerViewController.moviePlayer];
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoFinished:) name:MPMoviePlayerPlaybackDidFinishNotification object:_moviePlayerViewController.moviePlayer];
+            AVPlayer *player = [[AVPlayer alloc] initWithURL:fileURL];
+            _moviePlayerViewController = [AVPlayerViewController new];
+            _moviePlayerViewController.player = player;
+            _moviePlayerViewController.delegate = self;
             
-            NSError *_error = nil;
-            [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: &_error];
-
-			[self presentViewController:_moviePlayerViewController animated:YES completion:^{
-				[_moviePlayerViewController.moviePlayer play];
-			}];
+            [player play];
+            [self presentViewController:_moviePlayerViewController animated:YES completion:NULL];
+            
+//			_moviePlayerViewController = [[MPMoviePlayerViewController alloc] initWithContentURL:fileURL];
+//
+//			// 재생후에 자동으로 닫히는 것 방지하고, 사용자가 닫을수있도록 함.
+//			[[NSNotificationCenter defaultCenter] removeObserver:_moviePlayerViewController name:MPMoviePlayerPlaybackDidFinishNotification object:_moviePlayerViewController.moviePlayer];
+//            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoFinished:) name:MPMoviePlayerPlaybackDidFinishNotification object:_moviePlayerViewController.moviePlayer];
+            
+//            NSError *_error = nil;
+//            [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: &_error];
+//
+//			[self presentViewController:_moviePlayerViewController animated:YES completion:^{
+//				[_moviePlayerViewController.moviePlayer play];
+//			}];
         }
     }
+}
+
+- (void)playerViewControllerDidEndDismissalTransition:(AVPlayerViewController *)playerViewController {
+    _moviePlayerViewController = nil;
 }
 
 - (void)configureFloatingTextField:(JVFloatLabeledTextField *)txtFd

@@ -592,7 +592,7 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 
 - (void)addWalletItemAction {
 	A3WalletItemEditViewController *viewController = [self itemAddViewController];
-
+    viewController.delegate = self;
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
     [self presentViewController:nav animated:YES completion:NULL];
 }
@@ -754,6 +754,10 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 - (void)walletITemAddCanceled
 {
     
+}
+
+- (void)walletItemEdited:(WalletItem *)item {
+    [self refreshItems];
 }
 
 #pragma mark - Table view delegate

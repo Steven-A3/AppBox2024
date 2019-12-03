@@ -739,28 +739,35 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     
 	if ([savingContext hasChanges]) {
 		[savingContext MR_saveToPersistentStoreAndWait];
-        
-        if (_delegate && [_delegate respondsToSelector:@selector(walletItemEdited:)]) {
-            [_delegate walletItemEdited:_item];
-        }
     }
     
 	[self moveMediaFilesToNormalPath];
     
-	if (_alwaysReturnToOriginalCategory || [_originalCategoryUniqueID isEqualToString:_item.categoryID]) {
-		[self dismissViewControllerAnimated:YES completion:NULL];
-	} else {
-		[self dismissViewControllerAnimated:YES completion:NULL];
-        
-		NSNotification *notification = [[NSNotification alloc] initWithName:A3WalletNotificationItemCategoryMoved
-																	 object:nil
-																   userInfo:@{
-                                                                              @"oldCategoryID" : self.originalCategoryUniqueID,
-                                                                              @"categoryID":_item.categoryID,
-                                                                              @"itemID":_item.uniqueID
-                                                                              }];
-		[[NSNotificationCenter defaultCenter] postNotification:notification];
-	}
+//    MBProgressHUD *delayHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//    delayHud.label.text = NSLocalizedString(@"Updating...", nil);
+//    delayHud.minShowTime = 1;
+//    delayHud.removeFromSuperViewOnHide = YES;
+//    delayHud.mode = MBProgressHUDModeDeterminate;
+//    delayHud.completionBlock = ^{
+        if (self.alwaysReturnToOriginalCategory || [self.originalCategoryUniqueID isEqualToString:self.item.categoryID]) {
+            [self dismissViewControllerAnimated:YES completion:NULL];
+        } else {
+            [self dismissViewControllerAnimated:YES completion:NULL];
+            
+            NSNotification *notification = [[NSNotification alloc] initWithName:A3WalletNotificationItemCategoryMoved
+                                                                         object:nil
+                                                                       userInfo:@{
+                                                                           @"oldCategoryID" : self.originalCategoryUniqueID,
+                                                                           @"categoryID":self.item.categoryID,
+                                                                           @"itemID":self.item.uniqueID
+                                                                       }];
+            [[NSNotificationCenter defaultCenter] postNotification:notification];
+        }
+        if (self.delegate && [self.delegate respondsToSelector:@selector(walletItemEdited:)]) {
+            [self.delegate walletItemEdited:self.item];
+        }
+//    };
+//    [delayHud hideAnimated:YES afterDelay:0.5];
 }
 
 - (void)mediaButtonAction:(UIButton *)sender
@@ -1117,14 +1124,16 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 		_currentFieldItem.videoExtension = movieURL.pathExtension;
 		NSURL *destinationMovieURL = [_currentFieldItem videoFileURLInOriginal:NO];
         NSError *error;
-        NSFileManager *fileManager = [[NSFileManager alloc] init];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
         fileManager.delegate = self;
         
         if ([fileManager fileExistsAtPath:[destinationMovieURL path]]) {
             result = [fileManager removeItemAtURL:destinationMovieURL error:&error];
             NSAssert(result, @"NSFileManager defaultManager");
         }
-		result = [fileManager moveItemAtURL:movieURL toURL:destinationMovieURL error:&error];
+//		result = [fileManager moveItemAtURL:movieURL toURL:destinationMovieURL error:&error];
+        result = [fileManager copyItemAtURL:movieURL toURL:destinationMovieURL error:&error];
+        
         NSAssert(result, @"NSFileManager defaultManager");
         
         NSURL *assetURL = imageEditInfo[UIImagePickerControllerReferenceURL];
@@ -1383,6 +1392,8 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	NSInteger myButtonIndex = buttonIndex;
     NSInteger destructiveButtonIndex = actionSheet.destructiveButtonIndex;
     NSInteger actionSheetTag = actionSheet.tag;
+    
+    
     [self imagePickerActionForButtonIndex:myButtonIndex destructiveButtonIndex:destructiveButtonIndex actionSheetTag:actionSheetTag];
 }
 

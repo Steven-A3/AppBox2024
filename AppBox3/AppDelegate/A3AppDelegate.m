@@ -139,7 +139,7 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
     FNLOG(@"%@", [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]);
     FNLOG(@"%@", [NSLocale preferredLanguages]);
 #endif
-    
+   
     BOOL shouldPerformAdditionalDelegateHandling = [self shouldPerformAdditionalDelegateHandling:launchOptions];
 	
 	[[NSUserDefaults standardUserDefaults] registerDefaults:@{kA3SettingsMainMenuStyle:A3SettingsMainMenuStyleIconGrid}];
@@ -274,6 +274,7 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
     // Add this code to your application delegate's
     // application:didFinishLaunchingWithOptions: method.
     
+    [[GADMobileAds sharedInstance] startWithCompletionHandler:nil];
     [ACTConversionReporter reportWithConversionID:@"964753049" label:@"j_bDCNKruXEQme2DzAM" value:@"1.00" isRepeatable:NO];
     
 	return shouldPerformAdditionalDelegateHandling;

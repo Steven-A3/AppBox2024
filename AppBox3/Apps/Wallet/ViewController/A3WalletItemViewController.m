@@ -7,6 +7,7 @@
 //
 
 #import <MediaPlayer/MediaPlayer.h>
+@import AVKit;
 #import "A3WalletItemViewController.h"
 #import "A3WalletItemEditViewController.h"
 #import "A3WalletItemTitleView.h"
@@ -41,7 +42,7 @@
 @import MessageUI;
 
 
-@interface A3WalletItemViewController () <UITextFieldDelegate, WalletItemEditDelegate, MWPhotoBrowserDelegate, MFMailComposeViewControllerDelegate, UITextViewDelegate, MFMessageComposeViewControllerDelegate>
+@interface A3WalletItemViewController () <UITextFieldDelegate, WalletItemEditDelegate, MWPhotoBrowserDelegate, MFMailComposeViewControllerDelegate, UITextViewDelegate, MFMessageComposeViewControllerDelegate, AVPlayerViewControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *fieldItems;
 @property (nonatomic, strong) NSMutableDictionary *titleItem, *noteItem;
@@ -118,8 +119,10 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 - (void)cloudStoreDidImport {
 	if (_itemDeleted) return;
 
-	_fieldItems = nil;
-	[self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        _fieldItems = nil;
+        [self.tableView reloadData];
+    });
 }
 
 - (void)removeObserver {
@@ -144,6 +147,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 		_fieldItems = nil;
 		[self category];
 		[self fieldItems];
+        [self.tableView reloadData];
 	}
 }
 
@@ -297,10 +301,16 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 	WalletFieldItem *fieldItem = _fieldItems[sender.tag];
 
 	if ([fieldItem.hasVideo boolValue]) {
-		MPMoviePlayerViewController *pvc = [[MPMoviePlayerViewController alloc] initWithContentURL:[fieldItem videoFileURLInOriginal:YES] ];
-		[self presentViewController:pvc animated:YES completion:^{
-			[pvc.moviePlayer play];
-		}];
+        AVPlayer *player = [[AVPlayer alloc] initWithURL:[fieldItem videoFileURLInOriginal:YES]];
+        AVPlayerViewController *pvc = [AVPlayerViewController new];
+        pvc.player = player;
+        pvc.delegate = self;
+        [player play];
+        [self presentViewController:pvc animated:YES completion:NULL];
+//		MPMoviePlayerViewController *pvc = [[MPMoviePlayerViewController alloc] initWithContentURL:[fieldItem videoFileURLInOriginal:YES] ];
+//		[self presentViewController:pvc animated:YES completion:^{
+//			[pvc.moviePlayer play];
+//		}];
 	}
 	else if ([fieldItem.hasImage boolValue]) {
 		_photoBrowser = [[MWPhotoBrowser alloc] initWithDelegate:self];
@@ -315,6 +325,10 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 	}
 }
 
+- (void)playerViewControllerDidEndDismissalTransition:(AVPlayerViewController *)playerViewController {
+    
+}
+
 - (void)editButtonAction:(id)sender
 {
 	UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
@@ -325,7 +339,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 	viewController.delegate = self;
     
 	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
-	nav.modalPresentationStyle = UIModalPresentationCurrentContext;
+	nav.modalPresentationStyle = UIModalPresentationFullScreen;
 	nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 	[self presentViewController:nav animated:YES completion:NULL];
 }

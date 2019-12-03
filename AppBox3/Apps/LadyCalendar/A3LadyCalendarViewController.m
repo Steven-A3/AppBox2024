@@ -829,7 +829,7 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
     A3LadyCalendarListViewController *viewCtrl = [[A3LadyCalendarListViewController alloc] initWithNibName:@"A3LadyCalendarListViewController" bundle:nil];
 	viewCtrl.dataManager = _dataManager;
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-    navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+    navCtrl.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:navCtrl animated:YES completion:nil];
 }
 
@@ -872,7 +872,7 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 	viewCtrl.dataManager = self.dataManager;
     viewCtrl.isEditMode = NO;
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-    navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+    navCtrl.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:navCtrl animated:YES completion:nil];
 }
 

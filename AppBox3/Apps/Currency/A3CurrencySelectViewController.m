@@ -17,7 +17,7 @@
 
 NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCodeSelected";
 
-@interface A3CurrencySelectViewController () <UISearchBarDelegate, UISearchDisplayDelegate>
+@interface A3CurrencySelectViewController () <UISearchBarDelegate>
 
 @property (nonatomic, weak) UIViewController *modalPresentingParentViewController;
 

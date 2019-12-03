@@ -150,6 +150,7 @@
 				[_touchIDSwitch setOn:[[A3AppDelegate instance] useTouchID]];
                 if (@available(iOS 11.0, *)) {
                     LAContext *context = [LAContext new];
+                    [context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:nil];
                     if (context.biometryType == LABiometryTypeFaceID) {
                         cell.textLabel.text = NSLocalizedString(@"Face ID", nil);
                     }

@@ -1292,9 +1292,13 @@
     //todo: moveable	Ramadan http://en.wikipedia.org/wiki/Ramadan
 
     //todo: Leap year- September 12
-	holidayName = NSLocalizedStringFromTable(@"New Year's Day", kHolidaysResourceName, nil);
-	date = [HolidayData dateWithDay:11 month:9 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    holidayName = NSLocalizedStringFromTable(@"New Year's Day", kHolidaysResourceName, nil);
+    if (year == 2019) {
+        date = [HolidayData dateWithDay:12 month:9 year:year withCalendar:gregorian option:0];
+    } else {
+        date = [HolidayData dateWithDay:11 month:9 year:year withCalendar:gregorian option:0];
+    }
+    [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
     //todo: Leap year- September 28
 	holidayName = NSLocalizedStringFromTable(@"Finding of the True Cross", kHolidaysResourceName, nil);

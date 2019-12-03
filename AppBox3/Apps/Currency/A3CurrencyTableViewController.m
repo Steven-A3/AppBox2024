@@ -225,11 +225,13 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
         return;
     }
 
-    _favorites = nil;
-    [self favorites];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.favorites = nil;
+        [self favorites];
 
-    [self.tableView reloadData];
-    [self enableControls:_barButtonEnabled];
+        [self.tableView reloadData];
+        [self enableControls:_barButtonEnabled];
+    });
 }
 
 - (void)addObserver {

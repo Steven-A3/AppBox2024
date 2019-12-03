@@ -253,7 +253,7 @@
     viewCtrl.sharedManager = _sharedManager;
     
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-    navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+    navCtrl.modalPresentationStyle = UIModalPresentationFullScreen;
 
     // 왼쪽 바운드 라인이 사라지는 버그 수정을 위하여 추가.
     UIView *leftLineView = [[UIView alloc] initWithFrame:CGRectMake(-(IS_RETINA ? 0.5 : 1), 0, (IS_RETINA ? 0.5 : 1), CGRectGetHeight(navCtrl.view.frame))];
@@ -284,7 +284,7 @@
 	viewCtrl.calendar = [calendar MR_inContext:viewCtrl.savingContext];
     viewCtrl.sharedManager = _sharedManager;
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-    navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+    navCtrl.modalPresentationStyle = UIModalPresentationFullScreen;
     self.modalVC = navCtrl;
     
     // 왼쪽 바운드 라인이 사라지는 버그 수정을 위하여 추가.

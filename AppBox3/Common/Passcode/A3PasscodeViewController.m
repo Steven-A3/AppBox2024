@@ -524,6 +524,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
 - (void)prepareNavigationControllerWithController:(UIViewController *)viewController {
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController: self];
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
 	[viewController presentViewController: navController animated: NO completion: nil];
 //	[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel

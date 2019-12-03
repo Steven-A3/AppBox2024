@@ -225,6 +225,7 @@
 
     CGRect redRect = graphCell.redLineView.frame;
     redRect.size.width = self.view.bounds.size.width * percentOfRedBar;
+    redRect.size.height = 4;
     graphCell.redLineView.frame = redRect;
 
     // 애니메이션 End

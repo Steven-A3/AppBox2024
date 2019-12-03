@@ -92,9 +92,11 @@ A3InstructionViewControllerDelegate>
 }
 
 - (void)mainMenuContentsDidChange {
-    [self updateShouldShowHouseAds];
-	_collectionView.backgroundView = self.backgroundView;
-	_collectionView.backgroundView.backgroundColor = [UIColor colorWithRed:42.0/255.0 green:54.0/255.0 blue:59.0/255.0 alpha:1.0];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self updateShouldShowHouseAds];
+        self.collectionView.backgroundView = self.backgroundView;
+        self.collectionView.backgroundView.backgroundColor = [UIColor colorWithRed:42.0/255.0 green:54.0/255.0 blue:59.0/255.0 alpha:1.0];
+    });
 }
 
 - (void)didReceiveMemoryWarning {

@@ -79,6 +79,14 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 	[self removeObserver];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    if (!(self.isMovingToParentViewController || !self.isBeingPresented)) {
+        
+    }
+}
+
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 

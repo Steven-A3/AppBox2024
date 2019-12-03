@@ -276,7 +276,7 @@ static const CGFloat kSideViewWidth = 320.0;
 }
 
 - (void)presentCenterViewController:(UIViewController *)viewController fromViewController:(UIViewController *)sourceViewController withCompletion:(void (^)(void))completion {
-    viewController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    viewController.modalPresentationStyle = UIModalPresentationFullScreen;
     [sourceViewController presentViewController:viewController animated:YES completion:^{
         if (!_presentViewControllers) {
             _presentViewControllers = [NSMutableArray new];

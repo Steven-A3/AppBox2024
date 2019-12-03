@@ -287,13 +287,19 @@
 }
 
 - (void)coreDataDidSave {
-	[self reloadTableView];
+    if ([self.navigationController visibleViewController] == self) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self reloadTableView];
+        });
+    }
 }
 
 - (void)cloudDidImportChanges:(NSNotification *)notification {
-	if ([self.navigationController visibleViewController] == self) {
-		[self reloadTableView];
-	}
+    if ([self.navigationController visibleViewController] == self) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self reloadTableView];
+        });
+    }
 }
 
 - (void)removeObserver {
@@ -413,10 +419,12 @@
 
 - (void)reloadTableView
 {
-    self.itemArray = [_sharedManager visibleCalendarList];
-    [self.tableView reloadData];
-    self.addEventButton.tintColor = [A3AppDelegate instance].themeColor;
-	[self setupHeaderInfo];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.itemArray = [_sharedManager visibleCalendarList];
+        [self.tableView reloadData];
+        self.addEventButton.tintColor = [A3AppDelegate instance].themeColor;
+        [self setupHeaderInfo];
+    });
 }
 
 #pragma mark Initialize FontSize
@@ -510,7 +518,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 
     if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-        navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+        navCtrl.modalPresentationStyle = UIModalPresentationFullScreen;
         navCtrl.delegate = self;
         [self presentViewController:navCtrl animated:YES completion:^{
             [viewCtrl showKeyboard];
@@ -558,7 +566,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
     
     if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-        navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+        navCtrl.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:navCtrl animated:YES completion:nil];
     }
     else {

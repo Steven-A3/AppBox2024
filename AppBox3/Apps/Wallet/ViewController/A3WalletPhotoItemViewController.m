@@ -542,7 +542,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 	viewController.alwaysReturnToOriginalCategory = self.alwaysReturnToOriginalCategory;
     
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
-    nav.modalPresentationStyle = UIModalPresentationCurrentContext;
+    nav.modalPresentationStyle = UIModalPresentationFullScreen;
     
     [self presentViewController:nav animated:YES completion:NULL];
 }

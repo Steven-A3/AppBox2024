@@ -162,7 +162,9 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 
 - (void)cloudDidImportChanges:(NSNotification *)notification {
 	if ([self.navigationController visibleViewController] == self) {
-		[self loadEventData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self loadEventData];
+        });
 	}
 }
 
@@ -764,13 +766,22 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 
     if ([self.searchController isActive]) {
         self.searchController.active = NO;
+        double delayInSeconds = 0.4;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] init];
+            viewCtrl.eventItem = item;
+            viewCtrl.sharedManager = self.sharedManager;
+            viewCtrl.delegate = self;
+            [self.navigationController pushViewController:viewCtrl animated:YES];
+        });
+    } else {
+        A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] init];
+        viewCtrl.eventItem = item;
+        viewCtrl.sharedManager = self.sharedManager;
+        viewCtrl.delegate = self;
+        [self.navigationController pushViewController:viewCtrl animated:YES];
     }
-
-    A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] init];
-    viewCtrl.eventItem = item;
-    viewCtrl.sharedManager = _sharedManager;
-    viewCtrl.delegate = self;
-    [self.navigationController pushViewController:viewCtrl animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -976,7 +987,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 
     if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-        navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+        navCtrl.modalPresentationStyle = UIModalPresentationFullScreen;
         navCtrl.delegate = self;
         [self presentViewController:navCtrl animated:YES completion:^{
         }];
@@ -990,7 +1001,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
     }
 //    if ( IS_IPHONE ) {
 //        UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-//        navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+//        navCtrl.modalPresentationStyle = UIModalPresentationFullScreen;
 //        [self presentViewController:navCtrl animated:YES completion:nil];
 //    }
 //    else {
@@ -1048,7 +1059,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
     viewCtrl.landscapeFullScreen = NO;
     if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-        navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+        navCtrl.modalPresentationStyle = UIModalPresentationFullScreen;
         navCtrl.delegate = self;
         [self presentViewController:navCtrl animated:YES completion:^{
             [viewCtrl showKeyboard];

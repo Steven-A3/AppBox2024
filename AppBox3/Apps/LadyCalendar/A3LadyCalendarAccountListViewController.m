@@ -257,7 +257,7 @@
 	viewCtrl.accountItem = [account MR_inContext:viewCtrl.savingContext];
 
 	A3NavigationController *navCtrl = [[A3NavigationController alloc] initWithRootViewController:viewCtrl];
-	navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+	navCtrl.modalPresentationStyle = UIModalPresentationFullScreen;
 	[self presentViewController:navCtrl animated:YES completion:nil];
 }
 
@@ -272,7 +272,7 @@
 	viewCtrl.dataManager = _dataManager;
 	viewCtrl.isEditMode = NO;
     A3NavigationController *navCtrl = [[A3NavigationController alloc] initWithRootViewController:viewCtrl];
-    navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+    navCtrl.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:navCtrl animated:YES completion:nil];
 }
 

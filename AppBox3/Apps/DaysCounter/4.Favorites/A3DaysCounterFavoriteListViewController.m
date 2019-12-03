@@ -474,7 +474,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
     viewCtrl.sharedManager = _sharedManager;
     if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-        navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+        navCtrl.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:navCtrl animated:YES completion:nil];
     }
     else {

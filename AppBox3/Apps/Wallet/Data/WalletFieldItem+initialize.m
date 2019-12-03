@@ -19,33 +19,40 @@ NSString *const A3WalletVideoThumbnailDirectory = @"WalletVideoThumbnails"; // i
 @implementation WalletFieldItem (initialize)
 
 - (void)didSave {
-	if (self.isDeleted) {
-		FNLOG();
-		NSFileManager *fileManager = [NSFileManager defaultManager];
-		if ([self.hasImage boolValue]) {
-			NSError *error;
-			NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-			[coordinator coordinateWritingItemAtURL:[self photoImageURLInOriginalDirectory:YES]
-											options:NSFileCoordinatorWritingForDeleting
-											  error:&error
-										 byAccessor:^(NSURL *newURL) {
-											 [fileManager removeItemAtURL:newURL error:NULL];
-										 }];
-			[fileManager removeItemAtPath:[self photoImageThumbnailPathInOriginal:YES] error:NULL];
-			return;
-		}
-		if ([self.hasVideo boolValue])  {
-			NSError *error;
-			NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-			[coordinator coordinateWritingItemAtURL:[self videoFileURLInOriginal:YES]
-											options:NSFileCoordinatorWritingForDeleting
-											  error:&error
-										 byAccessor:^(NSURL *newURL) {
-											 [fileManager removeItemAtURL:newURL error:NULL];
-										 }];
-			[fileManager removeItemAtPath:[self videoThumbnailPathInOriginal:YES] error:NULL];
-		}
-	}
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.isDeleted) {
+            FNLOG();
+            NSFileManager *fileManager = [NSFileManager defaultManager];
+            if ([self.hasImage boolValue]) {
+                NSError *error;
+                NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+                [coordinator coordinateWritingItemAtURL:[self photoImageURLInOriginalDirectory:YES]
+                                                options:NSFileCoordinatorWritingForDeleting
+                                                  error:&error
+                                             byAccessor:^(NSURL *newURL) {
+                    [fileManager removeItemAtURL:newURL error:NULL];
+                }];
+                [fileManager removeItemAtPath:[self photoImageThumbnailPathInOriginal:YES] error:NULL];
+                return;
+            }
+            if ([self.hasVideo boolValue])  {
+                NSError *error;
+                NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+                [coordinator coordinateWritingItemAtURL:[self videoFileURLInOriginal:YES]
+                                                options:NSFileCoordinatorWritingForDeleting
+                                                  error:&error
+                                             byAccessor:^(NSURL *newURL)
+                 {
+                    NSError *removeError;
+                    [fileManager removeItemAtURL:newURL error:&removeError];
+                }];
+                NSString *thumbnalePath = [self videoThumbnailPathInOriginal:YES];
+                if ([fileManager isDeletableFileAtPath:thumbnalePath]) {
+                    [fileManager removeItemAtPath:thumbnalePath error:nil];
+                }
+            }
+        }
+    });
 }
 
 - (NSURL *)baseURL {

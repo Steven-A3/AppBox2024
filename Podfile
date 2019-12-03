@@ -14,16 +14,11 @@ target 'AppBox3' do
   # use_frameworks!
 
   # Pods for AppBox3
-pod 'Firebase/Core'
-pod 'Firebase/AdMob'
+pod 'Firebase/Core', '6.9.0'
+pod 'Firebase/AdMob', '6.9.0'
 pod 'PersonalizedAdConsent'
 
   target 'AppBox3 Tests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
-  target 'AppBox3UITests' do
     inherit! :search_paths
     # Pods for testing
   end

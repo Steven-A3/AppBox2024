@@ -363,7 +363,7 @@
     A3LadyCalendarAddPeriodViewController *viewCtrl = [[A3LadyCalendarAddPeriodViewController alloc] init];
 	viewCtrl.dataManager = _dataManager;
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-    navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+    navCtrl.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:navCtrl animated:YES completion:nil];
 }
 

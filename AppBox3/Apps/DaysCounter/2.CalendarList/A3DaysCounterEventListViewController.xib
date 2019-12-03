@@ -1,7 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="A3DaysCounterEventListViewController">
@@ -11,7 +14,6 @@
                 <outlet property="headerSeparatorView" destination="uWa-Al-TvQ" id="aji-RM-t5j"/>
                 <outlet property="headerView" destination="rtE-zw-6ea" id="XKW-Vo-8PF"/>
                 <outlet property="headerViewSeparatorHeightConst" destination="hIe-Q4-k75" id="j24-M5-hDh"/>
-                <outlet property="searchDisplayController" destination="dwC-tC-hWB" id="hvZ-AF-qKg"/>
                 <outlet property="segmentControlWidthConst" destination="9uX-E1-UZf" id="kae-Dr-HDV"/>
                 <outlet property="sortTypeSegmentCtrl" destination="S9q-hc-7Mt" id="OQb-3T-ZGR"/>
                 <outlet property="tableView" destination="4" id="I7w-Y4-BVk"/>
@@ -25,18 +27,14 @@
             <subviews>
                 <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="4">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <color key="separatorColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="separatorColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <view key="tableHeaderView" contentMode="scaleToFill" id="rtE-zw-6ea">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="S9q-hc-7Mt" customClass="A3WalletSegmentedControl">
-                                <rect key="frame" x="75" y="7" width="170" height="29"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="75" y="7.5" width="170" height="29"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="170" id="9uX-E1-UZf"/>
                                     <constraint firstAttribute="height" constant="28" id="kRr-Gp-ekr"/>
@@ -51,14 +49,13 @@
                             </segmentedControl>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uWa-Al-TvQ" userLabel="View 1">
                                 <rect key="frame" x="0.0" y="42" width="320" height="1"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="hIe-Q4-k75"/>
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="uWa-Al-TvQ" secondAttribute="bottom" id="Dfo-Nd-RcH"/>
                             <constraint firstAttribute="centerX" secondItem="S9q-hc-7Mt" secondAttribute="centerX" id="GdA-W8-wgH"/>
@@ -66,7 +63,6 @@
                             <constraint firstAttribute="centerY" secondItem="S9q-hc-7Mt" secondAttribute="centerY" id="Q4G-6M-t4J"/>
                             <constraint firstItem="uWa-Al-TvQ" firstAttribute="leading" secondItem="rtE-zw-6ea" secondAttribute="leading" id="zdK-Nw-It9"/>
                         </constraints>
-                        <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     </view>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="6"/>
@@ -74,29 +70,22 @@
                     </connections>
                 </tableView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="4" firstAttribute="leading" secondItem="mDx-pq-GFH" secondAttribute="leading" id="RG9-Ze-8HK"/>
                 <constraint firstAttribute="trailing" secondItem="4" secondAttribute="trailing" id="hoo-Bw-L1x"/>
                 <constraint firstItem="4" firstAttribute="top" secondItem="mDx-pq-GFH" secondAttribute="top" id="mXO-c8-FTN"/>
                 <constraint firstAttribute="bottom" secondItem="4" secondAttribute="bottom" id="s1c-B7-0dJ"/>
             </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
-        <searchDisplayController id="dwC-tC-hWB">
-            <connections>
-                <outlet property="delegate" destination="-1" id="rKr-wR-Pjw"/>
-                <outlet property="searchContentsController" destination="-1" id="Wbq-CY-dlj"/>
-                <outlet property="searchResultsDataSource" destination="-1" id="SiF-f7-ozw"/>
-                <outlet property="searchResultsDelegate" destination="-1" id="Giw-lU-wSf"/>
-            </connections>
-        </searchDisplayController>
         <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="S3u-7Y-Yjq" userLabel="Toolbar - bottom">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
             <items>
                 <barButtonItem image="photoview" width="30" id="DYd-OB-fhK">
-                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" red="0.66666668653488159" green="0.66666668653488159" blue="0.66666668653488159" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <action selector="photoViewAction:" destination="-1" id="TKo-Ty-2Oz"/>
                     </connections>
@@ -105,14 +94,14 @@
                 <barButtonItem image="listbox_on" width="30" id="lbh-4s-mbl"/>
                 <barButtonItem style="plain" systemItem="flexibleSpace" id="6h6-ka-Rt0"/>
                 <barButtonItem image="reminder" width="30" id="bfj-11-lof">
-                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" red="0.66666668653488159" green="0.66666668653488159" blue="0.66666668653488159" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <action selector="reminderAction:" destination="-1" id="aOb-oz-KSr"/>
                     </connections>
                 </barButtonItem>
                 <barButtonItem style="plain" systemItem="flexibleSpace" id="9IX-ID-O6R"/>
                 <barButtonItem image="star01" width="30" id="ebv-fJ-MgY">
-                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" red="0.66666668653488159" green="0.66666668653488159" blue="0.66666668653488159" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <action selector="favoriteAction:" destination="-1" id="FrI-TP-ZP8"/>
                     </connections>

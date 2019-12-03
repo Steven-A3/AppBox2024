@@ -359,7 +359,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 
 	viewController.shouldPopViewController = NO;
 	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
-	nav.modalPresentationStyle= UIModalPresentationCurrentContext;
+	nav.modalPresentationStyle= UIModalPresentationFullScreen;
 	[self.tabBarController.navigationController presentViewController:nav animated:YES completion:NULL];
 }
 

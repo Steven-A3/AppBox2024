@@ -20,7 +20,7 @@
 
 @end
 
-@interface A3SearchViewController () <UISearchDisplayDelegate, UISearchControllerDelegate, UISearchResultsUpdating>
+@interface A3SearchViewController () <UISearchControllerDelegate, UISearchResultsUpdating>
 
 @property (nonatomic) UILocalizedIndexedCollation *collation;
 @property (nonatomic, strong) NSArray *sectionTitles;
