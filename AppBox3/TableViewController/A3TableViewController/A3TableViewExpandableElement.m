@@ -37,7 +37,9 @@
 		A3TableViewExpandableHeaderCell *sectionHeaderTypeCell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
 		if (!sectionHeaderTypeCell) {
 			sectionHeaderTypeCell = [[A3TableViewExpandableHeaderCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
-		}
+        } else {
+            [sectionHeaderTypeCell resetCellLayout];
+        }
 		cell = sectionHeaderTypeCell;
 
 		sectionHeaderTypeCell.titleLabel.text = self.title;
@@ -50,7 +52,9 @@
 		A3TableViewExpandableDefaultCell *defaultTypeCell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
 		if (!defaultTypeCell) {
 			defaultTypeCell = [[A3TableViewExpandableDefaultCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
-		}
+        } else {
+            [defaultTypeCell resetCellLayout];
+        }
 		cell = defaultTypeCell;
 
 		defaultTypeCell.textLabel.text = self.title;

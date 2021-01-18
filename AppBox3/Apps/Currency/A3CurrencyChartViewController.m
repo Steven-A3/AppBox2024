@@ -21,10 +21,10 @@
 #import "A3CalculatorViewController.h"
 #import "A3YahooCurrency.h"
 #import "A3NumberFormatter.h"
+@import WebKit;
 
 @interface A3CurrencyChartViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate,
-		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewControllerProtocol,
-        UIWebViewDelegate>
+		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewControllerProtocol>
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UIView *line1;
@@ -33,7 +33,7 @@
 @property (nonatomic, weak) IBOutlet UIView *line2;
 @property (nonatomic, weak) IBOutlet UISegmentedControl *segmentedControl;
 
-@property (nonatomic, weak) IBOutlet UIWebView *chartWebView;
+@property (nonatomic, weak) IBOutlet WKWebView *chartWebView;
 @property (nonatomic, weak) IBOutlet UIView *webViewCoverView;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 @property (nonatomic, strong) NSTimer *activityIndicatorRemoveTimer;
@@ -41,7 +41,7 @@
 @property (nonatomic, strong) NSMutableArray *titleLabels;
 @property (nonatomic, strong) NSMutableArray *valueLabels;
 @property (nonatomic, weak) UITextField *sourceTextField, *targetTextField;
-@property (nonatomic, strong) UIWebView *landscapeChartWebView;
+@property (nonatomic, strong) WKWebView *landscapeChartWebView;
 @property (nonatomic, strong) UIScrollView *landscapeView;
 @property (nonatomic, strong) NSNumber *sourceValue;
 @property (nonatomic, copy) NSString *previousValue;
@@ -51,6 +51,7 @@
 @property (nonatomic, copy) NSString *sourceCurrencyCode, *targetCurrencyCode;
 @property (nonatomic, weak) UITextField *editingTextField;
 @property (nonatomic, strong) NSNumberFormatter *decimalNumberFormatter;
+@property (nonatomic, assign) BOOL isNumberKeyboardVisible;
 
 @end
 
@@ -81,7 +82,7 @@
 
 	[self makeFixedConstraint];
 
-	self.automaticallyAdjustsScrollViewInsets = NO;
+    self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentAutomatic;
 	[self.tableView registerClass:[A3CurrencyTVDataCell class] forCellReuseIdentifier:A3CurrencyDataCellID];
     self.tableView.rowHeight = IS_IPHONE35 ? 70.0 : 84.0;
 	self.tableView.dataSource = self;
@@ -114,15 +115,15 @@
 	[self registerContentSizeCategoryDidChangeNotification];
 
 	if (IS_IPAD && [[NSLocale preferredLanguages][0] hasPrefix:@"it"]) {
-		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days", @"StringsDict", nil), 1] forSegmentAtIndex:0];
-		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), 1] forSegmentAtIndex:1];
-		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), 3] forSegmentAtIndex:2];
-		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld years", @"StringsDict", nil), 1] forSegmentAtIndex:3];
-		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld years", @"StringsDict", nil), 5] forSegmentAtIndex:4];
+		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%d days", @"StringsDict", nil), 1] forSegmentAtIndex:0];
+		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%d mos", @"StringsDict", nil), 1] forSegmentAtIndex:1];
+		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%d mos", @"StringsDict", nil), 3] forSegmentAtIndex:2];
+		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%d years", @"StringsDict", nil), 1] forSegmentAtIndex:3];
+		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%d years", @"StringsDict", nil), 5] forSegmentAtIndex:4];
 	} else
 	if (IS_IPHONE35) {
-		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), 1] forSegmentAtIndex:2];
-		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), 5] forSegmentAtIndex:3];
+		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%d mos", @"StringsDict", nil), 1] forSegmentAtIndex:2];
+		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%d mos", @"StringsDict", nil), 5] forSegmentAtIndex:3];
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:kReachabilityChangedNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -132,7 +133,10 @@
 }
 
 - (void)didTapOnWebView {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://tradingview.go2cloud.org/aff_c?offer_id=2&aff_id=4413"]];
+    NSString *url = [NSString stringWithFormat:@"https://www.tradingview.com/symbols/%@%@/?offer_id=10&aff_id=4413", _sourceCurrencyCode, _targetCurrencyCode];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]
+                                       options:@{}
+                             completionHandler:nil];
 }
 
 - (void)applicationDidEnterBackground {
@@ -217,10 +221,8 @@
 - (void)makeFixedConstraint {
 	BOOL isIPHONE35 = IS_IPHONE35;
 
-    CGFloat verticalOffset = 0;
-    if (IS_IPHONEX) {
-        verticalOffset = 24;
-    }
+    UIEdgeInsets safeAreaInset = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    CGFloat verticalOffset = safeAreaInset.top - 20;
 	UIView *superview = _tableView.superview;
 	[_tableView makeConstraints:^(MASConstraintMaker *make) {
 		make.top.equalTo(superview.top).with.offset(64 + verticalOffset);
@@ -234,19 +236,19 @@
 		make.height.equalTo(@0.5);
 	}];
 	[_titleView makeConstraints:^(MASConstraintMaker *make) {
-		make.top.equalTo(_line1.bottom);
+		make.top.equalTo(self.line1.bottom);
 		make.left.equalTo(superview.left);
 		make.right.equalTo(superview.right);
 		make.height.equalTo(isIPHONE35 ? @22 : @30);
 	}];
 	[_valueView makeConstraints:^(MASConstraintMaker *make) {
-		make.top.equalTo(_titleView.bottom);
+		make.top.equalTo(self.titleView.bottom);
 		make.left.equalTo(superview.left);
 		make.right.equalTo(superview.right);
 		make.height.equalTo(isIPHONE35 ? @22 : @30);
 	}];
 	[_line2 makeConstraints:^(MASConstraintMaker *make) {
-		make.top.equalTo(_valueView.bottom);
+		make.top.equalTo(self.valueView.bottom);
 		make.left.equalTo(superview.left);
 		make.right.equalTo(superview.right);
 		make.height.equalTo(@0.5);
@@ -270,21 +272,21 @@
 	}
 	BOOL isIPHONE35 = IS_IPHONE35, isIPHONE = IS_IPHONE, isPORTRAIT = IS_PORTRAIT;
 	[_line1 makeConstraints:^(MASConstraintMaker *make) {
-		[_constraints addObject:make.top.equalTo(_tableView.bottom).with.offset(isIPHONE ? (isIPHONE35 ? 10 : 17) : (isPORTRAIT ? 50 : 33))];
+		[self.constraints addObject:make.top.equalTo(self.tableView.bottom).with.offset(isIPHONE ? (isIPHONE35 ? 10 : 17) : (isPORTRAIT ? 50 : 33))];
 	}];
 
 	[_segmentedControl makeConstraints:^(MASConstraintMaker *make) {
-		[_constraints addObject:make.top.equalTo(_line2.bottom).with.offset(isIPHONE ? (isIPHONE35 ? 10 : 17) : (isPORTRAIT ? 50 : 40))];
-		[_constraints addObject:make.width.equalTo(self.view.width).with.offset(-40)];
+		[self.constraints addObject:make.top.equalTo(self.line2.bottom).with.offset(isIPHONE ? (isIPHONE35 ? 10 : 17) : (isPORTRAIT ? 50 : 40))];
+		[self.constraints addObject:make.width.equalTo(self.view.width).with.offset(-40)];
 	}];
 	[_chartWebView makeConstraints:^(MASConstraintMaker *make) {
         CGFloat verticalMargin = isIPHONE ? (isIPHONE35 ? 14 : 18) : (isPORTRAIT ? 20 : 35);
-		[_constraints addObject:make.top.equalTo(_segmentedControl.bottom).with.offset(verticalMargin)];
-		[_constraints addObject:make.width.equalTo(self.view.width).with.offset(-40)];
-		[_constraints addObject:make.bottom.equalTo(self.view.bottom).with.offset(-verticalMargin)];
+		[self.constraints addObject:make.top.equalTo(self.segmentedControl.bottom).with.offset(verticalMargin)];
+		[self.constraints addObject:make.width.equalTo(self.view.width).with.offset(-40)];
+		[self.constraints addObject:make.bottom.equalTo(self.view.bottom).with.offset(-verticalMargin)];
 	}];
     [_webViewCoverView makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(_chartWebView);
+        make.edges.equalTo(self.chartWebView);
     }];
 }
 
@@ -580,8 +582,8 @@
 		[keyboardView removeFromSuperview];
 		[keyboardViewController removeFromParentViewController];
 		self.numberKeyboardViewController = nil;
-		_editingTextField = nil;
-		_isNumberKeyboardVisible = NO;
+		self.editingTextField = nil;
+		self.isNumberKeyboardVisible = NO;
 	}];
 }
 
@@ -641,7 +643,7 @@
     [_webViewCoverView addSubview:_activityIndicatorView];
     
     [_activityIndicatorView makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(_webViewCoverView);
+        make.center.equalTo(self.webViewCoverView);
     }];
     
     [_activityIndicatorView startAnimating];
@@ -711,9 +713,9 @@
 	}
 }
 
-- (UIWebView *)landscapeChartWebView {
+- (WKWebView *)landscapeChartWebView {
 	if (!_landscapeChartWebView) {
-		_landscapeChartWebView = [[UIWebView alloc] init];
+		_landscapeChartWebView = [[WKWebView alloc] init];
         _landscapeChartWebView.backgroundColor = [UIColor clearColor];
 	}
 	return _landscapeChartWebView;
@@ -816,7 +818,7 @@
         }
     }
     
-    NSArray *periodsArray = @[@"1d", @"1m", @"3m", @"1y", @"5y"];
+    NSArray *periodsArray = @[@"1d", @"1m", @"3m", @"1y", @"60M"];
     NSURL *url = [[NSBundle mainBundle] URLForResource:@"chartWidget" withExtension:@"html"];
     NSString *templateString = [NSString stringWithContentsOfURL:url usedEncoding:NULL error:nil];
     CGSize chartSize = targetView.frame.size;
@@ -828,25 +830,6 @@
     NSString *currencyPair = [NSString stringWithFormat:@"%@%@", _originalSourceCode, _originalTargetCode];
     NSString *periods = periodsArray[_segmentedControl.selectedSegmentIndex];
     return [NSString stringWithFormat:templateString, width, height, title, currencyPair, periods, width, height, locale];
-}
-
-#pragma mark - UIWebViewDelegate
-
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    FNLOG();
-    return YES;
-}
-
-- (void)webViewDidStartLoad:(UIWebView *)webView {
-    FNLOG();
-}
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
-    FNLOG();
-}
-
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    FNLOG();
 }
 
 @end

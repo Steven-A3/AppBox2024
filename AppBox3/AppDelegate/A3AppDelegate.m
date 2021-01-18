@@ -49,11 +49,11 @@
 #import "FXBlurView.h"
 #import "UIImage+imageWithColor.h"
 #import "NYXImagesKit.h"
-#import "ACTReporter.h"
 @import UserNotifications;
 #import <Firebase/Firebase.h>
 #import <PersonalizedAdConsent/PersonalizedAdConsent.h>
 #import <AdSupport/AdSupport.h>
+#import "TJDropboxAuthenticator.h"
 
 NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
@@ -138,6 +138,7 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
 #ifdef DEBUG
     FNLOG(@"%@", [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]);
     FNLOG(@"%@", [NSLocale preferredLanguages]);
+    FNLOG(@"%@", [[NSLocale currentLocale] currencyCode]);
 #endif
    
     BOOL shouldPerformAdditionalDelegateHandling = [self shouldPerformAdditionalDelegateHandling:launchOptions];
@@ -275,7 +276,7 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
     // application:didFinishLaunchingWithOptions: method.
     
     [[GADMobileAds sharedInstance] startWithCompletionHandler:nil];
-    [ACTConversionReporter reportWithConversionID:@"964753049" label:@"j_bDCNKruXEQme2DzAM" value:@"1.00" isRepeatable:NO];
+//    [ACTConversionReporter reportWithConversionID:@"964753049" label:@"j_bDCNKruXEQme2DzAM" value:@"1.00" isRepeatable:NO];
     
 	return shouldPerformAdditionalDelegateHandling;
 }
@@ -437,6 +438,9 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
 }
 
 - (BOOL)handleOpenURL:(NSURL *)url {
+    if ([TJDropboxAuthenticator tryHandleAuthenticationCallbackWithURL:url]) {
+        return YES;
+    }
     if ([[[url absoluteString] lowercaseString] hasPrefix:@"appboxpro://"]) {
         FNLOG(@"%@", url);
         NSArray *components = [[url absoluteString] componentsSeparatedByString:@"://"];

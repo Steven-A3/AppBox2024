@@ -94,6 +94,7 @@
 		17D42FD84048A09B5EE00DE4 /* A3TranslatorCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42DEFB63D5877A0449693 /* A3TranslatorCircleView.m */; };
 		17D42FF85AA97A33A049141B /* A3MainMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42FB24E3CE9119EAA77D3 /* A3MainMenuTableViewController.m */; };
 		3E21D15518FB1BF100B88D62 /* FrameRateCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E21D15418FB1BF100B88D62 /* FrameRateCalculator.m */; };
+		4D3F11E285D213D7B627BB84 /* libPods-A3SetupDefaultData.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD8F613ACE72C68BFE6803B8 /* libPods-A3SetupDefaultData.a */; };
 		571795CE19D7CD6600DEF2FB /* RGB-HSL.m in Sources */ = {isa = PBXBuildFile; fileRef = 571795CD19D7CD6600DEF2FB /* RGB-HSL.m */; };
 		57213EFB19C328FD005AD0ED /* CLLocationManager+authorization.m in Sources */ = {isa = PBXBuildFile; fileRef = 57213EFA19C328FD005AD0ED /* CLLocationManager+authorization.m */; };
 		5727A57219D411F100ADB17C /* Erase.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5727A57119D411F100ADB17C /* Erase.caf */; };
@@ -364,7 +365,6 @@
 		6835659418FA663100C3494C /* A3WalletMoreTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6835659318FA663100C3494C /* A3WalletMoreTableViewController.m */; };
 		683D68461DBC5C00008C47C9 /* ACSimpleKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 683D68401DBC5C00008C47C9 /* ACSimpleKeychain.m */; };
 		683D68471DBC5C00008C47C9 /* TJDropbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 683D68431DBC5C00008C47C9 /* TJDropbox.m */; };
-		683D68481DBC5C00008C47C9 /* TJDropboxAuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 683D68451DBC5C00008C47C9 /* TJDropboxAuthenticationViewController.m */; };
 		683D78F51F78986000A15FF3 /* ViewController+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 683D78F31F78985F00A15FF3 /* ViewController+MASAdditions.m */; };
 		68425D581977BD5F007C1AAE /* DaysCounterReminder+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68425D571977BD5F007C1AAE /* DaysCounterReminder+extension.m */; };
 		68425D5B1977BF63007C1AAE /* DaysCounterFavorite+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68425D5A1977BF63007C1AAE /* DaysCounterFavorite+extension.m */; };
@@ -433,9 +433,8 @@
 		685CF1AD1DFFF46300DE2636 /* A3AbbreviationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 685CF1AC1DFFF46300DE2636 /* A3AbbreviationTableViewCell.m */; };
 		685E319A1791694E001A0EC8 /* A3CurrencyTVActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 685E31991791694E001A0EC8 /* A3CurrencyTVActionCell.xib */; };
 		685E319F17917879001A0EC8 /* A3CurrencyTVActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 685E319E17917879001A0EC8 /* A3CurrencyTVActionCell.m */; };
+		686218DF2591DC3D00266BC5 /* TJDropboxAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = 686218D42591DC3D00266BC5 /* TJDropboxAuthenticator.m */; };
 		6862375F1974E7C300001DE7 /* LadyCalendarPeriod.m in Sources */ = {isa = PBXBuildFile; fileRef = 6862375E1974E7C300001DE7 /* LadyCalendarPeriod.m */; };
-		68636000198BF88F00C3A323 /* libensembles.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68635FFB198BF80E00C3A323 /* libensembles.a */; };
-		68636003198BF91300C3A323 /* Ensembles.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 68635FFD198BF80E00C3A323 /* Ensembles.bundle */; };
 		6864D60017BBBA6300A215D7 /* AppIcons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6864D5FE17BBBA6300A215D7 /* AppIcons.xcassets */; };
 		68691B7C1EB69007006685B0 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68AB0ABF1A3E92E9001BFC5D /* StoreKit.framework */; };
 		686BB86119092D94009163F2 /* A3WalletCategoryEditFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 686BB86019092D94009163F2 /* A3WalletCategoryEditFieldCell.m */; };
@@ -503,6 +502,8 @@
 		688257B817D3AFFB006429D3 /* A3HolidaysAddToDaysCounterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688257B717D3AFFB006429D3 /* A3HolidaysAddToDaysCounterViewController.m */; };
 		6882801F17E5E8DB000D8069 /* A3HolidaysPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6882801E17E5E8DB000D8069 /* A3HolidaysPageViewController.m */; };
 		6882802617E5ECED000D8069 /* A3HolidaysPageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6882802517E5ECED000D8069 /* A3HolidaysPageContentViewController.m */; };
+		6882BFD02581CCAA00A01A0E /* Ensembles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6882BFC12581CC5900A01A0E /* Ensembles.framework */; };
+		6882BFD12581CCAA00A01A0E /* Ensembles.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6882BFC12581CC5900A01A0E /* Ensembles.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6883D5E2183E7ABA00808CD2 /* A3MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6883D5E1183E7ABA00808CD2 /* A3MainViewController.m */; };
 		68857D361E6D1A6E009E4ABC /* currencyRates.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68857D341E6D1A6E009E4ABC /* currencyRates.plist */; };
 		6886791C18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6886791A18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib */; };
@@ -963,66 +964,57 @@
 		68F9391917D0DDBB0082234C /* FMMoveTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F9391617D0DDBB0082234C /* FMMoveTableView.m */; };
 		68F9391A17D0DDBB0082234C /* FMMoveTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F9391817D0DDBB0082234C /* FMMoveTableViewCell.m */; };
 		68F967BF1818D74300D64A0A /* NSArray+validation.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F967BE1818D74300D64A0A /* NSArray+validation.m */; };
-		68F9E34F1EFA02040042D5B6 /* libGoogleConversionTracking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68F9E34D1EFA02040042D5B6 /* libGoogleConversionTracking.a */; };
 		68FABA4C1CE9A8EB00A62B84 /* A3PedometerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FABA4B1CE9A8EB00A62B84 /* A3PedometerHandler.m */; };
 		68FB684A1C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FB68491C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.m */; };
 		68FB8E9E1C990922008CAB7A /* CurrencyInfo.dictionary in Resources */ = {isa = PBXBuildFile; fileRef = 68FB8E9C1C990922008CAB7A /* CurrencyInfo.dictionary */; };
 		68FC3AF01C19336000EC9348 /* A3CurrencyPickerStyle.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68FC3AF21C19336000EC9348 /* A3CurrencyPickerStyle.storyboard */; };
-		7CBAAB556B126E187AB93D23 /* libPods-A3SetupDefaultData.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 21698F9ABC3078214AE8F25E /* libPods-A3SetupDefaultData.a */; };
 		808DA9EB196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 808DA9EA196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.m */; };
-		E038A0A9062CAA902072DA51 /* libPods-AppBox3 Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D69318333BBD6204A384556C /* libPods-AppBox3 Tests.a */; };
-		F75143E07E1FF73D9056C383 /* libPods-AppBox3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C15CC41807E3C11C5BDEAB75 /* libPods-AppBox3.a */; };
+		AB3810CE56C130AD6F679B11 /* libPods-AppBox3 Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A998E86FFF98866AA8928926 /* libPods-AppBox3 Tests.a */; };
+		D4524D3DF4D8C9CB40BDC48A /* libPods-AppBox3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D121E6ABFD2B662DBDE4B018 /* libPods-AppBox3.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		685B760B1E4458E600AFA882 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E9D6301A1BFEB26300B60D60;
-			remoteInfo = "Ensembles iOS Module";
-		};
-		685B760D1E4458E600AFA882 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 07AC052D1D6D8D0E00AF2337;
-			remoteInfo = "Ensembles tvOS";
-		};
-		68635FFA198BF80E00C3A323 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 07BF374517F184DD00C56F64;
-			remoteInfo = "Ensembles iOS";
-		};
-		68635FFC198BF80E00C3A323 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 07571F0F1910EC02008479A9;
-			remoteInfo = "Ensembles Resources";
-		};
-		68635FFE198BF80E00C3A323 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 070D336118018A960054BA23;
-			remoteInfo = "Tests iOS";
-		};
-		68636001198BF8F400C3A323 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 07571F0E1910EC02008479A9;
-			remoteInfo = "Ensembles Resources";
-		};
 		6876D70717A75DAE00E16991 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 682EA2C815EB10B000BD6AD4 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 682EA2D015EB10B000BD6AD4;
 			remoteInfo = AppBox3;
+		};
+		6882BFBA2581CC5900A01A0E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6882BFAE2581CC5900A01A0E /* Ensembles iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 07BF374517F184DD00C56F64;
+			remoteInfo = "Ensembles iOS";
+		};
+		6882BFBC2581CC5900A01A0E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6882BFAE2581CC5900A01A0E /* Ensembles iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 07571F0F1910EC02008479A9;
+			remoteInfo = "Ensembles Resources";
+		};
+		6882BFBE2581CC5900A01A0E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6882BFAE2581CC5900A01A0E /* Ensembles iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 070D336118018A960054BA23;
+			remoteInfo = "Tests iOS";
+		};
+		6882BFC02581CC5900A01A0E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6882BFAE2581CC5900A01A0E /* Ensembles iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9D6301A1BFEB26300B60D60;
+			remoteInfo = "Ensembles iOS Module";
+		};
+		6882BFC22581CC5900A01A0E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6882BFAE2581CC5900A01A0E /* Ensembles iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 07AC052D1D6D8D0E00AF2337;
+			remoteInfo = "Ensembles tvOS";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -1037,10 +1029,20 @@
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		6882BFD22581CCAA00A01A0E /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				6882BFD12581CCAA00A01A0E /* Ensembles.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		153CCFF315CB93F0EB2F32E2 /* Pods-AppBox3UITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppBox3UITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AppBox3UITests/Pods-AppBox3UITests.debug.xcconfig"; sourceTree = "<group>"; };
 		17D42020AA362D23330F9A40 /* A3SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsViewController.h; path = Settings/A3SettingsViewController.h; sourceTree = "<group>"; };
 		17D4202915D388642422A149 /* A3UnitConverterTVDataCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitConverterTVDataCell.m; sourceTree = "<group>"; };
 		17D42035933BC6DF88D4E653 /* A3UnitConverterTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitConverterTabBarController.m; sourceTree = "<group>"; };
@@ -1212,12 +1214,11 @@
 		17D42FE2C4AD09E611D37298 /* A3TranslatorMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorMessageViewController.h; path = Translator/A3TranslatorMessageViewController.h; sourceTree = "<group>"; };
 		17D42FE39BA656A96951C52E /* LadyCalendarPeriod+extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LadyCalendarPeriod+extension.h"; sourceTree = "<group>"; };
 		17D42FEEE5D02AC4D6E1CB7A /* A3TranslatorMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = A3TranslatorMessageViewController.m; path = Translator/A3TranslatorMessageViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		193BB23981B57E9D6FDEFB5D /* Pods-A3SetupDefaultData.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-A3SetupDefaultData.release.xcconfig"; path = "Pods/Target Support Files/Pods-A3SetupDefaultData/Pods-A3SetupDefaultData.release.xcconfig"; sourceTree = "<group>"; };
-		21698F9ABC3078214AE8F25E /* libPods-A3SetupDefaultData.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-A3SetupDefaultData.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		254F46D73C5E370476B7A982 /* libPods-AppBox3UITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AppBox3UITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		181E5A6541E5AF3B36C17969 /* Pods-A3SetupDefaultData.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-A3SetupDefaultData.debug.xcconfig"; path = "Target Support Files/Pods-A3SetupDefaultData/Pods-A3SetupDefaultData.debug.xcconfig"; sourceTree = "<group>"; };
 		3E21D15318FB1BF100B88D62 /* FrameRateCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrameRateCalculator.h; sourceTree = "<group>"; };
 		3E21D15418FB1BF100B88D62 /* FrameRateCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FrameRateCalculator.m; sourceTree = "<group>"; };
-		40D488EBD1D55AF44C3FC869 /* Pods-AppBox3.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppBox3.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AppBox3/Pods-AppBox3.debug.xcconfig"; sourceTree = "<group>"; };
+		48CD4BB4ADC14BE5E881B527 /* Pods-AppBox3.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppBox3.release.xcconfig"; path = "Target Support Files/Pods-AppBox3/Pods-AppBox3.release.xcconfig"; sourceTree = "<group>"; };
+		4CB9E4E4117B731FA06932A7 /* Pods-AppBox3.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppBox3.debug.xcconfig"; path = "Target Support Files/Pods-AppBox3/Pods-AppBox3.debug.xcconfig"; sourceTree = "<group>"; };
 		571795CC19D7CD6500DEF2FB /* RGB-HSL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RGB-HSL.h"; path = "NPColorPicker/RGB-HSL.h"; sourceTree = "<group>"; };
 		571795CD19D7CD6600DEF2FB /* RGB-HSL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "RGB-HSL.m"; path = "NPColorPicker/RGB-HSL.m"; sourceTree = "<group>"; };
 		5718E4991988E91400B4C7ED /* A3DefaultColorDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DefaultColorDefines.h; sourceTree = "<group>"; };
@@ -1691,8 +1692,6 @@
 		683D68401DBC5C00008C47C9 /* ACSimpleKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACSimpleKeychain.m; sourceTree = "<group>"; };
 		683D68421DBC5C00008C47C9 /* TJDropbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJDropbox.h; sourceTree = "<group>"; };
 		683D68431DBC5C00008C47C9 /* TJDropbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJDropbox.m; sourceTree = "<group>"; };
-		683D68441DBC5C00008C47C9 /* TJDropboxAuthenticationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJDropboxAuthenticationViewController.h; sourceTree = "<group>"; };
-		683D68451DBC5C00008C47C9 /* TJDropboxAuthenticationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJDropboxAuthenticationViewController.m; sourceTree = "<group>"; };
 		683D684D1DBC5F3A008C47C9 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
 		683D78F21F78985F00A15FF3 /* MASConstraint+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MASConstraint+Private.h"; sourceTree = "<group>"; };
 		683D78F31F78985F00A15FF3 /* ViewController+MASAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+MASAdditions.m"; sourceTree = "<group>"; };
@@ -1832,9 +1831,10 @@
 		685E319E17917879001A0EC8 /* A3CurrencyTVActionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyTVActionCell.m; path = Apps/Currency/A3CurrencyTVActionCell.m; sourceTree = "<group>"; };
 		685F723B16A64ADD004C7222 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		685F723D16A64C91004C7222 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		686218D42591DC3D00266BC5 /* TJDropboxAuthenticator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJDropboxAuthenticator.m; sourceTree = "<group>"; };
+		686218DE2591DC3D00266BC5 /* TJDropboxAuthenticator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJDropboxAuthenticator.h; sourceTree = "<group>"; };
 		6862375D1974E7C300001DE7 /* LadyCalendarPeriod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LadyCalendarPeriod.h; sourceTree = "<group>"; };
 		6862375E1974E7C300001DE7 /* LadyCalendarPeriod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LadyCalendarPeriod.m; sourceTree = "<group>"; };
-		68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Ensembles iOS.xcodeproj"; path = "External/ensembles-next/Framework/Ensembles iOS.xcodeproj"; sourceTree = "<group>"; };
 		6864D5FE17BBBA6300A215D7 /* AppIcons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = AppIcons.xcassets; path = "AppBox3/Asset Catalogs/AppIcons.xcassets"; sourceTree = "<group>"; };
 		686BB85F19092D94009163F2 /* A3WalletCategoryEditFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletCategoryEditFieldCell.h; sourceTree = "<group>"; };
 		686BB86019092D94009163F2 /* A3WalletCategoryEditFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletCategoryEditFieldCell.m; sourceTree = "<group>"; };
@@ -1969,6 +1969,7 @@
 		6882801E17E5E8DB000D8069 /* A3HolidaysPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3HolidaysPageViewController.m; path = Holidays/A3HolidaysPageViewController.m; sourceTree = "<group>"; };
 		6882802417E5ECED000D8069 /* A3HolidaysPageContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3HolidaysPageContentViewController.h; path = Holidays/A3HolidaysPageContentViewController.h; sourceTree = "<group>"; };
 		6882802517E5ECED000D8069 /* A3HolidaysPageContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3HolidaysPageContentViewController.m; path = Holidays/A3HolidaysPageContentViewController.m; sourceTree = "<group>"; };
+		6882BFAE2581CC5900A01A0E /* Ensembles iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Ensembles iOS.xcodeproj"; path = "External/ensembles-next/Framework/Ensembles iOS.xcodeproj"; sourceTree = "<group>"; };
 		68832C9E199A3C8E00AF7C18 /* FlickrRecommendation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = FlickrRecommendation.json; path = Holidays/FlickrRecommendation.json; sourceTree = "<group>"; };
 		6883D5E0183E7ABA00808CD2 /* A3MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3MainViewController.h; sourceTree = "<group>"; };
 		6883D5E1183E7ABA00808CD2 /* A3MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3MainViewController.m; sourceTree = "<group>"; };
@@ -2976,10 +2977,6 @@
 		68F9391817D0DDBB0082234C /* FMMoveTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMMoveTableViewCell.m; sourceTree = "<group>"; };
 		68F967BD1818D74300D64A0A /* NSArray+validation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+validation.h"; sourceTree = "<group>"; };
 		68F967BE1818D74300D64A0A /* NSArray+validation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+validation.m"; sourceTree = "<group>"; };
-		68F9E3481EFA02040042D5B6 /* ACTReporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACTReporter.h; sourceTree = "<group>"; };
-		68F9E34A1EFA02040042D5B6 /* GoogleConversionPing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleConversionPing.h; sourceTree = "<group>"; };
-		68F9E34C1EFA02040042D5B6 /* DCTReporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCTReporter.h; sourceTree = "<group>"; };
-		68F9E34D1EFA02040042D5B6 /* libGoogleConversionTracking.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleConversionTracking.a; sourceTree = "<group>"; };
 		68FABA4A1CE9A8EB00A62B84 /* A3PedometerHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3PedometerHandler.h; path = Pedometer/A3PedometerHandler.h; sourceTree = "<group>"; };
 		68FABA4B1CE9A8EB00A62B84 /* A3PedometerHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3PedometerHandler.m; path = Pedometer/A3PedometerHandler.m; sourceTree = "<group>"; };
 		68FB68481C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsHomeStyleSelectTableViewCell.h; path = Settings/A3SettingsHomeStyleSelectTableViewCell.h; sourceTree = "<group>"; };
@@ -2996,15 +2993,14 @@
 		68FC3B061C19337C00EC9348 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/A3CurrencyPickerStyle.strings; sourceTree = "<group>"; };
 		68FC3B081C19337D00EC9348 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3CurrencyPickerStyle.strings; sourceTree = "<group>"; };
 		68FC3B0A1C19337F00EC9348 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/A3CurrencyPickerStyle.strings"; sourceTree = "<group>"; };
-		7AAAB70D49B9FCE9BF94C3AE /* Pods-A3SetupDefaultData.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-A3SetupDefaultData.debug.xcconfig"; path = "Pods/Target Support Files/Pods-A3SetupDefaultData/Pods-A3SetupDefaultData.debug.xcconfig"; sourceTree = "<group>"; };
 		808DA9E9196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterSlideShowCollectionViewLayout.h; sourceTree = "<group>"; };
 		808DA9EA196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterSlideShowCollectionViewLayout.m; sourceTree = "<group>"; };
-		865F7AB1290848BE89A89DE4 /* Pods-AppBox3 Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppBox3 Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AppBox3 Tests/Pods-AppBox3 Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		A3A0CA42792CDD1C9AE5079B /* Pods-AppBox3UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppBox3UITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AppBox3UITests/Pods-AppBox3UITests.release.xcconfig"; sourceTree = "<group>"; };
-		BEBD0E6AB9ED3EFB36C1727A /* Pods-AppBox3 Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppBox3 Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AppBox3 Tests/Pods-AppBox3 Tests.release.xcconfig"; sourceTree = "<group>"; };
-		C15CC41807E3C11C5BDEAB75 /* libPods-AppBox3.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AppBox3.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D69318333BBD6204A384556C /* libPods-AppBox3 Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AppBox3 Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FFE33AD38D6D2AC0A9AD1569 /* Pods-AppBox3.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppBox3.release.xcconfig"; path = "Pods/Target Support Files/Pods-AppBox3/Pods-AppBox3.release.xcconfig"; sourceTree = "<group>"; };
+		A998E86FFF98866AA8928926 /* libPods-AppBox3 Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AppBox3 Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5B6F123426A9EAC1CBE4962 /* Pods-A3SetupDefaultData.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-A3SetupDefaultData.release.xcconfig"; path = "Target Support Files/Pods-A3SetupDefaultData/Pods-A3SetupDefaultData.release.xcconfig"; sourceTree = "<group>"; };
+		C5F630F0C69B4FD065209F3D /* Pods-AppBox3 Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppBox3 Tests.debug.xcconfig"; path = "Target Support Files/Pods-AppBox3 Tests/Pods-AppBox3 Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		CD8F613ACE72C68BFE6803B8 /* libPods-A3SetupDefaultData.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-A3SetupDefaultData.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D121E6ABFD2B662DBDE4B018 /* libPods-AppBox3.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AppBox3.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E69D5F221588FAE53855BFD2 /* Pods-AppBox3 Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppBox3 Tests.release.xcconfig"; path = "Target Support Files/Pods-AppBox3 Tests/Pods-AppBox3 Tests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3016,7 +3012,7 @@
 				6829689018505E3900B70E13 /* CoreGraphics.framework in Frameworks */,
 				6829689118505E3900B70E13 /* UIKit.framework in Frameworks */,
 				6829688F18505E3900B70E13 /* Foundation.framework in Frameworks */,
-				7CBAAB556B126E187AB93D23 /* libPods-A3SetupDefaultData.a in Frameworks */,
+				4D3F11E285D213D7B627BB84 /* libPods-A3SetupDefaultData.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3027,13 +3023,12 @@
 				68691B7C1EB69007006685B0 /* StoreKit.framework in Frameworks */,
 				68F04D101B40F86B004FDD7B /* libcrypto.a in Frameworks */,
 				68F04D111B40F86B004FDD7B /* libssl.a in Frameworks */,
-				68636000198BF88F00C3A323 /* libensembles.a in Frameworks */,
 				681E1281193447D70077DCFA /* libz.dylib in Frameworks */,
 				680B59D71E9777C8004362AC /* HealthKit.framework in Frameworks */,
-				68F9E34F1EFA02040042D5B6 /* libGoogleConversionTracking.a in Frameworks */,
 				6825367F18A7C1B800EAFB84 /* libsqlite3.0.dylib in Frameworks */,
 				684A71BD1852E0250004A9FE /* libc++.dylib in Frameworks */,
-				F75143E07E1FF73D9056C383 /* libPods-AppBox3.a in Frameworks */,
+				D4524D3DF4D8C9CB40BDC48A /* libPods-AppBox3.a in Frameworks */,
+				6882BFD02581CCAA00A01A0E /* Ensembles.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3044,28 +3039,13 @@
 				6876D6FB17A75DAE00E16991 /* XCTest.framework in Frameworks */,
 				6876D6FD17A75DAE00E16991 /* UIKit.framework in Frameworks */,
 				6876D6FC17A75DAE00E16991 /* Foundation.framework in Frameworks */,
-				E038A0A9062CAA902072DA51 /* libPods-AppBox3 Tests.a in Frameworks */,
+				AB3810CE56C130AD6F679B11 /* libPods-AppBox3 Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		04078E3123C5E5B8E25C33DD /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				7AAAB70D49B9FCE9BF94C3AE /* Pods-A3SetupDefaultData.debug.xcconfig */,
-				193BB23981B57E9D6FDEFB5D /* Pods-A3SetupDefaultData.release.xcconfig */,
-				40D488EBD1D55AF44C3FC869 /* Pods-AppBox3.debug.xcconfig */,
-				FFE33AD38D6D2AC0A9AD1569 /* Pods-AppBox3.release.xcconfig */,
-				865F7AB1290848BE89A89DE4 /* Pods-AppBox3 Tests.debug.xcconfig */,
-				BEBD0E6AB9ED3EFB36C1727A /* Pods-AppBox3 Tests.release.xcconfig */,
-				153CCFF315CB93F0EB2F32E2 /* Pods-AppBox3UITests.debug.xcconfig */,
-				A3A0CA42792CDD1C9AE5079B /* Pods-AppBox3UITests.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		17D4214A947AD7F1FC503C9F /* UnitConverter */ = {
 			isa = PBXGroup;
 			children = (
@@ -3952,7 +3932,7 @@
 				6829689218505E3900B70E13 /* A3SetupDefaultData */,
 				682EA2D415EB10B000BD6AD4 /* Frameworks */,
 				682EA2D215EB10B000BD6AD4 /* Products */,
-				04078E3123C5E5B8E25C33DD /* Pods */,
+				EBCA40A147C9E4B5F5A19E3A /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -4013,10 +3993,9 @@
 				687C193B1783DF0F00415FCE /* XCTest.framework */,
 				681AB7C61E95D2100015F57D /* UserNotifications.framework */,
 				681AB7C81E95D2100015F57D /* UserNotificationsUI.framework */,
-				21698F9ABC3078214AE8F25E /* libPods-A3SetupDefaultData.a */,
-				C15CC41807E3C11C5BDEAB75 /* libPods-AppBox3.a */,
-				D69318333BBD6204A384556C /* libPods-AppBox3 Tests.a */,
-				254F46D73C5E370476B7A982 /* libPods-AppBox3UITests.a */,
+				CD8F613ACE72C68BFE6803B8 /* libPods-A3SetupDefaultData.a */,
+				D121E6ABFD2B662DBDE4B018 /* libPods-AppBox3.a */,
+				A998E86FFF98866AA8928926 /* libPods-AppBox3 Tests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -4341,10 +4320,10 @@
 		683D68411DBC5C00008C47C9 /* TJDropbox */ = {
 			isa = PBXGroup;
 			children = (
+				686218DE2591DC3D00266BC5 /* TJDropboxAuthenticator.h */,
+				686218D42591DC3D00266BC5 /* TJDropboxAuthenticator.m */,
 				683D68421DBC5C00008C47C9 /* TJDropbox.h */,
 				683D68431DBC5C00008C47C9 /* TJDropbox.m */,
-				683D68441DBC5C00008C47C9 /* TJDropboxAuthenticationViewController.h */,
-				683D68451DBC5C00008C47C9 /* TJDropboxAuthenticationViewController.m */,
 			);
 			name = TJDropbox;
 			path = External/TJDropbox;
@@ -4526,18 +4505,6 @@
 			path = External/_MBProgressHUD;
 			sourceTree = "<group>";
 		};
-		68635FF3198BF80E00C3A323 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				68635FFB198BF80E00C3A323 /* libensembles.a */,
-				68635FFD198BF80E00C3A323 /* Ensembles.bundle */,
-				68635FFF198BF80E00C3A323 /* Tests iOS.xctest */,
-				685B760C1E4458E600AFA882 /* Ensembles.framework */,
-				685B760E1E4458E600AFA882 /* Ensembles.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		686FCF331775CD1300F19332 /* NYXImagesKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -4586,6 +4553,18 @@
 				6876D70617A75DAE00E16991 /* AppBox3 Tests-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6882BFAF2581CC5900A01A0E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6882BFBB2581CC5900A01A0E /* libensembles.a */,
+				6882BFBD2581CC5900A01A0E /* Ensembles.bundle */,
+				6882BFBF2581CC5900A01A0E /* Tests iOS.xctest */,
+				6882BFC12581CC5900A01A0E /* Ensembles.framework */,
+				6882BFC32581CC5900A01A0E /* Ensembles.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		688788881A9B29D5008C8567 /* Ruler */ = {
@@ -5228,8 +5207,8 @@
 		68CC1594174F764C0000870F /* External */ = {
 			isa = PBXGroup;
 			children = (
+				6882BFAE2581CC5900A01A0E /* Ensembles iOS.xcodeproj */,
 				685C50BD1F7DD78200BE5BBB /* _MBProgressHUD */,
-				68F9E3471EFA02040042D5B6 /* GoogleConversionTrackingSDK-iOS-3.4.0 */,
 				68B6F7041EA575C500C4BB7A /* MWPhotoBrowser */,
 				68B6F6B71EA5759300C4BB7A /* SDWebImage */,
 				68B6F6A81EA5758200C4BB7A /* DACircularProgress */,
@@ -5238,7 +5217,6 @@
 				683D68411DBC5C00008C47C9 /* TJDropbox */,
 				6848ED681C50FD7B0067B93A /* ALDBlurImageProcessor */,
 				68F04CA01B40F825004FDD7B /* RMStore */,
-				68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */,
 				689C9A261839CD7F007C97EE /* AFNetworking */,
 				68F9391117D0DDA50082234C /* FMMoveTableView */,
 				68521A4317E1FF1C00E08FB1 /* FXLabel */,
@@ -5899,34 +5877,6 @@
 			path = External/FMMoveTableView/FMFramework;
 			sourceTree = "<group>";
 		};
-		68F9E3471EFA02040042D5B6 /* GoogleConversionTrackingSDK-iOS-3.4.0 */ = {
-			isa = PBXGroup;
-			children = (
-				68F9E3481EFA02040042D5B6 /* ACTReporter.h */,
-				68F9E3491EFA02040042D5B6 /* Deprecated */,
-				68F9E34B1EFA02040042D5B6 /* DoubleClick */,
-				68F9E34D1EFA02040042D5B6 /* libGoogleConversionTracking.a */,
-			);
-			name = "GoogleConversionTrackingSDK-iOS-3.4.0";
-			path = "External/GoogleConversionTrackingSDK-iOS-3.4.0";
-			sourceTree = "<group>";
-		};
-		68F9E3491EFA02040042D5B6 /* Deprecated */ = {
-			isa = PBXGroup;
-			children = (
-				68F9E34A1EFA02040042D5B6 /* GoogleConversionPing.h */,
-			);
-			path = Deprecated;
-			sourceTree = "<group>";
-		};
-		68F9E34B1EFA02040042D5B6 /* DoubleClick */ = {
-			isa = PBXGroup;
-			children = (
-				68F9E34C1EFA02040042D5B6 /* DCTReporter.h */,
-			);
-			path = DoubleClick;
-			sourceTree = "<group>";
-		};
 		804C330F18DAE53500DBCE83 /* Cells & Custom */ = {
 			isa = PBXGroup;
 			children = (
@@ -5946,6 +5896,19 @@
 			name = "Cells & Custom";
 			sourceTree = "<group>";
 		};
+		EBCA40A147C9E4B5F5A19E3A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				181E5A6541E5AF3B36C17969 /* Pods-A3SetupDefaultData.debug.xcconfig */,
+				B5B6F123426A9EAC1CBE4962 /* Pods-A3SetupDefaultData.release.xcconfig */,
+				4CB9E4E4117B731FA06932A7 /* Pods-AppBox3.debug.xcconfig */,
+				48CD4BB4ADC14BE5E881B527 /* Pods-AppBox3.release.xcconfig */,
+				C5F630F0C69B4FD065209F3D /* Pods-AppBox3 Tests.debug.xcconfig */,
+				E69D5F221588FAE53855BFD2 /* Pods-AppBox3 Tests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -5953,7 +5916,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 682968C218505E3900B70E13 /* Build configuration list for PBXNativeTarget "A3SetupDefaultData" */;
 			buildPhases = (
-				2035B51A4777CEE8E317D1C1 /* [CP] Check Pods Manifest.lock */,
+				A0828091BE8E657F660B8B99 /* [CP] Check Pods Manifest.lock */,
 				6829688A18505E3800B70E13 /* Sources */,
 				6829688B18505E3800B70E13 /* Frameworks */,
 				6829688C18505E3800B70E13 /* Resources */,
@@ -5971,17 +5934,17 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 682EA30415EB10B000BD6AD4 /* Build configuration list for PBXNativeTarget "AppBox3" */;
 			buildPhases = (
-				1671A0101834AEEA5FCC4ADB /* [CP] Check Pods Manifest.lock */,
+				48D4E11014682B85C9B0874D /* [CP] Check Pods Manifest.lock */,
 				682EA2CD15EB10B000BD6AD4 /* Sources */,
 				682EA2CE15EB10B000BD6AD4 /* Frameworks */,
 				682EA2CF15EB10B000BD6AD4 /* Resources */,
 				681AB7DF1E95D2100015F57D /* Embed App Extensions */,
-				1E69854DB21405D0799BC5F9 /* [CP] Copy Pods Resources */,
+				97A8DF381A043BF1EE8C80CC /* [CP] Copy Pods Resources */,
+				6882BFD22581CCAA00A01A0E /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				68636002198BF8F400C3A323 /* PBXTargetDependency */,
 			);
 			name = AppBox3;
 			productName = AppBox3;
@@ -5992,7 +5955,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6876D70917A75DAE00E16991 /* Build configuration list for PBXNativeTarget "AppBox3 Tests" */;
 			buildPhases = (
-				6C98F81B6F26CE1464FA759B /* [CP] Check Pods Manifest.lock */,
+				D6CBA157E08DEF16E5B5031E /* [CP] Check Pods Manifest.lock */,
 				6876D6F617A75DAE00E16991 /* Sources */,
 				6876D6F717A75DAE00E16991 /* Frameworks */,
 				6876D6F817A75DAE00E16991 /* Resources */,
@@ -6015,7 +5978,7 @@
 			attributes = {
 				CLASSPREFIX = A3;
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1220;
 				ORGANIZATIONNAME = ALLABOUTAPPS;
 				TargetAttributes = {
 					6829688D18505E3800B70E13 = {
@@ -6054,10 +6017,9 @@
 			};
 			buildConfigurationList = 682EA2CB15EB10B000BD6AD4 /* Build configuration list for PBXProject "AppBox3" */;
 			compatibilityVersion = "Xcode 6.3";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				Base,
 				ko,
 				"zh-Hans",
@@ -6075,8 +6037,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 68635FF3198BF80E00C3A323 /* Products */;
-					ProjectRef = 68635FF2198BF80E00C3A323 /* Ensembles iOS.xcodeproj */;
+					ProductGroup = 6882BFAF2581CC5900A01A0E /* Products */;
+					ProjectRef = 6882BFAE2581CC5900A01A0E /* Ensembles iOS.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -6089,39 +6051,39 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		685B760C1E4458E600AFA882 /* Ensembles.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Ensembles.framework;
-			remoteRef = 685B760B1E4458E600AFA882 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		685B760E1E4458E600AFA882 /* Ensembles.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Ensembles.framework;
-			remoteRef = 685B760D1E4458E600AFA882 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		68635FFB198BF80E00C3A323 /* libensembles.a */ = {
+		6882BFBB2581CC5900A01A0E /* libensembles.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libensembles.a;
-			remoteRef = 68635FFA198BF80E00C3A323 /* PBXContainerItemProxy */;
+			remoteRef = 6882BFBA2581CC5900A01A0E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		68635FFD198BF80E00C3A323 /* Ensembles.bundle */ = {
+		6882BFBD2581CC5900A01A0E /* Ensembles.bundle */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = Ensembles.bundle;
-			remoteRef = 68635FFC198BF80E00C3A323 /* PBXContainerItemProxy */;
+			remoteRef = 6882BFBC2581CC5900A01A0E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		68635FFF198BF80E00C3A323 /* Tests iOS.xctest */ = {
+		6882BFBF2581CC5900A01A0E /* Tests iOS.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = "Tests iOS.xctest";
-			remoteRef = 68635FFE198BF80E00C3A323 /* PBXContainerItemProxy */;
+			remoteRef = 6882BFBE2581CC5900A01A0E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6882BFC12581CC5900A01A0E /* Ensembles.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Ensembles.framework;
+			remoteRef = 6882BFC02581CC5900A01A0E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6882BFC32581CC5900A01A0E /* Ensembles.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Ensembles.framework;
+			remoteRef = 6882BFC22581CC5900A01A0E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -6144,7 +6106,6 @@
 			files = (
 				682C967A1E15FB7500C3F952 /* A3SharePopupViewController.storyboard in Resources */,
 				68E3A2A81AC4F61C004FE7B0 /* IsraelHolidays.plist in Resources */,
-				68636003198BF91300C3A323 /* Ensembles.bundle in Resources */,
 				68EF403E1EAAF2020009D88A /* Kaomoji.storyboard in Resources */,
 				68944FD81CB69D9100493E6A /* A3QRCodeViewController.xib in Resources */,
 				68143D0318E3EC1F00569691 /* A3NumberKeyboardSimpleVC_iPad.xib in Resources */,
@@ -6316,16 +6277,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1671A0101834AEEA5FCC4ADB /* [CP] Check Pods Manifest.lock */ = {
+		48D4E11014682B85C9B0874D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-AppBox3-checkManifestLockResult.txt",
 			);
@@ -6334,7 +6299,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		1E69854DB21405D0799BC5F9 /* [CP] Copy Pods Resources */ = {
+		97A8DF381A043BF1EE8C80CC /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -6352,16 +6317,20 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AppBox3/Pods-AppBox3-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		2035B51A4777CEE8E317D1C1 /* [CP] Check Pods Manifest.lock */ = {
+		A0828091BE8E657F660B8B99 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-A3SetupDefaultData-checkManifestLockResult.txt",
 			);
@@ -6370,16 +6339,20 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		6C98F81B6F26CE1464FA759B /* [CP] Check Pods Manifest.lock */ = {
+		D6CBA157E08DEF16E5B5031E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-AppBox3 Tests-checkManifestLockResult.txt",
 			);
@@ -6840,7 +6813,6 @@
 				684D92EE18BC1FBC005016F7 /* A3DateCalcAddSubCell1.m in Sources */,
 				68B6F6E11EA5759300C4BB7A /* UIImageView+WebCache.m in Sources */,
 				68F14FFC19485E8500159EAD /* A3DaysCounterSetupLocationViewController.m in Sources */,
-				683D68481DBC5C00008C47C9 /* TJDropboxAuthenticationViewController.m in Sources */,
 				68B6A31C18CEC76D004084EF /* A3WalletAllTopCell.m in Sources */,
 				68143D0218E3EC1F00569691 /* A3NumberKeyboardSimpleVC_iPad.m in Sources */,
 				68B6A34218CEC76D004084EF /* A3WalletAllViewController.m in Sources */,
@@ -7096,6 +7068,7 @@
 				17D42E4EE3830FB7CC709BC8 /* FSOAuth.m in Sources */,
 				68B6F6DA1EA5759300C4BB7A /* SDWebImageDownloaderOperation.m in Sources */,
 				17D423CC73A6341405CFC4F5 /* FSRequester.m in Sources */,
+				686218DF2591DC3D00266BC5 /* TJDropboxAuthenticator.m in Sources */,
 				17D422400D7D700ABC56BA5D /* FSTargetCallback.m in Sources */,
 				17D42093A4A4B45A06BFD4F1 /* FSWebLogin.m in Sources */,
 				17D423113B5E0448C539636D /* FSConverter.m in Sources */,
@@ -7196,11 +7169,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		68636002198BF8F400C3A323 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Ensembles Resources";
-			targetProxy = 68636001198BF8F400C3A323 /* PBXContainerItemProxy */;
-		};
 		6876D70817A75DAE00E16991 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 682EA2D015EB10B000BD6AD4 /* AppBox3 */;
@@ -7690,7 +7658,7 @@
 /* Begin XCBuildConfiguration section */
 		682968BB18505E3900B70E13 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7AAAB70D49B9FCE9BF94C3AE /* Pods-A3SetupDefaultData.debug.xcconfig */;
+			baseConfigurationReference = 181E5A6541E5AF3B36C17969 /* Pods-A3SetupDefaultData.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -7717,7 +7685,7 @@
 		};
 		682968BC18505E3900B70E13 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 193BB23981B57E9D6FDEFB5D /* Pods-A3SetupDefaultData.release.xcconfig */;
+			baseConfigurationReference = B5B6F123426A9EAC1CBE4962 /* Pods-A3SetupDefaultData.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -7760,6 +7728,7 @@
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -7788,7 +7757,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$PROJECT_DIR/**";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -7821,6 +7790,7 @@
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -7841,7 +7811,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$PROJECT_DIR/**";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-ObjC";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -7857,7 +7827,7 @@
 		};
 		682EA30515EB10B000BD6AD4 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 40D488EBD1D55AF44C3FC869 /* Pods-AppBox3.debug.xcconfig */;
+			baseConfigurationReference = 4CB9E4E4117B731FA06932A7 /* Pods-AppBox3.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -7865,7 +7835,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.6.23.0;
+				CURRENT_PROJECT_VERSION = 4.6.29.1;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -7875,28 +7845,31 @@
 					"$(inherited)/**",
 					"${PODS_HEADERS_SEARCH_PATHS}/**",
 					"External/RMStore/Optional/openssl-1.0.2c/include/**",
+					"External/ensembles-next/Framework/Source/General",
 				);
 				INFOPLIST_FILE = "AppBox3/AppBox3-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"${PROJECT_DIR}/External/**",
 					"$(PROJECT_DIR)/External/RMStore/Optional/openssl-1.0.2c/lib",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
-				MARKETING_VERSION = 4.6.23;
+				MARKETING_VERSION = 4.6.29;
 				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/External/Masonry/Masonry/** ${PROJECT_DIR}/External/MagicalRecord/MagicalRecord/**";
+				VALID_ARCHS = "$(ARCHS_STANDARD)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
 		};
 		682EA30615EB10B000BD6AD4 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FFE33AD38D6D2AC0A9AD1569 /* Pods-AppBox3.release.xcconfig */;
+			baseConfigurationReference = 48CD4BB4ADC14BE5E881B527 /* Pods-AppBox3.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -7904,7 +7877,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.6.23.0;
+				CURRENT_PROJECT_VERSION = 4.6.29.1;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -7914,28 +7887,31 @@
 					"$(inherited)/**",
 					"${PODS_HEADERS_SEARCH_PATHS}/**",
 					"External/RMStore/Optional/openssl-1.0.2c/include/**",
+					"External/ensembles-next/Framework/Source/General",
 				);
 				INFOPLIST_FILE = "AppBox3/AppBox3-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"${PROJECT_DIR}/External/**",
 					"$(PROJECT_DIR)/External/RMStore/Optional/openssl-1.0.2c/lib",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
-				MARKETING_VERSION = 4.6.23;
+				MARKETING_VERSION = 4.6.29;
 				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/External/Masonry/Masonry/** ${PROJECT_DIR}/External/MagicalRecord/MagicalRecord/**";
+				VALID_ARCHS = "$(ARCHS_STANDARD)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
 		};
 		6876D70A17A75DAE00E16991 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 865F7AB1290848BE89A89DE4 /* Pods-AppBox3 Tests.debug.xcconfig */;
+			baseConfigurationReference = C5F630F0C69B4FD065209F3D /* Pods-AppBox3 Tests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/AppBox3.app/AppBox3";
@@ -7972,7 +7948,7 @@
 		};
 		6876D70B17A75DAE00E16991 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BEBD0E6AB9ED3EFB36C1727A /* Pods-AppBox3 Tests.release.xcconfig */;
+			baseConfigurationReference = E69D5F221588FAE53855BFD2 /* Pods-AppBox3 Tests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/AppBox3.app/AppBox3";

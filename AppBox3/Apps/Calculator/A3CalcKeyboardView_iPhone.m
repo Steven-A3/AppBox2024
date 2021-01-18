@@ -32,6 +32,14 @@ NSString *kA3CalcButtonID = @"kA3CalcButtonID";
 NSString *kA3CalcButtonFont = @"kA3CalcButtonFont";
 NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 
+- (CGFloat)scaleToDesignForCalculator {
+    CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+    if (IS_PORTRAIT) {
+        return scale;
+    }
+    return MIN(1.24, scale);
+}
+
 - (NSArray *)buttonTitlesLevel1_h {
 	return @[
              @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_01_1_h"], kA3CalcButtonID:@(A3E_SIN)},
@@ -267,7 +275,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 #define KBD_BUTTON_TAG_BASE     1000
 
 - (void)setupSubviews {
-	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+	CGFloat scale = [self scaleToDesignForCalculator];
 	FNLOG(@"%f", scale);
 
 	// Dimension 320 X 2 / 348, 80 x 54 cell, 8 column, 6 row
@@ -342,17 +350,16 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 - (void)layoutSubviews {
     CGFloat x, y, width, height;
     CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
-    if (IS_IPHONEX && IS_LANDSCAPE) {
-        scale = 1.0;
-    }
+	CGFloat scale = [self scaleToDesignForCalculator];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+
 	NSArray *buttonTitle = nil;
     
     if(IS_PORTRAIT) {
         width = 80 * scale; height = 54 * scale;
         buttonTitle = bSecondButtonSelected ? [self buttonTitlesLevel2_p]: [self buttonTitlesLevel1_p];
     } else {
-        if (IS_IPHONEX) {
+        if (IS_IPHONE && safeAreaInsets.bottom > 0) {
             width = (screenBounds.size.width - 30) / 8;
             height = 40 * scale;
         } else {
@@ -461,7 +468,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 					[self setTitle:title forButton:button];
                     A3ExpressionKind buttonID = [[title objectForKey:kA3CalcButtonID] integerValue];
                     if (buttonID == A3E_RADIAN_DEGREE) {
-                        _radianDegreeButton = button;
+                        self.radianDegreeButton = button;
                     }
 				}
 			}

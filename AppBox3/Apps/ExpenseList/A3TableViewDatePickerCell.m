@@ -20,6 +20,9 @@
             rect.size.height = 216;
         }
         _datePicker = [[UIDatePicker alloc] initWithFrame:rect];
+        if (@available(iOS 13.4, *)) {
+            _datePicker.preferredDatePickerStyle = UIDatePickerStyleWheels;
+        }
         [self addSubview:_datePicker];
         //_datePicker.autoresizingMask = ~(NSUInteger)0;
         [_datePicker makeConstraints:^(MASConstraintMaker *make) {

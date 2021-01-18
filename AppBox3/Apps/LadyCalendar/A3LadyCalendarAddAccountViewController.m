@@ -273,6 +273,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
         else if( cellType == AccountCell_DateInput ){
             cell = [cellArray objectAtIndex:2];
             UIDatePicker *datePicker = (UIDatePicker*)[cell viewWithTag:10];
+            if (@available(iOS 13.4, *)) {
+                datePicker.preferredDatePickerStyle = UIDatePickerStyleWheels;
+            }
             datePicker.datePickerMode = UIDatePickerModeDate;
             datePicker.maximumDate = [NSDate date];
             [datePicker addTarget:self action:@selector(dateChangeAction:) forControlEvents:UIControlEventValueChanged];
@@ -319,6 +322,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
     }
     else if( cellType == AccountCell_DateInput ){
         UIDatePicker *datePicker = (UIDatePicker*)[cell viewWithTag:10];
+        if (@available(iOS 13.4, *)) {
+            datePicker.preferredDatePickerStyle = UIDatePickerStyleWheels;
+        }
         datePicker.datePickerMode = UIDatePickerModeDate;
         datePicker.date = _accountItem.birthday ? _accountItem.birthday : [NSDate date];
     }
@@ -566,8 +572,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 }
 
 - (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem {
-
-	[self dismissViewControllerAnimated:YES completion:nil];
+    [self.savingContext reset];
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button

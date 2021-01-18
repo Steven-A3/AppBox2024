@@ -643,7 +643,11 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
     viewCtrl.sharedManager = _sharedManager;
     if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-        navCtrl.modalPresentationStyle = UIModalPresentationFullScreen;
+        if (@available(iOS 13.0, *)) {
+            navCtrl.modalPresentationStyle = UIModalPresentationAutomatic;
+        } else {
+            navCtrl.modalPresentationStyle = UIModalPresentationFullScreen;
+        }
         [self presentViewController:navCtrl animated:YES completion:nil];
     }
     else {

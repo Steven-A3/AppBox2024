@@ -29,5 +29,6 @@ extern NSString *const A3CurrencyUpdateDate;
 - (NSString *)symbolForCode:(NSString *)currencyCode;
 - (void)purgeRetainingObjects;
 - (void)updateCurrencyRatesFromCurrencyLayerOnCompletion:(void (^)(BOOL))completion;
+- (void)buildBaseFile;
 
 @end

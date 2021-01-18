@@ -147,7 +147,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 		double delayInSeconds = 0.1;
 		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-			[_titleTextField becomeFirstResponder];
+			[self.titleTextField becomeFirstResponder];
 		});
 	}
 	if ([self.navigationController.navigationBar isHidden]) {
@@ -179,11 +179,15 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
     if (!_fields) {
         _fields = [NSMutableArray new];
 		if (!_isAddingCategory) {
-			[_fields addObjectsFromArray:[WalletField MR_findByAttribute:@"categoryID" withValue:_category.uniqueID andOrderBy:A3CommonPropertyOrder ascending:YES inContext:self.savingContext]];
+            [_fields addObjectsFromArray:[WalletField MR_findByAttribute:@"categoryID"
+                                                               withValue:_category.uniqueID
+                                                              andOrderBy:A3CommonPropertyOrder
+                                                               ascending:YES
+                                                               inContext:self.savingContext]];
 		}
 		[_fields addObject:self.plusItem];
 	}
-    
+    FNLOG(@"%@", _fields);
     return _fields;
 }
 
@@ -209,12 +213,8 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 
     // 입력값 유효성 체크
     if ([_category.name length] == 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-                                                        message:NSLocalizedString(@"Enter category name", @"Enter category name")
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                              otherButtonTitles:nil];
-        [alert show];
+        [self presentAlertWithTitle:NSLocalizedString(@"Info", @"Info")
+                            message:NSLocalizedString(@"Enter category name", @"Enter category name")];
         return;
     }
 
@@ -592,18 +592,9 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-	id fromObject = [_fields objectAtIndex:fromIndexPath.row];
-    
-    WalletField *fromItem = [_fields objectAtIndex:fromIndexPath.row];
-    WalletField *toItem = [_fields objectAtIndex:toIndexPath.row];
-    NSString *temp = fromItem.order;
-    fromItem.order = toItem.order;
-    toItem.order = temp;
-    
-	[_fields removeObjectAtIndex:fromIndexPath.row];
-	[_fields insertObject:fromObject atIndex:toIndexPath.row];
-
+    [_fields moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
     [self setupDoneButtonEnabled];
+    FNLOG(@"%@", _fields);
 }
 
 // Override to support conditional rearranging of the table view.

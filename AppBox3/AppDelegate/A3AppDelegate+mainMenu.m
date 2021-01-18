@@ -846,6 +846,15 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 	if (proceedPasscodeCheck) {
 		[self presentLockScreenShowCancelButton:YES];
 	} else {
+        if ([[A3AppDelegate instance] isMainMenuStyleList]) {
+            if ([[A3AppDelegate instance].mainMenuViewController.activeAppName isEqualToString:appName]) {
+                return YES;
+            }
+        } else {
+            if ([[A3AppDelegate instance].homeStyleMainMenuViewController.activeAppName isEqualToString:appName]) {
+                return YES;
+            }
+        }
 		[[NSManagedObjectContext MR_defaultContext] reset];
 		[[NSManagedObjectContext MR_rootSavingContext] reset];
 

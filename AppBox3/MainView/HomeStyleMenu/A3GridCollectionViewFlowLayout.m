@@ -16,22 +16,22 @@
 	if (self) {
 		_numberOfItemsPerRow = 4;
 		_numberOfRowsPerPage = IS_IPHONE ? 4 : 5;
-		_numberOfItemsPerPage = IS_IPHONE ? 16 : 20;
-	}
+    }
 	
 	return self;
 }
 
 - (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSInteger indexOnPage = indexPath.row % _numberOfItemsPerPage;
+    NSInteger numberOfItemsPerPage = _numberOfItemsPerRow * _numberOfRowsPerPage;
+	NSInteger indexOnPage = indexPath.row % numberOfItemsPerPage;
 
 	NSInteger row = indexOnPage / _numberOfItemsPerRow;
 	NSInteger col = indexOnPage % _numberOfItemsPerRow;
 	
 	//    FNLOG(@"row = %ld, col = %ld, indexPath.row = %ld", row, col, indexPath.row);
 	
-	CGFloat horiOffset = indexPath.row / _numberOfItemsPerPage * [A3UIDevice screenBoundsAdjustedWithOrientation].size.width;
+	CGFloat horiOffset = indexPath.row / numberOfItemsPerPage * [A3UIDevice screenBoundsAdjustedWithOrientation].size.width;
 	CGFloat horizontalMarginOnPage = IS_IPHONE ? 10.0 : IS_PORTRAIT ? 32.0 : 21;
 	
 	UICollectionViewLayoutAttributes *attributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
@@ -46,7 +46,8 @@
 
 - (CGSize)collectionViewContentSize
 {
-	CGFloat contentWidth = self.collectionView.bounds.size.width * (([self.collectionView numberOfItemsInSection:0] - 1) / self.numberOfItemsPerPage + 1);
+    NSInteger numberOfItemsPerPage = self.numberOfItemsPerRow * self.numberOfRowsPerPage;
+	CGFloat contentWidth = self.collectionView.bounds.size.width * (([self.collectionView numberOfItemsInSection:0] - 1) / numberOfItemsPerPage + 1);
 	
 	return CGSizeMake(contentWidth, _contentHeight);
 }

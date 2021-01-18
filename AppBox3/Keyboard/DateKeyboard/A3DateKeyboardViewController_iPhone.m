@@ -31,8 +31,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    if (IS_IPHONEX) {
-        _bottomSpaceConstraint.constant = 40;
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    if (safeAreaInsets.top > 20) {
+        _bottomSpaceConstraint.constant = safeAreaInsets.bottom;
     }
 }
 

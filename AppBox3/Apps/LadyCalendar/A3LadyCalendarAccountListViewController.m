@@ -272,7 +272,9 @@
 	viewCtrl.dataManager = _dataManager;
 	viewCtrl.isEditMode = NO;
     A3NavigationController *navCtrl = [[A3NavigationController alloc] initWithRootViewController:viewCtrl];
-    navCtrl.modalPresentationStyle = UIModalPresentationFullScreen;
+    if (@available(iOS 13.0, *)) {
+        navCtrl.modalPresentationStyle = UIModalPresentationAutomatic;
+    }
     [self presentViewController:navCtrl animated:YES completion:nil];
 }
 

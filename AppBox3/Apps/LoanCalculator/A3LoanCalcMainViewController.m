@@ -752,7 +752,8 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 
     FNLOG(@"%f", self.tableView.contentOffset.y);
     
-	if ((self.tableView.contentOffset.y == -63) || (IS_IPHONEX && self.tableView.contentOffset.y == -88)) {
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+	if ((self.tableView.contentOffset.y == -63) || (safeAreaInsets.top > 20 && self.tableView.contentOffset.y == -88)) {
 		CGRect frame = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 		frame = CGRectOffset(frame, 0, 1);
 		[self.tableView scrollRectToVisible:frame animated:YES];
@@ -3100,10 +3101,6 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
     _didReceiveAds = YES;
     
     [self.tableView reloadData];
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    FNLOG(@"%f", scrollView.contentOffset.y);
 }
 
 @end

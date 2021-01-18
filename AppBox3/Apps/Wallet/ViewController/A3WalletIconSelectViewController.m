@@ -53,16 +53,16 @@
 
 	CGFloat lineHeight = 1.0 / [[UIScreen mainScreen] scale];
 	[_upperLine makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(_contentView.left);
-		make.right.equalTo(_contentView.right);
-		make.top.equalTo(_contentView.top);
+		make.left.equalTo(self.contentView.left);
+		make.right.equalTo(self.contentView.right);
+		make.top.equalTo(self.contentView.top);
 		make.height.equalTo( @(lineHeight) );
 	}];
 	
 	[_lowerLine makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(_contentView.left);
-		make.right.equalTo(_contentView.right);
-		make.bottom.equalTo(_contentView.bottom);
+		make.left.equalTo(self.contentView.left);
+		make.right.equalTo(self.contentView.right);
+		make.bottom.equalTo(self.contentView.bottom);
 		make.height.equalTo(@(lineHeight));
 	}];
 	

@@ -5,7 +5,7 @@
 	<key>YEAR_FROM</key>
 	<string>2017</string>
 	<key>YEAR_TO</key>
-	<string>2019</string>
+	<string>2021</string>
 	<key>2017</key>
 	<array>
 		<array>
@@ -377,6 +377,280 @@
         <array>
             <string>Christmas</string>
             <date>2019-12-25T00:00:00Z</date>
+        </array>
+    </array>
+    <key>2020</key>
+    <array>
+        <array>
+            <string>Duruthu Full Moon Poya Day</string>
+            <date>2020-01-10T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Tamil Thai Pongal Day</string>
+            <date>2020-01-15T00:00:00Z</date>
+        </array>
+        <array>
+            <string>National Day</string>
+            <date>2020-02-04T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Navam Full Moon Poya Day</string>
+            <date>2020-02-08T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Valentine&apos;s Day</string>
+            <date>2020-02-14T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Mahasivarathri Day</string>
+            <date>2020-02-21T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Madin Full Moon Poya Day</string>
+            <date>2020-03-09T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Public Holiday</string>
+            <date>2020-03-16T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Public Holiday</string>
+            <date>2020-03-17T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Public Holiday</string>
+            <date>2020-03-18T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Public Holiday</string>
+            <date>2020-03-19T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Bak Full Moon Poya Day</string>
+            <date>2020-04-07T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Good Friday</string>
+            <date>2020-04-10T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Easter Sunday</string>
+            <date>2020-04-12T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Sinhala and Tamil New Year&apos;s Eve</string>
+            <date>2020-04-12T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Sinhala and Tamil New Year&apos;s Day</string>
+            <date>2020-04-13T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Labour Day</string>
+            <date>2020-05-01T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Vesak Full Moon Poya Day</string>
+            <date>2020-05-07T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Day after Vesak Full Moon Poya Day</string>
+            <date>2020-05-08T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Mother&apos;s Day</string>
+            <date>2020-05-10T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Eid-al-Fitr</string>
+            <date>2020-05-24T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Eid-al-Fitr Holiday</string>
+            <date>2020-05-25T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Public Holiday</string>
+            <date>2020-06-04T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Poson Full Moon Poya Day</string>
+            <date>2020-06-05T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Father&apos;s Day</string>
+            <date>2020-06-21T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Esala Full Moon Poya Day</string>
+            <date>2020-07-04T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Eid-al-Adha (Feast of Sacrifice)</string>
+            <date>2020-08-01T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Nikini Full Moon Poya Day</string>
+            <date>2020-08-03T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Binara Full Moon Poya Day</string>
+            <date>2020-09-01T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Adhi Vap Full Moon Poya Day</string>
+            <date>2020-10-01T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Milad-Un-Nabi (Holy Prophet&apos;s Birthday)</string>
+            <date>2020-10-29T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Vap Full Moon Poya Day</string>
+            <date>2020-10-30T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Deepavali</string>
+            <date>2020-11-14T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Il Full Moon Poya Day</string>
+            <date>2020-11-29T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Christmas Eve</string>
+            <date>2020-12-24T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Christmas</string>
+            <date>2020-12-25T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Unduvap Full Moon Poya Day</string>
+            <date>2020-12-29T00:00:00Z</date>
+        </array>
+    </array>
+    <key>2021</key>
+    <array>
+        <array>
+            <string>Tamil Thai Pongal Day</string>
+            <date>2021-01-14T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Duruthu Full Moon Poya Day</string>
+            <date>2021-01-28T00:00:00Z</date>
+        </array>
+        <array>
+            <string>National Day</string>
+            <date>2021-02-04T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Valentine&apos;s Day</string>
+            <date>2021-02-14T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Navam Full Moon Poya Day</string>
+            <date>2021-02-26T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Mahasivarathri Day</string>
+            <date>2021-03-11T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Madin Full Moon Poya Day</string>
+            <date>2021-03-28T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Good Friday</string>
+            <date>2021-04-02T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Easter Sunday</string>
+            <date>2021-04-04T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Sinhala and Tamil New Year&apos;s Eve</string>
+            <date>2021-04-13T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Sinhala and Tamil New Year&apos;s Day</string>
+            <date>2021-04-14T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Bak Full Moon Poya Day</string>
+            <date>2021-04-26T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Labour Day</string>
+            <date>2021-05-01T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Mother&apos;s Day</string>
+            <date>2021-05-09T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Eid-al-Fitr</string>
+            <date>2021-05-13T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Vesak Full Moon Poya Day</string>
+            <date>2021-05-26T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Day after Vesak Full Moon Poya Day</string>
+            <date>2021-05-27T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Father&apos;s Day</string>
+            <date>2021-06-20T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Poson Full Moon Poya Day</string>
+            <date>2021-06-24T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Eid-al-Adha (Feast of Sacrifice)</string>
+            <date>2021-07-20T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Esala Full Moon Poya Day</string>
+            <date>2021-07-23T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Nikini Full Moon Poya Day</string>
+            <date>2021-08-22T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Binara Full Moon Poya Day</string>
+            <date>2021-09-20T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Milad-Un-Nabi (Holy Prophet&apos;s Birthday)</string>
+            <date>2021-10-19T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Vap Full Moon Poya Day</string>
+            <date>2021-10-20T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Deepavali</string>
+            <date>2021-11-04T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Il Full Moon Poya Day</string>
+            <date>2021-11-18T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Unduvap Full Moon Poya Day</string>
+            <date>2021-12-18T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Christmas Eve</string>
+            <date>2021-12-24T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Christmas</string>
+            <date>2021-12-25T00:00:00Z</date>
         </array>
     </array>
 </dict>

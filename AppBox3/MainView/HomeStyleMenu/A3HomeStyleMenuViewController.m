@@ -171,7 +171,6 @@
 }
 
 - (void)addAppLinkButtonToView:(UIView *)targetView title:(NSString *)title imageName:(NSString *)imageName position:(CGFloat)position selector:(SEL)selector {
-	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	
 	UILabel *appTitle = [UILabel new];
 	appTitle.textColor = [UIColor whiteColor];
@@ -188,14 +187,10 @@
 
 	[appTitle makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(targetView.right).with.multipliedBy(position);
-		CGFloat offset;
-		if (IS_IPAD_PRO) {
-			offset = -18;
-		} else {
-			offset = screenBounds.size.height == 480 ? -5 : -15;
-		}
-        if (IS_IPHONEX) {
-            offset = -40;
+		CGFloat offset = -15;
+        UIEdgeInsets safeAreaInsets = [[UIApplication sharedApplication] keyWindow].safeAreaInsets;
+        if (safeAreaInsets.bottom != 0) {
+            offset = -safeAreaInsets.bottom;
         }
 		make.bottom.equalTo(targetView.bottom).with.offset(offset);
 	}];

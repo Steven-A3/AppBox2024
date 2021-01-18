@@ -59,14 +59,15 @@
 
 - (void)setupSubviews {
 	UIImage *backgroundImage;
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
 	if (viewMode == surfaceMode) {
-        if (IS_IPHONEX) {
+        if (safeAreaInsets.top > 20) {
             backgroundImage = [UIImage imageNamed:@"bg_Inclinometer_surface_cal_iPhoneX"];
         } else {
             backgroundImage = [UIImage imageNamed:IS_IPHONE35 ? @"bg_Inclinometer_surface_cal_480" : @"bg_Inclinometer_surface_cal"];
         }
 	} else {
-        if (IS_IPHONEX) {
+        if (safeAreaInsets.top > 20) {
             backgroundImage = [UIImage imageNamed:@"bg_Inclinometer_bubble_cal_iPhoneX"];
         } else {
             backgroundImage = [UIImage imageNamed:IS_IPHONE35 ? @"bg_Inclinometer_bubble_cal_480" : @"bg_Inclinometer_bubble_cal"];
@@ -95,7 +96,8 @@
     // set up Calibrate1 button
 	CGFloat x = 200.5 * scale;
 	CGFloat yOffset = IS_IPHONE35 ? 0 : 45.0 * scale;
-    if (IS_IPHONEX) {
+
+    if (safeAreaInsets.top > 20) {
         yOffset = 85;
     }
 	CGRect buttonFrame = CGRectMake(x, 340.0 * scale + yOffset, imageNormal.size.width * scale, imageNormal.size.height * scale);

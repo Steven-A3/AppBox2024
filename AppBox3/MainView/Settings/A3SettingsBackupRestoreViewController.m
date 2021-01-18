@@ -21,7 +21,7 @@
 #import "NSDate+TimeAgo.h"
 #import <SafariServices/SafariServices.h>
 #import "TJDropbox.h"
-#import "TJDropboxAuthenticationViewController.h"
+#import "TJDropboxAuthenticator.h"
 #import "ACSimpleKeychain.h"
 #import "NSDate-Utilities.h"
 
@@ -29,8 +29,7 @@ NSString *const kDropboxClientIdentifier = @"ody0cjvmnaxvob4";
 NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 
 @interface A3SettingsBackupRestoreViewController ()
-<A3SettingsDropboxSelectBackupDelegate, AAAZipDelegate, A3BackupRestoreManagerDelegate,
-TJDropboxAuthenticationViewControllerDelegate>
+<A3SettingsDropboxSelectBackupDelegate, AAAZipDelegate, A3BackupRestoreManagerDelegate>
 
 @property (nonatomic, strong) MBProgressHUD *HUD;
 @property (nonatomic, strong) NSString *backupInfoString;
@@ -39,6 +38,7 @@ TJDropboxAuthenticationViewControllerDelegate>
 @property (nonatomic, copy) NSString *dropboxAccessToken;
 @property (nonatomic, copy) NSDictionary *dropboxAccountInfo;
 @property (nonatomic, copy) NSArray *dropboxFolderList;
+@property (nonatomic, assign) BOOL restoreInProgress;
 
 @end
 
@@ -171,7 +171,6 @@ TJDropboxAuthenticationViewControllerDelegate>
 				}
 			 */
 			[TJDropbox listFolderWithPath:kDropboxDir accessToken:accessToken completion:^(NSArray<NSDictionary *> * _Nullable entries, NSString * _Nullable cursor, NSError * _Nullable error) {
-				FNLOG(@"%@", entries);
 				NSDate *recentModified = nil;
 				NSDateFormatter *dateFormatter = [NSDateFormatter new];
 				dateFormatter.dateFormat = @"y-MM-dd'T'HH:mm:ss'Z'";
@@ -251,15 +250,30 @@ TJDropboxAuthenticationViewControllerDelegate>
 - (void)linkDropboxAccount {
 	_dropboxLoginInProgress = YES;
 	
-	NSURL *appAuthURL = [TJDropbox dropboxAppAuthenticationURLWithClientIdentifier:kDropboxClientIdentifier];
-	if (!IS_IOS7 && [[UIApplication sharedApplication] canOpenURL:appAuthURL]) {
-		[[UIApplication sharedApplication] openURL:appAuthURL];
-	} else {
-		NSURL *redirectURL = [NSURL URLWithString:@"https://www.allaboutapps.net/redirect/dropboxAuth.html"];
-		NSURL *authURL = [TJDropbox tokenAuthenticationURLWithClientIdentifier:kDropboxClientIdentifier redirectURL:redirectURL];
-		FNLOG(@"%@", authURL.absoluteString);
-		[[UIApplication sharedApplication] openURL:authURL];
-	}
+    [TJDropboxAuthenticator authenticateWithClientIdentifier:kDropboxClientIdentifier
+                                         bypassingNativeAuth:NO
+                                               bypassingPKCE:NO
+                                                  completion:^(NSString * _Nullable accessToken) {
+        
+        if (accessToken) {
+            [[ACSimpleKeychain defaultKeychain] storeUsername:@"dropboxUser" password:accessToken identifier:@"net.allaboutapps.AppBoxPro" forService:@"Dropbox"];
+            FNLOG(@"App linked successfully!");
+            [[NSNotificationCenter defaultCenter] postNotificationName:A3DropboxLoginWithSuccess object:nil];
+        } else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:A3DropboxLoginFailed object:nil];
+        }
+    }];
+    
+//	NSURL *appAuthURL = [TJDropbox dropboxAppAuthenticationURLWithClientIdentifier:kDropboxClientIdentifier codeVerifier:[[NSUUID UUID] UUIDString]];
+//	if (!IS_IOS7 && [[UIApplication sharedApplication] canOpenURL:appAuthURL]) {
+//		[[UIApplication sharedApplication] openURL:appAuthURL];
+//	} else {
+//		NSURL *redirectURL = [NSURL URLWithString:@"https://www.allaboutapps.net/redirect/dropboxAuth.html"];
+//		NSURL *authURL = [TJDropbox tokenAuthenticationURLWithClientIdentifier:kDropboxClientIdentifier redirectURL:redirectURL
+//                          codeVerifier:[[NSUUID UUID] UUIDString]];
+//		FNLOG(@"%@", authURL.absoluteString);
+//		[[UIApplication sharedApplication] openURL:authURL];
+//	}
 }
 
 #pragma mark - UITableViewDelegate, UITableViewDataSource
@@ -440,32 +454,31 @@ TJDropboxAuthenticationViewControllerDelegate>
 	[_HUD showAnimated:YES];
 
 	_totalBytes = [metadata[@"size"] doubleValue];
+    __weak __typeof__(self) weakSelfProgress = self;
+    __weak __typeof__(self) weakSelfCompletion = self;
 	[TJDropbox downloadFileAtPath:metadata[@"path_display"] toPath:_downloadFilePath accessToken:self.dropboxAccessToken
 					progressBlock:^(CGFloat progress) {
 						dispatch_async(dispatch_get_main_queue(), ^{
-							_HUD.progress = progress;
-							[self.percentFormatter setMaximumFractionDigits:0];
-							_HUD.detailsLabel.text = [self.percentFormatter stringFromNumber:@(progress)];
+                            __typeof__(self) strongSelf = weakSelfProgress;
+                            strongSelf.HUD.progress = progress;
+							[strongSelf.percentFormatter setMaximumFractionDigits:0];
+                            strongSelf.HUD.detailsLabel.text = [strongSelf.percentFormatter stringFromNumber:@(progress)];
 						});
 					}
 					   completion:^(NSDictionary * _Nullable parsedResponse, NSError * _Nullable error) {
 						   dispatch_async(dispatch_get_main_queue(), ^{
+                               __typeof__(self) strongSelf = weakSelfCompletion;
 							   if (error == nil) {
-								   _restoreInProgress = YES;
-								   _HUD.label.text = NSLocalizedString(@"Unarchiving", @"Unarchiving");
+								   strongSelf.restoreInProgress = YES;
+                                   strongSelf.HUD.label.text = NSLocalizedString(@"Unarchiving", @"Unarchiving");
 								   AAAZip *zipArchive = [[AAAZip alloc] init];
 								   zipArchive.delegate = self;
-								   [zipArchive unzipFile:_downloadFilePath unzipFileto:[@"restore" pathInCachesDirectory]];
+								   [zipArchive unzipFile:strongSelf.downloadFilePath unzipFileto:[@"restore" pathInCachesDirectory]];
 							   } else {
 								   FNLOG(@"%@", error.localizedDescription);
-								   UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error")
-																					   message:NSLocalizedString(@"Failed to download backup file.", @"Failed to download backup file.")
-																					  delegate:nil
-																			 cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-																			 otherButtonTitles:nil];
-								   [alertView show];
-								   [_HUD hideAnimated:YES];
-								   _HUD = nil;
+                                   [self presentAlertWithTitle:NSLocalizedString(@"Error", @"Error") message:NSLocalizedString(@"Failed to download backup file.", @"Failed to download backup file.")];
+								   [strongSelf.HUD hideAnimated:YES];
+                                   strongSelf.HUD = nil;
 							   }
 						   });
 	}];
@@ -481,10 +494,6 @@ TJDropboxAuthenticationViewControllerDelegate>
 		_backupRestoreManager.hostingViewController = self;
 	}
 	return _backupRestoreManager;
-}
-
-- (void)dropboxAuthenticationViewController:(TJDropboxAuthenticationViewController *)viewController didAuthenticateWithAccessToken:(NSString *const)accessToken {
-	
 }
 
 @end

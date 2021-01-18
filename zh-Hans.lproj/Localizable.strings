@@ -828,6 +828,7 @@
 "Internet on Wi-Fi" = "互联网 Wi-Fi";
 "Internet on Cellular" = "互联网 Cellular";
 "Video playback" = "视频播放";
+"Video playback (streamed)" = "视频播放（流式）";
 "Audio playback" = "音频播放";
 "Standby" = "待机";
 "GPS" = "GPS";

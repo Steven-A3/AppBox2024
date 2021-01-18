@@ -38,27 +38,28 @@
 
 		UIImage *circleImage, *lineImage;
         CGRect backgroundViewFrame = [A3UIDevice screenBoundsAdjustedWithOrientation];
-        CGFloat verticalOffset = 0;
-        if (backgroundViewFrame.size.height == 812) {
-            backgroundViewFrame.size.height -= 80;
-            verticalOffset = 40;
-        }
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+        CGFloat verticalOffset = safeAreaInsets.top;
+        backgroundViewFrame.size.height -= safeAreaInsets.top + safeAreaInsets.bottom;
 		CGFloat diffCircle, diffLine;
-		if (_inclinometerMode == surfaceMode) {
+
+        if (_inclinometerMode == surfaceMode) {
             NSString *imageName;
-            if (IS_IPHONEX) {
+            if (safeAreaInsets.bottom > 0) {
                 imageName = @"bg_Inclinometer_surface_iPhoneX";
             } else {
                 imageName = IS_IPHONE35 ? @"bg_Inclinometer_surface_480" : @"bg_Inclinometer_surface";
             }
-			UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
+            UIImage *stretchableImage = [UIImage imageNamed:imageName];
+			UIImageView *imageView = [[UIImageView alloc] initWithImage:stretchableImage];
+            imageView.contentMode = UIViewContentModeScaleAspectFit;
 
             imageView.frame = backgroundViewFrame;
 
 			[self addSubview:imageView];
 			
-            circleImage = [UIImage imageNamed:IS_IPHONEX ? @"surface_circle_iPhoneX" : @"surface_circle"];
-			lineImage = [UIImage imageNamed:IS_IPHONEX ? @"surface_grid_iPhoneX" : @"surface_grid"];
+            circleImage = [UIImage imageNamed:safeAreaInsets.bottom > 0 ? @"surface_circle_iPhoneX" : @"surface_circle"];
+			lineImage = [UIImage imageNamed:safeAreaInsets.bottom > 0 ? @"surface_grid_iPhoneX" : @"surface_grid"];
 			diffCircle = 3.0;
 			diffLine = 1.0;
 			
@@ -71,7 +72,7 @@
 			
 		} else {
             NSString *imageName;
-            if (IS_IPHONEX) {
+            if (safeAreaInsets.bottom > 0) {
                 imageName = @"bg_Inclinometer_bubble_iPhoneX";
             } else {
                 imageName = IS_IPHONE35 ? @"bg_Inclinometer_bubble_480" : @"bg_Inclinometer_bubble";
@@ -80,8 +81,8 @@
             imageViewBubble.frame = backgroundViewFrame;
 			[self addSubview:imageViewBubble];
 			
-			circleImage = [UIImage imageNamed:IS_IPHONEX ? @"bubble_circle_iPhoneX" : @"bubble_circle"];
-            lineImage = [UIImage imageNamed:IS_IPHONEX ? @"bubble_bar_iPhoneX" : @"bubble_bar"];
+			circleImage = [UIImage imageNamed:safeAreaInsets.bottom > 0 ? @"bubble_circle_iPhoneX" : @"bubble_circle"];
+            lineImage = [UIImage imageNamed:safeAreaInsets.bottom > 0 ? @"bubble_bar_iPhoneX" : @"bubble_bar"];
 			diffCircle = 0.0;
 			diffLine = 0.0;
 			
@@ -97,7 +98,7 @@
 			CGRect lineBounds = _vialLinesView.bounds;
 			lineBounds.size.width *= _scale;
 			lineBounds.size.height *= _scale;
-            if (IS_IPHONEX) {
+            if (safeAreaInsets.bottom > 0) {
                 lineBounds.size.width -= 14;
             }
 			_vialLinesView.bounds = lineBounds;
@@ -109,7 +110,7 @@
 #define BAR_HEIGHT		30
 		
         CGFloat offsetY = 0;
-        if (IS_IPHONEX) {
+        if (safeAreaInsets.bottom > 0) {
             offsetY = -70;
         }
 		CGRect frameLabel = CGRectMake(CGRectGetWidth(frame)/2 - LABEL_WIDTH/2  - 50,
@@ -172,13 +173,14 @@ const float pitchVsDegree[] = {4.5, 9.5, 14.0, 18.5, 22.5, 26.5, 30.5, 33.75, 37
 
 - (void)updateBubbleForRadian:(float)rads {
     CGFloat halfViralLengthBubble = kHalfVialLengthBubble;
-    if (IS_IPHONEX) {
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    if (safeAreaInsets.bottom > 0) {
         halfViralLengthBubble = 102 * _scale;
     }
     float newY = self.center.y - sin(DegreesToRadians([self zoomAngle:rads])) * halfViralLengthBubble + 0.0;
     
     CGFloat offsetY = 0;
-    if (IS_IPHONEX) {
+    if (safeAreaInsets.bottom > 0) {
         offsetY = -40;
     }
     _bubbleView.center = CGPointMake(_bubbleView.center.x, newY + offsetY);
@@ -238,7 +240,8 @@ const float pitchVsDegree[] = {4.5, 9.5, 14.0, 18.5, 22.5, 26.5, 30.5, 33.75, 37
     float newY = self.center.y - maxY + 3.0;
 	
     CGFloat offsetY = 0;
-    if (IS_IPHONEX) {
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    if (safeAreaInsets.bottom > 0) {
         offsetY = -40;
     }
     _bubbleView.center = CGPointMake(newX, newY + offsetY);

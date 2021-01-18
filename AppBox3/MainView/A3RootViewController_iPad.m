@@ -157,21 +157,27 @@ static const CGFloat kSideViewWidth = 320.0;
 	[self animateLeftView];
 }
 
+- (BOOL)prefersStatusBarHidden {
+    return !_showLeftView;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleDefault;
+}
+
 - (void)animateLeftView {
 	if (_showLeftView) {
-		[[UIApplication sharedApplication] setStatusBarHidden:NO];
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+        [self setNeedsStatusBarAppearanceUpdate];
 
 		[_leftNavigationController setNavigationBarHidden:YES];
 		[_leftNavigationController setNavigationBarHidden:NO];
 	}
 
 	[UIView animateWithDuration:0.3 animations:^{
-		CGRect frame = _leftNavigationController.view.frame;
+		CGRect frame = self.leftNavigationController.view.frame;
 		if (self.showLeftView) {
 			frame.origin.x = 0;
-			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-			[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+            [self setNeedsStatusBarAppearanceUpdate];
 		} else {
 			if (IS_LANDSCAPE && ![self useFullScreenInLandscapeForCurrentTopViewController]) {
 				frame.origin.x = 0;
@@ -179,14 +185,14 @@ static const CGFloat kSideViewWidth = 320.0;
 				frame.origin.x = -kSideViewWidth - 1;
 			}
 		}
-		_leftNavigationController.view.frame = frame;
+        self.leftNavigationController.view.frame = frame;
 
 	} completion:^(BOOL finished) {
 		[self layoutSubviews];
 		if (self.showLeftView) {
-			[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationMainMenuDidShow object:_mainMenuViewController];
+			[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationMainMenuDidShow object:self.mainMenuViewController];
 		} else {
-			[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationMainMenuDidHide object:_mainMenuViewController];
+			[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationMainMenuDidHide object:self.mainMenuViewController];
 		}
 	}];
 }
@@ -197,19 +203,19 @@ static const CGFloat kSideViewWidth = 320.0;
     }
     
 	[UIView animateWithDuration:0.3 animations:^{
-        [_centerCoverView setHidden:YES];
+        [self.centerCoverView setHidden:YES];
         
-		_showLeftView = NO;
+        self.showLeftView = NO;
 
         CGRect bounds = [self screenBoundsAdjustedWithOrientation];
         
-		CGRect frame = _leftNavigationController.view.frame;
+		CGRect frame = self.leftNavigationController.view.frame;
         if (IS_PORTRAIT || (IS_LANDSCAPE && fullScreenCenterView)) {
             frame.origin.x = -kSideViewWidth - 1;
         } else {    
             frame.origin.x = 0;
         }
-		_leftNavigationController.view.frame = frame;
+        self.leftNavigationController.view.frame = frame;
 
         CGFloat centerViewWidth;
         CGFloat centerViewPosition;
@@ -222,9 +228,9 @@ static const CGFloat kSideViewWidth = 320.0;
         }
         
         frame = CGRectMake(centerViewPosition, 0, centerViewWidth, bounds.size.height);
-        _centerNavigationController.view.frame = frame;
+        self.centerNavigationController.view.frame = frame;
         frame = CGRectMake(bounds.size.width, 0, kSideViewWidth, bounds.size.height);
-        _rightNavigationController.view.frame = frame;
+        self.rightNavigationController.view.frame = frame;
 
     } completion:^(BOOL finished) {
     }];
@@ -278,10 +284,10 @@ static const CGFloat kSideViewWidth = 320.0;
 - (void)presentCenterViewController:(UIViewController *)viewController fromViewController:(UIViewController *)sourceViewController withCompletion:(void (^)(void))completion {
     viewController.modalPresentationStyle = UIModalPresentationFullScreen;
     [sourceViewController presentViewController:viewController animated:YES completion:^{
-        if (!_presentViewControllers) {
-            _presentViewControllers = [NSMutableArray new];
+        if (!self.presentViewControllers) {
+            self.presentViewControllers = [NSMutableArray new];
         }
-        [_presentViewControllers addObject:viewController];
+        [self.presentViewControllers addObject:viewController];
         
         if (completion) {
             completion();
@@ -296,7 +302,7 @@ static const CGFloat kSideViewWidth = 320.0;
     }
     
     [[[[_presentViewControllers lastObject] childViewControllers] lastObject] dismissViewControllerAnimated:YES completion:^{
-        [_presentViewControllers removeLastObject];
+        [self.presentViewControllers removeLastObject];
     }];
 
 }
@@ -316,18 +322,18 @@ static const CGFloat kSideViewWidth = 320.0;
 
 	[UIView animateWithDuration:0.3 animations:^{
 		if (IS_LANDSCAPE) {
-			CGRect centerViewFrame = _centerNavigationController.view.frame;
+			CGRect centerViewFrame = self.centerNavigationController.view.frame;
 			centerViewFrame.origin.x = 0;
-			_centerNavigationController.view.frame = centerViewFrame;
+			self.centerNavigationController.view.frame = centerViewFrame;
             // KJH
-            A3NavigationController *presentedViewController = [_presentViewControllers lastObject];
+            A3NavigationController *presentedViewController = [self.presentViewControllers lastObject];
             if (presentedViewController) {
                 presentedViewController.view.frame = centerViewFrame;
             }
 		}
-		CGRect sideViewFrame = _rightNavigationController.view.frame;
+		CGRect sideViewFrame = self.rightNavigationController.view.frame;
 		sideViewFrame.origin.x -= kSideViewWidth;
-		_rightNavigationController.view.frame = sideViewFrame;
+		self.rightNavigationController.view.frame = sideViewFrame;
 	} completion:^(BOOL finished) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationRightSideViewDidAppear object:nil];
 	}];
@@ -352,23 +358,23 @@ static const CGFloat kSideViewWidth = 320.0;
 		if (IS_LANDSCAPE) {
 			BOOL useFullScreenInLandscape = [self useFullScreenInLandscapeForCurrentTopViewController];
 			if (!useFullScreenInLandscape) {
-                CGRect frame = _leftNavigationController.view.frame;
+                CGRect frame = self.leftNavigationController.view.frame;
                 frame.origin.x -= kSideViewWidth;
-                _leftNavigationController.view.frame = frame;
+                self.leftNavigationController.view.frame = frame;
             }
-			CGRect centerViewFrame = _centerNavigationController.view.frame;
+			CGRect centerViewFrame = self.centerNavigationController.view.frame;
 			centerViewFrame.origin.x = 0;
-			_centerNavigationController.view.frame = centerViewFrame;
+            self.centerNavigationController.view.frame = centerViewFrame;
             // KJH
-            A3NavigationController *presentedViewController = [_presentViewControllers lastObject];
+            A3NavigationController *presentedViewController = [self.presentViewControllers lastObject];
             if (presentedViewController) {
                 presentedViewController.view.frame = centerViewFrame;
             }
 		}
-		CGRect sideViewFrame = _rightNavigationController.view.frame;
+		CGRect sideViewFrame = self.rightNavigationController.view.frame;
 		//sideViewFrame.origin.x -= kSideViewWidth;
         sideViewFrame.origin.y = 0;
-		_rightNavigationController.view.frame = sideViewFrame;
+        self.rightNavigationController.view.frame = sideViewFrame;
 	} completion:^(BOOL finished) {
 	}];
 }
@@ -396,26 +402,25 @@ static const CGFloat kSideViewWidth = 320.0;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 		[UIView animateWithDuration:0.3 animations:^{
-			_showRightView = NO;
+            self.showRightView = NO;
 
 			CGRect bounds = [self screenBoundsAdjustedWithOrientation];
 
-			CGRect frame = _rightNavigationController.view.frame;
+			CGRect frame = self.rightNavigationController.view.frame;
 			frame.origin.x = bounds.size.width;
-			_rightNavigationController.view.frame = frame;
+            self.rightNavigationController.view.frame = frame;
 
 		} completion:^(BOOL finished) {
-			[_rightNavigationController.view removeFromSuperview];
-			[_rightNavigationController removeFromParentViewController];
-			[_rightNavigationController.childViewControllers[0] removeObserver];
-			_rightNavigationController = nil;
+			[self.rightNavigationController.view removeFromSuperview];
+			[self.rightNavigationController removeFromParentViewController];
+			[self.rightNavigationController.childViewControllers[0] removeObserver];
+            self.rightNavigationController = nil;
 
 			[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationRightSideViewDidDismiss object:nil];
 		}];
 	});
 }
 
-#ifdef __IPHONE_8_0
 /*! If you override this method in your custom view controllers, always call super at some point in
  *  your implementation so that UIKit can forward the size change message appropriately.
  *  View controllers forward the size change message to their views and child view controllers.
@@ -430,6 +435,5 @@ static const CGFloat kSideViewWidth = 320.0;
 	
 	[self layoutSubviews];
 }
-#endif
 
 @end

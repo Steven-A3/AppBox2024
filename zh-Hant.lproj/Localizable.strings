@@ -125,6 +125,7 @@
 "Memory" = "記憶體";
 "%ldw" = "%ld周";
 "Video playback" = "視頻播放";
+"Video playback (streamed)" = "視頻播放（流式）";
 "End date is not a lunar date." = "結束日期不是農曆日期。";
 "1 day before(9 AM)" = "1天前（上午9時)";
 "Cannot remove current account." = "無法移除當前賬目。";

@@ -360,12 +360,13 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 	}
 	[_topBar setItems:[self topToolBarBarButtons] animated:YES];
 
-	[self.statusToolbar setFrame:CGRectMake(0, 0, screenBounds.size.width , 20)];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+	[self.statusToolbar setFrame:CGRectMake(0, 0, screenBounds.size.width , safeAreaInsets.top)];
 
 	[self setToolBarsHidden:_topBar.hidden];
     
-    if (IS_IPHONEX) {
-        _topBar.frame = CGRectMake(0, 40, screenBounds.size.width, 44);
+    if (safeAreaInsets.top > 20) {
+        _topBar.frame = CGRectMake(0, safeAreaInsets.top, screenBounds.size.width, 44);
     }
 }
 
@@ -884,10 +885,9 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	[[UIApplication sharedApplication] setStatusBarHidden:hidden];
 
     CGFloat verticalOffset = 0;
-    if (IS_IPHONEX) {
-        verticalOffset = -40;
-    }
-	[self.bottomBar setFrame:CGRectMake(self.bottomBar.bounds.origin.x, self.view.frame.size.height - 74 + verticalOffset, self.view.frame.size.width, 74)];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    verticalOffset = -safeAreaInsets.bottom;
+	[self.bottomBar setFrame:CGRectMake(self.bottomBar.bounds.origin.x, self.view.frame.size.height - 74 + verticalOffset, self.view.frame.size.width, 74 + safeAreaInsets.bottom)];
 	if(hidden == YES) {
 		[self.zoomToolBar setFrame:CGRectMake(self.zoomToolBar.frame.origin.x,
 				self.view.frame.size.height - self.zoomToolBar.frame.size.height + verticalOffset,

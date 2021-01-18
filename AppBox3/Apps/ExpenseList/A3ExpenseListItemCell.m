@@ -89,6 +89,8 @@
     [self.contentView addSubview:_priceField];
     [self.contentView addSubview:_quantityField];
     [self.contentView addSubview:_subTotalLabel];
+    
+    [self setupConstraintLayout];
 }
 
 - (void)setupConstraintLayout
@@ -99,21 +101,21 @@
 	CGFloat sep3_Quantity = ceilf(CGRectGetWidth(self.contentView.frame) * 0.11);
     
 	[_sep1View makeConstraints:^(MASConstraintMaker *make) {
-		_sep1Const = make.leading.equalTo(@(leftInset + sep1_Item));
+		self.sep1Const = make.leading.equalTo(@(leftInset + sep1_Item));
 		make.top.equalTo(self.contentView.top);
 		make.width.equalTo(IS_RETINA? @0.5 : @1);
 		make.height.equalTo(self.contentView.height);
 	}];
     
 	[_sep2View makeConstraints:^(MASConstraintMaker *make) {
-		_sep2Const = make.leading.equalTo(@(leftInset + sep1_Item + sep2_Price));
+		self.sep2Const = make.leading.equalTo(@(leftInset + sep1_Item + sep2_Price));
 		make.top.equalTo(self.contentView.top);
 		make.width.equalTo(IS_RETINA? @0.5 : @1);
 		make.height.equalTo(self.contentView.height);
 	}];
     
 	[_sep3View makeConstraints:^(MASConstraintMaker *make) {
-		_sep3Const = make.leading.equalTo(@(leftInset + sep1_Item + sep2_Price + sep3_Quantity));
+		self.sep3Const = make.leading.equalTo(@(leftInset + sep1_Item + sep2_Price + sep3_Quantity));
 		make.top.equalTo(self.contentView.top);
 		make.width.equalTo(IS_RETINA? @0.5 : @1);
 		make.height.equalTo(self.contentView.height);
@@ -125,27 +127,27 @@
 		} else {
 			make.leading.equalTo(@28);
 		}
-		make.right.equalTo(_sep1View.left);
+		make.right.equalTo(self.sep1View.left);
         make.centerY.equalTo(self.contentView.centerY);
         make.height.equalTo(@23.0);
     }];
     
     [_priceField makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_sep1View.right);
-        make.right.equalTo(_sep2View.left).with.offset(IS_IPHONE ? -5 : IS_RETINA ? -9.5 : -9);
+        make.left.equalTo(self.sep1View.right);
+        make.right.equalTo(self.sep2View.left).with.offset(IS_IPHONE ? -5 : IS_RETINA ? -9.5 : -9);
         make.centerY.equalTo(self.contentView.centerY);
         make.height.equalTo(@23.0);
     }];
     
     [_quantityField makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_sep2View.right);
-        make.right.equalTo(_sep3View.left);
+        make.left.equalTo(self.sep2View.right);
+        make.right.equalTo(self.sep3View.left);
         make.centerY.equalTo(self.contentView.centerY);
         make.height.equalTo(@23.0);
     }];
     
     [_subTotalLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_sep3View.right);
+        make.left.equalTo(self.sep3View.right);
         make.right.equalTo(self.contentView.right).with.offset(IS_IPHONE ? -5 : IS_RETINA ? -9.5 : -9);
         make.centerY.equalTo(self.contentView.centerY);
         make.height.equalTo(@23.0);

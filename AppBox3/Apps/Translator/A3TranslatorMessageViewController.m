@@ -421,9 +421,8 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	[self.view addSubview:_languageSelectView];
 
     CGFloat verticalOffset = 0;
-    if (IS_IPHONEX) {
-        verticalOffset = 24;
-    }
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    verticalOffset = safeAreaInsets.top - 20;
 	[_languageSelectView makeConstraints:^(MASConstraintMaker *make) {
 		make.top.equalTo(@(64.0 + verticalOffset));
 		make.width.equalTo(self.view.width);
@@ -435,7 +434,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	[_languageSelectView addSubview:contentsView];
 
 	[contentsView makeConstraints:^(MASConstraintMaker *make) {
-		make.edges.equalTo(_languageSelectView);
+		make.edges.equalTo(self.languageSelectView);
 	}];
 
 	_sourceLanguageSelectTextField = [self textFieldForLanguageSelect];
@@ -734,15 +733,14 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		[self.view addSubview:_searchResultsTableView];
 
         CGFloat verticalOffset = 0;
-        if (IS_IPHONEX) {
-            verticalOffset = 24;
-        }
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+        verticalOffset = safeAreaInsets.top - 20;
         
 		[_searchResultsTableView makeConstraints:^(MASConstraintMaker *make) {
 			make.top.equalTo(self.view.top).with.offset(64 + 74 + verticalOffset);
 			make.left.equalTo(self.view.left);
 			make.right.equalTo(self.view.right);
-			make.bottom.equalTo(_textEntryBarView.top);
+			make.bottom.equalTo(self.textEntryBarView.top);
 		}];
 
 		[self searchResultsDelegate];
@@ -821,24 +819,25 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	[self.view addSubview:_textEntryBarView];
 
     CGFloat verticalOffset = 0;
-    if (IS_IPHONEX) {
-        verticalOffset = 40;
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    verticalOffset = safeAreaInsets.bottom;
+    if (safeAreaInsets.top > 20) {
         UIView *bottomView = [UIView new];
         bottomView.backgroundColor = _textEntryBarView.backgroundColor;
         [_textEntryBarView addSubview:bottomView];
         
         [bottomView makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_textEntryBarView.bottom);
-            make.left.equalTo(_textEntryBarView.left);
-            make.right.equalTo(_textEntryBarView.right);
+            make.top.equalTo(self.textEntryBarView.bottom);
+            make.left.equalTo(self.textEntryBarView.left);
+            make.right.equalTo(self.textEntryBarView.right);
             make.bottom.equalTo(self.view.bottom);
         }];
     }
 	[_textEntryBarView makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.view.left);
 		make.right.equalTo(self.view.right);
-        _textEntryBarViewBottomConstraint = make.bottom.equalTo(self.view.bottom);
-        _textEntryBarViewHeightConstraint = make.height.equalTo(@(44 + verticalOffset));
+        self.textEntryBarViewBottomConstraint = make.bottom.equalTo(self.view.bottom);
+        self.textEntryBarViewHeightConstraint = make.height.equalTo(@(44 + verticalOffset));
 	}];
 
 	UIView *line = [UIView new];
@@ -847,9 +846,9 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	[_textEntryBarView addSubview:line];
 
 	[line makeConstraints:^(MASConstraintMaker *make) {
-		make.top.equalTo(_textEntryBarView.top);
-		make.left.equalTo(_textEntryBarView.left);
-		make.right.equalTo(_textEntryBarView.right);
+		make.top.equalTo(self.textEntryBarView.top);
+		make.left.equalTo(self.textEntryBarView.left);
+		make.right.equalTo(self.textEntryBarView.right);
 		make.height.equalTo( @1 );
 	}];
 
@@ -862,7 +861,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	[_textEntryBarView addSubview:_textView];
 
     [_textView makeConstraints:^(MASConstraintMaker *make) {
-		make.edges.equalTo(_textEntryBarView).insets(UIEdgeInsetsMake(8.0, 8.0, 8.0, IS_IPHONE ? 88.0 : 110.0 ));
+		make.edges.equalTo(self.textEntryBarView).insets(UIEdgeInsetsMake(8.0, 8.0, 8.0, IS_IPHONE ? 88.0 : 110.0 ));
 	}];
 
 	_translateButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -877,10 +876,10 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	[_textEntryBarView addSubview:_translateButton];
 
 	[_translateButton makeConstraints:^(MASConstraintMaker *make) {
-		make.bottom.equalTo(_textEntryBarView.bottom);
+		make.bottom.equalTo(self.textEntryBarView.bottom);
 		make.width.equalTo(IS_IPHONE ? @86.0 : @110.0);
 		make.height.equalTo(@42.0);
-		make.right.equalTo(_textEntryBarView.right);
+		make.right.equalTo(self.textEntryBarView.right);
 	}];
 }
 
@@ -899,7 +898,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 			make.width.equalTo(self.view.width);
 			make.height.equalTo(@35);
 			make.centerX.equalTo(self.view.centerX);
-			make.bottom.equalTo(_textEntryBarView.top);
+			make.bottom.equalTo(self.textEntryBarView.top);
 		}];
 
 		[self messageTableViewBottomToNetworkPrompter];
@@ -919,7 +918,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		[_networkPrompter addSubview:messageLabel];
 
 		[messageLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.edges.equalTo(_networkPrompter);
+			make.edges.equalTo(self.networkPrompter);
 		}];
 
 		[[messageLabel layer] addAnimation:[self blinkAnimation] forKey:A3AnimationKeyOpacity];
@@ -987,7 +986,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		[self setupBarButtons];
 
 		dispatch_async(dispatch_get_main_queue(), ^{
-			[self askTranslateWithText:_originalText];
+			[self askTranslateWithText:self.originalText];
 		});
 		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 	}
@@ -998,24 +997,24 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	[self rightBarButtonEditButton];
 
 	[UIView animateWithDuration:0.3 animations:^{
-		UIView *contentsView = [_languageSelectView subviews][0];
+		UIView *contentsView = [self.languageSelectView subviews][0];
 		CGRect newFrame = contentsView.frame;
 		newFrame = CGRectOffset(newFrame, 0, -newFrame.size.height);
 		contentsView.frame = newFrame;
 	} completion:^(BOOL finished) {
-		[_languageSelectView removeFromSuperview];
-		_languageSelectView = nil;
-		[_searchResultsTableView removeFromSuperview];
-		_searchResultsTableView = nil;
-		_sourceLanguageSelectTextField = nil;
-		_targetLanguageSelectTextField = nil;
-		_searchResultsDelegate = nil;
-		_languages = nil;
-		_sourceLanguagePicker = nil;
-		_targetLanguagePicker = nil;
-		_setSourceLanguageButton = nil;
-		_setTargetLanguageButton = nil;
-		_setTargetLanguageButtonConstraint = nil;
+		[self.languageSelectView removeFromSuperview];
+        self.languageSelectView = nil;
+		[self.searchResultsTableView removeFromSuperview];
+        self.searchResultsTableView = nil;
+        self.sourceLanguageSelectTextField = nil;
+        self.targetLanguageSelectTextField = nil;
+        self.searchResultsDelegate = nil;
+        self.languages = nil;
+        self.sourceLanguagePicker = nil;
+        self.targetLanguagePicker = nil;
+        self.setSourceLanguageButton = nil;
+        self.setTargetLanguageButton = nil;
+        self.setTargetLanguageButtonConstraint = nil;
 	}];
 }
 
@@ -1135,10 +1134,10 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
 	_keyboardHeight = height;
 
 	[UIView animateWithDuration:animationDuration animations:^{
-		_textEntryBarViewBottomConstraint.offset = -height;
+		self.textEntryBarViewBottomConstraint.offset = -height;
 		[self.view layoutIfNeeded];
 	} completion:^(BOOL finished) {
-		if (_messageTableView) {
+		if (self.messageTableView) {
 			[self scrollToBottomAnimated:YES ];
 		}
 	}];
@@ -1150,10 +1149,9 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
 
 	[UIView animateWithDuration:animationDuration animations:^{
         CGFloat verticalOffset = 0;
-        if (IS_IPHONEX) {
-            verticalOffset = -40;
-        }
-		_textEntryBarViewBottomConstraint.offset = verticalOffset;
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+        verticalOffset = -safeAreaInsets.bottom;
+		self.textEntryBarViewBottomConstraint.offset = verticalOffset;
         
 		[self.view layoutIfNeeded];
 	}];

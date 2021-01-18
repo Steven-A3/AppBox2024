@@ -123,11 +123,18 @@
 	}
 }
 
+- (BOOL)prefersStatusBarHidden {
+    return NO;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleDefault;
+}
+
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    [self setNeedsStatusBarAppearanceUpdate];
 	
 	if (!_viewWillAppearCalled) {
 		_viewWillAppearCalled = YES;
@@ -272,10 +279,10 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 	[self.view addSubview:_segmentedControl];
 
     CGFloat verticalOffset = 0;
-    if (IS_IPHONEX) {
-        verticalOffset = 24;
-    }
-	[_segmentedControl makeConstraints:^(MASConstraintMaker *make) {
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    verticalOffset = safeAreaInsets.top - 20;
+
+    [_segmentedControl makeConstraints:^(MASConstraintMaker *make) {
 		make.top.equalTo(self.view.top).with.offset(64.0 + 10.0 + verticalOffset);
 		make.centerX.equalTo(self.view.centerX);
 		make.width.equalTo(@(IS_IPHONE ? 170.0 : 300.0));
@@ -316,10 +323,9 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 	[_addButton addTarget:self action:@selector(addButtonAction) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:_addButton];
 
-    if (IS_IPHONEX) {
-        verticalOffset = -40;
-    }
-	[_addButton makeConstraints:^(MASConstraintMaker *make) {
+    verticalOffset = -safeAreaInsets.bottom;
+
+    [_addButton makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(self.view.centerX);
 		make.width.equalTo(@44);
 		make.height.equalTo(@44);
@@ -499,9 +505,8 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 	[self.view addSubview:bannerView];
 	
     CGFloat verticalOffset = 0;
-    if (IS_IPHONEX) {
-        verticalOffset = -40;
-    }
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    verticalOffset = -safeAreaInsets.bottom;
     
 	UIView *superview = self.view;
 	[bannerView remakeConstraints:^(MASConstraintMaker *make) {

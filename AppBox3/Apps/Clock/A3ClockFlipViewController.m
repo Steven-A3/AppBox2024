@@ -80,16 +80,16 @@
 	[self.view addSubview:_lbAMPM];
 
     CGFloat verticalOffset = 0;
-    if (IS_IPHONEX) {
-        verticalOffset = 40;
-    }
-	_weekdayMonthDay = [[UILabel alloc] init];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    verticalOffset = safeAreaInsets.top;
+
+    _weekdayMonthDay = [[UILabel alloc] init];
 	[_weekdayMonthDay setFont:[UIFont systemFontOfSize:18]];
 	[_weekdayMonthDay setTextColor:kColorClockFlipLabel];
 	[self.view addSubview:_weekdayMonthDay];
 	[_weekdayMonthDay makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(self.view.centerX);
-		_weekdayMonthDayBaseline = make.baseline.equalTo(self.view.top).with.offset(IS_IPHONE && IS_LANDSCAPE ? 27 : 50 + verticalOffset);
+		self.weekdayMonthDayBaseline = make.baseline.equalTo(self.view.top).with.offset(IS_IPHONE && IS_LANDSCAPE ? 27 : 50 + verticalOffset);
 	}];
 
 	_weatherCondition = [[UILabel alloc] init];
@@ -166,10 +166,10 @@
 	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
 	
     CGFloat verticalOffset = 0;
-    if (IS_IPHONEX) {
-        verticalOffset = 40;
-    }
-	_weekdayMonthDayBaseline.offset(IS_IPHONE && IS_LANDSCAPE ? 27 : 50 + verticalOffset);
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    verticalOffset = safeAreaInsets.top;
+
+    _weekdayMonthDayBaseline.offset(IS_IPHONE && IS_LANDSCAPE ? 27 : 50 + verticalOffset);
 
 	[self setWeatherHidden:![[A3UserDefaults standardUserDefaults] clockShowWeather] ];
 	[self layoutWeather];
@@ -300,58 +300,56 @@
 		CGFloat offsetTitle = isPortrait ? 52 : 161;
 
         CGFloat verticalOffsetFromTop = 0;
-        if (IS_IPHONEX) {
-            verticalOffsetFromTop = 40;
-        }
-		if (isPortrait) {
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+        verticalOffsetFromTop = safeAreaInsets.top;
+
+        if (isPortrait) {
 			[_weatherCondition makeConstraints:^(MASConstraintMaker *make) {
-				[_weatherConstraints addObject:make.centerX.equalTo(self.view.centerX)];
-				[_weatherConstraints addObject:make.baseline.equalTo(self.view.top).with.offset(76 + verticalOffsetFromTop)];
+				[self.weatherConstraints addObject:make.centerX.equalTo(self.view.centerX)];
+				[self.weatherConstraints addObject:make.baseline.equalTo(self.view.top).with.offset(76 + verticalOffsetFromTop)];
 			}];
 			[_temperature makeConstraints:^(MASConstraintMaker *make) {
-				[_weatherConstraints addObject:make.centerX.equalTo(self.view.centerX)];
-				[_weatherConstraints addObject:make.baseline.equalTo(self.view.top).with.offset(125 + verticalOffsetFromTop)];
+				[self.weatherConstraints addObject:make.centerX.equalTo(self.view.centerX)];
+				[self.weatherConstraints addObject:make.baseline.equalTo(self.view.top).with.offset(125 + verticalOffsetFromTop)];
 			}];
 			[_temperature setFont:[UIFont fontWithName:@"HelveticaNeue-UltraLight" size:44]];
 		} else {
 			[_weatherCondition makeConstraints:^(MASConstraintMaker *make) {
-				[_weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(15)];
-				[_weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(-67)];
+				[self.weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(15)];
+				[self.weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(-67)];
 			}];
 			[_temperature makeConstraints:^(MASConstraintMaker *make) {
-				[_weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(15)];
-				[_weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(-11)];
+				[self.weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(15)];
+				[self.weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(-11)];
 			}];
 			[_temperature setFont:[UIFont fontWithName:@"HelveticaNeue-UltraLight" size:64]];
 		}
 
         CGFloat verticalOffset = 0;
-        if (IS_IPHONEX) {
-            verticalOffset = -30;
-        }
+        verticalOffset = -safeAreaInsets.bottom;
 		[_weatherHumidity makeConstraints:^(MASConstraintMaker *make) {
-			[_weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(offsetValue)];
-			[_weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(isPortrait ? -50 + verticalOffset : -45)];
+			[self.weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(offsetValue)];
+			[self.weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(isPortrait ? -50 + verticalOffset : -45)];
 		}];
 		[_weatherHumidityTitle makeConstraints:^(MASConstraintMaker *make) {
-			[_weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(offsetTitle)];
-			[_weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(isPortrait ? -50 + verticalOffset : -45)];
+			[self.weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(offsetTitle)];
+			[self.weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(isPortrait ? -50 + verticalOffset : -45)];
 		}];
 		[_weatherTemperatureHigh makeConstraints:^(MASConstraintMaker *make) {
-			[_weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(offsetValue)];
-			[_weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(isPortrait ? -32 + verticalOffset : -28)];
+			[self.weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(offsetValue)];
+			[self.weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(isPortrait ? -32 + verticalOffset : -28)];
 		}];
 		[_weatherTemperatureHighTitle makeConstraints:^(MASConstraintMaker *make) {
-			[_weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(offsetTitle)];
-			[_weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(isPortrait ? -32 + verticalOffset : -28)];
+			[self.weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(offsetTitle)];
+			[self.weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(isPortrait ? -32 + verticalOffset : -28)];
 		}];
         [_weatherTemperatureLow makeConstraints:^(MASConstraintMaker *make) {
-			[_weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(offsetValue)];
-			[_weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(isPortrait ? -14 + verticalOffset: -11)];
+			[self.weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(offsetValue)];
+			[self.weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(isPortrait ? -14 + verticalOffset: -11)];
 		}];
 		[_weatherTemperatureLowTitle makeConstraints:^(MASConstraintMaker *make) {
-			[_weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(offsetTitle)];
-			[_weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(isPortrait ? -14 + verticalOffset: -11)];
+			[self.weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(offsetTitle)];
+			[self.weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(isPortrait ? -14 + verticalOffset: -11)];
 		}];
 	} else if (!_iPADLayoutInitialized) {
 		_iPADLayoutInitialized = YES;

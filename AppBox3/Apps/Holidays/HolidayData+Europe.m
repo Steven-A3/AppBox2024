@@ -1373,6 +1373,16 @@
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
+    holidayName = NSLocalizedStringFromTable(@"Statehood Day", kHolidaysResourceName, nil);
+    date = [HolidayData dateWithDay:30 month:5 year:year withCalendar:gregorian option:0];
+    [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+
+    holidayName = NSLocalizedStringFromTable(@"Ramadan Bayram", kHolidaysResourceName, nil);
+    date = [HolidayData getRamadanFeast:year withCalendar:gregorian option:0];
+    if (date != nil) {
+        [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    }
+    
 	holidayName = NSLocalizedStringFromTable(@"Corpus Christi", kHolidaysResourceName, nil);
 	date = [HolidayData getCorpusChristi:year withCalendar:gregorian];
 	if (date != nil) {
@@ -1383,11 +1393,17 @@
 	date = [HolidayData dateWithDay:22 month:6 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = NSLocalizedStringFromTable(@"Statehood Day", kHolidaysResourceName, nil);
-	date = [HolidayData dateWithDay:25 month:6 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
-	
-	holidayName = NSLocalizedStringFromTable(@"Victory and Homeland Thanksgiving Day", kHolidaysResourceName, nil);
+    holidayName = NSLocalizedStringFromTable(@"Independence Day", kHolidaysResourceName, nil);
+    date = [HolidayData dateWithDay:25 month:6 year:year withCalendar:gregorian option:0];
+    [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
+    holidayName = NSLocalizedStringFromTable(@"Kurban Bayram", kHolidaysResourceName, nil);
+    date = [HolidayData getSacrificeFeast:year withCalendar:gregorian];
+    if (date != nil) {
+        [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
+    }
+
+    holidayName = NSLocalizedStringFromTable(@"Victory and Homeland Thanksgiving Day", kHolidaysResourceName, nil);
 	date = [HolidayData dateWithDay:5 month:8 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1395,14 +1411,14 @@
 	date = [HolidayData dateWithDay:15 month:8 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = NSLocalizedStringFromTable(@"Independence Day", kHolidaysResourceName, nil);
-	date = [HolidayData dateWithDay:8 month:10 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
-	
 	holidayName = NSLocalizedStringFromTable(@"All Saints Day", kHolidaysResourceName, nil);
 	date = [HolidayData dateWithDay:1 month:11 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
+    holidayName = NSLocalizedStringFromTable(@"Homeland War Victims Memorial day", kHolidaysResourceName, nil);
+    date = [HolidayData dateWithDay:18 month:11 year:year withCalendar:gregorian option:0];
+    [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
 	holidayName = NSLocalizedStringFromTable(@"Christmas Day", kHolidaysResourceName, nil);
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];

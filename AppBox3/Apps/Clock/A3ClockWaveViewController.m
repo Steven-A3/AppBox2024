@@ -415,8 +415,8 @@
 		}
 		[self removeClockIconConstraints];
 		[self.clockIcon makeConstraints:^(MASConstraintMaker *make) {
-			_clockIconRight = make.right.equalTo(self.timeCircle.left).with.offset(-47);
-			_clockIconCenterY = make.centerY.equalTo(self.view.centerY);
+			self.clockIconRight = make.right.equalTo(self.timeCircle.left).with.offset(-47);
+			self.clockIconCenterY = make.centerY.equalTo(self.view.centerY);
 		}];
 	}
 
@@ -635,9 +635,8 @@
 	[self.view addSubview:self.weatherLabel];
 
     CGFloat verticalOffset = 0;
-    if (IS_IPHONEX) {
-        verticalOffset = -30;
-    }
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    verticalOffset = -safeAreaInsets.bottom;
     
 	[self.weatherImageView makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.view.left).with.offset(IS_IPHONE ? 12 : 25);
@@ -772,7 +771,8 @@
 - (void)refreshWholeClock:(A3ClockInfo *)clockInfo {
 	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
 	
-    if (IS_IPHONEX) {
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    if (safeAreaInsets.top > 20) {
         CGRect screenBounds = [[UIScreen mainScreen] bounds];
         scale = MIN(screenBounds.size.width, screenBounds.size.height) / 320;
     }

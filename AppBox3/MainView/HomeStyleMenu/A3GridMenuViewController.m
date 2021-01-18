@@ -47,6 +47,7 @@ A3InstructionViewControllerDelegate>
 @property (nonatomic, strong) NSIndexPath *selectedIndexPath;
 @property (nonatomic, strong) UIPageControl *pageControl;
 @property (nonatomic, strong) A3HomeStyleHelpViewController *instructionViewController;
+@property (nonatomic, assign) NSInteger pageBeforeViewDisappear;
 
 @end
 
@@ -58,7 +59,6 @@ A3InstructionViewControllerDelegate>
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-	self.automaticallyAdjustsScrollViewInsets = NO;
     _itemsPerPage = 16;
 	[self setupCollectionView];
 	[self setupPageControl];
@@ -75,9 +75,7 @@ A3InstructionViewControllerDelegate>
         [self setupContentHeightWithSize:self.view.bounds.size];
         self.collectionView.backgroundView = self.backgroundView;
         [self.collectionView reloadData];
-        [self.pageControl removeFromSuperview];
-        self.pageControl = nil;
-        [self setupPageControl];
+        [self layoutPageControl];
     });
 }
 
@@ -99,8 +97,8 @@ A3InstructionViewControllerDelegate>
 	[self.collectionView reloadData];
 
 	dispatch_async(dispatch_get_main_queue(), ^{
-		_pageControl.currentPage = _pageBeforeViewDisappear;
-		[self pageControlValueChanged:_pageControl];
+		self.pageControl.currentPage = self.pageBeforeViewDisappear;
+		[self pageControlValueChanged:self.pageControl];
 	});
 }
 
@@ -140,50 +138,50 @@ A3InstructionViewControllerDelegate>
 }
 
 - (void)setupPageControl {
-	_pageControl = [UIPageControl new];
-	_pageControl.numberOfPages = [self.menuItems count] / _flowLayout.numberOfItemsPerPage + 1;
+    UIEdgeInsets safeAreaInsets = [[UIApplication sharedApplication] keyWindow].safeAreaInsets;
+    
+    FNLOG(@"%@, %f, %f, %f", [A3UIDevice deviceInformationDictionary][@"Model"], safeAreaInsets.top, safeAreaInsets.bottom, safeAreaInsets.left);
+
+    if (_pageControl == nil) {
+        _pageControl = [UIPageControl new];
+        [_pageControl addTarget:self action:@selector(pageControlValueChanged:) forControlEvents:UIControlEventValueChanged];
+        [self.view addSubview:_pageControl];
+    }
+    NSInteger numberOfItemsPerPage = _flowLayout.numberOfItemsPerRow * _flowLayout.numberOfRowsPerPage;
+	_pageControl.numberOfPages = [self.menuItems count] / numberOfItemsPerPage + 1;
 	_pageControl.currentPage = 0;
-	[_pageControl addTarget:self action:@selector(pageControlValueChanged:) forControlEvents:UIControlEventValueChanged];
-	[self.view addSubview:_pageControl];
-	
+
+    __weak __typeof__(self) weakSelf = self;
 	[_pageControl makeConstraints:^(MASConstraintMaker *make) {
+        __typeof__(self) strongSelf = weakSelf;
+        
 		CGFloat offset;
-		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-		if (self.shouldShowHouseAd) {
-			if (IS_IPHONE) {
-                if (screenBounds.size.height == 812 || screenBounds.size.height == 896) {
-                    offset = -143;
-                } else if (screenBounds.size.height == 568) {
-					// 4" : 5, 5s, iPod Touch 5
-					offset = -84;
-				} else if (screenBounds.size.height == 480) {
-					// 3.5" : iPhone 4, 4s
-					offset = -63;
-				} else {
-					offset = -103;
-				}
-			} else {
-				if (IS_IPAD_PRO) {
-					offset = -160;
-				} else {
-					offset = -114;
-				}
-			}
-		} else {
-            if (screenBounds.size.height == 812 || screenBounds.size.height == 896) {
-                offset = -20;
-            } else {
-                offset = 0;
-            }
-		}
-		make.bottom.equalTo(self.view.bottom).with.offset(offset);
-		make.centerX.equalTo(_collectionView.centerX);
+        offset = -(strongSelf.collectionView.contentInset.bottom - 20);
+		make.bottom.equalTo(strongSelf.view.bottom).with.offset(offset);
+		make.centerX.equalTo(strongSelf.collectionView.centerX);
 	}];
 	[self updatePageControl];
 }
 
+- (void)layoutPageControl {
+    [self updatePageControl];
+    
+    __weak __typeof__(self) weakSelf = self;
+    [_pageControl remakeConstraints:^(MASConstraintMaker *make) {
+        __typeof__(self) strongSelf = weakSelf;
+        
+        CGFloat offset;
+        offset = -(strongSelf.collectionView.contentInset.bottom - 20);
+        make.bottom.equalTo(strongSelf.view.bottom).with.offset(offset);
+        make.centerX.equalTo(strongSelf.collectionView.centerX);
+    }];
+}
+
 - (void)updatePageControl {
-	_pageControl.numberOfPages = ([self.menuItems count] - 1) / _flowLayout.numberOfItemsPerPage + 1;
+    NSInteger numberOfItemsPerPage = _flowLayout.numberOfItemsPerRow * _flowLayout.numberOfRowsPerPage;
+    if (numberOfItemsPerPage == 0) numberOfItemsPerPage = 20;
+    
+	_pageControl.numberOfPages = ([self.menuItems count] - 1) / numberOfItemsPerPage + 1;
 	[_pageControl setHidden:_pageControl.numberOfPages == 1];
 }
 
@@ -513,112 +511,95 @@ A3InstructionViewControllerDelegate>
 	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 
 	[self setupContentHeightWithSize:size];
+    [self layoutPageControl];
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	[self setupContentHeightWithSize:screenBounds.size];
+    [self layoutPageControl];
 }
 
 - (void)setupContentHeightWithSize:(CGSize)toSize {
-	CGFloat offset;
-	
-	if (IS_IPHONE) {
-		if (self.shouldShowHouseAd) {
-			offset = 26;
-			if (toSize.height >= 647) {
-				_flowLayout.contentHeight = 454.0;
-			} else if (toSize.height == 568) {
-				_flowLayout.contentHeight = 354.0;
-				offset = 20;
-			} else {
-				_flowLayout.contentHeight = 312.0;
-				offset = 11;
-			}
-		} else {
-			offset = 26;
-			if (toSize.height > 667) {
-				_flowLayout.contentHeight = 600.0;
-				offset = -20;
-			} else if (toSize.height >= 647) {
-				_flowLayout.contentHeight = 540.0;
-				offset = -20;
-			} else if (toSize.height == 568) {
-				_flowLayout.contentHeight = 454.0;
-				offset = -20;
-			} else {
-				_flowLayout.contentHeight = 360.0;
-				offset = -20;
-			}
-		}
-	} else {
-		if (self.shouldShowHouseAd) {
-			if (IS_IPAD_PRO) {
-				if (toSize.width < toSize.height) {
-					_flowLayout.contentHeight = 1085;
-					_flowLayout.numberOfItemsPerRow = 4;
-					_flowLayout.numberOfRowsPerPage = 5;
-					offset = 70;
-				} else {
-					_flowLayout.contentHeight = 756;
-					_flowLayout.numberOfItemsPerRow = 5;
-					_flowLayout.numberOfRowsPerPage = 4;
-					offset = 46;
-				}
-			} else {
-				if (toSize.width < toSize.height) {
-					_flowLayout.contentHeight = 808;
-					_flowLayout.numberOfItemsPerRow = 4;
-					_flowLayout.numberOfRowsPerPage = 5;
-					offset = 51;
-				} else {
-					_flowLayout.contentHeight = 530;
-					_flowLayout.numberOfItemsPerRow = 5;
-					_flowLayout.numberOfRowsPerPage = 4;
-					offset = 34;
-				}
-			}
-		} else {
-			if (IS_IPAD_PRO) {
-				if (toSize.width < toSize.height) {
-					_flowLayout.contentHeight = 1085;
-					_flowLayout.numberOfItemsPerRow = 4;
-					_flowLayout.numberOfRowsPerPage = 5;
-					offset = -15;
-				} else {
-					_flowLayout.contentHeight = 756;
-					_flowLayout.numberOfItemsPerRow = 5;
-					_flowLayout.numberOfRowsPerPage = 4;
-					offset = -15;
-				}
-			} else {
-				if (toSize.width < toSize.height) {
-					_flowLayout.contentHeight = 808;
-					_flowLayout.numberOfItemsPerRow = 4;
-					_flowLayout.numberOfRowsPerPage = 5;
-					offset = -15;
-				} else {
-					_flowLayout.contentHeight = 530;
-					_flowLayout.numberOfItemsPerRow = 5;
-					_flowLayout.numberOfRowsPerPage = 4;
-					offset = -15;
-				}
-			}
-		}
-	}
-	CGFloat verticalMargin = (toSize.height - self.flowLayout.contentHeight) / 2;
-	self.collectionView.contentInset = UIEdgeInsetsMake(verticalMargin - offset, 0, verticalMargin + offset, 0);
+    // Content Height는
+    // toSize.height -
+    // safeAreaInsets.top
+    // NavigationBar Height 44
+    //
+    // safeAreaInsets.bottom
+    // if (shouldShowHouseAds) {
+    //      Height of House Ads = topMargin 8 Icon Height 40 margin To Text 4, text height 15, bototm margin 8
+    //      16 (top/bottom margin), text Height 15 + 4 = 35 + 40 = 75
+    // }
+    // Page Control 10 Point
+    //
+    // Again
+    //
+    // safeAreaInsets.top
+    // NavigationBar
+    // topMargin
+    // ContentHeight
+    // bottomMargin
+    // PageControl
+    // HouseAds Height
+    // safeAreaInsets.bottom
+    
+    UIEdgeInsets safeAreaInsets = [[UIApplication sharedApplication] keyWindow].safeAreaInsets;
 
-	NSInteger currentPage = _pageControl.currentPage;
+    if (IS_IPHONE) {
+        CGFloat contentHeight = toSize.height;
+        CGFloat topInset = safeAreaInsets.top + 44 + 10; // NavigationBarHeight + topMargin
+        CGFloat bottomInset = safeAreaInsets.bottom + 20; // bottomMargin + pageControlHeight
+        if (self.shouldShowHouseAd) {
+            bottomInset += 75 + 20;
+        }
+        contentHeight -= topInset;
+        contentHeight -= bottomInset;
+
+        _flowLayout.numberOfItemsPerRow = 4;
+        _flowLayout.numberOfRowsPerPage = MIN(floor((contentHeight - 100) / _flowLayout.itemSize.height), 5);
+        _flowLayout.contentHeight = contentHeight;
+        
+        self.collectionView.contentInset = UIEdgeInsetsMake(topInset, safeAreaInsets.left, bottomInset, safeAreaInsets.right);
+	} else {
+        CGFloat contentHeight = toSize.height;
+        
+        CGFloat verticalMargin = (toSize.height > toSize.width) ? 90 : 30;
+        CGFloat topInset = safeAreaInsets.top + 44 + verticalMargin; // NavigationBarHeight + topMargin
+        CGFloat bottomInset = safeAreaInsets.bottom + 20 + verticalMargin; // bottomMargin + pageControlHeight
+        if (self.shouldShowHouseAd) {
+//            if (toSize.width > toSize.height) {
+//                bottomInset -= 30;
+//            }
+            bottomInset += 75 + 20;
+        }
+        contentHeight -= topInset;
+        contentHeight -= bottomInset;
+
+        NSInteger maxRows = (toSize.height > toSize.width) ? 5 : 4;
+
+        // Is Landscape?
+        _flowLayout.numberOfItemsPerRow = (toSize.height > toSize.width) ? 4 : 5;
+        _flowLayout.numberOfRowsPerPage = MIN(floor((contentHeight - 100) / _flowLayout.itemSize.height), maxRows);
+        _flowLayout.contentHeight = contentHeight;
+        
+        self.collectionView.contentInset = UIEdgeInsetsMake(topInset, safeAreaInsets.left, bottomInset, safeAreaInsets.right);
+	}
+    
+ 	NSInteger currentPage = _pageControl.currentPage;
+
+    __weak __typeof__(self) weakSelf = self;
 	dispatch_async(dispatch_get_main_queue(), ^{
-		FNLOG(@"%ld", (long)_pageControl.currentPage);
-		self.collectionView.contentOffset = CGPointMake(toSize.width * currentPage, -self.collectionView.contentInset.top);
+        __typeof__(self) strongSelf = weakSelf;
+		FNLOG(@"%ld", (long)weakSelf.pageControl.currentPage);
+		strongSelf.collectionView.contentOffset = CGPointMake(toSize.width * currentPage, -strongSelf.collectionView.contentInset.top);
 	});
 	
 	if (_instructionViewController) {
 		dispatch_async(dispatch_get_main_queue(), ^{
-			[self adjustFingerCenter];
+            __typeof__(self) strongSelf = weakSelf;
+			[strongSelf adjustFingerCenter];
 		});
 	}
 }
@@ -692,7 +673,8 @@ static NSString *const A3V3InstructionDidShowForGridMenu = @"A3V3InstructionDidS
 		row = numberOfItems >= 14 ? 13 : 0;
 		hideImageView = row == 0;
 	} else {
-		row = numberOfItems >= _flowLayout.numberOfItemsPerPage + 6 ? _flowLayout.numberOfItemsPerPage + 5 : _flowLayout.numberOfItemsPerPage;
+        NSInteger numberOfItemsPerPage = _flowLayout.numberOfItemsPerRow * _flowLayout.numberOfRowsPerPage;
+		row = numberOfItems >= numberOfItemsPerPage + 6 ? numberOfItemsPerPage + 5 : numberOfItemsPerPage;
 		hideImageView = IS_IPHONE;
 	}
 	

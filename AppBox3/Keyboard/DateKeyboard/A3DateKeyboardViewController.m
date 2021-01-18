@@ -30,14 +30,20 @@
 }
 
 - (CGFloat)keyboardHeight {
-	if (IS_IPHONE) {
-		return 216;
-	}
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    if (IS_IPHONE) {
+        if (safeAreaInsets.top > 20) {
+            return 260;
+        }
+        return 216;
+    }
+
+    // if iPAD
 	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	if (IS_PORTRAIT) {
-		return screenBounds.size.height == 1024 ? 264 : 264 * 1.22;
+		return (screenBounds.size.height == 1024 ? 264: 264 * 1.22) + safeAreaInsets.bottom;
 	}
-	return screenBounds.size.height == 768 ? 352 : 352 * 1.16;
+	return (screenBounds.size.height == 768 ? 352 : 352 * 1.16) + safeAreaInsets.bottom;
 }
 
 - (void)viewDidLoad

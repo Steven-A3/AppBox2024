@@ -789,6 +789,8 @@
 	if (_isDateKeyboardVisible) {
 		return;
 	}
+    [self dismissNumberKeyboard];
+    
 	_isDateKeyboardVisible = YES;
 	
 	if (!self.dateKeyboardViewController) {
@@ -1066,6 +1068,8 @@
 	if (_isNumberKeyboardVisible) {
 		return;
 	}
+    [self dismissDateKeyboard];
+    
 	_isNumberKeyboardVisible = YES;
 
 	[self prepareEditingForTextField:textField];

@@ -146,6 +146,7 @@ NSString *const A3BatteryStatusThemeColorChanged = @"A3BatteryStatusThemeColorCh
 			@"Internet on Wi-Fi",
 			@"Internet on Cellular",
 			@"Video playback",
+            @"Video playback (streamed)",
 			@"Audio playback",
 			@"Standby",
 			@"FaceTime",

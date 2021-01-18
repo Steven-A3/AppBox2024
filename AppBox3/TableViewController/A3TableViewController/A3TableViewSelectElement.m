@@ -18,7 +18,9 @@
 	A3TableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
 	if (!cell) {
 		cell = [[A3TableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseIdentifier];
-	}
+    } else {
+        [cell resetCellLayout];
+    }
 	cell.textLabel.text = self.title;
 	cell.textLabel.textColor = [UIColor blackColor];
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

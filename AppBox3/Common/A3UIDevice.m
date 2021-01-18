@@ -44,13 +44,12 @@ NSString *const A3AnimationIDKeyboardWillShow = @"A3AnimationIDKeyboardWillShow"
 + (CGFloat)scaleToOriginalDesignDimension {
 	CGFloat scale;
 	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-    if (IS_IPHONEX) {
-        scale = MIN(bounds.size.width, bounds.size.height) / 320;
-    } else if (IS_IPHONE) {
+
+    if (IS_IPHONE) {
 		if (IS_PORTRAIT) {
 			scale = bounds.size.width / 320;
 		} else {
-			scale = bounds.size.width / (IS_IPHONE35 ? 480 : 568);
+			scale = bounds.size.height / 320;
 		}
 	} else {
 		if (IS_PORTRAIT) {
@@ -75,11 +74,8 @@ NSString *const A3AnimationIDKeyboardWillShow = @"A3AnimationIDKeyboardWillShow"
 }
 
 + (CGFloat)statusBarHeightPortrait {
-    CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-    if (screenBounds.size.height == 812.0 || screenBounds.size.height == 896.0) {
-        return 40.0;
-    }
-    return 20.0;
+    UIEdgeInsets safeAreaInsets = [[UIApplication sharedApplication] keyWindow].safeAreaInsets;
+    return safeAreaInsets.top;
 }
 
 + (double)memoryUsage {
@@ -111,7 +107,7 @@ NSString *const A3AnimationIDKeyboardWillShow = @"A3AnimationIDKeyboardWillShow"
 }
 
 + (CGFloat)applicationHeightForCurrentOrientation {
-	CGRect applicationFrame = [UIScreen mainScreen].applicationFrame;
+	CGRect applicationFrame = [[UIScreen mainScreen] bounds];
 	return UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]) ? applicationFrame.size.height : applicationFrame.size.width - kSystemStatusBarHeight;
 }
 
@@ -131,8 +127,8 @@ NSString *const A3AnimationIDKeyboardWillShow = @"A3AnimationIDKeyboardWillShow"
 
 + (BOOL)hasCellularNetwork {
 	CTTelephonyNetworkInfo *ctInfo = [[CTTelephonyNetworkInfo alloc] init];
-	CTCarrier *carrier = ctInfo.subscriberCellularProvider;
-	return (carrier != nil);
+    NSDictionary *carriers = ctInfo.serviceSubscriberCellularProviders;
+	return carriers && [[carriers allKeys] count] > 0;
 }
 
 + (BOOL)hasTorch {

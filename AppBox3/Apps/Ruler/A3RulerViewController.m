@@ -139,204 +139,326 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
     // Dispose of any resources that can be recreated.
 }
 
-- (void)setupBasicMeasureForInterfaceOrientation:(BOOL)toPortrait {
-	NSString *model = [A3UIDevice platformString];
+- (void)setupBasicMeasureForiPhone:(BOOL)toPortrait model:(NSString *)model {
     CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-	CGFloat screenHeight = MAX(screenBounds.size.width, screenBounds.size.height);
+    CGFloat screenHeight = MAX(screenBounds.size.width, screenBounds.size.height);
 
-	if ([model isEqualToString:@"iPod Touch (5th generation)"]
-        || [model isEqualToString:@"iPod Touch (6th generation)"]
-        || [model isEqualToString:@"iPod Touch (7th generation)"]) {
-		// iPod touch 5
-		CGFloat pixelsInInch = 326.7;
-		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (screenHeight / 1136.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
-		_inchAsPoints = (screenHeight / 1136.0) * pixelsInInch;
-		_redLineWidth = 0.5;
-		_resetPosition = _centimeterPositionRightBottom ? 8.0 : 3.0;
-	} else if ([model isEqualToString:@"iPhone 5"]) {
-		// iPhone 5
-		CGFloat pixelsInInch = 327.0;
-		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (screenHeight / 1136.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
-		_inchAsPoints = (screenHeight / 1136.0) * pixelsInInch;
-		_redLineWidth = 0.5;
-		_resetPosition = _centimeterPositionRightBottom ? 8.0 : 3.0;
-	} else if ([model isEqualToString:@"iPhone 5s"]) {
-		// iPhone 5s
-		CGFloat pixelsInInch = 326.5;
-		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (screenHeight / 1136.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
-		_inchAsPoints = (screenHeight / 1136.0) * pixelsInInch;
-		_redLineWidth = 0.5;
-		_resetPosition = _centimeterPositionRightBottom ? 8.0 : 3.0;
-	} else if ([model isEqualToString:@"iPhone SE"]) {
-		// iPhone SE
-		CGFloat pixelsInInch = 326.5;
-		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (screenHeight / 1136.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
-		_inchAsPoints = (screenHeight / 1136.0) * pixelsInInch;
-		_redLineWidth = 0.5;
-		_resetPosition = _centimeterPositionRightBottom ? 8.0 : 3.0;
-	} else if ([model isEqualToString:@"iPhone 4"])	{
-		// iPhone 4
-		// 326 PPI, 960 pixels, 480 points
-		CGFloat pixelsInInch = 326.5;
-		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (screenHeight / 960.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
-		_inchAsPoints = (screenHeight / 960.0) * pixelsInInch;
-		_redLineWidth = 0.5;
-		_resetPosition = _centimeterPositionRightBottom ? 6.5 : 2.5;
-	} else if ([model isEqualToString:@"iPhone 4s"])	{
-		// iPhone 4s
-		// 326 PPI, 960 pixels, 480 points
-		CGFloat pixelsInInch = 326.7;
-		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (screenHeight / 960.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
-		_inchAsPoints = (screenHeight / 960.0) * pixelsInInch;
-		_redLineWidth = 0.5;
-		_resetPosition = _centimeterPositionRightBottom ? 6.5 : 2.5;
-    } else if ([model isEqualToString:@"iPhone 6"] ||
-			   [model isEqualToString:@"iPhone 6s"] ||
-			   [model isEqualToString:@"iPhone 7"] ||
-               [model isEqualToString:@"iPhone 8"]) {
-		// iPhone 6
-		CGFloat pixelsInInch = 326;
-		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (screenHeight / 1334.0) * pixelsInCentimeter;
-		_inchAsPoints = (screenHeight / 1334.0) * pixelsInInch;
-		_resetPosition = _centimeterPositionRightBottom ? 9.5 : 3.5;
-		_redLineWidth = 0.5;
-	} else if ([model isEqualToString:@"iPhone 6 Plus"] ||
-			   [model isEqualToString:@"iPhone 6s Plus"] ||
-               [model isEqualToString:@"iPhone 7 Plus"] ||
-               [model isEqualToString:@"iPhone 8 Plus"])
-    {
-		// iPhone 6 Plus
-		CGFloat pixelsInInch = 401;	// Original value = 401
-		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (screenHeight / 1920.0) * pixelsInCentimeter;
-		_inchAsPoints = (screenHeight / 1920.0) * pixelsInInch;
-		_resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
-		_redLineWidth = 0.5;
-    } else if ([model isEqualToString:@"iPhone X"]) {
-        CGFloat pixelsInInch = 459.3;    // Original value = 458
+    if ([model isEqualToString:@"iPhone 12"]) {
+        CGFloat pixelsInInch = 460;
         CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-        _centimeterAsPoints = (screenHeight / 2436.0) * pixelsInCentimeter;
-        _inchAsPoints = (screenHeight / 2436.0) * pixelsInInch;
+        _centimeterAsPoints = (screenHeight / 2532.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2532.0) * pixelsInInch;
         _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
         _redLineWidth = 0.5;
-    } else if ([model isEqualToString:@"iPhone XS"]) {
-        CGFloat pixelsInInch = 459.3;    // Original value = 458
+        return;
+    }
+    if ([model isEqualToString:@"iPhone 12 mini"]) {
+        CGFloat pixelsInInch = 476;
         CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-        _centimeterAsPoints = (screenHeight / 2436.0) * pixelsInCentimeter;
-        _inchAsPoints = (screenHeight / 2436.0) * pixelsInInch;
+        _centimeterAsPoints = (screenHeight / 2340.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2340.0) * pixelsInInch;
         _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
         _redLineWidth = 0.5;
-    } else if ([model isEqualToString:@"iPhone XS Max"]) {
-        CGFloat pixelsInInch = 459.3;    // Original value = 458
+        return;
+    }
+    if ([model isEqualToString:@"iPhone 12 Pro"] ||
+        [model isEqualToString:@"iPhone (Latest)"]) {
+        CGFloat pixelsInInch = 460;    // Original value = 458
         CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-        _centimeterAsPoints = (screenHeight / 2688.0) * pixelsInCentimeter;
-        _inchAsPoints = (screenHeight / 2688.0) * pixelsInInch;
+        _centimeterAsPoints = (screenHeight / 2532.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2532.0) * pixelsInInch;
         _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
         _redLineWidth = 0.5;
-    } else if ([model isEqualToString:@"iPhone XR"]) {
-        CGFloat pixelsInInch = 326;     // Original value = 326
+        return;
+    }
+    if ([model isEqualToString:@"iPhone 12 Pro Max"]) {
+        CGFloat pixelsInInch = 458;     // Original value = 326
         CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-        _centimeterAsPoints = (screenHeight / 1792.0) * pixelsInCentimeter;
-        _inchAsPoints = (screenHeight / 1792.0) * pixelsInInch;
+        _centimeterAsPoints = (screenHeight / 2778.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2778.0) * pixelsInInch;
         _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
         _redLineWidth = 0.5;
-    } else if ([model isEqualToString:@"iPhone 11"]) {
-        CGFloat pixelsInInch = 326;    // Original value = 458
-        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-        _centimeterAsPoints = (screenHeight / 1792.0) * pixelsInCentimeter;
-        _inchAsPoints = (screenHeight / 1792.0) * pixelsInInch;
-        _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
-        _redLineWidth = 0.5;
-    } else if ([model isEqualToString:@"iPhone 11 Pro"] ||
-               [model isEqualToString:@"iPhone (Latest)"]) {
-        CGFloat pixelsInInch = 458;    // Original value = 458
-        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-        _centimeterAsPoints = (screenHeight / 2436.0) * pixelsInCentimeter;
-        _inchAsPoints = (screenHeight / 2436.0) * pixelsInInch;
-        _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
-        _redLineWidth = 0.5;
-    } else if ([model isEqualToString:@"iPhone 11 Pro Max"]) {
+        return;
+    }
+    if ([model isEqualToString:@"iPhone 11 Pro Max"]) {
         CGFloat pixelsInInch = 458;     // Original value = 326
         CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
         _centimeterAsPoints = (screenHeight / 2688.0) * pixelsInCentimeter;
         _inchAsPoints = (screenHeight / 2688.0) * pixelsInInch;
         _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
         _redLineWidth = 0.5;
-	} else if ([model isEqualToString:@"iPad 2"] || [model isEqualToString:@"iPad 2 (Wi-Fi)"]) {
-		// iPad 2
-		CGFloat pixelsInInch = 132.7;	// Announced PPI: 132
-		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (screenHeight / 1024.0) * pixelsInCentimeter;
-		_inchAsPoints = (screenHeight / 1024.0) * pixelsInInch;
-		_resetPosition = _centimeterPositionRightBottom ? 18.0 : 7.0;
-		_redLineWidth = 1.0;
-	} else if ([model isEqualToString:@"iPad (3rd generation)"]
-			|| [model isEqualToString:@"iPad (3rd generation, Wi-Fi)"]
-			|| [model isEqualToString:@"iPad (4th generation)"]
-			|| [model isEqualToString:@"iPad (4th generation, Wi-Fi)"]
-		    || [model isEqualToString:@"9.7\" iPad Pro"]
-		    || [model isEqualToString:@"9.7\" iPad Pro (Wi-Fi)"]
-            || [model isEqualToString:@"iPad 2017"]
-			|| [model isEqualToString:@"iPad Air"]
-			|| [model isEqualToString:@"iPad Air (Wi-Fi)"]
-			|| [model isEqualToString:@"iPad Air 2"]
-			|| [model isEqualToString:@"iPad Air 2 (Wi-Fi)"]) {
-		// iPad Air
-		CGFloat pixelsInInch = 265.3;	// Original ppi = 264
-		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (screenHeight / 2048.0) * pixelsInCentimeter;
-		_inchAsPoints = (screenHeight / 2048.0) * pixelsInInch;
-		_resetPosition = _centimeterPositionRightBottom ? 18.0 : 7.0;
-		_redLineWidth = 0.5;
-	} else if ([model isEqualToString:@"iPad mini"]
-               || [model isEqualToString:@"iPad mini (Wi-Fi)"]) {
-		// iPad mini
-		CGFloat pixelsInInch = 163.4;
-		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (screenHeight / 1024.0) * pixelsInCentimeter;
-		_inchAsPoints = (screenHeight / 1024.0) * pixelsInInch;
-		_resetPosition = _centimeterPositionRightBottom ? 14.0 : 5.5;
-		_redLineWidth = 1.0;
-	} else if ([model isEqualToString:@"iPad mini 2"]
-               || [model isEqualToString:@"iPad mini 2 (Wi-Fi)"]) {
-		// iPad mini Retina
-		CGFloat pixelsInInch = 326.8;               // 326
-		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (screenHeight / 2048.0) * pixelsInCentimeter;
-		_inchAsPoints = (screenHeight / 2048.0) * pixelsInInch;
-		_resetPosition = _centimeterPositionRightBottom ? 14.0 : 5.5;
-		_redLineWidth = 0.5;
-	} else if ([model isEqualToString:@"iPad mini 3"] ||
-               [model isEqualToString:@"iPad mini 3 (Wi-Fi)"] ||
-               [model isEqualToString:@"iPad mini 4"] ||
-               [model isEqualToString:@"iPad mini 4 (Wi-Fi)"]) {
-		// iPad mini 3
-		CGFloat pixelsInInch = 327.2;
-		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (screenHeight / 2048.0) * pixelsInCentimeter;
-		_inchAsPoints = (screenHeight / 2048.0) * pixelsInInch;
-		_resetPosition = _centimeterPositionRightBottom ? 14.0 : 5.5;
-		_redLineWidth = 0.5;
-	} else if ([model isEqualToString:@"iPad Pro"] ||
-               [model isEqualToString:@"iPad Pro 12.9\" 2nd generation"] ||
-               [model isEqualToString:@"iPad Pro 12.9\" 3rd generation"] ||
-			   [model isEqualToString:@"iPad Pro (Wi-Fi)"]) {
-		// iPad Pro
-		CGFloat pixelsInInch = 264.7;
-		CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-		_centimeterAsPoints = (screenHeight / 2732.0) * pixelsInCentimeter;
-		_inchAsPoints = (screenHeight / 2732.0) * pixelsInInch;
-		_resetPosition = _centimeterPositionRightBottom ? 23.0 : 9.0;
-		_redLineWidth = 0.5;
-    } else if ([model isEqualToString:@"iPad Pro 10.5\""] ||
-               [model isEqualToString:@"iPad Pro 11\""]) {
+        return;
+    }
+    if ([model isEqualToString:@"iPhone 11 Pro"] ||
+        [model isEqualToString:@"iPhone (Latest)"]) {
+        CGFloat pixelsInInch = 458;    // Original value = 458
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 2436.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2436.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
+        _redLineWidth = 0.5;
+        return;
+    }
+    if ([model isEqualToString:@"iPhone 11"]) {
+        CGFloat pixelsInInch = 326;    // Original value = 458
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 1792.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 1792.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
+        _redLineWidth = 0.5;
+        return;
+    }
+    if ([model isEqualToString:@"iPhone XR"]) {
+        CGFloat pixelsInInch = 326;     // Original value = 326
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 1792.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 1792.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
+        _redLineWidth = 0.5;
+        return;
+    }
+    if ([model isEqualToString:@"iPhone XS Max"]) {
+        CGFloat pixelsInInch = 459.3;    // Original value = 458
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 2688.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2688.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
+        _redLineWidth = 0.5;
+        return;
+    }
+    if ([model isEqualToString:@"iPhone XS"]) {
+        CGFloat pixelsInInch = 459.3;    // Original value = 458
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 2436.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2436.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
+        _redLineWidth = 0.5;
+        return;
+    }
+    if ([model isEqualToString:@"iPhone X"]) {
+        CGFloat pixelsInInch = 459.3;    // Original value = 458
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 2436.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2436.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
+        _redLineWidth = 0.5;
+        return;
+    }
+    if ([model isEqualToString:@"iPhone SE"]) {
+        // iPhone SE
+        CGFloat pixelsInInch = 326.5;
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 1136.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
+        _inchAsPoints = (screenHeight / 1136.0) * pixelsInInch;
+        _redLineWidth = 0.5;
+        _resetPosition = _centimeterPositionRightBottom ? 8.0 : 3.0;
+        return;
+    }
+    if ([@[@"iPhone 6",
+           @"iPhone 6s",
+           @"iPhone 7",
+           @"iPhone 8",
+           @"iPhone SE 2nd Gen"] containsObject:model]) {
+        CGFloat pixelsInInch = 326;
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 1334.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 1334.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 9.5 : 3.5;
+        _redLineWidth = 0.5;
+        return;
+    }
+    if ([@[@"iPhone 6 Plus",
+           @"iPhone 6s Plus",
+           @"iPhone 7 Plus",
+           @"iPhone 8 Plus"] containsObject:model])
+    {
+        // iPhone 6 Plus
+        CGFloat pixelsInInch = 401;    // Original value = 401
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 1920.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 1920.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
+        _redLineWidth = 0.5;
+        return;
+    }
+    if ([model isEqualToString:@"iPhone 5s"]) {
+        // iPhone 5s
+        CGFloat pixelsInInch = 326.5;
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 1136.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
+        _inchAsPoints = (screenHeight / 1136.0) * pixelsInInch;
+        _redLineWidth = 0.5;
+        _resetPosition = _centimeterPositionRightBottom ? 8.0 : 3.0;
+        return;
+    }
+    if ([model isEqualToString:@"iPhone 5"]) {
+        // iPhone 5
+        CGFloat pixelsInInch = 327.0;
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 1136.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
+        _inchAsPoints = (screenHeight / 1136.0) * pixelsInInch;
+        _redLineWidth = 0.5;
+        _resetPosition = _centimeterPositionRightBottom ? 8.0 : 3.0;
+        return;
+    }
+    if ([model isEqualToString:@"iPhone 4"])    {
+        // iPhone 4
+        // 326 PPI, 960 pixels, 480 points
+        CGFloat pixelsInInch = 326.5;
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 960.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
+        _inchAsPoints = (screenHeight / 960.0) * pixelsInInch;
+        _redLineWidth = 0.5;
+        _resetPosition = _centimeterPositionRightBottom ? 6.5 : 2.5;
+        return;
+    }
+    if ([model isEqualToString:@"iPhone 4s"])    {
+        // iPhone 4s
+        // 326 PPI, 960 pixels, 480 points
+        CGFloat pixelsInInch = 326.7;
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 960.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
+        _inchAsPoints = (screenHeight / 960.0) * pixelsInInch;
+        _redLineWidth = 0.5;
+        _resetPosition = _centimeterPositionRightBottom ? 6.5 : 2.5;
+        return;
+    }
+}
+
+- (void)setupBasicMeasureForiPad:(BOOL)toPortrait model:(NSString *)model {
+    CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+    CGFloat screenHeight = MAX(screenBounds.size.width, screenBounds.size.height);
+
+    if ([@[@"iPad 2",
+           @"iPad 2 (Wi-Fi)"] containsObject:model])
+    {
+        // iPad 2
+        CGFloat pixelsInInch = 132.7;    // Announced PPI: 132
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 1024.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 1024.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 18.0 : 7.0;
+        _redLineWidth = 1.0;
+        return;
+    }
+    if ([@[@"iPad 3rd Gen (GSM)",
+           @"iPad 3rd Gen (CDMA)",
+           @"iPad 3rd Gen (Wi-Fi)",
+           @"iPad 4th Gen (Wi-Fi)",
+           @"iPad 4th Gen (GSM+LTE)",
+           @"iPad 4th Gen (CDMA+LTE)",
+           @"iPad Pro 9.7 \" (Wi-Fi)",
+           @"iPad Pro 9.7 \" (Wi-Fi+Cellular)",
+           @"iPad 5th Gen (Wi-Fi)",
+           @"iPad 5th Gen (Wi-Fi+Cellular)",
+           @"iPad 6th Gen (Wi-Fi)",
+           @"iPad 6th Gen (Wi-Fi+Cellular)",
+           @"iPad Air 1st Gen (GSM+CDMA)",
+           @"iPad Air 1st Gen (Wi-Fi)",
+           @"iPad Air 1st Gen (Wi-Fi+Cellular)",
+           @"iPad Air (Wi-Fi)",
+           @"iPad Air 2nd Gen (Wi-Fi+Cellular)",
+           @"iPad Air 2nd Gen (Wi-Fi)"] containsObject:model])
+    {
+        // iPad Air
+        CGFloat pixelsInInch = 265.3;    // Original ppi = 264
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 2048.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2048.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 18.0 : 7.0;
+        _redLineWidth = 0.5;
+        return;
+    }
+    if ([@[@"iPad Air 3rd Gen (Wi-Fi)",
+           @"iPad Air 3rd Gen (Wi-Fi+Cellular)"
+           ] containsObject:model])
+    {
+        // iPad Air 4th gen
+        CGFloat pixelsInInch = 264;
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 2224.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2224.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 18.0 : 7.0;
+        _redLineWidth = 0.5;
+        return;
+    }
+    if ([@[@"iPad Air 4th Gen (Wi-Fi)",
+           @"iPad Air 4th Gen (Wi-Fi+Cellular)"] containsObject:model])
+    {
+        // iPad Air 4th gen
+        CGFloat pixelsInInch = 264;
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 2360.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2360.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 18.0 : 7.0;
+        _redLineWidth = 0.5;
+        return;
+    }
+    if ([@[@"iPad mini 1st Gen (CDMA+LTE)",
+           @"iPad mini 1st Gen (GSM+LTE)",
+           @"iPad mini 1st Gen (Wi-Fi)"] containsObject:model])
+    {
+        // iPad mini
+        CGFloat pixelsInInch = 163.4;
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 1024.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 1024.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 14.0 : 5.5;
+        _redLineWidth = 1.0;
+        return;
+    }
+    if ([@[@"iPad mini 2nd Gen (Wi-Fi)",
+           @"iPad mini 2nd Gen (Wi-Fi+Cellular)"] containsObject:model])
+    {
+        // iPad mini Retina
+        CGFloat pixelsInInch = 326.8;               // 326
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 2048.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2048.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 14.0 : 5.5;
+        _redLineWidth = 0.5;
+        return;
+    }
+    if ([@[@"iPad mini 3rd Gen (Wi-Fi)",
+           @"iPad mini 3rd Gen (Wi-Fi+Cellular)",
+           @"iPad mini 4th Gen (Wi-Fi)",
+           @"iPad mini 4th Gen (Wi-Fi+Cellular)",
+           @"iPad mini 5th Gen (Wi-Fi)",
+           @"iPad mini 5th Gen (Wi-Fi+Cellular)"] containsObject:model])
+    {
+        // iPad mini 3
+        CGFloat pixelsInInch = 327.2;
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 2048.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2048.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 14.0 : 5.5;
+        _redLineWidth = 0.5;
+        return;
+    }
+    if ([@[@"iPad Pro 12.9 \" 1st Gen (Wi-Fi)",
+           @"iPad Pro 12.9 \" 1st Gen (Wi-Fi+Cellular)",
+           @"iPad Pro 12.9 \" 2nd Gen (Wi-Fi)",
+           @"iPad Pro 12.9 \" 2nd Gen (Wi-Fi+Cellular)",
+           @"iPad Pro 12.9 \" 3rd Gen (Wi-Fi)",
+           @"iPad Pro 12.9 \" 3rd Gen (Wi-Fi, 1TB)",
+           @"iPad Pro 12.9 \" 3rd Gen (Wi-Fi+Cellular)",
+           @"iPad Pro 12.9 \" 3rd Gen (Wi-Fi+Cellular, 1TB)",
+           @"iPad Pro 12.9 \" 4th Gen (Wi-Fi)",
+           @"iPad Pro 12.9 \" 4th Gen (Wi-Fi+Cellular)"] containsObject:model]
+        )
+    {
+        // iPad Pro
+        CGFloat pixelsInInch = 264.7;
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 2732.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2732.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 23.0 : 9.0;
+        _redLineWidth = 0.5;
+        return;
+    }
+    if ([@[@"iPad Pro 10.5 \" (Wi-Fi)",
+           @"iPad Pro 10.5 \" (Wi-Fi+Cellular)"] containsObject:model])
+    {
         // iPad Pro
         CGFloat pixelsInInch = 264.7;
         CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
@@ -344,32 +466,70 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
         _inchAsPoints = (screenHeight / 2224.0) * pixelsInInch;
         _resetPosition = _centimeterPositionRightBottom ? 18.0 : 7.0;
         _redLineWidth = 0.5;
-    } else if ([model isEqualToString:@"iPad 6th generation"]) {
+        return;
+    }
+    if ([@[@"iPad Pro 11 \" 1st Gen (Wi-Fi)",
+           @"iPad Pro 11 \" 1st Gen (Wi-Fi, 1TB)",
+           @"iPad Pro 11 \" 1st Gen (Wi-Fi+Cellular)",
+           @"iPad Pro 11 \" 1st Gen (Wi-Fi+Cellular, 1TB)",
+           @"iPad Pro 11 \" 2nd Gen (Wi-Fi)",
+           @"iPad Pro 11 \" 2nd Gen (Wi-Fi+Cellular)",] containsObject:model])
+    {
         // iPad Pro
         CGFloat pixelsInInch = 264.7;
         CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-        _centimeterAsPoints = (screenHeight / 2048.0) * pixelsInCentimeter;
-        _inchAsPoints = (screenHeight / 2048.0) * pixelsInInch;
+        _centimeterAsPoints = (screenHeight / 2388.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2388.0) * pixelsInInch;
         _resetPosition = _centimeterPositionRightBottom ? 18.0 : 7.0;
         _redLineWidth = 0.5;
-    } else if ([model isEqualToString:@"iPad 7th Gen 10.2-inch"]) {
-        // iPad Pro
+        return;
+    }
+    if ([@[@"iPad 7th Gen 10.2 \" (Wi-Fi)",
+           @"iPad 7th Gen 10.2 \" (Wi-Fi+Cellular)",
+           @"iPad 8th Gen (Wi-Fi)",
+           @"iPad 8th Gen (Wi-Fi+Cellular)"] containsObject:model]
+        )
+    {
         CGFloat pixelsInInch = 264.7;
         CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
         _centimeterAsPoints = (screenHeight / 2160.0) * pixelsInCentimeter;
         _inchAsPoints = (screenHeight / 2160.0) * pixelsInInch;
         _resetPosition = _centimeterPositionRightBottom ? 18.0 : 7.0;
         _redLineWidth = 0.5;
-    } else {
-		// Simulator
+        return;
+    }
+}
 
-        CGFloat pixelsInInch = 458;    // Original value = 458
+- (void)setupBasicMeasureForiPod:(BOOL)toPortrait model:(NSString *)model {
+    CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+    CGFloat screenHeight = MAX(screenBounds.size.width, screenBounds.size.height);
+    
+    if ([@[@"iPod Touch (5th generation)",
+           @"iPod Touch (6th generation)",
+           @"iPod Touch (7th generation)"] containsObject:model])
+    {
+        // iPod touch 5
+        CGFloat pixelsInInch = 326.7;
         CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-        _centimeterAsPoints = (screenHeight / 2436.0) * pixelsInCentimeter;
-        _inchAsPoints = (screenHeight / 2436.0) * pixelsInInch;
-        _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
+        _centimeterAsPoints = (screenHeight / 1136.0) * pixelsInCentimeter; // or (568.0 / 1136.0) * pixelsInCentimeter
+        _inchAsPoints = (screenHeight / 1136.0) * pixelsInInch;
         _redLineWidth = 0.5;
-	}
+        _resetPosition = _centimeterPositionRightBottom ? 8.0 : 3.0;
+    }
+}
+
+- (void)setupBasicMeasureForInterfaceOrientation:(BOOL)toPortrait {
+	NSString *model = [A3UIDevice platformString];
+    CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+    CGFloat screenHeight = MAX(screenBounds.size.width, screenBounds.size.height);
+
+    if ([model hasPrefix:@"iPhone"]) {
+        [self setupBasicMeasureForiPhone:toPortrait model:model];
+    } else if ([model hasPrefix:@"iPad"]) {
+        [self setupBasicMeasureForiPad:toPortrait model:model];
+    } else {
+        [self setupBasicMeasureForiPod:toPortrait model:model];
+    }
 
 	if ((IS_PORTRAIT && toPortrait) || (IS_LANDSCAPE && !toPortrait)) {
 		_screenWidth = screenBounds.size.width;

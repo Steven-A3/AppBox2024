@@ -45,6 +45,8 @@
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
+@property (nonatomic, assign) CGFloat pageControlHeight;
+
 @end
 
 @implementation A3CalculatorViewController_iPhone {
@@ -58,6 +60,8 @@
     UIButton *_shareButton;
     UIButton *_historyButton;
     UIButton *_helpButton;
+    
+    CGFloat _pageControlHeight;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -65,6 +69,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+        _pageControlHeight = safeAreaInsets.bottom != 0 ? 30 : 20;
     }
     return self;
 }
@@ -79,7 +85,6 @@
 {
     [super viewDidLoad];
 
-    self.automaticallyAdjustsScrollViewInsets = NO;
 	self.title = NSLocalizedString(A3AppName_Calculator, nil);
 
 	if (!_modalPresentingParentViewController) {
@@ -138,8 +143,8 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
-	_scrollView.contentOffset = CGPointMake(320 * scale, 0);
+    CGFloat scaleToDesign = [_keyboardView scaleToDesignForCalculator];
+	_scrollView.contentOffset = CGPointMake(320 * scaleToDesign, 0);
 }
 
 - (void)removeObserver {
@@ -211,65 +216,63 @@
 }
 
 - (CGFloat)getSVbottomOffSet:(CGRect) screenBounds {
-    if (IS_IPHONEX) {
-        return IS_LANDSCAPE ? 0 : -60;
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    if (IS_PORTRAIT) {
+        return -(safeAreaInsets.bottom + _pageControlHeight);
     }
-    return IS_LANDSCAPE ? 0 : -20;
+    // if IS_LANDSCAPE
+    return -(safeAreaInsets.bottom);
 }
 
 - (CGFloat)getExpressionLabelTopOffSet:(CGRect) screenBounds {
-	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
-    return IS_PORTRAIT ? (screenBounds.size.height == 480 ? 25.5 : 80 * scale) : 5.5 * scale;
+    CGFloat scaleToDesign = [A3UIDevice scaleToOriginalDesignDimension];
+    return IS_PORTRAIT ? (screenBounds.size.height == 480 ? 25.5 : 80 * scaleToDesign) : 5.5 * scaleToDesign;
 }
 
 - (CGFloat)getExpressionLabelRightOffSet:(CGRect) screenBounds {
-    if (IS_IPHONEX && IS_LANDSCAPE) {
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+
+    CGFloat scaleToDesign = [A3UIDevice scaleToOriginalDesignDimension];
+    if (IS_LANDSCAPE && safeAreaInsets.bottom > 0) {
         if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationLandscapeRight) {
             return -10;
         } else {
             return -30;
         }
     }
-	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
-    return IS_PORTRAIT ? (screenBounds.size.height == 480 ? -6.5 : -6.5 * scale) : 0.5 * scale;
+    return IS_PORTRAIT ? (screenBounds.size.height == 480 ? -6.5 : -6.5 * scaleToDesign) : 0.5 * scaleToDesign;
 }
 
 - (CGFloat)getResultLabelRightOffSet:(CGRect) screenBounds {
-    if (IS_IPHONEX && IS_LANDSCAPE) {
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    if (IS_LANDSCAPE && safeAreaInsets.bottom > 0) {
         if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationLandscapeRight) {
             return -10;
         } else {
             return -30;
         }
     }
-	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
-    return IS_PORTRAIT ? (screenBounds.size.height == 480 ? -15 : -14 * scale) : -8.5 * scale;
+    CGFloat scaleToDesign = [A3UIDevice scaleToOriginalDesignDimension];
+    return IS_PORTRAIT ? (screenBounds.size.height == 480 ? -15 : -14 * scaleToDesign) : -8.5 * scaleToDesign;
 }
 
 - (CGFloat)getResultLabelBaselineOffSet:(CGRect) screenBounds {
-	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
-    return IS_PORTRAIT ? (screenBounds.size.height == 480 ? 121 : 204.5 * scale) : 68 * scale;
+    CGFloat scaleToDesign = [A3UIDevice scaleToOriginalDesignDimension];
+    return IS_PORTRAIT ? (screenBounds.size.height == 480 ? 121 : 204.5 * scaleToDesign) : 68 * scaleToDesign;
 }
 
 - (UIFont *)getResultLabelFont:(CGRect) screenBounds {
-	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
-    return [UIFont fontWithName:@"HelveticaNeue-Thin" size:IS_LANDSCAPE ? 44 * scale : screenBounds.size.height == 480 ? 62 : 84 * scale];
+    CGFloat scaleToDesign = [A3UIDevice scaleToOriginalDesignDimension];
+    return [UIFont fontWithName:@"HelveticaNeue-Thin" size:IS_LANDSCAPE ? 44 * scaleToDesign : screenBounds.size.height == 480 ? 62 : 84 * scaleToDesign];
 }
 
 - (id)getResultLabelHeight:(CGRect) screenBounds {
     return IS_PORTRAIT ? (screenBounds.size.height == 480 ? @60 : @83) : @44;
 }
 
-- (CGFloat)iPhoneXLandscapeKeyboardHeight {
-    return 260;
-}
-
-- (id)getSVHeight:(CGRect) screenBounds {
-	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
-    if (IS_LANDSCAPE && IS_IPHONEX) {
-        return @([self iPhoneXLandscapeKeyboardHeight]);
-    }
-    return IS_LANDSCAPE ? @(240 * scale): @(324 * scale);
+- (CGFloat)getNumberPadScrollViewHeight {
+    CGFloat scaleToDesign = [_keyboardView scaleToDesignForCalculator];
+    return IS_LANDSCAPE ? 240 * scaleToDesign + 1 : 324 * scaleToDesign;
 }
 
 - (void)setupSubviews {
@@ -282,7 +285,7 @@
 	[_scrollView makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.view.left);
 		make.right.equalTo(self.view.right);
-		self.scrollViewHeightConstraint = make.height.equalTo([self getSVHeight:screenBounds]);
+		self.scrollViewHeightConstraint = make.height.equalTo(@([self getNumberPadScrollViewHeight]));
 		self.scrollViewBottomConstraint = make.bottom.equalTo(self.view.bottom).with.offset([self getSVbottomOffSet:screenBounds]);
 	}];
     
@@ -294,8 +297,9 @@
 	[_pageControl makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.view.left);
 		make.right.equalTo(self.view.right);
-        make.bottom.equalTo(self.view.bottom).with.offset(IS_IPHONEX ? -40 : 0);
-		make.height.equalTo(@20);
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+        make.bottom.equalTo(self.view.bottom).with.offset(-safeAreaInsets.bottom);
+		make.height.equalTo(@(self.pageControlHeight));
 	}];
 
 	[self.view addSubview:self.evaluatedResultLabel];
@@ -323,7 +327,7 @@
 
 }
 
-- (void) setDegAndRad:(BOOL ) bFirst {
+- (void)setDegAndRad:(BOOL)bFirst {
     if (!bFirst) {
         [_degreeRadianLabel removeFromSuperview];
     }
@@ -332,19 +336,20 @@
 		[self.view addSubview:self.degreeRadianLabel];
         [_degreeRadianLabel makeConstraints:^(MASConstraintMaker *make) {
             CGFloat leftOffset = 12;
-            if (IS_IPHONEX) {
+            UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+            if (safeAreaInsets.bottom > 0) {
                 if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationLandscapeRight) {
                     leftOffset = 42;
                 }
             }
 			make.left.equalTo(self.view.left).with.offset(leftOffset);
-			make.bottom.equalTo(_keyboardView.top).with.offset(-8.0);
+			make.bottom.equalTo(self.keyboardView.top).with.offset(-8.0);
 		}];
     } else {
 		[self.pageControl addSubview:self.degreeRadianLabel];
         [_degreeRadianLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.left.equalTo(self.pageControl.left).with.offset(12);
-			make.bottom.equalTo(self.pageControl.bottom).with.offset(-1);
+            make.centerY.equalTo(self.pageControl.centerY);
 		}];
     }
 }
@@ -436,20 +441,28 @@
     return UIInterfaceOrientationMaskAllButUpsideDown;
 }
 
+- (BOOL)prefersStatusBarHidden {
+    return self.presentationController;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleDefault;
+}
+
 - (void)viewWillLayoutSubviews {
     FNLOG();
     
     CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
-	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
     
+    CGFloat scaleToDesign = [A3UIDevice scaleToOriginalDesignDimension];
     if (IS_PORTRAIT) {
         CGRect frame = _keyboardView.frame;
         frame.origin.x = 0.0;
         frame.origin.y = 0.0;
         frame.size.width = screenBounds.size.width * 2;
-        frame.size.height = 324.0 * scale;
+        frame.size.height = 324.0 * scaleToDesign;
         _keyboardView.frame = frame;
-        _scrollView.contentSize = CGSizeMake(screenBounds.size.width * 2, 324 * scale);
+        _scrollView.contentSize = CGSizeMake(screenBounds.size.width * 2, 324 * scaleToDesign);
         _scrollView.scrollEnabled = YES;
         [self pageControlValueChanged]; // to move the previsous page of keyboard before rotating.
         if ([self hidesNavigationBar]) {
@@ -461,10 +474,8 @@
         }
         self.pageControl.hidden = NO;
 
-		if (!self.presentedViewController) {
-			[[UIApplication sharedApplication] setStatusBarHidden:NO];
-			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-		}
+        [self setNeedsStatusBarAppearanceUpdate];
+
         self.calculator.isLandScape = NO;
     }
     else {
@@ -474,16 +485,19 @@
         
         CGRect frame = _keyboardView.frame;
         frame.size.width = screenBounds.size.width;
-        frame.size.height = 240.0 * scale;
+        frame.size.height = [self getNumberPadScrollViewHeight];
         
         // iPhone X
-        if (IS_IPHONEX) {
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+        if (safeAreaInsets.bottom > 0) {
             if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationLandscapeRight) {
-                frame.origin.x = 30;
+                frame.origin.x = safeAreaInsets.left - 14;
+                frame.size.width -= safeAreaInsets.left - 14;
             } else {
                 frame.origin.x = 0.0;
+                frame.size.width -= safeAreaInsets.right - 14;
             }
-            frame.size.height = [self iPhoneXLandscapeKeyboardHeight];
+            frame.size.height = [self getNumberPadScrollViewHeight];
         }
         
         frame.origin.y = 0.0;
@@ -499,8 +513,7 @@
 
 		if (!self.presentedViewController) {
 			[self setNavigationBarHidden:YES];
-			[[UIApplication sharedApplication] setStatusBarHidden:YES];
-			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+            [self setNeedsStatusBarAppearanceUpdate];
 		}
 		
         self.calculator.isLandScape = YES;
@@ -512,13 +525,19 @@
     self.resultLabelBaselineConstraint.offset([self getResultLabelBaselineOffSet:screenBounds]);
     self.resultLabelRightConstraint.offset([self getResultLabelRightOffSet:screenBounds]);
     // self.degreeLabelBottomConstraint.offset([self getDegreeLabelBottomOffset:screenBounds]);
-    self.scrollViewHeightConstraint.equalTo([self getSVHeight:screenBounds]);
+    self.scrollViewHeightConstraint.equalTo(@([self getNumberPadScrollViewHeight]));
     
     [self setDegAndRad:NO];
     [self.calculator evaluateAndSet];
     [_keyboardView layoutIfNeeded];
     
     [self checkRightButtonDisable];
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        [self viewWillLayoutSubviews];
+    } completion:nil];
 }
 
 #pragma mark Instruction Related
@@ -723,13 +742,13 @@ static NSString *const A3V3InstructionDidShowForCalculator = @"A3V3InstructionDi
     return NSLocalizedString(A3AppName_Calculator, nil);
 }
 
-
 - (void)shareButtonAction:(id)sender {
     [self dismissMoreMenu];
 	[self shareAll:sender];
 }
 
 #pragma mark - History
+
 - (void)historyButtonAction:(UIButton *)button {
     [self dismissMoreMenu];
     

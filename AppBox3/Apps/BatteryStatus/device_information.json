@@ -16,11 +16,11 @@
         "iPhone7,2": "iPhone 6",
         "iPhone8,1": "iPhone 6s",
         "iPhone8,2": "iPhone 6s Plus",
-		"iPhone8,4": "iPhone SE",
-		"iPhone9,1": "iPhone 7",
+        "iPhone8,4": "iPhone SE",
+        "iPhone9,1": "iPhone 7",
         "iPhone9,2": "iPhone 7 Plus",
-		"iPhone9,3": "iPhone 7",
-		"iPhone9,4": "iPhone 7 Plus",
+        "iPhone9,3": "iPhone 7",
+        "iPhone9,4": "iPhone 7 Plus",
         "iPhone10,1": "iPhone 8",
         "iPhone10,2": "iPhone 8 Plus",
         "iPhone10,3": "iPhone X",
@@ -34,63 +34,116 @@
         "iPhone12,1": "iPhone 11",
         "iPhone12,3": "iPhone 11 Pro",
         "iPhone12,5": "iPhone 11 Pro Max",
+        "iPhone12,8": "iPhone SE 2nd Gen",
+        "iPhone13,1": "iPhone 12 mini",
+        "iPhone13,2": "iPhone 12",
+        "iPhone13,3": "iPhone 12 Pro",
+        "iPhone13,4": "iPhone 12 Pro Max",
         "iPad2,1": "iPad 2 (Wi-Fi)",
         "iPad2,2": "iPad 2",
         "iPad2,3": "iPad 2",
         "iPad2,4": "iPad 2 (Wi-Fi)",
-        "iPad2,5": "iPad mini (Wi-Fi)",
-        "iPad2,6": "iPad mini",
-        "iPad2,7": "iPad mini",
-        "iPad3,1": "iPad (3rd generation, Wi-Fi)",
-        "iPad3,2": "iPad (3rd generation)",
-        "iPad3,3": "iPad (3rd generation)",
-        "iPad3,4": "iPad (4th generation, Wi-Fi)",
-        "iPad3,5": "iPad (4th generation)",
-        "iPad3,6": "iPad (4th generation)",
-        "iPad4,1": "iPad Air (Wi-Fi)",
-        "iPad4,2": "iPad Air",
-        "iPad4,3": "iPad Air",
-        "iPad4,4": "iPad mini 2 (Wi-Fi)",
-        "iPad4,5": "iPad mini 2",
-        "iPad4,6": "iPad mini 2",
-        "iPad4,7": "iPad mini 3 (Wi-Fi)",
-        "iPad4,8": "iPad mini 3",
-        "iPad4,9": "iPad mini 3",
-        "iPad5,1": "iPad mini 4 (Wi-Fi)",
-        "iPad5,2": "iPad mini 4",
-        "iPad5,3": "iPad Air 2 (Wi-Fi)",
-        "iPad5,4": "iPad Air 2",
-		"iPad6,3": "9.7\" iPad Pro (Wi-Fi)",
-		"iPad6,4": "9.7\" iPad Pro",
-		"iPad6,7": "iPad Pro (Wi-Fi)",
-        "iPad6,8": "iPad Pro",
-        "iPad6,11": "iPad 2017",
-        "iPad6,12": "iPad 2017",
-        "iPad7,1": "iPad Pro 12.9\" 2nd generation",
-        "iPad7,2": "iPad Pro 12.9\" 2nd generation",
-        "iPad7,3": "iPad Pro 10.5\"",
-        "iPad7,4": "iPad Pro 10.5\"",
-        "iPad7,5": "iPad 6th generation",
-        "iPad7,6": "iPad 6th generation",
-        "iPad7,11": "iPad 7th Gen 10.2-inch",
-        "iPad7,12": "iPad 7th Gen 10.2-inch",
-        "iPad8,1": "iPad Pro 11\"",
-        "iPad8,2": "iPad Pro 11\"",
-        "iPad8,3": "iPad Pro 11\"",
-        "iPad8,4": "iPad Pro 11\"",
-        "iPad8,5": "iPad Pro 12.9\" 3rd generation",
-        "iPad8,6": "iPad Pro 12.9\" 3rd generation",
-        "iPad8,7": "iPad Pro 12.9\" 3rd generation",
-        "iPad8,8": "iPad Pro 12.9\" 3rd generation",
-        "iPad11,1": "iPad mini 5",
-        "iPad11,2": "iPad mini 5",
-        "iPad11,3": "iPad Air 3rd generation",
-        "iPad11,4": "iPad Air 3rd generation",
+        "iPad2,5": "iPad mini 1st Gen (Wi-Fi)",
+        "iPad2,6": "iPad mini 1st Gen (GSM+LTE)",
+        "iPad2,7": "iPad mini 1st Gen (CDMA+LTE)",
+        "iPad3,1": "iPad 3rd Gen (Wi-Fi)",
+        "iPad3,2": "iPad 3rd Gen (CDMA)",
+        "iPad3,3": "iPad 3rd Gen (GSM)",
+        "iPad3,4": "iPad 4th Gen (Wi-Fi)",
+        "iPad3,5": "iPad 4th Gen (GSM+LTE)",
+        "iPad3,6": "iPad 4th Gen (CDMA+LTE)",
+        "iPad4,1": "iPad Air 1st Gen (Wi-Fi)",
+        "iPad4,2": "iPad Air 1st Gen (GSM+CDMA)",
+        "iPad4,3": "iPad Air 1st Gen (Wi-Fi+Cellular)",
+        "iPad4,4": "iPad mini 2nd Gen (Wi-Fi)",
+        "iPad4,5": "iPad mini 2nd Gen (Wi-Fi+Cellular)",
+        "iPad4,6": "iPad mini 2nd Gen (Wi-Fi+Cellular)",
+        "iPad4,7": "iPad mini 3rd Gen (Wi-Fi)",
+        "iPad4,8": "iPad mini 3rd Gen (Wi-Fi+Cellular)",
+        "iPad4,9": "iPad mini 3rd Gen (Wi-Fi+Cellular)",
+        "iPad5,1": "iPad mini 4th Gen (Wi-Fi)",
+        "iPad5,2": "iPad mini 4th Gen (Wi-Fi+Cellular)",
+        "iPad5,3": "iPad Air 2nd Gen (Wi-Fi)",
+        "iPad5,4": "iPad Air 2nd Gen (Wi-Fi+Cellular)",
+        "iPad6,3": "iPad Pro 9.7 \" (Wi-Fi)",
+        "iPad6,4": "iPad Pro 9.7 \" (Wi-Fi+Cellular)",
+        "iPad6,7": "iPad Pro 12.9 \" 1st Gen (Wi-Fi)",
+        "iPad6,8": "iPad Pro 12.9 \" 1st Gen (Wi-Fi+Cellular)",
+        "iPad6,11": "iPad 5th Gen (Wi-Fi)",
+        "iPad6,12": "iPad 5th Gen (Wi-Fi+Cellular)",
+        "iPad7,1": "iPad Pro 12.9 \" 2nd Gen (Wi-Fi)",
+        "iPad7,2": "iPad Pro 12.9 \" 2nd Gen (Wi-Fi+Cellular)",
+        "iPad7,3": "iPad Pro 10.5 \" (Wi-Fi)",
+        "iPad7,4": "iPad Pro 10.5 \" (Wi-Fi+Cellular)",
+        "iPad7,5": "iPad 6th Gen (Wi-Fi)",
+        "iPad7,6": "iPad 6th Gen (Wi-Fi+Cellular)",
+        "iPad7,11": "iPad 7th Gen 10.2 \" (Wi-Fi)",
+        "iPad7,12": "iPad 7th Gen 10.2 \" (Wi-Fi+Cellular)",
+        "iPad8,1": "iPad Pro 11 \" 1st Gen (Wi-Fi)",
+        "iPad8,2": "iPad Pro 11 \" 1st Gen (Wi-Fi, 1TB)",
+        "iPad8,3": "iPad Pro 11 \" 1st Gen (Wi-Fi+Cellular)",
+        "iPad8,4": "iPad Pro 11 \" 1st Gen (Wi-Fi+Cellular, 1TB)",
+        "iPad8,5": "iPad Pro 12.9 \" 3rd Gen (Wi-Fi)",
+        "iPad8,6": "iPad Pro 12.9 \" 3rd Gen (Wi-Fi, 1TB)",
+        "iPad8,7": "iPad Pro 12.9 \" 3rd Gen (Wi-Fi+Cellular)",
+        "iPad8,8": "iPad Pro 12.9 \" 3rd Gen (Wi-Fi+Cellular, 1TB)",
+        "iPad8,9": "iPad Pro 11 \" 2nd Gen (Wi-Fi)",
+        "iPad8,10": "iPad Pro 11 \" 2nd Gen (Wi-Fi+Cellular)",
+        "iPad8,11": "iPad Pro 12.9 \" 4th Gen (Wi-Fi)",
+        "iPad8,12": "iPad Pro 12.9 \" 4th Gen (Wi-Fi+Cellular)",
+        "iPad11,1": "iPad mini 5th Gen (Wi-Fi)",
+        "iPad11,2": "iPad mini 5th Gen (Wi-Fi+Cellular)",
+        "iPad11,3": "iPad Air 3rd Gen (Wi-Fi)",
+        "iPad11,4": "iPad Air 3rd Gen (Wi-Fi+Cellular)",
+        "iPad11,6": "iPad 8th Gen (Wi-Fi)",
+        "iPad11,7": "iPad 8th Gen (Wi-Fi+Cellular)",
+        "iPad13,1": "iPad Air 4th Gen (Wi-Fi)",
+        "iPad13,2": "iPad Air 4th Gen (Wi-Fi+Cellular)",
         "iPod5,1": "iPod Touch (5th generation)",
         "iPod7,1": "iPod Touch (6th generation)",
-        "iPod9,1": "iPod Touch (7th Generation)",
+        "iPod9,1": "iPod Touch (7th Generation)"
     },
     "deviceInformation": {
+        "iPhone 12 Pro Max": {
+            "Model": "iPhone 12 Pro Max",
+            "Chips": "A14 Bionic chip, Next-gen Neural Engine",
+            "CPU": "Hexa-core (2x3.1 GHz Firestorm + 4x1.8 GHz Icestorm)",
+            "GPU": "Apple GPU (4-core graphics)",
+            "Memory": "6 GB LPDDR4",
+            "PPI": "458"
+        },
+        "iPhone 12 Pro": {
+            "Model": "iPhone 12 Pro",
+            "Chips": "A14 Bionic chip, Next-gen Neural Engine",
+            "CPU": "Hexa-core (2x3.1 GHz Firestorm + 4x1.8 GHz Icestorm)",
+            "GPU": "Apple GPU (4-core graphics)",
+            "Memory": "6 GB LPDDR4",
+            "PPI": "460"
+        },
+        "iPhone 12": {
+            "Model": "iPhone 12",
+            "Chips": "A14 Bionic chip, Next-gen Neural Engine",
+            "CPU": "Hexa-core (2x3.1 GHz Firestorm + 4x1.8 GHz Icestorm)",
+            "GPU": "Apple GPU (4-core graphics)",
+            "Memory": "4 GB LPDDR4",
+            "PPI": "460"
+        },
+        "iPhone 12 mini": {
+            "Model": "iPhone 12 mini",
+            "Chips": "A14 Bionic chip, Next-gen Neural Engine",
+            "CPU": "Hexa-core (2x3.1 GHz Firestorm + 4x1.8 GHz Icestorm)",
+            "GPU": "Apple GPU (4-core graphics)",
+            "Memory": "4 GB LPDDR4",
+            "PPI": "476"
+        },
+        "iPhone SE 2nd Gen": {
+            "Model": "iPhone SE 2nd Gen",
+            "Chips": "A13 Bionic chip, 3rd gen Neural Engine",
+            "CPU": "2.66 GHz hexa-core 64-bit",
+            "GPU": "Apple designed Quad-core",
+            "Memory": "3 GB LPDDR4 RAM",
+            "PPI": "326"
+        },
         "iPhone 11 Pro Max": {
             "Model": "iPhone 11 Pro Max",
             "Chips": "A13 Bionic chip, Thrid-generation Neural Engine",
@@ -163,43 +216,43 @@
             "Memory": "3 GB LPDDR4 RAM",
             "PPI": "401"
         },
-		"iPhone SE": {
-			"Model": "iPhone SE",
-			"Chips": "A9 with 64-bit architecture\nM9 motion coprocessor",
-			"CPU": "1.85 GHz dual-core Apple-designed ARMv8-A",
-			"GPU": "PowerVR GT7600 (hexa-core, 450 MHz)",
-			"Memory": "2GB LPDDR4 DRAM",
-			"PPI": "326"
-		},
-		"iPhone 7": {
-			"Model": "iPhone 7",
-			"Chips": "A10 Fusion chip with 64-bit architecture\nM10 motion coprocessor",
-			"CPU": "2.34 GHz quad-core (two used) 64-bit ARMv8-A",
-			"GPU": "Custom Apple PowerVR GT7600 Plus (hexa-core) GPU",
-			"Memory": "2 GB LPDDR4 RAM",
-			"PPI": "326"
-		},
-		"iPhone 7 Plus": {
-			"Model": "iPhone 7 Plus",
-			"Chips": "A10 Fusion chip with 64-bit architecture\nM10 motion coprocessor",
-			"CPU": "2.34 GHz quad-core (two used) 64-bit ARMv8-A",
-			"GPU": "Custom Apple PowerVR GT7600 Plus (hexa-core) GPU",
-			"Memory": "3 GB LPDDR4 RAM",
-			"PPI": "401"
-		},
+        "iPhone SE": {
+            "Model": "iPhone SE",
+            "Chips": "A9 with 64-bit architecture\nM9 motion coprocessor",
+            "CPU": "1.85 GHz dual-core Apple-designed ARMv8-A",
+            "GPU": "PowerVR GT7600 (hexa-core, 450 MHz)",
+            "Memory": "2GB LPDDR4 DRAM",
+            "PPI": "326"
+        },
+        "iPhone 7": {
+            "Model": "iPhone 7",
+            "Chips": "A10 Fusion chip with 64-bit architecture\nM10 motion coprocessor",
+            "CPU": "2.34 GHz quad-core (two used) 64-bit ARMv8-A",
+            "GPU": "Custom Apple PowerVR GT7600 Plus (hexa-core) GPU",
+            "Memory": "2 GB LPDDR4 RAM",
+            "PPI": "326"
+        },
+        "iPhone 7 Plus": {
+            "Model": "iPhone 7 Plus",
+            "Chips": "A10 Fusion chip with 64-bit architecture\nM10 motion coprocessor",
+            "CPU": "2.34 GHz quad-core (two used) 64-bit ARMv8-A",
+            "GPU": "Custom Apple PowerVR GT7600 Plus (hexa-core) GPU",
+            "Memory": "3 GB LPDDR4 RAM",
+            "PPI": "401"
+        },
         "iPhone 6s": {
             "Model": "iPhone 6s",
             "Chips": "A9 with 64-bit architecture\nM9 motion coprocessor",
-			"CPU": "1.85 GHz dual-core Apple-designed ARMv8-A",
-			"GPU": "PowerVR GT7600(Hexa-core, 450MHz)",
+            "CPU": "1.85 GHz dual-core Apple-designed ARMv8-A",
+            "GPU": "PowerVR GT7600(Hexa-core, 450MHz)",
             "Memory": "2GB LPDDR4 DRAM",
             "PPI": "326"
         },
         "iPhone 6s Plus": {
             "Model": "iPhone 6s Plus",
             "Chips": "A9 with 64-bit architecture\nM9 motion coprocessor",
-			"CPU": "1.85 GHz dual-core Apple-designed ARMv8-A",
-			"GPU": "PowerVR GT7600(Hexa-core, 450MHz)",
+            "CPU": "1.85 GHz dual-core Apple-designed ARMv8-A",
+            "GPU": "PowerVR GT7600(Hexa-core, 450MHz)",
             "Memory": "2GB LPDDR4 DRAM",
             "PPI": "401"
         },
@@ -299,237 +352,445 @@
             "Memory": "512 MB Dual-Channel LPDDR2 DRAM",
             "PPI": "132"
         },
-        "iPad (3rd generation)": {
-            "Model": "iPad (3rd generation)",
-            "Chips": "Dual-core A5X",
-            "CPU": "1 GHz dual-core",
-            "GPU": "PowerVR SGX543MP4 (4-core)",
+        "iPad 3rd Gen (GSM)": {
+            "Model": "iPad 3rd Gen (GSM)",
+            "Chips": "Apple A5X (45 nm)",
+            "CPU": "Dual-core 1.0 GHz Cortex-A9",
+            "GPU": "PowerVR SGX543MP4 (quad-core graphics)",
             "Memory": "1 GB LPDDR2 DRAM",
             "PPI": "264"
         },
-        "iPad (3rd generation, Wi-Fi)": {
-            "Model": "iPad (3rd generation, Wi-Fi)",
-            "Chips": "Dual-core A5X",
-            "CPU": "1 GHz dual-core",
-            "GPU": "PowerVR SGX543MP4 (4-core)",
+        "iPad 3rd Gen (CDMA)": {
+            "Model": "iPad 3rd Gen (CDMA)",
+            "Chips": "Apple A5X (45 nm)",
+            "CPU": "Dual-core 1.0 GHz Cortex-A9",
+            "GPU": "PowerVR SGX543MP4 (quad-core graphics)",
             "Memory": "1 GB LPDDR2 DRAM",
             "PPI": "264"
         },
-        "iPad (4th generation)": {
-            "Model": "iPad (4th generation)",
-            "Chips": "Dual-core A6X",
-            "CPU": "1.4 GHz dual-core",
+        "iPad 3rd Gen (Wi-Fi)": {
+            "Model": "iPad 3rd Gen (Wi-Fi)",
+            "Chips": "Apple A5X (45 nm)",
+            "CPU": "Dual-core 1.0 GHz Cortex-A9",
+            "GPU": "PowerVR SGX543MP4 (quad-core graphics)",
+            "Memory": "1 GB LPDDR2 DRAM",
+            "PPI": "264"
+        },
+        "iPad 4th Gen (GSM+LTE)": {
+            "Model": "iPad 4th Gen (GSM+LTE)",
+            "Chips": "Apple A6X",
+            "CPU": "Dual-core 1.4 GHz",
             "GPU": "PowerVR SGX554MP4 (4-core)",
             "Memory": "1 GB LPDDR2 DRAM",
             "PPI": "264"
         },
-        "iPad (4th generation, Wi-Fi)": {
-            "Model": "iPad (4th generation, Wi-Fi)",
-            "Chips": "Dual-core A6X",
-            "CPU": "1.4 GHz dual-core",
+        "iPad 4th Gen (CDMA+LTE)": {
+            "Model": "iPad 4th Gen (CDMA+LTE)",
+            "Chips": "Apple A6X",
+            "CPU": "Dual-core 1.4 GHz",
             "GPU": "PowerVR SGX554MP4 (4-core)",
             "Memory": "1 GB LPDDR2 DRAM",
             "PPI": "264"
         },
-        "iPad Air": {
-            "Model": "iPad Air",
-            "Chips": "A7 chip with 64-bit architecture\nM7 motion coprocessor",
-            "CPU": "1.4 GHz dual-core",
-            "GPU": "PowerVR G6430 (4-core)",
-            "Memory": "1 GB LPDDR3 DRAM",
+        "iPad 4th Gen (Wi-Fi)": {
+            "Model": "iPad 4th Gen (Wi-Fi)",
+            "Chips": "Apple A6X",
+            "CPU": "Dual-core 1.4 GHz",
+            "GPU": "PowerVR SGX554MP4 (4-core)",
+            "Memory": "1 GB LPDDR2 DRAM",
             "PPI": "264"
         },
-        "iPad Air (Wi-Fi)": {
-            "Model": "iPad Air (Wi-Fi)",
-            "Chips": "A7 chip with 64-bit architecture\nM7 motion coprocessor",
-            "CPU": "1.4 GHz dual-core",
-            "GPU": "PowerVR G6430 (4-core)",
-            "Memory": "1 GB LPDDR3 DRAM",
+        "iPad 5th Gen (Wi-Fi)": {
+            "Model": "iPad 5th Gen (Wi-Fi)",
+            "Chips": "Apple A9, Embedded M9",
+            "CPU": "Dual-core 1.84 GHz (Twister)",
+            "GPU": "PowerVR GT7600 (6-core graphics)",
+            "Memory": "2 GB 1600MHz LPDDR4 DRAM",
             "PPI": "264"
         },
-        "iPad Air 2": {
-            "Model": "iPad Air 2",
-            "Chips": "A8 chip with 64-bit architecture\nM8 motion coprocessor",
-            "CPU": "1.5Ghz tri-core ARM processor",
-            "GPU": "PowerVR GXA6850 (8-core)",
-            "Memory": "2 GB LPDDR3 DRAM",
+        "iPad 5th Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad 5th Gen (Wi-Fi+Cellular)",
+            "Chips": "Apple A9, Embedded M9",
+            "CPU": "Dual-core 1.84 GHz (Twister)",
+            "GPU": "PowerVR GT7600 (6-core graphics)",
+            "Memory": "2 GB 1600MHz LPDDR4 DRAM",
             "PPI": "264"
         },
-        "iPad Air 2 (Wi-Fi)": {
-            "Model": "iPad Air 2 (Wi-Fi)",
-            "Chips": "A8 chip with 64-bit architecture\nM8 motion coprocessor",
-            "CPU": "1.5Ghz tri-core ARM processor",
-            "GPU": "PowerVR GXA6850 (8-core)",
-            "Memory": "2 GB LPDDR3 DRAM",
-            "PPI": "264"
-        },
-		"9.7\" iPad Pro": {
-			"Model": "9.7\" iPad Pro",
-			"Chips": "A9 chip with 64-bit architecture\nM9 motion coprocessor",
-			"CPU": "2.16GHz dual-core 64-bit",
-			"GPU": "12-core PowerVR Series 7XT",
-			"Memory": "2 GB LPDDR3 DRAM",
-			"PPI": "264"
-		},
-		"9.7\" iPad Pro (Wi-Fi)": {
-			"Model": "9.7\" iPad Pro (Wi-Fi)",
-			"Chips": "A9 chip with 64-bit architecture\nM9 motion coprocessor",
-			"CPU": "2.16GHz dual-core 64-bit",
-			"GPU": "12-core PowerVR Series 7XT",
-			"Memory": "2 GB LPDDR3 DRAM",
-			"PPI": "264"
-		},
-		"iPad Pro": {
-			"Model": "iPad Pro",
-			"Chips": "A9 chip with 64-bit architecture\nM9 motion coprocessor",
-			"CPU": "2.24 GHz dual-core 64-bit ARMv8-A",
-			"GPU": "12-core PowerVR Series 7XT",
-			"Memory": "4 GB LPDDR3 DRAM",
-			"PPI": "264"
-		},
-		"iPad Pro (Wi-Fi)": {
-			"Model": "iPad Pro (Wi-Fi)",
-			"Chips": "A9 chip with 64-bit architecture\nM9 motion coprocessor",
-			"CPU": "2.24 GHz dual-core 64-bit ARMv8-A",
-			"GPU": "12-core PowerVR Series 7XT",
-			"Memory": "4 GB LPDDR3 DRAM",
-			"PPI": "264"
-		},
-        "iPad Pro 12.9\" 2nd generation": {
-            "Model": "iPad Pro 12.9\" 2nd generation",
-            "Chips": "A10X chip with 64-bit architecture\nM10 motion coprocessor",
-            "CPU": "2.39 GHz hexa-core ARM processor",
-            "GPU": "12-core GPU",
-            "Memory": "4 GB 1600MHz LPDDR4 DRAM",
-            "PPI": "264"
-        },
-        "iPad Pro 10.5\"": {
-            "Model": "iPad Pro 10.5\"",
-            "Chips": "A10X chip with 64-bit architecture\nM10 motion coprocessor",
-            "CPU": "2.39 GHz hexa-core ARM processor",
-            "GPU": "12-core GPU",
-            "Memory": "4 GB 1600MHz LPDDR4 DRAM",
-            "PPI": "264"
-        },
-        "iPad 6th generation": {
-            "Model": "iPad 6th generation",
-            "Chips": "A10 chip with 64-bit architecture\nM10 motion coprocessor",
-            "CPU": "2.34 GHz quad-core ARM processor",
+        "iPad 6th Gen (Wi-Fi)": {
+            "Model": "iPad 6th Gen (Wi-Fi)",
+            "Chips": "Apple A10 Fusion\nEmbedded M10",
+            "CPU": "2.34 GHz 2 x Hurricane, 2 x Zephyr",
             "GPU": "Hexa-core PowerVR GT7600 Plus",
             "Memory": "2 GB 1600MHz LPDDR4 DRAM",
             "PPI": "264"
         },
-        "iPad 7th Gen 10.2-inch": {
-            "Model": "iPad 7th Gen 10.2-inch",
-            "Chips": "A10 chip with 64-bit architecture\nM10 motion coprocessor",
-            "CPU": "2.34 GHz quad-core ARM processor",
+        "iPad 6th Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad 6th Gen (Wi-Fi+Cellular)",
+            "Chips": "Apple A10 Fusion\nEmbedded M10",
+            "CPU": "2.34 GHz 2 x Hurricane, 2 x Zephyr",
+            "GPU": "Hexa-core PowerVR GT7600 Plus",
+            "Memory": "2 GB 1600MHz LPDDR4 DRAM",
+            "PPI": "264"
+        },
+        "iPad 7th Gen 10.2 \" (Wi-Fi)": {
+            "Model": "iPad 7th Gen 10.2 \" (Wi-Fi)",
+            "Chips": "Apple A10 Fusion\nEmbedded M10",
+            "CPU": "2.34 GHz 2 x Hurricane, 2 x Zephyr",
             "GPU": "Hexa-core PowerVR GT7600 Plus",
             "Memory": "3 GB 1600MHz LPDDR4 DRAM",
             "PPI": "264"
         },
-        "iPad Pro 11\"": {
-            "Model": "iPad Pro 11\"",
-            "Chips": "A12X Bionic chip with 64-bit architecture\nNeural Engine\nEmbedded M12 coprocessor",
-            "CPU": "2.48 GHz octa-core ARM processor",
-            "GPU": "7-core GPU",
-            "Memory": "4 GB 1600MHz LPDDR4 DRAM",
+        "iPad 7th Gen 10.2 \"  (Wi-Fi+Cellular)": {
+            "Model": "iPad 7th Gen 10.2 \" (Wi-Fi+Cellular)",
+            "Chips": "Apple A10 Fusion\nEmbedded M10",
+            "CPU": "2.34 GHz 2 x Hurricane, 2 x Zephyr",
+            "GPU": "Hexa-core PowerVR GT7600 Plus",
+            "Memory": "3 GB 1600MHz LPDDR4 DRAM",
             "PPI": "264"
         },
-        "iPad Pro 12.9\" 3rd generation": {
-            "Model": "iPad Pro 12.9\" 2nd generation",
-            "Chips": "A12X Bionic chip with 64-bit architecture\nNeural Engine\nEmbedded M12 coprocessor",
-            "CPU": "2.48 GHz octa-core ARM processor",
-            "GPU": "7-core GPU",
-            "Memory": "4 GB 1600MHz LPDDR4 DRAM",
+        "iPad 8th Gen (Wi-Fi)": {
+            "Model": "iPad 8th Gen (Wi-Fi)",
+            "Chips": "A12 Bionic chip, Neural Engine",
+            "CPU": "Hexa-core (2x2.5 GHz Vortex + 4x1.6 GHz Tempest)",
+            "GPU": "Apple GPU (4-core graphics)",
+            "Memory": "3 GB LPDDR4 DRAM",
             "PPI": "264"
         },
-        "iPad Air 3rd generation": {
-            "Model": "iPad Air 3rd generation",
+        "iPad 8th Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad 8th Gen (Wi-Fi+Cellular)",
+            "Chips": "A12 Bionic chip, Neural Engine",
+            "CPU": "Hexa-core (2x2.5 GHz Vortex + 4x1.6 GHz Tempest)",
+            "GPU": "Apple GPU (4-core graphics)",
+            "Memory": "3 GB LPDDR4 DRAM",
+            "PPI": "264"
+        },
+        "iPad Air 1st Gen (Wi-Fi)": {
+            "Model": "iPad Air 1st Gen (Wi-Fi)",
+            "Chips": "A7 chip with 64-bit architecture\nM7 motion coprocessor",
+            "CPU": "1.4 GHz dual-core",
+            "GPU": "PowerVR G6430 (4-core)",
+            "Memory": "1 GB LPDDR3 DRAM",
+            "PPI": "264"
+        },
+        "iPad Air 1st Gen (GSM+CDMA)": {
+            "Model": "iPad Air 1st Gen (GSM+CDMA)",
+            "Chips": "A7 chip with 64-bit architecture\nM7 motion coprocessor",
+            "CPU": "1.4 GHz dual-core",
+            "GPU": "PowerVR G6430 (4-core)",
+            "Memory": "1 GB LPDDR3 DRAM",
+            "PPI": "264"
+        },
+        "iPad Air 1st Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad Air 1st Gen (Wi-Fi+Cellular)",
+            "Chips": "A7 chip with 64-bit architecture\nM7 motion coprocessor",
+            "CPU": "1.4 GHz dual-core",
+            "GPU": "PowerVR G6430 (4-core)",
+            "Memory": "1 GB LPDDR3 DRAM",
+            "PPI": "264"
+        },
+        "iPad Air 2nd Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad Air 2nd Gen (Wi-Fi+Cellular)",
+            "Chips": "A8 chip with 64-bit architecture\nM8 motion coprocessor",
+            "CPU": "1.5Ghz tri-core ARM processor",
+            "GPU": "PowerVR 6XT (8-core)",
+            "Memory": "2 GB LPDDR3 DRAM",
+            "PPI": "264"
+        },
+        "iPad Air 2nd Gen (Wi-Fi)": {
+            "Model": "iPad Air 2nd Gen (Wi-Fi)",
+            "Chips": "A8X chip with 64-bit architecture\nM8 motion coprocessor",
+            "CPU": "1.5Ghz tri-core ARM processor",
+            "GPU": "PowerVR 6XT (8-core)",
+            "Memory": "2 GB LPDDR3 DRAM",
+            "PPI": "264"
+        },
+        "iPad Air 3rd Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad Air 3rd Gen (Wi-Fi+Cellular)",
             "Chips": "A12 Bionic chip with 64-bit architecture\nNeural Engine\nEmbedded M12 coprocessor",
             "CPU": "2.49 GHz hexa-core",
             "GPU": "Apple designed quad-core",
             "Memory": "3 GB LPDDR4X DRAM",
             "PPI": "264"
         },
-        "iPad mini": {
-            "Model": "iPad mini",
+        "iPad Air 3rd Gen (Wi-Fi)": {
+            "Model": "iPad Air 3rd Gen (Wi-Fi)",
+            "Chips": "A12 Bionic chip with 64-bit architecture\nNeural Engine\nEmbedded M12 coprocessor",
+            "CPU": "2.49 GHz hexa-core",
+            "GPU": "Apple designed quad-core",
+            "Memory": "3 GB LPDDR4X DRAM",
+            "PPI": "264"
+        },
+        "iPad Air 4th Gen (Wi-Fi)": {
+            "Model": "iPad Air 4th Gen (Wi-Fi)",
+            "Chips": "A14 Bionic chip, Next-gen Neural Engine",
+            "CPU": "Hexa-core (2x3.1 GHz Firestorm + 4x1.8 GHz Icestorm)",
+            "GPU": "Apple GPU (4-core graphics)",
+            "Memory": "4 GB LPDDR4 DRAM",
+            "PPI": "264"
+        },
+        "iPad Air 4th Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad Air 4th Gen (Wi-Fi+Cellular)",
+            "Chips": "A14 Bionic chip, Next-gen Neural Engine",
+            "CPU": "Hexa-core (2x3.1 GHz Firestorm + 4x1.8 GHz Icestorm)",
+            "GPU": "Apple GPU (4-core graphics)",
+            "Memory": "4 GB LPDDR4 DRAM",
+            "PPI": "264"
+        },
+        "iPad Pro 9.7 \" (Wi-Fi+Cellular)": {
+            "Model": "iPad Pro 9.7 \" (Wi-Fi+Cellular)",
+            "Chips": "A9X chip with 64-bit architecture\nM9 motion coprocessor",
+            "CPU": "2.16GHz dual-core 64-bit",
+            "GPU": "12-core PowerVR Series 7XT",
+            "Memory": "2 GB LPDDR3 DRAM",
+            "PPI": "264"
+        },
+        "iPad Pro 9.7 \" (Wi-Fi)": {
+            "Model": "iPad Pro 9.7 \" (Wi-Fi)",
+            "Chips": "A9X chip with 64-bit architecture\nM9 motion coprocessor",
+            "CPU": "2.16GHz dual-core 64-bit",
+            "GPU": "12-core PowerVR Series 7XT",
+            "Memory": "2 GB LPDDR3 DRAM",
+            "PPI": "264"
+        },
+        "iPad Pro 12.9 \" 1st Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad Pro 12.9 \" 1st Gen (Wi-Fi+Cellular)",
+            "Chips": "A9X chip with 64-bit architecture\nM9 motion coprocessor",
+            "CPU": "2.26 GHz dual-core 64-bit ARMv8-A",
+            "GPU": "12-core PowerVR Series 7XT",
+            "Memory": "4 GB LPDDR3 DRAM",
+            "PPI": "264"
+        },
+        "iPad Pro 12.9 \" 1st Gen (Wi-Fi)": {
+            "Model": "iPad Pro 12.9 \" 1st Gen (Wi-Fi)",
+            "Chips": "A9X chip with 64-bit architecture\nM9 motion coprocessor",
+            "CPU": "2.26 GHz dual-core 64-bit ARMv8-A",
+            "GPU": "12-core PowerVR Series 7XT",
+            "Memory": "4 GB LPDDR3 DRAM",
+            "PPI": "264"
+        },
+        "iPad Pro 12.9 \" 2nd Gen (Wi-Fi)": {
+            "Model": "iPad Pro 12.9 \" 2nd Gen (Wi-Fi)",
+            "Chips": "Apple A10X Fusion\nEmbedded M10 coprocessor",
+            "CPU": "2.38 GHz 3 x Hurricane + 3 x Zephyr Hexa-core",
+            "GPU": "PowerVR 7XT Series 7600 Plus (12-core)",
+            "Memory": "4 GB LPDDR4 DRAM",
+            "PPI": "264"
+        },
+        "iPad Pro 12.9 \" 2nd Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad Pro 12.9 \" 2nd Gen (Wi-Fi+Cellular)",
+            "Chips": "Apple A10X Fusion\nEmbedded M10 coprocessor",
+            "CPU": "2.38 GHz 3 x Hurricane + 3 x Zephyr Hexa-core",
+            "GPU": "PowerVR 7XT Series 7600 Plus (12-core)",
+            "Memory": "4 GB LPDDR4 DRAM",
+            "PPI": "264"
+        },
+        "iPad Pro 10.5 \" (Wi-Fi)": {
+            "Model": "iPad Pro 10.5 \" (Wi-Fi)",
+            "Chips": "Apple A10X Fusion\nEmbedded M10 coprocessor",
+            "CPU": "2.38 GHz 3 x Hurricane + 3 x Zephyr Hexa-core",
+            "GPU": "PowerVR 7XT Series 7600 Plus (12-core)",
+            "Memory": "4 GB LPDDR4 DRAM",
+            "PPI": "264"
+        },
+        "iPad Pro 10.5 \" (Wi-Fi+Cellular)": {
+            "Model": "iPad Pro 10.5 \" (Wi-Fi+Cellular)",
+            "Chips": "Apple A10X Fusion\nEmbedded M10 coprocessor",
+            "CPU": "2.38 GHz 3 x Hurricane + 3 x Zephyr Hexa-core",
+            "GPU": "PowerVR 7XT Series 7600 Plus (12-core)",
+            "Memory": "4 GB LPDDR4 DRAM",
+            "PPI": "264"
+        },
+        "iPad Pro 11 \" 1st Gen (Wi-Fi)": {
+            "Model": "iPad Pro 11 \" 1st Gen (Wi-Fi)",
+            "Chips": "A12X Bionic chip with 64-bit architecture\nNeural Engine\nEmbedded M12 coprocessor",
+            "CPU": "2.48 GHz octa-core ARM processor",
+            "GPU": "7-core GPU",
+            "Memory": "4 GB 1600MHz LPDDR4 DRAM",
+            "PPI": "264"
+        },
+        "iPad Pro 11 \" 1st Gen (Wi-Fi, 1TB)": {
+            "Model": "iPad Pro 11 \" 1st Gen (Wi-Fi, 1TB)",
+            "Chips": "A12X Bionic chip with 64-bit architecture\nNeural Engine\nEmbedded M12 coprocessor",
+            "CPU": "2.48 GHz octa-core ARM processor",
+            "GPU": "7-core GPU",
+            "Memory": "4 GB 1600MHz LPDDR4 DRAM",
+            "PPI": "264"
+        },
+        "iPad Pro 11 \" 1st Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad Pro 11 \" 1st Gen (Wi-Fi+Cellular)",
+            "Chips": "A12X Bionic chip with 64-bit architecture\nNeural Engine\nEmbedded M12 coprocessor",
+            "CPU": "2.48 GHz octa-core ARM processor",
+            "GPU": "7-core GPU",
+            "Memory": "4 GB 1600MHz LPDDR4 DRAM",
+            "PPI": "264"
+        },
+        "iPad Pro 11 \" 1st Gen (Wi-Fi+Cellular, 1TB)": {
+            "Model": "iPad Pro 11 \" 1st Gen (Wi-Fi+Cellular, 1TB)",
+            "Chips": "A12X Bionic chip with 64-bit architecture\nNeural Engine\nEmbedded M12 coprocessor",
+            "CPU": "2.48 GHz octa-core ARM processor",
+            "GPU": "7-core GPU",
+            "Memory": "4 GB 1600MHz LPDDR4 DRAM",
+            "PPI": "264"
+        },
+        "iPad Pro 12.9 \" 3rd Gen (Wi-Fi)": {
+            "Model": "iPad Pro 12.9 \" 3rd Gen (Wi-Fi)",
+            "Chips": "A12X Bionic chip with 64-bit architecture\nNeural Engine\nEmbedded M12 coprocessor",
+            "CPU": "2.49 GHz octa-core ARM processor",
+            "GPU": "7-core GPU",
+            "Memory": "4 GB 1600MHz LPDDR4 DRAM",
+            "PPI": "264"
+        },
+        "iPad Pro 12.9 \" 3rd Gen (Wi-Fi, 1TB)": {
+            "Model": "iPad Pro 12.9 \" 3rd Gen (Wi-Fi, 1TB)",
+            "Chips": "A12X Bionic chip with 64-bit architecture\nNeural Engine\nEmbedded M12 coprocessor",
+            "CPU": "2.49 GHz octa-core ARM processor",
+            "GPU": "7-core GPU",
+            "Memory": "4 GB 1600MHz LPDDR4 DRAM",
+            "PPI": "264"
+        },
+        "iPad Pro 12.9 \" 3rd Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad Pro 12.9 \" 3rd Gen (Wi-Fi+Cellular)",
+            "Chips": "A12X Bionic chip with 64-bit architecture\nNeural Engine\nEmbedded M12 coprocessor",
+            "CPU": "2.49 GHz octa-core ARM processor",
+            "GPU": "7-core GPU",
+            "Memory": "4 GB 1600MHz LPDDR4 DRAM",
+            "PPI": "264"
+        },
+        "iPad Pro 12.9 \" 3rd Gen (Wi-Fi+Cellular, 1TB)": {
+            "Model": "iPad Pro 12.9 \" 3rd Gen (Wi-Fi+Cellular, 1TB)",
+            "Chips": "A12X Bionic chip with 64-bit architecture\nNeural Engine\nEmbedded M12 coprocessor",
+            "CPU": "2.49 GHz octa-core ARM processor",
+            "GPU": "7-core GPU",
+            "Memory": "4 GB 1600MHz LPDDR4 DRAM",
+            "PPI": "264"
+        },
+        "iPad Pro 11 \" 2nd Gen (Wi-Fi)": {
+            "Model": "iPad Pro 11 \" 2nd Gen (Wi-Fi)",
+            "Chips": "A12Z Bionic chip with 64-bit architecture\nNeural Engine\nEmbedded M12 coprocessor",
+            "CPU": "2.48 GHz octa-core ARM processor",
+            "GPU": "8-core GPU",
+            "Memory": "6 GB 1600MHz LPDDR4 DRAM",
+            "PPI": "264"
+        },
+        "iPad Pro 11 \" 2nd Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad Pro 11 \" 2nd Gen (Wi-Fi+Cellular)",
+            "Chips": "A12Z Bionic chip with 64-bit architecture\nNeural Engine\nEmbedded M12 coprocessor",
+            "CPU": "2.48 GHz octa-core ARM processor",
+            "GPU": "8-core GPU",
+            "Memory": "6 GB LPDDR4 DRAM",
+            "PPI": "264"
+        },
+        "iPad Pro 12.9 \" 4th Gen (Wi-Fi)": {
+            "Model": "iPad Pro 12.9 \" 4th Gen (Wi-Fi)",
+            "Chips": "A12Z Bionic chip with 64-bit architecture\nNeural Engine\nEmbedded M12 coprocessor",
+            "CPU": "2.49 GHz octa-core ARM processor",
+            "GPU": "7-core GPU",
+            "Memory": "6 GB 1600MHz LPDDR4 DRAM",
+            "PPI": "264"
+        },
+        "iPad Pro 12.9 \" 4th Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad Pro 12.9 \" 4th Gen (Wi-Fi+Cellular)",
+            "Chips": "A12Z Bionic chip with 64-bit architecture\nNeural Engine\nEmbedded M12 coprocessor",
+            "CPU": "2.49 GHz octa-core ARM processor",
+            "GPU": "7-core GPU",
+            "Memory": "6 GB 1600MHz LPDDR4 DRAM",
+            "PPI": "264"
+        },
+        "iPad mini 1st Gen (CDMA+LTE)": {
+            "Model": "iPad mini 1st Gen (CDMA+LTE)",
             "Chips": "Dual-core A5 chip",
             "CPU": "1 GHz",
             "GPU": "PowerVR SGX543MP2 (2-core)",
             "Memory": "512 MB DDR2 DRAM",
             "PPI": "163"
         },
-        "iPad mini (Wi-Fi)": {
-            "Model": "iPad mini (Wi-Fi)",
+        "iPad mini 1st Gen (GSM+LTE)": {
+            "Model": "iPad mini 1st Gen (GSM+LTE)",
             "Chips": "Dual-core A5 chip",
             "CPU": "1 GHz",
             "GPU": "PowerVR SGX543MP2 (2-core)",
             "Memory": "512 MB DDR2 DRAM",
             "PPI": "163"
         },
-        "iPad mini 2": {
-            "Model": "iPad mini 2",
+        "iPad mini 1st Gen (Wi-Fi)": {
+            "Model": "iPad mini 1st Gen (Wi-Fi)",
+            "Chips": "Dual-core A5 chip",
+            "CPU": "1 GHz",
+            "GPU": "PowerVR SGX543MP2 (2-core)",
+            "Memory": "512 MB DDR2 DRAM",
+            "PPI": "163"
+        },
+        "iPad mini 2nd Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad mini 2nd Gen (Wi-Fi+Cellular)",
             "Chips": "A7 chip with 64-bit architecture\nM7 motion coprocessor",
             "CPU": "1.3 GHz dual-core",
             "GPU": "PowerVR G6430 (4-core)",
             "Memory": "1 GB LPDDR3 DRAM",
             "PPI": "326"
         },
-        "iPad mini 2 (Wi-Fi)": {
-            "Model": "iPad mini 2 (Wi-Fi)",
+        "iPad mini 2nd Gen (Wi-Fi)": {
+            "Model": "iPad mini 2nd Gen (Wi-Fi)",
             "Chips": "A7 chip with 64-bit architecture\nM7 motion coprocessor",
             "CPU": "1.3 GHz dual-core",
             "GPU": "PowerVR G6430 (4-core)",
             "Memory": "1 GB LPDDR3 DRAM",
             "PPI": "326"
         },
-        "iPad mini 3": {
-            "Model": "iPad mini 3",
+        "iPad mini 3rd Gen": {
+            "Model": "iPad mini 3rd Gen",
             "Chips": "A7 chip with 64-bit architecture\nM7 motion coprocessor",
             "CPU": "1.3 GHz dual-core",
             "GPU": "PowerVR G6430 (4-core)",
             "Memory": "1 GB LPDDR3 DRAM",
             "PPI": "326"
         },
-        "iPad mini 3 (Wi-Fi)": {
-            "Model": "iPad mini 3 (Wi-Fi)",
+        "iPad mini 3rd Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad mini 3rd Gen (Wi-Fi+Cellular)",
             "Chips": "A7 chip with 64-bit architecture\nM7 motion coprocessor",
             "CPU": "1.3 GHz dual-core",
             "GPU": "PowerVR G6430 (4-core)",
             "Memory": "1 GB LPDDR3 DRAM",
             "PPI": "326"
         },
-        "iPad mini 4": {
-            "Model": "iPad mini 4",
+        "iPad mini 3rd Gen (Wi-Fi)": {
+            "Model": "iPad mini 3rd Gen (Wi-Fi)",
+            "Chips": "A7 chip with 64-bit architecture\nM7 motion coprocessor",
+            "CPU": "1.3 GHz dual-core",
+            "GPU": "PowerVR G6430 (4-core)",
+            "Memory": "1 GB LPDDR3 DRAM",
+            "PPI": "326"
+        },
+        "iPad mini 4th Gen (Wi-Fi)": {
+            "Model": "iPad mini 4th Gen (Wi-Fi)",
             "Chips": "A8 chip with 64-bit architecture\nM8 motion coprocessor",
             "CPU": "1.5Ghz dual-core ARM processor",
             "GPU": "PowerVR GX6450 (4-core)",
             "Memory": "2 GB LPDDR3 DRAM",
             "PPI": "326"
         },
-        "iPad mini 4 (Wi-Fi)": {
-            "Model": "iPad mini 4 (Wi-Fi)",
+        "iPad mini 4th Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad mini 4th Gen (Wi-Fi+Cellular)",
             "Chips": "A8 chip with 64-bit architecture\nM8 motion coprocessor",
             "CPU": "1.5Ghz dual-core ARM processor",
             "GPU": "PowerVR GX6450 (4-core)",
             "Memory": "2 GB LPDDR3 DRAM",
             "PPI": "326"
         },
-        "iPad mini 5": {
-            "Model": "iPad mini 5",
+        "iPad mini 5th Gen (Wi-Fi)": {
+            "Model": "iPad mini 5th Gen (Wi-Fi)",
             "Chips": "A12 Bionic chip with 64-bit architecture\nNeural Engine\nM12 motion coprocessor",
             "CPU": "2.49 GHz hexa-core Apple 2x Vortex + 4x Tempest",
             "GPU": "Apple designed 4-core",
-            "Memory": "2 GB LPDDR3 DRAM",
+            "Memory": "3 GB LPDDR3 DRAM",
             "PPI": "326"
         },
-        "iPad 2017": {
-            "Model": "iPad 2017",
-            "Chips": "A9 chip with 64-bit architecture\nM9 motion coprocessor",
-            "CPU": "1.85 GHz dual-core ARM processor",
-            "GPU": "TBD",
-            "Memory": "2 GB LPDDR4 DRAM",
-            "PPI": "264"
+        "iPad mini 5th Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad mini 5th Gen (Wi-Fi+Cellular)",
+            "Chips": "A12 Bionic chip with 64-bit architecture\nNeural Engine\nM12 motion coprocessor",
+            "CPU": "2.49 GHz hexa-core Apple 2x Vortex + 4x Tempest",
+            "GPU": "Apple designed 4-core",
+            "Memory": "3 GB LPDDR3 DRAM",
+            "PPI": "326"
         },
         "iPhone Simulator": {
             "Model": "iPhone Simulator",
@@ -541,30 +802,64 @@
         },
         "iPhone (Latest)": {
             "Model": "iPhone (Latest)",
-            "Chips": "A11 Bionic chip, Neural Engine\nEmbedded M11 motion coprocessor",
-            "CPU": "GHz hexa-core 64-bit",
-            "GPU": "hexa-core GPU",
-            "Memory": "3 GB LPDDR4 RAM",
+            "Chips": "TBD",
+            "CPU": "TBD",
+            "GPU": "TBD",
+            "Memory": "TBD",
             "PPI": "401"
         },
         "iPad (Latest)": {
             "Model": "iPad (Latest)",
-            "Chips": "A10X chip with 64-bit architecture\nM10 motion coprocessor",
-            "CPU": "2.39 GHz hexa-core ARM processor",
-            "GPU": "12-core GPU",
-            "Memory": "4 GB 1600MHz LPDDR4 DRAM",
+            "Chips": "TBD",
+            "CPU": "TBD",
+            "GPU": "TBD",
+            "Memory": "TBD",
             "PPI": "264"
         },
         "iPod (Latest)": {
             "Model": "iPod (Latest)",
-            "Chips": "A8 with 64-bit architecture\nM8 motion coprocessor",
-            "CPU": "1.4 GHz (underclocked to 1.1 GHz)\nDual-core Apple Typhoon ARMv8-A",
-            "GPU": "PowerVR GX6450 (quad-core, 450MHz)",
-            "Memory": "1 GB LPDDR3 RAM",
+            "Chips": "TBD",
+            "CPU": "TBD",
+            "GPU": "TBD",
+            "Memory": "TBD",
             "PPI": "326"
         }
     },
     "remainingTimeInfo": {
+        "iPhone 12 Pro Max": {
+            "Model": "iPhone 12 Pro Max",
+            "Video playback (streamed)": 12,
+            "Video playback": 20,
+            "Audio playback": 80
+        },
+        "iPhone 12 Pro": {
+            "Model": "iPhone 12 Pro",
+            "Video playback (streamed)": 11,
+            "Video playback": 17,
+            "Audio playback": 65
+        },
+        "iPhone 12": {
+            "Model": "iPhone 12",
+            "Video playback (streamed)": 11,
+            "Video playback": 17,
+            "Audio playback": 65
+        },
+        "iPhone 12 mini": {
+            "Model": "iPhone 12 mini",
+            "Video playback (streamed)": 10,
+            "Video playback": 15,
+            "Audio playback": 50
+        },
+        "iPhone SE 2nd Gen": {
+            "Model": "iPhone SE 2nd Gen",
+            "Talk Time on 3G": 14,
+            "Internet on 3G": 12,
+            "Internet on LTE": 12,
+            "Internet on Wi-Fi": 14,
+            "Video playback": 13,
+            "Audio playback": 40,
+            "Standby": 384
+        },
         "iPhone 11 Pro Max": {
             "Model": "iPhone 11 Pro Max",
             "Talk Time on 3G": 20,
@@ -655,36 +950,36 @@
             "Audio playback": 60,
             "Standby": 384
         },
-		"iPhone SE": {
-			"Model": "iPhone SE",
-			"Talk Time on 3G": 14,
-			"Internet on 3G": 12,
-			"Internet on LTE": 13,
-			"Internet on Wi-Fi": 13,
-			"Video playback": 13,
-			"Audio playback": 50,
-			"Standby": 240
-		},
-		"iPhone 7": {
-			"Model": "iPhone 7",
-			"Talk Time on 3G": 14,
-			"Internet on 3G": 12,
-			"Internet on LTE": 12,
-			"Internet on Wi-Fi": 14,
-			"Video playback": 13,
-			"Audio playback": 40,
-			"Standby": 240
-		},
-		"iPhone 7 Plus": {
-			"Model": "iPhone 7 Plus",
-			"Talk Time on 3G": 21,
-			"Internet on 3G": 13,
-			"Internet on LTE": 13,
-			"Internet on Wi-Fi": 15,
-			"Video playback": 14,
-			"Audio playback": 60,
-			"Standby": 384
-		},
+        "iPhone SE": {
+            "Model": "iPhone SE",
+            "Talk Time on 3G": 14,
+            "Internet on 3G": 12,
+            "Internet on LTE": 13,
+            "Internet on Wi-Fi": 13,
+            "Video playback": 13,
+            "Audio playback": 50,
+            "Standby": 240
+        },
+        "iPhone 7": {
+            "Model": "iPhone 7",
+            "Talk Time on 3G": 14,
+            "Internet on 3G": 12,
+            "Internet on LTE": 12,
+            "Internet on Wi-Fi": 14,
+            "Video playback": 13,
+            "Audio playback": 40,
+            "Standby": 240
+        },
+        "iPhone 7 Plus": {
+            "Model": "iPhone 7 Plus",
+            "Talk Time on 3G": 21,
+            "Internet on 3G": 13,
+            "Internet on LTE": 13,
+            "Internet on Wi-Fi": 15,
+            "Video playback": 14,
+            "Audio playback": 60,
+            "Standby": 384
+        },
         "iPhone 6s": {
             "Model": "iPhone 6s",
             "Talk Time on 3G": 14,
@@ -808,194 +1103,354 @@
             "Video playback": 10,
             "Audio playback": 10
         },
-        "iPad (3rd generation)": {
-            "Model": "iPad (3rd generation)",
+        "iPad 3rd Gen (CDMA)": {
+            "Model": "iPad 3rd Gen (CDMA)",
             "Internet on Wi-Fi": 10,
             "Internet on Cellular": 9,
             "Video playback": 10,
             "Audio playback": 10
         },
-        "iPad (3rd generation, Wi-Fi)": {
-            "Model": "iPad (3rd generation, Wi-Fi)",
+        "iPad 3rd Gen (Wi-Fi)": {
+            "Model": "iPad 3rd Gen (Wi-Fi)",
             "Internet on Wi-Fi": 10,
             "Video playback": 10,
             "Audio playback": 10
         },
-        "iPad (4th generation)": {
-            "Model": "iPad (4th generation)",
+        "iPad 3rd Gen (GSM)": {
+            "Model": "iPad 3rd Gen (GSM)",
             "Internet on Wi-Fi": 10,
             "Internet on Cellular": 9,
             "Video playback": 10,
             "Audio playback": 10
         },
-        "iPad (4th generation, Wi-Fi)": {
-            "Model": "iPad (4th generation, Wi-Fi)",
-            "Internet on Wi-Fi": 10,
-            "Video playback": 10,
-            "Audio playback": 10
-        },
-        "iPad Air": {
-            "Model": "iPad Air",
+        "iPad 4th Gen (GSM+LTE)": {
+            "Model": "iPad 4th Gen (GSM+LTE)",
             "Internet on Wi-Fi": 10,
             "Internet on Cellular": 9,
             "Video playback": 10,
             "Audio playback": 10
         },
-        "iPad Air (Wi-Fi)": {
-            "Model": "iPad Air (Wi-Fi)",
-            "Internet on Wi-Fi": 10,
-            "Video playback": 10,
-            "Audio playback": 10
-        },
-        "iPad Air 2": {
-            "Model": "iPad Air 2",
+        "iPad 4th Gen (CDMA+LTE)": {
+            "Model": "iPad 4th Gen (CDMA+LTE)",
             "Internet on Wi-Fi": 10,
             "Internet on Cellular": 9,
             "Video playback": 10,
             "Audio playback": 10
         },
-        "iPad Air 2 (Wi-Fi)": {
-            "Model": "iPad Air 2 (Wi-Fi)",
+        "iPad 4th Gen (Wi-Fi)": {
+            "Model": "iPad 4th Gen (Wi-Fi)",
             "Internet on Wi-Fi": 10,
             "Video playback": 10,
             "Audio playback": 10
         },
-        "iPad 2017": {
-            "Model": "iPad 2017",
+        "iPad 5th Gen (Wi-Fi)": {
+            "Model": "iPad 5th Gen (Wi-Fi)",
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad 5th Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad 5th Gen (Wi-Fi+Cellular)",
             "Internet on Wi-Fi": 10,
             "Internet on Cellular": 9,
             "Video playback": 10,
             "Audio playback": 10
         },
-		"9.7\" iPad Pro": {
-			"Model": "9.7\" iPad Pro",
-			"Internet on Wi-Fi": 10,
-			"Internet on Cellular": 9,
-			"Video playback": 10,
-			"Audio playback": 10
-		},
-		"9.7\" iPad Pro (Wi-Fi)": {
-			"Model": "9.7\" iPad Pro (Wi-Fi)",
-			"Internet on Wi-Fi": 10,
-			"Video playback": 10,
-			"Audio playback": 10
-		},
-		"iPad Pro": {
-			"Model": "iPad Pro",
-			"Internet on Wi-Fi": 10,
-			"Internet on Cellular": 9,
-			"Video playback": 10,
-			"Audio playback": 140
-		},
-		"iPad Pro (Wi-Fi)": {
-			"Model": "iPad Pro (Wi-Fi)",
-			"Internet on Wi-Fi": 10,
-			"Video playback": 10,
-			"Audio playback": 140
-		},
-        "iPad Pro 12.9\" 2nd generation": {
-            "Model": "iPad Pro 12.9\" 2nd generation",
+        "iPad 6th Gen (Wi-Fi)": {
+            "Model": "iPad 6th Gen (Wi-Fi)",
             "Internet on Wi-Fi": 10,
-            "Internet on Cellular": 9,
             "Video playback": 10,
             "Audio playback": 140
         },
-        "iPad Pro 10.5\"": {
-            "Model": "iPad Pro 10.5\"",
+        "iPad 6th Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad 6th Gen (Wi-Fi+Cellular)",
             "Internet on Wi-Fi": 10,
             "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad 7th Gen 10.2 \" (Wi-Fi)": {
+            "Model": "iPad 7th Gen 10.2 \" (Wi-Fi)",
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad 7th Gen 10.2 \" (Wi-Fi+Cellular)": {
+            "Model": "iPad 7th Gen 10.2 \" (Wi-Fi+Cellular)",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad 8th Gen (Wi-Fi)": {
+            "Model": "iPad 8th Gen (Wi-Fi)",
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad 8th Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad 8th Gen (Wi-Fi+Cellular)",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Air 1st Gen (Wi-Fi)": {
+            "Model": "iPad Air 1st Gen (Wi-Fi)",
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Air 1st Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad Air 1st Gen (Wi-Fi+Cellular)",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Air 1st Gen (GSM+CDMA)": {
+            "Model": "iPad Air 1st Gen (GSM+CDMA)",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Air 2nd Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad Air 2nd Gen (Wi-Fi+Cellular)",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Air 2nd Gen (Wi-Fi)": {
+            "Model": "iPad Air 2nd Gen (Wi-Fi)",
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Air 3rd Gen (Wi-Fi)": {
+            "Model": "iPad Air 3rd Gen (Wi-Fi)",
+            "Internet on Wi-Fi": 10,
             "Video playback": 10,
             "Audio playback": 140
         },
-        "iPad 6th generation": {
-            "Model": "iPad 6th generation",
+        "iPad Air 3rd Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad Air 3rd Gen (Wi-Fi+Cellular)",
             "Internet on Wi-Fi": 10,
             "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Air 4th Gen (Wi-Fi)": {
+            "Model": "iPad Air 4th Gen (Wi-Fi)",
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Air 4th Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad Air 4th Gen (Wi-Fi+Cellular)",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Pro 9.7 \" (Wi-Fi+Cellular)": {
+            "Model": "iPad Pro 9.7 \" (Wi-Fi+Cellular)",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Pro 9.7 \" (Wi-Fi)": {
+            "Model": "iPad Pro 9.7 \" (Wi-Fi)",
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Pro 12.9 \" 1st Gen (Wi-Fi)": {
+            "Model": "iPad Pro 12.9 \" 1st Gen (Wi-Fi)",
+            "Internet on Wi-Fi": 10,
             "Video playback": 10,
             "Audio playback": 140
         },
-        "iPad 7th Gen 10.2-inch": {
-            "Model": "iPad 7th Gen 10.2-inch",
-            "Internet on Wi-Fi": 10,
-            "Internet on Cellular": 9,
-            "Video playback": 10,
-            "Audio playback": 140
-        },
-        "iPad Pro 12.9\" 3rd generation": {
-            "Model": "iPad Pro 12.9\" 3rd generation",
-            "Internet on Wi-Fi": 10,
-            "Internet on Cellular": 9,
-            "Video playback": 10,
-            "Audio playback": 140
-        },
-        "iPad Air 3rd generation": {
-            "Model": "iPad Air 3rd generation",
-            "Internet on Wi-Fi": 10,
-            "Internet on Cellular": 9,
-            "Video playback": 10,
-            "Audio playback": 140
-        },
-        "iPad Pro 11\"": {
-            "Model": "iPad Pro 11\"",
-            "Internet on Wi-Fi": 10,
-            "Internet on Cellular": 9,
-            "Video playback": 10,
-            "Audio playback": 140
-        },
-        "iPad mini": {
-            "Model": "iPad mini",
+        "iPad Pro 12.9 \" 1st Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad Pro 12.9 \" 1st Gen (Wi-Fi+Cellular)",
             "Internet on Wi-Fi": 10,
             "Internet on Cellular": 9,
             "Video playback": 10,
             "Audio playback": 10
         },
-        "iPad mini (Wi-Fi)": {
-            "Model": "iPad mini (Wi-Fi)",
+        "iPad Pro 12.9 \" 2nd Gen (Wi-Fi)": {
+            "Model": "iPad Pro 12.9 \" 2nd Gen (Wi-Fi)",
             "Internet on Wi-Fi": 10,
             "Video playback": 10,
             "Audio playback": 10
         },
-        "iPad mini 2": {
-            "Model": "iPad mini 2",
-            "Internet on Wi-Fi": 10,
-            "Internet on Cellular": 9,
-            "Video playback": 10,
-            "Audio playback": 10
-        },
-        "iPad mini 2 (Wi-Fi)": {
-            "Model": "iPad mini 2 (Wi-Fi)",
-            "Internet on Wi-Fi": 10,
-            "Video playback": 10,
-            "Audio playback": 10
-        },
-        "iPad mini 3": {
-            "Model": "iPad mini 3",
+        "iPad Pro 12.9 \" 2nd Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad Pro 12.9 \" 2nd Gen (Wi-Fi+Cellular)",
             "Internet on Wi-Fi": 10,
             "Internet on Cellular": 9,
             "Video playback": 10,
             "Audio playback": 10
         },
-        "iPad mini 3 (Wi-Fi)": {
-            "Model": "iPad mini 3 (Wi-Fi)",
+        "iPad Pro 10.5 \" (Wi-Fi)": {
+            "Model": "iPad Pro 10.5 \" (Wi-Fi)",
             "Internet on Wi-Fi": 10,
             "Video playback": 10,
             "Audio playback": 10
         },
-        "iPad mini 4": {
-            "Model": "iPad mini 4",
+        "iPad Pro 10.5 \" (Wi-Fi+Cellular)": {
+            "Model": "iPad Pro 10.5 \" (Wi-Fi+Cellular)",
             "Internet on Wi-Fi": 10,
             "Internet on Cellular": 9,
             "Video playback": 10,
             "Audio playback": 10
         },
-        "iPad mini 4 (Wi-Fi)": {
-            "Model": "iPad mini 4 (Wi-Fi)",
+        "iPad Pro 12.9 \" 3rd Gen (Wi-Fi)": {
+            "Model": "iPad Pro 12.9 \" 3rd Gen (Wi-Fi)",
             "Internet on Wi-Fi": 10,
             "Video playback": 10,
             "Audio playback": 10
         },
-        "iPad mini 5": {
-            "Model": "iPad mini 5",
+        "iPad Pro 12.9 \" 3rd Gen (Wi-Fi, 1TB)": {
+            "Model": "iPad Pro 12.9 \" 3rd Gen (Wi-Fi, 1TB)",
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Pro 12.9 \" 3rd Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad Pro 12.9 \" 3rd Gen (Wi-Fi+Cellular)",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Pro 12.9 \" 3rd Gen (Wi-Fi+Cellular, 1TB)": {
+            "Model": "iPad Pro 12.9 \" 3rd Gen (Wi-Fi+Cellular, 1TB)",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Pro 11 \" 1st Gen (Wi-Fi)": {
+            "Model": "iPad Pro 11 \" 1st Gen (Wi-Fi)",
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Pro 11 \" 1st Gen (Wi-Fi, 1TB)": {
+            "Model": "iPad Pro 11 \" 1st Gen (Wi-Fi, 1TB)",
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Pro 11 \" 1st Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad Pro 11 \" 1st Gen (Wi-Fi+Cellular)",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Pro 11 \" 1st Gen (Wi-Fi+Cellular, 1TB)": {
+            "Model": "iPad Pro 11 \" 1st Gen (Wi-Fi+Cellular, 1TB)",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Pro 12.9 \" 4th Gen (Wi-Fi)": {
+            "Model": "iPad Pro 12.9 \" 4th Gen (Wi-Fi)",
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Pro 12.9 \" 4th Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad Pro 12.9 \" 4th Gen (Wi-Fi+Cellular)",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Pro 11 \" 2nd Gen (Wi-Fi)": {
+            "Model": "iPad Pro 11 \" 2nd Gen (Wi-Fi)",
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Pro 11 \" 2nd Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad Pro 11 \" 2nd Gen (Wi-Fi+Cellular)",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad mini 1st Gen (CDMA+LTE)": {
+            "Model": "iPad mini 1st Gen (CDMA+LTE)",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad mini 1st Gen (GSM+LTE)": {
+            "Model": "iPad mini 1st Gen (GSM+LTE)",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad mini 1st Gen (Wi-Fi)": {
+            "Model": "iPad mini 1st Gen (Wi-Fi)",
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad mini 2nd Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad mini 2nd Gen (Wi-Fi+Cellular)",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad mini 2nd Gen (Wi-Fi)": {
+            "Model": "iPad mini 2nd Gen (Wi-Fi)",
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad mini 3rd Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad mini 3rd Gen (Wi-Fi+Cellular)",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad mini 3rd Gen (Wi-Fi)": {
+            "Model": "iPad mini 3rd Gen (Wi-Fi)",
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad mini 4th Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad mini 4th Gen (Wi-Fi+Cellular)",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad mini 4th Gen (Wi-Fi)": {
+            "Model": "iPad mini 4th Gen (Wi-Fi)",
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad mini 5th Gen (Wi-Fi)": {
+            "Model": "iPad mini 5th Gen (Wi-Fi)",
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad mini 5th Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad mini 5th Gen (Wi-Fi+Cellular)",
             "Internet on Wi-Fi": 10,
             "Internet on Cellular": 9,
             "Video playback": 10,
@@ -1031,7 +1486,7 @@
             "Internet on Wi-Fi": 10,
             "Internet on Cellular": 9,
             "Video playback": 10,
-            "Audio playback": 140
+            "Audio playback": 10
         }
     }
 }

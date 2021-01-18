@@ -68,6 +68,7 @@ NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChan
 @property(nonatomic, strong) NSManagedObjectContext *savingContext;
 @property(nonatomic, weak) UITextField *editingTextField;
 @property(nonatomic, strong) NSNumberFormatter *decimalNumberFormatter;
+@property(nonatomic, assign) BOOL isNumberKeyboardVisible;
 
 @end
 
@@ -97,7 +98,9 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.automaticallyAdjustsScrollViewInsets = NO;
+//    [self.currencyDataManager buildBaseFile];
+    
+    self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentAutomatic;
     self.tableView.accessibilityIdentifier = @"Currency";
 
     _barButtonEnabled = YES;
@@ -138,13 +141,10 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
     UIView *superview = self.view;
     [self.view addSubview:self.plusButton];
 
-    CGFloat verticalOffset = 0;
-    if (IS_IPHONEX) {
-        verticalOffset = 40;
-    }
     [self.plusButton makeConstraints:^(MASConstraintMaker *make) {
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
         make.centerX.equalTo(superview.centerX);
-        make.centerY.equalTo(superview.bottom).with.offset(-32 - verticalOffset);
+        make.centerY.equalTo(superview.bottom).with.offset(-32 - safeAreaInsets.bottom);
         make.width.equalTo(@44);
         make.height.equalTo(@44);
     }];
@@ -225,12 +225,14 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
         return;
     }
 
+    __weak __typeof__(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.favorites = nil;
-        [self favorites];
+        __typeof__(self) strongSelf = weakSelf;
+        strongSelf.favorites = nil;
+        [strongSelf favorites];
 
-        [self.tableView reloadData];
-        [self enableControls:_barButtonEnabled];
+        [strongSelf.tableView reloadData];
+        [strongSelf enableControls:_barButtonEnabled];
     });
 }
 
@@ -355,10 +357,12 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
         topSeparator.backgroundColor = [UIColor clearColor];
         [_footerView addSubview:topSeparator];
 
+        __weak __typeof__(self) weakSelf = self;
         [topSeparator makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(_footerView.left);
-            make.right.equalTo(_footerView.right);
-            make.top.equalTo(_footerView.top);
+            __typeof__(self) strongSelf = weakSelf;
+            make.left.equalTo(strongSelf.footerView.left);
+            make.right.equalTo(strongSelf.footerView.right);
+            make.top.equalTo(strongSelf.footerView.top);
             make.height.equalTo(@1);
         }];
     }
@@ -947,16 +951,18 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     [_favorites moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
     [self.savingContext MR_saveToPersistentStoreAndWait];
 
+    __weak __typeof__(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
-        [_favorites removeObject:_equalItem];
-        [_favorites removeObject:_adItem];
+        __typeof__(self) strongSelf = weakSelf;
+        [strongSelf.favorites removeObject:strongSelf.equalItem];
+        [strongSelf.favorites removeObject:strongSelf.adItem];
 
-        [_favorites insertObject:_equalItem atIndex:1];
-        if (_adItem) {
-            NSInteger position = [_favorites count] > 3 ? 4 : [_favorites count];
-            [_favorites insertObject:_adItem atIndex:position];
+        [strongSelf.favorites insertObject:strongSelf.equalItem atIndex:1];
+        if (strongSelf.adItem) {
+            NSInteger position = [strongSelf.favorites count] > 3 ? 4 : [strongSelf.favorites count];
+            [strongSelf.favorites insertObject:strongSelf.adItem atIndex:position];
         }
-        [self.tableView reloadData];
+        [strongSelf.tableView reloadData];
     });
 }
 
@@ -1420,9 +1426,12 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 - (NSString *)stringForShare {
     if (_shareAll) {
-        NSUInteger idx = 2 + (_adItem ? 1 : 0);
+        NSUInteger idx = 2;
         NSMutableString *resultString = [NSMutableString new];
         for (; idx < [self.favorites count]; idx++) {
+            if ([_favorites[idx] isEqual:_adItem]) {
+                continue;
+            }
             [resultString appendString:[self stringForShareOfSource:0 target:idx]];
         }
         return resultString;
@@ -1503,26 +1512,25 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     [_mainViewController.historyBarButton setEnabled:YES];
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        if (IS_IPHONE && IS_LANDSCAPE) {
+            [self leftBarButtonAppsButton];
+        }
 
-    if (IS_IPHONE && IS_LANDSCAPE) {
-        [self leftBarButtonAppsButton];
-    }
+        if (self.isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
+            UIView *keyboardView = self.numberKeyboardViewController.view;
+            CGFloat keyboardHeight = self.numberKeyboardViewController.keyboardHeight;
 
-    UIEdgeInsets contentInset = self.tableView.contentInset;
-    contentInset.top = 64;
-    self.tableView.contentInset = contentInset;
-
-    if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
-        UIView *keyboardView = self.numberKeyboardViewController.view;
-        CGFloat keyboardHeight = self.numberKeyboardViewController.keyboardHeight;
-
-        FNLOGRECT(self.view.bounds);
-        FNLOG(@"%f", keyboardHeight);
-        keyboardView.frame = CGRectMake(0, self.view.bounds.size.height - keyboardHeight, self.view.bounds.size.width, keyboardHeight);
-        [self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
-    }
+            FNLOGRECT(self.view.bounds);
+            FNLOG(@"%f", keyboardHeight);
+            keyboardView.frame = CGRectMake(0, self.view.bounds.size.height - keyboardHeight, self.view.bounds.size.width, keyboardHeight);
+            UIInterfaceOrientation interfaceOrientation = size.width > size.height ? UIInterfaceOrientationLandscapeLeft : UIInterfaceOrientationPortrait;
+            [self.numberKeyboardViewController rotateToInterfaceOrientation:interfaceOrientation];
+        }
+    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        
+    }];
 }
 
 #pragma mark - AdMob Ad
@@ -1609,7 +1617,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     void (^completion)(void) = ^{
         [keyboardView removeFromSuperview];
         self.numberKeyboardViewController = nil;
-        _isNumberKeyboardVisible = NO;
+        self.isNumberKeyboardVisible = NO;
     };
 
     if (animated) {

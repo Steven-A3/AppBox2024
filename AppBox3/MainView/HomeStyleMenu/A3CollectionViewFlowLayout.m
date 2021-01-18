@@ -422,7 +422,8 @@
 	[superview addSubview:self.deleteZoneView];
 	
     CGFloat verticalOffset = 0;
-    if (IS_IPHONEX) {
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    if (safeAreaInsets.top > 20) {
         verticalOffset = 20;
     }
     
@@ -444,9 +445,9 @@
 	[_deleteZoneView addSubview:textLabel];
 	
 	[textLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.bottom.equalTo(_deleteZoneView.bottom).with.offset(-10);
-		make.left.equalTo(_deleteZoneView.left).with.offset(10);
-		make.right.equalTo(_deleteZoneView.right).with.offset(-10);
+		make.bottom.equalTo(self.deleteZoneView.bottom).with.offset(-10);
+		make.left.equalTo(self.deleteZoneView.left).with.offset(10);
+		make.right.equalTo(self.deleteZoneView.right).with.offset(-10);
 	}];
 }
 

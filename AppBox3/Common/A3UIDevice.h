@@ -46,8 +46,6 @@
 #define IS_IPAD_PRO	(!IS_IOS7 && [[UIScreen mainScreen] nativeBounds].size.height == 2732.0)
 #define IS_IPHONE   ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
 #define IS_IPHONE35 ([A3UIDevice screenBoundsAdjustedWithOrientation].size.height == 480.0)
-#define IS_IPHONEX  (([UIScreen mainScreen].nativeBounds.size.height == 2436.0) || ([UIScreen mainScreen].nativeBounds.size.height == 1792.0) || ([UIScreen mainScreen].nativeBounds.size.height == 2688.0))
-#define IS_IPHONEXsMAX  ([UIScreen mainScreen].nativeBounds.size.height == 2688.0)
 
 #define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
 #define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
@@ -93,6 +91,7 @@ extern NSString *const A3AnimationIDKeyboardWillShow;
 // KJH
 + (NSString *)platform;
 + (BOOL)canVibrate;
++ (NSString *)modelNameFromDeviceInfo:(NSDictionary *)rootDictionary;
 + (NSDictionary *)deviceInformationDictionary;
 + (NSDictionary *)remainingTimeDictionary;
 + (NSString *)platformString;

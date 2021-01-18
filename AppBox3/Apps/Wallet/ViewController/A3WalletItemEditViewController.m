@@ -1249,10 +1249,10 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 
 - (void)deleteItemByActionSheet {
 	[self dismissViewControllerAnimated:NO completion:^{
-		if ([_delegate respondsToSelector:@selector(WalletItemDeleted)]) {
-			[_delegate WalletItemDeleted];
+		if ([self.delegate respondsToSelector:@selector(WalletItemDeleted)]) {
+			[self.delegate WalletItemDeleted];
 		}
-		[self deleteWalletItemByID:_item.uniqueID];
+		[self deleteWalletItemByID:self.item.uniqueID];
 	}];
 }
 
@@ -1359,12 +1359,14 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 
 			// 이전 화면을 덮었던 ActionSheet 가 사라진 후에도 영향을 주어서, 현재의 스택을 벗어나서 실행하도록 하였습니다.
 			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-				[self presentViewController:_imagePickerController animated:YES completion:NULL];
+				[self presentViewController:self.imagePickerController animated:YES completion:NULL];
 			});
 		}
 	}
 	else {
-		[self presentViewController:_imagePickerController animated:NO completion:NULL];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self presentViewController:self.imagePickerController animated:NO completion:NULL];
+        });
 	}
 }
 
@@ -2124,6 +2126,9 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	A3WalletDateInputCell *dateInputCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemDateInputCellID4 forIndexPath:indexPath];
 	dateInputCell.selectionStyle = UITableViewCellSelectionStyleNone;
 	dateInputCell.datePicker.date = fieldItem.date ? fieldItem.date: [NSDate date];
+    if (@available(iOS 13.4, *)) {
+        dateInputCell.datePicker.preferredDatePickerStyle = UIDatePickerStyleWheels;
+    }
 	dateInputCell.datePicker.datePickerMode = UIDatePickerModeDate;
 	[dateInputCell.datePicker addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged];
 	_datePicker = dateInputCell.datePicker;

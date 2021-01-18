@@ -277,8 +277,9 @@ NSString *const cellID = @"flashEffectID";
 	[_bottomToolBar2 setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 	[_statusToolbar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
     
-    if (IS_IPHONEX) {
-        _statusToolbarHeightConstraint.constant = 40;
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    if (safeAreaInsets.top > 20) {
+        _statusToolbarHeightConstraint.constant = safeAreaInsets.top;
     }
 }
 
@@ -300,7 +301,9 @@ NSString *const cellID = @"flashEffectID";
 	[alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(A3AppName_Settings, nil)
 														style:UIAlertActionStyleDefault
 													  handler:^(UIAlertAction *action) {
-														  [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+														  [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]
+                                                                                             options:@{}
+                                                                                   completionHandler:nil];
 													  }]];
 	[self presentViewController:alertController
 					   animated:YES
@@ -1008,9 +1011,10 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     
     CGFloat verticalOffset = 0;
     CGFloat verticalBottomOffset = 0;
-    if (IS_IPHONEX) {
-        verticalOffset = 20;
-        verticalBottomOffset = 40;
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    if (safeAreaInsets.top > 20) {
+        verticalOffset = safeAreaInsets.top - 20;
+        verticalBottomOffset = safeAreaInsets.bottom;
     }
     _topToolBarTopConst.constant = 20 + verticalOffset;
     
@@ -1118,6 +1122,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 }
 
 #pragma mark - LED Related
+
 - (void)setTorchOn {
 	if (![A3UIDevice canAccessCamera]) {
 		[self requestAuthorizationForCamera];

@@ -115,24 +115,18 @@
     return UIStatusBarStyleLightContent;
 }
 
+- (BOOL)prefersStatusBarHidden {
+    return NO;
+}
+
 - (void)mainMenuDidHide {
-    if (IS_IPHONEX) {
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    } else {
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-    }
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-    if (IS_IPHONEX) {
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    } else {
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-    }
+    [self setNeedsStatusBarAppearanceUpdate];
 	
 	[self setupMotionManager];
 }
@@ -141,7 +135,7 @@
 	[super viewWillDisappear:animated];
 
 	[self.motionManager stopAccelerometerUpdates];
-	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    [self setNeedsStatusBarAppearanceUpdate];
 
 	if ([self isMovingFromParentViewController]) {
 		[self removeObserver];
@@ -161,13 +155,11 @@
 }
 
 - (void)myLayoutSubviews {
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
 	CGRect frame = self.view.bounds;
-    CGFloat topOffset = 0;
-    if (frame.size.height == 812 || frame.size.height == 896) {
-        topOffset = 40;
-        frame.origin.y += topOffset;
-        frame.size.height -= 80;
-    }
+    frame.origin.y += safeAreaInsets.top;
+    frame.size.height -= safeAreaInsets.top + safeAreaInsets.bottom;
+    
 	surfaceView = [[InclinometerView alloc] initWithFrame:frame mode:surfaceMode];
 	surfaceView.viewController = self;
 	[self.view addSubview:surfaceView];
@@ -184,7 +176,7 @@
 	
 	toolbarVC = [[ClinometerToolbarViewController alloc] init];
 	toolbarVC.delegate = self;
-	toolbarVC.view.frame = CGRectMake(0.0, topOffset, self.view.bounds.size.width, 41.0 * scale);
+	toolbarVC.view.frame = CGRectMake(0.0, safeAreaInsets.top, self.view.bounds.size.width, 41.0 * scale);
 	[self.view addSubview:[toolbarVC view]];
 	
 	[toolbarVC updateTimer];
@@ -213,8 +205,8 @@
 			[navigationController setToolbarHidden:YES];
 			[A3AppDelegate instance].homeStyleMainMenuViewController.activeAppName = nil;
 		}
-		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-	} else {
+        [self setNeedsStatusBarAppearanceUpdate];
+    } else {
 		[[[A3AppDelegate instance] rootViewController_iPad] toggleLeftMenuViewOnOff];
 	}
 	[[A3AppDelegate instance] presentInterstitialAds];
@@ -456,11 +448,8 @@
     FNLOGRECT(bannerView.frame);
     FNLOG(@"%f", bannerView.adSize.size.height);
 
-    CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-    CGFloat bottomOffset = 0;
-    if (screenBounds.size.height == 812 || screenBounds.size.height == 896) {
-        bottomOffset = 40;
-    }
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    CGFloat bottomOffset = safeAreaInsets.bottom;
     
     [self.view bringSubviewToFront:bannerView];
     [bannerView setHidden:NO];

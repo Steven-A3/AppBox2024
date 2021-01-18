@@ -355,13 +355,74 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 
 - (void)viewWillLayoutSubviews {
 	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+    CGFloat vscale = scale;
+    
+    FNLOGRECT([UIScreen mainScreen].nativeBounds);
+    FNLOG(@"%f", [UIScreen mainScreen].nativeScale);
+    FNLOGRECT([UIScreen mainScreen].bounds);
     
     if (scientific == NO)
     {
-        self.calctopconstraint.offset((IS_LANDSCAPE ? 404.5:581.5) * scale);
-    }
-    else {
-        self.calctopconstraint.offset((IS_LANDSCAPE ? 273.5:413.5) * scale);
+        CGRect bounds = [UIScreen mainScreen].bounds;
+        if (bounds.size.width < bounds.size.height) {
+            vscale = bounds.size.height / 1024.0;
+            // Portrait
+            if (bounds.size.height == 1366.0) {
+                self.calctopconstraint.offset(581.5 * scale);
+            } else if (bounds.size.height == 1194.0) {
+                self.calctopconstraint.offset(700.0);
+            } else if (bounds.size.height == 1112.0) {
+                self.calctopconstraint.offset(581.5 * scale);
+            } else /* if (bounds.size.height == 1024) */ {
+                self.calctopconstraint.offset(581.5 * scale);
+            }
+        } else {
+            // Landscape
+            if (bounds.size.height == 1024.0) {
+                // iPad Pro 12.9"
+                self.calctopconstraint.offset(414.5 * scale);
+            } else if (bounds.size.width == 1194.0) {
+                // iPad Pro 11"
+                self.calctopconstraint.offset(420.0);
+            } else if (bounds.size.width == 1112.0) {
+                // iPad Pro 10.5"
+                self.calctopconstraint.offset(404.5 * scale);
+            } else /* if (bounds.size.height == 768) */ {
+                // Other devices
+                self.calctopconstraint.offset(404.5 * scale);
+            }
+        }
+    } else {
+        CGRect bounds = [UIScreen mainScreen].bounds;
+        
+        if (bounds.size.width < bounds.size.height) {
+            vscale = bounds.size.height / 1024.0;
+            // Portrait
+            if (bounds.size.height == 1366.0) {
+                self.calctopconstraint.offset(413.5 * scale);
+            } else if (bounds.size.height == 1194.0) {
+                self.calctopconstraint.offset(520.0);
+            } else if (bounds.size.height == 1112.0) {
+                self.calctopconstraint.offset(413.5 * vscale);
+            } else /* if (bounds.size.height == 1024) */ {
+                self.calctopconstraint.offset(413.5 * scale);
+            }
+        } else {
+            // Landscape
+            if (bounds.size.height == 1024) {
+                // iPad Pro 12.9"
+                self.calctopconstraint.offset(273.5 * scale);
+            } else if (bounds.size.width == 1194.0) {
+                // iPad Pro 11"
+                self.calctopconstraint.offset(273.5);
+            } else if (bounds.size.width == 1112.0) {
+                // iPad Pro 10.5"
+                self.calctopconstraint.offset(273.5 * scale);
+            } else /* if (bounds.size.height == 768) */ {
+                // Other devices
+                self.calctopconstraint.offset(273.5 * scale);
+            }
+        }
     }
     
     if (IS_LANDSCAPE) {

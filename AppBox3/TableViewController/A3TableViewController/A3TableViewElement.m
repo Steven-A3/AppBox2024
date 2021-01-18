@@ -20,7 +20,9 @@
 	A3TableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
 	if (!cell) {
 		cell = [[A3TableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
-	}
+    } else {
+        [cell resetCellLayout];
+    }
 	cell.textLabel.text = self.title;
 	cell.textLabel.textColor = [UIColor blackColor];
 	if ([self.imageName length]) {

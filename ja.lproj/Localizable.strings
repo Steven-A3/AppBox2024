@@ -820,6 +820,7 @@
 "Internet on Wi-Fi" = "Wi-Fiインターネット";
 "Internet on Cellular" = "携帯インターネット";
 "Video playback" = "ビデオ再生";
+"Video playback (streamed)" = "ビデオ再生（ストリーミング）";
 "Audio playback" = "オーディオ再生";
 "Standby" = "待機時間";
 "GPS" = "GPS";

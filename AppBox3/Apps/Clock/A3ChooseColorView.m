@@ -42,7 +42,8 @@ NSString *const ClockColorChooseCell = @"ClockColorCell";
 		}];
         
         CGFloat horizontalOffset = 0;
-        if (IS_IPHONEX) {
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+        if (safeAreaInsets.top > 20) {
             horizontalOffset = 20;
         }
         UILabel* lbCaption = [[UILabel alloc] initWithFrame:viewCaption.frame];

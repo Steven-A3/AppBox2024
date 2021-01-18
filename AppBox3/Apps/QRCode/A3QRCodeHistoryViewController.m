@@ -474,8 +474,9 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 	[self.view addSubview:bannerView];
 
     CGFloat verticalOffset = 0;
-    if (IS_IPHONEX) {
-        verticalOffset = 40;
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    if (safeAreaInsets.top > 20) {
+        verticalOffset = safeAreaInsets.bottom;
     }
     
 	UIView *superview = self.view;
@@ -486,7 +487,7 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 		make.height.equalTo(@(bannerView.bounds.size.height));
 	}];
 	
-    if (IS_IPHONEX) {
+    if (safeAreaInsets.top > 20) {
         UIView *superview = _tableView.superview;
         [_tableView remakeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(superview.left);

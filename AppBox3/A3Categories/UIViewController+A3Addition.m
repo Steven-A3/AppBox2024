@@ -369,10 +369,11 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
 - (UIView *)presentMoreMenuWithButtons:(NSArray *)buttons pullDownView:(UIView *)pullDownView {
 	UIView *moreMenuView = [self moreMenuViewWithButtons:buttons];
 	CGRect clippingViewFrame = moreMenuView.frame;
+    
     CGFloat vertifcalOffset = 0;
-    if (IS_IPHONEX || IS_IPHONEXsMAX) {
-        vertifcalOffset = 25;
-    }
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    vertifcalOffset = safeAreaInsets.top - 20;
+    
     clippingViewFrame.origin.y = 20.0 + 44.0 - 1.0 + vertifcalOffset;
     clippingViewFrame.size.height = clippingViewFrame.size.height + 0.5;//kjh
 
@@ -563,7 +564,9 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
 - (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromBarButtonItem:(UIBarButtonItem *)barButtonItem completionHandler:(void (^)(void))completionHandler {
 	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
 	activityController.completionWithItemsHandler = ^(UIActivityType activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
-		completionHandler();
+        if (completionHandler) {
+            completionHandler();
+        }
 	};
 	if (IS_IPHONE) {
 		[self presentViewController:activityController animated:YES completion:NULL];

@@ -38,17 +38,73 @@
 
 - (void)viewWillLayoutSubviews {
 	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+    CGFloat vscale = scale;
     CGFloat p_buttonwidth = 96.0 * scale, p_buttonheight = 96.0 * scale;
     CGFloat l_buttonwidth = 128.0 * scale, l_buttonheight = 80.0 * scale;
     CGFloat start_x = -1.0, start_y = 0.0;
     CGFloat current_x, current_y, buttonwidth, buttonheight;
 
+    CGRect bounds = [UIScreen mainScreen].bounds;
+
 	if (IS_PORTRAIT) {
-		[_calculatorkeypadvw setFrame:CGRectMake(0,  448 * scale, 768 * scale, 576 * scale)];
+        CGFloat top, width, height;
+        if (bounds.size.height == 1366) {
+            // iPad Pro 12.9"
+            top = 448.0 * scale;
+            width = 768.0 * scale;
+            height = 576.0 * scale;
+        } else if (bounds.size.height == 1194) {
+            // iPad Pro 11"
+            vscale = 1194.0/1024.0;
+            
+            top = 540.0;
+            width = 834.0;
+            height = 576.0 * vscale;
+        } else if (bounds.size.height == 1112) {
+            // iPad Pro 10.5"
+            vscale = 1112.0/1024.0;
+            
+            top = 448.0 * scale;
+            width = 834.0;
+            height = 576.0 * scale;
+        } else {
+            top = 448.0 * scale;
+            width = 768.0 * scale;
+            height = 576.0 * scale;
+        }
+		[_calculatorkeypadvw setFrame:CGRectMake(0,  top, width, height)];
 
         buttonwidth = p_buttonwidth; buttonheight = p_buttonheight;
 	} else {
-		[_calculatorkeypadvw setFrame:CGRectMake(0, 288 * scale, 1024 * scale, 480 * scale)];
+        CGFloat top, width, height;
+        if (bounds.size.height == 1366.0) {
+            // iPad Pro 12.9"
+            top = 288.0 * scale;
+            width = 1024.0;
+            height = 480.0 * scale;
+        } else if (bounds.size.width == 1194.0) {
+            // iPad Pro 11"
+            vscale = 834.0/768.0;
+
+            top = 288.0;
+            width = 1194.0;
+            height = 481.0 * vscale;
+            
+            p_buttonheight = 96.0 * vscale;
+            l_buttonheight = 80.0 * vscale;
+        } else if (bounds.size.width == 1112.0) {
+            // iPad Pro 10.5"
+            vscale = 834.0/768.0;
+            
+            top = 288.0 * scale;
+            width = 1112.0;
+            height = 480.0 * scale;
+        } else {
+            top = 288.0 * scale;
+            width = 1024.0 * scale;
+            height = 480.0 * scale;
+        }
+		[_calculatorkeypadvw setFrame:CGRectMake(0, top, width, height)];
 
         buttonwidth = l_buttonwidth; buttonheight = l_buttonheight;
 	}

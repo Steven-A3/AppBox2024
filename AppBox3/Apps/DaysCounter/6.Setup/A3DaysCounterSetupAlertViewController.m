@@ -363,12 +363,8 @@
 	NSDate *today = [NSDate date];
     
 	if ( [today timeIntervalSince1970] > [startDate timeIntervalSince1970] && [datePicker.date timeIntervalSince1970] < [today timeIntervalSince1970] ) {
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-															message:NSLocalizedString(@"Please enter your dates in the future.", @"Please enter your dates in the future.")
-														   delegate:nil
-												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-												  otherButtonTitles:nil];
-		[alertView show];
+        [self presentAlertWithTitle:NSLocalizedString(@"Info", @"Info")
+                            message:NSLocalizedString(@"Please enter your dates in the future.", @"Please enter your dates in the future.")];
 		return;
 	}
     

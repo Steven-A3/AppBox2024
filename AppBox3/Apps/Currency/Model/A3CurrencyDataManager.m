@@ -404,7 +404,7 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
         [currenciesString appendFormat:@"%@,", favorite.uniqueID];
     }
     [currenciesString deleteCharactersInRange:NSMakeRange([currenciesString length]-1, 1)];
-    NSString *URLString = [NSString stringWithFormat:@"http://apilayer.net/api/live?access_key=e2834bb6da9ca145c7b276f5aa522022&currencies=%@&source=USD&format=1", currenciesString];
+    NSString *URLString = [NSString stringWithFormat:@"https://apilayer.net/api/live?access_key=e2834bb6da9ca145c7b276f5aa522022&currencies=%@&source=USD&format=1", currenciesString];
     
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URLString]];
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
@@ -560,11 +560,46 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
     }
     newFields[@"price"] = value;
     newFields[@"ts"] = [NSString stringWithFormat:@"%0.0f", [[NSDate date] timeIntervalSince1970]];
+    NSISO8601DateFormatter *df = [NSISO8601DateFormatter new];
+    newFields[@"utctime"] = [df stringFromDate:[NSDate date]];
     return @{@"resource":@{
                      @"classname" : @"Quote",
                      @"fields" : newFields,
                      }
              };
+}
+
+- (void)buildBaseFile {
+    NSMutableArray *storedData = [[self ratesFromStoredFile] mutableCopy];
+    if (storedData == nil) {
+        storedData = [[NSArray arrayWithContentsOfFile:[self bundlePath]] mutableCopy];
+    }
+    NSMutableString *currenciesString = [NSMutableString new];
+    for (NSDictionary *item in storedData) {
+        [currenciesString appendFormat:@"%@,", [item[@"resource"][@"fields"][@"symbol"] substringToIndex:3]];
+    }
+    [currenciesString deleteCharactersInRange:NSMakeRange([currenciesString length]-1, 1)];
+    NSString *URLString = [NSString stringWithFormat:@"https://apilayer.net/api/live?access_key=e2834bb6da9ca145c7b276f5aa522022&currencies=%@&source=USD&format=1", currenciesString];
+    
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URLString]];
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    if ([operation respondsToSelector:@selector(setQualityOfService:)]) {
+        [operation setQualityOfService:NSQualityOfServiceUserInteractive];
+    }
+    operation.responseSerializer = [AFJSONResponseSerializer serializer];
+    
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *requestOperation, id JSON)
+     {
+         NSDictionary *quotes = JSON[@"quotes"];
+         for (NSString *key in [quotes allKeys]) {
+             [self updateRateForCurrency:[key substringFromIndex:3] value:quotes[key]];
+         }
+     }
+                                     failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error)
+     {
+        FNLOG(@"%@", error.localizedDescription);
+     }];
+    [operation start];
 }
 
 @end

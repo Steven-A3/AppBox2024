@@ -818,6 +818,7 @@
 "Internet on Wi-Fi" = "Internet Wi-Fi";
 "Internet on Cellular" = "Internet Móviles";
 "Video playback" = "Reproducir video";
+"Video playback (streamed)" = "Reproducción de video (transmitido)";
 "Audio playback" = "Reproducir audio";
 "Standby" = "En reposo";
 "FaceTime" = "FaceTime";

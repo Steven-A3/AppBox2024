@@ -10,7 +10,6 @@
 
 @interface A3GridCollectionViewFlowLayout : A3CollectionViewFlowLayout
 
-@property (nonatomic, assign) NSInteger numberOfItemsPerPage;
 @property (nonatomic, assign) NSInteger numberOfItemsPerRow;
 @property (nonatomic, assign) NSInteger numberOfRowsPerPage;
 @property (nonatomic, assign) CGFloat contentHeight;

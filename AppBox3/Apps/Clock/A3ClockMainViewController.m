@@ -93,10 +93,10 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 	[self setButtonTintColor];
 
     CGFloat verticalOffset = 0;
-    if (IS_IPHONEX) {
-        verticalOffset = -30;
-    }
-	CGRect bounds = [self screenBoundsAdjustedWithOrientation];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    verticalOffset = -safeAreaInsets.bottom;
+
+    CGRect bounds = [self screenBoundsAdjustedWithOrientation];
     [_pageControl makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(self.view.centerX);
 		if (IS_IPHONE) {
@@ -105,7 +105,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 			make.bottom.equalTo(self.view.bottom).with.offset(0);
 		}
 	}];
-	[self determineStatusBarStyle];
+    [self setNeedsStatusBarAppearanceUpdate];
 	[self addChooseColorButton];
 
 	_currentClockViewController = _clockWaveViewController;
@@ -286,13 +286,13 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 		[self.view addSubview:_clockAppsButton];
 
         CGFloat verticalOffset = 0;
-        if (IS_IPHONEX) {
-            verticalOffset = 30;
-        }
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+        verticalOffset = safeAreaInsets.top;
+        
 		[_clockAppsButton makeConstraints:^(MASConstraintMaker *make) {
 			make.left.equalTo(self.view).with.offset(8);
             // Top Offset은 변수로 저장해 두었다가, 매번 새로 설정합니다.
-			_appsButtonTop = make.top.equalTo(self.view.top).with.offset(26 + verticalOffset);
+			self.appsButtonTop = make.top.equalTo(self.view.top).with.offset(26 + verticalOffset);
             make.width.equalTo(@44);
             make.height.equalTo(@44);
 		}];
@@ -312,7 +312,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 
 		[_settingsButton makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(self.view.right).with.offset(-28);
-			make.centerY.equalTo(_clockAppsButton.centerY);
+			make.centerY.equalTo(self.clockAppsButton.centerY);
 			make.width.equalTo(@44);
 			make.height.equalTo(@44);
 		}];
@@ -333,7 +333,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
         
         [_helpButton makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(self.view.right).with.offset(-78);
-			make.centerY.equalTo(_clockAppsButton.centerY);
+			make.centerY.equalTo(self.clockAppsButton.centerY);
 			make.width.equalTo(@44);
 			make.height.equalTo(@44);
         }];
@@ -352,9 +352,8 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 		[self.view addSubview:_yahooButton];
 
         CGFloat verticalOffset = 0;
-        if (IS_IPHONEX) {
-            verticalOffset = -30;
-        }
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+        verticalOffset = -safeAreaInsets.bottom;
 
 		[_yahooButton makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(self.view.right).offset(IS_IPHONE ? -40 : -56);
@@ -366,7 +365,9 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 }
 
 - (void)yahooButtonAction {
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://weather.yahoo.com"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://weather.yahoo.com"]
+                                       options:@{}
+                             completionHandler:nil];
 }
 
 - (void)settingsChanged {
@@ -386,9 +387,8 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 	[self.view addSubview:_chooseColorButton];
 
     CGFloat verticalOffset = 0;
-    if (IS_IPHONEX) {
-        verticalOffset = -30;
-    }
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    verticalOffset = -safeAreaInsets.bottom;
 
 	[_chooseColorButton makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(self.view.right).offset(-28);
@@ -466,6 +466,10 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 	return _clockLEDViewController;
 }
 
+- (BOOL)prefersStatusBarHidden {
+    return [_clockAppsButton isHidden] || ![[A3AppDelegate instance] rootViewController_iPad].showLeftView;
+}
+
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
     [self turnOffAutoDim];
 
@@ -473,8 +477,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 		if ([[A3AppDelegate instance] isMainMenuStyleList]) {
 			[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:^(BOOL finished) {
 				[self.scrollView setScrollEnabled:self.mm_drawerController.openSide == MMDrawerSideNone];
-				[[UIApplication sharedApplication] setStatusBarHidden:NO];
-				[self determineStatusBarStyle];
+                [self setNeedsStatusBarAppearanceUpdate];
 			}];
 		} else {
 			UINavigationController *navigationController = [A3AppDelegate instance].currentMainNavigationController;
@@ -485,8 +488,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 		}
 	} else {
 		[[[A3AppDelegate instance] rootViewController_iPad] toggleLeftMenuViewOnOff];
-		[[UIApplication sharedApplication] setStatusBarHidden:NO];
-		[self determineStatusBarStyle];
+        [self setNeedsStatusBarAppearanceUpdate];
 	}
 	if (_buttonsTimer) {
 		FNLOG(@"Timer disabled");
@@ -544,10 +546,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
     }
     
 	if (!(show && IS_IPHONE && IS_LANDSCAPE)) {
-		if (self.mm_drawerController.openSide != MMDrawerSideLeft) {
-			[[UIApplication sharedApplication] setStatusBarHidden:!show withAnimation:UIStatusBarAnimationNone];
-		}
-		[self determineStatusBarStyle];
+        [self setNeedsStatusBarAppearanceUpdate];
 	}
 
 	if (show) {
@@ -559,10 +558,6 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 - (void)hideButtons {
 	[self showMenus:NO];
 	_buttonsTimer = nil;
-}
-
-- (BOOL)prefersStatusBarHidden {
-    return self.navigationController.navigationBarHidden;
 }
 
 #pragma mark Instruction Related
@@ -933,27 +928,20 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 	_scrollView.contentSize = CGSizeMake(bounds.size.width * 4, bounds.size.height);
 
     CGFloat verticalOffset = 0;
-    if (IS_IPHONEX) {
-        verticalOffset = 13;
-    }
-	if (IS_IPHONE && IS_LANDSCAPE) {
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    verticalOffset = safeAreaInsets.top - 26;
+
+    if (IS_IPHONE && IS_LANDSCAPE) {
 		_appsButtonTop.with.offset(5);
-		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 	} else {
-		BOOL hideStatusBar = [_clockAppsButton isHidden] || ![[A3AppDelegate instance] rootViewController_iPad].showLeftView;
 		_appsButtonTop.with.offset(26 + verticalOffset);
-		[[UIApplication sharedApplication] setStatusBarHidden:hideStatusBar withAnimation:UIStatusBarAnimationNone];
-		[self determineStatusBarStyle];
 	}
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
-- (void)determineStatusBarStyle {
-	BOOL useDefault = (IS_IPAD && [[A3AppDelegate instance] rootViewController_iPad].showLeftView) || _pageControl.currentPage == 2 || (IS_IPHONE && self.mm_drawerController.openSide == MMDrawerSideLeft);
-	if (useDefault) {
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-	} else {
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-	}
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    BOOL useDefault = (IS_IPAD && [[A3AppDelegate instance] rootViewController_iPad].showLeftView) || _pageControl.currentPage == 2 || (IS_IPHONE && self.mm_drawerController.openSide == MMDrawerSideLeft);
+    return useDefault ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
 }
 
 - (BOOL)usesFullScreenInLandscape {

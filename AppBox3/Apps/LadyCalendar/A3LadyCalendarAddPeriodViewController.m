@@ -350,6 +350,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
                 NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3LadyCalendarAddAccountCell" owner:nil options:nil];
                 cell = [cellArray objectAtIndex:2];
                 UIDatePicker *datePicker = (UIDatePicker*)[cell viewWithTag:10];
+                if (@available(iOS 13.4, *)) {
+                    datePicker.preferredDatePickerStyle = UIDatePickerStyleWheels;
+                }
                 datePicker.datePickerMode = UIDatePickerModeDate;
                 [datePicker addTarget:self action:@selector(changeDateAction:) forControlEvents:UIControlEventValueChanged];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -432,6 +435,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
         case PeriodCellType_DateInput:
         {
             UIDatePicker *datePicker = (UIDatePicker*)[cell viewWithTag:10];
+            if (@available(iOS 13.4, *)) {
+                datePicker.preferredDatePickerStyle = UIDatePickerStyleWheels;
+            }
             datePicker.datePickerMode = UIDatePickerModeDate;
             datePicker.date = ([_periodItem valueForKey:self.inputItemKey] ? [_periodItem valueForKey:self.inputItemKey] : [A3DateHelper dateMake12PM:[NSDate date]]);
 			break;

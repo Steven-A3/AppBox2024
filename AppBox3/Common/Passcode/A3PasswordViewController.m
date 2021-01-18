@@ -392,7 +392,7 @@
     } else {
         keyboardHeight = IS_LANDSCAPE ? 352 : 264;
     }
-    if (_isUserChangingPasscode && !IS_IOS7) keyboardHeight += 40.0;
+    if (_isUserChangingPasscode) keyboardHeight += 40.0;
 	return keyboardHeight;
 }
 

@@ -87,18 +87,16 @@
 {
 	[super viewDidLoad];
 
-	FNLOG();
-    
-    if (IS_IPHONEX) {
-        _verticalOffset = -40;
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    if (safeAreaInsets.top > 20) {
+        _verticalOffset = -safeAreaInsets.bottom;
     }
     
 	[self prepareDateFormat];
 
 	_viewControllerCache = [NSMutableDictionary new];
 
-	self.automaticallyAdjustsScrollViewInsets = NO;
-	_pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+    _pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
 	_pageViewController.delegate = self;
 	_pageViewController.dataSource = self;
 	_pageViewController.view.backgroundColor = [UIColor blackColor];
@@ -137,10 +135,10 @@
 	_pageControl.currentPage = page;
 
 	dispatch_async(dispatch_get_main_queue(), ^{
-		NSArray *allKeys = [_viewControllerCache allKeys];
+		NSArray *allKeys = [self.viewControllerCache allKeys];
 		for (NSString *key in allKeys) {
 			if (![self.countries containsObject:key]) {
-				[_viewControllerCache removeObjectForKey:key];
+				[self.viewControllerCache removeObjectForKey:key];
 			}
 		}
 	});

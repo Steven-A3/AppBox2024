@@ -99,8 +99,9 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 		}
 	}
 	
-    if (screenBounds.size.height == 812 || screenBounds.size.height == 896) {
-        _customNavigationBarHeightConstraint.constant = 84;
+    UIEdgeInsets safeAreaInsets = [[UIApplication sharedApplication] keyWindow].safeAreaInsets;
+    if (safeAreaInsets.top > 20) {
+        _customNavigationBarHeightConstraint.constant = 40 + safeAreaInsets.top;
     }
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartPedometerUpdate) name:UIApplicationSignificantTimeChangeNotification object:nil];
 }

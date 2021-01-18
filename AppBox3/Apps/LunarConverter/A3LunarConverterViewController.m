@@ -80,12 +80,12 @@
 	if ([[NSFileManager defaultManager] fileExistsAtPath:dataFilePath]) {
 		_dbManager = [[SQLiteWrapper alloc] initWithPath:dataFilePath];
 	}
-	[self setAutomaticallyAdjustsScrollViewInsets:NO];
 
 	CGFloat viewHeight = 84 * 3 + 1;
 
     CGFloat verticalOffset = 0;
-    if (IS_IPHONEX) {
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    if (safeAreaInsets.top > 20) {
         verticalOffset = 30;
     }
 	[_mainScrollView makeConstraints:^(MASConstraintMaker *make) {
@@ -98,18 +98,18 @@
 	[_mainScrollView addSubview:_firstPageView];
 
 	[_firstPageView makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(_mainScrollView.left);
-		make.top.equalTo(_mainScrollView.top);
-		make.width.equalTo(_mainScrollView.width);
-		make.height.equalTo(_mainScrollView.height);
+		make.left.equalTo(self.mainScrollView.left);
+		make.top.equalTo(self.mainScrollView.top);
+		make.width.equalTo(self.mainScrollView.width);
+		make.height.equalTo(self.mainScrollView.height);
 	}];
 	[_mainScrollView addSubview:_secondPageView];
 
 	[_secondPageView makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(_firstPageView.right);
-		make.top.equalTo(_firstPageView.top);
-		make.width.equalTo(_mainScrollView.width);
-		make.height.equalTo(_mainScrollView.height);
+		make.left.equalTo(self.firstPageView.right);
+		make.top.equalTo(self.firstPageView.top);
+		make.width.equalTo(self.mainScrollView.width);
+		make.height.equalTo(self.mainScrollView.height);
 	}];
 
 	[self initPageView:_firstPageView];
@@ -205,13 +205,20 @@
 	[self calculateDate];
 }
 
+- (BOOL)prefersStatusBarHidden {
+    return NO;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleDefault;
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
 
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-	
+    [self setNeedsStatusBarAppearanceUpdate];
+    
     [self shrinkCellScrollView:animated];
 
 	if ( _dbManager )
@@ -326,7 +333,7 @@
 		make.left.equalTo(pageView.left);
 		make.right.equalTo(pageView.right);
 		make.top.equalTo(line1.bottom);
-		[_cellHeightConstraints addObject:make.height.equalTo(@(topCellHeight))];
+		[self.cellHeightConstraints addObject:make.height.equalTo(@(topCellHeight))];
 	}];
 	[line2 makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(pageView.left);
@@ -338,7 +345,7 @@
 		make.left.equalTo(pageView.left);
 		make.right.equalTo(pageView.right);
 		make.top.equalTo(line2.bottom);
-		[_cellHeightConstraints addObject:make.height.equalTo(@(middleHeight))];
+		[self.cellHeightConstraints addObject:make.height.equalTo(@(middleHeight))];
 	}];
 	[line3 makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(pageView.left);
@@ -350,7 +357,7 @@
 		make.left.equalTo(pageView.left);
 		make.right.equalTo(pageView.right);
 		make.top.equalTo(line3.bottom);
-		[_cellHeightConstraints addObject:make.height.equalTo( @(bottomCellHeight) )];
+		[self.cellHeightConstraints addObject:make.height.equalTo( @(bottomCellHeight) )];
 	}];
 	[line4 makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(pageView.left);
@@ -411,8 +418,8 @@
 	[self.dateKeyboardVC.view makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(superview.left);
 		make.right.equalTo(superview.right);
-		_keyboardTopConstraint =  make.top.equalTo(superview.bottom);
-		_keyboardHeightConstraint =  make.height.equalTo(@(keyboardHeight));
+		self.keyboardTopConstraint =  make.top.equalTo(superview.bottom);
+		self.keyboardHeightConstraint =  make.height.equalTo(@(keyboardHeight));
 	}];
 	[superview layoutIfNeeded];
 
@@ -427,7 +434,11 @@
 }
 
 - (CGFloat)keyboardHeightForInterfaceOrientation:(UIInterfaceOrientation)orientation {
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
     if (IS_IPHONE) {
+        if (safeAreaInsets.top > 20) {
+            return 260;
+        }
         return 216;
     }
     if SYSTEM_VERSION_LESS_THAN(@"11") {
@@ -440,9 +451,9 @@
         screenBounds.size.width = temp;
     }
     if (UIInterfaceOrientationIsPortrait(orientation)) {
-        return screenBounds.size.height == 1024 ? 264 : 264 * 1.22;
+        return (screenBounds.size.height == 1024 ? 264 : 264 * 1.22) + safeAreaInsets.bottom;
     }
-    return screenBounds.size.height == 768 ? 352 : 352 * 1.16;
+    return (screenBounds.size.height == 768 ? 352 : 352 * 1.16) + safeAreaInsets.bottom;
 }
 
 - (void)layoutKeyboardToOrientation:(UIInterfaceOrientation)toOrientation
@@ -454,8 +465,8 @@
 	[_keyboardTopConstraint uninstall];
 	[_keyboardHeightConstraint uninstall];
 	[self.dateKeyboardVC.view updateConstraints:^(MASConstraintMaker *make) {
-		_keyboardTopConstraint =  make.top.equalTo(self.dateKeyboardVC.view.superview.bottom).with.offset(_isShowKeyboard ? -keyboardHeight : 0);;
-		_keyboardHeightConstraint = make.height.equalTo(@(keyboardHeight));
+		self.keyboardTopConstraint =  make.top.equalTo(self.dateKeyboardVC.view.superview.bottom).with.offset(_isShowKeyboard ? -keyboardHeight : 0);;
+		self.keyboardHeightConstraint = make.height.equalTo(@(keyboardHeight));
 	}];
 	[self.dateKeyboardVC.view.superview layoutIfNeeded];
 
@@ -492,17 +503,17 @@
 		for (UIView *pageView in @[_firstPageView, _secondPageView]) {
 			UIView *topCell = [pageView viewWithTag:100];
 			[topCell makeConstraints:^(MASConstraintMaker *make) {
-				[_cellHeightConstraints addObject:make.height.equalTo(@64)];
+				[self.cellHeightConstraints addObject:make.height.equalTo(@64)];
 			}];
             
 			UIView *middleCell = [pageView viewWithTag:102];
 			[middleCell makeConstraints:^(MASConstraintMaker *make) {
-				[_cellHeightConstraints addObject:make.height.equalTo(@47.0)];
+				[self.cellHeightConstraints addObject:make.height.equalTo(@47.0)];
 			}];
             
 			UIView *bottomCell = [pageView viewWithTag:101];
 			[bottomCell makeConstraints:^(MASConstraintMaker *make) {
-				[_cellHeightConstraints addObject:make.height.equalTo(@64.5)];
+				[self.cellHeightConstraints addObject:make.height.equalTo(@64.5)];
 			}];
 		}
 		if (_pageControl.currentPage != 0) duration = 0;
@@ -511,7 +522,7 @@
 	[_keyboardTopConstraint uninstall];
 	
 	[self.dateKeyboardVC.view makeConstraints:^(MASConstraintMaker *make) {
-		_keyboardTopConstraint =  make.top.equalTo(self.dateKeyboardVC.view.superview.bottom).with.offset(-self.dateKeyboardVC.view.frame.size.height);
+		self.keyboardTopConstraint =  make.top.equalTo(self.dateKeyboardVC.view.superview.bottom).with.offset(-self.dateKeyboardVC.view.frame.size.height);
 	}];
     
 	NSInteger currentPage = _pageControl.currentPage;
@@ -523,7 +534,7 @@
 		[UIView animateWithDuration:(duration) animations:^{
 			[self.view layoutIfNeeded];
 			[self.dateKeyboardVC.view.superview layoutIfNeeded];
-			[_mainScrollView setContentOffset:CGPointMake(_mainScrollView.frame.size.width * currentPage, 0)];
+			[self.mainScrollView setContentOffset:CGPointMake(self.mainScrollView.frame.size.width * currentPage, 0)];
 		}];
 	}
 }
@@ -547,8 +558,8 @@
 	[self.dateKeyboardVC.view makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(superview.left);
 		make.right.equalTo(superview.right);
-		_keyboardTopConstraint =  make.top.equalTo(superview.bottom);
-		_keyboardHeightConstraint =  make.height.equalTo(@(keyboardHeight));
+		self.keyboardTopConstraint =  make.top.equalTo(superview.bottom);
+		self.keyboardHeightConstraint =  make.height.equalTo(@(keyboardHeight));
 	}];
 	[self layoutKeyboardToOrientation:orientation];
 	[superview layoutIfNeeded];
@@ -580,12 +591,12 @@
 		for (UIView *pageView in @[_firstPageView, _secondPageView]) {
 			UIView *topCell = [pageView viewWithTag:100];
 			[topCell makeConstraints:^(MASConstraintMaker *make) {
-				[_cellHeightConstraints addObject:make.height.equalTo(@(topCellHeight))];
+				[self.cellHeightConstraints addObject:make.height.equalTo(@(topCellHeight))];
 			}];
 
 			UIView *bottomCell = [pageView viewWithTag:101];
 			[bottomCell makeConstraints:^(MASConstraintMaker *make) {
-				[_cellHeightConstraints addObject:make.height.equalTo(@(bottomCellHeight))];
+				[self.cellHeightConstraints addObject:make.height.equalTo(@(bottomCellHeight))];
 			}];
 
 			UIView *middleCell = [pageView viewWithTag:102];
@@ -597,7 +608,7 @@
 	}
 	[_keyboardTopConstraint uninstall];
 	[self.dateKeyboardVC.view makeConstraints:^(MASConstraintMaker *make) {
-		_keyboardTopConstraint =  make.top.equalTo(self.view.bottom);
+		self.keyboardTopConstraint =  make.top.equalTo(self.view.bottom);
 	}];
 
 	NSInteger currentPage = _pageControl.currentPage;
@@ -609,11 +620,11 @@
 		[UIView animateWithDuration:(duration) animations:^{
 			[self.view layoutIfNeeded];
 			[self.dateKeyboardVC.view.superview layoutIfNeeded];
-			[_mainScrollView setContentOffset:CGPointMake(_mainScrollView.frame.size.width * currentPage, 0)];
+			[self.mainScrollView setContentOffset:CGPointMake(self.mainScrollView.frame.size.width * currentPage, 0)];
 		} completion:^(BOOL finished) {
 			[self.dateKeyboardVC.view removeFromSuperview];
-			[_keyboardHeightConstraint uninstall];
-			_keyboardHeightConstraint = nil;
+			[self.keyboardHeightConstraint uninstall];
+			self.keyboardHeightConstraint = nil;
 		}];
 	}
 }

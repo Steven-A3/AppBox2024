@@ -169,12 +169,14 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	}
 	if ([downloadedCountryCode isEqualToString:_countryCode]) {
 		dispatch_async(dispatch_get_main_queue(), ^{
-			[_pageViewController updatePhotoLabelText];
-			_imageView.image = [[A3HolidaysFlickrDownloadManager sharedInstance] imageForCountryCode:_countryCode];
-			self.blurImageProcessor.imageToProcess = _imageView.image;
-			uint32_t radius = self.tableView.contentOffset.y < 100 ? 0 : lerp(self.tableView.contentOffset.y / self.tableView.contentSize.height, 20, 30);
-			[self.blurImageProcessor asyncBlurWithRadius:radius iterations:5 cancelingLastOperation:YES];
-			[self alertAcknowledgment];
+			[self.pageViewController updatePhotoLabelText];
+			self.imageView.image = [[A3HolidaysFlickrDownloadManager sharedInstance] imageForCountryCode:self.countryCode];
+            if (self.imageView.image) {
+                self.blurImageProcessor.imageToProcess = self.imageView.image;
+                uint32_t radius = self.tableView.contentOffset.y < 100 ? 0 : lerp(self.tableView.contentOffset.y / self.tableView.contentSize.height, 20, 30);
+                [self.blurImageProcessor asyncBlurWithRadius:radius iterations:5 cancelingLastOperation:YES];
+                [self alertAcknowledgment];
+            }
 		});
 	}
 }
@@ -183,29 +185,12 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
 		if (![[A3UserDefaults standardUserDefaults] boolForKey:A3HolidaysDoesNotNeedsShowAcknowledgement]) {
-			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Acknowledgement", @"Acknowledgement")
-															message:NSLocalizedString(@"HOLIDAYS_ACKNOWLEDGEMENT", @"HOLIDAYS_ACKNOWLEDGEMENT")
-														   delegate:self
-												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-												  otherButtonTitles:nil];
-			alert.tag = 894234;
-			[alert show];
-			_acknowledgementAlertView = alert;
+            [self presentAlertWithTitle:NSLocalizedString(@"Acknowledgement", @"Acknowledgement")
+                                message:NSLocalizedString(@"HOLIDAYS_ACKNOWLEDGEMENT", @"HOLIDAYS_ACKNOWLEDGEMENT")];
+            [[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3HolidaysDoesNotNeedsShowAcknowledgement];
+            [[A3UserDefaults standardUserDefaults] synchronize];
 		}
 	});
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-	if (alertView.tag == 894234) {
-		[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3HolidaysDoesNotNeedsShowAcknowledgement];
-		[[A3UserDefaults standardUserDefaults] synchronize];
-	}
-}
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-	if (alertView == _acknowledgementAlertView) {
-		_acknowledgementAlertView = nil;
-	}
 }
 
 - (void)reloadDataRedrawImage:(BOOL)redrawImage {
@@ -219,10 +204,13 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	}
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-
-	self.tableView.tableHeaderView = [self tableHeaderViewForInterfaceOrientation:toInterfaceOrientation];
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        UIInterfaceOrientation interfaceOrientation = size.width > size.height ? UIInterfaceOrientationLandscapeLeft : UIInterfaceOrientationPortrait;
+        self.tableView.tableHeaderView = [self tableHeaderViewForInterfaceOrientation:interfaceOrientation];
+    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        
+    }];
 }
 
 - (void)setupBackgroundView {
@@ -319,8 +307,9 @@ static NSString *const CellIdentifier = @"holidaysCell";
 	[self.view addSubview:self.tableView];
 
     CGFloat verticalOffset = 0;
-    if (IS_IPHONEX) {
-        verticalOffset = 31;
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    if (safeAreaInsets.top > 20) {
+        verticalOffset = safeAreaInsets.bottom;
     }
 	[_tableView makeConstraints:^(MASConstraintMaker *make) {
 		make.edges.equalTo(self.view).insets(UIEdgeInsetsMake(0, 0, 54 + verticalOffset, 0));
@@ -378,8 +367,9 @@ static NSString *const CellIdentifier = @"holidaysCell";
 	FNLOGRECT(screenBounds);
 
     CGFloat verticalOffset = 0;
-    if (IS_IPHONEX) {
-        verticalOffset = -90;
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    if (safeAreaInsets.top > 20) {
+        verticalOffset = -(50 + safeAreaInsets.bottom);
     }
 	CGFloat viewHeight = screenBounds.size.height;
 	CGFloat viewWidth = screenBounds.size.width;

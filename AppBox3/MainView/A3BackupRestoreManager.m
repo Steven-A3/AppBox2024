@@ -406,21 +406,26 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
             NSFileManager *fileManager = [NSFileManager defaultManager];
             unsigned long long filesize = [[fileManager attributesOfItemAtPath:_backupFilePath error:nil] fileSize];
             
+            __weak __typeof__(self) weakSelf = self;
             void (^progressBlock)(CGFloat) = ^(CGFloat progress) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    self.HUD.progress = progress;
-                    self.HUD.detailsLabel.text = [self.percentFormatter stringFromNumber:@(progress)];
+                    FNLOG(@"%f", progress);
+                    __typeof__(self) strongSelf = weakSelf;
+                    strongSelf.HUD.progress = progress;
+                    strongSelf.HUD.detailsLabel.text = [strongSelf.percentFormatter stringFromNumber:@(progress)];
                 });
             };
+            __weak __typeof__(self) weakSelfCompletion = self;
             void (^completionBlock)(NSDictionary * _Nullable parsedResponse, NSError * _Nullable error) = ^(NSDictionary * _Nullable parsedResponse, NSError * _Nullable error) {
                 FNLOG(@"%@", parsedResponse);
                 FNLOG(@"%@", error);
                 FNLOG(@"%@", error.description);
                 FNLOG(@"%@", error.debugDescription);
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    __typeof__(self) strongSelf = weakSelfCompletion;
                     if (error == nil) {
-                        [self.HUD hideAnimated:YES];
-                        self.HUD = nil;
+                        [strongSelf.HUD hideAnimated:YES];
+                        strongSelf.HUD = nil;
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
                                                                         message:NSLocalizedString(@"Backup file has been uploaded to Dropbox successfully.", @"Backup file has been uploaded to Dropbox successfully.")
                                                                        delegate:nil
@@ -428,34 +433,30 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
                                                               otherButtonTitles:nil];
                         [alert show];
                         
-                        [self deleteBackupFile];
+                        [strongSelf deleteBackupFile];
                         
-                        if ([self.delegate respondsToSelector:@selector(backupRestoreManager:backupCompleteWithSuccess:)]) {
-                            [self.delegate backupRestoreManager:self backupCompleteWithSuccess:YES];
+                        if ([strongSelf.delegate respondsToSelector:@selector(backupRestoreManager:backupCompleteWithSuccess:)]) {
+                            [strongSelf.delegate backupRestoreManager:strongSelf backupCompleteWithSuccess:YES];
                         }
                     } else {
-                        [self.HUD hideAnimated:YES];
-                        self.HUD = nil;
+                        [strongSelf.HUD hideAnimated:YES];
+                        strongSelf.HUD = nil;
                         
                         UIAlertView *alertFail = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:NSLocalizedString(@"Backup process failed to upload backup file to Dropbox.", @"Backup process failed to upload backup file to Dropbox.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                         [alertFail show];
                         
-                        [self deleteBackupFile];
+                        [strongSelf deleteBackupFile];
                         FNLOG(@"%@", error.description);
                     }
                 });
             };
             
             NSString *toPath = [NSString stringWithFormat:@"%@/%@", kDropboxDir, [_backupFilePath lastPathComponent]];
-            [TJDropbox uploadLargeFileAtPath:_backupFilePath
-                                      toPath:toPath
-                                 accessToken:accessToken
-                                  completion:^(NSDictionary * _Nullable parsedResponse, NSError * _Nullable error) {
-                                  }];
             if (filesize > 1500000) {
                 [TJDropbox uploadLargeFileAtPath:_backupFilePath
-                                          toPath:[NSString stringWithFormat:@"%@/%@", kDropboxDir, [_backupFilePath lastPathComponent]]
+                                          toPath:toPath
                                overwriteExisting:NO
+                        muteDesktopNotifications:YES
                                      accessToken:accessToken
                                    progressBlock:progressBlock
                                       completion:completionBlock];
@@ -463,6 +464,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
                 [TJDropbox uploadFileAtPath:_backupFilePath
                                      toPath:toPath
                           overwriteExisting:NO
+                   muteDesktopNotifications:YES
                                 accessToken:accessToken
                               progressBlock:progressBlock
                                  completion:completionBlock];

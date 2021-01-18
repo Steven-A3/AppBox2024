@@ -49,6 +49,7 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *maxValueTopLineHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *resultViewTopConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *generateButtonBottomConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *generateButtonHeightConstraint;
 
 @property (strong, nonatomic) NSNumberFormatter *numberFormatter;
 @property (strong, nonatomic) CMMotionManager *motionManager;
@@ -56,6 +57,8 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 @property (copy, nonatomic) NSString *textBeforeEditingTextField;
 @property (copy, nonatomic) UIColor *textColorBeforeEditing;
 @property (weak, nonatomic) UITextField *editingTextField;
+@property (assign, nonatomic) BOOL isNumberKeyboardVisible;
+@property (assign, nonatomic) CGFloat viewFrameOffset;
 
 @end
 
@@ -144,6 +147,9 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
     _limitPickerViewSeparatorBottomHeightConst.constant = 1.0 / scale;
 	_minValueTopLineHeightConstraint.constant = 1.0 / scale;
 	_maxValueTopLineHeightConstraint.constant = 1.0 / scale;
+    
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    _generateButtonHeightConstraint.constant = 44 + safeAreaInsets.bottom;
 
     if (IS_IPAD) {
         _generatorButton.titleLabel.font = [UIFont systemFontOfSize:22];
@@ -162,10 +168,6 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
-    
-    if (IS_IPHONEX) {
-        _generateButtonBottomConstraint.constant = 40;
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -173,7 +175,7 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
     
     [self setupMotionManager];
 
-	_resultViewTopConst.constant = CGRectGetHeight(self.navigationController.navigationBar.bounds) + 20;
+	_resultViewTopConst.constant = CGRectGetHeight(self.navigationController.navigationBar.bounds);
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -392,38 +394,34 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
     
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        if (IS_IPHONE && IS_LANDSCAPE) {
+            [self leftBarButtonAppsButton];
 
-	if (IS_IPHONE && IS_LANDSCAPE) {
-		[self leftBarButtonAppsButton];
+            CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+            CGRect frame = self.limitNumberPickerView.frame;
+            frame.size.width = screenBounds.size.height;
+            self.limitNumberPickerView.frame = frame;
+        }
 
-		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-		CGRect frame = _limitNumberPickerView.frame;
-		frame.size.width = screenBounds.size.height;
-		_limitNumberPickerView.frame = frame;
-	}
-}
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-	
-	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
-		UIView *keyboardView = self.numberKeyboardViewController.view;
-		CGFloat keyboardHeight = self.numberKeyboardViewController.keyboardHeight;
-		
-		FNLOGRECT(self.view.bounds);
-		FNLOG(@"%f", keyboardHeight);
-		CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-		keyboardView.frame = CGRectMake(0, bounds.size.height - keyboardHeight, bounds.size.width, keyboardHeight);
-		[self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
-		
-		if (IS_IPAD) {
-			_generateButtonBottomConstraint.constant = 0;
-			[self.view layoutIfNeeded];
-			_generateButtonBottomConstraint.constant = (keyboardHeight - (bounds.size.height - _pickerContainerView.frame.origin.y));
-		}
-	}
+        if (self.isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
+            UIView *keyboardView = self.numberKeyboardViewController.view;
+            CGFloat keyboardHeight = self.numberKeyboardViewController.keyboardHeight;
+            
+            FNLOGRECT(self.view.bounds);
+            FNLOG(@"%f", keyboardHeight);
+            CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
+            keyboardView.frame = CGRectMake(0, bounds.size.height - keyboardHeight, bounds.size.width, keyboardHeight);
+            UIInterfaceOrientation interfaceOrientation = size.width > size.height ? UIInterfaceOrientationLandscapeLeft : UIInterfaceOrientationPortrait;
+            [self.numberKeyboardViewController rotateToInterfaceOrientation:interfaceOrientation];
+            
+            UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+            self.generateButtonHeightConstraint.constant = 44 + safeAreaInsets.bottom;
+        }
+    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        
+    }];
 }
 
 - (NSNumberFormatter *)numberFormatter {
@@ -507,7 +505,7 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 		keyboardView.frame = frame;
 		
 		if (IS_IPAD) {
-			_generateButtonBottomConstraint.constant = (keyboardHeight - (bounds.size.height - _pickerContainerView.frame.origin.y));
+			self.generateButtonBottomConstraint.constant = (keyboardHeight - (bounds.size.height - _pickerContainerView.frame.origin.y));
 		}
 	} completion:^(BOOL finished) {
 		[self addNumberKeyboardNotificationObservers];
@@ -527,11 +525,12 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 		frame.origin.y += keyboardViewController.keyboardHeight;
 		keyboardView.frame = frame;
 		
-        _generateButtonBottomConstraint.constant = IS_IPHONEX ? 40 : 0;
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+        self.generateButtonBottomConstraint.constant = safeAreaInsets.top > 20 ? safeAreaInsets.bottom : 0;
 	} completion:^(BOOL finished) {
 		[keyboardView removeFromSuperview];
 		self.numberKeyboardViewController = nil;
-		_isNumberKeyboardVisible = NO;
+		self.isNumberKeyboardVisible = NO;
 	}];
 }
 
@@ -603,12 +602,12 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 	[UIView animateWithDuration:duration animations:^{
 		CGRect frameEnd = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
 		frameEnd = [self.view convertRect:frameEnd fromView:[A3AppDelegate instance].window];
-		CGRect textFieldFrame = [_minimumValueTextField isFirstResponder] ? _minimumValueTextField.frame : _maximumValueTextField.frame;
+		CGRect textFieldFrame = [self.minimumValueTextField isFirstResponder] ? self.minimumValueTextField.frame : self.maximumValueTextField.frame;
 		CGFloat diff = textFieldFrame.origin.y + textFieldFrame.size.height - frameEnd.origin.y;
 		if (diff > 0) {
-			_viewFrameOffset = diff;
+			self.viewFrameOffset = diff;
 			CGRect viewFrame = self.view.frame;
-			viewFrame.origin.y -= _viewFrameOffset;
+			viewFrame.origin.y -= self.viewFrameOffset;
 			self.view.frame = viewFrame;
 		}
 	}];

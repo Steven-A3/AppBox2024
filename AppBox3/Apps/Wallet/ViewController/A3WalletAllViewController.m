@@ -36,6 +36,7 @@
 @property (nonatomic, weak) A3WalletAllTopView *topViewRef;
 @property (nonatomic, copy) NSString *searchString;
 @property (nonatomic, strong) UIBarButtonItem *searchBarButton;
+@property (nonatomic, assign) BOOL dataEmpty;
 
 @end
 
@@ -157,7 +158,8 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 
     FNLOG(@"%f", self.tableView.contentOffset.y);
     
-    if (!IS_IPHONEX &&
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    if ((safeAreaInsets.top == 20) &&
         !_searchController.active &&
         !_dataEmpty &&
         self.tableView.contentOffset.y < -63.5) {
@@ -166,12 +168,11 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             [UIView animateWithDuration:0.5
                              animations:^{
-                                 CGFloat verticalOffset = 0;
-                                 if (IS_IPHONEX) {
-                                     verticalOffset = 24;
-                                 }
-                                 self.tableView.contentOffset = CGPointMake(0, -(8 + verticalOffset));
-                             }
+                CGFloat verticalOffset = 0;
+                UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+                verticalOffset = safeAreaInsets.top - 20;
+                self.tableView.contentOffset = CGPointMake(0, -(8 + verticalOffset));
+            }
                              completion:nil];
         });
     }
@@ -669,21 +670,20 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 
 - (void)setupSearchBar {
     void(^final)(void) = ^{
-        [self.searchBarButton setEnabled:!_dataEmpty];
+        [self.searchBarButton setEnabled:!self.dataEmpty];
     };
     
-    if (IS_IPHONEX) {
-        if (@available(iOS 11.0, *)) {
-            // For iOS 11 and later, we place the search bar in the navigation bar.
-            self.navigationController.navigationBar.prefersLargeTitles = NO;
-            self.navigationItem.searchController = self.searchController;
-            
-            // We want the search bar visible all the time.
-            self.navigationItem.hidesSearchBarWhenScrolling = NO;
-            
-            final();
-            return;
-        }
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    if (safeAreaInsets.top > 20) {
+        // For iOS 11 and later, we place the search bar in the navigation bar.
+        self.navigationController.navigationBar.prefersLargeTitles = NO;
+        self.navigationItem.searchController = self.searchController;
+        
+        // We want the search bar visible all the time.
+        self.navigationItem.hidesSearchBarWhenScrolling = NO;
+        
+        final();
+        return;
     }
     if (!_dataEmpty) {
         self.tableView.tableHeaderView = self.searchController.searchBar;
@@ -928,69 +928,6 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 	if (IS_IPHONE && IS_LANDSCAPE) {
 		[self leftBarButtonAppsButton];
 	}
-}
-
-#pragma mark - UISearchControllerDelegate
-
-- (void)willPresentSearchController:(UISearchController *)searchController {
-    FNLOGINSETS(self.tableView.contentInset);
-}
-
-- (void)didPresentSearchController:(UISearchController *)searchController {
-    if (IS_IPHONEX) return;
-    
-    if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11") {
-        CGRect frame = searchController.searchBar.frame;
-        frame.origin.y = 20;
-        searchController.searchBar.frame = frame;
-        FNLOGRECT(searchController.searchBar.frame);
-        
-        if (!_didAdjustContentInset) {
-            UIEdgeInsets contentInset = self.tableView.contentInset;
-            FNLOGINSETS(contentInset);
-            contentInset.top -= 6;
-            self.tableView.contentInset = contentInset;
-            _didAdjustContentInset = YES;
-        }
-    }
-
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10") && SYSTEM_VERSION_LESS_THAN(@"11")) {
-        FNLOGINSETS(self.tableView.contentInset);
-        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
-    }
-}
-
-- (void)willDismissSearchController:(UISearchController *)searchController {
-    if (IS_IPHONEX) return;
-
-    if (SYSTEM_VERSION_LESS_THAN(@"10")) {
-        [[UIApplication sharedApplication] setStatusBarHidden:NO];
-        [self.navigationController setNavigationBarHidden:NO];
-    }
-    if (_didAdjustContentInset) {
-        UIEdgeInsets contentInset = self.tableView.contentInset;
-        FNLOGINSETS(contentInset);
-        contentInset.top += 6;
-        self.tableView.contentInset = contentInset;
-        
-        _didAdjustContentInset = NO;
-    }
-}
-
-- (void)didDismissSearchController:(UISearchController *)searchController {
-    if (IS_IPHONEX) return;
-    
-    self.tableView.contentOffset = CGPointMake(0, -64);
-    _searchController = nil;
-    self.tableView.tableHeaderView = self.searchController.searchBar;
-    FNLOGINSETS(self.tableView.contentInset);
-}
-
-- (void)presentSearchController:(UISearchController *)searchController {
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    FNLOG(@"%f", scrollView.contentOffset.y);
 }
 
 @end

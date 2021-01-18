@@ -166,9 +166,16 @@ static char const *const key_navigationControllerForKeyboard	= "key_navigationCo
 			if ([userCurrencyCode length]) {
 				[formatter setCurrencyCode:userCurrencyCode];
 			}
-		}
+        }
+        if ([formatter currencyCode] == nil) {
+            [formatter setCurrencySymbol:@"$"];
+            [formatter setCurrencyCode:@"USD"];
+        }
 
 		[formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+        FNLOG(@"%@", [[NSLocale systemLocale] currencyCode]);
+        FNLOG(@"%@", formatter.currencySymbol);
+        FNLOG(@"%@", formatter.currencyCode);
 		objc_setAssociatedObject(self, key_currencyFormatter, formatter, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}
 	return formatter;

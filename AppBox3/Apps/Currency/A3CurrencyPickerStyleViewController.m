@@ -35,6 +35,7 @@
 #import "A3InstructionViewController.h"
 #import "UIColor+A3Addition.h"
 #import "A3NumberFormatter.h"
+@import WebKit;
 
 NSString *const A3CurrencyPickerSelectedIndexColumnOne = @"A3CurrencyPickerSelectedIndexColumnOne";
 NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelectedIndexColumnTwo";
@@ -53,7 +54,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *sampleValueLabels;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *termSelectSegmentedControl;
 
-@property (weak, nonatomic) IBOutlet UIWebView *chartWebView;
+@property (weak, nonatomic) IBOutlet WKWebView *chartWebView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *chartWebViewWidthConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *chartWebViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet UIView *chartCoverView;
@@ -86,7 +87,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 @property (weak, nonatomic) IBOutlet UIButton *refreshButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pickerBottom_bottomLayoutGuideConstraint;
 @property (nonatomic, strong) NSNumberFormatter *decimalNumberFormatter;
-@property (nonatomic, strong) GADNativeExpressAdView *admobNativeExpressAdView;
+@property (nonatomic, assign) BOOL isNumberKeyboardVisible;
 
 @end
 
@@ -104,8 +105,6 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-	self.automaticallyAdjustsScrollViewInsets = NO;
-	
 	_sourceValue = [self lastInputValue];
 	
 	[self setupPickerView];
@@ -135,12 +134,11 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 	UIView *superview = self.view;
 	[self.view addSubview:self.plusButton];
-	
-    CGFloat verticalOffset = 0;
-    if (IS_IPHONEX) {
-        verticalOffset = 40;
-    }
-	[self.plusButton makeConstraints:^(MASConstraintMaker *make) {
+
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    CGFloat verticalOffset = safeAreaInsets.bottom;
+
+    [self.plusButton makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(superview.centerX);
 		make.centerY.equalTo(superview.bottom).with.offset(-32 - verticalOffset);
 		make.width.equalTo(@44);
@@ -154,7 +152,10 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 }
 
 - (void)didTapChartCoverView {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://tradingview.go2cloud.org/aff_c?offer_id=2&aff_id=4413"]];
+    NSString *url = [NSString stringWithFormat:@"https://www.tradingview.com/symbols/%@%@/?offer_id=10&aff_id=4413", _sourceCurrencyCode, _targetCurrencyCode];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]
+                                       options:@{}
+                             completionHandler:nil];
 }
 
 - (void)dealloc {
@@ -567,15 +568,15 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 - (void)setupSegmentedControlTitles {
 	if (IS_IPAD && [[NSLocale preferredLanguages][0] hasPrefix:@"it"]) {
-		[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days", @"StringsDict", nil), 1] forSegmentAtIndex:0];
-		[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), 1] forSegmentAtIndex:1];
-		[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), 3] forSegmentAtIndex:2];
-		[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld year", @"StringsDict", nil), 1] forSegmentAtIndex:3];
-		[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld years", @"StringsDict", nil), 5] forSegmentAtIndex:4];
+		[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%d days", @"StringsDict", nil), 1] forSegmentAtIndex:0];
+		[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%d mos", @"StringsDict", nil), 1] forSegmentAtIndex:1];
+		[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%d mos", @"StringsDict", nil), 3] forSegmentAtIndex:2];
+		[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%d year", @"StringsDict", nil), 1] forSegmentAtIndex:3];
+		[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%d years", @"StringsDict", nil), 5] forSegmentAtIndex:4];
 	} else
 		if (IS_IPHONE35) {
-			[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld mos", @"StringsDict", nil), 3] forSegmentAtIndex:2];
-			[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld year", @"StringsDict", nil), 1] forSegmentAtIndex:3];
+			[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%d mos", @"StringsDict", nil), 3] forSegmentAtIndex:2];
+			[_termSelectSegmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%d year", @"StringsDict", nil), 1] forSegmentAtIndex:3];
 		}
 }
 
@@ -597,7 +598,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
     [_chartCoverView addSubview:_activityIndicatorView];
     
     [_activityIndicatorView makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(_chartCoverView);
+        make.center.equalTo(self.chartCoverView);
     }];
     
     [_activityIndicatorView startAnimating];
@@ -633,7 +634,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
         }
     }
     
-    NSArray *periodsArray = @[@"1d", @"1m", @"3m", @"1y", @"5y"];
+    NSArray *periodsArray = @[@"1d", @"1m", @"3m", @"1y", @"60M"];
     NSURL *url = [[NSBundle mainBundle] URLForResource:@"chartWidget" withExtension:@"html"];
     NSString *templateString = [NSString stringWithContentsOfURL:url usedEncoding:NULL error:nil];
     CGSize chartSize = _chartWebView.frame.size;
@@ -952,7 +953,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 			[self presentActivityViewControllerWithActivityItems:@[self]
 											   fromBarButtonItem:sender
 											   completionHandler:^() {
-												   [_mainViewController enableControls:YES];
+												   [self.mainViewController enableControls:YES];
 												   [self enableControls:YES];
 											   }];
 	_sharePopoverController.delegate = self;
@@ -992,7 +993,9 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 }
 
 - (IBAction)yahooButtonAction:(UIButton *)sender {
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://finance.yahoo.com"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://finance.yahoo.com"]
+                                       options:@{}
+                             completionHandler:nil];
 }
 
 #pragma mark - Admob Advertisement
@@ -1009,9 +1012,9 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
         [self.view addSubview:bannerView];
         
         [bannerView remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_lineUpView.top);
-            make.left.equalTo(_lineUpView.left);
-            make.right.equalTo(_lineUpView.right);
+            make.top.equalTo(self.lineUpView.top);
+            make.left.equalTo(self.lineUpView.left);
+            make.right.equalTo(self.lineUpView.right);
             make.height.equalTo(@50);
         }];
         
@@ -1034,10 +1037,10 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
         [_adBackgroundView addSubview:bannerView];
         
         [bannerView remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_adBackgroundView.top);
-            make.left.equalTo(_adBackgroundView.left);
-            make.right.equalTo(_adBackgroundView.right);
-            make.bottom.equalTo(_adBackgroundView.bottom);
+            make.top.equalTo(self.adBackgroundView.top);
+            make.left.equalTo(self.adBackgroundView.left);
+            make.right.equalTo(self.adBackgroundView.right);
+            make.bottom.equalTo(self.adBackgroundView.bottom);
         }];
         
         [_tableView reloadData];
@@ -1052,8 +1055,8 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
         [self.view addSubview:bannerView];
         
         [bannerView remakeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(_adBackgroundView.centerX);
-            make.centerY.equalTo(_adBackgroundView.centerY);
+            make.centerX.equalTo(self.adBackgroundView.centerX);
+            make.centerY.equalTo(self.adBackgroundView.centerY);
         }];
         
         [self.view layoutIfNeeded];
@@ -1062,21 +1065,25 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 #pragma mark - iPad Rotation
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-	
-	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
-		UIView *keyboardView = self.numberKeyboardViewController.view;
-		CGFloat keyboardHeight = self.numberKeyboardViewController.keyboardHeight;
-		
-		FNLOGRECT(self.view.bounds);
-		FNLOG(@"%f", keyboardHeight);
-		keyboardView.frame = CGRectMake(0, self.view.bounds.size.height - keyboardHeight, self.view.bounds.size.width, keyboardHeight);
-		[self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
-	}
-	
-	if (IS_IPHONE) return;
-	[self setupIPADLayoutToInterfaceOrientation:toInterfaceOrientation];
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        UIInterfaceOrientation interfaceOrientation = size.width > size.height ? UIInterfaceOrientationLandscapeLeft : UIInterfaceOrientationPortrait;
+        
+        if (self.isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
+            UIView *keyboardView = self.numberKeyboardViewController.view;
+            CGFloat keyboardHeight = self.numberKeyboardViewController.keyboardHeight;
+            
+            FNLOGRECT(self.view.bounds);
+            FNLOG(@"%f", keyboardHeight);
+            keyboardView.frame = CGRectMake(0, self.view.bounds.size.height - keyboardHeight, self.view.bounds.size.width, keyboardHeight);
+            [self.numberKeyboardViewController rotateToInterfaceOrientation:interfaceOrientation];
+        }
+        
+        if (IS_IPHONE) return;
+        [self setupIPADLayoutToInterfaceOrientation:interfaceOrientation];
+    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        
+    }];
 }
 
 - (void)setupIPADLayoutToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -1294,7 +1301,7 @@ static NSString *const A3V3InstructionDidShowForCurrencyPicker = @"A3V3Instructi
 		[keyboardView removeFromSuperview];
 		[keyboardViewController removeFromParentViewController];
 		self.numberKeyboardViewController = nil;
-		_isNumberKeyboardVisible = NO;
+		self.isNumberKeyboardVisible = NO;
 	};
 
 	if (animated) {

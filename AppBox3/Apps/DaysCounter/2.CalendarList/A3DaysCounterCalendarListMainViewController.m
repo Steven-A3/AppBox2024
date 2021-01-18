@@ -187,8 +187,9 @@
     }
     
     CGFloat verticalOffset = 0;
-    if (IS_IPHONEX) {
-        verticalOffset = -40;
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    if (safeAreaInsets.top > 20) {
+        verticalOffset = -safeAreaInsets.bottom;
     }
     
     [self.view addSubview:_addEventButton];
@@ -1130,8 +1131,9 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 	[self.view addSubview:bannerView];
 	
     CGFloat verticalOffset = 0;
-    if (IS_IPHONEX) {
-        verticalOffset = -40;
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    if (safeAreaInsets.top > 20) {
+        verticalOffset = -safeAreaInsets.bottom;
     }
 	UIView *superview = self.view;
 	[bannerView remakeConstraints:^(MASConstraintMaker *make) {

@@ -153,7 +153,8 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
         if ([[NSUserDefaults standardUserDefaults] integerForKey:kA3ApplicationNumberOfDidBecomeActive] <= 8) {
             return 3;
         }
-        return [[A3AppDelegate instance] isPaidAppVersionCustomer:appReceipt] ? 4 : 3;
+        return 4;
+//        return [[A3AppDelegate instance] isPaidAppVersionCustomer:appReceipt] ? 4 : 3;
 	}
 	if (section == 4) {
 		return [A3AppDelegate instance].shouldPresentAd ? 3 : 1;

@@ -237,9 +237,10 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 - (void)configureLayout {
     CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
     CGFloat verticalBottomOffset = 0;
-    if (IS_IPHONEX) {
-        verticalBottomOffset = -40;
-        _topToolBar.frame = CGRectMake(0, 40, screenBounds.size.width, 44);
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    if (safeAreaInsets.top > 20) {
+        verticalBottomOffset = -safeAreaInsets.bottom;
+        _topToolBar.frame = CGRectMake(0, safeAreaInsets.top, screenBounds.size.width, 44);
         _bottomToolBar.frame = CGRectMake(0, screenBounds.size.height - verticalBottomOffset, screenBounds.size.width, 44);
     }
     if(!IS_IPHONE) {
@@ -256,7 +257,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
         [self.zoomSlider setFrame:CGRectMake(self.zoomSlider.frame.origin.x, self.zoomSlider.frame.origin.y + verticalBottomOffset, screenBounds.size.width - 98, self.zoomSlider.frame.size.height)];
     }
  
-    _statusToolbar.frame = CGRectMake(0, 0, screenBounds.size.width, 20 + (IS_IPHONEX ? 20 : 0));
+    _statusToolbar.frame = CGRectMake(0, 0, screenBounds.size.width, safeAreaInsets.top);
 	[self setToolBarsHidden:_topToolBar.hidden];
 }
 
@@ -339,12 +340,8 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 - (void)notifyCameraShotSaveRule
 {
     if (![[A3UserDefaults standardUserDefaults] boolForKey:A3MagnifierFirstLoadCameraRoll]) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-                                                            message:NSLocalizedString(@"The photos you take with Magnifier are saved in your Camera Roll album in the Photos app.", @"The photos you take with Magnifier are saved in your Camera Roll album in the Photos app.")
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                  otherButtonTitles:nil];
-        [alertView show];
+        [self presentAlertWithTitle:NSLocalizedString(@"Info", @"Info")
+                            message:NSLocalizedString(@"The photos you take with Magnifier are saved in your Camera Roll album in the Photos app.", @"The photos you take with Magnifier are saved in your Camera Roll album in the Photos app.")];
         [[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3MagnifierFirstLoadCameraRoll];
     }
 }
@@ -414,11 +411,10 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 	self.bottomToolBar.hidden = hidden;
 
     CGFloat verticalBottomOffset = 0;
-    if (IS_IPHONEX) {
-        verticalBottomOffset = -40;
-    }
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    verticalBottomOffset = -safeAreaInsets.bottom;
     
-	[self.bottomToolBar setFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.size.height - 74 + verticalBottomOffset , self.view.frame.size.width, 74)];
+	[self.bottomToolBar setFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.size.height - 74 + verticalBottomOffset , self.view.frame.size.width, 74 + safeAreaInsets.bottom)];
 	if (hidden == YES) {
 		[self.flashToolBar setFrame:CGRectMake(self.flashToolBar.frame.origin.x,
 				self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.brightnessToolBar.frame.size.height - self.flashToolBar.frame.size.height + verticalBottomOffset,

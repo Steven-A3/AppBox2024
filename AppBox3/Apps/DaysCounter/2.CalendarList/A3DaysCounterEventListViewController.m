@@ -69,10 +69,8 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 {
     [super viewDidLoad];
 
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    if SYSTEM_VERSION_LESS_THAN(@"11") {
-        self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 44, 0);
-    }
+    self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentAutomatic;
+
     self.tableView.rowHeight = 62;
     
 	if ([_calendarItem.type integerValue] == CalendarCellType_User) {
@@ -81,7 +79,8 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 		self.title = [_sharedManager localizedSystemCalendarNameForCalendarID:_calendarItem.uniqueID];
 	}
     
-    if (IS_IPHONEX) {
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    if (safeAreaInsets.top > 20) {
         UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
         self.navigationItem.rightBarButtonItem = edit;
     } else {
@@ -113,8 +112,8 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 	_segmentControlWidthConst.constant = ( IS_IPHONE ? 171 : 300.0);
 
     CGFloat verticalOffset = 0;
-    if (IS_IPHONEX) {
-        verticalOffset = -40;
+    if (safeAreaInsets.top > 20) {
+        verticalOffset = -safeAreaInsets.bottom;
     }
     [self.view addSubview:_addEventButton];
     _addEventButton.tintColor = [A3AppDelegate instance].themeColor;
@@ -129,15 +128,13 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
         [self.headerView addSubview:self.sortArrowImgView];
     }
     
-    if (IS_IPHONEX) {
-        if (@available(iOS 11.0, *)) {
-            // For iOS 11 and later, we place the search bar in the navigation bar.
-            self.navigationController.navigationBar.prefersLargeTitles = NO;
-            self.navigationItem.searchController = self.searchController;
-            
-            // We want the search bar visible all the time.
-            self.navigationItem.hidesSearchBarWhenScrolling = NO;
-        }
+    if (safeAreaInsets.top > 20) {
+        // For iOS 11 and later, we place the search bar in the navigation bar.
+        self.navigationController.navigationBar.prefersLargeTitles = NO;
+        self.navigationItem.searchController = self.searchController;
+        
+        // We want the search bar visible all the time.
+        self.navigationItem.hidesSearchBarWhenScrolling = YES;
     } else {
         [self.view addSubview:self.searchController.searchBar];
     }
@@ -350,7 +347,8 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
     _sortTypeSegmentCtrl.enabled = ([_sourceArray count] > 0);
     _sortTypeSegmentCtrl.tintColor =(_sortTypeSegmentCtrl.enabled ? nil : [UIColor colorWithRed:147.0/255.0 green:147.0/255.0 blue:147.0/255.0 alpha:1.0]);
     
-    if (IS_IPHONEX) {
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    if (safeAreaInsets.top > 20) {
         self.navigationItem.rightBarButtonItem.enabled = ([_sourceArray count] > 0);
     } else {
         UIBarButtonItem *edit = [self.navigationItem.rightBarButtonItems objectAtIndex:0];
@@ -1073,89 +1071,6 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
                                              [viewCtrl showKeyboard];
                                          }];
     }
-}
-
-#pragma mark - UISearchControllDelegate
-
-- (void)willPresentSearchController:(UISearchController *)searchController {
-    if (IS_IPHONEX) return;
-    
-    FNLOGINSETS(self.tableView.contentInset);
-    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-
-    if (SYSTEM_VERSION_LESS_THAN(@"10")) {
-        [self.tabBarController.view addSubview:self.searchController.searchBar];
-        FNLOGINSETS(self.tableView.contentInset);
-        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
-        UIView *searchBarContainerView = self.searchController.searchBar.superview;
-        CGRect frame = searchBarContainerView.frame;
-        frame.origin.y = 0;
-        searchBarContainerView.frame = frame;
-    }
-}
-
-- (void)didPresentSearchController:(UISearchController *)searchController {
-    if (IS_IPHONEX) return;
-    
-    if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11") {
-        FNLOGRECT(searchController.view.frame);
-        CGRect frame = searchController.searchBar.frame;
-        frame.origin.y = 20;
-        searchController.searchBar.frame = frame;
-        FNLOGRECT(searchController.searchBar.frame);
-
-        if (!_didAdjustContentInset) {
-            CGPoint contentOffset = self.tableView.contentOffset;
-            contentOffset.y = -20;
-            self.tableView.contentOffset = contentOffset;
-            _didAdjustContentInset =YES;
-        }
-    }
-    if SYSTEM_VERSION_LESS_THAN(@"11") {
-        self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
-    }
-    FNLOGINSETS(self.tableView.contentInset);
-    if (SYSTEM_VERSION_LESS_THAN(@"10")) {
-        [self.tabBarController.view addSubview:self.searchController.searchBar];
-        FNLOGINSETS(self.tableView.contentInset);
-        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
-        UIView *searchBarContainerView = self.searchController.searchBar.superview;
-        CGRect frame = searchBarContainerView.frame;
-        frame.origin.y = 0;
-        searchBarContainerView.frame = frame;
-    }
-    FNLOG(@"%@", searchController.searchBar.superview);
-    FNLOGRECT(self.searchController.searchBar.frame);
-}
-
-- (void)willDismissSearchController:(UISearchController *)searchController {
-    if (IS_IPHONEX) return;
-
-    if (_didAdjustContentInset) {
-        UIEdgeInsets contentInset = self.tableView.contentInset;
-        FNLOGINSETS(contentInset);
-        contentInset.top += 20;
-        self.tableView.contentInset = contentInset;
-        _didAdjustContentInset = NO;
-    }
-    if SYSTEM_VERSION_LESS_THAN(@"11") {
-        self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 44, 0);
-    }
-    FNLOGINSETS(self.tableView.contentInset);
-}
-
-- (void)didDismissSearchController:(UISearchController *)searchController {
-    if (IS_IPHONEX) return;
-    
-    FNLOGINSETS(self.tableView.contentInset);
-}
-
-- (void)presentSearchController:(UISearchController *)searchController {
-
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    FNLOG(@"%f", scrollView.contentOffset.y);
 }
 
 @end

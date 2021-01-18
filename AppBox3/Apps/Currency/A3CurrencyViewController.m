@@ -30,6 +30,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 @property (nonatomic, strong) A3CurrencySettingsViewController *settingsViewController;
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3CurrencyHistoryViewController *historyViewController;
+@property (nonatomic, assign) BOOL isShowMoreMenu;
 
 @end
 
@@ -85,11 +86,18 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 	}
 }
 
+- (BOOL)prefersStatusBarHidden {
+    return NO;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleDefault;
+}
+
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    [self setNeedsStatusBarAppearanceUpdate];
 	
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self showNavigationBarOn:self.navigationController];
@@ -249,11 +257,13 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 	[self rightBarButtonDoneButton];
 
 	double delayInSeconds = 0.1;
-	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    __weak __typeof__(self) weakSelf = self;
+ 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		_moreMenuButtons = @[[self instructionHelpButton], self.shareButton, [self historyButton:[CurrencyHistory class] ], self.settingsButton];
-		_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons pullDownView:[self pullDownView]];
-		_isShowMoreMenu = YES;
+        __typeof__(self) strongSelf = weakSelf;
+        strongSelf.moreMenuButtons = @[[strongSelf instructionHelpButton], strongSelf.shareButton, [strongSelf historyButton:[CurrencyHistory class] ], strongSelf.settingsButton];
+		strongSelf.moreMenuView = [strongSelf presentMoreMenuWithButtons:_moreMenuButtons pullDownView:[strongSelf pullDownView]];
+        strongSelf.isShowMoreMenu = YES;
 	});
 
 }

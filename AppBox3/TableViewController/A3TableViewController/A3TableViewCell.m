@@ -25,7 +25,7 @@
 		[self addSubview:_customSeparator];
 
 		[_customSeparator makeConstraints:^(MASConstraintMaker *make) {
-			_separatorLeft = make.left.equalTo(self.left).with.offset(0);
+			self.separatorLeft = make.left.equalTo(self.left).with.offset(0);
 			make.right.equalTo(self.right);
 			make.bottom.equalTo(self.bottom);
 			make.height.equalTo(IS_RETINA ? @0.5 : @1.0);
@@ -58,10 +58,12 @@
 	[super prepareForReuse];
 
 	self.imageView.image = nil;
+}
 
-	[self setBottomSeparatorForMiddleRow];
-	[_customTopSeparator removeFromSuperview];
-	_customTopSeparator = nil;
+- (void)resetCellLayout {
+    [self setBottomSeparatorForMiddleRow];
+    [_customTopSeparator removeFromSuperview];
+    _customTopSeparator = nil;
 }
 
 - (void)showTopSeparator {
@@ -81,17 +83,17 @@
 
 - (void)setBottomSeparatorForBottomRow {
 	_separatorLeft.offset(0);
-	[self layoutIfNeeded];
+//	[self layoutIfNeeded];
 }
 
 - (void)setBottomSeparatorForMiddleRow {
 	_separatorLeft.offset(self.contentInset);
-	[self layoutIfNeeded];
+//	[self layoutIfNeeded];
 }
 
 - (void)setBottomSeparatorForExpandableBottom {
 	_separatorLeft.offset(IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28);
-	[self layoutIfNeeded];
+//	[self layoutIfNeeded];
 }
 
 - (CGFloat)contentInset {

@@ -49,7 +49,7 @@ typedef CMathParser<char, double> MathParser;
     return [self getExpressionWith:mathexpression];
 }
 
-- (id) initWithLabel:(HTCopyableLabel *) expression result:(HTCopyableLabel *) result {
+- (id)initWithLabel:(HTCopyableLabel *) expression result:(HTCopyableLabel *) result {
     self = [super init];
     if (self) {
         _expressionLabel = expression;
@@ -64,11 +64,11 @@ typedef CMathParser<char, double> MathParser;
     return self;
 }
 
-- (void) setRadian:(BOOL)bRadian {
+- (void)setRadian:(BOOL)bRadian {
     radian = bRadian;
 }
 
-- (void) setLabel:(HTCopyableLabel *) expression result:(HTCopyableLabel *) result;
+- (void)setLabel:(HTCopyableLabel *) expression result:(HTCopyableLabel *) result;
 {
     _expressionLabel = expression;
     _evaluatedResultLabel = result;
@@ -87,6 +87,7 @@ typedef CMathParser<char, double> MathParser;
     
     return expression;
 }
+
 - (double)evaluate:(BOOL *)err {
 	double resultValue;
 	try {
@@ -173,7 +174,7 @@ typedef CMathParser<char, double> MathParser;
     }
 }
 
-- (void) changeEEExpression {
+- (void)changeEEExpression {
     NSRange range = [mathexpression rangeOfString:@"EE"];
     if ( range.location != NSNotFound) {
         NSUInteger numLen = [self getNumberLengthFromMathExpression:mathexpression with:range.location + range.length];

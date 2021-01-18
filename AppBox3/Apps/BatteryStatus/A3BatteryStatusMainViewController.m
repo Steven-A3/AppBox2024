@@ -28,7 +28,6 @@
 @property (nonatomic, strong) A3BatteryStatusListPageSectionView *sectionHeaderView;
 @property (nonatomic, strong) UINavigationController *modalNavigationController;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
-@property (nonatomic, strong) GADNativeExpressAdView *admobNativeExpressAdView;
 
 @end
 
@@ -248,9 +247,10 @@ static NSString *const A3V3InstructionDidShowForBattery = @"A3V3InstructionDidSh
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"BatteryStatus"];
     self.instructionViewController.delegate = self;
-    if (IS_IPHONEX) {
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    if (safeAreaInsets.top > 20) {
         [self.instructionViewController view];
-        self.instructionViewController.batteryTopConstraint.constant = 40;
+        self.instructionViewController.batteryTopConstraint.constant = safeAreaInsets.top;
     }
     [self.navigationController.view addSubview:self.instructionViewController.view];
     [self.instructionViewController.view layoutIfNeeded];

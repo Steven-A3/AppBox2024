@@ -119,8 +119,9 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 - (void)cloudStoreDidImport {
 	if (_itemDeleted) return;
 
+    _fieldItems = nil;
+    [self fieldItems];
     dispatch_async(dispatch_get_main_queue(), ^{
-        _fieldItems = nil;
         [self.tableView reloadData];
     });
 }
@@ -448,7 +449,9 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 			{
 				// call
 				NSString *urlString = [NSString stringWithFormat:@"tel://%@", result.phoneNumber];
-				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]
+                                                   options:@{}
+                                         completionHandler:nil];
 				break;
 			}
 			case 1: {
@@ -911,7 +914,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 		}
 		[copyMenu setMenuVisible:YES animated:YES];
 
-		_copyingSourceView = view;
+		self.copyingSourceView = view;
 	});
 }
 

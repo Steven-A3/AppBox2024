@@ -116,12 +116,11 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	[_topToolbarSoundOnly setShadowImage:shadowImage forToolbarPosition:UIBarPositionAny];
 	[_bottomToolbar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 	[_statusToolbar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
-    
-    CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-    if (screenBounds.size.height == 812 || screenBounds.size.height == 896) {
-        _statusToolbarHeightConstraint.constant = [A3UIDevice statusBarHeightPortrait];
-        _bottomToolbarBottomSpaceConstraint.constant = 40;
-    }
+
+    UIEdgeInsets safeAreaInsets = [[UIApplication sharedApplication] keyWindow].safeAreaInsets;
+    _statusToolbarHeightConstraint.constant = safeAreaInsets.top;
+    _bottomToolbarBottomSpaceConstraint.constant = safeAreaInsets.bottom;
+
     [self.view layoutIfNeeded];
 }
 

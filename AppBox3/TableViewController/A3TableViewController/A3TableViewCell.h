@@ -15,6 +15,7 @@
 @property (nonatomic, strong) UIView *customTopSeparator;
 @property (nonatomic, strong) UIView *customSeparator;
 
+- (void)resetCellLayout;
 - (void)showTopSeparator;
 - (void)setBottomSeparatorForBottomRow;
 - (void)setBottomSeparatorForMiddleRow;

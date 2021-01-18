@@ -55,7 +55,7 @@
 - (void)verifyNULLField {
 	NSArray *fieldItems = [self fieldItemsArraySortedByFieldOrder];
 	NSMutableArray *fieldItemsFieldDoesNotExist = [NSMutableArray new];
-	WalletCategory *category = [WalletData categoryItemWithID:self.categoryID inContext:nil];
+	WalletCategory *category = [WalletData categoryItemWithID:self.categoryID inContext:self.managedObjectContext];
 	NSArray *fields = [WalletField MR_findByAttribute:@"categoryID" withValue:category.uniqueID andOrderBy:@"order" ascending:YES];
 	for (WalletFieldItem *fieldItem in fieldItems) {
 		if (![fieldItem.fieldID length]) {

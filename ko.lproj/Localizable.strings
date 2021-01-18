@@ -818,6 +818,7 @@
 "Internet on Wi-Fi" = "Wi-Fi에서 인터넷 사용";
 "Internet on Cellular" = "셀룰러에서 인터넷 사용";
 "Video playback" = "동영상 재생";
+"Video playback (streamed)" = "동영상 재생 (스트리밍)";
 "Audio playback" = "오디오 재생";
 "Standby" = "대기 시간";
 "FaceTime" = "FaceTime";

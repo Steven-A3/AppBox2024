@@ -37,18 +37,73 @@
 
 - (void)viewWillLayoutSubviews {
 	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+    CGFloat vscale = scale;
     CGFloat p_bigbuttonwidth = 120.0 * scale, p_smallbuttonwidth = 90.0 * scale, p_buttonheight = 89.0 * scale;
     CGFloat l_bigbuttonwidth = 168.0 * scale, l_smallbuttonwidth = 107.0 * scale, l_buttonheight = 74.0 * scale;
     CGFloat start_x, start_y, v_space, h_bigspace,h_smallspace;
     CGFloat current_x, current_y, bigbuttonwidth, smallbuttonwidth, buttonheight;
 
+    CGRect bounds = [UIScreen mainScreen].bounds;
+    
 	if (IS_PORTRAIT) {
-		[_calculatorkeypadvw setFrame:CGRectMake(0.0,  617.0 * scale, 768.0 * scale, 407.0 * scale)];
+        CGFloat top, width, height;
+        if (bounds.size.height == 1366.0) {
+            // iPad Pro 12.9"
+            top = 617.0 * scale;
+            width = 768.0 * scale;
+            height = 407.0 * scale;
+        } else if (bounds.size.height == 1194.0) {
+            // iPad Pro 11"
+            top = 732.0;
+            width = 834.0;
+            height = 407.0 * vscale + 20;
+        } else if (bounds.size.height == 1112.0) {
+            // iPad Pro 10.5"
+            top = 670.0;
+            width = 834.0;
+            height = 407.0 * vscale;
+        } else {
+            top = 617.0 * scale;
+            width = 768.0 * scale;
+            height = 407.0 * scale;
+        }
+        
+		[_calculatorkeypadvw setFrame:CGRectMake(0.0,  top, width, height)];
         start_x = 22.0 * scale; start_y = 10.0 * scale; v_space = 11.0 * scale; h_bigspace = 24.0 * scale; h_smallspace = 11.0 * scale;
         bigbuttonwidth = p_bigbuttonwidth; smallbuttonwidth = p_smallbuttonwidth; buttonheight = p_buttonheight;
 	} else {
-		[_calculatorkeypadvw setFrame:CGRectMake(0.0, 420.0 * scale, 1024.0 * scale, 348.0 * scale)];
-        start_x = 33.0 * scale; start_y = 10.0 * scale; v_space = 11.0 * scale; h_bigspace = 33.0 * scale; h_smallspace = 17.0 * scale;
+        CGFloat top, width, height;
+        if (bounds.size.width == 1366.0) {
+            // iPad Pro 12.9"
+            top = 420.0 * scale;
+            width = 1024.0 * scale;
+            height = 348.0 * scale;
+        } else if (bounds.size.width == 1194.0) {
+            // iPad Pro 11", height = 834
+            vscale = 834.0/768.0;
+            top = 440.0;
+            width = 1194.0;
+            height = 348.0 * vscale + 20;
+            
+            p_buttonheight = 89.0 * vscale;
+            l_buttonheight = 74.0 * vscale;
+        } else if (bounds.size.width == 1112.0) {
+            // iPad Pro 10.5", height = 834
+            vscale = 834.0/768.0;
+            top = 456.0;
+            width = 1112.0;
+            height = 348.0 * vscale;
+            
+            p_buttonheight = 89.0 * vscale;
+            l_buttonheight = 74.0 * vscale;
+        } else {
+            top = 420.0 * scale;
+            width = 1024.0 * scale;
+            height = 348.0 * scale;
+        }
+        
+		[_calculatorkeypadvw setFrame:CGRectMake(0.0, top, width, height)];
+        start_x = 33.0 * scale; start_y = 10.0 * vscale; v_space = 11.0 * vscale; h_bigspace = 33.0 * scale; h_smallspace = 17.0 * scale;
         bigbuttonwidth = l_bigbuttonwidth; smallbuttonwidth = l_smallbuttonwidth; buttonheight = l_buttonheight;
 	}
     
