@@ -16,7 +16,7 @@
 		_titleLabel = [UILabel new];
 		_titleLabel.adjustsFontSizeToFitWidth = YES;
 		_titleLabel.minimumScaleFactor = 0.5;
-		[self addSubview:_titleLabel];
+		[self.contentView addSubview:_titleLabel];
 
 		CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 		[_titleLabel makeConstraints:^(MASConstraintMaker *make) {
@@ -27,7 +27,7 @@
 		_subTitleLabel = [UILabel new];
 		_subTitleLabel.adjustsFontSizeToFitWidth = YES;
 		_subTitleLabel.minimumScaleFactor = 0.5;
-		[self addSubview:_subTitleLabel];
+		[self.contentView addSubview:_subTitleLabel];
 
 		[_subTitleLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.left.equalTo(self.left).with.offset(leading);
@@ -37,11 +37,11 @@
 
 		_editButton = [UIButton buttonWithType:UIButtonTypeSystem];
 		[_editButton setTitle:NSLocalizedString(@"Edit", @"Edit") forState:UIControlStateNormal];
-		[self addSubview:_editButton];
+		[self.contentView addSubview:_editButton];
 
 		[_editButton makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(_titleLabel.right).with.offset(8);
-			make.baseline.equalTo(_titleLabel.baseline);
+			make.left.equalTo(self.titleLabel.right).with.offset(8);
+			make.baseline.equalTo(self.titleLabel.baseline);
 		}];
 
 		[self setupFont];

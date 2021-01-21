@@ -26,8 +26,8 @@
 /* Class = "IBUILabel"; text = "Facebook"; ObjectID = "R44-Fm-Kr5"; */
 "R44-Fm-Kr5.text" = "Facebook";
 
-/* Class = "IBUITableViewSection"; footerTitle = "Copyright © 2009-2016 ALLABOUTAPPS Inc. All rights reserved."; ObjectID = "Spr-CR-vU4"; */
-"Spr-CR-vU4.footerTitle" = "Copyright © 2009-2018 ALLABOUTAPPS Inc. 保留所有权利。";
+/* Class = "IBUITableViewSection"; footerTitle = "Copyright © 2009-2021 ALLABOUTAPPS Inc. All rights reserved."; ObjectID = "Spr-CR-vU4"; */
+"Spr-CR-vU4.footerTitle" = "Copyright © 2009-2021 ALLABOUTAPPS Inc. 保留所有权利。";
 
 /* Class = "IBUILabel"; text = "Acknowledgement"; ObjectID = "Y4I-oe-yba"; */
 "Y4I-oe-yba.text" = "致谢";

@@ -259,7 +259,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
                 else {
                     [titleCell.editButton setHidden:isEditNavigationBar];
                 }
-                
+
 				[titleCell.editButton addTarget:self action:@selector(editDetailItem:) forControlEvents:UIControlEventTouchUpInside];
 				titleCell.editButton.tag = indexPath.row;
 
