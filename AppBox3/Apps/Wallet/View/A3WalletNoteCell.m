@@ -29,7 +29,7 @@
 - (void)setupTextView {
 	if (!_textView) {
 		_textView = [GCPlaceholderTextView new];
-		[self addSubview:_textView];
+		[self.contentView addSubview:_textView];
 	}
 	self.selectionStyle = UITableViewCellSelectionStyleNone;
 	_textView.bounces = NO;

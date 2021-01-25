@@ -294,6 +294,7 @@ static char const *const key_navigationControllerForKeyboard	= "key_navigationCo
 	}
 
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    navigationController.modalPresentationStyle = UIModalPresentationFullScreen;
 	[self presentViewController:navigationController animated:YES completion:nil];
 	[self setNavigationControllerForKeyboard:navigationController];
 

@@ -221,7 +221,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
     return YES;
 }
 
-- (void) setupSubViews {
+- (void)setupSubViews {
     self.view.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0];
 
     [self.view addSubview:self.evaluatedResultLabel];
@@ -267,7 +267,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
     }
 }
 
-- (void) setupBasicKeyPad {
+- (void)setupBasicKeyPad {
     scientific  = NO;
 
     _calculatorkeypad  = [[A3CalculatorButtonsInBasicViewController_iPad alloc] initWithNibName:@"A3CalculatorButtonsInBasicViewController_iPad" bundle:nil];
@@ -535,7 +535,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 }
 
 
-- (BOOL) isCalculationHistoryEmpty {
+- (BOOL)isCalculationHistoryEmpty {
     Calculation *lastcalculation = [Calculation MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
     if (lastcalculation != nil ) {
         return NO;
@@ -544,7 +544,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
     }
 }
 
-- (void) checkRightButtonDisable {
+- (void)checkRightButtonDisable {
     if ([self isCalculationHistoryEmpty]) {
         _history.enabled = NO;
     } else {
@@ -590,7 +590,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 	[[NSManagedObjectContext MR_rootSavingContext] MR_saveOnlySelfAndWait];
 }
 
-- (void) ShowMessage:(NSString *)message {
+- (void)ShowMessage:(NSString *)message {
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:HUD];
     CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];

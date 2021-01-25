@@ -36,6 +36,7 @@
 }
 
 - (void)viewWillLayoutSubviews {
+
 	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
     CGFloat vscale = scale;
     CGFloat p_bigbuttonwidth = 120.0 * scale, p_smallbuttonwidth = 90.0 * scale, p_buttonheight = 89.0 * scale;
@@ -44,7 +45,9 @@
     CGFloat current_x, current_y, bigbuttonwidth, smallbuttonwidth, buttonheight;
 
     CGRect bounds = [UIScreen mainScreen].bounds;
-    
+    FNLOGRECT(self.view.bounds);
+    FNLOGRECT(bounds);
+
 	if (IS_PORTRAIT) {
         CGFloat top, width, height;
         if (bounds.size.height == 1366.0) {
@@ -164,4 +167,5 @@
     self.plusbutton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Thin" size:50 * scale ];
     self.operationendbutton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Thin" size:50 * scale ];
 }
+
 @end
