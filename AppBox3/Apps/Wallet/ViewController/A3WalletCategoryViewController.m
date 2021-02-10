@@ -659,6 +659,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 		_searchController.searchResultsUpdater = self;
 		_searchController.searchBar.delegate = self;
         [_searchController.searchBar sizeToFit];
+        _searchController.obscuresBackgroundDuringPresentation = NO;
     }
     return _searchController;
 }
