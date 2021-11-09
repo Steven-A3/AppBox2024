@@ -37,9 +37,10 @@
 - (id)init {
 	self = [super init];
 	if (self) {
-		if ([[A3AppDelegate instance].reachability isReachable]) {
-			[self.locationManager startUpdatingLocation];
-		}
+
+//		if ([[A3AppDelegate instance].reachability isReachable]) {
+//			[self.locationManager startUpdatingLocation];
+//		}
 
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];

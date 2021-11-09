@@ -76,6 +76,8 @@ Data collected from HealthKit will not be used for marketing and advertising pur
 	<string>com.e2ndesign.TPremium2</string>
 	<key>NSUbiquitousDisplaySet</key>
 	<string>com.e2ndesign.TPremium2</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>This identifier will be used to deliver personalized ads to you.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>appbox.ttf</string>

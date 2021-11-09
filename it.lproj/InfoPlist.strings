@@ -21,3 +21,4 @@ NSCalendarsUsageDescription = "AppBox Pro® vorrebbe accedere al calendario per 
 NSMicrophoneUsageDescription = "AppBox Pro® vorrebbe accedere al tuo microfono per prendere video per Wallet.";
 NSFaceIDUsageDescription = "AppBox Pro® vorrebbe accedere a Face ID per sbloccare l'app.";
 NSPhotoLibraryAddUsageDescription = "AppBox Pro® vorrebbe accedere alla libreria di foto per salvare le immagini dal mirror, Magnifier, e Wallet.";
+NSUserTrackingUsageDescription = "Questo identificatore verrà utilizzato per fornirti annunci personalizzati.";

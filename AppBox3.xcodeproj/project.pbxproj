@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0DFC66CED0CCD1C5D3A9A5B7 /* libPods-AppBox3 Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C2D13FD8BA8E5E4278DDE4 /* libPods-AppBox3 Tests.a */; };
 		17D42081A3DD4A68E74CB291 /* A3SettingsPasscodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42E9E104FFF7C8B1030FD /* A3SettingsPasscodeViewController.m */; };
 		17D42093A4A4B45A06BFD4F1 /* FSWebLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D421EBC1891737E21BB3BE /* FSWebLogin.m */; };
 		17D420FD697D545A9027AB7C /* A3PasscodeCommonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42647DF41660948614893 /* A3PasscodeCommonViewController.m */; };
@@ -94,7 +95,6 @@
 		17D42FD84048A09B5EE00DE4 /* A3TranslatorCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42DEFB63D5877A0449693 /* A3TranslatorCircleView.m */; };
 		17D42FF85AA97A33A049141B /* A3MainMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42FB24E3CE9119EAA77D3 /* A3MainMenuTableViewController.m */; };
 		3E21D15518FB1BF100B88D62 /* FrameRateCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E21D15418FB1BF100B88D62 /* FrameRateCalculator.m */; };
-		4D3F11E285D213D7B627BB84 /* libPods-A3SetupDefaultData.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD8F613ACE72C68BFE6803B8 /* libPods-A3SetupDefaultData.a */; };
 		571795CE19D7CD6600DEF2FB /* RGB-HSL.m in Sources */ = {isa = PBXBuildFile; fileRef = 571795CD19D7CD6600DEF2FB /* RGB-HSL.m */; };
 		57213EFB19C328FD005AD0ED /* CLLocationManager+authorization.m in Sources */ = {isa = PBXBuildFile; fileRef = 57213EFA19C328FD005AD0ED /* CLLocationManager+authorization.m */; };
 		5727A57219D411F100ADB17C /* Erase.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5727A57119D411F100ADB17C /* Erase.caf */; };
@@ -707,6 +707,7 @@
 		68B6F76A1EA575C500C4BB7A /* UIImage+MWPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6F73E1EA575C500C4BB7A /* UIImage+MWPhotoBrowser.m */; };
 		68B6F76C1EA575F600C4BB7A /* MWPhotoBrowserAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68B6F76B1EA575F600C4BB7A /* MWPhotoBrowserAssets.xcassets */; };
 		68B7014819789F8200F7CE1E /* TranslatorFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B7014719789F8200F7CE1E /* TranslatorFavorite.m */; };
+		68B74CAC2716B542002A5B7A /* A3WalletHistoryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B74CAB2716B542002A5B7A /* A3WalletHistoryListViewController.m */; };
 		68B9B15717CF4D8F003ACAD0 /* FXPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B15617CF4D8F003ACAD0 /* FXPageControl.m */; };
 		68B9B15C17D01EB6003ACAD0 /* A3HolidaysCountryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B15B17D01EB6003ACAD0 /* A3HolidaysCountryViewController.m */; };
 		68B9B16317D02B85003ACAD0 /* A3HolidaysCountryViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B16217D02B85003ACAD0 /* A3HolidaysCountryViewCell.m */; };
@@ -969,8 +970,8 @@
 		68FB8E9E1C990922008CAB7A /* CurrencyInfo.dictionary in Resources */ = {isa = PBXBuildFile; fileRef = 68FB8E9C1C990922008CAB7A /* CurrencyInfo.dictionary */; };
 		68FC3AF01C19336000EC9348 /* A3CurrencyPickerStyle.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68FC3AF21C19336000EC9348 /* A3CurrencyPickerStyle.storyboard */; };
 		808DA9EB196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 808DA9EA196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.m */; };
-		AB3810CE56C130AD6F679B11 /* libPods-AppBox3 Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A998E86FFF98866AA8928926 /* libPods-AppBox3 Tests.a */; };
-		D4524D3DF4D8C9CB40BDC48A /* libPods-AppBox3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D121E6ABFD2B662DBDE4B018 /* libPods-AppBox3.a */; };
+		A60FDB7E6F842991B00AFC41 /* libPods-A3SetupDefaultData.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F707D8B3BDC88ED7618905E /* libPods-A3SetupDefaultData.a */; };
+		D13237882A2918C16D332860 /* libPods-AppBox3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A49F5956D07EAC08A3ABBCAE /* libPods-AppBox3.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1043,6 +1044,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		01C2D13FD8BA8E5E4278DDE4 /* libPods-AppBox3 Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AppBox3 Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		17D42020AA362D23330F9A40 /* A3SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsViewController.h; path = Settings/A3SettingsViewController.h; sourceTree = "<group>"; };
 		17D4202915D388642422A149 /* A3UnitConverterTVDataCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitConverterTVDataCell.m; sourceTree = "<group>"; };
 		17D42035933BC6DF88D4E653 /* A3UnitConverterTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitConverterTabBarController.m; sourceTree = "<group>"; };
@@ -1214,11 +1216,10 @@
 		17D42FE2C4AD09E611D37298 /* A3TranslatorMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorMessageViewController.h; path = Translator/A3TranslatorMessageViewController.h; sourceTree = "<group>"; };
 		17D42FE39BA656A96951C52E /* LadyCalendarPeriod+extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LadyCalendarPeriod+extension.h"; sourceTree = "<group>"; };
 		17D42FEEE5D02AC4D6E1CB7A /* A3TranslatorMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = A3TranslatorMessageViewController.m; path = Translator/A3TranslatorMessageViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		181E5A6541E5AF3B36C17969 /* Pods-A3SetupDefaultData.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-A3SetupDefaultData.debug.xcconfig"; path = "Target Support Files/Pods-A3SetupDefaultData/Pods-A3SetupDefaultData.debug.xcconfig"; sourceTree = "<group>"; };
+		2F707D8B3BDC88ED7618905E /* libPods-A3SetupDefaultData.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-A3SetupDefaultData.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E21D15318FB1BF100B88D62 /* FrameRateCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrameRateCalculator.h; sourceTree = "<group>"; };
 		3E21D15418FB1BF100B88D62 /* FrameRateCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FrameRateCalculator.m; sourceTree = "<group>"; };
-		48CD4BB4ADC14BE5E881B527 /* Pods-AppBox3.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppBox3.release.xcconfig"; path = "Target Support Files/Pods-AppBox3/Pods-AppBox3.release.xcconfig"; sourceTree = "<group>"; };
-		4CB9E4E4117B731FA06932A7 /* Pods-AppBox3.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppBox3.debug.xcconfig"; path = "Target Support Files/Pods-AppBox3/Pods-AppBox3.debug.xcconfig"; sourceTree = "<group>"; };
+		4F647AEDB5AC4D31449F5834 /* Pods-A3SetupDefaultData.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-A3SetupDefaultData.release.xcconfig"; path = "Target Support Files/Pods-A3SetupDefaultData/Pods-A3SetupDefaultData.release.xcconfig"; sourceTree = "<group>"; };
 		571795CC19D7CD6500DEF2FB /* RGB-HSL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RGB-HSL.h"; path = "NPColorPicker/RGB-HSL.h"; sourceTree = "<group>"; };
 		571795CD19D7CD6600DEF2FB /* RGB-HSL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "RGB-HSL.m"; path = "NPColorPicker/RGB-HSL.m"; sourceTree = "<group>"; };
 		5718E4991988E91400B4C7ED /* A3DefaultColorDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DefaultColorDefines.h; sourceTree = "<group>"; };
@@ -1248,6 +1249,7 @@
 		57E4E1CB19D2DD360037371B /* A3RandomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3RandomViewController.h; path = Random/A3RandomViewController.h; sourceTree = "<group>"; };
 		57E4E1CC19D2DD360037371B /* A3RandomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3RandomViewController.m; path = Random/A3RandomViewController.m; sourceTree = "<group>"; };
 		57E4E1CD19D2DD360037371B /* A3RandomViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3RandomViewController.xib; path = Random/A3RandomViewController.xib; sourceTree = "<group>"; };
+		5F9CE4EDD0CA8BD2B15BEB0A /* Pods-AppBox3.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppBox3.release.xcconfig"; path = "Target Support Files/Pods-AppBox3/Pods-AppBox3.release.xcconfig"; sourceTree = "<group>"; };
 		68024AD61631637600D396F0 /* A3UIDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UIDevice.h; sourceTree = "<group>"; };
 		68024AD71631637600D396F0 /* A3UIDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = A3UIDevice.m; sourceTree = "<group>"; };
 		68030ABA17F063D100B04487 /* HTCopyableLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTCopyableLabel.h; path = External/HTCopyableLabel/HTCopyableLabel.h; sourceTree = "<group>"; };
@@ -2370,6 +2372,8 @@
 		68B6F76B1EA575F600C4BB7A /* MWPhotoBrowserAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = MWPhotoBrowserAssets.xcassets; sourceTree = "<group>"; };
 		68B7014619789F8200F7CE1E /* TranslatorFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TranslatorFavorite.h; sourceTree = "<group>"; };
 		68B7014719789F8200F7CE1E /* TranslatorFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TranslatorFavorite.m; sourceTree = "<group>"; };
+		68B74CAB2716B542002A5B7A /* A3WalletHistoryListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = A3WalletHistoryListViewController.m; sourceTree = "<group>"; };
+		68B74CB72716B5E4002A5B7A /* A3WalletHistoryListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = A3WalletHistoryListViewController.h; sourceTree = "<group>"; };
 		68B9B15517CF4D8F003ACAD0 /* FXPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FXPageControl.h; path = External/FXPageControl/FXPageControl/FXPageControl.h; sourceTree = "<group>"; };
 		68B9B15617CF4D8F003ACAD0 /* FXPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FXPageControl.m; path = External/FXPageControl/FXPageControl/FXPageControl.m; sourceTree = "<group>"; };
 		68B9B15A17D01EB6003ACAD0 /* A3HolidaysCountryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3HolidaysCountryViewController.h; path = Holidays/A3HolidaysCountryViewController.h; sourceTree = "<group>"; };
@@ -2993,14 +2997,13 @@
 		68FC3B061C19337C00EC9348 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/A3CurrencyPickerStyle.strings; sourceTree = "<group>"; };
 		68FC3B081C19337D00EC9348 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3CurrencyPickerStyle.strings; sourceTree = "<group>"; };
 		68FC3B0A1C19337F00EC9348 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/A3CurrencyPickerStyle.strings"; sourceTree = "<group>"; };
+		6D654C6EE9B13F209958D345 /* Pods-AppBox3 Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppBox3 Tests.release.xcconfig"; path = "Target Support Files/Pods-AppBox3 Tests/Pods-AppBox3 Tests.release.xcconfig"; sourceTree = "<group>"; };
 		808DA9E9196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterSlideShowCollectionViewLayout.h; sourceTree = "<group>"; };
 		808DA9EA196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterSlideShowCollectionViewLayout.m; sourceTree = "<group>"; };
-		A998E86FFF98866AA8928926 /* libPods-AppBox3 Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AppBox3 Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B5B6F123426A9EAC1CBE4962 /* Pods-A3SetupDefaultData.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-A3SetupDefaultData.release.xcconfig"; path = "Target Support Files/Pods-A3SetupDefaultData/Pods-A3SetupDefaultData.release.xcconfig"; sourceTree = "<group>"; };
-		C5F630F0C69B4FD065209F3D /* Pods-AppBox3 Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppBox3 Tests.debug.xcconfig"; path = "Target Support Files/Pods-AppBox3 Tests/Pods-AppBox3 Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		CD8F613ACE72C68BFE6803B8 /* libPods-A3SetupDefaultData.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-A3SetupDefaultData.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D121E6ABFD2B662DBDE4B018 /* libPods-AppBox3.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AppBox3.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E69D5F221588FAE53855BFD2 /* Pods-AppBox3 Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppBox3 Tests.release.xcconfig"; path = "Target Support Files/Pods-AppBox3 Tests/Pods-AppBox3 Tests.release.xcconfig"; sourceTree = "<group>"; };
+		A43153E100A68652B5F496F2 /* Pods-A3SetupDefaultData.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-A3SetupDefaultData.debug.xcconfig"; path = "Target Support Files/Pods-A3SetupDefaultData/Pods-A3SetupDefaultData.debug.xcconfig"; sourceTree = "<group>"; };
+		A49F5956D07EAC08A3ABBCAE /* libPods-AppBox3.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AppBox3.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD067EA06B0174961782ED6A /* Pods-AppBox3 Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppBox3 Tests.debug.xcconfig"; path = "Target Support Files/Pods-AppBox3 Tests/Pods-AppBox3 Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		E0F2C0B39BE4FF8A721CBF20 /* Pods-AppBox3.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppBox3.debug.xcconfig"; path = "Target Support Files/Pods-AppBox3/Pods-AppBox3.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3012,7 +3015,7 @@
 				6829689018505E3900B70E13 /* CoreGraphics.framework in Frameworks */,
 				6829689118505E3900B70E13 /* UIKit.framework in Frameworks */,
 				6829688F18505E3900B70E13 /* Foundation.framework in Frameworks */,
-				4D3F11E285D213D7B627BB84 /* libPods-A3SetupDefaultData.a in Frameworks */,
+				A60FDB7E6F842991B00AFC41 /* libPods-A3SetupDefaultData.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3027,8 +3030,8 @@
 				680B59D71E9777C8004362AC /* HealthKit.framework in Frameworks */,
 				6825367F18A7C1B800EAFB84 /* libsqlite3.0.dylib in Frameworks */,
 				684A71BD1852E0250004A9FE /* libc++.dylib in Frameworks */,
-				D4524D3DF4D8C9CB40BDC48A /* libPods-AppBox3.a in Frameworks */,
 				6882BFD02581CCAA00A01A0E /* Ensembles.framework in Frameworks */,
+				D13237882A2918C16D332860 /* libPods-AppBox3.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3039,7 +3042,7 @@
 				6876D6FB17A75DAE00E16991 /* XCTest.framework in Frameworks */,
 				6876D6FD17A75DAE00E16991 /* UIKit.framework in Frameworks */,
 				6876D6FC17A75DAE00E16991 /* Foundation.framework in Frameworks */,
-				AB3810CE56C130AD6F679B11 /* libPods-AppBox3 Tests.a in Frameworks */,
+				0DFC66CED0CCD1C5D3A9A5B7 /* libPods-AppBox3 Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3993,9 +3996,9 @@
 				687C193B1783DF0F00415FCE /* XCTest.framework */,
 				681AB7C61E95D2100015F57D /* UserNotifications.framework */,
 				681AB7C81E95D2100015F57D /* UserNotificationsUI.framework */,
-				CD8F613ACE72C68BFE6803B8 /* libPods-A3SetupDefaultData.a */,
-				D121E6ABFD2B662DBDE4B018 /* libPods-AppBox3.a */,
-				A998E86FFF98866AA8928926 /* libPods-AppBox3 Tests.a */,
+				2F707D8B3BDC88ED7618905E /* libPods-A3SetupDefaultData.a */,
+				A49F5956D07EAC08A3ABBCAE /* libPods-AppBox3.a */,
+				01C2D13FD8BA8E5E4278DDE4 /* libPods-AppBox3 Tests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -5080,6 +5083,8 @@
 				68B6A2A518CEC76D004084EF /* A3WalletPhotoItemViewController.m */,
 				17D426E581ED82E6EA0F9AA8 /* A3WalletVideoItemViewController.h */,
 				17D4276A166CB33EEB6FC6F6 /* A3WalletVideoItemViewController.m */,
+				68B74CB72716B5E4002A5B7A /* A3WalletHistoryListViewController.h */,
+				68B74CAB2716B542002A5B7A /* A3WalletHistoryListViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -5899,12 +5904,12 @@
 		EBCA40A147C9E4B5F5A19E3A /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				181E5A6541E5AF3B36C17969 /* Pods-A3SetupDefaultData.debug.xcconfig */,
-				B5B6F123426A9EAC1CBE4962 /* Pods-A3SetupDefaultData.release.xcconfig */,
-				4CB9E4E4117B731FA06932A7 /* Pods-AppBox3.debug.xcconfig */,
-				48CD4BB4ADC14BE5E881B527 /* Pods-AppBox3.release.xcconfig */,
-				C5F630F0C69B4FD065209F3D /* Pods-AppBox3 Tests.debug.xcconfig */,
-				E69D5F221588FAE53855BFD2 /* Pods-AppBox3 Tests.release.xcconfig */,
+				A43153E100A68652B5F496F2 /* Pods-A3SetupDefaultData.debug.xcconfig */,
+				4F647AEDB5AC4D31449F5834 /* Pods-A3SetupDefaultData.release.xcconfig */,
+				E0F2C0B39BE4FF8A721CBF20 /* Pods-AppBox3.debug.xcconfig */,
+				5F9CE4EDD0CA8BD2B15BEB0A /* Pods-AppBox3.release.xcconfig */,
+				CD067EA06B0174961782ED6A /* Pods-AppBox3 Tests.debug.xcconfig */,
+				6D654C6EE9B13F209958D345 /* Pods-AppBox3 Tests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -5916,7 +5921,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 682968C218505E3900B70E13 /* Build configuration list for PBXNativeTarget "A3SetupDefaultData" */;
 			buildPhases = (
-				A0828091BE8E657F660B8B99 /* [CP] Check Pods Manifest.lock */,
+				1915D6ED728FDC2F6E78E2BC /* [CP] Check Pods Manifest.lock */,
 				6829688A18505E3800B70E13 /* Sources */,
 				6829688B18505E3800B70E13 /* Frameworks */,
 				6829688C18505E3800B70E13 /* Resources */,
@@ -5934,13 +5939,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 682EA30415EB10B000BD6AD4 /* Build configuration list for PBXNativeTarget "AppBox3" */;
 			buildPhases = (
-				48D4E11014682B85C9B0874D /* [CP] Check Pods Manifest.lock */,
+				C677296D8BB82370DFFF5BA4 /* [CP] Check Pods Manifest.lock */,
 				682EA2CD15EB10B000BD6AD4 /* Sources */,
 				682EA2CE15EB10B000BD6AD4 /* Frameworks */,
 				682EA2CF15EB10B000BD6AD4 /* Resources */,
 				681AB7DF1E95D2100015F57D /* Embed App Extensions */,
-				97A8DF381A043BF1EE8C80CC /* [CP] Copy Pods Resources */,
 				6882BFD22581CCAA00A01A0E /* Embed Frameworks */,
+				75A17D88A317A50F9D6FBDA0 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -5955,7 +5960,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6876D70917A75DAE00E16991 /* Build configuration list for PBXNativeTarget "AppBox3 Tests" */;
 			buildPhases = (
-				D6CBA157E08DEF16E5B5031E /* [CP] Check Pods Manifest.lock */,
+				33C1E44F47840FDAF572D3AC /* [CP] Check Pods Manifest.lock */,
 				6876D6F617A75DAE00E16991 /* Sources */,
 				6876D6F717A75DAE00E16991 /* Frameworks */,
 				6876D6F817A75DAE00E16991 /* Resources */,
@@ -6277,47 +6282,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		48D4E11014682B85C9B0874D /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-AppBox3-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		97A8DF381A043BF1EE8C80CC /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AppBox3/Pods-AppBox3-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/PersonalizedAdConsent/PersonalizedAdConsent.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PersonalizedAdConsent.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AppBox3/Pods-AppBox3-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A0828091BE8E657F660B8B99 /* [CP] Check Pods Manifest.lock */ = {
+		1915D6ED728FDC2F6E78E2BC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -6339,7 +6304,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D6CBA157E08DEF16E5B5031E /* [CP] Check Pods Manifest.lock */ = {
+		33C1E44F47840FDAF572D3AC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -6355,6 +6320,46 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-AppBox3 Tests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		75A17D88A317A50F9D6FBDA0 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AppBox3/Pods-AppBox3-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/PersonalizedAdConsent/PersonalizedAdConsent.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PersonalizedAdConsent.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AppBox3/Pods-AppBox3-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C677296D8BB82370DFFF5BA4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AppBox3-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -6441,6 +6446,7 @@
 				686F06E71AA1D9DC0093A6F9 /* A3MarkingsView.m in Sources */,
 				68F14FCC19485E8500159EAD /* A3DaysCounterReminderListViewController.m in Sources */,
 				681E1266193443F00077DCFA /* zip.c in Sources */,
+				68B74CAC2716B542002A5B7A /* A3WalletHistoryListViewController.m in Sources */,
 				68E2A65D18D0B1FC00E834D9 /* A3PercentCalcHeaderView.m in Sources */,
 				68ADE14817D83D28009618A7 /* MMDrawerController.m in Sources */,
 				68143D5918E3EC7C00569691 /* A3JHTableViewSections.m in Sources */,
@@ -7658,7 +7664,7 @@
 /* Begin XCBuildConfiguration section */
 		682968BB18505E3900B70E13 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 181E5A6541E5AF3B36C17969 /* Pods-A3SetupDefaultData.debug.xcconfig */;
+			baseConfigurationReference = A43153E100A68652B5F496F2 /* Pods-A3SetupDefaultData.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -7685,7 +7691,7 @@
 		};
 		682968BC18505E3900B70E13 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B5B6F123426A9EAC1CBE4962 /* Pods-A3SetupDefaultData.release.xcconfig */;
+			baseConfigurationReference = 4F647AEDB5AC4D31449F5834 /* Pods-A3SetupDefaultData.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -7827,7 +7833,7 @@
 		};
 		682EA30515EB10B000BD6AD4 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4CB9E4E4117B731FA06932A7 /* Pods-AppBox3.debug.xcconfig */;
+			baseConfigurationReference = E0F2C0B39BE4FF8A721CBF20 /* Pods-AppBox3.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -7835,7 +7841,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.6.32.0;
+				CURRENT_PROJECT_VERSION = 4.6.33.2;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -7856,7 +7862,7 @@
 					"$(PROJECT_DIR)/External/RMStore/Optional/openssl-1.0.2c/lib",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
-				MARKETING_VERSION = 4.6.32;
+				MARKETING_VERSION = 4.6.33;
 				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -7869,7 +7875,7 @@
 		};
 		682EA30615EB10B000BD6AD4 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 48CD4BB4ADC14BE5E881B527 /* Pods-AppBox3.release.xcconfig */;
+			baseConfigurationReference = 5F9CE4EDD0CA8BD2B15BEB0A /* Pods-AppBox3.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -7877,7 +7883,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.6.32.0;
+				CURRENT_PROJECT_VERSION = 4.6.33.2;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -7898,7 +7904,7 @@
 					"$(PROJECT_DIR)/External/RMStore/Optional/openssl-1.0.2c/lib",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
-				MARKETING_VERSION = 4.6.32;
+				MARKETING_VERSION = 4.6.33;
 				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -7911,7 +7917,7 @@
 		};
 		6876D70A17A75DAE00E16991 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C5F630F0C69B4FD065209F3D /* Pods-AppBox3 Tests.debug.xcconfig */;
+			baseConfigurationReference = CD067EA06B0174961782ED6A /* Pods-AppBox3 Tests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/AppBox3.app/AppBox3";
@@ -7948,7 +7954,7 @@
 		};
 		6876D70B17A75DAE00E16991 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E69D5F221588FAE53855BFD2 /* Pods-AppBox3 Tests.release.xcconfig */;
+			baseConfigurationReference = 6D654C6EE9B13F209958D345 /* Pods-AppBox3 Tests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/AppBox3.app/AppBox3";

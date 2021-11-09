@@ -14,8 +14,8 @@ target 'AppBox3' do
   # use_frameworks!
 
   # Pods for AppBox3
-pod 'Firebase/Core', '6.9.0'
-pod 'Firebase/AdMob', '6.9.0'
+pod 'Firebase/Core', '~> 6.9.0'
+pod 'Firebase/AdMob', '~> 6.9.0'
 pod 'PersonalizedAdConsent'
 
   target 'AppBox3 Tests' do

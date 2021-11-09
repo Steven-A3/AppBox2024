@@ -143,7 +143,8 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
     CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
     CGFloat screenHeight = MAX(screenBounds.size.width, screenBounds.size.height);
 
-    if ([model isEqualToString:@"iPhone 12"]) {
+    if ([model isEqualToString:@"iPhone 13"] ||
+        [model isEqualToString:@"iPhone 12"]) {
         CGFloat pixelsInInch = 460;
         CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
         _centimeterAsPoints = (screenHeight / 2532.0) * pixelsInCentimeter;
@@ -152,7 +153,8 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
         _redLineWidth = 0.5;
         return;
     }
-    if ([model isEqualToString:@"iPhone 12 mini"]) {
+    if ([model isEqualToString:@"iPhone 13 mini"] ||
+        [model isEqualToString:@"iPhone 12 mini"]) {
         CGFloat pixelsInInch = 476;
         CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
         _centimeterAsPoints = (screenHeight / 2340.0) * pixelsInCentimeter;
@@ -162,6 +164,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
         return;
     }
     if ([model isEqualToString:@"iPhone 12 Pro"] ||
+        [model isEqualToString:@"iPhone 13 Pro"] ||
         [model isEqualToString:@"iPhone (Latest)"]) {
         CGFloat pixelsInInch = 460;    // Original value = 458
         CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
@@ -171,7 +174,8 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
         _redLineWidth = 0.5;
         return;
     }
-    if ([model isEqualToString:@"iPhone 12 Pro Max"]) {
+    if ([model isEqualToString:@"iPhone 13 Pro Max"] ||
+        [model isEqualToString:@"iPhone 12 Pro Max"]) {
         CGFloat pixelsInInch = 458;     // Original value = 326
         CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
         _centimeterAsPoints = (screenHeight / 2778.0) * pixelsInCentimeter;
@@ -435,6 +439,18 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
         _redLineWidth = 0.5;
         return;
     }
+    if ([@[@"iPad mini 6th Gen (WiFi)",
+           @"iPad mini 6th Gen (WiFi+Cellular)"] containsObject:model])
+    {
+        // iPad mini 6th
+        CGFloat pixelsInInch = 326;
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 2266.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2266.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 15.0 : 6.0;
+        _redLineWidth = 0.5;
+        return;
+    }
     if ([@[@"iPad Pro 12.9 \" 1st Gen (Wi-Fi)",
            @"iPad Pro 12.9 \" 1st Gen (Wi-Fi+Cellular)",
            @"iPad Pro 12.9 \" 2nd Gen (Wi-Fi)",
@@ -444,7 +460,9 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
            @"iPad Pro 12.9 \" 3rd Gen (Wi-Fi+Cellular)",
            @"iPad Pro 12.9 \" 3rd Gen (Wi-Fi+Cellular, 1TB)",
            @"iPad Pro 12.9 \" 4th Gen (Wi-Fi)",
-           @"iPad Pro 12.9 \" 4th Gen (Wi-Fi+Cellular)"] containsObject:model]
+           @"iPad Pro 12.9 \" 4th Gen (Wi-Fi+Cellular)",
+           @"iPad Pro 12.9 inch 5th Gen",
+         ] containsObject:model]
         )
     {
         // iPad Pro
@@ -473,7 +491,9 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
            @"iPad Pro 11 \" 1st Gen (Wi-Fi+Cellular)",
            @"iPad Pro 11 \" 1st Gen (Wi-Fi+Cellular, 1TB)",
            @"iPad Pro 11 \" 2nd Gen (Wi-Fi)",
-           @"iPad Pro 11 \" 2nd Gen (Wi-Fi+Cellular)",] containsObject:model])
+           @"iPad Pro 11 \" 2nd Gen (Wi-Fi+Cellular)",
+           @"iPad Pro 11 inch 3rd Gen",
+         ] containsObject:model])
     {
         // iPad Pro
         CGFloat pixelsInInch = 264.7;
@@ -487,7 +507,10 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
     if ([@[@"iPad 7th Gen 10.2 \" (Wi-Fi)",
            @"iPad 7th Gen 10.2 \" (Wi-Fi+Cellular)",
            @"iPad 8th Gen (Wi-Fi)",
-           @"iPad 8th Gen (Wi-Fi+Cellular)"] containsObject:model]
+           @"iPad 8th Gen (Wi-Fi+Cellular)",
+           @"iPad 9th Gen (WiFi)",
+           @"iPad 9th Gen (WiFi+Cellular)",
+         ] containsObject:model]
         )
     {
         CGFloat pixelsInInch = 264.7;

@@ -13,3 +13,4 @@ NSCalendarsUsageDescription = "AppBox Pro®希望訪問日曆以保存從QR碼�
 NSMicrophoneUsageDescription = "AppBoxPro®想要訪問您的麥克風來為電子錢包拍攝視頻。";
 NSFaceIDUsageDescription = "AppBoxPro®想要使用Face ID來解鎖應用程序。";
 NSPhotoLibraryAddUsageDescription = "AppBoxPro®想要訪問您的照片庫以保存鏡像，放大鏡和電子錢包中的圖像。";
+NSUserTrackingUsageDescription = "該標識符將用於向您投放個性化廣告。";

@@ -54,6 +54,7 @@
 #import <PersonalizedAdConsent/PersonalizedAdConsent.h>
 #import <AdSupport/AdSupport.h>
 #import "TJDropboxAuthenticator.h"
+#import <AppTrackingTransparency/AppTrackingTransparency.h>
 
 NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
@@ -1564,7 +1565,13 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
 	NSDate *adsDisplayTime = [[NSUserDefaults standardUserDefaults] objectForKey:A3AdsDisplayTime];
 //	NSInteger numberOfTimesOpeningSubApp = [[NSUserDefaults standardUserDefaults] integerForKey:A3NumberOfTimesOpeningSubApp];
 	if (!adsDisplayTime || [[NSDate date] timeIntervalSinceDate:adsDisplayTime] > 60 * 60) {
-		[self setupAdInterstitialForAdUnitID:A3InterstitialAdUnitID keywords:@[@"shopping", @"currency", @"wallet", @"holidays", @"calendar"] gender:kGADGenderUnknown];
+        if (@available(iOS 14, *)) {
+            [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
+                [self setupAdInterstitialForAdUnitID:A3InterstitialAdUnitID keywords:@[@"shopping", @"currency", @"wallet", @"holidays", @"calendar"] gender:kGADGenderUnknown];
+            }];
+        } else {
+            [self setupAdInterstitialForAdUnitID:A3InterstitialAdUnitID keywords:@[@"shopping", @"currency", @"wallet", @"holidays", @"calendar"] gender:kGADGenderUnknown];
+        }
 		return YES;
 	}
 	

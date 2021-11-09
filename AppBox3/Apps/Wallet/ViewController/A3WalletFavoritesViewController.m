@@ -18,13 +18,13 @@
 
 @interface A3WalletFavoritesViewController () <A3InstructionViewControllerDelegate>
 
-@property (nonatomic, strong) FMMoveTableView *tableView;
+//@property (nonatomic, strong) FMMoveTableView *tableView;
 
 @end
 
 @implementation A3WalletFavoritesViewController
 
-@dynamic tableView;
+//@dynamic tableView;
 
 - (void)viewDidLoad
 {
