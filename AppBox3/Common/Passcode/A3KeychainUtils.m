@@ -69,7 +69,7 @@ static NSString *kA3KeychainAccountName = @"A3AppBox3Passcode";
 	CFTypeRef resData = NULL;
 	OSStatus status;
 	do {
-        [NSThread sleepForTimeInterval:0.1];
+//        [NSThread sleepForTimeInterval:0.1];
         status = SecItemCopyMatching((__bridge CFDictionaryRef)query, (CFTypeRef*)&resData);
     } while ((status != noErr) && (status != errSecItemNotFound));
     
