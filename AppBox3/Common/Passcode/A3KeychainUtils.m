@@ -68,11 +68,15 @@ static NSString *kA3KeychainAccountName = @"A3AppBox3Passcode";
 	
 	CFTypeRef resData = NULL;
 	OSStatus status;
-	do {
-//        [NSThread sleepForTimeInterval:0.1];
-        status = SecItemCopyMatching((__bridge CFDictionaryRef)query, (CFTypeRef*)&resData);
-    } while ((status != noErr) && (status != errSecItemNotFound));
+
+    status = SecItemCopyMatching((__bridge CFDictionaryRef)query, (CFTypeRef*)&resData);
     
+    if (status != noErr && status != errSecItemNotFound) {
+        // 상태가 오류 상태이고, 패스워드 찾기에 실패를 했다면, 암호가 없는 것 (정상)
+        // 상태는 noErr라면, 결과값이 돌아온 것으로 본다.
+        // 키체인 액세스에 문제가 생겼으니, 사용자에게 기기를 재설정하도록 유도하여야 한다.
+        return nil;
+    }
     if (status == errSecItemNotFound) {
         return nil;
     }

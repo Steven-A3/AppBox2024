@@ -91,20 +91,34 @@
 	[[A3UserDefaults standardUserDefaults] synchronize];
 }
 
-- (BOOL)showLockScreen {
-	BOOL passwordEnabled = [A3KeychainUtils getPassword] != nil;
-	BOOL passcodeTimerEnd = [self didPasscodeTimerEnd];
+- (void)showLockScreenWithCompletion:(void (^)(BOOL showLockScreen))completion {
+    // Lock screen을 무조건 뛰우고, 암호 검사 루틴을 dispatch_queue에 넣는다.
+    // 암호 처리 여부에 따라 Lock을 제거하거나 Cancel버튼을 추가하거나 한다.
     
-	if (!passwordEnabled || !passcodeTimerEnd) return NO;
+    dispatch_async(dispatch_get_main_queue(), ^{
 
-	BOOL presentLockScreen = [self shouldProtectScreen];
-	if (presentLockScreen) {
-		[self presentLockScreenShowCancelButton:![[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting]];
-        return YES;
-	} else {
-		[self showReceivedLocalNotifications];
-	}
-    return NO;
+        BOOL passwordEnabled = [A3KeychainUtils getPassword] != nil;
+        BOOL passcodeTimerEnd = [self didPasscodeTimerEnd];
+        
+        if (!passwordEnabled || !passcodeTimerEnd) {
+            if (completion) {
+                completion(NO);
+            }
+            return;
+        }
+
+        BOOL presentLockScreen = [self shouldProtectScreen];
+        if (presentLockScreen) {
+            [self presentLockScreenShowCancelButton:![[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForStarting]];
+        } else {
+            [self showReceivedLocalNotifications];
+        }
+        if (completion) {
+            completion(presentLockScreen);
+        }
+    });
+
+    return;
 }
 
 - (void)presentLockScreenShowCancelButton:(BOOL)showCancelButton {
@@ -273,7 +287,11 @@
 	if (!isAfterLaunch) {
 		if ([self didPasscodeTimerEnd] && [self shouldAskPasscodeForStarting]) {
 			FNLOG(@"showLockScreen");
-			[self showLockScreen];
+            [self showLockScreenWithCompletion:^(BOOL showLockScreen) {
+                if (!showLockScreen) {
+                    [self finalizeOpening];
+                }
+            }];
 		}
 		else
 		{
@@ -289,6 +307,7 @@
 					self.homeStyleMainMenuViewController.activeAppName = [A3AppName_Clock copy];
 				}
 				[self setStartOptionOpenClockOnce:NO];
+                [self finalizeOpening];
 			} else {
 				NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
 				if ([startingAppName length]) {
@@ -304,32 +323,22 @@
 						}
 						[self popStartingAppInfo];
 					}
+                    [self finalizeOpening];
 				} else {
 					[self popStartingAppInfo];
-					if (![self showLockScreen]) {
-						if ([self isMainMenuStyleList]) {
-							if (![self.mainMenuViewController openRecentlyUsedMenu:YES]) {
-								[self.mainMenuViewController openClockApp];
-							}
-						}
-					} else {
-						return;
-					}
+                    [self showLockScreenWithCompletion:^(BOOL showLockScreen) {
+                        if (!showLockScreen) {
+                            if ([self isMainMenuStyleList]) {
+                                if (![self.mainMenuViewController openRecentlyUsedMenu:YES]) {
+                                    [self.mainMenuViewController openClockApp];
+                                }
+                            }
+                            [self finalizeOpening];
+                        }
+                    }];
 				}
 			}
 		}
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (!self.isTouchIDEvaluationInProgress && !self.passcodeViewController.view.superview) {
-				[self removeSecurityCoverView];
-                if (!self.firstRunAfterInstall && ![self shouldPresentWhatsNew]) {
-                    [self presentInterstitialAds];
-                }
-				FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-			} else {
-				FNLOG(@"isTouchIDEvaluationInProgress = %ld", (long)self.isTouchIDEvaluationInProgress);
-				FNLOG(@"%@", self.parentOfPasscodeViewController);
-			}
-		});
 	} else {
 		if (self.shouldMigrateV1Data) {
 			self.migrationIsInProgress = YES;
@@ -349,6 +358,21 @@
             [self updateHolidayNations];
 		}
 	}
+}
+
+- (void)finalizeOpening {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (!self.isTouchIDEvaluationInProgress && !self.passcodeViewController.view.superview) {
+            [self removeSecurityCoverView];
+            if (!self.firstRunAfterInstall && ![self shouldPresentWhatsNew]) {
+                [self presentInterstitialAds];
+            }
+            FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        } else {
+            FNLOG(@"isTouchIDEvaluationInProgress = %ld", (long)self.isTouchIDEvaluationInProgress);
+            FNLOG(@"%@", self.parentOfPasscodeViewController);
+        }
+    });
 }
 
 - (void)migrationManager:(A3DataMigrationManager *)manager didFinishMigration:(BOOL)success {

@@ -103,13 +103,14 @@ NSString *const A3UserDefaultsDidShowLeftViewOnceiPad = @"A3UserDefaultsDidShowL
 		A3MainMenuTableViewController *mainMenuTableViewController = [[A3AppDelegate instance] mainMenuViewController];
 		
 		mainMenuTableViewController.pushClockViewControllerOnPasscodeFailure = NO;
-		
-		if (![appDelegate showLockScreen]) {
-			[self setupMainViewController];
-        }
-        else {
-            [appDelegate downloadDataFiles];
-        }
+
+        [appDelegate showLockScreenWithCompletion:^(BOOL showLockScreen) {
+            if (showLockScreen) {
+                [appDelegate downloadDataFiles];
+            } else {
+                [self setupMainViewController];
+            }
+        }];
 	}
 }
 

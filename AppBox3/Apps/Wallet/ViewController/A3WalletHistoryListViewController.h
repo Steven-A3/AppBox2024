@@ -6,13 +6,9 @@
 //  Copyright © 2021 ALLABOUTAPPS. All rights reserved.
 //
 
-#ifndef A3WalletHistoryListViewController_h
-#define A3WalletHistoryListViewController_h
-
+#import <UIKit/UIKit.h>
 #import "A3WalletListViewController.h"
 
-@interface A3WalletHistoryViewController : A3WalletListViewController
+@interface A3WalletHistoryListViewController : A3WalletListViewController
 
 @end
-
-#endif /* A3WalletHistoryListViewController_h */

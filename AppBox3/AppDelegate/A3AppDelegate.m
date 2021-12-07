@@ -1412,8 +1412,11 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
 	if (receipt.originalAppVersion == nil) return YES;
 
 	NSArray *components = [receipt.originalAppVersion componentsSeparatedByString:@"."];
-	float version = [components[0] floatValue] + [components[1] floatValue] / 10.0;
-	return version <= 3.5;
+    if ([components count] >= 2) {
+        float version = [components[0] floatValue] + [components[1] floatValue] / 10.0;
+        return version <= 3.5;
+    }
+    return NO;
 }
 
 - (BOOL)isIAPPurchasedCustomer:(RMAppReceipt *)receipt {

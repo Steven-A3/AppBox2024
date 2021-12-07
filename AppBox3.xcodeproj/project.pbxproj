@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 47;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -231,6 +231,7 @@
 		6817830F1902823D003E1BB9 /* A3WalletItemTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6817830E1902823D003E1BB9 /* A3WalletItemTitleCell.m */; };
 		681983731CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 681983721CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.m */; };
 		6819A86F18A6092B00E63C8B /* NSDateFormatter+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4255AEBE358EED319031E /* NSDateFormatter+A3Addition.m */; };
+		681BF928273CF40E00304924 /* Ensembles.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 68854E63273CEF000009D028 /* Ensembles.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		681C511F194EB57400CB653A /* LoanCalculatorPadStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 681C5121194EB57400CB653A /* LoanCalculatorPadStoryBoard.storyboard */; };
 		681E11FD1932E2250077DCFA /* A3DataMigrationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 681E11FC1932E2250077DCFA /* A3DataMigrationManager.m */; };
 		681E1224193440540077DCFA /* NSData-AES.m in Sources */ = {isa = PBXBuildFile; fileRef = 681E1223193440540077DCFA /* NSData-AES.m */; };
@@ -502,9 +503,9 @@
 		688257B817D3AFFB006429D3 /* A3HolidaysAddToDaysCounterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688257B717D3AFFB006429D3 /* A3HolidaysAddToDaysCounterViewController.m */; };
 		6882801F17E5E8DB000D8069 /* A3HolidaysPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6882801E17E5E8DB000D8069 /* A3HolidaysPageViewController.m */; };
 		6882802617E5ECED000D8069 /* A3HolidaysPageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6882802517E5ECED000D8069 /* A3HolidaysPageContentViewController.m */; };
-		6882BFD02581CCAA00A01A0E /* Ensembles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6882BFC12581CC5900A01A0E /* Ensembles.framework */; };
-		6882BFD12581CCAA00A01A0E /* Ensembles.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6882BFC12581CC5900A01A0E /* Ensembles.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6883D5E2183E7ABA00808CD2 /* A3MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6883D5E1183E7ABA00808CD2 /* A3MainViewController.m */; };
+		68854E64273CEF010009D028 /* Ensembles.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68854E63273CEF000009D028 /* Ensembles.xcframework */; };
+		68854E67273CEFA40009D028 /* WalletHistoryItems.m in Sources */ = {isa = PBXBuildFile; fileRef = 68854E66273CEFA40009D028 /* WalletHistoryItems.m */; };
 		68857D361E6D1A6E009E4ABC /* currencyRates.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68857D341E6D1A6E009E4ABC /* currencyRates.plist */; };
 		6886791C18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6886791A18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib */; };
 		6886791D18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6886791B18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib */; };
@@ -982,41 +983,6 @@
 			remoteGlobalIDString = 682EA2D015EB10B000BD6AD4;
 			remoteInfo = AppBox3;
 		};
-		6882BFBA2581CC5900A01A0E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6882BFAE2581CC5900A01A0E /* Ensembles iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 07BF374517F184DD00C56F64;
-			remoteInfo = "Ensembles iOS";
-		};
-		6882BFBC2581CC5900A01A0E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6882BFAE2581CC5900A01A0E /* Ensembles iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 07571F0F1910EC02008479A9;
-			remoteInfo = "Ensembles Resources";
-		};
-		6882BFBE2581CC5900A01A0E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6882BFAE2581CC5900A01A0E /* Ensembles iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 070D336118018A960054BA23;
-			remoteInfo = "Tests iOS";
-		};
-		6882BFC02581CC5900A01A0E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6882BFAE2581CC5900A01A0E /* Ensembles iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E9D6301A1BFEB26300B60D60;
-			remoteInfo = "Ensembles iOS Module";
-		};
-		6882BFC22581CC5900A01A0E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6882BFAE2581CC5900A01A0E /* Ensembles iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 07AC052D1D6D8D0E00AF2337;
-			remoteInfo = "Ensembles tvOS";
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1036,7 +1002,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				6882BFD12581CCAA00A01A0E /* Ensembles.framework in Embed Frameworks */,
+				681BF928273CF40E00304924 /* Ensembles.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1971,10 +1937,12 @@
 		6882801E17E5E8DB000D8069 /* A3HolidaysPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3HolidaysPageViewController.m; path = Holidays/A3HolidaysPageViewController.m; sourceTree = "<group>"; };
 		6882802417E5ECED000D8069 /* A3HolidaysPageContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3HolidaysPageContentViewController.h; path = Holidays/A3HolidaysPageContentViewController.h; sourceTree = "<group>"; };
 		6882802517E5ECED000D8069 /* A3HolidaysPageContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3HolidaysPageContentViewController.m; path = Holidays/A3HolidaysPageContentViewController.m; sourceTree = "<group>"; };
-		6882BFAE2581CC5900A01A0E /* Ensembles iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Ensembles iOS.xcodeproj"; path = "External/ensembles-next/Framework/Ensembles iOS.xcodeproj"; sourceTree = "<group>"; };
 		68832C9E199A3C8E00AF7C18 /* FlickrRecommendation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = FlickrRecommendation.json; path = Holidays/FlickrRecommendation.json; sourceTree = "<group>"; };
 		6883D5E0183E7ABA00808CD2 /* A3MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3MainViewController.h; sourceTree = "<group>"; };
 		6883D5E1183E7ABA00808CD2 /* A3MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3MainViewController.m; sourceTree = "<group>"; };
+		68854E63273CEF000009D028 /* Ensembles.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Ensembles.xcframework; path = External/Ensembles.xcframework; sourceTree = "<group>"; };
+		68854E65273CEFA40009D028 /* WalletHistoryItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletHistoryItems.h; sourceTree = "<group>"; };
+		68854E66273CEFA40009D028 /* WalletHistoryItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletHistoryItems.m; sourceTree = "<group>"; };
 		68857D341E6D1A6E009E4ABC /* currencyRates.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = currencyRates.plist; path = Apps/Currency/Model/currencyRates.plist; sourceTree = "<group>"; };
 		6886791A18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3NumberKeyboardSimpleUnitConverterVC_iPad.xib; sourceTree = "<group>"; };
 		6886791B18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib; sourceTree = "<group>"; };
@@ -3023,6 +2991,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68854E64273CEF010009D028 /* Ensembles.xcframework in Frameworks */,
 				68691B7C1EB69007006685B0 /* StoreKit.framework in Frameworks */,
 				68F04D101B40F86B004FDD7B /* libcrypto.a in Frameworks */,
 				68F04D111B40F86B004FDD7B /* libssl.a in Frameworks */,
@@ -3030,7 +2999,6 @@
 				680B59D71E9777C8004362AC /* HealthKit.framework in Frameworks */,
 				6825367F18A7C1B800EAFB84 /* libsqlite3.0.dylib in Frameworks */,
 				684A71BD1852E0250004A9FE /* libc++.dylib in Frameworks */,
-				6882BFD02581CCAA00A01A0E /* Ensembles.framework in Frameworks */,
 				D13237882A2918C16D332860 /* libPods-AppBox3.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3952,6 +3920,7 @@
 		682EA2D415EB10B000BD6AD4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				68854E63273CEF000009D028 /* Ensembles.xcframework */,
 				6878361D1E6E4D7000828BA8 /* WebKit.framework */,
 				686FCF701775CF9D00F19332 /* Accelerate.framework */,
 				687AEE9E1CBB73F900C2D844 /* AddressBook.framework */,
@@ -4558,18 +4527,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		6882BFAF2581CC5900A01A0E /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				6882BFBB2581CC5900A01A0E /* libensembles.a */,
-				6882BFBD2581CC5900A01A0E /* Ensembles.bundle */,
-				6882BFBF2581CC5900A01A0E /* Tests iOS.xctest */,
-				6882BFC12581CC5900A01A0E /* Ensembles.framework */,
-				6882BFC32581CC5900A01A0E /* Ensembles.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		688788881A9B29D5008C8567 /* Ruler */ = {
 			isa = PBXGroup;
 			children = (
@@ -4953,6 +4910,8 @@
 		68B6A21E18CEC76C004084EF /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				68854E65273CEFA40009D028 /* WalletHistoryItems.h */,
+				68854E66273CEFA40009D028 /* WalletHistoryItems.m */,
 				68D6E90D199EE0A200166A47 /* WalletField.h */,
 				68D6E90E199EE0A200166A47 /* WalletField.m */,
 				68D6E90A199EE0A200166A47 /* WalletCategory.h */,
@@ -5212,7 +5171,6 @@
 		68CC1594174F764C0000870F /* External */ = {
 			isa = PBXGroup;
 			children = (
-				6882BFAE2581CC5900A01A0E /* Ensembles iOS.xcodeproj */,
 				685C50BD1F7DD78200BE5BBB /* _MBProgressHUD */,
 				68B6F7041EA575C500C4BB7A /* MWPhotoBrowser */,
 				68B6F6B71EA5759300C4BB7A /* SDWebImage */,
@@ -6040,12 +5998,6 @@
 			mainGroup = 682EA2C615EB10B000BD6AD4;
 			productRefGroup = 682EA2D215EB10B000BD6AD4 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 6882BFAF2581CC5900A01A0E /* Products */;
-					ProjectRef = 6882BFAE2581CC5900A01A0E /* Ensembles iOS.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				682EA2D015EB10B000BD6AD4 /* AppBox3 */,
@@ -6054,44 +6006,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		6882BFBB2581CC5900A01A0E /* libensembles.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libensembles.a;
-			remoteRef = 6882BFBA2581CC5900A01A0E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		6882BFBD2581CC5900A01A0E /* Ensembles.bundle */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = Ensembles.bundle;
-			remoteRef = 6882BFBC2581CC5900A01A0E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		6882BFBF2581CC5900A01A0E /* Tests iOS.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Tests iOS.xctest";
-			remoteRef = 6882BFBE2581CC5900A01A0E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		6882BFC12581CC5900A01A0E /* Ensembles.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Ensembles.framework;
-			remoteRef = 6882BFC02581CC5900A01A0E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		6882BFC32581CC5900A01A0E /* Ensembles.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Ensembles.framework;
-			remoteRef = 6882BFC22581CC5900A01A0E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		6829688C18505E3800B70E13 /* Resources */ = {
@@ -7114,6 +7028,7 @@
 				17D421DA97EB3D5480B0586D /* A3SettingsViewController.m in Sources */,
 				17D427D61B3EEB8761EDC0B1 /* TranslatorGroup+manage.m in Sources */,
 				681E1284193448230077DCFA /* AAAZip.m in Sources */,
+				68854E67273CEFA40009D028 /* WalletHistoryItems.m in Sources */,
 				68EABE371CB75D8E00219151 /* QRCodeHistory+CoreDataProperties.m in Sources */,
 				17D42E9D7756E743947E5964 /* A3BackupRestoreManager.m in Sources */,
 				17D42D692E16244D9FFB4B2E /* A3DaysCounterEventListViewController.m in Sources */,
@@ -7823,7 +7738,8 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/**";
 				VALIDATE_PRODUCT = YES;
@@ -7855,19 +7771,25 @@
 				);
 				INFOPLIST_FILE = "AppBox3/AppBox3-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"${PROJECT_DIR}/External/**",
 					"$(PROJECT_DIR)/External/RMStore/Optional/openssl-1.0.2c/lib",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
-				MARKETING_VERSION = 4.6.34;
+				MARKETING_VERSION = 4.6.37;
 				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/External/Masonry/Masonry/** ${PROJECT_DIR}/External/MagicalRecord/MagicalRecord/**";
+				USER_HEADER_SEARCH_PATHS = (
+					"${PROJECT_DIR}/External/Masonry/Masonry/**",
+					"${PROJECT_DIR}/External/MagicalRecord/MagicalRecord/**",
+				);
 				VALID_ARCHS = "$(ARCHS_STANDARD)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -7897,19 +7819,25 @@
 				);
 				INFOPLIST_FILE = "AppBox3/AppBox3-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"${PROJECT_DIR}/External/**",
 					"$(PROJECT_DIR)/External/RMStore/Optional/openssl-1.0.2c/lib",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
-				MARKETING_VERSION = 4.6.34;
+				MARKETING_VERSION = 4.6.37;
 				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/External/Masonry/Masonry/** ${PROJECT_DIR}/External/MagicalRecord/MagicalRecord/**";
+				USER_HEADER_SEARCH_PATHS = (
+					"${PROJECT_DIR}/External/Masonry/Masonry/**",
+					"${PROJECT_DIR}/External/MagicalRecord/MagicalRecord/**",
+				);
 				VALID_ARCHS = "$(ARCHS_STANDARD)";
 				WRAPPER_EXTENSION = app;
 			};

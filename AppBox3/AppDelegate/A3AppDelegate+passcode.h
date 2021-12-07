@@ -15,7 +15,7 @@
 - (BOOL)isSimplePasscode;
 - (BOOL)useTouchID;
 - (void)setUseTouchID:(BOOL)use;
-- (BOOL)showLockScreen;
+- (void)showLockScreenWithCompletion:(void (^)(BOOL showLockScreen))completion;
 
 - (void)presentLockScreenShowCancelButton:(BOOL)showCancelButton;
 - (BOOL)shouldProtectScreen;
