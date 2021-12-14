@@ -838,6 +838,7 @@
 		68F04D0D1B40F825004FDD7B /* RMStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F04D021B40F825004FDD7B /* RMStore.m */; };
 		68F04D101B40F86B004FDD7B /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68F04D0E1B40F86B004FDD7B /* libcrypto.a */; };
 		68F04D111B40F86B004FDD7B /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68F04D0F1B40F86B004FDD7B /* libssl.a */; };
+		68F09CAB2766F24A002518FA /* UITabBarController+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F09CAA2766F24A002518FA /* UITabBarController+extension.m */; };
 		68F0AEF82224FFA6004A354E /* azureLanguageList.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68F0AEEF2224FFA6004A354E /* azureLanguageList.plist */; };
 		68F14FAC19485E8500159EAD /* A3DaysCounterSlideshowEventSummaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F14F1619485E8500159EAD /* A3DaysCounterSlideshowEventSummaryView.m */; };
 		68F14FAD19485E8500159EAD /* A3DaysCounterSlideshowEventSummaryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F14F1719485E8500159EAD /* A3DaysCounterSlideshowEventSummaryView.xib */; };
@@ -2677,6 +2678,8 @@
 		68F04D021B40F825004FDD7B /* RMStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMStore.m; sourceTree = "<group>"; };
 		68F04D0E1B40F86B004FDD7B /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "External/RMStore/Optional/openssl-1.0.2c/lib/libcrypto.a"; sourceTree = "<group>"; };
 		68F04D0F1B40F86B004FDD7B /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "External/RMStore/Optional/openssl-1.0.2c/lib/libssl.a"; sourceTree = "<group>"; };
+		68F09CA92766F24A002518FA /* UITabBarController+extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITabBarController+extension.h"; sourceTree = "<group>"; };
+		68F09CAA2766F24A002518FA /* UITabBarController+extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITabBarController+extension.m"; sourceTree = "<group>"; };
 		68F0AEEF2224FFA6004A354E /* azureLanguageList.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = azureLanguageList.plist; path = Translator/azureLanguageList.plist; sourceTree = "<group>"; };
 		68F14F1519485E8500159EAD /* A3DaysCounterSlideshowEventSummaryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterSlideshowEventSummaryView.h; sourceTree = "<group>"; };
 		68F14F1619485E8500159EAD /* A3DaysCounterSlideshowEventSummaryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterSlideshowEventSummaryView.m; sourceTree = "<group>"; };
@@ -3190,6 +3193,8 @@
 				17D428002E7CC2380AB2E2DA /* UIViewController+NumberKeyboard.m */,
 				68F32E4F188AC3C600248F16 /* UIViewController+tableViewStandardDimension.h */,
 				68F32E50188AC3C600248F16 /* UIViewController+tableViewStandardDimension.m */,
+				68F09CA92766F24A002518FA /* UITabBarController+extension.h */,
+				68F09CAA2766F24A002518FA /* UITabBarController+extension.m */,
 			);
 			path = A3Categories;
 			sourceTree = "<group>";
@@ -6542,6 +6547,7 @@
 				68F14FBD19485E8500159EAD /* A3DaysCounterCalendarListMainViewController.m in Sources */,
 				68E0B321198CAB8E00127229 /* SalesCalcHistory.m in Sources */,
 				687484AE19783B9D00EA8F74 /* DaysCounterDate.m in Sources */,
+				68F09CAB2766F24A002518FA /* UITabBarController+extension.m in Sources */,
 				68143D0518E3EC1F00569691 /* A3NumberKeyboardViewController.m in Sources */,
 				680D639518CFF9D400938AD0 /* A3CalculatorHistoryCell.m in Sources */,
 				68B6A32B18CEC76D004084EF /* A3WalletItemFieldCell.m in Sources */,
@@ -7781,7 +7787,7 @@
 					"$(PROJECT_DIR)/External/RMStore/Optional/openssl-1.0.2c/lib",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
-				MARKETING_VERSION = 4.6.37;
+				MARKETING_VERSION = 4.6.38;
 				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -7829,7 +7835,7 @@
 					"$(PROJECT_DIR)/External/RMStore/Optional/openssl-1.0.2c/lib",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
-				MARKETING_VERSION = 4.6.37;
+				MARKETING_VERSION = 4.6.38;
 				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

@@ -17,6 +17,7 @@
 #import "UIViewController+A3Addition.h"
 #import "A3CenterViewDelegate.h"
 #import "A3UserDefaults.h"
+#import "UITabBarController+extension.h"
 
 @interface A3UnitConverterTabBarController () <A3ViewControllerProtocol>
 
@@ -209,6 +210,8 @@
 	[viewControllers addObject:_myMoreNavigationController];
 
     self.viewControllers = viewControllers;
+    
+    [self makeAppearanceCompatible];
 }
 
 @end

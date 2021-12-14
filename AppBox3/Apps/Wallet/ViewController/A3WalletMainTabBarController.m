@@ -22,6 +22,7 @@
 #import "WalletCategory.h"
 #import "A3CenterViewDelegate.h"
 #import "UIViewController+A3Addition.h"
+#import "UITabBarController+extension.h"
 
 #define kDefaultTabSelection    1	// default tab value is 0 (tab #1), stored in A3UserDefaults
 
@@ -356,6 +357,8 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 
 	FNLOG(@"%ld, %ld, %ld", (long)[[A3UserDefaults standardUserDefaults] integerForKey:A3WalletUserDefaultsSelectedTab], (long)[self numberOfCategoriesInTabBar], (long)[_categories count]);
     self.selectedIndex = MIN(MIN([[A3UserDefaults standardUserDefaults] integerForKey:A3WalletUserDefaultsSelectedTab], [self numberOfCategoriesInTabBar]), [_categories count]);
+
+    [self makeAppearanceCompatible];
 }
 
 @end
