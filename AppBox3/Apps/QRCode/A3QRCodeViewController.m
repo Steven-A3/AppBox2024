@@ -74,7 +74,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	_viewWillAppearFirstRunAfterLoad = YES;
 	[self.navigationController setNavigationBarHidden:YES];
 	self.isCornersVisible = NO;
-	self.stopOnFirst = YES;
+	self.stopOnFirst = NO;
 
 	[self makeBackButtonEmptyArrow];
 	[self setupBarcodeHandler];

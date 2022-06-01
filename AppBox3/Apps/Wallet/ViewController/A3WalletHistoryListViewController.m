@@ -11,7 +11,6 @@
 #import "A3UserDefaults.h"
 #import "A3InstructionViewController.h"
 #import "UIColor+A3Addition.h"
-#import "WalletHistoryItems.h"
 #import "UIViewController+A3Addition.h"
 #import "WalletItem.h"
 
@@ -144,8 +143,6 @@
 - (NSMutableArray *)items
 {
     if (!self.items) {
-        WalletHistoryItems *historyItems = [WalletHistoryItems new];
-        self.items = [[historyItems historyItems] mutableCopy];
     }
     
     return self.items;
@@ -201,18 +198,11 @@ static NSString *const A3V3InstructionDidShowForWalletFavorite = @"A3V3Instructi
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *historyItem = self.items[indexPath.row];
-    WalletItem *item = [WalletItem MR_findFirstByAttribute:@"uniqueID" withValue:historyItem[kWalletHistoryItemID]];
-    
-    return [self tableView:tableView cellForRowAtIndexPath:indexPath walletItem:item];
-
     return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSDictionary *history = self.items[indexPath.row];
-    WalletItem *item = [WalletItem MR_findFirstByAttribute:@"uniqueID" withValue:history[kWalletHistoryItemID]];
-    [self tableView:tableView didSelectRowAtIndexPath:indexPath withItem:item];
+    
 }
 
 // Override to support conditional rearranging of the table view.

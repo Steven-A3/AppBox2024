@@ -364,6 +364,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
     if (scientific == NO)
     {
         CGRect bounds = [UIScreen mainScreen].bounds;
+        // iPad mini 6th, 1133 x 744
         if (bounds.size.width < bounds.size.height) {
             vscale = bounds.size.height / 1024.0;
             // Portrait
@@ -373,6 +374,9 @@ NSString *const A3CalculatorModeScientific = @"scientific";
                 self.calctopconstraint.offset(700.0);
             } else if (bounds.size.height == 1112.0) {
                 self.calctopconstraint.offset(581.5 * scale);
+            } else if (bounds.size.height == 1133.0) {
+                // iPad mini 6th
+                self.calctopconstraint.offset(730 * scale);
             } else /* if (bounds.size.height == 1024) */ {
                 self.calctopconstraint.offset(581.5 * scale);
             }
@@ -387,6 +391,9 @@ NSString *const A3CalculatorModeScientific = @"scientific";
             } else if (bounds.size.width == 1112.0) {
                 // iPad Pro 10.5"
                 self.calctopconstraint.offset(404.5 * scale);
+            } else if (bounds.size.width == 1133.0) {
+                // iPad mini 6th
+                self.calctopconstraint.offset(340 * scale);
             } else /* if (bounds.size.height == 768) */ {
                 // Other devices
                 self.calctopconstraint.offset(404.5 * scale);
@@ -404,6 +411,9 @@ NSString *const A3CalculatorModeScientific = @"scientific";
                 self.calctopconstraint.offset(520.0);
             } else if (bounds.size.height == 1112.0) {
                 self.calctopconstraint.offset(413.5 * vscale);
+            } else if (bounds.size.height == 1133.0) {
+                // iPad mini 6th edition
+                self.calctopconstraint.offset(490 * vscale);
             } else /* if (bounds.size.height == 1024) */ {
                 self.calctopconstraint.offset(413.5 * scale);
             }
@@ -418,6 +428,9 @@ NSString *const A3CalculatorModeScientific = @"scientific";
             } else if (bounds.size.width == 1112.0) {
                 // iPad Pro 10.5"
                 self.calctopconstraint.offset(273.5 * scale);
+            } else if (bounds.size.width == 1133.0) {
+                // iPad mini 6th
+                self.calctopconstraint.offset(220 * scale);
             } else /* if (bounds.size.height == 768) */ {
                 // Other devices
                 self.calctopconstraint.offset(273.5 * scale);

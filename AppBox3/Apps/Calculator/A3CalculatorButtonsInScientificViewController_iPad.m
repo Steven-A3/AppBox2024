@@ -67,6 +67,15 @@
             top = 448.0 * scale;
             width = 834.0;
             height = 576.0 * scale;
+        } else if (bounds.size.height == 1133) {
+            // iPad mini 6th
+            vscale = 1133.0/1024.0;
+            
+            width = 744.0;
+            height = 576.0 * scale;
+            
+            top = 1133.0 - height - 20;
+            p_buttonheight -= 0.5;
         } else {
             top = 448.0 * scale;
             width = 768.0 * scale;
@@ -99,6 +108,18 @@
             top = 288.0 * scale;
             width = 1112.0;
             height = 480.0 * scale;
+        } else if (bounds.size.width == 1133.0) {
+            // iPad mini 6th
+            vscale = 744.0/768.0;
+
+            p_buttonheight = 96.0 * vscale;
+            l_buttonheight = 80.0 * vscale;
+
+            width = 1133.0;
+            height = l_buttonheight * 6 * scale;
+            
+            top = 744.0 - height + 25;
+            
         } else {
             top = 288.0 * scale;
             width = 1024.0 * scale;

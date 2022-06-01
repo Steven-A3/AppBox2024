@@ -48,6 +48,7 @@
     FNLOGRECT(self.view.bounds);
     FNLOGRECT(bounds);
 
+    // iPad mini 6th edition : 1133 x 744
 	if (IS_PORTRAIT) {
         CGFloat top, width, height;
         if (bounds.size.height == 1366.0) {
@@ -65,6 +66,11 @@
             top = 670.0;
             width = 834.0;
             height = 407.0 * vscale;
+        } else if (bounds.size.height == 1133.0) {
+            // iPad mini 6th
+            width = 744.0;
+            height = 407.0 * vscale;
+            top = 1133 - height - 20;
         } else {
             top = 617.0 * scale;
             width = 768.0 * scale;
@@ -96,6 +102,15 @@
             top = 456.0;
             width = 1112.0;
             height = 348.0 * vscale;
+            
+            p_buttonheight = 89.0 * vscale;
+            l_buttonheight = 74.0 * vscale;
+        } else if (bounds.size.width == 1133.0) {
+            // iPad mini 6th edition
+            vscale = 744.0/768.0;
+            width = 1133.0;
+            height = 348.0 * vscale;
+            top = 744.0 - height - 20;
             
             p_buttonheight = 89.0 * vscale;
             l_buttonheight = 74.0 * vscale;

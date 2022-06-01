@@ -505,7 +505,6 @@
 		6882802617E5ECED000D8069 /* A3HolidaysPageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6882802517E5ECED000D8069 /* A3HolidaysPageContentViewController.m */; };
 		6883D5E2183E7ABA00808CD2 /* A3MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6883D5E1183E7ABA00808CD2 /* A3MainViewController.m */; };
 		68854E64273CEF010009D028 /* Ensembles.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68854E63273CEF000009D028 /* Ensembles.xcframework */; };
-		68854E67273CEFA40009D028 /* WalletHistoryItems.m in Sources */ = {isa = PBXBuildFile; fileRef = 68854E66273CEFA40009D028 /* WalletHistoryItems.m */; };
 		68857D361E6D1A6E009E4ABC /* currencyRates.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68857D341E6D1A6E009E4ABC /* currencyRates.plist */; };
 		6886791C18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6886791A18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib */; };
 		6886791D18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6886791B18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib */; };
@@ -1942,8 +1941,6 @@
 		6883D5E0183E7ABA00808CD2 /* A3MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3MainViewController.h; sourceTree = "<group>"; };
 		6883D5E1183E7ABA00808CD2 /* A3MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3MainViewController.m; sourceTree = "<group>"; };
 		68854E63273CEF000009D028 /* Ensembles.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Ensembles.xcframework; path = External/Ensembles.xcframework; sourceTree = "<group>"; };
-		68854E65273CEFA40009D028 /* WalletHistoryItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletHistoryItems.h; sourceTree = "<group>"; };
-		68854E66273CEFA40009D028 /* WalletHistoryItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletHistoryItems.m; sourceTree = "<group>"; };
 		68857D341E6D1A6E009E4ABC /* currencyRates.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = currencyRates.plist; path = Apps/Currency/Model/currencyRates.plist; sourceTree = "<group>"; };
 		6886791A18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3NumberKeyboardSimpleUnitConverterVC_iPad.xib; sourceTree = "<group>"; };
 		6886791B18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib; sourceTree = "<group>"; };
@@ -4915,8 +4912,6 @@
 		68B6A21E18CEC76C004084EF /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				68854E65273CEFA40009D028 /* WalletHistoryItems.h */,
-				68854E66273CEFA40009D028 /* WalletHistoryItems.m */,
 				68D6E90D199EE0A200166A47 /* WalletField.h */,
 				68D6E90E199EE0A200166A47 /* WalletField.m */,
 				68D6E90A199EE0A200166A47 /* WalletCategory.h */,
@@ -7034,7 +7029,6 @@
 				17D421DA97EB3D5480B0586D /* A3SettingsViewController.m in Sources */,
 				17D427D61B3EEB8761EDC0B1 /* TranslatorGroup+manage.m in Sources */,
 				681E1284193448230077DCFA /* AAAZip.m in Sources */,
-				68854E67273CEFA40009D028 /* WalletHistoryItems.m in Sources */,
 				68EABE371CB75D8E00219151 /* QRCodeHistory+CoreDataProperties.m in Sources */,
 				17D42E9D7756E743947E5964 /* A3BackupRestoreManager.m in Sources */,
 				17D42D692E16244D9FFB4B2E /* A3DaysCounterEventListViewController.m in Sources */,
@@ -7763,7 +7757,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -7787,7 +7781,7 @@
 					"$(PROJECT_DIR)/External/RMStore/Optional/openssl-1.0.2c/lib",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
-				MARKETING_VERSION = 4.6.38;
+				MARKETING_VERSION = 4.6.39;
 				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -7811,7 +7805,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -7835,7 +7829,7 @@
 					"$(PROJECT_DIR)/External/RMStore/Optional/openssl-1.0.2c/lib",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
-				MARKETING_VERSION = 4.6.38;
+				MARKETING_VERSION = 4.6.39;
 				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

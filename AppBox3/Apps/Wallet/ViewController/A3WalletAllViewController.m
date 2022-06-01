@@ -667,8 +667,9 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
         _searchController.searchResultsUpdater = self;
         _searchController.delegate = self;
 		_searchController.searchBar.delegate = self;
-        _searchController.hidesNavigationBarDuringPresentation = YES;
-//        [_searchController.searchBar sizeToFit];
+//        _searchController.hidesNavigationBarDuringPresentation = YES;
+        [_searchController.searchBar sizeToFit];
+        _searchController.obscuresBackgroundDuringPresentation = NO;
 	}
 	return _searchController;
 }

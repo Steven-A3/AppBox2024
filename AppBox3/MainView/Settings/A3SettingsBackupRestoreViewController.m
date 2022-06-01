@@ -338,6 +338,8 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 						[TJDropbox listFolderWithPath:kDropboxDir accessToken:self.dropboxAccessToken completion:^(NSArray<NSDictionary *> * _Nullable entries, NSString * _Nullable cursor, NSError * _Nullable error) {
                             NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K endsWith[cd] '.backup'", @"name"];
                             NSArray *backupFiles = [entries filteredArrayUsingPredicate:predicate];
+                            NSSortDescriptor *modifiedDescriptor = [[NSSortDescriptor alloc] initWithKey:@"client_modified" ascending:NO];
+                            backupFiles = [backupFiles sortedArrayUsingDescriptors:@[modifiedDescriptor]];
 							dispatch_async(dispatch_get_main_queue(), ^{
 								[_HUD hideAnimated:YES];
 								_HUD = nil;
@@ -357,7 +359,8 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 				case 1: {
 					[self.backupRestoreManager backupData];
 					break;
-                case 2:
+                }
+                case 2: {
                     [self.backupRestoreManager exportPhotosVideos];
                     break;
 				}
