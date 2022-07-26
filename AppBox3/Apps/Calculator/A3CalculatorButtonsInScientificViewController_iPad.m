@@ -60,6 +60,13 @@
             top = 540.0;
             width = 834.0;
             height = 576.0 * vscale;
+        } else if (bounds.size.height == 1180) {
+            // iPad Air 5th Gen
+            vscale = 1180.0/1024.0;
+            
+            top = 540.0;
+            width = 820.0;
+            height = 576.0 * vscale;
         } else if (bounds.size.height == 1112) {
             // iPad Pro 10.5"
             vscale = 1112.0/1024.0;
@@ -98,6 +105,16 @@
             top = 288.0;
             width = 1194.0;
             height = 481.0 * vscale;
+            
+            p_buttonheight = 96.0 * vscale;
+            l_buttonheight = 80.0 * vscale;
+        } else if (bounds.size.width == 1180.0) {
+            // iPad Air 5th Gen
+            vscale = 820.0/768.0;
+
+            top = 288.0;
+            width = 1180.0;
+            height = 481.0 * vscale + 20;
             
             p_buttonheight = 96.0 * vscale;
             l_buttonheight = 80.0 * vscale;

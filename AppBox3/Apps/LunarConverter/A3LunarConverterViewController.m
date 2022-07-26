@@ -56,6 +56,7 @@
 	[super viewDidLoad];
 	// Do any additional setup after loading the view from its nib.
 
+    [self makeNavigationBarAppearanceDefault];
 	if (IS_IPAD || IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	} else {

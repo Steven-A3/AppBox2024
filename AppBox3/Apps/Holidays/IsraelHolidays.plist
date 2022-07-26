@@ -5,7 +5,7 @@
 	<key>YEAR_FROM</key>
 	<string>2014</string>
 	<key>YEAR_TO</key>
-	<string>2022</string>
+	<string>2023</string>
 	<key>Y2014</key>
 	<array>
 		<array>
@@ -1375,6 +1375,173 @@
         <array>
             <string>Hanukkah (Day 8)</string>
             <date>2022-12-26T00:00:00Z</date>
+        </array>
+    </array>
+    <key>Y2023</key>
+    <array>
+        <array>
+            <string>Purim Eve</string>
+            <date>2023-03-06T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Aliyah Day</string>
+            <date>2023-04-01T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Passover Eve</string>
+            <date>2023-04-05T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Passover (Day 1)</string>
+            <date>2023-04-06T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Passover (Day 2)</string>
+            <date>2023-04-07T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Passover (Day 3)</string>
+            <date>2023-04-08T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Passover (Day 4)</string>
+            <date>2023-04-09T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Passover (Day 5)</string>
+            <date>2023-04-10T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Passover (Day 6)</string>
+            <date>2023-04-11T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Passover (Day 7)</string>
+            <date>2023-04-12T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Yom HaShoah</string>
+            <date>2023-04-18T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Yom HaZikaron</string>
+            <date>2023-04-25T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Yom HaAtzmaut</string>
+            <date>2023-04-26T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Jerusalem Day</string>
+            <date>2023-05-19T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Shavuot Eve</string>
+            <date>2023-05-25T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Shavuot</string>
+            <date>2023-05-26T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Tisha B'Av Eve</string>
+            <date>2023-07-26T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Tisha B'Av</string>
+            <date>2023-07-27T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Rosh Hashana Eve</string>
+            <date>2023-09-15T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Rosh Hashana</string>
+            <date>2023-09-16T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Rosh Hashana (Day 2)</string>
+            <date>2023-09-17T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Yom Kippur Eve</string>
+            <date>2023-09-24T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Yom Kippur</string>
+            <date>2023-09-25T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Sukkot Eve</string>
+            <date>2023-09-29T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Sukkot (Day 1)</string>
+            <date>2023-09-30T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Sukkot (Day 2)</string>
+            <date>2023-10-01T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Sukkot (Day 3)</string>
+            <date>2023-10-02T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Sukkot (Day 4)</string>
+            <date>2023-10-03T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Sukkot (Day 5)</string>
+            <date>2023-10-04T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Sukkot (Day 6)</string>
+            <date>2023-10-05T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Sukkot (Day 7)/Hoshanah Rabah</string>
+            <date>2023-10-06T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Shemini Atzeret/Simchat Torah</string>
+            <date>2023-10-07T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Aliyah Day School Observance</string>
+            <date>2023-10-22T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Hanukkah (Day 1)</string>
+            <date>2023-12-08T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Hanukkah (Day 2)</string>
+            <date>2023-12-09T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Hanukkah (Day 3)</string>
+            <date>2023-12-10T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Hanukkah (Day 4)</string>
+            <date>2023-12-11T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Hanukkah (Day 5)</string>
+            <date>2023-12-12T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Hanukkah (Day 6) / Rosh Chodesh Tevet</string>
+            <date>2023-12-13T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Hanukkah (Day 7)</string>
+            <date>2023-12-14T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Hanukkah (Day 8)</string>
+            <date>2023-12-15T00:00:00Z</date>
         </array>
     </array>
 </dict>

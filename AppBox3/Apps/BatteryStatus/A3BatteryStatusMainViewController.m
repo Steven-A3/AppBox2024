@@ -51,7 +51,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
+    [self makeNavigationBarAppearanceDefault];
 	[self makeBackButtonEmptyArrow];
 
 	if (IS_IPAD || IS_PORTRAIT) {
@@ -221,7 +222,7 @@
 {
     _topWhitePaddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0.0)];
     _topWhitePaddingView.backgroundColor = [UIColor whiteColor];
-    _topWhitePaddingView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
+    _topWhitePaddingView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [self.tableView addSubview:_topWhitePaddingView];
 }
 

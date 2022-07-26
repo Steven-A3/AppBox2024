@@ -119,6 +119,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
     if (![self.dataManager hasCalcData] && [self.dataManager isTaxOptionOn]) {
         [self.dataManager getUSTaxRateByLocation];     // to calledFromAreaTax
     }
+    [self makeNavigationBarAppearanceDefault];
     [self refreshMoreButtonState];
 
 	if (IS_IPAD) {

@@ -442,7 +442,7 @@
 }
 
 - (BOOL)prefersStatusBarHidden {
-    return self.presentationController;
+    return NO;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {

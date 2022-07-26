@@ -99,6 +99,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 
 	self.dataSectionStartIndex = 0;
 
+    [self makeNavigationBarAppearanceDefault];
     [self makeBackButtonEmptyArrow];
 	if (IS_IPAD || IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];

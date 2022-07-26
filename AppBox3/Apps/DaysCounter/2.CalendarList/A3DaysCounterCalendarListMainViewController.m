@@ -128,6 +128,8 @@
     self.navigationItem.title = NSLocalizedString(A3AppName_DaysCounter, nil);
     [self checkCalendarListToFixExceptionOfOldVersion];
 
+    [self makeNavigationBarAppearanceDefault];
+    
 	if (IS_IPAD || IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
         [self setToolbarItems:_bottomToolbar.items];

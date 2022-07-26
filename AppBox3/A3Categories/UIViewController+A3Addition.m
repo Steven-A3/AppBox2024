@@ -561,6 +561,26 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
 	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
+- (void)makeNavigationBarAppearanceDefault {
+    if (@available(iOS 15.0, *)) {
+        UINavigationBarAppearance *defaultAppearance = [UINavigationBarAppearance new];
+        [defaultAppearance configureWithDefaultBackground];
+        self.navigationController.navigationBar.standardAppearance = defaultAppearance;
+        self.navigationController.navigationBar.compactAppearance = defaultAppearance;
+        self.navigationController.navigationBar.scrollEdgeAppearance = defaultAppearance;
+    }
+}
+
+- (void)makeNavigationBarAppearanceTransparent {
+    if (@available(iOS 15.0, *)) {
+        UINavigationBarAppearance *transparentAppearance = [UINavigationBarAppearance new];
+        [transparentAppearance configureWithTransparentBackground];
+        self.navigationController.navigationBar.standardAppearance = transparentAppearance;
+        self.navigationController.navigationBar.compactAppearance = transparentAppearance;
+        self.navigationController.navigationBar.scrollEdgeAppearance = transparentAppearance;
+    }
+}
+
 - (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromBarButtonItem:(UIBarButtonItem *)barButtonItem completionHandler:(void (^)(void))completionHandler {
 	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
 	activityController.completionWithItemsHandler = ^(UIActivityType activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {

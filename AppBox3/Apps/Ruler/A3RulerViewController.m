@@ -262,7 +262,9 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
            @"iPhone 6s",
            @"iPhone 7",
            @"iPhone 8",
-           @"iPhone SE 2nd Gen"] containsObject:model]) {
+           @"iPhone SE 2nd Gen",
+           @"iPhone SE 3rd Gen"
+         ] containsObject:model]) {
         CGFloat pixelsInInch = 326;
         CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
         _centimeterAsPoints = (screenHeight / 1334.0) * pixelsInCentimeter;
@@ -377,7 +379,6 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
            @"iPad Air 3rd Gen (Wi-Fi+Cellular)"
            ] containsObject:model])
     {
-        // iPad Air 4th gen
         CGFloat pixelsInInch = 264;
         CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
         _centimeterAsPoints = (screenHeight / 2224.0) * pixelsInCentimeter;
@@ -387,9 +388,11 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
         return;
     }
     if ([@[@"iPad Air 4th Gen (Wi-Fi)",
-           @"iPad Air 4th Gen (Wi-Fi+Cellular)"] containsObject:model])
+           @"iPad Air 4th Gen (Wi-Fi+Cellular)",
+           @"iPad Air 5th Gen (Wi-Fi)",
+           @"iPad Air 5th Gen (Wi-Fi+Cellular)",
+         ] containsObject:model])
     {
-        // iPad Air 4th gen
         CGFloat pixelsInInch = 264;
         CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
         _centimeterAsPoints = (screenHeight / 2360.0) * pixelsInCentimeter;
@@ -439,8 +442,8 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
         _redLineWidth = 0.5;
         return;
     }
-    if ([@[@"iPad mini 6th Gen (WiFi)",
-           @"iPad mini 6th Gen (WiFi+Cellular)"] containsObject:model])
+    if ([@[@"iPad mini 6th Gen (Wi-Fi)",
+           @"iPad mini 6th Gen (Wi-Fi+Cellular)"] containsObject:model])
     {
         // iPad mini 6th
         CGFloat pixelsInInch = 326;
@@ -508,8 +511,8 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
            @"iPad 7th Gen 10.2 \" (Wi-Fi+Cellular)",
            @"iPad 8th Gen (Wi-Fi)",
            @"iPad 8th Gen (Wi-Fi+Cellular)",
-           @"iPad 9th Gen (WiFi)",
-           @"iPad 9th Gen (WiFi+Cellular)",
+           @"iPad 9th Gen (Wi-Fi)",
+           @"iPad 9th Gen (Wi-Fi+Cellular)",
          ] containsObject:model]
         )
     {

@@ -61,6 +61,7 @@
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.showsHorizontalScrollIndicator = NO;
     
+    [self makeNavigationBarAppearanceDefault];
 	[self makeBackButtonEmptyArrow];
 	if (IS_IPAD || IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];

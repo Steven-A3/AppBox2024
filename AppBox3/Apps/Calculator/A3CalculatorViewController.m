@@ -43,13 +43,14 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
+    [self makeNavigationBarAppearanceDefault];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
 	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
 		[self setupBannerViewForAdUnitID:AdMobAdUnitIDCalculator keywords:@[@"calculator"] gender:kGADGenderUnknown];

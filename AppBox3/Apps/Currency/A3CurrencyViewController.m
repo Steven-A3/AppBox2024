@@ -46,6 +46,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 	
     [A3CurrencyDataManager setupFavorites];
 
+    [self makeNavigationBarAppearanceDefault];
     [self makeBackButtonEmptyArrow];
     if (IS_IPAD || IS_PORTRAIT) {
         [self leftBarButtonAppsButton];
@@ -138,19 +139,8 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 		[self.view removeGestureRecognizer:[[self.view gestureRecognizers] lastObject]];
 		[self rightButtonMoreButton];
         
-        if SYSTEM_VERSION_LESS_THAN(@"11") {
-            UIView *pullDownView;
-            if (control.selectedSegmentIndex == 0) {
-                pullDownView = _listStyleViewController.tableView;
-            } else {
-                pullDownView = _pickerStyleViewController.view;
-            }
-            [self dismissMoreMenuView:_moreMenuView pullDownView:pullDownView completion:^{
-            }];
-        } else {
-            [self dismissMoreMenuView:_moreMenuView pullDownView:nil completion:^{
-            }];
-        }
+        [self dismissMoreMenuView:_moreMenuView pullDownView:nil completion:^{
+        }];
 	}
 
 	[[NSUserDefaults standardUserDefaults] setInteger:control.selectedSegmentIndex forKey:A3CurrencyConverterSelectedViewIndex];
@@ -217,6 +207,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 	if (self.viewTypeSegmentedControl.selectedSegmentIndex == 0) {
 		[_pickerStyleViewController resetIntermediateState];
 	} else {
+        [_listStyleViewController appsButtonAction:barButtonItem];
 		[_listStyleViewController resetIntermediateState];
 	}
 
@@ -262,7 +253,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         __typeof__(self) strongSelf = weakSelf;
         strongSelf.moreMenuButtons = @[[strongSelf instructionHelpButton], strongSelf.shareButton, [strongSelf historyButton:[CurrencyHistory class] ], strongSelf.settingsButton];
-		strongSelf.moreMenuView = [strongSelf presentMoreMenuWithButtons:_moreMenuButtons pullDownView:[strongSelf pullDownView]];
+		strongSelf.moreMenuView = [strongSelf presentMoreMenuWithButtons:_moreMenuButtons pullDownView:nil];
         strongSelf.isShowMoreMenu = YES;
 	});
 
@@ -285,7 +276,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 	
 	[self.view removeGestureRecognizer:gestureRecognizer];
 	[self rightButtonMoreButton];
-	[self dismissMoreMenuView:_moreMenuView pullDownView:[self pullDownView] completion:^{
+	[self dismissMoreMenuView:_moreMenuView pullDownView:nil completion:^{
 	}];
 }
 

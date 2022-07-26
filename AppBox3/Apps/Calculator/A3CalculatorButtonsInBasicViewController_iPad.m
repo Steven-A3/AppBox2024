@@ -61,6 +61,11 @@
             top = 732.0;
             width = 834.0;
             height = 407.0 * vscale + 20;
+        } else if (bounds.size.height == 1180.0) {
+            // iPad Air 5th Gen
+            top = 732.0;
+            width = 820.0;
+            height = 407.0 * vscale + 20;
         } else if (bounds.size.height == 1112.0) {
             // iPad Pro 10.5"
             top = 670.0;
@@ -69,8 +74,8 @@
         } else if (bounds.size.height == 1133.0) {
             // iPad mini 6th
             width = 744.0;
-            height = 407.0 * vscale;
-            top = 1133 - height - 20;
+            height = 407.0 * vscale + 20;
+            top = 1133 - height;
         } else {
             top = 617.0 * scale;
             width = 768.0 * scale;
@@ -96,6 +101,15 @@
             
             p_buttonheight = 89.0 * vscale;
             l_buttonheight = 74.0 * vscale;
+        } else if (bounds.size.width == 1180.0) {
+            // iPad Air 5th Gen, 820x1180
+            vscale = 820.0/768.0;
+            top = 440.0;
+            width = 1194.0;
+            height = 348.0 * vscale + 20;
+            
+            p_buttonheight = 89.0 * vscale;
+            l_buttonheight = 74.0 * vscale;
         } else if (bounds.size.width == 1112.0) {
             // iPad Pro 10.5", height = 834
             vscale = 834.0/768.0;
@@ -109,8 +123,8 @@
             // iPad mini 6th edition
             vscale = 744.0/768.0;
             width = 1133.0;
-            height = 348.0 * vscale;
-            top = 744.0 - height - 20;
+            height = 348.0 * vscale + 20;
+            top = 744.0 - height;
             
             p_buttonheight = 89.0 * vscale;
             l_buttonheight = 74.0 * vscale;

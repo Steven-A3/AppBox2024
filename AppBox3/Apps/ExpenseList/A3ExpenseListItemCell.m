@@ -96,9 +96,10 @@
 - (void)setupConstraintLayout
 {
 	CGFloat leftInset = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
-	CGFloat sep1_Item = ceilf(CGRectGetWidth(self.contentView.frame) * 0.33);
-	CGFloat sep2_Price = ceilf(CGRectGetWidth(self.contentView.frame) * 0.26);
-	CGFloat sep3_Quantity = ceilf(CGRectGetWidth(self.contentView.frame) * 0.11);
+    CGRect frame = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGFloat sep1_Item = ceilf(CGRectGetWidth(frame) * 0.33);
+	CGFloat sep2_Price = ceilf(CGRectGetWidth(frame) * 0.26);
+	CGFloat sep3_Quantity = ceilf(CGRectGetWidth(frame) * 0.11);
     
 	[_sep1View makeConstraints:^(MASConstraintMaker *make) {
 		self.sep1Const = make.leading.equalTo(@(leftInset + sep1_Item));
@@ -157,9 +158,10 @@
 - (void)adjustConstraintLayout
 {
 	CGFloat leftInset = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
-	CGFloat sep1_Item = ceilf(CGRectGetWidth(self.contentView.frame) * 0.33);
-	CGFloat sep2_Price = ceilf(CGRectGetWidth(self.contentView.frame) * 0.26);
-	CGFloat sep3_Quantity = ceilf(CGRectGetWidth(self.contentView.frame) * 0.11);
+    CGRect frame = [A3UIDevice screenBoundsAdjustedWithOrientation];
+	CGFloat sep1_Item = ceilf(CGRectGetWidth(frame) * 0.33);
+	CGFloat sep2_Price = ceilf(CGRectGetWidth(frame) * 0.26);
+	CGFloat sep3_Quantity = ceilf(CGRectGetWidth(frame) * 0.11);
     
 	if (IS_IPAD) {
 		_nameField.font = [UIFont systemFontOfSize:17.0];

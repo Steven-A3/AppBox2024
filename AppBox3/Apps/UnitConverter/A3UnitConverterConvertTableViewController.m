@@ -78,6 +78,7 @@
 	BOOL			_isNumberKeyboardVisible;
 	BOOL			_didPressClearKey;
 	BOOL			_didPressNumberKey;
+    BOOL            _didPressAppsButton;
 }
 
 NSString *const A3UnitConverterDataCellID = @"A3UnitConverterDataCell";
@@ -115,6 +116,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 
 	[self setupSwipeRecognizers];
 
+    [self makeNavigationBarAppearanceDefault];
 	[self makeBackButtonEmptyArrow];
 
 
@@ -402,6 +404,8 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 }
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
+    _didPressAppsButton = YES;
+    
 	[super appsButtonAction:barButtonItem];
 	[self setEditingObject:nil];
 
@@ -2265,7 +2269,7 @@ const CGFloat kUnitCellVisibleWidth = 100.0;
 #pragma mark - AdMob Did Receive Ad
 
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
-    if (_adItem && [_convertItems containsObject:_adItem]) {
+    if (_didPressAppsButton || (_adItem && [_convertItems containsObject:_adItem])) {
         return;
     }
     NSInteger position = [_convertItems count] > 3 ? 4 : [_convertItems count];

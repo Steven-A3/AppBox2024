@@ -65,7 +65,8 @@
 	UIImage *image = [UIImage new];
 	[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
 	[self.navigationController.navigationBar setShadowImage:image];
-	
+
+    [self makeNavigationBarAppearanceTransparent];
 	[self leftBarButtonAppsButton];
 	
     _titleLabel.text = NSLocalizedString(@"Abbreviation", @"Abbreviation");

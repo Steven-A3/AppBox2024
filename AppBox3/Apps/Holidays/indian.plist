@@ -5,7 +5,7 @@
 	<key>YEAR_FROM</key>
 	<string>2006</string>
 	<key>YEAR_TO</key>
-	<string>2022</string>
+	<string>2023</string>
 	<key>2006</key>
 	<array>
 		<array>
@@ -3379,6 +3379,233 @@
         <array>
             <string>Christmas</string>
             <date>2022-12-25T00:00:00Z</date>
+        </array>
+    </array>
+    <key>2023</key>
+    <array>
+        <array>
+            <string>New Year&apos;s Day</string>
+            <date>2023-01-01T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Lohri</string>
+            <date>2023-01-14T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Makar Sankranti</string>
+            <date>2023-01-15T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Pongal</string>
+            <date>2023-01-15T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Vasant Panchami</string>
+            <date>2023-01-25T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Republic Day</string>
+            <date>2023-01-26T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Hazarat Ali&apos;s Birthday</string>
+            <date>2023-02-04T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Guru Ravidas Jayanti</string>
+            <date>2023-02-05T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Maharishi Dayanand Saraswati Jayanti</string>
+            <date>2023-02-15T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Maha Shivaratri/Shivaratri</string>
+            <date>2023-02-18T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Shivaji Jayanti</string>
+            <date>2023-02-19T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Dolyatra</string>
+            <date>2023-03-07T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Holika Dahana</string>
+            <date>2023-03-07T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Holi</string>
+            <date>2023-03-08T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Chaitra Sukhladi</string>
+            <date>2023-03-22T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Gudi Padwa</string>
+            <date>2023-03-22T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Ugadi</string>
+            <date>2023-03-22T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Rama Navami</string>
+            <date>2023-03-30T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Mahavir Jayanti</string>
+            <date>2023-04-04T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Good Friday</string>
+            <date>2023-04-07T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Easter Day</string>
+            <date>2023-04-09T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Ambedkar Jayanti</string>
+            <date>2023-04-14T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Vaisakhi</string>
+            <date>2023-04-14T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Jamat Ul-Vida</string>
+            <date>2023-04-21T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Ramzan Id/Eid-ul-Fitar</string>
+            <date>2023-04-22T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Buddha Purnima/Vesak</string>
+            <date>2023-05-05T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Birthday of Ravindranath</string>
+            <date>2023-05-09T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Rath Yatra</string>
+            <date>2023-06-20T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Bakr Id/Eid ul-Adha</string>
+            <date>2023-06-29T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Muharram/Ashura</string>
+            <date>2023-07-28T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Independence Day</string>
+            <date>2023-08-15T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Parsi New Year</string>
+            <date>2023-08-16T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Onam</string>
+            <date>2023-08-29T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Raksha Bandhan (Rakhi)</string>
+            <date>2023-08-30T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Janmashtami (Smarta)</string>
+            <date>2023-09-06T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Janmashtami</string>
+            <date>2023-09-07T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Ganesh Chaturthi/Vinayaka Chaturthi</string>
+            <date>2023-09-19T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Milad un-Nabi/Id-e-Milad</string>
+            <date>2023-09-27T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Mahatma Gandhi Jayanti</string>
+            <date>2023-10-02T00:00:00Z</date>
+        </array>
+        <array>
+            <string>First Day of Sharad Navratri</string>
+            <date>2023-10-15T00:00:00Z</date>
+        </array>
+        <array>
+            <string>First Day of Durga Puja Festivities</string>
+            <date>2023-10-20T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Maha Saptami</string>
+            <date>2023-10-21T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Maha Ashtami</string>
+            <date>2023-10-22T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Maha Navami</string>
+            <date>2023-10-23T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Dussehra</string>
+            <date>2023-10-24T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Maharishi Valmiki Jayanti</string>
+            <date>2023-10-28T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Karaka Chaturthi (Karva Chauth)</string>
+            <date>2023-11-01T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Diwali/Deepavali</string>
+            <date>2023-11-12T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Naraka Chaturdasi</string>
+            <date>2023-11-12T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Bhai Duj</string>
+            <date>2023-11-14T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Govardhan Puja</string>
+            <date>2023-11-14T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Chhat Puja (Pratihar Sashthi/Surya Sashthi)</string>
+            <date>2023-11-19T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Guru Tegh Bahadur's Martyrdom Day</string>
+            <date>2023-11-24T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Guru Nanak Jayanti</string>
+            <date>2023-11-27T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Christmas Eve</string>
+            <date>2023-12-24T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Christmas</string>
+            <date>2023-12-25T00:00:00Z</date>
         </array>
     </array>
 </dict>

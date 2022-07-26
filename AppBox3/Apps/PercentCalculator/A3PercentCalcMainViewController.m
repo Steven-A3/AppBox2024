@@ -80,6 +80,7 @@
 
 	_barButtonEnabled = YES;
 
+    [self makeNavigationBarAppearanceDefault];
 	if (IS_IPAD || IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	} else {
@@ -138,6 +139,7 @@
 	[self reloadInputData];
 	[self reloadTableHeaderView];
 	[self.tableView reloadData];
+    [self updateEntryCells];
 	// 배경 설명
 	// 아이패드에서 HistoryViewController가 나와 있는 상태에서 업데이트를 받은 경우,
 	// apps button이 enable되는 것을 막기 위해서 barButton enable 상태를 기억하고
@@ -178,6 +180,7 @@
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self showNavigationBarOn:self.navigationController];
 	}
+    [self updateEntryCells];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -490,6 +493,7 @@
                             [self.headerView setNeedsLayout];
                         } completion:^(BOOL finished) {
                             [self.tableView reloadData];
+                            [self updateEntryCells];
                         }];
     [self scrollToTopOfTableView];
     [self setBarButtonEnable:YES];
@@ -649,6 +653,29 @@
     return cell;
 }
 
+- (void)updateEntryCells {
+    A3JHTableViewEntryCell *cell;
+    NSIndexPath *indexPath = nil;
+
+    indexPath = [NSIndexPath indexPathForRow:0 inSection:2];
+    cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    [self updateSection2EntryCell:cell forRowAtIndexPath:indexPath tableView:self.tableView];
+
+    indexPath = [NSIndexPath indexPathForRow:1 inSection:2];
+    cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    [self updateSection2EntryCell:cell forRowAtIndexPath:indexPath tableView:self.tableView];
+
+    if (self.calcType == PercentCalcType_5) {
+        indexPath = [NSIndexPath indexPathForRow:0 inSection:3];
+        cell = [self.tableView cellForRowAtIndexPath:indexPath];
+        [self updateSection3EntryCell:cell forRowAtIndexPath:indexPath tableView:self.tableView];
+        
+        indexPath = [NSIndexPath indexPathForRow:1 inSection:3];
+        cell = [self.tableView cellForRowAtIndexPath:indexPath];
+        [self updateSection3EntryCell:cell forRowAtIndexPath:indexPath tableView:self.tableView];
+    }
+}
+
 - (A3JHTableViewEntryCell *)updateSection2EntryCell:(A3JHTableViewEntryCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
     cell.accessoryType = UITableViewCellAccessoryNone;
     
@@ -806,14 +833,18 @@
                     [self reloadTableDataSource];
                     
                     if (IS_IPHONE) {
+                        [self reloadInputData];
                         [self reloadTableHeaderView];
                         [self.tableView reloadData];
+                        [self updateEntryCells];
                     }
                     else {
                         [UIView animateWithDuration:0.3 animations:^{
+                            [self reloadInputData];
                             [self reloadTableHeaderView];
                         } completion:^(BOOL finished) {
                             [self.tableView reloadData];
+                            [self updateEntryCells];
                         }];
                     }
                 }
@@ -826,8 +857,11 @@
 
                     _formattedFactorValues = [factorData formattedStringValuesByCalcType];
                     self.headerView.factorValues = factorData;
+                    [self reloadInputData];
+                    [self reloadTableHeaderView];
                     [self.tableView reloadData];
-                    
+                    [self updateEntryCells];
+
                     switch ([_selectedIndexPath row]) {
                         case 0:
                         case 1:
@@ -848,9 +882,7 @@
                             break;
                     }
                     
-                    if (!self.editingObject) {
-                        [self showKeyboardIfXFieldIsZeroAtTableView:self.tableView];
-                    }
+                    [self showKeyboardIfXFieldIsZeroAtTableView:self.tableView];
                 }
             }
                 break;
@@ -881,6 +913,7 @@
                     
                 } completion:^(BOOL finished) {
                     [self.tableView reloadData];
+                    [self updateEntryCells];
                 }];
 				break;
 			}
@@ -889,7 +922,8 @@
                 break;
         }
         CGPoint offset = self.tableView.contentOffset;
-        offset.y = -64;
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+        offset.y = -(44 + safeAreaInsets.top);
         self.tableView.contentOffset = offset;
     } else {
         _selectedIndexPath = [indexPath copy];
@@ -955,9 +989,8 @@
         } else {
             self.headerView.frame = CGRectMake(0.0, 0.0, self.view.bounds.size.width, 158);
         }
-
-        [self.headerView setNeedsLayout];
     }
+    [self.headerView setNeedsLayout];
 
     [self.tableView setTableHeaderView:self.headerView];
     self.headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -1008,9 +1041,9 @@
         A3JHTableViewEntryCell * cell = (A3JHTableViewEntryCell *)[tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
         [cell.textField becomeFirstResponder];
     }
-    else {
-        [self scrollToTopOfTableView];
-    }
+//    else {
+//        [self scrollToTopOfTableView];
+//    }
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
@@ -1091,6 +1124,7 @@
     if (decimalCheck.count>2) {
         textField.text = [NSString stringWithFormat:@"%@", @(textField.text.floatValue)];
         [self.tableView reloadData];
+        [self updateEntryCells];
         return;
     }
     if (decimalCheck.count==2 && [decimalCheck[1] length]==0) {
@@ -1270,6 +1304,8 @@
 
 - (void)presentNumberKeyboardForTextField:(UITextField *)textField {
 	if (_isNumberKeyboardVisible) {
+        NSIndexPath *selectedIndexPath = [self.tableView indexPathForCellSubview:textField];
+        [self.tableView scrollToRowAtIndexPath:selectedIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:NO];
 		return;
 	}
 	_editingTextField = textField;
@@ -1306,9 +1342,9 @@
 		contentInset.bottom = keyboardHeight;
 		self.tableView.contentInset = contentInset;
 
-		NSIndexPath *selectedIndexPath = [self.tableView indexPathForCellSubview:textField];
-		[self.tableView scrollToRowAtIndexPath:selectedIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 	} completion:^(BOOL finished) {
+        NSIndexPath *selectedIndexPath = [self.tableView indexPathForCellSubview:textField];
+        [self.tableView scrollToRowAtIndexPath:selectedIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:NO];
 	}];
 }
 
@@ -1402,6 +1438,7 @@
     }
 
     [self.tableView reloadData];
+    [self updateEntryCells];
 }
 
 - (void)keyboardViewControllerDidValueChange:(A3NumberKeyboardViewController *)vc {
@@ -1570,6 +1607,7 @@
 					 } completion:^(BOOL finished) {
                          //[self reloadTableDataSource];
                          [self.tableView reloadData];
+                         [self updateEntryCells];
                      }];
 	[self setBarButtonEnable:YES];
 }

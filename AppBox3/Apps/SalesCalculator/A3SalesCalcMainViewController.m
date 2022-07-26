@@ -107,6 +107,7 @@ enum A3TableElementCellType {
 	[self configureTableData];
 	_barButtonEnabled = YES;
 
+    [self makeNavigationBarAppearanceDefault];
     [self makeBackButtonEmptyArrow];
 	if (IS_IPAD || IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];

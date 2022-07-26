@@ -110,6 +110,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	_isAutoMovingAddBudgetView = NO;
 	_barButtonEnabled = YES;
 
+    [self makeNavigationBarAppearanceDefault];
     [self makeBackButtonEmptyArrow];
 	if (IS_IPAD || IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
@@ -144,6 +145,9 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+    if (@available(iOS 15.0, *)) {
+        self.tableView.sectionHeaderTopPadding = 0;
+    }
 
 	if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
@@ -346,9 +350,10 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
 -(void)setupTopWhitePaddingView
 {
+    FNLOGRECT(self.view.frame);
     _topWhitePaddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0.0)];
     _topWhitePaddingView.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1.0];
-    _topWhitePaddingView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
+    _topWhitePaddingView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [self.tableView addSubview:_topWhitePaddingView];
 }
 
@@ -1762,9 +1767,9 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 		frame.origin.y -= keyboardHeight;
 		accessoryView.frame = frame;
 
-		UIEdgeInsets contentInset = self.tableView.contentInset;
-		contentInset.bottom = keyboardHeight + accessoryView.frame.size.height;
-		self.tableView.contentInset = contentInset;
+//		UIEdgeInsets contentInset = self.tableView.contentInset;
+//		contentInset.bottom = keyboardHeight + accessoryView.frame.size.height;
+//		self.tableView.contentInset = contentInset;
 
 		[self.tableView scrollToRowAtIndexPath:_editingIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 		FNLOG(@"%@", keyboardView.superview);

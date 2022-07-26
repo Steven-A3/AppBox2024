@@ -372,6 +372,8 @@ NSString *const A3CalculatorModeScientific = @"scientific";
                 self.calctopconstraint.offset(581.5 * scale);
             } else if (bounds.size.height == 1194.0) {
                 self.calctopconstraint.offset(700.0);
+            } else if (bounds.size.height == 1180.0) {
+                self.calctopconstraint.offset(700.0);
             } else if (bounds.size.height == 1112.0) {
                 self.calctopconstraint.offset(581.5 * scale);
             } else if (bounds.size.height == 1133.0) {
@@ -387,6 +389,9 @@ NSString *const A3CalculatorModeScientific = @"scientific";
                 self.calctopconstraint.offset(414.5 * scale);
             } else if (bounds.size.width == 1194.0) {
                 // iPad Pro 11"
+                self.calctopconstraint.offset(420.0);
+            } else if (bounds.size.width == 1180.0) {
+                // iPad Air 5th Gen
                 self.calctopconstraint.offset(420.0);
             } else if (bounds.size.width == 1112.0) {
                 // iPad Pro 10.5"
@@ -409,6 +414,8 @@ NSString *const A3CalculatorModeScientific = @"scientific";
                 self.calctopconstraint.offset(413.5 * scale);
             } else if (bounds.size.height == 1194.0) {
                 self.calctopconstraint.offset(520.0);
+            } else if (bounds.size.height == 1180.0) {
+                self.calctopconstraint.offset(520.0);
             } else if (bounds.size.height == 1112.0) {
                 self.calctopconstraint.offset(413.5 * vscale);
             } else if (bounds.size.height == 1133.0) {
@@ -423,6 +430,9 @@ NSString *const A3CalculatorModeScientific = @"scientific";
                 // iPad Pro 12.9"
                 self.calctopconstraint.offset(273.5 * scale);
             } else if (bounds.size.width == 1194.0) {
+                // iPad Pro 11"
+                self.calctopconstraint.offset(273.5);
+            } else if (bounds.size.width == 1180.0) {
                 // iPad Pro 11"
                 self.calctopconstraint.offset(273.5);
             } else if (bounds.size.width == 1112.0) {

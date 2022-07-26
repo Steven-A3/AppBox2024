@@ -5,7 +5,7 @@
 	<key>YEAR_FROM</key>
 	<string>2017</string>
 	<key>YEAR_TO</key>
-	<string>2022</string>
+	<string>2023</string>
 	<key>2017</key>
 	<array>
 		<array>
@@ -786,6 +786,129 @@
         <array>
             <string>Special Bank Holiday</string>
             <date>2022-12-26T00:00:00Z</date>
+        </array>
+    </array>
+    <key>2023</key>
+    <array>
+        <array>
+            <string>Duruthu Full Moon Poya Day</string>
+            <date>2023-01-06T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Tamil Thai Pongal Day</string>
+            <date>2023-01-15T00:00:00Z</date>
+        </array>
+        <array>
+            <string>National Day</string>
+            <date>2023-02-04T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Navam Full Moon Poya Day</string>
+            <date>2023-02-05T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Valentine&apos;s Day</string>
+            <date>2023-02-14T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Mahasivarathri Day</string>
+            <date>2023-02-18T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Madin Full Moon Poya Day</string>
+            <date>2023-03-07T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Bak Full Moon Poya Day</string>
+            <date>2023-04-05T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Good Friday</string>
+            <date>2023-04-07T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Easter Sunday</string>
+            <date>2023-04-09T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Sinhala and Tamil New Year&apos;s Eve</string>
+            <date>2023-04-13T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Sinhala and Tamil New Year&apos;s Day</string>
+            <date>2023-04-14T00:00:00Z</date>
+        </array>
+        <array>
+            <string>May Day</string>
+            <date>2023-05-01T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Eid-al-Fitr</string>
+            <date>2023-04-22T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Vesak Full Moon Poya Day</string>
+            <date>2023-05-05T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Day after Vesak Full Moon Poya Day</string>
+            <date>2023-05-06T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Mother&apos;s Day</string>
+            <date>2023-05-14T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Poson Full Moon Poya Day</string>
+            <date>2023-06-03T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Father&apos;s Day</string>
+            <date>2023-06-18T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Eid-al-Adha (Feast of Sacrifice)</string>
+            <date>2023-06-29T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Esala Full Moon Poya Day</string>
+            <date>2023-07-03T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Nikini Full Moon Poya Day</string>
+            <date>2023-08-01T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Milad-Un-Nabi (Holy Prophet&apos;s Birthday)</string>
+            <date>2023-09-27T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Binara Full Moon Poya Day</string>
+            <date>2023-09-28T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Vap Full Moon Poya Day</string>
+            <date>2023-10-28T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Deepavali</string>
+            <date>2023-11-12T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Ill Full Moon Poya Day</string>
+            <date>2023-11-26T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Christmas Eve</string>
+            <date>2023-12-24T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Christmas</string>
+            <date>2023-12-25T00:00:00Z</date>
+        </array>
+        <array>
+            <string>Unduvap Full Moon Poya Day</string>
+            <date>2023-12-26T00:00:00Z</date>
         </array>
     </array>
 </dict>

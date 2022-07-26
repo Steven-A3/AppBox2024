@@ -80,6 +80,7 @@ A3CalendarViewDelegate>
 		self.navigationItem.hidesBackButton = YES;
 	}
 
+    [self makeNavigationBarAppearanceDefault];
 	if ( IS_IPHONE ) {
 		[self rightButtonMoreButton];
 
@@ -580,9 +581,7 @@ A3CalendarViewDelegate>
 		[_addButton makeConstraints:^(MASConstraintMaker *make) {
             CGFloat verticalOffset = 0;
             UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
-            if (safeAreaInsets.top > 20) {
-                verticalOffset = -safeAreaInsets.bottom;
-            }
+            verticalOffset = -safeAreaInsets.bottom;
 			make.centerX.equalTo(self.view.centerX);
 			make.bottom.equalTo(self.view.bottom).with.offset(-55 + verticalOffset);
 			make.width.equalTo(@44);

@@ -305,6 +305,8 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
 	[self setupRightBarButtonItems];
 
 	[self setupGestureRecognizer];
+    
+    [self makeNavigationBarAppearanceTransparent];
 }
 
 - (void)setupGestureRecognizer {

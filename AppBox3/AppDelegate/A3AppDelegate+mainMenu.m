@@ -851,9 +851,9 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
                 return YES;
             }
         } else {
-            if ([[A3AppDelegate instance].homeStyleMainMenuViewController.activeAppName isEqualToString:appName]) {
-                return YES;
-            }
+//            if ([[A3AppDelegate instance].homeStyleMainMenuViewController.activeAppName isEqualToString:appName]) {
+//                return YES;
+//            }
         }
 		[[NSManagedObjectContext MR_defaultContext] reset];
 		[[NSManagedObjectContext MR_rootSavingContext] reset];

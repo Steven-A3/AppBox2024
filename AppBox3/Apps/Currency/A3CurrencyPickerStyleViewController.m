@@ -1094,20 +1094,61 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 		[_termSelectSegmentedControl setHidden:NO];
 		[_chartWebView setHidden:NO];
 		if (_didReceiveAds) {
-			if (bounds.size.height == 1024) {
+            if (bounds.size.height == 1024) {
+                _lineBottomToSegmentVSpace.constant = 30.0;
+                self.tableView.rowHeight = 95;
+                self.tableViewHeightConstraint.constant = 190;
+            } else if (bounds.size.height == 1080) {
 				_lineBottomToSegmentVSpace.constant = 15.0;
 				self.tableView.rowHeight = 95;
 				self.tableViewHeightConstraint.constant = 190;
+            } else if (bounds.size.height == 1112) {
+                _lineBottomToSegmentVSpace.constant = 40.0;
+                self.tableView.rowHeight = 95;
+                self.tableViewHeightConstraint.constant = 190;
+            } else if (bounds.size.height == 1133) {
+                _lineBottomToSegmentVSpace.constant = 30.0;
+                self.tableView.rowHeight = 107;
+                self.tableViewHeightConstraint.constant = 214;
+            } else if (bounds.size.height == 1180) {
+                _lineBottomToSegmentVSpace.constant = 50.0;
+                self.tableView.rowHeight = 107;
+                self.tableViewHeightConstraint.constant = 214;
+            } else if (bounds.size.height == 1194) {
+                // iPad Pro (11-inch) 2nd Generation
+                _lineBottomToSegmentVSpace.constant = 57.0;
+                self.tableView.rowHeight = 107;
+                self.tableViewHeightConstraint.constant = 214;
 			} else {
 				_lineBottomToSegmentVSpace.constant = 150.0;
 				self.tableView.rowHeight = 107;
 				self.tableViewHeightConstraint.constant = 214;
 			}
 		} else {
-			if (bounds.size.height == 1024) {
+            if (bounds.size.height == 1024) {
+                _lineBottomToSegmentVSpace.constant = 65.0;
+                self.tableView.rowHeight = 95;
+                self.tableViewHeightConstraint.constant = 190;
+            } else if (bounds.size.height == 1080) {
 				_lineBottomToSegmentVSpace.constant = 65.0;
 				self.tableView.rowHeight = 95;
 				self.tableViewHeightConstraint.constant = 190;
+            } else if (bounds.size.height == 1112) {
+                _lineBottomToSegmentVSpace.constant = 65.0;
+                self.tableView.rowHeight = 95;
+                self.tableViewHeightConstraint.constant = 190;
+            } else if (bounds.size.height == 1133) {
+                _lineBottomToSegmentVSpace.constant = 70.0;
+                self.tableView.rowHeight = 107;
+                self.tableViewHeightConstraint.constant = 214;
+            } else if (bounds.size.height == 1180) {
+                _lineBottomToSegmentVSpace.constant = 80.0;
+                self.tableView.rowHeight = 107;
+                self.tableViewHeightConstraint.constant = 214;
+            } else if (bounds.size.height == 1194) {
+                _lineBottomToSegmentVSpace.constant = 87.0;
+                self.tableView.rowHeight = 107;
+                self.tableViewHeightConstraint.constant = 214;
 			} else {
 				_lineBottomToSegmentVSpace.constant = 190.0;
 				self.tableView.rowHeight = 107;
@@ -1122,7 +1163,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 		[self.tableView reloadData];
 	} else {
 		CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-		if (bounds.size.height == 768) {
+		if (bounds.size.height <= 834) {
 			[_termSelectSegmentedControl setHidden:YES];
 			[_chartWebView setHidden:YES];
 		}

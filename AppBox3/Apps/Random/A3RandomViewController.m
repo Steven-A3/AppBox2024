@@ -100,6 +100,7 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
     // Do any additional setup after loading the view from its nib.
     self.title = NSLocalizedString(A3AppName_Random, nil);
     
+    [self makeNavigationBarAppearanceDefault];
 	[self makeBackButtonEmptyArrow];
 	if (IS_IPAD || IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];

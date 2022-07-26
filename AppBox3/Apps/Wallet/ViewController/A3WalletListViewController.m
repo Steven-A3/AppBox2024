@@ -45,6 +45,7 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 
 	self.view.backgroundColor = [UIColor whiteColor];
 
+    [self makeNavigationBarAppearanceDefault];
 	[self makeBackButtonEmptyArrow];
 	self.navigationItem.hidesBackButton = YES;
 

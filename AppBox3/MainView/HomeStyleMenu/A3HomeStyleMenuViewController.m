@@ -218,15 +218,21 @@
 }
 
 - (void)openAppStoreAppBox {
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id307094023"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id307094023"]
+                                       options:@{UIApplicationOpenURLOptionUniversalLinksOnly:@NO}
+                             completionHandler:NULL];
 }
 
 - (void)openAppStoreMoment {
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id998244903"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id998244903"]
+                                       options:@{UIApplicationOpenURLOptionUniversalLinksOnly:@NO}
+                             completionHandler:NULL];
 }
 
 - (void)openAppStoreNumpad {
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id967194299"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id967194299"]
+                                       options:@{UIApplicationOpenURLOptionUniversalLinksOnly:@NO}
+                             completionHandler:NULL];
 }
 
 @end

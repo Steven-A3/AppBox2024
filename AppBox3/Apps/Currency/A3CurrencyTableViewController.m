@@ -69,6 +69,7 @@ NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChan
 @property(nonatomic, weak) UITextField *editingTextField;
 @property(nonatomic, strong) NSNumberFormatter *decimalNumberFormatter;
 @property(nonatomic, assign) BOOL isNumberKeyboardVisible;
+@property(nonatomic, assign) BOOL didPressAppsButton;
 
 @end
 
@@ -394,30 +395,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 }
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
-    [self.editingObject resignFirstResponder];
-    [self setEditingObject:nil];
-
-    if (IS_IPHONE) {
-        if ([[A3AppDelegate instance] isMainMenuStyleList]) {
-            [[A3AppDelegate instance].drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
-        } else {
-            UINavigationController *navigationController = [A3AppDelegate instance].currentMainNavigationController;
-            [navigationController setNavigationBarHidden:YES];
-            [navigationController popViewControllerAnimated:YES];
-            [navigationController setToolbarHidden:YES];
-            [A3AppDelegate instance].homeStyleMainMenuViewController.activeAppName = nil;
-        }
-
-        if ([_moreMenuView superview]) {
-            [self dismissMoreMenu];
-            [self rightButtonMoreButton];
-        }
-    } else {
-        A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController_iPad];
-        [self enableControls:rootViewController.showLeftView];
-        [[[A3AppDelegate instance] rootViewController_iPad] toggleLeftMenuViewOnOff];
-    }
-    [[A3AppDelegate instance] presentInterstitialAds];
+    _didPressAppsButton = YES;
 }
 
 - (void)moreButtonAction:(UIBarButtonItem *)button {
@@ -428,7 +406,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
     [self rightBarButtonDoneButton];
 
     _moreMenuButtons = @[[self instructionHelpButton], self.shareButton, [self historyButton:[CurrencyHistory class]], self.settingsButton];
-    _moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons pullDownView:self.tableView];
+    _moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons pullDownView:nil];
     _isShowMoreMenu = YES;
 }
 
@@ -450,13 +428,8 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
     [self.view removeGestureRecognizer:gestureRecognizer];
     [self rightButtonMoreButton];
     
-    if SYSTEM_VERSION_LESS_THAN(@"11") {
-        [self dismissMoreMenuView:_moreMenuView pullDownView:self.tableView completion:^{
-        }];
-    } else {
-        [self dismissMoreMenuView:_moreMenuView pullDownView:nil completion:^{
-        }];
-    }
+    [self dismissMoreMenuView:_moreMenuView pullDownView:nil completion:^{
+    }];
 }
 
 - (void)shareButtonAction:(id)sender {
@@ -548,6 +521,8 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
                     [visibleRows removeObjectAtIndex:swipedCellIndex];
                 }
             }
+            
+            if (self.didPressAppsButton) return;
             
             [self unSwipeAll];
             [self.tableView reloadRowsAtIndexPaths:visibleRows withRowAnimation:UITableViewRowAnimationNone];
@@ -1536,10 +1511,11 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 #pragma mark - AdMob Ad
 
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
-    FNLOGRECT(bannerView.frame);
-    if (_adItem) {
+    if (_didPressAppsButton || _adItem) {
         return;
     }
+    FNLOGRECT(bannerView.frame);
+    
     NSInteger position = [_favorites count] > 3 ? 4 : [_favorites count];
     [_favorites insertObject:[self adItem] atIndex:position];
     

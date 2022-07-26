@@ -47,6 +47,7 @@
         "iPhone14,3": "iPhone 13 Pro Max",
         "iPhone14,4": "iPhone 13 mini",
         "iPhone14,5": "iPhone 13",
+        "iPhone14,6": "iPhone SE 3rd Gen",
         "iPad1,1": "iPad",
         "iPad1,2": "iPad 3G",
         "iPad2,1": "iPad 2 (Wi-Fi)",
@@ -107,8 +108,8 @@
         "iPad11,4": "iPad Air 3rd Gen (Wi-Fi+Cellular)",
         "iPad11,6": "iPad 8th Gen (Wi-Fi)",
         "iPad11,7": "iPad 8th Gen (Wi-Fi+Cellular)",
-        "iPad12,1": "iPad 9th Gen (WiFi)",
-        "iPad12,2": "iPad 9th Gen (WiFi+Cellular)",
+        "iPad12,1": "iPad 9th Gen (Wi-Fi)",
+        "iPad12,2": "iPad 9th Gen (Wi-Fi+Cellular)",
         "iPad13,1": "iPad Air 4th Gen (Wi-Fi)",
         "iPad13,2": "iPad Air 4th Gen (Wi-Fi+Cellular)",
         "iPad13,4": "iPad Pro 11 inch 3rd Gen",
@@ -119,8 +120,10 @@
         "iPad13,9": "iPad Pro 12.9 inch 5th Gen",
         "iPad13,10": "iPad Pro 12.9 inch 5th Gen",
         "iPad13,11": "iPad Pro 12.9 inch 5th Gen",
-        "iPad14,1": "iPad mini 6th Gen (WiFi)",
-        "iPad14,2": "iPad mini 6th Gen (WiFi+Cellular)",
+        "iPad13,16": "iPad Air 5th Gen (Wi-Fi)",
+        "iPad13,17": "iPad Air 5th Gen (Wi-Fi+Cellular)",
+        "iPad14,1": "iPad mini 6th Gen (Wi-Fi)",
+        "iPad14,2": "iPad mini 6th Gen (Wi-Fi+Cellular)",
         "iPod1,1": "iPod Touch (1st Generation)",
         "iPod2,1": "iPod Touch (2nd Generation)",
         "iPod3,1": "iPod Touch (3rd Generation)",
@@ -130,6 +133,14 @@
         "iPod9,1": "iPod Touch (7th Generation)"
     },
     "deviceInformation": {
+        "iPhone SE 3rd Gen": {
+            "Model": "iPhone SE 3rd Gen",
+            "Chips": "A15 Bionic chip, New 16-Core Neural Engine",
+            "CPU": "Hexa-core (2x high-performance Avalanche + 4x energy-saving Blizzard)",
+            "GPU": "Apple-designed 4 core",
+            "Memory": "4 GB LPDDR4X",
+            "PPI": "326"
+        },
         "iPhone 13 Pro": {
             "Model": "iPhone 13 Pro",
             "Chips": "A15 Bionic chip, New 16-Core Neural Engine",
@@ -554,16 +565,16 @@
             "Memory": "3 GB LPDDR4 DRAM",
             "PPI": "264"
         },
-        "iPad 9th Gen (WiFi)": {
-            "Model": "iPad 9th Gen (WiFi)",
+        "iPad 9th Gen (Wi-Fi)": {
+            "Model": "iPad 9th Gen (Wi-Fi)",
             "Chips": "A13 Bionic chip, Neural Engine",
             "CPU": "Hexa-core (2×Lightning and 4×Thunder)",
             "GPU": "Apple GPU (4-core graphics)",
             "Memory": "3 GB LPDDR4X SDRAM",
             "PPI": "264"
         },
-        "iPad 9th Gen (WiFi+Cellular)": {
-            "Model": "iPad 9th Gen (WiFi+Cellular)",
+        "iPad 9th Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad 9th Gen (Wi-Fi+Cellular)",
             "Chips": "A13 Bionic chip, Neural Engine",
             "CPU": "Hexa-core (2×Lightning and 4×Thunder)",
             "GPU": "Apple GPU (4-core graphics)",
@@ -640,6 +651,22 @@
             "CPU": "Hexa-core (2x3.1 GHz Firestorm + 4x1.8 GHz Icestorm)",
             "GPU": "Apple GPU (4-core graphics)",
             "Memory": "4 GB LPDDR4 DRAM",
+            "PPI": "264"
+        },
+        "iPad Air 5th Gen (Wi-Fi)": {
+            "Model": "iPad Air 5th Gen (Wi-Fi)",
+            "Chips": "Apple M1",
+            "CPU": "8-core (4 x Firestorm + 4 x Icestorm)",
+            "GPU": "Apple GPU (8-core graphics)",
+            "Memory": "8 GB LPDDR4 DRAM",
+            "PPI": "264"
+        },
+        "iPad Air 5th Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad Air 5th Gen (Wi-Fi+Cellular)",
+            "Chips": "Apple M1",
+            "CPU": "8-core (4 x Firestorm + 4 x Icestorm)",
+            "GPU": "Apple GPU (8-core graphics)",
+            "Memory": "8 GB LPDDR4 DRAM",
             "PPI": "264"
         },
         "iPad Pro 9.7 \" (Wi-Fi+Cellular)": {
@@ -914,16 +941,16 @@
             "Memory": "3 GB LPDDR3 DRAM",
             "PPI": "326"
         },
-        "iPad mini 6th Gen (WiFi)": {
-            "Model": "iPad mini 6th Gen (WiFi)",
+        "iPad mini 6th Gen (Wi-Fi)": {
+            "Model": "iPad mini 6th Gen (Wi-Fi)",
             "Chips": "A15 Bionic, 16-core Neural Engine",
             "CPU": "2.93GHz 2 x Avalanche, 4 x Blizzard",
             "GPU": "Apple designed 5-core",
             "Memory": "4 GB LPDDR3 DRAM",
             "PPI": "326"
         },
-        "iPad mini 6th Gen (WiFi+Cellular)": {
-            "Model": "iPad mini 6th Gen (WiFi+Cellular)",
+        "iPad mini 6th Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad mini 6th Gen (Wi-Fi+Cellular)",
             "Chips": "A15 Bionic, 16-core Neural Engine",
             "CPU": "2.93 GHz 2 x Avalanche, 4 x Blizzard",
             "GPU": "Apple designed 5-core",
@@ -1004,6 +1031,12 @@
         }
     },
     "remainingTimeInfo": {
+        "iPhone SE 3rd Gen": {
+            "Model": "iPhone SE 3rd Gen",
+            "Video playback (streamed)": 10,
+            "Video playback": 15,
+            "Audio playback": 50
+        },
         "iPhone 13 Pro Max": {
             "Model": "iPhone 13 Pro Max",
             "Video playback (streamed)": 25,
@@ -1454,14 +1487,14 @@
             "Video playback": 10,
             "Audio playback": 10
         },
-        "iPad 9th Gen (WiFi)": {
-            "Model": "iPad 9th Gen (WiFi)",
+        "iPad 9th Gen (Wi-Fi)": {
+            "Model": "iPad 9th Gen (Wi-Fi)",
             "Internet on Wi-Fi": 10,
             "Video playback": 10,
             "Audio playback": 10
         },
-        "iPad 9th Gen (WiFi+Cellular)": {
-            "Model": "iPad 9th Gen (WiFi+Cellular)",
+        "iPad 9th Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad 9th Gen (Wi-Fi+Cellular)",
             "Internet on Wi-Fi": 10,
             "Internet on Cellular": 9,
             "Video playback": 10,
@@ -1521,6 +1554,19 @@
         },
         "iPad Air 4th Gen (Wi-Fi+Cellular)": {
             "Model": "iPad Air 4th Gen (Wi-Fi+Cellular)",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Air 5th Gen (Wi-Fi)": {
+            "Model": "iPad Air 5th Gen (Wi-Fi)",
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Air 5th Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad Air 5th Gen (Wi-Fi+Cellular)",
             "Internet on Wi-Fi": 10,
             "Internet on Cellular": 9,
             "Video playback": 10,
@@ -1740,14 +1786,14 @@
             "Video playback": 10,
             "Audio playback": 10
         },
-        "iPad mini 6th Gen (WiFi)": {
-            "Model": "iPad mini 6th Gen (WiFi)",
+        "iPad mini 6th Gen (Wi-Fi)": {
+            "Model": "iPad mini 6th Gen (Wi-Fi)",
             "Internet on Wi-Fi": 10,
             "Video playback": 10,
             "Audio playback": 10
         },
-        "iPad mini 6th Gen (WiFi+Cellular)": {
-            "Model": "iPad mini 6th Gen (WiFi+Cellular)",
+        "iPad mini 6th Gen (Wi-Fi+Cellular)": {
+            "Model": "iPad mini 6th Gen (Wi-Fi+Cellular)",
             "Internet on Wi-Fi": 10,
             "Internet on Cellular": 9,
             "Video playback": 10,

@@ -68,6 +68,7 @@
 	[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
 	[self.navigationController.navigationBar setShadowImage:image];
 
+    [self makeNavigationBarAppearanceTransparent];
 	[self leftBarButtonAppsButton];
 	
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"♥︎ %@", NSLocalizedString(@"Favorites", @"Favorites")]
