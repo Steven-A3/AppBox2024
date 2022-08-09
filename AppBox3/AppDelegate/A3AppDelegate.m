@@ -251,7 +251,10 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
 
 	[self.window makeKeyAndVisible];
 
-	[[A3UserDefaults standardUserDefaults] setObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] forKey:kA3ApplicationLastRunVersion];
+    NSString *lastRunVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [[NSUserDefaults standardUserDefaults] setObject:lastRunVersion forKey:kA3ApplicationLastRunVersion];
+	[[A3UserDefaults standardUserDefaults] setObject:lastRunVersion forKey:kA3ApplicationLastRunVersion];
+    
 	[[A3UserDefaults standardUserDefaults] synchronize];
 
     /*

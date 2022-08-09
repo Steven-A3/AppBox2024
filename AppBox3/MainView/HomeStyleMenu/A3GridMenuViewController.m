@@ -197,14 +197,19 @@ A3InstructionViewControllerDelegate>
 		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 		if (IS_IPHONE) {
 			if ([[UIScreen mainScreen] scale] == 3) {
-                if (screenBounds.size.width == 320) {
+                if (screenBounds.size.height == 693) {
+                    _flowLayout.itemSize = CGSizeMake(70.0, 88.0);
+                } else if (screenBounds.size.width == 320) {
                     _flowLayout.itemSize = CGSizeMake(70.0, 93.0);
                 } else {
                     _flowLayout.itemSize = CGSizeMake(78.0, 102.0);
                 }
 			} else {
-				if (screenBounds.size.height >= 647) {
-					_flowLayout.itemSize = CGSizeMake(70.0, 85.0);
+                if (screenBounds.size.height == 667) // iPhone SE 3rd
+                {
+                    _flowLayout.itemSize = CGSizeMake(70.0, 94.0);
+                } else if (screenBounds.size.height >= 647) {
+                    _flowLayout.itemSize = CGSizeMake(70.0, 85.0);
 				} else if (screenBounds.size.height == 568) {
 					_flowLayout.itemSize = CGSizeMake(60.0, 78.0);
 				} else {
