@@ -48,6 +48,7 @@ NSString *const WalletFieldTypeID			= @"Name";
 
 NSString *const A3WalletUUIDAllCategory = @"10F30F9F-FF9D-43D4-AC69-020F61E016E0";
 NSString *const A3WalletUUIDFavoriteCategory = @"9DA24468-83C1-41E1-B355-4AB245C1FEB5";
+NSString *const A3WalletUUIDRecentsCategory = @"2493316a-b6a4-4d71-8501-4587174e9342";
 NSString *const A3WalletUUIDPhotoCategory = @"D840A875-9C99-481E-A592-4059DEF7A248";
 NSString *const A3WalletUUIDVideoCategory = @"7FE1693F-76DA-42FC-A0A7-1C2E7F6346D9";
 NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F2";
@@ -195,6 +196,18 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 	favoriteCategory.isSystem = @YES;
 	favoriteCategory.doNotShow = @NO;
 	[favoriteCategory assignOrderAsFirstInContext:context];
+
+    [WalletData createRecentsCategoryInContext:context];
+}
+
++ (void)createRecentsCategoryInContext:(NSManagedObjectContext *)context {
+    WalletCategory *recentsCategory = [WalletCategory MR_createEntityInContext:context];
+    recentsCategory.uniqueID = A3WalletUUIDRecentsCategory;
+    recentsCategory.name = NSLocalizedString(@"Recents", nil);
+    recentsCategory.icon = @"history";
+    recentsCategory.isSystem = @YES;
+    recentsCategory.doNotShow = @NO;
+    [recentsCategory assignOrderAsFirstInContext:context];
 }
 
 + (void)initializeWalletCategories {

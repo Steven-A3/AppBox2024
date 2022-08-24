@@ -1,30 +1,28 @@
 //
-//  A3WalletHistoryListViewController.m
+//  A3WalletRecentsViewController.m
 //  AppBox3
 //
-//  Created by BYEONG KWON KWAK on 2021/10/13.
-//  Copyright © 2021 ALLABOUTAPPS. All rights reserved.
+//  Created by BYEONG KWON KWAK on 2022/08/15.
+//  Copyright © 2022 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3WalletHistoryListViewController.h"
-#import "A3AppDelegate.h"
-#import "A3UserDefaults.h"
-#import "A3InstructionViewController.h"
-#import "UIColor+A3Addition.h"
-#import "UIViewController+A3Addition.h"
+#import "A3WalletRecentsViewController.h"
 #import "WalletItem.h"
+#import "A3AppDelegate.h"
+#import "UIViewController+A3Addition.h"
+#import "UIColor+A3Addition.h"
 
-@interface A3WalletHistoryListViewController () <A3InstructionViewControllerDelegate>
+@interface A3WalletRecentsViewController ()
 
 @end
 
-@implementation A3WalletHistoryListViewController
+@implementation A3WalletRecentsViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
-    self.navigationItem.title = NSLocalizedString(@"Favorites", @"Favorites");
+    self.navigationItem.title = NSLocalizedString(@"Recents", nil);
     self.showCategoryInDetailViewController = YES;
 
     if (IS_IPAD) {
@@ -55,7 +53,6 @@
     if ([self.navigationController.navigationBar isHidden]) {
         [self.navigationController setNavigationBarHidden:NO animated:NO];
     }
-    [self setupInstructionView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -74,23 +71,6 @@
 - (void)cleanUp {
     [self dismissInstructionViewController:nil];
     [self removeObserver];
-}
-
-- (BOOL)resignFirstResponder {
-    NSString *startingAppName = [[A3UserDefaults standardUserDefaults] objectForKey:kA3AppsStartingAppName];
-    if ([startingAppName length] && ![startingAppName isEqualToString:A3AppName_Wallet]) {
-        [self.instructionViewController.view removeFromSuperview];
-        self.instructionViewController = nil;
-    }
-    return [super resignFirstResponder];
-}
-
-- (void)mainMenuDidShow {
-    [self enableControls:NO];
-}
-
-- (void)mainMenuDidHide {
-    [self enableControls:YES];
 }
 
 - (void)enableControls:(BOOL)enable {
@@ -140,69 +120,34 @@
     [self.tableView reloadData];
 }
 
+- (void)mainMenuDidShow {
+    [self enableControls:NO];
+}
+
+- (void)mainMenuDidHide {
+    [self enableControls:YES];
+}
+
 - (NSMutableArray *)items
 {
-    if (!self.items) {
+    if (!super.items) {
+        
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"lastOpened != NULL"];
+        super.items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:@"lastOpened" ascending:NO withPredicate:predicate]];
     }
     
-    return self.items;
-}
-
-#pragma mark Instruction Related
-
-static NSString *const A3V3InstructionDidShowForWalletFavorite = @"A3V3InstructionDidShowForWalletFavorite";
-
-- (void)setupInstructionView
-{
-    if ([self shouldShowHelpView]) {
-        [self showInstructionView];
-    }
-    self.navigationItem.rightBarButtonItem = [self instructionHelpBarButton];
-}
-
-- (BOOL)shouldShowHelpView {
-    return ![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForWalletFavorite];
-}
-
-- (void)showInstructionView
-{
-    [[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForWalletFavorite];
-    [[A3UserDefaults standardUserDefaults] synchronize];
-
-    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
-    self.instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Wallet_4"];
-    self.instructionViewController.delegate = self;
-
-    UIWindow *mainWindow = [UIApplication sharedApplication].keyWindow;
-    [mainWindow addSubview:self.instructionViewController.view];
-    [mainWindow.rootViewController addChildViewController:self.instructionViewController];
-
-    self.instructionViewController.view.frame = self.tabBarController.view.frame;
-    self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
-
-    if (IS_IOS7) {
-        [self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
-
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(statusBarFrameOrOrientationChanged:)
-                                                     name:UIApplicationDidChangeStatusBarOrientationNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(statusBarFrameOrOrientationChanged:)
-                                                     name:UIApplicationDidChangeStatusBarFrameNotification
-                                                   object:nil];
-    }
+    return super.items;
 }
 
 #pragma mark - Table view data source
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return nil;
+    return [self tableView:tableView cellForRowAtIndexPath:indexPath walletItem:self.items[indexPath.row]];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    [self tableView:tableView didSelectRowAtIndexPath:indexPath withItem:self.items[indexPath.row]];
 }
 
 // Override to support conditional rearranging of the table view.

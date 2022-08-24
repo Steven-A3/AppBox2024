@@ -155,32 +155,34 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 }
 
 - (void)copyImagesToTemporaryDirectory {
-	if (![self.photoID length]) {
-		return;
-	}
-
-	NSURL *photoURLInOriginalDirectory = [self photoURLInOriginalDirectory:YES];
-	NSURL *photoURLInTemporaryDirectory = [self photoURLInOriginalDirectory:NO];
-	
-	NSFileManager *fileManager = [[NSFileManager alloc] init];
-	NSFileCoordinator* fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-	NSError *error;
-	[fileCoordinator coordinateReadingItemAtURL:photoURLInOriginalDirectory
-										options:NSFileCoordinatorReadingWithoutChanges
-							   writingItemAtURL:photoURLInTemporaryDirectory
-										options:NSFileCoordinatorWritingForReplacing
-										  error:&error
-									 byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
-										 [fileManager copyItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
-									 }];
-	if (error) {
-		FNLOG(@"%@", error.localizedDescription);
-	}
-	
-	NSString *thumbnailPath = [self thumbnailPathInOriginalDirectory:YES];
-	NSString *thumbnailPathInTemp = [self thumbnailPathInOriginalDirectory:NO];
-	[fileManager removeItemAtPath:thumbnailPathInTemp error:NULL];
-	[fileManager copyItemAtPath:thumbnailPath toPath:thumbnailPathInTemp error:NULL];
+    @autoreleasepool {
+        if (![self.photoID length]) {
+            return;
+        }
+        
+        NSURL *photoURLInOriginalDirectory = [self photoURLInOriginalDirectory:YES];
+        NSURL *photoURLInTemporaryDirectory = [self photoURLInOriginalDirectory:NO];
+        
+        NSFileManager *fileManager = [[NSFileManager alloc] init];
+        NSFileCoordinator* fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+        NSError *error;
+        [fileCoordinator coordinateReadingItemAtURL:photoURLInOriginalDirectory
+                                            options:NSFileCoordinatorReadingWithoutChanges
+                                   writingItemAtURL:photoURLInTemporaryDirectory
+                                            options:NSFileCoordinatorWritingForReplacing
+                                              error:&error
+                                         byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
+            [fileManager copyItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
+        }];
+        if (error) {
+            FNLOG(@"%@", error.localizedDescription);
+        }
+        
+        NSString *thumbnailPath = [self thumbnailPathInOriginalDirectory:YES];
+        NSString *thumbnailPathInTemp = [self thumbnailPathInOriginalDirectory:NO];
+        [fileManager removeItemAtPath:thumbnailPathInTemp error:NULL];
+        [fileManager copyItemAtPath:thumbnailPath toPath:thumbnailPathInTemp error:NULL];
+    }
 }
 
 - (void)moveImagesToOriginalDirectory {
@@ -189,49 +191,51 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 		return;
 	}
 
-	NSURL *photoURLInOriginalDirectory = [self photoURLInOriginalDirectory:YES];
-	NSURL *photoURLInTemporaryDirectory = [self photoURLInOriginalDirectory:NO];
-	
-	NSFileManager *fileManager = [[NSFileManager alloc] init];
-	NSFileCoordinator* fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-	NSError *error;
-	[fileCoordinator coordinateReadingItemAtURL:photoURLInTemporaryDirectory
-										options:NSFileCoordinatorReadingWithoutChanges
-							   writingItemAtURL:photoURLInOriginalDirectory
-										options:NSFileCoordinatorWritingForReplacing
-										  error:&error
-									 byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
-										 [fileManager removeItemAtURL:newWritingURL error:NULL];
-										 [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
-									 }];
-	if (error) {
-		FNLOG(@"%@", error.localizedDescription);
-	}
-	NSString *thumbnailPath = [self thumbnailPathInOriginalDirectory:YES];
-	NSString *thumbnailPathInTemp = [self thumbnailPathInOriginalDirectory:NO];
-	
-	[fileManager removeItemAtPath:thumbnailPath error:NULL];
-	[fileManager moveItemAtPath:thumbnailPathInTemp toPath:thumbnailPath error:NULL];
-	
+    @autoreleasepool {
+        NSURL *photoURLInOriginalDirectory = [self photoURLInOriginalDirectory:YES];
+        NSURL *photoURLInTemporaryDirectory = [self photoURLInOriginalDirectory:NO];
+        
+        NSFileManager *fileManager = [[NSFileManager alloc] init];
+        NSFileCoordinator* fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+        NSError *error;
+        [fileCoordinator coordinateReadingItemAtURL:photoURLInTemporaryDirectory
+                                            options:NSFileCoordinatorReadingWithoutChanges
+                                   writingItemAtURL:photoURLInOriginalDirectory
+                                            options:NSFileCoordinatorWritingForReplacing
+                                              error:&error
+                                         byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
+            [fileManager removeItemAtURL:newWritingURL error:NULL];
+            [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
+        }];
+        if (error) {
+            FNLOG(@"%@", error.localizedDescription);
+        }
+        NSString *thumbnailPath = [self thumbnailPathInOriginalDirectory:YES];
+        NSString *thumbnailPathInTemp = [self thumbnailPathInOriginalDirectory:NO];
+        
+        [fileManager removeItemAtPath:thumbnailPath error:NULL];
+        [fileManager moveItemAtPath:thumbnailPathInTemp toPath:thumbnailPath error:NULL];
+    }
 }
 
 - (void)deletePhoto {
-
-	NSFileManager *fileManager = [[NSFileManager alloc] init];
-	NSURL *photoURL = [self photoURLInOriginalDirectory:YES];
-	NSFileCoordinator* fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-	NSError *error;
-	[fileCoordinator coordinateWritingItemAtURL:photoURL
-										options:NSFileCoordinatorWritingForDeleting
-										  error:&error
-									 byAccessor:^(NSURL *newURL) {
-										 [fileManager removeItemAtURL:newURL error:NULL];
-									 }];
-	[fileManager removeItemAtURL:[self photoURLInOriginalDirectory:NO] error:NULL];
-	[fileManager removeItemAtPath:[self thumbnailPathInOriginalDirectory:YES] error:NULL];
-	[fileManager removeItemAtPath:[self thumbnailPathInOriginalDirectory:NO] error:NULL];
-
-	self.photoID = nil;
+    @autoreleasepool {
+        NSFileManager *fileManager = [[NSFileManager alloc] init];
+        NSURL *photoURL = [self photoURLInOriginalDirectory:YES];
+        NSFileCoordinator* fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+        NSError *error;
+        [fileCoordinator coordinateWritingItemAtURL:photoURL
+                                            options:NSFileCoordinatorWritingForDeleting
+                                              error:&error
+                                         byAccessor:^(NSURL *newURL) {
+            [fileManager removeItemAtURL:newURL error:NULL];
+        }];
+        [fileManager removeItemAtURL:[self photoURLInOriginalDirectory:NO] error:NULL];
+        [fileManager removeItemAtPath:[self thumbnailPathInOriginalDirectory:YES] error:NULL];
+        [fileManager removeItemAtPath:[self thumbnailPathInOriginalDirectory:NO] error:NULL];
+        
+        self.photoID = nil;
+    }
 }
 
 - (void)deleteLocation {

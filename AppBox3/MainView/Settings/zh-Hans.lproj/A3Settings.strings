@@ -189,11 +189,11 @@
 /* Class = "IBUILabel"; text = "5 Most Recent"; ObjectID = "0Me-nY-VE5"; */
 "0Me-nY-VE5.text" = "最新 5 集";
 
-/* Class = "IBUILabel"; text = "Backup & Restore on iTunes"; ObjectID = "3V3-lS-rew"; */
-"3V3-lS-rew.text" = "备份与iTunes文件共享";
+/* Class = "IBUILabel"; text = "Backup & Restore using Files"; ObjectID = "3V3-lS-rew"; */
+"3V3-lS-rew.text" = "使用文件应用程序备份和恢复";
 
-/* Class = "IBUINavigationItem"; title = "Backup & Restore on iTunes"; ObjectID = "wZg-tr-J14"; */
-"wZg-tr-J14.title" = "备份与iTunes文件共享";
+/* Class = "IBUINavigationItem"; title = "Backup & Restore using Files"; ObjectID = "wZg-tr-J14"; */
+"wZg-tr-J14.title" = "使用文件应用程序备份和恢复";
 
 /* Class = "IBUINavigationItem"; title = "Select Backup"; ObjectID = "sf0-2F-cNr"; */
 "sf0-2F-cNr.title" = "选择备份";

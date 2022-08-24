@@ -108,6 +108,9 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextDidSaveNotification object:nil];
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
+
+    _item.lastOpened = [NSDate date];
+    [_item.managedObjectContext MR_saveToPersistentStoreAndWait];
 }
 
 - (void)applicationWillResignActive {
@@ -144,6 +147,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 		FNLOG();
 		NSString *itemID = _item.uniqueID;
 		_item = [WalletItem MR_findFirstByAttribute:ID_KEY withValue:itemID];
+        
 		_category = nil;
 		_fieldItems = nil;
 		[self category];

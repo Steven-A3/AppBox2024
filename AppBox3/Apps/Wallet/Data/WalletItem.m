@@ -17,5 +17,6 @@
 @dynamic order;
 @dynamic uniqueID;
 @dynamic updateDate;
+@dynamic lastOpened;
 
 @end

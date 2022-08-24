@@ -28,6 +28,7 @@ extern NSString *const WalletFieldTypeID;
 
 extern NSString *const A3WalletUUIDAllCategory;
 extern NSString *const A3WalletUUIDFavoriteCategory;
+extern NSString *const A3WalletUUIDRecentsCategory;
 extern NSString *const A3WalletUUIDPhotoCategory;
 extern NSString *const A3WalletUUIDVideoCategory;
 extern NSString *const A3WalletUUIDMemoCategory;
@@ -47,6 +48,7 @@ extern NSString *const A3WalletUUIDMemoCategory;
 + (void)createDirectories;
 + (void)createLocalizedPresetCategoriesInContext:(NSManagedObjectContext *)context;
 + (void)createSystemCategoryInContext:(NSManagedObjectContext *)context;
++ (void)createRecentsCategoryInContext:(NSManagedObjectContext *)context;
 + (void)initializeWalletCategories;
 + (NSArray *)walletCategoriesFilterDoNotShow:(BOOL)hideDoNotShow inContext:(NSManagedObjectContext *)context;
 + (NSUInteger)visibleCategoryCount;

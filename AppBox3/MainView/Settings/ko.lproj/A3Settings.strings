@@ -189,11 +189,11 @@
 /* Class = "IBUILabel"; text = "5 Most Recent"; ObjectID = "0Me-nY-VE5"; */
 "0Me-nY-VE5.text" = "최근 5 개";
 
-/* Class = "IBUILabel"; text = "Backup & Restore on iTunes"; ObjectID = "3V3-lS-rew"; */
-"3V3-lS-rew.text" = "iTunes로 백업 및 복원";
+/* Class = "IBUILabel"; text = "Backup & Restore using Files"; ObjectID = "3V3-lS-rew"; */
+"3V3-lS-rew.text" = "파일앱으로 백업 및 복원";
 
-/* Class = "IBUINavigationItem"; title = "Backup & Restore on iTunes"; ObjectID = "wZg-tr-J14"; */
-"wZg-tr-J14.title" = "iTunes로 백업 및 복원";
+/* Class = "IBUINavigationItem"; title = "Backup & Restore using Files"; ObjectID = "wZg-tr-J14"; */
+"wZg-tr-J14.title" = "파일앱으로 백업 및 복원";
 
 /* Class = "IBUINavigationItem"; title = "Select Backup"; ObjectID = "sf0-2F-cNr"; */
 "sf0-2F-cNr.title" = "백업 파일 선택";

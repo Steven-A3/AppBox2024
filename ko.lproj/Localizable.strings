@@ -1145,3 +1145,10 @@
 "Face ID" = "Face ID";
 "Wallet Contents" = "전자지갑 데이터";
 "Columns Header" = "열 머리글";
+"The backup file has been stored successfully." = "백업 파일이 저장되었습니다.";
+"This will take a while. Would you like to continue?" = "시간이 좀 걸립니다. 계속하시겠습니까?";
+"Backup & Restore will use Files app. If you don't see Dropbox in the Locations, please install the Dropbox app and setup your account. Next time, tap using Files." = "백업 및 복원은 파일 앱을 사용합니다. 위치에 Dropbox가 표시되지 않으면 Dropbox 앱을 설치하고 계정을 설정하세요. 다음에는 파일 사용을 탭하세요.";
+"Backup using Files app requires iOS 14 or later. Please update iOS to the latest version." = "파일 앱을 사용하여 백업하려면 iOS 14 이상이 필요합니다. iOS를 최신 버전으로 업데이트하십시오.";
+"The restoring process failed to unarchive the backup file." = "복원과정에서 백업 파일의 압축을 풀지 못했습니다.";
+"Copying..." = "복사중...";
+"Recents" = "최근";

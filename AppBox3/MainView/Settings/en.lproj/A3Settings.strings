@@ -20,8 +20,8 @@
 /* Class = "UITableViewController"; title = "Sync"; ObjectID = "2iF-5j-eQz"; */
 "2iF-5j-eQz.title" = "Sync";
 
-/* Class = "UILabel"; text = "Backup & Restore on iTunes"; ObjectID = "3V3-lS-rew"; */
-"3V3-lS-rew.text" = "Backup & Restore on iTunes";
+/* Class = "UILabel"; text = "Backup & Restore using Files"; ObjectID = "3V3-lS-rew"; */
+"3V3-lS-rew.text" = "Backup & Restore using Files";
 
 /* Class = "UITableViewSection"; headerTitle = "PASSCODE REQUIRED FOR"; ObjectID = "4da-k5-f71"; */
 "4da-k5-f71.headerTitle" = "PASSCODE REQUIRED FOR";
@@ -257,8 +257,8 @@
 /* Class = "UITableViewController"; title = "Edit Favorites"; ObjectID = "vRR-Rd-eut"; */
 "vRR-Rd-eut.title" = "Edit Favorites";
 
-/* Class = "UINavigationItem"; title = "Backup & Restore on iTunes"; ObjectID = "wZg-tr-J14"; */
-"wZg-tr-J14.title" = "Backup & Restore on iTunes";
+/* Class = "UINavigationItem"; title = "Backup & Restore using Files"; ObjectID = "wZg-tr-J14"; */
+"wZg-tr-J14.title" = "Backup & Restore using Files";
 
 /* Class = "UILabel"; text = "Restore"; ObjectID = "xJL-au-A2W"; */
 "xJL-au-A2W.text" = "Restore";

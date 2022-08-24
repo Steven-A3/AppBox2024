@@ -707,7 +707,6 @@
 		68B6F76A1EA575C500C4BB7A /* UIImage+MWPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6F73E1EA575C500C4BB7A /* UIImage+MWPhotoBrowser.m */; };
 		68B6F76C1EA575F600C4BB7A /* MWPhotoBrowserAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68B6F76B1EA575F600C4BB7A /* MWPhotoBrowserAssets.xcassets */; };
 		68B7014819789F8200F7CE1E /* TranslatorFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B7014719789F8200F7CE1E /* TranslatorFavorite.m */; };
-		68B74CAC2716B542002A5B7A /* A3WalletHistoryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B74CAB2716B542002A5B7A /* A3WalletHistoryListViewController.m */; };
 		68B9B15717CF4D8F003ACAD0 /* FXPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B15617CF4D8F003ACAD0 /* FXPageControl.m */; };
 		68B9B15C17D01EB6003ACAD0 /* A3HolidaysCountryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B15B17D01EB6003ACAD0 /* A3HolidaysCountryViewController.m */; };
 		68B9B16317D02B85003ACAD0 /* A3HolidaysCountryViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B16217D02B85003ACAD0 /* A3HolidaysCountryViewCell.m */; };
@@ -717,6 +716,7 @@
 		68C149481FFEF9E100545EB6 /* NSString+TextDirectionality.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C149471FFEF9E100545EB6 /* NSString+TextDirectionality.m */; };
 		68C1ABFA18B1C05200021001 /* NSDateFormatter+LunarDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C1ABF918B1C05200021001 /* NSDateFormatter+LunarDate.m */; };
 		68C36051220AC68600F9AC4D /* FlickrRecommendation.json in Resources */ = {isa = PBXBuildFile; fileRef = 68832C9E199A3C8E00AF7C18 /* FlickrRecommendation.json */; };
+		68C5F85728AA1AF20055F7CA /* A3WalletRecentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C5F85628AA1AF20055F7CA /* A3WalletRecentsViewController.m */; };
 		68C7E1081BE20C1C00861AFD /* A3CurrencyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C7E1071BE20C1C00861AFD /* A3CurrencyViewController.m */; };
 		68C802D819571A0200BC19EE /* WalletCategoryPreset.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68C802D719571A0200BC19EE /* WalletCategoryPreset.plist */; };
 		68C802DB19571A2000BC19EE /* WalletPreset.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68C802DD19571A2000BC19EE /* WalletPreset.strings */; };
@@ -732,6 +732,7 @@
 		68CF607E1CBCF78C00F8E9B9 /* beep.wav in Resources */ = {isa = PBXBuildFile; fileRef = 68CF607D1CBCF78C00F8E9B9 /* beep.wav */; };
 		68CF60821CBD105C00F8E9B9 /* A3CornersView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CF60811CBD105C00F8E9B9 /* A3CornersView.m */; };
 		68CF60851CBD1A8500F8E9B9 /* A3QRCodeScanLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CF60841CBD1A8500F8E9B9 /* A3QRCodeScanLineView.m */; };
+		68CFACD428A3A6F900C6B4F0 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68CFACD328A3A6F800C6B4F0 /* UniformTypeIdentifiers.framework */; };
 		68D0731A1820DE4200D34870 /* A3TripleCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D073191820DE4200D34870 /* A3TripleCircleView.m */; };
 		68D0732018210B5100D34870 /* A3RoundedSideButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D0731F18210B5100D34870 /* A3RoundedSideButton.m */; };
 		68D1AC9917977F960047D4BF /* A3CurrencyTVEqualCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D1AC9817977F960047D4BF /* A3CurrencyTVEqualCell.m */; };
@@ -2338,8 +2339,6 @@
 		68B6F76B1EA575F600C4BB7A /* MWPhotoBrowserAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = MWPhotoBrowserAssets.xcassets; sourceTree = "<group>"; };
 		68B7014619789F8200F7CE1E /* TranslatorFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TranslatorFavorite.h; sourceTree = "<group>"; };
 		68B7014719789F8200F7CE1E /* TranslatorFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TranslatorFavorite.m; sourceTree = "<group>"; };
-		68B74CAB2716B542002A5B7A /* A3WalletHistoryListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = A3WalletHistoryListViewController.m; sourceTree = "<group>"; };
-		68B74CB72716B5E4002A5B7A /* A3WalletHistoryListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = A3WalletHistoryListViewController.h; sourceTree = "<group>"; };
 		68B9B15517CF4D8F003ACAD0 /* FXPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FXPageControl.h; path = External/FXPageControl/FXPageControl/FXPageControl.h; sourceTree = "<group>"; };
 		68B9B15617CF4D8F003ACAD0 /* FXPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FXPageControl.m; path = External/FXPageControl/FXPageControl/FXPageControl.m; sourceTree = "<group>"; };
 		68B9B15A17D01EB6003ACAD0 /* A3HolidaysCountryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3HolidaysCountryViewController.h; path = Holidays/A3HolidaysCountryViewController.h; sourceTree = "<group>"; };
@@ -2356,6 +2355,9 @@
 		68C149471FFEF9E100545EB6 /* NSString+TextDirectionality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TextDirectionality.m"; sourceTree = "<group>"; };
 		68C1ABF818B1C05200021001 /* NSDateFormatter+LunarDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+LunarDate.h"; sourceTree = "<group>"; };
 		68C1ABF918B1C05200021001 /* NSDateFormatter+LunarDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+LunarDate.m"; sourceTree = "<group>"; };
+		68C5F85628AA1AF20055F7CA /* A3WalletRecentsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = A3WalletRecentsViewController.m; sourceTree = "<group>"; };
+		68C5F85828AA1B0F0055F7CA /* A3WalletRecentsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = A3WalletRecentsViewController.h; sourceTree = "<group>"; };
+		68C5F85928AA39030055F7CA /* WalletItem Last Opened.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WalletItem Last Opened.xcdatamodel"; sourceTree = "<group>"; };
 		68C7E1061BE20C1C00861AFD /* A3CurrencyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyViewController.h; path = Apps/Currency/A3CurrencyViewController.h; sourceTree = "<group>"; };
 		68C7E1071BE20C1C00861AFD /* A3CurrencyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyViewController.m; path = Apps/Currency/A3CurrencyViewController.m; sourceTree = "<group>"; };
 		68C802D719571A0200BC19EE /* WalletCategoryPreset.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WalletCategoryPreset.plist; sourceTree = "<group>"; };
@@ -2406,6 +2408,7 @@
 		68CF60811CBD105C00F8E9B9 /* A3CornersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CornersView.m; sourceTree = "<group>"; };
 		68CF60831CBD1A8500F8E9B9 /* A3QRCodeScanLineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3QRCodeScanLineView.h; sourceTree = "<group>"; };
 		68CF60841CBD1A8500F8E9B9 /* A3QRCodeScanLineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3QRCodeScanLineView.m; sourceTree = "<group>"; };
+		68CFACD328A3A6F800C6B4F0 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
 		68D073181820DE4200D34870 /* A3TripleCircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TripleCircleView.h; sourceTree = "<group>"; };
 		68D073191820DE4200D34870 /* A3TripleCircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3TripleCircleView.m; sourceTree = "<group>"; };
 		68D0731E18210B5100D34870 /* A3RoundedSideButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3RoundedSideButton.h; sourceTree = "<group>"; };
@@ -2991,6 +2994,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68CFACD428A3A6F900C6B4F0 /* UniformTypeIdentifiers.framework in Frameworks */,
 				68854E64273CEF010009D028 /* Ensembles.xcframework in Frameworks */,
 				68691B7C1EB69007006685B0 /* StoreKit.framework in Frameworks */,
 				68F04D101B40F86B004FDD7B /* libcrypto.a in Frameworks */,
@@ -3922,6 +3926,7 @@
 		682EA2D415EB10B000BD6AD4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				68CFACD328A3A6F800C6B4F0 /* UniformTypeIdentifiers.framework */,
 				68854E63273CEF000009D028 /* Ensembles.xcframework */,
 				6878361D1E6E4D7000828BA8 /* WebKit.framework */,
 				686FCF701775CF9D00F19332 /* Accelerate.framework */,
@@ -5042,8 +5047,8 @@
 				68B6A2A518CEC76D004084EF /* A3WalletPhotoItemViewController.m */,
 				17D426E581ED82E6EA0F9AA8 /* A3WalletVideoItemViewController.h */,
 				17D4276A166CB33EEB6FC6F6 /* A3WalletVideoItemViewController.m */,
-				68B74CB72716B5E4002A5B7A /* A3WalletHistoryListViewController.h */,
-				68B74CAB2716B542002A5B7A /* A3WalletHistoryListViewController.m */,
+				68C5F85828AA1B0F0055F7CA /* A3WalletRecentsViewController.h */,
+				68C5F85628AA1AF20055F7CA /* A3WalletRecentsViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -6360,7 +6365,6 @@
 				686F06E71AA1D9DC0093A6F9 /* A3MarkingsView.m in Sources */,
 				68F14FCC19485E8500159EAD /* A3DaysCounterReminderListViewController.m in Sources */,
 				681E1266193443F00077DCFA /* zip.c in Sources */,
-				68B74CAC2716B542002A5B7A /* A3WalletHistoryListViewController.m in Sources */,
 				68E2A65D18D0B1FC00E834D9 /* A3PercentCalcHeaderView.m in Sources */,
 				68ADE14817D83D28009618A7 /* MMDrawerController.m in Sources */,
 				68143D5918E3EC7C00569691 /* A3JHTableViewSections.m in Sources */,
@@ -6630,6 +6634,7 @@
 				68E0B31E198CAB6200127229 /* LoanCalcHistory.m in Sources */,
 				68143D5D18E3EC7C00569691 /* A3TableViewController.m in Sources */,
 				680D639118CFF9D400938AD0 /* A3CalculatorButtonsInScientificViewController_iPad.m in Sources */,
+				68C5F85728AA1AF20055F7CA /* A3WalletRecentsViewController.m in Sources */,
 				680886DB1891751B0093FD97 /* A3ClockMainViewController.m in Sources */,
 				577707F319D57CB900DC066A /* NPConicGradient.m in Sources */,
 				68236CDD186AA7B4006F442B /* A3AppDelegate+passcode.m in Sources */,
@@ -7757,7 +7762,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.6.41.0;
+				CURRENT_PROJECT_VERSION = 4.6.42.2;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -7781,7 +7786,7 @@
 					"$(PROJECT_DIR)/External/RMStore/Optional/openssl-1.0.2c/lib",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
-				MARKETING_VERSION = 4.6.41;
+				MARKETING_VERSION = 4.6.42;
 				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -7805,7 +7810,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.6.41.0;
+				CURRENT_PROJECT_VERSION = 4.6.42.2;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -7829,7 +7834,7 @@
 					"$(PROJECT_DIR)/External/RMStore/Optional/openssl-1.0.2c/lib",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
-				MARKETING_VERSION = 4.6.41;
+				MARKETING_VERSION = 4.6.42;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7960,12 +7965,13 @@
 		6831EBF618619CC800BAF15B /* AppBox3.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				68C5F85928AA39030055F7CA /* WalletItem Last Opened.xcdatamodel */,
 				68057CCD1E39ECB9002A11FE /* Abbreviation and Kaomoji favorites.xcdatamodel */,
 				68E67CAE1CE44E86002B022E /* Add Pedometer.xcdatamodel */,
 				68EABE271CB7515900219151 /* AppBox 2 (Adding QR Code).xcdatamodel */,
 				6831EBF718619CC800BAF15B /* AppBox3.xcdatamodel */,
 			);
-			currentVersion = 68057CCD1E39ECB9002A11FE /* Abbreviation and Kaomoji favorites.xcdatamodel */;
+			currentVersion = 68C5F85928AA39030055F7CA /* WalletItem Last Opened.xcdatamodel */;
 			path = AppBox3.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

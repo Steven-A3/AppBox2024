@@ -397,12 +397,8 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 }
 
 - (void)backupRestoreManager:(A3BackupRestoreManager *)manager restoreCompleteWithSuccess:(BOOL)success {
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-														message:NSLocalizedString(@"Your data has been restored successfully.", nil)
-													   delegate:nil
-											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-											  otherButtonTitles:nil];
-	[alertView show];
+    [self presentAlertWithTitle:NSLocalizedString(@"Info", @"Info")
+                        message:NSLocalizedString(@"Your data has been restored successfully.", nil)];
 
 	NSNumber *selectedColor = [[A3SyncManager sharedSyncManager] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
 	if (selectedColor) {

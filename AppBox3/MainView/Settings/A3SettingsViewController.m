@@ -365,7 +365,19 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	switch (indexPath.section) {
         case 0: {
-            if (indexPath.row == 3) {
+            if (indexPath.row == 1) {
+                if (@available(iOS 14.0, *)) {
+                    [self alertNewDropboxBackupInfo];
+                } else {
+                    [self performSegueWithIdentifier:@"dropboxbackup" sender:nil];
+                }
+            } else if (indexPath.row == 2) {
+                if (@available(iOS 14.0, *)) {
+                    [self performSegueWithIdentifier:@"backuprestore" sender:nil];
+                } else {
+                    [self alertFilesRequireiOS14];
+                }
+            } else if (indexPath.row == 3) {
                 [self exportWalletContents];
             }
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -463,6 +475,26 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 		default:
 			break;
 	}
+}
+
+- (void)alertNewDropboxBackupInfo {
+    UIAlertController *alertController =
+    [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Info", @"Info")
+                                        message:NSLocalizedString(@"Backup & Restore will use Files app. If you don't see Dropbox in the Locations, please install the Dropbox app and setup your account. Next time, tap using Files.", @"")
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction =
+    [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK")
+                             style:UIAlertActionStyleDefault
+                           handler:^(UIAlertAction * _Nonnull action) {
+        [self performSegueWithIdentifier:@"backuprestore" sender:nil];
+    }];
+    [alertController addAction:okAction];
+    [self presentViewController:alertController animated:YES completion:NULL];
+}
+
+- (void)alertFilesRequireiOS14 {
+    [self presentAlertWithTitle:NSLocalizedString(@"Info", @"Info")
+                        message:NSLocalizedString(@"Backup using Files app requires iOS 14 or later. Please update iOS to the latest version.", @"")];
 }
 
 - (void)exportWalletContents {

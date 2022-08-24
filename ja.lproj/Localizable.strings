@@ -1147,3 +1147,10 @@
 "Face ID" = "Face ID";
 "Wallet Contents" = "電子財布のコンテンツ";
 "Columns Header" = "列ヘッダー";
+"The backup file has been stored successfully." = "バックアップ ファイルが正常に保存されました。";
+"This will take a while. Would you like to continue?" = "これにはしばらく時間がかかります。 続行しますか？";
+"Backup & Restore will use Files app. If you don't see Dropbox in the Locations, please install the Dropbox app and setup your account. Next time, tap using Files." = "バックアップと復元はファイル アプリを使用します。 ロケーションに Dropbox が表示されない場合は、Dropbox アプリをインストールしてアカウントを設定してください。 次回は、ファイルを使用してタップします。";
+"Backup using Files app requires iOS 14 or later. Please update iOS to the latest version." = "ファイル アプリを使用したバックアップには、iOS 14 以降が必要です。 iOSを最新バージョンにアップデートしてください。";
+"The restoring process failed to unarchive the backup file." = "復元プロセスがバックアップ ファイルのアーカイブ解除に失敗しました。";
+"Copying..." = "コピー中...";
+"Recents" = "最近";

@@ -1156,3 +1156,10 @@
 "Face ID" = "Face ID";
 "Wallet Contents" = "钱包内容";
 "Columns Header" = "列标题";
+"The backup file has been stored successfully." = "备份文件已成功存储。";
+"This will take a while. Would you like to continue?" = "这需要一段时间。 你想继续吗？";
+"Backup & Restore will use Files app. If you don't see Dropbox in the Locations, please install the Dropbox app and setup your account. Next time, tap using Files." = "备份和恢复将使用文件应用程序。 如果您在 Locations 中没有看到 Dropbox，请安装 Dropbox 应用并设置您的帐户。 下次，点击使用文件。";
+"Backup using Files app requires iOS 14 or later. Please update iOS to the latest version." = "使用“文件”应用进行备份需要 iOS 14 或更高版本。 请将 iOS 更新至最新版本。";
+"The restoring process failed to unarchive the backup file." = "还原过程未能取消归档备份文件。";
+"Copying..." = "正在复制...";
+"Recents" = "最近";

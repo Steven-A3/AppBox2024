@@ -23,6 +23,7 @@
 #import "A3CenterViewDelegate.h"
 #import "UIViewController+A3Addition.h"
 #import "UITabBarController+extension.h"
+#import "A3WalletRecentsViewController.h"
 
 #define kDefaultTabSelection    1	// default tab value is 0 (tab #1), stored in A3UserDefaults
 
@@ -49,16 +50,20 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 		[WalletData initializeWalletCategories];
 	}
 
+    // Recents Category는 4.6.23에서 추가가 된다.
+    // Recents Category가 있는지 확인한다.
+    NSArray *recentsCategory = [WalletCategory MR_findByAttribute:@"uniqueID" withValue:A3WalletUUIDRecentsCategory];
+    if ([recentsCategory count] == 0) {
+        NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
+        [WalletData createRecentsCategoryInContext:context];
+        [context MR_saveToPersistentStoreAndWait];
+    }
+    
 	// test for "kWhichTabPrefKey" key value
-	NSUInteger preTabIndex = [[A3UserDefaults standardUserDefaults] integerForKey:A3WalletUserDefaultsSelectedTab];
-	if (preTabIndex == 0)
-	{
-		// no default source value has been set, create it here
-		//
-		// since no default values have been set (i.e. no preferences file created), create it here
-		[[A3UserDefaults standardUserDefaults] setInteger:kDefaultTabSelection forKey:A3WalletUserDefaultsSelectedTab];
-		[[A3UserDefaults standardUserDefaults] synchronize];
-	}
+    if (![[A3UserDefaults standardUserDefaults] objectForKey:A3WalletUserDefaultsSelectedTab]) {
+        [[A3UserDefaults standardUserDefaults] setInteger:kDefaultTabSelection forKey:A3WalletUserDefaultsSelectedTab];
+        [[A3UserDefaults standardUserDefaults] synchronize];
+    }
 
 	[WalletData createDirectories];
 
@@ -304,6 +309,13 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
             vc.category = category;
             viewController = vc;
             NSString *selected = [category.icon stringByAppendingString:@"_on"];
+            selectedIcon = [UIImage imageNamed:selected];
+        }
+        else if ([category.uniqueID isEqualToString:A3WalletUUIDRecentsCategory]) {
+            A3WalletRecentsViewController *vc = [[A3WalletRecentsViewController alloc] init];
+            vc.category = category;
+            viewController = vc;
+            NSString *selected = category.icon;
             selectedIcon = [UIImage imageNamed:selected];
         }
         else {

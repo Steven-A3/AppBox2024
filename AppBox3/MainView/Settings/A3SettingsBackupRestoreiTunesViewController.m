@@ -19,12 +19,17 @@
 #import "A3AppDelegate.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+@import UniformTypeIdentifiers;
+#import "UIViewController+A3Addition.h"
 
-@interface A3SettingsBackupRestoreiTunesViewController () <A3SettingsITunesSelectBackupDelegate, AAAZipDelegate, A3BackupRestoreManagerDelegate>
+@interface A3SettingsBackupRestoreiTunesViewController () <A3SettingsITunesSelectBackupDelegate, AAAZipDelegate, A3BackupRestoreManagerDelegate, UIDocumentPickerDelegate>
 
 @property (nonatomic, strong) NSString *backupInfoString;
 @property (nonatomic, strong) A3BackupRestoreManager *backupRestoreManager;
 @property (nonatomic, strong) MBProgressHUD *HUD;
+@property (nonatomic, strong) NSURL *backupFileURLFromFiles;
+@property (nonatomic, strong) NSIndexPath *selectedIndexPath;
+@property (nonatomic, strong) AAAZip *zipArchive;
 
 @end
 
@@ -62,7 +67,7 @@
 }
 
 - (void)updateBackupInfo {
-	_backupInfoString = NSLocalizedString(@"Backup file does not exist.", @"No backup files.");
+	_backupInfoString = NSLocalizedString(@"", nil);
 
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSString *documentDirectoryPath = [fileManager documentDirectoryPath];
@@ -153,20 +158,40 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    self.selectedIndexPath = indexPath;
+    
 	if (indexPath.section == 0) {
 		if (indexPath.row == 0) { 	// Restore
 			if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-				UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-																	message:NSLocalizedString(@"Please turn iCloud sync off.", @"Please turn iCloud sync off.")
-																   delegate:nil
-														  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-														  otherButtonTitles:nil];
-				[alertView show];
+                [self presentAlertWithTitle:NSLocalizedString(@"Info", nil)
+                                    message:NSLocalizedString(@"Please turn iCloud sync off.", nil)];
 			} else {
-				[self performSegueWithIdentifier:@"iTunesSelectBackup" sender:self];
+                if (@available(iOS 14.0, *)) {
+                    UTType *type = [UTType exportedTypeWithIdentifier:@"net.allaboutapps.appboxbackup"];
+                    UIDocumentPickerViewController *picker = [[UIDocumentPickerViewController alloc] initForOpeningContentTypes:@[type]];
+                    picker.delegate = self;
+                    [self presentViewController:picker animated:YES completion:NULL];
+                }
+//				[self performSegueWithIdentifier:@"iTunesSelectBackup" sender:self];
 			}
 		} else {					// Backup
-			[self.backupRestoreManager backupToDocumentDirectory];
+            UIAlertController *alertController =
+            [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Info", @"Info")
+                                                message:NSLocalizedString(@"This will take a while. Would you like to continue?", @"")
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *okAction =
+            [UIAlertAction actionWithTitle:NSLocalizedString(@"Continue", @"")
+                                     style:UIAlertActionStyleDestructive
+                                   handler:^(UIAlertAction * _Nonnull action) {
+                [self.backupRestoreManager backupToDocumentDirectory];
+            }];
+            UIAlertAction *cancelAction =
+            [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"")
+                                     style:UIAlertActionStyleCancel
+                                   handler:NULL];
+            [alertController addAction:okAction];
+            [alertController addAction:cancelAction];
+            [self presentViewController:alertController animated:YES completion:NULL];
 		}
 	} else {
 		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.allaboutapps.net/wordpress/archives/358"]];
@@ -188,6 +213,87 @@
     }
 }
 
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray<NSURL *> *)urls {
+    UIAlertAction *replaceAction =
+    [UIAlertAction actionWithTitle:NSLocalizedString(@"Replace", nil)
+                             style:UIAlertActionStyleDestructive
+                           handler:^(UIAlertAction * _Nonnull action) {
+        [self proceedRestoreWithFileURL:urls[0]];
+    }];
+    UIAlertAction *cancelAction =
+    [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
+                             style:UIAlertActionStyleCancel
+                           handler:NULL];
+    
+    UIAlertController *alertController =
+    [UIAlertController alertControllerWithTitle:@""
+                                        message:NSLocalizedString(@"Are you going to replace existing data with the backup data?", nil)
+                                 preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertController addAction:replaceAction];
+    [alertController addAction:cancelAction];
+
+    if (IS_IPAD) {
+        UIPopoverPresentationController *popover = alertController.popoverPresentationController;
+        popover.sourceView = self.view;
+        UITableViewCell *senderCell = [self.tableView cellForRowAtIndexPath:self.selectedIndexPath];
+        popover.sourceRect = CGRectMake(self.view.center.x, ((UITableViewCell *)senderCell).center.y, 0, 0);
+        popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
+    }
+    [self presentViewController:alertController animated:YES completion:NULL];
+}
+
+- (void)proceedRestoreWithFileURL:(NSURL *)fileURL {
+    self.HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:_HUD];
+
+    _HUD.mode = MBProgressHUDModeIndeterminate;
+    _HUD.label.text = NSLocalizedString(@"Copying...", nil);
+
+    [_HUD showAnimated:YES];
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        @autoreleasepool {
+            NSFileCoordinator *fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+            NSString *filename = [fileURL lastPathComponent];
+            self.backupFileURLFromFiles = [NSURL fileURLWithPath:[filename pathInCachesDirectory]];
+            
+            NSError *error;
+            if (![fileURL startAccessingSecurityScopedResource]) {
+                BOOL urlAvailable = NO;
+                do {
+                    urlAvailable = [fileURL startAccessingSecurityScopedResource];
+                } while (!urlAvailable);
+            }
+            [fileCoordinator coordinateReadingItemAtURL:fileURL
+                                                options:NSFileCoordinatorReadingWithoutChanges
+                                       writingItemAtURL:self.backupFileURLFromFiles
+                                                options:NSFileCoordinatorWritingForReplacing
+                                                  error:&error
+                                             byAccessor:^(NSURL * _Nonnull newReadingURL, NSURL * _Nonnull newWritingURL) {
+                NSFileManager *manager = [NSFileManager defaultManager];
+                NSError *copyError;
+                [manager copyItemAtURL:newReadingURL toURL:newWritingURL error:&copyError];
+                if (copyError) {
+                    FNLOG(@"%@", copyError.description);
+                }
+            }];
+            [fileURL stopAccessingSecurityScopedResource];
+        }
+
+        // Set determinate mode
+        self.HUD.mode = MBProgressHUDModeDeterminate;
+        self.HUD.removeFromSuperViewOnHide = YES;
+
+        self.HUD.label.text = NSLocalizedString(@"Unarchiving", @"Unarchiving");
+
+        [self.HUD showAnimated:YES];
+
+        self.zipArchive = [[AAAZip alloc] init];
+        self.zipArchive.delegate = self;
+        [self.zipArchive unzipFile:[self.backupFileURLFromFiles path] unzipFileto:[@"restore" pathInCachesDirectory]];
+    });
+
+}
 /*
 #pragma mark - Navigation
 
@@ -253,17 +359,22 @@
 	[_HUD hideAnimated:YES];
 	_HUD = nil;
 
-	self.backupRestoreManager.delegate = self;
-	[self.backupRestoreManager restoreDataAt:[@"restore" pathInCachesDirectory] toURL:[[A3AppDelegate instance] storeURL]];
+    // Delete backup file copied from Files
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    [fileManager removeItemAtURL:self.backupFileURLFromFiles error:NULL];
+
+    if (bResult) {
+        self.backupRestoreManager.delegate = self;
+        [self.backupRestoreManager restoreDataAt:[@"restore" pathInCachesDirectory] toURL:[[A3AppDelegate instance] storeURL]];
+    } else {
+        [self presentAlertWithTitle:NSLocalizedString(@"Info", @"Info") message:NSLocalizedString(@"The restoring process failed to unarchive the backup file.", @"")];
+    }
+    self.zipArchive = nil;
 }
 
 - (void)backupRestoreManager:(A3BackupRestoreManager *)manager restoreCompleteWithSuccess:(BOOL)success {
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-														message:NSLocalizedString(@"Your data has been restored successfully.", nil)
-													   delegate:nil
-											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-											  otherButtonTitles:nil];
-	[alertView show];
+    [self presentAlertWithTitle:NSLocalizedString(@"Info", @"Info")
+                        message:NSLocalizedString(@"Your data has been restored successfully.", nil)];
 
 	NSNumber *selectedColor = [[A3SyncManager sharedSyncManager] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
 	if (selectedColor) {

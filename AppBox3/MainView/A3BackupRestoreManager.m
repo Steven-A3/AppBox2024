@@ -24,6 +24,7 @@
 #import "WalletField.h"
 #import "WalletItem.h"
 #import "WalletCategory.h"
+#import "UIViewController+A3Addition.h"
 
 NSString *const A3ZipFilename = @"name";
 NSString *const A3ZipNewFilename = @"newname";
@@ -45,7 +46,7 @@ NSString *const A3BackupFileUserDefaultsKey = @"UserDefaults";
 NSString *const A3BackupFileDeviceUserDefaultsKey = @"DeviceUserDefaults";
 NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
-@interface A3BackupRestoreManager () <AAAZipDelegate, A3DataMigrationManagerDelegate>
+@interface A3BackupRestoreManager () <AAAZipDelegate, A3DataMigrationManagerDelegate, UIDocumentPickerDelegate>
 
 @property (nonatomic, strong) MBProgressHUD *HUD;
 @property (nonatomic, strong) NSNumberFormatter *percentFormatter;
@@ -388,12 +389,19 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 			[_delegate backupRestoreManager:self backupCompleteWithSuccess:YES];
 		}
 
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-														message:NSLocalizedString(@"Backup file is ready.", nil)
-													   delegate:nil
-											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-											  otherButtonTitles:nil];
-		[alert show];
+        if (@available(iOS 14.0, *)) {
+            NSURL *url = [NSURL fileURLWithPath:self.backupFilePath];
+            UIDocumentPickerViewController *documentPickerViewController = [[UIDocumentPickerViewController alloc] initForExportingURLs:@[url]];
+            documentPickerViewController.delegate = self;
+            [self.hostingViewController presentViewController:documentPickerViewController animated:YES completion:NULL];
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+                                                            message:NSLocalizedString(@"Backup file is ready.", nil)
+                                                           delegate:nil
+                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                  otherButtonTitles:nil];
+            [alert show];
+        }
 	} else {
 		_HUD.label.text = NSLocalizedString(@"Uploading", @"Uploading");
 		_HUD.detailsLabel.text = @"";
@@ -476,6 +484,11 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 		[fileManager removeItemAtPath:path error:NULL];
 	}
 	_deleteFilesAfterZip = nil;
+}
+
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray<NSURL *> *)urls {
+    [_hostingViewController presentAlertWithTitle:NSLocalizedString(@"Info", @"Info")
+                                          message:NSLocalizedString(@"The backup file has been stored successfully.", @"")];
 }
 
 - (NSString *)uniqueBackupFilenameWithPrefix:(NSString *)prefix extension:(NSString *)extension {
@@ -594,6 +607,9 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 		[fileManager removeItemAtPath:backupInfoFilePath error:NULL];
 		[self moveFilesFromURL:sourceBaseURL toURL:targetBaseURL];
 
+        // Cleanup restore source directory
+        [fileManager removeItemAtPath:backupFilePath error:NULL];
+        
 		[[A3AppDelegate instance] setupContext];
 
 		if ([_delegate respondsToSelector:@selector(backupRestoreManager:restoreCompleteWithSuccess:)]) {

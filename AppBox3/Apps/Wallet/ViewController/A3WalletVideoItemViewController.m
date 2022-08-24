@@ -81,10 +81,13 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 	self.title = NSLocalizedString(@"Details", @"Detail");
 
     [self initializeViews];
-    
+ 
     [self registerContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
+
+    _item.lastOpened = [NSDate date];
+    [_item.managedObjectContext MR_saveToPersistentStoreAndWait];
 }
 
 - (void)applicationWillResignActive {

@@ -18,5 +18,6 @@
 @property (nonatomic, retain) NSString * order;
 @property (nonatomic, retain) NSString * uniqueID;
 @property (nonatomic, retain) NSDate * updateDate;
+@property (nonatomic, retain) NSDate * lastOpened;
 
 @end
