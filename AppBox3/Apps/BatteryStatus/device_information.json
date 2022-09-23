@@ -48,6 +48,10 @@
         "iPhone14,4": "iPhone 13 mini",
         "iPhone14,5": "iPhone 13",
         "iPhone14,6": "iPhone SE 3rd Gen",
+        "iPhone14,7": "iPhone 14",
+        "iPhone14,8": "iPhone 14 Plus",
+        "iPhone15,2": "iPhone 14 Pro",
+        "iPhone15,3": "iPhone 14 Pro Max",
         "iPad1,1": "iPad",
         "iPad1,2": "iPad 3G",
         "iPad2,1": "iPad 2 (Wi-Fi)",
@@ -133,6 +137,38 @@
         "iPod9,1": "iPod Touch (7th Generation)"
     },
     "deviceInformation": {
+        "iPhone 14": {
+            "Model": "iPhone 14",
+            "Chips": "A15 Bionic chip, 16-Core Neural Engine",
+            "CPU": "Hexa-core (2x high-performance Avalanche + 4x energy-saving Blizzard)",
+            "GPU": "Apple-designed 5 core",
+            "Memory": "6 GB LPDDR4X",
+            "PPI": "460"
+        },
+        "iPhone 14 Plus": {
+            "Model": "iPhone 14 Plus",
+            "Chips": "A15 Bionic chip, 16-Core Neural Engine",
+            "CPU": "Hexa-core (2x high-performance Avalanche + 4x energy-saving Blizzard)",
+            "GPU": "Apple-designed 5 core",
+            "Memory": "6 GB LPDDR4X",
+            "PPI": "458"
+        },
+        "iPhone 14 Pro": {
+            "Model": "iPhone 14 Pro",
+            "Chips": "A16 Bionic chip, 16-Core Neural Engine",
+            "CPU": "Hexa-core (2x high-performance Everest + 4x energy-saving Sawtooth)",
+            "GPU": "Apple-designed 5 core",
+            "Memory": "6 GB LPDDR4X",
+            "PPI": "460"
+        },
+        "iPhone 14 Pro Max": {
+            "Model": "iPhone 14 Pro Max",
+            "Chips": "A16 Bionic chip, 16-Core Neural Engine",
+            "CPU": "Hexa-core (2x high-performance Everest + 4x energy-saving Sawtooth)",
+            "GPU": "Apple-designed 5 core",
+            "Memory": "6 GB LPDDR4X",
+            "PPI": "460"
+        },
         "iPhone SE 3rd Gen": {
             "Model": "iPhone SE 3rd Gen",
             "Chips": "A15 Bionic chip, New 16-Core Neural Engine",
@@ -1031,6 +1067,30 @@
         }
     },
     "remainingTimeInfo": {
+        "iPhone 14 Pro Max": {
+            "Model": "iPhone 14 Pro Max",
+            "Video playback (streamed)": 25,
+            "Video playback": 29,
+            "Audio playback": 95
+        },
+        "iPhone 14 Pro": {
+            "Model": "iPhone 14 Pro",
+            "Video playback (streamed)": 20,
+            "Video playback": 23,
+            "Audio playback": 75
+        },
+        "iPhone 14 Plus": {
+            "Model": "iPhone 14 Plus",
+            "Video playback (streamed)": 20,
+            "Video playback": 26,
+            "Audio playback": 100
+        },
+        "iPhone 14": {
+            "Model": "iPhone 14",
+            "Video playback (streamed)": 16,
+            "Video playback": 20,
+            "Audio playback": 80
+        },
         "iPhone SE 3rd Gen": {
             "Model": "iPhone SE 3rd Gen",
             "Video playback (streamed)": 10,

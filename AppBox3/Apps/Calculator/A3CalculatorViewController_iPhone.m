@@ -226,7 +226,7 @@
 
 - (CGFloat)getExpressionLabelTopOffSet:(CGRect) screenBounds {
     CGFloat scaleToDesign = [A3UIDevice scaleToOriginalDesignDimension];
-    return IS_PORTRAIT ? (screenBounds.size.height == 480 ? 25.5 : 80 * scaleToDesign) : 5.5 * scaleToDesign;
+    return IS_PORTRAIT ? (screenBounds.size.height == 480 ? 25.5 : 100 * scaleToDesign) : 5.5 * scaleToDesign;
 }
 
 - (CGFloat)getExpressionLabelRightOffSet:(CGRect) screenBounds {
@@ -258,7 +258,7 @@
 
 - (CGFloat)getResultLabelBaselineOffSet:(CGRect) screenBounds {
     CGFloat scaleToDesign = [A3UIDevice scaleToOriginalDesignDimension];
-    return IS_PORTRAIT ? (screenBounds.size.height == 480 ? 121 : 204.5 * scaleToDesign) : 68 * scaleToDesign;
+    return IS_PORTRAIT ? (screenBounds.size.height == 480 ? 121 : 250 * scaleToDesign) : 68 * scaleToDesign;
 }
 
 - (UIFont *)getResultLabelFont:(CGRect) screenBounds {

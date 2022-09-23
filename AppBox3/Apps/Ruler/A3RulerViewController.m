@@ -143,6 +143,24 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
     CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
     CGFloat screenHeight = MAX(screenBounds.size.width, screenBounds.size.height);
 
+    if ([model isEqualToString:@"iPhone 14 Pro Max"]) {
+        CGFloat pixelsInInch = 460;
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 2796.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2796.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
+        _redLineWidth = 0.5;
+        return;
+    }
+    if ([model isEqualToString:@"iPhone 14 Pro"]) {
+        CGFloat pixelsInInch = 460;
+        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
+        _centimeterAsPoints = (screenHeight / 2556.0) * pixelsInCentimeter;
+        _inchAsPoints = (screenHeight / 2556.0) * pixelsInInch;
+        _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
+        _redLineWidth = 0.5;
+        return;
+    }
     if ([model isEqualToString:@"iPhone 13"] ||
         [model isEqualToString:@"iPhone 12"]) {
         CGFloat pixelsInInch = 460;
@@ -165,6 +183,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
     }
     if ([model isEqualToString:@"iPhone 12 Pro"] ||
         [model isEqualToString:@"iPhone 13 Pro"] ||
+        [model isEqualToString:@"iPhone 14"] ||
         [model isEqualToString:@"iPhone (Latest)"]) {
         CGFloat pixelsInInch = 460;    // Original value = 458
         CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
@@ -175,7 +194,8 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
         return;
     }
     if ([model isEqualToString:@"iPhone 13 Pro Max"] ||
-        [model isEqualToString:@"iPhone 12 Pro Max"]) {
+        [model isEqualToString:@"iPhone 12 Pro Max"] ||
+        [model isEqualToString:@"iPhone 14 Plus"]) {
         CGFloat pixelsInInch = 458;     // Original value = 326
         CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
         _centimeterAsPoints = (screenHeight / 2778.0) * pixelsInCentimeter;

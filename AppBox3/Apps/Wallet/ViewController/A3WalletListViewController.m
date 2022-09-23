@@ -133,7 +133,7 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
     _tableView.delegate = self;
 	_tableView.showsVerticalScrollIndicator = NO;
 	_tableView.rowHeight = 48.0;
-	_tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+	_tableView.contentInset = UIEdgeInsetsMake(-22, 0, 0, 0);
 	_tableView.separatorColor = [self tableViewSeparatorColor];
 	_tableView.separatorInset = A3UITableViewSeparatorInset;
 	if ([_tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {

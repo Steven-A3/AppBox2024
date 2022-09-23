@@ -116,6 +116,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 		_item = [WalletItem MR_createEntity];
 		_item.uniqueID = [[NSUUID UUID] UUIDString];
 		_item.updateDate = [NSDate date];
+        _item.lastOpened = [NSDate date];
 		[_item assignOrder];
 		_item.categoryID = _category.uniqueID;
 	} else {
@@ -746,6 +747,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	}
     
 	_item.updateDate = [NSDate date];
+    _item.lastOpened = [NSDate date];
     
 	if ([savingContext hasChanges]) {
 		[savingContext MR_saveToPersistentStoreAndWait];

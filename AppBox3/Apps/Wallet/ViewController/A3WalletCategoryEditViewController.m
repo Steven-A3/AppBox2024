@@ -83,6 +83,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 	}
 	self.originalCategoryName = _category.name;
     
+    [self makeNavigationBarAppearanceDefault];
     [self makeBackButtonEmptyArrow];
     [self rightBarButtonDoneButton];
 	self.navigationItem.rightBarButtonItem.enabled = NO;

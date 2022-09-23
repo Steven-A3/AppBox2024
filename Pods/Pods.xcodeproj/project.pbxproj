@@ -2366,6 +2366,11 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1340;
+				TargetAttributes = {
+					9E5512C452E9FA6279093D3C4B894CB3 = {
+						DevelopmentTeam = 84XB754BWU;
+					};
+				};
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 6.3";
@@ -3497,6 +3502,7 @@
 			baseConfigurationReference = 7814DBF3395DE2CCD53D5C60DFC41E8E /* PersonalizedAdConsent.debug.xcconfig */;
 			buildSettings = {
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/PersonalizedAdConsent";
+				DEVELOPMENT_TEAM = 84XB754BWU;
 				IBSC_MODULE = PersonalizedAdConsent;
 				INFOPLIST_FILE = "Target Support Files/PersonalizedAdConsent/ResourceBundle-PersonalizedAdConsent-PersonalizedAdConsent-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -3570,6 +3576,7 @@
 			baseConfigurationReference = 00B7DED19276E4A2187196F02FDD3A68 /* PersonalizedAdConsent.release.xcconfig */;
 			buildSettings = {
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/PersonalizedAdConsent";
+				DEVELOPMENT_TEAM = 84XB754BWU;
 				IBSC_MODULE = PersonalizedAdConsent;
 				INFOPLIST_FILE = "Target Support Files/PersonalizedAdConsent/ResourceBundle-PersonalizedAdConsent-PersonalizedAdConsent-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;

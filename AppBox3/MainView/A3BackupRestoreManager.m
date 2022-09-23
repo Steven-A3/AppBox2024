@@ -51,6 +51,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 @property (nonatomic, strong) MBProgressHUD *HUD;
 @property (nonatomic, strong) NSNumberFormatter *percentFormatter;
 @property (nonatomic, copy) NSString *backupFilePath;
+@property (nonatomic, copy) NSURL *backupFileURL;
 @property (nonatomic, copy) NSString *backupCoreDataStorePath;
 @property (nonatomic, strong) A3DataMigrationManager *migrationManager;
 @property (nonatomic, strong) NSMutableArray *deleteFilesAfterZip;
@@ -390,8 +391,9 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 		}
 
         if (@available(iOS 14.0, *)) {
-            NSURL *url = [NSURL fileURLWithPath:self.backupFilePath];
-            UIDocumentPickerViewController *documentPickerViewController = [[UIDocumentPickerViewController alloc] initForExportingURLs:@[url]];
+            self.backupFileURL = [NSURL fileURLWithPath:self.backupFilePath];
+            
+            UIDocumentPickerViewController *documentPickerViewController = [[UIDocumentPickerViewController alloc] initForExportingURLs:@[self.backupFileURL] asCopy:YES];
             documentPickerViewController.delegate = self;
             [self.hostingViewController presentViewController:documentPickerViewController animated:YES completion:NULL];
         } else {
@@ -486,7 +488,15 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 	_deleteFilesAfterZip = nil;
 }
 
+- (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller {
+    [self deleteBackupFile];
+    [_hostingViewController presentAlertWithTitle:NSLocalizedString(@"Info", @"Info")
+                                          message:NSLocalizedString(@"The backup process has been canceled.", @"")];
+}
+
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray<NSURL *> *)urls {
+    [self deleteBackupFile];
+    
     [_hostingViewController presentAlertWithTitle:NSLocalizedString(@"Info", @"Info")
                                           message:NSLocalizedString(@"The backup file has been stored successfully.", @"")];
 }
