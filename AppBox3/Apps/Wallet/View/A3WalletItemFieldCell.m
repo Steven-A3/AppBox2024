@@ -66,6 +66,8 @@
     
 	[_deleteButton removeFromSuperview];
 	_deleteButton = nil;
+    [_showHideButton removeFromSuperview];
+    _showHideButton = nil;
 }
 
 - (void)addShowHideButton {

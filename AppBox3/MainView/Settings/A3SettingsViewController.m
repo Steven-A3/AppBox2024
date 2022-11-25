@@ -366,11 +366,11 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	switch (indexPath.section) {
         case 0: {
             if (indexPath.row == 1) {
-                if (@available(iOS 14.0, *)) {
-                    [self alertNewDropboxBackupInfo];
-                } else {
-                    [self performSegueWithIdentifier:@"dropboxbackup" sender:nil];
-                }
+//                if (@available(iOS 14.0, *)) {
+//                    [self alertNewDropboxBackupInfo];
+//                } else {
+//                    [self performSegueWithIdentifier:@"dropboxbackup" sender:nil];
+//                }
             } else if (indexPath.row == 2) {
                 if (@available(iOS 14.0, *)) {
                     [self performSegueWithIdentifier:@"backuprestore" sender:nil];

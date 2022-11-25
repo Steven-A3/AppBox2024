@@ -226,7 +226,29 @@
 
 - (CGFloat)getExpressionLabelTopOffSet:(CGRect) screenBounds {
     CGFloat scaleToDesign = [A3UIDevice scaleToOriginalDesignDimension];
-    return IS_PORTRAIT ? (screenBounds.size.height == 480 ? 25.5 : 100 * scaleToDesign) : 5.5 * scaleToDesign;
+    if (IS_PORTRAIT) {
+        if (screenBounds.size.height == 480) {
+            return 25.5;
+        } else if (screenBounds.size.height == 568) {
+            return 70 * scaleToDesign;
+        } else if (screenBounds.size.height == 568 ||
+                   screenBounds.size.height == 667 ||
+                   screenBounds.size.height == 693 ||
+                   screenBounds.size.height == 736) {
+            return 70 * scaleToDesign;
+        } else if (screenBounds.size.height == 812 ||
+                   screenBounds.size.height == 844 ||
+                   screenBounds.size.height == 852 ||
+                   screenBounds.size.height == 896 ||
+                   screenBounds.size.height == 926 ||
+                   screenBounds.size.height == 932      // iPhone 14 Pro Max
+                   ) {
+            return 90 * scaleToDesign;
+        }
+        return 100 * scaleToDesign;
+    }
+    // Landscape
+    return scaleToDesign * 5.5;
 }
 
 - (CGFloat)getExpressionLabelRightOffSet:(CGRect) screenBounds {
@@ -258,7 +280,27 @@
 
 - (CGFloat)getResultLabelBaselineOffSet:(CGRect) screenBounds {
     CGFloat scaleToDesign = [A3UIDevice scaleToOriginalDesignDimension];
-    return IS_PORTRAIT ? (screenBounds.size.height == 480 ? 121 : 250 * scaleToDesign) : 68 * scaleToDesign;
+    if (IS_PORTRAIT) {
+        if (screenBounds.size.height == 480) {
+            return 121;
+        } else if (screenBounds.size.height == 568 ||
+                   screenBounds.size.height == 667 ||
+                   screenBounds.size.height == 693 ||
+                   screenBounds.size.height == 736) {
+            return 200 * scaleToDesign;
+        } else if (screenBounds.size.height == 812 ||
+                   screenBounds.size.height == 844 ||
+                   screenBounds.size.height == 852 ||
+                   screenBounds.size.height == 896 ||
+                   screenBounds.size.height == 926 ||
+                   screenBounds.size.height == 932      // iPhone 14 Pro Max
+                   ) {
+            return 280 * scaleToDesign;
+        }
+        return 280 * scaleToDesign;
+    }
+    // Landscape
+    return scaleToDesign * 68;
 }
 
 - (UIFont *)getResultLabelFont:(CGRect) screenBounds {

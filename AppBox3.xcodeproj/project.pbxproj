@@ -7762,9 +7762,11 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.6.44.0;
+				CURRENT_PROJECT_VERSION = 4.6.46.0;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
+				EXCLUDED_ARCHS = "";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";
@@ -7786,7 +7788,8 @@
 					"$(PROJECT_DIR)/External/RMStore/Optional/openssl-1.0.2c/lib",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
-				MARKETING_VERSION = 4.6.44;
+				MARKETING_VERSION = 4.6.46;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -7810,9 +7813,11 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.6.44.0;
+				CURRENT_PROJECT_VERSION = 4.6.46.0;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
+				EXCLUDED_ARCHS = "";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";
@@ -7834,8 +7839,8 @@
 					"$(PROJECT_DIR)/External/RMStore/Optional/openssl-1.0.2c/lib",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
-				MARKETING_VERSION = 4.6.44;
-				ONLY_ACTIVE_ARCH = NO;
+				MARKETING_VERSION = 4.6.46;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
