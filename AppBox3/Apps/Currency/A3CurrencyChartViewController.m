@@ -413,26 +413,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	return;
-	/*
-	_selectionInSource = indexPath.row == 0;
-
-	A3CurrencySelectViewController *viewController = [[A3CurrencySelectViewController alloc] initWithNibName:nil bundle:nil];
-	viewController.delegate = self;
-	//viewController.allowChooseFavorite = YES;
-    viewController.allowChooseFavorite = NO;
-
-	if (IS_IPHONE) {
-		viewController.showCancelButton = YES;
-
-		_modalNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencySelectViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
-	} else {
-		[self.A3RootViewController presentRightSideViewController:viewController];
-	}
-
-	[tableView deselectRowAtIndexPath:indexPath animated:NO];
-	*/
 }
 
 - (void)currencySelectViewControllerDidDismiss {

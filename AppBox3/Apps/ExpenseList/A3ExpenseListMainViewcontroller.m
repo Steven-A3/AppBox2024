@@ -717,7 +717,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(expenseHistoryViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 	} else {
-		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController toViewController:nil];
 	}
 }
 

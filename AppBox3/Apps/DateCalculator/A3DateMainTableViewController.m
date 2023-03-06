@@ -490,7 +490,7 @@
         [self.navigationController pushViewController:viewController animated:YES];
     } else {
 		[self enableControls:NO];
-		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController toViewController:nil];
     }
 }
 
@@ -1798,7 +1798,7 @@
             [self.navigationController pushViewController:viewController animated:YES];
         } else {
 			[self enableControls:NO];
-			[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
+			[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController toViewController:nil];
 		}
     }
     else if (indexPath.section == 3 && indexPath.row == 0) {
@@ -1817,7 +1817,7 @@
         }
         else {
 			[self enableControls:NO];
-			[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
+			[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController toViewController:nil];
 		}
     }
 }

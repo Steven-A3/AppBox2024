@@ -29,7 +29,7 @@
 - (void)presentCenterViewController:(UIViewController *)viewController fromViewController:(UIViewController *)sourceViewController;
 - (void)presentCenterViewController:(UIViewController *)viewController fromViewController:(UIViewController *)sourceViewController withCompletion:(void (^)(void))completion;
 - (void)dismissCenterViewController;
-- (void)presentRightSideViewController:(UIViewController *)viewController;
+- (void)presentRightSideViewController:(UIViewController *)viewController toViewController:(UIViewController *)targetVC;
 - (void)dismissRightSideViewController;
 - (void)presentDownSideViewController:(UIViewController *)viewController;
 

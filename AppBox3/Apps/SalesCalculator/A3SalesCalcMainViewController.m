@@ -354,7 +354,7 @@ enum A3TableElementCellType {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(historyViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 	} else {
 		[self enableControls:NO];
-		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController toViewController:nil];
 	}
 }
 

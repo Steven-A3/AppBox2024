@@ -845,7 +845,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
             [self.navigationController pushViewController:_currencySelectViewController animated:YES];
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencySelectViewDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:_currencySelectViewController];
         } else {
-            [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:_currencySelectViewController];
+            [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:_currencySelectViewController toViewController:nil];
         }
     } else {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -886,7 +886,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
         [self presentViewController:_modalNavigationController animated:YES completion:NULL];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencySelectViewDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:_currencySelectViewController];
     } else {
-        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:_currencySelectViewController];
+        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:_currencySelectViewController toViewController:nil];
     }
 }
 

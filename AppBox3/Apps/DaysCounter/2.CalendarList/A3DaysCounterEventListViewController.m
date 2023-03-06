@@ -69,8 +69,11 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 {
     [super viewDidLoad];
 
-    self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentAutomatic;
+//    self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentAutomatic;
 
+    if (@available(iOS 15.0, *)) {
+        self.tableView.sectionHeaderTopPadding = 0;
+    }
     self.tableView.rowHeight = 62;
     
 	if ([_calendarItem.type integerValue] == CalendarCellType_User) {
@@ -569,7 +572,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
         return 0.01;
     }
     
-    return (self.sortType == EventSortType_Date ? 23.0 : 0.01);
+    return (self.sortType == EventSortType_Date ? 22.0 : 0.01);
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -578,7 +581,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
         return 0;
     }
     
-    return 0.01;
+    return 0;
 }
 
 #pragma mark - Table view delegate
@@ -997,14 +1000,6 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
                                          withCompletion:^{
                                          }];
     }
-//    if ( IS_IPHONE ) {
-//        UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-//        navCtrl.modalPresentationStyle = UIModalPresentationFullScreen;
-//        [self presentViewController:navCtrl animated:YES completion:nil];
-//    }
-//    else {
-//        [self.A3RootViewController presentRightSideViewController:viewCtrl];
-//    }
 }
 
 - (void)deactivateSearchController {

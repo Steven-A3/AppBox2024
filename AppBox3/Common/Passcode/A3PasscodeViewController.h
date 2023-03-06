@@ -13,6 +13,11 @@
 @interface A3PasscodeViewController : A3PasscodeCommonViewController
 
 @property (nonatomic, assign) BOOL isCurrentlyOnScreen;
+@property (nonatomic, assign) BOOL isUserConfirmingPasscode;
+@property (nonatomic, assign) BOOL isUserBeingAskedForNewPasscode;
+@property (nonatomic, assign) BOOL isUserTurningPasscodeOff;
+@property (nonatomic, assign) BOOL isUserChangingPasscode;
+@property (nonatomic, assign) BOOL isUserEnablingPasscode;
 @property (nonatomic, weak) id<A3PasscodeViewControllerDelegate> delegate;
 
 - (id)initWithDelegate:(id <A3PasscodeViewControllerDelegate>)delegate;

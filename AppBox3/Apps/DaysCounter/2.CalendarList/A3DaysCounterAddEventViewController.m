@@ -246,10 +246,12 @@
 }
 
 - (void)rightSideViewDidAppear {
+    [self addCoverToView:self.navigationController.view];
 	[self enableControls:NO];
 }
 
 - (void)rightSideViewWillDismiss {
+    [self removeCoverView];
 	[self enableControls:YES];
     [self.tableView reloadData];
 }
@@ -1276,7 +1278,7 @@
         [self.navigationController pushViewController:nextVC animated:YES];
     }
     else {
-        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:nextVC];
+        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:nextVC toViewController:self.navigationController];
     }
 	
 	[self.editingObject resignFirstResponder];
@@ -1302,7 +1304,7 @@
         [self.navigationController pushViewController:nextVC animated:YES];
     }
     else {
-        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:nextVC];
+        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:nextVC toViewController:self.navigationController];
     }
 	[self.editingObject resignFirstResponder];
 	[self dismissDateKeyboardAnimated:YES];
@@ -1377,7 +1379,7 @@
         [self.navigationController pushViewController:nextVC animated:YES];
     }
     else {
-        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:nextVC];
+        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:nextVC toViewController:self.navigationController];
     }
 	[self.editingObject resignFirstResponder];
 	[self dismissDateKeyboardAnimated:YES];
@@ -1415,7 +1417,7 @@
         [self.navigationController pushViewController:nextVC animated:YES];
     }
     else {
-        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:nextVC];
+        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:nextVC toViewController:self.navigationController];
     }
 	[self.editingObject resignFirstResponder];
 	[self dismissDateKeyboardAnimated:YES];
@@ -1441,8 +1443,9 @@
     
     if ( IS_IPHONE )
         [self.navigationController pushViewController:nextVC animated:YES];
-    else
-        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:nextVC];
+    else {
+        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:nextVC toViewController:self.navigationController];
+    }
 	
 	[self.editingObject resignFirstResponder];
 	[self dismissDateKeyboardAnimated:YES];

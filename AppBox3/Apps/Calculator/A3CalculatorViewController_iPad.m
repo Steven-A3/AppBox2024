@@ -590,7 +590,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 	viewController.calculator = self.calculator;
 	viewController.iPadViewController = self;
 
-	[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
+	[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController toViewController:nil];
 }
 
 - (void)putCalculationHistoryWithExpression:(NSString *)expression{

@@ -126,8 +126,15 @@
         "iPad13,11": "iPad Pro 12.9 inch 5th Gen",
         "iPad13,16": "iPad Air 5th Gen (Wi-Fi)",
         "iPad13,17": "iPad Air 5th Gen (Wi-Fi+Cellular)",
+        "iPad13,18": "iPad 10th Gen",
+        "iPad13,19": "iPad 10th Gen",
         "iPad14,1": "iPad mini 6th Gen (Wi-Fi)",
         "iPad14,2": "iPad mini 6th Gen (Wi-Fi+Cellular)",
+        "iPad14,3": "iPad Pro 11 inch 4th Gen",
+        "iPad14,4": "iPad Pro 11 inch 4th Gen",
+        "iPad14,5": "iPad Pro 12.9 inch 6th Gen",
+        "iPad14,6": "iPad Pro 12.9 inch 6th Gen",
+        
         "iPod1,1": "iPod Touch (1st Generation)",
         "iPod2,1": "iPod Touch (2nd Generation)",
         "iPod3,1": "iPod Touch (3rd Generation)",
@@ -617,6 +624,14 @@
             "Memory": "3 GB LPDDR4X SDRAM",
             "PPI": "264"
         },
+        "iPad 10th Gen": {
+            "Model": "iPad 10th Gen",
+            "Chips": "A14 Bionic chip, Neural Engine",
+            "CPU": "Hexa-core (2×Lightning and 4×Thunder)",
+            "GPU": "Apple GPU (4-core graphics)",
+            "Memory": "4 GB LPDDR4X SDRAM",
+            "PPI": "264"
+        },
         "iPad Air 1st Gen (Wi-Fi)": {
             "Model": "iPad Air 1st Gen (Wi-Fi)",
             "Chips": "A7 chip with 64-bit architecture\nM7 motion coprocessor",
@@ -857,6 +872,14 @@
             "Memory": "8 GB, 16 GB(models with 1TB and 2TB storage",
             "PPI": "264"
         },
+        "iPad Pro 11 inch 4th Gen": {
+            "Model": "iPad Pro 11 inch 4th Gen",
+            "Chips": "Apple M2, 16-Core Neural Engine",
+            "CPU": "3.49GHz 4 x Avalanche 4 x Blizzard",
+            "GPU": "New generation Apple designed 10-core GPU",
+            "Memory": "8 GB, 16 GB(models with 1TB and 2TB storage",
+            "PPI": "264"
+        },
         "iPad Pro 12.9 \" 4th Gen (Wi-Fi)": {
             "Model": "iPad Pro 12.9 \" 4th Gen (Wi-Fi)",
             "Chips": "A12Z Bionic chip with 64-bit architecture\nNeural Engine\nEmbedded M12 coprocessor",
@@ -878,6 +901,14 @@
             "Chips": "Apple M1, 16-Core Neural Engine",
             "CPU": "3.2GHz 4 x Firestorm 4 x Icestorm",
             "GPU": "New generation Apple designed 8-core GPU",
+            "Memory": "8 GB, 16 GB(models with 1TB and 2TB storage",
+            "PPI": "264"
+        },
+        "iPad Pro 12.9 inch 6th Gen": {
+            "Model": "iPad Pro 12.9 inch 6th Gen",
+            "Chips": "Apple M2, 16-Core Neural Engine",
+            "CPU": "3.49GHz 4 x Avalanche 4 x Blizzard",
+            "GPU": "New generation Apple designed 10-core GPU",
             "Memory": "8 GB, 16 GB(models with 1TB and 2TB storage",
             "PPI": "264"
         },
@@ -1560,6 +1591,13 @@
             "Video playback": 10,
             "Audio playback": 10
         },
+        "iPad 10th Gen": {
+            "Model": "iPad 10th Gen",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
         "iPad Air 1st Gen (Wi-Fi)": {
             "Model": "iPad Air 1st Gen (Wi-Fi)",
             "Internet on Wi-Fi": 10,
@@ -1765,12 +1803,27 @@
         "iPad Pro 11 inch 3rd Gen": {
             "Model": "iPad Pro 11 inch 3rd Gen",
             "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Pro 11 inch 4th Gen": {
+            "Model": "iPad Pro 11 inch 4th Gen",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
             "Video playback": 10,
             "Audio playback": 10
         },
         "iPad Pro 12.9 inch 5th Gen": {
             "Model": "iPad Pro 12.9 inch 5th Gen",
             "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Pro 12.9 inch 6th Gen": {
+            "Model": "iPad Pro 12.9 inch 6th Gen",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
             "Video playback": 10,
             "Audio playback": 10
         },

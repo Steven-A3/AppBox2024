@@ -9,9 +9,6 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIViewController+A3Addition.h"
 
-#define RIGHT_SIDE_VIEW_TAG	43895
-#define CENTER_VIEW_TAG		54232
-
 NSString *const A3NotificationRightSideViewWillDismiss = @"A3NotificationRightSideViewWillDismiss";
 NSString *const A3NotificationRightSideViewDidDismiss = @"A3NotificationRightSideViewDidDismiss";
 NSString *const A3NotificationRightSideViewDidAppear = @"A3NotificationRightSideViewDidAppear";
@@ -22,16 +19,9 @@ NSString *const A3NotificationChildViewControllerDidDismiss = @"A3NotificationCh
 - (void)presentRightSideView:(UIView *)presentingView {
 	self.navigationItem.leftBarButtonItem.enabled = NO;
 
+    [self addCoverToView:self.navigationController.view];
+    
 	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
-	UIView *coverView = [UIView new];
-	coverView.frame = screenBounds;
-	coverView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	coverView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.1];
-	coverView.tag = CENTER_VIEW_TAG;
-	[self.navigationController.view insertSubview:coverView belowSubview:presentingView];
-
-	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissRightSideView)];
-	[coverView addGestureRecognizer:tapGestureRecognizer];
 
 	CGRect frame = screenBounds;
 	CGFloat sideViewWidth = 320.0;
@@ -50,13 +40,33 @@ NSString *const A3NotificationChildViewControllerDidDismiss = @"A3NotificationCh
 	}];
 }
 
+- (void)addCoverToView:(UIView *)targetView {
+    CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+    screenBounds.size.width -= 320;
+    UIView *coverView = [UIView new];
+    coverView.frame = screenBounds;
+    coverView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    coverView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.1];
+    coverView.tag = CENTER_VIEW_TAG;
+    [targetView addSubview:coverView];
+
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissRightSideView)];
+    [coverView addGestureRecognizer:tapGestureRecognizer];
+}
+
+- (void)removeCoverView {
+    UIView *centerView = [self.navigationController.view viewWithTag:CENTER_VIEW_TAG];
+    if (centerView) {
+        [centerView removeFromSuperview];
+    }
+}
+
 - (void)dismissRightSideView {
 	FNLOG();
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationRightSideViewWillDismiss object:nil];
 
-	UIView *centerView = [self.navigationController.view viewWithTag:CENTER_VIEW_TAG];
-	[centerView removeFromSuperview];
-
+    [self removeCoverView];
+    
 	UIView *rightSideView = [self.navigationController.view viewWithTag:RIGHT_SIDE_VIEW_TAG];
 	[UIView animateWithDuration:0.3 animations:^{
 		CGRect bounds = [self screenBoundsAdjustedWithOrientation];

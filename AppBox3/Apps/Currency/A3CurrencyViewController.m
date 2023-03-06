@@ -310,7 +310,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 		
 	} else {
 		[self enableControls:NO];
-		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:_settingsViewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:_settingsViewController toViewController:nil];
 	}
 }
 
@@ -362,7 +362,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(historyViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:_historyViewController];
 	} else {
 		[self enableControls:NO];
-		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:_historyViewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:_historyViewController toViewController:nil];
 	}
 }
 

@@ -13,16 +13,16 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
-#import "JVFloatLabeledTextField.h"
+#import "A3FloatLabeledPasswordTextField.h"
 
 #define kFailedAttemptLabelBackgroundColor [UIColor colorWithRed:0.8f green:0.1f blue:0.2f alpha:1.000f]
 #define kLabelFont (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? [UIFont fontWithName: @"AvenirNext-Regular" size: kLabelFontSize * kFontSizeModifier] : [UIFont fontWithName: @"AvenirNext-Regular" size: kLabelFontSize])
 
 @interface A3PasswordViewController () <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, strong) JVFloatLabeledTextField *passwordField;
-@property (nonatomic, strong) JVFloatLabeledTextField *aNewPasswordField;
-@property (nonatomic, strong) JVFloatLabeledTextField *confirmPasswordField;
+@property (nonatomic, strong) A3FloatLabeledPasswordTextField *passwordField;
+@property (nonatomic, strong) A3FloatLabeledPasswordTextField *aNewPasswordField;
+@property (nonatomic, strong) A3FloatLabeledPasswordTextField *confirmPasswordField;
 @property (nonatomic, strong) JVFloatLabeledTextField *passwordHintField;
 @property (nonatomic, strong) UIResponder *currentResponder;
 @property (nonatomic, strong) UILabel *headerLabel;
@@ -34,6 +34,7 @@
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, assign) BOOL shouldDismissViewController;
 @property (nonatomic, strong) UILabel *sectionHeaderLabel;
+@property (nonatomic, weak) UITextField *lastEditingTextField;
 
 @end
 
@@ -150,14 +151,10 @@
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 	
 	if (_isUserEnablingPasscode) {
-        if (_aNewPasswordField) {
-            [_aNewPasswordField becomeFirstResponder];
+        if (_lastEditingTextField) {
+            [_lastEditingTextField becomeFirstResponder];
         } else {
-            double delayInSeconds = 0.5;
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                [_aNewPasswordField becomeFirstResponder];
-            });
+            [_aNewPasswordField becomeFirstResponder];
         }
 	}
     else
@@ -446,25 +443,39 @@
 	}
 }
 
-- (JVFloatLabeledTextField *)setupPasscodeField {
-	JVFloatLabeledTextField *textField = [JVFloatLabeledTextField new];
+- (void)styleTextField:(JVFloatLabeledTextField *)textField {
     textField.clipsToBounds = NO;
-	textField.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
-	textField.floatingLabelTextColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:1.0];
-	textField.font = [UIFont systemFontOfSize:17];
-	textField.floatingLabelFont = [UIFont systemFontOfSize:13];
-	textField.floatingLabelYPadding = 0;
-	textField.secureTextEntry = YES;
-	textField.keyboardType = UIKeyboardTypeDefault;
-	textField.delegate = self;
+    textField.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
+    textField.floatingLabelTextColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:1.0];
+    textField.font = [UIFont systemFontOfSize:17];
+    textField.floatingLabelFont = [UIFont systemFontOfSize:13];
+    textField.floatingLabelYPadding = 0;
+    textField.secureTextEntry = YES;
+    textField.keyboardType = UIKeyboardTypeDefault;
+    textField.delegate = self;
+}
+
+- (A3FloatLabeledPasswordTextField *)setupPasscodeField {
+    A3FloatLabeledPasswordTextField *textField = [A3FloatLabeledPasswordTextField new];
+    [self styleTextField:textField];
 	return textField;
+}
+
+- (JVFloatLabeledTextField *)setupHintField {
+    JVFloatLabeledTextField *textField = [JVFloatLabeledTextField new];
+    textField.secureTextEntry = NO;
+    textField.textContentType = UITextContentTypeUsername;
+    textField.placeholder = NSLocalizedString(@"Hint", @"Hint");
+    [self styleTextField:textField];
+    return textField;
 }
 
 - (void)setupCell:(UITableViewCell *)cell forRowAskingPasscodeAtIndexPath:(NSIndexPath *)indexPath {
     FNLOG();
 	if (!_passwordField) {
-		_passwordField = (JVFloatLabeledTextField *) [UITextField new];
+		_passwordField = (A3FloatLabeledPasswordTextField *) [A3FloatLabeledPasswordTextField new];
 		_passwordField.secureTextEntry = YES;
+        _passwordField.textContentType = UITextContentTypePassword;
 		_passwordField.keyboardType = UIKeyboardTypeDefault;
 		_passwordField.delegate = self;
 	}
@@ -490,16 +501,18 @@
 		make.left.equalTo(cell.left).with.offset(leading);
 		make.top.equalTo(cell.top);
 		make.bottom.equalTo(cell.bottom);
-		make.right.equalTo(cell.right).with.offset(leading);
+		make.right.equalTo(cell.right).with.offset(-leading);
 	}];
 }
 
 - (void)setupCell:(UITableViewCell *)cell forRowEnablingPasscodeAtIndexPath:(NSIndexPath *)indexPath {
-	JVFloatLabeledTextField *textField;
+    A3FloatLabeledPasswordTextField *textField;
 	switch (indexPath.row) {
 		case 0:
 			if (!_aNewPasswordField) {
 				_aNewPasswordField = [self setupPasscodeField];
+                _aNewPasswordField.textContentType = UITextContentTypePassword;
+                _aNewPasswordField.passwordRules = [UITextInputPasswordRules passwordRulesWithDescriptor:@"allowed: upper, lower, digit, [-().&@?__'__#,/&quot;+]; minlength: 8;"];
 			}
 			_aNewPasswordField.placeholder = NSLocalizedString(@"New Passcode", @"New Passcode");
 			textField = _aNewPasswordField;
@@ -507,14 +520,15 @@
 		case 1:
 			if (!_confirmPasswordField) {
 				_confirmPasswordField = [self setupPasscodeField];
+                _confirmPasswordField.textContentType = UITextContentTypePassword;
+                _confirmPasswordField.passwordRules = [UITextInputPasswordRules passwordRulesWithDescriptor:@"allowed: upper, lower, digit, [-().&@?__'__#,/&quot;+]; minlength: 8;"];
 			}
 			_confirmPasswordField.placeholder = NSLocalizedString(@"Confirm Passcode", @"Confirm Passcode");
 			textField = _confirmPasswordField;
 			break;
 		case 2:
 			if (!_passwordHintField) {
-				_passwordHintField = [self setupPasscodeField];
-				_passwordHintField.secureTextEntry = NO;
+				_passwordHintField = [self setupHintField];
 			}
 			_passwordHintField.placeholder = NSLocalizedString(@"Hint", @"Hint");
 			textField = _passwordHintField;
@@ -529,6 +543,7 @@
 		case 0:
 			if (!_passwordField) {
 				_passwordField = [self setupPasscodeField];
+                _passwordField.textContentType = UITextContentTypePassword;
 				_passwordField.placeholder = NSLocalizedString(@"Old Passcode", @"Old Passcode");
 			}
 			textField = _passwordField;
@@ -536,6 +551,7 @@
 		case 1:
 			if (!_aNewPasswordField) {
 				_aNewPasswordField = [self setupPasscodeField];
+                _aNewPasswordField.textContentType = UITextContentTypeNewPassword;
 				_aNewPasswordField.placeholder = NSLocalizedString(@"New Passcode", @"New Passcode");
 			}
 			textField = _aNewPasswordField;
@@ -543,14 +559,16 @@
 		case 2:
 			if (!_confirmPasswordField) {
 				_confirmPasswordField = [self setupPasscodeField];
+                _confirmPasswordField.textContentType = UITextContentTypeNewPassword;
 				_confirmPasswordField.placeholder = NSLocalizedString(@"Confirm Passcode", @"Confirm Passcode");
 			}
 			textField = _confirmPasswordField;
 			break;
 		case 3:
 			if (!_passwordHintField) {
-				_passwordHintField = [self setupPasscodeField];
+				_passwordHintField = [self setupHintField];
 				_passwordHintField.secureTextEntry = NO;
+                _passwordHintField.textContentType = UITextContentTypeUsername;
 				_passwordHintField.placeholder = NSLocalizedString(@"Hint", @"Hint");
 			}
 			textField = _passwordHintField;
@@ -642,6 +660,7 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
+    _lastEditingTextField = textField;
 	if (_userPressedCancelButton) return;
 
 	if (_isUserChangingPasscode) {

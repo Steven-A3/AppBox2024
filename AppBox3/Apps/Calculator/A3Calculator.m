@@ -1658,6 +1658,7 @@ typedef CMathParser<char, double> MathParser;
         }
         case A3E_RIGHT_PARENTHESIS: {
             if([self checkIfexpressionisnull]) return;
+            if ([mathexpression length] == 0) return;
             
             NSString *lastChar = [mathexpression substringFromIndex:[mathexpression length] - 1];
             NSRange range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890.)"]];

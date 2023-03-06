@@ -477,6 +477,7 @@
 		6876D6FB17A75DAE00E16991 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 687C193B1783DF0F00415FCE /* XCTest.framework */; };
 		6876D6FC17A75DAE00E16991 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D715EB10B000BD6AD4 /* Foundation.framework */; };
 		6876D6FD17A75DAE00E16991 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D515EB10B000BD6AD4 /* UIKit.framework */; };
+		6879262C29B18FC800BC9F9B /* A3FloatLabeledPasswordTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6879262B29B18FC800BC9F9B /* A3FloatLabeledPasswordTextField.m */; };
 		687A0E802218DFB200B63FFA /* walletExport.strings in Resources */ = {isa = PBXBuildFile; fileRef = 687A0E822218DFB200B63FFA /* walletExport.strings */; };
 		687AAFE221F1D53100CE1DF3 /* TDOAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AAFE021F1D53000CE1DF3 /* TDOAuth.m */; };
 		687AAFE321F1D53100CE1DF3 /* OMGUserAgent.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AAFE121F1D53100CE1DF3 /* OMGUserAgent.m */; };
@@ -1875,6 +1876,8 @@
 		6876D70017A75DAE00E16991 /* AppBox3 Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AppBox3 Tests-Info.plist"; sourceTree = "<group>"; };
 		6876D70617A75DAE00E16991 /* AppBox3 Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppBox3 Tests-Prefix.pch"; sourceTree = "<group>"; };
 		6878361D1E6E4D7000828BA8 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		6879262A29B18F8F00BC9F9B /* A3FloatLabeledPasswordTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = A3FloatLabeledPasswordTextField.h; sourceTree = "<group>"; };
+		6879262B29B18FC800BC9F9B /* A3FloatLabeledPasswordTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3FloatLabeledPasswordTextField.m; sourceTree = "<group>"; };
 		687A0E812218DFB200B63FFA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/walletExport.strings; sourceTree = "<group>"; };
 		687A0E8B2218DFB500B63FFA /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/walletExport.strings; sourceTree = "<group>"; };
 		687A0E8C2218DFB700B63FFA /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/walletExport.strings"; sourceTree = "<group>"; };
@@ -4234,6 +4237,8 @@
 				68D0731F18210B5100D34870 /* A3RoundedSideButton.m */,
 				6817825116253640008A6E4B /* A3SegmentedControl.h */,
 				6817825216253640008A6E4B /* A3SegmentedControl.m */,
+				6879262A29B18F8F00BC9F9B /* A3FloatLabeledPasswordTextField.h */,
+				6879262B29B18FC800BC9F9B /* A3FloatLabeledPasswordTextField.m */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -6395,6 +6400,7 @@
 				68B6F7651EA575C500C4BB7A /* MWPhoto.m in Sources */,
 				68143CFD18E3EC1F00569691 /* A3DateKeyboardViewController_iPhone.m in Sources */,
 				68143D6A18E3EC7C00569691 /* A3TableViewSelectElement.m in Sources */,
+				6879262C29B18FC800BC9F9B /* A3FloatLabeledPasswordTextField.m in Sources */,
 				687AEEAD1CBBE88300C2D844 /* A3QRCodeTextViewController.m in Sources */,
 				68143D5318E3EC7C00569691 /* A3JHTableViewEntryCell.m in Sources */,
 				68B6A2C918CEC76D004084EF /* A3LoanCalcSettingSwitchCell.m in Sources */,
@@ -7762,7 +7768,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.6.46.0;
+				CURRENT_PROJECT_VERSION = 4.6.48.0;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -7788,7 +7794,7 @@
 					"$(PROJECT_DIR)/External/RMStore/Optional/openssl-1.0.2c/lib",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
-				MARKETING_VERSION = 4.6.46;
+				MARKETING_VERSION = 4.6.48;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7813,7 +7819,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.6.46.0;
+				CURRENT_PROJECT_VERSION = 4.6.48.0;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -7839,7 +7845,7 @@
 					"$(PROJECT_DIR)/External/RMStore/Optional/openssl-1.0.2c/lib",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
-				MARKETING_VERSION = 4.6.46;
+				MARKETING_VERSION = 4.6.48;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -773,7 +773,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 	} else {
-		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController toViewController:nil];
 	}
 }
 

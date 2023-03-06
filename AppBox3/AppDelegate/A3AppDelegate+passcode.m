@@ -395,13 +395,13 @@
     FNLOG();
     
 	UIViewController *visibleViewController = [self.currentMainNavigationController visibleViewController];
-    if ([visibleViewController isKindOfClass:[A3PasscodeCommonViewController class]]) {
-        [visibleViewController dismissViewControllerAnimated:NO completion:^{
-            
-        }];
-    } else {
-        [visibleViewController resignFirstResponder];
-    }
+//    if ([visibleViewController isKindOfClass:[A3PasscodeViewController class]]) {
+//        [visibleViewController dismissViewControllerAnimated:NO completion:^{
+//
+//        }];
+//    } else {
+//        [visibleViewController resignFirstResponder];
+//    }
     if ([self shouldProtectScreen]) {
         FNLOG(@"CoverView added to Window");
         [[UIApplication sharedApplication] ignoreSnapshotOnNextApplicationLaunch];

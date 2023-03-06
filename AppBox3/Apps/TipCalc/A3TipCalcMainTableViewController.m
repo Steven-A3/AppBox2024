@@ -1246,7 +1246,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
             }
             else {
 				[self enableControls:NO];
-				[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:selectTableViewController];
+				[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:selectTableViewController toViewController:nil];
 				[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 			}
             
@@ -1389,7 +1389,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(historyViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 	} else {
-		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController toViewController:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
 }
@@ -1413,7 +1413,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 		[self presentViewController:_modalNavigationController animated:YES completion:NULL];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 	} else {
-		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController toViewController:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
 }

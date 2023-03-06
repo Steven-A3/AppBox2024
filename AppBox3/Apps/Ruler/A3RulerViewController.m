@@ -411,13 +411,14 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
            @"iPad Air 4th Gen (Wi-Fi+Cellular)",
            @"iPad Air 5th Gen (Wi-Fi)",
            @"iPad Air 5th Gen (Wi-Fi+Cellular)",
+           @"iPad 10th Gen",
          ] containsObject:model])
     {
         CGFloat pixelsInInch = 264;
         CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
         _centimeterAsPoints = (screenHeight / 2360.0) * pixelsInCentimeter;
         _inchAsPoints = (screenHeight / 2360.0) * pixelsInInch;
-        _resetPosition = _centimeterPositionRightBottom ? 18.0 : 7.0;
+        _resetPosition = _centimeterPositionRightBottom ? 15.0 : 6.0;
         _redLineWidth = 0.5;
         return;
     }
@@ -485,6 +486,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
            @"iPad Pro 12.9 \" 4th Gen (Wi-Fi)",
            @"iPad Pro 12.9 \" 4th Gen (Wi-Fi+Cellular)",
            @"iPad Pro 12.9 inch 5th Gen",
+           @"iPad Pro 12.9 inch 6th Gen",
          ] containsObject:model]
         )
     {
@@ -516,6 +518,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
            @"iPad Pro 11 \" 2nd Gen (Wi-Fi)",
            @"iPad Pro 11 \" 2nd Gen (Wi-Fi+Cellular)",
            @"iPad Pro 11 inch 3rd Gen",
+           @"iPad Pro 11 inch 4th Gen",
          ] containsObject:model])
     {
         // iPad Pro
@@ -523,7 +526,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
         CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
         _centimeterAsPoints = (screenHeight / 2388.0) * pixelsInCentimeter;
         _inchAsPoints = (screenHeight / 2388.0) * pixelsInInch;
-        _resetPosition = _centimeterPositionRightBottom ? 18.0 : 7.0;
+        _resetPosition = _centimeterPositionRightBottom ? 15.0 : 6.0;
         _redLineWidth = 0.5;
         return;
     }

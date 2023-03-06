@@ -861,7 +861,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 		[self presentViewController:navigationController animated:YES completion:nil];
 	} else {
 		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController_iPad];
-		[rootViewController presentRightSideViewController:viewController];
+		[rootViewController presentRightSideViewController:viewController toViewController:nil];
 	}
 
 	if (IS_IPAD) {
@@ -890,7 +890,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
 	} else {
 		[self enableControls:NO];
-		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
+		[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController toViewController:nil];
 	}
 }
 
@@ -2334,7 +2334,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
         }
         else {
             [self enableControls:NO];
-            [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
+            [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController toViewController:nil];
         }
     }
 }
@@ -2410,7 +2410,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
             }
             else {
 				[self enableControls:NO];
-				[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
+				[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController toViewController:nil];
 			}
         }
         else if (indexPath.section == 2) {
@@ -2431,7 +2431,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
                 }
                 else {
 					[self enableControls:NO];
-					[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
+					[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController toViewController:nil];
 				}
             }
             else {

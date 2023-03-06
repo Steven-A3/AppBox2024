@@ -328,7 +328,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 			[self.navigationController addChildViewController:_rightSideViewController];
 		} else {
 			A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController_iPad];
-			[rootViewController presentRightSideViewController:viewController];
+            [rootViewController presentRightSideViewController:viewController toViewController:nil];
 		}
 	}
 }

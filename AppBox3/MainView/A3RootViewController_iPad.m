@@ -307,9 +307,11 @@ static const CGFloat kSideViewWidth = 320.0;
 
 }
 
-- (void)presentRightSideViewController:(UIViewController *)viewController {
+- (void)presentRightSideViewController:(UIViewController *)viewController toViewController:(UIViewController *)targetVC {
 	_showRightView = YES;
     _showLeftView = NO;
+    
+    UIViewController *presentingVC = targetVC != nil ? targetVC : self;
     
     CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 	_rightNavigationController = [[A3NavigationController alloc] initWithRootViewController:viewController];
@@ -317,9 +319,11 @@ static const CGFloat kSideViewWidth = 320.0;
 	frame.origin.x = screenBounds.size.width;
 	frame.size.width = kSideViewWidth;
 	_rightNavigationController.view.frame = frame;
-	[self.view addSubview:_rightNavigationController.view];
-	[self addChildViewController:_rightNavigationController];
-
+    _rightNavigationController.view.tag = RIGHT_SIDE_VIEW_TAG;
+    
+    [presentingVC.view addSubview:_rightNavigationController.view];
+    [presentingVC addChildViewController:_rightNavigationController];
+    
 	[UIView animateWithDuration:0.3 animations:^{
 		if (IS_LANDSCAPE) {
 			CGRect centerViewFrame = self.centerNavigationController.view.frame;

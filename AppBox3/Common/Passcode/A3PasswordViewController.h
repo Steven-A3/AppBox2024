@@ -12,8 +12,7 @@
 @interface A3PasswordViewController : A3PasscodeCommonViewController
 
 - (id)initWithDelegate:(id <A3PasscodeViewControllerDelegate>)delegate;
-
 - (void)showEncryptionKeyScreenInViewController:(UIViewController *)viewController;
-
 - (void)showEncryptionKeyCheckScreen;
+
 @end

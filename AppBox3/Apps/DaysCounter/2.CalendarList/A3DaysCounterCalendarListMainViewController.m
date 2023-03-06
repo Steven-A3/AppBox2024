@@ -573,7 +573,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
         [self presentViewController:navCtrl animated:YES completion:nil];
     }
     else {
-        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewCtrl];
+        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewCtrl toViewController:nil];
     }
 }
 

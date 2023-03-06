@@ -714,7 +714,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
                     [weakSelf presentViewController:weakSelf.modalNavigationController animated:YES completion:NULL];
                     [[NSNotificationCenter defaultCenter] addObserver:weakSelf selector:@selector(optionViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:viewController];
                 } else {
-                    [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController];
+                    [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController toViewController:nil];
                     double delayInSeconds = 0.6;
                     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
                     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){

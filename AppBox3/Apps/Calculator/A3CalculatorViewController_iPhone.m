@@ -227,15 +227,18 @@
 - (CGFloat)getExpressionLabelTopOffSet:(CGRect) screenBounds {
     CGFloat scaleToDesign = [A3UIDevice scaleToOriginalDesignDimension];
     if (IS_PORTRAIT) {
-        if (screenBounds.size.height == 480) {
+        if (screenBounds.size.height == 693) {
+            // (iPhone 14 Pro, iPhone 14, iPhone 13 Pro, iPhone 12 Pro,
+            // iPhone 13, iPhone 12, iPhone 12 mini, iPhone 13 mini,
+            // iPhone 11 Pro, iPhone Xs, iPhone X) Zoomed
+            return 95 * scaleToDesign;
+        } else if (screenBounds.size.height == 480) {
             return 25.5;
         } else if (screenBounds.size.height == 568) {
             return 70 * scaleToDesign;
-        } else if (screenBounds.size.height == 568 ||
-                   screenBounds.size.height == 667 ||
-                   screenBounds.size.height == 693 ||
+        } else if (screenBounds.size.height == 667 ||
                    screenBounds.size.height == 736) {
-            return 70 * scaleToDesign;
+            return 90 * scaleToDesign;
         } else if (screenBounds.size.height == 812 ||
                    screenBounds.size.height == 844 ||
                    screenBounds.size.height == 852 ||
@@ -248,7 +251,7 @@
         return 100 * scaleToDesign;
     }
     // Landscape
-    return scaleToDesign * 5.5;
+    return scaleToDesign * 4;
 }
 
 - (CGFloat)getExpressionLabelRightOffSet:(CGRect) screenBounds {
@@ -281,21 +284,28 @@
 - (CGFloat)getResultLabelBaselineOffSet:(CGRect) screenBounds {
     CGFloat scaleToDesign = [A3UIDevice scaleToOriginalDesignDimension];
     if (IS_PORTRAIT) {
-        if (screenBounds.size.height == 480) {
+        if (screenBounds.size.height == 812) {
+            // Zoomed for iPhone 14 Pro Max, iPhone 14 Plus, iPhone 13/12 Pro Max
+            // iPhone 11 Pro Max, iPhone Xs Max, iPhone 11, iPhone Xr
+            return 300 * scaleToDesign;
+        } else if (screenBounds.size.height == 693) {
+            // (iPhone 14 Pro, iPhone 14, iPhone 13/12 Pro,
+            // iPhone 13/12, iPhone 13/12 mini,
+            // iPhone 11 Pro, iPhone Xs, iPhone X) Zoomed
+            return 295;
+        } else if (screenBounds.size.height == 480) {
             return 121;
         } else if (screenBounds.size.height == 568 ||
                    screenBounds.size.height == 667 ||
-                   screenBounds.size.height == 693 ||
                    screenBounds.size.height == 736) {
-            return 200 * scaleToDesign;
-        } else if (screenBounds.size.height == 812 ||
-                   screenBounds.size.height == 844 ||
+            return 280 * scaleToDesign;
+        } else if (screenBounds.size.height == 844 ||
                    screenBounds.size.height == 852 ||
                    screenBounds.size.height == 896 ||
                    screenBounds.size.height == 926 ||
                    screenBounds.size.height == 932      // iPhone 14 Pro Max
                    ) {
-            return 280 * scaleToDesign;
+            return 300 * scaleToDesign;
         }
         return 280 * scaleToDesign;
     }
@@ -322,12 +332,13 @@
 
 	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
+    CGFloat keyboardHeight = [self getNumberPadScrollViewHeight];
 
 	[self.view addSubview:self.scrollView];
 	[_scrollView makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.view.left);
 		make.right.equalTo(self.view.right);
-		self.scrollViewHeightConstraint = make.height.equalTo(@([self getNumberPadScrollViewHeight]));
+		self.scrollViewHeightConstraint = make.height.equalTo(@(keyboardHeight));
 		self.scrollViewBottomConstraint = make.bottom.equalTo(self.view.bottom).with.offset([self getSVbottomOffSet:screenBounds]);
 	}];
     
@@ -348,7 +359,7 @@
 	[self.evaluatedResultLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.view.left).with.offset(14);
         self.resultLabelRightConstraint = make.right.equalTo(self.view.right).with.offset([self getResultLabelRightOffSet:screenBounds]);
-		self.resultLabelBaselineConstraint = make.baseline.equalTo(self.view.top).with.offset([self getResultLabelBaselineOffSet:screenBounds]);
+        self.resultLabelBaselineConstraint = make.baseline.equalTo(self.scrollView.top).with.offset(IS_PORTRAIT ? -20 : 5);
 	}];
 
     [self.view addSubview:self.expressionLabel];
@@ -564,7 +575,7 @@
     self.scrollViewBottomConstraint.offset([self getSVbottomOffSet:screenBounds]);
     self.expressionTopConstraint.offset([self getExpressionLabelTopOffSet:screenBounds]);
     self.expressionLabelRightConstraint.offset([self getExpressionLabelRightOffSet:screenBounds]);
-    self.resultLabelBaselineConstraint.offset([self getResultLabelBaselineOffSet:screenBounds]);
+    self.resultLabelBaselineConstraint.offset(IS_PORTRAIT ? -30 : -5);
     self.resultLabelRightConstraint.offset([self getResultLabelRightOffSet:screenBounds]);
     // self.degreeLabelBottomConstraint.offset([self getDegreeLabelBottomOffset:screenBounds]);
     self.scrollViewHeightConstraint.equalTo(@([self getNumberPadScrollViewHeight]));

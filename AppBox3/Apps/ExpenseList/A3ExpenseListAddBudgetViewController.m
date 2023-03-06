@@ -773,7 +773,7 @@ static NSString *CellIdentifier = @"Cell";
 				[self presentViewController:_modalNavigationController animated:YES completion:NULL];
 				[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectTableViewControllerDidDismiss) name:A3NotificationChildViewControllerDidDismiss object:selectTableViewController];
 			} else {
-				[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:selectTableViewController];
+				[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:selectTableViewController toViewController:nil];
 			}
         }
         

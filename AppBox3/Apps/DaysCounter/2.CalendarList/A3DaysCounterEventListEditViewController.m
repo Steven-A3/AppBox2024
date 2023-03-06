@@ -411,7 +411,7 @@
         [self presentViewController:navCtrl animated:YES completion:nil];
     }
     else {
-        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewCtrl];
+        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewCtrl toViewController:nil];
     }
 }
 

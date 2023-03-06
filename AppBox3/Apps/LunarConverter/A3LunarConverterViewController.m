@@ -386,7 +386,7 @@
         [self presentViewController:nav animated:YES completion:NULL];
     } else {
         [self enableControls:NO];
-        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:settingsViewController];
+        [[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:settingsViewController toViewController:nil];
     }
 }
 

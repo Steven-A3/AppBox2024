@@ -90,6 +90,10 @@
         }
     }
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    
+    self.tableView.contentInset = UIEdgeInsetsMake(-21.5, 0, 0, 0);
 }
 
 - (void)applicationDidEnterBackground {
