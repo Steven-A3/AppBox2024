@@ -9,7 +9,7 @@
 #import "A3QRCodeTextViewController.h"
 #import "UIViewController+A3Addition.h"
 
-@interface A3QRCodeTextViewController ()
+@interface A3QRCodeTextViewController () <GADBannerViewDelegate>
 
 @property (nonatomic, strong) UITextView *textView;
 
@@ -40,8 +40,8 @@
 	if (!_viewWillAppearDidRun) {
 		[self setupBannerViewForAdUnitID:AdMobAdUnitIDQRCode
 								keywords:@[@"Low Price", @"Shopping", @"Marketing"]
-								  gender:kGADGenderUnknown
-								  adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
+								  adSize:IS_IPHONE ? GADAdSizeFluid : GADAdSizeLeaderboard
+                                delegate:self];
 	}
 }
 
@@ -75,7 +75,7 @@
 
 #pragma mark - AdMob
 
-- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+- (void)bannerViewDidReceiveAd:(GADBannerView *)bannerView {
 	[self.view addSubview:bannerView];
 	
 	UIView *superview = self.view;

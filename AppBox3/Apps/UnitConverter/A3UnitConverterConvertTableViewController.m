@@ -40,7 +40,7 @@
 @interface A3UnitConverterConvertTableViewController () <UITextFieldDelegate,
 		A3UnitSelectViewControllerDelegate, A3UnitConverterFavoriteEditDelegate, A3UnitConverterMenuDelegate,
 		UIPopoverControllerDelegate, UIActivityItemSource, FMMoveTableViewDelegate, FMMoveTableViewDataSource,
-		A3InstructionViewControllerDelegate, A3ViewControllerProtocol>
+		A3InstructionViewControllerDelegate, A3ViewControllerProtocol, GADBannerViewDelegate>
 
 @property (nonatomic, strong) FMMoveTableView *fmMoveTableView;
 @property (nonatomic, strong) NSMutableSet *swipedCells;
@@ -169,7 +169,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 
-    [self setupBannerViewForAdUnitID:AdMobAdUnitIDUnitConverter keywords:@[@"Shopping"] gender:kGADGenderMale adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
+    [self setupBannerViewForAdUnitID:AdMobAdUnitIDUnitConverter keywords:@[@"Shopping"] adSize:IS_IPHONE ? GADAdSizeFluid : GADAdSizeLeaderboard delegate:self];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
@@ -2268,7 +2268,7 @@ const CGFloat kUnitCellVisibleWidth = 100.0;
 
 #pragma mark - AdMob Did Receive Ad
 
-- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+- (void)bannerViewDidReceiveAd:(GADBannerView *)bannerView {
     if (_didPressAppsButton || (_adItem && [_convertItems containsObject:_adItem])) {
         return;
     }

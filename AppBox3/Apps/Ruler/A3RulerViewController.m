@@ -14,7 +14,7 @@
 NSString *const A3RulerCentimeterPositionRightBottom = @"A3RulerCentemeterPositionRightBottom";
 NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse";
 
-@interface A3RulerViewController () <UIScrollViewDelegate, UIGestureRecognizerDelegate>
+@interface A3RulerViewController () <UIScrollViewDelegate, UIGestureRecognizerDelegate, GADBannerViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *centimetersMarkingViews;
 @property (nonatomic, strong) NSMutableArray *centimeterLabels;
@@ -130,7 +130,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
 		[self resetButtonAction];
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDRuler keywords:@[@"ruler", @"size", @"length"] gender:kGADGenderUnknown];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDRuler keywords:@[@"ruler", @"size", @"length"] delegate:self];
 	}
 }
 

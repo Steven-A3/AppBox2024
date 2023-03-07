@@ -27,7 +27,7 @@
 NSString *const A3V3InstructionDidShowForClock1 = @"A3V3InstructionDidShowForClock1";
 NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClock2";
 
-@interface A3ClockMainViewController () <A3ClockDataManagerDelegate, A3ChooseColorDelegate, A3InstructionViewControllerDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate>
+@interface A3ClockMainViewController () <A3ClockDataManagerDelegate, A3ChooseColorDelegate, A3InstructionViewControllerDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate, GADBannerViewDelegate>
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIButton *clockAppsButton;
@@ -231,7 +231,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 	}
     [self resetAndStartAutoDimTimer];
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        [self setupBannerViewForAdUnitID:AdMobAdUnitIDClock keywords:@[@"clock"] gender:kGADGenderUnknown];
+        [self setupBannerViewForAdUnitID:AdMobAdUnitIDClock keywords:@[@"clock"] delegate:self];
 	}
 	[self setupInstructionView];
 	if (self.instructionViewController) {

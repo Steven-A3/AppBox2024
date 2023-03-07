@@ -23,7 +23,7 @@
 
 
 @interface A3PercentCalcMainViewController ()
-<UITextFieldDelegate, A3PercentCalcHistoryDelegate, A3ViewControllerProtocol>
+<UITextFieldDelegate, A3PercentCalcHistoryDelegate, A3ViewControllerProtocol, GADBannerViewDelegate>
 
 @property (strong, nonatomic) A3PercentCalcHeaderView *headerView;
 @property (strong, nonatomic) NSArray *sectionTitles;
@@ -176,7 +176,7 @@
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	}
-    [self setupBannerViewForAdUnitID:AdMobAdUnitIDPercentCalc keywords:@[@"sale", @"discount"] gender:kGADGenderUnknown];
+    [self setupBannerViewForAdUnitID:AdMobAdUnitIDPercentCalc keywords:@[@"sale", @"discount"] delegate:self];
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self showNavigationBarOn:self.navigationController];
 	}

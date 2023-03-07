@@ -58,7 +58,7 @@ UITableViewDataSource, UITableViewDelegate,
 UITextFieldDelegate, UIActivityItemSource, UIPopoverControllerDelegate,
 CLLocationManagerDelegate,A3TipCalcDataManagerDelegate, A3TipCalcSettingsDelegate,
 A3TipCalcHistorySelectDelegate, A3JHSelectTableViewControllerProtocol, A3TableViewInputElementDelegate,
-A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewControllerProtocol, UIPopoverPresentationControllerDelegate
+A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewControllerProtocol, UIPopoverPresentationControllerDelegate, GADBannerViewDelegate
 >
 
 @property (nonatomic, strong) A3JHTableViewRootElement *tableDataSource;
@@ -203,7 +203,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 		[self leftBarButtonAppsButton];
 	}
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        [self setupBannerViewForAdUnitID:AdMobAdUnitIDTipCalc keywords:@[@"restaurant", @"tip"] gender:kGADGenderUnknown];
+        [self setupBannerViewForAdUnitID:AdMobAdUnitIDTipCalc keywords:@[@"restaurant", @"tip"] delegate:self];
 	}
 	[self keyboardDidHide:nil];
 	if ([self.navigationController.navigationBar isHidden]) {

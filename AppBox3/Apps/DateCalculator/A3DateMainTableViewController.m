@@ -38,7 +38,7 @@
 		A3DateKeyboardDelegate, A3DateCalcExcludeDelegate,
 		A3DateCalcDurationDelegate, A3DateCalcHeaderViewDelegate,
 		A3DateCalcEditEventDelegate, UIActivityItemSource,
-		A3ViewControllerProtocol>
+		A3ViewControllerProtocol, GADBannerViewDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) A3DateCalcHeaderView *headerView;
@@ -180,7 +180,7 @@
 		[self leftBarButtonAppsButton];
 	}
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        [self setupBannerViewForAdUnitID:AdMobAdUnitIDDateCalc keywords:@[@"calendar"] gender:kGADGenderUnknown];
+        [self setupBannerViewForAdUnitID:AdMobAdUnitIDDateCalc keywords:@[@"calendar"] delegate:self];
     }
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self showNavigationBarOn:self.navigationController];

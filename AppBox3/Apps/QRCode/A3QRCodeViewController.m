@@ -39,7 +39,7 @@ NSString *const A3QRCodeImageTorchOn = @"m_flash_on";
 NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 
 @interface A3QRCodeViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, A3InstructionViewControllerDelegate,
-		A3QRCodeDataHandlerDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
+		A3QRCodeDataHandlerDelegate, UIActionSheetDelegate, UIAlertViewDelegate, GADBannerViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIToolbar *statusToolbar;
 @property (nonatomic, weak) IBOutlet UIToolbar *topToolbar;
@@ -145,8 +145,8 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 		[self setupInstructionView];
         [self setupBannerViewForAdUnitID:AdMobAdUnitIDQRCode
                                 keywords:@[@"Low Price", @"Shopping", @"Marketing"]
-                                  gender:kGADGenderUnknown
-                                  adSize:IS_IPHONE ? kGADAdSizeSmartBannerPortrait : kGADAdSizeLeaderboard];
+                                  adSize:IS_IPHONE ? GADAdSizeFluid : GADAdSizeLeaderboard
+                                delegate:self];
 	} else {
 		if (IS_IOS7) {
 			double delayInSeconds = 1.0;
@@ -523,7 +523,7 @@ static NSString *const A3V3InstructionDidShowForQRCode = @"A3V3InstructionDidSho
 
 #pragma mark - AdMob
 
-- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+- (void)bannerViewDidReceiveAd:(GADBannerView *)bannerView {
     [self.view addSubview:bannerView];
     
     CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];

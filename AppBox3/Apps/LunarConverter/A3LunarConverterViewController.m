@@ -24,7 +24,7 @@
 
 
 @interface A3LunarConverterViewController () <UIScrollViewDelegate, A3DateKeyboardDelegate, UITextFieldDelegate,
-		UIPopoverControllerDelegate, UIActivityItemSource>
+		UIPopoverControllerDelegate, UIActivityItemSource, GADBannerViewDelegate>
 
 @property (strong, nonatomic) A3DateKeyboardViewController *dateKeyboardVC;
 @property (strong, nonatomic) NSDateComponents *firstPageResultDateComponents;
@@ -238,7 +238,7 @@
 			[self showKeyboardAnimated:YES];
 		}
 	}
-	[self setupBannerViewForAdUnitID:AdMobAdUnitIDLunarConverter keywords:@[@"chinese", @"korean", @"lunar"] gender:kGADGenderUnknown];
+	[self setupBannerViewForAdUnitID:AdMobAdUnitIDLunarConverter keywords:@[@"chinese", @"korean", @"lunar"] delegate:self];
 	
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self showNavigationBarOn:self.navigationController];

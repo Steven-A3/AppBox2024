@@ -14,7 +14,7 @@
 #import "A3QRCodeTextViewController.h"
 #import "A3BasicWebViewController.h"
 
-@interface A3QRCodeDetailViewController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
+@interface A3QRCodeDetailViewController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, GADBannerViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIToolbar *bottomToolbar;
@@ -73,7 +73,7 @@
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 	
 	if (!_viewWillAppearDidRun) {
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDQRCode keywords:@[@"Low Price", @"Shopping", @"Marketing"] gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDQRCode keywords:@[@"Low Price", @"Shopping", @"Marketing"] adSize:IS_IPHONE ? GADAdSizeFluid : GADAdSizeLeaderboard delegate:self];
 	}
 }
 
@@ -193,7 +193,7 @@
 
 #pragma mark - AdMob
 
-- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+- (void)bannerViewDidReceiveAd:(GADBannerView *)bannerView {
 	[self.view addSubview:bannerView];
 
 	UIView *superview = self.view;

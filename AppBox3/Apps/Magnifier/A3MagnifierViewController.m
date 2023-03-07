@@ -19,7 +19,7 @@
 
 NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll";
 
-@interface A3MagnifierViewController () <A3InstructionViewControllerDelegate, GLKViewDelegate, A3ViewControllerProtocol>
+@interface A3MagnifierViewController () <A3InstructionViewControllerDelegate, GLKViewDelegate, A3ViewControllerProtocol, GADBannerViewDelegate>
 {
     GLKView                     *_previewLayer;
     CIContext                   *_ciContext;
@@ -164,7 +164,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 	[super viewDidAppear:animated];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
-	[self setupBannerViewForAdUnitID:AdMobAdUnitIDMagnifier keywords:@[@"magnifier", @"glasses"] gender:kGADGenderUnknown];
+	[self setupBannerViewForAdUnitID:AdMobAdUnitIDMagnifier keywords:@[@"magnifier", @"glasses"] delegate:self];
 }
 
 - (void)applicationDidBecomeActive {

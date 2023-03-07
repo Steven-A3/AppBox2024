@@ -43,7 +43,7 @@ NSString *const A3NotificationExpenseListCurrencyCodeChanged = @"A3NotificationE
 @interface A3ExpenseListMainViewController () <ATSDragToReorderTableViewControllerDelegate, UIPopoverControllerDelegate,
 		A3ExpenseBudgetSettingDelegate, A3ExpenseListItemCellDelegate, UINavigationControllerDelegate,
 		A3ExpenseListHistoryDelegate, A3CalculatorViewControllerDelegate, A3InstructionViewControllerDelegate,
-		A3ViewControllerProtocol, A3ExpenseListAccessoryDelegate, A3KeyboardDelegate>
+		A3ViewControllerProtocol, A3ExpenseListAccessoryDelegate, A3KeyboardDelegate, GADBannerViewDelegate>
 
 @property (nonatomic, strong) A3ExpenseListHeaderView *headerView;
 @property (nonatomic, strong) UIView *sep1View;
@@ -218,7 +218,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 		[self leftBarButtonAppsButton];
 	}
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        [self setupBannerViewForAdUnitID:AdMobAdUnitIDExpenseList keywords:@[@"expense"] gender:kGADGenderUnknown];
+        [self setupBannerViewForAdUnitID:AdMobAdUnitIDExpenseList keywords:@[@"expense"] delegate:self];
     }
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self showNavigationBarOn:self.navigationController];

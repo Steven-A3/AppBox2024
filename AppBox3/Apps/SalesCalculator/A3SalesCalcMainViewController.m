@@ -47,7 +47,7 @@ enum A3TableElementCellType {
         <
         CLLocationManagerDelegate, UIPopoverControllerDelegate,
 		A3JHSelectTableViewControllerProtocol, A3SalesCalcHistorySelectDelegate, A3TableViewInputElementDelegate,
-		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewControllerProtocol,UIPopoverPresentationControllerDelegate
+		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewControllerProtocol,UIPopoverPresentationControllerDelegate, GADBannerViewDelegate
 		>
 
 @property (nonatomic, strong) A3JHTableViewRootElement *root;
@@ -221,7 +221,7 @@ enum A3TableElementCellType {
 		[self leftBarButtonAppsButton];
 	}
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDSalesCalc keywords:@[@"sale", @"price"] gender:kGADGenderUnknown];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDSalesCalc keywords:@[@"sale", @"price"] delegate:self];
 	}
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self showNavigationBarOn:self.navigationController];

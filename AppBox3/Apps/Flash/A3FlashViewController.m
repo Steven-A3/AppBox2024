@@ -151,7 +151,7 @@ NSString *const A3UserDefaultFlashStrobeSpeedValue = @"A3UserDefaultFlashStrobeS
 
 NSString *const cellID = @"flashEffectID";
 
-@interface A3FlashViewController () <UIAlertViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, NPColorPickerViewDelegate, A3InstructionViewControllerDelegate>
+@interface A3FlashViewController () <UIAlertViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, NPColorPickerViewDelegate, A3InstructionViewControllerDelegate, GADBannerViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIToolbar *statusToolbar;
 @property (weak, nonatomic) IBOutlet UIToolbar *topToolBar;
@@ -345,7 +345,7 @@ NSString *const cellID = @"flashEffectID";
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDFlashlight keywords:@[@"torch", @"flashlight"] gender:kGADGenderUnknown];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDFlashlight keywords:@[@"torch", @"flashlight"] delegate:self];
 	}
 	[self setupInstructionView];
 }

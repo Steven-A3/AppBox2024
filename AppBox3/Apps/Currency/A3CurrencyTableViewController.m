@@ -45,7 +45,7 @@ NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChan
 @interface A3CurrencyTableViewController () <FMMoveTableViewDataSource, FMMoveTableViewDelegate,
         UITextFieldDelegate, A3CurrencyMenuDelegate, A3SearchViewControllerDelegate, A3CurrencyChartViewDelegate,
         UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate, UIActivityItemSource, A3CalculatorViewControllerDelegate,
-        A3InstructionViewControllerDelegate, A3ViewControllerProtocol>
+        A3InstructionViewControllerDelegate, A3ViewControllerProtocol, GADBannerViewDelegate>
 
 @property(nonatomic, strong) NSMutableArray *favorites;
 @property(nonatomic, strong) NSMutableDictionary *equalItem;
@@ -186,7 +186,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
     }
     _favorites = nil;
 
-    [self setupBannerViewForAdUnitID:AdMobAdUnitIDCurrencyList keywords:@[@"Finance", @"Money", @"Shopping", @"Travel"] gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeSmartBannerPortrait : kGADAdSizeLeaderboard];
+    [self setupBannerViewForAdUnitID:AdMobAdUnitIDCurrencyList keywords:@[@"Finance", @"Money", @"Shopping", @"Travel"] adSize:IS_IPHONE ? GADAdSizeFluid : GADAdSizeLeaderboard delegate:self];
 
     [self.tableView reloadData];
 
@@ -1510,7 +1510,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 #pragma mark - AdMob Ad
 
-- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+- (void)bannerViewDidReceiveAd:(GADBannerView *)bannerView {
     if (_didPressAppsButton || _adItem) {
         return;
     }

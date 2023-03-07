@@ -10,7 +10,7 @@
 #import "A3QRCodeMapViewController.h"
 #import "UIViewController+A3Addition.h"
 
-@interface A3QRCodeMapViewController () <MKMapViewDelegate>
+@interface A3QRCodeMapViewController () <MKMapViewDelegate, GADBannerViewDelegate>
 
 @property (nonatomic, strong) MKMapView *mapView;
 
@@ -41,7 +41,7 @@
 	if (!_viewWillAppearDidRun) {
 		_viewWillAppearDidRun = YES;
 
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDQRCode keywords:@[@"Low Price", @"Shopping", @"Marketing"] gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDQRCode keywords:@[@"Low Price", @"Shopping", @"Marketing"] adSize:IS_IPHONE ? GADAdSizeFluid : GADAdSizeLeaderboard delegate:self];
 	}
 }
 
@@ -129,7 +129,7 @@
 
 #pragma mark - AdMob
 
-- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+- (void)bannerViewDidReceiveAd:(GADBannerView *)bannerView {
 	[self.view addSubview:bannerView];
 
 	UIView *superview = self.view;

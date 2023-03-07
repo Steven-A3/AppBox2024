@@ -37,7 +37,7 @@
         UINavigationControllerDelegate, UISearchBarDelegate,
 		UISearchControllerDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate,
 		UIActionSheetDelegate, A3InstructionViewControllerDelegate, UIPopoverPresentationControllerDelegate,
-		A3ViewControllerProtocol, UISearchResultsUpdating
+		A3ViewControllerProtocol, UISearchResultsUpdating, GADBannerViewDelegate
 		>
 
 @property (strong, nonatomic) NSArray *itemArray;
@@ -266,7 +266,7 @@
 		});
 	}
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        [self setupBannerViewForAdUnitID:AdMobAdUnitIDDaysCounter keywords:@[@"calendar", @"anniversary"] gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
+        [self setupBannerViewForAdUnitID:AdMobAdUnitIDDaysCounter keywords:@[@"calendar", @"anniversary"] adSize:IS_IPHONE ? GADAdSizeFluid : GADAdSizeLeaderboard delegate:self];
     }
 	
 	UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
@@ -1129,7 +1129,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 
 #pragma mark - AdMob
 
-- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+- (void)bannerViewDidReceiveAd:(GADBannerView *)bannerView {
 	[self.view addSubview:bannerView];
 	
     CGFloat verticalOffset = 0;

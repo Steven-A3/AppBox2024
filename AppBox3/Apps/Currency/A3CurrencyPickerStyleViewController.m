@@ -42,7 +42,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 @interface A3CurrencyPickerStyleViewController ()
 		<UITableViewDelegate, UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate,
-		UITextFieldDelegate, UIPopoverControllerDelegate, A3CalculatorViewControllerDelegate, A3SearchViewControllerDelegate, A3InstructionViewControllerDelegate>
+		UITextFieldDelegate, UIPopoverControllerDelegate, A3CalculatorViewControllerDelegate, A3SearchViewControllerDelegate, A3InstructionViewControllerDelegate, GADBannerViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewHeightConstraint;
@@ -126,9 +126,9 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         if (IS_IPHONE) {
-            [self setupBannerViewForAdUnitID:AdMobAdUnitIDCurrencyPicker keywords:@[@"Finance", @"Money", @"Shopping", @"Travel"] gender:kGADGenderUnknown adSize:kGADAdSizeSmartBannerPortrait];
+            [self setupBannerViewForAdUnitID:AdMobAdUnitIDCurrencyPicker keywords:@[@"Finance", @"Money", @"Shopping", @"Travel"] adSize:GADAdSizeFluid delegate:self];
         } else {
-            [self setupBannerViewForAdUnitID:AdMobAdUnitIDCurrencyPicker keywords:@[@"Finance", @"Money", @"Shopping", @"Travel"] gender:kGADGenderUnknown adSize:kGADAdSizeLeaderboard];
+            [self setupBannerViewForAdUnitID:AdMobAdUnitIDCurrencyPicker keywords:@[@"Finance", @"Money", @"Shopping", @"Travel"] adSize:GADAdSizeLeaderboard delegate:self];
         }
     });
 
@@ -1000,7 +1000,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 #pragma mark - Admob Advertisement
 
-- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+- (void)bannerViewDidReceiveAd:(GADBannerView *)bannerView {
     FNLOGRECT(bannerView.bounds);
     FNLOG(@"%f", bannerView.adSize.size.height);
     

@@ -50,7 +50,7 @@
 #import "UIImage+imageWithColor.h"
 #import "NYXImagesKit.h"
 @import UserNotifications;
-#import <Firebase/Firebase.h>
+#import <FirebaseCore/FirebaseCore.h>
 #import <PersonalizedAdConsent/PersonalizedAdConsent.h>
 #import <AdSupport/AdSupport.h>
 #import "TJDropboxAuthenticator.h"
@@ -78,9 +78,7 @@ NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhat
 NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstall";
 NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPersonalizedAds";
 
-@interface A3AppDelegate () <UIAlertViewDelegate, NSURLSessionDownloadDelegate, CLLocationManagerDelegate
-		, GADInterstitialDelegate
-		>
+@interface A3AppDelegate () <UIAlertViewDelegate, NSURLSessionDownloadDelegate, CLLocationManagerDelegate, GADFullScreenContentDelegate>
 
 @property (nonatomic, strong) NSDictionary *localNotificationUserInfo;
 @property (nonatomic, strong) UILocalNotification *storedLocalNotification;
@@ -94,7 +92,7 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
 @property (nonatomic, strong) UIApplicationShortcutItem *shortcutItem;
 @property (nonatomic, strong) GADRequest *adRequest;
 @property (nonatomic, strong) GADBannerView *adBannerView;
-@property (nonatomic, strong) GADInterstitial *adInterstitial;
+@property (nonatomic, strong) GADInterstitialAd *adInterstitial;
 
 @end
 
@@ -136,6 +134,8 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [FIRApp configure];
+    [[GADMobileAds sharedInstance] startWithCompletionHandler:nil];
+    
 #ifdef DEBUG
     FNLOG(@"%@", [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]);
     FNLOG(@"%@", [NSLocale preferredLanguages]);
@@ -279,7 +279,6 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
     // Add this code to your application delegate's
     // application:didFinishLaunchingWithOptions: method.
     
-    [[GADMobileAds sharedInstance] startWithCompletionHandler:nil];
 //    [ACTConversionReporter reportWithConversionID:@"964753049" label:@"j_bDCNKruXEQme2DzAM" value:@"1.00" isRepeatable:NO];
     
 	return shouldPerformAdditionalDelegateHandling;
@@ -1492,7 +1491,7 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
 
 #pragma mark - AdMob
 
-- (GADRequest *)adRequestWithKeywords:(NSArray *)keywords gender:(GADGender)gender {
+- (GADRequest *)adRequestWithKeywords:(NSArray *)keywords {
 	GADRequest *adRequest = [GADRequest request];
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kA3AdsUserDidSelectPersonalizedAds]) {
         GADExtras *extras = [[GADExtras alloc] init];
@@ -1500,62 +1499,64 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
         [adRequest registerAdNetworkExtras:extras];
     }
 	adRequest.keywords = keywords;
-	adRequest.gender = gender;
 	return adRequest;
 }
 
-- (void)setupAdInterstitialForAdUnitID:(NSString *)adUnitID keywords:(NSArray *)keywords gender:(GADGender)gender {
-	_adRequest = [self adRequestWithKeywords:keywords gender:gender];
-	_adInterstitial = [[GADInterstitial alloc] initWithAdUnitID:adUnitID];
-	_adInterstitial.delegate = self;
-	[_adInterstitial loadRequest:_adRequest];
+- (void)setupAdInterstitialForAdUnitID:(NSString *)adUnitID keywords:(NSArray *)keywords {
+	_adRequest = [self adRequestWithKeywords:keywords];
+    [GADInterstitialAd loadWithAdUnitID:adUnitID
+                                request:_adRequest
+                      completionHandler:^(GADInterstitialAd * _Nullable interstitialAd, NSError * _Nullable error) {
+        if (error) {
+            FNLOG(@"%@", error.localizedDescription);
+            return;
+        }
+        self.adInterstitial = interstitialAd;
+        self.adInterstitial.fullScreenContentDelegate = self;
+        
+        if (self.passcodeViewController.view.superview) {
+            FNLOG(@"Cancel presenting Interstitial ads. Visible view controller is Passcode View controller.");
+            return;
+        }
+        UINavigationController *navigationController = self.currentMainNavigationController;
+        while ([navigationController.presentedViewController isKindOfClass:[UINavigationController class]]) {
+            navigationController = (id)navigationController.presentedViewController;
+        }
+        if (!navigationController.presentedViewController) {
+            [self.adInterstitial presentFromRootViewController:navigationController];
+        }
+    }];
 }
 
-- (void)interstitialDidReceiveAd:(GADInterstitial *)ad {
-	FNLOG(@"%@", self.passcodeViewController.view.superview);
-	if (self.passcodeViewController.view.superview) {
-		FNLOG(@"Cancel presenting Interstitial ads. Visible view controller is Passcode View controller.");
-		return;
-	}
-	UINavigationController *navigationController = self.currentMainNavigationController;
-	while ([navigationController.presentedViewController isKindOfClass:[UINavigationController class]]) {
-		navigationController = (id)navigationController.presentedViewController;
-	}
-    if (!navigationController.presentedViewController) {
-        [_adInterstitial presentFromRootViewController:navigationController];
-    }
-}
+/// Tells the delegate that the ad will present full screen content.
+- (void)adWillPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
+    _statusBarHiddenBeforeAdsAppear = [[UIApplication sharedApplication] isStatusBarHidden];
+    _statusBarStyleBeforeAdsAppear = [[UIApplication sharedApplication] statusBarStyle];
+    
+    double delayInSeconds = 0.3;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    });
 
-- (void)interstitial:(GADInterstitial *)ad didFailToReceiveAdWithError:(GADRequestError *)error {
-    FNLOG(@"%@", error.localizedDescription);
-}
-
-- (void)interstitialDidFailToPresentScreen:(GADInterstitial *)ad {
-    FNLOG();
-}
-
-- (void)interstitialWillPresentScreen:(GADInterstitial *)ad {
-	_statusBarHiddenBeforeAdsAppear = [[UIApplication sharedApplication] isStatusBarHidden];
-	_statusBarStyleBeforeAdsAppear = [[UIApplication sharedApplication] statusBarStyle];
-	
-	double delayInSeconds = 0.3;
-	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		[[UIApplication sharedApplication] setStatusBarHidden:YES];
-	});
-
-	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3AdsDisplayTime];
-	[[NSUserDefaults standardUserDefaults] setInteger:0 forKey:A3NumberOfTimesOpeningSubApp];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3AdsDisplayTime];
+    [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:A3NumberOfTimesOpeningSubApp];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     
     self.adDisplayedAfterApplicationDidBecomeActive = YES;
 }
 
-- (void)interstitialWillDismissScreen:(GADInterstitial *)ad {
-	[[UIApplication sharedApplication] setStatusBarHidden:_statusBarHiddenBeforeAdsAppear];
-	[[UIApplication sharedApplication] setStatusBarStyle:_statusBarStyleBeforeAdsAppear];
-	
-	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationsAdsWillDismissScreen object:nil];
+/// Tells the delegate that the ad will dismiss full screen content.
+- (void)adWillDismissFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
+    [[UIApplication sharedApplication] setStatusBarHidden:_statusBarHiddenBeforeAdsAppear];
+    [[UIApplication sharedApplication] setStatusBarStyle:_statusBarStyleBeforeAdsAppear];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationsAdsWillDismissScreen object:nil];
+}
+
+/// Tells the delegate that the ad dismissed full screen content.
+- (void)adDidDismissFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
+    
 }
 
 - (BOOL)presentInterstitialAds {
@@ -1563,8 +1564,9 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
 		return NO;
 	}
 	FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    
 	if (self.adDisplayedAfterApplicationDidBecomeActive) {
-		FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 		return NO;
 	}
 	
@@ -1574,20 +1576,13 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
     {
         if (@available(iOS 14, *)) {
             [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
-                [self setupAdInterstitialForAdUnitID:A3InterstitialAdUnitID keywords:@[@"shopping", @"currency", @"wallet", @"holidays", @"calendar"] gender:kGADGenderUnknown];
+                [self setupAdInterstitialForAdUnitID:A3InterstitialAdUnitID keywords:@[@"shopping", @"currency", @"wallet", @"holidays", @"calendar"]];
             }];
         } else {
-            [self setupAdInterstitialForAdUnitID:A3InterstitialAdUnitID keywords:@[@"shopping", @"currency", @"wallet", @"holidays", @"calendar"] gender:kGADGenderUnknown];
+            [self setupAdInterstitialForAdUnitID:A3InterstitialAdUnitID keywords:@[@"shopping", @"currency", @"wallet", @"holidays", @"calendar"]];
         }
 		return YES;
 	}
-	
-//	if (numberOfTimesOpeningSubApp >= 2) {
-//		[self setupAdInterstitialForAdUnitID:A3InterstitialAdUnitID keywords:nil gender:kGADGenderUnknown];
-//		return YES;
-//	} else {
-//		[self increaseNumberOfTimesOpenedSubappCount];
-//	}
 	
 	return NO;
 }

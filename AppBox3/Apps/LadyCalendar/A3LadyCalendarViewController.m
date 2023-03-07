@@ -36,7 +36,7 @@ A3ViewControllerProtocol,
 UICollectionViewDataSource,
 UICollectionViewDelegate,
 UICollectionViewDelegateFlowLayout,
-A3CalendarViewDelegate>
+A3CalendarViewDelegate, GADBannerViewDelegate>
 
 @property (strong, nonatomic) A3LadyCalendarModelManager *dataManager;
 @property (strong, nonatomic) UIView *headerView;
@@ -237,7 +237,7 @@ A3CalendarViewDelegate>
 	[self updateCurrentMonthLabel];
 
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDLadiesCalendar keywords:@[@"menstruation", @"ladies"] gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDLadiesCalendar keywords:@[@"menstruation", @"ladies"] adSize:IS_IPHONE ? GADAdSizeFluid : GADAdSizeLeaderboard delegate:self];
 	}
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self.navigationController setNavigationBarHidden:NO animated:NO];
@@ -902,7 +902,7 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 
 #pragma mark - AdMob
 
-- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+- (void)bannerViewDidReceiveAd:(GADBannerView *)bannerView {
 	[self.view addSubview:bannerView];
 	
     CGFloat verticalOffset = 0;

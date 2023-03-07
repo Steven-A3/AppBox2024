@@ -26,7 +26,7 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 };
 
 
-@interface A3QRCodeHistoryViewController () <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate>
+@interface A3QRCodeHistoryViewController () <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, GADBannerViewDelegate>
 
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
 @property (nonatomic, strong) UIView *navigationBarExtensionView;
@@ -62,7 +62,7 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 	if (!_viewWillAppearDidRun) {
 		_viewWillAppearDidRun = YES;
 		
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDQRCode keywords:@[@"Low Price", @"Shopping", @"Marketing"] gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDQRCode keywords:@[@"Low Price", @"Shopping", @"Marketing"] adSize:IS_IPHONE ? GADAdSizeFluid : GADAdSizeLeaderboard delegate:self];
 	}
 	[_navigationBarExtensionView setHidden:NO];
 	[self.navigationController setToolbarHidden:YES];
@@ -470,7 +470,7 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 
 #pragma mark - AdMob
 
-- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+- (void)bannerViewDidReceiveAd:(GADBannerView *)bannerView {
 	[self.view addSubview:bannerView];
 
     CGFloat verticalOffset = 0;

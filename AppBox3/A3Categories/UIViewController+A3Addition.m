@@ -867,42 +867,30 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
  *
  *  @param unitID   AdMob ad unit id
  *  @param keywords keywords list
- *  @param gender   gender information
  */
-- (void)setupBannerViewForAdUnitID:(NSString *)unitID keywords:(NSArray *)keywords gender:(GADGender)gender adSize:(GADAdSize)adSize {
+- (void)setupBannerViewForAdUnitID:(NSString *)unitID keywords:(NSArray *)keywords adSize:(GADAdSize)adSize delegate:(id<GADBannerViewDelegate>)delegate {
 	if (![[A3AppDelegate instance] shouldPresentAd]) return;
 
-	GADRequest *adRequest = [GADRequest request];
+	GAMRequest *adRequest = [GAMRequest request];
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kA3AdsUserDidSelectPersonalizedAds]) {
         GADExtras *extras = [[GADExtras alloc] init];
         extras.additionalParameters = @{@"npa": @"1"};
         [adRequest registerAdNetworkExtras:extras];
     }
 	adRequest.keywords = keywords;
-	adRequest.gender = gender;
-#if TARGET_IPHONE_SIMULATOR
-    adRequest.testDevices = @[ kGADSimulatorID ];
-#endif
 
-	GADBannerView *bannerView = [GADBannerView new];
+    GADBannerView *bannerView = [[GADBannerView alloc] initWithAdSize:adSize];
 	bannerView.adUnitID = unitID;
 	bannerView.rootViewController = self;
-	bannerView.adSize = adSize;
-	bannerView.delegate = (id<GADBannerViewDelegate>)self;
+    bannerView.delegate = delegate ? delegate : (id<GADBannerViewDelegate>)self;
 	[bannerView loadRequest:adRequest];
 	objc_setAssociatedObject(self, key_adBannerView, bannerView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)setupBannerViewForAdUnitID:(NSString *)unitID keywords:(NSArray *)keywords gender:(GADGender)gender {
+- (void)setupBannerViewForAdUnitID:(NSString *)unitID keywords:(NSArray *)keywords delegate:(id<GADBannerViewDelegate>)delegate {
 	if (![[A3AppDelegate instance] shouldPresentAd]) return;
 
-	[self setupBannerViewForAdUnitID:unitID keywords:keywords gender:gender adSize:kGADAdSizeBanner];
-}
-
-- (void)setupBannerViewForAdUnitID:(NSString *)unitID keywords:(NSArray *)keywords {
-	if (![[A3AppDelegate instance] shouldPresentAd]) return;
-
-	[self setupBannerViewForAdUnitID:unitID keywords:keywords gender:kGADGenderUnknown adSize:kGADAdSizeBanner];
+    [self setupBannerViewForAdUnitID:unitID keywords:keywords adSize:GADAdSizeBanner delegate:delegate];
 }
 
 - (CGFloat)bannerHeight {
@@ -920,40 +908,18 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
     }
 }
 
-- (void)prepareNativeExpressAdViewForUnitID:(NSString *)unitID keywords:(NSArray *)keywords delegate:(id<GADNativeExpressAdViewDelegate>)delegate {
-    GADRequest *adRequest = [GADRequest request];
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kA3AdsUserDidSelectPersonalizedAds]) {
-        GADExtras *extras = [[GADExtras alloc] init];
-        extras.additionalParameters = @{@"npa": @"1"};
-        [adRequest registerAdNetworkExtras:extras];
-    }
-    adRequest.keywords = keywords;
-    
-    GADNativeExpressAdView *nativeExpressAdView = [GADNativeExpressAdView new];
-    nativeExpressAdView.adUnitID = unitID;
-    nativeExpressAdView.rootViewController = self;
-    nativeExpressAdView.delegate = delegate;
-    [nativeExpressAdView loadRequest:adRequest];
-    
-    objc_setAssociatedObject(self, key_adNativeExpressView, nativeExpressAdView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (GADNativeExpressAdView *)nativeExpressAdView {
-    return objc_getAssociatedObject(self, key_adNativeExpressView);
-}
-
 /**
  *  광고를 받으면 폐기한다.
  *  현재 이 요청의 목적은 광고 수요를 파악하는데 있으므로, 광고를 게재하지는 않는다.
  *
  *  @param bannerView <#bannerView description#>
  */
-- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+- (void)bannerViewDidReceiveAd:(GADBannerView *)bannerView {
 	[bannerView removeFromSuperview];
 	objc_setAssociatedObject(self, key_adBannerView, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)adView:(GADBannerView *)bannerView didFailToReceiveAdWithError:(GADRequestError *)error {
+- (void)bannerView:(GADBannerView *)bannerView didFailToReceiveAdWithError:(NSError *)error {
 	FNLOG(@"%@", error.localizedDescription);
 }
 

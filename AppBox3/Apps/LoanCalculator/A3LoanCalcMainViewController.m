@@ -55,7 +55,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 
 @interface A3LoanCalcMainViewController () <LoanCalcHistoryViewControllerDelegate, LoanCalcExtraPaymentDelegate,
 		LoanCalcLoanDataDelegate, LoanCalcSelectCalcForDelegate, LoanCalcSelectFrequencyDelegate, A3KeyboardDelegate,
-		UITextFieldDelegate, UITextViewDelegate, UIPopoverControllerDelegate, UIActivityItemSource, A3ViewControllerProtocol>
+		UITextFieldDelegate, UITextViewDelegate, UIPopoverControllerDelegate, UIActivityItemSource, A3ViewControllerProtocol, GADBannerViewDelegate>
 
 @property (nonatomic, strong) NSArray *moreMenuButtons;
 @property (nonatomic, strong) UIView *moreMenuView;
@@ -234,8 +234,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 	}
     [self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/5665624549"
                             keywords:@[@"loan", @"finance", @"banking"]
-                              gender:kGADGenderUnknown
-                              adSize:IS_IPHONE ? kGADAdSizeSmartBannerPortrait : kGADAdSizeLeaderboard];
+                              adSize:IS_IPHONE ? GADAdSizeFluid : GADAdSizeLeaderboard delegate:self];
 
 	if (SYSTEM_VERSION_LESS_THAN(@"11") && [self isMovingToParentViewController]) {
 		self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
@@ -3098,7 +3097,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 
 #pragma mark - AdMob
 
-- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+- (void)bannerViewDidReceiveAd:(GADBannerView *)bannerView {
     _didReceiveAds = YES;
     
     [self.tableView reloadData];

@@ -22,7 +22,7 @@
 
 @import GoogleMobileAds;
 
-@interface A3BatteryStatusMainViewController () <A3InstructionViewControllerDelegate>
+@interface A3BatteryStatusMainViewController () <A3InstructionViewControllerDelegate, GADBannerViewDelegate>
 
 @property (nonatomic, strong) A3BatteryStatusSettingViewController *settingsViewController;
 @property (nonatomic, strong) A3BatteryStatusListPageSectionView *sectionHeaderView;
@@ -147,8 +147,8 @@
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
         [self setupBannerViewForAdUnitID:AdMobAdUnitIDBattery
                                 keywords:@[@"battery"]
-                                  gender:kGADGenderUnknown
-                                  adSize:IS_IPHONE ? kGADAdSizeSmartBannerPortrait : kGADAdSizeLeaderboard];
+                                  adSize:IS_IPHONE ? GADAdSizeFluid : GADAdSizeLeaderboard
+                                delegate:self];
 	}
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self.navigationController setNavigationBarHidden:NO];
@@ -555,7 +555,7 @@ static NSString *CellIdentifier = @"Cell";
 
 #pragma mark - AdMob
 
-- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+- (void)bannerViewDidReceiveAd:(GADBannerView *)bannerView {
     FNLOG(@"%f", bannerView.adSize.size.height);
     
     _didReceiveAds = YES;

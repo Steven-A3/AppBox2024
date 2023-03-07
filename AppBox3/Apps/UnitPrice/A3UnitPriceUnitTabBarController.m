@@ -11,7 +11,7 @@
 #import "UnitPriceInfo.h"
 #import "A3UnitDataManager.h"
 
-@interface A3UnitPriceUnitTabBarController () <UITabBarControllerDelegate>
+@interface A3UnitPriceUnitTabBarController () <UITabBarControllerDelegate, GADBannerViewDelegate>
 {
     BOOL isFavoriteMode;
     
@@ -65,7 +65,7 @@ NSString *const A3UnitPriceSegmentIndex = @"A3UnitPriceSegmentIndex";
     [super viewDidAppear:animated];
 
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        [self setupBannerViewForAdUnitID:AdMobAdUnitIDUnitPrice keywords:@[@"shopping", @"price", @"sale"] gender:kGADGenderUnknown];
+        [self setupBannerViewForAdUnitID:AdMobAdUnitIDUnitPrice keywords:@[@"shopping", @"price", @"sale"] delegate:self];
     }
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self showNavigationBarOn:self.navigationController];

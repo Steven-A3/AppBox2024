@@ -28,7 +28,7 @@ NSString *const A3RandomLastValueKey = @"A3RandomLastValueKey";
 NSString *const A3RandomRangeMinimumKey = @"A3RandomRangeMinimumKey";
 NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 
-@interface A3RandomViewController () <UIAccelerometerDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIScrollViewDelegate, UITextFieldDelegate, A3KeyboardDelegate>
+@interface A3RandomViewController () <UIAccelerometerDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIScrollViewDelegate, UITextFieldDelegate, A3KeyboardDelegate, GADBannerViewDelegate>
 
 - (IBAction)randomButtonTouchUp:(id)sender;
 
@@ -188,7 +188,7 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 	}
-    [self setupBannerViewForAdUnitID:AdMobAdUnitIDRandom keywords:@[@"random", @"lottery"] gender:kGADGenderUnknown];
+    [self setupBannerViewForAdUnitID:AdMobAdUnitIDRandom keywords:@[@"random", @"lottery"] delegate:self];
 	
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self showNavigationBarOn:self.navigationController];

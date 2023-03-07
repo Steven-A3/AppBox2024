@@ -32,7 +32,7 @@
 
 @interface A3HolidaysPageViewController () <UIPageViewControllerDelegate, UIPageViewControllerDataSource,
 		A3HolidaysEditViewControllerDelegate, FXPageControlDelegate, A3HolidaysCountryViewControllerDelegate,
-		A3HolidaysPageViewControllerProtocol, A3CenterViewDelegate, UIAlertViewDelegate, A3InstructionViewControllerDelegate>
+		A3HolidaysPageViewControllerProtocol, A3CenterViewDelegate, UIAlertViewDelegate, A3InstructionViewControllerDelegate, GADBannerViewDelegate>
 
 @property (nonatomic, strong) NSArray *countries;
 @property (nonatomic, strong) FXPageControl *pageControl;
@@ -177,7 +177,7 @@
 
 		[self alertDisclaimer];
 
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDHolidays keywords:@[@"holidays"] gender:kGADGenderUnknown];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDHolidays keywords:@[@"holidays"] delegate:self];
 	}
 }
 

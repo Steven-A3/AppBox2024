@@ -24,7 +24,7 @@
 #import "A3InstructionViewController.h"
 #import "A3UserDefaults.h"
 
-@interface A3TranslatorViewController () <FMMoveTableViewDataSource, FMMoveTableViewDelegate, A3TranslatorMessageViewControllerDelegate, A3TranslatorFavoriteDelegate, A3InstructionViewControllerDelegate>
+@interface A3TranslatorViewController () <FMMoveTableViewDataSource, FMMoveTableViewDelegate, A3TranslatorMessageViewControllerDelegate, A3TranslatorFavoriteDelegate, A3InstructionViewControllerDelegate, GADBannerViewDelegate>
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
 @property (nonatomic, strong) FMMoveTableView *tableView;
 @property (nonatomic, strong) UIButton *addButton;
@@ -151,7 +151,7 @@
 		[self leftBarButtonAppsButton];
 	}
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDTranslator keywords:@[@"translator", @"language"] gender:kGADGenderUnknown adSize:IS_IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDTranslator keywords:@[@"translator", @"language"] adSize:IS_IPHONE ? GADAdSizeFluid : GADAdSizeLeaderboard delegate:self];
 	}
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self showNavigationBarOn:self.navigationController];
@@ -502,7 +502,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 
 #pragma mark - AdMob
 
-- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+- (void)bannerViewDidReceiveAd:(GADBannerView *)bannerView {
 	[self.view addSubview:bannerView];
 	
     CGFloat verticalOffset = 0;

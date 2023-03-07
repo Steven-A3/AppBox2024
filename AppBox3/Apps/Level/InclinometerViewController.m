@@ -21,7 +21,7 @@
 #define kCalibrationOffsetXKeyForSurface		@"kCalibrationOffsetXKeyForSurface"
 #define kCalibrationOffsetYKeyForSurface		@"kCalibrationOffsetYKeyForSurface"
 
-@interface InclinometerViewController () <ClinometerToolbarViewControllerDelegate>
+@interface InclinometerViewController () <ClinometerToolbarViewControllerDelegate, GADBannerViewDelegate>
 
 @property (nonatomic, strong) CMMotionManager *motionManager;
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
@@ -94,7 +94,7 @@
 	[self myLayoutSubviews];
 
     if ([[A3AppDelegate instance] shouldPresentAd]) {
-        [self setupBannerViewForAdUnitID:AdMobAdUnitIDLevel keywords:@[@"House"] gender:kGADGenderUnknown adSize:kGADAdSizeSmartBannerPortrait];
+        [self setupBannerViewForAdUnitID:AdMobAdUnitIDLevel keywords:@[@"House"] adSize:GADAdSizeFluid delegate:self];
         
         UIView *superview = self.view;
         [self.view addSubview:self.bannerView];
@@ -444,7 +444,7 @@
 
 #pragma mark - Admob Ad
 
-- (void)adViewDidReceiveAd:(GADBannerView *)bannerView {
+- (void)bannerViewDidReceiveAd:(GADBannerView *)bannerView {
     FNLOGRECT(bannerView.frame);
     FNLOG(@"%f", bannerView.adSize.size.height);
 

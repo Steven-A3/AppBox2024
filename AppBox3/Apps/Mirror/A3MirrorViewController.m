@@ -19,7 +19,7 @@
 
 NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 
-@interface A3MirrorViewController() <A3InstructionViewControllerDelegate, A3ViewControllerProtocol>
+@interface A3MirrorViewController() <A3InstructionViewControllerDelegate, A3ViewControllerProtocol, GADBannerViewDelegate>
 {
 	GLKView *_videoPreviewViewNoFilter;     // OPEN GLES Aware-View
 	GLKView *_videoPreviewViewMonoFilter;
@@ -340,7 +340,7 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 	if (IS_IPHONE && IS_LANDSCAPE) {
 		[self setToolBarsHidden:YES];
 	}
-	[self setupBannerViewForAdUnitID:AdMobAdUnitIDMirror keywords:@[@"mirror", @"ladies"] gender:kGADGenderUnknown];
+	[self setupBannerViewForAdUnitID:AdMobAdUnitIDMirror keywords:@[@"mirror", @"ladies"] delegate:self];
 }
 
 - (void)setupButtonEnabled {

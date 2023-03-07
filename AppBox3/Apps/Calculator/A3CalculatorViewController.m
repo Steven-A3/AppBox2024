@@ -12,6 +12,10 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "UIViewController+A3Addition.h"
 
+@interface A3CalculatorViewController () <GADBannerViewDelegate>
+
+@end
+
 @implementation A3CalculatorViewController
 
 - (instancetype)initWithPresentingViewController:(UIViewController *)modalPresentingParentViewController {
@@ -53,7 +57,7 @@
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDCalculator keywords:@[@"calculator"] gender:kGADGenderUnknown];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDCalculator keywords:@[@"calculator"] delegate:self];
 	}
 	if (IS_IPHONE && IS_PORTRAIT && [self.navigationController.navigationBar isHidden]) {
 		[self showNavigationBarOn:self.navigationController];

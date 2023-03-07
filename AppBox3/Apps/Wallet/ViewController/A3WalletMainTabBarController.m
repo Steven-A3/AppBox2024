@@ -32,7 +32,7 @@ NSString *const A3WalletNotificationCategoryDeleted = @"CategoryDeleted";
 NSString *const A3WalletNotificationCategoryAdded = @"CategoryAdded";
 NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMoved";
 
-@interface A3WalletMainTabBarController ()
+@interface A3WalletMainTabBarController () <GADBannerViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *categories;
 @property (nonatomic, strong) UINavigationController *myMoreNavigationController;
@@ -145,7 +145,7 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 	
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-		[self setupBannerViewForAdUnitID:AdMobAdUnitIDWallet keywords:@[@"wallet", @"security", @"privacy", @"notes"] gender:kGADGenderUnknown];
+		[self setupBannerViewForAdUnitID:AdMobAdUnitIDWallet keywords:@[@"wallet", @"security", @"privacy", @"notes"] delegate:self];
 	}
 }
 
