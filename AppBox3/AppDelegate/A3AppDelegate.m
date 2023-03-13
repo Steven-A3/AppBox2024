@@ -1029,9 +1029,14 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
 
 - (void)setupContext
 {
+    // 2023년 3월 13일 - MagicalRecord 제거 시작
+    
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    NSManagedObjectModel *model = [NSManagedObjectModel mergedModelFromBundles:@[bundle]];
+    _persistentContainer = [[NSPersistentContainer alloc] initWithName:@"AppBoxStore" managedObjectModel:model];
+
 	[MagicalRecord setLogLevel:MagicalRecordLogLevelVerbose];
 	
-	NSManagedObjectModel *model = [NSManagedObjectModel MR_newManagedObjectModelNamed:@"AppBox3.momd"];
 	[NSManagedObjectModel MR_setDefaultManagedObjectModel:model];
 
 	[MagicalRecord setShouldAutoCreateManagedObjectModel:NO];

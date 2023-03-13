@@ -450,7 +450,6 @@
     textField.font = [UIFont systemFontOfSize:17];
     textField.floatingLabelFont = [UIFont systemFontOfSize:13];
     textField.floatingLabelYPadding = 0;
-    textField.secureTextEntry = YES;
     textField.keyboardType = UIKeyboardTypeDefault;
     textField.delegate = self;
 }

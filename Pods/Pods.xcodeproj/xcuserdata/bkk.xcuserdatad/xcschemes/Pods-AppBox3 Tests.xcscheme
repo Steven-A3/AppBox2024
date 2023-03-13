@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1340"
+   LastUpgradeVersion = "1300"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "24B156462F8562E455267B45028BC23E"
-               BuildableName = "libPods-AppBox3 Tests.a"
+               BuildableName = "Pods_AppBox3_Tests.framework"
                BlueprintName = "Pods-AppBox3 Tests"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>

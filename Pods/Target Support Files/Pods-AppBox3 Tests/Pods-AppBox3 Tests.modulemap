@@ -1,0 +1,6 @@
+framework module Pods_AppBox3_Tests {
+  umbrella header "Pods-AppBox3 Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -14,8 +14,6 @@ target 'AppBox3' do
   use_frameworks! :linkage => :static
 
   # Pods for AppBox3
-  pod 'FirebaseCore', :modular_headers => true
-  pod 'Google-Mobile-Ads-SDK'
   pod 'PersonalizedAdConsent'
 
   target 'AppBox3 Tests' do

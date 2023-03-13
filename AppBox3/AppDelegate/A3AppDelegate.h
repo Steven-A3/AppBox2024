@@ -15,6 +15,7 @@
 #import "A3HomeStyleMenuViewController.h"
 #import "MMDrawerController.h"
 #import "Reachability.h"
+#import "AppBox3-Swift.h"
 
 @protocol A3PasscodeViewControllerProtocol;
 @class Reachability;
@@ -132,7 +133,8 @@ extern NSString *const A3AppGroupNameNone;
 @property (strong, nonatomic) A3MainMenuTableViewController *mainMenuViewController;
 @property (strong, nonatomic) A3HomeStyleMenuViewController *homeStyleMainMenuViewController;
 
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (strong, nonatomic) NSPersistentContainer *persistentContainer;
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;     // It will be replaced with persistentContainer
 @property (strong, nonatomic) NSDate *wakeUpTime;
 @property (strong, nonatomic) MBProgressHUD *hud;
 @property (nonatomic, strong) MBProgressHUD *hudView;
