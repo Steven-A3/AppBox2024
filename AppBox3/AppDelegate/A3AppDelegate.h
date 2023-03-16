@@ -15,7 +15,9 @@
 #import "A3HomeStyleMenuViewController.h"
 #import "MMDrawerController.h"
 #import "Reachability.h"
-#import "AppBox3-Swift.h"
+#import <CoreData/CoreData.h>
+
+//#import "AppBox3-Swift.h"
 
 @protocol A3PasscodeViewControllerProtocol;
 @class Reachability;

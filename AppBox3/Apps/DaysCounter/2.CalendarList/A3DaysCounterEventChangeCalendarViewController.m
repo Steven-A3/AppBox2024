@@ -15,6 +15,8 @@
 #import "A3DaysCounterDefine.h"
 #import "DaysCounterCalendar.h"
 #import "NSMutableArray+A3Sort.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3DaysCounterEventChangeCalendarViewController ()
 @property (strong, nonatomic) NSArray *itemArray;
@@ -57,7 +59,7 @@
     
     self.navigationController.navigationBar.topItem.prompt = NSLocalizedString(@"Move these events to a new calendar.", @"Move these events to a new calendar.");
     
-    self.itemArray = [DaysCounterCalendar MR_findAllSortedBy:A3CommonPropertyOrder ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"uniqueID != %@ AND type == %@", _currentCalendar.uniqueID, @(CalendarCellType_User)]];
+    self.itemArray = [DaysCounterCalendar findAllSortedBy:A3CommonPropertyOrder ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"uniqueID != %@ AND type == %@", _currentCalendar.uniqueID, @(CalendarCellType_User)]];
 
     [self.tableView reloadData];
 }
@@ -152,7 +154,9 @@
         event.calendarID = targetCalendar.uniqueID;
     }
 	DaysCounterEvent *event = _eventArray[0];
-    [event.managedObjectContext MR_saveToPersistentStoreAndWait];
+    
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
     
     if (_doneActionCompletionBlock) {
         _doneActionCompletionBlock();

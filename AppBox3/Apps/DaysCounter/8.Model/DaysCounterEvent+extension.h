@@ -18,18 +18,12 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 @interface DaysCounterEvent (extension)
 
-- (DaysCounterReminder *)reminderWithContext:(NSManagedObjectContext *)context;
-
+- (DaysCounterReminder *)reminderItem;
 - (DaysCounterFavorite *)favorite;
-
 - (DaysCounterDate *)startDate;
-
 - (DaysCounterDate *)endDateCreateIfNotExist:(BOOL)createIfNotExist;
-
 - (void)setEndDate:(DaysCounterDate *)dateObject;
-
 - (DaysCounterEventLocation *)location;
-
 - (void)toggleFavorite;
 - (NSURL *)photoURLInOriginalDirectory:(BOOL)inOriginalDirectory;
 - (UIImage *)photoInOriginalDirectory:(BOOL)inOriginalDirectory;

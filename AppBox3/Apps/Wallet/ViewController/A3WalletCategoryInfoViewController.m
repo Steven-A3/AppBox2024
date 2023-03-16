@@ -18,6 +18,9 @@
 #import "WalletCategory.h"
 #import "NSMutableArray+A3Sort.h"
 #import "WalletField.h"
+#import "A3AppDelegate.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
 
@@ -108,7 +111,7 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
 
 - (NSArray *)fieldArray {
 	if (!_fieldArray) {
-		_fieldArray = [WalletField MR_findByAttribute:@"categoryID" withValue:_category.uniqueID andOrderBy:A3CommonPropertyOrder ascending:YES];
+		_fieldArray = [WalletField findByAttribute:@"categoryID" withValue:_category.uniqueID andOrderBy:A3CommonPropertyOrder ascending:YES];
 	}
 	return _fieldArray;
 }
@@ -133,7 +136,7 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
         }
 
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", _category.uniqueID];
-		WalletItem *item = [WalletItem MR_findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
+		WalletItem *item = [WalletItem findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
 		if (item) {
 			_headerView.timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Updated %@", @"Updated %@"), [dateFormatter stringFromDate:item.updateDate]];
 		}

@@ -12,6 +12,6 @@
 @interface CurrencyHistory (handler)
 
 - (NSInteger)targetCount;
-
 - (NSArray *)targets;
+
 @end

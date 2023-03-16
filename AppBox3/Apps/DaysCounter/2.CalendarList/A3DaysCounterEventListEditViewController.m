@@ -20,6 +20,8 @@
 #import "NSDateFormatter+A3Addition.h"
 #import "DaysCounterCalendar.h"
 #import "UITableView+utility.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 #define ActionSheet_DeleteAll           100
 #define ActionSheet_DeleteSelected      101
@@ -144,7 +146,7 @@
 {
     if( [_calendarItem.type integerValue] == CalendarCellType_User ) {
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"calendarID == %@", _calendarItem.uniqueID];
-		NSArray *events = [DaysCounterEvent MR_findAllWithPredicate:predicate];
+		NSArray *events = [DaysCounterEvent findAllWithPredicate:predicate];
         self.itemArray = [NSMutableArray arrayWithArray:events];
 	} else {
         NSArray *sourceArray = nil;
@@ -226,8 +228,9 @@
 
 - (void)deleteAllEventsAction
 {
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
     for(DaysCounterEvent *event in _itemArray){
-        [event MR_deleteEntity];
+        [context deleteObject:event];
     }
     [_checkStatusDict removeAllObjects];
     [_itemArray removeAllObjects];
@@ -246,9 +249,10 @@
             [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
         }
     }
-    
-    for(DaysCounterEvent *event in removeItems){
-        [event MR_deleteEntity];
+
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    for (DaysCounterEvent *event in removeItems) {
+        [context deleteObject:event];
     }
     [_itemArray removeObjectsInArray:removeItems];
     removeItems = nil;
@@ -267,8 +271,9 @@
             [self deleteSelectedEventsAction];
         }
         
-        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-        
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        [context saveContext];
+
         if( [self.itemArray count] < 1 ){
             [self cancelAction:nil];
         }

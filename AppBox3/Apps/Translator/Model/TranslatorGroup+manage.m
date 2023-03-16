@@ -8,12 +8,13 @@
 
 #import "TranslatorGroup+manage.h"
 #import "NSString+conversion.h"
-
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @implementation TranslatorGroup (manage)
 
 - (void)setupOrder {
-	TranslatorGroup *group = [TranslatorGroup MR_findFirstOrderedByAttribute:@"order" ascending:NO];
+	TranslatorGroup *group = [TranslatorGroup findFirstOrderedByAttribute:@"order" ascending:NO];
 	NSString *largestInOrder = group.order;
 	NSString *nextLargestInOrder = [NSString orderStringWithOrder:[largestInOrder integerValue] + 100000];
 	FNLOG(@"nextLargestInOrder = %@", nextLargestInOrder);

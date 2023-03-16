@@ -170,7 +170,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
         if ([_field.name length] && _delegate && [_delegate respondsToSelector:@selector(walletFieldAdded:)]) {
             [_delegate walletFieldAdded:_field];
         } else {
-			[_field MR_deleteEntityInContext:_field.managedObjectContext];
+            [_field.managedObjectContext deleteObject:_field];
 		}
     }
     // 편집모드

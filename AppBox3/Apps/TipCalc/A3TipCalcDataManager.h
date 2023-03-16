@@ -98,7 +98,7 @@ typedef NS_ENUM (NSInteger, TCRoundingMethodOption) {
 - (void)setTipCalcDataTip:(NSNumber *)tax isPercentType:(BOOL)isPercent;
 - (void)setTipCalcDataSplit:(NSNumber *)split;
 #pragma mark Save Data
-- (void)saveTipCalcData;
+- (void)saveCoreData;
 - (void)saveToHistory;
 
 

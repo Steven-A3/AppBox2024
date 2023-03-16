@@ -11,6 +11,9 @@
 #import "A3UserDefaultsKeys.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "UIViewController+A3Addition.h"
+#import "Calculation.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3CalculatorViewController () <GADBannerViewDelegate>
 
@@ -53,15 +56,42 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
 		[self setupBannerViewForAdUnitID:AdMobAdUnitIDCalculator keywords:@[@"calculator"] delegate:self];
 	}
 	if (IS_IPHONE && IS_PORTRAIT && [self.navigationController.navigationBar isHidden]) {
 		[self showNavigationBarOn:self.navigationController];
 	}
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return NO;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+
+- (void)putCalculationHistoryWithExpression:(NSString *)expression {
+    NSArray *results = [Calculation findAllSortedBy:@"updateDate" ascending:NO];
+    Calculation *lastcalculation = results.firstObject;
+    NSString *mathExpression = [self.calculator getMathExpression];
+    // Compare code and value.
+    if (lastcalculation) {
+        if ([lastcalculation.expression isEqualToString:mathExpression]) {
+            return;
+        }
+    }
+
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    Calculation *calculation = [[Calculation alloc] initWithContext:context];
+    calculation.uniqueID = [[NSUUID UUID] UUIDString];
+    NSDate *keyDate = [NSDate date];
+    calculation.expression = mathExpression;
+    calculation.result = self.evaluatedResultLabel.text;
+    calculation.updateDate = keyDate;
+
+    [context saveContext];
 }
 
 @end

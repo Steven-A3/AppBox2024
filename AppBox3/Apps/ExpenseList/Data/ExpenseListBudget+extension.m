@@ -8,22 +8,24 @@
 
 #import "ExpenseListBudget+extension.h"
 #import "ExpenseListItem.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @implementation ExpenseListBudget (extension)
 
 - (NSInteger)expenseItemsCount {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budgetID == %@", self.uniqueID];
-	return [ExpenseListItem MR_countOfEntitiesWithPredicate:predicate];
+	return [ExpenseListItem countOfEntitiesWithPredicate:predicate];
 }
 
 - (NSArray *)expenseItems {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budgetID == %@", self.uniqueID];
-	return [ExpenseListItem MR_findAllSortedBy:@"order" ascending:YES withPredicate:predicate];
+	return [ExpenseListItem findAllSortedBy:@"order" ascending:YES withPredicate:predicate];
 }
 
 - (NSArray *)expenseItemsHasData {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budgetID == %@ AND hasData == YES", self.uniqueID];
-	return [ExpenseListItem MR_findAllSortedBy:@"order" ascending:YES withPredicate:predicate];
+	return [ExpenseListItem findAllSortedBy:@"order" ascending:YES withPredicate:predicate];
 }
 
 @end

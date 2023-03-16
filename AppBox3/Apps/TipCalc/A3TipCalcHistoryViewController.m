@@ -14,6 +14,8 @@
 #import "A3DefaultColorDefines.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
 
@@ -97,7 +99,7 @@ NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
 
 - (NSFetchedResultsController *)fetchedResultsController {
 	if (!_fetchedResultsController) {
-        _fetchedResultsController = [TipCalcHistory MR_fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
+        _fetchedResultsController = [TipCalcHistory fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
 		if (![_fetchedResultsController.fetchedObjects count]) {
 			self.navigationItem.leftBarButtonItem = nil;
 		}
@@ -120,8 +122,8 @@ NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
-		[TipCalcHistory MR_truncateAll];
-		[TipCalcRecent MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID != NULL"]];
+		[TipCalcHistory truncateAll];
+		[TipCalcRecent deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID != NULL"]];
 
         _fetchedResultsController = nil;
         [self.tableView reloadData];
@@ -194,10 +196,10 @@ NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         TipCalcHistory *history = [self.fetchedResultsController objectAtIndexPath:indexPath];
-//		[TipCalcRecent MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID != %@", history.uniqueID]];
-        [TipCalcRecent MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", history.uniqueID]];
-        [history MR_deleteEntity];
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+        [TipCalcRecent deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", history.uniqueID]];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        [context deleteObject:history];
+        [context saveContext];
         _fetchedResultsController = nil;
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

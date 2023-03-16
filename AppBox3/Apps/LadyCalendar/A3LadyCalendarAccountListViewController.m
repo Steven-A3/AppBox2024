@@ -18,12 +18,13 @@
 #import "LadyCalendarAccount.h"
 #import "NSString+conversion.h"
 #import "A3NavigationController.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3LadyCalendarAccountListViewController ()
 
 @property (strong, nonatomic) NSMutableArray *ladyCalendarAccounts;
 @property (strong, nonatomic) UIImage *checkImage;
-@property (strong, nonatomic) NSManagedObjectContext *savingContext;
 
 @end
 
@@ -77,7 +78,6 @@
 {
     [super viewWillAppear:animated];
 
-	[self.savingContext reset];
 	_ladyCalendarAccounts = nil;
     [self.tableView reloadData];
 }
@@ -110,16 +110,9 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (NSManagedObjectContext *)savingContext {
-	if (!_savingContext) {
-		_savingContext = [NSManagedObjectContext MR_defaultContext];
-	}
-	return _savingContext;
-}
-
 - (NSMutableArray *)ladyCalendarAccounts {
 	if (!_ladyCalendarAccounts) {
-		NSArray *accounts = [LadyCalendarAccount MR_findAllSortedBy:A3CommonPropertyOrder ascending:YES];
+		NSArray *accounts = [LadyCalendarAccount findAllSortedBy:A3CommonPropertyOrder ascending:YES];
 		_ladyCalendarAccounts = [NSMutableArray arrayWithArray:accounts];
 		BOOL needAssignOrder = NO;
 		for (LadyCalendarAccount *account in _ladyCalendarAccounts) {
@@ -134,9 +127,10 @@
 				account.order = [NSString orderStringWithOrder:order];
 				order += 1000000;
 			}
-			[self.savingContext MR_saveToPersistentStoreAndWait];
+            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+            [context saveContext];
 
-			accounts = [LadyCalendarAccount MR_findAllSortedBy:A3CommonPropertyOrder ascending:YES];
+			accounts = [LadyCalendarAccount findAllSortedBy:A3CommonPropertyOrder ascending:YES];
 			_ladyCalendarAccounts = [NSMutableArray arrayWithArray:accounts];
 		}
 	}
@@ -220,8 +214,9 @@
 {
 	[_ladyCalendarAccounts moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 	FNLOG(@"%@", _ladyCalendarAccounts);
-	[self.savingContext MR_saveToPersistentStoreAndWait];
-    
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
+        
 	double delayInSeconds = 0.15;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
@@ -254,7 +249,7 @@
     A3LadyCalendarAddAccountViewController *viewCtrl = [[A3LadyCalendarAddAccountViewController alloc] init];
 	viewCtrl.dataManager = _dataManager;
 	viewCtrl.isEditMode = YES;
-	viewCtrl.accountItem = [account MR_inContext:viewCtrl.savingContext];
+    viewCtrl.accountItem = account;
 
 	A3NavigationController *navCtrl = [[A3NavigationController alloc] initWithRootViewController:viewCtrl];
 	navCtrl.modalPresentationStyle = UIModalPresentationFullScreen;

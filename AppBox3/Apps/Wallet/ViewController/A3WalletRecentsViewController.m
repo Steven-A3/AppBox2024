@@ -11,6 +11,8 @@
 #import "A3AppDelegate.h"
 #import "UIViewController+A3Addition.h"
 #import "UIColor+A3Addition.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3WalletRecentsViewController ()
 
@@ -135,7 +137,7 @@
     if (!super.items) {
         
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"lastOpened != NULL"];
-        super.items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:@"lastOpened" ascending:NO withPredicate:predicate]];
+        super.items = [NSMutableArray arrayWithArray:[WalletItem findAllSortedBy:@"lastOpened" ascending:NO withPredicate:predicate]];
     }
     
     return super.items;

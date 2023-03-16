@@ -29,6 +29,8 @@
 #import "A3UserDefaults.h"
 #import "DaysCounterCalendar.h"
 #import "A3NavigationController.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 #define ActionTag_DeleteCalendar 100
 
@@ -93,11 +95,12 @@
 }
 
 - (void)checkCalendarListToFixExceptionOfOldVersion {
-	NSArray *allEvents = [DaysCounterEvent MR_findAll];
+	NSArray *allEvents = [DaysCounterEvent findAllWithPredicate:nil];
 	for (DaysCounterEvent *event in allEvents) {
 		[self.sharedManager recalculateEventDatesForEvent:event];
 	}
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
 
 	NSArray *shownUserCalendarList = [[A3DaysCounterModelManager calendars] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type == %@ AND isShow == %@", @(CalendarCellType_User), @(YES)]];
     if ([shownUserCalendarList count] > 0) {
@@ -108,7 +111,8 @@
     if ([shownUserCalendarList count] != 0) {
         DaysCounterCalendar *calendar = [shownUserCalendarList lastObject];
         calendar.isShow = @(YES);
-        [[calendar managedObjectContext] MR_saveToPersistentStoreAndWait];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        [context saveContext];
         return;
     }
     
@@ -117,7 +121,8 @@
     DaysCounterCalendar *calendar = [shownUserCalendarList firstObject];
     if (calendar) {
         calendar.isShow = @(YES);
-        [[calendar managedObjectContext] MR_saveToPersistentStoreAndWait];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        [context saveContext];
     }
 }
 
@@ -202,7 +207,7 @@
         make.height.equalTo(@44);
     }];
     
-    [A3DaysCounterModelManager reloadAlertDateListForLocalNotification:[NSManagedObjectContext MR_rootSavingContext]];
+    [A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
     
 	[self registerContentSizeCategoryDidChangeNotification];
 	if (IS_IPAD) {
@@ -517,7 +522,6 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
     viewCtrl.landscapeFullScreen = NO;
     viewCtrl.sharedManager = _sharedManager;
-	viewCtrl.savingContext = [NSManagedObjectContext MR_rootSavingContext];
 
     if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
@@ -810,7 +814,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
     textLabel.text = calendarItem.name;
 
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"calendarID == %@", calendarItem.uniqueID];
-	long eventCount = [DaysCounterEvent MR_countOfEntitiesWithPredicate:predicate];
+	long eventCount = [DaysCounterEvent countOfEntitiesWithPredicate:predicate];
     switch (cellType) {
         case CalendarCellType_User:
         {

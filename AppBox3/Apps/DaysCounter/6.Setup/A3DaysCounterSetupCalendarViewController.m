@@ -15,6 +15,8 @@
 #import "A3DaysCounterDefine.h"
 #import "DaysCounterCalendar.h"
 #import "NSMutableArray+A3Sort.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3DaysCounterSetupCalendarViewController ()
 @property (strong, nonatomic) NSArray *calendarArray;
@@ -53,7 +55,7 @@
     }
     self.title = NSLocalizedString(@"Calendar", @"Calendar");
 
-    self.calendarArray = [DaysCounterCalendar MR_findAllSortedBy:A3CommonPropertyOrder ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"type == %@", @(CalendarCellType_User)]];
+    self.calendarArray = [DaysCounterCalendar findAllSortedBy:A3CommonPropertyOrder ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"type == %@", @(CalendarCellType_User)]];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

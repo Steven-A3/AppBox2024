@@ -18,6 +18,8 @@
 #import "A3PedometerSettingsTableViewController.h"
 #import "NSDate-Utilities.h"
 #import "NSDateFormatter+A3Addition.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 NSString *const A3PedometerSettingsDidSearchHealthStore = @"A3PedometerSettingsDidSearchHealthStore";
 NSString *const A3PedometerNumberOfTimesDidShowScrollHelp = @"A3PedometerNumberOfTimesDidShowScrollHelp";
@@ -49,6 +51,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 @property (nonatomic, strong) A3PedometerHandler *pedometerHandler;
 @property (nonatomic, strong) HKHealthStore *healthStore;
 @property (nonatomic, strong) NSTimer *scrollHelperTimer;
+@property (nonatomic, assign) BOOL didRefreshAfterSignificantTimeChange;
 
 @end
 
@@ -61,7 +64,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	NSInteger _remainingNumbersScrollAnimation;
 	BOOL _healthStoreAuthorizationAlertDone;
 	BOOL _healthStoreUpdateInProgress;
-	BOOL _didRefreshAfterSignificantTimeChange;
+	
 }
 
 - (void)viewDidLoad {
@@ -401,11 +404,11 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 				}
 				return;
 			}
-			NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
+            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
 			
-			Pedometer *pedometerItem = [Pedometer MR_findFirstByAttribute:@"date" withValue:[self.searchDateFormatter stringFromDate:queryDate] inContext:savingContext];
+			Pedometer *pedometerItem = [Pedometer findFirstByAttribute:@"date" withValue:[self.searchDateFormatter stringFromDate:queryDate]];
 			if (!pedometerItem) {
-				pedometerItem = [Pedometer MR_createEntityInContext:savingContext];
+                pedometerItem = [[Pedometer alloc] initWithContext:context];
 				pedometerItem.uniqueID = [[NSUUID UUID] UUIDString];
 			}
 			
@@ -417,7 +420,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 			if ([dateArray count]) {
 				[self updatePedometerForDateArray:dateArray completion:completion];
 			} else {
-				[savingContext MR_saveOnlySelfAndWait];
+                [context saveContext];
 				if (completion) {
 					completion();
 				}
@@ -471,11 +474,13 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 }
 
 - (void)fillMissingDatesCompletion:(void (^)(void))completion {
-	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
-	Pedometer *pedometerItem = [Pedometer MR_findFirstOrderedByAttribute:@"date" ascending:YES inContext:savingContext];
+	Pedometer *pedometerItem = [Pedometer findFirstOrderedByAttribute:@"date" ascending:YES];
 	NSString *todayDate = [self.searchDateFormatter stringFromDate:[NSDate date]];
 	NSCalendar *calendar = [NSCalendar currentCalendar];
-	while ([pedometerItem.date compare:todayDate] == NSOrderedAscending) {
+
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    
+    while ([pedometerItem.date compare:todayDate] == NSOrderedAscending) {
 		@autoreleasepool {
 			NSDate *date = [_searchDateFormatter dateFromString:pedometerItem.date];
 			NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
@@ -483,9 +488,9 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 			date = [calendar dateFromComponents:components];
 			NSString *dateString = [_searchDateFormatter stringFromDate:date];
 			if (![dateString isEqualToString:todayDate]) {
-				pedometerItem = [Pedometer MR_findFirstByAttribute:@"date" withValue:dateString inContext:savingContext];
+				pedometerItem = [Pedometer findFirstByAttribute:@"date" withValue:dateString];
 				if (!pedometerItem) {
-					pedometerItem = [Pedometer MR_createEntityInContext:savingContext];
+                    pedometerItem = [[Pedometer alloc] initWithContext:context];
 					pedometerItem.uniqueID = [[NSUUID UUID] UUIDString];
 					pedometerItem.date = dateString;
 				}
@@ -494,11 +499,15 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 			}
 		}
 	}
-	if ([savingContext hasChanges]) {
-		[savingContext MR_saveOnlySelfAndWait];
-		_pedometerItems = nil;
-		[_collectionView reloadData];
-	}
+    if ([context hasChanges]) {
+        NSError *saveError = nil;
+        [context save:&saveError];
+        if (saveError) {
+            FNLOG(@"%@", saveError);
+        }
+        _pedometerItems = nil;
+        [_collectionView reloadData];
+    }
 	if (completion) {
 		completion();
 	}
@@ -513,22 +522,22 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 		if (!error) {
 			dispatch_async(dispatch_get_main_queue(), ^{
 				NSString *todayString = [self.searchDateFormatter stringFromDate:today];
-				NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
-				Pedometer *pedometerItem = [Pedometer MR_findFirstByAttribute:@"date" withValue:todayString inContext:savingContext];
+                NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+				Pedometer *pedometerItem = [Pedometer findFirstByAttribute:@"date" withValue:todayString];
 				if (!pedometerItem) {
-					pedometerItem = [Pedometer MR_createEntityInContext:savingContext];
+                    pedometerItem = [[Pedometer alloc] initWithContext:context];
 					pedometerItem.uniqueID = [[NSUUID UUID] UUIDString];
 				}
 				pedometerItem.date = todayString;
 				[self mergeValuesFromCoreMotion:pedometerData to:pedometerItem];
 				
-				[savingContext MR_saveOnlySelfAndWait];
+                [context saveContext];
+
+				self.pedometerItems = nil;
+				[self.collectionView reloadData];
 				
-				_pedometerItems = nil;
-				[_collectionView reloadData];
-				
-				if (!_didRefreshAfterSignificantTimeChange) {
-					_didRefreshAfterSignificantTimeChange = YES;
+				if (!self.didRefreshAfterSignificantTimeChange) {
+					self.didRefreshAfterSignificantTimeChange = YES;
 					
 					[self scrollToTodayAnimated:YES];
 				}
@@ -558,7 +567,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 
 - (NSArray *)pedometerItems {
 	if (!_pedometerItems) {
-		_pedometerItems = [Pedometer MR_findAllSortedBy:@"date" ascending:YES];
+        _pedometerItems = [Pedometer findAllSortedBy:@"dater" ascending:YES];
 	}
 	return _pedometerItems;
 }
@@ -587,14 +596,14 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
     NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
     components.day -= 7;
     
-	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
 	for (NSArray *item in testData) {
         NSDate *date = [calendar dateFromComponents:components];
         components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
         NSString *dateString = [NSString stringWithFormat:@"%ld-%02ld-%02ld", components.year, components.month, components.day];
-		Pedometer *pedometer = [Pedometer MR_findFirstByAttribute:@"date" withValue:dateString inContext:savingContext];
+		Pedometer *pedometer = [Pedometer findFirstByAttribute:@"date" withValue:dateString];
 		if (!pedometer) {
-			pedometer = [Pedometer MR_createEntityInContext:savingContext];
+            pedometer = [[Pedometer alloc] initWithContext:context];
 			pedometer.uniqueID = [[NSUUID UUID] UUIDString];
             pedometer.date = dateString;
             pedometer.numberOfSteps = item[1];
@@ -603,13 +612,13 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 		}
         components.day += 1;
 	}
-	[savingContext MR_saveOnlySelfAndWait];
+    [context saveContext];
 }
 #endif
 
 - (void)updateToday {
 	NSString *today = [self.searchDateFormatter stringFromDate:[NSDate date]];
-	Pedometer *pedometerData = [Pedometer MR_findFirstByAttribute:@"date" withValue:today];
+    Pedometer *pedometerData = [Pedometer findFirstByAttribute:@"date" withValue:today];
 	NSDictionary *distanceInfo;
 	NSString *floorsAscended;
 	if (pedometerData) {
@@ -665,8 +674,8 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 }
 
 - (void)updateAverage {
-	NSArray *array = [Pedometer MR_findAllSortedBy:@"date" ascending:NO];
-	double averageSteps = 0;
+    NSArray *array = [Pedometer findAllSortedBy:@"date" ascending:NO];
+    double averageSteps = 0;
 	double averageDistance = 0;
 	double averageFloorsAscended = 0;
 
@@ -841,55 +850,54 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 			NSDate *endDate = [NSDate date];
 			// TODO: Daylight saving 관련 수정해야 할 부분
 			NSDate *startDate = [[endDate dateAtStartOfDay] dateByAddingDays:-1000];
-			NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
 
 			static BOOL dataFound;
 			dataFound = NO;
-			[results enumerateStatisticsFromDate:startDate toDate:endDate withBlock:^(HKStatistics *result, BOOL *stop) {
-				HKQuantity *quantity = result.sumQuantity;
-				double quantityValue;
-				switch (type) {
-					case A3PedometerQueryTypeStepCount:
-						quantityValue = [quantity doubleValueForUnit:[HKUnit countUnit]];
-						break;
-					case A3PedometerQueryTypeDistance:
-						quantityValue = [quantity doubleValueForUnit:[HKUnit meterUnit]];
-						break;
-					case A3PedometerQueryTypeFlightsClimbed:
-						quantityValue = [quantity doubleValueForUnit:[HKUnit countUnit]];
-						break;
-				}
-				
-				if (!dataFound && quantityValue == 0) {
-					return;
-				}
-				dataFound = YES;
-				
-				NSString *dateString = [self.searchDateFormatter stringFromDate:result.startDate];
-				Pedometer *pedometerItem = [Pedometer MR_findFirstByAttribute:@"date" withValue:dateString inContext:[NSManagedObjectContext MR_rootSavingContext]];
-				if (!pedometerItem) {
-					pedometerItem = [Pedometer MR_createEntityInContext:savingContext];
-					pedometerItem.uniqueID = [[NSUUID UUID] UUIDString];
-					pedometerItem.date = dateString;
-				}
-				switch (type) {
-					case A3PedometerQueryTypeStepCount:{
-						pedometerItem.numberOfSteps = @(MIN(MAX(quantityValue, [pedometerItem.numberOfSteps doubleValue]),100000));
-						break;
-					}
-					case A3PedometerQueryTypeDistance: {
-						pedometerItem.distance = @(MIN(MAX(quantityValue, [pedometerItem.distance doubleValue]), 100000));
-						break;
-					}
-					case A3PedometerQueryTypeFlightsClimbed:{
-						pedometerItem.floorsAscended = @(MIN(MAX(quantityValue, [pedometerItem.floorsAscended doubleValue]), 100000));
-						break;
-					}
-				}
-			}];
-			if ([savingContext hasChanges]) {
-				[savingContext MR_saveOnlySelfAndWait];
-			}
+            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+            [results enumerateStatisticsFromDate:startDate toDate:endDate withBlock:^(HKStatistics *result, BOOL *stop) {
+                HKQuantity *quantity = result.sumQuantity;
+                double quantityValue;
+                switch (type) {
+                    case A3PedometerQueryTypeStepCount:
+                        quantityValue = [quantity doubleValueForUnit:[HKUnit countUnit]];
+                        break;
+                    case A3PedometerQueryTypeDistance:
+                        quantityValue = [quantity doubleValueForUnit:[HKUnit meterUnit]];
+                        break;
+                    case A3PedometerQueryTypeFlightsClimbed:
+                        quantityValue = [quantity doubleValueForUnit:[HKUnit countUnit]];
+                        break;
+                }
+                
+                if (!dataFound && quantityValue == 0) {
+                    return;
+                }
+                dataFound = YES;
+                
+                NSString *dateString = [self.searchDateFormatter stringFromDate:result.startDate];
+                Pedometer *pedometerItem = [Pedometer findFirstByAttribute:@"date" withValue:dateString];
+                if (!pedometerItem) {
+                    pedometerItem = [[Pedometer alloc] initWithContext:context];
+                    pedometerItem.uniqueID = [[NSUUID UUID] UUIDString];
+                    pedometerItem.date = dateString;
+                }
+                switch (type) {
+                    case A3PedometerQueryTypeStepCount:{
+                        pedometerItem.numberOfSteps = @(MIN(MAX(quantityValue, [pedometerItem.numberOfSteps doubleValue]),100000));
+                        break;
+                    }
+                    case A3PedometerQueryTypeDistance: {
+                        pedometerItem.distance = @(MIN(MAX(quantityValue, [pedometerItem.distance doubleValue]), 100000));
+                        break;
+                    }
+                    case A3PedometerQueryTypeFlightsClimbed:{
+                        pedometerItem.floorsAscended = @(MIN(MAX(quantityValue, [pedometerItem.floorsAscended doubleValue]), 100000));
+                        break;
+                    }
+                }
+            }];
+            [context saveContext];
+
 			if (completion) {
 				completion();
 			}
@@ -899,11 +907,12 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 }
 
 - (void)alertImportResults {
-	NSUInteger numberOfEntities = [Pedometer MR_countOfEntities];
-	NSNumber *totalSteps = [Pedometer MR_aggregateOperation:@"sum:" onAttribute:@"numberOfSteps" withPredicate:nil];
-	NSNumber *totalDistance = [Pedometer MR_aggregateOperation:@"sum:" onAttribute:@"distance" withPredicate:nil];
-	NSNumber *totalFloorsAscended = [Pedometer MR_aggregateOperation:@"sum:" onAttribute:@"floorsAscended" withPredicate:nil];
-	Pedometer *firstItem = [Pedometer MR_findFirstOrderedByAttribute:@"date" ascending:YES];
+    NSUInteger numberOfEntities = [Pedometer countOfEntities];
+    NSNumber *totalSteps = [Pedometer aggregationOperation:@"sum:" column:@"numberOfSteps" predicate:nil];
+    NSNumber *totalDistance = [Pedometer aggregationOperation:@"sum:" column:@"distance" predicate:nil];
+    NSNumber *totalFloorsAscended = [Pedometer aggregationOperation:@"sum:" column:@"floorsAscended" predicate:nil];
+    
+    Pedometer *firstItem = [Pedometer findFirstOrderedByAttribute:@"date" ascending:YES];
 
 	NSDate *firstDate = [self.searchDateFormatter dateFromString:firstItem.date];
 	NSString *dateFormatBefore = self.dateFormatterForCell.dateFormat;
@@ -922,25 +931,19 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 						 ];
 	[self.dateFormatterForCell setDateFormat:dateFormatBefore];
 
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Data Imported", @"Data Imported")
-														message:message
-													   delegate:nil
-											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-											  otherButtonTitles:nil];
-	[alertView show];
+    [self presentAlertWithTitle:NSLocalizedString(@"Data Imported", @"Data Imported") message:nil];
 }
 
 - (void)purgeInvalidData {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"numberOfSteps >= 100000"];
-    NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
-    NSArray *invalidItems = [Pedometer MR_findAllWithPredicate:predicate inContext:savingContext];
+    NSArray *invalidItems = [Pedometer findAllWithPredicate:predicate];
     if ([invalidItems count]) {
         for (Pedometer *item in invalidItems) {
             item.numberOfSteps = @0;
         }
-        if ([savingContext hasChanges]) {
-            [savingContext MR_saveOnlySelfAndWait];
-        }
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        [context saveContext];
+
     }
 }
 

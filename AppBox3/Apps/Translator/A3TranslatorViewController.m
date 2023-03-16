@@ -23,6 +23,8 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3InstructionViewController.h"
 #import "A3UserDefaults.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3TranslatorViewController () <FMMoveTableViewDataSource, FMMoveTableViewDelegate, A3TranslatorMessageViewControllerDelegate, A3TranslatorFavoriteDelegate, A3InstructionViewControllerDelegate, GADBannerViewDelegate>
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
@@ -139,7 +141,7 @@
 	
 	if (!_viewWillAppearCalled) {
 		_viewWillAppearCalled = YES;
-		if (!_instructionViewController && [TranslatorGroup MR_countOfEntities] == 0) {
+		if (!_instructionViewController && [TranslatorGroup countOfEntities] == 0) {
 			double delayInSeconds = 0.2;
 			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -259,7 +261,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
     [self.instructionViewController.view removeFromSuperview];
     self.instructionViewController = nil;
 
-	if (_instructionPresentedVeryFirst && [TranslatorGroup MR_countOfEntities] == 0) {
+	if (_instructionPresentedVeryFirst && [TranslatorGroup countOfEntities] == 0) {
 		double delayInSeconds = 0.2;
 		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -367,8 +369,8 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 - (void)translatorFavoriteItemSelected:(TranslatorFavorite *)item {
 	A3TranslatorMessageViewController *viewController = [[A3TranslatorMessageViewController alloc] initWithNibName:nil bundle:nil];
 
-	TranslatorHistory *history = [TranslatorHistory MR_findFirstByAttribute:@"uniqueID" withValue:item.historyID];
-	TranslatorGroup *group = [TranslatorGroup MR_findFirstByAttribute:@"uniqueID" withValue:history.groupID];
+	TranslatorHistory *history = [TranslatorHistory findFirstByAttribute:@"uniqueID" withValue:item.historyID];
+	TranslatorGroup *group = [TranslatorGroup findFirstByAttribute:@"uniqueID" withValue:history.groupID];
 	viewController.originalTextLanguage = group.sourceLanguage;
 	viewController.translatedTextLanguage = group.targetLanguage;
 	viewController.delegate = self;
@@ -386,7 +388,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 
 - (NSFetchedResultsController *)fetchedResultsController {
 	if (!_fetchedResultsController) {
-		_fetchedResultsController = [TranslatorGroup MR_fetchAllSortedBy:@"order" ascending:YES withPredicate:nil groupBy:nil delegate:nil];
+		_fetchedResultsController = [TranslatorGroup fetchAllSortedBy:@"order" ascending:YES withPredicate:nil groupBy:nil delegate:nil];
 	}
 
 	return _fetchedResultsController;
@@ -403,7 +405,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 	TranslatorGroup *group = self.fetchedResultsController.fetchedObjects[indexPath.row];
 
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"groupID == %@", group.uniqueID];
-	TranslatorHistory *history = [TranslatorHistory MR_findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
+	TranslatorHistory *history = [TranslatorHistory findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
 	NSDate *updateDate = history.updateDate;
 	if (IS_IPHONE) {
 		UITableViewCell *iPhone_cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -434,7 +436,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 													 [self.languageListManager localizedNameForCode:group.targetLanguage]];
 
 	A3TranslatorCircleView *circleView = [[A3TranslatorCircleView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-    circleView.textLabel.text = [NSString stringWithFormat:@"%ld", (long)[TranslatorHistory MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"groupID == %@", group.uniqueID]]];
+    circleView.textLabel.text = [NSString stringWithFormat:@"%ld", (long)[TranslatorHistory countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"groupID == %@", group.uniqueID]]];
 	cell.imageView.image = [circleView imageByRenderingView];
 
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -449,9 +451,10 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
 		TranslatorGroup *group = self.fetchedResultsController.fetchedObjects[indexPath.row];
-		[TranslatorHistory MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"groupID == %@", group.uniqueID]];
-		[TranslatorFavorite MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"groupID == %@", group.uniqueID]];
-		[group MR_deleteEntity];
+		[TranslatorHistory deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"groupID == %@", group.uniqueID]];
+		[TranslatorFavorite deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"groupID == %@", group.uniqueID]];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        [context deleteObject:group];
 
 		[self.fetchedResultsController performFetch:nil];
 
@@ -459,7 +462,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 
 		// Save를 호출하는 순간, Notification이 도착, data reload 됨 save는 UI animation이 모두 종료된 후에 ...
 		// 가능한 가장 늦은 시점에 하도록 해야 함
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+        [context saveContext];
 	}
 }
 
@@ -496,7 +499,8 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 	NSMutableArray *mutableArray = [self.fetchedResultsController.fetchedObjects mutableCopy];
 	[mutableArray moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
 	_fetchedResultsController = nil;
 }
 

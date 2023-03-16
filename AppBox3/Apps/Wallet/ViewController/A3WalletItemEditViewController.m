@@ -43,6 +43,8 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 @import AVFoundation;
 @import Photos;
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 extern NSString *const A3TableViewCellDefaultCellID;
 NSString *const A3WalletItemTitleCellID = @"A3WalletTitleCell";
@@ -110,10 +112,11 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 {
     [super viewDidLoad];
     
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
 	if (_isAddNewItem) {
 		self.navigationItem.title = NSLocalizedString(@"Add Item", @"Add Item");
         
-		_item = [WalletItem MR_createEntity];
+        _item = [[WalletItem alloc] initWithContext:context];
 		_item.uniqueID = [[NSUUID UUID] UUIDString];
 		_item.updateDate = [NSDate date];
         _item.lastOpened = [NSDate date];
@@ -122,7 +125,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	} else {
 		self.navigationItem.title = NSLocalizedString(@"Edit Item", @"Edit Item");
         
-		_category = [WalletData categoryItemWithID:_item.categoryID inContext:[NSManagedObjectContext MR_defaultContext]];
+		_category = [WalletData categoryItemWithID:_item.categoryID];
         
 		[self copyThumbnailImagesToTemporaryPath];
         
@@ -520,7 +523,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     
     BOOL result;
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@", _item.uniqueID];
-	NSArray *fieldItems = [WalletFieldItem MR_findAllWithPredicate:predicate];
+	NSArray *fieldItems = [WalletFieldItem findAllWithPredicate:predicate];
 	for (WalletFieldItem *fieldItem in fieldItems) {
 		if ([fieldItem.hasImage boolValue]) {
 			NSString *thumbnailImagePathInTemp = [fieldItem photoImageThumbnailPathInOriginal:NO];
@@ -559,14 +562,14 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 - (NSMutableArray *)sectionItems
 {
     if (!_sectionItems) {
-		NSArray *fields = [WalletField MR_findByAttribute:@"categoryID" withValue:self.category.uniqueID andOrderBy:A3CommonPropertyOrder ascending:YES];
+		NSArray *fields = [WalletField findByAttribute:@"categoryID" withValue:self.category.uniqueID andOrderBy:A3CommonPropertyOrder ascending:YES];
         _sectionItems = [[NSMutableArray alloc] initWithArray:fields];
         
 		[_sectionItems insertObject:self.titleItem atIndex:0];
 		[_sectionItems insertObject:self.categoryItem atIndex:1];
         
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@ AND fieldID == NULL", _item.uniqueID];
-		NSArray *fieldItemsFieldEqualsNULL = [WalletFieldItem MR_findAllWithPredicate:predicate];
+		NSArray *fieldItemsFieldEqualsNULL = [WalletFieldItem findAllWithPredicate:predicate];
 		for (WalletFieldItem *fieldItem in fieldItemsFieldEqualsNULL) {
 			if ([fieldItem.hasImage boolValue] || [fieldItem.hasVideo boolValue]) {
 				[_sectionItems addObject:fieldItem];
@@ -632,11 +635,12 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	WalletField *field = _sectionItems[indexPath.row];
     
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@ AND fieldID == %@", _item.uniqueID, field.uniqueID];
-	WalletFieldItem *fieldItem = [WalletFieldItem MR_findFirstWithPredicate:predicate];
+	WalletFieldItem *fieldItem = [WalletFieldItem findFirstWithPredicate:predicate];
 	if (fieldItem) return fieldItem;
     
 	if (create) {
-		fieldItem = [WalletFieldItem MR_createEntity];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        fieldItem = [[WalletFieldItem alloc] initWithContext:context];
 		fieldItem.uniqueID = [[NSUUID UUID] UUIDString];
 		fieldItem.updateDate = [NSDate date];
 		fieldItem.walletItemID = _item.uniqueID;
@@ -715,7 +719,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	
 	NSString *addingItemID = [_item.uniqueID copy];
 	
-	NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
 	if ([context hasChanges]) {
 		[context rollback];
 	}
@@ -737,21 +741,19 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
         [self.editingObject resignFirstResponder];
     }
     
-	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_defaultContext];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
 	for (WalletFieldItem *fieldItem in [_item fieldItems]) {
 		if (	(!fieldItem.fieldID && !fieldItem.hasImage && !fieldItem.hasVideo ) ||
 				(!fieldItem.value && !fieldItem.date && !fieldItem.hasImage && !fieldItem.hasVideo))
 		{
-			[fieldItem MR_deleteEntity];
+            [context deleteObject:fieldItem];
 		}
 	}
     
 	_item.updateDate = [NSDate date];
     _item.lastOpened = [NSDate date];
-    
-	if ([savingContext hasChanges]) {
-		[savingContext MR_saveToPersistentStoreAndWait];
-    }
+
+    [context saveContext];
     
 	[self moveMediaFilesToNormalPath];
     
@@ -793,6 +795,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     NSFileManager *fileManager = [[NSFileManager alloc] init];
     fileManager.delegate = self;
     
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
 	if ([self.sectionItems[_currentIndexPath.row] isKindOfClass:[WalletFieldItem class]]) {
 		WalletFieldItem *fieldItem = _sectionItems[_currentIndexPath.row];
 		if ([fieldItem.hasImage boolValue]) {
@@ -800,7 +803,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 		} else {
 			[fileManager removeItemAtPath:[fieldItem videoThumbnailPathInOriginal:NO] error:NULL];
 		}
-		[fieldItem MR_deleteEntity];
+        [context deleteObject:fieldItem];
         
 		[_sectionItems removeObjectAtIndex:_currentIndexPath.row];
 		[self.tableView deleteRowsAtIndexPaths:@[_currentIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -814,7 +817,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 				[fileManager removeItemAtURL:[fieldItem videoFileURLInOriginal:NO ] error:NULL];
 				[fileManager removeItemAtPath:[fieldItem videoThumbnailPathInOriginal:NO ] error:NULL];
 			}
-			[fieldItem MR_deleteEntity];
+            [context deleteObject:fieldItem];
 			[self.tableView reloadRowsAtIndexPaths:@[_currentIndexPath] withRowAnimation:UITableViewRowAnimationFade];
 		}
 	}
@@ -955,7 +958,8 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	if (_isAddNewItem) {
 		return ![self isItemDataEmpty];
 	}
-	return [[NSManagedObjectContext MR_defaultContext] hasChanges];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+	return [context hasChanges];
 }
 
 - (BOOL)isItemDataEmpty
@@ -1044,10 +1048,10 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	_isMemoCategory = [_item.categoryID isEqualToString:A3WalletUUIDMemoCategory];
     
     // 현재 변경중인 field item 정보를, 새로운 카테고리에 해당하는 field item으로 바꾼다.
-	NSArray *fieldsOfTargetCategory = [WalletField MR_findByAttribute:@"categoryID" withValue:toCategory.uniqueID andOrderBy:A3CommonPropertyOrder ascending:YES];
+	NSArray *fieldsOfTargetCategory = [WalletField findByAttribute:@"categoryID" withValue:toCategory.uniqueID andOrderBy:A3CommonPropertyOrder ascending:YES];
     
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@ AND fieldID != NULL", _item.uniqueID];
-    NSMutableArray *originalFieldItems = [[NSMutableArray alloc] initWithArray:[WalletFieldItem MR_findAllWithPredicate:predicate]];
+    NSMutableArray *originalFieldItems = [[NSMutableArray alloc] initWithArray:[WalletFieldItem findAllWithPredicate:predicate]];
     NSMutableArray *addedItems = [NSMutableArray new];
     
 	for (WalletField *fieldOfTargetCategory in fieldsOfTargetCategory) {
@@ -1117,13 +1121,14 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 #pragma mark- UIImagePickerControllerDelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)imageEditInfo {
-	WalletFieldItem *fieldItem = [WalletFieldItem MR_createEntity];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    WalletFieldItem *fieldItem = [[WalletFieldItem alloc] initWithContext:context];
 	fieldItem.uniqueID = [[NSUUID UUID] UUIDString];
 	fieldItem.updateDate = [NSDate date];
 	fieldItem.walletItemID = _item.uniqueID;
 	fieldItem.fieldID = _currentFieldItem.fieldID;
     
-	[_currentFieldItem MR_deleteEntity];
+    [context deleteObject:_currentFieldItem];
 	_currentFieldItem = fieldItem;
     
     BOOL result;
@@ -1270,11 +1275,12 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 
 - (void)deleteWalletItemByID:(NSString *)itemID {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", itemID];
-	NSArray *items = [WalletItem MR_findAllWithPredicate:predicate];
-	for (WalletItem *item in items) {
-		[item deleteWalletItemInContext:item.managedObjectContext];
-	}
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+	NSArray *items = [WalletItem findAllWithPredicate:predicate];
+    for (WalletItem *item in items) {
+        [item deleteWalletItem];
+    }
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
 }
 
 - (void)imagePickerActionForButtonIndex:(NSInteger)myButtonIndex destructiveButtonIndex:(NSInteger)destructiveButtonIndex actionSheetTag:(NSInteger)actionSheetTag {

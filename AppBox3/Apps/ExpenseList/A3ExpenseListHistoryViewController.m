@@ -19,6 +19,8 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "ExpenseListHistory+extension.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 static NSString *CellIdentifier = @"Cell";
 
@@ -78,8 +80,7 @@ static NSString *CellIdentifier = @"Cell";
 
 - (NSFetchedResultsController *)fetchedResultsController {
 	if (!_fetchedResultsController) {
-        //_fetchedResultsController = [ExpenseListBudget MR_fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
-        _fetchedResultsController = [ExpenseListHistory MR_fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
+        _fetchedResultsController = [ExpenseListHistory fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
 		if (![_fetchedResultsController.fetchedObjects count]) {
 			self.navigationItem.leftBarButtonItem = nil;
 		}
@@ -108,17 +109,18 @@ static NSString *CellIdentifier = @"Cell";
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
-        [ExpenseListItem MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"budgetID != %@", A3ExpenseListCurrentBudgetID]];
-        [ExpenseListBudgetLocation MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"budgetID != %@", A3ExpenseListCurrentBudgetID]];
-        [ExpenseListBudget MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"uniqueID != %@", A3ExpenseListCurrentBudgetID]];
-        [ExpenseListHistory MR_truncateAll];
+        [ExpenseListItem deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"budgetID != %@", A3ExpenseListCurrentBudgetID]];
+        [ExpenseListBudgetLocation deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"budgetID != %@", A3ExpenseListCurrentBudgetID]];
+        [ExpenseListBudget deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"uniqueID != %@", A3ExpenseListCurrentBudgetID]];
+        [ExpenseListHistory truncateAll];
         
-        FNLOG(@"History : %ld", (long)[[ExpenseListHistory MR_findAll] count]);
-        FNLOG(@"Budget : %ld", (long)[[ExpenseListBudget MR_findAll] count]);
-        FNLOG(@"Items : %ld", (long)[[ExpenseListItem MR_findAll] count]);
-        FNLOG(@"Location : %ld", (long)[[ExpenseListBudgetLocation MR_findAll] count]);
+        FNLOG(@"History : %ld", (long)[ExpenseListHistory countOfEntities]);
+        FNLOG(@"Budget : %ld", (long)[ExpenseListBudget countOfEntities]);
+        FNLOG(@"Items : %ld", (long)[ExpenseListItem countOfEntities]);
+        FNLOG(@"Location : %ld", (long)[ExpenseListBudgetLocation countOfEntities]);
 
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        [context saveContext];
         _fetchedResultsController = nil;
         [self.tableView reloadData];
 	}
@@ -197,20 +199,22 @@ static NSString *CellIdentifier = @"Cell";
         if ([_delegate respondsToSelector:@selector(willRemoveHistoryItemBudgetID:)]) {
             [_delegate willRemoveHistoryItemBudgetID:aData.uniqueID];
         }
-		[ExpenseListItem MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"budgetID == %@", aData.uniqueID]];
-		[aData MR_deleteEntity];
-		[aHistory MR_deleteEntity];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
 
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+		[ExpenseListItem deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"budgetID == %@", aData.uniqueID]];
+        [context deleteObject:aData];
+        [context deleteObject:aHistory];
+
+        [context saveContext];
 
         _fetchedResultsController = nil;
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         
-        FNLOG(@"History : %ld", (long)[[ExpenseListHistory MR_findAll] count]);
-        FNLOG(@"Budget : %ld", (long)[[ExpenseListBudget MR_findAll] count]);
-        FNLOG(@"Items : %ld", (long)[[ExpenseListItem MR_findAll] count]);
-        FNLOG(@"Location : %ld", (long)[[ExpenseListBudgetLocation MR_findAll] count]);
+        FNLOG(@"History : %ld", (long)[ExpenseListHistory countOfEntities]);
+        FNLOG(@"Budget : %ld", (long)[ExpenseListBudget countOfEntities]);
+        FNLOG(@"Items : %ld", (long)[ExpenseListItem countOfEntities]);
+        FNLOG(@"Location : %ld", (long)[ExpenseListBudgetLocation countOfEntities]);
     }
 }
 

@@ -24,6 +24,8 @@
 #import "UIViewController+A3Addition.h"
 #import "UITabBarController+extension.h"
 #import "A3WalletRecentsViewController.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 #define kDefaultTabSelection    1	// default tab value is 0 (tab #1), stored in A3UserDefaults
 
@@ -46,17 +48,17 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
     [super viewDidLoad];
 
 	self.delegate = self;
-	if ([WalletCategory MR_countOfEntities] == 0) {
+	if ([WalletCategory countOfEntities] == 0) {
 		[WalletData initializeWalletCategories];
 	}
 
     // Recents Category는 4.6.23에서 추가가 된다.
     // Recents Category가 있는지 확인한다.
-    NSArray *recentsCategory = [WalletCategory MR_findByAttribute:@"uniqueID" withValue:A3WalletUUIDRecentsCategory];
+    NSArray *recentsCategory = [WalletCategory findByAttribute:@"uniqueID" withValue:A3WalletUUIDRecentsCategory];
     if ([recentsCategory count] == 0) {
-        NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
-        [WalletData createRecentsCategoryInContext:context];
-        [context MR_saveToPersistentStoreAndWait];
+        [WalletData createRecentsCategory];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        [context saveContext];
     }
     
 	// test for "kWhichTabPrefKey" key value
@@ -151,7 +153,7 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 
 - (NSMutableArray *)categories {
 	if (nil == _categories) {
-		_categories = [[WalletData walletCategoriesFilterDoNotShow:YES inContext:nil ] mutableCopy];
+		_categories = [[WalletData walletCategoriesFilterDoNotShow:YES] mutableCopy];
 	}
 	return _categories;
 }
@@ -207,7 +209,7 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 		UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
 		A3WalletItemViewController *itemViewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemViewController"];
 		itemViewController.hidesBottomBarWhenPushed = YES;
-		WalletItem *item = [WalletItem MR_findByAttribute:@"uniqueID" withValue:itemID][0];
+		WalletItem *item = [WalletItem findByAttribute:@"uniqueID" withValue:itemID][0];
 		itemViewController.item = item;
 		itemViewController.showCategory = YES;
 		itemViewController.alwaysReturnToOriginalCategory = YES;

@@ -41,6 +41,8 @@
 #import "A3StandardTableViewCell.h"
 @import AVFoundation;
 @import Photos;
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 #define ActionTag_Location      100
 #define ActionTag_Photo         101
@@ -93,13 +95,6 @@
 	return self;
 }
 
-- (NSManagedObjectContext *)savingContext {
-	if (!_savingContext) {
-		_savingContext = [NSManagedObjectContext MR_rootSavingContext];
-	}
-	return _savingContext;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -132,7 +127,8 @@
     else {
 		_isAddingEvent = YES;
         self.title = NSLocalizedString(@"Add Event", @"Add Event");
-        _eventItem = [DaysCounterEvent MR_createEntityInContext:_savingContext];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        _eventItem = [[DaysCounterEvent alloc] initWithContext:context];
 
 		// 사진 저장 및 기타 연관 정보 저장을 위해서
 		// uniqueID가 필요합니다. 만약 추가인지 수정인지를 구분해야 한다면
@@ -1671,8 +1667,7 @@
         if (_eventItem.location) {
             _eventItem.location.eventID = _eventItem.uniqueID;
         }
-        
-        [_sharedManager addEvent:_eventItem inContext:_savingContext];
+        [_sharedManager addEvent:_eventItem];
     }
     else {
         if ([_originalPhotoID length] && ![_originalPhotoID isEqualToString:_eventItem.photoID]) {
@@ -1680,11 +1675,11 @@
             NSString *path = [[A3DaysCounterImageDirectory stringByAppendingPathComponent:_originalPhotoID] pathInLibraryDirectory];
             [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
         }
-        [_sharedManager modifyEvent:_eventItem inContext:_savingContext];
+        [_sharedManager modifyEvent:_eventItem];
     }
     [_eventItem moveImagesToOriginalDirectory];
     
-    [A3DaysCounterModelManager reloadAlertDateListForLocalNotification:_savingContext ];
+    [A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
 
     if (IS_IPAD) {
         [[[A3AppDelegate instance] rootViewController_iPad] dismissCenterViewController];
@@ -1701,18 +1696,19 @@
 
 	NSString *addingEventID = [_eventItem.uniqueID copy];
 	
-	if ([_savingContext hasChanges]) {
-		[_savingContext rollback];
-	}
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    if ([context hasChanges]) {
+        [context rollback];
+    }
 
 	if (_isAddingEvent) {
 		// 추가 화면에서 데이터를 입력하고 홈 버튼을 눌러 앱을 빠져나갔다가 온 경우에
 		// 데이터가 저장이 됩니다.
 		// 다시 추가 화면으로 돌아와서 취소를 한 경우에는 해당 데이터를 지워주어야 합니다.
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", addingEventID];
-		NSArray *events = [DaysCounterEvent MR_findAllWithPredicate:predicate inContext:_savingContext];
+		NSArray *events = [DaysCounterEvent findAllWithPredicate:predicate];
 		for (DaysCounterEvent *event in events) {
-			[_sharedManager removeEvent:event inContext:_savingContext];
+			[_sharedManager removeEvent:event];
 		}
 	}
 
@@ -2384,7 +2380,8 @@
 - (void)deleteLocationAction
 {
     DaysCounterEventLocation *location = [_eventItem location];
-    [location MR_deleteEntityInContext:_savingContext];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context deleteObject:location];
     
     [self.tableView reloadData];
 }
@@ -2408,7 +2405,6 @@
     A3DaysCounterSetupLocationViewController *nextVC = [[A3DaysCounterSetupLocationViewController alloc] initWithNibName:@"A3DaysCounterSetupLocationViewController" bundle:nil];
     nextVC.eventModel = self.eventItem;
     nextVC.sharedManager = _sharedManager;
-    nextVC.savingContext = _savingContext;
     [self.navigationController pushViewController:nextVC animated:YES];
 
 	[self.editingObject resignFirstResponder];
@@ -2418,7 +2414,7 @@
 
 - (void)deleteEventActionByActionSheet
 {
-    [_sharedManager removeEvent:_eventItem inContext:_savingContext];
+    [_sharedManager removeEvent:_eventItem];
     id <A3DaysCounterAddEventViewControllerDelegate> o = self.delegate;
     if ([o respondsToSelector:@selector(viewControllerWillDismissByDeletingEvent)]) {
         [o viewControllerWillDismissByDeletingEvent];
@@ -2645,14 +2641,15 @@
             CLPlacemark *placeMark = [placemarks objectAtIndex:0];
             NSDictionary *addressDict = placeMark.addressDictionary;
 
-            DaysCounterEventLocation *locItem = [_eventItem location];
+            DaysCounterEventLocation *locItem = [self.eventItem location];
             if (!locItem) {
-                locItem = [DaysCounterEventLocation MR_createEntityInContext:_savingContext];
+                NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+                locItem = [[DaysCounterEventLocation alloc] initWithContext:context];
                 locItem.uniqueID = [[NSUUID UUID] UUIDString];
             }
 
 			locItem.updateDate = [NSDate date];
-            locItem.eventID = _eventItem.uniqueID;
+            locItem.eventID = self.eventItem.uniqueID;
             locItem.latitude = @(location.coordinate.latitude);
             locItem.longitude = @(location.coordinate.longitude);
             locItem.locationName = [addressDict objectForKey:(NSString*)kABPersonAddressStreetKey];

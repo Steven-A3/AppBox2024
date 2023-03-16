@@ -8,11 +8,13 @@
 
 #import "ExpenseListItem+management.h"
 #import "NSString+conversion.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @implementation ExpenseListItem (management)
 
 - (NSString *)makeOrderString {
-	ExpenseListItem *lastItem = [ExpenseListItem MR_findFirstOrderedByAttribute:@"order" ascending:NO];
+	ExpenseListItem *lastItem = [ExpenseListItem findFirstOrderedByAttribute:@"order" ascending:NO];
 	return [NSString orderStringWithOrder:[lastItem.order integerValue] + 1000000];
 }
 

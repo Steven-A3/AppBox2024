@@ -14,7 +14,6 @@
 @property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
 @property (strong, nonatomic) DaysCounterCalendar *calendar;
 @property (assign, nonatomic) BOOL isEditMode;
-@property (strong, nonatomic) NSManagedObjectContext *savingContext;
 
 - (IBAction)deleteCalendarAction:(id)sender;
 

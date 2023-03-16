@@ -24,6 +24,8 @@
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 extern NSString *A3TableViewCellDefaultCellID;
 NSString *const A3LadyCalendarDetailViewTitleCellID = @"A3LadyCalendarDetailViewTitleCellID";
@@ -73,7 +75,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		[self rightBarButtonDoneButton];
 	}
 	if (_periodID) {
-		LadyCalendarPeriod *period = [LadyCalendarPeriod MR_findFirstByAttribute:@"uniqueID" withValue:_periodID];
+		LadyCalendarPeriod *period = [LadyCalendarPeriod findFirstByAttribute:@"uniqueID" withValue:_periodID];
 		_periodItems = [NSMutableArray arrayWithArray:@[ period ] ];
 		_month = period.startDate;
 	}
@@ -398,7 +400,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	viewCtrl.dataManager = self.dataManager;
     viewCtrl.isEditMode = YES;
 	LadyCalendarPeriod *editingPeriod = [_periodItems objectAtIndex:0];
-    viewCtrl.periodItem = [editingPeriod MR_inContext:[NSManagedObjectContext MR_defaultContext]];
+    viewCtrl.periodItem = editingPeriod;
 	UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:navCtrl animated:YES completion:nil];
@@ -413,7 +415,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	A3LadyCalendarAddPeriodViewController *viewCtrl = [[A3LadyCalendarAddPeriodViewController alloc] init];
 	viewCtrl.dataManager = self.dataManager;
     viewCtrl.isEditMode = YES;
-    viewCtrl.periodItem = [item MR_inContext:[NSManagedObjectContext MR_defaultContext]];
+    viewCtrl.periodItem = item;
 	UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:navCtrl animated:YES completion:nil];

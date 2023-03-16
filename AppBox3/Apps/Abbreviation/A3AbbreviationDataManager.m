@@ -13,6 +13,9 @@
 #import "NSMutableArray+A3Sort.h"
 #import "A3AbbreviationDrillDownViewController.h"
 #import "UIColor+A3Addition.h"
+#import "A3AppDelegate.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 NSString *const A3AbbreviationKeyTag = @"tag";
 NSString *const A3AbbreviationKeyTags = @"tags";
@@ -82,7 +85,7 @@ NSString *const A3AbbreviationKeyMeaning = @"meaning";
 }
 
 - (NSArray *)favoritesArray {
-	NSArray *favoriteKeys = [AbbreviationFavorite MR_findAllSortedBy:@"order" ascending:YES];
+	NSArray *favoriteKeys = [AbbreviationFavorite findAllSortedBy:@"order" ascending:YES];
 	
 	if ([favoriteKeys count] > 0) {
 		NSMutableArray *favorites = [NSMutableArray new];
@@ -294,28 +297,29 @@ NSString *const A3AbbreviationKeyMeaning = @"meaning";
 #pragma mark - A3SharePopupViewControllerDelegate
 
 - (BOOL)isMemberOfFavorites:(NSString *)titleString {
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"uniqueID", titleString];
-	NSArray *result = [AbbreviationFavorite MR_findAllWithPredicate:predicate];
-	return [result count] > 0;
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"uniqueID", titleString];
+    NSUInteger count = [AbbreviationFavorite countOfEntitiesWithPredicate:predicate];
+	return count > 0;
 }
 
 - (void)addToFavorites:(NSString *)titleString {
-	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
-	AbbreviationFavorite *favorite = [AbbreviationFavorite MR_createEntityInContext:savingContext];
-	favorite.uniqueID = titleString;
-	[favorite assignOrderAsLastInContext:savingContext];
-	[savingContext MR_saveToPersistentStoreAndWait];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    AbbreviationFavorite *favorite = [[AbbreviationFavorite alloc] initWithContext:context];
+    favorite.uniqueID = titleString;
+    [favorite assignOrderAsLast];
+
+    [context saveContext];
 }
 
 - (void)removeFromFavorites:(NSString *)titleString {
-	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"uniqueID", titleString];
-	NSArray *result = [AbbreviationFavorite MR_findAllWithPredicate:predicate inContext:savingContext];
-	if ([result count]) {
-		for (AbbreviationFavorite *favorite in result) {
-			[favorite MR_deleteEntityInContext:savingContext];
+	NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"uniqueID", titleString];
+    NSArray *results = [AbbreviationFavorite findAllWithPredicate:predicate];
+	if ([results count]) {
+		for (AbbreviationFavorite *favorite in results) {
+            [context deleteObject:favorite];
 		}
-		[savingContext MR_saveToPersistentStoreAndWait];
+        [context saveContext];
 	}
 }
 
@@ -348,23 +352,22 @@ NSString *const A3AbbreviationKeyMeaning = @"meaning";
 // Favorites can delete or reorder the items
 
 - (void)deleteItemForContent:(NSDictionary *)content {
-	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
-	NSArray *results = [AbbreviationFavorite MR_findByAttribute:@"uniqueID" withValue:content[A3AbbreviationKeyAbbreviation]];
-	if ([results count] > 0) {
-		for (AbbreviationFavorite *favorite in results) {
-			[favorite MR_deleteEntityInContext:savingContext];
-		}
-		[savingContext MR_saveToPersistentStoreAndWait];
+	NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSArray *results = [AbbreviationFavorite findByAttribute:@"uniqueID" withValue:content[A3AbbreviationKeyAbbreviation]];
+    if ([results count] > 0) {
+        for (AbbreviationFavorite *favorite in results) {
+            [context deleteObject:favorite];
+        }
+        [context saveContext];
 	}
 }
 
 - (void)moveItemForContent:(id)content fromIndex:(NSInteger)fromIndex toIndex:(NSInteger)toIndex {
-	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
-	NSMutableArray *favoriteKeys = [[AbbreviationFavorite MR_findAllSortedBy:@"order" ascending:YES inContext:savingContext] mutableCopy];
-	FNLOG(@"%@", favoriteKeys);
-	[favoriteKeys moveItemInSortedArrayFromIndex:fromIndex toIndex:toIndex];
-	FNLOG(@"%@", favoriteKeys);
-	[savingContext MR_saveToPersistentStoreAndWait];
+    NSMutableArray *favoriteKeys = [[AbbreviationFavorite findAllSortedBy:@"order" ascending:YES] mutableCopy];
+    [favoriteKeys moveItemInSortedArrayFromIndex:fromIndex toIndex:toIndex];
+    
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
 }
 
 @end

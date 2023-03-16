@@ -17,6 +17,8 @@
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "LoanCalcComparisonHistory+extension.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3LoanCalcHistoryViewController () <UIActionSheetDelegate>
 {
@@ -164,11 +166,11 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
     
 	if (!_fetchedResultsController) {
         if (_isComparisonMode) {
-            _fetchedResultsController = [LoanCalcComparisonHistory MR_fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
+            _fetchedResultsController = [LoanCalcComparisonHistory fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
         }
         else {
             NSPredicate *predicate = [NSPredicate predicateWithFormat:@"orderInComparison == nil"];
-            _fetchedResultsController = [LoanCalcHistory MR_fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:predicate groupBy:nil delegate:nil];
+            _fetchedResultsController = [LoanCalcHistory fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:predicate groupBy:nil delegate:nil];
         }
         
 		if ([_fetchedResultsController.fetchedObjects count] == 0) {
@@ -186,19 +188,20 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
 
 - (void)deleteLoanHistory:(LoanCalcHistory *)history
 {
-    [history MR_deleteEntity];
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context deleteObject:history];
+    [context saveContext];
 }
 
 - (void)deleteComparisonHistory:(LoanCalcComparisonHistory *)history
 {
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
 	for (LoanCalcHistory *detail in [history details]) {
-		[detail MR_deleteEntity];
+        [context deleteObject:detail];
 	}
+    [context deleteObject:history];
 
-    [history MR_deleteEntity];
-
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    [context saveContext];
 }
 
 - (void)configureLoanCell:(A3LoanCalcLoanHistoryCell *)loanCell withHistory:(LoanCalcHistory *) history
@@ -305,6 +308,7 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
         
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
         NSUInteger section = [self.tableView numberOfSections];
         for (int i=0; i<section; i++) {
             NSUInteger row = [self.tableView numberOfRowsInSection:i];
@@ -312,16 +316,16 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
                 NSIndexPath *ip = [NSIndexPath indexPathForRow:j inSection:i];
                 if (_isComparisonMode) {
                     LoanCalcComparisonHistory *comparisonHistory = [_fetchedResultsController objectAtIndexPath:ip];
-					[LoanCalcHistory MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"comparisonHistoryID == %@", comparisonHistory.uniqueID]];
-                    [comparisonHistory MR_deleteEntity];
+					[LoanCalcHistory deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"comparisonHistoryID == %@", comparisonHistory.uniqueID]];
+                    [context deleteObject:comparisonHistory];
                 }
                 else {
                     LoanCalcHistory *loanHistory = [_fetchedResultsController objectAtIndexPath:ip];
-                    [loanHistory MR_deleteEntity];
+                    [context deleteObject:loanHistory];
                 }
             }
         }
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+        [context saveContext];
         _fetchedResultsController = nil;
         [self.tableView reloadData];
 	}
@@ -417,7 +421,8 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
             [self deleteLoanHistory:history];
         }
         
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        [context saveContext];
         _fetchedResultsController = nil;
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

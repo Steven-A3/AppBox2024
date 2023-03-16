@@ -19,6 +19,8 @@
 #import "A3BasicWebViewController.h"
 #import "A3QRCodeTextViewController.h"
 #import "Reachability.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 	A3QRCodeHistoryActionSheetTypeClearHistory = 1,
@@ -136,31 +138,30 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 	}
 	if (actionSheet.tag == A3QRCodeHistoryActionSheetTypeClearHistory) {
 		if (buttonIndex == actionSheet.destructiveButtonIndex) {
-			NSManagedObjectContext *moc = [NSManagedObjectContext MR_rootSavingContext];
+            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
 			switch (_segmentedControl.selectedSegmentIndex) {
 				case 0:
-					[QRCodeHistory MR_truncateAllInContext:moc];
+					[QRCodeHistory truncateAll];
 					break;
 				case 1: {
 					NSPredicate *predicate = [NSPredicate predicateWithFormat:@"dimension == %@", @"1"];
-					[QRCodeHistory MR_deleteAllMatchingPredicate:predicate inContext:moc];
+					[QRCodeHistory deleteAllMatchingPredicate:predicate];
 					break;
 				}
 				case 2: {
 					NSPredicate *predicate = [NSPredicate predicateWithFormat:@"dimension == %@", @"2"];
-					[QRCodeHistory MR_deleteAllMatchingPredicate:predicate inContext:moc];
+					[QRCodeHistory deleteAllMatchingPredicate:predicate];
 					break;
 				}
 				default:
 					break;
 			}
-			[moc MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-				[_tableView setEditing:NO];
+            [context saveContext];
+            [_tableView setEditing:NO];
 
-				_historyArray = nil;
-				[_tableView reloadData];
-				[self editDoneButtonAction:nil];
-			}];
+            _historyArray = nil;
+            [_tableView reloadData];
+            [self editDoneButtonAction:nil];
 		}
 	} else if (actionSheet.tag == A3QRCodeHistoryActionSheetTypeSearchOnGoogle) {
 		if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Search on Google", @"Search on Google")]) {
@@ -193,13 +194,13 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 
 	[_segmentedControl makeConstraints:^(MASConstraintMaker *make) {
 		if (IS_IPHONE) {
-			make.left.equalTo(_navigationBarExtensionView.left).with.offset(15);
-			make.right.equalTo(_navigationBarExtensionView.right).with.offset(-15);
+			make.left.equalTo(self.navigationBarExtensionView.left).with.offset(15);
+			make.right.equalTo(self.navigationBarExtensionView.right).with.offset(-15);
 		} else {
-			make.centerX.equalTo(_navigationBarExtensionView.centerX);
+			make.centerX.equalTo(self.navigationBarExtensionView.centerX);
 			make.width.equalTo(@320);
 		}
-		make.bottom.equalTo(_navigationBarExtensionView.bottom).with.offset(-10);
+		make.bottom.equalTo(self.navigationBarExtensionView.bottom).with.offset(-10);
 		make.height.equalTo(@29);
 	}];
 	
@@ -207,9 +208,9 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 	bottomLineView.backgroundColor = [UIColor colorWithRed:178.0/255.0 green:178.0/255.0 blue:178.0/255.0 alpha:1.0];
 	[_navigationBarExtensionView addSubview:bottomLineView];
 	[bottomLineView makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(_navigationBarExtensionView.left);
-		make.right.equalTo(_navigationBarExtensionView.right);
-		make.bottom.equalTo(_navigationBarExtensionView.bottom);
+		make.left.equalTo(self.navigationBarExtensionView.left);
+		make.right.equalTo(self.navigationBarExtensionView.right);
+		make.bottom.equalTo(self.navigationBarExtensionView.bottom);
 		make.height.equalTo(@(1.0 / [[UIScreen mainScreen] scale]));
 	}];
 
@@ -392,14 +393,13 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-		NSManagedObjectContext *moc = [NSManagedObjectContext MR_rootSavingContext];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
 		QRCodeHistory *history = self.historyArray[indexPath.row];
-		[history MR_deleteEntityInContext:moc];
+        [context deleteObject:history];
 
-		[moc MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-			_historyArray = nil;
-			[_tableView reloadData];
-		}];
+        [context saveContext];
+        _historyArray = nil;
+        [_tableView reloadData];
 	}
 }
 
@@ -442,12 +442,12 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 - (NSArray *)historyArray {
 	if (!_historyArray) {
 		if (self.segmentedControl.selectedSegmentIndex == 0) {
-			_historyArray = [QRCodeHistory MR_findAllSortedBy:@"created" ascending:NO];
+			_historyArray = [QRCodeHistory findAllSortedBy:@"created" ascending:NO];
 		} else {
-			_historyArray = [QRCodeHistory MR_findByAttribute:@"dimension"
-													withValue:[NSString stringWithFormat:@"%ld", (long)self.segmentedControl.selectedSegmentIndex]
-												   andOrderBy:@"created"
-													ascending:NO];
+            _historyArray = [QRCodeHistory findByAttribute:@"dimension"
+                                                 withValue:[NSString stringWithFormat:@"%ld", (long)self.segmentedControl.selectedSegmentIndex]
+                                                andOrderBy:@"created"
+                                                 ascending:NO];
 		}
 	}
 	return _historyArray;

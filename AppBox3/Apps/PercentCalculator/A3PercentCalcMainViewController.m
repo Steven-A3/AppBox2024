@@ -20,7 +20,8 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "UITableView+utility.h"
-
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3PercentCalcMainViewController ()
 <UITextFieldDelegate, A3PercentCalcHistoryDelegate, A3ViewControllerProtocol, GADBannerViewDelegate>
@@ -356,7 +357,7 @@
     if (enable) {
         // History 버튼, 히스토리가 있는 경우에만 활성.
         UIBarButtonItem *historyButton = [self.navigationItem.rightBarButtonItems objectAtIndex:0];
-        historyButton.enabled = [PercentCalcHistory MR_countOfEntities] > 0;
+        historyButton.enabled = [PercentCalcHistory countOfEntities] > 0;
         
         
         // Compose 버튼, 헤더에 값이 있는 경우에만 활성하도록..
@@ -501,14 +502,12 @@
 }
 
 - (void)saveCalcHistoryData:(A3PercentCalcData *)aData calcType:(PercentCalcType)calcType {
-    
     // 최근 데이터에 저장했던 데이터인지 체크.
-    NSFetchRequest * fetch = [[NSFetchRequest alloc] initWithEntityName:@"PercentCalcHistory"];
-    [fetch setFetchLimit:10];
-    [fetch setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"updateDate" ascending:NO]]];
-    NSArray *fetchedRows = [PercentCalcHistory MR_executeFetchRequest:fetch];
+    NSArray *fetchedRows = [PercentCalcHistory findAllSortedBy:@"updateDate" ascending:NO];
     for (PercentCalcHistory * entity in fetchedRows) {
-        A3PercentCalcData *entityHistory = [NSKeyedUnarchiver unarchiveObjectWithData:entity.historyItem];
+        A3PercentCalcData *entityHistory = [NSKeyedUnarchiver unarchivedObjectOfClass:[A3PercentCalcData class]
+                                                                             fromData:entity.historyItem
+                                                                                error:NULL];
         if (!entityHistory) {
             continue;
         }
@@ -529,11 +528,12 @@
         
         if ([_factorX1 isEqualToNumber:@0]==NO && [_factorY1 isEqualToNumber:@0]==NO
             && [_factorX2 isEqualToNumber:@0]==NO && [_factorY2 isEqualToNumber:@0]==NO) {
-            PercentCalcHistory *entity = [PercentCalcHistory MR_createEntity];
-			entity.uniqueID = [[NSUUID UUID] UUIDString];
+            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+            PercentCalcHistory *entity = [[PercentCalcHistory alloc] initWithContext:context];
+            entity.uniqueID = [[NSUUID UUID] UUIDString];
             entity.updateDate = [NSDate date];
-            entity.historyItem = [NSKeyedArchiver archivedDataWithRootObject:aData];
-			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+            entity.historyItem = [NSKeyedArchiver archivedDataWithRootObject:aData requiringSecureCoding:YES error:NULL];
+            [context saveContext];
             [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem * barButton, NSUInteger idx, BOOL *stop) {
                 barButton.enabled = YES;
             }];
@@ -543,11 +543,12 @@
             return;
         
         if ([_factorX1 isEqualToNumber:@0]==NO && [_factorY1 isEqualToNumber:@0]==NO) {
-            PercentCalcHistory *entity = [PercentCalcHistory MR_createEntity];
-			entity.uniqueID = [[NSUUID UUID] UUIDString];
+            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+            PercentCalcHistory *entity = [[PercentCalcHistory alloc] initWithContext:context];
+            entity.uniqueID = [[NSUUID UUID] UUIDString];
             entity.updateDate = [NSDate date];
-            entity.historyItem = [NSKeyedArchiver archivedDataWithRootObject:aData];
-			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+            entity.historyItem = [NSKeyedArchiver archivedDataWithRootObject:aData requiringSecureCoding:YES error:NULL];
+            [context saveContext];
             [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem * barButton, NSUInteger idx, BOOL *stop) {
                 barButton.enabled = YES;
             }];
@@ -562,7 +563,7 @@
         inputTextData.values = [NSArray arrayWithObjects:inputTextData.values[0], inputTextData.values[1], nil];
     }
 
-	id inputData = [NSKeyedArchiver archivedDataWithRootObject:inputTextData];
+	id inputData = [NSKeyedArchiver archivedDataWithRootObject:inputTextData requiringSecureCoding:YES error:NULL];
 	[[A3SyncManager sharedSyncManager] setObject:inputData forKey:A3PercentCalcUserDefaultsSavedInputData state:A3DataObjectStateModified];
 }
 

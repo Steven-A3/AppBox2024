@@ -34,6 +34,8 @@
 #import "A3StandardDetailTableViewController.h"
 #import "A3PopoverTableViewController.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 enum A3TableElementCellType {
     A3TableElementCellType_Price = 100,
@@ -297,7 +299,7 @@ enum A3TableElementCellType {
 		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
 			switch (barButtonItem.tag) {
 				case A3RightBarButtonTagHistoryButton:
-                    barButtonItem.enabled = [SalesCalcHistory MR_countOfEntities] > 0 ? YES : NO;
+                    barButtonItem.enabled = [SalesCalcHistory countOfEntities] > 0 ? YES : NO;
 					break;
 				case A3RightBarButtonTagComposeButton:
                     barButtonItem.enabled = ([self.preferences.calcData.price doubleValue] > 0.0 && [self.preferences.calcData.discount doubleValue] > 0.0) ? YES : NO;
@@ -313,7 +315,7 @@ enum A3TableElementCellType {
 }
 
 - (void)saveInputTextData:(A3SalesCalcData *)inputTextData {
-	NSData *inputData = [NSKeyedArchiver archivedDataWithRootObject:inputTextData];
+	NSData *inputData = [NSKeyedArchiver archivedDataWithRootObject:inputTextData requiringSecureCoding:YES error:NULL];
 	[[A3SyncManager sharedSyncManager] setObject:inputData forKey:A3SalesCalcUserDefaultsSavedInputDataKey state:A3DataObjectStateModified];
 }
 

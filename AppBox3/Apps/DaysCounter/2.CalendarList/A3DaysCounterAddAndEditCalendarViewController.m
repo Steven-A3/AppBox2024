@@ -16,6 +16,7 @@
 #import "A3SyncManager.h"
 #import "DaysCounterCalendar.h"
 #import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3DaysCounterAddAndEditCalendarViewController ()
 @property (strong, nonatomic) NSArray *colorArray;
@@ -57,7 +58,8 @@
     self.colorArray = [_sharedManager calendarColorArray];
     
     if ( !_isEditMode ) {
-		self.calendar = [DaysCounterCalendar MR_createEntityInContext:self.savingContext];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        self.calendar = [[DaysCounterCalendar alloc] initWithContext:context];
 		_calendar.uniqueID = [[NSUUID UUID] UUIDString];
 		_calendar.isShow = @YES;
 		_calendar.colorID = @6;
@@ -126,17 +128,8 @@
 }
 
 - (void)willDismissRightSideView {
-	if ([self.savingContext hasChanges]) {
-		[self.savingContext rollback];
-	}
+    [self rollbackChanges];
 	[self dismissViewControllerAnimated:NO completion:nil];
-}
-
-- (NSManagedObjectContext *)savingContext {
-	if (!_savingContext) {
-		_savingContext = [NSManagedObjectContext MR_rootSavingContext];
-	}
-	return _savingContext;
 }
 
 #pragma mark - Table view data source
@@ -362,11 +355,16 @@
 	[self dismissSelf];
 }
 
+- (void)rollbackChanges {
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    if ([context hasChanges]) {
+        [context rollback];
+    }
+}
+
 - (void)cancelAction:(id)sender
 {
-	if ([self.savingContext hasChanges]) {
-		[self.savingContext rollback];
-	}
+    [self rollbackChanges];
 	[self dismissSelf];
 }
 
@@ -384,10 +382,11 @@
 		_calendar.name = NSLocalizedString(@"Untitled", @"Untitled");
     }
 
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
     if ( !_isEditMode ) {
-		[_calendar assignOrderAsFirstInContext:self.savingContext];
+		[_calendar assignOrderAsFirst];
     }
-	[self.savingContext MR_saveToPersistentStoreAndWait];
+    [context saveContext];
 
 	[self dismissSelf];
 }

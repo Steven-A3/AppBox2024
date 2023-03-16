@@ -27,6 +27,7 @@
 #import "UITableView+utility.h"
 #import "A3StandardTableViewCell.h"
 #import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3LadyCalendarAddAccountViewController ()
 
@@ -85,7 +86,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 			}
 	]];
 	if ( !_isEditMode ) {
-		_accountItem = [LadyCalendarAccount MR_createEntityInContext:self.savingContext];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+
+        _accountItem = [[LadyCalendarAccount alloc] initWithContext:context];
 		_accountItem.uniqueID = [[NSUUID UUID] UUIDString];
 	}
 
@@ -156,13 +159,6 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
 	[self.tableView reloadData];
-}
-
-- (NSManagedObjectContext *)savingContext {
-	if (!_savingContext) {
-		_savingContext = [NSManagedObjectContext MR_defaultContext];
-	}
-	return _savingContext;
 }
 
 - (void)reloadItemAtCellType:(NSInteger)cellType
@@ -475,7 +471,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 	_accountItem.name = inputName;
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"name", inputName];
-	_sameNameExists = [LadyCalendarAccount MR_countOfEntitiesWithPredicate:predicate] > 1;
+	_sameNameExists = [LadyCalendarAccount countOfEntitiesWithPredicate:predicate] > 1;
 
 	if (_sameNameExists) {
 		[self.alertHUD showAnimated:YES];
@@ -572,7 +568,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 }
 
 - (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem {
-    [self.savingContext reset];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context reset];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -587,10 +584,11 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		_accountItem.name = [NSString stringWithFormat:@"%@%02ld", NSLocalizedString(@"User", nil), (long) totalUser + 1];
     }
 	if (!_accountItem.order) {
-		[_accountItem assignOrderAsLastInContext:_accountItem.managedObjectContext];
+		[_accountItem assignOrderAsLast];
 	}
 
-	[self.savingContext MR_saveToPersistentStoreAndWait];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
 
 	[self dismissViewControllerAnimated:YES completion:nil];
 }

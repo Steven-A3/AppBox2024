@@ -18,6 +18,6 @@
 - (void)assignOrder;
 - (void)verifyNULLField;
 
-- (void)deleteWalletItemInContext:(NSManagedObjectContext *)context;
+- (void)deleteWalletItem;
 
 @end

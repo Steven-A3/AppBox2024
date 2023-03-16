@@ -13,6 +13,8 @@
 #import "UIViewController+A3Addition.h"
 #import "A3QRCodeTextViewController.h"
 #import "A3BasicWebViewController.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3QRCodeDetailViewController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, GADBannerViewDelegate>
 
@@ -244,7 +246,7 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField {
 	if ([textField.placeholder isEqualToString:NSLocalizedString(@"PRODUCT NAME", @"PRODUCT NAME")]) {
 		_historyData.productName = textField.text;
-		[_historyData.managedObjectContext MR_saveOnlySelfAndWait];
+		[_historyData.managedObjectContext saveContext];
 	}
 }
 

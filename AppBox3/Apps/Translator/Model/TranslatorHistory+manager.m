@@ -9,12 +9,14 @@
 #import "TranslatorHistory+manager.h"
 #import "TranslatorFavorite.h"
 #import "NSString+conversion.h"
-
+#import "A3AppDelegate.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @implementation TranslatorHistory (manager)
 
 - (TranslatorFavorite *)favorite {
-	return [TranslatorFavorite MR_findFirstByAttribute:@"historyID" withValue:self.uniqueID];
+	return [TranslatorFavorite findFirstByAttribute:@"historyID" withValue:self.uniqueID];
 }
 
 - (void)setAsFavoriteMember:(BOOL)isFavorite {
@@ -22,23 +24,24 @@
 	if (favorite && isFavorite) return;
 	if (!favorite && !isFavorite) return;
 
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
 	if (isFavorite) {
 		// Add Favorite
-		favorite = [TranslatorFavorite MR_createEntityInContext:self.managedObjectContext];
+        favorite = [[TranslatorFavorite alloc] initWithContext:context];
 		favorite.uniqueID = [[NSUUID UUID] UUIDString];
 		favorite.updateDate = [NSDate date];
 		favorite.historyID = self.uniqueID;
 		favorite.groupID = self.groupID;
 
-		TranslatorFavorite *lastFavorite = [TranslatorFavorite MR_findFirstOrderedByAttribute:@"order" ascending:NO];
+		TranslatorFavorite *lastFavorite = [TranslatorFavorite findFirstOrderedByAttribute:@"order" ascending:NO];
 		NSString *largest = lastFavorite.order;
 		NSString *nextLargest = [NSString orderStringWithOrder:[largest integerValue] + 1000000];
 		favorite.order = nextLargest;
 	} else {
-		[self.favorite MR_deleteEntityInContext:self.managedObjectContext];
+        [context deleteObject:self.favorite];
 	}
 
-	[[self managedObjectContext] MR_saveToPersistentStoreAndWait];
+    [context saveContext];
 }
 
 @end

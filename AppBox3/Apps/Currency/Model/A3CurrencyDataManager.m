@@ -17,6 +17,9 @@
 #import "A3UserDefaults.h"
 #import "A3NumberFormatter.h"
 #import "NSMutableArray+A3Sort.h"
+#import "A3AppDelegate.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 NSString *const A3KeyCurrencyCode = @"currencyCode";
 NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRatesUdpated";
@@ -76,7 +79,7 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 }
 
 + (void)setupFavorites {
-	if ([CurrencyFavorite MR_countOfEntities] > 0) {
+	if ([CurrencyFavorite countOfEntities] > 0) {
 		return;
 	}
 
@@ -107,14 +110,14 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 		}
 	}
 	NSInteger order = 1000000;
-	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
+	NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
 	for (NSDictionary *favorite in favorites) {
-		CurrencyFavorite *newFavorite = [CurrencyFavorite MR_createEntityInContext:savingContext];
+        CurrencyFavorite *newFavorite = [[CurrencyFavorite alloc] initWithContext:context];
 		newFavorite.uniqueID = favorite[ID_KEY];
 		newFavorite.order = [NSString orderStringWithOrder:order];
 		order += 1000000;
 	}
-	[savingContext MR_saveToPersistentStoreAndWait];
+    [context saveContext];
 }
 
 + (BOOL)yahooNetworkAvailable {
@@ -398,7 +401,7 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 //}
 
 - (void)updateCurrencyRatesFromCurrencyLayerOnCompletion:(void (^)(BOOL))completion {
-    NSArray *targetCurrencies = [CurrencyFavorite MR_findAllSortedBy:A3CommonPropertyOrder ascending:YES];
+    NSArray *targetCurrencies = [CurrencyFavorite findAllSortedBy:A3CommonPropertyOrder ascending:YES];
     NSMutableString *currenciesString = [NSMutableString new];
     for (CurrencyFavorite *favorite in targetCurrencies) {
         [currenciesString appendFormat:@"%@,", favorite.uniqueID];
@@ -439,91 +442,6 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     [operation start];
 }
-
-// https://free.currencyconverterapi.com/api/v6/convert?q=USD_PHP&compact=y
-// returns {"USD_PHP":{"val":53.098255}}
-// It allows only one and two pairs of currencies per call for free license.
-// Number of favorites - number of USD occurrences (i.e, if it has USD, it does not require to get the USD_USD currency rates
-
-/*
-- (void)updateCurrencyRatesFromFreeCurrencyRatesAPIOnCompletion:(void (^)(BOOL))completion {
-    if (_updateCandidates)
-        return;
-    
-    _updateCandidates = [[CurrencyFavorite MR_findAllSortedBy:A3CommonPropertyOrder ascending:YES] mutableCopy];
-    _APIUpdateCompletionBlock = completion;
-    
-    // Get the index of the USD
-    NSInteger indexOfUSD = [_updateCandidates indexOfObjectPassingTest:^BOOL(CurrencyFavorite * _Nonnull favorite, NSUInteger idx, BOOL * _Nonnull stop) {
-        return [favorite.uniqueID isEqualToString:@"USD"];
-    }];
-    if (indexOfUSD != NSNotFound) {
-        [_updateCandidates removeObjectAtIndex:indexOfUSD];
-    }
-    [self updateCurrencyRateForCandidate];
-}
-
-- (void)updateCurrencyRateForCandidate {
-    if ([_updateCandidates count] == 0) {
-        return;
-    }
-    CurrencyFavorite *favorite = _updateCandidates[0];
-    NSString *URLString = [NSString stringWithFormat:@"https://free.currencyconverterapi.com/api/v6/convert?q=USD_%@&compact=y", favorite.uniqueID];
-    
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URLString]];
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    if ([operation respondsToSelector:@selector(setQualityOfService:)]) {
-        [operation setQualityOfService:NSQualityOfServiceUserInteractive];
-    }
-    operation.responseSerializer = [AFJSONResponseSerializer serializer];
-    
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *requestOperation, id JSON) {
-        // returns {"USD_PHP":{"val":53.098255}}
-        FNLOG(@"%@", JSON);
-        
-        CurrencyFavorite *favorite = self.updateCandidates[0];
-        NSString *code = favorite.uniqueID;
-        NSString *key = [NSString stringWithFormat:@"USD_%@", code];
-        id newValue = JSON[key][@"val"];
-        if (newValue) {
-            [self updateRateForCurrency:code value:newValue];
-        }
-        
-        if ([self.updateCandidates count] > 0) {
-            [self.updateCandidates removeObjectAtIndex:0];
-        }
-        if ([self.updateCandidates count] > 0) {
-            [self updateCurrencyRateForCandidate];
-        } else {
-            self.updateCandidates = nil;
-
-            [[A3UserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3CurrencyUpdateDate];
-            [[A3UserDefaults standardUserDefaults] synchronize];
-            
-            [self updateCoinbaseExchangeRatesOnCompletion:^(BOOL successUpdate) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdated object:nil];
-                
-                self.dataArray = nil;
-                
-                self.APIUpdateCompletionBlock(YES);
-            }];
-        }
-    }
-                                     failure:^(AFHTTPRequestOperation *requestOperation, NSError *error) {
-                                         if (error) {
-                                             FNLOG(@"%@", error.localizedDescription);
-                                         }
-                                         self.updateCandidates = nil;
-                                         dispatch_async(dispatch_get_main_queue(), ^{
-                                             self.APIUpdateCompletionBlock(NO);
-                                             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-                                         });
-
-                                     }];
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    [operation start];
-}
-*/
 
 - (void)updateRateForCurrency:(NSString *)code value:(id)value {
     NSMutableArray *storedData = [[self ratesFromStoredFile] mutableCopy];

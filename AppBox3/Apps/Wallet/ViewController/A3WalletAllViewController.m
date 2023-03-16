@@ -21,6 +21,8 @@
 #import "A3InstructionViewController.h"
 #import "A3UserDefaults.h"
 #import "WalletFieldItem+initialize.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3WalletAllViewController () <UISearchBarDelegate, UISearchControllerDelegate, A3InstructionViewControllerDelegate, A3ViewControllerProtocol, UISearchResultsUpdating>
 
@@ -215,7 +217,7 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 	
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 	[self.navigationItem.rightBarButtonItem setEnabled:enable];
-	BOOL segmentedControlEnable = enable && [WalletItem MR_countOfEntities] > 0;
+	BOOL segmentedControlEnable = enable && [WalletItem countOfEntities] > 0;
 	[self.segmentedControlRef setTintColor:segmentedControlEnable ? nil : [UIColor colorWithRed:147.0 / 255.0 green:147.0 / 255.0 blue:147.0 / 255.0 alpha:1.0]];
 	[self.segmentedControlRef setEnabled:segmentedControlEnable];
 	self.tabBarController.tabBar.tintColor = enable ? nil : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
@@ -307,7 +309,7 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
     if (!super.items) {
 		NSMutableArray *items;
         NSString *sortValue = (self.sortingMode == kSortingDate) ? @"updateDate" : @"name";
-        items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:sortValue ascending:self.isAscendingSort]];
+        items = [NSMutableArray arrayWithArray:[WalletItem findAllSortedBy:sortValue ascending:self.isAscendingSort]];
 		_dataEmpty = ![items count];
 		if (_dataEmpty) {
 			[items addObject:self.emptyItem];
@@ -437,7 +439,7 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
     
     // update
     NSString *dateText = @"-";
-    WalletItem *recentItem = [WalletItem MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
+    WalletItem *recentItem = [WalletItem findFirstOrderedByAttribute:@"updateDate" ascending:NO];
     if (recentItem && recentItem.updateDate) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 		[formatter setDateStyle:IS_IPHONE ? NSDateFormatterShortStyle : NSDateFormatterMediumStyle];
@@ -586,9 +588,9 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
     viewController.hidesBottomBarWhenPushed = YES;
     
     // 마지막으로 추가되었던 walletItem의 카테고리가 선택되도록 한다.
-    WalletItem *lastItem = [WalletItem MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
+    WalletItem *lastItem = [WalletItem findFirstOrderedByAttribute:@"updateDate" ascending:NO];
     if (lastItem) {
-        viewController.category = [WalletData categoryItemWithID:lastItem.categoryID inContext:nil];
+        viewController.category = [WalletData categoryItemWithID:lastItem.categoryID];
     }
     else {
         viewController.category = [WalletData firstEditableWalletCategory];
@@ -738,9 +740,10 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 		NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"WalletFieldItem"];
 		fetchRequest.predicate = predicateForValues;
 		fetchRequest.resultType = NSDictionaryResultType;
-		fetchRequest.propertiesToFetch = [WalletFieldItem MR_propertiesNamed:@[@"walletItemID"]];
+		fetchRequest.propertiesToFetch = @[@"walletItemID"];
 		NSError *error;
-		NSArray *results = [[NSManagedObjectContext MR_defaultContext] executeFetchRequest:fetchRequest error:&error];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+		NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
 		for (NSDictionary *item in results) {
 			[uniqueIDs addObjectsFromArray:[item allValues]];
 		}
@@ -936,8 +939,9 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 		if (_topViewRef) {
 			[self updateTopViewInfo:_topViewRef];
 		}
-		[item deleteWalletItemInContext:[NSManagedObjectContext MR_defaultContext]];
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+		[item deleteWalletItem];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        [context saveContext];
 	}
 }
 

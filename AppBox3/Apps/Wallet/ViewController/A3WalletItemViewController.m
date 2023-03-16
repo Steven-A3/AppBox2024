@@ -40,7 +40,9 @@
 #import "MWPhotoBrowserPrivate.h"
 #import "NSString+WalletStyle.h"
 @import MessageUI;
-
+#import "A3AppDelegate.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3WalletItemViewController () <UITextFieldDelegate, WalletItemEditDelegate, MWPhotoBrowserDelegate, MFMailComposeViewControllerDelegate, UITextViewDelegate, MFMessageComposeViewControllerDelegate, AVPlayerViewControllerDelegate>
 
@@ -110,7 +112,8 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
 
     _item.lastOpened = [NSDate date];
-    [_item.managedObjectContext MR_saveToPersistentStoreAndWait];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
 }
 
 - (void)applicationWillResignActive {
@@ -146,7 +149,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 
 		FNLOG();
 		NSString *itemID = _item.uniqueID;
-		_item = [WalletItem MR_findFirstByAttribute:ID_KEY withValue:itemID];
+		_item = [WalletItem findFirstByAttribute:ID_KEY withValue:itemID];
         
 		_category = nil;
 		_fieldItems = nil;
@@ -190,7 +193,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 
 - (WalletCategory *)category {
 	if (!_category) {
-		_category = [WalletData categoryItemWithID:_item.categoryID inContext:nil];
+		_category = [WalletData categoryItemWithID:_item.categoryID];
 	}
 	return _category;
 }
@@ -338,7 +341,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 {
 	UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
 	A3WalletItemEditViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemEditViewController"];
-	viewController.item = [self.item MR_inContext:[NSManagedObjectContext MR_defaultContext]];
+    viewController.item = self.item;
 	viewController.hidesBottomBarWhenPushed = YES;
 	viewController.alwaysReturnToOriginalCategory = self.alwaysReturnToOriginalCategory;
 	viewController.delegate = self;
@@ -663,7 +666,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
         textCell.valueTextField.font = [UIFont systemFontOfSize:17];
         textCell.valueTextField.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
         textCell.valueTextField.placeholder = NSLocalizedString(@"Category", @"Category");
-		WalletCategory *category = [WalletData categoryItemWithID:_item.categoryID inContext:nil];
+		WalletCategory *category = [WalletData categoryItemWithID:_item.categoryID];
 		textCell.valueTextField.text = category.name;
 
         cell = textCell;

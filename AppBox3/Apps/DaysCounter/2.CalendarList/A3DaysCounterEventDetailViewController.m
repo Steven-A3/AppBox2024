@@ -29,6 +29,8 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "DaysCounterCalendar.h"
 #import "A3NavigationController.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3DaysCounterEventDetailViewController () <UIAlertViewDelegate, UIPopoverControllerDelegate, UIActionSheetDelegate, UIActivityItemSource, A3DaysCounterAddEventViewControllerDelegate>
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -206,8 +208,9 @@
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
-	[self.eventItem reminderWithContext:[NSManagedObjectContext MR_rootSavingContext]].isUnread = @(NO);
-    [[NSManagedObjectContext MR_rootSavingContext] MR_saveToPersistentStoreAndWait];
+	[self.eventItem reminderItem].isUnread = @(NO);
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
 
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
@@ -1713,7 +1716,7 @@ EXIT_FUCTION:
 - (void)didSelectFavoriteRow
 {
 	[_eventItem toggleFavorite];
-    [_eventItem.managedObjectContext MR_saveToPersistentStoreAndWait];
+    [_eventItem.managedObjectContext saveContext];
 
     [self.tableView reloadData];
 
@@ -1757,7 +1760,7 @@ EXIT_FUCTION:
             [self.delegate willDeleteEvent:self.eventItem daysCounterEventDetailViewController:self];
         }
         else {
-            [_sharedManager removeEvent:_eventItem inContext:[NSManagedObjectContext MR_rootSavingContext] ];
+            [_sharedManager removeEvent:_eventItem];
             [self.navigationController popViewControllerAnimated:YES];
         }
     }
@@ -1771,40 +1774,6 @@ EXIT_FUCTION:
 }
 
 - (void)showActionSheetOfDeleteEventInViewAdaptively {
-    //#ifdef __IPHONE_8_0
-    //    if (!IS_IOS7 && IS_IPAD) {
-    //        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    //        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-    //            [alertController dismissViewControllerAnimated:YES completion:NULL];
-    //        }]];
-    //        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Event", @"Delete Event") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-    //            if ( self.delegate && [self.delegate respondsToSelector:@selector(willDeleteEvent:daysCounterEventDetailViewController:)]) {
-    //                [alertController dismissViewControllerAnimated:YES completion:^{
-    //                    [self.delegate willDeleteEvent:self.eventItem daysCounterEventDetailViewController:self];
-    //                }];
-    //            }
-    //            else {
-    //                [_sharedManager removeEvent:_eventItem inContext:[NSManagedObjectContext MR_rootSavingContext] ];
-    //                [alertController dismissViewControllerAnimated:YES completion:NULL];
-    //                [self.navigationController popViewControllerAnimated:YES];
-    //            }
-    //        }]];
-    //        UIPopoverPresentationController *popover = alertController.popoverPresentationController;
-    //        popover.sourceView = self.view;
-    //        popover.sourceRect = CGRectMake(self.view.center.x, ((UITableViewCell *)sender).center.y + 22, 0, 0);
-    //        popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
-    //
-    //        [self presentViewController:alertController animated:YES completion:NULL];
-    //    }
-    //    else {
-    //        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-    //                                                                 delegate:self
-    //                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-    //                                                   destructiveButtonTitle:NSLocalizedString(@"Delete Event", @"Delete Event")
-    //                                                        otherButtonTitles:nil];
-    //        [actionSheet showInView:self.view];
-    //    }
-    //#endif
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:self
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
@@ -1823,7 +1792,7 @@ EXIT_FUCTION:
             [self.delegate willDeleteEvent:self.eventItem daysCounterEventDetailViewController:self];
         }
         else {
-            [_sharedManager removeEvent:_eventItem inContext:[NSManagedObjectContext MR_rootSavingContext] ];
+            [_sharedManager removeEvent:_eventItem];
             [self.navigationController popViewControllerAnimated:YES];
         }
     }
@@ -1836,8 +1805,7 @@ EXIT_FUCTION:
     self.initialCalendarID = _eventItem.calendarID;
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
 	viewCtrl.delegate = self;
-	viewCtrl.savingContext = [NSManagedObjectContext MR_rootSavingContext];
-    viewCtrl.eventItem = [_eventItem MR_inContext:viewCtrl.savingContext];
+    viewCtrl.eventItem = _eventItem;
     viewCtrl.sharedManager = _sharedManager;
     
     if (IS_IPHONE) {

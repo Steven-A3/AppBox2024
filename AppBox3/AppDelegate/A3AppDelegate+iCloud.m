@@ -12,6 +12,8 @@
 #import "NSDate-Utilities.h"
 #import "A3SyncManager.h"
 #import "A3UserDefaults.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @implementation A3AppDelegate (iCloud)
 
@@ -64,7 +66,7 @@
 	if ([[UIApplication sharedApplication] isProtectedDataAvailable]) {
 		FNLOG(@"Protected Data is Available.");
 		
-		[A3DaysCounterModelManager reloadAlertDateListForLocalNotification:[NSManagedObjectContext MR_rootSavingContext] ];
+		[A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
 		[A3LadyCalendarModelManager setupLocalNotification];
 		
 		completionHandler(UIBackgroundFetchResultNewData);
@@ -192,18 +194,19 @@
  *
  *  @return YES if it founds entity which duplicated objects
  */
-- (BOOL)deduplicateDatabase {
-	NSManagedObjectModel *model = [NSManagedObjectModel MR_defaultManagedObjectModel];
-	
+- (BOOL)deduplicateDatabaseWithModel:(NSManagedObjectModel *)model {
+//    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+//    NSManagedObjectModel *model = [NSManagedObjectModel mergedModelFromBundles:@[bundle]];
+
 	BOOL dataHasDuplicatedRecords = NO;
 	for (NSEntityDescription *entityDescription in model.entities) {
 		@autoreleasepool {
 			dataHasDuplicatedRecords |= [self deDupRecordsForEntity:entityDescription.name];
 		}
 	}
-	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_defaultContext];
-	[managedObjectContext MR_saveToPersistentStoreAndWait];
-	
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
+
 	return dataHasDuplicatedRecords;
 }
 
@@ -217,8 +220,8 @@
 - (BOOL)deDupRecordsForEntity:(NSString *)entityName {
 	BOOL hasDuplicatedRecords = NO;
 	
-	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_defaultContext];
-	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:entityName inManagedObjectContext:managedObjectContext];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
 
 	NSExpression *keyPathExpression = [NSExpression expressionForKeyPath: @"uniqueID"]; // Does not really matter
 	NSExpression *countExpression = [NSExpression expressionForFunction:@"count:"
@@ -238,7 +241,7 @@
 	fetchRequest.resultType = NSDictionaryResultType;
 
 	NSError *error;
-	NSArray *result = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+	NSArray *result = [context executeFetchRequest:fetchRequest error:&error];
 
 	for (NSDictionary *unique in result) {
 		if ([unique[@"dupCount"] integerValue] > 1) {
@@ -246,7 +249,7 @@
 			
 			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"uniqueID", unique[@"uniqueID"]];
 
-			NSArray *duplicatedItems = [NSClassFromString(entityName) MR_findAllWithPredicate:predicate];
+			NSArray *duplicatedItems = [NSClassFromString(entityName) findAllWithPredicate:predicate];
 			BOOL skipFirst = YES;
 			for (NSManagedObject *targetRow in duplicatedItems) {
 				if (skipFirst) {
@@ -254,7 +257,7 @@
 					continue;
 				}
 				FNLOG(@"Deleting: %@", targetRow);
-				[targetRow MR_deleteEntity];
+                [context deleteObject:targetRow];
 			}
 		}
 	}

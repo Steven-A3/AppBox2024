@@ -23,11 +23,11 @@
 #import "A3BasicWebViewController.h"
 #import "A3UIDevice.h"
 #import "Reachability.h"
-#import "NSManagedObjectContext+MagicalSaves.h"
-#import "NSManagedObjectContext+MagicalRecord.h"
 #import "A3QRCodeTextViewController.h"
 #import "UIImage+imageWithColor.h"
 @import Photos;
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 NSString *const A3QRCodeSettingsPlayAlertSound = @"A3QRCodeSettingsPlayAlertSound";
 NSString *const A3QRCodeSettingsPlayVibrate = @"A3QRCodeSettingsPlayVibrate";
@@ -58,11 +58,11 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 @property (nonatomic, assign) BOOL scanHandlerInProgress;
 @property (nonatomic, strong) IBOutletCollection(UIBarButtonItem) NSArray *soundOnOffButtons;
 @property (nonatomic, strong) IBOutletCollection(UIBarButtonItem) NSArray *torchOnOffButtons;
+@property (nonatomic, assign) BOOL googleSearchInProgress;
 
 @end
 
 @implementation A3QRCodeViewController {
-	BOOL _googleSearchInProgress;
 	BOOL _viewWillAppearFirstRunAfterLoad;
 	BOOL _scanIsRunning;
 	BOOL _scanAnimationInProgress;
@@ -279,24 +279,20 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 			if ([[NSUserDefaults standardUserDefaults] boolForKey:A3QRCodeSettingsPlayVibrate]) {
 				AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
 			}
-			NSManagedObjectContext *moc = [NSManagedObjectContext MR_rootSavingContext];
-			
-			QRCodeHistory *history = [QRCodeHistory MR_findFirstByAttribute:@"scanData" withValue:barcode.stringValue inContext:moc];
+            
+            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+			QRCodeHistory *history = [QRCodeHistory findFirstByAttribute:@"scanData" withValue:barcode.stringValue];
 			if (history) {
 				history.created = [NSDate date];
 			} else {
-				history = [QRCodeHistory MR_createEntityInContext:moc];
+                history = [[QRCodeHistory alloc] initWithContext:context];
 				history.uniqueID = [[NSUUID UUID] UUIDString];
 				history.created = [NSDate date];
 				history.type = barcode.type;
 				history.scanData = barcode.stringValue;
 				
 				NSArray *qrcodeTypes;
-				if (IS_IOS7) {
-					qrcodeTypes = @[AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode];
-				} else {
-					qrcodeTypes = @[AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode, AVMetadataObjectTypeDataMatrixCode];
-				}
+                qrcodeTypes = @[AVMetadataObjectTypeQRCode, AVMetadataObjectTypeAztecCode, AVMetadataObjectTypeDataMatrixCode];
 				if ([qrcodeTypes indexOfObject:barcode.type] != NSNotFound) {
 					history.dimension = @"2";
 				} else {
@@ -304,8 +300,8 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 				}
 			}
 			
-			[moc MR_saveToPersistentStoreAndWait];
-			
+            [context saveContext];
+
 			if ([history.dimension isEqualToString:@"1"]) {
 				if ([[[A3AppDelegate instance] reachability] isReachableViaWiFi]) {
 					[weakSelf presentWebViewControllerWithBarCode:history.scanData];
@@ -374,13 +370,12 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	CIQRCodeFeature *feature = [features firstObject];
 	void(^alertBlock)(void) = nil;
 	if (feature) {
-		NSManagedObjectContext *moc = [NSManagedObjectContext MR_rootSavingContext];
-
-		QRCodeHistory *newItem = [QRCodeHistory MR_findFirstByAttribute:@"scanData" withValue:feature.messageString inContext:moc];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+		QRCodeHistory *newItem = [QRCodeHistory findFirstByAttribute:@"scanData" withValue:feature.messageString];
 		if (newItem) {
 			newItem.created = [NSDate date];
 		} else {
-			newItem = [QRCodeHistory MR_createEntityInContext:moc];
+            newItem = [[QRCodeHistory alloc] initWithContext:context];
 			newItem.uniqueID = [[NSUUID UUID] UUIDString];
 			newItem.created = [NSDate date];
 			newItem.type = feature.type;
@@ -388,7 +383,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 			newItem.dimension = @"2";
 		}
 
-		[moc MR_saveToPersistentStoreAndWait];
+        [context saveContext];
 
 		[self.dataHandler performActionWithData:newItem inViewController:self];
 
@@ -411,10 +406,10 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 
 - (void)searchBarcode:(NSString *)barcode {
 	FNLOG();
-	if (_googleSearchInProgress) {
+	if (self.googleSearchInProgress) {
 		return;
 	}
-	_googleSearchInProgress = YES;
+	self.googleSearchInProgress = YES;
 	
 	NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"https://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=%@", barcode] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
 
@@ -424,16 +419,15 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	operation.responseSerializer = [AFJSONResponseSerializer serializer];
 	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id JSON) {
 		if ([JSON[@"responseStatus"] integerValue] == 200) {
-			NSManagedObjectContext *moc = [NSManagedObjectContext MR_rootSavingContext];
-			QRCodeHistory *history = [QRCodeHistory MR_findFirstByAttribute:@"scanData" withValue:barcode inContext:moc];
-			history.searchData = [NSKeyedArchiver archivedDataWithRootObject:JSON];
-			[moc MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-				[self presentDetailViewControllerWithData:history];
-			}];
+            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+			QRCodeHistory *history = [QRCodeHistory findFirstByAttribute:@"scanData" withValue:barcode];
+			history.searchData = [NSKeyedArchiver archivedDataWithRootObject:JSON requiringSecureCoding:YES error:NULL];
+            [context saveContext];
+            [self presentDetailViewControllerWithData:history];
 		}
-		_googleSearchInProgress = NO;
+		self.googleSearchInProgress = NO;
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		_googleSearchInProgress = NO;
+		self.googleSearchInProgress = NO;
 	}];
 
 	[operation start];

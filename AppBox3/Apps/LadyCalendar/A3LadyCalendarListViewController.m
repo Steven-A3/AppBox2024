@@ -18,6 +18,8 @@
 #import "A3ColoredCircleView.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3LadyCalendarListViewController ()
 
@@ -308,19 +310,20 @@
         NSArray *items = [[_itemArray objectAtIndex:indexPath.section] objectForKey:ItemKey_Items];
         LadyCalendarPeriod *period = (indexPath.row >= [items count] ? nil : [items objectAtIndex:indexPath.row]);
         
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
         if (period) {
-			[period MR_deleteEntity];
-			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+            [context deleteObject:period];
+            [context saveContext];
 
 			double delayInSeconds = 0.1;
 			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 			dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
-				[_dataManager recalculateDates];
+				[self.dataManager recalculateDates];
 
-				self.sourceArray = [_dataManager periodListSortedByStartDateIsAscending:YES ];
-				self.predictArray = [_dataManager predictPeriodListSortedByStartDateIsAscending:YES ];
-				self.fullArray = [_sourceArray arrayByAddingObjectsFromArray:_predictArray];
-				[self groupingPeriodByYearInArray:_fullArray];
+				self.sourceArray = [self.dataManager periodListSortedByStartDateIsAscending:YES ];
+				self.predictArray = [self.dataManager predictPeriodListSortedByStartDateIsAscending:YES ];
+				self.fullArray = [self.sourceArray arrayByAddingObjectsFromArray:self.predictArray];
+				[self groupingPeriodByYearInArray:self.fullArray];
 
 				[self.tableView reloadData];
 			});

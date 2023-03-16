@@ -14,6 +14,9 @@
 #import "WalletCategory.h"
 #import "WalletField.h"
 #import "A3UserDefaultsKeys.h"
+#import "A3AppDelegate.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @implementation WalletItem (initialize)
 
@@ -24,16 +27,16 @@
  */
 - (NSArray *)fieldItems {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@", self.uniqueID];
-	return [WalletFieldItem MR_findAllWithPredicate:predicate inContext:self.managedObjectContext];
+	return [WalletFieldItem findAllWithPredicate:predicate];
 }
 
 - (NSArray *)fieldItemsArraySortedByFieldOrder
 {
-	WalletCategory *category = [WalletData categoryItemWithID:self.categoryID inContext:nil];
-	NSArray *fields = [WalletField MR_findByAttribute:@"categoryID" withValue:category.uniqueID andOrderBy:@"order" ascending:YES];
+	WalletCategory *category = [WalletData categoryItemWithID:self.categoryID];
+	NSArray *fields = [WalletField findByAttribute:@"categoryID" withValue:category.uniqueID andOrderBy:@"order" ascending:YES];
 	NSArray *fieldIDs = [fields valueForKeyPath:ID_KEY];
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@", self.uniqueID];
-	NSArray *fieldItems = [WalletFieldItem MR_findAllWithPredicate:predicate inContext:self.managedObjectContext];
+	NSArray *fieldItems = [WalletFieldItem findAllWithPredicate:predicate];
 	fieldItems = [fieldItems sortedArrayUsingComparator:^NSComparisonResult(WalletFieldItem *obj1, WalletFieldItem *obj2) {
 		NSUInteger idx1 = [fieldIDs indexOfObject:obj1.fieldID];
 		NSUInteger idx2 = [fieldIDs indexOfObject:obj2.fieldID];
@@ -43,7 +46,7 @@
 }
 
 - (void)assignOrder {
-	WalletItem *item = [WalletItem MR_findFirstOrderedByAttribute:@"order" ascending:NO inContext:self.managedObjectContext];
+	WalletItem *item = [WalletItem findFirstOrderedByAttribute:@"order" ascending:NO];
 	if (item) {
 		NSInteger latestOrder = [item.order integerValue];
 		self.order = [NSString orderStringWithOrder:latestOrder + 1000000];
@@ -55,8 +58,8 @@
 - (void)verifyNULLField {
 	NSArray *fieldItems = [self fieldItemsArraySortedByFieldOrder];
 	NSMutableArray *fieldItemsFieldDoesNotExist = [NSMutableArray new];
-	WalletCategory *category = [WalletData categoryItemWithID:self.categoryID inContext:self.managedObjectContext];
-	NSArray *fields = [WalletField MR_findByAttribute:@"categoryID" withValue:category.uniqueID andOrderBy:@"order" ascending:YES];
+	WalletCategory *category = [WalletData categoryItemWithID:self.categoryID];
+	NSArray *fields = [WalletField findByAttribute:@"categoryID" withValue:category.uniqueID andOrderBy:@"order" ascending:YES];
 	for (WalletFieldItem *fieldItem in fieldItems) {
 		if (![fieldItem.fieldID length]) {
 			[fieldItemsFieldDoesNotExist addObject:fieldItem];
@@ -83,27 +86,26 @@
 	NSDateFormatter *dateFormatter = [NSDateFormatter new];
 	[dateFormatter setDateStyle:NSDateFormatterFullStyle];
 	NSMutableString *collectedTexts = [NSMutableString new];
-	for (WalletFieldItem *fieldItem in fieldItemsFieldDoesNotExist) {
-		if (fieldItem.date) {
-			[collectedTexts appendFormat:@"%@\n", [dateFormatter stringFromDate:fieldItem.date]];
-			[fieldItem MR_deleteEntity];
-		} else if ([fieldItem.value length]) {
-			[collectedTexts appendFormat:@"%@\n", fieldItem.value];
-			[fieldItem MR_deleteEntity];
-		}
-	}
-	if ([collectedTexts length]) {
-		self.note = [NSString stringWithFormat:@"%@%@", [self.note length] ? [NSString stringWithFormat:@"%@\n", self.note] : @"", collectedTexts];
-	}
-	[[self managedObjectContext] MR_saveToPersistentStoreAndWait];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    for (WalletFieldItem *fieldItem in fieldItemsFieldDoesNotExist) {
+        if (fieldItem.date) {
+            [collectedTexts appendFormat:@"%@\n", [dateFormatter stringFromDate:fieldItem.date]];
+            [context deleteObject:fieldItem];
+        } else if ([fieldItem.value length]) {
+            [collectedTexts appendFormat:@"%@\n", fieldItem.value];
+            [context deleteObject:fieldItem];
+        }
+    }
+    if ([collectedTexts length]) {
+        self.note = [NSString stringWithFormat:@"%@%@", [self.note length] ? [NSString stringWithFormat:@"%@\n", self.note] : @"", collectedTexts];
+    }
+    [context saveContext];
 }
 
-- (void)deleteWalletItemInContext:(NSManagedObjectContext *)context {
-	if (!context) {
-		context = [NSManagedObjectContext MR_defaultContext];
-	}
+- (void)deleteWalletItem {
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@", self.uniqueID];
-	NSArray *fieldItems = [WalletFieldItem MR_findAllWithPredicate:predicate inContext:context];
+	NSArray *fieldItems = [WalletFieldItem findAllWithPredicate:predicate];
 	[fieldItems enumerateObjectsUsingBlock:^(WalletFieldItem *fieldItem, NSUInteger idx, BOOL *stop) {
 		NSFileManager *fileManager = [[NSFileManager alloc] init];
 		BOOL result;
@@ -135,10 +137,10 @@
 			}
 		}
 	}];
-	[WalletFieldItem MR_deleteAllMatchingPredicate:predicate inContext:context];
+	[WalletFieldItem deleteAllMatchingPredicate:predicate];
 	predicate = [NSPredicate predicateWithFormat:@"itemID == %@", self.uniqueID];
-	[WalletFavorite MR_deleteAllMatchingPredicate:predicate inContext:context];
-	[self MR_deleteEntityInContext:context];
+	[WalletFavorite deleteAllMatchingPredicate:predicate];
+    [context deleteObject:self];
 }
 
 @end

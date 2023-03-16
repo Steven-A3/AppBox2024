@@ -171,7 +171,7 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 {
 	if (!self.isCloudEnabled || _ensemble) return;
 
-	NSURL *storeURL = [NSPersistentStore MR_urlForStoreName:[[A3AppDelegate instance] storeFileName]];
+    NSURL *storeURL = [[A3AppDelegate instance] storeURL];
 	NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"AppBox3" withExtension:@"momd"];
 	_ensemble = [[CDEPersistentStoreEnsemble alloc] initWithEnsembleIdentifier:self.cloudStoreID persistentStoreURL:storeURL managedObjectModelURL:modelURL cloudFileSystem:self.cloudFileSystem];
 	_ensemble.delegate = self;
@@ -292,14 +292,9 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 
 - (void)persistentStoreEnsemble:(CDEPersistentStoreEnsemble *)ensemble didSaveMergeChangesWithNotification:(NSNotification *)notification
 {
-	NSManagedObjectContext *rootContext = [NSManagedObjectContext MR_rootSavingContext];
+	NSManagedObjectContext *rootContext = [[A3AppDelegate instance] managedObjectContext];
 	[rootContext performBlockAndWait:^{
 		[rootContext mergeChangesFromContextDidSaveNotification:notification];
-	}];
-
-	NSManagedObjectContext *mainContext = [NSManagedObjectContext MR_defaultContext];
-	[mainContext performBlockAndWait:^{
-		[mainContext mergeChangesFromContextDidSaveNotification:notification];
 	}];
 }
 

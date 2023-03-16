@@ -35,6 +35,8 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3NumberKeyboardViewController_iPhone.h"
 #import "A3NumberKeyboardViewController_iPad.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 enum A3ExpenseListAddBudgetCellType {
     AddBudgetCellID_Budget = 100,
@@ -171,7 +173,7 @@ enum A3ExpenseListAddBudgetCellType {
 		return;
 	}
 	// reload data
-	_currentBudget = [ExpenseListBudget MR_findFirstByAttribute:@"uniqueID" withValue:_currentBudget.uniqueID];
+	_currentBudget = [ExpenseListBudget findFirstByAttribute:@"uniqueID" withValue:_currentBudget.uniqueID];
 	[self.tableView reloadData];
 
 	[self enableControls:_barButtonEnabled];
@@ -271,9 +273,10 @@ enum A3ExpenseListAddBudgetCellType {
 		NSArray *section0 = [self section0_Array];
 		NSArray *elements = [self expandableCellElements];
 
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
 		ExpenseListBudget *resultBudget;
 		if (!_currentBudget) {
-			resultBudget = [ExpenseListBudget MR_createEntity];
+            resultBudget = [[ExpenseListBudget alloc] initWithContext:context];
 			resultBudget.uniqueID = [[NSUUID UUID] UUIDString];
 			resultBudget.updateDate = [NSDate date];
 		} else {
@@ -307,7 +310,7 @@ enum A3ExpenseListAddBudgetCellType {
 		resultBudget.updateDate = [NSDate date];
         resultBudget.isModified = @(YES);
 
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+        [context saveContext];
 
 		[_delegate setExpenseBudgetDataFor:resultBudget];
 	}

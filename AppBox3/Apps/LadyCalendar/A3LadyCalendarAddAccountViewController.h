@@ -14,6 +14,5 @@
 @property (strong, nonatomic) LadyCalendarAccount *accountItem;
 @property (assign, nonatomic) BOOL isEditMode;
 @property (weak, nonatomic) A3LadyCalendarModelManager *dataManager;
-@property (strong, nonatomic) NSManagedObjectContext *savingContext;
 
 @end

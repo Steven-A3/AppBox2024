@@ -8,11 +8,13 @@
 
 #import "DaysCounterFavorite+extension.h"
 #import "DaysCounterEvent.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @implementation DaysCounterFavorite (extension)
 
 - (DaysCounterEvent *)event {
-	return [DaysCounterEvent MR_findFirstByAttribute:@"uniqueID" withValue:self.eventID];
+	return [DaysCounterEvent findFirstByAttribute:@"uniqueID" withValue:self.eventID];
 }
 
 @end

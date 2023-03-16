@@ -23,6 +23,8 @@
 #import "A3TranslatorLanguage.h"
 #import "A3AppDelegate+appearance.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 NSString *const A3TranslatorKayLanguage = @"language";
 
@@ -324,7 +326,7 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 }
 
 - (UIButton *)speakButton {
-	TranslatorGroup *group = [TranslatorGroup MR_findFirstByAttribute:@"uniqueID" withValue:_messageEntity.groupID];
+	TranslatorGroup *group = [TranslatorGroup findFirstByAttribute:@"uniqueID" withValue:_messageEntity.groupID];
 	if ([self speechAvailableForLanguage:group.targetLanguage]) {
 		_speakWithApple = YES;
 	} else if ([self googleSpeechAvailableForLanguage:group.targetLanguage]) {
@@ -414,7 +416,7 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 		}
 
         NSArray *languages = [self.languageListManager translationLanguageAddingDetectLanguage:NO];
-		TranslatorGroup *group = [TranslatorGroup MR_findFirstByAttribute:@"uniqueID" withValue:_messageEntity.groupID];
+		TranslatorGroup *group = [TranslatorGroup findFirstByAttribute:@"uniqueID" withValue:_messageEntity.groupID];
         __block NSString *targetLanguage = group.targetLanguage;
 		AVSpeechSynthesisVoice *voice = [AVSpeechSynthesisVoice voiceWithLanguage:[self speechLanguageForLanguage:targetLanguage]];
 		AVSpeechUtterance *utterance = [[AVSpeechUtterance alloc] initWithString:_messageEntity.translatedText];
@@ -531,7 +533,7 @@ static NSString *const GOOGLE_LISTEN_URL	= @"https://translate.google.com/transl
 
 	NSMutableString *urlString = [NSMutableString stringWithCapacity:300];
 	[urlString appendString:GOOGLE_LISTEN_URL];
-	TranslatorGroup *group = [TranslatorGroup MR_findFirstByAttribute:@"uniqueID" withValue:_messageEntity.groupID];
+	TranslatorGroup *group = [TranslatorGroup findFirstByAttribute:@"uniqueID" withValue:_messageEntity.groupID];
 	[urlString appendString:[A3TranslatorLanguage googleCodeFromAppleCode:group.targetLanguage]];
 	[urlString appendString:@"&q="];
 	[urlString appendString:[_messageEntity.translatedText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];

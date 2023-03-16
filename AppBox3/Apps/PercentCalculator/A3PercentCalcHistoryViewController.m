@@ -18,6 +18,8 @@
 #import "NSDate+TimeAgo.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 NSString *const A3PercentCalcHistoryCellID = @"cell1";
 NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
@@ -111,7 +113,7 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
 
 - (NSFetchedResultsController *)fetchedResultsController {
 	if (!_fetchedResultsController) {
-        _fetchedResultsController = [PercentCalcHistory MR_fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
+        _fetchedResultsController = [PercentCalcHistory fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
 		if (![_fetchedResultsController.fetchedObjects count]) {
 			self.navigationItem.leftBarButtonItem = nil;
 		}
@@ -136,9 +138,11 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
-        [PercentCalcHistory MR_truncateAll];
+        [PercentCalcHistory truncateAll];
         _fetchedResultsController = nil;
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        [context saveContext];
 
         [self.tableView reloadData];
         if ([_delegate respondsToSelector:@selector(didDeleteHistory)]) {
@@ -405,9 +409,10 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
         PercentCalcHistory *aData = [_fetchedResultsController objectAtIndexPath:indexPath];
-        [aData MR_deleteEntity];
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+        [context deleteObject:aData];
+        [context saveContext];
         _fetchedResultsController = nil;
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

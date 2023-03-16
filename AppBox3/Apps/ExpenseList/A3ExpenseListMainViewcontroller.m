@@ -27,12 +27,15 @@
 #import "ExpenseListBudget+extension.h"
 #import "A3SyncManager.h"
 #import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3UserDefaults.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3NavigationController.h"
 #import "A3NumberKeyboardViewController_iPhone.h"
 #import "A3NumberKeyboardSimpleVC_iPad.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 #define kDefaultItemCount_iPhone    9
 #define kDefaultItemCount_iPad      18
@@ -309,11 +312,11 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 			switch (barButtonItem.tag) {
 				case A3RightBarButtonTagComposeButton:{
 					NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budgetID == %@ and hasData == YES", _currentBudget.uniqueID];
-					[barButtonItem setEnabled:[ExpenseListItem MR_countOfEntitiesWithPredicate:predicate] > 0];
+					[barButtonItem setEnabled:[ExpenseListItem countOfEntitiesWithPredicate:predicate] > 0];
 					break;
 				}
 				case A3RightBarButtonTagHistoryButton:
-					[barButtonItem setEnabled:[ExpenseListHistory MR_countOfEntities] > 0];
+					[barButtonItem setEnabled:[ExpenseListHistory countOfEntities] > 0];
 					break;
 				case A3RightBarButtonTagShareButton:
 					[barButtonItem setEnabled:_currentBudget.category != nil];
@@ -571,7 +574,8 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	item.order = [item makeOrderString];
     item.hasData = @(YES);
 
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
 
 	NSInteger focusingRow = [_currentBudget expenseItemsCount] - 1;
 
@@ -685,13 +689,16 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 }
 
 - (void)clearCurrentBudget {
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
     for (ExpenseListItem * item in [_currentBudget expenseItems]) {
-        [item MR_deleteEntity];
+        [context deleteObject:item];
     }
     
-    [_currentBudget MR_deleteEntity];
+    [context deleteObject:_currentBudget];
+    
     _currentBudget = nil;
-    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    
+    [context saveContext];
 }
 
 - (void)historyButtonAction:(id)sender
@@ -791,9 +798,9 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	_moreMenuButtons = @[help, /*share, */addNew, history];
 	// AddNew
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budgetID == %@ and hasData == YES", _currentBudget.uniqueID];
-    addNew.enabled = [ExpenseListItem MR_countOfEntitiesWithPredicate:predicate] > 0;
+    addNew.enabled = [ExpenseListItem countOfEntitiesWithPredicate:predicate] > 0;
 	// History
-    history.enabled = [ExpenseListHistory MR_countOfEntities] > 0;
+    history.enabled = [ExpenseListHistory countOfEntities] > 0;
 	// Share
 //    share.enabled = _currentBudget.category != nil;
 
@@ -806,9 +813,10 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 	[self createExpenseListItemWithBudgetID:_currentBudget.uniqueID];
 
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-    
-    _currentBudget = [ExpenseListBudget MR_findFirstByAttribute:@"uniqueID" withValue:A3ExpenseListCurrentBudgetID];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
+
+    _currentBudget = [ExpenseListBudget findFirstByAttribute:@"uniqueID" withValue:A3ExpenseListCurrentBudgetID];
     _tableDataSourceArray = [self loadBudgetFromDB];
     
     [self.tableView reloadData];
@@ -925,7 +933,8 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     [self.headerView setResult:_currentBudget withAnimation:animation];
     // 현재 상태 저장.
 	if (saveData) {
-		[self saveCurrentBudget];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        [context saveContext];
 	}
 }
 
@@ -941,7 +950,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 }
 
 - (void)reloadBudgetDataCreateIfNotExist:(BOOL)create {
-    _currentBudget = [ExpenseListBudget MR_findFirstByAttribute:@"uniqueID" withValue:A3ExpenseListCurrentBudgetID];
+    _currentBudget = [ExpenseListBudget findFirstByAttribute:@"uniqueID" withValue:A3ExpenseListCurrentBudgetID];
 
 	if (!_currentBudget && create) {
 		// 주제: 특별한 ID 할당이 필요
@@ -962,13 +971,14 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 		// 결론: 최초 18개를 무조건 만들고 그 상태를 유지하기로 함
 		int defaultCount = kDefaultItemCount_iPad;
 
-		_currentBudget = [ExpenseListBudget MR_createEntity];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        _currentBudget = [[ExpenseListBudget alloc] initWithContext:context];
 		_currentBudget.uniqueID = A3ExpenseListCurrentBudgetID;
 		_currentBudget.updateDate = [NSDate date];
         _currentBudget.isModified = @(NO);
 
 		for (NSInteger idx = 0; idx < defaultCount; idx++) {
-			ExpenseListItem *item = [ExpenseListItem MR_createEntity];
+            ExpenseListItem *item = [[ExpenseListItem alloc] initWithContext:context];
 			item.uniqueID = [self itemIDWithIndex:idx];
 			item.updateDate = [NSDate date];
 			item.budgetID = _currentBudget.uniqueID;
@@ -983,15 +993,16 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 			}
 		}
 
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+        [context saveContext];
 	}
 	_tableDataSourceArray = [self loadBudgetFromDB];
 }
 
 - (ExpenseListItem *)createExpenseListItemWithBudgetID:(NSString *)budgetID {
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budgetID == %@", budgetID];
-	ExpenseListItem *newItem = [ExpenseListItem MR_createEntity];
-	ExpenseListItem *lastItem = [ExpenseListItem MR_findFirstWithPredicate:predicate sortedBy:@"uniqueID" ascending:NO];
+    ExpenseListItem *newItem = [[ExpenseListItem alloc] initWithContext:context];
+	ExpenseListItem *lastItem = [ExpenseListItem findFirstWithPredicate:predicate sortedBy:@"uniqueID" ascending:NO];
 	NSString *lastUniqueID = lastItem.uniqueID;
 	NSInteger largestIndex = 0;
 	if (lastUniqueID) {
@@ -1014,38 +1025,27 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 #pragma mark Save Related
 
-- (void)saveCurrentBudget
-{
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-
-    FNLOG(@"History count : %ld", (long)[ExpenseListHistory MR_countOfEntities]);
-    FNLOG(@"Budget count : %ld", (long)[ExpenseListBudget MR_countOfEntities]);
-}
-
 - (void)saveCurrentBudgetToHistory
 {
 	// 현재 예산에 새 ID 를 부여하고 history 로 전환
     _currentBudget.currencyCode = [self defaultCurrencyCode];
 
-    NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
-	ExpenseListBudget *budgetInHistory = (ExpenseListBudget *) [_currentBudget cloneInContext:savingContext];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+	ExpenseListBudget *budgetInHistory = (ExpenseListBudget *) [_currentBudget cloneInContext:context];
 	budgetInHistory.uniqueID = [[NSUUID UUID] UUIDString];
 
-	ExpenseListHistory * history = [ExpenseListHistory MR_createEntityInContext:savingContext];
+    ExpenseListHistory * history = [[ExpenseListHistory alloc] initWithContext:context];
 	history.uniqueID = [[NSUUID UUID] UUIDString];
 	history.updateDate = [NSDate date];
 	history.budgetID = budgetInHistory.uniqueID;
 
 	for (ExpenseListItem *item in _tableDataSourceArray) {
-		ExpenseListItem *itemInHistory = (ExpenseListItem *) [item cloneInContext:savingContext];
+		ExpenseListItem *itemInHistory = (ExpenseListItem *) [item cloneInContext:context];
 		itemInHistory.uniqueID = [[NSUUID UUID] UUIDString];
 		itemInHistory.budgetID = budgetInHistory.uniqueID;
 	}
 
-    [savingContext MR_saveToPersistentStoreAndWait];
-    
-	FNLOG(@"History count : %ld", (long)[ExpenseListHistory MR_countOfEntities]);
-	FNLOG(@"Budget count : %ld", (long)[ExpenseListBudget MR_countOfEntities]);
+    [context saveContext];
 }
 
 #pragma mark - misc
@@ -1177,11 +1177,11 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     }
     
     _selectedItem = nil;
-    
+
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
     if (_tableDataSourceArray.count > defaultItemCount) {
         ExpenseListItem *aItem = _tableDataSourceArray[indexPath.row];
-        [aItem MR_deleteEntity];
-
+        [context deleteObject:aItem];
 
         [self reloadBudgetDataWithAnimation:YES saveData:NO ];
     }
@@ -1212,7 +1212,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         [self reloadBudgetDataWithAnimation:YES saveData:NO ];
     }
     
-    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    [context saveContext];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -1281,7 +1281,9 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self re_sort_DataSourceToSeparateValidAndEmpty];
         [self.tableView reloadData];
-        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        [context saveContext];
     });
 	return NO;
 }
@@ -1322,10 +1324,10 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     [self clearCurrentBudget];
 
     // 선택된 히스토리 버젯으로 복원.
-    NSManagedObjectContext * savingContext = [NSManagedObjectContext MR_defaultContext];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
     NSDate *updateDate = [NSDate date];
     
-	_currentBudget = (ExpenseListBudget *) [aBudget cloneInContext:savingContext];
+	_currentBudget = (ExpenseListBudget *) [aBudget cloneInContext:context];
     _currentBudget.uniqueID = A3ExpenseListCurrentBudgetID;
 	_currentBudget.updateDate = updateDate;
     _currentBudget.isModified = @(NO);
@@ -1336,14 +1338,14 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	_headerView.currencyFormatter = self.currencyFormatter;
 
 	[[aBudget expenseItems] enumerateObjectsUsingBlock:^(ExpenseListItem *item, NSUInteger idx, BOOL *stop) {
-		ExpenseListItem *newCurrentItem = (ExpenseListItem *) [item cloneInContext:savingContext];
+		ExpenseListItem *newCurrentItem = (ExpenseListItem *) [item cloneInContext:context];
 		newCurrentItem.uniqueID = [self itemIDWithIndex:idx];
         FNLOG(@"uniqueID : %@", newCurrentItem.uniqueID);
 		newCurrentItem.budgetID = _currentBudget.uniqueID;
 	}];
 
-    [savingContext MR_saveToPersistentStoreAndWait];
-    
+    [context saveContext];
+
     _tableDataSourceArray = [self loadBudgetFromDB];
 
 	[self calculateAndDisplayResultWithAnimation:YES saveData:YES ];
@@ -1499,12 +1501,12 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 - (void)cell:(A3ExpenseListItemCell *)cell textFieldDidEndEditing:(UITextField *)textField {
     void (^finalize)(void) = ^(){
-        if (_nextEditingCell && _nextEditingTextField) {
-            self.editingCell = _nextEditingCell;
-            [self presentNumberKeyboardForTextField:_nextEditingTextField];
+        if (self.nextEditingCell && self.nextEditingTextField) {
+            self.editingCell = self.nextEditingCell;
+            [self presentNumberKeyboardForTextField:self.nextEditingTextField];
             
-            _nextEditingCell = nil;
-            _nextEditingTextField = nil;
+            self.nextEditingCell = nil;
+            self.nextEditingTextField = nil;
         }
     };
     
@@ -1610,7 +1612,9 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
             [self.tableView reloadData];
 			FNLOG(@"TableView reload data!!!");
         }
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        [context saveContext];
+
 		_editingTextField = nil;
 		self.editingObject = nil;
         
@@ -1638,8 +1642,9 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	}
 	
 	[self enableControls:YES];
-    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-	
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
+
 	_editingTextField = nil;
 	self.editingObject = nil;
 	_isSwitchingTextField = NO;

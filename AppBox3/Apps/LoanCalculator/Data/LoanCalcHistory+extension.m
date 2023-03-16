@@ -8,6 +8,8 @@
 
 #import "LoanCalcHistory+extension.h"
 #import "LoanCalcData.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @implementation LoanCalcHistory (extension)
 
@@ -30,7 +32,7 @@
 			        type
 	];
 
-	return [LoanCalcHistory MR_countOfEntitiesWithPredicate:predicate] > 0;
+	return [LoanCalcHistory countOfEntitiesWithPredicate:predicate] > 0;
 }
 
 @end

@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
+#import "A3Calculator.h"
+
 @protocol A3CalculatorViewControllerDelegate <NSObject>
 
 - (void)calculatorDidDismissWithValue:(NSString *)value;
@@ -21,7 +23,9 @@
 @property (nonatomic, strong) HTCopyableLabel *evaluatedResultLabel;
 @property (nonatomic, weak) id<A3CalculatorViewControllerDelegate> delegate;
 @property (nonatomic, assign) BOOL radian;
+@property (nonatomic, strong) A3Calculator *calculator;
 
 - (instancetype)initWithPresentingViewController:(UIViewController *)modalPresentingParentViewController;
+- (void)putCalculationHistoryWithExpression:(NSString *)expression;
 
 @end

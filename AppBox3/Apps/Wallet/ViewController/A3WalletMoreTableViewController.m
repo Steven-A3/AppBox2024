@@ -24,6 +24,8 @@
 #import "A3UserDefaults.h"
 #import "WalletCategory.h"
 #import "NSMutableArray+A3Sort.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 
@@ -32,7 +34,6 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 @property (nonatomic, strong) NSMutableArray *categories;
 @property (nonatomic, strong) NSArray *sections;
 @property (nonatomic, strong) A3InstructionViewController *instructionViewController;
-@property (nonatomic, strong) NSManagedObjectContext *savingContext;
 
 @end
 
@@ -310,19 +311,12 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 
 #pragma mark - Prepare Data
 
-- (NSManagedObjectContext *)savingContext {
-	if (!_savingContext) {
-		_savingContext = [NSManagedObjectContext MR_defaultContext];
-	}
-	return _savingContext;
-}
-
 - (NSMutableArray *)categories {
 	if (nil == _categories) {
 		if (_isEditing) {
-			_categories = [[WalletData walletCategoriesFilterDoNotShow:NO inContext:self.savingContext ] mutableCopy];
+			_categories = [[WalletData walletCategoriesFilterDoNotShow:NO] mutableCopy];
 		} else {
-			_categories = [[WalletData walletCategoriesFilterDoNotShow:YES inContext:self.savingContext ] mutableCopy];
+			_categories = [[WalletData walletCategoriesFilterDoNotShow:YES] mutableCopy];
 		}
 	}
 	return _categories;
@@ -412,14 +406,14 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 	[cell setShowCheckMark:![walletCategory.doNotShow boolValue]];
 
     if ([walletCategory.uniqueID isEqualToString:A3WalletUUIDAllCategory]) {
-        cell.rightSideLabel.text = [self.decimalFormatter stringFromNumber:@([WalletItem MR_countOfEntities])];
+        cell.rightSideLabel.text = [self.decimalFormatter stringFromNumber:@([WalletItem countOfEntities])];
     }
     else if ([walletCategory.uniqueID isEqualToString:A3WalletUUIDFavoriteCategory]) {
-        cell.rightSideLabel.text = [self.decimalFormatter stringFromNumber:@([WalletFavorite MR_countOfEntities])];
+        cell.rightSideLabel.text = [self.decimalFormatter stringFromNumber:@([WalletFavorite countOfEntities])];
     }
     else {
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", walletCategory.uniqueID];
-        cell.rightSideLabel.text = [self.decimalFormatter stringFromNumber:@([WalletItem MR_countOfEntitiesWithPredicate:predicate])];
+        cell.rightSideLabel.text = [self.decimalFormatter stringFromNumber:@([WalletItem countOfEntitiesWithPredicate:predicate])];
     }
     
 	if (_isEditing) {
@@ -453,7 +447,8 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 		movingObject.doNotShow = @NO;
 	}
 
-	[self.savingContext MR_saveToPersistentStoreAndWait];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
 
 	self.categories = nil;
 	self.sections = nil;
@@ -476,7 +471,8 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 
 		[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-		[self.savingContext MR_saveToPersistentStoreAndWait];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        [context saveContext];
 		return;
 	}
 

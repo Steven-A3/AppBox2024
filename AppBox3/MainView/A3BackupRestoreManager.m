@@ -25,6 +25,8 @@
 #import "WalletItem.h"
 #import "WalletCategory.h"
 #import "UIViewController+A3Addition.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 NSString *const A3ZipFilename = @"name";
 NSString *const A3ZipNewFilename = @"newname";
@@ -82,7 +84,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 }
 
 - (void)addDaysCounterPhotosWith:(NSFileManager *)fileManager fileList:(NSMutableArray *)fileList forBackup:(BOOL)forBackup {
-    NSArray *daysCounterEvents = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"photoID != NULL"]];
+    NSArray *daysCounterEvents = [DaysCounterEvent findAllWithPredicate:[NSPredicate predicateWithFormat:@"photoID != NULL"]];
     [daysCounterEvents enumerateObjectsUsingBlock:^(DaysCounterEvent * _Nonnull event, NSUInteger idx, BOOL * _Nonnull stop) {
         NSString *photoPath = [[event photoURLInOriginalDirectory:YES] path];
         if (![fileManager fileExistsAtPath:photoPath]) return;
@@ -99,7 +101,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 }
 
 - (void)addWalletPhotosVideosWith:(NSFileManager *)fileManager fileList:(NSMutableArray *)fileList forBackup:(BOOL)forBackup {
-    NSArray *walletImages = [WalletFieldItem MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"hasImage == YES"]];
+    NSArray *walletImages = [WalletFieldItem findAllWithPredicate:[NSPredicate predicateWithFormat:@"hasImage == YES"]];
     [walletImages enumerateObjectsUsingBlock:^(WalletFieldItem * _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
         NSString *photoPath = [[item photoImageURLInOriginalDirectory:YES] path];
         if (![fileManager fileExistsAtPath:photoPath]) return;
@@ -113,9 +115,9 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
            }];
     }];
 
-    NSArray *walletVideos = [WalletFieldItem MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"hasVideo == YES"]];
+    NSArray *walletVideos = [WalletFieldItem findAllWithPredicate:[NSPredicate predicateWithFormat:@"hasVideo == YES"]];
     [walletVideos enumerateObjectsUsingBlock:^(WalletFieldItem * _Nonnull video, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSArray *items = [WalletItem MR_findByAttribute:@"uniqueID" withValue:video.walletItemID];
+        NSArray *items = [WalletItem findByAttribute:@"uniqueID" withValue:video.walletItemID];
         if ([items count] == 0) return;
         
         NSString *videoFilePath = [[video videoFileURLInOriginal:YES] path];
@@ -534,10 +536,11 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 - (void)restoreDataAt:(NSString *)backupFilePath toURL:(NSURL *)toURL {
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 
-	[[NSManagedObjectContext MR_defaultContext] reset];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+	[context reset];
 	
 	NSError *error;
-	NSPersistentStoreCoordinator *persistentStoreCoordinator = [NSPersistentStoreCoordinator MR_defaultStoreCoordinator];
+    NSPersistentStoreCoordinator *persistentStoreCoordinator = [[A3AppDelegate instance] persistentContainer].persistentStoreCoordinator;
 	for (NSPersistentStore *store in [persistentStoreCoordinator persistentStores]) {
 		BOOL removed = [persistentStoreCoordinator removePersistentStore:store error:&error];
 		
@@ -546,7 +549,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 		}
 	}
 	
-	[MagicalRecord cleanUp];
+    [A3AppDelegate instance].persistentContainer = nil;
 
 	[self deleteCoreDataStoreFilesAt:toURL];
 	[self removeMediaFiles];

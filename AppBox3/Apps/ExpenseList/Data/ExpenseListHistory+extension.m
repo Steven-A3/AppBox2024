@@ -8,11 +8,13 @@
 
 #import "ExpenseListHistory+extension.h"
 #import "ExpenseListBudget.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @implementation ExpenseListHistory (extension)
 
 - (ExpenseListBudget *)budgetData {
-	return [ExpenseListBudget MR_findFirstByAttribute:@"uniqueID" withValue:self.budgetID];
+	return [ExpenseListBudget findFirstByAttribute:@"uniqueID" withValue:self.budgetID];
 }
 
 @end

@@ -25,6 +25,8 @@
 #import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
 #import "UITableView+utility.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3DaysCounterReminderListViewController () <UITableViewDataSource, UITableViewDelegate, A3ViewControllerProtocol>
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -64,8 +66,7 @@
 	}
     [self makeBackButtonEmptyArrow];
     
-    NSManagedObjectContext *newContext = [NSManagedObjectContext MR_rootSavingContext];
-    [A3DaysCounterModelManager reloadAlertDateListForLocalNotification:newContext];
+    [A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
 
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
@@ -89,9 +90,6 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-
 	if (IS_IPHONE && IS_PORTRAIT) {
 		[self leftBarButtonAppsButton];
 		self.toolbarItems = _bottomToolbar.items;
@@ -101,6 +99,14 @@
 		[self showNavigationBarOn:self.navigationController];
 	}
 	[self.navigationController setToolbarHidden:NO];
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return NO;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleDefault;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -294,8 +300,9 @@
         [reminder.startDate timeIntervalSince1970] < [[NSDate date] timeIntervalSince1970]) {
             item.hasReminder = @(NO);
     }
-    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-    
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
+
     self.itemArray = [NSMutableArray arrayWithArray:[_sharedManager reminderList]];
 
     A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] init];
@@ -323,7 +330,6 @@
 
 - (IBAction)addEventAction:(id)sender {
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
-	viewCtrl.savingContext = [NSManagedObjectContext MR_rootSavingContext];
     viewCtrl.sharedManager = _sharedManager;
     if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
@@ -355,7 +361,7 @@
     DaysCounterEvent *item = [reminder event];
 
     item.alertDatetime = nil;
-    [item.managedObjectContext MR_saveToPersistentStoreAndWait];
+    [item.managedObjectContext saveContext];
     self.clearIndexPath = nil;
     [_itemArray removeObjectAtIndex:indexPath.row];
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

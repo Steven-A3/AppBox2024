@@ -8,12 +8,14 @@
 
 #import "LoanCalcComparisonHistory+extension.h"
 #import "LoanCalcHistory.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @implementation LoanCalcComparisonHistory (extension)
 
 - (NSArray *)details {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"comparisonHistoryID == %@", self.uniqueID];
-	return [LoanCalcHistory MR_findAllWithPredicate:predicate];
+	return [LoanCalcHistory findAllWithPredicate:predicate];
 }
 
 @end

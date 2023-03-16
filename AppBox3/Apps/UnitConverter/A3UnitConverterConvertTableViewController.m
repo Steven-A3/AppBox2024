@@ -34,6 +34,8 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3FMMoveTableViewController.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 #define kInchesPerFeet  (0.3048/0.0254)
 
@@ -64,6 +66,7 @@
 @property (nonatomic, weak) UITextField *editingTextField;
 @property (nonatomic, strong) UIView *keyboardAccessoryView;
 @property (nonatomic, copy) UIColor *textColorBeforeEditing;
+@property (nonatomic, assign) BOOL isNumberKeyboardVisible;
 
 @end
 
@@ -75,7 +78,6 @@
     BOOL        _isTemperatureMode;
 	BOOL 		_isSwitchingFractionMode;
 	BOOL			_barButtonEnabled;
-	BOOL			_isNumberKeyboardVisible;
 	BOOL			_didPressClearKey;
 	BOOL			_didPressNumberKey;
     BOOL            _didPressAppsButton;
@@ -261,7 +263,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
             case A3RightBarButtonTagHistoryButton:
             {
                 if (enable) {
-                    barButton.enabled = [UnitHistory MR_countOfEntities] > 0;
+                    barButton.enabled = [UnitHistory countOfEntities] > 0;
                 } else {
                     barButton.enabled = NO;
                 }
@@ -430,7 +432,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
     UIButton *history = [self historyButton:NULL];
     UIButton *help = [self instructionHelpButton];
     
-    history.enabled = [UnitHistory MR_countOfEntities] > 0 ? YES : NO;
+    history.enabled = [UnitHistory countOfEntities] > 0 ? YES : NO;
     
 	_moreMenuButtons = @[help, share, history];
 	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons pullDownView:_fmMoveTableView];
@@ -537,7 +539,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
     
     if (!_unitValue) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", @(_categoryID)];
-        UnitHistory *history = [UnitHistory MR_findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
+        UnitHistory *history = [UnitHistory findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
 		if (history) {
             _unitValue = @(history.value.floatValue);
         }
@@ -1473,7 +1475,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
             FNLOG(@"Calculated : %f", value);
         }
         
-        if ([self.unitValue floatValue] != 1.0 || ([self.unitValue floatValue] != 1.0 && [UnitHistory MR_countOfEntities] > 0)) {
+        if ([self.unitValue floatValue] != 1.0 || ([self.unitValue floatValue] != 1.0 && [UnitHistory countOfEntities] > 0)) {
 			[self putHistoryWithValue:@(value)];
 		}
 	}
@@ -1754,10 +1756,10 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		frame.origin.y -= keyboardHeight;
 		keyboardView.frame = frame;
 		
-		if (_keyboardAccessoryView) {
-			frame = _keyboardAccessoryView.frame;
+		if (self.keyboardAccessoryView) {
+			frame = self.keyboardAccessoryView.frame;
 			frame.origin.y -= keyboardHeight;
-			_keyboardAccessoryView.frame = frame;
+			self.keyboardAccessoryView.frame = frame;
 		}
 	} completion:^(BOOL finished) {
 		[self addNumberKeyboardNotificationObservers];
@@ -1780,19 +1782,19 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		frame.origin.y += keyboardHeight;
 		keyboardView.frame = frame;
 		
-		if (_keyboardAccessoryView) {
-			CGRect frame = _keyboardAccessoryView.frame;
-			frame.origin.y += keyboardHeight + _keyboardAccessoryView.frame.size.height;
-			_keyboardAccessoryView.frame = frame;
+		if (self.keyboardAccessoryView) {
+			CGRect frame = self.keyboardAccessoryView.frame;
+			frame.origin.y += keyboardHeight + self.keyboardAccessoryView.frame.size.height;
+			self.keyboardAccessoryView.frame = frame;
 		}
 	} completion:^(BOOL finished) {
 		[keyboardView removeFromSuperview];
 		[keyboardViewController removeFromParentViewController];
 		self.numberKeyboardViewController = nil;
-		_isNumberKeyboardVisible = NO;
+		self.isNumberKeyboardVisible = NO;
 		
-		[_keyboardAccessoryView removeFromSuperview];
-		_keyboardAccessoryView = nil;
+		[self.keyboardAccessoryView removeFromSuperview];
+		self.keyboardAccessoryView = nil;
 	}];
 }
 
@@ -2105,7 +2107,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 - (void)putHistoryWithValue:(NSNumber *)value {
 	NSString *categoryName = [_dataManager categoryNameForID:_categoryID];
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", categoryName];
-	UnitHistory *latestHistory = [UnitHistory MR_findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
+	UnitHistory *latestHistory = [UnitHistory findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
 
 	// Compare code and value.
 	if (latestHistory && [latestHistory.unitID isEqualToNumber:_convertItems[[self firstUnitIndex]]] && [value isEqualToNumber:latestHistory.value])
@@ -2114,8 +2116,8 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		return;
 	}
 
-	NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
-	UnitHistory *history = [UnitHistory MR_createEntityInContext:savingContext];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    UnitHistory *history = [[UnitHistory alloc] initWithContext:context];
 	history.uniqueID = [[NSUUID UUID] UUIDString];
 	history.updateDate = [NSDate date];
 	history.unitID = _convertItems[[self firstUnitIndex]];
@@ -2127,7 +2129,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		if (obj == self.equalItem) return;
 		if (obj == self.adItem) return;
 		
-		UnitHistoryItem *item = [UnitHistoryItem MR_createEntityInContext:savingContext];
+        UnitHistoryItem *item = [[UnitHistoryItem alloc] initWithContext:context];
 		item.uniqueID = [[NSUUID UUID] UUIDString];
 		item.updateDate = [NSDate date];
 		item.unitHistoryID = history.uniqueID;
@@ -2135,7 +2137,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		item.order = [NSString stringWithFormat:@"%010ld", (long)idx];
 	}];
 
-	[savingContext MR_saveToPersistentStoreAndWait];
+    [context saveContext];
 
 	[self enableControls:YES];
 }
@@ -2215,11 +2217,11 @@ const CGFloat kUnitCellVisibleWidth = 100.0;
 				}
 
 				NSMutableArray *reloadRows = [NSMutableArray new];
-				NSIndexPath *indexPath = [_fmMoveTableView indexPathForCell:cell];
+				NSIndexPath *indexPath = [self.fmMoveTableView indexPathForCell:cell];
 				if (indexPath) {
 					[reloadRows addObject:indexPath];
 				}
-				[_fmMoveTableView reloadRowsAtIndexPaths:reloadRows withRowAnimation:UITableViewRowAnimationNone];
+				[self.fmMoveTableView reloadRowsAtIndexPaths:reloadRows withRowAnimation:UITableViewRowAnimationNone];
 			}];
 		}
 

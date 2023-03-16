@@ -12,6 +12,8 @@
 #import "NSDate+TimeAgo.h"
 #import "UIViewController+A3Addition.h"
 #import "Calculation.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 NSString *const A3CalculatorHistoryRowCellID = @"CcellRow";
 
@@ -108,8 +110,9 @@ NSString *const A3CalculatorHistoryRowCellID = @"CcellRow";
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
 		_fetchedResultsController = nil;
-		[Calculation MR_truncateAll];
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+		[Calculation truncateAll];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        [context saveContext];
 
 		[self.tableView reloadData];
         if(IS_IPAD) {
@@ -127,7 +130,7 @@ NSString *const A3CalculatorHistoryRowCellID = @"CcellRow";
 
 - (NSFetchedResultsController *)fetchedResultsController {
 	if (!_fetchedResultsController) {
-        _fetchedResultsController = [Calculation MR_fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
+        _fetchedResultsController = [Calculation fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
 		if (![_fetchedResultsController.fetchedObjects count]) {
 			self.navigationItem.leftBarButtonItem = nil;
 		}
@@ -194,9 +197,11 @@ NSString *const A3CalculatorHistoryRowCellID = @"CcellRow";
         // Delete the row from the data source
         
         Calculation *calculation = [_fetchedResultsController objectAtIndexPath:indexPath];
-        [calculation MR_deleteEntity];
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-		_fetchedResultsController = nil;
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        [context deleteObject:calculation];
+        [context saveContext];
+
+        _fetchedResultsController = nil;
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }

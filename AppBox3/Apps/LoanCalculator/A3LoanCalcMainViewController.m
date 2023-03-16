@@ -41,6 +41,8 @@
 #import "LoanCalcHistory+extension.h"
 #import "CGColor+Additions.h"
 #import "A3NumberFormatter.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 #define LoanCalcModeSave @"LoanCalcModeSave"
 
@@ -478,8 +480,8 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
     if (IS_IPAD) {
         // 히스토리가 존재하는지 체크
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"orderInComparison == nil"];
-        LoanCalcHistory *history = [LoanCalcHistory MR_findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
-        LoanCalcComparisonHistory *comparison = [LoanCalcComparisonHistory MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
+        LoanCalcHistory *history = [LoanCalcHistory findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
+        LoanCalcComparisonHistory *comparison = [LoanCalcComparisonHistory findFirstOrderedByAttribute:@"updateDate" ascending:NO];
         
         //self.navigationItem.rightBarButtonItems = @[setting, history, share];
         UIBarButtonItem *historyItem = self.navigationItem.rightBarButtonItems[1];
@@ -761,8 +763,8 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 
 	// 히스토리가 존재하는지 체크
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"orderInComparison == nil"];
-	LoanCalcHistory *history = [LoanCalcHistory MR_findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
-	LoanCalcComparisonHistory *comparison = [LoanCalcComparisonHistory MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
+	LoanCalcHistory *history = [LoanCalcHistory findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
+	LoanCalcComparisonHistory *comparison = [LoanCalcComparisonHistory findFirstOrderedByAttribute:@"updateDate" ascending:NO];
 
 	if (!history && !comparison) {
 		// 둘다 없음
@@ -1016,7 +1018,8 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 
 - (LoanCalcHistory *)loanHistoryForLoanData:(LoanCalcData *)loan
 {
-    LoanCalcHistory *history = [LoanCalcHistory MR_createEntity];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    LoanCalcHistory *history = [[LoanCalcHistory alloc] initWithContext:context];
 	history.uniqueID = [[NSUUID UUID] UUIDString];
     history.calculationMode = @(loan.calculationMode);
     history.updateDate = [NSDate date];
@@ -1446,7 +1449,8 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
     if (![LoanCalcHistory sameDataExistForLoanCalcData:self.loanData type:nil]) {
         [self loanHistoryForLoanData:self.loanData];
 
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        [context saveContext];
     }
 }
 
@@ -1745,8 +1749,10 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
         LoanCalcHistory *historyB = [self loanHistoryForLoanData:_loanDataB];
 		historyA.orderInComparison = @"A";
 		historyB.orderInComparison = @"B";
-        LoanCalcComparisonHistory *comparison = [LoanCalcComparisonHistory MR_createEntity];
-		comparison.uniqueID = [[NSUUID UUID] UUIDString];
+        
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        LoanCalcComparisonHistory *comparison = [[LoanCalcComparisonHistory alloc] initWithContext:context];
+        comparison.uniqueID = [[NSUUID UUID] UUIDString];
         comparison.updateDate = [NSDate date];
         comparison.totalInterestA = [_loanDataA totalInterest].stringValue;
         comparison.totalInterestB = [_loanDataB totalInterest].stringValue;
@@ -1757,7 +1763,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 		historyA.comparisonHistoryID = comparison.uniqueID;
 		historyB.comparisonHistoryID = comparison.uniqueID;
 
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+        [context saveContext];
     }
 }
 

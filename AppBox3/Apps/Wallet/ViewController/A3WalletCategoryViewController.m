@@ -28,6 +28,8 @@
 #import "WalletField.h"
 #import "NSString+conversion.h"
 #import "A3WalletListPhotoCell.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3WalletCategoryViewController () <UIActionSheetDelegate, UIActivityItemSource,
 		UIPopoverControllerDelegate, FMMoveTableViewDelegate, FMMoveTableViewDataSource,
@@ -263,8 +265,8 @@
 		FNLOG();
 		NSMutableArray *items;
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", self.category.uniqueID];
-//        items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:@"order" ascending:YES withPredicate:predicate]];
-        items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:@"name" ascending:YES withPredicate:predicate]];
+//        items = [NSMutableArray arrayWithArray:[WalletItem findAllSortedBy:@"order" ascending:YES withPredicate:predicate]];
+        items = [NSMutableArray arrayWithArray:[WalletItem findAllSortedBy:@"name" ascending:YES withPredicate:predicate]];
 		[super setItems:items];
     }
 
@@ -680,9 +682,10 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 		NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"WalletFieldItem"];
 		fetchRequest.predicate = predicateForValues;
 		fetchRequest.resultType = NSDictionaryResultType;
-		fetchRequest.propertiesToFetch = [WalletFieldItem MR_propertiesNamed:@[@"walletItemID"]];
+		fetchRequest.propertiesToFetch = @[@"walletItemID"];
 		NSError *error;
-		NSArray *results = [[NSManagedObjectContext MR_defaultContext] executeFetchRequest:fetchRequest error:&error];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+		NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
 		for (NSDictionary *item in results) {
 			[uniqueIDs addObjectsFromArray:[item allValues]];
 		}
@@ -695,7 +698,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
     } else {
         predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", self.category.uniqueID];
     }
-    self.items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:@"name" ascending:YES withPredicate:predicate]];
+    self.items = [NSMutableArray arrayWithArray:[WalletItem findAllSortedBy:@"name" ascending:YES withPredicate:predicate]];
     [self configureSections];
     
     [self.tableView reloadData];
@@ -783,10 +786,11 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 
                     WalletItem *item = self.items[idx];
                     [self.items removeObject:item];
-					[item deleteWalletItemInContext:nil];
+					[item deleteWalletItem];
 				}
             }
-            [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+            [context saveContext];
             
             [self.tableView reloadData];
 
@@ -811,10 +815,11 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
                 if ([section[indexPath.row] isKindOfClass:[WalletItem class]]) {
 
                     WalletItem *item = section[indexPath.row];
-					[item deleteWalletItemInContext:nil];
+					[item deleteWalletItem];
 				}
             }
-            [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+            [context saveContext];
             [self.items removeObjectsAtIndexes:mis];
 
             [self.tableView deleteRowsAtIndexPaths:ips withRowAnimation:UITableViewRowAnimationFade];
@@ -1081,8 +1086,10 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 				}
 			}];
 
-            [item deleteWalletItemInContext:nil];
-            [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+            [item deleteWalletItem];
+            
+            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+            [context saveContext];
 
             self.items = nil;
             [self configureSections];

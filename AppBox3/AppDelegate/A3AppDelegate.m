@@ -6,6 +6,7 @@
 //  Copyright (c) 2011 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <CoreData/CoreData.h>
 #import <CoreLocation/CoreLocation.h>
 #import <AVFoundation/AVFoundation.h>
 #import <Foundation/Foundation.h>
@@ -55,6 +56,9 @@
 #import <AdSupport/AdSupport.h>
 #import "TJDropboxAuthenticator.h"
 #import <AppTrackingTransparency/AppTrackingTransparency.h>
+#import "Pedometer.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
@@ -136,7 +140,7 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
     [FIRApp configure];
     [[GADMobileAds sharedInstance] startWithCompletionHandler:nil];
     
-#ifdef DEBUG
+    #ifdef DEBUG
     FNLOG(@"%@", [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]);
     FNLOG(@"%@", [NSLocale preferredLanguages]);
     FNLOG(@"%@", [[NSLocale currentLocale] currencyCode]);
@@ -308,7 +312,7 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
 		identifier = UIBackgroundTaskInvalid;
 	}];
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-		NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_defaultContext];
+        NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
 		[managedObjectContext performBlock:^{
 			if (managedObjectContext.hasChanges) {
 				BOOL shouldSaveChanges = NO;
@@ -410,7 +414,7 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Saves changes in the application's managed object context before the application terminates.
-	[MagicalRecord cleanUp];
+    [self.managedObjectContext saveContext];
 }
 
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
@@ -659,16 +663,16 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
 		return;
 	}
 
-	[A3DaysCounterModelManager reloadAlertDateListForLocalNotification:[NSManagedObjectContext MR_rootSavingContext]];
+	[A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
 
 	FNLOG(@"%@", _localNotificationUserInfo[A3LocalNotificationDataID]);
 
-	DaysCounterEvent *eventItem = [DaysCounterEvent MR_findFirstByAttribute:@"uniqueID" withValue:_localNotificationUserInfo[A3LocalNotificationDataID]];
+	DaysCounterEvent *eventItem = [DaysCounterEvent findFirstByAttribute:@"uniqueID" withValue:_localNotificationUserInfo[A3LocalNotificationDataID]];
 	A3DaysCounterEventDetailViewController *viewController = [[A3DaysCounterEventDetailViewController alloc] init];
 	viewController.isNotificationPopup = YES;
 	viewController.eventItem = eventItem;
     A3DaysCounterModelManager *sharedManager = [[A3DaysCounterModelManager alloc] init];
-    [sharedManager prepareInContext:[NSManagedObjectContext MR_defaultContext] ];
+    [sharedManager prepareToUse];
     viewController.sharedManager = sharedManager;
 
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
@@ -1034,16 +1038,14 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
     NSBundle *bundle = [NSBundle bundleForClass:[self class]];
     NSManagedObjectModel *model = [NSManagedObjectModel mergedModelFromBundles:@[bundle]];
     _persistentContainer = [[NSPersistentContainer alloc] initWithName:@"AppBoxStore" managedObjectModel:model];
+    [_persistentContainer loadPersistentStoresWithCompletionHandler:^(NSPersistentStoreDescription * _Nonnull psd, NSError * _Nullable error) {
+        // Do nothing for the moment.
+        if (error == nil) {
+            self.isCoreDataReady = YES;
+        }
+    }];
 
-	[MagicalRecord setLogLevel:MagicalRecordLogLevelVerbose];
-	
-	[NSManagedObjectModel MR_setDefaultManagedObjectModel:model];
-
-	[MagicalRecord setShouldAutoCreateManagedObjectModel:NO];
-	[MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:[self storeFileName]];
-
-	self.managedObjectContext = [NSManagedObjectContext MR_defaultContext];
-	if ([self deduplicateDatabase]) {
+    if ([self deduplicateDatabaseWithModel:model]) {
 		// 중복 데이터가 발견되었다면, 동기화를 끄고, 사용자에게 새로 시작하도록 안내를 한다.
 		if ([[A3UserDefaults standardUserDefaults] boolForKey:A3SyncManagerCloudEnabled]) {
 			A3SyncManager *sharedSyncManager = [A3SyncManager sharedSyncManager];
@@ -1074,30 +1076,21 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
 	}
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
-	
-	_isCoreDataReady = YES;
-	
-	[A3DaysCounterModelManager reloadAlertDateListForLocalNotification:[NSManagedObjectContext MR_rootSavingContext] ];
+		
+	[A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
 	[A3LadyCalendarModelManager setupLocalNotification];
 }
 
+- (NSManagedObjectContext *)managedObjectContext {
+    return _persistentContainer.viewContext;
+}
+
 - (void)managedObjectContextDidSave:(NSNotification *)notification {
-    if (notification.object == [NSManagedObjectContext MR_defaultContext]) {
-        NSManagedObjectContext *rootContext = [NSManagedObjectContext MR_rootSavingContext];
-        [rootContext performBlockAndWait:^{
-            [rootContext mergeChangesFromContextDidSaveNotification:notification];
-        }];
-    } else if (notification.object == [NSManagedObjectContext MR_rootSavingContext]) {
-        NSManagedObjectContext *mainContext = [NSManagedObjectContext MR_defaultContext];
-        [mainContext performBlockAndWait:^{
-            [mainContext mergeChangesFromContextDidSaveNotification:notification];
-        }];
-    }
 }
 
 - (NSURL *)storeURL
 {
-	return [NSPersistentStore MR_urlForStoreName:[self storeFileName]];
+    return [[NSPersistentContainer defaultDirectoryURL] URLByAppendingPathComponent:[self storeFileName]];
 }
 
 - (NSString *)storeFileName {

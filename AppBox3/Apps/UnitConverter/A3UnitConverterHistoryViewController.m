@@ -18,6 +18,9 @@
 #import "A3UnitConverterHistoryViewController.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "UnitHistory+extension.h"
+#import "A3AppDelegate.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3UnitConverterHistoryViewController () <UIActionSheetDelegate>
 {
@@ -140,8 +143,9 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
         
-		[UnitHistory MR_truncateAll];
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+		[UnitHistory truncateAll];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        [context saveContext];
 		_fetchedResultsController = nil;
 		[self.tableView reloadData];
 	}
@@ -156,7 +160,7 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
 - (NSFetchedResultsController *)fetchedResultsController {
     
 	if (!_fetchedResultsController) {
-        _fetchedResultsController = [UnitHistory MR_fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
+        _fetchedResultsController = [UnitHistory fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
 		if (![_fetchedResultsController.fetchedObjects count]) {
 			self.navigationItem.leftBarButtonItem = nil;
 		}
@@ -330,9 +334,10 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
         
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
         UnitHistory *history = [_fetchedResultsController objectAtIndexPath:indexPath];
-		[history MR_deleteEntity];
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+        [context deleteObject:history];
+        [context saveContext];
 		_fetchedResultsController = nil;
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

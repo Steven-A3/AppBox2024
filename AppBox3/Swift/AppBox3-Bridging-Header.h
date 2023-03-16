@@ -9,6 +9,6 @@
 #ifndef AppBox3_Bridging_Header_h
 #define AppBox3_Bridging_Header_h
 
-#import "CoreData+MagicalRecord.h"
+#import "A3AppDelegate.h"
 
 #endif /* AppBox3_Bridging_Header_h */

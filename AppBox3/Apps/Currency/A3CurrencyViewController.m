@@ -18,6 +18,8 @@
 #import "UIViewController+MMDrawerController.h"
 #import "A3CurrencyHistoryViewController.h"
 #import "A3AppDelegate.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSelectedViewIndex";
 
@@ -253,7 +255,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         __typeof__(self) strongSelf = weakSelf;
         strongSelf.moreMenuButtons = @[[strongSelf instructionHelpButton], strongSelf.shareButton, [strongSelf historyButton:[CurrencyHistory class] ], strongSelf.settingsButton];
-		strongSelf.moreMenuView = [strongSelf presentMoreMenuWithButtons:_moreMenuButtons pullDownView:nil];
+		strongSelf.moreMenuView = [strongSelf presentMoreMenuWithButtons:strongSelf.moreMenuButtons pullDownView:nil];
         strongSelf.isShowMoreMenu = YES;
 	});
 
@@ -381,7 +383,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
 			switch (barButtonItem.tag) {
 				case A3RightBarButtonTagHistoryButton:
-					[barButtonItem setEnabled:[CurrencyHistory MR_countOfEntities] > 0];
+					[barButtonItem setEnabled:[CurrencyHistory countOfEntities] > 0];
 					break;
 				case A3RightBarButtonTagShareButton:
 				case A3RightBarButtonTagSettingsButton:

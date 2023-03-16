@@ -17,6 +17,8 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "CurrencyHistory+handler.h"
 #import "A3NumberFormatter.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3CurrencyHistoryViewController () <UIActionSheetDelegate>
 
@@ -129,9 +131,10 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
 		_fetchedResultsController = nil;
-		[CurrencyHistory MR_truncateAll];
-		[CurrencyHistoryItem MR_truncateAll];
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+		[CurrencyHistory truncateAll];
+		[CurrencyHistoryItem truncateAll];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        [context saveContext];
 
 		[self.tableView reloadData];
 	}
@@ -146,7 +149,7 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 
 - (NSFetchedResultsController *)fetchedResultsController {
 	if (!_fetchedResultsController) {
-			_fetchedResultsController = [CurrencyHistory MR_fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
+			_fetchedResultsController = [CurrencyHistory fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
 		if (![_fetchedResultsController.fetchedObjects count]) {
 			self.navigationItem.leftBarButtonItem = nil;
 		}
@@ -229,13 +232,14 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
         CurrencyHistory *history = [_fetchedResultsController objectAtIndexPath:indexPath];
 		for (CurrencyHistoryItem *historyItem in history.targets) {
-			[historyItem MR_deleteEntity];
+            [context deleteObject:historyItem];
 		}
-        [history MR_deleteEntity];
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+        [context deleteObject:history];
+
+        [context saveContext];
 		_fetchedResultsController = nil;
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

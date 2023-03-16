@@ -9,6 +9,9 @@
 #import "A3SalesCalcData.h"
 #import "SalesCalcHistory.h"
 #import "A3SalesCalcPreferences.h"
+#import "A3AppDelegate.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 static NSString *const A3SalesCalcDataKeyHistoryDate = @"updateDate";
 static NSString *const A3SalesCalcDataKeyShownPriceType = @"shownPriceType";
@@ -103,27 +106,28 @@ static NSString *const A3SalesCalcDataKeyCurrencyCode = @"currencyCode";
 			self.price, @(self.priceType), self.discount, @(self.discountType), self.additionalOff, @(self.additionalOffType),
 			self.tax, @(self.taxType), self.notes, @(self.shownPriceType), self.currencyCode];
 
-	SalesCalcHistory *sameData = [SalesCalcHistory MR_findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
-	if (sameData) {
-		return NO;
-	} else {
-		SalesCalcHistory *entity = [SalesCalcHistory MR_createEntity];
-		entity.uniqueID = [[NSUUID UUID] UUIDString];
-		entity.updateDate = [NSDate date];
-		entity.price = self.price;
-		entity.priceType = @(self.priceType);
-		entity.discount = self.discount;
-		entity.discountType = @(self.discountType);
-		entity.additionalOff = self.additionalOff;
-		entity.additionalOffType = @(self.additionalOffType);
-		entity.tax = self.tax;
-		entity.taxType = @(self.taxType);
-		entity.notes = self.notes;
-		entity.shownPriceType = @(self.shownPriceType);
-		entity.currencyCode = currencyCode;
-	}
+	SalesCalcHistory *sameData = [SalesCalcHistory findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    if (sameData) {
+        return NO;
+    } else {
+        SalesCalcHistory *entity = [[SalesCalcHistory alloc] initWithContext:context];
+        entity.uniqueID = [[NSUUID UUID] UUIDString];
+        entity.updateDate = [NSDate date];
+        entity.price = self.price;
+        entity.priceType = @(self.priceType);
+        entity.discount = self.discount;
+        entity.discountType = @(self.discountType);
+        entity.additionalOff = self.additionalOff;
+        entity.additionalOffType = @(self.additionalOffType);
+        entity.tax = self.tax;
+        entity.taxType = @(self.taxType);
+        entity.notes = self.notes;
+        entity.shownPriceType = @(self.shownPriceType);
+        entity.currencyCode = currencyCode;
+    }
 
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    [context saveContext];
     
     return YES;
 }

@@ -10,37 +10,37 @@
 #import "WalletFavorite.h"
 #import "NSMutableArray+A3Sort.h"
 #import "WalletFavorite+initialize.h"
-
+#import "A3AppDelegate.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @implementation WalletItem (Favorite)
 
 - (void)changeFavorite:(BOOL)isAdd
 {
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
     if (isAdd) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemID == %@", self.uniqueID];
-        if ([WalletFavorite MR_countOfEntitiesWithPredicate:predicate] == 0) {
-            WalletFavorite *favorite = [WalletFavorite MR_createEntity];
-			favorite.uniqueID = [[NSUUID UUID] UUIDString];
-			favorite.updateDate = [NSDate date];
-			favorite.itemID = self.uniqueID;
-			[favorite assignOrder];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemID == %@", self.uniqueID];
+        if ([WalletFavorite countOfEntitiesWithPredicate:predicate] == 0) {
+            WalletFavorite *favorite = [[WalletFavorite alloc] initWithContext:context];
+            favorite.uniqueID = [[NSUUID UUID] UUIDString];
+            favorite.updateDate = [NSDate date];
+            favorite.itemID = self.uniqueID;
+            [favorite assignOrder];
 
             // order set
-            NSArray *favors = [WalletFavorite MR_findAllSortedBy:@"order" ascending:YES];
+            NSArray *favors = [WalletFavorite findAllSortedBy:@"order" ascending:YES];
             NSMutableArray *tmp = [[NSMutableArray alloc] initWithArray:favors];
             [tmp addObjectToSortedArray:favorite];
 
-			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         }
-    }
-    else {
-		NSArray *favors = [WalletFavorite MR_findByAttribute:@"itemID" withValue:self.uniqueID];
+    } else {
+		NSArray *favors = [WalletFavorite findByAttribute:@"itemID" withValue:self.uniqueID];
 		for (WalletFavorite *favor in favors) {
-			[favor MR_deleteEntity];
+            [context deleteObject:favor];
 		}
-
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     }
+    [context saveContext];
 }
 
 @end

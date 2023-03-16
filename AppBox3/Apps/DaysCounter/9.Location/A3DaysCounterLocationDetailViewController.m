@@ -23,6 +23,8 @@
 #import "DaysCounterEventLocation.h"
 #import "DaysCounterEvent+extension.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3DaysCounterLocationDetailViewController ()
 @property (strong, nonatomic) NSString *addressStr;
@@ -268,7 +270,8 @@
 {
     [_eventModel deleteLocation];
     
-    DaysCounterEventLocation *locItem = [DaysCounterEventLocation MR_createEntityInContext:self.eventModel.managedObjectContext];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    DaysCounterEventLocation *locItem = [[DaysCounterEventLocation alloc] initWithContext:context];
 	locItem.uniqueID = [[NSUUID UUID] UUIDString];
 	locItem.updateDate = [NSDate date];
     locItem.eventID = _eventModel.uniqueID;
@@ -285,18 +288,6 @@
         [self.navigationController popViewControllerAnimated:YES];
     }
     else {
-//        if ( IS_IPHONE ) {
-//            [self dismissViewControllerAnimated:YES completion:nil];
-//        }
-//        else {
-//            if ( [self.navigationController.viewControllers count] > 2 ) {
-//                UIViewController *viewCtrl = [self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-3];
-//                [self.navigationController popToViewController:viewCtrl animated:YES];
-//            }
-//            else {
-//                [self dismissViewControllerAnimated:YES completion:nil];
-//            }
-//        }
         if ( [self.navigationController.viewControllers count] > 2 ) {
             UIViewController *viewCtrl = [self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-3];
             [self.navigationController popToViewController:viewCtrl animated:YES];
@@ -308,7 +299,8 @@
 }
 
 - (IBAction)deleteLocationAction:(id)sender {
-    [_eventModel.location MR_deleteEntity];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context deleteObject:_eventModel];
     
     if ( _isEditMode ) {
         [self.navigationController popViewControllerAnimated:YES];

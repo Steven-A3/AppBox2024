@@ -24,6 +24,8 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "LadyCalendarAccount.h"
 #import "A3UserDefaults.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 extern NSString *const A3WalletItemFieldNoteCellID;
 
@@ -121,8 +123,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		NSInteger cycleLength = [modelManager cycleLengthConsideringUserOption];
 		
 		self.prevPeriod = [_dataManager lastPeriod];
-		
-		_periodItem = [LadyCalendarPeriod MR_createEntityInContext:[NSManagedObjectContext MR_defaultContext]];
+
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        _periodItem = [[LadyCalendarPeriod alloc] initWithContext:context];
 		_periodItem.updateDate = [NSDate date];
 		_periodItem.cycleLength = cycleLength == 0 ? @28 : @(cycleLength);
 		_periodItem.isPredict = @NO;
@@ -590,9 +593,10 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)deletePeriodAction
 {
-    [_periodItem MR_deleteEntityInContext:[NSManagedObjectContext MR_defaultContext]];
-    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-    
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context deleteObject:_periodItem];
+    [context saveContext];
+
     [_dataManager recalculateDates];
     
     [self dismissViewControllerAnimated:YES completion:NULL];
@@ -903,11 +907,12 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	_periodItem.updateDate = [NSDate date];
 	_periodItem.isPredict = @NO;
 
-	LadyCalendarAccount *account = [self.dataManager.currentAccount MR_inContext:[NSManagedObjectContext MR_defaultContext]];
+    LadyCalendarAccount *account = self.dataManager.currentAccount;
 	account.watchingDate = _periodItem.startDate;
-	[account.managedObjectContext MR_saveToPersistentStoreAndWait];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
 
-	[_dataManager recalculateDates];
+    [_dataManager recalculateDates];
     
     NSDictionary * settingDictionary = [[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarUserDefaultsSettings];
     if ([[settingDictionary objectForKey:SettingItem_AutoRecord] boolValue]) {
@@ -923,7 +928,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)cancelAction:(id)sender
 {
-	NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
 	if ([context hasChanges]) {
 		[context rollback];
 	}

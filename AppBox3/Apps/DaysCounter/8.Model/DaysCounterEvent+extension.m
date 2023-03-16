@@ -18,6 +18,8 @@
 #import "DaysCounterReminder.h"
 #import "DaysCounterReminder.h"
 #import "A3SyncManager.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 NSString *const A3DaysCounterImageDirectory = @"DaysCounterImages";
 NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbnail";
@@ -25,11 +27,11 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 @implementation DaysCounterEvent (extension)
 
 - (DaysCounterReminder *)reminderWithContext:(NSManagedObjectContext *)context {
-	return [DaysCounterReminder MR_findFirstByAttribute:@"eventID" withValue:self.uniqueID inContext:context ? context : self.managedObjectContext];
+	return [DaysCounterReminder findFirstByAttribute:@"eventID" withValue:self.uniqueID];
 }
 
 - (DaysCounterFavorite *)favorite {
-	return [DaysCounterFavorite MR_findFirstByAttribute:@"eventID" withValue:self.uniqueID inContext:self.managedObjectContext];
+	return [DaysCounterFavorite findFirstByAttribute:@"eventID" withValue:self.uniqueID];
 }
 
 /*! 이것을 호출하면 startDate가 없는 경우, 항상 만든다. 있으면 만들지 않는다.
@@ -38,9 +40,9 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
  */
 - (DaysCounterDate *)startDate {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"eventID == %@ AND isStartDate == YES", self.uniqueID];
-	DaysCounterDate *startDate = [DaysCounterDate MR_findFirstWithPredicate:predicate inContext:self.managedObjectContext];
+	DaysCounterDate *startDate = [DaysCounterDate findFirstWithPredicate:predicate];
 	if (!startDate) {
-		startDate = [DaysCounterDate MR_createEntityInContext:self.managedObjectContext];
+        startDate = [[DaysCounterDate alloc] initWithContext:self.managedObjectContext];
 		startDate.uniqueID = [[NSUUID UUID] UUIDString];
 		startDate.updateDate = [NSDate date];
 		startDate.eventID = self.uniqueID;
@@ -51,9 +53,9 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 
 - (DaysCounterDate *)endDateCreateIfNotExist:(BOOL)createIfNotExist {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"eventID == %@ AND isStartDate == NO", self.uniqueID];
-	DaysCounterDate *endDate = [DaysCounterDate MR_findFirstWithPredicate:predicate inContext:self.managedObjectContext];
+	DaysCounterDate *endDate = [DaysCounterDate findFirstWithPredicate:predicate];
 	if (!endDate && createIfNotExist) {
-		endDate = [DaysCounterDate MR_createEntityInContext:self.managedObjectContext];
+        endDate = [[DaysCounterDate alloc] initWithContext:self.managedObjectContext];
 		endDate.uniqueID = [[NSUUID UUID] UUIDString];
 		endDate.updateDate = [NSDate date];
 		endDate.eventID = self.uniqueID;
@@ -74,20 +76,20 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 }
 
 - (DaysCounterEventLocation *)location {
-	return [DaysCounterEventLocation MR_findFirstByAttribute:@"eventID" withValue:self.uniqueID inContext:self.managedObjectContext];
+	return [DaysCounterEventLocation findFirstByAttribute:@"eventID" withValue:self.uniqueID];
 }
 
 - (void)toggleFavorite {
 	DaysCounterFavorite *favorite = [self favorite];
 	if (!favorite) {
-		favorite = [DaysCounterFavorite MR_createEntityInContext:self.managedObjectContext];
+        favorite = [[DaysCounterFavorite alloc] initWithContext:self.managedObjectContext];
 		favorite.uniqueID = [[NSUUID UUID] UUIDString];
 		favorite.updateDate = [NSDate date];
 		favorite.eventID = self.uniqueID;
-		DaysCounterFavorite *lastFavorite = [DaysCounterFavorite MR_findFirstOrderedByAttribute:@"order" ascending:NO];
+		DaysCounterFavorite *lastFavorite = [DaysCounterFavorite findFirstOrderedByAttribute:@"order" ascending:NO];
 		favorite.order = [NSString orderStringWithOrder:[lastFavorite.order integerValue] + 1000000];
 	} else {
-		[favorite MR_deleteEntityInContext:self.managedObjectContext];
+        [self.managedObjectContext deleteObject:favorite];
 	}
 }
 
@@ -240,9 +242,9 @@ NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbna
 
 - (void)deleteLocation {
     NSManagedObjectContext *editingContext = self.managedObjectContext;
-    NSArray *previousLocations = [DaysCounterEventLocation MR_findByAttribute:@"eventID" withValue:self.uniqueID inContext:editingContext];
+    NSArray *previousLocations = [DaysCounterEventLocation findByAttribute:@"eventID" withValue:self.uniqueID];
     for (NSManagedObject *location in previousLocations) {
-        [location MR_deleteEntityInContext:editingContext];
+        [editingContext deleteObject:location];
     }
 }
 

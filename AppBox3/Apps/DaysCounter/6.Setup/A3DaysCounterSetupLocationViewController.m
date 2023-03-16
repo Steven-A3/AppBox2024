@@ -29,6 +29,8 @@
 #import "DaysCounterEventLocation.h"
 #import "DaysCounterEvent+extension.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3DaysCounterSetupLocationViewController () <MBProgressHUDDelegate>
 @property (nonatomic, strong) A3LocationPlacemarkView *placemarkView;
@@ -656,8 +658,9 @@
         }
 
         DaysCounterEventLocation *locItem = [_eventModel location];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
         if (!locItem) {
-            locItem = [DaysCounterEventLocation MR_createEntityInContext:_savingContext];
+            locItem = [[DaysCounterEventLocation alloc] initWithContext:context];
             locItem.uniqueID = [[NSUUID UUID] UUIDString];
         }
 		
@@ -821,12 +824,13 @@
             [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, size.height == 0 ? 44 : 274) animated:YES];
         };
         viewCtrl.dismissCompletionBlock = ^(FSVenue *locationItem) {
-            [_eventModel deleteLocation];
+            [self.eventModel deleteLocation];
             
-            DaysCounterEventLocation *locItem = [DaysCounterEventLocation MR_createEntityInContext:_eventModel.managedObjectContext];
+            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+            DaysCounterEventLocation *locItem = [[DaysCounterEventLocation alloc] initWithContext:context];
 			locItem.uniqueID = [[NSUUID UUID] UUIDString];
 			locItem.updateDate = [NSDate date];
-            locItem.eventID = _eventModel.uniqueID;
+            locItem.eventID = self.eventModel.uniqueID;
             locItem.latitude = @(locationItem.location.coordinate.latitude);
             locItem.longitude = @(locationItem.location.coordinate.longitude);
             locItem.locationName = locationItem.name;

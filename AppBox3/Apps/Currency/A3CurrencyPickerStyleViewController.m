@@ -36,7 +36,8 @@
 #import "UIColor+A3Addition.h"
 #import "A3NumberFormatter.h"
 @import WebKit;
-
+#import "NSManagedObjectContext+extension.h"
+ 
 NSString *const A3CurrencyPickerSelectedIndexColumnOne = @"A3CurrencyPickerSelectedIndexColumnOne";
 NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelectedIndexColumnTwo";
 
@@ -528,23 +529,24 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 }
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedCode {
-	NSArray *result = [CurrencyFavorite MR_findByAttribute:@"uniqueID" withValue:selectedCode];
-	if ([result count]) {
-		NSInteger indexOfSelectedCurrency = [self.favorites indexOfObjectPassingTest:^BOOL(CurrencyFavorite * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-			return [obj.uniqueID isEqualToString:selectedCode];
-		}];
-		if (indexOfSelectedCurrency != NSNotFound) {
-			[_pickerView selectRow:indexOfSelectedCurrency inComponent:0 animated:YES];
-			[self didSelectPickerRow];
-		}
-		return;
-	}
-	NSManagedObjectContext *_savingContext = [NSManagedObjectContext MR_rootSavingContext];
+    NSArray *result = [CurrencyFavorite findByAttribute:@"uniqueID" withValue:selectedCode];
+    if ([result count]) {
+        NSInteger indexOfSelectedCurrency = [self.favorites indexOfObjectPassingTest:^BOOL(CurrencyFavorite * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            return [obj.uniqueID isEqualToString:selectedCode];
+        }];
+        if (indexOfSelectedCurrency != NSNotFound) {
+            [_pickerView selectRow:indexOfSelectedCurrency inComponent:0 animated:YES];
+            [self didSelectPickerRow];
+        }
+        return;
+    }
 
-	CurrencyFavorite *newObject = [CurrencyFavorite MR_createEntityInContext:_savingContext];
-	newObject.uniqueID = selectedCode;
-	[newObject assignOrderAsLastInContext:_savingContext];
-	[_savingContext MR_saveToPersistentStoreAndWait];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    CurrencyFavorite *newObject = [[CurrencyFavorite alloc] initWithContext:context];
+    newObject.uniqueID = selectedCode;
+    [newObject assignOrderAsLast];
+
+    [context saveContext];
 
 	_favorites = nil;
 	[_pickerView reloadAllComponents];
@@ -937,7 +939,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 - (NSArray *)favorites {
 	if (!_favorites) {
-		_favorites = [CurrencyFavorite MR_findAllSortedBy:A3CommonPropertyOrder ascending:YES];
+		_favorites = [CurrencyFavorite findAllSortedBy:A3CommonPropertyOrder ascending:YES];
 	}
 	return _favorites;
 }
@@ -1209,8 +1211,9 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	
 	A3YahooCurrency *fromCurrencyInfo = [self currencyInfoAtRow:fromRow];
 	A3YahooCurrency *toCurrencyInfo = [self currencyInfoAtRow:toRow];
-	
-	CurrencyHistory *history = [CurrencyHistory MR_createEntity];
+
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    CurrencyHistory *history = [[CurrencyHistory alloc] initWithContext:context];
 	history.uniqueID = [[NSUUID UUID] UUIDString];
 	NSDate *keyDate = [NSDate date];
 	history.updateDate = keyDate;
@@ -1218,7 +1221,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	history.rate = fromCurrencyInfo.rateToUSD;
 	history.value = @([value floatValueEx]);
 	
-	CurrencyHistoryItem *item = [CurrencyHistoryItem MR_createEntity];
+    CurrencyHistoryItem *item = [[CurrencyHistoryItem alloc] initWithContext:context];
 	item.uniqueID = [[NSUUID UUID] UUIDString];
 	item.updateDate = keyDate;
 	item.historyID = history.uniqueID;
@@ -1226,7 +1229,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	item.rate = toCurrencyInfo.rateToUSD;
 	item.order = [NSString stringWithFormat:@"%010ld", 1l];
 	
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    [context saveContext];
 	
 	[_mainViewController enableControls:YES];
 }

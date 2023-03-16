@@ -19,6 +19,9 @@
 #import "A3DefaultColorDefines.h"
 #import "A3UnitPriceMainTableController.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3AppDelegate.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3UnitPriceHistoryViewController () <UIActionSheetDelegate>
 
@@ -133,16 +136,17 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
         
         NSUInteger section = [self.tableView numberOfSections];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
         for (int i=0; i<section; i++) {
             NSUInteger row = [self.tableView numberOfRowsInSection:i];
             for (int j=0; j<row; j++) {
                 NSIndexPath *ip = [NSIndexPath indexPathForRow:j inSection:i];
                 UnitPriceHistory *unitPriceHistory = [_fetchedResultsController objectAtIndexPath:ip];
-				[UnitPriceInfo MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", unitPriceHistory.uniqueID]];
-                [unitPriceHistory MR_deleteEntity];
+                [UnitPriceInfo deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", unitPriceHistory.uniqueID]];
+                [context deleteObject:unitPriceHistory];
             }
         }
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+        [context saveContext];
 		_fetchedResultsController = nil;
 		[self.tableView reloadData];
         
@@ -161,7 +165,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 - (NSFetchedResultsController *)fetchedResultsController {
     
 	if (!_fetchedResultsController) {
-        _fetchedResultsController = [UnitPriceHistory MR_fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
+        _fetchedResultsController = [UnitPriceHistory fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
 		if (![_fetchedResultsController.fetchedObjects count]) {
 			self.navigationItem.leftBarButtonItem = nil;
 		}
@@ -173,9 +177,10 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 {
     [self releaseMainDefaultPriceObjects];
     
-	[UnitPriceInfo MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", history.uniqueID]];
-    [history MR_deleteEntity];
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+	[UnitPriceInfo deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", history.uniqueID]];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context deleteObject:history];
+    [context saveContext];
 }
 
 - (double)calcuUnitPriceOfHistoryItem:(UnitPriceInfo *)item
@@ -314,13 +319,13 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 - (void)releaseMainDefaultPriceObjects
 {
     // Main화면에서 관리되던 Price 오브젝트의, history로 부터 복원됨 여부를 표시하던 historyID 를 초기화 합니다.
-    UnitPriceInfo *price1 = [UnitPriceInfo MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@", A3UnitPricePrice1DefaultID]];
+    UnitPriceInfo *price1 = [UnitPriceInfo findFirstWithPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@", A3UnitPricePrice1DefaultID]];
     price1.historyID = nil;
-    UnitPriceInfo *price2 = [UnitPriceInfo MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@", A3UnitPricePrice2DefaultID]];
+    UnitPriceInfo *price2 = [UnitPriceInfo findFirstWithPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@", A3UnitPricePrice2DefaultID]];
     price2.historyID = nil;
     
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
 }
-
 
 @end

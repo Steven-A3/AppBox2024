@@ -13,7 +13,6 @@
 #import "A3ExpressionComponent.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+MMDrawerController.h"
-#import "A3Calculator.h"
 #import "Calculation.h"
 #import "A3CalculatorHistoryViewController.h"
 #import "A3KeyboardView.h"
@@ -23,6 +22,8 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3UserDefaults.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3CalculatorViewController_iPhone () <UIScrollViewDelegate, A3CalcKeyboardViewDelegate,MBProgressHUDDelegate, A3CalcMessagShowDelegate, A3InstructionViewControllerDelegate, UITextFieldDelegate>
 
@@ -31,7 +32,6 @@
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) FXPageControl *pageControl;
 @property (nonatomic, strong) A3CalcKeyboardView_iPhone *keyboardView;
-@property (nonatomic, strong) A3Calculator *calculator;
 @property (nonatomic, strong) NSArray *moreMenuButtons;
 @property (nonatomic, strong) UIView *moreMenuView;
 @property (nonatomic, strong) MASConstraint *scrollViewBottomConstraint;
@@ -98,8 +98,8 @@
 	[self setupSubviews];
 	NSString *expression = [[A3SyncManager sharedSyncManager] objectForKey:A3CalculatorUserDefaultsSavedLastExpression];
     if (expression){
-        [_calculator setMathExpression:expression];
-        [_calculator evaluateAndSet];
+        [self.calculator setMathExpression:expression];
+        [self.calculator evaluateAndSet];
         [self checkRightButtonDisable];
     }
     [self setupGestureRecognizer];
@@ -109,7 +109,7 @@
     }
     
     // Radian / Degrees 버튼 초기화
-    [_calculator setRadian:[self radian]];
+    [self.calculator setRadian:[self radian]];
     _degreeRadianLabel.text = [self radian] ? @"Rad" : @"Deg";
     [_keyboardView.radianDegreeButton setTitle:([self radian] ? @"Deg" : @"Rad") forState:UIControlStateNormal];
 
@@ -125,8 +125,8 @@
 - (void)cloudStoreDidImport {
 	NSString *mathExpression = [[A3SyncManager sharedSyncManager] objectForKey:A3CalculatorUserDefaultsSavedLastExpression];
 	if (mathExpression){
-		[_calculator setMathExpression:mathExpression];
-		[_calculator evaluateAndSet];
+		[self.calculator setMathExpression:mathExpression];
+		[self.calculator evaluateAndSet];
 	}
 	[self checkRightButtonDisable];
 }
@@ -206,10 +206,10 @@
 
 - (void)toggleRadianDegree {
     if([self radian]) {
-        [_calculator setRadian:FALSE];
+        [self.calculator setRadian:FALSE];
         self.radian = NO;
     } else {
-        [_calculator setRadian:TRUE];
+        [self.calculator setRadian:TRUE];
         self.radian = YES;
     }
     _degreeRadianLabel.text = self.radian ? @"Rad" : @"Deg";
@@ -373,8 +373,8 @@
 
     [self setDegAndRad:YES];
 
-    _calculator = [[A3Calculator alloc] initWithLabel:_expressionLabel result:self.evaluatedResultLabel];
-    _calculator.delegate = self;
+    self.calculator = [[A3Calculator alloc] initWithLabel:_expressionLabel result:self.evaluatedResultLabel];
+    self.calculator.delegate = self;
 
 	[self.view layoutIfNeeded];
 
@@ -714,7 +714,7 @@ static NSString *const A3V3InstructionDidShowForCalculator = @"A3V3InstructionDi
 }
 
 - (BOOL) isCalculationHistoryEmpty {
-    Calculation *lastcalculation = [Calculation MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
+    Calculation *lastcalculation = [Calculation findFirstOrderedByAttribute:@"updateDate" ascending:NO];
     if (lastcalculation != nil ) {
         return NO;
     } else {
@@ -816,27 +816,6 @@ static NSString *const A3V3InstructionDidShowForCalculator = @"A3V3InstructionDi
 - (void)historyViewControllerDidDismiss {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationChildViewControllerDidDismiss object:_modalNavigationController.childViewControllers[0]];
 	_modalNavigationController = nil;
-}
-
-- (void)putCalculationHistoryWithExpression:(NSString *)expression{
-	NSString *mathExpression = [self.calculator getMathExpression];
-	Calculation *lastcalculation = [Calculation MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
-
-	// Compare code and value.
-	if (lastcalculation) {
-		if ([lastcalculation.expression isEqualToString:mathExpression]) {
-			return;
-		}
-	}
-
-	Calculation *calculation = [Calculation MR_createEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
-	calculation.uniqueID = [[NSUUID UUID] UUIDString];
-	NSDate *keyDate = [NSDate date];
-	calculation.expression = mathExpression;
-	calculation.result = [self.calculator getResultString];
-	calculation.updateDate = keyDate;
-
-	[[NSManagedObjectContext MR_rootSavingContext] MR_saveOnlySelfAndWait];
 }
 
 - (void) ShowMessage:(NSString *)message {

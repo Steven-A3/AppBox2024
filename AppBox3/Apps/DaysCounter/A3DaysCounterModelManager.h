@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "FSVenue.h"
-#import "MagicalRecord.h"
 
 @class DaysCounterEvent;
 @class DaysCounterEventLocation;
@@ -22,7 +21,7 @@
 
 + (NSMutableArray *)calendars;
 
-- (void)prepareInContext:(NSManagedObjectContext *)context;
+- (void)prepareToUse;
 - (NSString*)repeatTypeStringFromValue:(NSInteger)repeatType;
 - (NSString*)repeatTypeStringForDetailValue:(NSInteger)repeatType;
 
@@ -36,11 +35,11 @@
 - (FSVenue*)fsvenueFromEventModel:(DaysCounterEventLocation *)locationItem;
 - (FSVenue*)fsvenueFromEventLocationModel:(id)location;
 
-- (BOOL)addEvent:(DaysCounterEvent *)eventModel inContext:(NSManagedObjectContext *)context;
+- (BOOL)addEvent:(DaysCounterEvent *)eventModel;
 
-- (BOOL)modifyEvent:(DaysCounterEvent *)eventItem inContext:(NSManagedObjectContext *)context;
+- (BOOL)modifyEvent:(DaysCounterEvent *)eventItem;
 
-- (BOOL)removeEvent:(DaysCounterEvent *)eventItem inContext:(NSManagedObjectContext *)context;
+- (BOOL)removeEvent:(DaysCounterEvent *)eventItem;
 
 - (NSArray *)visibleCalendarList;
 - (NSArray *)allUserVisibleCalendarList;
@@ -91,7 +90,7 @@
 #pragma mark - EventTime Management (AlertTime, EffectiveStartDate)
 - (NSString *)localizedSystemCalendarNameForCalendarID:(NSString *)calendarID;
 + (NSDate *)effectiveAlertDateForEvent:(DaysCounterEvent *)event;
-+ (void)reloadAlertDateListForLocalNotification:(NSManagedObjectContext *)context;
++ (void)reloadAlertDateListForLocalNotification;
 
 #pragma mark - Lunar
 + (NSDateComponents *)nextSolarDateComponentsFromLunarDateComponents:(NSDateComponents *)lunarComponents leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate;

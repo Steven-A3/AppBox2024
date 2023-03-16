@@ -36,6 +36,8 @@
 #import "A3StandardDetailTableViewController.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "NSString+conversion.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 #define kColorPlaceHolder [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]
 
@@ -348,7 +350,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 					barButton.enabled = ([self.dataManager.tipCalcData.costs doubleValue] > 0.0 && [self.dataManager.tipCalcData.tip doubleValue] > 0.0);
 					break;
 				case A3RightBarButtonTagHistoryButton:
-					barButton.enabled = [TipCalcHistory MR_countOfEntities] > 0;
+					barButton.enabled = [TipCalcHistory countOfEntities] > 0;
 					break;
 				case A3RightBarButtonTagSettingsButton:
 					barButton.enabled = YES;
@@ -848,7 +850,9 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
             [weakSelf.headerView showDetailInfoButton];
             [weakSelf.headerView setResult:weakSelf.dataManager.tipCalcData withAnimation:YES];
             [weakSelf refreshMoreButtonState];
-			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+
+            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+            [context saveContext];
 
 			A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *) [weakSelf.tableView cellForCellSubview:textField];
 			[cell setNeedsLayout];
@@ -1217,7 +1221,8 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
             UITableViewCell *costs = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
             costs.textLabel.text = [self.dataManager knownValue] == TCKnownValue_CostAfterTax ? NSLocalizedString(@"Amount After Tax", @"Amount After Tax") : NSLocalizedString(@"Amount Before Tax", @"Amount Before Tax");
 
-			[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+            [context saveContext];
 			break;
 		}
 

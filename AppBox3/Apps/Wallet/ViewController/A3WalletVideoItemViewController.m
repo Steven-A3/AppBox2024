@@ -31,6 +31,8 @@
 #import "WalletField.h"
 #import "MBProgressHUD.h"
 #import "UIViewController+A3Addition.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3WalletVideoItemViewController () <WalletItemEditDelegate, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, AVPlayerViewControllerDelegate>
 
@@ -87,7 +89,9 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
 
     _item.lastOpened = [NSDate date];
-    [_item.managedObjectContext MR_saveToPersistentStoreAndWait];
+    
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
 }
 
 - (void)applicationWillResignActive {
@@ -192,7 +196,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 
 - (WalletCategory *)category {
 	if (!_category) {
-		_category = [WalletData categoryItemWithID:_item.categoryID inContext:nil];
+		_category = [WalletData categoryItemWithID:_item.categoryID];
 	}
 	return _category;
 }
@@ -504,7 +508,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 	UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
     A3WalletItemEditViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemEditViewController"];
     viewController.delegate = self;
-    viewController.item = [self.item MR_inContext:[NSManagedObjectContext MR_defaultContext]];
+    viewController.item = self.item;
     viewController.hidesBottomBarWhenPushed = YES;
 	viewController.alwaysReturnToOriginalCategory = self.alwaysReturnToOriginalCategory;
     

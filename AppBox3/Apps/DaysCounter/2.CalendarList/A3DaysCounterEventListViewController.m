@@ -29,6 +29,8 @@
 #import "A3UserDefaults.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3NavigationController.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3DaysCounterEventListViewController ()
 		<UINavigationControllerDelegate, UISearchControllerDelegate, UISearchBarDelegate,
@@ -324,7 +326,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 - (void)loadEventData
 {
     if ( [_calendarItem.type integerValue] == CalendarCellType_User) {
-        self.sourceArray = [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", _calendarItem.uniqueID]];
+        self.sourceArray = [DaysCounterEvent findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", _calendarItem.uniqueID]];
     }
     else {
         if ( [_calendarItem.uniqueID isEqualToString:SystemCalendarID_All] ) {
@@ -796,7 +798,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
         }
 
 		if (item) {
-			[_sharedManager removeEvent:item inContext:item.managedObjectContext];
+			[_sharedManager removeEvent:item];
 		}
 		double delayInSeconds = 0.5;
 		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -1042,7 +1044,6 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 	_addEventButtonPressed = YES;
 
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
-	viewCtrl.savingContext = [NSManagedObjectContext MR_rootSavingContext];
     viewCtrl.calendarID = _calendarItem.uniqueID;
     viewCtrl.sharedManager = _sharedManager;
     if ([_calendarItem.type integerValue] == CalendarCellType_System) {

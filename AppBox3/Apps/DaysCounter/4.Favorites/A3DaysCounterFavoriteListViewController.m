@@ -31,7 +31,8 @@
 #import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
 #import "UIViewController+tableViewStandardDimension.h"
-
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3DaysCounterFavoriteListViewController () <FMMoveTableViewDelegate, FMMoveTableViewDataSource, A3InstructionViewControllerDelegate,
 		A3ViewControllerProtocol>
@@ -412,19 +413,19 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
         DaysCounterFavorite *favorite = [_itemArray objectAtIndex:indexPath.row];
-		NSManagedObjectContext *savingContext = [NSManagedObjectContext MR_rootSavingContext];
-		favorite = [favorite MR_inContext:savingContext];
-		[favorite MR_deleteEntityInContext:savingContext];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        [context deleteObject:favorite];
 
 		[_itemArray removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 
 		// Save는 제일 나중에 하자. Save를 하는 순간 iCloud 상태에서는 notification이 와서 데이터가 reload 된다.
-		[savingContext MR_saveToPersistentStoreAndWait];
+        [context saveContext];
     }
 }
 
 #pragma mark - Table view delegate
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 62.0;
@@ -447,7 +448,8 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
 
 - (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
 	[_itemArray moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
 }
 
 #pragma mark - action method
@@ -470,7 +472,6 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
 
 - (IBAction)addEventAction:(id)sender {
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] init];
-	viewCtrl.savingContext = [NSManagedObjectContext MR_rootSavingContext];
     viewCtrl.sharedManager = _sharedManager;
     if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];

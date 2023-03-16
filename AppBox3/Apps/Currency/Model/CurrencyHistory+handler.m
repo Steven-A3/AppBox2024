@@ -8,17 +8,19 @@
 
 #import "CurrencyHistory+handler.h"
 #import "CurrencyHistoryItem.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @implementation CurrencyHistory (handler)
 
 - (NSInteger)targetCount {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"historyID == %@", self.uniqueID];
-	return [CurrencyHistoryItem MR_countOfEntitiesWithPredicate:predicate];
+	return [CurrencyHistoryItem countOfEntitiesWithPredicate:predicate];
 }
 
 - (NSArray *)targets {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"historyID == %@", self.uniqueID];
-	return [CurrencyHistoryItem MR_findAllSortedBy:@"order" ascending:YES withPredicate:predicate];
+	return [CurrencyHistoryItem findAllSortedBy:@"order" ascending:YES withPredicate:predicate];
 }
 
 @end

@@ -855,8 +855,7 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 //                return YES;
 //            }
         }
-		[[NSManagedObjectContext MR_defaultContext] reset];
-		[[NSManagedObjectContext MR_rootSavingContext] reset];
+        [[self managedObjectContext] reset];
 
 		UIViewController *targetViewController= [self getViewControllerForAppNamed:appName];
 		[targetViewController callPrepareCloseOnActiveMainAppViewController];
@@ -878,7 +877,7 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 	NSDictionary *appInfo = [self appInfoDictionary][appName];
 	if ([appInfo[kA3AppsMenuImageName] isEqualToString:@"DaysCounter"]) {
 		A3DaysCounterModelManager *sharedManager = [[A3DaysCounterModelManager alloc] init];
-		[sharedManager prepareInContext:[A3AppDelegate instance].managedObjectContext];
+		[sharedManager prepareToUse];
 
 		NSInteger lastOpenedMainIndex = [[A3UserDefaults standardUserDefaults] integerForKey:A3DaysCounterLastOpenedMainIndex];
 		switch (lastOpenedMainIndex) {

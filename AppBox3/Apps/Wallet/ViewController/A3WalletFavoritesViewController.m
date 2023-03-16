@@ -15,6 +15,8 @@
 #import "UIColor+A3Addition.h"
 #import "A3InstructionViewController.h"
 #import "A3UserDefaults.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3WalletFavoritesViewController () <A3InstructionViewControllerDelegate>
 
@@ -151,7 +153,7 @@
 - (NSMutableArray *)items
 {
     if (!super.items) {
-		super.items = [NSMutableArray arrayWithArray:[WalletFavorite MR_findAllSortedBy:@"order" ascending:YES]];
+		super.items = [NSMutableArray arrayWithArray:[WalletFavorite findAllSortedBy:@"order" ascending:YES]];
     }
     
     return super.items;
@@ -210,7 +212,7 @@ static NSString *const A3V3InstructionDidShowForWalletFavorite = @"A3V3Instructi
 	if ([[self.items objectAtIndex:(NSUInteger) indexPath.row] isKindOfClass:[WalletFavorite class]]) {
 
 		WalletFavorite *favorite = self.items[(NSUInteger) indexPath.row];
-		WalletItem *item = [WalletItem MR_findFirstByAttribute:@"uniqueID" withValue:favorite.itemID];
+		WalletItem *item = [WalletItem findFirstByAttribute:@"uniqueID" withValue:favorite.itemID];
 
 		return [self tableView:tableView cellForRowAtIndexPath:indexPath walletItem:item];
 	}
@@ -220,7 +222,7 @@ static NSString *const A3V3InstructionDidShowForWalletFavorite = @"A3V3Instructi
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	WalletFavorite *favorite = self.items[indexPath.row];
-	WalletItem *item = [WalletItem MR_findFirstByAttribute:@"uniqueID" withValue:favorite.itemID];
+	WalletItem *item = [WalletItem findFirstByAttribute:@"uniqueID" withValue:favorite.itemID];
 	[self tableView:tableView didSelectRowAtIndexPath:indexPath withItem:item];
 }
 
@@ -230,14 +232,15 @@ static NSString *const A3V3InstructionDidShowForWalletFavorite = @"A3V3Instructi
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
         
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
         WalletFavorite *favorite = self.items[(NSUInteger) indexPath.row];
         [self.items removeObject:favorite];
         
-        [favorite MR_deleteEntity];
+        [context deleteObject:favorite];
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+        [context saveContext];
     }
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view

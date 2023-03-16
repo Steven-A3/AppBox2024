@@ -8,12 +8,14 @@
 
 #import "UnitHistory+extension.h"
 #import "UnitHistoryItem.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @implementation UnitHistory (extension)
 
 - (NSArray *)targets {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitHistoryID == %@", self.uniqueID];
-	return [UnitHistoryItem MR_findAllSortedBy:@"order" ascending:YES withPredicate:predicate];
+	return [UnitHistoryItem findAllSortedBy:@"order" ascending:YES withPredicate:predicate];
 }
 
 @end

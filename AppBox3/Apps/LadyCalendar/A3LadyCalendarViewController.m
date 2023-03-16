@@ -29,6 +29,8 @@
 #import "LadyCalendarAccount.h"
 #import "HolidayData.h"
 #import "CGColor+Additions.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3LadyCalendarViewController ()
 <A3InstructionViewControllerDelegate,
@@ -314,7 +316,8 @@ A3CalendarViewDelegate, GADBannerViewDelegate>
 		[_calendarHeaderView removeFromSuperview];
         _collectionView.delegate = nil;
         
-        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        [context saveContext];
 
 		id watchDate = self.dataManager.currentAccount.watchingDate;
 		if (watchDate) {

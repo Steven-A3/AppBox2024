@@ -15,6 +15,9 @@
 #import "TranslatorGroup.h"
 #import "NSMutableArray+A3Sort.h"
 #import "TranslatorHistory+manager.h"
+#import "A3AppDelegate.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3TranslatorFavoriteDataSource ()
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
@@ -36,7 +39,7 @@
 
 - (NSFetchedResultsController *)fetchedResultsController {
 	if (!_fetchedResultsController) {
-		_fetchedResultsController = [TranslatorFavorite MR_fetchAllSortedBy:@"order" ascending:YES withPredicate:nil groupBy:nil delegate:nil];
+		_fetchedResultsController = [TranslatorFavorite fetchAllSortedBy:@"order" ascending:YES withPredicate:nil groupBy:nil delegate:nil];
 	}
 	return _fetchedResultsController;
 }
@@ -56,8 +59,8 @@
 	}
 
 	TranslatorFavorite *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	TranslatorHistory *history = [TranslatorHistory MR_findFirstByAttribute:@"uniqueID" withValue:item.historyID];
-	TranslatorGroup *group = [TranslatorGroup MR_findFirstByAttribute:@"uniqueID" withValue:history.groupID];
+	TranslatorHistory *history = [TranslatorHistory findFirstByAttribute:@"uniqueID" withValue:item.historyID];
+	TranslatorGroup *group = [TranslatorGroup findFirstByAttribute:@"uniqueID" withValue:history.groupID];
 	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@", @"%@ to %@"), [self.languageListManager localizedNameForCode:group.sourceLanguage],
 													 [self.languageListManager localizedNameForCode:group.targetLanguage]];
 	cell.detailTextLabel.text = history.originalText;
@@ -91,14 +94,15 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
 		TranslatorFavorite *favorite = [self.fetchedResultsController objectAtIndexPath:indexPath];
-		[favorite MR_deleteEntity];
+        [context deleteObject:favorite];
 
 		[self.fetchedResultsController performFetch:nil];
 
 		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 
-		[favorite.managedObjectContext MR_saveToPersistentStoreAndWait];
+        [context saveContext];
 	}
 }
 
@@ -106,7 +110,8 @@
 	NSMutableArray *mutableArray = [self.fetchedResultsController.fetchedObjects mutableCopy];
 	[mutableArray moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
 
 	[self.fetchedResultsController performFetch:nil];
 }

@@ -21,6 +21,8 @@
 #import "A3HomeStyleMenuViewController.h"
 #import "A3BasicWebViewController.h"
 #import <objc/runtime.h>
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 static char const *const key_firstActionSheet = "key_firstActionSheet";
 static char const *const key_adBannerView = "key_adBannerView";
@@ -59,6 +61,8 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
  *  개별 viewController 에서 cleanUp을 구현하지 않은 경우, removeObserver 는 기본적으로 실행이 됩니다.
  *  만약 별도 구현한 경우에는 필요한 조치를 개별 구현하던가, [super cleanUp]을 호출해 주면 되겠습니다.
  */
+
+#pragma mark - Common UI methods
 
 - (void)cleanUp {
 	[self removeObserver];
@@ -472,14 +476,14 @@ NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
 	[button setImage:[UIImage imageNamed:@"history"] forState:UIControlStateNormal];
 	[button addTarget:self action:@selector(historyButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 	if (managedObjectClass) {
-		[button setEnabled:[managedObjectClass MR_countOfEntitiesWithContext:[NSManagedObjectContext MR_defaultContext] ] > 0 ];
+        [button setEnabled:[managedObjectClass countOfEntities] > 0 ];
 	}
 	return button;
 }
 
 - (UIBarButtonItem *)historyBarButton:(Class)managedObjectClass {
 	UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
-	[barButtonItem setEnabled:[managedObjectClass MR_countOfEntitiesWithContext:[NSManagedObjectContext MR_defaultContext] ] > 0 ];
+    [barButtonItem setEnabled:[managedObjectClass countOfEntities] > 0 ];
 	return barButtonItem;
 }
 

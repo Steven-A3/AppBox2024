@@ -30,6 +30,9 @@
 #import "A3UnitDataManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3StandardTableViewCell.h"
+#import "A3AppDelegate.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 typedef NS_ENUM(NSInteger, PriceDiscountType) {
 	Price_Percent = 0,
@@ -124,7 +127,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	self.currencyFormatter = nil;
 	self.currencyFormatter.maximumFractionDigits = 2;
 
-	_price = [UnitPriceInfo MR_findFirstByAttribute:ID_KEY withValue:_isPriceA ? A3UnitPricePrice1DefaultID : A3UnitPricePrice2DefaultID];
+	_price = [UnitPriceInfo findFirstByAttribute:ID_KEY withValue:_isPriceA ? A3UnitPricePrice1DefaultID : A3UnitPricePrice2DefaultID];
 	[self.tableView reloadData];
 }
 
@@ -507,7 +510,8 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
         }
 		textField.text = self.price.size ? [self.decimalFormatter stringFromNumber:self.price.size]: @"";
     }
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
 }
 
 - (NSString *)unitName {
@@ -549,7 +553,8 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	self.price.note = textView.text;
 	self.editingObject = nil;
 
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
 }
 
 #pragma mark - A3TbvCellTextInputDelegate
@@ -866,7 +871,8 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	self.price.unitCategoryID = @(categoryID);
 	self.price.unitID = @(unitID);
 
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
 
 	NSIndexPath *sliderIP = [NSIndexPath indexPathForRow:0 inSection:0];
 	NSIndexPath *unitIP = [NSIndexPath indexPathForRow:[self.items indexOfObject:self.unitItem] inSection:1];

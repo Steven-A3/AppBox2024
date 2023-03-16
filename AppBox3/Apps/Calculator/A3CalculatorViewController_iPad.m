@@ -20,6 +20,8 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 NSString *const A3CalculatorModeBasic = @"basic";
 NSString *const A3CalculatorModeScientific = @"scientific";
@@ -29,7 +31,6 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 @property (nonatomic, strong) HTCopyableLabel *expressionLabel;
 @property (nonatomic, strong) HTCopyableLabel *evaluatedResultLabel;
 @property (nonatomic, strong) UILabel *degreeandradianLabel;
-@property (nonatomic, strong) A3Calculator *calculator;
 @property (strong, nonatomic) A3CalculatorButtonsViewController_iPad *calculatorkeypad;
 @property (nonatomic, strong) MASConstraint *calctopconstraint;
 @property (nonatomic, strong) NSArray *moreMenuButtons;
@@ -78,8 +79,8 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 
 	NSString *expression = [[A3SyncManager sharedSyncManager] objectForKey:A3CalculatorUserDefaultsSavedLastExpression];
     if (expression){
-        [_calculator setMathExpression:expression];
-        [_calculator evaluateAndSet];
+        [self.calculator setMathExpression:expression];
+        [self.calculator evaluateAndSet];
         [self checkRightButtonDisable];
     }
 
@@ -93,7 +94,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
 
     // Radian / Degrees 버튼 초기화
-    [_calculator setRadian:[self radian]];
+    [self.calculator setRadian:[self radian]];
     _degreeandradianLabel.text = [self radian] == YES ? @"Radian" : @"Degrees";
     [_calculatorkeypad.radbutton setTitle:[self radian] == YES ? @"Deg" : @"Rad" forState:UIControlStateNormal];
 }
@@ -101,8 +102,8 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 - (void)cloudStoreDidImport {
 	NSString *mathExpression = [[A3SyncManager sharedSyncManager] objectForKey:A3CalculatorUserDefaultsSavedLastExpression];
 	if (mathExpression){
-		[_calculator setMathExpression:mathExpression];
-		[_calculator evaluateAndSet];
+		[self.calculator setMathExpression:mathExpression];
+		[self.calculator evaluateAndSet];
 	}
 	[self checkRightButtonDisable];
 }
@@ -246,8 +247,8 @@ NSString *const A3CalculatorModeScientific = @"scientific";
         make.bottom.equalTo(self.evaluatedResultLabel.bottom).with.offset(-9.5);
     }];
     
-    _calculator = [[A3Calculator alloc] initWithLabel:_expressionLabel result:self.evaluatedResultLabel];
-    _calculator.delegate = self;
+    self.calculator = [[A3Calculator alloc] initWithLabel:_expressionLabel result:self.evaluatedResultLabel];
+    self.calculator.delegate = self;
 	
     [self.view layoutIfNeeded];
 
@@ -294,11 +295,11 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 
 - (void)radiandegreeChange {
     if([self radian] == YES) {
-        [_calculator setRadian:FALSE];
+        [self.calculator setRadian:FALSE];
         self.radian = NO;
         _degreeandradianLabel.text = @"Degrees";
     } else {
-        [_calculator setRadian:TRUE];
+        [self.calculator setRadian:TRUE];
         self.radian = YES;
         _degreeandradianLabel.text = @"Radian";
     }
@@ -559,7 +560,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 
 
 - (BOOL)isCalculationHistoryEmpty {
-    Calculation *lastcalculation = [Calculation MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
+    Calculation *lastcalculation = [Calculation findFirstOrderedByAttribute:@"updateDate" ascending:NO];
     if (lastcalculation != nil ) {
         return NO;
     } else {
@@ -591,26 +592,6 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 	viewController.iPadViewController = self;
 
 	[[[A3AppDelegate instance] rootViewController_iPad] presentRightSideViewController:viewController toViewController:nil];
-}
-
-- (void)putCalculationHistoryWithExpression:(NSString *)expression{
-	Calculation *lastcalculation = [Calculation MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
-	NSString *mathExpression = [self.calculator getMathExpression];
-	// Compare code and value.
-	if (lastcalculation) {
-		if ([lastcalculation.expression isEqualToString:mathExpression]) {
-			return;
-		}
-	}
-
-	Calculation *calculation = [Calculation MR_createEntityInContext:[NSManagedObjectContext MR_rootSavingContext]];
-	calculation.uniqueID = [[NSUUID UUID] UUIDString];
-	NSDate *keyDate = [NSDate date];
-	calculation.expression = mathExpression;
-	calculation.result = self.evaluatedResultLabel.text;
-	calculation.updateDate = keyDate;
-
-	[[NSManagedObjectContext MR_rootSavingContext] MR_saveOnlySelfAndWait];
 }
 
 - (void)ShowMessage:(NSString *)message {

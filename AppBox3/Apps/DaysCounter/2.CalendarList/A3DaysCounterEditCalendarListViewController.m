@@ -19,11 +19,12 @@
 #import "DaysCounterCalendar.h"
 #import "NSMutableArray+A3Sort.h"
 #import "UITableView+utility.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 @interface A3DaysCounterEditCalendarListViewController ()
 @property (strong, nonatomic) NSMutableArray *calendarArray;
 @property (strong, nonatomic) UINavigationController *modalVC;
-@property (strong, nonatomic) NSManagedObjectContext *savingContext;
 
 @end
 
@@ -64,7 +65,7 @@
     [super viewWillAppear:animated];
     self.modalVC = nil;
 
-	NSArray *calendars = [DaysCounterCalendar MR_findAllSortedBy:A3CommonPropertyOrder ascending:YES inContext:self.savingContext];
+	NSArray *calendars = [DaysCounterCalendar findAllSortedBy:A3CommonPropertyOrder ascending:YES];
 	self.calendarArray = [NSMutableArray arrayWithArray:calendars];
     
     [self.tableView reloadData];
@@ -82,13 +83,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-}
-
-- (NSManagedObjectContext *)savingContext {
-	if (!_savingContext) {
-		_savingContext = [NSManagedObjectContext MR_rootSavingContext];
-	}
-	return _savingContext;
 }
 
 #pragma mark - Table view data source
@@ -144,7 +138,7 @@
     textLabel.text = calendar.name;
     checkButton.selected = [calendar.isShow boolValue];
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"calendarID == %@", calendar.uniqueID];
-	long eventCounts = [DaysCounterEvent MR_countOfEntitiesWithPredicate:predicate];
+	long eventCounts = [DaysCounterEvent countOfEntitiesWithPredicate:predicate];
     detailTextLabel.text = [NSString stringWithFormat:@"%ld", eventCounts];
     
     textLabel.font = [UIFont systemFontOfSize:17];
@@ -182,7 +176,8 @@
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
 	[_calendarArray moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
-	[self.savingContext MR_saveToPersistentStoreAndWait];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
 
     [tableView reloadData];
 
@@ -210,7 +205,9 @@
     DaysCounterCalendar *calendar = [_calendarArray objectAtIndex:indexPath.row];
     BOOL checkState = [calendar.isShow boolValue];
     calendar.isShow = @(!checkState);
-	[self.savingContext MR_saveToPersistentStoreAndWait];
+
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
 
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
@@ -237,7 +234,8 @@
     }
     
     calendar.isShow = @(!checkState);
-	[self.savingContext MR_saveToPersistentStoreAndWait];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
     if (checkState && ([shownUserCalendar count] == 2)) {
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
@@ -281,7 +279,7 @@
     
     A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] init];
     viewCtrl.isEditMode = YES;
-	viewCtrl.calendar = [calendar MR_inContext:viewCtrl.savingContext];
+    viewCtrl.calendar = calendar;
     viewCtrl.sharedManager = _sharedManager;
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationFullScreen;

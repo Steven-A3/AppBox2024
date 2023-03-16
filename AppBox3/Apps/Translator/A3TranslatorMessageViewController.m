@@ -24,6 +24,8 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "NSString+conversion.h"
 #import "TranslatorFavorite.h"
+#import "NSManagedObject+extension.h"
+#import "NSManagedObjectContext+extension.h"
 
 static NSString *const kTranslatorDetectLanguageCode = @"Detect";
 static NSString *const A3AnimationKeyOpacity = @"opacity";
@@ -955,7 +957,8 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		if ([_messages count]) {
 			firstObject = [_messages firstObject];
 		}
-		_translatingMessage = [TranslatorHistory MR_createEntity];
+        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        _translatingMessage = [[TranslatorHistory alloc] initWithContext:context];
 		_translatingMessage.uniqueID = [[NSUUID UUID] UUIDString];
 		_translatingMessage.updateDate = [NSDate date];
 		if (firstObject) {
@@ -988,7 +991,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[self askTranslateWithText:self.originalText];
 		});
-		[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+        [context saveContext];
 	}
 }
 
@@ -1066,19 +1069,20 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
 }
 
 - (void)addTranslatedString:(NSString *)translatedString detectedSourceLanguage:(NSString *)detectedLanguage {
-	TranslatorGroup *group = [TranslatorGroup MR_findFirstByAttribute:@"uniqueID" withValue:_translatingMessage.groupID];
+	TranslatorGroup *group = [TranslatorGroup findFirstByAttribute:@"uniqueID" withValue:_translatingMessage.groupID];
 	if (group && (![group.sourceLanguage isEqualToString:detectedLanguage] || ![group.targetLanguage isEqualToString:_translatedTextLanguage])) {
 		_translatingMessage.groupID = nil;
 	}
 
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
 	if (!group) {
 		NSString *uniqueID = [NSString stringWithFormat:@"%@-%@", detectedLanguage, _translatedTextLanguage];
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", uniqueID];
-		TranslatorGroup *groupCandidate = [TranslatorGroup MR_findFirstWithPredicate:predicate];
+		TranslatorGroup *groupCandidate = [TranslatorGroup findFirstWithPredicate:predicate];
 		if (groupCandidate) {
 			_translatingMessage.groupID = groupCandidate.uniqueID;
 		} else if (!groupCandidate) {
-			TranslatorGroup *newGroup = [TranslatorGroup MR_createEntity];
+            TranslatorGroup *newGroup = [[TranslatorGroup alloc] initWithContext:context];
 			newGroup.uniqueID = uniqueID;
 			newGroup.updateDate = [NSDate date];
 			[newGroup setupOrder];
@@ -1096,7 +1100,7 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
 
 	_translatingMessage.translatedText = translated;
 
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    [context saveContext];
 
 	_originalTextLanguage = detectedLanguage;
 
@@ -1204,7 +1208,7 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
     double delayInSeconds = 0.1;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
-		if (_messageTableView) {
+		if (self.messageTableView) {
 			[self scrollToBottomAnimated:animated];
 		}
 	});
@@ -1480,7 +1484,7 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
 	NSString *lineBreak = asHTML ? @"</br>" : @"\n";
 	for (NSIndexPath *indexPath in selectedIndexPaths) {
 		TranslatorHistory *item = _messages[indexPath.row];
-		TranslatorGroup *group = [TranslatorGroup MR_findFirstByAttribute:@"uniqueID" withValue:item.groupID];
+		TranslatorGroup *group = [TranslatorGroup findFirstByAttribute:@"uniqueID" withValue:item.groupID];
 		translatedLanguage = [self.languageListManager localizedNameForCode:group.targetLanguage];
 		if ([item.originalText length] && [item.translatedText length] && [translatedLanguage length]) {
 			[shareMessage appendString:[NSString stringWithFormat:@"\"%@\" is \"%@\"%@", item.originalText, item.translatedText, lineBreak]];
@@ -1531,7 +1535,8 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
 		A3TranslatorMessageCell *cell = (A3TranslatorMessageCell *) [_messageTableView cellForRowAtIndexPath:indexPath];
 		[cell changeFavoriteButtonImage];
 	}
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
 }
 
 - (void)unsetFavoriteActionFromToolbar {
@@ -1543,7 +1548,8 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
 		A3TranslatorMessageCell *cell = (A3TranslatorMessageCell *) [_messageTableView cellForRowAtIndexPath:indexPath];
 		[cell changeFavoriteButtonImage];
 	}
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
 }
 
 - (void)deleteActionFromToolbar:(UIBarButtonItem *)barButtonItem {
@@ -1589,19 +1595,20 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
 - (void)deleteSelectedMessageItems
 {
 	NSArray *selectedIndexPaths = [_messageTableView indexPathsForSelectedRows];
-	for (NSIndexPath *indexPath in selectedIndexPaths) {
-		TranslatorHistory *itemToDelete = _messages[indexPath.row];
-		[TranslatorFavorite MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", itemToDelete.uniqueID]];
-		[itemToDelete MR_deleteEntity];
-	}
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    for (NSIndexPath *indexPath in selectedIndexPaths) {
+        TranslatorHistory *itemToDelete = _messages[indexPath.row];
+        [TranslatorFavorite deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", itemToDelete.uniqueID]];
+        [context deleteObject:itemToDelete];
+    }
 
-	// Reload messages
-	_messages = nil;
-	[self messages];
+    // Reload messages
+    _messages = nil;
+    [self messages];
     
-	[_messageTableView deleteRowsAtIndexPaths:selectedIndexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+    [_messageTableView deleteRowsAtIndexPaths:selectedIndexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
 
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    [context saveContext];
 
 	[self setEnabledForAllToolbarButtons:NO];
     
@@ -1623,17 +1630,18 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
 
 - (NSArray *)messages {
 	if (!_messages) {
-		_messages = [TranslatorHistory MR_findAllSortedBy:@"updateDate" ascending:YES withPredicate:[self predicateForMessages]];
+		_messages = [TranslatorHistory findAllSortedBy:@"updateDate" ascending:YES withPredicate:[self predicateForMessages]];
 	}
 	return _messages;
 }
 
 - (void)deleteAllMessages {
 	NSPredicate *predicate = [self predicateForMessages];
-	[TranslatorHistory MR_deleteAllMatchingPredicate:predicate];
-	[TranslatorFavorite MR_deleteAllMatchingPredicate:predicate];
+	[TranslatorHistory deleteAllMatchingPredicate:predicate];
+	[TranslatorFavorite deleteAllMatchingPredicate:predicate];
 
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    [context saveContext];
 
 	_messages = nil;
 	[self messages];
