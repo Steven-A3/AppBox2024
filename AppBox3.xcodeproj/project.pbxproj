@@ -137,9 +137,6 @@
 		680886E41891751B0093FD97 /* SBGradientOverlayLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886CC1891751B0093FD97 /* SBGradientOverlayLayer.m */; };
 		680886E51891751B0093FD97 /* SBTickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886CE1891751B0093FD97 /* SBTickerView.m */; };
 		680886E61891751B0093FD97 /* UIView+SBExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886D01891751B0093FD97 /* UIView+SBExtras.m */; };
-		680A632C29B96B670020B964 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 680A632B29B96B670020B964 /* AuthenticationServices.framework */; };
-		680A632F29B96B670020B964 /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680A632E29B96B670020B964 /* CredentialProviderViewController.swift */; };
-		680A633229B96B670020B964 /* CredentialProviderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 680A633029B96B670020B964 /* CredentialProviderViewController.xib */; };
 		680A633C29BA9D790020B964 /* FirstSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680A633B29BA9D790020B964 /* FirstSwift.swift */; };
 		680A633F29C1896B0020B964 /* NSManagedObjectContext+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 680A633E29C1896B0020B964 /* NSManagedObjectContext+extension.m */; };
 		680B59D71E9777C8004362AC /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68DE21521CEB038D00E31DDF /* HealthKit.framework */; };
@@ -511,6 +508,14 @@
 		68ADE14917D83D28009618A7 /* MMDrawerVisualState.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE14417D83D28009618A7 /* MMDrawerVisualState.m */; };
 		68ADE14A17D83D28009618A7 /* UIViewController+MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE14617D83D28009618A7 /* UIViewController+MMDrawerController.m */; };
 		68AE58C91A118A4B0021E489 /* A3StandardDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68AE58C81A118A4B0021E489 /* A3StandardDetailTableViewController.m */; };
+		68B4028329D6DE3C00CA91CA /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 680A632B29B96B670020B964 /* AuthenticationServices.framework */; };
+		68B4028629D6DE3C00CA91CA /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B4028529D6DE3C00CA91CA /* CredentialProviderViewController.swift */; };
+		68B4028929D6DE3C00CA91CA /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68B4028729D6DE3C00CA91CA /* MainInterface.storyboard */; };
+		68B4028E29D6DE3C00CA91CA /* Autofill-extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 68B4028229D6DE3C00CA91CA /* Autofill-extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		68B4029429D6DF5600CA91CA /* WalletFieldItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B4029229D6DF5500CA91CA /* WalletFieldItem+CoreDataClass.swift */; };
+		68B4029529D6DF5600CA91CA /* WalletFieldItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B4029329D6DF5600CA91CA /* WalletFieldItem+CoreDataProperties.swift */; };
+		68B4029629D6DF6C00CA91CA /* AppBox3.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6831EBF618619CC800BAF15B /* AppBox3.xcdatamodeld */; };
+		68B4029829D6DFBA00CA91CA /* WalletCategoryPreset.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68C802D719571A0200BC19EE /* WalletCategoryPreset.plist */; };
 		68B62EBF199E532B006384E1 /* CurrencyFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B62EBE199E532B006384E1 /* CurrencyFavorite.m */; };
 		68B62EC2199E620B006384E1 /* DaysCounterCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B62EC1199E620B006384E1 /* DaysCounterCalendar.m */; };
 		68B635BF17B504C100570B09 /* A3RootViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B635BE17B504C100570B09 /* A3RootViewController_iPad.m */; };
@@ -649,6 +654,7 @@
 		68B9B16317D02B85003ACAD0 /* A3HolidaysCountryViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B16217D02B85003ACAD0 /* A3HolidaysCountryViewCell.m */; };
 		68B9B17017D04152003ACAD0 /* NSDate+daysleft.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B16F17D04152003ACAD0 /* NSDate+daysleft.m */; };
 		68B9DE701C17E1DF002E0D34 /* A3CurrencyPickerStyleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9DE6F1C17E1DF002E0D34 /* A3CurrencyPickerStyleViewController.m */; };
+		68BB6E4C29C72703002366EF /* CredentialIdentityStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BB6E4B29C72703002366EF /* CredentialIdentityStoreManager.swift */; };
 		68C0F0781E3F4A9200B04E8B /* A3SharePopupFavoriteButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C0F0771E3F4A9200B04E8B /* A3SharePopupFavoriteButton.m */; };
 		68C149481FFEF9E100545EB6 /* NSString+TextDirectionality.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C149471FFEF9E100545EB6 /* NSString+TextDirectionality.m */; };
 		68C1ABFA18B1C05200021001 /* NSDateFormatter+LunarDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C1ABF918B1C05200021001 /* NSDateFormatter+LunarDate.m */; };
@@ -918,6 +924,13 @@
 			remoteGlobalIDString = 682EA2D015EB10B000BD6AD4;
 			remoteInfo = AppBox3;
 		};
+		68B4028C29D6DE3C00CA91CA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 682EA2C815EB10B000BD6AD4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 68B4028129D6DE3C00CA91CA;
+			remoteInfo = "Autofill-extension";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -927,6 +940,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				68B4028E29D6DE3C00CA91CA /* Autofill-extension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1204,12 +1218,7 @@
 		680886CE1891751B0093FD97 /* SBTickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBTickerView.m; sourceTree = "<group>"; };
 		680886CF1891751B0093FD97 /* UIView+SBExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SBExtras.h"; sourceTree = "<group>"; };
 		680886D01891751B0093FD97 /* UIView+SBExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SBExtras.m"; sourceTree = "<group>"; };
-		680A632A29B96B670020B964 /* Autofill Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Autofill Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		680A632B29B96B670020B964 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
-		680A632E29B96B670020B964 /* CredentialProviderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialProviderViewController.swift; sourceTree = "<group>"; };
-		680A633129B96B670020B964 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/CredentialProviderViewController.xib; sourceTree = "<group>"; };
-		680A633329B96B670020B964 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		680A633429B96B670020B964 /* Autofill_Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Autofill_Extension.entitlements; sourceTree = "<group>"; };
 		680A633A29BA9D780020B964 /* AppBox3-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppBox3-Bridging-Header.h"; sourceTree = "<group>"; };
 		680A633B29BA9D790020B964 /* FirstSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstSwift.swift; sourceTree = "<group>"; };
 		680A633D29C189190020B964 /* NSManagedObjectContext+extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+extension.h"; sourceTree = "<group>"; };
@@ -1973,6 +1982,13 @@
 		68AE58C71A118A4B0021E489 /* A3StandardDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3StandardDetailTableViewController.h; path = ViewControllers/A3StandardDetailTableViewController.h; sourceTree = "<group>"; };
 		68AE58C81A118A4B0021E489 /* A3StandardDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3StandardDetailTableViewController.m; path = ViewControllers/A3StandardDetailTableViewController.m; sourceTree = "<group>"; };
 		68AF607C162BCCEE00E98002 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		68B4028229D6DE3C00CA91CA /* Autofill-extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Autofill-extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		68B4028529D6DE3C00CA91CA /* CredentialProviderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialProviderViewController.swift; sourceTree = "<group>"; };
+		68B4028829D6DE3C00CA91CA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		68B4028A29D6DE3C00CA91CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		68B4028B29D6DE3C00CA91CA /* Autofill_extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Autofill_extension.entitlements; sourceTree = "<group>"; };
+		68B4029229D6DF5500CA91CA /* WalletFieldItem+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WalletFieldItem+CoreDataClass.swift"; sourceTree = "<group>"; };
+		68B4029329D6DF5600CA91CA /* WalletFieldItem+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WalletFieldItem+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		68B62EBD199E532B006384E1 /* CurrencyFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CurrencyFavorite.h; path = Apps/Currency/Model/CurrencyFavorite.h; sourceTree = "<group>"; };
 		68B62EBE199E532B006384E1 /* CurrencyFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CurrencyFavorite.m; path = Apps/Currency/Model/CurrencyFavorite.m; sourceTree = "<group>"; };
 		68B62EC0199E620B006384E1 /* DaysCounterCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DaysCounterCalendar.h; sourceTree = "<group>"; };
@@ -2235,6 +2251,7 @@
 		68B9B16F17D04152003ACAD0 /* NSDate+daysleft.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "NSDate+daysleft.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		68B9DE6E1C17E1DF002E0D34 /* A3CurrencyPickerStyleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyPickerStyleViewController.h; path = Apps/Currency/A3CurrencyPickerStyleViewController.h; sourceTree = "<group>"; };
 		68B9DE6F1C17E1DF002E0D34 /* A3CurrencyPickerStyleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyPickerStyleViewController.m; path = Apps/Currency/A3CurrencyPickerStyleViewController.m; sourceTree = "<group>"; };
+		68BB6E4B29C72703002366EF /* CredentialIdentityStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialIdentityStoreManager.swift; sourceTree = "<group>"; };
 		68C0F0761E3F4A9200B04E8B /* A3SharePopupFavoriteButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3SharePopupFavoriteButton.h; sourceTree = "<group>"; };
 		68C0F0771E3F4A9200B04E8B /* A3SharePopupFavoriteButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SharePopupFavoriteButton.m; sourceTree = "<group>"; };
 		68C1493E1FFEF9E100545EB6 /* NSString+TextDirectionality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TextDirectionality.h"; sourceTree = "<group>"; };
@@ -2866,14 +2883,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		680A632729B96B670020B964 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				680A632C29B96B670020B964 /* AuthenticationServices.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		682EA2CE15EB10B000BD6AD4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -2907,6 +2916,14 @@
 				6876D6FD17A75DAE00E16991 /* UIKit.framework in Frameworks */,
 				6876D6FC17A75DAE00E16991 /* Foundation.framework in Frameworks */,
 				72D60606305C4B639565B897 /* Pods_AppBox3_Tests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		68B4027F29D6DE3C00CA91CA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				68B4028329D6DE3C00CA91CA /* AuthenticationServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3330,22 +3347,12 @@
 			path = Clock;
 			sourceTree = "<group>";
 		};
-		680A632D29B96B670020B964 /* Autofill Extension */ = {
-			isa = PBXGroup;
-			children = (
-				680A632E29B96B670020B964 /* CredentialProviderViewController.swift */,
-				680A633029B96B670020B964 /* CredentialProviderViewController.xib */,
-				680A633329B96B670020B964 /* Info.plist */,
-				680A633429B96B670020B964 /* Autofill_Extension.entitlements */,
-			);
-			path = "Autofill Extension";
-			sourceTree = "<group>";
-		};
 		680A633829BA9AE60020B964 /* Swift */ = {
 			isa = PBXGroup;
 			children = (
 				680A633B29BA9D790020B964 /* FirstSwift.swift */,
 				680A633A29BA9D780020B964 /* AppBox3-Bridging-Header.h */,
+				68BB6E4B29C72703002366EF /* CredentialIdentityStoreManager.swift */,
 			);
 			path = Swift;
 			sourceTree = "<group>";
@@ -3794,7 +3801,7 @@
 				68CC1594174F764C0000870F /* External */,
 				682EA2DD15EB10B000BD6AD4 /* AppBox3 */,
 				6876D6FE17A75DAE00E16991 /* AppBox3 Tests */,
-				680A632D29B96B670020B964 /* Autofill Extension */,
+				68B4028429D6DE3C00CA91CA /* Autofill-extension */,
 				682EA2D415EB10B000BD6AD4 /* Frameworks */,
 				682EA2D215EB10B000BD6AD4 /* Products */,
 				EBCA40A147C9E4B5F5A19E3A /* Pods */,
@@ -3806,7 +3813,7 @@
 			children = (
 				682EA2D115EB10B000BD6AD4 /* AppBox3.app */,
 				6876D6FA17A75DAE00E16991 /* AppBox3 Tests.xctest */,
-				680A632A29B96B670020B964 /* Autofill Extension.appex */,
+				68B4028229D6DE3C00CA91CA /* Autofill-extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4541,6 +4548,19 @@
 			);
 			name = Currency;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		68B4028429D6DE3C00CA91CA /* Autofill-extension */ = {
+			isa = PBXGroup;
+			children = (
+				68B4029229D6DF5500CA91CA /* WalletFieldItem+CoreDataClass.swift */,
+				68B4029329D6DF5600CA91CA /* WalletFieldItem+CoreDataProperties.swift */,
+				68B4028529D6DE3C00CA91CA /* CredentialProviderViewController.swift */,
+				68B4028729D6DE3C00CA91CA /* MainInterface.storyboard */,
+				68B4028A29D6DE3C00CA91CA /* Info.plist */,
+				68B4028B29D6DE3C00CA91CA /* Autofill_extension.entitlements */,
+			);
+			path = "Autofill-extension";
 			sourceTree = "<group>";
 		};
 		68B6A16918CEC76C004084EF /* LoanCalculator */ = {
@@ -5667,23 +5687,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		680A632929B96B670020B964 /* Autofill Extension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 680A633729B96B670020B964 /* Build configuration list for PBXNativeTarget "Autofill Extension" */;
-			buildPhases = (
-				680A632629B96B670020B964 /* Sources */,
-				680A632729B96B670020B964 /* Frameworks */,
-				680A632829B96B670020B964 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Autofill Extension";
-			productName = "Autofill Extension";
-			productReference = 680A632A29B96B670020B964 /* Autofill Extension.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
 		682EA2D015EB10B000BD6AD4 /* AppBox3 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 682EA30415EB10B000BD6AD4 /* Build configuration list for PBXNativeTarget "AppBox3" */;
@@ -5699,6 +5702,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				68B4028D29D6DE3C00CA91CA /* PBXTargetDependency */,
 			);
 			name = AppBox3;
 			packageProductDependencies = (
@@ -5735,6 +5739,23 @@
 			productReference = 6876D6FA17A75DAE00E16991 /* AppBox3 Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		68B4028129D6DE3C00CA91CA /* Autofill-extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 68B4028F29D6DE3D00CA91CA /* Build configuration list for PBXNativeTarget "Autofill-extension" */;
+			buildPhases = (
+				68B4027E29D6DE3C00CA91CA /* Sources */,
+				68B4027F29D6DE3C00CA91CA /* Frameworks */,
+				68B4028029D6DE3C00CA91CA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Autofill-extension";
+			productName = "Autofill-extension";
+			productReference = 68B4028229D6DE3C00CA91CA /* Autofill-extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -5746,9 +5767,6 @@
 				LastUpgradeCheck = 1220;
 				ORGANIZATIONNAME = ALLABOUTAPPS;
 				TargetAttributes = {
-					680A632929B96B670020B964 = {
-						CreatedOnToolsVersion = 14.2;
-					};
 					682EA2D015EB10B000BD6AD4 = {
 						DevelopmentTeam = 84XB754BWU;
 						LastSwiftMigration = 1420;
@@ -5778,6 +5796,9 @@
 					};
 					6876D6F917A75DAE00E16991 = {
 						TestTargetID = 682EA2D015EB10B000BD6AD4;
+					};
+					68B4028129D6DE3C00CA91CA = {
+						CreatedOnToolsVersion = 14.2;
 					};
 				};
 			};
@@ -5809,20 +5830,12 @@
 			targets = (
 				682EA2D015EB10B000BD6AD4 /* AppBox3 */,
 				6876D6F917A75DAE00E16991 /* AppBox3 Tests */,
-				680A632929B96B670020B964 /* Autofill Extension */,
+				68B4028129D6DE3C00CA91CA /* Autofill-extension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		680A632829B96B670020B964 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				680A633229B96B670020B964 /* CredentialProviderViewController.xib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		682EA2CF15EB10B000BD6AD4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -5997,6 +6010,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		68B4028029D6DE3C00CA91CA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				68B4029829D6DFBA00CA91CA /* WalletCategoryPreset.plist in Resources */,
+				68B4028929D6DE3C00CA91CA /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -6065,14 +6087,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		680A632629B96B670020B964 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				680A632F29B96B670020B964 /* CredentialProviderViewController.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		682EA2CD15EB10B000BD6AD4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -6707,6 +6721,7 @@
 				17D422400D7D700ABC56BA5D /* FSTargetCallback.m in Sources */,
 				17D42093A4A4B45A06BFD4F1 /* FSWebLogin.m in Sources */,
 				17D423113B5E0448C539636D /* FSConverter.m in Sources */,
+				68BB6E4C29C72703002366EF /* CredentialIdentityStoreManager.swift in Sources */,
 				17D42A333EA60B3995BBAAC3 /* FSVenue.m in Sources */,
 				17D42BAD7D2B6C3853B466B5 /* A3LocationPlacemarkView.m in Sources */,
 				17D4287AB63C166472C101FE /* UIViewController+NumberKeyboard.m in Sources */,
@@ -6801,6 +6816,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		68B4027E29D6DE3C00CA91CA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				68B4029429D6DF5600CA91CA /* WalletFieldItem+CoreDataClass.swift in Sources */,
+				68B4029629D6DF6C00CA91CA /* AppBox3.xcdatamodeld in Sources */,
+				68B4028629D6DE3C00CA91CA /* CredentialProviderViewController.swift in Sources */,
+				68B4029529D6DF5600CA91CA /* WalletFieldItem+CoreDataProperties.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -6809,17 +6835,14 @@
 			target = 682EA2D015EB10B000BD6AD4 /* AppBox3 */;
 			targetProxy = 6876D70717A75DAE00E16991 /* PBXContainerItemProxy */;
 		};
+		68B4028D29D6DE3C00CA91CA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 68B4028129D6DE3C00CA91CA /* Autofill-extension */;
+			targetProxy = 68B4028C29D6DE3C00CA91CA /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		680A633029B96B670020B964 /* CredentialProviderViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				680A633129B96B670020B964 /* Base */,
-			);
-			name = CredentialProviderViewController.xib;
-			sourceTree = "<group>";
-		};
 		681C5121194EB57400CB653A /* LoanCalculatorPadStoryBoard.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -6965,6 +6988,14 @@
 			);
 			name = Pedometer.storyboard;
 			path = Pedometer;
+			sourceTree = "<group>";
+		};
+		68B4028729D6DE3C00CA91CA /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				68B4028829D6DE3C00CA91CA /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 		68C802DD19571A2000BC19EE /* WalletPreset.strings */ = {
@@ -7299,96 +7330,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		680A633529B96B670020B964 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "Autofill Extension/Autofill_Extension.entitlements";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 84XB754BWU;
-				ENABLE_HARDENED_RUNTIME = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Autofill Extension/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Autofill Extension";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 ALLABOUTAPPS. All rights reserved.";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@executable_path/../../../../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 13.1;
-				MARKETING_VERSION = 1.0;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "net.allaboutapps.Autofill-Extension";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		680A633629B96B670020B964 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "Autofill Extension/Autofill_Extension.entitlements";
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 84XB754BWU;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Autofill Extension/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Autofill Extension";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 ALLABOUTAPPS. All rights reserved.";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@executable_path/../../../../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 13.1;
-				MARKETING_VERSION = 1.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "net.allaboutapps.Autofill-Extension";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
 		682EA30215EB10B000BD6AD4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -7512,6 +7453,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A2B44742FA51EA7F42EACA47 /* Pods-AppBox3.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -7519,7 +7461,8 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.6.48.0;
+				CURRENT_PROJECT_VERSION = 4.7.0.0;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -7533,7 +7476,9 @@
 					"External/ensembles-next/Framework/Source/General",
 				);
 				INFOPLIST_FILE = "AppBox3/AppBox3-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				INFOPLIST_KEY_CFBundleDisplayName = "AppBox Pro";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7545,7 +7490,7 @@
 					"$(PROJECT_DIR)/External/RMStore/Optional/openssl-1.0.2c/lib",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
-				MARKETING_VERSION = 4.6.48;
+				MARKETING_VERSION = 4.7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7567,6 +7512,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C016DCEDA2CB7BCD4B571813 /* Pods-AppBox3.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -7574,7 +7520,8 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.6.48.0;
+				CURRENT_PROJECT_VERSION = 4.7.0.0;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -7588,7 +7535,9 @@
 					"External/ensembles-next/Framework/Source/General",
 				);
 				INFOPLIST_FILE = "AppBox3/AppBox3-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				INFOPLIST_KEY_CFBundleDisplayName = "AppBox Pro";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7600,7 +7549,7 @@
 					"$(PROJECT_DIR)/External/RMStore/Optional/openssl-1.0.2c/lib",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
-				MARKETING_VERSION = 4.6.48;
+				MARKETING_VERSION = 4.7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7690,18 +7639,101 @@
 			};
 			name = Release;
 		};
+		68B4029029D6DE3D00CA91CA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "Autofill-extension/Autofill_extension.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 84XB754BWU;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Autofill-extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Autofill-extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 ALLABOUTAPPS. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.e2ndesign.TPremium2.Autofill-extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		68B4029129D6DE3D00CA91CA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "Autofill-extension/Autofill_extension.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 84XB754BWU;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Autofill-extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Autofill-extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 ALLABOUTAPPS. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.e2ndesign.TPremium2.Autofill-extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		680A633729B96B670020B964 /* Build configuration list for PBXNativeTarget "Autofill Extension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				680A633529B96B670020B964 /* Debug */,
-				680A633629B96B670020B964 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		682EA2CB15EB10B000BD6AD4 /* Build configuration list for PBXProject "AppBox3" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -7725,6 +7757,15 @@
 			buildConfigurations = (
 				6876D70A17A75DAE00E16991 /* Debug */,
 				6876D70B17A75DAE00E16991 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		68B4028F29D6DE3D00CA91CA /* Build configuration list for PBXNativeTarget "Autofill-extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				68B4029029D6DE3D00CA91CA /* Debug */,
+				68B4029129D6DE3D00CA91CA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

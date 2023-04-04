@@ -105,7 +105,7 @@ extern NSString *const A3AppName_None;
 
 extern NSString *const A3InAppPurchaseRemoveAdsProductIdentifier;
 extern NSString *const kA3AdsUserDidSelectPersonalizedAds;
-
+extern NSString *const A3AppGroupIdentifier;
 /**
  *  메뉴 그룹별 컬러를 적용하기 위해서 그룹 이름을 Key로 사용하기 위하여 정의 하였다.
  */

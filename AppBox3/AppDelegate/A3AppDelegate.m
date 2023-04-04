@@ -59,6 +59,7 @@
 #import "Pedometer.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "AppBox3-swift.h"
 
 NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
@@ -81,6 +82,7 @@ NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhatsNew4_5";
 NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstall";
 NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPersonalizedAds";
+NSString *const A3AppGroupIdentifier = @"group.allaboutapps.appbox";
 
 @interface A3AppDelegate () <UIAlertViewDelegate, NSURLSessionDownloadDelegate, CLLocationManagerDelegate, GADFullScreenContentDelegate>
 
@@ -1031,54 +1033,120 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
 
 #pragma mark - Setup Core Data Managed Object Context
 
+- (void)setupAfterLoadCoredata {
+    if ([self deduplicateDatabaseWithModel:_persistentContainer.managedObjectModel]) {
+        // 중복 데이터가 발견되었다면, 동기화를 끄고, 사용자에게 새로 시작하도록 안내를 한다.
+        if ([[A3UserDefaults standardUserDefaults] boolForKey:A3SyncManagerCloudEnabled]) {
+            A3SyncManager *sharedSyncManager = [A3SyncManager sharedSyncManager];
+            sharedSyncManager.storePath = [[self storeURL] path];
+            [sharedSyncManager setupEnsemble];
+            [sharedSyncManager disableCloudSync];
+            
+            [[A3UserDefaults standardUserDefaults] removeObjectForKey:A3SyncManagerCloudEnabled];
+            [[A3UserDefaults standardUserDefaults] synchronize];
+            
+            UIAlertView *alertSyncDisabled = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
+                                                                        message:NSLocalizedString(@"iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again.", nil)
+                                                                       delegate:self
+                                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                              otherButtonTitles:NSLocalizedString(@"Help", @"Help"), nil];
+            alertSyncDisabled.tag = 31;
+            [alertSyncDisabled show];
+        }
+    } else {
+        if ([[A3UserDefaults standardUserDefaults] boolForKey:A3SyncManagerCloudEnabled]) {
+            A3SyncManager *sharedSyncManager = [A3SyncManager sharedSyncManager];
+            sharedSyncManager.storePath = [[self storeURL] path];
+            [sharedSyncManager setupEnsemble];
+            [sharedSyncManager synchronizeWithCompletion:NULL];
+            [sharedSyncManager uploadMediaFilesToCloud];
+            [sharedSyncManager downloadMediaFilesFromCloud];
+        }
+    }
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
+        
+    [A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
+    [A3LadyCalendarModelManager setupLocalNotification];
+    
+    CredentialIdentityStoreManager *manager = [CredentialIdentityStoreManager new];
+    [manager updateCredentialIdentityStore];
+}
+
 - (void)setupContext
 {
-    // 2023년 3월 13일 - MagicalRecord 제거 시작
+    [self setupStoreFiles];
     
-    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-    NSManagedObjectModel *model = [NSManagedObjectModel mergedModelFromBundles:@[bundle]];
-    _persistentContainer = [[NSPersistentContainer alloc] initWithName:@"AppBoxStore" managedObjectModel:model];
+    if (!_persistentContainer) {
+        NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+        NSManagedObjectModel *model = [NSManagedObjectModel mergedModelFromBundles:@[bundle]];
+        _persistentContainer = [[NSPersistentContainer alloc] initWithName:@"AppBoxStore" managedObjectModel:model];
+    }
+    NSPersistentStoreDescription *storeDescription = [NSPersistentStoreDescription persistentStoreDescriptionWithURL:[self storeURL]];
+    _persistentContainer.persistentStoreDescriptions = @[storeDescription];
     [_persistentContainer loadPersistentStoresWithCompletionHandler:^(NSPersistentStoreDescription * _Nonnull psd, NSError * _Nullable error) {
         // Do nothing for the moment.
         if (error == nil) {
             self.isCoreDataReady = YES;
+            [self setupAfterLoadCoredata];
         }
     }];
+}
 
-    if ([self deduplicateDatabaseWithModel:model]) {
-		// 중복 데이터가 발견되었다면, 동기화를 끄고, 사용자에게 새로 시작하도록 안내를 한다.
-		if ([[A3UserDefaults standardUserDefaults] boolForKey:A3SyncManagerCloudEnabled]) {
-			A3SyncManager *sharedSyncManager = [A3SyncManager sharedSyncManager];
-			sharedSyncManager.storePath = [[self storeURL] path];
-			[sharedSyncManager setupEnsemble];
-			[sharedSyncManager disableCloudSync];
-			
-			[[A3UserDefaults standardUserDefaults] removeObjectForKey:A3SyncManagerCloudEnabled];
-			[[A3UserDefaults standardUserDefaults] synchronize];
-			
-			UIAlertView *alertSyncDisabled = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-																		message:NSLocalizedString(@"iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again.", nil)
-																	   delegate:self
-															  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-															  otherButtonTitles:NSLocalizedString(@"Help", @"Help"), nil];
-			alertSyncDisabled.tag = 31;
-			[alertSyncDisabled show];
-		}
-	} else {
-		if ([[A3UserDefaults standardUserDefaults] boolForKey:A3SyncManagerCloudEnabled]) {
-			A3SyncManager *sharedSyncManager = [A3SyncManager sharedSyncManager];
-			sharedSyncManager.storePath = [[self storeURL] path];
-			[sharedSyncManager setupEnsemble];
-			[sharedSyncManager synchronizeWithCompletion:NULL];
-			[sharedSyncManager uploadMediaFilesToCloud];
-			[sharedSyncManager downloadMediaFilesFromCloud];
-		}
-	}
+- (void)setupStoreFiles {
+    // 2023년 3월 13일 - MagicalRecord 제거 시작
+    // Library folder 아래로 AppBoxPro 폴더를 만들고, AppBoxStore.sqlite를 찾는다.
+    // 만약 해당 파일이 없다면 oldStorePath를 찾아서 해당 파일이 있으면 옮기고 없으면 loadPersistentContainer를 할 때 새롭게 생성이 될거라고 믿는다.
+    
+    // $containerURL/Library/AppBox 폴더를 찾는다.
+    NSURL *URL_after_V4_7 = [self storeURL];
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    // - URL-after-V4-7, URL-before-V4-7, URL before version
+    NSURL *URL_before_V4_7 = [NSPersistentContainer defaultDirectoryURL];
+    URL_before_V4_7 = [URL_before_V4_7 URLByAppendingPathComponent:[self storeFileName]];
+    
+    if (![fileManager fileExistsAtPath:[URL_after_V4_7 path]]) {
+        if ([fileManager fileExistsAtPath:[URL_before_V4_7 path]]) {
+            // Move files (AppBoxStore.sqlite, AppBoxStore.sqlite-shm, AppBoxStore.sqlite-wal) to URL_after_V4_7
+            NSString *path_after_V4_7 = [[URL_after_V4_7 URLByDeletingLastPathComponent] path];
+            NSString *path_before_V4_7 = [[URL_before_V4_7 URLByDeletingLastPathComponent] path];
+            NSError *createDirError = nil;
+            if (![fileManager fileExistsAtPath:path_after_V4_7]) {
+                [fileManager createDirectoryAtPath:path_after_V4_7 withIntermediateDirectories:YES attributes:nil error:&createDirError];
+                if (createDirError) {
+                    FNLOG(@"%@", createDirError);
+                    return;
+                }
+            }
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
-		
-	[A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
-	[A3LadyCalendarModelManager setupLocalNotification];
+            // Move AppBoxStore.sqlite
+            NSError *fileMoveError = nil;
+            [fileManager moveItemAtURL:URL_before_V4_7 toURL:URL_after_V4_7 error:&fileMoveError];
+            if (fileMoveError) {
+                FNLOG(@"%@", fileMoveError);
+                return;
+            }
+
+            // Move AppBoxStore.sqlite-shm
+            NSString *storeFilename = [self storeFileName];
+            NSURL *URL_after_shm_file = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@-shm", path_after_V4_7, storeFilename]];
+            NSURL *URL_before_shm_file = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@-shm", path_before_V4_7, storeFilename]];
+            [fileManager moveItemAtURL:URL_before_shm_file toURL:URL_after_shm_file error:&fileMoveError];
+            if (fileMoveError) {
+                FNLOG(@"%@", fileMoveError);
+                return;
+            }
+
+            NSURL *URL_after_wal_file = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@-wal", path_after_V4_7, storeFilename]];
+            NSURL *URL_before_wal_file = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@-wal", path_before_V4_7, storeFilename]];
+            [fileManager moveItemAtURL:URL_before_wal_file toURL:URL_after_wal_file error:&fileMoveError];
+            if (fileMoveError) {
+                FNLOG(@"%@", fileMoveError);
+            }
+        }
+    }
 }
 
 - (NSManagedObjectContext *)managedObjectContext {
@@ -1090,7 +1158,9 @@ NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPerson
 
 - (NSURL *)storeURL
 {
-    return [[NSPersistentContainer defaultDirectoryURL] URLByAppendingPathComponent:[self storeFileName]];
+    NSURL *appGroupContainerURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:A3AppGroupIdentifier];
+    NSURL *storeURL = [appGroupContainerURL URLByAppendingPathComponent:@"Library/AppBox"];
+    return [storeURL URLByAppendingPathComponent:[self storeFileName]];
 }
 
 - (NSString *)storeFileName {

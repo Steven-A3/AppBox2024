@@ -152,19 +152,63 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
     AAAZip *zip = [AAAZip new];
     zip.delegate = self;
     zip.encryptZip = NO;
-    _backupFilePath = [self uniqueBackupFilenameWithPrefix:@"PhotosVideos" extension:@"zip"];
+    _backupFilePath = [self uniqueBackupFilenameWithPostfix:@"PhotosVideos" extension:@"zip"];
     [zip createZipFile:_backupFilePath withArray:fileList];
 }
 
+- (void)removeFileIfexists:(NSFileManager *)fileManager tempCoreDataPath:(NSString *)tempCoreDataPath {
+    if ([fileManager fileExistsAtPath:tempCoreDataPath]) {
+        [fileManager removeItemAtPath:tempCoreDataPath error:NULL];
+    }
+}
+
+- (void)removeExistingTempFile:(NSFileManager *)fileManager path:(NSString *)tempCoreDataPath {
+    [self removeFileIfexists:fileManager tempCoreDataPath:tempCoreDataPath];
+    [self removeFileIfexists:fileManager tempCoreDataPath:[NSString stringWithFormat:@"%@%@", tempCoreDataPath, @"-shm"]];
+    [self removeFileIfexists:fileManager tempCoreDataPath:[NSString stringWithFormat:@"%@%@", tempCoreDataPath, @"-wal"]];
+}
+
+- (NSString *)migrateCoreDataStoreToTemp {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+
+    NSString *tempCoreDataPath = [[[A3AppDelegate instance] storeFileName] pathInTemporaryDirectory];
+    // Temporary directory
+    [self removeExistingTempFile:fileManager path:tempCoreDataPath];
+    
+    NSPersistentContainer *persistentContainer = [[A3AppDelegate instance] persistentContainer];
+    for (NSPersistentStoreDescription *description in persistentContainer.persistentStoreDescriptions) {
+        if ([description.type isEqualToString:NSInMemoryStoreType]) {
+            continue;
+        }
+        if (nil == description.URL) {
+            continue;
+        }
+        NSPersistentStoreCoordinator *tempPSC = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:persistentContainer.managedObjectModel];
+        NSURL *destinationURL = [NSURL fileURLWithPath:tempCoreDataPath];
+        NSError *addStoreError = nil;
+        NSPersistentStore *newStore = [tempPSC addPersistentStoreWithType:description.type configuration:description.configuration URL:description.URL options:description.options error:&addStoreError];
+        NSError *migrateError = nil;
+        [tempPSC migratePersistentStore:newStore toURL:destinationURL options:description.options withType:description.type error:&migrateError];
+        if (migrateError) {
+            FNLOG(@"%@", migrateError);
+        }
+    }
+    
+    return tempCoreDataPath;
+}
+
 - (void)backupCoreDataStore {
+    [[[A3AppDelegate instance] managedObjectContext] reset];
+
+    _backupCoreDataStorePath = [self migrateCoreDataStoreToTemp];
+
+    NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSMutableArray *fileList = [NSMutableArray new];
 	_deleteFilesAfterZip = [NSMutableArray new];
 
 	NSString *path;
 	NSString *filename = [[A3AppDelegate instance] storeFileName];
-	NSFileManager *fileManager = [NSFileManager defaultManager];
 
-	_backupCoreDataStorePath = [self storeFilePath];
 	if ([fileManager isDeletableFileAtPath:_backupCoreDataStorePath]) {
 		[fileList addObject:@{A3ZipFilename : _backupCoreDataStorePath, A3ZipNewFilename : filename}];
 	}
@@ -225,7 +269,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 	AAAZip *zip = [AAAZip new];
 	zip.delegate = self;
-    _backupFilePath = [self uniqueBackupFilenameWithPrefix:nil extension:nil];
+    _backupFilePath = [self uniqueBackupFilenameWithPostfix:nil extension:nil];
 	[zip createZipFile:_backupFilePath withArray:fileList];
 }
 
@@ -503,10 +547,10 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
                                           message:NSLocalizedString(@"The backup file has been stored successfully.", @"")];
 }
 
-- (NSString *)uniqueBackupFilenameWithPrefix:(NSString *)prefix extension:(NSString *)extension {
+- (NSString *)uniqueBackupFilenameWithPostfix:(NSString *)postfix extension:(NSString *)extension {
 	NSDate *date = [NSDate date];
 	NSDateComponents *components = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond fromDate:date];
-    NSString *seedFilename = [NSString stringWithFormat:@"%@-%0ld-%02ld-%02ld-%02ld-%02ld", prefix ?: @"AppBoxBackup", (long) components.year, (long) components.month, (long) components.day, (long) components.hour, (long) components.minute];
+    NSString *seedFilename = [NSString stringWithFormat:@"BK%0ld-%02ld-%02ld-%02ld-%02ld-%@", (long) components.year, (long) components.month, (long) components.day, (long) components.hour, (long) components.minute, postfix ?: @"AppBoxBackup"];
 	NSString *filename = seedFilename;
     NSString *path = [[filename stringByAppendingPathExtension:extension ?:@"backup"] pathInDocumentDirectory];
 	NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -539,16 +583,26 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
     NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
 	[context reset];
 	
-	NSError *error;
-    NSPersistentStoreCoordinator *persistentStoreCoordinator = [[A3AppDelegate instance] persistentContainer].persistentStoreCoordinator;
-	for (NSPersistentStore *store in [persistentStoreCoordinator persistentStores]) {
-		BOOL removed = [persistentStoreCoordinator removePersistentStore:store error:&error];
+    NSPersistentContainer *persistentContainer = [[A3AppDelegate instance] persistentContainer];
+    
+    NSError *error = nil;
+    NSPersistentStoreCoordinator *psc = persistentContainer.persistentStoreCoordinator;
+	for (NSPersistentStore *store in [psc persistentStores]) {
+		BOOL removed = [psc removePersistentStore:store error:&error];
 		
 		if (!removed) {
 			NSLog(@"Couldn't remove persistent store: %@", error);
 		}
+        NSError *destroyError = nil;
+        [psc destroyPersistentStoreAtURL:store.URL
+                                withType:store.type
+                                 options:store.options
+                                   error:&destroyError];
+        if (destroyError) {
+            FNLOG(@"%@", destroyError);
+        }
 	}
-	
+    
     [A3AppDelegate instance].persistentContainer = nil;
 
 	[self deleteCoreDataStoreFilesAt:toURL];

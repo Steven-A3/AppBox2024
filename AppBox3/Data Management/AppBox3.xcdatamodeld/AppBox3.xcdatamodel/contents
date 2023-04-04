@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13E28" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21513" systemVersion="22D68" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="Calculation" representedClassName="Calculation" syncable="YES">
         <attribute name="expression" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="result" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="CurrencyFavorite" representedClassName="CurrencyFavorite" syncable="YES">
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
@@ -12,58 +12,58 @@
     </entity>
     <entity name="CurrencyHistory" representedClassName="CurrencyHistory" syncable="YES">
         <attribute name="currencyCode" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="rate" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="rate" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="CurrencyHistoryItem" representedClassName="CurrencyHistoryItem" syncable="YES">
         <attribute name="currencyCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="historyID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="rate" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="rate" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="DaysCounterCalendar" representedClassName="DaysCounterCalendar" syncable="YES">
-        <attribute name="colorID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="isShow" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="colorID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isShow" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="DaysCounterDate" representedClassName="DaysCounterDate" syncable="YES">
-        <attribute name="day" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="day" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="eventID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="hour" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="isLeapMonth" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="isStartDate" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="minute" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="month" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="solarDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="hour" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isLeapMonth" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isStartDate" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="minute" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="month" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="solarDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="year" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="year" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="DaysCounterEvent" representedClassName="DaysCounterEvent" syncable="YES">
-        <attribute name="alertDatetime" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="alertInterval" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="alertType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="alertDatetime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="alertInterval" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="alertType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="calendarID" attributeType="String" syncable="YES"/>
-        <attribute name="durationOption" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="effectiveStartDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="durationOption" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="effectiveStartDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="eventName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="hasReminder" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="isAllDay" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isLunar" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isPeriod" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="hasReminder" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isAllDay" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isLunar" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isPeriod" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="photoID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="repeatEndDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="repeatType" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="repeatEndDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="repeatType" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="DaysCounterEventLocation" representedClassName="DaysCounterEventLocation" syncable="YES">
         <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
@@ -71,41 +71,41 @@
         <attribute name="contact" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="country" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="eventID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="latitude" optional="YES" attributeType="Float" syncable="YES"/>
+        <attribute name="latitude" optional="YES" attributeType="Float" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="locationName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="longitude" optional="YES" attributeType="Float" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Float" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="state" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="DaysCounterFavorite" representedClassName="DaysCounterFavorite" syncable="YES">
         <attribute name="eventID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="DaysCounterReminder" representedClassName="DaysCounterReminder" syncable="YES">
-        <attribute name="alertDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="alertDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="eventID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="isOn" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="isUnread" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="startDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="isOn" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isUnread" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="ExpenseListBudget" representedClassName="ExpenseListBudget" syncable="YES">
         <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="currencyCode" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="isModified" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isModified" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="location" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="paymentType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="totalAmount" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="totalAmount" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="usedAmount" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="usedAmount" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="ExpenseListBudgetLocation" representedClassName="ExpenseListBudgetLocation" syncable="YES">
         <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
@@ -113,49 +113,49 @@
         <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="contact" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="country" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="latitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="longitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="latitude" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="state" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="ExpenseListHistory" representedClassName="ExpenseListHistory" syncable="YES">
         <attribute name="budgetID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="ExpenseListItem" representedClassName="ExpenseListItem" syncable="YES">
         <attribute name="budgetID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="hasData" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="itemDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="hasData" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="itemDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="itemName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="price" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="qty" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="subTotal" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="price" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="qty" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="subTotal" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="LadyCalendarAccount" representedClassName="LadyCalendarAccount" syncable="YES">
-        <attribute name="birthday" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="birthday" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="watchingDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="watchingDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="LadyCalendarPeriod" representedClassName="LadyCalendarPeriod" syncable="YES">
         <attribute name="accountID" attributeType="String" syncable="YES"/>
-        <attribute name="cycleLength" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="endDate" attributeType="Date" syncable="YES"/>
-        <attribute name="isAutoSave" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isPredict" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="cycleLength" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="endDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isAutoSave" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isPredict" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="ovulation" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="periodEnds" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="startDate" attributeType="Date" syncable="YES"/>
+        <attribute name="ovulation" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="periodEnds" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="startDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="LoanCalcComparisonHistory" representedClassName="LoanCalcComparisonHistory" syncable="YES">
         <attribute name="currencyCode" optional="YES" attributeType="String" syncable="YES"/>
@@ -164,141 +164,141 @@
         <attribute name="totalInterestA" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="totalInterestB" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="LoanCalcHistory" representedClassName="LoanCalcHistory" syncable="YES">
-        <attribute name="calculationMode" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="calculationMode" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="comparisonHistoryID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="currencyCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="downPayment" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="editing" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="editing" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="extraPaymentMonthly" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="extraPaymentOnetime" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="extraPaymentOnetimeYearMonth" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="extraPaymentOnetimeYearMonth" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="extraPaymentYearly" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="extraPaymentYearlyMonth" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="frequency" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="extraPaymentYearlyMonth" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="frequency" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="interestRate" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="interestRatePerYear" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="interestRatePerYear" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="monthlyPayment" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="orderInComparison" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="principal" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="showAdvanced" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="showDownPayment" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="showExtraPayment" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="startDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="showAdvanced" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="showDownPayment" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="showExtraPayment" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="term" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="termTypeMonth" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="termTypeMonth" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="useSimpleInterest" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="useSimpleInterest" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="PercentCalcHistory" representedClassName="PercentCalcHistory" syncable="YES">
         <attribute name="historyItem" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="SalesCalcHistory" representedClassName="SalesCalcHistory" syncable="YES">
-        <attribute name="additionalOff" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="additionalOffType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="additionalOff" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="additionalOffType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="currencyCode" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="discount" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="discountType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="discount" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="discountType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="price" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="priceType" optional="YES" attributeType="Integer 16" syncable="YES"/>
-        <attribute name="shownPriceType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="tax" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="taxType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="price" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="priceType" optional="YES" attributeType="Integer 16" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="shownPriceType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="tax" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="taxType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="TipCalcHistory" representedClassName="TipCalcHistory" syncable="YES">
         <attribute name="labelTip" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="labelTotal" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="TipCalcRecent" representedClassName="TipCalcRecent" syncable="YES">
-        <attribute name="beforeSplit" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="costs" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="beforeSplit" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="costs" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="currencyCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="historyID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="isMain" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isPercentTax" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
-        <attribute name="isPercentTip" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
-        <attribute name="knownValue" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="optionType" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="showRounding" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="showSplit" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="showTax" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="split" optional="YES" attributeType="Double" defaultValueString="1" syncable="YES"/>
-        <attribute name="tax" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="tip" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="isMain" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isPercentTax" optional="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isPercentTip" optional="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="knownValue" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="optionType" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="showRounding" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="showSplit" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="showTax" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="split" optional="YES" attributeType="Double" defaultValueString="1" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="tax" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="tip" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="valueType" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="valueType" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="TranslatorFavorite" representedClassName="TranslatorFavorite" syncable="YES">
         <attribute name="groupID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="historyID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="TranslatorGroup" representedClassName="TranslatorGroup" syncable="YES">
         <attribute name="order" attributeType="String" syncable="YES"/>
         <attribute name="sourceLanguage" attributeType="String" syncable="YES"/>
         <attribute name="targetLanguage" attributeType="String" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="TranslatorHistory" representedClassName="TranslatorHistory" syncable="YES">
         <attribute name="groupID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="originalText" attributeType="String" syncable="YES"/>
         <attribute name="translatedText" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" attributeType="Date" syncable="YES"/>
+        <attribute name="updateDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="UnitHistory" representedClassName="UnitHistory" syncable="YES">
-        <attribute name="categoryID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="categoryID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="unitID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="unitID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="UnitHistoryItem" representedClassName="UnitHistoryItem" syncable="YES">
         <attribute name="order" attributeType="String" syncable="YES"/>
-        <attribute name="targetUnitItemID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="targetUnitItemID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="unitHistoryID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="UnitPriceHistory" representedClassName="UnitPriceHistory" syncable="YES">
         <attribute name="currencyCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="UnitPriceInfo" representedClassName="UnitPriceInfo" syncable="YES">
-        <attribute name="discountPercent" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="discountPrice" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="discountPercent" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="discountPrice" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="historyID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="note" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="price" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="price" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="priceName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="quantity" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="size" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="quantity" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="size" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="unitCategoryID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="unitID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="unitCategoryID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="unitID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="WalletCategory" representedClassName="WalletCategory" syncable="YES">
-        <attribute name="doNotShow" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="doNotShow" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="isSystem" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isSystem" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
@@ -307,7 +307,7 @@
         <attribute name="itemID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="WalletField" representedClassName="WalletField" syncable="YES">
         <attribute name="categoryID" optional="YES" attributeType="String" syncable="YES"/>
@@ -318,15 +318,15 @@
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="WalletFieldItem" representedClassName="WalletFieldItem" syncable="YES">
-        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="fieldID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="hasImage" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="hasVideo" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="hasImage" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="hasVideo" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="imageMetaData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="videoCreationDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="videoCreationDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="videoExtension" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="walletItemID" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
@@ -336,42 +336,6 @@
         <attribute name="note" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
-    <elements>
-        <element name="Calculation" positionX="-783" positionY="-441" width="128" height="105"/>
-        <element name="CurrencyFavorite" positionX="-576" positionY="-684" width="128" height="73"/>
-        <element name="CurrencyHistory" positionX="207" positionY="-549" width="128" height="118"/>
-        <element name="CurrencyHistoryItem" positionX="54" positionY="-621" width="128" height="133"/>
-        <element name="DaysCounterCalendar" positionX="-567" positionY="-675" width="128" height="28"/>
-        <element name="DaysCounterDate" positionX="-578" positionY="-646" width="128" height="208"/>
-        <element name="DaysCounterEvent" positionX="-236" positionY="-837" width="128" height="300"/>
-        <element name="DaysCounterEventLocation" positionX="-81" positionY="-801" width="162" height="208"/>
-        <element name="DaysCounterFavorite" positionX="-432" positionY="-640" width="128" height="103"/>
-        <element name="DaysCounterReminder" positionX="-83" positionY="-523" width="128" height="150"/>
-        <element name="ExpenseListBudget" positionX="376" positionY="-382" width="128" height="223"/>
-        <element name="ExpenseListBudgetLocation" positionX="540" positionY="-322" width="153" height="193"/>
-        <element name="ExpenseListHistory" positionX="196" positionY="-342" width="128" height="90"/>
-        <element name="ExpenseListItem" positionX="196" positionY="-235" width="128" height="193"/>
-        <element name="LadyCalendarPeriod" positionX="-585" positionY="873" width="128" height="208"/>
-        <element name="LoanCalcComparisonHistory" positionX="198" positionY="837" width="128" height="148"/>
-        <element name="LoanCalcHistory" positionX="441" positionY="531" width="128" height="448"/>
-        <element name="PercentCalcHistory" positionX="-783" positionY="15" width="128" height="90"/>
-        <element name="SalesCalcHistory" positionX="-407" positionY="-327" width="128" height="238"/>
-        <element name="TipCalcHistory" positionX="-587" positionY="-310" width="128" height="103"/>
-        <element name="TipCalcRecent" positionX="-774" positionY="-306" width="128" height="313"/>
-        <element name="TranslatorFavorite" positionX="304" positionY="-36" width="128" height="118"/>
-        <element name="TranslatorGroup" positionX="-396" positionY="-63" width="128" height="118"/>
-        <element name="TranslatorHistory" positionX="-216" positionY="-84" width="128" height="118"/>
-        <element name="UnitHistory" positionX="-2" positionY="207" width="128" height="120"/>
-        <element name="UnitHistoryItem" positionX="-191" positionY="252" width="128" height="118"/>
-        <element name="UnitPriceHistory" positionX="-605" positionY="332" width="128" height="88"/>
-        <element name="UnitPriceInfo" positionX="-47" positionY="428" width="128" height="223"/>
-        <element name="WalletFavorite" positionX="-335" positionY="764" width="128" height="103"/>
-        <element name="WalletFieldItem" positionX="-506" positionY="558" width="128" height="208"/>
-        <element name="WalletItem" positionX="-702" positionY="636" width="128" height="133"/>
-        <element name="LadyCalendarAccount" positionX="-576" positionY="-684" width="128" height="133"/>
-        <element name="WalletCategory" positionX="-567" positionY="-675" width="128" height="133"/>
-        <element name="WalletField" positionX="-558" positionY="-666" width="128" height="133"/>
-    </elements>
 </model>

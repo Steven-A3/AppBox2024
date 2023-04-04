@@ -3192,6 +3192,13 @@
 	date = [HolidayData dateWithDay:15 month:3 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
+    // Good Friday
+    holidayName = NSLocalizedStringFromTable(@"Good Friday", kHolidaysResourceName, nil);
+    date = [HolidayData getGoodFriday:year western:YES withCalendar:gregorian];
+    if (date != nil) {
+        [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    }
+    
 	holidayName = NSLocalizedStringFromTable(@"Easter", kHolidaysResourceName, nil);
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {

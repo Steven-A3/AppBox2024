@@ -22,6 +22,10 @@
 	</array>
 	<key>com.apple.developer.ubiquity-kvstore-identifier</key>
 	<string>$(TeamIdentifierPrefix)net.allaboutapps.AppBox</string>
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>group.allaboutapps.appbox</string>
+	</array>
 	<key>keychain-access-groups</key>
 	<array>
 		<string>5VX99NB632.net.allaboutapps.AppBox</string>

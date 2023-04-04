@@ -10,5 +10,7 @@
 #define AppBox3_Bridging_Header_h
 
 #import "A3AppDelegate.h"
+#import "WalletFieldItem.h"
+#import "WalletField.h"
 
 #endif /* AppBox3_Bridging_Header_h */
