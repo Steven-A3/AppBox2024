@@ -275,11 +275,11 @@ extern NSString *const A3AbbreviationKeyMeaning;
 	}
 }
 
-- (A3SharePopupPresentationController *)presentationController {
-	if (!_presentationController) {
-		_presentationController = [A3SharePopupPresentationController new];
-	}
-	return _presentationController;
-}
+//- (A3SharePopupPresentationController *)presentationController {
+//	if (!_presentationController) {
+//		_presentationController = [A3SharePopupPresentationController new];
+//	}
+//	return _presentationController;
+//}
 
 @end

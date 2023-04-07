@@ -6,13 +6,17 @@
 //  Copyright © 2023 ALLABOUTAPPS. All rights reserved.
 //
 
+import UIKit
 import AuthenticationServices
 import CoreData
 import OSLog
 
 class CredentialProviderViewController: ASCredentialProviderViewController {
 
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var navigationBar: UINavigationBar!
     var persistentContainer: NSPersistentContainer!
+    var passwords = [Credential]()
     
     /*
      Prepare your UI to list available credentials for the user to choose from. The items in
@@ -20,6 +24,28 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
      prioritize the most relevant credentials in the list.
     */
     override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
+        tableView.dataSource = self
+        tableView.delegate = self
+        
+        if persistentContainer == nil {
+            setupCoreDataStack()
+        }
+        os_log("%@", serviceIdentifiers)
+        for serviceIdentifier in serviceIdentifiers {
+            if serviceIdentifier.type == .URL {
+                let serviceURL = URL(string: serviceIdentifier.identifier)
+                let host = serviceURL?.host
+                let items = host?.components(separatedBy: ".")
+                let count = items?.count ?? 0
+                if count > 2 {
+                    let domainItems = items!.suffix(2)
+                    let domain = domainItems.joined(separator: ".")
+                    passwordFor(domain)
+                }
+            } else {
+                passwordFor(serviceIdentifier.identifier)
+            }
+        }
     }
 
     /*
@@ -52,10 +78,14 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
      ASExtensionError.userInteractionRequired. In this case, the system may present your extension's
      UI and call this method. Show appropriate UI for authenticating the user then provide the password
      by completing the extension request with the associated ASPasswordCredential.
+     */
 
     override func prepareInterfaceToProvideCredential(for credentialIdentity: ASPasswordCredentialIdentity) {
+        if persistentContainer == nil {
+            setupCoreDataStack()
+        }
+        passwordFor(credentialIdentity.serviceIdentifier.identifier)
     }
-    */
 
     @IBAction func cancel(_ sender: AnyObject?) {
         self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userCanceled.rawValue))
@@ -109,18 +139,17 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
         
         if walletItems.count > 0 {
             let requestForCredential = WalletFieldItem.fetchRequest()
-            let predicate = NSPredicate(format: "walletItemID IN %@ AND (fieldID == %@ OR fieldID == %@)", walletItems, IDofName!, IDofPassword!)
+            requestForCredential.predicate = NSPredicate(format: "walletItemID IN %@ AND (fieldID == %@ OR fieldID == %@)", walletItems, IDofName!, IDofPassword!)
             let credentialResults = try! persistentContainer.viewContext.fetch(requestForCredential)
             let groupedByItemID = Dictionary(grouping: credentialResults, by: {$0!.walletItemID})
             
             for (_, value) in groupedByItemID {
                 let name = getValueFromWalletFieldItem(array: value, value: IDofName!)
                 let password = getValueFromWalletFieldItem(array: value, value: IDofPassword!)
-                let URL = getValueFromWalletFieldItem(array: value, value: IDofURL!)
-                os_log("%@, %@, %@", name ?? "nil", password ?? "nil", URL ?? "nil")
+                os_log("%@, %@", name ?? "nil", password ?? "nil")
                 
                 if let _ = password {
-                    
+                    passwords.append(Credential(userName: name!, password: password!, url: identifier))
                 }
             }
         }
@@ -171,5 +200,43 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
             return results[0]["uniqueID"]!
         }
         return nil;
+    }
+    
+    override func viewDidLoad() {
+        navigationBar?.topItem?.title = "AppBox Pro"
+    }
+}
+
+extension CredentialProviderViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return passwords.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as? TableViewCell else {return TableViewCell()}
+        
+        let cred = passwords[indexPath.row]
+        cell.url?.text = cred.url
+        cell.id?.text = cred.userName
+        cell.password?.text = cred.password.masked
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cred = passwords[indexPath.row]
+        let passwordCredential = ASPasswordCredential(user: cred.userName, password: cred.password)
+        self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
+    }
+}
+
+struct Credential {
+    var userName = ""
+    var password = ""
+    var url = ""
+}
+
+extension StringProtocol {
+    var masked: String {
+        return String(repeating: "•", count: Swift.max(0, count-3)) + suffix(3)
     }
 }

@@ -73,6 +73,8 @@ import AuthenticationServices
                     )
                 }
             }
+            os_log("%@", passwordCredentialIdentities)
+            
             let store = ASCredentialIdentityStore.shared
             store.getState { state in
                 if state.supportsIncrementalUpdates {

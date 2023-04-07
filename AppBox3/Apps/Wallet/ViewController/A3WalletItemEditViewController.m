@@ -45,6 +45,7 @@
 @import Photos;
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "AppBox3-swift.h"
 
 extern NSString *const A3TableViewCellDefaultCellID;
 NSString *const A3WalletItemTitleCellID = @"A3WalletTitleCell";
@@ -754,7 +755,10 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     _item.lastOpened = [NSDate date];
 
     [context saveContext];
-    
+
+    CredentialIdentityStoreManager *manager = [CredentialIdentityStoreManager new];
+    [manager updateCredentialIdentityStore];
+
 	[self moveMediaFilesToNormalPath];
     
 //    MBProgressHUD *delayHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];

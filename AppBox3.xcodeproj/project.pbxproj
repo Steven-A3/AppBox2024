@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -231,6 +231,7 @@
 		68144BC61743381600FD22CF /* A3PlacemarkBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68144BC51743381600FD22CF /* A3PlacemarkBackgroundView.m */; };
 		6817825316253640008A6E4B /* A3SegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 6817825216253640008A6E4B /* A3SegmentedControl.m */; };
 		6817830F1902823D003E1BB9 /* A3WalletItemTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6817830E1902823D003E1BB9 /* A3WalletItemTitleCell.m */; };
+		6817E4EF29DC175100518477 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6817E4EE29DC175100518477 /* TableViewCell.swift */; };
 		681983731CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 681983721CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.m */; };
 		6819A86F18A6092B00E63C8B /* NSDateFormatter+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4255AEBE358EED319031E /* NSDateFormatter+A3Addition.m */; };
 		681BF928273CF40E00304924 /* Ensembles.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 68854E63273CEF000009D028 /* Ensembles.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -414,6 +415,7 @@
 		6876D6FB17A75DAE00E16991 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 687C193B1783DF0F00415FCE /* XCTest.framework */; };
 		6876D6FC17A75DAE00E16991 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D715EB10B000BD6AD4 /* Foundation.framework */; };
 		6876D6FD17A75DAE00E16991 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D515EB10B000BD6AD4 /* UIKit.framework */; };
+		6878E19C29DD154A00650010 /* autofill-media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6878E19B29DD154A00650010 /* autofill-media.xcassets */; };
 		6879262C29B18FC800BC9F9B /* A3FloatLabeledPasswordTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6879262B29B18FC800BC9F9B /* A3FloatLabeledPasswordTextField.m */; };
 		687A0E802218DFB200B63FFA /* walletExport.strings in Resources */ = {isa = PBXBuildFile; fileRef = 687A0E822218DFB200B63FFA /* walletExport.strings */; };
 		687AAFE221F1D53100CE1DF3 /* TDOAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AAFE021F1D53000CE1DF3 /* TDOAuth.m */; };
@@ -511,7 +513,7 @@
 		68B4028329D6DE3C00CA91CA /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 680A632B29B96B670020B964 /* AuthenticationServices.framework */; };
 		68B4028629D6DE3C00CA91CA /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B4028529D6DE3C00CA91CA /* CredentialProviderViewController.swift */; };
 		68B4028929D6DE3C00CA91CA /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68B4028729D6DE3C00CA91CA /* MainInterface.storyboard */; };
-		68B4028E29D6DE3C00CA91CA /* Autofill-extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 68B4028229D6DE3C00CA91CA /* Autofill-extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		68B4028E29D6DE3C00CA91CA /* Autofill-extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 68B4028229D6DE3C00CA91CA /* Autofill-extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		68B4029429D6DF5600CA91CA /* WalletFieldItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B4029229D6DF5500CA91CA /* WalletFieldItem+CoreDataClass.swift */; };
 		68B4029529D6DF5600CA91CA /* WalletFieldItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B4029329D6DF5600CA91CA /* WalletFieldItem+CoreDataProperties.swift */; };
 		68B4029629D6DF6C00CA91CA /* AppBox3.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6831EBF618619CC800BAF15B /* AppBox3.xcdatamodeld */; };
@@ -934,15 +936,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		681AB7DF1E95D2100015F57D /* Embed App Extensions */ = {
+		681AB7DF1E95D2100015F57D /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				68B4028E29D6DE3C00CA91CA /* Autofill-extension.appex in Embed App Extensions */,
+				68B4028E29D6DE3C00CA91CA /* Autofill-extension.appex in Embed Foundation Extensions */,
 			);
-			name = "Embed App Extensions";
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		6882BFD22581CCAA00A01A0E /* Embed Frameworks */ = {
@@ -1386,6 +1388,7 @@
 		6817825216253640008A6E4B /* A3SegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SegmentedControl.m; sourceTree = "<group>"; };
 		6817830D1902823D003E1BB9 /* A3WalletItemTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletItemTitleCell.h; sourceTree = "<group>"; };
 		6817830E1902823D003E1BB9 /* A3WalletItemTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletItemTitleCell.m; sourceTree = "<group>"; };
+		6817E4EE29DC175100518477 /* TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		681983711CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3PedometerCollectionViewFlowLayout.h; path = Pedometer/A3PedometerCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		681983721CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3PedometerCollectionViewFlowLayout.m; path = Pedometer/A3PedometerCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		681AB7C61E95D2100015F57D /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
@@ -1770,6 +1773,7 @@
 		6876D70017A75DAE00E16991 /* AppBox3 Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AppBox3 Tests-Info.plist"; sourceTree = "<group>"; };
 		6876D70617A75DAE00E16991 /* AppBox3 Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppBox3 Tests-Prefix.pch"; sourceTree = "<group>"; };
 		6878361D1E6E4D7000828BA8 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		6878E19B29DD154A00650010 /* autofill-media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "autofill-media.xcassets"; sourceTree = "<group>"; };
 		6879262A29B18F8F00BC9F9B /* A3FloatLabeledPasswordTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = A3FloatLabeledPasswordTextField.h; sourceTree = "<group>"; };
 		6879262B29B18FC800BC9F9B /* A3FloatLabeledPasswordTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3FloatLabeledPasswordTextField.m; sourceTree = "<group>"; };
 		687A0E812218DFB200B63FFA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/walletExport.strings; sourceTree = "<group>"; };
@@ -4553,12 +4557,14 @@
 		68B4028429D6DE3C00CA91CA /* Autofill-extension */ = {
 			isa = PBXGroup;
 			children = (
+				6817E4EE29DC175100518477 /* TableViewCell.swift */,
 				68B4029229D6DF5500CA91CA /* WalletFieldItem+CoreDataClass.swift */,
 				68B4029329D6DF5600CA91CA /* WalletFieldItem+CoreDataProperties.swift */,
 				68B4028529D6DE3C00CA91CA /* CredentialProviderViewController.swift */,
 				68B4028729D6DE3C00CA91CA /* MainInterface.storyboard */,
 				68B4028A29D6DE3C00CA91CA /* Info.plist */,
 				68B4028B29D6DE3C00CA91CA /* Autofill_extension.entitlements */,
+				6878E19B29DD154A00650010 /* autofill-media.xcassets */,
 			);
 			path = "Autofill-extension";
 			sourceTree = "<group>";
@@ -5695,7 +5701,7 @@
 				682EA2CD15EB10B000BD6AD4 /* Sources */,
 				682EA2CE15EB10B000BD6AD4 /* Frameworks */,
 				682EA2CF15EB10B000BD6AD4 /* Resources */,
-				681AB7DF1E95D2100015F57D /* Embed App Extensions */,
+				681AB7DF1E95D2100015F57D /* Embed Foundation Extensions */,
 				6882BFD22581CCAA00A01A0E /* Embed Frameworks */,
 				496EEF104971283EE77563A4 /* [CP] Copy Pods Resources */,
 			);
@@ -5762,9 +5768,10 @@
 		682EA2C815EB10B000BD6AD4 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				CLASSPREFIX = A3;
 				LastSwiftUpdateCheck = 1420;
-				LastUpgradeCheck = 1220;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = ALLABOUTAPPS;
 				TargetAttributes = {
 					682EA2D015EB10B000BD6AD4 = {
@@ -6014,6 +6021,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6878E19C29DD154A00650010 /* autofill-media.xcassets in Resources */,
 				68B4029829D6DFBA00CA91CA /* WalletCategoryPreset.plist in Resources */,
 				68B4028929D6DE3C00CA91CA /* MainInterface.storyboard in Resources */,
 			);
@@ -6820,6 +6828,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6817E4EF29DC175100518477 /* TableViewCell.swift in Sources */,
 				68B4029429D6DF5600CA91CA /* WalletFieldItem+CoreDataClass.swift in Sources */,
 				68B4029629D6DF6C00CA91CA /* AppBox3.xcdatamodeld in Sources */,
 				68B4028629D6DE3C00CA91CA /* CredentialProviderViewController.swift in Sources */,
@@ -7465,6 +7474,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
+				ENABLE_MODULE_VERIFIER = YES;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -7487,10 +7497,11 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"${PROJECT_DIR}/External/**",
-					"$(PROJECT_DIR)/External/RMStore/Optional/openssl-1.0.2c/lib",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
 				MARKETING_VERSION = 4.7.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7524,6 +7535,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
+				ENABLE_MODULE_VERIFIER = YES;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -7546,10 +7558,11 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"${PROJECT_DIR}/External/**",
-					"$(PROJECT_DIR)/External/RMStore/Optional/openssl-1.0.2c/lib",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
 				MARKETING_VERSION = 4.7.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.e2ndesign.TPremium2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
