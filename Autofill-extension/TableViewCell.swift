@@ -8,11 +8,11 @@
 import UIKit
 
 class TableViewCell: UITableViewCell {
-    @IBOutlet weak var iconView: UIImageView!
     @IBOutlet weak var url: UILabel!
     @IBOutlet weak var id: UILabel!
     @IBOutlet weak var password: UILabel!
     @IBOutlet weak var cardFrameView: UIView!
+    @IBOutlet weak var iconView: UIImageView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -28,5 +28,4 @@ class TableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
 }

@@ -165,7 +165,7 @@
 			double delayInSeconds = 0.5;
 			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-				[_passwordField becomeFirstResponder];
+				[self.passwordField becomeFirstResponder];
 			});
 		}
 	}
@@ -450,7 +450,7 @@
     textField.font = [UIFont systemFontOfSize:17];
     textField.floatingLabelFont = [UIFont systemFontOfSize:13];
     textField.floatingLabelYPadding = 0;
-    textField.keyboardType = UIKeyboardTypeDefault;
+    textField.keyboardType = UIKeyboardTypeEmailAddress;
     textField.delegate = self;
 }
 
@@ -510,8 +510,8 @@
 		case 0:
 			if (!_aNewPasswordField) {
 				_aNewPasswordField = [self setupPasscodeField];
-                _aNewPasswordField.textContentType = UITextContentTypePassword;
                 _aNewPasswordField.passwordRules = [UITextInputPasswordRules passwordRulesWithDescriptor:@"allowed: upper, lower, digit, [-().&@?__'__#,/&quot;+]; minlength: 8;"];
+                _aNewPasswordField.textContentType = UITextContentTypeNewPassword;
 			}
 			_aNewPasswordField.placeholder = NSLocalizedString(@"New Passcode", @"New Passcode");
 			textField = _aNewPasswordField;
@@ -519,8 +519,8 @@
 		case 1:
 			if (!_confirmPasswordField) {
 				_confirmPasswordField = [self setupPasscodeField];
-                _confirmPasswordField.textContentType = UITextContentTypePassword;
                 _confirmPasswordField.passwordRules = [UITextInputPasswordRules passwordRulesWithDescriptor:@"allowed: upper, lower, digit, [-().&@?__'__#,/&quot;+]; minlength: 8;"];
+                _confirmPasswordField.textContentType = UITextContentTypeNewPassword;
 			}
 			_confirmPasswordField.placeholder = NSLocalizedString(@"Confirm Passcode", @"Confirm Passcode");
 			textField = _confirmPasswordField;
@@ -530,6 +530,7 @@
 				_passwordHintField = [self setupHintField];
 			}
 			_passwordHintField.placeholder = NSLocalizedString(@"Hint", @"Hint");
+            _passwordHintField.textContentType = UITextContentTypeUsername;
 			textField = _passwordHintField;
 			break;
 	}

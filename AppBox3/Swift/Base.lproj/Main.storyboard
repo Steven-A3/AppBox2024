@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Change Password View Controller-->
+        <scene sceneID="IQe-mj-Q2i">
+            <objects>
+                <viewController storyboardIdentifier="ChangePasswordViewController" id="C9C-U6-Mqh" customClass="ChangePasswordViewController" customModule="AppBox3" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jhc-wG-jCB">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kqY-2N-zxM">
+                                <rect key="frame" x="0.0" y="20" width="375" height="200"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Developer Insider" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EbR-5U-gao">
+                                        <rect key="frame" x="98.5" y="85" width="178" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" weight="thin" pointSize="25"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="EbR-5U-gao" firstAttribute="centerX" secondItem="kqY-2N-zxM" secondAttribute="centerX" id="DZ5-OQ-BDv"/>
+                                    <constraint firstItem="EbR-5U-gao" firstAttribute="centerY" secondItem="kqY-2N-zxM" secondAttribute="centerY" id="guT-Ej-qKU"/>
+                                </constraints>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Hxo-Vh-CbB">
+                                <rect key="frame" x="20" y="220" width="335" height="195"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="A3Z-Pu-72e" customClass="ATextField" customModule="AppBox3" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="34"/>
+                                        <fontDescription key="fontDescription" type="system" weight="thin" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="New Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Sce-d4-jgl" customClass="ATextField" customModule="AppBox3" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="54" width="335" height="34"/>
+                                        <fontDescription key="fontDescription" type="system" weight="thin" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="new-password"/>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm new Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WaT-1X-F9F" customClass="ATextField" customModule="AppBox3" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="108" width="335" height="34"/>
+                                        <fontDescription key="fontDescription" type="system" weight="thin" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="new-password"/>
+                                    </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eal-ql-ihl">
+                                        <rect key="frame" x="0.0" y="162" width="335" height="33"/>
+                                        <fontDescription key="fontDescription" type="system" weight="thin" pointSize="17"/>
+                                        <state key="normal" title="Change Password"/>
+                                        <connections>
+                                            <action selector="changePasswordAction:" destination="C9C-U6-Mqh" eventType="touchUpInside" id="4ee-e2-bHZ"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="5MO-H1-GyV"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Hxo-Vh-CbB" firstAttribute="leading" secondItem="5MO-H1-GyV" secondAttribute="leading" constant="20" id="6AK-wG-K9m"/>
+                            <constraint firstItem="kqY-2N-zxM" firstAttribute="height" secondItem="jhc-wG-jCB" secondAttribute="height" multiplier="0.3" id="EgY-AM-65G"/>
+                            <constraint firstItem="5MO-H1-GyV" firstAttribute="trailing" secondItem="kqY-2N-zxM" secondAttribute="trailing" id="KfS-y4-qX8"/>
+                            <constraint firstItem="kqY-2N-zxM" firstAttribute="top" secondItem="5MO-H1-GyV" secondAttribute="top" id="SjI-Xb-Dbl"/>
+                            <constraint firstItem="kqY-2N-zxM" firstAttribute="leading" secondItem="jhc-wG-jCB" secondAttribute="leading" id="gje-dU-9kh"/>
+                            <constraint firstItem="Hxo-Vh-CbB" firstAttribute="top" secondItem="kqY-2N-zxM" secondAttribute="bottom" id="ojx-65-BMQ"/>
+                            <constraint firstItem="5MO-H1-GyV" firstAttribute="trailing" secondItem="Hxo-Vh-CbB" secondAttribute="trailing" constant="20" id="q5g-9h-mbM"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="confirmNewPasswordTextField" destination="WaT-1X-F9F" id="TUe-lW-DYr"/>
+                        <outlet property="newPasswordTextField" destination="Sce-d4-jgl" id="hPm-AY-LwU"/>
+                        <outlet property="usernameTextField" destination="A3Z-Pu-72e" id="xMe-QJ-Oct"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="p6g-wQ-qny" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3226" y="27"/>
+        </scene>
+    </scenes>
+</document>

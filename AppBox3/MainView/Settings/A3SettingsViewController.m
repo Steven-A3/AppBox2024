@@ -22,6 +22,7 @@
 #import "A3AppDelegate.h"
 #import "WalletData.h"
 @import MessageUI;
+#import "AppBox3-swift.h"
 
 typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	A3SettingsRowUseiCloud = 1100,
@@ -387,8 +388,8 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 			if (indexPath.row == 0) {
 				if ([A3KeychainUtils getPassword] != nil) {
 					void(^presentPasscodeViewControllerBlock)(void) = ^(){
-						_passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
-						[_passcodeViewController showLockScreenInViewController:self];
+						self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
+						[self.passcodeViewController showLockScreenInViewController:self];
 					};
 					if (IS_IOS7 || ![[A3AppDelegate instance] useTouchID]) {
 						presentPasscodeViewControllerBlock();

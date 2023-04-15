@@ -10,13 +10,21 @@ import UIKit
 import AuthenticationServices
 import CoreData
 import OSLog
+import LocalAuthentication
 
 class CredentialProviderViewController: ASCredentialProviderViewController {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var navigationBar: UINavigationBar!
+    @IBOutlet weak var secureCoverView: UIImageView!
+
+    var searchController: UISearchController!
+    var resultTableController: CredentialResultsTableViewController!
+    
     var persistentContainer: NSPersistentContainer!
     var passwords = [Credential]()
+    var suggestedPasswords = [Credential]()
+    var askedCredentialIdentifiers = [String]()
     
     /*
      Prepare your UI to list available credentials for the user to choose from. The items in
@@ -27,25 +35,19 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
         tableView.dataSource = self
         tableView.delegate = self
         
+        let nib = UINib(nibName: "AutofillTableCell", bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: UITableViewController.credentialCellIdentifier)
+
         if persistentContainer == nil {
             setupCoreDataStack()
         }
         os_log("%@", serviceIdentifiers)
-        for serviceIdentifier in serviceIdentifiers {
-            if serviceIdentifier.type == .URL {
-                let serviceURL = URL(string: serviceIdentifier.identifier)
-                let host = serviceURL?.host
-                let items = host?.components(separatedBy: ".")
-                let count = items?.count ?? 0
-                if count > 2 {
-                    let domainItems = items!.suffix(2)
-                    let domain = domainItems.joined(separator: ".")
-                    passwordFor(domain)
-                }
-            } else {
-                passwordFor(serviceIdentifier.identifier)
-            }
-        }
+
+        // viewWillAppear에서 요청받은 아이템이 있는 경우, 해당 항목으로 자동 스크롤을 수행하기 위해서
+        // 전달 받은 serviceIdentifiers를 저장해둔다.
+        askedCredentialIdentifiers = serviceIdentifiers.map{ $0.identifier }
+        
+        loadCredentials()
     }
 
     /*
@@ -58,12 +60,11 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
 
      */
     override func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
-        setupCoreDataStack()
-        if let passwordCredential = credential(with: credentialIdentity.recordIdentifier!) {
-            self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
-        } else {
-            self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code:ASExtensionError.userInteractionRequired.rawValue))
-        }
+        // 사용자 인증 과정이 필요함
+        askedCredentialIdentifiers = [credentialIdentity.serviceIdentifier.identifier]
+        
+        self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code:ASExtensionError.userInteractionRequired.rawValue))
+        
 //        let databaseIsUnlocked = true
 //        if (databaseIsUnlocked) {
 //            let passwordCredential = ASPasswordCredential(user: "j_appleseed", password: "apple1234")
@@ -78,22 +79,31 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
      ASExtensionError.userInteractionRequired. In this case, the system may present your extension's
      UI and call this method. Show appropriate UI for authenticating the user then provide the password
      by completing the extension request with the associated ASPasswordCredential.
+     
+     위의 함수에서는 에러를 돌려주고 - 여기에서 값을 돌려주자.
      */
 
     override func prepareInterfaceToProvideCredential(for credentialIdentity: ASPasswordCredentialIdentity) {
-        if persistentContainer == nil {
-            setupCoreDataStack()
+        let context = LAContext()
+        var error: NSError?
+        
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            let reason = "Access for AppBox Pro"
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { [weak self] success, authenticationError in
+                if self!.persistentContainer == nil {
+                    self!.setupCoreDataStack()
+                }
+                if let passwordCredential = self!.credential(with: credentialIdentity.recordIdentifier!) {
+                    self!.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
+                }
+            }
+        } else {
+            os_log("%@", error!.localizedDescription)
         }
-        passwordFor(credentialIdentity.serviceIdentifier.identifier)
     }
 
     @IBAction func cancel(_ sender: AnyObject?) {
         self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userCanceled.rawValue))
-    }
-
-    @IBAction func passwordSelected(_ sender: AnyObject?) {
-        let passwordCredential = ASPasswordCredential(user: "j_appleseed", password: "apple1234")
-        self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
     }
 
     func setupCoreDataStack() {
@@ -154,6 +164,52 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
             }
         }
     }
+    
+    func loadCredentials() {
+        let (IDofName, IDofPassword, IDofURL) = resolveIDs()
+
+        let request = WalletFieldItem.fetchRequest()
+        request.predicate = NSPredicate(format: "fieldID == %@ OR fieldID == %@ OR fieldID == %@", IDofName!, IDofPassword!, IDofURL!)
+        let result = try! persistentContainer.viewContext.fetch(request)
+        //            os_log("%@", result)
+        
+        let groupedByItemID = Dictionary(grouping: result, by: { $0!.walletItemID } )
+        //            os_log("%@", groupByItemID)
+
+        for (_, value) in groupedByItemID {
+            guard let name = getValueFromWalletFieldItem(array: value, value: IDofName!) else {
+                continue
+            }
+            guard let password = getValueFromWalletFieldItem(array: value, value: IDofPassword!) else {
+                continue
+            }
+            guard let URL = getValueFromWalletFieldItem(array: value, value: IDofURL!) else {
+                continue
+            }
+
+            passwords.append(Credential(userName: name, password: password, url: URL))
+        }
+        passwords.sort(by: {$0.url > $1.url})
+        
+        for serviceIdentifier in askedCredentialIdentifiers {
+            let serviceURL = URL(string: serviceIdentifier)
+            guard let host = serviceURL?.host else {
+                continue
+            }
+            let items = host.components(separatedBy: ".")
+            let count = items.count
+            var domain = host
+            if count > 2 {
+                let domainItems = items.suffix(2)
+                domain = domainItems.joined(separator: ".")
+            }
+            let filtered = passwords.filter( { $0.url.contains(domain) } )
+            if filtered.count > 0 {
+                suggestedPasswords.append(contentsOf: filtered)
+                passwords.removeAll(where: {$0.url.contains(domain) } )
+            }
+        }
+    }
 
     func resolveIDs() -> (String?, String?, String?) {
         guard let url = Bundle.main.url(forResource: "WalletCategoryPreset", withExtension: "plist") else {
@@ -203,36 +259,178 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         navigationBar?.topItem?.title = "AppBox Pro"
+        resultTableController = CredentialResultsTableViewController()
+        resultTableController.autofillExtensionContext = self.extensionContext
+        resultTableController.tableView.rowHeight = self.tableView.rowHeight
+        
+        searchController = UISearchController(searchResultsController: resultTableController)
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.searchBar.searchTextField.placeholder = "Enter a search term"
+        searchController.searchBar.returnKeyType = .done
+        searchController.searchBar.showsCancelButton = false
+
+        navigationBar.topItem?.searchController = searchController
+        navigationBar.topItem?.hidesSearchBarWhenScrolling = false
+
+        searchController.delegate = self
+        searchController.searchBar.delegate = self
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        let context = LAContext()
+        var error: NSError?
+        
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            let reason = "Access for AppBox Pro"
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { [weak self] success, authenticationError in
+                DispatchQueue.main.async {
+                    if success {
+                        self?.secureCoverView.isHidden = true
+                    }
+                }
+            }
+        } else {
+            os_log("%@", error!.localizedDescription)
+        }
+        
+        let serviceURL = URL(string: askedCredentialIdentifiers[0] )
+        let host = serviceURL?.host
+        let items = host?.components(separatedBy: ".")
+        let count = items?.count ?? 0
+        if count > 2 {
+            let domainItems = items!.suffix(2)
+            let domain = domainItems.joined(separator: ".")
+            if let firstIndex = passwords.firstIndex(where: { $0.url.lowercased().contains( domain ) } ) {
+                tableView.scrollToRow(at: IndexPath(row: firstIndex, section: 0), at: .top, animated: true)
+            } else if let firstIndex = passwords.firstIndex(where: {$0.url >= askedCredentialIdentifiers[0]} ) {
+                tableView.scrollToRow(at: IndexPath(row: firstIndex, section: 0), at: .top, animated: true)
+            }
+        }
     }
 }
 
+extension CredentialProviderViewController: UISearchControllerDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if let resultViewController = searchController.searchResultsController {
+            resultViewController.view.frame = self.tableView.frame
+        }
+    }
+}
+
+extension CredentialProviderViewController: UISearchBarDelegate {
+    
+}
+
+extension CredentialProviderViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        // Update the resultsController's filtered items based on the search terms and suggested search token.
+        let searchResults = passwords
+
+        // Strip out all the leading and trailing spaces.
+        let whitespaceCharacterSet = CharacterSet.whitespaces
+        let strippedString = searchController.searchBar.text!.trimmingCharacters(in: whitespaceCharacterSet).lowercased()
+        let searchItems = strippedString.components(separatedBy: " ") as [String]
+        
+        // Filter results down by title, yearIntroduced and introPrice.
+        var filtered = searchResults
+        var curTerm = searchItems[0]
+        var idx = 0
+        while curTerm != "" {
+            filtered = filtered.filter {
+                $0.url.lowercased().contains(curTerm) ||
+                $0.userName.lowercased().contains(curTerm)
+            }
+            idx += 1
+            curTerm = (idx < searchItems.count) ? searchItems[idx] : ""
+        }
+        
+        // Apply the filtered results to the search results table.
+        if let resultsController = searchController.searchResultsController as? CredentialResultsTableViewController {
+            resultsController.filteredCredentials = filtered
+            resultsController.tableView.reloadData()
+        }
+    }
+
+}
+
 extension CredentialProviderViewController: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2;
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if suggestedPasswords.count > 0  && section == 0 {
+            return "Suggested"
+        }
+        return "Other"
+    }
+        
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if suggestedPasswords.count > 0 && section == 0 {
+            return suggestedPasswords.count
+        }
         return passwords.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as? TableViewCell else {return TableViewCell()}
+        let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewController.credentialCellIdentifier, for: indexPath) as! TableViewCell
         
-        let cred = passwords[indexPath.row]
+        let cred = selectItem(indexPath)
+
         cell.url?.text = cred.url
         cell.id?.text = cred.userName
         cell.password?.text = cred.password.masked
+        cell.iconView.image = UIImage(named: cred.iconname)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cred = passwords[indexPath.row]
+        let cred = selectItem(indexPath)
+        
         let passwordCredential = ASPasswordCredential(user: cred.userName, password: cred.password)
         self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
+    }
+    
+    func selectItem(_ indexPath: IndexPath) -> Credential {
+        if suggestedPasswords.count > 0 && indexPath.section == 0 {
+            return suggestedPasswords[indexPath.row]
+        }
+        return passwords[indexPath.row]
     }
 }
 
 struct Credential {
     var userName = ""
     var password = ""
-    var url = ""
+    var iconname = ""
+    var url = "" {
+        didSet(oldVal) {
+            iconname = resolveIconname(url: url)
+        }
+    }
+    
+    init(userName: String, password: String, url: String) {
+        self.userName = userName
+        self.password = password
+        self.url = url
+        self.iconname = resolveIconname(url: url)
+    }
+    
+    func resolveIconname(url: String) -> String {
+        let icons = ["wikipedia", "google", "apple", "baidu", "instagram", "twitter", "youtube", "naver", "kakao"]
+        for icon in icons {
+            if url.lowercased().contains(icon) {
+                return icon + "favicon"
+            }
+        }
+        return "defaultfavicon"
+    }
 }
 
 extension StringProtocol {

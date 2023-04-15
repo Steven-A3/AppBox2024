@@ -106,4 +106,10 @@ import AuthenticationServices
         }
         return nil;
     }
+    
+    @objc func pushPasswordViewController(navigationController: UINavigationController) {
+        let mainStoryboard = UIStoryboard.init(name: "Main", bundle: nil)
+        let homeViewController = mainStoryboard.instantiateViewController(withIdentifier: String(describing: ChangePasswordViewController.self))
+        navigationController.pushViewController(homeViewController, animated: true)
+    }
 }

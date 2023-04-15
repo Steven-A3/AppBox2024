@@ -116,6 +116,7 @@
 		680344651CE1E46F009C300F /* A3PedometerSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680344641CE1E46F009C300F /* A3PedometerSettingsTableViewController.m */; };
 		680513E01E7617AD009E2A1D /* TemporaryForLayout.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 680513DF1E7617AD009E2A1D /* TemporaryForLayout.xcassets */; };
 		680513EB1E761F6B009E2A1D /* A3WhatsNew4_5ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680513EA1E761F6B009E2A1D /* A3WhatsNew4_5ViewController.m */; };
+		68056F6E29E82B6600BD81B3 /* AppBox3-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 689A203C19AB3650009144B6 /* AppBox3-Info.plist */; };
 		68057CDD1E39EEDA002A11FE /* AbbreviationFavorite+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 68057CDA1E39EEDA002A11FE /* AbbreviationFavorite+CoreDataClass.m */; };
 		68057CDE1E39EEDA002A11FE /* AbbreviationFavorite+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 68057CDC1E39EEDA002A11FE /* AbbreviationFavorite+CoreDataProperties.m */; };
 		68067C8C186E867C00D1A1D1 /* A3PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68067C8B186E867C00D1A1D1 /* A3PasswordViewController.m */; };
@@ -321,6 +322,8 @@
 		684A71C21853464A0004A9FE /* A3AppDelegate+iCloud.m in Sources */ = {isa = PBXBuildFile; fileRef = 684A71C11853464A0004A9FE /* A3AppDelegate+iCloud.m */; };
 		684AB7B51E48488F00F2C3EC /* A3KaomojiCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 684AB7B41E48488F00F2C3EC /* A3KaomojiCollectionViewFlowLayout.m */; };
 		684AB7C01E48819500F2C3EC /* A3KaomojiCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 684AB7BF1E48819500F2C3EC /* A3KaomojiCollectionViewCell.m */; };
+		684AE51C29E7EC8E00589D62 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684AE51A29E7EC8E00589D62 /* ChangePasswordViewController.swift */; };
+		684AE51F29E7EC9F00589D62 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 684AE51D29E7EC9E00589D62 /* Main.storyboard */; };
 		684B44B41CB9B50800B7D264 /* A3QRCodeDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 684B44B31CB9B50800B7D264 /* A3QRCodeDetailViewController.m */; };
 		684B44BB1CB9B53400B7D264 /* A3QRCodeDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 684B44BA1CB9B53400B7D264 /* A3QRCodeDetailCell.m */; };
 		684D92BA18BC1EFE005016F7 /* A3BatterStatusBatteryPanelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92A318BC1EFE005016F7 /* A3BatterStatusBatteryPanelView.m */; };
@@ -510,6 +513,12 @@
 		68ADE14917D83D28009618A7 /* MMDrawerVisualState.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE14417D83D28009618A7 /* MMDrawerVisualState.m */; };
 		68ADE14A17D83D28009618A7 /* UIViewController+MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE14617D83D28009618A7 /* UIViewController+MMDrawerController.m */; };
 		68AE58C91A118A4B0021E489 /* A3StandardDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68AE58C81A118A4B0021E489 /* A3StandardDetailTableViewController.m */; };
+		68B1292929EA0CA3003A5EB1 /* AppBoxKit.docc in Sources */ = {isa = PBXBuildFile; fileRef = 68B1292829EA0CA3003A5EB1 /* AppBoxKit.docc */; };
+		68B1292F29EA0CA4003A5EB1 /* AppBoxKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68B1292529EA0CA1003A5EB1 /* AppBoxKit.framework */; };
+		68B1293629EA0CA7003A5EB1 /* AppBoxKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B1293529EA0CA7003A5EB1 /* AppBoxKitTests.swift */; };
+		68B1293729EA0CA7003A5EB1 /* AppBoxKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 68B1292729EA0CA3003A5EB1 /* AppBoxKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		68B1293A29EA0CA7003A5EB1 /* AppBoxKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68B1292529EA0CA1003A5EB1 /* AppBoxKit.framework */; };
+		68B1293B29EA0CA7003A5EB1 /* AppBoxKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 68B1292529EA0CA1003A5EB1 /* AppBoxKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		68B4028329D6DE3C00CA91CA /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 680A632B29B96B670020B964 /* AuthenticationServices.framework */; };
 		68B4028629D6DE3C00CA91CA /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B4028529D6DE3C00CA91CA /* CredentialProviderViewController.swift */; };
 		68B4028929D6DE3C00CA91CA /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68B4028729D6DE3C00CA91CA /* MainInterface.storyboard */; };
@@ -673,6 +682,7 @@
 		68CB7982183DB8A800255AE3 /* NYXImagesHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CB7980183DB8A800255AE3 /* NYXImagesHelper.m */; };
 		68CBBE781E1BA90500E92A8A /* A3AbbreviationDrillDownViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CBBE771E1BA90500E92A8A /* A3AbbreviationDrillDownViewController.m */; };
 		68CC1593174F763E0000870F /* SFKImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CC1592174F763E0000870F /* SFKImage.m */; };
+		68CEE6DD29E5270C00ACD910 /* AutofillTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68CEE6DC29E5270C00ACD910 /* AutofillTableCell.xib */; };
 		68CEFB491E20F03900DAFDCB /* A3SharePopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CEFB481E20F03900DAFDCB /* A3SharePopupViewController.m */; };
 		68CF607E1CBCF78C00F8E9B9 /* beep.wav in Resources */ = {isa = PBXBuildFile; fileRef = 68CF607D1CBCF78C00F8E9B9 /* beep.wav */; };
 		68CF60821CBD105C00F8E9B9 /* A3CornersView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CF60811CBD105C00F8E9B9 /* A3CornersView.m */; };
@@ -907,6 +917,7 @@
 		68F319FD18D83D1F0003BE62 /* A3LaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F319F918D83D1F0003BE62 /* A3LaunchViewController.m */; };
 		68F32E51188AC3C600248F16 /* UIViewController+tableViewStandardDimension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F32E50188AC3C600248F16 /* UIViewController+tableViewStandardDimension.m */; };
 		68F4EE8F17E4C0F9009BDE05 /* A3FSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F4EE8E17E4C0F9009BDE05 /* A3FSegmentedControl.m */; };
+		68F4F68029E12D1800456950 /* CredentialResultsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F4F67F29E12D1800456950 /* CredentialResultsTableViewController.swift */; };
 		68F9391917D0DDBB0082234C /* FMMoveTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F9391617D0DDBB0082234C /* FMMoveTableView.m */; };
 		68F9391A17D0DDBB0082234C /* FMMoveTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F9391817D0DDBB0082234C /* FMMoveTableViewCell.m */; };
 		68F967BF1818D74300D64A0A /* NSArray+validation.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F967BE1818D74300D64A0A /* NSArray+validation.m */; };
@@ -925,6 +936,27 @@
 			proxyType = 1;
 			remoteGlobalIDString = 682EA2D015EB10B000BD6AD4;
 			remoteInfo = AppBox3;
+		};
+		68B1293029EA0CA4003A5EB1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 682EA2C815EB10B000BD6AD4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 68B1292429EA0CA1003A5EB1;
+			remoteInfo = AppBoxKit;
+		};
+		68B1293229EA0CA6003A5EB1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 682EA2C815EB10B000BD6AD4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 682EA2D015EB10B000BD6AD4;
+			remoteInfo = AppBox3;
+		};
+		68B1293829EA0CA7003A5EB1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 682EA2C815EB10B000BD6AD4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 68B1292429EA0CA1003A5EB1;
+			remoteInfo = AppBoxKit;
 		};
 		68B4028C29D6DE3C00CA91CA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -953,6 +985,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				68B1293B29EA0CA7003A5EB1 /* AppBoxKit.framework in Embed Frameworks */,
 				686490E529B82BD600AF1D39 /* OpenSSL.xcframework in Embed Frameworks */,
 				681BF928273CF40E00304924 /* Ensembles.xcframework in Embed Frameworks */,
 			);
@@ -1589,6 +1622,8 @@
 		684AB7B41E48488F00F2C3EC /* A3KaomojiCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3KaomojiCollectionViewFlowLayout.m; path = Kaomoji/A3KaomojiCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		684AB7BE1E48819500F2C3EC /* A3KaomojiCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3KaomojiCollectionViewCell.h; path = Kaomoji/A3KaomojiCollectionViewCell.h; sourceTree = "<group>"; };
 		684AB7BF1E48819500F2C3EC /* A3KaomojiCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3KaomojiCollectionViewCell.m; path = Kaomoji/A3KaomojiCollectionViewCell.m; sourceTree = "<group>"; };
+		684AE51A29E7EC8E00589D62 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
+		684AE51E29E7EC9E00589D62 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		684B44B21CB9B50800B7D264 /* A3QRCodeDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3QRCodeDetailViewController.h; sourceTree = "<group>"; };
 		684B44B31CB9B50800B7D264 /* A3QRCodeDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3QRCodeDetailViewController.m; sourceTree = "<group>"; };
 		684B44B91CB9B53400B7D264 /* A3QRCodeDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3QRCodeDetailCell.h; sourceTree = "<group>"; };
@@ -1986,6 +2021,11 @@
 		68AE58C71A118A4B0021E489 /* A3StandardDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3StandardDetailTableViewController.h; path = ViewControllers/A3StandardDetailTableViewController.h; sourceTree = "<group>"; };
 		68AE58C81A118A4B0021E489 /* A3StandardDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3StandardDetailTableViewController.m; path = ViewControllers/A3StandardDetailTableViewController.m; sourceTree = "<group>"; };
 		68AF607C162BCCEE00E98002 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		68B1292529EA0CA1003A5EB1 /* AppBoxKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppBoxKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		68B1292729EA0CA3003A5EB1 /* AppBoxKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppBoxKit.h; sourceTree = "<group>"; };
+		68B1292829EA0CA3003A5EB1 /* AppBoxKit.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = AppBoxKit.docc; sourceTree = "<group>"; };
+		68B1292E29EA0CA3003A5EB1 /* AppBoxKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppBoxKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		68B1293529EA0CA7003A5EB1 /* AppBoxKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBoxKitTests.swift; sourceTree = "<group>"; };
 		68B4028229D6DE3C00CA91CA /* Autofill-extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Autofill-extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		68B4028529D6DE3C00CA91CA /* CredentialProviderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialProviderViewController.swift; sourceTree = "<group>"; };
 		68B4028829D6DE3C00CA91CA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
@@ -2308,6 +2348,7 @@
 		68CBBE771E1BA90500E92A8A /* A3AbbreviationDrillDownViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AbbreviationDrillDownViewController.m; sourceTree = "<group>"; };
 		68CC1591174F763E0000870F /* SFKImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SFKImage.h; path = External/SymbolFontKit/SymbolFontKit/SFKImage.h; sourceTree = "<group>"; };
 		68CC1592174F763E0000870F /* SFKImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SFKImage.m; path = External/SymbolFontKit/SymbolFontKit/SFKImage.m; sourceTree = "<group>"; };
+		68CEE6DC29E5270C00ACD910 /* AutofillTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AutofillTableCell.xib; sourceTree = "<group>"; };
 		68CEFB471E20F03900DAFDCB /* A3SharePopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3SharePopupViewController.h; sourceTree = "<group>"; };
 		68CEFB481E20F03900DAFDCB /* A3SharePopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SharePopupViewController.m; sourceTree = "<group>"; };
 		68CF607D1CBCF78C00F8E9B9 /* beep.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = beep.wav; path = AppBox3/beep.wav; sourceTree = "<group>"; };
@@ -2852,6 +2893,7 @@
 		68F32E50188AC3C600248F16 /* UIViewController+tableViewStandardDimension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+tableViewStandardDimension.m"; sourceTree = "<group>"; };
 		68F4EE8D17E4C0F9009BDE05 /* A3FSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3FSegmentedControl.h; sourceTree = "<group>"; };
 		68F4EE8E17E4C0F9009BDE05 /* A3FSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3FSegmentedControl.m; sourceTree = "<group>"; };
+		68F4F67F29E12D1800456950 /* CredentialResultsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialResultsTableViewController.swift; sourceTree = "<group>"; };
 		68F9391517D0DDBB0082234C /* FMMoveTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMMoveTableView.h; sourceTree = "<group>"; };
 		68F9391617D0DDBB0082234C /* FMMoveTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMMoveTableView.m; sourceTree = "<group>"; };
 		68F9391717D0DDBB0082234C /* FMMoveTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMMoveTableViewCell.h; sourceTree = "<group>"; };
@@ -2891,6 +2933,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68B1293A29EA0CA7003A5EB1 /* AppBoxKit.framework in Frameworks */,
 				6826275429B77B610052CBD0 /* GoogleMobileAds in Frameworks */,
 				6826275829B77C8D0052CBD0 /* FirebaseFunctions in Frameworks */,
 				68CFACD428A3A6F900C6B4F0 /* UniformTypeIdentifiers.framework in Frameworks */,
@@ -2920,6 +2963,21 @@
 				6876D6FD17A75DAE00E16991 /* UIKit.framework in Frameworks */,
 				6876D6FC17A75DAE00E16991 /* Foundation.framework in Frameworks */,
 				72D60606305C4B639565B897 /* Pods_AppBox3_Tests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		68B1292229EA0CA1003A5EB1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		68B1292B29EA0CA3003A5EB1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				68B1292F29EA0CA4003A5EB1 /* AppBoxKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3354,6 +3412,8 @@
 		680A633829BA9AE60020B964 /* Swift */ = {
 			isa = PBXGroup;
 			children = (
+				684AE51D29E7EC9E00589D62 /* Main.storyboard */,
+				684AE51A29E7EC8E00589D62 /* ChangePasswordViewController.swift */,
 				680A633B29BA9D790020B964 /* FirstSwift.swift */,
 				680A633A29BA9D780020B964 /* AppBox3-Bridging-Header.h */,
 				68BB6E4B29C72703002366EF /* CredentialIdentityStoreManager.swift */,
@@ -3806,6 +3866,8 @@
 				682EA2DD15EB10B000BD6AD4 /* AppBox3 */,
 				6876D6FE17A75DAE00E16991 /* AppBox3 Tests */,
 				68B4028429D6DE3C00CA91CA /* Autofill-extension */,
+				68B1292629EA0CA2003A5EB1 /* AppBoxKit */,
+				68B1293429EA0CA7003A5EB1 /* AppBoxKitTests */,
 				682EA2D415EB10B000BD6AD4 /* Frameworks */,
 				682EA2D215EB10B000BD6AD4 /* Products */,
 				EBCA40A147C9E4B5F5A19E3A /* Pods */,
@@ -3818,6 +3880,8 @@
 				682EA2D115EB10B000BD6AD4 /* AppBox3.app */,
 				6876D6FA17A75DAE00E16991 /* AppBox3 Tests.xctest */,
 				68B4028229D6DE3C00CA91CA /* Autofill-extension.appex */,
+				68B1292529EA0CA1003A5EB1 /* AppBoxKit.framework */,
+				68B1292E29EA0CA3003A5EB1 /* AppBoxKitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4554,6 +4618,23 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
+		68B1292629EA0CA2003A5EB1 /* AppBoxKit */ = {
+			isa = PBXGroup;
+			children = (
+				68B1292729EA0CA3003A5EB1 /* AppBoxKit.h */,
+				68B1292829EA0CA3003A5EB1 /* AppBoxKit.docc */,
+			);
+			path = AppBoxKit;
+			sourceTree = "<group>";
+		};
+		68B1293429EA0CA7003A5EB1 /* AppBoxKitTests */ = {
+			isa = PBXGroup;
+			children = (
+				68B1293529EA0CA7003A5EB1 /* AppBoxKitTests.swift */,
+			);
+			path = AppBoxKitTests;
+			sourceTree = "<group>";
+		};
 		68B4028429D6DE3C00CA91CA /* Autofill-extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -4561,7 +4642,9 @@
 				68B4029229D6DF5500CA91CA /* WalletFieldItem+CoreDataClass.swift */,
 				68B4029329D6DF5600CA91CA /* WalletFieldItem+CoreDataProperties.swift */,
 				68B4028529D6DE3C00CA91CA /* CredentialProviderViewController.swift */,
+				68F4F67F29E12D1800456950 /* CredentialResultsTableViewController.swift */,
 				68B4028729D6DE3C00CA91CA /* MainInterface.storyboard */,
+				68CEE6DC29E5270C00ACD910 /* AutofillTableCell.xib */,
 				68B4028A29D6DE3C00CA91CA /* Info.plist */,
 				68B4028B29D6DE3C00CA91CA /* Autofill_extension.entitlements */,
 				6878E19B29DD154A00650010 /* autofill-media.xcassets */,
@@ -5692,6 +5775,17 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		68B1292029EA0CA1003A5EB1 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				68B1293729EA0CA7003A5EB1 /* AppBoxKit.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		682EA2D015EB10B000BD6AD4 /* AppBox3 */ = {
 			isa = PBXNativeTarget;
@@ -5709,6 +5803,7 @@
 			);
 			dependencies = (
 				68B4028D29D6DE3C00CA91CA /* PBXTargetDependency */,
+				68B1293929EA0CA7003A5EB1 /* PBXTargetDependency */,
 			);
 			name = AppBox3;
 			packageProductDependencies = (
@@ -5745,6 +5840,43 @@
 			productReference = 6876D6FA17A75DAE00E16991 /* AppBox3 Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		68B1292429EA0CA1003A5EB1 /* AppBoxKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 68B1294029EA0CAA003A5EB1 /* Build configuration list for PBXNativeTarget "AppBoxKit" */;
+			buildPhases = (
+				68B1292029EA0CA1003A5EB1 /* Headers */,
+				68B1292129EA0CA1003A5EB1 /* Sources */,
+				68B1292229EA0CA1003A5EB1 /* Frameworks */,
+				68B1292329EA0CA1003A5EB1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AppBoxKit;
+			productName = AppBoxKit;
+			productReference = 68B1292529EA0CA1003A5EB1 /* AppBoxKit.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		68B1292D29EA0CA3003A5EB1 /* AppBoxKitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 68B1294129EA0CAA003A5EB1 /* Build configuration list for PBXNativeTarget "AppBoxKitTests" */;
+			buildPhases = (
+				68B1292A29EA0CA3003A5EB1 /* Sources */,
+				68B1292B29EA0CA3003A5EB1 /* Frameworks */,
+				68B1292C29EA0CA3003A5EB1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				68B1293129EA0CA4003A5EB1 /* PBXTargetDependency */,
+				68B1293329EA0CA6003A5EB1 /* PBXTargetDependency */,
+			);
+			name = AppBoxKitTests;
+			productName = AppBoxKitTests;
+			productReference = 68B1292E29EA0CA3003A5EB1 /* AppBoxKitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		68B4028129D6DE3C00CA91CA /* Autofill-extension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 68B4028F29D6DE3D00CA91CA /* Build configuration list for PBXNativeTarget "Autofill-extension" */;
@@ -5770,7 +5902,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				CLASSPREFIX = A3;
-				LastSwiftUpdateCheck = 1420;
+				LastSwiftUpdateCheck = 1430;
 				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = ALLABOUTAPPS;
 				TargetAttributes = {
@@ -5802,6 +5934,13 @@
 						};
 					};
 					6876D6F917A75DAE00E16991 = {
+						TestTargetID = 682EA2D015EB10B000BD6AD4;
+					};
+					68B1292429EA0CA1003A5EB1 = {
+						CreatedOnToolsVersion = 14.3;
+					};
+					68B1292D29EA0CA3003A5EB1 = {
+						CreatedOnToolsVersion = 14.3;
 						TestTargetID = 682EA2D015EB10B000BD6AD4;
 					};
 					68B4028129D6DE3C00CA91CA = {
@@ -5838,6 +5977,8 @@
 				682EA2D015EB10B000BD6AD4 /* AppBox3 */,
 				6876D6F917A75DAE00E16991 /* AppBox3 Tests */,
 				68B4028129D6DE3C00CA91CA /* Autofill-extension */,
+				68B1292429EA0CA1003A5EB1 /* AppBoxKit */,
+				68B1292D29EA0CA3003A5EB1 /* AppBoxKitTests */,
 			);
 		};
 /* End PBXProject section */
@@ -5858,6 +5999,7 @@
 				684D92C118BC1EFE005016F7 /* device_information.json in Resources */,
 				68F1500C19485E8500159EAD /* A3DaysCounterLocationDetailViewController.xib in Resources */,
 				68B6F76C1EA575F600C4BB7A /* MWPhotoBrowserAssets.xcassets in Resources */,
+				684AE51F29E7EC9F00589D62 /* Main.storyboard in Resources */,
 				68B6A35218CEC76D004084EF /* WalletPhoneStoryBoard.storyboard in Resources */,
 				68F150B5194C0E6000159EAD /* Launch_iPad.storyboard in Resources */,
 				68B6A32718CEC76D004084EF /* A3WalletCateTitleView_iPad.xib in Resources */,
@@ -5918,6 +6060,7 @@
 				68C802DB19571A2000BC19EE /* WalletPreset.strings in Resources */,
 				68F1C8D718D7F37D009FAE8A /* CalendarCell.xib in Resources */,
 				57E4E1C919D2DCC20037371B /* A3FlashViewController.xib in Resources */,
+				68056F6E29E82B6600BD81B3 /* AppBox3-Info.plist in Resources */,
 				68F14FDE19485E8500159EAD /* A3DaysCounterAddEventTitleCell.xib in Resources */,
 				68E50B241945E1E600FAD986 /* Instruction_iPad.storyboard in Resources */,
 				68F14FDD19485E8500159EAD /* A3DaysCounterAddEventSwitchCell.xib in Resources */,
@@ -6017,12 +6160,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		68B1292329EA0CA1003A5EB1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		68B1292C29EA0CA3003A5EB1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		68B4028029D6DE3C00CA91CA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				6878E19C29DD154A00650010 /* autofill-media.xcassets in Resources */,
 				68B4029829D6DFBA00CA91CA /* WalletCategoryPreset.plist in Resources */,
+				68CEE6DD29E5270C00ACD910 /* AutofillTableCell.xib in Resources */,
 				68B4028929D6DE3C00CA91CA /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -6112,6 +6270,7 @@
 				68D0732018210B5100D34870 /* A3RoundedSideButton.m in Sources */,
 				684AB7C01E48819500F2C3EC /* A3KaomojiCollectionViewCell.m in Sources */,
 				68F04D081B40F825004FDD7B /* RMStoreAppReceiptVerificator.m in Sources */,
+				684AE51C29E7EC8E00589D62 /* ChangePasswordViewController.swift in Sources */,
 				68B6F6DE1EA5759300C4BB7A /* UIImage+GIF.m in Sources */,
 				686F06E71AA1D9DC0093A6F9 /* A3MarkingsView.m in Sources */,
 				68F14FCC19485E8500159EAD /* A3DaysCounterReminderListViewController.m in Sources */,
@@ -6824,6 +6983,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		68B1292129EA0CA1003A5EB1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				68B1292929EA0CA3003A5EB1 /* AppBoxKit.docc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		68B1292A29EA0CA3003A5EB1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				68B1293629EA0CA7003A5EB1 /* AppBoxKitTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		68B4027E29D6DE3C00CA91CA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -6831,6 +7006,7 @@
 				6817E4EF29DC175100518477 /* TableViewCell.swift in Sources */,
 				68B4029429D6DF5600CA91CA /* WalletFieldItem+CoreDataClass.swift in Sources */,
 				68B4029629D6DF6C00CA91CA /* AppBox3.xcdatamodeld in Sources */,
+				68F4F68029E12D1800456950 /* CredentialResultsTableViewController.swift in Sources */,
 				68B4028629D6DE3C00CA91CA /* CredentialProviderViewController.swift in Sources */,
 				68B4029529D6DF5600CA91CA /* WalletFieldItem+CoreDataProperties.swift in Sources */,
 			);
@@ -6843,6 +7019,21 @@
 			isa = PBXTargetDependency;
 			target = 682EA2D015EB10B000BD6AD4 /* AppBox3 */;
 			targetProxy = 6876D70717A75DAE00E16991 /* PBXContainerItemProxy */;
+		};
+		68B1293129EA0CA4003A5EB1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 68B1292429EA0CA1003A5EB1 /* AppBoxKit */;
+			targetProxy = 68B1293029EA0CA4003A5EB1 /* PBXContainerItemProxy */;
+		};
+		68B1293329EA0CA6003A5EB1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 682EA2D015EB10B000BD6AD4 /* AppBox3 */;
+			targetProxy = 68B1293229EA0CA6003A5EB1 /* PBXContainerItemProxy */;
+		};
+		68B1293929EA0CA7003A5EB1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 68B1292429EA0CA1003A5EB1 /* AppBoxKit */;
+			targetProxy = 68B1293829EA0CA7003A5EB1 /* PBXContainerItemProxy */;
 		};
 		68B4028D29D6DE3C00CA91CA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -6923,6 +7114,14 @@
 				6813614A1A6CADE300E13F51 /* zh-Hant */,
 			);
 			name = UnitPriceStoryboard_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+		684AE51D29E7EC9E00589D62 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				684AE51E29E7EC9E00589D62 /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		686BC1D51846343100FA5C94 /* A3CurrencySettings.storyboard */ = {
@@ -7652,6 +7851,184 @@
 			};
 			name = Release;
 		};
+		68B1293C29EA0CAA003A5EB1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 84XB754BWU;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 ALLABOUTAPPS. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = net.allaboutapps.AppBoxKit;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		68B1293D29EA0CAA003A5EB1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 84XB754BWU;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 ALLABOUTAPPS. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = net.allaboutapps.AppBoxKit;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		68B1293E29EA0CAA003A5EB1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 84XB754BWU;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = net.allaboutapps.AppBoxKitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AppBox3.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AppBox3";
+			};
+			name = Debug;
+		};
+		68B1293F29EA0CAA003A5EB1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 84XB754BWU;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = net.allaboutapps.AppBoxKitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AppBox3.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AppBox3";
+			};
+			name = Release;
+		};
 		68B4029029D6DE3D00CA91CA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -7770,6 +8147,24 @@
 			buildConfigurations = (
 				6876D70A17A75DAE00E16991 /* Debug */,
 				6876D70B17A75DAE00E16991 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		68B1294029EA0CAA003A5EB1 /* Build configuration list for PBXNativeTarget "AppBoxKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				68B1293C29EA0CAA003A5EB1 /* Debug */,
+				68B1293D29EA0CAA003A5EB1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		68B1294129EA0CAA003A5EB1 /* Build configuration list for PBXNativeTarget "AppBoxKitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				68B1293E29EA0CAA003A5EB1 /* Debug */,
+				68B1293F29EA0CAA003A5EB1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
