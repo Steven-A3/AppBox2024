@@ -21,5 +21,6 @@
 - (void)setupBannerViewForAdUnitID:(NSString *)unitID keywords:(NSArray *)keywords delegate:(id<GADBannerViewDelegate>)delegate;
 - (GADBannerView *)bannerView;
 - (CGFloat)bannerHeight;
+- (void)cleanUp;
 
 @end

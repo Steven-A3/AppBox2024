@@ -7,9 +7,6 @@
 //
 
 #import "A3UserDefaults+A3Addition.h"
-#import "A3AppDelegate+iCloud.h"
-#import "A3AppDelegate+mainMenu.h"
-#import "A3UserDefaultsKeys.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+mainmenu.h"
 

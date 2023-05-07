@@ -19,12 +19,20 @@
 #import "A3UserDefaults.h"
 #import <objc/runtime.h>
 #import "A3SyncManager.h"
-#import "A3UIDevice.h"
 
 static char const *const key_adBannerView = "key_adBannerView";
 static char const *const key_adNativeExpressView = "key_adNativeExpressView";
 
 @implementation UIViewController (extension)
+
+- (void)cleanUp {
+    [self removeObserver];
+}
+
+- (BOOL)resignFirstResponder {
+    [self.editingObject resignFirstResponder];
+    return [super resignFirstResponder];
+}
 
 - (void)callPrepareCloseOnActiveMainAppViewController {
     UINavigationController *navigationController = A3AppDelegate.instance.navigationController;

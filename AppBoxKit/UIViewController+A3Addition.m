@@ -8,7 +8,6 @@
 
 #import "UIViewController+A3Addition.h"
 #import <CoreLocation/CoreLocation.h>
-#import "UIViewController+NumberKeyboard.h"
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "NSManagedObject+extension.h"
@@ -60,10 +59,6 @@ static char const *const key_firstActionSheet = "key_firstActionSheet";
  */
 
 #pragma mark - Common UI methods
-
-- (void)cleanUp {
-	[self removeObserver];
-}
 
 - (void)prepareClose {
 	[self dismissInstructionViewController:nil];
@@ -608,11 +603,6 @@ static char const *const key_firstActionSheet = "key_firstActionSheet";
 
 - (void)rotateFirstActionSheet {
     [[self firstActionSheet] dismissWithClickedButtonIndex:[self.firstActionSheet cancelButtonIndex] animated:NO];
-}
-
-- (BOOL)resignFirstResponder {
-	[self.editingObject resignFirstResponder];
-	return [super resignFirstResponder];
 }
 
 - (void)requestAuthorizationForCamera:(NSString *)appName afterAuthorizedHandler:(void (^)(BOOL granted))afterAuthorizedHandler {

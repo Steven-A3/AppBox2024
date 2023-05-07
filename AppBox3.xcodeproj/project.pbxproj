@@ -36,7 +36,6 @@
 		17D425CA8B84A776935B9382 /* Foursquare2.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42335F0EAF9428BAC7BBD /* Foursquare2.m */; };
 		17D425D8B8511A61A52DBE3E /* A3SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4263A1F905EB73EA573B2 /* A3SearchViewController.m */; };
 		17D4262AB96A4454B8EF3B49 /* A3LanguagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D425363271B74082FD8477 /* A3LanguagePickerController.m */; };
-		17D4263785F661F55F888132 /* NSDateFormatter+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4255AEBE358EED319031E /* NSDateFormatter+A3Addition.m */; };
 		17D426431E7AC7B8D2D21A72 /* A3CalculatorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D423DD97AB2009AC80EA88 /* A3CalculatorViewController.m */; };
 		17D426A26D07018A5660B225 /* A3StandardLeft15Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42516142E89CE1E21A7E2 /* A3StandardLeft15Cell.m */; };
 		17D426B04A102E4DE14D07AC /* A3UnitConverterHistory3RowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D421CCCCD5F05EEFF5F9CC /* A3UnitConverterHistory3RowCell.m */; };
@@ -104,6 +103,12 @@
 		57E4E1CE19D2DD360037371B /* A3RandomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E4E1CC19D2DD360037371B /* A3RandomViewController.m */; };
 		57E4E1CF19D2DD360037371B /* A3RandomViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E4E1CD19D2DD360037371B /* A3RandomViewController.xib */; };
 		62CB1AC5F8DE3246838E657A /* Pods_AppBox3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D6D831C83E01C06D27EDC99 /* Pods_AppBox3.framework */; };
+		680143842A072CEB00CA47FB /* NSDate-Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 680143822A072CEB00CA47FB /* NSDate-Utilities.h */; };
+		680143852A072CEB00CA47FB /* NSDate-Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 680143832A072CEB00CA47FB /* NSDate-Utilities.m */; };
+		680143882A07340B00CA47FB /* NSDate+formatting.m in Sources */ = {isa = PBXBuildFile; fileRef = 680143862A07340B00CA47FB /* NSDate+formatting.m */; };
+		680143892A07340B00CA47FB /* NSDate+formatting.h in Headers */ = {isa = PBXBuildFile; fileRef = 680143872A07340B00CA47FB /* NSDate+formatting.h */; };
+		6801438C2A0734B800CA47FB /* NSDateFormatter+A3Addition.h in Headers */ = {isa = PBXBuildFile; fileRef = 6801438A2A0734B800CA47FB /* NSDateFormatter+A3Addition.h */; };
+		6801438D2A0734B800CA47FB /* NSDateFormatter+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6801438B2A0734B800CA47FB /* NSDateFormatter+A3Addition.m */; };
 		68030ABC17F063D100B04487 /* HTCopyableLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 68030ABB17F063D100B04487 /* HTCopyableLabel.m */; };
 		680344601CE19505009C300F /* A3PedometerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6803445F1CE19505009C300F /* A3PedometerViewController.m */; };
 		680344651CE1E46F009C300F /* A3PedometerSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680344641CE1E46F009C300F /* A3PedometerSettingsTableViewController.m */; };
@@ -224,7 +229,6 @@
 		6817830F1902823D003E1BB9 /* A3WalletItemTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6817830E1902823D003E1BB9 /* A3WalletItemTitleCell.m */; };
 		6817E4EF29DC175100518477 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6817E4EE29DC175100518477 /* TableViewCell.swift */; };
 		681983731CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 681983721CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.m */; };
-		6819A86F18A6092B00E63C8B /* NSDateFormatter+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4255AEBE358EED319031E /* NSDateFormatter+A3Addition.m */; };
 		681BF928273CF40E00304924 /* Ensembles.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 68854E63273CEF000009D028 /* Ensembles.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		681C511F194EB57400CB653A /* LoanCalculatorPadStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 681C5121194EB57400CB653A /* LoanCalculatorPadStoryBoard.storyboard */; };
 		681E11FD1932E2250077DCFA /* A3DataMigrationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 681E11FC1932E2250077DCFA /* A3DataMigrationManager.m */; };
@@ -335,7 +339,6 @@
 		684D92FD18BC1FBC005016F7 /* A3DateCalcStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92E218BC1FBC005016F7 /* A3DateCalcStateManager.m */; };
 		684D92FE18BC1FBC005016F7 /* A3DateCalcTableRowData.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92E418BC1FBC005016F7 /* A3DateCalcTableRowData.m */; };
 		684D92FF18BC1FBC005016F7 /* A3DateCalcTableviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92E618BC1FBC005016F7 /* A3DateCalcTableviewCell.m */; };
-		684D932E18BC20E1005016F7 /* NSDate+formatting.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D932D18BC20E1005016F7 /* NSDate+formatting.m */; };
 		684DEA222A01DAAA00B198DE /* NSString+conversion.h in Headers */ = {isa = PBXBuildFile; fileRef = 684DEA202A01DAAA00B198DE /* NSString+conversion.h */; };
 		684DEA232A01DAAA00B198DE /* NSString+conversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 684DEA212A01DAAA00B198DE /* NSString+conversion.m */; };
 		684DEA262A01DF6600B198DE /* A3NumberFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 684DEA242A01DF6600B198DE /* A3NumberFormatter.h */; };
@@ -350,7 +353,6 @@
 		684E9F09188A43DF00FAA48E /* A3ActivitySafari.m in Sources */ = {isa = PBXBuildFile; fileRef = 684E9F08188A43DF00FAA48E /* A3ActivitySafari.m */; };
 		684E9F0C188A447400FAA48E /* A3BasicWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 684E9F0B188A447400FAA48E /* A3BasicWebViewController.m */; };
 		68507F80191CA72400C1C895 /* A3AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68507F7F191CA72400C1C895 /* A3AppDelegate.m */; };
-		68521A3B17E1EBB200E08FB1 /* NSDate-Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 68521A3A17E1EBB200E08FB1 /* NSDate-Utilities.m */; };
 		68521A4617E1FF2E00E08FB1 /* FXLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 68521A4517E1FF2E00E08FB1 /* FXLabel.m */; };
 		6852298018FFFAD7002D3C0E /* UIViewController+iPad_rightSideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6852297F18FFFAD7002D3C0E /* UIViewController+iPad_rightSideView.m */; };
 		6853A90E2A02355600A8B539 /* A3UserDefaultsKeys.h in Headers */ = {isa = PBXBuildFile; fileRef = 6853A90D2A02355600A8B539 /* A3UserDefaultsKeys.h */; };
@@ -1088,7 +1090,6 @@
 		17D4242BE119DDE4F3E5A8D7 /* A3DaysCounterEventListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3DaysCounterEventListViewController.h; path = AppBox3/Apps/DaysCounter/2.CalendarList/A3DaysCounterEventListViewController.h; sourceTree = SOURCE_ROOT; };
 		17D424359ACEAF33830481B1 /* A3SettingsRecentToKeepViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsRecentToKeepViewController.h; path = Settings/A3SettingsRecentToKeepViewController.h; sourceTree = "<group>"; };
 		17D4244AFCF614150C7BFB2F /* A3TranslatorLanguage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorLanguage.h; path = Translator/A3TranslatorLanguage.h; sourceTree = "<group>"; };
-		17D424801832D26C2FADD93A /* NSDateFormatter+A3Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+A3Addition.h"; sourceTree = "<group>"; };
 		17D4249FF78B2AED617B3BC3 /* FSRequester.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSRequester.m; sourceTree = "<group>"; };
 		17D424BF501B6E037C902ACC /* TemperatureConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TemperatureConverter.m; sourceTree = "<group>"; };
 		17D424EB09B4F07032C85CBF /* A3UnitConverterAddViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UnitConverterAddViewController.h; sourceTree = "<group>"; };
@@ -1101,7 +1102,6 @@
 		17D425363271B74082FD8477 /* A3LanguagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3LanguagePickerController.m; path = Translator/A3LanguagePickerController.m; sourceTree = "<group>"; };
 		17D425377D2ADD0DF878511F /* A3UnitConverterConvertTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UnitConverterConvertTableViewController.h; sourceTree = "<group>"; };
 		17D42555D4EFD9D7B167055D /* A3DaysCounterEventListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = A3DaysCounterEventListViewController.m; path = AppBox3/Apps/DaysCounter/2.CalendarList/A3DaysCounterEventListViewController.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		17D4255AEBE358EED319031E /* NSDateFormatter+A3Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+A3Addition.m"; sourceTree = "<group>"; };
 		17D425748A9DD274ADA35B83 /* A3UnitConverterHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UnitConverterHistoryViewController.h; sourceTree = "<group>"; };
 		17D425908CC861C99303B58F /* A3UnitConverterTVActionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitConverterTVActionCell.m; sourceTree = "<group>"; };
 		17D425BD88980A21D81883A9 /* A3UnitConverterTVActionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = A3UnitConverterTVActionCell.xib; sourceTree = "<group>"; };
@@ -1228,6 +1228,12 @@
 		57E4E1CB19D2DD360037371B /* A3RandomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3RandomViewController.h; path = Random/A3RandomViewController.h; sourceTree = "<group>"; };
 		57E4E1CC19D2DD360037371B /* A3RandomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3RandomViewController.m; path = Random/A3RandomViewController.m; sourceTree = "<group>"; };
 		57E4E1CD19D2DD360037371B /* A3RandomViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3RandomViewController.xib; path = Random/A3RandomViewController.xib; sourceTree = "<group>"; };
+		680143822A072CEB00CA47FB /* NSDate-Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate-Utilities.h"; sourceTree = "<group>"; };
+		680143832A072CEB00CA47FB /* NSDate-Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate-Utilities.m"; sourceTree = "<group>"; };
+		680143862A07340B00CA47FB /* NSDate+formatting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+formatting.m"; sourceTree = "<group>"; };
+		680143872A07340B00CA47FB /* NSDate+formatting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+formatting.h"; sourceTree = "<group>"; };
+		6801438A2A0734B800CA47FB /* NSDateFormatter+A3Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+A3Addition.h"; sourceTree = "<group>"; };
+		6801438B2A0734B800CA47FB /* NSDateFormatter+A3Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+A3Addition.m"; sourceTree = "<group>"; };
 		68030ABA17F063D100B04487 /* HTCopyableLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTCopyableLabel.h; path = External/HTCopyableLabel/HTCopyableLabel.h; sourceTree = "<group>"; };
 		68030ABB17F063D100B04487 /* HTCopyableLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTCopyableLabel.m; path = External/HTCopyableLabel/HTCopyableLabel.m; sourceTree = "<group>"; };
 		6803445E1CE19505009C300F /* A3PedometerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3PedometerViewController.h; path = Pedometer/A3PedometerViewController.h; sourceTree = "<group>"; };
@@ -1671,8 +1677,6 @@
 		684D92E418BC1FBC005016F7 /* A3DateCalcTableRowData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateCalcTableRowData.m; sourceTree = "<group>"; };
 		684D92E518BC1FBC005016F7 /* A3DateCalcTableviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateCalcTableviewCell.h; sourceTree = "<group>"; };
 		684D92E618BC1FBC005016F7 /* A3DateCalcTableviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateCalcTableviewCell.m; sourceTree = "<group>"; };
-		684D932C18BC20E1005016F7 /* NSDate+formatting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+formatting.h"; sourceTree = "<group>"; };
-		684D932D18BC20E1005016F7 /* NSDate+formatting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+formatting.m"; sourceTree = "<group>"; };
 		684DEA202A01DAAA00B198DE /* NSString+conversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+conversion.h"; sourceTree = "<group>"; };
 		684DEA212A01DAAA00B198DE /* NSString+conversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+conversion.m"; sourceTree = "<group>"; };
 		684DEA242A01DF6600B198DE /* A3NumberFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3NumberFormatter.h; sourceTree = "<group>"; };
@@ -1696,8 +1700,6 @@
 		684E9F0D188A4BB100FAA48E /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		68507F7E191CA72400C1C895 /* A3AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3AppDelegate.h; path = AppDelegate/A3AppDelegate.h; sourceTree = "<group>"; };
 		68507F7F191CA72400C1C895 /* A3AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3AppDelegate.m; path = AppDelegate/A3AppDelegate.m; sourceTree = "<group>"; };
-		68521A3917E1EBB200E08FB1 /* NSDate-Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate-Utilities.h"; path = "External/NSDate-Extensions/NSDate-Utilities.h"; sourceTree = "<group>"; };
-		68521A3A17E1EBB200E08FB1 /* NSDate-Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate-Utilities.m"; path = "External/NSDate-Extensions/NSDate-Utilities.m"; sourceTree = "<group>"; };
 		68521A4417E1FF2E00E08FB1 /* FXLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FXLabel.h; path = External/FXLabel/FXLabel/FXLabel.h; sourceTree = "<group>"; };
 		68521A4517E1FF2E00E08FB1 /* FXLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FXLabel.m; path = External/FXLabel/FXLabel/FXLabel.m; sourceTree = "<group>"; };
 		6852297E18FFFAD7002D3C0E /* UIViewController+iPad_rightSideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+iPad_rightSideView.h"; sourceTree = "<group>"; };
@@ -3179,12 +3181,8 @@
 				17D4289E801DA848F979FEC4 /* NSDate+calculation.m */,
 				68B9B16E17D04152003ACAD0 /* NSDate+daysleft.h */,
 				68B9B16F17D04152003ACAD0 /* NSDate+daysleft.m */,
-				684D932C18BC20E1005016F7 /* NSDate+formatting.h */,
-				684D932D18BC20E1005016F7 /* NSDate+formatting.m */,
 				6825367818A7BBF600EAFB84 /* NSDate+LunarConverter.h */,
 				6825367918A7BBF600EAFB84 /* NSDate+LunarConverter.m */,
-				17D424801832D26C2FADD93A /* NSDateFormatter+A3Addition.h */,
-				17D4255AEBE358EED319031E /* NSDateFormatter+A3Addition.m */,
 				68C1ABF818B1C05200021001 /* NSDateFormatter+LunarDate.h */,
 				68C1ABF918B1C05200021001 /* NSDateFormatter+LunarDate.m */,
 				682126841843902A009A7964 /* NSNumberExtensions.h */,
@@ -4278,15 +4276,6 @@
 			path = UIActivities;
 			sourceTree = "<group>";
 		};
-		68521A3617E1EB9B00E08FB1 /* NSDate-Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				68521A3917E1EBB200E08FB1 /* NSDate-Utilities.h */,
-				68521A3A17E1EBB200E08FB1 /* NSDate-Utilities.m */,
-			);
-			name = "NSDate-Extensions";
-			sourceTree = "<group>";
-		};
 		68521A4317E1FF1C00E08FB1 /* FXLabel */ = {
 			isa = PBXGroup;
 			children = (
@@ -4612,6 +4601,12 @@
 		68B1292629EA0CA2003A5EB1 /* AppBoxKit */ = {
 			isa = PBXGroup;
 			children = (
+				6801438A2A0734B800CA47FB /* NSDateFormatter+A3Addition.h */,
+				6801438B2A0734B800CA47FB /* NSDateFormatter+A3Addition.m */,
+				680143872A07340B00CA47FB /* NSDate+formatting.h */,
+				680143862A07340B00CA47FB /* NSDate+formatting.m */,
+				680143822A072CEB00CA47FB /* NSDate-Utilities.h */,
+				680143832A072CEB00CA47FB /* NSDate-Utilities.m */,
 				68A2D35F2A068B07006D0898 /* MASCompositeConstraint.h */,
 				68A2D3612A068B07006D0898 /* MASCompositeConstraint.m */,
 				68A2D35D2A068B07006D0898 /* MASConstraint.h */,
@@ -5156,7 +5151,6 @@
 				68F1B11A1778560B00E81257 /* MMDrawerController */,
 				68F1C8DF18D7FA41009FAE8A /* MPFoldTransition */,
 				684E9EFF188A43C300FAA48E /* NJKWebViewProgress */,
-				68521A3617E1EB9B00E08FB1 /* NSDate-Extensions */,
 				6872DD2D17B3D53F00C1BF44 /* NSDate-TimeAgo */,
 				686FCF331775CD1300F19332 /* NYXImagesKit */,
 				686FCF421775CD1300F19332 /* Reachability */,
@@ -5843,6 +5837,7 @@
 				68A2D38A2A068B08006D0898 /* MASViewAttribute.h in Headers */,
 				6853A90E2A02355600A8B539 /* A3UserDefaultsKeys.h in Headers */,
 				68A2D3742A068B08006D0898 /* MASConstraint.h in Headers */,
+				680143842A072CEB00CA47FB /* NSDate-Utilities.h in Headers */,
 				68B787732A00933A00510A37 /* A3SyncManager+NSUbiquitousKeyValueStore.h in Headers */,
 				68B1293729EA0CA7003A5EB1 /* AppBoxKit.h in Headers */,
 				685B83DD29FD1416007B679E /* UIViewController+A3Addition.h in Headers */,
@@ -5850,6 +5845,7 @@
 				6853A9122A0235C000A8B539 /* A3Utilities.h in Headers */,
 				68A2D3772A068B08006D0898 /* MASConstraintMaker.h in Headers */,
 				685B83E629FD2B7B007B679E /* A3SyncManager+mainmenu.h in Headers */,
+				6801438C2A0734B800CA47FB /* NSDateFormatter+A3Addition.h in Headers */,
 				68A2D3802A068B08006D0898 /* View+MASShorthandAdditions.h in Headers */,
 				685B83D229FD0FD6007B679E /* A3UserDefaults+A3Addition.h in Headers */,
 				68A2D3842A068B08006D0898 /* MASLayoutConstraint.h in Headers */,
@@ -5863,6 +5859,7 @@
 				685B83D729FD11A3007B679E /* A3SyncManager.h in Headers */,
 				684DEA262A01DF6600B198DE /* A3NumberFormatter.h in Headers */,
 				68A2D3852A068B08006D0898 /* MASUtilities.h in Headers */,
+				680143892A07340B00CA47FB /* NSDate+formatting.h in Headers */,
 				68A2D3812A068B08006D0898 /* Masonry.h in Headers */,
 				684868D92A024DE200CD6FDE /* A3UIDevice.h in Headers */,
 				684869382A037E7200CD6FDE /* NSMutableArray+MoveObject.h in Headers */,
@@ -6424,7 +6421,6 @@
 				680886D81891751B0093FD97 /* A3ClockInfo.m in Sources */,
 				680A633C29BA9D790020B964 /* FirstSwift.swift in Sources */,
 				68F14FE819485E8500159EAD /* A3DaysCounterEventListNameCell.m in Sources */,
-				68521A3B17E1EBB200E08FB1 /* NSDate-Utilities.m in Sources */,
 				68F1C8C818D7F37D009FAE8A /* A3LadyCalendarDetailViewController.m in Sources */,
 				68F1500919485E8500159EAD /* A3DaysCounterChangeLocationViewController.m in Sources */,
 				68143D5718E3EC7C00569691 /* A3JHTableViewMonthEntryElement.m in Sources */,
@@ -6663,7 +6659,6 @@
 				68E67CB81CE47C6B002B022E /* A3PedometerCollectionViewCell.m in Sources */,
 				68B6A2F918CEC76D004084EF /* A3UnitPriceNoteCell.m in Sources */,
 				6898D8181E45722800B7BEEA /* A3KaomojiViewController.m in Sources */,
-				684D932E18BC20E1005016F7 /* NSDate+formatting.m in Sources */,
 				684D92F418BC1FBC005016F7 /* A3DateCalcExcludeViewController.m in Sources */,
 				17D4236A30D866AEE7D3F6B2 /* UIView+A3Drawing.m in Sources */,
 				68B6A2FE18CEC76D004084EF /* A3UnitPriceUnitTabBarController.m in Sources */,
@@ -6939,7 +6934,6 @@
 				68F1C8DC18D7F37D009FAE8A /* A3LinedSlider.m in Sources */,
 				685CF1AD1DFFF46300DE2636 /* A3AbbreviationTableViewCell.m in Sources */,
 				17D42DDB19963EC340C1CA17 /* A3BackgroundWithPatternView.m in Sources */,
-				17D4263785F661F55F888132 /* NSDateFormatter+A3Addition.m in Sources */,
 				68B6A2C718CEC76D004084EF /* A3LoanCalcNoteCell.m in Sources */,
 				68F1C89818D7F37D009FAE8A /* A3DaysCounterModelManager.m in Sources */,
 				686BB8671909676A009163F2 /* A3WalletFieldEditTitleCell.m in Sources */,
@@ -7040,7 +7034,6 @@
 				681170931AC03D4C0079F4F9 /* AFHTTPSessionManager.m in Sources */,
 				689E9855197C1B99003710C3 /* A3UnitNamesTest.m in Sources */,
 				68DBF05717CB8AAB009CAC33 /* HolidayData+MiddleEast.m in Sources */,
-				6819A86F18A6092B00E63C8B /* NSDateFormatter+A3Addition.m in Sources */,
 				681170921AC03D4C0079F4F9 /* AFHTTPRequestOperationManager.m in Sources */,
 				68143D7A18E4FFBB00569691 /* NSDate+TimeAgo.m in Sources */,
 				68DBF05517CB8AAB009CAC33 /* HolidayData+Country.m in Sources */,
@@ -7075,9 +7068,11 @@
 				68A2D3832A068B08006D0898 /* MASConstraintMaker.m in Sources */,
 				685B83CB29FD0F7F007B679E /* A3UserDefaults.m in Sources */,
 				684869302A037B1700CD6FDE /* NSManagedObject+extension.m in Sources */,
+				680143882A07340B00CA47FB /* NSDate+formatting.m in Sources */,
 				68C610C129F61BFA0002B484 /* PasswordController.swift in Sources */,
 				684868D82A024DE200CD6FDE /* A3UIDevice.m in Sources */,
 				685B83DE29FD1416007B679E /* UIViewController+A3Addition.m in Sources */,
+				6801438D2A0734B800CA47FB /* NSDateFormatter+A3Addition.m in Sources */,
 				68A2D37F2A068B08006D0898 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				68A2D3782A068B08006D0898 /* MASCompositeConstraint.m in Sources */,
 				684DEA232A01DAAA00B198DE /* NSString+conversion.m in Sources */,
@@ -7085,6 +7080,7 @@
 				68A2D3882A068B08006D0898 /* ViewController+MASAdditions.m in Sources */,
 				6853A9112A0235C000A8B539 /* A3Utilities.m in Sources */,
 				685B83E829FD2BA0007B679E /* A3SyncManager+mainmenu.m in Sources */,
+				680143852A072CEB00CA47FB /* NSDate-Utilities.m in Sources */,
 				685B83D029FD0FD6007B679E /* A3UserDefaults+A3Defaults.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

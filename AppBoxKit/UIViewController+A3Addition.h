@@ -44,7 +44,6 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 
 @interface UIViewController (A3Addition)
 
-- (void)cleanUp;
 - (CGRect)screenBoundsAdjustedWithOrientation;
 - (void)showNavigationBarOn:(UINavigationController *)targetController;
 - (void)leftBarButtonAppsButton;
