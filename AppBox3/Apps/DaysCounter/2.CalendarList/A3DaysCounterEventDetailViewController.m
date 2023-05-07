@@ -31,6 +31,8 @@
 #import "A3NavigationController.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 @interface A3DaysCounterEventDetailViewController () <UIAlertViewDelegate, UIPopoverControllerDelegate, UIActionSheetDelegate, UIActivityItemSource, A3DaysCounterAddEventViewControllerDelegate>
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -209,7 +211,7 @@
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
 	[self.eventItem reminderItem].isUnread = @(NO);
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];

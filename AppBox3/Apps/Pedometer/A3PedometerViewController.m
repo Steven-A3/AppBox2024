@@ -20,6 +20,7 @@
 #import "NSDateFormatter+A3Addition.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
 
 NSString *const A3PedometerSettingsDidSearchHealthStore = @"A3PedometerSettingsDidSearchHealthStore";
 NSString *const A3PedometerNumberOfTimesDidShowScrollHelp = @"A3PedometerNumberOfTimesDidShowScrollHelp";
@@ -404,7 +405,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 				}
 				return;
 			}
-            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 			
 			Pedometer *pedometerItem = [Pedometer findFirstByAttribute:@"date" withValue:[self.searchDateFormatter stringFromDate:queryDate]];
 			if (!pedometerItem) {
@@ -478,7 +479,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	NSString *todayDate = [self.searchDateFormatter stringFromDate:[NSDate date]];
 	NSCalendar *calendar = [NSCalendar currentCalendar];
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     
     while ([pedometerItem.date compare:todayDate] == NSOrderedAscending) {
 		@autoreleasepool {
@@ -522,7 +523,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 		if (!error) {
 			dispatch_async(dispatch_get_main_queue(), ^{
 				NSString *todayString = [self.searchDateFormatter stringFromDate:today];
-                NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+                NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 				Pedometer *pedometerItem = [Pedometer findFirstByAttribute:@"date" withValue:todayString];
 				if (!pedometerItem) {
                     pedometerItem = [[Pedometer alloc] initWithContext:context];
@@ -596,7 +597,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
     NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
     components.day -= 7;
     
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	for (NSArray *item in testData) {
         NSDate *date = [calendar dateFromComponents:components];
         components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
@@ -853,7 +854,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 
 			static BOOL dataFound;
 			dataFound = NO;
-            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
             [results enumerateStatisticsFromDate:startDate toDate:endDate withBlock:^(HKStatistics *result, BOOL *stop) {
                 HKQuantity *quantity = result.sumQuantity;
                 double quantityValue;
@@ -941,7 +942,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
         for (Pedometer *item in invalidItems) {
             item.numberOfSteps = @0;
         }
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context saveContext];
 
     }

@@ -23,6 +23,8 @@
 #import "WalletFieldItem+initialize.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 @interface A3WalletAllViewController () <UISearchBarDelegate, UISearchControllerDelegate, A3InstructionViewControllerDelegate, A3ViewControllerProtocol, UISearchResultsUpdating>
 
@@ -742,7 +744,7 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 		fetchRequest.resultType = NSDictionaryResultType;
 		fetchRequest.propertiesToFetch = @[@"walletItemID"];
 		NSError *error;
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 		NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
 		for (NSDictionary *item in results) {
 			[uniqueIDs addObjectsFromArray:[item allValues]];
@@ -940,7 +942,7 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 			[self updateTopViewInfo:_topViewRef];
 		}
 		[item deleteWalletItem];
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context saveContext];
 	}
 }

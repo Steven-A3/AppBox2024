@@ -26,6 +26,9 @@
 #import "A3WalletRecentsViewController.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "UIViewController+extension.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 #define kDefaultTabSelection    1	// default tab value is 0 (tab #1), stored in A3UserDefaults
 
@@ -57,7 +60,7 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
     NSArray *recentsCategory = [WalletCategory findByAttribute:@"uniqueID" withValue:A3WalletUUIDRecentsCategory];
     if ([recentsCategory count] == 0) {
         [WalletData createRecentsCategory];
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context saveContext];
     }
     

@@ -25,6 +25,10 @@
 #import "A3UserDefaults.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "UIViewController+extension.h"
+#import "A3SyncManager.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 @interface A3TranslatorViewController () <FMMoveTableViewDataSource, FMMoveTableViewDelegate, A3TranslatorMessageViewControllerDelegate, A3TranslatorFavoriteDelegate, A3InstructionViewControllerDelegate, GADBannerViewDelegate>
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
@@ -453,7 +457,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 		TranslatorGroup *group = self.fetchedResultsController.fetchedObjects[indexPath.row];
 		[TranslatorHistory deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"groupID == %@", group.uniqueID]];
 		[TranslatorFavorite deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"groupID == %@", group.uniqueID]];
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context deleteObject:group];
 
 		[self.fetchedResultsController performFetch:nil];
@@ -499,7 +503,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 	NSMutableArray *mutableArray = [self.fetchedResultsController.fetchedObjects mutableCopy];
 	[mutableArray moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 	_fetchedResultsController = nil;
 }

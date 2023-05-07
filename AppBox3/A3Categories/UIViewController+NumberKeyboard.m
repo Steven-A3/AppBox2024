@@ -23,6 +23,7 @@
 #import "A3CalculatorViewController_iPad.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3NumberFormatter.h"
+#import "A3UIDevice.h"
 
 NSString *const A3NotificationCurrencyButtonPressed = @"A3NotificationCurrencyButtonPressed";
 NSString *const A3NotificationCalculatorButtonPressed = @"A3NotificationCalculatorButtonPressed";

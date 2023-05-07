@@ -20,7 +20,6 @@
 - (NSDictionary *)favoriteMenuDictionary;
 - (NSArray *)favoriteItems;
 - (void)updateApplicationShortcutItems;
-- (NSUInteger)maximumRecentlyUsedMenus;
 - (void)storeMaximumNumberRecentlyUsedMenus:(NSUInteger)maxNumber;
 - (void)clearRecentlyUsedMenus;
 - (NSArray *)availableMenuTypes;

@@ -43,6 +43,9 @@
 @import Photos;
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 #define ActionTag_Location      100
 #define ActionTag_Photo         101
@@ -127,7 +130,7 @@
     else {
 		_isAddingEvent = YES;
         self.title = NSLocalizedString(@"Add Event", @"Add Event");
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         _eventItem = [[DaysCounterEvent alloc] initWithContext:context];
 
 		// 사진 저장 및 기타 연관 정보 저장을 위해서
@@ -1696,7 +1699,7 @@
 
 	NSString *addingEventID = [_eventItem.uniqueID copy];
 	
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     if ([context hasChanges]) {
         [context rollback];
     }
@@ -2380,7 +2383,7 @@
 - (void)deleteLocationAction
 {
     DaysCounterEventLocation *location = [_eventItem location];
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context deleteObject:location];
     
     [self.tableView reloadData];
@@ -2643,7 +2646,7 @@
 
             DaysCounterEventLocation *locItem = [self.eventItem location];
             if (!locItem) {
-                NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+                NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
                 locItem = [[DaysCounterEventLocation alloc] initWithContext:context];
                 locItem.uniqueID = [[NSUUID UUID] UUIDString];
             }

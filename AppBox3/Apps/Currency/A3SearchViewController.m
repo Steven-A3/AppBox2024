@@ -11,6 +11,7 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "NSString+conversion.h"
 #import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 @implementation A3SearchTargetItem
 

@@ -10,6 +10,7 @@
 #import "UIViewController+A3Addition.h"
 #import "AbbreviationFavorite+CoreDataProperties.h"
 #import "A3SharePopupPresentationController.h"
+#import "A3AppDelegate.h"
 
 extern NSString *const A3AbbreviationKeyAbbreviation;
 extern NSString *const A3AbbreviationKeyMeaning;

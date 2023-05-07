@@ -27,11 +27,14 @@
 #import "A3ClockMainViewController.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "A3SyncManager+mainmenu.h"
 #import "A3UserDefaults.h"
 #import "A3LunarConverterViewController.h"
 #import "RMStore.h"
 #import "RMAppReceipt.h"
 #import "A3TableViewElement.h"
+#import "UIViewController+extension.h"
+#import "A3UIDevice.h"
 
 NSString *const A3NotificationAppsMainMenuContentsChanged = @"A3NotificationAppsMainMenuContentsChanged";
 NSString *const A3MainMenuBecameFirstResponder = @"A3MainMenuBecameFirstResponder";
@@ -168,7 +171,7 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 		[section0 addObject:favoritesDict];
 	}
 
-	NSInteger maxRecent = [[A3AppDelegate instance] maximumRecentlyUsedMenus];
+	NSInteger maxRecent = [[A3SyncManager sharedSyncManager] maximumRecentlyUsedMenus];
 	NSArray *recentMenuItems = nil;
 	NSDictionary *recentlyUsedMenuDictionary = [self recentlyUsedMenuItems];
 	recentMenuItems = recentlyUsedMenuDictionary[kA3AppsExpandableChildren];
@@ -448,7 +451,7 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 			recentlyUsed[kA3AppsExpandableChildren] = appsList;
 		}
 	} else {
-		NSInteger maxRecent = [[A3AppDelegate instance] maximumRecentlyUsedMenus];
+		NSInteger maxRecent = [[A3SyncManager sharedSyncManager] maximumRecentlyUsedMenus];
 
 		if (maxRecent <= 1) {
 			recentlyUsed[kA3AppsExpandableChildren] = @[@{kA3AppsMenuName: appName}];

@@ -12,6 +12,7 @@
 #import "A3SyncManager.h"
 #import "A3UnitPriceMainTableController.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "A3UIDevice.h"
 
 NSString *const PRICE_KEY		= @"price";
 NSString *const SIZE_KEY		= @"size";

@@ -21,6 +21,10 @@
 #import "A3ChooseColorView.h"
 #import "A3InstructionViewController.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "UIViewController+extension.h"
+#import "A3SyncManager.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 #define kCntPage 4.0
 

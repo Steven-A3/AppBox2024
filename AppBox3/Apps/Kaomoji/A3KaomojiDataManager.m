@@ -14,9 +14,9 @@
 #import "NSManagedObjectContext+extension.h"
 #import "NSMutableArray+A3Sort.h"
 #import "A3KaomojiDrillDownViewController.h"
-#import "A3AppDelegate.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
 
 NSString *const A3KaomojiKeyCategory = @"category";
 NSString *const A3KaomojiKeyContents = @"contents";
@@ -323,7 +323,7 @@ NSString *const A3KaomojiKeyContents = @"contents";
 #pragma mark - A3SharePopupViewDataSource
 
 - (void)saveCoreData {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     if ([context hasChanges]) {
         NSError *saveError = nil;
         [context save:&saveError];
@@ -340,7 +340,7 @@ NSString *const A3KaomojiKeyContents = @"contents";
 }
 
 - (void)addToFavorites:(NSString *)titleString {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     KaomojiFavorite *favorite = [[KaomojiFavorite alloc] initWithContext:context];
 	favorite.uniqueID = titleString;
 	[favorite assignOrderAsLast];
@@ -348,7 +348,7 @@ NSString *const A3KaomojiKeyContents = @"contents";
 }
 
 - (void)removeFromFavorites:(NSString *)titleString {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"uniqueID", titleString];
 	NSArray *result = [KaomojiFavorite findAllWithPredicate:predicate];
 	if ([result count]) {
@@ -378,10 +378,9 @@ NSString *const A3KaomojiKeyContents = @"contents";
 // Favorites can delete or reorder the items
 
 - (void)deleteItemForContent:(NSString *)content {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	NSArray *results = [KaomojiFavorite findByAttribute:@"uniqueID" withValue:content];
 	if ([results count] > 0) {
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
 		for (KaomojiFavorite *favorite in results) {
             [context deleteObject:favorite];
 		}
@@ -390,7 +389,7 @@ NSString *const A3KaomojiKeyContents = @"contents";
 }
 
 - (void)moveItemForContent:(id)content fromIndex:(NSInteger)fromIndex toIndex:(NSInteger)toIndex {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	NSMutableArray *favoriteKeys = [[KaomojiFavorite findAllSortedBy:@"order" ascending:YES] mutableCopy];
 	FNLOG(@"%@", favoriteKeys);
 	[favoriteKeys moveItemInSortedArrayFromIndex:fromIndex toIndex:toIndex];

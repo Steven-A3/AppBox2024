@@ -14,6 +14,7 @@
 #import "A3UserDefaultsKeys.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "A3UIDevice.h"
 
 @interface A3SettingsChooseColorViewController ()
 

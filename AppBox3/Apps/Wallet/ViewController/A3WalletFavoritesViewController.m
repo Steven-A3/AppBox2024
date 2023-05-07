@@ -17,6 +17,8 @@
 #import "A3UserDefaults.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 @interface A3WalletFavoritesViewController () <A3InstructionViewControllerDelegate>
 
@@ -232,7 +234,7 @@ static NSString *const A3V3InstructionDidShowForWalletFavorite = @"A3V3Instructi
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
         
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         WalletFavorite *favorite = self.items[(NSUInteger) indexPath.row];
         [self.items removeObject:favorite];
         

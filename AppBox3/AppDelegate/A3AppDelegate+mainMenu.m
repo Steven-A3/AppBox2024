@@ -12,6 +12,7 @@
 #import "A3AppDelegate+mainMenu.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "A3SyncManager+mainmenu.h"
 #import "A3UserDefaults.h"
 #import "A3MainMenuTableViewController.h"
 #import "A3MainViewController.h"
@@ -30,6 +31,8 @@
 #import "NSMutableArray+MoveObject.h"
 #import <objc/runtime.h>
 #import <CoreMotion/CoreMotion.h>
+#import "UIViewController+extension.h"
+#import "A3UIDevice.h"
 
 NSString *const kA3ApplicationLastRunVersion = @"kLastRunVersion";
 NSString *const kA3ApplicationNumberOfDidBecomeActive = @"kA3ApplicationNumberOfDidBecomeActive";
@@ -60,42 +63,7 @@ NSString *const kA3AppsOriginalStartingAppName = @"kA3AppsOriginalStartingAppNam
 NSString *const kA3AppsHideOtherAppLinks = @"kA3AppsHideOtherAppLinks";
 NSString *const kA3AppsUseGrayIconsOnGridMenu = @"kA3AppsUseGrayIconsOnGridMenu";
 
-NSString *const A3AppName_DateCalculator = @"Date Calculator";
-NSString *const A3AppName_LoanCalculator = @"Loan Calculator";
-NSString *const A3AppName_SalesCalculator = @"Sales Calculator";
-NSString *const A3AppName_TipCalculator = @"Tip Calculator";
-NSString *const A3AppName_UnitPrice = @"Unit Price";
-NSString *const A3AppName_Calculator = @"Calculator";
-NSString *const A3AppName_PercentCalculator = @"Percent Calculator";
-NSString *const A3AppName_CurrencyConverter = @"Currency Converter";
-NSString *const A3AppName_LunarConverter = @"Lunar Converter";
-NSString *const A3AppName_Translator = @"Translator";
-NSString *const A3AppName_UnitConverter = @"Unit Converter";
-NSString *const A3AppName_DaysCounter = @"Days Counter";
-NSString *const A3AppName_LadiesCalendar = @"Ladies Calendar";
-NSString *const A3AppName_Wallet = @"Wallet";
-NSString *const A3AppName_ExpenseList = @"Expense List";
-NSString *const A3AppName_Holidays = @"Holidays";
-NSString *const A3AppName_Clock = @"Clock";
-NSString *const A3AppName_BatteryStatus = @"Battery Status";
-NSString *const A3AppName_Mirror = @"Mirror";
-NSString *const A3AppName_Magnifier = @"Magnifier";
-NSString *const A3AppName_Flashlight = @"Flashlight";
-NSString *const A3AppName_Random = @"Random";
-NSString *const A3AppName_Ruler = @"Ruler";
-NSString *const A3AppName_Level = @"Level";
-NSString *const A3AppName_QRCode = @"QR Code";
-NSString *const A3AppName_Pedometer = @"Pedometer";
-NSString *const A3AppName_Abbreviation = @"Abbreviation";
-NSString *const A3AppName_Kaomoji = @"Kaomoji";
-
-NSString *const A3AppName_Settings = @"Settings";
-NSString *const A3AppName_About = @"About";
-NSString *const A3AppName_RemoveAds = @"Remove Ads";
-NSString *const A3AppName_RestorePurchase = @"Restore Purchase";
-
 // 아래 줄 이하는 새로 정의한 상수
-NSString *const A3AppName_None = @"None";
 NSString *const kA3AppsMenuNameForGrid = @"kA3AppsMenuNameForGrid";
 
 NSString *const kA3AppsGroupName = @"kA3AppsGroupName";
@@ -664,11 +632,6 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 	return favoriteObject[kA3AppsExpandableChildren];
 }
 
-- (NSUInteger)maximumRecentlyUsedMenus {
-	id value = [[A3SyncManager sharedSyncManager] objectForKey:A3MainMenuUserDefaultsMaxRecentlyUsed];
-	return value ? [value unsignedIntegerValue] : 3;
-}
-
 - (void)storeMaximumNumberRecentlyUsedMenus:(NSUInteger)maxNumber {
 	[[A3SyncManager sharedSyncManager] setInteger:maxNumber forKey:A3MainMenuUserDefaultsMaxRecentlyUsed state:A3DataObjectStateModified];
 }
@@ -855,7 +818,7 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 //                return YES;
 //            }
         }
-        [[self managedObjectContext] reset];
+        [A3SyncManager.sharedSyncManager.persistentContainer.viewContext reset];
 
 		UIViewController *targetViewController= [self getViewControllerForAppNamed:appName];
 		[targetViewController callPrepareCloseOnActiveMainAppViewController];
@@ -1228,7 +1191,7 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 			recentlyUsed[kA3AppsExpandableChildren] = appsList;
 		}
 	} else {
-		NSInteger maxRecent = [[A3AppDelegate instance] maximumRecentlyUsedMenus];
+		NSInteger maxRecent = [[A3SyncManager sharedSyncManager] maximumRecentlyUsedMenus];
 		
 		if (maxRecent <= 1) {
 			recentlyUsed[kA3AppsExpandableChildren] = @[@{kA3AppsMenuName: appName}];

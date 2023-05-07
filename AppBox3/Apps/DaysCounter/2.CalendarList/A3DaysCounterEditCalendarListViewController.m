@@ -21,6 +21,8 @@
 #import "UITableView+utility.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 @interface A3DaysCounterEditCalendarListViewController ()
 @property (strong, nonatomic) NSMutableArray *calendarArray;
@@ -176,7 +178,7 @@
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
 	[_calendarArray moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 
     [tableView reloadData];
@@ -206,7 +208,7 @@
     BOOL checkState = [calendar.isShow boolValue];
     calendar.isShow = @(!checkState);
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -234,7 +236,7 @@
     }
     
     calendar.isShow = @(!checkState);
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
     if (checkState && ([shownUserCalendar count] == 2)) {
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];

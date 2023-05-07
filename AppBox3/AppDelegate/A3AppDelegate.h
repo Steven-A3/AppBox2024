@@ -57,8 +57,6 @@ extern NSString *const A3NotificationMainMenuDidShow;
 extern NSString *const A3NotificationMainMenuDidHide;
 extern NSString *const A3DropboxLoginWithSuccess;
 extern NSString *const A3DropboxLoginFailed;
-extern NSString *const A3NotificationCloudKeyValueStoreDidImport;
-extern NSString *const A3NotificationCloudCoreDataStoreDidImport;
 extern NSString *const A3NotificationsUserNotificationSettingsRegistered;
 extern NSString *const A3NotificationsAdsWillDismissScreen;
 
@@ -68,44 +66,7 @@ extern NSString *const A3LocalNotificationDataID;
 extern NSString *const A3LocalNotificationFromLadyCalendar;
 extern NSString *const A3LocalNotificationFromDaysCounter;
 
-extern NSString *const A3AppName_DateCalculator;
-extern NSString *const A3AppName_LoanCalculator;
-extern NSString *const A3AppName_SalesCalculator;
-extern NSString *const A3AppName_TipCalculator;
-extern NSString *const A3AppName_UnitPrice;
-extern NSString *const A3AppName_Calculator;
-extern NSString *const A3AppName_PercentCalculator;
-extern NSString *const A3AppName_CurrencyConverter;
-extern NSString *const A3AppName_LunarConverter;
-extern NSString *const A3AppName_Translator;
-extern NSString *const A3AppName_UnitConverter;
-extern NSString *const A3AppName_DaysCounter;
-extern NSString *const A3AppName_LadiesCalendar;
-extern NSString *const A3AppName_Wallet;
-extern NSString *const A3AppName_ExpenseList;
-extern NSString *const A3AppName_Holidays;
-extern NSString *const A3AppName_Clock;
-extern NSString *const A3AppName_BatteryStatus;
-extern NSString *const A3AppName_Mirror;
-extern NSString *const A3AppName_Magnifier;
-extern NSString *const A3AppName_Flashlight;
-extern NSString *const A3AppName_Random;
-extern NSString *const A3AppName_Ruler;
-extern NSString *const A3AppName_Level;
-extern NSString *const A3AppName_QRCode;
-extern NSString *const A3AppName_Pedometer;
-extern NSString *const A3AppName_Abbreviation;
-extern NSString *const A3AppName_Kaomoji;
-
-extern NSString *const A3AppName_Settings;
-extern NSString *const A3AppName_About;
-extern NSString *const A3AppName_RemoveAds;
-extern NSString *const A3AppName_RestorePurchase;
-extern NSString *const A3AppName_None;
-
 extern NSString *const A3InAppPurchaseRemoveAdsProductIdentifier;
-extern NSString *const kA3AdsUserDidSelectPersonalizedAds;
-extern NSString *const A3AppGroupIdentifier;
 /**
  *  메뉴 그룹별 컬러를 적용하기 위해서 그룹 이름을 Key로 사용하기 위하여 정의 하였다.
  */
@@ -135,8 +96,6 @@ extern NSString *const A3AppGroupNameNone;
 @property (strong, nonatomic) A3MainMenuTableViewController *mainMenuViewController;
 @property (strong, nonatomic) A3HomeStyleMenuViewController *homeStyleMainMenuViewController;
 
-@property (strong, nonatomic) NSPersistentContainer *persistentContainer;
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;     // It will be replaced with persistentContainer
 @property (strong, nonatomic) NSDate *wakeUpTime;
 @property (strong, nonatomic) MBProgressHUD *hud;
 @property (nonatomic, strong) MBProgressHUD *hudView;
@@ -190,8 +149,6 @@ extern NSString *const A3AppGroupNameNone;
 - (UIViewController *)visibleViewController;
 - (void)downloadDataFiles;
 - (void)setupContext;
-- (NSURL *)storeURL;
-- (NSString *)storeFileName;
 - (NSString *)backupReceiptFilePath;
 - (void)makeReceiptBackup;
 - (RMAppReceipt *)appReceipt;

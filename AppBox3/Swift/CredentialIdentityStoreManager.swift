@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 import OSLog
 import AuthenticationServices
+import AppBoxKit
 
 @objc public class CredentialIdentityStoreManager : NSObject {
     @objc func updateCredentialIdentityStore() {
@@ -23,7 +24,7 @@ import AuthenticationServices
     }
 
     func updateCredentialStore() {
-        let context = A3AppDelegate.instance().managedObjectContext;
+        let context = A3SyncManager.shared().persistentContainer.viewContext;
         
         // Account Catetory를 읽어들인다.
         let url = Bundle.main.url(forResource: "WalletCategoryPreset", withExtension: "plist")!
@@ -53,7 +54,7 @@ import AuthenticationServices
             //            request.propertiesToGroupBy = ["walletItemID"]
             //            request.resultType = .dictionaryResultType
             
-            let result = try! context?.fetch(request) as? [WalletFieldItem] ?? []
+            let result = try! context.fetch(request) as? [WalletFieldItem] ?? []
             //            os_log("%@", result)
             
             let groupByItemID = Dictionary(grouping: result, by: { $0!.walletItemID } )

@@ -7,6 +7,7 @@
 //
 
 #import "A3KaomojiCollectionViewCell.h"
+#import "A3UIDevice.h"
 
 @interface A3KaomojiCollectionViewCell ()
 

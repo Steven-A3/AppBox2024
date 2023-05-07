@@ -10,6 +10,9 @@
 #import "UIViewController+A3Addition.h"
 #import "UnitPriceInfo.h"
 #import "A3UnitDataManager.h"
+#import "UIViewController+extension.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 @interface A3UnitPriceUnitTabBarController () <UITabBarControllerDelegate, GADBannerViewDelegate>
 {

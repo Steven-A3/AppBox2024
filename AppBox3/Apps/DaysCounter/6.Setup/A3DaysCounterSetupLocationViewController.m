@@ -31,6 +31,8 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 @interface A3DaysCounterSetupLocationViewController () <MBProgressHUDDelegate>
 @property (nonatomic, strong) A3LocationPlacemarkView *placemarkView;
@@ -658,7 +660,7 @@
         }
 
         DaysCounterEventLocation *locItem = [_eventModel location];
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         if (!locItem) {
             locItem = [[DaysCounterEventLocation alloc] initWithContext:context];
             locItem.uniqueID = [[NSUUID UUID] UUIDString];
@@ -826,7 +828,7 @@
         viewCtrl.dismissCompletionBlock = ^(FSVenue *locationItem) {
             [self.eventModel deleteLocation];
             
-            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
             DaysCounterEventLocation *locItem = [[DaysCounterEventLocation alloc] initWithContext:context];
 			locItem.uniqueID = [[NSUUID UUID] UUIDString];
 			locItem.updateDate = [NSDate date];

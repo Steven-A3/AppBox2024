@@ -33,6 +33,10 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "UIViewController+extension.h"
+#import "A3AppDelegate.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 @interface A3DaysCounterFavoriteListViewController () <FMMoveTableViewDelegate, FMMoveTableViewDataSource, A3InstructionViewControllerDelegate,
 		A3ViewControllerProtocol>
@@ -413,7 +417,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
         DaysCounterFavorite *favorite = [_itemArray objectAtIndex:indexPath.row];
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context deleteObject:favorite];
 
 		[_itemArray removeObjectAtIndex:indexPath.row];
@@ -448,7 +452,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
 
 - (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
 	[_itemArray moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 }
 

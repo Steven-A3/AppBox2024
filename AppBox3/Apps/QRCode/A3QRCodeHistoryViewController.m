@@ -21,6 +21,9 @@
 #import "Reachability.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "UIViewController+extension.h"
+#import "A3SyncManager.h"
+#import "A3AppDelegate.h"
 
 typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 	A3QRCodeHistoryActionSheetTypeClearHistory = 1,
@@ -138,7 +141,7 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 	}
 	if (actionSheet.tag == A3QRCodeHistoryActionSheetTypeClearHistory) {
 		if (buttonIndex == actionSheet.destructiveButtonIndex) {
-            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 			switch (_segmentedControl.selectedSegmentIndex) {
 				case 0:
 					[QRCodeHistory truncateAll];
@@ -393,7 +396,7 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 		QRCodeHistory *history = self.historyArray[indexPath.row];
         [context deleteObject:history];
 

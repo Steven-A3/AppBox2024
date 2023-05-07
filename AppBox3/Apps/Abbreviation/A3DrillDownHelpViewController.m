@@ -8,6 +8,7 @@
 
 #import "A3DrillDownHelpViewController.h"
 #import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 @interface A3DrillDownHelpViewController ()
 

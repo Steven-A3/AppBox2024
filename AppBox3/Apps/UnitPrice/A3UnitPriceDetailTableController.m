@@ -33,6 +33,8 @@
 #import "A3AppDelegate.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 typedef NS_ENUM(NSInteger, PriceDiscountType) {
 	Price_Percent = 0,
@@ -510,7 +512,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
         }
 		textField.text = self.price.size ? [self.decimalFormatter stringFromNumber:self.price.size]: @"";
     }
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 }
 
@@ -553,7 +555,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	self.price.note = textView.text;
 	self.editingObject = nil;
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 }
 
@@ -871,7 +873,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	self.price.unitCategoryID = @(categoryID);
 	self.price.unitID = @(unitID);
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 
 	NSIndexPath *sliderIP = [NSIndexPath indexPathForRow:0 inSection:0];

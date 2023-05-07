@@ -8,6 +8,7 @@
 
 #import "A3CalculatorUtil.h"
 #import <CoreText/CoreText.h>
+#import "A3UIDevice.h"
 
 @implementation A3CalculatorUtil
 

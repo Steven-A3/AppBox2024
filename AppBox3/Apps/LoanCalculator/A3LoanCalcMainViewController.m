@@ -43,6 +43,9 @@
 #import "A3NumberFormatter.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "UIViewController+extension.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 #define LoanCalcModeSave @"LoanCalcModeSave"
 
@@ -1018,7 +1021,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 
 - (LoanCalcHistory *)loanHistoryForLoanData:(LoanCalcData *)loan
 {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     LoanCalcHistory *history = [[LoanCalcHistory alloc] initWithContext:context];
 	history.uniqueID = [[NSUUID UUID] UUIDString];
     history.calculationMode = @(loan.calculationMode);
@@ -1449,7 +1452,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
     if (![LoanCalcHistory sameDataExistForLoanCalcData:self.loanData type:nil]) {
         [self loanHistoryForLoanData:self.loanData];
 
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context saveContext];
     }
 }
@@ -1750,7 +1753,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 		historyA.orderInComparison = @"A";
 		historyB.orderInComparison = @"B";
         
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         LoanCalcComparisonHistory *comparison = [[LoanCalcComparisonHistory alloc] initWithContext:context];
         comparison.uniqueID = [[NSUUID UUID] UUIDString];
         comparison.updateDate = [NSDate date];

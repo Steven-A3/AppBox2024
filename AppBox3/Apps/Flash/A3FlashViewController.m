@@ -16,6 +16,10 @@
 #import "UIImage+imageWithColor.h"
 #import <AVFoundation/AVFoundation.h>
 #import "NPColorPickerView.h"
+#import "UIViewController+extension.h"
+#import "A3AppDelegate.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 #define kBottomToolBarHeight        74
 

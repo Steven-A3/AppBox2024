@@ -15,6 +15,8 @@
 #import "DaysCounterEvent.h"
 #import "UIImage+JHExtension.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 @interface A3DaysCounterSetupDurationViewController ()
 @property (strong, nonatomic) NSArray *itemArray;

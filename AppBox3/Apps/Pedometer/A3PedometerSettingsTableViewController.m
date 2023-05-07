@@ -9,6 +9,7 @@
 #import "A3PedometerSettingsTableViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "A3PedometerHandler.h"
+#import "A3AppDelegate.h"
 
 @interface A3PedometerSettingsTableViewController () <UIPickerViewDataSource, UIPickerViewDelegate>
 

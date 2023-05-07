@@ -14,6 +14,7 @@
 #import "UIImage+JHExtension.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIImage+imageWithColor.h"
+#import "A3UIDevice.h"
 
 @interface A3ExpenseListHeaderView()
 

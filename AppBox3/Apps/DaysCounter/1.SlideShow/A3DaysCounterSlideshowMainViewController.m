@@ -31,6 +31,10 @@
 #import "A3DaysCounterSlideShowCollectionViewLayout.h"
 #import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
+#import "UIViewController+extension.h"
+#import "A3AppDelegate.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 #define VISIBLE_INDEX_INTERVAL      2
 

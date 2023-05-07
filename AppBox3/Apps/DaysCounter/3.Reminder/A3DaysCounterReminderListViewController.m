@@ -27,6 +27,10 @@
 #import "UITableView+utility.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "UIViewController+extension.h"
+#import "A3AppDelegate.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 @interface A3DaysCounterReminderListViewController () <UITableViewDataSource, UITableViewDelegate, A3ViewControllerProtocol>
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -300,7 +304,7 @@
         [reminder.startDate timeIntervalSince1970] < [[NSDate date] timeIntervalSince1970]) {
             item.hasReminder = @(NO);
     }
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 
     self.itemArray = [NSMutableArray arrayWithArray:[_sharedManager reminderList]];

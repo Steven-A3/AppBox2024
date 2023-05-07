@@ -12,6 +12,9 @@
 #import "A3UserDefaults+A3Defaults.h"
 #import "A3CurrencyTableViewController.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "A3AppDelegate.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 @interface A3CurrencySettingsViewController ()
 

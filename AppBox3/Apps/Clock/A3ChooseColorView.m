@@ -8,6 +8,7 @@
 
 #import "A3ChooseColorView.h"
 #import "A3AppDelegate+appearance.h"
+#import "A3UIDevice.h"
 
 @interface A3ChooseColorView () <UICollectionViewDataSource, UICollectionViewDelegate>
 

@@ -22,7 +22,7 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "UIViewController+tableViewStandardDimension.h"
-
+#import "A3UIDevice.h"
 
 @interface A3LoanCalcMonthlyDataViewController ()
 

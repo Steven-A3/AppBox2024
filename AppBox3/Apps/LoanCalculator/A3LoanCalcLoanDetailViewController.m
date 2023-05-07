@@ -23,6 +23,7 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "A3UIDevice.h"
 
 @interface A3LoanCalcLoanDetailViewController ()
 <LoanCalcSelectFrequencyDelegate,

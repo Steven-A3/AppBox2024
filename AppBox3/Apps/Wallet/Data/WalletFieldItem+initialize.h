@@ -8,11 +8,6 @@
 
 #import "WalletFieldItem.h"
 
-extern NSString *const A3WalletImageDirectory;
-extern NSString *const A3WalletVideoDirectory;
-extern NSString *const A3WalletImageThumbnailDirectory;
-extern NSString *const A3WalletVideoThumbnailDirectory;
-
 @interface WalletFieldItem (initialize)
 
 - (NSURL *)photoImageURLInOriginalDirectory:(BOOL)inOriginalDirectory;

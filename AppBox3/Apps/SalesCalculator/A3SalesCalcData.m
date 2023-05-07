@@ -12,6 +12,7 @@
 #import "A3AppDelegate.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
 
 static NSString *const A3SalesCalcDataKeyHistoryDate = @"updateDate";
 static NSString *const A3SalesCalcDataKeyShownPriceType = @"shownPriceType";
@@ -107,7 +108,7 @@ static NSString *const A3SalesCalcDataKeyCurrencyCode = @"currencyCode";
 			self.tax, @(self.taxType), self.notes, @(self.shownPriceType), self.currencyCode];
 
 	SalesCalcHistory *sameData = [SalesCalcHistory findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     if (sameData) {
         return NO;
     } else {

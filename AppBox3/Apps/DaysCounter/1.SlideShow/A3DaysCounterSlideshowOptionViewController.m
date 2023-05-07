@@ -19,6 +19,7 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "A3AppDelegate.h"
 
 @interface A3DaysCounterSlideshowOptionViewController ()
 @property (strong, nonatomic) NSArray *sectionArray;

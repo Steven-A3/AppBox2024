@@ -12,6 +12,7 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "A3CurrencyDataManager.h"
 #import "A3NumberFormatter.h"
+#import "A3UIDevice.h"
 
 @interface A3NumberKeyboardViewController ()
 

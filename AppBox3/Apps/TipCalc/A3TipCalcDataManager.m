@@ -90,7 +90,7 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
     TipCalcRecent *currentData = self.tipCalcData;
     [self deepCopyRecently:history dest:currentData];
     
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 
 	_tipCalcData = [TipCalcRecent findFirstByAttribute:@"uniqueID" withValue:A3TipCalcRecentCurrentDataID];
@@ -255,7 +255,7 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 
 -(void)setRoundingOption:(BOOL)RoundingOption {
 	self.tipCalcData.showRounding = @(RoundingOption);
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 }
 
@@ -271,7 +271,7 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
         _tipCalcData.currencyCode = self.currencyCode;
     }
     else {
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         TipCalcRecent * recently = [[TipCalcRecent alloc] initWithContext:context];
 		recently.uniqueID = A3TipCalcRecentCurrentDataID;
 		recently.updateDate = [NSDate date];
@@ -305,7 +305,7 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 #pragma mark Split Option
 - (void)setTipSplitOption:(TipSplitOption)option {
     self.tipCalcData.beforeSplit = @(option);
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 }
 
@@ -316,7 +316,7 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 #pragma mark KnownValue
 - (void)setKnownValue:(TCKnownValue)value {
     self.tipCalcData.knownValue = value == TCKnownValue_CostAfterTax ? @(TCKnownValue_CostAfterTax) : @(TCKnownValue_CostsBeforeTax);
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 }
 
@@ -350,7 +350,7 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 #pragma mark Save Data
 
 - (void)saveCoreData {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     if ([context hasChanges]) {
         NSError *saveError = nil;
         [context save:&saveError];
@@ -367,7 +367,7 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 }
 
 - (void)saveToHistory {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	TipCalcRecent *recently;
 	if (![_tipCalcData.costs isEqualToNumber:@0] && ![self sameDataExist]) {
         TipCalcHistory* history = [[TipCalcHistory alloc] initWithContext:context];
@@ -404,7 +404,7 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 
 - (void)setRoundingMethodValue:(TCRoundingMethodValue)value {
     self.tipCalcData.valueType =  @(value);
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 }
 
@@ -414,7 +414,7 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 
 - (void)setRoundingMethodOption:(TCRoundingMethodOption)option {
     self.tipCalcData.optionType = @(option);
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 }
 

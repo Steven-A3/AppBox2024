@@ -14,6 +14,8 @@
 #import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
 #import "A3FloatLabeledPasswordTextField.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 #define kFailedAttemptLabelBackgroundColor [UIColor colorWithRed:0.8f green:0.1f blue:0.2f alpha:1.000f]
 #define kLabelFont (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? [UIFont fontWithName: @"AvenirNext-Regular" size: kLabelFontSize * kFontSizeModifier] : [UIFont fontWithName: @"AvenirNext-Regular" size: kLabelFontSize])

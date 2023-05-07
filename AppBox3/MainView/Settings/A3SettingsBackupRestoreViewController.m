@@ -24,6 +24,8 @@
 #import "TJDropboxAuthenticator.h"
 #import "ACSimpleKeychain.h"
 #import "NSDate-Utilities.h"
+#import "NSFileManager+A3Addition.h"
+#import "A3UIDevice.h"
 
 NSString *const kDropboxClientIdentifier = @"ody0cjvmnaxvob4";
 NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
@@ -341,8 +343,8 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
                             NSSortDescriptor *modifiedDescriptor = [[NSSortDescriptor alloc] initWithKey:@"client_modified" ascending:NO];
                             backupFiles = [backupFiles sortedArrayUsingDescriptors:@[modifiedDescriptor]];
 							dispatch_async(dispatch_get_main_queue(), ^{
-								[_HUD hideAnimated:YES];
-								_HUD = nil;
+                                [self->_HUD hideAnimated:YES];
+                                self->_HUD = nil;
 								
 								if (error == nil && [backupFiles count]) {
 									self.dropboxFolderList = backupFiles;
@@ -386,13 +388,13 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 - (void)completedUnzipProcess:(BOOL)bResult{
 	[_HUD hideAnimated:YES];
 	_HUD = nil;
-	NSFileManager *fileManager = [NSFileManager new];
+	NSFileManager *fileManager = [NSFileManager defaultManager];
 	[fileManager removeItemAtPath:_downloadFilePath error:NULL];
 	if (_restoreInProgress) {
 		_restoreInProgress = NO;
 
 		self.backupRestoreManager.delegate = self;
-		[self.backupRestoreManager restoreDataAt:[@"restore" pathInCachesDirectory] toURL:[[A3AppDelegate instance] storeURL]];
+		[self.backupRestoreManager restoreDataAt:[@"restore" pathInCachesDirectory] toURL:[fileManager storeURL]];
 	}
 }
 

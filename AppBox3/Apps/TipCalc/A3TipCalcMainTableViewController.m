@@ -38,6 +38,9 @@
 #import "NSString+conversion.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "UIViewController+extension.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 #define kColorPlaceHolder [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]
 
@@ -851,7 +854,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
             [weakSelf.headerView setResult:weakSelf.dataManager.tipCalcData withAnimation:YES];
             [weakSelf refreshMoreButtonState];
 
-            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
             [context saveContext];
 
 			A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *) [weakSelf.tableView cellForCellSubview:textField];
@@ -1221,7 +1224,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
             UITableViewCell *costs = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
             costs.textLabel.text = [self.dataManager knownValue] == TCKnownValue_CostAfterTax ? NSLocalizedString(@"Amount After Tax", @"Amount After Tax") : NSLocalizedString(@"Amount Before Tax", @"Amount Before Tax");
 
-            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
             [context saveContext];
 			break;
 		}

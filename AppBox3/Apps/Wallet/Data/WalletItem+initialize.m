@@ -17,6 +17,7 @@
 #import "A3AppDelegate.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
 
 @implementation WalletItem (initialize)
 
@@ -86,7 +87,7 @@
 	NSDateFormatter *dateFormatter = [NSDateFormatter new];
 	[dateFormatter setDateStyle:NSDateFormatterFullStyle];
 	NSMutableString *collectedTexts = [NSMutableString new];
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     for (WalletFieldItem *fieldItem in fieldItemsFieldDoesNotExist) {
         if (fieldItem.date) {
             [collectedTexts appendFormat:@"%@\n", [dateFormatter stringFromDate:fieldItem.date]];
@@ -103,7 +104,7 @@
 }
 
 - (void)deleteWalletItem {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@", self.uniqueID];
 	NSArray *fieldItems = [WalletFieldItem findAllWithPredicate:predicate];
 	[fieldItems enumerateObjectsUsingBlock:^(WalletFieldItem *fieldItem, NSUInteger idx, BOOL *stop) {

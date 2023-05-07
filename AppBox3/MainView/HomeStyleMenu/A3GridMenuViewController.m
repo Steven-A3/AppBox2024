@@ -19,6 +19,8 @@
 #import "A3HomeStyleHelpViewController.h"
 #import "A3InstructionViewController.h"
 #import "RMAppReceipt.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 NSString *const A3GridMenuCellID = @"gridCell";
 

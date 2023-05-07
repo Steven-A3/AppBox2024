@@ -7,6 +7,7 @@
 //
 
 #import "A3WalletCateInfoFieldCell.h"
+#import "A3UIDevice.h"
 
 @implementation A3WalletCateInfoFieldCell
 

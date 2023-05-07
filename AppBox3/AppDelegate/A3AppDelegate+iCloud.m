@@ -14,13 +14,16 @@
 #import "A3UserDefaults.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "AppBox3-swift.h"
+#import "NSFileManager+A3Addition.h"
 
 @implementation A3AppDelegate (iCloud)
 
 - (void)setCloudEnabled:(BOOL)enable {
 	A3SyncManager *sharedSyncManager = [A3SyncManager sharedSyncManager];
 	if (enable) {
-		sharedSyncManager.storePath = [self.storeURL path];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+		sharedSyncManager.storePath = [[fileManager storeURL] path];
 		[sharedSyncManager enableCloudSync];
 		[self mergeUserDefaultsDeleteCloud:NO];
 	}
@@ -204,7 +207,7 @@
 			dataHasDuplicatedRecords |= [self deDupRecordsForEntity:entityDescription.name];
 		}
 	}
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 
 	return dataHasDuplicatedRecords;
@@ -220,7 +223,7 @@
 - (BOOL)deDupRecordsForEntity:(NSString *)entityName {
 	BOOL hasDuplicatedRecords = NO;
 	
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
 
 	NSExpression *keyPathExpression = [NSExpression expressionForKeyPath: @"uniqueID"]; // Does not really matter

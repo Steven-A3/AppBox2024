@@ -7,6 +7,7 @@
 //
 
 #import "A3ActivitySafari.h"
+#import "A3UIDevice.h"
 
 @implementation A3ActivitySafari
 {

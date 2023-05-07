@@ -16,6 +16,9 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
 
@@ -197,7 +200,7 @@ NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         TipCalcHistory *history = [self.fetchedResultsController objectAtIndexPath:indexPath];
         [TipCalcRecent deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", history.uniqueID]];
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context deleteObject:history];
         [context saveContext];
         _fetchedResultsController = nil;

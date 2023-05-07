@@ -31,6 +31,10 @@
 #import "A3NavigationController.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "UIViewController+extension.h"
+#import "A3AppDelegate.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 @interface A3DaysCounterEventListViewController ()
 		<UINavigationControllerDelegate, UISearchControllerDelegate, UISearchBarDelegate,

@@ -17,6 +17,8 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 @interface A3LadyCalendarSetupAlertViewController () <UITextFieldDelegate, A3KeyboardDelegate, A3ViewControllerProtocol>
 

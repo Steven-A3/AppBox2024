@@ -20,6 +20,8 @@
 #import "A3AppDelegate.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "UIViewController+extension.h"
+#import "A3UIDevice.h"
 
 NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSelectedViewIndex";
 

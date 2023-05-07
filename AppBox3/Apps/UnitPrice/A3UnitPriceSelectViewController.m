@@ -14,6 +14,9 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3UnitDataManager.h"
 #import "A3StandardTableViewCell.h"
+#import "A3SyncManager.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 @interface A3UnitPriceSelectViewController () <UISearchControllerDelegate, UISearchResultsUpdating, A3UnitPriceAddViewControllerDelegate>
 {

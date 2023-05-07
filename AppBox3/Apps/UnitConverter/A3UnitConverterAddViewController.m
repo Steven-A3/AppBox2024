@@ -14,6 +14,8 @@
 #import "A3StandardTableViewCell.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3UIDevice.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 @interface A3UnitConverterAddViewController ()
 

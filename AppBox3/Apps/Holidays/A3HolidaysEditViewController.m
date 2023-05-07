@@ -22,6 +22,9 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 @import AVFoundation;
 @import Photos;
+#import "A3AppDelegate.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 static const NSInteger A3HolidaysResetActionSheet = 100;
 static const NSInteger A3HolidaysPhotoActionSheet = 200;

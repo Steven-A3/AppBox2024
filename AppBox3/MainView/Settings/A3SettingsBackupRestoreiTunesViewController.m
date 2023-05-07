@@ -21,6 +21,7 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 @import UniformTypeIdentifiers;
 #import "UIViewController+A3Addition.h"
+#import "A3UIDevice.h"
 
 @interface A3SettingsBackupRestoreiTunesViewController () <A3SettingsITunesSelectBackupDelegate, AAAZipDelegate, A3BackupRestoreManagerDelegate, UIDocumentPickerDelegate>
 
@@ -365,7 +366,7 @@
 
     if (bResult) {
         self.backupRestoreManager.delegate = self;
-        [self.backupRestoreManager restoreDataAt:[@"restore" pathInCachesDirectory] toURL:[[A3AppDelegate instance] storeURL]];
+        [self.backupRestoreManager restoreDataAt:[@"restore" pathInCachesDirectory] toURL:[fileManager storeURL]];
     } else {
         [self presentAlertWithTitle:NSLocalizedString(@"Info", @"Info") message:NSLocalizedString(@"The restoring process failed to unarchive the backup file.", @"")];
     }

@@ -17,6 +17,8 @@
 #import "NSMutableArray+A3Sort.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 @interface A3DaysCounterSetupCalendarViewController ()
 @property (strong, nonatomic) NSArray *calendarArray;

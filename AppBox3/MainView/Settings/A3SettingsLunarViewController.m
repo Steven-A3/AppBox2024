@@ -14,6 +14,8 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3UserDefaults.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 @interface A3SettingsLunarViewController ()
 

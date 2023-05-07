@@ -37,6 +37,8 @@
 #import "A3NumberKeyboardViewController_iPad.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 enum A3ExpenseListAddBudgetCellType {
     AddBudgetCellID_Budget = 100,
@@ -273,7 +275,7 @@ enum A3ExpenseListAddBudgetCellType {
 		NSArray *section0 = [self section0_Array];
 		NSArray *elements = [self expandableCellElements];
 
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 		ExpenseListBudget *resultBudget;
 		if (!_currentBudget) {
             resultBudget = [[ExpenseListBudget alloc] initWithContext:context];

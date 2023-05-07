@@ -12,6 +12,7 @@
 #import "PercentCalcHistory.h"
 #import "A3DefaultColorDefines.h"
 #import "NSNumberFormatter+Extension.h"
+#import "A3UIDevice.h"
 
 #define kX1Tag  1
 #define kX2Tag  2

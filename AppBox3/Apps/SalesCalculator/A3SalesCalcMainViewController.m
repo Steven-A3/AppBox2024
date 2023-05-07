@@ -36,6 +36,9 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3AppDelegate.h"
+#import "UIViewController+extension.h"
+#import "A3UIDevice.h"
 
 enum A3TableElementCellType {
     A3TableElementCellType_Price = 100,

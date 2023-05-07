@@ -14,6 +14,9 @@
 #import "A3UserDefaults.h"
 #import "A3CameraViewController.h"
 #import "UIImage+imageWithColor.h"
+#import "UIViewController+extension.h"
+#import "A3AppDelegate.h"
+#import "A3SyncManager.h"
 
 #define MAX_ZOOM_FACTOR 	6.0
 

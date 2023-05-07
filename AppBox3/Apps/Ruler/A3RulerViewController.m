@@ -10,6 +10,8 @@
 #import "A3MarkingsView.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIViewController+A3Addition.h"
+#import "UIViewController+extension.h"
+#import "A3UIDevice.h"
 
 NSString *const A3RulerCentimeterPositionRightBottom = @"A3RulerCentemeterPositionRightBottom";
 NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse";

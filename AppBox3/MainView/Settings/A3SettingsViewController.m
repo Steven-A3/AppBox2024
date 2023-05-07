@@ -23,6 +23,7 @@
 #import "WalletData.h"
 @import MessageUI;
 #import "AppBox3-swift.h"
+#import "UIViewController+extension.h"
 
 typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	A3SettingsRowUseiCloud = 1100,

@@ -46,6 +46,7 @@
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
 #import "AppBox3-swift.h"
+#import "A3UIDevice.h"
 
 extern NSString *const A3TableViewCellDefaultCellID;
 NSString *const A3WalletItemTitleCellID = @"A3WalletTitleCell";
@@ -113,7 +114,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 {
     [super viewDidLoad];
     
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	if (_isAddNewItem) {
 		self.navigationItem.title = NSLocalizedString(@"Add Item", @"Add Item");
         
@@ -640,7 +641,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	if (fieldItem) return fieldItem;
     
 	if (create) {
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         fieldItem = [[WalletFieldItem alloc] initWithContext:context];
 		fieldItem.uniqueID = [[NSUUID UUID] UUIDString];
 		fieldItem.updateDate = [NSDate date];
@@ -720,7 +721,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	
 	NSString *addingItemID = [_item.uniqueID copy];
 	
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	if ([context hasChanges]) {
 		[context rollback];
 	}
@@ -742,7 +743,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
         [self.editingObject resignFirstResponder];
     }
     
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	for (WalletFieldItem *fieldItem in [_item fieldItems]) {
 		if (	(!fieldItem.fieldID && !fieldItem.hasImage && !fieldItem.hasVideo ) ||
 				(!fieldItem.value && !fieldItem.date && !fieldItem.hasImage && !fieldItem.hasVideo))
@@ -799,7 +800,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     NSFileManager *fileManager = [[NSFileManager alloc] init];
     fileManager.delegate = self;
     
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	if ([self.sectionItems[_currentIndexPath.row] isKindOfClass:[WalletFieldItem class]]) {
 		WalletFieldItem *fieldItem = _sectionItems[_currentIndexPath.row];
 		if ([fieldItem.hasImage boolValue]) {
@@ -843,107 +844,48 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     fromRect.size = CGSizeZero;
 
 	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-		_actionSheet = deleteEnable ? [[UIActionSheet alloc] initWithTitle:nil
-																  delegate:self
-														 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-													destructiveButtonTitle:NSLocalizedString(@"Delete Video", nil)
-														 otherButtonTitles:NSLocalizedString(@"Take Video", nil),
-																		   NSLocalizedString(@"Choose Existing", nil), nil] :
-				[[UIActionSheet alloc] initWithTitle:nil
-											delegate:self
-								   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-							  destructiveButtonTitle:nil
-								   otherButtonTitles:NSLocalizedString(@"Take Video", nil),
-													 NSLocalizedString(@"Choose Existing", nil),
-													 nil];
-		_actionSheet.tag = ActionTag_PhotoLibraryEdit;
-
-		if ([cell isKindOfClass:[A3WalletItemRightIconCell class]]) {
-			[_actionSheet showFromRect:[((A3WalletItemRightIconCell *) cell).iconImgView bounds] inView:[(A3WalletItemRightIconCell *) cell iconImgView] animated:YES];
-		}
-		else if ([cell isKindOfClass:[A3WalletItemPhotoFieldCell class]]) {
-			[_actionSheet showFromRect:[((A3WalletItemPhotoFieldCell *) cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *) cell photoButton] animated:YES];
-		}
-	}
-    else {
-		if (deleteEnable) {
-#ifdef __IPHONE_8_0_X
-            if (!IS_IOS7) {
-                _alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-                [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-					_alertController = nil;
-				}]];
-                [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Video", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-					[self deleteMediaItem];
-					_alertController = nil;
-				}]];
-                [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Choose Existing", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-					[self imagePickerActionForButtonIndex:2 destructiveButtonIndex:1 actionSheetTag:2];
-					_alertController = nil;
-				}]];
-                
-                UIPopoverPresentationController *popover = _alertController.popoverPresentationController;
-                popover.sourceView = self.view;
-                popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
-
-				[self presentViewController:_alertController animated:YES completion:NULL];
-            }
-            else
-#endif
-            {
-				_actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-														   delegate:self
-												  cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-											 destructiveButtonTitle:NSLocalizedString(@"Delete Video", nil)
-												  otherButtonTitles:
-														  NSLocalizedString(@"Choose Existing", nil),
-														  nil];
-
-                _actionSheet.tag = ActionTag_PhotoLibraryEdit;
-                if ([cell isKindOfClass:[A3WalletItemRightIconCell class]]) {
-                    [_actionSheet showFromRect:[((A3WalletItemRightIconCell *) cell).iconImgView bounds] inView:[(A3WalletItemRightIconCell *) cell iconImgView] animated:YES];
-                }
-                else if ([cell isKindOfClass:[A3WalletItemPhotoFieldCell class]]) {
-                    [_actionSheet showFromRect:[((A3WalletItemPhotoFieldCell *) cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *) cell photoButton] animated:YES];
-                }
-            }
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                 message:nil
+                                                                          preferredStyle:UIAlertControllerStyleActionSheet];
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
+                                                            style:UIAlertActionStyleCancel
+                                                          handler:^(UIAlertAction * _Nonnull action) {
+            
+        }]];
+        if (deleteEnable) {
+            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Video", nil)
+                                                                style:UIAlertActionStyleDestructive
+                                                              handler:^(UIAlertAction * _Nonnull action) {
+                [self deleteMediaItem];
+            }]];
         }
-        else {
-#ifdef __IPHONE_8_0_X
-            if (!IS_IOS7 && IS_IPAD) {
-                _alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-                [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-					_alertController = nil;
-				}]];
-                [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Choose Existing", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-					[self imagePickerActionForButtonIndex:1 destructiveButtonIndex:-1 actionSheetTag:2];
-					_alertController = nil;
-				}]];
-                
-                UIPopoverPresentationController *popover = _alertController.popoverPresentationController;
-                popover.sourceView = self.view;
-                popover.sourceRect = fromRect;
-                popover.permittedArrowDirections = UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown;
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Take Video", nil)
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * _Nonnull action) {
+            [self presentImagePickerControllerWithOption:ActionTag_Camera actionSheetTag:ActionTag_Camera];
+        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Choose Existing", nil)
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * _Nonnull action) {
+            
+        }]];
 
-				[self presentViewController:_alertController animated:YES completion:NULL];
-            }
-            else
-#endif
-            {
-				_actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-														   delegate:self
-												  cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-											 destructiveButtonTitle:nil
-												  otherButtonTitles:NSLocalizedString(@"Choose Existing", nil), nil];
-                _actionSheet.tag = ActionTag_PhotoLibraryEdit;
-                if ([cell isKindOfClass:[A3WalletItemRightIconCell class]]) {
-                    [_actionSheet showFromRect:[((A3WalletItemRightIconCell *) cell).iconImgView bounds] inView:[(A3WalletItemRightIconCell *) cell iconImgView] animated:YES];
-                }
-                else if ([cell isKindOfClass:[A3WalletItemPhotoFieldCell class]]) {
-                    [_actionSheet showFromRect:[((A3WalletItemPhotoFieldCell *) cell).photoButton bounds] inView:[(A3WalletItemPhotoFieldCell *) cell photoButton] animated:YES];
-                }
-            }
+        UIPopoverPresentationController *presentationController = [alertController popoverPresentationController];
+        if ([cell isKindOfClass:[A3WalletItemRightIconCell class]]) {
+            A3WalletItemRightIconCell *typedCell = (A3WalletItemRightIconCell *)cell;
+            presentationController.sourceView = typedCell.iconImgView;
+            presentationController.sourceRect = typedCell.iconImgView.frame;
         }
+        else if ([cell isKindOfClass:[A3WalletItemPhotoFieldCell class]]) {
+            A3WalletItemPhotoFieldCell *typedCell = (A3WalletItemPhotoFieldCell *)cell;
+            presentationController.sourceView = typedCell.photoButton;
+            presentationController.sourceRect = typedCell.photoButton.frame;
+        }
+
+        [self presentViewController:alertController animated:YES completion:^{
+            
+        }];
 	}
 }
 
@@ -962,7 +904,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	if (_isAddNewItem) {
 		return ![self isItemDataEmpty];
 	}
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	return [context hasChanges];
 }
 
@@ -1125,7 +1067,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 #pragma mark- UIImagePickerControllerDelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)imageEditInfo {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     WalletFieldItem *fieldItem = [[WalletFieldItem alloc] initWithContext:context];
 	fieldItem.uniqueID = [[NSUUID UUID] UUIDString];
 	fieldItem.updateDate = [NSDate date];
@@ -1283,7 +1225,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     for (WalletItem *item in items) {
         [item deleteWalletItem];
     }
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 }
 

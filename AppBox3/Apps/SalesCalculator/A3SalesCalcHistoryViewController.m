@@ -18,6 +18,8 @@
 #import "A3AppDelegate.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 NSString *const A3SalesCalcHistoryCellID = @"cell1";
 
@@ -131,7 +133,7 @@ NSString *const A3SalesCalcHistoryCellID = @"cell1";
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
         [SalesCalcHistory truncateAll];
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context saveContext];
         _fetchedResultsController = nil;
         [self.tableView reloadData];
@@ -205,7 +207,7 @@ NSString *const A3SalesCalcHistoryCellID = @"cell1";
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         SalesCalcHistory *history = [_fetchedResultsController objectAtIndexPath:indexPath];
         [context deleteObject:history];
         [context saveContext];

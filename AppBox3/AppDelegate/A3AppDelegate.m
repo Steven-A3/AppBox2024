@@ -60,6 +60,8 @@
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
 #import "AppBox3-swift.h"
+#import <AppBoxKit/AppBoxKit.h>
+#import "A3UIDevice.h"
 
 NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
@@ -69,8 +71,6 @@ NSString *const A3LocalNotificationOwner = @"A3LocalNotificationOwner";
 NSString *const A3LocalNotificationDataID = @"A3LocalNotificationDataID";
 NSString *const A3LocalNotificationFromLadyCalendar = @"Ladies Calendar";
 NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
-NSString *const A3NotificationCloudKeyValueStoreDidImport = @"A3CloudKeyValueStoreDidImport";
-NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataStoreDidImport";
 NSString *const A3NotificationsUserNotificationSettingsRegistered = @"A3NotificationsUserNotificationSettingsRegistered";
 NSString *const A3NotificationsAdsWillDismissScreen = @"A3NotificationAdsWillDismissScreen";
 NSString *const A3InAppPurchaseRemoveAdsProductIdentifier = @"net.allaboutapps.AppBox3.removeAds";
@@ -81,10 +81,8 @@ NSString *const A3AppStoreReceiptBackupFilename = @"AppStoreReceiptBackup";
 NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhatsNew4_5";
 NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstall";
-NSString *const kA3AdsUserDidSelectPersonalizedAds = @"kA3AdsUserDidSelectPersonalizedAds";
-NSString *const A3AppGroupIdentifier = @"group.allaboutapps.appbox";
 
-@interface A3AppDelegate () <UIAlertViewDelegate, NSURLSessionDownloadDelegate, CLLocationManagerDelegate, GADFullScreenContentDelegate>
+@interface A3AppDelegate () <UIAlertViewDelegate, NSURLSessionDownloadDelegate, CLLocationManagerDelegate, GADFullScreenContentDelegate, A3AppUIContextProtocol>
 
 @property (nonatomic, strong) NSDictionary *localNotificationUserInfo;
 @property (nonatomic, strong) UILocalNotification *storedLocalNotification;
@@ -141,12 +139,13 @@ NSString *const A3AppGroupIdentifier = @"group.allaboutapps.appbox";
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [FIRApp configure];
     [[GADMobileAds sharedInstance] startWithCompletionHandler:nil];
+    A3SyncManager.sharedSyncManager.appUIContext = self;
     
     #ifdef DEBUG
     FNLOG(@"%@", [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]);
     FNLOG(@"%@", [NSLocale preferredLanguages]);
     FNLOG(@"%@", [[NSLocale currentLocale] currencyCode]);
-#endif
+    #endif
    
     BOOL shouldPerformAdditionalDelegateHandling = [self shouldPerformAdditionalDelegateHandling:launchOptions];
 	
@@ -314,7 +313,8 @@ NSString *const A3AppGroupIdentifier = @"group.allaboutapps.appbox";
 		identifier = UIBackgroundTaskInvalid;
 	}];
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+        
+        NSManagedObjectContext *managedObjectContext = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 		[managedObjectContext performBlock:^{
 			if (managedObjectContext.hasChanges) {
 				BOOL shouldSaveChanges = NO;
@@ -416,7 +416,7 @@ NSString *const A3AppGroupIdentifier = @"group.allaboutapps.appbox";
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Saves changes in the application's managed object context before the application terminates.
-    [self.managedObjectContext saveContext];
+    [A3SyncManager.sharedSyncManager.persistentContainer.viewContext saveContext];
 }
 
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
@@ -1034,11 +1034,13 @@ NSString *const A3AppGroupIdentifier = @"group.allaboutapps.appbox";
 #pragma mark - Setup Core Data Managed Object Context
 
 - (void)setupAfterLoadCoredata {
-    if ([self deduplicateDatabaseWithModel:_persistentContainer.managedObjectModel]) {
+    NSManagedObjectModel *model = [A3SyncManager sharedSyncManager].persistentContainer.managedObjectModel;
+    if ([self deduplicateDatabaseWithModel:model]) {
         // 중복 데이터가 발견되었다면, 동기화를 끄고, 사용자에게 새로 시작하도록 안내를 한다.
         if ([[A3UserDefaults standardUserDefaults] boolForKey:A3SyncManagerCloudEnabled]) {
             A3SyncManager *sharedSyncManager = [A3SyncManager sharedSyncManager];
-            sharedSyncManager.storePath = [[self storeURL] path];
+            NSFileManager *fileManager = [NSFileManager defaultManager];
+            sharedSyncManager.storePath = [[fileManager storeURL] path];
             [sharedSyncManager setupEnsemble];
             [sharedSyncManager disableCloudSync];
             
@@ -1056,7 +1058,8 @@ NSString *const A3AppGroupIdentifier = @"group.allaboutapps.appbox";
     } else {
         if ([[A3UserDefaults standardUserDefaults] boolForKey:A3SyncManagerCloudEnabled]) {
             A3SyncManager *sharedSyncManager = [A3SyncManager sharedSyncManager];
-            sharedSyncManager.storePath = [[self storeURL] path];
+            NSFileManager *fileManager = [NSFileManager defaultManager];
+            sharedSyncManager.storePath = [[fileManager storeURL] path];
             [sharedSyncManager setupEnsemble];
             [sharedSyncManager synchronizeWithCompletion:NULL];
             [sharedSyncManager uploadMediaFilesToCloud];
@@ -1077,14 +1080,16 @@ NSString *const A3AppGroupIdentifier = @"group.allaboutapps.appbox";
 {
     [self setupStoreFiles];
     
-    if (!_persistentContainer) {
+    A3SyncManager *syncManager = [A3SyncManager sharedSyncManager];
+    if (!syncManager.persistentContainer) {
         NSBundle *bundle = [NSBundle bundleForClass:[self class]];
         NSManagedObjectModel *model = [NSManagedObjectModel mergedModelFromBundles:@[bundle]];
-        _persistentContainer = [[NSPersistentContainer alloc] initWithName:@"AppBoxStore" managedObjectModel:model];
+        syncManager.persistentContainer = [[NSPersistentContainer alloc] initWithName:@"AppBoxStore" managedObjectModel:model];
     }
-    NSPersistentStoreDescription *storeDescription = [NSPersistentStoreDescription persistentStoreDescriptionWithURL:[self storeURL]];
-    _persistentContainer.persistentStoreDescriptions = @[storeDescription];
-    [_persistentContainer loadPersistentStoresWithCompletionHandler:^(NSPersistentStoreDescription * _Nonnull psd, NSError * _Nullable error) {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSPersistentStoreDescription *storeDescription = [NSPersistentStoreDescription persistentStoreDescriptionWithURL:[fileManager storeURL]];
+    syncManager.persistentContainer.persistentStoreDescriptions = @[storeDescription];
+    [syncManager.persistentContainer loadPersistentStoresWithCompletionHandler:^(NSPersistentStoreDescription * _Nonnull psd, NSError * _Nullable error) {
         // Do nothing for the moment.
         if (error == nil) {
             self.isCoreDataReady = YES;
@@ -1099,13 +1104,12 @@ NSString *const A3AppGroupIdentifier = @"group.allaboutapps.appbox";
     // 만약 해당 파일이 없다면 oldStorePath를 찾아서 해당 파일이 있으면 옮기고 없으면 loadPersistentContainer를 할 때 새롭게 생성이 될거라고 믿는다.
     
     // $containerURL/Library/AppBox 폴더를 찾는다.
-    NSURL *URL_after_V4_7 = [self storeURL];
-    
     NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSURL *URL_after_V4_7 = [fileManager storeURL];
     
     // - URL-after-V4-7, URL-before-V4-7, URL before version
     NSURL *URL_before_V4_7 = [NSPersistentContainer defaultDirectoryURL];
-    URL_before_V4_7 = [URL_before_V4_7 URLByAppendingPathComponent:[self storeFileName]];
+    URL_before_V4_7 = [URL_before_V4_7 URLByAppendingPathComponent:[fileManager storeFileName]];
     
     if (![fileManager fileExistsAtPath:[URL_after_V4_7 path]]) {
         if ([fileManager fileExistsAtPath:[URL_before_V4_7 path]]) {
@@ -1130,7 +1134,7 @@ NSString *const A3AppGroupIdentifier = @"group.allaboutapps.appbox";
             }
 
             // Move AppBoxStore.sqlite-shm
-            NSString *storeFilename = [self storeFileName];
+            NSString *storeFilename = [fileManager storeFileName];
             NSURL *URL_after_shm_file = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@-shm", path_after_V4_7, storeFilename]];
             NSURL *URL_before_shm_file = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@-shm", path_before_V4_7, storeFilename]];
             [fileManager moveItemAtURL:URL_before_shm_file toURL:URL_after_shm_file error:&fileMoveError];
@@ -1149,22 +1153,7 @@ NSString *const A3AppGroupIdentifier = @"group.allaboutapps.appbox";
     }
 }
 
-- (NSManagedObjectContext *)managedObjectContext {
-    return _persistentContainer.viewContext;
-}
-
 - (void)managedObjectContextDidSave:(NSNotification *)notification {
-}
-
-- (NSURL *)storeURL
-{
-    NSURL *appGroupContainerURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:A3AppGroupIdentifier];
-    NSURL *storeURL = [appGroupContainerURL URLByAppendingPathComponent:@"Library/AppBox"];
-    return [storeURL URLByAppendingPathComponent:[self storeFileName]];
-}
-
-- (NSString *)storeFileName {
-	return @"AppBoxStore.sqlite";
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)devToken {

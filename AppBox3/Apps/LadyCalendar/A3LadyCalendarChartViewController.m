@@ -16,6 +16,7 @@
 #import "UIColor+A3Addition.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "LadyCalendarAccount.h"
+#import "A3UIDevice.h"
 
 @interface A3LadyCalendarChartViewController ()
 

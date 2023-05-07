@@ -7,6 +7,7 @@
 //
 
 #import "A3LoanCalcMonthlyTableTitleView.h"
+#import "A3UIDevice.h"
 
 @interface A3LoanCalcMonthlyTableTitleView ()
 {

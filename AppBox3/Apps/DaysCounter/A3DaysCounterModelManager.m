@@ -34,6 +34,7 @@
 #import "NSDate-Utilities.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3UIDevice.h"
 
 extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
@@ -140,7 +141,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 	]];
 
 	NSInteger order = 1000000;
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	for (NSDictionary *calendar in calendars) {
         DaysCounterCalendar *newCalendar = [[DaysCounterCalendar alloc] initWithContext:context];
 		newCalendar.uniqueID = calendar[ID_KEY];
@@ -433,7 +434,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     }
     eventModel.updateDate = [NSDate date];
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 
     return YES;
@@ -455,7 +456,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         eventItem.hasReminder = ([eventItem.alertDatetime timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970]) || (![eventItem.repeatType isEqualToNumber:@(RepeatType_Never)]) ? @(YES) : @(NO);
     }
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	DaysCounterReminder *reminder = [eventItem reminderItem];
     if ([eventItem.hasReminder boolValue] && reminder) {
         reminder.isUnread = @(YES);
@@ -506,7 +507,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 	[DaysCounterFavorite deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"eventID == %@", event.uniqueID]];
 	[DaysCounterReminder deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"eventID == %@", event.uniqueID]];
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context deleteObject:event];
     
     [context saveContext];
@@ -516,7 +517,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (BOOL)removeCalendar:(DaysCounterCalendar *)calendar
 {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context deleteObject:calendar];
 
     BOOL retValue = NO;
@@ -1294,7 +1295,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 #pragma mark - EventTime Management (AlertTime, EffectiveStartDate)
 + (void)reloadAlertDateListForLocalNotification {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 
     // 기존 등록 얼럿 제거.
     [[[UIApplication sharedApplication] scheduledLocalNotifications] enumerateObjectsUsingBlock:^(UILocalNotification *notification, NSUInteger idx, BOOL *stop) {

@@ -15,6 +15,9 @@
 #import "A3UserDefaults.h"
 #import "A3NumberKeyboardViewController.h"
 #import "UIViewController+NumberKeyboard.h"
+#import "UIViewController+extension.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 #define kAccelerometerFrequency			25 //Hz
 #define kFilteringFactorForErase		0.1

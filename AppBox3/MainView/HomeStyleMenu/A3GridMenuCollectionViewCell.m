@@ -10,6 +10,7 @@
 #import "A3GradientView.h"
 #import "A3UserDefaults.h"
 #import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 @interface A3GridMenuCollectionViewCell ()
 

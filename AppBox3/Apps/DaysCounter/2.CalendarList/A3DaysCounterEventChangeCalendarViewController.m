@@ -17,6 +17,9 @@
 #import "NSMutableArray+A3Sort.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 @interface A3DaysCounterEventChangeCalendarViewController ()
 @property (strong, nonatomic) NSArray *itemArray;
@@ -155,7 +158,7 @@
     }
 	DaysCounterEvent *event = _eventArray[0];
     
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
     
     if (_doneActionCompletionBlock) {

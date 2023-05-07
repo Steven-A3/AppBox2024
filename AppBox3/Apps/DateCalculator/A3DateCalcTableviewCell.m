@@ -7,6 +7,7 @@
 //
 
 #import "A3DateCalcTableviewCell.h"
+#import "A3UIDevice.h"
 
 @implementation A3DateCalcTableviewCell
 

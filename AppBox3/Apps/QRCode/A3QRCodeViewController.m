@@ -28,6 +28,9 @@
 @import Photos;
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "UIViewController+extension.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 NSString *const A3QRCodeSettingsPlayAlertSound = @"A3QRCodeSettingsPlayAlertSound";
 NSString *const A3QRCodeSettingsPlayVibrate = @"A3QRCodeSettingsPlayVibrate";
@@ -280,7 +283,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 				AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
 			}
             
-            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 			QRCodeHistory *history = [QRCodeHistory findFirstByAttribute:@"scanData" withValue:barcode.stringValue];
 			if (history) {
 				history.created = [NSDate date];
@@ -370,7 +373,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	CIQRCodeFeature *feature = [features firstObject];
 	void(^alertBlock)(void) = nil;
 	if (feature) {
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 		QRCodeHistory *newItem = [QRCodeHistory findFirstByAttribute:@"scanData" withValue:feature.messageString];
 		if (newItem) {
 			newItem.created = [NSDate date];
@@ -419,7 +422,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	operation.responseSerializer = [AFJSONResponseSerializer serializer];
 	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id JSON) {
 		if ([JSON[@"responseStatus"] integerValue] == 200) {
-            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 			QRCodeHistory *history = [QRCodeHistory findFirstByAttribute:@"scanData" withValue:barcode];
 			history.searchData = [NSKeyedArchiver archivedDataWithRootObject:JSON requiringSecureCoding:YES error:NULL];
             [context saveContext];

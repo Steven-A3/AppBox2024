@@ -16,6 +16,9 @@
 #import "A3UIDevice.h"
 #import "A3StandardTableViewCell.h"
 #import "A3UserDefaultsKeys.h"
+#import "A3AppDelegate.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 @interface A3UnitConverterSelectViewController () <UISearchControllerDelegate,
 		A3UnitConverterAddViewControllerDelegate, UISearchResultsUpdating>

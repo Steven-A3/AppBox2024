@@ -7,6 +7,7 @@
 //
 
 #import "A3WalletListTextCell.h"
+#import "A3UIDevice.h"
 
 @implementation A3WalletListTextCell
 

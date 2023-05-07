@@ -21,6 +21,8 @@
 #import "A3AppDelegate.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 @interface A3UnitConverterHistoryViewController () <UIActionSheetDelegate>
 {
@@ -144,7 +146,7 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
         
 		[UnitHistory truncateAll];
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context saveContext];
 		_fetchedResultsController = nil;
 		[self.tableView reloadData];
@@ -334,7 +336,7 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
         
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         UnitHistory *history = [_fetchedResultsController objectAtIndexPath:indexPath];
         [context deleteObject:history];
         [context saveContext];

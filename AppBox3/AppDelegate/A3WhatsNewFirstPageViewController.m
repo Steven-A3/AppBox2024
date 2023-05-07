@@ -7,6 +7,7 @@
 //
 
 #import "A3WhatsNewFirstPageViewController.h"
+#import "A3UIDevice.h"
 
 extern NSString *const A3UserDefaultsDidAlertWhatsNew4_5;
 

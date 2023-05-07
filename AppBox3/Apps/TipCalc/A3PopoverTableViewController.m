@@ -12,6 +12,7 @@
 #import "UIViewController+A3Addition.h"
 #import "A3StandardLeft15Cell.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3UIDevice.h"
 
 typedef NS_ENUM(NSInteger, SectionType) {
     SectionType_Empty = 0,

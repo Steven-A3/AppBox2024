@@ -8,6 +8,7 @@
 
 #import "A3CurrencyTVDataCell.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3UIDevice.h"
 
 @interface A3CurrencyTVDataCell ()
 @property (nonatomic, strong) UIView *menuView;

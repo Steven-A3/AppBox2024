@@ -15,6 +15,7 @@
 #import "A3AppDelegate+appearance.h"
 #import "UIImage+imageWithColor.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3UIDevice.h"
 
 static NSString *CellIdentifier = @"Cell";
 

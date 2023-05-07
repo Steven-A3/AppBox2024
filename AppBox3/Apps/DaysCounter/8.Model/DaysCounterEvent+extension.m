@@ -21,9 +21,6 @@
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
 
-NSString *const A3DaysCounterImageDirectory = @"DaysCounterImages";
-NSString *const A3DaysCounterImageThumbnailDirectory = @"DaysCounterPhotoThumbnail";
-
 @implementation DaysCounterEvent (extension)
 
 - (DaysCounterReminder *)reminderItem {

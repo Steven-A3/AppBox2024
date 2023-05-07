@@ -80,7 +80,8 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 	NSString *bundleName = [[[NSBundle mainBundle] infoDictionary] valueForKey:(NSString *)kCFBundleNameKey];
 	NSString *path = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES)[0];
 	path = [path stringByAppendingPathComponent:bundleName];
-	return [path stringByAppendingPathComponent:[[A3AppDelegate instance] storeFileName]];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+	return [path stringByAppendingPathComponent:[fileManager storeFileName]];
 }
 
 - (void)addDaysCounterPhotosWith:(NSFileManager *)fileManager fileList:(NSMutableArray *)fileList forBackup:(BOOL)forBackup {
@@ -171,11 +172,11 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 - (NSString *)migrateCoreDataStoreToTemp {
     NSFileManager *fileManager = [NSFileManager defaultManager];
 
-    NSString *tempCoreDataPath = [[[A3AppDelegate instance] storeFileName] pathInTemporaryDirectory];
+    NSString *tempCoreDataPath = [[fileManager storeFileName] pathInTemporaryDirectory];
     // Temporary directory
     [self removeExistingTempFile:fileManager path:tempCoreDataPath];
     
-    NSPersistentContainer *persistentContainer = [[A3AppDelegate instance] persistentContainer];
+    NSPersistentContainer *persistentContainer = A3SyncManager.sharedSyncManager.persistentContainer;
     for (NSPersistentStoreDescription *description in persistentContainer.persistentStoreDescriptions) {
         if ([description.type isEqualToString:NSInMemoryStoreType]) {
             continue;
@@ -198,7 +199,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 }
 
 - (void)backupCoreDataStore {
-    [[[A3AppDelegate instance] managedObjectContext] reset];
+    [A3SyncManager.sharedSyncManager.persistentContainer.viewContext reset];
 
     _backupCoreDataStorePath = [self migrateCoreDataStoreToTemp];
 
@@ -207,7 +208,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 	_deleteFilesAfterZip = [NSMutableArray new];
 
 	NSString *path;
-	NSString *filename = [[A3AppDelegate instance] storeFileName];
+	NSString *filename = [fileManager storeFileName];
 
 	if ([fileManager isDeletableFileAtPath:_backupCoreDataStorePath]) {
 		[fileList addObject:@{A3ZipFilename : _backupCoreDataStorePath, A3ZipNewFilename : filename}];
@@ -580,10 +581,9 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 - (void)restoreDataAt:(NSString *)backupFilePath toURL:(NSURL *)toURL {
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
-	[context reset];
-	
-    NSPersistentContainer *persistentContainer = [[A3AppDelegate instance] persistentContainer];
+    NSPersistentContainer *persistentContainer = A3SyncManager.sharedSyncManager.persistentContainer;
+    NSManagedObjectContext *context = persistentContainer.viewContext;
+    [context reset];
     
     NSError *error = nil;
     NSPersistentStoreCoordinator *psc = persistentContainer.persistentStoreCoordinator;
@@ -603,7 +603,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
         }
 	}
     
-    [A3AppDelegate instance].persistentContainer = nil;
+    A3SyncManager.sharedSyncManager.persistentContainer = nil;
 
 	[self deleteCoreDataStoreFilesAt:toURL];
 	[self removeMediaFiles];
@@ -614,7 +614,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 		NSURL *sourceBaseURL = [NSURL fileURLWithPath:backupFilePath];
 		NSURL *targetBaseURL = [toURL URLByDeletingLastPathComponent];
 
-		NSString *filename = [[A3AppDelegate instance] storeFileName];
+		NSString *filename = [fileManager storeFileName];
 		[self moveComponent:filename fromURL:sourceBaseURL toURL:targetBaseURL];
 		[self moveComponent:[NSString stringWithFormat:@"%@%@", filename, @"-wal"] fromURL:sourceBaseURL toURL:targetBaseURL];
 		[self moveComponent:[NSString stringWithFormat:@"%@%@", filename, @"-shm"] fromURL:sourceBaseURL toURL:targetBaseURL];

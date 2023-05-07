@@ -9,6 +9,8 @@
 #import <MapKit/MapKit.h>
 #import "A3QRCodeMapViewController.h"
 #import "UIViewController+A3Addition.h"
+#import "UIViewController+extension.h"
+#import "A3SyncManager.h"
 
 @interface A3QRCodeMapViewController () <MKMapViewDelegate, GADBannerViewDelegate>
 

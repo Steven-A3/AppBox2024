@@ -20,6 +20,7 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "DaysCounterEvent+extension.h"
 #import "UITableView+utility.h"
+#import "A3UIDevice.h"
 
 @interface A3DaysCounterSetupAlertViewController () <A3KeyboardDelegate, UITextFieldDelegate, A3ViewControllerProtocol>
 @property (strong, nonatomic) NSArray *itemArray;

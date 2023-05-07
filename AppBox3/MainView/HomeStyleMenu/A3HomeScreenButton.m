@@ -7,6 +7,7 @@
 //
 
 #import "A3HomeScreenButton.h"
+#import "A3UIDevice.h"
 
 @interface A3HomeScreenButton ()
 

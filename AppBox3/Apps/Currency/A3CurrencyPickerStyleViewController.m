@@ -37,7 +37,8 @@
 #import "A3NumberFormatter.h"
 @import WebKit;
 #import "NSManagedObjectContext+extension.h"
- 
+#import "UIViewController+extension.h"
+
 NSString *const A3CurrencyPickerSelectedIndexColumnOne = @"A3CurrencyPickerSelectedIndexColumnOne";
 NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelectedIndexColumnTwo";
 
@@ -541,7 +542,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
         return;
     }
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     CurrencyFavorite *newObject = [[CurrencyFavorite alloc] initWithContext:context];
     newObject.uniqueID = selectedCode;
     [newObject assignOrderAsLast];
@@ -1212,7 +1213,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	A3YahooCurrency *fromCurrencyInfo = [self currencyInfoAtRow:fromRow];
 	A3YahooCurrency *toCurrencyInfo = [self currencyInfoAtRow:toRow];
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     CurrencyHistory *history = [[CurrencyHistory alloc] initWithContext:context];
 	history.uniqueID = [[NSUUID UUID] UUIDString];
 	NSDate *keyDate = [NSDate date];

@@ -13,6 +13,7 @@
 #import "A3NumberKeyboardViewController.h"
 #import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
+#import "A3UIDevice.h"
 
 static NSString *const kPasscodeCharacter = @"\u2014"; // A longer "-"
 static CGFloat const kPasscodeFontSize = 33.0f;

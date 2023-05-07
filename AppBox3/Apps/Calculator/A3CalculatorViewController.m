@@ -14,6 +14,7 @@
 #import "Calculation.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "UIViewController+extension.h"
 
 @interface A3CalculatorViewController () <GADBannerViewDelegate>
 
@@ -83,7 +84,7 @@
         }
     }
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     Calculation *calculation = [[Calculation alloc] initWithContext:context];
     calculation.uniqueID = [[NSUUID UUID] UUIDString];
     NSDate *keyDate = [NSDate date];

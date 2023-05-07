@@ -20,6 +20,7 @@
 #import "A3NavigationController.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3AppDelegate.h"
 
 @interface A3LadyCalendarAccountListViewController ()
 
@@ -127,7 +128,7 @@
 				account.order = [NSString orderStringWithOrder:order];
 				order += 1000000;
 			}
-            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
             [context saveContext];
 
 			accounts = [LadyCalendarAccount findAllSortedBy:A3CommonPropertyOrder ascending:YES];
@@ -214,7 +215,7 @@
 {
 	[_ladyCalendarAccounts moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 	FNLOG(@"%@", _ladyCalendarAccounts);
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
         
 	double delayInSeconds = 0.15;

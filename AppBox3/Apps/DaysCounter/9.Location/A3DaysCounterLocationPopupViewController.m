@@ -13,6 +13,7 @@
 #import "A3DaysCounterModelManager.h"
 #import "DaysCounterEventLocation.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3UIDevice.h"
 
 @interface A3DaysCounterLocationPopupViewController ()
 @property (strong, nonatomic) NSString *addressStr;

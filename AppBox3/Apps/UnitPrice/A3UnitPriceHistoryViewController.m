@@ -22,6 +22,8 @@
 #import "A3AppDelegate.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 @interface A3UnitPriceHistoryViewController () <UIActionSheetDelegate>
 
@@ -136,7 +138,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
         
         NSUInteger section = [self.tableView numberOfSections];
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         for (int i=0; i<section; i++) {
             NSUInteger row = [self.tableView numberOfRowsInSection:i];
             for (int j=0; j<row; j++) {
@@ -178,7 +180,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
     [self releaseMainDefaultPriceObjects];
     
 	[UnitPriceInfo deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", history.uniqueID]];
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context deleteObject:history];
     [context saveContext];
 }
@@ -324,7 +326,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
     UnitPriceInfo *price2 = [UnitPriceInfo findFirstWithPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@", A3UnitPricePrice2DefaultID]];
     price2.historyID = nil;
     
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 }
 

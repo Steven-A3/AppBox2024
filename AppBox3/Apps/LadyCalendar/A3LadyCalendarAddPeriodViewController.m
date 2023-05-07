@@ -26,6 +26,8 @@
 #import "A3UserDefaults.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 extern NSString *const A3WalletItemFieldNoteCellID;
 
@@ -124,7 +126,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		
 		self.prevPeriod = [_dataManager lastPeriod];
 
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         _periodItem = [[LadyCalendarPeriod alloc] initWithContext:context];
 		_periodItem.updateDate = [NSDate date];
 		_periodItem.cycleLength = cycleLength == 0 ? @28 : @(cycleLength);
@@ -593,7 +595,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)deletePeriodAction
 {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context deleteObject:_periodItem];
     [context saveContext];
 
@@ -909,7 +911,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
     LadyCalendarAccount *account = self.dataManager.currentAccount;
 	account.watchingDate = _periodItem.startDate;
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 
     [_dataManager recalculateDates];
@@ -928,7 +930,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)cancelAction:(id)sender
 {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	if ([context hasChanges]) {
 		[context rollback];
 	}

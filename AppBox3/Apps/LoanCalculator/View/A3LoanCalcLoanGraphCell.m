@@ -10,6 +10,7 @@
 #import "A3TripleCircleView.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIImage+imageWithColor.h"
+#import "A3UIDevice.h"
 
 @implementation A3LoanCalcLoanGraphCell
 {

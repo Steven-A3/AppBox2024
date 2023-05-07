@@ -16,6 +16,7 @@
 #import "A3AppDelegate.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
 
 NSString *const A3AbbreviationKeyTag = @"tag";
 NSString *const A3AbbreviationKeyTags = @"tags";
@@ -303,7 +304,7 @@ NSString *const A3AbbreviationKeyMeaning = @"meaning";
 }
 
 - (void)addToFavorites:(NSString *)titleString {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     AbbreviationFavorite *favorite = [[AbbreviationFavorite alloc] initWithContext:context];
     favorite.uniqueID = titleString;
     [favorite assignOrderAsLast];
@@ -312,7 +313,7 @@ NSString *const A3AbbreviationKeyMeaning = @"meaning";
 }
 
 - (void)removeFromFavorites:(NSString *)titleString {
-	NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"uniqueID", titleString];
     NSArray *results = [AbbreviationFavorite findAllWithPredicate:predicate];
 	if ([results count]) {
@@ -352,7 +353,7 @@ NSString *const A3AbbreviationKeyMeaning = @"meaning";
 // Favorites can delete or reorder the items
 
 - (void)deleteItemForContent:(NSDictionary *)content {
-	NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     NSArray *results = [AbbreviationFavorite findByAttribute:@"uniqueID" withValue:content[A3AbbreviationKeyAbbreviation]];
     if ([results count] > 0) {
         for (AbbreviationFavorite *favorite in results) {
@@ -366,7 +367,7 @@ NSString *const A3AbbreviationKeyMeaning = @"meaning";
     NSMutableArray *favoriteKeys = [[AbbreviationFavorite findAllSortedBy:@"order" ascending:YES] mutableCopy];
     [favoriteKeys moveItemInSortedArrayFromIndex:fromIndex toIndex:toIndex];
     
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 }
 

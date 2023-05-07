@@ -14,6 +14,7 @@
 #import "UIViewController+A3Addition.h"
 #import "A3AbbreviationCopiedViewController.h"
 #import "A3AbbreviationHelpViewController.h"
+#import "A3UIDevice.h"
 
 @interface A3AbbreviationViewController () <UICollectionViewDelegate, UICollectionViewDataSource,
 		UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, UIPreviewInteractionDelegate,

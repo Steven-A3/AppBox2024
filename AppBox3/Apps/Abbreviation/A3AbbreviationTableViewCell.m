@@ -7,6 +7,7 @@
 //
 
 #import "A3AbbreviationTableViewCell.h"
+#import "A3UIDevice.h"
 
 @interface A3AbbreviationTableViewCell ()
 

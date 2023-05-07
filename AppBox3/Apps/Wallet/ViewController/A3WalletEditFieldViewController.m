@@ -17,6 +17,7 @@
 #import "NSString+conversion.h"
 #import "A3WalletFieldEditTitleCell.h"
 #import "WalletField.h"
+#import "A3UIDevice.h"
 
 @interface A3WalletEditFieldViewController () <WalletFieldTypeSelectDelegate, WalletFieldStyleSelectDelegate, UITextFieldDelegate>
 @property (nonatomic, strong) MBProgressHUD *alertHUD;

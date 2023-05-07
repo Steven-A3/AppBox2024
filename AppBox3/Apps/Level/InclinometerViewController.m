@@ -12,6 +12,7 @@
 #import "UIViewController+MMDrawerController.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+A3Addition.h"
+#import "UIViewController+extension.h"
 
 @import CoreMotion;
 

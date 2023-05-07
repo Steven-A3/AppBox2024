@@ -17,6 +17,7 @@
 #import "DaysCounterCalendar.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3UIDevice.h"
 
 @interface A3DaysCounterAddAndEditCalendarViewController ()
 @property (strong, nonatomic) NSArray *colorArray;
@@ -58,7 +59,7 @@
     self.colorArray = [_sharedManager calendarColorArray];
     
     if ( !_isEditMode ) {
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         self.calendar = [[DaysCounterCalendar alloc] initWithContext:context];
 		_calendar.uniqueID = [[NSUUID UUID] UUIDString];
 		_calendar.isShow = @YES;
@@ -356,7 +357,7 @@
 }
 
 - (void)rollbackChanges {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     if ([context hasChanges]) {
         [context rollback];
     }
@@ -382,7 +383,7 @@
 		_calendar.name = NSLocalizedString(@"Untitled", @"Untitled");
     }
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     if ( !_isEditMode ) {
 		[_calendar assignOrderAsFirst];
     }

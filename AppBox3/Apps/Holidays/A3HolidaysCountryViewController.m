@@ -19,7 +19,9 @@
 #import "A3InstructionViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "A3UserDefaults.h"
-
+#import "A3AppDelegate.h"
+#import "A3SyncManager.h"
+#import "UIViewController+extension.h"
 
 @interface A3HolidaysCountryViewController () <FMMoveTableViewDataSource, FMMoveTableViewDelegate, A3SearchViewControllerDelegate, A3InstructionViewControllerDelegate>
 

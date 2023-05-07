@@ -9,6 +9,7 @@
 #import "A3TranslatorListCell.h"
 #import "A3UIDevice.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3UIDevice.h"
 
 @implementation A3TranslatorListCell
 

@@ -21,6 +21,7 @@
 #import "QRCodeHistory.h"
 #import "Reachability.h"
 #import "A3BasicWebViewController.h"
+#import "UIViewController+extension.h"
 
 typedef NS_ENUM(NSUInteger, A3QRCodeActionSheetType) {
 	A3QRCodeActionSheetTypeAddEvent = 1,

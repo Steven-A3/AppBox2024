@@ -8,6 +8,7 @@
 
 #import "A3LoanCalcLoanInfo3Cell.h"
 #import "A3TripleCircleView.h"
+#import "A3UIDevice.h"
 
 @implementation A3LoanCalcLoanInfo3Cell
 

@@ -7,6 +7,7 @@
 //
 
 #import "A3WalletAllTopView.h"
+#import "A3UIDevice.h"
 
 @interface A3WalletAllTopView ()
 

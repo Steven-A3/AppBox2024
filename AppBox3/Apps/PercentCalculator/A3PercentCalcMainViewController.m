@@ -22,6 +22,10 @@
 #import "UITableView+utility.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "UIViewController+extension.h"
+#import "A3SyncManager.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 @interface A3PercentCalcMainViewController ()
 <UITextFieldDelegate, A3PercentCalcHistoryDelegate, A3ViewControllerProtocol, GADBannerViewDelegate>
@@ -528,7 +532,7 @@
         
         if ([_factorX1 isEqualToNumber:@0]==NO && [_factorY1 isEqualToNumber:@0]==NO
             && [_factorX2 isEqualToNumber:@0]==NO && [_factorY2 isEqualToNumber:@0]==NO) {
-            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
             PercentCalcHistory *entity = [[PercentCalcHistory alloc] initWithContext:context];
             entity.uniqueID = [[NSUUID UUID] UUIDString];
             entity.updateDate = [NSDate date];
@@ -543,7 +547,7 @@
             return;
         
         if ([_factorX1 isEqualToNumber:@0]==NO && [_factorY1 isEqualToNumber:@0]==NO) {
-            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
             PercentCalcHistory *entity = [[PercentCalcHistory alloc] initWithContext:context];
             entity.uniqueID = [[NSUUID UUID] UUIDString];
             entity.updateDate = [NSDate date];

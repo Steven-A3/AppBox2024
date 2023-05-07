@@ -7,6 +7,7 @@
 //
 
 #import "A3TableViewDatePickerCell.h"
+#import "A3UIDevice.h"
 
 @implementation A3TableViewDatePickerCell
 

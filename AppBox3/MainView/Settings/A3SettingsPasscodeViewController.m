@@ -15,6 +15,9 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "Reachability.h"
 #import "A3UserDefaults.h"
+@import AppBoxKit;
+#import "UIViewController+extension.h"
+#import "A3PasswordViewController.h"
 
 @interface A3SettingsPasscodeViewController () <A3PasscodeViewControllerDelegate, UIAlertViewDelegate>
 
@@ -249,12 +252,18 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	switch (indexPath.section) {
 		case 0:
+            // Turn passcode On
+            // Change passcode
 			[self didSelectRowAtSection0:indexPath.row];
 			break;
 		case 1:
+            // Require Passcode
+            // Face ID
+            // Simple passcode
 			[self didSelectRowAtSection1:indexPath.row];
 			break;
 		case 3:
+            // More Information About Security
 			[self alertSecurityInfo];
 			[tableView deselectRowAtIndexPath:indexPath animated:YES];
 			break;
@@ -358,6 +367,12 @@
 
 	switch (row) {
 		case 0:{
+            [self.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES];
+            
+            PasswordController *controller = [PasswordController new];
+            [controller enablePasswordWithViewController:self];
+            return;
+            
 			if ([_useSimpleCodeSwitch isOn]) {
 				_passcodeViewController = [[A3PasscodeViewController alloc] initWithDelegate:self];
 			} else {

@@ -18,6 +18,7 @@
 #import "A3OverlappedCircleView.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3UIDevice.h"
 
 #define SLIDER_OFFSET_LABEL     20
 #define SLIDER_THUMB_MARGIN     20

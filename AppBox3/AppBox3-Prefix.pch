@@ -16,10 +16,6 @@
 	#import <MobileCoreServices/MobileCoreServices.h>
 	#import <CoreLocation/CoreLocation.h>
 
-	#import "common.h"
-	#import "A3UIDevice.h"
-
-#define MAS_SHORTHAND
-    #import <Masonry.h>
-
+    #import <common.h>
+    #import <AppBoxKit/AppBoxKit.h>
 #endif

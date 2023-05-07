@@ -16,6 +16,7 @@
 #import "A3AppDelegate.h"
 #import "Reachability.h"
 #import "UIViewController+A3Addition.h"
+#import "A3UIDevice.h"
 
 @interface A3ClockWaveViewController () <A3ClockWaveCircleDelegate>
 

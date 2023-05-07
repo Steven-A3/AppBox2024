@@ -15,6 +15,8 @@
 #import "A3BasicWebViewController.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "UIViewController+extension.h"
+#import "A3SyncManager.h"
 
 @interface A3QRCodeDetailViewController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, GADBannerViewDelegate>
 

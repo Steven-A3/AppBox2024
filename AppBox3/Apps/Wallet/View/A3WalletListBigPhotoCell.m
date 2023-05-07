@@ -9,6 +9,7 @@
 #import "A3WalletListBigPhotoCell.h"
 #import "A3UIDevice.h"
 #import "common.h"
+#import "A3UIDevice.h"
 
 @implementation A3WalletListBigPhotoCell
 

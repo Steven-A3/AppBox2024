@@ -32,7 +32,7 @@
 	</array>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>5VX99NB632.net.allaboutapps.AppBox</string>
+		<string>$(AppIdentifierPrefix)5VX99NB632.net.allaboutapps.AppBox</string>
 	</array>
 </dict>
 </plist>

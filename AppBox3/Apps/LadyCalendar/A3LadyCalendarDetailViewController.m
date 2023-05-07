@@ -26,6 +26,8 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 extern NSString *A3TableViewCellDefaultCellID;
 NSString *const A3LadyCalendarDetailViewTitleCellID = @"A3LadyCalendarDetailViewTitleCellID";

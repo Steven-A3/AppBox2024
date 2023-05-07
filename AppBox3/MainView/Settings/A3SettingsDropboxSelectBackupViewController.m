@@ -13,6 +13,7 @@
 #import "UIViewController+A3Addition.h"
 #import "TJDropbox.h"
 #import "NSFileManager+A3Addition.h"
+#import "A3UIDevice.h"
 
 extern NSString *const kDropboxDir;
 

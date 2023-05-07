@@ -10,6 +10,7 @@
 #import "A3BatteryStatusManager.h"
 #import "SFKImage.h"
 #import "A3DefaultColorDefines.h"
+#import "A3UIDevice.h"
 
 @implementation A3BatterStatusBatteryPanelView
 {

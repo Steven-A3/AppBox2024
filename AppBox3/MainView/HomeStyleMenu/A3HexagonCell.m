@@ -7,6 +7,7 @@
 //
 
 #import "A3HexagonCell.h"
+#import "A3UIDevice.h"
 
 @interface A3HexagonCell ()
 

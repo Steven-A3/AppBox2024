@@ -10,11 +10,8 @@
 #import "WalletData.h"
 #import "NSString+conversion.h"
 #import "UIImage+Resizing.h"
-
-NSString *const A3WalletImageDirectory = @"WalletImages";		// in Library Directory
-NSString *const A3WalletVideoDirectory = @"WalletVideos";		// in Library Directory
-NSString *const A3WalletImageThumbnailDirectory = @"WalletImageThumbnails";	// in Caches Directory
-NSString *const A3WalletVideoThumbnailDirectory = @"WalletVideoThumbnails"; // in Caches Directory
+#import "A3SyncManager.h"
+#import "common.h"
 
 @implementation WalletFieldItem (initialize)
 

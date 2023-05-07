@@ -19,6 +19,7 @@
 #import "A3AppDelegate.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
 
 NSString *const PRESET_DoNotShow_KEY		= @"doNotShow";
 NSString *const PRESET_SYSTEM_KEY			= @"SYSTEM";
@@ -149,7 +150,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 }
 
 + (void)createLocalizedPresetCategories {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	NSArray *presetCategories = [self categoryPresetData];
 	NSMutableArray *categories = [NSMutableArray new];
 	[presetCategories enumerateObjectsUsingBlock:^(NSDictionary *category, NSUInteger idx, BOOL *stop) {
@@ -185,7 +186,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 }
 
 + (void)createSystemCategory {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     WalletCategory *allCategory = [[WalletCategory alloc] initWithContext:context];
 	allCategory.uniqueID = A3WalletUUIDAllCategory;
 	allCategory.name = NSLocalizedString(@"Wallet_All_Category", @"All");
@@ -206,7 +207,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 }
 
 + (void)createRecentsCategory {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     WalletCategory *recentsCategory = [[WalletCategory alloc] initWithContext:context];
     recentsCategory.uniqueID = A3WalletUUIDRecentsCategory;
     recentsCategory.name = NSLocalizedString(@"Recents", nil);
@@ -217,14 +218,14 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 }
 
 + (void)initializeWalletCategories {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [WalletData createLocalizedPresetCategories];
     [WalletData createSystemCategory];
     [context saveContext];
 }
 
 + (NSArray *)walletCategoriesFilterDoNotShow:(BOOL)hideDoNotShow {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	if (hideDoNotShow) {
 		NSArray *categories = [WalletCategory findAllSortedBy:@"order" ascending:YES];
 		BOOL dataUpdated = NO;

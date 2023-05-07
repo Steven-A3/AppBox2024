@@ -13,6 +13,8 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3StandardLeft15Cell.h"
 #import "UIColor+A3Addition.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 @interface A3LanguagePickerController () <UISearchBarDelegate>
 

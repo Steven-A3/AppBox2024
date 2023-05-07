@@ -19,6 +19,7 @@
 #import "A3DateHelper.h"
 #import "A3AppDelegate+appearance.h"
 #import "NSDateFormatter+A3Addition.h"
+#import "A3UIDevice.h"
 
 @interface A3DaysCounterSetupEndRepeatViewController ()
 @property (strong,nonatomic) NSArray *itemArray;

@@ -18,6 +18,8 @@
 #import "A3HexagonMenuViewController.h"
 #import "A3GridMenuViewController.h"
 #import "A3NavigationController.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 @interface A3RootViewController_iPad ()
 

@@ -13,6 +13,9 @@
 #import "A3ClockDataManager.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "A3ClockAutoDimViewController.h"
+#import "A3AppDelegate.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 typedef NS_ENUM(NSUInteger, A3ClockSettingsTypes) {
 	kTagSwitchWithSecond = 1000,

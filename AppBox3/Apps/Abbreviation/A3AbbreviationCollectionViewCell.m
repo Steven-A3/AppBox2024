@@ -7,6 +7,7 @@
 //
 
 #import "A3AbbreviationCollectionViewCell.h"
+#import "A3UIDevice.h"
 
 @interface A3AbbreviationCollectionViewCell ()
 

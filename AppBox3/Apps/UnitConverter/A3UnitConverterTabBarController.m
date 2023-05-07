@@ -18,6 +18,7 @@
 #import "A3CenterViewDelegate.h"
 #import "A3UserDefaults.h"
 #import "UITabBarController+extension.h"
+#import "A3UIDevice.h"
 
 @interface A3UnitConverterTabBarController () <A3ViewControllerProtocol>
 

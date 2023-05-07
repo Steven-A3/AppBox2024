@@ -22,6 +22,8 @@
 #import "A3YahooCurrency.h"
 #import "A3NumberFormatter.h"
 @import WebKit;
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 @interface A3CurrencyChartViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate,
 		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewControllerProtocol>

@@ -19,6 +19,10 @@
 #import "A3UserDefaults.h"
 #import "A3StandardTableViewCell.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "UIViewController+extension.h"
+#import "A3SyncManager.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 @import GoogleMobileAds;
 

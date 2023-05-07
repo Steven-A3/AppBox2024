@@ -14,6 +14,9 @@
 #import "Calculation.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 NSString *const A3CalculatorHistoryRowCellID = @"CcellRow";
 
@@ -111,7 +114,7 @@ NSString *const A3CalculatorHistoryRowCellID = @"CcellRow";
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
 		_fetchedResultsController = nil;
 		[Calculation truncateAll];
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context saveContext];
 
 		[self.tableView reloadData];
@@ -197,7 +200,7 @@ NSString *const A3CalculatorHistoryRowCellID = @"CcellRow";
         // Delete the row from the data source
         
         Calculation *calculation = [_fetchedResultsController objectAtIndexPath:indexPath];
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context deleteObject:calculation];
         [context saveContext];
 

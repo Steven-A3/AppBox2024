@@ -13,12 +13,13 @@
 #import "A3AppDelegate.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
 
 @implementation WalletItem (Favorite)
 
 - (void)changeFavorite:(BOOL)isAdd
 {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     if (isAdd) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemID == %@", self.uniqueID];
         if ([WalletFavorite countOfEntitiesWithPredicate:predicate] == 0) {

@@ -7,6 +7,7 @@
 //
 
 #import "A3LunarConverterCellView.h"
+#import "A3UIDevice.h"
 
 @interface A3LunarConverterCellView ()
 @property (nonatomic, strong) NSMutableArray *constraints;

@@ -16,6 +16,10 @@
 #import "UIImage+imageWithColor.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3AppDelegate.h"
+#import "A3SyncManager.h"
+#import "UIViewController+extension.h"
+#import "A3UIDevice.h"
 
 NSString *const A3BatteryIndexKey = @"index";
 NSString *const A3BatteryCheckedKey = @"checked";

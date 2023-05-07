@@ -11,6 +11,8 @@
 #import "A3UIDevice.h"
 #import "common.h"
 #import "A3AppDelegate.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 @interface A3UnitPriceSliderView ()
 

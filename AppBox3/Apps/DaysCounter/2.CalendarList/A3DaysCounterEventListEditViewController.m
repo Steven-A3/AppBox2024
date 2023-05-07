@@ -22,6 +22,9 @@
 #import "UITableView+utility.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 #define ActionSheet_DeleteAll           100
 #define ActionSheet_DeleteSelected      101
@@ -228,7 +231,7 @@
 
 - (void)deleteAllEventsAction
 {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     for(DaysCounterEvent *event in _itemArray){
         [context deleteObject:event];
     }
@@ -250,7 +253,7 @@
         }
     }
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     for (DaysCounterEvent *event in removeItems) {
         [context deleteObject:event];
     }
@@ -271,7 +274,7 @@
             [self deleteSelectedEventsAction];
         }
         
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context saveContext];
 
         if( [self.itemArray count] < 1 ){

@@ -22,6 +22,9 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3AppDelegate.h"
+#import "UIViewController+extension.h"
+#import "A3UIDevice.h"
 
 NSString *const A3CalculatorModeBasic = @"basic";
 NSString *const A3CalculatorModeScientific = @"scientific";

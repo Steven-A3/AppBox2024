@@ -31,6 +31,10 @@
 #import "A3NavigationController.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "UIViewController+extension.h"
+#import "A3AppDelegate.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 #define ActionTag_DeleteCalendar 100
 
@@ -99,7 +103,7 @@
 	for (DaysCounterEvent *event in allEvents) {
 		[self.sharedManager recalculateEventDatesForEvent:event];
 	}
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 
 	NSArray *shownUserCalendarList = [[A3DaysCounterModelManager calendars] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type == %@ AND isShow == %@", @(CalendarCellType_User), @(YES)]];
@@ -111,7 +115,7 @@
     if ([shownUserCalendarList count] != 0) {
         DaysCounterCalendar *calendar = [shownUserCalendarList lastObject];
         calendar.isShow = @(YES);
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context saveContext];
         return;
     }
@@ -121,7 +125,7 @@
     DaysCounterCalendar *calendar = [shownUserCalendarList firstObject];
     if (calendar) {
         calendar.isShow = @(YES);
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context saveContext];
     }
 }

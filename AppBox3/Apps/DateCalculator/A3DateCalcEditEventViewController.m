@@ -12,6 +12,8 @@
 #import "A3DateCalcTableRowData.h"
 #import "A3DefaultColorDefines.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 @interface A3DateCalcEditEventViewController ()
 

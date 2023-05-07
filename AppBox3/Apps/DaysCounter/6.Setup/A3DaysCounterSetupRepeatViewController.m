@@ -20,6 +20,7 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3StandardTableViewCell.h"
 #import "UITableView+utility.h"
+#import "A3UIDevice.h"
 
 @interface A3DaysCounterSetupRepeatViewController () <A3ViewControllerProtocol>
 

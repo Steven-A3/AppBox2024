@@ -12,6 +12,7 @@
 #import "NYXImagesKit.h"
 #import "A3AppDelegate.h"
 #import "UIView+SBExtras.h"
+#import "A3UIDevice.h"
 
 @interface A3WhatsNewAppScreenViewController ()
 

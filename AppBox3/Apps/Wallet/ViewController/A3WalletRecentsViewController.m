@@ -13,6 +13,8 @@
 #import "UIColor+A3Addition.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 @interface A3WalletRecentsViewController ()
 

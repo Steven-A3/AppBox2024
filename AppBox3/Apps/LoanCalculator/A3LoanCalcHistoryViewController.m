@@ -19,6 +19,8 @@
 #import "LoanCalcComparisonHistory+extension.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 @interface A3LoanCalcHistoryViewController () <UIActionSheetDelegate>
 {
@@ -188,14 +190,14 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
 
 - (void)deleteLoanHistory:(LoanCalcHistory *)history
 {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context deleteObject:history];
     [context saveContext];
 }
 
 - (void)deleteComparisonHistory:(LoanCalcComparisonHistory *)history
 {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	for (LoanCalcHistory *detail in [history details]) {
         [context deleteObject:detail];
 	}
@@ -308,7 +310,7 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
         
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         NSUInteger section = [self.tableView numberOfSections];
         for (int i=0; i<section; i++) {
             NSUInteger row = [self.tableView numberOfRowsInSection:i];
@@ -421,7 +423,7 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
             [self deleteLoanHistory:history];
         }
         
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context saveContext];
         _fetchedResultsController = nil;
         

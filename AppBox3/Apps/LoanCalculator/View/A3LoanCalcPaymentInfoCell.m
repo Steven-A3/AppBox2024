@@ -7,6 +7,7 @@
 //
 
 #import "A3LoanCalcPaymentInfoCell.h"
+#import "A3UIDevice.h"
 
 @implementation A3LoanCalcPaymentInfoCell
 

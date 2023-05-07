@@ -25,6 +25,7 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "NSString+conversion.h"
+#import "A3UIDevice.h"
 
 @interface A3LoanCalcExtraPaymentViewController ()
 		<A3KeyboardDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource,

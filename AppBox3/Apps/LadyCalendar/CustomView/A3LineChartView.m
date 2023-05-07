@@ -8,6 +8,7 @@
 
 #import "A3LineChartView.h"
 #import "UIColor+A3Addition.h"
+#import "A3UIDevice.h"
 
 @interface A3LineChartView ()
 

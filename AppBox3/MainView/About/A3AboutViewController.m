@@ -17,6 +17,8 @@
 #import "A3WhatsNew4_5ViewController.h"
 #import "UIView+SBExtras.h"
 #import "FXBlurView.h"
+#import "A3AppDelegate.h"
+#import "A3SyncManager.h"
 
 @interface A3AboutViewController () <MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate>
 @property (nonatomic, strong) A3LaunchViewController *whatsNewViewController;

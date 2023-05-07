@@ -8,6 +8,7 @@
 
 #import "A3UnitConverterTVDataCell.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "A3UIDevice.h"
 
 @interface  A3UnitConverterTVDataCell ()
 

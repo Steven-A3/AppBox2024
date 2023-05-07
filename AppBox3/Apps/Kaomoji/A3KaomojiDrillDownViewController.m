@@ -13,6 +13,7 @@
 #import "NSMutableArray+MoveObject.h"
 #import "A3DrillDownHelpViewController.h"
 #import "UIViewController+A3Addition.h"
+#import "A3UIDevice.h"
 
 @interface A3KaomojiDrillDownViewController () <UITableViewDelegate, UITableViewDataSource, UIPreviewInteractionDelegate,
 		UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate>

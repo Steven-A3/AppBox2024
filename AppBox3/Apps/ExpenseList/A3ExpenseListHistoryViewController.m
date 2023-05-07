@@ -21,6 +21,9 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 static NSString *CellIdentifier = @"Cell";
 
@@ -119,7 +122,7 @@ static NSString *CellIdentifier = @"Cell";
         FNLOG(@"Items : %ld", (long)[ExpenseListItem countOfEntities]);
         FNLOG(@"Location : %ld", (long)[ExpenseListBudgetLocation countOfEntities]);
 
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context saveContext];
         _fetchedResultsController = nil;
         [self.tableView reloadData];
@@ -199,7 +202,7 @@ static NSString *CellIdentifier = @"Cell";
         if ([_delegate respondsToSelector:@selector(willRemoveHistoryItemBudgetID:)]) {
             [_delegate willRemoveHistoryItemBudgetID:aData.uniqueID];
         }
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 
 		[ExpenseListItem deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"budgetID == %@", aData.uniqueID]];
         [context deleteObject:aData];

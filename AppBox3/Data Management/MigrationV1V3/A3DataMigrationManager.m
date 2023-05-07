@@ -70,7 +70,7 @@ NSString *const kKeyForDDayShowCountdown			= @"kKeyForDDayShowCountdown";
 - (instancetype)init {
 	self = [super init];
 	if (self) {
-		_context = [[A3AppDelegate instance] managedObjectContext];
+        _context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 		_context.undoManager = nil;
 	}
 	return self;
@@ -83,7 +83,7 @@ NSString *const kKeyForDDayShowCountdown			= @"kKeyForDDayShowCountdown";
 - (void)migrateV1DataWithPassword:(NSString *)password {
 	[self migrateFilesForV1_7];
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context reset];
     
 	_migrateV1WithDaysCounterPhoto = NO;

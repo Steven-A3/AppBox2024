@@ -12,6 +12,7 @@
 #import "A3AppDelegate.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
 
 @implementation TranslatorHistory (manager)
 
@@ -24,7 +25,7 @@
 	if (favorite && isFavorite) return;
 	if (!favorite && !isFavorite) return;
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	if (isFavorite) {
 		// Add Favorite
         favorite = [[TranslatorFavorite alloc] initWithContext:context];

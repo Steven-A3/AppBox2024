@@ -17,6 +17,7 @@
 #import "A3UserDefaults.h"
 #import "A3KeychainUtils.h"
 #import "MMDrawerController.h"
+#import "A3UIDevice.h"
 
 NSString *const A3UserDefaultsDidShowLeftViewOnceiPad = @"A3UserDefaultsDidShowLeftViewOnceiPad";
 

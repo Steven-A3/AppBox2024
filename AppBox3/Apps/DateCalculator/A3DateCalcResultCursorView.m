@@ -8,6 +8,7 @@
 
 #import "A3DateCalcResultCursorView.h"
 #import "A3DefaultColorDefines.h"
+#import "A3UIDevice.h"
 
 #define CORNER_GAP  10
 #define BOUND_PADDING   5

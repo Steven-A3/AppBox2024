@@ -28,6 +28,8 @@
 #import "A3StandardTableViewCell.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 @interface A3LadyCalendarAddAccountViewController ()
 
@@ -86,7 +88,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 			}
 	]];
 	if ( !_isEditMode ) {
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 
         _accountItem = [[LadyCalendarAccount alloc] initWithContext:context];
 		_accountItem.uniqueID = [[NSUUID UUID] UUIDString];
@@ -568,7 +570,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 }
 
 - (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context reset];
     
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -587,7 +589,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		[_accountItem assignOrderAsLast];
 	}
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 
 	[self dismissViewControllerAnimated:YES completion:nil];

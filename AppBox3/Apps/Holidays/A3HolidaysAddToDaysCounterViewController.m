@@ -14,6 +14,7 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3StandardTableViewCell.h"
 #import "A3AppDelegate.h"
+#import "A3SyncManager.h"
 
 @interface A3HolidaysAddToDaysCounterViewController ()
 

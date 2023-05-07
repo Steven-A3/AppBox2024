@@ -20,6 +20,7 @@
 #import "A3AppDelegate.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
 
 NSString *const A3KeyCurrencyCode = @"currencyCode";
 NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRatesUdpated";
@@ -110,7 +111,7 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 		}
 	}
 	NSInteger order = 1000000;
-	NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	for (NSDictionary *favorite in favorites) {
         CurrencyFavorite *newFavorite = [[CurrencyFavorite alloc] initWithContext:context];
 		newFavorite.uniqueID = favorite[ID_KEY];

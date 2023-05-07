@@ -16,4 +16,7 @@ FOUNDATION_EXPORT const unsigned char AppBoxKitVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <AppBoxKit/PublicHeader.h>
 
-
+#define MAS_SHORTHAND
+#import <AppBoxKit/Masonry.h>
+#import <AppBoxKit/A3UIDevice.h>
+#import <AppBoxKit/MASUtilities.h>

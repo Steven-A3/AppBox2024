@@ -31,6 +31,9 @@
 #import "CGColor+Additions.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "UIViewController+extension.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 @interface A3LadyCalendarViewController ()
 <A3InstructionViewControllerDelegate,
@@ -316,7 +319,7 @@ A3CalendarViewDelegate, GADBannerViewDelegate>
 		[_calendarHeaderView removeFromSuperview];
         _collectionView.delegate = nil;
         
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context saveContext];
 
 		id watchDate = self.dataManager.currentAccount.watchingDate;

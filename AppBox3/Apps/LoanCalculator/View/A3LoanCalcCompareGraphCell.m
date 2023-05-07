@@ -7,6 +7,7 @@
 //
 
 #import "A3LoanCalcCompareGraphCell.h"
+#import "A3UIDevice.h"
 
 @implementation A3LoanCalcCompareGraphCell
 {

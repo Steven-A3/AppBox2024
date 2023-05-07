@@ -12,6 +12,7 @@
 #import "NSDate+TimeAgo.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "UIViewController+A3Addition.h"
+#import "A3UIDevice.h"
 
 @interface A3SettingsiTunesSelectBackupViewController () <UIActionSheetDelegate>
 

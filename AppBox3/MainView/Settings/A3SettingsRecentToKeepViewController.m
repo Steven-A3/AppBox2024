@@ -11,6 +11,8 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "UIViewController+A3Addition.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "A3SyncManager+mainmenu.h"
+#import "A3UIDevice.h"
 
 @interface A3SettingsRecentToKeepViewController () <UIActionSheetDelegate>
 
@@ -70,7 +72,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSUInteger maxMenus = [[A3AppDelegate instance] maximumRecentlyUsedMenus];
+	NSUInteger maxMenus = [[A3SyncManager sharedSyncManager] maximumRecentlyUsedMenus];
 	if (indexPath.section == 0) {
 		switch (indexPath.row) {
 			case 0:

@@ -8,6 +8,8 @@
 
 #import "A3QRCodeTextViewController.h"
 #import "UIViewController+A3Addition.h"
+#import "UIViewController+extension.h"
+#import "A3SyncManager.h"
 
 @interface A3QRCodeTextViewController () <GADBannerViewDelegate>
 

@@ -21,7 +21,9 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "NSString+conversion.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
-
+#import "UIViewController+extension.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 @interface A3LunarConverterViewController () <UIScrollViewDelegate, A3DateKeyboardDelegate, UITextFieldDelegate,
 		UIPopoverControllerDelegate, UIActivityItemSource, GADBannerViewDelegate>

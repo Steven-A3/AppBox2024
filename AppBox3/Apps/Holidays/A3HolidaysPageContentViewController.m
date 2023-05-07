@@ -21,6 +21,8 @@
 #import "A3GradientView.h"
 #import "ALDBlurImageProcessor.h"
 #import "NTRMath.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	HolidaysHeaderViewSegmentedControl = 1000,

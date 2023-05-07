@@ -14,6 +14,7 @@
 #import "A3SharePopupViewController.h"
 #import "A3KaomojiDrillDownViewController.h"
 #import "A3KaomojiHelpViewController.h"
+#import "A3UIDevice.h"
 
 @interface A3KaomojiViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UIPreviewInteractionDelegate,
 		A3SharePopupViewControllerDelegate, UIGestureRecognizerDelegate>

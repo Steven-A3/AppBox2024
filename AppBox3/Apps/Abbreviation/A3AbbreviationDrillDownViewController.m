@@ -14,6 +14,7 @@
 #import "NSMutableArray+MoveObject.h"
 #import "UIViewController+A3Addition.h"
 #import "A3DrillDownHelpViewController.h"
+#import "A3UIDevice.h"
 
 extern NSString *const A3AbbreviationKeyAbbreviation;
 extern NSString *const A3AbbreviationKeyMeaning;

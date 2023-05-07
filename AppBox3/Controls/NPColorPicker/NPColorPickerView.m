@@ -22,6 +22,7 @@
 #import "CGColor+Additions.h"
 #import "NPPickerIndicator.h"
 #import "RGB-HSL.h"
+#import "A3UIDevice.h"
 
 #define M_PI_3    M_PI/3 
 

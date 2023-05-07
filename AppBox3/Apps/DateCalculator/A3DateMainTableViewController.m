@@ -27,6 +27,10 @@
 #import "A3UserDefaultsKeys.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "UIViewController+tableViewStandardDimension.h"
+#import "UIViewController+extension.h"
+#import "A3AppDelegate.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 #define kDefaultBackgroundColor [UIColor lightGrayColor]
 #define kDefaultButtonColor     [UIColor colorWithRed:193.0/255.0 green:196.0/255.0 blue:200.0/255.0 alpha:1.0]

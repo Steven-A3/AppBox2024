@@ -36,6 +36,8 @@
 #import "A3FMMoveTableViewController.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "UIViewController+extension.h"
+#import "A3UIDevice.h"
 
 #define kInchesPerFeet  (0.3048/0.0254)
 
@@ -2116,7 +2118,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		return;
 	}
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     UnitHistory *history = [[UnitHistory alloc] initWithContext:context];
 	history.uniqueID = [[NSUUID UUID] UUIDString];
 	history.updateDate = [NSDate date];

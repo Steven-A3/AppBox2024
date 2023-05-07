@@ -29,6 +29,10 @@
 #import "A3AppDelegate.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
+#import "A3AppDelegate.h"
+#import "UIViewController+extension.h"
+#import "A3UIDevice.h"
 
 NSString *const A3NotificationUnitPriceCurrencyCodeChanged = @"A3NotificationUnitPriceCurrencyCodeChanged";
 NSString *const A3UnitPricePrice1DefaultID = @"UnitPriceDefault1";
@@ -302,7 +306,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     if (!_price1) {
 		_price1 = [UnitPriceInfo findFirstByAttribute:ID_KEY withValue:A3UnitPricePrice1DefaultID];
 		if (!_price1) {
-            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
             _price1 = [[UnitPriceInfo alloc] initWithContext:context];
             _price1.uniqueID = A3UnitPricePrice1DefaultID;
             _price1.priceName = @"A";
@@ -318,7 +322,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 	if (!_price2) {
 		_price2 = [UnitPriceInfo findFirstByAttribute:ID_KEY withValue:A3UnitPricePrice2DefaultID];
 		if (!_price2) {
-            NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
             _price2 = [[UnitPriceInfo alloc] initWithContext:context];
             _price2.uniqueID = A3UnitPricePrice2DefaultID;
             _price2.priceName = @"B";
@@ -408,7 +412,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
                 _price2.historyID = item.historyID;
 			}
 		}
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context saveContext];
 
 		if (![self.defaultCurrencyCode isEqualToString:history.currencyCode]) {
@@ -524,7 +528,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     FNLOG(@"+ putHistory !!");
 
     if ([self hasChangesOfPriceWithHistory]) {
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         UnitPriceHistory *history = [[UnitPriceHistory alloc] initWithContext:context];
         history.uniqueID = [[NSUUID UUID] UUIDString];
         NSDate *keyDate = [NSDate date];
@@ -574,7 +578,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 
 	[self.price1 initValues];
 	[self.price2 initValues];
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 
     [self.tableView reloadData];

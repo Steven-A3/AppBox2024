@@ -19,6 +19,7 @@
 #import "A3NumberFormatter.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
 
 @interface A3CurrencyHistoryViewController () <UIActionSheetDelegate>
 
@@ -133,7 +134,7 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 		_fetchedResultsController = nil;
 		[CurrencyHistory truncateAll];
 		[CurrencyHistoryItem truncateAll];
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context saveContext];
 
 		[self.tableView reloadData];
@@ -232,7 +233,7 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         CurrencyHistory *history = [_fetchedResultsController objectAtIndexPath:indexPath];
 		for (CurrencyHistoryItem *historyItem in history.targets) {
             [context deleteObject:historyItem];

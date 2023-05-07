@@ -32,6 +32,8 @@
 #import "A3NavigationController.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 @interface A3WalletCategoryEditViewController () <UIActionSheetDelegate, WalletIconSelectDelegate, WalletEditFieldDelegate,  UITextFieldDelegate>
 
@@ -71,7 +73,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 {
     [super viewDidLoad];
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	if (_isAddingCategory) {
 		self.navigationItem.title = NSLocalizedString(@"Add Category", @"Add Category");
         _category = [[WalletCategory alloc] initWithContext:context];
@@ -214,7 +216,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
         return;
     }
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 
 	if (_delegate && [_delegate respondsToSelector:@selector(walletCategoryEdited:)]) {
@@ -240,7 +242,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 	[self.editingObject resignFirstResponder];
 	[self setEditingObject:nil];
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	if ([context hasChanges]) {
 		[context rollback];
 	}
@@ -294,7 +296,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 
 - (void)addWalletField
 {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     self.toAddField = [[WalletField alloc] initWithContext:context];
     _toAddField.uniqueID = [[NSUUID UUID] UUIDString];
     _toAddField.categoryID = _category.uniqueID;
@@ -438,7 +440,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 
 - (void)setupDoneButtonEnabled {
 	self.navigationItem.leftBarButtonItem.enabled = YES;
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	BOOL enable = [context hasChanges];
 
 	enable &= !_sameCategoryNameExists;
@@ -566,7 +568,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 
         WalletField *field = [_fields objectAtIndex:indexPath.row];
         [_fields removeObject:field];
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context deleteObject:field];
 
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -692,7 +694,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
 #pragma mark - UIActionSheetDelegate
 
 - (void)deleteCategoryByActionSheet {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context deleteObject:_category];
     
     NSArray *items = [WalletItem findAllWithPredicate:[NSPredicate predicateWithFormat:@"categoryID == %@", self.category.uniqueID]];

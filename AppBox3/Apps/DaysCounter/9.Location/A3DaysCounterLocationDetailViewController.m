@@ -25,6 +25,8 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 @interface A3DaysCounterLocationDetailViewController ()
 @property (strong, nonatomic) NSString *addressStr;
@@ -270,7 +272,7 @@
 {
     [_eventModel deleteLocation];
     
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     DaysCounterEventLocation *locItem = [[DaysCounterEventLocation alloc] initWithContext:context];
 	locItem.uniqueID = [[NSUUID UUID] UUIDString];
 	locItem.updateDate = [NSDate date];
@@ -299,7 +301,7 @@
 }
 
 - (IBAction)deleteLocationAction:(id)sender {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context deleteObject:_eventModel];
     
     if ( _isEditMode ) {

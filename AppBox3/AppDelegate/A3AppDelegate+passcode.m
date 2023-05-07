@@ -24,6 +24,10 @@
 #import "A3HomeStyleMenuViewController.h"
 #import "A3SettingsPasscodeViewController.h"
 #import "A3SettingsRequireForViewController.h"
+#import "A3AppDelegate.h"
+#import "A3SyncManager.h"
+#import "UIViewController+extension.h"
+#import "A3UIDevice.h"
 
 @implementation A3AppDelegate (passcode)
 

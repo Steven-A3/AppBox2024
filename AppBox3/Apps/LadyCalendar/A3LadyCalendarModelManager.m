@@ -49,7 +49,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 }
 
 - (void)addDefaultAccount {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     LadyCalendarAccount *account = [[LadyCalendarAccount alloc] initWithContext:context];
 	account.uniqueID = DefaultAccountID;
 	account.name = [self defaultAccountName];
@@ -90,7 +90,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 }
 
 - (void)deleteAccount:(LadyCalendarAccount *)account {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context deleteObject:account];
     [context saveContext];
 }
@@ -134,7 +134,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 			period.isAutoSave = @(YES);
 		}
 	}
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 }
 
@@ -160,7 +160,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 - (void)setWatchingDateForCurrentAccount:(NSDate *)date {
 	self.currentAccount.watchingDate = date;
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 }
 
@@ -309,7 +309,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 - (void)removeAllPredictItemsAccountID:(NSString*)accountID
 {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     NSArray *predictArray = [self predictPeriodListSortedByStartDateIsAscending:YES ];
     for(LadyCalendarPeriod *item in predictArray){
         [context deleteObject:item];
@@ -398,7 +398,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 	LadyCalendarPeriod *lastItem = [periodArray lastObject];
 	NSDate *prevStartDate = lastItem.startDate;
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	for (NSInteger idx = 0; idx < numberOfPredicts; idx++){
         LadyCalendarPeriod *newPeriod = [[LadyCalendarPeriod alloc] initWithContext:context];
 		newPeriod.isPredict = @(YES);

@@ -20,6 +20,8 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3AppDelegate.h"
+#import "A3SyncManager.h"
 
 @interface A3LadyCalendarListViewController ()
 
@@ -310,7 +312,7 @@
         NSArray *items = [[_itemArray objectAtIndex:indexPath.section] objectForKey:ItemKey_Items];
         LadyCalendarPeriod *period = (indexPath.row >= [items count] ? nil : [items objectAtIndex:indexPath.row]);
         
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         if (period) {
             [context deleteObject:period];
             [context saveContext];

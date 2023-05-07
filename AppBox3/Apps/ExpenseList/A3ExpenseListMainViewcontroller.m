@@ -36,6 +36,9 @@
 #import "A3NumberKeyboardSimpleVC_iPad.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "UIViewController+extension.h"
+#import "A3AppDelegate.h"
+#import "A3UIDevice.h"
 
 #define kDefaultItemCount_iPhone    9
 #define kDefaultItemCount_iPad      18
@@ -574,7 +577,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	item.order = [item makeOrderString];
     item.hasData = @(YES);
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 
 	NSInteger focusingRow = [_currentBudget expenseItemsCount] - 1;
@@ -689,7 +692,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 }
 
 - (void)clearCurrentBudget {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     for (ExpenseListItem * item in [_currentBudget expenseItems]) {
         [context deleteObject:item];
     }
@@ -813,7 +816,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 	[self createExpenseListItemWithBudgetID:_currentBudget.uniqueID];
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 
     _currentBudget = [ExpenseListBudget findFirstByAttribute:@"uniqueID" withValue:A3ExpenseListCurrentBudgetID];
@@ -933,7 +936,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     [self.headerView setResult:_currentBudget withAnimation:animation];
     // 현재 상태 저장.
 	if (saveData) {
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context saveContext];
 	}
 }
@@ -971,7 +974,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 		// 결론: 최초 18개를 무조건 만들고 그 상태를 유지하기로 함
 		int defaultCount = kDefaultItemCount_iPad;
 
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         _currentBudget = [[ExpenseListBudget alloc] initWithContext:context];
 		_currentBudget.uniqueID = A3ExpenseListCurrentBudgetID;
 		_currentBudget.updateDate = [NSDate date];
@@ -999,7 +1002,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 }
 
 - (ExpenseListItem *)createExpenseListItemWithBudgetID:(NSString *)budgetID {
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budgetID == %@", budgetID];
     ExpenseListItem *newItem = [[ExpenseListItem alloc] initWithContext:context];
 	ExpenseListItem *lastItem = [ExpenseListItem findFirstWithPredicate:predicate sortedBy:@"uniqueID" ascending:NO];
@@ -1030,7 +1033,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	// 현재 예산에 새 ID 를 부여하고 history 로 전환
     _currentBudget.currencyCode = [self defaultCurrencyCode];
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 	ExpenseListBudget *budgetInHistory = (ExpenseListBudget *) [_currentBudget cloneInContext:context];
 	budgetInHistory.uniqueID = [[NSUUID UUID] UUIDString];
 
@@ -1178,7 +1181,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     
     _selectedItem = nil;
 
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     if (_tableDataSourceArray.count > defaultItemCount) {
         ExpenseListItem *aItem = _tableDataSourceArray[indexPath.row];
         [context deleteObject:aItem];
@@ -1282,7 +1285,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         [self re_sort_DataSourceToSeparateValidAndEmpty];
         [self.tableView reloadData];
 
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context saveContext];
     });
 	return NO;
@@ -1324,7 +1327,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     [self clearCurrentBudget];
 
     // 선택된 히스토리 버젯으로 복원.
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     NSDate *updateDate = [NSDate date];
     
 	_currentBudget = (ExpenseListBudget *) [aBudget cloneInContext:context];
@@ -1612,7 +1615,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
             [self.tableView reloadData];
 			FNLOG(@"TableView reload data!!!");
         }
-        NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context saveContext];
 
 		_editingTextField = nil;
@@ -1642,7 +1645,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	}
 	
 	[self enableControls:YES];
-    NSManagedObjectContext *context = [[A3AppDelegate instance] managedObjectContext];
+    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context saveContext];
 
 	_editingTextField = nil;

@@ -18,6 +18,8 @@
 #import "A3InstructionViewController.h"
 #import "A3HomeStyleHelpViewController.h"
 #import "RMAppReceipt.h"
+#import "A3SyncManager.h"
+#import "A3UIDevice.h"
 
 @interface A3HexagonMenuViewController () <A3ReorderableLayoutDelegate, A3ReorderableLayoutDataSource,
 UICollectionViewDataSource, UICollectionViewDelegate, A3AppSelectViewControllerDelegate,
