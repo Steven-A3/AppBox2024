@@ -9,6 +9,7 @@
 #import "A3UserDefaults+A3Addition.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+mainmenu.h"
+#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3UserDefaultsKeys.h"
 
 @implementation A3UserDefaults (A3Addition)
@@ -33,7 +34,7 @@
 }
 
 - (UIColor *)themeColor {
-    NSNumber *selectedIndex = [self objectForKey:A3SettingsUserDefaultsThemeColorIndex];
+    NSNumber *selectedIndex = [[A3SyncManager sharedSyncManager] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
     if (selectedIndex) {
         return self.themeColors[[selectedIndex unsignedIntegerValue]];
     }
