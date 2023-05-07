@@ -20,6 +20,7 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3AppDelegate.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3DaysCounterSlideshowOptionViewController ()
 @property (strong, nonatomic) NSArray *sectionArray;
@@ -180,7 +181,7 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
             cell.textLabel.font = [UIFont systemFontOfSize:17.0];
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
-            cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
+            cell.textLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
             break;
     }
     

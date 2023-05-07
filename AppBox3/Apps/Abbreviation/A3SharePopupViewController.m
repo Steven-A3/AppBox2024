@@ -11,6 +11,7 @@
 #import "AbbreviationFavorite+CoreDataProperties.h"
 #import "A3SharePopupPresentationController.h"
 #import "A3AppDelegate.h"
+#import "A3UserDefaults+A3Addition.h"
 
 extern NSString *const A3AbbreviationKeyAbbreviation;
 extern NSString *const A3AbbreviationKeyMeaning;
@@ -64,10 +65,11 @@ extern NSString *const A3AbbreviationKeyMeaning;
     }
 	_roundedRectView.layer.cornerRadius = 10;
 
-	_shareImageView.tintColor = [[A3AppDelegate instance] themeColor];
-	_favoriteImageView.tintColor = [[A3AppDelegate instance] themeColor];
-	_shareTitleLabel.textColor = [[A3AppDelegate instance] themeColor];
-	_favoriteTitleLabel.textColor = [[A3AppDelegate instance] themeColor];
+    UIColor *themeColor = [[A3UserDefaults standardUserDefaults] themeColor];
+    _shareImageView.tintColor = themeColor;
+    _favoriteImageView.tintColor = themeColor;
+    _shareTitleLabel.textColor = themeColor;
+    _favoriteTitleLabel.textColor = themeColor;
 	
 	UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureHandler:)];
 	[self.view addGestureRecognizer:gestureRecognizer];
@@ -94,14 +96,15 @@ extern NSString *const A3AbbreviationKeyMeaning;
 }
 
 - (void)setupFavoriteButton {
+    UIColor *themeColor = [[A3UserDefaults standardUserDefaults] themeColor];
 	if ([self contentIsFavorite]) {
-		_favoriteButton.backgroundColor = [[A3AppDelegate instance] themeColor];
+        _favoriteButton.backgroundColor = themeColor;
 		_favoriteImageView.tintColor = [UIColor whiteColor];
 		_favoriteTitleLabel.textColor = [UIColor whiteColor];
 	} else {
 		_favoriteButton.backgroundColor = [UIColor whiteColor];
-		_favoriteImageView.tintColor = [[A3AppDelegate instance] themeColor];
-		_favoriteTitleLabel.textColor = [[A3AppDelegate instance] themeColor];
+        _favoriteImageView.tintColor = themeColor;
+        _favoriteTitleLabel.textColor = themeColor;
 	}
 }
 

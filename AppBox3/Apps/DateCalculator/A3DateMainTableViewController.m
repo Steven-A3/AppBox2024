@@ -31,10 +31,11 @@
 #import "A3AppDelegate.h"
 #import "A3SyncManager.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 #define kDefaultBackgroundColor [UIColor lightGrayColor]
 #define kDefaultButtonColor     [UIColor colorWithRed:193.0/255.0 green:196.0/255.0 blue:200.0/255.0 alpha:1.0]
-#define kSelectedButtonColor    [A3AppDelegate instance].themeColor
+#define kSelectedButtonColor    [[A3UserDefaults standardUserDefaults] themeColor]
 
 @interface A3DateMainTableViewController ()
 		<UITableViewDelegate, UITableViewDataSource,
@@ -761,7 +762,7 @@
     
     self.editingIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.editingIndexPath];
-    cell.detailTextLabel.textColor = [A3AppDelegate instance].themeColor;
+    cell.detailTextLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 	
     cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
     cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
@@ -779,7 +780,7 @@
     
     self.editingIndexPath = [NSIndexPath indexPathForRow:1 inSection:1];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.editingIndexPath];
-    cell.detailTextLabel.textColor = [A3AppDelegate instance].themeColor;
+    cell.detailTextLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 	
     cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
     cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
@@ -1156,7 +1157,7 @@
 	
 	textField.text = @"0";
 	textField.placeholder = @"0";
-	textField.textColor = [[A3AppDelegate instance] themeColor];
+    textField.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 	
 	A3DateCalcAddSubCell2 *footerCell = (A3DateCalcAddSubCell2 *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
 	if (!footerCell) {
@@ -1235,14 +1236,14 @@
             
             if (cell) {
                 cell.detailTextLabel.text = (IS_IPAD || [NSDate isFullStyleLocale]) ? [A3DateCalcStateManager fullStyleDateStringFromDate:self.fromDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:self.fromDate];
-                cell.detailTextLabel.textColor = [A3AppDelegate instance].themeColor;
+                cell.detailTextLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
             }
         }
         else {
             self.toDate = date == nil ? [NSDate date] : date;
             if (cell) {
                 cell.detailTextLabel.text = (IS_IPAD || [NSDate isFullStyleLocale]) ? [A3DateCalcStateManager fullStyleDateStringFromDate:self.toDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:self.toDate];
-                cell.detailTextLabel.textColor = [A3AppDelegate instance].themeColor;
+                cell.detailTextLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
             }
         }
         
@@ -1574,7 +1575,7 @@
 
             // 선택된 셀 텍스트 색상 편집 중에만 변경.
             if (_isDateKeyboardVisible && _editingIndexPath && (indexPath.row==_editingIndexPath.row)) {
-                cell.detailTextLabel.textColor = [A3AppDelegate instance].themeColor;
+                cell.detailTextLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
             } else {
                 cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
             }

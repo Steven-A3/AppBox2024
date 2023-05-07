@@ -15,10 +15,11 @@
 #import "A3UserDefaultsKeys.h"
 #import "A3LadyCalendarSetupAlertViewController.h"
 #import "A3DateHelper.h"
-#import "A3AppDelegate+appearance.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "A3UserDefaults+A3Addition.h"
+#import "A3AppDelegate.h"
 
 @interface A3LadyCalendarSettingViewController ()
 
@@ -240,7 +241,7 @@
         NSString *text = [NSString stringWithFormat:NSLocalizedString(@"FORECASTING %@ PERIODS", @"FORECASTING %@ PERIODS"), periodStr];
 		NSRange numberRange = [text rangeOfString:periodStr];
         NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:text];
-        [attrStr setAttributes:@{NSForegroundColorAttributeName: [[A3AppDelegate instance] themeColor]} range:numberRange];
+        [attrStr setAttributes:@{NSForegroundColorAttributeName: [[A3UserDefaults standardUserDefaults] themeColor]} range:numberRange];
         label.attributedText = attrStr;
     }
     else{

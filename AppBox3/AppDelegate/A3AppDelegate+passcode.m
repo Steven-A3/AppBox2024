@@ -28,6 +28,7 @@
 #import "A3SyncManager.h"
 #import "UIViewController+extension.h"
 #import "A3UIDevice.h"
+#import "A3AppDelegate+appearance.h"
 
 @implementation A3AppDelegate (passcode)
 

@@ -27,6 +27,7 @@
 #import "UIViewController+A3Addition.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3UserDefaults+A3Addition.h"
 
 NSString *const A3ZipFilename = @"name";
 NSString *const A3ZipNewFilename = @"newname";
@@ -669,7 +670,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 		NSNumber *selectedColor = [[A3SyncManager sharedSyncManager] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
 		if (selectedColor) {
-			[A3AppDelegate instance].window.tintColor = [[A3AppDelegate instance] themeColor];
+            [A3AppDelegate instance].window.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
 		}
 		[fileManager removeItemAtPath:backupInfoFilePath error:NULL];
 		[self moveFilesFromURL:sourceBaseURL toURL:targetBaseURL];

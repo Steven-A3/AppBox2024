@@ -8,6 +8,7 @@
 
 #import "A3PriceTagLabel.h"
 #import "A3AppDelegate.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3PriceTagLabel ()
 
@@ -49,8 +50,8 @@
 	self.backgroundColor = [UIColor clearColor];
 	self.textAlignment = NSTextAlignmentCenter;
 	self.font = [UIFont boldSystemFontOfSize:13];
-	self.textColor = [A3AppDelegate instance].themeColor;
-	self.layer.borderColor = [A3AppDelegate instance].themeColor.CGColor;
+	self.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
+	self.layer.borderColor = [[A3UserDefaults standardUserDefaults] themeColor].CGColor;
 	self.layer.cornerRadius = 3;
 	self.layer.borderWidth = 1.0;
 }
@@ -58,7 +59,7 @@
 - (void)drawRect:(CGRect)rect {
 	[super drawRect:rect];
 
-	[[A3AppDelegate instance].themeColor setStroke];
+	[[[A3UserDefaults standardUserDefaults] themeColor] setStroke];
 
 	[self.crossPath stroke];
 }

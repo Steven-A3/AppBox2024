@@ -17,6 +17,7 @@
 #import "A3AppDelegate.h"
 #import "NSString+conversion.h"
 #import "A3NumberFormatter.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3TableViewInputElement () <UITextFieldDelegate, A3KeyboardDelegate>
 
@@ -217,7 +218,7 @@
 		_onEditingBegin(self, textField);
 	}
 
-	textField.textColor = [[A3AppDelegate instance] themeColor];
+    textField.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 	textField.text = [self.decimalFormatter stringFromNumber:@0];
 
 	return NO;

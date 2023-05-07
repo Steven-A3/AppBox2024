@@ -39,6 +39,7 @@
 #import "UIViewController+extension.h"
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 #define kDefaultItemCount_iPhone    9
 #define kDefaultItemCount_iPad      18
@@ -1448,7 +1449,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 		textField.placeholder = @"";
 		textField.text = [self.decimalFormatter stringFromNumber:@0];
         FNLOG(@"%@", textField.text);
-		textField.textColor = [[A3AppDelegate instance] themeColor];
+        textField.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 
 		UITextField *quantityField = cell.quantityField;
 		if (quantityField == textField) {

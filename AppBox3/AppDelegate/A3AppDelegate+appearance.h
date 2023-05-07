@@ -10,8 +10,6 @@
 
 @interface A3AppDelegate (appearance)
 
-- (NSArray *)themeColors;
-- (UIColor *)themeColor;
 - (NSString *)getLaunchImageName;
 
 @end

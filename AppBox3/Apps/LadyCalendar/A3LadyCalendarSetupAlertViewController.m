@@ -19,6 +19,7 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3LadyCalendarSetupAlertViewController () <UITextFieldDelegate, A3KeyboardDelegate, A3ViewControllerProtocol>
 
@@ -206,7 +207,7 @@
 	self.textBeforeEditingTextField = textField.text;
 	self.textColorBeforeEditing = textField.textColor;
 
-	textField.textColor = [[A3AppDelegate instance] themeColor];
+    textField.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 	textField.text = [self.decimalFormatter stringFromNumber:@0];
 }
 

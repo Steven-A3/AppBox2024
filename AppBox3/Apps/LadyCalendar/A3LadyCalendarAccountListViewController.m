@@ -21,6 +21,7 @@
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
 #import "A3AppDelegate.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3LadyCalendarAccountListViewController ()
 
@@ -159,7 +160,7 @@
         cell = [cellArray objectAtIndex:2];
         UIImageView *imageView = (UIImageView*)[cell viewWithTag:12];
         imageView.image = self.checkImage;
-		imageView.tintColor = [[A3AppDelegate instance] themeColor];
+		imageView.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
 	}
     
     LadyCalendarAccount *account = [self.ladyCalendarAccounts objectAtIndex:indexPath.row];

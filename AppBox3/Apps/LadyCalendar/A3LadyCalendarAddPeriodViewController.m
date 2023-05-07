@@ -28,6 +28,7 @@
 #import "NSManagedObjectContext+extension.h"
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 extern NSString *const A3WalletItemFieldNoteCellID;
 
@@ -388,7 +389,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
             //cell.detailTextLabel.text = [_dataManager stringFromDate:_periodItem.startDate];
             cell.detailTextLabel.text = [formatter stringFromDate:_periodItem.startDate];
-            cell.detailTextLabel.textColor = ( [self.inputItemKey isEqualToString:PeriodItem_StartDate] ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255] );
+            cell.detailTextLabel.textColor = ( [self.inputItemKey isEqualToString:PeriodItem_StartDate] ? [[A3UserDefaults standardUserDefaults] themeColor] : [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255] );
 			break;
 		}
         case PeriodCellType_EndDate:
@@ -404,7 +405,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
             cell.textLabel.text = [item objectForKey:ItemKey_Title];
             //cell.detailTextLabel.text = [_dataManager stringFromDate:_periodItem.endDate];
             cell.detailTextLabel.text = [formatter stringFromDate:_periodItem.endDate];
-            cell.detailTextLabel.textColor = ( [self.inputItemKey isEqualToString:PeriodItem_EndDate] ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255] );
+            cell.detailTextLabel.textColor = ( [self.inputItemKey isEqualToString:PeriodItem_EndDate] ? [[A3UserDefaults standardUserDefaults] themeColor] : [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255] );
 
             if ( [_periodItem.endDate timeIntervalSince1970] < [_periodItem.startDate timeIntervalSince1970] ) {
                 NSDictionary *attr = @{NSFontAttributeName: cell.detailTextLabel.font, NSStrikethroughStyleAttributeName : @(NSUnderlineStyleSingle)};
@@ -691,7 +692,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	self.textBeforeEditingTextField = textField.text;
 	self.textColorBeforeEditing = textField.textColor;
 
-	textField.textColor = [[A3AppDelegate instance] themeColor];
+    textField.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 	textField.text = [self.decimalFormatter stringFromNumber:@0];
 }
 

@@ -8,7 +8,7 @@
 
 #import "A3WalletMoreTableViewCell.h"
 #import "UIViewController+tableViewStandardDimension.h"
-#import "A3AppDelegate+appearance.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3WalletMoreTableViewCell ()
 
@@ -24,7 +24,7 @@
 	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
 	if (self) {
 		_checkImageView = [UIImageView new];
-		_checkImageView.tintColor = [A3AppDelegate instance].themeColor;
+        _checkImageView.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
 		[self addSubview:_checkImageView];
 
 		_cellImageView = [UIImageView new];

@@ -9,6 +9,7 @@
 #import "A3DrillDownHelpViewController.h"
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3DrillDownHelpViewController ()
 
@@ -36,7 +37,7 @@
     // Do any additional setup after loading the view.
 
     for (UIImageView *imageView in _imageViews) {
-        imageView.tintColor = [[A3AppDelegate instance] themeColor];
+        imageView.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
     }
     _popupImageView.image = [UIImage imageNamed:_imageName];
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10") && self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable)

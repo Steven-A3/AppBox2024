@@ -46,6 +46,7 @@
 #import "A3SyncManager.h"
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 #define ActionTag_Location      100
 #define ActionTag_Photo         101
@@ -681,7 +682,7 @@
             
             BOOL isSelected = [_eventItem favorite] != nil;
             [button setImage:[UIImage imageNamed:isSelected ? @"star02_on" : @"star02"] forState:UIControlStateNormal];
-            button.tintColor = [A3AppDelegate instance].themeColor;
+            button.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
         }
             break;
         case EventCellType_Photo:
@@ -893,7 +894,7 @@
     }
     
     if ( [keyName isEqualToString:self.inputDateKey] && itemType == inputType ) {
-        dateLabel.textColor = [A3AppDelegate instance].themeColor;
+        dateLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
     }
     else {
         dateLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
@@ -1176,7 +1177,7 @@
 			UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
 			UILabel *dateTextLabel = [cell viewWithTag:12];
 			self.textColorBeforeEditing = dateTextLabel.textColor;
-			dateTextLabel.textColor = [[A3AppDelegate instance] themeColor];
+            dateTextLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 
 			self.editingIndexPath = indexPath;
 			self.inputDateKey = indexPath.row == startDateIndex ? EventItem_StartDate : EventItem_EndDate;
@@ -1729,7 +1730,7 @@
 	[_eventItem toggleFavorite];
 
     [((UIButton *)sender) setImage:[UIImage imageNamed:_eventItem.favorite != nil ? @"star02_on" : @"star02"] forState:UIControlStateNormal];
-    ((UIButton *)sender).tintColor = [A3AppDelegate instance].themeColor;
+    ((UIButton *)sender).tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
 }
 
 - (void)photoAction:(UIButton *)sender

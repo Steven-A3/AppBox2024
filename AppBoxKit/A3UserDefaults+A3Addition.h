@@ -11,5 +11,7 @@
 @interface A3UserDefaults (A3Addition)
 
 - (NSString *)stringForRecentToKeep;
+- (NSArray *)themeColors;
+- (UIColor *)themeColor;
 
 @end

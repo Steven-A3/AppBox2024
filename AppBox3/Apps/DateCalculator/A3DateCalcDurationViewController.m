@@ -17,6 +17,7 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 static NSString *CellIdentifier = @"Cell";
 
@@ -158,7 +159,7 @@ static NSString *CellIdentifier = @"Cell";
 
 - (UIImageView *)checkImageView {
 	UIImageView *checkImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
-	checkImageView.tintColor = [[A3AppDelegate instance] themeColor];
+    checkImageView.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
 	return checkImageView;
 }
 

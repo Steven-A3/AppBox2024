@@ -21,7 +21,6 @@
 #import "NSDate+LunarConverter.h"
 #import "A3DaysCounterEventInfoCell.h"
 #import "SFKImage.h"
-#import "A3AppDelegate+appearance.h"
 #import "DaysCounterReminder.h"
 #import "DaysCounterEvent+extension.h"
 #import "NSDate+formatting.h"
@@ -33,6 +32,8 @@
 #import "NSManagedObjectContext+extension.h"
 #import "A3SyncManager.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
+#import "A3AppDelegate.h"
 
 @interface A3DaysCounterEventDetailViewController () <UIAlertViewDelegate, UIPopoverControllerDelegate, UIActionSheetDelegate, UIActivityItemSource, A3DaysCounterAddEventViewControllerDelegate>
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -367,7 +368,7 @@
         {
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
             textLabel.text = NSLocalizedString(@"Share Event", @"Share Event");
-            textLabel.textColor = [A3AppDelegate instance].themeColor;
+            textLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
             break;
@@ -376,7 +377,7 @@
         {
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
             textLabel.text = _eventItem.favorite != nil ? NSLocalizedString(@"Remove from Favorites", @"Remove from Favorites") : NSLocalizedString(@"Add to Favorites", @"Add to Favorites");
-            textLabel.textColor = [A3AppDelegate instance].themeColor;
+            textLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
             break;
@@ -388,7 +389,7 @@
 - (void)updateEventInfoCell:(A3DaysCounterEventInfoCell *)cell withInfo:(DaysCounterEvent*)event
 {
     cell.favoriteStarImageView.image = [[UIImage imageNamed:@"star02_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    cell.favoriteStarImageView.tintColor = [A3AppDelegate instance].themeColor;
+    cell.favoriteStarImageView.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
     
     if ( IS_IPHONE ) {
         cell.eventTitleLabel.font = [UIFont boldSystemFontOfSize:17.0];

@@ -30,6 +30,7 @@
 #import "NSManagedObjectContext+extension.h"
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3LadyCalendarAddAccountViewController ()
 
@@ -309,7 +310,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 			cell.detailTextLabel.text = NSLocalizedString(@"Optional", @"Optional");
 		}
         if( [self.itemArray count] > 3 )
-			cell.detailTextLabel.textColor = [[A3AppDelegate instance] themeColor];
+            cell.detailTextLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
         else {
 			if (birthDay) {
 				cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0 / 255.0 green:128.0 / 255.0 blue:128.0 / 255.0 alpha:1.0];

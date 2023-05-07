@@ -26,6 +26,7 @@
 #import "A3SyncManager.h"
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3PercentCalcMainViewController ()
 <UITextFieldDelegate, A3PercentCalcHistoryDelegate, A3ViewControllerProtocol, GADBannerViewDelegate>
@@ -1116,7 +1117,7 @@
 	self.textColorBeforeEditing = textField.textColor;
 
 	textField.text = [self.decimalFormatter stringFromNumber:@0];
-	textField.textColor = [[A3AppDelegate instance] themeColor];
+    textField.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 }
 
 - (void)textFieldDidChange:(UITextField *)textField {

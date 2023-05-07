@@ -8,6 +8,7 @@
 
 #import "A3AbbreviationHelpViewController.h"
 #import "A3AppDelegate.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3AbbreviationHelpViewController ()
 
@@ -38,7 +39,7 @@
     // Do any additional setup after loading the view.
 	
 	for (UIImageView *imageView in _imageViews) {
-		imageView.tintColor = [[A3AppDelegate instance] themeColor];
+        imageView.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
 	}
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10") &&
         self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable)

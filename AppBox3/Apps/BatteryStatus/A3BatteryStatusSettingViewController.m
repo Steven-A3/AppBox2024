@@ -20,6 +20,7 @@
 #import "A3SyncManager.h"
 #import "UIViewController+extension.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 NSString *const A3BatteryIndexKey = @"index";
 NSString *const A3BatteryCheckedKey = @"checked";
@@ -198,7 +199,7 @@ NSString *const A3BatteryTitleKey = @"title";
         
         NSDictionary *rowData = [_tableDataSourceArray objectAtIndex:index.integerValue];
         cell.textLabel.text = NSLocalizedString([rowData objectForKey:A3BatteryTitleKey], nil);
-        cell.imageView.image = checked.integerValue == 1 ? [[UIImage imageNamed:@"check_02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] : _blankImage;
+        cell.imageView.image = checked.integerValue == 1 ? [[UIImage imageNamed:@"check_02"] tintedImageWithColor:[[A3UserDefaults standardUserDefaults] themeColor]] : _blankImage;
         return cell;
     }
     else if (indexPath.section == 2) {
@@ -208,7 +209,7 @@ NSString *const A3BatteryTitleKey = @"title";
             cell.textLabel.font = [UIFont systemFontOfSize:17];
             
             UIImageView * info = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"information"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
-            info.tintColor = [A3AppDelegate instance].themeColor;
+            info.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
             [cell.contentView addSubview:info];
             [info makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(cell.centerY);
@@ -260,7 +261,7 @@ NSString *const A3BatteryTitleKey = @"title";
         //[tableView reloadData];
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         if (cell) {
-            cell.imageView.image = ([checked integerValue] == 0) ? [[UIImage imageNamed:@"check_02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] : _blankImage;
+            cell.imageView.image = ([checked integerValue] == 0) ? [[UIImage imageNamed:@"check_02"] tintedImageWithColor:[[A3UserDefaults standardUserDefaults] themeColor]] : _blankImage;
         }
         [A3BatteryStatusManager setAdjustedIndex:_adjustedIndex];
     }

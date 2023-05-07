@@ -19,6 +19,7 @@
 #import "A3UserDefaults.h"
 #import <objc/runtime.h>
 #import "A3SyncManager.h"
+#import "A3UserDefaults+A3Addition.h"
 
 static char const *const key_adBannerView = "key_adBannerView";
 static char const *const key_adNativeExpressView = "key_adNativeExpressView";
@@ -119,7 +120,7 @@ static char const *const key_adNativeExpressView = "key_adNativeExpressView";
         UINavigationController *target = [[A3AppDelegate instance] currentMainNavigationController];
         [self showNavigationBarOn:target];
     }
-    navigationController.navigationBar.tintColor = [A3AppDelegate instance].themeColor;
+    navigationController.navigationBar.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
 
     if (IS_IPAD) {
         A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController_iPad];

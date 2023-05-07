@@ -17,6 +17,7 @@
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3DaysCounterSetupDurationViewController ()
 @property (strong, nonatomic) NSArray *itemArray;
@@ -178,7 +179,7 @@
         
         if (self.selectedOptionFlag & itemRowType) {
 			UIImageView *checkImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
-			checkImageView.tintColor = [[A3AppDelegate instance] themeColor];
+            checkImageView.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
             cell.accessoryView = checkImageView;
 
         }
@@ -219,7 +220,7 @@
     }
     else {
 		UIImageView *checkImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
-		checkImageView.tintColor = [[A3AppDelegate instance] themeColor];
+        checkImageView.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
         cell.accessoryView = checkImageView;
     }
     
@@ -232,7 +233,7 @@
 												  otherButtonTitles: nil];
         [alertView show];
 		UIImageView *checkImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
-		checkImageView.tintColor = [[A3AppDelegate instance] themeColor];
+        checkImageView.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
         cell.accessoryView = checkImageView;
         return;
     }

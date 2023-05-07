@@ -62,6 +62,7 @@
 #import "AppBox3-swift.h"
 #import <AppBoxKit/AppBoxKit.h>
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
@@ -249,10 +250,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 	[self setupMainMenuViewController];
 	self.window.backgroundColor = [UIColor whiteColor];
 
-	NSNumber *selectedColor = [[A3SyncManager sharedSyncManager] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
-	if (selectedColor) {
-		self.window.tintColor = self.themeColors[[selectedColor unsignedIntegerValue]];
-	}
+    self.window.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
 
 	[self.window makeKeyAndVisible];
 

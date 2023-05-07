@@ -39,6 +39,7 @@
 #import "NSManagedObjectContext+extension.h"
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 enum A3ExpenseListAddBudgetCellType {
     AddBudgetCellID_Budget = 100,
@@ -653,7 +654,7 @@ static NSString *CellIdentifier = @"Cell";
         case AddBudgetCellID_Date:
         {
             cell.textLabel.textColor = [UIColor blackColor];
-            cell.detailTextLabel.textColor = _showDatePicker ? [A3AppDelegate instance].themeColor : COLOR_TABLE_DETAIL_TEXTLABEL;
+            cell.detailTextLabel.textColor = _showDatePicker ? [[A3UserDefaults standardUserDefaults] themeColor] : COLOR_TABLE_DETAIL_TEXTLABEL;
         }
             break;
 
@@ -738,7 +739,7 @@ static NSString *CellIdentifier = @"Cell";
             [CATransaction begin];
             [CATransaction setCompletionBlock:^{
                 [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-                cell.detailTextLabel.textColor = [A3AppDelegate instance].themeColor;
+                cell.detailTextLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
             }];
             [tableView beginUpdates];
             [tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:6 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
@@ -843,7 +844,7 @@ static NSString *CellIdentifier = @"Cell";
 				weakSelf.textColorBeforeEditing = textField.textColor;
 
 				textField.text = [weakSelf.decimalFormatter stringFromNumber:@0];
-				textField.textColor = [[A3AppDelegate instance] themeColor];
+                textField.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 
 				A3NumberKeyboardViewController *keyboardVC;
 				if (IS_IPHONE) {

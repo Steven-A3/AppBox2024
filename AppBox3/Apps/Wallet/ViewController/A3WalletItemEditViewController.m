@@ -18,7 +18,6 @@
 #import "WalletItem+Favorite.h"
 #import "WalletFieldItem.h"
 #import "WalletFieldItem+initialize.h"
-#import "A3AppDelegate+appearance.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+A3Addition.h"
 #import "UIImage+Extension2.h"
@@ -47,6 +46,7 @@
 #import "NSManagedObjectContext+extension.h"
 #import "AppBox3-swift.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 extern NSString *const A3TableViewCellDefaultCellID;
 NSString *const A3WalletItemTitleCellID = @"A3WalletTitleCell";
@@ -2077,7 +2077,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	}
     
 	if ([indexPath compare:self.dateInputIndexPath] == NSOrderedSame) {
-		inputCell.valueTextField.textColor = [[A3AppDelegate instance] themeColor];
+        inputCell.valueTextField.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 	} else {
 		inputCell.valueTextField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
 	}

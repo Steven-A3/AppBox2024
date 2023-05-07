@@ -7,11 +7,12 @@
 //
 
 #import "A3WalletIconSelectViewController.h"
-#import "A3AppDelegate+appearance.h"
 #import "UIViewController+A3Addition.h"
 #import "UIImage+imageWithColor.h"
 #import "WalletData.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
+#import "A3AppDelegate.h"
 
 @interface A3WalletIconSelectViewController ()
 {
@@ -89,7 +90,7 @@
         button.tag = idx;
         [button setImage:icon forState:UIControlStateNormal];
         NSString *onImgName = [iconName stringByAppendingString:@"_on"];
-		UIImage *selectedIcon = [[UIImage imageNamed:onImgName] tintedImageWithColor:[A3AppDelegate instance].themeColor];
+        UIImage *selectedIcon = [[UIImage imageNamed:onImgName] tintedImageWithColor:[[A3UserDefaults standardUserDefaults] themeColor]];
 		[button setImage:selectedIcon forState:UIControlStateSelected];
         [button setImage:selectedIcon forState:UIControlStateHighlighted];
         

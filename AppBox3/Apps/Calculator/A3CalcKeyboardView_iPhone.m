@@ -9,8 +9,7 @@
 #import "A3CalcKeyboardView_iPhone.h"
 #import "A3KeyboardButton_iOS7_iPhone.h"
 #import "A3ExpressionComponent.h"
-
-#import "A3AppDelegate+appearance.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @implementation A3CalcKeyboardView_iPhone {
     BOOL bSecondButtonSelected;
@@ -324,7 +323,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
                 [button setBackgroundColorForHighlightedState:[UIColor colorWithRed:0 green:122.0/255.0 blue:1.0 alpha:1.0]];
 				[button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                  */
-                UIColor *themeColor = [A3AppDelegate instance].themeColor;
+                UIColor *themeColor = [[A3UserDefaults standardUserDefaults] themeColor];
                 [button setBackgroundColor:themeColor];
                 if (IS_PORTRAIT) {
                     button.contentEdgeInsets = UIEdgeInsetsMake(-8, 0, 0, 0);

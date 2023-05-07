@@ -10,6 +10,7 @@
 #import "UIViewController+A3Addition.h"
 #import "A3PedometerHandler.h"
 #import "A3AppDelegate.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3PedometerSettingsTableViewController () <UIPickerViewDataSource, UIPickerViewDelegate>
 
@@ -59,7 +60,7 @@
 		if (indexPath.row == 0) {
 			NSNumber *goalSteps = [[NSUserDefaults standardUserDefaults] objectForKey:A3PedometerSettingsNumberOfGoalSteps];
 			cell.detailTextLabel.text = [self.pedometerHandler.integerFormatter stringFromNumber:goalSteps];
-			cell.detailTextLabel.textColor = [[A3AppDelegate instance] themeColor];
+            cell.detailTextLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 		}
 	}
 }

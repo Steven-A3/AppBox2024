@@ -9,6 +9,7 @@
 #import "A3LaunchSceneViewController.h"
 #import "A3LaunchViewController.h"
 #import "A3AppDelegate.h"
+#import "A3AppDelegate+appearance.h"
 
 @interface A3LaunchSceneViewController ()
 

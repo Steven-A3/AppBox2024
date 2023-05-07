@@ -25,6 +25,7 @@
 #import "A3SyncManager.h"
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 #define ActionSheet_DeleteAll           100
 #define ActionSheet_DeleteSelected      101
@@ -196,10 +197,10 @@
         cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListEditCell" owner:nil options:nil] lastObject];
         UIButton *button = (UIButton*)[cell viewWithTag:11];
         [button addTarget:self action:@selector(toggleSelectAction:) forControlEvents:UIControlEventTouchUpInside];
-        button.tintColor = [A3AppDelegate instance].themeColor;
+        button.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [button setImage:[self.checkNormalImage tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
-        [button setImage:[[UIImage imageNamed:@"check"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateSelected];
+        [button setImage:[self.checkNormalImage tintedImageWithColor:[[A3UserDefaults standardUserDefaults] themeColor]] forState:UIControlStateNormal];
+        [button setImage:[[UIImage imageNamed:@"check"] tintedImageWithColor:[[A3UserDefaults standardUserDefaults] themeColor]] forState:UIControlStateSelected];
     }   
     
     // Configure the cell...

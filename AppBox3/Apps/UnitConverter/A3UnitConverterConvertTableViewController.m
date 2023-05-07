@@ -38,6 +38,7 @@
 #import "NSManagedObjectContext+extension.h"
 #import "UIViewController+extension.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 #define kInchesPerFeet  (0.3048/0.0254)
 
@@ -288,10 +289,11 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 
 	NSIndexPath *firstRowIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
 	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [self.fmMoveTableView cellForRowAtIndexPath:firstRowIndexPath];
-	cell.valueField.textColor = enable ? [[A3AppDelegate instance] themeColor] : disabledColor;
-	cell.value2Field.textColor = enable ? [[A3AppDelegate instance] themeColor] : disabledColor;
-	cell.valueLabel.textColor = enable ? [[A3AppDelegate instance] themeColor] : disabledColor;
-	cell.value2Label.textColor = enable ? [[A3AppDelegate instance] themeColor] : disabledColor;
+    UIColor *themeColor = [[A3UserDefaults standardUserDefaults] themeColor];
+	cell.valueField.textColor = enable ? themeColor : disabledColor;
+	cell.value2Field.textColor = enable ? themeColor : disabledColor;
+	cell.valueLabel.textColor = enable ? themeColor : disabledColor;
+	cell.value2Label.textColor = enable ? themeColor : disabledColor;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -1411,7 +1413,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 				[self textFieldDidEndEditing:_editingTextField];
 				_editingTextField.textColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
 				[self textFieldDidBeginEditing:textField];
-				textField.textColor = [[A3AppDelegate instance] themeColor];
+                textField.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 				_isSwitchingFractionMode = NO;
 
 			}
@@ -1419,13 +1421,13 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 			if (cell.inputType == UnitInput_FeetInch) {
 				if (cell.valueField == textField) {
 					self.value1BeforeEditingTextField = [textField text];
-					cell.valueField.textColor = [[A3AppDelegate instance] themeColor];
+                    cell.valueField.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 					cell.value2Field.textColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
 				}
 				else if (cell.value2Field == textField) {
 					self.value2BeforeEditingTextField = [textField text];
 					cell.valueField.textColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
-					cell.value2Field.textColor = [[A3AppDelegate instance] themeColor];
+                    cell.value2Field.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 				}
 			}
 			[self presentNumberKeyboardForTextField:textField];
@@ -1503,15 +1505,15 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	}
 	if (cell.inputType != UnitInput_Normal) {
 		if (cell.valueField == textField) {
-			cell.valueField.textColor = [[A3AppDelegate instance] themeColor];
+            cell.valueField.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 			cell.value2Field.textColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
 		}
 		else if (cell.value2Field == textField) {
 			cell.valueField.textColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
-			cell.value2Field.textColor = [[A3AppDelegate instance] themeColor];
+            cell.value2Field.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 		}
 	} else {
-		cell.valueField.textColor = [[A3AppDelegate instance] themeColor];
+        cell.valueField.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 	}
 
 	[self updateTextFieldsWithSourceTextField:textField];
@@ -1564,8 +1566,8 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	[self updateTextFieldsWithSourceTextField:textField];
 	[cell updateMultiTextFieldModeConstraintsWithEditingTextField:nil];
 	
-	cell.valueField.textColor = [[A3AppDelegate instance] themeColor];
-	cell.value2Field.textColor = [[A3AppDelegate instance] themeColor];
+    cell.valueField.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
+    cell.value2Field.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 }
 
 - (void)textFieldDidChange:(NSNotification *)notification {
@@ -2025,13 +2027,15 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	UIBarButtonItem *prevButtonItem;
 	UIBarButtonItem *nextButtonItem;
 
+    UIColor *themeColor = [[A3UserDefaults standardUserDefaults] themeColor];
+    
 	if ([A3UIDevice shouldUseImageForPrevNextButton]) {
 		UIButton *prevButton = [UIButton buttonWithType:UIButtonTypeSystem];
 		[prevButton setTitle:@"o" forState:UIControlStateNormal];
 		prevButton.titleLabel.font = [UIFont fontWithName:@"appbox" size:38];
 		[prevButton addTarget:self action:@selector(prevButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 		[prevButton sizeToFit];
-		prevButton.tintColor = [[A3AppDelegate instance] themeColor];
+        prevButton.tintColor = themeColor;
 		prevButtonItem = [[UIBarButtonItem alloc] initWithCustomView:prevButton];
 
 		UIButton *nextButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -2039,16 +2043,16 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		nextButton.titleLabel.font = [UIFont fontWithName:@"appbox" size:38];
 		[nextButton addTarget:self action:@selector(nextButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 		[nextButton sizeToFit];
-		nextButton.tintColor = [[A3AppDelegate instance] themeColor];
+        nextButton.tintColor = themeColor;
 		nextButtonItem = [[UIBarButtonItem alloc] initWithCustomView:nextButton];
 	} else {
 		prevButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Prev", @"Prev") style:UIBarButtonItemStylePlain target:self action:@selector(prevButtonPressed)];
 		nextButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", @"Next") style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonPressed)];
 	}
 	[prevButtonItem setEnabled:[self isPreviousEntryExists]];
-    prevButtonItem.tintColor = [A3AppDelegate instance].themeColor;
+    prevButtonItem.tintColor = themeColor;
 	[nextButtonItem setEnabled:[self isNextEntryExists]];
-    nextButtonItem.tintColor = [A3AppDelegate instance].themeColor;
+    nextButtonItem.tintColor = themeColor;
 	keyboardAccessoryToolbar.items = @[flexibleSpace, prevButtonItem, nextButtonItem];
 
 	return keyboardAccessoryToolbar;

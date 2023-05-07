@@ -8,8 +8,8 @@
 
 #import "A3BatterStatusChooseColorCell.h"
 #import "A3BatteryStatusManager.h"
-#import "A3AppDelegate+appearance.h"
 #import "UIImage+imageWithColor.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @implementation A3BatterStatusChooseColorCell
 {
@@ -59,7 +59,7 @@
         }
         _colorViewArray = colorViewArray;
         
-        _selectMarkImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"check"] tintedImageWithColor:[A3AppDelegate instance].themeColor]];
+        _selectMarkImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"check"] tintedImageWithColor:[[A3UserDefaults standardUserDefaults] themeColor]]];
         _selectMarkImageView.frame = CGRectMake(0.0, 0.0, 22.0, 22.0);
         [self.contentView addSubview:_selectMarkImageView];
     }

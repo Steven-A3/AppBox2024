@@ -9,7 +9,6 @@
 #import "A3DateKeyboardViewController_iPhone.h"
 #import "A3KeyboardButton_iPhone.h"
 #import "A3KeyboardButton_iOS7_iPhone.h"
-#import "A3AppDelegate+appearance.h"
 
 @interface A3DateKeyboardViewController_iPhone ()
 

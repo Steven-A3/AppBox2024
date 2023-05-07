@@ -34,6 +34,7 @@
 #import "UIViewController+extension.h"
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3LadyCalendarViewController ()
 <A3InstructionViewControllerDelegate,
@@ -514,7 +515,7 @@ A3CalendarViewDelegate, GADBannerViewDelegate>
     NSDate *todayMonth = [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]];
 
     if ( [self.dataManager.currentAccount.watchingDate isEqualToDate:todayMonth] ) {
-        _currentMonthLabel.textColor = [[A3AppDelegate instance] themeColor];
+        _currentMonthLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
     }
     else {
         _currentMonthLabel.textColor = [UIColor blackColor];

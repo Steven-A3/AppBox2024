@@ -24,6 +24,7 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3LoanCalcLoanDetailViewController ()
 <LoanCalcSelectFrequencyDelegate,
@@ -154,8 +155,8 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
             cell.infoButton.enabled = YES;
         }
 
-		[cell.monthlyButton setTitleColor:[[A3AppDelegate instance] themeColor] forState:UIControlStateNormal];
-		[cell.totalButton setTitleColor:[[A3AppDelegate instance] themeColor] forState:UIControlStateNormal];
+		[cell.monthlyButton setTitleColor:[[A3UserDefaults standardUserDefaults] themeColor] forState:UIControlStateNormal];
+		[cell.totalButton setTitleColor:[[A3UserDefaults standardUserDefaults] themeColor] forState:UIControlStateNormal];
 		if (cell.monthlyButton.layer.borderColor != [UIColor clearColor].CGColor) {
 			cell.monthlyButton.layer.borderColor = cell.monthlyButton.currentTitleColor.CGColor;
 		}
@@ -430,7 +431,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 	textField.placeholder = @"";
 	
 	self.textColorBeforeEditing = textField.textColor;
-	textField.textColor = [[A3AppDelegate instance] themeColor];
+    textField.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 
 	self.currentIndexPath = [self.tableView indexPathForCellSubview:textField];
 	FNLOG(@"End IP : %ld - %ld", (long)self.currentIndexPath.section, (long)self.currentIndexPath.row);

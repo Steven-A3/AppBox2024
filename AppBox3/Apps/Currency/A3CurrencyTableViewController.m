@@ -41,6 +41,7 @@
 #import "A3CurrencyViewController.h"
 #import "A3NumberFormatter.h"
 #import "UIViewController+extension.h"
+#import "A3UserDefaults+A3Addition.h"
 
 NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChangedNotification";
 
@@ -333,7 +334,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
     CGRect cellFrame = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     if (!CGRectEqualToRect(cellFrame, CGRectZero)) {
         A3CurrencyTVDataCell *cell = (A3CurrencyTVDataCell *) [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-        cell.valueField.textColor = enable ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
+        cell.valueField.textColor = enable ? [[A3UserDefaults standardUserDefaults] themeColor] : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
     }
 }
 
@@ -752,7 +753,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     value = [self lastInputValue];
 
     if (dataIndex == 0) {
-        dataCell.valueField.textColor = [[A3AppDelegate instance] themeColor];
+        dataCell.valueField.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
         [dataCell.valueField setEnabled:YES];
         if (IS_IPHONE) {
             dataCell.rateLabel.text = [_currencyDataManager symbolForCode:currencyCode];

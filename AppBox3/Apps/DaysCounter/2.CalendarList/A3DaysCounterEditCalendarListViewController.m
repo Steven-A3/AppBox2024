@@ -23,6 +23,7 @@
 #import "NSManagedObjectContext+extension.h"
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3DaysCounterEditCalendarListViewController ()
 @property (strong, nonatomic) NSMutableArray *calendarArray;
@@ -106,7 +107,7 @@
     if (cell == nil) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterCalendarListMainEditCell" owner:nil options:nil] lastObject];
         UIButton *checkButton = (UIButton*)[cell viewWithTag:10];
-        UIImage *image = [[UIImage imageNamed:@"check_02"] tintedImageWithColor:[[A3AppDelegate instance] themeColor]];
+        UIImage *image = [[UIImage imageNamed:@"check_02"] tintedImageWithColor:[[A3UserDefaults standardUserDefaults] themeColor]];
 		[checkButton setImage:image forState:UIControlStateSelected];
         [checkButton setImage:nil forState:UIControlStateNormal];
         [checkButton addTarget:self action:@selector(checkAction:) forControlEvents:UIControlEventTouchUpInside];

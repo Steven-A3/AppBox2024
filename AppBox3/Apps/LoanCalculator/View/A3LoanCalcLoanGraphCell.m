@@ -8,9 +8,9 @@
 
 #import "A3LoanCalcLoanGraphCell.h"
 #import "A3TripleCircleView.h"
-#import "A3AppDelegate+appearance.h"
 #import "UIImage+imageWithColor.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @implementation A3LoanCalcLoanGraphCell
 {
@@ -57,16 +57,16 @@
     _monthlyButton.layer.borderWidth = 1;
     _monthlyButton.layer.cornerRadius = _monthlyButton.bounds.size.height/2;
     [_monthlyButton addTarget:self action:@selector(kindButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-	[_monthlyButton setTitleColor:[A3AppDelegate instance].themeColor forState:UIControlStateNormal];
+    [_monthlyButton setTitleColor:[[A3UserDefaults standardUserDefaults] themeColor] forState:UIControlStateNormal];
     _monthlyButton.layer.borderColor = _monthlyButton.currentTitleColor.CGColor;
 
 	_totalButton.layer.borderWidth = 1;
     _totalButton.layer.cornerRadius = _totalButton.bounds.size.height/2;
     [_totalButton addTarget:self action:@selector(kindButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-	[_totalButton setTitleColor:[A3AppDelegate instance].themeColor forState:UIControlStateNormal];
+    [_totalButton setTitleColor:[[A3UserDefaults standardUserDefaults] themeColor] forState:UIControlStateNormal];
     _totalButton.layer.borderColor = [UIColor clearColor].CGColor;
     
-    [_infoButton setImage:[[UIImage imageNamed:@"information"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
+    [_infoButton setImage:[[UIImage imageNamed:@"information"] tintedImageWithColor:[[A3UserDefaults standardUserDefaults] themeColor]] forState:UIControlStateNormal];
     
     // up label pos
     CGRect upLbFrame = _upLabel.frame;

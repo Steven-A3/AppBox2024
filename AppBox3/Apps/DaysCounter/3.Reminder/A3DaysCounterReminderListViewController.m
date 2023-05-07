@@ -31,6 +31,7 @@
 #import "A3AppDelegate.h"
 #import "A3SyncManager.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3DaysCounterReminderListViewController () <UITableViewDataSource, UITableViewDelegate, A3ViewControllerProtocol>
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -205,7 +206,7 @@
         cell.detailTextLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
         UIView *unReadMark = [[UIView alloc] initWithFrame:CGRectZero];
         unReadMark.tag = UNREADVIEW_TAG;
-        unReadMark.backgroundColor = [A3AppDelegate instance].themeColor; // [UIColor colorWithRed:0 green:126.0/255 blue:248.0/255 alpha:1.0];
+        unReadMark.backgroundColor = [[A3UserDefaults standardUserDefaults] themeColor]; // [UIColor colorWithRed:0 green:126.0/255 blue:248.0/255 alpha:1.0];
         unReadMark.layer.cornerRadius = 5;
         [cell addSubview:unReadMark];
         

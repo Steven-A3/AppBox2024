@@ -7,7 +7,7 @@
 //
 
 #import "UITabBarController+extension.h"
-#import "A3AppDelegate+appearance.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @implementation UITabBarController (extension)
     
@@ -26,7 +26,7 @@
 }
 
 - (void)updateTabBarItemAppearance:(UITabBarItemAppearance *)appearance API_AVAILABLE(ios(13)) {
-    appearance.selected.iconColor = [[A3AppDelegate instance] themeColor];
+    appearance.selected.iconColor = [[A3UserDefaults standardUserDefaults] themeColor];
     appearance.normal.iconColor = [UIColor lightGrayColor];
 }
 

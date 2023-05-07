@@ -7,8 +7,8 @@
 //
 
 #import "A3ChooseColorView.h"
-#import "A3AppDelegate+appearance.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3ChooseColorView () <UICollectionViewDataSource, UICollectionViewDelegate>
 
@@ -179,7 +179,7 @@ NSString *const ClockColorChooseCell = @"ClockColorCell";
 	if (!_selectedMarkView) {
 		_selectedMarkView = [UIImageView new];
 		_selectedMarkView.image = [[UIImage imageNamed:@"check"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-		_selectedMarkView.tintColor = [[A3AppDelegate instance] themeColor];
+        _selectedMarkView.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
 		[_selectedMarkView sizeToFit];
 	}
 	return _selectedMarkView;

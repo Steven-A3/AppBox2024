@@ -35,6 +35,7 @@
 #import "A3TableViewElement.h"
 #import "UIViewController+extension.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 NSString *const A3NotificationAppsMainMenuContentsChanged = @"A3NotificationAppsMainMenuContentsChanged";
 NSString *const A3MainMenuBecameFirstResponder = @"A3MainMenuBecameFirstResponder";
@@ -339,7 +340,7 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 		[expandableCell.expandButton setHidden:YES];
 		A3TableViewExpandableElement *expandableElement = (id)element;
 		cell.imageView.image = [[UIImage imageNamed:expandableElement.isCollapsed ? @"Category_open" : @"Category_close"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-		cell.imageView.tintColor = [[A3AppDelegate instance] themeColor];
+        cell.imageView.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
 		if (![element.title isEqualToString:@"Favorites"] && ![element.title isEqualToString:@"Recent"]) {
 			A3TableViewMenuElement *childElement = [[expandableElement elements] lastObject];
 			NSString *groupName = [A3AppDelegate instance].appInfoDictionary[childElement.title][kA3AppsGroupName];

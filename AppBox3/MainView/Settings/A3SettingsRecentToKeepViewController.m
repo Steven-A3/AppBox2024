@@ -13,6 +13,7 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3SyncManager+mainmenu.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3SettingsRecentToKeepViewController () <UIActionSheetDelegate>
 
@@ -98,7 +99,7 @@
 		}
 		cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld Most Recent", @"StringsDict", nil), (long)cell.tag];
 	} else if (indexPath.section == 1) {
-		cell.textLabel.textColor = [[A3AppDelegate instance] themeColor];
+        cell.textLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 		cell.textLabel.textAlignment = NSTextAlignmentCenter;
 	}
 }

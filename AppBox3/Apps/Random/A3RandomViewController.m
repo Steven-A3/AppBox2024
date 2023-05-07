@@ -10,7 +10,6 @@
 #import <AVFoundation/AVFoundation.h>
 #import "UIViewController+A3Addition.h"
 #import <CoreMotion/CoreMotion.h>
-#import "A3AppDelegate+appearance.h"
 #import "A3DefaultColorDefines.h"
 #import "A3UserDefaults.h"
 #import "A3NumberKeyboardViewController.h"
@@ -18,6 +17,8 @@
 #import "UIViewController+extension.h"
 #import "A3SyncManager.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
+#import "A3AppDelegate.h"
 
 #define kAccelerometerFrequency			25 //Hz
 #define kFilteringFactorForErase		0.1
@@ -116,7 +117,7 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 	_minimumValueLabel.text = NSLocalizedString(@"Minimum Value", @"Minimum Value");
 	_maximumValueLabel.text = NSLocalizedString(@"Maximum Value", @"Maximum Value");
 
-	UIColor *themeColor = [[A3AppDelegate instance] themeColor];
+    UIColor *themeColor = [[A3UserDefaults standardUserDefaults] themeColor];
 	_generatorButton.backgroundColor = themeColor;
 	_minimumValueTextField.textColor = themeColor;
 	_maximumValueTextField.textColor = themeColor;
@@ -470,8 +471,9 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 		textField.text = _textBeforeEditingTextField;
 	}
 
-	_minimumValueTextField.textColor = [[A3AppDelegate instance] themeColor];
-	_maximumValueTextField.textColor = [[A3AppDelegate instance] themeColor];
+    UIColor *themeColor = [[A3UserDefaults standardUserDefaults] themeColor];
+    _minimumValueTextField.textColor = themeColor;
+    _maximumValueTextField.textColor = themeColor;
 
 	NSInteger number = [[self.numberFormatter numberFromString:textField.text] integerValue];
 	NSInteger component = textField == _minimumValueTextField ? 0 : 1;

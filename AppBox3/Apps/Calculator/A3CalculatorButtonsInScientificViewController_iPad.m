@@ -7,7 +7,7 @@
 //
 
 #import "A3CalculatorButtonsInScientificViewController_iPad.h"
-#import "A3AppDelegate+appearance.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3CalculatorButtonsInScientificViewController_iPad ()
 
@@ -246,7 +246,7 @@
     current_x+=buttonwidth;
     [self.decimalpointbutton setFrame:CGRectMake(current_x, current_y,buttonwidth+1, buttonheight+1)];
     
-    UIColor *themeColor = [A3AppDelegate instance].themeColor;
+    UIColor *themeColor = [[A3UserDefaults standardUserDefaults] themeColor];
     [self.dividebutton setBackgroundColor:themeColor];
     [self.multiplybutton setBackgroundColor:themeColor];
     [self.minusbutton setBackgroundColor:themeColor];

@@ -9,7 +9,7 @@
 #import "A3ExpenseListAccessoryView.h"
 #import "SFKImage.h"
 #import "UIImage+Rotating.h"
-#import "A3AppDelegate+appearance.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3ExpenseListAccessoryView() <UITextFieldDelegate>
 
@@ -46,31 +46,33 @@
                                                    action:@selector(clearButtonTouchUp:)];
 
 	if ([A3UIDevice shouldUseImageForPrevNextButton]) {
+        UIColor *themeColor = [[A3UserDefaults standardUserDefaults] themeColor];
+        
 		UIButton *undoButton = [UIButton buttonWithType:UIButtonTypeSystem];
 		[undoButton setImage:[UIImage imageNamed:@"undo"] forState:UIControlStateNormal];
 		[undoButton addTarget:self action:@selector(undoButtonTouchUp:) forControlEvents:UIControlEventTouchUpInside];
-		undoButton.tintColor = [[A3AppDelegate instance] themeColor];
+        undoButton.tintColor = themeColor;
 		[undoButton sizeToFit];
 		_undoButton = [[UIBarButtonItem alloc] initWithCustomView:undoButton];
 
 		UIButton *redoButton = [UIButton buttonWithType:UIButtonTypeSystem];
 		[redoButton setImage:[UIImage imageNamed:@"redo"] forState:UIControlStateNormal];
 		[redoButton addTarget:self action:@selector(redoButtonTouchUp:) forControlEvents:UIControlEventTouchUpInside];
-		redoButton.tintColor = [[A3AppDelegate instance] themeColor];
+        redoButton.tintColor = themeColor;
 		[redoButton sizeToFit];
 		_redoButton = [[UIBarButtonItem alloc] initWithCustomView:redoButton];
 
 		UIButton *prevButton = [UIButton buttonWithType:UIButtonTypeSystem];
 		[prevButton setImage:[UIImage imageNamed:@"prev"] forState:UIControlStateNormal];
 		[prevButton addTarget:self action:@selector(prevButtonTouchUp:) forControlEvents:UIControlEventTouchUpInside];
-		prevButton.tintColor = [[A3AppDelegate instance] themeColor];
+        prevButton.tintColor = themeColor;
 		[prevButton sizeToFit];
 		_prevButton = [[UIBarButtonItem alloc] initWithCustomView:prevButton];
 
 		UIButton *nextButton = [UIButton buttonWithType:UIButtonTypeSystem];
 		[nextButton setImage:[UIImage imageNamed:@"next"] forState:UIControlStateNormal];
 		[nextButton addTarget:self action:@selector(nextButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-		nextButton.tintColor = [[A3AppDelegate instance] themeColor];
+        nextButton.tintColor = themeColor;
 		[nextButton sizeToFit];
 		_nextButton = [[UIBarButtonItem alloc] initWithCustomView:nextButton];
 	} else {
@@ -86,11 +88,12 @@
 		_nextButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", @"Next") style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonAction:)];
 	}
 
-    _undoButton.tintColor = [A3AppDelegate instance].themeColor;
-    _redoButton.tintColor = [A3AppDelegate instance].themeColor;
-    _clearButton.tintColor = [A3AppDelegate instance].themeColor;
-    _prevButton.tintColor = [A3AppDelegate instance].themeColor;
-    _nextButton.tintColor = [A3AppDelegate instance].themeColor;
+    UIColor *themeColor = [[A3UserDefaults standardUserDefaults] themeColor];
+    _undoButton.tintColor = themeColor;
+    _redoButton.tintColor = themeColor;
+    _clearButton.tintColor = themeColor;
+    _prevButton.tintColor = themeColor;
+    _nextButton.tintColor = themeColor;
     
 	UIBarButtonItem *space20 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
                                                                            target:self

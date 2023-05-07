@@ -10,9 +10,10 @@
 #import "A3DateHelper.h"
 #import "A3LadyCalendarModelManager.h"
 #import "LadyCalendarPeriod.h"
-#import "A3AppDelegate+appearance.h"
 #import "LadyCalendarAccount.h"
 #import "HolidayData.h"
+#import "A3AppDelegate.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @implementation LineDisplayModel
 
@@ -135,10 +136,11 @@
             NSInteger day = index - _firstDayStartIndex + 1;
             NSString *str = (index == _firstDayStartIndex ? [A3DateHelper dateStringFromDate:_dateMonth withFormat:@"MMM d"] : [NSString stringWithFormat:@"%ld",(long)(index - _firstDayStartIndex + 1)]);
             if ( _isCurrentMonth && _today == day) {
+                UIColor *themeColor = [[A3UserDefaults standardUserDefaults] themeColor];
 				CGContextSaveGState(context);
 				CGContextSetAllowsAntialiasing(context, NO);
-				CGContextSetStrokeColorWithColor(context, [[[A3AppDelegate instance] themeColor] CGColor]);
-                CGContextSetFillColorWithColor(context, [[[A3AppDelegate instance] themeColor] CGColor]);
+				CGContextSetStrokeColorWithColor(context, themeColor.CGColor);
+                CGContextSetFillColorWithColor(context, themeColor.CGColor);
                 CGContextFillRect(context, CGRectMake(xPos, yPos, _cellSize.width, _dateBGHeight));
 				CGContextSetAllowsAntialiasing(context, YES);
 				[str drawInRect:CGRectMake(xPos, yPos + (IS_IPHONE ? 9.0 : 15.0), _cellSize.width, _dateBGHeight + 5.0) withAttributes:todayTextAttr];

@@ -35,6 +35,7 @@
 #import "NSManagedObjectContext+extension.h"
 #import "A3SyncManager.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 typedef NS_ENUM(NSInteger, PriceDiscountType) {
 	Price_Percent = 0,
@@ -609,7 +610,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
 	textField.text = [self.decimalFormatter stringFromNumber:@0];
 	textField.placeholder = @"";
-	textField.textColor = [[A3AppDelegate instance] themeColor];
+    textField.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 
 	_currentIndexPath = [self.tableView indexPathForCellSubview:textField];
 

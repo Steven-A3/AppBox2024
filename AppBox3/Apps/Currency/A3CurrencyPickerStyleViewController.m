@@ -38,6 +38,7 @@
 @import WebKit;
 #import "NSManagedObjectContext+extension.h"
 #import "UIViewController+extension.h"
+#import "A3UserDefaults+A3Addition.h"
 
 NSString *const A3CurrencyPickerSelectedIndexColumnOne = @"A3CurrencyPickerSelectedIndexColumnOne";
 NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelectedIndexColumnTwo";
@@ -311,7 +312,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	
 	if (indexPath.row == 0) {
 		cell.valueField.delegate = self;
-		cell.valueField.textColor = [[A3AppDelegate instance] themeColor];
+        cell.valueField.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 		
 		//		cell.rateLabel.text = self.sourceItem.currencySymbol;
 		cell.codeLabel.text = _sourceCurrencyCode;
@@ -1369,7 +1370,7 @@ static NSString *const A3V3InstructionDidShowForCurrencyPicker = @"A3V3Instructi
 	[self.refreshButton setEnabled:enable];
 	[self.swapButton setEnabled:enable];
 
-	_sourceTextField.textColor = enable ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
+    _sourceTextField.textColor = enable ? [[A3UserDefaults standardUserDefaults] themeColor] : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
 }
 
 @end

@@ -8,6 +8,7 @@
 
 #import "A3FloatLabeledPasswordTextField.h"
 #import "A3AppDelegate.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @implementation A3FloatLabeledPasswordTextField
 
@@ -39,7 +40,7 @@
     [eyeOnOffButton setImage:[self imageForEyeButton] forState:UIControlStateNormal];
     [eyeOnOffButton.widthAnchor constraintEqualToConstant:34].active = YES;
     [eyeOnOffButton.heightAnchor constraintEqualToConstant:34].active = YES;
-    eyeOnOffButton.tintColor = [[A3AppDelegate instance] themeColor];
+    eyeOnOffButton.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
     [eyeOnOffButton sizeToFit];
     [eyeOnOffButton addTarget:self action:@selector(eyeButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     

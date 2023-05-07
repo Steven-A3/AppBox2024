@@ -18,10 +18,9 @@
 #import "NSString+conversion.h"
 #import <AddressBookUI/AddressBookUI.h>
 #import <CoreLocation/CoreLocation.h>
-#import "A3AppDelegate+appearance.h"
 #import "MBProgressHUD.h"
 #import "UIViewController+tableViewStandardDimension.h"
-
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3DaysCounterChangeLocationViewController () <MBProgressHUDDelegate>
 @property (strong, nonatomic) NSArray *tableDataSource;
@@ -104,7 +103,7 @@
     
     if ( indexPath.row == 0 ) {
         cell.textLabel.text = NSLocalizedString(@"Current Location", @"Current Location");
-        cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
+        cell.textLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
     }
     else {
         cell.textLabel.textColor = [UIColor darkTextColor];

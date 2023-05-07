@@ -41,6 +41,7 @@
 #import "UIViewController+extension.h"
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 #define kColorPlaceHolder [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]
 
@@ -313,7 +314,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 	self.headerView.beforeSplitButton.enabled = enable;
 	self.headerView.perPersonButton.enabled = enable;
 
-	UIColor *color = enable ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
+    UIColor *color = enable ? [[A3UserDefaults standardUserDefaults] themeColor] : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
 	[self.headerView.beforeSplitButton setTitleColor:color forState:UIControlStateNormal];
 	[self.headerView.perPersonButton setTitleColor:color forState:UIControlStateNormal];
 
@@ -399,13 +400,15 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 }
 
 - (UIView *)keyboardAccessoryView {
+    UIColor *themeColor = [[A3UserDefaults standardUserDefaults] themeColor];
+    
     UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 45)];
     accessoryView.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
     UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), IS_RETINA ? 0.5 : 1)];
     topLine.backgroundColor = [UIColor colorWithRed:178/255.0 green:178/255.0 blue:178/255.0 alpha:1.0];
     UIButton *percentButton15 = [UIButton buttonWithType:UIButtonTypeCustom];
     [percentButton15 setTitle:@"15%" forState:UIControlStateNormal];
-    [percentButton15 setTitleColor:[A3AppDelegate instance].themeColor forState:UIControlStateNormal];
+    [percentButton15 setTitleColor:themeColor forState:UIControlStateNormal];
     [percentButton15 setTitleColor:[UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0] forState:UIControlStateHighlighted];
     percentButton15.frame = CGRectMake(15, 0, 50, 45);
     percentButton15.tag = 15;
@@ -413,7 +416,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 
     UIButton *percentButton20 = [UIButton buttonWithType:UIButtonTypeCustom];
     [percentButton20 setTitle:@"20%" forState:UIControlStateNormal];
-    [percentButton20 setTitleColor:[A3AppDelegate instance].themeColor forState:UIControlStateNormal];
+    [percentButton20 setTitleColor:themeColor forState:UIControlStateNormal];
     [percentButton20 setTitleColor:[UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0] forState:UIControlStateHighlighted];
     percentButton20.frame = CGRectMake(15 + 50 + 10, 0, 50, 45);
     percentButton20.tag = 20;
@@ -421,7 +424,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
     
     UIButton *percentButton25 = [UIButton buttonWithType:UIButtonTypeCustom];
     [percentButton25 setTitle:@"25%" forState:UIControlStateNormal];
-    [percentButton25 setTitleColor:[A3AppDelegate instance].themeColor forState:UIControlStateNormal];
+    [percentButton25 setTitleColor:themeColor forState:UIControlStateNormal];
     [percentButton25 setTitleColor:[UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0] forState:UIControlStateHighlighted];
     percentButton25.frame = CGRectMake(15 + 50 + 10 + 50 + 10, 0, 50, 45);
     percentButton25.tag = 25;

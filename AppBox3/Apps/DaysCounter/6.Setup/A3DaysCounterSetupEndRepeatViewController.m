@@ -17,9 +17,10 @@
 #import "SFKImage.h"
 #import "DaysCounterEvent.h"
 #import "A3DateHelper.h"
-#import "A3AppDelegate+appearance.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
+#import "A3AppDelegate.h"
 
 @interface A3DaysCounterSetupEndRepeatViewController ()
 @property (strong,nonatomic) NSArray *itemArray;
@@ -168,7 +169,7 @@
             NSDateFormatter *formatter = [NSDateFormatter new];
             cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:[self.eventModel repeatEndDate] withFormat:[formatter customFullStyleFormat]];
             
-            cell.detailTextLabel.textColor = [self.itemArray count] == 3 ? [A3AppDelegate instance].themeColor : [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0];
+            cell.detailTextLabel.textColor = [self.itemArray count] == 3 ? [[A3UserDefaults standardUserDefaults] themeColor] : [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0];
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
         }
         else if ( indexPath.row == 0 && !self.eventModel.repeatEndDate ) {
@@ -216,7 +217,7 @@
             }
             else {
                 [self showDatePicker:[self.eventModel repeatEndDate]];
-                cell_1row.detailTextLabel.textColor = [A3AppDelegate instance].themeColor;
+                cell_1row.detailTextLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
             }
         }
             break;

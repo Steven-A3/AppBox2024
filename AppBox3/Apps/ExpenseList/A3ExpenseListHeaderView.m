@@ -12,9 +12,9 @@
 #import "A3CommonColorDefine.h"
 #import "A3DefaultColorDefines.h"
 #import "UIImage+JHExtension.h"
-#import "A3AppDelegate+appearance.h"
 #import "UIImage+imageWithColor.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3ExpenseListHeaderView()
 
@@ -76,8 +76,8 @@
     
     _detailInfoButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _detailInfoButton.frame = CGRectMake(0.0, 0.0, 44.0, 44.0);//19
-    [_detailInfoButton setImage:[[UIImage imageNamed:@"add02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
-    [_detailInfoButton setImage:[[UIImage imageNamed:@"add01"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateHighlighted];
+    [_detailInfoButton setImage:[[UIImage imageNamed:@"add02"] tintedImageWithColor:[[A3UserDefaults standardUserDefaults] themeColor]] forState:UIControlStateNormal];
+     [_detailInfoButton setImage:[[UIImage imageNamed:@"add01"] tintedImageWithColor:[[A3UserDefaults standardUserDefaults] themeColor]] forState:UIControlStateHighlighted];
     [_detailInfoButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"add02"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
     
     _sliderBaseLineView.backgroundColor = COLOR_DEFAULT_GRAY;
@@ -259,6 +259,7 @@
     _usedAmountLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:15.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
     _resultLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
     
+    UIColor *themeColor = [[A3UserDefaults standardUserDefaults] themeColor];
     if (!budget || budget.category==nil) {  // 아직 값이 AddBudget을 통해 초기화되지 않은 상태인 경우.
         //usedAmount = @0;
         usedAmount = budget.usedAmount == nil ? @0 : budget.usedAmount;
@@ -266,8 +267,8 @@
         resultAmount = @0;
         remainAmount = @0;
 
-        [_detailInfoButton setImage:[[UIImage imageNamed:@"add02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
-        [_detailInfoButton setImage:[[UIImage imageNamed:@"add01"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateHighlighted];
+        [_detailInfoButton setImage:[[UIImage imageNamed:@"add02"] tintedImageWithColor:themeColor] forState:UIControlStateNormal];
+        [_detailInfoButton setImage:[[UIImage imageNamed:@"add01"] tintedImageWithColor:themeColor] forState:UIControlStateHighlighted];
         [_detailInfoButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"add02"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
     }
     else {
@@ -281,8 +282,8 @@
         }
         
         remainAmount = @(budget.totalAmount.doubleValue - budget.usedAmount.doubleValue);
-        [_detailInfoButton setImage:[[UIImage imageNamed:@"information"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
-        [_detailInfoButton setImage:[[UIImage imageNamed:@"information"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateHighlighted];
+        [_detailInfoButton setImage:[[UIImage imageNamed:@"information"] tintedImageWithColor:themeColor] forState:UIControlStateNormal];
+        [_detailInfoButton setImage:[[UIImage imageNamed:@"information"] tintedImageWithColor:themeColor] forState:UIControlStateHighlighted];
         [_detailInfoButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"information"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
     }
     

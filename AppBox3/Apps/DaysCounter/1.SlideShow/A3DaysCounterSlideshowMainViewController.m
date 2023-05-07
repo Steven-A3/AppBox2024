@@ -35,6 +35,7 @@
 #import "A3AppDelegate.h"
 #import "A3SyncManager.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 #define VISIBLE_INDEX_INTERVAL      2
 
@@ -92,8 +93,8 @@
         [self leftBarButtonAppsButton];
         self.infoButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"information"] style:UIBarButtonItemStylePlain target:self action:@selector(detailAction:)];
         self.shareButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareOtherAction:)];
-        self.infoButton.tintColor = [A3AppDelegate instance].themeColor;
-        self.shareButton.tintColor = [A3AppDelegate instance].themeColor;
+        self.infoButton.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
+        self.shareButton.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
         self.navigationItem.rightBarButtonItems = @[self.shareButton, self.infoButton, self.instructionHelpBarButton];
 	}
 
@@ -422,9 +423,10 @@
     
 	UIButton *help = [self instructionHelpButton];
     
-    info.tintColor = [A3AppDelegate instance].themeColor;
-    share.tintColor = [A3AppDelegate instance].themeColor;
-    help.tintColor = [A3AppDelegate instance].themeColor;
+    UIColor *themeColor = [[A3UserDefaults standardUserDefaults] themeColor];
+    info.tintColor = themeColor;
+    share.tintColor = themeColor;
+    help.tintColor = themeColor;
     
 	_moreMenuButtons = @[help, info, share];
     

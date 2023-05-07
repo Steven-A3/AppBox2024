@@ -11,10 +11,10 @@
 #import "A3RoundedSideButton.h"
 #import "A3OverlappedCircleView.h"
 #import "UIImage+JHExtension.h"
-#import "A3AppDelegate+appearance.h"
 #import "UIImage+imageWithColor.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @implementation A3TipCalcHeaderView
 {
@@ -75,6 +75,7 @@
     
     self.backgroundColor = COLOR_HEADERVIEW_BG;
     
+    UIColor *themeColor = [[A3UserDefaults standardUserDefaults] themeColor];
     // Buttons
     _beforeSplitButton = [A3RoundedSideButton buttonWithType:UIButtonTypeCustom];
     _perPersonButton = [A3RoundedSideButton buttonWithType:UIButtonTypeCustom];
@@ -83,11 +84,11 @@
 	[self addSubview:_perPersonButton];
 	[self addSubview:_detailInfoButton];
 	[_beforeSplitButton setTitle:NSLocalizedString(@"Before Split", @"Before Split") forState:UIControlStateNormal];
-	[_beforeSplitButton setTitleColor:[A3AppDelegate instance].themeColor forState:UIControlStateNormal];
+	[_beforeSplitButton setTitleColor:themeColor forState:UIControlStateNormal];
 	[_perPersonButton setTitle:NSLocalizedString(@"Per Person", @"Per Person") forState:UIControlStateNormal];
-	[_perPersonButton setTitleColor:[A3AppDelegate instance].themeColor forState:UIControlStateNormal];
+	[_perPersonButton setTitleColor:themeColor forState:UIControlStateNormal];
     _detailInfoButton.frame = CGRectMake(0.0, 0.0, 44.0, 44.0);
-    [_detailInfoButton setImage:[[UIImage imageNamed:@"information"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
+    [_detailInfoButton setImage:[[UIImage imageNamed:@"information"] tintedImageWithColor:themeColor] forState:UIControlStateNormal];
     [_detailInfoButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"information"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
     
     // Layout Views
@@ -339,17 +340,18 @@
 
 - (void)setResult:(TipCalcRecent *)result withAnimation:(BOOL)animate {
     if (animate) {
-        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-        [UIView setAnimationBeginsFromCurrentState:YES];
-        [UIView setAnimationCurve:7];
-        [UIView setAnimationDuration:0.25];
-        [UIView setAnimationDidStopSelector:@selector(setNeedsLayout)];
-        [self setResult:result];
-        [_sliderBaseLineView layoutIfNeeded];
-        [_sliderGaugeLineView layoutIfNeeded];
-        [_bottomGrayLineView layoutIfNeeded];
-        [_sliderThumbView layoutIfNeeded];
-        [UIView commitAnimations];
+        [UIView animateWithDuration:0.25
+                              delay:0
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^{
+            [self setResult:result];
+            [self->_sliderBaseLineView layoutIfNeeded];
+            [self->_sliderGaugeLineView layoutIfNeeded];
+            [self->_bottomGrayLineView layoutIfNeeded];
+            [self->_sliderThumbView layoutIfNeeded];
+        } completion:^(BOOL finished) {
+            [self setNeedsLayout];
+        }];
     }
     else {
         [self setResult:result];

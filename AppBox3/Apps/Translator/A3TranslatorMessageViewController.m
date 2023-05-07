@@ -28,6 +28,7 @@
 #import "NSManagedObjectContext+extension.h"
 #import "A3SyncManager.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 static NSString *const kTranslatorDetectLanguageCode = @"Detect";
 static NSString *const A3AnimationKeyOpacity = @"opacity";
@@ -873,7 +874,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	_translateButton.titleLabel.font = [UIFont boldSystemFontOfSize:17.0];
 	_translateButton.titleLabel.adjustsFontSizeToFitWidth = YES;
 	_translateButton.titleLabel.minimumScaleFactor = 0.5;
-	[_translateButton setTitleColor:[[A3AppDelegate instance] themeColor] forState:UIControlStateNormal];
+	[_translateButton setTitleColor:[[A3UserDefaults standardUserDefaults] themeColor] forState:UIControlStateNormal];
 	[_translateButton setTitleColor:[UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0] forState:UIControlStateDisabled];
 	[_translateButton addTarget:self action:@selector(translateAction) forControlEvents:UIControlEventTouchUpInside];
 	[_translateButton setEnabled:NO];

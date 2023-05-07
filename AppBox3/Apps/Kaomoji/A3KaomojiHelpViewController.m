@@ -9,6 +9,7 @@
 #import "A3KaomojiHelpViewController.h"
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3KaomojiHelpViewController ()
 
@@ -36,7 +37,7 @@
     // Do any additional setup after loading the view.
 
 	for (UIImageView *imageView in _imageViews) {
-		imageView.tintColor = [[A3AppDelegate instance] themeColor];
+		imageView.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
 	}
     _popoverImageView.image = [UIImage imageNamed:@"KaomojiPopover"];
     

@@ -12,7 +12,7 @@
 #import "NJKWebViewProgress.h"
 #import "NJKWebViewProgressView.h"
 #import "A3ActivitySafari.h"
-#import "A3AppDelegate+appearance.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3BasicWebViewController () <UIWebViewDelegate, NJKWebViewProgressDelegate, UIPopoverControllerDelegate>
 @property (nonatomic, strong) UIWebView * webView;
@@ -91,7 +91,7 @@
 		CGRect navigationBarBounds = self.navigationController.navigationBar.bounds;
 		CGRect barFrame = CGRectMake(0, navigationBarBounds.size.height - progressBarHeight, navigationBarBounds.size.width, progressBarHeight);
 		_progressView = [[NJKWebViewProgressView alloc] initWithFrame:barFrame];
-        _progressView.progressBarView.backgroundColor = [A3AppDelegate instance].themeColor;
+        _progressView.progressBarView.backgroundColor = [[A3UserDefaults standardUserDefaults] themeColor];
 		[self.navigationController.navigationBar addSubview:_progressView];
 	}
 }

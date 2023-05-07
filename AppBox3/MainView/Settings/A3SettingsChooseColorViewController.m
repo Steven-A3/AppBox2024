@@ -8,13 +8,13 @@
 
 #import "A3SettingsChooseColorViewController.h"
 #import "A3AppDelegate.h"
-#import "A3AppDelegate+appearance.h"
 #import "A3UIDevice.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3UserDefaultsKeys.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3SettingsChooseColorViewController ()
 
@@ -33,7 +33,7 @@ NSString *const kCellID = @"Cell";                          // UICollectionViewC
 - (void)awakeFromNib {
 	[super awakeFromNib];
 
-	_colorsArray = [[A3AppDelegate instance] themeColors];
+    _colorsArray = [[A3UserDefaults standardUserDefaults] themeColors];
 
 	NSNumber *selectedColor = [[A3SyncManager sharedSyncManager] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
 	_selectedColorIndex = selectedColor ? [selectedColor unsignedIntegerValue] : 4;
@@ -60,7 +60,7 @@ NSString *const kCellID = @"Cell";                          // UICollectionViewC
 	if (!_selectedMarkView) {
 		_selectedMarkView = [UIImageView new];
 		_selectedMarkView.image = [[UIImage imageNamed:@"check"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-		_selectedMarkView.tintColor = [[A3AppDelegate instance] themeColor];
+        _selectedMarkView.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
 		[_selectedMarkView sizeToFit];
 	}
 	return _selectedMarkView;

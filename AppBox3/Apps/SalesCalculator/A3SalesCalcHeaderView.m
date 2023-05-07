@@ -12,10 +12,10 @@
 #import "UIImage+JHExtension.h"
 #import "A3SalesCalcData.h"
 #import "A3SalesCalcCalculator.h"
-#import "A3AppDelegate+appearance.h"
 #import "UIImage+imageWithColor.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3SalesCalcHeaderView()
 
@@ -79,7 +79,7 @@
     [self addSubview:_detailInfoButton];
 
     _bottomGrayLineView.backgroundColor = A3UITableViewSeparatorColor;
-    [_detailInfoButton setImage:[[UIImage imageNamed:@"information"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
+    [_detailInfoButton setImage:[[UIImage imageNamed:@"information"] tintedImageWithColor:[[A3UserDefaults standardUserDefaults] themeColor]] forState:UIControlStateNormal];
     [_detailInfoButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"information"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled]; // 196, 196, 196
     
     _sliderThumbView = [[A3OverlappedCircleView alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
@@ -111,15 +111,15 @@
     [_sliderThumbView makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@44);
         make.height.equalTo(@44);
-        make.centerY.equalTo(_sliderBaseLineView.centerY);
-        _sliderThumbLeadingConst = make.left.equalTo(self.left);
+        make.centerY.equalTo(self->_sliderBaseLineView.centerY);
+        self->_sliderThumbLeadingConst = make.left.equalTo(self.left);
     }];
     
     [_sliderRedLineView makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(_sliderThumbView.left).with.offset(22.0);
+        make.right.equalTo(self->_sliderThumbView.left).with.offset(22.0);
         make.height.equalTo(@5.0);
         make.left.equalTo(self.left);
-        make.centerY.equalTo(_sliderBaseLineView.centerY);
+        make.centerY.equalTo(self->_sliderBaseLineView.centerY);
     }];
     
     [_salesPricePrintLabel makeConstraints:^(MASConstraintMaker *make) {
@@ -135,12 +135,12 @@
     
     [_savedPricePrintLabel makeConstraints:^(MASConstraintMaker *make) {
         if (IS_IPAD) {
-		   _savedPriceLabelTrailingConst = make.right.equalTo(self.right).with.offset(-15);
+            self->_savedPriceLabelTrailingConst = make.right.equalTo(self.right).with.offset(-15);
             make.leading.greaterThanOrEqualTo(@10);
             //make.top.equalTo(_sliderBaseLineView.bottom).with.offset(28.0);
             make.baseline.equalTo(self.bottom).with.offset(-47);
         } else {
-			_savedPriceLabelTrailingConst = make.right.equalTo(self.right).with.offset(-15);
+            self->_savedPriceLabelTrailingConst = make.right.equalTo(self.right).with.offset(-15);
             make.leading.greaterThanOrEqualTo(@10);
             make.baseline.equalTo(self.bottom).with.offset(-28.0);
         }
@@ -149,10 +149,10 @@
     [_detailInfoButton makeConstraints:^(MASConstraintMaker *make) {
         if (IS_IPAD) {
             make.right.equalTo(self.right).with.offset(-4);
-            make.centerY.equalTo(_savedPricePrintLabel.centerY);
+            make.centerY.equalTo(self->_savedPricePrintLabel.centerY);
         } else {
             make.right.equalTo(self.right).with.offset(-4);
-            make.centerY.equalTo(_savedPricePrintLabel.centerY);
+            make.centerY.equalTo(self->_savedPricePrintLabel.centerY);
         }
         make.width.equalTo(@44);
         make.height.equalTo(@44);
@@ -196,7 +196,7 @@
                 make.leading.equalTo( @( self.frame.size.width / 5.0 * (idx+1) ) );
                 make.width.equalTo(IS_RETINA? @0.5 : @1);
                 make.height.equalTo(@18);
-                make.top.equalTo(_sliderBaseLineView.bottom);
+                make.top.equalTo(self->_sliderBaseLineView.bottom);
             }];
             
         }];
@@ -207,7 +207,7 @@
             [aLabel removeConstraints:aLabel.constraints];
             [aLabel sizeToFit];
             [aLabel makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(((UIView *)_sliderMeterViews[idx]).left).with.offset(IS_RETINA? -4.5 : -5);
+                make.right.equalTo(((UIView *)self->_sliderMeterViews[idx]).left).with.offset(IS_RETINA? -4.5 : -5);
                 make.baseline.equalTo(self.bottom).with.offset(-75);//-> 75pt로 하면 slider와 겹치게 됩니다. 현재는 label의 상단이 slider에서 6pt 하단에 위치하게 되어 있습니다. 폰트는 Caption2 입니다.
             }];
         }];
@@ -299,21 +299,21 @@
     self.calcData = resultData;
     
     if (animate) {
-        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-        [UIView setAnimationBeginsFromCurrentState:YES];
-        [UIView setAnimationCurve:7];
-        [UIView setAnimationDuration:0.25];
+        [UIView animateWithDuration:0.25
+                              delay:0
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^{
+            [self adjustConstraintLayout];
 
-        [self adjustConstraintLayout];
-
-        [_sliderBaseLineView layoutIfNeeded];
-        [_sliderRedLineView layoutIfNeeded];
-        [_bottomGrayLineView layoutIfNeeded];
-        [_salesPricePrintLabel layoutIfNeeded];
-        [_savedPricePrintLabel layoutIfNeeded];
-        [_sliderThumbView layoutIfNeeded];
-        
-        [UIView commitAnimations];
+            [self->_sliderBaseLineView layoutIfNeeded];
+            [self->_sliderRedLineView layoutIfNeeded];
+            [self->_bottomGrayLineView layoutIfNeeded];
+            [self->_salesPricePrintLabel layoutIfNeeded];
+            [self->_savedPricePrintLabel layoutIfNeeded];
+            [self->_sliderThumbView layoutIfNeeded];
+        } completion:^(BOOL finished) {
+            
+        }];
     }
     else {
         [self adjustConstraintLayout];

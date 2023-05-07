@@ -7,10 +7,10 @@
 //
 
 #import "A3WalletPhotoItemTitleView.h"
-#import "A3AppDelegate+appearance.h"
 #import "UIImage+imageWithColor.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @implementation A3WalletPhotoItemTitleView
 
@@ -33,8 +33,9 @@
 
 	[self addSubview:self.favoriteButton];
 
-	[_favoriteButton setImage:[[UIImage imageNamed:@"star02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
-	[_favoriteButton setImage:[[UIImage imageNamed:@"star02_on"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateSelected];
+    UIColor *themeColor = [[A3UserDefaults standardUserDefaults] themeColor];
+	[_favoriteButton setImage:[[UIImage imageNamed:@"star02"] tintedImageWithColor:themeColor] forState:UIControlStateNormal];
+	[_favoriteButton setImage:[[UIImage imageNamed:@"star02_on"] tintedImageWithColor:themeColor] forState:UIControlStateSelected];
 
 	CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 
@@ -104,7 +105,7 @@
 - (UIButton *)saveButton {
 	if (!_saveButton) {
 		_saveButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-		[_saveButton setImage:[[UIImage imageNamed:@"share"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
+		[_saveButton setImage:[[UIImage imageNamed:@"share"] tintedImageWithColor:[[A3UserDefaults standardUserDefaults] themeColor]] forState:UIControlStateNormal];
 	}
 	return _saveButton;
 }

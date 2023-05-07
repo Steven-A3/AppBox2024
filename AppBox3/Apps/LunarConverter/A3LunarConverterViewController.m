@@ -24,6 +24,7 @@
 #import "UIViewController+extension.h"
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3LunarConverterViewController () <UIScrollViewDelegate, A3DateKeyboardDelegate, UITextFieldDelegate,
 		UIPopoverControllerDelegate, UIActivityItemSource, GADBannerViewDelegate>
@@ -300,7 +301,7 @@
 
 	A3LunarConverterCellView *cellView = (A3LunarConverterCellView*)[pageView viewWithTag:100];
 	topCell = cellView;
-	cellView.dateLabel.textColor = [A3AppDelegate instance].themeColor;
+	cellView.dateLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 	cellView.descriptionLabel.text = NSLocalizedString(@"Solar", @"Solar");
 
 	cellView = (A3LunarConverterCellView*)[pageView viewWithTag:101];
@@ -1179,8 +1180,8 @@
 	[self.addToDaysCounterButtons enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop) {
 		[button setEnabled:enable];
 	}];
-	[[self dateLabelInView:_firstPageView] setTextColor: enable ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255] ];
-	[[self dateLabelInView:_secondPageView] setTextColor: enable ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255] ];
+	[[self dateLabelInView:_firstPageView] setTextColor: enable ? [[A3UserDefaults standardUserDefaults] themeColor] : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255] ];
+	[[self dateLabelInView:_secondPageView] setTextColor: enable ? [[A3UserDefaults standardUserDefaults] themeColor] : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255] ];
 }
 
 - (UILabel *)dateLabelInView:(UIView *)view {

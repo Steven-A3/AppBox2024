@@ -8,6 +8,7 @@
 
 #import "A3SharePopupFavoriteButton.h"
 #import "A3AppDelegate.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3SharePopupFavoriteButton ()
 
@@ -46,7 +47,7 @@
 	UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds byRoundingCorners:UIRectCornerBottomLeft|UIRectCornerBottomRight cornerRadii:CGSizeMake(10, 10)];
 	CAShapeLayer *maskLayer = [CAShapeLayer layer];
 	maskLayer.frame = self.bounds;
-	maskLayer.fillColor = [[A3AppDelegate instance] themeColor].CGColor;
+    maskLayer.fillColor = [[A3UserDefaults standardUserDefaults] themeColor].CGColor;
 	maskLayer.path = maskPath.CGPath;
 	maskLayer.lineWidth = 1.0;
 

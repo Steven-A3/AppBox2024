@@ -12,10 +12,10 @@
 #import "A3DateCalcStateManager.h"
 #import "A3DateCalcTableviewCell.h"
 #import "A3DefaultColorDefines.h"
-#import "A3AppDelegate+appearance.h"
 #import "UIImage+imageWithColor.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3UIDevice.h"
+#import "A3AppDelegate.h"
 
 static NSString *CellIdentifier = @"Cell";
 

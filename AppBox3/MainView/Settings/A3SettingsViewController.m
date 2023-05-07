@@ -186,7 +186,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 
 - (void)prepareCellForResetHomeScreenLayout:(UITableViewCell *)cell {
     cell.textLabel.text = NSLocalizedString(@"Reset Home Screen Layout", @"Reset Home Screen Layout");
-    cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
+    cell.textLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
     cell.textLabel.adjustsFontSizeToFitWidth = YES;
     cell.textLabel.minimumScaleFactor = 0.4;
     [cell.detailTextLabel setHidden:YES];
@@ -341,7 +341,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 
 					cell.accessoryView = priceTagLabel;
 					cell.detailTextLabel.text = @"";
-					cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
+					cell.textLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 				} else {
 					cell.accessoryView = nil;
 					cell.textLabel.textColor = [UIColor colorWithRed:179.0/255.0 green:179.0/255.0 blue:179.0/255.0 alpha:1.0];
@@ -359,7 +359,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 		}
 		case A3SettingsRowRestorePurchase:
 			cell.detailTextLabel.text = NSLocalizedString(@"Free", @"Free");
-			cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
+			cell.textLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 			break;
 	}
 }

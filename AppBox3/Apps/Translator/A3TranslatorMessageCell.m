@@ -21,10 +21,10 @@
 #import "A3AppDelegate.h"
 #import "Reachability.h"
 #import "A3TranslatorLanguage.h"
-#import "A3AppDelegate+appearance.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
+#import "A3UserDefaults+A3Addition.h"
 
 NSString *const A3TranslatorKayLanguage = @"language";
 
@@ -185,7 +185,7 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 		_rightMessageView = [UIImageView new];
 		UIImage *originalTextImage = [[UIImage imageNamed:@"ballon_right"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 		_rightMessageView.image = originalTextImage;
-		_rightMessageView.tintColor = [[A3AppDelegate instance] themeColor];
+        _rightMessageView.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
 		[self.contentView addSubview:_rightMessageView];
 
 		[_rightMessageView makeConstraints:^(MASConstraintMaker *make) {

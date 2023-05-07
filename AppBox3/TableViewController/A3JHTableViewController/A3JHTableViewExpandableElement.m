@@ -8,7 +8,7 @@
 
 #import "A3JHTableViewExpandableElement.h"
 #import "A3JHTableViewExpandableHeaderCell.h"
-#import "A3AppDelegate+appearance.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3JHTableViewExpandableElement () <A3TableViewExpandableHeaderCellProtocol>
 @end
@@ -67,7 +67,7 @@
 		self.titleLabel.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
 	} else {
 		[_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationMiddle];
-		self.titleLabel.textColor = [A3AppDelegate instance].themeColor;
+        self.titleLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 	}
 
 	[_tableView endUpdates];

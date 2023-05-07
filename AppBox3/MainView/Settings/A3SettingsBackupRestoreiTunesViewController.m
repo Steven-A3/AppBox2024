@@ -22,6 +22,7 @@
 @import UniformTypeIdentifiers;
 #import "UIViewController+A3Addition.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3SettingsBackupRestoreiTunesViewController () <A3SettingsITunesSelectBackupDelegate, AAAZipDelegate, A3BackupRestoreManagerDelegate, UIDocumentPickerDelegate>
 
@@ -207,7 +208,7 @@
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        cell.textLabel.textColor = [[A3AppDelegate instance] themeColor];
+        cell.textLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
     }
     else {
         cell.textLabel.textColor = [UIColor blackColor];
@@ -379,9 +380,10 @@
 
 	NSNumber *selectedColor = [[A3SyncManager sharedSyncManager] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
 	if (selectedColor) {
-		self.view.tintColor = [[A3AppDelegate instance] themeColor];
-		[A3AppDelegate instance].window.tintColor = [[A3AppDelegate instance] themeColor];
-		self.navigationController.navigationBar.tintColor = [[A3AppDelegate instance] themeColor];
+        UIColor *themeColor = [[A3UserDefaults standardUserDefaults] themeColor];
+        self.view.tintColor = themeColor;
+        [A3AppDelegate instance].window.tintColor = themeColor;
+        self.navigationController.navigationBar.tintColor = themeColor;
 		[self.tableView reloadData];
 	}
 }

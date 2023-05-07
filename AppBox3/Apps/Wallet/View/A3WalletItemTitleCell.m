@@ -7,9 +7,9 @@
 //
 
 #import "A3WalletItemTitleCell.h"
-#import "A3AppDelegate+appearance.h"
 #import "UIImage+imageWithColor.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @implementation A3WalletItemTitleCell
 
@@ -39,8 +39,9 @@
 
 	CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 	_favoriteButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	[_favoriteButton setImage:[[UIImage imageNamed:@"star02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
-	[_favoriteButton setImage:[[UIImage imageNamed:@"star02_on"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateSelected];
+    UIColor *themeColor = [[A3UserDefaults standardUserDefaults] themeColor];
+	[_favoriteButton setImage:[[UIImage imageNamed:@"star02"] tintedImageWithColor:themeColor] forState:UIControlStateNormal];
+	[_favoriteButton setImage:[[UIImage imageNamed:@"star02_on"] tintedImageWithColor:themeColor] forState:UIControlStateSelected];
 	[self addSubview:_favoriteButton];
 
 	[_titleTextField makeConstraints:^(MASConstraintMaker *make) {

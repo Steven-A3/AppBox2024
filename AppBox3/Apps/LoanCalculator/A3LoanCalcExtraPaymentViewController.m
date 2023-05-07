@@ -18,7 +18,6 @@
 #import "UITableView+utility.h"
 #import "A3CurrencySelectViewController.h"
 #import "A3CalculatorViewController.h"
-#import "A3AppDelegate+appearance.h"
 #import "UIImage+imageWithColor.h"
 #import "A3DateHelper.h"
 #import "A3UserDefaultsKeys.h"
@@ -26,6 +25,7 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "NSString+conversion.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3LoanCalcExtraPaymentViewController ()
 		<A3KeyboardDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource,
@@ -459,7 +459,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 	textField.text = [self.decimalFormatter stringFromNumber:@0];
 	textField.placeholder = @"";
 	
-	textField.textColor = [[A3AppDelegate instance] themeColor];
+    textField.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 
 	_currentIndexPath = [self.tableView indexPathForCellSubview:textField];
 	[self addNumberKeyboardNotificationObservers];
@@ -709,7 +709,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         inputCell.textField.font = [UIFont systemFontOfSize:17];
         
         if ([_items containsObject:self.dateInputItem]) {
-            inputCell.textField.textColor = [A3AppDelegate instance].themeColor;
+            inputCell.textField.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
         }
         else {
             inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];

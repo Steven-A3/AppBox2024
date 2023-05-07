@@ -8,10 +8,11 @@
 
 #import "A3RulerViewController.h"
 #import "A3MarkingsView.h"
-#import "A3AppDelegate+appearance.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+extension.h"
 #import "A3UIDevice.h"
+#import "A3AppDelegate.h"
+#import "A3UserDefaults+A3Addition.h"
 
 NSString *const A3RulerCentimeterPositionRightBottom = @"A3RulerCentemeterPositionRightBottom";
 NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse";
@@ -930,9 +931,9 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 
 		[_redLineGlassView remakeConstraints:^(MASConstraintMaker *make) {
 			make.left.equalTo(@-1);
-			make.centerY.equalTo(_redLineView.centerY);
-			make.width.equalTo(@(_screenWidth + 2.0));
-			make.height.equalTo(@(_centimeterAsPoints));
+			make.centerY.equalTo(self->_redLineView.centerY);
+			make.width.equalTo(@(self->_screenWidth + 2.0));
+			make.height.equalTo(@(self->_centimeterAsPoints));
 		}];
 	} else {
 		_topValueLabel.transform = CGAffineTransformIdentity;
@@ -957,10 +958,10 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 		_fingerDragView.frame = CGRectMake(_redLineView.frame.origin.x - 21.0, _screenHeight * 0.6, 42, 42);
 
 		[_redLineGlassView remakeConstraints:^(MASConstraintMaker *make) {
-			make.centerX.equalTo(_redLineView.centerX);
+            make.centerX.equalTo(self->_redLineView.centerX);
 			make.top.equalTo(@(-1));
-			make.width.equalTo(@(_centimeterAsPoints));
-			make.height.equalTo(@(_screenHeight + 2.0));
+			make.width.equalTo(@(self->_centimeterAsPoints));
+			make.height.equalTo(@(self->_screenHeight + 2.0));
 		}];
 	}
 }
@@ -1328,12 +1329,13 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 }
 
 - (UIButton *)buttonWithTitle:(NSString *)title {
+    UIColor *themeColor = [[A3UserDefaults standardUserDefaults] themeColor];
 	UIButton *button = [UIButton new];
 	button.layer.borderWidth = 1.0;
 	button.layer.cornerRadius = IS_IPAD ? 40.0 : 30.0;
-	button.layer.borderColor = [[A3AppDelegate instance] themeColor].CGColor;
+	button.layer.borderColor = themeColor.CGColor;
 	[button setTitle:title forState:UIControlStateNormal];
-	[button setTitleColor:[[A3AppDelegate instance] themeColor] forState:UIControlStateNormal];
+	[button setTitleColor:themeColor forState:UIControlStateNormal];
 
 	[self.view addSubview:button];
 

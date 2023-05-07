@@ -46,6 +46,7 @@
 #import "UIViewController+extension.h"
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 #define LoanCalcModeSave @"LoanCalcModeSave"
 
@@ -328,8 +329,8 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 			cell.monthlyButton.enabled = YES;
 			cell.totalButton.enabled = YES;
 
-			[cell.monthlyButton setTitleColor:[[A3AppDelegate instance] themeColor] forState:UIControlStateNormal];
-			[cell.totalButton setTitleColor:[[A3AppDelegate instance] themeColor] forState:UIControlStateNormal];
+			[cell.monthlyButton setTitleColor:[[A3UserDefaults standardUserDefaults] themeColor] forState:UIControlStateNormal];
+			[cell.totalButton setTitleColor:[[A3UserDefaults standardUserDefaults] themeColor] forState:UIControlStateNormal];
 			if (cell.monthlyButton.layer.borderColor != [UIColor clearColor].CGColor) {
 				cell.monthlyButton.layer.borderColor = cell.monthlyButton.currentTitleColor.CGColor;
 			}
@@ -1903,7 +1904,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 	_didPressClearKey = NO;
 	
 	textField.text = [self.decimalFormatter stringFromNumber:@0];
-	textField.textColor = [[A3AppDelegate instance] themeColor];
+    textField.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 	textField.placeholder = @"";
 
 	self.currentIndexPath = [self.tableView indexPathForCellSubview:textField];
@@ -2998,8 +2999,8 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 
         if ([_advItems containsObject:self.dateInputItem]) {
             //            inputCell.textField.textColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0];
-            inputCell.textField.textColor = [A3AppDelegate instance].themeColor;
-            inputCell.detailLabel.textColor = [A3AppDelegate instance].themeColor;
+            inputCell.textField.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
+            inputCell.detailLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
         } else {
             inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
             inputCell.detailLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];

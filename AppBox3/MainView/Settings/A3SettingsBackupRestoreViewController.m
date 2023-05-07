@@ -26,6 +26,7 @@
 #import "NSDate-Utilities.h"
 #import "NSFileManager+A3Addition.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 NSString *const kDropboxClientIdentifier = @"ody0cjvmnaxvob4";
 NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
@@ -304,7 +305,7 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 	if (cell.tag == 1100) {
 		cell.detailTextLabel.text = _dropboxAccountInfo ? _dropboxAccountInfo[@"name"][@"display_name"] : @"";
 	} else {
-		cell.textLabel.textColor = [[A3AppDelegate instance] themeColor];
+        cell.textLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 	}
 }
 
@@ -404,9 +405,10 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 
 	NSNumber *selectedColor = [[A3SyncManager sharedSyncManager] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
 	if (selectedColor) {
-		self.view.tintColor = [[A3AppDelegate instance] themeColor];
-		[A3AppDelegate instance].window.tintColor = [[A3AppDelegate instance] themeColor];
-		self.navigationController.navigationBar.tintColor = [[A3AppDelegate instance] themeColor];
+        UIColor *themeColor = [[A3UserDefaults standardUserDefaults] themeColor];
+        self.view.tintColor = themeColor;
+        [A3AppDelegate instance].window.tintColor = themeColor;
+        self.navigationController.navigationBar.tintColor = themeColor;
 		[self.tableView reloadData];
 	}
 }

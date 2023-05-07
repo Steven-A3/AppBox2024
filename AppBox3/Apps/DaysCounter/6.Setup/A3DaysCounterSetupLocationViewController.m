@@ -23,7 +23,6 @@
 #import "A3DaysCounterLocationPopupViewController.h"
 #import <AddressBookUI/AddressBookUI.h>
 #import "A3GradientView.h"
-#import "A3AppDelegate+appearance.h"
 #import "MBProgressHUD.h"
 #import "DaysCounterEvent.h"
 #import "DaysCounterEventLocation.h"
@@ -33,6 +32,7 @@
 #import "NSManagedObjectContext+extension.h"
 #import "A3SyncManager.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3DaysCounterSetupLocationViewController () <MBProgressHUDDelegate>
 @property (nonatomic, strong) A3LocationPlacemarkView *placemarkView;
@@ -557,14 +557,14 @@
     if ( [self.nearbyVenuesOfSearchResults count] == 0 ) {
         cell.textLabel.text = (isLoading ? NSLocalizedString(@"Loading locations....", @"Loading locations....") : NSLocalizedString(@"Add this place", @"Add this place"));
         cell.detailTextLabel.text = @"";
-        cell.textLabel.textColor = isLoading ? [UIColor blackColor] : [A3AppDelegate instance].themeColor;
+        cell.textLabel.textColor = isLoading ? [UIColor blackColor] : [[A3UserDefaults standardUserDefaults] themeColor];
     }
     else if (indexPath.row >= [self.nearbyVenuesOfSearchResults count]) {
         cell.textLabel.font = [UIFont boldSystemFontOfSize:17.0];
         cell.detailTextLabel.font = [UIFont systemFontOfSize:14.0];
         cell.textLabel.text = NSLocalizedString(@"Add this place?", @"Add this place?");
         cell.detailTextLabel.text = NSLocalizedString(@"We Couldn't find that", @"We Couldn't find that");
-        cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
+        cell.textLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
         cell.detailTextLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
     }
     else {
@@ -594,7 +594,7 @@
     if ( cell == nil ) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"currentLocationCell"];
         cell.textLabel.font = [UIFont systemFontOfSize:17]; 
-        cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
+        cell.textLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     

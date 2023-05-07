@@ -14,13 +14,14 @@
 #import "A3DateHelper.h"
 #import "A3NumberKeyboardViewController.h"
 #import "A3DaysCounterRepeatCustomCell.h"
-#import "A3AppDelegate+appearance.h"
 #import "DaysCounterEvent.h"
 #import "DaysCounterDate.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "DaysCounterEvent+extension.h"
 #import "UITableView+utility.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
+#import "A3AppDelegate.h"
 
 @interface A3DaysCounterSetupAlertViewController () <A3KeyboardDelegate, UITextFieldDelegate, A3ViewControllerProtocol>
 @property (strong, nonatomic) NSArray *itemArray;
@@ -196,7 +197,7 @@
 			UITextField *textField = (UITextField*)[cell viewWithTag:12];
 			textField.delegate = self;
 			((A3DaysCounterRepeatCustomCell *)cell).checkImageView.image = [[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-			[((A3DaysCounterRepeatCustomCell *)cell).checkImageView setTintColor:[A3AppDelegate instance].themeColor];
+            [((A3DaysCounterRepeatCustomCell *)cell).checkImageView setTintColor:[[A3UserDefaults standardUserDefaults] themeColor]];
 			[self setCheckmarkOnCustomInputCell:cell CheckShow:NO];
 		}
 		else {
@@ -418,7 +419,7 @@
 	self.textColorBeforeEditing = textField.textColor;
 
 	textField.text = [self.decimalFormatter stringFromNumber:@0];
-	textField.textColor = [[A3AppDelegate instance] themeColor];
+    textField.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
@@ -527,7 +528,7 @@
 	} completion:^(BOOL finished) {
 		[keyboardView removeFromSuperview];
 		self.numberKeyboardViewController = nil;
-		_isNumberKeyboardVisible = NO;
+        self->_isNumberKeyboardVisible = NO;
 	}];
 }
 

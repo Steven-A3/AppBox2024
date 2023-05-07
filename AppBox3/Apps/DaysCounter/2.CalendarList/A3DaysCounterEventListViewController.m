@@ -35,6 +35,7 @@
 #import "A3AppDelegate.h"
 #import "A3SyncManager.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3DaysCounterEventListViewController ()
 		<UINavigationControllerDelegate, UISearchControllerDelegate, UISearchBarDelegate,
@@ -125,7 +126,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
         verticalOffset = -safeAreaInsets.bottom;
     }
     [self.view addSubview:_addEventButton];
-    _addEventButton.tintColor = [A3AppDelegate instance].themeColor;
+    _addEventButton.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
     [_addEventButton makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view.centerX);
         make.bottom.equalTo(self.view.bottom).with.offset(-(CGRectGetHeight(self.bottomToolbar.frame) + 11) + verticalOffset);

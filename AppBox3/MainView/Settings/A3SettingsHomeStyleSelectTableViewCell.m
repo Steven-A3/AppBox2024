@@ -9,6 +9,7 @@
 #import "A3SettingsHomeStyleSelectTableViewCell.h"
 #import "A3UserDefaultsKeys.h"
 #import "A3AppDelegate.h"
+#import "A3UserDefaults+A3Addition.h"
 
 @interface A3SettingsHomeStyleSelectTableViewCell ()
 
@@ -74,21 +75,22 @@
 	NSString *style = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
 	NSInteger idx = [menuTypes indexOfObject:style];
 
+    UIColor *themeColor = [[A3UserDefaults standardUserDefaults] themeColor];
 	switch (idx) {
 		case 0:
-			_listTitleButton.layer.borderColor = [[A3AppDelegate instance] themeColor].CGColor;
+			_listTitleButton.layer.borderColor = themeColor.CGColor;
 			_hexagonTitleButton.layer.borderColor = [UIColor clearColor].CGColor;
 			_gridTitleButton.layer.borderColor = [UIColor clearColor].CGColor;
 			break;
 		case 1:
 			_listTitleButton.layer.borderColor = [UIColor clearColor].CGColor;
-			_hexagonTitleButton.layer.borderColor = [[A3AppDelegate instance] themeColor].CGColor;
+			_hexagonTitleButton.layer.borderColor = themeColor.CGColor;
 			_gridTitleButton.layer.borderColor = [UIColor clearColor].CGColor;
 			break;
 		case 2:
 			_listTitleButton.layer.borderColor = [UIColor clearColor].CGColor;
 			_hexagonTitleButton.layer.borderColor = [UIColor clearColor].CGColor;
-			_gridTitleButton.layer.borderColor = [[A3AppDelegate instance] themeColor].CGColor;
+			_gridTitleButton.layer.borderColor = themeColor.CGColor;
 			break;
 		default:
 			break;

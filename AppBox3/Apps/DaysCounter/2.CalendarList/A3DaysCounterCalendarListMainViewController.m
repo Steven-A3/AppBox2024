@@ -35,6 +35,7 @@
 #import "A3AppDelegate.h"
 #import "A3SyncManager.h"
 #import "A3UIDevice.h"
+#import "A3UserDefaults+A3Addition.h"
 
 #define ActionTag_DeleteCalendar 100
 
@@ -434,7 +435,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         self.itemArray = [_sharedManager visibleCalendarList];
         [self.tableView reloadData];
-        self.addEventButton.tintColor = [A3AppDelegate instance].themeColor;
+        self.addEventButton.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
         [self setupHeaderInfo];
     });
 }
