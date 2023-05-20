@@ -368,9 +368,11 @@
 	switch (row) {
 		case 0:{
             [self.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES];
-            
-            PasswordController *controller = [PasswordController new];
-            [controller enablePasswordWithViewController:self];
+
+            UIViewController *viewController = [PasswordViewFactory makePasswordViewWithDissmissHandler:^{
+                [[self presentedViewController] dismissViewControllerAnimated:YES completion:nil];
+            }];
+            [self presentViewController:viewController animated:YES completion:nil];
             return;
             
 			if ([_useSimpleCodeSwitch isOn]) {

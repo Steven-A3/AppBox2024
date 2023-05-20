@@ -7,6 +7,7 @@
 //
 
 #import "A3SyncManager.h"
+#import <Ensembles/Ensembles.h>
 #import "common.h"
 #import "NSString+conversion.h"
 #import "NSManagedObject+extension.h"

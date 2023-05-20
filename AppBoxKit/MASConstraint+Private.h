@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 cloudling. All rights reserved.
 //
 
-#import "MASConstraint.h"
+#import <AppBoxKit/MASConstraint.h>
 
 @protocol MASConstraintDelegate;
 

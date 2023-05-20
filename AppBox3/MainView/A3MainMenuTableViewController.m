@@ -36,6 +36,7 @@
 #import "UIViewController+extension.h"
 #import "A3UIDevice.h"
 #import "A3UserDefaults+A3Addition.h"
+#import <Ensembles/Ensembles.h>
 
 NSString *const A3NotificationAppsMainMenuContentsChanged = @"A3NotificationAppsMainMenuContentsChanged";
 NSString *const A3MainMenuBecameFirstResponder = @"A3MainMenuBecameFirstResponder";

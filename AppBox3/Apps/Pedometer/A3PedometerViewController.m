@@ -568,7 +568,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 
 - (NSArray *)pedometerItems {
 	if (!_pedometerItems) {
-        _pedometerItems = [Pedometer findAllSortedBy:@"dater" ascending:YES];
+        _pedometerItems = [Pedometer findAllSortedBy:@"date" ascending:YES];
 	}
 	return _pedometerItems;
 }

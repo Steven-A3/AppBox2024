@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-@import UIKit;
-#import "common.h"
+#import <UIKit/UIKit.h>
+#import <AppBoxKit/common.h>
 
 extern NSString *const A3UserDefaultsDidChangeNotification;
 extern NSString *const A3UserDefaultsChangedKey;

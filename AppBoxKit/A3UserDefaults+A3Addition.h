@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3UserDefaults.h"
+#import <AppBoxKit/A3UserDefaults.h>
 
 @interface A3UserDefaults (A3Addition)
 

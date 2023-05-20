@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "A3SyncManager.h"
-#import "A3UserDefaultsKeys.h"
+#import <AppBoxKit/A3SyncManager.h>
+#import <AppBoxKit/A3UserDefaultsKeys.h>
 
 extern NSString *const A3SyncManagerEmptyObject;
 

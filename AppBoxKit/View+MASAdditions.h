@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 cloudling. All rights reserved.
 //
 
-#import "MASUtilities.h"
+#import <AppBoxKit/MASUtilities.h>
 #import <AppBoxKit/MASConstraintMaker.h>
 #import <AppBoxKit/MASViewAttribute.h>
 

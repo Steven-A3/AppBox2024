@@ -9,30 +9,29 @@
 #ifndef AppBoxKit_Bridging_Header_h
 #define AppBoxKit_Bridging_Header_h
 
-#import "NSFileManager+A3Addition.h"
-#import "A3SyncManager.h"
-#import "A3SyncManager+mainmenu.h"
-#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
-#import "A3UserDefaults.h"
-#import "A3UserDefaults+A3Defaults.h"
-#import "A3UserDefaults+A3Addition.h"
-#import "common.h"
-#import "A3NumberFormatter.h"
-#import "NSString+conversion.h"
-#import "UIViewController+A3Addition.h"
-#import "A3Utilities.h"
-#import "A3UIDevice.h"
+#import <AppBoxKit/NSFileManager+A3Addition.h>
+#import <AppBoxKit/A3SyncManager.h>
+#import <AppBoxKit/A3SyncManager+mainmenu.h>
+#import <AppBoxKit/A3SyncManager+NSUbiquitousKeyValueStore.h>
+#import <AppBoxKit/A3UserDefaults.h>
+#import <AppBoxKit/A3UserDefaults+A3Defaults.h>
+#import <AppBoxKit/A3UserDefaults+A3Addition.h>
+#import <AppBoxKit/common.h>
+#import <AppBoxKit/A3NumberFormatter.h>
+#import <AppBoxKit/NSString+conversion.h>
+#import <AppBoxKit/UIViewController+A3Addition.h>
+#import <AppBoxKit/A3Utilities.h>
+#import <AppBoxKit/A3UIDevice.h>
 
-#define MAS_SHORTHAND
-#import "Masonry.h"
-#import "MASUtilities.h"
+#import <AppBoxKit/Masonry.h>
+#import <AppBoxKit/MASUtilities.h>
 
-#import "NSManagedObjectContext+extension.h"
-#import "NSManagedObject+extension.h"
-#import "NSMutableArray+A3Sort.h"
-#import "NSMutableArray+MoveObject.h"
-#import "NSDate-Utilities.h"
-#import "NSDate-formatting.h"
-#import "NSDateFormatter+A3Addition.h"
+#import <AppBoxKit/NSManagedObjectContext+extension.h>
+#import <AppBoxKit/NSManagedObject+extension.h>
+#import <AppBoxKit/NSMutableArray+A3Sort.h>
+#import <AppBoxKit/NSMutableArray+MoveObject.h>
+#import <AppBoxKit/NSDate-Utilities.h>
+#import <AppBoxKit/NSDate-formatting.h>
+#import <AppBoxKit/NSDateFormatter+A3Addition.h>
 
 #endif /* AppBoxKit_Bridging_Header_h */

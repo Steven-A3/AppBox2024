@@ -1532,8 +1532,8 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 	[[RMStore defaultStore] requestProducts:[NSSet setWithArray:queryProducts] success:^(NSArray *products, NSArray *invalidProductIdentifiers) {
 		for (SKProduct *product in products) {
 			if ([product.productIdentifier isEqualToString:queryProducts[0]]) {
-				_IAPRemoveAdsProductFromiTunes = product;
-				_isIAPRemoveAdsAvailable = YES;
+                self->_IAPRemoveAdsProductFromiTunes = product;
+                self->_isIAPRemoveAdsAvailable = YES;
 				
 				[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:nil];
 				break;
@@ -1655,7 +1655,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 		_hudView.minShowTime = 2;
 		_hudView.removeFromSuperViewOnHide = YES;
 		_hudView.completionBlock = ^{
-		_hudView = nil;
+            self->_hudView = nil;
 		};
 	}
 	return _hudView;

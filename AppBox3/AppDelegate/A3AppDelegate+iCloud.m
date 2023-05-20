@@ -16,6 +16,7 @@
 #import "NSManagedObjectContext+extension.h"
 #import "AppBox3-swift.h"
 #import "NSFileManager+A3Addition.h"
+#import <Ensembles/Ensembles.h>
 
 @implementation A3AppDelegate (iCloud)
 

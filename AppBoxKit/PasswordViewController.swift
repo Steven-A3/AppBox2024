@@ -15,6 +15,7 @@ class PasswordViewController: UIViewController {
         super.viewDidLoad()
         
         newPasswordTextField.passwordRules = UITextInputPasswordRules(descriptor: "required: upper; required: digit; max-consecutive: 2; minlength: 8;")
+        newPasswordTextField.borderColor = A3UserDefaults.standard().themeColor()
     }
     
     override func viewDidAppear(_ animated: Bool) {

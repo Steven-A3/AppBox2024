@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
-@import UIKit;
+#import <UIKit/UIKit.h>
 
 void drawLinearGradient(CGContextRef context, CGRect rect, NSArray *colors);
 

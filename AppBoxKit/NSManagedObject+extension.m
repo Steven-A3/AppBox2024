@@ -67,9 +67,9 @@
     [self setValue:[NSString orderStringWithOrder:maxOrderValue + 1000000] forKey:A3CommonPropertyOrder];
 }
 
-+ (NSNumber *)aggregationOperation:(NSString *)operator column:(NSString *)column predicate:(NSPredicate *)predicate {
++ (NSNumber *)aggregationOperation:(NSString *)operator_ column:(NSString *)column predicate:(NSPredicate *)predicate {
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    NSExpression *expression = [NSExpression expressionForFunction:operator arguments:@[[NSExpression expressionForKeyPath:column] ] ];
+    NSExpression *expression = [NSExpression expressionForFunction:operator_ arguments:@[[NSExpression expressionForKeyPath:column] ] ];
     
     NSExpressionDescription *expressionDescription = [[NSExpressionDescription alloc] init];
     

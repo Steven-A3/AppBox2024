@@ -16,7 +16,7 @@
 - (void)nullifyAttributes;
 - (void)assignOrderAsFirst;
 - (void)assignOrderAsLast;
-+ (NSNumber *)aggregationOperation:(NSString *)operator column:(NSString *)column predicate:(NSPredicate *)predicate;
++ (NSNumber *)aggregationOperation:(NSString *)operator_ column:(NSString *)column predicate:(NSPredicate *)predicate;
 + (instancetype)findFirstOrderedByAttribute:(NSString *)attribute ascending:(BOOL)ascending;
 + (NSArray *)findAllSortedBy:(NSString *)attribute ascending:(BOOL)ascending;
 + (NSArray *)findAllSortedBy:(NSString *)sortTerm ascending:(BOOL)ascending withPredicate:(NSPredicate *)searchTerm;

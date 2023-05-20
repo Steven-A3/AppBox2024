@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <Ensembles/Ensembles.h>
+#import <CoreData/CoreData.h>
 
-extern NSString * const A3SyncManagerCloudEnabled;
-extern NSString * const A3SyncDeviceSyncStartInfo;
+NS_ASSUME_NONNULL_BEGIN
+
+extern NSString *const A3SyncManagerCloudEnabled;
+extern NSString *const A3SyncDeviceSyncStartInfo;
 extern NSString *const A3NotificationCloudCoreDataStoreDidImport;
 extern NSString *const A3NotificationCloudKeyValueStoreDidImport;
 extern NSString *const A3DaysCounterImageDirectory;
@@ -57,12 +59,15 @@ extern NSString *const A3AppName_None;
 
 extern NSString *const kA3AdsUserDidSelectPersonalizedAds;
 
+@class CDEPersistentStoreEnsemble, CDEICloudFileSystem;
+
 @protocol A3AppUIContextProtocol <NSObject>
 
 - (UINavigationController *)navigationController;
 
 @end
 
+typedef void (^CDECompletionBlock)(NSError * _Nullable error);
 
 @interface A3SyncManager : NSObject
 
@@ -88,3 +93,5 @@ extern NSString *const kA3AdsUserDidSelectPersonalizedAds;
 - (void)downloadMediaFilesFromCloud;
 
 @end
+
+NS_ASSUME_NONNULL_END

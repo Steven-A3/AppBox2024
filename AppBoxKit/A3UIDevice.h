@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "A3UIDevice.h"
+#import <AppBoxKit/A3UIDevice.h>
 
 #define HOT_MENU_VIEW_WIDTH					54.0
 #define A3_NORMAL_ROW_HEIGHT				44.0
