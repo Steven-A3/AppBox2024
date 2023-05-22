@@ -91,6 +91,7 @@ struct SecuredTextFieldView: View {
                 .frame(height: 50)
                 .padding(.leading, 20)
                 .modifier(TextFieldClearButton(text: $text))
+                .textContentType(.newPassword)
                 .textInputAutocapitalization(.never)
                 .keyboardType(.asciiCapable) // This avoids suggestions bar on the keyboard.
                 .autocorrectionDisabled(true)
@@ -108,6 +109,7 @@ struct SecuredTextFieldView: View {
                 .padding(.leading, 20)
                 .modifier(TextFieldClearButton(text: $text))
                 .textInputAutocapitalization(.never)
+                .textContentType(.newPassword)
                 .keyboardType(.asciiCapable)
                 .autocorrectionDisabled(true)
                 .overlay(

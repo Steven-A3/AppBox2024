@@ -549,6 +549,7 @@
 		689D59061C1569BA002CD422 /* ClinometerToolbarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D59001C1569BA002CD422 /* ClinometerToolbarViewController.m */; };
 		689D59071C1569BA002CD422 /* InclinometerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D59021C1569BA002CD422 /* InclinometerView.m */; };
 		689D59081C1569BA002CD422 /* InclinometerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D59041C1569BA002CD422 /* InclinometerViewController.m */; };
+		689E8B3A2A190F86008BA7BD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 689E8B392A190F86008BA7BD /* Localizable.strings */; };
 		689E9855197C1B99003710C3 /* A3UnitNamesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 689E9854197C1B99003710C3 /* A3UnitNamesTest.m */; };
 		68A2D3252A05D795006D0898 /* Ensembles.xcframework in Headers */ = {isa = PBXBuildFile; fileRef = 68854E63273CEF000009D028 /* Ensembles.xcframework */; };
 		68A69A1221674F6000AF1DC5 /* UIImage+Blurring.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A69A0D21674F6000AF1DC5 /* UIImage+Blurring.m */; };
@@ -2059,6 +2060,7 @@
 		689D59021C1569BA002CD422 /* InclinometerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InclinometerView.m; sourceTree = "<group>"; };
 		689D59031C1569BA002CD422 /* InclinometerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InclinometerViewController.h; sourceTree = "<group>"; };
 		689D59041C1569BA002CD422 /* InclinometerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InclinometerViewController.m; sourceTree = "<group>"; };
+		689E8B392A190F86008BA7BD /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		689E9854197C1B99003710C3 /* A3UnitNamesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitNamesTest.m; sourceTree = "<group>"; };
 		68A69A0421674F5F00AF1DC5 /* UIImage+Filtering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Filtering.h"; sourceTree = "<group>"; };
 		68A69A0D21674F6000AF1DC5 /* UIImage+Blurring.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Blurring.m"; sourceTree = "<group>"; };
@@ -4689,6 +4691,7 @@
 				68330B4D2A17748C005EEEBC /* SecuredTextFieldView.swift */,
 				68E9D8842A13FE4200FDABE8 /* PasswordView.swift */,
 				6883CBDB29FA609A0053036F /* AppBoxKit-Bridging-Header.h */,
+				689E8B392A190F86008BA7BD /* Localizable.strings */,
 			);
 			path = AppBoxKit;
 			sourceTree = "<group>";
@@ -6268,6 +6271,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				686D966729F290D300AACD02 /* AppBoxKit.xcassets in Resources */,
+				689E8B3A2A190F86008BA7BD /* Localizable.strings in Resources */,
 				686D966529F28E8B00AACD02 /* Storyboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
