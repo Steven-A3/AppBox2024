@@ -63,7 +63,7 @@
 		14A9FBE55A51A81C87E6039A631A06DA /* Pods-A3SetupDefaultData-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-A3SetupDefaultData-acknowledgements.markdown"; sourceTree = "<group>"; };
 		1B846DA0667FF08EF7E50CE8269DB246 /* PACError.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PACError.h; path = PersonalizedAdConsent/PersonalizedAdConsent/PACError.h; sourceTree = "<group>"; };
 		1EA7348F65B8D7D88B67B610F273CF48 /* Pods-AppBox3 Tests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-AppBox3 Tests-Info.plist"; sourceTree = "<group>"; };
-		29856225861094062491C24AE1859AB5 /* Pods-A3SetupDefaultData */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "Pods-A3SetupDefaultData"; path = "libPods-A3SetupDefaultData.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		29856225861094062491C24AE1859AB5 /* libPods-A3SetupDefaultData.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-A3SetupDefaultData.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C910C9712ED1083E494EE001251C790 /* PersonalizedAdConsent-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "PersonalizedAdConsent-Info.plist"; sourceTree = "<group>"; };
 		322BA4F51EF3C4652FD016723C8FDE43 /* consentform.html */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.html; name = consentform.html; path = PersonalizedAdConsent/PersonalizedAdConsent/PersonalizedAdConsent.bundle/consentform.html; sourceTree = "<group>"; };
 		327C64B5D48DF1E9E6F5868C399E3C8C /* PACView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = PACView.m; path = PersonalizedAdConsent/PersonalizedAdConsent/PACView.m; sourceTree = "<group>"; };
@@ -81,7 +81,7 @@
 		64CD3EA4013D3E0137DFE1ABFAF0B803 /* Pods-A3SetupDefaultData-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-A3SetupDefaultData-acknowledgements.plist"; sourceTree = "<group>"; };
 		651BECD2E7C50DD84CD193E460B4CFFB /* PersonalizedAdConsent.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PersonalizedAdConsent.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		69B6A75174034386687CDB4DD9F0B0FF /* PACPersonalizedAdConsent.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PACPersonalizedAdConsent.h; path = PersonalizedAdConsent/PersonalizedAdConsent/PACPersonalizedAdConsent.h; sourceTree = "<group>"; };
-		70EB56EF5A9717C67DB2231E999616AD /* Pods-AppBox3 Tests */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-AppBox3 Tests"; path = Pods_AppBox3_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		70EB56EF5A9717C67DB2231E999616AD /* Pods_AppBox3_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AppBox3_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		7573AFE88B3CFB662FC52AAAB8D9605E /* ResourceBundle-PersonalizedAdConsent-PersonalizedAdConsent-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-PersonalizedAdConsent-PersonalizedAdConsent-Info.plist"; sourceTree = "<group>"; };
 		78F8CE9114B860BF0FA2BFB45E39C3CF /* PACConsentForm.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = PACConsentForm.m; path = PersonalizedAdConsent/PersonalizedAdConsent/PACConsentForm.m; sourceTree = "<group>"; };
@@ -168,9 +168,9 @@
 			children = (
 				651BECD2E7C50DD84CD193E460B4CFFB /* PersonalizedAdConsent.framework */,
 				DB52E15AD4C3B8F1103D2FA7E7180EDB /* PersonalizedAdConsent.bundle */,
-				29856225861094062491C24AE1859AB5 /* Pods-A3SetupDefaultData */,
+				29856225861094062491C24AE1859AB5 /* libPods-A3SetupDefaultData.a */,
 				58724169C5E08D57DE4A46D202F0CDB3 /* Pods_AppBox3.framework */,
-				70EB56EF5A9717C67DB2231E999616AD /* Pods-AppBox3 Tests */,
+				70EB56EF5A9717C67DB2231E999616AD /* Pods_AppBox3_Tests.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -348,7 +348,7 @@
 			);
 			name = "Pods-AppBox3 Tests";
 			productName = Pods_AppBox3_Tests;
-			productReference = 70EB56EF5A9717C67DB2231E999616AD /* Pods-AppBox3 Tests */;
+			productReference = 70EB56EF5A9717C67DB2231E999616AD /* Pods_AppBox3_Tests.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		441DDA091216DDADFEEDA2F484B4202E /* Pods-AppBox3 */ = {
@@ -384,7 +384,7 @@
 			);
 			name = "Pods-A3SetupDefaultData";
 			productName = "Pods-A3SetupDefaultData";
-			productReference = 29856225861094062491C24AE1859AB5 /* Pods-A3SetupDefaultData */;
+			productReference = 29856225861094062491C24AE1859AB5 /* libPods-A3SetupDefaultData.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		9E5512C452E9FA6279093D3C4B894CB3 /* PersonalizedAdConsent-PersonalizedAdConsent */ = {
@@ -570,7 +570,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/PersonalizedAdConsent/PersonalizedAdConsent-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/PersonalizedAdConsent/PersonalizedAdConsent-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -598,7 +598,7 @@
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MACH_O_TYPE = staticlib;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
@@ -628,7 +628,7 @@
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				INFOPLIST_FILE = "Target Support Files/Pods-AppBox3/Pods-AppBox3-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -659,7 +659,7 @@
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				IBSC_MODULE = PersonalizedAdConsent;
 				INFOPLIST_FILE = "Target Support Files/PersonalizedAdConsent/ResourceBundle-PersonalizedAdConsent-PersonalizedAdConsent-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				PRODUCT_NAME = PersonalizedAdConsent;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -677,7 +677,7 @@
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				IBSC_MODULE = PersonalizedAdConsent;
 				INFOPLIST_FILE = "Target Support Files/PersonalizedAdConsent/ResourceBundle-PersonalizedAdConsent-PersonalizedAdConsent-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				PRODUCT_NAME = PersonalizedAdConsent;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -769,7 +769,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "Target Support Files/Pods-AppBox3 Tests/Pods-AppBox3 Tests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -807,7 +807,7 @@
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				INFOPLIST_FILE = "Target Support Files/Pods-AppBox3/Pods-AppBox3-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -844,7 +844,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/PersonalizedAdConsent/PersonalizedAdConsent-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/PersonalizedAdConsent/PersonalizedAdConsent-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -943,7 +943,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "Target Support Files/Pods-AppBox3 Tests/Pods-AppBox3 Tests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -974,7 +974,7 @@
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MACH_O_TYPE = staticlib;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";

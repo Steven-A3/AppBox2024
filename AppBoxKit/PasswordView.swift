@@ -14,14 +14,26 @@ enum FocusField: Hashable {
     case password
 }
 
-@available(iOS 15.0, *)
-struct LoginView: View, SecuredTextFieldParentProtocol {
-    var dismiss: () -> Void = {}
+struct LoginMainPageView: View {
+    var dismissModal: () -> Void = {}
+    @State private var newPassword = ""
+    @State private var hintPhrase = ""
+    
+    var body: some View {
+        NavigationStack {
+            LoginViewPageOne(pageNumber: 1, dismissModal: dismissModal, newPassword: $newPassword)
+        }
+    }
+}
+
+struct LoginViewPageOne: View, SecuredTextFieldParentProtocol {
+    var pageNumber: Int
+    var dismissModal: () -> Void = {}
 
     @State var hideKeyboard: (() -> Void)?
     
     // MARK: - Propertiers
-    @State private var password = ""
+    @Binding var newPassword: String
     @FocusState private var passwordFieldIsFocused: FocusField?
     @ObservedObject var keyboardHeightHelper = KeyboardHeightHelper()
 
@@ -29,20 +41,34 @@ struct LoginView: View, SecuredTextFieldParentProtocol {
     
     // MARK: - View
     var body: some View {
+        PasswordBodyView(pageNumber:pageNumber, dismissModal: dismissModal, themeColor: themeColor, newPassword: $newPassword, parent: self)
+            .navigationBarBackButtonHidden()
+    }
+}
+
+struct PasswordBodyView: View {
+    var pageNumber: Int
+    var dismissModal: () -> Void = {}
+    var themeColor: Color
+    @Binding var newPassword: String
+    var parent: SecuredTextFieldParentProtocol
+
+    var body: some View {
         GeometryReader { geometry in
             VStack() {
-                NavigationView(themeColor: themeColor, dismiss: dismiss)
+                NavigationAreaView(themeColor: themeColor, dismissModal: dismissModal, pageNumber: pageNumber, newPassword: $newPassword)
                 Spacer()
                 LockImageView()
-                MainTitle(title: "Create new passcode")
+                if pageNumber == 1 {
+                    MainTitle(title: "Create new passcode")
+                } else {
+                    MainTitle(title: "Re-enter new passcode")
+                }
                 Spacer()
-                PasswordFieldRow(title: "New passcode", password: $password, passwordFieldIsFocused: _passwordFieldIsFocused, parent: self)
+                PasswordFieldRow(title: "New passcode", newPassword: $newPassword, parent: parent, pageNumber: pageNumber)
                 Spacer()
 
             } // VStack
-            .onAppear() {
-                passwordFieldIsFocused = .password
-            }
             Spacer()
                 .frame(height: geometry.safeAreaInsets.bottom)
         }
@@ -51,28 +77,40 @@ struct LoginView: View, SecuredTextFieldParentProtocol {
 
 struct PasswordFieldRow: View {
     var title: String
-    @Binding var password: String
+    @Binding var newPassword: String
     @FocusState var passwordFieldIsFocused: FocusField?
     var parent: SecuredTextFieldParentProtocol
+    var pageNumber: Int
     
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             HStack(alignment: .lastTextBaseline) {
-                if password.count == 0 {
-                    Text(title)
-                        .font(.system(size: 15, weight: .light, design: .default))
-                        .padding([.leading], 10)
+                if newPassword.count > 0 {
+                    PasswordFieldHelperText(title: title, password: $newPassword)
                 } else {
-                    Text("")
-                        .padding([.leading], 10)
+                    PasswordFieldHelperText(title: "", password: $newPassword)
                 }
                 Spacer()
-                NumberView(page: 1)
+                NumberView(page: pageNumber)
             }
-            SecuredTextFieldView(text: $password, parent: parent)
+            SecuredTextFieldView(text: $newPassword, parent: parent)
                 .focused($passwordFieldIsFocused, equals: .password)
         } // VStack
+        .onAppear() {
+            passwordFieldIsFocused = .password
+        }
         .padding([.leading, .trailing], 27.5)
+    }
+}
+
+struct PasswordFieldHelperText: View {
+    var title: String
+    @Binding var password: String
+    var body: some View {
+        Text(title)
+            .font(.system(size: 15, weight: .light, design: .default))
+            .padding([.leading], 10)
+            .animation(.easeOut(duration: 0.5), value: password)
     }
 }
 
@@ -85,24 +123,48 @@ struct MainTitle: View {
     }
 }
 
-struct NavigationView: View {
-    @State var themeColor: Color
-    var dismiss: () -> Void = {}
+struct NavigationAreaView: View {
+    var themeColor: Color
+    var dismissModal: () -> Void = {}
+    var pageNumber: Int
+    @Binding var newPassword: String
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var body: some View {
         HStack() {
-            Button(action: {
-                dismiss()
-            }) {
-                Text("Cancel")
-                    .foregroundColor(themeColor)
-            }.padding(15)
+            if pageNumber == 1 {
+                NavigationLeftSideView(dismissModal: dismissModal, themeColor: themeColor)
+            } else {
+                Button(action: {
+                    self.presentationMode.wrappedValue.dismiss()
+                }) {
+                    Text("Back")
+                        .foregroundColor(themeColor)
+                }.padding(15)
+            }
             Spacer()
-            Button(action: {}) {
+            NavigationLink(destination: {
+                LoginViewPageOne(pageNumber: pageNumber + 1, newPassword: $newPassword)
+            }, label: {
                 Text("Next")
                     .foregroundColor(themeColor)
-            }.padding(15)
+                    .padding(15)
+            })
         }
+    }
+}
+
+struct NavigationLeftSideView: View {
+    var dismissModal: () -> Void = {}
+    var themeColor: Color
+    
+    var body: some View {
+        Button(action: {
+            dismissModal()
+        }) {
+            Text("Cancel")
+                .foregroundColor(themeColor)
+        }.padding(15)
     }
 }
 
@@ -174,7 +236,7 @@ extension Color {
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView()
+        LoginMainPageView()
     }
 }
 
@@ -205,6 +267,6 @@ class KeyboardHeightHelper: ObservableObject {
 
 @objc public class PasswordViewFactory: NSObject {
     @objc public static func makePasswordView(dissmissHandler: @escaping ( () -> Void)) -> UIViewController {
-        return UIHostingController(rootView: LoginView(dismiss: dissmissHandler))
+        return UIHostingController(rootView: LoginMainPageView(dismissModal: dissmissHandler))
     }
 }
