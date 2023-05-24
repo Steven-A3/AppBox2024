@@ -23,6 +23,7 @@ enum Field: Hashable {
 /// hide -> show -> hide senario with reset the text by the new input value.
 /// It's common even in the other apps. eg: LinkedIn, MoneyGram
 struct SecuredTextFieldView: View {
+    @EnvironmentObject var passwordViewContext: PasswordViewContext
 
     /// Options for opacity of the fields.
     enum Opacity: Double {
@@ -41,6 +42,10 @@ struct SecuredTextFieldView: View {
         }
     }
 
+    var placeHolderText: String = ""
+    var submitLabel: SubmitLabel = .return
+    var onKeyboardSubmit: () -> Void = {}
+    
     /// The property wrapper type that can read and write a value that
     /// SwiftUI updates as the placement of focus.
     @FocusState private var focusedField: Field?
@@ -58,10 +63,6 @@ struct SecuredTextFieldView: View {
     /// binded with the @State property of the parent view of SecuredTextFieldView.
     @Binding var text: String
     
-    /// Parent view of this SecuredTextFieldView.
-    /// Also this is a struct and structs are value type.
-    @State var parent: SecuredTextFieldParentProtocol
-
     var body: some View {
         VStack {
             ZStack(alignment: .trailing) {
@@ -80,14 +81,14 @@ struct SecuredTextFieldView: View {
             }
         }
         .onAppear {
-            self.parent.hideKeyboard = hideKeyboard
+            passwordViewContext.hideKeyboard = hideKeyboard
         }
     }
 
     /// Secured field with the show / hide capability.
     var securedTextField: some View {
         Group {
-            SecureField("Enter new passcode", text: $text)
+            SecureField(placeHolderText, text: $text)
                 .frame(height: 50)
                 .padding(.leading, 20)
                 .modifier(TextFieldClearButton(text: $text))
@@ -103,8 +104,12 @@ struct SecuredTextFieldView: View {
 //                .shadow(radius: 10.0, x: 20, y: 10)
                 .focused($focusedField, equals: .hidePasswordField)
                 .opacity(hidePasswordFieldOpacity.rawValue)
+                .submitLabel(submitLabel)
+                .onSubmit {
+                    self.onKeyboardSubmit()
+                }
 
-            TextField("Enter new passcode", text: $text)
+            TextField(placeHolderText, text: $text)
                 .frame(height: 50)
                 .padding(.leading, 20)
                 .modifier(TextFieldClearButton(text: $text))
@@ -117,9 +122,12 @@ struct SecuredTextFieldView: View {
                             .stroke(Color.gray, lineWidth: 1)
                     )
                 .cornerRadius(30.0)
-//                .shadow(radius: 10.0, x: 20, y: 10)
                 .focused($focusedField, equals: .showPasswordField)
                 .opacity(showPasswordFieldOpacity.rawValue)
+                .submitLabel(submitLabel)
+                .onSubmit {
+                    self.onKeyboardSubmit()
+                }
         }
         .padding(.trailing, 32)
         .onAppear() {
