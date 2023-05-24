@@ -21,6 +21,10 @@ class PasswordViewContext: ObservableObject {
     @Published var dismissModal: () -> Void = {}
     @Published var parentView: SecuredTextFieldParentProtocol?
     @Published var hideKeyboard: (() -> Void)?
+
+    init(dismissModal: @escaping () -> Void) {
+        self.dismissModal = dismissModal
+    }
 }
 
 class PasswordViewPageContext: ObservableObject {
@@ -304,7 +308,9 @@ struct NumberView: View {
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         LoginMainPageView()
-            .environmentObject(PasswordViewContext())
+            .environmentObject(PasswordViewContext(dismissModal: {
+                
+            }))
     }
 }
 
@@ -335,6 +341,6 @@ class KeyboardHeightHelper: ObservableObject {
 
 @objc public class PasswordViewFactory: NSObject {
     @objc public static func makePasswordView(dissmissHandler: @escaping ( () -> Void)) -> UIViewController {
-        return UIHostingController(rootView: LoginMainPageView(dismissModal: dissmissHandler).environmentObject(PasswordViewContext()))
+        return UIHostingController(rootView: LoginMainPageView(dismissModal: dissmissHandler).environmentObject(PasswordViewContext(dismissModal: dissmissHandler)))
     }
 }
