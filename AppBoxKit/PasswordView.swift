@@ -16,6 +16,7 @@ enum FocusField: Hashable {
 
 class PasswordViewContext: ObservableObject {
     @Published var newPassword: String = ""
+    @Published var confirmPassword: String = ""
     @Published var hintText: String = ""
     @Published var themeColor: Color = Color(A3UserDefaults.standard().themeColor())
     @Published var dismissModal: () -> Void = {}
@@ -45,19 +46,19 @@ class PasswordViewPageContext: ObservableObject {
     }
 }
 
-struct LoginMainPageView: View {
+struct LoginMainView: View {
     @EnvironmentObject var passwordViewContext: PasswordViewContext
     var dismissModal: () -> Void = {}
     
     var body: some View {
         NavigationStack {
-            LoginViewPageOne()
+            LoginView()
                 .environmentObject(PasswordViewPageContext(currentPage:1))
         }
     }
 }
 
-struct LoginViewPageOne: View, SecuredTextFieldParentProtocol {
+struct LoginView: View, SecuredTextFieldParentProtocol {
     @EnvironmentObject var passwordViewContext: PasswordViewContext
     @EnvironmentObject var passwordViewPageContext: PasswordViewPageContext
     @State var hideKeyboard: (() -> Void)?
@@ -98,7 +99,7 @@ struct PasswordBodyView: View {
                 LockImageView()
                 MainTitle(title: passwordViewPageContext.pageTitle)
                 Spacer()
-                PasswordFieldRow(title: "New passcode", nextViewPresented: $nextViewPresented)
+                PasswordFieldRow(title: passwordViewPageContext.pageTitle, nextViewPresented: $nextViewPresented)
                 Spacer()
 
             } // VStack
@@ -106,7 +107,7 @@ struct PasswordBodyView: View {
                 .frame(height: geometry.safeAreaInsets.bottom)
         }
         .navigationDestination(isPresented: $nextViewPresented) {
-            LoginViewPageOne()
+            LoginView()
                 .environmentObject(PasswordViewPageContext(currentPage: passwordViewPageContext.currentPage + 1))
         }
     }
@@ -119,27 +120,48 @@ struct PasswordFieldRow: View {
     var title: String
     @Binding var nextViewPresented: Bool
     @State private var showCompleteAlert = false
-   
+    @State private var showPasswordDoesNotMatchAlert = false
+    @State private var showPasswordEmptyAlert = false
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             HStack(alignment: .lastTextBaseline) {
-                if passwordViewContext.newPassword.count > 0 {
-                    PasswordFieldHelperText(title: title)
-                } else {
-                    PasswordFieldHelperText(title: "")
-                }
+                PasswordFieldHelperText(title: passwordHelperTitle)
                 Spacer()
                 NumberView()
             }
             if passwordViewPageContext.currentPage != 3 {
                 SecuredTextFieldView(placeHolderText: passwordViewPageContext.pageTitle,
-                                     submitLabel: passwordViewPageContext.currentPage != 3 ? .next : .done,
+                                     submitLabel: .next,
                                      onKeyboardSubmit: {
-                    nextViewPresented = true
+                    if passwordViewPageContext.currentPage == 1 {
+                        /// 1 페이지 통과 조건. 암호가 있으면 됨. 없으면 alert
+                        if (passwordViewContext.newPassword.count == 0) {
+                            showPasswordEmptyAlert = true
+                        } else {
+                            nextViewPresented = true
+                        }
+                    } else {
+                        if passwordViewContext.newPassword == passwordViewContext.confirmPassword {
+                            nextViewPresented = true
+                        } else {
+                            showPasswordDoesNotMatchAlert = true
+                        }
+                    }
                 },
-                                     text: $passwordViewContext.newPassword
+                                     text: passwordViewPageContext.currentPage == 1 ? $passwordViewContext.newPassword : $passwordViewContext.confirmPassword
                 )
                 .focused($passwordFieldIsFocused, equals: .password)
+                .alert("Password does not match", isPresented: $showPasswordDoesNotMatchAlert) {
+                    Button("OK", role: .cancel) {
+                        showPasswordDoesNotMatchAlert = false
+                    }
+                }
+                .alert("Please enter new password.", isPresented: $showPasswordEmptyAlert) {
+                    Button("OK", role:. cancel) {
+                        showPasswordEmptyAlert = false
+                    }
+                }
             } else {
                 TextField(passwordViewPageContext.pageTitle, text:$passwordViewContext.hintText)
                     .frame(height: 50)
@@ -167,6 +189,22 @@ struct PasswordFieldRow: View {
             passwordFieldIsFocused = .password
         }
         .padding([.leading, .trailing], 27.5)
+    }
+    
+    var passwordHelperTitle: String {
+        if passwordViewPageContext.currentPage == 3 {
+            return passwordViewContext.hintText.count == 0 ? "" : passwordViewPageContext.pageTitle
+        }
+        if passwordViewPageContext.currentPage == 1 {
+            return passwordViewContext.newPassword.count == 0 ? "" : passwordViewPageContext.pageTitle
+        }
+        if passwordViewContext.confirmPassword.count == 0 {
+            return ""
+        }
+        if passwordViewContext.newPassword == passwordViewContext.confirmPassword {
+            return "Password match"
+        }
+        return "Password does not match"
     }
 }
 
@@ -219,14 +257,23 @@ struct NavigationAreaView: View {
                 }
             } label: {
                 Text(passwordViewPageContext.currentPage == 3 ? "Done" : "Next")
-                    .foregroundColor(passwordViewContext.themeColor)
                     .padding(15)
-            }.alert("Password has been set successfully.", isPresented: $presentAlertDone) {
+            }
+            .accentColor(passwordViewContext.themeColor)
+            .alert("Password has been set successfully.", isPresented: $presentAlertDone) {
                 Button("OK", role: .cancel) {
                     passwordViewContext.dismissModal()
                 }
             }
+            .disabled(nextButtonDisabled)
         }
+    }
+    
+    var nextButtonDisabled: Bool {
+        if passwordViewPageContext.currentPage == 1 {
+            return passwordViewContext.newPassword.count == 0
+        }
+        return passwordViewContext.confirmPassword != passwordViewContext.newPassword
     }
 }
 
@@ -245,7 +292,7 @@ struct NavigationLeftSideView: View {
 
 struct LockImageView: View {
     var body: some View {
-        Image(uiImage: UIImage(named: "lock_image", in:Bundle(identifier: "net.allaboutapps.AppBoxKit")!, with:nil)!)
+        Image(uiImage: UIImage(named: "Artua-Mac-Lock.512", in:Bundle(identifier: "net.allaboutapps.AppBoxKit")!, with:nil)!)
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(maxWidth: 250, maxHeight: 250)
@@ -307,7 +354,7 @@ struct NumberView: View {
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginMainPageView()
+        LoginMainView()
             .environmentObject(PasswordViewContext(dismissModal: {
                 
             }))
@@ -341,6 +388,6 @@ class KeyboardHeightHelper: ObservableObject {
 
 @objc public class PasswordViewFactory: NSObject {
     @objc public static func makePasswordView(dissmissHandler: @escaping ( () -> Void)) -> UIViewController {
-        return UIHostingController(rootView: LoginMainPageView(dismissModal: dissmissHandler).environmentObject(PasswordViewContext(dismissModal: dissmissHandler)))
+        return UIHostingController(rootView: LoginMainView(dismissModal: dissmissHandler).environmentObject(PasswordViewContext(dismissModal: dissmissHandler)))
     }
 }
