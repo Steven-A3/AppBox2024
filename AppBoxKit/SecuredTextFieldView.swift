@@ -62,6 +62,7 @@ struct SecuredTextFieldView: View {
     /// The text value of the SecureFiled and TextField which can be
     /// binded with the @State property of the parent view of SecuredTextFieldView.
     @Binding var text: String
+    let themeColor:Color = Color(A3UserDefaults.standard().themeColor())
     
     var body: some View {
         VStack {
@@ -74,10 +75,10 @@ struct SecuredTextFieldView: View {
                     },
                     label: {
                         Image(systemName: self.isSecured ? "eye.slash" : "eye")
-                            .accentColor(.gray)
+                            .accentColor(themeColor)
                     }
                 )
-                .padding(.trailing, -8)
+                .padding(.trailing, 10)
             }
         }
         .onAppear {
@@ -96,12 +97,6 @@ struct SecuredTextFieldView: View {
                 .textInputAutocapitalization(.never)
                 .keyboardType(.asciiCapable) // This avoids suggestions bar on the keyboard.
                 .autocorrectionDisabled(true)
-                .overlay(
-                        RoundedRectangle(cornerRadius: 32)
-                            .stroke(Color.gray, lineWidth: 1)
-                    )
-                .cornerRadius(30.0)
-//                .shadow(radius: 10.0, x: 20, y: 10)
                 .focused($focusedField, equals: .hidePasswordField)
                 .opacity(hidePasswordFieldOpacity.rawValue)
                 .submitLabel(submitLabel)
@@ -117,11 +112,6 @@ struct SecuredTextFieldView: View {
                 .textContentType(.newPassword)
                 .keyboardType(.asciiCapable)
                 .autocorrectionDisabled(true)
-                .overlay(
-                        RoundedRectangle(cornerRadius: 32)
-                            .stroke(Color.gray, lineWidth: 1)
-                    )
-                .cornerRadius(30.0)
                 .focused($focusedField, equals: .showPasswordField)
                 .opacity(showPasswordFieldOpacity.rawValue)
                 .submitLabel(submitLabel)

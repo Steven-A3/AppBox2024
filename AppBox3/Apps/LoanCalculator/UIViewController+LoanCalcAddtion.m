@@ -8,11 +8,8 @@
 
 #import "UIViewController+LoanCalcAddtion.h"
 #import "A3LoanCalcContentsTableViewController.h"
-#import "A3UserDefaultsKeys.h"
-#import "A3SyncManager.h"
-#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import <objc/runtime.h>
-#import "A3NumberFormatter.h"
+#import <AppBoxKit/AppBoxKit.h>
 
 static char const *const key_loanFormatter	= "key_loanFormatter";
 

@@ -6,6 +6,7 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <AppBoxKit/AppBoxKit.h>
 #import "A3WalletItemPhotoFieldCell.h"
 
 @implementation A3WalletItemPhotoFieldCell

@@ -8,8 +8,7 @@
 
 #import "LoanCalcPreference.h"
 #import "A3AppDelegate.h"
-#import "A3SyncManager.h"
-#import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import <AppBoxKit/AppBoxKit.h>
 
 NSString *const A3LoanCalcNotificationDownPaymentEnabled = @"A3LoanCalcNotificationDownPaymentEnabled";
 NSString *const A3LoanCalcNotificationDownPaymentDisabled = @"A3LoanCalcNotificationDownPaymentDisabled";

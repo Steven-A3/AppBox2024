@@ -6,10 +6,9 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <AppBoxKit/AppBoxKit.h>
 #import "DaysCounterReminder+extension.h"
 #import "DaysCounterEvent.h"
-#import "NSManagedObject+extension.h"
-#import "NSManagedObjectContext+extension.h"
 
 @implementation DaysCounterReminder (extension)
 

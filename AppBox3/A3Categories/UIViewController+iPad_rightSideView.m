@@ -7,7 +7,7 @@
 //
 
 #import "UIViewController+iPad_rightSideView.h"
-#import "UIViewController+A3Addition.h"
+#import <AppBoxKit/AppBoxKit.h>
 
 NSString *const A3NotificationRightSideViewWillDismiss = @"A3NotificationRightSideViewWillDismiss";
 NSString *const A3NotificationRightSideViewDidDismiss = @"A3NotificationRightSideViewDidDismiss";

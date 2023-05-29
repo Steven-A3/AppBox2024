@@ -33,5 +33,7 @@
 #import <AppBoxKit/NSDate-Utilities.h>
 #import <AppBoxKit/NSDate-formatting.h>
 #import <AppBoxKit/NSDateFormatter+A3Addition.h>
+#import <AppBoxKit/A3KeychainUtils.h>
+#import <AppBoxKit/NSData-AES.h>
 
 #endif /* AppBoxKit_Bridging_Header_h */

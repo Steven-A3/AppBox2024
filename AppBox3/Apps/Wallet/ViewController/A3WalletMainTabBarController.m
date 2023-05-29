@@ -6,6 +6,7 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <AppBoxKit/AppBoxKit.h>
 #import "A3WalletMainTabBarController.h"
 #import "A3WalletCategoryViewController.h"
 #import "A3WalletAllViewController.h"
@@ -17,18 +18,11 @@
 #import "WalletItem.h"
 #import "WalletData.h"
 #import "A3AppDelegate.h"
-#import "A3UserDefaultsKeys.h"
-#import "A3UserDefaults.h"
 #import "WalletCategory.h"
 #import "A3CenterViewDelegate.h"
-#import "UIViewController+A3Addition.h"
 #import "UITabBarController+extension.h"
 #import "A3WalletRecentsViewController.h"
-#import "NSManagedObject+extension.h"
-#import "NSManagedObjectContext+extension.h"
 #import "UIViewController+extension.h"
-#import "A3SyncManager.h"
-#import "A3UIDevice.h"
 
 #define kDefaultTabSelection    1	// default tab value is 0 (tab #1), stored in A3UserDefaults
 

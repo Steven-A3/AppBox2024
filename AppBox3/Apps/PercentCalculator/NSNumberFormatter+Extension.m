@@ -7,6 +7,7 @@
 //
 
 #import "NSNumberFormatter+Extension.h"
+#import <AppBoxKit/AppBoxKit.h>
 
 @implementation NSNumberFormatter (Extension)
 

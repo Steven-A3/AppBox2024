@@ -6,6 +6,7 @@
 //  Copyright 2009 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <AppBoxKit/AppBoxKit.h>
 #import "ClinometerToolbarViewController.h"
 
 @interface ClinometerToolbarViewController ()

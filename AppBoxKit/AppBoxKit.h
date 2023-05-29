@@ -18,7 +18,6 @@ FOUNDATION_EXPORT const unsigned char AppBoxKitVersionString[];
 
 #import <AppBoxKit/Masonry.h>
 #import <AppBoxKit/A3UIDevice.h>
-#import <AppBoxKit/MASUtilities.h>
 #import <AppBoxKit/A3SyncManager.h>
 #import <AppBoxKit/A3SyncManager+mainmenu.h>
 #import <AppBoxKit/A3UserDefaults.h>
@@ -38,3 +37,5 @@ FOUNDATION_EXPORT const unsigned char AppBoxKitVersionString[];
 #import <AppBoxKit/MASConstraint+Private.h>
 #import <AppBoxKit/NSDate-Utilities.h>
 #import <AppBoxKit/NSDateFormatter+A3Addition.h>
+#import <AppBoxKit/A3KeychainUtils.h>
+#import <AppBoxKit/NSData-AES.h>

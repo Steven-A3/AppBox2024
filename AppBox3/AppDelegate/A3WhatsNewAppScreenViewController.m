@@ -6,13 +6,13 @@
 //  Copyright © 2017 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <AppBoxKit/AppBoxKit.h>
 #import "A3WhatsNewAppScreenViewController.h"
 #import "A3AbbreviationViewController.h"
 #import "A3KaomojiViewController.h"
 #import "NYXImagesKit.h"
 #import "A3AppDelegate.h"
 #import "UIView+SBExtras.h"
-#import "A3UIDevice.h"
 
 @interface A3WhatsNewAppScreenViewController ()
 

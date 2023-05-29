@@ -7,9 +7,10 @@
 //
 
 #import "WalletFavorite+initialize.h"
-#import "NSString+conversion.h"
-#import "NSManagedObject+extension.h"
-#import "NSManagedObjectContext+extension.h"
+#import <AppBoxKit/AppBoxKit.h>
+//#import "NSString+conversion.h"
+//#import "NSManagedObject+extension.h"
+//#import "NSManagedObjectContext+extension.h"
 
 @implementation WalletFavorite (initialize)
 

@@ -6,11 +6,11 @@
 //  Copyright 2011 Home. All rights reserved.
 //
 
+#import <AppBoxKit/AppBoxKit.h>
 #import "Foursquare2.h"
 #import "FSTargetCallback.h"
 #ifndef __MAC_OS_X_VERSION_MAX_ALLOWED
 #import "FSOAuth.h"
-#import "A3UserDefaults.h"
 
 #endif
 

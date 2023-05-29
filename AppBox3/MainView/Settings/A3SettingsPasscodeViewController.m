@@ -278,81 +278,74 @@
 }
 
 - (void)alertSecurityInfo {
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-														message:NSLocalizedString(@"SECURITY_INFO", nil)
-													   delegate:self
-											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-											  otherButtonTitles:NSLocalizedString(@"How To Enable Data Protection", @"How To Enable Data Protection"), NSLocalizedString(@"Learn about iOS Security", @"Learn about iOS Security"), nil];
-	[alertView show];
-}
+    UIAlertController *alertController = [self alertControllerWithTitle:NSLocalizedString(@"Info", @"Info")
+                                                                message:NSLocalizedString(@"SECURITY_INFO", nil)];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"How To Enable Data Protection", @"How To Enable Data Protection")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(__kindof UIAlertAction * _Nonnull action) {
+        NSString *language = [NSLocale preferredLanguages][0];
+        NSString *urlString = [NSString stringWithFormat:@"https://help.apple.com/iphone/10/?lang=%@#/iph14a867ae", language];
+        NSURL *url = [NSURL URLWithString:urlString];
+        [self presentWebViewControllerWithURL:url];
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Learn about iOS Security", @"Learn about iOS Security")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(__kindof UIAlertAction * _Nonnull action) {
+        // 언어가 영어인 경우에는 지역 코드가 없는 URL을 사용한다.
+        NSString *languageCode = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
+//            NSString *countryCode = [[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode] lowercaseString];
 
-- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
-	if (buttonIndex != alertView.cancelButtonIndex) {
-		if (![[A3AppDelegate instance].reachability isReachable]) {
-			[self alertInternetConnectionIsNotAvailable];
-			return;
-		}
-		if (buttonIndex == 1) {
-			NSString *language = [NSLocale preferredLanguages][0];
-			NSString *urlString = [NSString stringWithFormat:@"https://help.apple.com/iphone/10/?lang=%@#/iph14a867ae", language];
-			NSURL *url = [NSURL URLWithString:urlString];
-			[self presentWebViewControllerWithURL:url];
-		} else if (buttonIndex == 2) {
-			// 언어가 영어인 경우에는 지역 코드가 없는 URL을 사용한다.
-			NSString *languageCode = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
-//			NSString *countryCode = [[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode] lowercaseString];
+        if ([languageCode isEqualToString:@"en"]) {
+            // 2017년 4월 27일
+            // Mar 2017 버전 Security 문서는 현재 소수 국가 버전만 지원이 된다.
+//                if ([countryCode isEqualToString:@"gb"]) {
+//                    NSURL *url = [self securityInfoURLWithCountryCode:@"uk"];
+//                    [self presentWebViewControllerWithURL:url];
+//                    return;
+//                }
+//                NSArray *countriesSupported = @[@"ae", @"ca", @"au", @"za", @"in", @"ie", @"my", @"nz", @"sg"];
+//                NSInteger indexOfCountry = [countriesSupported indexOfObject:countryCode];
+//                if (indexOfCountry != NSNotFound) {
+//                    NSURL *url = [self securityInfoURLWithCountryCode:countryCode];
+//                    [self presentWebViewControllerWithURL:url];
+//                    return;
+//                }
+            NSURL *url = [self securityInfoURLWithCountryCode:nil];
+            [self presentWebViewControllerWithURL:url];
+            return;
+        }
+        NSDictionary *languageCodes = @{
+                                        @"ja":@"jp",
+                                        @"zh-hans":@"cn",
+                                        @"zh-hant":@"tw",
+                                        @"es":@"es",
+                                        @"fr":@"fr",
+                                        @"it":@"it",
+                                        @"de":@"de",
+                                        };
+        NSString *targetCountryCode = languageCodes[languageCode];
+        if (targetCountryCode) {
+            NSURL *url = [self securityInfoURLWithCountryCode:targetCountryCode];
+            [self presentWebViewControllerWithURL:url];
+            return;
+        }
 
-			if ([languageCode isEqualToString:@"en"]) {
-                // 2017년 4월 27일
-                // Mar 2017 버전 Security 문서는 현재 소수 국가 버전만 지원이 된다.
-//				if ([countryCode isEqualToString:@"gb"]) {
-//					NSURL *url = [self securityInfoURLWithCountryCode:@"uk"];
-//					[self presentWebViewControllerWithURL:url];
-//					return;
-//				}
-//				NSArray *countriesSupported = @[@"ae", @"ca", @"au", @"za", @"in", @"ie", @"my", @"nz", @"sg"];
-//				NSInteger indexOfCountry = [countriesSupported indexOfObject:countryCode];
-//				if (indexOfCountry != NSNotFound) {
-//					NSURL *url = [self securityInfoURLWithCountryCode:countryCode];
-//					[self presentWebViewControllerWithURL:url];
-//					return;
-//				}
-				NSURL *url = [self securityInfoURLWithCountryCode:nil];
-				[self presentWebViewControllerWithURL:url];
-				return;
-			}
-			NSDictionary *languageCodes = @{
-                                            @"ja":@"jp",
-                                            @"zh-hans":@"cn",
-                                            @"zh-hant":@"tw",
-                                            @"es":@"es",
-                                            @"fr":@"fr",
-                                            @"it":@"it",
-                                            @"de":@"de",
-											};
-			NSString *targetCountryCode = languageCodes[languageCode];
-			if (targetCountryCode) {
-				NSURL *url = [self securityInfoURLWithCountryCode:targetCountryCode];
-				[self presentWebViewControllerWithURL:url];
-				return;
-			}
-
-//			// dk, ko, jp, cn, ae, at, au, ru, no, nl, fi, tw, hk, tr, th, za, it, in, ca,
-//			// de, es, fr, uk(for gb), hk, id, ie, my, nl, nz, se, sg
-//			NSArray *countrisSupported = @[@"dk", @"ko", @"jp", @"cn", @"ae", @"at",
-//										   @"au", @"ru", @"no", @"fi", @"nl", @"tw",
-//										   @"hk", @"tr", @"th", @"za", @"it", @"in",
-//										   @"ca", @"de", @"es", @"fr", @"id", @"ie",
-//										   @"my", @"nl", @"nz", @"se", @"sg"];
-//			if ([countrisSupported indexOfObject:countryCode] != NSNotFound) {
-//				NSURL *url = [self securityInfoURLWithCountryCode:countryCode];
-//				[self presentWebViewControllerWithURL:url];
-//				return;
-//			}
-			NSURL *url = [self securityInfoURLWithCountryCode:nil];
-			[self presentWebViewControllerWithURL:url];
-		}
-	}
+//            // dk, ko, jp, cn, ae, at, au, ru, no, nl, fi, tw, hk, tr, th, za, it, in, ca,
+//            // de, es, fr, uk(for gb), hk, id, ie, my, nl, nz, se, sg
+//            NSArray *countrisSupported = @[@"dk", @"ko", @"jp", @"cn", @"ae", @"at",
+//                                           @"au", @"ru", @"no", @"fi", @"nl", @"tw",
+//                                           @"hk", @"tr", @"th", @"za", @"it", @"in",
+//                                           @"ca", @"de", @"es", @"fr", @"id", @"ie",
+//                                           @"my", @"nl", @"nz", @"se", @"sg"];
+//            if ([countrisSupported indexOfObject:countryCode] != NSNotFound) {
+//                NSURL *url = [self securityInfoURLWithCountryCode:countryCode];
+//                [self presentWebViewControllerWithURL:url];
+//                return;
+//            }
+        NSURL *url = [self securityInfoURLWithCountryCode:nil];
+        [self presentWebViewControllerWithURL:url];
+    }]];
+    [self presentViewController:alertController animated:YES completion:NULL];
 }
 
 - (NSURL *)securityInfoURLWithCountryCode:(NSString *)countryCode {
@@ -369,21 +362,37 @@
 		case 0:{
             [self.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES];
 
-            UIViewController *viewController = [PasswordViewFactory makePasswordViewWithDissmissHandler:^{
-                [[self presentedViewController] dismissViewControllerAnimated:YES completion:nil];
-            }];
-            [self presentViewController:viewController animated:YES completion:nil];
-            return;
-            
 			if ([_useSimpleCodeSwitch isOn]) {
 				_passcodeViewController = [[A3PasscodeViewController alloc] initWithDelegate:self];
 			} else {
 				_passcodeViewController = [[A3PasswordViewController alloc] initWithDelegate:self];
 			}
 			if (passcodeEnabled) {
-				[_passcodeViewController showForTurningOffPasscodeInViewController:self];
+                UIViewController *viewController = [PasswordViewFactory makeAskPasswordViewWithCompletionHandler:^(BOOL success) {
+                    [[self presentedViewController] dismissViewControllerAnimated:YES completion:nil];
+                    
+                    if (success) {
+                        [A3KeychainUtils removePassword];
+                    }
+                    double delayInSeconds = 0.1;
+                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                    dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+                        [self.tableView reloadData];
+                    });
+                }];
+                [self presentViewController:viewController animated:YES completion:NULL];
+//				[_passcodeViewController showForTurningOffPasscodeInViewController:self];
 			} else {
-				[_passcodeViewController showForEnablingPasscodeInViewController:self];
+                UIViewController *viewController = [PasswordViewFactory makePasswordViewWithCompletionHandler:^(BOOL success) {
+                    [[self presentedViewController] dismissViewControllerAnimated:YES completion:nil];
+                    
+                    double delayInSeconds = 0.1;
+                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                        [self.tableView reloadData];
+                    });
+                }];
+                [self presentViewController:viewController animated:YES completion:nil];
 			}
 			break;
 		}

@@ -8,10 +8,8 @@
 
 #import "WalletFieldItem+initialize.h"
 #import "WalletData.h"
-#import "NSString+conversion.h"
 #import "UIImage+Resizing.h"
-#import "A3SyncManager.h"
-#import "common.h"
+#import <AppBoxKit/AppBoxKit.h>
 
 @implementation WalletFieldItem (initialize)
 

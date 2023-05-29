@@ -8,11 +8,8 @@
 
 #import "TranslatorHistory+manager.h"
 #import "TranslatorFavorite.h"
-#import "NSString+conversion.h"
 #import "A3AppDelegate.h"
-#import "NSManagedObject+extension.h"
-#import "NSManagedObjectContext+extension.h"
-#import "A3SyncManager.h"
+#import <AppBoxKit/AppBoxKit.h>
 
 @implementation TranslatorHistory (manager)
 

@@ -6,11 +6,10 @@
 //  Copyright (c) 2014년 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <AppBoxKit/AppBoxKit.h>
 #import "A3WalletPhotoItemTitleView.h"
 #import "UIImage+imageWithColor.h"
 #import "UIViewController+tableViewStandardDimension.h"
-#import "A3UIDevice.h"
-#import "A3UserDefaults+A3Addition.h"
 
 @implementation A3WalletPhotoItemTitleView
 

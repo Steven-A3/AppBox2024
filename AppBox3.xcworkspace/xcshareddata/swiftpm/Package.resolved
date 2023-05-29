@@ -91,6 +91,15 @@
       }
     },
     {
+      "identity" : "passphrase-meter",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/wultra/passphrase-meter",
+      "state" : {
+        "revision" : "d866f8265b505c744d1b1f9221d632f4f4fc1c5b",
+        "version" : "1.1.0"
+      }
+    },
+    {
       "identity" : "promises",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/promises.git",

@@ -8,8 +8,7 @@
 
 #import "LoanCalcComparisonHistory+extension.h"
 #import "LoanCalcHistory.h"
-#import "NSManagedObject+extension.h"
-#import "NSManagedObjectContext+extension.h"
+#import <AppBoxKit/AppBoxKit.h>
 
 @implementation LoanCalcComparisonHistory (extension)
 

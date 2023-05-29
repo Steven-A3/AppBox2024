@@ -6,10 +6,9 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <AppBoxKit/AppBoxKit.h>
 #import "CurrencyHistory+handler.h"
 #import "CurrencyHistoryItem.h"
-#import "NSManagedObject+extension.h"
-#import "NSManagedObjectContext+extension.h"
 
 @implementation CurrencyHistory (handler)
 

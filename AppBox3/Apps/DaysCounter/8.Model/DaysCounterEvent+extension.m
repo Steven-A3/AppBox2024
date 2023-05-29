@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <AppBoxKit/AppBoxKit.h>
 #import "DaysCounterEvent+extension.h"
 #import "DaysCounterFavorite.h"
-#import "NSString+conversion.h"
 #import "UIImage+Resizing.h"
 #import "A3DaysCounterModelManager.h"
 #import "A3AppDelegate.h"
@@ -17,9 +17,6 @@
 #import "DaysCounterEventLocation.h"
 #import "DaysCounterReminder.h"
 #import "DaysCounterReminder.h"
-#import "A3SyncManager.h"
-#import "NSManagedObject+extension.h"
-#import "NSManagedObjectContext+extension.h"
 
 @implementation DaysCounterEvent (extension)
 

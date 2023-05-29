@@ -7,7 +7,7 @@
 //
 
 #import "UIViewController+tableViewStandardDimension.h"
-#import "A3UIDevice.h"
+#import <AppBoxKit/AppBoxKit.h>
 
 @implementation UIViewController (tableViewStandardDimension)
 

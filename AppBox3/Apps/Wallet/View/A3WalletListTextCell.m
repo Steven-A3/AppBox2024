@@ -6,8 +6,8 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <AppBoxKit/AppBoxKit.h>
 #import "A3WalletListTextCell.h"
-#import "A3UIDevice.h"
 
 @implementation A3WalletListTextCell
 

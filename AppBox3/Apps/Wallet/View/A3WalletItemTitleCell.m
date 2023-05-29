@@ -6,10 +6,9 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <AppBoxKit/AppBoxKit.h>
 #import "A3WalletItemTitleCell.h"
 #import "UIImage+imageWithColor.h"
-#import "A3UIDevice.h"
-#import "A3UserDefaults+A3Addition.h"
 
 @implementation A3WalletItemTitleCell
 

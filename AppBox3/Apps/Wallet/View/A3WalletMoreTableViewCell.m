@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <AppBoxKit/AppBoxKit.h>
 #import "A3WalletMoreTableViewCell.h"
 #import "UIViewController+tableViewStandardDimension.h"
-#import "A3UserDefaults+A3Addition.h"
 
 @interface A3WalletMoreTableViewCell ()
 

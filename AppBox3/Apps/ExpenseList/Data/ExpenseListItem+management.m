@@ -6,10 +6,8 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <AppBoxKit/AppBoxKit.h>
 #import "ExpenseListItem+management.h"
-#import "NSString+conversion.h"
-#import "NSManagedObject+extension.h"
-#import "NSManagedObjectContext+extension.h"
 
 @implementation ExpenseListItem (management)
 

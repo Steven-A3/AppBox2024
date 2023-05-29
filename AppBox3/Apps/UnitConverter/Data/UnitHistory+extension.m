@@ -8,8 +8,7 @@
 
 #import "UnitHistory+extension.h"
 #import "UnitHistoryItem.h"
-#import "NSManagedObject+extension.h"
-#import "NSManagedObjectContext+extension.h"
+#import <AppBoxKit/AppBoxKit.h>
 
 @implementation UnitHistory (extension)
 

@@ -6,13 +6,10 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <AppBoxKit/AppBoxKit.h>
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
-#import "A3UIDevice.h"
 #import "A3AppDelegate.h"
-#import "A3UserDefaultsKeys.h"
-#import "A3UserDefaults.h"
-#import "NSString+conversion.h"
 
 NSString *const kHolidayCountryCode = @"kHolidayCountryCode";
 NSString *const kHolidayCapitalCityName = @"kHolidayCapitalCityName";

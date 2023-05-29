@@ -7,9 +7,7 @@
 //
 
 #import "TranslatorGroup+manage.h"
-#import "NSString+conversion.h"
-#import "NSManagedObject+extension.h"
-#import "NSManagedObjectContext+extension.h"
+#import <AppBoxKit/AppBoxKit.h>
 
 @implementation TranslatorGroup (manage)
 

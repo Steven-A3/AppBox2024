@@ -6,9 +6,9 @@
 //
 //
 
+#import <AppBoxKit/AppBoxKit.h>
 #import "FSConverter.h"
 #import "FSVenue.h"
-#import "NSString+conversion.h"
 
 @implementation FSConverter
 

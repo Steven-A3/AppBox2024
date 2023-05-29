@@ -6,12 +6,12 @@
 //  Copyright 2008 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <AppBoxKit/AppBoxKit.h>
 #import "InclinometerViewController.h"
 #import "InclinometerView.h"
 #import "CalibrationView.h"
 #import "UIViewController+MMDrawerController.h"
 #import "A3AppDelegate.h"
-#import "UIViewController+A3Addition.h"
 #import "UIViewController+extension.h"
 
 @import CoreMotion;

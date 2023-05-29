@@ -6,6 +6,7 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <AppBoxKit/AppBoxKit.h>
 #import <MediaPlayer/MediaPlayer.h>
 @import AVKit;
 #import <AVFoundation/AVFoundation.h>
@@ -30,11 +31,6 @@
 #import "WalletFavorite+initialize.h"
 #import "WalletField.h"
 #import "MBProgressHUD.h"
-#import "UIViewController+A3Addition.h"
-#import "NSManagedObject+extension.h"
-#import "NSManagedObjectContext+extension.h"
-#import "A3SyncManager.h"
-#import "A3UIDevice.h"
 
 @interface A3WalletVideoItemViewController () <WalletItemEditDelegate, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, AVPlayerViewControllerDelegate>
 

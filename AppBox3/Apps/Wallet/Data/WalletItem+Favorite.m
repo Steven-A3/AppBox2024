@@ -11,9 +11,7 @@
 #import "NSMutableArray+A3Sort.h"
 #import "WalletFavorite+initialize.h"
 #import "A3AppDelegate.h"
-#import "NSManagedObject+extension.h"
-#import "NSManagedObjectContext+extension.h"
-#import "A3SyncManager.h"
+#import <AppBoxKit/AppBoxKit.h>
 
 @implementation WalletItem (Favorite)
 

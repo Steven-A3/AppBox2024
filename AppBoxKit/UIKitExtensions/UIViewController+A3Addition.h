@@ -97,7 +97,7 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 
 - (void)requestAuthorizationForCamera:(NSString *)appName afterAuthorizedHandler:(void (^)(BOOL granted))afterAuthorizedHandler;
 - (void)requestAuthorizationForPhotoLibrary:(NSString *)appName afterAuthorizationHandler:(void (^)(BOOL granted))afterAuthorizationHandler;
-
+- (UIAlertController *)alertControllerWithTitle:(NSString *)title message:(NSString *)message;
 - (void)presentAlertWithTitle:(NSString *)title message:(NSString *)message;
 
 @end

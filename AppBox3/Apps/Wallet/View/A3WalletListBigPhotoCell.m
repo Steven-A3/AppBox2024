@@ -6,10 +6,8 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <AppBoxKit/AppBoxKit.h>
 #import "A3WalletListBigPhotoCell.h"
-#import "A3UIDevice.h"
-#import "common.h"
-#import "A3UIDevice.h"
 
 @implementation A3WalletListBigPhotoCell
 

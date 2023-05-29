@@ -6,15 +6,12 @@
 //  Copyright © 2022 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <AppBoxKit/AppBoxKit.h>
 #import "A3WalletRecentsViewController.h"
 #import "WalletItem.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+A3Addition.h"
 #import "UIColor+A3Addition.h"
-#import "NSManagedObject+extension.h"
-#import "NSManagedObjectContext+extension.h"
-#import "A3SyncManager.h"
-#import "A3UIDevice.h"
 
 @interface A3WalletRecentsViewController ()
 

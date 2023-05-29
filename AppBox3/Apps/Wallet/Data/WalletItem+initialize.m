@@ -9,15 +9,11 @@
 #import "WalletItem+initialize.h"
 #import "WalletFavorite.h"
 #import "WalletFieldItem+initialize.h"
-#import "NSString+conversion.h"
 #import "WalletData.h"
 #import "WalletCategory.h"
 #import "WalletField.h"
-#import "A3UserDefaultsKeys.h"
 #import "A3AppDelegate.h"
-#import "NSManagedObject+extension.h"
-#import "NSManagedObjectContext+extension.h"
-#import "A3SyncManager.h"
+#import <AppBoxKit/AppBoxKit.h>
 
 @implementation WalletItem (initialize)
 

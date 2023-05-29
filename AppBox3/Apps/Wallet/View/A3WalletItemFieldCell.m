@@ -6,6 +6,7 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <AppBoxKit/AppBoxKit.h>
 #import "A3WalletItemFieldCell.h"
 #import "UIImage+imageWithColor.h"
 #import "WalletFieldItem.h"

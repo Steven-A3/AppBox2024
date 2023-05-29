@@ -6,6 +6,7 @@
 //  Copyright 2009 Jeff LaMarche Consulting. All rights reserved.
 //
 
+#import "NSData-AES.h"
 #import <CommonCrypto/CommonCryptor.h>
 
 @implementation NSData (AES256)

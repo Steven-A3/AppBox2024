@@ -8,8 +8,7 @@
 
 #import "UnitPriceHistory+extension.h"
 #import "UnitPriceInfo.h"
-#import "NSManagedObject+extension.h"
-#import "NSManagedObjectContext+extension.h"
+#import <AppBoxKit/AppBoxKit.h>
 
 @implementation UnitPriceHistory (extension)
 

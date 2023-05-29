@@ -7,7 +7,7 @@
 //
 
 #import "A3AbbreviationDrillDownTableViewCell.h"
-#import "A3UIDevice.h"
+#import <AppBoxKit/A3UIDevice.h>
 
 @implementation A3AbbreviationDrillDownTableViewCell
 

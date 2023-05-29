@@ -662,7 +662,7 @@ static char const *const key_firstActionSheet = "key_firstActionSheet";
     }
 }
 
-- (void)presentAlertWithTitle:(NSString *)title message:(NSString *)message {
+- (UIAlertController *)alertControllerWithTitle:(NSString *)title message:(NSString *)message {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
                                                                              message:message
                                                                       preferredStyle:UIAlertControllerStyleAlert];
@@ -671,6 +671,11 @@ static char const *const key_firstActionSheet = "key_firstActionSheet";
                                                       handler:^(UIAlertAction *action) {
                                                           [alertController dismissViewControllerAnimated:YES completion:NULL];
                                                       }]];
+    return alertController;
+}
+
+- (void)presentAlertWithTitle:(NSString *)title message:(NSString *)message {
+    UIAlertController *alertController = [self alertControllerWithTitle:title message:message];
     [self.navigationController presentViewController:alertController animated:YES completion:NULL];
 }
 

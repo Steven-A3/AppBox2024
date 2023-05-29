@@ -6,10 +6,9 @@
 //  Copyright 2010 AllAboutApps. All rights reserved.
 //
 
+#import <AppBoxKit/AppBoxKit.h>
 #import "HolidayData+MiddleEast.h"
 #import "A3AppDelegate.h"
-#import "NSString+conversion.h"
-#import "NSDate-Utilities.h"
 
 NSUInteger const jewishTable[][14][2] = {
 	/*2000*/{{1, 22}, {3, 21}, {4, 20}, {5,  2}, {5, 10}, {5, 23}, {6,  9}, {8, 10}, {9, 14}, {10,  9}, {10, 14}, {10, 21}, {10, 22}, {12, 22}},

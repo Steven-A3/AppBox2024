@@ -6,8 +6,8 @@
 //  Copyright 2010 AllAboutApps. All rights reserved.
 //
 
+#import <AppBoxKit/AppBoxKit.h>
 #import "HolidayData.h"
-#import "A3UIDevice.h"
 #import "A3AppDelegate.h"
 
 NSString *const A3HolidaysDoesNotNeedsShowDisclaimer = @"AHolidaysDoesNotNeedsShowDisclaimer";

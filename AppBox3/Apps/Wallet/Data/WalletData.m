@@ -9,17 +9,12 @@
 #import "WalletData.h"
 #import "WalletFieldItem+initialize.h"
 #import "WalletItem+initialize.h"
-#import "NSString+conversion.h"
 #import "WalletCategory.h"
-#import "NSManagedObject+extension.h"
 #import "WalletField.h"
 #import "WalletItem.h"
-#import "NSMutableArray+A3Sort.h"
 #import <AVFoundation/AVFoundation.h>
 #import "A3AppDelegate.h"
-#import "NSManagedObject+extension.h"
-#import "NSManagedObjectContext+extension.h"
-#import "A3SyncManager.h"
+#import <AppBoxKit/AppBoxKit.h>
 
 NSString *const PRESET_DoNotShow_KEY		= @"doNotShow";
 NSString *const PRESET_SYSTEM_KEY			= @"SYSTEM";

@@ -7,8 +7,7 @@
 //
 
 #import "UITableViewCell+accessory.h"
-#import "A3UIDevice.h"
-#import "common.h"
+#import <AppBoxKit/AppBoxKit.h>
 
 @implementation UITableViewCell (accessory)
 
