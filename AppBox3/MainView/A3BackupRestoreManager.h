@@ -15,8 +15,8 @@ extern NSString *const A3BackupFileSystemModelKey;
 extern NSString *const A3BackupInfoFilename;
 
 @protocol A3BackupRestoreManagerDelegate <NSObject>
-- (void)backupRestoreManager:(A3BackupRestoreManager *)manager restoreCompleteWithSuccess:(BOOL)success;
 @optional
+- (void)backupRestoreManager:(A3BackupRestoreManager *)manager restoreCompleteWithSuccess:(BOOL)success;
 - (void)backupRestoreManager:(A3BackupRestoreManager *)manager backupCompleteWithSuccess:(BOOL)success;
 @end
 

@@ -24,6 +24,7 @@
 @import MessageUI;
 #import "AppBox3-swift.h"
 #import "UIViewController+extension.h"
+#import "A3BackupRestoreManager.h"
 
 typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	A3SettingsRowUseiCloud = 1100,
@@ -38,7 +39,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	A3SettingsRowRestorePurchase = 6200,
 };
 
-@interface A3SettingsViewController () <A3PasscodeViewControllerDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
+@interface A3SettingsViewController () <A3PasscodeViewControllerDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, A3BackupRestoreManagerDelegate>
 
 @property (nonatomic, strong) UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
 @property (nonatomic, strong) UIButton *colorButton;
@@ -47,6 +48,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 @property (nonatomic, strong) UISwitch *useGrayIconsSwitch;
 @property (nonatomic, strong) MBProgressHUD *HUD;
 @property (nonatomic, copy) NSString *previousMainMenuStyle;
+@property (nonatomic, strong) A3BackupRestoreManager *backupRestoreManager;
 
 @end
 
@@ -326,13 +328,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	switch (indexPath.section) {
         case 0: {
-            if (indexPath.row == 1) {
-//                if (@available(iOS 14.0, *)) {
-//                    [self alertNewDropboxBackupInfo];
-//                } else {
-//                    [self performSegueWithIdentifier:@"dropboxbackup" sender:nil];
-//                }
-            } else if (indexPath.row == 2) {
+            if (indexPath.row == 2) {
                 if (@available(iOS 14.0, *)) {
                     [self performSegueWithIdentifier:@"backuprestore" sender:nil];
                 } else {
@@ -340,6 +336,8 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
                 }
             } else if (indexPath.row == 3) {
                 [self exportWalletContents];
+            } else if (indexPath.row == 4) {
+                [self exportPhotosVideos];
             }
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             break;
@@ -438,6 +436,29 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	}
 }
 
+- (A3BackupRestoreManager *)backupRestoreManager {
+    if (_backupRestoreManager == nil) {
+        _backupRestoreManager = [[A3BackupRestoreManager alloc] init];
+        _backupRestoreManager.delegate = self;
+        _backupRestoreManager.hostingView = self.navigationController.view;
+        _backupRestoreManager.hostingViewController = self;
+    }
+    return _backupRestoreManager;
+}
+
+- (MBProgressHUD *)HUD {
+    if (!_HUD) {
+        _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        _HUD.mode = MBProgressHUDModeIndeterminate;
+        _HUD.removeFromSuperViewOnHide = YES;
+    }
+    return _HUD;
+}
+
+- (void)exportPhotosVideos {
+    [self.backupRestoreManager exportPhotosVideos];
+}
+
 - (void)alertNewDropboxBackupInfo {
     UIAlertController *alertController =
     [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Info", @"Info")
@@ -463,19 +484,46 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
         [self alertInternetConnectionIsNotAvailable];
         return;
     }
-    NSString *emailSubject = [NSString stringWithFormat:@"%@ %@", @"AppBox Pro®", NSLocalizedString(@"Wallet Contents", nil)];
-    NSString *body = [WalletData htmlRepresentationOfContents];
 
-    MFMailComposeViewController *viewController = [[MFMailComposeViewController alloc] init];
-    if (viewController) {
-        viewController.mailComposeDelegate = self;
+    NSString *title = NSLocalizedString(@"Export Function Usage Guide", @"");
+    NSString *msg = NSLocalizedString(@"ExportUsage", @"");
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                             message:msg
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * _Nonnull action) {
+        NSString *body = [WalletData htmlRepresentationOfContents];
+        WalletExtension *extension = [[WalletExtension alloc] init];
         
-        [viewController setSubject:emailSubject];
+        self.HUD.label.text = NSLocalizedString(@"Preparing", @"");
+        self.HUD.progress = 0;
+        [self.navigationController.view addSubview:self.HUD];
+        [self.HUD showAnimated:YES];
+
+        NSAttributedString *attributedString = [extension convertHtmlToAttributedStringWithHtmlString:body];
         
-        [viewController setMessageBody:body isHTML:YES];
+        [self.HUD hideAnimated:YES];
         
-        [self presentViewController:viewController animated:YES completion:nil];
-    }
+        UIActivityViewController *viewController = [[UIActivityViewController alloc] initWithActivityItems:@[attributedString] applicationActivities:NULL];
+        viewController.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+            if (completed) {
+                NSString *title = NSLocalizedString(@"Export Function Usage Guide", @"");
+                NSString *msg = NSLocalizedString(@"ExportUsageAfterCopy", @"");
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                                         message:msg
+                                                                                  preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:NULL];
+                [alertController addAction:action];
+                [self presentViewController:alertController animated:YES completion:NULL];
+}
+        };
+        [self presentViewController:viewController animated:YES completion:NULL];
+    }];
+    [alertController addAction:action];
+    [self presentViewController:alertController animated:YES completion:NULL];
 }
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {

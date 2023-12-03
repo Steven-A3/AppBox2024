@@ -136,7 +136,8 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 }
 
 - (void)exportPhotosVideos {
-    _backupToDocumentDirectory = NO;
+    // 압축이 완료되면 UIActivityViewController를 통해 압축 파일을 전달한다.
+    _backupToDocumentDirectory = YES;
     
     NSMutableArray *fileList = [NSMutableArray new];
     _deleteFilesAfterZip = [NSMutableArray new];

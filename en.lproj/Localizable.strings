@@ -1099,3 +1099,14 @@ the action menu";
 "Your purchases have been successfully restored." = "Your purchases have been successfully restored.";
 "Your subscription has been successfully restored." = "Your subscription has been successfully restored.";
 "There are no transactions available for restoration at this time." = "There are no transactions available for restoration at this time.";
+"Export Function Usage Guide" = "Export Function Usage Guide";
+"ExportUsage" = "Please use it as follows:\
+Instead of sending it directly to the Notes app, choose Copy.\
+Then, open the Notes app and paste it. This ensures the best delivery.";
+"ExportUsageAfterCopy" = "After you have completed copying, \
+exit the app and \
+open the Notes app to \
+create a new note, and then \
+paste it. \
+Of course, you can also paste it into other apps.";
+"Preparing" = "Preparing";

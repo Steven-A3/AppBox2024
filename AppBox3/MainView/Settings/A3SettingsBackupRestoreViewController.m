@@ -352,10 +352,6 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 					[self.backupRestoreManager backupData];
 					break;
                 }
-                case 2: {
-                    [self.backupRestoreManager exportPhotosVideos];
-                    break;
-				}
 			}
 			break;
 		case 2:

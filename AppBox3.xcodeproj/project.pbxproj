@@ -534,6 +534,7 @@
 		68953486178686AF007061CA /* UIScrollView+Screenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 6895346C178686AF007061CA /* UIScrollView+Screenshot.m */; };
 		68953488178686AF007061CA /* UIView+Screenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 6895346E178686AF007061CA /* UIView+Screenshot.m */; };
 		689573FF1F7E27AE002936E7 /* SriLanka.plist in Resources */ = {isa = PBXBuildFile; fileRef = 689573F61F7E27AD002936E7 /* SriLanka.plist */; };
+		6895E9E62B1C0BBF00007546 /* ExportWalletContents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6895E9E52B1C0BBF00007546 /* ExportWalletContents.swift */; };
 		68961FE218B311D100C89F16 /* Mirror.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68961FE118B311D100C89F16 /* Mirror.xcassets */; };
 		6896DC971921D64F00FA98F3 /* ExpenseListItem+management.m in Sources */ = {isa = PBXBuildFile; fileRef = 6896DC961921D64F00FA98F3 /* ExpenseListItem+management.m */; };
 		6897B6CF1DFEA01C00238FD3 /* A3AbbreviationCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6897B6CE1DFEA01C00238FD3 /* A3AbbreviationCollectionViewCell.m */; };
@@ -2009,6 +2010,7 @@
 		6895346D178686AF007061CA /* UIView+Screenshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Screenshot.h"; sourceTree = "<group>"; };
 		6895346E178686AF007061CA /* UIView+Screenshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Screenshot.m"; sourceTree = "<group>"; };
 		689573F61F7E27AD002936E7 /* SriLanka.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = SriLanka.plist; path = Holidays/SriLanka.plist; sourceTree = "<group>"; };
+		6895E9E52B1C0BBF00007546 /* ExportWalletContents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportWalletContents.swift; sourceTree = "<group>"; };
 		68961FE118B311D100C89F16 /* Mirror.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Mirror.xcassets; path = "AppBox3/Asset Catalogs/Mirror.xcassets"; sourceTree = "<group>"; };
 		6896DC951921D64F00FA98F3 /* ExpenseListItem+management.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ExpenseListItem+management.h"; path = "Data/ExpenseListItem+management.h"; sourceTree = "<group>"; };
 		6896DC961921D64F00FA98F3 /* ExpenseListItem+management.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ExpenseListItem+management.m"; path = "Data/ExpenseListItem+management.m"; sourceTree = "<group>"; };
@@ -3479,6 +3481,7 @@
 				68C4189A2B1148ED009668B9 /* AppTransactionManager.swift */,
 				68F720C92B1272AE00773D6E /* AppBox Pro.storekit */,
 				68F720CA2B12912600773D6E /* AdsFreePassShopView.swift */,
+				6895E9E52B1C0BBF00007546 /* ExportWalletContents.swift */,
 			);
 			path = Swift;
 			sourceTree = "<group>";
@@ -7054,6 +7057,7 @@
 				17D426BC7A3AD946E25DEADB /* A3WalletVideoItemViewController.m in Sources */,
 				17D4258B7D4BF46E0C3369B5 /* A3AppDelegate+migration.m in Sources */,
 				17D42FF85AA97A33A049141B /* A3MainMenuTableViewController.m in Sources */,
+				6895E9E62B1C0BBF00007546 /* ExportWalletContents.swift in Sources */,
 				17D4246891B35EE879B90A3E /* A3FractionInputView.m in Sources */,
 				17D427781AE9532AE6E09C7E /* A3UnitConverterAddViewController.m in Sources */,
 				17D42A9F13ACE076BAF14D08 /* A3UnitConverterConvertTableViewController.m in Sources */,
