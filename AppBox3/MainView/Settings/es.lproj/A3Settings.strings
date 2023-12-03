@@ -224,8 +224,8 @@
 /* Class = "UIButton"; normalTitle = "List"; ObjectID = "l7a-V1-SMB"; */
 "l7a-V1-SMB.normalTitle" = "Lista";
 
-/* Class = "UILabel"; text = "Remove Ads"; ObjectID = "yfZ-vk-zWG"; */
-"yfZ-vk-zWG.text" = "Eliminar publ.";
+/* Class = "UILabel"; text = "Restore Purchase"; ObjectID = "yfZ-vk-zWG"; */
+"yfZ-vk-zWG.text" = "Restaurar Compra";
 
 /* Class = "UILabel"; text = "About"; ObjectID = "b9v-1Y-xnC"; */
 "b9v-1Y-xnC.text" = "Información";

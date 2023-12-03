@@ -335,8 +335,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 }
 
 - (void)deleteAllAction:(UIBarButtonItem *)barButtonItem {
-#ifdef __IPHONE_8_0
-    if (!IS_IOS7 && IS_IPAD) {
+    if (IS_IPAD) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete All", @"Delete All") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
             [self deleteAllMessages];
@@ -353,7 +352,6 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
         [self presentViewController:alertController animated:YES completion:NULL];
     }
     else
-#endif
     {
         [self showDeleteAllActionSheet];
     }
@@ -1131,12 +1129,8 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
 	NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 	CGRect keyboardFrame = [kbFrame CGRectValue];
 
-	CGFloat height = IS_IPAD && IS_LANDSCAPE ? keyboardFrame.size.width : keyboardFrame.size.height;
-#ifdef __IPHONE_8_0
-    if (!IS_IOS7) {
-        height = keyboardFrame.size.height;
-    }
-#endif
+	CGFloat height = IS_IPAD && [UIWindow interfaceOrientationIsLandscape] ? keyboardFrame.size.width : keyboardFrame.size.height;
+    height = keyboardFrame.size.height;
     
 	_keyboardHeight = height;
 
@@ -1558,8 +1552,7 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
 - (void)deleteActionFromToolbar:(UIBarButtonItem *)barButtonItem {
     NSArray *selectedIndexPaths = [_messageTableView indexPathsForSelectedRows];
     
-#ifdef __IPHONE_8_0
-    if (!IS_IOS7 && IS_IPAD) {
+    if (IS_IPAD) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         if ([selectedIndexPaths count] == [_messages count]) {
             [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete All", @"Delete All") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
@@ -1584,7 +1577,6 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
         [self presentViewController:alertController animated:YES completion:NULL];
     }
     else
-#endif
     {
         if ([selectedIndexPaths count] == [_messages count]) {
             [self showDeleteAllActionSheet];

@@ -62,9 +62,11 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    
+
+    UIViewController *rootViewController = IS_IPHONE ? [A3AppDelegate instance].rootViewController_iPhone : [A3AppDelegate instance].rootViewController_iPad;
+    BOOL isPortrait = rootViewController.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassRegular;
     // 하단 날짜 입력 부분
-    if (IS_IPAD && IS_LANDSCAPE) {
+    if (IS_IPAD && !isPortrait) {
         CGFloat width = self.bounds.size.width;
         CGFloat lWidth = ceilf(width / 3 / 2);
         CGRect rect;
@@ -108,7 +110,7 @@
         [_monthLabel setTextAlignment:NSTextAlignmentLeft];
         [_dayLabel setTextAlignment:NSTextAlignmentLeft];
     }
-    else if (IS_IPAD && IS_PORTRAIT) {
+    else if (IS_IPAD && isPortrait) {
         CGFloat width = self.bounds.size.width;
         CGFloat lWidth = ceilf(width / 3 / 2);
         CGRect rect;

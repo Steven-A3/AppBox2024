@@ -18,6 +18,12 @@
 #import <objc/runtime.h>
 @import AVKit;
 @import Photos;
+#import "A3UserDefaults.h"
+#import "A3UserDefaultsKeys.h"
+#import "A3PasscodeViewController.h"
+#import "A3PasswordViewController.h"
+#import "A3AppDelegate.h"
+#import "AppBoxKit/AppBoxKit-swift.h"
 
 #define MAS_SHORTHAND
 #import "Masonry.h"
@@ -70,11 +76,6 @@ static char const *const key_firstActionSheet = "key_firstActionSheet";
 
 - (CGRect)screenBoundsAdjustedWithOrientation {
     CGRect bounds = [[UIScreen mainScreen] bounds];
-	if (IS_LANDSCAPE) {
-		CGFloat width = bounds.size.width;
-		bounds.size.width = bounds.size.height;
-		bounds.size.height = width;
-	}
 	return bounds;
 }
 
@@ -210,9 +211,13 @@ static char const *const key_firstActionSheet = "key_firstActionSheet";
     
     CGFloat vertifcalOffset = 0;
     UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
-    vertifcalOffset = safeAreaInsets.top - 20;
-    
-    clippingViewFrame.origin.y = 20.0 + 44.0 - 1.0 + vertifcalOffset;
+    if (safeAreaInsets.top == 59) {
+        clippingViewFrame.origin.y = 38.7 + safeAreaInsets.top;
+    } else {
+        vertifcalOffset = safeAreaInsets.top;
+        
+        clippingViewFrame.origin.y = 44.0 - 1.0 + vertifcalOffset;
+    }
     clippingViewFrame.size.height = clippingViewFrame.size.height + 0.5;//kjh
 
 	UIView *clippingView = [[UIView alloc] initWithFrame:clippingViewFrame];
@@ -677,6 +682,17 @@ static char const *const key_firstActionSheet = "key_firstActionSheet";
 - (void)presentAlertWithTitle:(NSString *)title message:(NSString *)message {
     UIAlertController *alertController = [self alertControllerWithTitle:title message:message];
     [self.navigationController presentViewController:alertController animated:YES completion:NULL];
+}
+
++ (UIViewController<A3PasscodeViewControllerProtocol> *)passcodeViewControllerWithDelegate:(id<A3PasscodeViewControllerDelegate>)delegate {
+    UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
+
+    if ([[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForUseSimplePasscode]) {
+        passcodeViewController = [[A3PasscodeViewController alloc] initWithDelegate:delegate];
+    } else {
+        passcodeViewController = [[A3PasswordViewController alloc] initWithDelegate:delegate];
+    }
+    return passcodeViewController;
 }
 
 @end

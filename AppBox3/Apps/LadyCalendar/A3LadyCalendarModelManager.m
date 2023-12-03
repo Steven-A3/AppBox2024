@@ -474,14 +474,12 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 	if (alertType == AlertType_None) return;
 
-	if (!IS_IOS7) {
-		UIUserNotificationSettings *currentNotificationSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
-		if (currentNotificationSettings.types == UIUserNotificationTypeNone) {
-
-			UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeSound | UIUserNotificationTypeAlert categories:nil];
-			[[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-		}
-	}
+    UIUserNotificationSettings *currentNotificationSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
+    if (currentNotificationSettings.types == UIUserNotificationTypeNone) {
+        
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeSound | UIUserNotificationTypeAlert categories:nil];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    }
 
 	NSInteger beforeDay = 0;
 	switch (alertType) {

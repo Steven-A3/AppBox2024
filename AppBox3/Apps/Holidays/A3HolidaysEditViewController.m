@@ -144,8 +144,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)resetButtonAction:(UITableViewCell *)sender {
-#ifdef __IPHONE_8_0
-    if (!IS_IOS7 && IS_IPAD) {
+    if (IS_IPAD) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"This will reset all settings.\nNo data will be deleted.", nil)
                                                                                  message:@""
                                                                           preferredStyle:UIAlertControllerStyleActionSheet];
@@ -167,7 +166,6 @@ static NSString *CellIdentifier = @"Cell";
         [self presentViewController:alertController animated:YES completion:NULL];
     }
     else
-#endif
     {
         [self showResetActionSheet];
     }
@@ -413,7 +411,7 @@ static NSString *CellIdentifier = @"Cell";
                 }
             }
 
-			if (myButtonIndex == 0 && !IS_IOS7 && ![A3UIDevice canAccessCamera]) {
+			if (myButtonIndex == 0 && ![A3UIDevice canAccessCamera]) {
 				dispatch_async(dispatch_get_main_queue(), ^{
 					[self requestAuthorizationForCamera:NSLocalizedString(A3AppName_Holidays, nil) afterAuthorizedHandler:NULL];
 				});

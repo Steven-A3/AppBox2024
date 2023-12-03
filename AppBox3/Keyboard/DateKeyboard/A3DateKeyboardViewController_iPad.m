@@ -93,7 +93,7 @@
 }
 
 - (void)setupFonts {
-	BOOL portrait = IS_PORTRAIT;
+	BOOL portrait = [UIWindow interfaceOrientationIsPortrait];
 
 	if ([self.yearButton isSelected] || [self.dayButton isSelected]) {
 		NSArray *numbers = @[self.today_Oct_Button, self.num1_Jul_Button, self.num2_Aug_Button, self.num3_Sep_Button, self.num4_Apr_Button, self.num5_May_Button, self.num6_Jun_Button, self.num7_Jan_Button, self.num8_Feb_Button, self.num9_Mar_Button];

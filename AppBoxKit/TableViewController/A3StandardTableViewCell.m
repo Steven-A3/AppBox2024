@@ -7,6 +7,7 @@
 //
 
 #import "A3StandardTableViewCell.h"
+#import "A3UIDevice.h"
 
 @implementation A3StandardTableViewCell
 

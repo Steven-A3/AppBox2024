@@ -39,3 +39,8 @@ FOUNDATION_EXPORT const unsigned char AppBoxKitVersionString[];
 #import <AppBoxKit/NSDateFormatter+A3Addition.h>
 #import <AppBoxKit/A3KeychainUtils.h>
 #import <AppBoxKit/NSData-AES.h>
+#import <AppBoxKit/A3PasscodeViewController.h>
+#import <AppBoxKit/A3PasswordViewController.h>
+#import <AppBoxKit/JVFloatLabeledTextField.h>
+#import <AppBoxKit/A3FloatLabeledPasswordTextField.h>
+#import <AppBoxKit/A3StandardTableViewCell.h>

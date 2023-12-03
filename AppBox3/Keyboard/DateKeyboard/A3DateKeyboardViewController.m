@@ -40,7 +40,7 @@
 
     // if iPAD
 	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-	if (IS_PORTRAIT) {
+	if ([UIWindow interfaceOrientationIsPortrait]) {
 		return (screenBounds.size.height == 1024 ? 264: 264 * 1.22) + safeAreaInsets.bottom;
 	}
 	return (screenBounds.size.height == 768 ? 352 : 352 * 1.16) + safeAreaInsets.bottom;
@@ -88,11 +88,11 @@
 
 	[order enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop) {
 		[button setTitle:[NSString stringWithFormat:@"%ld", (long) idx] forState:UIControlStateNormal];
-		button.titleLabel.font = [UIFont systemFontOfSize:IS_IPHONE ? 26 : IS_LANDSCAPE ? 27 : 22];
+		button.titleLabel.font = [UIFont systemFontOfSize:IS_IPHONE ? 26 : [UIWindow interfaceOrientationIsLandscape] ? 27 : 22];
 	}];
 
 	[_today_Oct_Button setTitle:NSLocalizedString(@"Today", @"Today") forState:UIControlStateNormal];
-	_today_Oct_Button.titleLabel.font = [UIFont systemFontOfSize:IS_IPHONE ? 18 : IS_LANDSCAPE ? 25 : 18];
+	_today_Oct_Button.titleLabel.font = [UIFont systemFontOfSize:IS_IPHONE ? 18 : [UIWindow interfaceOrientationIsLandscape] ? 25 : 18];
 	[_delete_Dec_Button setImage:[UIImage imageNamed:IS_IPHONE ? @"backspace" : @"backspace_p"] forState:UIControlStateNormal];
 	[_delete_Dec_Button setTitle:nil forState:UIControlStateNormal];
 }
@@ -127,7 +127,7 @@
 			button.subTitle.text = [NSString stringWithFormat:@"%ld", (long)idx + 1];
 			
 			button.mainTitle.font = [UIFont systemFontOfSize:IS_IPHONE ? 18 : 20];
-			button.subTitle.font = [UIFont systemFontOfSize:IS_IPHONE ? 16 : IS_LANDSCAPE ? 17 : 15];
+			button.subTitle.font = [UIFont systemFontOfSize:IS_IPHONE ? 16 : [UIWindow interfaceOrientationIsLandscape] ? 17 : 15];
 			button.subTitle.textColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];
 		} else {
 			[button setTitle:monthSymbols[idx] forState:UIControlStateNormal];

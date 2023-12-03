@@ -101,7 +101,7 @@
 
     self.mapView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
     self.mapViewHeightConst.constant = CGRectGetHeight(self.infoTableView.frame) - 88;
-    self.infoTableView.contentInset = UIEdgeInsetsMake(IS_LANDSCAPE ? (CGRectGetWidth([[UIScreen mainScreen] bounds]) - 88) : (CGRectGetHeight([[UIScreen mainScreen] bounds]) - 88), 0, 0, 0);
+    self.infoTableView.contentInset = UIEdgeInsetsMake([UIWindow interfaceOrientationIsLandscape] ? (CGRectGetWidth([[UIScreen mainScreen] bounds]) - 88) : (CGRectGetHeight([[UIScreen mainScreen] bounds]) - 88), 0, 0, 0);
     self.infoTableView.separatorInset = A3UITableViewSeparatorInset;
     self.infoTableView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:0.95];
     self.infoTableView.separatorColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
@@ -920,16 +920,12 @@
     }
 	[self adjustInfoTableViewInset];
     
-#ifdef __IPHONE_8_0
-    if (!IS_IOS7) {
-		if ([_infoTableView respondsToSelector:@selector(layoutMargins)])
-		{
-			UIEdgeInsets layoutMargins = _infoTableView.layoutMargins;
-			layoutMargins.left = 0;
-			_infoTableView.layoutMargins = layoutMargins;
-		}
+    if ([_infoTableView respondsToSelector:@selector(layoutMargins)])
+    {
+        UIEdgeInsets layoutMargins = _infoTableView.layoutMargins;
+        layoutMargins.left = 0;
+        _infoTableView.layoutMargins = layoutMargins;
     }
-#endif
 }
 
 - (void)adjustInfoTableViewInset {

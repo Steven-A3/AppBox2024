@@ -12,8 +12,9 @@
 #import "A3UserDefaults.h"
 #import <Security/Security.h>
 
-static NSString *kA3KeychainServiceName = @"A3PasscodeService";
-static NSString *kA3KeychainAccountName = @"A3AppBox3Passcode";
+NSString *const kA3KeychainServiceName = @"A3PasscodeService";
+NSString *const kA3KeychainAccountName = @"A3AppBox3Passcode";
+NSString *const A3RemoveSecurityCoverViewNotification = @"A3RemoveSecurityCoverViewNotification";
 
 @implementation A3KeychainUtils
 
@@ -190,6 +191,14 @@ NSString *const kUserUseSimplePasscode				= @"kUserUseSimplePasscode";
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserSavedPasscode];
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserSavedPasscodeHint];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
++ (void)saveTimerStartTime {
+    [[A3UserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kUserDefaultTimerStart];
+    [[A3UserDefaults standardUserDefaults] synchronize];
+    FNLOG(@"**************************************************************");
+    FNLOG(@"%@", [NSDate date]);
+    FNLOG(@"**************************************************************");
 }
 
 @end

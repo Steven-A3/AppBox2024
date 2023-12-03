@@ -87,14 +87,14 @@
 																					  relatedBy:NSLayoutRelationEqual
 																						 toItem:self.view
 																					  attribute:NSLayoutAttributeBottom
-																					 multiplier:IS_PORTRAIT ? 0.09 : 0.12
+																					 multiplier:[UIWindow interfaceOrientationIsPortrait] ? 0.09 : 0.12
 																					   constant:0];
 		NSLayoutConstraint *tableViewTopConstraint = [NSLayoutConstraint constraintWithItem:_tableView
 																				  attribute:NSLayoutAttributeTop
 																				  relatedBy:NSLayoutRelationEqual
 																					 toItem:self.view
 																				  attribute:NSLayoutAttributeBottom
-																				 multiplier:IS_PORTRAIT ? 0.11 : 0.14
+																				 multiplier:[UIWindow interfaceOrientationIsPortrait] ? 0.11 : 0.14
 																				   constant:0];
 		[self.view addConstraints:@[titleLabelBottomConstraint, tableViewTopConstraint]];
 		
@@ -108,14 +108,14 @@
 																					  relatedBy:NSLayoutRelationEqual
 																						 toItem:self.view
 																					  attribute:NSLayoutAttributeBottom
-																					 multiplier:IS_PORTRAIT ? 0.10 : 0.13
+																					 multiplier:[UIWindow interfaceOrientationIsPortrait] ? 0.10 : 0.13
 																					   constant:0];
 		NSLayoutConstraint *tableViewTopConstraint = [NSLayoutConstraint constraintWithItem:_tableView
 																				  attribute:NSLayoutAttributeTop
 																				  relatedBy:NSLayoutRelationEqual
 																					 toItem:self.view
 																				  attribute:NSLayoutAttributeBottom
-																				 multiplier:IS_PORTRAIT ? 0.12 : 0.15
+																				 multiplier:[UIWindow interfaceOrientationIsPortrait] ? 0.12 : 0.15
 																				   constant:0];
 		[self.view addConstraints:@[titleLabelBottomConstraint, tableViewTopConstraint]];
 		

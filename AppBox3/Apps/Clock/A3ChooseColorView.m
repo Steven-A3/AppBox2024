@@ -127,7 +127,7 @@ NSString *const ClockColorChooseCell = @"ClockColorCell";
 			make.bottom.equalTo(view.bottom);
 			make.height.equalTo(@(frame.size.height));
 		}];
-		UICollectionViewScrollPosition position = IS_IPAD && IS_PORTRAIT ? UICollectionViewScrollPositionCenteredVertically : UICollectionViewScrollPositionCenteredHorizontally;
+		UICollectionViewScrollPosition position = IS_IPAD && [UIWindow interfaceOrientationIsPortrait] ? UICollectionViewScrollPositionCenteredVertically : UICollectionViewScrollPositionCenteredHorizontally;
 		[chooseColorView.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:selectedIndex inSection:0] atScrollPosition:position animated:YES];
 	}];
 

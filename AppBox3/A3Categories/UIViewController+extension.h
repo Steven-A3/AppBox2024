@@ -15,7 +15,6 @@
 - (void)callPrepareCloseOnActiveMainAppViewController;
 - (void)popToRootAndPushViewController:(UIViewController *)viewController animated:(BOOL)animated;
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem;
-+ (UIViewController <A3PasscodeViewControllerProtocol> *)passcodeViewControllerWithDelegate:(id <A3PasscodeViewControllerDelegate>)delegate;
 - (void)presentWebViewControllerWithURL:(NSURL *)url;
 - (void)setupBannerViewForAdUnitID:(NSString *)unitID keywords:(NSArray *)keywords adSize:(GADAdSize)adSize delegate:(id<GADBannerViewDelegate>)delegate;
 - (void)setupBannerViewForAdUnitID:(NSString *)unitID keywords:(NSArray *)keywords delegate:(id<GADBannerViewDelegate>)delegate;

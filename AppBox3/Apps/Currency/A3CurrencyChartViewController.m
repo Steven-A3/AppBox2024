@@ -272,7 +272,7 @@
 			[constraint uninstall];
 		}
 	}
-	BOOL isIPHONE35 = IS_IPHONE35, isIPHONE = IS_IPHONE, isPORTRAIT = IS_PORTRAIT;
+	BOOL isIPHONE35 = IS_IPHONE35, isIPHONE = IS_IPHONE, isPORTRAIT = [UIWindow interfaceOrientationIsPortrait];
 	[_line1 makeConstraints:^(MASConstraintMaker *make) {
 		[self.constraints addObject:make.top.equalTo(self.tableView.bottom).with.offset(isIPHONE ? (isIPHONE35 ? 10 : 17) : (isPORTRAIT ? 50 : 33))];
 	}];
@@ -439,7 +439,7 @@
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-	if (IS_IPHONE && IS_LANDSCAPE) return NO;
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) return NO;
 
 	self.previousValue = textField.text;
 

@@ -29,6 +29,7 @@
 #import "UIViewController+extension.h"
 #import "A3UIDevice.h"
 #import "A3AppDelegate+appearance.h"
+@import AppBoxKit;
 
 @implementation A3AppDelegate (passcode)
 
@@ -40,14 +41,6 @@
 	NSDate *date = [[A3UserDefaults standardUserDefaults] objectForKey:kUserDefaultTimerStart];
 	if (!date) return -1;
 	return [date timeIntervalSinceReferenceDate];
-}
-
-- (void)saveTimerStartTime {
-	[[A3UserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kUserDefaultTimerStart];
-    [[A3UserDefaults standardUserDefaults] synchronize];
-	FNLOG(@"**************************************************************");
-	FNLOG(@"%@", [NSDate date]);
-	FNLOG(@"**************************************************************");
 }
 
 - (BOOL)didPasscodeTimerEnd {
@@ -77,8 +70,6 @@
 }
 
 - (BOOL)useTouchID {
-	if (IS_IOS7) return NO;
-
 	LAContext *context = [LAContext new];
 	NSError *error;
 	if (![context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
@@ -158,11 +149,11 @@
 					FNLOG(@"%@", passcodeParentViewController);
 				}
 				self.parentOfPasscodeViewController = passcodeParentViewController;
-				[self.passcodeViewController showLockScreenInViewController:passcodeParentViewController];
+				[self.passcodeViewController showLockScreenInViewController:passcodeParentViewController completion:NULL];
 			}
 			self.pushClockViewControllerIfFailPasscode = NO;
 		} else {
-			[self.passcodeViewController showLockScreenWithAnimation:NO showCacelButton:showCancelButton];
+            [self.passcodeViewController showLockScreenWithAnimation:NO showCacelButton:showCancelButton inViewController:IS_IPHONE ? self.rootViewController_iPhone : self.rootViewController_iPad];
 		}
 		double delayInSeconds = 1.0;
 		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -170,7 +161,7 @@
 			[self removeSecurityCoverView];
 		});
 	};
-	if (IS_IOS7 || ![self useTouchID]) {
+	if (![self useTouchID]) {
 		presentPasscodeViewControllerBlock(showCancelButton);
 	} else {
 		LAContext *context = [LAContext new];
@@ -194,7 +185,7 @@
                                       [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
                                       [self.touchIDBackgroundViewController dismissViewControllerAnimated:NO completion:NULL];
                                       if (success && !error) {
-                                          [self saveTimerStartTime];
+                                          [A3KeychainUtils saveTimerStartTime];
                                           [self passcodeViewControllerDidDismissWithSuccess:YES];
                                       } else {
                                           presentPasscodeViewControllerBlock(showCancelButton);
@@ -252,7 +243,7 @@
 	if (IS_IPHONE) {
 		[self.drawerController closeDrawerAnimated:NO completion:nil];
 	} else {
-		if (IS_PORTRAIT && self.rootViewController_iPad.showLeftView) {
+		if (self.rootViewController_iPad.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassRegular && self.rootViewController_iPad.showLeftView) {
 			[self.rootViewController_iPad toggleLeftMenuViewOnOff];
 		}
 	}
@@ -345,6 +336,8 @@
 			}
 		}
 	} else {
+        // 홈에서 처음으로 들어온 순간
+        
 		if (self.shouldMigrateV1Data) {
 			self.migrationIsInProgress = YES;
 			A3DataMigrationManager *migrationManager = [A3DataMigrationManager new];
@@ -357,7 +350,7 @@
 			}
 			return;
 		} else {
-            if (!self.firstRunAfterInstall && ![self shouldPresentWhatsNew]) {
+            if (!self.firstRunAfterInstall) {
                 [self presentInterstitialAds];
             }
             [self updateHolidayNations];
@@ -369,7 +362,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         if (!self.isTouchIDEvaluationInProgress && !self.passcodeViewController.view.superview) {
             [self removeSecurityCoverView];
-            if (!self.firstRunAfterInstall && ![self shouldPresentWhatsNew]) {
+            if (!self.firstRunAfterInstall) {
                 [self presentInterstitialAds];
             }
             FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
@@ -423,19 +416,15 @@
 		self.coverView = nil;
 	}
 	CGRect screenBounds = [[UIScreen mainScreen] bounds];
-	if (IS_IPHONE && IS_LANDSCAPE && IS_IOS7) {
-		CGFloat height = screenBounds.size.height;
-		screenBounds.size.height = screenBounds.size.width;
-		screenBounds.size.width = height;
-	}
+    BOOL isPortrait = [UIWindow interfaceOrientationIsPortrait];
 	self.coverView = [[UIImageView alloc] initWithFrame:screenBounds];
 	self.coverView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	self.coverView.image = [UIImage imageNamed:[self getLaunchImageName]];
+	self.coverView.image = [UIImage imageNamed:[self getLaunchImageNameForOrientation:isPortrait]];
 	[self.window addSubview:self.coverView];
 
-	if (IS_IPHONE && IS_LANDSCAPE) {
+	if (IS_IPHONE && !isPortrait) {
 		CGFloat angle;
-		switch ([[UIApplication sharedApplication] statusBarOrientation]) {
+		switch ([UIWindow getCurrentInterfaceOrientation]) {
 			case UIInterfaceOrientationPortraitUpsideDown:
 				angle = M_PI;
 				break;
@@ -452,16 +441,6 @@
 		self.coverView.frame = screenBounds;
 		FNLOGRECT(self.coverView.frame);
 	}
-
-	if (IS_IPAD && IS_IOS7) {
-		[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
-
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(statusBarFrameOrOrientationChanged:)
-													 name:UIApplicationDidChangeStatusBarOrientationNotification
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarFrameOrOrientationChanged:) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
-	}
 }
 
 - (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder {
@@ -475,6 +454,12 @@
 		[application ignoreSnapshotOnNextApplicationLaunch];
 	}
 	return NO;
+}
+
+- (void)handleRemoveSecurityCoverView {
+    if (!self.appWillResignActive) {
+        [self removeSecurityCoverView];
+    }
 }
 
 - (void)removeSecurityCoverView {
@@ -612,10 +597,9 @@
 		[self reloadRootViewController];
 	}
 	[self showReceivedLocalNotifications];
-    if (!self.firstRunAfterInstall && ![self shouldPresentWhatsNew]) {
+    if (!self.firstRunAfterInstall) {
         [self presentInterstitialAds];
     }
-	[self alertWhatsNew];
 }
 
 - (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {

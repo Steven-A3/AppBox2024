@@ -232,7 +232,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 	[self.evaluatedResultLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.view.left).with.offset(85);
 		make.right.equalTo(self.view.right).with.offset(-15);
-        self.calctopconstraint =  make.bottom.equalTo(self.view.top).with.offset(IS_LANDSCAPE ? 389 : 566);
+        self.calctopconstraint =  make.bottom.equalTo(self.view.top).with.offset([UIWindow interfaceOrientationIsLandscape] ? 389 : 566);
 		make.height.equalTo(@110);
 	}];
     
@@ -452,7 +452,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
         }
     }
     
-    if (IS_LANDSCAPE) {
+    if ([UIWindow interfaceOrientationIsLandscape]) {
         self.calculator.isLandScape = YES;
     } else {
         

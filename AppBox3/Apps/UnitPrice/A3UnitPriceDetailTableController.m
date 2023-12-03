@@ -1040,9 +1040,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)currencyCode {
 	[UnitPriceInfo changeDefaultCurrencyCode:currencyCode];
 
-    if (!IS_IOS7) {
-        self.currencyFormatter = nil;
-    }
+    self.currencyFormatter = nil;
 
     [self.currencyFormatter setCurrencyCode:currencyCode];
     self.currencyFormatter.maximumFractionDigits = 2;

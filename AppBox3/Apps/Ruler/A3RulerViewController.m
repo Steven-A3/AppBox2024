@@ -96,7 +96,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 
 	self.view.backgroundColor = [UIColor whiteColor];
 	
-	[self setupBasicMeasureForInterfaceOrientation:IS_PORTRAIT];
+	[self setupBasicMeasureForInterfaceOrientation:[UIWindow interfaceOrientationIsPortrait]];
 	[self setupSubviews];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(drawerStateChanged) name:A3DrawerStateChanged object:nil];
@@ -146,7 +146,10 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
     CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
     CGFloat screenHeight = MAX(screenBounds.size.width, screenBounds.size.height);
 
-    if ([model isEqualToString:@"iPhone 14 Pro Max"]) {
+    if ([model isEqualToString:@"iPhone 15 Plus"] ||
+        [model isEqualToString:@"iPhone 15 Pro Max"] ||
+        [model isEqualToString:@"iPhone 14 Pro Max"])
+    {
         CGFloat pixelsInInch = 460;
         CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
         _centimeterAsPoints = (screenHeight / 2796.0) * pixelsInCentimeter;
@@ -155,21 +158,14 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
         _redLineWidth = 0.5;
         return;
     }
-    if ([model isEqualToString:@"iPhone 14 Pro"]) {
+    if ([model isEqualToString:@"iPhone 15"] ||
+        [model isEqualToString:@"iPhone 15 Pro"] ||
+        [model isEqualToString:@"iPhone 14 Pro"])
+    {
         CGFloat pixelsInInch = 460;
         CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
         _centimeterAsPoints = (screenHeight / 2556.0) * pixelsInCentimeter;
         _inchAsPoints = (screenHeight / 2556.0) * pixelsInInch;
-        _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
-        _redLineWidth = 0.5;
-        return;
-    }
-    if ([model isEqualToString:@"iPhone 13"] ||
-        [model isEqualToString:@"iPhone 12"]) {
-        CGFloat pixelsInInch = 460;
-        CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
-        _centimeterAsPoints = (screenHeight / 2532.0) * pixelsInCentimeter;
-        _inchAsPoints = (screenHeight / 2532.0) * pixelsInInch;
         _resetPosition = _centimeterPositionRightBottom ? 11.0 : 4.0;
         _redLineWidth = 0.5;
         return;
@@ -184,9 +180,11 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
         _redLineWidth = 0.5;
         return;
     }
-    if ([model isEqualToString:@"iPhone 12 Pro"] ||
-        [model isEqualToString:@"iPhone 13 Pro"] ||
+    if ([model isEqualToString:@"iPhone 13 Pro"] ||
+        [model isEqualToString:@"iPhone 12 Pro"] ||
         [model isEqualToString:@"iPhone 14"] ||
+        [model isEqualToString:@"iPhone 13"] ||
+        [model isEqualToString:@"iPhone 12"] ||
         [model isEqualToString:@"iPhone (Latest)"]) {
         CGFloat pixelsInInch = 460;    // Original value = 458
         CGFloat pixelsInCentimeter = pixelsInInch / 2.54;
@@ -583,7 +581,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
         [self setupBasicMeasureForiPod:toPortrait model:model];
     }
 
-	if ((IS_PORTRAIT && toPortrait) || (IS_LANDSCAPE && !toPortrait)) {
+	if (([UIWindow interfaceOrientationIsPortrait] && toPortrait) || ([UIWindow interfaceOrientationIsLandscape] && !toPortrait)) {
 		_screenWidth = screenBounds.size.width;
 		_screenHeight = screenBounds.size.height;
 		
@@ -617,7 +615,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	_rulerScrollView = [[UIScrollView alloc] initWithFrame:screenBounds];
 	_rulerScrollView.scrollsToTop = NO;
-	[self setupScrollViewContentSizeToInterfaceOrientation:IS_PORTRAIT];
+	[self setupScrollViewContentSizeToInterfaceOrientation:[UIWindow interfaceOrientationIsPortrait]];
 	_rulerScrollView.contentOffset = CGPointMake(0, _rulerScrollView.contentSize.height - _screenHeight);
 	_rulerScrollView.delegate = self;
 	_rulerScrollView.showsVerticalScrollIndicator = NO;
@@ -671,7 +669,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 	_redLineView = [UIView new];
 	_redLineView.backgroundColor = [UIColor redColor];
 	[self.view addSubview:_redLineView];
-	[self resetRedLinePositionForInterfaceOrientation:IS_PORTRAIT];
+	[self resetRedLinePositionForInterfaceOrientation:[UIWindow interfaceOrientationIsPortrait]];
 
 	_redLineGlassView = [UIView new];
 	_redLineGlassView.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:128.0/255.0 blue:1.0/255.0 alpha:0.3];
@@ -691,15 +689,10 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 	_bottomValueLabel.textColor = [UIColor blackColor];
 	[_redLineView addSubview:_bottomValueLabel];
 
-	[self updateLabelsForInterfaceOrientation:IS_PORTRAIT];
+	[self updateLabelsForInterfaceOrientation:[UIWindow interfaceOrientationIsPortrait]];
 
 	_fingerDragView = [UIImageView new];
-	if (IS_IOS7) {
-		UIImage *image = [[UIImage imageNamed:@"finger_drag"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-		_fingerDragView.image = image;
-	} else {
-		_fingerDragView.image = [UIImage imageNamed:@"finger_drag"];
-	}
+    _fingerDragView.image = [UIImage imageNamed:@"finger_drag"];
 	[self.view addSubview:_fingerDragView];
 
 	_fingerDragViewGestureRecognizer = [UIPanGestureRecognizer new];
@@ -707,19 +700,15 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 	[_redLineGlassView addGestureRecognizer:_fingerDragViewGestureRecognizer];
 
 	_rulerDragView = [UIImageView new];
-	if (IS_IOS7) {
-		UIImage *image = [[UIImage imageNamed:@"horizontal_drag"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-		_rulerDragView.image = image;
-	} else {
-		_rulerDragView.image = [UIImage imageNamed:@"horizontal_drag"];
-	}
+    UIImage *image = [[UIImage imageNamed:@"horizontal_drag"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    _rulerDragView.image = image;
 
 	[_rulerScrollView addSubview:_rulerDragView];
-	[self layoutRulerDragViewToInterfaceOrientation:IS_PORTRAIT];
+	[self layoutRulerDragViewToInterfaceOrientation:[UIWindow interfaceOrientationIsPortrait]];
 
 	[self addButtons];
 
-	[self layoutMarkingsToInterfaceOrientation:IS_PORTRAIT];
+	[self layoutMarkingsToInterfaceOrientation:[UIWindow interfaceOrientationIsPortrait]];
 }
 
 - (void)setupScrollViewContentSizeToInterfaceOrientation:(BOOL)toPortrait {
@@ -735,7 +724,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 }
 
 - (CGFloat)hiddenSpace {
-	if (IS_PORTRAIT) {
+	if ([UIWindow interfaceOrientationIsPortrait]) {
 		if (_rulerScrollDirectionReverse) {
 			return _rulerScrollView.contentOffset.y;
 		} else {
@@ -871,19 +860,19 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 - (void)handleDrag:(UIPanGestureRecognizer *)gestureRecognizer {
 	CGPoint location = [gestureRecognizer locationInView:self.view];
 
-	if (IS_PORTRAIT) {
+	if ([UIWindow interfaceOrientationIsPortrait]) {
 		_redLineView.frame = CGRectMake(0, location.y, _screenWidth, _redLineWidth);
 	} else {
 		_redLineView.frame = CGRectMake(location.x, 0, _redLineWidth, _screenHeight);
 	}
-	CGFloat currentPosition = [self currentPositionForInterfaceOrientation:IS_PORTRAIT];
+	CGFloat currentPosition = [self currentPositionForInterfaceOrientation:[UIWindow interfaceOrientationIsPortrait]];
 	CGFloat roundBySecondFraction = floor(currentPosition * 100.0)/100.0;
 	if ((round(currentPosition) ==  roundBySecondFraction + 0.01) ||
 		(round(currentPosition) == roundBySecondFraction - 0.01)) {
-		[self moveRedLineToPosition:round(currentPosition) interfaceOrientation:IS_PORTRAIT];
+		[self moveRedLineToPosition:round(currentPosition) interfaceOrientation:[UIWindow interfaceOrientationIsPortrait]];
 	}
 
-	[self updateLabelsForInterfaceOrientation:IS_PORTRAIT];
+	[self updateLabelsForInterfaceOrientation:[UIWindow interfaceOrientationIsPortrait]];
 }
 
 - (NSString *)centimeterValueString:(BOOL)isPortrait {
@@ -1275,12 +1264,12 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 #pragma mark -- UIScrollView Delegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-	[self layoutMarkingsToInterfaceOrientation:IS_PORTRAIT];
-	[self updateLabelsForInterfaceOrientation:IS_PORTRAIT];
+	[self layoutMarkingsToInterfaceOrientation:[UIWindow interfaceOrientationIsPortrait]];
+	[self updateLabelsForInterfaceOrientation:[UIWindow interfaceOrientationIsPortrait]];
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
-	BOOL isPortrait = IS_PORTRAIT;
+	BOOL isPortrait = [UIWindow interfaceOrientationIsPortrait];
 	if (_needsSnapToGrid) {
 		_needsSnapToGrid = NO;
 		CGFloat currentPosition;
@@ -1325,7 +1314,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 	_appsButton = [self buttonWithTitle:@"Apps"];
 	[_appsButton addTarget:self action:@selector(appsButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 
-	[self layoutButtonsToInterfaceOrientation:IS_PORTRAIT];
+	[self layoutButtonsToInterfaceOrientation:[UIWindow interfaceOrientationIsPortrait]];
 }
 
 - (UIButton *)buttonWithTitle:(NSString *)title {
@@ -1447,7 +1436,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 }
 
 - (void)resetButtonAction {
-	BOOL isPortrait = IS_PORTRAIT;
+	BOOL isPortrait = [UIWindow interfaceOrientationIsPortrait];
 	if (isPortrait) {
 		if (_rulerScrollDirectionReverse) {
 			[_rulerScrollView setContentOffset:CGPointMake(0, 0) animated:YES];
@@ -1493,7 +1482,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 
 - (void)advanceButtonAction {
 	_needsSnapToGrid = YES;
-	if (IS_PORTRAIT) {
+	if ([UIWindow interfaceOrientationIsPortrait]) {
 		if (_rulerScrollDirectionReverse) {
 			[_rulerScrollView setContentOffset:CGPointMake(0, _rulerScrollView.contentOffset.y + _redLineView.frame.origin.y) animated:YES];
 		} else {
@@ -1518,8 +1507,8 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 }
 
 - (void)flipUnitButtonAction {
-	BOOL isPortrait = IS_PORTRAIT;
-	CGFloat currentPosition = [self currentPositionForInterfaceOrientation:IS_PORTRAIT];
+	BOOL isPortrait = [UIWindow interfaceOrientationIsPortrait];
+	CGFloat currentPosition = [self currentPositionForInterfaceOrientation:[UIWindow interfaceOrientationIsPortrait]];
 	_needsResetRedLinePosition = round(currentPosition * 100.0) == _resetPosition * 100.0;
 	
 	_centimeterPositionRightBottom = !_centimeterPositionRightBottom;
@@ -1537,9 +1526,9 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 	CGFloat hiddenSpace = [self hiddenSpace];
 	CGFloat currentPosition;
 	if (_centimeterPositionRightBottom) {
-		currentPosition = [self currentCentimeterForInterfaceOrientation:IS_PORTRAIT];
+		currentPosition = [self currentCentimeterForInterfaceOrientation:[UIWindow interfaceOrientationIsPortrait]];
 	} else {
-		currentPosition = [self currentInchesForInterfaceOrientation:IS_PORTRAIT];
+		currentPosition = [self currentInchesForInterfaceOrientation:[UIWindow interfaceOrientationIsPortrait]];
 	}
 
 	_rulerScrollDirectionReverse = !_rulerScrollDirectionReverse;
@@ -1547,7 +1536,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	[self setRedrawMarkingsViews];
-	[self reloadAllViewsFromOrientation:IS_PORTRAIT toOrientation:IS_PORTRAIT hiddenSpace:hiddenSpace position:currentPosition];
+	[self reloadAllViewsFromOrientation:[UIWindow interfaceOrientationIsPortrait] toOrientation:[UIWindow interfaceOrientationIsPortrait] hiddenSpace:hiddenSpace position:currentPosition];
 
 	[self resetButtonAction];
 }
@@ -1557,7 +1546,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 	
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-	[self reloadAllViewsFromOrientation:IS_PORTRAIT toOrientation:UIInterfaceOrientationIsPortrait(toInterfaceOrientation) hiddenSpace:CGFLOAT_MAX position:CGFLOAT_MAX];
+	[self reloadAllViewsFromOrientation:[UIWindow interfaceOrientationIsPortrait] toOrientation:UIInterfaceOrientationIsPortrait(toInterfaceOrientation) hiddenSpace:CGFLOAT_MAX position:CGFLOAT_MAX];
 }
 
 - (void)reloadAllViewsFromOrientation:(BOOL)fromIsPortrait toOrientation:(BOOL)toPortrait hiddenSpace:(CGFloat)hiddenSpaceParameter position:(CGFloat)positionParameter {

@@ -60,7 +60,7 @@
 		self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
 	}
 
-	if (IS_IPAD || IS_PORTRAIT) {
+	if (IS_IPAD || [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 		self.toolbarItems = _bottomToolbar.items;
 		[self.navigationController setToolbarHidden:NO];
@@ -95,7 +95,7 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	if (IS_IPHONE && IS_PORTRAIT) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 		self.toolbarItems = _bottomToolbar.items;
 		[self.navigationController setToolbarHidden:NO];
@@ -174,7 +174,7 @@
 {
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 
-	if (IS_IPHONE && IS_PORTRAIT) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 		self.toolbarItems = _bottomToolbar.items;
 		[self.navigationController setToolbarHidden:NO];

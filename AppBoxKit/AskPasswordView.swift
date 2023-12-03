@@ -11,10 +11,13 @@ import SwiftUI
 struct AskPasswordMainView: View {
     @EnvironmentObject var askPasswordContext: PasswordViewContext
     @State var showHintText: Bool = false
+    @State var showCancelButton: Bool = false
 
     var body: some View {
         VStack() {
-            NavigationBarRightCancelButton()
+            if showCancelButton {
+                NavigationBarRightCancelButton()
+            }
             Spacer()
             VStack() {
                 LockImageView()

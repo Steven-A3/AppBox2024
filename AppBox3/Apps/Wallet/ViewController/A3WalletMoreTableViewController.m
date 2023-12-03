@@ -67,7 +67,7 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
         self.navigationItem.rightBarButtonItems = @[done, help];
 	}
     else {
-		if (IS_IPAD || IS_PORTRAIT) {
+		if (IS_IPAD || [UIWindow interfaceOrientationIsPortrait]) {
 			[self leftBarButtonAppsButton];
 		} else {
 			self.navigationItem.leftBarButtonItem = nil;
@@ -140,7 +140,7 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 	if (_isEditing) {
 		[self setupInstructionView];
 	}
-	if (IS_IPHONE && IS_PORTRAIT) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		if (_isEditing) {
 			[self leftBarButtonAddButton];
 		} else {
@@ -204,7 +204,7 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-	if (IS_IPHONE && IS_LANDSCAPE) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) {
 		if (_isEditing) {
 			[self leftBarButtonAddButton];
 		} else {

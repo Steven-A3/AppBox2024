@@ -34,7 +34,6 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3UserDefaults.h"
 #import "A3AppDelegate+migration.h"
-#import "RMAppReceipt.h"
 #import "UIViewController+A3Addition.h"
 #import "A3LadyCalendarModelManager.h"
 #import "A3NavigationController.h"
@@ -45,7 +44,6 @@
 #import <CoreMotion/CoreMotion.h>
 #import "TJDropbox.h"
 #import "ACSimpleKeychain.h"
-#import "A3WhatsNew4_5ViewController.h"
 #import "UIView+SBExtras.h"
 #import "FXBlurView.h"
 #import "UIImage+imageWithColor.h"
@@ -80,7 +78,6 @@ NSString *const A3AdsDisplayTime = @"A3AdsDisplayTime";
 NSString *const A3InterstitialAdUnitID = @"ca-app-pub-0532362805885914/2537692543";
 NSString *const A3AppStoreReceiptBackupFilename = @"AppStoreReceiptBackup";
 NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
-NSString *const A3UserDefaultsDidAlertWhatsNew4_5 = @"A3UserDefaultsDidAlertWhatsNew4_5";
 NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstall";
 
 @interface A3AppDelegate () <UIAlertViewDelegate, NSURLSessionDownloadDelegate, CLLocationManagerDelegate, GADFullScreenContentDelegate, A3AppUIContextProtocol>
@@ -106,7 +103,6 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 	BOOL _backgroundDownloadIsInProgress;
 	BOOL _statusBarHiddenBeforeAdsAppear;
 	UIStatusBarStyle _statusBarStyleBeforeAdsAppear;
-    BOOL _whatsNewDidShowInSession;
 }
 
 @synthesize window = _window;
@@ -137,6 +133,50 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     return YES;
 }
 
+- (void)setDefaultValues {
+    if (_previousVersion && [_previousVersion length] > 4 && [[_previousVersion substringToIndex:3] doubleValue] < 3.3) {
+        FNLOG(@"%@", @([[_previousVersion substringToIndex:3] doubleValue]));
+        // 3.3 이전버전에서 업데이트 한 경우
+        // V3.3 부터 Touch ID가 추가되고 Touch ID 활성화가 기본
+        // Touch ID가 활성화된 경우, passcode timer를 쓸 수 없도록 하였으므로 0으로 설정한다.
+        // 3.3을 처음 설치한 경우에는 기본이 0이므로 별도 설정 불필요.
+        [[A3UserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultsKeyForPasscodeTimerDuration];
+        [[A3UserDefaults standardUserDefaults] synchronize];
+    }
+    if (_previousVersion && [_previousVersion length] > 4 && [[_previousVersion substringToIndex:3] doubleValue] < 3.4) {
+        if (!_shouldMigrateV1Data) {
+            [self migrateToV3_4_Holidays];
+        }
+    }
+    if (_previousVersion && [_previousVersion doubleValue] == 4.0) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddQRCodeMenu];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddQRCodeMenu];
+    }
+    if (_previousVersion && [_previousVersion doubleValue] <= 4.1) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddPedometerMenu];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddPedometerMenu];
+    }
+    // TODO: Abbreviation
+    if (_previousVersion && [_previousVersion doubleValue] < 4.5) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddAbbreviationMenu];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddAbbreviationMenu];
+    }
+}
+
+- (void)addNotificationObservers {
+    self.reachability = [Reachability reachabilityWithHostname:@"www.google.com"];
+    [self.reachability startNotifier];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleRemoveSecurityCoverView)
+                                                 name:A3RemoveSecurityCoverViewNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(rotateAccordingToStatusBarOrientationAndSupportedOrientations)
+                                                 name:A3RotateAccordingToDeviceOrientationNotification object:nil];
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [FIRApp configure];
     [[GADMobileAds sharedInstance] startWithCompletionHandler:nil];
@@ -153,15 +193,13 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 	[[NSUserDefaults standardUserDefaults] registerDefaults:@{kA3SettingsMainMenuStyle:A3SettingsMainMenuStyleIconGrid}];
 
     _shouldPresentAd = YES;
+    _expirationDate = [NSDate distantPast];
+    
+    [self evaluateSubscriptionWithCompletion:NULL];
     
 	_passcodeFreeBegin = [[NSDate distantPast] timeIntervalSinceReferenceDate];
 
-	_isIAPRemoveAdsAvailable = NO;
-	_doneAskingRestorePurchase = NO;
-
 	[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
-
-	[self configureStore];
 
 	_appIsNotActiveYet = YES;
 
@@ -198,36 +236,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 			[self initializePasscodeUserDefaults];
 		}
 	}
-	if (_previousVersion && [_previousVersion length] > 4 && [[_previousVersion substringToIndex:3] doubleValue] < 3.3) {
-		FNLOG(@"%@", @([[_previousVersion substringToIndex:3] doubleValue]));
-		// 3.3 이전버전에서 업데이트 한 경우
-		// V3.3 부터 Touch ID가 추가되고 Touch ID 활성화가 기본
-		// Touch ID가 활성화된 경우, passcode timer를 쓸 수 없도록 하였으므로 0으로 설정한다.
-		// 3.3을 처음 설치한 경우에는 기본이 0이므로 별도 설정 불필요.
-		[[A3UserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultsKeyForPasscodeTimerDuration];
-		[[A3UserDefaults standardUserDefaults] synchronize];
-	}
-	if (_previousVersion && [_previousVersion length] > 4 && [[_previousVersion substringToIndex:3] doubleValue] < 3.4) {
-		if (!_shouldMigrateV1Data) {
-			[self migrateToV3_4_Holidays];
-		}
-	}
-	if (_previousVersion && [_previousVersion doubleValue] == 4.0) {
-		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddQRCodeMenu];
-		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddQRCodeMenu];
-	}
-	if (_previousVersion && [_previousVersion doubleValue] <= 4.1) {
-		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddPedometerMenu];
-		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddPedometerMenu];
-	}
-	// TODO: Abbreviation
-	if (_previousVersion && [_previousVersion doubleValue] < 4.5) {
-		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddAbbreviationMenu];
-		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddAbbreviationMenu];
-	}
-    if (!_previousVersion) {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidAlertWhatsNew4_5];
-    }
+    [self setDefaultValues];
 
 	// AppBox Pro V1.8.4까지는 Days Until 기능의 옵션에 의해서 남은 일자에 대한 배지 기능이 있었습니다.
 	// AppBox Pro V3.0 이후로는 배지 기능을 제공하지 않습니다.
@@ -240,9 +249,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 		_shouldMigrateV1Data = YES;
 	}
 
-	self.reachability = [Reachability reachabilityWithHostname:@"www.google.com"];
-	[self.reachability startNotifier];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+    [self addNotificationObservers];
 
     FNLOGRECT([[UIScreen mainScreen] nativeBounds]);
     
@@ -259,30 +266,6 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 	[[A3UserDefaults standardUserDefaults] setObject:lastRunVersion forKey:kA3ApplicationLastRunVersion];
     
 	[[A3UserDefaults standardUserDefaults] synchronize];
-
-    /*
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10")) {
-        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-        [center requestAuthorizationWithOptions:UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge
-                              completionHandler:^(BOOL granted, NSError * _Nullable error) {
-                                  [application registerForRemoteNotifications];
-                              }];
-    } else {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-		[application registerForRemoteNotifications];
-		UIUserNotificationSettings *userNotificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil];
-		[application registerUserNotificationSettings:userNotificationSettings];
-#pragma GCC diagnostic pop
-	}
-     */
-    
-    // 다운로드
-    // Google iOS first open tracking snippet
-    // Add this code to your application delegate's
-    // application:didFinishLaunchingWithOptions: method.
-    
-//    [ACTConversionReporter reportWithConversionID:@"964753049" label:@"j_bDCNKruXEQme2DzAM" value:@"1.00" isRepeatable:NO];
     
 	return shouldPerformAdditionalDelegateHandling;
 }
@@ -383,10 +366,6 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     NSInteger numberOfDidBecomeAcive = [[NSUserDefaults standardUserDefaults] integerForKey:kA3ApplicationNumberOfDidBecomeActive];
     [[NSUserDefaults standardUserDefaults] setInteger:numberOfDidBecomeAcive + 1 forKey:kA3ApplicationNumberOfDidBecomeActive];
 	FNLOG(@"Number Of DidBecomeActive = %ld", (long)[[NSUserDefaults standardUserDefaults] integerForKey:kA3ApplicationNumberOfDidBecomeActive]);
-	
-	if (_shouldPresentAd && !_IAPRemoveAdsProductFromiTunes && [SKPaymentQueue canMakePayments]) {
-		[self prepareIAPProducts];
-	}
 	
 	A3SyncManager *syncManager = [A3SyncManager sharedSyncManager];
 	[syncManager synchronizeWithCompletion:NULL];
@@ -805,7 +784,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 	if (![self.reachability isReachableViaWiFi]) {
 		return;
 	}
-	double delayInSeconds = IS_IOS7 ? 20.0 : 2.0;
+	double delayInSeconds = 2.0;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
 		if ([_downloadList count]) {
@@ -1101,52 +1080,65 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     // Library folder 아래로 AppBoxPro 폴더를 만들고, AppBoxStore.sqlite를 찾는다.
     // 만약 해당 파일이 없다면 oldStorePath를 찾아서 해당 파일이 있으면 옮기고 없으면 loadPersistentContainer를 할 때 새롭게 생성이 될거라고 믿는다.
     
+    // 아래의 코드는 만약 예전 데이터가 존재한다는 의미는 4.7.0~4.7.1에서 데이터를 옮기지 못헀다는 것을 의미한다.
+    // 만약 예전 데이터가 존재한다면 그것은 무조건 옮겨야 한다.
+    
     // $containerURL/Library/AppBox 폴더를 찾는다.
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSURL *URL_after_V4_7 = [fileManager storeURL];
     
     // - URL-after-V4-7, URL-before-V4-7, URL before version
     NSURL *URL_before_V4_7 = [NSPersistentContainer defaultDirectoryURL];
+    URL_before_V4_7 = [URL_before_V4_7 URLByAppendingPathComponent:@"AppBox3"];
     URL_before_V4_7 = [URL_before_V4_7 URLByAppendingPathComponent:[fileManager storeFileName]];
     
-    if (![fileManager fileExistsAtPath:[URL_after_V4_7 path]]) {
-        if ([fileManager fileExistsAtPath:[URL_before_V4_7 path]]) {
-            // Move files (AppBoxStore.sqlite, AppBoxStore.sqlite-shm, AppBoxStore.sqlite-wal) to URL_after_V4_7
-            NSString *path_after_V4_7 = [[URL_after_V4_7 URLByDeletingLastPathComponent] path];
-            NSString *path_before_V4_7 = [[URL_before_V4_7 URLByDeletingLastPathComponent] path];
-            NSError *createDirError = nil;
-            if (![fileManager fileExistsAtPath:path_after_V4_7]) {
-                [fileManager createDirectoryAtPath:path_after_V4_7 withIntermediateDirectories:YES attributes:nil error:&createDirError];
-                if (createDirError) {
-                    FNLOG(@"%@", createDirError);
-                    return;
-                }
-            }
-
-            // Move AppBoxStore.sqlite
-            NSError *fileMoveError = nil;
-            [fileManager moveItemAtURL:URL_before_V4_7 toURL:URL_after_V4_7 error:&fileMoveError];
-            if (fileMoveError) {
-                FNLOG(@"%@", fileMoveError);
+    // 만약 4_7 이전 파일이 존재한다면, 이 파일을 옮겨야 합니다.
+    if ([fileManager fileExistsAtPath:[URL_before_V4_7 path]]) {
+        // Move files (AppBoxStore.sqlite, AppBoxStore.sqlite-shm, AppBoxStore.sqlite-wal) to URL_after_V4_7
+        NSString *path_after_V4_7 = [[URL_after_V4_7 URLByDeletingLastPathComponent] path];
+        NSString *path_before_V4_7 = [[URL_before_V4_7 URLByDeletingLastPathComponent] path];
+        NSError *createDirError = nil;
+        if (![fileManager fileExistsAtPath:path_after_V4_7]) {
+            [fileManager createDirectoryAtPath:path_after_V4_7 withIntermediateDirectories:YES attributes:nil error:&createDirError];
+            if (createDirError) {
+                FNLOG(@"%@", createDirError);
                 return;
             }
-
-            // Move AppBoxStore.sqlite-shm
-            NSString *storeFilename = [fileManager storeFileName];
-            NSURL *URL_after_shm_file = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@-shm", path_after_V4_7, storeFilename]];
-            NSURL *URL_before_shm_file = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@-shm", path_before_V4_7, storeFilename]];
-            [fileManager moveItemAtURL:URL_before_shm_file toURL:URL_after_shm_file error:&fileMoveError];
-            if (fileMoveError) {
-                FNLOG(@"%@", fileMoveError);
-                return;
-            }
-
-            NSURL *URL_after_wal_file = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@-wal", path_after_V4_7, storeFilename]];
-            NSURL *URL_before_wal_file = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@-wal", path_before_V4_7, storeFilename]];
-            [fileManager moveItemAtURL:URL_before_wal_file toURL:URL_after_wal_file error:&fileMoveError];
-            if (fileMoveError) {
-                FNLOG(@"%@", fileMoveError);
-            }
+        }
+        
+        // Move AppBoxStore.sqlite
+        NSError *fileMoveError = nil;
+        // 이동하기 전에 해당 파일이 있다면 지워준다.
+        if ([fileManager fileExistsAtPath:[URL_after_V4_7 path]]) {
+            [fileManager removeItemAtURL:URL_after_V4_7 error:&fileMoveError];
+        }
+        [fileManager moveItemAtURL:URL_before_V4_7 toURL:URL_after_V4_7 error:&fileMoveError];
+        if (fileMoveError) {
+            FNLOG(@"%@", fileMoveError);
+            return;
+        }
+        
+        // Move AppBoxStore.sqlite-shm
+        NSString *storeFilename = [fileManager storeFileName];
+        NSURL *URL_after_shm_file = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@-shm", path_after_V4_7, storeFilename]];
+        if ([fileManager fileExistsAtPath:[URL_after_shm_file path]]) {
+            [fileManager removeItemAtURL:URL_after_shm_file error:&fileMoveError];
+        }
+        NSURL *URL_before_shm_file = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@-shm", path_before_V4_7, storeFilename]];
+        [fileManager moveItemAtURL:URL_before_shm_file toURL:URL_after_shm_file error:&fileMoveError];
+        if (fileMoveError) {
+            FNLOG(@"%@", fileMoveError);
+            return;
+        }
+        
+        NSURL *URL_after_wal_file = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@-wal", path_after_V4_7, storeFilename]];
+        if ([fileManager fileExistsAtPath:[URL_after_wal_file path]]) {
+            [fileManager removeItemAtURL:URL_after_wal_file error:&fileMoveError];
+        }
+        NSURL *URL_before_wal_file = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@-wal", path_before_V4_7, storeFilename]];
+        [fileManager moveItemAtURL:URL_before_wal_file toURL:URL_after_wal_file error:&fileMoveError];
+        if (fileMoveError) {
+            FNLOG(@"%@", fileMoveError);
         }
     }
 }
@@ -1322,226 +1314,41 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 	return _shouldPresentAd;
 }
 
-#pragma mark - Validate App Receipt
-
-- (RMStoreAppReceiptVerificator *)receiptVerificator {
-	if (!_receiptVerificator) {
-		_receiptVerificator = [[RMStoreAppReceiptVerificator alloc] init];
-	}
-	return _receiptVerificator;
-}
-
-- (NSString *)backupReceiptFilePath {
-	NSString *baseFilepath = [[[NSFileManager defaultManager] applicationSupportPath] stringByAppendingPathComponent:A3AppStoreReceiptBackupFilename];
-	NSUUID *uuid = [[UIDevice currentDevice] identifierForVendor];
-	return [baseFilepath stringByAppendingString:[uuid UUIDString]];
-}
-
-- (void)configureStore
-{
-	if (![self.appReceipt verifyReceiptHash]) {
-		NSFileManager *fileManager = [NSFileManager defaultManager];
-		NSString *backupFilePath = [self backupReceiptFilePath];
-
-        void (^downloadFromCloudBlock)(void) = ^() {
-			CDEICloudFileSystem *cloudFileSystem = [[A3SyncManager sharedSyncManager] cloudFileSystem];
-			[cloudFileSystem connect:^(NSError *error) {
-				if (error) {
-					[self prepareIAPProducts];
-					return;
-				}
-				NSString *cloudPath = [A3AppStoreCloudDirectoryName stringByAppendingPathComponent:A3AppStoreReceiptBackupFilename];
-				[cloudFileSystem fileExistsAtPath:cloudPath completion:^(BOOL exists, BOOL isDirectory, NSError *error2) {
-					if (exists) {
-						[cloudFileSystem downloadFromPath:cloudPath toLocalFile:backupFilePath completion:^(NSError *error3) {
-							if (error3) {
-								[self prepareIAPProducts];
-								return;
-							}
- 							NSData *data = [RMAppReceipt dataFromPCKS7Path:backupFilePath];
-							if (data) {
-								RMAppReceipt *receipt = [[RMAppReceipt alloc] initWithASN1Data:data];
-								if (![self.receiptVerificator verifyAppReceipt:receipt]) {
-									[self prepareIAPProducts];
-								} else {
-									[self evaluateReceipt];
-								}
-							}
-						}];
-					} else {
-						[self prepareIAPProducts];
-					}
-				}];
-			}];
-		};
-		if ([fileManager fileExistsAtPath:backupFilePath]) {
-			NSData *data = [RMAppReceipt dataFromPCKS7Path:backupFilePath];
-			if (data) {
-				RMAppReceipt *receipt = [[RMAppReceipt alloc] initWithASN1Data:data];
-				if (![self.receiptVerificator verifyAppReceipt:receipt]) {
-					downloadFromCloudBlock();
-				} else {
-					[self evaluateReceipt];
-				}
-			}
-		} else {
-			downloadFromCloudBlock();
-		}
-	} else {
-		[self evaluateReceipt];
-		[self makeReceiptBackup];
-	}
-}
-
-- (void)makeReceiptBackup {
-	NSFileManager *fileManager = [NSFileManager defaultManager];
-	NSURL *receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
-	if ([fileManager fileExistsAtPath:[receiptURL path]]) {
-		// Make backup
-		NSString *backupPath = [self backupReceiptFilePath];
-		if ([fileManager fileExistsAtPath:backupPath]) {
-			[fileManager removeItemAtPath:backupPath error:nil];
-		}
-		NSError *error;
-		[fileManager copyItemAtPath:[receiptURL path] toPath:backupPath error:&error];
-		if (error) {
-			FNLOG(@"Error copying receipt to backup: %@", [error localizedDescription]);
-		}
-
-		CDEICloudFileSystem *cloudFileSystem = [[A3SyncManager sharedSyncManager] cloudFileSystem];
-		[cloudFileSystem connect:^(NSError *error2) {
-			if (!error2) {
-				[cloudFileSystem fileExistsAtPath:A3AppStoreCloudDirectoryName completion:^(BOOL exists, BOOL isDirectory, NSError *error1) {
-                    void (^fileCopyBlock)(void) = ^() {
-						NSString *cloudPath = [A3AppStoreCloudDirectoryName stringByAppendingPathComponent:A3AppStoreReceiptBackupFilename];
-						[cloudFileSystem uploadLocalFile:backupPath toPath:cloudPath completion:^(NSError *error3) {
-							if (error3) {
-								FNLOG(@"%@", [error3 localizedDescription]);
-							} else {
-								FNLOG(@"App Store Receipt has been uploaded to iCloud.");
-							}
-						}];
-					};
-					if (exists) {
-						fileCopyBlock();
-					} else {
-						[cloudFileSystem createDirectoryAtPath:A3AppStoreCloudDirectoryName completion:^(NSError *error3) {
-							fileCopyBlock();
-						}];
-					}
-				}];
-			}
-		}];
-	}
-}
-
-- (RMAppReceipt *)appReceipt {
-	RMAppReceipt *receipt = [RMAppReceipt bundleReceipt];
-
-	if (!receipt) {
-		NSString *backupFilePath = [self backupReceiptFilePath];
-		NSData *data = [RMAppReceipt dataFromPCKS7Path:backupFilePath];
-		if (data) {
-			receipt = [[RMAppReceipt alloc] initWithASN1Data:data];
-		}
-	}
-	return receipt;
-}
-
-- (BOOL)receiptHasRemoveAds {
-	RMAppReceipt *receipt = [self appReceipt];
-
-	if (!receipt) {
-		return NO;
-	}
-
-	if ([self isPaidAppVersionCustomer:receipt]) {
-		return YES;
-	}
-	return [self isIAPPurchasedCustomer:receipt];
-}
-
-- (BOOL)isPaidAppVersionCustomer:(RMAppReceipt *)receipt {
-	if (receipt == nil) return NO;
-	
-	// https://developer.apple.com/library/ios/releasenotes/General/ValidateAppStoreReceipt/Chapters/ReceiptFields.html#//apple_ref/doc/uid/TP40010573-CH106-SW_9
-	// Receipts prior to June 20, 2013 omit this field. It is populated on all new receipts, regardless of OS version.
-	if (receipt.originalAppVersion == nil) return YES;
-
-	NSArray *components = [receipt.originalAppVersion componentsSeparatedByString:@"."];
-    if ([components count] >= 2) {
-        float version = [components[0] floatValue] + [components[1] floatValue] / 10.0;
-        return version <= 3.5;
-    }
-    return NO;
-}
-
-- (BOOL)isIAPPurchasedCustomer:(RMAppReceipt *)receipt {
-	if (receipt == nil) return NO;
-
-	for (RMAppReceiptIAP *iapReceipt in receipt.inAppPurchases) {
-		if ([iapReceipt.productIdentifier isEqualToString:A3InAppPurchaseRemoveAdsProductIdentifier]) {
-			return YES;
-		}
-	}
-	return NO;
-}
-
-- (void)evaluateReceipt {
-	_shouldPresentAd = ![self receiptHasRemoveAds];
-
-	if (_shouldPresentAd) {
-		[self prepareIAPProducts];
-	} else {
-		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:nil];
-	}
-    
-    RMAppReceipt *receipt = [self appReceipt];
-    if ([receipt.appVersion isEqualToString:receipt.originalAppVersion])
-    {
-        void(^writeCredential)(void) = ^(){
-            [[ACSimpleKeychain defaultKeychain] storeUsername:@"AppInstall"
-                                                     password:@"password"
-                                                   identifier:@"net.allaboutapps.AppBoxPro"
-                                                         info:@{kA3TheDateFirstRunAfterInstall:[NSDate date]}
-                                                   forService:@"Application"];
-            
-        };
+- (void)evaluateSubscriptionWithCompletion:(void (^)(void))completion {
+    [AppTransactionManager isPaidForAppWithCompletionHandler:^(BOOL isPaid, NSDate *purchaseDate) {
+        self->_isOldPaidUser = isPaid;
+        self->_originalPurchaseDate = purchaseDate;
         
-        NSDictionary *credential = [[ACSimpleKeychain defaultKeychain] credentialsForUsername:@"AppInstall" service:@"Application"];
-        if (credential) {
-            NSDate *date = credential[ACKeychainInfo][kA3TheDateFirstRunAfterInstall];
-            if (!date) {
-                writeCredential();
-                _shouldPresentAd = NO;
-            } else if ([[NSDate date] timeIntervalSinceDate:date] < 60*60*24*7) {
-                _shouldPresentAd = NO;
-            }
-        } else {
-            writeCredential();
-            _shouldPresentAd = NO;
+        // 3.5 포함 이전 버전 구매자의 경우에는 패스
+        if (isPaid) {
+            self->_shouldPresentAd = NO;
+            return;
         }
-    }
-}
-
-- (void)prepareIAPProducts {
-	if (![SKPaymentQueue canMakePayments]) return;
-	
-	NSArray *queryProducts = @[A3InAppPurchaseRemoveAdsProductIdentifier];
-	
-	[[RMStore defaultStore] requestProducts:[NSSet setWithArray:queryProducts] success:^(NSArray *products, NSArray *invalidProductIdentifiers) {
-		for (SKProduct *product in products) {
-			if ([product.productIdentifier isEqualToString:queryProducts[0]]) {
-                self->_IAPRemoveAdsProductFromiTunes = product;
-                self->_isIAPRemoveAdsAvailable = YES;
-				
-				[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationAppsMainMenuContentsChanged object:nil];
-				break;
-			}
-		}
-	} failure:^(NSError *error) {
-		FNLOG();
-	}];
+        
+        // RemoveAds 구매 여부와 Subscription 가입 여부를 확인한다.
+        
+        [AppTransactionManager checkSubscriptionStatusWithCompletionHandler:^(BOOL isPaymentActive, BOOL hasAdsFreePass, NSDate * _Nullable expiration, NSError * _Nullable error) {
+            self->_isOldPaidUser = isPaymentActive;
+            self->_hasAdsFreePass = hasAdsFreePass;
+            self->_expirationDate = expiration;
+            
+            // 앱 구입한지 일주일이 안 되었다면 광고를 표출하지 않는다.
+            // 매번 광고를 표시할 지 결정할 때, 두가지를 봐야 하는 구나.
+            // 앱 구입일자, 마지막 광고를 표시한 날짜 - 왜냐하면 전면 광고는 한시간에 한 번만 표시하니까
+            // 광고 표시 결정하는 코드에서 구입일자도 비교하도록 수정을 해야 겠다.
+            if ([[NSDate date] timeIntervalSinceDate:purchaseDate] < 60*60*24*7) {
+                self->_shouldPresentAd = NO;
+            } else {
+                self->_shouldPresentAd = !isPaymentActive && !hasAdsFreePass;
+            }
+            if (completion) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion();
+                });
+            }
+        }];
+        
+    }];
 }
 
 #pragma mark - AdMob
@@ -1614,32 +1421,30 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     
 }
 
-- (BOOL)presentInterstitialAds {
-	if (!self.shouldPresentAd) {
-		return NO;
-	}
-	FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-    
-	if (self.adDisplayedAfterApplicationDidBecomeActive) {
-        FNLOG(@"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-		return NO;
-	}
-	
-	NSDate *adsDisplayTime = [[NSUserDefaults standardUserDefaults] objectForKey:A3AdsDisplayTime];
-//	NSInteger numberOfTimesOpeningSubApp = [[NSUserDefaults standardUserDefaults] integerForKey:A3NumberOfTimesOpeningSubApp];
-	if (!adsDisplayTime || [[NSDate date] timeIntervalSinceDate:adsDisplayTime] > 60 * 60)
-    {
-        if (@available(iOS 14, *)) {
-            [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
-                [self setupAdInterstitialForAdUnitID:A3InterstitialAdUnitID keywords:@[@"shopping", @"currency", @"wallet", @"holidays", @"calendar"]];
-            }];
-        } else {
-            [self setupAdInterstitialForAdUnitID:A3InterstitialAdUnitID keywords:@[@"shopping", @"currency", @"wallet", @"holidays", @"calendar"]];
+- (void)presentInterstitialAds {
+    [self evaluateSubscriptionWithCompletion:^{
+        if (!self.shouldPresentAd) {
+            return;
         }
-		return YES;
-	}
-	
-	return NO;
+        
+        if (self.adDisplayedAfterApplicationDidBecomeActive) {
+            return;
+        }
+        
+        NSDate *adsDisplayTime = [[NSUserDefaults standardUserDefaults] objectForKey:A3AdsDisplayTime];
+    //    NSInteger numberOfTimesOpeningSubApp = [[NSUserDefaults standardUserDefaults] integerForKey:A3NumberOfTimesOpeningSubApp];
+        if (!adsDisplayTime || [[NSDate date] timeIntervalSinceDate:adsDisplayTime] > 60 * 60)
+        {
+            if (@available(iOS 14, *)) {
+                [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
+                    [self setupAdInterstitialForAdUnitID:A3InterstitialAdUnitID keywords:@[@"shopping", @"currency", @"wallet", @"holidays", @"calendar"]];
+                }];
+            } else {
+                [self setupAdInterstitialForAdUnitID:A3InterstitialAdUnitID keywords:@[@"shopping", @"currency", @"wallet", @"holidays", @"calendar"]];
+            }
+            return;
+        }
+    }];
 }
 
 - (void)increaseNumberOfTimesOpenedSubappCount {
@@ -1662,10 +1467,6 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 }
 
 #pragma mark - Alert What's New
-
-- (BOOL)shouldPresentWhatsNew {
-    return !_whatsNewDidShowInSession && ![[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidAlertWhatsNew4_5];
-}
 
 - (void)askPersonalizedAdConsent {
     if (@available(iOS 14.5, *)) {
@@ -1718,15 +1519,6 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
              }
          }
      }];
-}
-
-- (void)alertWhatsNew {
-}
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-	if (alertView.tag == 8730394) {
-		[self updateHolidayNations];
-	}
 }
 
 @end

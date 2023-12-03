@@ -86,7 +86,6 @@ struct LoginView: View, SecuredTextFieldParentProtocol {
             .onAppear() {
                 passwordViewContext.parentView = self
             }
-            .navigationBarBackButtonHidden()
    }
 }
 
@@ -98,7 +97,9 @@ struct PasswordBodyView: View {
     var body: some View {
         GeometryReader { geometry in
             VStack() {
-                NavigationAreaView(nextViewPresented: $nextViewPresented)
+                if passwordViewPageContext.currentPage == 1 {
+                    NavigationAreaView(nextViewPresented: $nextViewPresented)
+                }
                 Spacer()
                 LockImageView()
                 MainTitle(title: passwordViewPageContext.pageTitle)
@@ -276,25 +277,6 @@ struct NavigationAreaView: View {
                 NavigationBarBackButton()
             }
             Spacer()
-            Button {
-                switch passwordViewPageContext.currentPage {
-                case 1, 2:
-                    nextViewPresented = true
-                default:
-                    A3KeychainUtils.storePassword(passwordViewContext.newPassword, hint: passwordViewContext.hintText)
-                    presentAlertDone = true
-                }
-            } label: {
-                Text(passwordViewPageContext.currentPage == 3 ? "Done" : "Next")
-                    .padding(15)
-            }
-            .accentColor(passwordViewContext.themeColor)
-            .alert("Password has been set successfully.", isPresented: $presentAlertDone) {
-                Button("OK", role: .cancel) {
-                    passwordViewContext.completionHandler(true)
-                }
-            }
-            .disabled(nextButtonDisabled)
         }
     }
     
@@ -310,9 +292,9 @@ struct NavigationBarCancelButton: View {
     @EnvironmentObject var passwordViewContext: PasswordViewContext
 
     var body: some View {
-        Button(action: {
+        Button {
             passwordViewContext.completionHandler(false)
-        }) {
+        } label: {
             Text("Cancel")
                 .foregroundColor(passwordViewContext.themeColor)
         }.padding(15)
@@ -327,7 +309,8 @@ struct NavigationBarBackButton: View {
         Button(action: {
             self.presentationMode.wrappedValue.dismiss()
         }) {
-            Text("Back")
+            Text("<")
+                .font(.title3)
                 .foregroundColor(passwordViewContext.themeColor)
         }.padding(15)
     }
@@ -429,12 +412,3 @@ class KeyboardHeightHelper: ObservableObject {
     }
 }
 
-@objc public class PasswordViewFactory: NSObject {
-    @objc public static func makePasswordView(completionHandler: @escaping ( (_ success: Bool) -> Void )) -> UIViewController {
-        return UIHostingController(rootView: LoginMainView().environmentObject(PasswordViewContext(completionHandler: completionHandler)))
-    }
-    
-    @objc public static func makeAskPasswordView(completionHandler: @escaping ( (_ success: Bool) -> Void ) ) -> UIViewController {
-            return UIHostingController(rootView: AskPasswordMainView().environmentObject(PasswordViewContext(completionHandler: completionHandler)))
-    }
-}

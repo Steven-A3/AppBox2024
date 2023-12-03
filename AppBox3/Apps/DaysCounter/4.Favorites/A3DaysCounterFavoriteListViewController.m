@@ -69,7 +69,7 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
     self.navigationItem.rightBarButtonItem = [self instructionHelpBarButton];
 
-	if (IS_IPAD || IS_PORTRAIT) {
+	if (IS_IPAD || [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 		self.toolbarItems = _bottomToolbar.items;
 		[self.navigationController setToolbarHidden:NO];
@@ -147,7 +147,7 @@
 	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 	
-	if (IS_IPHONE && IS_PORTRAIT) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 		self.toolbarItems = _bottomToolbar.items;
 	}
@@ -212,7 +212,7 @@
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-	if (IS_IPHONE && IS_LANDSCAPE) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) {
 		[self leftBarButtonAppsButton];
 		self.toolbarItems = _bottomToolbar.items;
 		[self.navigationController setToolbarHidden:NO];

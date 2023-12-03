@@ -373,28 +373,14 @@
 -(BOOL)hasSelectedItem
 {
     if ( [_selectedArray count] < 1 ) {
-#ifdef __IPHONE_8_0
-		if (!IS_IOS7) {
-			UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Please select events.", @"Please select events.")
-																					 message:@""
-																			  preferredStyle:UIAlertControllerStyleAlert];
-			[alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-				[alertController dismissViewControllerAnimated:YES completion:NULL];
-			}]];
-			[self.navigationController presentViewController:alertController animated:YES completion:NULL];
-            
-            
-		}
-		else
-#endif
-        {
-			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Please select events.", @"Please select events.")
-																message:@""
-															   delegate:nil
-													  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-													  otherButtonTitles:nil];
-			[alertView show];
-		}
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Please select events.", @"Please select events.")
+                                                                                 message:@""
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+            [alertController dismissViewControllerAnimated:YES completion:NULL];
+        }]];
+        [self.navigationController presentViewController:alertController animated:YES completion:NULL];
+        
         return NO;
     }
     

@@ -10,7 +10,7 @@
 
 @implementation A3AppDelegate (appearance)
 
-- (NSString *)getLaunchImageName {
+- (NSString *)getLaunchImageNameForOrientation:(BOOL)isPortrait {
 	NSString *imageName;
 	if (IS_IPHONE) {
 		if (IS_IPHONE35) {
@@ -20,7 +20,7 @@
 		}
 
 	} else {
-		if (IS_LANDSCAPE) {
+		if (!isPortrait) {
 			if (IS_RETINA) {
 				imageName = @"LaunchImage-700-Landscape@2x~ipad.png";
 			} else {

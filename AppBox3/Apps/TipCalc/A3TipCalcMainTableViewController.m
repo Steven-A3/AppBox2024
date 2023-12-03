@@ -205,7 +205,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 	
-	if (IS_IPHONE && IS_PORTRAIT) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	}
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
@@ -262,7 +262,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 
     [self makeBackButtonEmptyArrow];
 	
-	if (IS_IPAD || IS_PORTRAIT) {
+	if (IS_IPAD || [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	} else {
 		self.navigationItem.leftBarButtonItem = nil;
@@ -502,7 +502,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
         [details addObject:values];
     }
 
-	if (IS_IOS7 || IS_IPAD) {
+	if (IS_IPAD) {
 		A3PopoverTableViewController *popoverTableViewController = [[A3PopoverTableViewController alloc] initWithStyle:UITableViewStylePlain];
 		[popoverTableViewController setSectionArrayForTitles:titles withDetails:details];
 		self.localPopoverController = [[UIPopoverController alloc] initWithContentViewController:popoverTableViewController];
@@ -551,7 +551,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-	if (IS_IPHONE && IS_LANDSCAPE) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) {
 		[self leftBarButtonAppsButton];
 	}
 }

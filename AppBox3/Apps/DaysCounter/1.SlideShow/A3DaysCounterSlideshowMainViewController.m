@@ -81,7 +81,7 @@
 	_barButtonEnabled = YES;
 
 	if (IS_IPHONE) {
-		if (IS_PORTRAIT) {
+		if ([UIWindow interfaceOrientationIsPortrait]) {
 			[self leftBarButtonAppsButton];
 		} else {
 			self.navigationItem.leftBarButtonItem = nil;
@@ -193,7 +193,7 @@
 	[self.navigationController setToolbarHidden:self.navigationController.navigationBarHidden];
 	[self updateNavigationTitle];
 
-	if ( IS_IPAD && IS_LANDSCAPE) {
+	if ( IS_IPAD && [UIWindow interfaceOrientationIsLandscape]) {
 		[[[A3AppDelegate instance] rootViewController_iPad] animateHideLeftViewForFullScreenCenterView:YES];
 	}
 	if ([[A3AppDelegate instance] rootViewController_iPad].showRightView ) {
@@ -231,7 +231,7 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	if (IS_IPHONE && IS_PORTRAIT) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	}
 }
@@ -395,7 +395,7 @@
 {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-	if (IS_IPHONE && IS_LANDSCAPE) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) {
 		[self leftBarButtonAppsButton];
 	}
 
@@ -493,7 +493,7 @@
 
 - (BOOL)usesFullScreenInLandscape
 {
-    return (IS_IPAD && IS_LANDSCAPE);
+    return (IS_IPAD && [UIWindow interfaceOrientationIsLandscape]);
 }
 
 - (BOOL)hidesNavigationBar
@@ -503,7 +503,7 @@
 
 - (void)tapPhotoViewScreen:(UITapGestureRecognizer*)gesture
 {
-	if (IS_IPHONE && IS_LANDSCAPE) return;
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) return;
 
     if (_isShowMoreMenu) {
         [self dismissMoreMenu];
@@ -744,7 +744,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     if ( [viewController isKindOfClass:[A3MainViewController class]]) {
-        if ( IS_IPAD && IS_LANDSCAPE) {
+        if ( IS_IPAD && [UIWindow interfaceOrientationIsLandscape]) {
             [[[A3AppDelegate instance] rootViewController_iPad] animateHideLeftViewForFullScreenCenterView:NO];
         }
     }

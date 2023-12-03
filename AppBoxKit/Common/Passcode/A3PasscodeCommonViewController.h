@@ -7,17 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "A3PasscodeViewControllerProtocol.h"
-
+#import <AppBoxKit/A3PasscodeViewControllerProtocol.h>
 
 @interface A3PasscodeCommonViewController : UIViewController <A3PasscodeViewControllerProtocol>
 {
 	BOOL _beingDisplayedAsLockscreen;
 }
 
-@property (nonatomic, weak) id<A3PasscodeViewControllerDelegate> delegate;
+@property (nonatomic, weak, nullable) id<A3PasscodeViewControllerDelegate> delegate;
+@property (copy, nullable) void (^completionBlock)(BOOL success);
 
-- (void)statusBarFrameOrOrientationChanged:(NSNotification *)notification;
 - (void)rotateAccordingToStatusBarOrientationAndSupportedOrientations;
 
 @end

@@ -160,7 +160,7 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	if (IS_IPHONE && IS_PORTRAIT) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	}
 	[self.navigationController setNavigationBarHidden:[_searchController isActive]];
@@ -249,7 +249,7 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
         self.navigationItem.hidesBackButton = NO;
         
         if (IS_IPAD) {
-            if (IS_LANDSCAPE) {
+            if ([UIWindow interfaceOrientationIsLandscape]) {
                 self.navigationItem.leftBarButtonItem = nil;
             }
             else {
@@ -257,7 +257,7 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
             }
         }
         else {
-			if (IS_PORTRAIT) {
+			if ([UIWindow interfaceOrientationIsPortrait]) {
 				[self leftBarButtonAppsButton];
 			} else {
 				self.navigationItem.leftBarButtonItem = nil;
@@ -268,7 +268,7 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
         [self makeBackButtonEmptyArrow];
         self.navigationItem.hidesBackButton = YES;
 
-		if (IS_IPAD || IS_PORTRAIT) {
+		if (IS_IPAD || [UIWindow interfaceOrientationIsPortrait]) {
 			[self leftBarButtonAppsButton];
 		} else {
 			self.navigationItem.leftBarButtonItem = nil;
@@ -639,18 +639,6 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 
     self.instructionViewController.view.frame = self.tabBarController.view.frame;
     self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
-	if (IS_IOS7) {
-		[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
-
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(statusBarFrameOrOrientationChanged:)
-													 name:UIApplicationDidChangeStatusBarOrientationNotification
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(statusBarFrameOrOrientationChanged:)
-													 name:UIApplicationDidChangeStatusBarFrameNotification
-												   object:nil];
-	}
 }
 
 #pragma mark - Search relative
@@ -962,7 +950,7 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-	if (IS_IPHONE && IS_LANDSCAPE) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) {
 		[self leftBarButtonAppsButton];
 	}
 }

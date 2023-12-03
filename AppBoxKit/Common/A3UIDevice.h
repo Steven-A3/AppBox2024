@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <AppBoxKit/A3UIDevice.h>
 
 #define HOT_MENU_VIEW_WIDTH					54.0
 #define A3_NORMAL_ROW_HEIGHT				44.0
@@ -35,16 +34,13 @@
 #define A3_TEXT_COLOR_DISABLED              [UIColor colorWithRed:201.0/255.0 green:201.0/255.0 blue:201.0/255.0 alpha:1.0]
 #define A3_TEXT_COLOR_DEFAULT				[UIColor blackColor]
 
-#define IS_IOS7			([[[UIDevice currentDevice] systemVersion] floatValue] < 8.0)
 #define IS_IOS_GREATER_THAN_7	([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 #define IS_IOS9			([[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0)
 #define IS_IOS10			([[[UIDevice currentDevice] systemVersion] floatValue] >= 10.0)
-#define IS_LANDSCAPE	(UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
-#define IS_PORTRAIT		(UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]))
 #define CURRENT_ORIENTATION        [[UIApplication sharedApplication] statusBarOrientation]
 
 #define IS_IPAD    	([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
-#define IS_IPAD_PRO	(!IS_IOS7 && [[UIScreen mainScreen] nativeBounds].size.height == 2732.0)
+#define IS_IPAD_PRO	([[UIScreen mainScreen] nativeBounds].size.height == 2732.0)
 #define IS_IPHONE   ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
 #define IS_IPHONE35 ([A3UIDevice screenBoundsAdjustedWithOrientation].size.height == 480.0)
 
@@ -70,6 +66,7 @@
 #define	LANGUAGE_KOREAN	[[NSLocale preferredLanguages][0] hasPrefix:@"ko"]
 
 extern NSString *const A3AnimationIDKeyboardWillShow;
+extern NSString *const A3RotateAccordingToDeviceOrientationNotification;
 
 @interface A3UIDevice : NSObject
 

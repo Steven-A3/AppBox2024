@@ -266,8 +266,8 @@
 /* Class = "UILabel"; text = "Title"; ObjectID = "xJM-LO-q65"; */
 "xJM-LO-q65.text" = "Title";
 
-/* Class = "UILabel"; text = "Remove Ads"; ObjectID = "yfZ-vk-zWG"; */
-"yfZ-vk-zWG.text" = "Remove Ads";
+/* Class = "UILabel"; text = "Restore Purchase"; ObjectID = "yfZ-vk-zWG"; */
+"yfZ-vk-zWG.text" = "Restore Purchase";
 
 "gQA-4o-Zwh.text" = "Export Wallet Contents";
 

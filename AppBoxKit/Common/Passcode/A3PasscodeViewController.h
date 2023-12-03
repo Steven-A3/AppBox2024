@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "A3PasscodeViewControllerProtocol.h"
-#import "A3PasscodeCommonViewController.h"
+#import <AppBoxKit/A3PasscodeViewControllerProtocol.h>
+#import <AppBoxKit/A3PasscodeCommonViewController.h>
 
 @interface A3PasscodeViewController : A3PasscodeCommonViewController
 

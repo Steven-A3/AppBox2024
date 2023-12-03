@@ -350,7 +350,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 }
 
 - (void)tapOnPreviewView {
-	if (IS_IPHONE && IS_LANDSCAPE) return;
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) return;
 
 	BOOL toolBarsHidden = self.topToolBar.hidden;
 	[self setToolBarsHidden:!toolBarsHidden];

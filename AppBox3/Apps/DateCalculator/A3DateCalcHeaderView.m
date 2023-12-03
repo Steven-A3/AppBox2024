@@ -502,7 +502,7 @@
 - (void)setToValue:(CGFloat)newValue {
     _toValue = newValue;
     if (_toValue > CGRectGetWidth(_sliderLineView.frame) - SLIDER_OFFSET) {
-        if (IS_IPAD && IS_LANDSCAPE) {
+        if (IS_IPAD && [UIWindow interfaceOrientationIsLandscape]) {
             _toValue = 1024.0 - SLIDER_OFFSET;
         }
         else {
@@ -582,7 +582,7 @@
 
     self.toLabel.text = IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:_toDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_toDate];
     [_toLabel sizeToFit];
-    if (IS_IPAD && IS_LANDSCAPE) {
+    if (IS_IPAD && [UIWindow interfaceOrientationIsLandscape]) {
         self.toValue = 1024.0;
     }
     else {

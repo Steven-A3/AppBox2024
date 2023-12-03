@@ -13,6 +13,8 @@
 #import "A3AppDelegate.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
+#import "AppBoxKit/AppBoxKit.h"
+#import "AppBoxKit/AppBoxKit-swift.h"
 
 @interface A3Calculator ()
 
@@ -1550,7 +1552,7 @@ typedef CMathParser<char, double> MathParser;
 					 i <= [mathexpression length]);
 		}
 		
-        if (IS_IPHONE && IS_PORTRAIT) {
+        if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
             if (numLen >= 9) return;
         } else {
             if (numLen >= 15) return;

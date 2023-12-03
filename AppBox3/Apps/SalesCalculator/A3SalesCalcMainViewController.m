@@ -114,7 +114,7 @@ enum A3TableElementCellType {
 
     [self makeNavigationBarAppearanceDefault];
     [self makeBackButtonEmptyArrow];
-	if (IS_IPAD || IS_PORTRAIT) {
+	if (IS_IPAD || [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	} else {
 		self.navigationItem.leftBarButtonItem = nil;
@@ -222,7 +222,7 @@ enum A3TableElementCellType {
 	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 	
-	if (IS_IPHONE && IS_PORTRAIT) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	}
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
@@ -475,7 +475,7 @@ enum A3TableElementCellType {
 			[self.currencyFormatter stringFromNumber:[A3SalesCalcCalculator savedAmountTaxForCalcData:_preferences.calcData]]
 	]];
 
-	if (IS_IOS7 || IS_IPAD) {
+	if (IS_IPAD) {
 		A3PopoverTableViewController *popoverTableViewController = [[A3PopoverTableViewController alloc] initWithStyle:UITableViewStylePlain];
 		[popoverTableViewController setSectionArrayForTitles:titleSections withDetails:detailSections];
 
@@ -498,46 +498,6 @@ enum A3TableElementCellType {
 		popoverPresentationController.delegate = self;
 		[self presentViewController:detailViewController animated:YES completion:nil];
 	}
-
-//	if (IS_IOS7 || IS_IPAD) {
-//		A3SalesCalcDetailInfoViewController *infoViewController = [[A3SalesCalcDetailInfoViewController alloc] initWithStyle:UITableViewStylePlain];
-//		[infoViewController setResult:_preferences.calcData];
-//
-//		if (!IS_IOS7) {
-//			[self.localPopoverController setPopoverContentSize:CGSizeMake(320, infoViewController.tableView.contentSize.height) animated:NO];
-//			infoViewController.modalPresentationStyle = UIModalPresentationPopover;
-//			[infoViewController setPreferredContentSize:CGSizeMake(320, 308)];
-//			UIPopoverPresentationController *popoverPresentationController = infoViewController.popoverPresentationController;
-//			popoverPresentationController.sourceView = _headerView.detailInfoButton;
-//			popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
-//			popoverPresentationController.delegate = self;
-//			[self presentViewController:infoViewController animated:YES completion:nil];
-//		}
-//		else
-//		{
-//			infoViewController.tableView.scrollEnabled = IS_IPHONE35;
-//			infoViewController.tableView.showsVerticalScrollIndicator = NO;
-//			self.localPopoverController = [[UIPopoverController alloc] initWithContentViewController:infoViewController];
-//			self.localPopoverController.backgroundColor = [UIColor whiteColor];
-//			self.localPopoverController.delegate = self;
-//			[self.localPopoverController setPopoverContentSize:CGSizeMake(320, 311) animated:NO];
-//			[self.localPopoverController presentPopoverFromRect:[_headerView convertRect:_headerView.detailInfoButton.frame fromView:self.view]
-//														 inView:self.view
-//									   permittedArrowDirections:UIPopoverArrowDirectionUp
-//													   animated:YES];
-//		}
-//	} else {
-//		A3StandardDetailTableViewController *infoViewController = [[A3StandardDetailTableViewController alloc] initWithTitles:titleSections details:detailSections];
-//		infoViewController.title = NSLocalizedString(@"Detail", @"Detail");
-//		[self.localPopoverController setPopoverContentSize:CGSizeMake(320, infoViewController.tableView.contentSize.height) animated:NO];
-//		infoViewController.modalPresentationStyle = UIModalPresentationPopover;
-//		[infoViewController setPreferredContentSize:CGSizeMake(320, 308)];
-//		UIPopoverPresentationController *popoverPresentationController = infoViewController.popoverPresentationController;
-//		popoverPresentationController.sourceView = _headerView.detailInfoButton;
-//		popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
-//		popoverPresentationController.delegate = self;
-//		[self presentViewController:infoViewController animated:YES completion:nil];
-//	}
 
     // 기타 & 버튼들, 비활성 처리.
 	[self enableControls:NO];
@@ -568,7 +528,7 @@ enum A3TableElementCellType {
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-	if (IS_IPHONE && IS_LANDSCAPE) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) {
 		[self leftBarButtonAppsButton];
 	}
 }

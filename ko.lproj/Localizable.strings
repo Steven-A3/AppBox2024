@@ -1152,3 +1152,9 @@
 "The restoring process failed to unarchive the backup file." = "복원과정에서 백업 파일의 압축을 풀지 못했습니다.";
 "Copying..." = "복사중...";
 "Recents" = "최근";
+"Enjoy_faster_app" = "광고로 인한 로딩 시간 없이 더 빠른 앱 탐색을 즐기세요.";
+"Your_free_trial" = "무료 체험은 종료 전에 취소할 수 있으며, 계속 이용할 경우 구독이 자동으로 갱신되지만 언제든지 취소할 수 있습니다.";
+"Ads Free Pass" = "광고 없는 이용권";
+"Your purchases have been successfully restored." = "구매 내역이 성공적으로 복원되었습니다.";
+"Your subscription has been successfully restored." = "구독이 성공적으로 복원되었습니다.";
+"There are no transactions available for restoration at this time." = "현재 복원할 수 있는 거래가 없습니다.";

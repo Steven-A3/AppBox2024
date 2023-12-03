@@ -60,7 +60,7 @@
 	// Do any additional setup after loading the view from its nib.
 
     [self makeNavigationBarAppearanceDefault];
-	if (IS_IPAD || IS_PORTRAIT) {
+	if (IS_IPAD || [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	} else {
 		self.navigationItem.leftBarButtonItem = nil;
@@ -228,10 +228,10 @@
 	if ( _dbManager )
 		[_dbManager open];
 
-	if (IS_IPHONE && IS_LANDSCAPE) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) {
 		[self hideKeyboardAnimate:NO];
 	}
-	if (IS_IPHONE && IS_PORTRAIT) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	}
 	if (IS_IPAD) {
@@ -265,7 +265,7 @@
 {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-	if (IS_IPHONE && IS_LANDSCAPE) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) {
 		[self leftBarButtonAppsButton];
 	}
 	[self layoutKeyboardToOrientation:toInterfaceOrientation];

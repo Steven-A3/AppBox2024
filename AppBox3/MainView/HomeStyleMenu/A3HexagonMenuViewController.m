@@ -17,7 +17,6 @@
 #import "A3UserDefaults.h"
 #import "A3InstructionViewController.h"
 #import "A3HomeStyleHelpViewController.h"
-#import "RMAppReceipt.h"
 #import "A3SyncManager.h"
 #import "A3UIDevice.h"
 
@@ -166,7 +165,7 @@ A3InstructionViewControllerDelegate>
 	NSDictionary *appInfo = [[A3AppDelegate instance] appInfoDictionary][menuInfo[kA3AppsMenuName]];
 	cell.borderColor = [A3AppDelegate instance].groupColors[appInfo[kA3AppsGroupName]];
 	NSString *imageName = [[A3AppDelegate instance] imageNameForApp:menuInfo[kA3AppsMenuName]];
-	if (!IS_IOS7 && IS_IPAD) {
+	if (IS_IPAD) {
 		imageName = [imageName stringByAppendingString:@"_Large"];
 	}
 	cell.imageName = imageName;
@@ -307,7 +306,7 @@ A3InstructionViewControllerDelegate>
 		[_appTitleLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(superview.centerX);
 			CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-			_appTitleTopConstraint =  make.top.equalTo(superview.top).with.offset(screenBounds.size.height * (IS_PORTRAIT ? 0.15 : 0.11));
+			_appTitleTopConstraint =  make.top.equalTo(superview.top).with.offset(screenBounds.size.height * ([UIWindow interfaceOrientationIsPortrait] ? 0.15 : 0.11));
 		}];
 	}
 	return _appTitleLabel;
@@ -384,7 +383,7 @@ A3InstructionViewControllerDelegate>
 		if (!_menuItems) {
 			_menuItems = [[self originalMenuItems] mutableCopy];
 		}
-		BOOL isStepCountingAvailable = !IS_IOS7 && [CMPedometer isStepCountingAvailable];
+		BOOL isStepCountingAvailable = [CMPedometer isStepCountingAvailable];
 #if TARGET_IPHONE_SIMULATOR
 		if (IS_IPAD) {
 			[_menuItems removeObject:@{kA3AppsMenuName:A3AppName_Pedometer}];

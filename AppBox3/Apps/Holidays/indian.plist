@@ -3616,11 +3616,11 @@
             </array>
             <array>
                 <string>Lohri</string>
-                <date>2024-01-14T00:00:00Z</date>
+                <date>2024-01-13T00:00:00Z</date>
             </array>
             <array>
                 <string>Makar Sankranti</string>
-                <date>2024-01-15T00:00:00Z</date>
+                <date>2024-01-14T00:00:00Z</date>
             </array>
             <array>
                 <string>Pongal</string>
@@ -3652,11 +3652,15 @@
             </array>
             <array>
                 <string>Maharishi Dayanand Saraswati Jayanti</string>
-                <date>2024-03-05T00:00:00Z</date>
+                <date>2024-03-06T00:00:00Z</date>
             </array>
             <array>
                 <string>Maha Shivaratri/Shivaratri</string>
                 <date>2024-03-08T00:00:00Z</date>
+            </array>
+            <array>
+                <string>Ramadan Start</string>
+                <date>2024-03-12T00:00:00Z</date>
             </array>
             <array>
                 <string>Holika Dahana</string>
@@ -3707,6 +3711,10 @@
                 <date>2024-04-14T00:00:00Z</date>
             </array>
             <array>
+                <string>Mesadi / Vaisakhadi</string>
+                <date>2024-04-14T00:00:00Z</date>
+            </array>
+            <array>
                 <string>Rama Navami</string>
                 <date>2024-04-17T00:00:00Z</date>
             </array>
@@ -3743,7 +3751,7 @@
                 <date>2024-08-15T00:00:00Z</date>
             </array>
             <array>
-                <string>Raksha Bandhan </string>
+                <string>Raksha Bandhan (Rakhi)</string>
                 <date>2024-08-19T00:00:00Z</date>
             </array>
             <array>
@@ -3751,7 +3759,7 @@
                 <date>2024-08-26T00:00:00Z</date>
             </array>
             <array>
-                <string>Janmashtami </string>
+                <string>Janmashtami (Smarta)</string>
                 <date>2024-08-26T00:00:00Z</date>
             </array>
             <array>
@@ -3787,11 +3795,11 @@
                 <date>2024-10-11T00:00:00Z</date>
             </array>
             <array>
-                <string>Dussehra</string>
-                <date>2024-10-12T00:00:00Z</date>
+                <string>Maha Navami</string>
+                <date>2024-10-11T00:00:00Z</date>
             </array>
             <array>
-                <string>Maha Navami</string>
+                <string>Dussehra</string>
                 <date>2024-10-12T00:00:00Z</date>
             </array>
             <array>
@@ -3799,16 +3807,16 @@
                 <date>2024-10-17T00:00:00Z</date>
             </array>
             <array>
-                <string>Karaka Chaturthi </string>
+                <string>Karaka Chaturthi (Karva Chauth)</string>
                 <date>2024-10-20T00:00:00Z</date>
+            </array>
+            <array>
+                <string>Diwali/Deepavali</string>
+                <date>2024-10-31T00:00:00Z</date>
             </array>
             <array>
                 <string>Naraka Chaturdasi</string>
                 <date>2024-10-31T00:00:00Z</date>
-            </array>
-            <array>
-                <string>Diwali/Deepavali</string>
-                <date>2024-11-01T00:00:00Z</date>
             </array>
             <array>
                 <string>Govardhan Puja</string>
@@ -3819,7 +3827,7 @@
                 <date>2024-11-03T00:00:00Z</date>
             </array>
             <array>
-                <string>Chhat Puja </string>
+                <string>Chhat Puja (Pratihar Sashthi/Surya Sashthi)</string>
                 <date>2024-11-07T00:00:00Z</date>
             </array>
             <array>

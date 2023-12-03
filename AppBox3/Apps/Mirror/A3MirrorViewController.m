@@ -340,7 +340,7 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
         [self setupInstructionView];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
 	}
-	if (IS_IPHONE && IS_LANDSCAPE) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) {
 		[self setToolBarsHidden:YES];
 	}
 	[self setupBannerViewForAdUnitID:AdMobAdUnitIDMirror keywords:@[@"mirror", @"ladies"] delegate:self];
@@ -874,7 +874,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	}
 	else
 	{
-		if (IS_IPHONE && IS_LANDSCAPE) return;
+		if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) return;
 
 		BOOL toolBarHidden = self.topBar.hidden;
 		[self setToolBarsHidden:!toolBarHidden];
@@ -1183,7 +1183,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 				}
 
 				if (_isFlip == YES) {
-					if (IS_LANDSCAPE ||
+					if ([UIWindow interfaceOrientationIsLandscape] ||
 							orientation == UIDeviceOrientationLandscapeRight ||
 							orientation == UIDeviceOrientationLandscapeLeft) {
 						CGAffineTransform f = CGAffineTransformMake(-1, 0, 0, 1, ciSaveImg.extent.size.width, 0);

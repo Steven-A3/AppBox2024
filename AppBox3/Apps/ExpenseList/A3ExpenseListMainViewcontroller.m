@@ -119,7 +119,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
     [self makeNavigationBarAppearanceDefault];
     [self makeBackButtonEmptyArrow];
-	if (IS_IPAD || IS_PORTRAIT) {
+	if (IS_IPAD || [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	} else {
 		self.navigationItem.leftBarButtonItem = nil;
@@ -221,7 +221,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 	
-	if (IS_IPHONE && IS_PORTRAIT) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	}
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
@@ -459,7 +459,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-	if (IS_IPHONE && IS_LANDSCAPE) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) {
 		[self leftBarButtonAppsButton];
 	}
 }

@@ -239,7 +239,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 	}
 	[self setupInstructionView];
 	if (self.instructionViewController) {
-		[self adjustInstructionFingerPositionForPortrait:IS_PORTRAIT];
+		[self adjustInstructionFingerPositionForPortrait:[UIWindow interfaceOrientationIsPortrait]];
 	}
 }
 
@@ -524,9 +524,9 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 		[_buttonsTimer invalidate];
 		_buttonsTimer = nil;
 	}
-	_clockAppsButton.hidden = !show || (IS_IPHONE && IS_LANDSCAPE);
-	_settingsButton.hidden = !show || (IS_IPHONE && IS_LANDSCAPE);
-    _helpButton.hidden = !show || (IS_IPHONE && IS_LANDSCAPE);
+	_clockAppsButton.hidden = !show || (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]);
+	_settingsButton.hidden = !show || (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]);
+    _helpButton.hidden = !show || (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]);
 	_pageControl.hidden = !show;
 	_chooseColorButton.hidden = !show;
 	if (show) {
@@ -549,7 +549,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
         }
     }
     
-	if (!(show && IS_IPHONE && IS_LANDSCAPE)) {
+	if (!(show && IS_IPHONE && [UIWindow interfaceOrientationIsLandscape])) {
         [self setNeedsStatusBarAppearanceUpdate];
 	}
 
@@ -580,7 +580,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
     if (_instructionViewController) {
         return;
     }
-    if (IS_IPHONE && IS_LANDSCAPE) {
+    if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) {
         return;
     }
 
@@ -601,7 +601,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:(_chooseColorButton.isHidden || !_chooseColorButton) ? A3V3InstructionDidShowForClock1 : A3V3InstructionDidShowForClock2];
 	[[A3UserDefaults standardUserDefaults] synchronize];
  
-    [self adjustInstructionFingerPositionForPortrait:IS_PORTRAIT];
+    [self adjustInstructionFingerPositionForPortrait:[UIWindow interfaceOrientationIsPortrait]];
 }
 
 - (void)dismissInstructionViewController:(UIView *)view
@@ -935,7 +935,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
     UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
     verticalOffset = safeAreaInsets.top - 26;
 
-    if (IS_IPHONE && IS_LANDSCAPE) {
+    if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) {
 		_appsButtonTop.with.offset(5);
 	} else {
 		_appsButtonTop.with.offset(26 + verticalOffset);

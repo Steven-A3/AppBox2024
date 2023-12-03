@@ -152,17 +152,6 @@ static char const *const key_adNativeExpressView = "key_adNativeExpressView";
     [[A3AppDelegate instance] presentInterstitialAds];
 }
 
-+ (UIViewController<A3PasscodeViewControllerProtocol> *)passcodeViewControllerWithDelegate:(id<A3PasscodeViewControllerDelegate>)delegate {
-    UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
-
-    if ([[A3UserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForUseSimplePasscode]) {
-        passcodeViewController = [[A3PasscodeViewController alloc] initWithDelegate:delegate];
-    } else {
-        passcodeViewController = [[A3PasswordViewController alloc] initWithDelegate:delegate];
-    }
-    return passcodeViewController;
-}
-
 - (void)presentWebViewControllerWithURL:(NSURL *)url {
     if (![[A3AppDelegate instance].reachability isReachable]) {
         [self alertInternetConnectionIsNotAvailable];
@@ -187,22 +176,24 @@ static char const *const key_adNativeExpressView = "key_adNativeExpressView";
  *  @param keywords keywords list
  */
 - (void)setupBannerViewForAdUnitID:(NSString *)unitID keywords:(NSArray *)keywords adSize:(GADAdSize)adSize delegate:(id<GADBannerViewDelegate>)delegate {
-    if (![[A3AppDelegate instance] shouldPresentAd]) return;
+    [[A3AppDelegate instance] evaluateSubscriptionWithCompletion:^{
+        if (![[A3AppDelegate instance] shouldPresentAd]) return;
 
-    GAMRequest *adRequest = [GAMRequest request];
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kA3AdsUserDidSelectPersonalizedAds]) {
-        GADExtras *extras = [[GADExtras alloc] init];
-        extras.additionalParameters = @{@"npa": @"1"};
-        [adRequest registerAdNetworkExtras:extras];
-    }
-    adRequest.keywords = keywords;
+        GAMRequest *adRequest = [GAMRequest request];
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:kA3AdsUserDidSelectPersonalizedAds]) {
+            GADExtras *extras = [[GADExtras alloc] init];
+            extras.additionalParameters = @{@"npa": @"1"};
+            [adRequest registerAdNetworkExtras:extras];
+        }
+        adRequest.keywords = keywords;
 
-    GADBannerView *bannerView = [[GADBannerView alloc] initWithAdSize:adSize];
-    bannerView.adUnitID = unitID;
-    bannerView.rootViewController = self;
-    bannerView.delegate = delegate ? delegate : (id<GADBannerViewDelegate>)self;
-    [bannerView loadRequest:adRequest];
-    objc_setAssociatedObject(self, key_adBannerView, bannerView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        GADBannerView *bannerView = [[GADBannerView alloc] initWithAdSize:adSize];
+        bannerView.adUnitID = unitID;
+        bannerView.rootViewController = self;
+        bannerView.delegate = delegate ? delegate : (id<GADBannerViewDelegate>)self;
+        [bannerView loadRequest:adRequest];
+        objc_setAssociatedObject(self, key_adBannerView, bannerView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }];
 }
 
 - (void)setupBannerViewForAdUnitID:(NSString *)unitID keywords:(NSArray *)keywords delegate:(id<GADBannerViewDelegate>)delegate {

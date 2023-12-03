@@ -109,7 +109,7 @@
 			offset = 64;
 		}
 	} else {
-		offset = IS_PORTRAIT ? 106 : 0;
+		offset = [UIWindow interfaceOrientationIsPortrait] ? 106 : 0;
 	}
 	return offset;
 }
@@ -119,7 +119,7 @@
 	if (IS_IPHONE) {
 		offset = 0;
 	} else {
-		offset = IS_LANDSCAPE ? 128 : 0;
+		offset = [UIWindow interfaceOrientationIsLandscape] ? 128 : 0;
 	}
 	return offset;
 }
@@ -149,7 +149,7 @@
 }
 
 - (void)setBackgroundImage {
-	NSString *imageName= [[A3AppDelegate instance] getLaunchImageName];
+	NSString *imageName= [[A3AppDelegate instance] getLaunchImageNameForOrientation:[UIWindow interfaceOrientationIsPortrait]];
 	[self.imageView setImage:[UIImage imageNamed:imageName]];
 	return;
 }

@@ -402,7 +402,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
 	FNLOG();
-	if (IS_IPHONE && IS_LANDSCAPE) return NO;
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) return NO;
 
 	if (_isNumberKeyboardVisible) {
 		if (textField != _editingTextField) {

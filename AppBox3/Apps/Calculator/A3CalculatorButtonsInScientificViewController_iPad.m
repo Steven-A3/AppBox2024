@@ -46,7 +46,8 @@
 
     CGRect bounds = [UIScreen mainScreen].bounds;
 
-	if (IS_PORTRAIT) {
+    BOOL isPortrait = [UIWindow interfaceOrientationIsPortrait];
+	if (isPortrait) {
         CGFloat top, width, height;
         if (bounds.size.height == 1366) {
             // iPad Pro 12.9"

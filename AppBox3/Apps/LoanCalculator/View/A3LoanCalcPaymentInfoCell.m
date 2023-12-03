@@ -71,32 +71,6 @@
 {
     [super layoutSubviews];
     
-//    float cellHeight = 42.0;
-//
-//    if (IS_IPHONE) {
-//        _dateLb.frame = CGRectMake(15, 1, 51, cellHeight);
-//        _paymentLb.frame = CGRectMake(15+51, 1, 63-5, cellHeight);
-//        _principalLb.frame = CGRectMake(15+51+63, 1, 63-5, cellHeight);
-//        _interestLb.frame = CGRectMake(15+51+63+63, 1, 58-5, cellHeight);
-//        _balanceLb.frame = CGRectMake(15+51+63+63+58, 1, 70-5, cellHeight);
-//    }
-//    else {
-//        if (IS_LANDSCAPE) {
-//            _dateLb.frame = CGRectMake(28, 1, 100, cellHeight);
-//            _paymentLb.frame = CGRectMake(28+100+10, 1, 140-10-10, cellHeight);
-//            _principalLb.frame = CGRectMake(28+100+140+10, 1, 140-10-10, cellHeight);
-//            _interestLb.frame = CGRectMake(28+100+140+140+10, 1, 140-10-10, cellHeight);
-//            _balanceLb.frame = CGRectMake(28+100+140+140+140+10, 1, 156-10-10, cellHeight);
-//        }
-//        else {
-//            _dateLb.frame = CGRectMake(28, 1, 110, cellHeight);
-//            _paymentLb.frame = CGRectMake(28+110+10, 1, 150-10-10, cellHeight);
-//            _principalLb.frame = CGRectMake(28+110+150+10, 1, 150-10-10, cellHeight);
-//            _interestLb.frame = CGRectMake(28+110+150+150+10, 1, 150-10-10, cellHeight);
-//            _balanceLb.frame = CGRectMake(28+110+150+150+150+10, 1, 180-10-10, cellHeight);
-//        }
-//    }
-    
     // Date 16%  Payment 21%  Principal 21%  Interest 19% Balance 23%
     float cellHeight = 42.0;
     

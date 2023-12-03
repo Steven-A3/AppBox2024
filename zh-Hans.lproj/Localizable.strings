@@ -1163,3 +1163,9 @@
 "The restoring process failed to unarchive the backup file." = "还原过程未能取消归档备份文件。";
 "Copying..." = "正在复制...";
 "Recents" = "最近";
+"Enjoy_faster_app" = "享受更快的应用导航，无需等待与广告相关的加载时间。";
+"Your_free_trial" = "您可以在免费试用期结束前取消，以避免产生费用。如果您选择继续使用，订阅将会自动续订，但您可以随时取消。";
+"Ads Free Pass" = "去除广告的使用券";
+"Your purchases have been successfully restored." = "您的购买已成功恢复。";
+"Your subscription has been successfully restored." = "您的订阅已成功恢复。";
+"There are no transactions available for restoration at this time." = "当前没有可恢复的交易。";

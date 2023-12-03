@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "A3PasscodeCommonViewController.h"
+#import <AppBoxKit/A3PasscodeCommonViewController.h>
 
 @interface A3PasswordViewController : A3PasscodeCommonViewController
 
 - (id)initWithDelegate:(id <A3PasscodeViewControllerDelegate>)delegate;
 - (void)showEncryptionKeyScreenInViewController:(UIViewController *)viewController;
-- (void)showEncryptionKeyCheckScreen;
+- (void)showEncryptionKeyCheckScreenInViewController:(UIViewController *)viewController;
 
 @end

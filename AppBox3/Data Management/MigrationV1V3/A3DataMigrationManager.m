@@ -693,7 +693,8 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 	if (_canCancelInEncryptionKeyView) {
 		[_passwordViewController showEncryptionKeyScreenInViewController:self.hostingViewController];
 	} else {
-		[_passwordViewController showEncryptionKeyCheckScreen];
+        
+        [_passwordViewController showEncryptionKeyCheckScreenInViewController:self.hostingViewController];
 	}
 }
 

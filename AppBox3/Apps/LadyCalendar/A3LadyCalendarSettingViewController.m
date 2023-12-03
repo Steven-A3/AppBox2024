@@ -393,49 +393,45 @@
         
         if( [[item objectForKey:ItemKey_Type] integerValue] == SettingCell_Alert ){
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
-#ifdef __IPHONE_8_0
-			if (!IS_IOS7) {
 				// 설정에 들어가기 전에, Notification 설정을 확인
 				UIUserNotificationSettings *currentNotificationSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
 				if (currentNotificationSettings.types == UIUserNotificationTypeNone) {
 
-					UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeSound|UIUserNotificationTypeAlert categories:nil];
-					[[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-
-					_settingsObserver = [[NSNotificationCenter defaultCenter] addObserverForName:A3NotificationsUserNotificationSettingsRegistered
-																						  object:nil
-																						   queue:nil
-																					  usingBlock:^(NSNotification *note) {
-																						  [[NSNotificationCenter defaultCenter] removeObserver:_settingsObserver];
-																						  _settingsObserver = nil;
-
-																						  UIUserNotificationSettings *userSettings = note.object;
-																						  if (userSettings.types == UIUserNotificationTypeNone) {
-																							  // User did not allow to use notification
-																							  // Alert User to it is not possible to set alert option
-
-																							  UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Notifications are disabled", nil)
-																																									   message:NSLocalizedString(@"Please enable alert after enabling notifications for this app.", nil)
-																																								preferredStyle:UIAlertControllerStyleAlert];
-																							  [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK")
-																																				  style:UIAlertActionStyleCancel
-																																				handler:NULL]];
-																							  [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(A3AppName_Settings, nil)
-																																				  style:UIAlertActionStyleDefault
-																																				handler:^(UIAlertAction *action) {
-																																					[[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
-																																				}]];
-																							  [self presentViewController:alertController
-																												 animated:YES
-																											   completion:NULL];
-																						  } else {
-																							  [self moveToAlertSetupViewController];
-																						  }
-																					  }];
-					return;
-				}
-			}
-#endif
+                    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeSound|UIUserNotificationTypeAlert categories:nil];
+                    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+                    
+                    _settingsObserver = [[NSNotificationCenter defaultCenter] addObserverForName:A3NotificationsUserNotificationSettingsRegistered
+                                                                                          object:nil
+                                                                                           queue:nil
+                                                                                      usingBlock:^(NSNotification *note) {
+                        [[NSNotificationCenter defaultCenter] removeObserver:_settingsObserver];
+                        _settingsObserver = nil;
+                        
+                        UIUserNotificationSettings *userSettings = note.object;
+                        if (userSettings.types == UIUserNotificationTypeNone) {
+                            // User did not allow to use notification
+                            // Alert User to it is not possible to set alert option
+                            
+                            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Notifications are disabled", nil)
+                                                                                                     message:NSLocalizedString(@"Please enable alert after enabling notifications for this app.", nil)
+                                                                                              preferredStyle:UIAlertControllerStyleAlert];
+                            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK")
+                                                                                style:UIAlertActionStyleCancel
+                                                                              handler:NULL]];
+                            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(A3AppName_Settings, nil)
+                                                                                style:UIAlertActionStyleDefault
+                                                                              handler:^(UIAlertAction *action) {
+                                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+                            }]];
+                            [self presentViewController:alertController
+                                               animated:YES
+                                             completion:NULL];
+                        } else {
+                            [self moveToAlertSetupViewController];
+                        }
+                    }];
+                    return;
+                }
             [self moveToAlertSetupViewController];
         }
     }

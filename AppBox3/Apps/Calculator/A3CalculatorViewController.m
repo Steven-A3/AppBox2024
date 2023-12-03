@@ -60,7 +60,7 @@
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
 		[self setupBannerViewForAdUnitID:AdMobAdUnitIDCalculator keywords:@[@"calculator"] delegate:self];
 	}
-	if (IS_IPHONE && IS_PORTRAIT && [self.navigationController.navigationBar isHidden]) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait] && [self.navigationController.navigationBar isHidden]) {
 		[self showNavigationBarOn:self.navigationController];
 	}
 }

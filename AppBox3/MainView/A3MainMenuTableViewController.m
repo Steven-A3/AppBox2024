@@ -30,8 +30,6 @@
 #import "A3SyncManager+mainmenu.h"
 #import "A3UserDefaults.h"
 #import "A3LunarConverterViewController.h"
-#import "RMStore.h"
-#import "RMAppReceipt.h"
 #import "A3TableViewElement.h"
 #import "UIViewController+extension.h"
 #import "A3UIDevice.h"

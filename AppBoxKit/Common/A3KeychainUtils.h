@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString *const A3RemoveSecurityCoverViewNotification;
+
 @interface A3KeychainUtils : NSObject
 
 + (BOOL)storePassword:(NSString *)password hint:(NSString *)hint;
@@ -20,4 +22,6 @@
 + (NSString *)passcodeTimeString;
 
 + (void)migrateV1Passcode;
++ (void)saveTimerStartTime;
+
 @end

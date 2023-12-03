@@ -29,6 +29,10 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
         case 2013:
 		case 2016:
 		case 2020:
+        case 2021:
+        case 2024:
+        case 2025:
+        case 2026:
             day = 4;
             break;
 		case 1990:
@@ -51,6 +55,8 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 		case 2017:
 		case 2018:
 		case 2019:
+        case 2022:
+        case 2023:
             day = 5;
             break;
 		default:

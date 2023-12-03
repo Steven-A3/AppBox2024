@@ -64,12 +64,8 @@
             [_roundedRectView addSubview:_imageView];
             
             [_imageView makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(_roundedRectView.centerX);
-                make.centerY.equalTo(_roundedRectView.centerY);
-                if (IS_IPAD && IS_IOS7) {
-                    make.width.equalTo(@40);
-                    make.height.equalTo(@40);
-                }
+                make.centerX.equalTo(self->_roundedRectView.centerX);
+                make.centerY.equalTo(self->_roundedRectView.centerY);
                 if (IS_IPAD_PRO) {
                     make.width.equalTo(@58);
                     make.height.equalTo(@58);
@@ -127,12 +123,8 @@
             [_roundedRectView addSubview:_imageView];
             
             [_imageView makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(_roundedRectView.centerX);
-                make.centerY.equalTo(_roundedRectView.centerY);
-                if (IS_IPAD && IS_IOS7) {
-                    make.width.equalTo(@40);
-                    make.height.equalTo(@40);
-                }
+                make.centerX.equalTo(self->_roundedRectView.centerX);
+                make.centerY.equalTo(self->_roundedRectView.centerY);
                 if (IS_IPAD_PRO) {
                     make.width.equalTo(@58);
                     make.height.equalTo(@58);

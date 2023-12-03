@@ -18,7 +18,6 @@
 #import "A3UserDefaults.h"
 #import "A3HomeStyleHelpViewController.h"
 #import "A3InstructionViewController.h"
-#import "RMAppReceipt.h"
 #import "A3SyncManager.h"
 #import "A3UIDevice.h"
 
@@ -134,6 +133,8 @@ A3InstructionViewControllerDelegate>
 		make.edges.equalTo(superview);
     }];
 	
+    self.view.backgroundColor = [UIColor colorWithRed:56.0/255.0 green:63.0/255.0 blue:74.0/255.0 alpha:1.0];
+    self.collectionView.backgroundColor = [UIColor colorWithRed:56.0/255.0 green:63.0/255.0 blue:74.0/255.0 alpha:1.0];
 	self.collectionView.backgroundView = [self backgroundView];
 
 	[self setupContentHeightWithSize:[A3UIDevice screenBoundsAdjustedWithOrientation].size];
@@ -141,7 +142,6 @@ A3InstructionViewControllerDelegate>
 
 - (void)setupPageControl {
     UIEdgeInsets safeAreaInsets = [[UIApplication sharedApplication] keyWindow].safeAreaInsets;
-    
     FNLOG(@"%@, %f, %f, %f", [A3UIDevice deviceInformationDictionary][@"Model"], safeAreaInsets.top, safeAreaInsets.bottom, safeAreaInsets.left);
 
     if (_pageControl == nil) {
@@ -270,7 +270,7 @@ A3InstructionViewControllerDelegate>
 	} else {
 		NSString *imageName = appInfo[kA3AppsMenuImageName];
 		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-		if (!IS_IOS7 && screenBounds.size.height > 568) {
+		if (screenBounds.size.height > 568) {
 			imageName = [imageName stringByAppendingString:@"_Large"];
 		}
 		cell.imageName = imageName;
@@ -453,7 +453,7 @@ A3InstructionViewControllerDelegate>
 		if (!_menuItems) {
 			_menuItems = [[self originalMenuItems] mutableCopy];
 		}
-		BOOL isStepCountingAvailable = !IS_IOS7 && [CMPedometer isStepCountingAvailable];
+		BOOL isStepCountingAvailable = [CMPedometer isStepCountingAvailable];
 		FNLOG(@"%@", @([CMPedometer isStepCountingAvailable]));
 		if (IS_IPAD) {
 			[_menuItems removeObject:@{kA3AppsMenuName:A3AppName_Level}];

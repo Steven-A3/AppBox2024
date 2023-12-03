@@ -14,7 +14,6 @@
 #import "A3LaunchViewController.h"
 #import <Social/Social.h>
 #import <MessageUI/MessageUI.h>
-#import "A3WhatsNew4_5ViewController.h"
 #import "UIView+SBExtras.h"
 #import "FXBlurView.h"
 #import "A3AppDelegate.h"
@@ -167,20 +166,9 @@
 
 - (void)didSelectSectionTwoAtRow:(NSInteger)row {
 	switch (row) {
-		case 1:{
-			A3WhatsNew4_5ViewController *viewController = [A3WhatsNew4_5ViewController storyboardInstanceWithImage:nil];
-			[self presentViewController:viewController animated:YES completion:NULL];
-//			NSURL *url = [NSURL URLWithString:@"http://www.allaboutapps.net/wordpress/archives/category/whats-new"];
-//			[self presentWebViewControllerWithURL:url];
-			break;
-		}
 		case 2: {
 			NSURL *url;
-			if (IS_IOS7) {
-				url = [[NSURL alloc] initWithString:@"https://itunes.apple.com/artist/allaboutapps/id307094026"];
-			} else {
-				url = [[NSURL alloc] initWithString:@"itms-apps://itunes.com/apps/allaboutapps"];
-			}
+            url = [[NSURL alloc] initWithString:@"itms-apps://itunes.com/apps/allaboutapps"];
 			[[UIApplication sharedApplication] openURL:url];
 			break;
 		}

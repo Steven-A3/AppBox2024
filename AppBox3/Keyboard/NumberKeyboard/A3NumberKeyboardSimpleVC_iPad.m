@@ -19,14 +19,14 @@
 }
 
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-	BOOL isLandscape = IS_LANDSCAPE;
+	BOOL isLandscape = [UIWindow interfaceOrientationIsLandscape];
 	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 
 	CGFloat col_1, col_2, col_3, col_4, col_5;
 	CGFloat row_1, row_2, row_3, row_4;
 	CGFloat width_small, height_small, width_big, height_big;
 	CGFloat width_extra;
-	if (IS_PORTRAIT) {
+	if ([UIWindow interfaceOrientationIsPortrait]) {
 		CGFloat scaleX = bounds.size.height != 1024 ? bounds.size.width / 768 : 1.0;
 		CGFloat scaleY = bounds.size.height != 1024 ? 1.22 : 1.0;
 		CGFloat space1 = 16.0 * scaleX;

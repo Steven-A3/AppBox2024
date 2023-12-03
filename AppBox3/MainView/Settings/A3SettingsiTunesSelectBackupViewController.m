@@ -138,9 +138,7 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	_selectedIndex = (NSUInteger) indexPath.row;
 
-
-#ifdef __IPHONE_8_0
-    if (!IS_IOS7 && IS_IPAD) {
+    if (IS_IPAD) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"" message:NSLocalizedString(@"Are you going to replace existing data with the backup data?", @"") preferredStyle:UIAlertControllerStyleActionSheet];
         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString( @"Replace", @"") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
             [self selectBackUpFileAction];
@@ -163,7 +161,6 @@
         [self presentViewController:alertController animated:YES completion:NULL];
     }
     else
-#endif
 	{
 		[self showReplaceActionSheet];
 	}

@@ -106,7 +106,7 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
     
     [self makeNavigationBarAppearanceDefault];
 	[self makeBackButtonEmptyArrow];
-	if (IS_IPAD || IS_PORTRAIT) {
+	if (IS_IPAD || [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	} else {
 		self.navigationItem.leftBarButtonItem = nil;
@@ -189,7 +189,7 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 	
-	if (IS_IPHONE && IS_PORTRAIT) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	}
     [self setupBannerViewForAdUnitID:AdMobAdUnitIDRandom keywords:@[@"random", @"lottery"] delegate:self];
@@ -401,7 +401,7 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-        if (IS_IPHONE && IS_LANDSCAPE) {
+        if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) {
             [self leftBarButtonAppsButton];
 
             CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];

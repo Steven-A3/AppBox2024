@@ -331,7 +331,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 
 	if ([self isMovingToParentViewController]) {
         [self setupInstructionView];
-		if (IS_IPHONE && IS_PORTRAIT) {
+		if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 			[self leftBarButtonAppsButton];
 		}
 	}
@@ -378,7 +378,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
         [self makeBackButtonEmptyArrow];
         self.navigationItem.hidesBackButton = YES;
     }
-	if (IS_IPAD || IS_PORTRAIT) {
+	if (IS_IPAD || [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	} else {
 		self.navigationItem.leftBarButtonItem = nil;
@@ -389,7 +389,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-	if (IS_IPHONE && IS_LANDSCAPE) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) {
 		[self leftBarButtonAppsButton];
 	}
 }
@@ -657,19 +657,6 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
     self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin |
 	UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin |
 	UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
-
-	if (IS_IOS7) {
-		[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
-
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(statusBarFrameOrOrientationChanged:)
-													 name:UIApplicationDidChangeStatusBarOrientationNotification
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(statusBarFrameOrOrientationChanged:)
-													 name:UIApplicationDidChangeStatusBarFrameNotification
-												   object:nil];
-	}
 }
 
 - (void)dismissInstructionViewController:(UIView *)view
@@ -1398,7 +1385,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 #pragma mark - UITextField delegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-	if (IS_IPHONE && IS_LANDSCAPE) return NO;
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) return NO;
 
 	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:textField];
 	if (!cell) return NO;

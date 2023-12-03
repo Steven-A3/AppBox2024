@@ -10,6 +10,6 @@
 
 @interface A3AppDelegate (appearance)
 
-- (NSString *)getLaunchImageName;
+- (NSString *)getLaunchImageNameForOrientation:(BOOL)isPortrait;
 
 @end

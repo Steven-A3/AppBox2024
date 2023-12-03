@@ -62,17 +62,13 @@ typedef NS_ENUM(NSInteger, SectionType) {
 	if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
 		self.tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
 	}
-#ifdef __IPHONE_8_0
-	if (!IS_IOS7) {
-		self.tableView.backgroundColor = [UIColor colorWithRGBRed:239 green:239 blue:244 alpha:255];
-		UIView *footerView = [UIView new];
-		self.tableView.tableFooterView = footerView;
-
-		if (IS_IPHONE) {
-			[self rightBarButtonDoneButton];
-		}
-	}
-#endif
+    self.tableView.backgroundColor = [UIColor colorWithRGBRed:239 green:239 blue:244 alpha:255];
+    UIView *footerView = [UIView new];
+    self.tableView.tableFooterView = footerView;
+    
+    if (IS_IPHONE) {
+        [self rightBarButtonDoneButton];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -84,14 +80,12 @@ typedef NS_ENUM(NSInteger, SectionType) {
 - (void)viewWillLayoutSubviews {
 	[super viewWillLayoutSubviews];
 
-#ifdef __IPHONE_8_0
 	if ([self.tableView respondsToSelector:@selector(layoutMargins)])
 	{
 		UIEdgeInsets layoutMargins = self.tableView.layoutMargins;
 		layoutMargins.left = 0;
 		self.tableView.layoutMargins = layoutMargins;
 	}
-#endif
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
@@ -168,7 +162,7 @@ typedef NS_ENUM(NSInteger, SectionType) {
             cell.backgroundColor = [UIColor whiteColor];
             
             if (([indexPath row] == [section.sectionTitleRows count] - 1)) {
-                if ((IS_IPAD || IS_IOS7) && ([indexPath section] == [self.tableDataSourceArray count] - 1)) {
+                if ((IS_IPAD) && ([indexPath section] == [self.tableDataSourceArray count] - 1)) {
                     cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, cell.bounds.size.width);
                 } else {
                     cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);

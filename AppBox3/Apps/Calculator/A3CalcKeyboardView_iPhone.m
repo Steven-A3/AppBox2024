@@ -10,6 +10,8 @@
 #import "A3KeyboardButton_iOS7_iPhone.h"
 #import "A3ExpressionComponent.h"
 #import "A3UserDefaults+A3Addition.h"
+#import "A3AppDelegate.h"
+@import AppBoxKit;
 
 @implementation A3CalcKeyboardView_iPhone {
     BOOL bSecondButtonSelected;
@@ -33,7 +35,11 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 
 - (CGFloat)scaleToDesignForCalculator {
     CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
-    if (IS_PORTRAIT) {
+    
+    CGRect bounds = self.bounds;
+
+    // Height가 Width보다 큽니까?
+    if ([UIWindow interfaceOrientationIsPortrait]) {
         return scale;
     }
     return MIN(1.24, scale);
@@ -277,11 +283,14 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 	CGFloat scale = [self scaleToDesignForCalculator];
 	FNLOG(@"%f", scale);
 
+    CGRect bounds = self.bounds;
+    BOOL isPortrait = [UIWindow interfaceOrientationIsPortrait];
+    
 	// Dimension 320 X 2 / 348, 80 x 54 cell, 8 column, 6 row
 	NSArray *buttonTitle = nil;
 
 	CGFloat x, y, width, height;
-    if(IS_PORTRAIT) {
+    if([UIWindow interfaceOrientationIsPortrait]) {
         width = 80 * scale; height = 54 * scale;
         buttonTitle = [self buttonTitlesLevel1_p];
     } else {
@@ -317,23 +326,14 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
             }
             
 			if (column == 7) {
-                /*
-				[button setBackgroundColor:[UIColor colorWithRed:0 green:122.0/255.0 blue:1.0 alpha:0.75]];
-               	[button setBackgroundColorForDefaultState:[UIColor colorWithRed:0 green:122.0/255.0 blue:1.0 alpha:0.75]];
-                [button setBackgroundColorForHighlightedState:[UIColor colorWithRed:0 green:122.0/255.0 blue:1.0 alpha:1.0]];
-				[button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-                 */
                 UIColor *themeColor = [[A3UserDefaults standardUserDefaults] themeColor];
                 [button setBackgroundColor:themeColor];
-                if (IS_PORTRAIT) {
+                if ([UIWindow interfaceOrientationIsPortrait]) {
                     button.contentEdgeInsets = UIEdgeInsetsMake(-8, 0, 0, 0);
                 } else {
                     button.contentEdgeInsets = UIEdgeInsetsMake(-5, 0, 0, 0);
                 }
                 [button setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-			//} else if (row > 1 && column >= 4) {
-			//	[button setBackgroundColor:[UIColor colorWithRed:250.0/255.0 green:250.0/255.0 blue:250.0/255.0 alpha:1.0]];
-			//	[button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 			} else {
 				[button setBackgroundColor:[UIColor colorWithRed:252.0 / 255.0 green:252.0 / 255.0 blue:253.0 / 255.0 alpha:1.0]];
                 [button setBackgroundColorForDefaultState:[UIColor colorWithRed:252.0 / 255.0 green:252.0 / 255.0 blue:253.0 / 255.0 alpha:1.0]];
@@ -354,7 +354,8 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 
 	NSArray *buttonTitle = nil;
     
-    if(IS_PORTRAIT) {
+    BOOL isPortrait = [UIWindow interfaceOrientationIsPortrait];
+    if([UIWindow interfaceOrientationIsPortrait]) {
         width = 80 * scale; height = 54 * scale;
         buttonTitle = bSecondButtonSelected ? [self buttonTitlesLevel2_p]: [self buttonTitlesLevel1_p];
     } else {
@@ -384,7 +385,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
             [button setFrame:frame];
             id title = buttonTitle[idx];
             if (column == 7) {
-                if (IS_PORTRAIT) {
+                if ([UIWindow interfaceOrientationIsPortrait]) {
                     button.contentEdgeInsets = UIEdgeInsetsMake(-8, 0, 0, 0);
                 } else {
                     button.contentEdgeInsets = UIEdgeInsetsMake(-5, 0, 0, 0);
@@ -453,7 +454,8 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 		}
 	} completion:^(BOOL finished) {
 		NSArray *buttonTitles = nil;
-        if (IS_PORTRAIT) {
+        BOOL isPortrait = [UIWindow interfaceOrientationIsPortrait];
+        if ([UIWindow interfaceOrientationIsPortrait]) {
             buttonTitles =  level ? [self buttonTitlesLevel2_p] : [self buttonTitlesLevel1_p];
         } else {
             buttonTitles =  level ? [self buttonTitlesLevel2_h] : [self buttonTitlesLevel1_h];

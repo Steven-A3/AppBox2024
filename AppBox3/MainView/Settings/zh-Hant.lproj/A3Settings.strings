@@ -87,8 +87,8 @@
 /* Class = "UIButton"; normalTitle = "List"; ObjectID = "l7a-V1-SMB"; */
 "l7a-V1-SMB.normalTitle" = "名單";
 
-/* Class = "UILabel"; text = "Remove Ads"; ObjectID = "yfZ-vk-zWG"; */
-"yfZ-vk-zWG.text" = "移除廣告";
+/* Class = "UILabel"; text = "Restore Purchase"; ObjectID = "yfZ-vk-zWG"; */
+"yfZ-vk-zWG.text" = "恢復購買";
 
 /* Class = "UILabel"; text = "About"; ObjectID = "b9v-1Y-xnC"; */
 "b9v-1Y-xnC.text" = "關於本機";

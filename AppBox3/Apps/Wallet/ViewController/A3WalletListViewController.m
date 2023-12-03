@@ -54,7 +54,7 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 	[self makeBackButtonEmptyArrow];
 	self.navigationItem.hidesBackButton = YES;
 
-	if (IS_IPAD || IS_PORTRAIT) {
+	if (IS_IPAD || [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	} else {
 		self.navigationItem.leftBarButtonItem = nil;
@@ -96,7 +96,7 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	if (IS_IPHONE && IS_PORTRAIT) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	}
 	[self.navigationController setNavigationBarHidden:NO];
@@ -179,7 +179,7 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
         // more 탭바
         self.navigationItem.hidesBackButton = NO;
     }
-	if (IS_IPAD || IS_PORTRAIT) {
+	if (IS_IPAD || [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	} else {
 		self.navigationItem.leftBarButtonItem = nil;
@@ -538,7 +538,7 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-	if (IS_IPHONE && IS_LANDSCAPE) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) {
 		[self leftBarButtonAppsButton];
 	}
 }

@@ -89,7 +89,7 @@
 	[self.view addSubview:_weekdayMonthDay];
 	[_weekdayMonthDay makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(self.view.centerX);
-		self.weekdayMonthDayBaseline = make.baseline.equalTo(self.view.top).with.offset(IS_IPHONE && IS_LANDSCAPE ? 27 : 50 + verticalOffset);
+		self.weekdayMonthDayBaseline = make.baseline.equalTo(self.view.top).with.offset(IS_IPHONE && ![UIWindow interfaceOrientationIsPortrait] ? 27 : 50 + verticalOffset);
 	}];
 
 	_weatherCondition = [[UILabel alloc] init];
@@ -169,7 +169,7 @@
     UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
     verticalOffset = safeAreaInsets.top;
 
-    _weekdayMonthDayBaseline.offset(IS_IPHONE && IS_LANDSCAPE ? 27 : 50 + verticalOffset);
+    _weekdayMonthDayBaseline.offset(IS_IPHONE && ![UIWindow interfaceOrientationIsPortrait] ? 27 : 50 + verticalOffset);
 
 	[self setWeatherHidden:![[A3UserDefaults standardUserDefaults] clockShowWeather] ];
 	[self layoutWeather];
@@ -196,7 +196,7 @@
 	BOOL showSeconds = [[A3UserDefaults standardUserDefaults] clockTheTimeWithSeconds];
 	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	if (IS_IPHONE) {
-		if (IS_PORTRAIT) {
+		if ([UIWindow interfaceOrientationIsPortrait]) {
 			boxSize = showSeconds ? 90 : 140;
 			boxSize *= screenBounds.size.width/320;
 			interimSpace = 10;
@@ -208,7 +208,7 @@
 			interimSpace *= scale;
 		}
 	} else {
-		if (IS_PORTRAIT) {
+		if ([UIWindow interfaceOrientationIsPortrait]) {
 			boxSize = showSeconds ? 200 : 284;
 			boxSize *= scale;
 			interimSpace = 20;
@@ -284,7 +284,7 @@
 }
 
 - (void)layoutWeather {
-	BOOL isPortrait = IS_PORTRAIT;
+	BOOL isPortrait = [UIWindow interfaceOrientationIsPortrait];
 
 	if (IS_IPHONE) {
 		for (MASConstraint *constraint in _weatherConstraints) {
@@ -413,7 +413,7 @@
 	CGFloat fontSize;
 	BOOL showSeconds = [[A3UserDefaults standardUserDefaults] clockTheTimeWithSeconds];
 	if (IS_IPHONE) {
-		if (IS_PORTRAIT) {
+		if ([UIWindow interfaceOrientationIsPortrait]) {
 			fontSize = showSeconds ? 64 : 110;
 			frontView.layer.cornerRadius = 5 * scale;
 			backView.layer.cornerRadius = 5 * scale;
@@ -424,7 +424,7 @@
 			backView.layer.cornerRadius = (showSeconds ? 5 : 8) * scale;
 		}
 	} else {
-		if (IS_PORTRAIT) {
+		if ([UIWindow interfaceOrientationIsPortrait]) {
 			fontSize = showSeconds ? 150 : 214;
 			frontView.layer.cornerRadius = (showSeconds ? 11 : 16) * scale;
 			backView.layer.cornerRadius = (showSeconds ? 11 : 16) * scale;

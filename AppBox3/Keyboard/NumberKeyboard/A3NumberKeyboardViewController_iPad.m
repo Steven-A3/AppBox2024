@@ -100,7 +100,7 @@
 	CGFloat col_1, col_2, col_3, col_4, col_5;
 	CGFloat row_1, row_2, row_3, row_4;
 	CGFloat width_small, height_small, width_big, height_big;
-	if (IS_PORTRAIT) {
+	if ([UIWindow interfaceOrientationIsPortrait]) {
 		CGFloat scaleX = bounds.size.height != 1024 ? bounds.size.width / 768 : 1.0;
 		CGFloat scaleY = bounds.size.height != 1024 ? 1.22 : 1.0;
         width_big = 124.0 * scaleX; height_big = 118.0 * scaleY + (scaleY != 1.0 ? 4 : 0);
@@ -143,7 +143,7 @@
 	[self.nextButton setFrame:CGRectMake(col_5, row_3, width_big, height_small)];
 	[self.doneButton setFrame:CGRectMake(col_5, row_4, width_big, height_small)];
 
-	[self setupFonts:IS_PORTRAIT ];
+	[self setupFonts:[UIWindow interfaceOrientationIsPortrait] ];
 }
 
 @end

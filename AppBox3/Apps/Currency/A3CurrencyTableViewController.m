@@ -183,7 +183,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
         self.tableViewController.refreshControl = self.refreshControl;
     }
 
-    if (IS_IPHONE && IS_PORTRAIT) {
+    if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
         [self leftBarButtonAppsButton];
     }
     _favorites = nil;
@@ -1010,7 +1010,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     [_mainViewController dismissMoreMenu];
     self.tableViewController.refreshControl = nil;
 
-    if (IS_IPHONE && IS_LANDSCAPE) return NO;
+    if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) return NO;
 
     [self dismissMoreMenu];
 
@@ -1488,7 +1488,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-        if (IS_IPHONE && IS_LANDSCAPE) {
+        if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) {
             [self leftBarButtonAppsButton];
         }
 

@@ -150,11 +150,7 @@
 - (UILabel *)noneLabel {
 	if (!_noneLabel) {
 		_noneLabel = [UILabel new];
-		if (IS_IOS7) {
-			_noneLabel.font = [UIFont fontWithName:@"TrebuchetMS" size:45];
-		} else {
-			_noneLabel.font = [UIFont boldSystemFontOfSize:45];
-		}
+        _noneLabel.font = [UIFont boldSystemFontOfSize:45];
 		_noneLabel.text = @"…";
 		_noneLabel.textAlignment = NSTextAlignmentCenter;
 	}

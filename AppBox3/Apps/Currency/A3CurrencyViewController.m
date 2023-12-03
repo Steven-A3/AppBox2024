@@ -52,7 +52,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 
     [self makeNavigationBarAppearanceDefault];
     [self makeBackButtonEmptyArrow];
-    if (IS_IPAD || IS_PORTRAIT) {
+    if (IS_IPAD || [UIWindow interfaceOrientationIsPortrait]) {
         [self leftBarButtonAppsButton];
     } else {
         self.navigationItem.leftBarButtonItem = nil;
@@ -163,7 +163,8 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
         [self.view addSubview:self.pickerStyleViewController.view];
         [self addChildViewController:_pickerStyleViewController];
 		
-		[self.pickerStyleViewController.view remakeConstraints:^(MASConstraintMaker *make) {
+        [_pickerStyleViewController.view layoutIfNeeded];
+		[_pickerStyleViewController.view remakeConstraints:^(MASConstraintMaker *make) {
 			make.edges.equalTo(self.view);
 		}];
     } else {

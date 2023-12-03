@@ -79,7 +79,7 @@ A3CalendarViewDelegate, GADBannerViewDelegate>
 	
 	self.title = NSLocalizedString(A3AppName_LadiesCalendar, nil);
 
-	if (IS_IPAD || IS_PORTRAIT) {
+	if (IS_IPAD || [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	} else {
 		self.navigationItem.leftBarButtonItem = nil;
@@ -236,7 +236,7 @@ A3CalendarViewDelegate, GADBannerViewDelegate>
 												   otherButtonTitles:nil];
 		[disclaimer show];
 	}
-	if (IS_IPHONE && IS_PORTRAIT) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	}
 
@@ -420,7 +420,7 @@ A3CalendarViewDelegate, GADBannerViewDelegate>
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-	if (IS_IPHONE && IS_PORTRAIT) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	}
 
@@ -430,7 +430,7 @@ A3CalendarViewDelegate, GADBannerViewDelegate>
 }
 
 - (void)setupCalendarHeaderViewFrame {
-    if (IS_PORTRAIT) {
+    if ([UIWindow interfaceOrientationIsPortrait]) {
         _calendarHeaderView.frame = CGRectMake(_calendarHeaderView.frame.origin.x, _calendarHeaderView.frame.origin.y, self.view.frame.size.width, _calendarHeaderView.frame.size.height);
     }
     else{

@@ -18,7 +18,7 @@
 	CGFloat width_small, height_small, width_big, height_big;
 	CGFloat width_extra;
 	
-	if (IS_PORTRAIT) {
+	if ([UIWindow interfaceOrientationIsPortrait]) {
 		CGFloat scaleX = bounds.size.height != 1024 ? 1.25 : 1.0;
 		CGFloat space1 = 16.0 * scaleX, space2 = 30.0 * scaleX;
         width_big = 124.0 * scaleX; height_big = 118.0 * scaleX;

@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
+
 @protocol A3PasscodeViewControllerDelegate <NSObject>
 @optional
 - (void)passcodeViewControllerDidDismissWithSuccess:(BOOL)success;
@@ -22,8 +24,8 @@
 @property (weak, nonatomic) id<A3PasscodeViewControllerDelegate> delegate;
 
 @optional
-- (void)showLockScreenWithAnimation:(BOOL)animated showCacelButton:(BOOL)showCancelButton;
-- (void)showLockScreenInViewController:(UIViewController *)viewController;
+- (void)showLockScreenWithAnimation:(BOOL)animated showCacelButton:(BOOL)showCancelButton inViewController:(UIViewController *)rootViewController ;
+- (void)showLockScreenInViewController:(UIViewController *)viewController completion:(void(^)(BOOL success))completion;
 - (void)showForEnablingPasscodeInViewController:(UIViewController *)viewController;
 - (void)showForChangingPasscodeInViewController:(UIViewController *)viewController;
 - (void)showForTurningOffPasscodeInViewController:(UIViewController *)viewController;

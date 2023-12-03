@@ -121,8 +121,7 @@
 }
 
 - (void)askClearUsedItems:(UITableViewCell *)cell {
-#ifdef __IPHONE_8_0
-    if (!IS_IOS7 && IS_IPAD) {
+    if (IS_IPAD) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Clear Recent", @"Clear Recent") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
             [self clearRecentAction];
@@ -144,7 +143,6 @@
         [self presentViewController:alertController animated:YES completion:NULL];
     }
     else
-#endif
     {
         [self showClearRecentActionSheet];
     }

@@ -35,7 +35,6 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	A3SettingsRowThemeColor = 4100,
 	A3SettingsRowLunarCalendar = 4200,
 	A3SettingsRowMainMenuStyle = 5200,
-	A3SettingsRowRemoveAds = 6100,
 	A3SettingsRowRestorePurchase = 6200,
 };
 
@@ -133,7 +132,6 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 		if ([appDelegate isMainMenuStyleList]) {
 			return 3;
 		}
-        RMAppReceipt *appReceipt = [A3AppDelegate instance].appReceipt;
         NSString *menuStyle = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
         if ([menuStyle isEqualToString:A3SettingsMainMenuStyleHexagon]) {
             // row 0: Style
@@ -143,7 +141,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
             if ([[NSUserDefaults standardUserDefaults] integerForKey:kA3ApplicationNumberOfDidBecomeActive] <= 8) {
                 return 2;
             }
-            return [[A3AppDelegate instance] isPaidAppVersionCustomer:appReceipt] ? 3 : 2;
+            return 2;
         }
 
         // Home Style Grid
@@ -155,11 +153,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
         if ([[NSUserDefaults standardUserDefaults] integerForKey:kA3ApplicationNumberOfDidBecomeActive] <= 8) {
             return 3;
         }
-        return 4;
-//        return [[A3AppDelegate instance] isPaidAppVersionCustomer:appReceipt] ? 4 : 3;
-	}
-	if (section == 4) {
-		return [A3AppDelegate instance].shouldPresentAd ? 3 : 1;
+        return [A3AppDelegate instance].isOldPaidUser ? 4 : 3;
 	}
 	return [super tableView:tableView numberOfRowsInSection:section];
 }
@@ -322,45 +316,10 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 			
 			break;
 		}
-		case A3SettingsRowRemoveAds: {
-			if ([A3AppDelegate instance].shouldPresentAd) {
-				if ([SKPaymentQueue canMakePayments] && [A3AppDelegate instance].IAPRemoveAdsProductFromiTunes) {
-					NSNumberFormatter *priceFormatter = [NSNumberFormatter new];
-					SKProduct *product = [A3AppDelegate instance].IAPRemoveAdsProductFromiTunes;
-					[priceFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-					[priceFormatter setLocale:product.priceLocale];
-					NSString *priceString = [priceFormatter stringFromNumber:product.price];
-
-					A3PriceTagLabel *priceTagLabel = [[A3PriceTagLabel alloc] initWithFrame:CGRectMake(0, 0, 58, 26)];
-					priceTagLabel.text = priceString;
-					[priceTagLabel sizeToFit];
-					CGRect bounds = priceTagLabel.bounds;
-					bounds.size.width += 20;
-					bounds.size.height = 26;
-					priceTagLabel.bounds = bounds;
-
-					cell.accessoryView = priceTagLabel;
-					cell.detailTextLabel.text = @"";
-					cell.textLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
-				} else {
-					cell.accessoryView = nil;
-					cell.textLabel.textColor = [UIColor colorWithRed:179.0/255.0 green:179.0/255.0 blue:179.0/255.0 alpha:1.0];
-					cell.detailTextLabel.text = NSLocalizedString(@"Restricted", @"Restricted");
-					cell.selectionStyle = UITableViewCellSelectionStyleNone;
-				}
-			} else {
-				cell.textLabel.text = NSLocalizedString(@"About", @"About");
-				cell.textLabel.textColor = [UIColor blackColor];
-				cell.accessoryView = nil;
-				cell.detailTextLabel.text = @"";
-				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-			}
+		case A3SettingsRowRestorePurchase: {
+            cell.textLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
 			break;
 		}
-		case A3SettingsRowRestorePurchase:
-			cell.detailTextLabel.text = NSLocalizedString(@"Free", @"Free");
-			cell.textLabel.textColor = [[A3UserDefaults standardUserDefaults] themeColor];
-			break;
 	}
 }
 
@@ -390,9 +349,9 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 				if ([A3KeychainUtils getPassword] != nil) {
 					void(^presentPasscodeViewControllerBlock)(void) = ^(){
 						self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
-						[self.passcodeViewController showLockScreenInViewController:self];
+						[self.passcodeViewController showLockScreenInViewController:self completion:NULL];
 					};
-					if (IS_IOS7 || ![[A3AppDelegate instance] useTouchID]) {
+					if (![[A3AppDelegate instance] useTouchID]) {
 						presentPasscodeViewControllerBlock();
 					} else {
 						LAContext *context = [LAContext new];
@@ -414,7 +373,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 													  
 													  [[A3AppDelegate instance] removeSecurityCoverView];
 													  if (success && !error) {
-														  [[A3AppDelegate instance] saveTimerStartTime];
+														  [A3KeychainUtils saveTimerStartTime];
 														  [self performSegueWithIdentifier:@"passcode" sender:nil];
 													  } else {
 														  presentPasscodeViewControllerBlock();
@@ -453,19 +412,19 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 		}
 		case 4:
 			switch (indexPath.row) {
-				case 0:
-					if ([A3AppDelegate instance].shouldPresentAd) {
-						if ([SKPaymentQueue canMakePayments]) {
-							[[A3AppDelegate instance] startRemoveAds];
-						}
-					} else {
-						[self presentAboutViewController];
-					}
-					break;
-				case 1:
-					[[A3AppDelegate instance] startRestorePurchase];
-					break;
-				case 2: {
+                case 0: {
+                    [[A3AppDelegate instance] evaluateSubscriptionWithCompletion:^{
+                        if ([A3AppDelegate instance].isOldPaidUser) {
+                            [self presentAlertWithTitle:@"" message:NSLocalizedString(@"Your purchases have been successfully restored.", @"")];
+                        } else if ([A3AppDelegate instance].hasAdsFreePass) {
+                            [self presentAlertWithTitle:@"" message:NSLocalizedString(@"Your subscription has been successfully restored.", @"")];
+                        } else {
+                            [self presentAlertWithTitle:@"" message:NSLocalizedString(@"There are no transactions available for restoration at this time.", @"")];
+                        }
+                    }];
+                    break;
+                }
+				case 1: {
 					[self presentAboutViewController];
 					break;
 				}

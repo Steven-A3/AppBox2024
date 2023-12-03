@@ -11,7 +11,6 @@
 #import "A3PasscodeViewControllerProtocol.h"
 #import "A3DataMigrationManager.h"
 #import <GoogleMobileAds/GoogleMobileAds.h>
-#import "RMStoreAppReceiptVerificator.h"
 #import "A3HomeStyleMenuViewController.h"
 #import "MMDrawerController.h"
 #import "Reachability.h"
@@ -22,7 +21,6 @@
 @protocol A3PasscodeViewControllerProtocol;
 @class Reachability;
 @class A3MainMenuTableViewController;
-@class RMAppReceipt;
 @class A3HomeStyleMenuViewController;
 
 extern NSString *const kA3ApplicationLastRunVersion;
@@ -113,14 +111,9 @@ extern NSString *const A3AppGroupNameNone;
 @property (nonatomic, assign) BOOL isTouchIDEvaluationInProgress;
 @property (nonatomic, strong) UIViewController *touchIDBackgroundViewController;
 @property (nonatomic, assign) BOOL shouldPresentAd;
-@property (nonatomic, assign) BOOL isIAPRemoveAdsAvailable;
-@property (nonatomic, copy) SKProduct *IAPRemoveAdsProductFromiTunes;
-@property (nonatomic, strong) RMStoreAppReceiptVerificator *receiptVerificator;
 @property (nonatomic, strong) NSDate *appOpenTime;
-@property (nonatomic, assign) BOOL inAppPurchaseInProgress;
 @property (nonatomic, assign) BOOL firstRunAfterInstall;
 @property (nonatomic, assign) BOOL adDisplayedAfterApplicationDidBecomeActive;
-@property (nonatomic, assign) BOOL doneAskingRestorePurchase;
 
 @property (nonatomic, copy) NSString *previousVersion;
 @property (nonatomic, assign) NSTimeInterval passcodeFreeBegin;
@@ -132,6 +125,10 @@ extern NSString *const A3AppGroupNameNone;
 @property (nonatomic, assign) BOOL migrationIsInProgress;
 @property (nonatomic, assign) NSUInteger counterPassedDidBecomeActive;
 @property (nonatomic, assign) BOOL appWillResignActive;
+@property (nonatomic, strong) NSDate *originalPurchaseDate;
+@property (nonatomic, assign) BOOL isOldPaidUser;
+@property (nonatomic, assign) BOOL hasAdsFreePass;
+@property (nonatomic, strong) NSDate *expirationDate;
 
 /**
  *  Settings에서 홈 화면 종류를 바꾼 경우, rootViewController가 초기화되면서
@@ -151,15 +148,19 @@ extern NSString *const A3AppGroupNameNone;
 - (void)setupContext;
 - (NSString *)backupReceiptFilePath;
 - (void)makeReceiptBackup;
-- (RMAppReceipt *)appReceipt;
 - (BOOL)receiptHasRemoveAds;
-- (BOOL)isPaidAppVersionCustomer:(RMAppReceipt *)receipt;
-- (BOOL)isIAPPurchasedCustomer:(RMAppReceipt *)receipt;
-- (BOOL)presentInterstitialAds;
-- (BOOL)shouldPresentWhatsNew;
-- (void)alertWhatsNew;
+- (void)presentInterstitialAds;
 - (void)updateHolidayNations;
 - (void)askPersonalizedAdConsent;
+
+/**
+ Evaluates the subscription status of the user and decides whether to present ads.
+
+ completion() is the call to your completion block, now safely nested inside the dispatch_async call to ensure it runs on the main thread.
+ @param completion A completion block that will be called once the evaluation is complete. It has no return value and takes no parameters.
+
+*/
+- (void)evaluateSubscriptionWithCompletion:(void (^)(void))completion;
 
 @end
 

@@ -822,7 +822,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 			middleTarget = 359;
 		}
 	} else {
-		if (IS_PORTRAIT) {
+		if ([UIWindow interfaceOrientationIsPortrait]) {
 			middleTarget = 815;
 		} else {
 			middleTarget = 559;

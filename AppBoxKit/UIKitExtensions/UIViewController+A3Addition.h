@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AppBoxKit/A3PasscodeViewControllerProtocol.h>
 
 extern NSString *const AdMobAdUnitIDBattery;
 extern NSString *const AdMobAdUnitIDCalculator;
@@ -99,5 +100,6 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 - (void)requestAuthorizationForPhotoLibrary:(NSString *)appName afterAuthorizationHandler:(void (^)(BOOL granted))afterAuthorizationHandler;
 - (UIAlertController *)alertControllerWithTitle:(NSString *)title message:(NSString *)message;
 - (void)presentAlertWithTitle:(NSString *)title message:(NSString *)message;
++ (UIViewController <A3PasscodeViewControllerProtocol> *)passcodeViewControllerWithDelegate:(id <A3PasscodeViewControllerDelegate>)delegate;
 
 @end

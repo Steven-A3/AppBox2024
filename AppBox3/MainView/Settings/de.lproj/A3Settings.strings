@@ -243,8 +243,8 @@
 /* Class = "UIButton"; normalTitle = "List"; ObjectID = "l7a-V1-SMB"; */
 "l7a-V1-SMB.normalTitle" = "Liste";
 
-/* Class = "UILabel"; text = "Remove Ads"; ObjectID = "yfZ-vk-zWG"; */
-"yfZ-vk-zWG.text" = "Werbung entfernen";
+/* Class = "UILabel"; text = "Restore Purchase"; ObjectID = "yfZ-vk-zWG"; */
+"yfZ-vk-zWG.text" = "Kauf wiederherstellen";
 
 /* Class = "UILabel"; text = "About"; ObjectID = "b9v-1Y-xnC"; */
 "b9v-1Y-xnC.text" = "Über uns";

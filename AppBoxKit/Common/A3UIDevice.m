@@ -18,26 +18,20 @@
 #import <sys/types.h>
 #import <sys/sysctl.h>
 #import <AVFoundation/AVFoundation.h>
+#import "AppBoxKit/AppBoxKit-swift.h"
 
 NSString *const A3AnimationIDKeyboardWillShow = @"A3AnimationIDKeyboardWillShow";
+NSString *const A3RotateAccordingToDeviceOrientationNotification = @"A3RotateAccordingToDeviceOrientationNotification";
 
 @implementation A3UIDevice
 
++ (BOOL)isPortraitOrientation:(CGRect)rect {
+    return CGRectGetHeight(rect) > CGRectGetWidth(rect);
+}
+
 + (CGRect)screenBoundsAdjustedWithOrientation {
 	CGRect bounds = [[UIScreen mainScreen] bounds];
-	#ifdef __IPHONE_8_0
-	if (IS_IOS7 && IS_LANDSCAPE) {
-		CGFloat width = bounds.size.width;
-		bounds.size.width = bounds.size.height;
-		bounds.size.height = width;
-	}
-	#else
-	if (IS_LANDSCAPE) {
-		CGFloat width = bounds.size.width;
-		bounds.size.width = bounds.size.height;
-		bounds.size.height = width;
-	}
-	#endif
+
 	return bounds;
 }
 
@@ -46,13 +40,13 @@ NSString *const A3AnimationIDKeyboardWillShow = @"A3AnimationIDKeyboardWillShow"
 	CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 
     if (IS_IPHONE) {
-		if (IS_PORTRAIT) {
+		if ([self isPortraitOrientation:bounds]) {
 			scale = bounds.size.width / 320;
 		} else {
 			scale = bounds.size.height / 320;
 		}
 	} else {
-		if (IS_PORTRAIT) {
+        if ([self isPortraitOrientation:bounds]) {
 			scale = bounds.size.width / 768;
 		} else {
 			scale = bounds.size.width / 1024;
@@ -63,14 +57,8 @@ NSString *const A3AnimationIDKeyboardWillShow = @"A3AnimationIDKeyboardWillShow"
 
 + (CGFloat)statusBarHeight {
 	CGRect frame = [[UIApplication sharedApplication] statusBarFrame];
-	#ifdef __IPHONE_8_0
-	if (IS_IOS7) {
-		return IS_LANDSCAPE ? frame.size.width : frame.size.height;
-	}
-	return frame.size.height;
-	#else
-	return IS_LANDSCAPE ? frame.size.width : frame.size.height;
-	#endif
+
+    return frame.size.height;
 }
 
 + (CGFloat)statusBarHeightPortrait {
@@ -143,8 +131,7 @@ NSString *const A3AnimationIDKeyboardWillShow = @"A3AnimationIDKeyboardWillShow"
 }
 
 + (BOOL)canAccessCamera {
-	if (IS_IOS7) return YES;
-	return [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo] == AVAuthorizationStatusAuthorized;
+    return [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo] == AVAuthorizationStatusAuthorized;
 }
 
 /////////////////

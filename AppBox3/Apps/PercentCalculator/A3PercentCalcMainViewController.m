@@ -87,7 +87,7 @@
 	_barButtonEnabled = YES;
 
     [self makeNavigationBarAppearanceDefault];
-	if (IS_IPAD || IS_PORTRAIT) {
+	if (IS_IPAD || [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	} else {
 		self.navigationItem.leftBarButtonItem = nil;
@@ -179,7 +179,7 @@
 	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 	
-	if (IS_IPHONE && IS_PORTRAIT) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	}
     [self setupBannerViewForAdUnitID:AdMobAdUnitIDPercentCalc keywords:@[@"sale", @"discount"] delegate:self];
@@ -244,7 +244,7 @@
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 	
-	if (IS_IPHONE && IS_LANDSCAPE) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) {
 		[self leftBarButtonAppsButton];
 	}
 
@@ -1065,7 +1065,7 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-	if (IS_IPHONE && IS_LANDSCAPE) return NO;
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) return NO;
 
 	if (_isNumberKeyboardVisible && textField != _editingTextField) {
 		[self textFieldDidEndEditing:_editingTextField];

@@ -42,11 +42,9 @@
 {
     [super viewDidLoad];
 
-	if (!IS_IOS7) {
-		LAContext *context = [LAContext new];
-		NSError *error;
-		_touchIDAvailable = [context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error];
-	}
+    LAContext *context = [LAContext new];
+    NSError *error;
+    _touchIDAvailable = [context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error];
 
 	[self makeBackButtonEmptyArrow];
 
@@ -367,33 +365,11 @@
 			} else {
 				_passcodeViewController = [[A3PasswordViewController alloc] initWithDelegate:self];
 			}
-			if (passcodeEnabled) {
-                UIViewController *viewController = [PasswordViewFactory makeAskPasswordViewWithCompletionHandler:^(BOOL success) {
-                    [[self presentedViewController] dismissViewControllerAnimated:YES completion:nil];
-                    
-                    if (success) {
-                        [A3KeychainUtils removePassword];
-                    }
-                    double delayInSeconds = 0.1;
-                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-                    dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
-                        [self.tableView reloadData];
-                    });
-                }];
-                [self presentViewController:viewController animated:YES completion:NULL];
-//				[_passcodeViewController showForTurningOffPasscodeInViewController:self];
-			} else {
-                UIViewController *viewController = [PasswordViewFactory makePasswordViewWithCompletionHandler:^(BOOL success) {
-                    [[self presentedViewController] dismissViewControllerAnimated:YES completion:nil];
-                    
-                    double delayInSeconds = 0.1;
-                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-                    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                        [self.tableView reloadData];
-                    });
-                }];
-                [self presentViewController:viewController animated:YES completion:nil];
-			}
+            if (passcodeEnabled) {
+                [_passcodeViewController showForTurningOffPasscodeInViewController:self];
+            } else {
+                [_passcodeViewController showForEnablingPasscodeInViewController:self];
+            }
 			break;
 		}
 		case 1: {
@@ -422,7 +398,7 @@
 		} else {
 			_passcodeViewController = [[A3PasscodeViewController alloc] initWithDelegate:self];
 		}
-		[_passcodeViewController showLockScreenInViewController:self];
+		[_passcodeViewController showLockScreenInViewController:self completion:NULL];
 	} else {
 		A3UserDefaults *defaults = [A3UserDefaults standardUserDefaults];
 		[defaults setBool:control.isOn forKey:kUserDefaultsKeyForUseSimplePasscode];

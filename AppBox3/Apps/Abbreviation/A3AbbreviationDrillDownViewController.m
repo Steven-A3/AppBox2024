@@ -15,6 +15,7 @@
 #import "UIViewController+A3Addition.h"
 #import "A3DrillDownHelpViewController.h"
 #import "A3UIDevice.h"
+@import AppBoxKit;
 
 extern NSString *const A3AbbreviationKeyAbbreviation;
 extern NSString *const A3AbbreviationKeyMeaning;
@@ -79,6 +80,7 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate, UIActivityItemS
 - (void)viewWillLayoutSubviews {
 	[super viewWillLayoutSubviews];
 
+    BOOL isPortrait = [UIWindow interfaceOrientationIsPortrait];
 	if (IS_IPHONE_4_7_INCH) {
 		_tableView.rowHeight = 54;
 		_titleLabel.font = [UIFont boldSystemFontOfSize:21];
@@ -93,35 +95,35 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate, UIActivityItemS
 																					  relatedBy:NSLayoutRelationEqual
 																						 toItem:self.view
 																					  attribute:NSLayoutAttributeBottom
-																					 multiplier:IS_PORTRAIT ? 0.09 : 0.12
+																					 multiplier:isPortrait ? 0.09 : 0.12
 																					   constant:0];
 		NSLayoutConstraint *tableViewTopConstraint = [NSLayoutConstraint constraintWithItem:_tableView
 																				  attribute:NSLayoutAttributeTop
 																				  relatedBy:NSLayoutRelationEqual
 																					 toItem:self.view
 																				  attribute:NSLayoutAttributeBottom
-																				 multiplier:IS_PORTRAIT ? 0.11 : 0.14
+																				 multiplier:isPortrait ? 0.11 : 0.14
 																				   constant:0];
 		[self.view addConstraints:@[titleLabelBottomConstraint, tableViewTopConstraint]];
 		
 		_titleLabelBottomConstraint = titleLabelBottomConstraint;
 		_tableViewTopConstraint = tableViewTopConstraint;
 	} else if (IS_IPAD) {
-		[self.view removeConstraints:@[_titleLabelBottomConstraint, _tableViewTopConstraint]];
-		
+        [self.view removeConstraints:@[_titleLabelBottomConstraint, _tableViewTopConstraint]];
+
 		NSLayoutConstraint *titleLabelBottomConstraint = [NSLayoutConstraint constraintWithItem:_titleLabel
 																						attribute:NSLayoutAttributeBaseline
 																						relatedBy:NSLayoutRelationEqual
 																						   toItem:self.view
 																						attribute:NSLayoutAttributeBottom
-																					   multiplier:IS_PORTRAIT ? 0.10 : 0.13
+																					   multiplier:isPortrait ? 0.10 : 0.13
 																						 constant:0];
 		NSLayoutConstraint *tableViewTopConstraint = [NSLayoutConstraint constraintWithItem:_tableView
 																				  attribute:NSLayoutAttributeTop
 																				  relatedBy:NSLayoutRelationEqual
 																					 toItem:self.view
 																				  attribute:NSLayoutAttributeBottom
-																				 multiplier:IS_PORTRAIT ? 0.12 : 0.15
+																				 multiplier:isPortrait ? 0.12 : 0.15
 																				   constant:0];
 		[self.view addConstraints:@[titleLabelBottomConstraint, tableViewTopConstraint]];
 		

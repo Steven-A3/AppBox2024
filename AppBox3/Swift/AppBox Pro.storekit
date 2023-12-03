@@ -1,0 +1,283 @@
+{
+  "identifier" : "9DFC8ED9",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : true,
+      "internalID" : "1012162043",
+      "localizations" : [
+        {
+          "description" : "Remove All Ads",
+          "displayName" : "Remove Ads",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "Werbung entfernen",
+          "displayName" : "Werbung entfernen",
+          "locale" : "de"
+        },
+        {
+          "description" : "Supprimer pubs",
+          "displayName" : "Supprimer pubs",
+          "locale" : "fr"
+        },
+        {
+          "description" : "Rimuovi pubbl.",
+          "displayName" : "Rimuovi pubbl.",
+          "locale" : "it"
+        },
+        {
+          "description" : "全ての広告を削除します。",
+          "displayName" : "広告を削除",
+          "locale" : "ja"
+        },
+        {
+          "description" : "광고표시를 하지 않도록 합니다.",
+          "displayName" : "광고제거",
+          "locale" : "ko"
+        },
+        {
+          "description" : "-删除所有广告展示。",
+          "displayName" : "移除广告",
+          "locale" : "zh_CN"
+        },
+        {
+          "description" : "Eliminar publ.",
+          "displayName" : "Eliminar publ.",
+          "locale" : "es_ES"
+        }
+      ],
+      "productID" : "net.allaboutapps.AppBox3.removeAds",
+      "referenceName" : "Remove Ads",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "0.0",
+      "familyShareable" : false,
+      "internalID" : "349456794",
+      "localizations" : [
+        {
+          "description" : "This is Security Key to lock or unlock your wallet.",
+          "displayName" : "Security Key",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "SECURITYKEY",
+      "referenceName" : "Security Key",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "318404385",
+    "_developerTeamID" : "84XB754BWU",
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 722629297.61947799,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "21416287",
+      "localizations" : [
+
+      ],
+      "name" : "Ads Free Pass",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "0.99",
+          "familyShareable" : false,
+          "groupNumber" : 2,
+          "internalID" : "6473088684",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Facturé mensuellement",
+              "displayName" : "Werbefreier Weg",
+              "locale" : "de"
+            },
+            {
+              "description" : "Billed Monthly",
+              "displayName" : "Ads Free Pass",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "毎月請求",
+              "displayName" : "広告削除パス",
+              "locale" : "ja"
+            },
+            {
+              "description" : "每月账单",
+              "displayName" : "去除广告的使用券",
+              "locale" : "zh_CN"
+            },
+            {
+              "description" : "每月帳單",
+              "displayName" : "去除廣告的使用券",
+              "locale" : "zh_CN"
+            },
+            {
+              "description" : "매월 청구",
+              "displayName" : "광고제거이용권",
+              "locale" : "ko"
+            },
+            {
+              "description" : "Rozliczany miesięcznie",
+              "displayName" : "Ścieżka bez reklam",
+              "locale" : "pl"
+            },
+            {
+              "description" : "Facturado mensualmente",
+              "displayName" : "Camino sin anuncios",
+              "locale" : "es_ES"
+            },
+            {
+              "description" : "Facturé mensuellement",
+              "displayName" : "Chemin sans publicités",
+              "locale" : "fr"
+            },
+            {
+              "description" : "Fatturato mensilmente",
+              "displayName" : "Percorso senza pubblicità",
+              "locale" : "it"
+            }
+          ],
+          "productID" : "net.allaboutapps.AppBoxPro.AdsFreePassMonthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Ads Free Pass(Monthly)",
+          "subscriptionGroupID" : "21416287",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "5.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6473088739",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "按年计费",
+              "displayName" : "去除广告的使用券",
+              "locale" : "zh_CN"
+            },
+            {
+              "description" : "Facturé annuellement",
+              "displayName" : "Pass sans publicités",
+              "locale" : "fr"
+            },
+            {
+              "description" : "Billed Yearly",
+              "displayName" : "Ads Free Pass",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "按年計費",
+              "displayName" : "去除廣告的使用券",
+              "locale" : "zh_CN"
+            },
+            {
+              "description" : "Facturado anualmente",
+              "displayName" : "Pase sin anuncios",
+              "locale" : "es_ES"
+            },
+            {
+              "description" : "Rozliczany rocznie",
+              "displayName" : "Przepustka bez reklam",
+              "locale" : "pl"
+            },
+            {
+              "description" : "Fatturato annualmente",
+              "displayName" : "Pass senza pubblicità",
+              "locale" : "it"
+            },
+            {
+              "description" : "Jährlich abgerechnet",
+              "displayName" : "Werbefreier Pass",
+              "locale" : "de"
+            },
+            {
+              "description" : "年間請求",
+              "displayName" : "広告削除パス",
+              "locale" : "ja"
+            },
+            {
+              "description" : "연간 결제",
+              "displayName" : "광고제거 이용권",
+              "locale" : "ko"
+            }
+          ],
+          "productID" : "net.allaboutapps.AppBoxPro.AdsFreePassYearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Ads Free Pass(Yearly)",
+          "subscriptionGroupID" : "21416287",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

@@ -43,7 +43,7 @@
     }
     // if iPAD
 	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-	if (IS_PORTRAIT) {
+	if ([UIWindow interfaceOrientationIsPortrait]) {
 		return (screenBounds.size.height == 1024 ? 264 : 264 * 1.22) + safeAreaInsets.bottom;
 	}
 	return (screenBounds.size.height == 768 ? 352 : 352 * 1.16) + safeAreaInsets.bottom;
@@ -311,7 +311,7 @@
 	if (_useDotAsClearButton) {
 		[self.dotButton setTitle:IS_IPHONE ? @"C" : NSLocalizedString(@"Clear", @"Clear") forState:UIControlStateNormal];
 		if (IS_IPAD) {
-			self.dotButton.titleLabel.font = [UIFont systemFontOfSize:IS_LANDSCAPE ? 25 : 18];
+			self.dotButton.titleLabel.font = [UIFont systemFontOfSize:[UIWindow interfaceOrientationIsLandscape] ? 25 : 18];
 		} else {
 			self.dotButton.titleLabel.font = [UIFont systemFontOfSize:26];
 		}

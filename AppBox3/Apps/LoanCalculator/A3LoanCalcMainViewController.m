@@ -107,7 +107,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 
     [self makeNavigationBarAppearanceDefault];
     [self makeBackButtonEmptyArrow];
-	if (IS_IPAD || IS_PORTRAIT) {
+	if (IS_IPAD || [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	} else {
 		self.navigationItem.leftBarButtonItem = nil;
@@ -235,7 +235,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 	
-	if (IS_IPHONE && IS_PORTRAIT) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	}
     [self setupBannerViewForAdUnitID:@"ca-app-pub-0532362805885914/5665624549"
@@ -265,7 +265,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-	if (IS_IPHONE && IS_LANDSCAPE) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) {
 		[self leftBarButtonAppsButton];
 	}
 }
@@ -1868,7 +1868,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-	if (IS_IPHONE && IS_LANDSCAPE) return NO;
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) return NO;
 
 	[self dismissMoreMenu];
 	[self dismissDatePicker];

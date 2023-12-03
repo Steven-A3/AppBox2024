@@ -115,7 +115,7 @@
 
 - (BOOL)usesFullScreenInLandscape
 {
-    return (IS_IPAD && IS_LANDSCAPE);
+    return (IS_IPAD && [UIWindow interfaceOrientationIsLandscape]);
 }
 
 - (void)dealloc
@@ -169,7 +169,7 @@
 - (void)origamiTransition
 {
     CGSize size = self.view.frame.size;
-    if (IS_LANDSCAPE) {
+    if ([UIWindow interfaceOrientationIsLandscape]) {
         size = CGSizeMake(self.view.frame.size.height, self.view.frame.size.width);
     }
     self.currentView.frame = CGRectMake(0, 0, size.width, size.height);
@@ -279,7 +279,7 @@
     
     currentIndex = (currentIndex+1) % [_itemArray count];
     self.nextView = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterSlideshowEventSummaryView" owner:nil options:nil] objectAtIndex:0];
-    CGSize size = IS_LANDSCAPE ? CGSizeMake(self.view.frame.size.height, self.view.frame.size.width) : self.view.frame.size;
+    CGSize size = [UIWindow interfaceOrientationIsLandscape] ? CGSizeMake(self.view.frame.size.height, self.view.frame.size.width) : self.view.frame.size;
     _nextView.frame = CGRectMake(0, 0, size.width, size.height);
     
     [_sharedManager setupEventSummaryInfo:[_itemArray objectAtIndex:currentIndex] toView:self.nextView];

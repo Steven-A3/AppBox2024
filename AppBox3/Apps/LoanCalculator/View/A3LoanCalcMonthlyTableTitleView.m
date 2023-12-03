@@ -92,32 +92,6 @@
     
     [super layoutSubviews];
     
-//    if (IS_IPHONE) {
-//        
-//        dateLB.frame = CGRectMake(15, 0, 51, 35);
-//        paymentLB.frame = CGRectMake(15+51, 0, 63, 35);
-//        principalLB.frame = CGRectMake(15+51+63, 0, 63, 35);
-//        interestLB.frame = CGRectMake(15+51+63+63, 0, 58, 35);
-//        balanceLB.frame = CGRectMake(15+51+63+63+58, 0, 70, 35);
-//    }
-//    else {
-//        if (IS_LANDSCAPE) {
-//            dateLB.frame = CGRectMake(28, 0, 100, 35);
-//            paymentLB.frame = CGRectMake(28+100+10, 0, 140-10-10, 35);
-//            principalLB.frame = CGRectMake(28+100+140+10, 0, 140-10-10, 35);
-//            interestLB.frame = CGRectMake(28+100+140+140+10, 0, 140-10-10, 35);
-//            balanceLB.frame = CGRectMake(28+100+140+140+140+10, 0, 156-10-10, 35);
-//        }
-//        else {
-//            dateLB.frame = CGRectMake(28, 0, 110, 35);
-//            paymentLB.frame = CGRectMake(28+110+10, 0, 150-10-10, 35);
-//            principalLB.frame = CGRectMake(28+110+150+10, 0, 150-10-10, 35);
-//            interestLB.frame = CGRectMake(28+110+150+150+10, 0, 150-10-10, 35);
-//            balanceLB.frame = CGRectMake(28+110+150+150+150+10, 0, 180-10-10, 35);
-//        }
-//    }
-    
-
     CGFloat leftInset = IS_IPHONE ? 15 : 28;
     CGFloat dateWidth = ceilf((CGRectGetWidth(self.bounds) - leftInset) * 0.16);
     CGFloat paymentWidth = ceilf((CGRectGetWidth(self.bounds) - leftInset) * 0.21);

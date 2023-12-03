@@ -266,17 +266,6 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
             [[NSNotificationCenter defaultCenter] postNotificationName:A3DropboxLoginFailed object:nil];
         }
     }];
-    
-//	NSURL *appAuthURL = [TJDropbox dropboxAppAuthenticationURLWithClientIdentifier:kDropboxClientIdentifier codeVerifier:[[NSUUID UUID] UUIDString]];
-//	if (!IS_IOS7 && [[UIApplication sharedApplication] canOpenURL:appAuthURL]) {
-//		[[UIApplication sharedApplication] openURL:appAuthURL];
-//	} else {
-//		NSURL *redirectURL = [NSURL URLWithString:@"https://www.allaboutapps.net/redirect/dropboxAuth.html"];
-//		NSURL *authURL = [TJDropbox tokenAuthenticationURLWithClientIdentifier:kDropboxClientIdentifier redirectURL:redirectURL
-//                          codeVerifier:[[NSUUID UUID] UUIDString]];
-//		FNLOG(@"%@", authURL.absoluteString);
-//		[[UIApplication sharedApplication] openURL:authURL];
-//	}
 }
 
 #pragma mark - UITableViewDelegate, UITableViewDataSource

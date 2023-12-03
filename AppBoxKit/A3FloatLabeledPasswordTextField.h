@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "JVFloatLabeledTextField.h"
+#import <AppBoxKit/JVFloatLabeledTextField.h>
 
 @interface A3FloatLabeledPasswordTextField : JVFloatLabeledTextField
 

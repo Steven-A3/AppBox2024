@@ -80,24 +80,25 @@
 	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
 	
 	CGFloat timeFontSize;
+    BOOL isPortrait = [UIWindow interfaceOrientationIsPortrait];
 	if (IS_IPHONE) {
 		if (self.showSeconds) {
-			timeFontSize = IS_PORTRAIT ? 74 : 116;
+			timeFontSize = isPortrait ? 74 : 116;
 		} else {
-			timeFontSize = IS_PORTRAIT ? 116 : 162;
+			timeFontSize = isPortrait ? 116 : 162;
 		}
 	} else {
 		if (self.showSeconds) {
-			timeFontSize = IS_PORTRAIT ? 165 : 231;
+			timeFontSize = isPortrait ? 165 : 231;
 		} else {
-			timeFontSize = IS_PORTRAIT ? 231 : 304;
+			timeFontSize = isPortrait ? 231 : 304;
 		}
 	}
 	timeFontSize *= scale;
 
 	CGFloat otherFontSize;
 	if (IS_IPHONE) {
-		otherFontSize = IS_PORTRAIT ? 15 : 20.5;
+		otherFontSize = isPortrait ? 15 : 20.5;
 	} else {
 		otherFontSize = 26;
 	}
@@ -118,11 +119,11 @@
 	if (self.showSeconds) {
 		CGFloat colonSize;
 		if (IS_IPHONE) {
-			colonSize = IS_PORTRAIT ? 70 : 90;
-			colonOffset = IS_PORTRAIT ? -7 : -7;
+			colonSize = isPortrait ? 70 : 90;
+			colonOffset = isPortrait ? -7 : -7;
 		} else {
-			colonSize = IS_PORTRAIT ? 140 : 180;
-			colonOffset = IS_PORTRAIT ? -7 : -7;
+			colonSize = isPortrait ? 140 : 180;
+			colonOffset = isPortrait ? -7 : -7;
 		}
 		colonSize *= scale;
 		colonOffset *= scale;
@@ -130,11 +131,11 @@
 		CGFloat timeHalfHeightUp;
 		CGFloat timeHalfHeightDown;
 		if (IS_IPHONE) {
-			timeHalfHeightUp = IS_PORTRAIT ? 80 / 2 : 108 / 2;
-			timeHalfHeightDown = IS_PORTRAIT ? 80 / 2 : 108 / 2;
+			timeHalfHeightUp = isPortrait ? 80 / 2 : 108 / 2;
+			timeHalfHeightDown = isPortrait ? 80 / 2 : 108 / 2;
 		} else {
-			timeHalfHeightUp = IS_PORTRAIT ? 142 / 2: 182 / 2;
-			timeHalfHeightDown = IS_PORTRAIT ? 142 / 2: 182 / 2;
+			timeHalfHeightUp = isPortrait ? 142 / 2: 182 / 2;
+			timeHalfHeightDown = isPortrait ? 142 / 2: 182 / 2;
 		}
 		timeHalfHeightUp *= scale;
 		timeHalfHeightDown *= scale;
@@ -210,11 +211,11 @@
 	} else {
 		CGFloat colonSize;
 		if (IS_IPHONE) {
-			colonSize = IS_PORTRAIT ? 90 : 126;
-			colonOffset = IS_PORTRAIT ? -7 : -7;
+			colonSize = isPortrait ? 90 : 126;
+			colonOffset = isPortrait ? -7 : -7;
 		} else {
-			colonSize = IS_PORTRAIT ? 180 : 234;
-			colonOffset = IS_PORTRAIT ? -7 : -7;
+			colonSize = isPortrait ? 180 : 234;
+			colonOffset = isPortrait ? -7 : -7;
 		}
 		colonSize *= scale;
 		colonOffset *= scale;
@@ -222,11 +223,11 @@
 		CGFloat timeHalfHeightUp;
 		CGFloat timeHalfHeightDown;
 		if (IS_IPHONE) {
-			timeHalfHeightUp = IS_PORTRAIT ? 108 / 2 : 140 / 2;
-			timeHalfHeightDown = IS_PORTRAIT ? 108 / 2 : 140 / 2;
+			timeHalfHeightUp = isPortrait ? 108 / 2 : 140 / 2;
+			timeHalfHeightDown = isPortrait ? 108 / 2 : 140 / 2;
 		} else { // iPAD
-			timeHalfHeightUp = IS_PORTRAIT ? 188 / 2 - 2: 236 / 2 - 1;
-			timeHalfHeightDown = IS_PORTRAIT ? 188 / 2 - 2: 236 / 2 - 3;
+			timeHalfHeightUp = isPortrait ? 188 / 2 - 2: 236 / 2 - 1;
+			timeHalfHeightDown = isPortrait ? 188 / 2 - 2: 236 / 2 - 3;
 		}
 		timeHalfHeightUp *= scale;
 		timeHalfHeightDown *= scale;
@@ -381,17 +382,18 @@
 
 - (CGFloat)timeVerticalOffset {
 	CGFloat verticalOffset;
+    BOOL isPortrait = [UIWindow interfaceOrientationIsPortrait];
 	if (self.showSeconds) {
 		if (IS_IPHONE) {
-			verticalOffset = IS_PORTRAIT ? 0 : 0;
+			verticalOffset = isPortrait ? 0 : 0;
 		} else {
-			verticalOffset = IS_PORTRAIT ? 0 : -6;
+			verticalOffset = isPortrait ? 0 : -6;
 		}
 	} else {
 		if (IS_IPHONE) {
-			verticalOffset = IS_PORTRAIT ? 0 : 0;
+			verticalOffset = isPortrait ? 0 : 0;
 		} else {
-			verticalOffset = IS_PORTRAIT ? -4 : -9;
+			verticalOffset = isPortrait ? -4 : -9;
 		}
 	}
 	return verticalOffset;

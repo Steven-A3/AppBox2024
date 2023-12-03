@@ -140,7 +140,7 @@
 
     [self makeNavigationBarAppearanceDefault];
     
-	if (IS_IPAD || IS_PORTRAIT) {
+	if (IS_IPAD || [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
         [self setToolbarItems:_bottomToolbar.items];
 		[self.navigationController setToolbarHidden:NO];
@@ -260,7 +260,7 @@
 	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 	
-	if (IS_IPHONE && IS_PORTRAIT) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 		[self.addEventButton setHidden:NO];
 		[self setToolbarItems:_bottomToolbar.items];
@@ -392,7 +392,7 @@
     [super viewWillLayoutSubviews];
     
     if ( IS_IPAD ) {
-        CGFloat barWidth = IS_PORTRAIT ? 768 : 1024;
+        CGFloat barWidth = [UIWindow interfaceOrientationIsPortrait] ? 768 : 1024;
         _headerView_view1_widthConst_iPad.constant = barWidth / 3.0;
         _headerView_view2_widthConst_iPad.constant = barWidth / 3.0;
         _headerView_view3_widthConst_iPad.constant = barWidth / 3.0;
@@ -611,7 +611,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-	if (IS_IPHONE && IS_LANDSCAPE) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) {
 		[self leftBarButtonAppsButton];
 		[self.addEventButton setHidden:NO];
         [self setToolbarItems:_bottomToolbar.items];
@@ -932,7 +932,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (IS_IPHONE && IS_LANDSCAPE) {
+    if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) {
         return;
     }
     if ( !_searchResultArray && (indexPath.row >= [_itemArray count]) ) {
@@ -949,48 +949,38 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ( editingStyle == UITableViewCellEditingStyleDelete ) {
-#ifdef __IPHONE_8_0
-        if (!IS_IOS7) {
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedString(@"DaysCalendar_CalendarDeleteConfirmMsg", @"Are you sure you want to delete this calendar? All events associated with the calendar will also be deleted.") preferredStyle:UIAlertControllerStyleActionSheet];
-            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:NULL]];
-            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Calendar", @"Delete Calendar") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-                [alertController dismissViewControllerAnimated:YES completion:NULL];
-                
-                DaysCounterCalendar *calendar = _itemArray[indexPath.row];
-                if ( [calendar.type integerValue] == CalendarCellType_System ) {
-                    return;
-                }
-                
-                [_sharedManager removeCalendar:calendar];
-                
-                self.itemArray = [_sharedManager visibleCalendarList];
-                [self setupHeaderInfo];
-                [self.tableView reloadData];
-            }]];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedString(@"DaysCalendar_CalendarDeleteConfirmMsg", @"Are you sure you want to delete this calendar? All events associated with the calendar will also be deleted.") preferredStyle:UIAlertControllerStyleActionSheet];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:NULL]];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Calendar", @"Delete Calendar") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+            [alertController dismissViewControllerAnimated:YES completion:NULL];
             
-            UIPopoverPresentationController *popover = alertController.popoverPresentationController;
-            popover.sourceView = self.view;
-            popover.delegate = self;
-            UITableViewCell *senderCell = [tableView cellForRowAtIndexPath:indexPath];
-            CGFloat deleteButtonWidth = 200; //  UITableViewCellDeleteConfirmationView
-            popover.sourceRect = CGRectMake(CGRectGetWidth(self.view.frame) - deleteButtonWidth, senderCell.frame.origin.y + 64, 200, senderCell.frame.size.height);
-            popover.permittedArrowDirections = UIPopoverArrowDirectionRight;
+            DaysCounterCalendar *calendar = _itemArray[indexPath.row];
+            if ( [calendar.type integerValue] == CalendarCellType_System ) {
+                return;
+            }
             
-            [self presentViewController:alertController animated:YES completion:NULL];
-        }
-        else
-        {
-            _selectedRowIndex = indexPath.row;
+            [_sharedManager removeCalendar:calendar];
             
-            [self showDeleteCalendarActionSheet];
-        }
-#else
-        {
-            _selectedRowIndex = indexPath.row;
-            
-            [self showDeleteCalendarActionSheet];
-        }
-#endif
+            self.itemArray = [_sharedManager visibleCalendarList];
+            [self setupHeaderInfo];
+            [self.tableView reloadData];
+        }]];
+        
+        UIPopoverPresentationController *popover = alertController.popoverPresentationController;
+        popover.sourceView = self.view;
+        popover.delegate = self;
+        UITableViewCell *senderCell = [tableView cellForRowAtIndexPath:indexPath];
+        CGFloat deleteButtonWidth = 200; //  UITableViewCellDeleteConfirmationView
+        popover.sourceRect = CGRectMake(CGRectGetWidth(self.view.frame) - deleteButtonWidth, senderCell.frame.origin.y + 64, 200, senderCell.frame.size.height);
+        popover.permittedArrowDirections = UIPopoverArrowDirectionRight;
+        
+        [self presentViewController:alertController animated:YES completion:NULL];
+    }
+    else
+    {
+        _selectedRowIndex = indexPath.row;
+        
+        [self showDeleteCalendarActionSheet];
     }
 }
 

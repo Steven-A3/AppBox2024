@@ -237,9 +237,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	[_lineAboveAdBackgroundView setHidden:YES];
 
 	_tableView.rowHeight = 70.0;
-	if (!IS_IOS7) {
-		_tableViewHeightConstraint.constant = 140.0;
-	}
+    _tableViewHeightConstraint.constant = 140.0;
 	_adBGBottomToLineUpTopConstraint.constant = -1;
 	_lineBottomToPickerSpaceConstraint.constant = -11;
 	
@@ -256,9 +254,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 		_tableViewHeightConstraint.constant = 240.0;
 	} else {
 		_tableView.rowHeight = 95.0;
-		if (!IS_IOS7) {
-			_tableViewHeightConstraint.constant = 190.0;
-		}
+        _tableViewHeightConstraint.constant = 190.0;
 	}
 	_adBGBottomToLineUpTopConstraint.constant = -1;
 	_lineBottomToPickerSpaceConstraint.constant = -7;
@@ -274,9 +270,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	[_lineAboveAdBackgroundView setHidden:YES];
 	
 	_tableView.rowHeight = 95.0;
-	if (!IS_IOS7) {
-		_tableViewHeightConstraint.constant = 190.0;
-	}
+    _tableViewHeightConstraint.constant = 190.0;
 	
 	[self.view layoutIfNeeded];
 }
@@ -671,7 +665,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
 	[_mainViewController dismissMoreMenu];
-	if (IS_IPHONE && IS_LANDSCAPE) return NO;
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) return NO;
 
 	self.previousValue = textField.text;
 

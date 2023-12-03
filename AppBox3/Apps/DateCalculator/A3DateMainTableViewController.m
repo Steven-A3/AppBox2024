@@ -94,7 +94,7 @@
     self.title = NSLocalizedString(A3AppName_DateCalculator, nil);
 	kCalculationString = NSLocalizedString(@"CALCULATION", @"CALCULATION");
 
-	if (IS_IPAD || IS_PORTRAIT) {
+	if (IS_IPAD || [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	} else {
 		self.navigationItem.leftBarButtonItem = nil;
@@ -181,7 +181,7 @@
 	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 
-	if (IS_IPHONE && IS_PORTRAIT) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	}
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
@@ -292,7 +292,7 @@
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 	
-	if (IS_IPHONE && IS_PORTRAIT) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	}
 	
@@ -1001,7 +1001,7 @@
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-	if (IS_IPHONE && IS_LANDSCAPE) return NO;
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) return NO;
 
 	if (_editingTextField) {
 		if (_editingTextField != textField) {
@@ -1757,7 +1757,7 @@
         // From, To Date Input
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-		if (IS_IPHONE && IS_LANDSCAPE) return;
+		if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) return;
 		
 		if (_isDateKeyboardVisible) {
 			if (_editingIndexPath.row != indexPath.row) {

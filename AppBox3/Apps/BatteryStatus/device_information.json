@@ -52,6 +52,10 @@
         "iPhone14,8": "iPhone 14 Plus",
         "iPhone15,2": "iPhone 14 Pro",
         "iPhone15,3": "iPhone 14 Pro Max",
+        "iPhone15,4": "iPhone 15",
+        "iPhone15,5": "iPhone 15 Plus",
+        "iPhone16,1": "iPhone 15 Pro",
+        "iPhone16,2": "iPhone 15 Pro Max",
         "iPad1,1": "iPad",
         "iPad1,2": "iPad 3G",
         "iPad2,1": "iPad 2 (Wi-Fi)",
@@ -144,6 +148,38 @@
         "iPod9,1": "iPod Touch (7th Generation)"
     },
     "deviceInformation": {
+        "iPhone 15": {
+            "Model": "iPhone 15",
+            "Chips": "A16 Bionic chip, 16-Core Neural Engine",
+            "CPU": "Hexa-core (2x high-performance Everest + 4x energy-saving Sawtooth)",
+            "GPU": "Apple-designed 5 core",
+            "Memory": "6 GB LPDDR4X",
+            "PPI": "460"
+        },
+        "iPhone 15 Plus": {
+            "Model": "iPhone 15 Plus",
+            "Chips": "A16 Bionic chip, 16-Core Neural Engine",
+            "CPU": "Hexa-core (2x high-performance Everest + 4x energy-saving Sawtooth)",
+            "GPU": "Apple-designed 5 core",
+            "Memory": "6 GB LPDDR4X",
+            "PPI": "458"
+        },
+        "iPhone 15 Pro": {
+            "Model": "iPhone 15 Pro",
+            "Chips": "A17 Pro, 16-Core Neural Engine",
+            "CPU": "Hexa-core (2x high-performance Everest + 4x energy-saving Sawtooth)",
+            "GPU": "Apple-designed 6 core",
+            "Memory": "8 GB LPDDR5 3200MHz",
+            "PPI": "460"
+        },
+        "iPhone 15 Pro Max": {
+            "Model": "iPhone 15 Pro Max",
+            "Chips": "A17 Pro, 16-Core Neural Engine",
+            "CPU": "Hexa-core (2x high-performance Everest + 4x energy-saving Sawtooth)",
+            "GPU": "Apple-designed 6 core",
+            "Memory": "8 GB LPDDR5 3200MHz",
+            "PPI": "460"
+        },
         "iPhone 14": {
             "Model": "iPhone 14",
             "Chips": "A15 Bionic chip, 16-Core Neural Engine",
@@ -1098,6 +1134,30 @@
         }
     },
     "remainingTimeInfo": {
+        "iPhone 15 Pro Max": {
+            "Model": "iPhone 15 Pro Max",
+            "Video playback (streamed)": 25,
+            "Video playback": 29,
+            "Audio playback": 95
+        },
+        "iPhone 15 Pro": {
+            "Model": "iPhone 15 Pro",
+            "Video playback (streamed)": 20,
+            "Video playback": 23,
+            "Audio playback": 75
+        },
+        "iPhone 15 Plus": {
+            "Model": "iPhone 15 Plus",
+            "Video playback (streamed)": 20,
+            "Video playback": 26,
+            "Audio playback": 100
+        },
+        "iPhone 15": {
+            "Model": "iPhone 15",
+            "Video playback (streamed)": 16,
+            "Video playback": 20,
+            "Audio playback": 80
+        },
         "iPhone 14 Pro Max": {
             "Model": "iPhone 14 Pro Max",
             "Video playback (streamed)": 25,

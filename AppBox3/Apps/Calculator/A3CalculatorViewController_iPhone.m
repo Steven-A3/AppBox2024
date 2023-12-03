@@ -203,7 +203,7 @@
 }
 
 - (BOOL)hidesNavigationBar {
-	return IS_LANDSCAPE || IS_IPHONE35;
+	return ![UIWindow interfaceOrientationIsPortrait] || IS_IPHONE35;
 }
 
 - (void)toggleRadianDegree {
@@ -219,16 +219,15 @@
 
 - (CGFloat)getSVbottomOffSet:(CGRect) screenBounds {
     UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
-    if (IS_PORTRAIT) {
+    if ([UIWindow interfaceOrientationIsPortrait]) {
         return -(safeAreaInsets.bottom + _pageControlHeight);
     }
-    // if IS_LANDSCAPE
     return -(safeAreaInsets.bottom);
 }
 
 - (CGFloat)getExpressionLabelTopOffSet:(CGRect) screenBounds {
     CGFloat scaleToDesign = [A3UIDevice scaleToOriginalDesignDimension];
-    if (IS_PORTRAIT) {
+    if ([UIWindow interfaceOrientationIsPortrait]) {
         if (screenBounds.size.height == 693) {
             // (iPhone 14 Pro, iPhone 14, iPhone 13 Pro, iPhone 12 Pro,
             // iPhone 13, iPhone 12, iPhone 12 mini, iPhone 13 mini,
@@ -260,19 +259,19 @@
     UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
 
     CGFloat scaleToDesign = [A3UIDevice scaleToOriginalDesignDimension];
-    if (IS_LANDSCAPE && safeAreaInsets.bottom > 0) {
+    if (![UIWindow interfaceOrientationIsPortrait] && safeAreaInsets.bottom > 0) {
         if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationLandscapeRight) {
             return -10;
         } else {
             return -30;
         }
     }
-    return IS_PORTRAIT ? (screenBounds.size.height == 480 ? -6.5 : -6.5 * scaleToDesign) : 0.5 * scaleToDesign;
+    return [UIWindow interfaceOrientationIsPortrait] ? (screenBounds.size.height == 480 ? -6.5 : -6.5 * scaleToDesign) : 0.5 * scaleToDesign;
 }
 
 - (CGFloat)getResultLabelRightOffSet:(CGRect) screenBounds {
     UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
-    if (IS_LANDSCAPE && safeAreaInsets.bottom > 0) {
+    if (![UIWindow interfaceOrientationIsPortrait] && safeAreaInsets.bottom > 0) {
         if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationLandscapeRight) {
             return -10;
         } else {
@@ -280,12 +279,12 @@
         }
     }
     CGFloat scaleToDesign = [A3UIDevice scaleToOriginalDesignDimension];
-    return IS_PORTRAIT ? (screenBounds.size.height == 480 ? -15 : -14 * scaleToDesign) : -8.5 * scaleToDesign;
+    return [UIWindow interfaceOrientationIsPortrait] ? (screenBounds.size.height == 480 ? -15 : -14 * scaleToDesign) : -8.5 * scaleToDesign;
 }
 
 - (CGFloat)getResultLabelBaselineOffSet:(CGRect) screenBounds {
     CGFloat scaleToDesign = [A3UIDevice scaleToOriginalDesignDimension];
-    if (IS_PORTRAIT) {
+    if ([UIWindow interfaceOrientationIsPortrait]) {
         if (screenBounds.size.height == 812) {
             // Zoomed for iPhone 14 Pro Max, iPhone 14 Plus, iPhone 13/12 Pro Max
             // iPhone 11 Pro Max, iPhone Xs Max, iPhone 11, iPhone Xr
@@ -317,16 +316,16 @@
 
 - (UIFont *)getResultLabelFont:(CGRect) screenBounds {
     CGFloat scaleToDesign = [A3UIDevice scaleToOriginalDesignDimension];
-    return [UIFont fontWithName:@"HelveticaNeue-Thin" size:IS_LANDSCAPE ? 44 * scaleToDesign : screenBounds.size.height == 480 ? 62 : 84 * scaleToDesign];
+    return [UIFont fontWithName:@"HelveticaNeue-Thin" size:![UIWindow interfaceOrientationIsPortrait] ? 44 * scaleToDesign : screenBounds.size.height == 480 ? 62 : 84 * scaleToDesign];
 }
 
 - (id)getResultLabelHeight:(CGRect) screenBounds {
-    return IS_PORTRAIT ? (screenBounds.size.height == 480 ? @60 : @83) : @44;
+    return [UIWindow interfaceOrientationIsPortrait] ? (screenBounds.size.height == 480 ? @60 : @83) : @44;
 }
 
 - (CGFloat)getNumberPadScrollViewHeight {
     CGFloat scaleToDesign = [_keyboardView scaleToDesignForCalculator];
-    return IS_LANDSCAPE ? 240 * scaleToDesign + 1 : 324 * scaleToDesign;
+    return ![UIWindow interfaceOrientationIsPortrait] ? 240 * scaleToDesign + 1 : 324 * scaleToDesign;
 }
 
 - (void)setupSubviews {
@@ -361,7 +360,7 @@
 	[self.evaluatedResultLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.view.left).with.offset(14);
         self.resultLabelRightConstraint = make.right.equalTo(self.view.right).with.offset([self getResultLabelRightOffSet:screenBounds]);
-        self.resultLabelBaselineConstraint = make.baseline.equalTo(self.scrollView.top).with.offset(IS_PORTRAIT ? -20 : 5);
+        self.resultLabelBaselineConstraint = make.baseline.equalTo(self.scrollView.top).with.offset([UIWindow interfaceOrientationIsPortrait] ? -20 : 5);
 	}];
 
     [self.view addSubview:self.expressionLabel];
@@ -387,7 +386,7 @@
         [_degreeRadianLabel removeFromSuperview];
     }
     
-    if (IS_LANDSCAPE) {
+    if (![UIWindow interfaceOrientationIsPortrait]) {
 		[self.view addSubview:self.degreeRadianLabel];
         [_degreeRadianLabel makeConstraints:^(MASConstraintMaker *make) {
             CGFloat leftOffset = 12;
@@ -510,7 +509,7 @@
     CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
     
     CGFloat scaleToDesign = [A3UIDevice scaleToOriginalDesignDimension];
-    if (IS_PORTRAIT) {
+    if ([UIWindow interfaceOrientationIsPortrait]) {
         CGRect frame = _keyboardView.frame;
         frame.origin.x = 0.0;
         frame.origin.y = 0.0;
@@ -577,7 +576,7 @@
     self.scrollViewBottomConstraint.offset([self getSVbottomOffSet:screenBounds]);
     self.expressionTopConstraint.offset([self getExpressionLabelTopOffSet:screenBounds]);
     self.expressionLabelRightConstraint.offset([self getExpressionLabelRightOffSet:screenBounds]);
-    self.resultLabelBaselineConstraint.offset(IS_PORTRAIT ? -30 : -5);
+    self.resultLabelBaselineConstraint.offset([UIWindow interfaceOrientationIsPortrait] ? -30 : -5);
     self.resultLabelRightConstraint.offset([self getResultLabelRightOffSet:screenBounds]);
     // self.degreeLabelBottomConstraint.offset([self getDegreeLabelBottomOffset:screenBounds]);
     self.scrollViewHeightConstraint.equalTo(@([self getNumberPadScrollViewHeight]));
@@ -610,7 +609,7 @@ static NSString *const A3V3InstructionDidShowForCalculator = @"A3V3InstructionDi
 {
     [self dismissMoreMenu];
     
-    if (IS_LANDSCAPE) {
+    if (![UIWindow interfaceOrientationIsPortrait]) {
         return;
     }
 

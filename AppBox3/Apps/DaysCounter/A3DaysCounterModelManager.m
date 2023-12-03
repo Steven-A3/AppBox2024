@@ -1004,11 +1004,11 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     A3DaysCounterSlideshowEventSummaryView *categoryCell = (A3DaysCounterSlideshowEventSummaryView *)toView;
 
     if (IS_IPAD) {
-        categoryCell.daysSinceTopSpaceConst.constant = IS_LANDSCAPE ? 67 : 77;
+        categoryCell.daysSinceTopSpaceConst.constant = [UIWindow interfaceOrientationIsLandscape] ? 67 : 77;
         categoryCell.titleLeadingSpaceConst.constant = 28;
         categoryCell.titleTrailingSpaceConst.constant = 28;
-        categoryCell.countBaselineConst.constant = IS_LANDSCAPE ? 150 : 160;
-        categoryCell.dateBaselineConst.constant = IS_LANDSCAPE ? 188 : 198;
+        categoryCell.countBaselineConst.constant = [UIWindow interfaceOrientationIsLandscape] ? 150 : 160;
+        categoryCell.dateBaselineConst.constant = [UIWindow interfaceOrientationIsLandscape] ? 188 : 198;
     }
     else {
         categoryCell.daysSinceTopSpaceConst.constant = 56;
@@ -1310,14 +1310,12 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 	if (![alertItems count])
         return;
 
-	if (!IS_IOS7) {
-		UIUserNotificationSettings *currentNotificationSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
-		if (currentNotificationSettings.types == UIUserNotificationTypeNone) {
-
-			UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeSound | UIUserNotificationTypeAlert categories:nil];
-			[[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-		}
-	}
+    UIUserNotificationSettings *currentNotificationSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
+    if (currentNotificationSettings.types == UIUserNotificationTypeNone) {
+        
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeSound | UIUserNotificationTypeAlert categories:nil];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    }
 
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
     // 얼럿 생성 & 등록.

@@ -25,9 +25,6 @@
 [submodule "External/MBProgressHUD"]
 	path = External/MBProgressHUD
 	url = https://github.com/jdg/MBProgressHUD.git
-[submodule "External/JVFloatLabeledTextField"]
-	path = External/JVFloatLabeledTextField
-	url = https://github.com/Steven-A3/JVFloatLabeledTextField.git
 [submodule "External/MPFoldTransition"]
 	path = External/MPFoldTransition
 	url = https://github.com/Steven-A3/MPFoldTransition.git

@@ -35,5 +35,11 @@
 #import <AppBoxKit/NSDateFormatter+A3Addition.h>
 #import <AppBoxKit/A3KeychainUtils.h>
 #import <AppBoxKit/NSData-AES.h>
+#import <AppBoxKit/A3PasscodeViewControlle.h>
+#import <AppBoxKit/A3PasswordViewController.h>
+#import <AppBoxKit/A3PasscodeCommonViewController.h>
+#import <AppBoxKit/JVFloatLabeledTextField.h>
+#import <AppBoxKit/A3FloatLabeledPasswordTextField.h>
+#import <AppBoxKit/A3StandardTableViewCell.h>
 
 #endif /* AppBoxKit_Bridging_Header_h */

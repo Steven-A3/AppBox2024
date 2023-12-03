@@ -111,7 +111,8 @@
 	NSUInteger numberOfViews = [_circleArray count];
 	CGRect bounds = self.view.bounds;
 	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-	CGFloat radiusBase = IS_PORTRAIT ? bounds.size.width : bounds.size.height;
+    BOOL isPortrait = [UIWindow interfaceOrientationIsPortrait];
+	CGFloat radiusBase = isPortrait ? bounds.size.width : bounds.size.height;
 
 	switch (numberOfViews) {
 		case 1:
@@ -137,7 +138,7 @@
 			];
 			break;
 	}
-	if (IS_PORTRAIT) {
+	if (isPortrait) {
 		if (screenBounds.size.height != 480) {
 			switch (numberOfViews) {
 				case 1:
@@ -287,7 +288,7 @@
 	[self.clockIcon setHidden:([_circleArray[0] unsignedIntegerValue] != A3ClockWaveCircleTypeTime)];
 
 	if (IS_IPHONE && screenBounds.size.height == 480) {
-		if (IS_PORTRAIT) {
+		if (isPortrait) {
 			A3ClockWaveCircleTypes type = (A3ClockWaveCircleTypes) [_circleArray[0] unsignedIntegerValue];
 			if (type == A3ClockWaveCircleTypeDate) {
 				[_dateTopLabel setHidden:YES];
@@ -351,7 +352,7 @@
 			];
 			break;
 	}
-	if (IS_PORTRAIT) {
+	if ([UIWindow interfaceOrientationIsPortrait]) {
 		switch (numberOfViews) {
 			case 1:
 				centerArray = @[

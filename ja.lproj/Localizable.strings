@@ -1154,3 +1154,9 @@
 "The restoring process failed to unarchive the backup file." = "復元プロセスがバックアップ ファイルのアーカイブ解除に失敗しました。";
 "Copying..." = "コピー中...";
 "Recents" = "最近";
+"Enjoy_faster_app" = "広告による読み込み時間なしで、より速いアプリナビゲーションをお楽しみください。";
+"Your_free_trial" = "無料トライアルは終了前にキャンセル可能です。継続すると、サブスクリプションは自動的に更新されますが、いつでもキャンセルできます。";
+"Ads Free Pass" = "広告削除パス";
+"Your purchases have been successfully restored." = "ご購入の商品は正常に復元されました。";
+"Your subscription has been successfully restored." = "ご購読は正常に復元されました。";
+"There are no transactions available for restoration at this time." = "現時点で復元可能なトランザクションはありません。";

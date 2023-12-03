@@ -336,6 +336,9 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	if ([self.delegate respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
 		[self.delegate passcodeViewControllerDidDismissWithSuccess:NO];
 	}
+    if (self.completionBlock) {
+        self.completionBlock(NO);
+    }
 	[self dismissViewControllerAnimated: YES completion: nil];
 }
 
@@ -349,7 +352,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	[self resetUI];
 	[self dismissNumberKeyboard];
 
-	[[A3AppDelegate instance] saveTimerStartTime];
+	[A3KeychainUtils saveTimerStartTime];
 
     if (!_beingDisplayedAsLockscreen) {
         // Delete from Keychain
@@ -359,7 +362,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
             // Update the Keychain if adding or changing passcode
         else {
             if (_isUserEnablingPasscode|| _isUserChangingPasscode) {
-                [[A3AppDelegate instance] saveTimerStartTime];
+                [A3KeychainUtils saveTimerStartTime];
                 [A3KeychainUtils storePassword:_tempPasscode hint:nil];
 
                 A3UserDefaults *defaults = [A3UserDefaults standardUserDefaults];
@@ -375,6 +378,9 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
         if ([self.delegate respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
             [self.delegate passcodeViewControllerDidDismissWithSuccess:YES];
         }
+        if (self.completionBlock) {
+            self.completionBlock(YES);
+        }
 
         if ([self.delegate respondsToSelector:@selector(passcodeViewDidDisappearWithSuccess:)]) {
             [self.delegate passcodeViewDidDisappearWithSuccess:_passcodeValid ];
@@ -385,6 +391,9 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
         if ([self.delegate respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
             [self.delegate passcodeViewControllerDidDismissWithSuccess:YES];
+        }
+        if (self.completionBlock) {
+            self.completionBlock(YES);
         }
     }
 
@@ -402,7 +411,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
 #pragma mark - Displaying
 
-- (void)showLockScreenWithAnimation:(BOOL)animated showCacelButton:(BOOL)showCancelButton {
+- (void)showLockScreenWithAnimation:(BOOL)animated showCacelButton:(BOOL)showCancelButton inViewController:(UIViewController *)rootViewController {
 	_beingDisplayedAsLockscreen = YES;
 //	// In case the user leaves the app while changing/disabling Passcode.
 //	if (!_beingDisplayedAsLockscreen) [self cancelAndDismissMe];
@@ -428,60 +437,12 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
 		UIWindow *mainWindow = [UIApplication sharedApplication].keyWindow;
 		if (!mainWindow) {
-			UIViewController *rootViewController = IS_IPAD ? [[A3AppDelegate instance] rootViewController_iPad] : [[A3AppDelegate instance] rootViewController_iPhone];
+//			UIViewController *rootViewController = IS_IPAD ? [[A3AppDelegate instance] rootViewController_iPad] : [[A3AppDelegate instance] rootViewController_iPhone];
 			[rootViewController presentViewController:self animated:NO completion:NULL];
 			_shouldDismissViewController = YES;
 		} else {
 			[mainWindow addSubview: self.view];
 			[mainWindow.rootViewController addChildViewController: self];
-			
-			if (IS_IOS7) {
-				[[NSNotificationCenter defaultCenter] addObserver:self
-														 selector:@selector(statusBarFrameOrOrientationChanged:)
-															 name:UIApplicationDidChangeStatusBarOrientationNotification
-														   object:nil];
-				[[NSNotificationCenter defaultCenter] addObserver:self
-														 selector:@selector(statusBarFrameOrOrientationChanged:)
-															 name:UIApplicationDidChangeStatusBarFrameNotification
-														   object:nil];
-				
-				// All this hassle because a view added to UIWindow does not rotate automatically
-				// and if we would have added the view anywhere else, it wouldn't display properly
-				// (having a modal on screen when the user leaves the app, for example).
-				[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
-			}
-
-			/*
-			CGPoint newCenter;
-			if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeLeft) {
-				self.view.center = CGPointMake(self.view.center.x * -1.f, self.view.center.y);
-				newCenter = CGPointMake(mainWindow.center.x - self.navigationController.navigationBar.frame.size.height / 2,
-										mainWindow.center.y);
-			}
-			else if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeRight) {
-				self.view.center = CGPointMake(self.view.center.x * 2.f, self.view.center.y);
-				newCenter = CGPointMake(mainWindow.center.x + self.navigationController.navigationBar.frame.size.height / 2,
-										mainWindow.center.y);
-			}
-			else if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait) {
-				self.view.center = CGPointMake(self.view.center.x, self.view.center.y * -1.f);
-				newCenter = CGPointMake(mainWindow.center.x,
-										mainWindow.center.y - self.navigationController.navigationBar.frame.size.height / 2);
-			}
-			else {
-				self.view.center = CGPointMake(self.view.center.x, self.view.center.y * 2.f);
-				newCenter = CGPointMake(mainWindow.center.x,
-										mainWindow.center.y + self.navigationController.navigationBar.frame.size.height / 2);
-			}
-			if (animated) {
-				[UIView animateWithDuration: kLockAnimationDuration animations: ^{
-					self.view.center = newCenter;
-				}];
-			} else {
-				self.view.center = newCenter;
-			}
-			 */
-			FNLOGRECT(self.view.frame);
 		}
 		_isCurrentlyOnScreen = YES;
 	}
@@ -503,7 +464,6 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 }
 
 - (void)statusBarFrameOrOrientationChanged:(NSNotification *)notification {
-	[super statusBarFrameOrOrientationChanged:notification];
 
 	UIInterfaceOrientation toInterfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
 	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
@@ -528,7 +488,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 																						  action: @selector(cancelAndDismissMe)];
 }
 
-- (void)showLockScreenInViewController:(UIViewController *)viewController {
+- (void)showLockScreenInViewController:(UIViewController *)viewController completion:(void (^)(BOOL))completion {
 	[self prepareAsLockscreen];
 	[self prepareNavigationControllerWithController:viewController];
 	self.title = NSLocalizedString(@"Passcode", @"View title while confirm passcode");
@@ -847,43 +807,12 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
 #pragma mark - Notification Observers
 
-//- (void)applicationDidEnterBackground {
-//	if ([_passcodeTextField isFirstResponder]) [_passcodeTextField resignFirstResponder];
-//	// Without animation because otherwise it won't come down fast enough,
-//	// so inside iOS' multitasking view the app won't be covered by anything.
-//	if ([[A3AppDelegate instance] timerDuration] == 0) [self showLockscreenWithAnimation:NO showCacelButton:NO ];
-//	else {
-//		_coverView.hidden = NO;
-//		if (![[UIApplication sharedApplication].keyWindow viewWithTag: 99]) [[UIApplication sharedApplication].keyWindow addSubview: _coverView];
-//	}
-//}
-//
-//- (void)applicationDidBecomeActive {
-//	_coverView.hidden = YES;
-//}
-
 #pragma mark - Init
 
 - (id)initWithDelegate:(id<A3PasscodeViewControllerDelegate>)delegate {
 	self = [super init];
 	if (self) {
 		self.delegate = delegate;
-//		[[NSNotificationCenter defaultCenter] addObserver: self
-//												 selector: @selector(applicationDidEnterBackground)
-//													 name: UIApplicationDidEnterBackgroundNotification
-//												   object: nil];
-//		[[NSNotificationCenter defaultCenter] addObserver: self
-//												 selector: @selector(applicationDidBecomeActive)
-//													 name: UIApplicationDidBecomeActiveNotification
-//												   object: nil];
-
-//		_coverView = [[UIView alloc] initWithFrame: CGRectZero];
-//		_coverView.backgroundColor = kCoverViewBackgroundColor;
-//		_coverView.frame = self.view.frame;
-//		_coverView.userInteractionEnabled = NO;
-//		_coverView.tag = 99;
-//		_coverView.hidden = YES;
-//		[[UIApplication sharedApplication].keyWindow addSubview: _coverView];
 	}
 	return self;
 }

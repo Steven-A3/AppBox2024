@@ -289,8 +289,8 @@ NSString *const cellID = @"flashEffectID";
 
 - (void)requestAuthorizationForCamera {
 	if (![A3UIDevice hasTorch]) return;
-	if (IS_IOS7) return;
-	AVAuthorizationStatus authorizationStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+
+    AVAuthorizationStatus authorizationStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
 	if (authorizationStatus == AVAuthorizationStatusAuthorized) return;
 	if (authorizationStatus == AVAuthorizationStatusNotDetermined) {
         [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted){}];
@@ -995,7 +995,7 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
 - (void)configureFlashViewMode:(A3FlashViewModeType)type animation:(BOOL)animate {
     _currentFlashViewMode = type;
 
-	self.appsBarButton.enabled = !(IS_IPHONE && IS_LANDSCAPE);
+	self.appsBarButton.enabled = !(IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]);
 
     [[A3UserDefaults standardUserDefaults] setObject:@(_currentFlashViewMode) forKey:A3UserDefaultFlashViewMode];
     [[A3UserDefaults standardUserDefaults] synchronize];

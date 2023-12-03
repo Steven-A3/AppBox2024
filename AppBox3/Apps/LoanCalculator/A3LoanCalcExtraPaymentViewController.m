@@ -421,7 +421,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-	if (IS_IPHONE && IS_LANDSCAPE) return NO;
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) return NO;
 	
 	if ([_items containsObject:self.dateInputItem]) {
 		[_items removeObject:self.dateInputItem];

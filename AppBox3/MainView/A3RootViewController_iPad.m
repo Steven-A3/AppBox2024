@@ -181,7 +181,7 @@ static const CGFloat kSideViewWidth = 320.0;
 			frame.origin.x = 0;
             [self setNeedsStatusBarAppearanceUpdate];
 		} else {
-			if (IS_LANDSCAPE && ![self useFullScreenInLandscapeForCurrentTopViewController]) {
+			if ([UIWindow interfaceOrientationIsLandscape] && ![self useFullScreenInLandscapeForCurrentTopViewController]) {
 				frame.origin.x = 0;
 			} else {
 				frame.origin.x = -kSideViewWidth - 1;
@@ -212,7 +212,7 @@ static const CGFloat kSideViewWidth = 320.0;
         CGRect bounds = [self screenBoundsAdjustedWithOrientation];
         
 		CGRect frame = self.leftNavigationController.view.frame;
-        if (IS_PORTRAIT || (IS_LANDSCAPE && fullScreenCenterView)) {
+        if ([UIWindow interfaceOrientationIsPortrait] || ([UIWindow interfaceOrientationIsLandscape] && fullScreenCenterView)) {
             frame.origin.x = -kSideViewWidth - 1;
         } else {    
             frame.origin.x = 0;
@@ -221,7 +221,7 @@ static const CGFloat kSideViewWidth = 320.0;
 
         CGFloat centerViewWidth;
         CGFloat centerViewPosition;
-        if (IS_LANDSCAPE) {
+        if ([UIWindow interfaceOrientationIsLandscape]) {
             centerViewWidth = fullScreenCenterView ? bounds.size.width : 704;
             centerViewPosition = fullScreenCenterView ? 0.0 : kSideViewWidth + 1.0;
         } else {
@@ -242,7 +242,7 @@ static const CGFloat kSideViewWidth = 320.0;
     CGRect leftFrame = _leftNavigationController.view.frame;
     CGRect centerFrame = _centerNavigationController.view.frame;
     CGRect bounds = [self screenBoundsAdjustedWithOrientation];
-    if (IS_IPAD && IS_LANDSCAPE && (leftFrame.origin.x == -kSideViewWidth - 1) && (centerFrame.origin.x == 0) && (centerFrame.size.width == bounds.size.width)) {
+    if (IS_IPAD && [UIWindow interfaceOrientationIsLandscape] && (leftFrame.origin.x == -kSideViewWidth - 1) && (centerFrame.origin.x == 0) && (centerFrame.size.width == bounds.size.width)) {
         return YES;
     }
     
@@ -327,7 +327,7 @@ static const CGFloat kSideViewWidth = 320.0;
     [presentingVC addChildViewController:_rightNavigationController];
     
 	[UIView animateWithDuration:0.3 animations:^{
-		if (IS_LANDSCAPE) {
+		if ([UIWindow interfaceOrientationIsLandscape]) {
 			CGRect centerViewFrame = self.centerNavigationController.view.frame;
 			centerViewFrame.origin.x = 0;
 			self.centerNavigationController.view.frame = centerViewFrame;
@@ -361,7 +361,7 @@ static const CGFloat kSideViewWidth = 320.0;
 	[self.view addSubview:_rightNavigationController.view];
     
 	[UIView animateWithDuration:0.3 animations:^{
-		if (IS_LANDSCAPE) {
+		if ([UIWindow interfaceOrientationIsLandscape]) {
 			BOOL useFullScreenInLandscape = [self useFullScreenInLandscapeForCurrentTopViewController];
 			if (!useFullScreenInLandscape) {
                 CGRect frame = self.leftNavigationController.view.frame;

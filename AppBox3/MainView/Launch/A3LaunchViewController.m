@@ -19,6 +19,7 @@
 #import "MMDrawerController.h"
 #import "A3UIDevice.h"
 #import "A3AppDelegate+appearance.h"
+#import "AppBox3-swift.h"
 
 NSString *const A3UserDefaultsDidShowLeftViewOnceiPad = @"A3UserDefaultsDidShowLeftViewOnceiPad";
 
@@ -56,24 +57,8 @@ NSString *const A3UserDefaultsDidShowLeftViewOnceiPad = @"A3UserDefaultsDidShowL
 
 	UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
 	backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	backgroundImageView.image = [UIImage imageNamed:[[A3AppDelegate instance] getLaunchImageName]];
+	backgroundImageView.image = [UIImage imageNamed:[[A3AppDelegate instance] getLaunchImageNameForOrientation:[UIWindow interfaceOrientationIsPortrait]]];
 	[self.view addSubview:backgroundImageView];
-
-//	if ([[A3AppDelegate instance] shouldMigrateV1Data]) {
-//		[[A3UserDefaults standardUserDefaults] setBool:NO forKey:A3UserDefaultsDidShowWhatsNew_3_0];
-//		[[A3UserDefaults standardUserDefaults] synchronize];
-//	}
-//
-//	if (_showAsWhatsNew || ![[A3UserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowWhatsNew_3_0]) {
-//		_sceneNumber = 0;
-//
-//		_launchStoryboard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Launch_iPhone" : @"Launch_iPad" bundle:nil];
-//		_currentSceneViewController = [_launchStoryboard instantiateViewControllerWithIdentifier:@"LaunchScene0"];
-//		_currentSceneViewController.sceneNumber = _sceneNumber;
-//		_currentSceneViewController.delegate = self;
-//		[self.view addSubview:_currentSceneViewController.view];
-//		[self addChildViewController:_currentSceneViewController];
-//	}
 }
 
 - (void)didReceiveMemoryWarning
@@ -162,7 +147,6 @@ NSString *const A3UserDefaultsDidShowLeftViewOnceiPad = @"A3UserDefaultsDidShowL
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 		if (![self askRestorePurchase]) {
-			[[A3AppDelegate instance] askPersonalizedAdConsent];
 		}
 	});
 }
@@ -170,79 +154,16 @@ NSString *const A3UserDefaultsDidShowLeftViewOnceiPad = @"A3UserDefaultsDidShowL
 #pragma mark - Ask Restore Purchase
 
 - (BOOL)askRestorePurchase {
-	if ([A3AppDelegate instance].doneAskingRestorePurchase) {
-		return NO;
-	}
-	
-	// PreviousVersion이 있다면 다시 묻지 않는다.
-	// 지우고 설치한 경우에만 물어본다. 업데이트 한 경우는 물어보지 않는다.
-	if ([A3AppDelegate instance].previousVersion) {
-		return NO;
-	}
-	NSURL *receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
-	if (receiptURL && [[NSFileManager defaultManager] fileExistsAtPath:[receiptURL path]]) {
-		return NO;
-	}
-	
-	NSString *backupReceiptFilepath = [[A3AppDelegate instance] backupReceiptFilePath];
-	if ([[NSFileManager defaultManager] fileExistsAtPath:backupReceiptFilepath]) {
-		return NO;
-	}
-
-	[A3AppDelegate instance].doneAskingRestorePurchase = YES;
-	
-	if (!IS_IOS7 && IS_IPAD) {
-		UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Verification Required", @"Verification Required")
-																				 message:nil
-																		  preferredStyle:UIAlertControllerStyleAlert];
-		UIAlertAction *paidCustomer = [UIAlertAction actionWithTitle:NSLocalizedString(@"Paid User", @"Paid User")
-															   style:UIAlertActionStyleDefault
-															 handler:^(UIAlertAction *action) {
-																 [self proceedRestorePurchase];
-															 }];
-		UIAlertAction *boughtRemoveAds = [UIAlertAction actionWithTitle:NSLocalizedString(@"Bought Remove Ads", @"Bought Remove Ads")
-															   style:UIAlertActionStyleDefault
-															 handler:^(UIAlertAction *action) {
-																 [self proceedRestorePurchase];
-															 }];
-		UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Continue without Verification", @"Continue without Verification")
-															   style:UIAlertActionStyleCancel
-															 handler:^(UIAlertAction *action) {
-																 [[A3AppDelegate instance] alertWhatsNew];
-															 }];
-
-		[alertController addAction:paidCustomer];
-		[alertController addAction:boughtRemoveAds];
-		[alertController addAction:cancelAction];
-
-		alertController.modalPresentationStyle = UIModalPresentationPopover;
-		UIPopoverPresentationController *popoverPresentation = [alertController popoverPresentationController];
-		popoverPresentation.sourceView = self.view;
-		[self presentViewController:alertController animated:YES completion:NULL];
-	} else {
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Verification Required", @"Verification Required")
-															message:nil
-														   delegate:self
-												  cancelButtonTitle:NSLocalizedString(@"Continue without Verification", @"Continue without Verification")
-												  otherButtonTitles:NSLocalizedString(@"Paid User", @"Paid User"),
-																	NSLocalizedString(@"Bought Remove Ads", @"Bought Remove Ads"),
-																	nil];
-		[alertView show];
-	}
+    /*
+     5.0에서 서브스크립션을 출시 합니다.
+     
+    UIViewController *subscriptionShopViewController = [SubscriptionUtility subscriptionShopViewControllerWithExpirationDate:[A3AppDelegate instance].expirationDate];
+    subscriptionShopViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:subscriptionShopViewController animated:YES completion:^{
+        [[A3AppDelegate instance] askPersonalizedAdConsent];
+    }];
+    */
 	return YES;
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-	if (buttonIndex != alertView.cancelButtonIndex) {
-		[self proceedRestorePurchase];
-	} else {
-		[[A3AppDelegate instance] askPersonalizedAdConsent];
-	}
-}
-
-- (void)proceedRestorePurchase {
-	[[A3AppDelegate instance] askPersonalizedAdConsent];
-	[[A3AppDelegate instance] startRestorePurchase];
 }
 
 @end

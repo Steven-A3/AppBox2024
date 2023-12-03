@@ -23,6 +23,7 @@
 #import "A3SyncManager.h"
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
+@import AppBoxKit;
 
 @import GoogleMobileAds;
 
@@ -59,7 +60,7 @@
     [self makeNavigationBarAppearanceDefault];
 	[self makeBackButtonEmptyArrow];
 
-	if (IS_IPAD || IS_PORTRAIT) {
+    if (IS_IPAD || [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	} else {
 		self.navigationItem.leftBarButtonItem = nil;
@@ -145,7 +146,7 @@
 	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 	
-	if (IS_IPHONE && IS_PORTRAIT) {
+	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	}
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
@@ -334,7 +335,7 @@ static NSString *const A3V3InstructionDidShowForBattery = @"A3V3InstructionDidSh
 			height = 219.0;
 		}
         else {
-			if (IS_LANDSCAPE) {
+			if ([UIWindow interfaceOrientationIsLandscape]) {
 				height = 275.0;
 			} else {
 				height = 321.0;
@@ -358,7 +359,7 @@ static NSString *const A3V3InstructionDidShowForBattery = @"A3V3InstructionDidSh
 
 	UIInterfaceOrientation orientation;
 	orientation = size.width < size.height ? UIInterfaceOrientationPortrait : UIInterfaceOrientationLandscapeLeft;
-    if (IS_IPHONE && IS_LANDSCAPE) {
+    if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) {
         [self leftBarButtonAppsButton];
     }
     CGRect rect = self.headerView.frame;

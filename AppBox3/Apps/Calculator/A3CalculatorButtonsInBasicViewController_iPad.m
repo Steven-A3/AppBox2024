@@ -49,7 +49,8 @@
     FNLOGRECT(bounds);
 
     // iPad mini 6th edition : 1133 x 744
-	if (IS_PORTRAIT) {
+    BOOL isPortrait = [UIWindow interfaceOrientationIsPortrait];
+	if (isPortrait) {
         CGFloat top, width, height;
         if (bounds.size.height == 1366.0) {
             // iPad Pro 12.9"

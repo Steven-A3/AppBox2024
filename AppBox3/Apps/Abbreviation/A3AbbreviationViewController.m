@@ -176,7 +176,7 @@
 		_topLineTopConstraint = topLineTopConstraint;
 
 	} else if (IS_IPAD) {
-        BOOL isPortrait  = self.view.bounds.size.width < self.view.bounds.size.height;
+        BOOL isPortrait  = [UIWindow interfaceOrientationIsPortrait];
         
 		[self.view removeConstraints:@[_titleLabelBaselineConstraint, _topLineTopConstraint]];
 		

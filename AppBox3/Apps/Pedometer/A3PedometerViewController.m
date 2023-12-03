@@ -759,7 +759,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	if (_healthStoreUpdateInProgress) {
 		return;
 	}
-	if (IS_IOS7 || ![HKHealthStore isHealthDataAvailable]) {
+	if (![HKHealthStore isHealthDataAvailable]) {
 		if (completion) {
 			completion();
 		}

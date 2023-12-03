@@ -11,12 +11,16 @@ import AuthenticationServices
 import CoreData
 import OSLog
 import LocalAuthentication
+import AppBoxKit
+import SwiftUI
 
 class CredentialProviderViewController: ASCredentialProviderViewController {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var navigationBar: UINavigationBar!
     @IBOutlet weak var secureCoverView: UIImageView!
+    @IBOutlet weak var myNavigationItem: UINavigationItem!
+    @IBOutlet weak var instructionLabel: UILabel!
 
     var searchController: UISearchController!
     var resultTableController: CredentialResultsTableViewController!
@@ -84,22 +88,32 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
      */
 
     override func prepareInterfaceToProvideCredential(for credentialIdentity: ASPasswordCredentialIdentity) {
-        let context = LAContext()
-        var error: NSError?
-        
-        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-            let reason = "Access for AppBox Pro"
-            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { [weak self] success, authenticationError in
-                if self!.persistentContainer == nil {
-                    self!.setupCoreDataStack()
-                }
-                if let passwordCredential = self!.credential(with: credentialIdentity.recordIdentifier!) {
-                    self!.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
-                }
-            }
-        } else {
-            os_log("%@", error!.localizedDescription)
-        }
+        // 암호가 설정되어 있는지 확인한다.
+//        if let password = A3KeychainUtils.getPassword() {
+//            if password.isEmpty { return }
+//            
+//            let context = LAContext()
+//            var error: NSError?
+//            
+//            if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+//                let reason = "Access for AppBox Pro"
+//                context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { [weak self] success, authenticationError in
+//                    if self!.persistentContainer == nil {
+//                        self!.setupCoreDataStack()
+//                    }
+//                    if let passwordCredential = self!.credential(with: credentialIdentity.recordIdentifier!) {
+//                        self!.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
+//                    }
+//                }
+//            } else {
+//                // Biometric을 사용할 수 없는 경우에는 Passcode/Password를 확인한다.
+//                let passcodeCheckViewController = UIViewController.passcodeViewController(with: nil)
+//                passcodeCheckViewController?.showLockScreen?(in: self, completion: { success in
+//                    
+//                })
+//                os_log("%@", error!.localizedDescription)
+//            }
+//        }
     }
 
     @IBAction func cancel(_ sender: AnyObject?) {
@@ -189,7 +203,7 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
 
             passwords.append(Credential(userName: name, password: password, url: URL))
         }
-        passwords.sort(by: {$0.url > $1.url})
+        passwords.sort(by: {$0.url < $1.url})
         
         for serviceIdentifier in askedCredentialIdentifiers {
             let serviceURL = URL(string: serviceIdentifier)
@@ -262,22 +276,57 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
         super.viewDidLoad()
         
         navigationBar?.topItem?.title = "AppBox Pro"
-        resultTableController = CredentialResultsTableViewController()
+        
+        resultTableController = CredentialResultsTableViewController(style: .insetGrouped)
         resultTableController.autofillExtensionContext = self.extensionContext
         resultTableController.tableView.rowHeight = self.tableView.rowHeight
-        
+        resultTableController.navigationItem.searchController = searchController
+
         searchController = UISearchController(searchResultsController: resultTableController)
         searchController.searchResultsUpdater = self
         searchController.searchBar.autocapitalizationType = .none
+        searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.searchTextField.placeholder = "Enter a search term"
         searchController.searchBar.returnKeyType = .done
         searchController.searchBar.showsCancelButton = false
+        searchController.searchBar.sizeToFit()
 
-        navigationBar.topItem?.searchController = searchController
-        navigationBar.topItem?.hidesSearchBarWhenScrolling = false
+        myNavigationItem.searchController = searchController
+        definesPresentationContext = true
+        
+        myNavigationItem.hidesSearchBarWhenScrolling = false
 
         searchController.delegate = self
         searchController.searchBar.delegate = self
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.shadowImage = nil
+        appearance.shadowColor = nil
+        appearance.backgroundColor = UIColor(red: 247/255, green: 248/255, blue: 247/255, alpha: 1.0)
+        tableView.backgroundColor = UIColor(red: 247/255, green: 248/255, blue: 247/255, alpha: 1.0)
+        
+        navigationBar.standardAppearance = appearance
+        navigationBar.compactAppearance = appearance
+        navigationBar.scrollEdgeAppearance = appearance
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        let serviceURL = URL(string: askedCredentialIdentifiers[0] )
+        let host = serviceURL?.host
+        let items = host?.components(separatedBy: ".")
+        let count = items?.count ?? 0
+        if count > 2 {
+            let domainItems = items!.suffix(2)
+            let domain = domainItems.joined(separator: ".")
+            
+            self.instructionLabel.text = "Choose a password to use for \(domain)."
+        } else {
+            instructionLabel.text = "Choose a password"
+        }
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -286,6 +335,7 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
         let context = LAContext()
         var error: NSError?
         
+        // Biometric을 사용할 수 있는 경우에만 오토필 기능을 사용 할 수 있다.
         if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
             let reason = "Access for AppBox Pro"
             context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { [weak self] success, authenticationError in
@@ -295,8 +345,6 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
                     }
                 }
             }
-        } else {
-            os_log("%@", error!.localizedDescription)
         }
         
         let serviceURL = URL(string: askedCredentialIdentifiers[0] )
@@ -306,10 +354,11 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
         if count > 2 {
             let domainItems = items!.suffix(2)
             let domain = domainItems.joined(separator: ".")
-            if let firstIndex = passwords.firstIndex(where: { $0.url.lowercased().contains( domain ) } ) {
-                tableView.scrollToRow(at: IndexPath(row: firstIndex, section: 0), at: .top, animated: true)
-            } else if let firstIndex = passwords.firstIndex(where: {$0.url >= askedCredentialIdentifiers[0]} ) {
-                tableView.scrollToRow(at: IndexPath(row: firstIndex, section: 0), at: .top, animated: true)
+            
+            if suggestedPasswords.count == 0 {
+                if let firstIndex = passwords.firstIndex(where: { $0.url.lowercased().contains( domain ) } ) {
+                    tableView.scrollToRow(at: IndexPath(row: firstIndex, section: 1), at: .top, animated: true)
+                }
             }
         }
     }
@@ -330,7 +379,7 @@ extension CredentialProviderViewController: UISearchBarDelegate {
 extension CredentialProviderViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         // Update the resultsController's filtered items based on the search terms and suggested search token.
-        let searchResults = passwords
+        let searchResults = passwords + suggestedPasswords
 
         // Strip out all the leading and trailing spaces.
         let whitespaceCharacterSet = CharacterSet.whitespaces
@@ -349,6 +398,8 @@ extension CredentialProviderViewController: UISearchResultsUpdating {
             idx += 1
             curTerm = (idx < searchItems.count) ? searchItems[idx] : ""
         }
+        
+        filtered.sort(by: {$0.url.lowercased() < $1.url.lowercased()})
         
         // Apply the filtered results to the search results table.
         if let resultsController = searchController.searchResultsController as? CredentialResultsTableViewController {
@@ -378,16 +429,19 @@ extension CredentialProviderViewController: UITableViewDelegate, UITableViewData
         return passwords.count
     }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 30
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewController.credentialCellIdentifier, for: indexPath) as! TableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewController.credentialCellIdentifier, for: indexPath) as! CredentialTableViewCell?
         
-        let cred = selectItem(indexPath)
+        let credential = selectItem(indexPath)
 
-        cell.url?.text = cred.url
-        cell.id?.text = cred.userName
-        cell.password?.text = cred.password.masked
-        cell.iconView.image = UIImage(named: cred.iconname)
-        return cell
+        cell?.urlLabel?.text = credential.url
+        cell?.usernameLabel?.text = credential.userName
+        cell?.iconImageView.image = UIImage(named: credential.iconname())
+        return cell!
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -396,40 +450,23 @@ extension CredentialProviderViewController: UITableViewDelegate, UITableViewData
         let passwordCredential = ASPasswordCredential(user: cred.userName, password: cred.password)
         self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
     }
-    
+
+    func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        // Get the data for the corresponding row
+        let credential = selectItem(indexPath)
+        
+        // Perform actions, such as navigating to a detail view controller with the item
+        let detailView = PasswordDetailView(credential: credential)
+        let viewController = UIHostingController(rootView: detailView)
+        viewController.modalPresentationStyle = .popover
+        present(viewController, animated: true)
+    }
+
     func selectItem(_ indexPath: IndexPath) -> Credential {
         if suggestedPasswords.count > 0 && indexPath.section == 0 {
             return suggestedPasswords[indexPath.row]
         }
         return passwords[indexPath.row]
-    }
-}
-
-struct Credential {
-    var userName = ""
-    var password = ""
-    var iconname = ""
-    var url = "" {
-        didSet(oldVal) {
-            iconname = resolveIconname(url: url)
-        }
-    }
-    
-    init(userName: String, password: String, url: String) {
-        self.userName = userName
-        self.password = password
-        self.url = url
-        self.iconname = resolveIconname(url: url)
-    }
-    
-    func resolveIconname(url: String) -> String {
-        let icons = ["wikipedia", "google", "apple", "baidu", "instagram", "twitter", "youtube", "naver", "kakao"]
-        for icon in icons {
-            if url.lowercased().contains(icon) {
-                return icon + "favicon"
-            }
-        }
-        return "defaultfavicon"
     }
 }
 

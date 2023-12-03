@@ -14,8 +14,9 @@
 #import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
 #import "A3FloatLabeledPasswordTextField.h"
-#import "A3AppDelegate.h"
 #import "A3UIDevice.h"
+#import "Masonry.h"
+#import "AppBoxKit/AppBoxKit-swift.h"
 
 #define kFailedAttemptLabelBackgroundColor [UIColor colorWithRed:0.8f green:0.1f blue:0.2f alpha:1.000f]
 #define kLabelFont (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? [UIFont fontWithName: @"AvenirNext-Regular" size: kLabelFontSize * kFontSizeModifier] : [UIFont fontWithName: @"AvenirNext-Regular" size: kLabelFontSize])
@@ -241,6 +242,9 @@
 	if ([self.delegate respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
 		[self.delegate passcodeViewControllerDidDismissWithSuccess:NO];
 	}
+    if (self.completionBlock) {
+        self.completionBlock(NO);
+    }
 	if (_beingPresentedInViewController || _shouldDismissViewController) {
 		[self dismissViewControllerAnimated:YES completion:nil];
 		dispatch_async(dispatch_get_main_queue(), ^{
@@ -250,9 +254,7 @@
 		});
 	} else {
 		[self.view removeFromSuperview];
-		if (!IS_IOS7) {
-			[self removeFromParentViewController];
-		}
+        [self removeFromParentViewController];
 		if ([self.delegate respondsToSelector:@selector(passcodeViewDidDisappearWithSuccess:)]) {
 			[self.delegate passcodeViewDidDisappearWithSuccess:NO ];
 		}
@@ -261,16 +263,16 @@
 
 - (void)showEncryptionKeyScreenInViewController:(UIViewController *)viewController {
 	_isWalletEncryptionKeyMode = YES;
-	[self showLockScreenInViewController:viewController];
+	[self showLockScreenInViewController:viewController completion:NULL];
 	self.title = NSLocalizedString(@"Encryption Key for Wallet", @"");
 }
 
-- (void)showEncryptionKeyCheckScreen {
+- (void)showEncryptionKeyCheckScreenInViewController:(UIViewController *)viewController {
 	_isWalletEncryptionKeyMode = YES;
-	[self showLockScreenWithAnimation:NO showCacelButton:NO];
+	[self showLockScreenWithAnimation:NO showCacelButton:NO inViewController:viewController];
 }
 
-- (void)showLockScreenWithAnimation:(BOOL)animated showCacelButton:(BOOL)showCancelButton {
+- (void)showLockScreenWithAnimation:(BOOL)animated showCacelButton:(BOOL)showCancelButton inViewController:(UIViewController *)rootViewController {
 	FNLOG();
 	_beingDisplayedAsLockscreen = YES;
 	_showCancelButton = showCancelButton;
@@ -278,35 +280,23 @@
 
 	[self prepareAsLockscreen];
 
-	UIWindow *mainWindow = [UIApplication sharedApplication].keyWindow;
+    UIWindow *mainWindow = [UIApplication sharedApplication].keyWindow;
 	if (!mainWindow) {
-		UIViewController *rootViewController = IS_IPAD ? [[A3AppDelegate instance] rootViewController_iPad] : [[A3AppDelegate instance] rootViewController_iPhone];
+//		UIViewController *rootViewController = IS_IPAD ? [[A3AppDelegate instance] rootViewController_iPad] : [[A3AppDelegate instance] rootViewController_iPhone];
 		[rootViewController presentViewController:self animated:NO completion:NULL];
 		_shouldDismissViewController = YES;
 	} else {
-		[[A3AppDelegate instance].currentMainNavigationController setNavigationBarHidden:YES];
 		[mainWindow addSubview: self.view];
 		
-		if (IS_IOS7) {
-			[[NSNotificationCenter defaultCenter] addObserver:self
-													 selector:@selector(statusBarFrameOrOrientationChanged:)
-														 name:UIApplicationDidChangeStatusBarOrientationNotification
-													   object:nil];
-			[[NSNotificationCenter defaultCenter] addObserver:self
-													 selector:@selector(statusBarFrameOrOrientationChanged:)
-														 name:UIApplicationDidChangeStatusBarFrameNotification
-													   object:nil];
-			
-			[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
-		} else {
-			[mainWindow.rootViewController addChildViewController: self];
-		}
+        [mainWindow.rootViewController addChildViewController: self];
 	}
 
 	self.title = NSLocalizedString(@"Enter Passcode", @"");
 }
 
-- (void)showLockScreenInViewController:(UIViewController *)viewController {
+- (void)showLockScreenInViewController:(UIViewController *)viewController completion:(void (^)(BOOL))completion {
+    self.completionBlock = completion;
+    
 	_showCancelButton = YES;
 	_beingDisplayedAsLockscreen = YES;
 	_beingPresentedInViewController = viewController != nil;
@@ -389,7 +379,7 @@
 	if (IS_IPHONE) {
         keyboardHeight = 216;
     } else {
-        keyboardHeight = IS_LANDSCAPE ? 352 : 264;
+        keyboardHeight = [UIWindow interfaceOrientationIsLandscape] ? 352 : 264;
     }
     if (_isUserChangingPasscode) keyboardHeight += 40.0;
 	return keyboardHeight;
@@ -614,6 +604,9 @@
 		if ([self.delegate respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
 			[self.delegate passcodeViewControllerDidDismissWithSuccess:YES];
 		}
+        if (self.completionBlock) {
+            self.completionBlock(YES);
+        }
 		[self.presentingViewController dismissViewControllerAnimated:NO completion:nil];
 		dispatch_async(dispatch_get_main_queue(), ^{
 			if ([self.delegate respondsToSelector:@selector(passcodeViewDidDisappearWithSuccess:)]) {
@@ -623,12 +616,13 @@
 
 	} else {
 		[self.view removeFromSuperview];
-		if (!IS_IOS7) {
-			[self removeFromParentViewController];
-		}
+        [self removeFromParentViewController];
 
         if ([self.delegate respondsToSelector:@selector(passcodeViewControllerDidDismissWithSuccess:)]) {
             [self.delegate passcodeViewControllerDidDismissWithSuccess:_passcodeValid];
+        }
+        if (self.completionBlock) {
+            self.completionBlock(_passcodeValid);
         }
 
         if ([self.delegate respondsToSelector:@selector(passcodeViewDidDisappearWithSuccess:)]) {
@@ -700,7 +694,7 @@
 			if (_isUserTurningPasscodeOff) {
 				[A3KeychainUtils removePassword];
 			} else {
-				[[A3AppDelegate instance] saveTimerStartTime];
+				[A3KeychainUtils saveTimerStartTime];
 			}
 			_passcodeValid = YES;
 
@@ -713,7 +707,7 @@
 		if (!nextTextField) {
 			BOOL passcodeValid = [self isPasswordValid];
 			if (passcodeValid && [self isNewPasscodeValid]) {
-				[[A3AppDelegate instance] saveTimerStartTime];
+				[A3KeychainUtils saveTimerStartTime];
 				[A3KeychainUtils storePassword:_aNewPasswordField.text hint:_passwordHintField.text];
 				A3UserDefaults *defaults = [A3UserDefaults standardUserDefaults];
 				[defaults setBool:NO forKey:kUserDefaultsKeyForUseSimplePasscode];
@@ -736,7 +730,7 @@
 			[nextTextField becomeFirstResponder];
 		} else {
 			if ([self isNewPasscodeValid]) {
-				[[A3AppDelegate instance] saveTimerStartTime];
+				[A3KeychainUtils saveTimerStartTime];
 				[A3KeychainUtils storePassword:_aNewPasswordField.text hint:_passwordHintField.text];
 				A3UserDefaults *defaults = [A3UserDefaults standardUserDefaults];
 				[defaults setBool:NO forKey:kUserDefaultsKeyForUseSimplePasscode];
@@ -796,7 +790,7 @@
 }
 
 - (void)setMessage:(NSString *)text {
-	if ((!IS_IOS7 || IS_IPHONE35) && (_isUserEnablingPasscode || _isUserChangingPasscode)) {
+	if ((IS_IPHONE35) && (_isUserEnablingPasscode || _isUserChangingPasscode)) {
 		_headerLabel.text = text;
 		if (IS_IPHONE35) {
 			_sectionHeaderLabel.text = text;

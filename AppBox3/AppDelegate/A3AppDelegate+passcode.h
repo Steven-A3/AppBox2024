@@ -11,7 +11,6 @@
 @interface A3AppDelegate (passcode) <A3PasscodeViewControllerDelegate, A3DataMigrationManagerDelegate>
 
 - (BOOL)didPasscodeTimerEnd;
-- (void)saveTimerStartTime;
 - (BOOL)isSimplePasscode;
 - (BOOL)useTouchID;
 - (void)setUseTouchID:(BOOL)use;

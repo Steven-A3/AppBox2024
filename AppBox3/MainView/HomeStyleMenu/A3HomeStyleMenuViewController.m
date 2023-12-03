@@ -11,7 +11,6 @@
 #import "A3HomeScreenButton.h"
 #import "MMDrawerController.h"
 #import "UIViewController+A3Addition.h"
-#import "RMAppReceipt.h"
 #import "A3SyncManager.h"
 #import "A3UIDevice.h"
 
@@ -27,8 +26,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-	self.automaticallyAdjustsScrollViewInsets = NO;
-
+    self.view.backgroundColor = [UIColor colorWithRed:56.0/255.0 green:63.0/255.0 blue:74.0/255.0 alpha:1.0];
     [self updateShouldShowHouseAds];
     
     [self setNeedsStatusBarAppearanceUpdate];
@@ -39,19 +37,12 @@
         _shouldShowHouseAd = ![[NSUserDefaults standardUserDefaults] boolForKey:kA3AppsHideOtherAppLinks];
         return;
     }
-    RMAppReceipt *appReceipt = [A3AppDelegate instance].appReceipt;
-    if ([appReceipt verifyReceiptHash]) {
-        if ([[A3AppDelegate instance] isPaidAppVersionCustomer:appReceipt]) {
-            _shouldShowHouseAd = ![[NSUserDefaults standardUserDefaults] boolForKey:kA3AppsHideOtherAppLinks];
-        } else {
-            _shouldShowHouseAd = ![[A3AppDelegate instance] isIAPPurchasedCustomer:appReceipt];
-        }
+    if ([A3AppDelegate instance].isOldPaidUser) {
+        _shouldShowHouseAd = ![[NSUserDefaults standardUserDefaults] boolForKey:kA3AppsHideOtherAppLinks];
     } else {
         _shouldShowHouseAd = YES;
     }
-    if (IS_IPHONE_3_5_INCH) {
-        self.shouldShowHouseAd = NO;
-    }
+
     if (_shouldShowHouseAd) {
         _shouldShowHouseAd = [[NSUserDefaults standardUserDefaults] integerForKey:kA3ApplicationNumberOfDidBecomeActive] > 8;
     }

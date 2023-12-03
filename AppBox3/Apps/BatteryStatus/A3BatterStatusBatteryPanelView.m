@@ -95,7 +95,7 @@
         if (IS_IPHONE) {
             _remainPercentTopConst = make.top.equalTo(@12);
         } else {
-            if (IS_LANDSCAPE) {
+            if ([UIWindow interfaceOrientationIsPortrait]) {
                 _remainPercentTopConst = make.top.equalTo(@22);
             } else {
                 _remainPercentTopConst = make.top.equalTo(@42);
@@ -144,12 +144,11 @@
         width = 268.0;
         height = 106.0;
         
-        if (IS_LANDSCAPE) {
+        if ([UIWindow interfaceOrientationIsLandscape]) {
             ypos = 128.0;
         } else {
             ypos = 153.0;
         }
-        //xpos = (self.frame.size.width / 2.0) - (width / 2.0);
     }
     
     xpos = (self.frame.size.width / 2.0) - (width / 2.0) - ((headGap + headWidth) / 2.0);
@@ -159,7 +158,7 @@
     if (IS_IPHONE) {
         _remainPercentTopConst.equalTo(@12);
     } else {
-        if (IS_LANDSCAPE) {
+        if ([UIWindow interfaceOrientationIsLandscape]) {
             _remainPercentTopConst.equalTo(@22);
         } else {
             _remainPercentTopConst.equalTo(@42);
