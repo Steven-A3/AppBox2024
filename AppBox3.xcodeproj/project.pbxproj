@@ -455,7 +455,6 @@
 		6870A0D7163647A50059BD2F /* A3GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6870A0D6163647A50059BD2F /* A3GradientView.m */; };
 		6872DD3217B3D56600C1BF44 /* NSDate+TimeAgo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6872DD3017B3D56600C1BF44 /* NSDate+TimeAgo.m */; };
 		6872DD3317B3D56600C1BF44 /* NSDateTimeAgo.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6872DD3117B3D56600C1BF44 /* NSDateTimeAgo.bundle */; };
-		6872F1392B19EB9800DE0922 /* ExportWalletContents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6872F1382B19EB9800DE0922 /* ExportWalletContents.swift */; };
 		6873B58A1E1E5EB600A61AB3 /* A3AbbreviationDrillDownTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6873B5891E1E5EB600A61AB3 /* A3AbbreviationDrillDownTableViewCell.m */; };
 		687483E21977E77D00EA8F74 /* ExpenseListBudget+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 687483E11977E77D00EA8F74 /* ExpenseListBudget+extension.m */; };
 		687484031977EE0A00EA8F74 /* ExpenseListHistory+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484021977EE0A00EA8F74 /* ExpenseListHistory+extension.m */; };
@@ -598,8 +597,6 @@
 		68B62EBF199E532B006384E1 /* CurrencyFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B62EBE199E532B006384E1 /* CurrencyFavorite.m */; };
 		68B62EC2199E620B006384E1 /* DaysCounterCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B62EC1199E620B006384E1 /* DaysCounterCalendar.m */; };
 		68B635BF17B504C100570B09 /* A3RootViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B635BE17B504C100570B09 /* A3RootViewController_iPad.m */; };
-		68B681E82B19EE8300E59458 /* CoreXLSX in Frameworks */ = {isa = PBXBuildFile; productRef = 68B681E72B19EE8300E59458 /* CoreXLSX */; };
-		68B681EB2B1A0FBD00E59458 /* SwiftXLSX in Frameworks */ = {isa = PBXBuildFile; productRef = 68B681EA2B1A0FBD00E59458 /* SwiftXLSX */; };
 		68B6A18B17CC398A008E0296 /* indian.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A18A17CC398A008E0296 /* indian.plist */; };
 		68B6A18C17CC398A008E0296 /* indian.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A18A17CC398A008E0296 /* indian.plist */; };
 		68B6A2AA18CEC76D004084EF /* A3LoanCalcExtraPaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A16B18CEC76C004084EF /* A3LoanCalcExtraPaymentViewController.m */; };
@@ -1838,7 +1835,6 @@
 		6872DD2F17B3D56600C1BF44 /* NSDate+TimeAgo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate+TimeAgo.h"; path = "External/NSDate-TimeAgo/NSDate+TimeAgo.h"; sourceTree = "<group>"; };
 		6872DD3017B3D56600C1BF44 /* NSDate+TimeAgo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate+TimeAgo.m"; path = "External/NSDate-TimeAgo/NSDate+TimeAgo.m"; sourceTree = "<group>"; };
 		6872DD3117B3D56600C1BF44 /* NSDateTimeAgo.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = NSDateTimeAgo.bundle; path = "External/NSDate-TimeAgo/NSDateTimeAgo.bundle"; sourceTree = "<group>"; };
-		6872F1382B19EB9800DE0922 /* ExportWalletContents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportWalletContents.swift; sourceTree = "<group>"; };
 		6873B5881E1E5EB600A61AB3 /* A3AbbreviationDrillDownTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3AbbreviationDrillDownTableViewCell.h; sourceTree = "<group>"; };
 		6873B5891E1E5EB600A61AB3 /* A3AbbreviationDrillDownTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AbbreviationDrillDownTableViewCell.m; sourceTree = "<group>"; };
 		68746E771A4133ED007E74A0 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
@@ -3007,10 +3003,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				68B681E82B19EE8300E59458 /* CoreXLSX in Frameworks */,
 				683F56132A1EBCE600684674 /* WultraPassphraseMeter in Frameworks */,
 				68B1293A29EA0CA7003A5EB1 /* AppBoxKit.framework in Frameworks */,
-				68B681EB2B1A0FBD00E59458 /* SwiftXLSX in Frameworks */,
 				683F56172A1EBCE600684674 /* WultraPassphraseMeterENDictionary in Frameworks */,
 				6826275429B77B610052CBD0 /* GoogleMobileAds in Frameworks */,
 				6826275829B77C8D0052CBD0 /* FirebaseFunctions in Frameworks */,
@@ -3485,7 +3479,6 @@
 				68C4189A2B1148ED009668B9 /* AppTransactionManager.swift */,
 				68F720C92B1272AE00773D6E /* AppBox Pro.storekit */,
 				68F720CA2B12912600773D6E /* AdsFreePassShopView.swift */,
-				6872F1382B19EB9800DE0922 /* ExportWalletContents.swift */,
 			);
 			path = Swift;
 			sourceTree = "<group>";
@@ -5956,8 +5949,6 @@
 				683F56122A1EBCE600684674 /* WultraPassphraseMeter */,
 				683F56142A1EBCE600684674 /* WultraPassphraseMeterCore */,
 				683F56162A1EBCE600684674 /* WultraPassphraseMeterENDictionary */,
-				68B681E72B19EE8300E59458 /* CoreXLSX */,
-				68B681EA2B1A0FBD00E59458 /* SwiftXLSX */,
 			);
 			productName = AppBox3;
 			productReference = 682EA2D115EB10B000BD6AD4 /* AppBox3.app */;
@@ -6118,9 +6109,6 @@
 				68AB292929B774F400B4452B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				682A776B29B7769700EC31FF /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 				683F56112A1EBCE600684674 /* XCRemoteSwiftPackageReference "passphrase-meter" */,
-				6872F13A2B19EC4A00DE0922 /* XCRemoteSwiftPackageReference "CoreXLSX" */,
-				68B681E92B1A0B2900E59458 /* XCRemoteSwiftPackageReference "SwiftXLSX" */,
-				68B681EC2B1A104E00E59458 /* XCRemoteSwiftPackageReference "xlsxwriter" */,
 			);
 			productRefGroup = 682EA2D215EB10B000BD6AD4 /* Products */;
 			projectDirPath = "";
@@ -7066,7 +7054,6 @@
 				17D426BC7A3AD946E25DEADB /* A3WalletVideoItemViewController.m in Sources */,
 				17D4258B7D4BF46E0C3369B5 /* A3AppDelegate+migration.m in Sources */,
 				17D42FF85AA97A33A049141B /* A3MainMenuTableViewController.m in Sources */,
-				6872F1392B19EB9800DE0922 /* ExportWalletContents.swift in Sources */,
 				17D4246891B35EE879B90A3E /* A3FractionInputView.m in Sources */,
 				17D427781AE9532AE6E09C7E /* A3UnitConverterAddViewController.m in Sources */,
 				17D42A9F13ACE076BAF14D08 /* A3UnitConverterConvertTableViewController.m in Sources */,
@@ -8393,36 +8380,12 @@
 				minimumVersion = 1.0.0;
 			};
 		};
-		6872F13A2B19EC4A00DE0922 /* XCRemoteSwiftPackageReference "CoreXLSX" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/CoreOffice/CoreXLSX";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.14.2;
-			};
-		};
 		68AB292929B774F400B4452B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 9.0.0;
-			};
-		};
-		68B681E92B1A0B2900E59458 /* XCRemoteSwiftPackageReference "SwiftXLSX" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/3973770/SwiftXLSX";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
-		68B681EC2B1A104E00E59458 /* XCRemoteSwiftPackageReference "xlsxwriter" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/damuellen/xlsxwriter.swift";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -8502,15 +8465,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 683F56112A1EBCE600684674 /* XCRemoteSwiftPackageReference "passphrase-meter" */;
 			productName = WultraPassphraseMeterENDictionary;
-		};
-		68B681E72B19EE8300E59458 /* CoreXLSX */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6872F13A2B19EC4A00DE0922 /* XCRemoteSwiftPackageReference "CoreXLSX" */;
-			productName = CoreXLSX;
-		};
-		68B681EA2B1A0FBD00E59458 /* SwiftXLSX */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = SwiftXLSX;
 		};
 /* End XCSwiftPackageProductDependency section */
 
