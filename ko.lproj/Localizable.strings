@@ -1158,3 +1158,24 @@
 "Your purchases have been successfully restored." = "구매 내역이 성공적으로 복원되었습니다.";
 "Your subscription has been successfully restored." = "구독이 성공적으로 복원되었습니다.";
 "There are no transactions available for restoration at this time." = "현재 복원할 수 있는 거래가 없습니다.";
+/* Export Function Usage Guide */
+"Export Function Usage Guide" = "내보내기 기능 사용 가이드";
+
+/* Export Usage */
+"ExportUsage" = "다음과 같이 사용하십시오: \
+직접 노트 앱으로 보내지 마시고, \
+복사를 선택하세요. 그런 다음 \
+노트 앱을 열고 \
+붙여넣으십시오. \
+이렇게 하면 가장 좋은 전달을 보장할 수 있습니다.";
+
+/* Export Usage After Copy */
+"ExportUsageAfterCopy" = "복사를 완료한 후에는 \
+앱을 종료하고 \
+노트 앱을 열어 \
+새 노트를 만든 다음 \
+붙여넣으십시오. \
+물론 다른 앱에도 붙여넣을 수 있습니다.";
+
+/* Preparing */
+"Preparing" = "준비 중";

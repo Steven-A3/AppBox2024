@@ -1322,6 +1322,11 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
         // 3.5 포함 이전 버전 구매자의 경우에는 패스
         if (isPaid) {
             self->_shouldPresentAd = NO;
+            if (completion) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion();
+                });
+            }
             return;
         }
         

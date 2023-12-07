@@ -1152,3 +1152,23 @@ ver el menú de acción";
 "Your purchases have been successfully restored." = "Tus compras han sido restauradas exitosamente.";
 "Your subscription has been successfully restored." = "Tu suscripción ha sido restaurada exitosamente.";
 "There are no transactions available for restoration at this time." = "No hay transacciones disponibles para restaurar en este momento.";
+/* Export Function Usage Guide */
+"Export Function Usage Guide" = "Guía de uso de la función de exportación";
+
+/* Export Usage */
+"ExportUsage" = "Por favor, úselo de la siguiente manera: \
+En lugar de enviarlo directamente \
+a la aplicación de Notas, \
+elija Copiar. \
+Luego, abra la aplicación de Notas y péguelo. \
+Esto asegura la mejor entrega.";
+
+/* Export Usage After Copy */
+"ExportUsageAfterCopy" = "Después de completar la copia, \
+salga de la aplicación y abra \
+la aplicación de Notas para crear \
+una nueva nota y luego péguela. \
+Por supuesto, también puede pegarlo en otras aplicaciones.";
+
+/* Preparing */
+"Preparing" = "Preparando";

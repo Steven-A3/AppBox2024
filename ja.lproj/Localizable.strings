@@ -1160,3 +1160,24 @@
 "Your purchases have been successfully restored." = "ご購入の商品は正常に復元されました。";
 "Your subscription has been successfully restored." = "ご購読は正常に復元されました。";
 "There are no transactions available for restoration at this time." = "現時点で復元可能なトランザクションはありません。";
+/* Export Function Usage Guide */
+"Export Function Usage Guide" = "エクスポート機能の使用ガイド";
+
+/* Export Usage */
+"ExportUsage" = "以下のように使用してください：\
+直接メモアプリに送らず、\
+コピーを選択してください。\
+その後、メモアプリを開いて\
+貼り付けてください。\
+これにより、最良の配信が保証されます。";
+
+/* Export Usage After Copy */
+"ExportUsageAfterCopy" = "コピーが完了したら、\
+アプリを終了し、\
+メモアプリを開いて\
+新しいメモを作成し、\
+それから貼り付けてください。\
+もちろん、他のアプリにも貼り付けることができます。";
+
+/* Preparing */
+"Preparing" = "準備中";

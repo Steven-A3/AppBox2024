@@ -1158,3 +1158,22 @@ afficher le menu d'action";
 "Your purchases have been successfully restored." = "Vos achats ont été restaurés avec succès.";
 "Your subscription has been successfully restored." = "Votre abonnement a été restauré avec succès.";
 "There are no transactions available for restoration at this time." = "Il n'y a aucune transaction disponible pour restauration à l'heure actuelle.";
+/* Export Function Usage Guide */
+"Export Function Usage Guide" = "Guide d'utilisation de la fonction d'exportation";
+
+/* Export Usage */
+"ExportUsage" = "Veuillez l'utiliser comme suit : \
+Au lieu de l'envoyer directement à l'application Notes, \
+choisissez Copier. \
+Ensuite, ouvrez l'application Notes et collez-le. \
+Cela garantit la meilleure transmission.";
+
+/* Export Usage After Copy */
+"ExportUsageAfterCopy" = "Après avoir terminé la copie, \
+quittez l'application et ouvrez \
+l'application Notes pour créer une nouvelle note, \
+puis collez-la. \
+Bien sûr, vous pouvez également la coller dans d'autres applications.";
+
+/* Preparing */
+"Preparing" = "Préparation";

@@ -20,6 +20,7 @@
 "Percent Calculator_Short" = "Percent Calculator";
 "Tip Calculator" = "Tip Calculator";
 "Unit Price" = "Unit Price";
+"Unit Price Short" = "Unit Price";
 
 "Currency Converter" = "Currency Converter";
 "Lunar Converter" = "Lunar Converter";
@@ -41,8 +42,8 @@
 "Magnifier" = "Magnifier";
 "Flashlight" = "Flashlight";
 "Random" = "Random";
-"Ruler" = "Ruler";
-"Level" = "Level";
+"QR Code" = "QR Code";
+"Pedometer" = "Pedometer";
 
 "Select Currency" = "Select Currency";
 "Principal" = "Principal";
@@ -877,10 +878,10 @@ after the migration.";
 "ExplainAutoDim" = "This option will be very useful when you use Clock in the bed. Plug in your device to an electrical outlet. Switch Off \"Use Auto-Lock\" to prevent the device going into sleep mode. This option will help your sleep by reducing the brightness automatically.";
 
 "Backup file is ready." = "Backup file is ready.";
-"Backup file does not exist." = "Backup file does not exist.";
+"Backup file does not exist." = "No backup files.";
 
 "Tap" = "Tap";
-"or Shake!" = "or Shake!";
+"or Shake!"  = "or Shake!";
 
 "This app does not have access to your photos." = "This app does not have access to your photos.";
 "You can enable access in Privacy Settings." = "You can enable access in Privacy Settings.";
@@ -896,19 +897,18 @@ after the migration.";
 "For monthly payment." = "For monthly payment.";
 "Notifications are disabled" = "Notifications are disabled";
 "Please enable alert after enabling notifications for this app." = "Please enable alert after enabling notifications for this app.";
+"Cannot Save Period." = "Cannot Save Period.";
 "Unlock AppBox Pro" = "Unlock AppBox Pro";
 "Unlock %@" = "Unlock %@";
 "To turn on the LED requires camera access." = "LED requires camera access.";
 "%@ requires camera access." = "%@ requires camera access.";
 
 "Jewish Holidays" = "Jewish Holidays";
-
 "Thanks" = "Thanks";
 "Thank you very much for purchasing the AppBox Pro." = "Thank you very much for purchasing the AppBox Pro.";
 "No Transactions to Restore" = "No Transactions to Restore";
 "Remove Ads" = "Remove Ads";
 "Restore Purchase" = "Restore Purchase";
-
 "Transaction failed. Try again later." = "Transaction failed. Try again later.";
 "Processing" = "Processing";
 "Thank You" = "Thank You";
@@ -944,6 +944,7 @@ after the migration.";
 "Paid User" = "Paid User";
 "Bought Remove Ads" = "Bought Remove Ads";
 "Continue without Verification" = "Continue without Verification";
+
 "Default" = "Default";
 "TAP OR SHAKE TO GENERATE" = "TAP OR SHAKE TO GENERATE";
 "Minimum Value" = "Minimum Value";
@@ -957,16 +958,18 @@ after the migration.";
 "DaysCounter" = "DaysCounter";
 "L Calendar" = "L Calendar";
 "Battery" = "Battery";
+"Ruler" = "Ruler";
+"Level" = "Level";
 
 "Drag here to hide" = "Drag here to hide";
 "Expense" = "Expense";
 "Flashlight Short" = "Flashlight";
-"Unit Price Short" = "Unit Price";
 
-"9.7\" iPad Pro (Wi-Fi)" = "9.7\" iPad Pro (Wi-Fi)";
-"9.7\" iPad Pro" = "9.7\" iPad Pro";
-"iPad Pro (Wi-Fi)" = "12.9\" iPad Pro (Wi-Fi)";
-"iPad Pro" = "12.9\" iPad Pro";
+
+"9.7\" iPad Pro (Wi-Fi)" = "9.7-inch iPad Pro (Wi-Fi)";
+"9.7\" iPad Pro" = "9.7-inch iPad Pro";
+"iPad Pro (Wi-Fi)" = "12.9-inch iPad Pro (Wi-Fi)";
+"iPad Pro" = "12.9-inch iPad Pro";
 "This will reset your home screen layout to defaults." = "This will reset your home screen layout to defaults.";
 "Reset Home Screen" = "Reset Home Screen";
 "Reset Home Screen Layout" = "Reset Home Screen Layout";
@@ -992,7 +995,6 @@ after the migration.";
 "Blood Type" = "Blood Type";
 "Additional Info" = "Additional Info";
 "All" = "All";
-"QR Code" = "QR Code";
 "QR Code not found." = "QR Code not found.";
 "iMessage is not enabled." = "iMessage is not enabled.";
 "Free" = "Free";
@@ -1004,7 +1006,6 @@ after the migration.";
 "days" = "days";
 "steps" = "steps";
 "floors" = "floors";
-"Pedometer" = "Pedometer";
 "In order for AppBox Pro to collect step counts, it needs to be given permission in the device Settings app." = "In order for AppBox Pro to collect step counts, it needs to be given permission in the device Settings app.";
 "Open Settings" = "Open Settings";
 "km" = "km";
@@ -1036,6 +1037,7 @@ after the migration.";
 "Poland Zloty Reference Rate Spot" = "Poland Zloty Reference Rate Spot";
 "Wocu Spot" = "Wocu Spot";
 "South African Cent Spot" = "South African Cent Spot";
+
 "HealthKitAlert" = "AppBox Pro® reads Floors ascended, Steps, and Walking + Running Distance from Apple HealthKit data.\nData collected from HealthKit will not be used for marketing and advertising purposes.";
 
 "means" = "means";
@@ -1061,15 +1063,14 @@ after the migration.";
 "%@ requires Photo Library access." = "%@ requires Photo Library access.";
 "Photo Library access not authorized." = "Photo Library access not authorized.";
 "AbbreviationHelpTapToViewOrPress" =
-"Tap to view the list
-Or Press(3D Touch) to view
+"Tap to view the list or
+(3D Touch)Press to view
 the action menu";
 "DrillHelpTapToCopyOrPress" =
 "Tap to Copy or
-Press(3D Touch) to view
+(3D Touch)Press to view
 the action menu";
 
-"Rate" = "Rate";
 "rate" = "rate";
 "Removed from Favorites" = "Removed from Favorites";
 "Added to Favorites" = "Added to Favorites";
@@ -1082,9 +1083,10 @@ the action menu";
 "Recent to Keep" = "Recent to Keep";
 "Use Gray Icons" = "Use Gray Icons";
 "Face ID" = "Face ID";
+
 "Wallet Contents" = "Wallet Contents";
 "Columns Header" = "Columns Header";
-"The backup file has been stored successfully." = "The backup file has been stored successfully.";
+"The backup file has been stored successfully." = "The backup file has been stored successfully.";
 "This will take a while. Would you like to continue?" = "This will take a while. Would you like to continue?";
 "Backup & Restore will use Files app. If you don't see Dropbox in the Locations, please install the Dropbox app and setup your account. Next time, tap using Files." = "Backup & Restore will use Files app. If you don't see Dropbox in the Locations, please install the Dropbox app and setup your account. Next time, tap using Files.";
 "Backup using Files app requires iOS 14 or later. Please update iOS to the latest version." = "Backup using Files app requires iOS 14 or later. Please update iOS to the latest version.";
@@ -1094,3 +1096,17 @@ the action menu";
 "Enjoy_faster_app" = "Enjoy faster app navigation without the load times associated with ads.";
 "Your_free_trial" = "Your free trial can be cancelled before it ends to prevent charges. If you continue, the subscription renews automatically, but you can cancel anytime.";
 "Ads Free Pass" = "Ads Free Pass";
+"Your purchases have been successfully restored." = "Your purchases have been successfully restored.";
+"Your subscription has been successfully restored." = "Your subscription has been successfully restored.";
+"There are no transactions available for restoration at this time." = "There are no transactions available for restoration at this time.";
+"Export Function Usage Guide" = "Export Function Usage Guide";
+"ExportUsage" = "Please use it as follows:\
+Instead of sending it directly to the Notes app, choose Copy.\
+Then, open the Notes app and paste it. This ensures the best delivery.";
+"ExportUsageAfterCopy" = "After you have completed copying, \
+exit the app and \
+open the Notes app to \
+create a new note, and then \
+paste it. \
+Of course, you can also paste it into other apps.";
+"Preparing" = "Preparing";

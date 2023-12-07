@@ -992,3 +992,21 @@
 "Your purchases have been successfully restored." = "您的購買已成功恢復。";
 "Your subscription has been successfully restored." = "您的訂閱已成功恢復。";
 "There are no transactions available for restoration at this time." = "目前沒有可恢復的交易。";
+/* Export Function Usage Guide */
+"Export Function Usage Guide" = "匯出功能使用指南";
+
+/* Export Usage */
+"ExportUsage" = "請按照以下方式使用：\
+不要直接發送到備忘錄應用程式，\
+請選擇複製。\
+然後，打開備忘錄應用程式並粘貼。\
+這樣可以確保最佳傳遞。";
+
+/* Export Usage After Copy */
+"ExportUsageAfterCopy" = "複製完成後，\
+退出應用程式並打開備忘錄應用程式，\
+創建新筆記然後粘貼。\
+當然，您也可以粘貼到其他應用程式中。";
+
+/* Preparing */
+"Preparing" = "準備中";

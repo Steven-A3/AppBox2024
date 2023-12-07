@@ -1156,3 +1156,22 @@ wyświetlić menu czynności";
 "Your purchases have been successfully restored." = "Twoje zakupy zostały pomyślnie przywrócone.";
 "Your subscription has been successfully restored." = "Twoja subskrypcja została pomyślnie przywrócona.";
 "There are no transactions available for restoration at this time." = "W tej chwili nie ma transakcji dostępnych do przywrócenia.";
+/* Export Function Usage Guide */
+"Export Function Usage Guide" = "Przewodnik użytkowania funkcji eksportu";
+
+/* Export Usage */
+"ExportUsage" = "Proszę używać następująco: \
+zamiast wysyłać bezpośrednio do aplikacji Notatki, \
+wybierz Kopiuj. \
+Następnie otwórz aplikację Notatki i wklej. \
+Zapewni to najlepsze dostarczenie.";
+
+/* Export Usage After Copy */
+"ExportUsageAfterCopy" = "Po skopiowaniu, \
+zamknij aplikację i otwórz aplikację Notatki, \
+aby utworzyć nową notatkę, \
+a następnie wklej ją. \
+Oczywiście, możesz również wkleić to do innych aplikacji.";
+
+/* Preparing */
+"Preparing" = "Przygotowanie";

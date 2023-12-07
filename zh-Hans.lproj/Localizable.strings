@@ -1169,3 +1169,21 @@
 "Your purchases have been successfully restored." = "您的购买已成功恢复。";
 "Your subscription has been successfully restored." = "您的订阅已成功恢复。";
 "There are no transactions available for restoration at this time." = "当前没有可恢复的交易。";
+/* Export Function Usage Guide */
+"Export Function Usage Guide" = "导出功能使用指南";
+
+/* Export Usage */
+"ExportUsage" = "请按以下方式使用：\
+不要直接发送到备忘录应用，\
+请选择复制。\
+然后打开备忘录应用并粘贴。\
+这样可以确保最佳传递效果。";
+
+/* Export Usage After Copy */
+"ExportUsageAfterCopy" = "复制完成后，\
+退出应用并打开备忘录应用，\
+创建新笔记然后粘贴。\
+当然，您也可以粘贴到其他应用中。";
+
+/* Preparing */
+"Preparing" = "准备中";

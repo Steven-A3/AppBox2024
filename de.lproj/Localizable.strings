@@ -1168,3 +1168,25 @@ um das Aktionsmenü anzuzeigen";
 "Your purchases have been successfully restored." = "Ihre Käufe wurden erfolgreich wiederhergestellt.";
 "Your subscription has been successfully restored." = "Ihr Abonnement wurde erfolgreich wiederhergestellt.";
 "There are no transactions available for restoration at this time." = "Zurzeit stehen keine Transaktionen zur Wiederherstellung zur Verfügung.";
+/* Export Function Usage Guide */
+"Export Function Usage Guide" = "Anleitung zur Nutzung der Exportfunktion";
+
+/* Export Usage */
+"ExportUsage" = "Bitte verwenden Sie es wie folgt: \
+Senden Sie es nicht direkt zur Notiz-App, \
+sondern wählen Sie Kopieren. \
+Öffnen Sie dann die Notiz-App und \
+fügen Sie es ein. \
+Dies gewährleistet \
+die beste Übermittlung.";
+
+/* Export Usage After Copy */
+"ExportUsageAfterCopy" = "Nachdem Sie den Kopiervorgang abgeschlossen haben, \
+verlassen Sie die App und \
+öffnen Sie die Notiz-App, \
+um eine neue Notiz zu erstellen und \
+dann einzufügen. \
+Natürlich können Sie es auch in andere Apps einfügen.";
+
+/* Preparing */
+"Preparing" = "Vorbereitung";
