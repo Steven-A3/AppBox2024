@@ -126,9 +126,11 @@ extern NSString *const A3AppGroupNameNone;
 @property (nonatomic, assign) NSUInteger counterPassedDidBecomeActive;
 @property (nonatomic, assign) BOOL appWillResignActive;
 @property (nonatomic, strong) NSDate *originalPurchaseDate;
-@property (nonatomic, assign) BOOL isOldPaidUser;
-@property (nonatomic, assign) BOOL hasAdsFreePass;
+@property (nonatomic, assign) BOOL isOldPaidUser;   // 3.5 버전 이전 유료앱 구매자
+@property (nonatomic, assign) BOOL hasAdsFreePass;  // Subscription이 유효한 사용자
 @property (nonatomic, strong) NSDate *expirationDate;
+@property (nonatomic, strong) NSString *originalAppVersion;
+@property (nonatomic, assign) BOOL removeAdsActive; // Remove Ads를 구매한 사용자
 
 /**
  *  Settings에서 홈 화면 종류를 바꾼 경우, rootViewController가 초기화되면서
@@ -146,12 +148,8 @@ extern NSString *const A3AppGroupNameNone;
 - (UIViewController *)visibleViewController;
 - (void)downloadDataFiles;
 - (void)setupContext;
-- (NSString *)backupReceiptFilePath;
-- (void)makeReceiptBackup;
-- (BOOL)receiptHasRemoveAds;
 - (void)presentInterstitialAds;
 - (void)updateHolidayNations;
-- (void)askPersonalizedAdConsent;
 
 /**
  Evaluates the subscription status of the user and decides whether to present ads.

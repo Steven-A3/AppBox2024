@@ -1152,7 +1152,7 @@ wyświetlić menu czynności";
 "Recents" = "Ostatnie";
 "Enjoy_faster_app" = "Ciesz się szybszą nawigacją w aplikacji bez czasów ładowania związanych z reklamami.";
 "Your_free_trial" = "Możesz anulować swoją bezpłatną wersję próbną przed jej zakończeniem, aby uniknąć opłat. Jeśli kontynuujesz, subskrypcja odnawia się automatycznie, ale możesz zrezygnować w dowolnym momencie.";
-"Ads Free Pass" = "Przepustka bez Reklam";
+"Ads Free Pass" = "Przepustka bez reklam";
 "Your purchases have been successfully restored." = "Twoje zakupy zostały pomyślnie przywrócone.";
 "Your subscription has been successfully restored." = "Twoja subskrypcja została pomyślnie przywrócona.";
 "There are no transactions available for restoration at this time." = "W tej chwili nie ma transakcji dostępnych do przywrócenia.";
@@ -1175,3 +1175,5 @@ Oczywiście, możesz również wkleić to do innych aplikacji.";
 
 /* Preparing */
 "Preparing" = "Przygotowanie";
+"Ads Free Pass Unavailable" = "Brak dostępu do wersji bez reklam";
+"Upgrade to iOS 17 for Ads Free Pass. Visit Settings > General > Software Update." = "Zaktualizuj do iOS 17, aby uzyskać dostęp do wersji bez reklam. Odwiedź Ustawienia > Ogólne > Aktualizacja oprogramowania.";

@@ -1148,7 +1148,7 @@ ver el menú de acción";
 "Recents" = "Recientes";
 "Enjoy_faster_app" = "Disfruta de una navegación más rápida en la aplicación sin los tiempos de carga asociados con los anuncios.";
 "Your_free_trial" = "Tu prueba gratuita se puede cancelar antes de que termine para evitar cargos. Si continúas, la suscripción se renueva automáticamente, pero puedes cancelar en cualquier momento.";
-"Ads Free Pass" = "Pase Libre de Anuncios";
+"Ads Free Pass" = "Pase sin anuncios";
 "Your purchases have been successfully restored." = "Tus compras han sido restauradas exitosamente.";
 "Your subscription has been successfully restored." = "Tu suscripción ha sido restaurada exitosamente.";
 "There are no transactions available for restoration at this time." = "No hay transacciones disponibles para restaurar en este momento.";
@@ -1172,3 +1172,5 @@ Por supuesto, también puede pegarlo en otras aplicaciones.";
 
 /* Preparing */
 "Preparing" = "Preparando";
+"Ads Free Pass Unavailable" = "Pase Sin Anuncios No Disponible";
+"Upgrade to iOS 17 for Ads Free Pass. Visit Settings > General > Software Update." = "Actualiza a iOS 17 para obtener el Pase Sin Anuncios. Visita Ajustes > General > Actualización de Software.";

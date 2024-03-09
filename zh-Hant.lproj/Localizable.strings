@@ -988,7 +988,7 @@
 "Recents" = "最近";
 "Enjoy_faster_app" = "享受更快的應用導航，無需等待與廣告相關的加載時間。";
 "Your_free_trial" = "您可以在免費試用期結束前取消，以避免產生費用。如果您選擇繼續使用，訂閱將會自動續訂，但您可以隨時取消。";
-"Ads Free Pass" = "去除廣告的使用券";
+"Ads Free Pass" = "去廣告通行证";
 "Your purchases have been successfully restored." = "您的購買已成功恢復。";
 "Your subscription has been successfully restored." = "您的訂閱已成功恢復。";
 "There are no transactions available for restoration at this time." = "目前沒有可恢復的交易。";
@@ -1010,3 +1010,5 @@
 
 /* Preparing */
 "Preparing" = "準備中";
+"Ads Free Pass Unavailable" = "無廣告通行證不可用";
+"Upgrade to iOS 17 for Ads Free Pass. Visit Settings > General > Software Update." = "升級至iOS 17以獲得無廣告通行證。訪問設置 > 通用 > 軟件更新。";

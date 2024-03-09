@@ -621,11 +621,7 @@ static NSString *const A3V3InstructionDidShowForGridMenu = @"A3V3InstructionDidS
 
 - (void)setupInstructionView
 {
-    FNLOG();
-    if ([[NSUserDefaults standardUserDefaults] integerForKey:kA3ApplicationNumberOfDidBecomeActive] < 2) {
-        FNLOG();
-        return;
-    }
+
 	if (![self.navigationController.visibleViewController isKindOfClass:[self class]]) {
         FNLOG();
 		return;

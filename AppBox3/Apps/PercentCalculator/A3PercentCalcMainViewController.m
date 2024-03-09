@@ -317,6 +317,7 @@
 	NSData *inputData = [[A3SyncManager sharedSyncManager] objectForKey:A3PercentCalcUserDefaultsSavedInputData];
 	if (inputData) {
 		A3PercentCalcData *savedInputData = [NSKeyedUnarchiver unarchiveObjectWithData:inputData];
+        FNLOG(@"%@", savedInputData);
 
 		if (savedInputData.dataType == PercentCalcType_5) {
 			_factorX1 = savedInputData.values[ValueIdx_X1];
@@ -537,7 +538,11 @@
             PercentCalcHistory *entity = [[PercentCalcHistory alloc] initWithContext:context];
             entity.uniqueID = [[NSUUID UUID] UUIDString];
             entity.updateDate = [NSDate date];
-            entity.historyItem = [NSKeyedArchiver archivedDataWithRootObject:aData requiringSecureCoding:YES error:NULL];
+            NSError *error;
+            entity.historyItem = [NSKeyedArchiver archivedDataWithRootObject:aData requiringSecureCoding:NO error:&error];
+            if (error) {
+                FNLOG(@"%@", error.localizedDescription);
+            }
             [context saveContext];
             [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem * barButton, NSUInteger idx, BOOL *stop) {
                 barButton.enabled = YES;
@@ -552,7 +557,11 @@
             PercentCalcHistory *entity = [[PercentCalcHistory alloc] initWithContext:context];
             entity.uniqueID = [[NSUUID UUID] UUIDString];
             entity.updateDate = [NSDate date];
-            entity.historyItem = [NSKeyedArchiver archivedDataWithRootObject:aData requiringSecureCoding:YES error:NULL];
+            NSError *error;
+            entity.historyItem = [NSKeyedArchiver archivedDataWithRootObject:aData requiringSecureCoding:NO error:&error];
+            if (error) {
+                FNLOG(@"%@", error.localizedDescription);
+            }
             [context saveContext];
             [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem * barButton, NSUInteger idx, BOOL *stop) {
                 barButton.enabled = YES;
@@ -568,7 +577,11 @@
         inputTextData.values = [NSArray arrayWithObjects:inputTextData.values[0], inputTextData.values[1], nil];
     }
 
-	id inputData = [NSKeyedArchiver archivedDataWithRootObject:inputTextData requiringSecureCoding:YES error:NULL];
+    NSError *error;
+	id inputData = [NSKeyedArchiver archivedDataWithRootObject:inputTextData requiringSecureCoding:NO error:&error];
+    if (error) {
+        FNLOG(@"%@", error.localizedDescription);
+    }
 	[[A3SyncManager sharedSyncManager] setObject:inputData forKey:A3PercentCalcUserDefaultsSavedInputData state:A3DataObjectStateModified];
 }
 

@@ -20,6 +20,7 @@
 #import <objc/runtime.h>
 #import "A3SyncManager.h"
 #import "A3UserDefaults+A3Addition.h"
+#import "AppBox3-swift.h"
 
 static char const *const key_adBannerView = "key_adBannerView";
 static char const *const key_adNativeExpressView = "key_adNativeExpressView";
@@ -234,6 +235,19 @@ static char const *const key_adNativeExpressView = "key_adNativeExpressView";
 
 - (GADBannerView *)bannerView {
     return objc_getAssociatedObject(self, key_adBannerView);
+}
+
+/*
+ * Present subscription view controller
+ * @param completionHandler completion handler
+ * completionHandler will called when subscriptionview closed.
+ * This code requires iOS 17.0 or later
+ */
+- (void)presentSubscriptionViewControllerWithCompletion:(void (^)(void))completionHandler {
+    UIViewController *subscriptionShopViewController = [SubscriptionUtility subscriptionShopViewControllerWithExpirationDate:[A3AppDelegate instance].expirationDate completionHandler:completionHandler];
+    subscriptionShopViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+
+    [self presentViewController:subscriptionShopViewController animated:YES completion:NULL];
 }
 
 @end

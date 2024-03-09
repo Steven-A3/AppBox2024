@@ -34,6 +34,7 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3UserDefaults.h"
 #import "A3AppDelegate+migration.h"
+#import "A3AppDelegate+passcode.h"
 #import "UIViewController+A3Addition.h"
 #import "A3LadyCalendarModelManager.h"
 #import "A3NavigationController.h"
@@ -50,7 +51,6 @@
 #import "NYXImagesKit.h"
 @import UserNotifications;
 #import <FirebaseCore/FirebaseCore.h>
-#import <PersonalizedAdConsent/PersonalizedAdConsent.h>
 #import <AdSupport/AdSupport.h>
 #import "TJDropboxAuthenticator.h"
 #import <AppTrackingTransparency/AppTrackingTransparency.h>
@@ -61,6 +61,7 @@
 #import <AppBoxKit/AppBoxKit.h>
 #import "A3UIDevice.h"
 #import "A3UserDefaults+A3Addition.h"
+#import "UIViewController+extension.h"
 
 NSString *const A3UserDefaultsStartOptionOpenClockOnce = @"A3StartOptionOpenClockOnce";
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
@@ -99,22 +100,22 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 @end
 
 @implementation A3AppDelegate {
-	BOOL _appIsNotActiveYet;
-	BOOL _backgroundDownloadIsInProgress;
-	BOOL _statusBarHiddenBeforeAdsAppear;
-	UIStatusBarStyle _statusBarStyleBeforeAdsAppear;
+    BOOL _appIsNotActiveYet;
+    BOOL _backgroundDownloadIsInProgress;
+    BOOL _statusBarHiddenBeforeAdsAppear;
+    UIStatusBarStyle _statusBarStyleBeforeAdsAppear;
 }
 
 @synthesize window = _window;
 
 + (A3AppDelegate *)instance {
-	return (A3AppDelegate *) [[UIApplication sharedApplication] delegate];
+    return (A3AppDelegate *) [[UIApplication sharedApplication] delegate];
 }
 
 - (void)updateStartOption {
-	_startOptionOpenClockOnce = [[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsStartOptionOpenClockOnce];
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3UserDefaultsStartOptionOpenClockOnce];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+    _startOptionOpenClockOnce = [[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsStartOptionOpenClockOnce];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:A3UserDefaultsStartOptionOpenClockOnce];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 // TODO: 3D Touch 장비 입수후 테스트 필요
@@ -189,85 +190,85 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     #endif
    
     BOOL shouldPerformAdditionalDelegateHandling = [self shouldPerformAdditionalDelegateHandling:launchOptions];
-	
-	[[NSUserDefaults standardUserDefaults] registerDefaults:@{kA3SettingsMainMenuStyle:A3SettingsMainMenuStyleIconGrid}];
+    
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kA3SettingsMainMenuStyle:A3SettingsMainMenuStyleIconGrid}];
 
     _shouldPresentAd = YES;
     _expirationDate = [NSDate distantPast];
     
-    [self evaluateSubscriptionWithCompletion:NULL];
+//    [self evaluateSubscriptionWithCompletion:NULL];
     
-	_passcodeFreeBegin = [[NSDate distantPast] timeIntervalSinceReferenceDate];
+    _passcodeFreeBegin = [[NSDate distantPast] timeIntervalSinceReferenceDate];
 
-	[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
 
-	_appIsNotActiveYet = YES;
+    _appIsNotActiveYet = YES;
 
-	CDESetCurrentLoggingLevel(CDELoggingLevelNone);
+    CDESetCurrentLoggingLevel(CDELoggingLevelNone);
 
-	[self prepareDirectories];
-	[A3SyncManager sharedSyncManager];
+    [self prepareDirectories];
+    [A3SyncManager sharedSyncManager];
 
-	[[NSUbiquitousKeyValueStore defaultStore] removeObjectForKey:A3MainMenuDataEntityAllMenu];
-	[[NSUbiquitousKeyValueStore defaultStore] removeObjectForKey:A3MainMenuDataEntityFavorites];
-	[[NSUbiquitousKeyValueStore defaultStore] synchronize];
+    [[NSUbiquitousKeyValueStore defaultStore] removeObjectForKey:A3MainMenuDataEntityAllMenu];
+    [[NSUbiquitousKeyValueStore defaultStore] removeObjectForKey:A3MainMenuDataEntityFavorites];
+    [[NSUbiquitousKeyValueStore defaultStore] synchronize];
 
-	[self setupContext];
-	[self favoriteMenuDictionary];
+    [self setupContext];
+    [self favoriteMenuDictionary];
 
-	UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
-	if (localNotification) {
-		_localNotificationUserInfo = [localNotification.userInfo copy];
+    UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+    if (localNotification) {
+        _localNotificationUserInfo = [localNotification.userInfo copy];
         [[UIApplication sharedApplication] cancelLocalNotification:localNotification];
-	}
+    }
 
-	// Check if it is running first time after update from 1.x.x
-	// 아래 값은 마이그레이션이 끝나면 지운다.
-	_previousVersion = [[NSUserDefaults standardUserDefaults] objectForKey:kA3ApplicationLastRunVersion];
-	if (_previousVersion) {
-		_shouldMigrateV1Data = YES;
-		[A3KeychainUtils migrateV1Passcode];
-	} else {
-		// TODO: 지우고 새로 설치해도 암호가 지워지지 않는 오류 수정해야 함
-		_previousVersion = [[A3UserDefaults standardUserDefaults] objectForKey:kA3ApplicationLastRunVersion];
-		if (!_previousVersion) {
-			_firstRunAfterInstall = YES;
-			[A3KeychainUtils removePassword];
-			[self initializePasscodeUserDefaults];
-		}
-	}
+    // Check if it is running first time after update from 1.x.x
+    // 아래 값은 마이그레이션이 끝나면 지운다.
+    _previousVersion = [[NSUserDefaults standardUserDefaults] objectForKey:kA3ApplicationLastRunVersion];
+    if (_previousVersion) {
+        _shouldMigrateV1Data = YES;
+        [A3KeychainUtils migrateV1Passcode];
+    } else {
+        // TODO: 지우고 새로 설치해도 암호가 지워지지 않는 오류 수정해야 함
+        _previousVersion = [[A3UserDefaults standardUserDefaults] objectForKey:kA3ApplicationLastRunVersion];
+        if (!_previousVersion) {
+            _firstRunAfterInstall = YES;
+            [A3KeychainUtils removePassword];
+            [self initializePasscodeUserDefaults];
+        }
+    }
     [self setDefaultValues];
 
-	// AppBox Pro V1.8.4까지는 Days Until 기능의 옵션에 의해서 남은 일자에 대한 배지 기능이 있었습니다.
-	// AppBox Pro V3.0 이후로는 배지 기능을 제공하지 않습니다.
-	// 이 값은 초기화 합니다.
-	[self clearScheduledOldVersionLocalNotifications];
+    // AppBox Pro V1.8.4까지는 Days Until 기능의 옵션에 의해서 남은 일자에 대한 배지 기능이 있었습니다.
+    // AppBox Pro V3.0 이후로는 배지 기능을 제공하지 않습니다.
+    // 이 값은 초기화 합니다.
+    [self clearScheduledOldVersionLocalNotifications];
 
-	// toolsconf.db가 library directory에 남아 있으면 마이그레이션이 끝나지 않았으므로 확실히 점검한다.
-	NSString *oldFilePath = [@"toolsconf.db" pathInLibraryDirectory];
-	if ([[NSFileManager defaultManager] fileExistsAtPath:oldFilePath]) {
-		_shouldMigrateV1Data = YES;
-	}
+    // toolsconf.db가 library directory에 남아 있으면 마이그레이션이 끝나지 않았으므로 확실히 점검한다.
+    NSString *oldFilePath = [@"toolsconf.db" pathInLibraryDirectory];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:oldFilePath]) {
+        _shouldMigrateV1Data = YES;
+    }
 
     [self addNotificationObservers];
 
     FNLOGRECT([[UIScreen mainScreen] nativeBounds]);
     
-	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	[self setupMainMenuViewController];
-	self.window.backgroundColor = [UIColor whiteColor];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    [self setupMainMenuViewController];
+    self.window.backgroundColor = [UIColor whiteColor];
 
     self.window.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
 
-	[self.window makeKeyAndVisible];
+    [self.window makeKeyAndVisible];
 
     NSString *lastRunVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     [[NSUserDefaults standardUserDefaults] setObject:lastRunVersion forKey:kA3ApplicationLastRunVersion];
-	[[A3UserDefaults standardUserDefaults] setObject:lastRunVersion forKey:kA3ApplicationLastRunVersion];
+    [[A3UserDefaults standardUserDefaults] setObject:lastRunVersion forKey:kA3ApplicationLastRunVersion];
     
-	[[A3UserDefaults standardUserDefaults] synchronize];
+    [[A3UserDefaults standardUserDefaults] synchronize];
     
-	return shouldPerformAdditionalDelegateHandling;
+    return shouldPerformAdditionalDelegateHandling;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -276,88 +277,88 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     _appWillResignActive = YES;
     
-	[self applicationWillResignActive_passcode];
-	FNLOG();
+    [self applicationWillResignActive_passcode];
+    FNLOG();
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-	[[A3UserDefaults standardUserDefaults] synchronize];
+    [[A3UserDefaults standardUserDefaults] synchronize];
 
-	[self applicationDidEnterBackground_passcode];
+    [self applicationDidEnterBackground_passcode];
 
-	__block UIBackgroundTaskIdentifier identifier;
-	identifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-		[[UIApplication sharedApplication] endBackgroundTask:identifier];
-		identifier = UIBackgroundTaskInvalid;
-	}];
-	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    __block UIBackgroundTaskIdentifier identifier;
+    identifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+        [[UIApplication sharedApplication] endBackgroundTask:identifier];
+        identifier = UIBackgroundTaskInvalid;
+    }];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         NSManagedObjectContext *managedObjectContext = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-		[managedObjectContext performBlock:^{
-			if (managedObjectContext.hasChanges) {
-				BOOL shouldSaveChanges = NO;
-				NSArray *insertedObjects = [[managedObjectContext insertedObjects] allObjects];
-				for (id insertedObj in insertedObjects) {
-					if ([insertedObj isKindOfClass:[WalletItem class]]) {
-						WalletItem *insertedWalletItem = insertedObj;
-						if 	(	[[insertedWalletItem.name stringByTrimmingSpaceCharacters] length] ||
-								[[insertedWalletItem.note stringByTrimmingSpaceCharacters] length])
-						{
-							shouldSaveChanges = YES;
-							break;
-						}
-					}
-					if ([insertedObj isKindOfClass:[WalletFieldItem class]]) {
-						WalletFieldItem *fieldItem = insertedObj;
-						if (	[[fieldItem.value stringByTrimmingSpaceCharacters] length] ||
-								fieldItem.hasImage || fieldItem.hasVideo || fieldItem.date)
-						{
-							shouldSaveChanges = YES;
-							break;
-						}
-					}
-					if ([insertedObj isKindOfClass:[WalletCategory class]]) {
-						WalletCategory *category = insertedObj;
-						if ([[category.name stringByTrimmingSpaceCharacters] length]) {
-							shouldSaveChanges = YES;
-							break;
-						}
-					}
-					if ([insertedObj isKindOfClass:[DaysCounterEvent class]]) {
-						DaysCounterEvent *event = insertedObj;
-						if ([[event.eventName stringByTrimmingSpaceCharacters] length] ||
-								[[event.notes stringByTrimmingSpaceCharacters] length] ||
-								event.photoID )
-						{
-							shouldSaveChanges = YES;
-							break;
-						}
-					}
-				}
-				FNLOG(@"Core data changes will be saved: %@", shouldSaveChanges ? @"YES" : @"NO");
-				if (shouldSaveChanges) {
-					[managedObjectContext save:NULL];
-				}
-			}
+        [managedObjectContext performBlock:^{
+            if (managedObjectContext.hasChanges) {
+                BOOL shouldSaveChanges = NO;
+                NSArray *insertedObjects = [[managedObjectContext insertedObjects] allObjects];
+                for (id insertedObj in insertedObjects) {
+                    if ([insertedObj isKindOfClass:[WalletItem class]]) {
+                        WalletItem *insertedWalletItem = insertedObj;
+                        if     (    [[insertedWalletItem.name stringByTrimmingSpaceCharacters] length] ||
+                                [[insertedWalletItem.note stringByTrimmingSpaceCharacters] length])
+                        {
+                            shouldSaveChanges = YES;
+                            break;
+                        }
+                    }
+                    if ([insertedObj isKindOfClass:[WalletFieldItem class]]) {
+                        WalletFieldItem *fieldItem = insertedObj;
+                        if (    [[fieldItem.value stringByTrimmingSpaceCharacters] length] ||
+                                fieldItem.hasImage || fieldItem.hasVideo || fieldItem.date)
+                        {
+                            shouldSaveChanges = YES;
+                            break;
+                        }
+                    }
+                    if ([insertedObj isKindOfClass:[WalletCategory class]]) {
+                        WalletCategory *category = insertedObj;
+                        if ([[category.name stringByTrimmingSpaceCharacters] length]) {
+                            shouldSaveChanges = YES;
+                            break;
+                        }
+                    }
+                    if ([insertedObj isKindOfClass:[DaysCounterEvent class]]) {
+                        DaysCounterEvent *event = insertedObj;
+                        if ([[event.eventName stringByTrimmingSpaceCharacters] length] ||
+                                [[event.notes stringByTrimmingSpaceCharacters] length] ||
+                                event.photoID )
+                        {
+                            shouldSaveChanges = YES;
+                            break;
+                        }
+                    }
+                }
+                FNLOG(@"Core data changes will be saved: %@", shouldSaveChanges ? @"YES" : @"NO");
+                if (shouldSaveChanges) {
+                    [managedObjectContext save:NULL];
+                }
+            }
 
-			[[A3SyncManager sharedSyncManager] synchronizeWithCompletion:^(NSError *error) {
-				[[UIApplication sharedApplication] endBackgroundTask:identifier];
-				identifier = UIBackgroundTaskInvalid;
-			}];
-		}];
-	});
+            [[A3SyncManager sharedSyncManager] synchronizeWithCompletion:^(NSError *error) {
+                [[UIApplication sharedApplication] endBackgroundTask:identifier];
+                identifier = UIBackgroundTaskInvalid;
+            }];
+        }];
+    });
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     _appWillResignActive = NO;
-	_adDisplayedAfterApplicationDidBecomeActive = NO;
-	FNLOG();
-	// Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-	[self applicationWillEnterForeground_passcode];
+    _adDisplayedAfterApplicationDidBecomeActive = NO;
+    FNLOG();
+    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    [self applicationWillEnterForeground_passcode];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -365,29 +366,29 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     _appWillResignActive = NO;
     NSInteger numberOfDidBecomeAcive = [[NSUserDefaults standardUserDefaults] integerForKey:kA3ApplicationNumberOfDidBecomeActive];
     [[NSUserDefaults standardUserDefaults] setInteger:numberOfDidBecomeAcive + 1 forKey:kA3ApplicationNumberOfDidBecomeActive];
-	FNLOG(@"Number Of DidBecomeActive = %ld", (long)[[NSUserDefaults standardUserDefaults] integerForKey:kA3ApplicationNumberOfDidBecomeActive]);
-	
-	A3SyncManager *syncManager = [A3SyncManager sharedSyncManager];
-	[syncManager synchronizeWithCompletion:NULL];
-	if ([syncManager isCloudEnabled]) {
-		[syncManager uploadMediaFilesToCloud];
-		[syncManager downloadMediaFilesFromCloud];
-	}
+    FNLOG(@"Number Of DidBecomeActive = %ld", (long)[[NSUserDefaults standardUserDefaults] integerForKey:kA3ApplicationNumberOfDidBecomeActive]);
+    
+    A3SyncManager *syncManager = [A3SyncManager sharedSyncManager];
+    [syncManager synchronizeWithCompletion:NULL];
+    if ([syncManager isCloudEnabled]) {
+        [syncManager uploadMediaFilesToCloud];
+        [syncManager downloadMediaFilesFromCloud];
+    }
 
-	// TODO: Dropbox V2 Pending work
-//	UINavigationController *navigationController = [self navigationController];
-//	UIViewController *topViewController = self.navigationController.topViewController;
-//	if ([topViewController isKindOfClass:[A3SettingsBackupRestoreViewController class]] && ![[DBSession sharedSession] isLinked]) {
-//		[navigationController popViewControllerAnimated:NO];
-//	}
+    // TODO: Dropbox V2 Pending work
+//    UINavigationController *navigationController = [self navigationController];
+//    UIViewController *topViewController = self.navigationController.topViewController;
+//    if ([topViewController isKindOfClass:[A3SettingsBackupRestoreViewController class]] && ![[DBSession sharedSession] isLinked]) {
+//        [navigationController popViewControllerAnimated:NO];
+//    }
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-	[self applicationDidBecomeActive_passcodeAfterLaunch:_appIsNotActiveYet];
-	
-	[self fetchPushNotification];
+    [self applicationDidBecomeActive_passcodeAfterLaunch:_appIsNotActiveYet];
+    
+    [self fetchPushNotification];
 
-	if (_appIsNotActiveYet) {
-		_appIsNotActiveYet = NO;
-	}
+    if (_appIsNotActiveYet) {
+        _appIsNotActiveYet = NO;
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -397,20 +398,20 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 }
 
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-	NSUInteger orientations;
+    NSUInteger orientations;
 
-	if (IS_IPAD) {
-		orientations = UIInterfaceOrientationMaskAll;
-	} else {
-		id<A3ViewControllerProtocol>visibleViewController = (id <A3ViewControllerProtocol>) [_currentMainNavigationController visibleViewController];
-		if ([visibleViewController respondsToSelector:@selector(a3SupportedInterfaceOrientations)]) {
-			orientations = [visibleViewController a3SupportedInterfaceOrientations];
-		} else {
-			orientations = UIInterfaceOrientationMaskPortrait;
-		}
-	}
+    if (IS_IPAD) {
+        orientations = UIInterfaceOrientationMaskAll;
+    } else {
+        id<A3ViewControllerProtocol>visibleViewController = (id <A3ViewControllerProtocol>) [_currentMainNavigationController visibleViewController];
+        if ([visibleViewController respondsToSelector:@selector(a3SupportedInterfaceOrientations)]) {
+            orientations = [visibleViewController a3SupportedInterfaceOrientations];
+        } else {
+            orientations = UIInterfaceOrientationMaskPortrait;
+        }
+    }
 
-	return orientations;
+    return orientations;
 }
 
 #pragma mark - Handle Open URL
@@ -482,7 +483,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 
 // TODO: 3D Touch 장비 입수후 테스트 필요
 - (void)application:(UIApplication * _Nonnull)application performActionForShortcutItem:(UIApplicationShortcutItem * _Nonnull)shortcutItem completionHandler:(void (^ _Nonnull)(BOOL succeeded))completionHandler {
-	FNLOG();
+    FNLOG();
     _shortcutItem = shortcutItem;
     completionHandler([self handleShortcutItem]);
 }
@@ -491,22 +492,22 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     if (!_shortcutItem) return NO;
 
     [self pushStartingAppInfo];
-	NSString *startingAppName = (id)_shortcutItem.userInfo[kA3AppsMenuName];
+    NSString *startingAppName = (id)_shortcutItem.userInfo[kA3AppsMenuName];
     [[A3UserDefaults standardUserDefaults] setObject:startingAppName forKey:kA3AppsStartingAppName];
     _shortcutItem = nil;
     
-//	if ([self shouldAskPasscodeForStarting] || [self requirePasscodeForStartingApp]) {
-//		[self presentLockScreen:self];
-//	} else {
-//		[self removeSecurityCoverView];
-//		if ([self isMainMenuStyleList]) {
-//			[self.mainMenuViewController openRecentlyUsedMenu:YES];
-//		} else {
-//			[self launchAppNamed:startingAppName verifyPasscode:NO delegate:nil animated:NO];
-//			self.homeStyleMainMenuViewController.activeAppName = [startingAppName copy];
-//		}
-//	}
-	
+//    if ([self shouldAskPasscodeForStarting] || [self requirePasscodeForStartingApp]) {
+//        [self presentLockScreen:self];
+//    } else {
+//        [self removeSecurityCoverView];
+//        if ([self isMainMenuStyleList]) {
+//            [self.mainMenuViewController openRecentlyUsedMenu:YES];
+//        } else {
+//            [self launchAppNamed:startingAppName verifyPasscode:NO delegate:nil animated:NO];
+//            self.homeStyleMainMenuViewController.activeAppName = [startingAppName copy];
+//        }
+//    }
+    
     return YES;
 }
 
@@ -517,11 +518,11 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     } else {
         [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:kA3AppsOriginalStartingAppName];
     }
-	if ([self isMainMenuStyleList]) {
-		_mainMenuViewController.activeAppName = nil;
-	} else {
-		_homeStyleMainMenuViewController.activeAppName = nil;
-	}
+    if ([self isMainMenuStyleList]) {
+        _mainMenuViewController.activeAppName = nil;
+    } else {
+        _homeStyleMainMenuViewController.activeAppName = nil;
+    }
 }
 
 - (void)popStartingAppInfo {
@@ -540,7 +541,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-	FNLOG();
+    FNLOG();
     [self handleActionForLocalNotification:notification application:application];
 }
 
@@ -578,190 +579,190 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 }
 
 - (void)showReceivedLocalNotifications {
-	if (!_localNotificationUserInfo) return;
+    if (!_localNotificationUserInfo) return;
 
-	NSString *notificationOwner = [_localNotificationUserInfo objectForKey:A3LocalNotificationOwner];
+    NSString *notificationOwner = [_localNotificationUserInfo objectForKey:A3LocalNotificationOwner];
 
-	if (IS_IPHONE) {
-		[self.drawerController closeDrawerAnimated:NO completion:NULL];
-	}
+    if (IS_IPHONE) {
+        [self.drawerController closeDrawerAnimated:NO completion:NULL];
+    }
 
-	if ([notificationOwner isEqualToString:A3LocalNotificationFromDaysCounter]) {
-		[self showDaysCounterDetail];
-	} else if ([notificationOwner isEqualToString:A3LocalNotificationFromLadyCalendar]) {
-		[self showLadyCalendarDetailView];
-	}
-	_localNotificationUserInfo = nil;
+    if ([notificationOwner isEqualToString:A3LocalNotificationFromDaysCounter]) {
+        [self showDaysCounterDetail];
+    } else if ([notificationOwner isEqualToString:A3LocalNotificationFromLadyCalendar]) {
+        [self showLadyCalendarDetailView];
+    }
+    _localNotificationUserInfo = nil;
 }
 
 - (void)clearScheduledOldVersionLocalNotifications {
-	UIApplication *application = [UIApplication sharedApplication];
-	application.applicationIconBadgeNumber = 0;
-	NSArray *scheduledNotifications = [application scheduledLocalNotifications];
-	[scheduledNotifications enumerateObjectsUsingBlock:^(UILocalNotification *localNotification, NSUInteger idx, BOOL *stop) {
-		if (localNotification.userInfo[@"kABPLocalNotificationTypeDaysUntil"] || localNotification.applicationIconBadgeNumber) {
-			[application cancelLocalNotification:localNotification];
-		}
-	}];
+    UIApplication *application = [UIApplication sharedApplication];
+    application.applicationIconBadgeNumber = 0;
+    NSArray *scheduledNotifications = [application scheduledLocalNotifications];
+    [scheduledNotifications enumerateObjectsUsingBlock:^(UILocalNotification *localNotification, NSUInteger idx, BOOL *stop) {
+        if (localNotification.userInfo[@"kABPLocalNotificationTypeDaysUntil"] || localNotification.applicationIconBadgeNumber) {
+            [application cancelLocalNotification:localNotification];
+        }
+    }];
 }
 
 #pragma mark - UIAlertViewDelegate
 
-#define	ABAD_ALERT_PUSH_ALERT		1000
+#define    ABAD_ALERT_PUSH_ALERT        1000
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-	if (buttonIndex == alertView.cancelButtonIndex) {
-		_localNotificationUserInfo = nil;
-		return;
-	}
-	switch (alertView.tag) {
-		case 11:
-			[self showDaysCounterDetail];
-			break;
-		case 21:
-			[self showLadyCalendarDetailView];
-			break;
-		case 31:
-			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.allaboutapps.net/wordpress/archives/274"]];
-			break;
-		case ABAD_ALERT_PUSH_ALERT:
-			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.alertURLString]];
-			self.alertURLString = nil;
-			break;
-	}
+    if (buttonIndex == alertView.cancelButtonIndex) {
+        _localNotificationUserInfo = nil;
+        return;
+    }
+    switch (alertView.tag) {
+        case 11:
+            [self showDaysCounterDetail];
+            break;
+        case 21:
+            [self showLadyCalendarDetailView];
+            break;
+        case 31:
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.allaboutapps.net/wordpress/archives/274"]];
+            break;
+        case ABAD_ALERT_PUSH_ALERT:
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.alertURLString]];
+            self.alertURLString = nil;
+            break;
+    }
     
-	_localNotificationUserInfo = nil;
+    _localNotificationUserInfo = nil;
     if (_storedLocalNotification) {
         [[UIApplication sharedApplication] cancelLocalNotification:_storedLocalNotification];
     }
 }
 
 - (void)showDaysCounterDetail {
-	if (!_localNotificationUserInfo[A3LocalNotificationDataID]) {
-		return;
-	}
+    if (!_localNotificationUserInfo[A3LocalNotificationDataID]) {
+        return;
+    }
 
-	[A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
+    [A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
 
-	FNLOG(@"%@", _localNotificationUserInfo[A3LocalNotificationDataID]);
+    FNLOG(@"%@", _localNotificationUserInfo[A3LocalNotificationDataID]);
 
-	DaysCounterEvent *eventItem = [DaysCounterEvent findFirstByAttribute:@"uniqueID" withValue:_localNotificationUserInfo[A3LocalNotificationDataID]];
-	A3DaysCounterEventDetailViewController *viewController = [[A3DaysCounterEventDetailViewController alloc] init];
-	viewController.isNotificationPopup = YES;
-	viewController.eventItem = eventItem;
+    DaysCounterEvent *eventItem = [DaysCounterEvent findFirstByAttribute:@"uniqueID" withValue:_localNotificationUserInfo[A3LocalNotificationDataID]];
+    A3DaysCounterEventDetailViewController *viewController = [[A3DaysCounterEventDetailViewController alloc] init];
+    viewController.isNotificationPopup = YES;
+    viewController.eventItem = eventItem;
     A3DaysCounterModelManager *sharedManager = [[A3DaysCounterModelManager alloc] init];
     [sharedManager prepareToUse];
     viewController.sharedManager = sharedManager;
 
-	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-	[self.navigationController.visibleViewController presentViewController:navigationController animated:YES completion:NULL];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    [self.navigationController.visibleViewController presentViewController:navigationController animated:YES completion:NULL];
 }
 
 - (void)showLadyCalendarDetailView {
-	A3LadyCalendarDetailViewController *viewController = [[A3LadyCalendarDetailViewController alloc] init];
-	viewController.isFromNotification = YES;
-	viewController.periodID = _localNotificationUserInfo[A3LocalNotificationDataID];
+    A3LadyCalendarDetailViewController *viewController = [[A3LadyCalendarDetailViewController alloc] init];
+    viewController.isFromNotification = YES;
+    viewController.periodID = _localNotificationUserInfo[A3LocalNotificationDataID];
 
-	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-	[self.navigationController.visibleViewController presentViewController:navigationController animated:YES completion:NULL];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    [self.navigationController.visibleViewController presentViewController:navigationController animated:YES completion:NULL];
 }
 
 #pragma mark
 
 - (UINavigationController *)navigationController {
-	if (IS_IPHONE) {
-		return self.currentMainNavigationController;
-	} else {
-		return self.rootViewController_iPad.centerNavigationController;
-	}
+    if (IS_IPHONE) {
+        return self.currentMainNavigationController;
+    } else {
+        return self.rootViewController_iPad.centerNavigationController;
+    }
 }
 
 - (UIViewController *)visibleViewController {
-	UINavigationController *navigationController = [self navigationController];
-	return [navigationController visibleViewController];
+    UINavigationController *navigationController = [self navigationController];
+    return [navigationController visibleViewController];
 }
 
 - (NSCalendar *)calendar {
-	if (!_calendar) {
-		_calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-	}
-	return _calendar;
+    if (!_calendar) {
+        _calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    }
+    return _calendar;
 }
 
 - (NSMetadataQuery *)metadataQuery {
-	if (!_metadataQuery) {
-		_metadataQuery = [[NSMetadataQuery alloc] init];
-		_metadataQuery.searchScopes = @[NSMetadataQueryUbiquitousDataScope];
-		_metadataQuery.predicate = [NSPredicate predicateWithFormat:@"%K like %@", NSMetadataItemFSNameKey, @"*"];
-	}
-	return _metadataQuery;
+    if (!_metadataQuery) {
+        _metadataQuery = [[NSMetadataQuery alloc] init];
+        _metadataQuery.searchScopes = @[NSMetadataQueryUbiquitousDataScope];
+        _metadataQuery.predicate = [NSPredicate predicateWithFormat:@"%K like %@", NSMetadataItemFSNameKey, @"*"];
+    }
+    return _metadataQuery;
 }
 
 #pragma mark - Prepare subdirectories
 
 - (void)prepareDirectories {
-	NSFileManager *fileManager = [NSFileManager defaultManager];
-	NSString *applicationSupportPath = [fileManager applicationSupportPath];
-	if (![fileManager fileExistsAtPath:applicationSupportPath]) {
-		[fileManager createDirectoryAtPath:applicationSupportPath withIntermediateDirectories:YES attributes:nil error:NULL];
-	}
-	if ( ![fileManager fileExistsAtPath:[A3DaysCounterModelManager thumbnailDirectory]] ) {
-		[fileManager createDirectoryAtPath:[A3DaysCounterModelManager thumbnailDirectory] withIntermediateDirectories:YES attributes:nil error:NULL];
-	}
-	NSString *imageDirectory = [A3DaysCounterImageDirectory pathInLibraryDirectory];
-	if (![fileManager fileExistsAtPath:imageDirectory]) {
-		[fileManager createDirectoryAtPath:imageDirectory withIntermediateDirectories:YES attributes:nil error:NULL];
-	}
-	[WalletData createDirectories];
-	NSString *dataDirectory = [@"data" pathInCachesDirectory];
-	if (![fileManager fileExistsAtPath:dataDirectory]) {
-		[fileManager createDirectoryAtPath:dataDirectory withIntermediateDirectories:YES attributes:nil error:NULL];
-	}
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *applicationSupportPath = [fileManager applicationSupportPath];
+    if (![fileManager fileExistsAtPath:applicationSupportPath]) {
+        [fileManager createDirectoryAtPath:applicationSupportPath withIntermediateDirectories:YES attributes:nil error:NULL];
+    }
+    if ( ![fileManager fileExistsAtPath:[A3DaysCounterModelManager thumbnailDirectory]] ) {
+        [fileManager createDirectoryAtPath:[A3DaysCounterModelManager thumbnailDirectory] withIntermediateDirectories:YES attributes:nil error:NULL];
+    }
+    NSString *imageDirectory = [A3DaysCounterImageDirectory pathInLibraryDirectory];
+    if (![fileManager fileExistsAtPath:imageDirectory]) {
+        [fileManager createDirectoryAtPath:imageDirectory withIntermediateDirectories:YES attributes:nil error:NULL];
+    }
+    [WalletData createDirectories];
+    NSString *dataDirectory = [@"data" pathInCachesDirectory];
+    if (![fileManager fileExistsAtPath:dataDirectory]) {
+        [fileManager createDirectoryAtPath:dataDirectory withIntermediateDirectories:YES attributes:nil error:NULL];
+    }
 }
 
 #pragma mark - Download data files in background, 간지 데이터, Flick Recommendation, Message to customers.
 
 - (NSURLSession *)backgroundDownloadSession {
-	if (!_backgroundDownloadSession) {
+    if (!_backgroundDownloadSession) {
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:@"net.allaboutapps.backgroundTransfer.backgroundSession"];
         _backgroundDownloadSession = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
-	}
-	return _backgroundDownloadSession;
+    }
+    return _backgroundDownloadSession;
 }
 
 - (void)reachabilityChanged:(NSNotification *)notification {
-	if (![_downloadList count]) {
-		_downloadList = nil;
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
-		return;
-	}
+    if (![_downloadList count]) {
+        _downloadList = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
+        return;
+    }
 
-	if (_backgroundDownloadSession) {
-		// _backgroundDownloadSession이 있다는 것은 Download가 진행중이라는 의미
-		return;
-	}
-	Reachability *reachability = notification.object;
-	if ([_downloadList count] && [reachability isReachableViaWiFi]) {
-		[self startDownloadDataFiles];
-	}
+    if (_backgroundDownloadSession) {
+        // _backgroundDownloadSession이 있다는 것은 Download가 진행중이라는 의미
+        return;
+    }
+    Reachability *reachability = notification.object;
+    if ([_downloadList count] && [reachability isReachableViaWiFi]) {
+        [self startDownloadDataFiles];
+    }
 }
 
 - (void)downloadDataFiles {
-	_downloadList = [NSMutableArray new];
+    _downloadList = [NSMutableArray new];
 //    [_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/FlickrRecommendation.json"]];
 //    [_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/device_information.json"]];
 //    [_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/IsraelHolidays.plist"]];
 //    [_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/indian.plist"]];
 
-	if ([A3UIDevice shouldSupportLunarCalendar]) {
+    if ([A3UIDevice shouldSupportLunarCalendar]) {
         NSFileManager *fileManager = [NSFileManager new];
-		NSString *kanjiDataFile = [@"data/LunarConverter.sqlite" pathInCachesDirectory];
-		if (![fileManager fileExistsAtPath:kanjiDataFile]) {
-			[_downloadList addObject:[NSURL URLWithString:@"https://www.allaboutapps.net/data/LunarConverter.sqlite"]];
-		}
-	}
-//	[_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/message.plist"]];
+        NSString *kanjiDataFile = [@"data/LunarConverter.sqlite" pathInCachesDirectory];
+        if (![fileManager fileExistsAtPath:kanjiDataFile]) {
+            [_downloadList addObject:[NSURL URLWithString:@"https://www.allaboutapps.net/data/LunarConverter.sqlite"]];
+        }
+    }
+//    [_downloadList addObject:[NSURL URLWithString:@"http://www.allaboutapps.net/data/message.plist"]];
 
     if ([_downloadList count] > 0) {
         [self startDownloadDataFiles];
@@ -771,87 +772,87 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 }
 
 - (void)startDownloadDataFiles {
-	if (_backgroundDownloadIsInProgress) {
-		return;
-	}
-	_backgroundDownloadIsInProgress = YES;
-	if (![_downloadList count]) {
-		_downloadList = nil;
-		_backgroundDownloadSession = nil;
+    if (_backgroundDownloadIsInProgress) {
+        return;
+    }
+    _backgroundDownloadIsInProgress = YES;
+    if (![_downloadList count]) {
+        _downloadList = nil;
+        _backgroundDownloadSession = nil;
 
-		return;
-	}
-	if (![self.reachability isReachableViaWiFi]) {
-		return;
-	}
-	double delayInSeconds = 2.0;
-	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
-		if ([_downloadList count]) {
-			NSURLRequest *downloadRequest = [NSURLRequest requestWithURL:_downloadList[0]];
-			NSURLSessionDownloadTask *downloadTask = [self.backgroundDownloadSession downloadTaskWithRequest:downloadRequest];
-			[downloadTask resume];
-		}
-	});
+        return;
+    }
+    if (![self.reachability isReachableViaWiFi]) {
+        return;
+    }
+    double delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+        if ([_downloadList count]) {
+            NSURLRequest *downloadRequest = [NSURLRequest requestWithURL:_downloadList[0]];
+            NSURLSessionDownloadTask *downloadTask = [self.backgroundDownloadSession downloadTaskWithRequest:downloadRequest];
+            [downloadTask resume];
+        }
+    });
 }
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location {
     void (^completionBlock)(void) = ^() {
-		_backgroundDownloadIsInProgress = NO;
-		if ([self.reachability isReachableViaWiFi]) {
-			[self startDownloadDataFiles];
-		}
-	};
-	
-	if ([_downloadList count]) {
-		[_downloadList removeObjectAtIndex:0];
-	}
+        _backgroundDownloadIsInProgress = NO;
+        if ([self.reachability isReachableViaWiFi]) {
+            [self startDownloadDataFiles];
+        }
+    };
+    
+    if ([_downloadList count]) {
+        [_downloadList removeObjectAtIndex:0];
+    }
 
-	// Verify downloaded file contents.
-	// device_information.json, FlickrRecommendation.json 모두 json이므로
-	NSString *filename = [downloadTask.originalRequest.URL lastPathComponent];
-	if ([[downloadTask.originalRequest.URL pathExtension] isEqualToString:@"json"]) {
-		NSData *rawData = [NSData dataWithContentsOfURL:location];
-		if (rawData) {
-			NSError *error;
-			NSArray *candidates = [NSJSONSerialization JSONObjectWithData:rawData options:0 error:&error];
-			if (error || candidates == nil) {
-				// File has error
-				completionBlock();
-				return;
-			}
-		} else {
-			completionBlock();
-			return;
-		}
-	} else if ([[downloadTask.originalRequest.URL pathExtension] isEqualToString:@"plist"]) {
-		// indian.plist와 IsraelHolidays.plist는 모두 NSDictionary이다.
-		
-		NSDictionary *data = [NSDictionary dictionaryWithContentsOfURL:location];
-		if (![data isKindOfClass:[NSDictionary class]]) {
-			completionBlock();
-			return;
-		}
-	}
-	
-	NSString *destinationPath =	[@"data" pathInCachesDirectory];
-	destinationPath = [destinationPath stringByAppendingPathComponent:filename];
-	FNLOG(@"%@", destinationPath);
-	NSFileManager *fileManager = [NSFileManager new];
-	NSError *error = nil;
-	if ([fileManager fileExistsAtPath:destinationPath]) {
-		[fileManager removeItemAtPath:destinationPath error:&error];
-	}
-	if (error) {
-		FNLOG(@"%@, %@, %@, %@", error.localizedDescription, error.localizedFailureReason, error.localizedRecoveryOptions, error.localizedRecoverySuggestion);
-	} else {
-		[fileManager moveItemAtURL:location toURL:[NSURL fileURLWithPath:destinationPath] error:&error];
-		if (error) {
-			FNLOG(@"%@, %@, %@, %@", error.localizedDescription, error.localizedFailureReason, error.localizedRecoveryOptions, error.localizedRecoverySuggestion);
-		}
-	}
-	
-	completionBlock();
+    // Verify downloaded file contents.
+    // device_information.json, FlickrRecommendation.json 모두 json이므로
+    NSString *filename = [downloadTask.originalRequest.URL lastPathComponent];
+    if ([[downloadTask.originalRequest.URL pathExtension] isEqualToString:@"json"]) {
+        NSData *rawData = [NSData dataWithContentsOfURL:location];
+        if (rawData) {
+            NSError *error;
+            NSArray *candidates = [NSJSONSerialization JSONObjectWithData:rawData options:0 error:&error];
+            if (error || candidates == nil) {
+                // File has error
+                completionBlock();
+                return;
+            }
+        } else {
+            completionBlock();
+            return;
+        }
+    } else if ([[downloadTask.originalRequest.URL pathExtension] isEqualToString:@"plist"]) {
+        // indian.plist와 IsraelHolidays.plist는 모두 NSDictionary이다.
+        
+        NSDictionary *data = [NSDictionary dictionaryWithContentsOfURL:location];
+        if (![data isKindOfClass:[NSDictionary class]]) {
+            completionBlock();
+            return;
+        }
+    }
+    
+    NSString *destinationPath =    [@"data" pathInCachesDirectory];
+    destinationPath = [destinationPath stringByAppendingPathComponent:filename];
+    FNLOG(@"%@", destinationPath);
+    NSFileManager *fileManager = [NSFileManager new];
+    NSError *error = nil;
+    if ([fileManager fileExistsAtPath:destinationPath]) {
+        [fileManager removeItemAtPath:destinationPath error:&error];
+    }
+    if (error) {
+        FNLOG(@"%@, %@, %@, %@", error.localizedDescription, error.localizedFailureReason, error.localizedRecoveryOptions, error.localizedRecoverySuggestion);
+    } else {
+        [fileManager moveItemAtURL:location toURL:[NSURL fileURLWithPath:destinationPath] error:&error];
+        if (error) {
+            FNLOG(@"%@, %@, %@, %@", error.localizedDescription, error.localizedFailureReason, error.localizedRecoveryOptions, error.localizedRecoverySuggestion);
+        }
+    }
+    
+    completionBlock();
 }
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite {
@@ -863,149 +864,150 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 }
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
-	_backgroundDownloadIsInProgress = NO;
+    _backgroundDownloadIsInProgress = NO;
 
-	if (error) {
-//		FNLOG(@"%ld, %@, %@, %@", (long)error.code, error.localizedDescription, error.localizedFailureReason, error.localizedRecoveryOptions);
-		if (error.code == -1100) {
-			[_downloadList removeObjectAtIndex:0];
-		}
-		if (error.code == -997) {
-			_downloadList = nil;
-			_backgroundDownloadSession = nil;
-			return;
-		}
-		if ([self.reachability isReachableViaWiFi]) {
-			[self startDownloadDataFiles];
-		}
-	}
+    if (error) {
+//        FNLOG(@"%ld, %@, %@, %@", (long)error.code, error.localizedDescription, error.localizedFailureReason, error.localizedRecoveryOptions);
+        if (error.code == -1100) {
+            [_downloadList removeObjectAtIndex:0];
+        }
+        if (error.code == -997) {
+            _downloadList = nil;
+            _backgroundDownloadSession = nil;
+            return;
+        }
+        if ([self.reachability isReachableViaWiFi]) {
+            [self startDownloadDataFiles];
+        }
+    }
 }
 
 #pragma mark - HolidayNations
 
 - (void)updateHolidayNations {
-	dispatch_async(dispatch_get_main_queue(), ^{
-		if ([CLLocationManager locationServicesEnabled]) {
-			if (!_locationManager) {
-				_locationManager = [[CLLocationManager alloc] init];
-				_locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
-				_locationManager.delegate = self;
-			}
+    dispatch_async(dispatch_get_main_queue(), ^{
+//        if ([CLLocationManager locationServicesEnabled]) {
+//            if (!self->_locationManager) {
+//                self->_locationManager = [[CLLocationManager alloc] init];
+//                self->_locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
+//                self->_locationManager.delegate = self;
+//            }
+//
+//            if ([CLLocationManager authorizationStatus] < kCLAuthorizationStatusAuthorizedAlways) {
+//                [HolidayData resetFirstCountryWithLocale];
+//
+//                [self->_locationManager requestWhenInUseAuthorization];
+//            }
+//
+//            [self->_locationManager startUpdatingLocation];
+//
+//            if (self->_locationUpdateTimer) {
+//                [self->_locationUpdateTimer invalidate];
+//                self->_locationUpdateTimer = nil;
+//            }
+//            self->_locationUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:120 target:self selector:@selector(locationDidNotRespond) userInfo:nil repeats:NO];
+//        } else 
+        {
+            // 위치 정보 접근이 제한되어 있는 경우에는 autoupdatingCurrentLocale에서 정보를 읽어 휴일 국가 목록을 업데이트 한다.
+            [HolidayData resetFirstCountryWithLocale];
 
-			if ([CLLocationManager authorizationStatus] < kCLAuthorizationStatusAuthorizedAlways) {
-				[HolidayData resetFirstCountryWithLocale];
-
-                [_locationManager requestWhenInUseAuthorization];
-			}
-
-			[_locationManager startUpdatingLocation];
-
-			if (_locationUpdateTimer) {
-				[_locationUpdateTimer invalidate];
-				_locationUpdateTimer = nil;
-			}
- 			_locationUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:120 target:self selector:@selector(locationDidNotRespond) userInfo:nil repeats:NO];
-		} else {
-			// 위치 정보 접근이 제한되어 있는 경우에는 autoupdatingCurrentLocale에서 정보를 읽어 휴일 국가 목록을 업데이트 한다.
-			[HolidayData resetFirstCountryWithLocale];
-
-			double delayInSeconds = 20.0;
-			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-				[self addDownloadTasksForHolidayImages];
-			});
-		}
-	});
+            double delayInSeconds = 2.0;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [self addDownloadTasksForHolidayImages];
+            });
+        }
+    });
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
-	FNLOG();
-	[_locationUpdateTimer invalidate];
-	_locationUpdateTimer = nil;
+    FNLOG();
+    [_locationUpdateTimer invalidate];
+    _locationUpdateTimer = nil;
 
-	[_locationManager stopMonitoringSignificantLocationChanges];
-	_locationManager = nil;
+    [_locationManager stopMonitoringSignificantLocationChanges];
+    _locationManager = nil;
 
-	CLLocation *location = locations[0];
-	CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
-	NSMutableArray *countries = [[HolidayData userSelectedCountries] mutableCopy];
-	[geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray *placeMarks, NSError *error) {
-		NSString *_countryCodeOfCurrentLocation;
-		for (CLPlacemark *placeMark in placeMarks) {
-			_countryCodeOfCurrentLocation = [placeMark.addressDictionary[@"CountryCode"] lowercaseString];
-		}
+    CLLocation *location = locations[0];
+    CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
+    NSMutableArray *countries = [[HolidayData userSelectedCountries] mutableCopy];
+    [geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray *placeMarks, NSError *error) {
+        NSString *_countryCodeOfCurrentLocation;
+        for (CLPlacemark *placeMark in placeMarks) {
+            _countryCodeOfCurrentLocation = [placeMark.addressDictionary[@"CountryCode"] lowercaseString];
+        }
 
-		if ([_countryCodeOfCurrentLocation length]) {
-			NSArray *supportedCountries = [HolidayData supportedCountries];
-			NSInteger indexOfCountry = [supportedCountries indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-				return [_countryCodeOfCurrentLocation isEqualToString:obj[kHolidayCountryCode]];
-			}];
+        if ([_countryCodeOfCurrentLocation length]) {
+            NSArray *supportedCountries = [HolidayData supportedCountries];
+            NSInteger indexOfCountry = [supportedCountries indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+                return [_countryCodeOfCurrentLocation isEqualToString:obj[kHolidayCountryCode]];
+            }];
 
-			if (indexOfCountry == NSNotFound)
-				return;
+            if (indexOfCountry == NSNotFound)
+                return;
 
-			if (![countries[0] isEqualToString:_countryCodeOfCurrentLocation]) {
-				
-				[countries removeObject:_countryCodeOfCurrentLocation];
-				[countries insertObject:_countryCodeOfCurrentLocation atIndex:0];
+            if (![countries[0] isEqualToString:_countryCodeOfCurrentLocation]) {
+                
+                [countries removeObject:_countryCodeOfCurrentLocation];
+                [countries insertObject:_countryCodeOfCurrentLocation atIndex:0];
 
-				[HolidayData setUserSelectedCountries:countries];
+                [HolidayData setUserSelectedCountries:countries];
 
-				[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationHolidaysCountryListChanged object:nil];
-			}
-		}
-		double delayInSeconds = 20.0;
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-			[self addDownloadTasksForHolidayImages];
-		});
-	}];
+                [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationHolidaysCountryListChanged object:nil];
+            }
+        }
+        double delayInSeconds = 20.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self addDownloadTasksForHolidayImages];
+        });
+    }];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-	FNLOG();
-	[_locationUpdateTimer invalidate];
-	_locationUpdateTimer = nil;
+    FNLOG();
+    [_locationUpdateTimer invalidate];
+    _locationUpdateTimer = nil;
 
-	[_locationManager stopMonitoringSignificantLocationChanges];
-	_locationManager = nil;
-	
-	[self addDownloadTasksForHolidayImages];
+    [_locationManager stopMonitoringSignificantLocationChanges];
+    _locationManager = nil;
+    
+    [self addDownloadTasksForHolidayImages];
 }
 
 - (void)locationDidNotRespond {
-	[_locationUpdateTimer invalidate];
-	_locationUpdateTimer = nil;
+    [_locationUpdateTimer invalidate];
+    _locationUpdateTimer = nil;
 
-	[_locationManager stopMonitoringSignificantLocationChanges];
-	_locationManager = nil;
-	[self addDownloadTasksForHolidayImages];
+    [_locationManager stopMonitoringSignificantLocationChanges];
+    _locationManager = nil;
+    [self addDownloadTasksForHolidayImages];
 }
 
 - (void)addDownloadTasksForHolidayImages {
-	NSArray *holidayCountries = [HolidayData userSelectedCountries];
-	A3HolidaysFlickrDownloadManager *downloadManager = [A3HolidaysFlickrDownloadManager sharedInstance];
-	if ([holidayCountries count]) {
-		NSString *countryCode = holidayCountries[0];
-		NSString *imagePath = [downloadManager holidayImagePathForCountryCode:countryCode];
-		if (![[NSFileManager defaultManager] fileExistsAtPath:imagePath]) {
-			[downloadManager addDownloadTaskForCountryCode:countryCode];
-		}
-	}
+    NSArray *holidayCountries = [HolidayData userSelectedCountries];
+    A3HolidaysFlickrDownloadManager *downloadManager = [A3HolidaysFlickrDownloadManager sharedInstance];
+    if ([holidayCountries count]) {
+        NSString *countryCode = holidayCountries[0];
+        NSString *imagePath = [downloadManager holidayImagePathForCountryCode:countryCode];
+        if (![[NSFileManager defaultManager] fileExistsAtPath:imagePath]) {
+            [downloadManager addDownloadTaskForCountryCode:countryCode];
+        }
+    }
 }
 
 - (MBProgressHUD *)hud {
-	if (!_hud) {
-		UIView *targetViewForHud = [[self visibleViewController] view];
-		_hud = [MBProgressHUD showHUDAddedTo:targetViewForHud animated:YES];
-		_hud.minShowTime = 2;
-		_hud.removeFromSuperViewOnHide = YES;
-		__typeof(self) __weak weakSelf = self;
-		self.hud.completionBlock = ^{
-			weakSelf.hud = nil;
-		};
-	}
-	return _hud;
+    if (!_hud) {
+        UIView *targetViewForHud = [[self visibleViewController] view];
+        _hud = [MBProgressHUD showHUDAddedTo:targetViewForHud animated:YES];
+        _hud.minShowTime = 2;
+        _hud.removeFromSuperViewOnHide = YES;
+        __typeof(self) __weak weakSelf = self;
+        self.hud.completionBlock = ^{
+            weakSelf.hud = nil;
+        };
+    }
+    return _hud;
 }
 
 #pragma mark - Setup Core Data Managed Object Context
@@ -1058,16 +1060,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     [self setupStoreFiles];
     
     A3SyncManager *syncManager = [A3SyncManager sharedSyncManager];
-    if (!syncManager.persistentContainer) {
-        NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-        NSManagedObjectModel *model = [NSManagedObjectModel mergedModelFromBundles:@[bundle]];
-        syncManager.persistentContainer = [[NSPersistentContainer alloc] initWithName:@"AppBoxStore" managedObjectModel:model];
-    }
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSPersistentStoreDescription *storeDescription = [NSPersistentStoreDescription persistentStoreDescriptionWithURL:[fileManager storeURL]];
-    syncManager.persistentContainer.persistentStoreDescriptions = @[storeDescription];
-    [syncManager.persistentContainer loadPersistentStoresWithCompletionHandler:^(NSPersistentStoreDescription * _Nonnull psd, NSError * _Nullable error) {
-        // Do nothing for the moment.
+    [syncManager loadPersistentContainerInBundle:[NSBundle bundleForClass:[self class]] withCompletion:^(NSError * error) {
         if (error == nil) {
             self.isCoreDataReady = YES;
             [self setupAfterLoadCoredata];
@@ -1147,26 +1140,16 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)devToken {
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10")) {
-        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-        [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
-            [self registerDeviceTokenToAPNServerWithToken:devToken
-                                             userSettings:
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+    [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+        [self registerDeviceTokenToAPNServerWithToken:devToken
+                                         userSettings:
              @[settings.badgeSetting == UNNotificationSettingEnabled ? @"enabled" : @"disabled",
                settings.alertSetting == UNNotificationSettingEnabled ? @"enabled" : @"disabled",
                settings.soundSetting == UNNotificationSettingEnabled ? @"enabled" : @"disabled",
-               ]
-             ];
-        }];
-    } else {
-        UIUserNotificationSettings *settings = [[UIApplication sharedApplication] currentUserNotificationSettings];
-        [self registerDeviceTokenToAPNServerWithToken:devToken
-                                         userSettings:
-         @[settings.types & UIUserNotificationTypeBadge ? @"enabled" : @"disabled",
-           settings.types & UIUserNotificationTypeAlert ? @"enabled" : @"disabled",
-           settings.types & UIUserNotificationTypeSound ? @"enabled" : @"disabled",]
-         ];
-    }
+             ]
+        ];
+    }];
 }
 
 - (void)registerDeviceTokenToAPNServerWithToken:(NSData *)deviceTokenData userSettings:(NSArray<NSString *> *)userSettings {
@@ -1208,7 +1191,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
                   userSettings[1],  // Alert
                   userSettings[2]   // Sound
                   ]
-                 stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                 stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     FNLOG(@"%@", urlString);
     
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
@@ -1241,54 +1224,54 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 }
 
 - (void)fetchPushNotification {
-	NSString *urlString = [NSString stringWithFormat:@"https://apns.allaboutapps.net/apns/apns.php?task=message&devicetoken=%@", _deviceToken];
-	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
-	AFHTTPRequestOperation *fetchOperation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-	fetchOperation.responseSerializer = [AFJSONResponseSerializer serializer];
-	[fetchOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id message) {
-		if (message) {
-			[self application:[UIApplication sharedApplication] didReceiveRemoteNotification:message];
-		}
-	} failure:NULL];
-	[fetchOperation start];
+    NSString *urlString = [NSString stringWithFormat:@"https://apns.allaboutapps.net/apns/apns.php?task=message&devicetoken=%@", _deviceToken];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    AFHTTPRequestOperation *fetchOperation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    fetchOperation.responseSerializer = [AFJSONResponseSerializer serializer];
+    [fetchOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id message) {
+        if (message) {
+            [self application:[UIApplication sharedApplication] didReceiveRemoteNotification:message];
+        }
+    } failure:NULL];
+    [fetchOperation start];
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-	FNLOG(@"Error in registration. Error: %@", error);
+    FNLOG(@"Error in registration. Error: %@", error);
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
 
-	FNLOG(@"remote notification: %@",[userInfo description]);
-	NSDictionary *apsInfo = [userInfo objectForKey:@"aps"];
+    FNLOG(@"remote notification: %@",[userInfo description]);
+    NSDictionary *apsInfo = [userInfo objectForKey:@"aps"];
 
 #ifdef DEBUG
-	NSString *alert = [apsInfo objectForKey:@"alert"];
-	FNLOG(@"Received Push Alert: %@", alert);
+    NSString *alert = [apsInfo objectForKey:@"alert"];
+    FNLOG(@"Received Push Alert: %@", alert);
 
-	NSString *sound = [apsInfo objectForKey:@"sound"];
-	FNLOG(@"Received Push Sound: %@", sound);
+    NSString *sound = [apsInfo objectForKey:@"sound"];
+    FNLOG(@"Received Push Sound: %@", sound);
 
-	NSString *badge = [apsInfo objectForKey:@"badge"];
-	FNLOG(@"Received Push Badge: %@", badge);
+    NSString *badge = [apsInfo objectForKey:@"badge"];
+    FNLOG(@"Received Push Badge: %@", badge);
 #endif
-	
-	application.applicationIconBadgeNumber = 0;
+    
+    application.applicationIconBadgeNumber = 0;
 
-	NSString *url = [userInfo objectForKey:@"url"];
-	NSString *urlTitle = [userInfo objectForKey:@"urlTitle"];
-	if (![urlTitle length]) {
-		urlTitle = url;
-	}
-	self.alertURLString = url;
-	NSString *alertTitle = [userInfo objectForKey:@"alertTitle"];
+    NSString *url = [userInfo objectForKey:@"url"];
+    NSString *urlTitle = [userInfo objectForKey:@"urlTitle"];
+    if (![urlTitle length]) {
+        urlTitle = url;
+    }
+    self.alertURLString = url;
+    NSString *alertTitle = [userInfo objectForKey:@"alertTitle"];
 
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:alertTitle message:[apsInfo objectForKey:@"alert"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	alertView.tag = ABAD_ALERT_PUSH_ALERT;
-	if ([url length]) {
-		[alertView addButtonWithTitle:urlTitle];
-	}
-	[alertView show];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:alertTitle message:[apsInfo objectForKey:@"alert"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    alertView.tag = ABAD_ALERT_PUSH_ALERT;
+    if ([url length]) {
+        [alertView addButtonWithTitle:urlTitle];
+    }
+    [alertView show];
 }
 
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
@@ -1301,23 +1284,24 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 }
 
 - (void)applicationProtectedDataWillBecomeUnavailable:(UIApplication *)application {
-	FNLOG();
+    FNLOG();
 }
 
 - (void)applicationProtectedDataDidBecomeAvailable:(UIApplication *)application {
-	FNLOG();
+    FNLOG();
 }
 
 #pragma mark - Google AdMob
 
 - (BOOL)shouldPresentAd {
-	return _shouldPresentAd;
+    return _shouldPresentAd;
 }
 
 - (void)evaluateSubscriptionWithCompletion:(void (^)(void))completion {
-    [AppTransactionManager isPaidForAppWithCompletionHandler:^(BOOL isPaid, NSDate *purchaseDate) {
+    [AppTransactionManager isPaidForAppWithCompletionHandler:^(BOOL isPaid, NSString *originalAppVersion, NSDate *purchaseDate) {
         self->_isOldPaidUser = isPaid;
         self->_originalPurchaseDate = purchaseDate;
+        self->_originalAppVersion = originalAppVersion;
         
         // 3.5 포함 이전 버전 구매자의 경우에는 패스
         if (isPaid) {
@@ -1333,15 +1317,16 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
         // RemoveAds 구매 여부와 Subscription 가입 여부를 확인한다.
         
         [AppTransactionManager checkSubscriptionStatusWithCompletionHandler:^(BOOL isPaymentActive, BOOL hasAdsFreePass, NSDate * _Nullable expiration, NSError * _Nullable error) {
-            self->_isOldPaidUser = isPaymentActive;
+            self->_removeAdsActive = isPaymentActive;
             self->_hasAdsFreePass = hasAdsFreePass;
             self->_expirationDate = expiration;
             
-            // 앱 구입한지 일주일이 안 되었다면 광고를 표출하지 않는다.
+            // 앱 구입한지 3일이 안 되었다면 광고를 표출하지 않는다.
             // 매번 광고를 표시할 지 결정할 때, 두가지를 봐야 하는 구나.
             // 앱 구입일자, 마지막 광고를 표시한 날짜 - 왜냐하면 전면 광고는 한시간에 한 번만 표시하니까
             // 광고 표시 결정하는 코드에서 구입일자도 비교하도록 수정을 해야 겠다.
-            if ([[NSDate date] timeIntervalSinceDate:purchaseDate] < 60*60*24*7) {
+//            if ([[NSDate date] timeIntervalSinceDate:purchaseDate] < 0) {
+            if ([[NSDate date] timeIntervalSinceDate:purchaseDate] < 60*60*24*3) {
                 self->_shouldPresentAd = NO;
             } else {
                 self->_shouldPresentAd = !isPaymentActive && !hasAdsFreePass;
@@ -1359,18 +1344,18 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 #pragma mark - AdMob
 
 - (GADRequest *)adRequestWithKeywords:(NSArray *)keywords {
-	GADRequest *adRequest = [GADRequest request];
+    GADRequest *adRequest = [GADRequest request];
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kA3AdsUserDidSelectPersonalizedAds]) {
         GADExtras *extras = [[GADExtras alloc] init];
         extras.additionalParameters = @{@"npa": @"1"};
         [adRequest registerAdNetworkExtras:extras];
     }
-	adRequest.keywords = keywords;
-	return adRequest;
+    adRequest.keywords = keywords;
+    return adRequest;
 }
 
 - (void)setupAdInterstitialForAdUnitID:(NSString *)adUnitID keywords:(NSArray *)keywords {
-	_adRequest = [self adRequestWithKeywords:keywords];
+    _adRequest = [self adRequestWithKeywords:keywords];
     [GADInterstitialAd loadWithAdUnitID:adUnitID
                                 request:_adRequest
                       completionHandler:^(GADInterstitialAd * _Nullable interstitialAd, NSError * _Nullable error) {
@@ -1425,7 +1410,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 - (void)adDidDismissFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
     
 }
-
+ 
 - (void)presentInterstitialAds {
     [self evaluateSubscriptionWithCompletion:^{
         if (!self.shouldPresentAd) {
@@ -1435,95 +1420,52 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
         if (self.adDisplayedAfterApplicationDidBecomeActive) {
             return;
         }
+        // 광고를 표시하기 전에 무조건 가입 화면을 제시하고, 가입하지 않으면 광고로 진입하게 한다.
         
         NSDate *adsDisplayTime = [[NSUserDefaults standardUserDefaults] objectForKey:A3AdsDisplayTime];
-    //    NSInteger numberOfTimesOpeningSubApp = [[NSUserDefaults standardUserDefaults] integerForKey:A3NumberOfTimesOpeningSubApp];
-        if (!adsDisplayTime || [[NSDate date] timeIntervalSinceDate:adsDisplayTime] > 60 * 60)
+        if (nil == adsDisplayTime) {
+            adsDisplayTime = [NSDate date];
+            [[NSUserDefaults standardUserDefaults] setObject:adsDisplayTime forKey:A3AdsDisplayTime];
+        }
+        
+        if ([[NSDate date] timeIntervalSinceDate:adsDisplayTime] > 60 * 60)
         {
-            if (@available(iOS 14, *)) {
+            if (ATTrackingManager.trackingAuthorizationStatus == ATTrackingManagerAuthorizationStatusNotDetermined) {
                 [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
-                    [self setupAdInterstitialForAdUnitID:A3InterstitialAdUnitID keywords:@[@"shopping", @"currency", @"wallet", @"holidays", @"calendar"]];
                 }];
             } else {
-                [self setupAdInterstitialForAdUnitID:A3InterstitialAdUnitID keywords:@[@"shopping", @"currency", @"wallet", @"holidays", @"calendar"]];
+                void (^setupAdInterstitialBlock)(void) = ^{
+                    [self setupAdInterstitialForAdUnitID:A3InterstitialAdUnitID keywords:@[@"shopping", @"currency", @"wallet", @"holidays", @"calendar"]];
+                };
+                if (@available(iOS 17.0, *)) {
+                    UIViewController *visibleViewController = [self visibleViewController];
+                    [visibleViewController presentSubscriptionViewControllerWithCompletion:^{
+                        [self evaluateSubscriptionWithCompletion:^{
+                            if (!self.shouldPresentAd) {
+                                return;
+                            }
+                            setupAdInterstitialBlock();
+                        }];
+                    }];
+                } else {
+                    setupAdInterstitialBlock();
+                }
             }
             return;
         }
     }];
 }
 
-- (void)increaseNumberOfTimesOpenedSubappCount {
-	NSInteger numberOfTimesOpeningSubApp = [[NSUserDefaults standardUserDefaults] integerForKey:A3NumberOfTimesOpeningSubApp];
-	numberOfTimesOpeningSubApp++;
-	[[NSUserDefaults standardUserDefaults] setInteger:numberOfTimesOpeningSubApp forKey:A3NumberOfTimesOpeningSubApp];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-}
-
 - (MBProgressHUD *)hudView {
-	if (!_hudView) {
-		_hudView = [MBProgressHUD showHUDAddedTo:[[self visibleViewController] view] animated:YES];
-		_hudView.minShowTime = 2;
-		_hudView.removeFromSuperViewOnHide = YES;
-		_hudView.completionBlock = ^{
+    if (!_hudView) {
+        _hudView = [MBProgressHUD showHUDAddedTo:[[self visibleViewController] view] animated:YES];
+        _hudView.minShowTime = 2;
+        _hudView.removeFromSuperViewOnHide = YES;
+        _hudView.completionBlock = ^{
             self->_hudView = nil;
-		};
-	}
-	return _hudView;
-}
-
-#pragma mark - Alert What's New
-
-- (void)askPersonalizedAdConsent {
-    if (@available(iOS 14.5, *)) {
-        return;
+        };
     }
-    
-    if (![self shouldPresentAd])
-        return;
-    
-//    PACConsentInformation.sharedInstance.debugIdentifiers =
-//    @[ ASIdentifierManager.sharedManager.advertisingIdentifier.UUIDString ];
-//
-//    PACConsentInformation.sharedInstance.debugGeography = PACDebugGeographyEEA;
-    
-    [PACConsentInformation.sharedInstance
-     requestConsentInfoUpdateForPublisherIdentifiers:@[ @"pub-0532362805885914" ]
-     completionHandler:^(NSError *_Nullable error) {
-         if (error) {
-             // Consent info update failed.
-         } else {
-             // Consent info update succeeded. The shared PACConsentInformation
-             // instance has been updated.
-             if (PACConsentInformation.sharedInstance.consentStatus == PACConsentStatusUnknown) {
-                 NSURL *privacyURL = [NSURL URLWithString:@"https://policies.google.com/privacy"];
-                 PACConsentForm *form = [[PACConsentForm alloc] initWithApplicationPrivacyPolicyURL:privacyURL];
-                 form.shouldOfferPersonalizedAds = YES;
-                 form.shouldOfferNonPersonalizedAds = YES;
-                 form.shouldOfferAdFree = NO;
-                 [form loadWithCompletionHandler:^(NSError *_Nullable error) {
-                     NSLog(@"Load complete. Error: %@", error);
-                     if (error) {
-                         // Handle error.
-                     } else {
-                         // Load successful.
-                         [form presentFromViewController:IS_IPHONE ? self.rootViewController_iPhone : self.rootViewController_iPad
-                                       dismissCompletion:^(NSError *_Nullable error, BOOL userPrefersAdFree) {
-                                           if (error) {
-                                               // Handle error.
-                                           } else {
-                                               // Check the user's consent choice.
-                                               PACConsentStatus status = PACConsentInformation.sharedInstance.consentStatus;
-                                               [[NSUserDefaults standardUserDefaults]
-                                                setBool:status == PACConsentStatusPersonalized
-                                                forKey:kA3AdsUserDidSelectPersonalizedAds];
-                                           }
-                                       }];
-                     }
-                 }];
-                 
-             }
-         }
-     }];
+    return _hudView;
 }
 
 @end

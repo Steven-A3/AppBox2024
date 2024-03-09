@@ -643,7 +643,9 @@ static char const *const key_firstActionSheet = "key_firstActionSheet";
     if (authorizationStatus == PHAuthorizationStatusNotDetermined) {
         [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
             if (afterAuthorizationHandler) {
-                afterAuthorizationHandler(status == PHAuthorizationStatusAuthorized);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    afterAuthorizationHandler(status == PHAuthorizationStatusAuthorized);
+                });
             }
         }];
     } else {

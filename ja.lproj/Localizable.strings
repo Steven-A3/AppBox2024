@@ -1156,7 +1156,7 @@
 "Recents" = "最近";
 "Enjoy_faster_app" = "広告による読み込み時間なしで、より速いアプリナビゲーションをお楽しみください。";
 "Your_free_trial" = "無料トライアルは終了前にキャンセル可能です。継続すると、サブスクリプションは自動的に更新されますが、いつでもキャンセルできます。";
-"Ads Free Pass" = "広告削除パス";
+"Ads Free Pass" = "広告なしパス";
 "Your purchases have been successfully restored." = "ご購入の商品は正常に復元されました。";
 "Your subscription has been successfully restored." = "ご購読は正常に復元されました。";
 "There are no transactions available for restoration at this time." = "現時点で復元可能なトランザクションはありません。";
@@ -1181,3 +1181,5 @@
 
 /* Preparing */
 "Preparing" = "準備中";
+"Ads Free Pass Unavailable" = "広告フリーパス利用不可";
+"Upgrade to iOS 17 for Ads Free Pass. Visit Settings > General > Software Update." = "広告フリーパスを利用するにはiOS 17にアップグレードしてください。設定 > 一般 > ソフトウェアアップデートを訪問してください。";

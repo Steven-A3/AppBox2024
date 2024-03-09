@@ -87,10 +87,13 @@ typedef void (^CDECompletionBlock)(NSError * _Nullable error);
 - (void)enableCloudSync;
 - (void)disableCloudSync;
 - (BOOL)isCloudEnabled;
-- (void)synchronizeWithCompletion:(CDECompletionBlock)completion;
+- (void)synchronizeWithCompletion:(nullable CDECompletionBlock)completion;
 
 - (void)uploadMediaFilesToCloud;
 - (void)downloadMediaFilesFromCloud;
+
+- (void)loadPersistentContainerInBundle:(NSBundle *)bundle withCompletion:(void (^)(NSError *))completion;
+- (void)unloadPersistentContainer;
 
 @end
 

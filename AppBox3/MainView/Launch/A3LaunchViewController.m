@@ -142,28 +142,6 @@ NSString *const A3UserDefaultsDidShowLeftViewOnceiPad = @"A3UserDefaultsDidShowL
 		}
 	}
     [appDelegate downloadDataFiles];
-	
-	double delayInSeconds = 1.0;
-	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		if (![self askRestorePurchase]) {
-		}
-	});
-}
-
-#pragma mark - Ask Restore Purchase
-
-- (BOOL)askRestorePurchase {
-    /*
-     5.0에서 서브스크립션을 출시 합니다.
-     
-    UIViewController *subscriptionShopViewController = [SubscriptionUtility subscriptionShopViewControllerWithExpirationDate:[A3AppDelegate instance].expirationDate];
-    subscriptionShopViewController.modalPresentationStyle = UIModalPresentationFullScreen;
-    [self presentViewController:subscriptionShopViewController animated:YES completion:^{
-        [[A3AppDelegate instance] askPersonalizedAdConsent];
-    }];
-    */
-	return YES;
 }
 
 @end

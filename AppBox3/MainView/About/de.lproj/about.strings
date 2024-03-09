@@ -14,14 +14,8 @@
 /* Class = "IBUILabel"; text = "Disclaimer"; ObjectID = "9Z8-Bh-Lsm"; */
 "9Z8-Bh-Lsm.text" = "Haftungsausschuss";
 
-/* Class = "IBUILabel"; text = "Tell a Friend by email"; ObjectID = "CKx-jh-s85"; */
-"CKx-jh-s85.text" = "Weiterempfehlen per E-Mail";
-
 /* Class = "IBUITableViewSection"; headerTitle = " "; ObjectID = "Fc3-n4-rxm"; */
 "Fc3-n4-rxm.headerTitle" = " ";
-
-/* Class = "IBUILabel"; text = "appbox_pro"; ObjectID = "I2i-W8-CGf"; */
-"I2i-W8-CGf.text" = "appbox_pro";
 
 /* Class = "IBUILabel"; text = "Twitter"; ObjectID = "KTG-Xd-Ija"; */
 "KTG-Xd-Ija.text" = "Twitter";
@@ -29,11 +23,8 @@
 /* Class = "IBUILabel"; text = "www.allaboutapps.net"; ObjectID = "Nce-mm-wa5"; */
 "Nce-mm-wa5.text" = "www.allaboutapps.net";
 
-/* Class = "IBUILabel"; text = "Facebook"; ObjectID = "R44-Fm-Kr5"; */
-"R44-Fm-Kr5.text" = "Facebook";
-
-/* Class = "IBUITableViewSection"; footerTitle = "Copyright © 2009-2021 ALLABOUTAPPS Inc. All rights reserved."; ObjectID = "Spr-CR-vU4"; */
-"Spr-CR-vU4.footerTitle" = "Copyright © 2009-2021 ALLABOUTAPPS Inc. Alle Rechte vorbehalten.";
+/* Class = "IBUITableViewSection"; footerTitle = "Copyright © 2009-2024 ALLABOUTAPPS Inc. All rights reserved."; ObjectID = "Spr-CR-vU4"; */
+"Spr-CR-vU4.footerTitle" = "Urheberrecht © 2009-2024 ALLABOUTAPPS Inc. Alle Rechte vorbehalten.";
 
 /* Class = "IBUITableViewSection"; headerTitle = " "; ObjectID = "Spr-CR-vU4"; */
 "Spr-CR-vU4.headerTitle" = " ";
@@ -47,20 +38,14 @@
 /* Class = "IBUILabel"; text = "3.0.0"; ObjectID = "cFb-Qr-7IF"; */
 "cFb-Qr-7IF.text" = "3.0";
 
-/* Class = "IBUILabel"; text = "What's New"; ObjectID = "jzI-Kv-pA8"; */
-"jzI-Kv-pA8.text" = "Was gibt's Neues";
-
-/* Class = "IBUILabel"; text = "Other Apps"; ObjectID = "qGh-tu-1aG"; */
-"qGh-tu-1aG.text" = "Other Apps";
+/* Class = "UILabel"; text = "Original Version"; ObjectID = "jzI-Kv-pA8"; */
+"jzI-Kv-pA8.text" = "Originalversion";
 
 /* Class = "IBUILabel"; text = "Version"; ObjectID = "rPK-fC-u92"; */
 "rPK-fC-u92.text" = "Version";
 
 /* Class = "IBUINavigationItem"; title = "About"; ObjectID = "vLL-sw-MLM"; */
 "vLL-sw-MLM.title" = "Über uns";
-
-/* Class = "IBUILabel"; text = "Tell a Friend by message"; ObjectID = "ygM-lV-AEG"; */
-"ygM-lV-AEG.text" = "Weiterempfehlen per SMS";
 
 /* Class = "UILabel"; text = "Open Source Licenses"; ObjectID = "EA3-28-uzR"; */
 "EA3-28-uzR.text" = "Open-Source-Lizenzen";
@@ -70,4 +55,3 @@
 
 /* Class = "UILabel"; text = "Other Apps"; ObjectID = "3zq-zd-Qlj"; */
 "3zq-zd-Qlj.text" = "Weitere Apps";
-

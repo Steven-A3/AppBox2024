@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-
+/*
 struct CreateSimplePasscodeMainView: View {
     var body: some View {
         NavigationStack {
@@ -140,3 +140,4 @@ extension UINavigationController {
         navigationBar.topItem?.backButtonDisplayMode = .minimal
     }
 }
+*/

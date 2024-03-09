@@ -7,10 +7,10 @@
 //
 
 import SwiftUI
+/*
 import UIKit
 import WultraPassphraseMeter
 import WultraPassphraseMeterENDictionary
-
 enum FocusField: Hashable {
     case none
     case password
@@ -412,3 +412,4 @@ class KeyboardHeightHelper: ObservableObject {
     }
 }
 
+*/

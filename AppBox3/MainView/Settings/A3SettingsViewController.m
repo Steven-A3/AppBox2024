@@ -410,7 +410,17 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 		}
 		case 4:
 			switch (indexPath.row) {
-                case 0: {
+                case 0:
+                    if (@available(iOS 17.0, *)) {
+                        [self presentSubscriptionViewControllerWithCompletion:^{
+                            
+                        }];
+                    } else {
+                        [self presentAlertWithTitle:NSLocalizedString(@"Ads Free Pass Unavailable", @"")
+                                        message:NSLocalizedString(@"Upgrade to iOS 17 for Ads Free Pass. Visit Settings > General > Software Update.", @"")];
+                    }
+                    break;
+                case 1: {
                     [[A3AppDelegate instance] evaluateSubscriptionWithCompletion:^{
                         if ([A3AppDelegate instance].isOldPaidUser) {
                             [self presentAlertWithTitle:@"" message:NSLocalizedString(@"Your purchases have been successfully restored.", @"")];
@@ -422,7 +432,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
                     }];
                     break;
                 }
-				case 1: {
+				case 2: {
 					[self presentAboutViewController];
 					break;
 				}

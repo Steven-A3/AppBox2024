@@ -136,7 +136,11 @@ NSString *const A3SyncManagerEmptyObject = @"(!_^_!Empty!_^_!_#+129)";
 }
 
 - (void)setDateComponents:(NSDateComponents *)dateComponents forKey:(NSString *)key state:(A3DataObjectStateValue)state {
-	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dateComponents requiringSecureCoding:YES error:NULL];
+    NSError *error;
+	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dateComponents requiringSecureCoding:YES error:&error];
+    if (error) {
+        FNLOG(@"%@", error.localizedDescription);
+    }
 	[self setObject:data forKey:key state:state];
 }
 

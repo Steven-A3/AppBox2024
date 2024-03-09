@@ -9,22 +9,23 @@
 import StoreKit
 
 @objcMembers public class AppTransactionManager : NSObject {
-    static func isPaidForApp() async -> (Bool, Date) {
+    static func isPaidForApp() async -> (Bool, String, Date) {
         do {
             // Verify app purchase and handle business model change.
             let result: VerificationResult<AppTransaction> = try await AppTransaction.shared
             
             if case .verified(let appTransaction) = result {
                 let originalAppVersion = appTransaction.originalAppVersion
+//                let originalAppVersion = "3.7"
                 let freeAppVersion = "3.6"
                 let purchaseDate = appTransaction.originalPurchaseDate
                 return (isPaidAppVersion(originalAppVersion: originalAppVersion,
-                                                  freeAppVersion: freeAppVersion), purchaseDate)
+                                                  freeAppVersion: freeAppVersion), originalAppVersion, purchaseDate)
             }
         } catch {
             print("Error during verify AppTransaction: \(error)")
         }
-        return (false, Date.distantFuture)
+        return (false, "", Date.distantFuture)
     }
     
     static func isPaidAppVersion(originalAppVersion: String, freeAppVersion: String) -> Bool {
@@ -46,7 +47,7 @@ import StoreKit
         // If all segments are equal up to the length of the shortest version string,
         // and the original version string is shorter or equal, it means the app was paid for.
         // If the original version string is longer, we assume it was not paid for.
-        return originalVersionNumbers.count <= freeVersionNumbers.count
+        return originalVersionNumbers.count < freeVersionNumbers.count
     }
     
     static func checkSubscriptionStatus() async throws -> (Bool, Bool, Date) {

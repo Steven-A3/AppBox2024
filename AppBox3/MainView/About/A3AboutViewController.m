@@ -18,6 +18,7 @@
 #import "FXBlurView.h"
 #import "A3AppDelegate.h"
 #import "A3SyncManager.h"
+@import StoreKit;
 
 @interface A3AboutViewController () <MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate>
 @property (nonatomic, strong) A3LaunchViewController *whatsNewViewController;
@@ -74,10 +75,20 @@
 	return [super tableView:tableView heightForRowAtIndexPath:indexPath];
 }
 
+- (NSString * _Nonnull)versionInfoString {
+    return [NSString stringWithFormat:@"%@(%@,%@)",
+            [A3AppDelegate instance].originalAppVersion,
+            [A3AppDelegate instance].removeAdsActive ? @"RemoveAds Active" : @"RemoveAds Non",
+            [A3AppDelegate instance].hasAdsFreePass ? @"Subs Active" : @"Subs Non"
+    ];
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 2 && indexPath.row == 0) {
 		cell.detailTextLabel.text = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-	}
+    } else if (indexPath.section == 2 && indexPath.row == 1) {
+        cell.detailTextLabel.text = [self versionInfoString];
+    }
 }
 
 #pragma mark -- UITableViewDelegate
@@ -111,17 +122,10 @@
 			break;
 		}
 		case 1: {
-			NSURL *twitterURL = [NSURL URLWithString:@"twitter://user?screen_name=AppBox_Pro"];
-			if (![[UIApplication sharedApplication] canOpenURL:twitterURL]) {
-				twitterURL = [NSURL URLWithString:@"https://twitter.com/AppBox_Pro"];
-			}
-			[[UIApplication sharedApplication] openURL:twitterURL];
-			break;
-		}
-		case 2: {
-			NSString *review_url = @"itms-apps://userpub.itunes.apple.com/WebObjects/MZUserPublishing.woa/wa/addUserReview?id=318404385";
-			NSURL *url = [[NSURL alloc] initWithString:review_url];
-			[[UIApplication sharedApplication] openURL:url];
+            UIWindowScene *scene = (UIWindowScene *)UIApplication.sharedApplication.connectedScenes.allObjects.firstObject;
+            if (scene) {
+                [SKStoreReviewController requestReviewInScene:scene];
+            }
 			break;
 		}
 	}
@@ -157,31 +161,31 @@
 
 	UIDevice *currentDevice = [UIDevice currentDevice];
 	NSLocale *currentLocale = [NSLocale currentLocale];
-	NSString *body = [NSString stringWithFormat:@"\n\n\n\n\nModel: %@ (%@)\niOS Version: %@\n%@\n",
-					[A3UIDevice platformString], [A3UIDevice platform],
-					[currentDevice systemVersion],
-					[currentLocale displayNameForKey:NSLocaleIdentifier value:[currentLocale localeIdentifier]]];
+    NSString *body = [NSString stringWithFormat:@"\n\n\n\n\nModel: %@ (%@)\niOS Version: %@\n%@\nAppVersion: %@",
+                      [A3UIDevice platformString], [A3UIDevice platform],
+                      [currentDevice systemVersion],
+                      [currentLocale displayNameForKey:NSLocaleIdentifier value:[currentLocale localeIdentifier]],
+                      [self versionInfoString]
+    ];
 	[self openMailComposerWithSubject:emailSubject withBody:body withRecipient:@"support@allaboutapps.net" isHTML:NO ];
 }
 
 - (void)didSelectSectionTwoAtRow:(NSInteger)row {
 	switch (row) {
-		case 2: {
+		case 1: {
 			NSURL *url;
             url = [[NSURL alloc] initWithString:@"itms-apps://itunes.com/apps/allaboutapps"];
-			[[UIApplication sharedApplication] openURL:url];
+            [[UIApplication sharedApplication] openURL:url
+                                               options:@{}
+                                     completionHandler:NULL];
+			break;
+		}
+		case 2: {
+            [self presentAlertWithTitle:NSLocalizedString(@"Acknowledgement", @"Acknowledgement")
+                                message:NSLocalizedString(@"HOLIDAYS_ACKNOWLEDGEMENT", nil)];
 			break;
 		}
 		case 3: {
-			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Acknowledgement", @"Acknowledgement")
-																message:NSLocalizedString(@"HOLIDAYS_ACKNOWLEDGEMENT", nil)
-															   delegate:nil
-													  cancelButtonTitle:@"OK"
-													  otherButtonTitles:nil];
-			[alertView show];
-			break;
-		}
-		case 4: {
 			NSMutableString *message = [NSMutableString new];
 			[message appendString:[NSString stringWithFormat:@"\n📌 %@\n\n", NSLocalizedString(A3AppName_Holidays, nil)]];
 			[message appendString:[NSString stringWithFormat:@"%@\n\n", NSLocalizedString(@"DISCLAIMER_MESSAGE", nil)]];
@@ -189,15 +193,9 @@
 			[message appendString:[NSString stringWithFormat:@"📌 %@\n\n", NSLocalizedString(A3AppName_LadiesCalendar, nil)]];
 			[message appendString:[NSString stringWithFormat:@"%@\n\n", NSLocalizedString(@"LadyCalendarDisclaimerMsg", nil)]];
 
-			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Disclaimer", nil)
-																message:message
-															   delegate:nil
-													  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-													  otherButtonTitles:nil];
-			[alertView show];
+            [self presentAlertWithTitle:NSLocalizedString(@"Disclaimer", nil) message:message];
 			break;
 		}
-
 	}
 }
 

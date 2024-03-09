@@ -268,7 +268,7 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 			[[A3UserDefaults standardUserDefaults] boolForKey:A3SyncManagerCloudEnabled];
 }
 
-- (void)synchronizeWithCompletion:(CDECompletionBlock)completion
+- (void)synchronizeWithCompletion:(nullable CDECompletionBlock)completion
 {
 	if (!self.isCloudEnabled) return;
 
@@ -459,6 +459,28 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 			}
 		}];
 	}];
+}
+
+#pragma mark - Persistent Store
+
+- (void)loadPersistentContainerInBundle:(NSBundle *)bundle withCompletion:(void (^)(NSError *))completion {
+    if (_persistentContainer == nil) {
+        NSManagedObjectModel *model = [NSManagedObjectModel mergedModelFromBundles:@[bundle]];
+        _persistentContainer = [[NSPersistentContainer alloc] initWithName:@"AppBoxStore" managedObjectModel:model];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSPersistentStoreDescription *storeDescription = [NSPersistentStoreDescription persistentStoreDescriptionWithURL:[fileManager storeURL]];
+        _persistentContainer.persistentStoreDescriptions = @[storeDescription];
+        [_persistentContainer loadPersistentStoresWithCompletionHandler:^(NSPersistentStoreDescription *storeDescription, NSError *error) {
+            completion(error);
+        }];
+    }
+}
+
+- (void)unloadPersistentContainer {
+    if (_persistentContainer.viewContext.hasChanges) {
+        [_persistentContainer.viewContext save:nil];
+    }
+    _persistentContainer = nil;
 }
 
 @end

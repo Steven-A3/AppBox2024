@@ -318,7 +318,11 @@ enum A3TableElementCellType {
 }
 
 - (void)saveInputTextData:(A3SalesCalcData *)inputTextData {
-	NSData *inputData = [NSKeyedArchiver archivedDataWithRootObject:inputTextData requiringSecureCoding:YES error:NULL];
+    NSError *error;
+	NSData *inputData = [NSKeyedArchiver archivedDataWithRootObject:inputTextData requiringSecureCoding:NO error:&error];
+    if (error) {
+        FNLOG(@"%@", error.localizedDescription);
+    }
 	[[A3SyncManager sharedSyncManager] setObject:inputData forKey:A3SalesCalcUserDefaultsSavedInputDataKey state:A3DataObjectStateModified];
 }
 

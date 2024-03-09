@@ -140,15 +140,8 @@
 	}];
 
 	if (_shouldShowHouseAd) {
-		if (screenBounds.size.height > 568) {
-			[self addAppLinkButtonToView:backgroundView title:@"AppBox" imageName:@"iPad_AppBox" position:IS_IPHONE ? 0.2 : 0.25 selector:@selector(openAppStoreAppBox)];
-			[self addAppLinkButtonToView:backgroundView title:@"Numpad" imageName:@"iPad_Numpad" position:0.5 selector:@selector(openAppStoreNumpad)];
-			[self addAppLinkButtonToView:backgroundView title:@"Moment" imageName:@"iPad_Moment" position:IS_IPHONE ? 0.8 : 0.75 selector:@selector(openAppStoreMoment)];
-		} else {
-			[self addAppLinkButtonToView:backgroundView title:@"AppBox" imageName:@"iPhone_AppBox" position:0.25 selector:@selector(openAppStoreAppBox)];
-			[self addAppLinkButtonToView:backgroundView title:@"Numpad" imageName:@"iPhone_Numpad" position:0.5 selector:@selector(openAppStoreNumpad)];
-			[self addAppLinkButtonToView:backgroundView title:@"Moment" imageName:@"iPhone_Moment" position:0.75 selector:@selector(openAppStoreMoment)];
-		}
+        [self addAppLinkButtonToView:backgroundView title:@"AppBox" imageName:@"iPad_AppBox" position:0.3 selector:@selector(openAppStoreAppBox)];
+        [self addAppLinkButtonToView:backgroundView title:@"Moment" imageName:@"iPad_Moment" position:0.7 selector:@selector(openAppStoreMoment)];
 	}
 
 	return backgroundView;

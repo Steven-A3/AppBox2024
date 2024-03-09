@@ -82,6 +82,13 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if ([self passcodeEnabled]) {
+        return 4;
+    }
+    return 1;
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	switch (indexPath.section) {
 		case 0:
@@ -127,10 +134,15 @@
 			cell.textLabel.text =  passcodeEnabled ? NSLocalizedString(@"Turn Passcode Off", @"Turn Passcode Off") : NSLocalizedString(@"Turn Passcode On", @"Turn Passcode On");
 			cell.textLabel.textColor = [self.view tintColor];
 			break;
-		case 1:
-			cell.selectionStyle = passcodeEnabled ? UITableViewCellSelectionStyleDefault : UITableViewCellSelectionStyleNone;
-			cell.textLabel.textColor = passcodeEnabled ? [self.view tintColor] : A3_TEXT_COLOR_DISABLED;
-			break;
+        case 1: {
+            if (!_useSimpleCodeSwitch) {
+                _useSimpleCodeSwitch = [UISwitch new];
+                [_useSimpleCodeSwitch addTarget:self action:@selector(useSimplePasscodeValuedChanged:) forControlEvents:UIControlEventValueChanged];
+            }
+            [_useSimpleCodeSwitch setOn:[[A3AppDelegate instance] isSimplePasscode]];
+            cell.accessoryView = _useSimpleCodeSwitch;
+            break;
+        }
 	}
 }
 
@@ -158,15 +170,6 @@
                 }
 				cell.accessoryView = _touchIDSwitch;
 			}
-			break;
-		}
-		case 2: {
-			if (!_useSimpleCodeSwitch) {
-				_useSimpleCodeSwitch = [UISwitch new];
-				[_useSimpleCodeSwitch addTarget:self action:@selector(useSimplePasscodeValuedChanged:) forControlEvents:UIControlEventValueChanged];
-			}
-			[_useSimpleCodeSwitch setOn:[[A3AppDelegate instance] isSimplePasscode]];
-			cell.accessoryView = _useSimpleCodeSwitch;
 			break;
 		}
 	 }

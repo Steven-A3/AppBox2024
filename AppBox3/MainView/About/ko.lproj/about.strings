@@ -2,8 +2,8 @@
 /* Class = "IBUILabel"; text = "@appbox_pro"; ObjectID = "0Ql-Zd-0gc"; */
 "0Ql-Zd-0gc.text" = "@appbox_pro";
 
-/* Class = "IBUILabel"; text = "Write a Review"; ObjectID = "1q8-UP-67U"; */
-"P36-ib-WDG.text" = "앱 리뷰 작성하러 가기";
+/* Class = "UILabel"; text = "Other Apps"; ObjectID = "3zq-zd-Qlj"; */
+"3zq-zd-Qlj.text" = "더 많은 앱들";
 
 /* Class = "IBUILabel"; text = "Website"; ObjectID = "5OA-em-QL5"; */
 "5OA-em-QL5.text" = "웹사이트";
@@ -14,14 +14,8 @@
 /* Class = "IBUILabel"; text = "Disclaimer"; ObjectID = "9Z8-Bh-Lsm"; */
 "9Z8-Bh-Lsm.text" = "제약사항";
 
-/* Class = "IBUILabel"; text = "Tell a Friend by email"; ObjectID = "CKx-jh-s85"; */
-"CKx-jh-s85.text" = "친구에게 메일로 추천하기";
-
-/* Class = "IBUITableViewSection"; headerTitle = " "; ObjectID = "Fc3-n4-rxm"; */
-"Fc3-n4-rxm.headerTitle" = " ";
-
-/* Class = "IBUILabel"; text = "appbox_pro"; ObjectID = "I2i-W8-CGf"; */
-"I2i-W8-CGf.text" = "appbox_pro";
+/* Class = "UILabel"; text = "Open Source Licenses"; ObjectID = "EA3-28-uzR"; */
+"EA3-28-uzR.text" = "오픈 소스 라이센스";
 
 /* Class = "IBUILabel"; text = "Twitter"; ObjectID = "KTG-Xd-Ija"; */
 "KTG-Xd-Ija.text" = "트위터 보러가기";
@@ -29,11 +23,14 @@
 /* Class = "IBUILabel"; text = "www.allaboutapps.net"; ObjectID = "Nce-mm-wa5"; */
 "Nce-mm-wa5.text" = "www.allaboutapps.net";
 
-/* Class = "IBUILabel"; text = "Facebook"; ObjectID = "R44-Fm-Kr5"; */
-"R44-Fm-Kr5.text" = "페이스북 페이지 방문";
+/* Class = "UINavigationItem"; title = "Open Source Licenses"; ObjectID = "OXd-fK-eHk"; */
+"OXd-fK-eHk.title" = "오픈 소스 라이센스";
 
-/* Class = "IBUITableViewSection"; footerTitle = "Copyright © 2009-2021 ALLABOUTAPPS Inc. All rights reserved."; ObjectID = "Spr-CR-vU4"; */
-"Spr-CR-vU4.footerTitle" = "Copyright © 2009-2021 ALLABOUTAPPS Inc. All rights reserved.";
+/* Class = "IBUILabel"; text = "Write a Review"; ObjectID = "1q8-UP-67U"; */
+"P36-ib-WDG.text" = "앱 리뷰 작성하러 가기";
+
+/* Class = "IBUITableViewSection"; footerTitle = "Copyright © 2009-2024 ALLABOUTAPPS Inc. All rights reserved."; ObjectID = "Spr-CR-vU4"; */
+"Spr-CR-vU4.footerTitle" = "저작권 © 2009-2024 ALLABOUTAPPS Inc. 판권 소유";
 
 /* Class = "IBUITableViewSection"; headerTitle = " "; ObjectID = "Spr-CR-vU4"; */
 "Spr-CR-vU4.headerTitle" = " ";
@@ -48,10 +45,7 @@
 "cFb-Qr-7IF.text" = "3.0";
 
 /* Class = "IBUILabel"; text = "What's New"; ObjectID = "jzI-Kv-pA8"; */
-"jzI-Kv-pA8.text" = "새로운 기능";
-
-/* Class = "IBUILabel"; text = "Other Apps"; ObjectID = "qGh-tu-1aG"; */
-"qGh-tu-1aG.text" = "다른 앱 살펴보기";
+"jzI-Kv-pA8.text" = "최초 버전";
 
 /* Class = "IBUILabel"; text = "Version"; ObjectID = "rPK-fC-u92"; */
 "rPK-fC-u92.text" = "버전";
@@ -59,15 +53,5 @@
 /* Class = "IBUINavigationItem"; title = "About"; ObjectID = "vLL-sw-MLM"; */
 "vLL-sw-MLM.title" = "정보";
 
-/* Class = "IBUILabel"; text = "Tell a Friend by message"; ObjectID = "ygM-lV-AEG"; */
-"ygM-lV-AEG.text" = "친구에게 메시지로 추천하기";
-
-/* Class = "UILabel"; text = "Open Source Licenses"; ObjectID = "EA3-28-uzR"; */
-"EA3-28-uzR.text" = "오픈 소스 라이센스";
-
-/* Class = "UINavigationItem"; title = "Open Source Licenses"; ObjectID = "OXd-fK-eHk"; */
-"OXd-fK-eHk.title" = "오픈 소스 라이센스";
-
-/* Class = "UILabel"; text = "Other Apps"; ObjectID = "3zq-zd-Qlj"; */
-"3zq-zd-Qlj.text" = "더 많은 앱들";
-
+/* Class = "IBUITableViewSection"; headerTitle = " "; ObjectID = "Fc3-n4-rxm"; */
+"Fc3-n4-rxm.headerTitle" = " ";

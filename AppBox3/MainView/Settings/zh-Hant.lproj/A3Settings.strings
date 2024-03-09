@@ -81,6 +81,9 @@
 /* Class = "UIButton"; normalTitle = "Hexagon"; ObjectID = "9Xh-7R-BIO"; */
 "9Xh-7R-BIO.normalTitle" = "六邊形";
 
+/* Class = "UILabel"; text = "Ads Free Pass"; ObjectID = "52u-SH-gyS"; */
+"52u-SH-gyS.text" = "去廣告通行证";
+
 /* Class = "UILabel"; text = "Restore Purchase"; ObjectID = "C7v-Sr-wgh"; */
 "C7v-Sr-wgh.text" = "還原先前的購買項目";
 

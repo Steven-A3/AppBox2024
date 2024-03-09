@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+/*
 /// The identity of the TextField and the SecureField.
 enum Field: Hashable {
     case showPasswordField
@@ -167,3 +167,4 @@ struct TextFieldClearButton: ViewModifier {
         }
     }
 }
+*/

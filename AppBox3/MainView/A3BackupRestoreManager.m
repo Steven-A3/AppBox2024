@@ -605,7 +605,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
         }
 	}
     
-    A3SyncManager.sharedSyncManager.persistentContainer = nil;
+    [A3SyncManager.sharedSyncManager unloadPersistentContainer];
 
 	[self deleteCoreDataStoreFilesAt:toURL];
 	[self removeMediaFiles];

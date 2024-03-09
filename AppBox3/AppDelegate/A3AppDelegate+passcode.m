@@ -500,7 +500,6 @@
 			self.homeStyleMainMenuViewController.activeAppName = [A3AppName_Clock copy];
 		}
 		[self setStartOptionOpenClockOnce:NO];
-        [self askPersonalizedAdConsent];
 
         return;
 	}
@@ -548,7 +547,6 @@
 				[self removeSecurityCoverView];
 			});
 		}
-		[self askPersonalizedAdConsent];
 		return;
 	}
 

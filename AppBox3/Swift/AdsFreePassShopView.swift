@@ -9,16 +9,19 @@
 import SwiftUI
 import StoreKit
 
+
 struct AdsFreePassShop: View {
     var expirationDate: Date
+    var completionHandler: () -> Void
     var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
         formatter.timeStyle = .none
         return formatter
     }
-    init(expirationDate: Date = Date.distantPast) {
+    init(expirationDate: Date = Date.distantPast, completionHandler: @escaping () -> Void = {}) {
         self.expirationDate = expirationDate
+        self.completionHandler = completionHandler
     }
     
     private var passGroupID = "21416287"
@@ -62,7 +65,7 @@ struct AdsFreePassShop: View {
                 .subscriptionStoreButtonLabel(.multiline)
                 .subscriptionStorePickerItemBackground(.thinMaterial)
                 .subscriptionStoreControlIcon { product, _ in
-                    if (product.id == "AppBox_AdsFreePassYearly_01") {
+                    if (product.id == "net.allaboutapps.AppBoxPro.AdsFreePassYearly") {
                         SavesMark()
                     }
                 }
@@ -72,6 +75,9 @@ struct AdsFreePassShop: View {
                     Spacer()
                     BackgroundBottom()
                 }
+            }
+            .onDisappear {
+                completionHandler()
             }
         }
     }
@@ -111,7 +117,7 @@ struct BackgroundBottom: View {
 }
 
 @objcMembers class SubscriptionUtility: NSObject {
-    static func subscriptionShopViewController(expirationDate: NSDate) -> UIViewController {
-        return UIHostingController(rootView: AdsFreePassShop(expirationDate: expirationDate as Date))
+    static func subscriptionShopViewController(expirationDate: NSDate, completionHandler: @escaping () -> Void) -> UIViewController {
+        return UIHostingController(rootView: AdsFreePassShop(expirationDate: expirationDate as Date, completionHandler: completionHandler))
     }
 }

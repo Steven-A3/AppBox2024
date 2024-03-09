@@ -100,7 +100,6 @@
 		57E4E1C919D2DCC20037371B /* A3FlashViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E4E1C719D2DCC20037371B /* A3FlashViewController.xib */; };
 		57E4E1CE19D2DD360037371B /* A3RandomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E4E1CC19D2DD360037371B /* A3RandomViewController.m */; };
 		57E4E1CF19D2DD360037371B /* A3RandomViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E4E1CD19D2DD360037371B /* A3RandomViewController.xib */; };
-		62CB1AC5F8DE3246838E657A /* Pods_AppBox3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D6D831C83E01C06D27EDC99 /* Pods_AppBox3.framework */; };
 		68030ABC17F063D100B04487 /* HTCopyableLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 68030ABB17F063D100B04487 /* HTCopyableLabel.m */; };
 		680344601CE19505009C300F /* A3PedometerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6803445F1CE19505009C300F /* A3PedometerViewController.m */; };
 		680344651CE1E46F009C300F /* A3PedometerSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680344641CE1E46F009C300F /* A3PedometerSettingsTableViewController.m */; };
@@ -125,7 +124,6 @@
 		680886E41891751B0093FD97 /* SBGradientOverlayLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886CC1891751B0093FD97 /* SBGradientOverlayLayer.m */; };
 		680886E51891751B0093FD97 /* SBTickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886CE1891751B0093FD97 /* SBTickerView.m */; };
 		680886E61891751B0093FD97 /* UIView+SBExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886D01891751B0093FD97 /* UIView+SBExtras.m */; };
-		680A633C29BA9D790020B964 /* FirstSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680A633B29BA9D790020B964 /* FirstSwift.swift */; };
 		680B59D71E9777C8004362AC /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68DE21521CEB038D00E31DDF /* HealthKit.framework */; };
 		680D638C18CFF9D400938AD0 /* A3CalcKeyboardView_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D636618CFF9D400938AD0 /* A3CalcKeyboardView_iPhone.m */; };
 		680D638D18CFF9D400938AD0 /* A3Calculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D636818CFF9D400938AD0 /* A3Calculator.m */; };
@@ -496,6 +494,7 @@
 		687AEEB61CBC489700C2D844 /* MXLCalendarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AEEB31CBC489700C2D844 /* MXLCalendarManager.m */; };
 		687AEEBB1CBC4E5800C2D844 /* MXLCalendarAttendee.m in Sources */ = {isa = PBXBuildFile; fileRef = 687AEEBA1CBC4E5800C2D844 /* MXLCalendarAttendee.m */; };
 		687B95361E024A1A00126F9E /* A3AbbreviationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 687B95351E024A1A00126F9E /* A3AbbreviationViewController.m */; };
+		687C9D6F2B368F17007A3269 /* AppBoxKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68B1292529EA0CA1003A5EB1 /* AppBoxKit.framework */; };
 		687D0D0A17CAE519005AB571 /* HolidayData+Africa.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0CFD17CAE519005AB571 /* HolidayData+Africa.m */; };
 		687D0D0B17CAE519005AB571 /* HolidayData+America.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0CFF17CAE519005AB571 /* HolidayData+America.m */; };
 		687D0D0C17CAE519005AB571 /* HolidayData+Asia.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0117CAE519005AB571 /* HolidayData+Asia.m */; };
@@ -991,7 +990,6 @@
 		68FB684A1C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FB68491C9008730074ACF8 /* A3SettingsHomeStyleSelectTableViewCell.m */; };
 		68FB8E9E1C990922008CAB7A /* CurrencyInfo.dictionary in Resources */ = {isa = PBXBuildFile; fileRef = 68FB8E9C1C990922008CAB7A /* CurrencyInfo.dictionary */; };
 		68FC3AF01C19336000EC9348 /* A3CurrencyPickerStyle.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68FC3AF21C19336000EC9348 /* A3CurrencyPickerStyle.storyboard */; };
-		72D60606305C4B639565B897 /* Pods_AppBox3_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16CA5C7F50557A226617C022 /* Pods_AppBox3_Tests.framework */; };
 		808DA9EB196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 808DA9EA196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.m */; };
 /* End PBXBuildFile section */
 
@@ -1061,7 +1059,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		16CA5C7F50557A226617C022 /* Pods_AppBox3_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AppBox3_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		17D42020AA362D23330F9A40 /* A3SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsViewController.h; path = Settings/A3SettingsViewController.h; sourceTree = "<group>"; };
 		17D4202915D388642422A149 /* A3UnitConverterTVDataCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitConverterTVDataCell.m; sourceTree = "<group>"; };
 		17D42035933BC6DF88D4E653 /* A3UnitConverterTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitConverterTabBarController.m; sourceTree = "<group>"; };
@@ -1296,7 +1293,6 @@
 		680886D01891751B0093FD97 /* UIView+SBExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SBExtras.m"; sourceTree = "<group>"; };
 		680A632B29B96B670020B964 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 		680A633A29BA9D780020B964 /* AppBox3-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppBox3-Bridging-Header.h"; sourceTree = "<group>"; };
-		680A633B29BA9D790020B964 /* FirstSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstSwift.swift; sourceTree = "<group>"; };
 		680D636518CFF9D400938AD0 /* A3CalcKeyboardView_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalcKeyboardView_iPhone.h; sourceTree = "<group>"; };
 		680D636618CFF9D400938AD0 /* A3CalcKeyboardView_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalcKeyboardView_iPhone.m; sourceTree = "<group>"; };
 		680D636718CFF9D400938AD0 /* A3Calculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3Calculator.h; sourceTree = "<group>"; };
@@ -1930,6 +1926,7 @@
 		687B95341E024A1A00126F9E /* A3AbbreviationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3AbbreviationViewController.h; sourceTree = "<group>"; };
 		687B95351E024A1A00126F9E /* A3AbbreviationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AbbreviationViewController.m; sourceTree = "<group>"; };
 		687C193B1783DF0F00415FCE /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		687C9D6C2B368DD2007A3269 /* AppBox3 Tests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppBox3 Tests-Bridging-Header.h"; sourceTree = "<group>"; };
 		687D0CFC17CAE519005AB571 /* HolidayData+Africa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "HolidayData+Africa.h"; path = "Holidays/HolidayData+Africa.h"; sourceTree = "<group>"; };
 		687D0CFD17CAE519005AB571 /* HolidayData+Africa.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "HolidayData+Africa.m"; path = "Holidays/HolidayData+Africa.m"; sourceTree = "<group>"; };
 		687D0CFE17CAE519005AB571 /* HolidayData+America.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "HolidayData+America.h"; path = "Holidays/HolidayData+America.h"; sourceTree = "<group>"; };
@@ -2988,16 +2985,8 @@
 		68FC3B061C19337C00EC9348 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/A3CurrencyPickerStyle.strings; sourceTree = "<group>"; };
 		68FC3B081C19337D00EC9348 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3CurrencyPickerStyle.strings; sourceTree = "<group>"; };
 		68FC3B0A1C19337F00EC9348 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/A3CurrencyPickerStyle.strings"; sourceTree = "<group>"; };
-		73D6C387574F2F3CB9F6D960 /* Pods-A3SetupDefaultData.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-A3SetupDefaultData.debug.xcconfig"; path = "Target Support Files/Pods-A3SetupDefaultData/Pods-A3SetupDefaultData.debug.xcconfig"; sourceTree = "<group>"; };
 		808DA9E9196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterSlideShowCollectionViewLayout.h; sourceTree = "<group>"; };
 		808DA9EA196A94F10018DA25 /* A3DaysCounterSlideShowCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterSlideShowCollectionViewLayout.m; sourceTree = "<group>"; };
-		8D6D831C83E01C06D27EDC99 /* Pods_AppBox3.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AppBox3.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A2B44742FA51EA7F42EACA47 /* Pods-AppBox3.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppBox3.debug.xcconfig"; path = "Target Support Files/Pods-AppBox3/Pods-AppBox3.debug.xcconfig"; sourceTree = "<group>"; };
-		C005CDC13771E048C673CAAC /* libPods-A3SetupDefaultData.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-A3SetupDefaultData.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C016DCEDA2CB7BCD4B571813 /* Pods-AppBox3.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppBox3.release.xcconfig"; path = "Target Support Files/Pods-AppBox3/Pods-AppBox3.release.xcconfig"; sourceTree = "<group>"; };
-		CF71B77512EA11BE322B2B98 /* Pods-AppBox3 Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppBox3 Tests.release.xcconfig"; path = "Target Support Files/Pods-AppBox3 Tests/Pods-AppBox3 Tests.release.xcconfig"; sourceTree = "<group>"; };
-		E3C83E51E76A1AC7027F6EB4 /* Pods-AppBox3 Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppBox3 Tests.debug.xcconfig"; path = "Target Support Files/Pods-AppBox3 Tests/Pods-AppBox3 Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		EC25DC31BBCBB5F87F2DE508 /* Pods-A3SetupDefaultData.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-A3SetupDefaultData.release.xcconfig"; path = "Target Support Files/Pods-A3SetupDefaultData/Pods-A3SetupDefaultData.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3027,7 +3016,6 @@
 				687E4FAF29F8177200FE59F6 /* AuthenticationServices.framework in Frameworks */,
 				684A71BD1852E0250004A9FE /* libc++.dylib in Frameworks */,
 				6826276029B77D1D0052CBD0 /* FirebaseAppCheck in Frameworks */,
-				62CB1AC5F8DE3246838E657A /* Pods_AppBox3.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3035,10 +3023,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				687C9D6F2B368F17007A3269 /* AppBoxKit.framework in Frameworks */,
 				6876D6FB17A75DAE00E16991 /* XCTest.framework in Frameworks */,
 				6876D6FD17A75DAE00E16991 /* UIKit.framework in Frameworks */,
 				6876D6FC17A75DAE00E16991 /* Foundation.framework in Frameworks */,
-				72D60606305C4B639565B897 /* Pods_AppBox3_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3475,7 +3463,6 @@
 			children = (
 				684AE51D29E7EC9E00589D62 /* Main.storyboard */,
 				684AE51A29E7EC8E00589D62 /* ChangePasswordViewController.swift */,
-				680A633B29BA9D790020B964 /* FirstSwift.swift */,
 				680A633A29BA9D780020B964 /* AppBox3-Bridging-Header.h */,
 				68BB6E4B29C72703002366EF /* CredentialIdentityStoreManager.swift */,
 				68C4189A2B1148ED009668B9 /* AppTransactionManager.swift */,
@@ -3876,7 +3863,6 @@
 				68B1293429EA0CA7003A5EB1 /* AppBoxKitTests */,
 				682EA2D415EB10B000BD6AD4 /* Frameworks */,
 				682EA2D215EB10B000BD6AD4 /* Products */,
-				EBCA40A147C9E4B5F5A19E3A /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -3950,9 +3936,6 @@
 				687C193B1783DF0F00415FCE /* XCTest.framework */,
 				681AB7C61E95D2100015F57D /* UserNotifications.framework */,
 				681AB7C81E95D2100015F57D /* UserNotificationsUI.framework */,
-				C005CDC13771E048C673CAAC /* libPods-A3SetupDefaultData.a */,
-				8D6D831C83E01C06D27EDC99 /* Pods_AppBox3.framework */,
-				16CA5C7F50557A226617C022 /* Pods_AppBox3_Tests.framework */,
 				680A632B29B96B670020B964 /* AuthenticationServices.framework */,
 			);
 			name = Frameworks;
@@ -4494,6 +4477,7 @@
 				6876D6FF17A75DAE00E16991 /* Supporting Files */,
 				685946D018C371C800528190 /* A3SpeechTest.m */,
 				689E9854197C1B99003710C3 /* A3UnitNamesTest.m */,
+				687C9D6C2B368DD2007A3269 /* AppBox3 Tests-Bridging-Header.h */,
 			);
 			path = "AppBox3 Tests";
 			sourceTree = "<group>";
@@ -5845,19 +5829,6 @@
 			name = "Cells & Custom";
 			sourceTree = "<group>";
 		};
-		EBCA40A147C9E4B5F5A19E3A /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				73D6C387574F2F3CB9F6D960 /* Pods-A3SetupDefaultData.debug.xcconfig */,
-				EC25DC31BBCBB5F87F2DE508 /* Pods-A3SetupDefaultData.release.xcconfig */,
-				A2B44742FA51EA7F42EACA47 /* Pods-AppBox3.debug.xcconfig */,
-				C016DCEDA2CB7BCD4B571813 /* Pods-AppBox3.release.xcconfig */,
-				E3C83E51E76A1AC7027F6EB4 /* Pods-AppBox3 Tests.debug.xcconfig */,
-				CF71B77512EA11BE322B2B98 /* Pods-AppBox3 Tests.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -5923,13 +5894,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 682EA30415EB10B000BD6AD4 /* Build configuration list for PBXNativeTarget "AppBox3" */;
 			buildPhases = (
-				EB7AD43FDEB1CCD1B1D98AE2 /* [CP] Check Pods Manifest.lock */,
 				682EA2CD15EB10B000BD6AD4 /* Sources */,
 				682EA2CE15EB10B000BD6AD4 /* Frameworks */,
 				682EA2CF15EB10B000BD6AD4 /* Resources */,
 				681AB7DF1E95D2100015F57D /* Embed Foundation Extensions */,
 				6882BFD22581CCAA00A01A0E /* Embed Frameworks */,
-				496EEF104971283EE77563A4 /* [CP] Copy Pods Resources */,
 				6872F1372B19DF5D00DE0922 /* ShellScript */,
 			);
 			buildRules = (
@@ -5961,7 +5930,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6876D70917A75DAE00E16991 /* Build configuration list for PBXNativeTarget "AppBox3 Tests" */;
 			buildPhases = (
-				6A1A0FE21AE100DAF87BB237 /* [CP] Check Pods Manifest.lock */,
 				6876D6F617A75DAE00E16991 /* Sources */,
 				6876D6F717A75DAE00E16991 /* Frameworks */,
 				6876D6F817A75DAE00E16991 /* Resources */,
@@ -6075,6 +6043,7 @@
 						};
 					};
 					6876D6F917A75DAE00E16991 = {
+						LastSwiftMigration = 1510;
 						TestTargetID = 682EA2D015EB10B000BD6AD4;
 					};
 					68B1292429EA0CA1003A5EB1 = {
@@ -6332,24 +6301,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		496EEF104971283EE77563A4 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AppBox3/Pods-AppBox3-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/PersonalizedAdConsent/PersonalizedAdConsent.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PersonalizedAdConsent.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AppBox3/Pods-AppBox3-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		6872F1372B19DF5D00DE0922 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -6371,50 +6322,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n";
-		};
-		6A1A0FE21AE100DAF87BB237 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-AppBox3 Tests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EB7AD43FDEB1CCD1B1D98AE2 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-AppBox3-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -6493,7 +6400,6 @@
 				6823F6FC1863294700E6E90D /* A3YahooCurrency.m in Sources */,
 				687484A819783B9D00EA8F74 /* DaysCounterReminder.m in Sources */,
 				680886D81891751B0093FD97 /* A3ClockInfo.m in Sources */,
-				680A633C29BA9D790020B964 /* FirstSwift.swift in Sources */,
 				68F14FE819485E8500159EAD /* A3DaysCounterEventListNameCell.m in Sources */,
 				68F1C8C818D7F37D009FAE8A /* A3LadyCalendarDetailViewController.m in Sources */,
 				68F1500919485E8500159EAD /* A3DaysCounterChangeLocationViewController.m in Sources */,
@@ -7763,7 +7669,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$PROJECT_DIR/**";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -7817,7 +7723,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$PROJECT_DIR/**";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-ObjC";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -7834,7 +7740,6 @@
 		};
 		682EA30515EB10B000BD6AD4 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A2B44742FA51EA7F42EACA47 /* Pods-AppBox3.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -7845,7 +7750,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.7.4.1;
+				CURRENT_PROJECT_VERSION = 4.7.7.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
@@ -7874,7 +7779,7 @@
 					"${PROJECT_DIR}/External/**",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
-				MARKETING_VERSION = 4.7.4;
+				MARKETING_VERSION = 4.7.7;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				ONLY_ACTIVE_ARCH = YES;
@@ -7897,7 +7802,6 @@
 		};
 		682EA30615EB10B000BD6AD4 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C016DCEDA2CB7BCD4B571813 /* Pods-AppBox3.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -7908,7 +7812,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.7.4.1;
+				CURRENT_PROJECT_VERSION = 4.7.7.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
@@ -7937,7 +7841,7 @@
 					"${PROJECT_DIR}/External/**",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
-				MARKETING_VERSION = 4.7.4;
+				MARKETING_VERSION = 4.7.7;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				ONLY_ACTIVE_ARCH = YES;
@@ -7959,7 +7863,6 @@
 		};
 		6876D70A17A75DAE00E16991 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E3C83E51E76A1AC7027F6EB4 /* Pods-AppBox3 Tests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -7969,6 +7872,7 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 84XB754BWU;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -7990,6 +7894,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "net.allaboutapps.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "AppBox3 Tests/AppBox3 Tests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/External/**";
 				WRAPPER_EXTENSION = xctest;
@@ -7998,7 +7905,6 @@
 		};
 		6876D70B17A75DAE00E16991 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CF71B77512EA11BE322B2B98 /* Pods-AppBox3 Tests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -8008,6 +7914,7 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_NS_ASSERTIONS = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -8026,6 +7933,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "net.allaboutapps.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "AppBox3 Tests/AppBox3 Tests-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/External/**";
 				WRAPPER_EXTENSION = xctest;

@@ -14,8 +14,8 @@ extern NSString *const A3AppGroupIdentifier;
 
 - (NSString *)applicationSupportPath;
 - (NSString *)documentDirectoryPath;
-- (NSString *)storePath;
-- (NSString *)storeName;
+//- (NSString *)storePath;
+//- (NSString *)storeName;
 - (NSString *)humanReadableFileSize:(unsigned long long)size;
 - (NSURL *)storeURL;
 - (NSString *)storeFileName;

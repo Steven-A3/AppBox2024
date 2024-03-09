@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+/*
 struct AskSimplePasswordMainView: View {
     @EnvironmentObject var askPasswordContext: PasswordViewContext
     @State var countOfFailedAttempt: Int = 0
@@ -50,3 +51,4 @@ struct AskSimplePasscodeMainView_Previews: PreviewProvider {
             }))
     }
 }
+*/

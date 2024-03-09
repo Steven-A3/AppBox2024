@@ -62,6 +62,9 @@
 /* Class = "UILabel"; text = "Recent to Keep"; ObjectID = "BGG-KB-Wog"; */
 "BGG-KB-Wog.text" = "Recent to Keep";
 
+/* Class = "UILabel"; text = "Ads Free Pass"; ObjectID = "52u-SH-gyS"; */
+"52u-SH-gyS.text" = "Ads Free Pass";
+
 /* Class = "UILabel"; text = "Restore Purchase"; ObjectID = "C7v-Sr-wgh"; */
 "C7v-Sr-wgh.text" = "Restore Purchase";
 

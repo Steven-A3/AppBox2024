@@ -234,6 +234,7 @@
                                                                                   sectionNameKeyPath:groupingKeyPath
                                                                                            cacheName:nil];
     controller.delegate = delegate;
+    [controller performFetch:nil];
     return controller;
 }
 

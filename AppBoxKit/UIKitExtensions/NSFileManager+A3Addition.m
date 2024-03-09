@@ -25,13 +25,13 @@ NSString *const A3AppGroupIdentifier = @"group.allaboutapps.appbox";
     return [self directory:NSDocumentDirectory];
 }
 
-- (NSString *)storePath {
-	return [self.applicationSupportPath stringByAppendingPathComponent:self.storeName];
-}
-
-- (NSString *)storeName {
-	return @"AppBox3.sqlite";
-}
+//- (NSString *)storePath {
+//	return [self.applicationSupportPath stringByAppendingPathComponent:self.storeName];
+//}
+//
+//- (NSString *)storeName {
+//	return @"AppBox3.sqlite";
+//}
 
 - (NSString *)humanReadableFileSize:(unsigned long long)size
 {

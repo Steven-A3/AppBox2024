@@ -410,7 +410,11 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 		if ([JSON[@"responseStatus"] integerValue] == 200) {
             NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
 			QRCodeHistory *history = [QRCodeHistory findFirstByAttribute:@"scanData" withValue:barcode];
-			history.searchData = [NSKeyedArchiver archivedDataWithRootObject:JSON requiringSecureCoding:YES error:NULL];
+            NSError *error;
+			history.searchData = [NSKeyedArchiver archivedDataWithRootObject:JSON requiringSecureCoding:YES error:&error];
+            if (error) {
+                FNLOG(@"%@", error.localizedDescription);
+            }
             [context saveContext];
             [self presentDetailViewControllerWithData:history];
 		}

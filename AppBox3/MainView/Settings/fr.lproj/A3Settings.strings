@@ -223,6 +223,9 @@
 /* Class = "UIButton"; normalTitle = "Hexagon"; ObjectID = "9Xh-7R-BIO"; */
 "9Xh-7R-BIO.normalTitle" = "Hexagone";
 
+/* Class = "UILabel"; text = "Ads Free Pass"; ObjectID = "52u-SH-gyS"; */
+"52u-SH-gyS.text" = "Pass sans publicités";
+
 /* Class = "UILabel"; text = "Restore Purchase"; ObjectID = "C7v-Sr-wgh"; */
 "C7v-Sr-wgh.text" = "Restaurer l'achat";
 

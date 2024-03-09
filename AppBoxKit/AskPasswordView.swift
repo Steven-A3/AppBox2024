@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-
+/*
 struct AskPasswordMainView: View {
     @EnvironmentObject var askPasswordContext: PasswordViewContext
     @State var showHintText: Bool = false
@@ -131,3 +131,4 @@ struct AskPasswordMainView_Previews: PreviewProvider {
             }))
     }
 }
+*/

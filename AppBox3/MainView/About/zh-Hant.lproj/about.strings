@@ -1,28 +1,57 @@
-"rPK-fC-u92.text" = "版本";
-"9Z8-Bh-Lsm.text" = "放棄";
-"vLL-sw-MLM.title" = "關於本機";
-"YRa-HJ-6kz.text" = "聯絡支援";
-"jzI-Kv-pA8.text" = "有什麼新聞嗎";
-"Nce-mm-wa5.text" = "www.allaboutapps.net";
-"KTG-Xd-Ija.text" = "Twitter";
-"cFb-Qr-7IF.text" = "3.0";
-"Spr-CR-vU4.footerTitle" = "Copyright © 2009-2021 ALLABOUTAPPS Inc. 保留所有權利。";
-"5OA-em-QL5.text" = "網站";
-"qGh-tu-1aG.text" = "更多的應用程式";
-"ygM-lV-AEG.text" = "通過簡訊告訴朋友";
-"I2i-W8-CGf.text" = "appbox_pro";
-"CKx-jh-s85.text" = "通過電子郵件告訴朋友";
+
+/* Class = "UILabel"; text = "@appbox_pro"; ObjectID = "0Ql-Zd-0gc"; */
 "0Ql-Zd-0gc.text" = "@appbox_pro";
-"R44-Fm-Kr5.text" = "Facebook";
-"Y4I-oe-yba.text" = "致謝";
-"P36-ib-WDG.text" = "撰寫評論";
-
-/* Class = "UILabel"; text = "Open Source Licenses"; ObjectID = "EA3-28-uzR"; */
-"EA3-28-uzR.text" = "开源许可证";
-
-/* Class = "UINavigationItem"; title = "Open Source Licenses"; ObjectID = "OXd-fK-eHk"; */
-"OXd-fK-eHk.title" = "开源许可证";
 
 /* Class = "UILabel"; text = "Other Apps"; ObjectID = "3zq-zd-Qlj"; */
 "3zq-zd-Qlj.text" = "更多應用程序";
 
+/* Class = "UILabel"; text = "Website"; ObjectID = "5OA-em-QL5"; */
+"5OA-em-QL5.text" = "網站";
+
+/* Class = "UITableViewSection"; headerTitle = " "; ObjectID = "6ib-TK-JMG"; */
+"6ib-TK-JMG.headerTitle" = " ";
+
+/* Class = "UILabel"; text = "Disclaimer"; ObjectID = "9Z8-Bh-Lsm"; */
+"9Z8-Bh-Lsm.text" = "放棄";
+
+/* Class = "UILabel"; text = "Open Source Licenses"; ObjectID = "EA3-28-uzR"; */
+"EA3-28-uzR.text" = "开源许可证";
+
+/* Class = "UILabel"; text = "Twitter"; ObjectID = "KTG-Xd-Ija"; */
+"KTG-Xd-Ija.text" = "Twitter";
+
+/* Class = "UILabel"; text = "www.allaboutapps.net"; ObjectID = "Nce-mm-wa5"; */
+"Nce-mm-wa5.text" = "www.allaboutapps.net";
+
+/* Class = "UILabel"; text = "Write a Review"; ObjectID = "P36-ib-WDG"; */
+"P36-ib-WDG.text" = "撰寫評論";
+
+/* Class = "UINavigationItem"; title = "Open Source Licenses"; ObjectID = "OXd-fK-eHk"; */
+"OXd-fK-eHk.title" = "开源许可证";
+
+/* Class = "IBUITableViewSection"; footerTitle = "Copyright © 2009-2024 ALLABOUTAPPS Inc. All rights reserved."; ObjectID = "Spr-CR-vU4"; */
+"Spr-CR-vU4.footerTitle" = "版權所有 © 2009-2024 ALLABOUTAPPS公司。保留所有權利。";
+
+/* Class = "UITableViewSection"; headerTitle = " "; ObjectID = "Spr-CR-vU4"; */
+"Spr-CR-vU4.headerTitle" = " ";
+
+/* Class = "UILabel"; text = "Acknowledgement"; ObjectID = "Y4I-oe-yba"; */
+"Y4I-oe-yba.text" = "致謝";
+
+/* Class = "UILabel"; text = "Contact Support"; ObjectID = "YRa-HJ-6kz"; */
+"YRa-HJ-6kz.text" = "聯絡支援";
+
+/* Class = "UILabel"; text = "3.0.0"; ObjectID = "cFb-Qr-7IF"; */
+"cFb-Qr-7IF.text" = "3.0";
+
+/* Class = "UILabel"; text = "Original Version"; ObjectID = "jzI-Kv-pA8"; */
+"jzI-Kv-pA8.text" = "原始版本";
+
+/* Class = "UILabel"; text = "Version"; ObjectID = "rPK-fC-u92"; */
+"rPK-fC-u92.text" = "版本";
+
+/* Class = "UINavigationItem"; title = "About"; ObjectID = "vLL-sw-MLM"; */
+"vLL-sw-MLM.title" = "關於本機";
+
+/* Class = "IBUITableViewSection"; headerTitle = " "; ObjectID = "Fc3-n4-rxm"; */
+"Fc3-n4-rxm.headerTitle" = " ";

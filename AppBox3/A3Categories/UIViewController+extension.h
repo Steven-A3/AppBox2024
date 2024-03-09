@@ -21,5 +21,6 @@
 - (GADBannerView *)bannerView;
 - (CGFloat)bannerHeight;
 - (void)cleanUp;
+- (void)presentSubscriptionViewControllerWithCompletion:(void (^)(void))completionHandler API_AVAILABLE(ios(17.0));
 
 @end

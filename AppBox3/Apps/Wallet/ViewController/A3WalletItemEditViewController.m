@@ -863,12 +863,12 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Take Video", nil)
                                                             style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * _Nonnull action) {
-            [self presentImagePickerControllerWithOption:ActionTag_Camera actionSheetTag:ActionTag_Camera];
+            [self presentImagePickerControllerWithOption:ActionTag_Camera actionSheetTag:ActionTag_PhotoLibraryEdit];
         }]];
         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Choose Existing", nil)
                                                             style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * _Nonnull action) {
-            
+            [self presentImagePickerControllerWithOption:ActionTag_PhotoLibrary actionSheetTag:ActionTag_PhotoLibraryEdit];
         }]];
 
         UIPopoverPresentationController *presentationController = [alertController popoverPresentationController];
