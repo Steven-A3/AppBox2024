@@ -274,6 +274,7 @@
 		68351DFB1EA8C7870076B11B /* Abbreviation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68351DFD1EA8C7870076B11B /* Abbreviation.storyboard */; };
 		68351E241EA8E6200076B11B /* WhatsNew4_5.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68351E261EA8E6200076B11B /* WhatsNew4_5.storyboard */; };
 		6835659418FA663100C3494C /* A3WalletMoreTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6835659318FA663100C3494C /* A3WalletMoreTableViewController.m */; };
+		6836C0092BA27D110065BE1A /* LandscapeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6836C0082BA27D110065BE1A /* LandscapeViewController.m */; };
 		683D68461DBC5C00008C47C9 /* ACSimpleKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 683D68401DBC5C00008C47C9 /* ACSimpleKeychain.m */; };
 		683D68471DBC5C00008C47C9 /* TJDropbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 683D68431DBC5C00008C47C9 /* TJDropbox.m */; };
 		683F56132A1EBCE600684674 /* WultraPassphraseMeter in Frameworks */ = {isa = PBXBuildFile; productRef = 683F56122A1EBCE600684674 /* WultraPassphraseMeter */; };
@@ -451,6 +452,7 @@
 		686F06E71AA1D9DC0093A6F9 /* A3MarkingsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 686F06E61AA1D9DC0093A6F9 /* A3MarkingsView.m */; };
 		686FCF911775CFE400F19332 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 686FCF441775CD1300F19332 /* Reachability.m */; };
 		6870A0D7163647A50059BD2F /* A3GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6870A0D6163647A50059BD2F /* A3GradientView.m */; };
+		6871C9942B9EB25D00815FA7 /* CalibrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6871C9932B9EB25D00815FA7 /* CalibrationView.swift */; };
 		6872DD3217B3D56600C1BF44 /* NSDate+TimeAgo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6872DD3017B3D56600C1BF44 /* NSDate+TimeAgo.m */; };
 		6872DD3317B3D56600C1BF44 /* NSDateTimeAgo.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6872DD3117B3D56600C1BF44 /* NSDateTimeAgo.bundle */; };
 		6873B58A1E1E5EB600A61AB3 /* A3AbbreviationDrillDownTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6873B5891E1E5EB600A61AB3 /* A3AbbreviationDrillDownTableViewCell.m */; };
@@ -1580,6 +1582,8 @@
 		68351E3A1EA8E6320076B11B /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/WhatsNew4_5.strings"; sourceTree = "<group>"; };
 		6835659218FA663100C3494C /* A3WalletMoreTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletMoreTableViewController.h; sourceTree = "<group>"; };
 		6835659318FA663100C3494C /* A3WalletMoreTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletMoreTableViewController.m; sourceTree = "<group>"; };
+		6836C0082BA27D110065BE1A /* LandscapeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LandscapeViewController.m; sourceTree = "<group>"; };
+		6836C00A2BA27D2A0065BE1A /* LandscapeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LandscapeViewController.h; sourceTree = "<group>"; };
 		683B959215EB252400575377 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		683D683F1DBC5C00008C47C9 /* ACSimpleKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACSimpleKeychain.h; sourceTree = "<group>"; };
 		683D68401DBC5C00008C47C9 /* ACSimpleKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACSimpleKeychain.m; sourceTree = "<group>"; };
@@ -1829,6 +1833,7 @@
 		686FCF711775CF9D00F19332 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		6870A0D5163647A50059BD2F /* A3GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3GradientView.h; sourceTree = "<group>"; };
 		6870A0D6163647A50059BD2F /* A3GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3GradientView.m; sourceTree = "<group>"; };
+		6871C9932B9EB25D00815FA7 /* CalibrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationView.swift; sourceTree = "<group>"; };
 		6872DD2F17B3D56600C1BF44 /* NSDate+TimeAgo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate+TimeAgo.h"; path = "External/NSDate-TimeAgo/NSDate+TimeAgo.h"; sourceTree = "<group>"; };
 		6872DD3017B3D56600C1BF44 /* NSDate+TimeAgo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate+TimeAgo.m"; path = "External/NSDate-TimeAgo/NSDate+TimeAgo.m"; sourceTree = "<group>"; };
 		6872DD3117B3D56600C1BF44 /* NSDateTimeAgo.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = NSDateTimeAgo.bundle; path = "External/NSDate-TimeAgo/NSDateTimeAgo.bundle"; sourceTree = "<group>"; };
@@ -5231,6 +5236,9 @@
 				689D59021C1569BA002CD422 /* InclinometerView.m */,
 				689D59031C1569BA002CD422 /* InclinometerViewController.h */,
 				689D59041C1569BA002CD422 /* InclinometerViewController.m */,
+				6871C9932B9EB25D00815FA7 /* CalibrationView.swift */,
+				6836C00A2BA27D2A0065BE1A /* LandscapeViewController.h */,
+				6836C0082BA27D110065BE1A /* LandscapeViewController.m */,
 			);
 			path = Level;
 			sourceTree = "<group>";
@@ -6709,6 +6717,7 @@
 				6862375F1974E7C300001DE7 /* LadyCalendarPeriod.m in Sources */,
 				68953488178686AF007061CA /* UIView+Screenshot.m in Sources */,
 				68E6F34D17B25F5F00F10ED9 /* A3CurrencyChartViewController.m in Sources */,
+				6871C9942B9EB25D00815FA7 /* CalibrationView.swift in Sources */,
 				68E2A6B218D0B22800E834D9 /* A3TipCalcHistoryCell.m in Sources */,
 				684B44BB1CB9B53400B7D264 /* A3QRCodeDetailCell.m in Sources */,
 				68CA9BA61961B881002E58DC /* PercentCalcHistory.m in Sources */,
@@ -6819,6 +6828,7 @@
 				68F720CB2B12912600773D6E /* AdsFreePassShopView.swift in Sources */,
 				68B6A32818CEC76D004084EF /* A3WalletDateInputCell.m in Sources */,
 				6825366F18A7B89F00EAFB84 /* A3LunarConverterCellView.m in Sources */,
+				6836C0092BA27D110065BE1A /* LandscapeViewController.m in Sources */,
 				68B6A33818CEC76D004084EF /* A3WalletNoteCell.m in Sources */,
 				68B6A32D18CEC76D004084EF /* A3WalletItemRightIconCell.m in Sources */,
 				17D42129FB82BFB4E56A8D7A /* A3TranslatorLanguage.m in Sources */,
@@ -7750,7 +7760,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.7.7.0;
+				CURRENT_PROJECT_VERSION = 4.7.8.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
@@ -7779,7 +7789,7 @@
 					"${PROJECT_DIR}/External/**",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
-				MARKETING_VERSION = 4.7.7;
+				MARKETING_VERSION = 4.7.8;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				ONLY_ACTIVE_ARCH = YES;
@@ -7812,7 +7822,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.7.7.0;
+				CURRENT_PROJECT_VERSION = 4.7.8.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
@@ -7841,7 +7851,7 @@
 					"${PROJECT_DIR}/External/**",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
-				MARKETING_VERSION = 4.7.7;
+				MARKETING_VERSION = 4.7.8;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				ONLY_ACTIVE_ARCH = YES;

@@ -6,6 +6,7 @@
 //  Copyright 2008 ALLABOUTAPPS. All rights reserved.
 //
 
+#import "LandscapeViewController.h"
 #import "ClinometerToolbarViewController.h"
 
 #define SMALL_FONT							[UIFont boldSystemFontOfSize:14]					// Unit
@@ -27,7 +28,7 @@ enum InclinometerMode {
 
 @class InclinometerView, CalibrationView;
 
-@interface InclinometerViewController : UIViewController 
+@interface InclinometerViewController : LandscapeViewController
 
 @property (nonatomic, readonly) NSUInteger unit;
 
