@@ -923,7 +923,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     [_favorites moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 
     __weak __typeof__(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -1001,7 +1001,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
             [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
         });
     }
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 #pragma mark - UITextField delegate
@@ -1082,7 +1082,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     if (valueChanged) {
         [self putHistoryWithValue:@([self.previousValue floatValueEx])];
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        [context saveContext];
+        [context saveIfNeeded];
     }
     self.tableViewController.refreshControl = self.refreshControl;
 }
@@ -1135,7 +1135,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     if (valueChanged) {
         [self putHistoryWithValue:@([self.previousValue floatValueEx])];
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        [context saveContext];
+        [context saveIfNeeded];
     }
 }
 
@@ -1219,7 +1219,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     targetCurrency.order = orderOfSource;
 
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 
     [self.tableView reloadRowsAtIndexPaths:@[sourceIndexPath, targetIndexPath] withRowAnimation:UITableViewRowAnimationMiddle];
 
@@ -1307,7 +1307,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context deleteObject:deletingObject];
 
-        [context saveContext];
+        [context saveIfNeeded];
 
         if (indexPath.row == 0) {
             _favorites = nil;
@@ -1481,7 +1481,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
         [targets addObject:item];
     }
 
-    [context saveContext];
+    [context saveIfNeeded];
 
     [_mainViewController.historyBarButton setEnabled:YES];
 }

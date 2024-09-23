@@ -25,14 +25,6 @@ NSString *const A3AppGroupIdentifier = @"group.allaboutapps.appbox";
     return [self directory:NSDocumentDirectory];
 }
 
-//- (NSString *)storePath {
-//	return [self.applicationSupportPath stringByAppendingPathComponent:self.storeName];
-//}
-//
-//- (NSString *)storeName {
-//	return @"AppBox3.sqlite";
-//}
-
 - (NSString *)humanReadableFileSize:(unsigned long long)size
 {
 	NSString *formattedStr = nil;
@@ -56,10 +48,32 @@ NSString *const A3AppGroupIdentifier = @"group.allaboutapps.appbox";
 	return formattedStr;
 }
 
+/**
+ * Generates the URL for the app's store file within a shared app group container.
+ *
+ * This method constructs the full file path for the app's store file by:
+ * 1. Retrieving the URL for the app group's shared container.
+ * 2. Appending the path component "Library/AppBox" to the container URL.
+ * 3. Appending the store file name to the resulting URL.
+ *
+ * @return A NSURL object representing the full path to the store file within the app group's container.
+ *
+ * Example usage:
+ * NSURL *storeFileURL = [self storeURL];
+ *
+ * Note:
+ * - The method assumes that A3AppGroupIdentifier is a valid app group identifier.
+ * - The method `[self storeFileName]` should return the appropriate file name for the store file.
+ */
 - (NSURL *)storeURL
 {
+    // Retrieve the URL for the app group's shared container
     NSURL *appGroupContainerURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:A3AppGroupIdentifier];
+    
+    // Append the "Library/AppBox" path component to the container URL
     NSURL *storeURL = [appGroupContainerURL URLByAppendingPathComponent:@"Library/AppBox"];
+    
+    // Append the store file name to the resulting URL and return it
     return [storeURL URLByAppendingPathComponent:[self storeFileName]];
 }
 

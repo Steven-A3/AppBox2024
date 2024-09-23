@@ -96,7 +96,7 @@
     if ([collectedTexts length]) {
         self.note = [NSString stringWithFormat:@"%@%@", [self.note length] ? [NSString stringWithFormat:@"%@\n", self.note] : @"", collectedTexts];
     }
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 - (void)deleteWalletItem {

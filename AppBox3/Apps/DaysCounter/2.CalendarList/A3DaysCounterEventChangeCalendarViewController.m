@@ -159,7 +159,7 @@
 	DaysCounterEvent *event = _eventArray[0];
     
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
     
     if (_doneActionCompletionBlock) {
         _doneActionCompletionBlock();

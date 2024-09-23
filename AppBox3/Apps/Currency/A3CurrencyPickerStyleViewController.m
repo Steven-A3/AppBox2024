@@ -542,7 +542,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
     newObject.uniqueID = selectedCode;
     [newObject assignOrderAsLast];
 
-    [context saveContext];
+    [context saveIfNeeded];
 
 	_favorites = nil;
 	[_pickerView reloadAllComponents];
@@ -1225,7 +1225,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	item.rate = toCurrencyInfo.rateToUSD;
 	item.order = [NSString stringWithFormat:@"%010ld", 1l];
 	
-    [context saveContext];
+    [context saveIfNeeded];
 	
 	[_mainViewController enableControls:YES];
 }

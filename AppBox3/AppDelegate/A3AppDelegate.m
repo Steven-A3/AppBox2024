@@ -57,7 +57,7 @@
 #import "Pedometer.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
-#import "AppBox3-swift.h"
+#import "AppBox3-Swift.h"
 #import <AppBoxKit/AppBoxKit.h>
 #import "A3UIDevice.h"
 #import "A3UserDefaults+A3Addition.h"
@@ -81,7 +81,7 @@ NSString *const A3AppStoreReceiptBackupFilename = @"AppStoreReceiptBackup";
 NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstall";
 
-@interface A3AppDelegate () <UIAlertViewDelegate, NSURLSessionDownloadDelegate, CLLocationManagerDelegate, GADFullScreenContentDelegate, A3AppUIContextProtocol>
+@interface A3AppDelegate () <UIAlertViewDelegate, NSURLSessionDownloadDelegate, CLLocationManagerDelegate, GADFullScreenContentDelegate>
 
 @property (nonatomic, strong) NSDictionary *localNotificationUserInfo;
 @property (nonatomic, strong) UILocalNotification *storedLocalNotification;
@@ -181,7 +181,6 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [FIRApp configure];
     [[GADMobileAds sharedInstance] startWithCompletionHandler:nil];
-    A3SyncManager.sharedSyncManager.appUIContext = self;
     
     #ifdef DEBUG
     FNLOG(@"%@", [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]);
@@ -196,15 +195,11 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     _shouldPresentAd = YES;
     _expirationDate = [NSDate distantPast];
     
-//    [self evaluateSubscriptionWithCompletion:NULL];
-    
     _passcodeFreeBegin = [[NSDate distantPast] timeIntervalSinceReferenceDate];
 
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
 
     _appIsNotActiveYet = YES;
-
-    CDESetCurrentLoggingLevel(CDELoggingLevelNone);
 
     [self prepareDirectories];
     [A3SyncManager sharedSyncManager];
@@ -224,20 +219,21 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 
     // Check if it is running first time after update from 1.x.x
     // 아래 값은 마이그레이션이 끝나면 지운다.
-    _previousVersion = [[NSUserDefaults standardUserDefaults] objectForKey:kA3ApplicationLastRunVersion];
-    if (_previousVersion) {
-        _shouldMigrateV1Data = YES;
-        [A3KeychainUtils migrateV1Passcode];
-    } else {
-        // TODO: 지우고 새로 설치해도 암호가 지워지지 않는 오류 수정해야 함
-        _previousVersion = [[A3UserDefaults standardUserDefaults] objectForKey:kA3ApplicationLastRunVersion];
-        if (!_previousVersion) {
-            _firstRunAfterInstall = YES;
-            [A3KeychainUtils removePassword];
-            [self initializePasscodeUserDefaults];
-        }
+    NSString *activeVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    _previousVersion = [[A3UserDefaults standardUserDefaults] objectForKey:kA3ApplicationLastRunVersion];
+    if (!_previousVersion) {
+        // 이 값이 없다는 것은 설치되고 나서 실행된 적이 없다는 것을 의미함
+        // 한번이라도 실행이 되었다면 이 값이 설정되어야 한다.
+        _firstRunAfterInstall = YES;
+        [A3KeychainUtils removePassword];
+        [self initializePasscodeUserDefaults];
+    }
+    if ([_previousVersion isEqualToString:activeVersion]) {
+        _previousVersion = nil;
     }
     [self setDefaultValues];
+    [[A3UserDefaults standardUserDefaults] setObject:activeVersion forKey:kA3ApplicationLastRunVersion];
+    [[A3UserDefaults standardUserDefaults] synchronize];
 
     // AppBox Pro V1.8.4까지는 Days Until 기능의 옵션에 의해서 남은 일자에 대한 배지 기능이 있었습니다.
     // AppBox Pro V3.0 이후로는 배지 기능을 제공하지 않습니다.
@@ -262,12 +258,6 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 
     [self.window makeKeyAndVisible];
 
-    NSString *lastRunVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    [[NSUserDefaults standardUserDefaults] setObject:lastRunVersion forKey:kA3ApplicationLastRunVersion];
-    [[A3UserDefaults standardUserDefaults] setObject:lastRunVersion forKey:kA3ApplicationLastRunVersion];
-    
-    [[A3UserDefaults standardUserDefaults] synchronize];
-    
     return shouldPerformAdditionalDelegateHandling;
 }
 
@@ -394,7 +384,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Saves changes in the application's managed object context before the application terminates.
-    [A3SyncManager.sharedSyncManager.persistentContainer.viewContext saveContext];
+    [A3SyncManager.sharedSyncManager.persistentContainer.viewContext saveIfNeeded];
 }
 
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
@@ -1079,12 +1069,17 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     // $containerURL/Library/AppBox 폴더를 찾는다.
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSURL *URL_after_V4_7 = [fileManager storeURL];
+    // file:///Users/bkk/Library/Developer/CoreSimulator/Devices/0C8A79CE-B8F8-4A11-8A9E-8E9051C79CB5/data/Containers/Shared/AppGroup/CFE53790-05F4-46DD-9E02-7B000C7CB20A/Library/AppBox/AppBoxStore.sqlite
     
     // - URL-after-V4-7, URL-before-V4-7, URL before version
     NSURL *URL_before_V4_7 = [NSPersistentContainer defaultDirectoryURL];
     URL_before_V4_7 = [URL_before_V4_7 URLByAppendingPathComponent:@"AppBox3"];
     URL_before_V4_7 = [URL_before_V4_7 URLByAppendingPathComponent:[fileManager storeFileName]];
+    // file:///Users/bkk/Library/Developer/CoreSimulator/Devices/0C8A79CE-B8F8-4A11-8A9E-8E9051C79CB5/data/Containers/Data/Application/BE9779CB-4DAE-467D-91CC-DCA9ED97E0F9/Library/Application%20Support/AppBox3/AppBoxStore.sqlite
     
+    // Case 이전 버전 파일이 존재, 새 버전 파일도 존재 - 새 버전을 존중, 이전 버전 파일은 삭제
+    // Case 이전 버전 파일이 존재, 새 버전 파일 없음 - 파일 이동
+
     // 만약 4_7 이전 파일이 존재한다면, 이 파일을 옮겨야 합니다.
     if ([fileManager fileExistsAtPath:[URL_before_V4_7 path]]) {
         // Move files (AppBoxStore.sqlite, AppBoxStore.sqlite-shm, AppBoxStore.sqlite-wal) to URL_after_V4_7
@@ -1101,10 +1096,14 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
         
         // Move AppBoxStore.sqlite
         NSError *fileMoveError = nil;
-        // 이동하기 전에 해당 파일이 있다면 지워준다.
+        // 새 버전 파일이 있다면, 기존 파일을 삭제하고 종료한다.
         if ([fileManager fileExistsAtPath:[URL_after_V4_7 path]]) {
-            [fileManager removeItemAtURL:URL_after_V4_7 error:&fileMoveError];
+            NSError *fileRemoveError = nil;
+            [fileManager removeItemAtURL:URL_before_V4_7 error:&fileRemoveError];
+            return;
         }
+        
+        // Move AppBoxStore.sqlite
         [fileManager moveItemAtURL:URL_before_V4_7 toURL:URL_after_V4_7 error:&fileMoveError];
         if (fileMoveError) {
             FNLOG(@"%@", fileMoveError);

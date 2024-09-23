@@ -992,7 +992,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[self askTranslateWithText:self.originalText];
 		});
-        [context saveContext];
+        [context saveIfNeeded];
 	}
 }
 
@@ -1101,7 +1101,7 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
 
 	_translatingMessage.translatedText = translated;
 
-    [context saveContext];
+    [context saveIfNeeded];
 
 	_originalTextLanguage = detectedLanguage;
 
@@ -1533,7 +1533,7 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
 		[cell changeFavoriteButtonImage];
 	}
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 - (void)unsetFavoriteActionFromToolbar {
@@ -1546,7 +1546,7 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
 		[cell changeFavoriteButtonImage];
 	}
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 - (void)deleteActionFromToolbar:(UIBarButtonItem *)barButtonItem {
@@ -1603,7 +1603,7 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
     
     [_messageTableView deleteRowsAtIndexPaths:selectedIndexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
 
-    [context saveContext];
+    [context saveIfNeeded];
 
 	[self setEnabledForAllToolbarButtons:NO];
     
@@ -1636,7 +1636,7 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
 	[TranslatorFavorite deleteAllMatchingPredicate:predicate];
 
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 
 	_messages = nil;
 	[self messages];

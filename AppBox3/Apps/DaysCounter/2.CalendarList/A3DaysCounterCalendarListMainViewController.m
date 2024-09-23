@@ -105,7 +105,7 @@
 		[self.sharedManager recalculateEventDatesForEvent:event];
 	}
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 
 	NSArray *shownUserCalendarList = [[A3DaysCounterModelManager calendars] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type == %@ AND isShow == %@", @(CalendarCellType_User), @(YES)]];
     if ([shownUserCalendarList count] > 0) {
@@ -117,7 +117,7 @@
         DaysCounterCalendar *calendar = [shownUserCalendarList lastObject];
         calendar.isShow = @(YES);
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        [context saveContext];
+        [context saveIfNeeded];
         return;
     }
     
@@ -127,7 +127,7 @@
     if (calendar) {
         calendar.isShow = @(YES);
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        [context saveContext];
+        [context saveIfNeeded];
     }
 }
 

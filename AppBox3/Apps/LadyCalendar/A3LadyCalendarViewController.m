@@ -321,7 +321,7 @@ A3CalendarViewDelegate, GADBannerViewDelegate>
         _collectionView.delegate = nil;
         
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        [context saveContext];
+        [context saveIfNeeded];
 
 		id watchDate = self.dataManager.currentAccount.watchingDate;
 		if (watchDate) {

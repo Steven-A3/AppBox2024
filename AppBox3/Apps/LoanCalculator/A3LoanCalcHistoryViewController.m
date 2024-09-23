@@ -192,7 +192,7 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
 {
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context deleteObject:history];
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 - (void)deleteComparisonHistory:(LoanCalcComparisonHistory *)history
@@ -203,7 +203,7 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
 	}
     [context deleteObject:history];
 
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 - (void)configureLoanCell:(A3LoanCalcLoanHistoryCell *)loanCell withHistory:(LoanCalcHistory *) history
@@ -327,7 +327,7 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
                 }
             }
         }
-        [context saveContext];
+        [context saveIfNeeded];
         _fetchedResultsController = nil;
         [self.tableView reloadData];
 	}
@@ -424,7 +424,7 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
         }
         
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        [context saveContext];
+        [context saveIfNeeded];
         _fetchedResultsController = nil;
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

@@ -180,7 +180,7 @@
 {
 	[_calendarArray moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 
     [tableView reloadData];
 
@@ -210,7 +210,7 @@
     calendar.isShow = @(!checkState);
 
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
@@ -238,7 +238,7 @@
     
     calendar.isShow = @(!checkState);
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
     if (checkState && ([shownUserCalendar count] == 2)) {
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     }

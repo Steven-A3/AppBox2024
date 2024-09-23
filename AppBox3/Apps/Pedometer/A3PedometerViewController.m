@@ -421,7 +421,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 			if ([dateArray count]) {
 				[self updatePedometerForDateArray:dateArray completion:completion];
 			} else {
-                [context saveContext];
+                [context saveIfNeeded];
 				if (completion) {
 					completion();
 				}
@@ -532,7 +532,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 				pedometerItem.date = todayString;
 				[self mergeValuesFromCoreMotion:pedometerData to:pedometerItem];
 				
-                [context saveContext];
+                [context saveIfNeeded];
 
 				self.pedometerItems = nil;
 				[self.collectionView reloadData];
@@ -613,7 +613,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 		}
         components.day += 1;
 	}
-    [context saveContext];
+    [context saveIfNeeded];
 }
 #endif
 
@@ -897,7 +897,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
                     }
                 }
             }];
-            [context saveContext];
+            [context saveIfNeeded];
 
 			if (completion) {
 				completion();
@@ -943,7 +943,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
             item.numberOfSteps = @0;
         }
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        [context saveContext];
+        [context saveIfNeeded];
 
     }
 }

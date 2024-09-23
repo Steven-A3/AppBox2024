@@ -466,7 +466,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 
 		// Save를 호출하는 순간, Notification이 도착, data reload 됨 save는 UI animation이 모두 종료된 후에 ...
 		// 가능한 가장 늦은 시점에 하도록 해야 함
-        [context saveContext];
+        [context saveIfNeeded];
 	}
 }
 
@@ -504,7 +504,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 	[mutableArray moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 	_fetchedResultsController = nil;
 }
 

@@ -596,7 +596,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 {
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context deleteObject:_periodItem];
-    [context saveContext];
+    [context saveIfNeeded];
 
     [_dataManager recalculateDates];
     
@@ -911,7 +911,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
     LadyCalendarAccount *account = self.dataManager.currentAccount;
 	account.watchingDate = _periodItem.startDate;
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 
     [_dataManager recalculateDates];
     

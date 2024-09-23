@@ -147,7 +147,7 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
         
 		[UnitHistory truncateAll];
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        [context saveContext];
+        [context saveIfNeeded];
 		_fetchedResultsController = nil;
 		[self.tableView reloadData];
 	}
@@ -339,7 +339,7 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         UnitHistory *history = [_fetchedResultsController objectAtIndexPath:indexPath];
         [context deleteObject:history];
-        [context saveContext];
+        [context saveIfNeeded];
 		_fetchedResultsController = nil;
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

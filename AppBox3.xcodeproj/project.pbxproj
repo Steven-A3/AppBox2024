@@ -100,6 +100,7 @@
 		57E4E1C919D2DCC20037371B /* A3FlashViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E4E1C719D2DCC20037371B /* A3FlashViewController.xib */; };
 		57E4E1CE19D2DD360037371B /* A3RandomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E4E1CC19D2DD360037371B /* A3RandomViewController.m */; };
 		57E4E1CF19D2DD360037371B /* A3RandomViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E4E1CD19D2DD360037371B /* A3RandomViewController.xib */; };
+		680219C62C3A75FB007694F9 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680219C52C3A75FB007694F9 /* CoreDataStack.swift */; };
 		68030ABC17F063D100B04487 /* HTCopyableLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 68030ABB17F063D100B04487 /* HTCopyableLabel.m */; };
 		680344601CE19505009C300F /* A3PedometerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6803445F1CE19505009C300F /* A3PedometerViewController.m */; };
 		680344651CE1E46F009C300F /* A3PedometerSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680344641CE1E46F009C300F /* A3PedometerSettingsTableViewController.m */; };
@@ -154,6 +155,8 @@
 		681170971AC03D4C0079F4F9 /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A351839CD7F007C97EE /* AFURLRequestSerialization.m */; };
 		681170981AC03D4C0079F4F9 /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A371839CD7F007C97EE /* AFURLResponseSerialization.m */; };
 		681170991AC03D4C0079F4F9 /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A391839CD7F007C97EE /* AFURLSessionManager.m */; };
+		68117FBE2C96B73C009963F9 /* WalletFieldItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68117FBD2C96B73C009963F9 /* WalletFieldItem+CoreDataClass.swift */; };
+		68117FC02C96B817009963F9 /* GearView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68117FBF2C96B817009963F9 /* GearView.swift */; };
 		6811D3561C1317A200B3B114 /* Level.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6811D3551C1317A200B3B114 /* Level.xcassets */; };
 		68143CF718E3EC1F00569691 /* appbox.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68143CC518E3EC1F00569691 /* appbox.ttf */; };
 		68143CF818E3EC1F00569691 /* Digit.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68143CC618E3EC1F00569691 /* Digit.ttf */; };
@@ -238,7 +241,6 @@
 		6825367D18A7BD4E00EAFB84 /* SQLiteWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6825367C18A7BD4E00EAFB84 /* SQLiteWrapper.m */; };
 		6825367F18A7C1B800EAFB84 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6825367E18A7C1B800EAFB84 /* libsqlite3.0.dylib */; };
 		6826275229B77B610052CBD0 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6826275129B77B610052CBD0 /* FirebaseAnalytics */; };
-		6826275429B77B610052CBD0 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 6826275329B77B610052CBD0 /* GoogleMobileAds */; };
 		6826275629B77C3D0052CBD0 /* FirebaseInstallations in Frameworks */ = {isa = PBXBuildFile; productRef = 6826275529B77C3D0052CBD0 /* FirebaseInstallations */; };
 		6826275829B77C8D0052CBD0 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 6826275729B77C8D0052CBD0 /* FirebaseFunctions */; };
 		6826275A29B77D1D0052CBD0 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 6826275929B77D1D0052CBD0 /* FirebaseAnalyticsOnDeviceConversion */; };
@@ -388,10 +390,6 @@
 		686B6B5B2B0932F000E39E18 /* A3NumberFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 686B6B3E2B0932F000E39E18 /* A3NumberFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		686B6B5C2B0932F000E39E18 /* A3UserDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 686B6B3F2B0932F000E39E18 /* A3UserDefaults.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		686B6B5D2B0932F000E39E18 /* A3KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 686B6B402B0932F000E39E18 /* A3KeychainUtils.m */; };
-		686B6BB62B09926800E39E18 /* JVFloatLabeledTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 686B6BB02B09926800E39E18 /* JVFloatLabeledTextField.m */; };
-		686B6BB92B09926800E39E18 /* JVFloatLabeledTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 686B6BB32B09926800E39E18 /* JVFloatLabeledTextField.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		686B6BBD2B09937900E39E18 /* A3FloatLabeledPasswordTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 686B6BBB2B09937900E39E18 /* A3FloatLabeledPasswordTextField.m */; };
-		686B6BBE2B09937900E39E18 /* A3FloatLabeledPasswordTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 686B6BBC2B09937900E39E18 /* A3FloatLabeledPasswordTextField.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		686BB86119092D94009163F2 /* A3WalletCategoryEditFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 686BB86019092D94009163F2 /* A3WalletCategoryEditFieldCell.m */; };
 		686BB864190937F4009163F2 /* A3WalletCategoryEditAddNewFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 686BB863190937F4009163F2 /* A3WalletCategoryEditAddNewFieldCell.m */; };
 		686BB8671909676A009163F2 /* A3WalletFieldEditTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 686BB8661909676A009163F2 /* A3WalletFieldEditTitleCell.m */; };
@@ -472,14 +470,11 @@
 		687484AE19783B9D00EA8F74 /* DaysCounterDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484AD19783B9D00EA8F74 /* DaysCounterDate.m */; };
 		687484C019783BE100EA8F74 /* WalletItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484BF19783BE100EA8F74 /* WalletItem.m */; };
 		687484C319783BE100EA8F74 /* WalletFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484C219783BE100EA8F74 /* WalletFavorite.m */; };
-		687484C619783BE100EA8F74 /* WalletFieldItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484C519783BE100EA8F74 /* WalletFieldItem.m */; };
 		687484CF19783C1000EA8F74 /* ExpenseListHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484CE19783C1000EA8F74 /* ExpenseListHistory.m */; };
 		687484DB19783C2F00EA8F74 /* TipCalcRecent.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484DA19783C2F00EA8F74 /* TipCalcRecent.m */; };
 		687484DE19783C3000EA8F74 /* TipCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 687484DD19783C3000EA8F74 /* TipCalcHistory.m */; };
 		6874892F1854430C008972CC /* NationalFlags.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6874892E1854430C008972CC /* NationalFlags.xcassets */; };
 		687671531F7FC7B300182BA1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 687671521F7FC7B300182BA1 /* GoogleService-Info.plist */; };
-		6876AE712B18FCD0008AB510 /* NSString+TextDirectionality.h in Headers */ = {isa = PBXBuildFile; fileRef = 6876AE6F2B18FCD0008AB510 /* NSString+TextDirectionality.h */; };
-		6876AE722B18FCD0008AB510 /* NSString+TextDirectionality.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876AE702B18FCD0008AB510 /* NSString+TextDirectionality.m */; };
 		6876D6FB17A75DAE00E16991 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 687C193B1783DF0F00415FCE /* XCTest.framework */; };
 		6876D6FC17A75DAE00E16991 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D715EB10B000BD6AD4 /* Foundation.framework */; };
 		6876D6FD17A75DAE00E16991 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D515EB10B000BD6AD4 /* UIKit.framework */; };
@@ -534,6 +529,7 @@
 		68953484178686AF007061CA /* UIImage+Saving.m in Sources */ = {isa = PBXBuildFile; fileRef = 6895346A178686AF007061CA /* UIImage+Saving.m */; };
 		68953486178686AF007061CA /* UIScrollView+Screenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 6895346C178686AF007061CA /* UIScrollView+Screenshot.m */; };
 		68953488178686AF007061CA /* UIView+Screenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 6895346E178686AF007061CA /* UIView+Screenshot.m */; };
+		689565D42C53D8F7009FF087 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 689565D32C53D8F7009FF087 /* GoogleMobileAds */; };
 		689573FF1F7E27AE002936E7 /* SriLanka.plist in Resources */ = {isa = PBXBuildFile; fileRef = 689573F61F7E27AD002936E7 /* SriLanka.plist */; };
 		6895E9E62B1C0BBF00007546 /* ExportWalletContents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6895E9E52B1C0BBF00007546 /* ExportWalletContents.swift */; };
 		68961FE218B311D100C89F16 /* Mirror.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68961FE118B311D100C89F16 /* Mirror.xcassets */; };
@@ -743,9 +739,16 @@
 		68C7E1081BE20C1C00861AFD /* A3CurrencyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C7E1071BE20C1C00861AFD /* A3CurrencyViewController.m */; };
 		68C802D819571A0200BC19EE /* WalletCategoryPreset.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68C802D719571A0200BC19EE /* WalletCategoryPreset.plist */; };
 		68C802DB19571A2000BC19EE /* WalletPreset.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68C802DD19571A2000BC19EE /* WalletPreset.strings */; };
+		68C8F9532C96B65F0066A3B2 /* WalletFieldItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C8F9522C96B65F0066A3B2 /* WalletFieldItem+CoreDataProperties.swift */; };
 		68C999AD1CC74FB200BC1B0D /* A3PriceTagLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C999AC1CC74FB200BC1B0D /* A3PriceTagLabel.m */; };
 		68C9A0781E29B85A0065509B /* A3SharePopupPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C9A0771E29B85A0065509B /* A3SharePopupPresentationController.m */; };
 		68C9E3FE1882EF1B007E4697 /* A3AppDelegate+mainMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C9E3FD1882EF1B007E4697 /* A3AppDelegate+mainMenu.m */; };
+		68CA05222C96C141002A5FB0 /* A3FloatLabeledPasswordTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 68CA051B2C96C141002A5FB0 /* A3FloatLabeledPasswordTextField.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		68CA05232C96C141002A5FB0 /* A3FloatLabeledPasswordTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CA051C2C96C141002A5FB0 /* A3FloatLabeledPasswordTextField.m */; };
+		68CA05242C96C141002A5FB0 /* JVFloatLabeledTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 68CA051D2C96C141002A5FB0 /* JVFloatLabeledTextField.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		68CA05252C96C141002A5FB0 /* JVFloatLabeledTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CA051E2C96C141002A5FB0 /* JVFloatLabeledTextField.m */; };
+		68CA05262C96C141002A5FB0 /* NSString+TextDirectionality.h in Headers */ = {isa = PBXBuildFile; fileRef = 68CA051F2C96C141002A5FB0 /* NSString+TextDirectionality.h */; };
+		68CA05272C96C141002A5FB0 /* NSString+TextDirectionality.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CA05202C96C141002A5FB0 /* NSString+TextDirectionality.m */; };
 		68CA9B1919618866002E58DC /* Calculation.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CA9B1819618866002E58DC /* Calculation.m */; };
 		68CA9BA61961B881002E58DC /* PercentCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CA9BA51961B881002E58DC /* PercentCalcHistory.m */; };
 		68CB7982183DB8A800255AE3 /* NYXImagesHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CB7980183DB8A800255AE3 /* NYXImagesHelper.m */; };
@@ -1245,6 +1248,7 @@
 		57E4E1CB19D2DD360037371B /* A3RandomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3RandomViewController.h; path = Random/A3RandomViewController.h; sourceTree = "<group>"; };
 		57E4E1CC19D2DD360037371B /* A3RandomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3RandomViewController.m; path = Random/A3RandomViewController.m; sourceTree = "<group>"; };
 		57E4E1CD19D2DD360037371B /* A3RandomViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3RandomViewController.xib; path = Random/A3RandomViewController.xib; sourceTree = "<group>"; };
+		680219C52C3A75FB007694F9 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		68030ABA17F063D100B04487 /* HTCopyableLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTCopyableLabel.h; path = External/HTCopyableLabel/HTCopyableLabel.h; sourceTree = "<group>"; };
 		68030ABB17F063D100B04487 /* HTCopyableLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTCopyableLabel.m; path = External/HTCopyableLabel/HTCopyableLabel.m; sourceTree = "<group>"; };
 		6803445E1CE19505009C300F /* A3PedometerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3PedometerViewController.h; path = Pedometer/A3PedometerViewController.h; sourceTree = "<group>"; };
@@ -1331,6 +1335,8 @@
 		680E836F19D41D83007CF12C /* A3SettingsStartingAppViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsStartingAppViewController.h; path = Settings/A3SettingsStartingAppViewController.h; sourceTree = "<group>"; };
 		680E837019D41D83007CF12C /* A3SettingsStartingAppViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsStartingAppViewController.m; path = Settings/A3SettingsStartingAppViewController.m; sourceTree = "<group>"; };
 		6810C64519D9246F00BE75A9 /* Flashlight.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Flashlight.xcassets; path = "AppBox3/Asset Catalogs/Flashlight.xcassets"; sourceTree = "<group>"; };
+		68117FBD2C96B73C009963F9 /* WalletFieldItem+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WalletFieldItem+CoreDataClass.swift"; sourceTree = "<group>"; };
+		68117FBF2C96B817009963F9 /* GearView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GearView.swift; sourceTree = "<group>"; };
 		6811D3551C1317A200B3B114 /* Level.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Level.xcassets; path = "AppBox3/Asset Catalogs/Level.xcassets"; sourceTree = "<group>"; };
 		681361331A6CADC000E13F51 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3CurrencyChartViewController.strings; sourceTree = "<group>"; };
 		681361341A6CADC000E13F51 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3CurrencySettings.strings; sourceTree = "<group>"; };
@@ -1759,10 +1765,6 @@
 		686B6B3E2B0932F000E39E18 /* A3NumberFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3NumberFormatter.h; sourceTree = "<group>"; };
 		686B6B3F2B0932F000E39E18 /* A3UserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UserDefaults.h; sourceTree = "<group>"; };
 		686B6B402B0932F000E39E18 /* A3KeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3KeychainUtils.m; sourceTree = "<group>"; };
-		686B6BB02B09926800E39E18 /* JVFloatLabeledTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JVFloatLabeledTextField.m; sourceTree = "<group>"; };
-		686B6BB32B09926800E39E18 /* JVFloatLabeledTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JVFloatLabeledTextField.h; sourceTree = "<group>"; };
-		686B6BBB2B09937900E39E18 /* A3FloatLabeledPasswordTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3FloatLabeledPasswordTextField.m; sourceTree = "<group>"; };
-		686B6BBC2B09937900E39E18 /* A3FloatLabeledPasswordTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3FloatLabeledPasswordTextField.h; sourceTree = "<group>"; };
 		686BB85F19092D94009163F2 /* A3WalletCategoryEditFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletCategoryEditFieldCell.h; sourceTree = "<group>"; };
 		686BB86019092D94009163F2 /* A3WalletCategoryEditFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletCategoryEditFieldCell.m; sourceTree = "<group>"; };
 		686BB862190937F4009163F2 /* A3WalletCategoryEditAddNewFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletCategoryEditAddNewFieldCell.h; sourceTree = "<group>"; };
@@ -1872,8 +1874,6 @@
 		687484BF19783BE100EA8F74 /* WalletItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletItem.m; sourceTree = "<group>"; };
 		687484C119783BE100EA8F74 /* WalletFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletFavorite.h; sourceTree = "<group>"; };
 		687484C219783BE100EA8F74 /* WalletFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletFavorite.m; sourceTree = "<group>"; };
-		687484C419783BE100EA8F74 /* WalletFieldItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletFieldItem.h; sourceTree = "<group>"; };
-		687484C519783BE100EA8F74 /* WalletFieldItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletFieldItem.m; sourceTree = "<group>"; };
 		687484CD19783C1000EA8F74 /* ExpenseListHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExpenseListHistory.h; path = Data/ExpenseListHistory.h; sourceTree = "<group>"; };
 		687484CE19783C1000EA8F74 /* ExpenseListHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExpenseListHistory.m; path = Data/ExpenseListHistory.m; sourceTree = "<group>"; };
 		687484D919783C2F00EA8F74 /* TipCalcRecent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TipCalcRecent.h; path = Data/TipCalcRecent.h; sourceTree = "<group>"; };
@@ -1889,8 +1889,6 @@
 		687617F429B76EB900C3EE3A /* UserMessagingPlatform.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = UserMessagingPlatform.xcframework; path = "External/GoogleMobileAdsSdkiOS-10.2.0/UserMessagingPlatform.xcframework"; sourceTree = "<group>"; };
 		687617F529B76EB900C3EE3A /* nanopb.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = nanopb.xcframework; path = "External/GoogleMobileAdsSdkiOS-10.2.0/nanopb.xcframework"; sourceTree = "<group>"; };
 		687671521F7FC7B300182BA1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		6876AE6F2B18FCD0008AB510 /* NSString+TextDirectionality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TextDirectionality.h"; sourceTree = "<group>"; };
-		6876AE702B18FCD0008AB510 /* NSString+TextDirectionality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TextDirectionality.m"; sourceTree = "<group>"; };
 		6876D6FA17A75DAE00E16991 /* AppBox3 Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AppBox3 Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6876D70017A75DAE00E16991 /* AppBox3 Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AppBox3 Tests-Info.plist"; sourceTree = "<group>"; };
 		6876D70617A75DAE00E16991 /* AppBox3 Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppBox3 Tests-Prefix.pch"; sourceTree = "<group>"; };
@@ -2402,12 +2400,19 @@
 		68C802E419571A3700BC19EE /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/WalletPreset.strings; sourceTree = "<group>"; };
 		68C802E519571A3900BC19EE /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/WalletPreset.strings; sourceTree = "<group>"; };
 		68C802E619571A3B00BC19EE /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/WalletPreset.strings; sourceTree = "<group>"; };
+		68C8F9522C96B65F0066A3B2 /* WalletFieldItem+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "WalletFieldItem+CoreDataProperties.swift"; path = "/Users/bkk/development/2024_Sep/AppBox%20Pro/AppBox3/Swift/WalletFieldItem+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
 		68C999AB1CC74FB200BC1B0D /* A3PriceTagLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3PriceTagLabel.h; sourceTree = "<group>"; };
 		68C999AC1CC74FB200BC1B0D /* A3PriceTagLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3PriceTagLabel.m; sourceTree = "<group>"; };
 		68C9A0761E29B85A0065509B /* A3SharePopupPresentationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3SharePopupPresentationController.h; sourceTree = "<group>"; };
 		68C9A0771E29B85A0065509B /* A3SharePopupPresentationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SharePopupPresentationController.m; sourceTree = "<group>"; };
 		68C9E3FC1882EF1B007E4697 /* A3AppDelegate+mainMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "A3AppDelegate+mainMenu.h"; path = "AppDelegate/A3AppDelegate+mainMenu.h"; sourceTree = "<group>"; };
 		68C9E3FD1882EF1B007E4697 /* A3AppDelegate+mainMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "A3AppDelegate+mainMenu.m"; path = "AppDelegate/A3AppDelegate+mainMenu.m"; sourceTree = "<group>"; };
+		68CA051B2C96C141002A5FB0 /* A3FloatLabeledPasswordTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3FloatLabeledPasswordTextField.h; sourceTree = "<group>"; };
+		68CA051C2C96C141002A5FB0 /* A3FloatLabeledPasswordTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3FloatLabeledPasswordTextField.m; sourceTree = "<group>"; };
+		68CA051D2C96C141002A5FB0 /* JVFloatLabeledTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JVFloatLabeledTextField.h; sourceTree = "<group>"; };
+		68CA051E2C96C141002A5FB0 /* JVFloatLabeledTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JVFloatLabeledTextField.m; sourceTree = "<group>"; };
+		68CA051F2C96C141002A5FB0 /* NSString+TextDirectionality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TextDirectionality.h"; sourceTree = "<group>"; };
+		68CA05202C96C141002A5FB0 /* NSString+TextDirectionality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TextDirectionality.m"; sourceTree = "<group>"; };
 		68CA9B1719618866002E58DC /* Calculation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Calculation.h; sourceTree = "<group>"; };
 		68CA9B1819618866002E58DC /* Calculation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Calculation.m; sourceTree = "<group>"; };
 		68CA9BA41961B881002E58DC /* PercentCalcHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PercentCalcHistory.h; sourceTree = "<group>"; };
@@ -3002,7 +3007,6 @@
 				683F56132A1EBCE600684674 /* WultraPassphraseMeter in Frameworks */,
 				68B1293A29EA0CA7003A5EB1 /* AppBoxKit.framework in Frameworks */,
 				683F56172A1EBCE600684674 /* WultraPassphraseMeterENDictionary in Frameworks */,
-				6826275429B77B610052CBD0 /* GoogleMobileAds in Frameworks */,
 				6826275829B77C8D0052CBD0 /* FirebaseFunctions in Frameworks */,
 				683F56152A1EBCE600684674 /* WultraPassphraseMeterCore in Frameworks */,
 				68CFACD428A3A6F900C6B4F0 /* UniformTypeIdentifiers.framework in Frameworks */,
@@ -3016,6 +3020,7 @@
 				6826275229B77B610052CBD0 /* FirebaseAnalytics in Frameworks */,
 				680B59D71E9777C8004362AC /* HealthKit.framework in Frameworks */,
 				686490E429B82BD600AF1D39 /* OpenSSL.xcframework in Frameworks */,
+				689565D42C53D8F7009FF087 /* GoogleMobileAds in Frameworks */,
 				6826275C29B77D1D0052CBD0 /* FirebaseAnalyticsSwift in Frameworks */,
 				6825367F18A7C1B800EAFB84 /* libsqlite3.0.dylib in Frameworks */,
 				687E4FAF29F8177200FE59F6 /* AuthenticationServices.framework in Frameworks */,
@@ -3369,6 +3374,14 @@
 			name = Random;
 			sourceTree = "<group>";
 		};
+		680219C42C3A75DF007694F9 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				680219C52C3A75FB007694F9 /* CoreDataStack.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
 		68030AB717F063B400B04487 /* HTCopyableLabel */ = {
 			isa = PBXGroup;
 			children = (
@@ -3466,7 +3479,9 @@
 		680A633829BA9AE60020B964 /* Swift */ = {
 			isa = PBXGroup;
 			children = (
+				68117FBD2C96B73C009963F9 /* WalletFieldItem+CoreDataClass.swift */,
 				684AE51D29E7EC9E00589D62 /* Main.storyboard */,
+				68C8F9522C96B65F0066A3B2 /* WalletFieldItem+CoreDataProperties.swift */,
 				684AE51A29E7EC8E00589D62 /* ChangePasswordViewController.swift */,
 				680A633A29BA9D780020B964 /* AppBox3-Bridging-Header.h */,
 				68BB6E4B29C72703002366EF /* CredentialIdentityStoreManager.swift */,
@@ -3474,6 +3489,7 @@
 				68F720C92B1272AE00773D6E /* AppBox Pro.storekit */,
 				68F720CA2B12912600773D6E /* AdsFreePassShopView.swift */,
 				6895E9E52B1C0BBF00007546 /* ExportWalletContents.swift */,
+				68117FBF2C96B817009963F9 /* GearView.swift */,
 			);
 			path = Swift;
 			sourceTree = "<group>";
@@ -4092,6 +4108,7 @@
 		683B954515EB233500575377 /* Data Management */ = {
 			isa = PBXGroup;
 			children = (
+				685119A82C99925E00E7BC93 /* Migration2024 */,
 				681E11FA1932E1F50077DCFA /* MigrationV1V3 */,
 				6831EBF618619CC800BAF15B /* AppBox3.xcdatamodeld */,
 			);
@@ -4266,6 +4283,13 @@
 			path = UIActivities;
 			sourceTree = "<group>";
 		};
+		685119A82C99925E00E7BC93 /* Migration2024 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Migration2024;
+			sourceTree = "<group>";
+		};
 		68521A4317E1FF1C00E08FB1 /* FXLabel */ = {
 			isa = PBXGroup;
 			children = (
@@ -4368,18 +4392,6 @@
 				686B6B382B0932F000E39E18 /* A3PasswordViewController.m */,
 			);
 			path = Passcode;
-			sourceTree = "<group>";
-		};
-		686B6BAE2B09926800E39E18 /* JVFloatLabeledTextField */ = {
-			isa = PBXGroup;
-			children = (
-				6876AE6F2B18FCD0008AB510 /* NSString+TextDirectionality.h */,
-				6876AE702B18FCD0008AB510 /* NSString+TextDirectionality.m */,
-				686B6BB32B09926800E39E18 /* JVFloatLabeledTextField.h */,
-				686B6BB02B09926800E39E18 /* JVFloatLabeledTextField.m */,
-			);
-			name = JVFloatLabeledTextField;
-			path = JVFloatLabeledTextField/JVFloatLabeledTextField/JVFloatLabeledTextField;
 			sourceTree = "<group>";
 		};
 		686DB3AC2A2499AF009BC79C /* Masonry */ = {
@@ -4711,10 +4723,9 @@
 		68B1292629EA0CA2003A5EB1 /* AppBoxKit */ = {
 			isa = PBXGroup;
 			children = (
+				68CA05212C96C141002A5FB0 /* FloatLabeledTextField */,
+				680219C42C3A75DF007694F9 /* CoreData */,
 				68DAF44A2B0997E4006BA60A /* TableViewController */,
-				686B6BBC2B09937900E39E18 /* A3FloatLabeledPasswordTextField.h */,
-				686B6BBB2B09937900E39E18 /* A3FloatLabeledPasswordTextField.m */,
-				686B6BAE2B09926800E39E18 /* JVFloatLabeledTextField */,
 				686B6B222B0932F000E39E18 /* Common */,
 				686DB3AC2A2499AF009BC79C /* Masonry */,
 				686DB3DF2A2499B0009BC79C /* UIKitExtensions */,
@@ -4941,8 +4952,6 @@
 				68D6E90E199EE0A200166A47 /* WalletField.m */,
 				68D6E90A199EE0A200166A47 /* WalletCategory.h */,
 				68D6E90B199EE0A200166A47 /* WalletCategory.m */,
-				687484C419783BE100EA8F74 /* WalletFieldItem.h */,
-				687484C519783BE100EA8F74 /* WalletFieldItem.m */,
 				687484C119783BE100EA8F74 /* WalletFavorite.h */,
 				687484C219783BE100EA8F74 /* WalletFavorite.m */,
 				687484BE19783BE100EA8F74 /* WalletItem.h */,
@@ -5167,6 +5176,19 @@
 				68B9B15617CF4D8F003ACAD0 /* FXPageControl.m */,
 			);
 			name = FXPageControl;
+			sourceTree = "<group>";
+		};
+		68CA05212C96C141002A5FB0 /* FloatLabeledTextField */ = {
+			isa = PBXGroup;
+			children = (
+				68CA051B2C96C141002A5FB0 /* A3FloatLabeledPasswordTextField.h */,
+				68CA051C2C96C141002A5FB0 /* A3FloatLabeledPasswordTextField.m */,
+				68CA051D2C96C141002A5FB0 /* JVFloatLabeledTextField.h */,
+				68CA051E2C96C141002A5FB0 /* JVFloatLabeledTextField.m */,
+				68CA051F2C96C141002A5FB0 /* NSString+TextDirectionality.h */,
+				68CA05202C96C141002A5FB0 /* NSString+TextDirectionality.m */,
+			);
+			path = FloatLabeledTextField;
 			sourceTree = "<group>";
 		};
 		68CB797E183DB8A800255AE3 /* Helper */ = {
@@ -5868,8 +5890,8 @@
 				686DB43A2A2499B0009BC79C /* NSString+conversion.h in Headers */,
 				686B6B522B0932F000E39E18 /* A3PasswordViewController.h in Headers */,
 				686B6B5B2B0932F000E39E18 /* A3NumberFormatter.h in Headers */,
+				68CA05222C96C141002A5FB0 /* A3FloatLabeledPasswordTextField.h in Headers */,
 				686DB4362A2499B0009BC79C /* NSManagedObject+extension.h in Headers */,
-				686B6BBE2B09937900E39E18 /* A3FloatLabeledPasswordTextField.h in Headers */,
 				686DB4302A2499B0009BC79C /* NSDate+formatting.h in Headers */,
 				686B6B512B0932F000E39E18 /* A3UserDefaultsKeys.h in Headers */,
 				686B6B562B0932F000E39E18 /* A3PasscodeViewControllerProtocol.h in Headers */,
@@ -5884,14 +5906,14 @@
 				686B6B472B0932F000E39E18 /* A3KeychainUtils.h in Headers */,
 				686DB4032A2499B0009BC79C /* MASConstraint.h in Headers */,
 				686DB3FE2A2499B0009BC79C /* NSArray+MASAdditions.h in Headers */,
-				686B6BB92B09926800E39E18 /* JVFloatLabeledTextField.h in Headers */,
+				68CA05242C96C141002A5FB0 /* JVFloatLabeledTextField.h in Headers */,
 				686DB3F62A2499B0009BC79C /* MASCompositeConstraint.h in Headers */,
 				686DB4042A2499B0009BC79C /* NSLayoutConstraint+MASDebugAdditions.h in Headers */,
 				686DB3FA2A2499B0009BC79C /* NSArray+MASShorthandAdditions.h in Headers */,
 				68B1293729EA0CA7003A5EB1 /* AppBoxKit.h in Headers */,
 				686B6B592B0932F000E39E18 /* A3SyncManager+NSUbiquitousKeyValueStore.h in Headers */,
 				68A2D3252A05D795006D0898 /* Ensembles.xcframework in Headers */,
-				6876AE712B18FCD0008AB510 /* NSString+TextDirectionality.h in Headers */,
+				68CA05262C96C141002A5FB0 /* NSString+TextDirectionality.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5918,7 +5940,6 @@
 			name = AppBox3;
 			packageProductDependencies = (
 				6826275129B77B610052CBD0 /* FirebaseAnalytics */,
-				6826275329B77B610052CBD0 /* GoogleMobileAds */,
 				6826275529B77C3D0052CBD0 /* FirebaseInstallations */,
 				6826275729B77C8D0052CBD0 /* FirebaseFunctions */,
 				6826275929B77D1D0052CBD0 /* FirebaseAnalyticsOnDeviceConversion */,
@@ -5929,6 +5950,7 @@
 				683F56122A1EBCE600684674 /* WultraPassphraseMeter */,
 				683F56142A1EBCE600684674 /* WultraPassphraseMeterCore */,
 				683F56162A1EBCE600684674 /* WultraPassphraseMeterENDictionary */,
+				689565D32C53D8F7009FF087 /* GoogleMobileAds */,
 			);
 			productName = AppBox3;
 			productReference = 682EA2D115EB10B000BD6AD4 /* AppBox3.app */;
@@ -6020,7 +6042,7 @@
 				BuildIndependentTargetsInParallel = YES;
 				CLASSPREFIX = A3;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1600;
 				ORGANIZATIONNAME = ALLABOUTAPPS;
 				TargetAttributes = {
 					682EA2D015EB10B000BD6AD4 = {
@@ -6087,8 +6109,8 @@
 			mainGroup = 682EA2C615EB10B000BD6AD4;
 			packageReferences = (
 				68AB292929B774F400B4452B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				682A776B29B7769700EC31FF /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 				683F56112A1EBCE600684674 /* XCRemoteSwiftPackageReference "passphrase-meter" */,
+				689565D22C53D8F7009FF087 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 			);
 			productRefGroup = 682EA2D215EB10B000BD6AD4 /* Products */;
 			projectDirPath = "";
@@ -6345,7 +6367,6 @@
 				68E02E701C9286BD00C5A24A /* A3AppSelectTableViewController.m in Sources */,
 				68C4189B2B1148ED009668B9 /* AppTransactionManager.swift in Sources */,
 				68E2A64C18D0B1FC00E834D9 /* A3ExpenseListItemCell.m in Sources */,
-				687484C619783BE100EA8F74 /* WalletFieldItem.m in Sources */,
 				68143D6518E3EC7C00569691 /* A3TableViewExpandableHeaderCell.m in Sources */,
 				689C9A4B1839CD7F007C97EE /* AFHTTPRequestOperationManager.m in Sources */,
 				68F1C8D918D7F37D009FAE8A /* A3LadyCalendarCalendarView.m in Sources */,
@@ -6522,6 +6543,7 @@
 				680D639518CFF9D400938AD0 /* A3CalculatorHistoryCell.m in Sources */,
 				68B6A32B18CEC76D004084EF /* A3WalletItemFieldCell.m in Sources */,
 				68F163AD18E91537007B425B /* UITableView+utility.m in Sources */,
+				68117FC02C96B817009963F9 /* GearView.swift in Sources */,
 				68B6A34D18CEC76D004084EF /* A3WalletItemViewController.m in Sources */,
 				68E2A6B118D0B22800E834D9 /* A3TipCalcHeaderView.m in Sources */,
 				68B6A2C218CEC76D004084EF /* A3LoanCalcLoanHistoryCell.m in Sources */,
@@ -6636,6 +6658,7 @@
 				68B6A2AD18CEC76D004084EF /* A3LoanCalcMainViewController.m in Sources */,
 				68B6A2EE18CEC76D004084EF /* A3UnitPriceHistoryViewController.m in Sources */,
 				682E07EA171968A8007112B9 /* ATSDragToReorderTableViewController.m in Sources */,
+				68C8F9532C96B65F0066A3B2 /* WalletFieldItem+CoreDataProperties.swift in Sources */,
 				68F1C90418D814F9009FAE8A /* UIPopoverController+Override.m in Sources */,
 				68F1C92318D82500009FAE8A /* NYXProgressiveImageView.m in Sources */,
 				689B95191E4981D30005A43A /* A3KaomojiDrillDownViewController.m in Sources */,
@@ -6768,6 +6791,7 @@
 				68B6A2FC18CEC76D004084EF /* A3UnitPriceSliderView.m in Sources */,
 				682FDF4319820F5900C6C83D /* DaysCounterEvent.m in Sources */,
 				6890AB321786BA08004FECE4 /* A3CurrencyTableViewController.m in Sources */,
+				68117FBE2C96B73C009963F9 /* WalletFieldItem+CoreDataClass.swift in Sources */,
 				68B6F7661EA575C500C4BB7A /* MWPhotoBrowser.m in Sources */,
 				68F1500B19485E8500159EAD /* A3DaysCounterLocationDetailViewController.m in Sources */,
 				68F14FEA19485E8500159EAD /* A3DaysCounterEventListSectionHeader.m in Sources */,
@@ -7043,9 +7067,9 @@
 				686DB3F72A2499B0009BC79C /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				686DB4342A2499B0009BC79C /* NSDate-Utilities.m in Sources */,
 				686B6B462B0932F000E39E18 /* A3Utilities.m in Sources */,
+				68CA05252C96C141002A5FB0 /* JVFloatLabeledTextField.m in Sources */,
 				686B6B482B0932F000E39E18 /* A3UserDefaults.m in Sources */,
 				68590A7A2A441F46000B480C /* PasscodeViewFactory.swift in Sources */,
-				6876AE722B18FCD0008AB510 /* NSString+TextDirectionality.m in Sources */,
 				68330B4E2A17748C005EEEBC /* SecuredTextFieldParentProtocol.swift in Sources */,
 				686DB40A2A2499B0009BC79C /* View+MASAdditions.m in Sources */,
 				6844C6102B0FBEFF00C5D08F /* CredentialDetailView.swift in Sources */,
@@ -7055,14 +7079,15 @@
 				686DB4392A2499B0009BC79C /* NSDate+formatting.m in Sources */,
 				686B6B5A2B0932F000E39E18 /* A3SyncManager.m in Sources */,
 				686DB4082A2499B0009BC79C /* MASLayoutConstraint.m in Sources */,
-				686B6BBD2B09937900E39E18 /* A3FloatLabeledPasswordTextField.m in Sources */,
 				686DB4012A2499B0009BC79C /* ViewController+MASAdditions.m in Sources */,
 				686DB4282A2499B0009BC79C /* NSDateFormatter+A3Addition.m in Sources */,
 				68FA7D482A20E49000D008EA /* AskPasswordView.swift in Sources */,
 				686DB4382A2499B0009BC79C /* NSManagedObjectContext+extension.m in Sources */,
+				68CA05232C96C141002A5FB0 /* A3FloatLabeledPasswordTextField.m in Sources */,
 				686DB4062A2499B0009BC79C /* MASConstraintMaker.m in Sources */,
 				686B6B422B0932F000E39E18 /* A3SyncManager+mainmenu.m in Sources */,
 				68B1292929EA0CA3003A5EB1 /* AppBoxKit.docc in Sources */,
+				68CA05272C96C141002A5FB0 /* NSString+TextDirectionality.m in Sources */,
 				686B6B532B0932F000E39E18 /* A3PasscodeCommonViewController.m in Sources */,
 				686DB4092A2499B0009BC79C /* NSArray+MASAdditions.m in Sources */,
 				68E600BA2A249CC80083587D /* PasscodeField.swift in Sources */,
@@ -7075,9 +7100,9 @@
 				689806F12B16BBA0008D6890 /* WindowUtility.swift in Sources */,
 				686DB42C2A2499B0009BC79C /* NSManagedObject+extension.m in Sources */,
 				686DB3FC2A2499B0009BC79C /* View+MASShorthandAdditions.m in Sources */,
+				680219C62C3A75FB007694F9 /* CoreDataStack.swift in Sources */,
 				68C610C129F61BFA0002B484 /* PasswordController.swift in Sources */,
 				686B6B432B0932F000E39E18 /* A3SyncManager+NSUbiquitousKeyValueStore.m in Sources */,
-				686B6BB62B09926800E39E18 /* JVFloatLabeledTextField.m in Sources */,
 				686B6B492B0932F000E39E18 /* A3NumberFormatter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7661,6 +7686,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				FRAMEWORK_SEARCH_PATHS = "$PROJECT_DIR/**";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -7722,6 +7748,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				FRAMEWORK_SEARCH_PATHS = "$PROJECT_DIR/**";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -7751,7 +7778,6 @@
 		682EA30515EB10B000BD6AD4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
@@ -7760,7 +7786,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.7.8.0;
+				CURRENT_PROJECT_VERSION = 4.8.0.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
@@ -7789,7 +7815,7 @@
 					"${PROJECT_DIR}/External/**",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
-				MARKETING_VERSION = 4.7.8;
+				MARKETING_VERSION = 4.8.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				ONLY_ACTIVE_ARCH = YES;
@@ -7813,7 +7839,6 @@
 		682EA30615EB10B000BD6AD4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
@@ -7822,7 +7847,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.7.8.0;
+				CURRENT_PROJECT_VERSION = 4.8.0.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
@@ -7851,7 +7876,7 @@
 					"${PROJECT_DIR}/External/**",
 					"$(PROJECT_DIR)/External/GoogleConversionTrackingSDK-iOS-3.4.0",
 				);
-				MARKETING_VERSION = 4.7.8;
+				MARKETING_VERSION = 4.8.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				ONLY_ACTIVE_ARCH = YES;
@@ -7874,7 +7899,6 @@
 		6876D70A17A75DAE00E16991 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/AppBox3.app/AppBox3";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -7916,7 +7940,6 @@
 		6876D70B17A75DAE00E16991 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/AppBox3.app/AppBox3";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -7965,8 +7988,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -8021,8 +8043,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
@@ -8066,7 +8087,6 @@
 		68B1293E29EA0CAA003A5EB1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -8102,7 +8122,6 @@
 		68B1293F29EA0CAA003A5EB1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -8287,20 +8306,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		682A776B29B7769700EC31FF /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 9.0.0;
-			};
-		};
 		683F56112A1EBCE600684674 /* XCRemoteSwiftPackageReference "passphrase-meter" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/wultra/passphrase-meter";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.0;
+			};
+		};
+		689565D22C53D8F7009FF087 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.7.0;
 			};
 		};
 		68AB292929B774F400B4452B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
@@ -8318,11 +8337,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 68AB292929B774F400B4452B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalytics;
-		};
-		6826275329B77B610052CBD0 /* GoogleMobileAds */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 682A776B29B7769700EC31FF /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
-			productName = GoogleMobileAds;
 		};
 		6826275529B77C3D0052CBD0 /* FirebaseInstallations */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -8388,6 +8402,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 683F56112A1EBCE600684674 /* XCRemoteSwiftPackageReference "passphrase-meter" */;
 			productName = WultraPassphraseMeterENDictionary;
+		};
+		689565D32C53D8F7009FF087 /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 689565D22C53D8F7009FF087 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
 		};
 /* End XCSwiftPackageProductDependency section */
 

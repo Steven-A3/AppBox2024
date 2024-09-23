@@ -10,7 +10,6 @@
 #define AppBox3_Bridging_Header_h
 
 #import "A3AppDelegate.h"
-#import "WalletFieldItem.h"
 #import "WalletField.h"
 #import "A3SyncManager.h"
 

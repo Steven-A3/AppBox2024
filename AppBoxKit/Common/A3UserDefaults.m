@@ -40,34 +40,86 @@ NSString *const A3UserDefaultsChangedKey = @"A3UserDefaultsChangedKey";
 	return [[_fileManager applicationSupportPath] stringByAppendingPathComponent:A3PrivatePreferencesFilename];
 }
 
+/**
+ * Retrieves the main database as a mutable dictionary.
+ *
+ * This method locates the database file at the specified path and ensures that its file protection attributes
+ * are set to NSFileProtectionNone for availability purposes. It then reads the contents of the file, deserializes
+ * it into a mutable dictionary, and returns it. If any errors occur during these operations, an empty mutable dictionary
+ * is returned instead.
+ *
+ * @return NSMutableDictionary* - The main database as a mutable dictionary. Returns a new empty mutable dictionary if the file
+ *                                does not exist or if any errors occur during file access or deserialization.
+ *
+ * Error Handling:
+ * - Logs an error message if unable to retrieve file attributes.
+ * - Logs an error message if unable to set file protection attributes.
+ * - Logs an error message if unable to read the file.
+ * - Logs an error message if unable to deserialize the property list.
+ * - Logs an error message if the file does not exist at the specified path.
+ *
+ * Security Considerations:
+ * - Ensures the database file is protected using NSFileProtectionComplete to enhance security.
+ *
+ * Usage:
+ * Call this method to obtain the main database for read and write operations. Ensure that the database file path
+ * is correctly set up before invoking this method.
+ */
 - (NSMutableDictionary *)mainDatabase {
     @autoreleasepool {
         NSString *path = [self databasePath];
         if ([_fileManager fileExistsAtPath:path]) {
-            NSDictionary *fileAttributes = [_fileManager attributesOfFileSystemForPath:path error:NULL];
-            if (![[fileAttributes valueForKey:NSFileProtectionKey] isEqualToString:NSFileProtectionNone]) {
-                [_fileManager setAttributes:@{NSFileProtectionKey: NSFileProtectionNone} ofItemAtPath:path error:NULL];
+            NSError *error = nil;
+            NSDictionary *fileAttributes = [_fileManager attributesOfItemAtPath:path error:&error];
+            if (error) {
+                NSLog(@"Error getting file attributes: %@", error.localizedDescription);
+                return [NSMutableDictionary new];
             }
-            
+
+            // Consider using a more secure file protection level
+            if (![[fileAttributes valueForKey:NSFileProtectionKey] isEqualToString:NSFileProtectionComplete]) {
+                error = nil;
+                [_fileManager setAttributes:@{NSFileProtectionKey: NSFileProtectionComplete} ofItemAtPath:path error:&error];
+                if (error) {
+                    NSLog(@"Error setting file attributes: %@", error.localizedDescription);
+                    return [NSMutableDictionary new];
+                }
+            }
+
             __block NSData *data = nil;
-            NSMutableDictionary *mainDatabase;
-            NSError *error;
+            __block NSError *readError = nil;
+            NSMutableDictionary *mainDatabase = nil;
             NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
             [coordinator coordinateReadingItemAtURL:[NSURL fileURLWithPath:path]
                                             options:NSFileCoordinatorReadingWithoutChanges
                                               error:&error
                                          byAccessor:^(NSURL *newURL) {
-                data = [NSData dataWithContentsOfFile:[newURL path]];
+                data = [NSData dataWithContentsOfURL:newURL options:NSDataReadingMappedIfSafe error:&readError];
+                if (readError) {
+                    NSLog(@"Error reading file: %@", readError.localizedDescription);
+                }
             }];
-            if (data) {
+            if (data && !readError) {
+                error = nil;
+                NSPropertyListFormat format;
                 mainDatabase = [NSPropertyListSerialization propertyListWithData:data
                                                                          options:NSPropertyListMutableContainersAndLeaves
-                                                                          format:NULL
+                                                                          format:&format
                                                                            error:&error];
-                if (!error) {
+                if (error) {
+                    NSLog(@"Error deserializing property list: %@", error.localizedDescription);
+                } else if (format != NSPropertyListBinaryFormat_v1_0 && format != NSPropertyListXMLFormat_v1_0) {
+                    NSLog(@"Unexpected property list format");
+                    mainDatabase = nil;
+                }
+                if (mainDatabase) {
                     return mainDatabase;
                 }
+            } else {
+                NSLog(@"Error: No data read from file.");
             }
+        } else {
+            NSLog(@"File does not exist at path: %@", path);
         }
         return [NSMutableDictionary new];
     }

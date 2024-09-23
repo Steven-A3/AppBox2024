@@ -228,7 +228,7 @@ NSString *const V1AlarmMP3DirectoryName = @"mp3";
 
 			newEvent.effectiveStartDate = [A3DaysCounterModelManager effectiveDateForEvent:newEvent basisTime:[NSDate date]];
 
-            [context saveContext];
+            [context saveIfNeeded];
 		}
 	}
 }
@@ -281,7 +281,7 @@ NSString *const kMyGirlsDayHistoryTypeInput				= @"input";
 				period.endDate = item[2];
 				period.cycleLength = @([item[3] integerValue]);
 				[period reassignUniqueIDWithStartDate];
-                [context saveContext];
+                [context saveIfNeeded];
 			}
 		}
 	}
@@ -328,7 +328,7 @@ NSString *const kTargetText						= @"kTargetText";
 			history.translatedText = item[kTargetText];
 			[history setAsFavoriteMember:YES];
 
-            [context saveContext];
+            [context saveIfNeeded];
 		}
 
 	}
@@ -474,7 +474,7 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 					NSDictionary *valueDictionary = valueInfo[KWalletValueDictionary];
 					newItem.updateDate = valueDictionary[KWalletValueLastUpdated];
 
-					[context saveContext];
+					[context saveIfNeeded];
 
 					for (NSString *fieldID in valueDictionary.allKeys) {
 						@autoreleasepool {
@@ -535,7 +535,7 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 								} else {
 									V3FieldItem.value = valueDictionary[fieldID];
 								}
-								[context saveContext];
+								[context saveIfNeeded];
 							} else {
 								FNLOG(@"fieldInfo not found. %@, %@", V1CategoryID, fieldID);
 							}
@@ -546,7 +546,7 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 		}
 	}
 
-	[context saveContext];
+	[context saveIfNeeded];
 
 	return YES;
 }

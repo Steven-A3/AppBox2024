@@ -118,7 +118,7 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 		newFavorite.order = [NSString orderStringWithOrder:order];
 		order += 1000000;
 	}
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 + (BOOL)yahooNetworkAvailable {

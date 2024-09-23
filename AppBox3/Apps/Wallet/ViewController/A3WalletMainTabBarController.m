@@ -55,7 +55,7 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
     if ([recentsCategory count] == 0) {
         [WalletData createRecentsCategory];
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        [context saveContext];
+        [context saveIfNeeded];
     }
     
 	// test for "kWhichTabPrefKey" key value

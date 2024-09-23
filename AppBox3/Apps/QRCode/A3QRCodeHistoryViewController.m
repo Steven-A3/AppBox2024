@@ -159,7 +159,7 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 				default:
 					break;
 			}
-            [context saveContext];
+            [context saveIfNeeded];
             [_tableView setEditing:NO];
 
             _historyArray = nil;
@@ -400,7 +400,7 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 		QRCodeHistory *history = self.historyArray[indexPath.row];
         [context deleteObject:history];
 
-        [context saveContext];
+        [context saveIfNeeded];
         _historyArray = nil;
         [_tableView reloadData];
 	}

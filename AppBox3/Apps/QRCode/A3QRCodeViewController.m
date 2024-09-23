@@ -289,7 +289,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 				}
 			}
 			
-            [context saveContext];
+            [context saveIfNeeded];
 
 			if ([history.dimension isEqualToString:@"1"]) {
 				if ([[[A3AppDelegate instance] reachability] isReachableViaWiFi]) {
@@ -372,7 +372,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 			newItem.dimension = @"2";
 		}
 
-        [context saveContext];
+        [context saveIfNeeded];
 
 		[self.dataHandler performActionWithData:newItem inViewController:self];
 
@@ -415,7 +415,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
             if (error) {
                 FNLOG(@"%@", error.localizedDescription);
             }
-            [context saveContext];
+            [context saveIfNeeded];
             [self presentDetailViewControllerWithData:history];
 		}
 		self.googleSearchInProgress = NO;

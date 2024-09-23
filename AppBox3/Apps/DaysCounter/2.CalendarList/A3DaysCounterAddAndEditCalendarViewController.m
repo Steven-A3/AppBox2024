@@ -387,7 +387,7 @@
     if ( !_isEditMode ) {
 		[_calendar assignOrderAsFirst];
     }
-    [context saveContext];
+    [context saveIfNeeded];
 
 	[self dismissSelf];
 }

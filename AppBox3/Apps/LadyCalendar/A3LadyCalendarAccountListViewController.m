@@ -130,7 +130,7 @@
 				order += 1000000;
 			}
             NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-            [context saveContext];
+            [context saveIfNeeded];
 
 			accounts = [LadyCalendarAccount findAllSortedBy:A3CommonPropertyOrder ascending:YES];
 			_ladyCalendarAccounts = [NSMutableArray arrayWithArray:accounts];
@@ -217,7 +217,7 @@
 	[_ladyCalendarAccounts moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 	FNLOG(@"%@", _ladyCalendarAccounts);
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
         
 	double delayInSeconds = 0.15;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));

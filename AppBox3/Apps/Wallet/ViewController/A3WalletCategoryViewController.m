@@ -6,13 +6,13 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
+#import "AppBox3-Swift.h"
 #import "A3WalletCategoryViewController.h"
 #import "A3WalletCategoryInfoViewController.h"
 #import "A3WalletListBigVideoCell.h"
 #import "A3WalletListBigPhotoCell.h"
 #import "WalletData.h"
 #import "WalletItem.h"
-#import "WalletFieldItem.h"
 #import "WalletFieldItem+initialize.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+NumberKeyboard.h"
@@ -779,7 +779,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 				}
             }
             NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-            [context saveContext];
+            [context saveIfNeeded];
             
             [self.tableView reloadData];
 
@@ -808,7 +808,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 				}
             }
             NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-            [context saveContext];
+            [context saveIfNeeded];
             [self.items removeObjectsAtIndexes:mis];
 
             [self.tableView deleteRowsAtIndexPaths:ips withRowAnimation:UITableViewRowAnimationFade];
@@ -1078,7 +1078,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
             [item deleteWalletItem];
             
             NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-            [context saveContext];
+            [context saveIfNeeded];
 
             self.items = nil;
             [self configureSections];

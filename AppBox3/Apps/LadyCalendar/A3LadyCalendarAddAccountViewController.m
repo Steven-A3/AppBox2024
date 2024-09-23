@@ -591,7 +591,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	}
 
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 
 	[self dismissViewControllerAnimated:YES completion:nil];
 }

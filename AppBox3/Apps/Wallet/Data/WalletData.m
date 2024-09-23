@@ -216,7 +216,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [WalletData createLocalizedPresetCategories];
     [WalletData createSystemCategory];
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 + (NSArray *)walletCategoriesFilterDoNotShow:(BOOL)hideDoNotShow {
@@ -232,7 +232,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 			}
 		}
 		if (dataUpdated) {
-            [context saveContext];
+            [context saveIfNeeded];
 		}
 		
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K != %@", @"doNotShow", @(hideDoNotShow)];

@@ -102,42 +102,10 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyValueStoreDidChangeExternally:) name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification object:store];
-#ifdef DEBUG_ENSEMBLE_PROGRESS
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ensembleDidBeginActivity:) name:CDEPersistentStoreEnsembleDidBeginActivityNotification object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ensembleDidMakeProgress:) name:CDEPersistentStoreEnsembleDidMakeProgressWithActivityNotification object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ensembleWilEndActivity:) name:CDEPersistentStoreEnsembleWillEndActivityNotification object:nil];
-#endif
 	}
 
 	return self;
 }
-
-#ifdef DEBUG_ENSEMBLE_PROGRESS
-- (void)ensembleDidBeginActivity:(NSNotification *)notification {
-	FNLOG(@"%@", notification.userInfo[CDEEnsembleActivityKey]);
-}
-
-- (void)ensembleDidMakeProgress:(NSNotification *)notification {
-	FNLOG(@"%@", notification.userInfo[CDEEnsembleActivityKey]);
-	FNLOG(@"%@", notification.userInfo[CDEProgressFractionKey]);
-}
-
-- (void)ensembleWilEndActivity:(NSNotification *)notification {
-	id activity = notification.userInfo[CDEEnsembleActivityKey];
-	FNLOG(@"%@", activity);
-	switch ([activity unsignedIntegerValue]) {
-		case CDEEnsembleActivityLeeching: {
-			NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
-			[keyValueStore removeObjectForKey:A3SyncDeviceSyncStartInfo];
-			[keyValueStore synchronize];
-			break;
-		}
-		case CDEEnsembleActivityDeleeching:
-		default:
-			break;
-	}
-}
-#endif
 
 - (BOOL)canSyncStart {
 	NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];

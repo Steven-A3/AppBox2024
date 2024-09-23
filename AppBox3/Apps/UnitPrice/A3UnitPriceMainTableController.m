@@ -311,7 +311,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
             _price1.uniqueID = A3UnitPricePrice1DefaultID;
             _price1.priceName = @"A";
             [_price1 initValues];
-            [context saveContext];
+            [context saveIfNeeded];
 		}
 	}
     return _price1;
@@ -327,7 +327,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
             _price2.uniqueID = A3UnitPricePrice2DefaultID;
             _price2.priceName = @"B";
             [_price2 initValues];
-            [context saveContext];
+            [context saveIfNeeded];
 		}
 	}
     return _price2;
@@ -413,7 +413,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 			}
 		}
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        [context saveContext];
+        [context saveIfNeeded];
 
 		if (![self.defaultCurrencyCode isEqualToString:history.currencyCode]) {
 			[UnitPriceInfo changeDefaultCurrencyCode:history.currencyCode];
@@ -563,7 +563,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
         priceBItem.note = _price2.note;
         priceBItem.historyID = history.uniqueID;
         
-        [context saveContext];
+        [context saveIfNeeded];
     }
 
     self.historyBarItem.enabled = YES;
@@ -579,7 +579,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 	[self.price1 initValues];
 	[self.price2 initValues];
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 
     [self.tableView reloadData];
 }

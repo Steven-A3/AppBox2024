@@ -148,7 +148,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
                 [context deleteObject:unitPriceHistory];
             }
         }
-        [context saveContext];
+        [context saveIfNeeded];
 		_fetchedResultsController = nil;
 		[self.tableView reloadData];
         
@@ -182,7 +182,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 	[UnitPriceInfo deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", history.uniqueID]];
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context deleteObject:history];
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 - (double)calcuUnitPriceOfHistoryItem:(UnitPriceInfo *)item
@@ -327,7 +327,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
     price2.historyID = nil;
     
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 @end

@@ -152,7 +152,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 		newCalendar.order = [NSString orderStringWithOrder:order];
 		order += 1000000;
 	}
-    [context saveContext];
+    [context saveIfNeeded];
 
 	return [NSMutableArray arrayWithArray:[DaysCounterCalendar findAllSortedBy:@"order" ascending:YES]];
 }
@@ -435,7 +435,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     eventModel.updateDate = [NSDate date];
 
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 
     return YES;
 }
@@ -467,7 +467,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     
 	eventItem.updateDate = [NSDate date];
 
-    [context saveContext];
+    [context saveIfNeeded];
 
     return YES;
 }
@@ -510,7 +510,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context deleteObject:event];
     
-    [context saveContext];
+    [context saveIfNeeded];
 
 	return YES;
 }
@@ -526,7 +526,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         retValue = [self removeEvent:event];
     }
 
-    [context saveContext];
+    [context saveIfNeeded];
 
 	[[self class] reloadAlertDateListForLocalNotification];
 
@@ -1401,7 +1401,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         }
     }];
     
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 + (NSDate *)effectiveAlertDateForEvent:(DaysCounterEvent *)event

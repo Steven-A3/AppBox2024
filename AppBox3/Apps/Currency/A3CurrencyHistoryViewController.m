@@ -135,7 +135,7 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 		[CurrencyHistory truncateAll];
 		[CurrencyHistoryItem truncateAll];
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        [context saveContext];
+        [context saveIfNeeded];
 
 		[self.tableView reloadData];
 	}
@@ -240,7 +240,7 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 		}
         [context deleteObject:history];
 
-        [context saveContext];
+        [context saveIfNeeded];
 		_fetchedResultsController = nil;
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

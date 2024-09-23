@@ -579,7 +579,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     item.hasData = @(YES);
 
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 
 	NSInteger focusingRow = [_currentBudget expenseItemsCount] - 1;
 
@@ -702,7 +702,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     
     _currentBudget = nil;
     
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 - (void)historyButtonAction:(id)sender
@@ -818,7 +818,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	[self createExpenseListItemWithBudgetID:_currentBudget.uniqueID];
 
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 
     _currentBudget = [ExpenseListBudget findFirstByAttribute:@"uniqueID" withValue:A3ExpenseListCurrentBudgetID];
     _tableDataSourceArray = [self loadBudgetFromDB];
@@ -938,7 +938,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     // 현재 상태 저장.
 	if (saveData) {
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        [context saveContext];
+        [context saveIfNeeded];
 	}
 }
 
@@ -997,7 +997,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 			}
 		}
 
-        [context saveContext];
+        [context saveIfNeeded];
 	}
 	_tableDataSourceArray = [self loadBudgetFromDB];
 }
@@ -1049,7 +1049,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 		itemInHistory.budgetID = budgetInHistory.uniqueID;
 	}
 
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 #pragma mark - misc
@@ -1216,7 +1216,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         [self reloadBudgetDataWithAnimation:YES saveData:NO ];
     }
     
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -1287,7 +1287,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         [self.tableView reloadData];
 
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        [context saveContext];
+        [context saveIfNeeded];
     });
 	return NO;
 }
@@ -1348,7 +1348,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 		newCurrentItem.budgetID = _currentBudget.uniqueID;
 	}];
 
-    [context saveContext];
+    [context saveIfNeeded];
 
     _tableDataSourceArray = [self loadBudgetFromDB];
 
@@ -1617,7 +1617,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 			FNLOG(@"TableView reload data!!!");
         }
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        [context saveContext];
+        [context saveIfNeeded];
 
 		_editingTextField = nil;
 		self.editingObject = nil;
@@ -1647,7 +1647,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	
 	[self enableControls:YES];
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 
 	_editingTextField = nil;
 	self.editingObject = nil;

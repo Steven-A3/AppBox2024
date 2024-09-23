@@ -213,7 +213,7 @@
 {
 	[self.eventItem reminderItem].isUnread = @(NO);
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
@@ -1719,7 +1719,7 @@ EXIT_FUCTION:
 - (void)didSelectFavoriteRow
 {
 	[_eventItem toggleFavorite];
-    [_eventItem.managedObjectContext saveContext];
+    [_eventItem.managedObjectContext saveIfNeeded];
 
     [self.tableView reloadData];
 

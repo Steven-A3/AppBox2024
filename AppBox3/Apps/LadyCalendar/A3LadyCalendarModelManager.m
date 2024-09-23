@@ -54,7 +54,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 	account.uniqueID = DefaultAccountID;
 	account.name = [self defaultAccountName];
 	account.order = [NSString orderStringWithOrder:1000000];
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 - (NSDateFormatter *)dateFormatter {
@@ -92,7 +92,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 - (void)deleteAccount:(LadyCalendarAccount *)account {
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
     [context deleteObject:account];
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 - (void)makePredictPeriodsBeforeCurrentPeriod
@@ -135,7 +135,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 		}
 	}
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 #pragma mark - account
@@ -161,7 +161,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 - (void)setWatchingDateForCurrentAccount:(NSDate *)date {
 	self.currentAccount.watchingDate = date;
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 #pragma mark - period
@@ -314,7 +314,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
     for(LadyCalendarPeriod *item in predictArray){
         [context deleteObject:item];
     }
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 - (NSInteger)cycleLengthConsideringUserOption {
@@ -414,7 +414,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 		prevStartDate = newPeriod.startDate;
 	}
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 - (void)recalculateDates

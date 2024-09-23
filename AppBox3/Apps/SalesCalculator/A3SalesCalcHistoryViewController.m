@@ -134,7 +134,7 @@ NSString *const A3SalesCalcHistoryCellID = @"cell1";
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
         [SalesCalcHistory truncateAll];
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        [context saveContext];
+        [context saveIfNeeded];
         _fetchedResultsController = nil;
         [self.tableView reloadData];
         
@@ -210,7 +210,7 @@ NSString *const A3SalesCalcHistoryCellID = @"cell1";
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         SalesCalcHistory *history = [_fetchedResultsController objectAtIndexPath:indexPath];
         [context deleteObject:history];
-        [context saveContext];
+        [context saveIfNeeded];
         
         _fetchedResultsController = nil;
         

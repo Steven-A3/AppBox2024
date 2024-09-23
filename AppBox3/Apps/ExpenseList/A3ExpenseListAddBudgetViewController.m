@@ -313,7 +313,7 @@ enum A3ExpenseListAddBudgetCellType {
 		resultBudget.updateDate = [NSDate date];
         resultBudget.isModified = @(YES);
 
-        [context saveContext];
+        [context saveIfNeeded];
 
 		[_delegate setExpenseBudgetDataFor:resultBudget];
 	}

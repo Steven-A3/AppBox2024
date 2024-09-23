@@ -6,6 +6,7 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
+#import "AppBox3-Swift.h"
 #import <AppBoxKit/AppBoxKit.h>
 #import <MediaPlayer/MediaPlayer.h>
 @import AVKit;
@@ -22,7 +23,6 @@
 #import "WalletItem+initialize.h"
 #import "WalletItem+Favorite.h"
 #import "UIViewController+NumberKeyboard.h"
-#import "WalletFieldItem.h"
 #import "UIImage+Extension2.h"
 #import "WalletFieldItem+initialize.h"
 #import "A3WalletPhotoItemTitleView.h"
@@ -89,7 +89,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     _item.lastOpened = [NSDate date];
     
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 - (void)applicationWillResignActive {

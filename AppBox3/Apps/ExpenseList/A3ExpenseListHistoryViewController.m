@@ -123,7 +123,7 @@ static NSString *CellIdentifier = @"Cell";
         FNLOG(@"Location : %ld", (long)[ExpenseListBudgetLocation countOfEntities]);
 
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        [context saveContext];
+        [context saveIfNeeded];
         _fetchedResultsController = nil;
         [self.tableView reloadData];
 	}
@@ -208,7 +208,7 @@ static NSString *CellIdentifier = @"Cell";
         [context deleteObject:aData];
         [context deleteObject:aHistory];
 
-        [context saveContext];
+        [context saveIfNeeded];
 
         _fetchedResultsController = nil;
         

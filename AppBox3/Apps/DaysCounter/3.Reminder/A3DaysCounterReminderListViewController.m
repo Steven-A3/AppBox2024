@@ -306,7 +306,7 @@
             item.hasReminder = @(NO);
     }
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 
     self.itemArray = [NSMutableArray arrayWithArray:[_sharedManager reminderList]];
 
@@ -366,7 +366,7 @@
     DaysCounterEvent *item = [reminder event];
 
     item.alertDatetime = nil;
-    [item.managedObjectContext saveContext];
+    [item.managedObjectContext saveIfNeeded];
     self.clearIndexPath = nil;
     [_itemArray removeObjectAtIndex:indexPath.row];
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

@@ -202,7 +202,7 @@ NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
         [TipCalcRecent deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", history.uniqueID]];
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context deleteObject:history];
-        [context saveContext];
+        [context saveIfNeeded];
         _fetchedResultsController = nil;
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

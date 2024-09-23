@@ -104,7 +104,7 @@
 
 		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 
-        [context saveContext];
+        [context saveIfNeeded];
 	}
 }
 
@@ -113,7 +113,7 @@
 	[mutableArray moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 
 	[self.fetchedResultsController performFetch:nil];
 }

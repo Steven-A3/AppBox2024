@@ -6,7 +6,7 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "WalletFieldItem.h"
+#import "AppBox3-Swift.h"
 
 @interface WalletFieldItem (initialize)
 

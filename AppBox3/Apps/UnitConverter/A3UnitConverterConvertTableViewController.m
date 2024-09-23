@@ -2130,7 +2130,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		item.order = [NSString stringWithFormat:@"%010ld", (long)idx];
 	}];
 
-    [context saveContext];
+    [context saveIfNeeded];
 
 	[self enableControls:YES];
 }

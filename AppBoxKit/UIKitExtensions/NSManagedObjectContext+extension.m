@@ -11,7 +11,7 @@
 
 @implementation NSManagedObjectContext (extension)
 
-- (void)saveContext {
+- (void)saveIfNeeded {
     if ([self hasChanges]) {
         NSError *saveError = nil;
         [self save:&saveError];

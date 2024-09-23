@@ -931,7 +931,7 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 		}
 		[item deleteWalletItem];
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        [context saveContext];
+        [context saveIfNeeded];
 	}
 }
 

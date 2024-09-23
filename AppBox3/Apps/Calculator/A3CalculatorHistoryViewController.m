@@ -115,7 +115,7 @@ NSString *const A3CalculatorHistoryRowCellID = @"CcellRow";
 		_fetchedResultsController = nil;
 		[Calculation truncateAll];
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        [context saveContext];
+        [context saveIfNeeded];
 
 		[self.tableView reloadData];
         if(IS_IPAD) {
@@ -202,7 +202,7 @@ NSString *const A3CalculatorHistoryRowCellID = @"CcellRow";
         Calculation *calculation = [_fetchedResultsController objectAtIndexPath:indexPath];
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         [context deleteObject:calculation];
-        [context saveContext];
+        [context saveIfNeeded];
 
         _fetchedResultsController = nil;
         

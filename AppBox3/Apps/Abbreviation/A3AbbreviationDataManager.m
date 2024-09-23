@@ -309,7 +309,7 @@ NSString *const A3AbbreviationKeyMeaning = @"meaning";
     favorite.uniqueID = titleString;
     [favorite assignOrderAsLast];
 
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 - (void)removeFromFavorites:(NSString *)titleString {
@@ -320,7 +320,7 @@ NSString *const A3AbbreviationKeyMeaning = @"meaning";
 		for (AbbreviationFavorite *favorite in results) {
             [context deleteObject:favorite];
 		}
-        [context saveContext];
+        [context saveIfNeeded];
 	}
 }
 
@@ -359,7 +359,7 @@ NSString *const A3AbbreviationKeyMeaning = @"meaning";
         for (AbbreviationFavorite *favorite in results) {
             [context deleteObject:favorite];
         }
-        [context saveContext];
+        [context saveIfNeeded];
 	}
 }
 
@@ -368,7 +368,7 @@ NSString *const A3AbbreviationKeyMeaning = @"meaning";
     [favoriteKeys moveItemInSortedArrayFromIndex:fromIndex toIndex:toIndex];
     
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 @end

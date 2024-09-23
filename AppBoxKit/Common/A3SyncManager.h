@@ -61,12 +61,6 @@ extern NSString *const kA3AdsUserDidSelectPersonalizedAds;
 
 @class CDEPersistentStoreEnsemble, CDEICloudFileSystem;
 
-@protocol A3AppUIContextProtocol <NSObject>
-
-- (UINavigationController *)navigationController;
-
-@end
-
 typedef void (^CDECompletionBlock)(NSError * _Nullable error);
 
 @interface A3SyncManager : NSObject
@@ -76,7 +70,6 @@ typedef void (^CDECompletionBlock)(NSError * _Nullable error);
 @property (nonatomic, copy) NSString *storePath;
 @property (nonatomic, strong) NSFileManager *fileManager;
 @property (strong, nonatomic) NSPersistentContainer *persistentContainer;
-@property (nonatomic, weak) id<A3AppUIContextProtocol>appUIContext;
 
 + (instancetype)sharedSyncManager;
 

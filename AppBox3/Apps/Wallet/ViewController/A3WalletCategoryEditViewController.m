@@ -217,7 +217,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
     }
 
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 
 	if (_delegate && [_delegate respondsToSelector:@selector(walletCategoryEdited:)]) {
 		[_delegate walletCategoryEdited:_category];
@@ -699,7 +699,7 @@ NSString *const A3WalletCateEditNormalCellID = @"Cell";
     for (WalletItem *item in items) {
         [item deleteWalletItem];
     }
-    [context saveContext];
+    [context saveIfNeeded];
     
     [self dismissViewControllerAnimated:YES completion:NULL];
     

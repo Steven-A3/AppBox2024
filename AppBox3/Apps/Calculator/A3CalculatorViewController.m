@@ -92,7 +92,7 @@
     calculation.result = self.evaluatedResultLabel.text;
     calculation.updateDate = keyDate;
 
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 @end

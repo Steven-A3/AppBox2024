@@ -39,7 +39,7 @@
         [context deleteObject:self.favorite];
 	}
 
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 @end

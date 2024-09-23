@@ -6,6 +6,7 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
+#import "AppBox3-Swift.h"
 #import "A3WalletItemEditViewController.h"
 #import "A3WalletCategorySelectViewController.h"
 #import "A3WalletItemFieldCell.h"
@@ -16,7 +17,6 @@
 #import "WalletData.h"
 #import "WalletItem.h"
 #import "WalletItem+Favorite.h"
-#import "WalletFieldItem.h"
 #import "WalletFieldItem+initialize.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+A3Addition.h"
@@ -755,7 +755,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	_item.updateDate = [NSDate date];
     _item.lastOpened = [NSDate date];
 
-    [context saveContext];
+    [context saveIfNeeded];
 
     CredentialIdentityStoreManager *manager = [CredentialIdentityStoreManager new];
     [manager updateCredentialIdentityStore];
@@ -1226,7 +1226,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
         [item deleteWalletItem];
     }
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 - (void)imagePickerActionForButtonIndex:(NSInteger)myButtonIndex destructiveButtonIndex:(NSInteger)destructiveButtonIndex actionSheetTag:(NSInteger)actionSheetTag {

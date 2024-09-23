@@ -248,7 +248,7 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField {
 	if ([textField.placeholder isEqualToString:NSLocalizedString(@"PRODUCT NAME", @"PRODUCT NAME")]) {
 		_historyData.productName = textField.text;
-		[_historyData.managedObjectContext saveContext];
+		[_historyData.managedObjectContext saveIfNeeded];
 	}
 }
 

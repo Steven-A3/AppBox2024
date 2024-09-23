@@ -543,7 +543,7 @@
             if (error) {
                 FNLOG(@"%@", error.localizedDescription);
             }
-            [context saveContext];
+            [context saveIfNeeded];
             [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem * barButton, NSUInteger idx, BOOL *stop) {
                 barButton.enabled = YES;
             }];
@@ -562,7 +562,7 @@
             if (error) {
                 FNLOG(@"%@", error.localizedDescription);
             }
-            [context saveContext];
+            [context saveIfNeeded];
             [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem * barButton, NSUInteger idx, BOOL *stop) {
                 barButton.enabled = YES;
             }];

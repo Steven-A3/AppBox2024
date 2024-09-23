@@ -1454,7 +1454,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
         [self loanHistoryForLoanData:self.loanData];
 
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        [context saveContext];
+        [context saveIfNeeded];
     }
 }
 
@@ -1767,7 +1767,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 		historyA.comparisonHistoryID = comparison.uniqueID;
 		historyB.comparisonHistoryID = comparison.uniqueID;
 
-        [context saveContext];
+        [context saveIfNeeded];
     }
 }
 

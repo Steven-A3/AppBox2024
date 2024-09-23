@@ -7,7 +7,6 @@
 //
 
 #import "A3FloatLabeledPasswordTextField.h"
-#import "A3AppDelegate.h"
 #import "A3UserDefaults+A3Addition.h"
 
 @implementation A3FloatLabeledPasswordTextField

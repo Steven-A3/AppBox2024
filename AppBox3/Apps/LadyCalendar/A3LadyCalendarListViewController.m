@@ -315,7 +315,7 @@
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         if (period) {
             [context deleteObject:period];
-            [context saveContext];
+            [context saveIfNeeded];
 
 			double delayInSeconds = 0.1;
 			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));

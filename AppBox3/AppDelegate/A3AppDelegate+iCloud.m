@@ -209,7 +209,7 @@
 		}
 	}
     NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    [context saveContext];
+    [context saveIfNeeded];
 
 	return dataHasDuplicatedRecords;
 }

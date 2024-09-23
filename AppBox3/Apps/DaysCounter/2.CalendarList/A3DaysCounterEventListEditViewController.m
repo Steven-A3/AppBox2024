@@ -276,7 +276,7 @@
         }
         
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        [context saveContext];
+        [context saveIfNeeded];
 
         if( [self.itemArray count] < 1 ){
             [self cancelAction:nil];

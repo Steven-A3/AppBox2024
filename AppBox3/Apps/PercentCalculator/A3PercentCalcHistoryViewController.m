@@ -145,7 +145,7 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
         _fetchedResultsController = nil;
 
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        [context saveContext];
+        [context saveIfNeeded];
 
         [self.tableView reloadData];
         if ([_delegate respondsToSelector:@selector(didDeleteHistory)]) {
@@ -415,7 +415,7 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
         NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
         PercentCalcHistory *aData = [_fetchedResultsController objectAtIndexPath:indexPath];
         [context deleteObject:aData];
-        [context saveContext];
+        [context saveIfNeeded];
         _fetchedResultsController = nil;
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

@@ -344,7 +344,7 @@ NSString *const A3KaomojiKeyContents = @"contents";
     KaomojiFavorite *favorite = [[KaomojiFavorite alloc] initWithContext:context];
 	favorite.uniqueID = titleString;
 	[favorite assignOrderAsLast];
-	[context saveContext];
+	[context saveIfNeeded];
 }
 
 - (void)removeFromFavorites:(NSString *)titleString {
@@ -355,7 +355,7 @@ NSString *const A3KaomojiKeyContents = @"contents";
 		for (KaomojiFavorite *favorite in result) {
             [context deleteObject:favorite];
 		}
-        [context saveContext];
+        [context saveIfNeeded];
     }
 }
 
@@ -384,7 +384,7 @@ NSString *const A3KaomojiKeyContents = @"contents";
 		for (KaomojiFavorite *favorite in results) {
             [context deleteObject:favorite];
 		}
-        [context saveContext];
+        [context saveIfNeeded];
     }
 }
 
@@ -395,7 +395,7 @@ NSString *const A3KaomojiKeyContents = @"contents";
 	[favoriteKeys moveItemInSortedArrayFromIndex:fromIndex toIndex:toIndex];
 	FNLOG(@"%@", favoriteKeys);
 
-    [context saveContext];
+    [context saveIfNeeded];
 }
 
 @end

@@ -128,7 +128,7 @@ static NSString *const A3SalesCalcDataKeyCurrencyCode = @"currencyCode";
         entity.currencyCode = currencyCode;
     }
 
-    [context saveContext];
+    [context saveIfNeeded];
     
     return YES;
 }
